@@ -1,0 +1,53 @@
+\setlength{\unitlength}{3947sp}%
+%
+\begingroup\makeatletter\ifx\SetFigFont\undefined%
+\gdef\SetFigFont#1#2#3#4#5{%
+  \reset@font\fontsize{#1}{#2pt}%
+  \fontfamily{#3}\fontseries{#4}\fontshape{#5}%
+  \selectfont}%
+\fi\endgroup%
+\begin{picture}(8622,3297)(451,-3523)
+{\color[rgb]{0,0,0}\thinlines
+\put(8326,-2686){\oval(1478,1478)}
+}%
+{\color[rgb]{0,0,0}\put(4276,-2761){\oval(1478,1478)}
+}%
+{\color[rgb]{0,0,0}\put(2026,-2311){\circle{300}}
+}%
+{\color[rgb]{0,0,0}\put(4951,-2386){\vector( 1, 0){2700}}
+}%
+{\color[rgb]{0,0,0}\put(7726,-3136){\vector(-1, 0){2775}}
+}%
+{\color[rgb]{0,0,0}\put(2476,-2686){\vector( 1, 0){1050}}
+}%
+{\color[rgb]{0,0,0}\put(2026,-2461){\line( 0,-1){900}}
+}%
+{\color[rgb]{0,0,0}\put(2026,-3361){\line( 1,-1){150}}
+}%
+{\color[rgb]{0,0,0}\put(2026,-3361){\line(-1,-1){150}}
+}%
+{\color[rgb]{0,0,0}\put(2026,-2911){\line( 2,-3){150}}
+}%
+{\color[rgb]{0,0,0}\put(2026,-2911){\line(-1,-1){150}}
+}%
+\put(2926,-2536){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}1}%
+}}}
+\put(6301,-2311){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}2}%
+}}}
+\put(6226,-3436){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}3}%
+}}}
+\put(8401,-3211){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}4}%
+}}}
+\put(3751,-2686){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}      WEB}%
+}}}
+\put(3601,-2986){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}AUTHOR HOME}%
+}}}
+\put(7801,-2536){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}REPOSITORY}%
+}}}
+\put(8026,-2836){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}HOME}%
+}}}
+\put(451,-2836){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}(AUTHOR)}%
+}}}
+\put(3901,-361){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}UPLOAD    CONTENT}%
+}}}
+\end{picture}

@@ -1,0 +1,148 @@
+\documentclass{article}
+\textheight=8.5in
+\textwidth=6.5in
+\oddsidemargin=0.0in
+\topmargin=0.0in
+
+
+\renewcommand\baselinestretch{1.0}           % single space
+\pagestyle{empty}                            % no headers and page numbers
+\oddsidemargin -10 true pt      % Left margin on odd-numbered pages.
+\evensidemargin 10 true pt      % Left margin on even-numbered pages.
+\marginparwidth 0.75 true in    % Width of marginal notes.
+\oddsidemargin  0 true in       % Note that \oddsidemargin=\evensidemargin
+\evensidemargin 0 true in
+\topmargin -0.75 true in        % Nominal distance from top of page to top of\textheight 9.5 true in
+       % Height of text (including footnotes and figures)
+\textwidth 6.375 true in        % Width of text line.
+\parindent=0pt                  % Do not indent paragraphs
+\parskip=0.15 true in
+\usepackage{color}              % Need the color package
+\usepackage{epsfig}
+
+\begin{document}
+
+
+\begin{center}
+\section*{\underline{Documentation: Admin Functionality's}}
+      Author Name : Madhavi 
+\end{center}
+This file provides Documentation for Admin Functionality's.
+\begin{enumerate}
+\item Adding a new course-creation of course profile.
+\item Adding user  (and his profile).
+\item Modify course profile.
+\item Modify user profile.
+\item Modify user role in course.
+\item Remove course - profile and course.
+\item Remove user - profile.
+\item Giving a role to in user in a course.
+\item Removing role of user in a course.
+\item List course.
+\item List users.
+\item List content authors.
+\item Login as an instructors.
+\item Managing contents backup \& restoration.                                  
+\item Change own password and profile.
+\item Setting configuration parameters (what configuration parameter).
+\item Send notices.
+\item Remove notices (any  body).
+\item Add general / course news.
+\item Modify general / course news (put up by any body).
+\item Remove general / course news  (put up by any body).
+\item Backup (data base /content).
+\item Restore (data base/ content).
+\item Adds words to glossary.
+\item Remove words from glossary (created by any body).
+\item Modify words in glossary (created by any body).
+\item Add remove content author status to and user.
+\item Managing content repository /contents.
+\item Request for the registration of new course with primary instructor 'user'.
+\item Check if the course exits with user as instructor.
+\item If exits send error that course emit with user as instructor.
+\item Else current course profile and send request to give role to user as instructor.
+\item If user already emit give him role and send success message.
+\item If user does not exist , create user and give him role. Send message that new user created.
+\end{enumerate}
+\subsection*{\underline{REGISTERING A SECORDRY INSTRUCTOR /STUDENT}}
+Send request for registry a user as recordry instructor /student.
+\subsection*{\underline{Check if user exist-if yes}}
+\begin{enumerate}
+\item Find its role in course.
+\item If (student and requested role = instructor).
+\item If (student and requested role = instructor).
+\item If (instructor) send error message that user is already having role as instructor.
+\item Else creates new course and give him the requested role. 
+\end{enumerate}
+\subsection*{\underline{Modify Course}}
+\begin{enumerate}
+\item Give the course details for updation.
+\item Update all the tables related to the particular course.
+\item Give back the appropriate message.
+\begin{center}
+\input{admin_ModifyCourse.latex}
+\end{center}
+\end{enumerate}
+\subsection*{\underline{Modify User/Role}}
+\begin{enumerate}
+\item Send the user for whom updation has to be done.
+\item If want to modify role of the user then get the course-list as well as the role in the same for the user.
+\item Some the updated role/data for user.
+\item Give back the appropriate message.
+\end{enumerate}
+\begin{center}
+\input{admin_ModifyUser_Role.latex}
+\end{center}
+\subsection*{\underline{Remove Course}}
+\begin{enumerate}
+\item Send the course name for removal.
+\item Checks if the course is active/inactive.
+\item If active , return error message.
+\item If inactive get the list of all user registered in this course.
+\item Remove the role of user from this course and remove orphan users too.
+\item Return the result.
+\item If (5) return success then remove the course entries from database and remove directory structure. 
+\item If (5) return any error then restore all the removal actions performed earlier with error message.
+\item If (6) is successful /then return appropriate message. 
+\item If (6) is not successful , return appropriate error message.
+\end{enumerate}
+
+\begin{center}
+\input{admin_RemoveCourse.latex}
+\end{center}
+\subsection*{\underline{Removing Users Profile}}
+\begin{enumerate}
+\item Request to remove users profile.
+\item Get all the course where the user is student.
+\item Remove the users role from the course obtained in step.
+\item Get all the courses where the user is an instructor.
+\item Pass the list of courses obtained in step (4), and check for primary instructor.
+\item For each of the inactive courses in step (5), get the list of inactive courses.
+\item For each of the inactive courses in step (6).
+\item Get the list of all the user who are students . Remove their roles from the course . Check for orphan user.
+\item Get the list of all the user who are instructor . Remove their roles from the course. Check for orphan user.
+\item Remove the course directory . Remove the course entry from data base.
+\item For all the courses in step (4) except the courses in step (6) , remove the use role from the course.
+\item Return appropriate message.
+\begin{center}
+\input{admin_RemovingUser_profile.latex}
+\end{center}
+\subsection*{\underline{Removing User Role From a group}}
+\begin{enumerate}
+\item Send the username + course name which the users role has to be removed.
+\item Get the role of user in the course.
+\item If the user is a student , then remove his role from the course and give back appropriate message.
+\item If the user is an instructor , check if he is a primary instructor 
+\item If yes (user in primary instructor ) then send back the status of course (active \& inactive ) along with course name. 
+\item If inactive , then get list of all the students and instructor in the course and remove their roles from the course. Remove the course directory and course entries from the database.
+\item If active, then give back the error message.  
+\item If no (user is not primary instructor) then remove his role from the course and give back appropriate message.
+
+\begin{center}
+\input{admin_RemovingUser_rolefrom.latex}
+\end{center}
+\end{enumerate}
+\end{enumerate} 
+
+Written by:- Rekha Pal
+\end{document}

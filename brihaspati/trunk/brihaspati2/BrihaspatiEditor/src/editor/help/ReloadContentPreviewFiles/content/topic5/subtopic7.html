@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" href="../reloadhelp.css" type="text/css">
+<!-- &copy;Reload 2003 -- topic5:_Quick Start Guide_ -- subtopic6:_Manifests and Sub-Manifests_ -->
+<title>Manifests and Sub-manifests</title>
+</head>
+<body> 
+ <p align="center"><img src="../img/reloadeditoricon.gif" alt="RELOAD Icon"></p>
+<P>
+<span class="HEAD">Manifests and Sub-Manifests</span><br>
+The core element of a content package is the manifest, this is the organisational level which includes metadata and all the content within a given content package.  As well as the Metadata, Organizations and Resources structure which we have already come across, a manifest can also include sub-manifests - effectively whole content packages, stored within itself. Sub-manifests can contain their own metadata and will of course contain organization(s) and resources. They can also contain further sub-manifests, allowing very complex file structures to be created. We use the terms aggregation and disaggregation to cover the processes of adding and removing sub-manifests from a content package
+</p>
+<P><span class="SUBHEAD">Aggregation</span><br>
+Aggregation is the process of combining more than one content package manifest into a single Content Package. Right clicking on any manifest will display a content sensitive menu with Aggregate ... as the final menu item. Choosing this option will launch a dialogue box which will ask you to choose the manifest (or zipped content package) to aggregate.
+</p>
+<p align="center"><img src="../img/aggregate.gif" width="131" height="180" alt="" border="0"></p>
+<P>
+There are two main ways to aggregate content: either as a sub-manifest inside a standard Content Package 
+</p>
+<p align="center"><img src="../img/manifests-hier.gif" alt="" width="558" height="397" border="0"></p>
+<P>
+ 
+or as two sub-manifests side by side within an otherwise empty Content Package.
+</p>
+<p align="center"><img src="../img/manifests-same.gif" alt="" width="558" height="406" border="0"></p>
+<P>
+Although both these options are equally valid it is probably better practice (if more work) to aggregate the two sub-manifests side by side.  Aggregating content packages can be a very complex business and there is always a risk of files in individual sub-manifests having the same name (one overwrites the other) or non-unique identifiers (if you let Reload assign your unique identifiers it will always make sure they are unique).  Ultimately however, the structure should be determined by the learning material.
+</p>
+<P>
+Of course working with sub-manifests is more complex than working with simple content packages and many Managed Learning Environments and Repositories which are not yet fully IMS CP compliant will have problems with aggregated content. So Beware.
+</p>
+<P><span class="SUBHEAD">Disaggregation</span><br>
+Of course anything which has been aggregated can also be disaggregated. Right-clicking on any sub-manifest will display a content sensitive menu and the last option in the menu will be Disaggregate ... Clicking Disaggregate ... will launch a dialog box which will ask you to choose which directory to save the disaggregated content to. Once chosen, all the relevant files are copied across, including the manifest file. Within Reload, you can then Open this new Content Package as usual.
+</p>
+<p align="center"><img src="../img/disaggregate.gif" width="139" height="200" alt="" border="0"></p>
+
+<hr>
+<div align="right"> <a href="../../../index.htm" target="_top">Help Home</a> :: <a href="http://www.reload.ac.uk/" target="new">RELOAD Home</a> :: Page Last Updated 30th April 2004, CM</div>
+</body>
+</html>

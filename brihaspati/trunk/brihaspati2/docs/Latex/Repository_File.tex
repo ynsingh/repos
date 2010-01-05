@@ -1,0 +1,161 @@
+\documentclass{article}
+
+\textheight=8.5in
+\textwidth=6.5in
+\oddsidemargin=0.0in
+\topmargin=0.0in
+
+\renewcommand\baselinestretch{1.0}           % single space
+\pagestyle{empty}                            % no headers and page numbers
+\oddsidemargin -10 true pt      % Left margin on odd-numbered pages.
+\evensidemargin 10 true pt      % Left margin on even-numbered pages.
+\marginparwidth 0.75 true in    % Width of marginal notes.
+\oddsidemargin  0 true in       % Note that \oddsidemargin=\evensidemargin
+\evensidemargin 0 true in
+\topmargin -0.75 true in        % Nominal distance from top of page to top of\textheight 9.5 true in         % Height of text (including footnotes and figures)
+\textwidth 6.375 true in        % Width of text line.
+\parindent=0pt                  % Do not indent paragraphs
+\parskip=0.15 true in
+\usepackage{color}              % Need the color package
+\usepackage{epsfig}
+
+\begin{document}
+\begin{center}
+\section*{\underline{REPOSITORY}}
+             Author Name : Manorama Pal \& Kishore Kumar Shukla
+
+\input{Repository.latex}
+\end{center}
+
+\subsection*{\underline{CREATE REPOSITORY}}
+\subsubsection*{\underline{USER}}
+\begin{enumerate}
+                 \item Interacte with web-application.
+                       \item User send request to the admin to registerd as a author.
+                          \item Successful message come to admin,user registered as a author \& create his own  Repository.
+                             \item User management area where author registration done.
+                            
+\begin{center}
+\input{Create_rep.latex}
+\label{figure:Create_rep.latex}
+\end{center}
+\end{enumerate}
+
+
+
+\subsubsection*{\underline{AUTHOR}}
+          
+  \begin{enumerate}
+                     \item Author login as a content author \& goes to author home.
+                          \item Author create his own  Repository.
+                              \item After successful creation of repository author works his repository home.
+                                  \item Return the apporopiate message.
+
+
+\begin{center}
+\input{createauthor_rep.latex}
+\label{figure:createauthor_rep.latex}
+\end{center}
+\end{enumerate}
+
+\subsection*{\underline{UPLOAD CONTENT}}
+
+  \begin{enumerate}
+                                \item Author login as a content author.
+                                   \item Author send the request to upload content in existing topic or new topic.
+                                     \item Return the appropriate message.
+                                     \item Author works in his repository home.
+\begin{center}
+\input{Uploadcon_rep.latex}
+\label{figure:Uploadcon_rep.latex}
+\end{center}
+\end{enumerate} 
+\subsection*{\underline{VIEW CONTENT}}
+\begin{enumerate}
+
+                                  \item Author login as a content author.
+                                       \item Sending request to view a file.
+                                          \item Show the view file.
+                                             \item Return the appropriate message.
+                                                \item Repository home.
+\begin{center}
+\input{viewcon_rep.latex}
+\label{figure:viewcon_rep.latex}
+\end{center}
+\end{enumerate}
+\subsection*{\underline{DELETE DIR \& TOPIC}}
+\begin{enumerate}
+                          \item Author login as a content author.
+                            \item Sending request to delete dir \& topic.
+                              \item Delete dir \& topic.
+                                \item Return the successful message.
+                                   \item Repository home.  
+
+\begin{center}
+\input{deletedir_rep.latex}
+{DELETE DIR \& TOPIC}
+\label{figure:deletedir_rep.latex}
+\end{center}
+\end{enumerate}
+\subsection*{\underline{MOVE FILE}}
+\begin{enumerate}
+                                \item Author login as a content author.
+                                   \item Sending request to move file to another directory.
+                                     \item Selected file to another directory.
+                                       \item Return the successful message.
+                                         \item Repository home.
+\begin{center}
+\input{move_rep.latex}
+\label{figure:move_rep.latex}
+\end{center}
+\end{enumerate}
+\subsection*{\underline{PERMISSION GIVEN}}
+\begin{enumerate}
+                       \item Author login as a content author.
+                          \item Sending request to give permission.
+                            \item Check Role(check the role i.e author,Instructor(Private area),Instructor(Course area))
+      \item If role successful permission receive his area i.e authors's phase,Instructor(Private area)Instructor(Course area). 
+                              \item If role check successful permission given topic view author's phase.
+                                \item If failure role check given topic is not received.
+                                  \item Return the appropriate message.
+\begin{center}
+\input{permission_rep.latex}
+\label{figure:permission_rep.latex}
+\end{center}
+\end{enumerate}
+\subsection*{\underline{REPOSITORY BROWSER}}
+\begin{enumerate}
+\item Author login as a content author.
+\item Author view all the dir \& topic who registered as an author but not read the file.
+\item Return the appropriate message.
+\item Repository Browser.
+\begin{center}
+\input{repositoryBro_rep.latex}
+\label{figure:repositoryBro_rep.latex}
+\end{center}
+\end{enumerate}
+\subsection*{\underline{VIEW \& DELETE PERMISSION}}
+\begin{enumerate}
+\item Author login as a content author.
+\item Author goes to his repository home.
+\item Author send request to delete Permission Receive topic so Simultaneously delete Permission given topic in author phase.
+\item Similarly author delete Permission given topic in author phase so Simultaneously delete Permission Receive topic in Author phase,Instructor(Private area) and Instructor(Course area).
+\item Author,Instructor(Private area) and Instructor(Course area)request to view the Receive file.
+\item View the Receive file.
+\end{enumerate} 
+\subsection*{\underline{MODIFY IN REPOSITORY}}
+\begin{enumerate}
+\item User login as an instructor and goes into the course management.
+\item Instructor select the course content will select the publish link.
+\item Permitted topic will display in the unpublished area.Instructor view those file.
+\item Instructor will publish the selected files.
+\item Instructor \& student both view the permitted file.
+\begin{center}
+\input{modify_rep.latex}
+{MODIFY IN REPOSITORY}
+\label{figure:modify_rep.latex}
+\end{center}
+\end{enumerate}
+Written by :- Rekha Pal                                                   
+\end{document}
+

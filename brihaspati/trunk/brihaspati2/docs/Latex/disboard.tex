@@ -1,0 +1,96 @@
+\documentclass{article}
+\textheight=8.5in
+\textwidth=6.5in
+
+
+\pagestyle{empty}                            % no headers and page numbers
+\oddsidemargin -10 true pt      % Left margin on odd-numbered pages.
+\evensidemargin 10 true pt      % Left margin on even-numbered pages.
+\marginparwidth 0.75 true in    % Width of marginal notes.
+\oddsidemargin  0 true in       % Note that \oddsidemargin=\evensidemargin
+\evensidemargin 0 true in
+\topmargin -0.75 true in        % Nominal distance from top of page to top of\textheight 9.5 true in         % Height of text (including footnotes and figures)
+\textwidth 6.375 true in        % Width of text line.
+\parindent=0pt                  % Do not indent paragraphs
+\parskip=0.15 true in
+\usepackage{color}              % Need the color package
+
+  
+
+\begin{document} 
+\begin{center}
+\section*{\underline{Discussion Board}}
+                   Author Name : Suman Rajput \& Rekha Pal
+\end{center}
+\subsection*{\underline{Sending discussion}}
+\subsubsection*{Parameters: User-id, group-id, subject attachment, expiry}
+Send request for send a discussion.
+Add the discussion to the specfic group with specfic message.
+It is sucessfully send the message "Discussion send sucessfully" else "same error in DiscussionBoard".
+
+\subsection*{\underline{Update Discussion}}
+\begin{enumerate}
+\item Send a request for update the discussion send the updated details along with the request.
+\item Update the details if it is succesfuly send the message"Discussion Updated sucessfully" else "same error in Updation of DiscussionBoard".
+\begin{center}
+\input{Updatedis.latex}
+\label{figure:Updatedis.latex}
+\end{center}
+\end{enumerate}
+\section*{\underline{Deletion Discussion}}
+\begin{enumerate}
+\item  Send a request for deleting the Discussion.
+\item Delete the Discussion to the specific group with specific message.
+\item If step (2)is not successful than send the message"Deletion not successfully".
+\begin{center}
+\input{Deletiondis.latex}
+\label{figure:Deletiondis.latex}
+\end{center}
+\end{enumerate}
+\subsection*{\underline{Expiry enable/disable}}
+\begin{enumerate}
+\item User Login
+\item Sending request to enable/disable the message.
+\item Return the appropriate message.
+Parameter=Msg-id
+\begin{center}
+\input{Expirydis.latex}
+\label{figure:Expirydis.latex}
+\end{center}
+\end{enumerate}
+\subsection*{\underline{Permission Given-Deny}}
+Permission for discussion,We search for that msg-id of that is permitted from DB\_SEND table.
+User Login Sending request to permission given/deny the message.
+\input{Permissiondis.latex}
+\label{figure:Permissiondis.latex}
+\subsection*{\underline{Backup of Discussion}}
+
+Send request for backup a specific discussion.
+Parameters:Msg-id
+Store the Whole description of discussion with specific message.
+\input{Backupdis.latex}
+\label{figure:Backupdis.latex}
+\subsubsection*{\underline{Reply Discussion}}
+\begin{enumerate}
+\item Send request for reply of specific discussion.
+      Parameter: Msg-id,User-id,Group-id,Subject,Text,attachment any expiry .
+\item Add the reply of a specific discussion to the specific group with the specific message.
+\item Return the appropriate message.
+\begin{center}
+\input{Replydis.latex}
+\label{figure:Replydis.latex}
+\end{center}
+\end{enumerate}
+\subsubsection*{\underline{View Discussion}}
+\begin{enumerate}
+\item Send request for viewing discussion of specific discussion parameter,msg-id.
+\item Show all description of specific discussion.
+\item Return the appropriate message.
+\begin{center}
+\input{viewdis.latex}
+\label{figure:viewdis.latex}
+\end{center}
+\end{enumerate}
+Written By :- Rekha Pal
+
+\end{document}

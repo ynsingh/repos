@@ -1,0 +1,129 @@
+#*
+ * @(#)UserForm_Instructor.vm
+ * Copyright (c) 2005,2009-2010 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ * @author <a href="mailto:madhavi_mungole@hotmail.com ">Madhavi Mungole</a>
+ * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in ">Awadhesh Kumar Trivedi</a>
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+*#
+
+#set($lang=$data.getUser().getTemp("lang" ).toString())
+$page.setBgColor($ui.bgcolor)
+#if ($stat=="remove")
+	$page.setTitle("Home | $course | Student Management | List of Students | Remove User")
+#else
+	$page.setTitle("Home | $course | Student Management | List of Students | Update User")
+#end
+
+    <table bgcolor="$ui.menuColor" width=100% cellspacing=0>
+      <tr><td>
+        <a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none> $brih_home</a> |
+	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> |  
+	<a href=$link.setPage("call,UserMgmt_User,StudentManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_student $brih_mgmt</a> | 
+	<a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("mode","All").addPathInfo("count","4") style=text-decoration:none>$brih_listOfStudent</a> | 
+	
+	#if ($stat=="remove")
+		#if($lang=="hindi")
+			$brih_userDetail $brih_remove
+		#else
+			$brih_remove  $brih_usr
+		#end
+	#else
+		#if($lang=="hindi")
+			$brih_userDetail $brih_update
+		#else
+			 $brih_update  $brih_usr
+		#end
+	#end
+	</td>
+    </tr>
+</table>
+<table align=left bgcolor="$ui.tableColor" width=100%>
+        <tr>
+	#if($tdcolor!="1")
+        <td>
+	#elseif($tdcolor=="1")
+        <td bgcolor="#AFDCEC">
+	#end
+	<a href=$link.setPage("call,UserMgmt_User,StudentManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_add $brih_students</a></td>
+	#if($tdcolor!="2")
+        <td>
+	#elseif($tdcolor=="2")
+        <td bgcolor="#AFDCEC">
+	#end
+        <a href=$link.setPage("call,UserMgmt_User,RemoveStudents.vm").addPathInfo("count","2") style=text-decoration:none>$brih_rem_student</a></td>
+	#if($tdcolor!="3")
+        <td>
+	#elseif($tdcolor=="3")
+        <td bgcolor="#AFDCEC">
+	#end
+	<a href=$link.setPage("call,UserMgmt_User,MultiUserReg_Instructor.vm").addPathInfo("count","3") style=text-decoration:none>$brih_add $brih_multiple1 $brih_students</a></td>
+	#if($tdcolor!="4")
+        <td>
+	#elseif($tdcolor=="4")
+        <td bgcolor="#AFDCEC">
+	#end
+	<a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("mode","All").addPathInfo("count","4") style=text-decoration:none>$brih_listOfStudent</a></td>
+	#if($tdcolor!="5")
+        <td>
+	#elseif($tdcolor=="5")
+        <td bgcolor="#AFDCEC">
+	#end
+        <a href=$link.setPage("call,OnLine_Rgtn,ViewOnlineRegistrationInstructor.vm").addPathInfo("count","5") style=text-decoration:none>$online_online $brih_reg</a></td>
+        </tr>
+##</table>
+<form name=frm method="post" action="$link.setPage("call,UserMgmt_User,StudentList.vm").setAction("UserAction_Instructor")">
+##<table width=100% align=left bgcolor="$ui.tableColor" cellpadding="5">
+<tr bgcolor="$ui.menuColor">
+	<td colspan=5><b>$brih_userDetail</b></td>
+</tr>
+<tr><td>
+##<table width=100% bgcolor="$ui.tableColor">
+			#foreach($user in $user_details)
+			<tr><td colspan=5>$brih_usr $brih_name &nbsp;&nbsp;&nbsp;$!user.UserName</td></tr>
+			#if($stat=="update")
+				<tr bgcolor="$ui.menuColor"> #formCell ("$brih_first $brih_name" "firstname" $!user.FirstName)
+				<td colspan=3></td> </tr>
+				<tr> #formCell ("$brih_last $brih_name" "lastname" $!user.LastName)
+				<td colspan=3></td>	 </tr>
+				<tr bgcolor="$ui.menuColor"> #formCell ("$brih_email $brih_ID" "email" $!user.Email)
+				<td colspan=3></td> </tr>
+			#else
+				<tr bgcolor="$ui.menuColor">
+					<td width=30%><b><font size=4>$brih_first$brih_name</font></b></td>
+					<td colspan=3>$!user.FirstName</td>
+				</tr>
+	        		<tr>
+					<td width=30%><b><font size=4>$brih_last$brih_name</font></b></td>
+					<td colspan=3>$!user.LastName</td>
+				</tr>
+	        		<tr bgcolor="$ui.menuColor">
+					<td width=30%><b><font size=4>$brih_email $brih_ID</font></b></td>
+					<td colspan=3>$!user.Email</td>
+				</tr>
+			#end
+			<tr>
+				<td align=left colspan=3>
+					<input type="hidden" name="username" value="$!user.UserName"/>  
+			</tr>
+		##</table>
+		</td>
+	</tr>
+	<tr>
+		<td colspan=5 bgcolor="$ui.menuColor">
+			#if ($stat== "update")
+				<input type="submit" name="eventSubmit_doUpdate" value="$brih_update"/>
+			#elseif ($stat == "remove")
+				<input type="submit" name="eventSubmit_doDelete" value="$brih_remove"/>
+			#end
+			<input type=hidden name="mode" value="All">
+			<input type=hidden name="count" value="$tdcolor">
+		</td>
+	</tr>
+	#end
+##  </table>
+</td>
+</tr>
+</table>
+</form>

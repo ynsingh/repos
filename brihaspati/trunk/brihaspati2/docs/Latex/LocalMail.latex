@@ -1,0 +1,173 @@
+\setlength{\unitlength}{3947sp}%
+%
+\begingroup\makeatletter\ifx\SetFigFont\undefined%
+\gdef\SetFigFont#1#2#3#4#5{%
+  \reset@font\fontsize{#1}{#2pt}%
+  \fontfamily{#3}\fontseries{#4}\fontshape{#5}%
+  \selectfont}%
+\fi\endgroup%
+\begin{picture}(17124,14022)(64,-36973)
+\thinlines
+{\color[rgb]{0,0,0}\put(1126,-26761){\framebox(3300,3300){}}
+}%
+{\color[rgb]{0,0,0}\put(2176,-24736){\framebox(1500,450){}}
+}%
+{\color[rgb]{0,0,0}\put(2176,-26011){\framebox(1575,450){}}
+}%
+{\color[rgb]{0,0,0}\put(5626,-28111){\framebox(9075,4650){}}
+}%
+{\color[rgb]{0,0,0}\put(6376,-24361){\framebox(1800,450){}}
+}%
+{\color[rgb]{0,0,0}\put(9376,-24436){\framebox(1950,450){}}
+}%
+{\color[rgb]{0,0,0}\put(8101,-24586){\line( 0,-1){3525}}
+}%
+{\color[rgb]{0,0,0}\put(9226,-24586){\line( 0,-1){3525}}
+}%
+{\color[rgb]{0,0,0}\put(10726,-24586){\line( 0,-1){3525}}
+}%
+{\color[rgb]{0,0,0}\put(12001,-24811){\line( 0,-1){3300}}
+}%
+{\color[rgb]{0,0,0}\put(13951,-24886){\line( 1, 0){1350}}
+}%
+{\color[rgb]{0,0,0}\put(15301,-24886){\vector(-3,-4){612}}
+}%
+{\color[rgb]{0,0,0}\put(2326,-30586){\framebox(2925,525){}}
+}%
+{\color[rgb]{0,0,0}\put(2326,-31711){\framebox(2925,525){}}
+}%
+{\color[rgb]{0,0,0}\put(2326,-33211){\framebox(3225,975){}}
+}%
+{\color[rgb]{0,0,0}\put(1501,-35686){\framebox(5175,6300){}}
+}%
+{\color[rgb]{0,0,0}\put(3076,-34186){\framebox(2250,375){}}
+}%
+{\color[rgb]{0,0,0}\put(2101,-35461){\framebox(1200,300){}}
+}%
+{\color[rgb]{0,0,0}\put(3676,-35461){\framebox(1200,300){}}
+}%
+{\color[rgb]{0,0,0}\put(8176,-34336){\framebox(5700,4950){}}
+}%
+{\color[rgb]{0,0,0}\put(9526,-32761){\framebox(2775,900){}}
+}%
+{\color[rgb]{0,0,0}\put(8626,-33886){\framebox(1125,375){}}
+}%
+{\color[rgb]{0,0,0}\put(10576,-33886){\framebox(1125,375){}}
+}%
+{\color[rgb]{0,0,0}\put(8626,-33736){\line(-1, 0){1275}}
+}%
+{\color[rgb]{0,0,0}\put(7351,-33736){\line( 0,-1){1575}}
+}%
+{\color[rgb]{0,0,0}\put(7351,-35311){\vector(-1, 0){2475}}
+}%
+{\color[rgb]{0,0,0}\put(11176,-33886){\line( 0,-1){1875}}
+}%
+{\color[rgb]{0,0,0}\put(11176,-35761){\line( 1, 0){6000}}
+}%
+{\color[rgb]{0,0,0}\put(17176,-35761){\line( 0, 1){9450}}
+}%
+{\color[rgb]{0,0,0}\put(17176,-26311){\vector(-1, 0){2475}}
+}%
+{\color[rgb]{0,0,0}\put(11251,-25411){\vector( 0,-1){3975}}
+}%
+{\color[rgb]{0,0,0}\put(13051,-25186){\line( 0,-1){3825}}
+}%
+{\color[rgb]{0,0,0}\put(13051,-29011){\line(-1, 0){7125}}
+\put(5926,-29011){\vector( 0,-1){375}}
+}%
+{\color[rgb]{0,0,0}\put(6376,-24136){\line(-1, 0){1575}}
+\put(4801,-24136){\vector( 0,-1){5250}}
+}%
+{\color[rgb]{0,0,0}\put(3676,-24511){\vector( 1, 0){1950}}
+}%
+{\color[rgb]{0,0,0}\put(2851,-26011){\vector( 0,-1){3375}}
+}%
+{\color[rgb]{0,0,0}\put(4126,-35461){\line( 0,-1){1500}}
+\put(4126,-36961){\line(-1, 0){4050}}
+\put( 76,-36961){\line( 0, 1){10950}}
+\put( 76,-26011){\line( 1, 0){1050}}
+\put(1126,-26011){\vector( 0,-1){ 75}}
+}%
+{\color[rgb]{0,0,0}\put(11326,-24136){\line( 3,-1){450}}
+}%
+{\color[rgb]{0,0,0}\put(11776,-24286){\vector(-4,-1){441.176}}
+}%
+{\color[rgb]{0,0,0}\put(6451,-24586){\line( 0,-1){3525}}
+}%
+\put(1276,-23836){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}() ANREAD  () TOTAL}%
+}}}
+\put(2326,-24511){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}SHOW    MSG}%
+}}}
+\put(2326,-25861){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}COMPOSE MSG}%
+}}}
+\put(151,-24661){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}MAIL.VM}%
+}}}
+\put(6601,-24211){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}     COMPOSE}%
+}}}
+\put(9526,-24286){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}UNREAD / ACL}%
+}}}
+\put(9526,-24361){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}   }%
+}}}
+\put(9451,-24286){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}     }%
+}}}
+\put(5851,-24811){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}S.NO}%
+}}}
+\put(6676,-24811){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}SENDER NAME}%
+}}}
+\put(8251,-24811){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}   SUB}%
+}}}
+\put(9601,-24811){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}POSTDATA}%
+}}}
+\put(12076,-24586){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}TASK}%
+}}}
+\put(10951,-24961){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}VIEW}%
+}}}
+\put(12451,-24961){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}REPLY DELETE}%
+}}}
+\put(5926,-25411){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}1}%
+}}}
+\put(5926,-26236){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}2}%
+}}}
+\put(8551,-23086){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}MAIL CONTENT.VM}%
+}}}
+\put(1726,-30361){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}TO}%
+}}}
+\put(1726,-31561){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}SUB}%
+}}}
+\put(1726,-32161){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}MESSAGE}%
+}}}
+\put(1576,-34036){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}ATTACHMENT}%
+}}}
+\put(5476,-34111){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}BROWSE}%
+}}}
+\put(2326,-35386){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}RESET}%
+}}}
+\put(3976,-35386){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}SEND}%
+}}}
+\put(226,-31786){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}MAIL TEST}%
+}}}
+\put(151,-32236){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}MESSAGE.VM}%
+}}}
+\put(8476,-29911){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}SENDER NAME:}%
+}}}
+\put(8476,-30286){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}SUB}%
+}}}
+\put(8476,-30886){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}POST TIME}%
+}}}
+\put(8551,-31711){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}MESSAGE}%
+}}}
+\put(8401,-33286){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}ATTACHMENTS}%
+}}}
+\put(8776,-33736){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}REPLY}%
+}}}
+\put(10801,-33736){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}CLOSE}%
+}}}
+\put(3001,-28636){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}MODE=COMPOSE}%
+}}}
+\put(5176,-28486){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}MODE=COMPOSE}%
+}}}
+\put(6226,-28861){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}MODE=REPLY}%
+}}}
+\put(14101,-30361){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}MAIL VIEW.VM}%
+}}}
+\end{picture}

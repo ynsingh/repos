@@ -1,0 +1,42 @@
+<xs:schema targetNamespace="http://www.imsglobal.org/xsd/imsld_v1p0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.imsglobal.org/xsd/imsld_v1p0" elementFormDefault="qualified" attributeFormDefault="unqualified" version="IMS LD Level B version 1.0 Final Draft">
+	<!-- ******************** -->
+	<!-- ** Change History ** -->
+	<!-- ******************** -->
+	<xs:annotation>
+		<xs:documentation xml:lang="en">28 October 2002
+		This module declares the attributes that need to be added to the element email-data from level B onwards. The element including attributes is also used in the IMS LD global elements.
+		This module needs to be included in IMS LD Level B and in IMS LD global elements level C.
+		Changed the namespace.
+		</xs:documentation>
+	</xs:annotation>
+	
+	<!-- ************** -->
+	<!-- ** Redefine ** -->
+	<!-- ************** -->
+	<xs:redefine schemaLocation="IMS_LD_Level_A_emaildata.xsd">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">In level B, C and in the global elements, the attributes are used to refer to global properties holding the email address and username.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType name="email-dataType">
+			<xs:complexContent>
+				<xs:extension base="email-dataType">
+					<xs:attributeGroup ref="attr.email-property-ref.req"/>
+					<xs:attributeGroup ref="attr.username-property-ref"/>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:redefine>
+	
+	<!-- **************************** -->
+	<!-- ** Attribute Declarations ** -->
+	<!-- **************************** -->
+	<xs:annotation>
+		<xs:documentation xml:lang="en">These attributes refer to global properties holding the email address and username.</xs:documentation>
+	</xs:annotation>
+	<xs:attributeGroup name="attr.email-property-ref.req">
+		<xs:attribute name="email-property-ref" type="xs:anyURI" use="required"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="attr.username-property-ref">
+		<xs:attribute name="username-property-ref" type="xs:anyURI"/>
+	</xs:attributeGroup>
+</xs:schema>

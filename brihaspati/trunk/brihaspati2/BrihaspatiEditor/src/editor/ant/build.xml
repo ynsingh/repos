@@ -1,0 +1,189 @@
+<project name="Reload Editor Ant Build" default="run" basedir=".">
+  	
+	<description>
+  		Reload Editor Ant Build File
+ 
+  		This ant script will build the Editor and leave an executable .jar file in the folder
+	  	referred to in "target.dir".  This script also references ant scripts in other projects, so you will need those also.
+	  	This project relies on the Reload modules, as well as several jar files that exist.
+  	
+  		$Id: build.xml,v 1.1 1998/03/26 14:17:15 ynsingh Exp $
+  	</description>
+	
+
+	<!-- Default/Start Target -->
+	<target name="run" description="Generate the distributable jar file"
+		depends="checklib, init, properties, compile, copyfiles, makesupportjar, makejar" />
+
+	
+	<!--  Build moonunit first (which will make dweezil) --> 
+	<target name="checklib">
+  		<ant antfile="build.xml" dir="../../moonunit/ant" target="run" /> 
+  	</target>
+	
+	
+	<!-- Init some stuff -->
+	<target name="init" description="Init some stuff">
+	    	<property name="target.dir"			location="../../../$$ant-build$$"/>
+	<echo >
+		the target is ${target.dir}
+	</echo>
+    		<property name="build.classes.dir"  location="${target.dir}/$$classes$$"/>
+		<property name="src.dir" 			location="../src" />
+		<property name="lib.target.dir" 	location="${target.dir}/lib" />
+	<echo >
+		the target is ${lib.target.dir}
+	</echo>
+		<property name="i18n.target.dir" 	location="${target.dir}/i18n" />
+	
+		<!-- jars -->
+		<property name="main.jar" location="${target.dir}/reload-editor.jar" />
+		<property name="support.jar" location="${lib.target.dir}/reload-support.jar" />
+    
+		<!-- Create the target directory -->
+        <mkdir dir="${build.classes.dir}"/>
+	</target>
+	
+	
+	<!-- Write some props for the runtime app to use -->
+	<target name="properties">
+		<!-- Copy our runtime Properties File -->
+		<property name="runtimeProps.dir" value="${build.classes.dir}/uk/ac/reload/editor/properties" />
+		<property name="props.file" value="rb.properties" />
+		<copy file="${props.file}" todir="${runtimeProps.dir}" overwrite="true" />
+		
+		<tstamp>
+			<format property="app.releaseDate" pattern="yyyy-MM-dd HH:mm:ss" />
+		</tstamp>
+		
+		<!-- Add BUILD_DATE Property -->
+		<echo file="${runtimeProps.dir}/${props.file}" append="true">
+		BUILD_DATE=${app.releaseDate}
+        </echo>
+
+		<!-- Fix the CR -->
+		<fixcrlf srcdir="${runtimeProps.dir}" includes="${props.file}" eol="crlf"/>
+	</target>
+
+	
+	<!-- Compile -->
+	<target name="compile" depends="init">
+        <javac srcdir="${src.dir}" destdir="${build.classes.dir}" debug="true" debuglevel="lines,vars,source">
+            <classpath path="${build.classes.dir}"/>
+            <classpath>
+                <fileset dir="../../org.jdom">
+                    <include name="*.jar"/>
+                </fileset>
+            </classpath>
+        </javac>
+    </target>
+
+	<!-- Copy necessary files -->
+	<target name="copyfiles" description="Copy all files needed for a distrib">
+    	
+		<!-- Copy necessary files -->
+		<copy todir="${build.classes.dir}">
+			<fileset dir="${src.dir}">
+			    <exclude name="**/*.java"/>
+			</fileset>
+		</copy>
+
+	    <!-- Copy the default (English) i18n files -->
+		<copy todir="${i18n.target.dir}">
+			<fileset dir="${build.classes.dir}">
+				<include name="**/messages.properties" />
+			</fileset>
+		</copy>
+
+	    <!-- Copy libs -->
+        <copy todir="${lib.target.dir}">
+            <fileset dir="../../org.jdom">
+                <include name="*.jar"/>
+            </fileset>
+            <fileset dir="../../org.exolab.castor">
+                <include name="*.jar"/>
+            </fileset>
+            <fileset dir="../../org.apache.xerces">
+                <include name="*.jar"/>
+            </fileset>
+        </copy>
+
+		<!-- Copy licenses -->
+		<copy todir="${target.dir}/licences">
+			<fileset dir="../../docs/licences">
+				<include name="castor*" />
+				<include name="jdom*" />
+				<include name="relativelayout*" />
+				<include name="reload*" />
+				<include name="treemenu*" />
+				<include name="xerces*" />
+			</fileset>
+		</copy>
+
+		<!-- Copy docs -->
+		<copy todir="${target.dir}/readme">
+			<fileset dir="../../docs/editor">
+				<include name="changes.htm" />
+			    <include name="i18n-readme.txt" />
+			</fileset>
+		</copy>
+
+		<!-- Copy help -->
+		<copy todir="${target.dir}/help">
+			<fileset dir="../help" />
+		</copy>
+
+		<!-- Copy Schema files -->
+		<copy todir="${target.dir}/schema">
+			<fileset dir="../schema" />
+		</copy>
+
+		<!-- Copy Application gif -->
+		<copy file="${src.dir}/uk/ac/reload/editor/resources/images/bss_bsspllogo07.gif" todir="${target.dir}" />
+	</target>
+
+	
+	<!-- Make the support jar -->
+	<target name="makesupportjar">
+		<!-- Create a jar using zip so that a manifest is not written -->
+		<zip destfile="${support.jar}" update="false">
+			<fileset dir="..">
+				<!-- <include name="help/"/> -->
+				<include name="helpers/" />
+				<include name="preview/" />
+				 <include name="schema/"/> 
+			</fileset>
+		</zip>
+	</target>
+	
+		
+	<!-- Put everything into a jar and add the manifest -->
+	<target name="makejar" description="Put everything into a jar and add the manifest">
+
+		<!-- Create a classpath.  This will be created from the contents of the lib folder -->
+		<!-- So make sure the lib jars and the support jar are built and copied first -->
+		<pathconvert dirsep="/" pathsep=" " property="classpath">
+		    <map from="${lib.target.dir}" to="lib" />
+			<path>
+				<fileset dir="${lib.target.dir}">
+					<include name="**/*.jar" />
+				</fileset>
+			</path>
+		</pathconvert>
+
+		<!-- Editor and Manifest -->
+		<jar jarfile="${main.jar}" update="false">
+			<fileset dir="${build.classes.dir}">
+				<include name="**/editor/"/>
+			</fileset>
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Main-Class" value="uk.ac.reload.editor.EditorFrame" />
+				<attribute name="Version" value="$Id: build.xml,v 1.1 1998/03/26 14:17:15 ynsingh Exp $" />
+				<!-- Set classpath from previous and append i18n/ folder -->
+			    <attribute name="Class-Path" value="${classpath} i18n/" />
+			</manifest>
+		</jar>
+	</target>
+
+</project>

@@ -1,0 +1,35 @@
+\setlength{\unitlength}{3947sp}%
+%
+\begingroup\makeatletter\ifx\SetFigFont\undefined%
+\gdef\SetFigFont#1#2#3#4#5{%
+  \reset@font\fontsize{#1}{#2pt}%
+  \fontfamily{#3}\fontseries{#4}\fontshape{#5}%
+  \selectfont}%
+\fi\endgroup%
+\begin{picture}(5494,3976)(151,-3593)
+{\color[rgb]{0,0,0}\thinlines
+\put(1651,-736){\circle{1092}}
+}%
+{\color[rgb]{0,0,0}\put(5026,-790){\circle{1092}}
+}%
+{\color[rgb]{0,0,0}\put(3601,-3040){\circle{1092}}
+}%
+{\color[rgb]{0,0,0}\put(2176,-586){\vector( 1, 0){2325}}
+}%
+{\color[rgb]{0,0,0}\put(4501,-961){\vector(-1, 0){2325}}
+}%
+{\color[rgb]{0,0,0}\put(3763,-2545){\vector( 3, 4){963}}
+}%
+{\color[rgb]{0,0,0}\put(5176,-1336){\vector(-3,-4){1062}}
+}%
+\put(1351,-811){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Clint}%
+}}}}
+\put(151,239){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}After joining a session}%
+}}}}
+\put(4726,-886){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Server}%
+}}}}
+\put(3301,-3136){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Logger}%
+}}}}
+\put(4876,-2311){\makebox(0,0)[lb]{\smash{{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}1(b), 2(a)}%
+}}}}
+\end{picture}%

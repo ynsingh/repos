@@ -1,0 +1,105 @@
+\setlength{\unitlength}{3947sp}%
+%
+\begingroup\makeatletter\ifx\SetFigFont\undefined%
+\gdef\SetFigFont#1#2#3#4#5{%
+  \reset@font\fontsize{#1}{#2pt}%
+  \fontfamily{#3}\fontseries{#4}\fontshape{#5}%
+  \selectfont}%
+\fi\endgroup%
+\begin{picture}(7087,3623)(-86,-3465)
+{\color[rgb]{0,0,0}\thinlines
+\put(1576,-1111){\circle{1082}}
+}%
+{\color[rgb]{0,0,0}\put(4127,-2916){\circle{1082}}
+}%
+{\color[rgb]{0,0,0}\put(6452,-1116){\circle{1082}}
+}%
+{\color[rgb]{0,0,0}\put( 76,-661){\circle{212}}
+}%
+{\color[rgb]{0,0,0}\put( 76,-811){\line( 0,-1){750}}
+}%
+{\color[rgb]{0,0,0}\put( 76,-1561){\line( 2,-1){150}}
+}%
+{\color[rgb]{0,0,0}\put( 76,-1561){\line(-2,-1){150}}
+}%
+{\color[rgb]{0,0,0}\put(4651,-2686){\vector( 4, 3){1620}}
+}%
+{\color[rgb]{0,0,0}\put(4651,-2686){\line(-1,-1){150}}
+}%
+{\color[rgb]{0,0,0}\put( 38,-1261){\vector(-1, 0){ 37}}
+\put( 38,-1261){\line( 1, 0){ 24}}
+\put( 62,-1261){\line( 1, 0){ 31}}
+\put( 93,-1261){\line( 1, 0){ 37}}
+\put(130,-1261){\line( 1, 0){ 43}}
+\put(173,-1261){\line( 1, 0){ 48}}
+\put(221,-1261){\line( 1, 0){ 51}}
+\put(272,-1261){\line( 1, 0){ 55}}
+\put(327,-1261){\line( 1, 0){ 55}}
+\put(382,-1261){\line( 1, 0){ 55}}
+\put(437,-1261){\line( 1, 0){ 55}}
+\put(492,-1261){\line( 1, 0){ 52}}
+\put(544,-1261){\line( 1, 0){ 51}}
+\put(595,-1261){\line( 1, 0){ 48}}
+\put(643,-1261){\line( 1, 0){ 45}}
+\put(688,-1261){\line( 1, 0){ 42}}
+\put(730,-1261){\line( 1, 0){ 39}}
+\put(769,-1261){\line( 1, 0){ 36}}
+\put(805,-1261){\line( 1, 0){ 34}}
+\put(839,-1261){\line( 1, 0){ 31}}
+\put(870,-1261){\line( 1, 0){ 28}}
+\put(898,-1261){\line( 1, 0){ 27}}
+\put(925,-1261){\line( 1, 0){ 24}}
+\put(949,-1261){\line( 1, 0){ 23}}
+\put(972,-1261){\line( 1, 0){ 21}}
+\put(993,-1261){\line( 1, 0){ 21}}
+\put(1014,-1261){\line( 1, 0){ 34}}
+\put(1048,-1261){\line( 1, 0){ 31}}
+\put(1079,-1261){\line( 1, 0){ 27}}
+\put(1106,-1261){\line( 1, 0){ 25}}
+\put(1131,-1261){\line( 1, 0){ 22}}
+\put(1153,-1261){\line( 1, 0){ 21}}
+\put(1174,-1261){\line( 1, 0){ 19}}
+\put(1193,-1261){\line( 1, 0){ 18}}
+\put(1211,-1261){\line( 1, 0){ 17}}
+\put(1228,-1261){\line( 1, 0){ 14}}
+\put(1242,-1261){\line( 1, 0){ 13}}
+\put(1255,-1261){\line( 1, 0){  9}}
+\put(1264,-1261){\line( 1, 0){  7}}
+\put(1271,-1261){\line( 1, 0){  3}}
+\put(1274,-1261){\line( 1, 0){  2}}
+}%
+{\color[rgb]{0,0,0}\put(  1,-886){\vector( 1, 0){1275}}
+}%
+{\color[rgb]{0,0,0}\put(2101,-1261){\vector( 4,-3){1668}}
+}%
+{\color[rgb]{0,0,0}\put(6451,-1636){\vector(-4,-3){2004}}
+}%
+{\color[rgb]{0,0,0}\put(1876,-1486){\vector( 4,-3){1800}}
+}%
+\put(601,-661){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}1}%
+}}}
+\put(301,-1561){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}5}%
+}}}
+\put(976,-1486){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}6}%
+}}}
+\put(1351,-1186){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}web app}%
+}}}
+\put(3001,-1786){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}2}%
+}}}
+\put(2026,-2236){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}5}%
+}}}
+\put(3001,-2911){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}6}%
+}}}
+\put(3901,-2911){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}ACL}%
+}}}
+\put(4051,-3286){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}3}%
+}}}
+\put(5326,-2086){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}4}%
+}}}
+\put(5701,-2611){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}6}%
+}}}
+\put(6226,-1186){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Q.B}%
+}}}
+\put(226, 14){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Delete quiz}%
+}}}
+\end{picture}

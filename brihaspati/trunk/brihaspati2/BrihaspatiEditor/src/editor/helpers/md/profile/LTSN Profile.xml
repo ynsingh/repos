@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!-- RELOAD Metadata Profile -->
+<profile vocabfile="IMS LTSN Vocab.xml" schemahelperfile="IMS MD Helper.xml">
+
+  <group name="General">
+    <group name="Identifier">
+      <element name="Catalog" path="lom/general/catalogentry/catalog"/>
+      <element name="Entry" path="lom/general/catalogentry/entry/langstring"/>
+    </group>
+    <element name="Title" path="lom/general/title/langstring"/>
+    <element name="Language" path="lom/general/language"/>
+    <element name="Description" path="lom/general/description/langstring"/>
+    <element name="Coverage" path="lom/general/coverage/langstring"/>
+  </group>
+
+  <group name="Life Cycle">
+    <element name="Version" path="lom/lifecycle/version/langstring"/>
+    <element name="Status" path="lom/lifecycle/status/value/langstring"/>
+    <group name="Contribution">
+      <element name="Role" path="lom/lifecycle/contribute/role/value/langstring"/>
+      <element name="VCard" path="lom/lifecycle/contribute/centity/vcard"/>
+    </group>
+  </group>
+
+  <group name="Meta-metadata">
+    <group name="Identifier">
+      <element name="Catalog" path="lom/metametadata/catalogentry/catalog"/>
+      <element name="Entry" path="lom/metametadata/catalogentry/entry/langstring"/>
+    </group>
+    <group name="Contribution">
+      <element name="Role" path="lom/metametadata/contribute/role/value/langstring"/>
+      <element name="VCard" path="lom/metametadata/contribute/centity/vcard"/>
+      <element name="Date" path="lom/metametadata/contribute/date/datetime"/>
+    </group>
+    <element name="Metadatascheme" path="lom/metametadata/metadatascheme"/>
+    <element name="Language" path="lom/metametadata/language"/>
+  </group>
+
+  <group name="Technical">
+    <element name="Format" path="lom/technical/format"/>
+    <element name="Size" path="lom/technical/size"/>
+    <element name="Location" path="lom/technical/location"/>
+  </group>
+
+  <group name="Rights">
+    <element name="Cost" path="lom/rights/cost/value/langstring"/>
+    <element name="Copyright and other restrictions" path="lom/rights/copyrightandotherrestrictions/value/langstring"/>
+    <element name="Description" path="lom/rights/description/langstring"/>
+  </group>
+
+  <group name="Classification">
+    <element name="Purpose" path="lom/classification/purpose/value/langstring"/>
+  </group>
+
+</profile>

@@ -1,0 +1,134 @@
+/* generated javascript */
+
+/* Any JavaScript here will be loaded for all users on every page load. */
+ /** Execute function on page load *********************************************
+  *  Description: Wrapper around addOnloadHook() for backwards compatibility.
+  *               Will be removed in the near future.
+  */
+ 
+ function addLoadEvent( f ) { addOnloadHook( f ); }
+ 
+/** Internet Explorer bug fix **************************************************
+  *
+  *  Description: UNDOCUMENTED
+  *  Maintainers: [[User:Tom-]]?
+  */
+ 
+ if (window.showModalDialog && document.compatMode && document.compatMode == "CSS1Compat")
+ {
+   var oldWidth;
+   var docEl = document.documentElement;
+ 
+   function fixIEScroll()
+   {
+     if (!oldWidth || docEl.clientWidth > oldWidth)
+       doFixIEScroll();
+     else
+       setTimeout(doFixIEScroll, 1);
+   
+     oldWidth = docEl.clientWidth;
+   }
+ 
+   function doFixIEScroll() {
+     docEl.style.overflowX = (docEl.scrollWidth - docEl.clientWidth < 4) ? "hidden" : "";
+   }
+ 
+   document.attachEvent("onreadystatechange", fixIEScroll);
+   attachEvent("onresize", fixIEScroll);
+ }
+ if (wgIsArticle) {			// don't display the RealTitle when editing, since it is apparently inconsistent (doesn't show when editing sections, doesn't show when not previewing)
+addOnloadHook(function() {
+	try {
+ 	} catch (e) {
+ 		/* Something went wrong. */
+ 	} 
+     }); 
+ }
+ 
+function addTextEvent() {
+   // add transliteration feature to main edit box 
+   var editForm =document.getElementById('editform');
+   if(editForm != null) {
+      var textBox=document.getElementById('wpTextbox1');
+//      var textSummary = document.getElementById('wpSummary');
+ 
+      addTranslit(editForm,textBox);
+      addCheckbox(editForm,textBox );
+  //    if(textSummary) { addTranslit(editForm,textSummary); }
+   }
+ 
+   }
+
+  function addLoadEvent(func) 
+     {
+        if (window.addEventListener) 
+            window.addEventListener("load", func, false);
+        else if (window.attachEvent) 
+            window.attachEvent("onload", func);
+     }
+
+function addTranslit(editForm,textBox){
+checkrt(editForm);
+
+        if (textBox.addEventListener) 
+            textBox .addEventListener("keypress", processKeys, false);
+        else if (textBox .attachEvent) 
+            textBox.attachEvent("onkeypress", processKeys);
+
+}
+function addCheckbox(editform,textBox ){
+
+var element = document.createElement("input");
+element.setAttribute("type","checkbox");
+element.setAttribute("id","realtime");
+
+if (element.addEventListener) 
+            element.addEventListener("click", rtClick, false);
+         else if (element.attachEvent) 
+            element.attachEvent("onclick", rtClick);
+var labelcheckBox = document.createTextNode('चेक सन्दूक पर क्लिक करें ध्वन्यात्मक देवनागरी में लिखने के लिए (परीक्षण प्रावस्था) ');
+
+editform.insertBefore(element,textBox);
+document.getElementById("realtime").checked = realTime;
+editform.insertBefore(labelcheckBox,textBox);
+}
+function processKeys(event) {
+ if (rtsupported)
+ { 
+	if (event.keyCode == 27 && !isExplorer()) { 
+		//escape to toggle
+		realTime = !realTime;
+		document.getElementById("realtime").checked = realTime;
+		//alert("rtsupported.."+rtsupported +"event,.."+event);
+	}
+
+	else if (realTime){  /* alert("real time.."+realTime);*/ translitonkey(event);
+	} 
+ } 
+}
+
+
+var realTime = true;
+function rtClick(event) {
+realTime = !realTime;
+}
+
+var rtsupported = false;
+var error; 
+function checkrt(editform){
+try {
+rtsupported = (document.selection != undefined)
+if (!rtsupported) {
+var element = document.createElement("TEXTAREA");
+editform.appendChild(element);
+if (element.selectionStart != undefined)
+rtsupported = true;
+editform.removeChild(element);
+}
+
+} catch (error) {
+
+}
+}
+addLoadEvent(addTextEvent)
+

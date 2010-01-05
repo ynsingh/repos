@@ -1,0 +1,221 @@
+
+#*
+ * @(#)Glossary_Search_Word.vm
+ *  Copyright (c) 2005,2009,2010 ETRG,IIT Kanpur.
+ *  All Rights Reserved.
+ *  Contributors: Members of ETRG, I.I.T. Kanpur
+*#
+
+#*
+ * @author <a href="mailto:sharad23nov@yahoo.com ">Sharad Singh</a>
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
+ * @modified date: 31-12-2009
+*#
+<head>
+<script type="text/javascript">
+        _editor_url = "../../../../../../../../../../../../../../../scrpts/";
+        _editor_lang = "en";
+</script>
+<script type="text/javascript" src="../../../../../../../../../../../../../../../scrpts/htmlarea.js"></script>
+<script type="text/javascript">
+        var editor = null;
+        function initEditor() {
+                editor = new HTMLArea("ta");
+                editor.generate();
+                return false;
+                var cfg = editor.config;
+                cfg.registerButton({
+                        id        : "my-hilite",
+                        tooltip   : "Highlight text",
+                        image     : "ed_custom.gif",
+                        textMode  : false,
+                        action    : function(editor) {
+                                editor.surroundHTML("<span class=\"hilite\">", "</span>");
+                        },
+                        context   : 'table'
+                });
+                cfg.toolbar.push(["linebreak", "my-hilite"]); var cfg = editor.config;
+                function clickHandler(editor, buttonId) {
+                        switch (buttonId) {
+                                case "my-toc":
+                                        editor.insertHTML("<h1>Table Of Contents</h1>");
+                                break;
+                                case "my-date":
+                                        editor.insertHTML((new Date()).toString());
+                                break;
+                                case "my-bold":
+                                        editor.execCommand("bold");
+                                        editor.execCommand("italic");
+                                break;
+                                case "my-hilite":
+                                        editor.surroundHTML("<span class=\"hilite\">", "</span>");
+                                break;
+                        }
+                };
+                Cfg.registerButton("my-toc",  "Insert TOC", "ed_custom.gif", false, clickHandler);
+                cfg.registerButton("my-date", "Insert date/time", "ed_custom.gif", false, clickHandler);
+                cfg.registerButton("my-bold", "Toggle bold/italic", "ed_custom.gif", false, clickHandler);
+                cfg.registerButton("my-hilite", "Hilite selection", "ed_custom.gif", false, clickHandler);
+                cfg.registerButton("my-sample", "Class: sample", "ed_custom.gif", false,
+                        function(editor) {
+                                if (HTMLArea.is_ie) {
+                                        editor.insertHTML("<span class=\"sample\">&nbsp;&nbsp;</span>");
+                                        var r = editor._doc.selection.createRange();
+                                        r.move("character", -2); r.moveEnd("character", 2); r.select();
+                                } else {
+                                        var n = editor._doc.createElement("span"); n.className = "sample"; editor.insertNodeAtSelection(n);
+                                        var sel = editor._iframe.contentWindow.getSelection();  sel.removeAllRanges(); var r = editor._doc.createRange();
+                                        r.setStart(n, 0); r.setEnd(n, 0); sel.addRange(r);
+                                }
+                        }
+                );
+                cfg.pageStyle = "body { background-color:  } .hilite { background-color: yellow; } "+ ".sample { color: green; font-family: monospace; }";
+                cfg.toolbar.push(["linebreak", "my-toc", "my-date", "my-bold", "my-hilite", "my-sample"]);
+               editor.generate();
+        }
+        function insertHTML() { var html = prompt("Enter some HTML code here"); if (html) { editor.insertHTML(html); } }
+        function highlight() { editor.surroundHTML('<span style="background-color: yellow">', '</span>'); }
+</script>
+</head>
+<body onload="initEditor()">
+
+$page.setBgColor($ui.bgcolor)
+#if($data.getUser().getUserName()=="admin")
+$page.setTitle("Admin Home | Glossary | Search Word")
+#else
+$page.setTitle("Home | Glossary | Search Word")
+#end
+$!data.getMessage()
+
+<table bgcolor="$ui.menuColor" width=100%>
+	<tr><td>
+	        <b>
+	        	#if($data.getUser().getUserName()=="admin")
+		        ##<a href="$link.setPage("call,Admin.vm")">$brih_ad $brih_home</a> |
+		        <a href="$link.setPage("Index.vm")">$brih_ad $brih_home</a> |
+			#else
+			<a href="$link.setPage("Index.vm")">$brih_home</a> |
+			#end
+			#set($lang = $data.getUser().getTemp("lang" ).toString())
+			#if ($lang == "hindi")
+				<a href="$link.setPage("call,Glossary,Glossary_Search_Word.vm").addPathInfo("count","1")">$Glossary</a> | $brih_word $brih_search
+			#else
+				<a href="$link.setPage("call,Glossary,Glossary_Search_Word.vm").addPathInfo("count","1")">$Glossary</a> | $brih_search $brih_word
+			#end
+	</td>
+	</tr>
+</table>
+<table width="100%" bgcolor="$ui.tableColor">
+    <tr>
+	 ##<td width=33%><a href=$link.setPage("call,Glossary,Glossary_Search_Word.vm").addPathInfo("status","blank")>Search Word </td>
+	#if($tdcolor !="1")
+       <td width=33%>
+	#elseif($tdcolor=="1")
+	<td width=33% bgcolor="#AFDCEC">
+	#end
+	<a href=$link.setPage("call,Glossary,Glossary_Search_Word.vm").addPathInfo("count","1")>$brih_search $brih_word </td>
+      #if($guest_login=="false")
+	#if($tdcolor !="2")
+       <td width=33%>
+	#elseif($tdcolor=="2")
+	<td width=33% bgcolor="#AFDCEC">
+	#end
+        <a href=$link.setPage("call,Glossary,Glossary_Insert_Word.vm").addPathInfo("mode","Insert").addPathInfo("count","2")>$brih_insert $brih_word </td>
+	#if($tdcolor !="3")
+        <td>
+	#elseif($tdcolor=="3")
+	<td bgcolor="#AFDCEC">
+	#end
+       <a href=$link.setPage("call,Glossary,Glossary_Delete_Edit_Word.vm").addPathInfo("status","blank").addPathInfo("count","3")>$brih_delete/$brih_edit</td>
+      #end
+    </tr>
+  </table>
+<form name="frm" method="post" action=$link.setPage("call,Glossary,Glossary_Search_Word.vm").setAction("Glossary_Action").addPathInfo("stat","Noblank")>
+<table bgcolor="$ui.tableColor" width=100%>
+<tr>
+	#set($Alphabate=["$brih_a","$brih_b","$brih_c","$brih_d","$brih_e","$brih_f","$brih_g","$brih_h","$brih_i","$brih_j","$brih_k","$brih_l","$brih_m","$brih_n","$brih_o","$brih_p","$brih_q","$brih_r","$brih_s","$brih_t","$brih_u","$brih_v","$brih_w","$brih_x","$brih_y","$brih_z"])
+	
+	#foreach($alphabate in $Alphabate)
+        <td><a href="$link.setPage("call,Glossary,Glossary_Search_Word.vm").addPathInfo("alpha",$alphabate).addPathInfo("status","Noblank").addPathInfo("count",$tdcolor)"><b>$alphabate </b></a></td>
+        #end
+</tr>
+</table>
+<table bgcolor="$ui.tableColor" width=100%>
+	<tr>
+       	<td>
+		#if($key!="")
+			##formCell("$brih_string $brih_search" "WORD" "$key")
+			<td><b>$brih_string $brih_search</b>
+                        <input type="text" size=25 name="WORD" value="$key">
+		#else
+	  		##formCell("$brih_string $brih_search" "WORD" "")
+			<td><b>$brih_string $brih_search</b>
+                        <input type="text" size=25 name="WORD" value="">
+		#end
+       ##</td>
+       ##<td colspan=2>
+		<input type="button" name="eventSubmit_doSearch" value="$brih_search" onClick="checkValue(document.frm,this);"/>
+	  	<input type ="hidden" name="search" value="search">
+	  	<input type ="hidden" name="actionName">
+	  	<input type ="hidden" name="count" value="$tdcolor">
+       </td>
+       </tr>
+</table>
+#if($stat=="Noblank")
+<table bgcolor="$ui.tableColor" width=100%>
+	<tr>
+      	<td>
+		#set($i=0) 
+       	#if($search=="search")
+		#foreach($v1 in $v)
+<a href="$link.setPage("call,Glossary,Glossary_Search_Word.vm").addPathInfo("wordid",$v.get($i).getWordId()).addPathInfo("status","Noblank").addPathInfo("word",$v.get($i).getWord()).addPathInfo("alpha",$key).addPathInfo("count",$tdcolor)">$v.get($i).getWord()</a>
+			#set ($i = $i+1)
+                #end
+	#else 
+		#foreach($v1 in $v)
+			<a href="$link.setPage("call,Glossary,Glossary_Search_Word.vm").addPathInfo("wordid",$v.get($i).getWordId()).addPathInfo("status","Noblank").addPathInfo("word",$v.get($i).getWord()).addPathInfo("alpha",$alpha).addPathInfo("st",$v.get($i).getWordId()).addPathInfo("count",$tdcolor)">$v.get($i).getWord()</a>
+                        <font color=red>
+                        #if($wid=="$v.get($i).getWordId()")
+                        	<b>--></b>
+                        #end
+                        </font>
+                        <br>
+			#set ($i = $i+1)
+              #end
+	#end
+
+	#if($description!="") 
+		#if($waliassize!="0")
+            	<td width="2">
+                	<font face="$ui.sansSerifFonts"><textarea id="ta" name="DESCRIPTION" rows=10 cols=80>$description See also:$walias</textarea></font>
+            	</td>
+           	#else
+            	<td width="2">
+                	<font face="$ui.sansSerifFonts"><textarea id="ta" name="DESCRIPTION" rows=10 cols=80>$description</textarea></font>
+            	</td>
+           	#end	
+         #else
+          	 <td width="2"><font face="$ui.sansSerifFonts"><textarea id="ta" name="DESCRIPTION" rows=10 cols=80></textarea></font>
+           	 </td>
+         #end  
+	</tr>
+</table>
+#end
+</form>
+</body>
+
+<SCRIPT LANGUAGE="javascript">
+ function checkValue(frm,field)
+   {
+    if(frm.WORD.value!="") 
+      {
+       frm.actionName.value=field.name;
+       frm.submit();
+      }
+    else
+      {
+       alert("Please Insert String for search");
+      }
+   }
+</SCRIPT>

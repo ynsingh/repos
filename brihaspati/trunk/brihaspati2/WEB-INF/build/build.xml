@@ -1,0 +1,731 @@
+<?xml version="1.0"?>
+<!-- ================================================================= -->
+<!--@author Nagendra Kumar Singh mailto:nksngh_p@yahoo.co.in           -->
+<!--@author Awadhesh Kumar Trivedi mailto:awadhesh_trivedi@yahoo.co.in -->
+<!--@author Manvendra Baghel mailto:manav_cv@yahoo.co.in               -->
+<!--@modify Date:- 29 March 2006                                         -->
+<!-- ================================================================= -->
+
+<project name="peer" default="compile" basedir=".">
+
+  <property file="${user.home}/build.properties"/>
+  <property file="build.properties"/>
+  <property file="project.properties"/>
+
+  <!-- This value is currently set as a property because
+       the top level tdk build.xml file runs the "init" target
+       as part of testing and texen doesn't obey the ${basedir}
+       property so we must pass in the full path to the
+       build.properties for use with the contextProperties attribute.
+  -->
+  <property name="build.properties" value="build.properties"/>
+
+  <path id="classpath">
+    <fileset dir="${tdk.home}/webapps/${tdk.project}/WEB-INF/lib">
+      <include name="**/*.jar"/>
+    </fileset>
+	<fileset dir="${tdk.home}/common/lib">
+	  <include name="**/servlet*.jar"/>
+	</fileset>
+  </path>
+
+  <!-- ================================================================ -->
+  <!-- D E P L O Y M E N T  T A R G E T S                               -->
+  <!-- ================================================================ -->
+
+  <target
+    name="assemble-webapp-in-container"
+    depends="init">
+
+    <copy todir="${build.webappRoot}">
+      <fileset dir=".">
+        <include name="images/**"/>
+        <include name="resources/**"/>
+        <include name="templates/**"/>
+      </fileset>
+    </copy>
+
+    <copy todir="${build.webappRoot}/WEB-INF">
+      <fileset dir=".">
+        <include name="setup/**"/>
+      </fileset>
+    </copy>
+
+    <!-- Move the application configuration files into position. -->
+    <copy todir="${build.webappRoot}/WEB-INF/conf">
+      <fileset dir="../conf"/>
+    </copy>
+
+    <!-- Adjust the deployment descriptor from cvslayout mode
+         back to in-container mode. -->
+
+<!--    <ant dir="${tdk.home}" target="deployment-descriptor">
+      <property name="app.root" value="webappContext"/>
+      <property name="app.properties" value="/WEB-INF/conf/TurbineResources.properties"/>
+    </ant>
+-->
+  </target>
+
+  <target
+    name="deploy-war"
+    depends="assemble-webapp-in-container">
+
+    <jar jarfile="${tdk.project}.war">
+      <fileset dir="${tdk.home}/webapps">
+        <include name="${tdk.project}/**"/>
+        <exclude name="${tdk.project}/WEB-INF/src/**"/>
+      </fileset>
+    </jar>
+  </target>
+
+  <target
+    name="deploy-container"
+    depends="assemble-webapp-in-container">
+
+    <mkdir dir="target/${tdk.project}"/>
+    <copy todir="target/${tdk.project}">
+      <fileset dir="${tdk.home}">
+        <exclude name="tdk/**"/>
+        <exclude name="build.xml"/>
+        <exclude name="build.properties"/>
+        <exclude name="GETTING_STARTED.txt"/>
+      </fileset>
+    </copy>
+
+    <tar longfile="gnu" tarfile="${tdk.project}.tar">
+      <tarfileset dir="target" mode="755">
+        <include name="**/*.sh"/>
+      </tarfileset>
+      <tarfileset dir="target">
+        <include name="**"/>
+        <exclude name="**/*.sh"/>
+      </tarfileset>
+    </tar>
+
+    <gzip zipfile="${tdk.project}.tar.gz" src="${tdk.project}.tar"/>
+    <zip zipfile="${tdk.project}.zip" basedir="target"/>
+    <delete file="${tdk.project}.tar"/>
+    <delete dir="target"/>
+  </target>
+
+  <!-- ================================================================ -->
+  <!-- S E T U P  T A R G E T                                           -->
+  <!-- ================================================================ -->
+  <!-- Check that properties are defined correctly.                     -->
+  <!-- ================================================================ -->
+
+  <target
+    name="setup"
+    unless="tdk.home">
+
+    <echo>
+      ***
+      * ERROR : The 'tdk.home' property is not defined or
+      * is pointing to an invalid directory.
+      *
+      * In your personal build.properties define tdk.home to
+      * point to an absolute path where your tdk is installed.
+      * Example: tdk.home=${user.home}/tdk
+      ***
+    </echo>
+    <fail message="ERROR: tdk.home not defined properly: ${tdk.home}"/>
+  </target>
+
+  <!-- ================================================================ -->
+  <!-- I N I T  T A S K  T A R G E T                                    -->
+  <!-- ================================================================ -->
+  <!-- Taskdefs are defined inside this target as Ant seems to have     -->
+  <!-- problems defining them at the top level.                         -->
+  <!-- ================================================================ -->
+
+  <target name="init-tasks" depends="setup">
+
+    <taskdef name="texen"
+      classname="org.apache.velocity.texen.ant.TexenTask">
+      <classpath refid="classpath"/>
+    </taskdef>
+
+<!--
+    <taskdef name="format-source"
+      classname="jstyle.FormatTask">
+      <classpath refid="classpath"/>
+    </taskdef>
+-->
+  </target>
+
+  <!-- ================================================================ -->
+  <!-- I N I T  T A R G E T                                             -->
+  <!-- ================================================================ -->
+  <!-- You will probably only run this target once. It will generate    -->
+  <!-- your sources for you and compile them.                           -->
+  <!-- ================================================================ -->
+
+  <target
+    name="init"
+    depends="setup-webinf"
+    description="--> generates the full application">
+
+    <antcall target="create-database"/>
+    <antcall target="schema-sql"/>
+    <antcall target="idtable-init-sql"/>
+    <antcall target="security-sql"/>
+    <antcall target="insert-sql-files"/>
+    <antcall target="update-tr-props"/>
+    <antcall target="project-om"/>
+    <antcall target="remove-Dir"/>
+    <antcall target="create-Dir"/>
+    <antcall target="compile"/>
+    <antcall target="template"/>
+    <!-- antcall target="javadoc"/-->
+    <antcall target="createadminaccount"/>
+	
+  </target>
+  <!-- ================================================================ -->
+  <!-- U P D A T E  T A R G E T                                         -->
+  <!-- ================================================================ -->
+  <!-- You will probably run this target. It will generate              -->
+  <!-- your sources for you and compile them.                           -->
+  <!-- ================================================================ -->
+
+  <target
+    name="update"
+    description="--> Modify the full application">
+
+    <antcall target="compile"/>
+    <antcall target="template"/>
+  </target>
+  <!-- ================================================================ -->
+  <!-- C R E A T E  T A R G E T  D A T A B A S E                        -->
+  <!-- ================================================================ -->
+  <!-- Create the target database by executing a generated script       -->
+  <!-- that is capable of performing the task.                          -->
+  <!-- ================================================================ -->
+
+  <target
+    name="create-database"
+    depends="init-tasks"
+    unless="database.manual.creation"
+    description="--> generates the target database">
+
+    <ant
+      antfile="${torque.buildFile}"
+      target="create-db">
+    </ant>
+  </target>
+
+  <!-- ================================================================ -->
+  <!--                                                                  -->
+  <!-- G E N E R A T E  T A B L E  S Q L                                -->
+  <!--                                                                  -->
+  <!-- ================================================================ -->
+
+  <target
+    name="schema-sql"
+    depends="init-tasks"
+    description="--> generates the sql-script for your project">
+
+    <ant
+      antfile="${torque.buildFile}"
+      target="sql">
+    </ant>
+  </target>
+
+  <!-- ================================================================ -->
+  <!--                                                                  -->
+  <!-- G E N E R A T E  I D  B R O K E R  I N I T  S Q L                -->
+  <!--                                                                  -->
+  <!-- ================================================================ -->
+
+  <target
+    name="idtable-init-sql">
+
+    <ant
+      antfile="${torque.buildFile}"
+      target="id-table-init-sql">
+    </ant>
+  </target>
+
+  <target
+    name="security-sql"
+    unless="noSecuritySQL"
+    description="Creates SQL to initialize the security system.">
+
+    <taskdef
+      name="torque-datasql"
+      classname="org.apache.torque.task.TorqueDataSQLTask">
+      <classpath refid="classpath"/>
+    </taskdef>
+
+    <torque-datasql
+      contextProperties="${build.properties}"
+      controlTemplate="${DataSQLControlTemplate}"
+      outputDirectory="${src.dir}/sql"
+      useClasspath="true"
+      outputFile="turbine-security.sql"
+      xmlFile="${conf.dir}/turbine-schema.xml"
+      dataXmlFile="${conf.dir}/turbine-security.xml"
+      dataDTD="${conf.dir}/turbine-security.dtd"
+      targetDatabase="${database}"
+      sqldbmap="${src.dir}/sql/sqldb.map"
+    />
+<!--
+    <ant
+      antfile="${torque.buildFile}"
+      target="project-datasql">
+    </ant>
+-->
+  </target>
+
+  <!-- ================================================================ -->
+  <!-- G E N E R A T E  P R O J E C T  P E E R  B A S E D  O M          -->
+  <!-- ================================================================ -->
+  <!-- Generate the Peer-based object model for your project.           -->
+  <!-- These are in addition to the base Turbine OM!                    -->
+  <!-- ================================================================ -->
+
+  <target
+    name="project-om"
+    unless="noObjectModel"
+    description="--> generates the peer-based object model for your project">
+
+    <ant
+      antfile="${torque.buildFile}"
+      target="om">
+    </ant>
+
+    <!--
+    <format-source>
+      <fileset dir="${src.dir}/${targetDirectory}">
+        <include name="**/*.java"/>
+      </fileset>
+    </format-source>
+    -->
+
+  </target>
+
+  <!-- ================================================================ -->
+  <!-- I N S E R T  S I N G L E  S Q L  F I L E                         -->
+  <!-- ================================================================ -->
+
+  <target
+    name="setDatabaseUrl"
+    if="build.databaseUrl">
+
+    <property name="sqlInsert.databaseUrl" value="${build.databaseUrl}"/>
+  </target>
+
+  <target
+    name="insert-sql-files"
+    depends="setDatabaseUrl">
+
+    <property name="sqlInsert.databaseUrl" value="${databaseUrl}"/>
+
+    <ant
+      antfile="${torque.buildFile}"
+      target="insert-sql">
+    </ant>
+
+    
+
+
+<!--
+    <sql-tdk
+      driver="${databaseDriver}"
+      url="${sqlInsert.databaseUrl}"
+      userid="${databaseUser}"
+      password="${databasePassword}"
+      autocommit="true"
+      onerror="continue"
+      sqldbmap="${src.dir}/sql/sqldb.map"
+      srcDir="${src.dir}/sql">
+      <classpath refid="classpath"/>
+    </sql-tdk>
+-->
+  </target>
+
+  <!-- ================================================================ -->
+  <!-- U P D A T E  T U R B I N E  R E S O U R C E S  P R O P S         -->
+  <!-- ================================================================ -->
+
+  <target
+    name="update-tr-props">
+
+    <filter token="APPLICATION_ROOT" value="."/>
+    <filter token="DATABASE" value="${database}"/>
+    <filter token="DATABASE_DRIVER" value="${databaseDriver}"/>
+    <filter token="DATABASE_URL" value="${databaseUrl}"/>
+    <filter token="DATABASE_BUILD_URL" value="${build.databaseUrl}"/>
+    <filter token="DATABASE_USER" value="${databaseUser}"/>
+    <filter token="DATABASE_PASSWORD" value="${databasePassword}"/>
+    <filter token="DATABASE_HOST" value="${databaseHost}"/>
+    <filter token="DATABASE_DEFAULT" value="brihaspati"/>
+
+    <property name="database.descriptor" value="${master.conf.dir}/database/${database}"/>
+    <property name="database.name" value="brihaspati"/>
+    <property file="${database.descriptor}"/>
+
+    <filter token="DATABASE_ADAPTOR" value="${database.adaptor}"/>
+
+    <copy
+      file="${conf.dir}/TurbineResources.template"
+      tofile="${conf.dir}/TurbineResources.properties"
+      overwrite="yes"
+      filtering="yes"
+    />
+    <copy
+      file="${conf.dir}/Torque.template"
+      tofile="${conf.dir}/Torque.properties"
+      overwrite="yes"
+      filtering="yes"
+      />
+  </target>
+  <!-- =================================================================== -->
+  <!-- C R E A T E  A D M I N A N D G U E S T A C C O U N T                -->
+  <!-- =================================================================== -->
+
+  <target name="createadminaccount">
+	
+	<sql
+      		autocommit="true"
+      		driver="${databaseDriver}"
+		onerror="continue"
+      		password="${databasePassword}"
+      		src="brihaspati-script.sql"
+      		url="${createDatabaseUrl}"
+      		userid="${databaseUser}">
+      		<classpath refid="classpath"/>
+	</sql>
+	<echo message="============================================="/>
+	<echo message="The admin name is admin and password is admin"/>
+	<echo message="so please change it for security reasons."/>
+	<echo message="============================================="/>
+
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- R E M O V E  D I R E C T O R I E S    -->
+  <!-- =================================================================== -->
+
+  <target name="remove-Dir" >
+	<delete dir="${build.dest}" />
+	<delete dir="${build.webappRoot}/UserArea"/>
+	<delete dir="${build.webappRoot}/Courses"/>
+	<delete dir="${build.webappRoot}/Repository"/>
+	<delete dir="${build.webappRoot}/logs"/>
+	<delete dir="${build.webappRoot}/QuestionBank"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- C R E A T E  D I R E C T O R I E S    -->
+  <!-- =================================================================== -->
+
+  <target name="create-Dir" >
+      <mkdir dir="${build.dest}"/>
+      <mkdir dir="${build.webappRoot}/tmp"/>
+      <mkdir dir="${build.webappRoot}/Repository"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- J A V A D O C                                                       -->
+  <!-- =================================================================== -->
+	<target name="javadoc" description="javadoc documentation">
+                <javadoc destdir="${build.webappRoot}/javadoc" version="true" author="true" access="public"
+                         doctitle="Brihaspati Virtual ClassRoom  Api" windowtitle="Brihaspati Virtual ClassRoom  Api"
+                         bottom="Copyright &#169; 2003-2008 ETRG IIT Kanpur. All Right Reserved.">
+                        <fileset dir="${src.dir}/java/org/iitk/brihaspati/modules/" defaultexcludes="yes">
+                        </fileset>
+			<fileset dir="${src.dir}/java/" defaultexcludes="yes">
+          			<include name="*.java"/>
+		        </fileset>
+                        <package name="org.iitk.brihaspati.modules"/>
+                </javadoc>
+        </target>
+
+  <!-- =================================================================== -->
+  <!-- C O M P I L E                                                       -->
+  <!-- =================================================================== -->
+
+  <target
+    name="check-webinf-exists">
+
+    <available
+      property="webinf-exists"
+      file="${tdk.home}/webapps/${tdk.project}/WEB-INF"
+    />
+  </target>
+
+  <!-- Setup the WEB-INF directory in the webapp if it already hasn't
+       been done. -->
+
+  <target
+    name="setup-webinf"
+    depends="check-webinf-exists"
+    unless="webinf-exists">
+
+    <ant dir="${tdk.home}" target="setup-webinf"/>
+    <ant antfile="project-build.xml"/>
+  </target>
+
+  <target
+    name="copy-log4j-properties"
+    description="--> copy log4j properties from conf to WEB-INF/classes">
+
+    <filter token="LOG_DIR" value="${tdk.home}/webapps/${tdk.project}/logs"/>
+
+    <copy
+      file="${conf.dir}/Log4j.properties"
+      todir="${build.dest}"
+      overwrite="yes"
+      filtering="yes">
+    </copy>
+    
+  </target>
+
+  <target
+    name="compile"
+    depends="setup,setup-webinf"
+    description="--> compiles the source code">
+
+    <javac srcdir="${src.dir}/java"
+      destdir="${build.dest}"
+      debug="${debug}"
+      deprecation="${deprecation}"
+      optimize="${optimize}">
+	
+      <classpath refid="classpath"/>
+    </javac>
+    
+    <antcall target="copy-log4j-properties"/>
+    
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- M I G R A T E  P R O J E C T                                        -->
+  <!-- =================================================================== -->
+
+  <target name="migrate-project">
+    <taskdef
+      name="migrate"
+      classname="org.apache.tdk.task.transformer.SourceTransformer">
+      <classpath refid="classpath"/>
+    </taskdef>
+
+    <migrate
+      srcDir="${src.dir}/java"
+      targetDir="tmp"
+      descriptor="transformations.xml"
+    />
+
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- S C R U B  I M P O R T S                                            -->
+  <!-- =================================================================== -->
+
+  <target name="scrub-imports">
+    <taskdef
+      name="scrub"
+      classname="net.sourceforge.importscrubber.ant.ImportScrubberTask">
+      <classpath refid="classpath"/>
+    </taskdef>
+
+    <property name="tmp.dir" value="tmp"/>
+
+    <!-- Make sure our tmp directory doesn't exist before we start -->
+    <delete dir="${tmp.dir}"/>
+
+    <!-- Copy our source files into the temporary directory -->
+    <copy todir="${tmp.dir}">
+      <fileset dir="${src.dir}/java"/>
+    </copy>
+
+    <!--
+      Note that I compile the code with debug info first. This
+      prevents the compiler from removing class references
+      (i.e., by inlining static finals and such).
+    -->
+
+    <javac
+      deprecation="false"
+      debug="true"
+      optimize="false"
+      srcdir="${tmp.dir}"
+      destdir="${tmp.dir}">
+      <classpath refid="classpath"/>
+    </javac>
+
+    <!-- Fully qualify the imports -->
+    <scrub
+      root="${tmp.dir}"
+      format="nobreaks"
+      recurse="true"
+    />
+
+    <!-- Get rid of the class files in our tmp directory -->
+    <delete>
+      <fileset dir="${tmp.dir}" includes="**/*.class"/>
+    </delete>
+
+    <copy todir="${src.dir}/java" overwrite="true">
+      <fileset dir="${tmp.dir}"/>
+    </copy>
+
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- C L E A N                                                           -->
+  <!-- =================================================================== -->
+
+  <target
+    name="clean"
+    description="--> cleans up the build directory">
+
+    <delete dir="${build.dest}"/>
+    <mkdir dir="${build.dest}"/>
+  </target>
+
+
+
+
+  <!-- =================================================================== -->
+  <!-- GENERATE MULTILINGUAL PAGES                                         -->
+  <!-- =================================================================== -->
+  <!-- This Control.properties is file which is generated on Insert and    -->
+  <!-- is flag to tell if Insert action has taken place                    -->
+  <!-- =================================================================== -->
+
+        <property file="Control.properties"/>
+        <target name="template" description="This part calls all the 3 action ant insert control  remove ">
+                <antcall target="removeTemplate"/>
+		<antcall target="unicodeConvert"/>
+                <antcall target="insert"/>
+                <antcall target="control"/>
+                <antcall target="remove"/>
+        </target>
+        <target name="insert" description="This runs java Control INSERT">
+                <property name="act" value="${Multilingual.PropertyPath}" />
+                <java fork="true"  classname="Control" classpath="${build.dest}">
+                        <arg value="INSERT" />
+                        <sysproperty key="Multilingual.PropertyPath.property" value= "${act}" />
+                </java>
+        </target>
+        <target name="control" description="this part controls generating and error handling parts">
+                <antcall target="callgenerate"/>
+                <antcall target="tellinserterror"/>
+                <antcall target="telldeveloperror"/>
+        </target>
+        <target name="remove" description="This runs java Control REMOVE">
+                <property name="act" value="${Multilingual.PropertyPath}" />
+                <java fork="true"  classname="Control" classpath="${build.dest}">
+                        <arg value="REMOVE" />
+                        <sysproperty key="Multilingual.PropertyPath.property" value= "${act}" />
+                </java>
+        </target>
+
+  <!-- =================================================================== -->
+  <!-- C O N V E T R T  U N I C O D E  T O  U T F - 8                      -->
+  <!-- =================================================================== -->
+
+        <target name="unicodeConvert" description="Running Unicode Converter to CONVERT unicode to UTF-8">
+                <property name="act" value="${Multilingual.PropertyPath}" />
+                <java fork="true" classname="unicodeConverter" classpath="${build.dest}">
+                        <sysproperty key="Multilingual.PropertyPath.property" value= "${act}" />
+                </java>
+        </target>
+
+
+  <!-- =================================================================== -->
+  <!-- R E M O V E    V E L E O C I T Y    P A G E                         -->
+  <!-- =================================================================== -->
+
+  <target name="removeTemplate" >
+	<delete dir="${Multilingual.TemplatePath}/bangla" />
+	<delete dir="${Multilingual.TemplatePath}/call" />
+	<delete dir="${Multilingual.TemplatePath}/chinese" />
+        <delete dir="${Multilingual.TemplatePath}/dutch" />
+	<delete dir="${Multilingual.TemplatePath}/english" />
+	<delete dir="${Multilingual.TemplatePath}/french" />
+	<delete dir="${Multilingual.TemplatePath}/german" />
+	<delete dir="${Multilingual.TemplatePath}/gurmukhi" />
+	<delete dir="${Multilingual.TemplatePath}/hindi" />
+	<delete dir="${Multilingual.TemplatePath}/italian" />
+	<delete dir="${Multilingual.TemplatePath}/japanese" />
+	<delete dir="${Multilingual.TemplatePath}/korean" />
+	<delete dir="${Multilingual.TemplatePath}/malayalam" />
+	<delete dir="${Multilingual.TemplatePath}/marathi" />
+	<delete dir="${Multilingual.TemplatePath}/russian" />
+	<delete dir="${Multilingual.TemplatePath}/tamil" />
+	<delete dir="${Multilingual.TemplatePath}/telugu" />
+	<delete dir="${Multilingual.TemplatePath}/urdu" />
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- G E N E R A T E  V E L O C I T Y   P A G E S                        -->
+  <!-- =================================================================== -->
+  <!-- This target will generate a set of VM pages based on                -->
+  <!-- the information in our control context.                             -->
+  <!-- =================================================================== -->
+
+        <target name="callgenerate" if="ifInsert"  description="This is for nested if on genarete target">
+                <antcall target="generate"/>
+        </target>
+        <target name="generate" unless="ifDevelop"  description="This part is responsible for generating language vm">
+
+                <echo message="+------------------------------------------+"/>
+                <echo message="|                                          |"/>
+                <echo message="| Generating VM pages!                     |"/>
+                <echo message="|                                          |"/>
+                <echo message="+------------------------------------------+"/>
+
+                <taskdef name="texen" classname="org.apache.velocity.texen.ant.TexenTask">
+                        <classpath refid="classpath"/>
+                </taskdef>
+		<!-- Control.vm will have to  be put templates as templatePath -->
+		<!-- tells path of Control.vm as well as Raw templates	       -->
+                <texen
+                controlTemplate="Control.vm"
+                outputDirectory="${Multilingual.TemplatePath}"
+                templatePath="${Multilingual.TemplatePath}"
+                outputFile="generation.report"
+                />
+        </target>
+        <target name="tellinserterror" unless="ifInsert"   description="This shows error when ant run before running command: java Control insert ">
+             <echo>
+              ****
+              * ERROR : Ant has not found temporary
+              * files needed for its execution.
+              * Please check if you have run 'ant insert' before 'ant control'
+              * if not then run these commands in the sequence 'ant insert' then
+              * 'ant control ' then 'ant  remove'
+              ***
+            </echo>
+            <fail message="ERROR: You have run 'ant control'  before ' ant insert' "/>
+        </target>
+        <target name="telldeveloperror" if="ifDevelop"   description="This shows error when specified directory does not exists ">
+             <echo>
+              ****
+              * ERROR : Ant has not found specified Developing Directory 
+              * Please check if Directory exists in templates/app/screens/Raw
+              ***
+            </echo>
+            <fail message="ERROR: Your Specified Directory does not exists "/>
+        </target>
+  <!-- =================================================================== -->
+  <!-- GENERATE MULTILINGUAL PAGES       END                               -->
+  <!-- =================================================================== -->
+  
+  <!-- =================================================================== -->
+  <!-- DIFFERENCE BETWEEN PROPERTIES FILE TO MASTER FILE                   -->
+  <!-- =================================================================== -->
+
+        <target name="diffproperties" description="Create difference tag file for properties in different language">
+                <java fork="true" classname="CheckProperties" classpath="${build.dest}">
+                </java>
+
+	<echo message="================================================"/>
+        <echo message="The missing tag file are created in brihaspati2 "/>
+        <echo message="area. The file name is missingTag.txt"          />
+        <echo message="================================================"/>
+
+        </target>
+</project>

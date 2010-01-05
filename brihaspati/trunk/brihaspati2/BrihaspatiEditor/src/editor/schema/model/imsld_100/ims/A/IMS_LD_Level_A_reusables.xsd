@@ -1,0 +1,39 @@
+<xs:schema targetNamespace="http://www.imsglobal.org/xsd/imsld_v1p0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.imsglobal.org/xsd/imsld_v1p0" elementFormDefault="qualified" attributeFormDefault="unqualified" version="IMS LD Level A version 1.0 Final Draft">
+	<!-- ******************** -->
+	<!-- ** Change History ** -->
+	<!-- ******************** -->
+	<xs:annotation>
+		<xs:documentation xml:lang="en">Last update 16 December 2002
+		</xs:documentation>
+		<xs:documentation xml:lang="en">28 October 2002
+		This module contains elements and attributes that are used in all levels of LD and in the IMS LD global elements.
+		This module needs to be included in IMS LD Level A and IMS LD global elements.
+		Changed the namespace.
+		</xs:documentation>
+	</xs:annotation>
+	<!-- **************************** -->
+	<!-- ** Attribute declarations ** -->
+	<!-- **************************** -->
+	<xs:attributeGroup name="attr.ref.req">
+		<xs:annotation>
+			<xs:documentation>This attribute is used in several LD elements (level A and B) and in the global elements (level C).</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+	</xs:attributeGroup>
+	<!-- ************************** -->
+	<!-- ** Element Declarations ** -->
+	<!-- ************************** -->
+	<!-- ************************************ -->
+	<!-- ** Empty elements with attributes ** -->
+	<!-- ************************************ -->
+	<xs:element name="learning-activity-ref">
+		<xs:complexType>
+			<xs:attributeGroup ref="attr.ref.req"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="support-activity-ref">
+		<xs:complexType>
+			<xs:attributeGroup ref="attr.ref.req"/>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

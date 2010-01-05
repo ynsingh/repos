@@ -1,0 +1,152 @@
+#*
+ * @(#) DeletePosted.vm
+ * Copyright (c) 2005,2010 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ * @author <a href="mailto:madhavi_mungole@hotmail.com ">Madhavi Mungole</a>
+ * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in ">Awadhesh Kumar Trivedi</a>
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+ * @modified date: 31-12-2009
+*#
+<head>
+<script type="text/javascript">
+        _editor_url = "../../../../../../../scrpts/";
+        _editor_lang = "en";
+</script>
+<script type="text/javascript" src="../../../../../../../scrpts/htmlarea.js"></script>
+<script type="text/javascript">
+        var editor = null;
+        function initEditor() {
+                editor = new HTMLArea("ta");
+                editor.generate();
+                return false;
+                var cfg = editor.config;
+                cfg.registerButton({
+                        id        : "my-hilite",
+                        tooltip   : "Highlight text",
+                        image     : "ed_custom.gif",
+                        textMode  : false,
+                        action    : function(editor) {
+                                editor.surroundHTML("<span class=\"hilite\">", "</span>");
+                        },
+                        context   : 'table'
+                });
+                cfg.toolbar.push(["linebreak", "my-hilite"]); var cfg = editor.config;
+                function clickHandler(editor, buttonId) {
+                        switch (buttonId) {
+                                case "my-toc":
+                                        editor.insertHTML("<h1>Table Of Contents</h1>");
+                                break;
+                                case "my-date":
+                                        editor.insertHTML((new Date()).toString());
+                                break;
+                                case "my-bold":
+                                        editor.execCommand("bold");
+                                        editor.execCommand("italic");
+                                break;
+                                case "my-hilite":
+                                        editor.surroundHTML("<span class=\"hilite\">", "</span>");
+                                break;
+                        }
+                };
+                Cfg.registerButton("my-toc",  "Insert TOC", "ed_custom.gif", false, clickHandler);
+                cfg.registerButton("my-date", "Insert date/time", "ed_custom.gif", false, clickHandler);
+                cfg.registerButton("my-bold", "Toggle bold/italic", "ed_custom.gif", false, clickHandler);
+                cfg.registerButton("my-hilite", "Hilite selection", "ed_custom.gif", false, clickHandler);
+                cfg.registerButton("my-sample", "Class: sample", "ed_custom.gif", false,
+                        function(editor) {
+                                if (HTMLArea.is_ie) {
+                                        editor.insertHTML("<span class=\"sample\">&nbsp;&nbsp;</span>");
+                                        var r = editor._doc.selection.createRange();
+                                        r.move("character", -2); r.moveEnd("character", 2); r.select();
+                                } else {
+                                        var n = editor._doc.createElement("span"); n.className = "sample"; editor.insertNodeAtSelection(n);
+                                        var sel = editor._iframe.contentWindow.getSelection();  sel.removeAllRanges(); var r = editor._doc.createRange();
+                                        r.setStart(n, 0); r.setEnd(n, 0); sel.addRange(r);
+                                }
+                        }
+                );
+                cfg.pageStyle = "body { background-color:  } .hilite { background-color: yellow; } "+ ".sample { color: green; font-family: monospace; }";
+                cfg.toolbar.push(["linebreak", "my-toc", "my-date", "my-bold", "my-hilite", "my-sample"]);
+               editor.generate();
+        }
+        function insertHTML() { var html = prompt("Enter some HTML code here"); if (html) { editor.insertHTML(html); } }
+        function highlight() { editor.surroundHTML('<span style="background-color: yellow">', '</span>'); }
+</script>
+</head>
+<body onload="initEditor()">
+
+$page.setTitle("Admin Home | Communication | Delete Posted Notice")
+$!data.getMessage()
+<table bgcolor="$ui.menuColor" width=100%>
+	<tr><td>
+	<a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> | 
+	<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","1")>$brih_communication</a> | $Notice_DeletePosted_msg1
+	</td></tr>
+</table>
+<form name="frm" method="Post" action="$link.setPage("call,Notice_User,DeletePostedAdmin.vm").setAction("Notice_Send_Delete")">
+#if($Mas_size!="0")
+<table align="left" width=100% bgcolor="$ui.tableColor">
+<tr>
+	<td>$Notice_Subject</td>
+	<td>$brih_Da</td>
+</tr>
+##tr for description
+<tr>
+	#foreach($detail in $msgDetail)
+		#if($velocityCount%2==0)
+		<tr bgcolor="$ui.tableColor">
+		#else
+		<tr bgcolor="$ui.menuColor">
+		#end
+		<td>
+                	<INPUT TYPE="CHECKBOX" NAME="$detail.getMsgId()" onClick="addDeleteList(this,document.frm);">
+		<a href="$link.setPage("call,Notice_User,DeletePostedAdmin.vm").addPathInfo("notice_id",$detail.getMsgId()).addPathInfo("desc","Notice_Des")">$detail.getMsgSubject()</a></td>
+		<td>$detail.getPostTime()</td>
+		</tr>
+	#end
+	<tr bgcolor="$ui.tableColor">
+	<td>
+		<input type="button" name="eventSubmit_doDelete" value="$brih_delete" onClick="CheckValue(document.frm,this);">
+		<input type="hidden" name="actionName" value="">
+		<input type="hidden" name="deleteFileNames" VALUE="">
+	</td>
+#if($desc=="Notice_Des")
+<tr>
+<td bgcolor="$ui.tableColor" align="center"><font size=4><I><b>$Notice_sub</b></I></font></td>
+</tr>
+<tr><td><textarea id="ta" name=description rows=10 cols=90 wrap=physical onFocus="this.blur();">$message</textarea></td></tr>
+#end
+</tr>
+</table>
+#end
+</form>
+</body>
+<SCRIPT LANGUAGE="javascript">
+function CheckValue(frm,field)
+{
+        if(frm.deleteFileNames.value!="")
+        {
+                frm.actionName.value=field.name;
+                frm.submit();
+        }
+        else
+        {
+                alert("Please select checkbox for deletion !!");
+        }
+}
+function addDeleteList(field,frm)
+{
+        if(field.checked){
+                frm.deleteFileNames.value=frm.deleteFileNames.value+field.name+"^";
+        }
+        else{
+                var rmFile,index,actualString,preString,postString;
+                actualString=frm.deleteFileNames.value;
+                index=actualString.indexOf(field.name+"^",0);
+                       preString=actualString.substring(0,index);
+                       postString=actualString.substring(index+field.name.length+1);
+                       actualString=preString+postString;
+                       frm.deleteFileNames.value=actualString;
+        }
+}
+</SCRIPT>

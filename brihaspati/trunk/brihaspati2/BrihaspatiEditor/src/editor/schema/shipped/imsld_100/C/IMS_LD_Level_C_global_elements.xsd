@@ -1,0 +1,55 @@
+<xs:schema targetNamespace="http://www.imsglobal.org/xsd/imsld_v1p0" xmlns="http://www.imsglobal.org/xsd/imsld_v1p0" xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" version="IMS LD Level C global elements version 1.0 Final Draft">
+	<!-- ******************** -->
+	<!-- ** Change History ** -->
+	<!-- ******************** -->
+	<xs:annotation>
+		<xs:documentation xml:lang="en">4 November 2002
+		Restructured the schemas that were submitted as public draft.
+		Changed the namespace.
+		
+		These global elements can be inserted in other vocabularies to create dynamic content. The namespace should be maintained.
+		
+		</xs:documentation>
+	</xs:annotation>
+	
+	<!-- ******************** -->
+	<!-- ** Include modules** -->
+	<!-- ******************** -->
+	<xs:annotation>
+		<xs:documentation xml:lang="en">Include only those IMS LD elements and attributes that are also used in the global elements.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="IMS_LD_Level_A_reusables.xsd">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Include LD elements and attributes.</xs:documentation>
+		</xs:annotation>
+	</xs:include>
+	<xs:include schemaLocation="IMS_LD_Level_B_emaildata.xsd">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Include the redefined model for email-data</xs:documentation>
+		</xs:annotation>
+	</xs:include>
+	<xs:include schemaLocation="IMS_LD_Level_C_notification.xsd">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Include the notification element.</xs:documentation>
+		</xs:annotation>
+	</xs:include>
+	
+	<!-- ***************************** -->
+	<!-- ** Redefine content models ** -->
+	<!-- ***************************** -->
+	<xs:redefine schemaLocation="IMS_LD_Level_B_global_elements.xsd">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Add notification to set-property and set-property-group.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType name="set-propertyType">
+			<xs:complexContent>
+				<xs:extension base="set-propertyType">
+					<xs:sequence>
+						<xs:element ref="notification" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:extension>
+			</xs:complexContent>
+		</xs:complexType>
+	</xs:redefine>
+</xs:schema>

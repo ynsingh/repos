@@ -1,0 +1,3 @@
+use brihaspati;
+
+RENAME TABLE SYSTEM TO SYSTEM_CLEANTIME;

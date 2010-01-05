@@ -1,0 +1,113 @@
+#*
+ * @(#)DB.vm
+ * Copyright (c) 2005-2006,2009 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+ *@author <a href="mailto:aktri@iitk.ac.in">Awadhesh Kumar Trivedi</a>
+ *@author <a href="mailto:sumanrjpt@yahoo.co.in">Suman Rajput</a>
+ *@author <a href="mailto:rekha_20july@yahoo.co.in">Rakha Pal</a>
+ *#
+
+#set($lang = $data.getUser().getTemp("lang" ).toString())
+$page.setTitle("$brih_home |$DiscussionBoard")
+
+$!data.getMessage()
+<table bgcolor="$ui.menuColor" width=100%>
+	<tr><td>
+        	<b><a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cname</a> |
+		##<a href=$link.setPage("call,CourseMgmt_User,Communication.vm")>$brih_communication</a> | $DiscussionBoard
+		<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_communication</a> | $DiscussionBoard
+       </td></tr>
+</table>
+<table bgcolor="$ui.tableColor" width=100%>
+#if($data.getUser().getUserName()!= "guest")
+<tr>
+	#if($tdcolor != "1")
+	<td>
+	#elseif($tdcolor=="1")
+	<td bgcolor="#AFDCEC">
+	#end
+	<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_localmail</a></td>
+	#if($tdcolor != "2")
+	<td>
+	#elseif($tdcolor=="2")
+	<td bgcolor="#AFDCEC">
+	#end
+	<a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2")>$brih_chat</a></td>
+	#if($tdcolor != "3")
+	<td>
+	#elseif($tdcolor=="3")
+	<td bgcolor="#AFDCEC">
+	#end
+        <a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3")>$brih_Notices</td>
+	#if($tdcolor != "4")
+	<td>
+	#elseif($tdcolor=="4")
+	<td bgcolor="#AFDCEC">
+	#end
+        <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4")>$DiscussionBoard</td>
+	#if($tdcolor != "5")
+	<td>
+	#elseif($tdcolor=="5")
+	<td bgcolor="#AFDCEC">
+	#end
+        <a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status","fromCourse").addPathInfo("count","5")>$brih_news</td>
+</tr>
+#end
+##</table>
+	<form name="frm" ENCTYPE="multipart/form-data" METHOD="POST" action="$link.setPage("call,Dis_Board,DB.vm").setAction("SendDB")">
+	##<form method="GET" action="$link.setPage("call,Dis_Board,DBContent.vm")">
+##<table width=100% align=left bgcolor="$ui.tableColor"> 
+ 	<tr><td colspan=2><b>$DisBoard_WorkGroup:&nbsp&nbsp<font color=green>$courseid</font></b>
+ 	</td></tr>
+	##</table>
+	##<table align="center">
+	<tr bgcolor="$ui.menuColor"><td colspan=5>
+	#if($unread=="0")
+		<font size="3" face="$ui.sansSerifFonts"><b>$brih_unreadMsg(<font color="Blue">$unread</font>)&nbsp&nbsp
+	#else
+		<blink>
+		<font size="3" face="$ui.sansSerifFonts"><b>$brih_unreadMsg(<font color="Blue">$unread</font>)</blink>&nbsp&nbsp
+	#end
+	$LocalMail_Mail_msg1(<font color="blue">$total</font>)</b></font>
+	<tr>	
+	#if($total!="0")
+		<td align="center">
+			<input type="hidden" name="mode" value="All">
+			<INPUT TYPE="button" NAME="eventSubmit_doShowDBContent" VALUE="$LocalMail_Mail_msg2" onClick="checkValue(document.frm,this);">
+			##<input type="Submit" name=submit value="$LocalMail_Mail_msg2">
+			<input type="hidden" name="course_id" value=$courseid>
+		</td>
+	#end
+		<td>
+			<INPUT TYPE="button" NAME="eventSubmit_doShowArchive" VALUE="$brih_arch" onClick="checkValue(document.frm,this);">
+			<input type="hidden" name="course_id" value=$courseid>
+	 		<INPUT TYPE="hidden" NAME="actionName">
+	 		<INPUT TYPE="hidden" NAME="count" value="$tdcolor">
+                </td>
+	</tr>	
+	##</td></tr>
+ 	##</table>
+#if($data.getUser().getUserName()!="guest")
+##<table align="center">
+<tr bgcolor="$ui.menuColor">
+	#if($total!="0")
+	<td colspan=5><a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("mode","compose").addPathInfo("course_id",$courseid).addPathInfo("count","4")><b>$LocalMail_MailContent_msg1</b></a></td>
+	##<img src="$content.getURI("/images/$lang/DB.jpg")" border="0"></a></td>
+	#else
+	<td colspan=5><a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("mode","compose").addPathInfo("check","first").addPathInfo("course_id",$courseid).addPathInfo("count","4")><b>$LocalMail_MailContent_msg1</b></a></td>
+	##<img src="$content.getURI("/images/$lang/DB.jpg")"border="0"></a></td>
+	#end
+</tr>
+#end
+</table>
+</form>
+
+<SCRIPT LANGUAGE="javascript">
+function checkValue(frm,field)
+{
+	frm.actionName.value=field.name;
+        frm.submit();
+}
+</SCRIPT>
+

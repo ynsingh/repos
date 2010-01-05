@@ -1,0 +1,117 @@
+<xs:schema targetNamespace="http://www.imsglobal.org/xsd/imsld_v1p0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.imsglobal.org/xsd/imsld_v1p0" elementFormDefault="qualified" attributeFormDefault="unqualified" version="IMS LD Level C global elements version 1.0 Final Draft">
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+		27 May 2003 Last update
+		Copyright �2003 Open Universiteit Nederland. All rights reserved.
+		This schema is deducted from the IMS LD Final Draft version v1p0.
+		It is not modularised.
+		These elements can be used to create dynamic content at level C.
+		However, the only normative schema is the schema published at IMS.
+		</xs:documentation>
+	</xs:annotation>
+	<xs:attributeGroup name="attr.property">
+		<xs:attributeGroup ref="attr.ref"/>
+		<xs:attributeGroup ref="attr.href"/>
+		<xs:attributeGroup ref="attr.view"/>
+		<xs:attributeGroup ref="attr.property-of"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="attr.ref">
+		<xs:attribute name="ref" type="xs:IDREF"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="attr.href">
+		<xs:attribute name="href" type="xs:anyURI"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="attr.view">
+		<xs:attribute name="view" default="value">
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="value"/>
+					<xs:enumeration value="title-value"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="attr.property-of">
+		<xs:attribute name="property-of" default="self">
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="self"/>
+					<xs:enumeration value="supported-person"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="attr.set-property">
+		<xs:attributeGroup ref="attr.property"/>
+		<xs:attributeGroup ref="attr.transaction-type"/>
+		<xs:attributeGroup ref="attr.max-transactions"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="attr.transaction-type">
+		<xs:attribute name="transaction-type" type="xs:string"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="attr.max-transactions">
+		<xs:attribute name="max-transactions" type="xs:nonNegativeInteger"/>
+	</xs:attributeGroup>
+	<xs:element name="view-property">
+		<xs:complexType>
+			<xs:attributeGroup ref="attr.property"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="view-property-group">
+		<xs:complexType>
+			<xs:attributeGroup ref="attr.property"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="set-property" type="set-propertyType"/>
+	<xs:element name="set-property-group" type="set-propertyType"/>
+	<xs:complexType name="set-propertyType">
+		<xs:sequence>
+			<xs:element ref="notification" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="attr.set-property"/>
+	</xs:complexType>
+	<xs:attributeGroup name="attr.ref.req">
+		<xs:attribute name="ref" type="xs:IDREF" use="required"/>
+	</xs:attributeGroup>
+	<xs:element name="learning-activity-ref">
+		<xs:complexType>
+			<xs:attributeGroup ref="attr.ref.req"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="support-activity-ref">
+		<xs:complexType>
+			<xs:attributeGroup ref="attr.ref.req"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="email-data" type="email-dataType"/>
+	<xs:complexType name="email-dataType">
+		<xs:sequence>
+			<xs:element ref="role-ref"/>
+		</xs:sequence>
+		<xs:attributeGroup ref="attr.email-property-ref.req"/>
+		<xs:attributeGroup ref="attr.username-property-ref"/>
+	</xs:complexType>
+	<xs:element name="notification" type="notificationType"/>
+	<xs:element name="subject" type="xs:string"/>
+	<xs:complexType name="notificationType">
+		<xs:sequence>
+			<xs:element ref="email-data" maxOccurs="unbounded"/>
+			<xs:choice minOccurs="0">
+				<xs:element ref="learning-activity-ref"/>
+				<xs:element ref="support-activity-ref"/>
+			</xs:choice>
+			<xs:element ref="subject" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="role-ref">
+		<xs:complexType>
+			<xs:attributeGroup ref="attr.ref.req"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:attributeGroup name="attr.email-property-ref.req">
+		<xs:attribute name="email-property-ref" type="xs:anyURI" use="required"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="attr.username-property-ref">
+		<xs:attribute name="username-property-ref" type="xs:anyURI"/>
+	</xs:attributeGroup>
+</xs:schema>

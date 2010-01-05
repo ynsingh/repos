@@ -1,0 +1,294 @@
+\documentclass{article}
+\usepackage{graphicx}
+\textheight=8.5in
+\textwidth=6.5in
+\oddsidemargin=0.0in
+\topmargin=0.0in
+\begin{document}
+
+
+\begin{center}
+\section*{\underline{TURBINE-USER}}
+                          Author : Madhavi
+\end{center}
+\begin{enumerate}
+\item[{}{}]
+
+USER-ID------------------               int(11)                         PRI \\ 
+LOGIN-NAME ---------------           varchar(32)                     UNI \\
+PASSWORD-VALUE-----------            varchar(32) \\
+FIRST-NAME--------------             varchar(32)   \\ 
+LAST-NAME--------------              varchar(32) \\
+EMAIL-----------------               varchar(32)   \\                           
+CONIRM-VALUE---------------          varchar(32) \\
+MODIFIED--------------------         time stamp(14)\\ 
+CREATED--------------------          time stamp(14) \\
+LAST-LOGIN--------------------       time stamp(14) \\
+OBJECT DATA--------------------       mediumblob \\
+\end{enumerate}
+\subsection*{\underline{TURBINE-GROUP}} 
+\begin{enumerate} 
+\item[{}{}]
+
+GROUP-ID---------------  int(11)                          PRI \\
+GROUP-NAME------------   varchar(99)                      UNI \\
+OBJECT DATA------------   mediumblob \\
+\end{enumerate} 
+\subsection*{TURBINE- ROLE} 
+\begin{enumerate} 
+\item[{}{}]
+
+GROUP-ID------------------           int(11)                       PRI \\
+GROUP-NAME--------------            varchar(99)                   UNI \\
+OBJECT DATA---------------            mediumblob \\
+\end{enumerate}
+\subsection*{\underline{TURBINE-USER-GROUP-ROLE}} 
+\begin{enumerate}
+\item[{}{}]
+
+USER-ID----------     int(11)                           PRI \\
+GROUP-ID---------     int(11)                           PRI \\
+ROLE-ID---------    int(11)                           PRI \\
+\end{enumerate} 
+\subsection*{\underline{TURBINE-PERMISSION}} 
+\begin{enumerate}
+\item[{}{}]
+ 
+PERMISSION-ID------------         int (11)                     PRI\\ 
+PERMISSION-NAME----------         varchar(99)                  UNI \\
+OBJECT DATA---------------          mediumblob \\
+\end{enumerate} 
+\subsection*{\underline{TURBINE-ROLE-PERMISSION}}
+\begin{enumerate}
+\item[{}{}]
+
+ROLE-ID--------- int(11)        PRI \\
+PERMISSION-ID---------int(11)   PRI \\
+\end{enumerate} 
+\subsection*{\underline{TURBINE-SCHEDULED-JOB}}
+\begin{enumerate}
+\item[{}{}]
+
+JOB-ID------------------ int(11)      PRI\\ 
+SECOND------------------int(11)\\ 
+MINUTE------------------int(11)\\ 
+HOUR------------------- int(11)\\ 
+WEEK-DAY-----------------int(11) \\
+DAY-OF-MONTH--------------int(11) \\
+TASK---------------------varchar(99) \\
+EMAIL-------------------varchar(99) \\
+PROPERTY----------------mediumblob\\
+\end{enumerate}
+\subsection*{\underline{COURSES}}
+\begin{enumerate}
+\item[{}{}]
+
+GROUP-ID------------int(11)                     PRI\\
+auto(Foreign key with reference to TURBINE-GROUP) \\
+CNAME-----------varchar(255)\\ 
+GROUP-ALIAS---------varchar(99)\\ 
+DEPTT----------------varchar(255)\\ 
+DESCRIPTION-----------varchar(255)\\ 
+ACTIVE--------------tiny int(4)\\ 
+CREATION DATE----------date\\ 
+LAST MODIFIED----------date\\
+\end{enumerate}
+\subsection*{\underline{CAL-INFORMATION}}
+\begin{enumerate}
+\item[{}{}]
+
+INFO-ID------------int(11)                  PRI             auto\\ 
+USER-ID------------int(11)                  PRI \\
+GROUP-ID-----------varchar(100) 
+DATE---------------date\\ 
+KEYWORD------------varchar(40)\\ 
+DETAIL-INFORMATION--------------blob\\ 
+START-TIME----------time                    PRI\\ 
+END-TIME------------time\\ 
+EXPIRY--------------int(11)\\
+\end{enumerate}
+\subsection*{\underline{DB-SEND}}
+\begin{enumerate}
+\item[{}{}]
+
+MSG-ID-------------int(11)                PRI          auto \\
+REPLY-ID-----------int(11) \\
+MSG-SUBJECT--------varchar(255)\\ 
+USER-ID------------int(11) \\
+GROUP-ID-----------int(11) \\
+POST-TIME---------time \\
+EXPIRY------------int(11)\\ 
+\end{enumerate}
+\subsection*{\underline{DB-RECEIVE}}
+\begin{enumerate}
+\item[{}{}]
+
+MSG-ID--------------int(11)     PRI \\
+RECEIVER-ID---------int(11)     PRI\\ 
+READ-FLAG-----------int(11)\\
+\end{enumerate}
+\subsection*{\underline{GLOSSARY}}
+\begin{enumerate}
+\item[{}{}]
+
+WORD-ID--------int( 11)              PRI           auto \\
+WORD----------varchar(40)       PRI \\
+USER-ID--------int(11)\\ 
+DEFINITION---------blob\\
+\end{enumerate} 
+\subsection*{\underline{GLOSSARY-ALIAS}} 
+\begin{enumerate}
+\item[{}{}]
+
+ALIAS-ID--------------int(11)              PRI               auto \\
+WORD-ALIAS------------varchar(40)\\ 
+WORD-ID---------------int(11)\\          
+(Foreign key with reference to GLOSSARY) \\
+NOTICE-ID------------------int(11)              PRI        auto \\
+NOTICE-SUBJECT-------------varchar(255)\\ 
+NOTICE-DETAIL--------------blob \\
+USER-ID--------------------int(11) \\
+GROUP-ID------------------int(11) \\
+ROLE-ID------------------int(11) \\
+EXPIRY------------------int(11)\\ 
+POST-ID----------------date\\
+\end{enumerate}
+\subsection*{\underline{NOTICE-RECEIVE}}
+\begin{enumerate}
+\item[{}{}]
+
+NOTICE-ID---------------------int(11)                 PRI \\
+(Foreign key with reference to NOTICE-SEND) \\
+RECEIVER-ID---------------int(11)                 PRI \\
+(Foreign key with reference to TURBINE-USER) \\
+READ-FLAG---------------int(11)\\
+\end{enumerate}
+\subsection*{\underline{TASK}}
+\begin{enumerate}
+\item[{}{}]
+
+TASK  \\ 
+TASK-ID-----------------------int(11)              PRI         auto \\
+USER-ID----------------------int(11) \\
+TITLE----------------varchar(100)\\ 
+STATUS\\ 
+START-DATE-------------date \\
+START-DATE------------date\\
+\end{enumerate}
+\subsection*{\underline{SYSTEM}}
+\begin{enumerate}
+\item[{}{}]
+
+ID--------------int(11)               PRI             auto \\
+CLEAN-DATE-----------varchar(8)\\
+\end{enumerate}
+\subsection*{\underline{HINT-QUESTION}}
+\begin{enumerate}
+\item[{}{}]
+
+QUESTION-ID---------int(11)             PRI                auto \\
+QUESTION-NAME-------varchar(255)\\
+\end{enumerate}
+\subsection*{\underline{USAGE-DETAILS}}
+\begin{enumerate}
+\item[{}{}]
+
+ENTRY-ID-------------int(11)                PRI              auto \\
+USER-ID--------------int(11) \\
+LOGIN-TIME------------time stamp\\
+\end{enumerate}
+\subsection*{\underline{USER-CONFIGURATION}}
+\begin{enumerate}
+\item[{}{}]
+
+USER-ID------------int(11)                    PRI \\             
+QUESTION-ID--------int(2) \\
+ANSWER------------varchar(255) \\
+LIST-CONFIGURATION--------int(2) \\
+PHOTO---------------blob\\
+\end{enumerate}
+\subsection*{\underline{NEWS}}
+\begin{enumerate}
+\item[{}{}]
+
+NEWS-ID----------int(11)        PRI           auto \\
+GROUP-ID-----------int(11) \\
+USER-ID-------------int(11) \\
+NEWS-TITLE----------varchar(255)\\ 
+NEWS-DESCRIPTION--------blob \\
+POST-TIME------------date \\
+EXPIRY-------------int(11)\\
+\end{enumerate}
+\subsection*{\underline{RELATIONSHIP}}
+\begin{enumerate}
+\item[{}{}]
+TURBINE-USER---------------CALL-INFORMATION \\     
+         (USER-ID)\\
+
+TURBINE-USER----------------DB-SEND \\
+         (USER-ID)
+
+TURBINE-USER---------------DB-RECEIVE \\
+          (USER-ID)\\
+
+TURBINE-USER--------------GLOSSARY \\
+          (USER-ID)\\
+
+TURBINE-USER--------------NOTICE-SEND \\
+         (USER-ID)\\
+
+TURBINE-USER--------------NOTICE-RECEIVE \\
+          (USER-ID)\\
+
+TURBINE-USER--------------TASK 
+           (USER-ID) \\
+
+TURBINE-USER--------------USER-DETAILS \\
+           (USER-ID)\\
+
+TURBINE-USER--------------USER-CONFIGURATION \\
+          (USER-ID)\\
+
+TURBINE-USER--------------NEWS \\
+         (USER-ID)\\
+
+TURBINE-USER-------------TURBINE-USER-GROUP \\
+       (USER-ID)                     ROLE\\
+
+TURBINE-GROUP------------DB-SEND \\
+                               (GROUP-ID)\\
+
+TURBINE-GROUP------------NOTICE-SEND \\
+       (GROUP-ID) \\
+
+TURBINE-GROUP-----------NEWS\\
+       (GROUP-ID) \\
+
+TURBINE-GROUP--------------TURBINE-USER-GROUP \\
+       (GROUP-ID)                   ROLE\\
+
+GLOSSARY-----------------GLOSSARY-ALIAS \\
+        (WORD-ID)\\
+
+HINT-QUESTION------------USER\\ 
+       (QUESTION-ID)       CONFIGURATION\\
+
+TURBINE-ROLE------------TURBINE-USER-GROUP \\
+       (ROLE-ID)                    ROLE\\
+
+TURBINE-ROLE------------TURBINE-ROLE\\ 
+     (ROLE-ID)                   PERMISSION\\
+
+TURBINE-PERMISSION-----------TURBINE-ROLE\\
+       (PERMISSION-ID)      PERMISSION
+
+DB-SEND------------------DB-RECEIVE \\
+      (MSG-ID) \\
+
+NOTICE-SEND------------NOTICE-RECEIVE \\
+          (NOTICE-ID)\\
+\end{enumerate}
+Written by :- Rekha Pal
+\end{document} 
+
+

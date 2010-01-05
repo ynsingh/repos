@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE web-app
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
+    "http://java.sun.com/j2ee/dtds/web-app_2.2.dtd">
+
+<web-app>
+  <listener>
+    <listener-class>org.apache.turbine.services.session.SessionListener</listener-class>
+  </listener>
+
+  
+  <servlet>
+    <servlet-name>brihaspati</servlet-name>
+    <servlet-class>org.apache.turbine.Turbine</servlet-class>
+    <init-param>
+      <param-name>applicationRoot</param-name>
+      <param-value>webContext</param-value>
+    </init-param>
+    <init-param>
+      <param-name>properties</param-name>
+      <param-value>/WEB-INF/conf/TurbineResources.properties</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Brihaspati Internals</web-resource-name>
+      <url-pattern>/scrpts/*.*</url-pattern>
+      <url-pattern>/resources/*</url-pattern>
+      <url-pattern>/confsrc/*</url-pattern>
+      <url-pattern>/bin/*</url-pattern>
+      <url-pattern>/WIKI/*</url-pattern>
+      <url-pattern>/babylonsrc/*</url-pattern>
+      <url-pattern>/WebSearchSrc/*</url-pattern>
+      <url-pattern>/UserArea/*</url-pattern>
+      <url-pattern>/Updationmail/*</url-pattern>
+      <url-pattern>/QuestionBank/*</url-pattern>
+      <url-pattern>/OnlineUsers/*</url-pattern>
+      <url-pattern>/GroupManagement/*</url-pattern>
+      <url-pattern>/BackupData/*</url-pattern>
+      <url-pattern>/Repository/*</url-pattern>
+      <url-pattern>/ResearchRepository/*</url-pattern>
+      <url-pattern>/templates/*</url-pattern>
+      <url-pattern>/logs/*</url-pattern>
+      <url-pattern>/Courses/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>admin</role-name>
+    </auth-constraint>
+  </security-constraint>
+  <login-config>
+    <auth-method>BASIC</auth-method>
+    <realm-name>Brihaspati Internals</realm-name>
+  </login-config>
+</web-app>

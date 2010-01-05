@@ -1,0 +1,47 @@
+\setlength{\unitlength}{3947sp}%
+%
+\begingroup\makeatletter\ifx\SetFigFont\undefined%
+\gdef\SetFigFont#1#2#3#4#5{%
+  \reset@font\fontsize{#1}{#2pt}%
+  \fontfamily{#3}\fontseries{#4}\fontshape{#5}%
+  \selectfont}%
+\fi\endgroup%
+\begin{picture}(4740,1527)(2236,-1348)
+{\color[rgb]{0,0,0}\thinlines
+\put(3601,-398){\circle{940}}
+}%
+{\color[rgb]{0,0,0}\put(6460,-424){\circle{940}}
+}%
+{\color[rgb]{0,0,0}\put(2363, 52){\circle{238}}
+}%
+{\color[rgb]{0,0,0}\put(4051,-136){\vector( 1, 0){2025}}
+}%
+{\color[rgb]{0,0,0}\put(6001,-586){\vector(-1, 0){1950}}
+}%
+{\color[rgb]{0,0,0}\put(2401,-61){\line( 0,-1){1275}}
+}%
+{\color[rgb]{0,0,0}\put(2326,-586){\line( 1,-3){ 75}}
+}%
+{\color[rgb]{0,0,0}\put(2401,-811){\line( 1, 3){ 75}}
+}%
+{\color[rgb]{0,0,0}\put(2251,-1186){\line( 1, 1){150}}
+}%
+{\color[rgb]{0,0,0}\put(2401,-1036){\line( 1,-1){150}}
+}%
+{\color[rgb]{0,0,0}\put(2401,-361){\vector( 1, 0){750}}
+}%
+\put(3376,-286){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}web}%
+}}}
+\put(3376,-511){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Interface}%
+}}}
+\put(6076,-286){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}Discussion}%
+}}}
+\put(6226,-511){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}mgt}%
+}}}
+\put(4951,-61){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}1}%
+}}}
+\put(4951,-961){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}3}%
+}}}
+\put(6976,-811){\makebox(0,0)[lb]{\smash{\SetFigFont{12}{14.4}{\rmdefault}{\mddefault}{\updefault}{\color[rgb]{0,0,0}2}%
+}}}
+\end{picture}

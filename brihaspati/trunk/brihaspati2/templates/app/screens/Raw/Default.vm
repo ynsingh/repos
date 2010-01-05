@@ -1,0 +1,154 @@
+#*
+ * @(#) Default.vm
+ * Copyright (c) 2005,2009 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ *
+ * @author<a href="mailto:aktri@iitk.ac.in">Awadhesh Kumar Trivedi</a>
+ * @author<a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
+ * @author<a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ *
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+ *#
+$page.DefaultDoctype
+
+<html>
+
+$page.setBgColor("$ui.bgcolor")
+#set($lang=$data.getUser().getTemp("lang" ).toString())
+
+##$page.addStyleSheet($content.getURI("resources/css/brihaspati.css"))
+
+#TurbineHtmlHead()
+
+<body>
+<table width="100%"> ##1#t table
+	<tr> ##1#t tr
+		<td colspan="2">$navigation.setTemplate("/DefaultTop.vm")</td>
+	</tr> ##1#t tr closed
+	<tr> ##2#d tr
+		<td colspan=2>  ##1#t td of 2nd tr
+         			<table width="100%"> ##2#d table
+	 				##<tr bgcolor="$ui.headerLinkColor"> ##3#d tr
+	 				<tr bgcolor="$ui.menuColor"> ##3#d tr
+	    					#if($data.getUser().hasLoggedIn()) ##if(7)
+	       						<td> ##2#d td
+                  					<a href=$link.setPage("Index.vm") style=text-decoration:none>
+		   					<img src=$content.getURI("/images/home.JPG") style=border:0px solid; ><font size=2>$brih_home</font></a>
+                					</td> ##2#d closed
+                					#if($data.getUser().getUserName() != "guest") ##if(0)
+                   						#if($data.getUser().getTemp("role") == "author") ##if(8)
+                      						<td> ##3#d td
+                         					<a href=$link.setPage("call,Repository_Mgmt,Author.vm") style=text-decoration:none>
+		   						<img src=$content.getURI("/images/repository.JPG") style=border:0px solid; ><font size=2>$Repo_Repo1</font></a>
+                      						</td> ##3#t td closed
+		   						#else
+                   						<td> ##4#h td
+                      						<a href=$link.setPage("call,Repository_Mgmt,RepositoryBrowser.vm") style=text-decoration:none>
+		   						<img src=$content.getURI("/images/repository.JPG") style=border:0px solid;><font size=2>$Repo_Repo1</font></a>
+                   						</td> ##4#d closed
+                   						#end ##(end8)
+							#end	 
+                					#if($data.getUser().getUserName() == "admin") ##if(9)
+                					<td> ##5#h td
+                   					<a href=$link.setPage("Index.vm") style=text-decoration:none>
+		   					<img src=$content.getURI("/images/home.JPG") style=border:0px solid; ><font size=2>$brih_ad $brih_home</font></a>
+                					</td>  ##5#h td closed
+                					<td> ##6#h td
+                   						<a href=$link.setPage("call,UserMgmt_Admin,ProxyUser.vm") style=text-decoration:none>
+		   						<img src=$content.getURI("/images/prxyusr.JPG") style=border:0px solid;><font size=2>$Proxy_User</font></a>
+                					</td>  ##6#h td closed
+                					#end  ##end(9)
+                					#if($data.getUser().getUserName() != "guest") ##if(10)
+                   						#if($data.getUser().getUserName() != "admin") ##if(11)
+                   						<td> ##7#h td
+                      						<a href=$link.setPage("call,Task_Mgmt,TaskDIUD.vm") style=text-decoration:none>
+		      						<img src=$content.getURI("/images/TaskManager.JPG") style=border:0px solid;><font size=2>$brih_task $brih_mng</font></a>
+                   						</td> ##7#h td closed
+                   						#end ##end(11)
+                   						<td> ##8#h td
+                      						<a href=$link.setPage("call,Glossary,Glossary_Search_Word.vm").addPathInfo("count","1") style=text-decoration:none> 
+		      						<img src=$content.getURI("/images/glsry.JPG") style=border:0px solid;><font size=2>$Glossary</font></a>
+                   						</td> ##8#h td closed
+                   						<td> ##9#h td
+                      						<a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status","fromIndex") style=text-decoration:none>
+		      						<img src=$content.getURI("/images/news.JPG") style=border:0px solid;><font size=2>$brih_genNews</font></a>
+                   						</td> ##9#h td closed 
+		   						<td> ##10#h td
+                      						<a href=$link.setPage("call,Search.vm") style=text-decoration:none> 
+		      						<img src=$content.getURI("/images/search.JPG") style=border:0px solid;><font size=2>$brih_eng</font></a>
+                   						</td> ##10#h td closed
+							#end	 ##end(10)
+                					<td> ##11#h td
+							<a href=$link.setPage("call,ResearchRepository,ResearchRepo.vm").addPathInfo("count","1") style=text-decoration:none> 
+		   					<img src=$content.getURI("/images/rschgrp.JPG") style=border:0px solid;><font size=2>$brih_Res $brih_grp</font></a>
+                					</td> ##11#h td closed
+                					<td> ##12#h td
+            						<a href=$link.setPage("call,Calculator.vm") style=text-decoration:none>
+		   					<img src=$content.getURI("/images/calculater.JPG") style=border:0px solid;><font size=2>$brih_calculator</font></a>
+                					</td> ##12#h td closed
+                					<td> ##13#h td
+                   					##<a href=$link.setAction("LogoutUser") style=text-decoration:none> 
+                                			<a href=$link.setAction("myLogout") style=text-decoration:none>
+		   					<img src=$content.getURI("/images/lgot.JPG") style=border:0px solid;><font size=2>$brih_logout</font></a>
+                					</td> ##13#h td closed
+             					#end ##end(7)
+          				</tr> ##3#d tr closed
+        			</table> ##2#d table closed
+		<br>
+   		</td> ##1#t td of 2nd tr
+	</tr> ##2#d tr closed
+	<tr> ##5#h tr
+      		#if($data.getUser().hasLoggedIn())
+		#if($data.getUser().getUserName() == "admin")
+      			<td width="17%" valign="top"> ##26#h td
+         			<table width="100%"> ##4#h table
+            				<tr bgcolor="$ui.menuColor"> ##6#h tr
+               					<td valign="top"> ##27#h td
+                  				$navigation.setTemplate("/AdminMenu.vm")
+               					</td> ##27#h td closed
+            				</tr> ##6#h tr closed
+         			</table> ##4#h table closed
+      			</td> ##26#h td closed
+   		#end
+   		#end
+		#set($flag = true)
+      			#if($lang == "urdu")
+         		<td align="left" height="100%" valign="top"> ##28#h td 
+			$screen_placeholder
+			#set($flag= false)
+    	 		</td> ##28#h td closed
+      			#end
+      		#if($data.getUser().hasLoggedIn())
+         		#if($data.getUser().getTemp("role")!="")
+   	    			#if($data.getUser().getTemp("course_id")!="")
+  	       				<td bgcolor="$ui.tableColor" width="17%" valign="top"> ##29#h td
+       	          				<table width="100%" > ##5#h table
+        	     					<tr> ##7#h tr
+        	        					<td valign="top"> ##30#h td
+			   						#if($lang == "urdu")
+      			      						$navigation.setTemplate("/Screen_Menu_Urdu.vm")
+			   						#else
+      			      						$navigation.setTemplate("/Screen_Menu.vm")
+			   						#end
+        							</td> ##30#h td closed
+        	     					</tr> ##7#h tr closed
+        	  				</table> ##5#h table closed
+    	       				</td> ##29#h td closed
+	    			#end
+	 		#end
+     		#end
+	#if($flag) 
+   		<td align="left" height="100%" valign="top"> ##31#h td
+      		$screen_placeholder
+    		</td> ##31#h td closed
+	#end
+	</tr> ##5#h tr closed
+	<tr> ##8#h tr
+		<td colspan="2" > ##32#h td
+      		$navigation.setTemplate("/DefaultBottom.vm")
+    		</td> ##32#h td closed
+	</tr> ##8#h tr closed
+</table>
+</body>
+</html>
+
