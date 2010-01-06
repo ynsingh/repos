@@ -1,0 +1,67 @@
+<project name="brihaspatisync_reflector" default="main" basedir=".">
+	
+	<property name="reflector.home" value="."/>
+  	<property name="build-reflector.properties" value="build-reflector.properties"/>
+  	<property file="${build-reflector.properties}"/>
+  	<property name="lib.dir" value="lib"/>
+	<property name="src.dir" value="src/java"/>
+        <property name="bin.dir" value="bin/classes"/>
+        <property name="jnlp.dir" value="jnlp"/>
+	<property name="build.dir" location="build" />
+	<property name="logs.dir" location="logs" />
+        <property name="debug" value="on"/>
+        <property name="deprecation" value="off"/>
+        <property name="optimize" value="off"/>
+	<property name="user.name" value="Ashish Yadav"/>
+
+	<!-- -->
+ 	<target name="init" description="===> Creates the Directory or package">
+    		<property name="bin.dir" value="${targetPackage}"/>
+    		<mkdir dir="${bin.dir}"/>
+    		<mkdir dir="${lib.dir}"/>
+    		<mkdir dir="${build.dir}"/>
+    		<mkdir dir="${logs.dir}"/>
+  	</target>
+	<!-- -->
+        <target name="jar" depends="compile" description="**** Create executable JAR file">
+                <mkdir dir="${build.dir}"/>
+                <jar destfile="${build.dir}/syncreflector.jar">
+                        <fileset dir="${bin.dir}" includes="**/*"/>
+                        <manifest>
+                                <attribute name="Built-By" value="${user.name}" />
+                                <attribute name="Main-Class" value="org.bss.brihaspatisync.reflector.Reflector"/>
+                        </manifest>
+                </jar>
+        </target>
+
+        <!-- -->
+        <target name="sign" depends="jar">
+                <copy file="${build.dir}/syncreflector.jar" tofile="jnlp/syncreflector.jar"/>
+                <signjar keystore="jnlp/brihaspatisync"
+                         jar="jnlp/syncreflector.jar"
+                         alias="brihaspati_sync"
+                         storepass="ashish" />
+        </target>
+
+	
+	<!-- -->
+	<target name="compile" depends="init" description="**** Compiles the JAVA classes">
+    		<mkdir dir="${bin.dir}"/>
+    		<javac srcdir="${src.dir}"
+      		       destdir="${bin.dir}"
+      		       debug="${debug}"
+      		       deprecation="${deprecation}"
+      		       optimize="${optimize}">
+    		</javac>
+	</target>
+	
+	<target name="clean" description="clean up">
+                <delete dir="${temp.dir}"/>
+		<delete dir="${build.dir}"/>
+		<delete dir="${logs.dir}"/>
+		<delete file="${jnlp.dir}/syncreflector.jar"/>
+                <delete dir="${bin.dir}/org"/>
+        </target>
+
+</project>
+
