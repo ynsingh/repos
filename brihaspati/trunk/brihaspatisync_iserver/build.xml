@@ -1,0 +1,74 @@
+<project name="Torque" default="main" basedir=".">
+
+  <property name="torque.home" value="."/>
+  <property name="build.properties" value="build.properties"/>
+  <property file="${build.properties}"/>
+  <property name="lib.dir" value="lib"/>
+  <property name="src.dir" value="src/java"/>
+  <property name="logs.dir" value="logs"/>
+  <property name="om.dir" value="src/java/org/iitk/brihaspatisync/om"/>
+  <property name="build.dest" value="WEB-INF/classes"/>
+  <property name="debug" value="on"/>
+  <property name="deprecation" value="off"/>
+  <property name="optimize" value="off"/>
+
+  <!-- Build classpath -->
+  <path id="torque-classpath">
+    <fileset dir="WEB-INF/${lib.dir}">
+      <include name="**/*.jar"/>
+    </fileset>
+  </path>
+
+  <!-- ================================================================ -->
+  <!-- G E N E R A T E  P R O J E C T  P E E R  B A S E D  O M          -->
+  <!-- ================================================================ -->
+  <!-- Generate the Peer-based object model for your project.           -->
+  <!-- These are in addition to the base Turbine OM!                    -->
+  <!-- ================================================================ -->
+
+  <target
+    name="project-om"
+    unless="noObjectModel"
+    description="--> generates the peer-based object model for your project">
+
+    <ant
+      antfile="${torque.buildFile}"
+      target="project-om">
+    </ant>
+
+  </target>
+
+
+  <!-- =================================================================== -->
+  <!-- C O M P I L E  O M                                                  -->
+  <!-- =================================================================== -->
+
+  <target
+    name="compile"
+    description="==> compiles the OM classes">
+
+    <!--
+      This should be moved to the top of the file, and
+      the values should come from the build.properties file.
+    -->
+
+    <mkdir dir="${build.dest}"/>
+    <mkdir dir="${logs.dir}"/>
+
+    <javac srcdir="${src.dir}"
+      destdir="${build.dest}"
+      debug="${debug}"
+      deprecation="${deprecation}"
+      optimize="${optimize}">
+      <classpath refid="torque-classpath"/>
+    </javac>
+  </target>
+
+  <target name="clean" description="clean up">
+ 	<delete dir="${build.dest}/org"/>
+        <delete dir="${logs.dir}/"/>
+        <delete dir="${om.dir}"/>
+  </target>
+
+</project>
+
