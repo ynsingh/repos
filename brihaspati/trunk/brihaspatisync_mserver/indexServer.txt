@@ -1,0 +1,1 @@
+https://172.26.82.18:8443/brihaspatisync_iserver
