@@ -1,0 +1,97 @@
+<project name="brihaspatisync" default="main" basedir=".">
+	
+	<property name="client.home" value="."/>
+  	<property name="build-client.properties" value="build-client.properties"/>
+  	<property file="${build-client.properties}"/>
+  	<property name="lib.dir" value="lib"/>
+	<property name="src.dir" value="src/java"/>
+	<property name="logs.dir" location="logs" />
+    	<property name="bin.dir" value="bin/classes"/>
+	<property name="jnlp.dir" value="jnlp"/>
+	<property name="build.dir" location="build" />	
+	<property name="doc.dir" location="javadoc" />
+	<property name="temp.dir" location="temp" />
+    	<property name="debug" value="on"/>
+    	<property name="deprecation" value="off"/>
+    	<property name="optimize" value="off"/>
+    	<property name="component.title" value="BrihaspatiSync_client Library"/>
+    	<property name="user.name" value="Ashish Yadav"/>
+    
+    	<!-- ========== Properties: Component Declarations ======================== -->
+
+  	<!-- The name of this component -->
+  	<property name="component.name"          value="Brihaspatisync_client"/>
+  	<!-- The title of this component -->
+  	<property name="component.title"         value="Brihaspatisync_client Library"/>
+  	<!-- The current version number of this component -->
+  	<property name="component.version"       value="1.0 Beta"/>
+
+
+	<!-- -->
+ 	<target name="init" description="===> Creates the Directory or package">
+    		<property name="bin.dir" value="${targetPackage}"/>
+    		<mkdir dir="${bin.dir}"/>
+    		<mkdir dir="${lib.dir}"/>
+    		<mkdir dir="${build.dir}"/>
+		<mkdir dir="${logs.dir}"/>
+  	</target>
+
+	<!-- -->
+	<target name="compile" depends="init" description="**** Compiles the JAVA classes">
+    		<mkdir dir="${bin.dir}"/>
+    		<javac srcdir="${src.dir}"
+      		       destdir="${bin.dir}"
+      		       debug="${debug}"
+      		       deprecation="${deprecation}"
+      		       optimize="${optimize}">
+    		</javac>
+	</target>
+	
+	<!-- -->
+	<target name="jar" depends="compile" description="**** Create executable JAR file">
+		<mkdir dir="${build.dir}"/>
+      		<jar destfile="${build.dir}/brihaspatisync.jar">
+      			<fileset dir="${bin.dir}" includes="**/*"/>
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+            			<attribute name="Main-Class" value="org.bss.brihaspatisync.Client"/>
+            		</manifest>
+    		</jar>
+  	</target>
+	
+	<!-- -->
+    	<target name="sign" depends="jar">
+	    	<copy file="${build.dir}/brihaspatisync.jar" tofile="jnlp/brihaspatisync.jar"/>
+	    	<signjar keystore="jnlp/brihaspatisync"
+			 jar="jnlp/brihaspatisync.jar"	
+			 alias="brihaspati_sync"	
+			 storepass="ashish" />
+	</target>
+	
+	<!-- -->
+	<target name="clean" description="clean up">
+                <delete dir="${temp.dir}"/>
+		<delete dir="${build.dir}"/>
+                <delete dir="${bin.dir}/org"/>
+		<delete dir="${logs.dir}"/>
+                <delete dir="${doc.dir}"/>
+        </target>
+        
+   	<target name="javadoc" depends="sign" description="Create component Javadoc documentation">
+    		<mkdir dir="${doc.dir}"/>
+    		<mkdir dir="${doc.dir}/docs"/>
+    		<mkdir dir="${doc.dir}/docs/api"/>
+    		<javadoc sourcepath   ="${src.dir}"
+             		 destdir      ="${doc.dir}/docs/api"
+             		 packagenames ="*"
+             		 author       ="true"
+             		 protected    ="true"
+             		 version      ="true"
+             		 doctitle     ="&lt;h1&gt;${component.title}&lt;/h1&gt;"
+             		 windowtitle  ="${component.title} (Version ${component.version})"
+             		 bottom       ="Copyright (c) 2009-2010 - IIT Kanpur"
+    		></javadoc>
+  	</target>
+
+</project>
+
