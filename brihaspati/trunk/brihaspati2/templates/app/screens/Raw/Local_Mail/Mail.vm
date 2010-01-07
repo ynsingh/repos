@@ -1,11 +1,13 @@
 #*
  * @(#)Mail.vm
- *  Copyright (c) 2005,2009 ETRG,IIT Kanpur.
+ *  Copyright (c) 2005,2009,2010 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *  Contributors: Members of ETRG, I.I.T. Kanpur
  * @author <a href="mailto:chitvesh@yahoo.com">Chitvesh Dutta</a>
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kuamr</a>
+ * @modified date: 07-01-2010
  *#
 #if($mode=="adminmail")
 $page.setTitle("Home | Communication | Local Mail")
@@ -156,7 +158,7 @@ $!data.getMessage()
 	</td>
 	</tr>
 	#if($mode=="adminmail")
-	<tr bgcolor="$ui.menuColor"><td align="left" colspan=5><a href=$link.setPage("call,Local_Mail,MailCompose.vm").addPathInfo("status","compose") style=text-decoration:none>
+	<tr bgcolor="$ui.menuColor"><td align="left" colspan=5><a href=$link.setPage("call,Local_Mail,MailCompose.vm").addPathInfo("status","compose").addPathInfo("count","4") style=text-decoration:none>
 	#else 
 	<tr bgcolor="$ui.menuColor"><td align="left" colspan=5><a href=$link.setPage("call,Local_Mail,MailTestMessage.vm").addPathInfo("status","compose") style=text-decoration:none>
 	#end 
