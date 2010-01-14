@@ -31,14 +31,14 @@ $!data.getMessage()
 <td bgcolor="#AFDCEC">
 #end
 <b>
-<a href=$link.setPage("OnlineRegistration.vm").addPathInfo("lang",$lang).addPathInfo("status","UserResitration").addPathInfo("count","1")> $brih_usr $brih_reg </a></b>
+<a href=$link.setPage("OnlineRegistration.vm").addPathInfo("lang",$lang).addPathInfo("status","UserResitration").addPathInfo("count","1")> $brih_student $brih_reg </a></b>
 </td>
 #if($tdcolor != "2")
 <td>
 #elseif($tdcolor == "2")
 <td bgcolor="#AFDCEC">
 #end
-<b><a href=$link.setPage("OnlineRegistration.vm").addPathInfo("lang",$lang).addPathInfo("status","CourseRegistration").addPathInfo("count","2")> $brih_course $brih_reg </a></b>
+<b><a href=$link.setPage("OnlineRegistration.vm").addPathInfo("lang",$lang).addPathInfo("status","CourseRegistration").addPathInfo("count","2")> $brih_Instructor ($brih_course) $brih_reg </a></b>
 </td>
 </tr>
 ##</table>
