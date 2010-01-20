@@ -7,7 +7,7 @@
 <!--                                                                      -->
 <!-- ==================================================================== -->
 <!-- ==================================================================== -->
-<database >
+<database name="brihaspati">
   <table name="NOTE" idMethod="idbroker">
     <column name="NOTE_ID" required="true" primaryKey="true" type="INTEGER"/>
     <column name="POSTED_BY" size="255" type="VARCHAR"/>
@@ -33,7 +33,7 @@
 	<column name="CREATIONDATE" type="DATE"/>
 	<column name="LASTMODIFIED" type="DATE"/>
 	<column name="LASTACCESS" type="DATE"/>
-	<column name="QUOTA" required="true" type="NUMERIC"/>	
+	<column name="QUOTA" required="true" type="NUMERIC" default="100"/>	
 </table>
 <table name="CAL_INFORMATION" idMethod="idbroker">
 	<column name="INFO_ID" required="true" primaryKey="true" type="INTEGER" autoIncrement="true"/>
@@ -249,20 +249,20 @@
 
 
 <table name="LECTURE" idMethod="idbroker">
-           <column name="LECTUREID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER" />
-           <column name="GROUP_NAME" required="true" size="255" type="VARCHAR" />
+           <column name="LECTUREID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
+           <column name="GROUP_NAME" required="true" size="255" type="VARCHAR"/>
            <column name="LECTURENAME" required="true" size="255" type="VARCHAR"/>
            <column name="LECTUREINFO" required="true" size="255" type="VARCHAR"/>
-           <column name="URLNAME"  size="255" type="VARCHAR"/>
-           <column name="PHONENO"  size="255" type="VARCHAR"/>
-           <column name="FORVIDEO"  size="255" type="VARCHAR"/>
-           <column name="FORAUDIO"  size="255" type="VARCHAR"/>
+           <column name="URLNAME" size="255" type="VARCHAR"/>
+           <column name="PHONENO" size="255" type="VARCHAR"/>
+           <column name="FORVIDEO" size="255" type="VARCHAR"/>
+           <column name="FORAUDIO" size="255" type="VARCHAR"/>
            <column name="FORWHITEBOARD" size="255" type="VARCHAR"/>
            <column name="SESSIONDATE" required="true" type="DATE"/>
            <column name="SESSIONTIME" required="true" size="255" type="VARCHAR"/>
            <column name="DURATION" size="255" type="VARCHAR"/>
-           <column name="REPEAT"  size="255" type="VARCHAR"/>
-           <column name="FORTIME"  size="255" type="VARCHAR"/>
+           <column name="REPEATLEC" size="255" type="VARCHAR"/>
+           <column name="FORTIME" size="255" type="VARCHAR"/>
 </table>
 <table name="SessionAddress" idMethod="idbroker">
   <column name="SerialNo" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
