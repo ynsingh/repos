@@ -181,7 +181,7 @@ public class myLogin extends VelocityAction{
 				count=entry.size();
 				String find_minimum="SELECT MIN(ENTRY_ID) FROM USAGE_DETAILS WHERE USER_ID="+uid;
 				ErrorDumpUtil.ErrorLog("fm from usage details=="+find_minimum);
-				if(count==10)
+				if(count >= 10)
 				{
 					List v=UsageDetailsPeer.executeQuery(find_minimum);
 					for(Iterator j=v.iterator();j.hasNext();)

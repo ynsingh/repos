@@ -293,6 +293,7 @@ public class UserManagement
 						crit=new Criteria();
                                                 crit.add(org.iitk.brihaspati.om.TurbineUserPeer.USER_ID,u1);
                                                 crit.add(org.iitk.brihaspati.om.TurbineUserPeer.CREATED,date);
+                                                crit.add(org.iitk.brihaspati.om.TurbineUserPeer.LAST_LOGIN,date);
                                                 crit.add(org.iitk.brihaspati.om.TurbineUserPeer.QUOTA,UQuota);
                                                 org.iitk.brihaspati.om.TurbineUserPeer.doUpdate(crit);
 						/**

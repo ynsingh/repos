@@ -346,13 +346,6 @@ $!data.getMessage()
                                                         </td></tr>
                                                 </table>
                                         </td>
-                           <td align= center>
-                              <table border=0>
-                                  <tr><td align=center>
-                                    <a href=$link.setPage("call,CourseMgmt_User,List_files.vm") style=text-decoration:none>ScormContent</a>
-                                 </td></tr>
-                               </table>
-                            </td> 
 					## inner column 3 (2)close
 				</tr>
 				## inner row 2 close
