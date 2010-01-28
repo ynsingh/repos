@@ -8,7 +8,7 @@ package org.bss.brihaspatisync.reflector.audio_video;
  * Copyright (c) 2009
  */
 
-
+import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
 import org.bss.brihaspatisync.reflector.audio_video.receiver.AudioReceive;
 import org.bss.brihaspatisync.reflector.audio_video.receiver.VideoReceive;
 import org.bss.brihaspatisync.reflector.audio_video.transmitter.VideoTransmit;
@@ -23,6 +23,8 @@ import org.bss.brihaspatisync.reflector.audio_video.transmitter.AudioTransmit;
 public class TransmitReceiveHandler {
 
   	private static TransmitReceiveHandler trHandler=null;
+	
+	private MaintainLog log=MaintainLog.getController();
 
   	/** Getting the handler of the main controller class */
 	public static TransmitReceiveHandler getControllerofHandler(){
@@ -36,7 +38,7 @@ public class TransmitReceiveHandler {
    
    	public void startReceiveAudio(){
      		if (!AudioReceive.getAudioReceiveController().initialize()) {
-        		System.err.println("Failed to initialize the sessions.");
+        		log.setString("Failed to initialize the sessions.");
        		}
 		
 		(new Thread(){
@@ -56,7 +58,7 @@ public class TransmitReceiveHandler {
    
    	public void startReceiveVideo(){
      		if (!VideoReceive.getVideoReceiveController().initialize()) {
-               		System.err.println("Failed to initialize the sessions.");
+               		log.setString("Failed to initialize the sessions.");
       		}
 		
                 (new Thread(){
@@ -85,12 +87,12 @@ public class TransmitReceiveHandler {
 	public void addTargetToTransmitter(String ip){
 		AudioTransmit.getAudioTransmitController().createTransmitter(ip.trim());
                 VideoTransmit.getVideoTransmitController().createTransmitter(ip.trim());
-		System.out.println(ip+" : is added to transmit audio video");
+		log.setString(ip+" : is added to transmit audio video");
 	}
 	public void startSendStream(){
         	AudioTransmit.getAudioTransmitController().streamTransmitterStart();
 	        VideoTransmit.getVideoTransmitController().streamTransmitterStart();
-		System.out.println("Start send stream");
+		log.setString("Start send stream");
 
 		
 	}
@@ -98,7 +100,7 @@ public class TransmitReceiveHandler {
 	public void stopSendStream(){
                 AudioTransmit.getAudioTransmitController().streamTransmitterStop();
                 VideoTransmit.getVideoTransmitController().streamTransmitterStop();
-		System.out.println("Stop send stream");
+		log.setString("Stop send stream");
 
         }
 	

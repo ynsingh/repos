@@ -164,8 +164,8 @@ public class HttpsUtil{
          * Verify the Organisation Name and Issuer Common Name
          */
         private Boolean verifyCertificate(String Subject_OrgName, String IssuerCN_Name){
-                String orgName=Reflector.getController().getCertOrgName();
-                String issuerName=Reflector.getController().getcertIssuerName();
+                String orgName=RuntimeDataObject.getController().getCertOrgName();
+                String issuerName=RuntimeDataObject.getController().getcertIssuerName();
 
                 if (Subject_OrgName.equals(orgName)&&(IssuerCN_Name.equals(issuerName)))
                         return true;

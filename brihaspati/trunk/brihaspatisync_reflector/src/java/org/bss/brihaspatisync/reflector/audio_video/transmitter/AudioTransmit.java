@@ -29,8 +29,9 @@ import javax.media.control.TrackControl;
 import javax.media.control.FormatControl;
 import javax.media.protocol.ContentDescriptor;
 
+import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
+import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
 import org.bss.brihaspatisync.reflector.audio_video.receiver.AudioReceive;
-import org.bss.brihaspatisync.reflector.Reflector;
 
 
 /**
@@ -40,14 +41,15 @@ import org.bss.brihaspatisync.reflector.Reflector;
 
 public class AudioTransmit {
 
-	private	int port=Reflector.getController().getAudioPort(); 
+	private	int port=RuntimeDataObject.getController().getAudioPort();
 	private RTPManager rtpaudio;
 	private SendStream stream=null;
 	private InetAddress ipAddr=null;
 	private Processor processor = null;
 	private DataSource dataOutput = null;
     	private static AudioTransmit av=null;    
-    	
+	private MaintainLog log=MaintainLog.getController();
+	    	
 	public static AudioTransmit getAudioTransmitController() {
     		if(av==null)
       			av=new AudioTransmit();
@@ -96,7 +98,7 @@ public class AudioTransmit {
 		
 	
    	private String createProcessor() {
-      		System.out.println("we are in createProcessor ");
+      		log.setString("we are in createProcessor ");
 		DataSource ds;
 		DataSource clone;
         	/**get the clone of the datasource of the audio for the transmission of Audio from the Capture Device*/
@@ -136,28 +138,22 @@ public class AudioTransmit {
 
 		/** Program the tracks. */
 
-       		System.out.println("Getting the tracks length==>"+tracks.length);
+       		log.setString("Getting the tracks length==>"+tracks.length);
 
 		for (int i = 0; i < 1; i++) {
-	    		Format format = tracks[i].getFormat();
-	    		if (tracks[i].isEnabled()) {
-				supported = tracks[i].getSupportedFormats();
-				if (supported.length > 0) {
-		    			//if (supported[0] instanceof VideoFormat) {
-					//	chosen = checkForVideoSizes(tracks[i].getFormat(), supported[0]);
-		    			//} else
-					
-					chosen = supported[0];
-		    			tracks[i].setFormat(chosen);
-		    			System.err.println("Track " + i + " is set to transmit as:");
-		    			System.err.println("Supported stream===>" + chosen);
-		    			atLeastOneTrack = true;
-				} else
-		    			tracks[i].setEnabled(false);
-	    		} else
-				tracks[i].setEnabled(false);
-		}
-		
+                        Format format = tracks[i].getFormat();
+                        if (  tracks[i].isEnabled() && format instanceof AudioFormat ) {
+
+                                AudioFormat afmt = (AudioFormat)tracks[i].getFormat();
+                                AudioFormat newFormat =   new AudioFormat(AudioFormat.MPEG_RTP);
+                                tracks[i].setFormat (newFormat);
+                                System.err.println("Audio transmitted as:");
+                                System.err.println("  " + newFormat);
+                                atLeastOneTrack=true;
+                        } else
+                                tracks[i].setEnabled(false);
+                }
+	
 		if (!atLeastOneTrack)
 	    		return "Couldn't set any of the tracks to a valid RTP format";
 
@@ -179,21 +175,21 @@ public class AudioTransmit {
 			SessionAddress destAddr =new SessionAddress(ipAddr,port);
 			rtpaudio.addTarget(destAddr);
 			destAddr=null;
-       		}catch(Exception e) { System.out.println("Error in initialize address to transmit Audio==>"+e); }
+       		}catch(Exception e) { log.setString("Error in initialize address to transmit Audio==>"+e); }
        		return null;
   	}					 
 	public void streamTransmitterStart() {
                 try{
-			System.out.println("DataSource==============>"+dataOutput);
+			log.setString("DataSource==============>"+dataOutput);
                         stream=rtpaudio.createSendStream(dataOutput,0);
                         stream.start();
-                } catch(Exception ex) { System.out.println("Error in Start send stream for the audio===>"+ex); }
+                } catch(Exception ex) { log.setString("Error in Start send stream for the audio===>"+ex); }
         }
         public void streamTransmitterStop() {
                 try{
                         stream.stop();
                         stream=null;
-                } catch(Exception ex) { System.out.println("Error in stop send stream for the audio===>"+ex); }
+                } catch(Exception ex) { log.setString("Error in stop send stream for the audio===>"+ex); }
         }
 	
 

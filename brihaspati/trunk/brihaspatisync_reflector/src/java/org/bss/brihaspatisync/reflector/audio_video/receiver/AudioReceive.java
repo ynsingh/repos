@@ -34,6 +34,8 @@ import javax.media.rtp.event.NewReceiveStreamEvent;
 import javax.media.rtp.event.RemotePayloadChangeEvent;
 
 import org.bss.brihaspatisync.reflector.Reflector;
+import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
+import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
@@ -58,7 +60,9 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
     	
 	private Object dataSync = new Object();
 
-    	private int port=Reflector.getController().getAudioPort();                                               
+	private MaintainLog log=MaintainLog.getController();
+	
+	private int port=RuntimeDataObject.getController().getAudioPort();                                              
 
 	/** getting the clone datasource for the Audio */  
 
@@ -86,7 +90,7 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
     	public boolean initialize() {
     		try {
 
-			System.out.println("audio Receive initialize");
+			log.setString("audio Receive initialize");
 	    		InetAddress ipAddr;
             		initialize=1;                                          
 	    		SessionAddress localAddr = new SessionAddress();
@@ -107,7 +111,7 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
     				mgrs[i].addTarget(destAddr);
 	   		}
        		} catch (Exception e){
-                	System.err.println("Cannot create the RTP Session: " + e.getMessage());
+                	log.setString("Cannot create the RTP Session: " + e.getMessage());
                 	return value;
         	}
 
@@ -118,14 +122,14 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
    	    		synchronized (dataSync) {
 				while (!dataReceived) {
 		    			if (!dataReceived)
-						System.err.println("  - Waiting for RTP data to arrive...");
+						log.setString("  - Waiting for RTP data to arrive...");
 		       			dataSync.wait(1000);
               			}
 	    		}
 	  	} catch (Exception e) {}
 
 		if (!dataReceived) {
-	    		System.err.println("No RTP data was received.");
+	    		log.setString("No RTP data was received.");
             		JOptionPane.showMessageDialog(null,"Sorry You do not get the unicast Audio");
             
            		/**If data does not receive then transmitAudio button become disabled */
@@ -147,7 +151,7 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
     	} 
 
     	public void close() { 
-        	System.out.println("Stopping AudioReceive & close all Session for receive Audio"); 
+        	log.setString("Stopping AudioReceive & close all Session for receive Audio"); 
 		value=true;
 
        		/**If session is Initialise then close all of the Session */
@@ -168,7 +172,7 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
     	public synchronized void update(SessionEvent evt) {
 		if (evt instanceof NewParticipantEvent) {
 	    		Participant p = ((NewParticipantEvent)evt).getParticipant();
-	    		System.err.println("  - A new participant had just joined: " + p.getCNAME());
+	    		log.setString("  - A new participant had just joined: " + p.getCNAME());
 		}
     	}
 
@@ -182,8 +186,8 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
 
 		if (evt instanceof RemotePayloadChangeEvent) {
      
-	    		System.err.println("  - Received an RTP PayloadChangeEvent.");
-	    		System.err.println("Sorry, cannot handle payload change.");
+	    		log.setString("  - Received an RTP PayloadChangeEvent.");
+	    		log.setString("Sorry, cannot handle payload change.");
 		}
     
 		else if (evt instanceof NewReceiveStreamEvent) {
@@ -195,16 +199,16 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
  
 				RTPControl ctl = (RTPControl)ds.getControl("javax.media.rtp.RTPControl");
 				if (ctl != null){
-		    			System.err.println("  - Recevied format of the new RTP stream if first: " + ctl.getFormat());
+		    			log.setString("  - Recevied format of the new RTP stream if first: " + ctl.getFormat());
 				} else
-		    			System.err.println("  - here we do not get a format of stream  and Recevied new RTP stream");
+		    			log.setString("  - here we do not get a format of stream  and Recevied new RTP stream");
 
              			/**Find out is there any new user in this session */
 
 				if (participant == null)
-		    			System.err.println("      The sender of this stream had yet to be identified.");
+		    			log.setString("      The sender of this stream had yet to be identified.");
 				else {
-		    			System.err.println("      The stream comes from: " + participant.getCNAME()); 
+		    			log.setString("      The stream comes from: " + participant.getCNAME()); 
 				}
 
 				synchronized (dataSync) {
@@ -213,7 +217,7 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
 				}
 
 	    		} catch (Exception e) {
-				System.err.println("NewReceiveStreamEvent exception " + e.getMessage());
+				log.setString("NewReceiveStreamEvent exception " + e.getMessage());
 				return;
 	    		}
         
@@ -224,15 +228,15 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
  				/** Find out the formats. */
 
 				RTPControl ctl = (RTPControl)ds.getControl("javax.media.rtp.RTPControl");
-				System.err.println("  - The previously unidentified stream ");
+				log.setString("  - The previously unidentified stream ");
 				if (ctl != null)
-		    			System.err.println("Received the format of the stream if 2nd==>" + ctl.getFormat());
-				System.err.println("      had now been identified as sent by: " + participant.getCNAME());
+		    			log.setString("Received the format of the stream if 2nd==>" + ctl.getFormat());
+				log.setString("      had now been identified as sent by: " + participant.getCNAME());
 	     		}
 		}
 
 		else if (evt instanceof ByeEvent) {
-	     		System.err.println("  - Got \"bye\" from: " + participant.getCNAME());
+	     		log.setString("  - Got \"bye\" from: " + participant.getCNAME());
 		}
     	}
 }

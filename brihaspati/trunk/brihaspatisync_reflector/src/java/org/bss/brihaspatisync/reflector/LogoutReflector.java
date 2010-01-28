@@ -21,7 +21,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 import org.bss.brihaspatisync.reflector.util.HttpsUtil;
-
+import org.bss.brihaspatisync.reflector.network.ftp.FTPServer;
 
 import org.bss.brihaspatisync.reflector.network.tcp.TCPServer;
 import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
@@ -77,6 +77,7 @@ public class LogoutReflector {
                        		}
                 		HttpServer.getController().stop();     /** port 9999  */
        	        		TCPServer.getController().stop();      /** port 8888  */
+				FTPServer.getController().stopThread();
               			log.stop();
               			TransmitHandlerThread.getControllerofHandler().stop();
 				Timer UL_Timer =riserver.getTimer();
@@ -92,6 +93,28 @@ public class LogoutReflector {
 		}catch(Exception e){
 			log.setString("Error on Logout Reflector ");
 		}
-	}      	
+	}
+	
+	protected void restartReflector(){
+		try {
+			HttpServer.getController().stop();     /** port 9999  */
+                      	TCPServer.getController().stop();      /** port 8888  */
+                        FTPServer.getController().stopThread();
+                        //log.stop();
+                        TransmitHandlerThread.getControllerofHandler().stop();
+                        Timer UL_Timer =riserver.getTimer();
+                        if(UL_Timer != null) {
+                        	UL_Timer.cancel();
+                             	log.setString("Logout Reflector Successfully !! ");
+                      	}else {
+                        	System.out.println("Reflector is not start");
+                      	}
+					
+		}catch(Exception e){
+                        log.setString("Error on Logout Reflector ");
+                }
+
+	}
+	      	
 	 
 }

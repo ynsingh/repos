@@ -11,7 +11,8 @@ import java.net.Socket;
 import java.net.ServerSocket;
 
 import java.io.IOException;
-import org.bss.brihaspatisync.reflector.Reflector;
+//import org.bss.brihaspatisync.reflector.Reflector;
+import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
 import org.bss.brihaspatisync.reflector.buffer_mgt.MyHashTable;
 import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;	
 
@@ -33,7 +34,7 @@ public class HttpServer implements Runnable {
 	
 	private boolean flag=false;
 	
-	private int server_port = Reflector.getController().getHttpPort();
+	private int server_port = RuntimeDataObject.getController().getHttpPort();
 	
 	private MaintainLog log=MaintainLog.getController();
 	

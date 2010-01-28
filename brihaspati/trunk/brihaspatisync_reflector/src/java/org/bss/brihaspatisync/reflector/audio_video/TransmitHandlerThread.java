@@ -10,6 +10,7 @@ package org.bss.brihaspatisync.reflector.audio_video;
 
 import java.util.Vector;
 
+import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
 import org.bss.brihaspatisync.reflector.network.util.RuntimeObject;
 	
 
@@ -25,6 +26,8 @@ public class TransmitHandlerThread implements Runnable {
 	private Vector ipVectorforClient =new Vector();
 	
   	private static TransmitHandlerThread trHandler=null;
+	
+	private MaintainLog log=MaintainLog.getController();
 
   	/** Getting the handler of the main controller class */
 	public static TransmitHandlerThread getControllerofHandler(){
@@ -43,9 +46,9 @@ public class TransmitHandlerThread implements Runnable {
         	                audio_video = new Thread(this);
                 	        audio_video.start();
                 	}
-			System.out.println("Start Audio Video Thread Handeler : ");
+			log.setString("Start Audio Video Thread Handeler : ");
 		}catch(Exception e){
-			System.out.println("Error in Start Audio Video Thread Handeler : ");
+			log.setString("Error in Start Audio Video Thread Handeler : ");
 		}
         }
 
@@ -55,7 +58,7 @@ public class TransmitHandlerThread implements Runnable {
                         audio_video.stop();
                         audio_video=null;
                 }
-		System.out.println("Stop Audio Video Thread Handeler : ");
+		log.setString("Stop Audio Video Thread Handeler : ");
         }
   	 
 	public void run(){
@@ -69,7 +72,6 @@ public class TransmitHandlerThread implements Runnable {
 						String ip=VectorforClient.get(i).toString();
 						if(!ipVectorforClient.contains(ip)) {
 							ipVectorforClient.add(ip);
-							//System.out.println("your transmit IP is : "+ip+"\n\n\n\n\n\n\n\n");
 	        	                                if(j>0) {
 		        					TransmitReceiveHandler.getControllerofHandler().stopSendStream();
 								try {
@@ -84,7 +86,6 @@ public class TransmitHandlerThread implements Runnable {
                                 	                	j++;
                                         		}
                                         		TransmitReceiveHandler.getControllerofHandler().addTargetToTransmitter(ip);
-							//System.out.println("new address is added to transmit audio/video ==>"+ip);
         	                                	TransmitReceiveHandler.getControllerofHandler().startSendStream();
 						}
 					}
@@ -92,7 +93,7 @@ public class TransmitHandlerThread implements Runnable {
 				audio_video.yield();
                                 audio_video.sleep(1000);
 			}catch(Exception e) {
-                               // System.out.println("Error in TransmitHandlerThread.java  "+e.getMessage());
+                               log.setString("Error in TransmitHandlerThread.java  "+e.getMessage());
                         }
                 }
         }

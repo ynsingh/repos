@@ -34,8 +34,11 @@ import javax.media.control.TrackControl;
 import javax.media.control.QualityControl;
 
 import javax.media.protocol.ContentDescriptor;
+
+import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
+import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
 import org.bss.brihaspatisync.reflector.audio_video.receiver.VideoReceive;
-import org.bss.brihaspatisync.reflector.Reflector;
+
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
@@ -49,7 +52,8 @@ public class VideoTransmit {
     	private Processor processor = null;
     	private RTPManager rtpvideo;
     	private DataSource dataOutput = null;
-    	private int port=Reflector.getController().getVedioPort(); 
+	private MaintainLog log=MaintainLog.getController();
+    	private int port=RuntimeDataObject.getController().getVedioPort();
 		
     	public static VideoTransmit getVideoTransmitController() {
     		if(av==null)
@@ -62,7 +66,7 @@ public class VideoTransmit {
 		rtpvideo=RTPManager.newInstance();
 		SessionAddress localAddr1=new SessionAddress();
                 rtpvideo.initialize(localAddr1);
-		}catch(Exception e){System.out.println("Error in dispose of in Transmission of Video==> "+e);}
+		}catch(Exception e){log.setString("Error in dispose of in Transmission of Video==> "+e);}
 	}
 	
     	private String createProcessor() {
@@ -76,7 +80,7 @@ public class VideoTransmit {
 		try {
 	    		processor = javax.media.Manager.createProcessor(ds);
 		} catch (Exception e) {
-			System.out.println("Error in createProcessor in VideoTransmit.java "+e.getMessage());
+			log.setString("Error in createProcessor in VideoTransmit.java "+e.getMessage());
 		} 
 
 		boolean result = waitForState(processor, Processor.Configured);
@@ -95,25 +99,26 @@ public class VideoTransmit {
 		Format chosen;
 		boolean atLeastOneTrack = false;
 
-        	System.out.println("Getting the tracks length==>"+tracks.length);
+        	log.setString("Getting the tracks length==>"+tracks.length);
 		for (int i = 0; i < 1; i++) {
-	    		Format format = tracks[i].getFormat();
-	    		if (tracks[i].isEnabled()) {
-				supported = tracks[i].getSupportedFormats();
-				if (supported.length > 0) {
-		    			if (supported[0] instanceof VideoFormat) {
-						chosen = checkForVideoSizes(tracks[i].getFormat(), supported[0]);
-			    		} else
-						chosen = supported[0];
-		    			tracks[i].setFormat(chosen);
-		    			System.err.println("Track " + i + " is set to transmit as:");
-		    			System.err.println("Supported stream===>" + chosen);
-		    			atLeastOneTrack = true;
-				} else
-			    		tracks[i].setEnabled(false);
-	    		} else
-				tracks[i].setEnabled(false);
-		}
+                        Format format = tracks[i].getFormat();
+                        if (  tracks[i].isEnabled() && format instanceof VideoFormat ) {
+                                Dimension size = ((VideoFormat)format).getSize();
+                                float frameRate = ((VideoFormat)format).getFrameRate();
+                                int w = (size.width % 8 == 0 ? size.width : (int)(size.width / 8) * 8);
+                                int h = (size.height % 8 == 0 ? size.height :(int)(size.height / 8) * 8);
+                                VideoFormat newFormat = new VideoFormat(VideoFormat.H263_RTP,
+                                                                       new Dimension(w, h),
+                                                                       Format.NOT_SPECIFIED,
+                                                                       Format.byteArray,
+                                                                       frameRate);
+                                tracks[i].setFormat(newFormat);
+                                System.err.println("Video transmitted as:");
+                                System.err.println("  " + newFormat);
+                                atLeastOneTrack=true;
+                        } else
+                                tracks[i].setEnabled(false);
+                }
 		if (!atLeastOneTrack)
     			return "Couldn't set any of the tracks to a valid RTP format";
 		result = waitForState(processor, Controller.Realized);
@@ -174,7 +179,7 @@ public class VideoTransmit {
 						if (fmts[j].matches(jpegFmt)) {
 			    				qc = (QualityControl)cs[i];
 	    		    				qc.setQuality(val);
-				    			System.err.println("- Setting quality to " + val + " on " + qc);
+				    			log.setString("- Setting quality to " + val + " on " + qc);
 			    				break;
 						}
 			    		}
@@ -252,32 +257,32 @@ public class VideoTransmit {
                         SessionAddress destAddr=new SessionAddress(ipAddr,port);
                         rtpvideo.addTarget(destAddr);
                         destAddr=null;
-                }catch(Exception e) { System.out.println("Error createTransmitter in VideoTransmit.java "+e);}
+                }catch(Exception e) { log.setString("Error createTransmitter in VideoTransmit.java "+e);}
         }
 
         public void streamTransmitterStart() {
                 try{
                         stream=rtpvideo.createSendStream(dataOutput,0);
                         stream.start();
-                } catch(Exception ex) { System.out.println("Error in transmission Stream for the Video===>"+ex); }
+                } catch(Exception ex) { log.setString("Error in transmission Stream for the Video===>"+ex); }
         }
         public void streamTransmitterStop() {
                 try{
                         stream.stop();
                         stream=null;
-                } catch(Exception ex) { System.out.println("Error in transmission Stream for the Video===>"+ex); }
+                } catch(Exception ex) { log.setString("Error in transmission Stream for the Video===>"+ex); }
         }
 	
 	public synchronized String start() {
                 String result=null;
                 result = createProcessor();
                 if (result == null)
-                        System.out.println("createProcessor  already start");
+                        log.setString("createProcessor  already start");
                 if (result == null) {
                         processor.start();
-                        System.out.println("processor are in start ");
+                        log.setString("processor are in start ");
                 }else {
-                        System.out.println("processor already start ");
+                        log.setString("processor already start ");
                         result=null;
                 }
                 return null;
@@ -288,7 +293,7 @@ public class VideoTransmit {
          */
         public void stop() {
 		try{
-                	System.out.println("we are in stop all thread in VideoTransmit.java ");
+                	log.setString("we are in stop all thread in VideoTransmit.java ");
                         if (processor != null) {
                         	rtpvideo.removeTargets("Session ended.");
                        	}
@@ -296,7 +301,7 @@ public class VideoTransmit {
                         rtpvideo.dispose();
                         processor.close();
                         processor = null;
-               	}catch(Exception e){System.out.println("Error in dispose of in Transmission of Video==> "+e);}
+               	}catch(Exception e){log.setString("Error in dispose of in Transmission of Video==> "+e);}
         }
 }
 

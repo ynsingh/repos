@@ -23,6 +23,7 @@ import org.bss.brihaspatisync.reflector.buffer_mgt.BufferMgt;
 import org.bss.brihaspatisync.reflector.buffer_mgt.MyHashTable;
 
 import org.bss.brihaspatisync.reflector.Reflector;
+import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
 import org.bss.brihaspatisync.reflector.network.util.RuntimeObject;
 import org.bss.brihaspatisync.reflector.network.serverdata.VectorClass;
 import org.bss.brihaspatisync.reflector.network.serverdata.UserListUtil;
@@ -62,7 +63,7 @@ public class TCPClient implements Runnable{
 	
 	private MaintainLog log=MaintainLog.getController(); 
 	
-	private int TCP_Port=Reflector.getController().getTcpPort();
+	private int TCP_Port=RuntimeDataObject.getController().getTcpPort();
 	
 	/**
         * Controller for the class.
