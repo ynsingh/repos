@@ -13,6 +13,7 @@ import java.net.InetAddress;
 import javax.swing.JOptionPane;
 import org.bss.brihaspatisync.Client;
 import org.bss.brihaspatisync.util.HttpsUtil;
+import org.bss.brihaspatisync.util.RuntimeDataObject;
 import org.bss.brihaspatisync.network.Log;
 
 /**
@@ -64,7 +65,8 @@ public class HttpCommManager {
 	        	 *  The url is created to retrieve the secondry indexing servers' list
         		 *  from master indexing server
          		 */
-			String m_url=Client.getController().getMasterUrl()+"/ProcessRequest?req=getISList";
+			
+			String m_url=RuntimeDataObject.getController().getMasterUrl()+"/ProcessRequest?req=getISList";
                         if(!(m_url.equals(""))){
 				Vector indexServerList=httpsUtil.getvectorMessage(m_url,"noLecture");
 				indexServerList.insertElementAt("Select",0); 

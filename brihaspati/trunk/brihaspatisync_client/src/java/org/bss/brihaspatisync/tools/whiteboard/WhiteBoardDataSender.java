@@ -23,47 +23,30 @@ import org.bss.brihaspatisync.network.Log;
 
 public class WhiteBoardDataSender {
 
-	private int m=0,p=0,q=0,r=0,s=0,col=0;
-    	private String textname1="";
-    	private int size1=0;
-    	private String msgdata1="";
-    	private static short sendSeq=0;
-    	private int SSRC=0;
     	private String message="";
-	private UtilObject utilObject=UtilObject.getController();
 	private Log log=Log.getController();
+	private static WhiteBoardDataSender wb_draw=null;
+	private UtilObject utilObject=UtilObject.getController();
 
+
+        public static WhiteBoardDataSender getController(){
+                if(wb_draw==null){
+                        wb_draw=new WhiteBoardDataSender();
+                }
+                return wb_draw;
+        }
 
 	/*Constructor to initialise the value */
+	private WhiteBoardDataSender(){}
 
-        protected WhiteBoardDataSender(int col,int m,int p,int q,int r,int s,String textname1,int size1,String msgdata1){
-        	this.col=col;
-                this.m=m;
-                this.p=p;
-                this.q=q;
-                this.r=r;
-                this.s=s;
-                this.textname1=textname1;
-                this.size1=size1;
-                this.msgdata1=msgdata1;
-    	}
-
-        protected String sendpacket() {
-        	String msg="";
-                msg=sendUnicastPacket();
-             	return msg;
-         }
 
 	/**
-	 * Send the whiteboard payload to the TCP sender queue
+	 * Send the whiteboard payload to the HTTP sender queue
 	 */
 
-        private String sendUnicastPacket() {
-		int i,length;
+        protected void sendUnicastPacket(int col,int m,int p,int q,int r,int s,String textname1,int size1,String msgdata1) {
             	try {
                    	StringBuffer msg=new StringBuffer(100);
-			//msg=msg.append(InetAddress.getLocalHost().getHostAddress());
-                        //msg=msg.append("#");
 			msg=msg.append("wb");
                         msg=msg.append("$");
                    	msg=msg.append(Integer.toString(col));
@@ -85,9 +68,7 @@ public class WhiteBoardDataSender {
                     	msg=msg.append(msgdata1);
                   	message=msg.toString();
 			utilObject.setSendQueue(message);
-			//TCPSender.getController().getSendQueue().putString(message);			
               	} catch(Exception e) { log.setLog("Error On WhiteBoardDataSender"+e.getMessage()); }
-      		return message;
      	}
 }
 

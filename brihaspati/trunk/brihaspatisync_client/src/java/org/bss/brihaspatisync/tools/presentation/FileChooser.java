@@ -15,185 +15,107 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 
-
-import java.awt.Insets;
-import java.awt.Container;
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.WindowEvent;
-import java.awt.event.ActionListener;
-
-
-import javax.swing.JPanel;
-import javax.swing.JFrame;
-import javax.swing.JButton;
-import javax.swing.JTextArea;
-import javax.swing.JScrollPane;
-import javax.swing.JOptionPane;
-import javax.swing.JFileChooser;
-import javax.swing.SwingUtilities;
-
-
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
-
+import org.bss.brihaspatisync.network.Log;
 import org.bss.brihaspatisync.network.ftp.FTPClient;
-
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
  * @author <a href="mailto:arvindjass17@gmail.com">Arvind Pal </a>
  */
 
-public class FileChooser extends JFrame implements ActionListener {
+public class FileChooser implements Runnable {
 
-    	private String newline = "\n";
+	private Thread runner = null;
+
+        private boolean rec_Flag = false;
+
+	private static FileChooser fc=null;
+
+	private Log log=Log.getController();
+	private File src=null;
+	private File dst=null;
+	private PresentationPanel ftpc=PresentationPanel.getController();
 	
-	private static FileChooser instcspanel=null;
+	public static FileChooser getController(){
+                if (fc==null){
+                        fc=new FileChooser();
+                }
+                return fc;
+        }
+	
+	 /**
+         * Start ReceiveQueueHandler Thread.
+         */
 
-	private String zipFile="";
+        public synchronized void start(File src,File dst) throws IOException {
+                if(rec_Flag!=true){
+                        rec_Flag=true;
+                }
+                if (runner == null) {
+                        runner = new Thread(this);
+                        runner.start();
+			this.dst=dst;
+			this.src=src;
+                        log.setLog("FileChooser is Start");
+                }
+        }
 
         /**
-         * Controller for the class.
+         * Stop receiveQueueHandler Thread.
          */
-	/**
-        protected  static FileChooser getController(){
-                if (instcspanel==null){
-                        instcspanel=new FileChooser();
+        private synchronized void stop() {
+                if(rec_Flag!=false){
+                        rec_Flag=false;
                 }
-                return instcspanel;
+                if (runner != null) {
+                        runner.stop();
+                        runner = null;
+			this.dst=null;
+                        this.src=null;
+                        log.setLog("FileChooser is Stop");
+                }
         }
-	**/
-	private Vector v=new Vector();
-	private JFrame frame=null;;
-	private JTextArea textarea;
-    	private Container con=null;
-	private JFileChooser fc;
-	private JButton attach=null;
-	private JButton upload=null;
-
-	private JScrollPane logScrollPane=null;	
 	
-	protected FileChooser() {
-		super("Upload Presentation");
-		con=getContentPane();
-		JPanel mainPane=new JPanel();
-		mainPane.setLayout(new BorderLayout());
-
-        	textarea = new JTextArea(5,20);
-        	textarea.setMargin(new Insets(5,5,5,5));
-        	textarea.setEditable(false);
+	public void run(){
+                while(rec_Flag){
+                        try{
+				//label.setText("Uploading process ---");
+				ftpc.setlabelText("Uploading process -----");	
+                        	dst=new File("temp/presentation.ppt");
+                               	dst=new File(dst.getAbsolutePath().toString());
+                               	createcopy(src,dst);
+			}catch(Exception e){}
+                }
+        }
 		
-        	logScrollPane = new JScrollPane(textarea);
-		JPanel bttnPane=new JPanel();
-        	attach = new JButton("Attach File");
-		upload = new JButton("Create Presentation");
-		upload.addActionListener(this);
-        	attach.addActionListener(this);
 		
-		bttnPane.add(attach);
-		bttnPane.add(upload);
-
-		mainPane.add(logScrollPane, BorderLayout.CENTER);
-        	mainPane.add(bttnPane, BorderLayout.SOUTH);
-		con.add(mainPane);
-		setVisible(true);
-		setSize(300,300);
-		setLocation(400,400);	      
-    	}
-
-	/**
-         * Create the GUI and show it.
-         */
-	
-    	public void actionPerformed(ActionEvent e) {
-		if(e.getSource()==attach){
-	        	if (fc == null) {
-        	    		fc = new JFileChooser();
-            			fc.addChoosableFileFilter(new ImageFilter());
-            			fc.setAcceptAllFileFilterUsed(false);
-	            		fc.setFileView(new ImageFileView());
-        		   	fc.setAccessory(new ImagePreview(fc));
-				fc.setMultiSelectionEnabled(true);
-        		}
-	        	int returnVal = fc.showDialog(FileChooser.this,"Attach");
-        		if (returnVal == JFileChooser.APPROVE_OPTION) {
-            			File file1[] = fc.getSelectedFiles();// getSelectedFile();
-				for(int i=0;i<file1.length;i++){
-					File file=file1[i];
-					if(!file.getAbsolutePath().equals(""))
-						v.add(file.getAbsolutePath().toString());	
-	            			textarea.append("Attaching file - "+v.size() +" : " +file.getName() + "." + newline);
-				}
-        		} else {
-            			textarea.append("Attachment cancelled by user." + newline);
-        		}
-	        	textarea.setCaretPosition(textarea.getDocument().getLength());
-			fc.setSelectedFile(null);
+	private void createcopy(File src, File desc){
+                try {
+			ftpc.setlabelText("Uploading process ---");
+                        copy(src,desc);
+			ftpc.setlabelText("Uploading process -----");
+                }catch(Exception e) { 
+			e.printStackTrace();
 		}
-		if(e.getSource()==upload){
-			if(v.size() != 0){
-				FTPClient.getController().checkDirectory();	
-				File file=new File("temp/presentation");				
-				File f=null;	
-				for(int i=0;i<v.size();i++){
-					f=new File((String)v.get(i));
-					try{
-	        	       	                copy(f,file);
-					}catch(Exception ex1){}
-				}
-				f=null;
-				file=null;
-                        	createZip();//sourceFile.toString());//,file.toString());
-				setVisible(false);
-			}
-			else{
-			 	JOptionPane.showMessageDialog(null,"Please Attach atleast one image file to console !!");
-	
-			}	
-		}	
-    	}
-	
-	private void copy(File src, File dst) throws IOException {
+        }
 
-                String str[]=dst.list();
-                File descfile=new File(dst.toString()+"/image"+str.length+".png");
-                InputStream in = new FileInputStream(src);
-                OutputStream out = new FileOutputStream(descfile);
-                // Transfer bytes from in to out
+	private void copy(File src, File dst) throws IOException {
+		InputStream in = new FileInputStream(src);
+                OutputStream out = new FileOutputStream(dst);
+		// Transfer bytes from in to out
                 byte[] buf = new byte[1024];
                 int len;
                 while ((len = in.read(buf)) > 0) {
-                        out.write(buf, 0, len);
+                	out.write(buf, 0, len);
                 }
                 in.close();
-                out.close();
+                out.close();	
+		ftpc.setlabelText("Uploading process ---");
+    		FTPClient.getController().startFTPClient("POST");
+		ftpc.setlabelText("Uploading process -----");
+		PresentationPanel.getController().stopTimer(10000);
+		System.out.println("PPT File  Upload Successfully !! ");	
+		FTPClient.getController().createppt_TO_Images();
+		stop();
         }
-																	
-	private void createZip(){
-		try
-                {
-                        File inFolder=new File("temp/presentation/");
-                        File outFolder=new File("temp/presentation.zip");
-                        ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(outFolder)));
-                        BufferedInputStream in = null;
-                        byte[] data    = new byte[1000];
-                        String files[] = inFolder.list();
-                        for (int i=0; i<files.length; i++)
-                        {
-                                in = new BufferedInputStream(new FileInputStream(inFolder.getPath() + "/" + files[i]), 1000);
-                                out.putNextEntry(new ZipEntry(files[i]));
-                                int count;
-                                while((count = in.read(data,0,1000)) != -1){
-                                        out.write(data, 0, count);
-                                }
-                                out.closeEntry();
-                        }
-                        out.flush();
-                        out.close();
-                }catch(Exception e) { e.printStackTrace();}
-
-	}
 }

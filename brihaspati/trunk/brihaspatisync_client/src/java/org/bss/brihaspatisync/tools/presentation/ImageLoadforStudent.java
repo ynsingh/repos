@@ -10,14 +10,13 @@ package org.bss.brihaspatisync.tools.presentation;
  
 import java.awt.Image;
 import java.awt.Color;
-import java.awt.Toolkit;
 import java.awt.Graphics;
-import java.awt.MediaTracker;
+import java.awt.Dimension;
 
 import java.io.File;
-import java.awt.Toolkit;
 import javax.swing.JPanel;
-import java.awt.Dimension;
+import javax.imageio.ImageIO;
+	
 import org.bss.brihaspatisync.network.Log;
 
 
@@ -28,33 +27,22 @@ import org.bss.brihaspatisync.network.Log;
 
 
 public class ImageLoadforStudent extends JPanel {
-	private MediaTracker tracker=null;
+
 	private Image image=null;
-	private static ImageLoadforStudent img=null;	
-	
-	private File f=new File("./temp/presentation");
-        private String str[]=null;
+
+	private String LogfilePath="";
+
 	private Log log=Log.getController();
 
+	private Dimension area=new Dimension(0,0);
+
+	private static ImageLoadforStudent img=null;	
 	
 	public static ImageLoadforStudent  getController() {
                 if(img==null)
                         img=new ImageLoadforStudent();
                 return img;
         }
-	
-	public void runSlide(int temp) {
-		try{
-			image=Toolkit.getDefaultToolkit().createImage(f.toString()+"/"+"image"+Integer.toString(temp)+".png");	
-                       	tracker = new MediaTracker(this);
-       	              	tracker.addImage(image,0);
-			tracker.waitForID(0);
-
-			repaint();		
-		}catch(Exception ex) {
-			log.setLog("ERROR on load image===>"+ex.getMessage()); 
-		}
-	}
 
 	private ImageLoadforStudent() {
 		setBackground(Color.white);
@@ -65,14 +53,29 @@ public class ImageLoadforStudent extends JPanel {
 	}   
 
 	public void paint(Graphics g) {
-		g.setColor(Color.white);
-		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		Dimension screenSize = toolkit.getScreenSize();
-		if(image==null)
-			g.fillRect(0,0,((int)screenSize.getWidth()),((int)screenSize.getHeight()));
-		if(image != null){
-			g.setColor(Color.white);  
-			g.drawImage(image, 0, 0,((int)screenSize.getWidth()),((int)screenSize.getHeight()),this);
-		} 
-	}     
+			if(image==null)
+				g.setColor(Color.white);
+				g.fillRect(0,0,image.getWidth(this),image.getHeight(this));
+			if(image != null){			
+				g.drawImage(image, 0, 0,image.getWidth(this),image.getHeight(this),this);
+			}
+	}
+	
+	public void runSlide(int temp){
+		try {
+			if(LogfilePath.equals("")) {
+				String str="temp/presentation/";
+	        	        File existingFile=new File(str);
+        	        	LogfilePath = existingFile.getAbsolutePath();
+			}
+			String str=LogfilePath+"/image"+Integer.toString(temp)+".png";
+                	str=str.trim();
+			image = ImageIO.read(new File(str));
+			area.width=image.getWidth(this);
+		        area.height=image.getHeight(this);
+			img.setPreferredSize(area);
+                        img.revalidate();
+			img.repaint();
+		}catch(Exception e){}
+	}
 }

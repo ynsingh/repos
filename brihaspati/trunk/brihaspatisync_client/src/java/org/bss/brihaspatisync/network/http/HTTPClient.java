@@ -24,6 +24,7 @@ import java.io.DataInputStream;
 import java.io.BufferedInputStream;
 
 import org.bss.brihaspatisync.util.ClientObject;
+import org.bss.brihaspatisync.util.RuntimeDataObject;
 import org.bss.brihaspatisync.Client;
 import org.bss.brihaspatisync.network.Log;
 import org.bss.brihaspatisync.network.ReceiveQueueHandler;
@@ -48,7 +49,7 @@ public class HTTPClient extends TimerTask {
 
         private ClientObject clientObject=ClientObject.getController();
 	
-	private final String refHttpPort=Integer.toString(Client.getController().getRefHttpPort());
+	private final String refHttpPort=RuntimeDataObject.getController().getRefHttpPort();
 
 	public HTTPClient(){ }
 

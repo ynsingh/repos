@@ -8,17 +8,12 @@ package org.bss.brihaspatisync.tools.presentation;
  */
  
 import java.awt.Color;
-import java.awt.Toolkit;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.BorderLayout;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowAdapter;
-import java.awt.event.WindowListener;
-
 import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
@@ -26,13 +21,10 @@ import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JOptionPane;
-import javax.swing.BorderFactory;
-import javax.swing.JInternalFrame;
-
 import java.io.File;
 
-import org.bss.brihaspatisync.network.udp.UDPSender;
 import org.bss.brihaspatisync.util.ClientObject;
+import org.bss.brihaspatisync.network.util.UtilObject;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
@@ -41,79 +33,61 @@ import org.bss.brihaspatisync.util.ClientObject;
 
 public class SlideShowWindow extends JFrame implements ActionListener {
 	
-	public static SlideShowWindow ssw=null;
-	private static Dimension newframeSize=null;
-	
-	private JButton privious;
+	private int temp=0;
+	private File f=null;
 	private JButton next;
+	private JButton privious;
 
 	private JPanel mainPanel=null;
-        private JPanel centerPanel=null;
         private JPanel southPanel=null;
-	private JScrollPane imagePane=null;
-
-	private int temp=0;
-	
-	private File f=null;
-        private String str[]=null;
-	//private JScrollPane scrollpane;
+	public static SlideShowWindow ssw=null;
+	private static Dimension newframeSize=null;
+	private UtilObject utilObject=UtilObject.getController();
 
 	public static SlideShowWindow  getController() {
 		if(ssw==null)
 			ssw=new SlideShowWindow();
 		return ssw;
 	}
-	private  SlideShowWindow() {
-		//scrollpane = new JScrollPane(centerPanel);
-		//scrollpane.setAutoscrolls(true);
-	}
+
+	private  SlideShowWindow() { }
 	
 	public void setUPGUI(){
 		setTitle(" Image Canvas ");
-		Dimension d=Toolkit.getDefaultToolkit().getScreenSize();
-		setSize((int)d.getWidth(),((int)d.getHeight()));
-		setLocation(0,0);
-		setBackground(Color.gray);
-		
+		setLocation(200,200);
 		mainPanel=new JPanel();		
 		mainPanel.setLayout(new BorderLayout());
-		
 		southPanel=new JPanel();
 		
-			
-
-		centerPanel=new JPanel();
-		centerPanel.setLayout(new BorderLayout());
-		centerPanel.add(ImageLoadforStudent.getController(),BorderLayout.CENTER);		
-		
-		//scrollpane = new JScrollPane(ImageLoadforStudent.getController());
-                //scrollpane.setAutoscrolls(true);
-
-
+		JScrollPane scroller = new JScrollPane(ImageLoadforStudent.getController());
+	        scroller.setPreferredSize(new Dimension(200,200));
 		ImageLoadforStudent.getController().runSlide(temp);	
 		privious=new JButton("priv");
                 privious.addActionListener(this);
 		next=new JButton("next");
                 next.addActionListener(this);
-		
 		southPanel.add(privious);
 		southPanel.add(next);
-		
-		//mainPanel.add(scrollpane,BorderLayout.CENTER);
-		mainPanel.add(centerPanel,BorderLayout.CENTER);
-
+		mainPanel.add(scroller,BorderLayout.CENTER);
 		if(ClientObject.getController().getUserRole().equals("instructor"))
                 	mainPanel.add(southPanel,BorderLayout.SOUTH);			
 		setContentPane(mainPanel);
 		setSize(550,550);
                 setResizable(true);
                 setVisible(true);
-		addWindowListener( new WindowAdapter (){
-                        public void windowClosing (WindowEvent ev ){
-                                UDPSender.getController().getSendQueue().putString("cancleppt");
-                                getCanclePPT();
-                        }
-                });
+		if(ClientObject.getController().getUserRole().equals("instructor")){
+			addWindowListener( new WindowAdapter (){
+                        	public void windowClosing (WindowEvent ev ){
+					StringBuffer sb=new StringBuffer(100);
+                                	sb=sb.append("ppt");
+                                	sb=sb.append("$");
+                                	sb=sb.append("cancleppt");
+					String send_msg=sb.toString();
+                               		utilObject.setSendQueue(send_msg);
+                                	getCanclePPT();
+                        	}
+                	});
+		}
 	}
 	
 	public void getCanclePPT(){
@@ -124,25 +98,34 @@ public class SlideShowWindow extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent ae){
                 if(ae.getSource()==next){
 			f=new File("temp/presentation");
-			str=f.list();	
-			if(temp <str.length){
+			String str[]=f.list();	
+			if(temp==(str.length-1)){
+				JOptionPane.showMessageDialog(null," This is last .ppt !!");
+			}else {
 				temp=temp+1;
 				ImageLoadforStudent.getController().runSlide(temp);	
-				UDPSender.getController().getSendQueue().putString(Integer.toString(temp));
-			}else{
-				JOptionPane.showMessageDialog(null," This last image !!");
+				StringBuffer sb=new StringBuffer(100);
+        	                sb=sb.append("ppt");
+	                        sb=sb.append("$");
+                	        sb=sb.append(Integer.toString(temp));
+				String send_msg=sb.toString();
+                        	utilObject.setSendQueue(send_msg);
 			}
 		}
 		if(ae.getSource()==privious){
 			if(temp>0){
 				temp=temp-1;
-				ImageLoadforStudent.getController().runSlide(temp);
-				UDPSender.getController().getSendQueue().putString(Integer.toString(temp));
+                                ImageLoadforStudent.getController().runSlide(temp);
+				StringBuffer sb=new StringBuffer(100);
+                                sb=sb.append("ppt");
+                                sb=sb.append("$");
+                                sb=sb.append(Integer.toString(temp));
+				String send_msg=sb.toString();
+                                utilObject.setSendQueue(send_msg);
 			}else{
-				JOptionPane.showMessageDialog(null," This is start image !!");
+				JOptionPane.showMessageDialog(null," This is start .ppt !!");
 			}
 	
                 }
 	}
-
 }

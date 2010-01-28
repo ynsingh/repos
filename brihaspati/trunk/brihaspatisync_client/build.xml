@@ -44,8 +44,17 @@
       		       debug="${debug}"
       		       deprecation="${deprecation}"
       		       optimize="${optimize}">
+		       <classpath refid="classpath"/>	
     		</javac>
 	</target>
+	<!-- arvind -->
+	<path id="classpath">
+	    <fileset dir="${lib.dir}" >
+      		<include name="**/*.jar"/>
+        </fileset>
+  </path>
+	
+	<!-- arvind -->
 	
 	<!-- -->
 	<target name="jar" depends="compile" description="**** Create executable JAR file">

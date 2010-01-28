@@ -55,7 +55,8 @@ public class WhiteBoardDraw extends JPanel implements ItemListener, MouseListene
         private JTextField data=null;
         private Image OSC=null;
         private Graphics OSG=null;
-        private int widthOfOSC=0, heightOfOSC=0;
+		
+        private int  widthOfOSI=0, heightOfOSI=0;
         private int prevX=0, prevY=0;
         private int startX=0, startY=0;
         private boolean dragging;
@@ -237,12 +238,12 @@ public class WhiteBoardDraw extends JPanel implements ItemListener, MouseListene
         /*Implementing the Double buffering */
 
         private void setupOSC() {
-                if(OSG==null) {
-			Dimension OffDim=getSize();
-                        OSC=createImage(OffDim.width+900,OffDim.height+900);
+                if(OSG==null ) {
+                        OSC=createImage(getSize().width,getSize().height);
 			OSG=OSC.getGraphics();
                         OSG.setColor(getBackground());
-                        OSG.fillRect(0, 0, OffDim.width-1,OffDim.height-1);
+                        OSG.fillRect(0, 0, getSize().width-1,getSize().height-1);
+			
                 }
         }
 
@@ -324,8 +325,8 @@ public class WhiteBoardDraw extends JPanel implements ItemListener, MouseListene
                         setFont(myfont);
                         log.setLog("String of msg==>"+msgdata);
                         g.drawString(msgdata,x1,y1);
-                       	WhiteBoardDataSender datasender=new WhiteBoardDataSender(col,figure,x1,y1,0,0,textname,sizedata,msgdata);
-                        act_msg=datasender.sendpacket();
+                       	WhiteBoardDataSender.getController().sendUnicastPacket(col,figure,x1,y1,0,0,textname,sizedata,msgdata);
+                        
                 }
                 if (kind == LINE)   g.drawLine(x1, y1, x2, y2);
                 else {
@@ -397,8 +398,8 @@ public class WhiteBoardDraw extends JPanel implements ItemListener, MouseListene
                                 graphicsForDrawing.setPaintMode();
                                 putFigure(graphicsForDrawing, figure, startX, startY,prevX,prevY,false);
                                 putFigure(offscreenGraphics, figure, startX, startY,prevX, prevY,false);
-                                WhiteBoardDataSender datasender=new WhiteBoardDataSender(col,figure,startX,startY,prevX,prevY,"blank",0,"blank");
-                              	act_msg=datasender.sendpacket();
+                                WhiteBoardDataSender.getController().sendUnicastPacket(col,figure,startX,startY,prevX,prevY,"blank",0,"blank");
+                              	
                         }
                 }
                 graphicsForDrawing.dispose();
@@ -416,9 +417,8 @@ public class WhiteBoardDraw extends JPanel implements ItemListener, MouseListene
 
                 if (figure == CURVE && figure!=8) {
                         putFigure(graphicsForDrawing, LINE, prevX, prevY, x, y, false);
-                        WhiteBoardDataSender datasender=new WhiteBoardDataSender(col,0,prevX,prevY,x,y,"blank",0,"blank");
-		 	act_msg=datasender.sendpacket();
-                        putFigure(offscreenGraphics, LINE, prevX, prevY, x, y, false);
+                        WhiteBoardDataSender.getController().sendUnicastPacket(col,0,prevX,prevY,x,y,"blank",0,"blank");
+	                putFigure(offscreenGraphics, LINE, prevX, prevY, x, y, false);
                 }
                 else {
                         putFigure(graphicsForDrawing, figure, startX, startY, prevX, prevY,true);
@@ -435,8 +435,7 @@ public class WhiteBoardDraw extends JPanel implements ItemListener, MouseListene
                 OSG.setColor(Color.white);
                 OSG.fillOval(pt.x, pt.y,40,40);
                 repaint();
-              	WhiteBoardDataSender datasender=new WhiteBoardDataSender(10,9,pt.x,pt.y,0,0,"blank",0,"blank");
-                act_msg=datasender.sendpacket();
+              	WhiteBoardDataSender.getController().sendUnicastPacket(10,9,pt.x,pt.y,0,0,"blank",0,"blank");
         }
 
         public void mouseEntered(MouseEvent evt) { }

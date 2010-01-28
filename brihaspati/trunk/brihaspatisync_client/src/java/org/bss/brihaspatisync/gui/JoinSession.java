@@ -16,12 +16,13 @@ import java.util.TimerTask;
 import java.util.Vector;
 import org.bss.brihaspatisync.util.HttpsUtil;
 import org.bss.brihaspatisync.util.ClientObject;
+
 import org.bss.brihaspatisync.network.ReceiveQueueHandler;
-import org.bss.brihaspatisync.tools.whiteboard.WhiteBoardDraw;	
 import org.bss.brihaspatisync.network.http.HTTPClient;
-import org.bss.brihaspatisync.tools.audio_video.AVTransmitReceiveHandler;
 import org.bss.brihaspatisync.network.Log;
 
+import org.bss.brihaspatisync.tools.whiteboard.WhiteBoardDraw;	
+import org.bss.brihaspatisync.tools.audio_video.AVTransmitReceiveHandler;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
@@ -102,17 +103,11 @@ public class JoinSession {
 	protected void startGUIThread(){
 		if(!join_Flag)
 			join_Flag=true;
-		//hide courseSessionWindow GUI.
 		CourseSessionWindow.getController().setVisible(false);
-
-		// Add JoinSessionPanel with MainWindow's desktop which having whiteboard, chat,
-		// audio/video,userlist,presentation GUI Panel. 
                 MainWindow.getController().getContainer().remove(MainWindow.getController().getDesktop());
                 MainWindow.getController().getContainer().add(JoinSessionPanel.getController().createGUI(),BorderLayout.CENTER);
 		MainWindow.getController().getContainer().validate();
 		MainWindow.getController().getContainer().repaint();
-		//start Timer which retrive userlist from secondary index serveri's in (60*60*2) time interval.
-			
            	try{
                 	UL_Timer=new Timer(true);
 			UL_Timer.schedule(UserListTimer.getController(),01,60*60*2);

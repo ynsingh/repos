@@ -119,10 +119,6 @@ public class ClientObject {
          * from HttpCommManager.
          */
         public Vector getStudCourseList(){
-		//if(studCourseList!=null)
-		//	studCourseList=null;
-                //studCourseList= commMgr.getStudCourseList();
-                //return studCourseList;
                 return commMgr.getStudCourseList();
        }
 
@@ -131,10 +127,6 @@ public class ClientObject {
          * from HttpCommManager.
          */
         public Vector getInstCourseList(){
-		//if(instCourseList!=null)
-		//	instCourseList=null;
-                //instCourseList= commMgr.getInstCourseList();
-                //return instCourseList;
 		return commMgr.getInstCourseList();	
         }
 
@@ -144,10 +136,6 @@ public class ClientObject {
          * from HttpCommManager.
          */
 	public Vector getStudSessionList(){
-		//if(studSessionList!=null)
-		//	studSessionList=null;
-		//studSessionList= commMgr.getStudSessionList();
-		//return studSessionList;
 		return commMgr.getStudSessionList();
 	}
 
@@ -156,10 +144,6 @@ public class ClientObject {
 	 * from HttpCommManager.
          */
 	public Vector getInstSessionList(){
-		//if(instSessionList!=null)
-		//	instSessionList=null;
-                //instSessionList= commMgr.getInstSessionList();
-                //return instSessionList;
 		return commMgr.getInstSessionList();
         }
 

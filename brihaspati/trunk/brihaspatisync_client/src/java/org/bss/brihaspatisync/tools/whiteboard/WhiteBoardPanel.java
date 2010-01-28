@@ -17,6 +17,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JButton;
@@ -24,6 +25,7 @@ import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.ImageIcon;
+import javax.swing.JScrollPane;
 import javax.swing.JColorChooser;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
@@ -35,16 +37,14 @@ import org.bss.brihaspatisync.util.ClientObject;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
+ * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>
  */
 
 public class WhiteBoardPanel extends JPanel implements ActionListener, MouseListener{
 
         private JPanel mainPanel;
-        private JPanel west_mainPanel;
 	private JPanel center_mainPanel;
         private static WhiteBoardPanel wbPanel=null;
-	private WhiteBoardDraw wb_draw=null;
-
 	private TitledBorder titleBorder;
 	private static int button_value=0;
 	private  JButton curveButton;
@@ -81,7 +81,7 @@ public class WhiteBoardPanel extends JPanel implements ActionListener, MouseList
 
 	}
 
-        public  JPanel createGUI(){
+       	public JPanel createGUI(){
                 
                 mainPanel=new JPanel();
                 mainPanel.setLayout(new BorderLayout());
@@ -181,15 +181,13 @@ public class WhiteBoardPanel extends JPanel implements ActionListener, MouseList
 
 
 		mainPanel.add(toolBar,BorderLayout.PAGE_START);
-
-
-		//wb_draw=new WhiteBoardDraw();
-		//wb_draw.createGUI();
-                //JScrollPane scroll=new JScrollPane(wb_draw);
-		//scroll.setBackground(Color.WHITE);
+		center_mainPanel=WhiteBoardDraw.getController();
+		center_mainPanel.setBackground(Color.white);
 		
-                mainPanel.add(WhiteBoardDraw.getController(),BorderLayout.CENTER);
+		JScrollPane scroller = new JScrollPane(center_mainPanel);
+                scroller.setPreferredSize(new Dimension(1000,1000));
 
+		mainPanel.add(scroller,BorderLayout.CENTER);
 
 		JToolBar texttool = new JToolBar("TextToolbar");
 
@@ -201,11 +199,10 @@ public class WhiteBoardPanel extends JPanel implements ActionListener, MouseList
 		texttool.addSeparator();
 		
 		JButton Insert = new JButton("Insert");
-                //Insert.setBorder(BorderFactory.createEtchedBorder(Color.blue,Color.yellow));
 		Insert.addActionListener(WhiteBoardDraw.getController());
                 texttool.add(Insert);
 		texttool.addSeparator();
-	
+		
                 JLabel size = new JLabel("Font-size",JLabel.LEFT);
 
                 fontsize=new JComboBox();
@@ -245,8 +242,8 @@ public class WhiteBoardPanel extends JPanel implements ActionListener, MouseList
                 WhiteBoardDraw.getController().setTextChoice(f_Name);
                 WhiteBoardDraw.getController().setSizeChoice(fontsize);
                 WhiteBoardDraw.getController().setData(input_text);;
-		mainPanel.validate();
-
+		//mainPanel.validate();
+		mainPanel.revalidate();
 		return mainPanel;
 	}
 	

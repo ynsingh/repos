@@ -14,13 +14,20 @@ import org.bss.brihaspatisync.network.util.Queue;
 import org.bss.brihaspatisync.network.util.UtilObject;
 import org.bss.brihaspatisync.tools.chat.ChatPanel;
 import org.bss.brihaspatisync.tools.whiteboard.WhiteBoardDraw;
+import org.bss.brihaspatisync.tools.presentation.SlideShowWindow;
+import org.bss.brihaspatisync.tools.presentation.ImageLoadforStudent;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
+ * @author <a href="mailto:arvindjass17@gmail.com">Arvind Pal </a>	
  */
 
 
 public class ReceiveQueueHandler implements Runnable{
+
+	private int tempInt=0;
+	
+        private int tempInt1=0;	
 
         private Thread runner = null;
 
@@ -79,21 +86,39 @@ public class ReceiveQueueHandler implements Runnable{
 	public void run(){
 		while(rec_Flag){
 			try{
-				while(utilobject.getRecQueueSize() != 0){
+				synchronized(utilobject){
+					while(utilobject.getRecQueueSize() != 0){
 					String datastr=utilobject.getRecQueue();
 					StringTokenizer st=new StringTokenizer(datastr,"$");
 					while(st.hasMoreTokens()){
 						String type=st.nextToken();
+				
 						if(type.equals("wb")){
                                        			WhiteBoardDraw.getController().getDraw_vector().addElement(datastr); 
 						}else if(type.equals("ch")){
 							String data=st.nextToken();
 							ChatPanel.getController().showChatMSG(data);
+						} else if(type.equals("ppt")){
+							String data=st.nextToken();
+							if(data.equals("cancleppt")){
+                        			                SlideShowWindow.getController().getCanclePPT();
+								tempInt=0;tempInt1=0;
+                                			}else{
+                                        			int slide_index=Integer.parseInt(data);
+                                        			if(tempInt==tempInt1){
+                                                			tempInt++;
+									SlideShowWindow.getController().setUPGUI();
+									ImageLoadforStudent.getController().runSlide(slide_index);
+                                                		}else{
+									ImageLoadforStudent.getController().runSlide(slide_index);
+                                                		}
+                                			}
 						}
+					}
 					}
 				}
 				runner.yield();
-				runner.sleep(100);
+				runner.sleep(10);
 			}catch(Exception e){}
 		}	
 	}

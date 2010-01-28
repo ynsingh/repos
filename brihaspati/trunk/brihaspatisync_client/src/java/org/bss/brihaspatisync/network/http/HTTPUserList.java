@@ -19,6 +19,9 @@ import org.bss.brihaspatisync.Client;
 
 import org.bss.brihaspatisync.network.Log;
 
+import org.bss.brihaspatisync.network.ftp.FTPClient;
+import org.bss.brihaspatisync.util.ClientObject;
+import org.bss.brihaspatisync.util.RuntimeDataObject;
 import org.bss.brihaspatisync.network.util.UtilObject;
 
 /**
@@ -32,7 +35,7 @@ public class HTTPUserList {
 	
 	private UtilObject utilObject=UtilObject.getController();
 
-	private final String refHttpPort=Integer.toString(Client.getController().getRefHttpPort());
+	private final String refHttpPort=RuntimeDataObject.getController().getRefHttpPort();
 		
 	private Log log=Log.getController();
 
@@ -45,6 +48,7 @@ public class HTTPUserList {
 			httpUserList=new HTTPUserList();
 		return httpUserList;
 	}
+	
 	public Vector getUserList(String reflectorIP,String lect_id) {
       		try {
 			vector.clear();
@@ -73,7 +77,9 @@ public class HTTPUserList {
                 	}
 			if(vector.size()>0)
 				return vector;	
-                }catch(Exception ex){ log.setLog(" HTTP UserList could not connect "+ex.getMessage());  }
+                	if((ClientObject.getController().getUserRole()).equals("student"))
+                        	FTPClient.getController().startFTPClient("GET");
+		}catch(Exception ex){ log.setLog(" HTTP UserList could not connect "+ex.getMessage());  }
 		return null;
   	}
 }

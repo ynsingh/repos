@@ -69,8 +69,8 @@ public class JoinSessionPanel extends JPanel implements ActionListener, MouseLis
                 JPanel new_Pane=new JPanel();
                 new_Pane.setLayout(new BorderLayout());
 		//Audio Vedio Panel
-			
-		        av_Pane=new JPanel();
+		
+		av_Pane=new JPanel();
                 av_Pane.setLayout(new BorderLayout());
 		av_Pane.setBackground(Color.BLACK);
 		//PPT Presentation Panel
@@ -99,7 +99,7 @@ public class JoinSessionPanel extends JPanel implements ActionListener, MouseLis
 		right_Pane.setLayout(new BorderLayout());
 		right_Pane.add(WhiteBoardPanel.getController().createGUI(),BorderLayout.CENTER);
 		right_Pane.setBackground(Color.WHITE);
-        splitPane=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left_Pane,right_Pane);
+        	splitPane=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left_Pane,right_Pane);
 		splitPane.setBackground(Color.WHITE);
                 splitPane.setDividerLocation(275);
 		return splitPane;
