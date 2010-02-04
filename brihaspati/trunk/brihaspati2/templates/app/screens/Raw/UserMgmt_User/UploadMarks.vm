@@ -8,6 +8,7 @@
 
 $page.setBgColor($ui.bgcolor)
 $page.setTitle("Upload Marks")
+$!data.getMessage()
 #set ($lang=$data.getUser().getTemp("lang" ).toString())
 
 <table bgcolor="$ui.tableColor" width=100%>
@@ -32,7 +33,6 @@ $page.setTitle("Upload Marks")
 #if($fileExists=="true")
 ##<table align="left" width=100% bgcolor="$ui.tableColor">
 <tr>
-<td><b>$!data.getMessage()</b></td>
 <td><a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("type","marks").addPathInfo("filename",$fileName)","newWin");> #if($lang=="hindi") $brih_marks $brih_list $brih_Of1 $brih_view #else $brih_view $brih_marks #end </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </td>
 <td><a href="$link.setPage("call,ViewFileContent.vm").addPathInfo("type","marks").addPathInfo("dl",1).addPathInfo("filename",$fileName)"> #if($lang=="hindi") $brih_marks $brih_list $brih_Of1 $brih_download #else $brih_download $brih_marks #end </a>&nbsp;&nbsp;

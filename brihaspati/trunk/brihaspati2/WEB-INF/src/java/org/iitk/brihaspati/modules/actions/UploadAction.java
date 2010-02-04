@@ -35,31 +35,34 @@ package org.iitk.brihaspati.modules.actions;
  *
  */
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.FileOutputStream;
 import java.util.Vector;
+import java.util.StringTokenizer;
+
 import org.apache.velocity.context.Context;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.om.security.User;
-import org.apache.commons.fileupload.FileItem;
 import org.apache.turbine.services.servlet.TurbineServlet;
+
+import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
+
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.FileEntry;
+import org.iitk.brihaspati.modules.utils.XmlWriter;
+import org.iitk.brihaspati.modules.utils.FileEntry;
+import org.iitk.brihaspati.modules.utils.QuotaUtil;
+import org.iitk.brihaspati.modules.utils.GroupUtil;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.TotalFileCount;
+import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
-import org.iitk.brihaspati.modules.utils.FileEntry;
-import org.iitk.brihaspati.modules.utils.XmlWriter;
-import org.iitk.brihaspati.modules.utils.TotalFileCount;
-import org.iitk.brihaspati.modules.utils.MultilingualUtil;
-import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
-import org.iitk.brihaspati.modules.utils.FileEntry;
-import org.iitk.brihaspati.modules.utils.QuotaUtil;
-import org.iitk.brihaspati.modules.utils.UserUtil;
-import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
-import org.iitk.brihaspati.modules.utils.GroupUtil;
-//import org.iitk.brihaspati.modules.utils.DiscSpaceUtil;
-import java.util.StringTokenizer;
+
 /**
  * Class responsible for Upload files in particuler Area
  *
@@ -69,6 +72,7 @@ import java.util.StringTokenizer;
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:seema_020504@yahoo.com">Seema Pal</a>
  * @author <a href="mailto:kshuklak@rediffmail.com">Kishore kumar shukla</a> 
+ * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  */
 
 public class UploadAction extends SecureAction_Instructor
@@ -209,8 +213,7 @@ public class UploadAction extends SecureAction_Instructor
 							File descFile= new File(topicDir+"/"+contentTopic+"__des.xml");
                                         		if(!descFile.exists())
 							TopicMetaDataXmlWriter.writeWithRootOnly(descFile.getAbsolutePath());
-                        				if(Pub.equals("Publish"))
-                               			 	xmlWriter=TopicMetaDataXmlWriter.WriteXml_New(Path,contentTopic);
+							
 							int readCount;
 							InputStream is=fileItem.getInputStream();
                                         		FileOutputStream fos=new FileOutputStream(filePath+tempFile[count]);
@@ -240,11 +243,12 @@ public class UploadAction extends SecureAction_Instructor
                        		{
                                		for(int k=0;k<new_files_uploaded.size();k++)
                                		{
-                                       		String fileName=(String)new_files_uploaded.get(k);
+                                       		String fileName=new_files_uploaded.get(k).toString();
+                               			xmlWriter=TopicMetaDataXmlWriter.WriteXml_New(Path,contentTopic);
                                        		TopicMetaDataXmlWriter.appendFileElement(xmlWriter,fileName,fileName,dateOfCreation);
+                       				xmlWriter.writeXmlFile();
                                		}//for
                        		}//if
-                       		xmlWriter.writeXmlFile();
 			}//ifpublish
 			if(successfulUploadFilesCount>0) 
 			{	

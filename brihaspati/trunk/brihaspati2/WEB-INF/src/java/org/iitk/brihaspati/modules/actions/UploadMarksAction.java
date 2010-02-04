@@ -33,25 +33,37 @@ package org.iitk.brihaspati.modules.actions;
  * 
  *  
  */
+
 import java.io.File;
 import java.util.List;
+import java.util.Vector;
+
 import org.apache.velocity.context.Context;
+import org.apache.commons.fileupload.FileItem;
+
+import org.apache.torque.util.Criteria;
+
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.services.security.torque.om.TurbineUser;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
+
+import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.MailNotification;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.torque.util.Criteria;
+import org.iitk.brihaspati.modules.utils.CourseUserDetail;
+import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
+
 /**
  * In this class, We upload marks in txt format file
+ * @author <a href="mailto:nksinghiitk@yahoo.co.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:ammu_india@yahoo.com">Amit Joshi</a>
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar Pal</a>
  * @modified date 29-12-2009
  */
 
@@ -117,6 +129,7 @@ public class UploadMarksAction extends SecureAction_Instructor
 				String marksUploadStr="Marks are uploaded in"+courseHome;
 				Criteria crit=new Criteria();
 		                crit.add(TurbineUserPeer.LOGIN_NAME,userName);
+				//mail for Instructor
                 		try
                 		{
 		                        List v=TurbineUserPeer.doSelect(crit);
@@ -126,8 +139,23 @@ public class UploadMarksAction extends SecureAction_Instructor
 						mailMsg=MailNotification.sendMail(marksUploadStr, mailId, "", "Updation Mail", "", "", "", serverName, serverPort, (String)user.getTemp("LangFile"));
                 		}
 		                catch(Exception e)
-                		{
-                		}
+                			{data.setMessage("The error in sending mail to instructor for update/Upload marks !!"+e);}
+
+				//mail for student
+                                try{
+                                        int grid=GroupUtil.getGID(courseHome);
+                                        Vector usDetail=UserGroupRoleUtil.getUDetail(grid, 3);
+                                        for(int i=0; i<usDetail.size(); i++){
+                                                mailId=((CourseUserDetail) usDetail.elementAt(i)).getEmail().trim();
+                                                if(mailId != null && mailId != ""){
+                                                mailMsg=MailNotification.sendMail(marksUploadStr, mailId, "", "Updation Mail", "", "", "", serverName, serverPort, (String)user.getTemp("LangFile"));
+                                                }
+                                                usDetail=null;
+                                        }
+                                }
+                                catch(Exception ex)
+                                        { data.setMessage("The error in sending mail to student for update/Upload marks" + ex); }
+
 
 				String onUploadMessage=MultilingualUtil.ConvertedString("Marks_msg2",LangFile);
 				if(marksExist)
