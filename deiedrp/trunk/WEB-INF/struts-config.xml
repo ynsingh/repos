@@ -1,0 +1,561 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://struts.apache.org/dtds/struts-config_1_3.dtd">
+
+<struts-config>
+
+<form-beans >
+  	<form-bean name="loginform" type="login.LoginForm" />
+  	<form-bean name="passwordform" type="changePassword.PasswordForm"/>
+  	<form-bean name="projectform" type="projmanage.ProjectForm"/>
+  	
+  	<form-bean name="backprojectsearchform" type="org.apache.struts.action.DynaActionForm">
+      <form-property name="back" type="java.lang.String" />
+      </form-bean>
+ 	<form-bean name="backorgsearchform" type="org.apache.struts.action.DynaActionForm">
+      <form-property name="back" type="java.lang.String" />
+      </form-bean>
+ 
+  	<form-bean name="peoplesearchform" type="peoplesearch.PeopleSearchForm" />
+  	<form-bean name="projectsearchform" type="searching.ProjectSearchForm" />
+  	<form-bean name="editform" type="updation.EditForm" />
+  	<form-bean name="gcform" type="ganttChart.GanttChartForm" />
+  	<form-bean name="projassignform" type="member.ProjAssignForm" />
+  	<form-bean name="taskform" type="task.TaskForm" />
+  	<form-bean name="showtaskform" type="task.ShowTaskForm" />
+  	 <form-bean name="edittaskform" type="updation.EditTaskForm" />
+  	  
+  	  	<!-- Starting For organization -->
+  	
+    <form-bean name="editorgform" type="organization.EditOrgForm" />
+    <form-bean name="orgform" type="organization.OrgForm" />
+    <form-bean name="searchorgform" type="organization.SearchOrgForm" />
+  			<!-- Ending For Organisation -->
+  			<form-bean name="uploadfileform" type="upload.UploadFileForm" />
+  
+  </form-beans>
+    
+  <global-exceptions />
+  <global-forwards>
+  
+  <forward name="orgData"
+	path="/orgInfo.do"
+	redirect="true" />
+	
+  <forward name="fileDownloadList"
+	path="/fileDownloadList.do"
+	redirect="true" />
+	
+	<forward name="viewdownloadlist"
+	path="/viewdownload.do"
+	redirect="true" />
+<!-- Organisation part Starts -->
+
+	<!-- for View organization -->
+	<forward name="orgList"
+	path="/orgList.do"
+	redirect="true" />
+	
+	<!-- for search organization -->
+	<forward name="orgSearchList"
+	path="/orgSearchList.do"
+	redirect="true" />
+	
+	<!-- Organisation part Ends -->
+	
+	<forward name="welcome"
+	path="/welcome.do"
+	redirect="true" />
+	
+	<forward name="projectList"
+	path="/projectList.do"
+	redirect="true" />
+	
+	<forward name="updateOperation"
+	path="/updateOperation.do"
+	redirect="true" />
+	
+	<forward name="projectSearchList"
+	path="/projectSearchList.do"
+	redirect="true" />
+	
+	<forward name="taskList"
+	path="/taskList.do"
+	redirect="true" />
+	
+</global-forwards>
+<action-mappings >
+
+	<action 
+            path="/jspException" 
+            scope="request"
+            type="myValidator.JspExceptionHandlerAction" >
+            <forward name="exception" path="page.handler"/> 
+	</action> 
+	
+
+	<action
+     	 attribute="loginform"
+     	 input="/login.jsp"
+    	 name="loginform"
+     	 path="/login"
+     	 scope="request"
+    	 type="login.LoginAction" >
+       <forward name="valid" path="/WEB-INF/JspFiles/common/index.jsp" />
+       <forward name="admin" path="/WEB-INF/JspFiles/common/index.jsp" />
+       <forward name="invalid" path="/login.jsp" />
+    </action>
+	
+	<action path="/logout"
+		type="login.LogoutAction">
+		<forward name="Logout" path="/logout.jsp" />
+	</action>
+	
+	<!-- Change Password Start -->
+	
+	    <action
+    	attribute="passwordform"
+      	input="page.changepassword"
+      	name="passwordform"
+      	path="/changepass"
+      	scope="request"
+      	validate="true"
+      	type="changePassword.RePasswordAction">
+   	  	<forward name="passinfo" path="page.changepasswordMessage" />
+     </action>
+    <action
+      path="/changeOwnpassword"
+      type="changePassword.ChangePasswordAction">
+      <forward name="forwardPass" path="page.changepassword" />
+      </action>
+        
+    <!-- Change Password Ends -->
+    
+    <!-- People search starts -->
+    <action
+      path="/searchpeople"
+      scope="request"
+      type="peoplesearch.PeopleSearchAction" > 
+      <forward name="peoplesearch" path="page.peoplesearch" />
+      </action>
+    <action
+      attribute="peoplesearchform"
+      input="page.peoplesearch"
+      name="peoplesearchform"
+      path="/searchaction"
+      scope="session"
+      validate="true"
+      type="peoplesearch.PeopleSearchResultAction">
+      <forward name="success" path="page.peoplesuccess" />
+    </action>
+    
+	<!-- People search Ends -->
+	
+	<action
+    	attribute="projectform"
+      	input="page.newproject"
+      	name="projectform"
+      	path="/go"
+      	scope="request"
+      	validate="true"
+      	type="projmanage.ProjectAction">
+   	  	<forward name="success" path="page.newproject" />
+     	<forward name="projectfail" path="page.projectfail"/>
+   </action>
+
+	<action
+      	path="/newproject"
+      	type="projmanage.ProjectAction1" >
+      	<forward name="notshow" path="/login.jsp" />
+      	<forward name="project" path="page.newproject"/>
+     </action>
+          
+      <action        
+        	path="/projectList"
+      		type="projmanage.ProjectListAction" >
+      		<forward name="projectlist" path="page.projectlist"/>
+       </action>
+       
+       <action 
+       		path="/viewproject"
+			type="projmanage.ProjectListAction1">
+		<forward name="viewproject" path="/WEB-INF/JspFiles/projectManage/viewproject.jsp" />
+	   </action>
+
+												
+	<action
+      path="/searchproject"
+      type="searching.ProjectSearchAction1" >
+      <forward name="searchproject" path="page.searchproject"/>
+              </action>
+     
+     <action
+     path="/button"
+     input="/search.success"
+     name="backprojectsearchform"
+     type="searching.ProjectSearchAction1" >
+      <forward name="searchproject" path="page.searchproject"/>
+      </action>
+            
+              
+       <action
+      attribute="projectsearchform"
+      input="/projectSearch.jsp"
+      name="projectsearchform"
+      path="/go2"
+      scope="request"
+      type="searching.ProjectSearchAction" >
+   <forward name="success" path="/WEB-INF/JspFiles/searching/viewdesiredproject.jsp" />
+       </action>
+       
+       <action        
+        path="/projectSearchList"
+      type="searching.ProjectSearchListAction" >
+      <forward name="projectsearchlist" path="search.success"/>
+       </action>
+    <action        
+        path="/editProject"
+      type="updation.EditProjectAction">
+      <forward name="editproject" path="edit.project"/>
+       </action>
+   
+   <action
+      attribute="editform"
+      input="edit.project"
+      name="editform"
+      path="/go3"
+      scope="request"
+      validate="true"
+      type="updation.EditAction" >
+      <forward name="updateoperation" path="/WEB-INF/JspFiles/edit/UpdateOperation.jsp" />
+      <forward name="success" path="/WEB-INF/JspFiles/searching/viewdesiredproject.jsp" />
+      </action>
+    
+   <action        
+        path="/deleteProject"
+      type="updation.DeleteProjectAction">
+      <forward name="deleteproject" path="/WEB-INF/JspFiles/searching/viewdesiredproject.jsp"/>
+       <forward name="updateoperation" path="/WEB-INF/JspFiles/edit/UpdateOperation.jsp" />
+       </action>
+     
+	<action
+      path="/updateoperation"
+      type="updation.UpdateAction" >
+      <forward name="update" path="/WEB-INF/JspFiles/edit/UpdateOperation.jsp" />
+              </action>
+	   <action        
+        path="/updateOperation"
+      type="updation.UpdateOperationAction" >
+      <forward name="updateList" path="update.updatedlist"/>
+       </action> 
+    
+	<action
+    	  path="/ganttchart"
+      	  type="ganttChart.GanttChartAction" >
+     	 <forward name="ganttChart" path="page.ganttChart"/>
+    </action>
+    										
+    <action
+       path="/drawGanttChart"
+       type="ganttChart.GanttWithXmlAction" >
+     <forward name="dgchart" path="gchart.ganttChart"/>
+	 <forward name="charterror" path="chart.fail"/>    
+     </action>
+    
+    
+    <action
+      attribute="gcform"
+      input="page.ganttChart"
+      name="gcform"
+      path="/DrawGanttChart"
+      scope="request"
+      validate="true"
+      type="ganttChart.GanttWithXmlAction" >
+     <forward name="dgchart" path="gchart.ganttChart"/>
+	 <forward name="charterror" path="chart.fail"/>    
+     </action>
+       
+<action
+      path="/assignproject"
+      type="member.AssignProjectAction1" >
+      <forward name="notassign" path="/login.jsp" />
+      <forward name="assigning" path="page.assignproject"/>
+      </action>
+<action
+      attribute="projassignform"
+      input="page.assignproject"
+      name="projassignform"
+      path="/assign"
+      scope="request"
+      validate="true"
+      type="member.ProjAssignAction">
+      <forward name="assignsuccess" path="page.assignsuccess"/>
+      <forward name="assignfail" path="page.assignfail"/>
+      <forward name="alreadyAssigned" path="page.alreadyAssigned"/>
+      </action>
+
+	<action path="/viewmember" type="member.ViewMemberAction" >
+         <forward name="viewmember" path="page.memberList" />
+      </action>
+
+
+<action
+      path="/newtask"
+      type="task.TaskAction1" >
+      <forward name="notshowtask" path="/login.jsp" />
+      <forward name="task" path="page.newtask"/>
+      </action>
+
+<action
+      attribute="taskform"
+      input="page.newtask"
+      name="taskform"
+      path="/task"
+      scope="request"
+      validate="true"
+      type="task.TaskAction" >
+     <forward name="success" path="page.newtask" />
+     <forward name="taskAssignfail" path="page.taskAssignfail"/>
+     </action>
+
+	<action
+    	  path="/viewtask"
+      	  type="task.ShowTaskAction1" >
+     	 <forward name="showtask" path="page.showTask"/>
+    </action>
+
+ <action
+      attribute="showtaskform"
+      input="page.showTask"
+      name="showtaskform"
+      path="/showTask"
+      scope="request"
+      type="task.ShowTaskAction">
+      <forward name="tasklist" path="page.tasklist" />
+    </action>
+
+<action        
+        path="/editTask"
+      type="updation.EditTaskAction">
+      <forward name="edittask" path="edit.task"/>
+      <forward name="fail" path="page.reupdationFail" />
+       </action>
+
+<action
+      attribute="edittaskform"
+      input="edit.task"
+      name="edittaskform"
+      path="/go4"
+      scope="request"
+      validate="true"
+      type="updation.EditingTaskAction" >
+      <forward name="successtask" path="/WEB-INF/JspFiles/task/ReviewTask.jsp" />
+      <forward name="updationfail" path="page.updationFail" />
+    </action>
+    
+	<action        
+        	path="/taskList"
+      		type="task.ReviewTaskAction">
+	<forward name="tasklist" path="page.tasklist"/>
+       </action>
+
+	<action        
+        path="/deleteTask"
+      type="updation.DeleteTaskAction">
+      <forward name="taskDeletionSuccess" path="/WEB-INF/JspFiles/task/ReviewTask.jsp" />
+       <forward name="taskDeletionFail" path="page.fail" />
+       </action>
+
+
+<!-- Organisation part Starts -->
+
+    <!-- FOR NEW ORGANIZATION -->
+    
+   <action path="/neworganization" type="organization.ForwardNewOrgAction">
+      <forward name="neworg" path="page.neworganization" />
+    </action>
+    <action
+      	path="/orgInfo"
+      	type="organization.OrgDetailAction" >
+      	<forward name="orginfo" path="page.orgdata"/>
+     </action>
+    
+    
+    <action
+      attribute="orgform"
+      input="page.neworganization"
+      name="orgform"
+      path="/saveorganization"
+      scope="request"
+      validate="true"
+      
+      type="organization.AddNewOrganisationAction" >
+      <forward name="info" path="page.orginfo" />
+     </action> 
+     
+     <!-- FOR VIEW ORGANIZATION -->
+    
+    <action path="/vieworganization" type="organization.ViewOrganisationAction">
+      <forward name="vieworg" path="/WEB-INF/JspFiles/Organization/vieworg.jsp" />
+    </action>
+
+    <action        
+      path="/orgList"
+      type="organization.OrgListAction" >
+      <forward name="orglist" path="page.orglist"/>
+    </action>
+       
+   <!-- FOR SEARCH ORGANIZATION -->
+     <action 
+    		path="/searchorganization" 
+    		type="organization.SearchOrganisationAction"
+    		scope="request">
+      <forward name="searchorg" path="page.searchorganization" />
+    </action>
+               
+   <action
+      attribute="searchorgform"
+      input="page.searchorganization"
+      name="searchorgform"
+      path="/searchorg"
+      scope="request"
+      type="organization.OrgSearch" >
+   <forward name="success" path="/WEB-INF/JspFiles/Organization/orgSearch.jsp" />
+    </action>
+     
+    <action        
+        path="/orgSearchList"
+      type="organization.OrgSearchListAction" >
+      <forward name="orgsearchlist" path="page.orgsuccess"/>
+       </action>
+    
+    <action
+     path="/backbutton"
+     input="/page.orgsuccess"
+     name="backorgsearchform"
+     type="organization.SearchOrganisationAction"
+     scope="request">
+      <forward name="searchorg" path="page.searchorganization" />
+        </action>
+   
+   <!-- For Edit and Remove Organization -->
+	
+	<action
+     path="/editorgpage"
+      scope="request"
+      type="organization.EditOrg">
+      <forward name="editorgpage" path="page.editorgpage" />
+     <!--    <forward name="searchorg" path="page.searchorganization" /> -->
+    </action>
+    
+	<action
+      attribute="editorgform"
+      input="page.editorgpage"
+      name="editorgform"                                
+      path="/editorg"
+      scope="request"
+      validate="true"
+      type="organization.EditOrgAction">
+      <forward name="successorg" path="/WEB-INF/JspFiles/Organization/orgSearch.jsp"/>
+   	  </action>
+    
+    
+    <action
+      path="/deleteorg"
+      scope="request"
+      type="organization.DeleteOrgAction">
+      <forward name="deleteorg" path="/WEB-INF/JspFiles/Organization/orgSearch.jsp" />
+   <!--   <forward name="searchorg" path="page.searchorganization" /> -->
+    </action>
+    
+   
+	 <!-- Organisation part Ends -->
+
+<!-- for upload/downloadlink starts-->
+
+         <action 
+         path="/upload" 
+         type="upload.UploadFile">
+      <forward name="project" path="page.newupload" />
+    </action>
+         
+    
+     <action
+      attribute="uploadfileform"
+      input="/uploadfile.jsp"
+      name="uploadfileform"
+      path="/fpath"
+      scope="request"
+      type="upload.UploadFileAction" >
+       <forward name="success" path="page.upload" />
+      </action>
+      
+    <action 
+    path="/download" 
+    type="upload.DownloadForwardAction">
+     <forward name="loadfile" path="/WEB-INF/JspFiles/upload/fileList.jsp" />
+     </action>
+    
+    <action 
+    path="/fileDownloadList" 
+    type="upload.FileDownLoadListAction">
+     <forward name="filedownloadlist" path="page.fileDownLoad" />
+    </action>
+    
+    <action
+      input="page.fileDownLoad"
+      path="/deleteupload"
+      scope="request"
+      type="upload.DeleteUpload">
+      <forward name="view" path="/WEB-INF/JspFiles/upload/fileList.jsp" />
+      </action>
+      
+    <action
+      path="/viewdownload"
+      scope="request"
+      type="upload.ViewDownload" >
+      <forward name="viewdownloadlist" path="page.viewDownLoad" />
+      </action>
+    
+    <action 
+    path="/rundownload" 
+    scope="request" type="upload.RunDownload">
+      <forward name="success" path="/WebRoot/WEB-INF/JspFiles/fileList.jsp" />
+    </action>
+    <!-- for upload/downloadlink ends -->
+
+	<action path="/welcome"
+	type="home.WelcomeAction">
+	<forward name="showWelcome" path="page.welcome" />
+	</action>
+	
+	<action path="/leftlink"
+	type="home.LinkAction">
+	<forward name="showLink" path="/WEB-INF/JspFiles/common/LeftLink.jsp" />
+	</action>
+	
+</action-mappings>
+	
+    
+<controller>
+	
+	<set-property property="processorClass" value="control.CustomRequestProcessor" />
+	<set-property property="processorClass" value="org.apache.struts.tiles.TilesRequestProcessor" />
+	
+</controller>
+
+    
+       
+  <message-resources parameter="com.yourcompany.struts.ApplicationResources" />
+ 
+  <plug-in className="org.apache.struts.tiles.TilesPlugin">
+  <set-property property="definitions-config" value="/WEB-INF/tiles-defs.xml"/>
+  <set-property property="moduleAware" value="true"/>
+  <set-property property="definitions-parser-validate" value="true"/>
+ </plug-in>
+ <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+ <set-property property="pathnames" value="/WEB-INF/validator-rules.xml,
+                                                  /WEB-INF/validation.xml"/>
+   
+ </plug-in>
+</struts-config>
+
