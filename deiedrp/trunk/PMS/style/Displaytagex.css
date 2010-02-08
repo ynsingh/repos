@@ -1,0 +1,166 @@
+.dataTable {
+     background-color: white;
+     border: 1px solid #000066;
+     font-size :     9pt;
+     margin:     5px;
+     width:100%;
+}
+
+.dataTable th {
+     border-right: 1px solid #c8c8ff;
+     padding-left: 2px;
+     padding-right:12px;
+     font-family: arial, helvetica, sans-serif;
+     font-weight: bold;
+     color: white;
+     background-color: #000066;
+     margin-right: 10px;
+     white-space: nowrap;
+}
+
+.dataTable  td {
+     font-family: verdana, arial, helvetica, sans-serif;
+     padding-left: 2px;
+}
+
+.dataTable tr.total td {
+     white-space: nowrap;
+     vertical-align: top;
+     font-weight: bold;
+     border-top: 1px solid black;
+     padding-bottom: 10px;
+}
+
+
+.dataTable td.hidden {
+     display: none;
+}
+
+.dataTable th.hidden {
+     display: none;
+}
+
+.dataTable th.r {
+     text-align: right;
+     padding-right: 10px;
+}
+
+.dataTable th.c {
+     text-align: center;
+}
+
+.dataTable td.r {
+     text-align: right;
+     padding-right: 10px;
+}
+
+.dataTable td.c {
+     text-align: center;
+}
+
+.dataTable  tr.odd {
+     background-color: whitesmoke;
+	height: 20px;
+}
+
+.dataTable tr.even {
+     background-color: #d6cfe6;
+    height: 20px;
+}
+
+.dataTable th a   ,.dataTable th a:visited {
+     text-align: left;
+     color: white;
+}
+
+.dataTable th a:hover {
+     color: #ffcc00;
+     text-decoration: underline;
+     background-color: transparent;
+}
+.dataTable  th.sorted {
+	background-color: #770000;
+}
+.dataTable th.order1 {
+     background-position: right;
+     background-image: url(../img/arrow_down.png);
+     background-repeat: no-repeat;
+}
+
+.dataTable th.order2 {
+     background-position: right;
+     background-image: url(../img/arrow_up.png);
+     background-repeat: no-repeat;
+}
+
+.dataTable tr.odd:hover,.dataTable tr.tableRowEven:hover,.dataTable tr.even:hover {
+  background-color: #FFDAB9;
+  
+}
+
+
+span.export {
+     padding: 0 4px 1px 20px;
+     font-size: 8pt;
+     text-align: center;
+}
+
+span.excel {
+     background-image: url(../img/ico_file_excel.png);
+     background-repeat: no-repeat;
+     width: 16px;
+}
+
+span.csv {
+     background-image: url(../img/ico_file_csv.png);
+     background-repeat: no-repeat;
+     width: 16px;
+}
+
+span.xml {
+     background-image: url(../img/ico_file_xml.png);
+     background-repeat: no-repeat;
+     width: 16px;
+}
+
+span.pdf {
+     background-image: url(../img/ico_file_pdf.png);
+     background-repeat: no-repeat;
+     width: 16px;
+}
+
+span.rtf {
+     background-image: url(../img/ico_file_rtf.png);
+     background-repeat: no-repeat;
+     width: 16px;
+}
+
+.dataTable tr.rowMouseOver {
+     background-image: url(../img/next.gif);
+     background-repeat: repeat-x;
+     background-color: rffff99;
+}
+
+
+
+a:link {
+     color: #000099;
+     text-decoration: none;
+     font-weight: bold;
+}
+
+a:visited {
+     color: #000099;
+     text-decoration: none;
+     background-color: transparent;
+     font-weight: bold;
+}
+
+a:hover {
+     color: #d68000;
+     text-decoration: underline;
+     background-color: transparent;
+     font-weight: bold;
+}
+
+
