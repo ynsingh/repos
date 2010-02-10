@@ -23,7 +23,8 @@
                 <tr>
                         <td>
                                 ##<a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm")>$brih_course $brih_mgmt</a> 
-                                <a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_course $brih_mgmt</a> 
+                                ##<a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_course $brih_mgmt</a> 
+                                <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none>$brih_course $brih_mgmt</a> 
                          </td>
                 </tr>
                 <tr bgcolor="$ui.menuColor">

@@ -9,18 +9,18 @@
 
 $page.setBgColor($ui.bgcolor)
 $page.setTitle("Home | $course | Course Management | Course Content | Publishing Module")
-
+$!data.getMessage()
 <table bgcolor="$ui.menuColor" width=100%>
 <tr><td>
 	<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>$brih_home</a> | 
 	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> |
- 	<a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm") style=text-decoration:none>$brih_course $brih_mgmt</a> | 
-	<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm") style=text-decoration:none>
- #if(( $data.getUser().getTemp("lang" ).toString())=="hindi")
+ 	##<a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm") style=text-decoration:none>$brih_course $brih_mgmt</a> | 
+<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none>$brih_course $brih_mgmt</a>| $brih_content $brih_publish
+ #*if(( $data.getUser().getTemp("lang" ).toString())=="hindi")
 	$brih_course $brih_Of $brih_content</a> | $brih_content $brih_publish
  #else
 	$brih_course $brih_content</a> | $brih_publish $brih_content
- #end     
+ #end*#     
 </b></td></tr>
 </table>
 <table width=100% bgcolor="$ui.tableColor">
@@ -30,13 +30,13 @@ $page.setTitle("Home | $course | Course Management | Course Content | Publishing
 	#elseif($tdcolor=="1")
 	<td bgcolor="#AFDCEC">
 	#end
-	<a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_upload $brih_course $brih_content</a></td>
+	<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none>$brih_course $brih_content</a></td>
 	#if($tdcolor!="2")
         <td>
 	#elseif($tdcolor=="2")
 	<td bgcolor="#AFDCEC">
 	#end
-        <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","2") style=text-decoration:none>$brih_course $brih_content</a></td>
+        <a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","2") style=text-decoration:none>$brih_upload $brih_course $brih_content</a></td>
 	#if($tdcolor!="3")
         <td>
 	#elseif($tdcolor=="3")

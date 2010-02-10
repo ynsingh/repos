@@ -15,7 +15,8 @@ $!data.getMessage()
 <tr>
 <td>
 	<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>$brih_home</a> |
-	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> | $brih_course $brih_mgmt
+	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> | 
+	<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none>$brih_course $brih_mgmt</a> |$brih_upload $brih_course $brih_content
 </td>
 </tr>
 </table>
@@ -84,13 +85,13 @@ $!data.getMessage()
 		#elseif($tdcolor == "1")
 		<td bgcolor="#AFDCEC">
 		#end
-		<a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_upload $brih_course $brih_content</a></td>
+		<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none>$brih_course $brih_content</a></td>
 		#if($tdcolor != "2")
 		<td>
 		#elseif($tdcolor == "2")
 		<td bgcolor="#AFDCEC">
 		#end
-		<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","2") style=text-decoration:none>$brih_course $brih_content</a></td>
+		<a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","2") style=text-decoration:none>$brih_upload $brih_course $brih_content</a></td>
 		#if($tdcolor != "3")
 		<td>
 		#elseif($tdcolor == "3")
