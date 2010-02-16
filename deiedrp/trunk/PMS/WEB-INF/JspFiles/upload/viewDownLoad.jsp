@@ -32,7 +32,7 @@
     </logic:empty>
    <logic:notEmpty name="fileDownloadList" property="list">
     
-   <display:table name="fileDownloadList.list" export="false" pagesize="5" requestURI="/viewdownload.do" decorator="deco.PmsDecorator" class="dataTable">
+   <display:table name="fileDownloadList.list" export="false" pagesize="5" requestURI="/viewdownload.do" decorator="org.dei.edrp.pms.deco.PmsDecorator" class="dataTable">
 
 			<display:column title="Actions" property="link3"/>
 			<display:column  property="fileName" title="File Name" sortable="true"/>

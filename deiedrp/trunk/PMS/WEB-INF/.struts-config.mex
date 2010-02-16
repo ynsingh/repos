@@ -5,6 +5,8 @@
   <StrutsActivity path="/logout.do" location="350,50" dimension="142,96" />
   <StrutsActivity path="/changepass.do" location="650,2850" dimension="229,96" />
   <StrutsActivity path="/changeOwnpassword.do" location="1250,2850" dimension="257,96" />
+  <StrutsActivity path="/searchpeople.do" location="3350,1250" dimension="218,96" />
+  <StrutsActivity path="/searchaction.do" location="3350,1450" dimension="250,96" />
   <StrutsActivity path="/go.do" location="650,50" dimension="178,96" />
   <StrutsActivity path="/newproject.do" location="950,50" dimension="184,96" />
   <StrutsActivity path="/projectList.do" location="350,450" dimension="196,96" />
@@ -69,6 +71,8 @@
   <StrutsActivity path="/logout.jsp" location="350,650" dimension="88,51" />
   <StrutsActivity path="page.changepasswordMessage" location="950,2850" dimension="194,51" />
   <StrutsActivity path="page.changepassword" location="2750,650" dimension="148,51" />
+  <StrutsActivity path="page.peoplesearch" location="3350,1650" dimension="129,51" />
+  <StrutsActivity path="page.peoplesuccess" location="3350,1850" dimension="135,51" />
   <StrutsActivity path="page.newproject" location="50,850" dimension="118,51" />
   <StrutsActivity path="page.projectfail" location="2150,1450" dimension="112,51" />
   <StrutsActivity path="page.projectlist" location="950,450" dimension="111,51" />
@@ -144,10 +148,6 @@
   <StrutsActivity path="/showMemberList.jsp" location="3050,1450" dimension="144,51" />
   <StrutsActivity path="/showMemberList" location="2750,1750" dimension="126,51" />
   <StrutsActivity path="/" location="3050,1850" dimension="35,51" />
-  <StrutsActivity path="/searchaction.do" location="3350,1450" dimension="250,96" />
-  <StrutsActivity path="page.peoplesearch" location="3350,1650" dimension="129,51" />
-  <StrutsActivity path="page.peoplesuccess" location="3350,1850" dimension="135,51" />
-  <StrutsActivity path="/searchpeople.do" location="3350,1250" dimension="218,96" />
   <StrutsTransition id="/download.do,loadfile,/WEB-INF/JspFiles/upload/fileList.jsp,1" routingType="0">
     <AutomaticBendpoints>
       <AbsolutePoint location="1655,2546" />
@@ -844,14 +844,6 @@
       <AbsolutePoint location="3287,1995" />
       <AbsolutePoint location="3287,298" />
       <AbsolutePoint location="2943,298" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
-  <StrutsTransition id="peoplesearch;6,null,page.peoplesearch,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="3350,2090" />
-      <AbsolutePoint location="3317,2090" />
-      <AbsolutePoint location="3317,1675" />
-      <AbsolutePoint location="3350,1675" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/login.jsp,null,/login.do,2" routingType="0">

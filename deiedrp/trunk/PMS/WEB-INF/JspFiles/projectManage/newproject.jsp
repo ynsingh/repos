@@ -47,6 +47,8 @@
 		  <div align="center">
 		  <html:errors property="fdate"/>
 		  <html:errors property="pname"/>
+		  <html:errors property="projmsg"/>
+		  
 		  </div>
 		  <br>
 		
@@ -116,7 +118,7 @@ for(int i=0;i<=4;i++)
 			<tr class="form-element">
 			<td  class="form-label">
 			Project Description :</td><td class="form-widget">
-			<html:textarea property="darea" value="" rows="3" cols="32"/>
+			<html:textarea property="darea" value="" rows="3" cols="38"/>
 			<html:errors property="darea"/></td></tr>
 			<tr><td></td></tr></table>
 			<table align="center">

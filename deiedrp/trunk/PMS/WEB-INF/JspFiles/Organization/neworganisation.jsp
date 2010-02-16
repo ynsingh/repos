@@ -42,6 +42,7 @@
 		   <div align="center">
 		  <html:errors property="iname"/>
 		  <html:errors property="iurl"/>
+		  <html:errors property="orgmsg"/>
 		  </div>
 		  <br>
 		  		
@@ -49,39 +50,39 @@
 		<tr class="form-element">
 		<td  class="form-label">
 			Organisation Name : </td>
-			<td class="form-widget"><html:text property="iname" indexed="iname" size="40" onchange="seeOrganisation()" /><font color="red" size="2">*</font></td>
+			<td class="form-widget"><html:text property="iname" indexed="iname" size="40" value="" onchange="seeOrganisation()" /><font color="red" size="2">*</font></td>
 			<tr class="form-element">
 			<td class="form-label">
 			Address :</td>
-			<td class="form-widget"><html:textarea property="iaddress" rows="3" cols="32"/><font color="red" size="2">*</font><html:errors property="iaddress"/>
+			<td class="form-widget"><html:textarea property="iaddress" rows="2" cols="38" value=""/><font color="red" size="2">*</font><html:errors property="iaddress"/>
 			</td></tr>
 		<tr class="form-element"><td class="form-label">
 			City : </td>
-			<td class="form-widget"><html:text property="icity" size="40"/><font color="red" size="2">*</font><html:errors property="icity"/>
+			<td class="form-widget"><html:text property="icity" size="40" value=""/><font color="red" size="2">*</font><html:errors property="icity"/>
 			<tr class="form-element"><td class="form-label">
 			State : </td>
-			<td class="form-widget"><html:text property="istate" size="40"/><font color="red" size="2">*</font><html:errors property="state"/>
+			<td class="form-widget"><html:text property="istate" size="40" value=""/><font color="red" size="2">*</font><html:errors property="state"/>
 			<tr class="form-element"><td class="form-label">
 			Pin Code :</td>
-			<td class="form-widget"> <html:text property="ipin" size="40" maxlength="6"/><html:errors property="ipin"/>
+			<td class="form-widget"> <html:text property="ipin" size="40" maxlength="6" value=""/><font color="red" size="2">*</font><html:errors property="ipin"/>
 			<tr class="form-element"><td class="form-label">
 			Phone No : </td>
-			<td class="form-widget"><html:text property="iphoneno" size="40"/><font color="red" size="2">*</font><html:errors property="iphoneno"/>
+			<td class="form-widget"><html:text property="iphoneno" size="40" value=""/><font color="red" size="2">*</font><html:errors property="iphoneno"/>
 			<tr class="form-element"><td class="form-label">
 			Fax No. :</td>
-			<td class="form-widget"> <html:text property="ifax" size="40"/><html:errors property="ifax"/>
+			<td class="form-widget"> <html:text property="ifax" size="40" value=""/><html:errors property="ifax"/>
 			<tr class="form-element"><td class="form-label">
 			WebSite :</td>
-			<td class="form-widget"> <html:text property="iurl" size="40"/>
+			<td class="form-widget"> <html:text property="iurl" size="40" value=""/>
 			<tr class="form-element"><td class="form-label">
 			Head : </td>
-			<td class="form-widget"><html:text property="ihead" size="40"/><font color="red" size="2">*</font><html:errors property="ihead"/>
+			<td class="form-widget"><html:text property="ihead" size="40" value=""/><font color="red" size="2">*</font><html:errors property="ihead"/>
 			<tr class="form-element"><td class="form-label">
 			Email_id :</td>
-			<td class="form-widget"> <html:text property="ieid" size="40"/><font color="red" size="2">*</font><html:errors property="ieid"/>
+			<td class="form-widget"> <html:text property="ieid" size="40" value=""/><font color="red" size="2">*</font><html:errors property="ieid"/>
 			<tr class="form-element"><td class="form-label">
 			Description : </td>
-			<td class="form-widget"><html:text property="description" size="40"/><html:errors property="description"/>
+			<td class="form-widget"><html:text property="description" size="40" value=""/><html:errors property="description"/>
 			<tr><td></td></tr></table>
 			<table align="center">
 		<tr><td>

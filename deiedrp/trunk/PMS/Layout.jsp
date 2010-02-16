@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.sql.*" pageEncoding="ISO-8859-1"%>
-<%@page import="control.CustomRequestProcessor"%>
-<%@page import="dataBaseConnection.MyDataSource;"%>
+<%@page import="org.dei.edrp.pms.control.CustomRequestProcessor"%>
+<%@page import="org.dei.edrp.pms.dataBaseConnection.MyDataSource;"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -29,7 +29,7 @@
 	}
 %>
 <table border="1" cellspacing="0" cellpadding="0" height="100%" width="100%">
-<tr><td class="header123" colspan="2" width="100%" height="17%">
+<tr><td class="header123" colspan="2" width="100%" height="13%">
 <%!
   	Connection con=null;
   	PreparedStatement ps=null;

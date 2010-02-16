@@ -1,5 +1,5 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
-<%@page import="projmanage.ProjectFields;"%>
+<%@page import="org.dei.edrp.pms.projmanage.ProjectFields;"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -57,7 +57,7 @@
         </html:select>
 			<html:errors property="nrec"/><br><br>
 	</div>
-  </logic:notEmpty>
+  
  <display:table name="projectList.list" defaultsort="2" id="row" export="true" pagesize="<%=Integer.parseInt(key) %>" requestURI="/projectList.do" class="dataTable" >
 		<display:column title="Active Status" sortable="true" >
 		<logic:equal name="row" property="enable" value="0">Yes</logic:equal>
@@ -93,9 +93,9 @@
 		<display:setProperty name="export.csv.filename" value="ProjectDetails.csv"/>
 		
 	</display:table>
-	 
+	 </logic:notEmpty>
     <logic:empty name="projectList" property="list">
-    
+   <br><font color="#550003" size="2">Nothing found to display.</font><br><br>
     <html:button property="back" value="Back" onclick="history.back();" />
     </logic:empty>
   		

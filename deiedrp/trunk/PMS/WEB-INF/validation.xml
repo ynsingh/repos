@@ -21,7 +21,7 @@
 <var-value>3</var-value></var>
 <var>
 <var-name>maxlength</var-name>
-<var-value>8</var-value></var>
+<var-value>255</var-value></var>
 <var>
 <var-name>mask</var-name>
 <var-value>^[a-zA-Z][a-zA-Z\d]*$</var-value></var>
@@ -33,10 +33,10 @@
 <arg1 key="${var:maxlength}" name="maxlength" resource="false" />
 <var>
 <var-name>minlength</var-name>
-<var-value>3</var-value></var>
+<var-value>8</var-value></var>
 <var>
 <var-name>maxlength</var-name>
-<var-value>8</var-value></var>
+<var-value>255</var-value></var>
 <var>
 <var-name>mask</var-name>
 <var-value>^[a-zA-Z][a-zA-Z\d]*$</var-value></var>
@@ -50,10 +50,10 @@
 <arg1 key="${var:maxlength}" name="maxlength" resource="false" />
 <var>
 <var-name>minlength</var-name>
-<var-value>3</var-value></var>
+<var-value>8</var-value></var>
 <var>
 <var-name>maxlength</var-name>
-<var-value>8</var-value></var>
+<var-value>255</var-value></var>
 <var>
 <var-name>mask</var-name>
 <var-value>^[a-zA-Z][a-zA-Z\d]*$</var-value></var>
@@ -75,7 +75,7 @@
 <var-value>3</var-value></var>
 <var>
 <var-name>maxlength</var-name>
-<var-value>45</var-value></var>
+<var-value>255</var-value></var>
 <var>
 <var-name>mask</var-name>
 <var-value>^[A-Za-z][A-Za-z\s]*$</var-value></var>
@@ -144,7 +144,7 @@
 <var-value>3</var-value></var>
 <var>
 <var-name>maxlength</var-name>
-<var-value>45</var-value></var>
+<var-value>255</var-value></var>
 <var>
 <var-name>mask</var-name>
 <var-value>^[A-Za-z][A-Za-z\s]*$</var-value></var>
@@ -217,7 +217,7 @@
 <var-value>3</var-value></var>
 <var>
 <var-name>maxlength</var-name>
-<var-value>25</var-value></var>
+<var-value>255</var-value></var>
 <var>
        <var-name>secondProperty</var-name>
        <var-value>orgname</var-value>
@@ -232,35 +232,7 @@
 <var-value>5</var-value></var>
 <var>
 <var-name>maxlength</var-name>
-<var-value>65</var-value></var>
-</field>
-<field property="iphoneno" depends="required,mask,minlength,maxlength" >
-<arg0 key="phone.number" />
-<arg1 key="${var:minlength}" name="minlength" resource="false" />
-<arg1 key="${var:maxlength}" name="maxlength" resource="false" />
-<var>
-<var-name>minlength</var-name>
-<var-value>10</var-value></var>
-<var>
-<var-name>maxlength</var-name>
-<var-value>20</var-value></var>
-<var>
-<var-name>mask</var-name>
-<var-value>^[0-9-]*$</var-value></var>
-</field>
-<field property="ifax" depends="mask,minlength,maxlength">
-<arg0 key="org.fax" />
-<arg1 key="${var:minlength}" name="minlength" resource="false" />
-<arg1 key="${var:maxlength}" name="maxlength" resource="false" />
-<var>
-<var-name>minlength</var-name>
-<var-value>10</var-value></var>
-<var>
-<var-name>maxlength</var-name>
-<var-value>20</var-value></var>
-<var>
-<var-name>mask</var-name>
-<var-value>^[0-9-]*$</var-value></var>
+<var-value>455</var-value></var>
 </field>
 <field property="icity" depends="required,minlength,maxlength,mask" >
 <msg name="mask" key="orgForm.mask" />
@@ -270,7 +242,7 @@
 <var><var-name>minlength</var-name>
 <var-value>3</var-value></var>
 <var><var-name>maxlength</var-name>
-<var-value>30</var-value></var>
+<var-value>255</var-value></var>
 <var>
 <var-name>mask</var-name>
 <var-value>^[a-zA-z\s]*$</var-value></var>
@@ -283,13 +255,13 @@
 <var><var-name>minlength</var-name>
 <var-value>2</var-value></var>
 <var><var-name>maxlength</var-name>
-<var-value>30</var-value>
+<var-value>255</var-value>
 </var>
 <var>
 <var-name>mask</var-name>
 <var-value>^[a-zA-z\s]*$</var-value></var>
 </field>
-<field property="ipin" depends="mask,maxlength" >
+<field property="ipin" depends="required,mask,maxlength" >
 <msg name="mask" key="pin.msg"/>
    	<arg0 key="pin.name" />
    	<arg1 key="${var:maxlength}" name="maxlength" resource="false"/>
@@ -301,19 +273,40 @@
 <var-value>6</var-value>
 </var>
 </field>
-<field property="iurl" depends="url" >
+<field property="iphoneno" depends="required,mask,minlength,maxlength" >
+<arg0 key="phone.number" />
+<arg1 key="${var:minlength}" name="minlength" resource="false" />
+<arg1 key="${var:maxlength}" name="maxlength" resource="false" />
+<var>
+<var-name>minlength</var-name>
+<var-value>10</var-value></var>
+<var>
+<var-name>maxlength</var-name>
+<var-value>25</var-value></var>
+<var>
+<var-name>mask</var-name>
+<var-value>^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x | ext)\d{1,5}){0,1}$</var-value></var>
+</field>
+<field property="ifax" depends="mask,minlength,maxlength">
+<arg0 key="org.fax" />
+<arg1 key="${var:minlength}" name="minlength" resource="false" />
+<arg1 key="${var:maxlength}" name="maxlength" resource="false" />
+<var>
+<var-name>minlength</var-name>
+<var-value>10</var-value></var>
+<var>
+<var-name>maxlength</var-name>
+<var-value>25</var-value></var>
+<var>
+<var-name>mask</var-name>
+<var-value>^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x | ext)\d{1,5}){0,1}$</var-value></var>
+</field>
+
+<field property="iurl" depends="mask" >
 <arg0 key="url.name" />
 <var>
-<var-name>nofragments</var-name>
-<var-value>true</var-value>
-</var>
-<var>
-<var-name>schemes</var-name>
-<var-value>http,https,telnet</var-value>
-</var>
-<var>
-<var-name>allow2slashes</var-name>
-<var-value>true</var-value>
+<var-name>mask</var-name>
+<var-value>^(http|ftp|https|telnet)?:\/\/[a-z0-9-\.]+\.[a-z0-9]{2,4}\/?([^\d\s\#%"\,\{\}\\|\\\^\[\]`]+)?$</var-value>
 </var>
 </field>
 <field property="ihead" depends="required,minlength,maxlength,mask" >
@@ -325,11 +318,11 @@
 <var-value>3</var-value>
 </var>
 <var><var-name>maxlength</var-name>
-<var-value>25</var-value>
+<var-value>255</var-value>
 </var>
 <var>
 <var-name>mask</var-name>
-<var-value>^[A-za-z][a-zA-z\s]*$</var-value></var>
+<var-value>^[A-za-z.][a-zA-z.\s]*$</var-value></var>
 </field>
 <field property="ieid" depends="required,email,minlength,maxlength" >
 <arg0 key="mail.name" />
@@ -337,16 +330,16 @@
 <arg1 key="${var:minlength}" name="minlength" resource="false" />
 <var>
 <var-name>minlength</var-name>
-<var-value>3</var-value></var>
+<var-value>15</var-value></var>
 <var>
 <var-name>maxlength</var-name>
-<var-value>35</var-value></var>
+<var-value>255</var-value></var>
 </field>
 <field property="description" depends="maxlength" >
 <arg0 key="org.description"/>
 <arg1 key="${var:maxlength}" name="maxlength" resource="false" />
 <var><var-name>maxlength</var-name>
-<var-value>120</var-value></var>
+<var-value>255</var-value></var>
 </field>
 </form>
 
@@ -364,7 +357,7 @@
 <var-value>3</var-value></var>
 <var>
 <var-name>maxlength</var-name>
-<var-value>20</var-value></var>
+<var-value>255</var-value></var>
 </field>
 <field property="iaddress" depends="required,minlength,maxlength" >
 <arg0 key="oaddress.name" />
@@ -375,35 +368,7 @@
 <var-value>5</var-value></var>
 <var>
 <var-name>maxlength</var-name>
-<var-value>65</var-value></var>
-</field>
-<field property="iphoneno" depends="required,mask,minlength,maxlength" >
-<arg0 key="phone.number" />
-<arg1 key="${var:minlength}" name="minlength" resource="false" />
-<arg1 key="${var:maxlength}" name="maxlength" resource="false" />
-<var>
-<var-name>minlength</var-name>
-<var-value>10</var-value></var>
-<var>
-<var-name>maxlength</var-name>
-<var-value>20</var-value></var>
-<var>
-<var-name>mask</var-name>
-<var-value>^[0-9-]*$</var-value></var>
-</field>
-<field property="ifax" depends="mask,minlength,maxlength">
-<arg0 key="org.fax" />
-<arg1 key="${var:minlength}" name="minlength" resource="false" />
-<arg1 key="${var:maxlength}" name="maxlength" resource="false" />
-<var>
-<var-name>minlength</var-name>
-<var-value>10</var-value></var>
-<var>
-<var-name>maxlength</var-name>
-<var-value>20</var-value></var>
-<var>
-<var-name>mask</var-name>
-<var-value>^[0-9-]*$</var-value></var>
+<var-value>455</var-value></var>
 </field>
 <field property="icity" depends="required,minlength,maxlength,mask" >
 <msg name="mask" key="orgForm.mask" />
@@ -413,7 +378,7 @@
 <var><var-name>minlength</var-name>
 <var-value>3</var-value></var>
 <var><var-name>maxlength</var-name>
-<var-value>30</var-value></var>
+<var-value>255</var-value></var>
 <var>
 <var-name>mask</var-name>
 <var-value>^[A-Za-z][a-zA-z\s]*$</var-value></var>
@@ -426,7 +391,7 @@
 <var><var-name>minlength</var-name>
 <var-value>2</var-value></var>
 <var><var-name>maxlength</var-name>
-<var-value>30</var-value>
+<var-value>255</var-value>
 </var>
 <var>
 <var-name>mask</var-name>
@@ -445,19 +410,40 @@
 </var>
 
 </field>
-<field property="iurl" depends="url" >
+<field property="iphoneno" depends="required,mask,minlength,maxlength" >
+<arg0 key="phone.number" />
+<arg1 key="${var:minlength}" name="minlength" resource="false" />
+<arg1 key="${var:maxlength}" name="maxlength" resource="false" />
+<var>
+<var-name>minlength</var-name>
+<var-value>10</var-value></var>
+<var>
+<var-name>maxlength</var-name>
+<var-value>25</var-value></var>
+<var>
+<var-name>mask</var-name>
+<var-value>^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x | ext)\d{1,5}){0,1}$</var-value></var>
+</field>
+<field property="ifax" depends="mask,minlength,maxlength">
+<arg0 key="org.fax" />
+<arg1 key="${var:minlength}" name="minlength" resource="false" />
+<arg1 key="${var:maxlength}" name="maxlength" resource="false" />
+<var>
+<var-name>minlength</var-name>
+<var-value>10</var-value></var>
+<var>
+<var-name>maxlength</var-name>
+<var-value>25</var-value></var>
+<var>
+<var-name>mask</var-name>
+<var-value>^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x | ext)\d{1,5}){0,1}$</var-value></var>
+</field>
+
+<field property="iurl" depends="mask" >
 <arg0 key="url.name" />
 <var>
-<var-name>nofragments</var-name>
-<var-value>true</var-value>
-</var>
-<var>
-<var-name>schemes</var-name>
-<var-value>http,https,telnet</var-value>
-</var>
-<var>
-<var-name>allow2slashes</var-name>
-<var-value>true</var-value>
+<var-name>mask</var-name>
+<var-value>^(http|ftp|https|telnet)?:\/\/[a-z0-9-\.]+\.[a-z0-9]{2,4}\/?([^\d\s\#%"\,\{\}\\|\\\^\[\]`]+)?$</var-value>
 </var>
 </field>
 <field property="ihead" depends="required,minlength,maxlength,mask" >
@@ -469,11 +455,11 @@
 <var-value>3</var-value>
 </var>
 <var><var-name>maxlength</var-name>
-<var-value>25</var-value>
+<var-value>255</var-value>
 </var>
 <var>
 <var-name>mask</var-name>
-<var-value>^[A-za-z][a-zA-z\s]*$</var-value></var>
+<var-value>^[A-za-z.][a-zA-z.\s]*$</var-value></var>
 </field>
 <field property="ieid" depends="required,email,minlength,maxlength" >
 <arg0 key="mail.name" />
@@ -481,16 +467,16 @@
 <arg1 key="${var:minlength}" name="minlength" resource="false" />
 <var>
 <var-name>minlength</var-name>
-<var-value>3</var-value></var>
+<var-value>15</var-value></var>
 <var>
 <var-name>maxlength</var-name>
-<var-value>35</var-value></var>
+<var-value>255</var-value></var>
 </field>
 <field property="description" depends="maxlength" >
 <arg0 key="org.description"/>
 <arg1 key="${var:maxlength}" name="maxlength" resource="false" />
 <var><var-name>maxlength</var-name>
-<var-value>120</var-value></var>
+<var-value>255</var-value></var>
 </field>
 </form>
 
@@ -639,6 +625,15 @@
 <form name="showtaskform" >
 <field property="pselect" depends="selectoption" >
 <arg0 key="err.projname" />
+</field>
+</form>
+
+<form name="uploadfileform" >
+<field property="uploadedFile" depends="required" >
+<arg0 key="uploadfile.name" />
+</field>
+<field property="projectName" depends="selectoption" >
+<arg0 key="err.name" />
 </field>
 </form>
 

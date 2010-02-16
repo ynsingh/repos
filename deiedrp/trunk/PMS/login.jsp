@@ -1,5 +1,5 @@
 <%@ page language="java" pageEncoding="ISO-8859-1"%>
-<%@page import="control.CustomRequestProcessor;"%>
+<%@page import="org.dei.edrp.pms.control.CustomRequestProcessor;"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%> 
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
  

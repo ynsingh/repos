@@ -1,5 +1,5 @@
 <%@ page import="java.sql.*" language="java" pageEncoding="ISO-8859-1"%>
-<%@page import="dataBaseConnection.MyDataSource;"%>
+<%@page import="org.dei.edrp.pms.dataBaseConnection.MyDataSource;"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%> 
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
  
@@ -36,7 +36,7 @@
 		<html:form action="/go3" onsubmit="return validateEditform(this);">
 		<div id="main_title" align="left">
 		    <font color="#0044ff">Edit to desired Project:</font>
-		     </div>
+		     </div><br><br>
 		<div align="center"><html:errors property="sdate"/></div>
 		<table cellspacing="2" cellpadding="2" border="0" align="center">
 		<tr class="form-element"><td class="form-label">
@@ -64,7 +64,7 @@
 			(YYYY-MM-DD)
 			</td></tr>
 				<tr class="form-element"><td  class="form-label">
-			Target Budget :</td><td> <html:text property="tbudget" size="40" value="<%=rs1.getString(5)%>"/><html:errors property="tbudget"/></td>
+			Target Budget (Rs.):</td><td> <html:text property="tbudget" size="40" value="<%=rs1.getString(5)%>"/><html:errors property="tbudget"/></td>
 			</tr>
 			<tr class="form-element"><td  class="form-label">
 			Priority :</td>
@@ -115,7 +115,7 @@ for(int i=0;i<=1;i++)
 			 </td></tr>
 			<tr class="form-element">
 			<td  class="form-label">
-			Project Description :</td><td class="form-widget"> <html:textarea property="darea" rows="4" cols="32" value="<%=rs1.getString(10)%>"/><html:errors property="darea"/></td></tr>
+			Project Description :</td><td class="form-widget"> <html:textarea property="darea" rows="3" cols="38" value="<%=rs1.getString(10)%>"/><html:errors property="darea"/></td></tr>
 			<tr><td></td></tr></table>
 			<table align="center">
 			<tr><td><html:submit value="Save Changes"/></td>

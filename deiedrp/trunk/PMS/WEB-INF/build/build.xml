@@ -64,7 +64,7 @@
     <antcall target="compile"/>
     <antcall target="copy-props"/>
     <antcall target="javadoc"/>
-<!--    <antcall target="createadminaccount"/> -->
+<!--	<antcall target="createadminaccount"/>-->
 	
   </target>
 
@@ -85,8 +85,8 @@
       />
  
        <copy
-           file="${src.dir}/java/com/yourcompany/struts/ApplicationResources.properties"
-           tofile="${build.dest}/com/yourcompany/struts/ApplicationResources.properties"
+           file="${src.dir}/java/org/dei/edrp/pms/propertiesFile/ApplicationResources.properties"
+           tofile="${build.dest}/org/dei/edrp/pms/propertiesFile/ApplicationResources.properties"
            overwrite="yes"
            filtering="yes"
       />
@@ -103,7 +103,7 @@
       		driver="${databaseDriver}"
 		onerror="continue"
       		password="${databasePassword}"
-      		src="../conf/pmstable.sql"
+      		src="../conf/pmstables.sql"
       		url="${createDatabaseUrl}"
       		userid="${databaseUser}">
       		<classpath refid="classpath"/>
@@ -121,8 +121,8 @@
 
   <target name="create-Dir" >
       <mkdir dir="${build.dest}"/>
-      <mkdir dir="${build.dest}/com/yourcompany/struts"/>
-      <mkdir dir="${build.webappRoot}/tmp"/>
+      <mkdir dir="${build.dest}/org/dei/edrp/pms/propertiesFile"/>
+     <!-- <mkdir dir="${build.webappRoot}/tmp"/>-->
   </target>
 
   <!-- =================================================================== -->

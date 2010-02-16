@@ -1,5 +1,5 @@
 <%@ page import="java.sql.*" language="java" pageEncoding="ISO-8859-1"%>
-<%@page import="dataBaseConnection.MyDataSource;"%>
+<%@ page import="org.dei.edrp.pms.dataBaseConnection.MyDataSource;"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%> 
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
  
@@ -49,7 +49,7 @@
 			<td class="form-widget"><html:text property="iname" size="40" value="<%=rs1.getString(2)%>"/><html:errors property="iname"/></td>
 			<tr class="form-element"><td class="form-label">
 			Address :</td>
-			<td class="form-widget"><html:textarea property="iaddress" rows="3" cols="32" value="<%=rs1.getString(3)%>"/><html:errors property="iaddress"/>
+			<td class="form-widget"><html:textarea property="iaddress" rows="2" cols="38" value="<%=rs1.getString(3)%>"/><html:errors property="iaddress"/>
 			</td></tr>
 		<tr class="form-element"><td class="form-label">
 			City : </td>
@@ -77,7 +77,7 @@
 			<td class="form-widget"> <html:text property="ieid" size="40" value="<%=rs1.getString(10)%>"/><html:errors property="ieid"/>
 			<tr class="form-element"><td class="form-label">
 			Description : </td>
-			<td class="form-widget"><html:textarea property="description" rows="4" cols="32" value="<%=rs1.getString(12)%>"/><html:errors property="description"/>
+			<td class="form-widget"><html:text property="description" size="40" value="<%=rs1.getString(12)%>"/><html:errors property="description"/>
 			<tr><td></td></tr></table>
 			<table align="center">
 		<tr><td>

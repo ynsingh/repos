@@ -7,7 +7,7 @@
   <div>
    <font color="#f90000" size="3">Project Creation fail.because this Project already exist.</font> <br>
   </div>
-  <br>
+  <br><br>
   <html:button property="back" value="Back" onclick="history.back();" />
   </body>
 </html>

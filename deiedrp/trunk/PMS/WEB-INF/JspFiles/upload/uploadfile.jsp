@@ -1,5 +1,5 @@
 <%@ page import="java.sql.*" language="java" pageEncoding="ISO-8859-1"%>
-<%@page import="dataBaseConnection.MyDataSource;"%>
+<%@page import="org.dei.edrp.pms.dataBaseConnection.MyDataSource;"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%> 
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 
@@ -18,7 +18,8 @@
 	 }
 	%>
 	<%!Connection con=null; %>
-	<html:form action="/fpath" enctype="multipart/form-data">
+	<html:javascript formName="uploadfileform" dynamicJavascript="true" staticJavascript="true" />
+	<html:form action="/fpath" enctype="multipart/form-data" onsubmit="return validateUploadfileform(this);">
 		 <div id=main_title><font color="#0044ff">Upload File:</font></div><br>
 		  <br><br>
 		  <table align="center" cellspacing="2" cellpadding="2" border="0" bgcolor="#ffffff">

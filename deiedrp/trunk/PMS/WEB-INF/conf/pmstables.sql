@@ -63,8 +63,7 @@ CREATE TABLE `login` (
 
 /*!40000 ALTER TABLE `login` DISABLE KEYS */;
 INSERT INTO `login` (`User_ID`,`Authority`,`Password`) VALUES 
- ('admin','Admin','d033e22ae348aeb5660fc2140aec35850c4da997'),
- ('sudhish@pcs.dei.ac.in','User','96f867b903959a16c254cbe910538b0dac893a56');
+ ('admin','Admin','d033e22ae348aeb5660fc2140aec35850c4da997');
 /*!40000 ALTER TABLE `login` ENABLE KEYS */;
 
 
@@ -76,13 +75,13 @@ DROP TABLE IF EXISTS `organisation`;
 CREATE TABLE `organisation` (
   `Org_ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `Org_Name` varchar(255) NOT NULL,
-  `Org_Address` varchar(255) NOT NULL,
+  `Org_Address` varchar(455) NOT NULL,
   `Org_City` varchar(255) NOT NULL,
   `Org_State` varchar(255) NOT NULL,
   `Pincode` mediumint(6) unsigned DEFAULT NULL,
-  `Org_Fax` varchar(455) DEFAULT NULL,
-  `Org_URL` varchar(455) NOT NULL,
-  `Org_Head` varchar(455) NOT NULL,
+  `Org_Fax` varchar(255) DEFAULT NULL,
+  `Org_URL` varchar(255) NOT NULL,
+  `Org_Head` varchar(255) NOT NULL,
   `Org_Email_Id` varchar(255) NOT NULL,
   `Org_Phone` bigint(20) unsigned NOT NULL,
   `Org_Description` text,

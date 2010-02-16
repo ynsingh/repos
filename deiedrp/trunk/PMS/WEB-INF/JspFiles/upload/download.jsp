@@ -28,7 +28,7 @@
    <logic:notEmpty name="fileDownloadList" property="list">
     
   
-<display:table name="fileDownloadList.list" export="false" pagesize="5" requestURI="/fileDownloadList.do" decorator="deco.PmsDecorator" class="dataTable">
+<display:table name="fileDownloadList.list" export="false" pagesize="5" requestURI="/fileDownloadList.do" decorator="org.dei.edrp.pms.deco.PmsDecorator" class="dataTable">
 
 			<display:column title="Actions" property="link2"/>
 					

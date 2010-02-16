@@ -7,12 +7,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Successful changed PassWord Page</title>
+<title>Successful changed Password Page</title>
 </head>
 <body>
 	<div style="font: normal;color: blue;font-size: medium;padding-top: 6%;padding-left: 5%;">
 	Dear, '<%=(String)session.getAttribute("uid")%>' <%=request.getAttribute("passinfo") %>
-		</div>		
+		</div>	<br><br>	
 		<html:button property="back" value="Back to Previous Page" onclick="history.back();" />					  		
 </body>
 </html>

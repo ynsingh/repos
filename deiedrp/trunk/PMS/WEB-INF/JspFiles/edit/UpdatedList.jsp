@@ -1,6 +1,6 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 
-<%@page import="projmanage.ProjectFields;"%>
+<%@page import="org.dei.edrp.pms.projmanage.ProjectFields;"%>
 
 
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
@@ -72,7 +72,7 @@
 			<html:errors property="nrec"/><br><br>
 	</div>
 
- <display:table name="updatedList.list" defaultsort="2" id="row" export="true" pagesize="<%=Integer.parseInt(key) %>" requestURI="/updateOperation.do" decorator="deco.PmsDecorator" class="dataTable" >
+ <display:table name="updatedList.list" defaultsort="2" id="row" export="true" pagesize="<%=Integer.parseInt(key) %>" requestURI="/updateOperation.do" decorator="org.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >
 
 		<display:column title="Active Status" sortable="true" >
 		<logic:equal name="row" property="enable" value="0">Yes</logic:equal>

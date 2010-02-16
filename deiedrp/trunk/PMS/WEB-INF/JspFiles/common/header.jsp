@@ -7,39 +7,29 @@
 <script type="text/javascript" src="javascript/dropdown.js"></script>
 
 <body>
-<table bgcolor="c3d9ff" cellpadding="0" cellspacing="0" style="top: 0.0%;position: absolute;" width="100%">
+<table style="border:0px solid #000066;width:100%;height:13%;" cellspacing="0px" cellpadding="0px" bgcolor=#C3D9FF>
 <tr>
-	<td nowrap="nowrap">
-	<table style="height:100%;width:100%;">
-	<tr>
-	<td align="right" nowrap="nowrap">
-	<div align="right" style="color:#000066;;font-size:30px;font-family:algerian;width:100%;height:100%;text-align: center;text-shadow: aqua;">Project Management System <br><font size=2>An Open Source Initiative of the Ministry of Human Resource Development
-<br>
-Developed under the National Mission on Education through Information and Communication Technology</font></div>
-	</td>
-	<td valign="top" nowrap="nowrap">
-		<table align="right">
-		<tr>
-		<td nowrap="nowrap" align="left">
+	<td valign="top"><div>
+					<div style="float:left;width:70%;color:#000066;background-color:C3D9FF;font-size:30px;font-family:algerian;background-image:url(header-gif.rev.gif);background-repeat: no-repeat;background-position: left;height:13%;text-align: center;text-shadow: aqua;">PROJECT MANAGEMENT SYSTEM
+					<br><b><div style="padding-bottom:15px;font: normal;font-family: Arial, Helvetica, sans-serif;color:#000000;"><font size=3>An Open Source Initiative of the Ministry of Human Resource Development</font></b><br>
+					<font size=2>(Developed under the National Mission on Education through Information and Communication Technology)</font></div>
+					
+					</div>
+					<div align="right">
 		<strong><font >Welcome,</font></strong>
-		<font>
+		<font >
 		  		<%
 		  		/*The user_id which is currently logged In.*/
 		  		String uid=(String)session.getAttribute("uid");
 		  		out.println(uid);
 		   		%> | </font>
-		  </td>
-		  <td nowrap="nowrap" valign="top" align="right">
+		 
 				<html:link action="logout" styleClass="B"> <font size="-1">LogOut</font> </html:link> |
-				<html:link styleClass="B" action="changeOwnpassword"> Change Password </html:link>
-					
-		  </td></tr></table></td></tr>
-		</table>
-		</td>
-</tr>
+				<html:link styleClass="B" action="changeOwnpassword"> Change Password </html:link> 	</div>				
+		 </td>
 
-
-<tr>
+		 </tr>
+		<tr>
 	<td>
 
     <table cellspacing="0" cellpadding="0" ><tr>

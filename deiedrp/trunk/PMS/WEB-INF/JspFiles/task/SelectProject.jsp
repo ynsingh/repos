@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.sql.*" pageEncoding="ISO-8859-1"%>
-<%@page import="dataBaseConnection.MyDataSource;"%>
+<%@page import="org.dei.edrp.pms.dataBaseConnection.MyDataSource;"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%> 
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%

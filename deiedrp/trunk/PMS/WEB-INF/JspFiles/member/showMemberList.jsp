@@ -45,7 +45,7 @@
 	</div>
 		     
  
- <display:table name="memberList.list" defaultsort="1" export="false" pagesize="<%=Integer.parseInt(key) %>" requestURI="/viewmember.do" decorator="deco.PmsDecorator" class="dataTable" >
+ <display:table name="memberList.list" defaultsort="1" export="false" pagesize="<%=Integer.parseInt(key) %>" requestURI="/viewmember.do" decorator="org.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >
 				   
 		<display:column property="userEmailId" group="1" title="User ID" sortable="true" />
 		<display:column property="permittedby" title="Permitted By" sortable="true" />
@@ -55,7 +55,7 @@
     </logic:notEmpty>
     
      <logic:empty name="memberList" property="list">
-     nothing found.
+     <br><font color="#550003" size="2">Nothing found to display.</font><br><br>
      <html:button property="back" value="Back" onclick="history.back();" />
     </logic:empty>
   		

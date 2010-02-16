@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.sql.*" pageEncoding="UTF-8"%>
-<%@page import="dataBaseConnection.MyDataSource;"%>
+<%@page import="org.dei.edrp.pms.dataBaseConnection.MyDataSource;"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -54,7 +54,7 @@
   <div id="main_title" align="left">
 		    <font color="#0044ff">Searching Result By:</font><font color="#699f00" size="2"><%= session.getAttribute("searchOption") %></font>
 		     </div><br>
- <display:table name="orgSearchList.list" defaultsort="1" id="row" export="false" pagesize="10" requestURI="/orgSearchList.do" decorator="deco.PmsDecorator" class="dataTable" >
+ <display:table name="orgSearchList.list" defaultsort="1" id="row" export="false" pagesize="10" requestURI="/orgSearchList.do" decorator="org.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >
 				   
 		<display:column property="iname" title="Organisation Name" sortable="true"/>
 		<display:column property="iaddress" title="Organisation Address" sortable="true" />

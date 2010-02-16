@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.sql.*" pageEncoding="UTF-8"%>
-<%@page import="dataBaseConnection.MyDataSource"%>
-<%@page import="projmanage.ProjectFields;"%>
+<%@page import="org.dei.edrp.pms.dataBaseConnection.MyDataSource"%>
+<%@page import="org.dei.edrp.pms.projmanage.ProjectFields;"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -69,7 +69,7 @@
   <div id="main_title" align="left">
 		    <font color="#0044ff">Searching Result By:</font><font color="#699f00" size="2"><%= session.getAttribute("soption") %></font>
 		     </div><br>
- <display:table name="projectSearchList.list" defaultsort="2" id="row" export="false" pagesize="10" requestURI="/projectSearchList.do" decorator="deco.PmsDecorator" class="dataTable" >
+ <display:table name="projectSearchList.list" defaultsort="2" id="row" export="false" pagesize="10" requestURI="/projectSearchList.do" decorator="org.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >
 	
 		<display:column title="Active Status" sortable="true" >
 		<logic:equal name="row" property="enable" value="0">Yes</logic:equal>

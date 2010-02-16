@@ -1,5 +1,5 @@
 <%@ page import="java.sql.*" language="java" pageEncoding="ISO-8859-1"%>
-<%@page import="dataBaseConnection.MyDataSource;"%>
+<%@page import="org.dei.edrp.pms.dataBaseConnection.MyDataSource;"%>
 
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%> 
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
@@ -96,10 +96,10 @@
 	<html:javascript formName="taskform" />
 	<html:form action="/task"  onsubmit="return validateTaskform(this);">			
 	
-		<div id="main_title"><br>
+		<div id="main_title">
 		   <font color="#0044ff">  Add New Task:</font>
 		  </div>
-		  <br><br>
+		  <br>
 		  <div align="center"><html:errors property="sdate"/>
 		  	  <html:errors property="fdate"/>
 		  	  <html:errors property="taskmsg"/>
@@ -135,7 +135,7 @@
 		
 		<% 
 		try{
-			String uid=(String)this.getServletConfig().getServletContext().getAttribute("uid");
+			String uid=(String)session.getAttribute("uid");
 			%>
 			<html:option value="<%= uid%>"><%= uid%></html:option>
 			<%
@@ -210,7 +210,7 @@
 			<tr class="form-element">
 			<td  class="form-label">
 			Task Description :</td><td class="form-widget">
-			 <html:textarea property="darea"  rows="4" cols="32" value=""/><html:errors property="darea"/></td></tr>
+			 <html:textarea property="darea"  rows="2" cols="38" value=""/><html:errors property="darea"/></td></tr>
 			<tr><td></td></tr>
 			</table>
 			<table align="center">

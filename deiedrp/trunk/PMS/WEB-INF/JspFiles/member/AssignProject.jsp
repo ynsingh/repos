@@ -1,5 +1,5 @@
 <%@ page import="java.sql.*" language="java" pageEncoding="ISO-8859-1"%>
-<%@page import="dataBaseConnection.MyDataSource;"%>
+<%@page import="org.dei.edrp.pms.dataBaseConnection.MyDataSource;"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%> 
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
  
@@ -45,10 +45,10 @@
 		PreparedStatement ps=null;
 		 ResultSet rs=null;
 		 int flag=0;
-	
+	String uid=null;
 		 %>
 		<%
-		String uid=(String)session.getAttribute("uid");
+		uid=(String)session.getAttribute("uid");
 	 	con=MyDataSource.getConnection();
 	 	ps=con.prepareStatement("select Authority from login where User_ID=?");
 		ps.setString(1,uid);

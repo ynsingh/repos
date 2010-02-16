@@ -43,9 +43,8 @@
         </html:select>
 			<html:errors property="nrec"/><br><br>
 	</div>
-
-	 </logic:notEmpty>		
- <display:table name="orgList.list" defaultsort="1" export="false" pagesize="<%=Integer.parseInt(key) %>" requestURI="/orgList.do" decorator="deco.PmsDecorator" class="dataTable" >
+	 		
+ <display:table name="orgList.list" defaultsort="1" export="false" pagesize="<%=Integer.parseInt(key) %>" requestURI="/orgList.do" decorator="org.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >
 				   
 		<display:column property="iname" title="Organisation Name" sortable="true"/>
 		<display:column property="iaddress" title="Organisation Address" sortable="true" />
@@ -60,8 +59,9 @@
 		<display:column property="description" maxLength="10" title="Description" sortable="true" />
 		
 	</display:table>
-   
+   </logic:notEmpty>
   	<logic:empty name="orgList" property="list">
+       <br><font color="#550003" size="2">Nothing found to display.</font><br><br>
        <html:button property="back" value="Back" onclick="history.back();" />
     </logic:empty>
   		

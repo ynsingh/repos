@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.sql.*" pageEncoding="UTF-8"%>
-<%@page import="dataBaseConnection.MyDataSource"%>
-<%@page import="task.TaskFields;"%>
+<%@page import="org.dei.edrp.pms.dataBaseConnection.MyDataSource"%>
+<%@page import="org.dei.edrp.pms.task.TaskFields;"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -32,7 +32,7 @@
   	con=MyDataSource.getConnection();
   	/* Getting the User_iD which is currently logged in. */
    	String uid=(String)session.getAttribute("uid");
-	 out.println("uid="+uid);
+	 //out.println("uid="+uid);
 	ps=con.prepareStatement("select v.User_Id from validatetab v,project p where v.User_ID=? and "+
 	"(p.Project_Name=? and v.Project_ID=p.Project_ID) and "+
 	"v.PermittedBy=(select l.User_ID from login l where l.Authority='Admin')");
@@ -41,7 +41,7 @@
 		 rs=ps.executeQuery();
 			if(rs.next())
 			{
-				
+				//System.out.println("ok");
 				flag=1;//if user is project manager
 			}
 			else
@@ -53,7 +53,7 @@
 		 rs=ps.executeQuery();
 			 	if(rs.next())
 				{
-				
+					//System.out.println("not ok");
 					flag=2;//if user is not a project manager and only member of this project
 				}
 				else 
@@ -61,7 +61,7 @@
 			}
 			MyDataSource.freeConnection(con);
    %>
-
+	
   <logic:notEmpty name="taskList" property="list">
     <div id=main_title><font color="#0044ff">Task List of:</font> <font color="#0970ff" size="2"><%= session.getAttribute("projectName")%></font></div><br>
     </logic:notEmpty>
@@ -70,8 +70,7 @@
     <html:button property="back" value="Back" onclick="history.back();" />
     </logic:empty>
    <logic:notEmpty name="taskList" property="list">
- 
- <display:table name="taskList.list" defaultsort="2" id="row" export="false" pagesize="10" requestURI="/showTask.do" decorator="deco.PmsDecorator" class="dataTable" >
+ <display:table name="taskList.list" defaultsort="2" id="row" export="false" pagesize="10" requestURI="/showTask.do" decorator="org.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >
 				   
 		<display:column property="taskName" title="Task Name" sortable="true" />
 		<display:column property="projectName" title="Project Id" sortable="true" />
@@ -85,7 +84,7 @@
 		</font></display:column>
 
 		<display:column property="taskDependency" title="Dependency" sortable="true" />
-		<display:column property="darea" title="Description" sortable="true" />
+		<display:column property="darea" title="Description" maxLength="10" sortable="true" />
 	<% 
 	if(flag==1)//for project manager
 	{
