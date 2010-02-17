@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)Notice_Send_Delete.java	
  *
- *  Copyright (c) 2005-2008 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005,2008,2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -74,13 +74,18 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.FileEntry;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
+import org.iitk.brihaspati.modules.utils.MailNotification;
 import org.apache.turbine.services.servlet.TurbineServlet;
+import org.apache.turbine.services.security.torque.om.TurbineUser;
+import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
 
 /**
  * In this class,we send notice and delete self copy or all(Only Sender) notices
  * @author <a href="mailto:madhavi_mungole@hotmail.com">Madhavi Mungole</a>
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
+ * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
+ * @modified date: 28-01-2010
  */
 public class Notice_Send_Delete extends SecureAction
 {
@@ -90,6 +95,8 @@ public class Notice_Send_Delete extends SecureAction
 	* @param data Rundata
 	* @param context Context
 	*/
+	private String notice_message="";
+	private String msg1=null;
 	public void doSend(RunData data, Context context)
 	{
 		try{
@@ -116,7 +123,7 @@ public class Notice_Send_Delete extends SecureAction
 		 	*/
 
 			String notice_role=pp.getString("role");
-			String notice_message=pp.getString("message");	
+			notice_message=pp.getString("message");	
 
 			String notice_subject=pp.getString("subject");	
 			/**
@@ -254,7 +261,6 @@ public class Notice_Send_Delete extends SecureAction
                          	fw.write(notice_message);
                          	fw.write("\r\n"+"</" + msg_id + ">");
                          	fw.close();
-
 				/**
 			 	* Inserts notice details in NOTICE_RECEIVE table after checking 
 			 	* the users to whom the notice has to be sent
@@ -323,7 +329,7 @@ public class Notice_Send_Delete extends SecureAction
 					data.setMessage("The error in Receive "+cx);
 				}
 			}//for
-		//	String LangFile=(String)user.getTemp("LangFile");
+			//String LangFile=(String)user.getTemp("LangFile");
 
 			String msg1="";
                         if(mode.equals("quiz"))
@@ -355,14 +361,26 @@ public class Notice_Send_Delete extends SecureAction
 
 	public void insertReceiveNotice(int msg_id,int userid,int group_id)
 	{
-		try{
+		try{	
 			Criteria crit=new Criteria();
                         crit.add(NoticeReceivePeer.NOTICE_ID,msg_id);
                         crit.add(NoticeReceivePeer.RECEIVER_ID,userid);
                         crit.add(NoticeReceivePeer.GROUP_ID,group_id);
                         crit.add(NoticeReceivePeer.READ_FLAG,0);
                         NoticeReceivePeer.doInsert(crit);
-
+			String server_name=TurbineServlet.getServerName();
+                        String srvrPort=TurbineServlet.getServerPort();
+			crit =new Criteria();
+                        crit.add(TurbineUserPeer.USER_ID,userid);
+                        List userList=TurbineUserPeer.doSelect(crit);
+			for(int c1=0;c1<userList.size();c1++) {
+				TurbineUser element=(TurbineUser)(userList.get(c1));
+                                String eMail=element.getEmail();
+				ErrorDumpUtil.ErrorLog("Email"+eMail);
+				if(!eMail.equals("")){
+					String Mail_msg=MailNotification.sendMail(notice_message,eMail,"Brihaspati Notice","Updation Mail","","","",server_name,srvrPort,"english");
+				}
+			}
 		}
 		catch(Exception ex)
                 {

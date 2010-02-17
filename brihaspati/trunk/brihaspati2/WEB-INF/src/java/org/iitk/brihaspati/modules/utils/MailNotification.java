@@ -1,7 +1,7 @@
 package org.iitk.brihaspati.modules.utils;
 
 /*@(#)MailNotification.java
- *  Copyright (c) 2005-2006,2009 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006,2009,2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -48,7 +48,8 @@ import javax.mail.internet.*;
  * This class is used to send the mail for the concerned activity
  * @author <a href=satyapalsingh@gmail.com>Satyapal Singh</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
- * modify 31-08-2005, 20-03-2009, 29-12-2009
+ * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
+ * @modified date: 31-08-2005, 20-03-2009, 29-12-2009, 17-02-2010;
  */
 
 public class MailNotification{
@@ -207,6 +208,8 @@ public class MailNotification{
 									l_msg.setSubject("Online Registration Request");//Sets the Subject
 								else if(courseId.equals("LocalMail"))
 									l_msg.setSubject(userName);//Sets the Subject
+								else if(courseId.equals("Brihaspati Notice"))
+                                                                        l_msg.setSubject("Brihaspati Notice");//Send Notices in email by sunil kr.
 								else
 	      						      	        l_msg.setSubject("Updation Information");//Sets the Subject
 							}
@@ -225,7 +228,7 @@ public class MailNotification{
 						      java.util.Date date=new java.util.Date();
 						      l_msg.setSentDate(date);
 					              // Send the message
-			//			      Transport.send(l_msg);
+						      // Transport.send(l_msg);
 						      Transport tr = l_session.getTransport("smtp");
 						      // Send the message
 					              if(!mail_pass.equals("")){
@@ -236,7 +239,7 @@ public class MailNotification{
 								else{
 								         tr.connect(host_name, mail_uname, mail_pass);
 								}
-		                                         // Send the message
+		                                       // Send the message
 						      }
 						      else{
 							tr.connect();
