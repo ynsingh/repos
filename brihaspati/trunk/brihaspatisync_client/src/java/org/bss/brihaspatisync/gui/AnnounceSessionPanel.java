@@ -11,6 +11,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Container;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -275,9 +276,10 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
                 repeat_for_timeBox.setEnabled(false);
                 annBttn=new JButton("<html><u><b><center><font color=blue>Announce</font></center></b></u>");
 
-		/************MODIFIED**********************************/
+		//Modified by pratibha
+		annBttn.setCursor(new Cursor(Cursor.HAND_CURSOR));
                	annBttn.addActionListener(AnnounceSessionAction.getController());
-              	/******************************************************/
+              	//End of modification
 
 //		annBttn.addActionListener(this);
                 south_Panel.add(duration);

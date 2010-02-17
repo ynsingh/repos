@@ -20,6 +20,7 @@ import org.bss.brihaspatisync.tools.presentation.ImageLoadforStudent;
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
  * @author <a href="mailto:arvindjass17@gmail.com">Arvind Pal </a>	
+ * @author <a href="mailto:pratibhaayadav@gmail.com">Pratibha </a> Modified ShowMsg() for received chat signalling	
  */
 
 
@@ -97,7 +98,9 @@ public class ReceiveQueueHandler implements Runnable{
                                        			WhiteBoardDraw.getController().getDraw_vector().addElement(datastr); 
 						}else if(type.equals("ch")){
 							String data=st.nextToken();
-							ChatPanel.getController().showChatMSG(data);
+							// Modified by pratibha
+							ChatPanel.getController().showMsg(data);
+							//end of modification
 						} else if(type.equals("ppt")){
 							String data=st.nextToken();
 							if(data.equals("cancleppt")){

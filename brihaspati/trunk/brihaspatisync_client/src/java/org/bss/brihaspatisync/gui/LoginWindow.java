@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.gui;
  * MainWindow.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2007-2008 ETRG,IIT Kanpur.
+ * Copyright (c) 2009-2010 ETRG,IIT Kanpur.
  */
 
 import java.awt.BorderLayout;
@@ -37,10 +37,11 @@ import javax.swing.border.TitledBorder;
 import javax.swing.BorderFactory;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.network.Log;
-
+import javax.swing.JOptionPane;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a> 
+ * @author <a href="mailto:pratibhaayadav@gmail.com">Pratibha</a> Modified this class for signalling. 
  */
 
 public class LoginWindow extends JInternalFrame implements ActionListener, MouseListener {	
@@ -82,7 +83,10 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 
 	private MainWindow mainWindow=MainWindow.getController();		
 	private ClientObject client_obj=ClientObject.getController();
-	
+	private Cursor busyCursor =Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
+	private Cursor defaultCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+
+
 	private Log log=Log.getController();
 
 	
@@ -191,12 +195,28 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                 passwordField.setEnabled(false);
                 passwordField.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent ae) {
-				loginValue=client_obj.getAuthentication(indexServerName,usernameText.getText(),passwordField.getText());
+				usernameText.setCursor(busyCursor);
+				passwordField.setCursor(busyCursor);
+				mainLoginPanel.setCursor(busyCursor);
+				panel.setCursor(busyCursor);
+				MainWindow.getController().setCursor(busyCursor);
+				loginValue=client_obj.getAuthentication(indexServerName,usernameText.getText(),passwordField.getText());			try{
+						Thread.sleep(1000);
+					}catch(InterruptedException ie){
+						usernameText.setCursor(defaultCursor);
+						MainWindow.getController().setCursor(defaultCursor);
+					}finally{
+						usernameText.setCursor(defaultCursor);                                                                                     MainWindow.getController().setCursor(defaultCursor);
+					}
+						
                         	if(loginValue==false){
                                 	usernameText.setText("");
                                 	passwordField.setText("");
-                        	}else {
+			JOptionPane.showMessageDialog(null,"Incorrect Entry.", "Message", JOptionPane.ERROR_MESSAGE);
+					}else {
                                 	log.setLog("Login Successfull");
+					JOptionPane.showMessageDialog(null,"Login Successfull");
+
 					client_obj.setUserName(usernameText.getText());
 					if(((client_obj.getStudSessionList())!=null)||((client_obj.getInstSessionList())!=null)){
 						mainWindow.getMenuItem4().setEnabled(true);
@@ -227,7 +247,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 		ClassLoader clr= this.getClass().getClassLoader();
                 submitLabel=new JLabel(new ImageIcon(clr.getResource("resources/images/submit.jpg")));
                 submitLabel.setEnabled(false);
-                submitLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+	        submitLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
                 submitLabel.addMouseListener(this);
                 submitLabel.setName("submit.Action");
                 cancelLabel=new JLabel(new ImageIcon(clr.getResource("resources/images/cancle.jpg")));
@@ -280,16 +300,34 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
     	}   
 
 	public void mouseClicked(MouseEvent e) {
-                 if(e.getComponent().getName().equals("forgetpass.Action"))
-                        ForgetPass.getController();
-
+                 if(e.getComponent().getName().equals("forgetpass.Action")){
+			forgetpass.setCursor(busyCursor);
+			try{
+				Thread.sleep(500);
+			}catch(InterruptedException ie){
+				forgetpass.setCursor(defaultCursor);
+			}finally{
+				forgetpass.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+			ForgetPass.getController();
+		}
                  else if(e.getComponent().getName().equals("submit.Action")){
+			submitLabel.setCursor(busyCursor);
                         loginValue=client_obj.getAuthentication(indexServerName,usernameText.getText(),passwordField.getText());
+			try{
+				Thread.sleep(1000);
+			}catch(InterruptedException ie){
+				submitLabel.setCursor(defaultCursor);
+			}finally{
+				submitLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
 			if(loginValue==false){
                         	usernameText.setText("");
                         	passwordField.setText("");
+				JOptionPane.showMessageDialog(null,"Incorrect Entry.", "Message", JOptionPane.ERROR_MESSAGE);
 			}else {
 				log.setLog("Login Successfull");
+				JOptionPane.showMessageDialog(null,"Login Successfull");
 				client_obj.setUserName(usernameText.getText());
 				if(((client_obj.getStudSessionList())!=null)||((client_obj.getInstSessionList())!=null)){
 					mainWindow.getMenuItem4().setEnabled(true);
@@ -300,7 +338,16 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 			
                  }
                  else if(e.getComponent().getName().equals("cancle.Action")){
+			cancelLabel.setCursor(busyCursor);
+			try{
+                                Thread.sleep(500);
+                        }catch(InterruptedException ie){
+                                cancelLabel.setCursor(defaultCursor);
+                        }finally{
+                                cancelLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                        }
 			Logout.getController().sendLogoutRequest();
+			
                  }else 
 			log.setLog("oop!! Incorrect Action in LoginWindow");
         }

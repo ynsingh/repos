@@ -4,10 +4,11 @@ package org.bss.brihaspatisync.gui;
  * ForgetPass.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2007-2008 ETRG,IIT Kanpur.
+ * Copyright (c) 2009-2010 ETRG,IIT Kanpur.
  */
 
 import java.awt.Container;
+import java.awt.Cursor;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
 import java.awt.event.WindowAdapter;
@@ -25,6 +26,7 @@ import javax.swing.JOptionPane;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
+ * @author <a href="mailto:pratibhaayadav@gmail.com">Pratibha </a>Modified for signalling on button click.
  */
  
 public class ForgetPass extends JFrame implements ActionListener{
@@ -33,7 +35,9 @@ public class ForgetPass extends JFrame implements ActionListener{
 	private static ForgetPass forgetpass=null;
 	private Container con=null;
 	private JButton submitBttn;
-	
+	private Cursor busyCursor =Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
+        private Cursor defaultCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+
 	/**
 	 *Controller for the class.
 	 */
@@ -60,9 +64,12 @@ public class ForgetPass extends JFrame implements ActionListener{
    		centerPanel.add(entermail);
    		centerPanel.add(email);
    
-   		JButton submitBttn=new JButton("Submit");
+   		submitBttn=new JButton("Submit");
+		
    		submitBttn.addActionListener(this);
    		submitBttn.setActionCommand("Submit.Action");
+		submitBttn.setCursor(new Cursor(Cursor.HAND_CURSOR));	
+
    		centerPanel.add(submitBttn);
    		con.add(centerPanel,BorderLayout.CENTER);
    
@@ -80,6 +87,14 @@ public class ForgetPass extends JFrame implements ActionListener{
   
 	public void actionPerformed(ActionEvent e) {
   		if(e.getActionCommand().equals("Submit.Action")){
+			
+			submitBttn.setCursor(busyCursor);
+				try{Thread.sleep(300);
+				}catch(InterruptedException ie){
+					submitBttn.setCursor(defaultCursor);
+				}finally{
+					submitBttn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				}
   			this.hide();    
   			JOptionPane.showMessageDialog( null, "Your password will be sent to your email address." );
   			  			

@@ -4,9 +4,9 @@ package org.bss.brihaspatisync.gui;
  * UpdateSessionPanel.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2007-2008 ETRG, IIT Kanpur.
+ * Copyright (c) 2009-2010 ETRG, IIT Kanpur.
  */
-
+import java.awt.Cursor;
 import java.awt.*;
 import javax.swing.*;
 import java.util.Vector;
@@ -25,6 +25,7 @@ import org.bss.brihaspatisync.network.Log;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
+ * @author <a href="mailto:pratibhaayadav@gmail.com">Pratibha </a> Modified for Signalling.
  */
 
 public class UpdateSessionPanel extends JFrame implements ActionListener, MouseListener{
@@ -81,7 +82,9 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
 	private Log log=Log.getController();	
 	private ClientObject client_obj=ClientObject.getController();
 	private InstructorCSPanel insCSPanel=InstructorCSPanel.getController();
-	
+	private Cursor busyCursor =Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
+        private Cursor defaultCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+
 
 	private static UpdateSessionPanel annPanel=null; 
 	
@@ -306,7 +309,7 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
 		
 		ClassLoader clr= this.getClass().getClassLoader();	
 		closeLabel=new JLabel(new ImageIcon(clr.getResource("resources/images/close.jpg")));
-		closeLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		//closeLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
                 closeLabel.addMouseListener(this);
                 closeLabel.setName("closeLabel.Action");
                 closeLabel.addMouseListener(this);
@@ -436,6 +439,14 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
       	 */
 	public void actionPerformed(ActionEvent e){
         	if(e.getSource()==annBttn){
+			annBttn.setCursor(busyCursor);
+			try{
+				Thread.sleep(500);
+			}catch(InterruptedException ie){
+				annBttn.setCursor(defaultCursor);
+			}finally{
+				annBttn.setCursor(defaultCursor);
+			}
 			//BufferedReader in=null;
 			//URL indexurl=null;
 			try{
@@ -446,7 +457,7 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                                         String  indexServer=indexServerName+"/ProcessRequest?req=putLecture&"+lectValue;
                                         if(HttpsUtil.getController().getIndexingMessage(indexServer)){
 						/********************* modified ******************************/
-                                                JOptionPane.showMessageDialog(null," Update lecture successfully !!");
+                                                JOptionPane.showMessageDialog(null," Lecture is Updated Successfully !!");
 						frame.dispose();
 						insCSPanel.getmainPanel().remove(1);
                                                         Vector course_Name=client_obj.getInstCourseList();
@@ -472,6 +483,14 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
 		}
 		/*******  Modified *******/
 		if(ev.getComponent().getName().equals("closeLabel.Action")){
+			closeLabel.setCursor(busyCursor);
+			try{
+				Thread.sleep(500);
+			}catch(InterruptedException ie){
+				closeLabel.setCursor(defaultCursor);
+			}finally{
+				closeLabel.setCursor(defaultCursor);
+			}
                   frame.dispose();
                 }
 		/************************/

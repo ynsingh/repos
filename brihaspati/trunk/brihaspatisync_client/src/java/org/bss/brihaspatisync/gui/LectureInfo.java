@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.gui;
  * LectureInfo.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2007-2008 ETRG,IIT Kanpur.
+ * Copyright (c) 2009-2010 ETRG,IIT Kanpur.
  */
 
 import java.awt.Color;
@@ -27,6 +27,7 @@ import java.util.Vector;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
+ * @author <a href="mailto:pratibhaayadav@gmail.com">Pratibha </a> Modified for signalling 
  */
 
 
@@ -68,6 +69,9 @@ public class LectureInfo extends JFrame implements MouseListener
 	private JPanel descPanel=null;
        
 	private String[] sessionInfo={"Lecture Id","Lecture Name","Lecture Info","Author Url","Phone No","Transmit Video","Transmit Audio","WhiteBoard-chat","Session Date","Session Time","Duration","Repeat","For Times" };
+	
+	private Cursor busyCursor =Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
+        private Cursor defaultCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);	
 	
 	/**
 	 * Constructor of class
@@ -124,8 +128,18 @@ public class LectureInfo extends JFrame implements MouseListener
             	frame.setLocation(550,8);
 	} 
 	
+	//Modified by pratibha
 	public void mouseClicked(MouseEvent e) {
 		 if(e.getComponent().getName().equals("closeLabel.Action")){
+			closeLabel.setCursor(busyCursor);
+			try{
+				Thread.sleep(500);
+			}catch(InterruptedException ie){
+				closeLabel.setCursor(defaultCursor);
+			}
+			finally{
+				closeLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
 		 	frame.dispose();
 		 }
 		 	

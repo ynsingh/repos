@@ -4,9 +4,9 @@ package org.bss.brihaspatisync.tools.chat;
  * ChatPanel.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2007-2008 ETRG,IIT Kanpur
+ * Copyright (c) 2009-2010 ETRG,IIT Kanpur
  */
-
+import java.awt.*;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -47,9 +47,10 @@ import org.bss.brihaspatisync.network.Log;
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>
+ * @author <a href="mailto:pratibhaayadav@gmail.com">Pratibha </a>
  */
 
-public class ChatPanel extends JPanel implements ActionListener,KeyListener {
+public class ChatPanel extends JPanel implements ActionListener,KeyListener,MouseListener {
 
  	private JPanel mainPanel;
         private JPanel south_mainPanel;
@@ -57,12 +58,14 @@ public class ChatPanel extends JPanel implements ActionListener,KeyListener {
 	private JButton save;
 	private JTextField input_text;
 	private JTextArea textArea;
+	private JToolBar toolbar;
 	private UtilObject utilObject=UtilObject.getController();
 	private static ChatPanel chatPanel=null;
 	private Log log=Log.getController();
-
-	
 	private JScrollPane scrollpane=null;
+	int i=0;
+	Thread runner=null;
+	boolean flag=false;
 
 	/**
 	 * Controller for class
@@ -92,15 +95,17 @@ public class ChatPanel extends JPanel implements ActionListener,KeyListener {
 	     	scrollpane.setAutoscrolls(true);
 		mainPanel.add(scrollpane,BorderLayout.CENTER);
 
-		JToolBar toolbar=new JToolBar("ChatTool"); 
+		toolbar=new JToolBar("ChatTool"); 
+		
 		south_mainPanel=new JPanel();
 		JLabel textLabel = new JLabel("Enter Text : ",JLabel.LEFT);
                 //south_mainPanel.add(textLabel);
                 toolbar.add(textLabel);
 
                 input_text=new JTextField(20);
+		input_text.addMouseListener(this);
 		input_text.addKeyListener(this);
-                //south_mainPanel.add(input_text);
+		//south_mainPanel.add(input_text);
                 toolbar.add(input_text);
                 
 		save=new JButton("Save");
@@ -144,7 +149,41 @@ public class ChatPanel extends JPanel implements ActionListener,KeyListener {
 
 	}
 
+	//Modified by pratibha
+	// Adding this method for blinking thread 
+	public void showMsg(String data){
+		Font f=new Font("Courier",Font.BOLD,14);
+                textArea.setFont(f);
+                textArea.append(data+System.getProperty("line.separator"));
+                textArea.setCaretPosition(textArea.getDocument().getLength());
+		input_text.setFocusable(false);
+		runner=new Thread(new Runnable(){
+				public void run(){
+					if(flag==false)
+						flag=true;
+					while(flag){
+						try{
+							if((i%2)==0){
+								toolbar.setBackground(new Color(255,228,225));//Color.red);
+								repaint();
+								runner.sleep(500);
+								i++;
+							}else{
+								toolbar.setBackground(new Color(245,245,245));//.white);
+								repaint();
+								runner.sleep(500);
+								i++;
+							}
+						}catch(InterruptedException ie){continue;}
+					}
+				}
+			}, "BlinkThread");
+		runner.start();
+	} 
+        // end of method  modification
+
 	public void keyPressed(KeyEvent e){
+		input_text.setFocusable(true);
 		String send_msg="";
 		String msg;
       		int   i, length;
@@ -168,7 +207,49 @@ public class ChatPanel extends JPanel implements ActionListener,KeyListener {
              		input_text.setText("");
 		}
       	}
-   	public void keyTyped(KeyEvent e){}
+
+	// Added By pratibha
+   	public void keyTyped(KeyEvent e){
+		if(i>0){
+			try{
+				if(runner==null){
+					System.out.println("thread is going to stop:");
+					if(flag==true){
+
+						flag=false;
+						runner.interrupt();
+						runner=null;
+						toolbar.setBackground(new Color(245,245,245));//.white);
+						repaint();
+						i=0;
+					}
+				}
+			}catch(Exception ex){System.out.println("---"+ex.getMessage());}
+		}
+	}
    	public void keyReleased(KeyEvent e){}
+	public void mouseClicked(MouseEvent me){
+		if(i>0){
+                	try{
+                        	if(runner!=null){
+                                        System.out.println("thread is going to stop:");
+                                        if(flag==true){
+                                                flag=false;
+                                                runner.interrupt();
+                                                runner=null;
+                                                toolbar.setBackground(new Color(245,245,245));
+                                                repaint();
+						i=0;
+                                        }
+                                }
+                        }catch(Exception ex){System.out.println("---"+ex.getMessage());}
+			input_text.setFocusable(true);
+                }
+	}
+	public void mouseReleased(MouseEvent me){}
+	public void mouseExited(MouseEvent me){}
+	public void mouseEntered(MouseEvent me){}
+	public void mousePressed(MouseEvent me){}
+        // end of addition
 }         
 

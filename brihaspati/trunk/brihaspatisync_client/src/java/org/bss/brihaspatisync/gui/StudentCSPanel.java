@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.gui;
  * StudentCSPanel.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2007-2008 ETRG, IIT Kanpur.
+ * Copyright (c) 2009-2010 ETRG, IIT Kanpur.
  */
 
 import java.awt.BorderLayout;
@@ -33,6 +33,7 @@ import org.bss.brihaspatisync.network.Log;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a> 
+ * @author <a href="mailto:pratibhaayadav@gmail.com">Pratibha </a> Modified for signalling.
  */
 
 public class StudentCSPanel extends JPanel implements ActionListener, MouseListener{
@@ -56,6 +57,8 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
 	private ClientObject client_obj=ClientObject.getController();
 	private static StudentCSPanel studcspanel=null;
 	private Log log=Log.getController();
+	private Cursor busyCursor =Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
+        private Cursor defaultCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 
 	/**
 	 * Controller for class.
@@ -207,6 +210,14 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
 		try{
                        	for(int i=0;i<runButton.length;i++){
                                	if(e.getSource()==runButton[i]){
+					runButton[i].setCursor(busyCursor);
+					try{
+						Thread.sleep(1000);
+					}catch(InterruptedException ie){
+						runButton[i].setCursor(defaultCursor);
+					}finally{
+						runButton[i].setCursor(defaultCursor);
+						}
 					lect_id=(String)(getLectureID(lectinfoVector)).elementAt(i);
 					// store this lect_id in client objects for later use by this client.
                                         client_obj.setLectureID(lect_id);
@@ -227,6 +238,13 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
 			try{
 				for(int i=0;i<descLabel.length;i++) {
                 			if(ev.getSource()==descLabel[i]){
+						descLabel[i].setCursor(busyCursor);
+						try{Thread.sleep(500);
+						}catch(InterruptedException ie){
+							descLabel[i].setCursor(defaultCursor);
+						}finally{
+							descLabel[i].setCursor(new Cursor(Cursor.HAND_CURSOR));
+						}
                      				int p=i;
                        	  			LectureInfo info=new LectureInfo(p,lectinfoVector);
                     			}

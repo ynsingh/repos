@@ -13,6 +13,7 @@ import java.io.DataOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.awt.Container;
+import java.awt.Cursor;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.BorderLayout;
@@ -44,6 +45,7 @@ import org.bss.brihaspatisync.network.Log;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a> 
+ * @author <a href="mailto:pratibhaayadav@gmail.com">Pratibha </a> Modified for file handlling and signalling.
  */
  
 public class PreferenceWindow extends JFrame implements ActionListener{
@@ -78,7 +80,8 @@ public class PreferenceWindow extends JFrame implements ActionListener{
 	private int netType;
 	private Properties prop;
 	private Log log=Log.getController();
-
+	private Cursor busyCursor =Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
+        private Cursor defaultCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 	
 	public static PreferenceWindow getController(){
 		if (preWin==null){
@@ -94,13 +97,13 @@ public class PreferenceWindow extends JFrame implements ActionListener{
 	protected void createWindow(){
     	   	setTitle("Preferences");
     		con=this.getContentPane();
-  			window_mainPanel=new JPanel();
-  			window_mainPanel.setLayout(new BorderLayout());
+		window_mainPanel=new JPanel();
+		window_mainPanel.setLayout(new BorderLayout());
   				
-  			JTabbedPane tabPane = new JTabbedPane();
-  			tabPane.add("Connection Setting",createTabPane());
-  			window_mainPanel.add(tabPane,BorderLayout.CENTER);
-  			con.add(window_mainPanel); 
+		JTabbedPane tabPane = new JTabbedPane();
+		tabPane.add("Connection Setting",createTabPane());
+		window_mainPanel.add(tabPane,BorderLayout.CENTER);
+		con.add(window_mainPanel); 
     		setSize(420, 300);
     		setLocation(515,100);
     		setVisible(true);
@@ -143,26 +146,26 @@ public class PreferenceWindow extends JFrame implements ActionListener{
   		mainPanel.setLayout(new BorderLayout());
 
 		centerPanel=new JPanel();
-        centerPanel.setLayout(new BorderLayout());
+        	centerPanel.setLayout(new BorderLayout());
 
 		proxyPanel1=new JPanel();
-        proxyPanel1.setLayout(new FlowLayout());
+	        proxyPanel1.setLayout(new FlowLayout());
 
 		proxyPanel2=new JPanel();
-        proxyPanel2.setLayout(new FlowLayout());
+        	proxyPanel2.setLayout(new FlowLayout());
 
   		
   		rbttnPanel=new JPanel();
   		rbttnPanel.setLayout(new GridLayout(3,1,1,1));
   		proxyhost= new JLabel("Host");
 		proxyhosttext=new JTextField(20);
-        proxyport= new JLabel("Port");
+	        proxyport= new JLabel("Port");
 		proxyporttext=new JTextField(8);
 
 		proxyuser= new JLabel("Username");
-        proxyusertext=new JTextField(25);
-        proxypass= new JLabel("Password");
-        proxypasstext=new JPasswordField(25);
+        	proxyusertext=new JTextField(25);
+	        proxypass= new JLabel("Password");
+        	proxypasstext=new JPasswordField(25);
 
   		bttngroup= new ButtonGroup();
  		
@@ -185,12 +188,11 @@ public class PreferenceWindow extends JFrame implements ActionListener{
 			proxypasstext.setEditable(false);
 
 		} else {
-/**************************************************MODIFIED**********************************************************/
 
 			rb1= new JRadioButton("Direct Connection to the Internet", false);
 			rb3= new JRadioButton("proxy configuration : ", true);
 		//	rb3.addActionListener(this);
-        //  rb3.setActionCommand("rb3");
+        	//  rb3.setActionCommand("rb3");
 
 			String host=getProperties().getProperty("ProxyHost");
 			String port=getProperties().getProperty("ProxyPort");
@@ -213,55 +215,58 @@ public class PreferenceWindow extends JFrame implements ActionListener{
 			proxypasstext.setEditable(true);
 			proxypasstext.setText(pass);
 		}
-/********************************************************************************************************************/	
+		/*************************************************************************/	
 			rb1.addActionListener(this);
-            rb1.setActionCommand("rb1");
+            		rb1.setActionCommand("rb1");
 	
 			rb3.addActionListener(this);
-            rb3.setActionCommand("rb3");
+            		rb3.setActionCommand("rb3");
 	
-				bttngroup.add(rb1);
-                bttngroup.add(rb3);
-                rbttnPanel.add(rb1);
-                rbttnPanel.add(rb3);
+			bttngroup.add(rb1);
+                	bttngroup.add(rb3);
+                	rbttnPanel.add(rb1);
+                	rbttnPanel.add(rb3);
                 
-				titledBorder = BorderFactory.createTitledBorder("Proxy-Login");
+			titledBorder = BorderFactory.createTitledBorder("Proxy-Login");
         		centerPanel.setBorder(titledBorder);
 
-				proxyPanel1.add(proxyhost);
-                proxyPanel1.add(proxyhosttext);
-                proxyPanel1.add(proxyport);
-                proxyPanel1.add(proxyporttext);
+			proxyPanel1.add(proxyhost);
+                	proxyPanel1.add(proxyhosttext);
+                	proxyPanel1.add(proxyport);
+                	proxyPanel1.add(proxyporttext);
 
-                centerPanel.add(proxyPanel1,BorderLayout.NORTH);
+                	centerPanel.add(proxyPanel1,BorderLayout.NORTH);
 
-                proxyPanel2.add(proxyuser);
-                proxyPanel2.add(proxyusertext);
-                proxyPanel2.add(proxypass);
-                proxyPanel2.add(proxypasstext);
+                	proxyPanel2.add(proxyuser);
+                	proxyPanel2.add(proxyusertext);
+                	proxyPanel2.add(proxypass);
+                	proxyPanel2.add(proxypasstext);
 
-                centerPanel.add(proxyPanel2,BorderLayout.CENTER);
+                	centerPanel.add(proxyPanel2,BorderLayout.CENTER);
 
-                bttnPanel=new JPanel();
-                bttnPanel.setLayout(new FlowLayout());
-                bttnPanel.setBorder(BorderFactory.createTitledBorder(""));
+                	bttnPanel=new JPanel();
+                	bttnPanel.setLayout(new FlowLayout());
+                	bttnPanel.setBorder(BorderFactory.createTitledBorder(""));
 
-                appbttn=new JButton("Apply");
-                appbttn.addActionListener(this);
-                cancelbttn=new JButton("Cancel");
-                cancelbttn.addActionListener(this);
+                	appbttn=new JButton("Apply");
+                	appbttn.addActionListener(this);
+			appbttn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-                bttnPanel.add(appbttn);
-                bttnPanel.add(cancelbttn);
+                	cancelbttn=new JButton("Cancel");
+                	cancelbttn.addActionListener(this);
+			cancelbttn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-				mainPanel.add(rbttnPanel,BorderLayout.NORTH);
-                mainPanel.add(centerPanel,BorderLayout.CENTER);
-                mainPanel.add(bttnPanel,BorderLayout.SOUTH);
-                return mainPanel;
+                	bttnPanel.add(appbttn);
+                	bttnPanel.add(cancelbttn);
+
+			mainPanel.add(rbttnPanel,BorderLayout.NORTH);
+                	mainPanel.add(centerPanel,BorderLayout.CENTER);
+                	mainPanel.add(bttnPanel,BorderLayout.SOUTH);
+                	return mainPanel;
   		
 	}
 	
-	/**********************MODIFIED**********************************************************************/
+	/**********************MODIFIED********************/
 	public File  createFile(){
 		File f=new File("./conn.ini");
 		try{	
@@ -399,40 +404,43 @@ public class PreferenceWindow extends JFrame implements ActionListener{
          */
  
   		
-  		if(e.getSource()==appbttn){
-  
+  if(e.getSource()==appbttn){
+		
+		appbttn.setCursor(busyCursor);
+		
+  		try{Thread.sleep(500);
+		}catch(InterruptedException ie){
+			appbttn.setCursor(defaultCursor);
+		}finally{
+			appbttn.setCursor(new Cursor(Cursor.HAND_CURSOR));
   		log.setLog("NetType="+netType);
   		
   		
-  		if(	rb1.isSelected()==true){
+  			if(rb1.isSelected()==true){
   					log.setLog("this is direct net type");
-  					}
-  		if(rb3.isSelected()==true){
-  if(((proxyhosttext.getText().equals("")))){
+  			}
+  			if(rb3.isSelected()==true){
+  				if(((proxyhosttext.getText().equals("")))){
+  					JOptionPane.showMessageDialog(null,"THE HOST FIELD IS LEFT BLANK");
+  					proxyhosttext.requestFocus();
+  					return;
+				}
+  				if(((proxyporttext.getText().equals("")))){
+  					JOptionPane.showMessageDialog(null,"THE PORT FIELD IS LEFT BLANK");
+  					proxyporttext.requestFocus();
+  					return;
+  				}
+  				if(((proxyusertext.getText().equals("")))){
+  					JOptionPane.showMessageDialog(null,"THE USERNAME FIELD IS LEFT BLANK");
+  					proxyusertext.requestFocus();
+  					return;
+  				}
   
-  		JOptionPane.showMessageDialog(null,"THE HOST FIELD IS LEFT BLANK");
-  		proxyhosttext.requestFocus();
-  	return;
-  }
-  	if(((proxyporttext.getText().equals("")))){
-  
-  		JOptionPane.showMessageDialog(null,"THE PORT FIELD IS LEFT BLANK");
-  		proxyporttext.requestFocus();
-  	return;
-  }
-  if(((proxyusertext.getText().equals("")))){
-  
-  		JOptionPane.showMessageDialog(null,"THE USERNAME FIELD IS LEFT BLANK");
-  		proxyusertext.requestFocus();
-  	return;
-  }
-  
-  if(((proxypasstext.getText().equals("")))){
-  
-  		JOptionPane.showMessageDialog(null,"THE PASSWORD FIELD iS LEFT BLANK");
-  		proxyhosttext.requestFocus();
-  	return;
-  }
+  				if(((proxypasstext.getText().equals("")))){
+  					JOptionPane.showMessageDialog(null,"THE PASSWORD FIELD IS LEFT BLANK");
+  					proxyhosttext.requestFocus();
+  					return;
+  				}
   
   
 if((!(proxyhosttext.getText().equals("")))|| (!(proxyporttext.getText().equals("")))||(!(proxyusertext.getText().equals("")))||(!(proxypasstext.getText().equals("")))){	
@@ -445,18 +453,27 @@ if((!(proxyhosttext.getText().equals("")))|| (!(proxyporttext.getText().equals("
   				proxyusertext.setEnabled(false);
   				//proxypass.setEnabled(false);
   				proxypasstext.setEnabled(false);	
-  			}
+  				}
   		}	
   		
   		saveProxySetting();
   		
   		dispose();
   			 			
-  		} 
-  		if(e.getSource()==cancelbttn){
+  } 
+}
+  if(e.getSource()==cancelbttn){
+			cancelbttn.setCursor(busyCursor);
+			try{
+				Thread.sleep(300);
+			}catch(InterruptedException ie){
+				cancelbttn.setCursor(defaultCursor);
+			}finally{
+				cancelbttn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
   			dispose();
-         	}     
-  	}	
+         	    } 
+  }	
 
 
 /*******************************************************************************************************************/
