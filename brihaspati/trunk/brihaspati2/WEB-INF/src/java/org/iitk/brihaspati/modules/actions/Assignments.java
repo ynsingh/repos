@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.actions;
 
 
 /*
- * Copyright (c) 2007 ETRG,IIT Kanpur.
+ * Copyright (c) 2007,2010 ETRG,IIT Kanpur.
  * All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or
@@ -69,6 +69,7 @@ import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 	/** This class contains code of Sending Assignment  to the Assignment
 	*  with  attachments file txt formate
 	*  @author<a href="arvindjss17@gmail.com">Arvind Pal</a>
+	*  @author<a href="sunil.singh6094@gmail.com">Sunil Kumar Pal</a>
 	*/
 
 public class Assignments extends SecureAction
@@ -595,7 +596,8 @@ public class Assignments extends SecureAction
 				}
                                 else {
 					msg= MultilingualUtil.ConvertedString("assignment_msg18",LangFile);
-                                     //   data.setMessage(msg);
+                                     //   data.setMessage(msg); ====> Add one line by sk
+					context.put("DB_subject",DB_subject);
                                         data.setMessage("\" "+DB_subject+"  \""+msg);
 				}
                         }

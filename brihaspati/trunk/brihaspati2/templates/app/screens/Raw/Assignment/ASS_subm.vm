@@ -1,11 +1,11 @@
 #*
  * @(#) ASS_subm.vm
- * Copyright (c) 2007,2009 ETRG,IIT Kanpur.
+ * Copyright (c) 2007,2009,2010 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="arvindjss17@yahoo.co.in">Arvind Pal</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
- * @modified date: 31-12-2009
+ * @modified date: 31-12-2009, 22-02-2010
  *#
 <head>
 <script type="text/javascript">
@@ -154,13 +154,13 @@ $!data.getMessage()
 </tr>
 </table>
 #if($user_role == "instructor")
-	<form name=uploadform method="post" enctype="multipart/form-data"  action=$link.setPage("call,Assignment,AssView.vm").setAction("Assignments")>
+	<form name=uploadform method="post" enctype="multipart/form-data"  action=$link.setPage("call,Assignment,ASS_subm.vm").setAction("Assignments")>
 	#set($month=["01","02","03","04","05","06","07","08","09","10","11","12"])
 	#set($day=["01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"])
 	<table bgcolor="$ui.tableColor" width="100%">
 	<tr bgcolor="$ui.menuColor">
 		<td><b>$brih_topic $brih_name<font color=Red>*</font></b></td>
-		<td><input type="text" name="contentTopic"  size=26 onChange="validate1(this)"  /> &nbsp;
+		<td><input type="text" name="contentTopic"  value="$!DB_subject" size=26 onChange="validate1(this)"  /> &nbsp;
 		<input type="button" name="dosubmitView" value="$QuestionBank_available" onClick="checkBlank1(document.uploadform,this);"/></td>
 	</tr>
 	<tr>
