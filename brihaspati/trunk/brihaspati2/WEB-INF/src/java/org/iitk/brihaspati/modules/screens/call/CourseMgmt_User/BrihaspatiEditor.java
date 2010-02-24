@@ -58,24 +58,23 @@ public class BrihaspatiEditor extends SecureScreen{
 	{
 		try
 		{
-			User user=data.getUser();
-                        String authorname=user.getName();
-                        context.put("username",authorname);
-                	String C_Name=(String)user.getTemp("course_name");
-			context.put("Cname",C_Name);
-			context.put("tdcolor",data.getParameters().getString("count",""));
-			String UserPath=data.getServletContext().getRealPath("/BrihaspatiEditor");
-			File topicDir=new File(UserPath);
-			String filter[]={".jar","myKeystore","lib","tmp","src","CVS"};
-                        NotInclude exclude=new NotInclude(filter);
-                        String ContentList []=topicDir.list(exclude);
-
-                        Vector y =new Vector();
-                        for(int j=0;j<ContentList.length;j++)
-                        {
+		     User user=data.getUser();
+                     String authorname=user.getName();
+                     context.put("username",authorname);
+                     String C_Name=(String)user.getTemp("course_name");
+		     context.put("Cname",C_Name);
+		     context.put("tdcolor",data.getParameters().getString("count",""));
+		     String UserPath=data.getServletContext().getRealPath("/BrihaspatiEditor");
+		     File topicDir=new File(UserPath);
+		     String filter[]={".jar","lib","src",".svn"};
+                     NotInclude exclude=new NotInclude(filter);
+                     String ContentList []=topicDir.list(exclude);
+                     Vector y =new Vector();
+                      for(int j=0;j<ContentList.length;j++)
+                       {
                         	y.add(ContentList[j]);
-                        }
-                        context.put("contentvalue",y);
+                       }
+                       context.put("contentvalue",y);
 
 		}
 	 	catch(Exception e)
