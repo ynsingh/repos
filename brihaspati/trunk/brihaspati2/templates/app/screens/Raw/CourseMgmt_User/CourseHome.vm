@@ -380,11 +380,20 @@ $!data.getMessage()
                                                         </td></tr>
                                                         <tr><td align=center>
                                                                 <font face="$ui.sansSerifFonts">
-                                                                <a href=$link.setPage("call,Wiki,Wiki.vm").addpathInfo("count","1") style=text-decoration:none>$brih_Wiki</a>
+                                                                <a href=$link.setPage("call,Wiki,Wiki.vm").addPathInfo("count","1") style=text-decoration:none>$brih_Wiki</a>
                                                         </td></tr>
 						</table>
-				<td>
+				</td>
                                         ## inner column 2 (3)close
+                                 <td align=center>
+                          <table border=0>
+                          <tr><td align=center>
+                          <a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("count","1")><img border=0 src="$content.getURI("/images/ScormPlayer.jpg")"></a></td></tr>
+                           <tr><td align=center>
+                           <font face="$ui.sansSerifFonts">
+                           <a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("count","1")>$brih_scorm $Repo_Player</a></td></tr>
+                                </table>
+                                </td>
 				</tr>
 				##inner row 3 close 
 			#end

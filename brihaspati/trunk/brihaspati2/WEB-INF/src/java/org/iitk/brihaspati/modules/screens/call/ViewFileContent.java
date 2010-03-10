@@ -165,7 +165,13 @@ public class ViewFileContent extends SecureScreen
 				String docRoot=data.getServletContext().getRealPath("/Courses")+"/";
 				filePath=docRoot+dir+"Content/"+topic+fileID;
 			}
-				
+			else if(Type.equals("Scormpackage"))
+                        {
+                                String topic=pp.getString("topic","")+"/";
+                                String dir=pp.getString("dir","")+"/";
+                                String docRoot=data.getServletContext().getRealPath("/Courses")+"/";
+                                filePath=docRoot+dir+"Scormpackage/"+topic+fileID;
+                        }
 			/**
                          * getting the actual path where stored the Assignment file
                          */

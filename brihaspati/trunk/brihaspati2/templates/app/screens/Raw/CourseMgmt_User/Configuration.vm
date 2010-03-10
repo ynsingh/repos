@@ -62,6 +62,14 @@ $page.setBgColor($ui.bgcolor)
 	<td bgcolor="#AFDCEC">
 	#end	
         <a href=$link.setPage("call,CourseMgmt_User,BrihaspatiEditor.vm").addPathInfo("count","6") style=text-decoration:none>$brih_scorm $brih_packager</a></td>
+        #if($tdcolor != "7")
+         <td>
+         #elseif($tdcolor == "7")
+         <td bgcolor="#AFDCEC">
+         #end
+         <a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("count","7")>$brih_scorm $Repo_Player</a>
+         </td>
+
 ##	<td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/RemoteCourses.html","newWin");>$brih_help</a></td>
 </tr>
 </table>

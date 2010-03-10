@@ -75,7 +75,14 @@ $!data.getMessage()
         <td bgcolor="#AFDCEC">
 	#end
         <a href=$link.setPage("call,CourseMgmt_User,BrihaspatiEditor.vm").addPathInfo("count","6")>$brih_scorm $brih_packager</a></td>
-#end
+        #if($tdcolor != "7")
+         <td>
+         #elseif($tdcolor == "7")
+         <td bgcolor="#AFDCEC">
+         #end
+       <a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("count","7")>$brih_scorm $Repo_Player</a>
+         </td>
+ #end
 </tr>
 </table>
 <form method="post" enctype="multipart/form-data" >
