@@ -45,7 +45,6 @@ import org.iitk.brihaspati.om.NewsPeer;
 import org.iitk.brihaspati.om.News;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.utils.RemoteCourseUtilClient;
-import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.NewsHeadlinesUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.NewsDetail;
@@ -70,88 +69,21 @@ public class BrihaspatiLogin extends VelocityScreen
      */
     public void doBuildTemplate( RunData data, Context context )
     {
-	 	/**
-                 * getting the value of lang  According to selection of Language
-                 * getting property file According to selection of Language in temporary variable
-                 * and replacing the String from property file
-                 * getting value of file parameter
-                 * @see MultilingualUtil in utils
-                 */
-                String LangFile=null;
-                MultilingualUtil m_u=new MultilingualUtil();
+		boolean flag = false;
 		System.gc();
                 try{
                         ParameterParser pp=data.getParameters();
-                        String lang=pp.getString("lang","english");
-                        if(lang.equals("hindi"))
-                        {
-                                LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_hi.properties");
-                        }
-                        else if(lang.equals("urdu"))
-                        {
-                                LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_urd.properties");
-                        }
-                        else if(lang.equals("bangla"))
-                        {
-                                LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_bn.properties");
-                        }
-                        else if(lang.equals("marathi"))
-                        {
-                                LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_mr.properties");
-                        }
-                        else if(lang.equals("telugu"))
-                        {
-                                LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_te.properties");
-                        }
-			else if(lang.equals("tamil"))
-                        {
-                                 LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_ta.properties");
-                        }
-                        else if(lang.equals("french"))
-                        {
-                                LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_fr.properties");
-                        }
-                        else if(lang.equals("german"))
-                        {
-                                LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_de.properties");
-                        }
-                        else if(lang.equals("italian"))
-                        {
-                                LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_it.properties");
-                        }
-                        else if(lang.equals("russian"))
-                        {
-                                LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_ru.properties");
-                        }
-                        else if(lang.equals("korean"))
-                        {
-                                LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_ko.properties");
-                        }
-                        else if(lang.equals("chinese"))
-                        {
-                                LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_zh.properties");
-                        }
-			else if(lang.equals("dutch"))
-                        {
-                                LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_nl.properties");
-                        }
-			else if(lang.equals("japanese"))
-                        {
-                                LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_ja.properties");
-                        }
-			else if(lang.equals("malayalam"))
-                        {
-                                LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_ml.properties");
-                        }
+                        String lang=pp.getString("lang","");
+                        if(lang.equals(""))
+			{
+				flag = true;
+				lang= "english";
+			}
 
-                        else 
-                        {
-                                LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_en.properties");
-                        }
-                        String selLang=pp.getString("selectedLang");
-                        context.put("LangFile",LangFile);
-			context.put("lang",lang);
-			//context.put("lang",lang);
+				context.put("flag",flag);
+				context.put("lang",lang);
+				lang= "";
+			
 			Vector newsd=NewsHeadlinesUtil.getNews(1);
 			int t_size=newsd.size();
 	        	if(t_size!=0)

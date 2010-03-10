@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.screens;
 /*
  * @(#) ViewCourseList.java	
  *
- *  Copyright (c) 2005 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005, 2009 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -61,6 +61,7 @@ import org.apache.turbine.services.servlet.TurbineServlet;
  * 
  * @author <a href="awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * 
  */
 public class ViewCourseList extends VelocityScreen
@@ -78,7 +79,7 @@ public class ViewCourseList extends VelocityScreen
                         String lang=pp.getString("lang","english");
                         context.put("lang",lang);
 			String LangFile=new String();
-			LangFile = MultilingualUtil.LanguageSelection(lang);
+			LangFile = MultilingualUtil.LanguageSelectionForScreenMessage(lang);
                         context.put("LangFile",LangFile);
                         int ListConf=pp.getInt("SearchList",10);
                         context.put("ListConf",new Integer(ListConf));

@@ -151,7 +151,7 @@ public class OnlineRegistration extends VelocitySecureAction
 		lang=pp.getString("lang","english");
         	context.put("lang",lang);
 		context.put("status","UserResitration");
-		LangFile=MultilingualUtil.LanguageSelection(lang);
+		LangFile=MultilingualUtil.LanguageSelectionForScreenMessage(lang);
 		if(S.checkString(uname)==-1 && S.checkString(fname)==-1 && S.checkString(lname)==-1 && S.checkString(gname)==-1 && S.checkString(orgtn)==-1)
 		{ //if 1
 			boolean userExists = true;
@@ -316,7 +316,7 @@ public class OnlineRegistration extends VelocitySecureAction
 		Vector indexList = new Vector();
 		CourseManagement courseMgmt = new  CourseManagement();
                 lang=pp.getString("lang","english");
-                LangFile=MultilingualUtil.LanguageSelection(lang);
+                LangFile=MultilingualUtil.LanguageSelectionForScreenMessage(lang);
 		context.put("status","CourseRegistration");
 
 		/**

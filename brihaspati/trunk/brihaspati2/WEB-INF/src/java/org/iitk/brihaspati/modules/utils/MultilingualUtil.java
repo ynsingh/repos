@@ -168,23 +168,41 @@ public  class MultilingualUtil{
                                 word="Z";
 			return word;
 	}
-	public static String LanguageSelection(String Language)
+	public static String LanguageSelectionForScreenMessage(String Language)
                 {
                         String LangFile=new String();
                         String lang=Language;
 			try{
 	                        if(lang.equals("bangla"))
 	                               LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_bn.properties");
+				else if(lang.equals("chinese"))
+                                	LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_zh.properties");
+				else if(lang.equals("dutch"))
+                                	LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_nl.properties");
 	                        else if(lang.equals("english"))
 	                               LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_en.properties");
 	                        else if(lang.equals("french"))
 	                               LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_fr.properties");
+				else if(lang.equals("german"))
+                                	LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_de.properties");
 	                        else if(lang.equals("hindi"))
 	                               LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_hi.properties");
+				else if(lang.equals("italian"))
+                                	LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_it.properties");
+				else if(lang.equals("japanese"))
+                                	LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_ja.properties");
+				else if(lang.equals("korean"))
+                                	LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_ko.properties");
+				else if(lang.equals("malayalam"))
+                                	LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_ml.properties");
 	                        else if(lang.equals("marathi"))
 	                               LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_mr.properties");
+				else if(lang.equals("russian"))
+                                	LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_ru.properties");
 				else if(lang.equals("tamil"))
                                        LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_ta.properties");
+				else if(lang.equals("telugu"))
+                                	LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_te.properties");
 	                        else if(lang.equals("urdu"))
 	                               LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_urd.properties");
 			} // End Try

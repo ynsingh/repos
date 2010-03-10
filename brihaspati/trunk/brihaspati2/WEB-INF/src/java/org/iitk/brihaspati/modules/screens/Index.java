@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens;
 /*
  * @(#)Index.java	
  *
- *  Copyright (c) 2004 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2004, 2009 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -57,7 +57,7 @@ import org.apache.turbine.services.session.TurbineSession;
 
 /**
  * @author <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kumar Trivedi</a>
- * @author <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kumar Trivedi</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  */
 
 public class Index extends SecureScreen{
@@ -85,9 +85,13 @@ public class Index extends SecureScreen{
 
 			String fname=user.getFirstName();
 			String lname=user.getLastName();
+			String lang=user.getTemp("lang").toString();
+			//ErrorDumpUtil.ErrorLog("lang in Index.java="+lang);
                         context.put("username",username);
                         context.put("firstname",fname);
                         context.put("lastname",lname);
+                        context.put("lang",lang);
+			lang = "";
 			user.setTemp("role","");
 		// check for Admin Role
 			Vector Admin_Role=UserGroupRoleUtil.getGID(uid,1);

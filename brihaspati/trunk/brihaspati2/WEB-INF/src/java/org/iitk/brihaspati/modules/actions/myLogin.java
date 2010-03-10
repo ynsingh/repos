@@ -41,6 +41,8 @@ import java.security.NoSuchAlgorithmException;
 
 import com.workingdogs.village.Record;
 import org.apache.velocity.context.Context;
+import org.apache.turbine.Turbine;
+import org.apache.turbine.TurbineConstants;
 
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.security.AccessControlList;
@@ -54,6 +56,8 @@ import org.apache.torque.util.Criteria;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import org.iitk.brihaspati.om.TurbineUserPeer;
+import org.iitk.brihaspati.om.TurbineUser;
 import org.iitk.brihaspati.om.UsageDetailsPeer;
 import org.iitk.brihaspati.om.UserConfigurationPeer;
 import org.iitk.brihaspati.modules.utils.UserUtil;
@@ -79,6 +83,7 @@ import java.util.Vector;
  * NOTE :- Use 'Turbine.getConfiguration().getString(String str)' instead of
  * 'TurbineResources.getString(String str)'.This is deprecated in TDK2.3.
  *
+ * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
  *  @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kuamr Trivedi</a>
  *  @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  *  @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
@@ -95,14 +100,17 @@ public class myLogin extends VelocityAction{
 	public void doPerform( RunData data, Context context )
 	{
 		System.gc();
-
-		Criteria crit=new Criteria();
+		Criteria crit = null;
+		String userLanguage = "";
+		
 		/** Getting Language according to Selection of Language in lang Variable
                  *  Getting Property file  according to Selection of Language
 		 */
 
-                String LangFile =data.getParameters().getString("Langfile","");
-                String lang=data.getParameters().getString("lang","english");
+                String flag=data.getParameters().getString("flag");
+                //String LangFile =data.getParameters().getString("Langfile","");
+                String lang=data.getParameters().getString("lang","");
+		ErrorDumpUtil.ErrorLog("lang in my login "+lang);
 		UpdateInfoMail.checknWriteXml();
 
 		String username = data.getParameters().getString("username", "" );
@@ -163,15 +171,66 @@ public class myLogin extends VelocityAction{
 			int uid=UserUtil.getUID(username);
 			Date date=new Date();
 			try{//(2)
-				// Store the file object in Temporary Variable.
-                                user.setTemp("LangFile",LangFile);
-
-                                // Store the lang object in Temporary Variable.
-                                user.setTemp("lang",lang);
-
 				// Set the last_login date in the database.
  		
 				user.updateLastLogin();
+//////////////////////////////////////////////////////////////////////////////
+				List vec=null;
+				crit= new Criteria();
+                                crit.add(TurbineUserPeer.USER_ID,uid);
+                                crit.addGroupByColumn(TurbineUserPeer.USER_LANG);
+                                vec=TurbineUserPeer.doSelect(crit);
+				crit = null;
+                                TurbineUser element=(TurbineUser)vec.get(0);
+       	                        userLanguage=element.getUserLang().toString();
+				ErrorDumpUtil.ErrorLog("userlang in my login "+userLanguage);
+				if(vec != null){
+					if((userLanguage.equals("")))
+					{
+                        	                crit = new Criteria();
+                                	        crit.add(TurbineUserPeer.USER_ID,uid);
+                                       		crit.add(TurbineUserPeer.USER_LANG, lang);
+	                                        TurbineUserPeer.doUpdate(crit);
+	                                	user.setTemp("lang",lang);
+						user.setTemp("LangFile", MultilingualUtil.LanguageSelectionForScreenMessage(lang));
+        	                               	context.put("lang",lang);
+                	                }else {
+						if((!userLanguage.equals(lang)) && (!username.equals("guest"))){
+							ErrorDumpUtil.ErrorLog("lang in my login "+lang);
+							if(flag.equals("false")) {
+        		                                        crit = new Criteria();
+                		                                crit.add(TurbineUserPeer.USER_ID,uid);
+                        		                        crit.and(TurbineUserPeer.USER_LANG,lang);
+                                		                TurbineUserPeer.doUpdate(crit);
+								userLanguage=lang;
+							}
+							ErrorDumpUtil.ErrorLog("lang in my login "+lang);
+							user.setTemp("lang",userLanguage);
+     							context.put("lang",userLanguage);
+							user.setTemp("LangFile", MultilingualUtil.LanguageSelectionForScreenMessage(userLanguage));
+	                                        }
+						else{
+							ErrorDumpUtil.ErrorLog("lang in my login "+lang);
+        	        	                	// Store the LangFile & lang object in Temporary Variable.
+		                        	        //user.setTemp("LangFile",LangFile);
+               	                                	user.setTemp("lang",lang);
+							context.put("lang",lang);
+							user.setTemp("LangFile", MultilingualUtil.LanguageSelectionForScreenMessage(lang));
+						}
+                                	}
+				} //vec close
+				else
+				{
+                                        context.put("lang",lang);
+					//LangFile =data.getParameters().getString("Langfile");
+					data.setMessage(MultilingualUtil.ConvertedString("brih_langMsg", MultilingualUtil.LanguageSelectionForScreenMessage(lang)));
+					data.setScreenTemplate("BrihaspatiLogin.vm");
+					
+
+				}	
+				userLanguage = null;
+				crit = null;
+				ErrorDumpUtil.ErrorLog("lang in my login line 233"+lang);
 				int least_entry=0,count=0;
 
 				//code for usage details starts here
@@ -257,8 +316,8 @@ public class myLogin extends VelocityAction{
 	          *  TurbineResources.properties  
 		  */
 	 	catch ( TurbineSecurityException e ){
-			LangFile =data.getParameters().getString("Langfile");
-			String msg1=MultilingualUtil.ConvertedString("t_msg",LangFile);
+			//LangFile =data.getParameters().getString("Langfile");
+			String msg1=MultilingualUtil.ConvertedString("t_msg",MultilingualUtil.LanguageSelectionForScreenMessage(lang));
 			//page=Turbine.getConfiguration().getString("login.error");
 			data.setMessage(msg1);
 			data.setScreenTemplate("BrihaspatiLogin.vm");

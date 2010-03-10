@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)ForgotPassword.java	
  *
- *  Copyright (c) 2005-2007 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2007, 2009 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -60,6 +60,7 @@ import org.iitk.brihaspati.om.HintQuestion;
  * This class have different methods for using forgot password procedure
  * @author <a href="singhsatyapal@rediffmail.com">Satyapal Singh</a>
  * @author <a href="awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="ynsingh@iitk.ac.in">Y.N.Singh</a>
  */
 
@@ -304,7 +305,7 @@ public class ForgotPassword extends VelocitySecureAction
 		ParameterParser pp=data.getParameters();
         	lang=pp.getString("lang","english");
         	context.put("lang",lang);
-		LangFile = MultilingualUtil.LanguageSelection(lang);
+		LangFile = MultilingualUtil.LanguageSelectionForScreenMessage(lang);
         	context.put("LangFile",LangFile);
                 String action=data.getParameters().getString("actionName","");
                 if(action.equals("eventSubmit_doSendNewPassword"))

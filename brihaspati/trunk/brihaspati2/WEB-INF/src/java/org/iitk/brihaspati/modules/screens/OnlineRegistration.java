@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens;
 /* 
  * @(#)OnlineRegistration.java
  *
- *  Copyright (c) 2008 ETRG,IIT Kanpur.
+ *  Copyright (c) 2008, 2009 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -48,6 +48,7 @@ import org.apache.turbine.services.servlet.TurbineServlet;
 
  /**
  * @author <a href="mailto:omprakash_kgp@yahoo.co.in">Om Prakash</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  */
 
 public class OnlineRegistration extends VelocityScreen
@@ -58,7 +59,6 @@ public class OnlineRegistration extends VelocityScreen
  			ParameterParser pp=data.getParameters();
 			String lang=pp.getString("lang","english");
         	        context.put("lang",lang);
-			String LangFile=new String();
 			String status=pp.getString("status","");
 			String counter=pp.getString("count","");
 			context.put("tdcolor",counter);	

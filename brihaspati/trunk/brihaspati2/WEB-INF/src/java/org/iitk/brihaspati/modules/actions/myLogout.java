@@ -39,14 +39,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Iterator;
 
+
 import org.apache.turbine.Turbine;
 import org.apache.turbine.TurbineConstants;
-
 import org.apache.turbine.util.RunData;
+import org.apache.torque.util.Criteria;
 import org.apache.velocity.context.Context;
 
 import com.workingdogs.village.Record;
-import org.apache.torque.util.Criteria;
 
 import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.om.security.TurbineUser;
@@ -57,6 +57,8 @@ import org.apache.turbine.util.security.AccessControlList;
 
 import org.iitk.brihaspati.om.UsageDetails;
 import org.iitk.brihaspati.om.UsageDetailsPeer;
+//import org.iitk.brihaspati.om.TurbineUser;
+import org.iitk.brihaspati.om.TurbineUserPeer;
 
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.StringUtil;
@@ -65,7 +67,9 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.modules.actions.VelocityAction;
-
+/**
+ * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
+**/
 public class myLogout extends VelocityAction{
                 private Log log = LogFactory.getLog(this.getClass()); 
 
@@ -84,9 +88,27 @@ public class myLogout extends VelocityAction{
 	{
 		User user = data.getUser();
 		boolean a=data.userExists();
-        	ErrorDumpUtil.ErrorLog("check data.userexist=="+a);
+		// Store the user object.
+		String username=user.getName();
+		int uid=UserUtil.getUID(username);
+		
+/////////////////////////////////////////////////////
+		Criteria crit;
+		List vec=null;
+		String userLanguage="";
+                crit= new Criteria();
+                crit.add(TurbineUserPeer.USER_ID,uid);
+                crit.addGroupByColumn(TurbineUserPeer.USER_LANG);
+                vec=TurbineUserPeer.doSelect(crit);
+                crit = null;
+		ErrorDumpUtil.ErrorLog("vc size=="+vec.size());
+		if(vec.size() > 0){
+	                org.iitk.brihaspati.om.TurbineUser elementTU=(org.iitk.brihaspati.om.TurbineUser)vec.get(0);
+        	        userLanguage=elementTU.getUserLang().toString();
+		}
+
+//////////////////////////////////////////////////////
        		if(a)
-        	ErrorDumpUtil.ErrorLog("User exists already");
         	if(!TurbineSecurity.isAnonymousUser(user))
         	{
             		if(!user.hasLoggedIn())
@@ -96,20 +118,16 @@ public class myLogout extends VelocityAction{
             		user.setHasLoggedIn(new Boolean(false));
             		TurbineSecurity.saveUser(user);
         	}
-		// Store the user object.
-		String username=data.getUser().getName();
-		int uid=UserUtil.getUID(username);
                 data.setUser(user);
                 Date date=new Date();
 		int least_entry=0,count=0;
         	//code for usage details starts here
 		int eid=0,uid3=0;
                 java.util.Date logindate=new java.util.Date();
-        	Criteria crit=new Criteria();
+        	crit=new Criteria();
         	crit.add(UsageDetailsPeer.USER_ID,uid);
 		crit.addAscendingOrderByColumn(UsageDetailsPeer.ENTRY_ID);
         	List entry=UsageDetailsPeer.doSelect(crit);
-               //ErrorDumpUtil.ErrorLog("actionlogout"+entry);
 		for(int k=0;k<entry.size();k++)
 		{
 			UsageDetails element=(UsageDetails)entry.get(k);
@@ -124,6 +142,13 @@ public class myLogout extends VelocityAction{
         	crit.add(UsageDetailsPeer.LOGIN_TIME,logindate);
         	crit.add(UsageDetailsPeer.LOGOUT_TIME,date);
         	UsageDetailsPeer.doUpdate(crit);
+
+		if(vec.size() > 0){
+                	crit= new Criteria();
+	       	        crit.add(TurbineUserPeer.USER_ID,uid);
+       			crit.add(TurbineUserPeer.USER_LANG, userLanguage);
+                	TurbineUserPeer.doUpdate(crit);
+		}
 		data.setACL(null);
                 // Retrieve an anonymous user.
                 data.save();
@@ -134,7 +159,6 @@ public class myLogout extends VelocityAction{
                 //data.setScreen(Turbine.getConfiguration().getString( TurbineConstants.SCREEN_HOMEPAGE));
 		data.setMessage(Turbine.getConfiguration().getString(TurbineConstants.LOGOUT_MESSAGE));
 		//int timeout=data.getSession().getMaxInactiveInterval();
-               	//ErrorDumpUtil.ErrorLog("actionlogout timeout"+timeout);
     	}
 	catch ( TurbineSecurityException e ){
 		data.setScreenTemplate("Login.vm");
