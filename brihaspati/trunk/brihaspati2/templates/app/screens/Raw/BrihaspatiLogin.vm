@@ -9,7 +9,6 @@
 
 $page.setTitle("Login in Brihaspati")
 $page.setBgColor($ui.bgcolor)
-$!data.getMessage()
 <form name="frm" method="post" action="$link.setAction("myLogin")">
 <table width="100%">
 <tr><td>
@@ -94,6 +93,8 @@ $!data.getMessage()
 	</td>
 	<td valign="top" bgcolor="$ui.tableColor" width="25%">
 	<table align="left" width="100%">
+        <tr><td colspan=2><font color="red">$!data.getMessage() </font></td></tr>
+
 	<tr>
 	#if($lang == "hindi")
                 <td>$brih_any $brih_language $brih_select</td>
@@ -106,10 +107,10 @@ $!data.getMessage()
 		<option> $brih_select $brih_language </option>
 	#end
 #if($lang == "english")
+        <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","english")">  $brih_english 
         <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","bangla")">  $brih_bangla 
 	<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","chinese")">  $brih_chinese 
 	<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","dutch")">  $brih_dutch 
-        <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","english")">  $brih_english 
         <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","french")"> $brih_french 
         <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","german")"> $brih_german 
         <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","gurmukhi")"> $brih_gurmukhi 
@@ -130,8 +131,6 @@ $!data.getMessage()
                 <option>$brih_chinese (Chinese)</option>
 	#elseif($lang == "dutch")
                 <option>$brih_dutch (Dutch)</option>
-	#elseif($lang =="english")
-		<option> $brih_english (English) </option>
         #elseif($lang == "french")
                 <option>$brih_french (French)</option>
         #elseif($lang == "german")
@@ -259,7 +258,7 @@ $!data.getMessage()
 
 <tr><td colspan=2><b>
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
-<a href=$link.setAction("myLogin").addPathInfo("username","guest").addPathInfo("password","guest") style=text-decoration:none> $brih_open $brih_access $brih_courses</a>
+<a href=$link.setAction("myLogin").addPathInfo("username","guest").addPathInfo("password","guest").addPathInfo("lang",$lang) style=text-decoration:none> $brih_open $brih_access $brih_courses</a>
 </b></td></tr>
 </tr>
 </table>

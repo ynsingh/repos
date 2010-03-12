@@ -85,7 +85,7 @@ $!data.getMessage()
 		</b></td></tr>
 
 		<tr align="right"><td colspan=4 align="right"><b>
-			<a href=$link.setAction("myLogin").addPathInfo("username","guest").addPathInfo("password","guest")> $brih_open $brih_access $brih_course</a>
+			<a href=$link.setAction("myLogin").addPathInfo("username","guest").addPathInfo("password","guest").addPathInfo("lang",$lang)> $brih_open $brih_access $brih_course</a>
 			<img src="$content.getURI("/images/orange_sq_but.gif")">
 		</b></td></tr>
 		</tr>

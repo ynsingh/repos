@@ -23,7 +23,7 @@ $!data.getMessage()
 </td>
 </tr>
 <tr><td colspan=2><b>
-<a href=$link.setAction("myLogin").addPathInfo("username","guest").addPathInfo("password","guest")> Open Access Courses</a>
+<a href=$link.setAction("myLogin").addPathInfo("username","guest").addPathInfo("password","guest").addPathInfo("lang","english")> Open Access Courses</a>
 </b></td></tr>
 </table>
 <br>
