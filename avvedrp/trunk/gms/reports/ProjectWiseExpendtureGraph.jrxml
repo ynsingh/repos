@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="ProjectWiseExpendtureGraph"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Portrait"
+		 pageWidth="595"
+		 pageHeight="842"
+		 columnWidth="535"
+		 columnSpacing="0"
+		 leftMargin="30"
+		 rightMargin="30"
+		 topMargin="20"
+		 bottomMargin="20"
+		 whenNoDataType="NoPages"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<parameter name="Path" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="projectID" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="partyID" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="periodID" isForPrompting="false" class="java.lang.String"/>
+	<queryString><![CDATA[SELECT ga.id, ah.name  as AcHead ,gas.amount BudjAmt,(ge.expense_amount) as ExpAmt ,Mp.name as MainProjectName,p.code as ProjectName,
+pa.name_of_the_institution as InstName,grp.name grantPeriod,date_of_expense
+FROM account_heads ah,grant_allocation_split gas,grant_expense ge,grant_allocation ga,
+projects p left join projects Mp on(p.parent_id=Mp.id)
+ ,party pa ,grant_period grp  
+WHERE ah.id= gas.account_head_id AND
+gas.grant_allocation_id=ga.id AND
+ge.grant_allocation_id=ga.id AND
+ge.grant_allocation_split_id=gas.id AND
+ p.id=ga.projects_id AND
+pa.id=ga.party_id
+
+AND grp.id=gas.grant_period_id
+AND gas.grant_period_id=1
+AND( p.parent_id=1 or p.id=1)
+order by pa.id]]></queryString>
+
+	<field name="id" class="java.lang.Long"/>
+	<field name="AcHead" class="java.lang.String"/>
+	<field name="BudjAmt" class="java.lang.Double"/>
+	<field name="ExpAmt" class="java.lang.Double"/>
+	<field name="MainProjectName" class="java.lang.String"/>
+	<field name="ProjectName" class="java.lang.String"/>
+	<field name="InstName" class="java.lang.String"/>
+	<field name="grantPeriod" class="java.lang.String"/>
+	<field name="date_of_expense" class="java.sql.Timestamp"/>
+
+	<variable name="BudgTotal" class="java.lang.Double" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$F{BudjAmt}]]></variableExpression>
+	</variable>
+	<variable name="ExpAmt" class="java.lang.Double" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[$F{ExpAmt}]]></variableExpression>
+	</variable>
+	<variable name="FundAmt" class="java.lang.Double" resetType="Report" calculation="Nothing">
+	</variable>
+	<variable name="balanceAmt" class="java.lang.Double" resetType="Report" calculation="Sum">
+		<variableExpression><![CDATA[new Double($F{BudjAmt}.doubleValue()-$F{ExpAmt}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="InsBudAmt" class="java.lang.Double" resetType="Group" resetGroup="inst" calculation="Sum">
+		<variableExpression><![CDATA[$F{BudjAmt}]]></variableExpression>
+	</variable>
+	<variable name="InsExpAmt" class="java.lang.Double" resetType="Group" resetGroup="inst" calculation="Sum">
+		<variableExpression><![CDATA[$F{ExpAmt}]]></variableExpression>
+	</variable>
+	<variable name="insBalAmt" class="java.lang.Double" resetType="Group" resetGroup="inst" calculation="Sum">
+		<variableExpression><![CDATA[new Double($F{BudjAmt}.doubleValue()-$F{ExpAmt}.doubleValue())]]></variableExpression>
+	</variable>
+
+		<group  name="total" >
+			<groupExpression><![CDATA[null]]></groupExpression>
+			<groupHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="3"  isSplitAllowed="true" >
+			</band>
+			</groupFooter>
+		</group>
+		<group  name="inst" >
+			<groupExpression><![CDATA[$F{InstName}]]></groupExpression>
+			<groupHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+			</groupHeader>
+			<groupFooter>
+			<band height="254"  isSplitAllowed="true" >
+				<barChart>
+					<chart evaluationTime="Report" evaluationGroup="inst"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="99"
+						y="16"
+						width="341"
+						height="223"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="element-1"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					</chart>
+					<categoryDataset>
+						<dataset >
+						</dataset>
+						<categorySeries>
+							<seriesExpression><![CDATA[$F{AcHead}]]></seriesExpression>
+							<categoryExpression><![CDATA[$F{InstName}]]></categoryExpression>
+							<valueExpression><![CDATA[$F{ExpAmt}]]></valueExpression>
+						</categorySeries>
+						<categorySeries>
+							<seriesExpression><![CDATA[$F{AcHead}]]></seriesExpression>
+							<categoryExpression><![CDATA[$F{InstName}]]></categoryExpression>
+							<valueExpression><![CDATA[$F{BudjAmt}]]></valueExpression>
+						</categorySeries>
+					</categoryDataset>
+					<barPlot >
+						<plot />
+					</barPlot>
+				</barChart>
+			</band>
+			</groupFooter>
+		</group>
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="92"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="53"
+						y="47"
+						width="409"
+						height="31"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-1"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Book Antiqua" pdfFontName="Helvetica-Bold" size="14" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Institution Wise consolidated Expenditure"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="51"
+						y="10"
+						width="409"
+						height="31"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-10"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Book Antiqua" pdfFontName="Helvetica-Bold" size="18" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Multi Site Grant Management System"]]></textFieldExpression>
+				</textField>
+			</band>
+		</title>
+		<pageHeader>
+			<band height="78"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="18"
+						y="7"
+						width="190"
+						height="21"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-2"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="12" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Project Name:             "+$F{MainProjectName}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="17"
+						y="35"
+						width="353"
+						height="21"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-3"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="12" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Financial Year:            "+$F{grantPeriod}]]></textFieldExpression>
+				</textField>
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="30"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="194"
+						y="6"
+						width="311"
+						height="18"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-11"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["Generated on "+new Date()]]></textFieldExpression>
+				</textField>
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="50"  isSplitAllowed="true" >
+			</band>
+		</pageFooter>
+		<lastPageFooter>
+			<band height="50"  isSplitAllowed="true" >
+			</band>
+		</lastPageFooter>
+		<summary>
+			<band height="50"  isSplitAllowed="true" >
+			</band>
+		</summary>
+</jasperReport>

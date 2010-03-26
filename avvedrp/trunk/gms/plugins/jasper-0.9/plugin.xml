@@ -1,0 +1,17 @@
+<plugin name='jasper' version='0.9'>
+  <author>Marcos Pereira</author>
+  <authorEmail>mfpereira@gmail.com</authorEmail>
+  <title>Easily launch Jasper reports from a Grails application.</title>
+  <description>
+	This plugin adds easy support for launching jasper reports from GSP pages.
+	After installing this plugin, run your application and request (app-url)/jasper for a demonstration and instructions.
+    </description>
+  <resources>
+    <resource>Config</resource>
+    <resource>DataSource</resource>
+    <resource>UrlMappings</resource>
+    <resource>JasperController</resource>
+    <resource>JasperService</resource>
+    <resource>JasperTagLib</resource>
+  </resources>
+</plugin>

@@ -1,0 +1,17 @@
+class ProjectType
+{
+
+	Integer id;
+	String type;
+	String createdBy
+	Date createdDate
+	String modifiedBy
+	Date modifiedDate
+	
+	static constraints=
+	{
+		type(blank:false)
+		modifiedBy(nullable:true)
+		modifiedDate(nullable:true)
+	}
+}

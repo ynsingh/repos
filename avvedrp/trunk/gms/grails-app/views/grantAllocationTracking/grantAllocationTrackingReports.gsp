@@ -1,0 +1,82 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="layout" content="main" />
+        <title>Grant Allocation Tracking Reports</title>         
+    </head>
+    <script>
+   
+ 	</script>
+    
+    <body  onload="setValue()">
+    	<div class="nav">
+            <span class="menuButton"><a class="home" href="${createLinkTo(dir:'/login')}">Home</a></span>
+            
+        </div>
+        <br>
+	    <g:form action="showReport" method="post" name="frmGrantTrackingReport" >
+	    <div class="body">
+	    <div class="dialog">
+    	<table >
+    		<tbody>
+    			<tr>
+    				<td >
+                       <table >
+                       	<tbody>
+                       		<tr>
+                                <td valign="top" class="name">  
+                                    <label for="project"> Project :</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:grantAllocationTrackingInstance,field:'grantAllocation.projects','errors')}">
+                                    <g:select optionKey="id" optionValue="code" from="${projectInstanceList}" name="projects" onChange="setValue()" value="${grantAllocationTrackingInstance?.grantAllocation?.projects?.id}"></g:select>
+                                      
+                                </td>
+                                <td valign="top" class="name">
+                                    <label for="grantAllocationStatus">Grant Allocation Status:</label>
+                               	</td>
+                                <td valign="top" class="value ${hasErrors(bean:grantAllocationTrackingInstance,field:'grantAllocationStatus','errors')}">
+                                    <g:select name="grantAllocationStatus" from="${['Open', 'Surrender', 'Withdrawal','Closed']}" onChange="setValue()"  value="${fieldValue(bean:grantAllocationTrackingInstance,field:'grantAllocationStatus')}" />
+                                      
+                                </td>
+                                
+                                <td valign="top" class="name">
+                                    <label for="projectStatus">Project Status:</label>
+                               	</td>
+                                <td valign="top" class="value ${hasErrors(bean:projectTrackingInstance,field:'projectStatus','errors')}">
+                                	<g:select name="projectStatus" from="${['Open','Deadline Passed','Grant Funded','Closed']}" noSelection="['\'Open\',\'Deadline Passed\',\'Grant Funded\',\'Closed\'':'All']" onChange="setValue()"  value="${fieldValue(bean:projectTrackingInstance,field:'projectStatus')}" />
+                                      
+                                </td>
+                                   
+                            </tr> 
+                        </tbody>   
+                 	   </table></g:form>
+                    </td>       
+                </tr>              
+                <tr>
+                    <td valign="top" class="name">
+                    	<g:jasperReport jasper="GrantAllocationStatusReport"  name="Grant Allocation Status Report" format="XLS,PDF,CSV,HTML"  >
+                    		<input type="hidden" name="id" value="${session.AppFormID}" />
+				            <input type="hidden" name="projectID" value="" />
+				            <input type="hidden" name="grantStatus" value="" />
+			             	<input type="hidden" name="Path" value="${application.getRealPath("reports")}"/>
+		  	         	</g:jasperReport>
+		            </td>     
+           		</tr>
+           		
+           		<tr>
+                    <td valign="top" class="name">
+                    	<g:jasperReport jasper="ProjectStatusReport"  name="Project Status Report" format="XLS,PDF,CSV,HTML"  >
+                    		<input type="hidden" name="id" value="${session.AppFormID}" />
+				            <input type="hidden" name="projectID" value="" />
+				            <input type="hidden" name="projectStatus" value="" />
+			             	<input type="hidden" name="Path" value="${application.getRealPath("reports")}"/>
+		  	         	</g:jasperReport>
+		            </td>     
+           		</tr>
+           		
+       		</tbody>                             
+        </table>  
+      	</div>   </div> 
+      	
+    </body>
+</html>

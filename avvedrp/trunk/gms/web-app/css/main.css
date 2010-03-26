@@ -1,0 +1,534 @@
+html * {
+    margin: 0;
+    padding: 0; 
+}
+* html .body  {
+   \width: 947px;
+}
+/* GENERAL */
+
+.spinner {
+    padding: 5px;
+
+    right: 0;
+}
+
+ a:link, img  a:visited,  a:hover {
+     border:0px;
+     text-decoration: none;
+    
+ }
+ a img{ 
+ border:0; 
+}
+
+img,td { behavior: url(../images/iepngfix.htc) }
+
+
+body {
+	text-align: center;
+	font-family: verdana, Helvetica, sans-serif;
+	font-size: 12px;
+	background-image:url(../images/themesky/bg.jpg);
+	background-repeat: repeat-x;
+	background-color: #d5e5ed;
+    
+}
+
+a {
+    color: #666;
+    font-weight: bold;
+    text-decoration: none;
+    border-style: none;
+} 
+
+
+ a:hover {
+    color: #32607d;
+    font-weight: bold;
+    text-decoration: underline;
+} 
+
+
+ul {
+     line-height: 4em;
+} 
+
+li {
+     line-height: 2em;
+} 
+
+
+
+
+
+.glink  {
+    color: #ffffff;
+    font-weight: bold;
+    text-decoration: none;
+   
+    
+} 
+
+
+.glink a {
+    color: #ffffff;
+    font-weight: bold;
+    text-decoration: none;
+   
+} 
+
+
+.glink  a:hover {
+    color: #ffffff;
+    font-weight: bold;
+    text-decoration: none;
+    
+} 
+
+
+
+
+h1 {
+    color:  #084d6e;
+    font: 12px verdana;
+    font-weight: bold;
+    margin: .8em 0 .3em 0;
+}
+
+
+
+input, select, textarea {
+    background-color: #fcfcfc;
+    border: 1px solid #ccc;
+    font: 11px verdana, arial, helvetica, sans-serif;
+    margin: 2px 0;
+    padding: 2px 4px;
+}
+.inputbutton{
+	color:  #ffffff;
+	font: 12px Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	background: #fb9f28 url(../images/themesky/button.jpg) repeat-x;
+	border: 1px solid #cd7708;
+    margin: 2px 0;
+    padding: 2px 4px;
+
+}
+select {
+   padding: 2px 2px 2px 0;
+}
+textarea {
+	width: 250px;
+	height: 50px;
+	vertical-align: top;
+}
+
+input:focus, select:focus, textarea:focus {
+    border: 1px solid #b2d1ff;
+}
+
+.body {
+    margin: auto;
+    display: inline;
+	border: 1px solid #FFFFFF;
+    background: #80aec4 url(../images/themesky/tablebg.jpg) repeat-x;
+    float: left;
+    padding: 10px;
+    width: 947px;
+    
+}
+
+.body h1 {
+  color:  #000000;
+    font: 12px verdana;
+    font-weight: bold;
+    
+    margin: .8em 0 .3em 0;
+    
+}
+
+
+.newTable {
+	border: 1px solid #FFFFFF;
+    background: #80aec4 url(../images/themesky/tablebg.jpg) repeat-x;
+    
+   
+}
+
+.newTable h1 {
+    color:  #000000;
+    font: 12px verdana;
+    font-weight: bold;
+    line-height: 18px;
+    
+}
+
+.wrapper{
+text-align:left;
+margin: auto;
+width: 975px;
+}
+.tablewrapper
+{ 
+padding: 0px;
+text-align:left;
+width: 975px; 
+}
+
+
+/* NAVIGATION MENU */
+
+.innernav {
+	margin: 0 auto; 
+	width: 975px;
+	height: 9px;
+    background: #d2e8f3 url(../images/themesky/innermenubg.gif) repeat-y;
+    color:#01518e; 
+    font-weight:bold;	
+    text-align:left;
+    padding: 5px 2px;
+}
+.nav {
+   /*  background: #fff url(../images/skin/shadow.jpg) bottom repeat-x;
+    border: 1px solid #ccc;
+    border-style: solid none solid none; */
+    color:#01518e; 
+    font-weight:bold;	
+    width:950px;
+    text-align:left;
+    margin-top: 5px;
+    padding: 7px 2px;
+}
+.menuButton {
+    font-size: 11px;
+    color:#01518e; 
+    font-weight:bold;
+    padding: 0 5px;
+}
+.menuButton a {
+   padding: 4px 6px;
+   color:#01518e; 
+    font-weight:bold;
+}
+.menuButton a.home {
+    background: url(../images/skin/house.png) center left no-repeat;
+    padding-left: 25px;
+    color:#01518e; 
+    font-weight:bold;
+}
+.menuButton a.list {
+    background: url(../images/skin/database_table.png) center left no-repeat;
+    padding-left: 25px;
+}
+.menuButton a.create {
+    background: url(../images/skin/database_add.png) center left no-repeat;
+    padding-left: 25px;
+}
+
+/* MESSAGES AND ERRORS */
+
+.message {
+    background: #f3f8fc url(../images/skin/information.png) 8px 50% no-repeat;
+    border: 1px solid #b2d1ff;
+    color: #006dba;
+    margin: 10px 0 5px 0;
+    padding: 5px 5px 5px 30px
+}
+
+div.errors {
+    background: #fff3f3;
+    border: 1px solid red;
+    color: #cc0000;
+    margin: 10px 0 5px 0;
+    padding: 5px 0 5px 0;
+}
+div.errors ul {
+    list-style: none;
+    padding: 0;	
+}
+div.errors li {
+	background: url(../images/skin/exclamation.png) 8px 0% no-repeat;
+    line-height: 16px;
+    padding-left: 30px;
+}
+
+td.errors select {
+    border: 1px solid red;
+}
+td.errors input {
+    border: 1px solid red;
+}
+
+/* TABLES */
+
+.maintable {
+border: 0;
+padding: 0px;
+width: 100%
+   
+   
+}
+.dashBoard   {
+    border: 0;
+   
+}
+
+.dashBoard  td {
+    border: 0;
+    padding: 0px;
+}
+table{
+padding: 0px;
+}
+tr {
+    border: 0;
+}
+td, th { 
+    font: 11px verdana, arial, helvetica, sans-serif;
+    line-height: 12px;
+    padding: 5px 6px;
+    text-align: left;
+    vertical-align: top;
+}
+th {
+    background: #cce6f3;
+    color: #000000;
+    font-size: 11px;
+    font-weight: bold;
+    line-height: 17px;
+    padding: 2px 6px;
+}
+th a:link, th a:visited, th a:hover {
+    display: block;
+    font-size: 10px;
+    text-decoration: none;
+    width: 100%;
+}
+th.asc a, th.desc a {
+    background-position: right;
+    background-repeat: no-repeat;
+}
+th.asc a {
+    background-image: url(../images/skin/sorted_asc.gif);
+}
+th.desc a {
+    background-image: url(../images/skin/sorted_desc.gif);
+}
+
+.odd {
+    background: #fff;
+}
+.even {
+    background: #e9f4fa;
+}
+
+/* LIST */
+
+.list table {
+
+border: 2px solid #fff;
+width: 100%;
+   
+}
+.list th {
+
+	font: bold 12px  verdana, Helvetica, sans-serif;
+	color: #000000;
+	border: 1px solid #C1DAD7;
+	letter-spacing: 1px;
+	text-align: left;
+	padding: 6px 1px 3px 2px;
+	background: #a3c9de;
+
+
+   
+}
+
+.list th a:link, th a:visited, th a:hover {
+font: bold 11px  verdana, Helvetica, sans-serif;
+	color: #000000;
+	letter-spacing: 1px;
+    text-decoration: none;
+    }
+.list th, .list td {
+    border-left: 1px solid #81aec5;
+}
+.list th:hover{
+background: #cce6f3;
+    
+} 
+.list tr:hover {
+background: #fae7cf;
+    
+}
+
+/* PAGINATION */
+
+.paginateButtons {
+	background: #a3c9de;
+    border: 1px solid #cce6f3;
+    color: #666;
+    overflow: hidden;
+    border-top: 0;
+    color: #666;
+    font-size: 10px;
+    overflow: hidden;
+    padding: 10px 3px;
+}
+.paginateButtons a {
+    background: #e0eff7;
+    border: 1px solid #ccc;
+    border-color: #84aac6;
+    color: #000000;
+    margin: 0 3px;
+    padding: 2px 6px;
+}
+.paginateButtons a:hover {
+    background: #e9f4fa;
+    border: 1px solid #ccc;
+    border-color: #84aac6;
+    color: #000000;
+    margin: 0 3px;
+    padding: 2px 6px;
+}
+
+.paginateButtons span {
+    padding: 2px 3px;
+}
+
+/* DIALOG */
+
+.dialog table {
+text-align: left;
+background: #CCE6F3;
+padding: 5px ;
+   width: 100%;
+    
+}
+.proptable {
+   background: #CCE6F3;
+   text-align: left;
+   padding-left: 2px ;
+   width: 100%;
+    
+}
+.proptable  tr td{
+   
+   text-align: left;
+       
+}
+.prop {
+    padding: 5px;
+}
+.prop .name {
+    text-align: left;
+    width: 15%;
+    white-space: nowrap;
+}
+.prop .value {
+    text-align: left;
+    width: 85%;
+}
+
+/* ACTION BUTTONS */
+
+.buttons {
+    background: #a3c9de;
+    border: 1px solid #cce6f3;
+    color: #666;
+    font-size: 10px;
+    margin-top: 5px;
+    overflow: hidden;
+    padding: 0;
+}
+
+.buttons input {
+    background: #fff;
+    border: 0;
+    color: #333;
+    cursor: pointer;
+    font-size: 10px;
+    font-weight: bold;
+    margin-left: 3px;
+    overflow: visible;
+    padding: 2px 6px;
+}
+.buttons input.delete {
+    background: transparent url(../images/skin/database_delete.png) 5px 50% no-repeat;
+    padding-left: 28px;
+}
+.buttons input.edit {
+    background: transparent url(../images/skin/database_edit.png) 5px 50% no-repeat;
+    padding-left: 28px;
+}
+.buttons input.save {
+    background: transparent url(../images/skin/database_save.png) 5px 50% no-repeat;
+    padding-left: 28px;
+}
+.imgtextkey {
+    background: transparent url(../images/themesky/key.gif) 5px 50% no-repeat;
+    padding-left: 28px;
+}
+.pbar {
+
+margin-top:3px;
+ border: 0;
+}
+
+
+.innertable
+{
+margin-top: 30px;
+border: 1px #CCCCCC;
+background-color: #FFFFFF
+
+}
+
+
+.prjInfo {
+    line-height:20px;
+    height: auto;
+    	text-align: left;
+	color: #234a64
+}
+
+
+/* Inner Banner Start */
+.innnerBanner {
+	margin: 0 auto; 
+	width:975px;
+	height:158px;
+	background-color: #b9dcef;
+	background-image: url(../images/themesky/innerpageheader.jpg);
+	background-repeat: no-repeat;  
+	}
+	
+/* Inner Banner end */
+/* Login Bar Start */
+
+.loginLink{
+	margin: 0 auto; 
+	padding-top: 17px;
+	width:975px;
+	height:30px;
+	text-align:right;
+	}
+.loginLink span { 
+  text-align:right;
+  padding-right: 25px;
+  }
+	
+.loginLink span A:link { color:#01518e; font-weight:bold; text-decoration: none}
+.loginLink span A:visited { color:#01518e; font-weight:bold; text-decoration: none}
+.loginLink span A:active { color:#01518e; font-weight:bold; text-decoration: none}
+.loginLink span A:hover { color:#01518e; font-weight:bold; text-decoration: none}
+/* Login Bar Start */
+<!-- Main Container Start -->
+.container {
+	margin: 0 auto; 
+	width:95%;
+	text-align: center;
+	}
+<!-- Main Container End -->
+

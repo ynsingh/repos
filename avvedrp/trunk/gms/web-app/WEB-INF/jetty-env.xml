@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN" 
+     "http://jetty.mortbay.org/configure.dtd">
+
+<Configure class="org.mortbay.jetty.webapp.WebAppContext">
+
+  <New id="domainDb" class="org.mortbay.jetty.plus.naming.Resource">
+    <Arg>java:comp/env/MySqlGrailsDS</Arg>
+    <Arg>
+     <New class="org.apache.commons.dbcp.BasicDataSource">
+                         <Set name="Url">jdbc:mysql://192.168.18.103:3306/gms_db_demo</Set>
+                         <Set name="DriverClassName">com.mysql.jdbc.Driver</Set>
+                         <Set name="Username">root</Set>
+                         <Set name="Password">devima</Set>
+               </New>
+    </Arg>
+   </New>
+
+
+</Configure>
