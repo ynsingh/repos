@@ -85,7 +85,7 @@ public class RegisterMultiCourseInstructor extends SecureAction_Admin
                         FileItem file = pp.getFileItem("file");
                         String fileName=file.getName();
 //                        if((!fileName.endsWith(".txt"))||(!fileName.endsWith(".TXT")))
-                        if((!fileName.endsWith(".txt"))||(file.getSize()<=0))
+                        if((!(fileName.toLowerCase()).endsWith(".txt"))||(file.getSize()<=0))
                         {//if#1
                                  /**
                                  * Getting file value from temporary variable according to selection of Language

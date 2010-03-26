@@ -104,7 +104,7 @@ public class UserAction_Admin extends SecureAction_Admin{
 			ParameterParser pp=data.getParameters();
 	        	FileItem file = pp.getFileItem("file");
         		String fileName=file.getName();
-			if((!fileName.endsWith(".txt"))||(file.getSize()<=0))
+			if((!(fileName.toLowerCase()).endsWith(".txt"))||(file.getSize()<=0))
 	        	{
 				 /**
                                  * Getting file value from temporary variable according to selection of Language
@@ -299,7 +299,7 @@ public class UserAction_Admin extends SecureAction_Admin{
                         ParameterParser pp=data.getParameters();
                         FileItem file = pp.getFileItem("file");
                         String fileName=file.getName();
-                        if((!fileName.endsWith(".zip"))||(file.getSize()<=0))
+                        if((!(fileName.toLowerCase()).endsWith(".zip"))||(file.getSize()<=0))
                         {
                                  /**
                                  * Getting file value from temporary variable according to selection of Language

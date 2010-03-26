@@ -94,7 +94,7 @@ public class UploadMarksAction extends SecureAction_Instructor
 	 		*/
 			String fileName=fileItem.getName();
 			String mailMsg ="";
-			if(!fileName.endsWith(".txt") && !fileName.endsWith(".csv"))
+			if(!(fileName.toLowerCase()).endsWith(".txt") && !(fileName.toLowerCase()).endsWith(".csv"))
 			{
  				data.setMessage(MultilingualUtil.ConvertedString("Marks_msg1",LangFile));
 			}

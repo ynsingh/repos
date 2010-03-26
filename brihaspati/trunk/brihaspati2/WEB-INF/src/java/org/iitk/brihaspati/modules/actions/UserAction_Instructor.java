@@ -260,7 +260,7 @@ public class UserAction_Instructor extends SecureAction_Instructor
                         ParameterParser pp=data.getParameters();
                         FileItem file = pp.getFileItem("file");
                         String fileName=file.getName();
-                        if((!fileName.endsWith(".txt"))||(file.getSize()<=0))
+                        if((!(fileName.toLowerCase()).endsWith(".txt"))||(file.getSize()<=0))
                         {
 				String msg=MultilingualUtil.ConvertedString("upload_msg2",LangFile);
                         	data.setMessage(msg);
