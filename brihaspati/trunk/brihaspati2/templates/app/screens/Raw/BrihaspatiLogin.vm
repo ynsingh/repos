@@ -1,6 +1,6 @@
 #*
  * @(#) BrihaspatiLogin.vm
- * Copyright (c) 2008, 2009 ETRG,IIT Kanpur.
+ * Copyright (c) 2008-2010 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
@@ -12,39 +12,36 @@ $page.setBgColor($ui.bgcolor)
 <form name="frm" method="post" action="$link.setAction("myLogin")">
 <table width="100%">
 <tr><td>
-##<marquee>
-<font size=4>$!fNoti</font>
-##</morque>
+<marquee> <font size=4>$!fNoti</font></marquee>
 </td></tr>
 </table>
-<table align=left>
-<tr><td valign="top" width="25%">
-		<table bgcolor="$ui.tableColor" width="100%">
-        	<tr bgcolor="$ui.menuColor"><td>
+<table align=left> ## 1
+<tr><td valign="top" width="25%">  ## 2, 3
+		<table bgcolor="$ui.tableColor" width="100%"> ## 4
+        	<tr bgcolor="$ui.menuColor"><td>  ## 5, 6
                 <img src="$content.getURI("/images/newspaper.gif")"><u><b>$brih_newsHeadline</b></u>
-        	</td></tr>
-        	##<tr><td><marquee scrollamount="1" direction="up" loop="2" width="100%" height="100" behaviour="slide">
-        	<tr><td>
-		##<marquee scrollamount="1" direction="up" loop="2" width="100%" behaviour="slide">
+        	</td></tr> ## 6, 5
+        	<tr><td> ## 5, 6
+		<marquee scrollamount="1" direction="up" loop="2" width="100%" behaviour="slide">
 		#if($status!="empty")
                 #set($count=1)
                 #foreach($news in $detail)
                         #if($count % 2 == 0)
                                 <font size=3>
-                                <table bgcolor="$ui.buttonBoxColor" width="100%">
-                                <tr>
-                                <td><image src="$content.getURI("/images/orange_nav_arrow.gif")"> $news.getNews_Subject()
+                                <table bgcolor="$ui.buttonBoxColor" width="100%"> ## 7
+                                <tr> ## 8
+                                <td><image src="$content.getURI("/images/orange_nav_arrow.gif")"> $news.getNews_Subject() ## 9
 				<a href=javascript:popupWin($link.setPage("call,ViewNews_Photo.vm").addPathInfo("newsid",$news.getNews_ID()).addPathInfo("date",$news.getPDate()).addPathInfo("user",$news.getSender()) style=text-decoration:none,"newWin");>...$brih_more</a>
-                                </td>
-                                </tr>
-                                </table>
+                                </td> ## 9
+                                </tr> ## 8
+                                </table> ## 7
                                 </font>
                                 #set($count = $count + 1)
                         #else
                                 <font size=3>
-                                <table><tr><td><image src="$content.getURI("/images/orange_nav_arrow.gif")"> $news.getNews_Subject()   
+                                <table><tr><td><image src="$content.getURI("/images/orange_nav_arrow.gif")"> $news.getNews_Subject()   ## 7, 8, 9
 				<a href=javascript:popupWin($link.setPage("call,ViewNews_Photo.vm").addPathInfo("newsid",$news.getNews_ID()).addPathInfo("date",$news.getPDate()).addPathInfo("user",$news.getSender()) style=text-decoration:none,"newWin");>...$brih_more</a>
-                                </td></tr></table>
+                                </td></tr></table> ## 9, 8, 7
                                 </font>
                                 #set($count = $count + 1)
                         #end
@@ -52,30 +49,20 @@ $page.setBgColor($ui.bgcolor)
 		#else
 			<b>$brih_newsNo</b>
 		#end
-                ##</marquee>
-		</td></tr>
-		<tr><td align=right>
+                </marquee>
+		</td></tr> ## 6, 5
+		<tr><td align=right> ## 5, 6
 		<a href=$link.setPage("News_All.vm").addPathInfo("lang",$lang) style=text-decoration:none>$brih_more $brih_news &raquo;</a>
-                </td></tr>
-        ##</table>
-	##</td></tr>
-	##<tr bgcolor="$ui.menuColor"><td><b>$brih_indexHome_Msg</b></td></tr>
-	##<tr><td><font size=4>$!fNoti</font></td></tr>
-	</tr>
-	</table>
-	</td>
-	<td valign="top" width="50%">
-	<table align="left" bgcolor="$ui.tableColor">
-	<tr><td>
+                </td></tr> ## 6, 5
+        </table> ## 4
+	</td> ## 3
+	<td valign="top" width="50%"> ## 3
+	<table align="left" bgcolor="$ui.tableColor"> ## 4
+	<tr><td> ## 5, 6
 	##<marquee scrollamount="3" direction="left" loop="0" width="100%" behaviour="slide">
 	<b>$brih_msg</b>
 	##</marquee>
-	</td></tr>
-	##<tr><td><i><center><font size=5>$!fNoti</font></center></i></td></tr>
-	##<tr><td><font size=2>$!fNoti</font></td></tr>
-	##</table>
-	##<table align="left">
-	<tr><td>
+        <br>
 	<b>What is BRIHASPATI?</b><br>
 	A platform independent, highly scalable content-delivery tool for web based e-learning system !!<br>
 	<b><u>Entities !!</u></b><br>
@@ -88,20 +75,20 @@ $page.setBgColor($ui.bgcolor)
 	<ul><li> Content authoring and course instruction functionality decoupled</ul>
 	<ul><li> Multiserver architecture</ul>
 	<ul><li> Synchronous tool</ul>*#
-	</td></tr>
-	</table>
-	</td>
-	<td valign="top" bgcolor="$ui.tableColor" width="25%">
-	<table align="left" width="100%">
+	</td></tr> ## 6, 5
+	</table> ## 4
+	</td> ## 3
+	<td valign="top" bgcolor="$ui.tableColor" width="25%"> ## 3
+	<table align="left" width="100%"> ## 4
         <tr><td colspan=2><font color="red">$!data.getMessage() </font></td></tr>
 
-	<tr>
+	<tr> ## 5
 	#if($lang == "hindi")
                 <td>$brih_any $brih_language $brih_select</td>
         #else
                 <td> $brih_language</td>
         #end
-        <td>
+        <td> ## 6
 	<select id="language" onChange ="javascript:OnChange();">
 	#if($flag)
 		<option> $brih_select $brih_language </option>
@@ -222,16 +209,10 @@ $page.setBgColor($ui.bgcolor)
 
 #end
         </select>
-        </td>
-	</tr>
-<tr>
-#formCell("$brih_usr" "username" "")
-</tr>
-<tr>
-#formPasswordCell("$brih_pwd" "password" "")
-</tr>
-<tr align="right">
-<td align=left>
+        </td> </tr> ## 6, 5
+<tr> #formCell("$brih_usr" "username" "") </tr> 
+<tr> #formPasswordCell("$brih_pwd" "password" "") </tr> 
+<tr align="right"><td align=left> ## 5, 6
 <font face="$ui.sansSerifFonts">
 ##<input type="button" value="$brih_submit" onClick="checkUNamePwd(document.frm,this);">
 <input type="button" value="Login" onClick="checkUNamePwd(document.frm,this);">
@@ -239,31 +220,29 @@ $page.setBgColor($ui.bgcolor)
 <input type=hidden name="lang" value="$lang">
 <input type=hidden name="flag" value="$flag">
 </font>
-</td>
-</tr>
+</td> </tr> ## 6, 5
 <tr><td colspan=2>$brih_guestMsg2</td></tr>
 ##</table>
-<tr><td colspan=2><b>
+<tr><td colspan=2><b> ## 5, 6
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
 <a href=$link.setPage("ForgotPassword.vm").addPathInfo("lang",$lang).addPathInfo("status","User") style=text-decoration:none>$brih_forgot $brih_pwd</a>
-</b></td></tr>
-<tr><td colspan=2><b>
+</b></td></tr> ## 6, 5
+<tr><td colspan=2><b> ## 5, 6
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
 <a href=$link.setPage("ViewCourseList.vm").addPathInfo("lang",$lang) style=text-decoration:none>$brih_reg2 $brih_course $brih_list</a>
-</b></td></tr>
-<tr><td colspan=2><b>
+</b></td></tr> ## 6, 5
+<tr><td colspan=2><b> ## 5,6
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
 <a href=$link.setPage("OnlineRegistration.vm").addPathInfo("lang",$lang).addPathInfo("status","UserResitration").addPathInfo("count","1") style=text-decoration:none> $online_online $brih_reg </a>
-</b></td></tr>
+</b></td></tr> ## 6, 5
 
-<tr><td colspan=2><b>
+<tr><td colspan=2><b> ## 5, 6
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
 <a href=$link.setAction("myLogin").addPathInfo("username","guest").addPathInfo("password","guest").addPathInfo("lang",$lang) style=text-decoration:none> $brih_open $brih_access $brih_courses</a>
-</b></td></tr>
-</tr>
-</table>
-</td></tr>
-</table>
+</b></td></tr> ## 6, 5
+</table> ## 4
+</td></tr> ## 3, 2
+</table> ## 1
 </form>
 <SCRIPT language="JavaScript">
         function popupWin(url,popupName)
