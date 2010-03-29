@@ -95,7 +95,7 @@ public class VideoTransmit {
 	  	ContentDescriptor cd = new ContentDescriptor(ContentDescriptor.RAW_RTP);
 	  	processor.setContentDescriptor(cd);
 
-		Format supported[];
+/*		Format supported[];
 		Format chosen;
 		boolean atLeastOneTrack = false;
 
@@ -121,6 +121,7 @@ public class VideoTransmit {
                 }
 		if (!atLeastOneTrack)
     			return "Couldn't set any of the tracks to a valid RTP format";
+	*/
 		result = waitForState(processor, Controller.Realized);
 		if (result == false)
     			return "Couldn't realize processor";

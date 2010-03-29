@@ -132,13 +132,13 @@ public class AudioTransmit {
 	  	ContentDescriptor cd = new ContentDescriptor(ContentDescriptor.RAW);
 	  	processor.setContentDescriptor(cd);
 
-		Format supported[];
+	/*	Format supported[];
 		Format chosen;
 		boolean atLeastOneTrack = false;
-
+	*/
 		/** Program the tracks. */
 
-       		log.setString("Getting the tracks length==>"+tracks.length);
+       	/*	log.setString("Getting the tracks length==>"+tracks.length);
 
 		for (int i = 0; i < 1; i++) {
                         Format format = tracks[i].getFormat();
@@ -156,7 +156,7 @@ public class AudioTransmit {
 	
 		if (!atLeastOneTrack)
 	    		return "Couldn't set any of the tracks to a valid RTP format";
-
+	*/
 		result = waitForState(processor, Controller.Realized);
 		if (result == false)
 	    		return "Couldn't realize processor";

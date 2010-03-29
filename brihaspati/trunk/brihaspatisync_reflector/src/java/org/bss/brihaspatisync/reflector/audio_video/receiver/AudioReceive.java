@@ -101,9 +101,9 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
     				mgrs[i] = (RTPManager) RTPManager.newInstance();
 				mgrs[i].addSessionListener(this);
 				mgrs[i].addReceiveStreamListener(this);
-                		ipAddr = InetAddress.getByName("172.28.44.86");
+                		ipAddr = InetAddress.getByName("172.26.82.21");
                 		localAddr= new SessionAddress(InetAddress.getLocalHost(),port);
-                		destAddr = new SessionAddress(ipAddr,port);
+                		destAddr = new SessionAddress(InetAddress.getLocalHost(),port);//ipAddr,port);
 				mgrs[i].initialize(localAddr);
                 		BufferControl bc = (BufferControl)mgrs[i].getControl("javax.media.control.BufferControl");
 				if (bc != null)
