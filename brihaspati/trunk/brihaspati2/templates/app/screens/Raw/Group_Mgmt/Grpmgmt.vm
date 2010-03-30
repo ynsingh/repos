@@ -197,7 +197,7 @@ $!data.getMessage()
                                         <td align="left"><input type="text"  size="31" name="groupname"  value=""/></td>
                                         </tr>
                                         <tr>
-                                        <td><b>$brih_desc $brih_Of1 $brih_grp:</b><br>Before click on Save button,<br> use this [<blink>< ></blink>] button</td>
+                                        <td><b>$brih_desc $brih_Of1 $brih_grp:</b></td>
                                         <td align="left" width="2"><textarea id="ta" name="groupdesc" rows=10 cols=80 ></textarea></td>
                                         </tr>
                                 </table>
@@ -427,6 +427,7 @@ function checkField2(frm,field)
 }
 function checkField3(frm,field)
 {
+	editor.setMode("textmode");
         if(frm.groupmode[1].checked)
         {
                 if((frm.groupname.value!="") && (frm.groupno.value!="") && (frm.studentno.value!=""))
@@ -461,5 +462,6 @@ function checkField3(frm,field)
                         alert("Please fill the Mandatory(*) Fields and click this [<>] button!!");
                 }
           }
+	editor.setMode("wysiwyg");
 }	
 </SCRIPT>

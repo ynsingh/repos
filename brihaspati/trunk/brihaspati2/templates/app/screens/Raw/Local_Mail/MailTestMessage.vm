@@ -213,7 +213,7 @@ $!data.getmessage()
 <input type="hidden" name="hexaStr" value="">
 <tr>
 <td align="centre" bgcolor="$ui.tableColor">
-	<b><font face="$ui.sansSerifFonts">$brih_msg2</b> <br>Before click on Send button,<br> use this [<blink>< ></blink>] button</font>
+	<b><font face="$ui.sansSerifFonts">$brih_msg2</b> </font>
 </td>
 	<td align="left" bgcolor="$ui.tableColor" width="3">
 	<font face="$ui.sansSerifFonts">
@@ -248,6 +248,7 @@ $!data.getmessage()
  </body>
 <SCRIPT LANGUAGE="javascript">
 function checkValue(editform,field){
+	editor.setMode("textmode");
    	if(editform.addressNames.value!="") 
     	{
    		if(editform.subject.value=="")
@@ -292,6 +293,7 @@ function checkValue(editform,field){
      		alert("Fill the Address Field");
      		editform.addressNames.focus();
     	}
+	editor.setMode("wysiwyg");
 }
 </SCRIPT>
 

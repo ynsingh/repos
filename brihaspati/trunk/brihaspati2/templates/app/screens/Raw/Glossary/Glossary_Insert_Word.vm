@@ -154,7 +154,7 @@ $!data.getMessage()
           #formCell ("$brih_word <font color=Red>*</font>" "WORD" "")
       </tr>
       <tr>  
-          <td><b>$brih_desc<font color=Red>*</font</b><br>Before click on Insert button, use this [<blink>< ></blink>] button</td>
+          <td><b>$brih_desc<font color=Red>*</font</b></td>
           <td width="3"><textarea id="ta" name="DESCRIPTION" rows=10 cols=80></textarea></td>	
       </tr>
       <tr bgcolor="$ui.menuColor">
@@ -180,7 +180,7 @@ $!data.getMessage()
          #end 
       </tr>
       <tr>
-           <td><b>$brih_desc<font color=Red>*</font</b><br>Before click on Insert button, use this [<blink>< ></blink>] button</td>
+           <td><b>$brih_desc<font color=Red>*</font</b></td>
            <td width="3">
                #if($mode=="modify")
                          <font face="$ui.sansSerifFonts"><textarea id="ta" name="DESCRIPTION" rows=10 cols=80>$description</textarea></font>
@@ -207,14 +207,16 @@ $!data.getMessage()
 <SCRIPT LANGUAGE="javascript">
  function checkValue(frm,field)
   {
-   if((frm.WORD.value!="") && (frm.DESCRIPTION.value!=""))
-    {
-     frm.actionName.value=field.name;
-     frm.submit();
-    }
-   else
-    {
-     alert("Please Fill All The Mandatory(*) Fields and Click this [<>] button !!");
-    }
+	editor.setMode("textmode");
+	if((frm.WORD.value!="") && (frm.DESCRIPTION.value!=""))
+    	{
+		frm.actionName.value=field.name;
+		frm.submit();
+	}
+	else
+    	{
+     		alert("Please Fill All The Mandatory(*) Fields!!");
+    	}
+	editor.setMode("wysiwyg");
   }
 </SCRIPT>  

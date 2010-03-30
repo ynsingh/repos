@@ -218,7 +218,7 @@ $!data.getMessage()
                         		</td>
 					<td><input type="text"  size="30" name="groupname"  value="$grpname"/></td>
                 		</tr>                                                                                                                                       <tr>
-				<td><b> $brih_grp $brih_Of1 $brih_desc:</b><br>Before click on Update Group button,<br> use this [<blink>< ></blink>] button</td>
+				<td><b> $brih_grp $brih_Of1 $brih_desc:</b></td>
                         	<td width="3"><textarea id="ta" name="groupdesc" rows=10 cols=80 >$!groupdesc</textarea></td>
                 		</tr>                                                                                                                                       </table>
 			</td></tr>
@@ -265,7 +265,6 @@ $!data.getMessage()
                 	<tr>
                         	<td>
                                 	&nbsp;<b>$brih_default $brih_desc :</b>
-					<br>Before click on Update button, use this [<blink>< ></blink>] button
                         	</td>
                         	<td><textarea id="ta" name=groupdesc  rows=10 cols=90 >$!groupdesc</textarea></td>
                 	</tr>
@@ -349,6 +348,7 @@ $!data.getMessage()
 <SCRIPT LANGUAGE="javascript">
 	function checkfield(frm,field)
         {
+		editor.setMode("textmode");
 		if(frm.groupname.value!="")
                 {
                                 frm.actionName.value=field.name;
@@ -358,6 +358,7 @@ $!data.getMessage()
                 {
                         alert("Please fill the Mandatory(*) Fields and Click this [<>] button!!");
                 }
+		editor.setMode("wysiwyg");
 
         }
 	function popupWin(url,popupName)

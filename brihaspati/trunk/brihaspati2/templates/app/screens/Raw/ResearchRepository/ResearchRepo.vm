@@ -131,7 +131,7 @@ $!data.getMessage()
                                         <tr><td><b><font color=red>*</font> $brih_Res $brih_grp $brih_name :</b></td>
                                         <td><input type="text" name="topicname" size="30" value=""/></td>
                                         </tr>
-                                        <tr><td><b> $brih_desc:</b><br>Before click on Create button,<br> use this [<blink>< ></blink>] button</td>
+                                        <tr><td><b> $brih_desc:</b></td>
                                         <td width="2"><textarea id="ta" name="description" rows="10" cols="80" ></textarea></td>
                                         </tr>
                                 </table>
@@ -360,6 +360,7 @@ $brih_usr $Res_mess1 ..!!
 <SCRIPT LANGUAGE="javascript">
 function checkField(frm,field)
 {
+	editor.setMode("textmode");
 	if(frm.topicname.value!="")
         {
                 frm.actionName.value=field.name;
@@ -367,6 +368,7 @@ function checkField(frm,field)
         }
         else
                 alert("Please fill the Mandatory(*) Fields and Click this [<>] button !!");
+	editor.setMode("wysiwyg");
 }
 function deleteConfirm(frm,field)
 {

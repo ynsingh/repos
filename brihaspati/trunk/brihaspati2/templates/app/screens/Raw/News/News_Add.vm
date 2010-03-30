@@ -209,7 +209,7 @@ $!data.getMessage()
 				
                         </tr>
                         <tr bgcolor="$ui.menuColor">
-				<td><b>$brih_news $brih_desc<font color=RED> *</font></b><br>Before click on Submit button, <br>use this [<blink>< ></blink>] button</td>
+				<td><b>$brih_news $brih_desc<font color=RED> *</font></b></td>
 				<td align="left" width="2"><textarea id="ta" name="news" wrap="physical" rows=10 cols=80></textarea></td>
 
 			</tr>
@@ -244,7 +244,8 @@ $!data.getMessage()
 	}
         function checkNews(frm,field)
         {
-          if((frm.nt.value!="") &&(frm.news.value!="") && frm.et.value!="")
+        	editor.setMode("textmode");
+	        if((frm.nt.value!="") &&(frm.news.value!="") && frm.et.value!="")
                 {
 		    	if((frm.et.value>=1) && (frm.et.value<=30))
 	       		{
@@ -258,7 +259,8 @@ $!data.getMessage()
                 }
                 else 
                 {
-                        alert("Please Fill All The mandatory (*) Fields and Click this [<>] button");
+                        alert("Please Fill All The mandatory (*) Fields");
                 }
+        	editor.setMode("wysiwyg");
         }
 </SCRIPT>

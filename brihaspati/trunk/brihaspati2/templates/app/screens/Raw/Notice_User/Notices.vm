@@ -219,7 +219,7 @@ $!data.getMessage()
 </td>
 </tr>
 #end ##end for Flash Heading
-<tr bgcolor="$ui.tableColor"><td>$brih_msg2 <br>Before click on Send button,<br> use this [<blink>< ></blink>] button</td>
+<tr bgcolor="$ui.tableColor"><td>$brih_msg2 </td>
 <td width="3"><textarea id="ta" name="message" rows=10 cols=80></textarea></td>
 </tr>
                         #if($nflag == "fh")
@@ -261,6 +261,7 @@ $!data.getMessage()
 
         function checkField1(frm,field)
         {
+		editor.setMode("textmode");
                 if(frm.message.value!="")
                 {
                         frm.actionName.value=field.name;
@@ -271,10 +272,12 @@ $!data.getMessage()
                 {
                         alert("Message can not be empty and Click this [<>] button !!");
                 }
+		editor.setMode("wysiwyg");
         }
 
         function checkField(frm,field)
         {
+		editor.setMode("textmode");
                 if(frm.subject.value!="" && frm.message.value!="")
                 {
                          if((frm.expiry.value>=1) && (frm.expiry.value<=365))
@@ -290,6 +293,7 @@ $!data.getMessage()
                 {
                         alert("Subject and Message can not be empty !!");
                 }
+		editor.setMode("wysiwyg");
         }
 </SCRIPT>
 

@@ -194,7 +194,7 @@ $!data.getMessage()
                 </td>
 	</tr>
         <tr bgcolor="$ui.menuColor">
-	    <td><b> $brih_instruction  <font color=RED> * </font></b><br>Before click on Insert button,<br> use this [<blink>< ></blink>] button</td>
+	    <td><b> $brih_instruction  <font color=RED> * </font></b></td>
             <td align="left" width="3"><textarea id="ta" name="message" wrap="physical" rows=9 cols=80 ></textarea></td>
 	</tr>
 	<tr>
@@ -300,6 +300,7 @@ $!data.getMessage()
 
         function checkBlank(uploadform,field)
         {
+		editor.setMode("textmode")
                 if( (uploadform.contentTopic.value!="")  && (uploadform.message.value!="")  && (uploadform.grade.value!="")&& uploadform.file.value!="")
                 {
                         if(isNumberString(uploadform.grade.value))
@@ -321,8 +322,10 @@ $!data.getMessage()
                         uploadform.actionName.value=field.name;
                         uploadform.submit();
                 }
-                else
-                        alert("Please fill all mandatory  fields and Click this [<>] button!!");
+                else{
+                        alert("Please fill all mandatory  fields.!");
+		}
+		editor.setMode("wysiwyg")
         }
 	function isNumberString(chString)
         {

@@ -160,7 +160,7 @@ $!data.getmessage()
 </tr>
 <input type="hidden" name="hexaStr" value="">
 <tr bgcolor="$ui.menuColor">
-<td>$brih_msg2 <br>Before click on Send button,<br> use this [<blink>< ></blink>] button</td>
+<td>$brih_msg2 </td>
 <td width="2">
 #if ( $lang == "english")
 	<textarea id="ta" name="wpTextbox1" rows=14 cols=80>$!message</textarea >
@@ -195,6 +195,7 @@ $!data.getmessage()
  </body>
 <SCRIPT LANGUAGE="javascript">
 function checkValue(editform,field){
+	editor.setMode("textmode");
    	if(editform.addressNames.value!="") 
     	{
    		if(editform.subject.value=="")
@@ -239,6 +240,7 @@ function checkValue(editform,field){
      		alert("Fill the Address Field");
      		editform.addressNames.focus();
     	}
+	editor.setMode("wysiwyg");
 }
 </SCRIPT>
 

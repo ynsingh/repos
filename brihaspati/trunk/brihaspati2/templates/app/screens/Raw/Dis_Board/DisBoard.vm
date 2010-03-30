@@ -177,7 +177,7 @@ $!data.getMessage()
 				<td><input type="text" name=contentTopic onFocus=checkRadio() size=26></td>
 			</tr>
 			<tr>
-				<td><b>$brih_msg2<font color=Red>*</font></b><br>Before click on Post button, use this [<blink>< ></blink>] button</td>
+				<td><b>$brih_msg2<font color=Red>*</font></b></td>
 				<td><textarea id="ta" name="message" rows=10 cols=80 wrap=physical></textarea></td>
 				<td><input type="hidden" name="Repid" value=$Repid></td>
 			</tr>
@@ -283,6 +283,7 @@ $!data.getMessage()
   	}
 	function checkBlank(uploadform,field)
 	{
+		editor.setMode("textmode")
 		if((uploadform.contentTopic.value!="") && (uploadform.message.value!=""))
 		{
 			if(uploadform.status[0].checked)
@@ -303,7 +304,8 @@ $!data.getMessage()
 			}
 		}
 	  	else
-	        	alert("Please fill all mandatory  fields and Click this [<>] button");
+	        	alert("Please fill all mandatory  fields.");
+		editor.setMode("wysiwyg")
 	}
 	function insertminus(uploadform)	
 	{

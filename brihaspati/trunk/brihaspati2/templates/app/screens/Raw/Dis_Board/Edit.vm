@@ -185,7 +185,7 @@ $!data.getMessage()
 			</tr>
 			<tr>
 				<td>
-				<b><font face="$ui.sansSerifFonts">$brih_msg2 </font> </b><br>Before click on Update button, use this [<blink>< ></blink>] button
+				<b><font face="$ui.sansSerifFonts">$brih_msg2 </font> </b>
 				</td>
 			  	<td>
 			  	<font face="$ui.sansSerifFonts" size=4>
@@ -270,6 +270,7 @@ function checkRadio()
 }
 function checkBlank(uploadform,field)
 {
+	editor.setMode("textmode")
 	if((uploadform.contentTopic.value!="") && (uploadform.message.value!="")&&(uploadform.status[0].checked))
         {
         	if((uploadform.expiry.value>=1) && (uploadform.expiry.value<=365))
@@ -286,6 +287,7 @@ function checkBlank(uploadform,field)
 		uploadform.actionName.value=field.name;
             	uploadform.submit();
         }
+	editor.setMode("wysiwyg")
 }
 function insertminus(uploadform)
 {
