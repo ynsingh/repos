@@ -216,10 +216,18 @@ text-decoration: underline;
 					<div class="sublist">
 							<h1><img src="../../images/themesky/exp.gif" />Expenses</h1>
 									<ul>
-									 <li><a href="../../grantReceipt/create/${projectInstance.id}"><span>*  Grant Receipt</span></a></li>
+									
+									 <g:if test="${session.Role == 'ROLE_PI'}">
+									<li><a href="../../expenseRequest/create/${projectInstance.id}"><span>* Expense Request</span></a></li>
+									</g:if>
+									<g:else>
+									<li><a href="../../grantReceipt/create/${projectInstance.id}"><span>*  Grant Receipt</span></a></li>
 					                <li><a href="../../grantExpense/create/${projectInstance.id}"><span>* Record Expenses</span></a></li>
+					               </g:else>	
+					                 
 					                <li><a href="../../grantExpense/listExpenses/${projectInstance.id}"><span>* View Expense For a Period</span></a></li>
 					                <li><a href="../../grantExpense/listSummaryExpenses/${projectInstance.id}"><span>* View Expenses Headwise</span></a></li>
+					               
 					            </ul>
 					</div>
 					
@@ -254,6 +262,7 @@ text-decoration: underline;
 										            <input type="hidden" name="projectID" value="${projectInstance.id}" />
 										             <input type="hidden" name="Path" value="${application.getRealPath("reports")}" />
 									  	         </g:jasperReport></li>
+								  	 			 <li><a href="../../utilization/create/${projectInstance.id}"><span>* Upload utilization certificate</span></a></li>        
 									  	         <li><a href="../../grantAllocation/reports.gsp">More ...</a></li>
             						</ul>
 					</div>

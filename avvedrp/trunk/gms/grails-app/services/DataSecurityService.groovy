@@ -241,5 +241,15 @@ class DataSecurityService {
 				
 		return grantAllocationList
 	}
+ 	
+ 	public GrantAllocation[] getProjectsWithGrantAllocationForLoginPi(String piId){
+		def grantAllocationList
+		
+		
+		if(piId!=null)
+	     grantAllocationList=GrantAllocation.findAll("from GrantAllocation GA where GA.projects in (from Projects P where P.principalInvestigatorName.id="+piId+")"+"group by GA.projects");
+				
+		return grantAllocationList
+	}
      
 }

@@ -3,6 +3,7 @@ class ProjectType
 
 	Integer id;
 	String type;
+	char activeYesNo;
 	String createdBy
 	Date createdDate
 	String modifiedBy

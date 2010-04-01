@@ -176,6 +176,10 @@ class UserService{
 		Role.findByAuthority('ROLE_SITEADMIN').addToPeople(person)
 		
 	}
+	public void addRolesPi(def person)
+	{
+		Role.findByAuthority('ROLE_PI').addToPeople(person)
+	}
 	
 	public void addUserMap(def person,def params) {
 		
@@ -225,6 +229,16 @@ class UserService{
 			println "+++++++++++++++++++++++++call addNewUserRoles++++++++++++++++++++++++++++"
 			addRolesSiteAdmin(userInstance,params)
 			println "+++++++++++++++++++++++++after addNewUserRoles++++++++++++++++++++++++++++"
+		}
+		return userInstance
+	}
+	public User saveNewPi(def userInstance)
+	{
+		println "userInstance for Pi"
+		if(userInstance.save())
+		{
+			println "userInstance for Pi saved"
+			addRolesPi(userInstance)
 		}
 		return userInstance
 	}

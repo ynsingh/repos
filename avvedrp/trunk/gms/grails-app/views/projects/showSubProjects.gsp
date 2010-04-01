@@ -105,7 +105,7 @@
                          </td>
                            
                    <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'parent','errors')}">
-                        ${fieldValue(bean:projectsInstance,field:'parent.name')}
+                    <strong>    ${fieldValue(bean:projectsInstance,field:'parent.name')} </strong>
                            
                    </td>
                     <td  valign="top" class="name">
@@ -113,7 +113,7 @@
                   
                          
                            <td align="left" valign="top" class="value ${hasErrors(bean:projectsInstance,field:'parent','errors')}">
-                                     ${fieldValue(bean:projectsInstance,field:'parent.code')}
+                                    <strong> ${fieldValue(bean:projectsInstance,field:'parent.code')}</strong>
                                      <g:hiddenField id="parentid" name="parent.id" value="${fieldValue(bean:projectsInstance, field:'parent.id')}"/>
                    </td>
                    
@@ -144,6 +144,14 @@
                                 
                               
                             </tr> 
+		                   <tr class="prop">
+		                   <td colspan="3">
+		                   <div align="left"><label for="dateRangeFrom">Main Project Start Date: </label>
+		                    <strong><g:formatDate date="${projectsInstance.parent.projectStartDate}" format="dd/MM/yyyy"/> </strong>
+		                    <label for="dateRangeTo">End Date: </label>              
+		                    <strong> <g:formatDate date="${projectsInstance.parent.projectEndDate}" format="dd/MM/yyyy"/> </strong> 
+		                    </td>
+		                    </tr> 
                             <tr class="prop">
                             <td valign="top" class="name">
                             <label for="projectStartDate">Start Date:</label>
@@ -158,7 +166,7 @@
                             <calendar:datePicker name="projectEndDate" value="${projectsInstance?.projectEndDate}" defaultValue="${new Date()}" dateFormat= "%d/%m/%Y"/>
                             </td>
                             <td valign="top" class="name">
-                            <div align="right">
+                            <div align="top">
                             <label for="activeYesNo">Active:</label>
                             </div>
                             </td>

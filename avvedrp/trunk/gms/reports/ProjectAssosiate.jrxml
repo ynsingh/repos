@@ -28,7 +28,7 @@
 	<parameter name="partyID" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="periodID" isForPrompting="false" class="java.lang.String"/>
 	<queryString><![CDATA[select pr.name as ProjectName,pr.code as ProjectCode,pag.code as Granter,pa.code as Institution,
-pr.principal_investigator_name as ProjectMgr,ga.amount_allocated as AmtAllocated,
+(SELECT I.name FROM investigator I WHERE I.id=pr.principal_investigator_name_id) as ProjectMgr,ga.amount_allocated as AmtAllocated,
 
 (select  sum(grFR.amount)  from grant_allocation gaFR
 left join grant_receipt grFR on (grFR.grant_allocation_id=gaFR.id)
@@ -109,28 +109,6 @@ and pa.id = $P{partyID} order by pr.name]]></queryString>
 						<font fontName="Book Antiqua" pdfFontName="Helvetica-Bold" size="14" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA["REPORT FOR Project Associate "+$F{Institution}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Transparent"
-						x="160"
-						y="10"
-						width="409"
-						height="31"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="textField-10"
-						stretchType="NoStretch"
-						positionType="FixRelativeToTop"
-						isPrintRepeatedValues="true"
-						isRemoveLineWhenBlank="false"
-						isPrintInFirstWholeBand="false"
-						isPrintWhenDetailOverflows="false"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
-						<font fontName="Book Antiqua" pdfFontName="Helvetica-Bold" size="18" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Multi Site Grant Management System"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement

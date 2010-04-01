@@ -47,7 +47,7 @@
 		DATE(grant_expense.date_of_expense) = STR_TO_DATE($P{reportDate},'%d/%M/%Y')
 		AND grant_allocation_split.account_head_id = account_heads.id
 		AND grant_expense.grant_allocation_split_id = grant_allocation_split.id
-		AND grant_receipt.grant_allocation_split_id = grant_expense.grant_allocation_split_id
+		-- AND grant_receipt.grant_allocation_split_id = grant_expense.grant_allocation_split_id
 		AND grant_allocation_split.projects_id = projects.id
 	GROUP BY 
 		grant_allocation_split.account_head_id) AS TotalFundsReceived) AS TotalFundsReceived,
@@ -66,10 +66,10 @@ WHERE
 	AND DATE(GE.date_of_expense) = STR_TO_DATE($P{reportDate},'%d/%M/%Y')
 	AND GS.account_head_id = AH.id
 	AND GE.grant_allocation_split_id = GS.id
-	AND GR.grant_allocation_split_id = GE.grant_allocation_split_id
+	-- AND GR.grant_allocation_split_id = GE.grant_allocation_split_id
 	AND GS.projects_id = P.id
 	AND GA.id=GE.grant_allocation_id
-	AND GA.id=GS.grant_allocation_id
+	-- AND GA.id=GS.grant_allocation_id
 	AND GA.projects_id=P.id
 	
 GROUP BY GE.id,AH.id]]></queryString>
@@ -857,7 +857,7 @@ GROUP BY GE.id,AH.id]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="525"
+						x="537"
 						y="3"
 						width="0"
 						height="56"
@@ -1051,7 +1051,7 @@ GROUP BY GE.id,AH.id]]></queryString>
 						mode="Transparent"
 						x="475"
 						y="9"
-						width="45"
+						width="58"
 						height="47"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1071,9 +1071,9 @@ GROUP BY GE.id,AH.id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="530"
+						x="542"
 						y="11"
-						width="80"
+						width="70"
 						height="45"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1176,7 +1176,7 @@ GROUP BY GE.id,AH.id]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="525"
+						x="537"
 						y="-1"
 						width="0"
 						height="24"
@@ -1459,7 +1459,7 @@ GROUP BY GE.id,AH.id]]></queryString>
 						mode="Transparent"
 						x="475"
 						y="4"
-						width="45"
+						width="58"
 						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1479,9 +1479,9 @@ GROUP BY GE.id,AH.id]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="530"
+						x="542"
 						y="4"
-						width="79"
+						width="70"
 						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1778,7 +1778,7 @@ GROUP BY GE.id,AH.id]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="525"
+						x="537"
 						y="1"
 						width="0"
 						height="24"
@@ -1884,7 +1884,7 @@ GROUP BY GE.id,AH.id]]></queryString>
 						mode="Transparent"
 						x="475"
 						y="4"
-						width="48"
+						width="58"
 						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1904,9 +1904,9 @@ GROUP BY GE.id,AH.id]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="530"
+						x="542"
 						y="4"
-						width="82"
+						width="70"
 						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"

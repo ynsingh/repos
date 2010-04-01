@@ -74,12 +74,12 @@ WHERE
 	AND YEAR(GR.date_of_receipt) = YEAR(STR_TO_DATE($P{reportDate},'%d/%M/%Y'))
 	AND GS.account_head_id = AH.id
 	AND GE.grant_allocation_split_id = GS.id
-	AND GR.grant_allocation_split_id = GE.grant_allocation_split_id
+	-- AND GR.grant_allocation_split_id = GE.grant_allocation_split_id
 	AND GS.projects_id = P.id
 	AND GS.projects_id=GA.projects_id
 	AND GA.party_id = PT.id
 	AND GA.id=GE.grant_allocation_id
-	AND GA.id=GS.grant_allocation_id
+	-- AND GA.id=GS.grant_allocation_id
 	
 GROUP BY GE.id,GS.account_head_id]]></queryString>
 
@@ -987,7 +987,7 @@ GROUP BY GE.id,GS.account_head_id]]></queryString>
 			</band>
 		</columnFooter>
 		<pageFooter>
-			<band height="462"  isSplitAllowed="true" >
+			<band height="389"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						mode="Transparent"

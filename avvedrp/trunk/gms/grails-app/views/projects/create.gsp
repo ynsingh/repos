@@ -92,18 +92,18 @@
                                     <label for="code">Project Type:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'projectType','errors')}">
-                                    <g:select optionKey="id" optionValue="type" id="projectType.id" from="${ProjectType.list()}"  name="projectType.id" value="${projectsInstance?.projectType?.id}" noSelection="['null':'select']" ></g:select>
+                                    <g:select optionKey="id" optionValue="type" id="projectType.id" from="${ProjectType.findAll('from ProjectType P where P.activeYesNo=\'Y\' ')}"  name="projectType.id" value="${projectsInstance?.projectType?.id}" noSelection="['null':'select']" ></g:select>
                                 </td>
                             </tr> 
                           
                         
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="principalInvestigatorName">Investigator:</label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'principalInvestigatorName','errors')}">
-                                    <input type="text" id="principalInvestigatorName" name="principalInvestigatorName" value="${fieldValue(bean:projectsInstance,field:'principalInvestigatorName')}"/>
-                                </td>
+			<tr class="prop">
+			    <td valign="top" class="name">
+				<label for="principalInvestigatorName">Investigator:</label>
+			    </td>
+			    <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'principalInvestigatorName','errors')}">
+				 <g:select optionKey="id" optionValue="name" id="principalInvestigatorName.id" from="${Investigator.list()}"  name="principalInvestigatorName.id" value="${projectsInstance?.principalInvestigatorName?.id}" noSelection="['null':'select']" ></g:select>
+			    </td>
                             </tr> 
                         
                                                      

@@ -4,15 +4,14 @@
         <meta name="layout" content="main" />
         <title>Create Grant Expense</title>         
     </head>
-    <script>
-   
-     </script>
-    
+        
     <body  onload="setValue()">
      <div class="wrapper">
         <div class="nav">
             <span class="menuButton"><a class="home" href="${createLinkTo(dir:'/login')}">Home</a></span>
             <span class="menuButton"><g:link class="list" action="grantAllocationTrackingReports" controller="grantAllocationTracking">Grant Allocation/Project Status Reports</g:link></span>
+        	<span class="menuButton"><g:link class="list" action="list" controller="utilization">Utilization Certificates</g:link></span>
+        	
         </div>
         <br>
          <g:form action="listReport" method="post" name="grantReport" >
@@ -450,7 +449,7 @@
 				           	</tr>
 				          <tr>
 							<td valign="top" class="name">
-							   <g:jasperReport jasper="ResearchProjectGrantMonthwiseAccount" format="XLS,PDF,CSV,HTML" name="Statement 4" >
+							   <g:jasperReport jasper="ResearchProjectGrantMonthwiseAccount" format="XLS,PDF,CSV,HTML" name="Research Project Grant Monthwise Account - Statement 4" >
 							    <input type="hidden" name="id" value="${session.AppFormID}" />
 							   	<input type="hidden" name="projectID" value="" />
 							   	<input type="hidden" name="reportDate" value="" />
@@ -473,7 +472,7 @@
 					           </tr>
 					        <tr>
 								<td valign="top" class="name">
-									<g:jasperReport jasper="ResearchProjectGrantFinalStatement" format="XLS,PDF,CSV,HTML" name="Statement 6" >
+									<g:jasperReport jasper="ResearchProjectGrantFinalStatement" format="XLS,PDF,CSV,HTML" name="Research Project Grant Final Statement - Statement 6" >
 										<input type="hidden" name="id" value="${session.AppFormID}" />
 										<input type="hidden" name="projectID" value="" />
 										<input type="hidden" name="reportDate" value="" />
@@ -484,7 +483,7 @@
 								</td>
 							</tr>
 					           <tr>
-	                            <td valign="top" class="name"><g:jasperReport jasper="expenditures"  name="Statement No:7" format="XLS,PDF,CSV,HTML"  >
+	                            <td valign="top" class="name"><g:jasperReport jasper="expenditures"  name="On Going Research Project Grant(Central/State)- Statement 7" format="XLS,PDF,CSV,HTML"  >
 					            <input type="hidden" name="id" value="${session.AppFormID}" />
 					            <input type="hidden" name="reportDate" value="" />
 					            <input type="hidden" name="partyID" value="" />
@@ -538,6 +537,7 @@
                                 <td valign="top" class="name">
                                    <g:jasperReport jasper="GrantsAndContractsStatement11ConsolidatedAbstract" format="XLS,PDF,CSV,HTML" name="Grants And Contracts Consolidated Abstract - Statement 11" >
 					            <input type="hidden" name="id" value="${session.AppFormID}" />
+					            <input type="hidden" name="partyID" value="" />
 					             <input type="hidden" name="Path" value="${application.getRealPath("reports")}" />
 				  	         </g:jasperReport>
 					           </tr>

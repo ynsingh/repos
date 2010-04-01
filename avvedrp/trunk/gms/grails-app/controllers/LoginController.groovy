@@ -42,8 +42,8 @@ class LoginController {
 			 
 			 def userMap=UserMap.find("from UserMap UM where UM.user.id="+userDetails.getId());
 	         println userMap.party.id
-	         
-	         
+	       def investigatorInstance = Investigator.find("from Investigator I where I.email='"+userDetails.getUsername()+"'")
+	      
 	          def PartyID=userMap.party.id
 		          
 		      println PartyID
@@ -66,6 +66,15 @@ class LoginController {
  	        	gh.putValue("Role",  "ROLE_USER");
  	          	 redirect uri:'/grantAllocation/mainDash.gsp'
      	    }
+     	  else	if(authenticateService.ifAllGranted('ROLE_PI'))
+      		   
+   	    {
+	        	 println "ROLE_PI"
+	        	 def investigatorId = investigatorInstance.id
+	        	gh.putValue("Role",  "ROLE_PI");
+	        	gh.putValue("Pi",investigatorId.toString())
+	          	 redirect uri:'/grantAllocation/mainDash.gsp'
+   	    }
  	          	
      	   else	if(authenticateService.ifAllGranted('ROLE_SITEADMIN'))
 		   
@@ -74,6 +83,7 @@ class LoginController {
 	        	gh.putValue("Role",  "ROLE_SITEADMIN");
 	          	 redirect uri:'/grantAllocation/mainDash.gsp'
    	    }
+     	 
  	          		
  	         
      	

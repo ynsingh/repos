@@ -14,6 +14,7 @@
             <span class="menuButton"><g:link class="create" action="create">New Projects</g:link></span>
             <span class="menuButton"><g:link controller="projectDepartmentMap" class="create" action="create">Project Department Map</g:link></span>
             <span class="menuButton"><g:link controller="projectType" class="create" action="create">Project Type</g:link></span>
+            <span class="menuButton"><g:link controller="investigator" class="create" action="create">Investigator</g:link></span>
             
         </div>
         
@@ -38,7 +39,7 @@
                    	        
                    	        <g:sortableColumn property="projects.projectType.type" title="Project Type" />
                           
-                   	        <g:sortableColumn property="projects.principalInvestigatorName" title="Investigator" />
+                   	        <g:sortableColumn property="projects.principalInvestigatorName.name" title="Investigator" />
                         
                    	          <g:sortableColumn property="projects.activeYesNo" title="Active" />
                    	          <th>Sub Projects</th>
@@ -61,7 +62,7 @@
                            <td>${fieldValue(bean:grantAllocationInstance, field:'projects.name')}</td>
                            <td>${fieldValue(bean:grantAllocationInstance, field:'projects.code')}</td>
                            <td>${fieldValue(bean:grantAllocationInstance, field:'projects.projectType.type')}</td>
-                           <td>${fieldValue(bean:grantAllocationInstance, field:'projects.principalInvestigatorName')}</td>
+                           <td>${fieldValue(bean:grantAllocationInstance, field:'projects.principalInvestigatorName.name')}</td>
                             <td>${fieldValue(bean:grantAllocationInstance, field:'projects.activeYesNo')}</td>
                            <td><g:link  action="showSubProjects"  id="${grantAllocationInstance.projects.id}">Sub Projects</g:link></td>
                               <td><g:link action="projectDash" controller='grantAllocation' id="${grantAllocationInstance.projects.id}">View</g:link></td>

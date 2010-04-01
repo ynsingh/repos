@@ -26,9 +26,14 @@ class ProjectsController extends GmsController{
         def dataSecurityService = new DataSecurityService()
 		def projectsService = new ProjectsService()
       //  grantAllocationOfprojectsInstanceList=dataSecurityService.getProjectsFromGrantAllocationForLoginUser(gh.getValue("PartyID"))
-            
+            if(gh.getValue("Role")=="ROLE_PI")
+            {
+            	println "PI"
+            	grantAllocationWithprojectsInstanceList=dataSecurityService.getProjectsWithGrantAllocationForLoginPi(gh.getValue("Pi"))
+            }
+            else{
         	grantAllocationWithprojectsInstanceList=dataSecurityService.getProjectsWithGrantAllocationForLoginUser(gh.getValue("PartyID"),subQuery)
-     
+            }
        
         [ grantAllocationWithprojectsInstanceList: grantAllocationWithprojectsInstanceList ]
    }

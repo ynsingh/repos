@@ -33,9 +33,10 @@ class GrantAllocationController extends GmsController {
 		if(grantAllocationId != null){
 			if(grantAllocationId > 0){
 				GrailsHttpSession gh=getSession()
-	            if(gh.getValue("fromUrL")==null) {
+	            if(gh.getValue("fromUrL")=="fundAllot") {
 	            	redirect(action:'fundAllot')
-	                flash.message = "Fund Allocation deleted"
+	                flash.message = "Fund Allocation deleted" 
+	                	
                 }
                 else {
                 	if(gh.getValue("fromUrL")=="subGrantAllotExt")
@@ -46,6 +47,7 @@ class GrantAllocationController extends GmsController {
                 }
 			}
 			else {
+				
 	            flash.message = "GrantAllocation not found with id ${params.id}"
 	            redirect(action:list)
 	        }
@@ -96,7 +98,7 @@ class GrantAllocationController extends GmsController {
 				if(grantAllocationInstance.isSaved)
 				{
 					GrailsHttpSession gh=getSession()
-					if(gh.getValue("fromUrL")==null)
+					if(gh.getValue("fromUrL")=="fundAllot")
 					{
 						redirect(action:'fundAllot',id:grantAllocationInstance.id)
 		                flash.message = "Fund Allocation updated"
@@ -122,7 +124,7 @@ class GrantAllocationController extends GmsController {
 		GrailsHttpSession gh=getSession()
         def grantAllocationInstance = new GrantAllocation()
         grantAllocationInstance.properties = params
-        
+        println"++++++++++++++++params++++++++++"+params
         def dataSecurityService = new DataSecurityService()
         def grantAllocationInstanceList=dataSecurityService.getGrantAllocationsForLoginUser(
         		"Fund",gh.getValue("ProjectID"),gh.getValue("PartyID"))
@@ -134,6 +136,9 @@ class GrantAllocationController extends GmsController {
     def fundAllot = {
     		
     		GrailsHttpSession gh=getSession()
+    		
+        	gh.putValue("fromUrL", "fundAllot");
+        	gh.putValue("fromID", params.id);
         def grantAllocationInstance = new GrantAllocation()
         grantAllocationInstance.properties = params
         
@@ -390,9 +395,17 @@ class GrantAllocationController extends GmsController {
     	
     	//get data from grant_allocation
     	
-	    	def dataSecurityService = new DataSecurityService();
-	    	def grantAllocationInstanceList=dataSecurityService.getProjectsFromGrantAllocationForLoginUser(gh.getValue("PartyID"));
 	    	
+    	def grantAllocationInstanceList
+    	def dataSecurityService = new DataSecurityService();
+    	if(gh.getValue("Role")=="ROLE_PI")
+    	{
+    		println "Piiii"
+    		grantAllocationInstanceList=dataSecurityService.getProjectsWithGrantAllocationForLoginPi(gh.getValue("Pi"))
+    	}
+    	else{
+    		grantAllocationInstanceList=dataSecurityService.getProjectsFromGrantAllocationForLoginUser(gh.getValue("PartyID"));
+    	}	    	
     	
     	
          
@@ -613,7 +626,9 @@ class GrantAllocationController extends GmsController {
 							"	 FROM GrantExpense GA where  GA.projects.id="+ params.id+"  group by MONTHNAME(GA.dateOfExpense) order by GA.dateOfExpense   asc")
 
 							 println  "monthlyExpenseAndRecipts "+monthlyExpenseAndRecipts
-							 
+							 GrailsHttpSession gh=getSession()
+						        gh.putValue("ProjectID",projectInstance.id.toString());	
+    		  					
 							 def totalExpense=0;
                               def totalReciept=0;
             

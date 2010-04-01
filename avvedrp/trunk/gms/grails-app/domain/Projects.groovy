@@ -4,7 +4,7 @@ class Projects {
 	ProjectType projectType;
 	String code;
 	String name;
-	String principalInvestigatorName;
+	Investigator principalInvestigatorName;
 	String projectDuration;
 	Date projectStartDate
 	Date projectEndDate
@@ -21,6 +21,7 @@ class Projects {
 		projectEndDate(nullable:true)
 		name(blank:false)
 		code(blank:false)
+		principalInvestigatorName(nullable:true)
 		
 	}
 	
