@@ -1,10 +1,11 @@
 #*
  * @(#)AdminParam.vm
- * Copyright (c) 2005,2009 ETRG,IIT Kanpur.
+ * Copyright (c) 2005,2009, 2010 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto:chitvesh@yahoo.com">Chitvesh Dutta</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
- * modify date: 10-06-2009
+ * @modify date: 10-06-2009 (By Shaista)
+ * @modify date: 18-03-2010 (By Shasita)
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
@@ -12,35 +13,39 @@ $page.setTitle("Admin Home | Change Parameters")
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
 
-<table bgcolor="$ui.tableColor" width=100% cellspacing=0>
-<tr align="right" bgcolor="$ui.tableColor">
-	<td colspan="2">
-	<font face="$ui.sansSerifFonts" size=3>
-	<b>
-     	<a href=$link.setPage("call,Admin.vm")>$brih_ad $brih_Of1 $brih_home</a> | $brih_cp
+<table bgcolor="$ui.tableColor" width=100%>
+<tr align="right" bgcolor="$ui.menuColor">
+        <td colspan="2">
+        <font face="$ui.sansSerifFonts" size=3> <b>
+	     	<a href=$link.setPage("call,Admin.vm")>$brih_ad $brih_Of1 $brih_home</a> | $brih_cp
+	</font> </b>
 	</td>
 </tr>
 <form name="frm" method="post" action="$link.setPage("call,AdminProfile,AdminParam.vm").setAction("changeAParam")">
-    <tr bgcolor="$ui.menuColor"><td colspan=2 align="right"><font size=4><b>$brih_ap</b></font></td></tr>
-    <tr align="right" bgcolor="$ui.tableColor">
+    <tr> <td colspan=2 align="right"><font size=4><b>$brih_ap</b></font></td></tr>
+    <tr align="right" bgcolor="$ui.menuColor">
 	<td width="50">	<font face="$ui.sansSerifFonts"> <input type="text" size="30" name="AFName" value="$!afname">	</font> </td>
 	<td width="30"> <font face="$ui.sansSerifFonts"> $brih_first $brih_name </font> </td>
     </tr>
-    <tr align="right"  bgcolor="$ui.menuColor"> 
+    <tr align="right"  bgcolor="$ui.tableColor"> 
 	<td width="50"> <font face="$ui.sansSerifFonts"> <input type="text" size="30" name="ALName" value="$!alname">  </font> 	</td>
 	<td width="30"> $brih_last $brih_name </td>
     </tr>
-    <tr align="right" bgcolor="$ui.tableColor">
+    <tr align="right" bgcolor="$ui.menuColor">
 	<td width="50"> <font face="$ui.sansSerifFonts"> <input type="text" size="30" name="AdminConf" value="$!AdminConf">  </font> </td>
 	<td width="30"> <font face="$ui.sansSerifFonts"> $brih_lcv  </font> </td>
     </tr>
-    <tr align="right" bgcolor="$ui.menuColor">
+    <tr align="right" bgcolor="$ui.tableColor">
 	<td width="50"> <font face="$ui.sansSerifFonts"> <input type="text" size="30" name="AdminCrsExp" value="$!CrsExp"> </font> </td>
 	<td width="30" > <font face="$ui.sansSerifFonts"> $brih_course $brih_expiry </font> </td>	
     </tr>
-    <tr align="right" bgcolor="$ui.tableColor">   
+    <tr align="right" bgcolor="$ui.menuColor">   
 	<td width="50" > <font face="$ui.sansSerifFonts"> <input type="text" size="30" name="mailServ" value="$!mServer"> </font> </td>
 	<td width="30"> <font face="$ui.sansSerifFonts"> $LocalMail_mail $brih_server $brih_Of1 $brih_name </font> </td>
+    </tr>
+    <tr align="right" bgcolor="$ui.tableColor">
+        <td width="50"> <font face="$ui.sansSerifFonts"> <input type="text" size="30" name="mailServPort" value="$!mServerPort"> </font></td>
+        <td width="30"> <font face="$ui.sansSerifFonts"> $LocalMail_mail $brih_server $brih_Of1 $brih_port </font></td>
     </tr>
     <tr align="right"  bgcolor="$ui.menuColor">
 	<td width="50"> <font face="$ui.sansSerifFonts"> <input type="text" size="30" name="mailFrom" value="$!mFrom"> </font> </td>

@@ -34,7 +34,7 @@ $page.setBgColor("$ui.bgcolor")
                  				<td> ##14#h td
                    					<a href=$link.setAction("myLogout") style=text-decoration:none> 
 							<font size=2>$brih_logout</font>
-		   					<img src=$content.getURI("/images/lgot.JPG") style=border:0px solid;>
+		   					<img src=$content.getURI("/images/logout.JPG") style=border:0px solid;>
 							</a>
                  				</td> ##14#h td closed
                  				<td> ##15#h td
@@ -86,7 +86,7 @@ $page.setBgColor("$ui.bgcolor")
                        				</td> ##21#h td closed
                        				<td> ##22#h td
                    					<a href=$link.setPage("Index.vm") style=text-decoration:none>
-							<font size=2>$brih_ad $brih_home</font>
+							<font size=2>$brih_ad $brih_Of1 $brih_home</font>
 		   					<img src=$content.getURI("/images/home.JPG") style=border:0px solid; >
 							</a>
                         			</td> ##22#h td closed

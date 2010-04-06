@@ -7,19 +7,21 @@
 *#
 $page.setTitle("Login in Brihaspati")
 $page.setBgColor($ui.bgcolor)
-$!data.getMessage()
 <form name="frm" method="post" action="$link.setAction("myLogin")">
 
 <table width="100%">
 <tr><td>
-<marquee direction="right"><font size=4>$fNoti</font>
-</morque></td></tr>
+##<marquee direction="left">
+<font size=4>$!fNoti</font>
+##</morque>
+</td></tr>
 </table>
 
 <table align=left> ## Ta1
 <tr> ## tr1
 	<td valign="top" bgcolor="$ui.tableColor" width="25%"> ## TD1 
 		<table align="left" width="100%">
+		<tr align="right"><td align="right" colspan=4><font color="red">$!data.getMessage() </font></td></tr>
 		<tr align="right">
         	<td align="right" colspan="3">
 			<select id="language" onChange ="javascript:OnChange();">
@@ -36,7 +38,6 @@ $!data.getMessage()
                                 <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","hindi")"> (Hindi) $brih_hindi
                                 <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","italian")"> (Italian) $brih_italian
 				<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","japanese")"> (Japanese) $brih_japanese
-			        <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","russian")"> (Rusian) $brih_russian
                                 <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","korean")"> (Korean) $brih_korean
 			        <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","malayalam")"> (Malayalam) $brih_malayalam
                                 <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","marathi")"> (Marathi) $brih_marathi
@@ -93,7 +94,7 @@ $!data.getMessage()
 	</td> ## TD1 end
 	<td valign="top" width="50%"> ## TD2
 		<table align="left" bgcolor="$ui.tableColor">
-			<tr><td>
+			<tr align="right"><td>
 				<b>$brih_msg</b>
 			</td></tr>
 			<tr><td>

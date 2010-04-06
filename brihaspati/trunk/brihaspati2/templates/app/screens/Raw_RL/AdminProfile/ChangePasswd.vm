@@ -4,51 +4,59 @@
  * All Rights Reserved.
  * @author <a href="mailto:awadhk_t@yahoo.com ">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:madhavi_mungole@hotmail.com ">Madhavi Mungole</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @modified date: 30-03-2010
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
 $page.setTitle("Admin Home | Change Password")
 $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
-<table bgcolor="$ui.tableColor" width=100% cellspacing=0>
+<table bgcolor="$ui.menuColor" width=100% cellspacing=0>
 <tr align="right">
-	<td>
-	<font face="$ui.sansSerifFonts" size=3>
-	<b>
+	<td> <font face="$ui.sansSerifFonts" size=3> <b>
      	<a href=$link.setPage("call,Admin.vm")>$brih_ad $brih_Of1 $brih_home</a> | $brih_changePassword
-	</td>
+	</b> </font></td>
 </tr>
 </table>
-<br>
+
 <form name=frm method="post" action="$link.setAction("changePW").setPage("call,AdminProfile,ChangePasswd.vm")">
-  <table border=1 cellspacing=1 cellpadding=5 align=center>
-	<tr><td colspan=2 align="center" bgcolor="$ui.menuColor"><font size=4><b>$brih_ad $brih_changePassword1</b></font></td></tr>
-	<tr align="right" bgcolor="$ui.tableColor">
+<div align="right">
+<table width="25%" bgcolor="$ui.tableColor">
+	<tr align="right">
+                <td bgcolor="#AFDCEC"><a href=$link.setPage("call,AdminProfile,ChangePasswd.vm").addPathInfo("count","1")>$brih_changePassword</a></td>
+                ##<td><a href=$link.setPage("call,AdminProfile,AdminParam.vm")>$brih_ap</a></td>
+        </tr>
+</table>
+</div>
+
+<table width="100%" bgcolor="$ui.tableColor">
+        <tr align="right"><td bgcolor="$ui.menuColor"><font size=4><b>$brih_ad $brih_changePassword1</b></font></td></tr>
+</table>
+
+ <table align="right" width="100%" bgcolor="$ui.tableColor">
+        <tr align="right">
 ##	#formPasswordCell("$brih_pwdOld" "oldpassword" "")
-	<td size="50" bgcolor="$ui.tableColor">
-	    <font face="verdana,geneva,helvetica">
-	      <input type="password" size="30" name="oldpassword" value="">
-	    </font>
+	<td size="50"> <input type="password" size="30" name="oldpassword" value="">
 	</td>
 	<td><b>
 		$brih_pwdOld
 	</b></td>
 	</tr>
-	<tr align="right" bgcolor="$ui.tableColor">
+
+	<tr align="right" bgcolor="$ui.menuColor">
 	###formPasswordCell("$brih_pwdNew" "newpassword" "")
-	<td size="50" bgcolor="$ui.tableColor">
-            <font face="verdana,geneva,helvetica">
+	<td size="50">
               <input type="password" size="30" name="newpassword" value="">
-            </font>
         </td>
 	<td><b>
 		$brih_pwdNew
 	</b></td>
 	</tr>
-    	<tr align="right" bgcolor="$ui.tableColor">
+
+    	<tr align="right">
 ##	#formPasswordCell("$brih_pwdNewRetype" "retypepassword" "")
-	<td size="50" bgcolor="$ui.tableColor">
-            <font face="verdana,geneva,helvetica">
+	<td size="50"> 
               <input type="password" size="30" name="retypepassword" value="">
             </font>
         </td>
@@ -57,8 +65,9 @@ $!data.getMessage()
 	</b></td>
 
 	</tr>
-    	<tr bgcolor="$ui.tableColor">
-      	<td colspan=2 bgcolor="$ui.menuColor" align=center>	
+
+    	<tr align="right" bgcolor="$ui.menuColor">
+      	<td colspan=2 >	
 	  <input type="hidden" name="actionName">
 	<input type="button" name="eventSubmit_doUpdate" value="$brih_submit" onClick="checkPassword(document.frm,this);"/>   
 	<input type="reset" name="reset" value="$brih_reset" onClick="checkClear(document.frm,this);"/>

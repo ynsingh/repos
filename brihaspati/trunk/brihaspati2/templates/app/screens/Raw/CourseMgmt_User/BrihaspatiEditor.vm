@@ -6,8 +6,9 @@
  *  @author <a href="mailto:seema_020504@yahoo.com ">Seema Pal</a>
  *  @author <a href="mailto:kshuklak@rediffmail.com ">Kishore kumar shukla</a>
  *  @author <a href="mailto:singh_jaivir@rediffmail.com ">Jaivir Singh</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  *  Contributors: Members of ETRG, I.I.T. Kanpur
-
+ * @modified date: 30-03-2010
 *#
 $page.setTitle("Home | $course | Course Content | View Content")
 $page.setBgColor($ui.bgcolor)
@@ -28,37 +29,37 @@ $!data.getMessage()
 #elseif($tdcolor == "1")
 <td bgcolor="#AFDCEC">
 #end
-<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none>$brih_course $brih_content</a></td>
+<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") > #if($lang == "english") $brih_course $brih_content #else $brih_course $brih_content #end </a></td>
 #if($tdcolor != "2")
 <td>
 #elseif($tdcolor == "2")
 <td bgcolor="#AFDCEC">
 #end
-<a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","2") style=text-decoration:none>$brih_upload $brih_course $brih_content</a></td>
+<a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","2") > #if($lang == "english") $brih_upload $brih_course $brih_content #else $brih_content $brih_upload #end </a></td>
 #if($tdcolor != "3")
 <td>
 #elseif($tdcolor == "3")
 <td bgcolor="#AFDCEC">
 #end
-<a href=$link.setPage("call,CourseMgmt_User,Configuration.vm").addPathInfo("cName",$Cname).addPathInfo("count","3") style=text-decoration:none>$brih_course $RemoteConfiguration</a></td>
+<a href=$link.setPage("call,CourseMgmt_User,Configuration.vm").addPathInfo("cName",$Cname).addPathInfo("count","3") >$brih_course $RemoteConfiguration</a></td>
 #if($tdcolor != "4")
 <td>
 #elseif($tdcolor == "4")
 <td bgcolor="#AFDCEC">
 #end
-<a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("count","4") style=text-decoration:none>$brih_upload $brih_course $brih_header</a></td>
+<a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("count","4") > #if($lang == "english") $brih_upload $brih_course $brih_header #else $brih_course $brih_Of $brih_header $brih_upload #end </a></td>
 #if($tdcolor != "5")
 <td>
 #elseif($tdcolor == "5")
 <td bgcolor="#AFDCEC">
 #end
-<a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("mode","NotUploadImage").addPathInfo("count","5") style=text-decoration:none>$RemoteConfiguration $brih_grade</a></td>
+<a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("mode","NotUploadImage").addPathInfo("count","5") > #if($lang == "english") $RemoteConfiguration $brih_grade #else $brih_grade $RemoteConfiguration #end </a></td>
 #if($tdcolor != "6")
 <td>
 #elseif($tdcolor == "6")
 <td bgcolor="#AFDCEC">
 #end
-<a href=$link.setPage("call,CourseMgmt_User,BrihaspatiEditor.vm").addPathInfo("count","6") style=text-decoration:none>$brih_scorm $brih_packager</a></td>
+<a href=$link.setPage("call,CourseMgmt_User,BrihaspatiEditor.vm").addPathInfo("count","6") e>$brih_scorm $brih_packager</a></td>
          #if($tdcolor != "7")
          <td>
          #elseif($tdcolor == "7")
@@ -73,7 +74,7 @@ $!data.getMessage()
 <td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/jnlp.html","newWin"); style=text-decoration:none>$brih_jnlp</a></td>
 #foreach($content in $contentvalue)
 ##<td><a href="$link.setPage("call,ViewFileContent.vm").addPathInfo("contents",$username).addPathInfo("type","reload").addPathInfo("filename",$content).addPathInfo("count",$tdcolor)">$brih_Launch $brih_packager $brih_Application</a></td>
-<td><a href=$link.setPage("call,ViewFileContent.vm").addPathInfo("contents",$username).addPathInfo("type","reload").addPathInfo("filename",$content) style=text-decoration:none>$brih_Launch $brih_packager $brih_Application</a></td>
+<td><a href=$link.setPage("call,ViewFileContent.vm").addPathInfo("contents",$username).addPathInfo("type","reload").addPathInfo("filename",$content) style=text-decoration:none> #if($lang == "english") $brih_Launch $brih_packager $brih_Application #else $brih_packager $brih_Application $brih_Launch #end </a></td>
 #end
 <td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/BrihaspatiEditor_v1_3_manual.pdf","newWin"); style=text-decoration:none>$brih_help</a><td>
 </tr>

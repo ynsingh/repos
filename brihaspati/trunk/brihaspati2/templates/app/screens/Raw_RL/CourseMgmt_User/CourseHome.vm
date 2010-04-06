@@ -1,9 +1,8 @@
 
 #*
  * @(#) CourseHome.vm
- * Copyright (c) 2006-2008 ETRG,IIT Kanpur.
+ * Copyright (c) 2006-2008, 2010 ETRG,IIT Kanpur.
  * All Rights Reserved.
- * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:singhnk@iitk.ac.in ">Nagendra Kumar Singh</a>
  * @author <a href="mailto:shaistashekh@hotmail.com"> Shaista </a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
@@ -14,7 +13,7 @@ $!data.getMessage()
 <body>
 ## Representation of TOP BAR
 
-<table bgcolor="$ui.tableColor" width=100% cellspacing=0>
+<table bgcolor="$ui.menuColor"  width=100% cellspacing=0>
 	<tr align="right">
 	    <td>
 		 $cName |
@@ -127,7 +126,7 @@ $!data.getMessage()
 						</table>
 						<table align=center>
 						<tr><td align="center">
-							<a href="$link.setPage("call,News,News_Course.vm")"> &laquo;$brih_news $brih_more $brih_in </a>
+							<a href=$link.setPage("call,News,News_Course.vm") style=text-decoration:none> &laquo;$brih_news $brih_more $brih_in </a>
 						</td></tr>
 						</table>
 						#else
@@ -187,12 +186,12 @@ $!data.getMessage()
 					<td align="center" valign="top">
 						<table border=0 valign="top">
                                             	<tr><td align=center>
-                                                   <a href=$link.setPage("call,Assignment,ASS_subm.vm")>
-                                                   <img border=0 src="$content.getURI("/images/assignment.jpg")"  width="50" height="50" >  </a>
+						    <a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1") style=text-decoration:none>
+                                                   <img border=0 src="$content.getURI("/images/assignment.jpg")" width="50" height="50" >  </a>
                                             	</td></tr>
                                             	<tr><td align=center>
                                                     <font face="$ui.sansSerifFonts">
-                                                    <a href=$link.setPage("call,Assignment,ASS_subm.vm")> $brih_assignment </a>
+                                                    <a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1") style=text-decoration:none> $brih_assignment </a>
                                             	</td></tr>
                                           	</table>
 					</td>
@@ -201,11 +200,11 @@ $!data.getMessage()
 					<td align=center>
 						<table border=0>
 							<tr><td align=center>
-								<a href=$link.setPage("call,Backups,BackupIns.vm")><img border=0 src="$content.getURI("/images/book6.gif")"></a>
+								<a href=$link.setPage("call,Backups,BackupIns.vm").addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/book6.gif")"></a>
 							</td></tr>
 							<tr><td align=center>
 								<font face="$ui.sansSerifFonts">
-     								<a href=$link.setPage("call,Backups,BackupIns.vm")>$brih_backup</a><br>
+     								<a href=$link.setPage("call,Backups,BackupIns.vm").addPathInfo("count","1") style=text-decoration:none>$brih_backup</a><br>
 							</td></tr>
 						</table>
 					</td>
@@ -214,11 +213,14 @@ $!data.getMessage()
 					<td align=center>
 						<table border=0 valign="top">
 							<tr><td align=center>
-  				   				<a href=$link.setPage("call,CourseMgmt_User,Communication.vm")><img border=0 src="$content.getURI("/images/opnclass.jpg")"></a>
+  				   				##<a href=$link.setPage("call,CourseMgmt_User,Communication.vm").addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/opnclass.jpg")"></a>
+								<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/opnclass.jpg")"></a>
+
 							</td></tr>
 							<tr><td align=center>
 								<font face="$ui.sansSerifFonts">
-     								<a href=$link.setPage("call,CourseMgmt_User,Communication.vm")>$brih_communication</a><br>
+     								##<a href=$link.setPage("call,CourseMgmt_User,Communication.vm")>$brih_communication</a><br>
+								 <a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1") style=text-decoration:none>$brih_communication</a><br>
 							</td></tr>
 						</table>
 					</td>
@@ -231,11 +233,11 @@ $!data.getMessage()
 					<td align=center>
 						<table border=0>
 							<tr><td align=center>
-								<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","fromcourse")><img border=0 src="$content.getURI("/images/CourseCalendar.gif")"></a>
+								<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","fromcourse").addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/CourseCalendar.gif")"></a>
 							</td></tr>
 							<tr><td align=center>
 								<font face="$ui.sansSerifFonts">
-								<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","fromcourse")>$brih_course1 $brih_calendar</a><br>
+								<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","fromcourse").addPathInfo("count","1") style=text-decoration:none>$brih_course1 $brih_calendar</a><br>
 							</td></tr>
 						</table>
 					</td>
@@ -244,12 +246,13 @@ $!data.getMessage()
 					<td align="center" valign="top">
 						<table border=0 valign="top">
 							<tr><td align="center" valign="top">
-									 <a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm")>
-									<img border=0 src="$content.getURI("/images/book.gif")"></a>
+								 ##<a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm")>
+								 <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none>
+								<img border=0 src="$content.getURI("/images/book.gif")"></a>
 							</td></tr>
 							<tr><td align=center>
 								<font face="$ui.sansSerifFonts">
-									<a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm")> $brih_mgmt $brih_course </a><br>
+									<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none> $brih_mgmt $brih_course </a><br>
 							</td></tr>
 						</table>
 					</td>
@@ -258,11 +261,11 @@ $!data.getMessage()
                                         <td align=center>
                                                 <table border=0>
 							<tr><td align=center>
-                                                    <a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm")><img border=0 src="$content.getURI("/images/groupimages.jpg")"></a>
+                                                    <a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm").addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/groupimages.jpg")"></a>
                                                </td></tr>
                                                <tr><td align=center>
                                                    <font face="$ui.sansSerifFonts">
-                                                  <a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm")>$brih_mgmt $brih_grp</a>
+                                                  <a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm").addPathInfo("count","1") style=text-decoration:none>$brih_mgmt $brih_grp</a>
                                                      </td></tr>
                                                 </table>
                                         </td>
@@ -275,12 +278,12 @@ $!data.getMessage()
 					<td align=center>
 						<table border=0>
 							<tr><td align=center>
-							<a href=$link.setPage("call,Question_Bank,Question_bank.vm")>
+							<a href=$link.setPage("call,Question_Bank,Question_bank.vm").addPathInfo("count","1") style=text-decoration:none>
 							<img border=0 src="$content.getURI("/images/book_que.gif")"></a>
 							</td></tr>
 							<tr><td align=center>
 								<font face="$ui.sansSerifFonts">
-     									<a href=$link.setPage("call,Question_Bank,Question_bank.vm")>$brih_qus $brih_bank</a><br>
+     									<a href=$link.setPage("call,Question_Bank,Question_bank.vm").addPathInfo("count","1") style=text-decoration:none >$brih_qus $brih_bank</a><br>
 							</td></tr>
 						</table>
 					</td> 
@@ -289,12 +292,12 @@ $!data.getMessage()
                                         <td align=center>
                                                 <table border=0>
                                                         <tr><td align=center>
-                                                                       <a href=$link.setPage("call,Quiz_Mgmt,Quiz_Start.vm")>
+                                                                       <a href=$link.setPage("call,Quiz_Mgmt,Quiz_Start.vm").addPathInfo("count","1") style=text-decoration:none>
                                                                         <img border=0 src="$content.getURI("/images/quiz.jpg")"></a>
                                                         </td></tr>
                                                         <tr><td align=center>
                                                                 <font face="$ui.sansSerifFonts">
-                                                                        <a href=$link.setPage("call,Quiz_Mgmt,Quiz_Start.vm")> $brih_mgmt $brih_quiz </a><br>
+                                                                        <a href=$link.setPage("call,Quiz_Mgmt,Quiz_Start.vm").addPathInfo("count","1") style=text-decoration:none> $brih_mgmt $brih_quiz </a><br>
                                                         </td></tr>
                                                 </table>
                                         </td>
@@ -303,11 +306,11 @@ $!data.getMessage()
 					<td align=center>
 						<table border=0>
 							<tr><td align=center>
-								<a href=$link.setPage("call,UserMgmt_User,StudentManagement.vm").addPathInfo("courseid",$user_role)><img border=0 src="$content.getURI("/images/images.jpg")"></a>
+								<a href=$link.setPage("call,UserMgmt_User,StudentManagement.vm").addPathInfo("courseid",$user_role).addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/images.jpg")"></a>
 							</td></tr>
 							<tr><td align=center>
 								<font face="$ui.sansSerifFonts">
-     								<a href=$link.setPage("call,UserMgmt_User,StudentManagement.vm")>$brih_mgmt $brih_student </a><br>
+     								<a href=$link.setPage("call,UserMgmt_User,StudentManagement.vm").addPathInfo("count","1") style=text-decoration:none >$brih_mgmt $brih_student </a><br>
 							</td></tr>
 						</table>
 					</td>
@@ -321,11 +324,11 @@ $!data.getMessage()
 					<td align=center>
 					<table border=0>
 						<tr><td align=center>
-     							<a href=$link.setPage("call,UserMgmt_User,UploadMarks.vm")><img border=0 src="$content.getURI("/images/marks.png")"></a>
+     							<a href=$link.setPage("call,UserMgmt_User,UploadMarks.vm").addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/marks.png")"></a>
 						</td></tr>
 						<tr><td align=center>
 							<font face="$ui.sansSerifFonts">
-     							<a href=$link.setPage("call,UserMgmt_User,UploadMarks.vm")>$brih_upload $brih_marks</a><br>
+     							<a href=$link.setPage("call,UserMgmt_User,UploadMarks.vm").addPathInfo("count","1") style=text-decoration:none>$brih_upload $brih_marks</a><br>
 						</td></tr>
 					</table>
 					</td>
@@ -334,16 +337,28 @@ $!data.getMessage()
 					<td align=center>
 						<table border=0>
 							<tr><td align=center>
-	     							<a href=$link.setPage("call,Wiki,Wiki.vm")><img border=0 src="$content.getURI("/images/greenpen.gif")"></a>
+	     							<a href=$link.setPage("call,Wiki,Wiki.vm").addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/greenpen.gif")"></a>
 							</td></tr>
 							<tr><td align=center>
 								<font face="$ui.sansSerifFonts">
-								<a href=$link.setPage("call,Wiki,Wiki.vm")>$brih_Wiki</a>
+								<a href=$link.setPage("call,Wiki,Wiki.vm").addPathInfo("count","1") style=text-decoration:none>$brih_Wiki</a>
 							</td></tr>
 						</table>
 					</td>
                                         ## inner column 2 (4)close
-
+					## tracking Report
+                                        <td align=center>
+                                                <table border=0>
+                                                        <tr><td align=center>
+                                                                <a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype") style=text-decoration:none><img border=0 src="$content.getURI("/images/Tracking_icon.gif")"></a>
+                                                        </td></tr>
+                                                        <tr><td align=center>
+                                                                <font face="$ui.sansSerifFonts">
+                                                                <a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype") style=text-decoration:none>$brih_tracking $brih_reports</a>
+                                                        </td></tr>
+                                                </table>
+                                        </td>
+                                        ## tracking Report
 				</tr>
 			#elseif($user_role=="student")
 				## inner row 1 open
@@ -352,12 +367,12 @@ $!data.getMessage()
 					<td align="center" valign="top">
 						<table border=0 valign="top">
                                             	<tr><td align=center>
-                                                   <a href=$link.setPage("call,Assignment,ASS_subm.vm")>
+                                                   <a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1") style=text-decoration:none>
                                                    <img border=0 src="$content.getURI("/images/assignment.jpg")" width="50" height="50" >  </a>
                                             	</td></tr>
                                             	<tr><td align=center>
                                                     <font face="$ui.sansSerifFonts">
-                                                    <a href=$link.setPage("call,Assignment,ASS_subm.vm")> $brih_assignment </a>
+                                                    <a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1") style=text-decoration:none> $brih_assignment </a>
                                             	</td></tr>
                                           	</table>
 					</td>
@@ -366,11 +381,13 @@ $!data.getMessage()
 					<td align=center>
 						<table border=0 valign="top">
 							<tr><td align=center>
-  				   				<a href=$link.setPage("call,CourseMgmt_User,Communication.vm")><img border=0 src="$content.getURI("/images/opnclass.jpg")"></a>
+  				   				##<a href=$link.setPage("call,CourseMgmt_User,Communication.vm")><img border=0 src="$content.getURI("/images/opnclass.jpg")"></a>
+								 <a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/opnclass.jpg")"></a>
 							</td></tr>
 							<tr><td align=center>
 								<font face="$ui.sansSerifFonts">
-     								<a href=$link.setPage("call,CourseMgmt_User,Communication.vm")>$brih_communication</a><br>
+     								##<a href=$link.setPage("call,CourseMgmt_User,Communication.vm")>$brih_communication</a><br>
+								 <a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1") style=text-decoration:none>$brih_communication</a><br>
 							</td></tr>
 						</table>
 					</td>
@@ -379,11 +396,11 @@ $!data.getMessage()
 					<td align=center>
 						<table border=0>
 							<tr><td align=center>
-								<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","fromcourse")><img border=0 src="$content.getURI("/images/CourseCalendar.gif")"></a>
+								<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","fromcourse") style=text-decoration:none><img border=0 src="$content.getURI("/images/CourseCalendar.gif")"></a>
 							</td></tr>
 							<tr><td align=center>
 								<font face="$ui.sansSerifFonts">
-								<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","fromcourse")>$brih_course1 $brih_calendar</a><br>
+								<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","fromcourse") style=text-decoration:none>$brih_course1 $brih_calendar</a><br>
 							</td></tr>
 						</table>
 					</td>
@@ -396,12 +413,12 @@ $!data.getMessage()
 					<td align="center" valign="top">
 						<table border=0 valign="top">
 							<tr><td align="center" valign="top">
-								 	<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm")>
+								 	<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none>
 									<img border=0 src="$content.getURI("/images/book.gif")"></a>
 							</td></tr>
 							<tr><td align=center>
 								<font face="$ui.sansSerifFonts">
-									<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm")>$brih_course  $brih_Of $brih_content</a><br>
+									<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none>$brih_course  $brih_Of $brih_content</a><br>
 							</td></tr>
 						</table>
 					</td>
@@ -410,11 +427,11 @@ $!data.getMessage()
                                         <td align=center>
                                                 <table border=0>
 							<tr><td align=center>
-                                                    <a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm")><img border=0 src="$content.getURI("/images/groupimages.jpg")"></a>
+                                                    <a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm").addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/groupimages.jpg")"></a>
                                                </td></tr>
                                                <tr><td align=center>
                                                    <font face="$ui.sansSerifFonts">
-                                                  <a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm")>$brih_mgmt $brih_grp </a>
+                                                  <a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm").addPathInfo("count","1") style=text-decoration:none>$brih_mgmt $brih_grp </a>
                                                      </td></tr>
                                                 </table>
                                         </td>
@@ -423,12 +440,12 @@ $!data.getMessage()
                                         <td align=center>
                                                 <table border=0>
                                                         <tr><td align=center>
-                                                                       <a href=$link.setPage("call,Quiz_Mgmt,Quiz_Start.vm")>
+                                                                       <a href=$link.setPage("call,Quiz_Mgmt,Quiz_Start.vm").addPathInfo("count","1") style=text-decoration:none>
                                                                         <img border=0 src="$content.getURI("/images/quiz.jpg")"></a>
                                                         </td></tr>
                                                         <tr><td align=center>
                                                                 <font face="$ui.sansSerifFonts">
-                                                                        <a href=$link.setPage("call,Quiz_Mgmt,Quiz_Start.vm")> $brih_mgmt $brih_quiz </a><br>
+                                                                        <a href=$link.setPage("call,Quiz_Mgmt,Quiz_Start.vm").addPathInfo("count","1") style=text-decoration:none> $brih_mgmt $brih_quiz </a><br>
                                                         </td></tr>
                                                 </table>
                                         </td>
@@ -442,11 +459,11 @@ $!data.getMessage()
 
 					<table border=0>
 						<tr><td align=center>
-	     						<a href=$link.setPage("call,UserMgmt_User,ViewMarks.vm")><img border=0 src="$content.getURI("/images/marks.png")"></a>
+	     						<a href=$link.setPage("call,UserMgmt_User,ViewMarks.vm").addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/marks.png")"></a>
 						</td></tr>
 						<tr><td align=center>
 							<font face="$ui.sansSerifFonts">
-		     					<a href=$link.setPage("call,UserMgmt_User,ViewMarks.vm")>
+		     					<a href=$link.setPage("call,UserMgmt_User,ViewMarks.vm").addPathInfo("count","1") style=text-decoration:none>
 								$brih_view $brih_marks</a><br>
 						</td></tr>
 					</table>
@@ -456,16 +473,26 @@ $!data.getMessage()
 				<td align=center>
                                                 <table border=0>
                                                         <tr><td align=center>
-                                                                <a href=$link.setPage("call,Wiki,Wiki.vm")><img border=0 src=
+                                                                <a href=$link.setPage("call,Wiki,Wiki.vm").addPathInfo("count","1") style=text-decoration:none><img border=0 src=
 "$content.getURI("/images/greenpen.gif")"></a>
                                                         </td></tr>
                                                         <tr><td align=center>
                                                                 <font face="$ui.sansSerifFonts">
-                                                                <a href=$link.setPage("call,Wiki,Wiki.vm")>$brih_Wiki</a>
+                                                                <a href=$link.setPage("call,Wiki,Wiki.vm").addPathInfo("count","1") style=text-decoration:none>$brih_Wiki</a>
                                                         </td></tr>
 						</table>
 				<td>
                                         ## inner column 2 (3)close
+				<td align=center>
+	                          <table border=0>
+        	        	          <tr><td align=center>
+                		          <a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("count","1")><img border=0 src="$content.getURI("/images/ScormPlayer.jpg")"></a></td></tr>
+        	                	   <tr><td align=center>
+		                           <font face="$ui.sansSerifFonts">
+        	                   	<a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("count","1")>$brih_scorm $Repo_Player</a></td></tr>
+                                  </table>
+                                </td>
+
 				</tr>
 				##inner row 3 close 
 			#end
@@ -476,12 +503,12 @@ $!data.getMessage()
 					<td align="center" valign="top">
 						<table border=0 valign="top">
 							<tr><td align="center" valign="top">
-								 	<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm")>
+								 	<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none>
 									<img border=0 src="$content.getURI("/images/book.gif")"></a>
 							</td></tr>
 							<tr><td align=center>
 								<font face="$ui.sansSerifFonts">
-									<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm")>$brih_course $brih_Of $brih_content</a><br>
+									<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none>$brih_course $brih_Of $brih_content</a><br>
 							</td></tr>
 						</table>
 					</td>
@@ -490,11 +517,11 @@ $!data.getMessage()
 					<td align=center>
 						<table border=0 valign="top">
 							<tr><td align=center>
-  				   				<a href=$link.setPage("call,CourseMgmt_User,Communication.vm")><img border=0 src="$content.getURI("/images/opnclass.jpg")"></a>
+  				   				<a href=$link.setPage("call,CourseMgmt_User,Communication.vm").addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/opnclass.jpg")"></a>
 							</td></tr>
 							<tr><td align=center>
 								<font face="$ui.sansSerifFonts">
-     								<a href=$link.setPage("call,CourseMgmt_User,Communication.vm")>$brih_communication</a><br>
+     								<a href=$link.setPage("call,CourseMgmt_User,Communication.vm").addPathInfo("count","1") style=text-decoration:none>$brih_communication</a><br>
 							</td></tr>
 						</table>
 					</td>

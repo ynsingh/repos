@@ -9,6 +9,8 @@
  * @author <a href="mailto:seema_020504@yahoo.com">Seemapal</a>
  * @author <a href="mailto:omprakashkgp@gmail.com">Om Prakash</a>
  * @author <a href="mailto:smita37uiet@gmail.com">Smita</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @modified date: 30-03-2010
 *#
 
 $page.setBgColor($ui.bgcolor)
@@ -21,7 +23,7 @@ $!data.getMessage()
         	<font face="$ui.sansSerifFonts"><b>
 	        <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
         	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$courseid</a> |
-		<a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm")>$brih_upload $brih_scorm $brih_content </a> | $RemoteShow $brih_content
+		<a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm")> #if($lang == "hindi")  $brih_scorm $brih_content $brih_upload  </a> | $brih_content $RemoteShow #else $brih_upload $brih_scorm $brih_content  </a> | $RemoteShow $brih_content #end
         	</font>
 	</td>
 #else
@@ -30,7 +32,7 @@ $!data.getMessage()
                 <td>
                         <font face="$ui.sansSerifFonts"><b>
                         <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
-                        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$courseid</a> |$RemoteShow $brih_scorm $brih_content
+                        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$courseid</a> | #if($lang == "hindi") $brih_scorm $brih_content $RemoteShow #else $RemoteShow $brih_scorm $brih_content #end
                         </font>
                 </td>
 #end
