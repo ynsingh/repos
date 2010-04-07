@@ -80,6 +80,7 @@ public class ViewRemote extends SecureScreen_Instructor
 			Vector entry= getTable(status,cId);
 
 			context.put("status",status);
+			context.put("tdcolor",pp.getString("count"));
 
 			if(entry.size()!=0)
 		        {

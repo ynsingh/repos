@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#) Repo_Permission.java
  *
- *  Copyright (c) 2005 ETRG,IIT Kanpur.
+ *  Copyright (c) 2005,2010 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -51,13 +51,18 @@ import org.apache.torque.util.Criteria;
 import org.iitk.brihaspati.om.CoursesPeer;
 import java.util.List;
 import org.iitk.brihaspati.modules.utils.SystemIndependentUtil;
-
-
-
+import org.apache.turbine.services.servlet.TurbineServlet;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.CalendarUtil;
+import java.io.InputStream;
+import java.io.FileOutputStream;
+import org.apache.commons.fileupload.FileItem;
+import java.io.FileWriter;
 
 /**
 *@author <a href="mailto:seema_020504@yahoo.com">Seema Pal</a>
 *@author <a href="mailto:kshuklak@rediffmail.com">Kishore kumar shukla</a>
+*@author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
 */
 
 /**
@@ -97,17 +102,24 @@ public class Repo_Permission extends SecureAction
                		ParameterParser pp=data.getParameters();
 			String username=pp.getString("UNAME","");
 			context.put("username",username);
+			ErrorDumpUtil.ErrorLog("athname at line 103==="+authorname+"\nunm==="+username);	
 			String coursename=pp.getString("CNAME","");
+			ErrorDumpUtil.ErrorLog("cname at line 102==="+coursename);	
 			String topicname=pp.getString("tname");
 			context.put("contentlist",topicname);
 			String role=pp.getString("group1","");
 			context.put("role",role);
+			FileItem fileItem=pp.getFileItem("tname");
+			ErrorDumpUtil.ErrorLog("fItm=="+fileItem);
 			String stat=pp.getString("stats","");
 			String statvalue=pp.getString("statvalue","");
 			context.put("status",stat);
 			Vector Read=new Vector();
 			XmlWriter xmlwriter=null;
 			String check=username+topicname+role+coursename;
+			String way=TurbineServlet.getRealPath("/Courses")+"/"+coursename+"/Content/";
+			XmlWriter xmlWriter=null;
+			String dateOfCreation=(new java.util.Date()).toString();
 			if(stat.equals("permission") || stat.equals("PermissionRecieve")) //start of main if
 			{
 				//Get the path for using the different cases
@@ -117,8 +129,9 @@ public class Repo_Permission extends SecureAction
 				// For Given XML
 				File authordesc= new File(UserPath+"/"+authorname);
 				File authordesc1= new File(UserPath+"/"+authorname +"/" + topicname + "/"+topicname+"__des.xml");
-		//		File authordesc1= new File(authordesc +"/" + topicname + "/"+topicname+"__des.xml");
-				
+				File athdes= new File(UserPath+"/"+authorname +"/" + topicname);
+				ErrorDumpUtil.ErrorLog("athd at line 135==="+authordesc1);	
+				FileInputStream fis = new FileInputStream(authordesc1);
 				String Apath=UserPath+"/"+authorname;
 				String Upath2= filePath+"/"+coursename+"/Content/Permission";
 				String entry="";
@@ -218,7 +231,6 @@ public class Repo_Permission extends SecureAction
 							xmlwriter=TopicMetaDataXmlWriter.WriteXml_New1(Apath,xmlFile);
 		   				}//if
 					}//else1
-			
 					/**
 					*Here we appending the element in the permissionXmlFiles
 					*@see Xmlwriter in utils
@@ -288,12 +300,30 @@ public class Repo_Permission extends SecureAction
 						*/
 						if(myflag==false)
 						{//if
+							try{
                						TopicMetaDataXmlWriter.appendFile(xmlwriter,topicname,authorname,coursename,role);
                						xmlwriter.writeXmlFile();
+							File dFile=new File(way+"/"+"coursecontent__des.xml");
+							if(dFile.exists()){	
+								ErrorDumpUtil.ErrorLog("testing at line 299====");
+								xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"coursecontent");
+								ErrorDumpUtil.ErrorLog("testing at line 315===="+xmlWriter);
+		                                        	TopicMetaDataXmlWriter.appendFileElementModify(xmlWriter,topicname,topicname,dateOfCreation,authorname,"Repo");
+								xmlWriter.writeXmlFile();
+								ErrorDumpUtil.ErrorLog("testing at line 307====");
+							}
+                        				else{
+                                				TopicMetaDataXmlWriter.writeWithRootOnly(dFile.getAbsolutePath());
+                                				if(topicname.length()>0){
+                                        			xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"coursecontent");
+		                                        	TopicMetaDataXmlWriter.appendFileElementModify(xmlWriter,topicname,topicname,dateOfCreation,authorname,"Repo");
+                                        			xmlWriter.writeXmlFile();
+                                				}
+                        				}
+							}catch(Exception E){data.setMessage("exception======"+E);}
 						}//if
 					
 					}//end of ifRece
-					
 					// Here we coping the (topic)desc xml File
 					if((myflag==false) &&(!coursename.equals("")))
 					{//if	
@@ -525,6 +555,7 @@ public class Repo_Permission extends SecureAction
                 	String UserPathU=data.getServletContext().getRealPath("/UserArea");
                 	String path=UserPathR+"/"+authorname;
                 	String UserPathC=data.getServletContext().getRealPath("/Courses");
+			ErrorDumpUtil.ErrorLog("UserPathR=="+UserPathR+"\nUserPathC=="+UserPathC);
                         File filepath = null;
                 	/**
                 	* this will give seqquence number  of permissionRecieve to delete it
@@ -622,6 +653,22 @@ public class Repo_Permission extends SecureAction
                                         xmlWriter=TopicMetaDataXmlWriter.WriteXml_New1(path,xmlFile);
                                         xmlWriter.removeElement("Topic",newlist[num]);
                                         xmlWriter.writeXmlFile();
+					XmlWriter xmlwriter=null;
+					String BPath=data.getServletContext().getRealPath("/Courses")+"/"+coursename+"/Content";
+					File f1=new File(BPath+"/"+"coursecontent__des.xml");
+					int seq=CalendarUtil.getSequence(BPath,"coursecontent",stopic);
+                                	xmlwriter=TopicMetaDataXmlWriter.WriteXml_NewModify(BPath,"coursecontent");
+                                	xmlwriter.writeXmlFile();
+                                	TopicMetaDataXmlReader topicMetaData=new TopicMetaDataXmlReader(BPath+"/"+"coursecontent__des.xml");
+                                	Vector dc=topicMetaData.getFileDetailsModify();
+                                	if(dc.size()>1)
+                                	{
+                                        	xmlwriter.removeElement("File",seq);
+                                        	xmlwriter.writeXmlFile();
+                                	}
+                                	else{
+                                        	SystemIndependentUtil.deleteFile(f1);
+                                	}
                                         /**
                                         * if this is last record in xml file delete the file
                                         */

@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.CourseMgmt_User;
 /*
  * @(#)CourseContent.java	
  *
- *  Copyright (c) 2006-2008 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2006-2008,2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -52,8 +52,13 @@ import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
-//import org.iitk.brihaspati.modules.actions.RemoteCoursesAction;
-//import org.iitk.brihaspati.modules.actions.UploadAction;
+import org.iitk.brihaspati.modules.utils.FileEntry;
+import org.iitk.brihaspati.modules.utils.XmlWriter;
+import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
+import org.xml.sax.helpers.AttributesImpl;
+
+
+
 /**
 * This class manage all course contents
 * @author <a href="mailto:ammuamit@hotmail.com">Amit Joshi</a>
@@ -74,7 +79,6 @@ public class CourseContent extends VelocitySecureScreen{
 			ParameterParser pp=data.getParameters();
 			AccessControlList acl=data.getACL();
 			context.put("tdcolor",pp.getString("count",""));
-			ErrorDumpUtil.ErrorLog("acl at line 77==="+acl);
 			context.put("isAdmin",acl.hasRole("turbine_root")?"true":"false");
 			String group,dir;
 			String stat=pp.getString("stat","");
@@ -82,9 +86,9 @@ public class CourseContent extends VelocitySecureScreen{
 			group=dir=(String)user.getTemp("course_id");
 			String role=(String)user.getTemp("role");
                         context.put("user_role",role);
-
 			String filePath=data.getServletContext().getRealPath("/Courses")+"/"+dir+"/Content";
-
+			//File dFile=new File(filePath+"/"+"content__des.xml");
+			File dFile=new File(filePath+"/"+"coursecontent__des.xml");
 			String filePath1=data.getServletContext().getRealPath("/Courses")+"/"+dir+"/Content"+"/Permission";
 	
 			File f=new File(filePath1+"/permissionReceive__des.xml");
@@ -94,73 +98,20 @@ public class CourseContent extends VelocitySecureScreen{
 				context.put("isInstructor","true");
 			}
 			
-			File Path=new File(filePath+"/content__des.xml");
-                        ErrorDumpUtil.ErrorLog("path in coursecontent at line 92-->"+Path);
+			File Path=new File(filePath+"/coursecontent__des.xml");
 			/**
 			* Write all topic in xml file if topic is not present
 			*/
-			CommonUtility.cretUpdtxml(filePath);
-/*			String filter[]={"Permission","Remotecourse","content__des.xml"};
-                        NotInclude exclude=new  NotInclude(filter);
-                        String file[]=(new File(filePath)).list(exclude);
-                        for(int i=0;i<file.length;i++)
-                        {
-				// get the value from xml file
-				if(Path.exists()){
-					TopicMetaDataXmlReader topicMetaData=new TopicMetaDataXmlReader(filePath+"/"+"content__des.xml");
-					String tpcxml[]=topicMetaData.getTopicNames();
-
-					for(int j=0;j<tpcxml.length;j++){
-						String tnm=tpcxml[j];
-				//check topic name exist in xml file or not. If not then write in to xml file
-						if(file[i].equals(tnm)){
-						}
-						else{
-		                                	UploadAction.topicSequence(filePath,file[i],((new Date()).toString()),data);
-						}
-					}
-				}
-				else{
-					UploadAction.topicSequence(filePath,file[i],((new Date()).toString()),data);
-				}
-                        }
-*/
-
+			CommonUtility.cretUpdtxml(filePath,user.getName(),"course");
                         if(Path.exists())
                         {
-                                TopicMetaDataXmlReader topicMetaData=new TopicMetaDataXmlReader(filePath+"/"+"content__des.xml");
-                                Vector dc=topicMetaData.getFileDetails();
+                                TopicMetaDataXmlReader topicMetaData=new TopicMetaDataXmlReader(filePath+"/"+"coursecontent__des.xml");
+                                Vector dc=topicMetaData.getFileDetailsModify();
                                 if(dc.size()!=0)
                                 {
                                         context.put("dirContent",dc);
                                 }
-                                ErrorDumpUtil.ErrorLog("vector in coursecontent at line 100--->"+dc);
                         }
-
-			
-			//File dirHandle=new File(filePath);
-
-			/**
-			* Filter out Permission from Courses/Content directory
-			*/
-
-			/*String filter[]={"Permission","Remotecourse"};
-                        NotInclude exclude=new  NotInclude(filter);
-			String file[]=dirHandle.list(exclude);
-			for(int i=0;i<file.length;i++)
-			{
-				v.addElement(file[i]);
-			}
-			context.put("courseid",dir);*/
-			//context.put("dirContent",v);
-			if(f.exists())
-			{
-				Vector Read=new Vector();
-				TopicMetaDataXmlReader permissionRead=new TopicMetaDataXmlReader(filePath1+"/permissionReceive__des.xml");
-				Read=permissionRead.getDetails();
-                        	context.put("read",Read);
-			}
-			
                         /**
                         * Remote Course Path
                         */
@@ -221,6 +172,5 @@ public class CourseContent extends VelocitySecureScreen{
                 }
                 return isAuthorized;
         }
-
 }
 

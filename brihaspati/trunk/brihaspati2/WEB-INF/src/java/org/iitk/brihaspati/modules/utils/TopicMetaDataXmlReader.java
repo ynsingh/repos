@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.utils;
 /*
  * @(#)TopicMetaDataXmlReader.java
  *
- *  Copyright (c) 2005-2008,2009 ETRG,IIT Kanpur.
+ *  Copyright (c) 2005-2008,2009,2010 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -48,6 +48,7 @@ import org.iitk.brihaspati.modules.utils.XmlReader;
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @modify 20-03-2009
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  */
 
 public class TopicMetaDataXmlReader
@@ -88,23 +89,27 @@ public class TopicMetaDataXmlReader
 		try
 		{	
 		XmlData files[]=xr.getElements("File");
+		ErrorDumpUtil.ErrorLog("fls in util"+files);
 		if(files!=null)
 		{
 			Attributes ats;
 			String fileName,alias;
 			for(int j=0;j<files.length;j++)
 			{
+				ErrorDumpUtil.ErrorLog("vt return vale======"+"gfjgfdjsgfjdfghj");
 				FileEntry fileEntry=new FileEntry();	
 				ats=files[j].getAttributes();
 				fileName=ats.getValue("name");
 				alias=ats.getValue("alias");
 				String dateString=ats.getValue("publishingDate");
+				ErrorDumpUtil.ErrorLog("pbdate======"+dateString);
 
 				fileEntry.setName(fileName);
 				fileEntry.setAlias(alias);
 				fileEntry.setPDate(dateString);
-
+				
 				vt.add(fileEntry);
+				ErrorDumpUtil.ErrorLog("vt return vale======"+vt);
 			}
 			return vt;
 		}
@@ -215,6 +220,7 @@ public class TopicMetaDataXmlReader
 			for(int j=0;j<files.length;j++)
 			{
 				ats=files[j].getAttributes();
+				ErrorDumpUtil.ErrorLog("ats The exception in xmlreaderutil in line 222::"+ats);
 				temp[j]=ats.getValue("name");
 			}
 			return temp;
@@ -246,6 +252,31 @@ public class TopicMetaDataXmlReader
 				
                                 ats=files[j].getAttributes();
                                 temp[j]=ats.getValue("topicname");
+			}
+                        return temp;
+                }
+                }catch(Exception e){
+			ErrorDumpUtil.ErrorLog("The exception in xmlreaderutil in line 251::"+e);
+                        System.out.println("See Exception message in ExceptionLog.txt file:: ");
+//		return null;
+		}
+                return null;
+        }
+	public String[] getNames()
+        {
+                try
+                {
+                XmlData files[]=xr.getElements("File");
+                if(files!=null)
+                {
+                        Attributes ats;
+                        String temp[]=new String[files.length];
+                        for(int j=0;j<files.length;j++)
+                        {
+				
+				
+                                ats=files[j].getAttributes();
+                                temp[j]=ats.getValue("name");
 			}
                         return temp;
                 }
@@ -589,6 +620,46 @@ public class TopicMetaDataXmlReader
                 }
         return null;
         }
+//Jaivir Singh
+	public Vector getFileDetailsModify()
+	{
+			Vector vt=new Vector();
+		try
+		{	
+		XmlData files[]=xr.getElements("File");
+		ErrorDumpUtil.ErrorLog("fls in util"+files);
+		if(files!=null)
+		{
+			Attributes ats;
+			String fileName,alias,UName,locationidef;
+			for(int j=0;j<files.length;j++)
+			{
+				FileEntry fileEntry=new FileEntry();	
+				ats=files[j].getAttributes();
+				fileName=ats.getValue("name");
+				alias=ats.getValue("alias");
+				String dateString=ats.getValue("publishingDate");
+				UName=ats.getValue("username");
+				locationidef=ats.getValue("location");
 
+				fileEntry.setName(fileName);
+				fileEntry.setAlias(alias);
+				fileEntry.setPDate(dateString);
+				fileEntry.setUserName(UName);
+				fileEntry.setLocation(locationidef);
+				vt.add(fileEntry);
+				ErrorDumpUtil.ErrorLog("vt return vale======"+vt);
+			}
+			return vt;
+		}
+		
+		}catch(Exception e)
+		{
+			ErrorDumpUtil.ErrorLog("The exception in xmlreaderutil in line 112::"+e);
+                        System.out.println("See Exception message in ExceptionLog.txt file:: ");
+			//return null;
+		}
+	return null;	
+	}
 }
 

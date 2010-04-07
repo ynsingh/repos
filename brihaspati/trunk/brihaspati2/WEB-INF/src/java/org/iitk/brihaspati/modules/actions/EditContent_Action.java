@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#) EditContent_Action.java	
  *
- *  Copyright (c) 2005-2006 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006,2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -50,6 +50,7 @@ import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.SystemIndependentUtil;
 import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.CalendarUtil;
 import org.apache.turbine.services.servlet.TurbineServlet;
 
 /**
@@ -60,6 +61,7 @@ import org.apache.turbine.services.servlet.TurbineServlet;
  * @author <a href="mailto:seema_020504@yahoo.com">Seema Pal</a>
  * @author <a href="mailto:kshuklak@rediffmail.com">Kishore Kumar Shukla</a>
  * @author <a href="mailto:manav_cv@yahoo.co.in">Manvendra Baghel</a>
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  */
 
 public class EditContent_Action extends SecureAction
@@ -80,6 +82,8 @@ public class EditContent_Action extends SecureAction
                         String dir=(String)user.getTemp("course_id");
                         String cName=pp.getString("cName","");
 			String status=pp.getString("status","");
+			//String status=pp.getString("location","");
+			ErrorDumpUtil.ErrorLog("location in crspath===="+status);
                         String username=pp.getString("uname");
 			if(status.equals("Remote"))
                         {
@@ -166,6 +170,25 @@ public class EditContent_Action extends SecureAction
                                	} //inner if
 				
 			}//outer if
+			XmlWriter xmlwriter=null;
+			String BPath=data.getServletContext().getRealPath("/Courses")+"/"+dir+"/Content";
+			//File f1=new File(BPath+"/"+"content__des.xml");
+			File f1=new File(BPath+"/"+"coursecontent__des.xml");
+			 //int seq=CalendarUtil.getSequence(BPath,"content",topic);
+			 int seq=CalendarUtil.getSequence(BPath,"coursecontent",topic);
+                                xmlwriter=TopicMetaDataXmlWriter.WriteXml_NewModify(BPath,"coursecontent");
+                                xmlwriter.writeXmlFile();
+                                TopicMetaDataXmlReader topicMetaData=new TopicMetaDataXmlReader(BPath+"/"+"coursecontent__des.xml");
+                                Vector dc=topicMetaData.getFileDetailsModify();
+                                if(dc.size()>1)
+                                {
+                                        xmlwriter.removeElement("File",seq);
+                                        xmlwriter.writeXmlFile();
+                                }
+                                else{
+                                        SystemIndependentUtil.deleteFile(f1);
+                                }
+
 		}//try
 		catch(Exception ex)
 		{
@@ -324,10 +347,10 @@ public class EditContent_Action extends SecureAction
 		ParameterParser pp=data.getParameters();
                 String topic=pp.getString("topic","");
 		String topicDescription=pp.getString("description","");
+		String dir=(String)data.getUser().getTemp("course_id");
 		String filePath=CoursePath(data,context);
 		int temp=pp.getInt("actionType");
 		String radioButton=pp.getString("orderRadio","");
-
 		char replaceWith='.';
 		String fileName=radioButton.replace('$',replaceWith);
 		int seqnoFinal=pp.getInt("destinationSeqno"),seqnoInitial=pp.getInt(fileName);
@@ -421,6 +444,37 @@ public class EditContent_Action extends SecureAction
 		}
 	
 	}
+	public void doChangeTopicOrder(RunData data,Context context) 
+	{
+		ParameterParser pp=data.getParameters();
+                String topic=pp.getString("changeFileNameOrder","");
+		String topicDescription=pp.getString("description","");
+		String dir=(String)data.getUser().getTemp("course_id");
+		String filePath=data.getServletContext().getRealPath("/Courses")+"/"+dir+"/Content/";
+		int temp=pp.getInt("actionType");
+		String radioButton=pp.getString("orderRadio","");
+		char replaceWith='.';
+		String fileName=radioButton.replace('$',replaceWith);
+		int seqnoFinal=pp.getInt("destinationSeqno"),seqnoInitial=pp.getInt("changeFileSeqnoOrder");
+		boolean exchange=false;
+		if( temp==1)
+			exchange=false;
+		else if(temp==2)
+			exchange=true;
+		if(temp!=-1 && seqnoFinal!=-1)
+		{
+			try
+			{
+				XmlWriter xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(filePath,"coursecontent");
+				xmlWriter.changeSeqNo("File",seqnoInitial,seqnoFinal,exchange);
+				xmlWriter.writeXmlFile();
+			}
+			catch(Exception e)
+			{
+				data.setMessage("The error Exception in File Change Order !! "+ e); 
+			}
+		}
+	}
 	/**
 	* This is default method,to perform if the specified action cannot be executed 
 	* @param data RunData
@@ -455,6 +509,10 @@ public class EditContent_Action extends SecureAction
 		else if( actionToPerform.equals("eventSubmit_doDeleteTopic") )
 		{
 			doDeleteTopic(data,context);
+		}
+		else if( actionToPerform.equals("eventSubmit_doChangeTopicOrder") )
+		{
+			doChangeTopicOrder(data,context);
 		}
 	}
 	/**

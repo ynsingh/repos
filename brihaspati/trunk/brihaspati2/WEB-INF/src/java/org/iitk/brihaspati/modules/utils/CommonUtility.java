@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.utils;
 
 
 /*@(#)CommonUtility.java
- *  Copyright (c) 2005-2008 ETRG,IIT Kanpur. http://www.iitk.ac.in/
+ *  Copyright (c) 2005-2008,2010 ETRG,IIT Kanpur. http://www.iitk.ac.in/
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -111,6 +111,7 @@ import org.iitk.brihaspati.modules.actions.Groupmanagement;
  * like Create index for Search, Clean the system 
  * 
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @version 1.0
  * @since 1.0
  * @see ExpiryUtil
@@ -356,32 +357,35 @@ public class CommonUtility{
                         * Write all topic in xml file if topic is not present in xml file
 			* @param filePath string
                         */
-		public static void cretUpdtxml(String filePath){
+		public static void cretUpdtxml(String filePath,String uName,String location){
 			try{
-                        String filter[]={"Permission","Remotecourse","content__des.xml"};
+                        String filter[]={"Permission","Remotecourse","content__des.xml","coursecontent__des.xml"};
                         NotInclude exclude=new  NotInclude(filter);
                         String file[]=(new File(filePath)).list(exclude);
-			File Path=new File(filePath+"/content__des.xml");
+			File rmPath=new File(filePath+"/content__des.xml");
+			if(rmPath.exists()){
+			rmPath.delete();
+			}
+			File Path=new File(filePath+"/coursecontent__des.xml");
                         for(int i=0;i<file.length;i++)
                         {
 				UploadAction uA=new UploadAction();
                                 // get the value from xml file
                                 if(Path.exists()){
-                                        TopicMetaDataXmlReader topicMetaData=new TopicMetaDataXmlReader(filePath+"/"+"content__des.xml");
+                                        TopicMetaDataXmlReader topicMetaData=new TopicMetaDataXmlReader(filePath+"/"+"coursecontent__des.xml");
                                         String tpcxml[]=topicMetaData.getTopicNames();
-
                                         for(int j=0;j<tpcxml.length;j++){
                                                 String tnm=tpcxml[j];
                                 //check topic name exist in xml file or not. If not then write in to xml file
                                                 if(file[i].equals(tnm)){
                                                 }
                                                 else{
-                                                        uA.topicSequence(filePath,file[i],((new java.util.Date()).toString()));
+                                                        uA.topicSequence(filePath,file[i],((new java.util.Date()).toString()),uName,location);
                                                 }
                                         }
                                 }
                                 else{
-                                        uA.topicSequence(filePath,file[i],((new java.util.Date()).toString()));
+                                        uA.topicSequence(filePath,file[i],((new java.util.Date()).toString()),uName,location);
                                 }
                         }
 			}//try
@@ -750,6 +754,5 @@ public static void grpLeader()
                 }
                 catch(Exception e){data.setMessage("The error in [PListing] of [CommonUtility Util] !!"+e);}
     }//method
-
 		
 }//end of class

@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.CourseMgmt_User;
 /*
  * @(#)CourseManagement.java	
  *
- *  Copyright (c) 2005,2009 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005,2009,2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -48,6 +48,8 @@ import org.iitk.brihaspati.modules.utils.QuotaUtil;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.iitk.brihaspati.modules.utils.NotInclude;
 import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
+import org.iitk.brihaspati.modules.utils.FileEntry;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Instructor;
 import org.iitk.brihaspati.om.CoursesPeer;
@@ -80,9 +82,26 @@ public class CourseManagement extends SecureScreen_Instructor
                 File dirHandle1=new File(filePath1);
                 long unpdir=QuotaUtil.getDirSizeInMegabytes(dirHandle1);
                 context.put("TUSize",unpdir);
-
                 String filePath=data.getServletContext().getRealPath("/Courses")+"/"+dir+"/Content";
-                File dirHandle=new File(filePath);
+		 File Path=new File(filePath+"/coursecontent__des.xml");
+                        String tnme="";
+                        String location="";
+                        if(Path.exists())
+                        {
+                                TopicMetaDataXmlReader topicMetaData=new TopicMetaDataXmlReader(filePath+"/"+"coursecontent__des.xml");
+                                Vector vct=topicMetaData.getFileDetailsModify();
+                                if(vct.size()!=0)
+                                {
+                                        for(int k=0;k<vct.size();k++){
+                                                tnme=((FileEntry)vct.elementAt(k)).getName();
+                                                location=((FileEntry)vct.elementAt(k)).getLocation();
+						if(location.equals("course")){
+							v.addElement(tnme);
+						}
+                                        }
+                                }
+                        }
+                /*File dirHandle=new File(filePath);
         //      File UnpubDir=null;
                 String filter[]={"Permission","Remotecourse","content__des.xml"};
                 NotInclude exclude=new  NotInclude(filter);
@@ -91,7 +110,7 @@ public class CourseManagement extends SecureScreen_Instructor
                 for(int i=0;i<file.length;i++)
                 {
                         v.addElement(file[i]);
-                }
+                }*/
                 context.put("allTopics",v);
                 long tlmt=0;
 
@@ -109,6 +128,7 @@ public class CourseManagement extends SecureScreen_Instructor
                 }
                 long remlmt=tlmt-unpdir;
                 context.put("aSize",(remlmt));
+		ErrorDumpUtil.ErrorLog("asize at line 112=="+remlmt);
 	}
 	catch(Exception e)
 	{

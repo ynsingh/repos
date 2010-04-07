@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)UploadAction.java
  *
- *  Copyright (c) 2005-2008,2009 ETRG,IIT Kanpur.
+ *  Copyright (c) 2005-2008,2009,2010 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -16,6 +16,7 @@ package org.iitk.brihaspati.modules.actions;
  *  notice, this list of conditions and the following disclaimer in
  *  the documentation and/or other materials provided with the
  *  distribution.
+
  *
  *
  *  THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -93,6 +94,7 @@ public class UploadAction extends SecureAction_Instructor
 		String courseHome=(String)user.getTemp("course_id","");
 		ParameterParser pp=data.getParameters();
 		String contentTopic=pp.getString("contentTopic","");
+		String location=pp.getString("course","");
 		String Pub=pp.getString("publish","");
 		context.put("pub",Pub);
 		Vector new_files_uploaded=new Vector();
@@ -139,12 +141,14 @@ public class UploadAction extends SecureAction_Instructor
 			//f.mkdirs();
 			try
 			{
-			File dFile=new File(tDir+"/"+"content__des.xml");
+			//File dFile=new File(tDir+"/"+"content__des.xml");
+			File dFile=new File(tDir+"/"+"coursecontent__des.xml");
 			Vector dc=new Vector();
 			boolean flag=false;	
 			if(dFile.exists()){
-				TopicMetaDataXmlReader topicMetaData=new TopicMetaDataXmlReader(way+"/"+"content__des.xml");
-                                dc=topicMetaData.getFileDetails();
+				//TopicMetaDataXmlReader topicMetaData=new TopicMetaDataXmlReader(way+"/"+"content__des.xml");
+				TopicMetaDataXmlReader topicMetaData=new TopicMetaDataXmlReader(way+"/"+"coursecontent__des.xml");
+                                dc=topicMetaData.getFileDetailsModify();
 				for(int i=0;i<dc.size();i++){
 					String st=((FileEntry) dc.elementAt(i)).getName();
 					if(st.equals(contentTopic)){
@@ -152,16 +156,18 @@ public class UploadAction extends SecureAction_Instructor
 					}
 				}
 				if(!flag){
-                        		xmlWriter=TopicMetaDataXmlWriter.WriteXml_New(way,"content");
-   					TopicMetaDataXmlWriter.appendFileElement(xmlWriter,contentTopic,contentTopic,dateOfCreation);
+                        		//xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"content");
+                        		xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"coursecontent");
+   					TopicMetaDataXmlWriter.appendFileElementModify(xmlWriter,contentTopic,contentTopic,dateOfCreation,uName,location);
                        			xmlWriter.writeXmlFile();
 				}
 			}
 			else{	
 				TopicMetaDataXmlWriter.writeWithRootOnly(dFile.getAbsolutePath());
 				if(contentTopic.length()>0){
-                        		xmlWriter=TopicMetaDataXmlWriter.WriteXml_New(way,"content");
-   					TopicMetaDataXmlWriter.appendFileElement(xmlWriter,contentTopic,contentTopic,dateOfCreation);
+                        		//xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"content");
+                        		xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"coursecontent");
+   					TopicMetaDataXmlWriter.appendFileElementModify(xmlWriter,contentTopic,contentTopic,dateOfCreation,uName,location);
                        			xmlWriter.writeXmlFile();
                        		}
                        	}
@@ -181,6 +187,7 @@ public class UploadAction extends SecureAction_Instructor
 			{
 				boolean fileExists=false;
 				fileItem=pp.getFileItem("file"+(count+1));
+				ErrorDumpUtil.ErrorLog("fitm in uploadaction at line 180=="+fileItem);
 				if(fileItem!=null && fileItem.getSize() != 0)
 				{
 					String temp=fileItem.getName();
@@ -244,8 +251,8 @@ public class UploadAction extends SecureAction_Instructor
                                		for(int k=0;k<new_files_uploaded.size();k++)
                                		{
                                        		String fileName=new_files_uploaded.get(k).toString();
-                               			xmlWriter=TopicMetaDataXmlWriter.WriteXml_New(Path,contentTopic);
-                                       		TopicMetaDataXmlWriter.appendFileElement(xmlWriter,fileName,fileName,dateOfCreation);
+                               			xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(Path,contentTopic);
+                                       		TopicMetaDataXmlWriter.appendFileElementModify(xmlWriter,fileName,fileName,dateOfCreation,uName,location);
                        				xmlWriter.writeXmlFile();
                                		}//for
                        		}//if
@@ -292,17 +299,19 @@ public class UploadAction extends SecureAction_Instructor
 	}
 }//do
 
-	public void topicSequence(String way,String contentTopic,String dateOfCreation){
+	public void topicSequence(String way,String contentTopic,String dateOfCreation,String uName,String location){
 		try
                 {
 			XmlWriter xmlWriter=null;
-                        File dFile=new File(way+"/"+"content__des.xml");
+                        //File dFile=new File(way+"/"+"content__des.xml");
+                        File dFile=new File(way+"/"+"coursecontent__des.xml");
                         Vector dc=new Vector();
                         boolean flag=false;
 			try{
                         if(dFile.exists()){
-                                TopicMetaDataXmlReader topicMetaData=new TopicMetaDataXmlReader(way+"/"+"content__des.xml");
-                                dc=topicMetaData.getFileDetails();
+                                //TopicMetaDataXmlReader topicMetaData=new TopicMetaDataXmlReader(way+"/"+"content__des.xml");
+                                TopicMetaDataXmlReader topicMetaData=new TopicMetaDataXmlReader(way+"/"+"coursecontent__des.xml");
+                                dc=topicMetaData.getFileDetailsModify();
                                 for(int i=0;i<dc.size();i++){
                                         String st=((FileEntry) dc.elementAt(i)).getName();
                                         if(st.equals(contentTopic)){
@@ -310,16 +319,18 @@ public class UploadAction extends SecureAction_Instructor
                                         }
                                 }
                                 if(!flag){
-                                        xmlWriter=TopicMetaDataXmlWriter.WriteXml_New(way,"content");
-	                                TopicMetaDataXmlWriter.appendFileElement(xmlWriter,contentTopic,contentTopic,dateOfCreation);
+                                        //xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"content");
+                                        xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"coursecontent");
+	                                TopicMetaDataXmlWriter.appendFileElementModify(xmlWriter,contentTopic,contentTopic,dateOfCreation,uName,location);
                                         xmlWriter.writeXmlFile();
                                 }
                         }
                         else{
                                 TopicMetaDataXmlWriter.writeWithRootOnly(dFile.getAbsolutePath());
                                 if(contentTopic.length()>0){
-                                        xmlWriter=TopicMetaDataXmlWriter.WriteXml_New(way,"content");
-	                                TopicMetaDataXmlWriter.appendFileElement(xmlWriter,contentTopic,contentTopic,dateOfCreation);
+                                        //xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"content");
+                                        xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(way,"coursecontent");
+	                                TopicMetaDataXmlWriter.appendFileElementModify(xmlWriter,contentTopic,contentTopic,dateOfCreation,uName,location);
                                         xmlWriter.writeXmlFile();
                                 }
                         }

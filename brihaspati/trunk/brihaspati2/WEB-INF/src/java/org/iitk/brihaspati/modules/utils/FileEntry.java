@@ -72,6 +72,7 @@ public class FileEntry
 	private String emailId;
         private String status;
         private String url;
+        private String location;
 
 	private String Duedate;
 
@@ -347,5 +348,14 @@ public class FileEntry
                         return url;
                 }
 
+	 public void setLocation(String location)
+        {
+                this.location=location;
+        }
+        public String getLocation()
+        {
+                int index=location.lastIndexOf('/'); // truncate the relative path from the this.name
+                return location.substring(index+1);  // to retrieve the course name.
+        }
 		
 }

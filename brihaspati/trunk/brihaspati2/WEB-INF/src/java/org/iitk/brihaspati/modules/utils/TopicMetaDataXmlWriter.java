@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.utils;
 /*
  * @(#)TopicMetaDataXmlWriter.java
  *
- *  Copyright (c) 2005-2008, 2009 ETRG,IIT Kanpur.
+ *  Copyright (c) 2005-2008, 2009,2010 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -53,6 +53,7 @@ import org.iitk.brihaspati.modules.utils.FileEntry;
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @modify 20-03-2009
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  */
 
 public class TopicMetaDataXmlWriter
@@ -64,7 +65,7 @@ public class TopicMetaDataXmlWriter
 	public static void writeWithRootOnly(String fileName) throws Exception
 	{
 		FileOutputStream fos=new FileOutputStream(fileName);
-		fos.write( ("<Topic>\n<Desc></Desc>\n</Topic>").getBytes() );
+		fos.write( ("<Topic>\n<Desc> </Desc>\n</Topic>").getBytes() );
 		fos.close();
 	}
 	/**
@@ -778,5 +779,52 @@ public class TopicMetaDataXmlWriter
                 }
 
               return xmlWriter;
+        }
+	//Jaivir Singh	
+	public static void appendFileElementModify(XmlWriter xmlWriter,String fileName,String alias,String publishingDate,String username,String location)
+	{
+		AttributesImpl ats=new AttributesImpl();
+		ats.addAttribute("","name","","",StringUtil.replaceXmlSpecialCharacters(fileName));
+		ats.addAttribute("","alias","","",StringUtil.replaceXmlSpecialCharacters(alias));
+		ats.addAttribute("","publishingDate","","",publishingDate);
+		ats.addAttribute("","username","","",StringUtil.replaceXmlSpecialCharacters(username));
+		ats.addAttribute("","location","","",StringUtil.replaceXmlSpecialCharacters(location));
+		xmlWriter.appendElement("File",null,ats);
+	}
+	public static XmlWriter WriteXml_NewModify(String filePath,String topic)
+        {
+                XmlWriter xmlWriter=null;
+		String Xml_file="";
+		if(topic.endsWith(".xml"))
+			Xml_file=topic;
+		else
+			Xml_file=topic+"__des.xml";
+		
+               	File descFile=new File(filePath+"/"+Xml_file);
+
+                try{
+                        TopicMetaDataXmlReader topicMetaData=new TopicMetaDataXmlReader(filePath+"/"+Xml_file);
+                        String topicDesc=topicMetaData.getTopicDescription();
+                        Vector v=topicMetaData.getFileDetailsModify();
+                        descFile.delete();
+                        writeWithRootOnly(descFile.getAbsolutePath());
+                        xmlWriter=new XmlWriter(filePath+"/"+Xml_file);
+
+                        for(int i=0;i<v.size();i++)
+                        {
+                                String name=((FileEntry)v.get(i)).getName();
+                                String alias=((FileEntry)v.get(i)).getAlias();
+                                String Pdate=((FileEntry)v.get(i)).getPDate();
+                                String uname=((FileEntry)v.get(i)).getUserName();
+                                String mdname=((FileEntry)v.get(i)).getLocation();
+                                appendFileElementModify(xmlWriter,name,alias,Pdate,uname,mdname);
+                                xmlWriter.changeData("Desc",topicDesc,0);
+                        }
+                }
+                catch(Exception ex){
+			ErrorDumpUtil.ErrorLog("The exception in xmlwriterutil in line 813::"+ex);
+                        System.out.println("See Exception message in ExceptionLog.txt file:: ");
+		}
+        return xmlWriter;
         }
 }

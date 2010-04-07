@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)PublishAction.java	
  *
- *  Copyright (c) 2006-2008 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2006-2008,2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -62,6 +62,7 @@ import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
  * @author <a href="mailto:ammuamit@hotmail.com">Amit Joshi</a>
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  */
 
 public class PublishAction extends SecureAction_Instructor
@@ -104,14 +105,21 @@ public class PublishAction extends SecureAction_Instructor
 			else
 			filePath=BPath+"/"+topic;
 			File f=new File(filePath);
-			 File f1=new File(BPath+"/content__des.xml");
-                        if(status.equals("ccontent"))
-                        {
-                                int seq=CalendarUtil.getSequence(BPath,"content",topic);
-                                xmlwriter=TopicMetaDataXmlWriter.WriteXml_New(BPath,"content");
+			//File f1=new File(BPath+"/content__des.xml");
+			File f1=new File(BPath+"/coursecontent__des.xml");
+			ErrorDumpUtil.ErrorLog("filePath at line 108==="+filePath);
+                        //if(status.equals("ccontent"))
+                        //if(status.equals("course"))
+                        //{
+				try{	
+                                //int seq=CalendarUtil.getSequence(BPath,"content",topic);
+                                int seq=CalendarUtil.getSequence(BPath,"coursecontent",topic);
+                                //xmlwriter=TopicMetaDataXmlWriter.WriteXml_NewModify(BPath,"content");
+                                xmlwriter=TopicMetaDataXmlWriter.WriteXml_NewModify(BPath,"coursecontent");
                                 xmlwriter.writeXmlFile();
-                                TopicMetaDataXmlReader topicMetaData=new TopicMetaDataXmlReader(BPath+"/"+"content__des.xml");
-                                Vector dc=topicMetaData.getFileDetails();
+                                //TopicMetaDataXmlReader topicMetaData=new TopicMetaDataXmlReader(BPath+"/"+"content__des.xml");
+                                TopicMetaDataXmlReader topicMetaData=new TopicMetaDataXmlReader(BPath+"/"+"coursecontent__des.xml");
+                                Vector dc=topicMetaData.getFileDetailsModify();
                                 if(dc.size()>1)
                                 {
                                         xmlwriter.removeElement("File",seq);
@@ -120,11 +128,11 @@ public class PublishAction extends SecureAction_Instructor
                                 else{
                                         SystemIndependentUtil.deleteFile(f1);
                                 }
-                        }
-
+                        //}
 
 			SystemIndependentUtil.deleteFile(f);
 			data.setScreenTemplate("call,CourseMgmt_User,CourseContent.vm");
+			}catch(Exception ex){data.setMessage("exception in delete method==="+ex);}
 			//EditContent_Action ECA=new EditContent_Action();
 			EditContent_Action ECA = new EditContent_Action();
 			if(status.equals("Remote"))
@@ -227,6 +235,7 @@ public class PublishAction extends SecureAction_Instructor
 			else if(status.equals("Repo"))
 			{
 				filePath=data.getServletContext().getRealPath("/Courses")+"/"+dir+"/Content"+"/Permission"+"/"+username+"/"+topic;
+				ErrorDumpUtil.ErrorLog("fp in 231"+filePath);
 			}
 			else
 			{
@@ -557,6 +566,7 @@ public class PublishAction extends SecureAction_Instructor
                                                         	else
                                                         	{
                                                                 	xmlWriter=TopicMetaDataXmlWriter.WriteXml_New(filePath,accessxml);
+									ErrorDumpUtil.ErrorLog("xmlwrtr in 562=="+xmlWriter);
                                                         	}
 								/**
 								*Here we appending the new element in the Xml File
@@ -564,6 +574,7 @@ public class PublishAction extends SecureAction_Instructor
 								*/
                                                         	TopicMetaDataXmlWriter.appendFileElement(xmlWriter, fileName, fileName,pubDate);
                                                         	xmlWriter.writeXmlFile();
+									ErrorDumpUtil.ErrorLog("xmlwrtr in 570=="+xmlWriter);
 							}//if
 							else
 							{
@@ -580,6 +591,7 @@ public class PublishAction extends SecureAction_Instructor
 						if(status.equals("Repo")|| status.equals("Remote"))
 						{
 							ReadUnp=Readxmlfile(Pathremov,topic);
+							ErrorDumpUtil.ErrorLog("xmlwrtr in 587=="+ReadUnp);
 							/**
 							*Here we checking the "topic__des.xml" file exists or not
 							*We define the path for the xmlwriter
@@ -595,6 +607,7 @@ public class PublishAction extends SecureAction_Instructor
                         				else
                         				{
                                 				xmlWriter=TopicMetaDataXmlWriter.WriteXml_New(filePath,topic);
+									ErrorDumpUtil.ErrorLog("xmlwrtr in 602=="+xmlWriter);
                         				}
 							/**
 							*Here we appending the new element in the Xml File
@@ -607,6 +620,7 @@ public class PublishAction extends SecureAction_Instructor
 
 							TopicMetaDataXmlWriter.appendFileElement(xmlWriter, fileName, fileName,pubDate);
                         				xmlWriter.writeXmlFile();
+									ErrorDumpUtil.ErrorLog("xmlwrtr in 615=="+xmlWriter);
 						}//if
 						else
 						{
