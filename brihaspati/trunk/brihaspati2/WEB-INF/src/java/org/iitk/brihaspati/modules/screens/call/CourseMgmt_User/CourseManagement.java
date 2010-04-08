@@ -83,7 +83,7 @@ public class CourseManagement extends SecureScreen_Instructor
                 long unpdir=QuotaUtil.getDirSizeInMegabytes(dirHandle1);
                 context.put("TUSize",unpdir);
                 String filePath=data.getServletContext().getRealPath("/Courses")+"/"+dir+"/Content";
-		 File Path=new File(filePath+"/coursecontent__des.xml");
+		/*File Path=new File(filePath+"/coursecontent__des.xml");
                         String tnme="";
                         String location="";
                         if(Path.exists())
@@ -100,22 +100,19 @@ public class CourseManagement extends SecureScreen_Instructor
 						}
                                         }
                                 }
-                        }
-                /*File dirHandle=new File(filePath);
+                        }*/
+                File dirHandle=new File(filePath);
         //      File UnpubDir=null;
-                String filter[]={"Permission","Remotecourse","content__des.xml"};
+                String filter[]={"Permission","Remotecourse","content__des.xml","coursecontent__des.xml"};
                 NotInclude exclude=new  NotInclude(filter);
                 String file[]=dirHandle.list(exclude);
         //      long unpdir=0;
                 for(int i=0;i<file.length;i++)
                 {
                         v.addElement(file[i]);
-                }*/
+                }
                 context.put("allTopics",v);
                 long tlmt=0;
-
-
-
                 Criteria crit=new Criteria();
                 crit.add(CoursesPeer.GROUP_NAME,dir);
                 List lst=CoursesPeer.doSelect(crit);

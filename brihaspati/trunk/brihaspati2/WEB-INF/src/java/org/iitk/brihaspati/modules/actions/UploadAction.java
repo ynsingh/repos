@@ -251,8 +251,8 @@ public class UploadAction extends SecureAction_Instructor
                                		for(int k=0;k<new_files_uploaded.size();k++)
                                		{
                                        		String fileName=new_files_uploaded.get(k).toString();
-                               			xmlWriter=TopicMetaDataXmlWriter.WriteXml_NewModify(Path,contentTopic);
-                                       		TopicMetaDataXmlWriter.appendFileElementModify(xmlWriter,fileName,fileName,dateOfCreation,uName,location);
+                               			xmlWriter=TopicMetaDataXmlWriter.WriteXml_New(Path,contentTopic);
+                                       		TopicMetaDataXmlWriter.appendFileElement(xmlWriter,fileName,fileName,dateOfCreation);
                        				xmlWriter.writeXmlFile();
                                		}//for
                        		}//if
