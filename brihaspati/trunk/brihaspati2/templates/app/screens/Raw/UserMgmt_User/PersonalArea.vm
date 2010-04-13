@@ -42,11 +42,7 @@ $!data.getMessage()
 		#if($data.getUser().getTemp("role").toString()=="instructor")
 		<tr><td align="left" colspan=2>
   			<a href="$link.setPage("call,Repository_Mgmt,PermissionReceive.vm").addPathInfo("status","permissionreceive").addPathInfo("mode","frominstructor")">
-			#if($lang == "hindi")
-				$brih_view2 & $brih_delete1 $brih_Of  $Repo_Perm1
-			#else
-				$brih_view & $brih_delete $Repo_Perm1
-			#end
+				$brih_view2 & $brih_delete1 #if($lang == "hindi") $brih_Of #end $Repo_Perm1
 			</a></b>
 		</td></tr>
 		#end

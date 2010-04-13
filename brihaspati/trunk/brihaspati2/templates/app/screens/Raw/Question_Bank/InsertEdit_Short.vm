@@ -1,10 +1,12 @@
 #*
  * @(#) InsertEdit_Short.vm
- * Copyright(c)2004-2006 ETRG,IIT Kanpur.
+ * Copyright(c)2004-2006, 2010 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto:tarankhan1@yahoo.com">Tarannum Khan</a>
  * @author <a href="mailto:manju_14feb@yahoo.com">Mithelesh Parihar</a>
  * @author <a href="mailto:nksngh_p@yahoo.co.in ">Nagendra Kumar Singh</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @modified date: 09-04-2010
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
@@ -55,41 +57,45 @@ $!data.getMessage()
 </tr>
 </table>
 <form name="frm" method="post" action="$link.setAction("Question_Bank")">
-<table width="100%" bgcolor="$ui.tableColor" cellpadding="2">  
+<table width="100%" bgcolor="$ui.menuColor" cellpadding="2">  
   <tr>
-   <td width=30% align="centre" bgcolor="$ui.tableColor">
+   <td width=30% align="centre" >
      <b><font face="$ui.sansSerifFonts">$brih_qus</font></b>
    </td>
-   <td	width=70% align="left" bgcolor="$ui.tableColor">
+   <td	width=70% align="left" >
      <font face="$ui.sansSerifFonts">
       <textarea name="Question" rows=3 cols=50 #if($mode=="View") readonly #end>$!question </textarea >
      </td>
  </tr>
-  <tr> 
-  	<td width=30% align="centre" bgcolor="$ui.tableColor">
+  <tr bgcolor="$ui.tableColor"> 
+  	<td width=30% align="centre" >
     	<b><font face="$ui.sansSerifFonts"> #if($lang=="hindi") $LocalMail_Reply #else $brih_answer #end </font></b>
    	</td>
-   	<td width=70% align="left" bgcolor="$ui.tableColor">
+   	<td width=70% align="left" >
     	<font face="$ui.sansSerifFonts">
       <textarea name="Answer" rows=3 cols=50 #if($mode=="View") readonly #end>$!ans </textarea >
    	</td>
  </tr> 
   <tr> 
-	<td width=30% align="centre" bgcolor="$ui.tableColor">
+	<td width=30% align="centre" >
         <b><font face="$ui.sansSerifFonts">$brih_hint</font></b>
         </td>
-        <td  width=70% align="left" bgcolor="$ui.tableColor">
+        <td  width=70% align="left" >
         <font face="$ui.sansSerifFonts">
         <textarea name="hint" rows=3 cols=50 #if($mode=="View") readonly #end >$!hint</textarea >
         </td>
 	##formCell("$brih_hint" "hint" "$!hint")
 
  </tr> 
-<tr>
-<td align=center colspan=2 bgcolor="$ui.menuColor">  
+<tr bgcolor="$ui.tableColor">
+<td align=center colspan=2 >  
 <font face ="$ui.sansserifFonts">
 	#if($mode=="Insert")
-  		<input type="button" name="eventSubmit_doSaveQuestion" value="$WikiSave & $brih_add $brih_more" onClick="checkValue(document.frm,this);"> 
+		#if($lang == "hindi")
+	  		<input type="button" name="eventSubmit_doSaveQuestion" value="$WikiSave & $brih_more $brih_add" onClick="checkValue(document.frm,this);"> 
+		#else
+	  		<input type="button" name="eventSubmit_doSaveQuestion" value="$WikiSave & $brih_add $brih_more" onClick="checkValue(document.frm,this);"> 	
+		#end
   		<input type="button" name="eventSubmit_doFinishQuestion" value="$WikiSave & $brih_finish" onClick="checkValue(document.frm,this);"> 
 		<input type="reset" value="$brih_reset"> 
 	#elseif($mode=="View")

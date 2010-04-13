@@ -215,7 +215,7 @@ $page.setBgColor($ui.bgcolor)
 <tr align="right"><td align=left> ## 5, 6
 <font face="$ui.sansSerifFonts">
 ##<input type="button" value="$brih_submit" onClick="checkUNamePwd(document.frm,this);">
-<input type="button" value="Login" onClick="checkUNamePwd(document.frm,this);">
+<input type="button" value="$brih_login" onClick="checkUNamePwd(document.frm,this);">
 ##<input type=hidden name="LangFile" value="$LangFile">
 <input type=hidden name="lang" value="$lang">
 <input type=hidden name="flag" value="$flag">

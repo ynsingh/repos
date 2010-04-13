@@ -7,6 +7,8 @@
  * @author <a href="mailto:manju_14feb@yahoo.com">Mithelesh Parihar</a>
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in ">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @modified date: 12-04-2010
  *#
 
 $page.setTitle("QuestionBank | View All Question Bank")
@@ -52,45 +54,50 @@ $!data.getMessage()
 <form name="frm" method="post" action="$link.setPage("call,Question_Bank,RepositoryList.vm").setAction("Question_Bank")">
 #end
 <table bgcolor="$ui.tableColor" width=100%>
+#*
 <tr bgcolor="$ui.menuColor">
 <td colspan=6>	<a href=$link.setPage("call,Question_Bank,Create_Bank_Repository.vm").addPathInfo("count","1")><I><b> #if($lang!="english") $brih_new $brih_qus $brih_bank $brih_Of1 $WikiCreate #else $WikiCreate $brih_new $brih_qus $brih_bank #end </b></I></a>
 </td>
 </tr>
-<tr>
+*#
+<tr bgcolor="$ui.menuColor" >
 <td width="40%" valign="top">
-     	<table width="100%" cellspacing=1 cellpadding=2>
-	<tr>
-	<td colspan=3 bgcolor="ui.tableColor">
-        <font size=4><b> #if($lang!="english") $brih_qus $brih_bank $brih_in #UNAME() $Repo_Repo2 #else $brih_qus $brih_bank $Repo_Repo2 #UNAME() #end</font>
-	</b>
-	</td>
-	</tr>
-	#set( $count = 1)
-	#foreach ($repository in $allTopics)
-		#set ($count1 = 1)
-		##foreach ($id in $rid)
-			##if ($count == $count1)
-		#if($velocityCount%2==0)
-        	<tr bgcolor="$ui.tableColor">
-		#else
-        	<tr bgcolor="$ui.menuColor">
-		#end	
-		<td width=3% bgcolor="$ui.tableColor" align="center"><input type="checkbox" name="$repository" onClick="addDeleteList(this,document.frm);"></td>
-        <td align=left bgcolor="$ui.tableColor">
-        <font face="$ui.sansSerifFonts">
-	##<a href=$link.setPage("call,Question_Bank,RepositoryList.vm").addPathInfo("status","Repository").addPathInfo("repositoryname",$repository)>$repository</a>&nbsp;&nbsp;
-	<a href=$link.setPage("call,Question_Bank,RepositoryList.vm").addPathInfo("modulename",$repository).addPathInfo("status","quesList").addPathInfo("count",$tdcolor)><I>$repository</I></a>&nbsp;&nbsp;</td>
-<td bgcolor="$ui.tableColor"><a href=$link.setPage("call,Question_Bank,RepositoryList.vm").addPathInfo("modulename",$repository).addPathInfo("status","Addques").addPathInfo("count",$tdcolor)> #if($lang!="english") $brih_add $brih_qus #else $brih_add $brih_question #end </a>
-		##<a href=$link.setAction("Question_Bank").addPathInfo("modulename",$repository).addPathInfo("actionName","delete")> Delete</a>
-</td>
-	</font>
-	</td>
-		##end
-		##set ($count1 = $count1 + 1)
-		##end
-		#set ($count = $count + 1)
-        </tr>
-	#end
+     	<table width="100%" bgcolor= "$ui.menuColor" cellspacing=1 cellpadding=2>
+		<tr>
+			<td colspan=3 bgcolor="ui.tableColor">
+		        <font size=4><b> #if($lang!="english") $brih_qus $brih_bank $brih_in #UNAME() $Repo_Repo2 #else $brih_qus $brih_bank $Repo_Repo2 #UNAME() #end</font> </b> </td>
+		</tr>
+	##set( $count = 1)
+		#foreach ($repository in $allTopics)
+			##set ($count1 = 1)
+			##foreach ($id in $rid)
+				##if ($count == $count1)
+					#if($velocityCount%2==0)
+	        				##<tr bgcolor="$ui.tableColor">
+			        		<tr>
+					#else
+	        				<tr bgcolor="$ui.tableColor">
+		        			###<tr bgcolor="$ui.menuColor">
+					#end	
+
+					<td width=3% align="center"><input type="checkbox" name="$repository" onClick="addDeleteList(this,document.frm);">
+					</td>
+		        		<td align="left" >
+				        <font face="$ui.sansSerifFonts">
+					##<a href=$link.setPage("call,Question_Bank,RepositoryList.vm").addPathInfo("status","Repository").addPathInfo("repositoryname",$repository)>$repository</a>&nbsp;&nbsp;
+					<a href=$link.setPage("call,Question_Bank,RepositoryList.vm").addPathInfo("modulename",$repository).addPathInfo("status","quesList").addPathInfo("count",$tdcolor)><I>$repository</I></a>&nbsp;&nbsp;
+					</td>
+					<td><a href=$link.setPage("call,Question_Bank,RepositoryList.vm").addPathInfo("modulename",$repository).addPathInfo("status","Addques").addPathInfo("count",$tdcolor)> #if($lang!="english") $brih_add $brih_qus #else $brih_add $brih_question #end </a>
+					##<a href=$link.setAction("Question_Bank").addPathInfo("modulename",$repository).addPathInfo("actionName","delete")> Delete</a>
+					</td>
+					</font>
+</td>	
+				##end
+				##set ($count1 = $count1 + 1)
+				##end
+				#set ($count = $count + 1)
+</tr>
+			#end
 	<tr bgcolor="$ui.menuColor">
 	<td colspan=6>
 	#if($allTopics.size() > 0)
@@ -116,18 +123,19 @@ $brih_select $brih_qus $brih_type
 ##	<option value="MT">$brih_matchType $brih_qus</option>
 </select>
 #elseif($status == "Addques")
-<table>
-<tr>
-	<td>
+##################<table>
+<table width=100% bgcolor="$ui.menuColor" cellpadding=6>
+
+	<tr><td>
                 <b><a href=$link.setPage("call,Question_Bank,InsertEdit_Multiple.vm").addPathInfo("modulename",$modulename).addPathInfo("mode","Insert").addPathInfo("count","1")>$brih_multiple1 $brih_type</a>
         </td></tr>
-        <tr><td>
+        <tr bgcolor="$ui.tableColor"><td>
         	<b><a href=$link.setPage("call,Question_Bank,InsertEdit_TF.vm").addPathInfo("modulename",$modulename).addPathInfo("mode","Insert").addPathInfo("count","1")>$brih_true / $brih_false $brih_type</a>
          </td></tr>
          <tr><td>
                 <b><a href=$link.setPage("call,Question_Bank,InsertEdit_Short.vm").addPathInfo("modulename",$modulename).addPathInfo("mode","Insert").addPathInfo("count","1")>$brih_shortType $brih_type</a>
          </td></tr>
-         <tr><td>
+         <tr bgcolor="$ui.tableColor"><td>
                 <b><a href=$link.setPage("call,Question_Bank,Insert_Match.vm").addPathInfo("rName",$rName).addPathInfo("mName",$mName).addPathInfo("file",$fName).addPathInfo("count","1")></a>$brih_matchType $brih_type
          </td></tr>
 </table>

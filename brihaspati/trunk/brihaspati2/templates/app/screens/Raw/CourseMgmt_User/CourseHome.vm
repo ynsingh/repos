@@ -1,12 +1,14 @@
 
 #*
  * @(#) CourseHome.vm
- * Copyright (c) 2004-2005,2009 ETRG,IIT Kanpur.
+ * Copyright (c) 2004-2005, 2009, 2010 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto:madhavi_mungole@hotmail.com ">Madhavi Mungole</a>
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:singhnk@iitk.ac.in ">Nagendra Kumar Singh</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author<a href="mailto:shaistashekh@hotmail.com">Shaista </a>
+ * @modified:Date 07-04-2010
  * Contributors: Members of ETRG, I.I.T. Kanpur
  *#
 
@@ -317,7 +319,7 @@ $!data.getMessage()
 							</td></tr>
 							<tr><td align=center>
 								<font face="$ui.sansSerifFonts">
-						<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none>$brih_course #if($lang !="english") $brih_Of #end $brih_content</a><br>
+						<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang =="hindi") $brih_content #else $brih_course $brih_content #end </a><br>
 							</td></tr>
 						</table>
 					</td>
@@ -409,7 +411,7 @@ $!data.getMessage()
 							</td></tr>
 							<tr><td align=center>
 								<font face="$ui.sansSerifFonts">
-									<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none>$brih_course #if($lang !="english") $brih_Of #end $brih_content</a><br>
+									<a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang =="hindi") $brih_content #else $brih_course $brih_content #end</a><br>
 							</td></tr>
 						</table>
 					</td>

@@ -3,8 +3,10 @@
  *  Copyright (c) 2005,2009-2010 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *  Contributors: Members of ETRG, I.I.T. Kanpur
-  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in ">Awadhesh Kumar Trivedi</a>
-  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in ">Awadhesh Kumar Trivedi</a>
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @modified date: 07-04-2010
  *     
  *#
 #set($lang = $data.getUser().getTemp("lang" ).toString())
@@ -19,9 +21,13 @@ $!data.getMessage()
 	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> | 
 	<a href=$link.setPage("call,UserMgmt_User,StudentManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_student $brih_mgmt</a> |
 	#if($mode!="Search")
-	 $brih_listAllStudent
+		$brih_listAllStudent
 	#else
-	$brih_viewSel $brih_students
+		#if($lang == "hindi")
+			$brih_selected $brih_students $brih_Of1 $brih_view
+		#else
+			$brih_viewSel $brih_students
+		#end
 	#end
 	</td>
 	<td align="right">
@@ -46,7 +52,7 @@ $!data.getMessage()
 	#elseif($tdcolor=="1")
 	<td bgcolor="#AFDCEC" colspan=2>
 	#end
-	<a href=$link.setPage("call,UserMgmt_User,StudentManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_add $brih_students</a>
+	<a href=$link.setPage("call,UserMgmt_User,StudentManagement.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang =="hindi") $brih_student $brih_add #else $brih_add $brih_students #end </a>
 	</td>
 	#if($tdcolor != "2")
         <td colspan=2>
@@ -60,7 +66,7 @@ $!data.getMessage()
 	#elseif($tdcolor=="3")
 	<td bgcolor="#AFDCEC" colspan=2>
 	#end
-	<a href=$link.setPage("call,UserMgmt_User,MultiUserReg_Instructor.vm").addPathInfo("count","3") style=text-decoration:none>$brih_add $brih_multiple1 $brih_students</a>
+	<a href=$link.setPage("call,UserMgmt_User,MultiUserReg_Instructor.vm").addPathInfo("count","3") style=text-decoration:none> #if($lang =="hindi") $brih_multiple1 $brih_student $brih_add #else $brih_add $brih_multiple1 $brih_students #end </a>
 	</td>
 	#if($tdcolor != "4")
         <td colspan=3>
@@ -82,17 +88,21 @@ $!data.getMessage()
 		#elseif($tdcolor=="6")
 		<td bgcolor="#AFDCEC" colspan=2>
 		#end
-        	<a href=$link.setPage("call,UserMgmt_User,getBackup_Students.vm").addPathInfo("count","6") style=text-decoration:none>$brih_listOfStudent #if($lang="hindi") $brih_Of1 #end $brih_download </a>
+        	<a href=$link.setPage("call,UserMgmt_User,getBackup_Students.vm").addPathInfo("count","6") style=text-decoration:none>$brih_listOfStudent $brih_download </a>
 		</td>
 	#end
 </tr>
 ##</table>
-#set($headings = ["$brih_usr $brih_name","$brih_name", "$brih_email $brih_ID", "$brih_availableAction"] )
+#if($lang == "hindi")
+	#set($headings = ["$brih_usr $brih_Of1 $brih_name","$brih_name", "$brih_email $brih_ID", "$brih_availableAction"] )
+#else
+	#set($headings = ["$brih_usr $brih_name","$brih_name", "$brih_email $brih_ID", "$brih_availableAction"] )
+#end
 
 #*if($status=="notempty")
 <table width=100% bgcolor="$ui.menuColor">
         <tr><td>
-                <a href=$link.setPage("call,UserMgmt_User,getBackup_Students.vm").addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_listOfStudent #if($lang="hindi") $brih_Of1 #end $brih_download </a>
+                <a href=$link.setPage("call,UserMgmt_User,getBackup_Students.vm").addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_listOfStudent $brih_download </a>
         </td></tr>
 </table>
 #end
@@ -104,7 +114,7 @@ $!data.getMessage()
                 <td><b>$brih_searchBy</b></td>
                 <td>
                         <select name="queryList">
-                                <option value="UserName">$brih_usr $brih_name</option>
+                                <option value="UserName"> $brih_usr #if($lang == "hindi") $brih_Of1 #end $brih_name</option>
                                 <option value="FirstName">$brih_first $brih_name</option>
                                 <option value="LastName">$brih_last $brih_name</option>
                                 <option value="Email">$brih_email $brih_ID</option>

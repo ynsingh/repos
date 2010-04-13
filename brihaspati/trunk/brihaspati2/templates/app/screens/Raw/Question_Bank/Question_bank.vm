@@ -1,10 +1,12 @@
 #*
  * @(#) Question_bank.vm
- * Copyright(c)2004-2006,2009 ETRG,IIT Kanpur.
+ * Copyright(c)2004-2006, 2009, 2010 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto:tarankhan1@yahoo.com">Tarannum Khan</a>
  * @author <a href="mailto:manju_14feb@yahoo.com">Mithelesh Parihar</a>
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a> 
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @modified date: 09-04-2010
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
  
@@ -19,7 +21,7 @@ $!data.getMessage()
         <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
         ##<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> | $brih_qus $brih_mgmt
         <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> | 
-	<a href=$link.setPage("call,Question_Bank,Question_bank.vm").addPathInfo("count","1")>$brih_qus $brih_bank</a> | #if($lang=="hindi")$Repo_Repo1 $WikiCreate #else $WikiCreate $Repo_Repo1 #end
+	<a href=$link.setPage("call,Question_Bank,Question_bank.vm").addPathInfo("count","1")>$brih_qus $brih_bank</a> | #if($lang=="hindi")$Repo_Repo1 $brih_Of1 $WikiCreate #else $WikiCreate $Repo_Repo1 #end
 
 	</b>
 </td></tr>
@@ -45,7 +47,7 @@ $!data.getMessage()
 	#elseif($tdcolor == "1")
 	<td bgcolor="#AFDCEC">
 	#end
-	<a href=$link.setPage("call,Question_Bank,Question_bank.vm").addPathInfo("count","1")> #if ($lang!="english") $brih_qus $brih_bank $Repo_Repo1 $brih_Of1 $WikiCreate #else $WikiCreate $brih_qus $brih_bank $Repo_Repo1 #end </a></td>
+	<a href=$link.setPage("call,Question_Bank,Question_bank.vm").addPathInfo("count","1")> #if ($lang =="hindi") $brih_qus $brih_bank $brih_Of2 $Repo_Repo1 $brih_Of1 $WikiCreate #else $WikiCreate $brih_qus $brih_bank $Repo_Repo1 #end </a></td>
 	#if($tdcolor != "2")
 	<td>
 	#elseif($tdcolor == "2")
@@ -67,11 +69,13 @@ $!data.getMessage()
 <table align="left" bgcolor="$ui.tableColor" width=100%>
         #*<tr bgcolor="$ui.menuColor">
         ##<td colspan=2 align="center"> <b><a href=$link.setPage("call,Question_Bank,RepositoryList.vm")>View All Questions Bank</a></td>
-        #if($lang != "english")
-             <td align="left" colspan=2><a href=$link.setPage("call,Question_Bank,RepositoryList.vm")>$brih_all$brih_qus $brih_bank $brih_Of1 $brih_view</a></td>
+	<td align="left" colspan=2><a href=$link.setPage("call,Question_Bank,RepositoryList.vm")>
+        #if($lang == "hindi")
+		$brih_all$brih_qus $brih_bank $brih_Of1 $brih_view</a></td>
         #else
-           <td align="left" colspan=2><a href=$link.setPage("call,Question_Bank,RepositoryList.vm")>$brih_view_all $brih_qus $brih_bank</a></td>
+		$brih_view_all $brih_qus $brih_bank</a></td>
         #end
+           ##<td align="left" colspan=2><a href=$link.setPage("call,Question_Bank,RepositoryList.vm")>
         </tr>*#
         <tr bgcolor="$ui.menuColor">
         	<td colspan=3>
@@ -102,23 +106,24 @@ $!data.getMessage()
         #if($M_Create=="Module_create")
         <table width="100%" align="left" bgcolor="$ui.tableColor">
         <tr><td>
-      <b><a href=$link.setPage("call,Question_Bank,InsertEdit_Multiple.vm").addPathInfo("modulename",$mName).addPathInfo("mode","Insert")>$brih_multiple1 $brih_type</a>
-                </td></tr>
-                <tr><td>
-         <b><a href=$link.setPage("call,Question_Bank,InsertEdit_TF.vm").addPathInfo("modulename",$mName).addPathInfo("mode","Insert")>$brih_true / $brih_false $brih_type</a>
-                </td></tr>
-                <tr><td>
-    <b><a href=$link.setPage("call,Question_Bank,InsertEdit_Short.vm").addPathInfo("modulename",$mName).addPathInfo("mode","Insert")>$brih_shortType $brih_type</a>
-                </td></tr>
-		<tr><td>
-     <b><a href=$link.setPage("call,Question_Bank,InsertEdit_Short.vm").addPathInfo("modulename",$mName).addPathInfo("mode","Insert")>$brih_shortType $brih_type</a>
-                </td></tr>
-                <tr><td>
+		<b><a href=$link.setPage("call,Question_Bank,InsertEdit_Multiple.vm").addPathInfo("modulename",$mName).addPathInfo("mode","Insert")>$brih_multiple1 $brih_type</a>
+	</td></tr>
+        <tr bgcolor="$ui.menuColor" ><td>
+        	<b><a href=$link.setPage("call,Question_Bank,InsertEdit_TF.vm").addPathInfo("modulename",$mName).addPathInfo("mode","Insert")>$brih_true / $brih_false $brih_type</a>
+	</td></tr>
+        <tr><td>
+		<b><a href=$link.setPage("call,Question_Bank,InsertEdit_Short.vm").addPathInfo("modulename",$mName).addPathInfo("mode","Insert")>$brih_shortType $brih_type</a>
+	</td></tr>
+	#* <tr><td>
+		<b><a href=$link.setPage("call,Question_Bank,InsertEdit_Short.vm").addPathInfo("modulename",$mName).addPathInfo("mode","Insert")>$brih_shortType $brih_type</a>
+	</td></tr>
+*#
+	<tr bgcolor="$ui.menuColor" ><td>
                 <b><a href=$link.setPage("call,Question_Bank,Insert_Match.vm").addPathInfo("rName",$rName).addPathInfo("mName",$mName).addPathInfo("file",$fName)></a>$brih_matchType $brih_type
-                </td></tr>
-#*              <tr><td>
+        </td></tr>
+#*      <tr><td>
                 <b><a href=$link.setPage("call,Question_Bank,UploadQuestions.vm").addPathInfo("rName",$rName).addPathInfo("mName",$mName)>$brih_uploadQuesType</a>
-                </td></tr>  *#
+        </td></tr>  *#
 </table>
 #end
 </form>

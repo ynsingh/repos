@@ -190,10 +190,11 @@ public class StudentList extends SecureScreen_Instructor{
                         }
                         else
 			{
+				String msg1="";
                                 if(Mode.equals("All"))
 				{
 					
-					String msg1=MultilingualUtil.ConvertedString("stu_msgc",LangFile);
+					msg1=MultilingualUtil.ConvertedString("stu_msgc",LangFile);
 					if(LangFile.endsWith("hi.properties"))
 		                        	data.setMessage(course_name+" "+msg1);
 					else
@@ -202,9 +203,12 @@ public class StudentList extends SecureScreen_Instructor{
 				}
 				else
 				{
-				//	String msg1=MultilingualUtil.ConvertedString("notice_msg1",LangFile);
-		                  //      data.setMessage(msg1);
-                                	data.setMessage("The Student with "+query+" '"+valueString+"' does not exist !!");
+					if(LangFile.endsWith("hi.properties"))
+						msg1=query+" '"+valueString+"' "+MultilingualUtil.ConvertedString("brih_Of2",LangFile)+" "+MultilingualUtil.ConvertedString("brih_match_str",LangFile)+" "+MultilingualUtil.ConvertedString("brih_Of1",LangFile)+" "+MultilingualUtil.ConvertedString("varStudent",LangFile)+" "+MultilingualUtil.ConvertedString("notExist",LangFile);
+					else
+						msg1= MultilingualUtil.ConvertedString("varStudent",LangFile)+" "+MultilingualUtil.ConvertedString("brih_with",LangFile)+" "+query+" '"+valueString+"' "+MultilingualUtil.ConvertedString("notExist",LangFile);
+		                        data.setMessage(msg1);
+                                //	data.setMessage(MultilingualUtil.ConvertedString("varStudent",LangFile)+MultilingualUtil.ConvertedString("brih_with",LangFile)+" "++query+" '"+valueString+" '"+MultilingualUtil.ConvertedString("notExist",LangFile));
 				}
 				status="empty";
                         }

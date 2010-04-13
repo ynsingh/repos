@@ -5,6 +5,8 @@
  * @author <a href="mailto:tarankhan1@yahoo.com">Tarannum Khan</a>
  * @author <a href="mailto:manju_14feb@yahoo.com">Mithelesh Parihar</a>
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in ">Awadhesh Kumar Trivedi</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @modified date: 12-04-2010
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
@@ -54,39 +56,39 @@ $!data.getMessage()
 </tr>
 </table>
 <form name="frm" method="post" action="$link.setAction("Question_Bank")">
-<table width="100%" bgcolor="$ui.tableColor" cellpadding="2">  
+<table width="100%" bgcolor="$ui.menuColor" cellpadding="2">  
   <tr>
-   <td width=30% align="centre" bgcolor="$ui.tableColor">
+   <td width=30% align="centre">
      <b><font face="$ui.sansSerifFonts">$brih_qus</font></b>
    </td>
-   <td	width=70% align="left" bgcolor="$ui.tableColor">
+   <td	width=70% align="left">
      <font face="$ui.sansSerifFonts">
       <textarea name="Question" rows=3 cols=50 #if($mode=="View") readonly #end >$!question</textarea >
      </td>
  </tr>
-  <tr> 
+  <tr bgcolor="$ui.tableColor"> 
 	#formCell("$brih_option $brih_a" "op1" "$!op1")
  </tr> 
   <tr> 
 	#formCell("$brih_option $brih_b" "op2" "$!op2")
  </tr> 
-  <tr> 
+  <tr bgcolor="$ui.tableColor"> 
 	#formCell("$brih_option $brih_c" "op3" "$!op3")
  </tr> 
   <tr> 
 	#formCell("$brih_option $brih_d" "op4" "$!op4")
  </tr> 
-  <tr> 
+  <tr bgcolor="$ui.tableColor"> 
 	#formCell("$brih_option $brih_e" "op5" "$!op5")
  </tr> 
   <tr> 
 	#formCell("$brih_option $brih_f" "op6" "$!op6")
  </tr> 
-  <tr> 
-  	<td width=30% align="centre" bgcolor="$ui.tableColor">
+  <tr bgcolor="$ui.tableColor"> 
+  	<td width=30% align="centre"> 
     	<b><font face="$ui.sansSerifFonts"> #if($lang=="hindi") $LocalMail_Reply #else $brih_answer #end</font></b>
    	</td>
-   	<td width=70% align="left" bgcolor="$ui.tableColor">
+   	<td width=70% align="left">
     	<font face="$ui.sansSerifFonts">
       	<select name="Answer" size=1>
 	 <option value=$!ans>$!ans
@@ -100,18 +102,18 @@ $!data.getMessage()
    	</td>
  </tr> 
   <tr> 
-	<td width=30% align="centre" bgcolor="$ui.tableColor">
+	<td width=30% align="centre">
         <b><font face="$ui.sansSerifFonts">$brih_hint</font></b>
         </td>
-        <td  width=70% align="left" bgcolor="$ui.tableColor">
+        <td  width=70% align="left">
         <font face="$ui.sansSerifFonts">
         <textarea name="hint" rows=3 cols=50 #if($mode=="View") readonly #end >$!hint</textarea >
         </td>
 	##formCell("$brih_hint" "hint" "$!hint")
 
  </tr> 
-<tr>
-<td align=center colspan=2 bgcolor="$ui.menuColor">  
+<tr bgcolor="$ui.tableColor">
+<td align=center colspan=2>  
 <font face ="$ui.sansserifFonts">
 	#if($mode=="Insert")
 		<input type="reset" value="$brih_reset"> 

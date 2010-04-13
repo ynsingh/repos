@@ -47,7 +47,7 @@ $page.setTitle("$brih_home | $course | $brih_course $brih_mgmt | $brih_course $b
 	#elseif($tdcolor=="3")
         <td bgcolor="#AFDCEC">
 	#end
-        <a href=$link.setPage("call,CourseMgmt_User,Configuration.vm").addPathInfo("cName",$course).addPathInfo("count","3") style=text-decoration:none> #if($lang == "hindi") $brih_course $brih_Of $RemoteConfiguration #else $brih_course $RemoteConfiguration #end</a></td>
+        <a href=$link.setPage("call,CourseMgmt_User,Configuration.vm").addPathInfo("cName",$course).addPathInfo("count","3") style=text-decoration:none> $brih_course $RemoteConfiguration</a></td>
 	#if($tdcolor!="4")
         <td>
 	#elseif($tdcolor=="4")
@@ -59,7 +59,7 @@ $page.setTitle("$brih_home | $course | $brih_course $brih_mgmt | $brih_course $b
 	#elseif($tdcolor=="5")
         <td bgcolor="#AFDCEC">
 	#end
-        <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("mode","NotUploadImage").addPathInfo("count","5") style=text-decoration:none> #if($lang == "hindi") $brih_grade $brih_Of $RemoteConfiguration #else $RemoteConfiguration $brih_grade #end</a></td>
+        <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("mode","NotUploadImage").addPathInfo("count","5") style=text-decoration:none> $RemoteConfiguration $brih_grade </a></td>
 	#if($tdcolor!="6")
         <td>
 	#elseif($tdcolor=="6")
@@ -73,7 +73,7 @@ $page.setTitle("$brih_home | $course | $brih_course $brih_mgmt | $brih_course $b
 <form name="frm" method="post" enctype="multipart/form-data" action="$link.setAction("EditContent_Action").setPage("call,CourseMgmt_User,Edit.vm").addPathInfo("topic",$topic)">
 <table width=100% bgcolor="$ui.tableColor">
 	<tr>
-		<td><font size=3><b>$brih_topic$brih_name: $topic</b></font></td>
+		<td><font size=3><b>$brih_topic #if($lang =="hindi") $brih_Of1 #end $brih_name: &nbsp;$topic</b></font></td>
 	</tr>
         <tr bgcolor="$ui.menuColor">
 		<td>
@@ -150,8 +150,8 @@ $page.setTitle("$brih_home | $course | $brih_course $brih_mgmt | $brih_course $b
 		<table bgcolor="$ui.tableColor" width="100%">
                 <tr>
 		#set ( $totalRows = $dirContent.size() )
-		##set($headings = ["$brih_serialNo","$brih_file","$brih_alias","$brih_creation $brih_time","$brih_delete","$brih_fileOrder","$brih_action","$brih_sequence"] )
-		#set($headings = ["$brih_serialNo","$brih_file","$brih_alias","$brih_creation $brih_time","$brih_delete","$brih_fileOrder"] )
+			#set($headings = ["$brih_serialNo","$brih_file","$brih_alias","$brih_creation $brih_time","$brih_delete","$brih_fileOrder"] )
+			
 		#foreach($heading in $headings)
                 	#headerCell($heading)
         	#end
