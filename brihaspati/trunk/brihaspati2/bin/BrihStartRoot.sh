@@ -21,7 +21,7 @@ $BRIHASPATI_HOME/tdk-2.3_01/bin/startup.sh
 CLASSPATH=$CLASSPATH:$BRIHASPATI_HOME/tdk-2.3_01/webapps/brihaspati2/babylon/babylon.jar
 
 export CLASSPATH
-java babylon.babylonServer -nographics -chatlogs -usepasswords &
+java babylon.babylonServerStart -nographics -chatlogs -usepasswords &
 #$SUDO_HOME/sudo -u ynsingh $BRIHASPATI_HOME/tdk-2.3_01/webapps/brihaspati2/bin/brandgang.sh &
 
 #export PATH JAVA_HOME ANT_HOME BRIHASPATI_HOME SUDO_HOME CLASSPATH
