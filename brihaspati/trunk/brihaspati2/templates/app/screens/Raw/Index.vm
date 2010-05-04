@@ -6,6 +6,7 @@
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @author <a href="mailto:smita37uiet@gmail.com">Smita</a>
  * @modified date: 05-04-2010
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
@@ -86,17 +87,18 @@ $!data.getMessage()
 </table>
 <div style="overflow:auto;  height:180px;">
         <table  bgcolor="$ui.tableColor" width="98%"  align="left">
-                <tr><td colspan="1" align="center" bgcolor="$ui.menuColor"><b> #if($lang == "hindi") $brih_active $brih_usr $brih_Of $brih_list #else $brih_active $brih_usr $brih_list #end &nbsp;&nbsp;($activelist.size())</b></td></tr>
+                <tr><td colspan="1" align="center" bgcolor="$ui.menuColor"><b>$brih_active $brih_usr $brih_list &nbsp;&nbsp;($VE1.size())</b></td></tr>
 
-                        #foreach($element in $activelist)
+                        #foreach($element in $VE1)
                         #if($velocityCount%2==0)
                                 <tr bgcolor="$ui.menuColor">
                         #else
                                 <tr bgcolor="$ui.tableColor">
                         #end
 
-                                <td> $element.getName() </td>
+                                <td> $element </td>
                                   </tr>
                         #end
         </table>
 </div>
+

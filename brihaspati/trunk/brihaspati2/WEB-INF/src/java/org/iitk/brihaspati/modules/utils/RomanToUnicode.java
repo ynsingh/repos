@@ -19,6 +19,7 @@ public class RomanToUnicode
 	String [][] combo = new String[35][7];
 	String [] vov = new String[6];
 	String seed = null;
+	boolean debug=false;
 public String getstrUnicode(String strUnicode, String language)
 {
 	for(i=0;i<strUnicode.length();i++)
@@ -1067,8 +1068,10 @@ public String getHexachar(int kc)
 	if ((kc >= 48 && kc     <= 57) || (kc >= 65     && kc <= 90) || (kc     >= 97 && kc     <= 122) || (kc == 32) || (kc == 94))
 	{ //kc1
 		tempLkey = lastKey0;
-		ErrorDumpUtil.ErrorLog("tempLkey="+tempLkey +"   lastKey0="+lastKey0+"  kc="+kc);
-		ErrorDumpUtil.ErrorLog("currentChar="+currentChar+"    KC      "+(int)currentChar+"		"+uni [kc][1] +"    lastKeyType="+ lastKeyType+"   lastKeyType0="+ lastKeyType0+"      lastKeyType1="+ lastKeyType1);
+		if(debug){
+			ErrorDumpUtil.ErrorLog("tempLkey="+tempLkey +"   lastKey0="+lastKey0+"  kc="+kc);
+			ErrorDumpUtil.ErrorLog("currentChar="+currentChar+"    KC      "+(int)currentChar+"		"+uni [kc][1] +"    lastKeyType="+ lastKeyType+"   lastKeyType0="+ lastKeyType0+"      lastKeyType1="+ lastKeyType1);
+		}
 		if (kc == 94    || kc == 97     || kc == 101 || kc == 105 || kc == 111 || kc == 117     || kc == 77     || kc == 72      ||     kc == 65 ||     kc == 79 || kc == 82)
 		{ //kc2
 			if (lastKeyType0 == "h")
@@ -1076,7 +1079,9 @@ public String getHexachar(int kc)
 				if (kc == 65 || kc == 79 || kc == 82) 
 				{ // if 1.2 
 				msg  =  uni[kc][3];
-				ErrorDumpUtil.ErrorLog( "line 1045 msg>>>>>         "+msg);
+				if(debug){
+					ErrorDumpUtil.ErrorLog( "line 1045 msg>>>>>         "+msg);
+				}
 				lastKeyType =  lastKeyType1;
 				lastKeyType1 = lastKeyType0;
 				lastKeyType0 = uni[kc][2];
@@ -1086,12 +1091,19 @@ public String getHexachar(int kc)
 				else { // else 1.2
 					msg = uni[kc][1];
 					
-					ErrorDumpUtil.ErrorLog( "line 1054 msg>>>>>         "+msg);
+					if(debug){
+						ErrorDumpUtil.ErrorLog( "line 1054 msg>>>>>         "+msg);
+					}
 					String tmp2 =  message.substring(message.length() - 5, message.length());
-					ErrorDumpUtil.ErrorLog( "line 1054.1>>>>>         "+tmp2);
+					if(debug){
+						ErrorDumpUtil.ErrorLog( "line 1054.1>>>>>         "+tmp2);
+					}
 					if(msg == "" || tmp2.equals( "2381;"))
 						message = message.substring(0, message.length() - 7);
-					ErrorDumpUtil.ErrorLog( "line 1054.2 message=         "+message);
+					
+					if(debug){
+						ErrorDumpUtil.ErrorLog( "line 1054.2 message=         "+message);
+					}
                                  } // else 1.2
 				 	lastKeyType =  lastKeyType1;
 					lastKeyType1 = lastKeyType0;
@@ -1102,11 +1114,13 @@ public String getHexachar(int kc)
 			} //if 1.1
 			else if (lastKeyType0   == "s" || lastKeyType0 == "n"   )
                         { //else if 1      
-				ErrorDumpUtil.ErrorLog( "line 1069 msg>>>>>         "+msg);
+				if(debug)
+					ErrorDumpUtil.ErrorLog( "line 1069 msg>>>>>         "+msg);
 				if ((kc == 97) || (kc == 111) )
 				{       
 					msg  =  uni[kc][3];
-					ErrorDumpUtil.ErrorLog( "line 1073 msg>>>>>         "+msg);
+					if(debug)
+						ErrorDumpUtil.ErrorLog( "line 1073 msg>>>>>         "+msg);
 				 	lastKeyType =  lastKeyType1;
 					lastKeyType1 = lastKeyType0;
 					lastKeyType0 = uni[kc][2];
@@ -1116,7 +1130,8 @@ public String getHexachar(int kc)
 				else if (kc     >= 97 )
                                 {       kc = kc -       32;
                                         msg  =  uni[kc][1];
-					ErrorDumpUtil.ErrorLog( "line 1082 msg>>>>>         "+msg);
+					if(debug)
+						ErrorDumpUtil.ErrorLog( "line 1082 msg>>>>>         "+msg);
 				 	lastKeyType =  lastKeyType1;
                                         lastKeyType1 = lastKeyType0;
                                         lastKeyType0 = uni[kc][0];
@@ -1126,7 +1141,8 @@ public String getHexachar(int kc)
                                 else
                                 {
 					msg  = uni[kc][1];
-					ErrorDumpUtil.ErrorLog( "line 1091 msg>>>>>         "+msg);
+					if(debug)
+						ErrorDumpUtil.ErrorLog( "line 1091 msg>>>>>         "+msg);
 				 	lastKeyType =  lastKeyType1;
 					lastKeyType1 = lastKeyType0;
 					lastKeyType0 = uni[kc][0];
@@ -1139,7 +1155,8 @@ public String getHexachar(int kc)
 				if (lastKeyType1 ==     "v") 
 				{ // if 2.1
 					msg = getCombo2(lastKey0,kc);
-				 	ErrorDumpUtil.ErrorLog( "line 1099 msg>>>>>         "+msg);
+					if(debug)
+				 		ErrorDumpUtil.ErrorLog( "line 1099 msg>>>>>         "+msg);
 					if (msg == null)
                                         {
 						msg  = uni[kc][3];
@@ -1148,7 +1165,8 @@ public String getHexachar(int kc)
 	                                        lastKeyType0 = uni[kc][2];
 	                                        lastKey1 = lastKey0;
 	                                        lastKey0 = kc;
-				 		ErrorDumpUtil.ErrorLog( "line 1107 msg>>>>>         "+msg);
+						if(debug)
+				 			ErrorDumpUtil.ErrorLog( "line 1107 msg>>>>>         "+msg);
 					}
 					 else
                                         { 
@@ -1158,18 +1176,21 @@ public String getHexachar(int kc)
                                          lastKey1 = lastKey0;
                                          lastKey0 = kc;
                                         }
-				 	ErrorDumpUtil.ErrorLog( "line 1115 msg>>>>>         "+msg);
+					if(debug)
+					 	ErrorDumpUtil.ErrorLog( "line 1115 msg>>>>>         "+msg);
 				} // if 2.1
 				else if (lastKeyType1 == "s") 
 				{ // else if 2.1
 					msg = getCombo2(lastKey0,kc);
-				ErrorDumpUtil.ErrorLog( "line 1125.11 msg>>>>>         "+msg);
+					if(debug)
+						ErrorDumpUtil.ErrorLog( "line 1125.11 msg>>>>>         "+msg);
                                         lastKeyType = lastKeyType1;
                                         lastKeyType1 = lastKeyType0;
                                         lastKeyType0 = "v";
                                         lastKey1 = lastKey0;
                                         lastKey0 = kc;
-				ErrorDumpUtil.ErrorLog( "line 1125 msg>>>>>         "+msg);
+					if(debug)
+						ErrorDumpUtil.ErrorLog( "line 1125 msg>>>>>         "+msg);
 				} // else if 2.1
                                 else if (lastKeyType1 == "h") 
 				{ // else if 2.1 
@@ -1179,7 +1200,8 @@ public String getHexachar(int kc)
 					lastKeyType0 = uni[kc][0];
 					lastKey1 = lastKey0;
 					lastKey0 = kc;
-				ErrorDumpUtil.ErrorLog( "line 1134 msg>>>>>         "+msg);
+					if(debug)
+						ErrorDumpUtil.ErrorLog( "line 1134 msg>>>>>         "+msg);
 				} // else if 2.1
 				
 				else if (lastKeyType1 == "c") 
@@ -1190,7 +1212,8 @@ public String getHexachar(int kc)
 					lastKeyType0 = uni[kc][0];
 					lastKey1 = lastKey0;
 					lastKey0 = kc;
-				ErrorDumpUtil.ErrorLog( "line 1144  msg>>>>>         "+msg);
+					if(debug)
+						ErrorDumpUtil.ErrorLog( "line 1144  msg>>>>>         "+msg);
 				} // else if 2.1
                                 else if (lastKeyType1 == "n") 
 				{ // else if 2.1
@@ -1200,7 +1223,8 @@ public String getHexachar(int kc)
 					lastKeyType0 = "v";
 					lastKey1 = lastKey0;
 					lastKey0 = kc;
-				ErrorDumpUtil.ErrorLog( "line 1154 msg>>>>>         "+msg);
+					if(debug)
+						ErrorDumpUtil.ErrorLog( "line 1154 msg>>>>>         "+msg);
 				} // else if 2.1
 				else if (lastKeyType1 == "m") 
 				{ // else if 2.1
@@ -1221,7 +1245,8 @@ public String getHexachar(int kc)
 						lastKey1 = lastKey0;
 						lastKey0 = kc;
 					}
-				ErrorDumpUtil.ErrorLog( "line 1172 msg>>>>>         "+msg);
+					if(debug)
+						ErrorDumpUtil.ErrorLog( "line 1172 msg>>>>>         "+msg);
 				}// else if 2.1
 				else 
 				{  //else of else if 2.1
@@ -1231,7 +1256,8 @@ public String getHexachar(int kc)
                                         lastKeyType0 = uni[kc][0];
                                         lastKey1 = lastKey0;
                                         lastKey0 = kc;  
-				ErrorDumpUtil.ErrorLog( "line 1182 msg>>>>>         "+msg);
+					if(debug)
+						ErrorDumpUtil.ErrorLog( "line 1182 msg>>>>>         "+msg);
 				}
 				if (msg == uni[kc][1])                                
 				{
@@ -1252,13 +1278,16 @@ public String getHexachar(int kc)
                         	                        lastKey0 = kc;
 						}
 					}
-				ErrorDumpUtil.ErrorLog( "line 1197 msg>>>>>         "+msg);
+					if(debug)
+						ErrorDumpUtil.ErrorLog( "line 1197 msg>>>>>         "+msg);
 				}
-			 ErrorDumpUtil.ErrorLog( "line 1203 msg>>>>>         "+msg);
+				if(debug)
+					 ErrorDumpUtil.ErrorLog( "line 1203 msg>>>>>         "+msg);
 			} //else if 2
 			else if (lastKeyType0   == "m")
 			{  //else if 3
-				ErrorDumpUtil.ErrorLog( "line 1202 >>>>>");
+				if(debug)
+					ErrorDumpUtil.ErrorLog( "line 1202 >>>>>");
 				if      (lastKeyType1   ==	"v") 
 				{ //  if 3.1
 					msg = getCombo(lastKey0,kc);
@@ -1267,7 +1296,8 @@ public String getHexachar(int kc)
 					lastKeyType0 = uni[kc][0];
 					lastKey1 = lastKey0;
 					lastKey0 = kc;
-				ErrorDumpUtil.ErrorLog( "line 1211 msg>>>>>         "+msg);
+					if(debug)
+						ErrorDumpUtil.ErrorLog( "line 1211 msg>>>>>         "+msg);
 				}
 				else if (lastKeyType1 ==        "s") 
 				{  //else if 3.1
@@ -1280,7 +1310,8 @@ public String getHexachar(int kc)
 						lastKeyType0 = uni[kc][2];
 						lastKey1 = lastKey0;
 						lastKey0 = kc;
-				ErrorDumpUtil.ErrorLog( "line 1223 msg>>>>>         "+msg);
+						if(debug)
+							ErrorDumpUtil.ErrorLog( "line 1223 msg>>>>>         "+msg);
 					}
 					else
 					{
@@ -1289,13 +1320,15 @@ public String getHexachar(int kc)
 						lastKeyType0 = uni[kc][0];
 						lastKey1 = lastKey0;
 						lastKey0 = kc;
-				ErrorDumpUtil.ErrorLog( "line 1231 msg>>>>>         "+msg);
+						if(debug)
+							ErrorDumpUtil.ErrorLog( "line 1231 msg>>>>>         "+msg);
 					}
 				} //else if 3.1
 				else if (lastKeyType1 ==        "h") 
 				{ //else if 3.1
                                         msg = getCombo(lastKey0,kc);
-					ErrorDumpUtil.ErrorLog( "line 1236 msg>>>>>         "+msg);
+					if(debug)
+						ErrorDumpUtil.ErrorLog( "line 1236 msg>>>>>         "+msg);
                                         if (msg == null)
 					{
 						msg  = uni[kc][3];
@@ -1313,12 +1346,14 @@ public String getHexachar(int kc)
 						lastKey1 = lastKey0;
 						lastKey0 = kc;
 					}
-					ErrorDumpUtil.ErrorLog( "line 1252 msg>>>>>         "+msg);
+					if(debug)
+						ErrorDumpUtil.ErrorLog( "line 1252 msg>>>>>         "+msg);
 				} //else if 3.1
 				else if (lastKeyType1 ==        "c") 
 				{//else if 3.1  
 					msg    = getCombo(lastKey0,kc);
-					ErrorDumpUtil.ErrorLog( "line 1257 msg>>>>>         "+msg);
+					if(debug)
+						ErrorDumpUtil.ErrorLog( "line 1257 msg>>>>>         "+msg);
                                		lastKeyType = lastKeyType1;
 					lastKeyType1 = lastKeyType0;
 					lastKeyType0 = uni[kc][0];
@@ -1327,7 +1362,8 @@ public String getHexachar(int kc)
 				} //else if 3.1
 				else if (lastKeyType1 ==	"m") 
 				{ //else if 3.1
-					ErrorDumpUtil.ErrorLog( "line 1265 msg>>>>>         "+msg);
+					if(debug)
+						ErrorDumpUtil.ErrorLog( "line 1265 msg>>>>>         "+msg);
 					if (getCombo(lastKey0,kc) == null)
 					{
 						if (uni[kc][3] == null) 
@@ -1338,7 +1374,8 @@ public String getHexachar(int kc)
 							lastKeyType0 = uni[kc][0];
 							lastKey1 = lastKey0;
 							lastKey0 = kc;
-							ErrorDumpUtil.ErrorLog( "line 1275 msg>>>>>         "+msg);
+							if(debug)
+								ErrorDumpUtil.ErrorLog( "line 1275 msg>>>>>         "+msg);
 						}
 						else {
 							msg  = uni[kc][3];
@@ -1347,7 +1384,8 @@ public String getHexachar(int kc)
 							lastKeyType0 = uni[kc][2];
 							lastKey1 = lastKey0;
 							lastKey0 = kc;
-							ErrorDumpUtil.ErrorLog( "line 1283 msg>>>>>         "+msg);
+							if(debug)
+								ErrorDumpUtil.ErrorLog( "line 1283 msg>>>>>         "+msg);
 						}
 					}
 					else { 
@@ -1357,12 +1395,14 @@ public String getHexachar(int kc)
 						lastKeyType0 = uni[kc][2];
 						lastKey1 = lastKey0;
 						lastKey0 = kc; 
-						ErrorDumpUtil.ErrorLog( "line 1292 msg>>>>>         "+msg);
+						if(debug)
+							ErrorDumpUtil.ErrorLog( "line 1292 msg>>>>>         "+msg);
 					}
 				} //else if 3.1
 				else {	
 					msg = getCombo(lastKey0,kc); 
-					ErrorDumpUtil.ErrorLog( "line 1297 msg>>>>>         "+msg);
+					if(debug)
+						ErrorDumpUtil.ErrorLog( "line 1297 msg>>>>>         "+msg);
                                		lastKeyType = lastKeyType1;
 					lastKeyType1 = lastKeyType0;
 					lastKeyType0 = uni[kc][0];
@@ -1375,7 +1415,8 @@ public String getHexachar(int kc)
 					if ((kc	== 97) || (kc == 111))
 					{ 
 						msg  = uni[kc][1];
-						ErrorDumpUtil.ErrorLog( "line 1309 msg>>>>>         "+msg);
+						if(debug)
+							ErrorDumpUtil.ErrorLog( "line 1309 msg>>>>>         "+msg);
 					}
 					else if	(kc	>= 97 )	
 					{
@@ -1385,7 +1426,8 @@ public String getHexachar(int kc)
                                			lastKeyType = lastKeyType1;
 						lastKeyType0 = uni[kc][0];
 						lastKey0 = kc;
-						ErrorDumpUtil.ErrorLog( "line 1318 msg>>>>>         "+msg);
+						if(debug)
+							ErrorDumpUtil.ErrorLog( "line 1318 msg>>>>>         "+msg);
 				}
 			} //else if 3
 				
@@ -1397,7 +1439,8 @@ public String getHexachar(int kc)
 				lastKeyType0 = uni[kc][0];
 				lastKey1 = lastKey0;
 				lastKey0 = kc;
-				ErrorDumpUtil.ErrorLog( "line 1329 msg>>>>>         "+msg);
+				if(debug)
+					ErrorDumpUtil.ErrorLog( "line 1329 msg>>>>>         "+msg);
 			}
 			else 
 			{ //else of else if 4 
@@ -1409,7 +1452,8 @@ public String getHexachar(int kc)
 					lastKeyType0 = uni[kc][2];
 					lastKey1 = lastKey0;
 					lastKey0 = kc;	
-					ErrorDumpUtil.ErrorLog( "line 1340 msg>>>>>         "+msg);
+					if(debug)
+						ErrorDumpUtil.ErrorLog( "line 1340 msg>>>>>         "+msg);
 				}
 				else if	(kc	>= 97 )	
 				{ 
@@ -1420,13 +1464,15 @@ public String getHexachar(int kc)
 					lastKeyType0 = uni[kc][0];
 					lastKey1 = lastKey0;
 					lastKey0 = kc;	
-					ErrorDumpUtil.ErrorLog( "line 1350 msg>>>>>         "+msg);
+					if(debug)
+						ErrorDumpUtil.ErrorLog( "line 1350 msg>>>>>         "+msg);
 				}
 			} //else of else if 4
 		} // kc2
 		else
 		{ // else of kc2
-			ErrorDumpUtil.ErrorLog( "line 1418 msg>>>>>         ");
+			if(debug)
+				ErrorDumpUtil.ErrorLog( "line 1418 msg>>>>>         ");
 			if (kc == 32){
 				if (lastKeyType0 == "h") 
 					msg  = uni[kc][1];
@@ -1437,17 +1483,22 @@ public String getHexachar(int kc)
 			}
 			else if	(uni[kc][0]	== "c")	
 			{ //else if else of kc2
-				ErrorDumpUtil.ErrorLog( "line 1429 msg>>>>>       uni[kc][0]  ="+uni[kc][0] +".....lstKeyType0="+lastKeyType0);
+				if(debug)
+					ErrorDumpUtil.ErrorLog( "line 1429 msg>>>>>       uni[kc][0]  ="+uni[kc][0] +".....lstKeyType0="+lastKeyType0);
 				if (lastKeyType0 == "h" || lastKeyType0	== "c")
 				{	
-					ErrorDumpUtil.ErrorLog( "line 1432 msg>>>>>         ");
-					ErrorDumpUtil.ErrorLog( "line 1433 msg>>>>>"+getCombo(lastKey0,kc));
+					if(debug) {
+						ErrorDumpUtil.ErrorLog( "line 1432 msg>>>>>         ");
+						ErrorDumpUtil.ErrorLog( "line 1433 msg>>>>>"+getCombo(lastKey0,kc));
+					}
 					msg = getCombo(lastKey0,kc);
-					ErrorDumpUtil.ErrorLog( "line 1435 msg>>>>>"+msg);
+					if(debug) 
+						ErrorDumpUtil.ErrorLog( "line 1435 msg>>>>>"+msg);
 					if (msg == null )
 					{ 
 						msg     = uni[kc][1];
-						ErrorDumpUtil.ErrorLog( "line 1437 msg>>>>>         "+msg+"......uni[kc][1]"+uni[kc][1]);
+						if(debug) 
+							ErrorDumpUtil.ErrorLog( "line 1437 msg>>>>>         "+msg+"......uni[kc][1]"+uni[kc][1]);
 					}
 					if (msg == uni[kc][1])
 					{
@@ -1455,7 +1506,8 @@ public String getHexachar(int kc)
                        				lastKeyType = lastKeyType1;
 						lastKeyType0	= "h";
 						lastKey0	= kc;
-						ErrorDumpUtil.ErrorLog( "line 1445 msg>>>>>         "+msg);
+						if(debug) 
+							ErrorDumpUtil.ErrorLog( "line 1445 msg>>>>>         "+msg);
 					}
 					else {
 						message = message.substring(0, message.length() - 14);
@@ -1463,20 +1515,25 @@ public String getHexachar(int kc)
                        				lastKeyType = lastKeyType1;
 						lastKeyType0	= "h";
 						lastKey0	= kc;
-					ErrorDumpUtil.ErrorLog( "line 1386 msg>>>>>         "+msg);
+						if(debug) 
+							ErrorDumpUtil.ErrorLog( "line 1386 msg>>>>>         "+msg);
 					}
-					ErrorDumpUtil.ErrorLog( "line 1370 msg>>>>>         "+msg);
+					if(debug) 
+						ErrorDumpUtil.ErrorLog( "line 1370 msg>>>>>         "+msg);
 				}
 				else 
 				{	
-					ErrorDumpUtil.ErrorLog( "line 1454 msg>>>>>         ");
+					if(debug) 
+						ErrorDumpUtil.ErrorLog( "line 1454 msg>>>>>         ");
 					msg     = uni[kc][1]+"&#2381;";
                				lastKeyType = lastKeyType1;
 					lastKeyType0 = "h";
 					lastKey0 = kc;
-					ErrorDumpUtil.ErrorLog( "line 1459 msg>>>>>         "+msg);
+					if(debug) 
+						ErrorDumpUtil.ErrorLog( "line 1459 msg>>>>>         "+msg);
 				}
-				ErrorDumpUtil.ErrorLog("line 1391..."+msg);
+				if(debug) 
+					ErrorDumpUtil.ErrorLog("line 1391..."+msg);
 			} //else if else of kc2
 			else if	(uni[kc][0]	== "s" || uni[kc][0] ==	"n") 
 			{
@@ -1486,16 +1543,19 @@ public String getHexachar(int kc)
 					msg	= uni[kc][1];
        				lastKeyType = lastKeyType1;
 				lastKeyType0 =	uni[kc][0];
-				ErrorDumpUtil.ErrorLog("\n msg.....line 1400...for numeric"+msg);
+				if(debug) 
+					ErrorDumpUtil.ErrorLog("\n msg.....line 1400...for numeric"+msg);
 			}
 			else
 			{   
 				msg = uni[kc][1];
        				lastKeyType = lastKeyType1;
 				lastKeyType0 =	uni[kc][0];
-				ErrorDumpUtil.ErrorLog("\n msg......ne 1406..for numeric"+msg);
+				if(debug) 
+					ErrorDumpUtil.ErrorLog("\n msg......ne 1406..for numeric"+msg);
 			} 
-			ErrorDumpUtil.ErrorLog("line 1408..."+msg);
+			if(debug) 
+				ErrorDumpUtil.ErrorLog("line 1408..."+msg);
 		} // else of kc2
 		
 	} // kc1
@@ -1504,11 +1564,14 @@ public String getHexachar(int kc)
 		msg = Integer.toString(kc);
 		lastKeyType = lastKeyType1;
 		lastKeyType0	= "s";
-		ErrorDumpUtil.ErrorLog("\n msg........inutil  1469 line ="+msg);
+		if(debug) 
+			ErrorDumpUtil.ErrorLog("\n msg........inutil  1469 line ="+msg);
 	}
-	ErrorDumpUtil.ErrorLog("msg....line 1487....."+msg);
+	if(debug) 
+		ErrorDumpUtil.ErrorLog("msg....line 1487....."+msg);
 	message = message +msg;
-	ErrorDumpUtil.ErrorLog("message.....line 1480....."+message);
+	if(debug) 
+		ErrorDumpUtil.ErrorLog("message.....line 1480....."+message);
 	return(message);
 }
 public String getCombo2(int lKey, int cKey)
@@ -1521,17 +1584,21 @@ public String getCombo2(int lKey, int cKey)
 	{
 		lKey = lKey + 32;
 	}		
-	ErrorDumpUtil.ErrorLog("Integer.toString(cKey)"+Integer.toString(cKey)+"  Integer.toString(lKey)="+Integer.toString(lKey));
+	if(debug) 
+		ErrorDumpUtil.ErrorLog("Integer.toString(cKey)"+Integer.toString(cKey)+"  Integer.toString(lKey)="+Integer.toString(lKey));
         for(i=0;i<=33;i++)
 	{
-	//	ErrorDumpUtil.ErrorLog("message="+message+"i="+i+"  getcombo2  combo[i][0]="+combo[i][0]+"     combo[i][1]="+combo[i][1]);
+	if(debug) 
+		ErrorDumpUtil.ErrorLog("message="+message+"i="+i+"  getcombo2  combo[i][0]="+combo[i][0]+"     combo[i][1]="+combo[i][1]);
 		if ((combo[i][0]).equals(Integer.toString(lKey))&& (combo[i][1]).equals(Integer.toString(cKey)))
 		{
-			ErrorDumpUtil.ErrorLog("message="+message+"i="+i+"  getcombo2  combo[i][0]="+combo[i][0]+"     combo[i][1]="+combo[i][1]);
+			if(debug) 
+				ErrorDumpUtil.ErrorLog("message="+message+"i="+i+"  getcombo2  combo[i][0]="+combo[i][0]+"     combo[i][1]="+combo[i][1]);
 			if ((combo[i][0]).equals("97")&& (combo[i][1]).equals("105") || (combo[i][0]).equals("65")&& (combo[i][1]).equals("105"))
 			{
 				String str =  message.substring(message.length() - 7, message.length());
-				ErrorDumpUtil.ErrorLog("message="+message+"  getcombo2 str="+str);
+				if(debug) 
+					ErrorDumpUtil.ErrorLog("message="+message+"  getcombo2 str="+str);
 				if(str.equals("&#2309;"))
 				{
 					message = message.substring(0, message.length() - 7);
@@ -1549,17 +1616,20 @@ public String getCombo2(int lKey, int cKey)
 			{
 				message = message.substring(0, message.length() - 7);
 				d = combo[i][4]; 
-				ErrorDumpUtil.ErrorLog("d="+d+"  getcombo2   oo  ");
+				if(debug) 
+					ErrorDumpUtil.ErrorLog("d="+d+"  getcombo2   oo  ");
 			}
 	 		else if((combo[i][0]).equals("117") && (combo[i][1]).equals("117"))
 			{
 				message = message.substring(0, message.length() - 7);
 				d = combo[i][4]; 
-				ErrorDumpUtil.ErrorLog("d="+d+"  getcombo2   uu  ");
+				if(debug) 
+					ErrorDumpUtil.ErrorLog("d="+d+"  getcombo2   uu  ");
 			}
 			else
 				d = combo[i][2]; 
-				ErrorDumpUtil.ErrorLog("d="+d+"  getcombo2   else  ");
+				if(debug) 
+					ErrorDumpUtil.ErrorLog("d="+d+"  getcombo2   else  ");
 
 			flag = false;
 			break;
@@ -1567,7 +1637,8 @@ public String getCombo2(int lKey, int cKey)
         }
 	if(flag)
 		d= uni [cKey][1];
-	ErrorDumpUtil.ErrorLog("d="+d+"  getcombo2   flag  "+flag);
+		if(debug) 
+			ErrorDumpUtil.ErrorLog("d="+d+"  getcombo2   flag  "+flag);
 	return  d;
 }
 public String getCombo(int lKey,int cKey)
@@ -1577,52 +1648,64 @@ public String getCombo(int lKey,int cKey)
         int j=0;
         String d = "";
 	boolean flag = true;
-	//System.out.println("Integer.toString(lKey).."+Integer.toString(lKey)+"Integer.toString(cKey).."+Integer.toString(cKey));
+	System.out.println("Integer.toString(lKey).."+Integer.toString(lKey)+"Integer.toString(cKey).."+Integer.toString(cKey));
         for     (i=0; i<=33; i++)
 	{
-		//ErrorDumpUtil.ErrorLog("  getcombo  message  i="+i+"....combo[i][0]........="+combo[i][0]+"...lKey="+lKey+"......combo[i][1]="+combo[i][1]+"..cKey ="+cKey);
+		if(debug) 
+			ErrorDumpUtil.ErrorLog("  getcombo  message  i="+i+"....combo[i][0]........="+combo[i][0]+"...lKey="+lKey+"......combo[i][1]="+combo[i][1]+"..cKey ="+cKey);
 		if ((combo[i][0]).equals(Integer.toString(lKey)) && (combo[i][1]).equals(Integer.toString(cKey)))
                 {
-			//ErrorDumpUtil.ErrorLog("  getcombo  message =  "+message);
+			if(debug) 
+				ErrorDumpUtil.ErrorLog("  getcombo  message =  "+message);
+/**
 			if((combo[i][0]).equals("105") && (combo[i][1]).equals("105") || (combo[i][0]).equals("73") && (combo[i][1]).equals("105")) // for i & i  OR I & i
 			{
 				message = message.substring(0, message.length() - 7);
-				//ErrorDumpUtil.ErrorLog("  getcombo  message1 =  "+message);
-				d = combo[i][2]; 
+				if(debug) 
+					ErrorDumpUtil.ErrorLog("  getcombo  message1 =  "+message);
+				 //d= combo[i][2]; 
 			}
-	 		else if((combo[i][0]).equals("111") && (combo[i][1]).equals("111")) // o & o
+	 		if((combo[i][0]).equals("111") && (combo[i][1]).equals("111")) // o & o
 			{
 				message = message.substring(0, message.length() - 7);
-				d=combo[i][6];
-				//ErrorDumpUtil.ErrorLog("d="+d+"  getcombo   oo  ");
+				combo[i][2] = combo[i][6];
+				if(debug) 
+					ErrorDumpUtil.ErrorLog("d="+d+"  getcombo   oo  ");
 			}
-			else if ((combo[i][0]).equals(Integer.toString(lKey)) && (combo[i][1]).equals(Integer.toString(cKey)) && (combo[i][4]).equals(Integer.toString(tempLkey)))
+			if ((combo[i][0]).equals(Integer.toString(lKey)) && (combo[i][1]).equals(Integer.toString(cKey)) && (combo[i][4]).equals(Integer.toString(tempLkey)))
 			{
-				d=combo[i][2];
+				//d=combo[i][2];
 				tempLkey = 0;
-				//ErrorDumpUtil.ErrorLog("  getcombo  line 1593 =  "+d);
+				if(debug) 
+					ErrorDumpUtil.ErrorLog("  getcombo  line 1593 =  "+d);
 			}
-			else{	d=combo[i][2]; }
-			//ErrorDumpUtil.ErrorLog("message.........."+message+"  getcombo    1597     d    ......  "+d);
+**/
+			d=combo[i][2]; 
+			if(debug) 
+				ErrorDumpUtil.ErrorLog("message.........."+message+"  getcombo    1597     d    ......  "+d);
 			flag=false; 
 			break;
 		}
-		//ErrorDumpUtil.ErrorLog("  getcombo  line 1601 d=  "+d +"i "+i);
+		if(debug) 
+			ErrorDumpUtil.ErrorLog("  getcombo  line 1601 d=  "+d +"i "+i);
 	}	
 	if(flag)
 	{
 		d= uni [cKey][1];
-		//ErrorDumpUtil.ErrorLog("  getcombo  1602  "+d);
+		if(debug) 
+			ErrorDumpUtil.ErrorLog("  getcombo  1602  "+d);
 		
 	}
-	//ErrorDumpUtil.ErrorLog("  getcombo 1605  ");
+	if(debug) 
+		ErrorDumpUtil.ErrorLog("  getcombo 1605  ");
 	return d;
 }
-
-/* public static void main(String args[])
+/**
+ public static void main(String args[])
  {
    Roman2Unicode r2u = new  Roman2Unicode();
     
     r2u.getstrUnicode("aap","hindi");
- }*/
+ }
+**/
 }//class ISCII2Unicode

@@ -35,11 +35,10 @@ package org.iitk.brihaspati.modules.screens;
  *  Contributors: Members of ETRG, I.I.T. Kanpur 
 */
 
-
-
-
+import java.util.Date;
 import java.util.Vector;
 import java.util.List;
+import java.text.SimpleDateFormat;
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
@@ -52,12 +51,17 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.om.UserConfiguration;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import javax.servlet.http.HttpSession;
 import org.apache.turbine.services.session.TurbineSession;
 //import org.apache.turbine.services.session.SessionTool;
 
 /**
  * @author <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+* @author <a href="mailto:smita37uiet@gmail.com">Smita Pal</a>
+* @ mdified date 05-05-2010
+
  */
 
 public class Index extends SecureScreen{
@@ -69,8 +73,41 @@ public class Index extends SecureScreen{
 			List < String >  actlst = new ArrayList < String >  (  ) ;
                         Collection au=TurbineSession.getActiveUsers();
                         actlst.addAll(au);
+			Iterator it=au.iterator();
+                        Vector ve=new Vector();
+                                while(it.hasNext()){
+                                       String ss=it.next().toString();
+                                       ve.add(ss.substring(0,(ss.length()-3)));
+                                }
+
                         //send list to vm
                         context.put("activelist", actlst);
+			 /**
+                         * code for Active User list With Time
+                         */
+			Vector ve1=new Vector();
+                        Collection aul=TurbineSession.getActiveSessions();
+
+                         for(Iterator i=aul.iterator();i.hasNext();)
+                                        {
+                                                HttpSession session=(HttpSession) i.next();
+                                                User un =TurbineSession.getUserFromSession(session);
+                                                String u=un.getName();
+                                                if(ve.contains(u)){
+                                                Date creationTime = new Date(session.getCreationTime( ));
+                                                Date de=new Date();
+                                                long diff = de.getTime() - creationTime.getTime();
+                                                long diffHours = diff/(60 * 60 * 1000);
+                                                long diffHour = diff%(60 * 60 * 1000);
+                                                long diffMin=diffHour/(60*1000);
+                                                String h=u+" "+"("+diffHours+" "+"Hs"+diffMin+"Min"+")";
+                                                long diffMin1=diffHour%(60*1000);
+
+                                                ve1.add(h);
+                                                }
+
+                                               }
+                                                context.put("VE1",ve1);
 
 			User user=data.getUser();
 			String username=user.getName();
