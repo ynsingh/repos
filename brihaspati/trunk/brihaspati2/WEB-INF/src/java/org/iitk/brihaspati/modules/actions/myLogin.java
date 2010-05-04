@@ -110,7 +110,6 @@ public class myLogin extends VelocityAction{
                 String flag=data.getParameters().getString("flag");
                 //String LangFile =data.getParameters().getString("Langfile","");
                 String lang=data.getParameters().getString("lang","");
-		ErrorDumpUtil.ErrorLog("lang in my login "+lang);
 		UpdateInfoMail.checknWriteXml();
 
 		String username = data.getParameters().getString("username", "" );
@@ -183,7 +182,6 @@ public class myLogin extends VelocityAction{
 				crit = null;
                                 TurbineUser element=(TurbineUser)vec.get(0);
        	                        userLanguage=element.getUserLang().toString();
-				ErrorDumpUtil.ErrorLog("userlang in my login "+userLanguage);
 				if(vec != null){
 					if((userLanguage.equals("")))
 					{
@@ -196,7 +194,6 @@ public class myLogin extends VelocityAction{
         	                               	context.put("lang",lang);
                 	                }else {
 						if((!userLanguage.equals(lang)) && (!username.equals("guest"))){
-							ErrorDumpUtil.ErrorLog("lang in my login "+lang);
 							if(flag.equals("false")) {
         		                                        crit = new Criteria();
                 		                                crit.add(TurbineUserPeer.USER_ID,uid);
@@ -204,13 +201,11 @@ public class myLogin extends VelocityAction{
                                 		                TurbineUserPeer.doUpdate(crit);
 								userLanguage=lang;
 							}
-							ErrorDumpUtil.ErrorLog("lang in my login "+lang);
 							user.setTemp("lang",userLanguage);
      							context.put("lang",userLanguage);
 							user.setTemp("LangFile", MultilingualUtil.LanguageSelectionForScreenMessage(userLanguage));
 	                                        }
 						else{
-							ErrorDumpUtil.ErrorLog("lang in my login "+lang);
         	        	                	// Store the LangFile & lang object in Temporary Variable.
 		                        	        //user.setTemp("LangFile",LangFile);
                	                                	user.setTemp("lang",lang);
@@ -230,7 +225,6 @@ public class myLogin extends VelocityAction{
 				}	
 				userLanguage = null;
 				crit = null;
-				ErrorDumpUtil.ErrorLog("lang in my login line 233"+lang);
 				int least_entry=0,count=0;
 
 				//code for usage details starts here

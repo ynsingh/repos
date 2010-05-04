@@ -137,7 +137,7 @@ public class DeletePosted extends SecureScreen_Instructor
                         	crit.add(NoticeSendPeer.NOTICE_ID,msg_id);
 				List sub=NoticeSendPeer.doSelect(crit);
 				StringBuffer Notice_sub=new StringBuffer(((NoticeSend)(sub.get(0))).getNoticeSubject());
-				Notice_sub.deleteCharAt(0);
+				//Notice_sub.deleteCharAt(0);
                 		context.put("Notice_sub",Notice_sub);
                 		/**
                  		* Getting the actual path where the Mail is stored

@@ -82,7 +82,6 @@ public class MailView extends SecureScreen{
 		AccessControlList acl=data.getACL();
                 String mode=data.getParameters().getString("mod","");
 		context.put("mode",mode);
-		ErrorDumpUtil.ErrorLog("mode at line 84 in mailview==="+mode);	
 		/**
 		 * Retrive the CourseName and CourseId from Temp variables
 		*/ 

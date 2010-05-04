@@ -124,15 +124,18 @@ public class MailTestMessage extends VelocitySecureScreen
 		lang= (String)user.getTemp("lang");
 		String counter=pp.getString("count","");
 		context.put("tdcolor",counter);
-		if( lang.equals("hindi") || lang.equals("marathi"))
-		{
-			String tempStat = stat;
-		        stat = tempStat.substring(0,5);
-        	        msg_id = tempStat.substring(5);
-		}
-		else
-		{
-			msg_id=pp.getString("msgid","");
+		//ErrorDumpUtil.ErrorLog("stat="+stat);
+		if (!stat.equals("")){
+			if( lang.equals("hindi") || lang.equals("marathi"))
+			{
+				String tempStat = stat;
+			        stat = tempStat.substring(0,5);
+        	        	msg_id = tempStat.substring(5);
+			}
+			else
+			{
+				msg_id=pp.getString("msgid","");
+			}
 		}
 
 	      		context.put("status",stat);

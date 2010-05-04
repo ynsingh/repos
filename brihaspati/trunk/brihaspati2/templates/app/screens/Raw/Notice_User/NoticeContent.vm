@@ -8,7 +8,8 @@
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
- * @modified date: 25-01-2010
+ * @author <a href="mailto:shaistashekh@hotmail.com"> Shaista Bano</a>
+ * @modified date: 25-01-2010, 27-04-2010
  *#
 <head>
 #if($flag=="FromHome")
@@ -153,13 +154,13 @@ $!data.getMessage()
 	<table width=100% bgcolor="$ui.tableColor">
  	<tr bgcolor="$ui.menuColor">
   	<td colspan=5>
-  	<I>
+  	<I><b>
 		#if(( $data.getUser().getTemp("lang" ).toString())=="hindi")
 			<font color=blue>#UNAME()</font> $Notice_NoticeContent_msg3 
 		#else
 			$Notice_NoticeContent_msg3<font color=blue> #UNAME() </font>
 		#end
-		</I>
+		</b></I>
   	</td>
  	</tr>
 	#set($headings=["$Notice_Sender","$Notice_Subject","$brih_Da","$brih_status"])
@@ -172,15 +173,30 @@ $!data.getMessage()
 		</td>
 	#end
 	</tr>
+	#set($boolian= "")
 	#foreach ($SeRe in $notice_Sent_Rec)
+		#if($velocityCount % 2 == 0)
+			<tr bgcolor="$ui.tableColor">
+			#set($boolian = "true")
+		#elseif($e.getRole_Id()=="7")
+                        <tr bgcolor="$ui.fontColorPink">
+			#set($boolian = "false")
+		#else
+			<tr bgcolor="$ui.menuColor">
+			#set($boolian = "false")
+		#end
         	#if($flag=="FromNotices")
+#*
                 	#if($SeRe.getReadFlag() == "0")
 				<tr bgcolor="$ui.buttonBoxColor">
+				#set($boolian = false)
 			#elseif($e.getRole_Id()=="7")
 	                        <tr bgcolor="$ui.fontColorPink">
 			#else
 				<tr bgcolor="$ui.tableColor">
+				#set($boolian = true)
 			#end
+*#
 			<td align="Center">
         			<INPUT TYPE="CHECKBOX" NAME="$SeRe.getMsgId()" onClick="addDeleteList(this,document.frm);">
 			</td>
@@ -202,7 +218,8 @@ $!data.getMessage()
                                 #end
 		#else
                 	#if($SeRe.getReadFlag() == "0")
-			<tr bgcolor="$ui.buttonBoxColor">
+			##<tr bgcolor="$ui.buttonBoxColor">
+			##end
 			<td align="Center">
         			<INPUT TYPE="CHECKBOX" NAME="$SeRe.getMsgId()" onClick="addDeleteList(this,document.frm);">
 			</td>
@@ -220,7 +237,11 @@ $!data.getMessage()
 		#end
 		</tr>
 	#end
-	<tr bgcolor="$ui.menuColor">
+	#if($boolian == "false")
+                <tr bgcolor= "$ui.tableColor">
+        #else
+		<tr bgcolor="$ui.menuColor">
+	#end
 	<td align=center>
 		<INPUT TYPE="button" NAME="eventSubmit_doDelete" VALUE="$brih_delete" onClick="checkValue(document.frm,this);">
         	<INPUT TYPE="hidden" NAME="deleteFileNames" VALUE="">

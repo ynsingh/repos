@@ -19,11 +19,11 @@ $!data.getMessage()
   <td colspan=4><b>
 	#if($mode=="fromauthor")
         <a href=$link.setPage("call,Repository_Mgmt,Author.vm").addPathInfo("count","1") style=text-decoration:none>$brih_authorHome </a>| 
-        <a href=$link.setPage("call,Repository_Mgmt,RepositoryList.vm").addPathInfo("count","2") style=text-decoration:none>$Repo_Repo1</a> | $Repo_Perm $brih_view </b>
+        <a href=$link.setPage("call,Repository_Mgmt,RepositoryList.vm").addPathInfo("count","2") style=text-decoration:none>$Repo_Repo1</a> | $Repo_Perm #if($lang== "hindi") $brih_Of1 #end $brih_view </b>
 	#end
 	#if($mode=="frominstructor")
         <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_home </a>| 
-        <a href=$link.setPage("call,UserMgmt_User,PersonalArea.vm").addPathInfo("count","1") style=text-decoration:none> $personal $area</a> | $Repo_Perm  $brih_view </b>
+        <a href=$link.setPage("call,UserMgmt_User,PersonalArea.vm").addPathInfo("count","1") style=text-decoration:none> $personal $area</a> | $Repo_Perm  #if($lang =="hindi") $brih_Of1 #end $brih_view </b>
 	#end
      </td>
 </tr>
@@ -137,28 +137,29 @@ $!data.getMessage()
 <tr><td> 
 	<table width=100% bgcolor="$ui.tableColor">
 	<form name="frm1" action="$link.setPage("call,Repository_Mgmt,PermissionReceive.vm").setAction("Repo_Permission")">
-	<tr bgcolor="$ui.menuColor"><td colspan=4><b>$Repo_Perm $Repo_Permgiv</b></td></tr>
+	##<tr bgcolor="$ui.menuColor"><td colspan=4><b>$Repo_Perm $Repo_Permgiv</b></td></tr>
+	<tr> <td colspan=4><b>$Repo_Perm $Repo_Permgiv</b></td></tr>
 	#if($check1!="NoPermm")
-	<tr><td>$Repo_select</td><td>$brih_usr$brih_name &nbsp; $brih_topic$brih_name</td></tr>
-        #set($countm=0)
-	#foreach($d in $write)
-		#if($velocityCount%2==0)
-                <tr bgcolor="$ui.tableColor">
-		#else
-		<tr bgcolor="$ui.menuColor">
+		<tr bgcolor="$ui.menuColor"><td>$Repo_select</td><td>$brih_usr$brih_name &nbsp; $brih_topic$brih_name</td></tr>
+	        #set($countm=0)
+		#foreach($d in $write)
+			#if($velocityCount%2==0)
+	           		<tr>
+			#else
+				<tr bgcolor="$ui.menuColor">
+			#end
+        	        <td><INPUT TYPE="CHECKBOX" name="permdel" value="$countm"></td>
+                	<td>
+			#if($d.UserName!="")
+				$d.UserName &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp  
+			#else
+				$d.CourseName
+			#end
+			$d.Topic 
+                        </td>
+			#set($countm = $countm+1)
 		#end
-                <td><INPUT TYPE="CHECKBOX" name="permdel" value="$countm"></td>
-                                        <td>
-                                        #if($d.UserName!="")
-					$d.UserName &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp  
-					#else
-                                        $d.CourseName
-					#end
-                                        $d.Topic 
-                                        </td>
-					#set($countm = $countm+1)
-                                        #end
-					</tr>
+				</tr>
 		<tr>
                 <td colspan=4>
 		<input type="hidden" name="actionName" value="">
@@ -168,15 +169,14 @@ $!data.getMessage()
                 <input type="button" name="eventSubmit_doRemoveperm_given" value="$brih_remove" onClick="checkField(document.frm1,this);">
                 </td>
 		</tr>
-				#else
-				<tr><td>$Repo_PermmNo</td></tr>
-				#end	
-                                        ##</table>
-				##</form>
-
-                                </td> 
-				#end
-                       </tr> 
+	#else
+		<tr bgcolor="$ui.menuColor"><td>$Repo_PermmNo</td></tr>
+	#end	
+        ##</table>
+	##</form>
+</td> 
+#end
+</tr> 
 </form>
 </table>
 </table>

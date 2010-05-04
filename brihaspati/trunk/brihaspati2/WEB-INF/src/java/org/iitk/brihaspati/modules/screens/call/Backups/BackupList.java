@@ -51,13 +51,11 @@ import org.apache.turbine.services.servlet.TurbineServlet;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
-
+import org.iitk.brihaspati.modules.utils.OnlyExt;
 
 
 public class BackupList extends SecureScreen 
 {
-		
-
 	 public void doBuildTemplate( RunData data, Context context )
 	{
 		String LangFile=(String)data.getUser().getTemp("LangFile");
@@ -66,13 +64,31 @@ public class BackupList extends SecureScreen
 			File dir=new File(TurbineServlet.getRealPath("/BackupData/"));
 			if(dir.exists()){
 				File list[];
+				/**
+				  * @param str[] added by shaista  
+				  */
+				String str[]= new String[100]; 
 				String crsName=(String)data.getUser().getTemp("course_id");
 				String st=data.getParameters().getString("st","");
-				list=dir.listFiles();
 				context.put("st",st);
+				list=dir.listFiles();
+				FilenameFilter filter=null;
 				if((Array.getLength(list))>0)
-				{ 
-					context.put("list",list);
+				{
+					/**
+					  * Below for loop code is added by Shaista
+					  */
+					//for(int i=0 ; i < Array.getLength(list) ; i++){
+						FilenameFilter only = new OnlyExt(data.getUser().getTemp("course_id" ).toString());
+						ErrorDumpUtil.ErrorLog("only="+only);
+						str =dir.list(only);  
+						ErrorDumpUtil.ErrorLog("list[]="+str);
+					//}	
+					/**
+					  * Commented by shaista
+					  */
+					//context.put("list",list);
+					context.put("list",str);
 				}
 				else{
 				//	data.setMessage(MultilingualUtil.ConvertedString("backup_msg4",LangFile));

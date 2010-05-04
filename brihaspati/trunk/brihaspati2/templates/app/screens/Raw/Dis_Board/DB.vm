@@ -58,11 +58,11 @@ $!data.getMessage()
 	<form name="frm" ENCTYPE="multipart/form-data" METHOD="POST" action="$link.setPage("call,Dis_Board,DB.vm").setAction("SendDB")">
 	##<form method="GET" action="$link.setPage("call,Dis_Board,DBContent.vm")">
 ##<table width=100% align=left bgcolor="$ui.tableColor"> 
- 	<tr><td colspan=2><b>$DisBoard_WorkGroup:&nbsp&nbsp<font color=green>$courseid</font></b>
+ 	<tr bgcolor="$ui.menuColor"><td colspan=2><b>$DisBoard_WorkGroup:&nbsp&nbsp<font color=green>$courseid</font></b>
  	</td></tr>
 	##</table>
 	##<table align="center">
-	<tr bgcolor="$ui.menuColor"><td colspan=5>
+	<tr><td colspan=5>
 	#if($unread=="0")
 		<font size="3" face="$ui.sansSerifFonts"><b>$brih_unreadMsg(<font color="Blue">$unread</font>)&nbsp&nbsp
 	#else
@@ -70,7 +70,7 @@ $!data.getMessage()
 		<font size="3" face="$ui.sansSerifFonts"><b>$brih_unreadMsg(<font color="Blue">$unread</font>)</blink>&nbsp&nbsp
 	#end
 	$LocalMail_Mail_msg1(<font color="blue">$total</font>)</b></font>
-	<tr>	
+	<tr bgcolor="$ui.menuColor">	
 	#if($total!="0")
 		<td align="center">
 			<input type="hidden" name="mode" value="All">
@@ -90,7 +90,7 @@ $!data.getMessage()
  	##</table>
 #if($data.getUser().getUserName()!="guest")
 ##<table align="center">
-<tr bgcolor="$ui.menuColor">
+<tr>
 	#if($total!="0")
 	<td colspan=5><a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("mode","compose").addPathInfo("course_id",$courseid).addPathInfo("count","4")><b>$LocalMail_MailContent_msg1</b></a></td>
 	##<img src="$content.getURI("/images/$lang/DB.jpg")" border="0"></a></td>

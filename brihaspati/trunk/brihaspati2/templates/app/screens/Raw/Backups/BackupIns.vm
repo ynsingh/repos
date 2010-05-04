@@ -4,6 +4,8 @@
  * All Rights Reserved.
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @author <a href="mailto:nksinghiitk@yahoo.co.in">Nagendra Kumar Singh</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @modified date: 12-04-2010
 *#
 
 $page.setBgColor($ui.bgcolor)
@@ -42,8 +44,8 @@ $!data.getMessage()
 <tr bgcolor="$ui.menuColor" >
 <td><input type="text" name="courses" value="$data.getUser().getTemp("course_id" ).toString()" readonly /></td>
 <td align=left>
-<input type="button" name="eventSubmit_doCourseBackup" value="$brih_content  $brih_backup" onClick="checkField(document.frm,this);"/>
-<input type="button" name="eventSubmit_doStudent_db_backup" value="$brih_database $brih_backup" onClick="checkField(document.frm,this);"/>
+<input type="button" name="eventSubmit_doCourseBackup" value="$brih_content #if($lang == "hindi") $brih_Of1 #end $brih_backup" onClick="checkField(document.frm,this);"/>
+<input type="button" name="eventSubmit_doStudent_db_backup" value="$brih_database #if($lang == "hindi") $brih_Of1 #end $brih_backup" onClick="checkField(document.frm,this);"/>
 <input type="hidden" name="actionName">
 </td>
 </tr>

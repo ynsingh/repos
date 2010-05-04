@@ -76,7 +76,8 @@ public class DeletePostedAdmin extends SecureScreen_Admin
 			List name=TurbineUserPeer.doSelect(crit);
 			String fname=((TurbineUser)(name.get(0))).getFirstName();
 			String lname=((TurbineUser)(name.get(0))).getLastName();
-
+			String counter=data.getParameters().getString("count","");
+                        context.put("tdcolor",counter);
 			context.put("loginName",Username);
 			context.put("username",Username);
 			context.put("firstname",fname);
@@ -131,7 +132,7 @@ public class DeletePostedAdmin extends SecureScreen_Admin
                         	crit.add(NoticeSendPeer.NOTICE_ID,msg_id);
 				List sub=NoticeSendPeer.doSelect(crit);
 				StringBuffer Notice_sub=new StringBuffer(((NoticeSend)(sub.get(0))).getNoticeSubject());
-				Notice_sub.deleteCharAt(0);
+				//Notice_sub.deleteCharAt(0);
                 		context.put("Notice_sub",Notice_sub);
 
 				int grid=(((NoticeSend)(sub.get(0))).getGroupId());

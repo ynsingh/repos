@@ -4,8 +4,9 @@
  * All Rights Reserved.
  * @author <a href="mailto:madhavi_mungole@hotmail.com ">Madhavi Mungole</a>
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in ">Awadhesh Kumar Trivedi</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com"> Shaista Bano</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
- * @modified date: 31-12-2009
+ * @modified date: 31-12-2009, 20-04-2010
 *#
 <head>
 <script type="text/javascript">
@@ -80,9 +81,40 @@ $!data.getMessage()
 <table bgcolor="$ui.menuColor" width=100%>
 	<tr><td>
 	<a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> | 
-	<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","1")>$brih_communication</a> | $Notice_DeletePosted_msg1
+	<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","1")>$brih_Notices</a> | $Notice_DeletePosted_msg1
 	</td></tr>
 </table>
+
+<table align=left bgcolor="$ui.tableColor" width="100%">
+<tr>
+        #if($tdcolor != "1")
+        <td>
+        #elseif($tdcolor == "1")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","1")>$Notice_NoticeSend_msg1</a></td>
+	#if($tdcolor != "2")
+        	<td>
+	#elseif($tdcolor == "2")
+                <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Notice_User,DeletePostedAdmin.vm").addPathInfo("count","2")>$Notice_DeletePosted_msg1</a></td>
+        #if($tdcolor != "3")
+        	<td>
+	#elseif($tdcolor == "3")
+                <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("nflag","fh").addPathInfo("count","3")>$brih_flash $brih_heading</a></td>
+        ##<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("nflag","fh")>$brih_flash $brih_heading</a></td>
+        #if($tdcolor != "4")
+                <td>
+        #elseif($tdcolor == "4")
+                <td bgcolor="#AFDCEC">
+        #end
+                <a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("mod","adminmail").addPathInfo("count","4")>$brih_localmail</a></td>
+</td></tr>
+</table>
+
 <form name="frm" method="Post" action="$link.setPage("call,Notice_User,DeletePostedAdmin.vm").setAction("Notice_Send_Delete")">
 #if($Mas_size!="0")
 <table align="left" width=100% bgcolor="$ui.tableColor">
@@ -100,7 +132,7 @@ $!data.getMessage()
 		#end
 		<td>
                 	<INPUT TYPE="CHECKBOX" NAME="$detail.getMsgId()" onClick="addDeleteList(this,document.frm);">
-		<a href="$link.setPage("call,Notice_User,DeletePostedAdmin.vm").addPathInfo("notice_id",$detail.getMsgId()).addPathInfo("desc","Notice_Des")">$detail.getMsgSubject()</a></td>
+		<a href="$link.setPage("call,Notice_User,DeletePostedAdmin.vm").addPathInfo("notice_id",$detail.getMsgId()).addPathInfo("desc","Notice_Des").addPathInfo("count","2")">$detail.getMsgSubject()</a></td>
 		<td>$detail.getPostTime()</td>
 		</tr>
 	#end

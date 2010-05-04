@@ -18,7 +18,10 @@ $page.setTitle("Home | $CName | Communication | Local Mail | Mails")
 $!data.getMessage()
 <table width=100% bgcolor="$ui.tableColor">
 	<tr bgcolor="$ui.menuColor">
-		<td colspan=5>
+		#*
+		 * Changes done by shaista in <td colspan=7
+		*#
+		<td colspan="7">
 		<font face="$ui.sansSerifFonts"><b>
 		#if(($stat=="admns")||($mod=="adminmail"))
 		<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> | 
@@ -43,20 +46,23 @@ $!data.getMessage()
 ##<table align=left bgColor="$ui.tableColor" width=100%>
 	<tr><b>
 		#if($data.getUser().getUserName()!="guest")
+			<td colspan="3">
 			#if($stat=="admns")
-			<td><a href=$link.setPage("call,Local_Mail,MailCompose.vm").addPathInfo("stat","admns").addPathInfo("status","compose") style=text-decoration:none>
+				<a href=$link.setPage("call,Local_Mail,MailCompose.vm").addPathInfo("stat","admns").addPathInfo("status","compose") style=text-decoration:none>
 			#else
-			<td><a href=$link.setPage("call,Local_Mail,MailTestMessage.vm").addPathInfo("status","compose") style=text-decoration:none>
+				<a href=$link.setPage("call,Local_Mail,MailTestMessage.vm").addPathInfo("status","compose") style=text-decoration:none>
 			#end
-			<img border=0 src="$content.getURI("/images/$lang/ml.gif")">$LocalMail_MailContent_msg1</a><td>
+			<img border=0 src="$content.getURI("/images/$lang/ml.gif")">$LocalMail_MailContent_msg1</a>
+			</td>
 			#if($mode=="All")
 				#if($stat=="admns")
 				##<td><a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("mod","adminmail").addPathInfo("mode","Unread")>
-				<td><a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("stat","admns").addPathInfo("mod","adminmail").addPathInfo("mode","Unread") style=text-decoration:none>
+				<td colspan="2"><a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("stat","admns").addPathInfo("mod","adminmail").addPathInfo("mode","Unread") style=text-decoration:none>
 				#else
-				<td><a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("mode","Unread") style=text-decoration:none>
+				<td colspan="2"><a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("mode","Unread") style=text-decoration:none>
 				#end
-				<img border=0 src="$content.getURI("/images/$lang/newmail1.gif")">$LocalMail_MailContent_msg2</a></td>
+				<img border=0 src="$content.getURI("/images/$lang/newmail1.gif")">$LocalMail_MailContent_msg2</a>
+				</td>
 			#else
 			<td><a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("mode","All") style=text-decoration:none>$LocalMail_MailContent_msg3</a></td>
 	        	#end	
@@ -122,12 +128,16 @@ $!data.getMessage()
 	<td width=2% align="Center">
         <INPUT TYPE="CHECKBOX" NAME="$e.getMailID()" onClick="addDeleteList(this,document.frm);">
 	</td>
-	<td width=2% align="Center">
 	#if($e.getReplyStatus()!="0")
+	<td width=2% align="Center">
 		<img src="$content.getURI("/images/$lang/reply.gif")">
-	#end
 	</td>
-	<td align="center">
+	#end
+	#if($e.getReplyStatus()!="0")
+		<td align="center">
+	#else
+		<td align="center" colspan="2">
+	#end
 		$e.getSender()</td>
 	<td align="Center">
 		#if($stat=="admns")

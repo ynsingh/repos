@@ -106,7 +106,7 @@ $!data.getMessage()
 		</tr>
 		#foreach($e in $entry)
 			#if(($e.getStatus()=="0")&& ($e.getGrpmgmtType()!="1"))
-				<tr bgcolor="ui.tableColor">
+				<tr bgcolor="$ui.tableColor">
 			#elseif($e.getGrpmgmtType()=="1")
                                 <tr bgcolor="$ui.fontColorPink">
 			#else

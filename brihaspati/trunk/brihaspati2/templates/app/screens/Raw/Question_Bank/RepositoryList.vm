@@ -64,7 +64,7 @@ $!data.getMessage()
 <td width="40%" valign="top">
      	<table width="100%" bgcolor= "$ui.menuColor" cellspacing=1 cellpadding=2>
 		<tr>
-			<td colspan=3 bgcolor="ui.tableColor">
+			<td colspan=3 bgcolor="$ui.tableColor">
 		        <font size=4><b> #if($lang!="english") $brih_qus $brih_bank $brih_in #UNAME() $Repo_Repo2 #else $brih_qus $brih_bank $Repo_Repo2 #UNAME() #end</font> </b> </td>
 		</tr>
 	##set( $count = 1)
