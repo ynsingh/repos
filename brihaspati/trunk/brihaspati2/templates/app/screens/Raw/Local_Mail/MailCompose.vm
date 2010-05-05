@@ -107,15 +107,17 @@ $!data.getmessage()
 <table bgcolor="$ui.menuColor" width=100% >
 <tr>
         <td>
-        <font face="$ui.sansSerifFonts" size=3>
+        <font face="$ui.sansSerifFonts" ><b>
         <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> |
-        <a href=$link.setPage("call,Notice_User,Notices.vm") style=text-decoration:none>$brih_communication</a> |
+        <a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","1") style=text-decoration:none>$brih_communication</a> |
         <a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("mod","adminmail") style=text-decoration:none>$brih_localmail</a> | 
 	#if($status!="reply") 
 		$LocalMail_MailContent_msg1
 	#else
 		$LocalMail_Reply
 	#end 	
+	</b></font>
+	</td>
 </tr>
 </table>
 #if ( $lang == "english")

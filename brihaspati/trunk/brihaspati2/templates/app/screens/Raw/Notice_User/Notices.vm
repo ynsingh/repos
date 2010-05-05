@@ -12,10 +12,20 @@
 *#
 <head>
 <script type="text/javascript">
-        _editor_url = "../../../../../scrpts/";
+	#if($nflag == "fh")
+                _editor_url = "../../../../../../../scrpts/";
+        #else
+                _editor_url = "../../../../../scrpts/";
+        #end
+
         _editor_lang = "en";
 </script>
-<script type="text/javascript" src="../../../../../scrpts/htmlarea.js"></script>
+#if($nflag == "fh")
+        <script type="text/javascript" src="../../../../../../../scrpts/htmlarea.js"></script>
+#else
+        <script type="text/javascript" src="../../../../../scrpts/htmlarea.js"></script>
+#end
+
 <script type="text/javascript">
         var editor = null;
         function initEditor() {
