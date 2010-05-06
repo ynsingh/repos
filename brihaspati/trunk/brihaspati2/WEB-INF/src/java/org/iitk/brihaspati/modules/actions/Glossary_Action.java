@@ -128,6 +128,7 @@ public class Glossary_Action extends SecureAction{
                                 data.setMessage(msg1);
 				setTemplate(data,"call,Glossary,Glossary_Insert_Word.vm");
 				context.put("mode","Insert");
+				context.put("count","2");
 			}
 		}
 		catch(Exception e){data.setMessage(" Error in Insert" +e);}

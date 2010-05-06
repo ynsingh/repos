@@ -92,7 +92,7 @@ $!data.getMessage()
 ##<table align="center">
 <tr>
 	#if($total!="0")
-	<td colspan=5><a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("mode","compose").addPathInfo("course_id",$courseid).addPathInfo("count","4")><b>$LocalMail_MailContent_msg1</b></a></td>
+	<td colspan=5><a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("mode","compose").addPathInfo("check","more").addPathInfo("course_id",$courseid).addPathInfo("count","4")><b>$LocalMail_MailContent_msg1</b></a></td>
 	##<img src="$content.getURI("/images/$lang/DB.jpg")" border="0"></a></td>
 	#else
 	<td colspan=5><a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("mode","compose").addPathInfo("check","first").addPathInfo("course_id",$courseid).addPathInfo("count","4")><b>$LocalMail_MailContent_msg1</b></a></td>

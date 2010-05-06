@@ -152,7 +152,8 @@ public class myLogout extends VelocityAction{
 		data.setACL(null);
                 // Retrieve an anonymous user.
                 data.save();
-		data.getSession().removeAttribute(AccessControlList.SESSION_KEY);
+		data.getSession().invalidate();
+		//data.getSession().removeAttribute(AccessControlList.SESSION_KEY);
 		if (!Turbine.getConfiguration().getString(TurbineConstants.ACTION_LOGOUT_DEFAULT , "").equals("LogoutUser"))
 		//data.setScreen(Turbine.getConfiguration().getString( TurbineConstants.SCREEN_HOMEPAGE));
 		data.setScreenTemplate("Login.vm");

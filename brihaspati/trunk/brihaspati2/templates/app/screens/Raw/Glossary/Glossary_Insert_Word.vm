@@ -148,7 +148,7 @@ $!data.getMessage()
   </table>
 #if($mode=="Insert")
 
- <form name=frm method="post" action="$link.setPage("call,Glossary,Glossary_Insert_Word.vm").setAction("Glossary_Action")">
+ <form name=frm method="post" action="$link.setPage("call,Glossary,Glossary_Insert_Word.vm").setAction("Glossary_Action").addPathInfo("count","2")">
     <table bgcolor="$ui.tableColor" width=100%>
       <tr>
           #formCell ("$brih_word <font color=Red>*</font>" "WORD" "")

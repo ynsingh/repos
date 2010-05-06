@@ -62,7 +62,7 @@ $!data.getMessage()
 	<tr>
 		#if($data.getUser().getUserName()!="guest")
 			<td>
-			       <a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("mode","compose").addPathInfo("course_id",$workgroup).addPathInfo("count",$tdcolor)>$LocalMail_MailContent_msg1</a>
+			       <a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("mode","compose").addPathInfo("course_id",$workgroup).addPathInfo("count",$tdcolor).addPathInfo("check","more")>$LocalMail_MailContent_msg1</a>
 			</td>
 		#end
 		#if($mode=="All")

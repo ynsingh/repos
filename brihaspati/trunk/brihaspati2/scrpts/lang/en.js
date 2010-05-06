@@ -45,7 +45,7 @@ HTMLArea.I18N = {
 
 	msg: {
 		"Path":         "Path",
-		"TEXT_MODE":    "You are in TEXT MODE.  Use the [<>] button to switch back to TEXTAREA.",
+//		"TEXT_MODE":    "You are in TEXT MODE.  Use the [<>] button to switch back to TEXTAREA.",
 
 		"IE-sucks-full-screen" :
 		// translate here

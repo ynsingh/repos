@@ -12,10 +12,10 @@
 <head>
 #if($mode!="reply")
 <script type="text/javascript">
-        _editor_url = "../../../../../../../../../scrpts/";
+        _editor_url = "../../../../../../../../../../../scrpts/";
         _editor_lang = "en";
 </script>
-<script type="text/javascript" src="../../../../../../../../../scrpts/htmlarea.js"></script>
+<script type="text/javascript" src="../../../../../../../../../../../scrpts/htmlarea.js"></script>
 #else
 <script type="text/javascript">
         _editor_url = "../../../../../../../../../../../../../scrpts/";
@@ -187,7 +187,7 @@ $!data.getMessage()
 			</tr>
 			<tr>
 				<td bgcolor="$ui.tableColor">
-				<b><font face="$ui.sansSerifFonts">$brih_msg2 </font> </b><br>Before click on Post button, use this [<blink>< ></blink>] button
+				<b><font face="$ui.sansSerifFonts">$brih_msg2 </font> </b>
 				</td>
 				<td>
 				<font face="$ui.sansSerifFonts" size=4><textarea id="ta" name="message" rows=10 cols=80 wrap=physical>$!rep_msg</textarea></font>

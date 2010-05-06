@@ -367,7 +367,7 @@ function checkField(frm,field)
                 frm.submit();
         }
         else
-                alert("Please fill the Mandatory(*) Fields and Click this [<>] button !!");
+                alert("Please fill the Mandatory(*) Fields.!!");
 	editor.setMode("wysiwyg");
 }
 function deleteConfirm(frm,field)

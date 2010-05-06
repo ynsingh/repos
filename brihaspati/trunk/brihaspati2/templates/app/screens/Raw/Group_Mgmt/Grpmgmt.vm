@@ -247,7 +247,6 @@ $!data.getMessage()
                         <tr>
                                 <td>
                                 &nbsp;<b>$brih_default $brih_desc :</b>
-				<br>Before click on Save button,<br> use this [<blink>< ></blink>] button
                                 </td>
                                 <td width="2">
                                 <textarea id="ta" name="groupdesc"  rows=10 cols=80 ></textarea>
@@ -335,6 +334,7 @@ $!data.getMessage()
 }
 function checkField(frm,field)
 {
+	editor.setMode("textmode");
         if(frm.groupname.value!="")
         {
                 frm.actionName.value=field.name;
@@ -342,6 +342,7 @@ function checkField(frm,field)
         }
         else
                 alert("Please fill the Mandatory(*) Fields !!");
+	editor.setMode("wysiwyg");
 }
 function checkselect(frm,field)
 {
@@ -412,6 +413,7 @@ function Changegroup(frm,field)
 }
 function checkField2(frm,field)
 {
+	editor.setMode("textmode");
         if((frm.groupname.value!="") && (frm.groupno.value!="") && (frm.studentno.value!=""))
         {
                 if((frm.studentno.value>=1) && (frm.groupno.value>=1))
@@ -424,6 +426,7 @@ function checkField2(frm,field)
         }
         else
                 alert("Please fill the Mandatory(*) Fields !!");
+	editor.setMode("wysiwyg");
 }
 function checkField3(frm,field)
 {
@@ -459,7 +462,7 @@ function checkField3(frm,field)
                 }
                 else
                 {
-                        alert("Please fill the Mandatory(*) Fields and click this [<>] button!!");
+                        alert("Please fill the Mandatory(*) Fields.!!");
                 }
           }
 	editor.setMode("wysiwyg");
