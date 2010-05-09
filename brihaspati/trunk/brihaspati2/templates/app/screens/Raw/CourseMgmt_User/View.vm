@@ -118,7 +118,7 @@ $page.setBgColor($ui.bgcolor)
 #else
 	<div style="background-color:$ui.tableColor">
 #end
-	<a href=$link.setPage("call,Bookmarks,AddBookmarks.vm").addPathInfo("mode","Course").addPathInfo("name","$course").addPathInfo("location","$topic").addPathInfo("count","1") style=text-decoration:none> #if($lang =="english) $WikiSave $brih_as $brih_Bookmark #else $brih_Bookmark $brih_Of2 $brih_as $brih_in $WikiSave #end </a>
+	<a href=$link.setPage("call,Bookmarks,AddBookmarks.vm").addPathInfo("mode","Course").addPathInfo("name","$course").addPathInfo("location","$topic").addPathInfo("count","1") style=text-decoration:none> #if($lang =="english") $WikiSave $brih_as $brih_Bookmark #else $brih_Bookmark $brih_Of2 $brih_as $brih_in $WikiSave #end </a>
 </div>
   	<div style="background-color:$ui.menuColor;text-align:left">
 		<H3>$brih_desc</H3>
