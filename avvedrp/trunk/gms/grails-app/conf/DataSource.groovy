@@ -1,8 +1,8 @@
 dataSource {
 	pooled = true
 	driverClassName = "com.mysql.jdbc.Driver"
-	username = "user"
-	password = "password"
+	username = "root"
+	password = "devima"
 }
 hibernate {
     cache.use_second_level_cache=true
@@ -14,14 +14,14 @@ environments {
 	development {
 		dataSource {
 			dbCreate = "update" // one of 'create', 'create-drop','update'
-				url = "jdbc:mysql://localhost/gmsiitk"
+				url = "jdbc:mysql://192.168.18.103/gms_Ver1"
 		}
 	}
 	
 	production {
 		dataSource {
 			dbCreate = "update"
-				url = "jdbc:mysql://localhost/gmsiitk"
+				url = "jdbc:mysql://localhost/gms_Ver"
 		}
 	}
 }

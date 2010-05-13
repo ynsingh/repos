@@ -3,6 +3,9 @@ class GrantPeriod {
 	
 	String name;
 	char activeYesNo;
+	char defaultYesNo
+	Date startDate;
+	Date endDate;
 	String createdBy;
 	Date createdDate;
 	String modifiedBy;
@@ -10,6 +13,7 @@ class GrantPeriod {
 	
 	static constraints = {
 		name(blank:false, unique:true)
+		defaultYesNo(nullable: false)
 		createdDate(nullable: true)
 		modifiedDate(nullable: true)
 		

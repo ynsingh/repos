@@ -7,8 +7,28 @@ class InvestigatorController {
     def allowedMethods = [delete:'POST', save:'POST', update:'POST']
 
     def list = {
-        if(!params.max) params.max = 10
-        [ investigatorInstanceList: Investigator.list( params ) ]
+    
+        def investigatorInstanceList
+        def investigatorService=new InvestigatorService()
+        println"@@@@@params@@@@@@"+params
+        String subQuery ="";
+       GrailsHttpSession gh=getSession()
+        if(params.sort != null && !params.sort.equals(""))
+        	subQuery=" order by I."+params.sort
+        if(params.order != null && !params.order.equals(""))
+        	subQuery =subQuery+" "+params.order
+      
+       if(gh.getValue("Role")=="ROLE_ADMIN")
+       {
+        	investigatorInstanceList = investigatorService.getAllInvestigators(subQuery)
+        }
+        else
+        {
+        	
+        	investigatorInstanceList =investigatorService.getInvestigatorsWithParty(gh.getValue("PartyID"),subQuery)
+        }
+        
+        [ investigatorInstanceList: investigatorInstanceList ]
     }
 
     def show = {
@@ -81,6 +101,8 @@ class InvestigatorController {
     		
         def investigatorInstance = new Investigator()
         GrailsHttpSession gh=getSession()
+        //Puting help page into session
+    	gh.putValue("Help","Investigator.htm")
         def partyinstance=Party.get(gh.getValue("Party"))
        
         def department = PartyDepartment.find("from PartyDepartment P where P.party.id="+partyinstance.id)
@@ -94,7 +116,8 @@ class InvestigatorController {
     def save = {
         def investigatorInstance = new Investigator(params)
         println "--------------------"+params.institution
-        investigatorInstance.party = Party.get(params.institution)
+        def partyinstance = Party.get(params.institution)
+        investigatorInstance.party = partyinstance
         if(!investigatorInstance.hasErrors() && investigatorInstance.save()) {
             flash.message = "Investigator ${investigatorInstance.name} created"
             def userInstance = new User()
@@ -108,13 +131,11 @@ class InvestigatorController {
             userInstance.passwd = authenticateService.encodePassword(userName)
             userInstance.email = investigatorInstance.email
             userInstance.enabled=true
-           // userInstance.save()
+            //userInstance.save()
             def userService = new UserService()
             def userPiInstance = userService.saveNewPi(userInstance)
             def userMapInstance = new UserMap()
             userMapInstance.user = userInstance
-            println "userInstance"+userInstance
-            println "userInstance"+userMapInstance.user
             userMapInstance.party = Party.get(params.institution)
             userMapInstance.createdBy="admin"
             userMapInstance.modifiedBy="admin"
@@ -126,7 +147,7 @@ class InvestigatorController {
             redirect(action:list,id:investigatorInstance.id)
         }
         else {
-            render(view:'create',model:[investigatorInstance:investigatorInstance])
+            render(view:'create',model:[investigatorInstance:investigatorInstance,partyinstance:partyinstance])
         }
     }
     def updateSelect = 

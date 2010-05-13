@@ -50,9 +50,9 @@ class GrantExpenseService {
 	public GrantExpense[] getGrantExpenseByProjectsAndExpenseDateRange(def grantExpenseId,def projectInstance,def dateFrom,def dateTo){
 		def grantExpenseInstanceList
 		def sdf1 = new SimpleDateFormat('yyyy/MM/dd')
-		if(!grantExpenseId){
-			String query = "from GrantExpense GE where GE.projects.id = "+projectInstance.id+" and GE.dateOfExpense  "+
-				"between '"+sdf1.format(dateFrom)+"' and '"+sdf1.format(dateTo)+"' order by GE.dateOfExpense" 
+		if(grantExpenseId == null){
+			String query = "from GrantExpense GE where GE.projects.id = "+projectInstance.id+" and DATE_FORMAT(GE.dateOfExpense,'%Y/%m/%d')  "+
+				"between '"+sdf1.format(dateFrom)+"' and '"+sdf1.format(dateTo)+"'order by GE.dateOfExpense" 
 			println "*****Query "+query
 			grantExpenseInstanceList = GrantExpense.findAll(query)
 		}

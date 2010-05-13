@@ -115,9 +115,6 @@
                 </div>
                 <div class="buttons">
                     <span class="button"><g:actionSubmit class="save" value="Update" onClick="return validateParty()" /></span>
-                     <g:if test="${session.Role == 'ROLE_ADMIN'}"> 
-                    <span class="button"><g:actionSubmit class="delete" onclick="return confirm('Are you sure?');" value="Delete" /></span>
-                    	</g:if>
                 </div>
             </g:form>
        

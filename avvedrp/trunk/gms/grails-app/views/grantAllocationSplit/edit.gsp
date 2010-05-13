@@ -60,6 +60,7 @@ width: 500px;
                 <div class="dialog">
                     <table>
                         <tbody>
+  <g:javascript library="scriptaculous" />   
                         
                           
                             
@@ -77,10 +78,35 @@ width: 500px;
                                 <td valign="top" class="name">
                                     <label for="accountHead">Account Head:</label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean:grantAllocationSplitInstance,field:'accountHead','errors')}">
-                                    <g:select optionKey="id" from="${AccountHeads.list()}" optionValue="code" name="accountHead.id" value="${grantAllocationSplitInstance?.accountHead?.id}" ></g:select>
+                                 <g:if test="${grantAllocationSplitInstance.accHead != null}">
+                                <td valign="top" class=" " value ${hasErrors(bean:grantAllocationSplitInstance,field:'accHead','errors')}">
+                                    <g:select optionKey="id" from="${AccountHeads.findAll('from AccountHeads AH where AH.parent.id is NULL and AH.activeYesNo=\'Y\' order by AH.name')}" optionValue="name" name="accountHead.id" value="${grantAllocationSplitInstance?.accHead?.id}" onchange="${remoteFunction(controller:'grantAllocationSplit',action:'updateSubAccount',update:'subAccountHead',  params:'\'accountHead=\' + this.value' )}"></g:select>
                                 </td>
+                                </g:if>
+                                <g:else>
+                                <td valign="top" class=" " value ${hasErrors(bean:grantAllocationSplitInstance,field:'accountHead','errors')}">
+                                    <g:select optionKey="id" from="${AccountHeads.findAll('from AccountHeads AH where AH.parent.id is NULL and AH.activeYesNo=\'Y\' order by AH.name')}" optionValue="name" name="accountHead.id" value="${grantAllocationSplitInstance?.accountHead?.id}" onchange="${remoteFunction(controller:'grantAllocationSplit',action:'updateSubAccount',update:'subAccountHead',  params:'\'accountHead=\' + this.value' )}"></g:select>
+                                </td>
+                                </g:else>
+                               </tr> 
+                            <tr >
+                             <td valign="top" class="name" value ${hasErrors(bean:grantAllocationSplitInstance,field:'subAccHead','errors')}">
+                              <label for="subaccountHead">Sub Account Head:</label>
+                             </td>
                             
+                                <td valign="top" class="name">
+                            <div id="subAccountHead">
+							    <g:select 																	       
+							       name="subAccountHead" 
+							       value="" 
+								   optionKey="id" optionValue="name" from="${accountHeadInstanceList}" noSelection="['null':'-Select-']"  value="${grantAllocationSplitInstance?.subAccHead?.id}" >
+								</g:select>
+							
+							</div>
+							</td>
+							
+                             </tr> 
+                            <tr >
                             
                                 <td valign="top" class="name">
                                     <label for="amount">Amount(Rs):</label>

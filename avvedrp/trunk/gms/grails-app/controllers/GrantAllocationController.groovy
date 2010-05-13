@@ -1,5 +1,18 @@
 	import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 	import java.util.Iterator;
+	import java.text.*;
+	import java.util.*;
+	import ConvertToIndainRS
+	
+	import java.sql.*;
+
+	import java.io.*
+	import net.sf.jasperreports.engine.JRException;
+	import net.sf.jasperreports.engine.JasperExportManager;
+	import net.sf.jasperreports.engine.JasperFillManager;
+	import net.sf.jasperreports.engine.JasperPrint;
+	import net.sf.jasperreports.engine.JasperRunManager;
+	import javax.servlet.ServletOutputStream;
 
 class GrantAllocationController extends GmsController {
 
@@ -15,7 +28,7 @@ class GrantAllocationController extends GmsController {
 
     def list = {
     	GrailsHttpSession gh=getSession()
-    		
+    	gh.putValue("Help","Fund_Allocation.htm")
         if(!params.max) params.max = 10
         
     	def dataSecurityService = new DataSecurityService()
@@ -133,29 +146,44 @@ class GrantAllocationController extends GmsController {
         return ['grantAllocationInstance':grantAllocationInstance,'grantAllocationInstanceList':grantAllocationInstanceList]
     }
     
-    def fundAllot = {
-    		
+    def fundAllot = 
+    {
     		GrailsHttpSession gh=getSession()
-    		
         	gh.putValue("fromUrL", "fundAllot");
         	gh.putValue("fromID", params.id);
-        def grantAllocationInstance = new GrantAllocation()
-        grantAllocationInstance.properties = params
+        	
+        	def grantAllocationInstance = new GrantAllocation()
+        	grantAllocationInstance.properties = params
         
-        def grantAllocationService = new GrantAllocationService()
-    		 def dataSecurityService = new DataSecurityService()
+        	def grantAllocationService = new GrantAllocationService()
+        	def dataSecurityService = new DataSecurityService()
     		String subQuery="";
             if(params.sort != null && !params.sort.equals(""))
-           	subQuery=" order by GA."+params.sort
-           if(params.order != null && !params.order.equals(""))
-           	subQuery =subQuery+" "+params.order
+            	subQuery=" order by GA."+params.sort
+            if(params.order != null && !params.order.equals(""))
+            	subQuery =subQuery+" "+params.order
            
-         def grantAllocationInstanceList=grantAllocationService.getGrantAllocations(gh.getValue("PartyID"),subQuery)
+            def grantAllocationInstanceList=grantAllocationService.getGrantAllocations(gh.getValue("PartyID"),subQuery)
          
-         def projectsList=dataSecurityService.getProjectsForLoginUser(gh.getValue("PartyID"))
+            def projectsList=dataSecurityService.getProjectsForLoginUser(gh.getValue("PartyID"))
+            def projectsPIMapInstanceList=[]
+            //get PI of projects
+            for(int i=0;i<grantAllocationInstanceList.size();i++)
+            {
+            	println "grantAllocationInstanceList"+ grantAllocationInstanceList[i].projects.id
+            	def projectsPIMapInstance = dataSecurityService.getProjectsPIMap(grantAllocationInstanceList[i].projects.id);
+            	println "PIMAp"+ projectsPIMapInstance
+            	projectsPIMapInstanceList.add(projectsPIMapInstance)
+            }
+            println "projectsPIMapInstanceList"+ projectsPIMapInstanceList
         	def partyinstance=Party.get(gh.getValue("Party"))
         	println partyinstance
-        return ['grantAllocationInstance':grantAllocationInstance,'grantAllocationInstanceList':grantAllocationInstanceList,'projectsList':projectsList,'partyinstance':partyinstance]
+        	ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
+        	return ['grantAllocationInstance':grantAllocationInstance,
+                'grantAllocationInstanceList':grantAllocationInstanceList,
+                'projectsList':projectsList,'partyinstance':partyinstance,
+                'projectsPIMapInstanceList':projectsPIMapInstanceList,
+                'currencyFormat':currencyFormatter]
     }
         
     def funtSave = {
@@ -214,16 +242,29 @@ class GrantAllocationController extends GmsController {
 	        String subQuery="";
             if(params.sort != null && !params.sort.equals(""))
            	subQuery=" order by GA."+params.sort
-           if(params.order != null && !params.order.equals(""))
+           	if(params.order != null && !params.order.equals(""))
            	subQuery =subQuery+" "+params.order
 	        def grantAllocationInstanceList = grantAllocationService.getSubGrantAllocationsChild(new Integer(params.id),getUserPartyID(),subQuery)
 	        double sumAmountAllocated = 0.00
+	        def projectsPIMapInstanceList=[]
 	        for(int i=0;i<grantAllocationInstanceList.size();i++)
 	        {
 	        	sumAmountAllocated = sumAmountAllocated + grantAllocationInstanceList[i].amountAllocated
+	        	//get PI of projects
+	        	println "grantAllocationInstanceList"+ grantAllocationInstanceList[i].projects.id
+            	def projectsPIMapInstance = dataSecurityService.getProjectsPIMap(grantAllocationInstanceList[i].projects.id);
+    	        println "PIMAp"+ projectsPIMapInstance
+   	        	projectsPIMapInstanceList.add(projectsPIMapInstance)
 	        }
+
 	        grantAllocationInstance.totAllAmount = sumAmountAllocated
-	        return ['grantAllocationInstance':grantAllocationInstance,'projectInstance':projectInstance,'grantAllocationInstanceList':grantAllocationInstanceList,'partyInstance':partyInstance,'grantAllocation':grantAllocation ]
+	        ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
+	        return ['grantAllocationInstance':grantAllocationInstance,
+	                'projectInstance':projectInstance,
+	                'grantAllocationInstanceList':grantAllocationInstanceList,
+	                'partyInstance':partyInstance,'grantAllocation':grantAllocation,
+	                'projectsPIMapInstanceList':projectsPIMapInstanceList,
+	                'currencyFormat':currencyFormatter]
     	}
     	 /* }
     
@@ -300,8 +341,22 @@ class GrantAllocationController extends GmsController {
 	       	subQuery =subQuery+" "+params.order
 			
 			def grantAllocationInstanceList = grantAllocationService.getValidGrantAllocationsForProjectAndParty("("+projectInstance.id.toString()+")","("+partyInstance.id.toString()+")",subQuery)
-        
-			return ['grantAllocationInstance':grantAllocationInstance,'projectInstance':projectInstance,'grantAllocationInstanceList':grantAllocationInstanceList,'partyInstance':partyInstance]
+			 def projectsPIMapInstanceList=[]
+            //get PI of projects
+            for(int i=0;i<grantAllocationInstanceList.size();i++)
+            {
+            	println "grantAllocationInstanceList"+ grantAllocationInstanceList[i].projects.id
+            	def projectsPIMapInstance = dataSecurityService.getProjectsPIMap(grantAllocationInstanceList[i].projects.id);
+            	println "PIMAp"+ projectsPIMapInstance
+            	projectsPIMapInstanceList.add(projectsPIMapInstance)
+            }
+	        ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
+			return ['grantAllocationInstance':grantAllocationInstance,
+			        'projectInstance':projectInstance,
+			        'grantAllocationInstanceList':grantAllocationInstanceList,
+			        'partyInstance':partyInstance,
+			        'projectsPIMapInstanceList':projectsPIMapInstanceList,
+			        'currencyFormat':currencyFormatter]
 		}
     }
 	/*1. Get the total Amount allocated during the sub allotment and the new amount Allocated that entered 
@@ -344,10 +399,20 @@ class GrantAllocationController extends GmsController {
 			
 			Integer duplicateCheck = grantAllocationService.checkDuplicateFundAllot(grantAllocationInstance);
 			println "+++++++++++++++++++++++++++++++++++duplicateCheck++++++++++++++++++++++++" + duplicateCheck
+			println"((((grantallocproj))))"+grantAllocationInstance.projects.parent.id
 			if( duplicateCheck == 0 || duplicateCheck == null)
 			{
 				def GrantAllocation = grantAllocationService.saveSubGrantAllocation(grantAllocationInstance)
-				flash.message = "New Grant Allocation Created"
+				println"+++++++++++GrantAllocation+++++++++"+ GrantAllocation
+				
+				if(GrantAllocation == null)
+				{
+				flash.message = "Headwise allocation is not done.So couldnot allocate"
+				}
+				else
+				{
+					flash.message = "New allocation created "
+				}
 			}
 			else
 			{
@@ -383,8 +448,7 @@ class GrantAllocationController extends GmsController {
 		//grantAllocationInstance.granter = granterInstance
 //                    	    grantAllocationInstance.save();
 		def grantAllocationService = new GrantAllocationService()
-        def GrantAllocation = grantAllocationService.saveSubGrantAllocation(grantAllocationInstance)
-            	
+        def GrantAllocation = grantAllocationService.subGrantSaveExt(grantAllocationInstance)	
         flash.message = "New Grant Allocation Created"
         redirect(action:'subGrantAllotExt',id:grantAllocationInstance.projects.id)
        
@@ -779,7 +843,9 @@ class GrantAllocationController extends GmsController {
                 redirect(action:list)
             }
           
-            else { return [ projectInstance : projectInstance,sumAmount:sumAmount,grantAllocationSplit:grantAllocationSplit,resultPiechart:resultPiechart,resultLinechart:resultLinechart,rangelimit:rangelimit,sumGrantRecieve:sumGrantRecieve]}
+            else {
+            	ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
+            	return [ projectInstance : projectInstance,sumAmount:sumAmount,grantAllocationSplit:grantAllocationSplit,resultPiechart:resultPiechart,resultLinechart:resultLinechart,rangelimit:rangelimit,sumGrantRecieve:sumGrantRecieve,'currencyFormat':currencyFormatter]}
         }
         
         
@@ -792,5 +858,102 @@ class GrantAllocationController extends GmsController {
 
     		return[projectInstanceList:projectInstanceList]
         }
+//  For State of Accounts Report
+    def reportView = {}
+    /* Get sql connection from properties file */
+    private Connection getSqlConnection(){
+    	Properties props = new Properties()
+    	def webRootDir = servletContext.getRealPath("/")
+         println webRootDir
+    	
+    	FileInputStream fis = new FileInputStream(webRootDir+ "/images/gmsDb.properties" )
+    	props.load( fis )
+    	fis.close()
+    	
+    	String url = props.getProperty( "gmsDbUrl" )
+    	String user = props.getProperty("gmsDbUSer")
+    	String password = props.getProperty("gmsDbPassword")
+    	String driver = props.getProperty("gmsDbDriver")
+    	
+    	Class.forName(driver);
+        Connection con = DriverManager.getConnection (url,user,password);
+    	return con
+    }
+	
+	
+	
+	def showReports={
+				File reportFile
+				println("Intim --->"+params)
+				def webRootDir = servletContext.getRealPath("/")
+				
+					reportFile = new File(webRootDir+ "/reports/StatementOFAccounts.jasper")
+					Map parameters = new HashMap();
+										
+				GrailsHttpSession gh=getSession()
+				println "priject id from session" +gh.getValue("ProjectID")
+				println "test =="	
+					println "inner =="	
+						def ProjectID=gh.getValue("ProjectID")
+					parameters.put("grantPeriod",params.grantPeriod)
+					parameters.put("projectID",ProjectID)
+					parameters.put("Path",webRootDir+"/reports/")
+					
+					def sql = getSqlConnection()
+					
+					byte[] bytes = 
+						JasperRunManager.runReportToPdf(
+								reportFile.getPath(), 
+							parameters, 
+							sql
+							);
+	
+					response.setContentType("application/pdf");
+					response.setContentLength(bytes.length);
+					ServletOutputStream ouputStream = response.getOutputStream();
+					ouputStream.write(bytes, 0, bytes.length);
+					sql.close()
+					ouputStream.flush();
+					ouputStream.close();
+				
+	}
+	def utilizationCertificate={
+			File reportFile
+			println("Intimuti --->"+params)
+			def webRootDir = servletContext.getRealPath("/")
+			
+				reportFile = new File(webRootDir+ "/reports/UtilizationCertificate.jasper")
+				Map parameters = new HashMap();
+									
+			GrailsHttpSession gh=getSession()
+			println "priject id from session" +gh.getValue("ProjectID")
+			println "test =="	
+				println "inner =="	
+					def ProjectID=gh.getValue("ProjectID")
+				parameters.put("grantPeriod",params.grantPeriod)
+				parameters.put("projectID",ProjectID)
+				parameters.put("Path",webRootDir+"/reports/")
+				
+				def sql = getSqlConnection()
+				
+				byte[] bytes = 
+					JasperRunManager.runReportToPdf(
+							reportFile.getPath(), 
+						parameters, 
+						sql
+						);
+				println "parameters =="	+ parameters
+				response.setContentType("application/pdf");
+				response.setContentLength(bytes.length);
+				ServletOutputStream ouputStream = response.getOutputStream();
+				ouputStream.write(bytes, 0, bytes.length);
+				sql.close()
+				ouputStream.flush();
+				ouputStream.close();
+			
+}
+
+
+
 
 }

@@ -1,3 +1,7 @@
+import java.text.*;
+import java.util.*;
+import ConvertToIndainRS
+import grails.converters.*
 class GrantAllocationSplitController extends GmsController  {
     
     def index = { redirect(action:list,params:params) }
@@ -38,7 +42,8 @@ class GrantAllocationSplitController extends GmsController  {
             println "grantAllocationSplitList"+grantAllocationSplitList
             grantAllocationSplitInstance.properties = params
             grantAllocationSplitInstance.projects=projectsInstance;
-            return ['grantAllocationSplitInstance':grantAllocationSplitInstance,'grantAllocationInstanceList':grantAllocationInstanceList,'grantAllocationSplitDetailsList':grantAllocationSplitDetailsList]
+    		ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();	 
+            return ['grantAllocationSplitInstance':grantAllocationSplitInstance,'grantAllocationInstanceList':grantAllocationInstanceList,'grantAllocationSplitDetailsList':grantAllocationSplitDetailsList,'currencyFormat':currencyFormatter]
     		}
     }
 
@@ -47,7 +52,7 @@ class GrantAllocationSplitController extends GmsController  {
         def grantAllocationSplitInstance = grantAllocationSplitService.getGrantAllocationSplitById(new Integer(params.id))
 
         if(!grantAllocationSplitInstance) {
-            flash.message = "GrantAllocationSplit not found with id ${params.id}"
+            flash.message = " GrantAllocationSplit not found with id ${params.id}"
             redirect(action:list)
         }
         else { return [ grantAllocationSplitInstance : grantAllocationSplitInstance ] }
@@ -73,7 +78,11 @@ class GrantAllocationSplitController extends GmsController  {
 		def grantAllocationSplitService = new GrantAllocationSplitService()
         def grantAllocationSplitInstance = grantAllocationSplitService.getGrantAllocationSplitById(new Integer(params.id))
            def dataSecurityService = new DataSecurityService()
+		def accountHeadInstanceList 
+		
 		//checking  whether the user has access to the given projects
+		println "--------------params ------------------" + params
+		def accountHeadsService =  new AccountHeadsService()
 		if(dataSecurityService.checkForAuthorisedAcsessInProjects(grantAllocationSplitInstance.projects.id,new Integer(getUserPartyID()))==0)
 		{
 			
@@ -83,20 +92,59 @@ class GrantAllocationSplitController extends GmsController  {
 		}
 		else
 		{
-        if(!grantAllocationSplitInstance) {
+        if(!grantAllocationSplitInstance) 
+        {
             flash.message = "GrantAllocationSplit not found with id ${params.id}"
             redirect(action:list)
         }
-        else {
-            return [ grantAllocationSplitInstance : grantAllocationSplitInstance ]
+        else 
+        {
+    		// check whether the accounthead id is exists
+    		if(grantAllocationSplitInstance.accountHead)
+            {
+    			/**
+        		 * 1. Check  whether the account head is sub account head)
+        		 * 2. If its sub find the main account head)
+        		 */
+        		println "==============sub accHead================"+grantAllocationSplitInstance.accountHead
+    			if(grantAllocationSplitInstance.accountHead.parent) //if null its main accounthead.
+    			{
+    				def subAccHead =  grantAllocationSplitInstance.accountHead
+    				grantAllocationSplitInstance.subAccHead = subAccHead
+    				println "==============sub accHead================"+grantAllocationSplitInstance.subAccHead.code
+    				
+    				def accountHead = accountHeadsService.getParentAccountHead(grantAllocationSplitInstance.subAccHead)
+    				println "==============accountHead================" + accountHead.id
+    				grantAllocationSplitInstance.accHead = accountHead
+    				accountHeadInstanceList = accountHeadsService.getSubAccountHeads(new Integer(accountHead.id.toString()))
+    				println "==============after================" 
+    			}
+    			else
+    			{
+    				accountHeadInstanceList = accountHeadsService.getSubAccountHeads(new Integer(grantAllocationSplitInstance.accountHead.id.toString()))
+    			}
+    		
+            }
         }
     }
+		render(view:'edit',model:['grantAllocationSplitInstance':grantAllocationSplitInstance,'accountHeadInstanceList':accountHeadInstanceList])
     }
 
     def update = {
 		def grantAllocationSplitService = new GrantAllocationSplitService()
 		def grantAllocationSplitInstance = grantAllocationSplitService.updateGrantAllocationSplit(params)
 		if(grantAllocationSplitInstance) {
+			println "==============params.getValue================" +params.subAccountHead
+			if((params.subAccountHead != "null") && (params.subAccountHead))
+        	{
+				println "==============inside================" +params.subAccountHead
+				grantAllocationSplitInstance.accountHead = AccountHeads.get(new Integer(params.subAccountHead))
+        	}
+			if((!params.subAccountHead) && (params.subAccountHead == "null") )
+        	{
+        		println "==============else================" 
+        		grantAllocationSplitInstance.accountHead = AccountHeads.get(grantAllocationSplitInstance.accountHead.id)
+        	}
 			if(grantAllocationSplitInstance.isSaved){
 				flash.message = "Grant Heads Updated"
 				
@@ -143,12 +191,14 @@ class GrantAllocationSplitController extends GmsController  {
         grantAllocationSplitInstance.unAllocatedAmt = new Double(params.UnAll)
         grantAllocationSplitInstance.projects=projectsInstance;
         grantAllocationSplitInstance.grantAllocation=grantAllocationInstance;
-        return ['grantAllocationSplitInstance':grantAllocationSplitInstance,'grantAllocationInstance':grantAllocationInstance,'grantAllocationInstanceList':grantAllocationInstanceList]
+       
+        ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
+        return ['grantAllocationSplitInstance':grantAllocationSplitInstance,'grantAllocationInstance':grantAllocationInstance,'grantAllocationInstanceList':grantAllocationInstanceList,'currencyFormat':currencyFormatter]
 		}
     }
 
     def save = {
-    		println params
+    		println "------------------------------"+params.subAccountHead
         def grantAllocationSplitInstance = new GrantAllocationSplit(params)
         if(!grantAllocationSplitInstance.hasErrors() ) {
             def grantAllocationInstance = GrantAllocation.get(new Integer(params.grantAllotId))
@@ -157,11 +207,31 @@ class GrantAllocationSplitController extends GmsController  {
         	grantAllocationSplitInstance.modifiedBy="admin"
         	grantAllocationSplitInstance.createdDate=new Date()
             grantAllocationSplitInstance.grantAllocation=grantAllocationInstance;
-            println "grantAllocationSplitInstance.grantAllocation"+grantAllocationSplitInstance.grantAllocation
+            println "grantAllocationSplitInstance"+grantAllocationSplitInstance.grantPeriod
+           // def grantAllocationSplitInstanceCheck = GrantAllocationSplit.findAll("from GrantAllocationSplit GAS where GAS.accountHead.id='"+grantAllocationSplitInstance.accountHead.id+"' and GAS.grantPeriod.id= '"+grantAllocationSplitInstance.grantPeriod.id+"' and GAS.projects.id="+params.projectId)
+            //println "grantAllocationSplitInstanceCheck"+grantAllocationSplitInstanceCheck
+            println "grantAllocationSplitInstance"+grantAllocationSplitInstance.accountHead
         	def grantAllocationSplitService = new GrantAllocationSplitService()
-        	
+            println "params.subAccountHead"+params.subAccountHead
+            if((!params.subAccountHead) && (params.subAccountHead == "null") )
+        	{
+            	 println "inside"
+            	 grantAllocationSplitInstance.accountHead = AccountHeads.get(new Integer(params.accountHead.id))
+        	}
+        	if((params.subAccountHead != "null") && (params.subAccountHead))
+        	{
+        		println "inside else"
+        		grantAllocationSplitInstance.accountHead = AccountHeads.get(new Integer(params.subAccountHead))
+        		
+        	}
+        	def grantAllocationSplitInstanceCheck =grantAllocationSplitService.validateGrantAllocationSplit(grantAllocationSplitInstance,params.projectId)
+        	if(!grantAllocationSplitInstanceCheck)
+        	{
+        	println "grantAllocationSplitInstanceCheck"+grantAllocationSplitInstanceCheck
         	grantAllocationSplitInstance =grantAllocationSplitService.saveGrantAllocationSplit(grantAllocationSplitInstance,new Integer(params.projectId)) 
-        	
+        	}
+        	else
+        	{flash.message = "Grant can not Allocated to Heads"}
             flash.message = "Grant is Allocated to Heads"
             	  redirect(action:list,id:params.projectId)
         }
@@ -169,4 +239,20 @@ class GrantAllocationSplitController extends GmsController  {
             render(view:'create',model:[grantAllocationSplitInstance:grantAllocationSplitInstance])
         }
     }
+    def updateSubAccount =
+    { 
+    		println "---------------on call--------------------" +params
+    		if(params.accountHead)
+        	{
+    	    	def subaccountHead = AccountHeads.findAll("from AccountHeads AH where AH.activeYesNo='Y' and AH.parent.id="+params.accountHead)
+    	    	println "lllllllllllww" +subaccountHead;
+    	    	render (template:"subAccHead", model : ['accountHead' : subaccountHead])
+    	    	println "after" +subaccountHead;  
+        	}
+        	else
+        	{
+        		render (template:"notSelected")
+        	}
+    }
+
 }

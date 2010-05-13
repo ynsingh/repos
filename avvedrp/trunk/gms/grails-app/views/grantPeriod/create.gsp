@@ -51,7 +51,23 @@
                                 </td>
                             </tr> 
                         
+                             <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="startDate">Start Date:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:grantPeriodInstance,field:'startDate','errors')}">
+                                <calendar:datePicker name="startDate" defaultValue="${new Date()}" value="${grantPeriodInstance?.startDate}" dateFormat= "%d/%m/%Y"/>
+                                </td>
+                            </tr> 
                             
+                            
+                             <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="endDate">End Date:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:grantPeriodInstance,field:'endDate','errors')}">
+                                    <calendar:datePicker name="endDate" value="${grantPeriodInstance?.endDate}" defaultValue="${new Date()}"  dateFormat= "%d/%m/%Y"/>
+                                </td>
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
@@ -61,6 +77,16 @@
                                          <g:select name="activeYesNo" from="${['Y', 'N']}"  value="${fieldValue(bean:grantPeriodInstance,field:'activeYesNo')}" />
                                 </td>
                             </tr> 
+                            
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="defaultYesNo">Default:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:grantPeriodInstance,field:'defaultYesNo','errors')}">
+                                         <g:select name="defaultYesNo" from="${['Y', 'N']}"  value="${fieldValue(bean:grantPeriodInstance,field:'defaultYesNo')}" />
+                                </td>
+                            </tr> 
+                        
                         
                            
                         

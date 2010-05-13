@@ -22,15 +22,17 @@
      if((document.getElementById("amount").value)=='')
     {
     alert("Please enter Proper Amount  ");
+    
     return false;
     }
     
      if(eval(document.getElementById("amount").value)<=0)
     {
     alert("Please enter Proper Amount  ");
+    
     return false;
     }
-   if((parseFloat(document.getElementById("amount").value)) > parseFloat(document.getElementById("unAllocatedAmt").value)){
+   if((parseFloat(document.getElementById("amount").value)) > parseFloat(document.getElementById("UnAll").value)){
   		alert("Please enter Amount Less Than Or Equal To Unallocated Amount  ");
   		document.getElementById("amount").focus();
     	return false;
@@ -48,7 +50,7 @@
         </div>
             <div class="proptable"> 
         
-                 <table >
+             <table >
                    <tr>
                     <td valign="top">
                        <label for="project">Projects:</label>
@@ -66,7 +68,8 @@
                                     <label for="party"> Allocated Amount (Rs):</label>
                                 </td>
                                 <td valign="top" >
-                                    <strong><g:formatNumber number="${grantAllocationSplitInstance.projects.totAllAmount}" format="###,##0.00" /> </strong> </td>
+                                    <strong>${currencyFormat.ConvertToIndainRS(grantAllocationSplitInstance.projects.totAllAmount)}</strong></td>
+                                    
                                     
                                    </td>
                             </tr> 
@@ -102,8 +105,9 @@
       <tr>
         
         <td width="147">${grantAllocationSplit[0].name} </td>
-        <td width="126"> ${grantAllocationSplit[2].code}  </td>
-        <td width="169">Rs.<g:formatNumber number="${grantAllocationSplit[3]}" format="###,##0.00" /> </td>
+        <td width="126"> ${grantAllocationSplit[2].name}  </td>
+        <td width="169">Rs.${currencyFormat.ConvertToIndainRS(grantAllocationSplit[3])}</td>
+       
          <td width="169"> <modalbox:createLink action="edit" id="${grantAllocationSplit[4]}"  params="['grantAllotId':grantAllocationInstanceList.id]" title="Edit  Allocation" width="500">Edit</modalbox:createLink> </td>
       </tr>
        </g:each>
@@ -206,9 +210,9 @@
                          unallocateAmt=grantAllocationInstanceList.amountAllocated-totalGrantAlloctedAmt[0]
                          
 		        %>
-		        
- 
-    <td height="40"><strong>Unallocated Amount(Rs) : <g:formatNumber number="${unallocateAmt}"  format="###,##0.00" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<g:if test="${unallocateAmt>0}">
+
+ <td height="40"><strong>Unallocated Amount(Rs) :${currencyFormat.ConvertToIndainRS(unallocateAmt)}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<g:if test="${unallocateAmt>0}">
+    
    
     <modalbox:createLink action="create" id="${grantAllocationSplitInstance.projects.id}"  params="['grantAllotId':grantAllocationInstanceList.id,'UnAll':unallocateAmt]" title="Head Wise Allocation" width="500">Allocate</modalbox:createLink>
     </g:if></td>

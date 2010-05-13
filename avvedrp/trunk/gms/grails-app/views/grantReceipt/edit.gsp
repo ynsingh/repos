@@ -79,9 +79,19 @@
 			                                        <label for="grantAllocationSplit">Account Heads:</label>
 			                                    </td>
 			                                    <td valign="top" class="value ${hasErrors(bean:grantReceiptInstance,field:'grantAllocationSplit','errors')}">
-			                                        <g:select optionKey="id" optionValue="${{it.accountHead.code.toUpperCase()}}"  from="${GrantAllocationSplit.findAllByProjects(grantReceiptInstance.projects)}" name="grantAllocationSplit.id" value="${grantReceiptInstance?.grantAllocationSplit?.id}" noSelection="['null':'select']"></g:select>
+			                                        <g:select optionKey="id" optionValue="accHeadPeriod"  from="${accountHeadList}" name="grantAllocationSplit.id" value="${grantReceiptInstance?.grantAllocationSplit?.id}" noSelection="['null':'select']"></g:select>
 			                                    </td>
 			                                </tr> 
+			                                
+			                                
+			                 <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="description">Funds received order No:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:grantReceiptInstance,field:'referenceId','errors')}">
+                                  <input type="text" id="referenceId" name="referenceId" value="${fieldValue(bean:grantReceiptInstance,field:'referenceId')}" style="text-align: right" />
+                                </td>
+                            </tr>                
                         
                         
                             <tr class="prop">
@@ -95,14 +105,61 @@
                                 </td>
                             </tr> 
                             
-                        	<tr class="prop">
+                            <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="description">Funds received order No:</label>
+                                    <label for="modeOfPayment">Mode of Payment:</label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean:grantReceiptInstance,field:'referenceId','errors')}">
-                                  <input type="text" id="referenceId" name="referenceId" value="${fieldValue(bean:grantReceiptInstance,field:'referenceId')}" style="text-align: right" />
+                                <td valign="top" class="value ${hasErrors(bean:grantReceiptInstance,field:'modeOfPayment','errors')}">
+                                    <g:select name="modeOfPayment" from="${['DD','Cheque','Cash' ,'BankTransfer']}"  value="${fieldValue(bean:grantReceiptInstance,field:'modeOfPayment')}" />
+                                </td>
+                            </tr>      
+                    
+              
+               
+                          <tr class="prop">
+
+                                <td valign="top" class="name">
+                                    <label for="ddNo">DD/Cheque No:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:grantReceiptInstance,field:'ddNo','errors')}">
+                                    <input type="text" id="ddNo" name="ddNo" value="${fieldValue(bean:grantReceiptInstance,field:'ddNo')}" style="text-align: right" />
                                 </td>
                             </tr> 
+                       
+                        
+                        
+                        <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="ddDate">DD/Cheque Date:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:grantReceiptInstance,field:'ddDate','errors')}">
+                                <calendar:datePicker name="ddDate" defaultValue="${new Date()}" value="${grantReceiptInstance?.ddDate}" dateFormat= "%d/%m/%Y"/>
+                                  
+                                </td>
+                            </tr> 
+                            
+                            <tr class="prop">
+
+                                <td valign="top" class="name">
+                                    <label for="bankName">Bank Name:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:grantReceiptInstance,field:'bankName','errors')}">
+                                    <input type="text" id="bankName" name="bankName" value="${fieldValue(bean:grantReceiptInstance,field:'bankName')}" style="text-align: right" />
+                                </td>
+                            </tr> 
+                            
+                            <tr class="prop">
+
+                                <td valign="top" class="name">
+                                    <label for="ddBranch">Branch:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:grantReceiptInstance,field:'ddBranch','errors')}">
+                                    <input type="text" id="ddBranch" name="ddBranch" value="${fieldValue(bean:grantReceiptInstance,field:'ddBranch')}" style="text-align: right" />
+                                </td>
+                            </tr> 
+                           
+                            
+                        	
                         
                         
                             <tr class="prop">

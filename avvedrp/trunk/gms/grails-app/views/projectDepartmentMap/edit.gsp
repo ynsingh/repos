@@ -11,7 +11,7 @@
         <div class="nav">
             <span class="menuButton"><a class="home" href="${createLinkTo(dir:'')}">Home</a></span>
             <span class="menuButton"><g:link class="list" action="list">ProjectDepartmentMap List</g:link></span>
-            <span class="menuButton"><g:link class="create" action="create">New ProjectDepartmentMap</g:link></span>
+            
         </div>
         <div class="body">
             <h1>Edit ProjectDepartmentMap</h1>
@@ -28,12 +28,20 @@
                 <div class="dialog">
                     <table>
                         <tbody>        
+                         </tr>
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="partyDepartment">Party Department:</label>
+                                    <label for="partyDepartment">Project:</label>
+                                </td>
+                            <td valign="top" class="value ${hasErrors(bean:projectDepartmentMapInstance,field:'projects','errors')}">
+                            <g:select optionKey="id" optionValue="code" from="${Projects.list()}" name="projects.id" value="${projectDepartmentMapInstance?.projects?.id}"></g:select>
+                        	</tr>
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="partyDepartment">Department:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:projectDepartmentMapInstance,field:'partyDepartment','errors')}">
-                                    <g:select optionKey="id" from="${PartyDepartment.list()}" name="partyDepartment.id" value="${projectDepartmentMapInstance?.partyDepartment?.id}" ></g:select>
+                                    <g:select optionKey="id" optionValue="departmentCode" from="${PartyDepartment.list()}" name="partyDepartment.id" value="${projectDepartmentMapInstance?.partyDepartment?.id}" ></g:select>
                                 </td>
                             </tr> 
                         

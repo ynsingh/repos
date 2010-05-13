@@ -7,7 +7,7 @@ class SecurityFilters {
     			   println "party"+session.Party
     			   println "actionname"+actionName
     			   
-        	  if(!session.Party && !actionName.equals('auth')&&!actionName.equals('mainDash')&&(actionName!=null))
+        	  if(!session.Party && !actionName.equals('auth')&&!actionName.equals('mainDash')&&!actionName.equals('newUserCreate')&&!actionName.equals('saveNewUser')&&(actionName!=null))
         	  {
         		  println " herecf"
         	

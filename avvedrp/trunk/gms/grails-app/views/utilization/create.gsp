@@ -24,28 +24,66 @@
             </div>
             </g:hasErrors>
             
-            <g:form action="save" method="post" enctype="multipart/form-data" controller="utilization">
                 <div class="dialog">
                     <table>
                         <tbody>
                         <input type="hidden" name="projectsId" value="${params.id}" />
-                            <tr class="prop">
+                        <tr class="prop">
+                            <td valign="top" class="name">Project Name:</td>
+                            
+                            <td valign="top" class="value">${fieldValue(bean:projectInstance, field:'name')}</td>
+                            
+                        </tr>
+                        <tr class="prop">
+                            <td valign="top" class="name">Project StartDate:</td>
+                            
+                            <td valign="top" class="value"><g:formatDate format="dd/MM/yyyy" date="${projectInstance.projectStartDate}"/></td>
+                            
+                        </tr>
+                        <tr class="prop">
+                            <td valign="top" class="name">Project EndDate:</td>
+                            
+                            <td valign="top" class="value"><g:formatDate format="dd/MM/yyyy" date="${projectInstance.projectEndDate}"/></td>
+                            
+                        </tr>
+                        <div>    
+                        <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="attachmentPath">Attachment Path:</label>
-                                </td>
-                                <td valign="top" class="value">
-                                    <input type="file" id="attachmentName" name="attachmentName"/>
-                                </td>
-                            </tr> 
-                                                                       
-                                                    
+                                <label>Documents:</label>
+                        </td>
+                         <td valign="top" class="value">
+                        	<g:jasperReport jasper="UtilizationCertificate" format="PDF" name="Utilization Certificate" >
+										             <input type="hidden" name="id" value="${projectInstance.id}" />
+										            <input type="hidden" name="projectID" value="${projectInstance.id}" />
+										             <input type="hidden" name="Path" value="${application.getRealPath("reports")}" />
+						 </g:jasperReport>
+						 </td>
+						 </tr>  
+						  <tr class="prop">
+                                <td valign="top" class="name">
+                                
+                        </td>
+                         <td valign="top" class="value">
+						 <g:jasperReport jasper="StatementOFAccounts" format="PDF" name="Statement Of Accounts" >
+										            <input type="hidden" name="id" value="${projectInstance.id}" />
+										            <input type="hidden" name="projectID" value="${projectInstance.id}" />
+										             <input type="hidden" name="Path" value="${application.getRealPath("reports")}" />
+						 </g:jasperReport>
+                         </td>
+                         </tr>                                             
+                         </div>                           
                         </tbody>
                     </table>
                 </div>
+                <g:if test="${!utilizationInstanceCheck}">
                 <div class="buttons">
-                    <span class="button"><input class="save" type="submit" value="Create" /></span>
+                 <g:form action="save" method="post" controller="utilization" id="${fieldValue(bean:projectInstance, field:'id')}">
+                <input type="hidden" name="projectsId" value="${params.id}" />
+                    <span class="button"><g:actionSubmit value="Submit" action="save"/></span>
+                 </g:form>
                 </div>
-            </g:form>
+               </g:if>
+            
         </div>
         </div>
        </div>

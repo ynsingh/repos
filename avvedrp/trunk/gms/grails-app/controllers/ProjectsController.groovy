@@ -14,6 +14,9 @@ class ProjectsController extends GmsController{
 		GrailsHttpSession gh=getSession()
 		def grantAllocationWithprojectsInstanceList
 		def grandAllocationList
+		gh.removeValue("Help")
+		//putting help pages in session
+		gh.putValue("Help","Project_List.htm")
         if(!params.max) params.max = 10
         String subQuery="";
         if(params.sort != null && !params.sort.equals(""))
@@ -102,6 +105,8 @@ class ProjectsController extends GmsController{
 		def projectsService = new ProjectsService()
 		def dataSecurityService = new DataSecurityService()
 		GrailsHttpSession gh=getSession()
+		//putting help pages in session
+		gh.putValue("Help","New_Projects.htm")
 		def projectsInstance = projectsService.getProjectById(new Integer( params.id ))
 		
 		def projectid
@@ -211,17 +216,12 @@ class ProjectsController extends GmsController{
 
     def create = {
     	GrailsHttpSession gh=getSession()
+    	//putting help pages in session
+    	gh.putValue("Help","New_Projects.htm")
     	def grantAllocationWithprojectsInstanceList
         def projectsInstance = new Projects()
         projectsInstance.properties = params
-        
-        def dataSecurityService = new DataSecurityService()
-        def projectsInstanceList
-        if(gh.getValue("ProjectID")!=null)
-        {
-        	grantAllocationWithprojectsInstanceList=dataSecurityService.getProjectsFromGrantAllocationForLoginUser(gh.getValue("ProjectID"))
-        }
-        return ['projectsInstance':projectsInstance,'grantAllocationWithprojectsInstanceList':grantAllocationWithprojectsInstanceList]
+        return ['projectsInstance':projectsInstance]
     }
 
     def save = {
@@ -297,6 +297,8 @@ class ProjectsController extends GmsController{
         		 		
     def proList = {
 		GrailsHttpSession gh=getSession()
+		//putting help pages in session
+		gh.putValue("Help","Project_List.htm")
         if(!params.max) params.max = 10
         
         def dataSecurityService = new DataSecurityService()
@@ -318,6 +320,8 @@ class ProjectsController extends GmsController{
 		else
 		{
     	GrailsHttpSession gh=getSession()
+    	//putting help pages in session
+    	gh.putValue("Help","sub_Projects.htm")
         def projectsInstance = new Projects()
 		def projectsInstanceList= new Projects();
 		

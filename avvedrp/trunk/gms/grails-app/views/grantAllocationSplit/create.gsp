@@ -55,7 +55,7 @@ width: 500px;
 }
      </script>
      
-     
+  <g:javascript library="scriptaculous" />   
      
 
     <body>
@@ -82,7 +82,8 @@ width: 500px;
                                     <label for="party"> Allocated Amount (Rs):</label>
                                 </td>
                                 <td valign="top" >
-                                    <strong><g:formatNumber number="${grantAllocationSplitInstance.projects.totAllAmount}" format="###,##0.00" /> </strong>
+                                 <strong>${currencyFormat.ConvertToIndainRS(grantAllocationSplitInstance.projects.totAllAmount)}</strong>
+                                    
                                    </td>
                             </tr> 
                             
@@ -109,14 +110,12 @@ width: 500px;
                                     <label for="grantPeriod">Grant Period:</label>
                                     <input type="hidden" id="projectId" name="projectId" value="${fieldValue(bean:grantAllocationSplitInstance.projects, field:'id')}"/>
                                      <input type="hidden" id="grantAllotId" name="grantAllotId" value="${fieldValue(bean:grantAllocationSplitInstance.grantAllocation, field:'id')}"/>
+                                     <input type="hidden" id="UnAll" name="UnAll" value="${params.UnAll}"/>  
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:grantAllocationSplitInstance,field:'grantPeriod','errors')}">
-                                    <g:select optionKey="id" optionValue="name" from="${GrantPeriod.list()}" name="grantPeriod.id" value="${grantAllocationSplitInstance?.grantPeriod?.id}" ></g:select>
+                                    <g:select optionKey="id" optionValue="name" from="${GrantPeriod.findAll('from GrantPeriod GP order by defaultYesNo desc')}"  name="grantPeriod.id" value="${grantAllocationSplitInstance?.grantPeriod?.id}"  ></g:select>
                                 </td>
-                                
-                                
-                                   
-                               
+
                             </tr> 
                             
                             <tr >
@@ -124,9 +123,24 @@ width: 500px;
                                     <label for="accountHead">Account Head:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:grantAllocationSplitInstance,field:'accountHead','errors')}">
-                                    <g:select optionKey="id" from="${AccountHeads.list()}" optionValue="code" name="accountHead.id" value="${grantAllocationSplitInstance?.accountHead?.id}" ></g:select>
-                                </td>
+                                    <g:select optionKey="id" from="${AccountHeads.findAll('from AccountHeads AH where AH.parent.id is NULL and AH.activeYesNo=\'Y\' order by AH.name')}" optionValue="name" name="accountHead.id" value="${grantAllocationSplitInstance?.accountHead?.id}"  onchange="${remoteFunction(controller:'grantAllocationSplit',action:'updateSubAccount',update:'subAccountHead',  params:'\'accountHead=\' + this.value' )}" ></g:select>
+                         	</td>
+                             </tr> 
                             
+                             <tr >
+                             <td valign="top" class="name">
+                              <label for="subaccountHead">Sub Account Head:</label>
+                             </td>
+                                <td valign="top" class="name">
+                            <div id="subAccountHead">
+							    <g:select 
+							       name="subAccountHead" 
+							       value="" 
+								   disabled="true" noSelection="['null':'-Select-']"  value="${grantAllocationSplitInstance?.accountHead?.id}" >
+								</g:select>
+							
+							</div>
+							</td>
                              </tr> 
                             
                             <tr >

@@ -9,9 +9,11 @@ class PartyController  extends GmsController {
     def allowedMethods = [delete:'POST', save:'POST', update:'POST']
 
     def list = {
-        if(!params.max) params.max = 10
+        
         String subQuery ="";
         GrailsHttpSession gh=getSession()
+        //adding help page into session
+        gh.putValue("Help","Investigator.htm")
         if(params.sort != null && !params.sort.equals(""))
         	subQuery=" order by P."+params.sort
         if(params.order != null && !params.order.equals(""))
@@ -55,7 +57,7 @@ class PartyController  extends GmsController {
 			redirect(action:list)
 		}
 		else {
-            flash.message = "Institution not found with id ${params.id}"
+            flash.message = "Institution ${params.code} involved in grant Allocation,so could not delete"
             redirect(action:list)
         }
     }
@@ -104,6 +106,9 @@ class PartyController  extends GmsController {
 
     def create = {
         def partyInstance = new Party()
+        GrailsHttpSession gh=getSession()
+        //Adding Help page into session
+        gh.putValue("Help","Investigator.htm")
         return ['partyInstance':partyInstance]
     }
 

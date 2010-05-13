@@ -118,6 +118,7 @@
                    	        <g:sortableColumn property="id" title="SlNo" />
                             <g:sortableColumn property="name" title="Name" />
                    	        <g:sortableColumn property="code" title="Code" />
+                   	        <g:sortableColumn property="activeYesNo" title="Active" />
                    	        <th>Edit</th>
                     </tr>
                     </thead>
@@ -127,6 +128,14 @@
                            <td>${i+1}</td>
                            <td>${fieldValue(bean:accountHeadsInstance, field:'name')}</td>
                            <td>${fieldValue(bean:accountHeadsInstance, field:'code')}</td>
+                           <td>
+                	             <g:if test="${fieldValue(bean:accountHeadsInstance, field:'activeYesNo') == 'Y'}">
+    							 ${'YES'}
+    							 </g:if>
+    							 <g:else>
+    							 ${'NO'}
+    							 </g:else>
+                        	 </td>
                            <td><g:link action="edit" id="${accountHeadsInstance.id}">Edit</g:link></td>
                           </tr>
                     </g:each>

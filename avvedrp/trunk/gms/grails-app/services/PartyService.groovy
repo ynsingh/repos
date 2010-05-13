@@ -6,7 +6,7 @@ class PartyService{
 	 */
 	public List getPartiesWithoutPartyType(String subQuery){
 		 
-		def partyInstanceList =Party.findAll( "from Party P where  P.partyType is NULL and P.activeYesNo='Y'"+subQuery )
+		def partyInstanceList =Party.findAll( "from Party P where  P.partyType is NULL"+subQuery )
 		return partyInstanceList
 	}
 	
@@ -35,12 +35,23 @@ class PartyService{
 	public Integer deleteParty(Integer partyId){
 		def partyDeletedId = null
 		def partyInstance = getPartyById( partyId )
-        if(partyInstance) {
+		//check fund allocation by party and grantagency
+		def partyFromGrantAllocationInstance = GrantAllocation.findAll("from GrantAllocation GA where GA.party="+partyInstance.id)
+		def partyFromGrantAllocationGrantorInstance = GrantAllocation.findAll("from GrantAllocation GA where GA.granter="+partyInstance.id)
+		println "partyFromGrantAllocationInstance"+partyFromGrantAllocationInstance
+        if((!partyFromGrantAllocationInstance)&& (!partyFromGrantAllocationGrantorInstance))
+        {
+		if(partyInstance) {
         	if(partyInstance.delete()){
         		partyDeletedId = partyInstance.id
         	}
         	else
         		partyDeletedId = -1
+        }
+		}
+        else
+        {
+        	partyDeletedId = null
         }
 		return partyDeletedId
 	}
@@ -104,7 +115,7 @@ class PartyService{
 	 * Function to get all active grant agencies.
 	 */
 	public List getActiveGrantAgency(String subQuery){
-		def partyInstanceList =Party.findAll( "from Party P where P.partyType='GA' and P.activeYesNo='Y' "+subQuery ) 
+		def partyInstanceList =Party.findAll( "from Party P where P.partyType='GA' "+subQuery ) 
 		return partyInstanceList
 	}
 	
@@ -158,6 +169,16 @@ class PartyService{
 	    	partyInstance.saveMode = "Duplicate"
 	    	
     	return partyInstance
+	}
+	/**
+	 * get departments of an institution
+	 */
+	public PartyDepartment[] getPartyDepartment(def partyId)
+	{
+		
+		def partyDepartmentInstance =  PartyDepartment.findAll("from PartyDepartment P where P.party.id = " +partyId)
+		println "=====partyDepartmentInstance====== " + partyDepartmentInstance 
+		return partyDepartmentInstance
 	}
 	
 }

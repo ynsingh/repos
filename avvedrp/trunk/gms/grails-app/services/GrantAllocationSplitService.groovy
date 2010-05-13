@@ -127,5 +127,20 @@ class GrantAllocationSplitService{
 			
 		return grantAllocationSplitInstance
 	}
+	public List validateGrantAllocationSplit(def grantAllocationSplitInstance,def projectId)
+	{
+       def grantAllocationSplitInstanceCheck = GrantAllocationSplit.findAll("from GrantAllocationSplit GAS where GAS.accountHead.id='"+grantAllocationSplitInstance.accountHead.id+"' and GAS.grantPeriod.id= '"+grantAllocationSplitInstance.grantPeriod.id+"' and GAS.projects.id="+projectId)
+       return grantAllocationSplitInstanceCheck
+	}
+//	Function to get Fund allocated account head with grant period
+	 public GrantAllocationSplit[] getAccountHeadByProject(def projectId)
+	 {
+	        def accountHeadList=GrantAllocationSplit.findAll("from GrantAllocationSplit GS where GS.projects.id="+projectId+" and GS.grantPeriod.defaultYesNo='Y' order by GS.accountHead.code asc")
+	        for(int i=0;i<accountHeadList.size();i++ )
+	        {
+	        	accountHeadList[i].accHeadPeriod=accountHeadList[i].accountHead.name.toUpperCase()+" ("+accountHeadList[i].grantPeriod.name+")"
+	        }
+	        return accountHeadList
+	 }
 	
 }

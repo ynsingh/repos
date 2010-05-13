@@ -403,7 +403,7 @@ div.info {
 <div class="banner">
 <div class="loginLink">
  	<span>
- 	<a href="../user/changePassword"><img src="../images/themesky/key.gif"  title="Change Password" alt="Change Password"/>&nbsp;&nbsp;|</a>&nbsp;&nbsp; <a href="${createLinkTo(dir:'UserDoc/GMS_DOC.html')}" target="_blank"><img src="${createLinkTo(dir:'images/themesky',file:'help.gif')}" alt="Help" title="Help"/>  |</a> ; <a href="#"><img src="../images/themesky/aboutUs.jpg" title="About Us" alt="About Us"/>&nbsp;&nbsp;|</a>
+ 	<a href="../user/changePassword"><img src="../images/themesky/key.gif"  title="Change Password" alt="Change Password"/>&nbsp;&nbsp;|</a>&nbsp;&nbsp; <a href="${createLinkTo(dir:'UserDoc/GMS_DOC.html')}" target="_blank"><img src="${createLinkTo(dir:'images/themesky',file:'help.gif')}" alt="Help" title="Help"/>&nbsp;&nbsp;|</a>&nbsp;&nbsp;<a href="#"><img src="../images/themesky/aboutUs.jpg" title="About Us" alt="About Us"/>&nbsp;&nbsp;|</a>
  	<font face="verdana" color:#01518e; font-weight:bold; text-decoration: none>
     	<g:isLoggedIn>
     	<b><g:loggedInUsername/></b> (<g:link  controller='logout'>Logout</g:link>)
@@ -420,6 +420,8 @@ div.info {
 <div class="dash">
 <ul>
 <li><a href="../projects/list" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image1','','../images/themesky/projectsOver.png',1)"><img src="../images/themesky/projects.png" name="Image1" width="117" height="84" border="0" id="Image1" /></a></li>
+<li><a href="../notification/list" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image8','','../images/themesky/notificationover.png',1)"><img src="../images/themesky/notification.png" name="Image8" width="117" height="84" border="0" id="Image8" /></a></li>
+<li><a href="../notificationsEmails/partyNotificationsList" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image9','','../images/themesky/proposalover.png',1)"><img src="../images/themesky/proposal.png" name="Image9" width="117" height="84" border="0" id="Image9" /></a></li>
 <li><a href="../party/list" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image2','','../images/themesky/institutionOver.png',1)"><img src="../images/themesky/institution.png" name="Image2" width="117" height="84" border="0" id="Image2" /></a></li>
 <li><a href="../partyGrantAgency/list" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image3','','../images/themesky/grantAgencyOver.png',1)"><img src="../images/themesky/grantAgency.png" name="Image3" width="117" height="84" border="0" id="Image3" /></a></li>
 <li><a href="../accountHeads/list" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image4','','../images/themesky/accountHeadOver.png',1)"><img src="../images/themesky/accountHead.png" name="Image4" width="117" height="84" border="0" id="Image4" /></a></li>
@@ -456,26 +458,38 @@ div.info {
         
     
     def sumAmount = GrantExpense.executeQuery("select sum(GE.expenseAmount) as SumAmt from GrantExpense GE where GE.grantAllocation.projects.id ="+ grantAllocationInstance.projects.id) 
-     def allocatedAmt = GrantAllocation.executeQuery("select sum(GA.amountAllocated) as total from GrantAllocation  GA where   GA.projects= "+grantAllocationInstance.projects.id+" group by GA.projects");
-   
+     def allocatedAmt = GrantReceipt.executeQuery("select sum(GR.amount) as total from GrantReceipt GR where GR.projects= "+grantAllocationInstance.projects.id+" group by GR.projects");
+      def fund=0;
+      if(sumAmount[0] < allocatedAmt[0])
+      {
       def expAmt=0;
       if(sumAmount[0]==null)
             expAmt=0
             else
             expAmt=sumAmount[0]
             
-              def allAmt=0;
+              
         if(allocatedAmt[0]==null)
-            allAmt=0
+                   fund=0
+            
             else
-            allAmt=allocatedAmt[0]
-            def fund=Math.round((allAmt-expAmt)*100/allAmt)
+            fund=Math.round((expAmt)*100/allocatedAmt[0])
+            }
+            else
+            fund = 100
             
                def time=0;
                if((grantAllocationInstance.projects.projectEndDate.getTime()-grantAllocationInstance.projects.projectStartDate.getTime())>0)
-              time=Math.round((grantAllocationInstance.projects.projectEndDate.getTime()-new Date().getTime())/(grantAllocationInstance.projects.projectEndDate.getTime()-grantAllocationInstance.projects.projectStartDate.getTime())*100)
-             
-             
+               {
+               if(grantAllocationInstance.projects.projectStartDate.getTime() <= new Date().getTime())
+               {
+              time=Math.round(((grantAllocationInstance.projects.projectEndDate.getTime()-new Date().getTime())/(grantAllocationInstance.projects.projectEndDate.getTime()-grantAllocationInstance.projects.projectStartDate.getTime()))*100)
+             }
+             else
+             {
+             time=Math.round(((grantAllocationInstance.projects.projectEndDate.getTime()-grantAllocationInstance.projects.projectStartDate.getTime())/(grantAllocationInstance.projects.projectEndDate.getTime()-grantAllocationInstance.projects.projectStartDate.getTime()))*100)
+             }
+             }
              if(time<0)
              time=0
              if(fund<0)
@@ -500,7 +514,7 @@ div.info {
   <tr>
      <td>&nbsp;</td>
     <td>
-    Funds remaining
+    Fund Utilized
 	<dl>
 		
 		<dd>

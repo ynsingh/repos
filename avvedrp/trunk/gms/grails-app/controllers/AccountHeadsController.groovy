@@ -49,28 +49,38 @@ class AccountHeadsController {
             accountHeadsInstance.properties = params
 		def accountHeadsService = new AccountHeadsService()
 		Integer accountHeadId = null
+		
+		println"+++++++++params+++++"+params.parentId
 		if(params.id){
 			accountHeadId = accountHeadsService.deleteAccountHeads(new Integer(params.id))
 		}
-		
+    		
+    		println"+++++++++params.id after deletion+++++"+params.id	
+    		 
 		if(accountHeadId != null){
+			
 			flash.message = "AccountHead ${params.name} deleted"
+			
 				if(accountHeadsInstance.parent !=null)
 				{
+					
 					redirect(action:showSubAccountHeads,id:accountHeadsInstance.parent.id)
 				}
 				else	
 				{
+		    		
 					redirect(action:list,id:accountHeadsInstance.id)
 				}
 			}
 		
-		
+    			
+    
 		else {
-            flash.message = "AccountHead not found with id ${params.id}"
+            flash.message = "Sub AccountHead exists.Cannot be deleted"
             redirect(action:list)
         }
     }
+    
 
     def edit = {
 		def accountHeadsService = new AccountHeadsService()

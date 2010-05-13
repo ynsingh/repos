@@ -17,6 +17,7 @@
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
+            <g:if test="${grantPeriodInstanceList}">
             <div class="list">
                 <table cellspacing="0" cellpadding="0">
                     <thead>
@@ -26,10 +27,12 @@
                         
                    	        <g:sortableColumn property="name" title="Name" />
                         
-                   	        
+                   	        <g:sortableColumn property="startDate" title="Start Date" />
+                   	         
+                   	        <g:sortableColumn property="endDate" title="End Date" />
                         
                    	        <g:sortableColumn property="activeYesNo" title="Active" />
-                        
+                             <g:sortableColumn property="defaultYesNo" title="Default" />
                    	        <th>Edit</th>
                         
                         </tr>
@@ -41,10 +44,27 @@
                              <td>${(i + 1)}</td>
                          
                             <td>${fieldValue(bean:grantPeriodInstance, field:'name')}</td>
-                        
                             
-                            <td>${fieldValue(bean:grantPeriodInstance, field:'activeYesNo')}</td>
-                        
+                            <td><g:formatDate format="dd/MM/yyyy" date="${grantPeriodInstance.startDate}"/></td>
+                            
+                            <td><g:formatDate format="dd/MM/yyyy" date="${grantPeriodInstance.endDate}"/></td>
+                        	
+                            <td>
+                	             <g:if test="${fieldValue(bean:grantPeriodInstance, field:'activeYesNo') == 'Y'}">
+    							 ${'YES'}
+    							 </g:if>
+    							 <g:else>
+    							 ${'NO'}
+    							 </g:else>
+                        	 </td>
+                        <td>
+	                        <g:if test="${fieldValue(bean:grantPeriodInstance, field:'defaultYesNo') == 'Y'}">
+	    							 ${'YES'}
+	    							 </g:if>
+	    							 <g:else>
+	    							 ${'NO'}
+	    							 </g:else>
+                       </td>
                        <td><g:link action="edit" id="${fieldValue(bean:grantPeriodInstance, field:'id')}">Edit</g:link></td>
                         
                         </tr>
@@ -52,6 +72,10 @@
                     </tbody>
                 </table>
             </div>
+            </g:if>
+            <g:else>
+            <br>No Records Available</br>
+            </g:else>
             <div class="paginateButtons">
                 <g:paginate total="${GrantPeriod.count()}" />
             </div>

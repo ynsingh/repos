@@ -96,7 +96,7 @@
                                 <label for="grantAllocationSplit">Account Head:</label>
                             </td>
                             <td valign="top" class="value ${hasErrors(bean:grantExpenseInstance,field:'grantAllocationSplit','errors')}">
-                            	<g:select optionKey="id" optionValue="${{it.accountHead.code}}" from="${GrantAllocationSplit.findAll('from GrantAllocationSplit GA where GA.projects='+grantExpenseInstance.projects.id+' group by GA.accountHead')}" noSelection="['null':'-Select-']" name="grantAllocationSplit.id" value="${grantExpenseInstance?.grantAllocationSplit?.id}" ></g:select>
+                            	<g:select optionKey="id" optionValue="accHeadPeriod" from="${accountHeadList}" noSelection="['null':'-Select-']" name="grantAllocationSplit.id" value="${grantExpenseInstance?.grantAllocationSplit?.id}" ></g:select>
                             </td>
                         </tr>  
                     
@@ -109,6 +109,59 @@
                                 <g:hiddenField name="grantAllocation.id" value="${grantExpenseInstance?.grantAllocation?.id}" />
                             </td>
                         </tr> 
+                        
+                        <tr class="prop">
+			                                <td valign="top" class="name">
+			                                    <label for="modeOfPayment">Mode of Payment:</label>
+			                                </td>
+			                                <td valign="top" class="value ${hasErrors(bean:grantExpenseInstance,field:'modeOfPayment','errors')}">
+			                                    <g:select name="modeOfPayment" from="${['DD','Cheque','Cash' ,'BankTransfer']}"  value="${fieldValue(bean:grantExpenseInstance,field:'modeOfPayment')}" />
+			                                </td>
+			                            </tr>      
+			                    
+			              
+			               
+			                          <tr class="prop">
+			
+			                                <td valign="top" class="name">
+			                                    <label for="ddNo">DD/Cheque No:</label>
+			                                </td>
+			                                <td valign="top" class="value ${hasErrors(bean:grantExpenseInstance,field:'ddNo','errors')}">
+			                                    <input type="text" id="ddNo" name="ddNo" value="${fieldValue(bean:grantExpenseInstance,field:'ddNo')}" style="text-align: right" />
+			                                </td>
+			                            </tr> 
+			                       
+			                        
+			                        
+			                        <tr class="prop">
+			                                <td valign="top" class="name">
+			                                    <label for="ddDate">DD/Cheque Date:</label>
+			                                </td>
+			                                <td valign="top" class="value ${hasErrors(bean:grantExpenseInstance,field:'ddDate','errors')}">
+			                                <calendar:datePicker name="ddDate" defaultValue="${new Date()}" value="${grantExpenseInstance?.ddDate}" dateFormat= "%d/%m/%Y"/>
+			                                  
+			                                </td>
+			                            </tr> 
+			                            
+			                            <tr class="prop">
+			
+			                                <td valign="top" class="name">
+			                                    <label for="bankName">Bank Name:</label>
+			                                </td>
+			                                <td valign="top" class="value ${hasErrors(bean:grantExpenseInstance,field:'bankName','errors')}">
+			                                    <input type="text" id="bankName" name="bankName" value="${fieldValue(bean:grantExpenseInstance,field:'bankName')}" style="text-align: right" />
+			                                </td>
+			                            </tr> 
+			                            
+			                            <tr class="prop">
+			
+			                                <td valign="top" class="name">
+			                                    <label for="ddBranch">Branch:</label>
+			                                </td>
+			                                <td valign="top" class="value ${hasErrors(bean:grantExpenseInstance,field:'ddBranch','errors')}">
+			                                    <input type="text" id="ddBranch" name="ddBranch" value="${fieldValue(bean:grantExpenseInstance,field:'ddBranch')}" style="text-align: right" />
+			                                </td>
+                            </tr> 
                     
                         <tr class="prop">
                             <td valign="top" class="name">

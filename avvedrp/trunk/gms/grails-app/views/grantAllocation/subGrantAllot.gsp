@@ -88,7 +88,8 @@
                                     
                                 </td>
                                 <td valign="top" >
-                                  <strong> <g:formatNumber number="${projectInstance.totAllAmount}" format="###,##0.00" /> </strong>
+                                 <strong>${currencyFormat.ConvertToIndainRS(projectInstance.totAllAmount)}</strong>
+                                 
                                 <input type="hidden" id="totAllAmount" name="totAllAmount" value="${projectInstance.totAllAmount}"/>
                                 <input type="hidden" id="amount" name="amount" value="${grantAllocationInstance.totAllAmount}"/>
                                   </td>
@@ -109,7 +110,7 @@
                                     <label for="party">Recipient:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:grantAllocationInstance,field:'party','errors')}">
-                                    <g:select id="recipient" optionKey="id" optionValue="code" from="${Party.list()}"  name="party.id" value="${grantAllocationInstance?.party?.id}" noSelection="['null':'Select']"></g:select>
+                                    <g:select id="recipient" optionKey="id" optionValue="code" from="${Party.findAll('from Party P where P.activeYesNo=\'Y\' ')}"  name="party.id" value="${grantAllocationInstance?.party?.id}" noSelection="['null':'Select']"></g:select>
                                 </td>
                             </tr> 
                         
@@ -174,7 +175,7 @@
                           
                              
                    	        <g:sortableColumn property="projects.code" title="Project Code " />
-                   	           <g:sortableColumn property="projects.principalInvestigatorName" title="PI Name " />
+                   	          
                             <g:sortableColumn property="projects.projectStartDate" title="Project Start Date " />
                             <g:sortableColumn property="projects.projectEndDate" title="Project End date " />
                         
@@ -201,7 +202,7 @@
                             
                             
                             <td>${fieldValue(bean:grantAllocationInstance, field:'projects.code')}</td>
-                             <td>${fieldValue(bean:grantAllocationInstance, field:'projects.principalInvestigatorName')}</td>
+                             
                                <td><g:formatDate format="dd-MM-yyyy" date="${grantAllocationInstance.projects.projectStartDate}"/></td>
                             <td><g:formatDate format="dd-MM-yyyy" date="${grantAllocationInstance.projects.projectEndDate}"/></td>
                             
@@ -210,8 +211,8 @@
                             <td>${fieldValue(bean:grantAllocationInstance, field:'party.code')}</td>
                         
                           
-                        
-                            <td><g:formatNumber number="${grantAllocationInstance.amountAllocated}" format="###,##0.00" /></td>
+                            <td>${currencyFormat.ConvertToIndainRS(grantAllocationInstance.amountAllocated)}</td>
+                            
                            	<td>${fieldValue(bean:grantAllocationInstance,field:'sanctionOrderNo')} </td>
                            	<td>${fieldValue(bean:grantAllocationInstance,field:'granter.code')} </td>
                             <td><g:link action="create"  controller='grantAllocationTracking' id="${grantAllocationInstance.id}" params="[trackType:'withdraw']">Grant Withdrawal/Closure</g:link></td>

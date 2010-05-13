@@ -9,10 +9,10 @@ class UtilizationController {
     def list = {
 		GrailsHttpSession gh = getSession()
 		println "partyid"+gh.getValue("Party")
-		def utilizationInstanceList = Utilization.findAll("from Utilization U where U.projects IN (from GrantAllocation GA where GA.granter="+gh.getValue("Party")+")") 
-	
-      if(!params.max) params.max = 10
-        [ utilizationInstanceList: utilizationInstanceList ]
+		def utilizationInstanceListbyparty
+		utilizationInstanceListbyparty = Utilization.findAll("from Utilization U where U.projects.id in (select GA.projects.id from GrantAllocation GA where GA.granter='"+gh.getValue("Party")+"')")
+			
+        [ utilizationInstanceList: utilizationInstanceListbyparty ]
     }
 
     def show = {
@@ -71,26 +71,22 @@ class UtilizationController {
     def create = {
         def utilizationInstance = new Utilization()
         println "projectid=="+params.id
+        def projectInstance = Projects.get(params.id)
+        def utilizationInstanceCheck = Utilization.findAll("from Utilization U where U.projects.id="+projectInstance.id)
         utilizationInstance.properties = params
-        return ['utilizationInstance':utilizationInstance]
-    }
+        if(utilizationInstanceCheck)
+        	flash.message ="Utilization certificate submitted."
+        [projectInstance:projectInstance,utilizationInstanceCheck:utilizationInstanceCheck]
+      }
 
     def save = {
 		GrailsHttpSession gh=getSession()
-        def utilizationInstance = new Utilization(params)
-        println "fileeeeeeeee"+utilizationInstance.attachmentPath
-        
-        def downloadFile=request.getFile("attachmentName")
-        String  fileName=downloadFile.getOriginalFilename()
-        def projectInstance = Projects.get(params.projectsId)
-		utilizationInstance.attachmentPath=fileName
-       utilizationInstance.projects= Projects.get(params.projectsId)
-        utilizationInstance.uploadedDate=new Date()
+        def utilizationInstance = new Utilization()
+        utilizationInstance.projects= Projects.get(params.projectsId)
+        utilizationInstance.submittedDate=new Date()
 		utilizationInstance.grantee=Party.get(gh.getValue("Party"))
-        new File("grails-app/views/appForm/").mkdirs()
-        downloadFile.transferTo(new File("grails-app/views/appForm/"+File.separatorChar+fileName))
         if(!utilizationInstance.hasErrors() && utilizationInstance.save()) {
-            flash.message = "Utilization certificate uploaded"
+            flash.message = "Utilization certificate submitted"
             redirect(action:'create',id:params.projectsId)
         }
         else {

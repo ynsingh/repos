@@ -17,8 +17,9 @@
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
+            <g:if test="${investigatorInstanceList}">
             <div class="list">
-                <table>
+                <table cellspacing="0" cellpadding="0">
                     <thead>
                         <tr>
                         
@@ -35,7 +36,9 @@
                    	        <g:sortableColumn property="address" title="Address" />
                                          
                    	        <g:sortableColumn property="email" title="Email" />
-                   	        
+                   	       
+                   	        <g:sortableColumn property="activeYesNo" title="Active" />
+                   	       
                    	        <th>Edit</th>
                         
                         </tr>
@@ -57,6 +60,13 @@
                             <td>${fieldValue(bean:investigatorInstance, field:'address')}</td>
                         
                             <td>${fieldValue(bean:investigatorInstance, field:'email')}</td>
+                            <td><g:if test="${fieldValue(bean:investigatorInstance, field:'activeYesNo') == 'Y'}">
+    							 ${'YES'}
+    							 </g:if>
+    							 <g:else>
+    							 ${'NO'}
+    							 </g:else>
+                           </td>
                             
                             <td><g:link action="edit" id="${fieldValue(bean:investigatorInstance, field:'id')}">Edit</g:link></td>
                         
@@ -65,6 +75,10 @@
                     </tbody>
                 </table>
             </div>
+            </g:if>
+            <g:else>
+            <br>No Records Available</br>
+            </g:else>
             
         </div>
         </div>

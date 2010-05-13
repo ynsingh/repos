@@ -67,7 +67,7 @@ class DataSecurityService {
 		
 		def grantAllocationlist
 		if(partyId!=null)
-		  grantAllocationlist=GrantAllocation.findAll(" from GrantAllocation GA where GA.party in "+partyId+" group by GA.projects  ");
+		  grantAllocationlist=GrantAllocation.findAll(" from GrantAllocation GA where GA.party in "+partyId+" and GA.projects.activeYesNo='Y' group by GA.projects  ");
 		def projectsList=[]
 		for(int i=0;i<grantAllocationlist.size();i++)
 		{
@@ -247,9 +247,27 @@ class DataSecurityService {
 		
 		
 		if(piId!=null)
-	     grantAllocationList=GrantAllocation.findAll("from GrantAllocation GA where GA.projects in (from Projects P where P.principalInvestigatorName.id="+piId+")"+"group by GA.projects");
-				
+		grantAllocationList=GrantAllocation.findAll("from GrantAllocation GA where GA.projects in (select PM.projects from ProjectsPIMap PM where PM.investigator.id="+piId+")"+"group by GA.projects");
+	
 		return grantAllocationList
 	}
      
+ 	public ProjectsPIMap[] getProjectsPIMapForLoginUser(def projectId)
+ 	{
+ 		def projectsPIMapInstanceList
+ 		if(projectId !=null)
+ 		{
+ 			projectsPIMapInstanceList = ProjectsPIMap.findAll("from ProjectsPIMap P where P.projects = '"+ projectId + "'");
+ 		}
+ 		return projectsPIMapInstanceList
+ 	}
+ 	public ProjectsPIMap getProjectsPIMap(def projectId)
+ 	{
+ 		def projectsPIMapInstance
+ 		if(projectId !=null)
+ 		{
+ 			projectsPIMapInstance = ProjectsPIMap.find("from ProjectsPIMap P where P.projects = '"+ projectId + "' and P.role='PI'");
+ 		}
+ 		return projectsPIMapInstance
+ 	}
 }

@@ -6,6 +6,7 @@ class Investigator
 	PartyDepartment department;
 	String address;
 	String email;
+	char activeYesNo;
 	static constraints = 
 	{
 		

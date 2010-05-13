@@ -44,7 +44,7 @@
 <table class="tablewrapper" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td scope="col">  <div class="body">
-            <h1>Sub Project Allotment</h1>
+            <h1>Project Allotment</h1>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
@@ -80,7 +80,9 @@
                                     <label for="party"> Amount Allocated(Rs):</label>
                                 </td>
                                 <td valign="top" >
-                                  <strong> <g:formatNumber number="${projectInstance.totAllAmount}" format="###,##0.00" /> </strong>
+                                <strong>${currencyFormat.ConvertToIndainRS(projectInstance.totAllAmount)}</strong>
+                                  
+                                  
                                 
                                   </td>
                             </tr> 
@@ -97,7 +99,7 @@
                                     <label for="party"> Granter :</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:grantAllocationInstance,field:'granter','errors')}" >
-                                   <g:select id="granter" optionKey="id" optionValue="code" from="${Party.findAllByIdNotEqual(partyInstance.id)}"  name="granter.id" value="${grantAllocationInstance?.granter?.id}" noSelection="['null':'Select']"></g:select>
+                                   <g:select id="granter" optionKey="id" optionValue="code" from="${Party.findAll('from Party P where P.id!=\'partyInstance.id\' and P.activeYesNo=\'Y\' ')}" name="granter.id" value="${grantAllocationInstance?.granter?.id}" noSelection="['null':'Select']"></g:select>
                                    <input type="hidden" id="projects.id" name="projects.id" value="${fieldValue(bean:grantAllocationInstance, field:'projects.id')}"/>
                                    <input type="hidden" id="party.id" name="party.id" value="${fieldValue(bean:grantAllocationInstance, field:'party.id')}"/>
                                   </td>
@@ -167,7 +169,9 @@
               </g:form></td>
   </tr>
   <tr>
-    <td scope="row"> <div class="list">
+    <td scope="row"> 
+    <g:if test="${grantAllocationInstanceList}">
+    <div class="list">
                 <table width="97%" align="center" border="0" cellspacing="0" cellpadding="0">
                     <thead>
                         <tr>
@@ -177,7 +181,7 @@
                           
                              
                    	        <g:sortableColumn property="projects.code" title="Project Code " />
-                   	           <g:sortableColumn property="projects.principalInvestigatorName" title="PI Name " />
+                   	           <g:sortableColumn property="investigator.name" title="PI Name " />
                             <g:sortableColumn property="projects.projectStartDate" title="Project Start Date " />
                             <g:sortableColumn property="projects.projectEndDate" title="Project End date " />
                         
@@ -186,6 +190,7 @@
                    	        <g:sortableColumn property="amountAllocated" title="Amount Allocated(Rs)" />
                    	        <g:sortableColumn property="sanctionOrderNo" title="Sanction Order No" />
                    	        <g:sortableColumn property="granter" title="Granter" />
+                   	        <th>Fund Type </th>
                    	        
                    	        <g:sortableColumn property="amountAllocated" title="Grant Withdrawal/Closure" />
                         
@@ -203,7 +208,7 @@
                             
                             
                             <td>${fieldValue(bean:grantAllocationInstance, field:'projects.code')}</td>
-                             <td>${fieldValue(bean:grantAllocationInstance, field:'projects.principalInvestigatorName')}</td>
+                             <td>${fieldValue(bean:projectsPIMapInstanceList[i], field:'investigator.name')}</td>
                                <td><g:formatDate format="dd-MM-yyyy" date="${grantAllocationInstance.projects.projectStartDate}"/></td>
                             <td><g:formatDate format="dd-MM-yyyy" date="${grantAllocationInstance.projects.projectEndDate}"/></td>
                             
@@ -212,10 +217,20 @@
                             <td>${fieldValue(bean:grantAllocationInstance, field:'party.code')}</td>
                         
                           
-                        
-                            <td><g:formatNumber number="${grantAllocationInstance.amountAllocated}" format="###,##0.00" /></td>
+                             <td>${currencyFormat.ConvertToIndainRS(grantAllocationInstance.amountAllocated)}</td>
+                            
                         	<td>${fieldValue(bean:grantAllocationInstance,field:'sanctionOrderNo')} </td>
                         	<td>${fieldValue(bean:grantAllocationInstance,field:'granter.code')} </td>
+                        	<td> <g:if test="${grantAllocationInstance.granter ==null}"> 
+				        
+				Self Fund			    
+				</g:if>
+				<g:else>
+							
+				Grant
+			</g:else>
+			</td>
+                        	
                             <td><g:link action="create"  controller='grantAllocationTracking' id="${grantAllocationInstance.id}" params="[trackType:'withdraw']">Grant Withdrawal/Closure</g:link></td>
                         <td><g:link action="editProAllot" id="${grantAllocationInstance.id}">Edit</g:link></td>
                            
@@ -223,7 +238,9 @@
                     </g:each>
                     </tbody>
                 </table>
-            </div></td>
+            </div>
+            </g:if>
+            </td>
   </tr>
 </table>      
 

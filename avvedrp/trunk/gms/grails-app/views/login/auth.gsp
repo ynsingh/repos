@@ -18,7 +18,10 @@ background-color: #d5e5ed;
 	width:847px;
 	height:30px;
 	background-color: #b9dcef;
+	font-size:14px;
 	text-align:right;
+	font-weight:bold;
+	color:#007500;
 	}
 .loginLink span { 
   text-align:right;
@@ -123,6 +126,11 @@ background-color: #d5e5ed;
     <tr>
       <th height="52" scope="row">&nbsp;</th>
       <td><input type='submit' value='Login' /></td>
+      </tr>
+    <tr>
+   	 	<td>
+  	 	 <g:link style="font-size:12px;font-weight: bold;" controller="user" action="newUserCreate">Register</g:link>
+      </td>
       </tr>
     <tr>
       <th  scope="row">&nbsp;</th>

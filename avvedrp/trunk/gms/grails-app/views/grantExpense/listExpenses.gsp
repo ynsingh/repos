@@ -33,7 +33,8 @@
             
             
             <td valign="top" >Amount Allocated:</td>
-            <td valign="top" ><strong><g:formatNumber number="${projectsInstance.totAllAmount}" format="###,##0.00" /></strong></td>
+            <td ><strong>${currencyFormat.ConvertToIndainRS(projectsInstance.totAllAmount)}</strong></td>
+            
                     
         </tr>  
       	</table>   
@@ -66,7 +67,8 @@
                             </td>
                             <td valign="top" >
                                 <calendar:datePicker name="dateOfExpenseFrom" defaultValue="${new Date()}" value="" dateFormat= "%d/%m/%Y"/>
-                                <g:hiddenField name="projects.id" value="${grantExpenseInstance?.projects?.id}" />
+                                
+                                 <g:hiddenField name="id" value="${grantExpenseInstance?.projects?.id}" /> 
                             </td>
                             <td valign="top" class="name">
                                 <label for="dateOfExpense">Date Of Expense To:</label>
@@ -75,7 +77,8 @@
                                 <calendar:datePicker name="dateOfExpenseTo" defaultValue="${new Date()}" value="" dateFormat= "%d/%m/%Y"/>
                             </td>
                             <td valign="top" >
-                    <input class="inputbutton" name="listExpenses" type="submit" value="List Expenses" />
+                          
+                    <input class="inputbutton" name="listExpenses"  type="submit" value="List Expenses" />
                             </td>
                         </tr>
                         
@@ -102,16 +105,16 @@
             	<thead>
             		<tr>
             			                        
-               	        <g:sortableColumn property="id" title="SlNo" />
+               	        <th>SlNo</th>
                    	        
-               	        <g:sortableColumn property="dateOfExpense" title="Date Of Expense" />
+               	         <th>Date Of Expense</th>
                	        
-               	        <g:sortableColumn property="grantAllocationSplit.accountHead.code" title="Account Head" />
+               	       <th>Account Head</th>
                	        
-               	        <g:sortableColumn property="expenseAmount" title="Expense Amount" />
+               	        <th>Expense Amount</th>
                         
-               	        <g:sortableColumn property="description" title="Description" />
-                   	       <th>Edit</th>
+               	        <th>Description</th>
+                   	       
                         
                     </tr>
                 </thead>
@@ -125,10 +128,11 @@
                         	
                         	<td>${fieldValue(bean:grantExpenseInstance, field:'grantAllocationSplit.accountHead.code')}</td>
                         
-                            <td><g:formatNumber number="${grantExpenseInstance.expenseAmount}" format="###,##0.00" /></td>
+                            
+                            <td>${currencyFormat.ConvertToIndainRS(grantExpenseInstance.expenseAmount)}</td>
                         
                             <td>${fieldValue(bean:grantExpenseInstance, field:'description')}</td>
-                        <td><g:link action="edit" id="${fieldValue(bean:grantExpenseInstance, field:'id')}">Edit</g:link></td>
+                       
                         </tr>
                     </g:each>
                 </tbody>

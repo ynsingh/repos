@@ -1,3 +1,6 @@
+import java.text.*;
+import java.util.*;
+import ConvertToIndainRS
 class GrantReceiptController extends GmsController {
     
     def index = { redirect(action:list,params:params) }
@@ -47,8 +50,10 @@ class GrantReceiptController extends GmsController {
 		def grantAllocationService = new GrantAllocationService()
         def grantReceiptInstance = grantReceiptService.getGrantReceiptById(new Integer(params.id))
          def dataSecurityService = new DataSecurityService()
-		
-		//checking  whether the user has access to the given projects
+		def grantAllocationSplitService=new GrantAllocationSplitService()
+       def accountHeadList=grantAllocationSplitService.getAccountHeadByProject(grantReceiptInstance.projects.id)
+
+       //checking  whether the user has access to the given projects
 		if(dataSecurityService.checkForAuthorisedAcsessInProjects(grantReceiptInstance.projects.id,new Integer(getUserPartyID()))==0)
 		{
 			
@@ -66,7 +71,7 @@ class GrantReceiptController extends GmsController {
         	def totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(grantReceiptInstance.projects.id,getUserPartyID())
         	def totalAmountReceived = grantReceiptService.getSumOfGrantReceviedByProjects(grantReceiptInstance.projects.id)
             grantReceiptInstance.balanceAmt = totAllAmount - totalAmountReceived - grantReceiptInstance.amount
-            return [ grantReceiptInstance : grantReceiptInstance ]
+            return [ grantReceiptInstance : grantReceiptInstance,accountHeadList:accountHeadList]
         }
 		}
     }
@@ -92,7 +97,7 @@ class GrantReceiptController extends GmsController {
     def create = {
 		def grantReceiptService = new GrantReceiptService();
 		def grantAllocationService = new GrantAllocationService()
-    		
+    	def grantAllocationSplitService=new GrantAllocationSplitService()	
         def grantReceiptInstance = new GrantReceipt()
         grantReceiptInstance.properties = params
         println"++++++++++++++++++params+++++++"+params
@@ -118,7 +123,7 @@ class GrantReceiptController extends GmsController {
        	subQuery =subQuery+" "+params.order
    
         grantReceiptInstance.projects=projectsInstance
-        
+        def accountHeadList=grantAllocationSplitService.getAccountHeadByProject(grantReceiptInstance.projects.id)
         def grantReceiptList=grantReceiptService.getGrantReceiptByProjects(params.id,subQuery)
         
         //def grantRecieptInstanceList=grantReceiptService.getGrantReceiptBySort(params.id,subQuery)
@@ -130,8 +135,8 @@ class GrantReceiptController extends GmsController {
         	
         def summaryList =  grantReceiptService.getGrantReceiptSummary(params.id)
         grantReceiptInstance.grantAllocation = grantAllocationInstanceList[0]
-        
-        return ['grantReceiptInstance':grantReceiptInstance,'grantReceiptInstanceList':grantReceiptList,'summaryList':summaryList,'grantAllocationInstanceList':grantAllocationInstanceList]
+        ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
+        return ['grantReceiptInstance':grantReceiptInstance,'grantReceiptInstanceList':grantReceiptList,'summaryList':summaryList,'grantAllocationInstanceList':grantAllocationInstanceList,'accountHeadList':accountHeadList,'currencyFormat':currencyFormatter]
 		}
     }
 

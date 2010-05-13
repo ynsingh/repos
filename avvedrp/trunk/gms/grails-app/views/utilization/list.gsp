@@ -10,7 +10,6 @@
     <div class="wrapper"> 
         <div class="nav">
             <span class="menuButton"><a class="home" href="${createLinkTo(dir:'')}">Home</a></span>
-            <span class="menuButton"><g:link class="create" action="create">New Utilization</g:link></span>
         </div>
         <div class="tablewrapper">
         <div class="body">
@@ -18,6 +17,7 @@
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
+            <g:if test="${utilizationInstanceList}">
             <div class="list">
                 <table>
                     <thead>
@@ -25,15 +25,16 @@
                         
                    	        <g:sortableColumn property="id" title="Id" />
                    	        
-                   	        <g:sortableColumn property="projects" title="projects" />
+                   	        <g:sortableColumn property="projects" title="Project" />
                    	        
-                   	        <g:sortableColumn property="grantee" title="grantee" />
+                   	        <g:sortableColumn property="grantee" title="Grantee" />
+                   	        
+                   	        <g:sortableColumn property="submittedDate" title="Submitted Date" />
                    	                                
-                   	        <g:sortableColumn property="attachmentPath" title="Attachment Path" />
-                	                               
-                   	        <g:sortableColumn property="uploadedDate" title="uploadedDate" />
-                   	       	
-                             <th>View</th>                	                               
+                   	        <th>Utilization Certificate</th>
+                   	        
+                   	        <th>Statement Of Accounts</th>
+                	                   	                               
                         </tr>
                     </thead>
                     <tbody>
@@ -46,21 +47,33 @@
                         
                             <td>${fieldValue(bean:utilizationInstance, field:'grantee.nameOfTheInstitution')}</td>
                         
-                            <td>${fieldValue(bean:utilizationInstance, field:'attachmentPath')}</td>
-                        	<td><g:formatDate format="dd/mm/yyyy" date="${utilizationInstance.uploadedDate}"/></td>
+                             <td><g:formatDate format="dd/MM/yyyy" date="${utilizationInstance.submittedDate}"/></td>
+                            
+                            <td><g:jasperReport jasper="UtilizationCertificate" format="PDF" name="Utilization Certificate" >
+										            <input type="hidden" name="id" value="${utilizationInstance.projects.id}" />
+										            <input type="hidden" name="projectID" value="${utilizationInstance.projects.id}" />
+										             <input type="hidden" name="Path" value="${application.getRealPath("reports")}" />
+									  	         </g:jasperReport></td>
+							 <td><g:jasperReport jasper="StatementOFAccounts" format="PDF" name="Statement Of Accounts" >
+										            <input type="hidden" name="id" value="${utilizationInstance.projects.id}" />
+										            <input type="hidden" name="projectID" value="${utilizationInstance.projects.id}" />
+										             <input type="hidden" name="Path" value="${application.getRealPath("reports")}" />
+									  	         </g:jasperReport></td>						
                           <%--  <td><a href="${g.createLink(controller:'utilization',action:'download',id:utilizationInstance.id}">View</a></td>
                         
                            --%>
-                           <td><g:link action="download" controller="utilization" id="${utilizationInstance.id}">View</g:link></td>
                         
                         </tr>
                     </g:each>
                     </tbody>
                 </table>
             </div>
-            <div class="paginateButtons">
-                <g:paginate total="${Utilization.count()}" />
-            </div>
+            </g:if>
+            <g:else>
+            <br>
+            No Records Available</br>
+            </g:else>
+            
             </div>
             </div>
         </div>

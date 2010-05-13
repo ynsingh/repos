@@ -9,7 +9,12 @@ class PartyDepartmentController {
 
     def list = {
         if(!params.max) params.max = 10
-        [ partyDepartmentInstanceList: PartyDepartment.list( params ) ]
+       
+        GrailsHttpSession gh=getSession()
+        def dataSecurityService = new DataSecurityService()
+        def partyService = new PartyService()
+        def partyDepartmentInstanceList = partyService.getPartyDepartment(gh.getValue("PartyID"))
+        [ partyDepartmentInstanceList: partyDepartmentInstanceList ]
     }
 
     def show = {
@@ -26,7 +31,7 @@ class PartyDepartmentController {
         def partyDepartmentInstance = PartyDepartment.get( params.id )
         if(partyDepartmentInstance) {
             partyDepartmentInstance.delete()
-            flash.message = "PartyDepartment ${params.id} deleted"
+            flash.message = "PartyDepartment deleted"
             redirect(action:list)
         }
         else {
@@ -52,8 +57,8 @@ class PartyDepartmentController {
         if(partyDepartmentInstance) {
             partyDepartmentInstance.properties = params
             if(!partyDepartmentInstance.hasErrors() && partyDepartmentInstance.save()) {
-                flash.message = "PartyDepartment ${params.id} updated"
-                redirect(action:show,id:partyDepartmentInstance.id)
+                flash.message = "PartyDepartment updated"
+                redirect(action:list,id:partyDepartmentInstance.id)
             }
             else {
                 render(view:'edit',model:[partyDepartmentInstance:partyDepartmentInstance])
@@ -79,7 +84,7 @@ class PartyDepartmentController {
         def partyDepartmentInstance = new PartyDepartment(params)
         partyDepartmentInstance.createdBy="admin";
         if(!partyDepartmentInstance.hasErrors() && partyDepartmentInstance.save()) {
-            flash.message = "PartyDepartment ${partyDepartmentInstance.id} created"
+            flash.message = "PartyDepartment created"
             redirect(action:list,id:partyDepartmentInstance.id)
         }
         else {

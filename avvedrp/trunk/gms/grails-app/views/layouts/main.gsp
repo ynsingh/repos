@@ -5,7 +5,7 @@
         <link rel="stylesheet" href="${createLinkTo(dir:'css',file:'main.css')}" />
         <link rel="shortcut icon" href="${createLinkTo(dir:'images',file:'favicon.ico')}" type="image/x-icon" />
         <calendar:resources lang="en" theme="tiger"/>
-        
+        <script src="${createLinkTo(dir:'images',file:'jquery.tools.min.js')}"></script> 
         <g:layoutHead />
         <g:javascript library="application" />				
     </head>
@@ -17,12 +17,7 @@
 
 </style>
 
-
-
-
-
-   <script type="text/javascript" src="../images/jquery.js"></script> 
-            <script type="text/javascript" src="../images/jquery.pngFix.pack.js"></script> 
+            <script type="text/javascript" src="${createLinkTo(dir:'images',file:'jquery.pngFix.pack.js')}"></script> 
 
 <script type="text/javascript"> 
     $(document).ready(function(){ 
@@ -39,6 +34,7 @@
 	if(eval('typeof(document.grantReport)') != 'undefined')
 	{
 	  document.List_of_on_going_projects.partyID.value=document.grantReport.party.value;
+	  document.GrantsAndContractsStatement11ConsolidatedAbstract.partyID.value=document.grantReport.party.value;
 	  document.GrantsAndContractsStatement10Abstract.partyID.value=document.grantReport.party.value;
 	  document.GrantsAndContractsStatement10Abstract.projectType.value=document.grantReport.projectType.value; 
 	  document.GrantsAndContractsStatement9.partyID.value=document.grantReport.party.value;
@@ -65,6 +61,7 @@
 	  document.ResearchProjectGrantAnnualStatement.projectID.value=document.grantReport.projects.value;
 	  document.ResearchProjectGrantAnnualStatement.partyID.value=document.grantReport.party.value;
 	  document.ResearchProjectGrantAnnualStatement.reportDate.value = day+"/"+month+"/"+year;
+	  document.ResearchProjectGrantDailyAccounts.reportDateTo.value = today+"/"+tomonth+"/"+toyear;
 	  document.expenditures.partyID.value=document.grantReport.party.value;
 	  document.ResearchProjectGrantFinalStatement.projectID.value=document.grantReport.projects.value;
 	  document.ResearchProjectGrantFinalStatement.partyID.value=document.grantReport.party.value;
@@ -128,6 +125,27 @@ else if(eval('typeof(document.frmGrantTrackingReport)') != 'undefined'){
    
 
     }
+    $(function() {
+ 
+	// if the function argument is given to overlay,
+	// it is assumed to be the onBeforeLoad event listener
+	$("a[rel]").overlay({
+ 
+		expose: 'white',
+		effect: 'apple',
+ 
+		onBeforeLoad: function() {
+ 
+			// grab wrapper element inside content
+			var wrap = this.getContent().find(".contentWrap");
+ 
+			// load the page specified in the trigger
+			wrap.load(this.getTrigger().attr("href"));
+		}
+ 
+	});
+});
+    
     </script>
   
 <body onload="setValue()"  >
@@ -147,7 +165,11 @@ else if(eval('typeof(document.frmGrantTrackingReport)') != 'undefined'){
 <div class="innnerBanner">
 <div class="loginLink">
 	<span>
-	<a href="${createLinkTo(dir:'/user/changePassword')}"><img src="${createLinkTo(dir:'images/themesky',file:'key.gif')}"  title="Change Password" alt="Change Password" />  |</a>   <a href="${createLinkTo(dir:'UserDoc/GMS_DOC.html')}" target="_blank"><img src="${createLinkTo(dir:'images/themesky',file:'help.gif')}" alt="Help" title="Help"/>  |</a>  
+	
+	
+	<a href="${createLinkTo(dir:'/user/changePassword')}"><img src="${createLinkTo(dir:'images/themesky',file:'key.gif')}"  title="Change Password" alt="Change Password" />&nbsp;&nbsp;|</a>&nbsp;&nbsp; <a href="${createLinkTo(dir:'/images/help',file:session.Help)}" title="Help" alt="Help" rel="#overlay" > 
+<img src="${createLinkTo(dir:'images/themesky',file:'help.gif')}"/> 
+</a> &nbsp;&nbsp;|</a>&nbsp;&nbsp;<a href="#"><img src="${createLinkTo(dir:'images/themesky',file:'aboutUs.jpg')}" title="About Us" alt="About Us"/>&nbsp;&nbsp;|</a>
 	<font face="verdana" color:#01518e; font-weight:bold; text-decoration: none>
    	<g:isLoggedIn>
    	<b><g:loggedInUsername/></b> (<g:link  controller='logout'>Logout</g:link>)
@@ -172,6 +194,13 @@ else if(eval('typeof(document.frmGrantTrackingReport)') != 'undefined'){
 
 
 <!-- inner Banner end-->   
+           <!-- overlayed element --> 
+<div class="apple_overlay" id="overlay"> 
+ 
+	<!-- the external content is loaded inside this tag --> 
+	<div class="contentWrap"></div> 
+ 
+</div> 
 	 
     </div>
   

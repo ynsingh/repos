@@ -39,7 +39,7 @@
                                     <label for="grantPeriod">Grant Period:</label>
                                                                    </td>
                                 <td valign="top" class="value ${hasErrors(bean:grantAllocationInstance,field:'grantPeriod','errors')}">
-                                    <g:select optionKey="id" optionValue="name" from="${GrantPeriod.list()}" onChange="setValue()" name="grantPeriod" value="id" ></g:select>
+                                    <g:select optionKey="id" optionValue="name" from="${GrantPeriod.findAll('from GrantPeriod GP order by defaultYesNo desc')}" onChange="setValue()" name="grantPeriod" value="id" ></g:select>
                                       <input type="hidden" id="periodHidden" name="periodHidden" value="${fieldValue(bean:projectInstance, field:'id')}"/>
                                 </td>
                                 <td valign="top" ><label for="projectType">Project Type:</label></td>
@@ -442,7 +442,8 @@
 	                            <td valign="top" class="name"><g:jasperReport jasper="ResearchProjectGrantDailyAccounts"  name="Research Project Grant Daily Accounts-Statement No:3(a)" format="XLS,PDF,CSV,HTML"  >
 					            <input type="hidden" name="id" value="${session.AppFormID}" />
 					            <input type="hidden" name="reportDate" value="" />
-					            <input type="hidden" name="projectID" value="" />
+					           <input type="hidden" name="projectID" value="" />
+					           <input type="hidden" name="reportDateTo" value="" />
 					            <input type="hidden" name="Path" value="${application.getRealPath("reports")}"/>
 				  	         	</g:jasperReport>
 					           	</td>

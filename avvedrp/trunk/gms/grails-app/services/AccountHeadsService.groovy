@@ -5,7 +5,7 @@ class AccountHeadsService{
 	 * Function to get all active account heads.
 	 */
 	public List getActiveAccountHeads(String subQuery){
-		def accountHeadsInstanceList = AccountHeads.findAll( "from AccountHeads AH where AH.parent=NULL and AH.activeYesNo='Y' "+subQuery  ) 
+		def accountHeadsInstanceList = AccountHeads.findAll( "from AccountHeads AH where AH.parent=NULL "+subQuery  ) 
 		return accountHeadsInstanceList
 	}
 	
@@ -41,9 +41,20 @@ class AccountHeadsService{
 		
 		def accountHeadsInstance = getAccountHeadsById( accountHeadsId )
         if(accountHeadsInstance) {
-            accountHeadsInstance.delete()
+           
+            println"+++++++params.id++++++++"+accountHeadsInstance
+         def chkAccountHeadInstance=AccountHeads.findAll("from AccountHeads AH where AH.parent= "+accountHeadsInstance.id)
+         println"++++++++++chkAccountHeadInstance++++++++++"+chkAccountHeadInstance.id
+         if(chkAccountHeadInstance[0]==null )
+         {
+        	accountHeadsInstance.delete()
             accountHeadsDeletedId = accountHeadsInstance.id
         }
+        else
+        {
+        	accountHeadsDeletedId = null 
+        }
+	}
 		return accountHeadsDeletedId
 	}
 	
@@ -99,7 +110,12 @@ class AccountHeadsService{
     		
     	return accountHeadId
     }
-	            
-	            
+	/**
+	 * Function for getting the parent of a subaccount head
+	 */
+	public AccountHeads getParentAccountHead(def accHeads){
+		def accountHeadsInstance = AccountHeads.find("from AccountHeads AH where AH.id= "+accHeads.parent.id)
+		return accountHeadsInstance
+	}            
 	
 }

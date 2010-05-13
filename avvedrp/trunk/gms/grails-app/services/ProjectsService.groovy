@@ -127,7 +127,7 @@ class ProjectsService{
 	 * Function to get active sub projects.
 	 */
 	public List getActiveSubProjects(Integer mainProjectId,String subQuery){
-		def projectsInstanceList=Projects.findAll("from Projects P where P.activeYesNo='Y' and P.parent.id="+mainProjectId+""+subQuery)
+		def projectsInstanceList=Projects.findAll("from Projects P where P.parent.id="+mainProjectId+""+subQuery)
 		return projectsInstanceList
 	}
 	
@@ -192,6 +192,5 @@ class ProjectsService{
 			projectTrackingInstance.saveMode = "Saved"
 		}
 		return projectTrackingInstance
-	}
-	
+	}	
 }

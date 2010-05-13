@@ -39,7 +39,14 @@
              <span class="menuButton"><a class="list"  href="../projectDash/${projectInstance.id}">Project List</a></span>
         </div>
         <div class="body">
-            <h1>Edit Sub Project Allocation</h1>
+        <g:if test="${grantAllocationInstance.projects.parent ==null}"> 
+        
+			      <h1>Edit Project Allocation</h1>
+			</g:if>
+			<g:else>
+			
+			    <h1>Edit SubProject Allocation</h1>
+			</g:else>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>

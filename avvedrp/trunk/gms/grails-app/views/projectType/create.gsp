@@ -34,7 +34,15 @@
                                 <td valign="top" class="value ${hasErrors(bean:projectTypeInstance,field:'type','errors')}">
                                     <input type="text" id="type" name="type" value="${fieldValue(bean:projectTypeInstance,field:'type')}"/>
                                 </td>
-                            </tr>                     
+                            </tr>  
+                             <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="activeYesNo">Active:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:projectTypeInstance,field:'activeYesNo','errors')}">
+                                    <g:select name="activeYesNo" from="${['Y', 'N']}"  value="${fieldValue(bean:projectTypeInstance,field:'activeYesNo')}" />
+                                </td>
+                            </tr>                    
                         </tbody>
                     </table>
                 </div>

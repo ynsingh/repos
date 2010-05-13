@@ -8,7 +8,7 @@
 	<div class="nav">
 		        <span class="menuButton"><a class="home" href="${createLinkTo(dir:'/login')}">Home</a></span>
 		        
-					 <g:if test="${session.Role != 'ROLE_USER'}"> 
+					 <g:if test="${(session.Role != 'ROLE_USER') && (session.Role != 'ROLE_PI')}"> 
 		            <span class="menuButton"><g:link class="create" action="create">New User</g:link></span>
                   
 					 </g:if>
@@ -23,6 +23,7 @@
 		<g:if test="${flash.message}">
 		<div class="message">${flash.message}</div>
 		</g:if>
+		<g:if test="${userMapList}">
 		<div class="list">
 			<table>
 			<thead>
@@ -30,7 +31,7 @@
 					<g:sortableColumn property="id" title="Id" />
 					<g:sortableColumn property="user.username" title="Login Name" />
 					<g:sortableColumn property="user.userRealName" title="Full Name" />
-					<g:sortableColumn property="user.nameOfTheInstitution" title="Institution" />
+					<g:sortableColumn property="party.nameOfTheInstitution" title="Institution" />
 					<g:if test="${session.Role == 'ROLE_ADMIN'}"> 
 					<th>Edit</th>
 					</g:if>
@@ -59,6 +60,10 @@
 			</tbody>
 			</table>
 		</div>
+		</g:if>
+            <g:else>
+            <br>No Records Available</br>
+            </g:else>
 
 		<div class="paginateButtons">
 			<g:paginate total="${User.count()}" />

@@ -85,7 +85,7 @@ class LoginController {
    	    }
      	 
  	          		
- 	         
+     	 gh.putValue("Help",  "Project_List.htm");
      	
 			 
      		 

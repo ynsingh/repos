@@ -39,7 +39,7 @@ class PartyGrantAgencyController {
 			redirect(action:list)
 		}
 		else {
-            flash.message = "Grant Agency not found with id ${params.id}"
+            flash.message = "Grant Allocation done by Grant Agency ${params.code},so could not delete"
             redirect(action:list)
         }
     }

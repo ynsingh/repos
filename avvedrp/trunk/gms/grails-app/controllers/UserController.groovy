@@ -329,7 +329,7 @@ class UserController extends GmsController {
 				Integer personId = userService.saveNewUserMap(person,params)
 			   
 			    if(personId != null){
-					redirect uri: '/grantAllocation/mainDash.gsp'
+					redirect uri: '/login/auth.gsp'
 				}
 			}
 			

@@ -4,6 +4,11 @@ class GrantExpense {
 	GrantAllocation grantAllocation
 	GrantAllocationSplit grantAllocationSplit
 	double expenseAmount
+	String modeOfPayment
+	String ddNo
+	Date ddDate
+	String bankName
+	String ddBranch
 	Date dateOfExpense
 	String description
 	String createdBy

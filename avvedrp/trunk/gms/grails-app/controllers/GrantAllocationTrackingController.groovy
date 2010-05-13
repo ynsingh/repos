@@ -94,7 +94,7 @@ class GrantAllocationTrackingController {
 		def grantAllocationTrackingInstance = grantAllocationService.saveOrUpdateGrantAllocationTracking(params)
 		if(grantAllocationTrackingInstance){
 			if(grantAllocationTrackingInstance.saveMode != null){
-				flash.message = "Grant Allocation Status ${grantAllocationTrackingInstance.id} "+grantAllocationTrackingInstance.saveMode
+				flash.message = "Grant Allocation ${grantAllocationTrackingInstance.grantAllocationStatus} "
 				redirect(action:create,id:grantAllocationTrackingInstance.grantAllocation.id,params:[trackType:params.trackType])
 			}
 			else{

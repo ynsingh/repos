@@ -122,15 +122,16 @@ text-decoration: underline;
  				<div class="prjInfo">
 				       <strong>Project :${projectInstance.code}</strong>
 				       <br>
-				    <strong>Fund Estimated :</strong><g:formatNumber number="${projectInstance.totAllAmount}" format="##,##,##0.00" />
+				      
+				    <strong>Fund Estimated :</strong>${currencyFormat.ConvertToIndainRS(projectInstance.totAllAmount)} 
 				    <br>
-				       <strong>Fund Received :</strong> <g:formatNumber number="${sumGrantRecieve[0].doubleValue()}" format="##,##,##0.00" />
-				    <br>
-
-				       <strong>Fund Utilized :</strong> <g:formatNumber number="${sumAmount[0].doubleValue()}" format="##,##,##0.00" />
+				       <strong>Fund Received :</strong> ${currencyFormat.ConvertToIndainRS(sumGrantRecieve[0].doubleValue())} 
 				    <br>
 
-				     <strong> Balance :</strong> <g:formatNumber number="${sumGrantRecieve[0].doubleValue()-sumAmount[0].doubleValue()}" format="###,##0.00" />
+				       <strong>Fund Utilized :</strong> ${currencyFormat.ConvertToIndainRS(sumAmount[0].doubleValue())} 
+				    <br>
+
+				     <strong> Balance :</strong> ${currencyFormat.ConvertToIndainRS(sumGrantRecieve[0].doubleValue()-sumAmount[0].doubleValue())}
 				    <br>
 				     <strong>Project Duration:</strong>
 				     <br>
@@ -252,17 +253,9 @@ text-decoration: underline;
 										            <input type="hidden" name="periodID" value="" />
 										             <input type="hidden" name="Path" value="${application.getRealPath("reports")}" />
 									  	         </g:jasperReport></li>
-					                <li><g:jasperReport jasper="UtilizationCertificate" format="PDF" name="Utilization Certificate" >
-										            <input type="hidden" name="id" value="${projectInstance.id}" />
-										            <input type="hidden" name="projectID" value="${projectInstance.id}" />
-										             <input type="hidden" name="Path" value="${application.getRealPath("reports")}" />
-									  	         </g:jasperReport></li>
-									<li><g:jasperReport jasper="StatementOFAccounts" format="PDF" name="Statement Of Accounts" >
-										            <input type="hidden" name="id" value="${projectInstance.id}" />
-										            <input type="hidden" name="projectID" value="${projectInstance.id}" />
-										             <input type="hidden" name="Path" value="${application.getRealPath("reports")}" />
-									  	         </g:jasperReport></li>
-								  	 			 <li><a href="../../utilization/create/${projectInstance.id}"><span>* Upload utilization certificate</span></a></li>        
+					                <li><a href="../../grantAllocation/reportView.gsp">Utilization Certificate</a></li>
+								  	 			 <li><a style="color:#234a64" href="../../utilization/create/${projectInstance.id}"><span>* Submit utilization certificate</span></a></li>        
+									  	        
 									  	         <li><a href="../../grantAllocation/reports.gsp">More ...</a></li>
             						</ul>
 					</div>

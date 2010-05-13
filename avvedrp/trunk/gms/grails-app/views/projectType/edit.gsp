@@ -11,7 +11,7 @@
         <div class="nav">
             <span class="menuButton"><a class="home" href="${createLinkTo(dir:'')}">Home</a></span>
             <span class="menuButton"><g:link class="list" action="list">ProjectType List</g:link></span>
-            <span class="menuButton"><g:link class="create" action="create">New ProjectType</g:link></span>
+            
         </div>
         <div class="body">
             <h1>Edit ProjectType</h1>
@@ -37,12 +37,20 @@
                                     <input type="text" id="type" name="type" value="${fieldValue(bean:projectTypeInstance,field:'type')}"/>
                                 </td>
                             </tr> 
+                              <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="activeYesNo">Active:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:projectTypeInstance,field:'activeYesNo','errors')}">
+                                    <g:select name="activeYesNo" from="${['Y', 'N']}"  value="${fieldValue(bean:projectTypeInstance,field:'activeYesNo')}" />
+                                </td>
+                            </tr> 
+                        
                         </tbody>
                     </table>
                 </div>
                 <div class="buttons">
                     <span class="button"><g:actionSubmit class="save" value="Update" /></span>
-                    <span class="button"><g:actionSubmit class="delete" onclick="return confirm('Are you sure?');" value="Delete" /></span>
                 </div>
             </g:form>
         </div>

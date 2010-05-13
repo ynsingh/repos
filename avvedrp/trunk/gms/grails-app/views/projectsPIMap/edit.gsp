@@ -4,54 +4,54 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main" />
-        <title>Edit Department</title>
+        <title>Edit Projects PI Map</title>
     </head>
     <body>
     <div class="wrapper">
         <div class="nav">
             <span class="menuButton"><a class="home" href="${createLinkTo(dir:'')}">Home</a></span>
-            <span class="menuButton"><g:link class="list" action="list">PartyDepartment List</g:link></span>
-            <span class="menuButton"><g:link class="create" action="create">New PartyDepartment</g:link></span>
+            <span class="menuButton"><g:link class="create" action="create">New Projects PI Map</g:link></span>
         </div>
         <div class="body">
-            <h1>Edit Department</h1>
+            <h1>Edit ProjectsPIMap</h1>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
-            <g:hasErrors bean="${partyDepartmentInstance}">
+            <g:hasErrors bean="${projectsPIMapInstance}">
             <div class="errors">
-                <g:renderErrors bean="${partyDepartmentInstance}" as="list" />
+                <g:renderErrors bean="${projectsPIMapInstance}" as="list" />
             </div>
             </g:hasErrors>
             <g:form method="post" >
-                <input type="hidden" name="id" value="${partyDepartmentInstance?.id}" />
+                <input type="hidden" name="id" value="${projectsPIMapInstance?.id}" />
                 <div class="dialog">
                     <table>
                         <tbody>
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="departmentCode">Department Code:</label>
+                                    <label for="investigator">Investigator:</label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean:partyDepartmentInstance,field:'departmentCode','errors')}">
-                                    <input type="text" id="departmentCode" name="departmentCode" value="${fieldValue(bean:partyDepartmentInstance,field:'departmentCode')}"/>
+                                <td valign="top" class="value ${hasErrors(bean:projectsPIMapInstance,field:'investigator','errors')}">
+                                    <g:select optionKey="id" optionValue="name" from="${Investigator.list()}" name="investigator.id" value="${projectsPIMapInstance?.investigator?.id}" ></g:select>
                                 </td>
                             </tr> 
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="name">Name:</label>
+                                    <label for="projects">Projects:</label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean:partyDepartmentInstance,field:'name','errors')}">
-                                    <input type="text" id="name" name="name" value="${fieldValue(bean:partyDepartmentInstance,field:'name')}"/>
+                                <td valign="top" class="value ${hasErrors(bean:projectsPIMapInstance,field:'projects','errors')}">
+                                    <g:select optionKey="id" optionValue="code" from="${Projects.list()}" name="projects.id" value="${projectsPIMapInstance?.projects?.id}" ></g:select>
                                 </td>
-                            </tr>                         
+                            </tr> 
+                        
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="party">Institution:</label>
+                                    <label for="role">Role:</label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean:partyDepartmentInstance,field:'party.code','errors')}">
-                                    <g:select optionKey="code" optionValue="code" from="${Party.list()}" name="party.code" value="${partyDepartmentInstance?.party?.code}" ></g:select>
+                                <td valign="top" class="value ${hasErrors(bean:projectsPIMapInstance,field:'role','errors')}">
+                                     <g:select id="role" name="role"  from="${['PI','CO-PI']}" value="${projectsPIMapInstance?.role}" ></g:select>
                                 </td>
                             </tr> 
                         

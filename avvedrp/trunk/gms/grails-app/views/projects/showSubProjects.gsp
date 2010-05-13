@@ -134,15 +134,6 @@
                                 <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'code','errors')}">
                                     <input type="text" id="code" name="code" value="${fieldValue(bean:projectsInstance,field:'code')}"/>
                                 </td>
-                               
-                                <td  colspan="2" valign="top" class="name">
-                                    <label for="principalInvestigatorName">Investigator:</label>
-                                </td>
-                                <td  valign="top" class="value ${hasErrors(bean:projectsInstance,field:'principalInvestigatorName','errors')}">
-                                    <input type="text" id="principalInvestigatorName" name="principalInvestigatorName" value="${fieldValue(bean:projectsInstance,field:'principalInvestigatorName')}"/>
-                                </td>
-                                
-                              
                             </tr> 
 		                   <tr class="prop">
 		                   <td colspan="3">
@@ -200,15 +191,14 @@
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
+            <g:if test="${projectsInstanceList}">
             <div class="list">
             <table cellspacing="0" cellpadding="0">
                     <thead>
                         <tr>
              	       <g:sortableColumn property="id" title="SlNo" />
                        <g:sortableColumn property="name" title="Name" />
-                       <g:sortableColumn property="code" title="Code" />
-                       <g:sortableColumn property="principalInvestigatorName" title="Investigator" />
-                    
+                       <g:sortableColumn property="code" title="Code" />               
                    	   <g:sortableColumn property="activeYesNo" title="Active" />
                    	   <th>Edit</th>
                         </tr>
@@ -219,8 +209,14 @@
                             <td>${i+1}</td>
                          <td>${fieldValue(bean:projectsInstanceList, field:'name')}</td>
                          <td>${fieldValue(bean:projectsInstanceList, field:'code')}</td>
-                         <td>${fieldValue(bean:projectsInstanceList, field:'principalInvestigatorName')}</td>
-                         <td>${fieldValue(bean:projectsInstanceList, field:'activeYesNo')}</td>
+                         <td>
+                	             <g:if test="${fieldValue(bean:projectsInstanceList, field:'activeYesNo') == 'Y'}">
+    							 ${'YES'}
+    							 </g:if>
+    							 <g:else>
+    							 ${'NO'}
+    							 </g:else>
+                         </td>
                          <td><g:link  action="edit" id="${projectsInstanceList.id}" params="[flag:'Y']">Edit</g:link></td>
                        </tr>
                     </g:each>
@@ -229,6 +225,10 @@
                     
                 </table>
             </div>
+            </g:if>
+            <g:else>
+            <br>No Records Available</br>
+            </g:else>
          
       
          </div>

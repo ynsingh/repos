@@ -30,7 +30,7 @@ grails.converters.encoding="UTF-8"
 
 // enabled native2ascii conversion of i18n properties files
 grails.enable.native2ascii = true
-grails.mail.host="localhost"
+grails.mail.host="192.168.36.10"
 /*grails {
 	   mail {
 		   

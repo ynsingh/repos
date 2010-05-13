@@ -49,17 +49,6 @@
                             <td valign="top" class="value">${fieldValue(bean:projectsInstance, field:'code')}</td>
                             
                         </tr>
-                    
-                      
-                    
-                        <tr class="prop">
-                            <td valign="top" class="name">Investigator:</td>
-                            
-                            <td valign="top" class="value">${fieldValue(bean:projectsInstance, field:'principalInvestigatorName')}</td>
-                            
-                        </tr>
-                    
-                     
                         <tr class="prop">
                             <td valign="top" class="name">Active:</td>
                             

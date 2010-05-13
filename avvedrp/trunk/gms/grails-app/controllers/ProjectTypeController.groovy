@@ -1,3 +1,4 @@
+import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 class ProjectTypeController {
     
     def index = { redirect(action:list,params:params) }
@@ -5,9 +6,12 @@ class ProjectTypeController {
     // the delete, save and update actions only accept POST requests
     def allowedMethods = [delete:'POST', save:'POST', update:'POST']
 
-    def list = {
+    def list =
+    {
         if(!params.max) params.max = 10
-        [ projectTypeInstanceList: ProjectType.list( params ) ]
+         
+       
+        [ projectTypeInstanceList: ProjectType.list(params) ]
     }
 
     def show = {
@@ -24,7 +28,7 @@ class ProjectTypeController {
         def projectTypeInstance = ProjectType.get( params.id )
         if(projectTypeInstance) {
             projectTypeInstance.delete()
-            flash.message = "ProjectType ${params.id} deleted"
+            flash.message = "ProjectType ${projectTypeInstance.type} deleted"
             redirect(action:list)
         }
         else {
@@ -50,7 +54,7 @@ class ProjectTypeController {
         if(projectTypeInstance) {
             projectTypeInstance.properties = params
             if(!projectTypeInstance.hasErrors() && projectTypeInstance.save()) {
-                flash.message = "ProjectType ${params.id} updated"
+                flash.message = "ProjectType ${projectTypeInstance.type} updated"
                 redirect(action:list,id:projectTypeInstance.id)
             }
             else {
@@ -64,6 +68,9 @@ class ProjectTypeController {
     }
 
     def create = {
+    	GrailsHttpSession gh=getSession()
+    	//Puting help page into session
+    	gh.putValue("Help","Project_Type.htm")
         def projectTypeInstance = new ProjectType()
         projectTypeInstance.properties = params
         return ['projectTypeInstance':projectTypeInstance]

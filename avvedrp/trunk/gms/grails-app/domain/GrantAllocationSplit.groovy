@@ -19,6 +19,9 @@ class GrantAllocationSplit {
     
     boolean isSaved
     double unAllocatedAmt
-    static transients = [ "isSaved" ,"unAllocatedAmt"]
+    AccountHeads subAccHead
+    AccountHeads accHead
+    String accHeadPeriod
+    static transients = [ "isSaved" ,"unAllocatedAmt","subAccHead","accHead","accHeadPeriod"]
 
 }

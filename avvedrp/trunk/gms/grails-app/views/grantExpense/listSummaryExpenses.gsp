@@ -22,7 +22,8 @@
             
             
             <td valign="top" >Amount Allocated:</td>
-            <td valign="top" ><strong><g:formatNumber number="${projectsInstance.totAllAmount}" format="###,##0.00" /></strong></td>
+            <td ><strong>${currencyFormat.ConvertToIndainRS(projectsInstance.totAllAmount)}</strong></td>
+            
                     
         </tr> 
                
@@ -57,11 +58,15 @@
                     	
                     	<td>${fieldValue(bean:grantExpenseInstance, field:'grantAllocationSplit.accountHead.code')}</td>
                     
-                        <td><g:formatNumber number="${grantExpenseInstance.expenseAmount}" format="###,##0.00" /></td>
-                            
-                     	<td><g:formatNumber number="${(grantExpenseInstance.expenseAmount)-(grantExpenseInstance.balanceAmount)}" format="###,##0.00" /></td>
                         
-                        <td><g:formatNumber number="${grantExpenseInstance.balanceAmount}" format="###,##0.00" /></td>
+                        <td>${currencyFormat.ConvertToIndainRS(grantExpenseInstance.expenseAmount)}</td>
+                        
+                        
+                         <td>${currencyFormat.ConvertToIndainRS((grantExpenseInstance.expenseAmount)-(grantExpenseInstance.balanceAmount))}</td>   
+                     	
+                        
+                        
+                        <td>${currencyFormat.ConvertToIndainRS(grantExpenseInstance.balanceAmount)}</td>
                         
                     </tr>
                 </g:each>

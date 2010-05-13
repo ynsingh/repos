@@ -8,8 +8,12 @@ class ProjectDepartmentMapController {
     def allowedMethods = [delete:'POST', save:'POST', update:'POST']
 
     def list = {
-        if(!params.max) params.max = 10
-        [ projectDepartmentMapInstanceList: ProjectDepartmentMap.list( params ) ]
+    	GrailsHttpSession gh = getSession()
+    	
+    	def projectDepartmentMapService=new ProjectDepartmentMapService()
+    	def projectDepartmentMapInstanceList = projectDepartmentMapService.getProjectDepartmentMapList(gh.getValue("Party"))
+        
+        [ projectDepartmentMapInstanceList: projectDepartmentMapInstanceList ]
     }
 
     def show = {
@@ -26,7 +30,7 @@ class ProjectDepartmentMapController {
         def projectDepartmentMapInstance = ProjectDepartmentMap.get( params.id )
         if(projectDepartmentMapInstance) {
             projectDepartmentMapInstance.delete()
-            flash.message = "ProjectDepartmentMap ${params.id} deleted"
+            flash.message = "ProjectDepartmentMap  deleted"
             redirect(action:list)
         }
         else {
@@ -52,8 +56,8 @@ class ProjectDepartmentMapController {
         if(projectDepartmentMapInstance) {
             projectDepartmentMapInstance.properties = params
             if(!projectDepartmentMapInstance.hasErrors() && projectDepartmentMapInstance.save()) {
-                flash.message = "ProjectDepartmentMap ${params.id} updated"
-                redirect(action:show,id:projectDepartmentMapInstance.id)
+                flash.message = "ProjectDepartmentMap is updated"
+                redirect(action:list,id:projectDepartmentMapInstance.id)
             }
             else {
                 render(view:'edit',model:[projectDepartmentMapInstance:projectDepartmentMapInstance])
@@ -69,6 +73,8 @@ class ProjectDepartmentMapController {
         def projectDepartmentMapInstance = new ProjectDepartmentMap()
         projectDepartmentMapInstance.properties = params
        	GrailsHttpSession gh=getSession()
+       	//Adding help page into session
+       	gh.putValue("Help","Project_Dept_Map.htm")
         def dataSecurityService = new DataSecurityService()
         def projectDepartmentMapService = new ProjectDepartmentMapService()
     	println "===== PartyID====== " +gh.getValue("PartyID")
@@ -80,8 +86,8 @@ class ProjectDepartmentMapController {
     def save = {
         def projectDepartmentMapInstance = new ProjectDepartmentMap(params)
         if(!projectDepartmentMapInstance.hasErrors() && projectDepartmentMapInstance.save()) {
-            flash.message = "ProjectDepartmentMap ${projectDepartmentMapInstance.id} created"
-            redirect(action:show,id:projectDepartmentMapInstance.id)
+            flash.message = "ProjectDepartmentMap created for ${projectDepartmentMapInstance.projects.code}"
+            redirect(action:list,id:projectDepartmentMapInstance.id)
         }
         else {
             render(view:'create',model:[projectDepartmentMapInstance:projectDepartmentMapInstance])

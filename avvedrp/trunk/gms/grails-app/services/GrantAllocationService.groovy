@@ -223,6 +223,25 @@ class GrantAllocationService {
 			 }
 			 return grantAllocationInstanceList
 		}
+	 
+	 public GrantAllocation[] getGrantAllocationsByProjectCode(def projectId)
+	 {
+		 def subQry = "";
+		 
+			
+		 def grantAllocationInstanceList=GrantAllocation.findAll("from GrantAllocation  GA where  GA.projects = "+projectId);
+		 for(int i=0;i<grantAllocationInstanceList.size();i++)
+		 {
+			 String s=grantAllocationInstanceList[i].projects.code;
+			 println"***********s**********"+s
+			 def numformatter = new DecimalFormat("#0.00");
+			  println numformatter.format(grantAllocationInstanceList[i].amountAllocated)
+
+			 grantAllocationInstanceList[i].grantCode=s+"-"+numformatter.format(grantAllocationInstanceList[i].amountAllocated)
+		 }
+		 return grantAllocationInstanceList
+		
+	 }
 	
 	/**
 	 * Function to check whether fund is allocated for same project and party.
@@ -254,8 +273,19 @@ class GrantAllocationService {
 	 * Function to save sub grant allocation.
 	 */
 	public GrantAllocation saveSubGrantAllocation(def grantAllocationInstance){
-		grantAllocationInstance.save();
 		
+		def chkhdallocinstance=GrantAllocationSplit.findAll("from GrantAllocationSplit GS where GS.projects="+grantAllocationInstance.projects.parent.id)
+		println"*********chkhdallocinstance***********"+chkhdallocinstance[0]
+		if(chkhdallocinstance[0])
+		{
+		
+		grantAllocationInstance.save()
+	    return grantAllocationInstance    
+		
+	}
+	}
+	public GrantAllocation subGrantSaveExt(def grantAllocationInstance){
+		grantAllocationInstance.save()
 	}
 	
 	/**

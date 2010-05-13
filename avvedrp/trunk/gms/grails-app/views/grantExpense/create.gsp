@@ -53,7 +53,8 @@
 	        <td >Project Code:</td>
 	        <td><strong>${fieldValue(bean:projectsInstance, field:'code')}</strong></td>
 	             <td >Amount Allocated:</td>
-	        <td ><strong><g:formatNumber number="${projectsInstance.totAllAmount}" format="###,##0.00" /></strong></td>
+	        <td ><strong>${currencyFormat.ConvertToIndainRS(projectsInstance.totAllAmount)}</strong></td>
+	        
         </tr> 
       	</table> 
       	</div>  
@@ -109,7 +110,7 @@
                   <td valign="top" class="name"> <label for="grantAllocationSplit">Account 
                     Head:</label> </td>
                   <td valign="top" class="value ${hasErrors(bean:grantExpenseInstance,field:'grantAllocationSplit','errors')}"> 
-                    <g:select optionKey="id" optionValue="${{it.accountHead.code}}" from="${GrantAllocationSplit.findAll('from GrantAllocationSplit GA where GA.projects='+grantExpenseInstance.projects.id+' group by GA.accountHead')}" noSelection="['null':'-Select-']" name="grantAllocationSplit.id" value="${grantExpenseInstance?.grantAllocationSplit?.id}" ></g:select> 
+                    <g:select optionKey="id" optionValue="accHeadPeriod" from="${accountHeadList}" noSelection="['null':'-Select-']" name="grantAllocationSplit.id" value="${grantExpenseInstance?.grantAllocationSplit?.id}" ></g:select> 
                   </td>
                 </tr>
                 <tr class="prop"> 
@@ -119,6 +120,60 @@
                     <input type="text" id="expenseAmount" name="expenseAmount" value="${fieldValue(bean:grantExpenseInstance,field:'expenseAmount')}" style="text-align: right" /> 
                   </td>
                 </tr>
+                
+                <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="modeOfPayment">Mode of Payment:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:grantExpenseInstance,field:'modeOfPayment','errors')}">
+                                    <g:select name="modeOfPayment" from="${['DD','Cheque','Cash' ,'BankTransfer']}"  value="${fieldValue(bean:grantExpenseInstance,field:'modeOfPayment')}" />
+                                </td>
+                            </tr>      
+                    
+              
+               
+                          <tr class="prop">
+
+                                <td valign="top" class="name">
+                                    <label for="ddNo">DD/Cheque No:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:grantExpenseInstance,field:'ddNo','errors')}">
+                                    <input type="text" id="ddNo" name="ddNo" value="${fieldValue(bean:grantExpenseInstance,field:'ddNo')}" style="text-align: right" />
+                                </td>
+                            </tr> 
+                       
+                        
+                        
+                        <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="ddDate">DD/Cheque Date:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:grantExpenseInstance,field:'ddDate','errors')}">
+                                <calendar:datePicker name="ddDate" defaultValue="${new Date()}" value="${grantExpenseInstance?.ddDate}" dateFormat= "%d/%m/%Y"/>
+                                  
+                                </td>
+                            </tr> 
+                            
+                            <tr class="prop">
+
+                                <td valign="top" class="name">
+                                    <label for="bankName">Bank Name:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:grantExpenseInstance,field:'bankName','errors')}">
+                                    <input type="text" id="bankName" name="bankName" value="${fieldValue(bean:grantExpenseInstance,field:'bankName')}" style="text-align: right" />
+                                </td>
+                            </tr> 
+                            
+                            <tr class="prop">
+
+                                <td valign="top" class="name">
+                                    <label for="ddBranch">Branch:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:grantExpenseInstance,field:'ddBranch','errors')}">
+                                    <input type="text" id="ddBranch" name="ddBranch" value="${fieldValue(bean:grantExpenseInstance,field:'ddBranch')}" style="text-align: right" />
+                                </td>
+                            </tr> 
+                           
                 <tr class="prop"> 
                   <td valign="top" class="name"> <label for="description">Description:</label> 
                   </td>
@@ -152,7 +207,7 @@
                 <tr class="prop"> 
                   <td class="name"> <label for="dateOfExpense">Date From:</label> 
                   </td>
-                  <td  > <calendar:datePicker name="dateFrom" defaultValue="${new Date()}" value="${grantExpenseInstance.dateFrom}" dateFormat= "%d/%m/%Y"/> 
+                  <td> <calendar:datePicker name="dateFrom" defaultValue="${new Date()}" value="${grantExpenseInstance.dateFrom}" dateFormat= "%d/%m/%Y"/> 
                     <g:hiddenField name="id" value="${grantExpenseInstance?.projects?.id}" /> 
                   </td>
                 </tr>
@@ -174,14 +229,22 @@
         
       <tr>
         <td>
+        <g:if test="${grantExpenseInstanceList}">
         
         <div id="ss" class="list" style="overflow:auto ;height:150px; width:100%">
         <table width="100%" height="" cellspacing="0">
             <thead>
-              <tr> <g:sortableColumn property="id" title="SlNo" /> <g:sortableColumn property="dateOfExpense" title="Date Of Expense" /> 
-                <g:sortableColumn property="grantAllocationSplit.accountHead.code" title="Account Head" /> 
-                <g:sortableColumn property="expenseAmount" title="Expense Amount" /> 
-                <g:sortableColumn property="description" title="Description" /> 
+              <tr> 
+                                      
+               	        <th>SlNo</th>
+                   	        
+               	         <th>Date Of Expense</th>
+               	        
+               	       <th>Account Head</th>
+               	        
+               	        <th>Expense Amount</th>
+                        
+               	        <th>Description</th>
                 
                  <th>Edit</th>
               </tr>
@@ -192,19 +255,25 @@
                 <td>${(i + 1)}</td>
                 <td><g:formatDate format="dd/MM/yyyy" date="${grantExpenseInstance.dateOfExpense}"/></td>
                 <td>${fieldValue(bean:grantExpenseInstance, field:'grantAllocationSplit.accountHead.code')}</td>
-                <td><g:formatNumber number="${grantExpenseInstance.expenseAmount}" format="###,##0.00" /></td>
+                <td>${currencyFormat.ConvertToIndainRS(grantExpenseInstance.expenseAmount)}</td>
+                
+                
                 <td>${fieldValue(bean:grantExpenseInstance, field:'description')}</td>
                 <td><g:link action="edit" id="${fieldValue(bean:grantExpenseInstance, field:'id')}">Edit</g:link></td>
               </tr>
               </g:each> 
             </tbody>
-          </table></div></td>
+          </table></div>
+          </g:if>
+          </td>
       </tr>
       
       <tr> 
         <td height="200" colspan="2"> <div class="list" align="center"> 
             <h1>Account Head Wise Expense Summary</h1>
+            
             <table width="100%" cellspacing="0" >
+            <g:if test="${grantExpenseSummaryList}">
               <thead >
                 <tr> <g:sortableColumn property="id" title="SlNo" /> 
                 <g:sortableColumn property="grantAllocationSplit.accountHead.code" title="Account Head" /> 
@@ -217,14 +286,21 @@
                 <g:each in="${grantExpenseSummaryList}" status="i" var="grantExpenseInstance"> 
                 <tr class="${(i % 2) == 0 ? 'odd' : 'even'}"> 
                   <td>${(i + 1)}</td>
+                
                   <td>${grantExpenseInstance.accountHeadCode}</td>
-                  <td><g:formatNumber number="${(grantExpenseInstance.expenseAmount)+(grantExpenseInstance.balanceAmount)}" format="###,##0.00" /></td>
-                  <td><g:formatNumber number="${(grantExpenseInstance.expenseAmount)}" format="###,##0.00" /></td>
-                  <td><g:formatNumber number="${grantExpenseInstance.balanceAmount}" format="###,##0.00" /></td>
+                  <td>${currencyFormat.ConvertToIndainRS((grantExpenseInstance.expenseAmount)+(grantExpenseInstance.balanceAmount))}</td>
+                  <td>${currencyFormat.ConvertToIndainRS(grantExpenseInstance.expenseAmount)}</td>
+                  <td>${currencyFormat.ConvertToIndainRS(grantExpenseInstance.balanceAmount)}</td>
+                  
                 </tr>
                 </g:each> 
               </tbody>
+              </g:if>
+            <g:else>
+            No Records Available
+            </g:else>
             </table>
+            
           </div></td>
       </tr>
     </table>

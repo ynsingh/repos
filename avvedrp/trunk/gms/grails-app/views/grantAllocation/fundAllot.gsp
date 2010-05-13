@@ -128,7 +128,7 @@
                    	        <g:sortableColumn property="id" title="SlNo" />
                                                                                  
                    	        <g:sortableColumn property="projects.code" title="Project Code " />
-                   	        <g:sortableColumn property="projects.principalInvestigatorName" title="PI Name " />
+                   	        <g:sortableColumn property="investigator.name" title="PI Name " />
                             <g:sortableColumn property="projects.projectStartDate" title="Project Start Date " />
                             <g:sortableColumn property="projects.projectEndDate" title="Project End date " />
                             
@@ -144,16 +144,15 @@
                     <tbody>
                     <g:each in="${grantAllocationInstanceList}" status="i" var="grantAllocationInstance">
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-                        
                             <td>${(i + 1)}</td>
                             <td>${fieldValue(bean:grantAllocationInstance, field:'projects.code')}</td>
-                             <td>${fieldValue(bean:grantAllocationInstance, field:'projects.principalInvestigatorName')}</td>
+                             <td>${fieldValue(bean:projectsPIMapInstanceList[i], field:'investigator.name')}</td>
                                <td><g:formatDate format="dd-MM-yyyy" date="${grantAllocationInstance.projects.projectStartDate}"/></td>
                             <td><g:formatDate format="dd-MM-yyyy" date="${grantAllocationInstance.projects.projectEndDate}"/></td>
                             <td>${fieldValue(bean:grantAllocationInstance, field:'party.code')}</td>
                             
-                         
-    	                     <td><g:formatNumber number="${grantAllocationInstance.amountAllocated}" format="###,##0.00" /></td>
+                             <td>${currencyFormat.ConvertToIndainRS(grantAllocationInstance.amountAllocated)}</td>
+    	                     
                         <td>${fieldValue(bean:grantAllocationInstance, field:'remarks')}</td>
                             
                         <td><g:link action="edit" id="${grantAllocationInstance.id}">Edit</g:link></td>
