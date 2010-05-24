@@ -94,6 +94,7 @@ public class Notices extends SecureScreen
                          * Retreives all the courses in which the user is an instructor
                          */
 			Vector courselist=new Vector();
+			Vector groupIdList=new Vector();
                         Vector v=UserGroupRoleUtil.getGID(user_id,2);
                         int rows=v.size();
                         for(int count=0;count<rows;count++){
@@ -102,11 +103,13 @@ public class Notices extends SecureScreen
                                 String group_name=GroupUtil.getGroupName(gid);
                                 String coursename=CourseUtil.getCourseName(group_name);
                                 courselist.addElement(coursename);
+                                groupIdList.addElement(group_name);
                         }
 
                         String C_Name=(String)(user.getTemp("course_name"));
                         context.put("course",C_Name);
                         context.put("courselist",courselist);
+                        context.put("groupIdList",groupIdList);
                 }
                 catch(Exception e){data.setMessage("the error in notice send java---->"+e);}
 

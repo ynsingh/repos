@@ -61,7 +61,8 @@ import org.iitk.brihaspati.om.NoticeSend;
 import org.iitk.brihaspati.om.NoticeReceive;
 import org.iitk.brihaspati.om.NoticeSendPeer;
 import org.iitk.brihaspati.om.NoticeReceivePeer;
-
+import org.iitk.brihaspati.om.Courses;
+import org.iitk.brihaspati.om.CoursesPeer;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.CourseUtil;
@@ -165,11 +166,11 @@ public class Notice_Send_Delete extends SecureAction
 				if(userid==1){
 					course_id=courses[num];
 				}else{
-					course_id=CourseUtil.getCourseId(courses[num]);
+					//course_id=CourseUtil.getCourseId(courses[num]);
+					course_id = courses[num];
 				}
 
 				//this is used for notices and group management
-
                                         group_id=GroupUtil.getGID(course_id);
 
 				//Check for repeat quiz announcement
@@ -270,7 +271,6 @@ public class Notice_Send_Delete extends SecureAction
                                         {
                                                 String grpname=pp.getString("val","");
 						String gpath=TurbineServlet.getRealPath("/Courses"+"/"+course_id)+"/GroupManagement";
-						ErrorDumpUtil.ErrorLog("grpmgmtpath-->"+gpath);
                                                 TopicMetaDataXmlReader topicmetadata=new TopicMetaDataXmlReader(gpath+"/"+grpname+"__des.xml");
                                                 Vector grouplist=topicmetadata.getGroupDetails();
                                                // int usrid=0;
@@ -289,7 +289,7 @@ public class Notice_Send_Delete extends SecureAction
                                                         {
                                                                 String str=username[k];
                                                                 userid=UserUtil.getUID(str);
-								insertReceiveNotice( msg_id, userid, group_id);
+								insertReceiveNotice( msg_id, userid, group_id, data);
                                                         }
                                                 }
                                         }
@@ -305,20 +305,20 @@ public class Notice_Send_Delete extends SecureAction
 							for(int count=0;count<rows;count++){
 								String user_id=(String)userList.elementAt(count);
 								userid=Integer.parseInt(user_id);
-								insertReceiveNotice( msg_id, userid, group_id);
+								insertReceiveNotice( msg_id, userid, group_id, data);
 							}
 						}
 					}
 					if(role_id==7)
 					{
 						userList=UserGroupRoleUtil.getUID(group_id);
-						int list=userList.size();	
+						int list=userList.size();
 						if(list!=0)
 						{
 						for(int k=0;k<list;k++)
 						{
 							userid=Integer.parseInt((String)userList.get(k));
-							insertReceiveNotice( msg_id, userid, group_id);
+							insertReceiveNotice( msg_id, userid, group_id, data);
 						}
 						}
 					}
@@ -359,26 +359,32 @@ public class Notice_Send_Delete extends SecureAction
         * @param group_id int
         */
 
-	public void insertReceiveNotice(int msg_id,int userid,int group_id)
+	public void insertReceiveNotice(int msg_id,int userid,int group_id, RunData data)
 	{
-		try{	
+		try{
 			Criteria crit=new Criteria();
                         crit.add(NoticeReceivePeer.NOTICE_ID,msg_id);
                         crit.add(NoticeReceivePeer.RECEIVER_ID,userid);
                         crit.add(NoticeReceivePeer.GROUP_ID,group_id);
                         crit.add(NoticeReceivePeer.READ_FLAG,0);
                         NoticeReceivePeer.doInsert(crit);
+			String lang=data.getUser().getTemp("lang").toString();
 			String server_name=TurbineServlet.getServerName();
                         String srvrPort=TurbineServlet.getServerPort();
+			String groupName = GroupUtil.getGroupName(group_id);
+			String userName=UserUtil.getLoginName(userid);
+			crit=new Criteria();
+                        crit.add(CoursesPeer.GROUP_NAME,groupName);
+                        List Course_list=CoursesPeer.doSelect(crit);
+                        String courseName=((Courses)Course_list.get(0)).getCname();
 			crit =new Criteria();
                         crit.add(TurbineUserPeer.USER_ID,userid);
                         List userList=TurbineUserPeer.doSelect(crit);
 			for(int c1=0;c1<userList.size();c1++) {
 				TurbineUser element=(TurbineUser)(userList.get(c1));
                                 String eMail=element.getEmail();
-				ErrorDumpUtil.ErrorLog("Email"+eMail);
 				if(!eMail.equals("")){
-					String Mail_msg=MailNotification.sendMail(notice_message,eMail,"Brihaspati Notice","Updation Mail","","","",server_name,srvrPort,"english");
+					String Mail_msg=MailNotification.sendMail(notice_message,eMail,courseName,"Updation Mail",userName,"Brihaspati Notice","",server_name,srvrPort,lang);
 				}
 			}
 		}

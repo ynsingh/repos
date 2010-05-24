@@ -91,6 +91,7 @@ public class Index extends SecureScreen{
                          for(Iterator i=aul.iterator();i.hasNext();)
                                         {
                                                 HttpSession session=(HttpSession) i.next();
+						ErrorDumpUtil.ErrorLog("session create--------"+session);
                                                 User un =TurbineSession.getUserFromSession(session);
                                                 String u=un.getName();
                                                 if(ve.contains(u)){
@@ -100,11 +101,9 @@ public class Index extends SecureScreen{
                                                 long diffHours = diff/(60 * 60 * 1000);
                                                 long diffHour = diff%(60 * 60 * 1000);
                                                 long diffMin=diffHour/(60*1000);
-                                                String h=u+" "+"("+diffHours+" "+"Hs"+diffMin+"Min"+")";
-                                                long diffMin1=diffHour%(60*1000);
-
-                                                ve1.add(h);
-                                                }
+                                                String h=u+" "+"("+diffHours+"Hrs"+" "+diffMin+"Min"+")";
+			                        ve1.add(h);
+	                                                }
 
                                                }
                                                 context.put("VE1",ve1);

@@ -78,7 +78,7 @@ import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
  *  @author<a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  *  @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  *  @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
- * @modified date 28-12-2009
+ * @modified date 28-12-2009, 14-05-2010
 
  */
 public class MailSendMessage extends SecureAction
@@ -93,7 +93,8 @@ public class MailSendMessage extends SecureAction
     	{
 		try
 		{
-			String cerMsg = "", message = "";
+			//String cerMsg = "", message = "";
+			String message = "", cerMsg = "";
 			User user = data.getUser();
 			ParameterParser pp=data.getParameters();
 			String AddList=new String();
@@ -103,7 +104,7 @@ public class MailSendMessage extends SecureAction
 	  		String Add_FstList=pp.getString("addressNames","");
 	  		String Add_SndList=pp.getString("addressNames1","");
 			String mode =pp.getString("mode1","");
-			String name="",path="",gpath="";
+			String name="",gpath="";
 			int msgid = 0,Status=0,receiver_id=0,readf=0,index=0;
 			RomanToUnicode romanToUni = new RomanToUnicode();
 			cerMsg = pp.getString("hexaStr");
@@ -117,7 +118,6 @@ public class MailSendMessage extends SecureAction
 			}
 			else
 				message = pp.getString("hexaStr");
-
 			if(!Add_SndList.equals(""))
 			{
 				AddList=Add_FstList+","+Add_SndList;
@@ -157,10 +157,11 @@ public class MailSendMessage extends SecureAction
                                 crit.add(MailSendPeer.REPLY_STATUS,0);
                                 crit.add(MailSendPeer.POST_TIME,d);
                                 MailSendPeer.doInsert(crit);
-				List v= null;
-                               	String mailId="", mailMsg="";
+/**
+                               	String mailMsg="";
 				String serverName= TurbineServlet.getServerName();
 		                String serverPort= TurbineServlet.getServerPort();
+**/
 				StringTokenizer st=new StringTokenizer(AddList,", ");
                       		for(int i=0;st.hasMoreTokens();i++)
 				{ //first 'for' loop
@@ -179,25 +180,17 @@ public class MailSendMessage extends SecureAction
                                				for(int k=0;k<list.size();k++)
                                         		{
                                                			name=((FileEntry)list.elementAt(k)).getUserName();
-								path = data.getServletContext().getRealPath("/UserArea")+"/"+name;
-								doWriteMail(LangFile, path, msgid, message, name, data,readf, receiver_id,context,Status,mode,"");
+								//path = data.getServletContext().getRealPath("/UserArea")+"/"+name;
+								//doWriteMail(LangFile, path, msgid, message, name, data,readf, receiver_id,context,Status,mode,"");
+								doWriteMail(LangFile, msgid, message, name, data,readf, receiver_id, context, Status, mode, "", "");
 							}
 						}
 					}
 					else
 					{
-        	                        crit=new Criteria();
-                	                crit.add(TurbineUserPeer.LOGIN_NAME,toAddress);
-                        	        v=TurbineUserPeer.doSelect(crit);
-                                	TurbineUser element=(TurbineUser)v.get(0);
-	                                mailId=element.getEmail();
-		                                if(mailId != null && mailId != "")
-        	                                        mailMsg=MailNotification.sendMail(message, mailId, "LocalMail", "Updation Mail", subject, "", "", serverName, serverPort, (String)user.getTemp("LangFile"));
-
-						else{
-							path = data.getServletContext().getRealPath("/UserArea")+"/"+toAddress;
-							doWriteMail(LangFile, path, msgid, message, toAddress,data,readf,receiver_id,context,Status,mode,cerMsg);
-						}
+						//doWriteMail(LangFile, path, msgid, message, toAddress,data,readf,receiver_id,context,Status,mode,cerMsg);
+						doWriteMail(LangFile, msgid, message, toAddress, data, readf, receiver_id, context, Status, mode, cerMsg, subject);
+						//}
 					}
 					String msg1=MultilingualUtil.ConvertedString("mail_msg2",LangFile);
 					data.setMessage(msg1);
@@ -331,7 +324,8 @@ public class MailSendMessage extends SecureAction
         */
 
 
-	public void doWriteMail(String LangFile,String path,int msgid,String message, String toAddress, RunData data, int readf, int receiver_id,Context context,int Status,String mode, String msg)
+	//public void doWriteMail(String LangFile,String path,int msgid,String message, String toAddress, RunData data, int readf, int receiver_id,Context context,int Status,String mode, String msg)
+	public void doWriteMail(String LangFile, int msgid, String message, String toAddress, RunData data, int readf, int receiver_id,Context context,int Status,String mode, String msg, String subject)
 	{
 		try
 		{
@@ -339,78 +333,121 @@ public class MailSendMessage extends SecureAction
                         Criteria crit=new Criteria();
 			if(TurbineSecurity.accountExists(toAddress)) 
                         {// inner 'if'
-                        	/**
-                               	* Select highest mail_id from Mail_Send table
-                               	*/
-                               	String qmsgid="SELECT MAX(MAIL_ID) FROM MAIL_SEND";
-                               	List vmsgid = MailSendPeer.executeQuery(qmsgid);
-                               	/**
-                               	* getting the mail_id of the message.
-                               	*/
-                               	for(ListIterator j = vmsgid.listIterator();j.hasNext();)
-                               	{
-                               		Record item = (Record)j.next();
-                                       	msgid = item.getValue("MAX(MAIL_ID)").asInt();
-                               	}        
-				/**
-                        	* inserting into the MAIL_RECEIVE table.
-                        	*/
-                        	receiver_id = UserUtil.getUID(toAddress);
-				//ErrorDumpUtil.ErrorLog("receiver_id"+receiver_id);
-                        	crit=new Criteria();
-                        	crit.add(MailReceivePeer.MAIL_ID,msgid);
-                        	crit.add(MailReceivePeer.RECEIVER_ID,receiver_id);
-                        	crit.add(MailReceivePeer.MAIL_READFLAG,readf);
-				if(!mode.equals("grpmgmt"))
-                        		crit.add(MailReceivePeer.MAIL_TYPE,0);
-				else
-                        		crit.add(MailReceivePeer.MAIL_TYPE,1);
-                        	MailReceivePeer.doInsert(crit);
+				String path="", mailId="";
+				
+				if(!mode.equals("grpmgmt")){
+					List v= null;
+					crit=new Criteria();
+                                        crit.add(TurbineUserPeer.LOGIN_NAME,toAddress);
+                                        v=TurbineUserPeer.doSelect(crit);
+                                        TurbineUser element=(TurbineUser)v.get(0);
+                                        mailId=element.getEmail();
+				}
+				if(mailId != null && mailId != ""){ //if s1 start
+                                	/////////////////////////////////////
+                                        /**
+                                          * From here starts the code to upload
+                                          * the attachment if any with the message.
+                                          */
+					File fForLM=new File(data.getServletContext().getRealPath("/tmp"));
+					if(!fForLM.exists())
+                                        	fForLM.mkdirs();
+					path = data.getServletContext().getRealPath("/tmp");
+				} //if s1 end
+				else { //else s1 start
 
+					path = data.getServletContext().getRealPath("/UserArea")+"/"+toAddress;
+
+	                        	/**
+        	                       	* Select highest mail_id from Mail_Send table
+                	               	*/
+                        	       	String qmsgid="SELECT MAX(MAIL_ID) FROM MAIL_SEND";
+                               		List vmsgid = MailSendPeer.executeQuery(qmsgid);
+	                               	/**
+        	                       	* getting the mail_id of the message.
+                	               	*/
+                        	       	for(ListIterator j = vmsgid.listIterator();j.hasNext();)
+                               		{
+                               			Record item = (Record)j.next();
+	                                       	msgid = item.getValue("MAX(MAIL_ID)").asInt();
+        	                       	}        
+					/**
+                        		* inserting into the MAIL_RECEIVE table.
+                        		*/
+	                        	receiver_id = UserUtil.getUID(toAddress);
+					//ErrorDumpUtil.ErrorLog("receiver_id"+receiver_id);
+                	        	crit=new Criteria();
+                        		crit.add(MailReceivePeer.MAIL_ID,msgid);
+                        		crit.add(MailReceivePeer.RECEIVER_ID,receiver_id);
+	                        	crit.add(MailReceivePeer.MAIL_READFLAG,readf);
+					if(!mode.equals("grpmgmt"))
+                	        		crit.add(MailReceivePeer.MAIL_TYPE,0);
+					else
+                        			crit.add(MailReceivePeer.MAIL_TYPE,1);
+	                        	MailReceivePeer.doInsert(crit);
 				//ErrorDumpUtil.ErrorLog("receiver_id after insert after insert"+receiver_id);
+	
+					/**here we first make the Dir
+					*for writing the message.
+					*/
+					File first = new File(path);
+					if(!first.exists())
+	               				first.mkdirs();
+	                		String path1 = path+"/"+"typedCharMsg.txt";
+        	       			path = path+"/"+"Msg.txt";
+             				FileWriter fw = new FileWriter(path,true);
+               				FileWriter fw1 = new FileWriter(path1,true);
+	               			fw.write("\r\n");
+	                		fw.write("<" + msgid + ">");
+        	        		fw.write("\r\n");
+                			fw.write(message);
+                			fw.write("\r\n"+"</" + msgid + ">");
+                			fw.close();
+	                		fw1.write("\r\n");
+        	        		fw1.write("<" + msgid + ">");
+                			fw1.write("\r\n");
+                			fw1.write(msg);
+                			fw1.write("\r\n"+"</" + msgid + ">");
+	                		fw1.close();
+				} //else s1 end
 
-				/**here we first make the Dir
-				*for writing the message.
-				*/
-				File first = new File(path);
-				if(!first.exists())
-                		first.mkdirs();
-
-                		String path1 = path+"/"+"typedCharMsg.txt";
-                		path = path+"/"+"Msg.txt";
-                		FileWriter fw = new FileWriter(path,true);
-                		FileWriter fw1 = new FileWriter(path1,true);
-                		fw.write("\r\n");
-                		fw.write("<" + msgid + ">");
-                		fw.write("\r\n");
-                		fw.write(message);
-                		fw.write("\r\n"+"</" + msgid + ">");
-                		fw.close();
-                		fw1.write("\r\n");
-                		fw1.write("<" + msgid + ">");
-                		fw1.write("\r\n");
-                		fw1.write(msg);
-                		fw1.write("\r\n"+"</" + msgid + ">");
-                		fw1.close();
 				/**
                         	* From here starts the code to upload
                         	* the attachment if any with the message.
                         	*/
 				FileItem fileItem = pp.getFileItem("file");
                         	try {//inner try
+               				String mailMsg="";
+					String serverName= TurbineServlet.getServerName();
+        			        String serverPort= TurbineServlet.getServerPort();
+	                		if( (fileItem.getSize() == 0) && (mailId != null && mailId != "") ){
+						mailMsg=MailNotification.sendMail(message, mailId, "LocalMail", "Updation Mail", subject, "", "", serverName, serverPort, LangFile);
+					}
 	                		if((fileItem!=null) && (fileItem.getSize()!=0))
                                 	{
-                                		String realPath = TurbineServlet.getRealPath("/UserArea");
                                         	String  temp = fileItem.getName();
-                                        	context.put("to",temp);
+						
+						if(mailId.equals(null) && mailId.equals("") ) //if s2 start
+					               	context.put("to",temp);
                                         	int index = temp.lastIndexOf("\\");
                                         	String tempFile=temp.substring(index+1);
-                                        	String filePath = realPath+"/"+toAddress+"/Attachment/"+msgid+"/"+tempFile;
-                                        	File f1=new File(filePath);
-                                        	File f=new File(realPath+"/"+toAddress+"/Attachment/"+msgid);
-                                        	f.mkdirs();
-                                        	fileItem.write(f1);
-                                        	Status=1;
+						if(mailId != null && mailId != ""){ //if s3 start
+                                        		String filePathForLM = "";
+							filePathForLM = path+"/"+tempFile;
+							File f1ForLM=new File(filePathForLM);
+							fileItem.write(f1ForLM);
+							mailMsg=MailNotification.sendMail(message, mailId, "LocalMail", "Updation Mail", subject, "", filePathForLM, serverName, serverPort, LangFile);
+						} //if s3 end
+						else { //else s3 start
+	                                		String realPath = TurbineServlet.getRealPath("/UserArea");
+        	                                	String filePath = realPath+"/"+toAddress+"/Attachment/"+msgid+"/"+tempFile;
+                	                        	File f1=new File(filePath);
+                        	                	File f=new File(realPath+"/"+toAddress+"/Attachment/"+msgid);
+							if(!f.exists())
+	                                	        	f.mkdirs();
+                                        		fileItem.write(f1);
+                                        		Status=1;
+						}
                                  	}
                           	}//close inner try
                           	catch(Exception e)

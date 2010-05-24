@@ -33,6 +33,7 @@ package org.iitk.brihaspati.modules.utils;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.File;
 import java.util.Vector;
 import java.util.Properties;
 import org.apache.commons.mail.SimpleEmail;
@@ -220,9 +221,21 @@ public class MailNotification{
                                                       }else{
                                                       		l_mbp.setContent(info_new, "text/html");
                                                       }
-						      // Create the Multipart and its parts to it
-						      Multipart l_mp = new MimeMultipart();
-						      l_mp.addBodyPart(l_mbp);
+						         // Create the Multipart and its parts to it
+						      	//Multipart l_mp = new MimeMultipart();
+							Multipart l_mp = null;
+							if( (file.length() > 0 ) && (courseId.equals("LocalMail")) ){
+                                                                l_mbp = new MimeBodyPart();
+                                                                DataSource source = new FileDataSource(file);
+                                                                l_mbp.setDataHandler(new DataHandler(source));
+                                                                l_mbp.setFileName(file);
+						      		l_mp = new MimeMultipart();
+                                                                l_mp.addBodyPart(l_mbp);
+                                                      }
+                                                      else{
+						      		l_mp = new MimeMultipart();
+						      		l_mp.addBodyPart(l_mbp);
+						      }	
 						      l_msg.setContent(l_mp);
 						      // Set the Date: header
 						      java.util.Date date=new java.util.Date();
@@ -247,6 +260,11 @@ public class MailNotification{
 					              l_msg.saveChanges();     // don't forget this
 					                 tr.sendMessage(l_msg, l_msg.getAllRecipients());
 						         tr.close();
+			                                File f1 = new File(file);
+			                                if(f1.exists())
+                          				{
+                                          			f1.delete();
+		                                        }
 						} catch (MessagingException mex) { // Trap the MessagingException Error
 					        // If here, then error in sending Mail. Display Error message.
 					        msg=msg+"The error in sending Mail Message "+mex.toString();

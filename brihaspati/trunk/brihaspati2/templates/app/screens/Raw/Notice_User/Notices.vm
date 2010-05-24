@@ -200,7 +200,11 @@ $!data.getMessage()
 </select>
 </td></tr>
 #else
+	#set($count = 1)
 	#foreach($course_ls in $courselist)
+	#set($count1 = 1)
+	#foreach($groupId_ls in $groupIdList)
+	#if($count == $count1)
 		#if($velocityCount % 2 == 0)
 			<tr bgcolor="$ui.menuColor">
 			#set($flag = false)
@@ -210,13 +214,19 @@ $!data.getMessage()
 		#end
 		<td>
 		#if($course_ls == $course)
-		<input type="checkbox" checked="true" name="course_list" value="$course_ls">
+		##<input type="checkbox" checked="true" name="course_list" value="$course_ls">
+		<input type="checkbox" checked="true" name="course_list" value="$groupId_ls">
 		#else
-		<input type="checkbox"  name="course_list" value="$course_ls">
+		##<input type="checkbox"  name="course_list" value="$course_ls">
+		<input type="checkbox"  name="course_list" value="$groupId_ls">
 		#end
 		</td>
 		<td>$course_ls</td>
 	</tr>
+        #end
+	#set ( $count1 = $count1+1 )
+        #end
+        #set ( $count = $count+1 )
 	#end
 #end
 #if($flag)
