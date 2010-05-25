@@ -18,6 +18,99 @@
 	</definition>
 	<!-- Exception Handler ends -->
 	
+	<!-- portal part starts -->
+	
+	<definition name="page.newportal" extends="base.definition">
+	<put name="title" value="Create New Portal" />
+	<put name="body" value="/WEB-INF/JspFiles/portal/NewPortal.jsp" />
+	</definition>
+	<!-- Tiles Definition of portal List -->
+	<definition name="page.portallist" extends="base.definition">
+	<put name="title" value="List Of Portals" />
+	<put name="body" value="/WEB-INF/JspFiles/portal/PortalList.jsp" />
+	</definition>
+	<!-- Tiles Definition of edit role page -->
+	<definition name="edit.portal" extends="base.definition">
+	<put name="title" value="Edit Portal" />
+	<put name="body" value="/WEB-INF/JspFiles/portal/EditPortal.jsp" />
+	</definition>
+	<!-- Tiles Definition of edit role info -->
+	<definition name="page.portalinfo" extends="base.definition">
+	<put name="title" value="Edit portal" />
+	<put name="body" value="/WEB-INF/JspFiles/ForError/orgfail.jsp" />
+	</definition>
+	<!-- portal part ends -->
+	
+	<!-- role part starts -->
+	
+	<definition name="page.newrole" extends="base.definition">
+	<put name="title" value="Add New Role" />
+	<put name="body" value="/WEB-INF/JspFiles/role/NewRole.jsp" />
+	</definition>
+	<!-- Tiles Definition of role List -->
+	<definition name="page.rolelist" extends="base.definition">
+	<put name="title" value="List Of Roles" />
+	<put name="body" value="/WEB-INF/JspFiles/role/RoleList.jsp" />
+	</definition>
+	<!-- Tiles Definition of role details -->
+	<definition name="page.roledetails" extends="base.definition">
+	<put name="title" value="Role Details" />
+	<put name="body" value="/WEB-INF/JspFiles/role/RoleDetails.jsp" />
+	</definition>
+	<!-- Tiles Definition of edit role page -->
+	<definition name="edit.role" extends="base.definition">
+	<put name="title" value="Edit Role Details" />
+	<put name="body" value="/WEB-INF/JspFiles/role/EditRole.jsp" />
+	</definition>
+	<!-- Tiles Definition of edit role info -->
+	<definition name="page.roleinfo" extends="base.definition">
+	<put name="title" value="Edit role" />
+	<put name="body" value="/WEB-INF/JspFiles/ForError/orgfail.jsp" />
+	</definition>
+	<!-- role part ends -->
+	
+	<!-- add org in portal part starts -->
+	
+	<!-- Tiles Definition of add member page -->
+	<definition name="page.addorginportal" extends="base.definition">
+	<put name="title" value="Add Org in Portal" />
+	<put name="body" value="/WEB-INF/JspFiles/addorg_in_portal/AddOrgInPortal.jsp" />
+	</definition>
+	
+	<!-- Tiles Definition of add member page -->
+	<definition name="page.addorgintoportalinfo" extends="base.definition">
+	<put name="title" value="Add Org in Portal info" />
+	<put name="body" value="/WEB-INF/JspFiles/ForError/AddOrgIntoPortalFail.jsp" />
+	</definition>
+	<!-- add org in portal part ends -->
+	
+	<!-- add member part starts -->
+	
+	<!-- Tiles Definition of add member page -->
+	<definition name="page.addnewmember" extends="base.definition">
+	<put name="title" value="Add New Member" />
+	<put name="body" value="/WEB-INF/JspFiles/member/NewMember.jsp" />
+	</definition>
+
+	<!-- add member part ends -->
+	
+	<!-- Tiles Definition of View Member List -->
+	<definition name="page.memberList" extends="base.definition">
+	<put name="title" value="Member List" />
+	<put name="body" value="/WEB-INF/JspFiles/member/showMemberList.jsp" />
+	</definition>
+	<!-- Tiles Definition of View Org Member List -->
+	<definition name="page.OrgMemberList" extends="base.definition">
+	<put name="title" value="Org Member List" />
+	<put name="body" value="/WEB-INF/JspFiles/member/showOrgMemberList.jsp" />
+	</definition>
+	<!-- Tiles Definition of View project team -->
+	<definition name="page.projTeamList" extends="base.definition">
+	<put name="title" value="Project Team" />
+	<put name="body" value="/WEB-INF/JspFiles/member/showProjTeamList.jsp" />
+	</definition>
+	
+	
 	<!-- People Search View starts -->
 	
 	<definition name="page.peoplesearch" extends="base.definition">
@@ -61,14 +154,19 @@
 	<!-- Tiles Definition of project creation fail page -->
 	<definition name="page.projectfail" extends="base.definition">
 	<put name="title" value="Project Creation fail" />
-	<put name="body" value="/WEB-INF/JspFiles/ForError/projectfail.jsp" />
+	<put name="body" value="/WEB-INF/JspFiles/ForError/orgfail.jsp" />
 	</definition>
 	
 	
-	<!-- Tiles Definition of Project List -->
-	<definition name="page.projectlist" extends="base.definition">
+	<!-- Tiles Definition of Project List for user-->
+	<definition name="page.userProjectList" extends="base.definition">
 	<put name="title" value="List Of Project" />
 	<put name="body" value="/WEB-INF/JspFiles/projectManage/ProjectList.jsp" />
+	</definition>
+	<!-- Tiles Definition of Project List for super admin -->
+	<definition name="page.adminProjectList" extends="base.definition">
+	<put name="title" value="List Of Project" />
+	<put name="body" value="/WEB-INF/JspFiles/projectManage/AllProjectList.jsp" />
 	</definition>
 	
 	<!-- Tiles Definition of Project Searching -->
@@ -88,21 +186,14 @@
 	<put name="title" value="Updating Of Project" />
 	<put name="body" value="/WEB-INF/JspFiles/edit/EditProject.jsp" />
 	</definition>
-	
-	<!-- Tiles Definition of Updated operation of a Project -->
-	<definition name="update.updatedlist" extends="base.definition">
-	<put name="title" value="Updated Project" />
-	<put name="body" value="/WEB-INF/JspFiles/edit/UpdatedList.jsp" />
-	</definition>
-	
-	<!-- Tiles Definition of Selecting Project For Gantt Chart -->
-	<definition name="page.ganttChart" extends="base.definition">
-	<put name="title" value="Select Project For Gantt Chart" />
-	<put name="body" value="/WEB-INF/JspFiles/ganttChart/SelectProject.jsp" />
+	<!-- Tiles Definition of project updation fail -->
+	<definition name="projectUpdation.fail" extends="base.definition">
+	<put name="title" value="Project updation fail" />
+	<put name="body" value="/WEB-INF/JspFiles/ForError/orgfail.jsp" />
 	</definition>
 	
 	<!-- Tiles Definition of draw Gantt Chart -->
-	<definition name="gchart.ganttChart" extends="base.definition">
+	<definition name="page.ganttChart" extends="base.definition">
 	<put name="title" value="View Gantt Chart" />
 	<put name="body" value="/WEB-INF/JspFiles/ganttChart/DrawGanttChart.jsp" />
 	</definition>
@@ -150,11 +241,6 @@
 	<put name="body" value="/WEB-INF/JspFiles/ForError/alreadyAssignedProject.jsp" />
 	</definition>
 	
-	<!-- Tiles Definition of View Member List -->
-	<definition name="page.memberList" extends="base.definition">
-	<put name="title" value="Member List" />
-	<put name="body" value="/WEB-INF/JspFiles/member/showMemberList.jsp" />
-	</definition>
 	
 	<!-- Tiles Definition of New Task -->
 	<definition name="page.newtask" extends="base.definition">
@@ -162,10 +248,10 @@
 	<put name="body" value="/WEB-INF/JspFiles/task/newtask.jsp" />
 	</definition>
 	
-	<!-- Tiles Definition of task assign fail page -->
-	<definition name="page.taskAssignfail" extends="base.definition">
-	<put name="title" value="Task Assigned Fail" />
-	<put name="body" value="/WEB-INF/JspFiles/ForError/taskAssignFail.jsp" />
+	<!-- Tiles Definition of task assign page -->
+	<definition name="page.assigntask" extends="base.definition">
+	<put name="title" value="Assigning Task" />
+	<put name="body" value="/WEB-INF/JspFiles/task/AssignTask.jsp" />
 	</definition>
 	
 	<!-- Tiles Definition of task assign success page -->
@@ -174,16 +260,16 @@
 	<put name="body" value="/WEB-INF/JspFiles/ForError/taskAssignSuccess.jsp" />
 	</definition>
 	
-	<!-- Tiles Definition of Selecting Project For View Task -->
-	<definition name="page.showTask" extends="base.definition">
-	<put name="title" value="Select Project For View Task" />
-	<put name="body" value="/WEB-INF/JspFiles/task/SelectProject.jsp" />
+	<!-- Tiles Definition of Task List for super admin -->
+	<definition name="page.adminTaskList" extends="base.definition">
+	<put name="title" value="List Of Task" />
+	<put name="body" value="/WEB-INF/JspFiles/task/AdminTaskList.jsp" />
 	</definition>
 	
 	<!-- Tiles Definition of Task List -->
-	<definition name="page.tasklist" extends="base.definition">
+	<definition name="page.UserTaskList" extends="base.definition">
 	<put name="title" value="List Of Task" />
-	<put name="body" value="/WEB-INF/JspFiles/task/TaskList.jsp" />
+	<put name="body" value="/WEB-INF/JspFiles/task/UserTaskList.jsp" />
 	</definition>
 	
 	<!-- Tiles Definition of Updating a Task -->
@@ -192,16 +278,16 @@
 	<put name="body" value="/WEB-INF/JspFiles/edit/EditTask.jsp" />
 	</definition>
 	
-	<!-- For Organisation Link -->
+	<!-- For Organization Link -->
 	
-	<!-- for new organisation -->
+	<!-- for new organization -->
 	<definition name="page.neworganization" extends="base.definition">
 	<put name="title" value="Add new Organization" />
 	<put name="body" value="/WEB-INF/JspFiles/Organization/neworganisation.jsp" />
 	</definition>
-	<!-- Tiles Definition of Organisation insertion info -->
+	<!-- Tiles Definition of Organization insertion info -->
 	<definition name="page.orginfo" extends="base.definition">
-	<put name="title" value="Organisation Insertion Info" />
+	<put name="title" value="PMS warning message" />
 	<put name="body" value="/WEB-INF/JspFiles/ForError/orgfail.jsp" />
 	</definition>
 	<!-- for view organisation -->
@@ -232,9 +318,9 @@
 	<put name="body" value="/WEB-INF/JspFiles/Organization/editorg.jsp" />
 	</definition>
 	
-	<definition name="page.editorgsuccess" extends="base.definition">
-	<put name="title" value="Edit Success Organization" />
-	<put name="body" value="/WEB-INF/JspFiles/Organization/successorg.jsp" />
+	<definition name="page.editorgfail" extends="base.definition">
+	<put name="title" value="Edit Organization Failed" />
+	<put name="body" value="/WEB-INF/JspFiles/ForError/orgfail.jsp" />
 	</definition>
 	
 	<definition name="page.deleteorg" extends="base.definition">

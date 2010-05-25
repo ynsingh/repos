@@ -1,7 +1,8 @@
-<%@ page import="java.sql.*" language="java" pageEncoding="ISO-8859-1"%>
-<%@page import="org.dei.edrp.pms.dataBaseConnection.MyDataSource;"%>
+<%@ page language="java" pageEncoding="ISO-8859-1"%>
+<%@ page import="javax.sql.rowset.CachedRowSet;" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%> 
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
+<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
  
 <html> 
 	<head>
@@ -21,28 +22,26 @@
 		response.sendRedirect("login.jsp");
 	 }
 	%>
-	<%!Connection con=null; %>
-	<%
-	con=MyDataSource.getConnection();
-	/*Get the value of 'id' that is set in request scope and assigned in EditProjectAction.java*/
-	String k=(String)request.getParameter("id");
-	/*fetching to that record of project table for updation which project_id is assigned in k variable.*/
-	PreparedStatement ps=con.prepareStatement("select * from project where Project_Id=? and Enable=0");
-    ps.setString(1,k);
-    ResultSet rs1=ps.executeQuery();
-    if(rs1.next()){}
-  		
+	<%!
+		CachedRowSet crs_project=null;
 	 %>
+	<%
+	crs_project=(CachedRowSet)request.getAttribute("crs");
+  	%>
 		<html:form action="/go3" onsubmit="return validateEditform(this);">
 		<div id="main_title" align="left">
 		    <font color="#0044ff">Edit to desired Project:</font>
 		     </div><br><br>
 		<div align="center"><html:errors property="sdate"/></div>
-		<table cellspacing="2" cellpadding="2" border="0" align="center">
+		<table cellspacing="1" cellpadding="6" width="40%" border="0" align="center">
 		<tr class="form-element"><td class="form-label">
-			Project Id :</td>
+		<input type="hidden" name="maxActualEndDate_task" <%if(crs_project.getString(12)==null){ %> value="<%=crs_project.getString(5)%>" <%}else {%> value="<%=crs_project.getString(12)%>"<%} %> id="maxActualEndDate_task" size="20" readonly="readonly"/>
+		<html:errors property="maxActualEndDate_task"/>
+		<input type="hidden" name="oldprojectname" value="<%= crs_project.getString(2)%>" id="oldprojectname" size="20" readonly="readonly"/>
+		<html:errors property="oldprojectname"/>
+			Project Code :</td>
 			<td class="form-widget">
-			 <html:text property="pid" size="40" value="<%=rs1.getString(1)%>" readonly="true" style="background-color:threedface;"/><html:errors property="pid"/>
+			 <html:text property="pcode" style="color: black;" disabled="true" size="40" value="<%=crs_project.getString(1)%>"/><html:errors property="pcode"/>
 			 </td></tr>
 		
 		<tr class="form-element">
@@ -50,25 +49,37 @@
 		Project Name : 
 		</td>
 		<td class="form-widget">
-		<html:text property="pname" size="40" value="<%=rs1.getString(2)%>"/><html:errors property="pname"/></td></tr>
+		<html:text property="pname" size="40" value="<%=crs_project.getString(2)%>"/><html:errors property="pname"/></td></tr>
 		 <tr class="form-element"><td  class="form-label">
-			Start Date :</td>
+			Schedule Start Date :</td>
 			<td class="form-widget">
-			<input type="text" name="sdate" id="sdate" value="<%=rs1.getString(3)%>"/><a href="javascript:NewCssCal('sdate','yyyymmdd')"><img src="img/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a>
+			<input type="text" name="scheduleStartDate" id="scheduleStartDate" readonly="readonly"  value="<%=crs_project.getString(3)%>"/>
 			(YYYY-MM-DD)</td></tr>
 			<tr class="form-element">
 			<td  class="form-label">
-			Finished Date :</td>
+			Schedule End Date :</td>
 			<td class="form-widget">
-			<input type="text" name="fdate" id="fdate" value="<%=rs1.getString(4)%>"/><a href="javascript:NewCssCal('fdate','yyyymmdd')"><img src="img/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a>
+			<input type="text" name="scheduleEndDate" id="scheduleEndDate" readonly="readonly"  value="<%=crs_project.getString(4)%>"/>
+			(YYYY-MM-DD)
+			</td></tr>
+			<tr class="form-element"><td  class="form-label">
+			Actual Start Date :</td>
+			<td class="form-widget">
+			<input type="text" name="actualStartDate" id="actualStartDate" readonly="readonly"  value="<%=crs_project.getString(5)%>"/>
+			(YYYY-MM-DD)</td></tr>
+			<tr class="form-element">
+			<td  class="form-label">
+			Actual End Date :</td>
+			<td class="form-widget">
+			<input type="text" name="actualEndDate" id="actualEndDate" <%if(crs_project.getString(6)==null){ %> value="" <%}else {%> value="<%=crs_project.getString(6)%>"<%} %>/><a href="javascript:NewCssCal('actualEndDate','yyyymmdd')"><img src="img/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a>
 			(YYYY-MM-DD)
 			</td></tr>
 				<tr class="form-element"><td  class="form-label">
-			Target Budget (Rs.):</td><td> <html:text property="tbudget" size="40" value="<%=rs1.getString(5)%>"/><html:errors property="tbudget"/></td>
+			Target Budget (Rs.):</td><td> <html:text property="tbudget" size="40" value="<%=crs_project.getString(7)%>"/><html:errors property="tbudget"/></td>
 			</tr>
 			<tr class="form-element"><td  class="form-label">
 			Priority :</td>
-			<td class="form-widget"> <html:select property="priority" value="<%=rs1.getString(6)%>">
+			<td class="form-widget"> <html:select property="priority" value="<%=crs_project.getString(8)%>">
 			<% 
  	String[] st={"Low","Normal","High"};
 	for(int i=0;i<=2;i++)
@@ -81,7 +92,7 @@
 	</html:select><html:errors property="priority"/></td>
 			</tr>
 			<tr class="form-element"><td  class="form-label">
-			Status :</td><td class="form-widget"> <html:select property="status" value="<%=rs1.getString(7)%>">
+			Status :</td><td class="form-widget"> <html:select property="status" value="<%=crs_project.getString(9)%>">
 			<% 
  String[] st={"In Progress","Complete","Planning","Canceled"};
 for(int i=0;i<=3;i++)
@@ -93,29 +104,15 @@ for(int i=0;i<=3;i++)
 	%>
 	</html:select><html:errors property="status"/></td>
 			</tr>
-		
-		<tr class="form-element"><td  class="form-label">
-			View Permission :</td><td class="form-widget"> <html:select property="viewPermission" value="<%=rs1.getString(8)%>">
-			<% 
- String[] st={"For All","Only For Project Members"};
-for(int i=0;i<=1;i++)
-	{
-	%>
-	<html:option value="<%=st[i]%>"></html:option>
-	<%
-	}
-	%>
-	</html:select><html:errors property="viewPermission"/></td>
-			</tr>
-				<tr class="form-element"><td class="form-label">
+			<tr class="form-element"><td class="form-label">
 				Gantt Chart Color :</td>
 			<td class="form-widget">
 			<div id="colorpicker201" class="colorpicker201"></div>
-			<input type="text" name="gcolor" id="gcolor" size="9" readonly="readonly" value="<%=rs1.getString(9)%>"/>&nbsp;<input type="button" onclick="showColorGrid2('gcolor','sample_1');" value="...">&nbsp;<input type="text" ID="sample_1" size="1" value="">
+			<input type="text" name="gcolor" id="gcolor" size="9" readonly="readonly" value="<%=crs_project.getString(10)%>"/>&nbsp;<input type="button" onclick="showColorGrid2('gcolor','sample_1');" value="...">&nbsp;<input type="text" ID="sample_1" size="1" value="">
 			 </td></tr>
 			<tr class="form-element">
 			<td  class="form-label">
-			Project Description :</td><td class="form-widget"> <html:textarea property="darea" rows="3" cols="38" value="<%=rs1.getString(10)%>"/><html:errors property="darea"/></td></tr>
+			Project Description :</td><td class="form-widget"> <html:textarea property="darea" rows="3" cols="38" value="<%=crs_project.getString(11)%>"/><html:errors property="darea"/></td></tr>
 			<tr><td></td></tr></table>
 			<table align="center">
 			<tr><td><html:submit value="Save Changes"/></td>
@@ -123,8 +120,6 @@ for(int i=0;i<=1;i++)
 			<td><html:button property="back" value="Cancel" onclick="history.back();" /></td>
 			</tr></table>
 		</html:form>
-		<%
-			MyDataSource.freeConnection(con);
-		 %>
+		
 	</body>
 </html>

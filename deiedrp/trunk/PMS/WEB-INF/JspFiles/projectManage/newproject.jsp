@@ -19,11 +19,11 @@
 	<script type="text/javascript">
 	function seeProject() {
 	
-	var name = DWRUtil.getValue("pname");
-	var info="project";
-   DynamicList.seeExistence(name,info,function(data)
+	var pname = DWRUtil.getValue("pname");
+	var orgportal = DWRUtil.getValue("orgportal");
+  DynamicList.seeProjectExistence(pname,orgportal,function(data)
   {
-  	DWRUtil.setValue("prname",data);
+   	DWRUtil.setValue("prname",data);
   }
   ); 
  }
@@ -45,38 +45,51 @@
 		 <font color="#0044ff"> Add New Project:</font>
 	  </div><br>
 		  <div align="center">
-		  <html:errors property="fdate"/>
+		  <html:errors property="scheduleStartDate"/>
+		  <html:errors property="scheduleEndDate"/>
+		  <html:errors property="actualEndDate"/>
+		  <html:errors property="actualStartDate"/>
 		  <html:errors property="pname"/>
 		  <html:errors property="projmsg"/>
-		  
 		  </div>
 		  <br>
 		
-		<table cellspacing="2" cellpadding="2" border="0" align="center">
-		<tr class="form-element">
-	
-		</tr>
+		<table cellspacing="1" cellpadding="6" width="40%" border="0" align="center">
+		
 		<tr class="form-element">
 		<td  class="form-label">
-		
+		<input type="hidden" name="orgportal" id="orgportal" value="<%=(String)session.getAttribute("validOrgInPortal") %>" size="20" readonly="readonly"/>
+			<html:errors property="orgportal"/>
 		Project Name : 
 		</td>
 		<td class="form-widget">
 		<html:text property="pname" indexed="pname" size="40" value="" onchange="seeProject()"/><font color="red" size="2">*</font></td></tr>
 		 <tr class="form-element"><td  class="form-label">
-			Start Date :</td>
+			Schedule Start Date :</td>
 			<td class="form-widget">
-			<input type="text" name="sdate" id="sdate"/><a href="javascript:NewCssCal('sdate','yyyymmdd')"><img src="img/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a>
+			<input type="text" name="scheduleStartDate" id="scheduleStartDate"/><a href="javascript:NewCssCal('scheduleStartDate','yyyymmdd')"><img src="img/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a>
 			(YYYY-MM-DD)<font color="red" size="2">*</font></td></tr>
 			<tr class="form-element">
 			<td  class="form-label">
-			Finished Date :</td>
+			Schedule End Date :</td>
 			<td class="form-widget">
-			<input type="text" name="fdate" id="fdate" value=""/><a href="javascript:NewCssCal('fdate','yyyymmdd')"><img src="<html:rewrite page='/img/cal.gif'/>" width="16" height="16" border="0" alt="Pick a date"></a>
+			<input type="text" name="scheduleEndDate" id="scheduleEndDate" value=""/><a href="javascript:NewCssCal('scheduleEndDate','yyyymmdd')"><img src="<html:rewrite page='/img/cal.gif'/>" width="16" height="16" border="0" alt="Pick a date"></a>
 			(YYYY-MM-DD)<font color="red" size="2">*</font>
 			</td></tr>
+			<!--  <tr class="form-element"><td  class="form-label">
+			Actual Start Date :</td>
+			<td class="form-widget">
+			<input type="text" name="actualStartDate" id="actualStartDate"/><a href="javascript:NewCssCal('actualStartDate','yyyymmdd')"><img src="img/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a>
+			(YYYY-MM-DD)<font color="red" size="2">*</font></td></tr>
+			<tr class="form-element">
+			<td  class="form-label">
+			Actual End Date :</td>
+			<td class="form-widget">
+			<input type="text" name="actualEndDate" id="actualEndDate" value=""/><a href="javascript:NewCssCal('actualEndDate','yyyymmdd')"><img src="<html:rewrite page='/img/cal.gif'/>" width="16" height="16" border="0" alt="Pick a date"></a>
+			(YYYY-MM-DD)
+			</td></tr> -->
 			<tr class="form-element"><td  class="form-label">
-			Target Budget(Rs.):</td><td class="form-widget"> <html:text property="tbudget" value="" size="40"/><font color="red" size="2">*</font><html:errors property="tbudget"/></td>
+			Target Budget (Rs.):</td><td class="form-widget"> <html:text property="tbudget" value="" size="40"/><font color="red" size="2">*</font><html:errors property="tbudget"/></td>
 			</tr>
 			<tr class="form-element"><td  class="form-label">
 			Priority :</td>
@@ -90,8 +103,8 @@
 			Status :</td><td class="form-widget">
 			 <html:select property="status" value="--Select--" >
 			<% 
- String[] st1={"--Select--","In Progress","Complete","Planning","Canceled"};
-for(int i=0;i<=4;i++)
+ String[] st1={"--Select--","In Progress","Complete","Planning","Pending","Canceled"};
+for(int i=0;i<=5;i++)
 	{
 	%>
 	<html:option value="<%=st1[i]%>"></html:option>
@@ -100,14 +113,6 @@ for(int i=0;i<=4;i++)
 	%>
 	</html:select><font color="red" size="2">*</font><html:errors property="status"/></td>
 			</tr>
-			
-			<tr class="form-element"><td  class="form-label">
-			View Permission :</td><td  class="form-widget">
-		<html:radio property="viewPermission" value="For All">For All</html:radio>
-		<html:radio property="viewPermission" value="Only For Project Members">Only For Project Members</html:radio>
-		</td>
-		</tr>
-		
 			<tr class="form-element"><td class="form-label">
 			Gantt Chart Color :</td>
 			<td class="form-widget">

@@ -3,10 +3,17 @@
 
 <struts-config>
 
-<form-beans >
-  	<form-bean name="loginform" type="org.dei.edrp.pms.login.LoginForm" />
-  	<form-bean name="passwordform" type="org.dei.edrp.pms.changePassword.PasswordForm"/>
-  	<form-bean name="projectform" type="org.dei.edrp.pms.projmanage.ProjectForm"/>
+<form-beans>
+  	<form-bean name="loginform" type="in.ac.dei.edrp.pms.login.LoginForm" />
+  	<form-bean name="portalnameform" type="in.ac.dei.edrp.pms.home.PortalBean" />
+  	<form-bean name="passwordform" type="in.ac.dei.edrp.pms.changePassword.PasswordForm"/>
+  	<form-bean name="projectform" type="in.ac.dei.edrp.pms.projmanage.ProjectForm"/>
+  	<form-bean name="newroleform" type="in.ac.dei.edrp.pms.role.NewRoleForm"/>
+  	<form-bean name="newportalform" type="in.ac.dei.edrp.pms.portal.NewPortalForm"/>
+  	<form-bean name="editroleform" type="in.ac.dei.edrp.pms.role.EditRoleForm"/>
+  	<form-bean name="editportalform" type="in.ac.dei.edrp.pms.portal.EditPortalForm"/>
+  	<form-bean name="newmemberform" type="in.ac.dei.edrp.pms.member.NewMemberForm"/>
+  	<form-bean name="addorginportalform" type="in.ac.dei.edrp.pms.addorg_in_portal.AddOrgInPortalForm"/>
   	
   	<form-bean name="backprojectsearchform" type="org.apache.struts.action.DynaActionForm">
       <form-property name="back" type="java.lang.String" />
@@ -15,32 +22,41 @@
       <form-property name="back" type="java.lang.String" />
       </form-bean>
  
-  	<form-bean name="peoplesearchform" type="org.dei.edrp.pms.peoplesearch.PeopleSearchForm" />
-  	<form-bean name="projectsearchform" type="org.dei.edrp.pms.searching.ProjectSearchForm" />
-  	<form-bean name="editform" type="org.dei.edrp.pms.updation.EditForm" />
-  	<form-bean name="gcform" type="org.dei.edrp.pms.ganttChart.GanttChartForm" />
-  	<form-bean name="projassignform" type="org.dei.edrp.pms.member.ProjAssignForm" />
-  	<form-bean name="taskform" type="org.dei.edrp.pms.task.TaskForm" />
-  	<form-bean name="showtaskform" type="org.dei.edrp.pms.task.ShowTaskForm" />
-  	 <form-bean name="edittaskform" type="org.dei.edrp.pms.updation.EditTaskForm" />
+  	<form-bean name="peoplesearchform" type="in.ac.dei.edrp.pms.peoplesearch.PeopleSearchForm" />
+  	<form-bean name="projectsearchform" type="in.ac.dei.edrp.pms.searching.ProjectSearchForm" />
+  	<form-bean name="editform" type="in.ac.dei.edrp.pms.updation.EditForm" />
+  	<form-bean name="projassignform" type="in.ac.dei.edrp.pms.member.ProjAssignForm" />
+  	<form-bean name="taskform" type="in.ac.dei.edrp.pms.task.TaskForm" />
+  	<form-bean name="assignTaskform" type="in.ac.dei.edrp.pms.task.AssignTaskForm" />
+  	<form-bean name="edittaskform" type="in.ac.dei.edrp.pms.updation.EditTaskForm" />
   	  
-  	  	<!-- Starting For organization -->
+  	 	<!-- Starting For organization -->
   	
-    <form-bean name="editorgform" type="org.dei.edrp.pms.organization.EditOrgForm" />
-    <form-bean name="orgform" type="org.dei.edrp.pms.organization.OrgForm" />
-    <form-bean name="searchorgform" type="org.dei.edrp.pms.organization.SearchOrgForm" />
-  			<!-- Ending For Organisation -->
-  			<form-bean name="uploadfileform" type="org.dei.edrp.pms.upload.UploadFileForm" />
+    <form-bean name="editorgform" type="in.ac.dei.edrp.pms.organization.EditOrgForm" />
+    <form-bean name="orgform" type="in.ac.dei.edrp.pms.organization.OrgForm" />
+    <form-bean name="searchorgform" type="in.ac.dei.edrp.pms.organization.SearchOrgForm" />
+  		<!-- Ending For Organisation -->
+  	<form-bean name="uploadfileform" type="in.ac.dei.edrp.pms.upload.UploadFileForm" />
   
   </form-beans>
     
   <global-exceptions />
   <global-forwards>
   
-  <forward name="orgData"
-	path="/orgInfo.do"
+  <!-- for View portals -->
+	
+	<forward name="portalList"
+	path="/portalList.do"
 	redirect="true" />
 	
+  <!-- for View roles -->
+	
+	<forward name="roleList"
+	path="/roleList.do"
+	redirect="true" />
+	
+  <!-- for View documents -->
+  	
   <forward name="fileDownloadList"
 	path="/fileDownloadList.do"
 	redirect="true" />
@@ -50,6 +66,10 @@
 	redirect="true" />
 <!-- Organisation part Starts -->
 
+	<forward name="orgData"
+	path="/orgInfo.do"
+	redirect="true" />
+	
 	<!-- for View organization -->
 	<forward name="orgList"
 	path="/orgList.do"
@@ -66,10 +86,6 @@
 	path="/welcome.do"
 	redirect="true" />
 	
-	<forward name="projectList"
-	path="/projectList.do"
-	redirect="true" />
-	
 	<forward name="updateOperation"
 	path="/updateOperation.do"
 	redirect="true" />
@@ -78,17 +94,13 @@
 	path="/projectSearchList.do"
 	redirect="true" />
 	
-	<forward name="taskList"
-	path="/taskList.do"
-	redirect="true" />
-	
 </global-forwards>
 <action-mappings >
 
 	<action 
             path="/jspException" 
             scope="request"
-            type="org.dei.edrp.pms.myValidator.JspExceptionHandlerAction" >
+            type="in.ac.dei.edrp.pms.myValidator.JspExceptionHandlerAction" >
             <forward name="exception" path="page.handler"/> 
 	</action> 
 	
@@ -98,16 +110,38 @@
      	 input="/login.jsp"
     	 name="loginform"
      	 path="/login"
-     	 scope="request"
-    	 type="org.dei.edrp.pms.login.LoginAction" >
+     	 scope="session"
+    	 type="in.ac.dei.edrp.pms.login.LoginAction" >
        <forward name="valid" path="/WEB-INF/JspFiles/common/index.jsp" />
        <forward name="admin" path="/WEB-INF/JspFiles/common/index.jsp" />
        <forward name="invalid" path="/login.jsp" />
     </action>
 	
+	<action path="/welcome"
+	type="in.ac.dei.edrp.pms.home.WelcomeAction">
+	<forward name="showWelcome" path="page.welcome" />
+	<forward name="showUrl" path="/Portal_Org_Selection.jsp"/>
+	<forward name="invalid" path="/login.jsp" />
+	</action>
+	
+	<action path="/mainwelcome"
+	input="/Portal_Org_Selection.jsp"
+	attribute="portalnameform"
+	name="portalnameform"
+	type="in.ac.dei.edrp.pms.home.MainWelcomeAction">
+	<forward name="showWelcome" path="page.welcome" />
+ <forward name="invalid" path="/login.jsp" />
+	</action>
+	
+	<action path="/leftlink"
+	type="in.ac.dei.edrp.pms.home.LinkAction">
+	<forward name="showLink" path="/WEB-INF/JspFiles/common/LeftLink.jsp" />
+	</action>
+	
 	<action path="/logout"
-		type="org.dei.edrp.pms.login.LogoutAction">
-		<forward name="Logout" path="/logout.jsp" />
+		type="in.ac.dei.edrp.pms.login.LogoutAction">
+	<!--	<forward name="Logout" path="/logout.jsp" />-->
+		<forward name="invalid" path="/login.jsp" />
 	</action>
 	
 	<!-- Change Password Start -->
@@ -119,22 +153,202 @@
       	path="/changepass"
       	scope="request"
       	validate="true"
-      	type="org.dei.edrp.pms.changePassword.RePasswordAction">
+      	type="in.ac.dei.edrp.pms.changePassword.RePasswordAction">
    	  	<forward name="passinfo" path="page.changepasswordMessage" />
      </action>
     <action
       path="/changeOwnpassword"
-      type="org.dei.edrp.pms.changePassword.ChangePasswordAction">
+      type="in.ac.dei.edrp.pms.changePassword.ChangePasswordAction">
       <forward name="forwardPass" path="page.changepassword" />
       </action>
         
-    <!-- Change Password Ends -->
+    <!-- Change Password part Ends -->
     
-    <!-- People search starts -->
+    <!-- Portal part starts -->
+    
+    <action
+      path="/newportal"
+      scope="request"
+      type="in.ac.dei.edrp.pms.portal.ForwardPortalAction" > 
+      <forward name="portal" path="page.newportal" />
+      </action>
+      <action
+    	attribute="newportalform"
+      	input="page.newportal"
+      	name="newportalform"
+      	path="/addportal"
+      	scope="session"
+      	validate="true"
+      	type="in.ac.dei.edrp.pms.portal.AddNewPortalAction">
+   	  	<forward name="portalsuccess" path="page.newportal" />
+     	<forward name="portalfail" path="page.orginfo"/>
+   </action>
+   <action path="/viewportal" type="in.ac.dei.edrp.pms.portal.ForwardViewPortalAction">
+      <forward name="viewPortalList" path="/WEB-INF/JspFiles/portal/ViewPortal.jsp" />
+    </action>
+
+    <action        
+      path="/portalList"
+      type="in.ac.dei.edrp.pms.portal.PortalListAction" >
+      <forward name="portallist" path="page.portallist"/>
+    </action>
+   <action        
+      path="/editPortal"
+      type="in.ac.dei.edrp.pms.portal.EditForwardPortalAction">
+     <forward name="editportal" path="edit.portal"/>
+     <forward name="editportalfail" path="/WEB-INF/JspFiles/portal/ViewPortal.jsp" />
+     </action>
+   
+   <action
+      attribute="editportalform"
+      input="edit.portal"
+      name="editportalform"
+      path="/editingportal"
+      scope="request"
+      validate="true"
+      type="in.ac.dei.edrp.pms.portal.EditPortalAction" >
+      <forward name="viewPortalList" path="/WEB-INF/JspFiles/portal/ViewPortal.jsp" />
+      <forward name="editportalfail" path="page.portalinfo"/>
+    </action>
+  
+    <action        
+      path="/deletePortal"
+      type="in.ac.dei.edrp.pms.portal.DeletePortalAction">
+     <forward name="deleteportal" path="/WEB-INF/JspFiles/portal/ViewPortal.jsp"/>
+     </action>
+   
+    <!-- Portal part ends -->
+   
+    <!-- Role part starts -->
+    
+    <action
+      path="/newrole"
+      scope="request"
+      type="in.ac.dei.edrp.pms.role.ForwardNewRoleAction" > 
+      <forward name="role" path="page.newrole" />
+      <forward name="notAssigning" path="page.orginfo"/>
+      </action>
+    <action
+    	attribute="newroleform"
+      	input="page.newrole"
+      	name="newroleform"
+      	path="/addrole"
+      	scope="session"
+      	validate="true"
+      	type="in.ac.dei.edrp.pms.role.AddNewRoleAction">
+   	  	<forward name="rolesuccess" path="page.newrole" />
+     	<forward name="rolefail" path="page.orginfo"/>
+   </action>
+   
+    <action path="/viewrole" type="in.ac.dei.edrp.pms.role.ForwardViewRoleAction">
+      <forward name="viewRoleList" path="/WEB-INF/JspFiles/role/ViewRole.jsp" />
+    </action>
+
+    <action        
+      path="/roleList"
+      type="in.ac.dei.edrp.pms.role.RoleListAction" >
+      <forward name="rolelist" path="page.rolelist"/>
+    </action>
+   
+    <action
+      	path="/roleDetail"
+      	type="in.ac.dei.edrp.pms.role.RoleDetailAction" >
+      	<forward name="roledetail" path="page.roledetails"/>
+    </action>
+     
+     <action        
+      path="/editRole"
+      type="in.ac.dei.edrp.pms.role.EditForwardRoleAction">
+     <forward name="editrole" path="edit.role"/>
+      <forward name="editrolefail" path="/WEB-INF/JspFiles/role/ViewRole.jsp" />
+     </action>
+   
+   <action
+      attribute="editroleform"
+      input="edit.role"
+      name="editroleform"
+      path="/editingrole"
+      scope="request"
+      validate="true"
+      type="in.ac.dei.edrp.pms.role.EditRoleAction" >
+      <forward name="viewRoleList" path="/WEB-INF/JspFiles/role/ViewRole.jsp" />
+      <forward name="editrolefail" path="page.roleinfo"/>
+    </action>
+    
+    <action        
+      path="/deleteRole"
+      type="in.ac.dei.edrp.pms.role.DeleteRoleAction">
+     <forward name="deleterole" path="/WEB-INF/JspFiles/role/ViewRole.jsp"/>
+     </action>
+    
+    <!-- Role part ends -->
+    
+    <!-- Member part starts -->
+    
+    <action path="/addorg_in_portal" type="in.ac.dei.edrp.pms.addorg_in_portal.ForwardAddOrgInPortalAction">
+      <forward name="addorgportal" path="page.addorginportal" />
+    </action>
+    <action
+    	attribute="addorginportalform"
+      	input="page.addorginportal"
+      	name="addorginportalform"
+      	path="/add_org_in_portal"
+      	scope="session"
+      	validate="true"
+      	type="in.ac.dei.edrp.pms.addorg_in_portal.AddOrgInPortalAction">
+   	  	<forward name="addorginportalsuccess" path="page.addorginportal" />
+      	<forward name="addorginportalfail" path="page.addorgintoportalinfo" />
+         	
+   </action>
+        
+    
+    <action
+      path="/addmember"
+      scope="request"
+      type="in.ac.dei.edrp.pms.member.ForwardAddMemberAction" > 
+      <forward name="member" path="page.addnewmember" />
+      <forward name="notAssigning" path="page.orginfo"/>
+      </action>
+    <action
+    	attribute="newmemberform"
+      	input="page.addnewmember"
+      	name="newmemberform"
+      	path="/addnewmember"
+      	scope="session"
+      	validate="true"
+      	type="in.ac.dei.edrp.pms.member.AddNewMemberAction">
+   	  	<forward name="addmembersuccess" path="page.addnewmember" />
+     	<forward name="addmemberfail" path="page.orginfo"/>
+   </action>
+   
+   
+	<action path="/viewmember" type="in.ac.dei.edrp.pms.member.ViewMemberAction" >
+	     <forward name="viewmember" path="page.memberList" />
+         <forward name="viewOrgMember" path="page.OrgMemberList" />
+         <forward name="invalid" path="/logout.jsp" />
+      </action>
+   
+   <!--delete Member permanently -->
+   <action        
+      path="/deleteMember"
+      type="in.ac.dei.edrp.pms.member.DeleteMemberAction">
+     <forward name="deletemember" path="page.memberList"/>
+     <forward name="deleteOrgmember" path="page.OrgMemberList"/>
+     </action>
+     
+     <!--delete user role -->
+   <action        
+      path="/deleteUserRole"
+      type="in.ac.dei.edrp.pms.member.DeleteUserRoleAction">
+      <forward name="deleteuserrole" path="page.memberList"/>
+     </action>
+    <!-- Member part ends -->
+    
+    <!-- People search part starts -->
     <action
       path="/searchpeople"
       scope="request"
-      type="org.dei.edrp.pms.peoplesearch.PeopleSearchAction" > 
+      type="in.ac.dei.edrp.pms.peoplesearch.PeopleSearchAction" > 
       <forward name="peoplesearch" path="page.peoplesearch" />
       </action>
     <action
@@ -144,11 +358,11 @@
       path="/searchaction"
       scope="session"
       validate="true"
-      type="org.dei.edrp.pms.peoplesearch.PeopleSearchResultAction">
+      type="in.ac.dei.edrp.pms.peoplesearch.PeopleSearchResultAction">
       <forward name="success" path="page.peoplesuccess" />
     </action>
     
-	<!-- People search Ends -->
+	<!-- People search part Ends -->
 	
 	<action
     	attribute="projectform"
@@ -157,34 +371,33 @@
       	path="/go"
       	scope="request"
       	validate="true"
-      	type="org.dei.edrp.pms.projmanage.ProjectAction">
+      	type="in.ac.dei.edrp.pms.projmanage.ProjectAction">
    	  	<forward name="success" path="page.newproject" />
      	<forward name="projectfail" path="page.projectfail"/>
    </action>
 
 	<action
       	path="/newproject"
-      	type="org.dei.edrp.pms.projmanage.ProjectAction1" >
-      	<forward name="notshow" path="/login.jsp" />
+      	type="in.ac.dei.edrp.pms.projmanage.ProjectAction1" >
+      	<forward name="notAssigning" path="page.orginfo"/>
       	<forward name="project" path="page.newproject"/>
      </action>
           
-      <action        
-        	path="/projectList"
-      		type="org.dei.edrp.pms.projmanage.ProjectListAction" >
-      		<forward name="projectlist" path="page.projectlist"/>
-       </action>
-       
-       <action 
-       		path="/viewproject"
-			type="org.dei.edrp.pms.projmanage.ProjectListAction1">
-		<forward name="viewproject" path="/WEB-INF/JspFiles/projectManage/viewproject.jsp" />
-	   </action>
-
-												
-	<action
+          
+          <action path="/viewproject" type="in.ac.dei.edrp.pms.projmanage.ProjectListAction" >
+	     <forward name="userProjectList" path="page.userProjectList" />
+         <forward name="adminProjectList" path="page.adminProjectList" />
+         <forward name="invalid" path="/logout.jsp" />
+      </action>
+          
+          <action path="/viewProjTeam" type="in.ac.dei.edrp.pms.member.ViewProjTeamAction" >
+	     <forward name="viewprojteam" path="page.projTeamList" />
+         <forward name="invalid" path="/logout.jsp" />
+      </action>
+          
+   	<action
       path="/searchproject"
-      type="org.dei.edrp.pms.searching.ProjectSearchAction1" >
+      type="in.ac.dei.edrp.pms.searching.ProjectSearchAction1" >
       <forward name="searchproject" path="page.searchproject"/>
               </action>
      
@@ -192,7 +405,7 @@
      path="/button"
      input="/search.success"
      name="backprojectsearchform"
-     type="org.dei.edrp.pms.searching.ProjectSearchAction1" >
+     type="in.ac.dei.edrp.pms.searching.ProjectSearchAction1" >
       <forward name="searchproject" path="page.searchproject"/>
       </action>
             
@@ -203,19 +416,20 @@
       name="projectsearchform"
       path="/go2"
       scope="request"
-      type="org.dei.edrp.pms.searching.ProjectSearchAction" >
+      type="in.ac.dei.edrp.pms.searching.ProjectSearchAction" >
    <forward name="success" path="/WEB-INF/JspFiles/searching/viewdesiredproject.jsp" />
        </action>
        
        <action        
         path="/projectSearchList"
-      type="org.dei.edrp.pms.searching.ProjectSearchListAction" >
+      type="in.ac.dei.edrp.pms.searching.ProjectSearchListAction" >
       <forward name="projectsearchlist" path="search.success"/>
        </action>
     <action        
         path="/editProject"
-      type="org.dei.edrp.pms.updation.EditProjectAction">
+      type="in.ac.dei.edrp.pms.updation.EditProjectAction">
       <forward name="editproject" path="edit.project"/>
+       <forward name="projectupdationfail" path="projectUpdation.fail" />
        </action>
    
    <action
@@ -225,60 +439,29 @@
       path="/go3"
       scope="request"
       validate="true"
-      type="org.dei.edrp.pms.updation.EditAction" >
-      <forward name="updateoperation" path="/WEB-INF/JspFiles/edit/UpdateOperation.jsp" />
-      <forward name="success" path="/WEB-INF/JspFiles/searching/viewdesiredproject.jsp" />
+      type="in.ac.dei.edrp.pms.updation.EditAction" >
+      <forward name="projectupdationfail" path="projectUpdation.fail"/>
       </action>
     
    <action        
         path="/deleteProject"
-      type="org.dei.edrp.pms.updation.DeleteProjectAction">
-      <forward name="deleteproject" path="/WEB-INF/JspFiles/searching/viewdesiredproject.jsp"/>
-       <forward name="updateoperation" path="/WEB-INF/JspFiles/edit/UpdateOperation.jsp" />
-       </action>
+      type="in.ac.dei.edrp.pms.updation.DeleteProjectAction">
+      
+   </action>
      
-	<action
-      path="/updateoperation"
-      type="org.dei.edrp.pms.updation.UpdateAction" >
-      <forward name="update" path="/WEB-INF/JspFiles/edit/UpdateOperation.jsp" />
-              </action>
-	   <action        
-        path="/updateOperation"
-      type="org.dei.edrp.pms.updation.UpdateOperationAction" >
-      <forward name="updateList" path="update.updatedlist"/>
-       </action> 
-    
-	<action
-    	  path="/ganttchart"
-      	  type="org.dei.edrp.pms.ganttChart.GanttChartAction" >
-     	 <forward name="ganttChart" path="page.ganttChart"/>
-    </action>
-    										
-    <action
+ <action
        path="/drawGanttChart"
-       type="org.dei.edrp.pms.ganttChart.GanttWithXmlAction" >
-     <forward name="dgchart" path="gchart.ganttChart"/>
+       type="in.ac.dei.edrp.pms.ganttChart.GanttWithXmlAction" >
+     <forward name="dgchart" path="page.ganttChart"/>
 	 <forward name="charterror" path="chart.fail"/>    
      </action>
     
-    
-    <action
-      attribute="gcform"
-      input="page.ganttChart"
-      name="gcform"
-      path="/DrawGanttChart"
-      scope="request"
-      validate="true"
-      type="org.dei.edrp.pms.ganttChart.GanttWithXmlAction" >
-     <forward name="dgchart" path="gchart.ganttChart"/>
-	 <forward name="charterror" path="chart.fail"/>    
-     </action>
-       
+           
 <action
       path="/assignproject"
-      type="org.dei.edrp.pms.member.AssignProjectAction1" >
-      <forward name="notassign" path="/login.jsp" />
+      type="in.ac.dei.edrp.pms.member.AssignProjectAction1" >
       <forward name="assigning" path="page.assignproject"/>
+      <forward name="notAssigning" path="page.orginfo"/>
       </action>
 <action
       attribute="projassignform"
@@ -287,22 +470,18 @@
       path="/assign"
       scope="request"
       validate="true"
-      type="org.dei.edrp.pms.member.ProjAssignAction">
+      type="in.ac.dei.edrp.pms.member.ProjAssignAction">
       <forward name="assignsuccess" path="page.assignsuccess"/>
       <forward name="assignfail" path="page.assignfail"/>
       <forward name="alreadyAssigned" path="page.alreadyAssigned"/>
       </action>
 
-	<action path="/viewmember" type="org.dei.edrp.pms.member.ViewMemberAction" >
-         <forward name="viewmember" path="page.memberList" />
-      </action>
-
 
 <action
       path="/newtask"
-      type="org.dei.edrp.pms.task.TaskAction1" >
-      <forward name="notshowtask" path="/login.jsp" />
+      type="in.ac.dei.edrp.pms.task.ForwardNewTaskAction" >
       <forward name="task" path="page.newtask"/>
+       <forward name="notAssigning" path="page.orginfo"/>
       </action>
 
 <action
@@ -312,33 +491,43 @@
       path="/task"
       scope="request"
       validate="true"
-      type="org.dei.edrp.pms.task.TaskAction" >
-     <forward name="success" path="page.newtask" />
-     <forward name="taskAssignfail" path="page.taskAssignfail"/>
+      type="in.ac.dei.edrp.pms.task.TaskAction" >
+     <forward name="tasksuccess" path="page.newtask" />
+     <forward name="taskAssignfail" path="page.orginfo"/>
+     </action>
+	
+	 <action path="/viewtask" type="in.ac.dei.edrp.pms.task.ShowTaskAction" >
+	     <forward name="TaskList_ofUser" path="page.UserTaskList" />
+         <forward name="TaskList_ofAdmin" path="page.adminTaskList" />
+         <forward name="invalid" path="/logout.jsp" />
+      </action>
+
+<action
+      path="/assigntask"
+      type="in.ac.dei.edrp.pms.task.ForwardAssignTaskAction" >
+      <forward name="assigntask" path="page.assigntask"/>
+       <forward name="notAssigning" path="page.orginfo"/>
+      </action>
+ 
+ <action
+      attribute="assignTaskform"
+      input="page.assigntask"
+      name="assignTaskform"
+      path="/assignTask"
+      scope="request"
+      validate="true"
+      type="in.ac.dei.edrp.pms.task.AssignTaskAction" >
+     <forward name="taskAssignsuccess" path="page.assigntask" />
+     <forward name="taskAssignfail" path="page.orginfo"/>
+     </action>
+ 
+ <action        
+      path="/editTask"
+      type="in.ac.dei.edrp.pms.updation.ForwardEditTaskAction">
+      <forward name="edittask" path="edit.task"/>
+      <forward name="edittaskfail" path="page.reupdationFail" />
      </action>
 
-	<action
-    	  path="/viewtask"
-      	  type="org.dei.edrp.pms.task.ShowTaskAction1" >
-     	 <forward name="showtask" path="page.showTask"/>
-    </action>
-
- <action
-      attribute="showtaskform"
-      input="page.showTask"
-      name="showtaskform"
-      path="/showTask"
-      scope="request"
-      type="org.dei.edrp.pms.task.ShowTaskAction">
-      <forward name="tasklist" path="page.tasklist" />
-    </action>
-
-<action        
-        path="/editTask"
-      type="org.dei.edrp.pms.updation.EditTaskAction">
-      <forward name="edittask" path="edit.task"/>
-      <forward name="fail" path="page.reupdationFail" />
-       </action>
 
 <action
       attribute="edittaskform"
@@ -347,20 +536,13 @@
       path="/go4"
       scope="request"
       validate="true"
-      type="org.dei.edrp.pms.updation.EditingTaskAction" >
-      <forward name="successtask" path="/WEB-INF/JspFiles/task/ReviewTask.jsp" />
+      type="in.ac.dei.edrp.pms.updation.EditingTaskAction" >
       <forward name="updationfail" path="page.updationFail" />
     </action>
     
 	<action        
-        	path="/taskList"
-      		type="org.dei.edrp.pms.task.ReviewTaskAction">
-	<forward name="tasklist" path="page.tasklist"/>
-       </action>
-
-	<action        
         path="/deleteTask"
-      type="org.dei.edrp.pms.updation.DeleteTaskAction">
+      type="in.ac.dei.edrp.pms.updation.DeleteTaskAction">
       <forward name="taskDeletionSuccess" path="/WEB-INF/JspFiles/task/ReviewTask.jsp" />
        <forward name="taskDeletionFail" path="page.fail" />
        </action>
@@ -370,12 +552,12 @@
 
     <!-- FOR NEW ORGANIZATION -->
     
-   <action path="/neworganization" type="org.dei.edrp.pms.organization.ForwardNewOrgAction">
+   <action path="/neworganization" type="in.ac.dei.edrp.pms.organization.ForwardNewOrgAction">
       <forward name="neworg" path="page.neworganization" />
     </action>
     <action
       	path="/orgInfo"
-      	type="org.dei.edrp.pms.organization.OrgDetailAction" >
+      	type="in.ac.dei.edrp.pms.organization.OrgDetailAction" >
       	<forward name="orginfo" path="page.orgdata"/>
      </action>
     
@@ -388,27 +570,27 @@
       scope="request"
       validate="true"
       
-      type="org.dei.edrp.pms.organization.AddNewOrganisationAction" >
+      type="in.ac.dei.edrp.pms.organization.AddNewOrganisationAction" >
       <forward name="orgsuccess" path="page.neworganization" />
       <forward name="info" path="page.orginfo" />
      </action> 
      
      <!-- FOR VIEW ORGANIZATION -->
     
-    <action path="/vieworganization" type="org.dei.edrp.pms.organization.ViewOrganisationAction">
+    <action path="/vieworganization" type="in.ac.dei.edrp.pms.organization.ViewOrganisationAction">
       <forward name="vieworg" path="/WEB-INF/JspFiles/Organization/vieworg.jsp" />
     </action>
 
     <action        
       path="/orgList"
-      type="org.dei.edrp.pms.organization.OrgListAction" >
+      type="in.ac.dei.edrp.pms.organization.OrgListAction">
       <forward name="orglist" path="page.orglist"/>
     </action>
        
    <!-- FOR SEARCH ORGANIZATION -->
      <action 
     		path="/searchorganization" 
-    		type="org.dei.edrp.pms.organization.SearchOrganisationAction"
+    		type="in.ac.dei.edrp.pms.organization.SearchOrganisationAction"
     		scope="request">
       <forward name="searchorg" path="page.searchorganization" />
     </action>
@@ -419,13 +601,13 @@
       name="searchorgform"
       path="/searchorg"
       scope="request"
-      type="org.dei.edrp.pms.organization.OrgSearch" >
+      type="in.ac.dei.edrp.pms.organization.OrgSearch" >
    <forward name="success" path="/WEB-INF/JspFiles/Organization/orgSearch.jsp" />
     </action>
      
     <action        
         path="/orgSearchList"
-      type="org.dei.edrp.pms.organization.OrgSearchListAction" >
+      type="in.ac.dei.edrp.pms.organization.OrgSearchListAction" >
       <forward name="orgsearchlist" path="page.orgsuccess"/>
        </action>
     
@@ -433,7 +615,7 @@
      path="/backbutton"
      input="/page.orgsuccess"
      name="backorgsearchform"
-     type="org.dei.edrp.pms.organization.SearchOrganisationAction"
+     type="in.ac.dei.edrp.pms.organization.SearchOrganisationAction"
      scope="request">
       <forward name="searchorg" path="page.searchorganization" />
         </action>
@@ -443,8 +625,9 @@
 	<action
      path="/editorgpage"
       scope="request"
-      type="org.dei.edrp.pms.organization.EditOrg">
+      type="in.ac.dei.edrp.pms.organization.EditForwardOrgAction">
       <forward name="editorgpage" path="page.editorgpage" />
+      <forward name="editorgfail" path="/WEB-INF/JspFiles/Organization/vieworg.jsp" />
      </action>
     
 	<action
@@ -454,16 +637,18 @@
       path="/editorg"
       scope="request"
       validate="true"
-      type="org.dei.edrp.pms.organization.EditOrgAction">
-      <forward name="successorg" path="/WEB-INF/JspFiles/Organization/orgSearch.jsp"/>
+      type="in.ac.dei.edrp.pms.organization.EditOrgAction">
+      <forward name="viewOrgList" path="/WEB-INF/JspFiles/Organization/vieworg.jsp"/>
+   	  <forward name="editorgfail" path="page.editorgfail" />
    	  </action>
     
     
     <action
       path="/deleteorg"
       scope="request"
-      type="org.dei.edrp.pms.organization.DeleteOrgAction">
-      <forward name="deleteorg" path="/WEB-INF/JspFiles/Organization/orgSearch.jsp" />
+      type="in.ac.dei.edrp.pms.organization.DeleteOrgAction">
+      <forward name="deleteorg" path="/WEB-INF/JspFiles/Organization/vieworg.jsp" />
+   <!-- <forward name="deleteorg" path="/WEB-INF/JspFiles/Organization/orgSearch.jsp" /> -->   
    <!--   <forward name="searchorg" path="page.searchorganization" /> -->
     </action>
     
@@ -474,7 +659,7 @@
 
          <action 
          path="/upload" 
-         type="org.dei.edrp.pms.upload.UploadFile">
+         type="in.ac.dei.edrp.pms.upload.UploadFile">
       <forward name="project" path="page.newupload" />
     </action>
          
@@ -485,19 +670,19 @@
       name="uploadfileform"
       path="/fpath"
       scope="request"
-      type="org.dei.edrp.pms.upload.UploadFileAction" >
+      type="in.ac.dei.edrp.pms.upload.UploadFileAction" >
        <forward name="success" path="page.upload" />
       </action>
       
     <action 
     path="/download" 
-    type="org.dei.edrp.pms.upload.DownloadForwardAction">
+    type="in.ac.dei.edrp.pms.upload.DownloadForwardAction">
      <forward name="loadfile" path="/WEB-INF/JspFiles/upload/fileList.jsp" />
      </action>
     
     <action 
     path="/fileDownloadList" 
-    type="org.dei.edrp.pms.upload.FileDownLoadListAction">
+    type="in.ac.dei.edrp.pms.upload.FileDownLoadListAction">
      <forward name="filedownloadlist" path="page.fileDownLoad" />
     </action>
     
@@ -505,47 +690,40 @@
       input="page.fileDownLoad"
       path="/deleteupload"
       scope="request"
-      type="org.dei.edrp.pms.upload.DeleteUpload">
+      type="in.ac.dei.edrp.pms.upload.DeleteUpload">
       <forward name="view" path="/WEB-INF/JspFiles/upload/fileList.jsp" />
       </action>
       
     <action
       path="/viewdownload"
       scope="request"
-      type="org.dei.edrp.pms.upload.ViewDownload" >
+      type="in.ac.dei.edrp.pms.upload.ViewDownload" >
       <forward name="viewdownloadlist" path="page.viewDownLoad" />
       </action>
     
     <action 
     path="/rundownload" 
-    scope="request" type="org.dei.edrp.pms.upload.RunDownload">
+    scope="request" type="in.ac.dei.edrp.pms.upload.RunDownload">
       <forward name="success" path="/WebRoot/WEB-INF/JspFiles/fileList.jsp" />
     </action>
     <!-- for upload/downloadlink ends -->
-
-	<action path="/welcome"
-	type="org.dei.edrp.pms.home.WelcomeAction">
-	<forward name="showWelcome" path="page.welcome" />
-	</action>
-	
-	<action path="/leftlink"
-	type="org.dei.edrp.pms.home.LinkAction">
-	<forward name="showLink" path="/WEB-INF/JspFiles/common/LeftLink.jsp" />
-	</action>
 	
 </action-mappings>
-	
     
 <controller>
 	
-	<set-property property="processorClass" value="org.dei.edrp.pms.control.CustomRequestProcessor" />
+	<set-property property="processorClass" value="in.ac.dei.edrp.pms.control.CustomRequestProcessor" />
 	<set-property property="processorClass" value="org.apache.struts.tiles.TilesRequestProcessor" />
-	
+	<set-property  property="locale" value="false"/>
+
 </controller>
 
-    
-       
-  <message-resources parameter="org.dei.edrp.pms.propertiesFile.ApplicationResources" />
+ <message-resources parameter="in.ac.dei.edrp.pms.propertiesFile.ApplicationResources_fr" />
+ <message-resources parameter="in.ac.dei.edrp.pms.propertiesFile.ApplicationResources_hi" />
+ <message-resources parameter="in.ac.dei.edrp.pms.propertiesFile.ApplicationResources_sa" />
+ <message-resources parameter="in.ac.dei.edrp.pms.propertiesFile.ApplicationResources_ur" />
+ <message-resources parameter="in.ac.dei.edrp.pms.propertiesFile.ApplicationResources" />
+ 
  
   <plug-in className="org.apache.struts.tiles.TilesPlugin">
   <set-property property="definitions-config" value="/WEB-INF/tiles-defs.xml"/>

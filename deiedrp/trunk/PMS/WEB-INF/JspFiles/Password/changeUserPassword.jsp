@@ -1,4 +1,4 @@
-<%@ page language="java" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%> 
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
  
@@ -69,8 +69,8 @@
 	
 	<div id="main_title">
 		 <font color="#0044ff"> Change Password:</font>
-	  </div><br>
-		<table style="padding-left: 25%;padding-top: 3%" cellpadding="2" cellspacing="4" border="0">
+	  </div><br><br><br>
+		<table cellspacing="1" cellpadding="6" width="40%" border="0" align="center">
 		<tr class="form-element">
 			<td class="form-label">Old password :</td>
 			<td class="form-widget">

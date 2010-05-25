@@ -10,9 +10,8 @@
 <html:html>
   <head>
     <title>showorgdata.jsp</title>
- <link rel="stylesheet" href="style/main.css" type="text/css"></link>
-	
-<link rel="stylesheet" href="style/Displaytagex.css" type="text/css"></link>
+ <link rel="stylesheet" href="style/Displaytagex.css" type="text/css"></link>
+ <link rel="stylesheet" href="style/dropdown.css" type="text/css"></link>
   </head>
   <script language="JavaScript" type="text/javascript">
 	function fnrec()
@@ -20,12 +19,16 @@
 		a=document.getElementsByName("nrec");
 		window.location.href="orgList.do?key="+a[0].value;
 	}
+	function sure()
+	{
+		return(confirm("Are you sure want to Delete?"));
+	}
 	</script>
   <body>
   
   <logic:notEmpty name="orgList" property="list">
   <div id="main_title" align="left">
-		    <font color="#0044ff">Organisation List:</font>
+		    <font color="#0044ff">Organization List:</font>
 		     </div><br>
 	<%!String key=null; %>
 	<%
@@ -41,27 +44,33 @@
     <html:option value="15" >15</html:option>
     <html:option value="20" >20</html:option>
         </html:select>
-			<html:errors property="nrec"/><br><br>
+			<html:errors property="nrec"/>
+		<div align="right">
+	<html:link action="neworganization">New Organization<img border="0" title="Add New" src="img/user1_add.png" width="15" "height="15" ></html:link>
+		</div>
 	</div>
 	 		
- <display:table name="orgList.list" defaultsort="1" export="false" pagesize="<%=Integer.parseInt(key) %>" requestURI="/orgList.do" decorator="org.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >
+ <display:table name="orgList.list" defaultsort="1" id="row" export="false" pagesize="<%=Integer.parseInt(key) %>" requestURI="/orgList.do" decorator="in.ac.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >
 				   
 		<display:column property="iname" title="Organisation Name" sortable="true"/>
 		<display:column property="iaddress" title="Organisation Address" sortable="true" />
 		<display:column property="icity" title="City" sortable="true" />
 		<display:column property="istate" title="State" sortable="true" />
-		<display:column property="ipin" title="Pin Code" sortable="true" />
 		<display:column property="iphoneno" title="Phone No." sortable="true" />
 		<display:column property="ifax" title="Fax" sortable="true" />
-		<display:column property="iurl" autolink="true" maxLength="15" title="URL" sortable="true" />
-		<display:column property="ihead" title="Head Name" sortable="true" />
-		<display:column property="emailId" title="Head Email_ID" sortable="true"/>
-		<display:column property="description" maxLength="10" title="Description" sortable="true" />
-		
-	</display:table>
+		<display:column property="iurl" autolink="true" title="URL" sortable="true" />
+		<display:column media="html" title="Actions">
+		 <html:link href="editorgpage.do" paramProperty="id" paramId="id" paramName="row">Edit
+		  </html:link><!--  | this link working
+		 <html:link href="deleteorg.do" onclick="return sure();" paramProperty="id" paramId="id" paramName="row">Delete
+		 </html:link> -->
+		</display:column>
+		</display:table>
    </logic:notEmpty>
   	<logic:empty name="orgList" property="list">
-       <br><font color="#550003" size="2">Nothing found to display.</font><br><br>
+       <br><font color="#550003" size="2">Nothing found to display.foe adding new organization click on this link--></font>
+       <html:link action="neworganization">New Organization<img border="0" title="Add New" src="img/user1_add.png" width="15" "height="15" ></html:link>
+       <br><br>
        <html:button property="back" value="Back" onclick="history.back();" />
     </logic:empty>
   		

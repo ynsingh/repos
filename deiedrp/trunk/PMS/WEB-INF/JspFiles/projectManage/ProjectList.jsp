@@ -1,5 +1,6 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
-<%@page import="org.dei.edrp.pms.projmanage.ProjectFields;"%>
+<%@ page import="in.ac.dei.edrp.pms.projmanage.ProjectList"%>
+<%@ page import="in.ac.dei.edrp.pms.projmanage.ProjectFields;"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -18,7 +19,7 @@
 	function fnrec()
 	{
 		a=document.getElementsByName("nrec");
-		window.location.href="projectList.do?key="+a[0].value;
+		window.location.href="viewproject.do?key="+a[0].value;
 	}
 	function rowchange()
 	{
@@ -28,17 +29,23 @@
     // add event handlers so rows light up and are clickable
     	for (i=0; i < rows.length; i++) {
         	var value = rows[i].getElementsByTagName("td")[0].firstChild.nodeValue;
-          if (value.indexOf('N') == 6) {
+          if (value.indexOf('N') >= 0) {
             rows[i].style.backgroundColor = "#C0C0C0";
             rows[i].style.textDecoration="line-through";
             rows[i].style.color="#FF6347";
         }
     	}
 	}
+	
+	function deleteProject()
+	{
+	return(confirm("Are you sure want to disable this project?"));
+	}
 	</script>
   <body onload="rowchange();">
+   <% request.setAttribute("projectList", new ProjectList((String)session.getAttribute("uid"),
+   (String)session.getAttribute("validOrgInPortal"),(String)session.getAttribute("role_in_org"))); %>
   
-  <logic:notEmpty name="projectList" property="list">
   <div id="main_title" align="left">
 		    <font color="#0044ff">Project List:</font></div><br>
 <%!  String key=null;%>
@@ -50,43 +57,79 @@
  <div align="left">
 	Number of records to be displayed:
   <html:select property="nrec" name="nrec" value="<%=key %>" onchange="fnrec();">	
-    <html:option value="5" >5</html:option>
-    <html:option value="10" >10</html:option>
-    <html:option value="15" >15</html:option>
-    <html:option value="20" >20</html:option>
+    <html:option value="5">5</html:option>
+    <html:option value="10">10</html:option>
+    <html:option value="15">15</html:option>
+    <html:option value="20">20</html:option>
         </html:select>
-			<html:errors property="nrec"/><br><br>
+			<html:errors property="nrec"/>
+			<div align="right">
+			<html:link action="newproject">New Project<img border="0" title="Add new project" src="img/user1_add.png" width="15" "height="15" ></html:link>
+			</div>
 	</div>
-  
- <display:table name="projectList.list" defaultsort="2" id="row" export="true" pagesize="<%=Integer.parseInt(key) %>" requestURI="/projectList.do" class="dataTable" >
-		<display:column title="Active Status" sortable="true" >
+   <logic:notEmpty name="projectList" property="list">
+ <display:table name="projectList.list" defaultsort="2" id="row" export="true" pagesize="<%=Integer.parseInt(key) %>" requestURI="/viewproject.do" decorator="in.ac.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >
+		
+		<display:column title="Active" sortable="true" >
 		<logic:equal name="row" property="enable" value="0">Yes</logic:equal>
 		<logic:equal name="row" property="enable" value="1">No</logic:equal>
 		</display:column>
-		<display:column property="id" title="Project ID" sortable="true" />
-		<display:column property="name" title="Project Name" sortable="true" />
-		<display:column property="startDate" title="Start Date" sortable="true" />
-		<display:column property="finishDate" title="Finished Date" sortable="true" />
+		<display:column title="Project Name" sortable="true">
+		<html:link title="click for view the Task List" href="viewtask.do" paramProperty="project_name" paramId="key1" paramName="row">
+		<%=((ProjectFields)pageContext.getAttribute("row")).getProject_name()%>
+		</html:link>
+		</display:column>	
+		<display:column property="scheduleStartDate" title="Plan Start Date" sortable="true" />
+		<display:column property="scheduleEndDate" title="Plan End Date" sortable="true" />
+		<display:column property="actualStartDate" title="Actual Start Date" sortable="true" />
+		<display:column property="actualEndDate" title="Actual End Date" sortable="true" />
+		
 		<display:column property="tbudget" title="Target Budget (Rs.)" format="{0,number,0,000.00}"
 		 sortable="true" />
 		<display:column property="priority" title="Priority" sortable="true" />
 		<display:column property="status" title="Status" sortable="true" />
-		<display:column property="viewPermission" title="View Permission" sortable="true" />
 		<display:column title="Gantt Chart Color" sortable="true">
 		<logic:equal name="row" property="enable" value="0">
-			<html:link title="click for view the Gantt Chart" href="drawGanttChart.do" paramProperty="name" paramId="pname" paramName="row">
+			<html:link title="click for view the Gantt Chart" href="drawGanttChart.do" paramProperty="project_name" paramId="pname" paramName="row">
 			<font style="padding-left:100%;background-color:<%=((ProjectFields)pageContext.getAttribute("row")).getGcolor()%>;">
 			</font></html:link>
 		</logic:equal>
 		<logic:equal name="row" property="enable" value="1">
-			<font style="padding-left:100%;background-color:<%=((ProjectFields)pageContext.getAttribute("row")).getGcolor()%>;">
-			</font>
+			<font style="padding-left:100%;background-color:<%=((ProjectFields)pageContext.getAttribute("row")).getGcolor()%>;"></font>
 		</logic:equal>
-		
 		</display:column>
+		<display:column property="description" maxLength="15" title="Description" sortable="true" />
 		
-		<display:column property="darea" maxLength="15" title="Description" sortable="true" />
+		<!-- for view the project members -->
 		
+		<display:column media="html" title="Project Team">
+		<logic:equal name="row" property="enable" value="0">
+		<html:link href="viewProjTeam.do" paramProperty="project_code" paramId="key1" paramName="row">
+		<img border="0" title="View Team" src="img/users3.png" width="20"  height="10" >
+		  </html:link>
+		  </logic:equal>
+		  <logic:equal name="row" property="enable" value="1">
+		  <img border="0" title="View Team" src="img/users3.png" width="20"  height="10" >
+		  </logic:equal>
+		  </display:column>
+	
+		<!-- end here -->
+		
+		<logic:equal name="row" property="editPermission" value="Allow">
+		<display:column media="html" title="Actions">
+		 	<logic:equal name="row" property="enable" value="0">
+			<html:link href="editProject.do" paramProperty="project_code" paramId="project_code" paramName="row"><img border="0" title="Edit" src="img/write_pen.gif" width="15"  height="10" >
+		 	</html:link> | 
+			<html:link href="deleteProject.do" onclick="return deleteProject();" paramProperty="project_code" paramId="project_code" paramName="row">Disable
+			 </html:link>  
+		</logic:equal>
+		<logic:equal name="row" property="enable" value="1">
+	 		 <html:link href="deleteProject.do" paramProperty="project_code" paramId="project_code" paramName="row">Enable
+		 	</html:link>
+		</logic:equal>
+
+		</display:column>
+		</logic:equal>
 		<display:setProperty name="export.pdf.filename" value="ProjectDetails.pdf"/>
 		<display:setProperty name="export.excel.filename" value="ProjectDetails.xls"/>
 		<display:setProperty name="export.xml.filename" value="ProjectDetails.xml"/>

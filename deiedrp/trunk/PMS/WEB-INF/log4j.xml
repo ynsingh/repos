@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
+<!-- Console Appender -->
+	<appender name="CA" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-4r [%t] %-5p %c %x - %m%n" />
+		</layout>
+	</appender>
+<!-- File Appender -->
+	<appender name="FA" class="org.apache.log4j.FileAppender">
+		<param name="File" value="C://Documents and Settings//anil//Desktop//log file//PMSLog.log"/>
+		<!-- Set the logger level of File Appender that can be DEBUG,INFO,WARN,ERROR,FATAL -->
+		<param name="Threshold" value="ERROR"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-4r [%t] %-5p %c %x - %m%n" />
+		</layout>
+	</appender>
+<!-- Order of using logger level DEBUG,INFO,WARN,ERROR,FATAL -->
+	<root>
+		<level value="INFO" />
+		<!-- <appender-ref ref="CA" /> -->
+		<appender-ref ref="FA" />
+	</root>
+</log4j:configuration>

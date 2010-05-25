@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%> 
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 
@@ -34,7 +34,7 @@
 		 </div>
 		 <br><br>
 		  <br>
-		<table cellspacing="2" cellpadding="2" border="0" align="center">
+		<table cellspacing="1" cellpadding="6" border="0" align="center">
 		<tr class="form-element">
 		<td  class="form-label">
 		<html:radio property="searchOption" value="Project Name">Project Name</html:radio>

@@ -45,12 +45,12 @@
 	</div>
 		     
  
- <display:table name="memberList.list" defaultsort="1" export="false" pagesize="<%=Integer.parseInt(key) %>" requestURI="/searchaction.do" decorator="org.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >
+ <display:table name="memberList.list" defaultsort="1" export="false" pagesize="<%=Integer.parseInt(key) %>" requestURI="/searchaction.do" decorator="in.ac.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >
 				   
-		<display:column property="userEmailId" group="1" title="User ID" sortable="true" />
-		<display:column property="permittedby" title="Permitted By" sortable="true" />
-		<display:column property="projectname" title="Project Name" sortable="true" />
+		<display:column property="userid" group="1" title="User ID" sortable="true" />
+		<display:column property="portalname" title="Portal Name" sortable="true" />
 		<display:column property="orgname" title="Organisation Name" sortable="true" />
+		<display:column property="rolename" title="Role Name" sortable="true" />
 	</display:table>
     </logic:notEmpty>
     

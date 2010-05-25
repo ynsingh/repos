@@ -21,7 +21,6 @@
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
- <html:javascript formName="searchorgform" />
   </head>
   
   <body>
@@ -33,7 +32,7 @@
 	 }
 	%>
 	
- <html:form action="/searchorg" onsubmit="return validateSearchorgform(this);">
+ <html:form action="/searchorg">
   		<div id="main_title">
 	<font color="#0044ff">	Searching By:</font>
 		 </div>
@@ -43,7 +42,7 @@
 		<td  class="form-label">
 		<html:radio property="searchOption" value="Organisation Name">Organisation Name</html:radio>
 		<html:radio property="searchOption" value="Organisation City">Organisation City</html:radio>
-		<html:radio property="searchOption" value="Organisation Owner">Organisation Owner</html:radio>
+		<html:radio property="searchOption" value="Organisation State">Organisation State</html:radio>
 		</td>
 		</tr>
 		<tr></tr><tr></tr>

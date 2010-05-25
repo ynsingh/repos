@@ -7,12 +7,8 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html:html>
   <head>
-   <link rel="stylesheet" href="<html:rewrite page='/style/main.css'/>" type="text/css"></link>
-   
- <link rel="stylesheet" href="style/main.css" type="text/css"></link>
-		
-<link rel="stylesheet" href="style/Displaytagex.css" type="text/css"></link>
-   
+   <link rel="stylesheet" href="style/Displaytagex.css" type="text/css"></link>
+   <link rel="stylesheet" href="style/dropdown.css" type="text/css"></link>
     <script type="text/javascript">
 	function sure()
 	{
@@ -32,7 +28,7 @@
     </logic:empty>
    <logic:notEmpty name="fileDownloadList" property="list">
     
-   <display:table name="fileDownloadList.list" export="false" pagesize="5" requestURI="/viewdownload.do" decorator="org.dei.edrp.pms.deco.PmsDecorator" class="dataTable">
+   <display:table name="fileDownloadList.list" export="false" pagesize="5" requestURI="/viewdownload.do" decorator="in.ac.dei.edrp.pms.deco.PmsDecorator" class="dataTable">
 
 			<display:column title="Actions" property="link3"/>
 			<display:column  property="fileName" title="File Name" sortable="true"/>

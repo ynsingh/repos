@@ -1,7 +1,7 @@
-<%@ page import="java.sql.*" language="java" pageEncoding="ISO-8859-1"%>
+<%@ page import="java.sql.*" language="java" pageEncoding="UTF-8"%>
 <%@ page errorPage="/jspException.do" %>
-<%@page import="org.dei.edrp.pms.task.DynamicList"%>
-<%@page import="org.dei.edrp.pms.dataBaseConnection.MyDataSource;"%>
+<%@ page import="javax.sql.rowset.CachedRowSet" %>
+<%@ page import="in.ac.dei.edrp.pms.dataBaseConnection.MyDataSource;"%>
 
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%> 
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
@@ -18,237 +18,170 @@
         <script type='text/javascript' src='dwr/util.js'></script>
 	<!-- This JavaScript file is generated specifically for your application -->
          <script type='text/javascript' src='dwr/interface/DynamicList.js'></script>
-	
-	<script language="JavaScript" type="text/javascript">
-	function taskGenerate() {
-   var name = DWRUtil.getValue("projectName");
- 	var tname = DWRUtil.getValue("taskName");
- 	var rname = DWRUtil.getValue("resourceName");
- 	var oname = DWRUtil.getValue("orgName");
-  DynamicList.taskList(name,tname,rname,oname,function(data)
+
+  <script language="JavaScript" type="text/javascript">
+    
+  	function taskGenerate() {
+  
+   	var taskName = DWRUtil.getValue("taskName");
+   	var projectName = DWRUtil.getValue("projectName");
+ 	var orgportal = DWRUtil.getValue("orgportal");
+ 	
+  DynamicList.taskList(taskName,projectName,orgportal,function(data)
   {
   	DWRUtil.removeAllOptions(document.getElementsByName("taskDependency")[0]);
   	DWRUtil.addOptions(document.getElementsByName("taskDependency")[0],data);
   	DWRUtil.setValue("taskDependency",DWRUtil.getValue("taskDependencyValue"));
- 	 sdateGenerate();
-	 fdateGenerate();
-  }
+  	}
   ); 
  }
-  
-  function sdateGenerate() {
-   var name = DWRUtil.getValue("projectName");
-  DynamicList.pSDate(name,function(data)
-  {
-  	DWRUtil.setValue("prosdate",data);
-  }
-  ); 
- }
-  
-  function fdateGenerate() {
-   var name = DWRUtil.getValue("projectName");
-  DynamicList.pFDate(name,function(data)
-  {
-  	DWRUtil.setValue("profdate",data);
-  }
-  ); 
-  }
-    
-  function orgGenerate() {
-  var name = DWRUtil.getValue("resourceName");
-  var uname = DWRUtil.getValue("uname");
-  DWRUtil.setValue("prosdate","");
-  DWRUtil.setValue("profdate","");
-  DynamicList.orgList(name,uname,function(data)
-  {
-   	DWRUtil.removeAllOptions(document.getElementsByName("orgName")[0]);
-  	DWRUtil.addOptions(document.getElementsByName("orgName")[0],data);
-  	DWRUtil.setValue("orgName",DWRUtil.getValue("orgValue"));
-  	DWRUtil.removeAllOptions(document.getElementsByName("projectName")[0]);
-  	DWRUtil.removeAllOptions(document.getElementsByName("taskDependency")[0]);
-  	projectGenerate();
-  }
-  ); 
- }
-  
-  function projectGenerate() {
-  
-   var name = DWRUtil.getValue("orgName");
-   var rname = DWRUtil.getValue("resourceName");
-   var uname = DWRUtil.getValue("uname");
- 
-  DynamicList.projectList(name,rname,uname,function(data)
-  {
- 
-  	DWRUtil.removeAllOptions(document.getElementsByName("projectName")[0]);
-  	DWRUtil.addOptions(document.getElementsByName("projectName")[0],data);
-  	DWRUtil.setValue("projectName",DWRUtil.getValue("projectValue"));
-  	DWRUtil.removeAllOptions(document.getElementsByName("taskDependency")[0]);
-  	taskGenerate();
-  }
-  ); 
- }
-  </script>
+ </script>
 	</head>
-	<body onload="orgGenerate();">
+	<body onload="taskGenerate()">
 	<%
 	String mysession=(String)session.getAttribute("mysession");
 	if(mysession==null)
 	{
-		response.sendRedirect("login.jsp");  
+		response.sendRedirect("login.jsp");
 	}
+	%>
+	<%!
+		Connection con=null;
+		ResultSet rs=null;
+		String tdep="No";
+		CachedRowSet crs_task=null;
+	 %>
 	
-   %>
-
 	<html:javascript formName="edittaskform" />
 	<html:form action="/go4" onsubmit="return validateEdittaskform(this);">	
-		  <%!
-		Connection con=null;
-		 PreparedStatement ps=null;
-		 ResultSet rs=null,rs2=null;
-		 ResultSet rs1=null;
-		 String tdep="No";
-		 %>
+		
 		 <%
-	try{	 
-	con=MyDataSource.getConnection();
-	//System.out.println("Task Name in EditTask.jsp="+session.getAttribute("taskname"));
-	/* fetching to that task from 'task' table for updation which Task_Name,Project_ID,Resource_Name is set in session scope.*/
-	PreparedStatement ps=con.prepareStatement("select t.Task_Name,v.User_ID,o.Org_Name,"+
-	"p.Project_Name,t.Start_Date,t.Finished_Date,t.Gchart_Color,t.Per_Completed,t.Dependency,"+
-	"t.Description,t.Task_ID from task t,project p,organisation o,validatetab v"+
-	" where (t.Task_Id=? and v.Valid_ID=t.Valid_ID) and v.Project_ID=p.Project_ID and p.enable=0 and v.Org_ID=o.Org_ID");
-    ps.setString(1,(String)request.getParameter("id"));
-    //ps.setInt(2,Integer.parseInt((String)request.getParameter("pName")));
-    //ps.setString(3,(String)request.getParameter("rName"));
-    rs1=ps.executeQuery();
-    if(rs1.next())
-    {
-     %>
+			crs_task=(CachedRowSet)request.getAttribute("crs");
+	    	con=MyDataSource.getConnection();
+		 %>
 		<div id="main_title">
 		   <font color="#0044ff">  Edit To Desired Task:</font>
 		  </div>
-		  <br>
-		
-		  <div align="center"><html:errors property="sdate"/>
-		  	  <html:errors property="fdate"/>
+		 	
+		  <div align="center">
 		  	  <html:errors property="taskmsg"/>
 		  </div>
-		  <br>
-		  <table cellspacing="2" cellpadding="2" border="0" align="center">
+		 
+		  <table cellspacing="2" cellpadding="5" width="40%" border="0" align="center">
 		  <tr>
 		<td>
+		<input type="hidden" name="orgportal" id="orgportal" value="<%=(String)session.getAttribute("validOrgInPortal") %>" size="20" readonly="readonly"/>
+			<html:errors property="orgportal"/>
 		<input type="hidden" name="uname" id="uname" value="<%=(String)session.getAttribute("uid") %>" size="20" readonly="readonly"/>
 			<html:errors property="uname"/>
-</td></tr>
+		<!-- <input type="hidden" name="projAStartDate" id="projAStartDate" value="<%=crs_task.getString(14)%>" size="20" readonly="readonly"/>
+			<html:errors property="projAStartDate"/>
+		<input type="hidden" name="projAEndDate" id="projAEndDate" value="<%=crs_task.getString(15)%>" size="20" readonly="readonly"/>
+			<html:errors property="projAEndDate"/> -->
+			<input type="hidden" name="project_code" id="project_code" value="<%=crs_task.getString(16)%>" size="20" readonly="readonly"/>
+			<html:errors property="project_code"/>
+		</td></tr>
+		<tr class="form-element">
+		<td  class="form-label">
+			Project : 
+			</td>
+		<td class="form-widget">
+		<html:text property="projectName" style="color: blue;" value="<%=crs_task.getString(1)%>" disabled="true" size="40" />
+		<html:errors property="projectName"/></td></tr>
+		<tr class="form-element">
+		<td  class="form-label">
+			Task Id : 
+			</td>
+		<td class="form-widget">
+		<html:text property="taskId" style="color: black;" indexed="taskId" value="<%=crs_task.getString(2)%>" disabled="true" size="40" />
+		<html:errors property="taskId"/></td></tr>
 		<tr class="form-element">
 		<td  class="form-label">
 			Task Name : 
 			</td>
 		<td class="form-widget">
-		<html:text property="taskName" indexed="taskName" value="<%=rs1.getString(1)%>" onchange="taskGenerate()" size="40" /><font color="red" size="2">*</font>
+		<html:text property="taskName" style="color: black;" disabled="true" indexed="taskName" value="<%=crs_task.getString(3)%>"  size="40" />
 		<html:errors property="taskName"/></td></tr>
-		
-		<%
-		//For getting database connection.
-			//con=MyDataSource.getConnection();
-		%>
-			<tr class="form-element">
-		<td  class="form-label">
-		Resource Name :</td><td class="form-widget">
-		
-		<html:select property="resourceName" indexed="resourceName" value="" style="width: 270px;" onkeypress="orgGenerate()" onchange="orgGenerate()" onclick="orgGenerate()">
-			<html:option value="<%=rs1.getString(2)%>"><%=rs1.getString(2)%></html:option>
-		
-		<% 
-		try{
-			String uid=(String)session.getAttribute("uid");
-			if(!uid.equalsIgnoreCase(rs1.getString(2)))
-			{
-			%>
-			<html:option value="<%= uid%>"><%= uid%></html:option>
-			<%
-			}
-			ps=con.prepareStatement("select distinct User_ID from validatetab where PermittedBy=?");
-			ps.setString(1,uid);
-			rs=ps.executeQuery();
-				while(rs.next())
-				{
-			if(!rs.getString(1).equalsIgnoreCase(rs1.getString(2)))
-			{
-			%>
-			<html:option value="<%= rs.getString(1)%>"><%=rs.getString(1)%></html:option>
-			<%
-			}
-			}
-			}
-			catch(SQLException e){}
-			 %>
-			 </html:select><html:errors property="resourceName"/></td></tr>
-
-			<tr class="form-element">
-			<td  class="form-label">
-			Organisation Name :</td><td class="form-widget">
-			<html:select property="orgName" indexed="orgName" style="width: 270px;" onkeypress="projectGenerate()" onchange="projectGenerate()" onclick="projectGenerate()">
-			</html:select><html:errors property="orgName"/>
-			<input type="hidden" name="orgValue" id="orgValue" value="<%=rs1.getString(3)%>" size="20" readonly="readonly"/>
-		<html:errors property="orgValue"/></td></tr>
 		<tr class="form-element">
-			<td class="form-label">
-			Project Name :</td><td class="form-widget">
-			<html:select property="projectName" indexed="projectName" style="width: 270px;" onkeypress="taskGenerate()" onchange="taskGenerate()" onclick="taskGenerate()">
-			</html:select><html:errors property="projectName"/>
-			<input type="hidden" name="projectValue" id="projectValue" value="<%=rs1.getString(4)%>" size="20" readonly="readonly"/>
-		<html:errors property="projectValue"/>
-			
-			</td></tr>
-			
-			<html:errors property="prosdate"/><html:errors property="profdate"/>
-			<tr class="form-element"><td class="form-label">Project (Start Date)</td>
-			<td class="form-label"><input type="text" name="prosdate" id="prosdate" size="8" readonly="readonly" style="background-color:threedface;" value="<%=new DynamicList().pSDate(rs1.getString(4)) %>"/>
-			(Finish Date)
-			<input type="text" name="profdate" id="profdate" size="8" readonly="readonly" style="background-color:threedface;" value="<%=new DynamicList().pFDate(rs1.getString(4)) %>"/></td></tr>
-			
-			<tr class="form-element"><td  class="form-label">
-			Task Start Date :</td>
+		<td class="form-label">
+			No of Days: 
+			</td>
+		<td class="form-widget">
+		<html:text property="no_of_days" style="color: black;" disabled="true" indexed="no_of_days" size="10" value="<%=crs_task.getString(4)%>"/>
+		<html:errors property="no_of_days"/></td></tr>
+		<tr class="form-element"><td  class="form-label">
+			Schedule Start Date :</td>
 			<td class="form-widget">
-			<input type="text" name="sdate" id="sdate" value="<%=rs1.getString(5)%>" /><a href="javascript:NewCssCal('sdate','yyyymmdd')"><img src="img/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a>
-			(YYYY-MM-DD)<font color="red" size="2">*</font>
+			<input type="text" name="taskStartDate" id="taskStartDate" readonly="readonly" value="<%=crs_task.getString(5)%>" />
+			(YYYY-MM-DD)
 			</td></tr>
-
 			<tr class="form-element">
 			<td  class="form-label">
-			Task Finished Date :</td>
+			Schedule End Date :</td>
 			<td class="form-widget">
-			<input type="text" name="fdate" id="fdate" value="<%=rs1.getString(6)%>"/><a href="javascript:NewCssCal('fdate','yyyymmdd')"><img src="img/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a>
-			(YYYY-MM-DD)<font color="red" size="2">*</font>
+			<input type="text" name="taskEndDate" id="taskEndDate" readonly="readonly" value="<%=crs_task.getString(6)%>"/>
+			(YYYY-MM-DD)
 			</td></tr>
-		
+		 <tr class="form-element"><td  class="form-label">
+			Actual Start Date :</td>
+			<td class="form-widget">
+			<input type="text" name="actualStartDate" id="actualStartDate" value="<%=crs_task.getString(7)%>"/><a href="javascript:NewCssCal('actualStartDate','yyyymmdd')"><img src="img/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a>
+			(YYYY-MM-DD)<font color="red" size="2">*</font></td></tr>
+			<tr class="form-element">
+			<td  class="form-label">
+			Actual End Date :</td>
+			<td class="form-widget">
+			<input type="text" name="actualEndDate" id="actualEndDate" <%if(crs_task.getString(8)==null){ %> value="" <%}else {%> value="<%=crs_task.getString(8)%>"<%} %>/><a href="javascript:NewCssCal('actualEndDate','yyyymmdd')"><img src="<html:rewrite page='/img/cal.gif'/>" width="16" height="16" border="0" alt="Pick a date"></a>
+			(YYYY-MM-DD)
+			</td></tr>
 			<tr class="form-element"><td class="form-label">
 			Gantt Chart Color :</td><td class="form-widget"> 
 			 <div id="colorpicker201" class="colorpicker201"></div>
-	<input type="text" id="input_field" name="ifield" size="9" readonly="readonly" value="<%=rs1.getString(7)%>" />&nbsp;<input type="button" onclick="showColorGrid2('input_field','sample_1');" value="...">&nbsp;<input type="text" ID="sample_1" size="1" value="">
-			<html:errors property="input_field"/></td></tr>
+	<input type="text" id="gantt_chart_color" name="gantt_chart_color" size="9" readonly="readonly" value="<%=crs_task.getString(9)%>" />&nbsp;<input type="button" onclick="showColorGrid2('gantt_chart_color','sample_1');" value="...">&nbsp;<input type="text" ID="sample_1" size="1" value="">
+			<html:errors property="gantt_chart_color"/></td></tr>
 			
 			<tr class="form-element">
 		<td  class="form-label">
 			Task Completed : 
 			</td>
 		<td class="form-widget">
-			<html:text property="pcom" size="5" value="<%=rs1.getString(8)%>"/><strong><font color="#0000ff">%</font><font color="red" size="2">*</font></strong><html:errors property="pcom"/></td></tr>
+			<html:text property="task_percentage_completion" size="5" value="<%=crs_task.getString(10)%>"/><strong><font color="#0000ff">%</font>
+			<font color="red" size="2">*</font></strong><html:errors property="task_percentage_completion"/></td></tr>
+		<tr class="form-element"><td  class="form-label">
+			Task Status :</td><td class="form-widget">
+			<html:select property="status" value="<%=crs_task.getString(11)%>" >
+			<% 
+ 	String[] sttus={"--Select--","Completed","Not Completed","Planning","Pending","Canceled"};
+	for(int i=0;i<=5;i++)
+	{
+	%>
+	<html:option value="<%=sttus[i]%>"></html:option>
+	<%
+	}
+	%>
+	</html:select><font color="red" size="2">*</font><html:errors property="status"/></td>
+			</tr>
 			<tr class="form-element"><td class="form-label">
 			Dependency :(if any)</td>
 			<td class="form-widget">
 			<%
 			try{
-			PreparedStatement ps1=con.prepareStatement("select Task_Name from task where Task_ID=?");
-    ps1.setInt(1,Integer.parseInt(rs1.getString(9)));
-        
-    rs2=ps1.executeQuery();
-    if(rs2.next()){tdep=rs2.getString(1);}
+			//System.out.println("dependency="+crs_task.getString(12));
+			tdep="No";
+			PreparedStatement ps1=con.prepareStatement("select Task_Name from task where Task_Id=?");
+    		ps1.setString(1,crs_task.getString(12));
+    		rs=ps1.executeQuery();
+    		if(rs.next())
+    		{
+   	 			tdep=rs.getString(1);
+    		}
 			}
 			catch(Exception e){
 			tdep="No";
+				}
+				finally
+				{
+					MyDataSource.freeConnection(con);
 				}
 			 %>
 			 
@@ -256,28 +189,22 @@
 			</html:select>
 			<input type="hidden" name="taskDependencyValue" id="taskDependencyValue" value="<%=tdep%>" size="20" readonly="readonly"/>
 			<html:errors property="taskDependencyValue"/>
-			
 			</td></tr>
+			
 			<tr class="form-element">
 			<td  class="form-label">
 			Task Description :</td><td class="form-widget">
-			 <html:textarea property="darea"  rows="2" cols="38" value="<%=rs1.getString(10)%>"/><html:errors property="darea"/></td></tr>
+			 <html:textarea property="remark"  rows="2" cols="38" value="<%=crs_task.getString(13)%>"/>
+			 <html:errors property="remark"/></td></tr>
 			<tr><td></td></tr>
 			</table>
 			<table align="center">
-			<tr><td><html:submit value="Save Change" /></td><td><html:reset onclick="orgGenerate()"></html:reset></td>
+			<tr><td><html:submit value="Save Change" /></td>
+			<td><html:reset onclick="taskGenerate()"/></td>
 			<td><html:button property="back" value="Cancel" onclick="history.back();" /></td>
 			</tr>
 			</table>
-			<%
-				}
-				MyDataSource.freeConnection(con);
-				
-			}
-		 	catch(Exception e){System.out.println("exception in Edit Task.jsp page="+e);}
-		 	%>
 		</html:form>
-			
 	</body>
 </html>
 
