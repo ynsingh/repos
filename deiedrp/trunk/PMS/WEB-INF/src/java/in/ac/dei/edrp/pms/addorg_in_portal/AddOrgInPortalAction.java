@@ -23,10 +23,11 @@ import org.apache.struts.action.ActionMessage;
 /** 
  * MyEclipse Struts
  * Creation date: 03-16-2010
- * 
+ * <br>
  * XDoclet definition:
  * @struts.action path="/addorgportal" name="orgportalform" input="/WEB-INF/JspFiles/orgportal/addorgportal.jsp" scope="request" validate="true"
  * @struts.action-forward name="success" path="/index.jsp"
+ * @author Anil Kumar Tiwari <b>mailto:</b>aniltiwari08@gmail.com 
  */
 public class AddOrgInPortalAction extends Action {
 	/*
@@ -120,19 +121,6 @@ public class AddOrgInPortalAction extends Action {
 		ps.setString(3,"Default");//which authority default/member.
 		ps.setString(4,"Active");//status active/inactive.
 		x=ps.executeUpdate();
-//		PreparedStatement pst=con.prepareStatement("select max(substr(Valid_ID,-6)) from validatetab where substr(Valid_ID,1,4)=Date_Format(Now(),'%Y')");
-//		ResultSet rst=pst.executeQuery();
-//		rst.next();
-//		String maxvalue=rst.getString(1);
-//		//String maxvalue=checkRecord.duplicacyChecker("max(substr(Valid_ID,-6))","validatetab","substr(Valid_ID,1,4)","Date_Format(Now(),'%Y')");
-//		System.out.println("max value="+maxvalue);
-//		if(maxvalue!=null)
-//		{
-//			valid_code=CodeGenerator.gettingCode(org_id,Integer.parseInt(maxvalue)+1,6);
-//		}
-//		else
-//			valid_code=CodeGenerator.gettingCode(org_id,1,6);
-//		ps.setString(4,valid_code);
 		
 			if(x>0) /*if x is greater than zero it means insertion operation is successful.*/
 			{
@@ -172,9 +160,6 @@ public class AddOrgInPortalAction extends Action {
 				System.out.println("body="+s4);
 
 			}
-		
-		
-		//}//outer if
 		
 		}
 		catch(Exception e)

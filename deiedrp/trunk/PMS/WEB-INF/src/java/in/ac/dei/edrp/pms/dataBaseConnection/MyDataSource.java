@@ -5,7 +5,10 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
-
+/**
+ * It is used for holding datasource.
+ * @author Anil Kumar Tiwari <b>mailto:</b>aniltiwari08@gmail.com
+ */
 
 public class MyDataSource {
 	//private static Connection con=null;

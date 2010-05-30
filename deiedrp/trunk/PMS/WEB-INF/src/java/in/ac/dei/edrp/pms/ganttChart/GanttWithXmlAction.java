@@ -13,10 +13,12 @@ import javax.xml.parsers.*;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.*;
 import javax.xml.transform.stream.*;  
-
 import java.sql.*;
 
-
+/**
+ * It is used for generating xml file and that file is used to generate gantt chart of project.
+ * @author Anil Kumar Tiwari <b>mailto:</b>aniltiwari08@gmail.com
+ */
 public class GanttWithXmlAction extends Action {
 	/*
 	 * Generated Methods

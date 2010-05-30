@@ -67,8 +67,7 @@
     <ul class="ss">
 		<li><html:link styleClass="underline" action="addmember"> Add Member </html:link></li>
       <li><html:link styleClass="underline" action="viewmember"> View Members </html:link></li>
-      <li><html:link styleClass="underline" action="assignproject"> Assign Project </html:link></li>
-    	<li><html:link styleClass="underline" action="searchpeople"> People Search </html:link></li>
+      <li><html:link styleClass="underline" action="searchpeople"> People Search </html:link></li>
     </ul>
   </dd>
 </dl>
@@ -80,6 +79,7 @@
     <ul class="ss">
     <li><html:link styleClass="underline" action="newproject" > Add Project </html:link></li>
       <li><html:link styleClass="underline" action="viewproject"> View Project </html:link></li>
+     <li><html:link styleClass="underline" action="assignproject"> Assign Project </html:link></li>
      <!--   <li><html:link styleClass="underline" action="searchproject"> Search Project </html:link></li>
       <li><html:link styleClass="underline" action="updateoperation"> Update Operation </html:link></li>-->
       <li><html:link styleClass="underline" action="drawGanttChart">View Gantt Chart </html:link></li>

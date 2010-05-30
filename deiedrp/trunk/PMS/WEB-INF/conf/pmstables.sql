@@ -2,7 +2,9 @@
 --
 -- ------------------------------------------------------
 -- Server version	5.1.30-community
-
+-- ================================================================= -->
+--@author Anil Kumar Tiwari mailto:aniltiwari08@gmail.com        -->
+-- ================================================================= -->
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -46,42 +48,14 @@ CREATE TABLE `default_authority` (
   PRIMARY KEY (`authority_id`),
   KEY `role_id` (`role_id`),
   CONSTRAINT `role_id` FOREIGN KEY (`role_id`) REFERENCES `role` (`Role_Id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `default_authority`
 --
 
-
---
--- Definition of table `file`
---
-
-DROP TABLE IF EXISTS `file`;
-CREATE TABLE `file` (
-  `File_Name` varchar(255) NOT NULL,
-  `File_Type` varchar(255) NOT NULL,
-  `Size` int(10) unsigned NOT NULL,
-  `File_Description` text NOT NULL,
-  `Location` text NOT NULL,
-  `OrgPortal` int(10) unsigned NOT NULL,
-  `ProjectCode` char(12) NOT NULL,
-  `File_Owner` varchar(255) NOT NULL,
-  PRIMARY KEY (`File_Name`,`ProjectCode`,`File_Owner`,`OrgPortal`) USING BTREE,
-  KEY `OrgPortal` (`OrgPortal`),
-  KEY `ProjectCode` (`ProjectCode`),
-  KEY `File_Owner` (`File_Owner`),
-  CONSTRAINT `File_Owner` FOREIGN KEY (`File_Owner`) REFERENCES `user_info` (`User_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `OrgPortal` FOREIGN KEY (`OrgPortal`) REFERENCES `org_into_portal` (`valid_org_inportal`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `ProjectCode` FOREIGN KEY (`ProjectCode`) REFERENCES `project` (`Project_Code`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `file`
---
-
-/*!40000 ALTER TABLE `file` DISABLE KEYS */;
-/*!40000 ALTER TABLE `file` ENABLE KEYS */;
+/*!40000 ALTER TABLE `default_authority` DISABLE KEYS */;
+/*!40000 ALTER TABLE `default_authority` ENABLE KEYS */;
 
 
 --
@@ -93,8 +67,8 @@ CREATE TABLE `login` (
   `login_user_id` varchar(255) NOT NULL,
   `authority` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  PRIMARY KEY (`login_user_id`) USING BTREE,
-  KEY `login_role_id` (`authority`) USING BTREE,
+  PRIMARY KEY (`login_user_id`),
+  KEY `login_role_id` (`authority`),
   CONSTRAINT `login_user_id` FOREIGN KEY (`login_user_id`) REFERENCES `user_info` (`User_ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -105,7 +79,6 @@ CREATE TABLE `login` (
 /*!40000 ALTER TABLE `login` DISABLE KEYS */;
 INSERT INTO `login` (`login_user_id`,`authority`,`password`) VALUES 
  ('superadmin','Super Admin','889a3a791b3875cfae413574b53da4bb8a90d53e');
- 
 /*!40000 ALTER TABLE `login` ENABLE KEYS */;
 
 
@@ -162,11 +135,15 @@ CREATE TABLE `org_into_portal` (
   PRIMARY KEY (`valid_org_inportal`),
   KEY `Portal_Id` (`Portal_Id`),
   CONSTRAINT `Portal_Id` FOREIGN KEY (`Portal_Id`) REFERENCES `portal` (`Portal_ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `org_into_portal`
 --
+
+/*!40000 ALTER TABLE `org_into_portal` DISABLE KEYS */;
+/*!40000 ALTER TABLE `org_into_portal` ENABLE KEYS */;
+
 
 --
 -- Definition of table `organisation`
@@ -183,11 +160,46 @@ CREATE TABLE `organisation` (
   `Org_Fax` varchar(20) DEFAULT NULL,
   `Org_URL` varchar(255) NOT NULL,
   PRIMARY KEY (`Org_Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `organisation`
 --
+
+/*!40000 ALTER TABLE `organisation` DISABLE KEYS */;
+/*!40000 ALTER TABLE `organisation` ENABLE KEYS */;
+
+
+--
+-- Definition of table `pms_file`
+--
+
+DROP TABLE IF EXISTS `pms_file`;
+CREATE TABLE `pms_file` (
+  `File_Name` varchar(255) NOT NULL,
+  `File_Type` varchar(255) NOT NULL,
+  `File_Size` int(10) unsigned NOT NULL,
+  `File_Description` text NOT NULL,
+  `Location` text NOT NULL,
+  `OrgPortal` int(10) unsigned NOT NULL,
+  `ProjectCode` char(12) NOT NULL,
+  `File_Owner` varchar(255) NOT NULL,
+  PRIMARY KEY (`File_Name`,`ProjectCode`,`File_Owner`,`OrgPortal`),
+  KEY `OrgPortal` (`OrgPortal`),
+  KEY `ProjectCode` (`ProjectCode`),
+  KEY `File_Owner` (`File_Owner`),
+  CONSTRAINT `File_Owner` FOREIGN KEY (`File_Owner`) REFERENCES `user_info` (`User_ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `OrgPortal` FOREIGN KEY (`OrgPortal`) REFERENCES `org_into_portal` (`valid_org_inportal`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `ProjectCode` FOREIGN KEY (`ProjectCode`) REFERENCES `project` (`Project_Code`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `pms_file`
+--
+
+/*!40000 ALTER TABLE `pms_file` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pms_file` ENABLE KEYS */;
+
 
 --
 -- Definition of table `portal`
@@ -201,11 +213,14 @@ CREATE TABLE `portal` (
   `Created_By` varchar(255) NOT NULL,
   `Created_On` datetime NOT NULL,
   PRIMARY KEY (`Portal_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `portal`
 --
+
+/*!40000 ALTER TABLE `portal` DISABLE KEYS */;
+/*!40000 ALTER TABLE `portal` ENABLE KEYS */;
 
 
 --
@@ -237,6 +252,10 @@ CREATE TABLE `project` (
 -- Dumping data for table `project`
 --
 
+/*!40000 ALTER TABLE `project` DISABLE KEYS */;
+/*!40000 ALTER TABLE `project` ENABLE KEYS */;
+
+
 --
 -- Definition of table `role`
 --
@@ -253,11 +272,14 @@ CREATE TABLE `role` (
   PRIMARY KEY (`Role_Id`),
   KEY `ValidOrgPortal` (`ValidOrgPortal`),
   CONSTRAINT `ValidOrgPortal` FOREIGN KEY (`ValidOrgPortal`) REFERENCES `org_into_portal` (`valid_org_inportal`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `role`
 --
+
+/*!40000 ALTER TABLE `role` DISABLE KEYS */;
+/*!40000 ALTER TABLE `role` ENABLE KEYS */;
 
 
 --
@@ -307,6 +329,9 @@ CREATE TABLE `task` (
 -- Dumping data for table `task`
 --
 
+/*!40000 ALTER TABLE `task` DISABLE KEYS */;
+/*!40000 ALTER TABLE `task` ENABLE KEYS */;
+
 
 --
 -- Definition of table `task_with_user`
@@ -325,6 +350,9 @@ CREATE TABLE `task_with_user` (
 --
 -- Dumping data for table `task_with_user`
 --
+
+/*!40000 ALTER TABLE `task_with_user` DISABLE KEYS */;
+/*!40000 ALTER TABLE `task_with_user` ENABLE KEYS */;
 
 
 --
@@ -346,6 +374,9 @@ CREATE TABLE `user_in_org` (
 --
 -- Dumping data for table `user_in_org`
 --
+
+/*!40000 ALTER TABLE `user_in_org` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_in_org` ENABLE KEYS */;
 
 
 --
@@ -376,7 +407,6 @@ CREATE TABLE `user_info` (
 /*!40000 ALTER TABLE `user_info` DISABLE KEYS */;
 INSERT INTO `user_info` (`User_ID`,`First_Name`,`Last_Name`,`Phone_No`,`Skills`,`Experince`,`Secure_Qid`,`Secure_Ans`,`Created_On`,`Updated_On`) VALUES 
  ('superadmin',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2010-05-25','2010-05-25');
- 
 /*!40000 ALTER TABLE `user_info` ENABLE KEYS */;
 
 
@@ -399,6 +429,10 @@ CREATE TABLE `user_role_in_org` (
 --
 -- Dumping data for table `user_role_in_org`
 --
+
+/*!40000 ALTER TABLE `user_role_in_org` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_role_in_org` ENABLE KEYS */;
+
 
 --
 -- Definition of table `validatetab`
@@ -425,6 +459,10 @@ CREATE TABLE `validatetab` (
 --
 -- Dumping data for table `validatetab`
 --
+
+/*!40000 ALTER TABLE `validatetab` DISABLE KEYS */;
+/*!40000 ALTER TABLE `validatetab` ENABLE KEYS */;
+
 
 
 

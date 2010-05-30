@@ -6,7 +6,10 @@ import in.ac.dei.edrp.pms.task.TaskFields;
 import in.ac.dei.edrp.pms.upload.UploadFileForm;
 
 import org.displaytag.decorator.*;
-
+/**
+ * It is used for generating dynamic links
+ * @author Anil Kumar Tiwari <b>mailto:</b>aniltiwari08@gmail.com
+ */
 public class PmsDecorator extends TableDecorator {
 	 
 		

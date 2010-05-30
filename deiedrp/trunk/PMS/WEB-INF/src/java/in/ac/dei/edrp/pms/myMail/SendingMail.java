@@ -3,9 +3,14 @@ import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
 
+/**
+ * It is used for sending mail.
+ * @author Anil Kumar Tiwari <b>mailto:</b>aniltiwari08@gmail.com
+ */
+
 public class SendingMail {
 	
-	   public static boolean sendMail(String text, String mailFrom, String mailTo, String subject) throws Exception {  
+    public static boolean sendMail(String text, String mailFrom, String mailTo, String subject) throws Exception {  
 	boolean sent=false;
 		   try {  
 		          Properties props = System.getProperties();  

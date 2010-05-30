@@ -6,12 +6,14 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
-
 import org.apache.log4j.BasicConfigurator;
 //import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.xml.DOMConfigurator;
 
-
+/**
+ * It is used for initializing log4j.xml file.
+ * @author Anil Kumar Tiwari <b>mailto:</b>aniltiwari08@gmail.com
+ */
 public class Log4JInitServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
