@@ -452,50 +452,66 @@ div.info {
 
 
 	<g:each in="${grantAllocationInstanceList}" status="i" var="grantAllocationInstance">
-                       
-       
-        <%
-        
-    
-    def sumAmount = GrantExpense.executeQuery("select sum(GE.expenseAmount) as SumAmt from GrantExpense GE where GE.grantAllocation.projects.id ="+ grantAllocationInstance.projects.id) 
-     def allocatedAmt = GrantReceipt.executeQuery("select sum(GR.amount) as total from GrantReceipt GR where GR.projects= "+grantAllocationInstance.projects.id+" group by GR.projects");
-      def fund=0;
-      if(sumAmount[0] < allocatedAmt[0])
-      {
-      def expAmt=0;
-      if(sumAmount[0]==null)
-            expAmt=0
-            else
-            expAmt=sumAmount[0]
+    <!-- 
+    	Fund Utilization in % -> Here the Utilization is calculated in the basis of the Recieved grant.
+    	1.If the expense amount is less than Recieved Grant Amount,
+    	  Fund Utilization in % will be 
+    		(expense amount/Recieved Grant Amount)*100
+    	2.If the expense amount is grater than Recieved Grant Amount, 
+    	  Fund Utilization will be set as 100%
+    	3.The Expense amount can be entered before Receiving the Grant amount,
+    	  then the Fund Utilization will be set as 0%
+    	4.The Expense amount can be entered before the funt is allocated,
+    	  then the Fund Utilization will be set as 0%
+    -->   
+	<%
+	    def sumAmount = GrantExpense.executeQuery("select sum(GE.expenseAmount) as SumAmt from GrantExpense GE where GE.grantAllocation.projects.id ="+ grantAllocationInstance.projects.id) 
+     	def allocatedAmt = GrantReceipt.executeQuery("select sum(GR.amount) as total from GrantReceipt GR where GR.projects= "+grantAllocationInstance.projects.id+" group by GR.projects");
+		def fundAllocated = GrantAllocation.executeQuery("select sum(GA.amountAllocated) as amt from GrantAllocation GA where GA.projects.id ="+ grantAllocationInstance.projects.id)
+		def fund=0;
+		if(fundAllocated[0].intValue()>0)
+		{
+	      	if(sumAmount[0] < allocatedAmt[0])
+	      	{
+	      		def expAmt=0;
+	      		if(sumAmount[0]==null)
+	            	expAmt=0
+	            else
+	            	expAmt=sumAmount[0]
+	        	if(allocatedAmt[0]==null)
+					fund=0
+				else
+	            	fund=Math.round((expAmt)*100/allocatedAmt[0])
+			}
+			else if(sumAmount[0] > allocatedAmt[0])
+			{
+				if(allocatedAmt[0] == null)
+					fund = 0
+				else
+	            	fund = 100
+			}
+		}
+		else
+		{
+			fund = 0
+		}
             
-              
-        if(allocatedAmt[0]==null)
-                   fund=0
-            
-            else
-            fund=Math.round((expAmt)*100/allocatedAmt[0])
-            }
-            else
-            fund = 100
-            
-               def time=0;
-               if((grantAllocationInstance.projects.projectEndDate.getTime()-grantAllocationInstance.projects.projectStartDate.getTime())>0)
-               {
-               if(grantAllocationInstance.projects.projectStartDate.getTime() <= new Date().getTime())
-               {
-              time=Math.round(((grantAllocationInstance.projects.projectEndDate.getTime()-new Date().getTime())/(grantAllocationInstance.projects.projectEndDate.getTime()-grantAllocationInstance.projects.projectStartDate.getTime()))*100)
-             }
-             else
-             {
-             time=Math.round(((grantAllocationInstance.projects.projectEndDate.getTime()-grantAllocationInstance.projects.projectStartDate.getTime())/(grantAllocationInstance.projects.projectEndDate.getTime()-grantAllocationInstance.projects.projectStartDate.getTime()))*100)
-             }
-             }
-             if(time<0)
-             time=0
-             if(fund<0)
-             fund=0
-               
-             
+		def time=0;
+		if((grantAllocationInstance.projects.projectEndDate.getTime()-grantAllocationInstance.projects.projectStartDate.getTime())>0)
+		{
+			if(grantAllocationInstance.projects.projectStartDate.getTime() <= new Date().getTime())
+			{
+				time=Math.round(((grantAllocationInstance.projects.projectEndDate.getTime()-new Date().getTime())/(grantAllocationInstance.projects.projectEndDate.getTime()-grantAllocationInstance.projects.projectStartDate.getTime()))*100)
+			}
+			else
+			{
+				time=Math.round(((grantAllocationInstance.projects.projectEndDate.getTime()-grantAllocationInstance.projects.projectStartDate.getTime())/(grantAllocationInstance.projects.projectEndDate.getTime()-grantAllocationInstance.projects.projectStartDate.getTime()))*100)
+			}
+		}
+		if(time<0)
+			time=0
+		if(fund<0)
+			fund=0
     %>      
   
          

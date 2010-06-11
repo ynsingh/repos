@@ -468,3 +468,8 @@ insert into `role` (`id`,`version`,`authority`,`description`) values (4,9,'ROLE_
 
 UPDATE investigator SET active_yes_no='Y';
 
+/*new Sql added on 11 th June 2010 */
+
+UPDATE grant_period SET active_yes_no='Y',default_yes_no='Y';
+
+
