@@ -16,6 +16,7 @@
 $page.setBgColor($ui.bgcolor)
 $page.setTitle("Launch content")
 $!data.getMessage()
+#set($lang=$data.getUser().getTemp("lang").toString())
 #if($user_role == "instructor")
 <table bgcolor="$ui.menuColor" width=100%>
 	<tr>
@@ -23,7 +24,7 @@ $!data.getMessage()
         	<font face="$ui.sansSerifFonts"><b>
 	        <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
         	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$courseid</a> |
-		<a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm")> #if($lang == "hindi")  $brih_scorm $brih_content $brih_upload  </a> | $brih_content $RemoteShow #else $brih_upload $brih_scorm $brih_content  </a> | $RemoteShow $brih_content #end
+		<a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm")> #if($lang == "hindi")  $brih_content $brih_upload  </a> | $brih_content $RemoteShow #else $brih_upload $brih_scorm $brih_content  </a> | $RemoteShow $brih_content #end
         	</font>
 	</td>
 #else
@@ -32,7 +33,7 @@ $!data.getMessage()
                 <td>
                         <font face="$ui.sansSerifFonts"><b>
                         <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
-                        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$courseid</a> | #if($lang == "hindi") $brih_scorm $brih_content $RemoteShow #else $RemoteShow $brih_scorm $brih_content #end
+                        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$courseid</a> | #if($lang == "hindi") $brih_content $RemoteShow #else $RemoteShow $brih_scorm $brih_content #end
                         </font>
                 </td>
 #end

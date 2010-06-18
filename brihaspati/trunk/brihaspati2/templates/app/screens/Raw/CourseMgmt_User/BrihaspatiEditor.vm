@@ -59,7 +59,7 @@ $!data.getMessage()
 #elseif($tdcolor == "6")
 <td bgcolor="#AFDCEC">
 #end
-<a href=$link.setPage("call,CourseMgmt_User,BrihaspatiEditor.vm").addPathInfo("count","6") e>$brih_scorm $brih_packager</a></td>
+<a href=$link.setPage("call,CourseMgmt_User,BrihaspatiEditor.vm").addPathInfo("count","6") >$brih_scorm $brih_packager</a></td>
          #if($tdcolor != "7")
          <td>
          #elseif($tdcolor == "7")
@@ -74,7 +74,7 @@ $!data.getMessage()
 <td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/jnlp.html","newWin"); style=text-decoration:none>$brih_jnlp</a></td>
 #foreach($content in $contentvalue)
 ##<td><a href="$link.setPage("call,ViewFileContent.vm").addPathInfo("contents",$username).addPathInfo("type","reload").addPathInfo("filename",$content).addPathInfo("count",$tdcolor)">$brih_Launch $brih_packager $brih_Application</a></td>
-<td><a href=$link.setPage("call,ViewFileContent.vm").addPathInfo("contents",$username).addPathInfo("type","reload").addPathInfo("filename",$content) style=text-decoration:none> #if($lang == "english") $brih_Launch $brih_packager $brih_Application #else $brih_packager $brih_Application $brih_Launch #end </a></td>
+<td><a href=$link.setPage("call,ViewFileContent.vm").addPathInfo("contents",$username).addPathInfo("type","reload").addPathInfo("filename",$content) style=text-decoration:none> #if($lang == "english") $brih_Launch $brih_packager $brih_Application #else $brih_packager $brih_Launch #end </a></td>
 #end
 <td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/BrihaspatiEditor_v1_3_manual.pdf","newWin"); style=text-decoration:none>$brih_help</a><td>
 </tr>

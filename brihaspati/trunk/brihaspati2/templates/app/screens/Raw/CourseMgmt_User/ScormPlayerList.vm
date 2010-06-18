@@ -29,7 +29,7 @@ $!data.getMessage()
         	<td>
         	<font face="$ui.sansSerifFonts"><b>
         	<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
-        	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |$RemoteShow $brih_scorm $brih_content
+        	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> | #if($lang == "hindi") $brih_content $RemoteShow #else $RemoteShow $brih_scorm $brih_content #end
         	</font>
        		</td>
 		#end
@@ -124,9 +124,9 @@ $!data.getMessage()
         </td></tr>
         #else
 	#if($Mode == "NoBlank")
-        <tr bgcolor="$ui.menuColor" width="100%"><td align="left" colspan="5"><b> #if($lang == "english") $brih_Launch $brih_scorm $brih_content #else $brih_scorm $brih_content $brih_Launch #end </b>
+        <tr bgcolor="$ui.menuColor" width="100%"><td align="left" colspan="5"><b> #if($lang == "english") $brih_Launch $brih_scorm $brih_content #else $brih_content $brih_Launch #end </b>
 	#else
-	$brih_there $brih_scorm $brih_content
+	$brih_there #if($lang =="hindi") $brih_content #else $brih_scorm $brih_content #end
         #end
         #end
         <table width="100%" border="0">
@@ -148,7 +148,7 @@ $!data.getMessage()
                 #end
 		</td>
                 <td align="left"><a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("ziptopic",$topicList.Name).setAction("ScormPlayer").addPathInfo("actionName","eventSubmit_doDelete") onclick="javascript:return confirm('Do you want to delete this package')"><b>$brih_delete</b></a></td>
-                <td align="left"><a href=$link.setPage("call,CourseMgmt_User,Launchcontent.vm").addPathInfo("package",$topicList.Name)><b>$RemoteShow$brih_content</b></a></td>
+                <td align="left"><a href=$link.setPage("call,CourseMgmt_User,Launchcontent.vm").addPathInfo("package",$topicList.Name)><b> #if($lang == "hindi") $brih_content $RemoteShow #else $RemoteShow$brih_content #end </b></a></td>
                 #if($topicList.Alias=="Launch")
                 <td align="left"><u><font color="grey">$brih_Launch</font></u></td>
                 <td align="left"><a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("ziptopic",$topicList.Name).addPathInfo("type","Unlaunch").setAction("ScormPlayer").addPathInfo("actionName","eventSubmit_doLaunch")><b>$brih_unlaunch</b></a><div></td>
