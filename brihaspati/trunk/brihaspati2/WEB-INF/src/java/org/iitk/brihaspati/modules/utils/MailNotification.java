@@ -127,7 +127,7 @@ public class MailNotification{
 	 * @return String
 	 */
 
-	public static String sendMail(String info_new , String mail_id , String courseId , String dept , String userName , String userPassword , String file,String serverName,String serverPort,String LangFile){
+	public static String sendMail(String info_new , String mail_id , String courseId , String dept , String userName , String userPassword , String propFile,String serverName,String serverPort,String LangFile){
 			String msg="";
 			String msg1= "";
 			String email_new="";
@@ -136,7 +136,7 @@ public class MailNotification{
 				InputStream f = null;
 				Properties p = new Properties();
 				if(!dept.equals("Updation Mail")){
-					f = new FileInputStream(file);
+					f = new FileInputStream(propFile);
 					msg1=MultilingualUtil.ConvertedString("mailNotification_msg1",LangFile);
 					p.load(f);
 				}
@@ -224,7 +224,7 @@ public class MailNotification{
 						         // Create the Multipart and its parts to it
 						      	//Multipart l_mp = new MimeMultipart();
 							Multipart l_mp = null;
-							if( (file.length() > 0 ) && (courseId.equals("LocalMail")) ){
+/*							if( (file.length() > 0 ) && (courseId.equals("LocalMail")) ){
                                                                 l_mbp = new MimeBodyPart();
                                                                 DataSource source = new FileDataSource(file);
                                                                 l_mbp.setDataHandler(new DataHandler(source));
@@ -232,11 +232,11 @@ public class MailNotification{
 						      		l_mp = new MimeMultipart();
                                                                 l_mp.addBodyPart(l_mbp);
                                                       }
-                                                      else{
+                                                      else{ */
 						      		l_mp = new MimeMultipart();
 						      		l_mp.addBodyPart(l_mbp);
-						      }	
-						      l_msg.setContent(l_mp);
+//						      }	
+ 						      l_msg.setContent(l_mp);
 						      // Set the Date: header
 						      java.util.Date date=new java.util.Date();
 						      l_msg.setSentDate(date);
@@ -260,12 +260,12 @@ public class MailNotification{
 					              l_msg.saveChanges();     // don't forget this
 					                 tr.sendMessage(l_msg, l_msg.getAllRecipients());
 						         tr.close();
-			                                File f1 = new File(file);
+/*			                                File f1 = new File(file);
 			                                if(f1.exists())
                           				{
                                           			f1.delete();
 		                                        }
-						} catch (MessagingException mex) { // Trap the MessagingException Error
+*/						} catch (MessagingException mex) { // Trap the MessagingException Error
 					        // If here, then error in sending Mail. Display Error message.
 					        msg=msg+"The error in sending Mail Message "+mex.toString();
     						}
