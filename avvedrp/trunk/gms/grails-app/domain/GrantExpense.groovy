@@ -1,5 +1,6 @@
 class GrantExpense {
 	
+	static auditable=true
 	Projects projects
 	GrantAllocation grantAllocation
 	GrantAllocationSplit grantAllocationSplit

@@ -1,4 +1,6 @@
 class GrantAllocationSplit {
+	
+	static auditable=true
 	Projects projects
     GrantAllocation grantAllocation
     AccountHeads accountHead
