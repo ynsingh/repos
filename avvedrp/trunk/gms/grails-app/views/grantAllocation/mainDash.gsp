@@ -428,7 +428,7 @@ div.info {
 <li><a href="../grantPeriod/list" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image5','','../images/themesky/grantPeriodOver.png',1)"><img src="../images/themesky/grantPeriod.png" name="Image5" width="117" height="84" border="0" id="Image5" /></a></li>
 <li><a href="../grantAllocation/fundAllot.gsp" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image6','','../images/themesky/fundAllocOver.png',1)"><img src="../images/themesky/fundAlloc.png" name="Image6" width="117" height="84" border="0" id="Image6" /></a></li>
 <li><a href="../user/list" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image7','','../images/themesky/usrManagemntOver.png',1)"><img src="../images/themesky/usrManagemnt.png" name="Image7"  width="117" height="84" border="0" id="Image7" /></a></li>
-<li><a href="../grantAllocation/grantReports.gsp" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image10','','../images/themesky/reportsOver.png',1)"><img src="../images/themesky/reports.png" name="Image10" width="117" height="84" border="0" id="Image10" /></a></li>
+<li><a href="../grantAllocation/reports.gsp" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('Image10','','../images/themesky/reportsOver.png',1)"><img src="../images/themesky/reports.png" name="Image10" width="117" height="84" border="0" id="Image10" /></a></li>
 </ul>
 </div>
 	

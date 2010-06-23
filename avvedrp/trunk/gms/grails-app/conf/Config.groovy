@@ -108,8 +108,12 @@ ckeditor {
             denied = []
         }
     }
+	auditLog {
+		   actorClosure = { request, session ->
+		       return request.applicationContext.authenticateService.principal()?.username
+		   }
+		}
+
+	
 }
-
-
-
 //log4j.logger.org.springframework.security='off,stdout'

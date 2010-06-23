@@ -123,7 +123,10 @@ width: 500px;
                                     <label for="accountHead">Account Head:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:grantAllocationSplitInstance,field:'accountHead','errors')}">
-                                    <g:select optionKey="id" from="${AccountHeads.findAll('from AccountHeads AH where AH.parent.id is NULL and AH.activeYesNo=\'Y\' order by AH.name')}" optionValue="name" name="accountHead.id" value="${grantAllocationSplitInstance?.accountHead?.id}"  onchange="${remoteFunction(controller:'grantAllocationSplit',action:'updateSubAccount',update:'subAccountHead',  params:'\'accountHead=\' + this.value' )}" ></g:select>
+                                    <g:select optionKey="id" from="${AccountHeads.findAll('from AccountHeads AH where AH.parent.id is NULL and AH.activeYesNo=\'Y\' order by AH.name')}" 
+                                    	optionValue="name" name="accountHead.id" value="${grantAllocationSplitInstance?.accountHead?.id}" 
+                                    	onchange="${remoteFunction(controller:'grantAllocationSplit',action:'updateSubAccount',update:'subAccountHead',  params:'\'accountHead=\' + this.value' )}" 
+                                    	onFocus="${remoteFunction(controller:'grantAllocationSplit',action:'updateSubAccount',update:'subAccountHead',  params:'\'accountHead=\' + this.value' )}" ></g:select>
                          	</td>
                              </tr> 
                             
