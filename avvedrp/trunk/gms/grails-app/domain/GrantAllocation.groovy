@@ -1,7 +1,7 @@
 class GrantAllocation
 {
 	
-	
+	static auditable=true
 	Party party;
 	Party granter;
 	Projects projects;
