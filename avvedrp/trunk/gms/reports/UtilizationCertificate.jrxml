@@ -24,48 +24,78 @@
 	<import value="net.sf.jasperreports.engine.data.*" />
 
 	<parameter name="projectID" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="grantPeriod" isForPrompting="true" class="java.lang.String"/>
 	<queryString><![CDATA[SELECT 
 	PJ.name AS ProjectName,
-	GA.sanction_order_no AS LetterNo,
+	CONCAT(YEAR(GP.start_date),'-',YEAR(GP.end_date)) AS financialYear,
+	CONCAT(YEAR(GP.start_date)+1,'-',YEAR(GP.end_date)+1) AS nextFinancialYear,
+	YEAR(GP.end_date) AS currentYear,
+	GR.reference_id AS LetterNo,
 	(SELECT 
 		SUM(total)
 	 FROM 
 		(SELECT 
-			SUM(GA.amount_allocated) AS total
-		 FROM 
-			grant_allocation GA
-		 WHERE 
-			GA.projects_id = $P{projectID}
-		 GROUP BY 
-			GA.projects_id)AS Amount)AS Amount,
+			SUM(GR.amount) AS total
+		FROM 
+			grant_receipt GR,
+			grant_allocation_split GS,
+			grant_period GP,
+			projects P 
+		WHERE 
+			
+			GR.projects_id =  P.id
+			AND GR.grant_allocation_split_id = GS.id
+			AND GS.grant_period_id = GP.id
+			AND GP.id=$P{grantPeriod}
+			AND (P.parent_id =$P{projectID} OR P.id =$P{projectID})
+		GROUP BY 
+			GR.projects_id)AS Amount)AS Amount,
 	PY.name_of_the_institution AS Institution,
 	(SELECT 
 		SUM(total) 
 	 FROM
 			(SELECT 
 				SUM(GE.expense_amount) AS total
-			 FROM 
-				grant_expense GE
-			 WHERE 
-				GE.projects_id = $P{projectID}
-			 GROUP BY 
-				GE.projects_id 
+			FROM 
+				grant_expense GE,
+				grant_allocation_split GS,
+				grant_period GP,
+				projects P 
+			WHERE 
+				
+				GE.projects_id =  P.id
+				AND GE.grant_allocation_split_id = GS.id
+				AND GS.grant_period_id = GP.id
+				AND GP.id=$P{grantPeriod}
+				AND (P.parent_id =$P{projectID} OR P.id =$P{projectID})
+			GROUP BY 
+				GE.projects_id
 			 ) AS ExpenseAmount
 	 ) AS ExpenseAmount
 FROM 
 	projects PJ,
-	grant_allocation GA,
+	grant_receipt GR,
 	party PY,
-	grant_expense GE
+	grant_expense GE,
+	grant_period GP,
+	grant_allocation_split GS,
+	grant_allocation GA
 WHERE 
-	GA.projects_id = PJ.id
+	GA.projects_id  = PJ.id
+	AND GR.projects_id = GA.projects_id 
 	AND PY.id = GA.party_id
-	AND GA.projects_id = GE.projects_id
-	AND PJ.id = $P{projectID}
+	AND GR.projects_id = GE.projects_id
+	AND GE.grant_allocation_split_id = GS.id
+	AND GS.grant_period_id = GP.id
+	AND GP.id=$P{grantPeriod}
+	AND (PJ.parent_id =$P{projectID} OR PJ.id =$P{projectID})
 GROUP BY 
 	PJ.id,GE.projects_id]]></queryString>
 
 	<field name="ProjectName" class="java.lang.String"/>
+	<field name="financialYear" class="java.lang.String"/>
+	<field name="nextFinancialYear" class="java.lang.String"/>
+	<field name="currentYear" class="java.lang.Long"/>
 	<field name="LetterNo" class="java.lang.String"/>
 	<field name="Amount" class="java.lang.Double"/>
 	<field name="Institution" class="java.lang.String"/>
@@ -202,7 +232,7 @@ Utilization Certificate]]></text>
 					<textElement textAlignment="Justified" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Times New Roman" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[Certified that I have satisfied myself that the condition on which the grants-in-aid was sanctioned have been dully fulfilled/are being fulfilled and that I have exerceised the following checks to see that the money was actually utilised for the purpose for which it was sanctioned.
+				<text><![CDATA[Certified that I have satisfied myself that the condition on which the grants-in-aid was sanctioned have been duly fulfilled/are being fulfilled and that I have exercised the following checks to see that the money was actually utilized for the purpose for which it was sanctioned.
 ]]></text>
 				</staticText>
 				<staticText>
@@ -297,7 +327,7 @@ Utilization Certificate]]></text>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{LetterNo}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
 						x="172"
@@ -341,7 +371,7 @@ Utilization Certificate]]></text>
 					</textElement>
 				<text><![CDATA[Certified that out of Rs.]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
 						x="412"
@@ -363,7 +393,7 @@ Utilization Certificate]]></text>
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{Amount}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
 						x="291"
@@ -383,9 +413,9 @@ Utilization Certificate]]></text>
 					<textElement textAlignment="Justified" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Times New Roman" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["of grants-in aid sanctioned during the financial year 2008-2009 in favour of "+$F{Institution}+" for project entitled "+ "\""+$F{ProjectName}+"\"" + " under this Ministry/Department Letter No. given in the margin and Rs.Nil on account of the unspent balance of the previous"]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["of grants-in aid sanctioned during the financial year "+$F{financialYear}+" in favour of "+$F{Institution}+" for project entitled "+ "\""+$F{ProjectName}+"\"" + " under this Ministry/Department Letter No. given in the margin and Rs.Nil on account of the unspent balance of the previous"]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
 						x="392"
@@ -407,7 +437,7 @@ Utilization Certificate]]></text>
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{ExpenseAmount}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
 						x="311"
@@ -424,7 +454,7 @@ Utilization Certificate]]></text>
 						isPrintInFirstWholeBand="false"
 						isPrintWhenDetailOverflows="false"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+					<textElement textAlignment="Justified" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Times New Roman" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{BalanceAmount}]]></textFieldExpression>
@@ -449,7 +479,7 @@ Utilization Certificate]]></text>
 					<textElement textAlignment="Justified" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Times New Roman" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[has been utilised for the purpose for which it was sanctioned and that  the  balance of]]></text>
+				<text><![CDATA[has been utilized for the purpose for which it was sanctioned and that  the  balance of]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -472,28 +502,6 @@ Utilization Certificate]]></text>
 						<font fontName="Times New Roman" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<text><![CDATA[year a sum of Rs.]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						mode="Transparent"
-						x="291"
-						y="172"
-						width="206"
-						height="92"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="staticText-19"
-						stretchType="NoStretch"
-						positionType="FixRelativeToTop"
-						isPrintRepeatedValues="true"
-						isRemoveLineWhenBlank="false"
-						isPrintInFirstWholeBand="false"
-						isPrintWhenDetailOverflows="false"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Justified" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="Times New Roman" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<text><![CDATA[as on 31st March 2009 will be adjusted towards grants in aid payable during the next financial year i.e.2009-10.]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -534,7 +542,7 @@ Utilization Certificate]]></text>
 						isPrintInFirstWholeBand="false"
 						isPrintWhenDetailOverflows="false"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+					<textElement textAlignment="Justified" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Times New Roman" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<text><![CDATA[remaining unspent]]></text>
@@ -561,6 +569,28 @@ Utilization Certificate]]></text>
 					</textElement>
 				<text><![CDATA[Rs.]]></text>
 				</staticText>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="291"
+						y="172"
+						width="206"
+						height="106"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Justified" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Times New Roman" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["as on 31st March "+$F{currentYear}+" will be adjusted towards grants in aid payable during the next financial year i.e."+$F{nextFinancialYear}]]></textFieldExpression>
+				</textField>
 			</band>
 		</detail>
 		<columnFooter>

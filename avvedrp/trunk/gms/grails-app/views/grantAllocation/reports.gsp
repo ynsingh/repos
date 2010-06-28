@@ -13,6 +13,7 @@
         <div class="nav">
             <span class="menuButton"><a class="home" href="${createLinkTo(dir:'/login')}">Home</a></span>
             <span class="menuButton"><g:link class="list" action="grantAllocationTrackingReports" controller="grantAllocationTracking">Grant Allocation/Project Status Reports</g:link></span>
+            <span class="menuButton"><g:link class="list" action="list" controller="utilization">Utilization Certificates</g:link></span>
         </div>
         <br>
          <g:form action="listReport" method="post" name="frmreport" >

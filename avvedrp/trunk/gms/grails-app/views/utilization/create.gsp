@@ -10,7 +10,7 @@
     <div class="wrapper">
         <div class="nav">
             <span class="menuButton"><a class="home" href="${createLinkTo(dir:'')}">Home</a></span>
-            <span class="menuButton"><g:link class="list" action="list">Utilization List</g:link></span>
+            <span class="menuButton"><g:link controller="grantAllocation" class="create" action="projectDash" id="${session.ProjectID}">Project List</g:link></span>
         </div>
         <div class="tablewrapper">
         <div class="body">
@@ -23,20 +23,20 @@
                 <g:renderErrors bean="${utilizationInstance}" as="list" />
             </div>
             </g:hasErrors>
-            
-                <div class="dialog">
+             <g:form action="save" method="post" controller="utilization" id="${fieldValue(bean:projectInstance, field:'id')}">
+              <div class="dialog">
                     <table>
                         <tbody>
-                        <input type="hidden" name="projectsId" value="${params.id}" />
+                        
                         <tr class="prop">
                             <td valign="top" class="name">Project Name:</td>
                             
                             <td valign="top" class="value">${fieldValue(bean:projectInstance, field:'name')}</td>
                             
                         </tr>
+                        
                         <tr class="prop">
                             <td valign="top" class="name">Project StartDate:</td>
-                            
                             <td valign="top" class="value"><g:formatDate format="dd/MM/yyyy" date="${projectInstance.projectStartDate}"/></td>
                             
                         </tr>
@@ -46,43 +46,34 @@
                             <td valign="top" class="value"><g:formatDate format="dd/MM/yyyy" date="${projectInstance.projectEndDate}"/></td>
                             
                         </tr>
+                        <tr>
+                         <td valign="top" class="name">
+                                    <label for="grantPeriod">Grant Period:</label>
+                         <td valign="top" class="value ${hasErrors(bean:grantAllocationSplitInstance,field:'grantPeriod','errors')}">
+                                    <g:select optionKey="id" optionValue="name" from="${GrantPeriod.findAll('from GrantPeriod GP order by defaultYesNo desc')}"  name="grantPeriod.id" value="${utilizationInstance?.grantPeriod?.id}"  ></g:select>
+                                </td>
+                        </tr>
                         <div>    
                         <tr class="prop">
                                 <td valign="top" class="name">
                                 <label>Documents:</label>
                         </td>
-                         <td valign="top" class="value">
-                        	<g:jasperReport jasper="UtilizationCertificate" format="PDF" name="Utilization Certificate" >
-										             <input type="hidden" name="id" value="${projectInstance.id}" />
-										            <input type="hidden" name="projectID" value="${projectInstance.id}" />
-										             <input type="hidden" name="Path" value="${application.getRealPath("reports")}" />
-						 </g:jasperReport>
-						 </td>
-						 </tr>  
-						  <tr class="prop">
-                                <td valign="top" class="name">
-                                
+                        <td>
+                        <g:link  controller='grantAllocation' action="reportView"  id="${projectInstance.id}">View</g:link>
                         </td>
-                         <td valign="top" class="value">
-						 <g:jasperReport jasper="StatementOFAccounts" format="PDF" name="Statement Of Accounts" >
-										            <input type="hidden" name="id" value="${projectInstance.id}" />
-										            <input type="hidden" name="projectID" value="${projectInstance.id}" />
-										             <input type="hidden" name="Path" value="${application.getRealPath("reports")}" />
-						 </g:jasperReport>
-                         </td>
-                         </tr>                                             
+						 </tr>  
+						                                              
                          </div>                           
                         </tbody>
                     </table>
                 </div>
-                <g:if test="${!utilizationInstanceCheck}">
-                <div class="buttons">
-                 <g:form action="save" method="post" controller="utilization" id="${fieldValue(bean:projectInstance, field:'id')}">
-                <input type="hidden" name="projectsId" value="${params.id}" />
-                    <span class="button"><g:actionSubmit value="Submit" action="save"/></span>
-                 </g:form>
+                
+                <div>
+                <input type="hidden" name="projects.id" value="${projectInstance.id}" />
+                    <g:actionSubmit class="inputbutton" value="Submit" action="save"/>
+                
                 </div>
-               </g:if>
+                </g:form>
             
         </div>
         </div>

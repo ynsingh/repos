@@ -26,7 +26,7 @@
                    	        <g:sortableColumn property="id" title="Id" />
                    	        
                    	        <g:sortableColumn property="projects" title="Project" />
-                   	        
+                   	        <g:sortableColumn property="grantPeriod" title="GrantPeriod" />
                    	        <g:sortableColumn property="grantee" title="Grantee" />
                    	        
                    	        <g:sortableColumn property="submittedDate" title="Submitted Date" />
@@ -44,21 +44,14 @@
                             <td>${i+1}</td>
                         
                             <td>${fieldValue(bean:utilizationInstance, field:'projects.name')}</td>
-                        
+                        	<td>${fieldValue(bean:utilizationInstance, field:'grantPeriod.name')}</td>
                             <td>${fieldValue(bean:utilizationInstance, field:'grantee.nameOfTheInstitution')}</td>
                         
                              <td><g:formatDate format="dd/MM/yyyy" date="${utilizationInstance.submittedDate}"/></td>
-                            
-                            <td><g:jasperReport jasper="UtilizationCertificate" format="PDF" name="Utilization Certificate" >
-										            <input type="hidden" name="id" value="${utilizationInstance.projects.id}" />
-										            <input type="hidden" name="projectID" value="${utilizationInstance.projects.id}" />
-										             <input type="hidden" name="Path" value="${application.getRealPath("reports")}" />
-									  	         </g:jasperReport></td>
-							 <td><g:jasperReport jasper="StatementOFAccounts" format="PDF" name="Statement Of Accounts" >
-										            <input type="hidden" name="id" value="${utilizationInstance.projects.id}" />
-										            <input type="hidden" name="projectID" value="${utilizationInstance.projects.id}" />
-										             <input type="hidden" name="Path" value="${application.getRealPath("reports")}" />
-									  	         </g:jasperReport></td>						
+                           
+                            <td><g:link  controller='grantAllocation' action="utilizationCertificate"  params="[grantPeriod:utilizationInstance.grantPeriod.id,projects:utilizationInstance.projects.id]" target="_blank">View</g:link>                           </td>
+							<td><g:link  controller='grantAllocation' action="showReports"  params="[grantPeriod:utilizationInstance.grantPeriod.id,projects:utilizationInstance.projects.id]" target="_blank">View</g:link>                           </td>
+					
                           <%--  <td><a href="${g.createLink(controller:'utilization',action:'download',id:utilizationInstance.id}">View</a></td>
                         
                            --%>

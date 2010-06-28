@@ -26,7 +26,12 @@
      
         <div class="nav">
          <span class="menuButton"><a class="home" href="${createLinkTo(dir:'/login')}">Home</a></span>
+         <g:if test="${params.id}">
+            <span class="menuButton"><g:link controller="utilization" class="create" action="create" id="${session.ProjectID}">Submit Utilization Certificate</g:link></span>
+         </g:if>	
+         <g:else>
           <span class="menuButton"><a class="list"  href="../grantAllocation/projectDash/${session.ProjectID}">Project List</a></span>   
+        </g:else>
         </div>
         
         
@@ -68,6 +73,7 @@
                     </table>
                 </div>
                 <div>
+                <input type="hidden" name="projects" value="${(Projects.get(session.ProjectID)).id}" />
              	<g:actionSubmit class="inputbutton" value="Statement of Accounts" action="showReports" target="_blank"  onclick="return confirmPrint();"/>
              	<g:actionSubmit class="inputbutton" value="Utilization Certificate" action="utilizationCertificate" target="_blank"  onclick="return confirmPrint();"/>
                 </div>

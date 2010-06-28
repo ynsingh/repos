@@ -24,11 +24,15 @@
 	<import value="net.sf.jasperreports.engine.data.*" />
 
 	<parameter name="projectID" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="grantPeriod" isForPrompting="true" class="java.lang.String"/>
 	<queryString><![CDATA[SELECT 
 	
+	DATE_FORMAT(PJ.project_start_date,('%d-%m-%Y')) AS StartDate,
 	DATE_FORMAT(DATE(CURDATE()),('%d-%m-%Y')) AS EndDate,
 	PJ.name AS ProjectTitle,
-	PJ.principal_investigator_name AS PI,
+	GP.start_date AS fromDate,
+	GP.end_date AS toDate,
+	(SELECT I.name FROM investigator I,projectspimap PMAP WHERE I.id=PMAP.investigator_id AND PMAP.projects_id=PJ.id AND PMAP.role='PI') AS PI,
 	GAG.name_of_the_institution AS SponsoringAgency,
 	PY.name_of_the_institution AS Inst,
 	GA.sanction_order_no AS SanctionLetterNo,
@@ -39,10 +43,12 @@
 		(SELECT 
 			SUM(GA.amount_allocated) AS total
 		 FROM 
-			grant_allocation GA 
+			grant_allocation GA,
+			projects P 
 		 WHERE 
 			
-			GA.projects_id = $P{projectID}
+			GA.projects_id = P.id
+			AND (P.parent_id =$P{projectID} OR P.id =$P{projectID})
 		 GROUP BY GA.projects_id )AS TotalGrant) AS TotalGrant,
 	AH.code AS BudgetHead,
 	SUM(GE.expense_amount) AS BudgetAmount,
@@ -52,10 +58,12 @@
 		(SELECT 
 			SUM(GR.amount) AS total
 		 FROM 
-			grant_receipt GR
+			grant_receipt GR,
+			projects P 
 		 WHERE 
 			
-			GR.projects_id = $P{projectID}
+			GR.projects_id = P.id
+			AND (P.parent_id =$P{projectID} OR P.id =$P{projectID})
 			AND DATE(GR.date_of_receipt) <= DATE(CURDATE())
 		GROUP BY 
 			GR.projects_id
@@ -68,11 +76,17 @@
 		(SELECT 
 			SUM(GR.amount) AS total
 		FROM 
-			grant_receipt GR
+			grant_receipt GR,
+			grant_allocation_split GS,
+			grant_period GP,
+			projects P 
 		WHERE 
 			
-			GR.projects_id = $P{projectID}
-			AND DATE(GR.date_of_receipt) BETWEEN '2009-04-01' AND '2010-04-01'
+			GR.projects_id =  P.id
+			AND GR.grant_allocation_split_id = GS.id
+			AND GS.grant_period_id = GP.id
+			AND GP.id=$P{grantPeriod}
+			AND (P.parent_id =$P{projectID} OR P.id =$P{projectID})
 		GROUP BY 
 			GR.projects_id
 	)AS ReceiptsDuringPeriod)AS ReceiptsDuringPeriod,
@@ -82,11 +96,17 @@
 		(SELECT 
 			SUM(GE.expense_amount) AS total
 		FROM 
-			grant_expense GE
+			grant_expense GE,
+			grant_allocation_split GS,
+			grant_period GP,
+			projects P 
 		WHERE 
 			
-			GE.projects_id = $P{projectID}
-			AND DATE(GE.date_of_expense) BETWEEN '2009-04-01' AND '2010-04-01'
+			GE.projects_id =  P.id
+			AND GE.grant_allocation_split_id = GS.id
+			AND GS.grant_period_id = GP.id
+			AND GP.id=$P{grantPeriod}
+			AND (P.parent_id =$P{projectID} OR P.id =$P{projectID})
 		GROUP BY 
 			GE.projects_id
 		)AS TotalExpenditure)AS TotalExpenditure
@@ -97,21 +117,27 @@ FROM
 	grant_allocation GA LEFT  JOIN party GAG ON (GAG.id = GA.granter_id),
 	account_heads AH,
 	grant_allocation_split GS,
-	grant_expense GE
+	grant_expense GE,
+	grant_period GP
 WHERE
 	GA.projects_id = PJ.id
 	AND PY.id = GA.party_id
 	AND AH.id = GS.account_head_id
 	AND GE.projects_id = PJ.id
 	AND GE.grant_allocation_split_id =GS.id	
+	AND GS.grant_period_id = GP.id
 	AND GS.projects_id=PJ.id
 	AND GA.id= GS.grant_allocation_id
-	AND PJ.id = $P{projectID}
+	AND (PJ.parent_id =$P{projectID} OR PJ.id =$P{projectID})
+	AND GP.id=$P{grantPeriod}
 GROUP BY 
 	GE.grant_allocation_split_id]]></queryString>
 
+	<field name="StartDate" class="java.lang.String"/>
 	<field name="EndDate" class="java.lang.String"/>
 	<field name="ProjectTitle" class="java.lang.String"/>
+	<field name="fromDate" class="java.util.Date"/>
+	<field name="toDate" class="java.util.Date"/>
 	<field name="PI" class="java.lang.String"/>
 	<field name="SponsoringAgency" class="java.lang.String"/>
 	<field name="Inst" class="java.lang.String"/>
@@ -340,7 +366,7 @@ GROUP BY
 					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="11" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[AS PER SANCTION LETTER REFFERED TO ABOVE]]></text>
+				<text><![CDATA[AS PER SANCTION LETTER REFERRED TO ABOVE]]></text>
 				</staticText>
 				<rectangle radius="0" >
 					<reportElement
@@ -541,28 +567,6 @@ GROUP BY
 					</textElement>
 				<text><![CDATA[DETAIL OF ACTUAL EXPENDITURE]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" pattern="dd-MMM-yy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Transparent"
-						x="208"
-						y="15"
-						width="224"
-						height="18"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="textField"
-						stretchType="NoStretch"
-						positionType="FixRelativeToTop"
-						isPrintRepeatedValues="true"
-						isRemoveLineWhenBlank="false"
-						isPrintInFirstWholeBand="false"
-						isPrintWhenDetailOverflows="false"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
-						<font fontName="Verdana" pdfFontName="Helvetica" size="11" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["From 01-04-2009 To 01-04-2010"]]></textFieldExpression>
-				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
@@ -651,7 +655,7 @@ GROUP BY
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{TotalGrant}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="dd-MM-yy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="d-M-yyyy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
 						x="208"
@@ -678,7 +682,7 @@ GROUP BY
 						mode="Transparent"
 						x="76"
 						y="236"
-						width="304"
+						width="185"
 						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -693,14 +697,14 @@ GROUP BY
 					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Times New Roman" pdfFontName="Helvetica" size="11" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["TOTAL GRANT RECEIVED UPTO 01-04-2010"]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["TOTAL GRANT RECEIVED UPTO"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="dd-MM-yy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
 						x="76"
 						y="256"
-						width="303"
+						width="176"
 						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -715,14 +719,14 @@ GROUP BY
 					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Times New Roman" pdfFontName="Helvetica" size="11" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["(A) OPENING BALANCE AS ON 01-04-2009"]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["(A) OPENING BALANCE AS ON"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="dd-MM-yy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
 						x="76"
 						y="276"
-						width="303"
+						width="128"
 						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -737,14 +741,14 @@ GROUP BY
 					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Times New Roman" pdfFontName="Helvetica" size="11" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["(B) RECEIPTS DURING 01-04-2009 TO 01-04-2010"]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["(B) RECEIPTS DURING"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="dd-MM-yy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
 						x="76"
 						y="336"
-						width="304"
+						width="149"
 						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -759,14 +763,14 @@ GROUP BY
 					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Times New Roman" pdfFontName="Helvetica" size="11" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["CLOSING BALANCE AS ON 01-04-2010"]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["CLOSING BALANCE AS ON"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="dd-MM-yy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
 						x="76"
 						y="316"
-						width="317"
+						width="157"
 						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -781,7 +785,7 @@ GROUP BY
 					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Times New Roman" pdfFontName="Helvetica" size="11" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["TOTAL EXPENDITURE FROM 01-04-2009 TO 01-04-2010"]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["TOTAL EXPENDITURE FROM"]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -914,6 +918,292 @@ GROUP BY
 						<font fontName="Times New Roman" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[new Double(($F{OpeningBalance}.doubleValue()+$F{ReceiptsDuringPeriod}.doubleValue()) - $F{TotalExpenditure}.doubleValue())]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="d-M-yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="242"
+						y="14"
+						width="76"
+						height="18"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Verdana" pdfFontName="Helvetica" size="11" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{fromDate}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="d-M-yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="336"
+						y="14"
+						width="101"
+						height="18"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Verdana" pdfFontName="Helvetica" size="11" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{toDate}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="208"
+						y="14"
+						width="35"
+						height="18"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="staticText-30"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Verdana" pdfFontName="Helvetica" size="11" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[From]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="318"
+						y="14"
+						width="18"
+						height="18"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="staticText-31"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Verdana" pdfFontName="Helvetica" size="11" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[To]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="d-M-yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="261"
+						y="236"
+						width="100"
+						height="18"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Verdana" pdfFontName="Helvetica" size="11" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{toDate}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="d-M-yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="252"
+						y="256"
+						width="100"
+						height="18"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-7"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Verdana" pdfFontName="Helvetica" size="11" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{fromDate}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="d-M-yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="203"
+						y="276"
+						width="85"
+						height="18"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-8"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Verdana" pdfFontName="Helvetica" size="11" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{fromDate}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="dd-MM-yy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="285"
+						y="276"
+						width="17"
+						height="18"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-9"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Times New Roman" pdfFontName="Helvetica" size="11" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["TO"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="d-M-yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="303"
+						y="276"
+						width="75"
+						height="18"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-10"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Verdana" pdfFontName="Helvetica" size="11" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{toDate}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="dd-MM-yy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="303"
+						y="315"
+						width="17"
+						height="18"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-11"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Times New Roman" pdfFontName="Helvetica" size="11" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA["TO"]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="d-M-yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="235"
+						y="315"
+						width="68"
+						height="18"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-12"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Verdana" pdfFontName="Helvetica" size="11" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{fromDate}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="d-M-yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="319"
+						y="315"
+						width="74"
+						height="18"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-13"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Verdana" pdfFontName="Helvetica" size="11" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{toDate}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="d-M-yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="224"
+						y="336"
+						width="146"
+						height="18"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-14"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Verdana" pdfFontName="Helvetica" size="11" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[$F{toDate}]]></textFieldExpression>
 				</textField>
 			</band>
 		</pageHeader>
@@ -1197,7 +1487,7 @@ GROUP BY
 					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Verdana" pdfFontName="Helvetica-Bold" size="11" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[UTILISATION CERTIFICATE]]></text>
+				<text><![CDATA[UTILIZATION CERTIFICATE]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -1353,7 +1643,7 @@ GROUP BY
 					</textElement>
 				<text><![CDATA[Dean R&D]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
 						x="278"

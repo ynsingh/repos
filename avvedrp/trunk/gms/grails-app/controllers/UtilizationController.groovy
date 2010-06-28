@@ -74,24 +74,36 @@ class UtilizationController {
         def projectInstance = Projects.get(params.id)
         def utilizationInstanceCheck = Utilization.findAll("from Utilization U where U.projects.id="+projectInstance.id)
         utilizationInstance.properties = params
-        if(utilizationInstanceCheck)
-        	flash.message ="Utilization certificate submitted."
-        [projectInstance:projectInstance,utilizationInstanceCheck:utilizationInstanceCheck]
+        
+        [projectInstance:projectInstance,utilizationInstance:utilizationInstance]
       }
 
     def save = {
 		GrailsHttpSession gh=getSession()
+		println "uti"+params
+		def projectInstance = Projects.get(params.projects.id)
         def utilizationInstance = new Utilization()
-        utilizationInstance.projects= Projects.get(params.projectsId)
+        utilizationInstance.projects= Projects.get(params.projects.id)
         utilizationInstance.submittedDate=new Date()
 		utilizationInstance.grantee=Party.get(gh.getValue("Party"))
-        if(!utilizationInstance.hasErrors() && utilizationInstance.save()) {
-            flash.message = "Utilization certificate submitted"
-            redirect(action:'create',id:params.projectsId)
-        }
-        else {
-            render(view:'create',model:[utilizationInstance:utilizationInstance])
-        }
+		utilizationInstance.grantPeriod=GrantPeriod.get(params.grantPeriod.id)
+		def utilizationInstanceCheck = Utilization.findAll("from Utilization U where U.projects.id="+params.projects.id+" and U.grantPeriod.id="+params.grantPeriod.id)
+		if(!utilizationInstanceCheck)
+		{
+			if(!utilizationInstance.hasErrors() && utilizationInstance.save()) 
+			{
+				flash.message = "Utilization certificate submitted"
+				redirect(action:'create',id:params.projects.id)
+			}
+			else {
+            render(view:'create',model:[projectInstance:projectInstance])
+			}
+		}
+		else
+		{
+			 flash.message = "Utilization certificate for grant period "+utilizationInstance.grantPeriod.name+" already submitted"
+			render(view:'create',model:['utilizationInstance':utilizationInstance,'projectInstance':projectInstance])
+		}
     }
     def download ={
     		def utilizationInstance=Utilization.get(params.id)
