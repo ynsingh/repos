@@ -9,16 +9,19 @@ import java.util.Date;
 import java.lang.Long;
 import java.io.FileOutputStream;
 import java.io.File;
+import java.io.DataOutputStream;
 
 /**
  * @author <a href="mailto:ayadav@iitk.ac.in"> Ashish Yadav </a>
- * @author <a href="mailto:"> Arvind Pal </a>
+ * @author <a href="mailto:arvindjss17@gmail.com"> Arvind Pal </a>
  */
 
 public class ServerLog {
 
+	private static String LogfilePath ="";
 	public static ServerLog log=null;
-	 
+ 	private static DataOutputStream dos = null;
+
 	/**
 	 * ServerLog controller 
 	 */
@@ -29,32 +32,39 @@ public class ServerLog {
                 return log;
         }
 
+	private static void createFile(){
+                try {
+                        File existingFile=new File("../webapps/brihaspatisync_mserver/logs/");
+                        LogfilePath = existingFile.getAbsolutePath();
+                        existingFile=new File(LogfilePath);
+                        if(!existingFile.exists()){
+                                existingFile.mkdirs();
+                        }
+                        LogfilePath=LogfilePath+"/ServerLog.txt";
+                        dos = new DataOutputStream(new FileOutputStream(LogfilePath,true));
+
+                }catch(Exception e){
+                        LogfilePath="";
+  		}
+        }
+
+
         /**
         * In this method, Dump error message in logfile
         * @param msg String
         * @return
         */
+	
         public static void Log(String msg)
         {
                 try
                 {
-                        Date Errordate=new Date();
-                        String LogfilePath="../webapps/brihaspatisync_mserver/logs/ServerLog.txt";
-                        File existingFile=new File(LogfilePath);
-			LogfilePath = existingFile.getAbsolutePath();
-                        String fileSize=Long.toString(existingFile.length());
-                        if(fileSize.equals("1048576"))
-                        {
-                                boolean success=existingFile.delete();
-                        }
-                        else{
-                                FileOutputStream log=new FileOutputStream(LogfilePath,true);
-                                log.write((Errordate+"---"+msg+"\n").getBytes());
-                                log.close();
-                        }
+			if(LogfilePath.equals("")){
+                                createFile();
+			}
+			dos.writeBytes(new Date()+"---"+msg+"\n");
                 }//try
-                catch(Exception e)
-                {
+                catch(Exception e) {
                 }
         }
 }
