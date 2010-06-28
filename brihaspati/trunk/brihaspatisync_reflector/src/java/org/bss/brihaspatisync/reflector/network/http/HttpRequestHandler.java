@@ -17,11 +17,14 @@ import java.io.DataOutputStream;
 
 import org.bss.brihaspatisync.reflector.buffer_mgt.BufferMgt;
 import org.bss.brihaspatisync.reflector.buffer_mgt.MyHashTable;
+
 import org.bss.brihaspatisync.reflector.network.tcp.TCPClient;
+import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
+
 import org.bss.brihaspatisync.reflector.network.util.RuntimeObject;
 import org.bss.brihaspatisync.reflector.network.serverdata.UserListUtil;
-import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
-	
+
+import org.bss.brihaspatisync.reflector.network.serverdata.HandraiseAction;	
 
 /**
  * @author <a href="mailto:arvindjss17@gmail.com"> Arvind Pal  </a>Created this HttpRequestHandler on 01Feb2009
@@ -84,6 +87,13 @@ public class HttpRequestHandler {
                                                 return "UnSuccessfull";
 
                                         }
+				}else if(data_value[1].startsWith("HandRaiseAction")){
+                                        data_value[1]=java.net.URLDecoder.decode(data_value[1]).replaceAll("HandRaiseAction","");
+                                        HandraiseAction.getController().setValue(data_value[1]);
+                                        output.flush();
+                                        output.close();
+                                        in.close();
+                                        return "UnSuccessfull";
 				}else {	
 					String s=data_value[0];
 					String strarray[]=s.split(",");

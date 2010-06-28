@@ -173,7 +173,34 @@ public class RegisterToIndexServer {
                         JOptionPane.showMessageDialog(null,"Reflector could not find iserver pls try again ");
                 }
 	}
-		
+	
+	public void requestToChangeStatus(String str1){
+                if(!ServerIP.equals("")){
+                        try{
+                                String str[]=str1.split(",");
+                                String lectid ="lectID="+URLEncoder.encode(str[0].trim(),"UTF-8");
+                                String user="loginName="+URLEncoder.encode(str[1].trim(),"UTF-8");
+                                String action="userAction="+URLEncoder.encode(str[2].trim(),"UTF-8");
+                                String indexServer =ServerIP+"/ProcessRequest?req=Permissions&"+lectid+"&"+user+"&"+action;
+				JOptionPane.showMessageDialog(null,indexServer);
+                                URL indexurl = new URL(indexServer);
+                                connection=HttpsUtil.getController().createHTTPConnection(indexurl);
+                                if(connection==null){
+                                        JOptionPane.showMessageDialog(null,"Check your Network Connection or try again");
+                                }else{
+                                        if(!bufferReader(connection.getInputStream())){
+                                                System.out.println("There is an error!! please try again");
+                                        }
+                                }
+                        }catch(Exception e){
+                                log.setString("Error on registeration "+e.getMessage());
+                        }
+                }else {
+                        JOptionPane.showMessageDialog(null,"Reflector could not find iserver pls try again ");
+                }
+        }
+	
+	
 	private boolean bufferReader(InputStream ins ){
 		String str="";
 		try{
