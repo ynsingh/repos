@@ -43,7 +43,6 @@ import org.bss.brihaspatisync.util.ClientObject;
 public class WhiteBoardPanel extends JPanel implements ActionListener, MouseListener{
 
         private JPanel mainPanel;
-	private JPanel center_mainPanel;
         private static WhiteBoardPanel wbPanel=null;
 	private TitledBorder titleBorder;
 	private static int button_value=0;
@@ -181,16 +180,8 @@ public class WhiteBoardPanel extends JPanel implements ActionListener, MouseList
 
 
 		mainPanel.add(toolBar,BorderLayout.PAGE_START);
-		center_mainPanel=WhiteBoardDraw.getController();
-		center_mainPanel.setBackground(Color.white);
-		
-		JScrollPane scroller = new JScrollPane(center_mainPanel);
-                scroller.setPreferredSize(new Dimension(1000,1000));
-
-		mainPanel.add(scroller,BorderLayout.CENTER);
-
+		mainPanel.add(WhiteBoardDraw.getController(),BorderLayout.CENTER);
 		JToolBar texttool = new JToolBar("TextToolbar");
-
 		JLabel textLabel = new JLabel("Text : ",JLabel.LEFT);
                 texttool.add(textLabel);
 

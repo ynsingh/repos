@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 
 import org.bss.brihaspatisync.util.HttpsUtil;
 import org.bss.brihaspatisync.util.ClientObject;
+import org.bss.brihaspatisync.network.util.UtilObject;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
@@ -24,8 +25,9 @@ import org.bss.brihaspatisync.util.ClientObject;
 public class HandRaiseAction implements ActionListener {
 
 	private static HandRaiseAction hraction=null;
+	private StringBuffer sb =new StringBuffer(100);
 	private ClientObject client_obj=ClientObject.getController();
-
+	private UtilObject utilObject=UtilObject.getController();
 	private String selectedUsername="";
 	protected static HandRaiseAction getController(){
 		if(hraction==null)
@@ -55,14 +57,19 @@ public class HandRaiseAction implements ActionListener {
 				}
 	              	}else
 				System.out.println("Insufficient User Role :"+client_obj.getUserRole());
-
-
-                        String action="userAction="+URLEncoder.encode(Request,"UTF-8");
+                        //String action="userAction="+URLEncoder.encode(Request,"UTF-8");
 			String indexServer1=client_obj.getIndexServerName();
 			if(!(indexServer1.equals(""))){
+				sb=sb.append("HandRaiseAction");
+                                sb=sb.append(id+","+user+","+Request);
+                                System.out.println(sb.toString());
+                                utilObject.setSendQueue(sb.toString());
+                                sb.delete(0, sb.length());
+				/*
                         	String indexServer =indexServer1+"/ProcessRequest?req=Permissions&"+lectid+"&"+user+"&"+action;
                         	if(!(HttpsUtil.getController().getIndexingMessage(indexServer)))
 					JOptionPane.showMessageDialog(null,"There is some problem to Please try again");
+				*/
 			}else{
 				System.out.println("Insufficient indexServer name in HandRaiseAction :");
 			}

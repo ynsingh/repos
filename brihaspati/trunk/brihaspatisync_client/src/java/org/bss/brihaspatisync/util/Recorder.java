@@ -1,6 +1,6 @@
 package org.bss.brihaspatisync.util;
 
-/*@(#)ClientLog.java
+/*@(#) Recorder.java
  * See licence file for usage and redistribution terms
  * Copyright (c) 2009 .All Rights Reserved.
  */
@@ -12,58 +12,55 @@ import java.io.File;
 import java.io.DataOutputStream;
 
 /**
- * @author <a href="mailto:ayadav@iitk.ac.in"    > Ashish Yadav </a>
- * @author <a href="mailto:arvindjss17@gmail.com"> Arvind Pal </a>
+ * @author <a href="mailto:sndpsngh000@gmail.com"> Sandeep Pal </a>
+ * @author <a href="mailto:crystal.brawal@gmail.com"> Ankit Porwall </a>
  */
 
-public class ClientLog {
+public class Recorder {
 
-	private static ClientLog log=null;
+	private static Recorder log=null;
 	private String LogfilePath ="";
 	private DataOutputStream dos = null; 
+	
 	/**
 	 * ServerLog controller 
 	 */
 	
-	public static ClientLog getController(){
+	public static Recorder getController(){
                 if (log==null){
-                        log=new ClientLog();
+                        log=new Recorder();
                 }
                 return log;
         }
 	
 	private void createFile(){
 		try {
-			String str="logs";
-        	        File existingFile=new File(str);
+			File existingFile=new File("logs");
                 	LogfilePath = existingFile.getAbsolutePath();
 			existingFile=new File(LogfilePath);
 			if(!existingFile.exists()){
 				existingFile.mkdirs();
 			}
-			LogfilePath=LogfilePath+"/ServerLog.txt";
+			LogfilePath=LogfilePath+"/Recorder.txt";
 			dos = new DataOutputStream(new FileOutputStream(LogfilePath,true));
-			
-		}catch(Exception e){
-			LogfilePath="";
-		}
-
+		}catch(Exception e){ LogfilePath=""; }
 	}
 	
-		
         /**
         * In this method, Dump error message in logfile
         * @param msg String
         * @return
         */
-        public void Log(String msg)
+
+        public void Record(String msg)
         {
-                try {
+                try
+                {
 			if(LogfilePath.equals(""))
 				createFile();
 			Date Errordate=new Date();
                         dos.writeBytes(Errordate+"---"+msg+"\n");
-                }catch(Exception e) { }
+		}catch(Exception e) { }
         }
 }
  

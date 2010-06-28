@@ -14,11 +14,10 @@ import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 
+import org.bss.brihaspatisync.network.Log;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.tools.whiteboard.WhiteBoardDraw;
-//import org.bss.brihaspatisync.tools.avtool.AudioCaptureAndTransmit;
-//import org.bss.brihaspatisync.tools.avtool.AudioReceiveAndPlay;
-import org.bss.brihaspatisync.network.Log;
+import org.bss.brihaspatisync.tools.audio_video.AVTransmitReceiveHandler;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
@@ -37,7 +36,7 @@ public class HandRaisePanel {
 
 
 	private String role=object.getUserRole();	
-//	private CommonVariable cv=CommonVariable.getController();	
+	
 	/**
 	 * Controller for class.
 	 */	
@@ -61,7 +60,7 @@ public class HandRaisePanel {
 		whiteBoard=new JButton(object.getAWBorHRbut(),new ImageIcon(clr.getResource("resources/images/user/accept.png")));
 		whiteBoard.setToolTipText(object.gettooltipRWB());
                 whiteBoard.setActionCommand(object.getAWBorHRbut());
-		whiteBoard.setEnabled(false);//object.getflag());
+		whiteBoard.setEnabled(object.getflag());
 		whiteBoard.addActionListener(HandRaiseAction.getController());
 		
 		DenieWB=new JButton(object.getdenieWB(),new ImageIcon(clr.getResource("resources/images/user/denie.png")));
@@ -79,19 +78,19 @@ public class HandRaisePanel {
 	protected void setEnableORDecable(String str){
 		if(role.equals("student")){
 	                if(str.equals("available")){
-        	        	whiteBoard.setEnabled(false);//true);
+        	        	whiteBoard.setEnabled(true);
 				DenieWB.setEnabled(false);	
 				try{
 					WhiteBoardDraw.getController().denieDrawforStudent();
-//					AudioCaptureAndTransmit.getController().stopAudio();
+					//AVTransmitReceiveHandler.getController().AVTransmitHandlerStop();
 				}catch(Exception e){log.setLog("Error in Stop Audio  or White Board");}
 			}
 	                if(str.equals("Allow-WB")){
 				whiteBoard.setEnabled(false);
-	        	       	DenieWB.setEnabled(false);//true);
+	        	       	DenieWB.setEnabled(false);
 				try{
 					WhiteBoardDraw.getController().allowDrawforStudent();
-//					AudioCaptureAndTransmit.getController().startAudio();
+					//AVTransmitReceiveHandler.getController().AVTransmitHandlerStart();
 				}catch(Exception e){log.setLog("Error in Start Audio or White Board");}
 			}
 		}else{
@@ -100,6 +99,7 @@ public class HandRaisePanel {
                                 DenieWB.setEnabled(true);
 			}
 			else if(str.equals("Allow-WB")){
+				//AVTransmitReceiveHandler.getController().
                                 whiteBoard.setEnabled(false);
                                 DenieWB.setEnabled(true);
                         }else{
@@ -109,3 +109,4 @@ public class HandRaisePanel {
 		}
         }
 }
+

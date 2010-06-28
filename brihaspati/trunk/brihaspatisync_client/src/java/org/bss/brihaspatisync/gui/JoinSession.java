@@ -118,9 +118,11 @@ public class JoinSession {
 			WhiteBoardDraw.getController().start();
                         ReceiveQueueHandler.getController().start();
 			AVTransmitReceiveHandler.getController();
-
-
-           	}catch(Exception ex){log.setLog("Error in Starting GUIThreads"+ex.getMessage());}
+			//if(client_obj.getUserRole().equals("student"))
+			//AVTransmitReceiveHandler.getController().AVReceiveHandler();
+                        //else
+                        //        AVTransmitReceiveHandler.getController().AVTransmitHandlerStart();
+		}catch(Exception ex){log.setLog("Error in Starting GUIThreads"+ex.getMessage());}
 		
 	}
 

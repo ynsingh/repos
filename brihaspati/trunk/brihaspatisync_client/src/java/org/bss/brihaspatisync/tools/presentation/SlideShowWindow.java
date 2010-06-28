@@ -110,6 +110,15 @@ public class SlideShowWindow extends JFrame implements ActionListener {
                 	        sb=sb.append(Integer.toString(temp));
 				String send_msg=sb.toString();
                         	utilObject.setSendQueue(send_msg);
+				if(temp==(str.length-1)){
+                                        next.setEnabled(false);
+                                        privious.setEnabled(true);
+                                        JOptionPane.showMessageDialog(null," This is last ppt Slide !!");
+                                }else{
+                                        next.setEnabled(true);
+                                        privious.setEnabled(true);
+                                }
+
 			}
 		}
 		if(ae.getSource()==privious){
@@ -122,6 +131,14 @@ public class SlideShowWindow extends JFrame implements ActionListener {
                                 sb=sb.append(Integer.toString(temp));
 				String send_msg=sb.toString();
                                 utilObject.setSendQueue(send_msg);
+				if(temp==0){
+                                        next.setEnabled(true);
+                                        privious.setEnabled(false);
+                                        JOptionPane.showMessageDialog(null," This is start ppt Slide !!");
+                                }else{
+                                        next.setEnabled(true);
+                                        privious.setEnabled(true);
+                                }
 			}else{
 				JOptionPane.showMessageDialog(null," This is start .ppt !!");
 			}

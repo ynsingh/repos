@@ -94,21 +94,19 @@ public class WhiteBoardDraw extends JPanel implements ItemListener, MouseListene
 
 
 	public void allowDrawforStudent(){
-		setCursor(new Cursor(1));
-               	addMouseListener(this);
-             	addMouseMotionListener(this);
-		//if(checkFlag==false)
-		//	checkFlag=true;
+		this.setCursor(new Cursor(1));
+                this.addMouseListener(this);
+                this.addMouseMotionListener(this);
+                this.dragging=false;
         }
 
 	public void denieDrawforStudent(){
-		//if(checkFlag){
-			setCursor(new Cursor(0));
-                	removeMouseListener(this);
-                	removeMouseMotionListener(this);
-			this.revalidate();
-		//	checkFlag=false;
-		//}
+		this.dragging=true;
+                this.setCursor(new Cursor(0));
+                this.removeMouseListener(this);
+                this.removeMouseMotionListener(this);
+                this.revalidate();
+                this.checkFlag=false;
 	}
 
 	private WhiteBoardDraw(){
@@ -376,7 +374,6 @@ public class WhiteBoardDraw extends JPanel implements ItemListener, MouseListene
                         prevX = startX = evt.getX();
                         prevY = startY = evt.getY();
                         figure=WhiteBoardPanel.getController().getButtonValue();//button_value;
-			//System.out.println("Figure=="+figure);
 			textname=(String)textChoice.getSelectedItem();
 			sizedata=Integer.parseInt((String)sizeChoice.getSelectedItem());
 	                graphicsForDrawing =getGraphics();

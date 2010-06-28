@@ -35,6 +35,8 @@ public class JoinSessionPanel extends JPanel implements ActionListener, MouseLis
 	private JSplitPane splitPane=null;
 	private JPanel left_Pane=null;
 	private JPanel right_Pane=null;
+	private JPanel av_Pane_new  =null;
+
 	/**
          * Controller for Class.
 	 */
@@ -48,6 +50,9 @@ public class JoinSessionPanel extends JPanel implements ActionListener, MouseLis
    	public JPanel getAV_Panel(){
    		return av_Pane;
    	}
+	public JPanel getAV_Panel_Student(){
+                return av_Pane_new;
+        }
    	public JSplitPane getSplit_Panel(){
    		return splitPane;
    	}
@@ -68,11 +73,20 @@ public class JoinSessionPanel extends JPanel implements ActionListener, MouseLis
                 left_Pane.setLayout(new BorderLayout());
                 JPanel new_Pane=new JPanel();
                 new_Pane.setLayout(new BorderLayout());
+		
+		JPanel new_Pane1=new JPanel();
+                new_Pane1.setLayout(new BorderLayout());
+
 		//Audio Vedio Panel
 		
 		av_Pane=new JPanel();
                 av_Pane.setLayout(new BorderLayout());
 		av_Pane.setBackground(Color.BLACK);
+	
+		av_Pane_new=new JPanel();
+                av_Pane_new.setLayout(new BorderLayout());
+                av_Pane_new.setBackground(Color.BLACK);
+
 		//PPT Presentation Panel
                 JPanel chat_slide_Pane=new JPanel();
                 chat_slide_Pane.setLayout(new BorderLayout());
@@ -81,17 +95,20 @@ public class JoinSessionPanel extends JPanel implements ActionListener, MouseLis
 		JPanel slide_Pane=new JPanel();
 		
 		JSplitPane chat_pp_Split=new JSplitPane(JSplitPane.VERTICAL_SPLIT,ChatPanel.getController().createGUI(),PresentationPanel.getController().createGUI());
-                chat_pp_Split.setDividerLocation(200);
-		//pp_Pane.add(chat_pp_Split);
+                chat_pp_Split.setDividerLocation(110);
 		chat_slide_Pane.add(chat_pp_Split);
+		//ins Audio vedio stream
+                JSplitPane chat_pp_Split1=new JSplitPane(JSplitPane.VERTICAL_SPLIT,av_Pane_new,chat_slide_Pane);
+                chat_pp_Split1.setDividerLocation(120);
+                new_Pane1.add(chat_pp_Split1);
 		
-		JSplitPane av_chat_Split=new JSplitPane(JSplitPane.VERTICAL_SPLIT,av_Pane,chat_slide_Pane);
-		av_chat_Split.setDividerLocation(250);
+		JSplitPane av_chat_Split=new JSplitPane(JSplitPane.VERTICAL_SPLIT,av_Pane,new_Pane1);
+		av_chat_Split.setDividerLocation(160);
 
                 new_Pane.add(av_chat_Split);
 
                 JSplitPane ul_av_Split=new JSplitPane(JSplitPane.VERTICAL_SPLIT,UserListPanel.getController().createGUI(),new_Pane);
-		ul_av_Split.setDividerLocation(200);
+		ul_av_Split.setDividerLocation(220);
                 left_Pane.add(ul_av_Split);
 
                 //start for whiteboard,chat,remoteDesktop Panel

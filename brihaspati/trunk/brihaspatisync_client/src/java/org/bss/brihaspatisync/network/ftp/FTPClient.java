@@ -40,14 +40,17 @@ import java.awt.Font;
 import java.awt.Dimension;
 import java.awt.Graphics;
 
-
-
+import java.awt.RenderingHints;
+import java.awt.AlphaComposite;
+import javax.imageio.ImageIO;
 /**
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>
  */
 
 public class FTPClient {
 
+	private final int IMG_WIDTH = 210;
+        private final int IMG_HEIGHT = 210;
 	private static FTPClient ftpclient=null;
 	private Socket sock;
         private DataInputStream din;
@@ -192,6 +195,12 @@ public class FTPClient {
                                 	FileOutputStream out = new FileOutputStream("temp/presentation/"+"image"+(i)+".png");
                                 	javax.imageio.ImageIO.write(img, "png", out);
                                 	out.close();
+					/////////////////////////////arvind
+					BufferedImage originalImage = ImageIO.read(new File("temp/presentation/"+"image"+(i)+".png"));
+	        	                int type = originalImage.getType() == 0? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
+        	        	        BufferedImage resizeImageJpg = resizeImage(originalImage, type);
+                        		ImageIO.write(resizeImageJpg, "png", new File("temp/presentation/"+"image"+(i)+".png"));
+					/////////////////////////////arvind
                         	}
 			}else {
 				System.out.println(".ppt file is not found !! ");
@@ -199,6 +208,31 @@ public class FTPClient {
 		}catch(Exception e){log.setLog("Error in createppt_TO_Images() method ----->"+e.getMessage());}
 		
         }
+	
+	private BufferedImage resizeImage(BufferedImage originalImage, int type){
+                BufferedImage resizedImage = new BufferedImage(IMG_WIDTH, IMG_HEIGHT, type);
+                Graphics2D g = resizedImage.createGraphics();
+                g.drawImage(originalImage, 0, 0, IMG_WIDTH, IMG_HEIGHT, null);
+                g.dispose();
+                return resizedImage;
+        }
+
+        private BufferedImage resizeImageWithHint(BufferedImage originalImage, int type){
+                BufferedImage resizedImage = new BufferedImage(IMG_WIDTH, IMG_HEIGHT, type);
+                Graphics2D g = resizedImage.createGraphics();
+                g.drawImage(originalImage, 0, 0, IMG_WIDTH, IMG_HEIGHT, null);
+                g.dispose();
+                g.setComposite(AlphaComposite.Src);
+                g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                g.setRenderingHint(RenderingHints.KEY_RENDERING,
+                RenderingHints.VALUE_RENDER_QUALITY);
+                g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+                return resizedImage;
+        }
+		
+
 	/** checkDirectory is available or not */
 		
 	public void checkDirectory(){

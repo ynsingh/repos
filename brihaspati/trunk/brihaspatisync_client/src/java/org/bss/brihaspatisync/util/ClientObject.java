@@ -70,21 +70,6 @@ public class ClientObject {
 		return av_port;
 	}
 
-	private ClientObject(){
-                if(usr_role.equals("instructor")){
-                        AWBorHRbut="Allow-WB";
-                        tooltipRWB="Allow student to Draw on Whiteboard";
-                        flag=false;
-                }else{
-                        AWBorHRbut="Hand-Raise";
-                        tooltipRWB="Request to draw on Whiteboard";
-                        flag=true;
-                }
-                denieWB="Denie-WB";
-                tooltipDWB="Denie student to Draw on Whiteboard ";
-        }
-
-	
 	/**
 	 * This method is used to retrive the list of index server by calling connectToMasterServer() 
 	 * from HttpCommManager which initiate a connection with master server and get indexing server 
@@ -214,6 +199,17 @@ public class ClientObject {
 	}
 
 	public String getAWBorHRbut(){
+		if(usr_role.equals("instructor")){
+                        AWBorHRbut="Allow-WB";
+                        tooltipRWB="Allow student to Draw on Whiteboard";
+                        flag=false;
+                }else{
+                        AWBorHRbut="Hand-Raise";
+                        tooltipRWB="Request to draw on Whiteboard";
+                        flag=true;
+                }
+                denieWB="Denie-WB";
+                tooltipDWB="Denie student to Draw on Whiteboard ";
                 return this.AWBorHRbut;
         }
 
@@ -270,7 +266,6 @@ public class ClientObject {
                         usrNameVector.clear();
                 this.usrNameVector=value;
         }
-/** after**/
 	public void setLocalIP(String str){
 		this.localIP=str;
 	}
@@ -278,9 +273,5 @@ public class ClientObject {
 	public String getLocalIP(){
                 return this.localIP;
         }
-
-/** after**/
-
-
 }
 
