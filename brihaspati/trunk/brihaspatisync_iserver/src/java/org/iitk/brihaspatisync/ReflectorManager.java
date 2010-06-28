@@ -69,7 +69,6 @@ public class ReflectorManager
 						ip="Instructor is not login";
 					if(ip.equals("Reflector is not running"))
 						ip="Reflector is not running";
-					
                                         return ip;
                                 }
 				ip=insAvilable(courceid);	
@@ -95,7 +94,7 @@ public class ReflectorManager
                         factory.setValidating(false);
                         factory.setIgnoringElementContentWhitespace(false);
                         DocumentBuilder builder = factory.newDocumentBuilder();
-                        Document document = builder.parse(getFile("Reflector"));
+                        Document document = builder.parse(getFile("Reflector.xml"));
                         Element root = document.getDocumentElement();
                         ref_List = root.getElementsByTagName("Reflector");
 			if(ref_List.getLength()==0)
@@ -125,7 +124,7 @@ public class ReflectorManager
                         factory.setValidating(false);
                         factory.setIgnoringElementContentWhitespace(false);
                         DocumentBuilder builder = factory.newDocumentBuilder();
-                        Document document = builder.parse(getFile("Reflector"));
+                        Document document = builder.parse(getFile("Reflector.xml"));
                         Element root = document.getDocumentElement();
                         ref_List = root.getElementsByTagName("Reflector");
                         for( int i=0; i<ref_List.getLength(); i++ ){
@@ -141,7 +140,7 @@ public class ReflectorManager
                 	                                String newload=Integer.toString(load+1);
                         	                        Attr attrNode = element.getAttributeNode("Load");
                                 	                attrNode.setValue(newload);
-	                                                saveXML(document,getFile("Reflector"));
+	                                                saveXML(document,getFile("Reflector.xml"));
 							ip="current"+ip+","+"parent"+"";
         	                                        return ip;
 						}else {
@@ -163,7 +162,7 @@ public class ReflectorManager
                         factory.setValidating(false);
                         factory.setIgnoringElementContentWhitespace(false);
                         DocumentBuilder builder = factory.newDocumentBuilder();
-                        Document document = builder.parse(getFile("Reflector"));
+                        Document document = builder.parse(getFile("Reflector.xml"));
                         Element root = document.getDocumentElement();
                         ref_List = root.getElementsByTagName("Reflector");
                         for( int i=0; i<ref_List.getLength(); i++ ){
@@ -206,8 +205,10 @@ public class ReflectorManager
 									temp[inttemp]=courceid;
 								}
 							}
-							if(!flag)
-								return ip;
+							if(!(clientrole.equals("Instructor"))){
+                                                                if(!flag)
+                                                                        return ip;
+                                                        }
         	                                        // set existing load +1
                 	                                ip=element.getAttribute("IP");
                         	                        String newload=Integer.toString(load+1);
@@ -217,9 +218,9 @@ public class ReflectorManager
 								course = element.getAttribute("Instructor");
 		                                                String ins[]= course.split(",");
 
-								int kk=checkIns(courceid,ins);	
+								int kk=checkIns1(courceid,ins);	
 								attrNode = element.getAttributeNode("Instructor");
-								if(kk==0){
+								if(kk==1){
 									ins[0]=courceid+clientrole;
 								}else {
 									ins[1]=courceid+clientrole;
@@ -236,7 +237,7 @@ public class ReflectorManager
 							}
 							attrNode = element.getAttributeNode("Courses");
                                                         attrNode.setValue(temp[0]+","+temp[1]);
-	                                             	saveXML(document,getFile("Reflector"));
+	                                             	saveXML(document,getFile("Reflector.xml"));
                         	                        return ip;
 						}
 
@@ -256,7 +257,7 @@ public class ReflectorManager
                         factory.setValidating(false);
                         factory.setIgnoringElementContentWhitespace(false);
                         DocumentBuilder builder = factory.newDocumentBuilder();
-                        Document document = builder.parse(getFile("Reflector"));
+                        Document document = builder.parse(getFile("Reflector.xml"));
                         Element root = document.getDocumentElement();
                         ref_List = root.getElementsByTagName("Reflector");
 			if(ref_List.getLength()==0)
@@ -275,12 +276,10 @@ public class ReflectorManager
 				
 						attrNode = element.getAttributeNode("Instructor");
                                                 attrNode.setValue(courceid+"Instructor"+","+"notInstructor");
-						
-							
                                                 //set value of Cource
                                                 attrNode = element.getAttributeNode("Courses");
                                                 attrNode.setValue(courceid+","+"0");
-                                                saveXML(document,getFile("Reflector"));
+                                                saveXML(document,getFile("Reflector.xml"));
 						ip="current"+ip+","+"parent"+"";
                                                 return ip;
 					}
@@ -299,7 +298,7 @@ public class ReflectorManager
                         factory.setValidating(false);
                         factory.setIgnoringElementContentWhitespace(false);
                         DocumentBuilder builder = factory.newDocumentBuilder();
-                        Document document = builder.parse(getFile("Reflector"));
+                        Document document = builder.parse(getFile("Reflector.xml"));
                         Element root = document.getDocumentElement();
                         ref_List = root.getElementsByTagName("Reflector");
                         for( int i=0; i<ref_List.getLength(); i++ ){
@@ -332,7 +331,7 @@ public class ReflectorManager
 		try{			
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         		DocumentBuilder builder = factory.newDocumentBuilder();
-                        Document doc = builder.parse(getFile("Reflector"));
+                        Document doc = builder.parse(getFile("Reflector.xml"));
                         Element root = doc.getDocumentElement();
                       	ref_List = root.getElementsByTagName("Reflector");
                         Element peer = doc.createElement("Reflector");
@@ -343,7 +342,7 @@ public class ReflectorManager
                                 peer.setAttribute("Instructor","notInstructor"+","+"notInstructor");
 				peer.setAttribute("Courses","0"+","+"0");
                                 root.appendChild(peer);
-                                saveXML(doc,getFile("Reflector"));
+                                saveXML(doc,getFile("Reflector.xml"));
                     	}else{
                          	ServerLog.getController().Log("Error in insert value to xml file by any null value==>");
                    	}
@@ -364,7 +363,7 @@ public class ReflectorManager
 	                factory.setValidating(false);
         	        factory.setIgnoringElementContentWhitespace(false);
                 	DocumentBuilder builder = factory.newDocumentBuilder();
-	                Document document = builder.parse(getFile("Reflector"));
+	                Document document = builder.parse(getFile("Reflector.xml"));
         	        Element root = document.getDocumentElement();
                 	ref_List = root.getElementsByTagName("Reflector");
 			for( int i=0; i<ref_List.getLength(); i++ ){
@@ -378,7 +377,7 @@ public class ReflectorManager
                 	       	                       		Attr attrNode = element.getAttributeNode("Status");
 								if(!(attrNode.equals("Active")))
                                 	                		attrNode.setValue(status);
-                                        	        	saveXML(document,getFile("Reflector"));
+                                        	        	saveXML(document,getFile("Reflector.xml"));
 								return "Successfull";
         	                     			}
 						} else if((status.equals("getsingleins"))){
@@ -398,7 +397,7 @@ public class ReflectorManager
 								attrNode = element.getAttributeNode("Courses");
                                                 		attrNode.setValue(temp[0]+","+temp[1]);
                                 		                //	
-								saveXML(document,getFile("Reflector"));
+								saveXML(document,getFile("Reflector.xml"));
 								return ip;
 							}
 						} else if(status.equals("getins")){
@@ -416,7 +415,7 @@ public class ReflectorManager
 									attrNode = element.getAttributeNode("Courses");
                                                 			attrNode.setValue(temp[0]+","+temp[1]);
 									// 
-									saveXML(document,getFile("Reflector"));
+									saveXML(document,getFile("Reflector.xml"));
                                                                 	return ip;
                                                                 }
 							}
@@ -440,7 +439,7 @@ public class ReflectorManager
                         factory.setValidating(false);
                         factory.setIgnoringElementContentWhitespace(false);
                         DocumentBuilder builder = factory.newDocumentBuilder();
-                        Document document = builder.parse(getFile("Reflector"));
+                        Document document = builder.parse(getFile("Reflector.xml"));
                         Element root = document.getDocumentElement();
                         ref_List = root.getElementsByTagName("Reflector");
                         for( int i=0; i<ref_List.getLength(); i++ ){
@@ -454,7 +453,7 @@ public class ReflectorManager
                                         if(ip.equals(reflectorIP)){
                                                 synchronized (this) {
                                                         root.removeChild(element);
-                                                        saveXML(document,getFile("Reflector"));
+                                                        saveXML(document,getFile("Reflector.xml"));
                                                 }
 					 return "successfull" ;	
                                         }
@@ -484,7 +483,7 @@ public class ReflectorManager
                         factory.setValidating(false);
                         factory.setIgnoringElementContentWhitespace(false);
                         DocumentBuilder builder = factory.newDocumentBuilder();
-                        Document document = builder.parse(getFile("Reflector"));
+                        Document document = builder.parse(getFile("Reflector.xml"));
                         Element root = document.getDocumentElement();
                         ref_List = root.getElementsByTagName("Reflector");
                         for( int i=0; i<ref_List.getLength(); i++ ){
@@ -503,7 +502,7 @@ public class ReflectorManager
                                                         synchronized (this) {
                                                                 Attr attrNode = element.getAttributeNode("Load");
                                                                 attrNode.setValue(newload);
-                                                                saveXML(document,getFile("Reflector"));
+                                                                saveXML(document,getFile("Reflector.xml"));
                                                         }
                                                 }
                                         }
@@ -536,17 +535,28 @@ public class ReflectorManager
  		}
 		return kk;
 	}
-	private int  checkIns(String courceid,String []temp){
+	private int  checkIns1(String courceid,String []temp){
                 int kk=0;
-                if(!(temp[0].equals("notInstructor"))){
+                if(temp[0].equals("notInstructor")){
 			kk=1;
                 }
-		if(!(temp[1].equals("notInstructor"))){
+		if(temp[1].equals("notInstructor")){
                 	kk=2;
 		}
 		return kk;
 	}
-	
+
+	private int  checkIns(String courceid,String []temp){
+                int kk=0;
+                if(!(temp[0].equals("notInstructor"))){
+                        kk=1;
+                }
+                if(!(temp[1].equals("notInstructor"))){
+                        kk=2;
+                }
+                return kk;
+        }
+
 	private boolean checkRunningIns(String courceid,String []temp){
 		boolean flag=false;	
 		if(!(temp[0].equals("notInstructor"))){
@@ -560,7 +570,6 @@ public class ReflectorManager
 				flag=true;
 		         }
                 }
-
 		return flag;
         }
 	
@@ -569,9 +578,11 @@ public class ReflectorManager
          */
 
         private File getFile(String reflector){
-                File file=new File("/home/suneel/brihaspati_sync/webapps/brihaspatisync_iserver/"+reflector+".xml");
-                System.out.println("File    "+file);
-                if(file.exists()){
+                String Path="../webapps/brihaspatisync_iserver/"+reflector;
+                File existingFile=new File(Path);
+                Path = existingFile.getAbsolutePath();
+                File file=new File(Path);
+		if(file.exists()){
                         return file;
                 }else{
                         try {
@@ -589,7 +600,4 @@ public class ReflectorManager
                         return file;
                 }
         }
-
-
-
 }//end class

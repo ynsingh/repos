@@ -73,7 +73,9 @@ public class ProcessRequest extends HttpServlet {
 		if(set==null){
 			try{
 				set=new Torque();
-				set.init("/home/suneel/brihaspati_sync/webapps/brihaspatisync_iserver/Torque.properties");
+				ServletContext context = getServletContext();
+                                String tempFileName =context.getRealPath("Torque.properties");
+                                set.init(tempFileName);
 		      		dbTimer=new Timer(true);
                		}catch(Exception dberror){ServerLog.getController().Log("Error in database connection "+dberror.getMessage());}
 		}
@@ -333,10 +335,14 @@ public class ProcessRequest extends HttpServlet {
 		else if(reqType.equals("Permissions")){
                        try{
 				String ipAddress=InetAddress.getByName(request.getRemoteAddr()).toString();
+				ServerLog.getController().Log("---------------------------->\n\n\n\n"+ipAddress);
 				String lectID=request.getParameter("lectID");
 				String userAction=request.getParameter("userAction");
+				ServerLog.getController().Log("---------------------------->\n\n\n\n"+userAction);
 				String login=request.getParameter("loginName");
+				login=login.replaceAll("loginName=","");
 				message=PeerManager.getController().updateStatus(userAction,login,lectID);
+				ServerLog.getController().Log("---------------------------->\n\n\n\n"+message);
 				response.setContentLength(message.length());
                                 out.println(message);
                                 out.flush();
@@ -493,7 +499,7 @@ public class ProcessRequest extends HttpServlet {
                            		result.addElement(resultofLecture.getSessiondate().toString());
                            		result.addElement((String)resultofLecture.getSessiontime());
                            		result.addElement((String)resultofLecture.getDuration());
-                           		result.addElement((String)resultofLecture.getRepeatd());
+                           		result.addElement((String)resultofLecture.getRepeatlec());
                            		result.addElement((String)resultofLecture.getFortime());
                        		}//else
              	} catch(Exception ex) { ServerLog.getController().Log("Error in selection of session list==>" +ex); }
@@ -574,7 +580,7 @@ public class ProcessRequest extends HttpServlet {
                                         crit.add(LecturePeer.SESSIONDATE,lecDate);
                                         crit.add(LecturePeer.SESSIONTIME,(String)lectureInfo.elementAt(10));
                                         crit.add(LecturePeer.DURATION,(String)lectureInfo.elementAt(11));
-                                        crit.add(LecturePeer.REPEATD,(String)lectureInfo.elementAt(12));
+                                        crit.add(LecturePeer.REPEATLEC,(String)lectureInfo.elementAt(12));
                                         crit.add(LecturePeer.FORTIME,(String)lectureInfo.elementAt(13));
                                         LecturePeer.doUpdate(crit);
 					
@@ -590,7 +596,7 @@ public class ProcessRequest extends HttpServlet {
                 	                crit.add(LecturePeer.SESSIONDATE,lecDate);
                         	        crit.add(LecturePeer.SESSIONTIME,(String)lectureInfo.elementAt(10));
                                 	crit.add(LecturePeer.DURATION,(String)lectureInfo.elementAt(11));
-	                                crit.add(LecturePeer.REPEATD,(String)lectureInfo.elementAt(12));
+	                                crit.add(LecturePeer.REPEATLEC,(String)lectureInfo.elementAt(12));
         	                        crit.add(LecturePeer.FORTIME,(String)lectureInfo.elementAt(13));
                 	                LecturePeer.doInsert(crit);
 				}
@@ -634,7 +640,7 @@ public class ProcessRequest extends HttpServlet {
                                                 crit.add(LecturePeer.SESSIONDATE,lecDate2);
                                         crit.add(LecturePeer.SESSIONTIME,(String)lectureInfo.elementAt(10));
                                         crit.add(LecturePeer.DURATION,(String)lectureInfo.elementAt(11));
-                                        crit.add(LecturePeer.REPEATD,(String)lectureInfo.elementAt(12));
+                                        crit.add(LecturePeer.REPEATLEC,(String)lectureInfo.elementAt(12));
                                         crit.add(LecturePeer.FORTIME,(String)lectureInfo.elementAt(13));
 					LecturePeer.doInsert(crit);
                                 }catch(Exception e) {

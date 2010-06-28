@@ -243,7 +243,7 @@
            <column name="SESSIONDATE" required="true" type="DATE"/>
            <column name="SESSIONTIME" required="true" size="255" type="VARCHAR"/>
            <column name="DURATION" size="255" type="VARCHAR"/>
-           <column name="REPEATD"  size="255" type="VARCHAR"/>
+           <column name="REPEATLEC"  size="255" type="VARCHAR"/>
            <column name="FORTIME"  size="255" type="VARCHAR"/>
 </table>
 <table name="SessionAddress" idMethod="idbroker">

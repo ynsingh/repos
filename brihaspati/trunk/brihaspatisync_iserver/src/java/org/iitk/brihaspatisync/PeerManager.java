@@ -48,7 +48,11 @@ public class PeerManager
 	 */
 	
 	private File getFile(String lectureID){
-		File file=new File("/home/suneel/brihaspati_sync/webapps/brihaspatisync_iserver/"+lectureID+".xml");
+		String Path="../webapps/brihaspatisync_iserver/"+lectureID+".xml";
+                File existingFile=new File(Path);
+                Path = existingFile.getAbsolutePath();
+                File file=new File(Path);
+		
                 if(file.exists()){
                        	return file;
 		}else{
@@ -105,6 +109,7 @@ public class PeerManager
 		Element element=null;
                 Node node=null;
                 String user="";
+		ServerLog.getController().Log("action-----> "+action+" userName ---->  "+userName+" LectureID "+LectureID);
 		try {		
 			DocumentBuilderFactory factory =DocumentBuilderFactory.newInstance();
 	                factory.setValidating(false);
@@ -122,9 +127,10 @@ public class PeerManager
 					/**
         	                         * update Reflector of Parent Peer
                 	                 */
-                        	        
-					if(user.equals(userName)){
-                	               		synchronized (this) {
+					ServerLog.getController().Log("user===========>  "+user+" userName ====  "+userName);
+                        	        if(user.equals(userName)){
+						ServerLog.getController().Log("Iner loop  userName @@@@@  "+userName);
+						synchronized (this) {
                         	                       	Attr attrNode = element.getAttributeNode("Status");
                                 	                attrNode.setValue(action);
                                         	        saveXML(document,getFile(LectureID));
