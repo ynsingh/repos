@@ -1,3 +1,5 @@
+import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
+
 class GrantPeriodController {
     
     def index = { redirect(action:list,params:params) }
@@ -6,6 +8,11 @@ class GrantPeriodController {
     def allowedMethods = [delete:'POST', save:'POST', update:'POST']
 
     def list = {
+    		
+    	GrailsHttpSession gh=getSession()
+        gh.removeValue("Help")
+       		//putting help pages in session
+       	gh.putValue("Help","Grant_Period_List.htm")	
         if(!params.max) params.max = 10
         
         def grantPeriodService = new GrantPeriodService()
@@ -73,8 +80,13 @@ class GrantPeriodController {
     }
 
     def create = {
-        def grantPeriodInstance = new GrantPeriod()
+    		GrailsHttpSession gh=getSession()
+         def grantPeriodInstance = new GrantPeriod()
         
+        
+        	gh.removeValue("Help")
+    		//putting help pages in session
+    		gh.putValue("Help","Create_Grant_Period.htm")	
         grantPeriodInstance.properties = params
         return ['grantPeriodInstance':grantPeriodInstance]
     }

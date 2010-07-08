@@ -149,6 +149,9 @@ class GrantAllocationController extends GmsController {
     def fundAllot = 
     {
     		GrailsHttpSession gh=getSession()
+    		gh.removeValue("Help")
+		//putting help pages in session
+		gh.putValue("Help","Fund_Allocation.htm")
         	gh.putValue("fromUrL", "fundAllot");
         	gh.putValue("fromID", params.id);
         	
@@ -217,6 +220,9 @@ class GrantAllocationController extends GmsController {
     		
     	GrailsHttpSession gh=getSession()
     		
+		gh.removeValue("Help")
+	//putting help pages in session
+	gh.putValue("Help","SubProject_Allocation.htm")
     	gh.putValue("fromUrL", "subGrantAllot");
     	gh.putValue("fromID", params.id);
     	def grantAllocationService = new GrantAllocationService()
@@ -272,7 +278,8 @@ class GrantAllocationController extends GmsController {
     def subGrantAllotExt = {
     		
     		GrailsHttpSession gh=getSession()
-    		
+    		gh.removeValue("Help")
+    		gh.putValue("Help","Grant_Alot_Ext_Agency.htm")
     		gh.putValue("fromUrL", "subGrantAllotExt");
     		gh.putValue("fromID", params.id);
         def grantAllocationInstance = new GrantAllocation()
@@ -312,6 +319,8 @@ class GrantAllocationController extends GmsController {
     	GrailsHttpSession gh=getSession()
     	gh.putValue("fromUrL", "subGrantAllotExt");
     	gh.putValue("fromID", params.id);
+    	gh.removeValue("Help");
+    	gh.putValue("Help","Grant_Alot_Ext_Agency.htm");
     	
         def grantAllocationInstance = new GrantAllocation()
         grantAllocationInstance.properties = params

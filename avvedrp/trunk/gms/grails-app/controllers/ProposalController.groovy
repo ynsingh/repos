@@ -15,6 +15,7 @@ class ProposalController {
     def show = 
     {
         def proposalInstance = Proposal.get( params.id )
+        GrailsHttpSession gh = getSession()
 
         if(!proposalInstance) 
         {
@@ -87,8 +88,11 @@ class ProposalController {
     	
         def proposalInstance = new Proposal()
         proposalInstance.properties = params
-        
-        println "+++++++++++++++++++++paramscreate++++++++++++" + params
+        GrailsHttpSession gh = getSession()
+         
+        gh.removeValue("Help")
+    		//putting help pages in session
+    	gh.putValue("Help","Create_Proposal.htm")       
         proposalInstance.notification=Notification.get(params.id)
         def proposalInstanceCheck = Proposal.findAll("from Proposal P where P.notification="+params.id+" and P.lockedYN='N'") 
         println "proposalInstanceCheck "+proposalInstanceCheck

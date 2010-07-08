@@ -2,6 +2,7 @@ import java.text.*;
 import java.util.*;
 import ConvertToIndainRS
 import grails.converters.*
+import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 class GrantAllocationSplitController extends GmsController  {
     
     def index = { redirect(action:list,params:params) }
@@ -13,7 +14,10 @@ class GrantAllocationSplitController extends GmsController  {
     		def grantAllocationSplitService = new GrantAllocationSplitService()
     		def grantAllocationService = new GrantAllocationService()
             def grantAllocationSplitInstance = new GrantAllocationSplit()
-    		
+    		GrailsHttpSession gh=getSession()
+    		gh.removeValue("Help")
+		//putting help pages in session
+		gh.putValue("Help","Headwise_Allocation.htm")
     		
     		
             def projectsInstance = Projects.get(new Integer(params.id))

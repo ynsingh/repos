@@ -153,7 +153,7 @@ WHERE
 	AND YEAR(GES.date_of_expense) = STR_TO_DATE($P{reportDate},'%d/%M/%Y')
 	AND GS.account_head_id = AH.id
 	AND GES.grant_allocation_split_id = GS.id
-	AND GR.grant_allocation_split_id = GES.grant_allocation_split_id
+	-- AND GR.grant_allocation_split_id = GES.grant_allocation_split_id
 	AND GS.projects_id = P.id
 	
 GROUP BY AH.id]]></queryString>

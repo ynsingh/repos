@@ -10,6 +10,13 @@ class NotificationsEmailsController {
     		
     		//def notificationsEmailsInstanceList
     		def partyInstanceList
+    		GrailsHttpSession gh = getSession()
+    		
+    	    
+    		
+            gh.removeValue("Help")
+           		//putting help pages in session
+           	gh.putValue("Help","Notification_Emails.htm")
         if(!params.max) params.max = 10
         println "iddd="+params.id
         
@@ -146,6 +153,12 @@ class NotificationsEmailsController {
     def partyNotificationsList = {
     		println "hii party"
     		GrailsHttpSession gh = getSession()
+    		
+    
+		
+        gh.removeValue("Help")
+       		//putting help pages in session
+       	gh.putValue("Help","Party_Notifications_List.htm")
             if(!params.max) params.max = 10
             def notificationsEmailsService = new NotificationsEmailsService()
     		println "party=="+gh.getValue("Party")
@@ -158,6 +171,9 @@ class NotificationsEmailsController {
     		println "comonnnnnnnnnnn=="+params.id
     		println "show party"
     		GrailsHttpSession gh = getSession()
+    		gh.removeValue("Help")
+       		//putting help pages in session
+       	gh.putValue("Help","Show_Party_Notifications.htm")
     		 def notificationsInstance = Notification.get( params.id )
     		 println "hii id="+notificationsInstance
     	        if(!notificationsInstance) {

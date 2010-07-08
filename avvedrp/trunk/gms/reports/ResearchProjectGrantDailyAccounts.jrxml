@@ -25,32 +25,39 @@
 
 	<parameter name="reportDate" isForPrompting="true" class="java.lang.String"/>
 	<parameter name="projectID" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="reportDateTo" isForPrompting="true" class="java.lang.String"/>
 	<queryString><![CDATA[SELECT 
 	P.name AS ProjectTitle,
 	P.code AS IDNo,
-	P.principal_investigator_name AS PI,
+	
+	(SELECT I.name FROM investigator I,projectspimap PMAP WHERE I.id=PMAP.investigator_id AND PMAP.projects_id=P.id AND PMAP.role='PI') AS PI,
 	CONCAT(YEAR(P.project_start_date)," - ",YEAR(P.project_end_date)) AS ProjectPeriod,
 	DATE_FORMAT(DATE(GE.date_of_expense),'%d/%m/%Y') AS DATE,
+	PD.department_code AS FundingDepartment,
 	AH.name AS SanctionedHead,
-	GS.amount AS FundsReceived,
+	SUM(GR.amount) AS FundsReceived,
 	GE.expense_amount AS Expendeture,
 	GA.sanction_order_no AS Sancno,
 	GR.reference_id AS Recno,
 		(SELECT 
 		SUM(total) 
 	FROM (SELECT 
-		grant_allocation_split.amount AS total
+		grant_receipt.amount AS total
 	FROM 
 		projects ,
-		grant_allocation_split,grant_expense,grant_receipt,	account_heads 
-	WHERE 
-		DATE(grant_expense.date_of_expense) = STR_TO_DATE($P{reportDate},'%d/%M/%Y')
+		grant_allocation_split,grant_expense,grant_receipt,account_heads,grant_allocation
+	WHERE   
+	        projects.id= $P{projectID} 
+		AND DATE(grant_expense.date_of_expense) BETWEEN STR_TO_DATE($P{reportDate},'%d/%M/%Y') AND STR_TO_DATE($P{reportDateTo},'%d/%M/%Y')
 		AND grant_allocation_split.account_head_id = account_heads.id
-		AND grant_expense.grant_allocation_split_id = grant_allocation_split.id
-		-- AND grant_receipt.grant_allocation_split_id = grant_expense.grant_allocation_split_id
+		AND  grant_expense.grant_allocation_split_id = grant_allocation_split.id
+		 AND grant_receipt.grant_allocation_split_id = grant_allocation_split.id
+		 AND grant_receipt.grant_allocation_id=grant_allocation.id
+		 AND grant_allocation.projects_id=projects.id
+		 AND grant_receipt.grant_allocation_split_id = grant_expense.grant_allocation_split_id
 		AND grant_allocation_split.projects_id = projects.id
 	GROUP BY 
-		grant_allocation_split.account_head_id) AS TotalFundsReceived) AS TotalFundsReceived,
+		grant_receipt.id) AS TotalFundsReceived) AS TotalFundsReceived,
 	YEAR(CURDATE()) AS FinancialYear
 
 
@@ -60,25 +67,31 @@ FROM
 	grant_allocation_split GS,
 	grant_expense GE,
 	grant_receipt GR,
-	grant_allocation GA
+	grant_allocation GA,
+	party_department PD,
+	project_department_map PM
 WHERE 
 	P.id=$P{projectID}
-	AND DATE(GE.date_of_expense) = STR_TO_DATE($P{reportDate},'%d/%M/%Y')
+	AND DATE(GE.date_of_expense) BETWEEN STR_TO_DATE($P{reportDate},'%d/%M/%Y') AND STR_TO_DATE($P{reportDateTo},'%d/%M/%Y')
 	AND GS.account_head_id = AH.id
 	AND GE.grant_allocation_split_id = GS.id
-	-- AND GR.grant_allocation_split_id = GE.grant_allocation_split_id
+	AND GR.grant_allocation_split_id=GS.id
+	AND GR.grant_allocation_split_id = GE.grant_allocation_split_id
 	AND GS.projects_id = P.id
 	AND GA.id=GE.grant_allocation_id
-	-- AND GA.id=GS.grant_allocation_id
+	AND GA.id=GR.grant_allocation_id
 	AND GA.projects_id=P.id
+	AND PM.party_department_id=PD.id
+	AND PM.projects_id=$P{projectID}
 	
-GROUP BY GE.id,AH.id]]></queryString>
+GROUP BY GE.id]]></queryString>
 
 	<field name="ProjectTitle" class="java.lang.String"/>
 	<field name="IDNo" class="java.lang.String"/>
 	<field name="PI" class="java.lang.String"/>
 	<field name="ProjectPeriod" class="java.lang.String"/>
 	<field name="DATE" class="java.lang.String"/>
+	<field name="FundingDepartment" class="java.lang.String"/>
 	<field name="SanctionedHead" class="java.lang.String"/>
 	<field name="FundsReceived" class="java.lang.Double"/>
 	<field name="Expendeture" class="java.lang.Double"/>
@@ -697,6 +710,28 @@ GROUP BY GE.id,AH.id]]></queryString>
 						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{Recno}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="150"
+						y="100"
+						width="517"
+						height="20"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{FundingDepartment}]]></textFieldExpression>
 				</textField>
 			</band>
 		</pageHeader>
@@ -1381,7 +1416,7 @@ GROUP BY GE.id,AH.id]]></queryString>
 						key="textField"
 						stretchType="NoStretch"
 						positionType="FixRelativeToTop"
-						isPrintRepeatedValues="true"
+						isPrintRepeatedValues="false"
 						isRemoveLineWhenBlank="false"
 						isPrintInFirstWholeBand="false"
 						isPrintWhenDetailOverflows="false"/>

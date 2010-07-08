@@ -6,9 +6,9 @@
 		 columnCount="1"
 		 printOrder="Vertical"
 		 orientation="Portrait"
-		 pageWidth="595"
+		 pageWidth="708"
 		 pageHeight="842"
-		 columnWidth="535"
+		 columnWidth="648"
 		 columnSpacing="0"
 		 leftMargin="30"
 		 rightMargin="30"
@@ -86,10 +86,10 @@ order by pa.id]]></queryString>
 				<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="238"
-						y="6"
-						width="94"
-						height="23"
+						x="351"
+						y="8"
+						width="89"
+						height="19"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="textField-7"
@@ -108,10 +108,10 @@ order by pa.id]]></queryString>
 				<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="343"
-						y="6"
-						width="92"
-						height="23"
+						x="447"
+						y="8"
+						width="89"
+						height="19"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="textField-8"
@@ -130,9 +130,9 @@ order by pa.id]]></queryString>
 				<line direction="BottomUp">
 					<reportElement
 						mode="Opaque"
-						x="2"
+						x="4"
 						y="1"
-						width="531"
+						width="638"
 						height="0"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -149,10 +149,10 @@ order by pa.id]]></queryString>
 				<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="425"
-						y="6"
-						width="93"
-						height="23"
+						x="551"
+						y="8"
+						width="88"
+						height="19"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="textField-14"
@@ -171,7 +171,7 @@ order by pa.id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="108"
+						x="129"
 						y="8"
 						width="123"
 						height="19"
@@ -226,9 +226,9 @@ order by pa.id]]></queryString>
 				<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="238"
-						y="5"
-						width="101"
+						x="351"
+						y="6"
+						width="89"
 						height="23"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -248,9 +248,9 @@ order by pa.id]]></queryString>
 				<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="343"
-						y="5"
-						width="89"
+						x="447"
+						y="6"
+						width="91"
 						height="23"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -270,8 +270,8 @@ order by pa.id]]></queryString>
 				<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="436"
-						y="5"
+						x="551"
+						y="6"
 						width="88"
 						height="23"
 						forecolor="#000000"
@@ -292,9 +292,9 @@ order by pa.id]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="1"
+						x="4"
 						y="5"
-						width="533"
+						width="638"
 						height="0"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -311,7 +311,7 @@ order by pa.id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="107"
+						x="129"
 						y="6"
 						width="123"
 						height="23"
@@ -342,7 +342,7 @@ order by pa.id]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="53"
+						x="105"
 						y="47"
 						width="409"
 						height="31"
@@ -365,16 +365,16 @@ order by pa.id]]></queryString>
 		</title>
 		<pageHeader>
 			<band height="67"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="18"
-						y="7"
-						width="509"
-						height="21"
+						x="9"
+						y="9"
+						width="88"
+						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="textField-2"
+						key="staticText-9"
 						stretchType="NoStretch"
 						positionType="FixRelativeToTop"
 						isPrintRepeatedValues="true"
@@ -385,18 +385,40 @@ order by pa.id]]></queryString>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="12" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Project Name:             "+$F{MainProjectName}]]></textFieldExpression>
+				<text><![CDATA[Project Name:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="100"
+						y="9"
+						width="544"
+						height="20"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{MainProjectName}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="17"
-						y="35"
-						width="353"
-						height="21"
+						x="9"
+						y="40"
+						width="88"
+						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="textField-3"
+						key="staticText-10"
 						stretchType="NoStretch"
 						positionType="FixRelativeToTop"
 						isPrintRepeatedValues="true"
@@ -407,7 +429,29 @@ order by pa.id]]></queryString>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="12" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Financial Year:            "+$F{grantPeriod}]]></textFieldExpression>
+				<text><![CDATA[Financial Year:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="100"
+						y="40"
+						width="543"
+						height="20"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{grantPeriod}]]></textFieldExpression>
 				</textField>
 			</band>
 		</pageHeader>
@@ -438,8 +482,8 @@ order by pa.id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="258"
-						y="5"
+						x="351"
+						y="4"
 						width="89"
 						height="23"
 						forecolor="#000000"
@@ -460,8 +504,8 @@ order by pa.id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="363"
-						y="2"
+						x="455"
+						y="4"
 						width="91"
 						height="23"
 						forecolor="#000000"
@@ -482,9 +526,9 @@ order by pa.id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="206"
-						y="5"
-						width="123"
+						x="263"
+						y="4"
+						width="79"
 						height="23"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -504,9 +548,9 @@ order by pa.id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="468"
+						x="574"
 						y="4"
-						width="65"
+						width="57"
 						height="23"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -528,7 +572,7 @@ order by pa.id]]></queryString>
 						mode="Opaque"
 						x="4"
 						y="29"
-						width="531"
+						width="638"
 						height="0"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -546,7 +590,7 @@ order by pa.id]]></queryString>
 					<reportElement
 						mode="Transparent"
 						x="144"
-						y="6"
+						y="4"
 						width="78"
 						height="23"
 						forecolor="#000000"
@@ -572,7 +616,7 @@ order by pa.id]]></queryString>
 					<reportElement
 						mode="Transparent"
 						x="6"
-						y="6"
+						y="5"
 						width="145"
 						height="15"
 						forecolor="#000000"
@@ -593,9 +637,9 @@ order by pa.id]]></queryString>
 				<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="238"
+						x="351"
 						y="5"
-						width="94"
+						width="89"
 						height="15"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -615,9 +659,9 @@ order by pa.id]]></queryString>
 				<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="343"
+						x="447"
 						y="5"
-						width="69"
+						width="91"
 						height="15"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -637,10 +681,10 @@ order by pa.id]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="206"
-						y="7"
-						width="100"
-						height="14"
+						x="263"
+						y="5"
+						width="79"
+						height="15"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="textField"
@@ -682,16 +726,16 @@ order by pa.id]]></queryString>
 		</detail>
 		<columnFooter>
 			<band height="30"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="194"
-						y="6"
-						width="311"
-						height="18"
+						x="213"
+						y="5"
+						width="69"
+						height="19"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="textField-11"
+						key="staticText-11"
 						stretchType="NoStretch"
 						positionType="FixRelativeToTop"
 						isPrintRepeatedValues="true"
@@ -702,7 +746,29 @@ order by pa.id]]></queryString>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Generated on "+new Date()]]></textFieldExpression>
+				<text><![CDATA[Generated on:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="284"
+						y="5"
+						width="78"
+						height="19"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-19"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
 				</textField>
 			</band>
 		</columnFooter>

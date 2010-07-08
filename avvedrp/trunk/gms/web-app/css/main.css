@@ -1,3 +1,50 @@
+/* the overlayed element */
+.apple_overlay {
+	
+	/* initially overlay is hidden */
+	display:none;
+	
+	/* growing background image */
+	background-image:url(../img/overlay/white.png);
+	
+	/* 
+		width after the growing animation finishes
+		height is automatically calculated
+	*/
+	width:500px;		
+	
+	/* some padding to layout nested elements nicely  */
+	padding:35px;
+
+	/* a little styling */	
+	font-size:11px;
+}
+
+/* default close button positioned on upper right corner */
+.apple_overlay div.close {
+	background-image:url(../images/close.png);
+	position:absolute; right:5px; top:5px;
+	cursor:pointer;
+	height:35px;
+	width:35px;
+}
+
+
+
+/* use a semi-transparent image for the overlay */
+#overlay {
+	background-image:url(../images/transparent.png);
+	color:#000000;
+	height:440px;
+}
+
+/* container for external content. uses vertical scrollbar, if needed */
+.contentWrap {
+	height:410px;
+	//overflow-y:auto;
+}
+/*Modular Help End*/
+
 html * {
     margin: 0;
     padding: 0; 
@@ -492,7 +539,6 @@ background-color: #FFFFFF
     	text-align: left;
 	color: #234a64
 }
-
 
 /* Inner Banner Start */
 .innnerBanner {

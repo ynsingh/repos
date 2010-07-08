@@ -1,3 +1,6 @@
+import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
+
+
 class PartyGrantAgencyController {
     
     def index = { redirect(action:list,params:params) }
@@ -6,6 +9,11 @@ class PartyGrantAgencyController {
     def allowedMethods = [delete:'POST', save:'POST', update:'POST']
 
     def list = {
+    		
+    	GrailsHttpSession gh=getSession()
+        gh.removeValue("Help")
+        //putting help pages in session
+        gh.putValue("Help","Grant_Agency_List.htm")		
         if(!params.max) params.max = 10
         params.partyType = "GA"
         String subQuery ="";
@@ -83,6 +91,13 @@ class PartyGrantAgencyController {
 
     def create = {
         def partyInstance = new Party()
+        GrailsHttpSession gh=getSession()
+        
+       
+       
+       	gh.removeValue("Help")
+   		//putting help pages in session
+   		gh.putValue("Help","Create_Grant_Agency.htm")
         return ['partyInstance':partyInstance]
     }
 

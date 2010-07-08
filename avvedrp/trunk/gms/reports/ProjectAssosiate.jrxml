@@ -27,21 +27,22 @@
 	<parameter name="projectID" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="partyID" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="periodID" isForPrompting="false" class="java.lang.String"/>
-	<queryString><![CDATA[select pr.name as ProjectName,pr.code as ProjectCode,pag.code as Granter,pa.code as Institution,
-(SELECT I.name FROM investigator I WHERE I.id=pr.principal_investigator_name_id) as ProjectMgr,ga.amount_allocated as AmtAllocated,
+	<queryString><![CDATA[SELECT pr.name AS ProjectName,pr.code AS ProjectCode,pag.code AS Granter,pa.code AS Institution,
+ga.amount_allocated AS AmtAllocated,
+(SELECT I.name FROM investigator I,projectspimap PMAP WHERE I.id=PMAP.investigator_id AND PMAP.projects_id=pr.id AND PMAP.role='PI') AS ProjectMgr,
 
-(select  sum(grFR.amount)  from grant_allocation gaFR
-left join grant_receipt grFR on (grFR.grant_allocation_id=gaFR.id)
-where gaFR.id=ga.id group by gaFR.id) as FundRcvd,
+(SELECT  SUM(grFR.amount)  FROM grant_allocation gaFR
+LEFT JOIN grant_receipt grFR ON (grFR.grant_allocation_id=gaFR.id)
+WHERE gaFR.id=ga.id GROUP BY gaFR.id) AS FundRcvd,
 
-(select  sum(geFE.expense_amount)  from grant_allocation gaFE
-left join grant_expense geFE on (geFE.grant_allocation_id=gaFE.id)
-where gaFE.id=ga.id group by gaFE.id) as FundExp
+(SELECT  SUM(geFE.expense_amount)  FROM grant_allocation gaFE
+LEFT JOIN grant_expense geFE ON (geFE.grant_allocation_id=gaFE.id)
+WHERE gaFE.id=ga.id GROUP BY gaFE.id) AS FundExp
 
-from projects pr,party pa,grant_allocation ga 
-left join party pag on (pag.id = ga.granter_id)
-where pr.id = ga.projects_id and pa.id = ga.party_id 
-and pa.id = $P{partyID} order by pr.name]]></queryString>
+FROM projects pr,party pa,grant_allocation ga 
+LEFT JOIN party pag ON (pag.id = ga.granter_id)
+WHERE pr.id = ga.projects_id AND pa.id = ga.party_id 
+AND pa.id = $P{partyID} ORDER BY pr.name]]></queryString>
 
 	<field name="ProjectName" class="java.lang.String"/>
 	<field name="ProjectCode" class="java.lang.String"/>
@@ -316,7 +317,7 @@ and pa.id = $P{partyID} order by pr.name]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="394"
+						x="391"
 						y="4"
 						width="82"
 						height="23"
@@ -648,16 +649,16 @@ and pa.id = $P{partyID} order by pr.name]]></queryString>
 		</detail>
 		<columnFooter>
 			<band height="27"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="190"
-						y="8"
-						width="428"
-						height="18"
+						x="292"
+						y="6"
+						width="67"
+						height="20"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="textField-11"
+						key="staticText-20"
 						stretchType="NoStretch"
 						positionType="FixRelativeToTop"
 						isPrintRepeatedValues="true"
@@ -668,7 +669,29 @@ and pa.id = $P{partyID} order by pr.name]]></queryString>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Generated on "+new Date()]]></textFieldExpression>
+				<text><![CDATA[Generated on]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="360"
+						y="6"
+						width="54"
+						height="20"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-24"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
 				</textField>
 			</band>
 		</columnFooter>

@@ -12,6 +12,9 @@ class NotificationController {
             if(!params.max) params.max = 10
             String subQuery ="";
            GrailsHttpSession gh=getSession()
+           gh.removeValue("Help")
+       		//putting help pages in session
+       	gh.putValue("Help","Notification_List.htm")
             if(params.sort != null && !params.sort.equals(""))
             	subQuery=" order by N."+params.sort
             if(params.order != null && !params.order.equals(""))
@@ -111,8 +114,12 @@ class NotificationController {
 
     def create = {
         def notificationInstance = new Notification()
-        notificationInstance.properties = params
         GrailsHttpSession gh=getSession()
+        gh.removeValue("Help")
+    		//putting help pages in session
+    	gh.putValue("Help","Create_Notification.htm")
+        notificationInstance.properties = params
+       
 		def grantAllocationWithprojectsInstanceList
 		def dataSecurityService = new DataSecurityService()
         grantAllocationWithprojectsInstanceList=dataSecurityService.getProjectsFromGrantAllocationForLoginUser(gh.getValue("PartyID"))

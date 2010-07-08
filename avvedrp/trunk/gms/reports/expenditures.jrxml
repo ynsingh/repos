@@ -27,7 +27,7 @@
 	<parameter name="partyID" isForPrompting="true" class="java.lang.String"/>
 	<queryString><![CDATA[SELECT 
       P.name AS ProjectTitle,
-      P.principal_investigator_name AS PI,
+      (SELECT I.name FROM investigator I,projectspimap PMAP WHERE I.id=PMAP.investigator_id AND PMAP.projects_id=P.id AND PMAP.role='PI') AS PI,
       PD.name AS Department,
       PRT.type AS ProjectType,
       (SELECT PY.name_of_the_institution FROM party PY,grant_allocation G WHERE PY.id=G.granter_id AND G.projects_id=GA.projects_id AND P.id=G.projects_id GROUP BY G.projects_id)AS FundingAgency,
@@ -192,72 +192,6 @@ GROUP BY PM.projects_id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="494"
-						y="132"
-						width="45"
-						height="15"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="staticText-4"
-						stretchType="NoStretch"
-						positionType="FixRelativeToTop"
-						isPrintRepeatedValues="true"
-						isRemoveLineWhenBlank="false"
-						isPrintInFirstWholeBand="false"
-						isPrintWhenDetailOverflows="false"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<text><![CDATA[Date]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						mode="Transparent"
-						x="558"
-						y="132"
-						width="39"
-						height="15"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="staticText-5"
-						stretchType="NoStretch"
-						positionType="FixRelativeToTop"
-						isPrintRepeatedValues="true"
-						isRemoveLineWhenBlank="false"
-						isPrintInFirstWholeBand="false"
-						isPrintWhenDetailOverflows="false"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<text><![CDATA[Month]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						mode="Transparent"
-						x="611"
-						y="132"
-						width="31"
-						height="15"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="staticText-6"
-						stretchType="NoStretch"
-						positionType="FixRelativeToTop"
-						isPrintRepeatedValues="true"
-						isRemoveLineWhenBlank="false"
-						isPrintInFirstWholeBand="false"
-						isPrintWhenDetailOverflows="false"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<text><![CDATA[Year]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						mode="Transparent"
 						x="174"
 						y="154"
 						width="313"
@@ -280,10 +214,10 @@ GROUP BY PM.projects_id]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="510"
-						y="154"
-						width="122"
-						height="18"
+						x="374"
+						y="148"
+						width="72"
+						height="15"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="textField"
@@ -1123,9 +1057,9 @@ Balance]]></text>
 				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="68"
+						x="66"
 						y="1"
-						width="93"
+						width="98"
 						height="20"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1189,9 +1123,9 @@ Balance]]></text>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="334"
+						x="332"
 						y="1"
-						width="55"
+						width="61"
 						height="20"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1211,9 +1145,9 @@ Balance]]></text>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="397"
+						x="395"
 						y="1"
-						width="59"
+						width="63"
 						height="20"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1233,9 +1167,9 @@ Balance]]></text>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="595"
+						x="593"
 						y="1"
-						width="64"
+						width="68"
 						height="20"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1255,9 +1189,9 @@ Balance]]></text>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="728"
+						x="725"
 						y="1"
-						width="72"
+						width="77"
 						height="20"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1277,9 +1211,9 @@ Balance]]></text>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="463"
+						x="461"
 						y="1"
-						width="61"
+						width="64"
 						height="20"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1299,9 +1233,9 @@ Balance]]></text>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="529"
+						x="527"
 						y="1"
-						width="59"
+						width="63"
 						height="20"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1321,9 +1255,9 @@ Balance]]></text>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="664"
+						x="662"
 						y="1"
-						width="57"
+						width="62"
 						height="20"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1343,9 +1277,9 @@ Balance]]></text>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="807"
+						x="804"
 						y="1"
-						width="57"
+						width="63"
 						height="19"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1365,9 +1299,9 @@ Balance]]></text>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="8"
+						x="6"
 						y="1"
-						width="54"
+						width="58"
 						height="20"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1791,9 +1725,9 @@ Balance]]></text>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="399"
+						x="395"
 						y="3"
-						width="56"
+						width="64"
 						height="16"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1835,9 +1769,9 @@ Balance]]></text>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="729"
+						x="727"
 						y="4"
-						width="71"
+						width="75"
 						height="14"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1859,7 +1793,7 @@ Balance]]></text>
 						mode="Transparent"
 						x="662"
 						y="4"
-						width="61"
+						width="63"
 						height="13"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1881,7 +1815,7 @@ Balance]]></text>
 						mode="Transparent"
 						x="462"
 						y="4"
-						width="61"
+						width="63"
 						height="14"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1901,9 +1835,9 @@ Balance]]></text>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="531"
+						x="528"
 						y="4"
-						width="56"
+						width="62"
 						height="13"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1925,7 +1859,7 @@ Balance]]></text>
 						mode="Transparent"
 						x="804"
 						y="4"
-						width="61"
+						width="63"
 						height="12"
 						forecolor="#000000"
 						backcolor="#FFFFFF"

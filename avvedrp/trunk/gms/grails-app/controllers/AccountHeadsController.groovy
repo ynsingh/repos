@@ -16,7 +16,9 @@ class AccountHeadsController {
         	subQuery=" order by AH."+params.sort
         if(params.order != null && !params.order.equals(""))
         	subQuery =subQuery+" "+params.order
-        	
+        	gh.removeValue("Help")
+    		//putting help pages in session
+    		gh.putValue("Help","Account_Head_List.htm")	
     	def accountHeadsInstanceList
        	//if(gh.getValue("Role").equals('ROLE_USER')) {
        		accountHeadsInstanceList = accountHeadsService.getActiveAccountHeads(subQuery)
@@ -132,7 +134,11 @@ class AccountHeadsController {
     }
 
     def create = {
+    		GrailsHttpSession gh=getSession()	
         def accountHeadsInstance = new AccountHeads()
+        gh.removeValue("Help")
+		//putting help pages in session
+		gh.putValue("Help","Create_Account_Head.htm")
         accountHeadsInstance.properties = params
         return ['accountHeadsInstance':accountHeadsInstance]
     }

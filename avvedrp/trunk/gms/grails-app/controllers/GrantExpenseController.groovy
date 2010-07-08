@@ -129,7 +129,10 @@ class GrantExpenseController extends GmsController {
 		def grantExpenseService = new GrantExpenseService()
 		def grantAllocationService = new GrantAllocationService()
 		def grantAllocationSplitService=new GrantAllocationSplitService()
-
+        GrailsHttpSession gh=getSession()
+        gh.removeValue("Help")
+       		//putting help pages in session
+       	gh.putValue("Help","Grant_Expense.htm")
     	/* Get grant allocation details. */
     	println "*********************************************create params.id "+params.id
     	def projectsInstance
@@ -208,6 +211,12 @@ class GrantExpenseController extends GmsController {
 		def grantExpenseService = new GrantExpenseService()
 		
 		def grantAllocationService = new GrantAllocationService()
+		GrailsHttpSession gh=getSession()
+    	 gh.putValue("projDashLink", "projectDash/"+params.id);
+		
+        gh.removeValue("Help")
+       		//putting help pages in session
+       	gh.putValue("Help","List_Grant_Expense.htm")
 		
     	def projectId
     	/* Get grant allocation details. */
@@ -268,7 +277,12 @@ class GrantExpenseController extends GmsController {
     def listSummaryExpenses = {
 		def grantExpenseService = new GrantExpenseService()
 		def grantAllocationService = new GrantAllocationService()
+		GrailsHttpSession gh=getSession()
+    
 		
+        gh.removeValue("Help")
+       		//putting help pages in session
+       	gh.putValue("Help","Grant_Expense_Summary.htm")
     	/* Get grant allocation details. */
     	def projectId
     	if(params.id)

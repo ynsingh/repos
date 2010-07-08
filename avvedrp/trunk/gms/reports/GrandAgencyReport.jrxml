@@ -6,9 +6,9 @@
 		 columnCount="1"
 		 printOrder="Vertical"
 		 orientation="Landscape"
-		 pageWidth="842"
+		 pageWidth="765"
 		 pageHeight="595"
-		 columnWidth="782"
+		 columnWidth="705"
 		 columnSpacing="0"
 		 leftMargin="30"
 		 rightMargin="30"
@@ -72,9 +72,9 @@ group by pa1.id]]></queryString>
 					<reportElement
 						mode="Transparent"
 						x="3"
-						y="3"
+						y="4"
 						width="162"
-						height="17"
+						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="staticText-15"
@@ -117,9 +117,9 @@ group by pa1.id]]></queryString>
 					<reportElement
 						mode="Transparent"
 						x="285"
-						y="3"
+						y="4"
 						width="94"
-						height="15"
+						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="textField-15"
@@ -178,9 +178,9 @@ group by pa1.id]]></queryString>
 					<reportElement
 						mode="Transparent"
 						x="3"
-						y="4"
+						y="3"
 						width="34"
-						height="23"
+						height="28"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="staticText-1"
@@ -194,7 +194,7 @@ group by pa1.id]]></queryString>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="10" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[SlNo]]></text>
+				<text><![CDATA[SLNO]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
@@ -221,7 +221,7 @@ group by pa1.id]]></queryString>
 						x="176"
 						y="3"
 						width="97"
-						height="23"
+						height="28"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="staticText-8"
@@ -241,9 +241,9 @@ group by pa1.id]]></queryString>
 					<reportElement
 						mode="Transparent"
 						x="54"
-						y="4"
+						y="3"
 						width="73"
-						height="23"
+						height="28"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="staticText-9"
@@ -257,15 +257,15 @@ group by pa1.id]]></queryString>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="10" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[Institution]]></text>
+				<text><![CDATA[INSTITUTION]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="404"
-						y="4"
-						width="74"
-						height="23"
+						x="401"
+						y="3"
+						width="72"
+						height="28"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="staticText-10"
@@ -284,10 +284,10 @@ group by pa1.id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="517"
-						y="4"
-						width="57"
-						height="23"
+						x="519"
+						y="3"
+						width="50"
+						height="28"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="staticText-11"
@@ -306,10 +306,10 @@ group by pa1.id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="627"
-						y="4"
+						x="626"
+						y="3"
 						width="57"
-						height="23"
+						height="28"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="staticText-12"
@@ -329,10 +329,10 @@ group by pa1.id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="310"
+						x="312"
 						y="3"
-						width="75"
-						height="23"
+						width="83"
+						height="28"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="staticText-14"
@@ -529,16 +529,16 @@ group by pa1.id]]></queryString>
 		</detail>
 		<columnFooter>
 			<band height="27"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="53"
-						y="4"
-						width="428"
-						height="18"
+						x="262"
+						y="5"
+						width="70"
+						height="17"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="textField-11"
+						key="staticText-16"
 						stretchType="NoStretch"
 						positionType="FixRelativeToTop"
 						isPrintRepeatedValues="true"
@@ -549,7 +549,29 @@ group by pa1.id]]></queryString>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Generated on "+new Date()]]></textFieldExpression>
+				<text><![CDATA[Generated on]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="333"
+						y="5"
+						width="70"
+						height="17"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-19"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
 				</textField>
 			</band>
 		</columnFooter>

@@ -1,6 +1,7 @@
 import java.text.*;
 import java.util.*;
 import ConvertToIndainRS
+import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 class GrantReceiptController extends GmsController {
     
     def index = { redirect(action:list,params:params) }
@@ -99,6 +100,10 @@ class GrantReceiptController extends GmsController {
 		def grantAllocationService = new GrantAllocationService()
     	def grantAllocationSplitService=new GrantAllocationSplitService()	
         def grantReceiptInstance = new GrantReceipt()
+        GrailsHttpSession gh=getSession()
+        gh.removeValue("Help")
+       		//putting help pages in session
+       	gh.putValue("Help","Grant_Receipt.htm")
         grantReceiptInstance.properties = params
         println"++++++++++++++++++params+++++++"+params
         

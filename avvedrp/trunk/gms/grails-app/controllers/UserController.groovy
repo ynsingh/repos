@@ -16,6 +16,11 @@ class UserController extends GmsController {
 	}
 
 	def list = {
+		
+		GrailsHttpSession gh=getSession()
+        gh.removeValue("Help")
+       		//putting help pages in session
+       	gh.putValue("Help","User_List.htm")	
 		if (!params.max) {
 			params.max = 100
 		}
@@ -142,6 +147,10 @@ class UserController extends GmsController {
 	def create = {
 		def userService = new UserService()
 		def authorityList = userService.getRoles()
+		GrailsHttpSession gh=getSession()
+        gh.removeValue("Help")
+       		//putting help pages in session
+       	gh.putValue("Help","New_User.htm")	
 		[person: new User(params), authorityList: authorityList]
 	}
 	
@@ -289,11 +298,6 @@ class UserController extends GmsController {
 			}
 			else
 			{
-				def userInstance = userService.saveNewUser(user,params)
-				person.user = userInstance
-				person.user.id = userInstance.id;
-				
-				
 				println "4444444444444before ++++++++++++++"+partyInstance
 		        partyInstance.createdBy="admin"
 		        partyInstance.createdDate = new Date();
@@ -323,6 +327,16 @@ class UserController extends GmsController {
 				println "+++++++++++++++++++++++++before call addParty++++++++++++++++++++++++++++" +partyInstance
 				def party = userService.addParty(partyInstance)
 				println "+++++++++++++++++++++++++after call addParty++++++++++++++++++++++++++++" 
+			if((partyInstance.saveMode != null) && (partyInstance.saveMode.equals("Duplicate")))
+	       		 {
+	       			flash.message = "Institution Already Exists"
+	               redirect uri: '/user/newUserCreate.gsp'
+	       		}
+			else
+			{
+				def userInstance = userService.saveNewUser(user,params)
+				person.user = userInstance
+				person.user.id = userInstance.id;
 				person.party = party
 				person.party.id = party.id
 				println "+++++++++++++++++++++++++person.party.id++++++++++++++++++++++++++++"+ person.party.id
@@ -331,6 +345,7 @@ class UserController extends GmsController {
 			    if(personId != null){
 					redirect uri: '/login/auth.gsp'
 				}
+		       		 }
 			}
 			
 		}

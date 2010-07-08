@@ -13,7 +13,7 @@ class PartyController  extends GmsController {
         String subQuery ="";
         GrailsHttpSession gh=getSession()
         //adding help page into session
-        gh.putValue("Help","Investigator.htm")
+        gh.putValue("Help","Institution_List.htm")
         if(params.sort != null && !params.sort.equals(""))
         	subQuery=" order by P."+params.sort
         if(params.order != null && !params.order.equals(""))
@@ -108,7 +108,7 @@ class PartyController  extends GmsController {
         def partyInstance = new Party()
         GrailsHttpSession gh=getSession()
         //Adding Help page into session
-        gh.putValue("Help","Investigator.htm")
+        gh.putValue("Help","Institution.htm")
         return ['partyInstance':partyInstance]
     }
 

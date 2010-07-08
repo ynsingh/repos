@@ -26,12 +26,12 @@
 	<parameter name="projectID" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="Path" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="grantStatus" isForPrompting="false" class="java.lang.String"/>
-	<queryString><![CDATA[select PR.name as ProjectName,PA.name_of_the_institution as InstName,GA.code as GrantCode,
-GA.amount_allocated as AmtAllocated,GAT.grant_allocation_status as GrantStatus,
-GAT.remarks as GrantTrackRemarks,GAT.date_of_tracking as GrantTrackDate 
-from grant_allocation_tracking GAT,grant_allocation GA,party PA,projects PR 
-where GAT.grant_allocation_id = GA.id and GA.party_id = PA.id and GA.projects_id = PR.id and 
-PR.id = $P{projectID} and GAT.grant_allocation_status = $P{grantStatus}]]></queryString>
+	<queryString><![CDATA[SELECT PR.name AS ProjectName,PA.name_of_the_institution AS InstName,GA.code AS GrantCode,
+GA.amount_allocated AS AmtAllocated,GAT.grant_allocation_status AS GrantStatus,
+GAT.remarks AS GrantTrackRemarks,GAT.date_of_tracking AS GrantTrackDate 
+FROM grant_allocation_tracking GAT,grant_allocation GA,party PA,projects PR 
+WHERE GAT.grant_allocation_id = GA.id AND GA.party_id = PA.id AND GA.projects_id = PR.id AND 
+PR.parent_id = $P{projectID} AND GAT.grant_allocation_status = $P{grantStatus}]]></queryString>
 
 	<field name="ProjectName" class="java.lang.String"/>
 	<field name="InstName" class="java.lang.String"/>
@@ -764,13 +764,35 @@ PR.id = $P{projectID} and GAT.grant_allocation_status = $P{grantStatus}]]></quer
 		</columnFooter>
 		<pageFooter>
 			<band height="34"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="0"
-						y="5"
-						width="535"
-						height="24"
+						x="169"
+						y="8"
+						width="66"
+						height="19"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="staticText-9"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[Generated on]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="238"
+						y="8"
+						width="62"
+						height="19"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="textField-11"
@@ -781,10 +803,10 @@ PR.id = $P{projectID} and GAT.grant_allocation_status = $P{grantStatus}]]></quer
 						isPrintInFirstWholeBand="false"
 						isPrintWhenDetailOverflows="false"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["Generated on "+new Date()]]></textFieldExpression>
+				<textFieldExpression   class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
 				</textField>
 			</band>
 		</pageFooter>

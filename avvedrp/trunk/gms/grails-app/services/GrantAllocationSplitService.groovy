@@ -142,5 +142,21 @@ class GrantAllocationSplitService{
 	        }
 	        return accountHeadList
 	 }
+public List getAccountHeadOfProject(def projectId)
+{
 	
+	def accountHeadList=GrantAllocationSplit.executeQuery("select GS.accountHead from GrantAllocationSplit GS where GS.projects.id="+projectId+"and GS.grantPeriod.defaultYesNo='Y'order by GS.accountHead.name asc")
+	def grantPeriodList=GrantAllocationSplit.executeQuery("select GS.grantPeriod from GrantAllocationSplit GS where GS.projects.id="+projectId+"and GS.grantPeriod.defaultYesNo='Y'")
+println"....accountHeadList..."+accountHeadList
+	 for(int i=0;i<accountHeadList.size();i++ )
+	      {
+		
+		
+	      accountHeadList[i].accHeadPeriod=accountHeadList[i].name.toUpperCase()+"("+grantPeriodList[i].name+")"
+	      println"accountHeadList[i].accHeadPeriod"+accountHeadList[i].accHeadPeriod
+	      }
+	
+	return accountHeadList
 }
+}
+	

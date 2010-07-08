@@ -6,9 +6,9 @@
 		 columnCount="1"
 		 printOrder="Vertical"
 		 orientation="Portrait"
-		 pageWidth="765"
+		 pageWidth="850"
 		 pageHeight="1048"
-		 columnWidth="705"
+		 columnWidth="790"
 		 columnSpacing="0"
 		 leftMargin="30"
 		 rightMargin="30"
@@ -27,7 +27,7 @@
 	<parameter name="projectType" isForPrompting="true" class="java.lang.String"/>
 	<queryString><![CDATA[SELECT 
       P.name AS ProjectTitle,
-      P.principal_investigator_name AS PI,
+      (SELECT I.name FROM investigator I,projectspimap PMAP WHERE I.id=PMAP.investigator_id AND PMAP.projects_id=P.id AND PMAP.role='PI') AS PI,
       PD.department_code AS Department,
       PRT.type AS ProjectType,
       (SELECT PY.name_of_the_institution FROM party PY,grant_allocation G WHERE PY.id=G.granter_id AND G.projects_id=GA.projects_id AND P.id=G.projects_id GROUP BY G.projects_id)AS FundingAgency,
@@ -199,7 +199,7 @@ GROUP BY PM.projects_id]]></queryString>
 						mode="Opaque"
 						x="5"
 						y="4"
-						width="696"
+						width="751"
 						height="54"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -273,7 +273,7 @@ GROUP BY PM.projects_id]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="351"
+						x="359"
 						y="4"
 						width="0"
 						height="54"
@@ -292,7 +292,7 @@ GROUP BY PM.projects_id]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="428"
+						x="434"
 						y="4"
 						width="0"
 						height="54"
@@ -311,7 +311,7 @@ GROUP BY PM.projects_id]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="497"
+						x="503"
 						y="4"
 						width="0"
 						height="54"
@@ -330,7 +330,7 @@ GROUP BY PM.projects_id]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="556"
+						x="589"
 						y="4"
 						width="0"
 						height="54"
@@ -349,7 +349,7 @@ GROUP BY PM.projects_id]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="638"
+						x="669"
 						y="4"
 						width="0"
 						height="54"
@@ -436,7 +436,7 @@ GROUP BY PM.projects_id]]></queryString>
 						mode="Transparent"
 						x="274"
 						y="6"
-						width="73"
+						width="82"
 						height="49"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -456,7 +456,7 @@ GROUP BY PM.projects_id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="373"
+						x="379"
 						y="6"
 						width="52"
 						height="49"
@@ -478,7 +478,7 @@ GROUP BY PM.projects_id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="432"
+						x="438"
 						y="6"
 						width="62"
 						height="49"
@@ -500,9 +500,9 @@ GROUP BY PM.projects_id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="502"
+						x="507"
 						y="6"
-						width="52"
+						width="79"
 						height="49"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -522,7 +522,7 @@ GROUP BY PM.projects_id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="561"
+						x="593"
 						y="6"
 						width="74"
 						height="49"
@@ -544,9 +544,9 @@ GROUP BY PM.projects_id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="641"
+						x="673"
 						y="6"
-						width="57"
+						width="79"
 						height="49"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -572,7 +572,7 @@ GROUP BY PM.projects_id]]></queryString>
 						mode="Opaque"
 						x="5"
 						y="24"
-						width="696"
+						width="751"
 						height="0"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -665,7 +665,7 @@ GROUP BY PM.projects_id]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="351"
+						x="359"
 						y="0"
 						width="0"
 						height="25"
@@ -684,7 +684,7 @@ GROUP BY PM.projects_id]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="428"
+						x="434"
 						y="0"
 						width="0"
 						height="25"
@@ -703,7 +703,7 @@ GROUP BY PM.projects_id]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="497"
+						x="503"
 						y="0"
 						width="0"
 						height="25"
@@ -722,7 +722,7 @@ GROUP BY PM.projects_id]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="556"
+						x="589"
 						y="0"
 						width="0"
 						height="25"
@@ -741,7 +741,7 @@ GROUP BY PM.projects_id]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="638"
+						x="669"
 						y="0"
 						width="0"
 						height="25"
@@ -760,7 +760,7 @@ GROUP BY PM.projects_id]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="700"
+						x="755"
 						y="0"
 						width="0"
 						height="25"
@@ -779,7 +779,7 @@ GROUP BY PM.projects_id]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="431"
+						x="438"
 						y="3"
 						width="63"
 						height="18"
@@ -847,7 +847,7 @@ GROUP BY PM.projects_id]]></queryString>
 						mode="Transparent"
 						x="194"
 						y="3"
-						width="70"
+						width="71"
 						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -867,7 +867,7 @@ GROUP BY PM.projects_id]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="355"
+						x="362"
 						y="3"
 						width="70"
 						height="18"
@@ -889,9 +889,9 @@ GROUP BY PM.projects_id]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="501"
+						x="507"
 						y="3"
-						width="53"
+						width="80"
 						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -911,7 +911,7 @@ GROUP BY PM.projects_id]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="560"
+						x="591"
 						y="3"
 						width="76"
 						height="18"
@@ -933,9 +933,9 @@ GROUP BY PM.projects_id]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="641"
+						x="673"
 						y="3"
-						width="56"
+						width="80"
 						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -955,9 +955,9 @@ GROUP BY PM.projects_id]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="273"
+						x="270"
 						y="3"
-						width="75"
+						width="87"
 						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1035,7 +1035,7 @@ GROUP BY PM.projects_id]]></queryString>
 						mode="Opaque"
 						x="5"
 						y="0"
-						width="696"
+						width="751"
 						height="25"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1071,7 +1071,7 @@ GROUP BY PM.projects_id]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="638"
+						x="669"
 						y="0"
 						width="0"
 						height="25"
@@ -1090,7 +1090,7 @@ GROUP BY PM.projects_id]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="557"
+						x="589"
 						y="0"
 						width="0"
 						height="25"
@@ -1109,7 +1109,7 @@ GROUP BY PM.projects_id]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="497"
+						x="503"
 						y="0"
 						width="0"
 						height="25"
@@ -1128,7 +1128,7 @@ GROUP BY PM.projects_id]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="428"
+						x="434"
 						y="0"
 						width="0"
 						height="25"
@@ -1147,7 +1147,7 @@ GROUP BY PM.projects_id]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="351"
+						x="359"
 						y="0"
 						width="0"
 						height="25"
@@ -1248,7 +1248,7 @@ GROUP BY PM.projects_id]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="353"
+						x="360"
 						y="5"
 						width="72"
 						height="18"
@@ -1270,9 +1270,9 @@ GROUP BY PM.projects_id]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="641"
+						x="672"
 						y="5"
-						width="57"
+						width="81"
 						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1294,7 +1294,7 @@ GROUP BY PM.projects_id]]></queryString>
 						mode="Transparent"
 						x="273"
 						y="5"
-						width="75"
+						width="84"
 						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1314,7 +1314,7 @@ GROUP BY PM.projects_id]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="431"
+						x="437"
 						y="5"
 						width="63"
 						height="18"
@@ -1336,9 +1336,9 @@ GROUP BY PM.projects_id]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="501"
+						x="506"
 						y="5"
-						width="54"
+						width="81"
 						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1358,7 +1358,7 @@ GROUP BY PM.projects_id]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="561"
+						x="592"
 						y="5"
 						width="75"
 						height="18"

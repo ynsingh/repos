@@ -28,36 +28,15 @@
 	<parameter name="reportDate" isForPrompting="true" class="java.lang.String"/>
 	<queryString><![CDATA[SELECT 
 	P.name AS ProjectTitle,
-	PT.name_of_the_institution AS FundingAgency,
-	P.principal_investigator_name AS PI,
+	(SELECT PY.name_of_the_institution FROM party PY,grant_allocation G WHERE PY.id=G.granter_id AND G.projects_id=GA.projects_id AND P.id=G.projects_id GROUP BY G.projects_id)AS FundingAgency,
+	(SELECT I.name FROM investigator I,projectspimap PMAP WHERE I.id=PMAP.investigator_id AND PMAP.projects_id=P.id AND PMAP.role='PI') AS PI,
 	AH.name AS SanctionedHead,
-	GS.amount AS FundsReceived,
-	GE.expense_amount AS Expendeture,
+	(SELECT SUM(GR.amount) FROM grant_receipt GR,grant_allocation GA,grant_allocation_split GS,account_heads AHS WHERE GA.projects_id=GR.projects_id AND GR.projects_id=P.id AND GR.grant_allocation_id= GA.id AND GR.grant_allocation_split_id=GS.id AND GS.account_head_id=AH.id
+       AND AHS.id=AH.id GROUP BY AHS.id)AS FundsReceived,
+	(SELECT SUM(GE.expense_amount) FROM grant_expense GE,grant_allocation GL,grant_allocation_split GAS,account_heads AHS WHERE GE.grant_allocation_split_id=GAS.id AND GL.projects_id=GE.projects_id AND GE.grant_allocation_id=GL.id AND GE.projects_id=P.id AND 
+	GAS.account_head_id=AHS.id AND AHS.id=AH.id GROUP BY AH.id) AS Expendeture,
 	YEAR(STR_TO_DATE($P{reportDate},'%d/%M/%Y')) AS Period,
 	GA.sanction_order_no AS Sancno,
-	(SELECT 
-	SUM(total) 
-	FROM (SELECT 
-		grant_receipt.amount AS total
-	FROM 
-		projects,
-		account_heads,
-		grant_allocation_split,
-		grant_expense ,
-		grant_receipt ,
-		party,
-		grant_allocation 
-	WHERE 
-		grant_allocation_split.account_head_id = account_heads.id
-		AND grant_expense.grant_allocation_split_id = grant_allocation_split.id
-		AND grant_receipt.grant_allocation_split_id = grant_expense.grant_allocation_split_id
-		AND grant_allocation_split.projects_id = projects.id
-		AND grant_allocation_split.projects_id=grant_allocation.projects_id
-		AND grant_allocation.party_id = party.id
-		AND YEAR(grant_receipt.date_of_receipt) = YEAR(STR_TO_DATE($P{reportDate},'%d/%M/%Y'))
-
-	GROUP BY 
-		grant_receipt.id) AS TotalFundsReceived) AS TotalFundsReceived,	
 	YEAR(CURDATE()) AS FinancialYear
 
 FROM 
@@ -70,7 +49,7 @@ FROM
 	grant_allocation GA
 WHERE 
 	P.id=$P{projectID} 
-	AND PT.id = $P{partyID}
+	AND PT.id =$P{partyID}
 	AND YEAR(GR.date_of_receipt) = YEAR(STR_TO_DATE($P{reportDate},'%d/%M/%Y'))
 	AND GS.account_head_id = AH.id
 	AND GE.grant_allocation_split_id = GS.id
@@ -79,9 +58,9 @@ WHERE
 	AND GS.projects_id=GA.projects_id
 	AND GA.party_id = PT.id
 	AND GA.id=GE.grant_allocation_id
-	-- AND GA.id=GS.grant_allocation_id
+	 -- AND GA.id=GS.grant_allocation_id
 	
-GROUP BY GE.id,GS.account_head_id]]></queryString>
+GROUP BY AH.id]]></queryString>
 
 	<field name="ProjectTitle" class="java.lang.String"/>
 	<field name="FundingAgency" class="java.lang.String"/>
@@ -91,7 +70,6 @@ GROUP BY GE.id,GS.account_head_id]]></queryString>
 	<field name="Expendeture" class="java.lang.Double"/>
 	<field name="Period" class="java.lang.Long"/>
 	<field name="Sancno" class="java.lang.String"/>
-	<field name="TotalFundsReceived" class="java.lang.Double"/>
 	<field name="FinancialYear" class="java.lang.Long"/>
 
 	<variable name="balance" class="java.lang.Double" resetType="Group" resetGroup="accountHead" calculation="Nothing">

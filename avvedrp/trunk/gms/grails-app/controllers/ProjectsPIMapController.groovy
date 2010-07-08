@@ -68,6 +68,9 @@ class ProjectsPIMapController {
         def projectsPIMapInstance = new ProjectsPIMap()
         projectsPIMapInstance.properties = params
         GrailsHttpSession gh=getSession()
+          //Removing the old help session and putting the current session help file
+         gh.removeValue("Help")
+         gh.putValue("Help","Assign_Projects_to_PI.htm")
         def dataSecurityService = new DataSecurityService()
         //get all projects for the logined institution
         def projectsList = dataSecurityService.getProjectsForLoginUser(gh.getValue("PartyID"));
