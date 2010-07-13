@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)changePW_User.java	
  *
- *  Copyright (c) 2005-2006 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006, 2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -38,6 +38,8 @@ package org.iitk.brihaspati.modules.actions;
  * This class responsible for change user password in dataBase
  * @author <a href="mailto:madhavi_mungole@hotmail.com ">Madhavi Mungole</a>
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in ">Awadhesh Kumar Trivedi</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @modified date: 08-07-2010
  */
 
 import org.apache.turbine.util.RunData;
@@ -46,6 +48,7 @@ import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.om.security.User;
 import org.iitk.brihaspati.modules.utils.PasswordUtil;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 
 public class changePW_User extends SecureAction
 {
@@ -82,8 +85,11 @@ public class changePW_User extends SecureAction
 		 	* @see PasswordUtil in utils
 		 	*/
 			String msg="";
+			int srvrPort=data.getServerPort();
+                        String serverPort=Integer.toString(srvrPort);
 			if(!user.getName().equals("guest")){
-			 msg=PasswordUtil.doChangepassword(user,oldPW,newPW,LangFile);
+				PasswordUtil.passwordFromUtil(data.getServerName(), serverPort);
+				msg=PasswordUtil.doChangepassword(user,oldPW,newPW,LangFile);
 			}
 			else{
 			 msg="Password can not be Modified for guest";

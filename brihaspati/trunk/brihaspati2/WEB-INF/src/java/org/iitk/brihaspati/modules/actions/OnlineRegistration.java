@@ -4,7 +4,7 @@ package org.iitk.brihaspati.modules.actions;
 /**
  * @(#)OnlineRegistration.java	
  *  
- *  Copyright (c) 2008, 2009 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2008, 2009, 2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -36,6 +36,7 @@ package org.iitk.brihaspati.modules.actions;
 import java.io.File;
 import java.util.Vector;
 import java.util.List;
+import java.util.Properties;
 import java.sql.Date;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
@@ -69,6 +70,7 @@ import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
  * @author <a href="mailto:omprakash_kgp@yahoo.co.in">Om Prakash</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @modify 20-03-09
+ * @modified date: 08-07-2010
  */
 
 
@@ -87,6 +89,8 @@ public class OnlineRegistration extends VelocitySecureAction
 	private Vector vc = new Vector();
 	private String  orgtn="",curDate="", path="";
         private String uname="", gname="", email="", fname="", lname="", passwd="";
+	private Properties pr;
+	private String subject="", message="", info_new = "", fileName, Mail_msg="";
 
         protected boolean isAuthorized( RunData data ) throws Exception
         {
@@ -223,32 +227,12 @@ public class OnlineRegistration extends VelocitySecureAction
         	                        {
 						server_name= TurbineServlet.getServerName();
 	        	                	srvrPort= TurbineServlet.getServerPort();
-						MsgForExpireTime = "Your Request for user "; 
+						MsgForExpireTime = "forUser "; 
 						indexList = sendMail_MoreThanSevenDays(userlist, MsgForExpireTime, uname, server_name, srvrPort, LangFile);
-	/**					
-						String subMsgForExpireTime =" registration is expired. Please talk to the administrator personally";
-						for( i=0; i <userlist.size(); i++)
-						{
-							cdate=((CourseUserDetail)userlist.get(i)).getCreateDate();
-							creation_date = cdate.substring(0,4)+"-"+cdate.substring(4,6)+"-"+cdate.substring(6,8);
-							java.util.Date currentDate= new java.util.Date();
-                				        Creation_date=Date.valueOf(creation_date);
-	                		        	longCreationDate= Creation_date.getTime();
-	        	        		        longCurrentDate= currentDate.getTime();
-	        	        	        	noOfdays=(longCurrentDate-longCreationDate)/(24*3600*1000)+1;
-							if(noOfdays > 7 && (longCurrentDate-longCreationDate)!=0)
-							{
-								//String gname=((CourseUserDetail)userlist.elementAt(i)).getGroupName();
-								emailId = ((CourseUserDetail)userlist.get(i)).getEmail();
-								Mail_msg=MailNotification.sendMail(MsgForExpireTime+gName+subMsgForExpireTime,emailId,"","Updation Mail","","","",server_name,srvrPort,LangFile);
-								indexList.add(i);
-							}
-						}
-**/
 						xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineUser(path,"/OnlineUser.xml",indexList);
 				                TopicMetaDataXmlWriter.appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,curDate);
         				        xmlWriter.writeXmlFile();
-						sendMailToApproval(gname,LangFile,uname);
+						sendMailToApproval(gname,LangFile,uname,"");
 			        	} //else 4
 				} //if 3
 
@@ -258,7 +242,7 @@ public class OnlineRegistration extends VelocitySecureAction
 	                		xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineUser(path,"/OnlineUser.xml",indexList);
 		        	        TopicMetaDataXmlWriter.appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,curDate);
         		        	xmlWriter.writeXmlFile();
-					sendMailToApproval(gname,LangFile,uname);
+					sendMailToApproval(gname,LangFile,uname,"");
 				} //else 3
 				String str=MultilingualUtil.ConvertedString("online_msg5",LangFile);
         		        data.setMessage(str);
@@ -382,36 +366,14 @@ public class OnlineRegistration extends VelocitySecureAction
 				}
 				else //inner
 				{
-					MsgForExpireTime = "Your Request for course ";
+					MsgForExpireTime = "forCourse";
 					server_name= TurbineServlet.getServerName();
         	                	srvrPort= TurbineServlet.getServerPort();
 					indexList = sendMail_MoreThanSevenDays(courselist, MsgForExpireTime, gName, server_name, srvrPort, LangFile);
-/**
-					String subMsgForExpireTime=" registration is expired. Please talk to the administrator personally";
-					for( i=0; i <courselist.size(); i++)
-					{
-						server_name= TurbineServlet.getServerName();
-	        	                	srvrPort= TurbineServlet.getServerPort();
-						cdate=((CourseUserDetail)courselist.get(i)).getCreateDate();
-						creation_date = cdate.substring(0,4)+"-"+cdate.substring(4,6)+"-"+cdate.substring(6,8);
-						java.util.Date currentDate= new java.util.Date();
-        	        		        Creation_date=Date.valueOf(creation_date);
-	        	        	        longCreationDate= Creation_date.getTime();
-        	        	        	longCurrentDate= currentDate.getTime();
-	                		        noOfdays=(longCurrentDate-longCreationDate)/(24*3600*1000)+1;
-					
-						if(noOfdays > 7 && (longCurrentDate-longCreationDate)!=0)
-						{
-							emailId = ((CourseUserDetail)courselist.get(i)).getEmail();
-							Mail_msg=MailNotification.sendMail(MsgForExpireTime+gName+subMsgForExpireTime,emailId,"onlineRegRequest","Updation Mail","","","",server_name,srvrPort,LangFile);
-							indexList.add(i);
-						}
-					}	
-**/
 					xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineCourse(path,"/courses.xml",indexList);
 	        	        	TopicMetaDataXmlWriter.appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,curDate);
 	        		        xmlWriter.writeXmlFile();
-					sendMailToApproval("fromCourse",LangFile,uname);
+					sendMailToApproval("fromCourse",LangFile,uname, cname);
 				} //else inner
         		}
 			else
@@ -420,7 +382,7 @@ public class OnlineRegistration extends VelocitySecureAction
                 		xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineCourse(path,"/courses.xml",indexList);
 		                TopicMetaDataXmlWriter.appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,curDate);
         		        xmlWriter.writeXmlFile();
-				sendMailToApproval("fromCourse",LangFile,uname);
+				sendMailToApproval("fromCourse",LangFile,uname, cname);
 			}
 		}
                 context.put("lang",lang);
@@ -428,50 +390,75 @@ public class OnlineRegistration extends VelocitySecureAction
                 data.setMessage(str);
         }
 		
-	void sendMailToApproval(String gname, String LangFile,String unme)
-	{	
+	void sendMailToApproval(String gname, String LangFile, String unme, String courseName)
+	{
 		int j=0;
+		String temp="";
+		String info_msg="";
 		server_name= TurbineServlet.getServerName();
                 srvrPort= TurbineServlet.getServerPort();
-		MsgForExpireTime = " A user ";
-		String subMsgForExpireTime =", has requested for registration as student in your course"+" "+gname+" "+" on brihaspati. Kindly do the needful to approve or reject the request";
-		String temp="";
-		if(!gname.equals("fromCourse") && !gname.equals("author")) {
-			int counter=0;
-			int gid=GroupUtil.getGID(gname);
-			Vector uid=UserGroupRoleUtil.getUID(gid,2);
-			for(counter =0; counter<uid.size(); counter++)
+/////////////////////////////////////////////////////////////////////////////////////////
+		try{
+			fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
+       		        pr =MailNotification.uploadingPropertiesFile(fileName);
+	
+			//MsgForExpireTime = " A user ";
+			//String subMsgForExpireTime =", has requested for registration as student in your course"+" "+gname+" "+" on brihaspati. Kindly do the needful to approve or reject the request";
+			if(!gname.equals("fromCourse") && !gname.equals("author")) {
+				if(srvrPort.equals("8080"))
+					info_new="approvalOfonLineRegReqForStudent";
+				else
+					info_new="approvalOfonLineRegReqForStudent_https";
+				subject = MailNotification.subjectFormate(info_new, "", pr );
+				message = MailNotification.getMessage(info_new, gname, "", unme,"" , server_name, srvrPort,pr); 
+				//ErrorDumpUtil.ErrorLog("\n\n\nstudent approval message="+message+"      subject="+subject);
+///////////////////////////////////////////////////////////////////////////////////////////
+				int counter=0;
+				int gid=GroupUtil.getGID(gname);
+				Vector uid=UserGroupRoleUtil.getUID(gid,2);
+				for(counter =0; counter<uid.size(); counter++)
+				{
+					String s=uid.elementAt(counter).toString();
+					List st=UserManagement.getUserDetail(s);
+				
+               	        		for(j=0;j<st.size();j++)
+	                       		{
+						TurbineUser element1=(TurbineUser)st.get(j);
+						String userName = element1.getUserName();
+						boolean check_Primary=CourseManagement.IsPrimaryInstructor(gname,userName);
+						boolean check_Active=CourseManagement.CheckcourseIsActive(gid);
+						if(check_Primary==true && check_Active==false)
+						{
+							emailId = element1.getEmail();
+							//Mail_msg=MailNotification.sendMail(MsgForExpireTime+unme+subMsgForExpireTime,emailId,"onlineRegRequest","Updation Mail","","","",server_name,srvrPort,LangFile);
+							Mail_msg=MailNotification.sendMail(message, emailId, subject, "", LangFile);
+						}		
+					}
+				}// for
+			} //if
+			else
 			{
-				String s=uid.elementAt(counter).toString();
-				List st=UserManagement.getUserDetail(s);
+				if(srvrPort.equals("8080"))
+					info_new="approvalOfonLineRegReqForCourse";
+				else
+					info_new="approvalOfonLineRegReqForCourse_https";
 			
-               	        	for(j=0;j<st.size();j++)
-                       		{
+				subject = MailNotification.subjectFormate(info_new, "", pr );
+				message = MailNotification.getMessage(info_new, courseName, "", unme,"" , server_name, srvrPort,pr); 
+				//ErrorDumpUtil.ErrorLog("\n\n\n course Approval message="+message+"      subject="+subject+"\n uname="+unme+"	courseName="+courseName);
+///////////////////////////////////////////////////////////////////////////////////////////
+				String s=Integer.toString(UserUtil.getUID("admin"));
+				List st=UserManagement.getUserDetail(s);
+				for(j=0;j<st.size();j++)
+	                        {
 					TurbineUser element1=(TurbineUser)st.get(j);
-					String userName = element1.getUserName();
-					boolean check_Primary=CourseManagement.IsPrimaryInstructor(gname,userName);
-					boolean check_Active=CourseManagement.CheckcourseIsActive(gid);
-					if(check_Primary==true && check_Active==false)
-					{
-						emailId = element1.getEmail();
-						//String Mail_msg=MailNotification.sendMail(MsgForExpireTime+"user named "+userName+subMsgForExpireTime,emailId,"onlineRegRequest","Updation Mail","","","",server_name,srvrPort,LangFile);
-						String Mail_msg=MailNotification.sendMail(MsgForExpireTime+unme+subMsgForExpireTime,emailId,"onlineRegRequest","Updation Mail","","","",server_name,srvrPort,LangFile);
-					}		
+					emailId = element1.getEmail();
+					//Mail_msg=MailNotification.sendMail(MsgForExpireTime+"a new course"+subMsgForExpireTime,emailId,"onlineRegRequest","Updation Mail","","","",server_name,srvrPort,LangFile);
+					Mail_msg=MailNotification.sendMail(message, emailId, subject, "", LangFile);
 				}
-			}// for
-		} //if
-		else
-		{
-			String Mail_msg="";
-			String s=Integer.toString(UserUtil.getUID("admin"));
-			List st=UserManagement.getUserDetail(s);
-			for(j=0;j<st.size();j++)
-                        {
-				TurbineUser element1=(TurbineUser)st.get(j);
-				emailId = element1.getEmail();
-				Mail_msg=MailNotification.sendMail(MsgForExpireTime+"a new course"+subMsgForExpireTime,emailId,"onlineRegRequest","Updation Mail","","","",server_name,srvrPort,LangFile);
 			}
-		}
+		} //try close
+		catch(Exception e){ErrorDumpUtil.ErrorLog("Erro in approvalOfonLineRegReqForStudent"+e);}
 	}// sendMailToApproval
 
 	/* Generate a Password object with a random password. */
@@ -505,24 +492,54 @@ public class OnlineRegistration extends VelocitySecureAction
 	{
 		Vector indexList = new Vector();
 		Date Creation_date;
-		String subMsgForExpireTime =" registration is expired. Please talk to the administrator personally";
-		for( int i=0; i <listCrs_OR_Usr.size(); i++)
-		{
-			String cdate=((CourseUserDetail)listCrs_OR_Usr.get(i)).getCreateDate();
-			String creation_date = cdate.substring(0,4)+"-"+cdate.substring(4,6)+"-"+cdate.substring(6,8);
-			java.util.Date currentDate= new java.util.Date();
-	        	Creation_date=Date.valueOf(creation_date);
-		        longCreationDate= Creation_date.getTime();
-	        	longCurrentDate= currentDate.getTime();
-		        noOfdays=(longCurrentDate-longCreationDate)/(24*3600*1000)+1;
+		//////////////////////////////////////////////////
+		//String subMsgForExpireTime =" registration is expired. Please talk to the administrator personally";
+		try{
+			fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
+        	        pr =MailNotification.uploadingPropertiesFile(fileName);
 
-        		if(noOfdays > 7 && (longCurrentDate-longCreationDate)!=0)
-		        {
-        			emailId = ((CourseUserDetail)listCrs_OR_Usr.get(i)).getEmail();
-                		String Mail_msg=MailNotification.sendMail(MsgForExpireTime+name+subMsgForExpireTime,emailId,"onlineRegRequest","Updation Mail","","","",serverName,serverPort,LangFile);
-	                	indexList.add(i);
+			if(MsgForExpireTime.equals("forUser") ){
+				if(serverPort.equals("8080")) 
+					info_new = "onLineRegRequestForUserExpire";
+				else
+					info_new = "onLineRegRequestForUserExpirehttps";
+
+                		subject = MailNotification.subjectFormate(info_new, "", pr );
+                		message = MailNotification.getMessage(info_new, "", "", name, "", serverName, serverPort,pr);
 			}
-		}
+			if(MsgForExpireTime.equals("forCourse") ){
+				if(serverPort.equals("8080")) 
+					info_new = "onLineRegRequestForCourseExpire";
+				else
+					info_new = "onLineRegRequestForCourseExpirehttps";
+
+                		subject = MailNotification.subjectFormate(info_new, "", pr );
+                		message = MailNotification.getMessage(info_new, name, "", "", "", serverName, serverPort,pr);
+                      
+			}
+
+		 /////////////////////////////////////////////////
+			
+			for( int i=0; i <listCrs_OR_Usr.size(); i++)
+			{
+				String cdate=((CourseUserDetail)listCrs_OR_Usr.get(i)).getCreateDate();
+				String creation_date = cdate.substring(0,4)+"-"+cdate.substring(4,6)+"-"+cdate.substring(6,8);
+				java.util.Date currentDate= new java.util.Date();
+		        	Creation_date=Date.valueOf(creation_date);
+			        longCreationDate= Creation_date.getTime();
+	        		longCurrentDate= currentDate.getTime();
+			        noOfdays=(longCurrentDate-longCreationDate)/(24*3600*1000)+1;
+	
+        			if(noOfdays > 7 && (longCurrentDate-longCreationDate)!=0)
+			        {
+        				emailId = ((CourseUserDetail)listCrs_OR_Usr.get(i)).getEmail();
+                			//String Mail_msg=MailNotification.sendMail(MsgForExpireTime+name+subMsgForExpireTime,emailId,"onlineRegRequest","Updation Mail","","","",serverName,serverPort,LangFile);
+	                		Mail_msg=MailNotification.sendMail(message, emailId, subject, "", LangFile);
+		                	indexList.add(i);
+				}
+			}
+		} //try close
+		catch(Exception e){ErrorDumpUtil.ErrorLog("Error in Exipiration of onLineRegReq"+e);}
 		return indexList;              
 	}
 	/**

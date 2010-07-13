@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)UploadMarksAction.java	
  *
- *  Copyright (c) 2005, 2009 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005, 2009, 2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -36,6 +36,7 @@ package org.iitk.brihaspati.modules.actions;
 
 import java.io.File;
 import java.util.List;
+import java.util.Properties;
 import java.util.Vector;
 
 import org.apache.velocity.context.Context;
@@ -56,6 +57,7 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.MailNotification;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 
 /**
  * In this class, We upload marks in txt format file
@@ -65,6 +67,7 @@ import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar Pal</a>
  * @modified date 29-12-2009
+ * @modified date: 08-07-2010
  */
 
 public class UploadMarksAction extends SecureAction_Instructor
@@ -126,7 +129,19 @@ public class UploadMarksAction extends SecureAction_Instructor
 				StringUtil.insertCharacter(tempFile.getAbsolutePath(),marksFile.getAbsolutePath(),',','-');
 				tempFile.delete();
 				String mailId="";
-				String marksUploadStr="Marks are uploaded in"+courseHome;
+				//String marksUploadStr="Marks are uploaded in"+courseHome;
+//////////////////////////////////////////////////////////////////////////
+				String info_new ="";
+
+				if(serverPort == "8080")
+					info_new = "marksUpload";
+				else
+					info_new = "marksUpload_https";
+				Properties pr =MailNotification.uploadingPropertiesFile(TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties"));
+                                String subject = MailNotification.subjectFormate(info_new, "", pr );
+                                String message = MailNotification.getMessage(info_new, courseHome, "", "", "", serverName, serverPort,pr);
+                                //ErrorDumpUtil.ErrorLog("\n\n\n\n Upload marks.java message="+message+"      subject="+subject);
+//////////////////////////////////////////////////////////////////////////
 				Criteria crit=new Criteria();
 		                crit.add(TurbineUserPeer.LOGIN_NAME,userName);
 				//mail for Instructor
@@ -136,7 +151,8 @@ public class UploadMarksAction extends SecureAction_Instructor
                 		        TurbineUser element=(TurbineUser)v.get(0);
 		                        mailId=element.getEmail();
 					if(mailId != null && mailId != "")
-						mailMsg=MailNotification.sendMail(marksUploadStr, mailId, "", "Updation Mail", "", "", "", serverName, serverPort, (String)user.getTemp("LangFile"));
+						//mailMsg=MailNotification.sendMail(marksUploadStr, mailId, "", "Updation Mail", "", "", "", serverName, serverPort, (String)user.getTemp("LangFile"));
+						mailMsg=MailNotification.sendMail(message, mailId, subject, "", (String)user.getTemp("LangFile"));
                 		}
 		                catch(Exception e)
                 			{data.setMessage("The error in sending mail to instructor for update/Upload marks !!"+e);}
@@ -148,7 +164,8 @@ public class UploadMarksAction extends SecureAction_Instructor
                                         for(int i=0; i<usDetail.size(); i++){
                                                 mailId=((CourseUserDetail) usDetail.elementAt(i)).getEmail().trim();
                                                 if(mailId != null && mailId != ""){
-                                                mailMsg=MailNotification.sendMail(marksUploadStr, mailId, "", "Updation Mail", "", "", "", serverName, serverPort, (String)user.getTemp("LangFile"));
+                                                //mailMsg=MailNotification.sendMail(marksUploadStr, mailId, "", "Updation Mail", "", "", "", serverName, serverPort, (String)user.getTemp("LangFile"));
+						mailMsg=MailNotification.sendMail(message, mailId, subject, "", (String)user.getTemp("LangFile"));
                                                 }
                                                 usDetail=null;
                                         }

@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)RemoveStudentCourse.java	
  *
- *  Copyright (c) 2005, 2008 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005, 2008, 2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -36,9 +36,12 @@ package org.iitk.brihaspati.modules.actions;
  * @author  <a href="awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author  <a href="satyapalsingh@gmail.com">Satyapal Singh</a>
  * @author  <a href="singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @modified date: 08-07-2010
  */
 
 import java.util.Vector;
+import java.util.Properties;
 import java.util.StringTokenizer;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.util.RunData;
@@ -104,17 +107,24 @@ public class RemoveStudentCourse extends SecureAction_Admin{
 				 */
 				String server_name=TurbineServlet.getServerName();
                         	String srvrPort=TurbineServlet.getServerPort();
-				String subject="";
+				String info_new = "", subject = "";
 				if(srvrPort.equals("8080"))
-                		subject="deleteUser";
+	                		info_new = "deleteUser";
                 		else
-                		subject="deleteUserhttps";	
+        	        		info_new = "deleteUserhttps";	
 				int uId=UserUtil.getUID(postString);
 		                String uid=Integer.toString(uId);
 				TurbineUser element=(TurbineUser)UserManagement.getUserDetail(uid).get(0);
 				String email=element.getEmail();
 				String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
-                                String Mail_msg=MailNotification.sendMail(subject,email,"","","","",fileName,server_name,srvrPort,LangFile);
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				Properties pr =MailNotification.uploadingPropertiesFile(fileName);
+				subject = MailNotification.subjectFormate(info_new, "", pr );
+				String message = MailNotification.getMessage(info_new, preString, "", "", "", server_name, srvrPort,pr);	
+				//ErrorDumpUtil.ErrorLog("\n\n\n\n in RemoveStudentCourse message="+message+"      subject="+subject);
+                                //String Mail_msg=MailNotification.sendMail(subject,email,"","","","",fileName,server_name,srvrPort,LangFile);
+                                String Mail_msg=MailNotification.sendMail(message, email, subject, "", LangFile);
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                 data.setMessage(Mail_msg);
 				String msg=umt.removeUserProfile(postString,preString,LangFile);
 				if(umt.flag.booleanValue()==false){ 

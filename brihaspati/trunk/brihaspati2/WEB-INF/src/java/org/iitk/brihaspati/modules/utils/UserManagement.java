@@ -35,6 +35,7 @@ package org.iitk.brihaspati.modules.utils;
 //JDK
 import java.io.File;
 import java.util.List;
+import java.util.Properties;
 import java.util.Vector;
 //Turbine
 import org.apache.turbine.Turbine;
@@ -82,6 +83,7 @@ import babylon.babylonPasswordEncryptor;
  * @author <a href="mailto:madhavi_mungole@hotmail.com">Madhavi Mungole</a>
  * @author <a href="mailto:satyapalsingh@gmail.com">Satyapal Singh</a>
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
+ * @modified date: 08-07-2010
  */
 
 public class UserManagement
@@ -105,6 +107,8 @@ public class UserManagement
 	{
     		babylonUserTool tool=new babylonUserTool();	
 		String message=new String();
+		String messageFormate= "", subject = "";
+		Properties pr ;
 		StringUtil S=new StringUtil();
 		Criteria crit=new Criteria();
 		/**
@@ -193,9 +197,15 @@ public class UserManagement
 			                         * variable which will fetch approriate message from the properties file
                         			 */
 						fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
-
-						Mail_msg=message+MailNotification.sendMail(userRole,email_existing,cAlias,dept,"","",fileName,serverName,serverPort,file);
-						
+						pr =MailNotification.uploadingPropertiesFile(fileName);
+				                subject = MailNotification.subjectFormate(userRole, "", pr );
+						messageFormate = MailNotification.getMessage(userRole, cAlias, dept, "", "", serverName, serverPort,pr);
+						//ErrorDumpUtil.ErrorLog("\n\n\n\n subject="+subject+"		messageFormate="+messageFormate);
+						//Mail_msg=message+MailNotification.sendMail(userRole,email_existing,cAlias,dept,"","",fileName,serverName,serverPort,file);
+						Mail_msg=message+MailNotification.sendMail(messageFormate, email_existing, subject, "", file);
+						pr = null;
+						subject ="";
+						messageFormate = "";	
 						Msg =MultilingualUtil.ConvertedString("u_msg1",file);
 						String Msg2 =MultilingualUtil.ConvertedString("u_msg5",file);
 						/**
@@ -342,15 +352,29 @@ public class UserManagement
                                                  * This mail will specify the user name and password of the new user
                                                  * @see MailNotification in utils
                                                  */
-
-                                                MailNotification.sendMail(NewUser,email_new,"","",UName,Passwd,fileName,serverName,serverPort,file);
+//////////////////////////////////////////////////////////////////////////////////////////////////
+						pr =MailNotification.uploadingPropertiesFile(fileName);
+                                                subject = MailNotification.subjectFormate(NewUser, "", pr );
+                                                messageFormate = MailNotification.getMessage(NewUser, "", "", UName, Passwd, serverName, serverPort,pr);
+						//ErrorDumpUtil.ErrorLog("\n\n\n\n subject="+subject+"		messageFormate="+messageFormate);
+                                                //MailNotification.sendMail(NewUser,email_new,"","",UName,Passwd,fileName,serverName,serverPort,file);
+						MailNotification.sendMail(messageFormate, email_new, subject, "", file);
+						subject = ""; messageFormate ="";
+                                               	subject = MailNotification.subjectFormate(userRole, "", pr );
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 						if(Role.equals("author"))
 						{
-							Mail_msg=message+MailNotification.sendMail(userRole,email_new,"","","","",fileName,serverName,serverPort,file);
+							//Mail_msg=message+MailNotification.sendMail(userRole,email_new,"","","","",fileName,serverName,serverPort,file);
+                                               		messageFormate = MailNotification.getMessage(userRole, "", "", "", "", serverName, serverPort,pr);
+							//ErrorDumpUtil.ErrorLog("----------- subject="+subject+"		messageFormate="+messageFormate);
+							Mail_msg=message+MailNotification.sendMail(messageFormate, email_new, subject, "", file);
 						}
 						else
 						{
-							Mail_msg=message+MailNotification.sendMail(userRole,email_new,cAlias,dept,"","",fileName,serverName,serverPort,file);
+                                               		messageFormate = MailNotification.getMessage(userRole, cAlias, dept, "", "", serverName, serverPort,pr);
+							//ErrorDumpUtil.ErrorLog("----------- subject="+subject+"		messageFormate="+messageFormate);
+							//Mail_msg=message+MailNotification.sendMail(userRole,email_new,cAlias,dept,"","",fileName,serverName,serverPort,file);
+							Mail_msg=message+MailNotification.sendMail(messageFormate, email_new, subject, "", file);
 						}
 						/**
 						  * Insert default value of configuartion parameter
@@ -446,7 +470,7 @@ public class UserManagement
         }
 	public static String DeleteInstructor(String Gname,String LangFile)
         {	
-		String Message="";
+		String Message="", messageFormate="";
 		try
 		{
 			int gid=GroupUtil.getGID(Gname);
@@ -467,7 +491,14 @@ public class UserManagement
                         email=element.getEmail();
                         String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
                         String rmsg=CourseManagement.RemoveCourse(Gname,"ByCourseMgmt",LangFile);
-                        String Mail_msg=MailNotification.sendMail(subject,email,"","","","",fileName,server_name,srvrPort,LangFile);
+			//////////////////////////////////////////////////////////////////////////////
+			Properties pr =MailNotification.uploadingPropertiesFile(fileName);
+			String subj = MailNotification.subjectFormate(subject, "", pr );
+                        messageFormate = MailNotification.getMessage(subject, Gname, "", "", "", server_name, srvrPort,pr);
+			//ErrorDumpUtil.ErrorLog("DeleteInstructor----------- subject="+subj+"		messageFormate="+messageFormate);
+                        //String Mail_msg=MailNotification.sendMail(subject,email,"","","","",fileName,server_name,srvrPort,LangFile);
+                        String Mail_msg=MailNotification.sendMail(messageFormate, email, subj, "", LangFile);
+			/////////////////////////////////////////////////////////////////////////////////
                         Message=rmsg+" "+Mail_msg;
 
                 }
@@ -1110,10 +1141,36 @@ public class UserManagement
 			ErrorDumpUtil.ErrorLog("The error in RemoveMessages - UserManagement.java Util !!" +ex);
 		}
 	}
+	/**
+	 * Sending a mail to user after removing his profile from brihaspati
+	 * @param userName String the name of User
+	 * @param group_name String the name of a group
+	 * @param langFile String the name of a propeties file for multilingual
+	 * @param info_new String Portion of a property define in brihaspati.properties file like(deleteUser, deleteUserhttps, onlineStudentRegRequest 
+	 * @param mail_id String mail id of a user
+	 * @param courseId String course id 
+	 * @param dept String name of department
+	 * @param userPassword String users's password
+	 * @param file String name of property file to read property define in it.
+	 * @param serverName String  address of server
+	 * @param serverPort String Port Number of the server
+	 * @return String
+	**/
         public String removeUserProfileWithMail(String userName, String group_name, String langFile, String info_new, String mail_id, String courseId, String dept, String userPassword, String file, String serverName, String serverPort )
 	{
-		String Msg=removeUserProfile(userName,group_name,langFile);
-		String Mail_msg=MailNotification.sendMail(info_new,mail_id,group_name,"","","",file,serverName,serverPort,langFile);
+		String Msg ="", Mail_msg = "";
+		try{
+			Msg=removeUserProfile(userName,group_name,langFile);
+		//////////////////////////////////////
+			Properties pr =MailNotification.uploadingPropertiesFile(file);
+        	        String subject = MailNotification.subjectFormate(info_new, "", pr );
+                	String message = MailNotification.getMessage(info_new, group_name, "", "", "", serverName, serverPort,pr);
+	                //ErrorDumpUtil.ErrorLog("\n\n\n\n in UserManagement util  message="+message+"      subject="+subject);
+		////////////////////////////////////////
+		//String Mail_msg=MailNotification.sendMail(info_new,mail_id,group_name,"","","",file,serverName,serverPort,langFile);
+			Mail_msg=MailNotification.sendMail(message, mail_id, subject, "" ,langFile);
+		}
+		catch(Exception e){ErrorDumpUtil.ErrorLog("Error in removeUserProfileWithMail method in UserManagment util"+e);}
 		return Mail_msg+":"+Msg;
 	}
 

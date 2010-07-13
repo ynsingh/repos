@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.utils;
 
 /*@(#)UpdateInfoMail.java
 
- *  Copyright (c) 2008 ETRG,IIT Kanpur. http://www.iitk.ac.in/
+ *  Copyright (c) 2008, 2010 ETRG,IIT Kanpur. http://www.iitk.ac.in/
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -66,6 +66,8 @@ import org.apache.turbine.services.security.torque.om.TurbineUserGroupRole;
  * 
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:arvindjss17@yahoo.co.in">Arvind Pal</a> 
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+ * @modified date: 08-07-2010
  * @since 1.0
  * @see ExpiryUtil 
  */
@@ -124,7 +126,6 @@ public class UpdateInfoMail{
                         crit.addAscendingOrderByColumn(TurbineUserPeer.USER_ID);
                         crit.setDistinct();
                         List userList=TurbineUserPeer.doSelect(crit);
-			ErrorDumpUtil.ErrorLog(" size in updatelist userList() method -- "+userList.size());
 			return userList;
 		}catch(Exception ex) {
         		ErrorDumpUtil.ErrorLog("The error in User List () - UpdateInfoMail class !!"+ex);
@@ -146,7 +147,6 @@ public class UpdateInfoMail{
                         String  stat[]={"Mon","Tue","Wed","Thu","Fri","Sat","Sun"};
                         String updatePath=TurbineServlet.getRealPath("/Updationmail");
 			Vector updatelist=userListfrmxml();
-                //        ErrorDumpUtil.ErrorLog(" size in updatelist "+updatelist.size());
 			List userList=userList();
                         //ErrorDumpUtil.ErrorLog("size in userList -->"+userList.size()+" size in updatelist "+updatelist.size());
 			//Getting the strength of users from database//
@@ -239,14 +239,19 @@ public class UpdateInfoMail{
                                         int uId=Integer.parseInt(xmluid);
                                         if(uId==1) {
                                                 String Messagebackup ="Taken backup";
-                                                Mail_msg=MailNotification.sendMail(Messagebackup,emailId1,"","Updation Mail","","","",server_name,srvrPort,"");
+						////////////////////////////////////////////
+                                                //Mail_msg=MailNotification.sendMail(Messagebackup,emailId1,"","Updation Mail","","","",server_name,srvrPort,"");
+                                                Mail_msg=MailNotification.sendMail(Messagebackup, emailId1, "Updation Mail", "", "english");
+						////////////////////////////////////////////
                                         }
                                         else
                                         {
 						String TitalMailMessage="";
                                                 TitalMailMessage=getAllMessage(uId);
+						//ErrorDumpUtil.ErrorLog("Update Info TitalMailMessage"+TitalMailMessage);
                                                 if(!TitalMailMessage.equals("")){
-                                                	Mail_msg=MailNotification.sendMail(TitalMailMessage,emailId1,"","Updation Mail","","","",server_name,srvrPort,"english");
+                                                	//Mail_msg=MailNotification.sendMail(TitalMailMessage,emailId1,"","Updation Mail","","","",server_name,srvrPort,"english");
+                                                	Mail_msg=MailNotification.sendMail(TitalMailMessage,  emailId1, "Updation Mail", "", "english");
                                   //              	ErrorDumpUtil.ErrorLog("This is  else  condision !!!!!");
                                                 }
                                         }

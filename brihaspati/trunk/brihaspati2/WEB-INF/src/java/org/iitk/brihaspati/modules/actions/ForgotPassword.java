@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)ForgotPassword.java	
  *
- *  Copyright (c) 2005-2007, 2009 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2007, 2009, 2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -35,6 +35,7 @@ package org.iitk.brihaspati.modules.actions;
 import java.util.Vector; 
 import java.util.List; 
 import java.util.Random;
+import java.util.Properties;
 
 import org.apache.velocity.context.Context;
 import org.apache.turbine.modules.actions.VelocitySecureAction;
@@ -50,7 +51,6 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.EncryptionUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil; 
 import org.iitk.brihaspati.modules.utils.UserManagement; 
-import org.iitk.brihaspati.modules.utils.ErrorDumpUtil; 
 import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.iitk.brihaspati.om.UserConfigurationPeer;
 import org.iitk.brihaspati.om.UserConfiguration;
@@ -62,6 +62,7 @@ import org.iitk.brihaspati.om.HintQuestion;
  * @author <a href="awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="ynsingh@iitk.ac.in">Y.N.Singh</a>
+ * modified date: 08-07-2010
  */
 
 public class ForgotPassword extends VelocitySecureAction
@@ -107,11 +108,12 @@ public class ForgotPassword extends VelocitySecureAction
                  		*/
 				if(userExists==false)
 				{
-					int uid=UserUtil.getUID(loginName); 
+					int uid=UserUtil.getUID(loginName);
 					Criteria crit=new Criteria();
                 			crit.add(UserConfigurationPeer.USER_ID,Integer.toString(uid));
                 			crit.add(UserConfigurationPeer.QUESTION_ID,0);
                 	 		List check=UserConfigurationPeer.doSelect(crit);
+					
 			 		if((check.size()!=0))
                          		{
 						msg=MultilingualUtil.ConvertedString("forgotPwd_msg2",LangFile);
@@ -168,7 +170,7 @@ public class ForgotPassword extends VelocitySecureAction
                 	crit.add(UserConfigurationPeer.USER_ID,uid);
                 	List check_ans=UserConfigurationPeer.doSelect(crit);
 			UserConfiguration element=(UserConfiguration)check_ans.get(0); 
-                	String ansOfDb=element.getAnswer();
+                	String ansOfDb=element.getAnswer();	
 			if(ansOfDb.equals(ansOfInput))
 		        {
 				User user = TurbineSecurity.getUser(loginName);
@@ -208,26 +210,42 @@ public class ForgotPassword extends VelocitySecureAction
 					String serverName=data.getServerName();
  					int srvrPort=data.getServerPort();
 					String serverPort=Integer.toString(srvrPort);
-        		        	String str=new String(pass);
+        		        	//String str=new String(pass);
+        		        	String password=new String(pass);
 	        			String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
 					String msg1=new String();
 					try
 					{
+						String info_new = "";
 						if(srvrPort == 8080)
-						{
-							msg1=MailNotification.sendMail("newPassword",mailId,"","","",str,fileName,serverName,serverPort,LangFile); 
-	      					}
+							info_new="newPassword";
 						else
-						{
-							msg1=MailNotification.sendMail("newPasswordhttps",mailId,"","","",str,fileName,serverName,serverPort,LangFile);
-						}
+							info_new="newPasswordhttps";
+
+						
+						//////////////////////////////////////////////////
+						Properties pr =MailNotification.uploadingPropertiesFile(fileName);
+						String subject = MailNotification.subjectFormate(info_new, "", pr );
+						String message = MailNotification.getMessage(info_new, "", "", "", password, serverName, serverPort,pr);
+						msg1=MailNotification.sendMail(message, mailId, subject, "", LangFile); 
+						
+						/////////////////////////////////////////////////
+						//if(srvrPort == 8080)
+						//{
+							//msg1=MailNotification.sendMail("newPassword",mailId,"","","",str,fileName,serverName,serverPort,LangFile); 
+	      					//}
+						//else
+						//{
+							//msg1=MailNotification.sendMail("newPasswordhttps",mailId,"","","",str,fileName,serverName,serverPort,LangFile);
+						//}
 						 if(msg1.equals(MultilingualUtil.ConvertedString("mail_msg2",LangFile)))
                                                 {
 						/**
 						* new Password encrypted by MD5 then modify database 
 						* password for user
 						*/
-						String encPass=EncryptionUtil.createDigest("MD5",str);
+						//String encPass=EncryptionUtil.createDigest("MD5",str);
+						String encPass=EncryptionUtil.createDigest("MD5",password);
 		       				user.setPassword(encPass); 
 						TurbineSecurity.saveUser(user);
 						msg=MultilingualUtil.ConvertedString("forgotPwd_msg3",LangFile);

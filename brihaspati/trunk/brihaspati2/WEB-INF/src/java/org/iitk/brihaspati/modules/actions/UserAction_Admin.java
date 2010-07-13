@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)UserAction_Admin.java	
  *
- *  Copyright (c) 2005-2006, 2008 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006, 2008, 2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -38,6 +38,7 @@ package org.iitk.brihaspati.modules.actions;
 import java.io.File;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 import java.util.Vector;
 import java.util.StringTokenizer;
 //Turbine
@@ -80,6 +81,7 @@ import org.iitk.brihaspati.om.CoursesPeer;
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @modified date: 08-07-2010
  */
 
 public class UserAction_Admin extends SecureAction_Admin{
@@ -222,26 +224,37 @@ public class UserAction_Admin extends SecureAction_Admin{
                 List listone=TurbineRolePeer.doSelect(crit);
                 String RoleName=((TurbineRole)listone.get(0)).getRoleName();
 		context.put("roleName",RoleName);
-		Vector grpInstructor=UserGroupRoleUtil.getGID(userId,2);
-		int gId=0;
-		String Gname="";
+		//Vector grpInstructor = UserGroupRoleUtil.getGID(userId,2);
+		//int gId=0;
 		String server_name=TurbineServlet.getServerName();
                 String srvrPort=TurbineServlet.getServerPort();
-		String subject="";
+		String subject="", info_new = "";
 		if(srvrPort.equals("8080"))
-                   subject="deleteUser";
+                   info_new = "deleteUser";
                 else
-                   subject="deleteUserhttps";
+                   info_new = "deleteUserhttps";
 		String email="";
+		String Mail_msg="", message ="";
+		boolean flag=false;
+
                 TurbineUser element=(TurbineUser)UserManagement.getUserDetail(uid).get(0);
                 email=element.getEmail();
 		String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
-		String Mail_msg="";
-		boolean flag=false;
+		////////////////////////////////////////////////////
+		Properties pr =MailNotification.uploadingPropertiesFile(fileName);
+		subject = MailNotification.subjectFormate(info_new, "", pr );
+		/**
 		if(grpInstructor.size()!=0)
-		gId=Integer.parseInt((String)grpInstructor.get(0));
+		{
+			gId=Integer.parseInt((String)grpInstructor.get(0));
+		}
+		**/
+		//message = MailNotification.getMessage(info_new, groupName, "", "", "", server_name, srvrPort,pr);
+		//ErrorDumpUtil.ErrorLog("\nRoleName="+RoleName+"\n   subject="+subject);	
+		////////////////////////////////////////////////////
 		if(RoleName.equals("instructor"))
 		{
+			String Gname="";
 			crit=new Criteria();
 			crit.addGroupByColumn(CoursesPeer.GROUP_NAME);
                 	List lstt=CoursesPeer.doSelect(crit);
@@ -260,7 +273,9 @@ public class UserAction_Admin extends SecureAction_Admin{
 				if(active.equals("0"))
 				{
 					String Message=CourseManagement.RemoveCourse(Gname,"ByCourseMgmt",LangFile);
-					Mail_msg=MailNotification.sendMail(subject,email,"","","","",fileName,server_name,srvrPort,LangFile);
+					message = MailNotification.getMessage(info_new, cName, "", "", "", server_name, srvrPort,pr);
+					//Mail_msg=MailNotification.sendMail(subject,email,"","","","",fileName,server_name,srvrPort,LangFile);
+					Mail_msg=MailNotification.sendMail(message, email, subject, "", LangFile);
 					data.setMessage(Mail_msg);
 					String st1=mu.ConvertedString("delIns1",LangFile);
 					String st2=mu.ConvertedString("delIns2",LangFile);
@@ -276,7 +291,16 @@ public class UserAction_Admin extends SecureAction_Admin{
 			return;
 		}
 		else{
-			Mail_msg=MailNotification.sendMail(subject,email,"","","","",fileName,server_name,srvrPort,LangFile);
+			String groupName = "";
+			if(RoleName.equals("student"))
+				groupName = GroupUtil.getGroupName(userId,3);
+			if(RoleName.equals("instructor"))
+				groupName = GroupUtil.getGroupName(userId,2);
+
+			message = MailNotification.getMessage(info_new, groupName, "", "", "", server_name, srvrPort,pr);
+			//ErrorDumpUtil.ErrorLog("\n	in User_Action_Admin  message="+message+"      subject="+subject);	
+			//Mail_msg=MailNotification.sendMail(subject,email,"","","","",fileName,server_name,srvrPort,LangFile);
+			Mail_msg=MailNotification.sendMail(message, email, subject, "", LangFile);
 			Messages=UserManagement.RemoveUser(userName,LangFile);
 			context.put("error_Messages",Messages);
 			data.setMessage(Mail_msg);
@@ -387,7 +411,6 @@ public class UserAction_Admin extends SecureAction_Admin{
         	String action=data.getParameters().getString("actionName","");
 		context.put("actionName",action);
 		LangFile=(String)data.getUser().getTemp("LangFile");
-		ErrorDumpUtil.ErrorLog("actionName in doPerform method:==="+action);
 		if(action.equals("eventSubmit_doUpdatePass"))
 			doUpdatePass(data,context);
 		else if(action.equals("eventSubmit_doDelete"))

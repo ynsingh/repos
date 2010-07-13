@@ -36,6 +36,7 @@ package org.iitk.brihaspati.modules.actions;
 
 import java.io.File;
 import java.util.List;
+import java.util.Properties;
 import java.util.Vector;
 import java.util.StringTokenizer;
 
@@ -93,10 +94,21 @@ public class  OnlineRegistration_Instructor extends SecureAction{
                         TopicMetaDataXmlReader topicmetadata =new TopicMetaDataXmlReader(path+"/OnlineUser.xml");
 			userlist=topicmetadata.getOnlineUserDetails();
 			StringTokenizer st=new StringTokenizer(accept,"^");
-			String msgForExpireTime= "Your Request for "; 
-			String subMsgForExpireTime= " registration is rejected. Please contact to the administrator personally";
+			//String msgForExpireTime= "Your Request for "; 
+			//String subMsgForExpireTime= " registration is rejected. Please contact to the administrator personally";
                         String server_name= TurbineServlet.getServerName();
                         String srvrPort= TurbineServlet.getServerPort();
+////////////////////////////////////////////////////////////////////////
+			String message ="";
+                        String info_new = "";
+                        if(srvrPort == "8080")
+                                info_new="onLineRegReqForUserReject";
+                        else
+                                info_new="onLineRegReqForUserReject_https";
+                        Properties pr =MailNotification.uploadingPropertiesFile(TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties"));
+                        String subject = MailNotification.subjectFormate(info_new, "", pr );
+			//ErrorDumpUtil.ErrorLog("OnlineRegistration_Instructor.java RejectUser  subject="+subject);
+///////////////////////////////////////////////////////////////////////////
 			for(int j=0;st.hasMoreTokens();j++)
                         {
 				tokn=st.nextToken();
@@ -116,8 +128,11 @@ public class  OnlineRegistration_Instructor extends SecureAction{
 						email=((CourseUserDetail) userlist.elementAt(i)).getEmail();
 
 						if(uname.equals(userName) && gname.equals(groupName) && email.equals(mailId))
-						{						
-							String Mail_msg=MailNotification.sendMail(msgForExpireTime+gname+subMsgForExpireTime,mailId,"onlineRegRequest","Updation Mail","","","",server_name,srvrPort,LangFile);
+						{	
+							message = MailNotification.getMessage(info_new, gname, "", uname, "", server_name, srvrPort,pr);					
+							//ErrorDumpUtil.ErrorLog("OnlineRegistration_Instructor.java RejectUser  message="+message);
+							//String Mail_msg=MailNotification.sendMail(msgForExpireTime+gname+subMsgForExpireTime,mailId,"onlineRegRequest","Updation Mail","","","",server_name,srvrPort,LangFile);
+							String Mail_msg=MailNotification.sendMail(message, mailId, subject, "", LangFile);
 							indexList.add(i);
 							String str=MultilingualUtil.ConvertedString("online_msg3",LangFile);
                 					data.setMessage(str);

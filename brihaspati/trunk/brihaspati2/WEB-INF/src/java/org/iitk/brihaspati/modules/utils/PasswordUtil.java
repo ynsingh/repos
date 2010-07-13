@@ -35,17 +35,25 @@ package org.iitk.brihaspati.modules.utils;
 /**
  * @author: <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kumar Trivedi</a>
  * @author: <a href="mailto:madhavi_mungole@hotmail.com">Madhavi Mungole</a>
+ * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
+ * @modified date: 08-07-2010
  */
+
+import java.util.Properties;
+
 import org.apache.turbine.om.security.User;
+import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.services.security.TurbineSecurity;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+import org.iitk.brihaspati.modules.utils.MailNotification;
 import babylon.babylonUserTool;
 import babylon.babylonPasswordEncryptor;
 /**
  * This is a util class used to change the password of the user
  */
 public class PasswordUtil{
-
+	
+	static String serverName= "", serverPort="";
 	/**
 	 * Used to change the password
 	 * @param user User The user object for the user for whom
@@ -99,6 +107,7 @@ public class PasswordUtil{
 			 * Set the new password in the user object of
 			 * user and save it
 			 */
+
 			user.setPassword(encryptPasswd);
 			TurbineSecurity.saveUser(user);
 			/**
@@ -129,15 +138,55 @@ public class PasswordUtil{
 	                 * Getting file value from temporary variable according to selection of Language
 	                 * Replacing the static value from Property file
 	                 **/
+			
+	                String loginName=user.getName();
+        	        User user1 = TurbineSecurity.getUser(loginName);
+                	String mailId=user1.getEmail();
+			/**
+	                  * checking for the user's e-mail
+        	          * from the database table.
+                	  */
+               	        String msg1=new String();
+                	if(!mailId.equals(""))
+	                {
+        	                String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
+                        	try
+	                        {
+					String info_new = "";
+        	                        if(serverPort == "8080")
+						info_new = "newPassword";
+					else
+						info_new = "newPasswordhttps";
+
+					Properties pr =MailNotification.uploadingPropertiesFile(fileName);
+                                        String subject = MailNotification.subjectFormate(info_new, "", pr );
+					String messageFormat = MailNotification.getMessage(info_new, "", "", "", newPassword, PasswordUtil.serverName, PasswordUtil.serverPort,pr);
+					msg1=MailNotification.sendMail(messageFormat, mailId, subject, "", file);
+
+
+				/**						
+        	                        if(serverPort == "8080")
+					{
+                        	                msg1=MailNotification.sendMail("newPassword",mailId,"","","",newPassword,fileName,serverName,serverPort,file);
+                                	}
+                               		 else
+	                                {
+        	                                msg1=MailNotification.sendMail("newPasswordhttps",mailId,"","","",newPassword,fileName,serverName,serverPort,file);
+                	                }
+				**/
+                        	}
+	
+        	                catch(Exception e){}
+                	}
 			String pwdOf=m_u.ConvertedString("pwdOf",file);
 			String pwdChangeSuccess=m_u.ConvertedString("pwdChangeSuccess",file);
 			 if(file.endsWith("hi.properties")) 
-				message=userName+" " +pwdOf+" " +pwdChangeSuccess +msg;
+				message=userName+" " +pwdOf+" " +pwdChangeSuccess +msg+"\n"+msg1;
                         else if(file.endsWith("urd.properties"))
-                                message=pwdOf+" "+pwdChangeSuccess+" "+userName +msg;
+                                message=pwdOf+" "+pwdChangeSuccess+" "+userName +msg+"\n"+msg1;
 
 			else
-				message=pwdOf+" "+userName+" " +pwdChangeSuccess +msg;
+				message=pwdOf+" "+userName+" " +pwdChangeSuccess +msg+"\n"+msg1;
 		}
 		catch(Exception exc)
 		{
@@ -149,4 +198,10 @@ public class PasswordUtil{
 		}
 		return message;
 	}
+
+	public static void passwordFromUtil(String serverName, String serverPort){
+		PasswordUtil.serverName = serverName;
+		PasswordUtil.serverPort = serverPort;	
+	}
+
 }

@@ -43,7 +43,7 @@ $!data.getMessage()
 	                #elseif($tdcolor=="1")
         		        <td width=25% bgcolor="#AFDCEC">
 	                #end
-        	        <a href=$link.setPage("call,Backups,Backups.vm").addPathInfo("count","1")>$brih_content #if($lang =="hindi") $brih_Of1 #end $f($lang =="hindi") $brih_Of1 #endbrih_backup </a></td>
+        	        <a href=$link.setPage("call,Backups,Backups.vm").addPathInfo("count","1")>$brih_content #if($lang =="hindi") $brih_Of1 #end #if($lang =="hindi") $brih_Of1 #end $brih_backup </a></td>
 	                #if($tdcolor!="2")
         		        <td width=25%>
 	                #elseif($tdcolor=="2")

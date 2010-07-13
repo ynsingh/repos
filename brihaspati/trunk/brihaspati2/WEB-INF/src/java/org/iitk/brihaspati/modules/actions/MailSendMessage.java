@@ -127,6 +127,7 @@ public class MailSendMessage extends SecureAction
 				AddList=Add_FstList;
 				
 			}
+			//ErrorDumpUtil.ErrorLog("\n\n\n\n message==========="+message);
                 	if(!AddList.equals(""))
 			{ //outer 'if'
 				Criteria crit=new Criteria();
@@ -145,6 +146,7 @@ public class MailSendMessage extends SecureAction
 				* escape the special character in subject
 				*/
 				String subject = pp.getString("subject","");
+				//ErrorDumpUtil.ErrorLog("subject==========="+subject);
                                 String sender_name = data.getUser().getName();
                                 int sender_id = UserUtil.getUID(sender_name);
 			
@@ -417,11 +419,13 @@ public class MailSendMessage extends SecureAction
                         	*/
 				FileItem fileItem = pp.getFileItem("file");
                         	try {//inner try
+					//ErrorDumpUtil.ErrorLog("message==========="+message+"	subject="+subject);
                				String mailMsg="";
 					String serverName= TurbineServlet.getServerName();
         			        String serverPort= TurbineServlet.getServerPort();
 	                		if( (fileItem.getSize() == 0) && (mailId != null && mailId != "") ){
-						mailMsg=MailNotification.sendMail(message, mailId, "LocalMail", "Updation Mail", subject, "", "", serverName, serverPort, LangFile);
+						// mailMsg=MailNotification.sendMail(message, mailId, "LocalMail", "Updation Mail", subject, "", "", serverName, serverPort, LangFile);
+						mailMsg=MailNotification.sendMail(message, mailId, subject, "", LangFile);
 					}
 	                		if((fileItem!=null) && (fileItem.getSize()!=0))
                                 	{
@@ -436,7 +440,8 @@ public class MailSendMessage extends SecureAction
 							filePathForLM = path+"/"+tempFile;
 							File f1ForLM=new File(filePathForLM);
 							fileItem.write(f1ForLM);
-							mailMsg=MailNotification.sendMail(message, mailId, "LocalMail", "Updation Mail", subject, "", filePathForLM, serverName, serverPort, LangFile);
+							//mailMsg=MailNotification.sendMail(message, mailId, "LocalMail", "Updation Mail", subject, "", filePathForLM, serverName, serverPort, LangFile);
+							mailMsg=MailNotification.sendMail(message, mailId, subject, filePathForLM, LangFile);
 						} //if s3 end
 						else { //else s3 start
 	                                		String realPath = TurbineServlet.getRealPath("/UserArea");

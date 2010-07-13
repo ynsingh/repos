@@ -44,6 +44,7 @@ import java.util.List;
 import java.util.Vector;
 import java.util.ListIterator;
 import java.util.StringTokenizer;
+import java.util.Properties;
 
 import java.sql.Date;
 
@@ -86,7 +87,9 @@ import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @modified date: 28-01-2010
+ * @modified date: 08-07-2010
  */
 public class Notice_Send_Delete extends SecureAction
 {
@@ -380,11 +383,23 @@ public class Notice_Send_Delete extends SecureAction
 			crit =new Criteria();
                         crit.add(TurbineUserPeer.USER_ID,userid);
                         List userList=TurbineUserPeer.doSelect(crit);
+			////////////////////////////////////////////////////
+			String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
+			String info_new = "";
+			if(srvrPort == "8080")
+				info_new= "brihaspatiNotice";
+			else
+				info_new= "brihaspatiNoticehttps";
+			Properties pr =MailNotification.uploadingPropertiesFile(fileName);
+                        String subject = MailNotification.subjectFormate(info_new, courseName, pr );
+			String message = MailNotification.getMessage(info_new, courseName, "", data.getUser().getName(), "", "", "",pr);
+			///////////////////////////////////////////////////
 			for(int c1=0;c1<userList.size();c1++) {
 				TurbineUser element=(TurbineUser)(userList.get(c1));
                                 String eMail=element.getEmail();
 				if(!eMail.equals("")){
-					String Mail_msg=MailNotification.sendMail(notice_message,eMail,courseName,"Updation Mail",userName,"Brihaspati Notice","",server_name,srvrPort,lang);
+					//String Mail_msg=MailNotification.sendMail(notice_message,eMail,courseName,"Updation Mail",userName,"Brihaspati Notice","",server_name,srvrPort,lang);
+					String Mail_msg= MailNotification.sendMail(message+"<br><br>"+notice_message, eMail, subject, "", lang);
 				}
 			}
 		}
