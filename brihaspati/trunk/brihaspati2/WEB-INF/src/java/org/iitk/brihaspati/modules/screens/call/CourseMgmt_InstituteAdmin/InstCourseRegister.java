@@ -1,9 +1,9 @@
-package org.iitk.brihaspati.modules.screens.call.AdminProfile;
+package org.iitk.brihaspati.modules.screens.call.CourseMgmt_Admin;
 
 /*
- * @(#)ChangePasswd.java	
+ * @(#)InstCourseRegister.java	
  *
- *  Copyright (c) 2005,2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2004 - 2005,2009,2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -30,28 +30,34 @@ package org.iitk.brihaspati.modules.screens.call.AdminProfile;
  *  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
  *  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
  *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * 
  *  
  *  Contributors: Members of ETRG, I.I.T. Kanpur 
- */
-
-/**
- * @author <a href="mailto:madhavi_mungole@hotmail.com ">Madhavi Mungole</a> 
- * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a> 
+ * 
  */
 
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
-//import org.iitk.brihaspati.modules.screens.call.SecureScreen_Institute_Admin;
-import org.iitk.brihaspati.modules.screens.call.SecureScreen;
+import org.iitk.brihaspati.modules.screens.call.SecureScreen_Institute_Admin;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+
 /**
- * Loads the template page for administrator
+ * Grab all the records in a table using a Peer, and
+ * place the Vector of data objects in the context
+ * where they can be displayed by a #foreach loop.
+ *
+ * @author <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kumar Trivedi</a>
+ * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
  */
+public class InstCourseRegister extends SecureScreen_Institute_Admin
+{
+    /**
+     * Place all the data object in the context
+     * for use in the template.
+     */
+    public void doBuildTemplate( RunData data, Context context )
+    {
 
-//public class ChangePasswd extends SecureScreen_Institute_Admin{
-public class ChangePasswd extends SecureScreen{
-	
-	public void doBuildTemplate(RunData data, Context context){
-		context.put("tdcolor",data.getParameters().getString("count",""));
-	}
+    }
+
 }
-

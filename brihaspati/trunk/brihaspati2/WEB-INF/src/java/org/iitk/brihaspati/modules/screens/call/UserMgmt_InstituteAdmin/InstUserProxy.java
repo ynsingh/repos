@@ -1,9 +1,9 @@
-package org.iitk.brihaspati.modules.screens.call.AdminProfile;
+package org.iitk.brihaspati.modules.screens.call.UserMgmt_InstituteAdmin;
 
 /*
- * @(#)ChangePasswd.java	
+ * @(#)InstUserProxy.java	
  *
- *  Copyright (c) 2005,2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -30,28 +30,31 @@ package org.iitk.brihaspati.modules.screens.call.AdminProfile;
  *  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
  *  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
  *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * 
  *  
  *  Contributors: Members of ETRG, I.I.T. Kanpur 
- */
-
-/**
- * @author <a href="mailto:madhavi_mungole@hotmail.com ">Madhavi Mungole</a> 
- * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a> 
+ * 
  */
 
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
-//import org.iitk.brihaspati.modules.screens.call.SecureScreen_Institute_Admin;
-import org.iitk.brihaspati.modules.screens.call.SecureScreen;
+
+import org.iitk.brihaspati.modules.screens.call.SecureScreen_Institute_Admin;
+
 /**
- * Loads the template page for administrator
+ * This class loads the vm file and checks for the access rights of the user if he can access this page 
  */
 
-//public class ChangePasswd extends SecureScreen_Institute_Admin{
-public class ChangePasswd extends SecureScreen{
-	
-	public void doBuildTemplate(RunData data, Context context){
-		context.put("tdcolor",data.getParameters().getString("count",""));
-	}
+public class InstUserProxy extends SecureScreen_Institute_Admin
+{
+    /*
+     * Places all the data objects in the context for further use
+     */   
+
+     public void doBuildTemplate( RunData data, Context context )
+    {
+    }
+
 }
+
 

@@ -1,9 +1,9 @@
-package org.iitk.brihaspati.modules.screens.call.AdminProfile;
+package org.iitk.brihaspati.modules.screens.call.Root_Admin;
 
 /*
- * @(#)ChangePasswd.java	
+ * @(#)ApprovedInstituteList.java	
  *
- *  Copyright (c) 2005,2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2009-2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -30,28 +30,53 @@ package org.iitk.brihaspati.modules.screens.call.AdminProfile;
  *  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
  *  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
  *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * 
  *  
  *  Contributors: Members of ETRG, I.I.T. Kanpur 
+ * 
  */
 
 /**
- * @author <a href="mailto:madhavi_mungole@hotmail.com ">Madhavi Mungole</a> 
- * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a> 
+ * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  */
+
+import java.util.Vector;
+import java.util.List;
 
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
-//import org.iitk.brihaspati.modules.screens.call.SecureScreen_Institute_Admin;
-import org.iitk.brihaspati.modules.screens.call.SecureScreen;
-/**
- * Loads the template page for administrator
- */
+import org.apache.turbine.util.parser.ParameterParser;
 
-//public class ChangePasswd extends SecureScreen_Institute_Admin{
-public class ChangePasswd extends SecureScreen{
+import org.apache.torque.util.Criteria;
+
+import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
+import org.iitk.brihaspati.modules.utils.StringUtil;
+import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+//import org.iitk.brihaspati.modules.screens.call.SecureScreen_RootAdmin;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.screens.call.SecureScreen_Admin;
+
+
+public class ApprovedInstituteList extends SecureScreen_Admin
+{
+	public void doBuildTemplate( RunData data, Context context )
+    	{
+		try{
+			String file = (String)data.getUser().getTemp("LangFile");
+			MultilingualUtil m_u = new MultilingualUtil();
+			Criteria crit = new Criteria();
+			crit.addGroupByColumn(InstituteAdminRegistrationPeer.INSTITUTE_ID);
+			crit.add(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"1");
+			List instdetail=InstituteAdminRegistrationPeer.doSelect(crit);
+			context.put("idetail",instdetail);			
+		}
+		catch(Exception e)
+		{
+			ErrorDumpUtil.ErrorLog("Exception=====>"+e);
+			
+		}
 	
-	public void doBuildTemplate(RunData data, Context context){
-		context.put("tdcolor",data.getParameters().getString("count",""));
-	}
+    	}
 }
 

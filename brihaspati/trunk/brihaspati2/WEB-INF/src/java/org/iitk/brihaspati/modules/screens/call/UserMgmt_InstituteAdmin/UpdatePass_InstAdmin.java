@@ -1,9 +1,9 @@
-package org.iitk.brihaspati.modules.screens.call.AdminProfile;
+package org.iitk.brihaspati.modules.screens.call.UserMgmt_InstituteAdmin;
 
 /*
- * @(#)ChangePasswd.java	
+ * @(#) UpdatePass_InstAdmin.java	
  *
- *  Copyright (c) 2005,2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2004-2006 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -32,26 +32,39 @@ package org.iitk.brihaspati.modules.screens.call.AdminProfile;
  *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *  
  *  Contributors: Members of ETRG, I.I.T. Kanpur 
+ * 
+ */
+/**
+ * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  */
 
-/**
- * @author <a href="mailto:madhavi_mungole@hotmail.com ">Madhavi Mungole</a> 
- * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a> 
- */
 
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
-//import org.iitk.brihaspati.modules.screens.call.SecureScreen_Institute_Admin;
-import org.iitk.brihaspati.modules.screens.call.SecureScreen;
+import org.iitk.brihaspati.modules.screens.call.SecureScreen_Institute_Admin;
+
 /**
- * Loads the template page for administrator
+ * Class for updating password of user in the system.
  */
 
-//public class ChangePasswd extends SecureScreen_Institute_Admin{
-public class ChangePasswd extends SecureScreen{
-	
-	public void doBuildTemplate(RunData data, Context context){
-		context.put("tdcolor",data.getParameters().getString("count",""));
-	}
+public class UpdatePass_InstAdmin extends SecureScreen_Institute_Admin
+{
+ /**
+  * Specific username for modify password 
+  * @param data RunData
+  * @param context Context
+  * @exception Exception, a generic exception
+  */
+	public void doBuildTemplate(RunData data, Context context ){
+		try{
+	    		context.put("username",data.getParameters().getString("username"));
+	    		context.put("status",data.getParameters().getString("status"));
+	    		context.put("tdcolor",data.getParameters().getString("count",""));
+	    	}
+	    	catch(Exception e){
+			data.setMessage("The error is :-"+e);
+		}
+    	}
+
 }
 

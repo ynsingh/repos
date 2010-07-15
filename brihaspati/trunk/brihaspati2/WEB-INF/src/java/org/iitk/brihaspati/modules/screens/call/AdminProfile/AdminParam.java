@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.AdminProfile;
 /*
  * @(#)AdminParam.java	
  *
- *  Copyright (c) 2005,2009 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005,2009,2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -35,7 +35,8 @@ package org.iitk.brihaspati.modules.screens.call.AdminProfile;
  */
 import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
-import org.iitk.brihaspati.modules.screens.call.SecureScreen_Admin;
+//import org.iitk.brihaspati.modules.screens.call.SecureScreen_Admin;
+import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
@@ -45,6 +46,8 @@ import org.apache.velocity.context.Context;
  * @author <a href="mailto:awadhk_t@yahoo.com ">Awadhesh Kumar Trivedi</a> 
  * @author <a href="mailto:shaistashekh@hotmail.com"> Shaista </a>
  * @modified date: 17-10-2009
+ * @author <a href="mailto:sharad23nov@yahoo.com ">Sharad Singhi</a> 
+ * @author <a href="mailto:jaivir_singh@rediffmail.com">Jaivir Singh</a> 
  */
 
 
@@ -52,10 +55,15 @@ import org.apache.velocity.context.Context;
  * Loads the template page for Administrator
  */
 
-public class AdminParam extends SecureScreen_Admin{
+//public class AdminParam extends SecureScreen_Admin{
+public class AdminParam extends SecureScreen{
 	public void doBuildTemplate(RunData data, Context context){
 		User user = data.getUser();
-		String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+		String path="";	
+		if((user.getName()).equals("admin"))
+			path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+		else
+			path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"InstituteAdmin.properties";
 		String LangFile=data.getUser().getTemp("LangFile").toString();
 		context.put("tdcolor",data.getParameters().getString("count",""));
 		try{

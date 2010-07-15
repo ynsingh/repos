@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens;
 /*
  * @(#)Index.java	
  *
- *  Copyright (c) 2004, 2009 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2004, 2009,2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -57,10 +57,11 @@ import org.apache.turbine.services.session.TurbineSession;
 //import org.apache.turbine.services.session.SessionTool;
 
 /**
+ * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kumar Trivedi</a>
- * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
 * @author <a href="mailto:smita37uiet@gmail.com">Smita Pal</a>
-* @ mdified date 05-05-2010
+* @ mdified date 05-05-2010,13-07-2010
 
  */
 
@@ -82,16 +83,16 @@ public class Index extends SecureScreen{
 
                         //send list to vm
                         context.put("activelist", actlst);
+			String role=data.getParameters().getString("role");
+			context.put("role",role);
 			 /**
                          * code for Active User list With Time
                          */
 			Vector ve1=new Vector();
                         Collection aul=TurbineSession.getActiveSessions();
-
                          for(Iterator i=aul.iterator();i.hasNext();)
                                         {
                                                 HttpSession session=(HttpSession) i.next();
-						ErrorDumpUtil.ErrorLog("session create--------"+session);
                                                 User un =TurbineSession.getUserFromSession(session);
                                                 String u=un.getName();
                                                 if(ve.contains(u)){
@@ -111,6 +112,7 @@ public class Index extends SecureScreen{
 			User user=data.getUser();
 			String username=user.getName();
 			int uid=UserUtil.getUID(username);
+			context.put("Uid",uid);
 			/** 
 			 *	code for Photo display 
 			 */
@@ -122,13 +124,16 @@ public class Index extends SecureScreen{
 			String fname=user.getFirstName();
 			String lname=user.getLastName();
 			String lang=user.getTemp("lang").toString();
-			//ErrorDumpUtil.ErrorLog("lang in Index.java="+lang);
                         context.put("username",username);
                         context.put("firstname",fname);
                         context.put("lastname",lname);
                         context.put("lang",lang);
 			lang = "";
 			user.setTemp("role","");
+			user.setTemp("mInststat","");
+			user.setTemp("course_id","");
+			user.setTemp("Institute_id","");
+			user.setTemp("DomainName","");
 		// check for Admin Role
 			Vector Admin_Role=UserGroupRoleUtil.getGID(uid,1);
 		// check for Instructor Role
@@ -139,12 +144,13 @@ public class Index extends SecureScreen{
 			Vector GAdmin_Role=UserGroupRoleUtil.getGID(uid,4);
 		// check for ContentAuthor Role
 			Vector Author_Role=UserGroupRoleUtil.getGID(uid,5);
-			
+		// check for InstituteAdmin Role
+			Vector InstituteAdmin_Role=UserGroupRoleUtil.getGID(uid,7);
 			if(Admin_Role.size()!=0)
 			{
 	                        context.put("Role1","AdminRole");
 			}
-	
+
 			if(Instructor_Role.size()!=0)
 			{
                         	context.put("Role2","InstructorRole");
@@ -164,6 +170,10 @@ public class Index extends SecureScreen{
 			{
                         	context.put("Role5","AuthorRole");
 			}
+			if(InstituteAdmin_Role.size()!=0)
+			{
+				context.put("Role7","InstituteAdminRole");
+			}
 			
 			if(user.getName().equals("guest")){
 				context.put("guest_login","true");
@@ -171,7 +181,6 @@ public class Index extends SecureScreen{
 			else{
 				context.put("guest_login","false");
 			}
-
 		}
 		catch(Exception e){data.setMessage("The error is :- "+e);}
 	}

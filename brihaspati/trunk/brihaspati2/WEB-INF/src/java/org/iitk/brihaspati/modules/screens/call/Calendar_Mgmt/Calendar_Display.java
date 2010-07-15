@@ -47,6 +47,8 @@ import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.om.CalInformationPeer;
 import org.iitk.brihaspati.om.CalInformation;
+import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
+import org.iitk.brihaspati.om.InstituteAdminRegistration;
 import org.apache.turbine.om.security.User;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
@@ -76,7 +78,17 @@ public class Calendar_Display extends SecureScreen{
 	Hashtable acal=new Hashtable();
 	public void doBuildTemplate(RunData data,Context context){
 		try{
-
+			String instituteId=(data.getUser().getTemp("Institute_id")).toString();
+                    	ErrorDumpUtil.ErrorLog("insid in display calendar=="+instituteId);
+                        String instname="";
+                        if(!instituteId.equals("")){
+                        Criteria crit=new Criteria();
+                        crit.add(InstituteAdminRegistrationPeer.INSTITUTE_ID,instituteId);
+                        List lst=InstituteAdminRegistrationPeer.doSelect(crit);
+                        instname=((InstituteAdminRegistration)lst.get(0)).getInstituteName();
+                        }
+                        else
+                        instname="Admin";
 			/**
 			* Get the current date and time. Put it in context
 			*/
@@ -363,7 +375,7 @@ public class Calendar_Display extends SecureScreen{
 			* key will have value of month and year of which 
 			* you want holiday and academic event
 			*/
-			String key = dmonth + "."+year;
+			String key = instname+"."+dmonth + "."+year;
 			context.put("key",key);
 			Holiday(key,path1);
 			Holiday(key,path2);
@@ -395,8 +407,6 @@ public class Calendar_Display extends SecureScreen{
 	public void Holiday(String key,String path){
 		try{
 			String [] AdminConf = CalendarUtil.getValue(path,key);
-				
-		
 			String [] dayfromprop =null;
 			String daypp=null;
 			String eventpp=null;

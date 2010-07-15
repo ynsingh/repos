@@ -53,6 +53,7 @@ import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.CourseUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.ListManagement;
+import org.iitk.brihaspati.modules.utils.CourseManagement;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 
@@ -81,15 +82,29 @@ public class Notices extends SecureScreen
                         context.put("nflag",flag);
                         String counter=data.getParameters().getString("count","");
                         context.put("tdcolor",counter);
-
                         /**
-                         * Retreives all courses for use of admin
+                         * Retreives all courses for use of Admin and Institute Admin
                          */
+			String rolename=(user.getTemp("role")).toString();
+			String instituteId=(user.getTemp("Institute_id")).toString();
+			ErrorDumpUtil.ErrorLog("rname=="+rolename+"\niId==="+instituteId);
+			List CList=null;
                         if(loginname.equals("admin")){
-                                List CList=ListManagement.getCourseList();
-                                context.put("clist",CList);
-                                CList=null;
-                        }
+                        	CList=ListManagement.getCourseList();
+				ErrorDumpUtil.ErrorLog("clist in admin loop====="+CList);
+                        	//context.put("clist",CList);
+			}
+			else{
+				ErrorDumpUtil.ErrorLog("testing in else loop in notices");
+				if(rolename.equals("institute_admin")){	
+                                //CList=ListManagement.getInstituteCourseList(instituteId);
+				CList=CourseManagement.getInstituteCourseNUserDetails("All",instituteId);
+				ErrorDumpUtil.ErrorLog("size()instituteadmin loop=="+CList.size());
+                        	//context.put("clist",CList);
+				}
+			}
+                        context.put("clist",CList);
+                        //CList=null;
                         /**
                          * Retreives all the courses in which the user is an instructor
                          */

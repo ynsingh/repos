@@ -49,6 +49,8 @@ import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.CourseUtil;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.utils.ListManagement;
+import org.iitk.brihaspati.modules.utils.CourseManagement;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.screens.call.News.News_Add;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
@@ -79,8 +81,18 @@ public class EventMgmt extends SecureScreen
                         *Get the group name(courseId+IName)
                         *@see ListManagement util in utils
                         */
-
-                        context.put("glist",ListManagement.getCourseList());
+				String instituteId=(data.getUser().getTemp("Institute_id")).toString();	//by Jaivir 30 apr10
+			String role=(data.getUser().getTemp("role")).toString();	//by Jaivir 30 apr10
+			if((data.getUser().getName()).equals("admin")){
+                        	context.put("glist",ListManagement.getCourseList());
+				ErrorDumpUtil.ErrorLog("glist in eventmgmt=="+ListManagement.getCourseList());}
+			else{
+				if(role.equals("institute_admin")){
+                        	context.put("glist",CourseManagement.getInstituteCourseNUserDetails("All",instituteId));
+				}
+				
+			}
+                        //context.put("glist",ListManagement.getCourseList(instituteId));
 
                         String value=pp.getString("val");
                         context.put("value",value);

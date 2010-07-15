@@ -38,8 +38,10 @@ package org.iitk.brihaspati.modules.screens.call.Backups;
 import java.util.List;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
-import org.iitk.brihaspati.modules.screens.call.SecureScreen_Admin;
+//import org.iitk.brihaspati.modules.screens.call.SecureScreen_Institute_Admin;
+import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.ListManagement;
+import org.iitk.brihaspati.modules.utils.CourseManagement;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import java.io.File;
@@ -51,7 +53,8 @@ import org.apache.turbine.services.servlet.TurbineServlet;
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  */
 
-public class Backups extends SecureScreen_Admin
+//public class Backups extends SecureScreen_Institute_Admin
+public class Backups extends SecureScreen
 {
     /**
      * Place all the data object in the context
@@ -66,11 +69,33 @@ public class Backups extends SecureScreen_Admin
 		context.put("tdcolor",counter);
 		context.put("mode",mode);
 		context.put("actionName",acn);
-                List CourseList=ListManagement.getCourseList();
+		String instituteId=(data.getUser().getTemp("Institute_id")).toString();
+		////////////////////////////////
+		/*
+		*add by jaivir on 21june
+		*/
+		String loginname=(data.getUser()).getName();
+		String rolename=(data.getUser().getTemp("role")).toString();
+		List CourseList=null;
+		if(loginname.equals("admin")){
+                	CourseList=ListManagement.getCourseList();
+			ErrorDumpUtil.ErrorLog("crslist in backup==="+CourseList);
+		}
+		else{
+			if(rolename.equals("institute_admin"))
+                                CourseList=CourseManagement.getInstituteCourseNUserDetails("All",instituteId);
+			ErrorDumpUtil.ErrorLog("crslist in else or institute admin backup==="+CourseList);
+
+		}
+		/////////////////////////////////////
                 context.put("courseList",CourseList);
 		if(mode.equals("blist")){
 			String LangFile=(String)data.getUser().getTemp("LangFile");
-			File dir=new File(TurbineServlet.getRealPath("/BackupData/"));
+			File dir;
+			if(loginname.equals("admin"))
+			dir=new File(TurbineServlet.getRealPath("/BackupData"+"/Admin/"));
+			else	
+			dir=new File(TurbineServlet.getRealPath("/BackupData/"+instituteId+"/"));
                         if(dir.exists()){
                                 File list[];
                                 String crsName=(String)data.getUser().getTemp("course_id");
