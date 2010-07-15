@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.utils;
 /*
  * @(#)UserGroupRoleUtil.java
  *
- *  Copyright (c) 2004-2006 ETRG,IIT Kanpur.
+ *  Copyright (c) 2004-2006,2010 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -274,6 +274,8 @@ public class UserGroupRoleUtil{
 	    else
 	    if(rid==6)
 		    return("user");
+	    if(rid==7)
+		    return("institute_admin");	
 			    
 	    else
 		    return("error");

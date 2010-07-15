@@ -39,14 +39,18 @@ package org.iitk.brihaspati.modules.actions;
 import java.io.File;
 import java.sql.Date;
 import java.util.Vector;
+import java.util.List;
 import java.io.FileWriter;
 import org.apache.turbine.util.RunData;
+import org.apache.torque.util.Criteria;
 import org.apache.turbine.om.security.User;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.CalendarUtil;
+import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
+import org.iitk.brihaspati.om.InstituteAdminRegistration;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.util.StringTokenizer;
@@ -72,6 +76,16 @@ public class AcademicAction extends SecureAction
 			String msg="";
 			ParameterParser pp=data.getParameters();
 			User user=data.getUser();
+			String instituteId=(data.getUser().getTemp("Institute_id")).toString();
+			String instname="";	
+			if(!instituteId.equals("")){
+			Criteria crit=new Criteria();
+                        crit.add(InstituteAdminRegistrationPeer.INSTITUTE_ID,instituteId);
+                        List lst=InstituteAdminRegistrationPeer.doSelect(crit);
+			instname=((InstituteAdminRegistration)lst.get(0)).getInstituteName();
+			}	
+			else
+			instname="Admin";
 			String event=pp.getString("event");
 			StringTokenizer st=new StringTokenizer(event,";"); 
 			Vector v=new Vector();
@@ -87,8 +101,10 @@ public class AcademicAction extends SecureAction
 			String year=pp.getString("Start_year");
 			int iy=Integer.parseInt(year);		
 			String hd=pp.getString("etype");
-			String prpdate=month+"."+year;
+			//String prpdate=month+"."+year;
+			String prpdate=instname+"."+month+"."+year;
 			String path=data.getServletContext().getRealPath("/WEB-INF") +"/conf";
+			//String role=(data.getUser().getTemp("role")).toString();
 			String acdPath=path+"/"+"AcademicCalendar.properties";
 			String hldPath=path+"/"+"CalendarHolidays.properties";
 			String fpath="";	
@@ -147,6 +163,11 @@ public class AcademicAction extends SecureAction
 	{
 		try
 		{
+			String instituteId=(data.getUser().getTemp("Institute_id")).toString();
+			Criteria crit=new Criteria();
+                        crit.add(InstituteAdminRegistrationPeer.INSTITUTE_ID,instituteId);
+                        List lst=InstituteAdminRegistrationPeer.doSelect(crit);
+			String instname=((InstituteAdminRegistration)lst.get(0)).getInstituteName();
 			String LangFile=data.getUser().getTemp("LangFile").toString();
 			String msg="";  
 			ParameterParser pp=data.getParameters();
@@ -155,7 +176,7 @@ public class AcademicAction extends SecureAction
 			String year=pp.getString("Start_year");
 			String etype=pp.getString("etype");
 			context.put("etype",etype);
-			String date=month+"."+year;
+			String date=instname+"."+month+"."+year;
 			context.put("keydate",date);
 			String path=data.getServletContext().getRealPath("/WEB-INF") +"/conf";
 			String acdPath=path+"/"+"AcademicCalendar.properties";

@@ -129,7 +129,8 @@ public class Notice_Send_Delete extends SecureAction
 			String notice_role=pp.getString("role");
 			notice_message=pp.getString("message");	
 
-			String notice_subject=pp.getString("subject");	
+			String notice_subject=pp.getString("subject");
+			ErrorDumpUtil.ErrorLog("nsubject at line 130=="+notice_subject);	
 			/**
 			 *   Replace special character and scripts
 			 */

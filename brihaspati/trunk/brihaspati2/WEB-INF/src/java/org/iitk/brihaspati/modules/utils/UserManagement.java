@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.utils;
 
 /*
  *  @(#) UserManagement.java
- *  Copyright (c) 2005-2008, 2009 ETRG,IIT Kanpur 
+ *  Copyright (c) 2005-2008, 2009,2010 ETRG,IIT Kanpur 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -49,6 +49,8 @@ import org.apache.turbine.util.security.DataBackendException;
 import org.apache.turbine.util.security.UnknownEntityException;
 import org.apache.turbine.services.security.torque.om.TurbineUser;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
+import org.apache.turbine.services.security.torque.om.TurbineGroup;
+import org.apache.turbine.services.security.torque.om.TurbineGroupPeer;
 import org.apache.turbine.services.security.torque.om.TurbineUserGroupRole;
 import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
 //Brihaspati
@@ -78,6 +80,8 @@ import babylon.babylonPasswordEncryptor;
 //import org.iitk.brihaspati.modules.utils.GongUtil;
 /**
  * In this class manage all utility of user
+ * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:madhavi_mungole@hotmail.com">Madhavi Mungole</a>
@@ -102,7 +106,6 @@ public class UserManagement
 		 * @param Role String The role of the new user 
 		 * @return String
 		 */
-
 	public static String CreateUserProfile(String UName,String Passwd,String FName,String LName,String Email,String GroupName,String Role,String serverName,String serverPort,String file)
 	{
     		babylonUserTool tool=new babylonUserTool();	
@@ -124,11 +127,10 @@ public class UserManagement
 				String cAlias=new String();
 				String dept=new String();
 				String fileName=new String();
-
-				
 				/**
 			 	* Get the group and role from TurbineSecurity
 			 	*/
+
 				Group user_group=TurbineSecurity.getGroupByName(GroupName);
 				Role user_role=TurbineSecurity.getRoleByName(Role);
 				/**
@@ -139,6 +141,7 @@ public class UserManagement
 				boolean UserExist=checkUserExist(UName);
 				if(UserExist==false)
 				{
+
 					try
 					{
 					int user_id=UserUtil.getUID(UName);
@@ -183,11 +186,17 @@ public class UserManagement
                                 			else
                                         			userRole="newStudenthttps";
                         			}
+						else if(Role.equals("institute_admin")){
+							if(serverPort.equals("8080"))
+								userRole="newInstituteAdmin";
+							else
+								userRole="newInstituteAdminhttps";
+						}
                         			else{
                                 			if(serverPort.equals("8080"))
                                         			userRole="newAuthor";
                                 			else
-                                        			userRole="newAuthorhttps";
+                       						userRole="newAuthorhttps";
                         			}
 
                         			/**
@@ -239,7 +248,6 @@ public class UserManagement
                         			new_user.setFirstName(FName);
                         			new_user.setLastName(LName);
                         			new_user.setCreateDate(date);
-                        			//new_user.setCreated(date);
                         			new_user.setLastLogin(date);
 						String email_new=new String();
 						fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
@@ -256,19 +264,28 @@ public class UserManagement
                                 			else
                                         			userRole="newStudenthttps";
                         			}
+						else if(Role.equals("institute_admin")){
+							ErrorDumpUtil.ErrorLog("True2");
+                                                        if(serverPort.equals("8080"))
+                                                                userRole="newInstituteAdmin";
+                                                        else
+                                                                userRole="newInstituteAdminhttps";	
+                                                }
+
                         			else{
                                 			if(serverPort.equals("8080"))
                                         			userRole="newAuthor";
                                 			else
                                         			userRole="newAuthorhttps";
                         			}
+
                         			if(Email.equals("") || Email.equals(null))
 						{
 							new_user.setEmail(Email);
 						}
 						else
 						{
-							if(!Role.equals("author"))
+							if(!Role.equals("author") && (!Role.equals("institute_admin")))
 							{
 								crit=new Criteria();
         	                                        	crit.add(CoursesPeer.GROUP_NAME,GroupName);
@@ -281,6 +298,7 @@ public class UserManagement
 							email_new=ChkMailId(email_existing);
 							new_user.setEmail(email_new);
 						}
+						 
 						/**
 			 			* Encrypt the password entered by the user
 			 			* @see EncryptionUtil in utils
@@ -289,22 +307,23 @@ public class UserManagement
 						/**
 				 		* Adds the new user using TurbineSecurity which throws
 				 		* EntityExistsException and DataBackendException
+
 				 		*/
 
 						TurbineSecurity.addUser(new_user,encrPassword);
 						/**
 						* Update last login, user quota  and create date field of turbine user
 						*/
-						String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
-				                String SpacefPrp=AdminProperties.getValue(path,"brihaspati.user.quota.value");
-				                long UQuota=new Long(SpacefPrp).longValue();
-	
+						//String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+				                //String SpacefPrp=AdminProperties.getValue(path,"brihaspati.user.quota.value");
+				                //long UQuota=new Long(SpacefPrp).longValue();
+
 						int u1=UserUtil.getUID(UName);
 						crit=new Criteria();
                                                 crit.add(org.iitk.brihaspati.om.TurbineUserPeer.USER_ID,u1);
                                                 crit.add(org.iitk.brihaspati.om.TurbineUserPeer.CREATED,date);
                                                 crit.add(org.iitk.brihaspati.om.TurbineUserPeer.LAST_LOGIN,date);
-                                                crit.add(org.iitk.brihaspati.om.TurbineUserPeer.QUOTA,UQuota);
+                                                //crit.add(org.iitk.brihaspati.om.TurbineUserPeer.QUOTA,UQuota);
                                                 org.iitk.brihaspati.om.TurbineUserPeer.doUpdate(crit);
 						/**
                                  		* The code below does not executes if the user already exists in 
@@ -340,15 +359,6 @@ public class UserManagement
 						else
 							NewUser="newUserhttps";
 						/**
-						* Create new user entry for Gong audio chat
-						*
-						*/
-						/*
-							int roleid=getRoleinCourse( u1, GroupUtil.getGID(GroupName));
-							String nme=FName+LName;
-							GongUtil.creatUser(UName,nme,Passwd,"default",roleid,String.valueOf(u1),Email);
-						*/
-						/**
                                                  * This mail will specify the user name and password of the new user
                                                  * @see MailNotification in utils
                                                  */
@@ -383,6 +393,7 @@ public class UserManagement
 						crit=new Criteria();
 						crit.add(UserConfigurationPeer.USER_ID,u_id);
 						UserConfigurationPeer.doInsert(crit);
+						ErrorDumpUtil.ErrorLog("exception blow UserConfigurationPeer");	
 						/**
 						 * Create User area for the new user
 						 */
@@ -405,6 +416,8 @@ public class UserManagement
 							Msg=Msg1+""+Msg2;
 						}
 						message=Msg+" "+Mail_msg;
+						ErrorDumpUtil.ErrorLog("message in last==="+message);
+						
 					}
 					catch(Exception e)
 					{
@@ -487,7 +500,8 @@ public class UserManagement
                         else
                                 subject="deleteUserhttps";
                         String email="";
-                        TurbineUser element=(TurbineUser)UserManagement.getUserDetail(uid).get(0);
+             		TurbineUser element=(TurbineUser)UserManagement.getUserDetail(uid).get(0);
+			ErrorDumpUtil.ErrorLog("DeleteInstructor======"+element);
                         email=element.getEmail();
                         String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
                         String rmsg=CourseManagement.RemoveCourse(Gname,"ByCourseMgmt",LangFile);
@@ -583,6 +597,10 @@ public class UserManagement
 	 * @param uid Integer The userid of the user
 	 * @return List 
 	 */
+
+	/*Modified for getting User according to Institute wise.
+	  Call in getUserListMethod inListManagement Util.
+	*/
 	public static List getUserDetail(String uid)
 	{
 		List v=null;
@@ -609,6 +627,78 @@ public class UserManagement
 		}
 		return v;
 	}
+	/*Modified for getting User according to Institute wise.
+          Call in getUserListMethod inListManagement Util.
+        */
+        public static List getUserDetail1(String uid,String InstituteId)
+        {
+                List v=null;
+                Vector v1=new Vector();
+                List crslist=null;
+                List details=null;
+		List UidList=null;
+                List tulist=null;
+		Vector UidVector=new Vector();
+                try
+                {
+                        Criteria crit=new Criteria();
+			Vector grpList=new Vector();
+			Vector uidList=new Vector();
+			Vector grpIdList=new Vector();
+			crit.addGroupByColumn(CoursesPeer.GROUP_NAME);
+                        crslist=CoursesPeer.doSelect(crit);
+			for(int i=0;i<crslist.size();i++){
+				Courses element=(Courses)(crslist.get(i));
+                          	String gname=(element.getGroupName()).toString();
+				if(gname.endsWith(InstituteId)){
+					grpList.add(gname);
+				}
+			}
+			for(int j=0;j<grpList.size();j++){
+				String Gname=(grpList.get(j)).toString();
+				crit=new Criteria();
+				crit.add(TurbineGroupPeer.GROUP_NAME,Gname);
+				details=TurbineGroupPeer.doSelect(crit);
+				for(int l=0;l<details.size();l++){
+					TurbineGroup tgrp=(TurbineGroup)(details.get(l));
+					int grpId=tgrp.getGroupId();
+					grpIdList.add(grpId);
+				}
+			}
+			for(int k=0;k<grpIdList.size();k++){
+				String Gid=(grpIdList.get(k)).toString();
+				crit=new Criteria();
+				crit.add(TurbineUserGroupRolePeer.GROUP_ID,Gid);
+				UidList=TurbineUserGroupRolePeer.doSelect(crit);
+				for(int p=0;p<UidList.size();p++){
+					TurbineUserGroupRole tugrole=(TurbineUserGroupRole)(UidList.get(p));
+					int user_id=tugrole.getUserId();
+					UidVector.add(user_id);
+				}
+			}
+			for(int u=0;u<UidVector.size();u++){
+				String userId=(UidVector.get(u)).toString(); 
+				int UserId=Integer.parseInt(userId);
+				crit=new Criteria();
+				crit.add(TurbineUserPeer.USER_ID,UserId);
+				try{
+					tulist=TurbineUserPeer.doSelect(crit);
+					for(int r=0;r<tulist.size();r++){
+					TurbineUser tuser=(TurbineUser)tulist.get(r);
+                                       	v1.add(tuser);
+                                	}
+				}catch(Exception ex){}
+				v=v1;
+			}
+                }
+                catch(Exception e)
+                {
+                        ErrorDumpUtil.ErrorLog("This is the exception in get user details -utils(UserManagement)  :- "+e);
+
+                }
+                return v;
+        }
+
 	/**
 	 * In this method,Update the user profile 
 	 * 

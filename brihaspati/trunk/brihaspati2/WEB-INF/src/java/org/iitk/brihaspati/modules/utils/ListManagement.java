@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.utils;
 /*
  * @(#)ListManagement.java	
  *
- *  Copyright (c) 2004-2008 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2004-2008,2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -45,14 +45,17 @@ import org.apache.torque.util.Criteria;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
-import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
 import org.apache.turbine.services.security.torque.om.TurbineUser;
+import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
+import org.apache.turbine.services.security.torque.om.TurbineGroup;
 import org.apache.turbine.services.security.torque.om.TurbineGroupPeer;
 import org.iitk.brihaspati.om.CoursesPeer;
 import org.iitk.brihaspati.om.Courses;
 import java.io.FileOutputStream;
 /**
  * This class contains methods for listing
+ * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a> 
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a> 
  * @author <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kumar trivedi</a>
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a> 
  */
@@ -64,20 +67,32 @@ public class ListManagement
        * @see UserManagement in Utils
        * @return Vector
        */
+
+	/* Method is called by in AdminViewAll.java to get all user in a institute.
+	 * For this instituteid has to be sent.
+	 *  changes made for View All User for Institute Admin(Institute Wise) 
+	*/ 
+	public static Vector getInstituteUserList(String Institute_Id)
+	{
+		Vector userDetails=new Vector();
+		try{
+			List user1=UserManagement.getUserDetail1("All",Institute_Id);
+			userDetails=getInstituteUDetails(user1,"User");
+		}
+		catch(Exception e)
+		{}
+		return userDetails;
+	}
 	public static Vector getUserList()
 	{
 		Vector userDetails=new Vector();
 		try{
-                 /**
-                 * Getting the value of file from temporary variable
-                 * According to selection of Language./                 
-                 */
 			List user=UserManagement.getUserDetail("All");
 			userDetails=getDetails(user,"User");
 		}
 		catch(Exception e)
 		{}
-	return userDetails;
+		return userDetails;
 	}
       /**
        * Deatils of all the registered courses or Users
@@ -85,6 +100,72 @@ public class ListManagement
        * @param type String
        * @return Vector
        */
+	public static Vector getInstituteUDetails(List list,String type)
+	{
+		Vector Details=new Vector();
+		try
+		{
+			/**
+			 * Add the details of each detail in a vector
+			 * and put the same in context for use in template
+			 */
+			if(type.equals("User"))
+			{
+			for(int i=0;i<list.size();i++)
+			{
+				TurbineUser element=(TurbineUser)(list.get(i));
+				//org.iitk.brihaspati.om.TurbineUser element=(org.iitk.brihaspati.om.TurbineUser)(list.get(i));
+				String loginName=(element.getUserName()).toString();
+				//String loginName=(element.getLoginName()).toString();
+				String firstName=(element.getFirstName()).toString();
+				String lastName=(element.getLastName()).toString();
+				String email=(element.getEmail()).toString();
+				String userName=firstName+" "+lastName;
+				CourseUserDetail cuDetail=new CourseUserDetail();
+				cuDetail.setLoginName(loginName);
+				cuDetail.setUserName(userName);
+				cuDetail.setEmail(email);
+				Details.add(cuDetail);
+			}
+			}
+			else
+			{
+				for(int i=0;i<list.size();i++)
+				{
+				Courses element=(Courses)(list.get(i));
+				String GName=(element.getGroupName()).toString();
+				String courseName=(element.getCname()).toString();
+				String gAlias=(element.getGroupAlias()).toString();
+				String dept=(element.getDept()).toString();
+				String description=(element.getDescription()).toString();
+				byte active=element.getActive();
+				String act=Byte.toString(active);
+				String crDate=(element.getCreationdate()).toString();
+				CourseUserDetail cuDetail=new CourseUserDetail();
+				cuDetail.setGroupName(GName);
+                                cuDetail.setCourseName(courseName);
+                                cuDetail.setCAlias(gAlias);
+                                cuDetail.setDept(dept);
+                                cuDetail.setActive(act);
+                                cuDetail.setDescription(description);
+                                cuDetail.setCreateDate(crDate);
+				Details.add(cuDetail);
+				}
+			}
+		}
+		catch(Exception ex)
+		{
+			/**
+			* Replacing the value of String from property file.
+			* @see MultilingualUtil in utils
+	                */
+			Details.add("The Error in Details"+ex);
+		}	
+	return(Details);
+	}
+	/**
+	* getDetails method for Super Admin	
+	*/
 	public static Vector getDetails(List list,String type)
 	{
 		Vector Details=new Vector();
@@ -146,22 +227,51 @@ public class ListManagement
 		}	
 	return(Details);
 	}
-	public static List getCourseList()
+	/*
+	*Add two parameters instituteId and
+	*adname for particular institute and
+	*for super admin
+	*/
+	public static List getInstituteCourseList(String instituteId)
+	//public static List getCourseList()
 	{
 		List v=null;
+		List w=null;
 		try{
 		Criteria crit=new Criteria();
-		//crit.addAscendingOrderByColumn(TurbineGroupPeer.GROUP_NAME);
-		crit.addGroupByColumn(TurbineGroupPeer.GROUP_NAME);
-		v=TurbineGroupPeer.doSelect(crit);
+		crit.addGroupByColumn(org.iitk.brihaspati.om.TurbineGroupPeer.GROUP_NAME);
+		v=org.iitk.brihaspati.om.TurbineGroupPeer.doSelect(crit);
+		for(int j=0;j<v.size();j++){
+                	String GName=((org.iitk.brihaspati.om.TurbineGroup)v.get(j)).getGroupName();
+			if(GName.endsWith(instituteId)){
+			crit.add(org.iitk.brihaspati.om.TurbineGroupPeer.GROUP_NAME,GName);
+			w=org.iitk.brihaspati.om.TurbineGroupPeer.doSelect(crit);
+			}
+		}
 		}
 		catch(Exception e)
 		{
 		}
-		return v;
+		//return v;
+		return w;
 		
 	}
-	public static Vector getListBySearchString(String Type,String query,String searchString)
+	public static List getCourseList()
+        {
+                List v=null;
+                try{
+                Criteria crit=new Criteria();
+                //crit.addAscendingOrderByColumn(TurbineGroupPeer.GROUP_NAME);
+                crit.addGroupByColumn(TurbineGroupPeer.GROUP_NAME);
+                v=TurbineGroupPeer.doSelect(crit);
+                }
+                catch(Exception e)
+                {
+                }
+                return v;
+
+        }
+	public static Vector getInstituteListBySearchString(String Type,String query,String searchString,String instituteId)
 	{
 		MultilingualUtil m_u=new MultilingualUtil();
 		Vector Details=new Vector();
@@ -183,8 +293,31 @@ public class ListManagement
 				crit=new Criteria();
 				crit.add(table,str,(Object)("%"+searchString+"%"),crit.LIKE);
                                 List v=CoursesPeer.doSelect(crit);
-                                Details=getDetails(v,"Course");
-
+				/*
+				*Code for search course by string in particular Institute by Jaivir,Sharad
+				*/
+				for(int i=0;i<v.size();i++)
+				{
+                                	String GName=((Courses)v.get(i)).getGroupName();
+                                	if(GName.endsWith(instituteId)){
+                                		String courseName=((Courses)v.get(i)).getCname();
+                                		String gAlias=((Courses)v.get(i)).getGroupAlias();
+                                		String dept=((Courses)v.get(i)).getDept();
+                                		String description=((Courses)v.get(i)).getDescription();
+                                		byte active=((Courses)v.get(i)).getActive();
+                                		String act=Byte.toString(active);
+                                		String crDate=(((Courses)v.get(i)).getCreationdate()).toString();
+                                		CourseUserDetail cuDetail=new CourseUserDetail();
+                                		cuDetail.setGroupName(GName);
+                                		cuDetail.setCourseName(courseName);
+                                		cuDetail.setCAlias(gAlias);
+                                		cuDetail.setDept(dept);
+                                		cuDetail.setActive(act);
+                                		cuDetail.setDescription(description);
+                                		cuDetail.setCreateDate(crDate);
+                               		 	Details.add(cuDetail);
+					}
+				}	
 			}
 			else
 			{
@@ -217,6 +350,63 @@ public class ListManagement
 		}
 		return Details;
 	}
+
+	public static Vector getListBySearchString(String Type,String query,String searchString)
+        {
+                MultilingualUtil m_u=new MultilingualUtil();
+                Vector Details=new Vector();
+                try{
+                        Criteria crit=new Criteria();
+                        if(Type.equals("CourseWise"))
+                        {
+                                String str="GROUP_NAME";
+                                if(query.equals("CourseId"))
+                                        str="GROUP_NAME";
+                                else if(query.equals("Course Name"))
+                                        str="CNAME";
+                                else if(query.equals("Dept"))
+                                        str="DEPT";
+                                /**
+                                 * Checks for Matching Records
+                                 */
+                                String table="COURSES";
+                                crit=new Criteria();
+                                crit.add(table,str,(Object)("%"+searchString+"%"),crit.LIKE);
+                                List v=CoursesPeer.doSelect(crit);
+                                Details=getDetails(v,"Course");
+				}
+                        else
+                        {
+                                crit=new Criteria();
+                                String str=null;
+                                if(query.equals("First Name"))
+                                        str="FIRST_NAME";
+                                else if(query.equals("Last Name"))
+                                        str="LAST_NAME";
+                                else if(query.equals("User Name"))
+                                        str="LOGIN_NAME";
+                                else if(query.equals("Email"))
+                                        str="EMAIL";
+                                /**
+                                 * Checks for Matching Records
+                                 */
+                                int noUid[]={0,1};
+                                String table="TURBINE_USER";
+                                crit.addNotIn(TurbineUserPeer.USER_ID,noUid);
+                                crit.add(table,str,(Object)("%"+searchString+"%"),crit.LIKE);
+                                List v=TurbineUserPeer.doSelect(crit);
+                                Details=getDetails(v,"User");
+                        }
+                }
+		catch(Exception e)
+                {
+                        String searchMsg="The error in find details !!"+e;
+                        Details.add(searchMsg);
+
+                }
+                return Details;
+        }
+
 	/**
 	 * Partion of List
 	 * This shows the list containing records at a time,
@@ -306,6 +496,6 @@ public class ListManagement
 		value[5]=check_last;
 		value[6]=startIndex+1;
 		return value;
-	}	
+	}
 }
 

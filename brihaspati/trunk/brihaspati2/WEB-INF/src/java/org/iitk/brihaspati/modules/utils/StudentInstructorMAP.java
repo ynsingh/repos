@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.utils;
 /*
  * @(#)StudentInstructorMAP.java	
  *
- *  Copyright (c) 2004-2006 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2004-2006,2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -38,6 +38,7 @@ package org.iitk.brihaspati.modules.utils;
 
 import java.util.List;
 import java.util.Vector;
+import java.util.StringTokenizer;
 
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
@@ -48,9 +49,12 @@ import org.apache.turbine.services.security.torque.om.TurbineGroupPeer;
 import org.apache.turbine.services.security.torque.om.TurbineUser;
 
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 
 /**
  *  This Class contains all information of Instructor and Student
+ *  @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ *  @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
  *  @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  *  @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  */
@@ -80,7 +84,6 @@ public class StudentInstructorMAP
 			crit.add(TurbineUserGroupRolePeer.USER_ID,Integer.toString(uid));
 			crit.add(TurbineUserGroupRolePeer.ROLE_ID,role_id);
 			List stud_list=TurbineUserGroupRolePeer.doSelect(crit);
-		
 			for(int i=0;i<stud_list.size();i++){
 				TurbineUserGroupRole element=(TurbineUserGroupRole)stud_list.get(i);
 				int gid=element.getGroupId();
@@ -89,8 +92,7 @@ public class StudentInstructorMAP
 				crit.add(TurbineUserGroupRolePeer.GROUP_ID,Integer.toString(gid));
 				crit.and(TurbineUserGroupRolePeer.ROLE_ID,"2");
 				crit.andNotIn(TurbineUserGroupRolePeer.USER_ID,userId);
-				List substud_list=TurbineUserGroupRolePeer.doSelect(crit);	
-
+				List substud_list=TurbineUserGroupRolePeer.doSelect(crit);
 				for(int j=0;j<substud_list.size();j++){
 					TurbineUserGroupRole element1=(TurbineUserGroupRole)substud_list.get(j);
 					uid=element1.getUserId();
@@ -102,22 +104,34 @@ public class StudentInstructorMAP
 						insName=element2.getFirstName();
 						insName=insName+" "+element2.getLastName();
                                 		String loginname=element2.getUserName();
-
 						String groupName=GroupUtil.getGroupName(gid);
+						StringTokenizer mdgroupName=new StringTokenizer(groupName,"_");
+						String oldgroupName="";
+						String addIid="";
+                                		while(mdgroupName.hasMoreTokens())
+                                		{
+                                        		oldgroupName=mdgroupName.nextToken();
+                                        		addIid=mdgroupName.nextToken();
+                                		}
+						ErrorDumpUtil.ErrorLog("inst Id from grpname=="+addIid);
+						///////
+						//add institute id in loginname as loginname_instituteid 
+						loginname=loginname+"_"+addIid;
+						///////////////////	
 						boolean checkuser=groupName.endsWith(loginname);
 						if(checkuser == true){
-							boolean checkactive=CourseManagement.CheckcourseIsActive(gid);	
-							if(checkactive==false){
-								courseName=CourseUtil.getCourseName(groupName);
-                    						String Coursealias=CourseUtil.getCourseAlias(groupName); 
-								cDetail= new CourseUserDetail();
-								cDetail.setGroupName(groupName);
-								cDetail.setCAlias(Coursealias);
-								cDetail.setLastModified(CourseUtil.getLastModified(groupName));
-								cDetail.setCourseName(courseName);
-								cDetail.setInstructorName(insName);
-								entries.add(cDetail);
-							}
+						boolean checkactive=CourseManagement.CheckcourseIsActive(gid);	
+						if(checkactive==false){
+						courseName=CourseUtil.getCourseName(groupName);
+                    				String Coursealias=CourseUtil.getCourseAlias(groupName); 
+						cDetail= new CourseUserDetail();
+						cDetail.setGroupName(groupName);
+						cDetail.setCAlias(Coursealias);
+						cDetail.setLastModified(CourseUtil.getLastModified(groupName));
+						cDetail.setCourseName(courseName);
+						cDetail.setInstructorName(insName);
+						entries.add(cDetail);
+						}
 						}
 					}
 				}

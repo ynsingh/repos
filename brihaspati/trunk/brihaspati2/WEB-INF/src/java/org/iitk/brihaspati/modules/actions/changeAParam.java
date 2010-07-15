@@ -52,7 +52,8 @@ import org.apache.turbine.services.security.TurbineSecurity;
 
  */
 
-public class changeAParam extends SecureAction_Admin{
+//public class changeAParam extends SecureAction_Admin{
+public class changeAParam extends SecureAction{
 
 	/**
 	 * This method updates the first, last name and configuration 
@@ -100,7 +101,11 @@ public class changeAParam extends SecureAction_Admin{
 		 * Update the first,last name configuration parameter values for Admin
 		 * @see AdminProperties in utils
 		 */
-		String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+		String path="";	
+		if((user.getName()).equals("admin"))
+		path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+		else
+		path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"InstituteAdmin.properties";
 		StringUtil S = new StringUtil();
 		String prof_update=null;
 		if (S.checkString(AFName)==-1 && S.checkString(ALName)==-1){

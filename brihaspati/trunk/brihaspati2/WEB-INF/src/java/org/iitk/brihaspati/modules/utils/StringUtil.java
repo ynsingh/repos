@@ -1,7 +1,7 @@
 package org.iitk.brihaspati.modules.utils;
 
 /*@(#)StringUtil.java
- *  Copyright (c) 2003-2006 ETRG,IIT Kanpur. http://www.iitk.ac.in/
+ *  Copyright (c) 2003-2006,2010 ETRG,IIT Kanpur. http://www.iitk.ac.in/
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -32,6 +32,7 @@ package org.iitk.brihaspati.modules.utils;
 /**
   * This class handle the illegal and xml character
   * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
+  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
   */
 
 
@@ -54,7 +55,8 @@ public class StringUtil
 	public static int checkString(String to_be_checked)
 	{
 		int x=-1;
-		char illegal_characters[]={'!' , '@' , '#' , '$' , '%' , '^' , '&' , '*' , '(' , ')' , '-' , '=' , '+' , '<' , ',' , '>' , '.' , '/' , '?' ,  ';' , '\"' , '\'' , '{' , '[' , '}' , ']' } ;
+		//char illegal_characters[]={'!' , '@' , '#' , '$' , '%' , '^' , '&' , '*' , '(' , ')' , '-' , '=' , '+' , '<' , ',' , '>' , '.' , '/' , '?' ,  ';' , '\"' , '\'' , '{' , '[' , '}' , ']' } ;
+		char illegal_characters[]={'!' , '#' , '$' , '%' , '^' , '&' , '*' , '(' , ')' , '-' , '=' , '+' , '<' , ',' , '>' , '/' , '?' ,  ';' , '\"' , '\'' , '{' , '[' , '}' , ']' } ;
 		for(int a=0;a<illegal_characters.length;a++)
 		{
 		    x=to_be_checked.indexOf(illegal_characters[a]);

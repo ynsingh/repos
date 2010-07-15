@@ -102,15 +102,34 @@ public class UserAction_Instructor extends SecureAction_Instructor
 
 			ParameterParser pp=data.getParameters();
 			String gName=data.getUser().getTemp("course_id").toString();
+			ErrorDumpUtil.ErrorLog("data username=="+user.getName()+"\ngname=="+gName);
+			String []starr=(user.getName()).split("@");
+                	String domainName=starr[1];
 			String uname=pp.getString("UNAME");
 			String passwd=pp.getString("PASSWD");
+			String unameWdomain=uname+"@"+domainName;	
 			if(passwd.equals(""))
-				passwd=uname;
+				passwd=unameWdomain;
 			String fname=pp.getString("FNAME");
 			String lname=pp.getString("LNAME");
 			String email=pp.getString("EMAIL");
+			///////////////////////////////////////////////////add by jaivir 7apr10
+			/*String userName=user.getName();
+                        int userId=UserUtil.getUID(userName);
+                        ErrorDumpUtil.ErrorLog("uid at line 67 in RegisterationManagement==="+userId);
+                        Criteria crt=new Criteria();
+                        crt.add(TurbineUserPeer.USER_ID,userId);
+                        //crt.addGroupByColumn(TurbineUserPeer.INSTITUE_ID);
+                        List lst=TurbineUserPeer.doSelect(crt);
+			int instituteId=0;
+			for(int i=0;i<lst.size();i++){
+				instituteId=(TurbineUser)lst.get(0).getInstitueId();
+			}
+			ErrorDumpUtil.ErrorLog();*/
+			//////////////////////////////////////////
 
-			String msg=UserManagement.CreateUserProfile(uname,passwd,fname,lname,email,gName,"student",serverName,serverPort,LangFile);
+			//String msg=UserManagement.CreateUserProfile(uname,passwd,fname,lname,email,gName,"student",serverName,serverPort,LangFile);
+			String msg=UserManagement.CreateUserProfile(unameWdomain,passwd,fname,lname,email,gName,"student",serverName,serverPort,LangFile);
 			data.setMessage(msg);
 
 		}

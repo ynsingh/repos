@@ -37,6 +37,7 @@ import java.io.File;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
+import java.util.StringTokenizer;
 
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.om.security.Group;
@@ -51,7 +52,7 @@ import org.iitk.brihaspati.om.CoursesPeer;
 import org.iitk.brihaspati.om.DbReceivePeer;
 import org.iitk.brihaspati.om.NoticeSendPeer;
 import org.iitk.brihaspati.om.NoticeReceivePeer;
-
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 /**
  * This utils class have all details of course
  * @author <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kumar Trivedi</a>
@@ -79,7 +80,7 @@ public class CourseManagement
 		 * @see UserManagement In this utils manage all details of user
 		 * 
 		 */
-		public static String CreateCourse(String groupalias,String cname,String dept,String desc,String uname,String passwd,String fname,String lname,String email,String serverName,String serverPort,String file) throws Exception
+		public static String CreateCourse(String groupalias,String cname,String dept,String desc,String uname,String passwd,String fname,String lname,String email,String serverName,String serverPort,String file,int institute_id) throws Exception
 		{
 			String message=new String();
 			/**
@@ -92,10 +93,11 @@ public class CourseManagement
 			 */
 			if(S.checkString(groupalias)==-1 && S.checkString(uname)==-1 && S.checkString(fname)==-1 && S.checkString(lname)==-1)
 			{
+				ErrorDumpUtil.ErrorLog("test at line 95");
 			/**
 		   	  * Concatenate CourseId and UserName
 		   	  */
-                   	  String newcid=groupalias + uname;
+                   	  String newcid=groupalias + uname+"_"+institute_id;
 		   	  if(!newcid.equals(""))
 			  {
 		  	 	/**
@@ -153,7 +155,7 @@ public class CourseManagement
                           			crit.add(CoursesPeer.CREATIONDATE,date);
                           			crit.add(CoursesPeer.LASTMODIFIED,date);
                           			crit.add(CoursesPeer.LASTACCESS,date);
-						crit.add(CoursesPeer.QUOTA,cquota);
+						//crit.add(CoursesPeer.QUOTA,cquota);
 						CoursesPeer.doInsert(crit);
                          			/**
                            	  		* Create a New Group according to newcid in TURBINE_GROUP
@@ -162,7 +164,6 @@ public class CourseManagement
 						/**
 				 		* Create a user(Primary Instructor) for the new Course
 				 		*/
-						
 						String message2=UserManagement.CreateUserProfile(uname,passwd,fname,lname,email,newcid,"instructor",serverName,serverPort,file);
 						message=message1+message2;
 					}
@@ -227,10 +228,11 @@ public class CourseManagement
 	/**
 	 * In this method,All Details of a existing all courses or specific course
 	 * @param groupName String 
+	 * @param instituteId String 
 	 * @return Vector
 	 */ 
-	
-	public static Vector getCourseNUserDetails(String groupName)
+	//add institute Id for listing of courses according to Institute.
+	public static Vector getInstituteCourseNUserDetails(String groupName,String instituteId)
 	{
 		Vector details=new Vector();
 		try
@@ -249,6 +251,12 @@ public class CourseManagement
 			{
 				
 				String GName=((Courses)v.get(i)).getGroupName();
+				
+				/*
+				*Get Course details according to InstituteId
+				*/
+				
+				if(GName.endsWith(instituteId)){	
 				String courseName=((Courses)v.get(i)).getCname();
 				String dept=((Courses)v.get(i)).getDept();
 				String gAlias=((Courses)v.get(i)).getGroupAlias();
@@ -257,13 +265,26 @@ public class CourseManagement
 				String act=Byte.toString(active);
 				Date CDate=((Courses)v.get(i)).getCreationdate();
 				String CrDate=CDate.toString();
+				ErrorDumpUtil.ErrorLog("GName==="+GName+"courseName===="+courseName);
 				CourseUserDetail cuDetail=new CourseUserDetail();
 				
 				if(!groupName.equals("All"))
 				{
 					int index=gAlias.length();
 					String loginName=groupName.substring(index);
-					int UId=UserUtil.getUID(loginName);
+					///////////////////////add by jaivir 8apr10	
+					StringTokenizer mdloginName=new StringTokenizer(loginName,"_");
+                                                String oldloginName="";
+                                                String InstId="";
+                                                while(mdloginName.hasMoreTokens())
+                                                {
+                                                        oldloginName=mdloginName.nextToken();
+                                                        InstId=mdloginName.nextToken();
+                                                }
+					int UId=UserUtil.getUID(oldloginName);
+					//ErrorDumpUtil.ErrorLog("uid at line 291===="+UID);
+					////////////////////////////////////
+					//int UId=UserUtil.getUID(loginName); //comment by jaivir8apr10
 					String uID=Integer.toString(UId);
 					List userDetails=UserManagement.getUserDetail(uID);
 					TurbineUser element=(TurbineUser)userDetails.get(0);
@@ -284,6 +305,7 @@ public class CourseManagement
 				cuDetail.setDescription(description);
 				cuDetail.setCreateDate(CrDate);
 				details.add(cuDetail);
+				}//by Jaivir
 			}
 		}
 		catch(Exception e)
@@ -292,6 +314,70 @@ public class CourseManagement
 		}
 		return(details);
 	}
+
+	public static Vector getCourseNUserDetails(String groupName)
+        {
+                Vector details=new Vector();
+                try
+                {
+                        Criteria crit=new Criteria();
+                        if(groupName.equals("All"))
+                        {
+                                crit.addGroupByColumn(CoursesPeer.GROUP_NAME);
+                        }
+                        else
+                        {
+                                crit.add(CoursesPeer.GROUP_NAME,groupName);
+                        }
+                        List v=CoursesPeer.doSelect(crit);
+                        for(int i=0;i<v.size();i++)
+                        {
+
+                                String GName=((Courses)v.get(i)).getGroupName();
+                                String courseName=((Courses)v.get(i)).getCname();
+                                String dept=((Courses)v.get(i)).getDept();
+                                String gAlias=((Courses)v.get(i)).getGroupAlias();
+                                String description=((Courses)v.get(i)).getDescription();
+                                byte active=((Courses)v.get(i)).getActive();
+                                String act=Byte.toString(active);
+                                Date CDate=((Courses)v.get(i)).getCreationdate();
+				String CrDate=CDate.toString();
+                                CourseUserDetail cuDetail=new CourseUserDetail();
+
+                                if(!groupName.equals("All"))
+                                {
+                                        int index=gAlias.length();
+                                        String loginName=groupName.substring(index);
+                                        int UId=UserUtil.getUID(loginName);
+                                        String uID=Integer.toString(UId);
+                                        List userDetails=UserManagement.getUserDetail(uID);
+                                        TurbineUser element=(TurbineUser)userDetails.get(0);
+                                        String firstName=element.getFirstName().toString();
+                                        String lastName=element.getLastName().toString();
+                                        String email=element.getEmail().toString();
+                                        String userName=firstName+lastName;
+                                        cuDetail.setLoginName(loginName);
+                                        cuDetail.setUserName(userName);
+                                        cuDetail.setEmail(email);
+                                }
+
+                                cuDetail.setGroupName(GName);
+                                cuDetail.setCourseName(courseName);
+				cuDetail.setCAlias(gAlias);
+                                cuDetail.setDept(dept);
+                                cuDetail.setActive(act);
+                                cuDetail.setDescription(description);
+                                cuDetail.setCreateDate(CrDate);
+                                details.add(cuDetail);
+                        }
+                }
+                catch(Exception e)
+                {
+                        ErrorDumpUtil.ErrorLog("The error in getCourseNUserDetails() - CourseManagement Utils "+e);
+                }
+                return(details);
+        }
+
 	/**
 	 * In this method,Update all details of a existing course
 	 * @param courseName String 

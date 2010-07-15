@@ -31,7 +31,7 @@ package org.iitk.brihaspati.modules.actions;
  * 
  *  Contributors : members of ETRG, IIT Kanpur  
  */  
-
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.modules.actions.VelocitySecureAction;
@@ -77,7 +77,6 @@ public class SecureAction_Admin extends VelocitySecureAction
          * Get acl and check security.
          */
         AccessControlList acl = data.getACL();
-        
         //if (acl == null || ! acl.hasPermission("default_view", "group"))
         if (acl == null || ! acl.hasRole("turbine_root"))
         {

@@ -75,6 +75,15 @@ public class RegisterMultiUser
 			FileReader fr=new FileReader(f);
 			BufferedReader br=new BufferedReader(fr);
 			String line;
+
+			/**
+			* Get domain name from Group Name
+			*/
+			String []starr=Gname.split("@");
+	                String gnamewdomain=starr[1];
+        	        String actgname[]=gnamewdomain.split("_");
+                	String addUname=actgname[0];
+
 			/**
 		 	* Read the lines in the file one by one and extracts
 		 	* the user details with the
@@ -97,6 +106,7 @@ public class RegisterMultiUser
 				else 
 				{
 					username=st2.nextToken().trim();
+					username=username+"@"+addUname;
 					if(username.equals(";"))
 						{error=2;}
 			      		else 

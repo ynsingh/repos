@@ -45,7 +45,9 @@ import org.apache.turbine.om.security.User;
 import org.iitk.brihaspati.modules.utils.PasswordUtil;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
-public class changePW extends SecureAction_Admin{
+
+//public class changePW extends SecureAction_Admin{
+public class changePW extends SecureAction{
 
 	/**
 	 * This method updates the password of the user

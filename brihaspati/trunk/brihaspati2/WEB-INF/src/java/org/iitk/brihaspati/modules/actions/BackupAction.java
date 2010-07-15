@@ -79,7 +79,13 @@ public class BackupAction extends SecureAction
                 String LangFile=(String)user.getTemp("LangFile");
 		try{
 			String dir=data.getParameters().getString("courses");
-			String destination=TurbineServlet.getRealPath("/BackupData");
+			String instituteId=(data.getUser().getTemp("Institute_id")).toString();
+			ErrorDumpUtil.ErrorLog("hgjkghkghkghkghkghk"+instituteId);
+			String destination="";
+			if((user.getName()).equals("admin"))
+			destination=TurbineServlet.getRealPath("/BackupData"+"/Admin");
+			else
+			destination=TurbineServlet.getRealPath("/BackupData"+"/"+instituteId);
 			File f=new File(destination+"/");
 			f.mkdirs();
 			String docRoot="";
@@ -142,7 +148,12 @@ public class BackupAction extends SecureAction
                 String LangFile=(String)user.getTemp("LangFile");
 	
                 AccessControlList acl=data.getACL();
-                String CoursesRealPath=TurbineServlet.getRealPath("/BackupData");
+		String instituteId=(data.getUser().getTemp("Institute_id")).toString();
+                String CoursesRealPath="";
+		if((user.getName()).equals("admin"))
+                CoursesRealPath=TurbineServlet.getRealPath("/BackupData"+"/Admin");
+		else
+		CoursesRealPath=TurbineServlet.getRealPath("/BackupData"+"/"+instituteId);
 		File fi=new File(CoursesRealPath +"/");
                 fi.mkdirs();
 		String filePath=CoursesRealPath+"/CompleteDBBackup"+ExpiryUtil.getCurrentDate("")+".sql";
@@ -261,17 +272,23 @@ public class BackupAction extends SecureAction
                 String LangFile=(String)user.getTemp("LangFile");
 		String fname=data.getParameters().getString("fname","");
 		context.put("tdcolor",data.getParameters().getString("count",""));
+		ErrorDumpUtil.ErrorLog("count in doDeletebackup="+data.getParameters().getString("count"));
 		AccessControlList acl=data.getACL();
-		if(acl.hasRole("turbine_root","global")){//if0
+		String instituteId=(data.getUser().getTemp("Institute_id")).toString();
+		//if(acl.hasRole("turbine_root","global")){//if0
 			try{ //try0
-				File fle=new File(TurbineServlet.getRealPath("/BackupData/"+fname));
+				File fle;
+				if((user.getName()).equals("admin"))
+				fle=new File(TurbineServlet.getRealPath("/BackupData/"+"Admin/"+fname));
+				else
+				fle=new File(TurbineServlet.getRealPath("/BackupData/"+instituteId+"/"+fname));
 				boolean res=CommonUtility.autoDeletebackup();
 				fle.delete();
 				data.setMessage(MultilingualUtil.ConvertedString("personal_del2",LangFile));
 				setTemplate(data,"call,Backups,BackupList.vm");
 			}
 			catch(Exception e){data.addMessage("The error in Backups file deletion : " +e);}
-		}
+		//}
 	}//doDeletebackup
 	 /**
                 * This method is responsble for automatic 
@@ -293,7 +310,12 @@ public class BackupAction extends SecureAction
                 String LangFile=(String)user.getTemp("LangFile");
 
                 AccessControlList acl=data.getACL();
-                String CoursesRealPath=TurbineServlet.getRealPath("/BackupData");
+		String instituteId=(data.getUser().getTemp("Institute_id")).toString();
+                String CoursesRealPath="";
+		if((user.getName()).equals("admin"))
+                CoursesRealPath=TurbineServlet.getRealPath("/BackupData"+"/Admin");
+		else
+		CoursesRealPath=TurbineServlet.getRealPath("/BackupData"+"/"+instituteId);
                 File fi=new File(CoursesRealPath +"/");
                 fi.mkdirs();
                 String filePath=CoursesRealPath+"/GlossaryBackup"+ExpiryUtil.getCurrentDate("")+".sql";

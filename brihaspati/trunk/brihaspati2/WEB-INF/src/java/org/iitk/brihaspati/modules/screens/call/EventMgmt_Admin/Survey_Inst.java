@@ -52,6 +52,7 @@ import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.CourseUtil;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.utils.ListManagement;
+import org.iitk.brihaspati.modules.utils.CourseManagement;
 import org.iitk.brihaspati.modules.screens.call.News.News_Add;
 
 /**
@@ -80,8 +81,16 @@ public class Survey_Inst extends SecureScreen
 			*Get the group name(courseId+IName)
 			*@see ListManagement util in utils
 			*/
+			String instituteId=(data.getUser().getTemp("Institute_id")).toString();
+                        String role=(data.getUser().getTemp("role")).toString();
+			List CourseList=null;
+			if(role.equals("institute_admin"))
+				CourseList=CourseManagement.getInstituteCourseNUserDetails("All",instituteId);
+			else
+                        	CourseList=ListManagement.getCourseList();
+                        //List CourseList=ListManagement.getCourseList(instituteId);
 
-			context.put("glist",ListManagement.getCourseList());
+			context.put("glist",CourseList);
 			
 			String value=pp.getString("val");
 			context.put("value",value);

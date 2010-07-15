@@ -1,9 +1,9 @@
 package org.iitk.brihaspati.modules.actions;
 
 /*
- * @(#)InstructorRegisteration.java	
+ * @(#)InstructorRegisteration_Institute.java	
  *
- *  Copyright (c) 2005 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -43,13 +43,12 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 /**
  * This class is responsible for adding a secondary instructor to the system.
  *
- *  @author <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kumar Trivedi</a>
- *  @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
+ *  @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ *  @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
  */
  
 
-//public class InstructorRegisteration extends SecureAction_Admin
-public class InstructorRegisteration extends SecureAction
+public class InstructorRegisteration_Institute extends SecureAction_Institute_Admin
 {
 
 /**
@@ -79,12 +78,7 @@ public class InstructorRegisteration extends SecureAction
 		String mod=pp.getString("mode");
 		context.put("mode",mod);
 		String gName=pp.getString("cName");
-		String []starr=gName.split("@");
-                String domainNameWithIid=starr[1];
-		String []str=domainNameWithIid.split("_");	
-                String domainName=str[0];
 		String uname=pp.getString("UNAME");
-		uname=uname+"@"+domainName;
 		String fname=pp.getString("FNAME");
 		String lname=pp.getString("LNAME");
 		String email=pp.getString("EMAIL");
@@ -96,6 +90,9 @@ public class InstructorRegisteration extends SecureAction
 		String serverName=data.getServerName();
                 int srvrPort=data.getServerPort();
                 String serverPort=Integer.toString(srvrPort);
+		String InstituteId=(data.getUser().getTemp("Institute_Id")).toString();
+		ErrorDumpUtil.ErrorLog("iid at line 93 in RegisterSecInstructor==="+InstituteId);
+		int instituteId=Integer.parseInt(InstituteId); 	
 		String msg=UserManagement.CreateUserProfile(uname,passwd,fname,lname,email,gName,"instructor",serverName,serverPort,LangFile);
 		context.put("msg",msg);
 		data.setMessage(msg +" "+ mail_msg);
