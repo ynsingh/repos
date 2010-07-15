@@ -100,7 +100,7 @@ $!data.getMessage()
 <table bgcolor="$ui.menuColor" width=100%>
 <tr><td>
 	<font face="$ui.sansSerifFonts"><b>
-	#if($data.getUser().getUserName() == "admin")
+#if(($data.getUser().getUserName() == "admin") || $data.getUser().getTemp("role")=="institute_admin")
         	<a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> | $brih_Notices
 	#else
 		<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> | 
@@ -118,13 +118,18 @@ $!data.getMessage()
 	<td bgcolor="#AFDCEC">
 	#end
     	<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","1")>$Notice_NoticeSend_msg1</a></td>
- 	#if($data.getUser().getUserName() == "admin")
+ 	##if($data.getUser().getUserName() == "admin")
+	#if(($data.getUser().getUserName() == "admin") || $data.getUser().getTemp("role")=="institute_admin")
 		#if($tdcolor != "2")
 		<td>
 		#elseif($tdcolor == "2")
 		<td bgcolor="#AFDCEC">
 		#end
+		#if($data.getUser().getTemp("role")=="institute_admin")
+		<a href=$link.setPage("call,Notice_User,InstDeletePostedAdmin.vm").addPathInfo("count","2")>$Notice_DeletePosted_msg1</a></td>
+		#else
 		<a href=$link.setPage("call,Notice_User,DeletePostedAdmin.vm").addPathInfo("count","2")>$Notice_DeletePosted_msg1</a></td>
+		#end
 		#if($tdcolor != "3")
 		<td>
 		#elseif($tdcolor == "3")
@@ -186,14 +191,21 @@ $!data.getMessage()
 <td>$brih_courseName</td>
 #end
 </tr>
-#if($data.getUser().getUserName() == "admin")
+##if($data.getUser().getUserName() == "admin")
+#if(($data.getUser().getUserName() == "admin") || $data.getUser().getTemp("role")=="institute_admin")
 <tr bgcolor="$ui.tableColor">
 <td>$brih_sel_course</td>
 <td>
 <select name="course_list" size=1>
 #foreach($c_ls in $clist)
-	#if(($c_ls.getName()!="author")&&($c_ls.getName()!="global"))
-	<option value="$c_ls.getName()">$c_ls.getName()
+	#if($data.getUser().getUserName() == "admin")
+		#if(($c_ls.getName()!="author")&&($c_ls.getName()!="global"))
+		<option value="$c_ls.getName()">$c_ls.getName()
+		#end
+	#else
+		#if($data.getUser().getTemp("role")=="institute_admin")
+		<option value="$c_ls.getGroupName()">$c_ls.getGroupName()
+		#end
 	#end
 #end
 	</option>

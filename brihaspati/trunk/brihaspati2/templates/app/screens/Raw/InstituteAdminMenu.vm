@@ -1,47 +1,34 @@
 #*
- * @(#) AdminMenu.vm
- * Copyright (c) 2008-2010 ETRG,IIT Kanpur.
+ * @(#) InstituteAdminMenu.vm
+ * Copyright (c) 2010 ETRG,IIT Kanpur.
  * All Rights Reserved.
  *
  * @author<a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author<a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
- * @author<a href="mailto:shaistashekh@hotmail.com">Shaista</a>
- * @modified date: 05-04-2010
+ *
  * Contributors: Members of ETRG, I.I.T. Kanpur
  *#
 
 
 <table width="100%" bgcolor="$ui.MenuColor">
-#set($lang=$data.getUser().getTemp("lang").toString())
-<tr><td>
-#if($lang == "hindi") 
-	$brih_ad $brih_Of $brih_menu
-#else	
-	$brih_ad $brih_menu
-#end
-</td></ir>
+<tr><td>$brih_ad $brih_menu</td></ir>
 </table>
 <table width=100% bgcolor="$ui.tableColor">
-<tr bgcolor="$ui.MenuColor">
-        <td>
-                <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","pendinglist").addPathInfo("count","1") style=text-decoration:none>$RemoteInstitute $brih_mgmt</a>
-        </td>
-        </tr>
-#*   <tr>
+ <tr>
       <td>
-         <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_reg</a>
+         <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("count","1").addPathInfo("mInststat","1") style=text-decoration:none>$brih_reg</a>
                 ##<img src="$content.getURI("/images/$lang/registration.jpg")"border=0></a><br>
       </td>
    </tr>
    <tr bgcolor="$ui.menuColor">
       <td>
-         <a href=$link.setPage("call,UserMgmt_Admin,UserManagement_Admin.vm").addPathInfo("count","1") style=text-decoration:none>$brih_usr $brih_mgmt</a>
+         <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("count","1") style=text-decoration:none>$brih_usr $brih_mgmt</a>
                 ##<img src="$content.getURI("/images/$lang/usermanagement.jpg")"border=0></a><br>
       </td>
    </tr>
    <tr>
       <td>
-         <a href=$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("listcourse","listcourse").addPathInfo("mode","All").addPathInfo("actionStat","Edit").addPathInfo("count","1") style=text-decoration:none>$brih_list $brih_mgmt</a>
+         <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("listcourse","listcourse").addPathInfo("mode","All").addPathInfo("actionStat","Edit").addPathInfo("count","1") style=text-decoration:none>$brih_list $brih_mgmt</a>
               ##  <img src="$content.getURI("/images/$lang/listmanagement.jpg")"border=0></a><br>
       </td>
    </tr>
@@ -58,7 +45,7 @@
    </tr>
    <tr bgcolor="$ui.menuColor">
       <td>
-         <a href=$link.setPage("call,Backups,Backups.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang == "hindi") $brih_ad $brih_Of1 $brih_backup #else $brih_ad $brih_backup #end</a>
+         <a href=$link.setPage("call,Backups,Backups.vm").addPathInfo("count","1") style=text-decoration:none>$brih_ad $brih_backup</a>
 ##       <img src="$content.getURI("/images/$lang/adminbackup.jpg")" border="0"></a>
       </td>
    </tr>
@@ -98,7 +85,7 @@
       <td>
         <a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype") style=text-decoration:none>$brih_tracking $brih_reports</a>
       </td>
-</tr>*#
+</tr>
 
 </table>
 

@@ -21,17 +21,17 @@ $!data.getMessage()
 	 #if($data.getUser().getUserName() == "admin")
          $page.setTitle("Admin's Calendar ")
          ##<a href=$link.setPage("call,Admin.vm")>$brih_ad $brih_home</a> | $brih_calendar 
-         <a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> | $brih_calendar 
+         <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> | $brih_calendar 
 	#elseif($path =="personal")
 		##<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
-		<a href=$link.setPage("Index.vm")>$brih_home</a> |
+		<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_home</a> |
 		$page.setTitle("Personal Calendar")
 		$personal $brih_calendar
 	#else
 		##<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
-		<a href=$link.setPage("Index.vm")>$brih_home</a> |
+		<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_home</a> |
 		$page.setTitle("Course Calendar ")
-		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> | 
+		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$course</a> | 
 		#if($lang=="hindi") $brih_course $brih_Of1 $brih_calendar #else $brih_calendar for $course #end 
 	#end
 	</font>
@@ -85,7 +85,7 @@ $!data.getMessage()
 <tr>
 	<td>
 		<font face="$ui.sansSerifFonts" size=1><b>
-		<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("month",$month1).addPathInfo("year",$year1).addPathInfo("status","previous").addPathInfo("path",$path)><I>$brih_pre $brih_month</I></a>
+		<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("month",$month1).addPathInfo("year",$year1).addPathInfo("status","previous").addPathInfo("path",$path) style=text-decoration:none><I>$brih_pre $brih_month</I></a>
           	</font>
 	</td>
 	<td align=center bgcolor="$ui.menuColor">
@@ -95,7 +95,7 @@ $!data.getMessage()
 	</td>
 	<td align=right bgcolor="$ui.menuColor">
 		<font face="$ui.sansSerifFonts" size=1><b>
-        	<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("month",$month1).addPathInfo("year",$year1).addPathInfo("status","next").addPathInfo("path",$path)><I>$brih_nxt $brih_month</I></a>
+        	<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("month",$month1).addPathInfo("year",$year1).addPathInfo("status","next").addPathInfo("path",$path) style=text-decoration:none><I>$brih_nxt $brih_month</I></a>
 		</font>
 	</td>
 </tr>
@@ -234,7 +234,7 @@ $!data.getMessage()
 				#end
 			#end
 			##<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Day.vm").addPathInfo("day",$element).addPathInfo("month",$M).addPathInfo("year",$year1).addPathInfo("mon",$month1).addPathInfo("path",$path)><I>$element <font color="black">$flag</font></a></I>
-			<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Day.vm").addPathInfo("day",$element).addPathInfo("year",$year1).addPathInfo("mon",$month1).addPathInfo("path",$path)>
+			<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Day.vm").addPathInfo("day",$element).addPathInfo("year",$year1).addPathInfo("mon",$month1).addPathInfo("path",$path) style=text-decoration:none>
 			 #if($nm==$d)
                                 <font color="red">
                         #elseif($hday.containsKey($element))

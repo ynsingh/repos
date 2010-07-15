@@ -13,7 +13,7 @@ $!data.getMessage()
 ## Representation of TOP BAR
 <table bgcolor="$ui.menuColor" width=100%>
         <tr><td>
-			#if($data.getUser().getUserName() == "admin")
+			##if($data.getUser().getUserName() == "admin")
 			$page.setTitle("Admin Home ")
 			<a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> |
 			#if($mode == "edit")
@@ -21,7 +21,7 @@ $!data.getMessage()
 			#else
 			<a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("count","1")>$brih_emgmt</a> | $brih_add $brih_Ev
 			#end
-			#end
+			##end
        </td></tr>
 </table>
 <table width=100%>

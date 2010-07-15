@@ -54,6 +54,12 @@ $!data.getMessage()
         		<b><a href=$link.setPage("call,Admin.vm").addPathInfo("lang",$lang)>$brih_ad $brih_home</a>
 		</td></tr>
    		#end*#
+    		#if($Role7=="InstituteAdminRole")
+		<tr><td align="center" colspan="6">
+
+       		<a href=$link.setPage("call,InstituteAdmin.vm").addPathInfo("role","institute_admin") style=text-decoration:none>$instituteHome</a>
+		</td></tr>
+		#end
 		
     		#if($Role2=="InstructorRole")
 		<tr><td align="center" colspan="6">
@@ -70,11 +76,10 @@ $!data.getMessage()
        		<a href=$link.setPage("call,IndexHome.vm").addPathInfo("lang",$lang) style=text-decoration:none>$brih_groupAdmin  $brih_home</a>
 		</td></tr>
 		#end
-    		#if($Role5=="AuthorRole")
-		<tr><td align="center" colspan="6">
-       		<a href=$link.setPage("call,Repository_Mgmt,Author.vm").addPathInfo("role","Author").addPathInfo("count","1").addPathInfo("lang",$lang) style=text-decoration:none>$brih_authorHome</a>
-		</td></tr>
-		#end
+                #if($Role5=="AuthorRole") 
+                <tr><td align="center" colspan="6">
+		<a href=$link.setPage("call,Repository_Mgmt,Author.vm").addPathInfo("role","Author").addPathInfo("count","1") style=text-decoration:none>$brih_authorHome</a>
+                </td></tr>                                                                                #end                                                                      
 <tr bgcolor="$ui.menuColor">
 #if($guest_login=="false" )
 	#if(($Role2=="InstructorRole")||($Role3=="StudentRole")||($Role4=="GAdminRole")||($Role5=="AuthorRole"))

@@ -31,7 +31,7 @@ $page.setBgColor($ui.bgcolor)
                                 <table bgcolor="$ui.buttonBoxColor" width="100%"> ## 7
                                 <tr> ## 8
                                 <td><image src="$content.getURI("/images/orange_nav_arrow.gif")"> $news.getNews_Subject() ## 9
-				<a href=javascript:popupWin($link.setPage("call,ViewNews_Photo.vm").addPathInfo("newsid",$news.getNews_ID()).addPathInfo("date",$news.getPDate()).addPathInfo("user",$news.getSender()) style=text-decoration:none,"newWin");>...$brih_more</a>
+				<a href=javascript:popupWin("$link.setPage("call,ViewNews_Photo.vm").addPathInfo("newsid",$news.getNews_ID()).addPathInfo("date",$news.getPDate()).addPathInfo("user",$news.getSender())","newWin");>...$brih_more</a>
                                 </td> ## 9
                                 </tr> ## 8
                                 </table> ## 7
@@ -40,7 +40,7 @@ $page.setBgColor($ui.bgcolor)
                         #else
                                 <font size=3>
                                 <table><tr><td><image src="$content.getURI("/images/orange_nav_arrow.gif")"> $news.getNews_Subject()   ## 7, 8, 9
-				<a href=javascript:popupWin($link.setPage("call,ViewNews_Photo.vm").addPathInfo("newsid",$news.getNews_ID()).addPathInfo("date",$news.getPDate()).addPathInfo("user",$news.getSender()) style=text-decoration:none,"newWin");>...$brih_more</a>
+				<a href=javascript:popupWin("$link.setPage("call,ViewNews_Photo.vm").addPathInfo("newsid",$news.getNews_ID()).addPathInfo("date",$news.getPDate()).addPathInfo("user",$news.getSender())","newWin");>...$brih_more</a>
                                 </td></tr></table> ## 9, 8, 7
                                 </font>
                                 #set($count = $count + 1)
@@ -52,7 +52,7 @@ $page.setBgColor($ui.bgcolor)
                 </marquee>
 		</td></tr> ## 6, 5
 		<tr><td align=right> ## 5, 6
-		<a href=$link.setPage("News_All.vm").addPathInfo("lang",$lang) style=text-decoration:none>$brih_more $brih_news &raquo;</a>
+		<a href="$link.setPage("News_All.vm").addPathInfo("lang",$lang)">$brih_more $brih_news &raquo;</a>
                 </td></tr> ## 6, 5
         </table> ## 4
 	</td> ## 3
@@ -225,21 +225,25 @@ $page.setBgColor($ui.bgcolor)
 ##</table>
 <tr><td colspan=2><b> ## 5, 6
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
-<a href=$link.setPage("ForgotPassword.vm").addPathInfo("lang",$lang).addPathInfo("status","User") style=text-decoration:none>$brih_forgot $brih_pwd</a>
+<a href=$link.setPage("ForgotPassword.vm").addPathInfo("lang",$lang).addPathInfo("status","User")>$brih_forgot $brih_pwd</a>
 </b></td></tr> ## 6, 5
 <tr><td colspan=2><b> ## 5, 6
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
-<a href=$link.setPage("ViewCourseList.vm").addPathInfo("lang",$lang) style=text-decoration:none>$brih_reg2 $brih_course $brih_list</a>
+<a href=$link.setPage("ViewCourseList.vm").addPathInfo("lang",$lang)>$brih_reg2 $brih_course $brih_list</a>
 </b></td></tr> ## 6, 5
 <tr><td colspan=2><b> ## 5,6
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
-<a href=$link.setPage("OnlineRegistration.vm").addPathInfo("lang",$lang).addPathInfo("status","UserResitration").addPathInfo("count","1") style=text-decoration:none> $online_online $brih_reg </a>
+<a href=$link.setPage("OnlineRegistration.vm").addPathInfo("lang",$lang).addPathInfo("status","UserResitration").addPathInfo("count","1")> $online_online $brih_reg </a>
 </b></td></tr> ## 6, 5
 
 <tr><td colspan=2><b> ## 5, 6
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
-<a href=$link.setAction("myLogin").addPathInfo("username","guest").addPathInfo("password","guest").addPathInfo("lang",$lang) style=text-decoration:none> $brih_open $brih_access $brih_courses</a>
+<a href=$link.setAction("myLogin").addPathInfo("username","guest").addPathInfo("password","guest")> $brih_open $brih_access $brih_courses</a>
 </b></td></tr> ## 6, 5
+<tr><td colspan=2><b>
+<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
+<a href=$link.setPage("InstituteAdminRegistration.vm").addPathInfo("lang",$lang)> $RemoteInstitute $brih_admin $brih_reg </a>
+</b></td></tr>
 </table> ## 4
 </td></tr> ## 3, 2
 </table> ## 1

@@ -14,25 +14,25 @@ $!data.getMessage()
 <table width=100% bgcolor="$ui.menuColor">
 <tr><td>
 	#if($mode=="")
-	<a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> | $brih_emgmt</b>
+	<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> | $brih_emgmt</b>
 	#elseif($mode=="adphase")
-        <a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> |
+        <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> |
         	#if($lang=="hindi")
-		<a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("mode","adphase").addPathInfo("count","1")>$brih_emgmt</a> | $brih_ins $brih_for $brih_survey
+		<a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("mode","adphase").addPathInfo("count","1") style=text-decoration:none>$brih_emgmt</a> | $brih_ins $brih_for $brih_survey
                 #else
-                <a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("mode","adphase").addPathInfo("count","1")>$brih_emgmt</a> | Create& Post $brih_survey $brih_for $brih_ins
+                <a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("mode","adphase").addPathInfo("count","1") style=text-decoration:none>$brih_emgmt</a> | Create& Post $brih_survey $brih_for $brih_ins
                 #end
         #elseif($mode=="sresult")
-        <a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> |
-        <a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("mode","adphase").addPathInfo("count","1")>$brih_emgmt</a> | $brih_survey $brih_result
+        <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> |
+        <a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("mode","adphase").addPathInfo("count","1") style=text-decoration:none>$brih_emgmt</a> | $brih_survey $brih_result
 	#elseif($mode=="update")
-        <a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("mode","adphase").addPathInfo("count","1")>$brih_emgmt</a> | $brih_survey $brih_update
+        <a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("mode","adphase").addPathInfo("count","1") style=text-decoration:none>$brih_emgmt</a> | $brih_survey $brih_update
         #else
         <a href=$link.setPage("Index.vm")>$brih_home</a> |
         #if($lang=="hindi")
-        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cname</a> | $cname $brih_for $brih_survey
+        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$cname</a> | $cname $brih_for $brih_survey
         #else
-        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cname</a> | $brih_survey $brih_for $cname
+        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm") style=text-decoration:none>$cname</a> | $brih_survey $brih_for $cname
         #end
         #end
 </td></tr>
@@ -45,31 +45,31 @@ $!data.getMessage()
 	#elseif($tdcolor=="1")
 	<td width=25% bgcolor="#AFDCEC">
 	#end
-	<a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("mode","adphase").addPathInfo("count","1")>$brih_survey</a></td>
+	<a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("mode","adphase").addPathInfo("count","1") style=text-decoration:none>$brih_survey</a></td>
 	#if($tdcolor!="2")
 	<td width=25%>
 	#elseif($tdcolor=="2")
 	<td width=25% bgcolor="#AFDCEC">
 	#end
-	<a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("mode","sresult").addPathInfo("count","2")>$brih_survey $brih_result</a></td>
+	<a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("mode","sresult").addPathInfo("count","2") style=text-decoration:none>$brih_survey $brih_result</a></td>
 	#if($tdcolor!="3")
 	<td width=25%>
 	#elseif($tdcolor=="3")
 	<td width=25% bgcolor="#AFDCEC">
 	#end
-                <a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("mode","update").addPathInfo("count","3")>$brih_survey $brih_edit</a></td>
+                <a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("mode","update").addPathInfo("count","3") style=text-decoration:none>$brih_survey $brih_edit</a></td>
 	#if($tdcolor!="4")
 	<td width=25%>
 	#elseif($tdcolor=="4")
 	<td width=25% bgcolor="#AFDCEC">
 	#end
-                <a href=$link.setPage("call,EventMgmt_Admin,Academic_Event.vm").addPathInfo("count","4")>$brih_col1</a></td>
+                <a href=$link.setPage("call,EventMgmt_Admin,Academic_Event.vm").addPathInfo("count","4") style=text-decoration:none>$brih_col1</a></td>
 </tr>
                 #if(($mode=="adphase")||($mode=="sresult")||($mode=="update"))
         	<tr bgcolor="$ui.menuColor"><td align=right colspan=4>
-                <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Survey.html","newWin");>$brih_help</a>
+                <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Survey.html","newWin"); style=text-decoration:none>$brih_help</a>
                 #elseif($mode !="")
-                <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/SurveyStud.html","newWin");>$brih_help</a>
+                <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/SurveyStud.html","newWin"); style=text-decoration:none>$brih_help</a>
                 </td></tr>
                 #end
 #macro(ls)
@@ -101,8 +101,14 @@ $!data.getMessage()
                         <select name="group1" onChange="checkoption(document.frm,this)";>
                                 <option>$brih_select</option>
                                         #foreach($gname in $glist)
-                                                #if(($gname.getName()!="author") && ($gname.getName()!="global"))
-                                                        <option value="$!gname.getName()"">$!gname.getName()    </option>
+						#if($data.getUser().getUserName() == "admin")
+                                                	#if(($gname.getName()!="author") && ($gname.getName()!="global") &&($gname.getName()!="institute_admin"))
+                                                	<option value="$!gname.getName()">$!gname.getName()</option>
+							#end
+						#else
+							#if($data.getUser().getTemp("role")=="institute_admin")
+                                                        <option value="$!gname.getGroupName()">$!gname.getGroupName()</option>
+							#end
                                                 #end
                                         #end
                         </select>

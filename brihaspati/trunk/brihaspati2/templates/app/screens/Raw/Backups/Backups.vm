@@ -16,8 +16,8 @@ $!data.getMessage()
 <table bgcolor="$ui.menuColor" width=100% cellspacing=0>
 	<tr><td>
 		<font face="$ui.sansSerifFonts" size=3>
-		<a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> | 
-		<a href=$link.setPage("call,Backups,Backups.vm").addPathInfo("count","1")>$brih_backup</a> |
+		<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> | 
+		<a href=$link.setPage("call,Backups,Backups.vm").addPathInfo("count","1") style=text-decoration:none>$brih_backup</a> |
 		#if(($mode=="")&&($actionName==""))
 		#if ($lang=="hindi") $brih_course $brih_Of1 $brih_backup #else $brih_course Wise $brih_backup #end
 		#elseif($mode=="blist") $brih_backup $brih_list #end
@@ -38,25 +38,25 @@ $!data.getMessage()
 		#elseif($tdcolor=="1")
 		<td width=25% bgcolor="#AFDCEC">
 		#end
-    		<a href=$link.setPage("call,Backups,Backups.vm").addPathInfo("count","1")>$brih_backup $brih_content</a></td>
+    		<a href=$link.setPage("call,Backups,Backups.vm").addPathInfo("count","1") style=text-decoration:none>$brih_backup $brih_content</a></td>
 		#if($tdcolor!="2")
 		<td width=25%>
 		#elseif($tdcolor=="2")
 		<td width=25% bgcolor="#AFDCEC">
 		#end
-		<a href="$link.setPage("call,Backups,Backups.vm").setAction("BackupAction").addPathInfo("actionName","eventSubmit_doCompleteBackup").addPathInfo("count","2")">$brih_system $brih_backup</a></td>
+		<a href=$link.setPage("call,Backups,Backups.vm").setAction("BackupAction").addPathInfo("actionName","eventSubmit_doCompleteBackup").addPathInfo("count","2") style=text-decoration:none>$brih_system $brih_backup</a></td>
 		#if($tdcolor!="3")
 		<td width=25%>
 		#elseif($tdcolor=="3")
 		<td width=25% bgcolor="#AFDCEC">
 		#end
-    		<a href=$link.setPage("call,Backups,Backups.vm").addPathInfo("mode","blist").addPathInfo("count","3")>$brih_backup $brih_list</a></td>
+    		<a href=$link.setPage("call,Backups,Backups.vm").addPathInfo("mode","blist").addPathInfo("count","3") style=text-decoration:none>$brih_backup $brih_list</a></td>
 		#if($tdcolor!="4")
 		<td width=25%>
 		#elseif($tdcolor=="4")
 		<td width=25% bgcolor="#AFDCEC">
 		#end
-		<a href="$link.setPage("call,Backups,Backups.vm").setAction("BackupAction").addPathInfo("actionName","eventSubmit_doGlossaryBackup").addPathInfo("count","4")">$Glossary $brih_backup</td>
+		<a href=$link.setPage("call,Backups,Backups.vm").setAction("BackupAction").addPathInfo("actionName","eventSubmit_doGlossaryBackup").addPathInfo("count","4") style=text-decoration:none>$Glossary $brih_backup</td>
 </tr>
 ##</form>
 </table></td></tr>
@@ -94,10 +94,15 @@ $!data.getMessage()
                         <select name="courses">
                                 <option value="Courses">$Notice_All $brih_courses</option>
                         #foreach($group in $courseList)
-                                #if(($group.Name !="global") && ($group.Name !="author"))
-
-                                        <option value="$group.Name">$group.Name</option>
-                                #end
+				#if($data.getUser().getUserName() == "admin")
+                                	#if(($group.Name !="global") && ($group.Name !="author"))
+                               		<option value="$group.Name">$group.Name</option>
+                                	#end
+				#else
+                			#if($data.getUser().getTemp("role")=="institute_admin")
+                                        <option value="$group.getGroupName()">$group.getGroupName()</option>
+					#end
+				#end
                         #end
                         </select>
                 </td>
@@ -144,7 +149,7 @@ $!data.getMessage()
 	                		## <td>$i</td>
                         		<td>$lst.getName()</td>
                         		<td>
-					<a href="$link.setPage("call,Backups,getZipfile.vm").addPathInfo("fName",$lst.getName()).addPathInfo("count",$tdcolor)">$brih_download</a>
+					<a href=$link.setPage("call,Backups,getZipfile.vm").addPathInfo("fName",$lst.getName()).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_download</a>
 					</td>
                         		</tr>
                 			#end
@@ -156,8 +161,8 @@ $!data.getMessage()
 				#end
 				<td>$i</td>
                 		<td>$lst.getName() </td>
-       	<td><a href="$link.setPage("call,Backups,getZipfile.vm").addPathInfo("fName",$lst.getName()).addPathInfo("count",$tdcolor)">$brih_download</a> &nbsp;&nbsp;
-				<a href="$link.setAction("BackupAction").addPathInfo("actionName","eventSubmit_doDeletebackup").addPathInfo("fName",$lst.getName()).addPathInfo("count",$tdcolor)">$brih_delete</a></td>
+       	<td><a href=$link.setPage("call,Backups,getZipfile.vm").addPathInfo("fName",$lst.getName()).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_download</a> &nbsp;&nbsp;
+				<a href=$link.setAction("BackupAction").addPathInfo("actionName","eventSubmit_doDeletebackup").addPathInfo("fName",$lst.getName()).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_delete</a></td>
                 </tr>
                 		#end
 			#set ($i=$i+1)
