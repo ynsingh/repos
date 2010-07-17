@@ -256,7 +256,7 @@ text-decoration: underline;
 					                <li><a href="../../grantAllocation/reportView.gsp">Utilization Certificate</a></li>
 								  	 			 <li><a style="color:#234a64" href="../../utilization/create/${projectInstance.id}"><span>* Submit utilization certificate</span></a></li>        
 									  	        
-									  	         <li><a href="../../grantAllocation/grantReports.gsp">More ...</a></li>
+									  	        <li><a href="../../grantAllocation/reports.gsp">More ...</a></li>
             						</ul>
 					</div>
 					</td>
