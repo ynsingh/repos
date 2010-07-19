@@ -327,7 +327,7 @@ public class  OnlineRegistration_Admin extends SecureAction_Admin{
                                                         lname=((CourseUserDetail) courselist.elementAt(i)).getUserName();
                                                        {
                                                                 try{
-                                                                        String msg=CourseManagement.CreateCourse(gname,cname,"","",uname,passwd,fname,lname,email,serverName,serverPort,LangFile);
+                                                                        String msg=CourseManagement.CreateCourse(gname,cname,"","",uname,passwd,fname,lname,email,serverName,serverPort,LangFile,0);
 								/**
 									String subject="";
 									if(serverPort.equals("8080"))

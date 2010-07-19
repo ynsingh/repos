@@ -137,7 +137,7 @@ public class CourseManagement
 					/**
 					* Get the course default quota which is set by administrator
 					*/
-					String pathq=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+					String pathq=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"InstituteAdmin.properties";
                                         String SpacefPrp=AdminProperties.getValue(pathq,"brihaspati.admin.quota.value");
                                         long cquota=new Long(SpacefPrp).longValue();
 	
@@ -155,7 +155,7 @@ public class CourseManagement
                           			crit.add(CoursesPeer.CREATIONDATE,date);
                           			crit.add(CoursesPeer.LASTMODIFIED,date);
                           			crit.add(CoursesPeer.LASTACCESS,date);
-						//crit.add(CoursesPeer.QUOTA,cquota);
+						crit.add(CoursesPeer.QUOTA,cquota);
 						CoursesPeer.doInsert(crit);
                          			/**
                            	  		* Create a New Group according to newcid in TURBINE_GROUP

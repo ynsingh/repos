@@ -58,7 +58,7 @@ public class QuotaUtil {
 	public static boolean CreateandUpdate(){
 		//Create Quota of User in Turbine User Table
 		try{
-		String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+		String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"InstituteAdmin.properties";
                 String userquotasize =AdminProperties.getValue(path,"brihaspati.user.quota.value");
                 Criteria crit=new Criteria();
                 crit.addGroupByColumn(TurbineUserPeer.LOGIN_NAME);
@@ -191,7 +191,7 @@ public class QuotaUtil {
 		long differ=0;
 		try{
                 long dspace=getFileSystemSpace();
-                String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+                String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"InstituteAdmin.properties";
                 String SpacefPrp=AdminProperties.getValue(path,"brihaspati.user.quota.value");
                 long UQuota=new Long(SpacefPrp).longValue();
                 differ=dspace-UQuota;
@@ -207,7 +207,7 @@ public class QuotaUtil {
 		long differ=0;
 		try{
                 long dspace=getFileSystemSpace();
-                String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+                String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"InstituteAdmin.properties";
                 String SpacefPrp=AdminProperties.getValue(path,"brihaspati.user.quota.value");
                 long UQuota=new Long(SpacefPrp).longValue();
                 String Spacefcrs=AdminProperties.getValue(path,"brihaspati.admin.quota.value");
@@ -224,7 +224,7 @@ public class QuotaUtil {
 	public static long getFileSystemSpace() {
 	         long fdisks =0;
 		 try{
-			 String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+			 String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"InstituteAdmin.properties";
         	         String dirName=AdminProperties.getValue(path,"brihaspati.home.dir.value");
 			 if(dirName.equals("")){
 				dirName=System.getProperty("user.home");

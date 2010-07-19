@@ -107,7 +107,11 @@ public class UserAction_Instructor extends SecureAction_Instructor
                 	String domainName=starr[1];
 			String uname=pp.getString("UNAME");
 			String passwd=pp.getString("PASSWD");
-			String unameWdomain=uname+"@"+domainName;	
+			String unameWdomain="";
+			if(!uname.contains("@"))
+			unameWdomain=uname+"@"+domainName;
+			else	
+			unameWdomain=uname;
 			if(passwd.equals(""))
 				passwd=unameWdomain;
 			String fname=pp.getString("FNAME");

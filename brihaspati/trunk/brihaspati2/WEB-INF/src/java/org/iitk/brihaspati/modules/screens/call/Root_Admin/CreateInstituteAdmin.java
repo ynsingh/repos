@@ -62,6 +62,10 @@ public class CreateInstituteAdmin extends SecureScreen_Admin
 			String adminusername=pp.getString("adminUname",""); 
 			context.put("adminusername",adminusername);
 			context.put("tdcolor",count);
+			String iadminfname=pp.getString("iadfname",""); 
+			context.put("iadminfname",iadminfname);
+			String iadminlname=pp.getString("iadlname",""); 
+			context.put("iadminlname",iadminlname);
 		}
 		catch(Exception e) { 	data.setMessage("Error in CreateInstituteAdmin !!" +e);
 		}

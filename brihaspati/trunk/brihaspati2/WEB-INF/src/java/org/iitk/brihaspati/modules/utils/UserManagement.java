@@ -314,16 +314,16 @@ public class UserManagement
 						/**
 						* Update last login, user quota  and create date field of turbine user
 						*/
-						//String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
-				                //String SpacefPrp=AdminProperties.getValue(path,"brihaspati.user.quota.value");
-				                //long UQuota=new Long(SpacefPrp).longValue();
+						String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"InstituteAdmin.properties";
+				                String SpacefPrp=AdminProperties.getValue(path,"brihaspati.user.quota.value");
+				                long UQuota=new Long(SpacefPrp).longValue();
 
 						int u1=UserUtil.getUID(UName);
 						crit=new Criteria();
                                                 crit.add(org.iitk.brihaspati.om.TurbineUserPeer.USER_ID,u1);
                                                 crit.add(org.iitk.brihaspati.om.TurbineUserPeer.CREATED,date);
                                                 crit.add(org.iitk.brihaspati.om.TurbineUserPeer.LAST_LOGIN,date);
-                                                //crit.add(org.iitk.brihaspati.om.TurbineUserPeer.QUOTA,UQuota);
+                                                crit.add(org.iitk.brihaspati.om.TurbineUserPeer.QUOTA,UQuota);
                                                 org.iitk.brihaspati.om.TurbineUserPeer.doUpdate(crit);
 						/**
                                  		* The code below does not executes if the user already exists in 

@@ -146,8 +146,12 @@ public class PasswordUtil{
 	                  * checking for the user's e-mail
         	          * from the database table.
                 	  */
+			/**
+			*comment by Jaivir
+			*The below code is not working due to mailnotification util has some problem.
+			*/
                	        String msg1=new String();
-                	if(!mailId.equals(""))
+                	/*if(!mailId.equals(""))
 	                {
         	                String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
                         	try
@@ -162,7 +166,7 @@ public class PasswordUtil{
                                         String subject = MailNotification.subjectFormate(info_new, "", pr );
 					String messageFormat = MailNotification.getMessage(info_new, "", "", "", newPassword, PasswordUtil.serverName, PasswordUtil.serverPort,pr);
 					msg1=MailNotification.sendMail(messageFormat, mailId, subject, "", file);
-
+*/
 
 				/**						
         	                        if(serverPort == "8080")
@@ -174,10 +178,10 @@ public class PasswordUtil{
         	                                msg1=MailNotification.sendMail("newPasswordhttps",mailId,"","","",newPassword,fileName,serverName,serverPort,file);
                 	                }
 				**/
-                        	}
+                        /*	}
 	
         	                catch(Exception e){}
-                	}
+                	}*/
 			String pwdOf=m_u.ConvertedString("pwdOf",file);
 			String pwdChangeSuccess=m_u.ConvertedString("pwdChangeSuccess",file);
 			 if(file.endsWith("hi.properties")) 
@@ -187,6 +191,7 @@ public class PasswordUtil{
 
 			else
 				message=pwdOf+" "+userName+" " +pwdChangeSuccess +msg+"\n"+msg1;
+				message=message+" and Mail can not send";
 		}
 		catch(Exception exc)
 		{
