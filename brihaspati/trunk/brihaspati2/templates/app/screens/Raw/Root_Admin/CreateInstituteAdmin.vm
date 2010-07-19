@@ -89,6 +89,8 @@ $page.setTitle("Login Page | Create Institute Admin ")
 				<input type="button" name="eventSubmit_CreateInstituteAdmin" value="$brih_reg1" onClick="checkField(document.frm,this);"/>
         			<input type="Reset" name="Reset" Value="$brih_clear"/>
         			<input type="hidden" name="adminusername" Value="$adminusername">
+        			<input type="hidden" name="iadminfname" Value="$iadminfname">
+        			<input type="hidden" name="iadminlname" Value="$iadminlname">
         			<input type="hidden" name="count" Value="$tdcolor">
         			</td>
         	</tr>
@@ -102,11 +104,11 @@ $page.setTitle("Login Page | Create Institute Admin ")
         function checkField(frm,field)
         {
 
-               /* if ((frm.INAME.value !="") && (frm.IADDRESS.value !="") && (frm.ICITY.value !="") && (frm.IPINCODE.value !="") && (frm.ISTATE.value !="") && (frm.ILANDLINE.value !="") && (frm.IDOMAIN.value !="") && (frm.ITYPE.value !="") && (frm.IWEBSITE.value !="") && (frm.IADMINFNAME.value !="") && (frm.IADMINLNAME.value !="")&& (frm.IADMINEMAIL.value !="") && (frm.IADMINDESIGNATION.value !=""))
+                if ((frm.INAME.value !="") && (frm.IADDRESS.value !="") && (frm.ICITY.value !="") && (frm.IPINCODE.value !="") && (frm.ISTATE.value !="") && (frm.ILANDLINE.value !="") && (frm.IDOMAIN.value !="") && (frm.ITYPE.value !="") && (frm.IWEBSITE.value !="") && (frm.IADMINEMAIL.value !="") && (frm.IADMINDESIGNATION.value !=""))
                 {
 
                         var adminemailid = document.frm.IADMINEMAIL.value;
-                        //alert("Emailid"+adminemailid);
+                        alert("Emailid"+adminemailid);
 
                         if (CheckValidEmail(adminemailid) == false)
                         {
@@ -115,15 +117,15 @@ $page.setTitle("Login Page | Create Institute Admin ")
                                 return;
                         }
                         else
-                        {*/
+                        {
                                 frm.actionName.value=field.name;
                                 frm.submit();
-                        /*}
+                        }
                 }
                 else
                 {
                         alert("Please fill all the mandatory(*) Fielsd !");
-                }*/
+                }
 
         }
 

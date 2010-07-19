@@ -1,10 +1,16 @@
 $page.setBgColor("#ffffff")
 #set ($cid=$data.getUser().getTemp("course_id") )
 #set ($istat=$data.getUser().getTemp("istat") )
+#set ($instituteid=$data.getUser().getTemp("Institute_id") )
+#set ($instimg=$data.getUser().getTemp("instImg") )
+
+
 
 #if($cid!="" && $istat) 
         <img src="$content.getURI("images/Header/$cid")" width="100%" height="120px">
+#elseif($instituteid!="" && $instimg)
+	<img src="$content.getURI("images/Header/$instituteid")" >
 #else
-        <img src="$content.getURI("images/brihaspati2.png")">
+        <img src="$content.getURI("images/brihaspati3.png")" >
 #end
 <hr>
