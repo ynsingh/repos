@@ -9,14 +9,15 @@ import in.ac.dei.edrp.pms.viewer.CodeGenerator;
 import in.ac.dei.edrp.pms.viewer.checkRecord;
 
 import java.sql.*;
-import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.struts.action.Action;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
 
 /** 
  * MyEclipse Struts
@@ -46,27 +47,31 @@ public class ProjAssignAction extends Action {
 		
 		ProjAssignForm projassignform = (ProjAssignForm) form;// TODO Auto-generated method stub
 		String uid=(String)session.getAttribute("uid");
-		String forwardString="assignfail";
+		String forwardString="assignsuccess";
 		String permitted_By=uid;
 		String valid_code="";
-		String pass="Use your old password.";
-	String orgportal=(String)session.getAttribute("validOrgInPortal");
+		String orgportal=(String)session.getAttribute("validOrgInPortal");
+		ActionErrors errors = new ActionErrors();
+		ActionMessage error = null;
 		try{
-			request.setAttribute("msginfo","This user is already worked for the same role on the same project.");
+			request.setAttribute("msginfo","This user is already worked on the selected project.");
+			
+			error=new ActionMessage("msg.Create_Project_Team_Msg_UserExist.added");
+			errors.add("Create_Project_Team_Msg",error);
+			saveErrors(request,errors);
 			/*
 			 * established database connection.
 			 * */
 			con=MyDataSource.getConnection();
 			PreparedStatement check=con.prepareStatement("select v.valid_id from validatetab v," +
-					"user_in_org u,project p,role r where v.valid_user_key=u.valid_key" +
+					"user_in_org u,project p where v.valid_user_key=u.valid_key" +
 					" and u.valid_user_id=? and u.valid_orgportal=?" +
-					" and p.project_code=v.valid_project_code and p.project_name=?" +
-					" and v.valid_role_id=r.role_id and r.role_name=?");
+					" and p.project_code=v.valid_project_code and p.project_name=?");
 			
 			check.setString(1,projassignform.getUserId().trim());
 			check.setString(2,orgportal);
 			check.setString(3,projassignform.getProjectName());
-			check.setString(4,projassignform.getRoleName());
+			//check.setString(4,projassignform.getRoleName());
 			rs=check.executeQuery();
 			if(!rs.next())//It means the user does not working in the selected project on the selected role.
 		    {
@@ -88,8 +93,7 @@ public class ProjAssignAction extends Action {
 //							//f=true;
 //							break;
 //						 }
-//			
-//			
+		
 		String valid_key="";
 		request.setAttribute("uidinfo",projassignform.getUserId());
 		if(projassignform.getUserId().equalsIgnoreCase(uid))
@@ -101,7 +105,7 @@ public class ProjAssignAction extends Action {
 		{
 			System.out.println("other person valid key="+(valid_key=checkRecord.twoFieldDuplicacyChecker("Valid_Key","user_in_org","valid_user_id",projassignform.getUserId().trim(),"Valid_OrgPortal",orgportal)));
 			request.setAttribute("msginfo","This user does not belongs to current portal and organization \n" +
-				",for adding this user in his project you shold be added this user in his organization first then try to add.");
+				",for adding this user in his project you shold be added this user in his organization, then try to add.");
 		}
 		if(checkRecord.duplicacyChecker("Valid_Key","user_role_in_org","Valid_Key",valid_key)!=null)
 		{
@@ -135,13 +139,13 @@ public class ProjAssignAction extends Action {
 	    int v=ps.executeUpdate();/*if v>0 it means insertion operation successful in 'validatetab' table.*/
 			if(v>0)
 			{
-					request.setAttribute("msginfo", "Project Assigned Successfully!!");
-					request.setAttribute("AssignProjName",projassignform.getProjectName());
-					request.setAttribute("AssignRoleName",projassignform.getRoleName());
-					request.setAttribute("passinfo",pass);
-					forwardString="assignsuccess";
+				errors.clear();
+				error = new ActionMessage("msg.Create_Project_Team_Msg.added");
+				errors.add("Create_Project_Team_Msg",error);
+				saveErrors(request,errors);
 			}
 		}
+			
 		}
 		catch(Exception e){e.printStackTrace();}
 

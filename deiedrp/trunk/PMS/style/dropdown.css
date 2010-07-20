@@ -1,11 +1,11 @@
 .ss{padding:0; margin:0}
 
 .dropdown {float:left; padding-right:0px;background-color:#336699; margin:0px auto}
-.dropdown dt {width:160px;height:12px;border-right: 2px solid #9ac1c9; padding:5px; font-weight:bold;color:#ffffff; cursor:pointer; background:url(images/header.gif);margin:0px auto}
+.dropdown dt {width:135px;height:12px;border-right: 2px solid #9ac1c9; padding:5px; font-weight:bold;color:#ffffff; cursor:pointer; background:url(images/header.gif);margin:0px auto}
 .dropdown dt:hover {background:url(images/header_over.gif) }
-.dropdown dd {position:absolute; overflow:hidden; width:168px; display:none; background:#fff; z-index:200; opacity:0; margin:0px auto}
-.dropdown ul {width:164px; border:2px solid #9ac1c9; list-style:none; border-top:none ;margin:0px auto}
+.dropdown dd {position:absolute; overflow:hidden; width:144px; display:none; background:#fff; z-index:200; opacity:0; margin:0px auto}
+.dropdown ul {width:140px; border:2px solid #9ac1c9; list-style:none; border-top:none ;margin:0px auto}
 .dropdown li {display:inline ;margin:0px auto}
-.dropdown a, .dropdown a:active, .dropdown a:visited {display:block;font-weight: normal; padding:5px; color:#333; text-decoration:none; background:#eaf0f2; width:153px ;margin:0px auto;}
+.dropdown a, .dropdown a:active, .dropdown a:visited {display:block;font-weight: normal; padding:5px; color:#333; text-decoration:none; background:#eaf0f2; width:129px ;margin:0px auto;}
 .dropdown a:hover {background:#d9e1e4; color:#000 ;margin:0px auto;font-weight: normal;}
 .dropdown .underline {border-bottom:1px solid #b9d6dc ;margin:0px auto}

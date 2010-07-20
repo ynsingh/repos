@@ -27,7 +27,7 @@
 		  		out.println(uid);
 		   		%> | </font>
 		 
-				<html:link action="logout" styleClass="B"> <font size="-1">LogOut</font> </html:link> |
+				<html:link action="logout" styleClass="B"> <font size="-1">Logout</font> </html:link> |
 				<html:link styleClass="B" action="changeOwnpassword"> Change Password </html:link> </div>		
 				
 				<div style="padding-top: 5px">
@@ -79,7 +79,7 @@
     <ul class="ss">
     <li><html:link styleClass="underline" action="newproject" > Add Project </html:link></li>
       <li><html:link styleClass="underline" action="viewproject"> View Project </html:link></li>
-     <li><html:link styleClass="underline" action="assignproject"> Assign Project </html:link></li>
+     <li><html:link styleClass="underline" action="assignproject"> Create Project Team </html:link></li>
      <!--   <li><html:link styleClass="underline" action="searchproject"> Search Project </html:link></li>
       <li><html:link styleClass="underline" action="updateoperation"> Update Operation </html:link></li>-->
       <li><html:link styleClass="underline" action="drawGanttChart">View Gantt Chart </html:link></li>
@@ -128,6 +128,14 @@
 </dl>
 </td>
  -->
+ <td>
+<dl class="dropdown">
+  <dt id="one-ddheader" style="width: 100px;" onmouseover="ddMenu('nine',1)" onmouseout="ddMenu('nine',-1)">
+  
+  <html:link action="help" style="padding:0px;width: 100px;background-color:#336699;font-weight:bold;color:#ffffff;"> Help</html:link>
+  </dt>
+  </dl>
+</td>
     </tr></table>
    </td>
 </tr>

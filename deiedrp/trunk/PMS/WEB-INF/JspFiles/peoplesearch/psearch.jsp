@@ -5,6 +5,7 @@
 <html> 
 	<head>
 		<title>JSP for PeopleSearchForm form</title>
+		<link rel="stylesheet" href="style/style.css" type="text/css"></link>
 		<link rel="stylesheet" href="<html:rewrite page='/style/main.css'/>" type="text/css"></link>
 	</head>
 	<body>
@@ -37,7 +38,7 @@
 		</td>
 		<td class="form-widget">
 		<html:text property="keySearch" value="" size="40"/><html:errors property="keySearch"/>
-		<td class="form-widget"><html:submit value="Search"/></td>
+		<td class="form-widget"><html:submit value="Search" styleClass="butStnd"/></td>
 		</tr>
 	</table>
 		</html:form>

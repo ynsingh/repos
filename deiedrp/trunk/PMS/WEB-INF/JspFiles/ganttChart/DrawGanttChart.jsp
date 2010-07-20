@@ -6,6 +6,7 @@
 <html>
   <head>
 	<link rel="stylesheet" href="style/main.css" type="text/css"></link>
+	<link rel="stylesheet" href="style/style.css" type="text/css"></link>
 	<link rel="stylesheet" href="style/jsgantt.css" type="text/css"></link>
 	<script type="text/javascript" src="javascript/jsgantt.js"></script>
   	<meta http-equiv="pragma" content="no-cache">
@@ -66,7 +67,7 @@
 		<% 
 			try{
 			con=MyDataSource.getConnection();
-			ps=con.prepareStatement("select p.project_name from project p,"+
+			ps=con.prepareStatement("select distinct p.project_name from project p,"+
 									"user_in_org u,validatetab v where p.enable=0 and "+
 									"u.valid_user_id=? and u.valid_orgportal=? "+
 					"and u.valid_key=v.valid_user_key and v.valid_project_code=p.project_code");
@@ -124,6 +125,6 @@
   <br>
  <%} %>
 <br>
-<html:button property="back" value="Back to Previous Page" onclick="history.back();" />
+<html:button property="back" value="Back" styleClass="butStnd" onclick="history.back();" />
  </body>
 </html>

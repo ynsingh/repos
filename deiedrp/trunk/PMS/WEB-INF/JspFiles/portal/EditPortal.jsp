@@ -54,9 +54,9 @@
 			<html:errors property="portaldescription"/></td></tr>
 			</table><br><br>
 			<table align="center">
-			<tr><td><html:submit value="Save Changes"/></td>
-			<td><html:reset></html:reset></td>
-			<td><html:button property="back" value="Cancel" onclick="history.back();" /></td>
+			<tr><td><html:submit value="Save Changes" styleClass="butStnd"/></td>
+			<td><html:reset styleClass="butStnd"></html:reset></td>
+			<td><html:button property="back" value="Cancel" styleClass="butStnd" onclick="history.back();" /></td>
 			</tr></table>
 		</html:form>
 		

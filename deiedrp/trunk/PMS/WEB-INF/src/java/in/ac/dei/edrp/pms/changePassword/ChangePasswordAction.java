@@ -14,13 +14,10 @@ import org.apache.struts.action.ActionMapping;
 /** 
  * MyEclipse Struts
  * Creation date: 01-01-2010
- * <br>
+ * 
  * XDoclet definition:
  * @struts.action path="/changepassword" 
- * It is used for forwarding next view to change the password.
- * @author Anil Kumar Tiwari <b>mailto:</b>aniltiwari08@gmail.com
  */
- 
 public class ChangePasswordAction extends Action {
 	/*
 	 * Generated Methods

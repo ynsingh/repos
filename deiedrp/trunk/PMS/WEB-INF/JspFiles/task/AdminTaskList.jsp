@@ -13,6 +13,7 @@
     <title>example.jsp</title>
  <link rel="stylesheet" href="style/Displaytagex.css" type="text/css"></link>
  <link rel="stylesheet" href="style/dropdown.css" type="text/css"></link>
+ <link rel="stylesheet" href="style/style.css" type="text/css"></link>
   </head>
   
   <body>
@@ -60,7 +61,7 @@
 		<% 
 			try{
 			con=MyDataSource.getConnection();
-				ps=con.prepareStatement("select p.project_name from project p"+
+				ps=con.prepareStatement("select distinct p.project_name from project p"+
 									" where p.valid_org_inportal=?");
 			ps.setString(1,(String)session.getAttribute("validOrgInPortal"));
 			rs=ps.executeQuery();
@@ -95,7 +96,7 @@
     <logic:empty name="taskList" property="list"><br><font color="#0000ff" size="2">
     This type of task does not exist in the selected project.</font>
     <br><br>
-    <html:button property="back" value="Back" onclick="history.back();" />
+    <html:button property="back" value="Back" styleClass="butStnd" onclick="history.back();" />
     </logic:empty>
    <logic:notEmpty name="taskList" property="list">
  <display:table name="taskList.list" defaultsort="1" id="row" export="false" pagesize="<%=Integer.parseInt(key) %>" requestURI="/viewtask.do" decorator="in.ac.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >

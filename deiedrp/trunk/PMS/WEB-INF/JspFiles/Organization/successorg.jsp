@@ -11,6 +11,7 @@
     <title>search result</title>
  <link rel="stylesheet" href="style/Displaytagex.css" type="text/css"></link>
  <link rel="stylesheet" href="style/dropdown.css" type="text/css"></link>
+ <link rel="stylesheet" href="style/style.css" type="text/css"></link>
   </head>
   
   <body>
@@ -84,7 +85,7 @@
 	</display:table>
     <html:form action="/backbutton">
     <br>
-  <html:submit property="back" value="Back to Search Page"/>
+  <html:submit property="back" value="Back to Search Page" styleClass="butStnd"/>
   </html:form>
   		
   </body>

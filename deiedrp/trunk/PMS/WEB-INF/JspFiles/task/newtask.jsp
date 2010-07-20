@@ -166,7 +166,7 @@
 			<html:option value="--Select--">--Select--</html:option>
 			<% 
 		try{
-			ps=con.prepareStatement("select p.project_name from project p,"+
+			ps=con.prepareStatement("select distinct p.project_name from project p,"+
 									"user_in_org u,validatetab v where p.enable=0 and "+
 									"u.valid_user_id=? and u.valid_orgportal=? "+
 					"and u.valid_key=v.valid_user_key and v.valid_project_code=p.project_code");
@@ -250,8 +250,9 @@
 			</td></tr>
 			</table>
 			<table align="center">
-			<tr><td><html:submit value="Add Task"/></td><td><html:reset onclick="clearData();"></html:reset></td>
-			<td><html:button property="back" value="Back" onclick="history.back();" /></td>
+			<tr><td><html:submit value="Add Task" styleClass="butStnd"/></td>
+			<td><html:reset onclick="clearData();" styleClass="butStnd"></html:reset></td>
+			<td><html:button property="back" value="Back" styleClass="butStnd" onclick="history.back();" /></td>
 			</tr>
 			
 			</table>

@@ -3,9 +3,10 @@
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
 <%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
 <html>
+<link rel="stylesheet" href="style/style.css" type="text/css"></link>
    <body>
         <h2><font size="2" color="#0000ff"><bean:message key="taskUpdation.fail"/></font></h2>
         <br>
-        <html:button property="back" value="Back to Previous Page" onclick="history.back();" />
+        <html:button property="back" value="Back" styleClass="butStnd" onclick="history.back();" />
   </body>
 </html>

@@ -6,8 +6,9 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 
 /**
- * It is used for holding datasource.
- * @author Anil Kumar Tiwari <b>mailto:</b>aniltiwari08@gmail.com
+ * Used for connection pooling
+ * @author <a href="http://aniltiwaripms.blogspot.com" target="_blank">Anil Kumar Tiwari</a>
+ *
  */
 
 public class MyDataSource {

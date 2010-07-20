@@ -6,6 +6,7 @@
 --@author Anil Kumar Tiwari mailto:aniltiwari08@gmail.com        -->
 -- ================================================================= -->
 
+
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -68,7 +69,6 @@ CREATE TABLE `login` (
   `authority` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   PRIMARY KEY (`login_user_id`),
-  KEY `login_role_id` (`authority`),
   CONSTRAINT `login_user_id` FOREIGN KEY (`login_user_id`) REFERENCES `user_info` (`User_ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -156,8 +156,8 @@ CREATE TABLE `organisation` (
   `Org_Address` text NOT NULL,
   `Org_City` varchar(255) NOT NULL,
   `Org_State` varchar(255) NOT NULL,
-  `Org_Phone` varchar(20) NOT NULL,
-  `Org_Fax` varchar(20) DEFAULT NULL,
+  `Org_Phone` varchar(25) NOT NULL,
+  `Org_Fax` varchar(25) DEFAULT NULL,
   `Org_URL` varchar(255) NOT NULL,
   PRIMARY KEY (`Org_Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -388,7 +388,7 @@ CREATE TABLE `user_info` (
   `User_ID` varchar(255) NOT NULL,
   `First_Name` varchar(255) DEFAULT NULL,
   `Last_Name` varchar(255) DEFAULT NULL,
-  `Phone_No` varchar(20) DEFAULT NULL,
+  `Phone_No` varchar(25) DEFAULT NULL,
   `Skills` varchar(455) DEFAULT NULL,
   `Experince` tinyint(3) unsigned DEFAULT NULL,
   `Secure_Qid` int(10) unsigned DEFAULT NULL,
@@ -451,6 +451,7 @@ CREATE TABLE `validatetab` (
   KEY `Valid_User_Key` (`Valid_User_Key`),
   KEY `Valid_Project_Code` (`Valid_Project_Code`),
   KEY `Valid_Role_Id` (`Valid_Role_Id`),
+  CONSTRAINT `Permitted_By` FOREIGN KEY (`Permitted_By`) REFERENCES `user_info` (`User_ID`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `Valid_Project_Code` FOREIGN KEY (`Valid_Project_Code`) REFERENCES `project` (`Project_Code`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `Valid_Role_Id` FOREIGN KEY (`Valid_Role_Id`) REFERENCES `role` (`Role_Id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `Valid_User_Key` FOREIGN KEY (`Valid_User_Key`) REFERENCES `user_in_org` (`Valid_Key`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -464,12 +465,3 @@ CREATE TABLE `validatetab` (
 /*!40000 ALTER TABLE `validatetab` ENABLE KEYS */;
 
 
-
-
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

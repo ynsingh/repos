@@ -11,7 +11,7 @@
   <head>
     <title>showMemberList.jsp</title>
   <link rel="stylesheet" href="style/main.css" type="text/css"></link>
-
+<link rel="stylesheet" href="style/style.css" type="text/css"></link>
 <link rel="stylesheet" href="style/Displaytagex.css" type="text/css"></link>
   </head>
   <script language="JavaScript" type="text/javascript">
@@ -56,7 +56,7 @@
     
      <logic:empty name="memberList" property="list">
      <br><font color="#550003" size="2">Nothing found to display.</font><br><br>
-     <html:button property="back" value="Back to Previous Page" onclick="history.back();" />
+     <html:button property="back" value="Back" styleClass="butStnd" onclick="history.back();" />
     </logic:empty>
   		
   </body>

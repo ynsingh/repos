@@ -27,7 +27,7 @@
 		  		String uid=(String)session.getAttribute("uid");
 		  		out.println(uid);
 		   		%> | </font>
-		 		<html:link action="logout" styleClass="B"> <font size="-1">LogOut</font> </html:link> |
+		 		<html:link action="logout" styleClass="B"> <font size="-1">Logout</font> </html:link> |
 				<html:link styleClass="B" action="changeOwnpassword"> Change Password </html:link> 	</div>				
 		 </td>
 		 </tr>
@@ -41,6 +41,14 @@
   <dt id="one-ddheader" onmouseover="ddMenu('one',1)" onmouseout="ddMenu('one',-1)">
   
   <html:link action="welcome" style="padding:0px;background-color:#336699;font-weight:bold;color:#ffffff;"> Home</html:link>
+  </dt>
+  </dl>
+</td>
+<td>
+<dl class="dropdown">
+  <dt id="one-ddheader" onmouseover="ddMenu('eight',1)" onmouseout="ddMenu('eight',-1)">
+  
+  <html:link action="mailconfig" style="padding:0px;background-color:#336699;font-weight:bold;color:#ffffff;"> Mail Configuration</html:link>
   </dt>
   </dl>
 </td>
@@ -85,9 +93,9 @@
   <dt id="six-ddheader" onmouseover="ddMenu('six',1)" onmouseout="ddMenu('six',-1)">Member</dt>
   <dd id="six-ddcontent" onmouseover="cancelHide('six')" onmouseout="ddMenu('six',-1)">
     <ul class="ss">
-      <li><html:link styleClass="underline" action="addorg_in_portal">Add Organization into Portal</html:link></li>
       <li><html:link styleClass="underline" action="addmember"> Add Member </html:link></li>
       <li><html:link styleClass="underline" action="viewmember"> View Members </html:link></li>
+    <li><html:link styleClass="underline" action="addorg_in_portal">Add Organization into Portal</html:link></li>
      <!--   <li><html:link styleClass="underline" action="assignproject"> Assign Project </html:link></li>-->
       	<li><html:link styleClass="underline" action="searchpeople"> People Search </html:link></li>
       </ul>
@@ -123,6 +131,15 @@
 </dl>
 </td>
  -->
+ <td>
+<dl class="dropdown">
+  <dt id="one-ddheader" style="width: 100px;" onmouseover="ddMenu('nine',1)" onmouseout="ddMenu('nine',-1)">
+  
+  <html:link action="help" style="padding:0px;width: 100px;background-color:#336699;font-weight:bold;color:#ffffff;"> Help</html:link>
+  </dt>
+  </dl>
+</td>
+<td>
 </tr></table>
    </td></tr></table>
 </body>

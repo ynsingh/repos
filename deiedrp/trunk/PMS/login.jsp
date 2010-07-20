@@ -1,7 +1,5 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ page import="in.ac.dei.edrp.pms.control.CustomRequestProcessor;"%>
-
-
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -51,9 +49,9 @@
 			<td valign="middle" style="float:none;width:50%;" align="left">
 				<div style="font: normal;font-family: Arial, Helvetica, sans-serif;color:#000000;" align="justify">
 				<font size=-1><b><bean:message key="label.feature"/> :</b><br><br>
+				<a href="#"><font color="blue"><bean:message key="label.heading3"/></font></a> <bean:message key="label.feature3"/>.<br/><br/>
 				<a href="#"><font color="blue"><bean:message key="label.heading1"/></font></a> <bean:message key="label.feature1"/>.<br/><br/>
 				<a href="#"><font color="blue"><bean:message key="label.heading2"/></font></a> <bean:message key="label.feature2"/>.<br/><br/>
-				<a href="#"><font color="blue"><bean:message key="label.heading3"/></font></a> <bean:message key="label.feature3"/>.<br/><br/>
 				<a href="#"><font color="blue"><bean:message key="label.heading4"/></font></a> <bean:message key="label.feature4"/>.<br/><br/>
 				<a href="#"><font color="blue"><bean:message key="label.heading5"/></font></a> <bean:message key="label.feature5"/>.<br/><br/>
 				<a href="#"><font color="blue"><bean:message key="label.heading6"/></font></a> <bean:message key="label.feature6"/>.<br/><br/>
@@ -90,7 +88,7 @@
 						</tr>
 						<tr>
 							<td></td><td valign="top" style="font: normal;font-family: Arial, Helvetica, sans-serif;font-size:14px;text-align: center" nowrap="nowrap">
-							<input type="submit" value='<bean:message key="label.button" />'/></td>
+							<input type="submit" class="butStnd" value='<bean:message key="label.button" />'/></td>
 						</tr>
 						<tr></tr>
 			</table>

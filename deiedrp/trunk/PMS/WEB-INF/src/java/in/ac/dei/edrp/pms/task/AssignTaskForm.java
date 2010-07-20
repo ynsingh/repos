@@ -24,6 +24,7 @@ public class AssignTaskForm extends ValidatorForm {
 	private static final long serialVersionUID = 1L;
 
 	/** fields property */
+	private String taskname2;
 	private String projectName;//for holding project name
 	private String taskNameList;//for holding task name
 	private String assignedTo;//for holding task user name
@@ -43,6 +44,15 @@ public class AssignTaskForm extends ValidatorForm {
 	}
 
 	
+	public String getTaskname2() {
+		return taskname2;
+	}
+
+	public void setTaskname2(String taskname2) {
+		this.taskname2 = taskname2;
+	}
+
+
 	public String getProjectName() {
 		return projectName;
 	}

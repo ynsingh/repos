@@ -18,6 +18,7 @@ public class NewMemberForm extends ValidatorForm {
 
 	private static final long serialVersionUID = 1L;
 
+	private String emailid2;
 	/** emailid property */
 	private String emailid;
 	/** firstname property */
@@ -59,6 +60,14 @@ public class NewMemberForm extends ValidatorForm {
 	 */
 	public void reset(ActionMapping mapping, HttpServletRequest request) {
 		this.experience = "--Select--";
+	}
+
+	public String getEmailid2() {
+		return emailid2;
+	}
+
+	public void setEmailid2(String emailid2) {
+		this.emailid2 = emailid2;
 	}
 
 	/** 

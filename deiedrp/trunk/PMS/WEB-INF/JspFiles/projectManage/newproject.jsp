@@ -127,8 +127,9 @@ for(int i=0;i<=5;i++)
 			<html:errors property="darea"/></td></tr>
 			<tr><td></td></tr></table>
 			<table align="center">
-			<tr><td><html:submit value="Add" /></td><td><html:reset value="Reset"/>
-			<html:button property="back" value="Back" onclick="history.back();" />
+			<tr><td><html:submit value="Add" styleClass="butStnd" /></td>
+			<td><html:reset value="Reset" styleClass="butStnd"/>
+			<html:button property="back" value="Back" styleClass="butStnd" onclick="history.back();" />
 
 			<input type="hidden" name="prname" id="prname" value="" size="20" readonly="readonly"/>
 			<html:errors property="prname"/>

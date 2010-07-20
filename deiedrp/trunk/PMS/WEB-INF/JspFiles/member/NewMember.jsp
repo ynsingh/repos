@@ -66,11 +66,11 @@
         	
         <tr class="form-element">
           <td class="form-label">First Name :</td>
-          <td class="form-widget"><html:text property="firstname" value="" size="40" /></td>
+          <td class="form-widget"><html:text property="firstname" value="" size="40" /><font color="red" size="2">*</font></td>
         </tr>
           <tr class="form-element">
           <td class="form-label">Last Name :</td>
-          <td class="form-widget"><html:text property="lastname" value="" size="40"/></td>
+          <td class="form-widget"><html:text property="lastname" value="" size="40"/><font color="red" size="2">*</font></td>
         </tr>
         <tr class="form-element">
           <td class="form-label">Phone No. :</td>
@@ -101,9 +101,9 @@
       <table align="center">	
 			  
 			<tr><td><BR>	  
-			<html:submit value="Add Member"/>
-			<html:reset/>
-			<html:button property="back" value="Cancel" onclick="history.back();" />
+			<html:submit value="Add Member" styleClass="butStnd"/>
+			<html:reset styleClass="butStnd"/>
+			<html:button property="back" value="Cancel" styleClass="butStnd" onclick="history.back();" />
 			<input type="hidden" name="emailid2" id="emailid2" value="" size="20" readonly="readonly"/>
 			<html:errors property="emailid2"/>
             </td>

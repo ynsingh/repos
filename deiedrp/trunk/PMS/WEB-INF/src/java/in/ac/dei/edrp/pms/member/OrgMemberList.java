@@ -14,6 +14,7 @@ public class OrgMemberList{
 	ArrayList<MemberBean> list = new ArrayList<MemberBean>();;
 
 	//constructors
+	public OrgMemberList(){}
 	//for displaying the project team
 	public OrgMemberList(String project_code){
 	fillProjectTeam(project_code);
@@ -139,4 +140,28 @@ public class OrgMemberList{
 		this.list = list;
 	}
 
+	//used in showOrgMemberList for inactive members in case of delete
+	public boolean checkUserId(String orgportal,String userid){
+		Connection con=null;
+		boolean bool=false;
+		try{
+			con=MyDataSource.getConnection();//This method Established the connection from the database MySql
+			PreparedStatement st=con.prepareStatement("select u.user_id from user_info u,user_in_org uio," +
+					"user_role_in_org uro where u.user_id=uio.valid_user_id and uio.valid_orgportal=?" +
+					" and u.user_id=? and uio.valid_key=uro.valid_key and uio.valid_key " +
+					"NOT IN(select v.valid_user_key from validatetab v)");
+			st.setString(1,orgportal);
+			st.setString(2,userid);
+			ResultSet rs=st.executeQuery();
+			if(rs.next())
+			bool=true;
+			
+		}
+		catch(Exception e){System.out.println(e);}
+		finally
+		{
+			MyDataSource.freeConnection(con);
+		}
+		return bool;
+	}
 }

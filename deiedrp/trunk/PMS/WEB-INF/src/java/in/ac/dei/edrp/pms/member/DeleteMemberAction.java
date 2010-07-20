@@ -23,7 +23,7 @@ import org.apache.struts.action.ActionMapping;
 public class DeleteMemberAction extends Action {
 	
 /** 
-	 * Method execute
+	 * Method execute is used for deleting inactive members
 	 * @param mapping
 	 * @param form
 	 * @param request
@@ -42,13 +42,14 @@ public class DeleteMemberAction extends Action {
 		try
 		{
 			con=MyDataSource.getConnection();//This method Established the connection from the database MySql
+			//in case of super admin for inactive members
 			if(((String)session.getAttribute("authority")).equalsIgnoreCase("Super Admin"))
 			{
 			ps=con.prepareStatement("delete from user_info where User_ID=?");
 		    ps.setString(1,request.getParameter("userid"));
 		    ps.executeUpdate();
 			}
-			else//in case of user
+			else//in case of user for inactive members
 			{
 				ps=con.prepareStatement("delete from user_in_org where valid_user_id=?" +
 		    			" and valid_orgportal=?");
@@ -64,8 +65,7 @@ public class DeleteMemberAction extends Action {
 			    
 			    forwardMsg="deleteOrgmember";
 			}
-		   
-		    
+		   		    
 		}
 		catch(Exception e){System.out.println("error in delete member action file="+e);	}
 		finally

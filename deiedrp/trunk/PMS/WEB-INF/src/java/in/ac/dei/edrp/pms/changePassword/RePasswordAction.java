@@ -21,14 +21,11 @@ import java.sql.*;
 /** 
  * MyEclipse Struts
  * Creation date: 01-01-2010
- * <br>
+ * 
  * XDoclet definition:
  * @struts.action path="/changepasswordaction" name="passwordform" input="/WEB-INF/JspFiles/changepassword/changepassword.jsp" scope="request" validate="true"
  * @struts.action-forward name="success" path="page.changepasswordsuccess"
- * It is used for changing password.
- * @author Anil Kumar Tiwari <b>mailto:</b>aniltiwari08@gmail.com
  */
-
 public class RePasswordAction extends Action {
 	/*
 	 * Generated Methods

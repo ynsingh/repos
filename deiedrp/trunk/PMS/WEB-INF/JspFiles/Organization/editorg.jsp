@@ -63,8 +63,8 @@
 			</td></tr></table><br>
 			<table align="center">
 		<tr><td>
-			<html:submit value="Save Change"/></td><td><html:reset/></td>
-			<td><html:button property="back" value="Cancel" onclick="history.back();" /></td>
+			<html:submit value="Save Change" styleClass="butStnd"/></td><td><html:reset styleClass="butStnd"/></td>
+			<td><html:button property="back" value="Cancel" styleClass="butStnd" onclick="history.back();" /></td>
 			</tr></table>
 		</html:form>
 		

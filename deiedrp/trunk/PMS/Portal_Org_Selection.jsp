@@ -11,6 +11,7 @@
    <title>Portal_Org Selection</title>
    <link rel="icon" href="img/logo.ico" type="image/x-icon">
 <link rel="stylesheet" href="style/dropdown.css" type="text/css"></link>
+<link rel="stylesheet" href="style/style.css" type="text/css"></link>
 <style type="text/css" media="screen">
 .answerbox
 {
@@ -67,15 +68,15 @@ border-bottom-style:ridge;
 					</div>
 					</div>
 					<div align="right" style="padding-right: 10px;">
-		<b><font size="2">Welcome,</font></b>
-		<font size="2">
+		<b><font size="1">Welcome,</font></b>
+		<font size="1">
 		  		<%
 		  		/*The user_id which is currently logged In.*/
 		  		String uid=(String)session.getAttribute("uid");
 		  		out.println(uid);
 		   		%> |</font>
 		 
-				<html:link action="logout" styleClass="B"> LogOut</html:link>
+				<html:link action="logout" styleClass="B"> Logout</html:link>
 				</div>				
 		 </td></tr>
 		</table></td></tr>
@@ -87,7 +88,7 @@ border-bottom-style:ridge;
 		<td class="answerbox" style="padding-bottom: 100px;" align="center">
 			
 			 <b>PMS Portals<br/><br/>
-			 Hello , <b><%=(String)session.getAttribute("uid")%></b><br/>
+			 Hello , <b><font color="blue"><%=(String)session.getAttribute("uid")%></font></b><br/>
 			<br/>You have access to the following portals. Select the portal and organization you wish to access. <br/><br/>
 			
 	     <%
@@ -130,7 +131,7 @@ border-bottom-style:ridge;
 	   </td>
 	   </tr><tr></tr><tr></tr>
 	  <tr><td align="right" style="padding-top: 10px;">
-	   <html:submit></html:submit></td></tr>
+	   <html:submit styleClass="butStnd"></html:submit></td></tr>
 	   </html:form>
 	   </table> </td> </tr>
 	  </table> </td> </tr> 

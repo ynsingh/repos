@@ -1,10 +1,11 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ page import="in.ac.dei.edrp.pms.member.OrgMemberList"%>
+<%@ page import="in.ac.dei.edrp.pms.member.MemberBean"%>
+<%@page import="in.ac.dei.edrp.pms.deco.PmsDecorator;"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%@ taglib uri="http://displaytag.sf.net" prefix="display" %>
-
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html:html>
@@ -12,6 +13,7 @@
     <title>showOrgMemberList.jsp</title>
   <link rel="stylesheet" href="style/Displaytagex.css" type="text/css"></link>
   <link rel="stylesheet" href="style/dropdown.css" type="text/css"></link>
+  <link rel="stylesheet" href="style/style.css" type="text/css"></link>
   </head>
     
   <script language="JavaScript" type="text/javascript">
@@ -23,7 +25,7 @@
 	}
 	function deleteUser()
 	{
-		return(confirm("Are you sure want to delete this user permanently from this portal and organization?"));
+		return(confirm("Are you sure to remove this user permanently from this portal and organization?"));
 	}
 	function deleteUserRole()
 	{
@@ -42,6 +44,7 @@
 			response.sendRedirect("login.jsp");  
 		}
 	else{
+	
 	%>
   
 	<%
@@ -65,7 +68,7 @@
 	Users to be displayed:
   <html:select style="color:#0044ff" property="nrec1" name="nrec1" value="<%=key1 %>" onchange="fnrec();">	
     <html:option value="Active" >Active</html:option>
-    <html:option value="InActive" >In Active</html:option>
+    <html:option value="InActive" >Inactive</html:option>
     </html:select>
 	<html:errors property="nrec1"/>
 	
@@ -95,16 +98,18 @@
 	<logic:notEmpty name="memberList" property="list">
 	<%if(key1.equalsIgnoreCase("Active"))
 	{
+	new PmsDecorator().setUser((String)session.getAttribute("uid"));
 	%>
  
- <display:table name="memberList.list" id="row" defaultsort="1" export="false" pagesize="<%=Integer.parseInt(key) %>" requestURI="/viewmember.do" decorator="in.ac.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >
+ <display:table name="memberList.list" id="row" defaultsort="3" export="false" pagesize="<%=Integer.parseInt(key) %>" requestURI="/viewmember.do" decorator="in.ac.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >
 				   
 		<display:column property="userid" group="1" title="User ID" sortable="true" />
 		<display:column property="portalname" title="Permitted By" sortable="true" />
 		<display:column property="orgname" title="Project Name" sortable="true" />
 		<display:column property="rolename" title="Role Name" sortable="true" />
-		<!-- here we write edit/delete link of active members in case of org user not an admin -->
-			
+		<logic:equal name="row" property="editPermission" value="Allow">
+		<display:column property="activeMemberLink" media="html" title="Actions"/>
+			</logic:equal>
 </display:table>
     <%}
     else
@@ -117,14 +122,26 @@
 		<display:column property="orgname" title="Last Name" sortable="true" />
 		<display:column property="rolename" title="Skills" sortable="true" />
 		<display:column property="valid_key" title="Experince (in years)" sortable="true" />
-		<!-- here we write edit/delete link of inactive members in case of org user not an admin -->
+		<logic:equal name="row" property="editPermission" value="Allow">
+		<display:column media="html" title="Actions">
+		<%
+		if(!new OrgMemberList().checkUserId((String)session.getAttribute("validOrgInPortal"),((MemberBean)pageContext.getAttribute("row")).getUserid()))
+		{
+		if(!((String)session.getAttribute("uid")).equals(((MemberBean)pageContext.getAttribute("row")).getUserid()))
+		{
+		 %>
+		<html:link href="deleteMember.do" onclick="return deleteUser()" paramProperty="userid" paramId="userid" paramName="row">Delete
+		  </html:link>
+		  <%}} %>
+		</display:column>
+		</logic:equal>
 </display:table>
 <%} %>
     </logic:notEmpty>
     
      <logic:empty name="memberList" property="list">
      <br><font color="#550003" size="2">This type of member doesn't exist in the organization.</font><br><br>
-     <html:button property="back" value="Back" onclick="history.back();" />
+     <html:button property="back" value="Back" styleClass="butStnd" onclick="history.back();" />
     </logic:empty>
   		<%} %>
   </body>

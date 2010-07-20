@@ -6,6 +6,8 @@ package in.ac.dei.edrp.pms.organization;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -38,8 +40,13 @@ public class OrgListAction extends Action {
 	 */
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) {
-		
+		String forwardString="invalid";
+		HttpSession session=request.getSession();
+		if((String)session.getAttribute("mysession")!=null)
+		{
 		request.setAttribute("orgList", new OrgList());
-		return mapping.findForward("orglist");
+		forwardString="orglist";
+		}
+		return mapping.findForward(forwardString);
 	}
 	}

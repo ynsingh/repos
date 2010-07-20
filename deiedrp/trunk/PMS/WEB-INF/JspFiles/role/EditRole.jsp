@@ -73,28 +73,30 @@
 	   <logic:equal name="var" property="addrole" value="Allow">
 	  <td  class="form-label">
 		Add Role :</td><td>
-		<INPUT TYPE=RADIO NAME="addrole" id="addrole" VALUE="Allow" <%if(crs_userRole.getString(22).equals("Allow")){%> checked="checked" <%} %>>Allow
-		<INPUT TYPE=RADIO NAME="addrole" id="addrole" VALUE="Not Allow" <%if(crs_userRole.getString(22).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
+		<INPUT TYPE=RADIO NAME="addrole" id="addrole" VALUE="Allow" <%if(crs_userRole.getString(22).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
+		<INPUT TYPE=RADIO NAME="addrole" id="addrole" VALUE="Not Allow" <%if(crs_userRole.getString(22).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td></logic:equal>
 		<logic:equal name="var" property="addrole" value="Not Allow">
 	  <td  class="form-label">
 		Add Role :</td><td>
-		<INPUT TYPE=RADIO NAME="addrole" id="addrole" disabled="disabled" VALUE="Allow" <%if(crs_userRole.getString(22).equals("Allow")){%> checked="checked" <%} %>>Allow
-		<INPUT TYPE=RADIO NAME="addrole" id="addrole" disabled="disabled" VALUE="Not Allow" <%if(crs_userRole.getString(22).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
+		<INPUT TYPE=RADIO NAME="addrole" id="addrole" disabled="disabled" VALUE="Allow" <%if(crs_userRole.getString(22).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
+		<INPUT TYPE=RADIO NAME="addrole" id="addrole" disabled="disabled" VALUE="Not Allow" <%if(crs_userRole.getString(22).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td></logic:equal>
 		<logic:equal name="var" property="editrole" value="Allow">
 		<td  class="form-label">
 		Edit/Remove Role :</td><td>
-		<INPUT TYPE=RADIO NAME="editrole" id="editrole" VALUE="Allow" <%if(crs_userRole.getString(23).equals("Allow")){%> checked="checked" <%} %>>Allow
-		<INPUT TYPE=RADIO NAME="editrole" id="editrole" VALUE="Not Allow" <%if(crs_userRole.getString(23).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
+		<INPUT TYPE=RADIO NAME="editrole" id="editrole" VALUE="Allow" <%if(crs_userRole.getString(23).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
+		<INPUT TYPE=RADIO NAME="editrole" id="editrole" VALUE="Not Allow" <%if(crs_userRole.getString(23).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td></logic:equal>
 		<logic:equal name="var" property="editrole" value="Not Allow">
 		<td  class="form-label">
 		Edit/Remove Role :</td><td>
-		<INPUT TYPE=RADIO NAME="editrole" id="editrole" disabled="disabled" VALUE="Allow" <%if(crs_userRole.getString(23).equals("Allow")){%> checked="checked" <%} %>>Allow
-		<INPUT TYPE=RADIO NAME="editrole" id="editrole" disabled="disabled" VALUE="Not Allow" <%if(crs_userRole.getString(23).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
+		<INPUT TYPE=RADIO NAME="editrole" id="editrole" disabled="disabled" VALUE="Allow" <%if(crs_userRole.getString(23).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
+		<INPUT TYPE=RADIO NAME="editrole" id="editrole" disabled="disabled" VALUE="Not Allow" <%if(crs_userRole.getString(23).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td></logic:equal>
 		</tr>
+		
+		<!-- 
 		<tr class="form-element">
 		<logic:equal name="var" property="addorg" value="Allow">
 		<td  class="form-label">
@@ -120,135 +122,136 @@
 		<INPUT TYPE=RADIO NAME="editorg" id="editorg" disabled="disabled" VALUE="Allow" <%if(crs_userRole.getString(10).equals("Allow")){%> checked="checked" <%} %>>Allow
 		<INPUT TYPE=RADIO NAME="editorg" id="editorg" disabled="disabled" VALUE="Not Allow" <%if(crs_userRole.getString(10).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
 		</td></logic:equal>
-		</tr>
+		</tr> 
+		-->
 		<tr class="form-element">
 		<logic:equal name="var" property="addproject" value="Allow">
 		<td class="form-label">
 		Add Project :</td><td>
-		<INPUT TYPE=RADIO NAME="addproject" id="addproject" VALUE="Allow" <%if(crs_userRole.getString(11).equals("Allow")){%> checked="checked" <%} %>>Allow
-		<INPUT TYPE=RADIO NAME="addproject" id="addproject" VALUE="Not Allow" <%if(crs_userRole.getString(11).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
+		<INPUT TYPE=RADIO NAME="addproject" id="addproject" VALUE="Allow" <%if(crs_userRole.getString(11).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
+		<INPUT TYPE=RADIO NAME="addproject" id="addproject" VALUE="Not Allow" <%if(crs_userRole.getString(11).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td></logic:equal>
 		<logic:equal name="var" property="addproject" value="Not Allow">
 		<td class="form-label">
 		Add Project :</td><td>
-		<INPUT TYPE=RADIO NAME="addproject" id="addproject" disabled="disabled" VALUE="Allow" <%if(crs_userRole.getString(11).equals("Allow")){%> checked="checked" <%} %>>Allow
-		<INPUT TYPE=RADIO NAME="addproject" id="addproject" disabled="disabled" VALUE="Not Allow" <%if(crs_userRole.getString(11).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
+		<INPUT TYPE=RADIO NAME="addproject" id="addproject" disabled="disabled" VALUE="Allow" <%if(crs_userRole.getString(11).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
+		<INPUT TYPE=RADIO NAME="addproject" id="addproject" disabled="disabled" VALUE="Not Allow" <%if(crs_userRole.getString(11).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td></logic:equal>
 		<logic:equal name="var" property="editproject" value="Allow">
 		<td class="form-label">
 		Edit/Remove Project :</td><td>
-		<INPUT TYPE=RADIO NAME="editproject" id="editproject" VALUE="Allow" <%if(crs_userRole.getString(12).equals("Allow")){%> checked="checked" <%} %>>Allow
-		<INPUT TYPE=RADIO NAME="editproject" id="editproject" VALUE="Not Allow" <%if(crs_userRole.getString(12).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
+		<INPUT TYPE=RADIO NAME="editproject" id="editproject" VALUE="Allow" <%if(crs_userRole.getString(12).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
+		<INPUT TYPE=RADIO NAME="editproject" id="editproject" VALUE="Not Allow" <%if(crs_userRole.getString(12).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td></logic:equal>
 		<logic:equal name="var" property="editproject" value="Not Allow">
 		<td class="form-label">
 		Edit/Remove Project :</td><td>
-		<INPUT TYPE=RADIO NAME="editproject" id="editproject" disabled="disabled" VALUE="Allow" <%if(crs_userRole.getString(12).equals("Allow")){%> checked="checked" <%} %>>Allow
-		<INPUT TYPE=RADIO NAME="editproject" id="editproject" disabled="disabled" VALUE="Not Allow" <%if(crs_userRole.getString(12).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
+		<INPUT TYPE=RADIO NAME="editproject" id="editproject" disabled="disabled" VALUE="Allow" <%if(crs_userRole.getString(12).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
+		<INPUT TYPE=RADIO NAME="editproject" id="editproject" disabled="disabled" VALUE="Not Allow" <%if(crs_userRole.getString(12).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td></logic:equal>
 		</tr>
 		<tr class="form-element">
 		<logic:equal name="var" property="addmember" value="Allow">
 		<td class="form-label">
 		Add Member :</td><td>
-		<INPUT TYPE=RADIO NAME="addmember" id="addmember" VALUE="Allow" <%if(crs_userRole.getString(13).equals("Allow")){%> checked="checked" <%} %>>Allow
-		<INPUT TYPE=RADIO NAME="addmember" id="addmember" VALUE="Not Allow" <%if(crs_userRole.getString(13).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
+		<INPUT TYPE=RADIO NAME="addmember" id="addmember" VALUE="Allow" <%if(crs_userRole.getString(13).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
+		<INPUT TYPE=RADIO NAME="addmember" id="addmember" VALUE="Not Allow" <%if(crs_userRole.getString(13).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td></logic:equal>
 		<logic:equal name="var" property="addmember" value="Not Allow">
 		<td class="form-label">
 		Add Member :</td><td>
-		<INPUT TYPE=RADIO NAME="addmember" id="addmember" disabled="disabled" VALUE="Allow" <%if(crs_userRole.getString(13).equals("Allow")){%> checked="checked" <%} %>>Allow
-		<INPUT TYPE=RADIO NAME="addmember" id="addmember" disabled="disabled" VALUE="Not Allow" <%if(crs_userRole.getString(13).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
+		<INPUT TYPE=RADIO NAME="addmember" id="addmember" disabled="disabled" VALUE="Allow" <%if(crs_userRole.getString(13).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
+		<INPUT TYPE=RADIO NAME="addmember" id="addmember" disabled="disabled" VALUE="Not Allow" <%if(crs_userRole.getString(13).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td></logic:equal>
 		<logic:equal name="var" property="editmember" value="Allow">
 		<td  class="form-label">
 		Edit/Remove Member :</td><td>
-		<INPUT TYPE=RADIO NAME="editmember" id="editmember" VALUE="Allow" <%if(crs_userRole.getString(14).equals("Allow")){%> checked="checked" <%} %>>Allow
-		<INPUT TYPE=RADIO NAME="editmember" id="editmember" VALUE="Not Allow" <%if(crs_userRole.getString(14).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
+		<INPUT TYPE=RADIO NAME="editmember" id="editmember" VALUE="Allow" <%if(crs_userRole.getString(14).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
+		<INPUT TYPE=RADIO NAME="editmember" id="editmember" VALUE="Not Allow" <%if(crs_userRole.getString(14).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td></logic:equal>
 		<logic:equal name="var" property="editmember" value="Not Allow">
 		<td  class="form-label">
 		Edit/Remove Member :</td><td>
-		<INPUT TYPE=RADIO NAME="editmember" id="editmember" disabled="disabled" VALUE="Allow" <%if(crs_userRole.getString(14).equals("Allow")){%> checked="checked" <%} %>>Allow
-		<INPUT TYPE=RADIO NAME="editmember" id="editmember" disabled="disabled" VALUE="Not Allow" <%if(crs_userRole.getString(14).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
+		<INPUT TYPE=RADIO NAME="editmember" id="editmember" disabled="disabled" VALUE="Allow" <%if(crs_userRole.getString(14).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
+		<INPUT TYPE=RADIO NAME="editmember" id="editmember" disabled="disabled" VALUE="Not Allow" <%if(crs_userRole.getString(14).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td></logic:equal>
 		</tr>
 		<tr class="form-element">
 		<logic:equal name="var" property="assignproject" value="Allow">
 		<td class="form-label">
 		Assign Project :</td><td>
-		<INPUT TYPE=RADIO NAME="assignproject" id="assignproject" VALUE="Allow" <%if(crs_userRole.getString(15).equals("Allow")){%> checked="checked" <%} %>>Allow
-		<INPUT TYPE=RADIO NAME="assignproject" id="assignproject" VALUE="Not Allow" <%if(crs_userRole.getString(15).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
+		<INPUT TYPE=RADIO NAME="assignproject" id="assignproject" VALUE="Allow" <%if(crs_userRole.getString(15).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
+		<INPUT TYPE=RADIO NAME="assignproject" id="assignproject" VALUE="Not Allow" <%if(crs_userRole.getString(15).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td></logic:equal>
 		<logic:equal name="var" property="assignproject" value="Not Allow">
 		<td class="form-label">
 		Assign Project :</td><td>
-		<INPUT TYPE=RADIO NAME="assignproject" id="assignproject" disabled="disabled" VALUE="Allow" <%if(crs_userRole.getString(15).equals("Allow")){%> checked="checked" <%} %>>Allow
-		<INPUT TYPE=RADIO NAME="assignproject" id="assignproject" disabled="disabled" VALUE="Not Allow" <%if(crs_userRole.getString(15).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
+		<INPUT TYPE=RADIO NAME="assignproject" id="assignproject" disabled="disabled" VALUE="Allow" <%if(crs_userRole.getString(15).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
+		<INPUT TYPE=RADIO NAME="assignproject" id="assignproject" disabled="disabled" VALUE="Not Allow" <%if(crs_userRole.getString(15).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td></logic:equal>
 		<logic:equal name="var" property="editauthority" value="Allow">
 		<td  class="form-label">
 		Edit Member Authority :</td><td>
-		<INPUT TYPE=RADIO NAME="editauthority" id="editauthority" VALUE="Allow" <%if(crs_userRole.getString(16).equals("Allow")){%> checked="checked" <%} %>>Allow
-		<INPUT TYPE=RADIO NAME="editauthority" id="editauthority" VALUE="Not Allow" <%if(crs_userRole.getString(16).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
+		<INPUT TYPE=RADIO NAME="editauthority" id="editauthority" VALUE="Allow" <%if(crs_userRole.getString(16).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
+		<INPUT TYPE=RADIO NAME="editauthority" id="editauthority" VALUE="Not Allow" <%if(crs_userRole.getString(16).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td></logic:equal>
 		<logic:equal name="var" property="editauthority" value="Not Allow">
 		<td  class="form-label">
 		Edit Member Authority :</td><td>
-		<INPUT TYPE=RADIO NAME="editauthority" id="editauthority" disabled="disabled" VALUE="Allow" <%if(crs_userRole.getString(16).equals("Allow")){%> checked="checked" <%} %>>Allow
-		<INPUT TYPE=RADIO NAME="editauthority" id="editauthority" disabled="disabled" VALUE="Not Allow" <%if(crs_userRole.getString(16).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
+		<INPUT TYPE=RADIO NAME="editauthority" id="editauthority" disabled="disabled" VALUE="Allow" <%if(crs_userRole.getString(16).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
+		<INPUT TYPE=RADIO NAME="editauthority" id="editauthority" disabled="disabled" VALUE="Not Allow" <%if(crs_userRole.getString(16).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td></logic:equal>
 		</tr>
 		<tr class="form-element">
 		<logic:equal name="var" property="assigntask" value="Allow">
 		<td class="form-label">
 		Assign Task :</td><td>
-		<INPUT TYPE=RADIO NAME="assigntask" id="assigntask" VALUE="Allow" <%if(crs_userRole.getString(17).equals("Allow")){%> checked="checked" <%} %>>Allow
-		<INPUT TYPE=RADIO NAME="assigntask" id="assigntask" VALUE="Not Allow" <%if(crs_userRole.getString(17).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
+		<INPUT TYPE=RADIO NAME="assigntask" id="assigntask" VALUE="Allow" <%if(crs_userRole.getString(17).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
+		<INPUT TYPE=RADIO NAME="assigntask" id="assigntask" VALUE="Not Allow" <%if(crs_userRole.getString(17).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td></logic:equal>
 		<logic:equal name="var" property="assigntask" value="Not Allow">
 		<td class="form-label">
 		Assign Task :</td><td>
-		<INPUT TYPE=RADIO NAME="assigntask" id="assigntask" disabled="disabled" VALUE="Allow" <%if(crs_userRole.getString(17).equals("Allow")){%> checked="checked" <%} %>>Allow
-		<INPUT TYPE=RADIO NAME="assigntask" id="assigntask" disabled="disabled" VALUE="Not Allow" <%if(crs_userRole.getString(17).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
+		<INPUT TYPE=RADIO NAME="assigntask" id="assigntask" disabled="disabled" VALUE="Allow" <%if(crs_userRole.getString(17).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
+		<INPUT TYPE=RADIO NAME="assigntask" id="assigntask" disabled="disabled" VALUE="Not Allow" <%if(crs_userRole.getString(17).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td></logic:equal>
 		<logic:equal name="var" property="edittask" value="Allow">
 		<td  class="form-label">
 		Edit/Remove Task :</td><td>
-		<INPUT TYPE=RADIO NAME="edittask" id="edittask" VALUE="Allow" <%if(crs_userRole.getString(18).equals("Allow")){%> checked="checked" <%} %>>Allow
-		<INPUT TYPE=RADIO NAME="edittask" id="edittask" VALUE="Not Allow" <%if(crs_userRole.getString(18).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
+		<INPUT TYPE=RADIO NAME="edittask" id="edittask" VALUE="Allow" <%if(crs_userRole.getString(18).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
+		<INPUT TYPE=RADIO NAME="edittask" id="edittask" VALUE="Not Allow" <%if(crs_userRole.getString(18).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td></logic:equal>
 		<logic:equal name="var" property="edittask" value="Not Allow">
 		<td  class="form-label">
 		Edit/Remove Task :</td><td>
-		<INPUT TYPE=RADIO NAME="edittask" id="edittask" disabled="disabled" VALUE="Allow" <%if(crs_userRole.getString(18).equals("Allow")){%> checked="checked" <%} %>>Allow
-		<INPUT TYPE=RADIO NAME="edittask" id="edittask" disabled="disabled" VALUE="Not Allow" <%if(crs_userRole.getString(18).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
+		<INPUT TYPE=RADIO NAME="edittask" id="edittask" disabled="disabled" VALUE="Allow" <%if(crs_userRole.getString(18).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
+		<INPUT TYPE=RADIO NAME="edittask" id="edittask" disabled="disabled" VALUE="Not Allow" <%if(crs_userRole.getString(18).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td></logic:equal>
 		</tr>
 		<tr class="form-element">
 		<logic:equal name="var" property="uploaddoc" value="Allow">
 		<td class="form-label">
 		Upload Documents :</td><td>
-		<INPUT TYPE=RADIO NAME="uploaddoc" id="uploaddoc" VALUE="Allow" <%if(crs_userRole.getString(19).equals("Allow")){%> checked="checked" <%} %>>Allow
-		<INPUT TYPE=RADIO NAME="uploaddoc" id="uploaddoc" VALUE="Not Allow" <%if(crs_userRole.getString(19).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
+		<INPUT TYPE=RADIO NAME="uploaddoc" id="uploaddoc" VALUE="Allow" <%if(crs_userRole.getString(19).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
+		<INPUT TYPE=RADIO NAME="uploaddoc" id="uploaddoc" VALUE="Not Allow" <%if(crs_userRole.getString(19).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td></logic:equal>
 		<logic:equal name="var" property="uploaddoc" value="Not Allow">
 		<td class="form-label">
 		Upload Documents :</td><td>
-		<INPUT TYPE=RADIO NAME="uploaddoc" id="uploaddoc" disabled="disabled" VALUE="Allow" <%if(crs_userRole.getString(19).equals("Allow")){%> checked="checked" <%} %>>Allow
-		<INPUT TYPE=RADIO NAME="uploaddoc" id="uploaddoc" disabled="disabled" VALUE="Not Allow" <%if(crs_userRole.getString(19).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
+		<INPUT TYPE=RADIO NAME="uploaddoc" id="uploaddoc" disabled="disabled" VALUE="Allow" <%if(crs_userRole.getString(19).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
+		<INPUT TYPE=RADIO NAME="uploaddoc" id="uploaddoc" disabled="disabled" VALUE="Not Allow" <%if(crs_userRole.getString(19).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td></logic:equal>
 		<logic:equal name="var" property="downloaddoc" value="Allow">
 		<td  class="form-label">
 		Download/Remove Documents :</td><td>
-		<INPUT TYPE=RADIO NAME="downloaddoc" id="downloaddoc" VALUE="Allow" <%if(crs_userRole.getString(20).equals("Allow")){%> checked="checked" <%} %>>Allow
-		<INPUT TYPE=RADIO NAME="downloaddoc" id="downloaddoc" VALUE="Not Allow" <%if(crs_userRole.getString(20).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
+		<INPUT TYPE=RADIO NAME="downloaddoc" id="downloaddoc" VALUE="Allow" <%if(crs_userRole.getString(20).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
+		<INPUT TYPE=RADIO NAME="downloaddoc" id="downloaddoc" VALUE="Not Allow" <%if(crs_userRole.getString(20).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td></logic:equal>
 		<logic:equal name="var" property="downloaddoc" value="Not Allow">
 		<td  class="form-label">
 		Download/Remove Documents :</td><td>
-		<INPUT TYPE=RADIO NAME="downloaddoc" id="downloaddoc" disabled="disabled" VALUE="Allow" <%if(crs_userRole.getString(20).equals("Allow")){%> checked="checked" <%} %>>Allow
-		<INPUT TYPE=RADIO NAME="downloaddoc" id="downloaddoc" disabled="disabled" VALUE="Not Allow" <%if(crs_userRole.getString(20).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
+		<INPUT TYPE=RADIO NAME="downloaddoc" id="downloaddoc" disabled="disabled" VALUE="Allow" <%if(crs_userRole.getString(20).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
+		<INPUT TYPE=RADIO NAME="downloaddoc" id="downloaddoc" disabled="disabled" VALUE="Not Allow" <%if(crs_userRole.getString(20).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td></logic:equal>
 		</tr>
 		</logic:iterate>
@@ -261,13 +264,14 @@ else
 	  
 	  <tr class="form-element"><td  class="form-label">
 		Add Role :</td><td>
-		<INPUT TYPE=RADIO NAME="addrole" id="addrole" VALUE="Allow" <%if(crs_userRole.getString(22).equals("Allow")){%> checked="checked" <%} %>>Allow
-		<INPUT TYPE=RADIO NAME="addrole" id="addrole" VALUE="Not Allow" <%if(crs_userRole.getString(22).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
+		<INPUT TYPE=RADIO NAME="addrole" id="addrole" VALUE="Allow" <%if(crs_userRole.getString(22).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
+		<INPUT TYPE=RADIO NAME="addrole" id="addrole" VALUE="Not Allow" <%if(crs_userRole.getString(22).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td><td  class="form-label">
 		Edit/Remove Role :</td><td>
-		<INPUT TYPE=RADIO NAME="editrole" id="editrole" VALUE="Allow" <%if(crs_userRole.getString(23).equals("Allow")){%> checked="checked" <%} %>>Allow
-		<INPUT TYPE=RADIO NAME="editrole" id="editrole" VALUE="Not Allow" <%if(crs_userRole.getString(23).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
+		<INPUT TYPE=RADIO NAME="editrole" id="editrole" VALUE="Allow" <%if(crs_userRole.getString(23).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
+		<INPUT TYPE=RADIO NAME="editrole" id="editrole" VALUE="Not Allow" <%if(crs_userRole.getString(23).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td></tr>
+		<!-- 
 		<tr class="form-element"><td  class="form-label">
 		Add Organization :</td><td>
 		<INPUT TYPE=RADIO NAME="addorg" id="addorg" VALUE="Allow" <%if(crs_userRole.getString(9).equals("Allow")){%> checked="checked" <%} %>>Allow
@@ -277,59 +281,60 @@ else
 		<INPUT TYPE=RADIO NAME="editorg" id="editorg" VALUE="Allow" <%if(crs_userRole.getString(10).equals("Allow")){%> checked="checked" <%} %>>Allow
 		<INPUT TYPE=RADIO NAME="editorg" id="editorg" VALUE="Not Allow" <%if(crs_userRole.getString(10).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
 		</td></tr>
+		 -->
 		<tr class="form-element"><td class="form-label">
 		Add Project :</td><td>
-		<INPUT TYPE=RADIO NAME="addproject" id="addproject" VALUE="Allow" <%if(crs_userRole.getString(11).equals("Allow")){%> checked="checked" <%} %>>Allow
-		<INPUT TYPE=RADIO NAME="addproject" id="addproject" VALUE="Not Allow" <%if(crs_userRole.getString(11).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
+		<INPUT TYPE=RADIO NAME="addproject" id="addproject" VALUE="Allow" <%if(crs_userRole.getString(11).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
+		<INPUT TYPE=RADIO NAME="addproject" id="addproject" VALUE="Not Allow" <%if(crs_userRole.getString(11).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td><td  class="form-label">
 		Edit/Remove Project :</td><td>
-		<INPUT TYPE=RADIO NAME="editproject" id="editproject" VALUE="Allow" <%if(crs_userRole.getString(12).equals("Allow")){%> checked="checked" <%} %>>Allow
-		<INPUT TYPE=RADIO NAME="editproject" id="editproject" VALUE="Not Allow" <%if(crs_userRole.getString(12).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
+		<INPUT TYPE=RADIO NAME="editproject" id="editproject" VALUE="Allow" <%if(crs_userRole.getString(12).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
+		<INPUT TYPE=RADIO NAME="editproject" id="editproject" VALUE="Not Allow" <%if(crs_userRole.getString(12).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td></tr>
 		<tr class="form-element"><td class="form-label">
 		Add Member :</td><td>
-		<INPUT TYPE=RADIO NAME="addmember" id="addmember" VALUE="Allow" <%if(crs_userRole.getString(13).equals("Allow")){%> checked="checked" <%} %>>Allow
-		<INPUT TYPE=RADIO NAME="addmember" id="addmember" VALUE="Not Allow" <%if(crs_userRole.getString(13).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
+		<INPUT TYPE=RADIO NAME="addmember" id="addmember" VALUE="Allow" <%if(crs_userRole.getString(13).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
+		<INPUT TYPE=RADIO NAME="addmember" id="addmember" VALUE="Not Allow" <%if(crs_userRole.getString(13).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td><td  class="form-label">
 		Edit/Remove Member :</td><td>
-		<INPUT TYPE=RADIO NAME="editmember" id="editmember" VALUE="Allow" <%if(crs_userRole.getString(14).equals("Allow")){%> checked="checked" <%} %>>Allow
-		<INPUT TYPE=RADIO NAME="editmember" id="editmember" VALUE="Not Allow" <%if(crs_userRole.getString(14).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
+		<INPUT TYPE=RADIO NAME="editmember" id="editmember" VALUE="Allow" <%if(crs_userRole.getString(14).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
+		<INPUT TYPE=RADIO NAME="editmember" id="editmember" VALUE="Not Allow" <%if(crs_userRole.getString(14).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td></tr>
 		<tr class="form-element"><td class="form-label">
 		Assign Project :</td><td>
-		<INPUT TYPE=RADIO NAME="assignproject" id="assignproject" VALUE="Allow" <%if(crs_userRole.getString(15).equals("Allow")){%> checked="checked" <%} %>>Allow
-		<INPUT TYPE=RADIO NAME="assignproject" id="assignproject" VALUE="Not Allow" <%if(crs_userRole.getString(15).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
+		<INPUT TYPE=RADIO NAME="assignproject" id="assignproject" VALUE="Allow" <%if(crs_userRole.getString(15).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
+		<INPUT TYPE=RADIO NAME="assignproject" id="assignproject" VALUE="Not Allow" <%if(crs_userRole.getString(15).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td><td  class="form-label">
 		Edit Member Authority :</td><td>
-		<INPUT TYPE=RADIO NAME="editauthority" id="editauthority" VALUE="Allow" <%if(crs_userRole.getString(16).equals("Allow")){%> checked="checked" <%} %>>Allow
-		<INPUT TYPE=RADIO NAME="editauthority" id="editauthority" VALUE="Not Allow" <%if(crs_userRole.getString(16).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
+		<INPUT TYPE=RADIO NAME="editauthority" id="editauthority" VALUE="Allow" <%if(crs_userRole.getString(16).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
+		<INPUT TYPE=RADIO NAME="editauthority" id="editauthority" VALUE="Not Allow" <%if(crs_userRole.getString(16).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td></tr>
 		<tr class="form-element"><td class="form-label">
 		Assign Task :</td><td>
-		<INPUT TYPE=RADIO NAME="assigntask" id="assigntask" VALUE="Allow" <%if(crs_userRole.getString(17).equals("Allow")){%> checked="checked" <%} %>>Allow
-		<INPUT TYPE=RADIO NAME="assigntask" id="assigntask" VALUE="Not Allow" <%if(crs_userRole.getString(17).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
+		<INPUT TYPE=RADIO NAME="assigntask" id="assigntask" VALUE="Allow" <%if(crs_userRole.getString(17).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
+		<INPUT TYPE=RADIO NAME="assigntask" id="assigntask" VALUE="Not Allow" <%if(crs_userRole.getString(17).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 
 		</td><td  class="form-label">
 		Edit/Remove Task :</td><td>
-		<INPUT TYPE=RADIO NAME="edittask" id="edittask" VALUE="Allow" <%if(crs_userRole.getString(18).equals("Allow")){%> checked="checked" <%} %>>Allow
-		<INPUT TYPE=RADIO NAME="edittask" id="edittask" VALUE="Not Allow" <%if(crs_userRole.getString(18).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
+		<INPUT TYPE=RADIO NAME="edittask" id="edittask" VALUE="Allow" <%if(crs_userRole.getString(18).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
+		<INPUT TYPE=RADIO NAME="edittask" id="edittask" VALUE="Not Allow" <%if(crs_userRole.getString(18).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td></tr>
 		<tr class="form-element"><td class="form-label">
 		Upload Documents :</td><td>
-		<INPUT TYPE=RADIO NAME="uploaddoc" id="uploaddoc" VALUE="Allow" <%if(crs_userRole.getString(19).equals("Allow")){%> checked="checked" <%} %>>Allow
-		<INPUT TYPE=RADIO NAME="uploaddoc" id="uploaddoc" VALUE="Not Allow" <%if(crs_userRole.getString(19).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
+		<INPUT TYPE=RADIO NAME="uploaddoc" id="uploaddoc" VALUE="Allow" <%if(crs_userRole.getString(19).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
+		<INPUT TYPE=RADIO NAME="uploaddoc" id="uploaddoc" VALUE="Not Allow" <%if(crs_userRole.getString(19).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td><td  class="form-label">
 		Download/Remove Documents :</td><td>
-		<INPUT TYPE=RADIO NAME="downloaddoc" id="downloaddoc" VALUE="Allow" <%if(crs_userRole.getString(20).equals("Allow")){%> checked="checked" <%} %>>Allow
-		<INPUT TYPE=RADIO NAME="downloaddoc" id="downloaddoc" VALUE="Not Allow" <%if(crs_userRole.getString(20).equals("Not Allow")){%> checked="checked" <%} %> >Not Allow
+		<INPUT TYPE=RADIO NAME="downloaddoc" id="downloaddoc" VALUE="Allow" <%if(crs_userRole.getString(20).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
+		<INPUT TYPE=RADIO NAME="downloaddoc" id="downloaddoc" VALUE="Not Allow" <%if(crs_userRole.getString(20).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td></tr>
 
 <%} %>
 			</table><br><br>
 			<table align="center">
-			<tr><td><html:submit value="Save Changes"/></td>
-			<td><html:reset></html:reset></td>
-			<td><html:button property="back" value="Cancel" onclick="history.back();" /></td>
+			<tr><td><html:submit value="Save Changes" styleClass="butStnd"/></td>
+			<td><html:reset styleClass="butStnd"></html:reset></td>
+			<td><html:button property="back" value="Cancel" styleClass="butStnd" onclick="history.back();" /></td>
 			</tr></table>
 		</html:form>
 	</body>

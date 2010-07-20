@@ -14,6 +14,7 @@
  	
 	<link rel="stylesheet" href="style/Displaytagex.css" type="text/css"></link>
 	<link rel="stylesheet" href="style/dropdown.css" type="text/css"></link>
+	<link rel="stylesheet" href="style/style.css" type="text/css"></link>
   </head>
   <script language="JavaScript" type="text/javascript">
 	function fnrec()
@@ -91,7 +92,7 @@
 		<display:column title="Gantt Chart Color" sortable="true">
 		<logic:equal name="row" property="enable" value="0">
 			<html:link title="click for view the Gantt Chart" href="drawGanttChart.do" paramProperty="project_name" paramId="pname" paramName="row">
-			<font style="padding-left:100%;background-color:<%=((ProjectFields)pageContext.getAttribute("row")).getGcolor()%>;">
+			view<font style="padding-left:70%;background-color:<%=((ProjectFields)pageContext.getAttribute("row")).getGcolor()%>;">
 			</font></html:link>
 		</logic:equal>
 		<logic:equal name="row" property="enable" value="1">
@@ -139,7 +140,7 @@
 	 </logic:notEmpty>
     <logic:empty name="projectList" property="list">
    <br><font color="#550003" size="2">Nothing found to display.</font><br><br>
-    <html:button property="back" value="Back" onclick="history.back();" />
+    <html:button property="back" value="Back" styleClass="butStnd" onclick="history.back();" />
     </logic:empty>
   		
   </body>

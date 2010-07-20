@@ -6,13 +6,15 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
+
 import org.apache.log4j.BasicConfigurator;
 //import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.xml.DOMConfigurator;
 
 /**
- * It is used for initializing log4j.xml file.
- * @author Anil Kumar Tiwari <b>mailto:</b>aniltiwari08@gmail.com
+ * This class is used for initializing log4j
+ * @author <a href="http://aniltiwaripms.blogspot.com" target="_blank">Anil Kumar Tiwari</a> 
+ *
  */
 public class Log4JInitServlet extends HttpServlet {
 

@@ -19,6 +19,7 @@ public class EditForm extends ValidatorForm {
 	/*
 	 * Generated fields
 	 */
+	private String maxActualEndDate_task=null;
 	private String pcode;
 	private String pname; //For holding project name
 	private String oldprojectname; //For holding project name
@@ -43,6 +44,14 @@ public class EditForm extends ValidatorForm {
 	public void reset(ActionMapping mapping, HttpServletRequest request) {
 		
 	}
+
+public String getMaxActualEndDate_task() {
+	return maxActualEndDate_task;
+}
+
+public void setMaxActualEndDate_task(String maxActualEndDate_task) {
+	this.maxActualEndDate_task = maxActualEndDate_task;
+}
 
 public String getOldprojectname() {
 	return oldprojectname;

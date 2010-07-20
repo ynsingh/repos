@@ -98,9 +98,10 @@
 			</table>
 			<table style="padding-left: 30%;padding-top: 2%">
 			<tr>
-			<td><html:submit value="Change" onclick="return sure();"  /></td><td><html:reset value="Reset"/></td>
+			<td><html:submit value="Change" styleClass="butStnd" onclick="return sure();"  /></td>
+			<td><html:reset value="Reset" styleClass="butStnd"/></td>
 			<td>
-			<html:button property="back" value="Cancel" onclick="history.back();" />
+			<html:button property="back" value="Cancel" styleClass="butStnd" onclick="history.back();" />
 			</td>
 			</tr>
 			</table>		

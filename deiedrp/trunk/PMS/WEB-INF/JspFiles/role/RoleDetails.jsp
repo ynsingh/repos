@@ -52,7 +52,7 @@
 		Edit / Remove Role</html:link></td>
 		  <td class="hilite">: For edit and remove roles only for his organization.</td>
 		  </tr></logic:equal>
-		  
+		  <!-- 
 		<logic:equal name="var" property="addorg" value="Allow">
 		<tr class="form-element"><td>
 		<html:link href="neworganization.do" paramProperty="rolename" paramId="id" paramName="var" styleClass="B">
@@ -65,6 +65,7 @@
 		Edit / Remove Organization</html:link></td>
 		  <td class="hilite">: For edit and remove Organization in which the project will be run under project manager.</td>
 		  </tr></logic:equal>
+		  -->
 		<logic:equal name="var" property="addproject" value="Allow">
 		<tr class="form-element"><td>
 		<html:link href="newproject.do" paramProperty="rolename" paramId="id" paramName="var" styleClass="B">
@@ -119,7 +120,7 @@
 		</logic:iterate>		
 		</logic:notEmpty>
 	<br><div style="padding-left: 100px;">
-	 <html:button property="back" value="Back to Previous Page" onclick="history.back();" />
+	 <html:button property="back" value="Back" styleClass="butStnd" onclick="history.back();" />
     </div>
     <%
     }//in case of super admin
@@ -152,6 +153,7 @@
 		Edit / Remove Role</td>
 		  <td class="hilite">: For edit and remove roles only for his organization.</td>
 		  </tr></logic:equal>
+		  <!--  
 		<logic:equal name="var" property="addorg" value="Allow">
 		<tr class="form-element"><td>
 		Add New Organization</td>
@@ -162,6 +164,7 @@
 		Edit / Remove Organization</td>
 		  <td class="hilite">: For edit and remove Organization in which the project will be run under project manager.</td>
 		  </tr></logic:equal>
+		  -->
 		<logic:equal name="var" property="addproject" value="Allow">
 		<tr class="form-element"><td>
 		Add Project</td><td>: For adding new project.</td>
@@ -208,7 +211,7 @@
 		</logic:iterate>		
 		</logic:notEmpty>
 	<br><div style="padding-left: 100px;">
-	 <html:button property="back" value="Back to Previous Page" onclick="history.back();" />
+	 <html:button property="back" value="Back" styleClass="butStnd" onclick="history.back();" />
     </div>
      
      

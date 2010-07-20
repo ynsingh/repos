@@ -40,5 +40,6 @@ public class ViewOrganisationAction extends Action {
 			HttpServletRequest request, HttpServletResponse response) {
 		
 		return mapping.findForward("vieworg");
+		
 	}
 }

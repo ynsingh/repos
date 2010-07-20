@@ -14,9 +14,11 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 
+import in.ac.dei.edrp.pms.adminConfig.ReadPropertiesFile;
 import in.ac.dei.edrp.pms.dataBaseConnection.MyDataSource;
 import in.ac.dei.edrp.pms.myMail.SendingMail;
 import in.ac.dei.edrp.pms.viewer.CodeGenerator;
+import in.ac.dei.edrp.pms.viewer.PasswordGenerator;
 import in.ac.dei.edrp.pms.viewer.checkRecord;
 
 /** 
@@ -52,12 +54,15 @@ public class AddNewMemberAction extends Action {
 		Connection con=null;
 		PreparedStatement ps=null;
 		String retstring="addmemberfail";
-		request.setAttribute("message", "User could not be added ,because this user already exist!!");
+		request.setAttribute("message", "User could not be added ,because this user already exist in the system!!");
 		try{
 			con=MyDataSource.getConnection();
+			//for checking email id of super admin or not
+			if(!checkRecord.duplicacyChecker("login_user_id","login","authority","Super Admin").equalsIgnoreCase(newmemberform.getEmailid().trim()))
+			{
 			if(checkRecord.duplicacyChecker("User_ID","user_info","User_ID",newmemberform.getEmailid().trim())==null)
 			{
-				System.out.println("does not exist.");
+				System.out.println("does not exist in user info.");
 				
 				ps=con.prepareStatement("insert into user_info " +
 					"(User_ID,First_Name,Last_Name,Phone_No,Skills,Experince,Created_On,Updated_On) " +
@@ -106,7 +111,7 @@ public class AddNewMemberAction extends Action {
 						PreparedStatement ps1=con.prepareStatement("insert into login values(?,?,SHA1(?))");
 						ps1.setString(1,newmemberform.getEmailid().trim());
 						ps1.setString(2,"User");
-						pass1=PasswordGenerator.generatePassword(3,8).toLowerCase();
+						pass1=PasswordGenerator.generatePassword(3,5).toLowerCase();
 						ps1.setString(3,pass1);
 						ps1.executeUpdate();
 						}
@@ -118,8 +123,11 @@ public class AddNewMemberAction extends Action {
 							"click on the following link," +url+
 							" and proceed by your login.\n" +
 							" User Id: "+newmemberform.getEmailid().trim()+
-							"\n Password: "+pass1+"\n Thanks !";
-						bool=SendingMail.sendMail(s4,"pms.dei2010@gmail.com",newmemberform.getEmailid().trim(),"PMS Info");
+							"\n Password: "+pass1+
+							"\n Note:- After login, Please change your password for security point of view."+
+							"\n Thanks !";
+						bool=SendingMail.sendMail(s4,newmemberform.getEmailid().trim(),
+								ReadPropertiesFile.mailConfig(getServlet().getServletContext().getRealPath("/")+"WEB-INF/"));
 						System.out.println("body="+s4);
 					}
 				}
@@ -147,11 +155,9 @@ public class AddNewMemberAction extends Action {
 				saveErrors(request,errors);
 				retstring="addmembersuccess";
 			}
-			
-			
+		  }//outer if closed
 		}catch(Exception e)
 		{
-			
 			System.out.println("Exception is e="+e);
 		}
 		finally

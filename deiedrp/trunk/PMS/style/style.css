@@ -6,6 +6,12 @@
 
 
 /* TEST WITH INCLUDE STYLE.CSS  */
+.butStnd {
+    font-family:arial,sans-serif;
+    font-size:11px;
+    width:105px;
+    background-color:#DCDFFA ;color:black;font-weight:bold;
+}
  .B:link {
 	color: #0000ff;
 	text-decoration: none;

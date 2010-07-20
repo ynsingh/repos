@@ -7,13 +7,19 @@
 
 <form-beans>
   	<form-bean name="loginform" type="in.ac.dei.edrp.pms.login.LoginForm" />
+  	
+  	<form-bean name="mailconfigform" type="in.ac.dei.edrp.pms.adminConfig.MailConfigForm" />
+  	
   	<form-bean name="portalnameform" type="in.ac.dei.edrp.pms.home.PortalBean" />
   	<form-bean name="passwordform" type="in.ac.dei.edrp.pms.changePassword.PasswordForm"/>
   	<form-bean name="projectform" type="in.ac.dei.edrp.pms.projmanage.ProjectForm"/>
-  	<form-bean name="newroleform" type="in.ac.dei.edrp.pms.role.NewRoleForm"/>
-  	<form-bean name="newportalform" type="in.ac.dei.edrp.pms.portal.NewPortalForm"/>
-  	<form-bean name="editroleform" type="in.ac.dei.edrp.pms.role.EditRoleForm"/>
-  	<form-bean name="editportalform" type="in.ac.dei.edrp.pms.portal.EditPortalForm"/>
+  	
+  	<form-bean name="newroleform" type="in.ac.dei.edrp.pms.role.RoleForm"/>
+  	<form-bean name="editroleform" type="in.ac.dei.edrp.pms.role.RoleForm"/>
+  	
+  	<form-bean name="newportalform" type="in.ac.dei.edrp.pms.portal.PortalForm"/>
+  	<form-bean name="editportalform" type="in.ac.dei.edrp.pms.portal.PortalForm"/>
+  	
   	<form-bean name="newmemberform" type="in.ac.dei.edrp.pms.member.NewMemberForm"/>
   	<form-bean name="addorginportalform" type="in.ac.dei.edrp.pms.addorg_in_portal.AddOrgInPortalForm"/>
   	
@@ -23,7 +29,7 @@
  	<form-bean name="backorgsearchform" type="org.apache.struts.action.DynaActionForm">
       <form-property name="back" type="java.lang.String" />
       </form-bean>
- 
+   
   	<form-bean name="peoplesearchform" type="in.ac.dei.edrp.pms.peoplesearch.PeopleSearchForm" />
   	<form-bean name="projectsearchform" type="in.ac.dei.edrp.pms.searching.ProjectSearchForm" />
   	<form-bean name="editform" type="in.ac.dei.edrp.pms.updation.EditForm" />
@@ -34,7 +40,7 @@
   	  
   	 	<!-- Starting For organization -->
   	
-    <form-bean name="editorgform" type="in.ac.dei.edrp.pms.organization.EditOrgForm" />
+    <form-bean name="editorgform" type="in.ac.dei.edrp.pms.organization.OrgForm" />
     <form-bean name="orgform" type="in.ac.dei.edrp.pms.organization.OrgForm" />
     <form-bean name="searchorgform" type="in.ac.dei.edrp.pms.organization.SearchOrgForm" />
   		<!-- Ending For Organisation -->
@@ -99,14 +105,6 @@
 </global-forwards>
 <action-mappings >
 
-	<action 
-            path="/jspException" 
-            scope="request"
-            type="in.ac.dei.edrp.pms.myValidator.JspExceptionHandlerAction" >
-            <forward name="exception" path="page.handler"/> 
-	</action> 
-	
-
 	<action
      	 attribute="loginform"
      	 input="/login.jsp"
@@ -165,6 +163,36 @@
       </action>
         
     <!-- Change Password part Ends -->
+    <!-- Online help part starts -->
+    <action
+     path="/help"
+     scope="request"
+      type="in.ac.dei.edrp.pms.help.ForwardHelpAction" > 
+      <forward name="pmsHelpPage" path="page.pmsHelpPage" />
+      <forward name="invalid" path="/logout.jsp" />
+      </action>
+    <!-- Online help part ends -->
+    
+    <!-- Mail Configuration part starts -->
+    
+    <action
+     path="/mailconfig"
+     scope="request"
+      type="in.ac.dei.edrp.pms.adminConfig.ForwardMailConfigAction" > 
+      <forward name="mailConfigPage" path="page.mailConfigPage" />
+      <forward name="invalid" path="/logout.jsp" />
+      </action>
+      <action
+    	attribute="mailconfigform"
+      	input="page.mailConfigPage"
+      	name="mailconfigform"
+      	path="/addMailConfig"
+      	scope="session"
+      	validate="true"
+      	type="in.ac.dei.edrp.pms.adminConfig.MailConfigAction">
+   	  	<forward name="mailconfigsuccess" path="page.mailConfigPage" />
+     	</action>
+    <!-- Mail Configuration part ends -->
     
     <!-- Portal part starts -->
     
@@ -342,7 +370,8 @@
    <action        
       path="/deleteUserRole"
       type="in.ac.dei.edrp.pms.member.DeleteUserRoleAction">
-      <forward name="deleteuserrole" path="page.memberList"/>
+      <forward name="deletemember" path="page.memberList"/>
+     <forward name="deleteOrgmember" path="page.OrgMemberList"/>
      </action>
     <!-- Member part ends -->
     
@@ -473,11 +502,8 @@
       scope="request"
       validate="true"
       type="in.ac.dei.edrp.pms.member.ProjAssignAction">
-      <forward name="assignsuccess" path="page.assignsuccess"/>
-      <forward name="assignfail" path="page.assignfail"/>
-      <forward name="alreadyAssigned" path="page.alreadyAssigned"/>
+      <forward name="assignsuccess" path="page.assignproject"/>
       </action>
-
 
 <action
       path="/newtask"
@@ -581,12 +607,13 @@
     
     <action path="/vieworganization" type="in.ac.dei.edrp.pms.organization.ViewOrganisationAction">
       <forward name="vieworg" path="/WEB-INF/JspFiles/Organization/vieworg.jsp" />
-    </action>
+     </action>
 
     <action        
       path="/orgList"
       type="in.ac.dei.edrp.pms.organization.OrgListAction">
       <forward name="orglist" path="page.orglist"/>
+      <forward name="invalid" path="/logout.jsp" />
     </action>
        
    <!-- FOR SEARCH ORGANIZATION -->

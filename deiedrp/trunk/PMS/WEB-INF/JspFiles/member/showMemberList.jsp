@@ -1,6 +1,7 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ page import="in.ac.dei.edrp.pms.member.MemberList"%>
 <%@ page import="in.ac.dei.edrp.pms.member.MemberBean"%>
+<%@page import="in.ac.dei.edrp.pms.deco.PmsDecorator;"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -13,6 +14,7 @@
     <title>showMemberList.jsp</title>
   <link rel="stylesheet" href="style/Displaytagex.css" type="text/css"></link>
   <link rel="stylesheet" href="style/dropdown.css" type="text/css"></link>
+  <link rel="stylesheet" href="style/style.css" type="text/css"></link>
   </head>
     
   <script language="JavaScript" type="text/javascript">
@@ -24,7 +26,7 @@
 	}
 	function deleteUser()
 	{
-		return(confirm("Are you sure want to delete this user permanently?"));
+		return(confirm("Do you want to delete this user permanently?"));
 	}
 	function deleteUserRole()
 	{
@@ -43,6 +45,7 @@
 			response.sendRedirect("login.jsp");  
 		}
 	else{
+	
 	%>
   
 	<%
@@ -64,7 +67,7 @@
 	Users to be displayed:
   <html:select style="color:#0044ff" property="nrec1" name="nrec1" value="<%=key1 %>" onchange="fnrec();">	
     <html:option value="Active" >Active</html:option>
-    <html:option value="InActive" >In Active</html:option>
+    <html:option value="InActive" >Inactive</html:option>
     </html:select>
 	<html:errors property="nrec1"/>
 	
@@ -94,6 +97,7 @@
 	 <logic:notEmpty name="memberList" property="list">
 	<%if(key1.equalsIgnoreCase("Active"))
 	{
+	new PmsDecorator().setUser("");
 	%>
  
  <display:table name="memberList.list" id="row" defaultsort="1" export="false" pagesize="<%=Integer.parseInt(key) %>" requestURI="/viewmember.do" decorator="in.ac.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >
@@ -106,9 +110,7 @@
 		<%=((MemberBean)pageContext.getAttribute("row")).getRolename()%>
 		</html:link>
 		</display:column>
-		<!-- delete link is working but edit link not working
-		see the C:\Documents and Settings\anil\Desktop\task\showMemberList.jsp file
-		-->
+		<display:column property="activeMemberLink" media="html" title="Actions"/>
 </display:table>
     <%}
     else
@@ -121,16 +123,14 @@
 		<display:column property="orgname" title="Last Name" sortable="true" />
 		<display:column property="rolename" title="Skills" sortable="true" />
 		<display:column property="valid_key" title="Experince (in years)" sortable="true" />
-		<!-- delete link is working but edit link not working
-		see the C:\Documents and Settings\anil\Desktop\task\showMemberList.jsp file
-		-->
+		<display:column property="inActiveMemberLink" media="html" title="Actions"/>
 </display:table>
 <%} %>
     </logic:notEmpty>
     
      <logic:empty name="memberList" property="list">
      <br><font color="#550003" size="2">Nothing found to display.</font><br><br>
-     <html:button property="back" value="Back" onclick="history.back();" />
+     <html:button property="back" value="Back" styleClass="butStnd" onclick="history.back();" />
     </logic:empty>
   		<%} %>
   </body>

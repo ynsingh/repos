@@ -1,60 +1,124 @@
 package in.ac.dei.edrp.pms.myMail;
+
 import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
 
 /**
- * It is used for sending mail.
- * @author Anil Kumar Tiwari <b>mailto:</b>aniltiwari08@gmail.com
+ * This class is related with sending mail
+ * @author <a href="http://aniltiwaripms.blogspot.com" target="_blank">Anil Kumar Tiwari</a>
+ *
  */
-
 public class SendingMail {
-	
-    public static boolean sendMail(String text, String mailFrom, String mailTo, String subject) throws Exception {  
+	static String username=null;
+	static String password=null;
+	/**
+	 * Used for sending mail
+	 * @param bodyText It holds message body.
+	 * @param mailTo It holds the email_id of mail Recipient
+	 * @param mailData It holds the mail server port,mail server name,email_id of sender and password of email_id.
+	 * @return boolean 
+	 * @throws Exception
+	 */
+	   public static boolean sendMail(String bodyText,String mailTo,
+			  Map<String, String> mailData) throws Exception {  
 	boolean sent=false;
+	
 		   try {  
-		          Properties props = System.getProperties();  
+		          			
+			   Properties props = System.getProperties();  
 //		          props.setProperty("proxySet","true");
-//		          props.setProperty("socksProxyHost","10.151.0.16");
-//		          props.setProperty("socksProxyPort","80");
-//		          props.setProperty("socksProxyUser","staff");
-//		          props.setProperty("socksProxyPassword","staff@dei");
+//		          props.setProperty("socksProxyHost","192.10.40.250");
+//		          props.setProperty("socksProxyPort","8080");
+			   
+			   //this is working fine
+//			   props.setProperty("http.proxyHost", "10.151.0.16");
+//			   props.setProperty("http.proxyPort", "80");
+			  
 
+		          props.setProperty("mail.smtp.port", mailData.get("smtpServerPort").toString());
+		          props.setProperty("mail.smtp.socketFactory.port", mailData.get("smtpServerPort").toString()); 
+		          props.setProperty("mail.smtp.host", mailData.get("smtpServerName").toString());
+		          props.setProperty("mail.smtp.startssl.enable","true");
+		          props.setProperty("mail.smtp.starttls.enable", "true");  
+		          props.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+		          props.setProperty("mail.smtp.auth", "true");  
+		          props.put("mail.store.protocol", "pop3");//for incoming mail
+		          props.put("mail.transport.protocol", "smtp");//for outgoing mail
 
-		           props.setProperty("mail.smtp.port", "465");  
-		           props.setProperty("mail.smtp.socketFactory.port", "465");  
-		           props.setProperty("mail.smtp.host", "smtp.gmail.com");
-		           props.setProperty("mail.smtp.startssl.enable","true");
-		           props.setProperty("mail.smtp.starttls.enable", "true");  
-		           props.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-		           props.setProperty("mail.smtp.auth", "true");  
-		       
-		           Authenticator auth = new MyAuthenticator();  
-		           Session smtpSession = Session.getInstance(props, auth);  
-		           smtpSession.setDebug(true);  
-		     
-		           MimeMessage message = new MimeMessage(smtpSession);  
-		          message.setFrom(new InternetAddress(mailFrom));  
-		           message.addRecipient(Message.RecipientType.TO, new InternetAddress(mailTo));  
-		      
+		           final String username = mailData.get("mailFrom").toString();
+		           final String password = mailData.get("userPassword").toString();
+
+		           Session smtpSession = Session.getDefaultInstance(props, 
+                           new Authenticator(){
+                       protected PasswordAuthentication getPasswordAuthentication() {
+                          return new PasswordAuthentication(username, password);
+                       }});
+  
+		          smtpSession.setDebug(false);  
+		          String mailFrom=username;
+		          MimeMessage message = new MimeMessage(smtpSession);  
+		          message.setFrom(new InternetAddress(mailFrom)); 
+		          message.setRecipients(Message.RecipientType.TO, 
+                          InternetAddress.parse(mailTo,false));
 		           final String encoding = "UTF-8";  
 		      
-		           message.setSubject(subject, encoding);  
-		           message.setText(text, encoding); 
+		           message.setSubject(mailData.get("subject").toString(), encoding);  
+		           message.setText(bodyText, encoding); 
 		           System.out.println("Mail to:aniltiwari08@gmail.com");
 		           Transport.send(message);
 		           sent=true;
 		       } catch (Exception e) {  
-		          System.out.println("error="+e);
+		          System.out.println("error in sending mail="+e);
 		       }
 		       return sent;
 		   }  
-		      
-		   static class MyAuthenticator extends Authenticator {  
-		       public PasswordAuthentication getPasswordAuthentication() {  
-		           String username = "pms.dei2010@gmail.com";  
-		           String password = "anilpms@dei";  
-		           return new PasswordAuthentication(username, password);  
-		       }  
-		   }  
-}
+	   
+	   public static boolean checkMailValidation(String port,String serverName,
+			   String userid,String userpassword,String subject) throws Exception {  
+		   boolean sent=false;
+	try{
+		 			Properties props = System.getProperties();  
+//         props.setProperty("proxySet","true");
+//         props.setProperty("socksProxyHost","10.151.0.16");
+//         props.setProperty("socksProxyPort","80");
+    		          username=userid.trim();
+    		          password=userpassword.trim();
+    		          props.setProperty("mail.smtp.port",port);
+    		          props.setProperty("mail.smtp.socketFactory.port",port); 
+       //smtp.mail.yahoo.com for yahoo
+       //smtp.gmail.com for gmail
+    		          props.setProperty("mail.smtp.host",serverName);
+    		          props.setProperty("mail.smtp.startssl.enable","true");
+    		          props.setProperty("mail.smtp.starttls.enable", "true");  
+    		          props.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+    		          props.setProperty("mail.smtp.auth", "true");  
+    		          props.put("mail.store.protocol", "pop3");//for incoming mail
+    		          props.put("mail.transport.protocol", "smtp");//for outgoing mail
+    		          Session smtpSession = Session.getDefaultInstance(props, 
+                  new Authenticator(){
+              protected PasswordAuthentication getPasswordAuthentication()
+              {
+                 return new PasswordAuthentication(SendingMail.username.trim(), SendingMail.password.trim());
+              }});
+
+    		          smtpSession.setDebug(false);  
+    		          String mailFrom=username;
+    		          MimeMessage message = new MimeMessage(smtpSession);  
+    		          message.setFrom(new InternetAddress(mailFrom)); 
+    		          message.setRecipients(Message.RecipientType.TO, 
+    		          InternetAddress.parse(mailFrom,false));
+    		          final String encoding = "UTF-8";  
+     
+    		          message.setSubject(subject, encoding);  
+    		          message.setText("This is only for confirmation of your valid email id and password that is configure for PMS", encoding); 
+    		          System.out.println("Mail to:aniltiwari08@gmail.com");
+          				Transport.send(message);
+          				sent=true;
+			   		} catch (Exception e) {  
+			          System.out.println("errorin checkmail validation="+e);
+			       }
+			   		return sent;
+	   		}
+			  
+	}

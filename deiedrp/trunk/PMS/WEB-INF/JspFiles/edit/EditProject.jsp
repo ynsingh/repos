@@ -115,9 +115,9 @@ for(int i=0;i<=3;i++)
 			Project Description :</td><td class="form-widget"> <html:textarea property="darea" rows="3" cols="38" value="<%=crs_project.getString(11)%>"/><html:errors property="darea"/></td></tr>
 			<tr><td></td></tr></table>
 			<table align="center">
-			<tr><td><html:submit value="Save Changes"/></td>
-			<td><html:reset></html:reset></td>
-			<td><html:button property="back" value="Cancel" onclick="history.back();" /></td>
+			<tr><td><html:submit value="Save Changes" styleClass="butStnd"/></td>
+			<td><html:reset styleClass="butStnd"></html:reset></td>
+			<td><html:button property="back" value="Cancel" styleClass="butStnd" onclick="history.back();" /></td>
 			</tr></table>
 		</html:form>
 		

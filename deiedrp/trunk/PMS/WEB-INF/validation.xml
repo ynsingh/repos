@@ -7,6 +7,24 @@
 <!-- ================================================================= -->
 <form-validation>
 <formset>
+<form name="mailconfigform" >
+<field property="smtpServerPort" depends="required" >
+<arg0 key="mail.smtpServerPort" />
+</field>
+<field property="smtpServerName" depends="required" >
+<arg0 key="mail.smtpServerName" />
+</field>
+<field property="mailFrom" depends="required,email" >
+<arg0 key="mail.mailFrom" />
+</field>
+<field property="password" depends="required" >
+<arg0 key="mail.password" />
+</field>
+<field property="subject" depends="required" >
+<arg0 key="mail.subject" />
+</field>
+</form>
+
 <form name="portalnameform" >
 <field property="portalname" depends="selectoption" >
 <arg0 key="err.portalname" />
@@ -34,6 +52,12 @@
 <var>
 <var-name>maxlength</var-name>
 <var-value>255</var-value></var>
+</field>
+<field property="firstname" depends="required" >
+<arg0 key="firstname.value" />
+</field>
+<field property="lastname" depends="required" >
+<arg0 key="lastname.value" />
 </field>
 <field property="phoneno" depends="mask,minlength,maxlength" >
 <arg0 key="phone.number" />
@@ -104,14 +128,14 @@
 </form>
 
 <form name="addorginportalform">
-<field property="emailid" depends="required,email" >
-<arg0 key="err.emailid" />
-</field>
 <field property="portalname" depends="selectoption" >
 <arg0 key="err.portalname" />
 </field>
 <field property="organisation" depends="selectoption" >
-<arg0 key="err.organisation" />
+<arg0 key="err.organization" />
+</field>
+<field property="emailid" depends="selectoption" >
+<arg0 key="err.emailid" />
 </field>
 <field property="role" depends="selectoption" >
 <arg0 key="err.role" />

@@ -26,6 +26,7 @@ public class TaskForm extends ValidatorForm {
 	/** fields property */
 	private String projectName;//for holding project name
 	private String taskName;//for holding task name
+	private String taskname2;
 	private String assignedTo;//for holding task user name
 	private int no_of_days;//for holding number of days
 	private String taskStartDate;//for holding schedule start date of a task
@@ -48,6 +49,14 @@ public class TaskForm extends ValidatorForm {
 	public void reset(ActionMapping mapping, HttpServletRequest request) {
 		this.assignedTo="--Select--";
 		this.projectName="";
+	}
+
+	public String getTaskname2() {
+		return taskname2;
+	}
+
+	public void setTaskname2(String taskname2) {
+		this.taskname2 = taskname2;
 	}
 
 	public String getProjectName() {

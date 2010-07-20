@@ -41,7 +41,7 @@ public class EditPortalAction extends Action {
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) {
 			
-		EditPortalForm editportalform = (EditPortalForm)form;
+		PortalForm editportalform = (PortalForm)form;
 		
 		String forwardmsg="editportalfail";
 		Connection con=null;

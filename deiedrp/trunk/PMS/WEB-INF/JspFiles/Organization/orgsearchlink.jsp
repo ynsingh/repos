@@ -18,9 +18,7 @@
 	<meta http-equiv="expires" content="0">    
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
-	<!--
-	<link rel="stylesheet" type="text/css" href="styles.css">
-	-->
+	<link rel="stylesheet" href="style/style.css" type="text/css"></link>
   </head>
   
   <body>
@@ -52,7 +50,7 @@
 		</td>
 		<td class="form-widget">
 		<html:text property="keysearch" size="40" value=""/><html:errors property="keysearch"/></td>
-		<td class="form-widget"><html:submit value="Search"/></td>
+		<td class="form-widget"><html:submit value="Search" styleClass="butStnd"/></td>
 		</tr>
 	</table>
     </html:form>

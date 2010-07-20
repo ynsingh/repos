@@ -1,5 +1,6 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
-
+<%@ page import="in.ac.dei.edrp.pms.viewer.checkRecord"%>
+<%@page import="in.ac.dei.edrp.pms.organization.OrgFields;"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -12,6 +13,7 @@
     <title>showorgdata.jsp</title>
  <link rel="stylesheet" href="style/Displaytagex.css" type="text/css"></link>
  <link rel="stylesheet" href="style/dropdown.css" type="text/css"></link>
+ <link rel="stylesheet" href="style/style.css" type="text/css"></link>
   </head>
   <script language="JavaScript" type="text/javascript">
 	function fnrec()
@@ -26,11 +28,20 @@
 	</script>
   <body>
   
+  <%!
+	String key=null;
+	String uid=null;
+	String authority=null;
+	 %>
+     <%
+	uid=(String)session.getAttribute("uid");
+	authority=checkRecord.duplicacyChecker("Authority","login","login_user_id",uid);
+	 %>
   <logic:notEmpty name="orgList" property="list">
   <div id="main_title" align="left">
 		    <font color="#0044ff">Organization List:</font>
 		     </div><br>
-	<%!String key=null; %>
+	
 	<%
 	 key=request.getParameter("key");
 	 if(key==null)
@@ -46,7 +57,11 @@
         </html:select>
 			<html:errors property="nrec"/>
 		<div align="right">
+		<%
+		if(authority.equalsIgnoreCase("Super Admin"))
+			{ %>
 	<html:link action="neworganization">New Organization<img border="0" title="Add New" src="img/user1_add.png" width="15" "height="15" ></html:link>
+		<%} %>
 		</div>
 	</div>
 	 		
@@ -60,18 +75,36 @@
 		<display:column property="ifax" title="Fax" sortable="true" />
 		<display:column property="iurl" autolink="true" title="URL" sortable="true" />
 		<display:column media="html" title="Actions">
+		<%
+		if(authority.equalsIgnoreCase("User"))
+		{
+		if(((OrgFields)pageContext.getAttribute("row")).getIname().equals(session.getAttribute("orgname")))
+		{
+		%>
 		 <html:link href="editorgpage.do" paramProperty="id" paramId="id" paramName="row">Edit
-		  </html:link><!--  | this link working
+		  </html:link>
+		  <%}}
+		  else
+		  { %>
+		  <html:link href="editorgpage.do" paramProperty="id" paramId="id" paramName="row">Edit
+		  </html:link>
+		  <%} %>
+		  <!--  | this link working
 		 <html:link href="deleteorg.do" onclick="return sure();" paramProperty="id" paramId="id" paramName="row">Delete
 		 </html:link> -->
 		</display:column>
 		</display:table>
    </logic:notEmpty>
   	<logic:empty name="orgList" property="list">
-       <br><font color="#550003" size="2">Nothing found to display.foe adding new organization click on this link--></font>
-       <html:link action="neworganization">New Organization<img border="0" title="Add New" src="img/user1_add.png" width="15" "height="15" ></html:link>
+       <br><font color="#550003" size="2">Nothing found to display.for adding new organization click on this link--></font>
+       <%
+		if(authority.equalsIgnoreCase("Super Admin"))
+			{ %>
+	<html:link action="neworganization">New Organization<img border="0" title="Add New" src="img/user1_add.png" width="15" "height="15" ></html:link>
+		<%} %>
+       
        <br><br>
-       <html:button property="back" value="Back" onclick="history.back();" />
+       <html:button property="back" value="Back" styleClass="butStnd" onclick="history.back();" />
     </logic:empty>
   		
   </body>

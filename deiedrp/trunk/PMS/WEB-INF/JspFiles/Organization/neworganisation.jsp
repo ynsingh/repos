@@ -4,7 +4,7 @@
  
 <html> 
 	<head>
-	<link rel="stylesheet" href="<html:rewrite page='/style/style.css'/>" type="text/css"></link>
+	 <link rel="stylesheet" href="style/style.css" type="text/css"></link>
 	<!-- You have to include these two JavaScript files -->
         <script type='text/javascript' src='dwr/engine.js'></script>
         <script type='text/javascript' src='dwr/util.js'></script>
@@ -80,8 +80,8 @@
 			</table><br>
 			<table align="center">
 		<tr><td>
-			<html:submit value="Add"/></td><td><html:reset/></td>
-			<td><html:button property="back" value="Back" onclick="history.back();" /></td>
+			<html:submit value="Add" styleClass="butStnd"/></td><td><html:reset styleClass="butStnd"/></td>
+			<td><html:button property="back" value="Back" styleClass="butStnd" onclick="history.back();" /></td>
 			<td>
 			<input type="hidden" name="orgname" id="orgname" size="20" readonly="readonly"/>
 			<html:errors property="orgname"/>

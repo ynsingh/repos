@@ -33,7 +33,7 @@ public class AddNewRoleAction extends Action {
 		ActionForm form,
 		HttpServletRequest request,
 		HttpServletResponse response) {
-		NewRoleForm newroleform = (NewRoleForm) form;
+		RoleForm newroleform = (RoleForm) form;
 		HttpSession session=request.getSession();
 		//System.out.println("role name="+newroleform.getRolename()+"member="+newroleform.getAddmember()+", org="+newroleform.getAddorg());
 		Connection con=null;

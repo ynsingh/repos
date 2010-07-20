@@ -6,7 +6,7 @@
 <dwr>
   <allow>
     <create creator="new" javascript="DynamicList">
-      <param name="class" value="in.ac.dei.edrp.pms.task.DynamicList"/>
+      <param name="class" value="in.ac.dei.edrp.pms.viewer.DynamicList"/>
     </create>
     
   </allow>

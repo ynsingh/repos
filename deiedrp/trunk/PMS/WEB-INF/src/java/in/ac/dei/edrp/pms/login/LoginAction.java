@@ -33,6 +33,7 @@ import org.apache.log4j.Logger;
 /**
  * This Action class is related with login the user.
  * This class have only one method that is execute. 
+ * @author <a href="http://aniltiwaripms.blogspot.com" target="_blank">Anil Kumar Tiwari</a> 
  */
 public class LoginAction extends Action {
 	/*
@@ -96,12 +97,6 @@ public class LoginAction extends Action {
 		ResultSet rs=ps.executeQuery();
 		if(rs.next())
 		{
-			/*
-			 * Setting the attribute uid that can be used in whole application.
-			 * 
-			 * */
-			
-			//this.getServlet().getServletContext().setAttribute("uid",loginform.getUid().trim().toLowerCase());
 			session.setAttribute("uid", loginform.getUid().trim().toLowerCase());
 			if(rs.getString(1).equals("Super Admin"))				
 			{
@@ -117,10 +112,8 @@ public class LoginAction extends Action {
 			else
 			{
 				logger.info("invalid id Sample info message");
-		        logger.warn("Sample warn message");
-		        logger.error("Sample error message");
-		        logger.fatal("Sample fatal message");
-
+		        logger.error("invalid id and password");
+		        
 				ActionErrors errors = new ActionErrors();
 				ActionMessage error = new ActionMessage("error.login.invalid");
 				errors.add("login",error);
@@ -132,9 +125,7 @@ public class LoginAction extends Action {
 		catch(Exception e)
 		{
 			logger.info("invalid id Sample info message");
-	        logger.warn("Sample warn message");
-	        logger.error("Sample error message="+e);
-	        logger.fatal("Sample fatal message");
+			logger.error("invalid id and password "+e);
 
 			ActionErrors errors = new ActionErrors();
 			ActionMessage error = new ActionMessage("error.login.invalid");

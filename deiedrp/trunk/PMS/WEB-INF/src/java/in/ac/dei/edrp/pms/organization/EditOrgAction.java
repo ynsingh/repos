@@ -43,7 +43,7 @@ public class EditOrgAction extends Action {
 	 */ 
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) {
-		EditOrgForm editorgform = (EditOrgForm) form;// TODO Auto-generated method stub
+		OrgForm editorgform = (OrgForm) form;// TODO Auto-generated method stub
 		String forwardmsg="editorgfail";
 		Connection con=null;
 		try{

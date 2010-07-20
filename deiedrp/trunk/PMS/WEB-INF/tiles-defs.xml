@@ -5,7 +5,7 @@
 <!-- ================================================================= -->
 <!--@author Anil Kumar Tiwari mailto:aniltiwari08@gmail.com        -->
 <!-- ================================================================= -->
-    <tiles-definitions>
+	<tiles-definitions>
 	<!-- Base Tiles Definition -->
 	<definition name="base.definition" path="/Layout.jsp">
 	<put name="header" value="/WEB-INF/JspFiles/common/header.jsp" />
@@ -14,12 +14,24 @@
 	<put name="footer" value="/WEB-INF/JspFiles/common/footer.jsp" />
 	</definition>
 	
-	<!-- Exception Handler starts -->
-	<definition name="page.handler" extends="base.definition">
-	<put name="title" value="Exception Handler" />
-	<put name="body" value="/WEB-INF/JspFiles/ForError/ExceptionHandler.jsp" />
+	<!-- online help part starts -->
+	
+	<definition name="page.pmsHelpPage" extends="base.definition">
+	<put name="title" value="PMS Help Page" />
+	<put name="body" value="/Work Flow of PMS.htm" />
 	</definition>
-	<!-- Exception Handler ends -->
+	
+	<!-- online help part ends -->
+	
+	
+	<!-- mail configuration part starts -->
+	
+	<definition name="page.mailConfigPage" extends="base.definition">
+	<put name="title" value="Mail Configuration" />
+	<put name="body" value="/WEB-INF/JspFiles/admin_config/MailConfig.jsp" />
+	</definition>
+	
+	<!-- mail configuration part ends -->
 	
 	<!-- portal part starts -->
 	
@@ -218,32 +230,12 @@
 	<put name="body" value="/WEB-INF/JspFiles/ForError/chartfail.jsp" />
 	</definition>
 	
-	
-	
+		
 	<!-- Tiles Definition of Assigning Project -->
 	<definition name="page.assignproject" extends="base.definition">
 	<put name="title" value="Assign Project" />
 	<put name="body" value="/WEB-INF/JspFiles/member/AssignProject.jsp" />
 	</definition>
-	
-	<!-- Tiles Definition of Project Assigning fail page -->
-	<definition name="page.assignfail" extends="base.definition">
-	<put name="title" value="Project Assigning Failed" />
-	<put name="body" value="/WEB-INF/JspFiles/ForError/AssignFail.jsp" />
-	</definition>
-	
-	<!-- Tiles Definition of Project Assigning success page -->
-	<definition name="page.assignsuccess" extends="base.definition">
-	<put name="title" value="Project Assigning Success" />
-	<put name="body" value="/WEB-INF/JspFiles/ForError/AssignSuccess.jsp" />
-	</definition>
-	
-	<!-- Tiles Definition of Assigning Project Already -->
-	<definition name="page.alreadyAssigned" extends="base.definition">
-	<put name="title" value="Assign Project Already" />
-	<put name="body" value="/WEB-INF/JspFiles/ForError/alreadyAssignedProject.jsp" />
-	</definition>
-	
 	
 	<!-- Tiles Definition of New Task -->
 	<definition name="page.newtask" extends="base.definition">

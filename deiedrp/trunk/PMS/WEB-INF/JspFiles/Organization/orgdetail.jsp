@@ -73,8 +73,8 @@
 		</table>
 	<html:form action="/button">
     <br>
-  <html:submit property="back" value="Back to Search Page" style="margin-left: 150px;"/>
-  <html:button property="back" value="Back to Previous Page" onclick="history.back();" />
+  <html:submit property="back" value="Back to Search Page" styleClass="butStnd" style="margin-left: 150px;"/>
+  <html:button property="back" value="Back to Previous Page" styleClass="butStnd" onclick="history.back();" />
   </html:form>
   </body>
 </html>

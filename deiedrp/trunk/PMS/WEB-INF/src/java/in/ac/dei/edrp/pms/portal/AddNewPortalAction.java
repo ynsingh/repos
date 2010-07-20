@@ -33,7 +33,7 @@ public class AddNewPortalAction extends Action {
 		ActionForm form,
 		HttpServletRequest request,
 		HttpServletResponse response) {
-		NewPortalForm newportalform = (NewPortalForm) form;
+		PortalForm newportalform = (PortalForm) form;
 		HttpSession session=request.getSession();
 		Connection con=null;
 		String forwardmsg="portalfail";

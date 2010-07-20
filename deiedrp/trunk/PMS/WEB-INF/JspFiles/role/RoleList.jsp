@@ -12,6 +12,7 @@
      	
 	<link rel="stylesheet" href="style/Displaytagex.css" type="text/css"></link>
 	<link rel="stylesheet" href="style/dropdown.css" type="text/css"></link>
+	<link rel="stylesheet" href="style/style.css" type="text/css"></link>
   </head>
   <script language="JavaScript" type="text/javascript">
 	function fnrec()
@@ -91,7 +92,7 @@
    <br><font color="#550003" size="2">Nothing found to display.for adding new role click on this link--></font>
    <html:link action="newrole">New Role<img border="0" title="Edit" src="img/user1_add.png" width="15" "height="15" ></html:link>
    <br><br>
-    <html:button property="back" value="Back" onclick="history.back();" />
+    <html:button property="back" value="Back" styleClass="butStnd" onclick="history.back();" />
     </logic:empty>
   		
   </body>

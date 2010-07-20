@@ -24,7 +24,7 @@ public class ProjectForm extends ValidatorForm {
 	/*
 	 * Generated fields
 	 */
-	//private String prname;
+	private String prname;
 	private String pname; //For holding project name
 	private String scheduleStartDate; //For holding schedule start date of a project 
 	private String scheduleEndDate; //For holding schedule end date of a project
@@ -55,12 +55,12 @@ public class ProjectForm extends ValidatorForm {
 		this.scheduleStartDate=null;
 	}
 	
-//	public String getPrname() {
-//		return prname;
-//	}
-//	public void setPrname(String prname) {
-//		this.prname = prname;
-//	}
+	public String getPrname() {
+		return prname;
+	}
+	public void setPrname(String prname) {
+		this.prname = prname;
+	}
 /**The method getPname return the project name of a project */
 	public String getPname() {
 		return pname;

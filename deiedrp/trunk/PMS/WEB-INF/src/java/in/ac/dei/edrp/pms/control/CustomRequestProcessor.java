@@ -5,10 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-/**
- * It is used for preprocessing.
- * @author Anil Kumar Tiwari <b>mailto:</b>aniltiwari08@gmail.com
- */
+
 public class CustomRequestProcessor extends RequestProcessor{
 
 	public boolean processPreprocess(HttpServletRequest request,

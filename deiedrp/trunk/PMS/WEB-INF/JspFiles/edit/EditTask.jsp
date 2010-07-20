@@ -1,5 +1,4 @@
 <%@ page import="java.sql.*" language="java" pageEncoding="UTF-8"%>
-<%@ page errorPage="/jspException.do" %>
 <%@ page import="javax.sql.rowset.CachedRowSet" %>
 <%@ page import="in.ac.dei.edrp.pms.dataBaseConnection.MyDataSource;"%>
 
@@ -199,9 +198,9 @@
 			<tr><td></td></tr>
 			</table>
 			<table align="center">
-			<tr><td><html:submit value="Save Change" /></td>
-			<td><html:reset onclick="taskGenerate()"/></td>
-			<td><html:button property="back" value="Cancel" onclick="history.back();" /></td>
+			<tr><td><html:submit value="Save Change" styleClass="butStnd"/></td>
+			<td><html:reset styleClass="butStnd" onclick="taskGenerate()"/></td>
+			<td><html:button property="back" value="Cancel" styleClass="butStnd" onclick="history.back();" /></td>
 			</tr>
 			</table>
 		</html:form>

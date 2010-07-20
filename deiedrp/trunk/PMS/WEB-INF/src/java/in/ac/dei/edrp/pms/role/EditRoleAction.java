@@ -47,7 +47,7 @@ public class EditRoleAction extends Action {
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) {
 			
-		EditRoleForm editroleform = (EditRoleForm)form;
+		RoleForm editroleform = (RoleForm)form;
 		HttpSession session=request.getSession();
 		/*
 		 * The variable forwardmsg holds success or updateoperation.

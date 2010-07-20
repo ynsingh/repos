@@ -13,11 +13,13 @@ import javax.xml.parsers.*;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.*;
 import javax.xml.transform.stream.*;  
+
 import java.sql.*;
 
 /**
- * It is used for generating xml file and that file is used to generate gantt chart of project.
- * @author Anil Kumar Tiwari <b>mailto:</b>aniltiwari08@gmail.com
+ * This class is used for generating gant chart.
+ * @author <a href="http://aniltiwaripms.blogspot.com" target="_blank">Anil Kumar Tiwari</a> 
+ *
  */
 public class GanttWithXmlAction extends Action {
 	/*
@@ -66,8 +68,7 @@ public class GanttWithXmlAction extends Action {
 	    ResultSet rs_projectDetails=null;
 	    ResultSet rs_projectCompletion=null;
 	    BufferedOutputStream bw=null;
-	   
-	   // int flag=0;
+	  	  
 		//String uid=(String)session.getAttribute("uid");
 	    try
 	    {	    	

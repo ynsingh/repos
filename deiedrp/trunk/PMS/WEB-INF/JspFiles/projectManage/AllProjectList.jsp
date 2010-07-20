@@ -16,6 +16,7 @@
  	
 	<link rel="stylesheet" href="style/Displaytagex.css" type="text/css"></link>
 	<link rel="stylesheet" href="style/dropdown.css" type="text/css"></link>
+	<link rel="stylesheet" href="style/style.css" type="text/css"></link>
 	<!-- You have to include these two JavaScript files -->
         <script type='text/javascript' src='dwr/engine.js'></script>
         <script type='text/javascript' src='dwr/util.js'></script>
@@ -210,7 +211,7 @@
 	 </logic:notEmpty>
     <logic:empty name="projectList" property="list">
    <br><font color="#550003" size="2">No project will found in desired portal and organization.</font><br><br>
-    <html:button property="back" value="Back" onclick="history.back();" />
+    <html:button property="back" value="Back" styleClass="butStnd" onclick="history.back();" />
     </logic:empty>
   		
   </body>

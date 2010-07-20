@@ -95,7 +95,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			String uid=(String)session.getAttribute("uid");
 			//al.add(uid);
 			try{
-			ps=con.prepareStatement("select u.valid_key from user_in_org u"+
+			ps=con.prepareStatement("select distinct u.valid_key from user_in_org u"+
 			" where u.valid_user_id=? and u.valid_orgportal=?");
 			ps.setString(1,(String)session.getAttribute("uid"));
 			ps.setString(2,(String)session.getAttribute("validOrgInPortal"));
@@ -120,7 +120,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<html:option value="--Select--">--Select--</html:option>
 			<% 
 		try{
-			ps=con.prepareStatement("select p.project_name from project p,"+
+			ps=con.prepareStatement("select distinct p.project_name from project p,"+
 									"user_in_org u,validatetab v where p.enable=0 and "+
 									"u.valid_user_id=? and u.valid_orgportal=? "+
 					"and u.valid_key=v.valid_user_key and v.valid_project_code=p.project_code");
@@ -163,8 +163,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</td></tr>
 			</table>
 			<table align="center" style="padding-right: 400px">
-			<tr><td><html:submit value="Assign Task"/></td><td><html:reset onclick="clearData();"></html:reset></td>
-			<td><html:button property="back" value="Back" onclick="history.back();" /></td>
+			<tr><td><html:submit value="Assign Task" styleClass="butStnd"/></td>
+			<td><html:reset onclick="clearData();" styleClass="butStnd"></html:reset></td>
+			<td><html:button property="back" value="Back" styleClass="butStnd" onclick="history.back();" /></td>
 			</tr>
 			
 			</table>
