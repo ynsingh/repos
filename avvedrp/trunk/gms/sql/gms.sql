@@ -472,7 +472,7 @@ UPDATE investigator SET active_yes_no='Y';
 
 UPDATE grant_period SET active_yes_no='Y',default_yes_no='Y';
 
-/*new Sql added on 21 th June 2010 */
+/*new Sql added on 21 th July 2010 */
 
 
 alter table `projects` drop `principal_investigator_name`;
