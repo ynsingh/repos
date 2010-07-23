@@ -314,7 +314,7 @@ public class UserManagement
 						/**
 						* Update last login, user quota  and create date field of turbine user
 						*/
-						String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"InstituteAdmin.properties";
+						String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
 				                String SpacefPrp=AdminProperties.getValue(path,"brihaspati.user.quota.value");
 				                long UQuota=new Long(SpacefPrp).longValue();
 
@@ -323,7 +323,7 @@ public class UserManagement
                                                 crit.add(org.iitk.brihaspati.om.TurbineUserPeer.USER_ID,u1);
                                                 crit.add(org.iitk.brihaspati.om.TurbineUserPeer.CREATED,date);
                                                 crit.add(org.iitk.brihaspati.om.TurbineUserPeer.LAST_LOGIN,date);
-                                                crit.add(org.iitk.brihaspati.om.TurbineUserPeer.QUOTA,UQuota);
+                                                //crit.add(org.iitk.brihaspati.om.TurbineUserPeer.QUOTA,UQuota);
                                                 org.iitk.brihaspati.om.TurbineUserPeer.doUpdate(crit);
 						/**
                                  		* The code below does not executes if the user already exists in 
@@ -504,14 +504,20 @@ public class UserManagement
 			ErrorDumpUtil.ErrorLog("DeleteInstructor======"+element);
                         email=element.getEmail();
                         String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
+			ErrorDumpUtil.ErrorLog("fileName at line 507===="+fileName);
                         String rmsg=CourseManagement.RemoveCourse(Gname,"ByCourseMgmt",LangFile);
+			ErrorDumpUtil.ErrorLog("message in DeleteInstructor method=="+rmsg);
 			//////////////////////////////////////////////////////////////////////////////
 			Properties pr =MailNotification.uploadingPropertiesFile(fileName);
+			ErrorDumpUtil.ErrorLog("pr at line 512=="+pr);
 			String subj = MailNotification.subjectFormate(subject, "", pr );
+			ErrorDumpUtil.ErrorLog("subject at line 514=="+subj);
                         messageFormate = MailNotification.getMessage(subject, Gname, "", "", "", server_name, srvrPort,pr);
+			ErrorDumpUtil.ErrorLog("messageFormate at line 516=="+messageFormate);
 			//ErrorDumpUtil.ErrorLog("DeleteInstructor----------- subject="+subj+"		messageFormate="+messageFormate);
                         //String Mail_msg=MailNotification.sendMail(subject,email,"","","","",fileName,server_name,srvrPort,LangFile);
                         String Mail_msg=MailNotification.sendMail(messageFormate, email, subj, "", LangFile);
+			ErrorDumpUtil.ErrorLog("mail msge at line 520=="+Mail_msg);
 			/////////////////////////////////////////////////////////////////////////////////
                         Message=rmsg+" "+Mail_msg;
 
@@ -764,12 +770,15 @@ public class UserManagement
                         * the parameters passed
                         */
                         User user=TurbineSecurity.getUser(userName);
+			ErrorDumpUtil.ErrorLog("user in removeUserProfile= "+user);
                         Group user_group=TurbineSecurity.getGroupByName(group_name);
+			ErrorDumpUtil.ErrorLog("usergroup at line 775 in removeUserProfile= "+user);
 			int uid=UserUtil.getUID(userName);
 			int gid=GroupUtil.getGID(group_name);
 			int role=getRoleinCourse(uid,gid);
 			String roleName=UserGroupRoleUtil.getRoleName(role);
                         Role user_role=TurbineSecurity.getRoleByName(roleName);
+			ErrorDumpUtil.ErrorLog("user_role at line 781 in removeUserProfile= "+user);
                         Criteria crit=new Criteria();
 
                         /**
@@ -802,6 +811,7 @@ public class UserManagement
                                        	crit.add(TurbineUserGroupRolePeer.USER_ID,user_id);
 					crit.addNotIn(TurbineUserGroupRolePeer.GROUP_ID,i);
 					List check=TurbineUserGroupRolePeer.doSelect(crit);
+					ErrorDumpUtil.ErrorLog("lst from TurbineUserGroupRolePeer in rmvusrprfle==="+check);
 					if(check.size()==0){
                                                	/**
                                                	* Remove the login details for the user
@@ -822,6 +832,7 @@ public class UserManagement
                                                	*/
                                       		TurbineSecurity.removeUser(user);
                                                	tool.deleteUser(userName);
+						ErrorDumpUtil.ErrorLog("testing after tooldeletion=======");	
                                                	/**
                        				* Delete the repository from the server for
                        				* this User

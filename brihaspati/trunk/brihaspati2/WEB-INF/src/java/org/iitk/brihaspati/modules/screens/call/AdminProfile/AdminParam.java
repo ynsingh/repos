@@ -60,10 +60,10 @@ public class AdminParam extends SecureScreen{
 	public void doBuildTemplate(RunData data, Context context){
 		User user = data.getUser();
 		String path="";	
-		if((user.getName()).equals("admin"))
+		//if((user.getName()).equals("admin"))
 			path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
-		else
-			path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"InstituteAdmin.properties";
+		//else
+		//	path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"InstituteAdmin.properties";
 		String LangFile=data.getUser().getTemp("LangFile").toString();
 		context.put("tdcolor",data.getParameters().getString("count",""));
 		try{

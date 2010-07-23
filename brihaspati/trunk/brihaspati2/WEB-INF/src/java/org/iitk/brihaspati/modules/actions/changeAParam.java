@@ -102,10 +102,10 @@ public class changeAParam extends SecureAction{
 		 * @see AdminProperties in utils
 		 */
 		String path="";	
-		if((user.getName()).equals("admin"))
+		//if((user.getName()).equals("admin"))
 		path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
-		else
-		path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"InstituteAdmin.properties";
+		//else
+		//path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"InstituteAdmin.properties";
 		StringUtil S = new StringUtil();
 		String prof_update=null;
 		if (S.checkString(AFName)==-1 && S.checkString(ALName)==-1){

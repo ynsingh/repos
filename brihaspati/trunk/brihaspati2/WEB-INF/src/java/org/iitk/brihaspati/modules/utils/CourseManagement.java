@@ -334,6 +334,7 @@ public class CourseManagement
                         {
 
                                 String GName=((Courses)v.get(i)).getGroupName();
+				ErrorDumpUtil.ErrorLog("GName in crsManagement=="+GName);	
                                 String courseName=((Courses)v.get(i)).getCname();
                                 String dept=((Courses)v.get(i)).getDept();
                                 String gAlias=((Courses)v.get(i)).getGroupAlias();
@@ -348,7 +349,17 @@ public class CourseManagement
                                 {
                                         int index=gAlias.length();
                                         String loginName=groupName.substring(index);
-                                        int UId=UserUtil.getUID(loginName);
+					ErrorDumpUtil.ErrorLog("loginNamein old method====="+loginName);
+					StringTokenizer mdloginName=new StringTokenizer(loginName,"_");
+                                                String oldloginName="";
+                                                String InstId="";
+                                                while(mdloginName.hasMoreTokens())
+                                                {
+                                                        oldloginName=mdloginName.nextToken();
+                                                        InstId=mdloginName.nextToken();
+                                                }
+					int UId=UserUtil.getUID(oldloginName);
+                                        //int UId=UserUtil.getUID(loginName);
                                         String uID=Integer.toString(UId);
                                         List userDetails=UserManagement.getUserDetail(uID);
                                         TurbineUser element=(TurbineUser)userDetails.get(0);
@@ -432,12 +443,14 @@ public class CourseManagement
 		String msg="";
 		try{
 			int gid=GroupUtil.getGID(gName);
+			ErrorDumpUtil.ErrorLog("gid in crsmgmt in remove course mthd="+gid);	
 			boolean check_active=CheckcourseIsActive(gid);
 			if(check_active!=false || fromPath.equals("admin"))
 			{
 			   	if(fromPath.equals("ByCourseMgmt")|| fromPath.equals("admin"))
 				{
 					Vector All_User=UserGroupRoleUtil.getUID(gid);
+					ErrorDumpUtil.ErrorLog("all user at line 453="+All_User);
 					if(All_User.size()!=0)
 					{
 						String userName="";
@@ -445,8 +458,10 @@ public class CourseManagement
 						{
 						int uId=Integer.parseInt((String)All_User.get(i));
 						userName=UserUtil.getLoginName(uId);
+						ErrorDumpUtil.ErrorLog("userName at line 461=="+userName);
 			   			UserManagement umt=new UserManagement();
 						msg=umt.removeUserProfile(userName,gName,file);
+						ErrorDumpUtil.ErrorLog("msg at line 464=="+msg);
 						}
 					}
 				}

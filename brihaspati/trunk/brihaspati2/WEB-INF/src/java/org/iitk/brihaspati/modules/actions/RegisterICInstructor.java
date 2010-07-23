@@ -81,18 +81,13 @@ public class RegisterICInstructor extends SecureAction_Institute_Admin
 		 		String description=pp.getString("DESCRIPTION","");
 		 		String uname=pp.getString("UNAME");
 		 		String passwd=pp.getString("PASSWD","");
-		 		if(passwd.equals(""))
-			 	passwd=uname;
 		 		String fname=pp.getString("FNAME","");
 		 		String lname=pp.getString("LNAME","");
 		 		String email=pp.getString("EMAIL","");
 		 		String serverName=data.getServerName();
                  		int srvrPort=data.getServerPort();
                  		String serverPort=Integer.toString(srvrPort);
-				ErrorDumpUtil.ErrorLog("sport at line 92="+serverPort);
-		 		//String instId=pp.getString("instituteId","");
 				String instId=(data.getUser().getTemp("Institute_id")).toString();
-				ErrorDumpUtil.ErrorLog("instId at line 94="+instId);
 				int instituteId=Integer.parseInt(instId);
 				Criteria crit=new Criteria();
 				crit.add(InstituteAdminRegistrationPeer.INSTITUTE_ID,instituteId);
@@ -102,11 +97,12 @@ public class RegisterICInstructor extends SecureAction_Institute_Admin
 				InstituteAdminRegistration iaregistration=(InstituteAdminRegistration)lst.get(i);
 				domainname=iaregistration.getInstituteDomain().toString();
 				}
-		 		//String domainname=pp.getString("domainname","");
 				if(!(uname.contains("@"))){
 					uname=uname+"@"+domainname;
 					ErrorDumpUtil.ErrorLog("uname====="+uname);
 				}
+		 		if(passwd.equals(""))
+			 	passwd=uname;
 		 		/**
 		  		* Register a new course with instructor
 				* Here we give 100MB quota for course, once he is login in the system and immediate his quota is updated
