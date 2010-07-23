@@ -137,7 +137,7 @@ public class CourseManagement
 					/**
 					* Get the course default quota which is set by administrator
 					*/
-					String pathq=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"InstituteAdmin.properties";
+					String pathq=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
                                         String SpacefPrp=AdminProperties.getValue(pathq,"brihaspati.admin.quota.value");
                                         long cquota=new Long(SpacefPrp).longValue();
 	
