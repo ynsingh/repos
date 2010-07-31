@@ -64,7 +64,6 @@ import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
-import org.iitk.brihaspati.modules.utils.UpdateInfoMail;
 import org.iitk.brihaspati.modules.utils.EncryptionUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.apache.turbine.services.session.TurbineSession;
@@ -110,7 +109,6 @@ public class myLogin extends VelocityAction{
                 String flag=data.getParameters().getString("flag");
                 //String LangFile =data.getParameters().getString("Langfile","");
                 String lang=data.getParameters().getString("lang","");
-		UpdateInfoMail.checknWriteXml();
 
 		String username = data.getParameters().getString("username", "" );
 		if(StringUtil.checkString(username) != -1) username="";

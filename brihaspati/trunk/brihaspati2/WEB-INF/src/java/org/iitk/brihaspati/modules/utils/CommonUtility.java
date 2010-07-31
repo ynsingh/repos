@@ -198,6 +198,7 @@ public class CommonUtility{
 				boolean CI=CreateIndex();
 				boolean OT=optimizeTables();
 				boolean ADB=autoDeletebackup();
+				UpdateInfoMail.checknWriteXml();
                         }//end of if 2 loop
 
 		}//end of if 1 loop
