@@ -19,9 +19,9 @@ $!data.getMessage()
                 <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cnm</a> |
                 <a href=$link.setPage("call,Quiz_Mgmt,Quiz_Start.vm")>$brih_quiz </a> | 
 		#if($quizinfo == "QuizDetail")
-			$brih_schedule $brih_update
+			$brih_schedule #if($lang =="hindi") $brih_Of1 #end $brih_update
 		#else
-			 $brih_quiz $brih_schedule
+			 $brih_quiz #if($lang =="hindi") $brih_Of1 #end $brih_schedule
 		#end
                 </td>
         </tr>
@@ -55,28 +55,28 @@ $!data.getMessage()
   <table align=left bgcolor="$ui.tableColor" width=100% >
         <tr>
                 <td colspan=4 >
-			<b> $brih_quiz $brih_schedule </b>			                
+			<b> $brih_quiz #if($lang =="hindi") $brih_Of1 #end $brih_schedule </b>			                
                 </td>
         </tr>
 	#if($quizinfo == "QuizDetail")
 	<tr bgcolor="$ui.menuColor">	
 		<td colspan=2>
-		<b> $brih_quiz $brih_ID = </b> <i> $!qid </i>&nbsp;&nbsp; <b> $brih_quiz $brih_title=  </b> <i> $title  </i>
+		<b> $brih_quiz #if($lang =="hindi") $brih_Of1 #end $brih_ID = </b> <i> $!qid </i>&nbsp;&nbsp; <b> $brih_quiz $brih_title=  </b> <i> $title  </i>
 		</td>
 	</tr>	
 	#else
 	<tr bgcolor="$ui.menuColor">
-		<td><b> $brih_quiz $brih_ID <font color=RED> *</font></b> </td>
+		<td><b> $brih_quiz #if($lang =="hindi") $brih_Of1 #end $brih_ID <font color=RED> *</font></b> </td>
 		<td> <input type="text" size=8 name="qid" value="$!qid" "readonly"></td>
 	</tr>
 	<tr>
-		<td><b> $brih_quiz $brih_title <font color=RED> *</font></b> </td>
+		<td><b> $brih_quiz #if($lang =="hindi") $brih_Of1 #end $brih_title <font color=RED> *</font></b> </td>
                 <td><input type="text" size=8 name="title" value=""></td>
 	</tr>
 	#end
         <tr bgcolor="$ui.menuColor">
                 <td>
-                	<b> $brih_quiz $brih_Da </b>
+                	<b> $brih_quiz #if($lang =="hindi") $brih_Of #end $brih_Da </b>
             	</td>
 		<td>
                   <select name="Start_year">

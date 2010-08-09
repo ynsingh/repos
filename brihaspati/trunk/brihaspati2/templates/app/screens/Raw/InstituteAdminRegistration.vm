@@ -12,7 +12,8 @@ $page.setTitle("Login Page | Institute Admin Registration ")
 	<table bgcolor="$ui.menuColor" width=100%>
 		<tr><td>
 			##<a href=$link.setPage("BrihaspatiLogin.vm")> $brih_login $WikiPage </a>| Institute Admin Registration   
-			<a href=$link.setPage("BrihaspatiLogin.vm")> $brih_login $WikiPage </a>| $RemoteInstitute $brih_ad $brih_reg   
+			##<a href=$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang",$lang)> $brih_login $WikiPage </a>| $RemoteInstitute $brih_ad $brih_reg   
+			<a href=$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang",$lang)> $brih_login $WikiPage </a>| #if($lang == "hindi") $brih_Institute $brih_Of2 #else $RemoteInstitute #end $brih_admin #if($lang == "hindi") $brih_Of1 #end $brih_reg   
 		</td></tr>
 	</table>
 
@@ -65,23 +66,24 @@ $page.setTitle("Login Page | Institute Admin Registration ")
 
                         </tr>
 			<tr>
-		           #formCell ("$brih_ad $brih_first $brih_name<font color=red>*</font>" "IADMINFNAME" "")
+		           #formCell ("$brih_ad $brih_Of1 $brih_first $brih_name<font color=red>*</font>" "IADMINFNAME" "")
                         </tr>
-                        <tr bgcolor="$ui.menuColor">                                                                      #formCell ("$brih_ad $brih_last $brih_name<font color=red>*</font>" "IADMINLNAME" "")
+                        <tr bgcolor="$ui.menuColor">
+				#formCell ("$brih_ad $brih_Of1 $brih_last $brih_name<font color=red>*</font>" "IADMINLNAME" "")
                         </tr>
 
                         <tr>
-                                #formCell ("$brih_ad $brih_email <font color=red>*</font>" "IADMINEMAIL" "")
+                                #formCell ("$brih_ad $brih_Of1 $brih_email <font color=red>*</font>" "IADMINEMAIL" "")
 
                         </tr>
-			<tr bgcolor="$ui.menuColor">                                                                      #formCell ("$brih_ad $Inst_designation<font color=red>*</font>" "IADMINDESIGNATION" "")
+			<tr bgcolor="$ui.menuColor"> #formCell ("$brih_ad $brih_Of1 $Inst_designation<font color=red>*</font>" "IADMINDESIGNATION" "")
                         </tr>
                         <tr>
-                                #formCell ("$brih_ad $brih_usr$brih_name <font color=red>*</font>" "IADMINUSERNAME" "")
+                                #formCell ("$brih_ad $brih_Of1 $brih_usr $brih_name <font color=red>*</font>" "IADMINUSERNAME" "")
 
                         </tr>
-			<tr bgcolor="$ui.menuColor">                                                                      #formPasswordCell ("$brih_ad $brih_pwd<font color=red>*</font>" "IADMINPASSWORD" "")
-                        </tr>
+			<tr bgcolor="$ui.menuColor"> #formPasswordCell ("$brih_ad $brih_Of1 $brih_pwd<font color=red>*</font>" "IADMINPASSWORD" "")
+			</tr>
 			<tr>
         			<td colspan=2 align="left">
 				<input type="hidden" name="actionName">

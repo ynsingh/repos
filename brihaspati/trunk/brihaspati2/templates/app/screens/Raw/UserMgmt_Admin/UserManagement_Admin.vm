@@ -19,7 +19,7 @@ $!data.getMessage()
 	#if($mode=="")
 	$brih_a_usr
 	#elseif($mode=="sclist")
-		$brih_student $brih_course $brih_list 
+		$brih_student #if($lang == "hindi") $brih_Of #end $brih_course $brih_list 
 		<td align=right>
 		#if($mode1=="list")
 			#if( $total_size!=0 )
@@ -36,14 +36,14 @@ $!data.getMessage()
 		#end
 		</td>		
 	#elseif($mode=="AddMUser")
-	$brih_add $brih_multiple1 $brih_usr
+		$brih_add $brih_multiple1 $brih_usr
 	#elseif($mode=="UPhoto")
-	$brih_upload $brih_photo	 
+		#if($lang == "hindi") $brih_photo $brih_upload #else $brih_upload $brih_photo #end
 	#else
 		#if($role=="instructor")
-			$brih_delete $brih_ins
+			#if($lang == "hindi") $brih_ins $brih_delete #else $brih_delete $brih_ins #end
 		#else
-			$brih_delete $brih_student
+			#if($lang == "hindi") $brih_student $brih_delete #else $brih_delete $brih_student #end
 		#end
 	#end
 </td></tr>
@@ -59,19 +59,19 @@ $!data.getMessage()
         #elseif($tdcolor == "2")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,UserMgmt_Admin,UserManagement_Admin.vm").addPathInfo("mode","sclist").addPathInfo("count","2") style=text-decoration:none>$brih_student $brih_course $brih_list</a></td>
+        <a href=$link.setPage("call,UserMgmt_Admin,UserManagement_Admin.vm").addPathInfo("mode","sclist").addPathInfo("count","2") style=text-decoration:none>$brih_student #if($lang == "hindi") $brih_Of #end $brih_course $brih_list</a></td>
         #if($tdcolor != "3")
         <td>
         #elseif($tdcolor == "3")
         <td bgcolor="#AFDCEC">
         #end
-	<a href=$link.setPage("call,UserMgmt_Admin,UserManagement_Admin.vm").addPathInfo("mode","userdelete").addPathInfo("role","instructor").addPathInfo("count","3") style=text-decoration:none>$brih_delete $brih_Instructor</a></td>
+	<a href=$link.setPage("call,UserMgmt_Admin,UserManagement_Admin.vm").addPathInfo("mode","userdelete").addPathInfo("role","instructor").addPathInfo("count","3") style=text-decoration:none> #if($lang == "hindi") $brih_ins $brih_delete #else $brih_delete $brih_ins #end </a></td>
         #if($tdcolor != "4")
         <td>
         #elseif($tdcolor == "4")
         <td bgcolor="#AFDCEC">
         #end
-	<a href=$link.setPage("call,UserMgmt_Admin,UserManagement_Admin.vm").addPathInfo("mode","userdelete").addPathInfo("role","student").addPathInfo("count","4") style=text-decoration:none>$brih_delete $brih_student</a></td>
+	<a href=$link.setPage("call,UserMgmt_Admin,UserManagement_Admin.vm").addPathInfo("mode","userdelete").addPathInfo("role","student").addPathInfo("count","4") style=text-decoration:none> #if($lang == "hindi") $brih_student $brih_delete #else $brih_delete $brih_student #end </a></td>
         #if($tdcolor != "5")
         <td>
         #elseif($tdcolor == "5")
@@ -83,7 +83,7 @@ $!data.getMessage()
         #elseif($tdcolor == "6")
         <td bgcolor="#AFDCEC">
         #end
-	<a href=$link.setPage("call,UserMgmt_Admin,UserManagement_Admin.vm").addPathInfo("mode","UPhoto").addPathInfo("count","6") style=text-decoration:none>$brih_upload $brih_photo</a></td>
+	<a href=$link.setPage("call,UserMgmt_Admin,UserManagement_Admin.vm").addPathInfo("mode","UPhoto").addPathInfo("count","6") style=text-decoration:none> #if($lang == "hindi") $brih_photo $brih_upload #else $brih_upload $brih_photo #end </a></td>
 	#if($tdcolor != "7")
         <td>
         #elseif($tdcolor == "7")
@@ -97,7 +97,9 @@ $!data.getMessage()
 <table width=100% align=left bgcolor="$ui.tableColor">
 	<tr bgcolor="$ui.menuColor"><td colspan=7><b>$brih_entUsrDetail</b></td></tr>
 	<tr>
-        #formCell ("$brih_usr $brih_name <font color=red>*</font>" "UNAME" "")
+        ###formCell ("$brih_usr $brih_name <font color=red>*</font>" "UNAME" "")
+	<td> $brih_usr #if($lang == "hindi") $brih_Of1 #end $brih_name <font color=red>*</font> </td>
+	<td> <input type="text" name="UNAME" value="" > </td> 
       </tr>
       <tr bgcolor="$ui.menuColor">
         #formPasswordCell ("$brih_pwd" "PASSWD" "")
@@ -161,7 +163,7 @@ $!data.getMessage()
                 <td width=20% align=left>$brih_searchBy</td>
                 <td colspan=8>
                 <select name="queryList">
-                <option value="User Name">$brih_usr $brih_name</option>
+                <option value="User Name">$brih_usr #if($lang == "hindi") $brih_Of1 #end $brih_name</option>
                 <option value="First Name">$brih_first $brih_name</option>
                 <option value="Last Name">$brih_last $brih_name</option>
                 <option value="Email">$brih_email</option>
@@ -182,7 +184,11 @@ $!data.getMessage()
 #if($total_size != 0)
 #if($mode1 == "list")
 <tr bgcolor="$ui.menuColor">
-#set ( $headings = ["$brih_login $brih_name","$brih_student $brih_name","$brih_email"," ","","","","",""] )
+#if($lang == "hindi") 
+	#set ( $headings = ["$brih_login $brih_name","$brih_student $brih_Of1 $brih_name","$brih_email"," ","","","","",""] )
+#else
+	#set ( $headings = ["$brih_login $brih_name","$brih_student $brih_name","$brih_email"," ","","","","",""] )
+#end
         #foreach ($heading in $headings)
                 <td><font size=3><b>$heading</b></font></td>
         #end
@@ -246,7 +252,7 @@ $!data.getMessage()
                         #if( $count == $count2 )
                         <tr bgcolor="$ui.menuColor">
                         <td align=center>
-                                <font face="$ui.sansSerifFonts">$brih_usr $brih_name <font color="brown">"$entry"</font></font>
+                                <font face="$ui.sansSerifFonts">$brih_usr #if($lang =="hindi") $brih_Of1 #end $brih_name <font color="brown">"$entry"</font></font>
                         </td>
                         <td align=center>
                                 <font
@@ -401,7 +407,8 @@ face="$ui.sansSerifFonts">$type</font>
 #foreach( $e in $Msg )
         <tr bgcolor="$ui.menuColor">
         <td align=center>
-        <font face="$ui.sansSerifFonts">Entry <font color="brown">"$e.getErr_User()"</font>
+        ##<font face="$ui.sansSerifFonts">Entry <font color="brown">"$e.getErr_User()"</font>
+        <font face="$ui.sansSerifFonts">$brih_entry <font color="brown">"$e.getErr_User()"</font>
         </font>
         </td>
         <td align=center>
@@ -457,7 +464,11 @@ face="$ui.sansSerifFonts">$type</font>
 <td align="left">
 #if($status=="notempty")
 
- #set($headings = ["$brih_course $brih_ID","$brih_usr $brih_name","$brih_first $brih_name","$brih_last $brih_name"] )
+#if($lang =="hindi")
+	#set($headings = ["$brih_course $brih_Of1 $brih_ID","$brih_usr $brih_Of1 $brih_name","$brih_first $brih_name","$brih_last $brih_name"] )
+#else
+	#set($headings = ["$brih_course $brih_ID","$brih_usr $brih_name","$brih_first $brih_name","$brih_last $brih_name"] )
+#end
 <table width=100% align=left bgcolor="$ui.tableColor">
         <tr>
                 <td align=left>
@@ -533,7 +544,7 @@ face="$ui.sansSerifFonts">$type</font>
 #foreach( $e in $error_user )
         <tr bgcolor="$ui.menuColor">
         <td align=center>
-        <font face="$ui.sansSerifFonts">$brih_usr $brih_name <font color="brown">"$e.getErr_User()"</font>
+        <font face="$ui.sansSerifFonts">$brih_usr #if($lang == "hindi") $brih_Of1 #end $brih_name <font color="brown">"$e.getErr_User()"</font>
         </font>
         </td>
         <td align=center>

@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call;
 /*
  * @(#)IndexHome.java	
  *
- *  Copyright (c) 2004-2006 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2004-2006, 2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -52,6 +52,7 @@ import org.apache.turbine.services.servlet.TurbineServlet;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
+import org.iitk.brihaspati.modules.utils.CourseUtil;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.CommonUtility;//
 import org.iitk.brihaspati.modules.utils.StudentInstructorMAP;
@@ -67,6 +68,8 @@ import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
  * @author <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kuamr Trivedi</a>
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kuamr Singh</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+ * @ modified date: 26-07-2010, 06-08-2010
  */
 
 public class IndexHome extends SecureScreen{
@@ -128,14 +131,26 @@ public class IndexHome extends SecureScreen{
 				user.setTemp("confParam","10");
 			}
 			// This is check for set temp variables
-			user.setTemp("course_name","");
-                        user.setTemp("course_id","");
+			//user.setTemp("course_name","");
+                        //user.setTemp("course_id","");
 			user.setTemp("role",Role);
+
+				/**
+				 * get groupName according to user id & role id
+				 * set course name for whole session in temporary variable according to group name
+				 * set  group name for whole session in temporary variable according to group name
+				 * if { there is any new message it indicate new message }
+				 */
 
                         Vector unread_inst=new Vector();
                         Vector unread_stud=new Vector();
+			String groupName = "";
                         if(Role.equals("instructor"))
 			{
+				groupName=GroupUtil.getGroupName(u_id,2);
+				user.setTemp("course_name",CourseUtil.getCourseName(groupName));
+                        	user.setTemp("course_id",groupName);
+				
 				Vector course_inst=StudentInstructorMAP.getIMAP(u_id);
                         	context.put("inst",course_inst);
 				//Unread Notices
@@ -144,6 +159,11 @@ public class IndexHome extends SecureScreen{
 			}
                         else if(Role.equals("student"))
 			{
+				/////////////////////////////////
+				groupName=GroupUtil.getGroupName(u_id,3);
+				user.setTemp("course_name",CourseUtil.getCourseName(groupName));
+                        	user.setTemp("course_id",groupName);
+				//////////////////////////////////////
 				Vector course_stud=StudentInstructorMAP.getSMAP(u_id);
                         	context.put("stud",course_stud);
 				//Unread Notices

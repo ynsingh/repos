@@ -242,7 +242,7 @@ $page.setBgColor($ui.bgcolor)
 </b></td></tr> ## 6, 5
 <tr><td colspan=2><b>
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
-<a href=$link.setPage("InstituteAdminRegistration.vm").addPathInfo("lang",$lang)> $RemoteInstitute $brih_admin $brih_reg </a>
+<a href=$link.setPage("InstituteAdminRegistration.vm").addPathInfo("lang",$lang)> #if($lang == "hindi") $brih_Institute $brih_Of2 #else $RemoteInstitute #end $brih_admin #if($lang == "hindi") $brih_Of1 #end $brih_reg </a>
 </b></td></tr>
 </table> ## 4
 </td></tr> ## 3, 2

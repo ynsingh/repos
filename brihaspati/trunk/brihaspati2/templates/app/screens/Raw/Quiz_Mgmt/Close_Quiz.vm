@@ -40,7 +40,7 @@ $!data.getMessage()
 	<table bgcolor="$ui.tableColor" width=100% >
         <tr bgcolor="$ui.menuColor" >
         	<td colspan=4>
-        		<b>$brih_quiz $brih_name </b> <i> $!quiztitle  </i>
+        		<b>$brih_quiz #if($lang == "hindi") $brih_Of1 #end $brih_name </b> &nbsp;&nbsp<i> $!quiztitle  </i>
                 </td>
         </tr>
 	#if($questionscreations != "questionnotcreated")

@@ -141,6 +141,7 @@ $!data.getMessage()
 </tr>
 </table>
 #end
+#set($boolian="")
 <form name="frm" action="$link.setPage("call,News,News_Edit.vm").setAction("NewsAction")">
 <table width=100%  bgcolor="$ui.tableColor">
 #*<tr><td>
@@ -151,8 +152,15 @@ $brih_course #if($lang=="hindi") $brih_Of2 #end $brih_news
 #end
 </td></tr>*#
 #if($mode!="NoNews")
-              #foreach ($entry in $entries)
-		<tr>
+	#foreach ($entry in $entries)
+		##<tr>
+		#if($velocityCount%2==0)
+                	<tr bgcolor="$ui.tableColor">
+                	#set($boolian ="true")
+		#else
+                	<tr bgcolor="$ui.menuColor">
+                        #set($boolian ="false")
+		#end
 		#*if($status=="fromCourse")
 			#if($velocityCount%2==0)
                		<tr bgcolor="$ui.tableColor">
@@ -193,23 +201,32 @@ $brih_course #if($lang=="hindi") $brih_Of2 #end $brih_news
 		#end
 		</tr>
 #else
-<tr><td colspan=3>$brih_newsNo</td></tr>
+<tr bgcolor="$ui.menuColor"><td colspan=3>$brih_newsNo</td></tr>
 #end
-		<tr bgcolor="$ui.menuColor">
-		<td>
-		#if($mode!="NoNews")
-		<input type="button" name="eventSubmit_doDelete" Value=$brih_delete onClick="checkField(document.frm,this);">
-		<input type="hidden" name="actionName">
-		<input type="hidden" name="deleteFileNames">
-		<input type="hidden" name="status" value=$status>
-		#end
-		</td>
-		#set($lang = $data.getUser().getTemp( "lang" ).toString())
-		#if($lang == "hindi")
-			<td colspan=2><b><a href=$link.setPage("call,News,News_Add.vm").addPathInfo("status",$status).addPathInfo("count",$tdcolor)> $brih_news $brih_add</a></b></td>
-		#else
+##<tr bgcolor="$ui.menuColor">
+##<td>
+#if($mode!="NoNews")
+	#if($boolian == "true")
+        	<tr bgcolor="$ui.menuColor">
+	#else
+        	<tr>
+	#end
+	<td>
+	<input type="button" name="eventSubmit_doDelete" Value=$brih_delete onClick="checkField(document.frm,this);">
+	<input type="hidden" name="actionName">
+	<input type="hidden" name="deleteFileNames">
+	<input type="hidden" name="status" value=$status>
+	</td>
+#else
+	<tr>
+
+#end
+	#set($lang = $data.getUser().getTemp( "lang" ).toString())
+	#if($lang == "hindi")
+		<td colspan=2><b><a href=$link.setPage("call,News,News_Add.vm").addPathInfo("status",$status).addPathInfo("count",$tdcolor)> $brih_news $brih_add</a></b></td>
+	#else
 		<td colspan=2><b><a href=$link.setPage("call,News,News_Add.vm").addPathInfo("status",$status).addPathInfo("count",$tdcolor)>$brih_add $brih_news</a></b></td>
-		#end
+	#end
 </tr>
 </td>
 ##</table>

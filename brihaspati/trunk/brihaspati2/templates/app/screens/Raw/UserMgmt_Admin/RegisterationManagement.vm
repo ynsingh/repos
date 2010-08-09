@@ -20,7 +20,7 @@ $!data.getMessage()
      	<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home </a> |
 	<a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_reg $brih_mgmt</a> |
 	#if($mode=="")
-	$brih_course $brih_reg
+	$brih_course #if($lang == "hindi") $brih_Of1 #end $brih_reg
 	#elseif($mode=="MCRegister")
 	$brih_multi_usr2
 	#else		
@@ -71,13 +71,13 @@ $!data.getMessage()
 	#elseif($tdcolor == "1")
         <td width=33% bgcolor="#AFDCEC">
 	#end
-        <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_reg1 $brih_course</a> </td> 
+        <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang == "hindi") $brih_course $brih_Of1 $brih_reg1 #else $brih_reg1 $brih_course #end </a> </td> 
 	#if($tdcolor != "2")
         <td width=33%>
 	#elseif($tdcolor == "2")
         <td width=33% bgcolor="#AFDCEC">
 	#end
-        <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("mode","MCRegister").addPathInfo("count","2") style=text-decoration:none>$brih_reg1 $brih_multiple1 $brih_course</a></td> 
+        <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("mode","MCRegister").addPathInfo("count","2") style=text-decoration:none>  #if($lang == "hindi") $brih_multiple1 $brih_course $brih_Of1 $brih_reg1 #else $brih_reg1 $brih_multiple1 $brih_course #end </a></td> 
 	#if($tdcolor != "3")
         <td width=33%>
 	#elseif($tdcolor == "3")
@@ -94,10 +94,14 @@ $!data.getMessage()
   ##<div align="left">
     <table align="left" width=100%>
       <tr bgcolor="$ui.menuColor">
-        #formCell ("$brih_course $brih_ID <font color=Red>*</font>" "COURSEID" "")
+        ###formCell ("$brih_course $brih_ID <font color=Red>*</font>" "COURSEID" "")
+        <td> $brih_course #if($lang =="hindi") $brih_Of1  #end $brih_ID <font color=Red>*</font> </td>
+	<td> <input type="text" name="COURSEID" value="" > </td>
       </tr>
       <tr>
-        #formCell ("$brih_course $brih_name <font color=Red>*</font>" "CNAME" "")
+        ###formCell ("$brih_course $brih_name <font color=Red>*</font>" "CNAME" "")
+        <td> $brih_course #if($lang =="hindi") $brih_Of1 #end $brih_name <font color=Red>*</font> </td>
+	<td> <input type="text" name="CNAME" value="" > </td>
       </tr>
       <tr bgcolor="$ui.menuColor">
         #formCell ("$brih_dept" "DEPARTMENT" "")
@@ -113,7 +117,10 @@ $!data.getMessage()
                 </td>
           </tr>
           <tr bgcolor="$ui.menuColor">
-                   #formCell ("$brih_usr $brih_name <font color=Red>*</font>" "UNAME" "")
+                   ## #formCell ("$brih_usr $brih_name <font color=Red>*</font>" "UNAME" "")
+		  <td> #if($lang =="hindi") $brih_usr $brih_Of1 $brih_name #else $brih_usr $brih_name #end <font color=red>*</font> </td>
+                  <td> <input type="text" name="UNAME" value=""> </td>
+
           </tr>
           <tr>
                   #formPasswordCell ("$brih_pwd" "PASSWD" "")
@@ -211,8 +218,8 @@ $!data.getMessage()
 
                 <td align=left>
                         <select name="queryList">
-                                <option value=CourseId>$brih_course $brih_ID</option>
-                                <option value="Course Name">$brih_course $brih_name</option>
+                                <option value=CourseId>$brih_course #if($lang == "hindi") $brih_Of1 #end $brih_ID</option>
+                                <option value="Course Name">$brih_course #if($lang == "hindi") $brih_Of1 #end $brih_name</option>
                                 <option value=Dept>$brih_dept</option>
                         </select>
                 </td>
@@ -235,8 +242,11 @@ $!data.getMessage()
         </tr>
 </table>
 #if($status == "Noblank" )
-
-#set($headings = ["$brih_course $brih_ID","$brih_course $brih_name","$brih_dept","$brih_desc","$brih_creation $brih_Da","$brih_status",""] )
+#if($lang == "hindi")
+	#set($headings = ["$brih_course $brih_Of1 $brih_ID","$brih_course $brih_Of1 $brih_name","$brih_dept","$brih_desc","$brih_creation $brih_Da","$brih_status",""] )
+#else
+	#set($headings = ["$brih_course $brih_ID","$brih_course $brih_name","$brih_dept","$brih_desc","$brih_creation $brih_Da","$brih_status",""] )
+#end
 <table bgcolor="$ui.tableColor" align="left" width=100%>
 ##<table align="left">
   <tr>

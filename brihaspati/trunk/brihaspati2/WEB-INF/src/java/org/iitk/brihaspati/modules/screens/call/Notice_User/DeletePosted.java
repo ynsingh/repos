@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.Notice_User;
 /*
  * @(#)DeletePosted.java	
  *
- *  Copyright (c) 2005,2009 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005,2009, 2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -39,6 +39,8 @@ package org.iitk.brihaspati.modules.screens.call.Notice_User;
  * In this class,We deleted self posted notices
  * @author <a href="mailto:madhavi_mungole@hotmail.com ">Madhavi Mungole</a>
  * @author <a href="mailto:awadhesh_trivedi">Awadhesh Kumar Trivedi</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+ * @ modified date: 26-07-2010
  */
 
 import org.iitk.brihaspati.modules.utils.UserUtil;
@@ -68,11 +70,33 @@ public class DeletePosted extends SecureScreen_Instructor
 			 * Retrevies the course details and user details
 			 */
 
+			Vector noticeSentRec=new Vector();
+			
+			/**
+			 * @param user Getting User object
+			 */
 			User user=data.getUser();
+			/**
+			 * @param crit Instance of Criteria
+			 */
+			
 			Criteria crit=new Criteria();
+
+			/**
+			 * @param cName getting course name which is set by setTemp() method
+			 * @param courseid getting group name which is set by setTemp() method
+			 */
+			
 		
 			String cName=(String)(user.getTemp("course_name"));
 			String courseid=(String)(user.getTemp("course_id"));
+			
+			/**
+			 * @param Username getting user name 
+			 * @param name Selecting  list according to user name
+			 * @param fname getting first name from the list
+			 * @param lname getting last name from the list
+			 */
 
 			String Username=user.getName();
 			crit.add(TurbineUserPeer.USERNAME,Username);
@@ -84,24 +108,39 @@ public class DeletePosted extends SecureScreen_Instructor
 			context.put("username",Username);
 			context.put("firstname",fname);
 			context.put("lastname",lname);
+			
+			/**
+			 * @param user_id getting user id by giving username
+			 * @param group_id getting group id by giving groupname
+			 */
 			int user_id=UserUtil.getUID(Username);
 			int group_id=GroupUtil.getGID(courseid);
-			String message_text=new String();
+			
+			/**
+			 * @param tdcolor setting the color for current feature 
+			 */
 			context.put("tdcolor",data.getParameters().getString("count",""));
 			/**
 			 * Retreives the notice details from MESSAGE_SEND table
+			 * according to group_id and user id to display the list of Notices to delete
+			 * @param messageDetails having the details of notices towhome it is send
+			 * if{ there is no notice shows the message }
+			 * else {all the notice detail is set in Notice_SRDetail (which is a util class) Object 
+			 * add this Notice_SRDetail (which is a util class) Object in a vector named, noticeSentRec }
+			 * if {vector named, noticeSentRec is empty it shows proper message}
+			 * else{ vector named, noticeSentRec, vector size & course name is put in context }
 			 */
 
 			crit=new Criteria();
 			crit.add(NoticeSendPeer.USER_ID,Integer.toString(user_id));
 			crit.and(NoticeSendPeer.GROUP_ID,Integer.toString(group_id));
 			crit.addDescendingOrderByColumn(NoticeSendPeer.POST_TIME);
-
 			List messageDetails=NoticeSendPeer.doSelect(crit);
 
-			Vector noticeSentRec=new Vector();
-			for(int i=0;i<messageDetails.size();i++)
-			{
+			String LangFile=data.getUser().getTemp("LangFile").toString();
+			if(messageDetails.size() != 0 || messageDetails != null) {
+				for(int i=0;i<messageDetails.size();i++)
+				{
 					Notice_SRDetail noticeSRDetails=new Notice_SRDetail();
                                         NoticeSend element1=(NoticeSend)(messageDetails.get(i));
                                         
@@ -112,27 +151,44 @@ public class DeletePosted extends SecureScreen_Instructor
                                         noticeSRDetails.setPostTime(element1.getPostTime());
                                         noticeSRDetails.setMsgId(Integer.toString(element1.getNoticeId()));
                                         noticeSentRec.add(noticeSRDetails);
-			}
-			if(noticeSentRec.size()!=0)
-			{
-				context.put("msgDetail",noticeSentRec);
+				}
+
+				if(noticeSentRec.size()!=0)
+					context.put("msgDetail",noticeSentRec);
+				else
+					data.setMessage(MultilingualUtil.ConvertedString("notice_msg4",LangFile));
+	
 			}
 			else
 			{
-				String LangFile=data.getUser().getTemp("LangFile").toString();
-				String msg=MultilingualUtil.ConvertedString("notice_msg4",LangFile);
-				data.setMessage(msg);
+				data.setMessage(MultilingualUtil.ConvertedString("notice_msg4",LangFile));
 			}
 			context.put("Mas_size",Integer.toString(noticeSentRec.size()));
 			context.put("Course",cName);
 			String desc=data.getParameters().getString("desc","");
-                	context.put("desc",desc);
                 	String topicDesc="";
+	
+			/**
+			 * @param msg_id String, gets message id according to notice id
+			 * @param flag String, gets flag whether notice is read or unread
+			 * put desc & flag  in context
+			 * @param desc String
+			 * bydefault it is null else have String "Notice_Des"
+			 * if { desc is equal "Notice_Des" 
+			 * Gets Notice object according to message id
+			 * Gets notice subject to show heading
+			 * Read Notice_Msg.txt for getting message, stored  according to message_id
+			 * put message in context
+			 * }
+			 * else it would not run
+			 */
+
 			if(desc.equals("Notice_Des"))
 			{
 				String msg_id=data.getParameters().getString("notice_id","");
 				String flag=data.getParameters().getString("flag");
                 		context.put("flag",flag);
+                		context.put("desc",desc);
 				crit=new Criteria();
                         	crit.add(NoticeSendPeer.NOTICE_ID,msg_id);
 				List sub=NoticeSendPeer.doSelect(crit);

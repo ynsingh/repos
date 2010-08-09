@@ -154,7 +154,7 @@ $!data.getMessage()
 						#else
 							<td align=center>
 							<font face="$ui.sansSerifFonts">
-							<a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("courseId",$instructor.getGroupName()).addPathInfo("flag","FromHome") style=text-decoration:none>$message $brih_unreadMsg</a>
+								<a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("courseId",$instructor.getGroupName()).addPathInfo("flag","FromHome").addPathInfo("count","1") style=text-decoration:none>$message $brih_unreadMsg</a>
 							</font>
 							</td>
 						#end
@@ -214,7 +214,7 @@ $!data.getMessage()
 								#else
 									<td align=center>
 										<font face="$ui.sansSerifFonts">
-											<a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("courseId",$student.getGroupName()).addPathInfo("role","student").addPathInfo("flag","FromHome") style=text-decoration:none>$message $brih_unreadMsg
+											<a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("courseId",$student.getGroupName()).addPathInfo("role","student").addPathInfo("flag","FromHome").addPathInfo("count","1") style=text-decoration:none>$message $brih_unreadMsg
 											</a>
 											#set ($no_of_messages=$message)
 											<input type="hidden" name="no_of_messages">

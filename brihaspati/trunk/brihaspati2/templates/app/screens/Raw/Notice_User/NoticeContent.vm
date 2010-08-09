@@ -9,7 +9,7 @@
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @author <a href="mailto:shaistashekh@hotmail.com"> Shaista Bano</a>
- * @modified date: 25-01-2010, 27-04-2010
+ * @modified date: 25-01-2010, 27-04-2010, 26-07-2010
  *#
 <head>
 #if($flag=="FromHome")
@@ -125,12 +125,23 @@ $!data.getMessage()
 </table>
 <table width=100% bgcolor="$ui.tableColor">
 <tr>
-#if($tdcolor != "1")
-        <td>
-        #elseif($tdcolor == "1")
-        <td bgcolor="#AFDCEC">
+#if($user_role=="student")
+
+	#if($tdcolor != "2")
+                <td>
+	#elseif($tdcolor == "2")
+                <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","1")>$Notice_NoticeSend_msg1</a></td>
+                <a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","2")> $Notice_NoticeContent_msg1 </a></td>
+
+#else	
+
+	#if($tdcolor != "1")
+        	<td>
+        #elseif($tdcolor == "1")
+	        <td bgcolor="#AFDCEC">
+        #end
+        	<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","1")>$Notice_NoticeSend_msg1</a></td>
 	#if($tdcolor != "2")
                 <td>
                 #elseif($tdcolor == "2")
@@ -143,7 +154,7 @@ $!data.getMessage()
                 <td bgcolor="#AFDCEC">
                 #end
                 <a href=$link.setPage("call,Notice_User,DeletePosted.vm").addPathInfo("count","3")>$Notice_DeletePosted_msg1</a></td>
-
+#end
 </tr>
 </table>
 <form name="frm" ENCTYPE="multipart/form-data" METHOD="POST" action="$link.setPage("call,Notice_User,NoticeContent.vm").setAction("Notice_Send_Delete")">
@@ -185,7 +196,7 @@ $!data.getMessage()
 			<tr bgcolor="$ui.menuColor">
 			#set($boolian = "false")
 		#end
-        	#if($flag=="FromNotices")
+        	#if($flag=="FromNotices") 
 #*
                 	#if($SeRe.getReadFlag() == "0")
 				<tr bgcolor="$ui.buttonBoxColor">
@@ -205,21 +216,19 @@ $!data.getMessage()
 				<a href="$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("notice_id",$SeRe.getMsgId()).addPathInfo("flag",$flag).addPathInfo("desc","Notice_Des").addPathInfo("count",$tdcolor)">$SeRe.getMsgSubject()</a>
 			</td>
 			<td align="Center">$SeRe.getPostTime()</td>
+				<td align=center>
 				#if( $SeRe.getReadFlag() == "0")
-                                        <td align=center>
-                                        <font face="$ui.sansSerifFonts" color="$ui.fontColorRed">
+					##<font face="$ui.sansSerifFonts" color="$ui.fontColorRed">
+                                	<font color="Red" face="$ui.sansSerifFonts">
                                         $Notice_Unread
-                                        </td>
                                 #else
-                                        <td align=center>
                                         <font face="$ui.sansSerifFonts">
                                         $Notice_Read
-                                        </td>
                                 #end
+			</font>
+			</td>
 		#else
-                	#if($SeRe.getReadFlag() == "0")
-			##<tr bgcolor="$ui.buttonBoxColor">
-			##end
+                	##if($SeRe.getReadFlag() == "0")
 			<td align="Center">
         			<INPUT TYPE="CHECKBOX" NAME="$SeRe.getMsgId()" onClick="addDeleteList(this,document.frm);">
 			</td>
@@ -229,11 +238,19 @@ $!data.getMessage()
 			</td>
 			<td align="Center">$SeRe.getPostTime()</td>
                         <td align=center>
+        		#if($flag=="FromHome") 
                                 <font color="Red" face="$ui.sansSerifFonts">
                                 $brih_new
+			#elseif($SeRe.getReadFlag() == "0")
+                                <font color="Red" face="$ui.sansSerifFonts">
+                                	$Notice_Unread
+			#else
+                        	<font face="$ui.sansSerifFonts">
+                                        $Notice_Read
+                        #end
 				</font>
                         </td>
-                        #end
+                       ##end
 		#end
 		</tr>
 	#end

@@ -38,13 +38,13 @@ $!data.getMessage()
 		#elseif($tdcolor=="1")
 		<td width=25% bgcolor="#AFDCEC">
 		#end
-    		<a href=$link.setPage("call,Backups,Backups.vm").addPathInfo("count","1") style=text-decoration:none>$brih_backup $brih_content</a></td>
+    		<a href=$link.setPage("call,Backups,Backups.vm").addPathInfo("count","1") style=text-decoration:none > #if($lang == "hindi") $brih_content $brih_Of1 $brih_backup #else $brih_backup $brih_content #end </a></td>
 		#if($tdcolor!="2")
 		<td width=25%>
 		#elseif($tdcolor=="2")
 		<td width=25% bgcolor="#AFDCEC">
 		#end
-		<a href=$link.setPage("call,Backups,Backups.vm").setAction("BackupAction").addPathInfo("actionName","eventSubmit_doCompleteBackup").addPathInfo("count","2") style=text-decoration:none>$brih_system $brih_backup</a></td>
+		<a href="$link.setPage("call,Backups,Backups.vm").setAction("BackupAction").addPathInfo("actionName","eventSubmit_doCompleteBackup").addPathInfo("count","2")" style=text-decoration:none >$brih_system #if($lang == "hindi") $brih_Of1 #end $brih_backup</a></td>
 		#if($tdcolor!="3")
 		<td width=25%>
 		#elseif($tdcolor=="3")
@@ -56,7 +56,7 @@ $!data.getMessage()
 		#elseif($tdcolor=="4")
 		<td width=25% bgcolor="#AFDCEC">
 		#end
-		<a href=$link.setPage("call,Backups,Backups.vm").setAction("BackupAction").addPathInfo("actionName","eventSubmit_doGlossaryBackup").addPathInfo("count","4") style=text-decoration:none>$Glossary $brih_backup</td>
+		<a href="$link.setPage("call,Backups,Backups.vm").setAction("BackupAction").addPathInfo("actionName","eventSubmit_doGlossaryBackup").addPathInfo("count","4")" style=text-decoration:none >$Glossary #if($lang == "hindi") $brih_Of1 #end $brih_backup</td>
 </tr>
 ##</form>
 </table></td></tr>
@@ -108,7 +108,13 @@ $!data.getMessage()
                 </td>
                 <td>
                         <font face="$ui.sansSerifFonts">
-                        <input type="button" name="eventSubmit_doCourseBackup" value="$brih_content  $brih_backup" onClick="checkField(document.frm,this);"/>
+			#if($lang == "hindi")
+	                        <input type="button" name="eventSubmit_doCourseBackup" value="$brih_content $brih_Of1 $brih_backup" onClick="checkField(document.frm,this);"/>
+			#else
+	                        <input type="button" name="eventSubmit_doCourseBackup" value="$brih_content  $brih_backup" onClick="checkField(document.frm,this);"/>
+			#end
+			#if($lang == "hindi")
+                        <input type="button" name="eventSubmit_doStudent_db_backup" value="$brih_database $brih_Of1 $brih_backup" onClick="checkField(document.frm,this);"/>
                         <input type="button" name="eventSubmit_doStudent_db_backup" value="$brih_database $brih_backup" onClick="checkField(document.frm,this);"/>
                         <input type="hidden" name="actionName">
                         <input type="hidden" name="count" value="$tdcolor">

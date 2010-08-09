@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /**
  * @(#)InstituteAdminRegistration.java
  *
- *  Copyright (c) 2009 ETRG,IIT Kanpur.
+ *  Copyright (c) 2009, 2010 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -45,6 +45,7 @@ import org.apache.velocity.context.Context;
 //Local classes
 import org.iitk.brihaspati.modules.utils.ListManagement;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
 import org.iitk.brihaspati.om.InstituteAdminRegistration;
 
@@ -52,18 +53,32 @@ import org.iitk.brihaspati.om.InstituteAdminRegistration;
  * 
  * 
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @Created Date
+ * @modified Date: 04-08-2010
  */
-
 
 public class InstituteRegistration extends VelocitySecureAction
 {
-	private String institutename = "", instituteaddress = "", institutecity = "" ,institutepincode = "", institutestate = "", institutelandline = "", institutedomain = "", institutetype = "", instituteaffiliation = "", institutewebsite = "", instituteadminfname = "", instituteadminlname = "", instituteadminemail = "", instituteadmindesignation = "", instituteadminusername = "", instituteadminpassword = "", instituteregisterdate = "" ;
+	private String institutename = "", instituteaddress = "", institutecity = "" ,institutepincode = "", institutestate = "", institutelandline = "", institutedomain = "", institutetype = "", instituteaffiliation = "", institutewebsite = "", instituteadminfname = "", instituteadminlname = "", instituteadminemail = "", instituteadmindesignation = "", instituteadminusername = "", instituteadminpassword = "", instituteregisterdate = "", LangFile ="", lang="";
+	private MultilingualUtil mU = new MultilingualUtil();
+
+	/**
+	 * Implement this method to perform the security check needed. The user to be sent to if they're unauthorized.
+	 * @param data RunData instance
+	 * @return boolean
+	**/
 
 	protected boolean isAuthorized( RunData rundata ) throws Exception
         {
                 return true;
         }
+	
+	/**
+	 * Implement this to add information to the context.
+	 * @param data RunData instance
+	 * @param context Context instance
+	 */
 
 	public void doPerform(RunData rundata,Context context) throws Exception
         {
@@ -79,10 +94,22 @@ public class InstituteRegistration extends VelocitySecureAction
                 }
         }
 
-	
+	/**
+	 * Register an Institute if not available 
+	 * @param data RunData instance
+	 * @param context Context instance
+	 */	
 	public void InstituteRegister(RunData rundata, Context context) 
 	{
 		try{
+			/**
+			 * Getting Language selected by user or set in database
+			 *  Getting property file name according to selection of language
+			 */
+
+			lang= rundata.getParameters().getString("lang","english");
+	                context.put("lang",lang);
+	                LangFile=mU.LanguageSelectionForScreenMessage(lang);
 			rundata.setMessage("Test");
 			ParameterParser parameterparser = rundata.getParameters();
 			institutename = parameterparser.getString("INAME");
@@ -113,7 +140,6 @@ public class InstituteRegistration extends VelocitySecureAction
 					InstituteAdminRegistration iar=(InstituteAdminRegistration)(lst.get(i));
 					String checkUName=iar.getAdminUname().toString();
 					String Dname=iar.getInstituteDomain().toString();
-					ErrorDumpUtil.ErrorLog("domain name=="+Dname);
 					/*
 					* if domain name exist then no entry in the table
 					* due to existence of admin
@@ -127,7 +153,13 @@ public class InstituteRegistration extends VelocitySecureAction
 			}
 			if(flag){
 				//rundata.setMessage("User Name "+instituteadminusername +" alraedy exists,please choose another name");
-				rundata.setMessage("Admin already exists for this Institute");
+				//rundata.setMessage("Admin already exists for this Institute");
+				//brih_admin=Admin Wikiaction6=already exists brih_for = for brih_this = this brih_institute = institute
+
+				if(lang.equals("hindi") || lang.equals("urdu"))
+					rundata.setMessage(mU.ConvertedString("brih_this",LangFile)+" "+mU.ConvertedString("brih_institute",LangFile)+" "+mU.ConvertedString("brih_for",LangFile)+" "+mU.ConvertedString("brih_admin",LangFile)+" "+mU.ConvertedString("Wikiaction6",LangFile));
+				else
+					rundata.setMessage(mU.ConvertedString("brih_admin",LangFile)+" "+mU.ConvertedString("Wikiaction6",LangFile)+" "+mU.ConvertedString("brih_for",LangFile)+" "+mU.ConvertedString("brih_this",LangFile)+" "+mU.ConvertedString("brih_institute",LangFile)+"!!");
 			}
 			else{
 			criteria=new Criteria();
@@ -148,7 +180,15 @@ public class InstituteRegistration extends VelocitySecureAction
 			criteria.add(InstituteAdminRegistrationPeer.ADMIN_UNAME,instituteadminusername);
 			criteria.add(InstituteAdminRegistrationPeer.ADMIN_PASSWORD,instituteadminpassword);
 			InstituteAdminRegistrationPeer.doInsert(criteria);
-			rundata.setMessage("Admin Registeration Successfull");
+
+			/**
+			 * Making message multilingual 
+			*/
+			//rundata.setMessage("Admin Registeration Successfull");
+			if( lang.equals("hindi") || lang.equals("urdu"))
+				rundata.setMessage(mU.ConvertedString("brih_admin",LangFile)+" "+mU.ConvertedString("brih_Of1",LangFile)+" "+mU.ConvertedString("u_msg3",LangFile));
+			else
+				rundata.setMessage(mU.ConvertedString("brih_admin",LangFile)+" "+mU.ConvertedString("u_msg3",LangFile));
 			}
 			
 				
@@ -168,7 +208,15 @@ public class InstituteRegistration extends VelocitySecureAction
 			Criteria crit=new Criteria();
 			crit.add(InstituteAdminRegistrationPeer.INSTITUTE_ID,InstituteId);
 			InstituteAdminRegistrationPeer.doDelete(crit);
-			rundata.setMessage("Admin of" +InstituteName +"has been deleted");
+
+			/**
+			 * Making message multilingual 
+			*/
+			//rundata.setMessage("Admin of" +InstituteName +"has been deleted");
+			if( lang.equals("hindi") || lang.equals("urdu"))
+				rundata.setMessage(mU.ConvertedString(InstituteName+" "+"brih_admin",LangFile)+" "+mU.ConvertedString("c_msg9",LangFile));
+			else
+				rundata.setMessage(mU.ConvertedString("brih_admin",LangFile)+" "+mU.ConvertedString("brih_Of1",LangFile)+" "+InstituteName+" "+mU.ConvertedString("c_msg9",LangFile));
 		}
 		catch (Exception e)
 		{
@@ -185,7 +233,17 @@ public class InstituteRegistration extends VelocitySecureAction
 			Criteria crit=new Criteria();
 			crit.add(InstituteAdminRegistrationPeer.INSTITUTE_ID,InstituteId);
 			InstituteAdminRegistrationPeer.doUpdate(crit);
-			rundata.setMessage("Details of" +InstituteName +"has been Updated");
+
+			/**
+			 * Making message multilingual 
+			*/
+			//rundata.setMessage("Details of" +InstituteName +"has been updated successfully");
+
+			if( lang.equals("hindi") || lang.equals("urdu"))
+				rundata.setMessage(mU.ConvertedString(InstituteName+" "+"brih_Of1",LangFile)+" "+mU.ConvertedString("brih_details",LangFile)+" "+mU.ConvertedString("update_msg",LangFile));
+			else
+			
+				rundata.setMessage(mU.ConvertedString("brih_details",LangFile)+" "+mU.ConvertedString("brih_Of1",LangFile)+" "+InstituteName+" "+mU.ConvertedString("update_msg",LangFile));
 		}
 		catch (Exception e)
 		{

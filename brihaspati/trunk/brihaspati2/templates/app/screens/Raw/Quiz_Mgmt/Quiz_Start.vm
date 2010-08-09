@@ -35,19 +35,19 @@ $!data.getMessage()
 	<table width=100% align="left" bgcolor="$ui.tableColor">
 	#if($user_role == "instructor" )	
 	<tr>
-		<td><a href=$link.setPage("call,Quiz_Mgmt,Quiz_Schedule.vm")>$brih_quiz $brih_schedule</a></td>
+		<td><a href=$link.setPage("call,Quiz_Mgmt,Quiz_Schedule.vm")>$brih_quiz #if($lang == "hindi") $brih_Of1 #end $brih_schedule</a></td>
 		#if($flag == true )
 			#if($QuizGrade == true )
-			<td><a href=$link.setPage("call,Quiz_Mgmt,Grade_Quiz.vm")>$brih_quiz $brih_grade</a></td>
+			<td><a href=$link.setPage("call,Quiz_Mgmt,Grade_Quiz.vm")>$brih_quiz #if($lang == "hindi") $brih_Of1 #end $brih_grade</a></td>
                 	<td><a href=$link.setPage("call,Quiz_Mgmt,Gradecard.vm")>$brih_grade $brih_card</a></td>
 			#end
-                <td><a href=$link.setPage("call,Quiz_Mgmt,Quiz_Detail.vm")>$brih_quiz $brih_detail</a></td>
+                <td><a href=$link.setPage("call,Quiz_Mgmt,Quiz_Detail.vm")>$brih_quiz #if($lang == "hindi") $brih_Of1 #end $brih_detail</a></td>
 		#end
 	#end
 	#if($user_role == "student")
 		#if($flag == true)
 			#if($startQuiz1 == true)
-			<td><a href=$link.setPage("call,Quiz_Mgmt,Close_Quiz.vm")>$brih_start $brih_quiz </a></td>
+			<td><a href=$link.setPage("call,Quiz_Mgmt,Close_Quiz.vm")> #if($lang == "hindi") $brih_quiz $brih_start #else $brih_start $brih_quiz #end </a></td>
 			#end
 			#if($QuizGrade == true )	
 			<td><a href=$link.setPage("call,Quiz_Mgmt,Quiz_Score.vm")>$brih_score $brih_card</a></td>

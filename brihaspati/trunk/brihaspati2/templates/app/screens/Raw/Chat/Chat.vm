@@ -48,10 +48,16 @@ $!data.getMessage()
 	<tr>
 		<td>
 		<font face="$ui.sansSerifFonts"><b>
-		<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
-		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> | 
-		##<a href=$link.setPage("call,CourseMgmt_User,Communication.vm")>$brih_communication</a> | $brih_chat
-		<a href=$link.setPage("call,Local_Mail,Mail.vm")>$brih_communication</a> | $brih_chat
+		#if($mode == "general")
+			<a href=$link.setPage("Index.vm")>$brih_home</a> |
+		#else
+			<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
+			<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> | 
+		
+			##<a href=$link.setPage("call,CourseMgmt_User,Communication.vm")>$brih_communication</a> | $brih_chat
+			<a href=$link.setPage("call,Local_Mail,Mail.vm")>$brih_communication</a>
+		#end  
+		 | $brih_chat
 		</font>
 		</td>
 	</tr>
@@ -60,36 +66,45 @@ $!data.getMessage()
 </table>
 <table align=left bgcolor="$ui.tableColor" width=100%>
 <tr>
-	#if($tdcolor!="1")
-        <td>
-        #elseif($tdcolor == "1")
-        <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_localmail</a></td>
-	#if($tdcolor!="2")
-        <td>
-        #elseif($tdcolor == "2")
-        <td bgcolor="#AFDCEC">
-        #end
-	<a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2")>$brih_chat</a></td>
-	#if($tdcolor!="3")
-        <td>
-        #elseif($tdcolor == "3")
-        <td bgcolor="#AFDCEC">
-        #end
-	<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3")>$brih_Notices</td>
-	#if($tdcolor!="4")
-        <td>
-        #elseif($tdcolor == "4")
-        <td bgcolor="#AFDCEC">
-        #end
-	<a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4")>$DiscussionBoard</td>
-	#if($tdcolor!="5")
-        <td>
-        #elseif($tdcolor == "5")
-        <td bgcolor="#AFDCEC">
-        #end
-	<a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status","fromCourse").addPathInfo("count","5")>$brih_news</td>
+	#if($mode == "general")
+		#if($tdcolor!="2")
+			<td>
+	        #elseif($tdcolor == "2")
+		       	<td bgcolor="#AFDCEC">
+	        #end
+		<a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2").addPathInfo("mode",$mode)>Chat</a></td>
+	#else
+		#if($tdcolor!="1")
+	        	<td>
+	        #elseif($tdcolor == "1")
+        		<td bgcolor="#AFDCEC">
+	        #end
+        	<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_localmail</a></td>
+		#if($tdcolor!="2")
+			<td>
+	        #elseif($tdcolor == "2")
+		       	<td bgcolor="#AFDCEC">
+	        #end
+		<a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2")>$brih_chat</a></td>
+		#if($tdcolor!="3")
+	        	<td>
+        	#elseif($tdcolor == "3")
+		        <td bgcolor="#AFDCEC">
+        	#end
+		<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3")>$brih_Notices</td>
+		#if($tdcolor!="4")
+		        <td>
+        	#elseif($tdcolor == "4")
+	        	<td bgcolor="#AFDCEC">
+        	#end
+		<a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4")>$DiscussionBoard</td>
+		#if($tdcolor!="5")
+		        <td>
+        	#elseif($tdcolor == "5")
+		        <td bgcolor="#AFDCEC">
+        	#end
+		<a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status","fromCourse").addPathInfo("count","5")>$brih_news</td>
+       	#end
 </tr>
 </table>
 #if($username=="guest")
@@ -114,10 +129,18 @@ $!data.getMessage()
 	$brih_chatMsg1
 	<a href=$link.setPage("call,UserMgmt_User,changePassword.vm")>$brih_changePassword</a>
 </td></tr>
+<tr><td>
+        <blink> <img src="$content.getURI("/images/hand.gif")"> </blink>
+                $brih_chatMsg2  <a href="/brihaspati/docs/ChatDocToSavePlay.html">$brih_here</a><br>
+</td></tr>
 
 </table>
 <applet archive="babylon.jar" code="babylon.babylonApplet.class" codebase=$codeBase width="0" height="0">
-	<param name="chatroom" value=$chatRoom>
+	#if($mode == "general")
+                <param name="chatroom" value="general">
+        #else
+                <param name="chatroom" value=$chatRoom>
+        #end
 	<param name="username" value=$username>
 	<param name="password" value=$password>
 	<param name="servername" value=$serverName>
