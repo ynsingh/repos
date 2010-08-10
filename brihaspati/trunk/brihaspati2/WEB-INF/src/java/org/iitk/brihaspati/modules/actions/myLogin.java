@@ -108,7 +108,7 @@ public class myLogin extends VelocityAction{
 
                 String flag=data.getParameters().getString("flag");
                 //String LangFile =data.getParameters().getString("Langfile","");
-                String lang=data.getParameters().getString("lang","");
+                String lang=data.getParameters().getString("lang","english");
 
 		String username = data.getParameters().getString("username", "" );
 		if(StringUtil.checkString(username) != -1) username="";
@@ -322,7 +322,7 @@ public class myLogin extends VelocityAction{
 		}
 		System.gc();
                 //----------------code for the groupmanagement--------//
-            CommonUtility.grpLeader();
+          //  CommonUtility.grpLeader();
         //----------------code for the groupmanagement--------//
 
 	}

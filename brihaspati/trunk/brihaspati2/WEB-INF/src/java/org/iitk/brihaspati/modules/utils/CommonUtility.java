@@ -184,7 +184,8 @@ public class CommonUtility{
                         String clean_Date=Clean_date.substring(0,10);
                         if(!clean_Date.equals(c_date)){//2 if
                         	boolean Expiry_Success=ExpiryUtil.Expiry();
-				String  Update_Mail = UpdateInfoMail.getUpdationMail();
+			//	UpdateInfoMail.checknWriteXml();
+		//		String  Update_Mail = UpdateInfoMail.getUpdationMail();
                                 if(Expiry_Success=true){//3 if
                                 	/**
                                         *Code for update the clean date in database
@@ -198,7 +199,8 @@ public class CommonUtility{
 				boolean CI=CreateIndex();
 				boolean OT=optimizeTables();
 				boolean ADB=autoDeletebackup();
-				UpdateInfoMail.checknWriteXml();
+				grpLeader();
+
                         }//end of if 2 loop
 
 		}//end of if 1 loop
