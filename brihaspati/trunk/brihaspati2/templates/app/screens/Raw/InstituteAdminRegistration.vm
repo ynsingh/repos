@@ -4,32 +4,39 @@
  * All Rights Reserved.
  *
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a> 
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a> 
  * Contributors: Members of ETRG, I.I.T. Kanpur
  *#
 $!data.getMessage()
 $page.setTitle("Login Page | Institute Admin Registration ")
 	
+## Adding the line containing urls after the header image.
 	<table bgcolor="$ui.menuColor" width=100%>
 		<tr><td>
-			##<a href=$link.setPage("BrihaspatiLogin.vm")> $brih_login $WikiPage </a>| Institute Admin Registration   
-			##<a href=$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang",$lang)> $brih_login $WikiPage </a>| $RemoteInstitute $brih_ad $brih_reg   
 			<a href=$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang",$lang)> $brih_login $WikiPage </a>| #if($lang == "hindi") $brih_Institute $brih_Of2 #else $RemoteInstitute #end $brih_admin #if($lang == "hindi") $brih_Of1 #end $brih_reg   
 		</td></tr>
 	</table>
 
-	<form name="frm" method="post" action="$link.setPage("InstituteAdminRegistration.vm").addPathInfo("lang",$lang).setAction("InstituteRegistration")">
-
+## Creating the links for help regarding registration.
 		<table align="left" bgcolor="$ui.tableColor" width=100%>
 			<tr><td align="right"><img src="$content.getURI("/images/hand.gif")">
         			<font face="$ui.sansSerifFonts" size=3>
         			<a href=javascript:popupWin("/brihaspati2/docs/InstituteAdminRegistration.html","newWin");>$brih_help</a></font>
 			</td></tr>
 		</table>
-		<table align=left bgcolor="$ui.tableColor" width="100%">
-			<tr bgcolor="$ui.menuColor">                                                                      #formCell ("$RemoteInstitute $brih_name <font color=red>*</font>" "INAME" "")
-        		</tr>
-        		<tr>
-				#formCell ("$RemoteInstitute $RemoteAddress <font color=red>*</font>" "IADDRESS" "")
+
+## Creating the form to collect the information for creation of Instiute account
+## alongwith Institute admin information.
+	<form name="frm" method="post" action="$link.setPage("InstituteAdminRegistration.vm").addPathInfo("lang",$lang).setAction("InstituteRegistration")">
+
+	   <table align=left bgcolor="$ui.tableColor" width="100%">
+	      <tr bgcolor="$ui.menuColor">
+## forming cell for institute's name.
+                 #formCell ("$RemoteInstitute $brih_name <font color=red>*</font>" "INAME" "")
+	      </tr>
+	      <tr>
+## forming cell for entry of Institute's address.
+		#formCell ("$RemoteInstitute $RemoteAddress <font color=red>*</font>" "IADDRESS" "")
 
 			</tr>
 			<tr bgcolor="$ui.menuColor">                                                                      #formCell ("$Inst_city <font color=red>*</font>" "ICITY" "")
@@ -49,18 +56,6 @@ $page.setTitle("Login Page | Institute Admin Registration ")
                                 #formCell ("$Inst_type <font color=red>*</font>" "ITYPE" "")
 
                         </tr>
-			#*
-			<tr bgcolor="$ui.menuColor"><td>
-	                        $Inst_affiliation <font color=red>*</font>
-			</td><td><select  name="group" size=1>
-          			<option>
-          				<option value="TEST">
-           			</option>
-          			</select>
-
-			</td>
-                        </tr>
-			*#
                         <tr bgcolor="$ui.menuColor">
                                 #formCell ("$RemoteInstitute $Inst_website <font color=red>*</font>" "IWEBSITE" "")
 
@@ -98,32 +93,51 @@ $page.setTitle("Login Page | Institute Admin Registration ")
 
 <SCRIPT LANGUAGE="javascript">
 
-	function checkField(frm,field)
-        {
-		frm.actionName.value=field.name;
-                frm.submit();
-	}
-	
         function checkField(frm,field)
         {
 
                 if ((frm.INAME.value !="") && (frm.IADDRESS.value !="") && (frm.ICITY.value !="") && (frm.IPINCODE.value !="") && (frm.ISTATE.value !="") && (frm.ILANDLINE.value !="") && (frm.IDOMAIN.value !="") && (frm.ITYPE.value !="") && (frm.IWEBSITE.value !="") && (frm.IADMINFNAME.value !="") && (frm.IADMINLNAME.value !="")&& (frm.IADMINEMAIL.value !="") && (frm.IADMINDESIGNATION.value !="") && (frm.IADMINUSERNAME.value !=""))
                 {
-
-                        var adminemailid = document.frm.IADMINEMAIL.value;
-                        //alert("Emailid"+adminemailid);
-
-                        if (CheckValidEmail(adminemailid) == false)
+			if(isNumberString(frm.IPINCODE.value))
                         {
-                                adminemailid = "";
-                                adminemailid.focus();
-                                return;
+				if(frm.IPINCODE.value.length ==6){
+                                if(isNumberString(frm.ILANDLINE.value))
+                                {
+					if(frm.ILANDLINE.value.length <12){
+                        		var adminemailid = document.frm.IADMINEMAIL.value;
+                        		if (CheckValidEmail(adminemailid) == false)
+                        		{
+                                		adminemailid = "";
+                                		adminemailid.focus();
+                                		return;
+                        		}
+                        		else
+                        		{
+                                		frm.actionName.value=field.name;
+                                		frm.submit();
+                        		}
+					}
+                                        else{
+                                             alert(" Landline no. should not be more than 12 digit");
+                                        }
+
+				}
+                                else
+                                {
+                                        alert(" Landline no. should be numeric");
+                                }
+				}
+                                else
+                                {
+                                        alert(" pincode no. should be 6 digit");
+                                }
+
                         }
                         else
                         {
-                                frm.actionName.value=field.name;
-                                frm.submit();
+                                alert("pincode no. should be numeric");
                         }
+
                 }
                 else
                 {
@@ -183,6 +197,21 @@ $page.setTitle("Login Page | Institute Admin Registration ")
                 }
 
                  return true
+        }
+	function isNumberString(chString)
+        {
+                if(chString.length==0)
+                return false;
+                var RefString="0123456789";
+                for(count=0;count<chString.length;count++)
+                {
+                        tempChar=chString.charAt(count);
+                        if(RefString.indexOf(tempChar)==-1)
+                        {
+                                return false;
+                        }
+                }
+                return true;
         }
 
 

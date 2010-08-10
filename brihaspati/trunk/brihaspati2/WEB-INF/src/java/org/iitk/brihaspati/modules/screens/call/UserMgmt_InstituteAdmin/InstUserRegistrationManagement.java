@@ -37,8 +37,8 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_InstituteAdmin;
  */
 
 /**
- * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
- * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh 20100810</a>
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh - 20100810</a>
  */
 
 
@@ -58,37 +58,45 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.CourseManagement;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
-import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.om.TurbineUserPeer;
 import org.iitk.brihaspati.om.TurbineUser;
 import org.apache.turbine.om.security.User;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Institute_Admin;
-import org.iitk.brihaspati.om.Courses;
 
+/* Class for registering of single or multiple courses by Institute admin,
+ * and display of course list of the institute in the screen.
+ */
 public class InstUserRegistrationManagement extends SecureScreen_Institute_Admin
 {
 	private String LangFile= null;
+
+	/**
+        * @param data RunData
+        * @param context Context
+	* 
+        */
     public void doBuildTemplate( RunData data, Context context )
     {
+/* Get the values of mode (used to decide what has to be done - single course
+ * registration, multiple course registration.)
+ */
 		String mode=data.getParameters().getString("mode","");
 		context.put("mode",mode);
+/* Get value of count used to (TBD)
+ */
 		String counter=data.getParameters().getString("count","");
 		context.put("tdcolor",counter);
                 String DomainName=data.getParameters().getString("domainName","");
 		context.put("domainname",DomainName);
-		ErrorDumpUtil.ErrorLog("DomainName at line 113 in registrationmgmt screen======"+DomainName);
 		try
                 {
-			//////////////////////////////////today 6apr10 by Jaivir	
 			String userName=data.getUser().getName();
                 	int userId=UserUtil.getUID(userName);
 			Criteria crt=new Criteria();
 			crt.add(TurbineUserPeer.USER_ID,userId);
-			//crt.addGroupByColumn(TurbineUserPeer.INSTITUE_ID);
 			List lst=TurbineUserPeer.doSelect(crt);
 			context.put("lst",lst);
 			String loginname=((TurbineUser)lst.get(0)).getLoginName();
-			///////////////////////////////////////
 			String scrs=data.getParameters().getString("scourse","");
 			context.put("scourse",scrs);
                         LangFile=(String)data.getUser().getTemp("LangFile");
@@ -96,19 +104,15 @@ public class InstUserRegistrationManagement extends SecureScreen_Institute_Admin
                         Vector courseList=new Vector();
                         String stat=data.getParameters().getString("status","");
                         context.put("stat",stat);
-			//////////////14apr10
                         String minststat=data.getParameters().getString("minststat","1");
-			//String grpname=loginname+"_"+instituteId;
-			//ErrorDumpUtil.ErrorLog("grpname	at line 95========"+grpname);
 			User user=data.getUser();
-				user.setTemp("mInststat",minststat);
+			user.setTemp("mInststat",minststat);
                         String instituteId=data.getParameters().getString("instituteId","");
                         context.put("instituteId",instituteId);
-			//user.setTemp("instituteId",instituteId);
-			/* Code for set Temp */
-			//String courseid=pp.getString("courseid","");
+			/**
+			* Set InstitutedId and domain name in temp variable
+			*/
                         String iidInuse=(String)user.getTemp("Institute_id");
-                        //if( userInCourse!=null && !userInCourse.equals("") && courseid.equals(""))
                         if( iidInuse!=null && !iidInuse.equals("") && instituteId.equals("")){
                                 instituteId=iidInuse;
 			}
@@ -116,7 +120,6 @@ public class InstUserRegistrationManagement extends SecureScreen_Institute_Admin
                         {
                                 user.setTemp("Institute_id",instituteId);
                                 user.setTemp("DomainName",DomainName);
-				//        user.setTemp("course_id",courseid);
                         /**
                         * For setting the Institute header
                         */
@@ -125,18 +128,20 @@ public class InstUserRegistrationManagement extends SecureScreen_Institute_Admin
                                 user.setTemp("instImg",istat1);
 
 			}	
-                        /*String DomainName=data.getParameters().getString("domainName","");
-			context.put("domainname",DomainName);
-			ErrorDumpUtil.ErrorLog("DomainName at line 113 in registrationmgmt screen======"+DomainName);*/
-			///////////////
                         String query="";
                         String valueString="";
 			if(scrs.equals("scourse")){
-                        if(mode.equals("All"))
+			
+			/*
+			*Get all course and user details.
+			*@see CourseManagement	util in utils.
+			*if use search string then execute else part.
+			*/	
+                        
+			if(mode.equals("All"))
                         {
                                 //courseList=CourseManagement.getCourseNUserDetails("All",instituteId);
                                 courseList=CourseManagement.getInstituteCourseNUserDetails("All",instituteId);
-				ErrorDumpUtil.ErrorLog("crslst at line 127========"+courseList);
                                 context.put("mode","All");
                         }
                         else
@@ -150,17 +155,22 @@ public class InstUserRegistrationManagement extends SecureScreen_Institute_Admin
                                         query=data.getParameters().getString("query");
         //                              valueString=data.getParameters().getString("valueString");
                         /**
-                          * Check for special characters
-                          */
+                        *Check for special characters
+			*get institute list by search string using ListManagement util.
+			*@see ListManagement util in utils
+                        */
                            valueString =StringUtil.replaceXmlSpecialCharacters(data.getParameters().getString("valueString"));
 
                                 context.put("query",query);
 				context.put("valueString",valueString);
-                                //courseList=ListManagement.getListBySearchString("CourseWise",query,valueString,instituteId);
                                 courseList=ListManagement.getInstituteListBySearchString("CourseWise",query,valueString,instituteId);
                                 context.put("mode","Search");
                         }
-                        String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"InstituteAdmin.properties";
+			/**
+			*Code for pagination
+			*@see ListManagement util in utils.	
+			*/
+                        String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
                         int AdminConf = Integer.valueOf(AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value"));
                         context.put("AdminConf",new Integer(AdminConf));
                         context.put("AdminConf_str",Integer.toString(AdminConf));

@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.ListMgmt_InstituteAdmin;
 /*
  * @(#)InstList_Mgmt.java	
  *
- *  Copyright (c) 2004 - 2005,2009 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -37,8 +37,8 @@ package org.iitk.brihaspati.modules.screens.call.ListMgmt_InstituteAdmin;
  */
 
 /**
- * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
- * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh -20100810</a>
+ * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh - 20100810</a>
  */
 
 import java.util.Vector;
@@ -53,25 +53,26 @@ import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Institute_Admin;
 
+/*
+ * This class called when institute admin view the list of all courses and all users.
+ */
+
 public class InstList_Mgmt extends SecureScreen_Institute_Admin
 {
-	private String file=null;
+    private String file=null;
     public void doBuildTemplate( RunData data, Context context )
     {
-
-	
-                try
-                {
-                 /**
-                  * Getting Language value from temporary variable
-                  * Getting file value from temporary variable according to selection
-                  * Replacing the value from Property file
-                 **/
-			String lcourse=data.getParameters().getString("listcourse","");
-			context.put("listcourse",lcourse);
-			String counter=data.getParameters().getString("count","");
-			context.put("tdcolor",counter);
-			String instituteId=(data.getUser().getTemp("Institute_id")).toString();
+    try {
+	String lcourse=data.getParameters().getString("listcourse","");
+	context.put("listcourse",lcourse);
+	String counter=data.getParameters().getString("count","");
+	context.put("tdcolor",counter);
+	String instituteId=(data.getUser().getTemp("Institute_id")).toString();
+                 	/**
+                  	* Getting Language value from temporary variable
+                  	* Getting file value from temporary variable according to selection
+                  	* Replacing the value from Property file
+                 	**/
 			if(lcourse.equals("listcourse")){
                 	file=(String)data.getUser().getTemp("LangFile");
                 	MultilingualUtil m_u=new MultilingualUtil();
@@ -81,9 +82,13 @@ public class InstList_Mgmt extends SecureScreen_Institute_Admin
                         String query="";
                         String valueString="";
                         String Mode=data.getParameters().getString("mode","");
+			/**
+			*get all courselist using CourseManagement util
+			*@see CourseManagement util in utils 
+			*if by search string the else part executed. 
+			*/
                         if(Mode.equals("All"))
                         {
-                                //courseList=CourseManagement.getCourseNUserDetails("All",instituteId);
                                 courseList=CourseManagement.getInstituteCourseNUserDetails("All",instituteId);
                                 context.put("mode","All");
                         }
@@ -101,14 +106,18 @@ public class InstList_Mgmt extends SecureScreen_Institute_Admin
                           */
                            valueString =StringUtil.replaceXmlSpecialCharacters(data.getParameters().getString("valueString"));
 			
-                        //      valueString=data.getParameters().getString("valueString");
                                 context.put("query",query);
                                 context.put("valueString",valueString);
-                                //courseList=ListManagement.getListBySearchString("CourseWise",query,valueString,instituteId);
                                 courseList=ListManagement.getInstituteListBySearchString("CourseWise",query,valueString,instituteId);
                                 context.put("mode","Search");
                         }
-                        String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"InstituteAdmin.properties";
+			/**
+			*read the Admin.properties for pagination
+			*@see AdminProperties util in utils
+			*@see ListManagement util in utils for link visible and
+			*list divide.	
+			*/
+                        String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
                         int AdminConf = Integer.valueOf(AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value"));
 
 //                      int AdminConf = AdminProperties.getValue(path);
