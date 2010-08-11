@@ -43,6 +43,5 @@ HTMLArea.I18N = {
 
 	msg: {
 		"Path":         "Chemin",
-		"TEXT_MODE":    "Vous êtes en mode texte.  Utilisez le bouton [<>] pour revenir au mode WYSIWIG."
 	}
 };

@@ -43,6 +43,5 @@ HTMLArea.I18N = {
 
 	msg: {
 		"Path":         "Pfad",
-		"TEXT_MODE":    "Du befindest dich im HTML Modus.  Benuetze die [<>] Schaltflaeche um in den WYSIWIG-Modus zu wechseln."
 	}
 };

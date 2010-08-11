@@ -41,6 +41,5 @@ HTMLArea.I18N = {
 	},
 	msg: {
 		"Path":         "Đường Dẫn",
-		"TEXT_MODE":    "Bạn đang ở chế độ text.  Sử dụng nút [<>] để chuyển lại chế độ WYSIWIG."
 	}
 };

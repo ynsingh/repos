@@ -43,6 +43,5 @@ HTMLArea.I18N = {
 
 	msg: {
 		"Path":         "Pot",
-		"TEXT_MODE":    "Si v tekstovnem naèinu.  Uporabi [<>] gumb za prklop nazaj na WYSIWYG."
 	}
 };

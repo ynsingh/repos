@@ -1,12 +1,13 @@
 #*
  * @(#) Default.vm
- * Copyright (c) 2005,2009 ETRG,IIT Kanpur.
+ * Copyright (c) 2005,2009, 2010 ETRG,IIT Kanpur.
  * All Rights Reserved.
  *
  * @author<a href="mailto:aktri@iitk.ac.in">Awadhesh Kumar Trivedi</a>
  * @author<a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author<a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @modified date: 10-08-2010 (Shaista)
  *
  * Contributors: Members of ETRG, I.I.T. Kanpur
  *#
@@ -150,6 +151,21 @@ $page.setBgColor("$ui.bgcolor")
             				</tr> ##6#h tr closed
          			</table> ##4#h table closed
       			</td> ##26#h td closed
+   		#end
+   		#end
+              	#if($data.getUser().hasLoggedIn()) ##if(8)
+		#if($data.getUser().getTemp("role")=="institute_admin")
+                #if($data.getUser().getTemp("mInststat")=="1")
+      			<td align="right" width="17%" valign="top"> ##27#h td
+         			<table align="right" width="100%"> ##5#h table
+            				<tr align="right" bgcolor="$ui.menuColor"> ##6#h tr
+               					<td valign="top"> ##28#h td
+                  				$navigation.setTemplate("/InstituteAdminMenu.vm")
+               					</td> ##28#h td closed
+            				</tr> ##6#h tr closed
+         			</table> ##5#h table closed
+      			</td> ##27#h td closed
+   		#end
    		#end
    		#end
 	</tr> ##5#h tr closed

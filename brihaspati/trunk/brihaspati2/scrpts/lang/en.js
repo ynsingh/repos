@@ -45,10 +45,7 @@ HTMLArea.I18N = {
 
 	msg: {
 		"Path":         "Path",
-//		"TEXT_MODE":    "You are in TEXT MODE.  Use the [<>] button to switch back to TEXTAREA.",
-
 		"IE-sucks-full-screen" :
-		// translate here
 		"The full screen mode is known to cause problems with Internet Explorer, " +
 		"due to browser bugs that we weren't able to workaround.  You might experience garbage " +
 		"display, lack of editor functions and/or random browser crashes.  If your system is Windows 9x " +

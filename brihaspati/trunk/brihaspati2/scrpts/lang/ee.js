@@ -44,6 +44,5 @@ HTMLArea.I18N = {
 
 	msg: {
 		"Path":         "Path",
-		"TEXT_MODE":    "Sa oled tekstireziimis.  Kasuta nuppu [<>] lülitamaks tagasi WYSIWIG reziimi."
 	}
 };

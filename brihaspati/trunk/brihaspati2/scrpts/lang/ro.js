@@ -45,7 +45,6 @@ HTMLArea.I18N = {
 
 	msg: {
 		"Path":         "Calea",
-		"TEXT_MODE":    "Eşti în modul TEXT.  Apasă butonul [<>] pentru a te întoarce în modul WYSIWYG."
 	},
 
 	dialogs: {

@@ -43,6 +43,5 @@ HTMLArea.I18N = {
 
 	msg: {
 		"Path":         "Ceïð",
-		"TEXT_MODE":    "Jûs patlaban darbojaties TEKSTA REÞÎMÂ. Lai pârietu atpakaï uz GRAFISKO REÞÎMU (WYSIWIG), lietojiet [<>] pogu."
 	}
 };

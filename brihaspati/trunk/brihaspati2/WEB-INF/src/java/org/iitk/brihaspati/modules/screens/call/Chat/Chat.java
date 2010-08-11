@@ -57,7 +57,9 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
  *
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+ * @modified date: 10-08-2010 (Shaista)
  */
+
 public class Chat extends SecureScreen
 {
     /**
@@ -69,15 +71,35 @@ public class Chat extends SecureScreen
     {
 	  try{
 		/**
-		* Get UserName, Passwd, CourseId, serverName and Base Path
+		* Get UserName, Passwd, CourseId, serverName, Base Path, mode
 		*/
           	String uname=data.getUser().getName();
 	  	String pword=data.getUser().getPassword();
-	  	String cid=data.getUser().getTemp("course_id").toString();
+		String cid ="";
+		String mode1=data.getParameters().getString("mode","");
+		
+		/**
+		 * if { mode is general then room name is General} else {room name is group name}
+		 * if {role is instructor then save the chat in a .txt file to play back } else {chat doesnt save in .txt file}
+		 * if{ Saved file is exist list of saved file is sent to babylon chat}
+		 * Sending babylon path to save & play back a file.
+		 */
+		if(mode1.equals("general"))
+		{
+			cid="General";
+			//context.put("course","General");
+		}
+		else
+		{
+	  		cid=data.getUser().getTemp("course_id").toString();
+                	context.put("course",data.getUser().getTemp("course_name").toString());
+		}
 		context.put("tdcolor",data.getParameters().getString("count",""));
 	  	String hostIP=data.getServerName();
 	  	String codeBase=data.getServerScheme()+"://"+hostIP+":"+data.getServerPort()+data.getContextPath()+"/babylon/";
 		int uid=UserUtil.getUID(uname);
+                context.put("mode",mode1);
+
 /**
 		Criteria crt=new Criteria();
                 crt.add(UserConfigurationPeer.USER_ID,uid);
@@ -122,7 +144,7 @@ public class Chat extends SecureScreen
 		  	context.put("password",pword);
 	  		context.put("chatRoom",cid);
 		  	context.put("username",uname);
-		  	context.put("course",data.getUser().getTemp("course_name").toString());
+		  	//context.put("course",data.getUser().getTemp("course_name").toString());
 			context.put("babylonPath",data.getServletContext().getRealPath("/babylon/"));
 
 	}

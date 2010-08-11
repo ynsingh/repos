@@ -45,7 +45,6 @@ HTMLArea.I18N = {
 
 	msg: {
 		"Path":         "Ruta",
-		"TEXT_MODE":    "Esta en modo TEXTO. Use el boton [<>] para cambiar a WYSIWIG",
 
 		"IE-sucks-full-screen" :
 		// translate here

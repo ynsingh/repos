@@ -76,8 +76,9 @@ $!data.getMessage()
 <tr bgcolor="$ui.menuColor">
 #if($guest_login=="false" )
 	#if(($Role2=="InstructorRole")||($Role3=="StudentRole")||($Role4=="GAdminRole")||($Role5=="AuthorRole"))
-	<td align="center" colspan="3"><a href=$link.setPage("call,UserMgmt_User,Profile.vm").addPathInfo("lang",$lang) style=text-decoration:none>$Profile_user $brih_usr </a></td>
-	<td width="50%" align="center" colspan="3"><a href=$link.setPage("call,UserMgmt_User,changePassword.vm").addPathInfo("status","homePage").addPathInfo("lang",$lang) style=text-decoration:none>$brih_changePassword</a>
+	<td width="33%" align="center" colspan="2" ><a href=$link.setPage("call,UserMgmt_User,Profile.vm").addPathInfo("lang",$lang) style=text-decoration:none>$Profile_user $brih_usr </a></td>
+	<td width="33%" align="center"> <a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("mode","general")> $brih_chat</a> </td>
+	<td align="center"><a href=$link.setPage("call,UserMgmt_User,changePassword.vm").addPathInfo("status","homePage").addPathInfo("lang",$lang) style=text-decoration:none>$brih_changePassword</a>
 	</td>
 	#end
 #end

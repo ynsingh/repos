@@ -43,6 +43,5 @@ HTMLArea.I18N = {
 
 	msg: {
 		"Path":         "Kelias",
-		"TEXT_MODE":    "Jūs esete teksto režime.  Naudokite [<>] mygtuką grįžimui į WYSIWYG."
 	}
 };

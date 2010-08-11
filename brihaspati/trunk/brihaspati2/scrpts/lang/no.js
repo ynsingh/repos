@@ -45,7 +45,6 @@ HTMLArea.I18N = {
 
 	msg: {
 		"Path":         "Tekstvelger",
-		"TEXT_MODE":    "Du er i tekstmodus  Klikk på [<>] for å gå tilbake til WYSIWIG.",
                 "IE-sucks-full-screen" :
 		// translate here
                 "Visning i eget vindu har kjente problemer med Internet Explorer, " + 

@@ -43,6 +43,5 @@ HTMLArea.I18N = {
 
 	msg: {
 		"Path":         "Cesta",
-		"TEXT_MODE":    "Jste v TEXTOVÉM REŽIMU.  Použijte tlačítko [<>] pro přepnutí do WYSIWIG."
 	}
 };

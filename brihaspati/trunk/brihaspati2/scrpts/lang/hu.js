@@ -43,6 +43,5 @@ HTMLArea.I18N = {
 
 	msg: {
 		"Path":         "Hierarchia",
-		"TEXT_MODE":    "Forrás mód. Visszaváltás [<>] gomb"
 	}
 };
