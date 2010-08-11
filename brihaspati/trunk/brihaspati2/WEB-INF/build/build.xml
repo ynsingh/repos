@@ -3,7 +3,9 @@
 <!--@author Nagendra Kumar Singh mailto:nksngh_p@yahoo.co.in           -->
 <!--@author Awadhesh Kumar Trivedi mailto:awadhesh_trivedi@yahoo.co.in -->
 <!--@author Manvendra Baghel mailto:manav_cv@yahoo.co.in               -->
-<!--@modify Date:- 29 March 2006                                         -->
+<!--@author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>       -->
+<!--@modify Date:- 29 March 2006                                       -->
+<!--@modify Date:- 10-08-2010 (Shaista)                   	       -->
 <!-- ================================================================= -->
 
 <project name="peer" default="compile" basedir=".">
@@ -654,6 +656,7 @@
 	<delete dir="${Multilingual.TemplatePath}/malayalam" />
 	<delete dir="${Multilingual.TemplatePath}/marathi" />
 	<delete dir="${Multilingual.TemplatePath}/russian" />
+	<delete dir="${Multilingual.TemplatePath}/spanish" />
 	<delete dir="${Multilingual.TemplatePath}/tamil" />
 	<delete dir="${Multilingual.TemplatePath}/telugu" />
 	<delete dir="${Multilingual.TemplatePath}/urdu" />
