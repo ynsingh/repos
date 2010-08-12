@@ -1,4 +1,3 @@
-
 #*
  * @(#) ViewAss.vm 
  * Copyright (c) 2007,2009 ETRG,IIT Kanpur.
@@ -11,7 +10,7 @@
 $!data.getMessage()
 <table bgcolor="$ui.menuColor" width=100% > ##table 1 start
         <tr> 
-		<td>
+		<td><b>
 			<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
 	        	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")> $coursename </a> |
         		<a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1")> $brih_assignment  </a>| $brih_view $brih_assignment</b>
@@ -19,8 +18,61 @@ $!data.getMessage()
         	</td>
 	</tr>
 </table> ##table 1 end
+<table width=100% bgcolor="$ui.tableColor">
+	<tr>
+        #if($user_role == "instructor")
+        #if($tdcolor != "1")
+        <td>
+        #elseif($tdcolor=="1")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1")>$brih_post $brih_assignment</a></td>
+        #if($tdcolor != "2")
+        <td>
+        #elseif($tdcolor=="2")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Assignment,ViewAss.vm").addPathInfo("count","2")>$brih_view $brih_assignment/$brih_answer</a></td>
+        #if($tdcolor != "5")
+        <td>
+        #elseif($tdcolor=="5")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Assignment,EditDelete.vm").addPathInfo("count","5")>$brih_edit/$brih_delete $brih_assignment</a></td>
+                <td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/ViewAss.html","newWin");>$brih_help</a></td>
+        #else
+                #if($u == "true")
+                        #if($tdcolor != "1")
+                        <td>
+                        #elseif($tdcolor=="1")
+                        <td bgcolor="#AFDCEC">
+                        #end
+                        <a href=$link.setPage("call,Assignment,ViewAss.vm").addPathInfo("count","1")>$brih_view $brih_assignment/$brih_answer</a></td>
+                ##<img border=0  src="$content.getURI("/images/$lang/viewassignment.jpg")"></a></td>
+                #if($u1 == true)
+                        #if($tdcolor != "2")
+                        <td>
+                        #elseif($tdcolor=="2")
+                        <td bgcolor="#AFDCEC">
+                        #end
+			<a href=$link.setPage("call,Assignment,PostAns.vm").addPathInfo("count","2")>$brih_post $brih_answer</a></td>
+                ##<img border=0  src="$content.getURI("/images/$lang/postAnswer.jpg")"> </a><br></td>
+                #end
+                #if($u2 == true)
+                        #if($tdcolor != "3")
+                        <td>
+                        #elseif($tdcolor=="3")
+                        <td bgcolor="#AFDCEC">
+                        #end
+                        <a href=$link.setPage("call,Assignment,RePostAns.vm").addPathInfo("count","3")>$brih_repost $brih_answer</a></td>
+                ##<img border=0  src="$content.getURI("/images/$lang/repostAnswer.jpg")"></a><br></td>
+                #end
+                #end
+                <td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/ASS1.html","newWin");>$brih_help</a></td>
+        #end
+</tr>
+</table>
 <Form name=uploadform method="post" enctype="multipart/form-data"  action=$link.setPage("call,Assignment,ViewAss.vm").setAction("Assignments")>   
-
 <table width=100% bgcolor="$ui.tableColor">
         <tr>
 	#if($user_role == "instructor")
@@ -39,7 +91,7 @@ $!data.getMessage()
         </td>
 	<td>
         	#if($user_role == "instructor")
-                	<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/ViewAss.html","newWin");>$brih_help</a>
+##                	<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/ViewAss.html","newWin");>$brih_help</a>
  		#end
 	</td>
 	</tr>

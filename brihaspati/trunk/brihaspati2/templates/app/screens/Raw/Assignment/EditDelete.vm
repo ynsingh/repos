@@ -1,0 +1,130 @@
+#*
+ * @(#) EditDelete.vm
+ * Copyright (c) 2010 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ * @author <a href=" mailto:sunil.singh6094@gmail.com "> Sunil Kuamr Pal </a>
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+*#
+
+## Retreiving the $lang (representing the choosen language for display, which
+## was set in corresponding the screen class.
+#set($lang=$data.getUser().getTemp("lang").toString())
+
+## If some message has been set, that is retrieved and displayed.
+$!data.getMessage()
+
+## First of row of links is created.
+<table bgcolor="$ui.menuColor" width=100% > ##table 1 start
+	<tr> 
+		<td><b>
+			<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
+		        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")> $coursename </a> |
+        		<a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1")> $brih_assignment  </a>| $brih_edit/$brih_delete $brih_assignment</b>
+	        </td>
+	</tr>
+</table> ##table 1 end
+
+## Assignment submission form is created.
+<Form name=uploadform method="post" enctype="multipart/form-data"  action=$link.setPage("call,Assignment,EditDelete.vm").setAction("Assignments")>   
+<table width=100% bgcolor="$ui.tableColor">
+	<tr>
+		#if($user_role == "instructor")
+			<td><b>$brih_usr $brih_name</b>&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="text" name="GetUser"  size=26 onChange="validate1(this)" /></td>
+	        #end
+		<td>
+        	#if($user_role == "instructor")
+                	<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/ViewAss.html","newWin");>Help</a>
+ 		#end
+		</td>
+	</tr>
+</table>
+<table width=100% bgcolor="$ui.tableColor"> ##table 2 start
+<tr>
+        ##if($user_role == "instructor")
+        #if($tdcolor != "1")
+        <td>
+        #elseif($tdcolor=="1")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1")>$brih_post $brih_assignment</a></td>
+        #if($tdcolor != "2")
+        <td>
+        #elseif($tdcolor=="2")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Assignment,ViewAss.vm").addPathInfo("count","2")>$brih_view $brih_assignment/$brih_answer</a></td>
+        #if($tdcolor != "5")
+        <td>
+        #elseif($tdcolor=="5")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Assignment,EditDelete.vm").addPathInfo("count","5")>$brih_edit/$brih_delete $brih_assignment</a></td>
+        <td>
+        #if($Status!="Edit")
+        <td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Ass.html","newWin");>$brih_help</a></td>
+        #else
+            <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/EditDelete.html","newWin");>$brih_help</a>
+        #end
+        </td>
+        </tr>
+</table>
+<table bgcolor="$ui.tableColor" width="100%">
+	<tr bgcolor="$ui.menuColor">
+		<td align="center"> <b> $brih_serialNo</b> </td>
+		<td align="center"> <b> $brih_topic $brih_name</b> </td>
+		<td align="center">  <b> $brih_assignment $brih_file  </b> </td>
+		<td  align="Center"> <b> $brih_assignment $brih_Da  </b> </td>
+		<td  align="Center"> <b> $brih_max $brih_marks </b> </td>
+		<td  align="Center"> <b> $brih_action </b> </td>
+		
+	</tr>
+	#set($i=1)
+	#foreach($e in $Assignmentlist )
+		#if($velocityCount%2==0)
+			<tr bgcolor="$ui.menuColor">
+		#else
+			<tr bgcolor="$ui.tableColor">
+		#end
+			<td width="2%" align="Center"> $i  </td>  ## Serial Number
+			<td width="10%" align="Center"> $!e.getStudentname()  </td>  ##get topic name in student name
+			<td width="10%" align="Center">   ##  Assignment file
+			<a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("view","content").addPathInfo("type","Assignment").addPathInfo("msgid",$e.getStudentfile()).addPathInfo("filename",$e.getAssignmentfile())","newWin");>$brih_assignment</a>
+			</td>
+  			<td width="20%" align="Center"> $!e.getDuedate() </td>
+			<td width="10%" align="Center"> $!e.getmaxgrade() </td> 
+			<td width="10%" align="Center"> 
+				<a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("mode","Update").addPathInfo("cid",$!e.getStudentfile())>$brih_update</a>&nbsp; &nbsp;
+				<a href=$link.setPage("call,Assignment,EditDelete.vm").addPathInfo("topic", $!e.getStudentname()).addPathInfo("cid", $!e.getStudentfile()).setAction("Assignments").addPathInfo("actionName","eventSubmit_doDelete") onclick="javascript:return confirm('Do you want to delete this Assignment')"><b>$brih_delete</b></a>
+			</td>
+	#set($i=$i+1)
+	#end	
+</table>
+</form>
+			<input type="hidden" name="actionName" >
+                        <input type=hidden name="mode" value="All">
+                        <input type=hidden name="topic" value="$topic">
+                        <input type=hidden name="cid" value="$cid">
+                        <input type=hidden name="count" value="$tdcolor">
+<script language="javascript">
+	function popupWin(url,popupName)
+        {
+                Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400,align=left");
+        }
+        function checkBlank(uploadform,field)
+        {
+               	if(uploadform.topicList.value!="" )
+               	{
+			uploadform.actionName.value=field.name;
+			uploadform.submit();
+                }
+                else{
+			alert("Topic Name Can not Empty !! "+uploadform.topicList.value);
+		}
+
+        }
+        function popupWin(urlName,popupName)
+        {
+                window.open(urlName,popupName,"toolbar=yes,scrollbars=yes");
+        }
+</script>

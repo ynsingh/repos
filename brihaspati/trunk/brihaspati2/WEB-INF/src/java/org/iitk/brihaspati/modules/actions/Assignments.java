@@ -1,6 +1,5 @@
 package org.iitk.brihaspati.modules.actions;
 
-
 /*
  * Copyright (c) 2007,2010 ETRG,IIT Kanpur.
  * All Rights Reserved.
@@ -16,7 +15,8 @@ package org.iitk.brihaspati.modules.actions;
  * notice, this list of conditions and the following disclaimer in
  * the documentation and/or other materials provided with the
  * distribution.
- *
+ 
+
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
@@ -54,7 +54,7 @@ import org.iitk.brihaspati.om.News;
 import org.iitk.brihaspati.om.NewsPeer;
 import org.iitk.brihaspati.om.Assignment;
 import org.iitk.brihaspati.om.AssignmentPeer;
-
+import org.iitk.brihaspati.modules.utils.SystemIndependentUtil;//sunil
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.FileEntry;
 import org.iitk.brihaspati.modules.utils.XmlWriter;
@@ -65,6 +65,7 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
+import org.iitk.brihaspati.modules.utils.SystemIndependentUtil;
 
 	/** This class contains code of Sending Assignment  to the Assignment
 	*  with  attachments file txt formate
@@ -95,7 +96,6 @@ public class Assignments extends SecureAction
                         * @see UserUtil in Util.
                         */
 				
-				
                         User user=data.getUser();
                         String username=user.getName();
                         String courseid=(String)user.getTemp("course_id","");
@@ -104,15 +104,24 @@ public class Assignments extends SecureAction
                         /**
                         *Retrieve the parameters by using the ParameterParser
 			*/
-				
-				
+
 			String DB_subject1=pp.getString("contentTopic");
                         String DB_message1=pp.getString("message");
                         String Grade=pp.getString("grade");
                         String year=pp.getString("Start_year");
                         String month=pp.getString("Start_mon");
                         String day=pp.getString("Start_day");
-				
+
+			/**
+                        *Get mode for update and delete Assingnment
+                        */
+
+			String mode=pp.getString("mode","");	
+			String cid=null;
+			if(mode.equals("Update")){
+				cid=pp.getString("cid","");	
+			}
+
 				
                         /**
                         *convert the year,month,date in date formate
@@ -159,6 +168,8 @@ public class Assignments extends SecureAction
 			int Day=Integer.parseInt(day);
                         String pdate= year+month+day;
                         int pubdate=Integer.parseInt(pdate);
+			boolean flag=false;
+			//Vector str=new Vector();
 
                         /** Expiry date get using ExpiryUtil and convert String type to Date type*/
 
@@ -169,8 +180,6 @@ public class Assignments extends SecureAction
         		{
 				msg= MultilingualUtil.ConvertedString("assignment_msg4",LangFile);
 	                 	data.setMessage(msg);
-			//        data.setMessage("Assignment failed. Illegal characters in the fields !! ");
-
                         }
                         else if(pubdate >= curdate)
                         {
@@ -189,17 +198,21 @@ public class Assignments extends SecureAction
                                 * Select GroupName
                                 * from the Assignment table
                                 */
-
                                 Criteria crit=new Criteria();
                                 crit.add(AssignmentPeer.GROUP_NAME,courseid);
                                 List u=AssignmentPeer.doSelect(crit);
+
 				 /**
                                 * Assignment id is created
                                 */
+				String agroup_name;
+				if(mode.equals("Update")){
+					agroup_name=cid;
+				}else{
+                                	agroup_name=courseid+"-"+u.size();
+				}
 
-                                String group_name=courseid+"-"+u.size();
-
-                                String Assign=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Assignment"+"/"+group_name);
+                                String Assign=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Assignment"+"/"+agroup_name);
 
                                 /**
                                 *Get  path for the Assignment
@@ -219,22 +232,24 @@ public class Assignments extends SecureAction
                                 fileItem = pp.getFileItem("file");
                                 String fileName1=fileItem.getName();
 				if(fileName1.endsWith(".txt")||fileName1.endsWith(".pdf")||fileName1.endsWith(".html"))
-                                {
+                                {//if1
 					
                                         /**
                                         * Select the Topic Name According to Course Id
                                         * from the Assignment table
                                         */
-					
+				
                                         crit=new Criteria();
 					crit.add(AssignmentPeer.GROUP_NAME,courseid);
                                         crit.add(AssignmentPeer.TOPIC_NAME,DB_subject1);
                                         List u5=AssignmentPeer.doSelect(crit);
-                                        if(u5.size()==0)
-                                        {
+
+                                        if( (u5.size()==0) || (mode.equals("Update")) )
+                                        {//if2
                                                 /**
                                                 * Write Assignment file in txt formate
                                                 */
+
 						int startIndex=fileName1.lastIndexOf(".")+1;
         		                        String fileExt=fileName1.substring(startIndex);
                                                 String fileName="AssignmentFile."+fileExt;
@@ -246,65 +261,105 @@ public class Assignments extends SecureAction
                                                 * from the Assignment table
                                                 */
 
-                                                crit=new Criteria();
-                                                crit.add(NewsPeer.GROUP_ID,GID);
-                                                crit.add(NewsPeer.USER_ID,uid);
-                                                crit.add(NewsPeer.NEWS_TITLE,News);
-                                                crit.add(NewsPeer.NEWS_DESCRIPTION,MessageBox);
+						crit=new Criteria();
+                                	        crit.add(NewsPeer.GROUP_ID,GID);
+                        	                crit.add(NewsPeer.USER_ID,uid);
+                	                        crit.add(NewsPeer.NEWS_TITLE,News);
+		                                crit.add(NewsPeer.NEWS_DESCRIPTION,MessageBox);
                                                 crit.add(NewsPeer.PUBLISH_DATE,Cur_date);
                                                 crit.add(NewsPeer.EXPIRY,Edate);
                                                 crit.add(NewsPeer.EXPIRY_DATE,Post_date);
-                                                NewsPeer.doInsert(crit);
-
+						NewsPeer.doInsert(crit);
+						//ErrorDumpUtil.ErrorLog("Insert1====>sunil"+MessageBox);
                                                 /**
-                                                * Insert the Aissignment Info
-                                                * from the Assignment table
-                                                */
-						ErrorDumpUtil.ErrorLog("group_name  "+group_name +" courseid  "+courseid+"  DB_subject1  "+DB_subject1 +" Cur_date  "+Cur_date+"  Post_date  "+Post_date +"  Grade  "+Grade);
-						//DB_subject1=DB_subject1.replaceAll("`","\'");	
+						* Insert the Aissignment Info
+                		                * from the Assignment table
+                                	        */
+
 						Criteria crit1=new Criteria();
-                                                crit1.add(AssignmentPeer.ASSIGN_ID,group_name);
+                                                crit1.add(AssignmentPeer.ASSIGN_ID,agroup_name);
                                                 crit1.add(AssignmentPeer.GROUP_NAME,courseid);
                                                 crit1.add(AssignmentPeer.TOPIC_NAME,DB_subject1);
                                                 crit1.add(AssignmentPeer.CUR_DATE,Cur_date);
                                                 crit1.add(AssignmentPeer.DUE_DATE,Post_date);
                                                 crit1.add(AssignmentPeer.PER_DATE,Post_date);
                                                 crit1.add(AssignmentPeer.GRADE,Grade);
-                                                AssignmentPeer.doInsert(crit1);
-							
-							
-                                                File file=new File(Assign+"/__file.xml");
+						if(mode.equals("Update")){
+								AssignmentPeer.doUpdate(crit1);
+							}else{
+                                                		AssignmentPeer.doInsert(crit1);
+							}
+						File file=new File(Assign+"/__file.xml");
                                                 XmlWriter xmlwriter=null;
+						int kk = -1;
                                                 if(!file.exists())
                                                 {
-                                                        TopicMetaDataXmlWriter.writeWithRootOnly1(file.getAbsolutePath());
-                                                        xmlwriter=new XmlWriter(Assign+"/__file.xml");
+                                                       	TopicMetaDataXmlWriter.writeWithRootOnly1(file.getAbsolutePath());
+                                                       	xmlwriter=new XmlWriter(Assign+"/__file.xml");
+						}else{
+                                                	if(mode.equals("Update")){
+                                                        	kk=0;
+                                                       		xmlwriter=TopicMetaDataXmlWriter.writeXml_Assignment(Assign,"/__file.xml",kk);
+                                                	}else {
+                                                       		//xmlwriter=new XmlWriter(Assign+"/__file.xml",kk);
+								xmlwriter=TopicMetaDataXmlWriter.writeXml_Assignment(Assign,"/__file.xml",-1);
+							}
 						}
-                                                TopicMetaDataXmlWriter.appendUpdationMailElement(xmlwriter,fileName,username,Grade,Duedate);     
+
+                                        		TopicMetaDataXmlWriter.appendUpdationMailElement(xmlwriter,fileName,username,Grade,Duedate);     
 						xmlwriter.writeXmlFile();
-						msg= MultilingualUtil.ConvertedString("assignment_msg5",LangFile);
-						data.setMessage(msg);
-						//data.setMessage(" Assignment File has been uploaded successfully ");
-                                        }
+
+						/**
+                                                * Disply Message when assignment uploaded successfully
+                                                * and Assignment update successfully
+                                                */
+
+						if(mode.equals("Update")){
+							msg= MultilingualUtil.ConvertedString("c_msg5",LangFile);
+							data.setMessage(msg);
+						}else{
+							msg= MultilingualUtil.ConvertedString("assignment_msg5",LangFile);
+							data.setMessage(msg);
+						}
+						flag=true;
+						
+                                        }//if2
                                         else {  
 						msg= MultilingualUtil.ConvertedString("assignment_msg15",LangFile);             
 						data.setMessage(msg);
-						//setMessage("This Topic Name already exists");
 							
 					}
-                                }  //if
+                        	}//if1
                                 else {
+					
+					/**
+                                        * Disply Message The file for uploading should have '.txt', '.pdf', '.html' extension !!
+					*/
+
 					msg= MultilingualUtil.ConvertedString("assignment_msg6",LangFile);               
 					data.setMessage(msg);
-				//	data.setMessage("The file for uploading should have '.txt' extension !!");
 				}
-                        }//if
+			}//else if
                         else {
+
+				/**
+                                * Disply Message Due date is not correct !!
+                                */
+				
 				msg= MultilingualUtil.ConvertedString("assignment_msg7",LangFile);           
 				data.setMessage(msg);
- 				// data.setMessage("Due date is not correct");
 			}
-		}catch(Exception ex) {   data.setMessage("Rind !!"+ex); }
+
+			/**
+ 			* Break Message in textarea if topic name same or
+                        * Assignment file .txt, .pdf and .html format not found
+                        */
+
+			if(!flag){
+				context.put("DB_subject",DB_subject1);
+                        	context.put("DB_message",DB_message1);		
+			}
+		}catch(Exception ex) {   data.setMessage("Error in assignment action in do_submit method !!"+ex); }
         }
 
         /**
@@ -319,10 +374,12 @@ public class Assignments extends SecureAction
                 {
 			String LangFile=data.getUser().getTemp("LangFile").toString();
                         String msg="";
+
 			/**
                         * Get the user name  and find the user id
                         * @see UserUtil in utils
                         */
+
                         User user=data.getUser();
                         ParameterParser pp=data.getParameters();
                         String username=user.getName();
@@ -339,9 +396,6 @@ public class Assignments extends SecureAction
                         String cdate = Integer.toString(Integer.parseInt(ExpiryUtil.getCurrentDate("")));
                         String date=cdate.substring(0,4);
                         date=date+"-"+cdate.substring(4,6)+"-"+cdate.substring(6,8);
-
-
-
 
 			//String date=pp.getString("date","");
                         String DB_subject1=pp.getString("topicList");
@@ -367,7 +421,9 @@ public class Assignments extends SecureAction
                         File f=new File(Assign);
                         String flist[] = f.list();
                         String userid1=Integer.toString(userid);
+
                         /** serching the file */
+
                         for(int ss=0;ss<flist.length;ss++)
                         {
                                 if(flist[ss].startsWith("Answerfile"))
@@ -384,6 +440,7 @@ public class Assignments extends SecureAction
                                 String fileName1=fileItem.getName();
                                 
 				/** check the txt formate */
+
 				ErrorDumpUtil.ErrorLog("aaaa    "+fileName1);
                                 
 				if(fileName1.endsWith(".txt")||fileName1.endsWith(".pdf")||fileName1.endsWith(".html"))
@@ -400,16 +457,20 @@ public class Assignments extends SecureAction
                                         XmlWriter xmlwriter=null;
 					xmlwriter=TopicMetaDataXmlWriter.writeXml_Assignment(Assign,"/__file.xml",-1);            
                                         String Grade="10";
+
                                         //String Duedate=pp.getString("date");
-                               TopicMetaDataXmlWriter.appendUpdationMailElement(xmlwriter,fileName,username,Grade,date);
+
+					TopicMetaDataXmlWriter.appendUpdationMailElement(xmlwriter,fileName,username,Grade,date);
                                         xmlwriter.writeXmlFile();
 					msg= MultilingualUtil.ConvertedString("c_msg5",LangFile);
 	                                data.setMessage(msg);
+
                                         //data.setMessage("Answer File has been uploaded successfully");
                                 }
                                 else {
 					msg= MultilingualUtil.ConvertedString("assignment_msg6",LangFile);    
 					data.setMessage(msg);
+
 					//data.setMessage(" The file for uploading should have '.txt' extension !!   ");
 				
 				}
@@ -417,12 +478,12 @@ public class Assignments extends SecureAction
                         else { 
 				msg= MultilingualUtil.ConvertedString("assignment_msg9",LangFile);
 				data.setMessage(msg);
+
 				//data.setMessage(" Answer file already uploaded ");      
 			}
                 }
-                catch(Exception ex) {   data.setMessage("     Rind !!       "+ex); }
+                catch(Exception ex) {   data.setMessage(" Error in action !!       "+ex); }
 	}
-		
 			
 	/**
         * Place all the data object in the context for use in the template.
@@ -431,10 +492,8 @@ public class Assignments extends SecureAction
         * @exception Exception, a generic exception
         * @return nothing
         **/
-		
-		
-			
-        public void RePostAns (RunData data,Context context)
+        
+	public void RePostAns (RunData data,Context context)
         {
                 try
                 {
@@ -453,6 +512,7 @@ public class Assignments extends SecureAction
                         String str4=Integer.toString(userid);
 
                         /**  Get Role id Student or Instructor   */
+
                         String user_role=(String)data.getUser().getTemp("role");
                         String courseid=(String)user.getTemp("course_id","");
 
@@ -465,15 +525,10 @@ public class Assignments extends SecureAction
                         String date=cdate.substring(0,4);
                         date=date+"-"+cdate.substring(4,6)+"-"+cdate.substring(6,8);
 
-
-
-
-
                         //String date=pp.getString("date","");
                         String DB_subject1=pp.getString("topicList");
                         context.put("topicList",DB_subject1);
                         String Assign=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Assignment");
-				
 				
                         /**
                         * Select Topic Name
@@ -491,7 +546,6 @@ public class Assignments extends SecureAction
                                 Assign =Assign+"/"+str2;
                         }
 
-			
                         /** set the path to Assignment file    */
 
                         File file=new File(Assign+"/__file.xml");
@@ -572,6 +626,9 @@ public class Assignments extends SecureAction
                         ParameterParser pp=data.getParameters();
                         String DB_subject1=pp.getString("topicList");
                         context.put("topicList",DB_subject1);
+			String mode=pp.getString("mode","");
+                        context.put("mode",mode);
+
                         String username1=pp.getString("topicList1");
                         context.put("topicList1",username1);
                         String newgrade=pp.getString("newgrade");
@@ -638,11 +695,6 @@ public class Assignments extends SecureAction
                         String cdate = Integer.toString(Integer.parseInt(ExpiryUtil.getCurrentDate("")));
                         String date=cdate.substring(0,4);
                         date=date+"-"+cdate.substring(4,6)+"-"+cdate.substring(6,8);
-
-
-
-
-
 
                         //String date=pp.getString("date","");
                         String DB_subject=pp.getString("topicList");
@@ -740,7 +792,7 @@ public class Assignments extends SecureAction
                 }//try
                 catch(Exception ex) {    }
         }
-        //arvind
+        
         public void Reset(RunData data , Context context)
         {
                 try{
@@ -758,11 +810,6 @@ public class Assignments extends SecureAction
                         int userid=UserUtil.getUID(username);
                         String str4=Integer.toString(userid);
 
-                        /**
-                        *
-                        *
-                        */
-
                         String user_role=(String)data.getUser().getTemp("role");
                         String courseid=(String)user.getTemp("course_id","");
 
@@ -774,9 +821,6 @@ public class Assignments extends SecureAction
                         String date=cdate.substring(0,4);
                         date=date+"-"+cdate.substring(4,6)+"-"+cdate.substring(6,8);
 	
-
-
-
                         //String date=pp.getString("date","");
                         String DB_subject=pp.getString("topicList");
                         String DB_subject1=pp.getString("topicList1");
@@ -786,7 +830,7 @@ public class Assignments extends SecureAction
                         String day=pp.getString("Start_day");
                         String Duedate="0000"+"-"+"00"+"-"+"00";
                         /** convert Date String to Integer  */
-			 int Year1=Integer.parseInt(year);
+			int Year1=Integer.parseInt(year);
                         ErrorDumpUtil.ErrorLog("yyyy..."+Duedate);
                         int Month1=Integer.parseInt(month);
                         int Day=Integer.parseInt(day);
@@ -810,7 +854,7 @@ public class Assignments extends SecureAction
                                         Assignment element=(Assignment)(u.get(i));
                                         str2=(element.getAssignId());
                                         Assign =Assign+"/"+str2;
-                                //      ErrorDumpUtil.ErrorLog("Arvind....."+Assign);
+                                //      ErrorDumpUtil.ErrorLog("Assingment....."+Assign);
                                 }
 
                                 boolean reset=false;
@@ -889,9 +933,6 @@ public class Assignments extends SecureAction
                 }//try
                 catch(Exception ex) {    }
         }
-
-
-
 
         //arvind
         /**
@@ -1004,8 +1045,6 @@ public class Assignments extends SecureAction
 						xmlwriter=new XmlWriter(Assign+"/__Gradefile.xml");
                                 	}
 					Vector xmlvector=new Vector();
-                                        
-
 	                                int kk=-1;
 				        /**
                                 	* Getting the gradedetail through xml file
@@ -1036,7 +1075,6 @@ public class Assignments extends SecureAction
 					msg= MultilingualUtil.ConvertedString("assignment_msg8",LangFile);
 					data.setMessage(msg);
 					
-
 					data.setScreenTemplate("call,Assignment,ViewAss.vm");
 
                         	        //data.setMessage("Grade Send Sucessfully");
@@ -1052,6 +1090,59 @@ public class Assignments extends SecureAction
                 }
                 catch(Exception ex)  {  data.setMessage("The error in Assignment !!"+ex);                }
         }
+
+        /**
+        * Place all the data object in the context for use in the template.Delete
+        * @param data RunData instance
+        * @param context Context instance
+        * @exception Exception, a generic exception
+        **/
+
+	public void doDelete(RunData data,Context context)
+        {
+               	try
+               	{
+                       	String LangFile=data.getUser().getTemp("LangFile").toString();
+                       	ParameterParser pp=data.getParameters();
+                       	User user=data.getUser();
+                       	String username=data.getUser().getName();
+                       	int uid=UserUtil.getUID(username);
+
+			/**
+                        *Get mode for Delete Assingnment
+                        */
+
+                       	String mode=pp.getString("mode","");
+                       	context.put("mode",mode);
+			String courseid=(String)user.getTemp("course_id");
+                       	String assignid=pp.getString("cid","");
+                       	ErrorDumpUtil.ErrorLog("\nassignid"+assignid);
+                       	String topicname=pp.getString("topic","");
+                       	ErrorDumpUtil.ErrorLog("\nmode"+mode+"\ntopicname"+assignid);
+				
+			/**
+                        *Delete Assingnment From database
+                        */
+
+			Criteria crit=new Criteria();
+                        crit=new Criteria();
+                        crit.add(AssignmentPeer.ASSIGN_ID, assignid);
+                        AssignmentPeer.doDelete(crit);
+
+			/**
+                        *Delete Assingnment From Courses 
+                        */
+
+			String courseRealPath=TurbineServlet.getRealPath("/Courses");
+			String filepath=(courseRealPath+"/"+courseid+"/"+"/Assignment");
+                       	File AssDir=new File(filepath+"/"+assignid);
+                       	ErrorDumpUtil.ErrorLog("\nassignid"+assignid+"\nfilepath"+filepath+"\nAssDir"+AssDir);
+                       	SystemIndependentUtil.deleteFile(AssDir);
+			//AssDir.delete();
+                        data.setMessage("Assignment deleted successfully !!");
+		}
+                catch(Exception ex){data.setMessage("Error in Delete word and alias" + ex);}
+       	}//method close
 
         /**
         * This method is invoked when no button corresponding to
@@ -1078,10 +1169,15 @@ public class Assignments extends SecureAction
         {       try
                 {
                         String action=data.getParameters().getString("actionName","");
+			ErrorDumpUtil.ErrorLog("actionname"+action);
                         if(action.equals("brih_upload"))
                                 do_submit(data,context);
+        	        else if(action.equals("eventSubmit_doDelete"))
+                	        doDelete(data,context);
                         else if(action.equals("dosubmit"))
                                 dosubmit(data,context);
+			else if(action.equals("doUpdate"))
+                                do_submit(data,context);
                         else if(action.equals("RePostAns"))
                                 RePostAns(data,context);
                         else if(action.equals("dosubmitView"))
@@ -1096,15 +1192,13 @@ public class Assignments extends SecureAction
                                 MarkUpload(data,context);
 			else if(action.equals("Go"))
                                 Go(data,context);
-
                         else
                         {       String LangFile=data.getUser().getTemp("LangFile").toString();
                                 String msg=MultilingualUtil.ConvertedString("action_msg",LangFile);
                                 data.setMessage(msg);
                         }
-                }
+			 }
                 catch(Exception ex)  {    data.setMessage("The error in Assignment !!"+ex);   }
         }
 }
 
-				

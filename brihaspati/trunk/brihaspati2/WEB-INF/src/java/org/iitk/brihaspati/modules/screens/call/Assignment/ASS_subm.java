@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.Assignment;
 /*
  * @(#)ASS_subm.java
  *
- *  Copyright (c) 2005-2006 ETRG,IIT Kanpur.
+ *  Copyright (c) 2005-2010 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -37,36 +37,34 @@ package org.iitk.brihaspati.modules.screens.call.Assignment;
  */
 
 import java.io.File;
-
 import java.util.Date;
 import java.util.Vector;
 import java.util.List;
-
 import org.iitk.brihaspati.om.Assignment;
 import org.iitk.brihaspati.om.AssignmentPeer;
+import org.iitk.brihaspati.om.News;
+import org.iitk.brihaspati.om.NewsPeer;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.FileEntry;
 import org.iitk.brihaspati.modules.utils.YearListUtil;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
-
-
-
 import org.apache.torque.util.Criteria;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.services.servlet.TurbineServlet;
-
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
-
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.GroupUtil;
 
 /**
  *   This class contains code for all discussions in workgroup
  *   Compose a discussion and reply.
  *   @author  <a href="arvindjss17@yahoo.co.in">Arvind Pal</a>
+ *   @author  <a href="sunil.singh6094@gmail.com">Sunil Kumar Pal</a>
  */
 
 public class  ASS_subm  extends  SecureScreen
@@ -87,6 +85,11 @@ public class  ASS_subm  extends  SecureScreen
 			User user=data.getUser();
                         ParameterParser pp=data.getParameters();
                         String courseid=(String)user.getTemp("course_id");
+			/**
+                        * this mode use for update assignment
+                        */
+			String mode=pp.getString("mode","");
+                        context.put("mode",mode);
 			
 			/**
                         * Get courseid  and coursename for the user currently logged in
@@ -100,7 +103,8 @@ public class  ASS_subm  extends  SecureScreen
                         String Role = (String)user.getTemp("role");
                         context.put("user_role",Role);
                         context.put("tdcolor",pp.getString("count",""));
-                        
+			//topic
+                        String Asmt_topic=pp.getString("topicAsmt","");
 			/**
                         * Select all the information according to GroupName
                         * from the Assignment table
@@ -109,7 +113,7 @@ public class  ASS_subm  extends  SecureScreen
 			Criteria crit1=new Criteria();
                         crit1.add(AssignmentPeer.GROUP_NAME,courseid);
                         List u=AssignmentPeer.doSelect(crit1);
-			ErrorDumpUtil.ErrorLog("                     a           "+u.size());
+			ErrorDumpUtil.ErrorLog("a"+u.size());
                         boolean view=false,postAns=false,perdate=false;
                         if( u.size() != 0 )
                         {
@@ -214,20 +218,53 @@ public class  ASS_subm  extends  SecureScreen
                         *  Retrieves the current date of the System
                         *  @see ExpiryUtil in utils
                         */
-                        String cdate=ExpiryUtil.getCurrentDate("");
+
+			String cdate="";
+   			if(mode.equals("Update")) {
+                        	lst.clear();
+                        	String tcid=pp.getString("cid","");
+				crit1=new Criteria();
+        	                crit1.add(AssignmentPeer.GROUP_NAME,courseid);
+        	                crit1.add(AssignmentPeer.ASSIGN_ID,tcid);
+	                        List uu=AssignmentPeer.doSelect(crit1);
+				if( uu.size() != 0 )
+                        	{
+                                	for(int i=0;i<uu.size();i++)
+                                	{
+                                        	Assignment element=(Assignment)(uu.get(i));
+	                                        String topic=(element.getTopicName());
+	                                        cdate=(element.getDueDate()).toString();
+						cdate=cdate.substring(0,10);
+               	        			cdate=cdate.replace("-","");
+	                                        int mmarks=(element.getGrade());
+	                                        String assid=(element.getAssignId());
+						context.put("topic",topic);
+						context.put("maxmarks",mmarks);
+		                                context.put("cid",assid);
+						
+					}
+				}
+
+				/**
+                                * Break topic name if same name not exist
+                                */
+
+                                String topicname=pp.getString("DB_subject1","");
+                                context.put("DB_subject",topicname);				
+			}else{
+				cdate=ExpiryUtil.getCurrentDate("");
+                      	}//mode update close
+
                         /**
                          * Get the current day from the currentdate
                          */
+
                         context.put("cdays",cdate.substring(6,8));
                         context.put("cmonth",cdate.substring(4,6));
                         context.put("cyear",cdate.substring(0,4));
                         context.put("year_list",YearListUtil.getYearList());
-			}
-		////////////////////////////////////////////////////////////////
+			}//role instructor close
                 }
                 catch(Exception e) { data.setMessage("Exception screens [Assignment]" + e);   }
         }
 }
-
-
-					
