@@ -72,8 +72,27 @@ import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
  * @ modified date: 26-07-2010, 06-08-2010
  */
 
+/* This screen class is called when User's selects a home location as instructor/
+ * student.
+ */
 public class IndexHome extends SecureScreen{
 	public void doBuildTemplate( RunData data, Context context ){
+
+/* Verify if the user has selected Instructor's role or Student's role.
+ * Set the context course to be NULL. The role context of the user remain same.
+ * If Instructor's role is choosen {
+ *   Get list of all the courses in which user is instructors.
+ *   Set this list for display.
+ * }
+ * If student's role is choosen {
+ *    Get list of all the courses in which user is student.
+ *    Set this list for display.
+ * }
+ * For each course in the courses list {
+ *    Check if there is unread notice is there or not. Store this info for
+ *        this course for creation of link for directly viewing the unread notice list.
+ * }
+ */
 		try{
 			User user=data.getUser();
 		        System.gc();	
@@ -131,8 +150,8 @@ public class IndexHome extends SecureScreen{
 				user.setTemp("confParam","10");
 			}
 			// This is check for set temp variables
-			//user.setTemp("course_name","");
-                        //user.setTemp("course_id","");
+			user.setTemp("course_name","");
+                        user.setTemp("course_id","");
 			user.setTemp("role",Role);
 
 				/**
@@ -144,12 +163,9 @@ public class IndexHome extends SecureScreen{
 
                         Vector unread_inst=new Vector();
                         Vector unread_stud=new Vector();
-			String groupName = "";
-                        if(Role.equals("instructor"))
+                        
+			if(Role.equals("instructor"))
 			{
-				groupName=GroupUtil.getGroupName(u_id,2);
-				user.setTemp("course_name",CourseUtil.getCourseName(groupName));
-                        	user.setTemp("course_id",groupName);
 				
 				Vector course_inst=StudentInstructorMAP.getIMAP(u_id);
                         	context.put("inst",course_inst);
@@ -159,11 +175,6 @@ public class IndexHome extends SecureScreen{
 			}
                         else if(Role.equals("student"))
 			{
-				/////////////////////////////////
-				groupName=GroupUtil.getGroupName(u_id,3);
-				user.setTemp("course_name",CourseUtil.getCourseName(groupName));
-                        	user.setTemp("course_id",groupName);
-				//////////////////////////////////////
 				Vector course_stud=StudentInstructorMAP.getSMAP(u_id);
                         	context.put("stud",course_stud);
 				//Unread Notices
