@@ -114,8 +114,14 @@ public class StringUtil
 				if(start_index!=-1){
 					int index=start_index+1;
 					if(character==38){
-						if(!(data.substring(index,index+3).equals("amp;")))
-							sb.replace(start_index,index,"&amp;");
+						if(index+4<=data.length()){
+                                                        if(!(data.substring(index,index+4).equals("amp;"))){
+                                                                sb.replace(start_index,index,"&amp;");
+                                                        }
+                                                }
+                                                else{
+                                                        sb.replace(start_index,index,"&amp;");
+                                                }
 					}
 					else if(character==60){
 						sb.replace(start_index,index,"&lt;");
