@@ -120,6 +120,9 @@ $!data.getMessage()
 					<td align=center>
 					<font face="$ui.sansSerifFonts"><b>$brih_msg2</font>
 					</td>
+					<td align=center>
+					<font face="$ui.sansSerifFonts"><b>$brih_guest $brih_login</font>
+					</td>
 					</tr>
 					#set($count=1)
 					##set($row_count=1)
@@ -158,6 +161,19 @@ $!data.getMessage()
 							</font>
 							</td>
 						#end
+						<td align="center">
+##				//add course id for that action
+						<form name="frm" method="post" action="$link.setPage("call,IndexHome.vm").setAction("Guest")">
+##						$cid=$instructor.getGroupName();
+						#if($instructor.getCGuest() == "true")
+							<input type="submit"  value="$DisBoard_DBmsg8" name="$DisBoard_DBmsg7">
+                                                #else
+							<input type="submit"  value="$DisBoard_DBmsg7" name="$DisBoard_DBmsg8">
+                                                #end
+							<input type="hidden" value="$instructor.getGroupName()"  name="courseId">
+						</form>
+                                                </td>
+
  						</tr>
 					#end ## if1 close
 					#set($count1=$count1+1)

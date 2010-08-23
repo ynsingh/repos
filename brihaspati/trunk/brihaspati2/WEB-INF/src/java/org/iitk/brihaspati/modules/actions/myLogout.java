@@ -1,9 +1,9 @@
 package org.iitk.brihaspati.modules.actions;
 
 /*
- * @(#)myLogin.java
+ * @(#)myLogout.java
  *
- *  Copyright (c)2009 ETRG,IIT Kanpur.
+ *  Copyright (c)2010 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -34,44 +34,32 @@ package org.iitk.brihaspati.modules.actions;
  *  Contributors : members of ETRG, IIT Kanpur
  *
  */
-
+//java classes
 import java.util.Date;
 import java.util.List;
-import java.util.Iterator;
-
-
+//Turbine classes
 import org.apache.turbine.Turbine;
-import org.apache.turbine.TurbineConstants;
+import org.apache.commons.logging.Log;
 import org.apache.turbine.util.RunData;
 import org.apache.torque.util.Criteria;
 import org.apache.velocity.context.Context;
-
-import com.workingdogs.village.Record;
-
-import org.apache.turbine.services.security.TurbineSecurity;
-import org.apache.turbine.om.security.TurbineUser;
+import org.apache.turbine.TurbineConstants;
 import org.apache.turbine.om.security.User;
-
-import org.apache.turbine.util.security.TurbineSecurityException;
-import org.apache.turbine.util.security.AccessControlList;
-
-import org.iitk.brihaspati.om.UsageDetails;
-import org.iitk.brihaspati.om.UsageDetailsPeer;
-//import org.iitk.brihaspati.om.TurbineUser;
-import org.iitk.brihaspati.om.TurbineUserPeer;
-
-import org.iitk.brihaspati.modules.utils.UserUtil;
-import org.iitk.brihaspati.modules.utils.StringUtil;
-import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
-
-import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.turbine.modules.actions.VelocityAction;
+//Brihaspati class
+import org.iitk.brihaspati.om.UsageDetails;
+import org.iitk.brihaspati.om.UsageDetailsPeer;
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+
+
 /**
- * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
-**/
+ * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
+ **/
+
 public class myLogout extends VelocityAction{
-                private Log log = LogFactory.getLog(this.getClass()); 
+	private Log log = LogFactory.getLog(this.getClass()); 
 
     /**
      * Updates the user's Logout timestamp, sets their state to
@@ -82,87 +70,60 @@ public class myLogout extends VelocityAction{
      * to SCREEN_LOGIN
      * @exception Exception, a generic exception.
      */
-    public void doPerform( RunData data, Context context ) throws Exception
-    {
-	try
-	{
-		User user = data.getUser();
-		boolean a=data.userExists();
-		// Store the user object.
-		String username=user.getName();
-		int uid=UserUtil.getUID(username);
-		
-/////////////////////////////////////////////////////
-		Criteria crit;
-		List vec=null;
-		String userLanguage="";
-                crit= new Criteria();
-                crit.add(TurbineUserPeer.USER_ID,uid);
-                crit.addGroupByColumn(TurbineUserPeer.USER_LANG);
-                vec=TurbineUserPeer.doSelect(crit);
-                crit = null;
-		ErrorDumpUtil.ErrorLog("vc size=="+vec.size());
-		if(vec.size() > 0){
-	                org.iitk.brihaspati.om.TurbineUser elementTU=(org.iitk.brihaspati.om.TurbineUser)vec.get(0);
-        	        userLanguage=elementTU.getUserLang().toString();
-		}
-
-//////////////////////////////////////////////////////
-       		if(a)
-        	if(!TurbineSecurity.isAnonymousUser(user))
-        	{
-            		if(!user.hasLoggedIn())
-            		{
-                		return;
-            		}
-            		user.setHasLoggedIn(new Boolean(false));
-            		TurbineSecurity.saveUser(user);
-        	}
-                data.setUser(user);
-                Date date=new Date();
-		int least_entry=0,count=0;
-        	//code for usage details starts here
-		int eid=0,uid3=0;
-                java.util.Date logindate=new java.util.Date();
-        	crit=new Criteria();
-        	crit.add(UsageDetailsPeer.USER_ID,uid);
-		crit.addAscendingOrderByColumn(UsageDetailsPeer.ENTRY_ID);
-        	List entry=UsageDetailsPeer.doSelect(crit);
-		for(int k=0;k<entry.size();k++)
+	public void doPerform( RunData data, Context context ) throws Exception
+    	{
+		try
 		{
-			UsageDetails element=(UsageDetails)entry.get(k);
-                        eid=element.getEntryId();
-                        uid3=element.getUserId();
-                        logindate=(element.getLoginTime());
+		/*
+		 * Check user exist in this session or not
+                 */
+			boolean a=data.userExists();
 
+		/* if yes { */
+	       		if(a){
+		
+                /*    Get the user name */
+				User user = data.getUser();
+				String username=user.getName();
+		/* Check user is guest */
+		/*  If no { */
+				if (!(username.equals("guest"))){	
+		/* Get user id for this user  */
+					int uid=UserUtil.getUID(username);
+		/* Set logout time in usage details */
+					Date date=new Date();
+        			        int least_entry=0,count=0;
+                			int eid=0,uid3=0;
+		        	        Criteria crit=new Criteria();
+                			crit.add(UsageDetailsPeer.USER_ID,uid);
+			                crit.addAscendingOrderByColumn(UsageDetailsPeer.ENTRY_ID);
+        	        		List entry=UsageDetailsPeer.doSelect(crit);
+			                for(int k=0;k<entry.size();k++)
+                			{
+		                	        UsageDetails element=(UsageDetails)entry.get(k);
+                		        	eid=element.getEntryId();
+	                        		uid3=element.getUserId();
+        	        		}
+        		        	crit=new Criteria();
+        	        		crit.add(UsageDetailsPeer.ENTRY_ID,(eid));
+		                	crit.add(UsageDetailsPeer.USER_ID,Integer.toString(uid));
+	                		crit.add(UsageDetailsPeer.LOGOUT_TIME,date);
+			                UsageDetailsPeer.doUpdate(crit);
+		/* Set has logged in false */
+					user.setHasLoggedIn(new Boolean(false));
+                		}
+		/*  Invalidate session */
+				data.setACL(null);
+				data.getSession().invalidate();
+		/* Set next screen (ie login) and display logout message */
+				if (!Turbine.getConfiguration().getString(TurbineConstants.ACTION_LOGOUT_DEFAULT , "").equals("LogoutUser"))
+		        	        data.setScreenTemplate("Login.vm");
+		               		data.setMessage(Turbine.getConfiguration().getString(TurbineConstants.LOGOUT_MESSAGE));
+                	}
 		}
-        	crit=new Criteria();
-        	crit.add(UsageDetailsPeer.ENTRY_ID,(eid));
-        	crit.add(UsageDetailsPeer.USER_ID,Integer.toString(uid));
-        	crit.add(UsageDetailsPeer.LOGIN_TIME,logindate);
-        	crit.add(UsageDetailsPeer.LOGOUT_TIME,date);
-        	UsageDetailsPeer.doUpdate(crit);
-
-		if(vec.size() > 0){
-                	crit= new Criteria();
-	       	        crit.add(TurbineUserPeer.USER_ID,uid);
-       			crit.add(TurbineUserPeer.USER_LANG, userLanguage);
-                	TurbineUserPeer.doUpdate(crit);
-		}
-		data.setACL(null);
-                // Retrieve an anonymous user.
-                data.save();
-		data.getSession().invalidate();
-		//data.getSession().removeAttribute(AccessControlList.SESSION_KEY);
-		if (!Turbine.getConfiguration().getString(TurbineConstants.ACTION_LOGOUT_DEFAULT , "").equals("LogoutUser"))
-		//data.setScreen(Turbine.getConfiguration().getString( TurbineConstants.SCREEN_HOMEPAGE));
-		data.setScreenTemplate("Login.vm");
-                //data.setScreen(Turbine.getConfiguration().getString( TurbineConstants.SCREEN_HOMEPAGE));
-		data.setMessage(Turbine.getConfiguration().getString(TurbineConstants.LOGOUT_MESSAGE));
-		//int timeout=data.getSession().getMaxInactiveInterval();
-    	}
-	catch ( TurbineSecurityException e ){
-		data.setScreenTemplate("Login.vm");
-                }
+		catch ( Exception e ){
+			ErrorDumpUtil.ErrorLog("The Exception in logout action is "+e);
+	                data.setScreenTemplate("Login.vm");
+        	}
 	}
 }

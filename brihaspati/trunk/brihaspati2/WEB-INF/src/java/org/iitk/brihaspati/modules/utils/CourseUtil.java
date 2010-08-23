@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.utils;
 /* 
  *  @(#)CourseUtil.java
  *
- *  Copyright (c) 2004 ETRG,IIT Kanpur. http://www.iitk.ac.in/
+ *  Copyright (c) 2004-2010 ETRG,IIT Kanpur. http://www.iitk.ac.in/
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -31,12 +31,23 @@ package org.iitk.brihaspati.modules.utils;
  *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *  
  */
-
-import org.iitk.brihaspati.om.CoursesPeer;
-import org.iitk.brihaspati.om.Courses;
-import org.apache.torque.util.Criteria;
+//Java classes
 import java.util.List;
 import java.util.Date;
+//Turbine classes
+import org.apache.torque.util.Criteria;
+import org.apache.turbine.om.security.User;
+import org.apache.turbine.services.security.TurbineSecurity;
+import org.apache.turbine.util.security.AccessControlList;
+//Brihaspati classes
+import org.iitk.brihaspati.om.Courses;
+import org.iitk.brihaspati.om.CoursesPeer;
+
+/**
+ *
+ * @author <a href="mailto:nksinghiitk@yahoo.co.in">Nagendra Kumar Singh</a>
+ */
+
 
 public class CourseUtil{
 
@@ -96,5 +107,20 @@ public class CourseUtil{
         	return (Date)((Courses)mainResult.get(0)).getLastmodified();
 
 	}
+
+	public static boolean getCourseGuestStatus(String Course_id)
+        {
+		boolean gstat=false;
+                try{
+			User user=TurbineSecurity.getUser("guest");
+			AccessControlList acl=TurbineSecurity.getACL(user);
+			gstat=acl.hasRole("student",Course_id);
+                }
+                catch(Exception e){
+			ErrorDumpUtil.ErrorLog("The Error in course Util Guest Status"+e);
+                }
+                return gstat;
+
+        }
 
 }

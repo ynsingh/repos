@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.utils;
 /*
  * @(#)CourseUserDetail.java
  *
- *  Copyright (c) 2006-2008 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2006-2008.2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -52,6 +52,7 @@ public class CourseUserDetail
 	private String courseName;
 	private String courseAlias;
 	private String active;
+	private String cguest;
 	private String deptt;
 	private String desc;
 	private String createD;
@@ -125,6 +126,16 @@ public class CourseUserDetail
 	{
 		return active;
 	}
+
+	public void setCGuest(String gst)
+        {
+                this.cguest=gst;
+        }
+        public String getCGuest()
+        {
+                return cguest;
+        }
+
 	public void setDept(String dept)
 	{
 		this.deptt=dept;

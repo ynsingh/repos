@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)Guest.java	
  *
- *  Copyright (c) 2002 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2002-2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -34,31 +34,26 @@ package org.iitk.brihaspati.modules.actions;
  *  
  *  
  */
-
+//Java classes
 import java.util.Vector;
-import org.apache.turbine.util.RunData;
-import org.apache.velocity.context.Context;
-import org.apache.turbine.util.security.AccessControlList;
-import org.apache.torque.util.Criteria;
+//Apache classes
 import org.apache.turbine.Turbine;
-//import org.apache.turbine.util.db.Criteria;
-import org.apache.turbine.modules.actions.VelocitySecureAction;
-//import org.apache.turbine.services.resources.TurbineResources;
+import org.apache.turbine.util.RunData;
+import org.apache.torque.util.Criteria;
+import org.apache.velocity.context.Context;
 import org.apache.turbine.om.security.User;
-import org.apache.turbine.om.security.Group;
 import org.apache.turbine.om.security.Role;
+import org.apache.turbine.om.security.Group;
+import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.services.security.TurbineSecurity;
-/*import org.iitk.brihaspati.om.MessageSendPeer;
-import org.iitk.brihaspati.om.MessageSend;
-import org.iitk.brihaspati.om.MessageReceivePeer;
-import org.iitk.brihaspati.om.DbSendPeer;
-import org.iitk.brihaspati.om.DbSend;
-import org.iitk.brihaspati.om.DbReceivePeer;
-import org.iitk.brihaspati.om.DbSendPeer;
-import org.apache.turbine.om.peer.BasePeer;
-*/
+import org.apache.turbine.modules.actions.VelocitySecureAction;
+//Brihaspati classes
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
+
+/**
+ * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
+ **/
 
 public class Guest extends VelocitySecureAction
 {
@@ -68,7 +63,11 @@ public class Guest extends VelocitySecureAction
 	{
 		boolean isAuthorized=false;
 		AccessControlList acl=data.getACL();
-		if(acl.hasRole("instructor",data.getUser().getTemp("course_id").toString()))
+		String courseId=data.getUser().getTemp("course_id").toString();
+                if(courseId.equals("")){
+                        courseId= data.getParameters().getString("courseId", "" );
+                }
+		if(acl.hasRole("instructor",courseId))
 		{
 			isAuthorized=true;
 		}
@@ -98,9 +97,12 @@ public class Guest extends VelocitySecureAction
 		 */
 
 		String courseId=data.getUser().getTemp("course_id").toString();
+		if(courseId.equals("")){
+			courseId= data.getParameters().getString("courseId", "" );
+		}
 		int GroupId=GroupUtil.getGID(courseId);
 
-		Group group=TurbineSecurity.getGroupByName(data.getUser().getTemp("course_id").toString());
+		Group group=TurbineSecurity.getGroupByName(courseId);
 		Role role=TurbineSecurity.getRoleByName("student");
 		AccessControlList acl=TurbineSecurity.getACL(user);
 

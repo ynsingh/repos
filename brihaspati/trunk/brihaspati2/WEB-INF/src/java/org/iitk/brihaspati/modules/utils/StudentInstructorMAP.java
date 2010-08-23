@@ -35,21 +35,21 @@ package org.iitk.brihaspati.modules.utils;
  *  Contributors: Members of ETRG, I.I.T. Kanpur 
  * 
  */
-
+//Java classes
 import java.util.List;
 import java.util.Vector;
 import java.util.StringTokenizer;
-
+//Turbine Classes
 import org.apache.torque.util.Criteria;
-import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
-import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
-import org.apache.turbine.services.security.torque.om.TurbineUserGroupRole;
-import org.apache.turbine.services.security.torque.om.TurbineGroup;
-import org.apache.turbine.services.security.torque.om.TurbineGroupPeer;
 import org.apache.turbine.services.security.torque.om.TurbineUser;
-
-import org.iitk.brihaspati.modules.utils.CourseUserDetail;
+import org.apache.turbine.services.security.torque.om.TurbineGroup;
+import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
+import org.apache.turbine.services.security.torque.om.TurbineGroupPeer;
+import org.apache.turbine.services.security.torque.om.TurbineUserGroupRole;
+import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
+//Brihaspati classes
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 
 /**
  *  This Class contains all information of Instructor and Student
@@ -161,7 +161,7 @@ public class StudentInstructorMAP
 			crit.and(TurbineUserGroupRolePeer.ROLE_ID,role_id);
 			List inst_list=TurbineUserGroupRolePeer.doSelect(crit);
 			CourseUserDetail cDetail=new CourseUserDetail();
-			String act="";
+			String act="", statc="";
 			for(int i=0;i<inst_list.size();i++)
 			{
 				TurbineUserGroupRole element=(TurbineUserGroupRole)inst_list.get(i);
@@ -175,11 +175,18 @@ public class StudentInstructorMAP
 					act="1";
 				else
 					act="0";
+				boolean gustst=CourseUtil.getCourseGuestStatus(groupName);
+				if(gustst)
+					statc="true";
+				else
+					statc="false";
+
 				cDetail=new CourseUserDetail();
 				cDetail.setCourseName(courseName);
 				cDetail.setGroupName(groupName);
 				cDetail.setCAlias(Coursealias);
 				cDetail.setActive(act);
+				cDetail.setCGuest(statc);
 				entries.add(cDetail);
 			}
 
