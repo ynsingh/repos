@@ -286,9 +286,9 @@
         <column name="INSTITUTE_NAME" required="true" type="VARCHAR" size="255"/>
         <column name="INSTIUTE_ADDRESS" required="true" type="VARCHAR" size="255"/>
         <column name="CITY" required="true" type="VARCHAR" size="255"/>
-        <column name="PINCODE" required="true" type="INTEGER"/>
+        <column name="PINCODE" required="true" type="VARCHAR" size="255"/>
         <column name="STATE" required="true" type="VARCHAR" size="255"/>
-        <column name="LANDLINE_NO" required="true" type="INTEGER" size="255"/>
+        <column name="LANDLINE_NO" required="true" type="VARCHAR" size="255"/>
         <column name="INSTITUTE_DOMAIN" required="true" type="VARCHAR" size="255"/>
         <column name="TYPE_OF_INSTITUTION" type="VARCHAR" size="255"/>
         <column name="AFFILIATION" type="VARCHAR" size="255"/>
