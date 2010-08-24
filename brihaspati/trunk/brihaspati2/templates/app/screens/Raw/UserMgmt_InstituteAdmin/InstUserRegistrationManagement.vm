@@ -112,12 +112,12 @@ $!data.getMessage()
                 <font face="$ui.sansSerifFonts"><textarea name="DESCRIPTION" rows=5 cols=60></textarea></font>
                 </td>
           </tr>
-          <tr bgcolor="$ui.menuColor">
+          #*<tr bgcolor="$ui.menuColor">
                    #formCell ("$brih_usr $brih_name <font color=Red>*</font>" "UNAME" "")
           </tr>
           <tr>
                   #formPasswordCell ("$brih_pwd" "PASSWD" "")
-          </tr>
+          </tr>*#
           <tr bgcolor="$ui.menuColor">
                   #formCell ("$brih_first $brih_name" "FNAME" "")
            </tr>
@@ -125,9 +125,12 @@ $!data.getMessage()
                    #formCell("$brih_last $brih_name" "LNAME" "")
             </tr>
             <tr bgcolor="$ui.menuColor">
-	  	#formCell("$brih_email $brih_ID" "EMAIL" "")
+	  	#formCell("$brih_email $brih_ID <font color=Red>*</font>" "EMAIL" "")
             </tr>
           <tr>
+                  #formPasswordCell ("$brih_pwd" "PASSWD" "")
+          </tr>
+          <tr bgcolor="$ui.menuColor">
           <td align=left colspan=2>
     <input type="hidden" name="actionName" >
     <input type="hidden" name="mode" value="$mode" >
@@ -369,7 +372,7 @@ face="$ui.sansSerifFonts">$type</font>
 <SCRIPT LANGUAGE="javascript">
         function checkCourseName(frm,field)
         {
-                if((frm.COURSEID.value!="") && (frm.UNAME.value!="")  && (frm.CNAME.value!=""))
+                if((frm.COURSEID.value!="") && (frm.EMAIL.value!="")  && (frm.CNAME.value!=""))
                 {
                                 frm.actionName.value=field.name;
                                 frm.submit();
@@ -382,7 +385,7 @@ face="$ui.sansSerifFonts">$type</font>
         function checkClear(frm,field)
         {
         frm.COURSEID.value="";
-        frm.UNAME.value="";
+        frm.EMAIL.value="";
         frm.CNAME.value="";
         }
 	 function popupWin(url,popupName)

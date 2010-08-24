@@ -30,7 +30,6 @@ package org.iitk.brihaspati.modules.actions;
  *  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
  *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import java.util.List;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.om.security.User;
@@ -39,8 +38,6 @@ import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.utils.CourseManagement;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
-import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
-import org.iitk.brihaspati.om.InstituteAdminRegistration;
 /**
  *
  * This Action class for Registering a particular course with Instructor(Primary) 
@@ -64,13 +61,11 @@ public class RegisterICInstructor extends SecureAction_Institute_Admin
 	{
 	        try
 		{
-			ErrorDumpUtil.ErrorLog("sgfsdgfkdjkd");
 	 		/**
           		*Getting file value from temporary variable according to selection
           		*Replacing the value from Property file
          		**/
 				LangFile=(String)data.getUser().getTemp("LangFile");
-				ErrorDumpUtil.ErrorLog("lfile at line 73="+LangFile);
 				ParameterParser pp=data.getParameters();
 		 		/**
 		  		* Gather details from the page where user has entered them
@@ -79,36 +74,31 @@ public class RegisterICInstructor extends SecureAction_Institute_Admin
 		 		String cname=pp.getString("CNAME");
 		 		String dept=pp.getString("DEPARTMENT","");
 		 		String description=pp.getString("DESCRIPTION","");
-		 		String uname=pp.getString("UNAME");
-		 		String passwd=pp.getString("PASSWD","");
+		 		//String uname=pp.getString("UNAME");
 		 		String fname=pp.getString("FNAME","");
 		 		String lname=pp.getString("LNAME","");
 		 		String email=pp.getString("EMAIL","");
+		 		String passwd=pp.getString("PASSWD","");
 		 		String serverName=data.getServerName();
                  		int srvrPort=data.getServerPort();
                  		String serverPort=Integer.toString(srvrPort);
 				String instId=(data.getUser().getTemp("Institute_id")).toString();
 				int instituteId=Integer.parseInt(instId);
-				Criteria crit=new Criteria();
-				crit.add(InstituteAdminRegistrationPeer.INSTITUTE_ID,instituteId);
-				List lst=InstituteAdminRegistrationPeer.doSelect(crit);
-				String domainname="";	
-				for(int i=0;i<lst.size();i++){
-				InstituteAdminRegistration iaregistration=(InstituteAdminRegistration)lst.get(i);
-				domainname=iaregistration.getInstituteDomain().toString();
-				}
-				if(!(uname.contains("@"))){
-					uname=uname+"@"+domainname;
-					ErrorDumpUtil.ErrorLog("uname====="+uname);
-				}
+				/**
+				* if password is empty then set password.
+				* password is the value of 0th position of email id
+				*/
 		 		if(passwd.equals(""))
-			 	passwd=uname;
+			 	passwd=email;
+				String []starr=passwd.split("@");
+                		passwd =starr[0];
 		 		/**
 		  		* Register a new course with instructor
 				* Here we give 100MB quota for course, once he is login in the system and immediate his quota is updated
 		  		* @see CourseManagement Utils
 		  		*/ 
-	 			String msg=CourseManagement.CreateCourse(gname,cname,dept,description,uname,passwd,fname,lname,email,serverName,serverPort,LangFile,instituteId);
+	 			//String msg=CourseManagement.CreateCourse(gname,cname,dept,description,uname,passwd,fname,lname,email,serverName,serverPort,LangFile,instituteId);
+	 			String msg=CourseManagement.CreateCourse(gname,cname,dept,description,email,passwd,fname,lname,email,serverName,serverPort,LangFile,instituteId);
 		 		data.setMessage(msg);
 		}
 		catch(Exception e)

@@ -96,7 +96,8 @@ $!data.getMessage()
 <table width=100% align=left bgcolor="$ui.tableColor">
 	<tr bgcolor="$ui.menuColor"><td colspan=7><b>$brih_entUsrDetail</b></td></tr>
 	<tr>
-        #formCell ("$brih_usr $brih_name <font color=red>*</font>" "UNAME" "")
+        ##formCell ("$brih_usr $brih_name <font color=red>*</font>" "UNAME" "")
+           #formCell("$brih_email $brih_ID <font color=red>*</font>" "EMAIL" "")
       </tr>
       <tr bgcolor="$ui.menuColor">
         #formPasswordCell ("$brih_pwd" "PASSWD" "")
@@ -107,21 +108,15 @@ $!data.getMessage()
           <tr bgcolor="$ui.menuColor">
            #formCell("$brih_last $brih_name" "LNAME" "")
           </tr>
-          <tr>
-           #formCell("$brih_email $brih_ID" "EMAIL" "")
-          </tr>
-          <tr bgcolor="$ui.menuColor"><td>
+          <tr><td>
           $brih_sel_course <font color=RED>*</font>
           </td>
      	<td>
         <select id="group_id" name="group" size=1 onChange="ChangeRole(document.frm,this);"/>
           <option>
           #foreach($name in $courseList)
-	  ##if($name.getName()!="global")
-          ##<option value="$name.getName()">$name.getName()
-          <option value="$name.getGroupName()">$name.getGroupName()
-           ##end
-           #end
+          <option value="$name">$name
+          #end
            </option>
           </select>
          </td>
@@ -312,8 +307,8 @@ face="$ui.sansSerifFonts">$type</font>
                 <select name="GroupName" size=1>
                 #foreach($name in $courseList)
                 ##if(($name.getName()!="global") && ($name.getName()!="author"))
-                        ##<option value="$name.getName()">$name.getName()
-                        <option value="$name.getGroupName()">$name.getGroupName()
+                        <option value="$name">$name
+                        ##<option value="$name.getGroupName()">$name.getGroupName()
                 ##end
                 #end
                 </option>
@@ -439,11 +434,11 @@ face="$ui.sansSerifFonts">$type</font>
           <option name=all value="All">$Notice_All
           #foreach($course in $courseList)
                 ##if(($course.getName()!="author") && ($course.getName()!="global"))
-          ##<option name=option$i value="$course.getName()">$course.getName()
-	  <option name=option$i value="$course.getGroupName()">$course.getGroupName()	
-          #set($i=$i+1)
+          	<option name=option$i value="$course">$course
+	  	##<option name=option$i value="$course.getGroupName()">$course.getGroupName()	
+          	#set($i=$i+1)
+          	##end
           #end
-                ##end
           </option>
           </select>
           ##</space>
@@ -553,7 +548,7 @@ face="$ui.sansSerifFonts">$type</font>
         ##function checkField(frm,field,b)
         function checkField(frm,field)
         {
-                if((frm.UNAME.value!="") &&(frm.group.value!="") && (frm.role.value!=""))
+                if((frm.EMAIL.value!="") &&(frm.group.value!="") && (frm.role.value!=""))
                 {
                                 frm.actionName.value=field.name;
                                 frm.submit();

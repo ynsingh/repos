@@ -30,7 +30,6 @@ package org.iitk.brihaspati.modules.actions;
  *  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
  *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import java.util.List;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.om.security.User; 
@@ -46,13 +45,14 @@ import org.iitk.brihaspati.modules.actions.SecureAction_Institute_Admin;
  * @author <a href="mailto:madhavi_mungole@hotmail.com">Madhavi Mungole</a> 
  * @author <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kumar Trivedi</a> 
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a> 
+ * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a> 
  */
 
 public class AddUser_Institute extends SecureAction_Institute_Admin 
 {
 /**
  *
- * Method for registered a user as Secondary Instructor,Student,Group_Admin
+ * Method for registered a user as Secondary Instructor,Student
  * and Content Author
  * @param data RunData instance
  * @param context Context instance
@@ -63,14 +63,15 @@ public class AddUser_Institute extends SecureAction_Institute_Admin
 	public void doRegister(RunData data, Context context) throws Exception
 	{
 		try{
-		MultilingualUtil m_u= new MultilingualUtil();
+		/**
+                *get the value of server name and server port used in sending a mail.
+                *and get the role in which user registered.
+                */
 		ParameterParser pp=data.getParameters();
 		String serverName=data.getServerName();
                 int srvrPort=data.getServerPort();
                 String serverPort=Integer.toString(srvrPort);
-
                 String roleName=pp.getString("role","");
-		ErrorDumpUtil.ErrorLog("Role 72 AddUser_Institute==========>"+roleName);
 		/**
                  * Getting the value of file from temporary variable
                  * According to selection of Language.
@@ -84,42 +85,39 @@ public class AddUser_Institute extends SecureAction_Institute_Admin
                  * Retreiving details entered by the user
                  */
 		String gname=new String();
-		//String roleName=new String();
 		gname=pp.getString("group","");
-		String []starr=gname.split("@");
-		String gnamewdomain=starr[1];
-		String actgname[]=gnamewdomain.split("_");
-		String addUname=actgname[0];
-                //roleName=pp.getString("role","");
-		ErrorDumpUtil.ErrorLog("groupname 89 AddUser_Institute===>"+gname+"[1]======"+gname+"starr=="+gnamewdomain+"new gname==="+gname);
 		if(gname.equals(""))
 		{
 			gname=new String();	
 			gname=pp.getString("group_author");
-			ErrorDumpUtil.ErrorLog("gname in loop Ist 94======>"+gname);
 		}
 		if(roleName.equals(""))
 		{
 			roleName=new String();	
 			roleName=pp.getString("role_author");
-			ErrorDumpUtil.ErrorLog("rolename in roleName AddUser_Institute======> 100"+roleName);
 		}
-		String uname=pp.getString("UNAME");
-                String passwd=pp.getString("PASSWD");
-		uname=uname+"@"+addUname;
-                if(passwd.equals(""))
-                        passwd=uname;
                 String fname=pp.getString("FNAME");
                 String lname=pp.getString("LNAME");
                 String email=pp.getString("EMAIL");
+                String passwd=pp.getString("PASSWD");
 		email=UserManagement.ChkMailId(email);
+		/**
+		*if password field is null,set the password.
+		*break email using "@" and set the password as the value of email at 0th position.
+		*/
+                if(passwd.equals(""))
+		passwd=email;
+                String []starr=passwd.split("@");
+                String mailname=starr[0];
+                passwd=mailname;
 		/**
                  * Passing the value of file from temporary variable
                  * According to selection of Language.
 		 * Adds the new user in the database.
 		 * @see UserManagement in utils
 		 */
-		String msg=UserManagement.CreateUserProfile(uname,passwd,fname,lname,email,gname,roleName,serverName,serverPort,LangFile);
+		//String msg=UserManagement.CreateUserProfile(uname,passwd,fname,lname,email,gname,roleName,serverName,serverPort,LangFile);
+		String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,email,gname,roleName,serverName,serverPort,LangFile);
 
 		data.setMessage(msg);
 		}

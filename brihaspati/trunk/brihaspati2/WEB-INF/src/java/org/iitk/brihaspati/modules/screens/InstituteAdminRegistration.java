@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens;
 /* 
  * @(#)InstituteAdminRegistration.java
  *
- *  Copyright (c) 2009 ETRG,IIT Kanpur.
+ *  Copyright (c) 2009,2010 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -36,18 +36,14 @@ package org.iitk.brihaspati.modules.screens;
  */
 
 
-import java.util.List;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
-import org.apache.turbine.util.parser.ParameterParser;
-import org.iitk.brihaspati.modules.utils.ListManagement;
-import org.apache.turbine.modules.screens.VelocityScreen;
-import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
-import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.modules.screens.VelocityScreen;
 
  /**
+ * This screens called when user fillup the form and display to Sysadmin for accepting. 
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  */
 
 public class InstituteAdminRegistration extends VelocityScreen
@@ -55,8 +51,10 @@ public class InstituteAdminRegistration extends VelocityScreen
 	public void doBuildTemplate(RunData rundata, Context context)
 	{
 		try{
- 			ParameterParser parameterparser=rundata.getParameters();
-			String lang=parameterparser.getString("lang","english");
+			/**
+			  * Get Language and set in context for use in template.	
+			  */
+			String lang=rundata.getParameters().getString("lang","english");
 			context.put("lang",lang);
 		}
 		catch(Exception e) { 	rundata.setMessage("Error in Registration !!" +e);

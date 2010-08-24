@@ -43,6 +43,7 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_InstituteAdmin;
 import java.util.List;
 import java.util.Vector;
 import org.apache.turbine.util.RunData;
+import org.apache.torque.util.Criteria;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
@@ -51,38 +52,45 @@ import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.StringUtil;
-import org.apache.torque.util.Criteria;
-import org.iitk.brihaspati.modules.screens.call.SecureScreen_Institute_Admin;
 import org.iitk.brihaspati.modules.utils.ListManagement;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
-import org.iitk.brihaspati.modules.utils.CommonUtility;
-import org.iitk.brihaspati.modules.utils.CourseManagement;
+import org.iitk.brihaspati.modules.screens.call.SecureScreen_Institute_Admin;
 
+/* This screen class is called when Institute admin add a user as Secondary Instructor,student and author.
+*View Student course list,delete Instructor/student,add multiple user's(Instructor/student)and upload photo. 
+
+*/
 
 public class InstUserMgmt_Admin extends SecureScreen_Institute_Admin
 {
     public void doBuildTemplate( RunData data, Context context )
     {
+	/* Get the mode for which part executed of the screen.
+	 * get the counter for colour the tag in browser and 
+	 * set mode and counter in context.
+	 */
 	String mode=data.getParameters().getString("mode","");
 	String counter=data.getParameters().getString("count"," ");
-	ErrorDumpUtil.ErrorLog("count at line 67=="+counter);
-		context.put("tdcolor",counter);
+	context.put("tdcolor",counter);
 	context.put("mode",mode);
-	/*
-	*get admin name and
-	*InstituteId for listing whole course and InstituteWise 	
-	*/
+	
+	/**
+	  *get InstituteId and used in getting Institute Course List.
+	  *@see ListManagement util in utils. 	
+	  */
 	String instituteId=(data.getUser().getTemp("Institute_id")).toString();
 	if((mode.equals(""))||(mode.equals("AddMUser"))||(mode.equals("userdelete"))){	
-		List CourseList=CourseManagement.getInstituteCourseNUserDetails("All",instituteId);
-        	//List CourseList=ListManagement.getCourseList();
+        	List CourseList=ListManagement.getInstituteCourseList(instituteId);
         	context.put("courseList",CourseList);
 		if(mode.equals("userdelete")){
 		String role=data.getParameters().getString("role");
-		ErrorDumpUtil.ErrorLog("role ent_Admin screens--->"+role);	
 		context.put("role",role);
 		}
 	}
+	
+	/**
+	 * Institute admin view the student course list by search string selecting query(First name ,last name username and email )  
+	 */
 	if(mode.equals("sclist")){
 		String stat=data.getParameters().getString("status");
                 context.put("stat",stat);
@@ -90,9 +98,10 @@ public class InstUserMgmt_Admin extends SecureScreen_Institute_Admin
 		context.put("mode1",mode1);
 		if(mode1.equals("list")){
 		try{
-		String file=null;
+			String file=null;
                         MultilingualUtil m_u=new MultilingualUtil();
                         file=(String)data.getUser().getTemp("LangFile");
+
                         /**
                          * Get the search criteria and the search string
                          * from the screen
@@ -104,16 +113,21 @@ public class InstUserMgmt_Admin extends SecureScreen_Institute_Admin
                         if(query.equals(""))
                               query=pp.getString("query");
 
-//                      String valueString=pp.getString("value");
                         /**
-                          * Check for special characters
-                          */
+                         * check for special characters using StringUtil.
+			 * @see StringUtil in utils	
+                         */
+
                          String  valueString =StringUtil.replaceXmlSpecialCharacters(data.getParameters().getString("value"));
 
                         context.put("query",query);
                         context.put("value",valueString);
                         String str=null;
 
+			/*set the feild as in TURBINE_USER table 
+			 *according to search string set by user.
+			 *select the list from database
+			 */
                         if(query.equals("First Name"))
                                 str="FIRST_NAME";
                         else if(query.equals("Last Name"))
@@ -122,23 +136,24 @@ public class InstUserMgmt_Admin extends SecureScreen_Institute_Admin
                                 str="LOGIN_NAME";
                         else if(query.equals("Email"))
                                 str="EMAIL";
-			  Criteria crit=new Criteria();
+			Criteria crit=new Criteria();
                         crit.addJoin(TurbineUserPeer.USER_ID,TurbineUserGroupRolePeer.USER_ID);
                         crit.add("TURBINE_USER",str,(Object)(valueString+"%"),crit.LIKE);
                         crit.add(TurbineUserGroupRolePeer.ROLE_ID,3);
                         crit.setDistinct();
                         //List v=null;
                         List v=TurbineUserPeer.doSelect(crit);
+
                         /**
-                         * Add the details of each detail in a vector
-                         * and put the same in context for use in
-                         * template
+                         * if list not empty then get the User details
+			 *@see ListManagement util in utils. 
+                         * use listDivide method for pagination of ListManagement
+                         * set in context admin configuration value and the vector
                          */
                         if(v.size()!=0)
                                 {
                                 //Vector userList=ListManagement.getDetails(v,"User");
                                 Vector userList=ListManagement.getInstituteUDetails(v,"User");
-				//CommonUtility.PListing(data ,context ,userList);
                                 String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
                                 int AdminConf=10;
                                 AdminConf = Integer.parseInt(AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value"));
