@@ -43,6 +43,7 @@ $page.setBgColor($ui.bgcolor)
 			        <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","malayalam")"> (Malayalam) $brih_malayalam
                                 <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","marathi")"> (Marathi) $brih_marathi
                                 <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","russian")"> (Russian) $brih_russian
+        			<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","spanish")"> (Spanish) $brih_spanish
         			<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","tamil")"> (Tamil) $brih_tamil
                                 <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","telugu")"> (Telugu) $brih_telugu
                         </select>
