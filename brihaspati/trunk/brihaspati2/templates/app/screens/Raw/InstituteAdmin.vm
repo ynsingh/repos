@@ -36,12 +36,17 @@ $!data.getMessage()
 			#end
 	</td>
 </tr>
+	
 	<tr><td align="center">Institute Admin List</td></tr>
 	#if($rldpage != "yes")
-		#foreach($lst in $list)	
+		#foreach($lst in $list1)
+		##	#foreach($lst1 in $list1)
+		##		#if($lst.getInstituteId() == $lst1.getInstituteId())
 		<tr>
 		<td align=center><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("role",$role).addPathInfo("mInststat","1").addPathInfo("instituteId",$lst.getInstituteId()).addPathInfo("iname",$lst.getInstituteName()).addPathInfo("domainName",$lst.getInstituteDomain()).addPathInfo("reload","yes")>$lst.getInstituteName()</a></td>
 		</tr>
+		##		#end
+		##	#end
 		#end
 	#else
         <tr><td align=center><b>$list</b></td></tr>

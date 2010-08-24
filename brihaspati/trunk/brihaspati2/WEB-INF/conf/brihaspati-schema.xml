@@ -293,13 +293,19 @@
         <column name="TYPE_OF_INSTITUTION" type="VARCHAR" size="255"/>
         <column name="AFFILIATION" type="VARCHAR" size="255"/>
         <column name="INSTITUTE_WEBSITE" type="VARCHAR" size="255"/>
+        <column name="INSTITUTE_STATUS" required="true" type="INTEGER" size="1" default="0"/>
+
+</table>
+<table name="INSTITUTE_ADMIN_USER" idMethod="idbroker">
+	<column name="ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
+	<column name="INSTITUTE_ID" required="true" type="INTEGER"/>
         <column name="ADMIN_FNAME" required="true" type="VARCHAR" size="255"/>
         <column name="ADMIN_LNAME" required="true" type="VARCHAR" size="255"/>
         <column name="ADMIN_EMAIL" required="true" type="VARCHAR" size="255"/>
         <column name="ADMIN_DESIGNATION" required="true" type="VARCHAR" size="255"/>
         <column name="ADMIN_UNAME" required="true" type="VARCHAR" size="32"/>
         <column name="ADMIN_PASSWORD" required="true" type="VARCHAR" size="32"/>
-	<column name="INSTITUTE_STATUS" required="true" type="INTEGER" size="1" default="0"/>
+	
 	
 </table>
 

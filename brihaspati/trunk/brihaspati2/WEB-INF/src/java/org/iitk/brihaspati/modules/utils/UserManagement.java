@@ -130,9 +130,10 @@ public class UserManagement
 				/**
 			 	* Get the group and role from TurbineSecurity
 			 	*/
-
 				Group user_group=TurbineSecurity.getGroupByName(GroupName);
 				Role user_role=TurbineSecurity.getRoleByName(Role);
+				
+				
 				/**
 				* Check if the user profile already exists 
 				* then assign a role in group else create a
@@ -141,7 +142,6 @@ public class UserManagement
 				boolean UserExist=checkUserExist(UName);
 				if(UserExist==false)
 				{
-
 					try
 					{
 					int user_id=UserUtil.getUID(UName);
@@ -155,8 +155,14 @@ public class UserManagement
 					boolean RoleExist=checkRoleinCourse(user_id,group_id);
 					if(RoleExist==false)
 					{
+						if(group_id==3)	
+						{
+							 message=MultilingualUtil.ConvertedString("u_msg1",file);
+						}
+						else{
+							 message=MultilingualUtil.ConvertedString("u_msg",file);
+						}
 						
-						message=MultilingualUtil.ConvertedString("u_msg",file);
 					}
 					else
 					{
@@ -166,8 +172,8 @@ public class UserManagement
 						crit.add(TurbineUserPeer.LOGIN_NAME,UName);
 						List result=TurbineUserPeer.doSelect(crit);
 						email_existing=((TurbineUser)result.get(0)).getEmail();
-						if(!Role.equals("author"))
-						{		
+						if((!Role.equals("author")) && (!Role.equals("institute_admin")))
+						{	
 							crit=new Criteria();
 							crit.add(CoursesPeer.GROUP_NAME,GroupName);
 							List result1=CoursesPeer.doSelect(crit);	
@@ -186,6 +192,7 @@ public class UserManagement
                                 			else
                                         			userRole="newStudenthttps";
                         			}
+						
 						else if(Role.equals("institute_admin")){
 							if(serverPort.equals("8080"))
 								userRole="newInstituteAdmin";
@@ -223,6 +230,7 @@ public class UserManagement
         					* received all notices and Group Discussion Board messages by
         					* existing user
 						*/
+
 						InsertMessages(UName,GroupName,Role);
 
 						message=Msg+" "+Msg2+" "+Mail_msg;
@@ -237,7 +245,9 @@ public class UserManagement
 				}
 				else
 				{
+					ErrorDumpUtil.ErrorLog("This is in else");
 					try{
+						ErrorDumpUtil.ErrorLog("Test1");
 		 				User new_user=TurbineSecurity.getUserInstance();
 			 			/**
 			  			* Sets the data entered by the user in a blank user object
@@ -264,8 +274,8 @@ public class UserManagement
                                 			else
                                         			userRole="newStudenthttps";
                         			}
+					
 						else if(Role.equals("institute_admin")){
-							ErrorDumpUtil.ErrorLog("True2");
                                                         if(serverPort.equals("8080"))
                                                                 userRole="newInstituteAdmin";
                                                         else
@@ -290,7 +300,6 @@ public class UserManagement
 								crit=new Criteria();
         	                                        	crit.add(CoursesPeer.GROUP_NAME,GroupName);
                 	                                	List result2=CoursesPeer.doSelect(crit);
-                        	                        
 								cAlias=((Courses)result2.get(0)).getGroupAlias();
                                 	                	dept=((Courses)result2.get(0)).getDept();
 							}
@@ -343,14 +352,13 @@ public class UserManagement
                                  		*/
 
                                 		tool.createUser(UName,encrPasswd_babylon);
-
 						/**
 				 		* Grants the new user in the role "user" in "global" group
 				 		* Grants the role in specified group
 				 		*/
-
 						Group global=TurbineSecurity.getGroupByName("global");
 						Role role_of_user=TurbineSecurity.getRoleByName("user");
+						
 						TurbineSecurity.grant(new_user,global,role_of_user);
 						TurbineSecurity.grant(new_user,user_group,user_role);
 						String NewUser= new String();
@@ -393,7 +401,6 @@ public class UserManagement
 						crit=new Criteria();
 						crit.add(UserConfigurationPeer.USER_ID,u_id);
 						UserConfigurationPeer.doInsert(crit);
-						ErrorDumpUtil.ErrorLog("exception blow UserConfigurationPeer");	
 						/**
 						 * Create User area for the new user
 						 */
@@ -416,7 +423,6 @@ public class UserManagement
 							Msg=Msg1+""+Msg2;
 						}
 						message=Msg+" "+Mail_msg;
-						ErrorDumpUtil.ErrorLog("message in last==="+message);
 						
 					}
 					catch(Exception e)
@@ -445,7 +451,6 @@ public class UserManagement
 		/**
 		 * Return the message which is set above as per the condition
 		 */
-
 		return(message);
 	}
 	/**

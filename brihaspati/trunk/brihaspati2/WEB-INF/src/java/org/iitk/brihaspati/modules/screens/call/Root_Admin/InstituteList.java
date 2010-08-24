@@ -50,43 +50,85 @@ import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.torque.util.Criteria;
 
 import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
+import org.iitk.brihaspati.om.InstituteAdminRegistration;
+import org.iitk.brihaspati.om.InstituteAdminUserPeer;
+import org.iitk.brihaspati.om.InstituteAdminUser;
 import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
-//import org.iitk.brihaspati.modules.screens.call.SecureScreen_RootAdmin;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Admin;
 
-
+/**
+*  Class for to display for pending , approved as well as rejected institute.
+*/
 public class InstituteList extends SecureScreen_Admin
 {
 	public void doBuildTemplate( RunData data, Context context )
     	{
 		try{
+			
 			ParameterParser pp = data.getParameters();
 			String file = (String)data.getUser().getTemp("LangFile");
 			MultilingualUtil m_u = new MultilingualUtil();
+			/**
+			*  mode for approved(1) ,pending(0) as well as rejected(2) institute list
+			*  tdcolor for tab view
+			*  orphan(3) having no institute admin in an institute.
+			*/
 			String mode=pp.getString("mode","");
 			context.put("mode",mode);
 			String tdcolor=pp.getString("count","");
 			context.put("tdcolor",tdcolor);
 			Criteria crit = new Criteria();
+			
+
 			if(mode.equals("pendinglist")){
-			crit.addGroupByColumn(InstituteAdminRegistrationPeer.INSTITUTE_ID);
-			crit.add(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"0");
-			//crit.addAscendingOrderByColumn(InstituteAdminRegistrationPeer.INSTITUTE_ID);
-			List instdetail=InstituteAdminRegistrationPeer.doSelect(crit);
-			context.put("idetail",instdetail);
+				crit.addGroupByColumn(InstituteAdminRegistrationPeer.INSTITUTE_ID);
+				crit.add(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"0");
+				List instdetail=InstituteAdminRegistrationPeer.doSelect(crit);
+                                Vector inst_id=new Vector();
+				Vector instuser=new Vector();
+				 List admindetail=null;
+                                if(instdetail.size() !=0){
+                                	for(int i=0;i<instdetail.size();i++){
+                                        	InstituteAdminRegistration inst=(InstituteAdminRegistration)(instdetail.get(i));
+						int instid=inst.getInstituteId();
+						inst_id.add(instid);
+       	                                  }
+                                }
+				for(int j=0;j<inst_id.size();j++)
+				{
+					String Instid=(inst_id.get(j)).toString();
+					int InstId=Integer.parseInt(Instid);
+					crit=new Criteria();
+					crit.add(InstituteAdminUserPeer.INSTITUTE_ID,InstId);
+					try{
+						admindetail=InstituteAdminUserPeer.doSelect(crit);
+						for(int k=0;k<admindetail.size();k++)
+						{
+							InstituteAdminUser instadminuser=(InstituteAdminUser)admindetail.get(k);
+							instuser.add(instadminuser);
+						}
+					}
+					catch(Exception e){}
+				}
+
+				context.put("idetail",instdetail);
+				context.put("idetail1",instuser);
+				
 			}
 			if(mode.equals("approved")){
-				crit=new Criteria();
-				//crit.addGroupByColumn(InstituteAdminRegistrationPeer.INSTITUTE_ID);
-				crit.add(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"1");
-				List approvedlist=InstituteAdminRegistrationPeer.doSelect(crit);
-				context.put("approvedlist",approvedlist);
+                                crit.addGroupByColumn(InstituteAdminRegistrationPeer.INSTITUTE_ID);
+                                crit.add(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"1");
+                                crit.or(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"3");
+                                List instdetail=InstituteAdminRegistrationPeer.doSelect(crit);
+                                context.put("approved",instdetail);
+                                
+
+
 			}			
 			if(mode.equals("reject")){
 				crit=new Criteria();
-				//crit.addGroupByColumn(InstituteAdminRegistrationPeer.INSTITUTE_ID);
 				crit.add(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"2");
 				List rejectedlist=InstituteAdminRegistrationPeer.doSelect(crit);
 				context.put("rejectedlist",rejectedlist);

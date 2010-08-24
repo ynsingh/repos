@@ -1,0 +1,207 @@
+#*
+ * @(#)AddAdmin.vm 
+ * Copyright (c)2010 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ *
+ * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a> 
+ * @author <a href="mailto:singh_jaivir@rediff.com">Jaivir Singh</a>
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+ * 
+ *#
+$!data.getMessage()
+$mode
+$page.setTitle("Login Page | Add Admin ")
+	
+	<table bgcolor="$ui.tableColor" width=100%>
+		<tr bgcolor="$ui.menuColor">
+			<td colspan=14>
+			<a href=$link.setPage("Index.vm") style=text-decoration:none>Admin's Home</a> | 
+			<a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","pendinglist").addPathInfo("count","1") style=text-decoration:none>Institute Management</a> |
+			<a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","approved").addPathInfo("count","2") style=text-decoration:none></a> | Add Institute Admin
+			 
+		</td></tr>
+	<tr>
+		#if($tdcolor != "1")
+                <td>
+                #elseif($tdcolor == "1")
+                <td bgcolor="#AFDCEC">
+                #end
+                <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","pendinglist").addPathInfo("count","1") style=text-decoration:none>Pending Institute $brih_list</a></td>
+		#if($tdcolor != "2")
+                <td>
+                #elseif($tdcolor == "2")
+                <td bgcolor="#AFDCEC">
+                #end
+                <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","approved").addPathInfo("count","2") style=text-decoration:none>Approved Institute $brih_list</a></td>
+		#if($tdcolor != "3")
+                <td>
+                #elseif($tdcolor == "3")
+                <td bgcolor="#AFDCEC">
+                #end
+                <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","reject").addPathInfo("count","3") style=text-decoration:none>Rejected Institute $brih_list</a></td>
+        </tr>
+
+	</table>
+	#if($mode=="addadmin")
+	<form name="frm" method="post" action="$link.setPage("call,Root_Admin,AddAdmin.vm").setAction("Institute_RootAdmin")">
+		<table bgcolor="$ui.tableColor" width="100%">
+		<tr bgcolor="$ui.menuColor">
+                	<td>$RemoteInstitute $brih_name</td>
+                	<td><input type="text" name="institutename" value="$Institute_Name" "readonly"></td>
+                </tr>
+                <tr>
+			#formCell ("$brih_ad $brih_first $brih_name<font color=red>*</font>" "IADMINFNAME" "")
+                </tr>
+                <tr bgcolor="$ui.menuColor">
+                        #formCell ("$brih_ad $brih_last $brih_name<font color=red>*</font>" "IADMINLNAME" "")
+                </tr>
+                <tr>
+			#formCell ("$brih_ad $Inst_designation<font color=red>*</font>" "IADMINDESIGNATION" "")
+                </tr>
+                <tr bgcolor="$ui.menuColor">  
+			#formCell ("$brih_ad $brih_email <font color=red>*</font>" "IADMINEMAIL" "")
+                </tr>
+
+		<tr>
+        			<td colspan=2>
+				<input type="hidden" name="actionName">
+				<input type="button" name="eventSubmit_AddAdmin" value="$brih_reg1" onClick="checkField(document.frm,this);"/>
+        			<input type="Reset" name="Reset" Value="$brih_clear"/>
+        			<input type="hidden" name="instituteid" Value="$Institute_Id">
+        			<input type="hidden" name="count" Value="$tdcolor">
+        			</td>
+        	</tr>
+			
+		</table>
+	</form>
+	#end
+	
+	#if($mode=="viewadmin")
+		        <form name="frm" method="post" action="$link.setPage("call,Root_Admin,AddAdmin.vm").setAction("Institute_RootAdmin")">
+				<table  bgcolor="$ui.tableColor" width=100%>
+				        <tr bgcolor="$ui.menuColor">
+			        		<td align=center>$brih_select</td>
+					        <td align=center>$brih_ad $brih_first $brih_name</td>
+					        <td align=center>$brih_ad $brih_last $brih_name</td>
+					        <td align=center>$brih_ad $brih_email</td>
+					        <td align=center>$brih_ad $Inst_designation</td>
+					        <td align=center>$brih_usr $brih_name</td>
+					        <td align=center>$brih_availableAction</td>
+        				</tr>
+					#foreach($admin_list in $adminlist )
+					<tr>
+						<td><INPUT TYPE="CHECKBOX" NAME="$admin_list.getInstituteId()" onClick="apprv_rej(this,document.frm);">		
+						</td>
+				                <td>
+				                        $admin_list.getAdminFname()
+				                </td>
+				                <td>
+				                        $admin_list.getAdminLname()
+				                </td>
+				                <td>
+				                        $admin_list.getAdminEmail()
+				                </td>
+				                <td>
+				                        $admin_list.getAdminDesignation()
+				                </td>
+			                        <td>
+                        				$admin_list.getAdminUname()
+                				</td>
+						<td>
+							<a href=$link.setPage("call,Root_Admin,AddAdmin.vm").setAction("Institute_RootAdmin").addPathInfo("username",$admin_list.getAdminUname()).addPathInfo("Institute_Id",$admin_list.getInstituteId()).addPathInfo("actionName","eventSubmit_doDelete")>$brih_remove</a>
+						</td>
+	
+				
+					</tr>
+					#end
+				</table>
+			</form>
+	#end
+
+
+<SCRIPT LANGUAGE="javascript">
+	
+        function checkField(frm,field)
+        {
+
+                if ((frm.IADMINFNAME.value!="") && (frm.IADMINLNAME.value!="")  && (frm.IADMINEMAIL.value !="") && (frm.IADMINDESIGNATION.value !=""))
+                {
+
+                        var adminemailid = document.frm.IADMINEMAIL.value;
+                        //alert("Emailid"+adminemailid);
+
+                        if (CheckValidEmail(adminemailid) == false)
+                        {
+                                adminemailid = "";
+                                adminemailid.focus();
+                                return;
+                        }
+                        else
+                        {
+                                frm.actionName.value=field.name;
+                                frm.submit();
+                        }
+                }
+                else
+                {
+                        alert("Please fill all the mandatory(*) Fielsd !");
+                }
+
+        }
+
+        function CheckValidEmail(adminemail)
+        {
+                var atrate = "@";
+                var dot = ".";
+                var indexofatrate = adminemail.indexOf(atrate);
+                var emaillength = adminemail.length;
+                var indexofdot = adminemail.indexOf(dot);
+
+                if (indexofatrate == -1)
+                {
+                        alert("Invalid email ID")
+                        return false;
+                }
+
+                if (indexofatrate == -1 || indexofatrate == 0 || indexofatrate == emaillength)
+                {
+                        alert("Invalid email ID ")
+                        return false;
+                }
+
+                if (indexofdot == -1 || indexofdot == 0 || indexofdot == emaillength)
+                {
+                        alert("Invalid E-mail ID")
+                        return false
+                }
+
+                if (adminemail.indexOf(atrate,(indexofatrate+1)) != -1)
+                {
+                        alert("Invalid E-mail ID")
+                        return false
+                }
+
+                if (adminemail.substring(indexofatrate-1,indexofatrate)==dot || adminemail.substring(indexofatrate+1,indexofatrate+2)==dot)
+                {
+                        alert("Invalid E-mail ID")
+                        return false
+                }
+
+                if (adminemail.indexOf(dot,(indexofatrate+2))==-1)
+                {
+                        alert("Invalid E-mail ID")
+                        return false
+                }
+
+                if (adminemail.indexOf(" ")!=-1)
+                {
+                        alert("Invalid E-mail ID")
+                        return false
+                }
+
+                 return true
+        }
+
+
+</SCRIPT>
+

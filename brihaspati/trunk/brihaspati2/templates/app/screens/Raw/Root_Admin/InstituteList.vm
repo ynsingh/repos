@@ -76,6 +76,8 @@ $!data.getMessage()
         <td align=center>$brih_usr $brih_name</td>
         </tr>
 	#foreach($details in $idetail)
+        #foreach($details1 in $idetail1)
+        #if($details.getInstituteId()==$details1.getInstituteId())
 	<tr>
 		<td align="center">
                 	<INPUT TYPE="CHECKBOX" NAME="$details.getInstituteId()" onClick="apprv_rej(this,document.frm);">
@@ -105,22 +107,24 @@ $!data.getMessage()
 			$details.getInstituteWebsite()
 		</td>
 		<td>
-			$details.getAdminFname()
+			$details1.getAdminFname()
 		</td>
 		<td>
-			$details.getAdminLname()
+			$details1.getAdminLname()
 		</td>
 		<td>
-			$details.getAdminEmail()
+			$details1.getAdminEmail()
 		</td>
 		<td>
-			$details.getAdminDesignation()
+			$details1.getAdminDesignation()
 		</td>
 			<td>
-			$details.getAdminUname()
+			$details1.getAdminUname()
 		</td>
 
 	</tr>
+	#end
+	#end
 	#end
         <tr bgcolor="$ui.menuColor">
                 <td align="left" colspan=14>
@@ -139,15 +143,16 @@ $!data.getMessage()
 	#if($mode=="approved")
 	<tr>
 		<td>$RemoteInstitute $brih_name</td>
-		<td>$brih_instAdname</td>
+		<td>$RemoteInstitute $brih_ID</td>
 	</tr>
-	#foreach($applist in $approvedlist)
+	#foreach($applist in $approved)
+
 	<tr>
 	<td>$applist.getInstituteName()</td>
-	<td>$applist.getAdminUname()</td>
-	##<td><a href=$link.setPage("call,Root_Admin,CreateInstituteAdmin.vm").addPathInfo("mode","approved").addPathInfo("count","2").addPathInfo("adminUname",$applist.getAdminUname()).addPathInfo("iadfname",$applist.getAdminFname()).addPathInfo("iadlname",$applist.getAdminLname()) style=text-decoration:none>$brih_CrinstAdmin</a></td>
-	##<td><a href=$link.setPage("call,Root_Admin,InstituteList.vm").setAction("InstituteRegistration").addPathInfo("mode","approved").addPathInfo("count","2").addPathInfo("instituteId",$applist.getInstituteId()).addPathInfo("instituteName",$applist.getInstituteName()).addPathInfo("actionName","eventSubmit_doDelete") onclick="javascript:return confirm('Do you want to delete this topic')" style=text-decoration:none>$brih_delete</a></td>
-	##<td><a href=$link.setPage("call,Root_Admin,InstituteList.vm").setAction("InstituteRegistration").addPathInfo("mode","approved").addPathInfo("count","2").addPathInfo("InstituteId",$applist.getInstituteId()).addPathInfo("instituteName",$applist.getInstituteName()).addPathInfo("actionName","eventSubmit_doUpdate") style=text-decoration:none>$brih_update</a></td>
+	<td>$applist.getInstituteId()</td>
+
+	<td><a href=$link.setPage("call,Root_Admin,AddAdmin.vm").addPathInfo("Institute_Id",$applist.getInstituteId()).addPathInfo("Institute_Name",$applist.getInstituteName()).addPathInfo("mode","addadmin") style=text-decoration:none>$brih_add $RemoteInstitute $brih_admin</a></td>
+	<td><a href=$link.setPage("call,Root_Admin,AddAdmin.vm").addPathInfo("Institute_Id",$applist.getInstituteId()).addPathInfo("Institute_Name",$applist.getInstituteName()).addPathInfo("mode","viewadmin") style=text-decoration:none>$brih_view $RemoteInstitute $brih_admin</a></td>
 	</tr>		
 	#end
 	#end

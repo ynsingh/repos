@@ -44,7 +44,11 @@ import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.apache.torque.util.Criteria;
+import org.iitk.brihaspati.om.InstituteAdminRegistration;
 import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
+import org.iitk.brihaspati.om.InstituteAdminUserPeer;
+import org.iitk.brihaspati.om.InstituteAdminUser;
+import java.util.Vector;
 import java.util.List;
 
 /**
@@ -92,11 +96,41 @@ public class InstituteAdmin extends SecureScreen{
 			user.setTemp("mInststat",minststat);
 			user.setTemp("role",Role);
 			Criteria crit=new Criteria();
-			crit.add(InstituteAdminRegistrationPeer.ADMIN_UNAME,username);
-			List list=InstituteAdminRegistrationPeer.doSelect(crit);
+			crit.add(InstituteAdminUserPeer.ADMIN_UNAME,username);
+			List list=InstituteAdminUserPeer.doSelect(crit);
+			Vector list1=new Vector();
+			List list2=null;
+			Vector list3=new Vector();
+                        if(list.size() !=0){
+	                        for(int i=0;i<list.size();i++){
+        	                        InstituteAdminUser inst=(InstituteAdminUser)(list.get(i));
+                                        int instid=inst.getInstituteId();
+                                        //String instid=instidtemp.toString();
+                                        list1.add(instid);
+                                }
+                       	}
+			for(int j=0;j<list1.size();j++)
+			{
+				String inst_id=(list1.get(j)).toString();
+				int instid=Integer.parseInt(inst_id);
+				crit=new Criteria();
+				crit.add(InstituteAdminRegistrationPeer.INSTITUTE_ID,instid);
+				try{
+	                                list2=InstituteAdminRegistrationPeer.doSelect(crit);
+                                        for(int k=0;k<list2.size();k++)
+                                        {
+        	                                InstituteAdminRegistration instadminreg=(InstituteAdminRegistration)list2.get(k);
+                                                list3.add(instadminreg);
+                                        }
+                                 }
+                                 catch(Exception e){}
+
+			}
 			String rldpage=pp.getString("reload"," ");
 			if(rldpage.equals(" ")){
 			context.put("list",list);
+			context.put("list1",list3);
+			
 			}
 			else{
 			String iname=pp.getString("iname","");
