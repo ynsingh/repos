@@ -32,6 +32,7 @@ package org.iitk.brihaspati.modules.utils;
              
 /**
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista Bano</a>
+ * @modified date: 29-08-2010
  **/
 
 import java.io.FileInputStream;
@@ -175,6 +176,8 @@ public  class MultilingualUtil{
 			try{
 	                        if(lang.equals("bangla"))
 	                               LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_bn.properties");
+	                        else if(lang.equals("bhojpuri"))
+	                               LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_bh.properties");
 				else if(lang.equals("chinese"))
                                 	LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_zh.properties");
 				else if(lang.equals("dutch"))
@@ -199,6 +202,8 @@ public  class MultilingualUtil{
 	                               LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_mr.properties");
 				else if(lang.equals("russian"))
                                 	LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_ru.properties");
+				else if(lang.equals("spanish"))
+                                	LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_sp.properties");
 				else if(lang.equals("tamil"))
                                        LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_ta.properties");
 				else if(lang.equals("telugu"))
