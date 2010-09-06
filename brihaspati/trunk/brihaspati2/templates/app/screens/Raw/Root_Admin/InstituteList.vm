@@ -151,8 +151,8 @@ $!data.getMessage()
 	<td>$applist.getInstituteName()</td>
 	<td>$applist.getInstituteId()</td>
 
-	<td><a href=$link.setPage("call,Root_Admin,AddAdmin.vm").addPathInfo("Institute_Id",$applist.getInstituteId()).addPathInfo("Institute_Name",$applist.getInstituteName()).addPathInfo("mode","addadmin") style=text-decoration:none>$brih_add $RemoteInstitute $brih_admin</a></td>
-	<td><a href=$link.setPage("call,Root_Admin,AddAdmin.vm").addPathInfo("Institute_Id",$applist.getInstituteId()).addPathInfo("Institute_Name",$applist.getInstituteName()).addPathInfo("mode","viewadmin") style=text-decoration:none>$brih_view $RemoteInstitute $brih_admin</a></td>
+	<td><a href=$link.setPage("call,Root_Admin,AddAdmin.vm").addPathInfo("Institute_Id",$applist.getInstituteId()).addPathInfo("Institute_Name",$applist.getInstituteName()).addPathInfo("mode","addadmin").addPathInfo("count","2") style=text-decoration:none>$brih_add $RemoteInstitute $brih_admin</a></td>
+	<td><a href=$link.setPage("call,Root_Admin,AddAdmin.vm").addPathInfo("Institute_Id",$applist.getInstituteId()).addPathInfo("Institute_Name",$applist.getInstituteName()).addPathInfo("mode","viewadmin").addPathInfo("count","2") style=text-decoration:none>$brih_view $RemoteInstitute $brih_admin</a></td>
 	</tr>		
 	#end
 	#end

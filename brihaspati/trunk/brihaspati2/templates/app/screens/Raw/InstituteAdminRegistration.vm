@@ -27,6 +27,13 @@ $page.setTitle("Login Page | Institute Admin Registration ")
 
 ## Creating the form to collect the information for creation of Instiute account
 ## alongwith Institute admin information.
+#macro(opt)
+
+        <option value=Govt>$brih_govt</option>
+        <option value=SemiGovt2>$brih_semi $brih_govt</option>
+        <option value=SF>$brih_sf</option>
+        <option value=Other>$brih_other</option>
+#end
 	<form name="frm" method="post" action="$link.setPage("InstituteAdminRegistration.vm").addPathInfo("lang",$lang).setAction("InstituteRegistration")">
 
 	   <table align=left bgcolor="$ui.tableColor" width="100%">
@@ -53,14 +60,21 @@ $page.setTitle("Login Page | Institute Admin Registration ")
 
                         </tr>
 			<tr bgcolor="$ui.menuColor">   
-                                #formCell ("$RemoteInstitute $brih_domain <font color=red>*</font>" "IDOMAIN" "")
+                                ##formCell ("$RemoteInstitute $brih_domain <font color=red>*</font>" "IDOMAIN" "")
+				<td>$RemoteInstitute $brih_domain <font color=red>*</font></td>
+				<td>@<input type="text" name="IDOMAIN" value=""></td>
                         </tr>
                         <tr>
-                                #formCell ("$Inst_type <font color=red>*</font>" "ITYPE" "")
-
+                                ##formCell ("$Inst_type <font color=red>*</font>" "ITYPE" "")
+				<td>$Inst_type <font color=red>*</font></td>
+				<td><select name="ITYPE">
+					#opt()
+				</select></td>
                         </tr>
                         <tr bgcolor="$ui.menuColor">
-                                #formCell ("$RemoteInstitute $Inst_website <font color=red>*</font>" "IWEBSITE" "")
+                                ##formCell ("$RemoteInstitute $Inst_website <font color=red>*</font>" "IWEBSITE" "")
+				<td>$RemoteInstitute $Inst_website <font color=red>*</font></td>
+                                <td>http://<input type="text"  name="IWEBSITE" value=""></td>
 
                         </tr>
 			<tr>

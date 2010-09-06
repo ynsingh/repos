@@ -9,15 +9,19 @@
  * 
  *#
 $!data.getMessage()
-$mode
 $page.setTitle("Login Page | Add Admin ")
 	
 	<table bgcolor="$ui.tableColor" width=100%>
 		<tr bgcolor="$ui.menuColor">
 			<td colspan=14>
-			<a href=$link.setPage("Index.vm") style=text-decoration:none>Admin's Home</a> | 
-			<a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","pendinglist").addPathInfo("count","1") style=text-decoration:none>Institute Management</a> |
-			<a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","approved").addPathInfo("count","2") style=text-decoration:none></a> | Add Institute Admin
+			<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> | 
+			<a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","pendinglist").addPathInfo("count","1") style=text-decoration:none>$RemoteInstitute $brih_mgmt</a> |
+			<a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","approved").addPathInfo("count","2") style=text-decoration:none>$brih_approved $RemoteInstitute $brih_list</a> | 
+			#if($mode=="addadmin")
+			$brih_add $RemoteInstitute $brih_admin
+			#else
+			$brih_view $RemoteInstitute $brih_admin
+			#end
 			 
 		</td></tr>
 	<tr>
@@ -26,19 +30,19 @@ $page.setTitle("Login Page | Add Admin ")
                 #elseif($tdcolor == "1")
                 <td bgcolor="#AFDCEC">
                 #end
-                <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","pendinglist").addPathInfo("count","1") style=text-decoration:none>Pending Institute $brih_list</a></td>
+		<a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","pendinglist").addPathInfo("count","1") style=text-decoration:none>$brih_pending $RemoteInstitute $brih_list</a></td>
 		#if($tdcolor != "2")
                 <td>
                 #elseif($tdcolor == "2")
                 <td bgcolor="#AFDCEC">
                 #end
-                <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","approved").addPathInfo("count","2") style=text-decoration:none>Approved Institute $brih_list</a></td>
+		<a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","approved").addPathInfo("count","2") style=text-decoration:none>$brih_approved $RemoteInstitute $brih_list</a></td>
 		#if($tdcolor != "3")
                 <td>
                 #elseif($tdcolor == "3")
                 <td bgcolor="#AFDCEC">
                 #end
-                <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","reject").addPathInfo("count","3") style=text-decoration:none>Rejected Institute $brih_list</a></td>
+  		<a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","reject").addPathInfo("count","3") style=text-decoration:none>$brih_rejected $RemoteInstitute $brih_list</a></td>
         </tr>
 
 	</table>
@@ -80,7 +84,6 @@ $page.setTitle("Login Page | Add Admin ")
 		        <form name="frm" method="post" action="$link.setPage("call,Root_Admin,AddAdmin.vm").setAction("Institute_RootAdmin")">
 				<table  bgcolor="$ui.tableColor" width=100%>
 				        <tr bgcolor="$ui.menuColor">
-			        		<td align=center>$brih_select</td>
 					        <td align=center>$brih_ad $brih_first $brih_name</td>
 					        <td align=center>$brih_ad $brih_last $brih_name</td>
 					        <td align=center>$brih_ad $brih_email</td>
@@ -90,8 +93,6 @@ $page.setTitle("Login Page | Add Admin ")
         				</tr>
 					#foreach($admin_list in $adminlist )
 					<tr>
-						<td><INPUT TYPE="CHECKBOX" NAME="$admin_list.getInstituteId()" onClick="apprv_rej(this,document.frm);">		
-						</td>
 				                <td>
 				                        $admin_list.getAdminFname()
 				                </td>
@@ -108,7 +109,8 @@ $page.setTitle("Login Page | Add Admin ")
                         				$admin_list.getAdminUname()
                 				</td>
 						<td>
-							<a href=$link.setPage("call,Root_Admin,AddAdmin.vm").setAction("Institute_RootAdmin").addPathInfo("username",$admin_list.getAdminUname()).addPathInfo("Institute_Id",$admin_list.getInstituteId()).addPathInfo("actionName","eventSubmit_doDelete")>$brih_remove</a>
+						<a href=$link.setPage("call,Root_Admin,AddAdmin.vm").setAction("Institute_RootAdmin").addPathInfo("username",$admin_list.getAdminUname()).addPathInfo("Institute_Id",$admin_list.getInstituteId()).addPathInfo("actionName","eventSubmit_doDelete") onclick="javascript:return confirm('Do you want to remove this institute admin')" style=text-decoration:none>$brih_remove</a>
+						<a href=$link.setPage("call,Root_Admin,UpdateInstituteAdmin.vm").addPathInfo("username",$admin_list.getAdminUname()).addPathInfo("Institute_Id",$admin_list.getInstituteId()).addPathInfo("count","2") style=text-decoration:none>$brih_edit</a>
 						</td>
 	
 				

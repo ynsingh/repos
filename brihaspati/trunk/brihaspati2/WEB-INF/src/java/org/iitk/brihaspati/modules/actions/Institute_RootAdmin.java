@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /**
  * @(#) Institute_RootAdmin.java
  *
- *  Copyright (c) 2009,1010 ETRG,IIT Kanpur.
+ *  Copyright (c) 2009,2010 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -33,69 +33,53 @@ package org.iitk.brihaspati.modules.actions;
  *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import java.lang.String;
 import java.io.File;
 import java.util.Properties;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import org.apache.velocity.context.Context;
-import org.apache.turbine.om.security.User;
-
 //turbine classes
-import org.apache.turbine.om.security.User;
-import org.apache.turbine.om.security.Role;
-import org.apache.turbine.om.security.Group;
-import org.apache.turbine.services.security.torque.om.TurbineUser;
 
+import org.apache.turbine.om.security.User;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.modules.actions.VelocitySecureAction;
 import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.services.servlet.TurbineServlet;
+import org.apache.turbine.services.security.torque.om.TurbineUser;
+import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
+
 //torque classes
 
 import org.apache.torque.util.Criteria;
-
 import org.apache.velocity.context.Context;
 import org.iitk.brihaspati.om.InstituteAdminRegistration;
 import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
-import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
-import org.iitk.brihaspati.om.InstituteAdminRegistration;
 import org.iitk.brihaspati.om.InstituteAdminUserPeer;
 import org.iitk.brihaspati.om.InstituteAdminUser;
 import org.iitk.brihaspati.om.TurbineUserGroupRolePeer;
 import org.iitk.brihaspati.om.TurbineUserGroupRole;
-import org.iitk.brihaspati.om.TurbineRole;
-import org.iitk.brihaspati.om.TurbineRolePeer;
 import org.iitk.brihaspati.om.UsageDetailsPeer;
 import org.iitk.brihaspati.om.UserConfigurationPeer;
-
+//import org.iitk.brihaspati.om.TurbineUserPeer;
 
 //utils classes
+
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
-import org.iitk.brihaspati.modules.utils.ListManagement;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.iitk.brihaspati.modules.utils.EncryptionUtil;
-import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.MailNotification;
-import org.iitk.brihaspati.om.InstituteAdminUser;
-
-import org.iitk.brihaspati.modules.actions.UserAction_Instructor;
 import org.iitk.brihaspati.modules.utils.SystemIndependentUtil;
-
 import babylon.babylonUserTool;
-import babylon.babylonPasswordEncryptor;
 
 /**
  *
  * @author <a href="mailto:singh_jaivir.rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
- * @Created Date
  */
 
 /** 
@@ -153,9 +137,9 @@ public class Institute_RootAdmin extends VelocitySecureAction
 					String i_name = ((InstituteAdminRegistration)(getinstitutedetail.get(0))).getInstituteName();
 					String i_address = ((InstituteAdminRegistration)(getinstitutedetail.get(0))).getInstiuteAddress();
 					String i_city = ((InstituteAdminRegistration)(getinstitutedetail.get(0))).getCity();
-					String i_pincode = ((InstituteAdminRegistration)(getinstitutedetail.get(0))).getPincode();
+					int i_pincode = ((InstituteAdminRegistration)(getinstitutedetail.get(0))).getPincode();
 					String i_state = ((InstituteAdminRegistration)(getinstitutedetail.get(0))).getState();
-					String i_landline = ((InstituteAdminRegistration)(getinstitutedetail.get(0))).getLandlineNo();
+					int i_landline = ((InstituteAdminRegistration)(getinstitutedetail.get(0))).getLandlineNo();
 					String i_domain = ((InstituteAdminRegistration)(getinstitutedetail.get(0))).getInstituteDomain();
 					String i_type = ((InstituteAdminRegistration)(getinstitutedetail.get(0))).getTypeOfInstitution();
 					String i_affiliation = ((InstituteAdminRegistration)(getinstitutedetail.get(0))).getAffiliation();
@@ -378,7 +362,7 @@ public class Institute_RootAdmin extends VelocitySecureAction
                 email=element.getEmail();
 
 
-		UserGroupRoleUtil usergrouproleutil=new UserGroupRoleUtil();
+		//UserGroupRoleUtil usergrouproleutil=new UserGroupRoleUtil();
 		boolean flag=false;
 		boolean flag1=false;
                 crit=new Criteria();
@@ -557,7 +541,73 @@ public class Institute_RootAdmin extends VelocitySecureAction
 
 		
 	}
-
+	/**
+	*This method called when Sysadmin update the detail of Institute admin
+	*/
+	public void doUpdateDetail(RunData data, Context context) throws Exception
+	{
+		/**
+		* Get the value of Institute,Institute admin for update to corresponding table
+		*/
+		String LangFile=data.getUser().getTemp("LangFile").toString();
+		ParameterParser pp = data.getParameters();
+		String instid=pp.getString("instituteid");
+		String instadname=pp.getString("iadname");
+		int uid=UserUtil.getUID(instadname);
+		int id=pp.getInt("id");
+		String instname=pp.getString("INAME");
+		String instadd=pp.getString("IADDRESS");
+		String instcity=pp.getString("ICITY");
+		String instpincode=pp.getString("IPINCODE");
+		String inststate=pp.getString("ISTATE");
+		String instlandln=pp.getString("ILANDLINE");
+		String instdomain=pp.getString("IDOMAIN");
+		String insttype=pp.getString("ITYPE");
+		String instwebsite=pp.getString("IWEBSITE");
+		String adminfname=pp.getString("IADMINFNAME");
+		String adminlname=pp.getString("IADMINLNAME");
+		String admindesignation=pp.getString("IADMINDESIGNATION");
+		String email=pp.getString("IADMINEMAIL");
+		/**
+		* Update the field in 'INSTITUTE_ADMIN_REGISTRATION' table
+		*/	
+		Criteria crit=new Criteria();
+		crit.add(InstituteAdminRegistrationPeer.INSTITUTE_ID,instid);	
+		crit.add(InstituteAdminRegistrationPeer.INSTITUTE_NAME,instname);	
+		crit.add(InstituteAdminRegistrationPeer.INSTIUTE_ADDRESS,instadd);	
+		crit.add(InstituteAdminRegistrationPeer.CITY,instcity);	
+		crit.add(InstituteAdminRegistrationPeer.PINCODE,instpincode);	
+		crit.add(InstituteAdminRegistrationPeer.STATE,inststate);	
+		crit.add(InstituteAdminRegistrationPeer.LANDLINE_NO,instlandln);	
+		crit.add(InstituteAdminRegistrationPeer.INSTITUTE_DOMAIN,instdomain);	
+		crit.add(InstituteAdminRegistrationPeer.TYPE_OF_INSTITUTION,insttype);	
+		crit.add(InstituteAdminRegistrationPeer.INSTITUTE_WEBSITE,instwebsite);	
+		InstituteAdminRegistrationPeer.doUpdate(crit);
+		/**
+		* Update the field in 'INSTITUTE_ADMIN_USER' table
+		*/	
+		crit=new Criteria();
+		crit.add(InstituteAdminUserPeer.ID,id);	
+		crit.add(InstituteAdminUserPeer.ADMIN_FNAME,adminfname);	
+		crit.add(InstituteAdminUserPeer.ADMIN_FNAME,adminfname);	
+		crit.add(InstituteAdminUserPeer.ADMIN_LNAME,adminlname);	
+		crit.add(InstituteAdminUserPeer.ADMIN_EMAIL,email);	
+		crit.add(InstituteAdminUserPeer.ADMIN_DESIGNATION,admindesignation);
+		InstituteAdminUserPeer.doUpdate(crit);
+		/**
+		* Update the field in 'TURBINE_USER' table
+		*/
+		crit=new Criteria();
+		crit.add(TurbineUserPeer.USER_ID,uid);	
+		crit.add(TurbineUserPeer.FIRST_NAME,adminfname);	
+		crit.add(TurbineUserPeer.LAST_NAME,adminlname);	
+		crit.add(TurbineUserPeer.EMAIL,email);
+		TurbineUserPeer.doUpdate(crit);
+		String msg=MultilingualUtil.ConvertedString("instAreg_msg4",LangFile);
+		data.setScreenTemplate("call,Root_Admin,AddAdmin.vm");
+		context.put("mode","viewadmin");	
+		data.setMessage(msg);
+	}
 	
 	public void doPerform(RunData data, Context context) throws Exception
 	{
@@ -570,6 +620,8 @@ public class Institute_RootAdmin extends VelocitySecureAction
 			AddAdmin(data,context);
                 else if(action.equals("eventSubmit_doDelete"))
                         DeleteAdmin(data,context);
+                else if(action.equals("eventSubmit_doUpdate"))
+                        doUpdateDetail(data,context);
 		else
 			data.setMessage("Action not found");		
 				
