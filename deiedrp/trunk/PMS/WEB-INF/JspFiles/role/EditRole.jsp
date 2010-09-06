@@ -10,6 +10,22 @@
 	<title>Edit Role</title>
 				
 	<link rel="stylesheet" href="style/style.css" type="text/css"></link>
+	<link rel="stylesheet" type="text/css" href="style/jquery-ui.css" />
+<script type="text/javascript" src="javascript/jquery.js"></script>
+<script type="text/javascript" src="javascript/jquery-ui.min.js"></script>
+<script type="text/javascript">
+jQuery.noConflict();
+jQuery(document).ready(function(){
+
+jQuery(function() {
+		jQuery("#accordion").accordion({ collapsible: true,
+		header: 'h3',
+		fillSpace: false
+		});
+				
+	});
+});
+</script>
 	</head>
 	<body>
 	<%
@@ -29,38 +45,37 @@
 		{
 		request.setAttribute("roleAutority", new RoleList((String)session.getAttribute("uid"),
 				Integer.parseInt((String)session.getAttribute("validOrgInPortal")),
-				(String)session.getAttribute("role_in_org")));
+				(String)session.getAttribute("roleid")));
 		}
 	%>
-	
+	<div style="padding-left:100px;padding-right:100px;padding-top:40px;">
+	<div id="accordion">
+	<h3><a href="#">Edit to desired role -</a></h3>
+	<div>
 	 	<html:javascript formName="editroleform" />
 		<html:form action="/editingrole" onsubmit="return validateEditroleform(this);">
-			<div id="main_title">
-		 <font color="#0044ff"> Edit to desired role:</font>
-	  </div><br>
+		  <br>
 		  <div align="center">
 		  	<html:errors property="rolename"/>
 		  	<html:errors property="rolemsg"/>
 		   </div>
-		  <br>
+		  
 		<input type="hidden" name="roleid" value="<%= crs_userRole.getString(1)%>" id="roleid" size="20" readonly="readonly"/>
 		<html:errors property="roleid"/>
 		<input type="hidden" name="oldrolename" value="<%= crs_userRole.getString(2)%>" id="oldrolename" size="20" readonly="readonly"/>
 		<html:errors property="oldrolename"/>
 		
 		<table cellspacing="1" cellpadding="6" border="0" align="center">
-		<tr><td> <font color="#0044ff" size="2"> Role :</font></td></tr>
 		<tr class="form-element">
-		<td  class="form-label">
-		
+		<td class="form-label">
 		Role Name : 
 		</td>
 		<td class="form-widget">
-		<html:text property="rolename" size="35" value="<%=crs_userRole.getString(2)%>"/></td></tr>
-		<tr class="form-element">
+		<html:text property="rolename" size="35" value="<%=crs_userRole.getString(2)%>"/></td>
+		
 		<td class="form-label">
 			Role Description :</td><td class="form-widget">
-			<html:textarea property="roledescription" value="<%=crs_userRole.getString(3)%>" rows="3" cols="33"/>
+			<html:textarea property="roledescription" value="<%=crs_userRole.getString(3)%>" rows="2" cols="33"/>
 			<html:errors property="roledescription"/></td></tr>
 			<%if(((String)session.getAttribute("authority")).equalsIgnoreCase("User"))
 			{
@@ -179,7 +194,7 @@
 		<tr class="form-element">
 		<logic:equal name="var" property="assignproject" value="Allow">
 		<td class="form-label">
-		Assign Project :</td><td>
+		Project Team Creation :</td><td>
 		<INPUT TYPE=RADIO NAME="assignproject" id="assignproject" VALUE="Allow" <%if(crs_userRole.getString(15).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
 		<INPUT TYPE=RADIO NAME="assignproject" id="assignproject" VALUE="Not Allow" <%if(crs_userRole.getString(15).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td></logic:equal>
@@ -301,7 +316,7 @@ else
 		<INPUT TYPE=RADIO NAME="editmember" id="editmember" VALUE="Not Allow" <%if(crs_userRole.getString(14).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td></tr>
 		<tr class="form-element"><td class="form-label">
-		Assign Project :</td><td>
+		Project Team Creation :</td><td>
 		<INPUT TYPE=RADIO NAME="assignproject" id="assignproject" VALUE="Allow" <%if(crs_userRole.getString(15).equals("Allow")){%> checked="checked" <%} %>><bean:message key="role.allow" />
 		<INPUT TYPE=RADIO NAME="assignproject" id="assignproject" VALUE="Not Allow" <%if(crs_userRole.getString(15).equals("Not Allow")){%> checked="checked" <%} %> ><bean:message key="role.notallow" />
 		</td><td  class="form-label">
@@ -330,12 +345,13 @@ else
 		</td></tr>
 
 <%} %>
-			</table><br><br>
+			</table><br>
 			<table align="center">
 			<tr><td><html:submit value="Save Changes" styleClass="butStnd"/></td>
 			<td><html:reset styleClass="butStnd"></html:reset></td>
 			<td><html:button property="back" value="Cancel" styleClass="butStnd" onclick="history.back();" /></td>
 			</tr></table>
 		</html:form>
+		</div></div></div>
 	</body>
 </html>

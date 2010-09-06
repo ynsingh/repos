@@ -39,7 +39,6 @@ public class WelcomeAction extends Action{
 			//System.out.println("session is not null");
 			if(((String)session.getAttribute("authority")).equalsIgnoreCase("User"))//the authority is user or super admin
 			{
-				request.setAttribute("portal", new PortalOrgBeanList((String)session.getAttribute("uid")));
 				retString="showUrl";
 			}
 		}

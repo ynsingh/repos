@@ -7,11 +7,12 @@
 
 <form-beans>
   	<form-bean name="loginform" type="in.ac.dei.edrp.pms.login.LoginForm" />
-  	
+  	<form-bean name="pmsteamform" type="in.ac.dei.edrp.pms.team.PmsTeamForm" />
   	<form-bean name="mailconfigform" type="in.ac.dei.edrp.pms.adminConfig.MailConfigForm" />
   	
   	<form-bean name="portalnameform" type="in.ac.dei.edrp.pms.home.PortalBean" />
   	<form-bean name="passwordform" type="in.ac.dei.edrp.pms.changePassword.PasswordForm"/>
+  	<form-bean name="userpasswordform" type="in.ac.dei.edrp.pms.changePassword.UserPasswordForm"/>
   	<form-bean name="projectform" type="in.ac.dei.edrp.pms.projmanage.ProjectForm"/>
   	
   	<form-bean name="newroleform" type="in.ac.dei.edrp.pms.role.RoleForm"/>
@@ -23,15 +24,11 @@
   	<form-bean name="newmemberform" type="in.ac.dei.edrp.pms.member.NewMemberForm"/>
   	<form-bean name="addorginportalform" type="in.ac.dei.edrp.pms.addorg_in_portal.AddOrgInPortalForm"/>
   	
-  	<form-bean name="backprojectsearchform" type="org.apache.struts.action.DynaActionForm">
-      <form-property name="back" type="java.lang.String" />
-      </form-bean>
- 	<form-bean name="backorgsearchform" type="org.apache.struts.action.DynaActionForm">
+  	<form-bean name="backorgsearchform" type="org.apache.struts.action.DynaActionForm">
       <form-property name="back" type="java.lang.String" />
       </form-bean>
    
   	<form-bean name="peoplesearchform" type="in.ac.dei.edrp.pms.peoplesearch.PeopleSearchForm" />
-  	<form-bean name="projectsearchform" type="in.ac.dei.edrp.pms.searching.ProjectSearchForm" />
   	<form-bean name="editform" type="in.ac.dei.edrp.pms.updation.EditForm" />
   	<form-bean name="projassignform" type="in.ac.dei.edrp.pms.member.ProjAssignForm" />
   	<form-bean name="taskform" type="in.ac.dei.edrp.pms.task.TaskForm" />
@@ -97,11 +94,7 @@
 	<forward name="updateOperation"
 	path="/updateOperation.do"
 	redirect="true" />
-	
-	<forward name="projectSearchList"
-	path="/projectSearchList.do"
-	redirect="true" />
-	
+		
 </global-forwards>
 <action-mappings >
 
@@ -129,14 +122,10 @@
 	attribute="portalnameform"
 	name="portalnameform"
 	type="in.ac.dei.edrp.pms.home.MainWelcomeAction">
-	<forward name="showWelcome" path="page.welcome" />
+	<forward name="showWelcome" path="page.userProjectList" />
  <forward name="invalid" path="/login.jsp" />
 	</action>
 	
-	<action path="/leftlink"
-	type="in.ac.dei.edrp.pms.home.LinkAction">
-	<forward name="showLink" path="/WEB-INF/JspFiles/common/LeftLink.jsp" />
-	</action>
 	
 	<action path="/logout"
 		type="in.ac.dei.edrp.pms.login.LogoutAction">
@@ -150,7 +139,7 @@
     	attribute="passwordform"
       	input="page.changepassword"
       	name="passwordform"
-      	path="/changepass"
+      	path="/changeadminpassword"
       	scope="request"
       	validate="true"
       	type="in.ac.dei.edrp.pms.changePassword.RePasswordAction">
@@ -162,6 +151,16 @@
       <forward name="forwardPass" path="page.changepassword" />
       </action>
         
+        <action
+    	attribute="userpasswordform"
+      	input="page.changepassword"
+      	name="userpasswordform"
+      	path="/changeuserpassword"
+      	scope="request"
+      	validate="true"
+      	type="in.ac.dei.edrp.pms.changePassword.UserRePasswordAction">
+   	  	<forward name="passinfo" path="page.changepasswordMessage" />
+     </action>
     <!-- Change Password part Ends -->
     <!-- Online help part starts -->
     <action
@@ -172,7 +171,16 @@
       <forward name="invalid" path="/logout.jsp" />
       </action>
     <!-- Online help part ends -->
-    
+        
+    <action
+    	attribute="pmsteamform"
+       	name="pmsteamform"
+      	path="/addTeam"
+      	scope="session"
+       	type="in.ac.dei.edrp.pms.team.AddTeamAction" > 
+   	  <forward name="pmsTeamPage" path="page.userProjectList" />
+   	  <forward name="invalid" path="/logout.jsp" />
+     	</action>
     <!-- Mail Configuration part starts -->
     
     <action
@@ -409,7 +417,7 @@
 
 	<action
       	path="/newproject"
-      	type="in.ac.dei.edrp.pms.projmanage.ProjectAction1" >
+      	type="in.ac.dei.edrp.pms.projmanage.ForwardProjectAction" >
       	<forward name="notAssigning" path="page.orginfo"/>
       	<forward name="project" path="page.newproject"/>
      </action>
@@ -425,37 +433,7 @@
 	     <forward name="viewprojteam" path="page.projTeamList" />
          <forward name="invalid" path="/logout.jsp" />
       </action>
-          
-   	<action
-      path="/searchproject"
-      type="in.ac.dei.edrp.pms.searching.ProjectSearchAction1" >
-      <forward name="searchproject" path="page.searchproject"/>
-              </action>
-     
-     <action
-     path="/button"
-     input="/search.success"
-     name="backprojectsearchform"
-     type="in.ac.dei.edrp.pms.searching.ProjectSearchAction1" >
-      <forward name="searchproject" path="page.searchproject"/>
-      </action>
-            
-              
-       <action
-      attribute="projectsearchform"
-      input="/projectSearch.jsp"
-      name="projectsearchform"
-      path="/go2"
-      scope="request"
-      type="in.ac.dei.edrp.pms.searching.ProjectSearchAction" >
-   <forward name="success" path="/WEB-INF/JspFiles/searching/viewdesiredproject.jsp" />
-       </action>
-       
-       <action        
-        path="/projectSearchList"
-      type="in.ac.dei.edrp.pms.searching.ProjectSearchListAction" >
-      <forward name="projectsearchlist" path="search.success"/>
-       </action>
+      
     <action        
         path="/editProject"
       type="in.ac.dei.edrp.pms.updation.EditProjectAction">
@@ -479,6 +457,7 @@
       type="in.ac.dei.edrp.pms.updation.DeleteProjectAction">
       
    </action>
+         
      
  <action
        path="/drawGanttChart"
@@ -486,8 +465,29 @@
      <forward name="dgchart" path="page.ganttChart"/>
 	 <forward name="charterror" path="chart.fail"/>    
      </action>
+     
+    <!-- for home page load when click on Project name start here  -->
     
-           
+    <action
+       path="/projectDetails"
+       type="in.ac.dei.edrp.pms.home.FrwardProjectDetailsAction" >
+     <forward name="showDetails" path="page.showDetails" />
+	 </action>
+	 
+	 <action path="/loadProjectTask" type="in.ac.dei.edrp.pms.task.ShowProjectTaskAction" >
+	     <forward name="TaskList_ofUser" path="/WEB-INF/JspFiles/ganttChart/ShowProjectTask.jsp" />
+         <forward name="TaskList_ofAdmin" path="page.adminTaskList" />
+         <forward name="invalid" path="/logout.jsp" />
+      </action>
+	 
+    <action
+       path="/loadGanttChart"
+       type="in.ac.dei.edrp.pms.ganttChart.GanttWithXmlAction" >
+     <forward name="dgchart" path="/WEB-INF/JspFiles/ganttChart/ShowGanttChart.jsp"/>
+	 <forward name="charterror" path="/WEB-INF/JspFiles/ForError/chartfail.jsp"/>    
+     </action>
+     
+         <!-- for home page load when click on Project name closed here-->  
 <action
       path="/assignproject"
       type="in.ac.dei.edrp.pms.member.AssignProjectAction1" >

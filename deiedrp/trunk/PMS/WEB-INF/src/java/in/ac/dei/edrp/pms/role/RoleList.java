@@ -12,14 +12,12 @@ import java.sql.*;
 
 public class RoleList {
 
-		//properties
-	
 		ArrayList<RoleFields> list = new ArrayList<RoleFields>();
 		//uid means email id of login person
-		public RoleList(String roleOrAuthority,String orgportal,String uid,String role_in_org){
+		public RoleList(String roleOrAuthority,String orgportal,String roleid){
 
-			String edit=checkRecord.AuthorityChecker("edit_remove_role", uid, orgportal,role_in_org);
-			//System.out.println("edit authority="+edit);
+			String edit=checkRecord.AuthorityChecker("edit_remove_role", roleid);
+//			System.out.println("edit authority="+edit);
 				fillList(roleOrAuthority,orgportal,edit);
 		}
 		
@@ -34,7 +32,7 @@ public class RoleList {
 				
 		public RoleList(String userid,int validorgportal,String role_in_org){
 			
-			fillList(userid,validorgportal,role_in_org);
+			fillRoleList(role_in_org);
 		}
 		/**
 		 * fill the list for viewing the role list
@@ -71,7 +69,7 @@ public class RoleList {
 			}
 		}
 		
-		public void fillList(String userid,int validorgportal,String role_in_org){
+		public void fillRoleList(String roleid){
 			Connection con=null;
 			String s[]=new String[14];
 			try{
@@ -81,30 +79,13 @@ public class RoleList {
 				}
 				con=MyDataSource.getConnection();//This method Established the connection from the database MySql
 				PreparedStatement ps=null;
-				if(role_in_org.equals("exist"))//exist in user_role_in_org table
-				{
 				ps=con.prepareStatement("select dfa.add_org,dfa.edit_remove_org,dfa.add_project," +
 						"dfa.edit_disable_project,dfa.add_member,dfa.edit_remove_member," +
 						"dfa.assign_project,dfa.edit_member_authority,dfa.assign_task,"+
 				"dfa.edit_remove_task,dfa.upload_documents,dfa.dwnld_remove_doc," +
-				"dfa.add_role,dfa.edit_remove_role from role r,default_authority dfa," +
-				"user_role_in_org uro where r.role_id=dfa.role_id and r.Role_ID=uro.valid_role" +
-				" and uro.valid_key=(select valid_key from user_in_org where " +
-				"valid_user_id=? and valid_orgportal=?)");
-				}
-				else
-				{
-					ps=con.prepareStatement("select dfa.add_org,dfa.edit_remove_org,dfa.add_project," +
-							"dfa.edit_disable_project,dfa.add_member,dfa.edit_remove_member," +
-							"dfa.assign_project,dfa.edit_member_authority,dfa.assign_task,"+
-					"dfa.edit_remove_task,dfa.upload_documents,dfa.dwnld_remove_doc," +
-					"dfa.add_role,dfa.edit_remove_role from role r,default_authority dfa," +
-					"validatetab v where v.valid_user_key=(select valid_key from user_in_org " +
-					"where valid_user_id=? and valid_orgportal=?) and r.role_id=dfa.role_id " +
-					"and r.Role_ID=v.valid_role_id");
-				}
-				ps.setString(1, userid);
-				ps.setInt(2, validorgportal);
+				"dfa.add_role,dfa.edit_remove_role from role r,default_authority dfa " +
+				"where r.role_id=dfa.role_id and r.role_id=?");
+				ps.setString(1, roleid);
 				ResultSet rs=ps.executeQuery();
 				int i=0;
 				while(rs.next())

@@ -43,7 +43,6 @@ public class DeleteUserRoleAction extends Action {
 		try
 		{
 			con=MyDataSource.getConnection();//This method Established the connection from the database MySql
-			
 			//in case of super admin for active members
 			if(((String)session.getAttribute("authority")).equalsIgnoreCase("Super Admin"))
 			{

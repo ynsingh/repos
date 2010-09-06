@@ -15,7 +15,22 @@
         <script type='text/javascript' src='dwr/util.js'></script>
 	<!-- This JavaScript file is generated specifically for your application -->
          <script type='text/javascript' src='dwr/interface/DynamicList.js'></script>
-	
+	<link rel="stylesheet" type="text/css" href="style/jquery-ui.css" />
+<script type="text/javascript" src="javascript/jquery.js"></script>
+<script type="text/javascript" src="javascript/jquery-ui.min.js"></script>
+<script type="text/javascript">
+jQuery.noConflict();
+jQuery(document).ready(function(){
+
+jQuery(function() {
+		jQuery("#accordion").accordion({ collapsible: true,
+		header: 'h3',
+		fillSpace: false
+		});
+				
+	});
+});
+</script>
 	<script type="text/javascript">
 	function seeRole() {
 	var name = DWRUtil.getValue("rolename");
@@ -42,35 +57,34 @@
 		{
 		request.setAttribute("roleAutority", new RoleList((String)session.getAttribute("uid"),
 				Integer.parseInt((String)session.getAttribute("validOrgInPortal")),
-				(String)session.getAttribute("role_in_org")));
+				(String)session.getAttribute("roleid")));
 		}
 	%>
-	
+	<div style="padding-left:100px;padding-right:100px;padding-top:40px;">
+	<div id="accordion">
+	<h3><a href="#">Add New Role -</a></h3>
+	<div>
 	<html:javascript formName="newroleform" dynamicJavascript="true" staticJavascript="true" />
 	<html:form action="/addrole" onsubmit="return validateNewroleform(this);">
-	<div id="main_title">
-		 <font color="#0044ff"> Add New Role:</font>
-	  </div><br>
+		  <br>
 		  <div align="center">
 		  	<html:errors property="rolename"/>
 		  	<html:errors property="rolemsg"/>
 		   </div>
-		  <br>
-		
+		 		
 		<table cellspacing="1" cellpadding="6" border="0" align="center">
-		<tr ><td> <font color="#0044ff" size="2"> Role :</font></td></tr>
 		<tr class="form-element">
-		<td  class="form-label">
+		<td class="form-label">
 		<input type="hidden" name="orgportal" id="orgportal" value="<%=(String)session.getAttribute("validOrgInPortal") %>" size="20" readonly="readonly"/>
 			<html:errors property="orgportal"/>
 		Role Name : 
 		</td>
 		<td class="form-widget">
-		<html:text property="rolename" indexed="rolename" size="35" value="" onchange="seeRole()"/><font color="red" size="2">*</font></td></tr>
-		<tr class="form-element">
-		<td  class="form-label">
+		<html:text property="rolename" indexed="rolename" size="35" value="" onchange="seeRole()"/><font color="red" size="2">*</font>
+		</td>
+		<td class="form-label">
 			Role Description :</td><td class="form-widget">
-			<html:textarea property="roledescription" value="" rows="3" cols="33"/>
+			<html:textarea property="roledescription" value="" rows="2" cols="33"/>
 			<html:errors property="roledescription"/></td></tr>
 			<%if(((String)session.getAttribute("authority")).equalsIgnoreCase("User"))
 			{
@@ -190,13 +204,13 @@
 		<tr class="form-element">
 		<logic:equal name="var" property="assignproject" value="Allow">
 		<td class="form-label">
-		Assign Project :</td><td>
+		Project Team Creation :</td><td>
 		<INPUT TYPE=RADIO NAME="assignproject" id="assignproject" VALUE="Allow" ><bean:message key="role.allow" />
 		<INPUT TYPE=RADIO NAME="assignproject" id="assignproject" VALUE="Not Allow" checked="checked" ><bean:message key="role.notallow" />
 		</td></logic:equal>
 		<logic:equal name="var" property="assignproject" value="Not Allow">
 		<td class="form-label">
-		Assign Project :</td><td>
+		Project Team Creation :</td><td>
 		<INPUT TYPE=RADIO NAME="assignproject" id="assignproject" disabled="disabled" VALUE="Allow" ><bean:message key="role.allow" />
 		<INPUT TYPE=RADIO NAME="assignproject" id="assignproject" disabled="disabled" VALUE="Not Allow" checked="checked" ><bean:message key="role.notallow" />
 		</td></logic:equal>
@@ -311,7 +325,7 @@ else
 		<INPUT TYPE=RADIO NAME="editmember" id="editmember" VALUE="Not Allow" checked="checked" ><bean:message key="role.notallow" />
 		</td></tr>
 		<tr class="form-element"><td class="form-label">
-		Assign Project :</td><td>
+		Project Team Creation :</td><td>
 		<INPUT TYPE=RADIO NAME="assignproject" id="assignproject" VALUE="Allow" ><bean:message key="role.allow" />
 		<INPUT TYPE=RADIO NAME="assignproject" id="assignproject" VALUE="Not Allow" checked="checked" ><bean:message key="role.notallow" />
 		</td><td  class="form-label">
@@ -339,18 +353,19 @@ else
 		<INPUT TYPE=RADIO NAME="downloaddoc" id="downloaddoc" VALUE="Not Allow" checked="checked" ><bean:message key="role.notallow" />
 		</td></tr>
 
-<%} %>			</table><br><br>
+<%} %>			</table><br>
 			<table align="center">
 			<tr><td><html:submit value="Add" styleClass="butStnd"/></td>
 			<td><html:button property="back" value="Back" styleClass="butStnd" onclick="history.back();" />
-
 			<input type="hidden" name="rolename2" id="rolename2" value="" size="20" readonly="readonly"/>
 			<html:errors property="rolename2"/>
 			</td>
-			
 			</tr></table>
 		</html:form>
 		<%} %>
+		</div>
+		</div>
+		</div>
 	</body>
 </html>
 

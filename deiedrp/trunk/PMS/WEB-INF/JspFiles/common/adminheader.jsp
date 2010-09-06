@@ -1,6 +1,7 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
 <head><title>Login Form</title>
@@ -9,10 +10,10 @@
 <script type="text/javascript" src="javascript/dropdown.js"></script>
 </head>
 <body>
-<table style="border:0px solid #000066;width:100%;height:13%;" cellspacing="0px" cellpadding="0px" bgcolor=#C3D9FF>
+<table style="border:0px solid #000066;width:100%;height:13%;background-image: url('img/backimage.PNG');background-repeat: repeat;" cellspacing="0px" cellpadding="0px" bgcolor=#C3D9FF>
 <tr>
 	<td valign="top"><div>
-					<div style="float:left;width:70%;color:#000066;background-color:C3D9FF;font-size:30px;font-family:algerian;background-image:url(header-gif.rev.gif);background-repeat: no-repeat;background-position: left;height:13%;text-align: center;text-shadow: aqua;">
+					<div style="float:left;width:70%;color:#000066;font-size:30px;font-family:algerian;height:13%;text-align: center;text-shadow: aqua;">
 					<bean:message key="header.title" />
 					<br><div style="padding-bottom:15px;font: normal;font-family: Arial, Helvetica, sans-serif;color:#000000;">
 					<b><font size="3"><bean:message key="header.subtitle" /></font></b><br>
@@ -22,11 +23,7 @@
 					<div align="right">
 		<b><font size="1">Welcome,</font></b>
 		<font size="1">
-		  		<%
-		  		/*The user_id which is currently logged In.*/
-		  		String uid=(String)session.getAttribute("uid");
-		  		out.println(uid);
-		   		%> | </font>
+		  		<c:out value="${sessionScope.uid}"/> | </font>
 		 		<html:link action="logout" styleClass="B"> <font size="-1">Logout</font> </html:link> |
 				<html:link styleClass="B" action="changeOwnpassword"> Change Password </html:link> 	</div>				
 		 </td>
@@ -139,7 +136,9 @@
   </dt>
   </dl>
 </td>
-<td>
+
+
+
 </tr></table>
    </td></tr></table>
 </body>

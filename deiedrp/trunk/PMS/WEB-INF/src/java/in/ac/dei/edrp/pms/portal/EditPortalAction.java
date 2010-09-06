@@ -47,16 +47,16 @@ public class EditPortalAction extends Action {
 		Connection con=null;
 			
 		try{
-			request.setAttribute("message","Portal updation failed,because this portal name is already exist. !!");
-			
-			con=MyDataSource.getConnection();//This method Established the connection from the database MySql
-			if(!editportalform.getPortalname().trim().equalsIgnoreCase(editportalform.getOldportalname().trim()))
-			{
-			if(checkRecord.duplicacyChecker("Portal_ID","portal","Portal_Name",editportalform.getPortalname().trim())!=null)
-			{
-				return mapping.findForward("editportalfail");
-			}
-			}
+				request.setAttribute("message","Portal updation failed,because this portal name is already exist. !!");
+				
+				con=MyDataSource.getConnection();//This method Established the connection from the database MySql
+				if(!editportalform.getPortalname().trim().equalsIgnoreCase(editportalform.getOldportalname().trim()))
+				{
+					if(checkRecord.duplicacyChecker("Portal_ID","portal","Portal_Name",editportalform.getPortalname().trim())!=null)
+					{
+						return mapping.findForward("editportalfail");
+					}
+				}
 			
 		/*
 		 * update the 'portal' table with the desired values.
@@ -68,14 +68,13 @@ public class EditPortalAction extends Action {
 				ps.setInt(3,Integer.parseInt(editportalform.getPortalid()));
 				int n=ps.executeUpdate();
 						
-		if(n>0) /*if n is greater than zero it means update operation is successful.*/
-		{
-			forwardmsg="viewPortalList";
-		}
+				if(n>0) /*if n is greater than zero it means update operation is successful.*/
+				{
+					forwardmsg="viewPortalList";
+				}
 		}
 		catch(Exception e)
-		{
-		}
+		{}
 		finally
 		{
 			MyDataSource.freeConnection(con);

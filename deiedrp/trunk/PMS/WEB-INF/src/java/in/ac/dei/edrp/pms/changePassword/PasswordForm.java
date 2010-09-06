@@ -30,6 +30,7 @@ public class PasswordForm extends ValidatorForm {
 
 	/** repassword property */
 	private String repassword;
+	
 	/*
 	 * Generated Methods
 	 */
@@ -44,6 +45,7 @@ public class PasswordForm extends ValidatorForm {
 		// TODO Auto-generated method stub
 	}
 
+	
 	/** 
 	 * Returns the oldpassword.
 	 * @return String

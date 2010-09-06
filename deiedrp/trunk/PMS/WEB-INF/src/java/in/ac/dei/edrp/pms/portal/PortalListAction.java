@@ -34,7 +34,7 @@ public class PortalListAction extends Action {
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) {
 		
-		request.setAttribute("portalList", new PortalList());
-		return mapping.findForward("portallist");
-	}
+			request.setAttribute("portalList", new PortalList());
+			return mapping.findForward("portallist");
+		}
 	}

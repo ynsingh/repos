@@ -1,0 +1,87 @@
+a.a{  
+      display: block;  
+      border: 1px solid #aaa;  
+      text-decoration: none;  
+      font-family:arial,sans-serif;
+      font-size:15px;
+      width:50px;
+      margin:2px;
+      background-color:#DCDFFA ;color:black;font-weight:bold;
+     
+     }  
+     .div {  
+      float:left;  
+      text-align: center;  
+      margin: 10px;  
+      
+     }  
+     .select {  
+      width: 100px;  
+      height: 250px;
+      border: 1px solid #aaa;  
+     }  
+    .B{
+	 color: #000099;
+	text-decoration: none;
+	font-weight: bold;
+	}
+	
+	.title{
+		top:-21px;text-decoration: none;  
+      	font-family:arial,sans-serif;word-spacing: 2px;
+      	font-size:12px;font-weight: normal;
+		position:absolute;
+		color:#191970;
+	}
+
+#button{
+	text-align:right;
+}
+
+
+/* coding for new popup window*/
+
+#fade { /*--Transparent background layer--*/
+	display: none; /*--hidden by default--*/
+	background: #000;
+	position: fixed; left: 0; top: 0;
+	width: 100%; height: 100%;
+	opacity: 0.7;
+	z-index: 9999;
+}
+.popup_block{
+	display: none; /*--hidden by default--*/
+	background: threedlightshadow;
+	padding: 0px;
+	border: 20px solid #B0C4DE;
+	float: left;
+	font-size: 1.2em;
+	position: fixed;
+	top: 50%; left: 50%;
+	z-index: 99999;
+	/*--CSS3 Box Shadows--*/
+	-webkit-box-shadow: 0px 0px 20px #000;
+	-moz-box-shadow: 0px 0px 20px #000;
+	box-shadow: 0px 0px 20px #000;
+	/*--CSS3 Rounded Corners--*/
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+img.btn_close {
+right:-15px;
+top:-16px;
+position:absolute;
+color:#ff0000;
+width: 12px;
+height: 12px;
+}
+/*--Making IE6 Understand Fixed Positioning--*/
+*html #fade {
+	position: absolute;
+}
+*html .popup_block {
+	position: absolute;
+}
+    
+

@@ -41,9 +41,6 @@ public class DeleteProjectAction extends Action {
 	
 		Connection con=MyDataSource.getConnection();   
 		HttpSession session=request.getSession();
-		//String forwardMsg="deleteUserProjectList";
-		//if(((String)session.getAttribute("authority")).equalsIgnoreCase("Super Admin"))
-			//forwardMsg="deleteAdminProjectList";
 		/*delete to the desired record of project table.*/
 		try
 		{

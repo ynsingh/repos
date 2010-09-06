@@ -8,6 +8,22 @@
 	<title>Edit Portal</title>
 				
 	<link rel="stylesheet" href="style/style.css" type="text/css"></link>
+	<link rel="stylesheet" type="text/css" href="style/jquery-ui.css" />
+<script type="text/javascript" src="javascript/jquery.js"></script>
+<script type="text/javascript" src="javascript/jquery-ui.min.js"></script>
+<script type="text/javascript">
+jQuery.noConflict();
+jQuery(document).ready(function(){
+
+jQuery(function() {
+		jQuery("#accordion").accordion({ collapsible: true,
+		header: 'h3',
+		fillSpace: false
+		});
+				
+	});
+});
+</script>
 	</head>
 	<body>
 	<%
@@ -24,12 +40,13 @@
 	/*Get the value of 'crs' that is set in request scope in EditForwardPortalAction*/
 	crs_portal=(CachedRowSet)request.getAttribute("crs");
 	%>
+	<div style="padding-left:100px;padding-right:100px;padding-top:40px;">
+	<div id="accordion">
+	<h3><a href="#"> Edit to desired portal -</a></h3>
+	<div>
 	 	<html:javascript formName="editportalform" />
 		<html:form action="/editingportal" onsubmit="return validateEditportalform(this);">
-			<div id="main_title">
-		 <font color="#0044ff"> Edit to desired portal:</font>
-	  </div><br>
-		  <div align="center">
+			<div align="center">
 		  	<html:errors property="portalname"/>
 		  </div>
 		  <br>
@@ -38,8 +55,7 @@
 		<input type="hidden" name="oldportalname" value="<%= crs_portal.getString(2)%>" id="oldportalname" size="20" readonly="readonly"/>
 		<html:errors property="oldportalname"/>
 		
-		<table cellspacing="1" cellpadding="6" border="0" align="center">
-		<tr><td> <font color="#0044ff" size="2"> Portal :</font></td></tr>
+		<table cellspacing="1" cellpadding="6" width="50%" border="0" align="center">
 		<tr class="form-element">
 		<td  class="form-label">
 		
@@ -59,6 +75,8 @@
 			<td><html:button property="back" value="Cancel" styleClass="butStnd" onclick="history.back();" /></td>
 			</tr></table>
 		</html:form>
-		
+		</div>
+		</div>
+		</div>
 	</body>
 </html>

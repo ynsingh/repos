@@ -10,6 +10,21 @@
     
   <link rel="stylesheet" href="style/main.css" type="text/css"></link>
   <link rel="stylesheet" href="style/style.css" type="text/css"></link>
+  <link rel="stylesheet" type="text/css" href="style/jquery-ui.css" />
+<script type="text/javascript" src="javascript/jquery.js"></script>
+<script type="text/javascript" src="javascript/jquery-ui.min.js"></script>
+<script type="text/javascript">
+jQuery.noConflict();
+jQuery(document).ready(function(){
+
+jQuery(function() {
+		jQuery("#accordion").accordion({ collapsible: false,
+		header: 'h3',
+		fillSpace: false
+		});
+	});
+});
+</script>
   </head>
   
   <body >
@@ -20,13 +35,17 @@
 		response.sendRedirect("login.jsp");
 	 }
 	 %>
+	 <div style="padding-left:100px;padding-right:100px;padding-top:40px;">
+	<div id="accordion">
+	<h3><a href="#">Role Details -</a></h3>
+	<div>
 	 <%
 	 if(((String)session.getAttribute("authority")).equalsIgnoreCase("User"))//the authority is user or super admin
 		{
 	  %>
+	  
 	 <logic:notEmpty name="roleDetail" property="list">
-  <div id="main_title"><font color="#0044ff">Role Details: </font></div>
-  <br>
+ 	  <br>
   <logic:iterate name="roleDetail" property="list" id="var">
 		
 		<table cellspacing="2" cellpadding="4" style="margin-left: 150px;width: 60%">
@@ -39,7 +58,7 @@
 			<td><font size="2">Role Description:</font></td>
 			<td class="hilite"><bean:write name="var" property="roledescription" /></td>
 		</tr>
-		<tr><td> <font size="3"> Authorities :</font></td></tr>
+		<tr><td> <font size="3" color="blue"> Authorities :</font></td></tr>
 		<logic:equal name="var" property="addrole" value="Allow">
 		<tr class="form-element"><td>
 		<html:link href="newrole.do" paramProperty="rolename" paramId="id" paramName="var" styleClass="B">
@@ -89,7 +108,7 @@
 		<logic:equal name="var" property="assignproject" value="Allow">
 		<tr class="form-element"><td>
 		<html:link href="assignproject.do" paramProperty="rolename" paramId="id" paramName="var" styleClass="B">
-		Assign Project</html:link></td><td>: For assigning project to the member.</td>
+		Project Team Creation</html:link></td><td>: For creating project team.</td>
 		 </tr></logic:equal>
 		<logic:equal name="var" property="editauthority" value="Allow">
 		<tr class="form-element"><td>
@@ -128,8 +147,7 @@
     {
      %>
      <logic:notEmpty name="roleDetail" property="list">
-  <div id="main_title"><font color="#0044ff">Role Details: </font></div>
-  <br>
+   <br>
   <logic:iterate name="roleDetail" property="list" id="var">
 		
 		<table cellspacing="2" cellpadding="4" style="margin-left: 150px;width: 60%">
@@ -142,7 +160,7 @@
 			<td><font size="2">Role Description:</font></td>
 			<td class="hilite"><bean:write name="var" property="roledescription" /></td>
 		</tr>
-		<tr><td> <font size="3"> Authorities :</font></td></tr>
+		<tr><td> <font size="3" color="blue"> Authorities :</font></td></tr>
 		<logic:equal name="var" property="addrole" value="Allow">
 		<tr class="form-element"><td>
 		Add New Role</td>
@@ -183,7 +201,7 @@
 		  </tr></logic:equal>
 		<logic:equal name="var" property="assignproject" value="Allow">
 		<tr class="form-element"><td>
-		Assign Project</td><td>: For assigning project to the member.</td>
+		Project Team Creation</td><td>: For creating project team.</td>
 		 </tr></logic:equal>
 		<logic:equal name="var" property="editauthority" value="Allow">
 		<tr class="form-element"><td>
@@ -213,8 +231,7 @@
 	<br><div style="padding-left: 100px;">
 	 <html:button property="back" value="Back" styleClass="butStnd" onclick="history.back();" />
     </div>
-     
-     
      <%} %>
+     </div></div></div>
   </body>
 </html>

@@ -60,19 +60,20 @@ public class EditForwardOrgAction extends Action {
 			 * This method Established the connection from the database MySql
 			 */
 		con=MyDataSource.getConnection();
-		PreparedStatement ps=con.prepareStatement("select * from organisation o"+
-		" where o.Org_Id=?");
+		PreparedStatement ps=con.prepareStatement("select distinct o.Org_Id,o.Org_Name,o.Org_Address,"+
+					  		"s.state_name,c.city_name,o.org_phone,o.Org_Fax,o.Org_Url,o.org_id  "+ 
+					  		" from organisation o,state s,city c "+
+					  		"where o.Org_State=s.state_id and o.org_city=c.city_id and s.state_id=c.state_id and o.Org_Id=?");
 	    ps.setString(1,request.getParameter("id"));
 	    ResultSet rs_org=ps.executeQuery();
 	    CachedRowSet crs = new CachedRowSetImpl();
 	    crs.populate(rs_org);
 	    
-	    if(crs.next())
-	    {
-	    	request.setAttribute("crs", crs);
-	    	forwardmsg="editorgpage";
-	    }
-		//System.out.println("org id="+request.getParameter("id"));
+	    	if(crs.next())
+	    	{
+	    		request.setAttribute("crs", crs);
+	    		forwardmsg="editorgpage";
+	    	}
 		}
 		catch(Exception e){}
 		finally

@@ -7,6 +7,7 @@
 -- ================================================================= -->
 
 
+
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -18,11 +19,93 @@
 
 
 --
--- Create schema pms
+-- Create schema pmsdatabase123
 --
 
 CREATE DATABASE IF NOT EXISTS pms;
 USE pms;
+
+--
+-- Definition of table `city`
+--
+
+DROP TABLE IF EXISTS `city`;
+CREATE TABLE `city` (
+  `state_id` int(10) unsigned NOT NULL,
+  `city_id` int(10) unsigned NOT NULL,
+  `city_name` varchar(255) NOT NULL,
+  PRIMARY KEY (`state_id`,`city_id`),
+  CONSTRAINT `state_id` FOREIGN KEY (`state_id`) REFERENCES `state` (`state_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `city`
+--
+
+/*!40000 ALTER TABLE `city` DISABLE KEYS */;
+INSERT INTO `city` (`state_id`,`city_id`,`city_name`) VALUES 
+ (1,1,'Agra'),
+ (1,2,'Kanpur'),
+ (1,3,'Lucknow'),
+ (1,4,'Aligarh'),
+ (1,5,'Hamirpur'),
+ (1,6,'Allahabad'),
+ (2,1,'Dehradun'),
+ (2,2,'Uttarkashi'),
+ (2,3,'Haridwar'),
+ (2,4,'Rudraprayag'),
+ (2,5,'Nainital'),
+ (2,6,'Roorkee'),
+ (3,1,'Mysore'),
+ (3,2,'Gulberga'),
+ (3,3,'Chitradurga'),
+ (3,4,'Kolar'),
+ (3,5,'Bijapur'),
+ (3,6,'Bangalore Rural'),
+ (3,7,'Belgaum'),
+ (5,1,'Bhopal'),
+ (5,2,'Indore'),
+ (5,3,'Jabalpur'),
+ (6,1,'Chennai'),
+ (6,2,'Coimbotore'),
+ (6,3,'Cuddalorei'),
+ (6,4,'Dharmapuri'),
+ (6,5,'Kancheepuram'),
+ (6,6,'Ramanathapuram'),
+ (6,7,'Tiruchiorappalli'),
+ (6,8,'Nagapattinam'),
+ (7,1,'Kathua'),
+ (7,2,'Badgan'),
+ (7,3,'Poonch'),
+ (7,4,'Rajauri'),
+ (7,5,'Baramula'),
+ (7,6,'Doda'),
+ (7,7,'Udhampur'),
+ (7,8,'Jammu'),
+ (7,9,'Kupwara'),
+ (7,10,'Pulwama'),
+ (7,11,'Anantnag'),
+ (7,12,'Srinagar'),
+ (7,13,'Leh'),
+ (7,14,'Kargil'),
+ (8,1,'Hamirpur'),
+ (8,2,'Sirmour'),
+ (8,3,'Kullu'),
+ (8,4,'Solan'),
+ (8,5,'Mandi'),
+ (8,6,'Chamba'),
+ (8,7,'Bilaspur'),
+ (8,8,'Kangra'),
+ (8,9,'Kinnaur'),
+ (8,10,'Shimla'),
+ (9,1,'New Delhi'),
+ (9,2,'Central Delhi'),
+ (9,3,'North Delhi'),
+ (9,4,'East Delhi'),
+ (9,5,'South Delhi'),
+ (9,6,'West Delhi');
+/*!40000 ALTER TABLE `city` ENABLE KEYS */;
+
 
 --
 -- Definition of table `default_authority`
@@ -49,14 +132,12 @@ CREATE TABLE `default_authority` (
   PRIMARY KEY (`authority_id`),
   KEY `role_id` (`role_id`),
   CONSTRAINT `role_id` FOREIGN KEY (`role_id`) REFERENCES `role` (`Role_Id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `default_authority`
 --
 
-/*!40000 ALTER TABLE `default_authority` DISABLE KEYS */;
-/*!40000 ALTER TABLE `default_authority` ENABLE KEYS */;
 
 
 --
@@ -135,14 +216,12 @@ CREATE TABLE `org_into_portal` (
   PRIMARY KEY (`valid_org_inportal`),
   KEY `Portal_Id` (`Portal_Id`),
   CONSTRAINT `Portal_Id` FOREIGN KEY (`Portal_Id`) REFERENCES `portal` (`Portal_ID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `org_into_portal`
 --
 
-/*!40000 ALTER TABLE `org_into_portal` DISABLE KEYS */;
-/*!40000 ALTER TABLE `org_into_portal` ENABLE KEYS */;
 
 
 --
@@ -154,20 +233,17 @@ CREATE TABLE `organisation` (
   `Org_Id` int(4) unsigned zerofill NOT NULL AUTO_INCREMENT,
   `Org_Name` varchar(255) NOT NULL,
   `Org_Address` text NOT NULL,
-  `Org_City` varchar(255) NOT NULL,
-  `Org_State` varchar(255) NOT NULL,
+  `Org_City` int(10) unsigned NOT NULL,
+  `Org_State` int(10) unsigned NOT NULL,
   `Org_Phone` varchar(25) NOT NULL,
   `Org_Fax` varchar(25) DEFAULT NULL,
   `Org_URL` varchar(255) NOT NULL,
   PRIMARY KEY (`Org_Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `organisation`
 --
-
-/*!40000 ALTER TABLE `organisation` DISABLE KEYS */;
-/*!40000 ALTER TABLE `organisation` ENABLE KEYS */;
 
 
 --
@@ -213,14 +289,11 @@ CREATE TABLE `portal` (
   `Created_By` varchar(255) NOT NULL,
   `Created_On` datetime NOT NULL,
   PRIMARY KEY (`Portal_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `portal`
 --
-
-/*!40000 ALTER TABLE `portal` DISABLE KEYS */;
-/*!40000 ALTER TABLE `portal` ENABLE KEYS */;
 
 
 --
@@ -252,9 +325,6 @@ CREATE TABLE `project` (
 -- Dumping data for table `project`
 --
 
-/*!40000 ALTER TABLE `project` DISABLE KEYS */;
-/*!40000 ALTER TABLE `project` ENABLE KEYS */;
-
 
 --
 -- Definition of table `role`
@@ -272,14 +342,11 @@ CREATE TABLE `role` (
   PRIMARY KEY (`Role_Id`),
   KEY `ValidOrgPortal` (`ValidOrgPortal`),
   CONSTRAINT `ValidOrgPortal` FOREIGN KEY (`ValidOrgPortal`) REFERENCES `org_into_portal` (`valid_org_inportal`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `role`
 --
-
-/*!40000 ALTER TABLE `role` DISABLE KEYS */;
-/*!40000 ALTER TABLE `role` ENABLE KEYS */;
 
 
 --
@@ -299,6 +366,35 @@ CREATE TABLE `secure_question` (
 
 /*!40000 ALTER TABLE `secure_question` DISABLE KEYS */;
 /*!40000 ALTER TABLE `secure_question` ENABLE KEYS */;
+
+
+--
+-- Definition of table `state`
+--
+
+DROP TABLE IF EXISTS `state`;
+CREATE TABLE `state` (
+  `state_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `state_name` varchar(255) NOT NULL,
+  PRIMARY KEY (`state_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `state`
+--
+
+/*!40000 ALTER TABLE `state` DISABLE KEYS */;
+INSERT INTO `state` (`state_id`,`state_name`) VALUES 
+ (1,'Uttar Pradesh'),
+ (2,'Uttaranchal'),
+ (3,'Karnataka'),
+ (4,'Bihar'),
+ (5,'Madhya Pradesh'),
+ (6,'Tamil Nadu'),
+ (7,'Jammu & Kashmir'),
+ (8,'Himachal Pradesh'),
+ (9,'Delhi');
+/*!40000 ALTER TABLE `state` ENABLE KEYS */;
 
 
 --
@@ -329,10 +425,6 @@ CREATE TABLE `task` (
 -- Dumping data for table `task`
 --
 
-/*!40000 ALTER TABLE `task` DISABLE KEYS */;
-/*!40000 ALTER TABLE `task` ENABLE KEYS */;
-
-
 --
 -- Definition of table `task_with_user`
 --
@@ -350,9 +442,6 @@ CREATE TABLE `task_with_user` (
 --
 -- Dumping data for table `task_with_user`
 --
-
-/*!40000 ALTER TABLE `task_with_user` DISABLE KEYS */;
-/*!40000 ALTER TABLE `task_with_user` ENABLE KEYS */;
 
 
 --
@@ -374,9 +463,6 @@ CREATE TABLE `user_in_org` (
 --
 -- Dumping data for table `user_in_org`
 --
-
-/*!40000 ALTER TABLE `user_in_org` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user_in_org` ENABLE KEYS */;
 
 
 --
@@ -406,7 +492,7 @@ CREATE TABLE `user_info` (
 
 /*!40000 ALTER TABLE `user_info` DISABLE KEYS */;
 INSERT INTO `user_info` (`User_ID`,`First_Name`,`Last_Name`,`Phone_No`,`Skills`,`Experince`,`Secure_Qid`,`Secure_Ans`,`Created_On`,`Updated_On`) VALUES 
- ('superadmin',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2010-05-25','2010-05-25');
+ ('superadmin',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2010-08-23','2010-08-23');
 /*!40000 ALTER TABLE `user_info` ENABLE KEYS */;
 
 
@@ -418,10 +504,13 @@ DROP TABLE IF EXISTS `user_role_in_org`;
 CREATE TABLE `user_role_in_org` (
   `Valid_Key` char(10) NOT NULL,
   `Valid_Role` int(10) unsigned NOT NULL,
+  `PermittedBy` varchar(255) NOT NULL,
   `Authority` varchar(255) NOT NULL,
-  `Status` varchar(8) NOT NULL,
+  `Status` varchar(255) NOT NULL,
   PRIMARY KEY (`Valid_Key`,`Valid_Role`),
   KEY `Valid_Role` (`Valid_Role`),
+  KEY `PermittedBy` (`PermittedBy`),
+  CONSTRAINT `PermittedBy` FOREIGN KEY (`PermittedBy`) REFERENCES `user_info` (`User_ID`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `Valid_Key` FOREIGN KEY (`Valid_Key`) REFERENCES `user_in_org` (`Valid_Key`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `Valid_Role` FOREIGN KEY (`Valid_Role`) REFERENCES `role` (`Role_Id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -429,9 +518,6 @@ CREATE TABLE `user_role_in_org` (
 --
 -- Dumping data for table `user_role_in_org`
 --
-
-/*!40000 ALTER TABLE `user_role_in_org` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user_role_in_org` ENABLE KEYS */;
 
 
 --
@@ -451,6 +537,7 @@ CREATE TABLE `validatetab` (
   KEY `Valid_User_Key` (`Valid_User_Key`),
   KEY `Valid_Project_Code` (`Valid_Project_Code`),
   KEY `Valid_Role_Id` (`Valid_Role_Id`),
+  KEY `Permitted_By` (`Permitted_By`),
   CONSTRAINT `Permitted_By` FOREIGN KEY (`Permitted_By`) REFERENCES `user_info` (`User_ID`) ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT `Valid_Project_Code` FOREIGN KEY (`Valid_Project_Code`) REFERENCES `project` (`Project_Code`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `Valid_Role_Id` FOREIGN KEY (`Valid_Role_Id`) REFERENCES `role` (`Role_Id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -461,7 +548,5 @@ CREATE TABLE `validatetab` (
 -- Dumping data for table `validatetab`
 --
 
-/*!40000 ALTER TABLE `validatetab` DISABLE KEYS */;
-/*!40000 ALTER TABLE `validatetab` ENABLE KEYS */;
 
 

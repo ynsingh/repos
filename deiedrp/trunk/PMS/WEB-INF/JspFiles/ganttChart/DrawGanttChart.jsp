@@ -70,9 +70,11 @@
 			ps=con.prepareStatement("select distinct p.project_name from project p,"+
 									"user_in_org u,validatetab v where p.enable=0 and "+
 									"u.valid_user_id=? and u.valid_orgportal=? "+
-					"and u.valid_key=v.valid_user_key and v.valid_project_code=p.project_code");
+					"and u.valid_key=v.valid_user_key and v.valid_project_code=p.project_code"+
+					" and v.valid_role_id=?");
 			ps.setString(1,(String)session.getAttribute("uid"));
 			ps.setString(2,(String)session.getAttribute("validOrgInPortal"));
+			ps.setString(3,(String)session.getAttribute("roleid"));
 		rs=ps.executeQuery();
 				while(rs.next())
 				{

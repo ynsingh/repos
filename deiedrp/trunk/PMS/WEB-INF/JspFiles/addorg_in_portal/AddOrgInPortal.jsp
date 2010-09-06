@@ -1,56 +1,56 @@
 <%@ page language="java" pageEncoding="ISO-8859-1"%>
-<%@ page import="java.sql.*"%>
-<%@page import="in.ac.dei.edrp.pms.dataBaseConnection.MyDataSource;"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%> 
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
+<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
  
 <html> 
 	<head>
 		<title>JSP for OrgPOrtalForm form</title>
 		<link rel="stylesheet" href="style/main.css" type="text/css"></link>
 		<link rel="stylesheet" href="style/style.css" type="text/css"></link>
-		
+		<link rel="stylesheet" type="text/css" href="style/jquery-ui.css" />
+<script type="text/javascript" src="javascript/jquery.js"></script>
+<script type="text/javascript" src="javascript/jquery-ui.min.js"></script>
+<script type="text/javascript">
+jQuery.noConflict();
+jQuery(document).ready(function(){
+
+jQuery(function() {
+		jQuery("#accordion").accordion({ collapsible: true,
+		header: 'h3',
+		fillSpace: false
+		});
+	});
+});
+</script>
 	</head>
 	<body>
-	<%!
-	Connection con=null;
-	ResultSet rs=null;
-	PreparedStatement ps=null;
-	String uid=null;
-	%>
+	<div style="padding-left:100px;padding-right:100px;padding-top:40px;">
+	<div id="accordion">
+	<h3><a href="#"><bean:message key="addportalmessage"/> -</a></h3>
+	<div>
 	<html:javascript formName="addorginportalform" dynamicJavascript="true"	staticJavascript="true" />
 	<html:form action="/add_org_in_portal" onsubmit="return validateAddorginportalform(this)">
-		<div id="main_title">
-			<font color="#0044ff"><bean:message key="addportalmessage"/> :</font>
-		</div><br><br><div align="center">
+		<br>
+		<div align="center">
 		  	<html:errors property="addorgportal"/>
 		   </div>
 		  <br><br>
-	 <table cellspacing="2" cellpadding="10" width="40%" border="0" align="center">
-		 
-		<tr></tr>
+	 <table cellspacing="2" cellpadding="10" width="50%" border="0" align="center">
+		 <tr></tr>
 		<tr class="form-element">
 		 <td class="form-label">
 			<bean:message key="addportalname"/> :</td>
 		<td class="form-widget">
 			<select id="portalname" name="portalname" style="width: 270px;">
 			<option>--Select--</option>
-			<%
-			uid=request.getParameter("userid");
-			try{
-			con=MyDataSource.getConnection();
-			ps=con.prepareStatement("select distinct portal_name from portal");
-			rs=ps.executeQuery();
-			while(rs.next())
-			{
-			 %>
-			<option><%=rs.getString(1)%></option>
-			<%
-			}
-			}catch(Exception e){
-			System.out.println("Error in addorginportal jsp!!!"+e);
-			}
-			 %>
+			<sql:query var="sysportal" dataSource="jdbc/mydb">
+				select distinct portal_name from portal order by portal_name asc
+			</sql:query>
+			<c:forEach var="row" items="${sysportal.rows}">
+			<option><c:out value="${row.portal_name}"/></option>
+			</c:forEach>
 			 </select><font color="red" size="2">*</font>
 			<html:errors property="portalname"/>
 		</td></tr>
@@ -61,54 +61,44 @@
 		<td class="form-widget">
 			<select id="organisation" name="organisation" style="width: 270px;">
 			<option>--Select--</option>
-			<%
-			try{
-			//con=MyDataSource.getConnection();
-			ps=con.prepareStatement("select distinct org_name from organisation");
-			rs=ps.executeQuery();
-			while(rs.next())
-			{
-			 %>
-			<option><%=rs.getString(1)%></option>
-			<%
-			}
-			}catch(Exception e)
-			{
-			System.out.println("Error in addorginportal jsp!!!"+e);
-			}
-			 %>
-			 </select><font color="red" size="2">*</font>
+			<sql:query var="sysorg" dataSource="jdbc/mydb">
+				select distinct org_name from organisation order by org_name asc
+			</sql:query>
+			<c:forEach var="row" items="${sysorg.rows}">
+			<option><c:out value="${row.org_name}"/></option>
+			</c:forEach>
+			</select><font color="red" size="2">*</font>
 			<html:errors property="organisation"/>
 		</td></tr><tr></tr>	
 		<tr class="form-element">
 		 <td class="form-label">
 		<bean:message key="addportalemailid"/> :</td>
 		<td class="form-widget"> 
-		 <html:select property="emailid" indexed="emailid" value="<%=uid%>" style="width: 270px;">
+		 <html:select property="emailid" indexed="emailid" value="${param.userid}" style="width: 270px;">
 			<html:option value="--Select--"></html:option>
-			<% 
-			try{
-			ps=con.prepareStatement("SELECT valid_user_id FROM user_in_org");
-				ResultSet rs1=ps.executeQuery();
-				if(rs1.next())
-				ps=con.prepareStatement("SELECT distinct u.user_id FROM user_info u,user_in_org uio,"+
-				"user_role_in_org uro where u.user_id=uio.valid_user_id and "+
-				"uio.valid_key=uro.valid_key or u.user_id not in "+
-				"(select l.login_user_id from login l)order by u.user_id asc");
-				else
-				ps=con.prepareStatement("SELECT distinct u.user_id FROM user_info u"+
-				" where u.user_id not in "+
-				"(select l.login_user_id from login l)order by u.user_id asc");
-				rs=ps.executeQuery();
-			while(rs.next())
-				{
-			%>
-			<html:option value="<%= rs.getString(1)%>"></html:option>
-			<%
-			}
-			}
-			catch(SQLException e){}
-			 %>
+			<sql:query var="user1" dataSource="jdbc/mydb">
+				SELECT valid_user_id FROM user_in_org
+			</sql:query>
+			<c:if test="${empty user1.rows}">
+				<sql:query var="user" dataSource="jdbc/mydb">
+					SELECT distinct u.user_id FROM user_info u 
+					where u.user_id not in (select l.login_user_id from login l)
+					order by u.user_id asc
+					</sql:query>
+ 				</c:if>
+ 				<c:if test="${!empty user1.rows}">
+ 				<sql:query var="user" dataSource="jdbc/mydb">
+					SELECT distinct u.user_id FROM user_info u,user_in_org uio,
+					user_role_in_org uro where (u.user_id=uio.valid_user_id and
+					uio.valid_key=uro.valid_key and uro.PermittedBy=
+					(select l.login_user_id from login l where l.authority='Super Admin'))
+        			or u.user_id not in
+				(select l.login_user_id from login l)order by u.user_id asc	
+				</sql:query> 
+  				</c:if>
+			<c:forEach var="row" items="${user.rows}">
+			<html:option value="${row.user_id}"></html:option>
+			</c:forEach>
 			</html:select>
 			<font color="red" size="2">*</font>
 		<html:errors property="emailid"/>
@@ -120,25 +110,16 @@
 		<td class="form-widget">
 			<select id="role" name="role" style="width: 270px;">
 			<option>--Select--</option>
-			<%
-			try{
-			//con=MyDataSource.getConnection();
-			ps=con.prepareStatement("select distinct role_name from role where ValidOrgPortal IS NULL");
-			rs=ps.executeQuery();
-			while(rs.next())
-			{
-			 %>
-			<option><%=rs.getString(1)%></option>
-			<%
-			}
-			}catch(Exception e){
-			System.out.println("Error in addorginportal jsp!!!"+e);
-			}
-			 %>
+			<sql:query var="sysrole" dataSource="jdbc/mydb">
+				select distinct role_name from role where ValidOrgPortal IS NULL order by role_name asc
+			</sql:query>
+			<c:forEach var="row" items="${sysrole.rows}">
+			<option><c:out value="${row.role_name}"/></option>
+			</c:forEach>
 			</select><font color="red" size="2">*</font><html:errors property="role"/>
 			 </td></tr>
 		</table>
-		 <table style="padding-top: 40px;padding-left: 370px" >	
+		 <table style="padding-top: 30px;" align="center">	
 			<tr></tr><tr></tr><tr></tr>		  
 			<tr><td>
 			<html:submit value="Done" styleClass="butStnd"/>
@@ -147,9 +128,7 @@
             </td></tr>
 			</table>
 		</html:form>
-				<%
-					MyDataSource.freeConnection(con);
-				%>
+		</div></div></div>		
 	</body>
 </html>
 

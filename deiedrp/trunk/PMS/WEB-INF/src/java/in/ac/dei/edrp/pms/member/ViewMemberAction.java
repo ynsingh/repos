@@ -34,7 +34,7 @@ public class ViewMemberAction extends Action {
 			HttpSession session=request.getSession();
 			String retString="invalid";
 			if((String)session.getAttribute("mysession")!=null)
-			{												//list comes as active/inactive on date 7 april 2010
+			{		//list comes as active/inactive on date 7 april 2010
 				if(((String)session.getAttribute("authority")).equalsIgnoreCase("User"))//the authority is user or super admin
 					retString="viewOrgMember";
 				else

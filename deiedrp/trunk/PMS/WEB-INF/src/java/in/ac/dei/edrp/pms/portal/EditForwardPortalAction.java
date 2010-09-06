@@ -46,20 +46,20 @@ public class EditForwardPortalAction extends Action {
 			 * This method Established the connection from the database MySql
 			 */
 		//request.setAttribute("message","The desired portal has been deleted.");
-		con=MyDataSource.getConnection();
-		PreparedStatement ps=con.prepareStatement("select * from portal p"+
-		" where p.Portal_Id=?");
-	    ps.setString(1,request.getParameter("portalkey"));
-	    ResultSet rs_portal=ps.executeQuery();
-	    CachedRowSet crs = new CachedRowSetImpl();
-	    crs.populate(rs_portal);
+			con=MyDataSource.getConnection();
+			PreparedStatement ps=con.prepareStatement("select * from portal p"+
+			" where p.Portal_Id=?");
+		    ps.setString(1,request.getParameter("portalkey"));
+		    ResultSet rs_portal=ps.executeQuery();
+		    CachedRowSet crs = new CachedRowSetImpl();
+		    crs.populate(rs_portal);
 	    
-	    if(crs.next())
-	    {
-	    	request.setAttribute("crs", crs);
-	    	forwardmsg="editportal";
-	    }
-		//System.out.println("portal id="+request.getParameter("portalkey"));
+		    if(crs.next())
+		    {
+		    	request.setAttribute("crs", crs);
+		    	forwardmsg="editportal";
+		    }
+		
 		}
 		catch(Exception e){}
 		finally

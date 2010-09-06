@@ -1,11 +1,40 @@
+/* it is used for IE only*/
 .ss{padding:0; margin:0}
 
 .dropdown {float:left; padding-right:0px;background-color:#336699; margin:0px auto}
-.dropdown dt {width:135px;height:12px;border-right: 2px solid #9ac1c9; padding:5px; font-weight:bold;color:#ffffff; cursor:pointer; background:url(images/header.gif);margin:0px auto}
+.dropdown dt {width:146px;height:12px;border-right: 2px solid #9ac1c9; padding:5px; font-weight:bold;color:#ffffff; cursor:pointer; background:url(images/header.gif);margin:0px auto;}
 .dropdown dt:hover {background:url(images/header_over.gif) }
-.dropdown dd {position:absolute; overflow:hidden; width:144px; display:none; background:#fff; z-index:200; opacity:0; margin:0px auto}
-.dropdown ul {width:140px; border:2px solid #9ac1c9; list-style:none; border-top:none ;margin:0px auto}
-.dropdown li {display:inline ;margin:0px auto}
-.dropdown a, .dropdown a:active, .dropdown a:visited {display:block;font-weight: normal; padding:5px; color:#333; text-decoration:none; background:#eaf0f2; width:129px ;margin:0px auto;}
+.dropdown dd {position:absolute;overflow:hidden; width:188px; display:none; background:#fff; z-index:200; opacity:0; margin-left:-40px;}
+.dropdown ul {width:138px;border:2px solid #9ac1c9;list-style:none; border-top:none ;margin:0px auto}
+.dropdown li {display:inline ;margin:0px auto;background:#eaf0f2; width:138px ;}
+.dropdown a, .dropdown a:active, .dropdown a:visited {display:block;font-weight: normal; padding:5px; color:#333; text-decoration:none; background:#eaf0f2; width:138px ;margin:0px auto;}
 .dropdown a:hover {background:#d9e1e4; color:#000 ;margin:0px auto;font-weight: normal;}
-.dropdown .underline {border-bottom:1px solid #b9d6dc ;margin:0px auto}
+.dropdown .underline {border-bottom:1px solid #b9d6dc ;margin:0px auto; }
+
+/* it is used for all other browser excluding IE*/
+
+html>body .ss{padding:0; margin:0}
+html>body .dropdown {
+	float:left; padding-right:0px;
+	background-color:#336699; margin:0px auto}
+html>body .dropdown dt {
+	width:135px;height:12px;border-right: 2px solid #9ac1c9; 
+	padding:5px; font-weight:bold;color:#ffffff; cursor:pointer;
+	background:url(images/header.gif);
+	margin:0px auto}
+html>body .dropdown dt:hover {
+	background:url(images/header_over.gif) }
+html>body .dropdown dd {
+	position:absolute; overflow:hidden; width:144px;
+	display:none; background:#fff; z-index:200; opacity:0; margin:0px auto}
+html>body .dropdown ul {
+	width:140px; border:2px solid #9ac1c9; list-style:none;
+	border-top:none ;margin:0px auto}
+html>body .dropdown li {display:inline ;margin:0px auto}
+html>body .dropdown a, .dropdown a:active, .dropdown a:visited {
+	display:block;font-weight: normal; padding:5px; color:#333;
+	text-decoration:none; background:#eaf0f2; width:129px ;margin:0px auto;}
+html>body .dropdown a:hover {
+	background:#d9e1e4; color:#000 ;margin:0px auto;font-weight: normal;}
+html>body .dropdown .underline {
+	border-bottom:1px solid #b9d6dc ;margin:0px auto}

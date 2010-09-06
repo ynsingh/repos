@@ -14,7 +14,22 @@
         <script type='text/javascript' src='dwr/util.js'></script>
 	<!-- This JavaScript file is generated specifically for your application -->
          <script type='text/javascript' src='dwr/interface/DynamicList.js'></script>
-	
+	<link rel="stylesheet" type="text/css" href="style/jquery-ui.css" />
+<script type="text/javascript" src="javascript/jquery.js"></script>
+<script type="text/javascript" src="javascript/jquery-ui.min.js"></script>
+<script type="text/javascript">
+jQuery.noConflict();
+jQuery(document).ready(function(){
+
+jQuery(function() {
+		jQuery("#accordion").accordion({ collapsible: true,
+		header: 'h3',
+		fillSpace: false
+		});
+				
+	});
+});
+</script>
 	<script type="text/javascript">
 	function seePortal() {
 	
@@ -38,19 +53,20 @@
 	}
 	%>
 	
+<div style="padding-left:100px;padding-right:100px;padding-top:40px;">
+	<div id="accordion">
+	<h3><a href="#">Create Portal -</a></h3>
+	<div>
 	<html:javascript formName="newportalform" dynamicJavascript="true" staticJavascript="true" />
 	<html:form action="/addportal" onsubmit="return validateNewportalform(this);">
-	<div id="main_title">
-		 <font color="#0044ff"> Create Portal:</font>
-	  </div><br>
-		  <div align="center">
+	  <br>
+	  <div align="center">
 		  	<html:errors property="portalname"/>
 		  	<html:errors property="portalmsg"/>
 		   </div>
 		  <br>
 		
-		<table cellspacing="1" cellpadding="6" border="0" align="center">
-		<tr ><td> <font color="#0044ff" size="2"> Portal :</font></td></tr>
+		<table cellspacing="1" cellpadding="6" width="50%" border="0" align="center">
 		<tr class="form-element">
 		<td class="form-label">
 		
@@ -63,7 +79,6 @@
 			Portal Description :</td><td class="form-widget">
 			<html:textarea property="portaldescription" value="" rows="3" cols="33"/>
 			<html:errors property="portaldescription"/></td></tr>
-			
 			</table><br><br>
 			<table align="center">
 			<tr><td><html:submit value="Add" styleClass="butStnd" /></td><td><html:reset value="Reset" styleClass="butStnd"/>
@@ -72,9 +87,12 @@
 			<input type="hidden" name="portalname2" id="portalname2" value="" size="20" readonly="readonly"/>
 			<html:errors property="portalname2"/>
 			</td>
-			
 			</tr></table>
 		</html:form>
+	</div>
+	</div>
+	</div>
+	
 	</body>
 </html>
 

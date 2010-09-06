@@ -38,8 +38,10 @@ public class ProjectList {
 		 */
 		public ProjectList(String user_id,String org_portal,String role_in_org)
 		{
-			String editPermission=checkRecord.AuthorityChecker("edit_disable_project", user_id, org_portal,role_in_org);
-			fillProjectList(org_portal,editPermission);	
+			//in case of user (not a super admin)
+			String editPermission=checkRecord.AuthorityChecker("edit_disable_project",role_in_org);
+			String teamCreation=checkRecord.AuthorityChecker("assign_project",role_in_org);
+			fillProjectList(user_id,role_in_org,org_portal,editPermission,teamCreation);	
 		}
 
 		
@@ -50,23 +52,29 @@ public class ProjectList {
 		 * @param uid It holds the user id of that person which is currently logged in.
 		 * @see projmanage.ProjectFields
 		 */
-		public void fillProjectList(String org_portal,String editPermission){
+		public void fillProjectList(String user_id,String role_in_org,
+				String org_portal,String editPermission,String teamCreation){
 			Connection con=null;
 			try{
 				con=MyDataSource.getConnection();//This method Established the connection from the database MySql
 				PreparedStatement ps=null;
 				ResultSet rs=null;
-				
-					//System.out.println("for user");
+				//System.out.println("for user");
 					ps=con.prepareStatement("select p.project_code,p.project_name," +
 							"DATE_FORMAT(p.schedule_start_date,'%d-%b-%Y')," +
 							"DATE_FORMAT(p.schedule_end_date,'%d-%b-%Y')," +
 							"DATE_FORMAT(p.actual_start_date,'%d-%b-%Y')," +
 							"DATE_FORMAT(p.actual_end_date,'%d-%b-%Y')," +
 							"p.target_budget,p.priority,p.status,p.gchart_color," +
-							"p.description,p.Enable from project p " +
-							"where p.valid_org_inportal=? order by p.Project_Code asc");
-					ps.setString(1,org_portal);
+							"p.description,p.Enable from project p," +
+							"user_in_org u,validatetab v where p.enable=0 and "+
+							"u.valid_user_id=? and u.valid_orgportal=? "+
+			"and u.valid_key=v.valid_user_key and v.valid_project_code=p.project_code"+
+			" and v.valid_role_id=? order by p.project_name");
+		ps.setString(1,user_id);
+		ps.setString(2,org_portal);
+		ps.setString(3,role_in_org);
+					
 					rs=ps.executeQuery();
 					while(rs.next())
 					{
@@ -74,7 +82,7 @@ public class ProjectList {
 			list.add(new ProjectFields(rs.getString(1),rs.getString(2),rs.getString(3),
 					rs.getString(4),rs.getString(5),rs.getString(6),
 					Integer.parseInt(rs.getString(7)),rs.getString(8),rs.getString(9),
-					rs.getString(10),rs.getString(11),rs.getString(12),editPermission));
+					rs.getString(10),rs.getString(11),rs.getString(12),editPermission,teamCreation));
 
 					}
 				}
@@ -115,7 +123,7 @@ public class ProjectList {
 							list.add(new ProjectFields(rs.getString(1),rs.getString(2),rs.getString(3),
 						rs.getString(4),rs.getString(5),rs.getString(6),
 						Integer.parseInt(rs.getString(7)),rs.getString(8),rs.getString(9),
-						rs.getString(10),rs.getString(11),rs.getString(12),""));
+						rs.getString(10),rs.getString(11),rs.getString(12),"",""));
 						}
 					}
 					catch(Exception e)

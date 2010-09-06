@@ -53,8 +53,11 @@ public class RePasswordAction extends Action {
 			ps.setString(3, passwordform.getOldpassword());
 			int x=ps.executeUpdate();
 			if(x>0)
-				request.setAttribute("passinfo","Your password has been changed successfully!");
-		}catch(Exception e){System.out.println("Exception is coming "+e);}
+				request.setAttribute("passinfo","Your own password has been changed successfully!");
+			
+		}catch(Exception e){
+			//System.out.println("Exception is coming in RePasswordAction.java "+e);
+			}
 		finally
 		{
 			MyDataSource.freeConnection(con);

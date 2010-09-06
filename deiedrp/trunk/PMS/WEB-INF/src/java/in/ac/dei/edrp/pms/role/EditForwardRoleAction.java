@@ -56,12 +56,11 @@ public class EditForwardRoleAction extends Action {
 	    CachedRowSet crs = new CachedRowSetImpl();
 	    crs.populate(rs_role);
 	    
-	    if(crs.next())
-	    {
-	    	request.setAttribute("crs", crs);
-	    	forwardmsg="editrole";
-	    }
-		//System.out.println("role id="+request.getParameter("rolekey"));
+		    if(crs.next())
+		    {
+		    	request.setAttribute("crs", crs);
+		    	forwardmsg="editrole";
+		    }
 		}
 		catch(Exception e){}
 		finally

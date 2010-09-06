@@ -36,11 +36,6 @@ public class AssignProjectAction1 extends Action {
 		HttpServletRequest request,
 		HttpServletResponse response) {
 		//String user=(String)this.getServlet().getServletConfig().getServletContext().getAttribute("uid");
-		/*if(!user.equalsIgnoreCase("pms123"))
-		{
-			return mapping.findForward("notassign");
-		}
-		else*/
 		String forwardString="assigning";
 		HttpSession session=request.getSession();
 		if((String)session.getAttribute("mysession")!=null)
@@ -48,8 +43,7 @@ public class AssignProjectAction1 extends Action {
 		if(((String)session.getAttribute("authority")).equalsIgnoreCase("User"))
 		{
 			String assign_project_permission=checkRecord.AuthorityChecker("assign_project", 
-				(String)session.getAttribute("uid"),(String)session.getAttribute("validOrgInPortal"),
-				(String)session.getAttribute("role_in_org"));
+				(String)session.getAttribute("roleid"));
 			if(assign_project_permission==null || assign_project_permission.equalsIgnoreCase("Not Allow"))
 			{
 				request.setAttribute("message", "Sorry!!! You are not an authorized person for this operation.");

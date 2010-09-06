@@ -18,7 +18,7 @@
 	
 	<definition name="page.pmsHelpPage" extends="base.definition">
 	<put name="title" value="PMS Help Page" />
-	<put name="body" value="/Work Flow of PMS.htm" />
+	<put name="body" value="/Help Document of PMS.htm" />
 	</definition>
 	
 	<!-- online help part ends -->
@@ -88,7 +88,7 @@
 	
 	<!-- Tiles Definition of add member page -->
 	<definition name="page.addorginportal" extends="base.definition">
-	<put name="title" value="Add Org in Portal" />
+	<put name="title" value="Add organization into portal" />
 	<put name="body" value="/WEB-INF/JspFiles/addorg_in_portal/AddOrgInPortal.jsp" />
 	</definition>
 	
@@ -184,18 +184,6 @@
 	<put name="body" value="/WEB-INF/JspFiles/projectManage/AllProjectList.jsp" />
 	</definition>
 	
-	<!-- Tiles Definition of Project Searching -->
-	<definition name="page.searchproject" extends="base.definition">
-	<put name="title" value="Project Searching" />
-	<put name="body" value="/WEB-INF/JspFiles/searching/projectSearch.jsp" />
-	</definition>
-	
-	<!-- Tiles Definition of success page of project Searching -->
-	<definition name="search.success" extends="base.definition">
-	<put name="title" value="Record Found" />
-	<put name="body" value="/WEB-INF/JspFiles/searching/ProjectSearchResult.jsp" />
-	</definition>
-	
 	<!-- Tiles Definition of Updating a Project -->
 	<definition name="edit.project" extends="base.definition">
 	<put name="title" value="Updating Of Project" />
@@ -212,7 +200,11 @@
 	<put name="title" value="View Gantt Chart" />
 	<put name="body" value="/WEB-INF/JspFiles/ganttChart/DrawGanttChart.jsp" />
 	</definition>
-	
+	<!-- Tiles Definition of show project details on load time -->
+	<definition name="page.showDetails" extends="base.definition">
+	<put name="title" value="Project Details" />
+	<put name="body" value="/WEB-INF/JspFiles/projectManage/ProjectDetails.jsp" />
+	</definition>
 		
 	<!-- Tiles Definition of Task updation fail page -->
 	<definition name="page.updationFail" extends="base.definition">

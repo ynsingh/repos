@@ -41,7 +41,7 @@ public class RoleListAction extends Action {
 			HttpServletRequest request, HttpServletResponse response) {
 		HttpSession session=request.getSession();
 		request.setAttribute("roleList", new RoleList((String)session.getAttribute("authority"),(String)session.getAttribute("validOrgInPortal"),
-				(String)session.getAttribute("uid"),(String)session.getAttribute("role_in_org")));
+				(String)session.getAttribute("roleid")));
 		return mapping.findForward("rolelist");
 	}
 	}

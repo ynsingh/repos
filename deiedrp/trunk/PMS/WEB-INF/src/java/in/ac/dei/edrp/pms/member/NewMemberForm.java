@@ -35,7 +35,7 @@ public class NewMemberForm extends ValidatorForm {
 	private String securequestion;
 	/** secureanswer property */
 	private String secureanswer;
-
+	private String rolename;
 
 	/*
 	 * Generated Methods
@@ -60,6 +60,14 @@ public class NewMemberForm extends ValidatorForm {
 	 */
 	public void reset(ActionMapping mapping, HttpServletRequest request) {
 		this.experience = "--Select--";
+	}
+
+	public String getRolename() {
+		return rolename;
+	}
+
+	public void setRolename(String rolename) {
+		this.rolename = rolename;
 	}
 
 	public String getEmailid2() {

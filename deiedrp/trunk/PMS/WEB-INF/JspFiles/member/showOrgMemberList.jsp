@@ -58,7 +58,7 @@
   %>
   <% request.setAttribute("memberList", new OrgMemberList(key1,
   (String)session.getAttribute("validOrgInPortal"),(String)session.getAttribute("uid"),
-  (String)session.getAttribute("role_in_org"))); %>
+  (String)session.getAttribute("roleid"))); %>
      
   <div id="main_title" align="left">
 		    <font color="#0044ff">Organization Member List:</font>
@@ -125,7 +125,7 @@
 		<logic:equal name="row" property="editPermission" value="Allow">
 		<display:column media="html" title="Actions">
 		<%
-		if(!new OrgMemberList().checkUserId((String)session.getAttribute("validOrgInPortal"),((MemberBean)pageContext.getAttribute("row")).getUserid()))
+		if(new OrgMemberList().checkUserId((String)session.getAttribute("validOrgInPortal"),((MemberBean)pageContext.getAttribute("row")).getUserid())==true)
 		{
 		if(!((String)session.getAttribute("uid")).equals(((MemberBean)pageContext.getAttribute("row")).getUserid()))
 		{

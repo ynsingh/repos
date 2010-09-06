@@ -38,7 +38,8 @@ public class MemberList{
 					"org_into_portal oip,portal p,organisation o " +
 					"where uio.valid_orgportal=oip.valid_org_inportal and " +
 					"uro.valid_key=uio.valid_key and uro.valid_role=r.role_id " +
-					"and oip.portal_id=p.portal_id and o.org_id=oip.org_id");
+					"and oip.portal_id=p.portal_id and o.org_id=oip.org_id and " +
+					"uro.PermittedBy=(select l.login_user_id from login l where l.authority='Super Admin')");
 			while(rs.next())
 			{
 								

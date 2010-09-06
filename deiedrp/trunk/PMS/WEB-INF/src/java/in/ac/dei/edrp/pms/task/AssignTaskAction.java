@@ -1,9 +1,6 @@
 package in.ac.dei.edrp.pms.task;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-
 import in.ac.dei.edrp.pms.dataBaseConnection.MyDataSource;
 import in.ac.dei.edrp.pms.viewer.checkRecord;
 
@@ -42,38 +39,23 @@ public class AssignTaskAction extends Action{
 		String forwardMsg="taskAssignfail";
 		AssignTaskForm assignTaskform = (AssignTaskForm) form;
 		HttpSession session=request.getSession();
-//		System.out.println("project name="+assignTaskform.getProjectName());
-//		System.out.println("task name="+assignTaskform.getTaskNameList());
-//		System.out.println("assigned to="+assignTaskform.getAssignedTo());
+		String orgportal=(String)session.getAttribute("validOrgInPortal");
 		Connection con=null;
 		request.setAttribute("message","Task assigned failed,because this task already assign to the same user.");
 
 		try{
 			/*
-			 * This method Established the connection from the database MySql
+			 * This method established the connection from the database MySql
 			 */
 		con=MyDataSource.getConnection();
 		String project_code=checkRecord.twoFieldDuplicacyChecker("Project_Code","project",
 				"Project_Name",assignTaskform.getProjectName(),"Valid_Org_Inportal",
-				(String)session.getAttribute("validOrgInPortal"));
+				orgportal);
 		String taskid=checkRecord.twoFieldDuplicacyChecker("Task_Id","task","Task_Name",
 				assignTaskform.getTaskNameList(),"VProject_Code",project_code);
-		//System.out.println("project code="+project_code +",task id="+taskid);
-		PreparedStatement ps=con.prepareStatement("insert into task_with_user values(?,?)");
-		ps.setString(1,taskid);
-		PreparedStatement ps_validid=con.prepareStatement("select distinct v.valid_id from validatetab v " +
-				"where v.valid_user_key=(select u.valid_key from user_in_org u where " +
-				"u.valid_user_id=? and u.valid_orgportal=?) and v.valid_project_code=?");
-		ps_validid.setString(1,assignTaskform.getAssignedTo());
-		ps_validid.setString(2,(String)session.getAttribute("validOrgInPortal"));
-		ps_validid.setString(3,project_code);
-		ResultSet rs=ps_validid.executeQuery();
-		if(rs.next())
-		{
-			ps.setString(2,rs.getString(1));
-		}
-		int n=ps.executeUpdate();
-		if(n>0)
+		
+		//insert the data into task_with_user table when we select assigned to option.	
+		if(AddingTaskWithUser.insertTaskWithUser(assignTaskform.getAssignedTo(),taskid,project_code,orgportal)>0)
 		{
 			ActionErrors errors = new ActionErrors();
 			ActionMessage error = new ActionMessage("msg.assignTask.added");

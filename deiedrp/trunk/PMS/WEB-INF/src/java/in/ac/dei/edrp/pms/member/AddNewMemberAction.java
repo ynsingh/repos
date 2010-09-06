@@ -106,7 +106,17 @@ public class AddNewMemberAction extends Action {
 				
 				if(recInUser_In_Org>0) /*if recInUser_In_Org is greater than zero it means insertion operation is successful.*/
 				{
-						if(checkRecord.duplicacyChecker("login_user_id","login","login_user_id",newmemberform.getEmailid().trim())==null)
+					String role_id=checkRecord.twoFieldDuplicacyChecker("Role_ID","role","Role_Name",newmemberform.getRolename().trim(),"ValidOrgPortal",(String)session.getAttribute("validOrgInPortal"));				
+					
+					ps=con.prepareStatement("insert into user_role_in_org values(?,?,?,?,?)");
+					ps.setString(1,valid_code);
+					ps.setInt(2,Integer.parseInt(role_id));
+					ps.setString(3,(String)session.getAttribute("uid"));
+					ps.setString(4,"Default");//which authority default/member.
+					ps.setString(5,"Active");//status active/inactive.
+					ps.executeUpdate();
+		
+					if(checkRecord.duplicacyChecker("login_user_id","login","login_user_id",newmemberform.getEmailid().trim())==null)
 						{
 						PreparedStatement ps1=con.prepareStatement("insert into login values(?,?,SHA1(?))");
 						ps1.setString(1,newmemberform.getEmailid().trim());
@@ -115,8 +125,7 @@ public class AddNewMemberAction extends Action {
 						ps1.setString(3,pass1);
 						ps1.executeUpdate();
 						}
-						System.out.println("password="+pass1);
-						//System.out.println("valid code"+valid_code);
+						
 						String url="http://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath();
 						String s4="Welcome to Project Management System," +
 							"\n Your account has been created successfully.\n " +
@@ -128,7 +137,7 @@ public class AddNewMemberAction extends Action {
 							"\n Thanks !";
 						bool=SendingMail.sendMail(s4,newmemberform.getEmailid().trim(),
 								ReadPropertiesFile.mailConfig(getServlet().getServletContext().getRealPath("/")+"WEB-INF/"));
-						System.out.println("body="+s4);
+						//System.out.println("body="+s4);
 					}
 				}
 			}
@@ -158,7 +167,7 @@ public class AddNewMemberAction extends Action {
 		  }//outer if closed
 		}catch(Exception e)
 		{
-			System.out.println("Exception is e="+e);
+			System.out.println("Exception in add new member action="+e);
 		}
 		finally
 		{

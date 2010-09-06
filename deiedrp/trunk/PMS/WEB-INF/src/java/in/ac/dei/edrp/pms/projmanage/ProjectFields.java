@@ -22,7 +22,7 @@ public class ProjectFields {
 	private String enable;
 	//private String org_portal;
 	private String editPermission;
-	
+	private String teamCreation;
 	
 	//constructors
 	public ProjectFields(){}
@@ -42,7 +42,7 @@ public class ProjectFields {
 	public ProjectFields(String project_code, String project_name, String scheduleStartDate,
 			String scheduleEndDate,String actualStartDate,String actualEndDate,
 			int tbudget, String priority, String status,String gcolor,
-			String description,String enable,String editPermission){
+			String description,String enable,String editPermission,String teamCreation){
 		this.project_code = project_code;
 		this.project_name = project_name;
 		this.scheduleStartDate = scheduleStartDate;
@@ -56,22 +56,13 @@ public class ProjectFields {
 		this.description = description;
 		this.enable = enable;
 		this.editPermission=editPermission;
+		this.teamCreation=teamCreation;
 	//	this.org_portal=org_portal;
 		
 	}
 
 	//getter and setter methods
-//	
-//	/**The method getOrg_portal return the orgportal code  */
-//	public String getOrg_portal() {
-//		return org_portal;
-//	}
-///**The method setOrg_portal is used for setting the orgportal code*/
-//	public void setOrg_portal(String org_portal) {
-//		this.org_portal = org_portal;
-//	}
-//	
-	
+
 	/**The method getEditPermission return the project edit permission  */
 	public String getEditPermission() {
 		return editPermission;
@@ -193,6 +184,12 @@ public class ProjectFields {
 	/**The method setName is used for setting the enable status of a project */
 	public void setEnable(String enable) {
 		this.enable = enable;
+	}
+	public String getTeamCreation() {
+		return teamCreation;
+	}
+	public void setTeamCreation(String teamCreation) {
+		this.teamCreation = teamCreation;
 	}
 
 }

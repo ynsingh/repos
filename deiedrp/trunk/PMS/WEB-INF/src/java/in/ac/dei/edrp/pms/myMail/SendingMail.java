@@ -34,7 +34,6 @@ public class SendingMail {
 			   //this is working fine
 //			   props.setProperty("http.proxyHost", "10.151.0.16");
 //			   props.setProperty("http.proxyPort", "80");
-			  
 
 		          props.setProperty("mail.smtp.port", mailData.get("smtpServerPort").toString());
 		          props.setProperty("mail.smtp.socketFactory.port", mailData.get("smtpServerPort").toString()); 
@@ -74,14 +73,14 @@ public class SendingMail {
 		       return sent;
 		   }  
 	   
-	   public static boolean checkMailValidation(String port,String serverName,
+	   public static boolean checkMailValidation(String serverName,String port,
 			   String userid,String userpassword,String subject) throws Exception {  
 		   boolean sent=false;
 	try{
 		 			Properties props = System.getProperties();  
-//         props.setProperty("proxySet","true");
-//         props.setProperty("socksProxyHost","10.151.0.16");
-//         props.setProperty("socksProxyPort","80");
+//         	   props.setProperty("proxySet","true");
+// 	    	   props.setProperty("http.proxyHost", "10.151.0.16");
+//     		   props.setProperty("http.proxyPort", "80");
     		          username=userid.trim();
     		          password=userpassword.trim();
     		          props.setProperty("mail.smtp.port",port);
@@ -111,7 +110,7 @@ public class SendingMail {
     		          final String encoding = "UTF-8";  
      
     		          message.setSubject(subject, encoding);  
-    		          message.setText("This is only for confirmation of your valid email id and password that is configure for PMS", encoding); 
+    		          message.setText("This is a system generated mail for confirmation of your email id and password for PMS", encoding); 
     		          System.out.println("Mail to:aniltiwari08@gmail.com");
           				Transport.send(message);
           				sent=true;

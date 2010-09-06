@@ -9,13 +9,6 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
-/** 
- * MyEclipse Struts
- *Creation date: 06-09-2009
- * XDoclet definition:
- * @struts:action scope="null" validate="true"
- * @struts:action-forward name="projectlist" path="page.projectlist"
- */
 
 public class ShowTaskAction extends Action {
 	
@@ -41,7 +34,6 @@ public class ShowTaskAction extends Action {
 				retString="TaskList_ofUser";
 			else
 				retString="TaskList_ofAdmin";
-			//System.out.println("mytaskquery="+request.getRequestURL()+"?"+query);
 			session.setAttribute("mytaskquery",request.getRequestURL()+"?"+query);
 		}
 		return mapping.findForward(retString);

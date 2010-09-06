@@ -5,10 +5,9 @@
 package in.ac.dei.edrp.pms.member;
 
 import in.ac.dei.edrp.pms.dataBaseConnection.MyDataSource;
-import in.ac.dei.edrp.pms.viewer.CodeGenerator;
-import in.ac.dei.edrp.pms.viewer.checkRecord;
-
+import in.ac.dei.edrp.pms.team.AddMemberIntoProject;
 import java.sql.*;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -22,7 +21,7 @@ import org.apache.struts.action.ActionMessage;
 /** 
  * MyEclipse Struts
  * Creation date: 06-25-2009
- * 
+ * Modified date: 08-30-2010
  * XDoclet definition:
  * @struts.action input="AssignProject.jsp" validate="true"
  */
@@ -46,10 +45,8 @@ public class ProjAssignAction extends Action {
 		HttpSession session=request.getSession();
 		
 		ProjAssignForm projassignform = (ProjAssignForm) form;// TODO Auto-generated method stub
-		String uid=(String)session.getAttribute("uid");
+		String permitted_By=(String)session.getAttribute("uid");
 		String forwardString="assignsuccess";
-		String permitted_By=uid;
-		String valid_code="";
 		String orgportal=(String)session.getAttribute("validOrgInPortal");
 		ActionErrors errors = new ActionErrors();
 		ActionMessage error = null;
@@ -68,110 +65,28 @@ public class ProjAssignAction extends Action {
 					" and u.valid_user_id=? and u.valid_orgportal=?" +
 					" and p.project_code=v.valid_project_code and p.project_name=?");
 			
-			check.setString(1,projassignform.getUserId().trim());
+			check.setString(1,projassignform.getUserId());
 			check.setString(2,orgportal);
 			check.setString(3,projassignform.getProjectName());
 			//check.setString(4,projassignform.getRoleName());
 			rs=check.executeQuery();
 			if(!rs.next())//It means the user does not working in the selected project on the selected role.
 		    {
-//			ArrayList<String> al=new ArrayList<String>();
-//				while(uid!=null)
-//	 			{
-//	 				//System.out.println("anil my uid="+uid);
-//	 				al.add(uid);
-//	 				uid=runQuery(uid,projassignform.getProjectName());
-//	 			}
-//				Iterator<String> i=null;
-//		
-//				i=al.iterator();
-//				// f=false;
-//					 while(i.hasNext())
-//					 {
-//				 		if(projassignform.getUserId().trim().equals(i.next()))
-//						{
-//							//f=true;
-//							break;
-//						 }
-		
-		String valid_key="";
-		request.setAttribute("uidinfo",projassignform.getUserId());
-		if(projassignform.getUserId().equalsIgnoreCase(uid))
-		{
-			request.setAttribute("uidinfo",uid);
-			System.out.println("login person valid key="+(valid_key=checkRecord.twoFieldDuplicacyChecker("Valid_Key","user_in_org","valid_user_id",uid.trim(),"Valid_OrgPortal",orgportal)));
-		}
-		else
-		{
-			System.out.println("other person valid key="+(valid_key=checkRecord.twoFieldDuplicacyChecker("Valid_Key","user_in_org","valid_user_id",projassignform.getUserId().trim(),"Valid_OrgPortal",orgportal)));
-			request.setAttribute("msginfo","This user does not belongs to current portal and organization \n" +
-				",for adding this user in his project you shold be added this user in his organization, then try to add.");
-		}
-		if(checkRecord.duplicacyChecker("Valid_Key","user_role_in_org","Valid_Key",valid_key)!=null)
-		{
-			System.out.println("exist in user_role_in_org then permitted by='super admin'");
-			//permitted_By="superadmin";
-			permitted_By=checkRecord.duplicacyChecker("login_user_id","login","authority","Super Admin");
-		}
-		
-		PreparedStatement ps=con.prepareStatement("insert into validatetab values(?,?,?,?,?,?,?)");
-		PreparedStatement pst=con.prepareStatement("select max(substr(Valid_Id,8)) from validatetab where substr(Valid_Id,4,4)=Date_Format(Now(),'%Y')");
-		ResultSet rst=pst.executeQuery();
-		rst.next();
-		String maxvalue=rst.getString(1);
-		if(maxvalue!=null)
-		{
-			valid_code=CodeGenerator.gettingCombineCode("VID",Long.parseLong(maxvalue)+1,5);
-		}
-		else
-			valid_code=CodeGenerator.gettingCombineCode("VID",1,5);
-		System.out.println("valid code="+valid_code);
-		ps.setString(1,valid_code);
-		ps.setString(2,valid_key);
-		ps.setString(3,permitted_By);
-		ps.setString(4,checkRecord.twoFieldDuplicacyChecker("Project_Code","project","Project_Name",projassignform.getProjectName(),"Valid_Org_Inportal",orgportal));
-		//if(permitted_By.equalsIgnoreCase("superadmin"))
-		if(!permitted_By.equalsIgnoreCase(uid))			
-			orgportal=null;
-		ps.setString(5,checkRecord.twoFieldDuplicacyChecker("Role_Id","role","Role_Name",projassignform.getRoleName(),"ValidOrgPortal",orgportal));
-		ps.setString(6,"Default");
-		ps.setString(7,"Active");
-	    int v=ps.executeUpdate();/*if v>0 it means insertion operation successful in 'validatetab' table.*/
-			if(v>0)
-			{
+				//for adding member into validatetab
+				if(AddMemberIntoProject.insertIntoValidatetab(projassignform.getRoleName(),
+						projassignform.getUserId(),projassignform.getProjectName(),
+						orgportal, permitted_By)>0)
+				{
 				errors.clear();
 				error = new ActionMessage("msg.Create_Project_Team_Msg.added");
 				errors.add("Create_Project_Team_Msg",error);
 				saveErrors(request,errors);
+				}
 			}
-		}
-			
 		}
 		catch(Exception e){e.printStackTrace();}
 
 		return mapping.findForward(forwardString);
 	}
-	
-	/* This method is used for checking the authority level of the user. */ 
-	 String runQuery(String uid,String pname)
-	 {
-	try{
-	 ps=con.prepareStatement("select distinct v.PermittedBy from validatetab v,project p"+
-			 " where v.User_ID=? and (p.Project_Name=? and p.Project_ID=v.Project_ID)");
-		ps.setString(1,uid);
-		ps.setString(2,pname);
-		rs=ps.executeQuery();
-		if(rs.next())
-		{
-			uid=rs.getString(1);
-			//System.out.println("anil my uid in runquery ="+uid);
-		}
-	 	  else
-	 	  uid=null;
-	 	 }
-	 catch(Exception e){System.out.println("error in runQuery="+e);
-	 	 }
-	 	return(uid);
-	 }
-		
+			
 }

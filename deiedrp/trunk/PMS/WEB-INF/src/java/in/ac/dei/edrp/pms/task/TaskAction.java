@@ -7,7 +7,7 @@ package in.ac.dei.edrp.pms.task;
 import in.ac.dei.edrp.pms.dataBaseConnection.MyDataSource;
 import in.ac.dei.edrp.pms.viewer.CodeGenerator;
 import in.ac.dei.edrp.pms.viewer.checkRecord;
-
+import in.ac.dei.edrp.pms.task.AddingTaskWithUser;
 import java.sql.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -46,6 +46,9 @@ public class TaskAction extends Action {
 			HttpServletRequest request, HttpServletResponse response) {
 		TaskForm taskform = (TaskForm) form;
 		HttpSession session=request.getSession();
+				
+		String orgportal=(String)session.getAttribute("validOrgInPortal");
+				
 //		System.out.println("project name="+taskform.getProjectName());
 //		System.out.println("task name="+taskform.getTaskName());
 //		System.out.println("assigned to="+taskform.getAssignedTo());
@@ -67,7 +70,7 @@ public class TaskAction extends Action {
 		con=MyDataSource.getConnection();
 		String project_code=checkRecord.twoFieldDuplicacyChecker("Project_Code","project",
 				"Project_Name",taskform.getProjectName(),"Valid_Org_Inportal",
-				(String)session.getAttribute("validOrgInPortal"));
+				orgportal);
 		String taskid=checkRecord.twoFieldDuplicacyChecker("Task_Id","task",
 				"Task_Name",taskform.getTaskName().trim(),"VProject_Code",project_code);
 		if(taskid!=null)
@@ -126,22 +129,8 @@ public class TaskAction extends Action {
 		//insert the data into task_with_user table when we select assigned to option.
 		if(!taskform.getAssignedTo().equals("--Select--"))
 		{
-				ps=con.prepareStatement("insert into task_with_user values(?,?)");
-				ps.setString(1,taskid);
-				PreparedStatement ps_validid=con.prepareStatement("select distinct v.valid_id from validatetab v " +
-						"where v.valid_user_key=(select u.valid_key from user_in_org u where " +
-						"u.valid_user_id=? and u.valid_orgportal=?) and v.valid_project_code=?");
-				ps_validid.setString(1,taskform.getAssignedTo());
-				ps_validid.setString(2,(String)session.getAttribute("validOrgInPortal"));
-				ps_validid.setString(3,project_code);
-				ResultSet rs=ps_validid.executeQuery();
-				if(rs.next())
-				{
-					ps.setString(2,rs.getString(1));
-				}
-				int n=ps.executeUpdate();
-				if(n>0)
-					System.out.println("task has been assigned to the selected user.");
+			if(AddingTaskWithUser.insertTaskWithUser(taskform.getAssignedTo(),taskid,project_code,orgportal)>0)
+			System.out.println("task has been assigned to the selected user.");
 		}
 		
 		if(x>0)
@@ -164,5 +153,7 @@ public class TaskAction extends Action {
 		}
 		return mapping.findForward(forwardmsg);
 	}
+
+	
 	
 }

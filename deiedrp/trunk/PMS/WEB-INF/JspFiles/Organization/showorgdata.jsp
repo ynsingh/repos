@@ -65,7 +65,7 @@
 		</div>
 	</div>
 	 		
- <display:table name="orgList.list" defaultsort="1" id="row" export="false" pagesize="<%=Integer.parseInt(key) %>" requestURI="/orgList.do" decorator="in.ac.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >
+ <display:table name="orgList.list" defaultsort="1" id="row" export="true" pagesize="<%=Integer.parseInt(key) %>" requestURI="/orgList.do" decorator="in.ac.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >
 				   
 		<display:column property="iname" title="Organisation Name" sortable="true"/>
 		<display:column property="iaddress" title="Organisation Address" sortable="true" />
@@ -93,13 +93,17 @@
 		 <html:link href="deleteorg.do" onclick="return sure();" paramProperty="id" paramId="id" paramName="row">Delete
 		 </html:link> -->
 		</display:column>
+		<display:setProperty name="export.pdf.filename" value="OrgList.pdf"/>
+		<display:setProperty name="export.excel.filename" value="OrgList.xls"/>
+		<display:setProperty name="export.xml.filename" value="OrgList.xml"/>
+		<display:setProperty name="export.csv.filename" value="OrgList.csv"/>
 		</display:table>
    </logic:notEmpty>
   	<logic:empty name="orgList" property="list">
        <br><font color="#550003" size="2">Nothing found to display.for adding new organization click on this link--></font>
        <%
 		if(authority.equalsIgnoreCase("Super Admin"))
-			{ %>
+	{ %>
 	<html:link action="neworganization">New Organization<img border="0" title="Add New" src="img/user1_add.png" width="15" "height="15" ></html:link>
 		<%} %>
        

@@ -197,11 +197,9 @@ public class GanttWithXmlAction extends Action {
 	    		    	//	System.out.println("task_name="+task_name);
 	    		    		
 	    		    		task_sstart_date=rst.getString(2);
-	    		    	//	System.out.println("task_sstart_date="+task_sstart_date);
-	    		    		
+	    		    	
 	    		    		task_send_date=rst.getString(3);
-	    		    	//	System.out.println("task_send_date="+task_send_date);
-	    		    		
+	    		    	
 	    		    		task_color=rst.getString(4);
 	    		    		task_per_completion=rst.getString(5);
 	    		    		task_dependency=rst.getString(6);
@@ -268,18 +266,9 @@ public class GanttWithXmlAction extends Action {
 	    	}
 	    	byte b[]=xmlString.getBytes();
 	    	 String filePath = getServlet().getServletContext().getRealPath("/");
-	//request.setAttribute("filePath",filePath);
-		     //   System.out.println(filePath);
-		        
 	    	bw = new BufferedOutputStream(new FileOutputStream(filePath+"GChart.xml"));
-	    	//BufferedOutputStream bw = new BufferedOutputStream(new FileOutputStream("/login.xml"));
-	    	//String f=filePath+"login.xml";
-	    //	String f=filePath+"GChart.xml";
-	    //	System.out.println(f);
-	  //request.setAttribute("f",f);
-	        bw.write(b);
-	        
-            System.out.println("This is working");
+	    	bw.write(b);
+	       //System.out.println("This is working");
             bw.flush();
             bw.close();
 	    }

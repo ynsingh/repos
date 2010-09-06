@@ -67,12 +67,13 @@ public class AddNewOrganisationAction extends Action {
 		/*
 		 * inserting values into 'organisation' table.
 		 * */
+			String state_id=checkRecord.duplicacyChecker("state_id","state","state_name",orgform.getIstate());
 		PreparedStatement ps=con.prepareStatement("insert into organisation values(?,?,?,?,?,?,?,?)");
 		ps.setInt(1,0);	//org_id is auto incremented.
 		ps.setString(2,orgform.getIname());
 		ps.setString(3,orgform.getIaddress());
-		ps.setString(4,orgform.getIcity());
-		ps.setString(5,orgform.getIstate());
+		ps.setString(4,checkRecord.twoFieldDuplicacyChecker("city_id","city","state_id",state_id,"city_name",orgform.getIcity()));
+		ps.setString(5,state_id);
 		ps.setString(6,orgform.getIphoneno());
 		ps.setString(7,orgform.getIfax());
 		ps.setString(8,orgform.getIurl());

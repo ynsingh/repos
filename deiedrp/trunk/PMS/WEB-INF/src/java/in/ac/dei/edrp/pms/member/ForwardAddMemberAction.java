@@ -40,8 +40,7 @@ public class ForwardAddMemberAction extends Action {
 		if(((String)session.getAttribute("authority")).equalsIgnoreCase("User"))
 		{
 			String add_member_permission=checkRecord.AuthorityChecker("add_member", 
-				(String)session.getAttribute("uid"),(String)session.getAttribute("validOrgInPortal"),
-				(String)session.getAttribute("role_in_org"));
+						(String)session.getAttribute("roleid"));
 			if(add_member_permission==null || add_member_permission.equalsIgnoreCase("Not Allow"))
 			{
 				request.setAttribute("message", "Sorry!!! You are not an authorized person for this operation.");

@@ -1,6 +1,7 @@
 <%@ page language="java" pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
 <link rel="stylesheet" href="style/dropdown.css" type="text/css"></link>
@@ -8,32 +9,31 @@
 <link rel="icon" href="img/logo.ico" type="image/x-icon"/>
 </head>
 <body>
-<table style="border:0px solid #000066;width:100%;height:13%;" cellspacing="0px" cellpadding="0px" bgcolor=#C3D9FF>
+<table style="border:0px solid #000066;width:100%;height:13%;background-image: url('img/backimage.PNG');background-repeat: repeat;" cellspacing="0px" cellpadding="0px">
 <tr>
 	<td valign="top"><div>
-					<div style="float:left;width:70%;color:#000066;background-color:C3D9FF;font-size:30px;font-family:algerian;background-image:url(header-gif.rev.gif);background-repeat: no-repeat;background-position: left;height:13%;text-align: center;text-shadow: aqua;">
+					<div style="float:left;width:70%;font-size:30px;font-family:algerian;background-position: left;text-align: center;text-shadow: aqua;">
 					<bean:message key="header.title" />
 					<br><div style="padding-bottom:15px;font: normal;font-family: Arial, Helvetica, sans-serif;color:#000000;">
 					<b><font size="3"><bean:message key="header.subtitle" /></font></b><br>
 					<font size="2">(<bean:message key="header.subtitle1" />)</font></div>
 					</div>
 					</div>
-					<div align="right">
+					<div align="right" >
 		<b><font size="1">Welcome,</font></b>
 		<font size="1">
-		  		<%
-		  		/*The user_id which is currently logged In.*/
-		  		String uid=(String)session.getAttribute("uid");
-		  		out.println(uid);
-		   		%> | </font>
+		  		<c:out value="${sessionScope.uid}"/> | </font>
 		 
 				<html:link action="logout" styleClass="B"> <font size="-1">Logout</font> </html:link> |
 				<html:link styleClass="B" action="changeOwnpassword"> Change Password </html:link> </div>		
 				
 				<div style="padding-top: 5px">
-				<b><font size="1">Portal:</font></b><font color="#1425FF"> <%=session.getAttribute("portalname") %>  </font>
+				<b><font size="1">Portal:</font></b><font color="#1425FF"> <c:out value="${sessionScope.portalname}"/> </font>
 				<br>
-				<b><font size="1">Organization:</font></b><font color="#1425FF"> <%=session.getAttribute("orgname") %> </font>
+				<b><font size="1">Organization:</font></b><font color="#1425FF"> <c:out value="${sessionScope.orgname}"/></font>
+				<br>
+				<b><font size="1">Role:</font></b><font color="#1425FF"> <c:out value="${sessionScope.rolename}"/></font>
+				
 				</div>
 		    </td>
 		 </tr>
@@ -79,8 +79,8 @@
     <ul class="ss">
     <li><html:link styleClass="underline" action="newproject" > Add Project </html:link></li>
       <li><html:link styleClass="underline" action="viewproject"> View Project </html:link></li>
-     <li><html:link styleClass="underline" action="assignproject"> Create Project Team </html:link></li>
-     <!--   <li><html:link styleClass="underline" action="searchproject"> Search Project </html:link></li>
+     <!-- <li><html:link styleClass="underline" action="assignproject"> Create Project Team </html:link></li>
+        <li><html:link styleClass="underline" action="searchproject"> Search Project </html:link></li>
       <li><html:link styleClass="underline" action="updateoperation"> Update Operation </html:link></li>-->
       <li><html:link styleClass="underline" action="drawGanttChart">View Gantt Chart </html:link></li>
             
@@ -131,12 +131,11 @@
  <td>
 <dl class="dropdown">
   <dt id="one-ddheader" style="width: 100px;" onmouseover="ddMenu('nine',1)" onmouseout="ddMenu('nine',-1)">
-  
   <html:link action="help" style="padding:0px;width: 100px;background-color:#336699;font-weight:bold;color:#ffffff;"> Help</html:link>
   </dt>
   </dl>
 </td>
-    </tr></table>
+ </tr></table>
    </td>
 </tr>
 </table>

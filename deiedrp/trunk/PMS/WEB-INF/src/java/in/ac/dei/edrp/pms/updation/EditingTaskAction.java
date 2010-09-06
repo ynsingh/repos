@@ -84,9 +84,8 @@ public class EditingTaskAction extends Action {
 			ps.setString(1,(String)session.getAttribute("projectkey"));
 			ps.setString(2,(String)session.getAttribute("projectkey"));
 			ps.executeUpdate();
-			
+			//System.out.println("mytaskquery="+(String)session.getAttribute("mytaskquery"));
 			response.sendRedirect((String)session.getAttribute("mytaskquery"));
-			
 		}
 		
 		}

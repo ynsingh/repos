@@ -45,7 +45,6 @@ public class AddNewPortalAction extends Action {
 		con=MyDataSource.getConnection();
 		if(checkRecord.duplicacyChecker("Portal_ID","portal","Portal_Name",newportalform.getPortalname().trim())!=null)
 		{
-			System.out.println("already exist.");
 			return mapping.findForward("portalsuccess");
 		}
 		/*

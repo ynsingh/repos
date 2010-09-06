@@ -3,17 +3,16 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
  <html:html> 
 	<head>
 		<title>Login Form</title>
 	<link rel="stylesheet" href="style/style.css" type="text/css"></link>
-			
 	</head>
 	<link rel="icon" href="img/logo.ico" type="image/x-icon">
-	
 	<body>
-	
+
 	<%
 	//System.out.println("session new in login jsp="+session.isNew());
 	try
@@ -23,17 +22,15 @@
 	catch(Exception e){}
 		new CustomRequestProcessor().processNoCache(request, response);
 	 %>
-	<body>
-
-<table style="border:1px solid #000066;width:100%;height:100%;" cellspacing="0px" cellpadding="0px" bgcolor=#C3D9FF>
-<tr style="height:20%;width:100%;">
+<table style="border:1px solid #000066;width:100%;height:100%;" cellspacing="0px" cellpadding="0px" >
+<tr style="height:15%;width:100%;background-image: url('img/backimage.PNG');background-repeat: repeat;">
 	<td>
-			<table bgcolor="#c3d9ff" style="height:100%;width:100%;">
+			<table style="height:100%;width:100%;">
 			<tr><td align="center">
-			<div style="color:#000066;background-color:C3D9FF;font-size:30px;font-family:algerian;background-image:url(header-gif.rev.gif);background-repeat: no-repeat;background-position: left;width:100%;height:100%;text-align: center;text-shadow: aqua;">
+			<div style="color:#000066;font-size:30px;font-family:algerian;width:100%;height:100%;text-align: center;text-shadow: aqua;">
 			<bean:message key="header.title" />
 			</div></td></tr>
-			<tr><td align="center" style="padding-top:10px; font: normal;font-family: Arial, Helvetica, sans-serif;font-size:14px;color:#000000;" >
+			<tr><td align="center" style="font: normal;font-family: Arial, Helvetica, sans-serif;font-size:14px;color:#000000;" >
 			<b><font size=3><bean:message key="header.subtitle" /></font></b><br><br>
 			<font size=2>(<bean:message key="header.subtitle1" />)</font><br><br> 
 			</td></tr>
@@ -96,12 +93,12 @@
 			</table></td></tr></table>
 	</td></tr>
 					
-		<tr><td>
-		<table width="100%" >
+		<tr><td  class="footerpage">
+		<table width="100%">
 		<tr><td valign="top" style="font: normal;font-family: Arial, Helvetica, sans-serif;font-size:12px;text-align: center" nowrap="nowrap">
-		<div align="center">
+		
    	<jsp:include page="WEB-INF/JspFiles/common/footer.jsp"/>
-  		</div>
+  	
   </td></tr></table></td></tr></table>
 </body>
 		

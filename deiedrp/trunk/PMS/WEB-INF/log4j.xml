@@ -13,7 +13,8 @@
 <!-- File Appender -->
 	<appender name="FA" class="org.apache.log4j.FileAppender">
 		<param name="File" value="${catalina.home}//log file//PMSLog.log"/>
-		<!-- Set the logger level of File Appender that can be DEBUG,INFO,WARN,ERROR,FATAL -->
+		<!--value="C://Users//Documents and Settings//Desktop//log file//PMSLog.log"/> 
+		Set the logger level of File Appender that can be DEBUG,INFO,WARN,ERROR,FATAL -->
 		<param name="Threshold" value="ERROR"/>
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d{MM/dd/yy hh:mm:ss a } %-5p %C %M - %m%n" />

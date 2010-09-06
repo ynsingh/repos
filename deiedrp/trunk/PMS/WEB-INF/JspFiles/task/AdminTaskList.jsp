@@ -99,7 +99,7 @@
     <html:button property="back" value="Back" styleClass="butStnd" onclick="history.back();" />
     </logic:empty>
    <logic:notEmpty name="taskList" property="list">
- <display:table name="taskList.list" defaultsort="1" id="row" export="false" pagesize="<%=Integer.parseInt(key) %>" requestURI="/viewtask.do" decorator="in.ac.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >
+ <display:table name="taskList.list" defaultsort="1" id="row" export="true" pagesize="<%=Integer.parseInt(key) %>" requestURI="/viewtask.do" decorator="in.ac.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >
 		<display:column property="taskName" title="Task Name" sortable="true" />
 		<%if(!key2.equals("Not Assigned")){ %>
 		<display:column property="resourceName" title="Assigned To" sortable="true" />
@@ -119,6 +119,10 @@
 		 <display:column media="html" title="Actions" property="tasklink"/>
 				
 		</logic:equal>
+		<display:setProperty name="export.pdf.filename" value="TaskList.pdf"/>
+		<display:setProperty name="export.excel.filename" value="TaskList.xls"/>
+		<display:setProperty name="export.xml.filename" value="TaskList.xml"/>
+		<display:setProperty name="export.csv.filename" value="TaskList.csv"/>
 	</display:table>
     </logic:notEmpty>
   		

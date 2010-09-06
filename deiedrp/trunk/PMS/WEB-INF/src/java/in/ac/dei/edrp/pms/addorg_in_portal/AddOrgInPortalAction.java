@@ -52,6 +52,7 @@ public class AddOrgInPortalAction extends Action {
 		String valid_code="";
 		String pass1="Please use your old password.";
 		int x=0;
+		String permitted_By=null;
 		try{
 			/*
 			 * This method Established the connection from the database MySql
@@ -74,23 +75,7 @@ public class AddOrgInPortalAction extends Action {
 			ps.setInt(3,0);
 			ps.executeUpdate();
 		}
-//		if(checkRecord.duplicacyChecker("User_ID","user_info","user_id",orgportalform.getEmailid().trim())==null)
-//		{
-//			System.out.println("user in user info does not exist.");
-//			request.setAttribute("message","The organization has not been added in the desired Portal" +
-//					" \n because this user email_id does not exist in the system. " +
-//					"first of all we should added that user in the system by using 'Add Member' link then try.");
-//			return mapping.findForward(forwardmsg);
-			
-		/*
-		 * Inserting the record into user_info table.
-		 */
-//		ps=con.prepareStatement("insert into user_info (User_ID,Created_On,Updated_On) " +
-//				"values(?,NOW(),NOW())");
-//		ps.setString(1,orgportalform.getEmailid().trim());
-//		ps.executeUpdate();
-		
-//		}
+
 		String orginportal=checkRecord.twoFieldDuplicacyChecker("valid_org_inportal","org_into_portal","org_id",org_id,"portal_id",portal_id);
 		request.setAttribute("message","This user already work in this portal and organisation on the same role.");
 		if(checkRecord.twoFieldDuplicacyChecker("Valid_User_ID","user_in_org","valid_user_id",orgportalform.getEmailid().trim(),"Valid_OrgPortal",orginportal)==null)
@@ -115,18 +100,18 @@ public class AddOrgInPortalAction extends Action {
 		ps.setString(3,valid_code);
 		ps.executeUpdate();
 		}
-	
-		ps=con.prepareStatement("insert into user_role_in_org values(?,?,?,?)");
+		permitted_By=checkRecord.duplicacyChecker("login_user_id","login","authority","Super Admin");
+		ps=con.prepareStatement("insert into user_role_in_org values(?,?,?,?,?)");
 		ps.setString(1,checkRecord.twoFieldDuplicacyChecker("Valid_Key","user_in_org","valid_user_id",orgportalform.getEmailid().trim(),"Valid_OrgPortal",orginportal));
 		ps.setInt(2,Integer.parseInt(role_id));
-		ps.setString(3,"Default");//which authority default/member.
-		ps.setString(4,"Active");//status active/inactive.
+		ps.setString(3,permitted_By);
+		ps.setString(4,"Default");//which authority default/member.
+		ps.setString(5,"Active");//status active/inactive.
 		x=ps.executeUpdate();
 
 		if(x>0) /*if x is greater than zero it means insertion operation is successful.*/
 		{
 			//update validatetab on 21june 2010
-			String permitted_By=checkRecord.duplicacyChecker("login_user_id","login","authority","Super Admin");
 			ps=con.prepareStatement("update validatetab set permitted_by=?," +
 					"valid_role_id=? where valid_user_key=? and permitted_by!=?");
 			ps.setString(1,permitted_By);
@@ -144,10 +129,10 @@ public class AddOrgInPortalAction extends Action {
 				ps1.setString(3,pass1);
 				ps1.executeUpdate();
 				}
-				System.out.println("password="+pass1);
+				//System.out.println("password="+pass1);
 				//System.out.println("valid code"+valid_code);
 				String url="http://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath();
-				System.out.println("url="+url);
+				//System.out.println("url="+url);
 				String s4="Welcome to Project Management System," +
 						"\n Your account has been created successfully.\n " +
 						"click on the following link, " +url+
@@ -171,7 +156,7 @@ public class AddOrgInPortalAction extends Action {
 					errors.add("addorgportal",error);
 				saveErrors(request,errors);
 				forwardmsg="addorginportalsuccess"; 
-				System.out.println("body="+s4);
+				//System.out.println("body="+s4);
 			}
 			
 		//}//outer if

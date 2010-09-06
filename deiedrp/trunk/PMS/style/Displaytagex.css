@@ -15,7 +15,7 @@
      color: white;
      background-color: #000066;
      margin-right: 10px;
-     white-space: nowrap;
+     <!-- white-space: nowrap; for table heading change it 31 july-->
 }
 
 .dataTable  td {

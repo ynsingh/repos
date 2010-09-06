@@ -51,7 +51,7 @@
 		key2="";
  %>
    <% request.setAttribute("taskList", new TaskList(key1,key2,
-   (String)session.getAttribute("validOrgInPortal"),(String)session.getAttribute("uid"),(String)session.getAttribute("role_in_org"))); %>	
+   (String)session.getAttribute("validOrgInPortal"),(String)session.getAttribute("roleid"))); %>	
  
     <div id=main_title><font color="#0044ff">Task List:</font></div><br>
   <div align="left">
@@ -64,9 +64,11 @@
 				ps=con.prepareStatement("select distinct p.project_name from project p,"+
 									"user_in_org u,validatetab v where p.enable=0 and "+
 									"u.valid_user_id=? and u.valid_orgportal=? "+
-					"and u.valid_key=v.valid_user_key and v.valid_project_code=p.project_code");
+					"and u.valid_key=v.valid_user_key and v.valid_project_code=p.project_code"+
+					" and v.valid_role_id=?");
 			ps.setString(1,(String)session.getAttribute("uid"));
 			ps.setString(2,(String)session.getAttribute("validOrgInPortal"));
+			ps.setString(3,(String)session.getAttribute("roleid"));
 			rs=ps.executeQuery();
 			while(rs.next())
 			{
@@ -105,7 +107,7 @@
     <html:button property="back" value="Back" styleClass="butStnd" onclick="history.back();" />
     </logic:empty>
    <logic:notEmpty name="taskList" property="list">
- <display:table name="taskList.list" defaultsort="1" id="row" export="false" pagesize="<%=Integer.parseInt(key) %>" requestURI="/viewtask.do" decorator="in.ac.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >
+ <display:table name="taskList.list" defaultsort="1" id="row" export="true" pagesize="<%=Integer.parseInt(key) %>" requestURI="/viewtask.do" decorator="in.ac.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >
 		<display:column property="taskName" title="Task Name" sortable="true" />
 		<%if(!key2.equals("Not Assigned")){ %>
 		<display:column property="resourceName" title="Assigned To" sortable="true" />
@@ -125,10 +127,13 @@
 		 <display:column media="html" title="Actions" property="tasklink"/>
 				
 		</logic:equal>
+		<display:setProperty name="export.pdf.filename" value="TaskList.pdf"/>
+		<display:setProperty name="export.excel.filename" value="TaskList.xls"/>
+		<display:setProperty name="export.xml.filename" value="TaskList.xml"/>
+		<display:setProperty name="export.csv.filename" value="TaskList.csv"/>
 	</display:table>
     </logic:notEmpty>
-  		
-  </body>
+  	</body>
 </html:html>
 
 

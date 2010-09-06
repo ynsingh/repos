@@ -58,16 +58,16 @@ public class EditRoleAction extends Action {
 		Connection con=null;
 			
 		try{
-			request.setAttribute("message","Role updation failed,because this role name is already exist. !!");
-			
-			con=MyDataSource.getConnection();//This method Established the connection from the database MySql
-			if(!editroleform.getRolename().trim().equalsIgnoreCase(editroleform.getOldrolename().trim()))
-			{
-				if(checkRecord.twoFieldDuplicacyChecker("Role_ID","role","Role_Name",editroleform.getRolename().trim(),"ValidOrgPortal",(String)session.getAttribute("validOrgInPortal"))!=null)
+				request.setAttribute("message","Role updation failed,because this role name is already exist. !!");
+				
+				con=MyDataSource.getConnection();//This method Established the connection from the database MySql
+				if(!editroleform.getRolename().trim().equalsIgnoreCase(editroleform.getOldrolename().trim()))
 				{
-					return mapping.findForward("editrolefail");
+					if(checkRecord.twoFieldDuplicacyChecker("Role_ID","role","Role_Name",editroleform.getRolename().trim(),"ValidOrgPortal",(String)session.getAttribute("validOrgInPortal"))!=null)
+					{
+						return mapping.findForward("editrolefail");
+					}
 				}
-			}
 			
 		/*
 		 * update the 'role' and 'default_authority' table with the desired values.
@@ -79,43 +79,43 @@ public class EditRoleAction extends Action {
 				ps.setInt(3,Integer.parseInt(editroleform.getRoleid()));
 				ps.executeUpdate();
 				
-		ps = con.prepareStatement("update default_authority set add_org=?,edit_remove_org=?,"+
-				"add_project=?,edit_disable_project=?,add_member=?,edit_remove_member=?,"+
-				"assign_project=?,edit_member_authority=?,assign_task=?,"+
-				"edit_remove_task=?,upload_documents=?,dwnld_remove_doc=?," +
-				"add_role=?,edit_remove_role=? where role_id=?");
-			    
-		ps.setString(1,editroleform.getAddorg());
-		ps.setString(2,editroleform.getEditorg());
-		ps.setString(3,editroleform.getAddproject());
-		ps.setString(4,editroleform.getEditproject());
-		ps.setString(5,editroleform.getAddmember());
-		ps.setString(6,editroleform.getEditmember());
-		ps.setString(7,editroleform.getAssignproject());
-		ps.setString(8,editroleform.getEditauthority());
-		ps.setString(9,editroleform.getAssigntask());
-		ps.setString(10,editroleform.getEdittask());
-		ps.setString(11,editroleform.getUploaddoc());
-		ps.setString(12,editroleform.getDownloaddoc());
-		ps.setString(13,editroleform.getAddrole());
-		ps.setString(14,editroleform.getEditrole());
-		ps.setInt(15,Integer.parseInt(editroleform.getRoleid()));
-		
-		int n=ps.executeUpdate();
-		if(n>0) /*if n is greater than zero it means update operation is successful.*/
-		{
-			forwardmsg="viewRoleList";
+			ps = con.prepareStatement("update default_authority set add_org=?,edit_remove_org=?,"+
+					"add_project=?,edit_disable_project=?,add_member=?,edit_remove_member=?,"+
+					"assign_project=?,edit_member_authority=?,assign_task=?,"+
+					"edit_remove_task=?,upload_documents=?,dwnld_remove_doc=?," +
+					"add_role=?,edit_remove_role=? where role_id=?");
+				    
+			ps.setString(1,editroleform.getAddorg());
+			ps.setString(2,editroleform.getEditorg());
+			ps.setString(3,editroleform.getAddproject());
+			ps.setString(4,editroleform.getEditproject());
+			ps.setString(5,editroleform.getAddmember());
+			ps.setString(6,editroleform.getEditmember());
+			ps.setString(7,editroleform.getAssignproject());
+			ps.setString(8,editroleform.getEditauthority());
+			ps.setString(9,editroleform.getAssigntask());
+			ps.setString(10,editroleform.getEdittask());
+			ps.setString(11,editroleform.getUploaddoc());
+			ps.setString(12,editroleform.getDownloaddoc());
+			ps.setString(13,editroleform.getAddrole());
+			ps.setString(14,editroleform.getEditrole());
+			ps.setInt(15,Integer.parseInt(editroleform.getRoleid()));
+			
+			int n=ps.executeUpdate();
+				if(n>0) /*if n is greater than zero it means update operation is successful.*/
+				{
+					forwardmsg="viewRoleList";
+				}
+			}
+			catch(Exception e)
+			{
+				System.out.println("error in edit role action="+e);
+			}
+			finally
+			{
+				MyDataSource.freeConnection(con);
+			}
+			return mapping.findForward(forwardmsg);//calling to that jsp page which is assigned in variable forwardmsg.
+			
 		}
-		}
-		catch(Exception e)
-		{
-			System.out.println("error in edit role action="+e);
-		}
-		finally
-		{
-			MyDataSource.freeConnection(con);
-		}
-		return mapping.findForward(forwardmsg);//calling to that jsp page which is assigned in variable forwardmsg.
-		
 	}
-}

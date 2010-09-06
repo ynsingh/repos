@@ -22,9 +22,9 @@ public class TaskList {
 			fillList(projectname,type,validOrgInPortal,"");	
 		}
 		//for user
-		public TaskList(String projectname,String type,String validOrgInPortal,String uid,String role_in_org)
+		public TaskList(String projectname,String type,String validOrgInPortal,String role_in_org)
 		{
-			String edit=checkRecord.AuthorityChecker("edit_remove_task", uid, validOrgInPortal,role_in_org);
+			String edit=checkRecord.AuthorityChecker("edit_remove_task", role_in_org);
 			//System.out.println("edit authority of task="+edit);
 			//if(flag==1)
 			fillList(projectname,type,validOrgInPortal,edit);	

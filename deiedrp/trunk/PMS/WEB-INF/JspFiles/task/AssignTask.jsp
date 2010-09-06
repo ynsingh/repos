@@ -20,7 +20,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         <script type='text/javascript' src='dwr/util.js'></script>
 	<!-- This JavaScript file is generated specifically for your application -->
          <script type='text/javascript' src='dwr/interface/DynamicList.js'></script>
-	  
+	  <link rel="stylesheet" type="text/css" href="style/jquery-ui.css" />
+<script type="text/javascript" src="javascript/jquery.js"></script>
+<script type="text/javascript" src="javascript/jquery-ui.min.js"></script>
+<script type="text/javascript">
+jQuery.noConflict();
+jQuery(document).ready(function(){
+
+jQuery(function() {
+		jQuery("#accordion").accordion({ collapsible: true,
+		header: 'h3',
+		fillSpace: false
+		});
+				
+	});
+});
+</script>
   <script language="JavaScript" type="text/javascript">
    function clearData()
    {
@@ -45,7 +60,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   var projectName = DWRUtil.getValue("projectName");
   var orgportal = DWRUtil.getValue("orgportal");
   var uname = DWRUtil.getValue("uname");
-  DynamicList.resourceList(uname,valid_key,projectName,orgportal,function(data)
+  //DynamicList.resourceList(uname,valid_key,projectName,orgportal,function(data)
+   DynamicList.generateProjectTeamList(projectName,orgportal,1,function(data)
   {
    	DWRUtil.removeAllOptions(document.getElementsByName("assignedTo")[0]);
   	DWRUtil.addOptions(document.getElementsByName("assignedTo")[0],data);
@@ -72,18 +88,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		//For getting database connection.
 			con=MyDataSource.getConnection();
 		%>
+		<div style="padding-left:100px;padding-right:100px;padding-top:40px;">
+	<div id="accordion">
+	<h3><a href="#"> Assign Task -</a></h3>
+	<div>
 		<html:javascript formName="assignTaskform"/>
 	<html:form action="/assignTask" onsubmit="return validateAssignTaskform(this);">	
-	
-		<div id="main_title">
-		   <font color="#0044ff">  Assign Task:</font>
-		  </div>
-		  <br>
-		  <div align="center">
+	 	  <div align="center">
 		  	  <html:errors property="assignTaskMsg"/>
-		  </div>
-		  <br>
-		  <table cellspacing="2" cellpadding="9" border="0" align="center">
+		  </div><br>
+		   <table cellspacing="1" cellpadding="9" width="50%" border="0" align="center">
 		  <tr>
 		<td>
 		<input type="hidden" name="orgportal" id="orgportal" value="<%=(String)session.getAttribute("validOrgInPortal") %>" size="20" readonly="readonly"/>
@@ -123,9 +137,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			ps=con.prepareStatement("select distinct p.project_name from project p,"+
 									"user_in_org u,validatetab v where p.enable=0 and "+
 									"u.valid_user_id=? and u.valid_orgportal=? "+
-					"and u.valid_key=v.valid_user_key and v.valid_project_code=p.project_code");
+					"and u.valid_key=v.valid_user_key and v.valid_project_code=p.project_code"+
+					" and v.valid_role_id=?");
 			ps.setString(1,(String)session.getAttribute("uid"));
 			ps.setString(2,(String)session.getAttribute("validOrgInPortal"));
+			ps.setString(3,(String)session.getAttribute("roleid"));
 			rs=ps.executeQuery();
 			while(rs.next())
 			{
@@ -162,13 +178,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<html:errors property="taskname2"/>
 			</td></tr>
 			</table>
-			<table align="center" style="padding-right: 400px">
+			<table align="center" >
 			<tr><td><html:submit value="Assign Task" styleClass="butStnd"/></td>
 			<td><html:reset onclick="clearData();" styleClass="butStnd"></html:reset></td>
 			<td><html:button property="back" value="Back" styleClass="butStnd" onclick="history.back();" /></td>
 			</tr>
-			
 			</table>
 		</html:form>
+		</div></div></div>
   </body>
 </html>

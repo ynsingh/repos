@@ -6,11 +6,26 @@
 
 
 /* TEST WITH INCLUDE STYLE.CSS  */
+.outerbox
+{
+border: 1px solid black; /*Add 1px solid border, use any color you want*/
+background-color:#F5FFFA; /*Add a background color to the box*/
+text-align:center; /*Align the text to the center*/
+border-bottom-style:ridge;
+padding-bottom:180px;
+}
+.innerbox
+{
+border: 1px solid black; /*Add 1px solid border, use any color you want*/
+background-color:#FFE4C4; /*Add a background color to the box*/
+text-align:center; /*Align the text to the center*/
+border-bottom-style:ridge;
+}
 .butStnd {
     font-family:arial,sans-serif;
     font-size:11px;
     width:105px;
-    background-color:#DCDFFA ;color:black;font-weight:bold;
+    background-color:#B0C4DE ;color:black;font-weight:bold;
 }
  .B:link {
 	color: #0000ff;
@@ -45,7 +60,7 @@ background-color: #c3d9ff;
 	
 .footerpage
 	{
-	background-color: #c3d0ff;
+	background-image: url('../img/footerimage.PNG');background-repeat: repeat;
 }
 
 .month_heading {

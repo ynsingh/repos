@@ -55,7 +55,10 @@ public class OrgList {
 			try{
 				con=MyDataSource.getConnection();//This method Established the connection from the database MySql
 				Statement st=con.createStatement();
-				ResultSet rs=st.executeQuery("select Org_Name,org_address,Org_City,Org_State,Org_Phone,Org_Fax,Org_URL,org_id from organisation");
+				ResultSet rs=st.executeQuery("select o.Org_Name,o.org_address,c.city_name," +
+						"s.state_name,o.Org_Phone,o.Org_Fax,o.Org_URL," +
+						"o.org_id from organisation o,state s,city c" +
+						" where o.Org_State=s.state_id and o.org_city=c.city_id and s.state_id=c.state_id");
 				while(rs.next())
 				{
 					list.add(new OrgFields(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8)));
@@ -81,25 +84,26 @@ public class OrgList {
 				con=MyDataSource.getConnection();//This method Established the connection from the database MySql
 				if(searchOption.equalsIgnoreCase("Organisation Name"))
 				{	
-					ps=con.prepareStatement("select distinct o.Org_Name,o.Org_Address,o.Org_City,"+
-					  		"o.Org_State,o.org_phone,o.Org_Fax,o.Org_Url,o.org_id  "+ 
-					  		" from organisation o "+
-					  		"where o.org_name like ? ");	
+					ps=con.prepareStatement("select distinct o.Org_Name,o.Org_Address,c.city_name,"+
+					  		"s.state_name,o.org_phone,o.Org_Fax,o.Org_Url,o.org_id  "+ 
+					  		" from organisation o,state s,city c "+
+					  		"where o.Org_State=s.state_id and o.org_city=c.city_id and s.state_id=c.state_id" +
+					  		" and o.org_name like ? ");	
 					
 				}
 				else if(searchOption.equalsIgnoreCase("Organisation City"))
 				{
-					ps=con.prepareStatement("select distinct o.Org_Name,o.Org_Address,o.Org_City,"+
-					  		"o.Org_State,o.org_phone,o.Org_Fax,o.Org_Url,o.org_id "+ 
-					  		" from organisation o "+
-					  		"where o.org_city like ? ");
+					ps=con.prepareStatement("select distinct o.Org_Name,o.Org_Address,c.city_name,"+
+					  		"s.state_name,o.org_phone,o.Org_Fax,o.Org_Url,o.org_id "+ 
+					  		" from organisation o,state s,city c "+
+					  		"where o.Org_State=s.state_id and o.org_city=c.city_id and s.state_id=c.state_id and o.org_city like ? ");
 					//System.out.println("Query running according to organisation City");
 				}
 				else
-					ps=con.prepareStatement("select distinct o.Org_Name,o.Org_Address,o.Org_City,"+
-					  		"o.Org_State,o.org_phone,o.Org_Fax,o.Org_Url,o.org_id "+ 
-					  		" from organisation o "+
-					  		"where o.org_state like ? ");	
+					ps=con.prepareStatement("select distinct o.Org_Name,o.Org_Address,c.city_name,"+
+					  		"s.state_name,o.org_phone,o.Org_Fax,o.Org_Url,o.org_id "+ 
+					  		" from organisation o,state s,city c "+
+					  		"where o.Org_State=s.state_id and o.org_city=c.city_id and s.state_id=c.state_id and s.state_name like ? ");	
 				ps.setString(1,keysearch.trim()+'%');
 				ResultSet rs=ps.executeQuery();
 				while(rs.next())

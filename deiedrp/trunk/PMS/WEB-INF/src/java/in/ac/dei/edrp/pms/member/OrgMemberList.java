@@ -21,7 +21,7 @@ public class OrgMemberList{
 	}
 	
 	public OrgMemberList(String type,String orgportal,String user_id,String role_in_org){
-		String editPermission=checkRecord.AuthorityChecker("edit_remove_member", user_id, orgportal,role_in_org);
+		String editPermission=checkRecord.AuthorityChecker("edit_remove_member", role_in_org);
 		if(type.equalsIgnoreCase("Active"))
 		fillList(orgportal,editPermission);
 		else if(type.equalsIgnoreCase("Inactive"))
@@ -106,31 +106,6 @@ public class OrgMemberList{
 			MyDataSource.freeConnection(con);
 		}
 	}
-//	//above method is end here
-//	public void fillList(String keySearch,String searchOption) {
-//		Connection con=null;
-//		try {
-//			con=MyDataSource.getConnection();//This method Established the connection from the database MySql
-//            PreparedStatement st = con.prepareStatement("select u.valid_user_id,p.portal_name,o.org_name," +
-//					"r.role_name,u.valid_key from user_in_org u,role r,user_role_in_org ur," +
-//					"org_into_portal op,portal p,organisation o " +
-//					"where u.valid_orgportal=op.valid_org_inportal and " +
-//					"ur.valid_key=u.valid_key and ur.valid_role=r.role_id " +
-//					"and op.portal_id=p.portal_id and o.org_id=op.org_id and u.valid_user_id like ?");
-//            st.setString(1, keySearch+"%");
-//            ResultSet rs = st.executeQuery();
-//                    
-//            while (rs.next()) {
-//                list.add(new MemberBean(rs.getString(1), rs.getString(2),
-//                        rs.getString(3), rs.getString(4),rs.getString(5)));
-//            }
-//        }
-//		catch(Exception e){}
-//		finally
-//		{
-//			MyDataSource.freeConnection(con);
-//		}
-//    }
 	
 		// getter and setter methods
 	public ArrayList<MemberBean> getList() {

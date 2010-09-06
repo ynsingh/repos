@@ -1,10 +1,12 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
-<%@ page import="in.ac.dei.edrp.pms.home.*"%>
+
 <%@ page import="in.ac.dei.edrp.pms.control.CustomRequestProcessor"%>
-<%@ page import="java.util.*;"%>
+
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
+<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html:html lang="true">
   <head>
@@ -12,16 +14,6 @@
    <link rel="icon" href="img/logo.ico" type="image/x-icon">
 <link rel="stylesheet" href="style/dropdown.css" type="text/css"></link>
 <link rel="stylesheet" href="style/style.css" type="text/css"></link>
-<style type="text/css" media="screen">
-.answerbox
-{
-border: 1px solid black; /*Add 1px solid border, use any color you want*/
-background-color:#fffff1; /*Add a background color to the box*/
-text-align:center; /*Align the text to the center*/
-border-bottom-style:ridge;
-
-}
-</style>
    <script type='text/javascript' src='dwr/engine.js'></script>
   <script type='text/javascript' src='dwr/util.js'></script>
 	<!-- This JavaScript file is generated specifically for your application -->
@@ -33,15 +25,30 @@ border-bottom-style:ridge;
    var username = DWRUtil.getValue("uname");
   DynamicList.organisationPortalList(portalname,username,function(data)
   {
-  	DWRUtil.removeAllOptions("orgname");
-  	DWRUtil.addOptions("orgname",data);
+  		DWRUtil.removeAllOptions(document.getElementsByName("orgname")[0]);
+  		DWRUtil.addOptions(document.getElementsByName("orgname")[0],data);
+  	  	validUserRoleList();
    }
   ); 
+ }
+ 
+ function validUserRoleList(){
+  var portalname = DWRUtil.getValue("portalname");
+  var orgname = DWRUtil.getValue("orgname");
+   var username = DWRUtil.getValue("uname");
+   
+  DynamicList.userRoleList(portalname,orgname,username,function(data)
+  {
+  		DWRUtil.removeAllOptions(document.getElementsByName("rolename")[0]);
+  	  	DWRUtil.addOptions(document.getElementsByName("rolename")[0],data);
+   }
+  );
+ 
  }
   </script>
   </head>
   
-  <body bgcolor="#fffffd">
+  <body bgcolor="#fffffd" onload="organisationPortalList()">
   <noscript><h1>Warning: either you have javascript disabled or your browser does not support javascript. To work properly, this page requires javascript to be enabled.</h1></noscript>
   <%! String mysession=null; %>
 	
@@ -57,10 +64,10 @@ border-bottom-style:ridge;
   <table height="100%" width="100%" cellspacing="0px" cellpadding="0px">
   <tr height="10%">
   <td width="100%">
-  <table style="border:0px solid #000066;width:100%;" cellspacing="0px" cellpadding="0px" bgcolor=#C3D9FF>
+  <table style="border:0px solid #000066;width:100%;background-image: url('img/backimage.PNG');background-repeat: repeat;" cellspacing="0px" cellpadding="0px">
 <tr>
 	<td valign="top"><div>
-					<div style="float:left;width:70%;color:#000066;background-color:C3D9FF;font-size:30px;font-family:algerian;background-image:url(header-gif.rev.gif);background-repeat: no-repeat;background-position: left;height:13%;text-align: center;text-shadow: aqua;">
+					<div style="float:left;width:70%;color:#000066;font-size:30px;font-family:algerian;background-image:url(header-gif.rev.gif);background-repeat: no-repeat;background-position: left;height:13%;text-align: center;text-shadow: aqua;">
 					<bean:message key="header.title" />
 					<br><div style="padding-bottom:15px;font: normal;font-family: Arial, Helvetica, sans-serif;color:#000000;">
 					<b><font size="3"><bean:message key="header.subtitle" /></font></b><br>
@@ -70,73 +77,79 @@ border-bottom-style:ridge;
 					<div align="right" style="padding-right: 10px;">
 		<b><font size="1">Welcome,</font></b>
 		<font size="1">
-		  		<%
-		  		/*The user_id which is currently logged In.*/
-		  		String uid=(String)session.getAttribute("uid");
-		  		out.println(uid);
-		   		%> |</font>
+		  		<c:out value="${sessionScope.uid}"/> |</font>
 		 
-				<html:link action="logout" styleClass="B"> Logout</html:link>
+				<html:link action="logout" styleClass="B"><font size="-1"> Logout</font></html:link>
 				</div>				
 		 </td></tr>
 		</table></td></tr>
   
   <tr height="80%">
-  <td align="justify" style="type:text/css;color:#000000;background-color:#FFFFFF;" width="50%">
+  <td align="justify" style="color:#000000; width="50%">
 	<table width="100%" height="100%" >
 		<tr>
-		<td class="answerbox" style="padding-bottom: 100px;" align="center">
+		<td class="outerbox">
 			
 			 <b>PMS Portals<br/><br/>
-			 Hello , <b><font color="blue"><%=(String)session.getAttribute("uid")%></font></b><br/>
+			 Hello , <b><font color="blue"><c:out value="${sessionScope.uid}"/></font></b><br/>
 			<br/>You have access to the following portals. Select the portal and organization you wish to access. <br/><br/>
-			
-	     <%
-	   PortalOrgBeanList pol=(PortalOrgBeanList)request.getAttribute("portal");
-	   List<PortalOrgBean> list=pol.getList();
-	   Iterator<PortalOrgBean> i=list.iterator();
-	   %>
+			   
 	   </b>
-	  <table class="answerbox" align="center" style="padding: 20px;">
+	  <table class="innerbox" cellpadding="10px;" cellspacing="2px;" align="center" >
 	<html:javascript formName="portalnameform" dynamicJavascript="true"	staticJavascript="true" />
 	<html:form action="/mainwelcome" onsubmit="return validatePortalnameform(this)">
 	  
 	  <tr><td>
-	   <input type="hidden" name="uname" id="uname" value="<%=(String)session.getAttribute("uid") %>" size="20" readonly="readonly"/>
+	   <input type="hidden" name="uname" id="uname" value="${sessionScope.uid}" size="20" readonly="readonly"/>
 	   </td></tr>
-	  <tr valign="top"><td align="left">
+	  <tr ><td align="left">
 	  Portal Name :
 	   </td>
-	   <td>
-	   <select name="portalname" id="portalname" onchange="organisationPortalList()" style="width: 270px;height: 22px;">
-	   <option value="--Select--">--Select--</option>
-	   <%
-	   while(i.hasNext())
-	   {
-	   PortalOrgBean pob=i.next();
-	   %>
-	   <option value="<%= pob.getPortalname()%>"><%= pob.getPortalname()%></option>
-	   <%
-	   }
-	    %>
-	   </select><html:errors property="portalname"/>
+	   <td >
+	   <html:select property="portalname" indexed="portalname" style="width: 270px;height: 22px;" onchange="organisationPortalList()">
+		<html:option value="--Select--"></html:option>
+		<sql:query var="userPortal" dataSource="jdbc/mydb">
+				select distinct p.portal_name from portal p,org_into_portal oip,
+				user_in_org uio where p.portal_id=oip.portal_id and 
+				uio.Valid_OrgPortal=oip.valid_org_inportal and uio.valid_user_id=?
+				<sql:param value="${sessionScope.uid}"/>
+			</sql:query>
+			<c:forEach var="row" items="${userPortal.rows}">
+			<html:option value="${row.portal_name}"></html:option>
+			</c:forEach>
+		 </html:select><html:errors property="portalname"/>
+		 
+		
 	   </td></tr>
 	   <tr><td align="left">
 	   Organization Name :
 	  </td>
-	   <td style="padding-top: 10px;">
-	   <select id="orgname" name="orgname" style="width: 270px;height: 22px;">
-	   <option value="--Select--"/>
-	   </select><html:errors property="orgname"/>
+	   <td >
+	   <html:select indexed="orgname" property="orgname" onchange="validUserRoleList()" style="width: 270px;height: 22px;">
+		<html:option value="--Select--"></html:option>
+		</html:select>
+	   <html:errors property="orgname"/>
 	   </td>
-	   </tr><tr></tr><tr></tr>
-	  <tr><td align="right" style="padding-top: 10px;">
+	   </tr>
+	   <tr><td align="left">
+	   Role Name :
+	  </td>
+	   <td >
+	   <html:select indexed="rolename" property="rolename" style="width: 270px;height: 22px;">
+		<html:option value="--Select--"></html:option>
+		</html:select>
+	   <html:errors property="rolename"/>
+	   </td>
+	   </tr>
+	   
+	   <tr></tr><tr></tr>
+	  <tr><td></td><td align="left" >
 	   <html:submit styleClass="butStnd"></html:submit></td></tr>
 	   </html:form>
 	   </table> </td> </tr>
 	  </table> </td> </tr> 
    <tr height="10%">
-   <td width="100%" bgcolor="c3d9ff"><jsp:include page="/WEB-INF/JspFiles/common/footer.jsp"></jsp:include> 
+   <td class="footerpage"><jsp:include page="/WEB-INF/JspFiles/common/footer.jsp"></jsp:include> 
    </td></tr> 
    <%} %>
  </table> </body>

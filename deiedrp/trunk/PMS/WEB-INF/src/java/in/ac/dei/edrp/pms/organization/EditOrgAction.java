@@ -59,12 +59,13 @@ public class EditOrgAction extends Action {
 		/**
 		 * update the 'organisation' table with the desired values.
 		 * */
+			String state_id=checkRecord.duplicacyChecker("state_id","state","state_name",editorgform.getIstate());
 		PreparedStatement ps=con.prepareStatement("update organisation set Org_Name=?," +
 				"Org_Address=?,Org_City=?,Org_State=?,Org_Phone=?,Org_Fax=?,Org_URL=? where Org_Id=?");
 		ps.setString(1,editorgform.getIname());
 		ps.setString(2,editorgform.getIaddress());
-		ps.setString(3,editorgform.getIcity());
-		ps.setString(4,editorgform.getIstate());
+		ps.setString(3,checkRecord.twoFieldDuplicacyChecker("city_id","city","state_id",state_id,"city_name",editorgform.getIcity()));
+		ps.setString(4,state_id);
 		ps.setString(5,editorgform.getIphoneno());
 		ps.setString(6,editorgform.getIfax());
 		ps.setString(7,editorgform.getIurl());

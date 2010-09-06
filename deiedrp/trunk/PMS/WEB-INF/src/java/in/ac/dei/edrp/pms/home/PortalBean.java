@@ -27,6 +27,7 @@ public class PortalBean extends ValidatorForm {
 	/** portalname property */
 	private String portalname;
 	private String orgname;
+	private String rolename;
 	/*
 	 * Generated Methods
 	 */
@@ -50,6 +51,14 @@ public class PortalBean extends ValidatorForm {
 	 */
 	public void reset(ActionMapping mapping, HttpServletRequest request) {
 		// TODO Auto-generated method stub
+	}
+
+	public String getRolename() {
+		return rolename;
+	}
+
+	public void setRolename(String rolename) {
+		this.rolename = rolename;
 	}
 
 	/** 

@@ -4,11 +4,6 @@
  */
 package in.ac.dei.edrp.pms.home;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-
-import in.ac.dei.edrp.pms.dataBaseConnection.MyDataSource;
 import in.ac.dei.edrp.pms.viewer.checkRecord;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,10 +15,9 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
-
 /** 
  * MyEclipse Struts
- * Creation date: 06-25-2009
+ * Creation date: 05-04-2010
  * 
  * XDoclet definition:
  * @struts.action input="login.jsp" validate="true"
@@ -41,34 +35,25 @@ public class MainWelcomeAction extends Action {
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) {
 		PortalBean portalnameform=(PortalBean)form;
-		Connection con=null;
-		ResultSet rs=null;
+		
 		String forwardString="invalid";
-		//System.out.println("selected value "+portalnameform.getPortalname());
 		HttpSession session=request.getSession();
 		try{
 		if((String)session.getAttribute("mysession")!=null)
 		{
 			session.setAttribute("portalname", portalnameform.getPortalname());
 			session.setAttribute("orgname", portalnameform.getOrgname());
+			session.setAttribute("rolename", portalnameform.getRolename());
 			String portal_id=checkRecord.duplicacyChecker("Portal_ID","portal","Portal_Name",portalnameform.getPortalname());
 			String org_id=checkRecord.duplicacyChecker("Org_ID","organisation","Org_Name",portalnameform.getOrgname());
 			session.setAttribute("validOrgInPortal",checkRecord.twoFieldDuplicacyChecker("valid_org_inportal","org_into_portal","org_id",org_id,"portal_id",portal_id));
-			//System.out.println(session.getAttribute("portalname"));
-			
-			con=MyDataSource.getConnection();
-			PreparedStatement check=con.prepareStatement("select uio.valid_key from " +
-					"user_in_org uio where uio.valid_user_id=? " +
-					"and uio.valid_orgportal=? and uio.valid_key IN" +
-					"(select valid_key from user_role_in_org)");
-			
-			check.setString(1,(String)session.getAttribute("uid"));
-			check.setString(2,(String)session.getAttribute("validOrgInPortal"));
-			rs=check.executeQuery();
-			if(rs.next())
-				session.setAttribute("role_in_org", "exist");
-			else
-				session.setAttribute("role_in_org", "not exist");
+			String roleid=checkRecord.twoFieldDuplicacyChecker("Role_Id","role","Role_Name",portalnameform.getRolename(),"ValidOrgPortal",(String)session.getAttribute("validOrgInPortal"));
+			if(roleid==null)
+			{
+				roleid=checkRecord.twoFieldDuplicacyChecker("Role_Id","role","Role_Name",portalnameform.getRolename(),"ValidOrgPortal",null);
+			}
+			session.setAttribute("roleid", roleid);
+			session.setAttribute("myquery",request.getRequestURL()+"?"+request.getQueryString());
 			forwardString="showWelcome";
 		}
 		
@@ -77,10 +62,7 @@ public class MainWelcomeAction extends Action {
 	{
 		System.out.println("error in main welcome.java file ="+e);
 	}
-	finally
-	{
-		MyDataSource.freeConnection(con);
-	}
+	
 	return mapping.findForward(forwardString);
   }
 }

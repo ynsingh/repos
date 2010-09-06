@@ -23,6 +23,7 @@ public class OrgForm extends ValidatorForm {
 	/*
 	 * Generated fields
 	 */
+	private String cityValue=null;
 	private String orgname=null;
 	private String orgid;	//for holding organisation ID.
 	private String iname;	//for holding organisation name.
@@ -45,6 +46,14 @@ public class OrgForm extends ValidatorForm {
 	 */
 	public void reset(ActionMapping mapping, HttpServletRequest request) {
 		// TODO Auto-generated method stub
+	}
+
+	public String getCityValue() {
+		return cityValue;
+	}
+
+	public void setCityValue(String cityValue) {
+		this.cityValue = cityValue;
 	}
 
 	public String getOrgname() {
