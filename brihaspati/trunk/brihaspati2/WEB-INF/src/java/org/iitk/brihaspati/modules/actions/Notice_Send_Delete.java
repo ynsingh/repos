@@ -518,9 +518,12 @@ public class Notice_Send_Delete extends SecureAction
 			ParameterParser pp=data.getParameters();
 			String Fheading=pp.getString("message","");
 		//	String Fheadexp=pp.getString("expiry","");
+			String fhrole=pp.getString("role");
+			if(fhrole.equals("turbine_root")){
 			String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Notification.properties";
 			(new File(path)).delete();
 			AdminProperties.setValue(path,Fheading,"brihaspati.admin.flashHeading.value");
+			}
 		//	AdminProperties.setValue(path,Fheadexp,"brihaspati.admin.flashHeadExp.value");
 			String Fhupdate=MultilingualUtil.ConvertedString("cal_ins",LangFile);
                         data.setMessage(Fhupdate);

@@ -1,0 +1,186 @@
+#*
+ * @(#) RolePermissionMap.vm 
+ * Copyright (c) 2010 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ *
+ * @author <a href="mailto:nksinghiitk@yahoo.co.in">Nagendra Kumar Singh</a> 
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+*#
+
+
+$page.setTitle("Admin Home | View Role Permission List")
+
+$page.setBgColor($ui.bgcolor)
+<body>
+
+$!data.getMessage()
+
+<table  bgcolor="$ui.tableColor" width=100%>
+	<tr bgcolor="$ui.menuColor">
+		<td colspan=14> 
+		<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> |
+		<a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","pendinglist").addPathInfo("count","1") style=text-decoration:none>$RemoteInstitute $brih_mgmt</a> |
+		$brih_role $Repo_Perm $brih_list	
+		</td>
+	</tr>
+</table>
+<form name="frm" method="Post" action="$link.setPage("call,Root_Admin,RolePermissionMap.vm").setAction("RolePermissionMap")">
+<table  bgcolor="$ui.tableColor" width=100%>
+	<tr>
+		#if($tdcolor != "1")
+                <td>
+                #elseif($tdcolor == "1")
+                <td bgcolor="#AFDCEC">
+                #end
+		<a href=$link.setPage("call,Root_Admin,RolePermissionMap.vm").addPathInfo("mode","all").addPathInfo("count","1") style=text-decoration:none>$brih_role $Repo_Perm $brih_list</a></td>
+		#if($tdcolor != "2")
+                <td>
+                #elseif($tdcolor == "2")
+                <td bgcolor="#AFDCEC">
+                #end
+		<a href=$link.setPage("call,Root_Admin,RolePermissionMap.vm").addPathInfo("mode","role").addPathInfo("count","2") style=text-decoration:none>$brih_add $brih_role </a></td>
+		#if($tdcolor != "3")
+                <td>
+                #elseif($tdcolor == "3")
+                <td bgcolor="#AFDCEC">
+                #end
+		<a href=$link.setPage("call,Root_Admin,RolePermissionMap.vm").addPathInfo("mode","perm").addPathInfo("count","3") style=text-decoration:none>$brih_add $Repo_Perm </a></td>
+		#if($tdcolor != "4")
+                <td>
+                #elseif($tdcolor == "4")
+                <td bgcolor="#AFDCEC">
+                #end
+                <a href=$link.setPage("call,Root_Admin,RolePermissionMap.vm").addPathInfo("mode","map").addPathInfo("count","4") style=text-decoration:none>
+Map $brih_role $Repo_Perm </a></td>
+
+	</tr>
+</table>
+<table  bgcolor="$ui.tableColor" width=100%>
+	#if($mode=="all")
+      	<tr bgcolor="$ui.menuColor">
+        <td align=center>$brih_role $brih_name</td>
+        <td align=center>$QuestionBank_available $Repo_Perm $brih_name</td>
+        <td align=center colspan=2>$brih_availableAction</td>
+        </tr>
+	#set($i=0)
+        	#foreach($data1 in $info)
+	        #set($j=0)
+        		#foreach($data2 in $info2)
+			        #if($i==$j)
+			        <tr><td>
+					  $data2.getRoleName()   	
+			        </td><td>
+           ##             <INPUT TYPE="CHECKBOX" NAME="$data" onClick="apprv_rej(this,document.frm);">
+		                        $data1
+			        </td>
+			        <td>
+					 <a href=$link.setPage("call,Root_Admin,RolePermissionMap.vm").addPathInfo("mode","map").addPathInfo("count","4").addPathInfo("rlid","$data2.getRoleId()").addPathInfo("rlnme","$data2.getRoleName()") style=text-decoration:none>$brih_update $brih_role $Repo_Perm </a>
+				</td>
+			        <td>
+					 <a href=$link.setPage("call,Root_Admin,RolePermissionMap.vm").setAction("RolePermissionMap").addPathInfo("actionName","eventSubmit_doDelete").addPathInfo("rlid","$data2.getRoleId()") style=text-decoration:none>$brih_delete $brih_role </a>
+				</td>
+			        </tr>
+			        #end
+		        #set($j=$j+1)
+		        #end
+	        #set($i=$i+1)
+        	#end
+	        <tr bgcolor="$ui.menuColor">
+        	        <td align="left" colspan=14>
+              ##  	<input type="hidden" name="actionName">
+	  ##              <input type="hidden" name="count" value="$tdcolor">
+        	        </td>
+	        </tr> 
+	#end
+##</table>
+##<table width=100% bgcolor="$ui.tableColor">
+	#if($mode=="role")
+	<tr><td></td></tr>
+	<tr>
+		#formCell ("$brih_role $brih_name" "rname" "")
+	</tr>
+	<tr bgcolor="$ui.menuColor">
+                <td align="left" colspan=14>
+                <input type="hidden" name="actionName" value="eventSubmit_doAddRole">
+		<input type="submit" name="eventSubmit_doAddRole" value="$brih_add">
+		</td>
+        </tr>
+
+	#end
+##</table>
+##<table width=100% bgcolor="$ui.tableColor">
+	#if($mode=="perm")
+	<tr><td></td></tr>
+	<tr>
+		#formCell ("$Repo_Perm $brih_name" "pname" "")
+	</tr>
+	<tr bgcolor="$ui.menuColor">
+                <td align="left" colspan=14>
+                <input type="hidden" name="actionName" value="eventSubmit_doAddPerm">
+                <input type="submit" name="eventSubmit_doAddPerm" value="$brih_add">
+                </td>
+        </tr>
+	#end
+	#if($mode=="map")
+        <tr bgcolor="$ui.menuColor">
+        <td align=center>$brih_select $brih_role $brih_name</td>
+        <td align=center>$brih_select $Repo_Perm $brih_name</td>
+        </tr>
+        <tr><td>
+                <select name="role">
+                        <option value=$rlid>$rlnme</option>
+                #foreach($data2 in $info2)
+                        <option value=$data2.getRoleId()>$data2.getRoleName()</option>
+                #end
+                </select>
+       </td><td>
+               <select name="permi">
+               #foreach($data3 in $perm)
+                        <option value=$data3.getPermissionId()>$data3.getPermissionName()</option>
+               #end
+               </select>
+        </td></tr>
+        <tr bgcolor="$ui.menuColor">
+                <td align="left" colspan=14>
+                <input type="hidden" name="actionName">
+                <input type="submit" name="eventSubmit_doAccept" value="$brih_add" onClick="return checkActName(document.frm,this);">
+                <input type="submit" name="eventSubmit_doReject" value="$brih_remove" onClick="return checkActName(document.frm,this);">
+                <input type="hidden" name="count" value="$tdcolor">
+                </td>
+        </tr>
+	#end
+
+</table>
+</form>
+</body>
+
+<SCRIPT LANGUAGE="javascript">
+
+        function checkActName(frm,field)
+        {
+			frm.actionName.value=field.name;
+        	        frm.submit();
+	
+	}
+ 
+        function apprv_rej(field,frm)
+        {
+		if(field.checked)
+        	{
+                	frm.deleteFileNames.value=frm.deleteFileNames.value+field.name+"^";
+		}                
+        	else
+		{
+                      	var rmFile,index,actualString,preString,postString;
+	        	actualString=frm.deleteFileNames.value;
+        	        index=actualString.indexOf(field.name+"^",0);
+                	preString=actualString.substring(0,index);
+                        postString=actualString.substring(index+field.name.length+1);
+	                actualString=preString+postString;
+        	        frm.deleteFileNames.value=actualString;
+		}                
+        }
+
+
+</SCRIPT>
+
