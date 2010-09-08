@@ -6,6 +6,8 @@
  *@author <a href="mailto:aktri@iitk.ac.in">Awadhesh Kumar Trivedi</a>
  *@author <a href="mailto:sumanrjpt@yahoo.co.in">Suman Rajput</a>
  *@author <a href="mailto:rekha_20july@yahoo.co.in">Rakha Pal</a>
+ *@author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
+ *@modified date: 20-08-2010 (Sunil Kumar),
  *#
 
 #set($lang = $data.getUser().getTemp("lang" ).toString())
@@ -13,15 +15,19 @@ $page.setTitle("$brih_home |$DiscussionBoard")
 
 $!data.getMessage()
 <table bgcolor="$ui.menuColor" width=100%>
-	<tr><td>
+   <tr><td>
+   #if($mode1 == "DGeneral")
+	<b><a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> | $DiscussionBoard
+   #else
         	<b><a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cname</a> |
-		##<a href=$link.setPage("call,CourseMgmt_User,Communication.vm")>$brih_communication</a> | $DiscussionBoard
 		<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_communication</a> | $DiscussionBoard
+  #end
        </td></tr>
 </table>
 <table bgcolor="$ui.tableColor" width=100%>
 #if($data.getUser().getUserName()!= "guest")
 <tr>
+   #if($mode1 != "DGeneral")
 	#if($tdcolor != "1")
 	<td>
 	#elseif($tdcolor=="1")
@@ -39,7 +45,7 @@ $!data.getMessage()
 	#elseif($tdcolor=="3")
 	<td bgcolor="#AFDCEC">
 	#end
-        <a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3")>$brih_Notices</td>
+        <a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3")>$Notice_NoticeContent_msg1</td>
 	#if($tdcolor != "4")
 	<td>
 	#elseif($tdcolor=="4")
@@ -52,16 +58,16 @@ $!data.getMessage()
 	<td bgcolor="#AFDCEC">
 	#end
         <a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status","fromCourse").addPathInfo("count","5")>$brih_news</td>
+#end
 </tr>
 #end
-##</table>
 	<form name="frm" ENCTYPE="multipart/form-data" METHOD="POST" action="$link.setPage("call,Dis_Board,DB.vm").setAction("SendDB")">
-	##<form method="GET" action="$link.setPage("call,Dis_Board,DBContent.vm")">
-##<table width=100% align=left bgcolor="$ui.tableColor"> 
+#if($mode1 == "DGeneral")
+ 	<tr bgcolor="$ui.menuColor"><td colspan=2><b>$DisBoard_WorkGroup:&nbsp&nbsp<font color=green> $brih_general $DiscussionBoard</font></b>
+#else
  	<tr bgcolor="$ui.menuColor"><td colspan=2><b>$DisBoard_WorkGroup:&nbsp&nbsp<font color=green>$courseid</font></b>
+#end
  	</td></tr>
-	##</table>
-	##<table align="center">
 	<tr><td colspan=5>
 	#if($unread=="0")
 		<font size="3" face="$ui.sansSerifFonts"><b>$brih_unreadMsg(<font color="Blue">$unread</font>)&nbsp&nbsp
@@ -75,29 +81,34 @@ $!data.getMessage()
 		<td align="center">
 			<input type="hidden" name="mode" value="All">
 			<INPUT TYPE="button" NAME="eventSubmit_doShowDBContent" VALUE="$LocalMail_Mail_msg2" onClick="checkValue(document.frm,this);">
-			##<input type="Submit" name=submit value="$LocalMail_Mail_msg2">
 			<input type="hidden" name="course_id" value=$courseid>
 		</td>
 	#end
 		<td>
-			<INPUT TYPE="button" NAME="eventSubmit_doShowArchive" VALUE="$brih_arch" onClick="checkValue(document.frm,this);">
+			#if($mode1 == "DGeneral")
+			   <INPUT TYPE="button" NAME="eventSubmit_doShowArchive" VALUE=" $brih_general $brih_arch">
+			#else
+			   <INPUT TYPE="button" NAME="eventSubmit_doShowArchive" VALUE="$brih_arch" onClick="checkValue(document.frm,this);">
+			#end
 			<input type="hidden" name="course_id" value=$courseid>
 	 		<INPUT TYPE="hidden" NAME="actionName">
 	 		<INPUT TYPE="hidden" NAME="count" value="$tdcolor">
                 </td>
 	</tr>	
-	##</td></tr>
- 	##</table>
 #if($data.getUser().getUserName()!="guest")
-##<table align="center">
 <tr>
+
+## this is use for Gerneral DiscussionBoard.
+
+#if ($mode1 == "DGeneral")
+	<td colspan=5><a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("mode","compose").addPathInfo("mode1","DGeneral")><b>$LocalMail_MailContent_msg1</b></a></td>
+#else
 	#if($total!="0")
 	<td colspan=5><a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("mode","compose").addPathInfo("check","more").addPathInfo("course_id",$courseid).addPathInfo("count","4")><b>$LocalMail_MailContent_msg1</b></a></td>
-	##<img src="$content.getURI("/images/$lang/DB.jpg")" border="0"></a></td>
 	#else
 	<td colspan=5><a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("mode","compose").addPathInfo("check","first").addPathInfo("course_id",$courseid).addPathInfo("count","4")><b>$LocalMail_MailContent_msg1</b></a></td>
-	##<img src="$content.getURI("/images/$lang/DB.jpg")"border="0"></a></td>
 	#end
+#end
 </tr>
 #end
 </table>

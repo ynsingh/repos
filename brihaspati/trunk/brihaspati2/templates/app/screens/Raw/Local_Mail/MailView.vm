@@ -9,22 +9,15 @@
  *  @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @modify date: 01-05-09
- * @modified date: 31-12-2009
+ * @modified date: 31-12-2009, 07-09-2010,
  *#
 <head>
-#if($mode=="adminmail")
+##This Script use for Fck Editor in Textarea.
 <script type="text/javascript">
-        _editor_url = "../../../../../../../scrpts/";
+        _editor_url = "$content.getURI("/scrpts/")";
         _editor_lang = "en";
 </script>
-<script type="text/javascript" src="../../../../../../../scrpts/htmlarea.js"></script>
-#else
-<script type="text/javascript">
-        _editor_url = "../../../../../scrpts/";
-        _editor_lang = "en";
-</script>
-<script type="text/javascript" src="../../../../../scrpts/htmlarea.js"></script>
-#end
+<script type="text/javascript" src="$content.getURI("/scrpts/htmlarea.js")"></script>
 <script type="text/javascript">
         var editor = null;
         function initEditor() {

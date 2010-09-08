@@ -6,15 +6,16 @@
  *  @author <a href="mailto:kshuklak@rediffmail.com ">Kishore kumar shukla</a>
  *  @author <a href="mailto:singh_jaivir@rediffmail.com ">Jaivir Singh</a>
  *  @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
- * @modified date: 31-12-2009
+ * @modified date: 31-12-2009, 07-09-2010
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 <head>
+## This Script usr for Fck Editor in textarea.
 <script type="text/javascript">
-        _editor_url = "../../../../../scrpts/";
+        _editor_url = "$content.getURI("/scrpts/")";
         _editor_lang = "en";
 </script>
-<script type="text/javascript" src="../../../../../scrpts/htmlarea.js"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/htmlarea.js")"></script>
 <script type="text/javascript">
         var editor = null;
         function initEditor() {
@@ -342,7 +343,7 @@ function checkField(frm,field)
         }
         else
                 alert("Please fill the Mandatory(*) Fields !!");
-	editor.setMode("wysiwyg");
+		editor.setMode("wysiwyg");
 }
 function checkselect(frm,field)
 {
@@ -426,7 +427,7 @@ function checkField2(frm,field)
         }
         else
                 alert("Please fill the Mandatory(*) Fields !!");
-	editor.setMode("wysiwyg");
+		editor.setMode("wysiwyg");
 }
 function checkField3(frm,field)
 {
@@ -462,7 +463,7 @@ function checkField3(frm,field)
                 }
                 else
                 {
-                        alert("Please fill the Mandatory(*) Fields.!!");
+                        alert("Please fill the Mandatory(*) Fields !!");
                 }
           }
 	editor.setMode("wysiwyg");

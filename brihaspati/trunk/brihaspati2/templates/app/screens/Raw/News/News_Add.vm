@@ -6,14 +6,15 @@
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in ">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com ">Sunil Kumar</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
- * @modified date: 31-12-2009
+ * @modified date: 31-12-2009, 07-09-2010,
 *#
 <head>
-<script type="text/javascript"> 
-	_editor_url = "../../../../../../../scrpts/"; 
-	_editor_lang = "en"; 
+##This Script use for Fck Editor in Textarea.
+<script type="text/javascript">
+        _editor_url = "$content.getURI("/scrpts/")";
+        _editor_lang = "en";
 </script>
-<script type="text/javascript" src="../../../../../../../scrpts/htmlarea.js"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/htmlarea.js")"></script>
 <script type="text/javascript">
         var editor = null;
         function initEditor() {
@@ -133,7 +134,7 @@ $!data.getMessage()
 		#elseif($tdcolor=="3")
 		<td bgcolor="#AFDCEC">
 		#end
-                <a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3")>$brih_Notices</td>
+                <a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3")>$Notice_NoticeContent_msg1</td>
 		#if($tdcolor !="4")
 		<td>
 		#elseif($tdcolor=="4")

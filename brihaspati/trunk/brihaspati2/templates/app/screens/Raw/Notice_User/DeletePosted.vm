@@ -8,14 +8,16 @@
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @author <a href="mailto:shaistashekh@hotmail.com"> Shaista Bano</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
- * @modified date: 31-12-2009, 27-04-2010
+ * @modified date: 31-12-2009, 27-04-2010,07-09-2010,
 *#
 <head>
+##This Script use for Fck Editor in Textarea.
+
 <script type="text/javascript">
-        _editor_url = "../../../../../../../../../scrpts/";
+        _editor_url = "$content.getURI("/scrpts/")";
         _editor_lang = "en";
 </script>
-<script type="text/javascript" src="../../../../../../../../../scrpts/htmlarea.js"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/htmlarea.js")"></script>
 <script type="text/javascript">
         var editor = null;
         function initEditor() {

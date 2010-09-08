@@ -9,28 +9,15 @@
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
- * @modified date: 31-12-2009
+ * @modified date: 31-12-2009, 07-09-2010,
 *#
 <head>
-#if($mode == "Insert")
+##This Script use for Fck Editor in Textarea.
 <script type="text/javascript">
-        _editor_url = "../../../../../../../scrpts/";
+        _editor_url = "$content.getURI("/scrpts/")";
         _editor_lang = "en";
 </script>
-<script type="text/javascript" src="../../../../../../../scrpts/htmlarea.js"></script>
-#elseif($mode == "modify")
-<script type="text/javascript">
-        _editor_url = "../../../../../../../../../../../../../scrpts/";
-        _editor_lang = "en";
-</script>
-<script type="text/javascript" src="../../../../../../../../../../../../../scrpts/htmlarea.js"></script>
-#elseif($mode == "alias")
-<script type="text/javascript">
-        _editor_url = "../../../../../../../../../../../../../scrpts/";
-        _editor_lang = "en";
-</script>
-<script type="text/javascript" src="../../../../../../../../../../../../../scrpts/htmlarea.js"></script>
-#end
+<script type="text/javascript" src="$content.getURI("/scrpts/htmlarea.js")"></script>
 <script type="text/javascript">
         var editor = null;
         function initEditor() {

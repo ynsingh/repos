@@ -11,11 +11,12 @@
  * @modified date: 31-12-2009
  *#
 <head>
+##This Script use for Fck Editor in Textarea.
 <script type="text/javascript">
-        _editor_url = "../../../../../../../../../../../scrpts/";
+        _editor_url = "$content.getURI("/scrpts/")";
         _editor_lang = "en";
 </script>
-<script type="text/javascript" src="../../../../../../../../../../../scrpts/htmlarea.js"></script>
+<script type="text/javascript" src="$content.getURI("/scrpts/htmlarea.js")"></script>
 <script type="text/javascript">
         var editor = null;
         function initEditor() {
@@ -188,7 +189,7 @@ $!data.getMessage()
 		#end
 	</table>
 	<tr bgcolor="$ui.menuColor"><td colspan=5>
-		<a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("msgid",$msgID).addPathInfo("mode","reply").addPathInfo("course_id",$workgroup).addPathInfo("count",$tdcolor)>$LocalMail_Reply</a>&nbsp&nbsp
+		<a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("msgid",$msgID).addPathInfo("mode","reply").addPathInfo("course_id",$workgroup).addPathInfo("count",$tdcolor).addPathInfo("count","4")>$LocalMail_Reply</a>&nbsp&nbsp
 		<a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("course_id",$workgroup).addPathInfo("mode","All").addPathInfo("count",$tdcolor)>$LocalMail_Close</a>
 
  	 </td></tr>

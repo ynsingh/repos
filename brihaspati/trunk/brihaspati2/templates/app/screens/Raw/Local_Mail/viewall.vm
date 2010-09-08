@@ -101,7 +101,7 @@ $!data.getMessage()
                 #elseif($tdcolor == "3")
                 <td bgcolor="#AFDCEC" colspan=2>
                 #end
-                <a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3") style=text-decoration:none>$brih_Notices</td>
+                <a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3") style=text-decoration:none>$Notice_NoticeContent_msg1</td>
                 #if($tdcolor!="4")
                 <td>
                 #elseif($tdcolor == "4")

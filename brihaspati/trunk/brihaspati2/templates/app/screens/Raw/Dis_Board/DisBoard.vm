@@ -7,22 +7,15 @@
  *@author <a href="mailto:rekha_20july@yahoo.co.in">Rekha Pal</a>
  *@author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  *@author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
- * @modified date: 31-12-2009
+ * @modified date: 31-12-2009, 20-08-2010
  *#
 <head>
-#if($mode!="reply")
+##This Script use for Fck Editor in Textarea.
 <script type="text/javascript">
-        _editor_url = "../../../../../../../../../../../scrpts/";
+        _editor_url = "$content.getURI("/scrpts/")";
         _editor_lang = "en";
 </script>
-<script type="text/javascript" src="../../../../../../../../../../../scrpts/htmlarea.js"></script>
-#else
-<script type="text/javascript">
-        _editor_url = "../../../../../../../../../../../../../scrpts/";
-        _editor_lang = "en";
-</script>
-<script type="text/javascript" src="../../../../../../../../../../../../../scrpts/htmlarea.js"></script>
-#end
+<script type="text/javascript" src="$content.getURI("/scrpts/htmlarea.js")"></script>
 <script type="text/javascript">
         var editor = null;
         function initEditor() {
@@ -75,7 +68,7 @@
                                 }
                         }
                 );
-                cfg.pageStyle = "body { background-color:  } .hilite { background-color: yellow; } "+ ".sample { color: green; font-family: monospace; }";
+                cfg.pageStyle = "body { background-color:  } .hilite { background-color: yellow; } "+ ".sample { color: green; font-family: moospace; }";
                 cfg.toolbar.push(["linebreak", "my-toc", "my-date", "my-bold", "my-hilite", "my-sample"]);
                editor.generate();
         }
@@ -95,18 +88,22 @@ $!data.getMessage()
 
 <table bgcolor="$ui.menuColor" width=100%>
 <tr><td>
-		<b>
-		<a href=$link.setPage("Index.vm")>$brih_home</a> | 
+#if($mode1 == "DGeneral")
+	<b><a href=$link.setPage("Index.vm")> $brih_home </a> | <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("mode1","DGeneral") style=text-decoration:none> $DiscussionBoard </a>|</b>
+#else
+		<b><a href=$link.setPage("Index.vm")>$brih_home</a> | 
 		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
 		#if($mode1 == "grpmgmt")
-                <a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm")>$brih_grp $brih_mgmt</a> |
-                #else
-		<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_communication</a> |
-		<a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","1")>$DiscussionBoard</a> |
-			#if($check!="first") 
-			<a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("mode","All").addPathInfo("count","1")>$LocalMail_MailContent_msg3</a> |
+                   <a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm")>$brih_grp $brih_mgmt</a> |
+                	#else
+			   <a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_communication</a> |
+			   <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","1")>$DiscussionBoard</a> |
+			   #if($check!="first") 
+				<a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("mode","All").addPathInfo("count","1")>$LocalMail_MailContent_msg3</a> |</b>
 			#end
-		#end
+		   #end
+#end		
+
 		#if(($mode=="compose")|| ($mode1 == "grpmgmt"))
 	               $LocalMail_MailContent_msg1	
 		#else
@@ -117,6 +114,7 @@ $!data.getMessage()
 </table>
 <table bgcolor="$ui.tableColor" width=100%>
 <tr>
+#if ($mode1 != "DGeneral")
 	#if($tdcolor !="1")
 	<td>
 	#elseif($tdcolor=="1")
@@ -147,6 +145,7 @@ $!data.getMessage()
 	<td bgcolor="#AFDCEC">
 	#end
         <a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status","fromCourse").addPathInfo("count","5")>$brih_news</a></td>
+#end
 </tr>
 </table>
 #set($lang = $data.getUser().getTemp("lang" ).toString())
@@ -155,10 +154,14 @@ $!data.getMessage()
 ##<form name=uploadform method="post" enctype="multipart/form-data" action="$link.setPage("call,Dis_Board,DB.vm").setAction("SendDB").addPathInfo("courseid",$cid)">
 <form name=uploadform method="post" enctype="multipart/form-data" action="$link.setPage("call,Dis_Board,DB.vm").setAction("SendDB")">
 <table align="left" bgcolor="$ui.tableColor" width=100%>
-<tr bgcolor="$ui.menuColor">
-<td colspan=2><b>$DisBoard_WorkGroup:&nbsp<font color="Green">$cid</font></b>
-</td>
-</tr>
+	<tr bgcolor="$ui.menuColor">
+#if ($mode1 == "DGeneral")
+	<td colspan=2><b>$DisBoard_WorkGroup:&nbsp<font color="Green"> $brih_general $DiscussionBoard </font></b>
+#else
+	<td colspan=2><b>$DisBoard_WorkGroup:&nbsp<font color="Green"> $cid </font></b>
+#end
+	</td>
+	</tr>
 		#if($mode!="reply")
 			<tr><td colspan=2>
 				<input type="RADIO" name=topicExisting checked=true value="OLDTOPIC" onClick=blurTopicName(document.uploadform)>&nbsp $brih_Exist $brih_topic
