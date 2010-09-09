@@ -137,9 +137,9 @@ public class Institute_RootAdmin extends VelocitySecureAction
 					String i_name = ((InstituteAdminRegistration)(getinstitutedetail.get(0))).getInstituteName();
 					String i_address = ((InstituteAdminRegistration)(getinstitutedetail.get(0))).getInstiuteAddress();
 					String i_city = ((InstituteAdminRegistration)(getinstitutedetail.get(0))).getCity();
-					int i_pincode = ((InstituteAdminRegistration)(getinstitutedetail.get(0))).getPincode();
+					String i_pincode = ((InstituteAdminRegistration)(getinstitutedetail.get(0))).getPincode();
 					String i_state = ((InstituteAdminRegistration)(getinstitutedetail.get(0))).getState();
-					int i_landline = ((InstituteAdminRegistration)(getinstitutedetail.get(0))).getLandlineNo();
+					String i_landline = ((InstituteAdminRegistration)(getinstitutedetail.get(0))).getLandlineNo();
 					String i_domain = ((InstituteAdminRegistration)(getinstitutedetail.get(0))).getInstituteDomain();
 					String i_type = ((InstituteAdminRegistration)(getinstitutedetail.get(0))).getTypeOfInstitution();
 					String i_affiliation = ((InstituteAdminRegistration)(getinstitutedetail.get(0))).getAffiliation();
