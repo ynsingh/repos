@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#) UserAction_Instructor.java	
  *
- *  Copyright (c) 2005-2006, 2008-2009 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006, 2008-2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -57,9 +57,6 @@ import org.iitk.brihaspati.modules.utils.RegisterMultiUser;
 import org.iitk.brihaspati.modules.utils.XmlWriter;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
-import org.iitk.brihaspati.modules.utils.MailNotification;
-import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
-import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.apache.turbine.services.security.torque.om.TurbineUser;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
 import org.apache.turbine.services.security.torque.om.TurbineUserGroupRole;
@@ -102,38 +99,21 @@ public class UserAction_Instructor extends SecureAction_Instructor
 
 			ParameterParser pp=data.getParameters();
 			String gName=data.getUser().getTemp("course_id").toString();
-			ErrorDumpUtil.ErrorLog("data username=="+user.getName()+"\ngname=="+gName);
-			String []starr=(user.getName()).split("@");
-                	String domainName=starr[1];
-			String uname=pp.getString("UNAME");
+			String email=pp.getString("EMAIL");
 			String passwd=pp.getString("PASSWD");
-			String unameWdomain="";
-			if(!uname.contains("@"))
-			unameWdomain=uname+"@"+domainName;
-			else	
-			unameWdomain=uname;
-			if(passwd.equals(""))
-				passwd=unameWdomain;
+			/**
+			* set the password,if password is null.
+			* the value of password is the value of 0th position of emailId.
+			* for creating user profile use UserManagement util.
+			* @see UserManagement util in utils 
+			*/
+			if(passwd.equals("")){
+			String []starr=email.split("@");
+                	passwd =starr[0];
+			}
 			String fname=pp.getString("FNAME");
 			String lname=pp.getString("LNAME");
-			String email=pp.getString("EMAIL");
-			///////////////////////////////////////////////////add by jaivir 7apr10
-			/*String userName=user.getName();
-                        int userId=UserUtil.getUID(userName);
-                        ErrorDumpUtil.ErrorLog("uid at line 67 in RegisterationManagement==="+userId);
-                        Criteria crt=new Criteria();
-                        crt.add(TurbineUserPeer.USER_ID,userId);
-                        //crt.addGroupByColumn(TurbineUserPeer.INSTITUE_ID);
-                        List lst=TurbineUserPeer.doSelect(crt);
-			int instituteId=0;
-			for(int i=0;i<lst.size();i++){
-				instituteId=(TurbineUser)lst.get(0).getInstitueId();
-			}
-			ErrorDumpUtil.ErrorLog();*/
-			//////////////////////////////////////////
-
-			//String msg=UserManagement.CreateUserProfile(uname,passwd,fname,lname,email,gName,"student",serverName,serverPort,LangFile);
-			String msg=UserManagement.CreateUserProfile(unameWdomain,passwd,fname,lname,email,gName,"student",serverName,serverPort,LangFile);
+			String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,email,gName,"student",serverName,serverPort,LangFile);
 			data.setMessage(msg);
 
 		}

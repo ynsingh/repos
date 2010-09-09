@@ -98,8 +98,9 @@ $!data.getMessage()
 	<tr bgcolor="$ui.menuColor"><td colspan=7><b>$brih_entUsrDetail</b></td></tr>
 	<tr>
         ###formCell ("$brih_usr $brih_name <font color=red>*</font>" "UNAME" "")
-	<td> $brih_usr #if($lang == "hindi") $brih_Of1 #end $brih_name <font color=red>*</font> </td>
-	<td> <input type="text" name="UNAME" value="" > </td> 
+	#*<td> $brih_usr #if($lang == "hindi") $brih_Of1 #end $brih_name <font color=red>*</font> </td>
+	<td> <input type="text" name="UNAME" value="" > </td> *#
+           #formCell("$brih_email $brih_ID<font color=red>*</font>" "EMAIL" "")
       </tr>
       <tr bgcolor="$ui.menuColor">
         #formPasswordCell ("$brih_pwd" "PASSWD" "")
@@ -110,10 +111,10 @@ $!data.getMessage()
           <tr bgcolor="$ui.menuColor">
            #formCell("$brih_last $brih_name" "LNAME" "")
           </tr>
-          <tr>
+          #*<tr>
            #formCell("$brih_email $brih_ID" "EMAIL" "")
-          </tr>
-          <tr bgcolor="$ui.menuColor"><td>
+          </tr>*#
+          <tr><td>
           $brih_sel_course <font color=RED>*</font>
           </td>
      	<td>
@@ -128,7 +129,7 @@ $!data.getMessage()
           </select>
          </td>
          </tr>
- 	<tr>
+ 	<tr bgcolor="$ui.menuColor">
           <td>
           $brih_sel_Role <font color="Red">*</font>
           </td>
@@ -143,7 +144,7 @@ $!data.getMessage()
           </select>
         </td>
         </tr>
-        <tr bgcolor="$ui.menuColor">
+        <tr>
         <td colspan=2 align="left">
         <input type="hidden" name="actionName">
         <input type="hidden" name="group_author">
@@ -559,7 +560,7 @@ face="$ui.sansSerifFonts">$type</font>
         ##function checkField(frm,field,b)
         function checkField(frm,field)
         {
-                if((frm.UNAME.value!="") &&(frm.group.value!="") && (frm.role.value!=""))
+                if((frm.EMAIL.value!="") &&(frm.group.value!="") && (frm.role.value!=""))
                 {
                                 frm.actionName.value=field.name;
                                 frm.submit();

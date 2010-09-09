@@ -37,6 +37,8 @@ import org.apache.turbine.om.security.User;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+//import org.iitk.brihaspati.modules.actions.SecureAction_Institute_Admin;
 
 /**
  * This class is responsible for adding a new user in specified group and 
@@ -46,7 +48,7 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a> 
  */
 
-public class AddUser extends SecureAction_Admin
+public class AddUser extends SecureAction_Admin 
 {
 /**
  *
@@ -68,7 +70,7 @@ public class AddUser extends SecureAction_Admin
                 String serverPort=Integer.toString(srvrPort);
 
                 String roleName=pp.getString("role","");
-
+		ErrorDumpUtil.ErrorLog("Role 72==========>"+roleName);
 		/**
                  * Getting the value of file from temporary variable
                  * According to selection of Language.
@@ -84,33 +86,49 @@ public class AddUser extends SecureAction_Admin
 		String gname=new String();
 		//String roleName=new String();
 		gname=pp.getString("group","");
+		ErrorDumpUtil.ErrorLog("gname at line 89========"+gname);
+		/*String []starr=gname.split("@");
+		String gnamewdomain=starr[1];
+		String actgname[]=gnamewdomain.split("_");
+		String addUname=actgname[0];
                 //roleName=pp.getString("role","");
+		ErrorDumpUtil.ErrorLog("groupname 89===>"+gname+"[1]======"+gname+"starr=="+gnamewdomain+"new gname==="+gname);*/
 		if(gname.equals(""))
 		{
 			gname=new String();	
 			gname=pp.getString("group_author");
+			ErrorDumpUtil.ErrorLog("gname in loop Ist 94======>"+gname);
 		}
 		if(roleName.equals(""))
 		{
 			roleName=new String();	
 			roleName=pp.getString("role_author");
+			ErrorDumpUtil.ErrorLog("rolename in roleName======> 100"+roleName);
 		}
-		String uname=pp.getString("UNAME");
+		//String uname=pp.getString("UNAME");
                 String passwd=pp.getString("PASSWD");
-                if(passwd.equals(""))
-                        passwd=uname;
+                //if(passwd.equals(""))
+                //        passwd=uname;
                 String fname=pp.getString("FNAME");
                 String lname=pp.getString("LNAME");
                 String email=pp.getString("EMAIL");
 		email=UserManagement.ChkMailId(email);
+		/**
+		*Set the password as the value of 0th position of mailId
+		*/
+                if(passwd.equals("")){
+			String []starr=email.split("@");
+                	passwd =starr[0];
+			ErrorDumpUtil.ErrorLog("passwd at line 123========"+passwd);
+		}
 		/**
                  * Passing the value of file from temporary variable
                  * According to selection of Language.
 		 * Adds the new user in the database.
 		 * @see UserManagement in utils
 		 */
-		String msg=UserManagement.CreateUserProfile(uname,passwd,fname,lname,email,gname,roleName,serverName,serverPort,LangFile);
-
+		String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,email,gname,roleName,serverName,serverPort,LangFile);
+		ErrorDumpUtil.ErrorLog("msg at line 131====="+msg);
 		data.setMessage(msg);
 		}
 		catch(Exception ex){

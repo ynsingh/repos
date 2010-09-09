@@ -79,11 +79,11 @@ public class RegisterMultiUser
 			/**
 			* Get domain name from Group Name
 			*/
-			String []starr=Gname.split("@");
+			/*String []starr=Gname.split("@");
 	                String gnamewdomain=starr[1];
         	        String actgname[]=gnamewdomain.split("_");
                 	String addUname=actgname[0];
-
+			*/
 			/**
 		 	* Read the lines in the file one by one and extracts
 		 	* the user details with the
@@ -106,7 +106,7 @@ public class RegisterMultiUser
 				else 
 				{
 					username=st2.nextToken().trim();
-					username=username+"@"+addUname;
+					//username=username+"@"+addUname;
 					if(username.equals(";"))
 						{error=2;}
 			      		else 
@@ -144,7 +144,7 @@ public class RegisterMultiUser
 							}
 						}
 					if(error==0){
-							String str=UserManagement.CreateUserProfile(username,passwd,first_name,last_name,email,Gname,Role,serverName,serverPort,Langfile);
+							String str=UserManagement.CreateUserProfile(email,passwd,first_name,last_name,email,Gname,Role,serverName,serverPort,Langfile);
 								error=3;
 								errMsg=str;
 						}

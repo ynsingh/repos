@@ -15,7 +15,7 @@ $page.setBgColor($ui.bgcolor)
 <body>
 
 $!data.getMessage()
-
+#set($lang = $data.getUser().getTemp("lang" ).toString())
 <table  bgcolor="$ui.tableColor" width=100%>
 	<tr bgcolor="$ui.menuColor">
 		<td colspan=14> 
@@ -151,8 +151,10 @@ $!data.getMessage()
 	<td>$applist.getInstituteName()</td>
 	<td>$applist.getInstituteId()</td>
 
-	<td><a href=$link.setPage("call,Root_Admin,AddAdmin.vm").addPathInfo("Institute_Id",$applist.getInstituteId()).addPathInfo("Institute_Name",$applist.getInstituteName()).addPathInfo("mode","addadmin").addPathInfo("count","2") style=text-decoration:none>$brih_add $RemoteInstitute $brih_admin</a></td>
-	<td><a href=$link.setPage("call,Root_Admin,AddAdmin.vm").addPathInfo("Institute_Id",$applist.getInstituteId()).addPathInfo("Institute_Name",$applist.getInstituteName()).addPathInfo("mode","viewadmin").addPathInfo("count","2") style=text-decoration:none>$brih_view $RemoteInstitute $brih_admin</a></td>
+	<td><a href=$link.setPage("call,Root_Admin,AddAdmin.vm").addPathInfo("Institute_Id",$applist.getInstituteId()).addPathInfo("Institute_Name",$applist.getInstituteName()).addPathInfo("mode","addadmin").addPathInfo("count","2") style=text-decoration:none>
+	#if($lang=="hindi") $RemoteInstitute $brih_admin $brih_add #else $brih_add $RemoteInstitute $brih_admin #end</a></td>
+	<td><a href=$link.setPage("call,Root_Admin,AddAdmin.vm").addPathInfo("Institute_Id",$applist.getInstituteId()).addPathInfo("Institute_Name",$applist.getInstituteName()).addPathInfo("mode","viewadmin").addPathInfo("count","2") style=text-decoration:none>
+#if($lang=="hindi")$RemoteInstitute $brih_admin $brih_view #else $brih_view $RemoteInstitute $brih_admin #end</a></td>
 	</tr>		
 	#end
 	#end
