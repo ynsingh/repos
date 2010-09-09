@@ -23,27 +23,31 @@ $!data.getMessage()
 </td>
 </tr>
 
-<tr><td colspan=2><b> ## 5, 6
+<tr><td colspan=2> 
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
-<a href=$link.setPage("ForgotPassword.vm").addPathInfo("lang","english").addPathInfo("status","User")>Forgot Password</a>
-</b></td></tr> ## 6, 5
-<tr><td colspan=2><b> ## 5, 6
+<a href=$link.setPage("ForgotPassword.vm").addPathInfo("lang","english").addPathInfo("status","User") style=text-decoration:none>Forgot Password</a>
+</td></tr> 
+<tr><td colspan=2> 
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
-<a href=$link.setPage("ViewCourseList.vm").addPathInfo("lang","english")>Registered Course List</a>
-</b></td></tr> ## 6, 5
-<tr><td colspan=2><b> ## 5,6
+<a href=$link.setPage("ViewCourseList.vm").addPathInfo("lang","english") style=text-decoration:none>Registered Course List</a>
+</td></tr>
+<tr><td colspan=2>
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
-<a href=$link.setPage("OnlineRegistration.vm").addPathInfo("lang","english").addPathInfo("status","UserResitration").addPathInfo("count","1")> Online Registration </a>
-</b></td></tr> ## 6, 5
-<tr><td colspan=2><b>
+<a href=$link.setPage("OnlineRegistration.vm").addPathInfo("lang","english").addPathInfo("status","UserResitration").addPathInfo("count","1") style=text-decoration:none> Online Registration </a>
+</td></tr> 
+<tr><td colspan=2>
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
-<a href=$link.setAction("myLogin").addPathInfo("username","guest").addPathInfo("password","guest").addPathInfo("lang","english")> Open Access Courses</a>
-</b></td></tr>
-<tr><td colspan=2><b>
+<a href=$link.setAction("myLogin").addPathInfo("username","guest").addPathInfo("password","guest").addPathInfo("lang","english") style=text-decoration:none> Open Access Courses</a>
+</td></tr>
+<tr><td colspan=2>
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
-<a href=$link.setPage("InstituteAdminRegistration.vm").addPathInfo("lang","english")>Institute Admin Registration </a>
-</b></td></tr>
+<a href=$link.setPage("InstituteAdminRegistration.vm").addPathInfo("lang","english") style=text-decoration:none>Institute Admin Registration </a>
+</td></tr>
 
+<tr><td colspan=2>
+<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
+<a href=$link.setPage("ViewInstituteList.vm").addPathInfo("lang","english") style=text-decoration:none>Registered Institute List </a>
+</td></tr>
 
 </table>
 <br>

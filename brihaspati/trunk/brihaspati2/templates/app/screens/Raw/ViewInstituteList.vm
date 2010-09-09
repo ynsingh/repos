@@ -1,0 +1,53 @@
+#*
+ * @(#)ViewInstituteList.vm
+ *  Copyright (c) 2010 ETRG,IIT Kanpur.
+ *  All Rights Reserved.
+ *  Contributors: Members of ETRG, I.I.T. Kanpur
+ * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
+ *#
+
+$page.setTitle("Registered Institute List")
+$page.setBgColor($ui.bgcolor)
+$!data.getMessage()
+
+<table bgcolor="$ui.menuColor" width=100%>
+<tr><td>
+	<font face="$ui.sansSerifFonts" size=3>
+	<a href=$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang",$lang)>$brih_login $WikiPage</a> |
+	$brih_reg2 $RemoteInstitute
+	</font>
+	</td>
+</tr>
+</table>
+#set($headings = ["$RemoteInstitute $brih_name","$RemoteInstitute $RemoteAddress","$brih_ad $brih_name","$brih_ad $brih_email"] )
+<table align="left" bgcolor="$ui.menuColor" width=100%>
+<tr>
+	<td><b>$brih_reg2 $RemoteInstitute</b></font></td>
+</tr>
+</table>
+<table align="left" width=100% bgcolor="$ui.tableColor">
+	<tr width=100%>
+	#foreach ($heading in $headings)
+		<td><b>$heading</b></td>
+	#end
+	</tr>
+	#foreach($entry in $Inslist)
+		#foreach($entry1 in $Inslist1)
+			#if($entry.getInstituteId()==$entry1.getInstituteId())
+				#if($velocityCount%2==0)
+					<tr bgcolor="$ui.tableColor">
+				#else
+					<tr bgcolor="$ui.menuColor">
+				#end
+			<td>$entry.getInstituteName()</td>
+			<td>$entry.getInstiuteAddress()</td>
+			<td>$!entry1.getAdminFname() $!entry1.getAdminLname()</td>
+			<td><a href=mailto:$!entry1.getAdminEmail()>$!entry1.getAdminEmail()</a></td>
+			</tr>
+			#end
+		#end
+	#end
+	</td>
+	</tr>
+</table>
+</form>
