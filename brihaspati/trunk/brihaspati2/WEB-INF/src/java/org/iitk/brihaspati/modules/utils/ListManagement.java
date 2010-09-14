@@ -228,38 +228,53 @@ public class ListManagement
 	return(Details);
 	}
 	/*
-	*Add two parameters instituteId and
-	*adname for particular institute and
-	*for super admin
+	*This method for get course list institutewise.
+	*parameter instituteId
+	*@return List
 	*/
 	public static List getInstituteCourseList(String instituteId)
-	//public static List getCourseList()
 	{
 		List v=null;
 		List w=null;
+		Vector vct=new Vector();
 		try{
+		/**
+		*select all group name from TURBINE_GROUP table.
+		*/	
 		Criteria crit=new Criteria();
 		crit.addGroupByColumn(org.iitk.brihaspati.om.TurbineGroupPeer.GROUP_NAME);
 		v=org.iitk.brihaspati.om.TurbineGroupPeer.doSelect(crit);
+		/**
+		*get group name one by one.and store in a vector whose GName ends with InstituteId.
+		*if Group Name not endswith InstituteId,then store "author" in that vector.
+		*replace this vector in a List .
+		*return List .
+		*/
 		for(int j=0;j<v.size();j++){
                 	String GName=((org.iitk.brihaspati.om.TurbineGroup)v.get(j)).getGroupName();
-			if(GName.endsWith(instituteId)){
-			crit.add(org.iitk.brihaspati.om.TurbineGroupPeer.GROUP_NAME,GName);
-			w=org.iitk.brihaspati.om.TurbineGroupPeer.doSelect(crit);
-			}
+				if(GName.endsWith(instituteId)){
+					vct.add(GName);
+				}
 		}
+		vct.add("author");
+		w=vct;
 		}
 		catch(Exception e)
-		{
-		}
-		//return v;
+		{}
 		return w;
-		
 	}
+	/**
+	*Method for get all course list.
+	*@return List.
+	*/
 	public static List getCourseList()
         {
                 List v=null;
                 try{
+		/**
+		*select all group name from TURBINE_GROUP table.
+		*@return List v.
+		*/
                 Criteria crit=new Criteria();
                 //crit.addAscendingOrderByColumn(TurbineGroupPeer.GROUP_NAME);
                 crit.addGroupByColumn(TurbineGroupPeer.GROUP_NAME);

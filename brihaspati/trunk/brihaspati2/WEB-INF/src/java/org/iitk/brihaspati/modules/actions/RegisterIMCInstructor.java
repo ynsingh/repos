@@ -73,36 +73,31 @@ public class RegisterIMCInstructor extends SecureAction_Institute_Admin
  	  */
 	public void doRegister(RunData data, Context context)
 	{
-	 /**
-          * Getting file value from temporary variable according to selection
-          * Replacing the value from Property file
-         **/
-
+	 	/**
+          	* Getting file value from temporary variable according to selection
+          	* Replacing the value from Property file
+         	*/
 		CourseUserDetail MsgDetails=new CourseUserDetail();
 		LangFile=(String)data.getUser().getTemp("LangFile");
 	        try
-		 {//try
+		{
 			String instituteId=(data.getUser().getTemp("Institute_id").toString());
 			ErrorDumpUtil.ErrorLog("iid in action at line 86==="+instituteId);
 			int InstituteId=Integer.parseInt(instituteId);	
 		 	ParameterParser pp=data.getParameters();
                         FileItem file = pp.getFileItem("file");
                         String fileName=file.getName();
-			ErrorDumpUtil.ErrorLog("fname in action registermulticrsinstructor======"+fileName);
 			String domainname=(data.getUser().getTemp("DomainName")).toString();
-			ErrorDumpUtil.ErrorLog("domainname in RegisterMultiCourseInstructor=========="+domainname);
-//                        if((!fileName.endsWith(".txt"))||(!fileName.endsWith(".TXT")))
                         if((!(fileName.toLowerCase()).endsWith(".txt"))||(file.getSize()<=0))
-                        {//if#1
-                                 /**
+                        {
+                        	/**
                                  * Getting file value from temporary variable according to selection of Language
                                  * Replacing the static value from Property file
-                                 **/
-
+                                 */
                                 String upload_msg1=MultilingualUtil.ConvertedString("upload_msg2",LangFile);
                                 data.setMessage(upload_msg1+fileName);
-                        }//end if#1
-                        else{//else#1
+                        }
+                        else{
 				Date date=new Date();
                                 File f=new File(TurbineServlet.getRealPath("/tmp")+"/"+date.toString()+".txt");
                                 file.write(f);
@@ -111,103 +106,83 @@ public class RegisterIMCInstructor extends SecureAction_Institute_Admin
 				FileReader fr=new FileReader(f);
                 	        BufferedReader br=new BufferedReader(fr);
                         	String line;
-                        /**
-                        * Read the lines in the file one by one and extracts
-                        * the user details with the
-                        * help of StringTokenizer
-                        */
-                        	while((line=br.readLine())!=null)
-                        	{//while#1
-
-                                	StringTokenizer st1=new StringTokenizer(line,";",true);
-	                                entryNumber++;
-        	                        String first_name="",email="", courseid="", courseName="";
-					ErrorDumpUtil.ErrorLog("tokencounts in rgstrmltycrsinstrctr=="+st1.countTokens());
-                	                int error=0;
-                        	        String mail_msg="";
-                                	String errMsg="";
-		                               if(st1.countTokens()<7 ||st1.countTokens()>7)//if#2
-                                		        {error=1;}
-							//insufficient argument
-						else
-                                		{//else#2
-		                                        first_name=st1.nextToken().trim();
-                		                        if(first_name.equals(";"))//if#3
-                                	                	{error=2;}
-                                        		else//else#3
-                                        		{
-		                                                st1.nextToken();
-                		                                email=st1.nextToken().trim();
-								ErrorDumpUtil.ErrorLog("email at line 141==="+email);
-                                		                if(email.equals(";"))
-                                                		        {error=2;}
-		                                                else{//else#4
-                			                                st1.nextToken();
-                                        			        courseid=st1.nextToken().trim();
-		                                           	        if(courseid.equals(";"))
-                                        	        			{error=2;}
-									else{//else#5
-								ErrorDumpUtil.ErrorLog("error at line 149==="+error);
-                			                                	st1.nextToken();
-                                        			        	courseName=st1.nextToken().trim();
-                                                				if(courseName.equals(";"))
-											{error=2;}
-                        		                       			else{//else#6
-											int i=email.indexOf("@");
-											String uname=email.substring(0,i);
-											//uname=uname+"@"+domainname+"_"+instituteId;
-											/*
-											* add domain name and 
-											* InstituteId acoording
-											* to Courses Table
-											*/
-											uname=uname+"@"+domainname;
-											String check=courseid.concat(uname);
-											ErrorDumpUtil.ErrorLog("uname at line 141==="+uname+"\ncheck==="+check);
-								/** Getting the group name from the database
-								 *  and compare this group name with current group name
-								 */
-											Criteria crit = new Criteria();
-											crit.add(CoursesPeer.GROUP_NAME,check);
-		                							List v=CoursesPeer.doSelect(crit);
-											ErrorDumpUtil.ErrorLog("v=at line 174==="+v);
-									                String gName="";
-									                if(v.size() > 0 )
-									                        gName=((Courses)(v.get(0))).getGroupName();
-												ErrorDumpUtil.ErrorLog("at line 167=="+gName+"\n error at line 167==="+error);
-												//if(gName.endsWith(instituteId))
-												//{	
-												if(check.equalsIgnoreCase(gName)){
-												error=4;
-												}
-												else{//else#7
-													ErrorDumpUtil.ErrorLog("hfkjhfkhfkshfkhkfhjkh");
-													
-													 String passwd=uname;
-													ErrorDumpUtil.ErrorLog("passwdhfkjhfkh===="+passwd);
-													 String serverName=data.getServerName();
-											                 int srvrPort=data.getServerPort();
-											                 String serverPort=Integer.toString(srvrPort);
-													ErrorDumpUtil.ErrorLog("serverportpasswdhfkjhfkh===="+serverPort);
-													 String dept="", description="", lname="";
-											 /**
-											  * Register a new course with instructor
-											  * @see CourseManagement Utils
-											  */ 
-					 								//String msg=CourseManagement.CreateCourse(courseid,courseName,dept,description,uname,passwd,first_name,lname,email,serverName,serverPort,LangFile,0);
-								String msg=CourseManagement.CreateCourse(courseid,courseName,dept,description,uname,passwd,first_name,lname,email,serverName,serverPort,LangFile,InstituteId);
-													error=3;
-								ErrorDumpUtil.ErrorLog("msg at line 189=="+msg+"\nerror=="+error);
-		                                			                                errMsg=msg;
-												}//end Else#7
-											//}//end if add by Jaivir
-
-                                                        				}//endelse#6
-                                                				}//endelse#5
-									}//endelse#4
-								}//endelse#3
-							}//endelse#2
-				
+                        	/**
+                        	* Read the lines in the file one by one and extracts
+                        	* the user details with the
+                        	* help of StringTokenizer
+                        	*/
+                        	while((line=br.readLine())!=null){
+                                StringTokenizer st1=new StringTokenizer(line,";",true);
+	                        entryNumber++;
+        	                String first_name="",email="";
+				String  courseid="", courseName="",uname="";
+                	        int error=0;
+                        	String mail_msg="";
+                                String errMsg="";
+		                if(st1.countTokens()<7 ||st1.countTokens()>7)
+                                {error=1;}
+				//insufficient argument
+				else
+                                {
+		                	first_name=st1.nextToken().trim();
+                			if(first_name.equals(";"))
+                                     	{error=2;}
+                                        else{
+		                        st1.nextToken();
+                		        email=st1.nextToken().trim();
+                                        if(email.equals(";"))
+                                        {error=2;}
+		                        else{
+                			st1.nextToken();
+                                        courseid=st1.nextToken().trim();
+		                        if(courseid.equals(";"))
+                                        {error=2;}
+					else{
+                			st1.nextToken();
+                                        courseName=st1.nextToken().trim();
+                                        if(courseName.equals(";"))
+					{error=2;}
+                        		else{//else#6
+					int i=email.indexOf("@");
+					String pass=email.substring(0,i);
+					ErrorDumpUtil.ErrorLog("emailat153="+email+"\npass=="+pass);
+					uname=email;
+					String check=courseid.concat(uname);
+					ErrorDumpUtil.ErrorLog("unameatline 156="+uname);
+					/** Getting the group name from the database
+					* and compare this group name with current group name
+					*/
+					Criteria crit = new Criteria();
+					crit.add(CoursesPeer.GROUP_NAME,check);
+		                	List v=CoursesPeer.doSelect(crit);
+					String gName="";
+				        if(v.size() > 0 )
+					gName=((Courses)(v.get(0))).getGroupName();
+					if(check.equalsIgnoreCase(gName)){
+					error=4;
+					}
+					else{//else#7
+					String passwd=pass;
+					ErrorDumpUtil.ErrorLog("pass==="+passwd);
+					String serverName=data.getServerName();
+					int srvrPort=data.getServerPort();
+					String serverPort=Integer.toString(srvrPort);
+					String dept="", description="", lname="";
+					/**
+					* Register a new course with instructor
+					* @see CourseManagement Utils
+					*/ 
+					//String msg=CourseManagement.CreateCourse(courseid,courseName,dept,description,uname,passwd,first_name,lname,email,serverName,serverPort,LangFile,0);
+					String msg=CourseManagement.CreateCourse(courseid,courseName,dept,description,uname,passwd,first_name,lname,email,serverName,serverPort,LangFile,InstituteId);
+					error=3;
+		                        errMsg=msg;
+					}//end Else#7
+					//}//end if add by Jaivir
+					}//endelse#6
+                                        }//endelse#5
+					}//endelse#4
+					}//endelse#3
+					}//endelse#2
 			/**
                          * Adds the error message to a vector if all the required fields
                          * are not entered in the file. The entry number is also added.
