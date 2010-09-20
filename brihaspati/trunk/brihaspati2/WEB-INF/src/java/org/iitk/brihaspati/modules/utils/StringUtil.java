@@ -33,6 +33,8 @@ package org.iitk.brihaspati.modules.utils;
   * This class handle the illegal and xml character
   * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
   * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
+  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+  * @modified date 15-09-2010
   */
 
 
@@ -216,5 +218,122 @@ public class StringUtil
 	                return(numLines);
         }
 
+	 /**
+          * This method insert the specified charaters between the tokens if the tokens are empty
+          * @param sourceFile String contains the path of the file which is to be read 
+          * @param destinationFile String contains the path where the file having marks stored after change 
+          * @param destinationtmpFile String contains the path where the file having formula if exist
+	  *                            in any cell
+          * @param delimiter char contains the character which is the delimiter in the file
+          */
 
+	
+	public static void insertCharSpreadsheet(String sourceFile, String destinationFile,String destinationtmpFile,char delimiter, char insertCharacter)
+        {
+                try{
+			/**
+			 *@param fr FileReader that read marks file  
+			 */
+			
+                        FileReader fr=new FileReader(sourceFile);
+                        BufferedReader br=new BufferedReader(fr);
+
+                        String line ;
+                        FileOutputStream fout=new FileOutputStream(destinationFile);
+                        FileOutputStream fout1=new FileOutputStream(destinationtmpFile);
+                        while( (line=br.readLine())!=null ){//first while
+                                StringBuffer sb=new StringBuffer(line);
+				/**
+				 *@param startIndex Integer contains index of delimiter 
+				 *@param endIndex Integer contains length of line
+				 */
+                                int startIndex=line.indexOf(delimiter);
+                                int endIndex=line.length()-1;
+
+                                while( (startIndex <= endIndex) && (startIndex > 0) )
+                                {//2 while
+					/**
+					 *@param nextIndex Integer gives next index from start index
+					 */
+                                        int nextIndex=startIndex+1;
+                                        try{
+						/**
+						 *At next index of line, if there is a delimiter it shows 
+						 *blank space then insert '-' at that place 
+						 */
+                                                if(line.charAt(nextIndex)==delimiter)
+                                                {
+                                                        sb.insert(nextIndex,insertCharacter);
+                                                }
+                                        }catch(Exception e){
+                                                sb.insert(nextIndex,insertCharacter);
+                                        }
+					/**
+					 *after inserting '-', it gives new string
+					 *then again check index of delimiter it gives start index
+					 *now find end index 
+					 */
+                                        line=new String(sb);
+                                        startIndex=line.indexOf(delimiter,nextIndex+1);
+                                        endIndex=line.length()-1;
+				}//end of 2 while	
+				/**
+				 *@param Tok String tokenizer, tokenize string with "," 
+				 */
+				StringTokenizer Tok = new StringTokenizer(line,",");
+				while (Tok.hasMoreTokens())
+                                {//3 while
+	                                /**
+	                                 *@param c Getting next token in the String
+	                                 */
+                                	String c = Tok.nextToken();
+					/**
+					 *@param pos Integer that contain index of '#'in each token
+					 */
+					int pos = c.indexOf("#");
+					/**
+					 * if value of pos is positive it shows token having '#'
+					 * that gives cell having formula
+					 */
+					if(pos > 0)
+					{
+						StringTokenizer Tok2 = new StringTokenizer(c,"#");
+	                                        while(Tok2.hasMoreTokens())
+	                                                {// 4 while
+	                                                        /**
+	                                                         * @param resValue save result of formula in string
+	                                                         */
+	                                                        String resValue = Tok2.nextToken();  
+	                                                        /**
+	                                                         * @param frmValue save formula in another string
+	                                                         */
+	                                                        String frmValue = Tok2.nextToken();  
+								/**
+				                                 * write result in MARK.txt file
+				                                 */
+				                                fout.write((resValue).getBytes());
+				                                /**
+				                                 * write formula in TMPMARK.txt file
+			        	                         */
+				                                fout1.write((frmValue).getBytes());
+				                                fout1.write(("\n").getBytes());
+	                                    		}//end of 4 while
+	                         	}// end of if
+	                                /**
+        	                         * else cell not having formula then write in MARK.txt file
+                	                 */
+                        	        else
+                                	fout.write(c.getBytes());
+	                                fout.write((",").getBytes());
+				}//end of 3 while
+                                fout.write(("\n").getBytes());
+			}//end of 1 while
+                                fout.close();//close 1 file 
+                                fout1.close();//close 2 file
+	
+		}// end of try
+                catch(Exception e){
+                }
+        }// end of method
+				
 }

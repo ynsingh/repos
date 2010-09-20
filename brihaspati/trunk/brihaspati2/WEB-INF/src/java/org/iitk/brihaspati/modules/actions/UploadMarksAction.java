@@ -35,6 +35,8 @@ package org.iitk.brihaspati.modules.actions;
  */
 
 import java.io.File;
+import java.io.*;
+import java.util.*;
 import java.util.List;
 import java.util.Properties;
 import java.util.Vector;
@@ -66,8 +68,10 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar Pal</a>
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @modified date 29-12-2009
  * @modified date: 08-07-2010
+ * @modified date 15-09-2010
  */
 
 public class UploadMarksAction extends SecureAction_Instructor
@@ -81,20 +85,20 @@ public class UploadMarksAction extends SecureAction_Instructor
                 String serverName= TurbineServlet.getServerName();
                 String serverPort= TurbineServlet.getServerPort();
 		/**
-	 	* Get the course id from user's temporary variable
-	 	*/
+	 	 * Get the course id from user's temporary variable
+	 	 */
 
 		String courseHome=(String)user.getTemp("course_id","");
 		/**
-	 	* Get the file for uploading and check if the file is "null"
-	 	*/
+	 	 * Get the file for uploading and check if the file is "null"
+	 	 */
 		FileItem fileItem=pp.getFileItem("file");
 		if((fileItem!=null) && (fileItem.getSize()!=0))
 		{
 			/**
-	 		* Get the name of the file for uploading and check if the
-	 		* extension is ".txt"
-	 		*/
+	 		 * Get the name of the file for uploading and check if the
+	 		 * extension is ".txt"
+	 		 */
 			String fileName=fileItem.getName();
 			String mailMsg ="";
 			if(!(fileName.toLowerCase()).endsWith(".txt") && !(fileName.toLowerCase()).endsWith(".csv"))
@@ -104,8 +108,8 @@ public class UploadMarksAction extends SecureAction_Instructor
 			else
 			{
 				/**
-		 		* Get the real path of the marks directory
-		 		*/
+		 		 * Get the real path of the marks directory
+		 		 */
 
 				String coursesRealPath=TurbineServlet.getRealPath("/Courses");
 				String destDir=coursesRealPath+"/"+courseHome+"/Marks/";
@@ -115,8 +119,8 @@ public class UploadMarksAction extends SecureAction_Instructor
 				boolean marksExist=false;
 
 				/**
-		 		* Check if the marks file exists
-		 		*/
+		 		 * Check if the marks file exists
+		 		 */
 
 				if(marksFile.exists())
 				{
@@ -128,62 +132,7 @@ public class UploadMarksAction extends SecureAction_Instructor
 				fileItem.write(tempFile);
 				StringUtil.insertCharacter(tempFile.getAbsolutePath(),marksFile.getAbsolutePath(),',','-');
 				tempFile.delete();
-				String mailId="";
-				//String marksUploadStr="Marks are uploaded in"+courseHome;
-//////////////////////////////////////////////////////////////////////////
-				String info_new ="";
-
-				if(serverPort == "8080")
-					info_new = "marksUpload";
-				else
-					info_new = "marksUpload_https";
-				Properties pr =MailNotification.uploadingPropertiesFile(TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties"));
-                                String subject = MailNotification.subjectFormate(info_new, "", pr );
-                                String message = MailNotification.getMessage(info_new, courseHome, "", "", "", serverName, serverPort,pr);
-                                //ErrorDumpUtil.ErrorLog("\n\n\n\n Upload marks.java message="+message+"      subject="+subject);
-//////////////////////////////////////////////////////////////////////////
-				Criteria crit=new Criteria();
-		                crit.add(TurbineUserPeer.LOGIN_NAME,userName);
-				//mail for Instructor
-                		try
-                		{
-		                        List v=TurbineUserPeer.doSelect(crit);
-                		        TurbineUser element=(TurbineUser)v.get(0);
-		                        mailId=element.getEmail();
-					if(mailId != null && mailId != "")
-						//mailMsg=MailNotification.sendMail(marksUploadStr, mailId, "", "Updation Mail", "", "", "", serverName, serverPort, (String)user.getTemp("LangFile"));
-						mailMsg=MailNotification.sendMail(message, mailId, subject, "", (String)user.getTemp("LangFile"));
-                		}
-		                catch(Exception e)
-                			{data.setMessage("The error in sending mail to instructor for update/Upload marks !!"+e);}
-
-				//mail for student
-                                try{
-                                        int grid=GroupUtil.getGID(courseHome);
-                                        Vector usDetail=UserGroupRoleUtil.getUDetail(grid, 3);
-                                        for(int i=0; i<usDetail.size(); i++){
-                                                mailId=((CourseUserDetail) usDetail.elementAt(i)).getEmail().trim();
-                                                if(mailId != null && mailId != ""){
-                                                //mailMsg=MailNotification.sendMail(marksUploadStr, mailId, "", "Updation Mail", "", "", "", serverName, serverPort, (String)user.getTemp("LangFile"));
-						mailMsg=MailNotification.sendMail(message, mailId, subject, "", (String)user.getTemp("LangFile"));
-                                                }
-                                                usDetail=null;
-                                        }
-                                }
-                                catch(Exception ex)
-                                        { data.setMessage("The error in sending mail to student for update/Upload marks" + ex); }
-
-
-				String onUploadMessage=MultilingualUtil.ConvertedString("Marks_msg2",LangFile);
-				if(marksExist)
-				{
-					onUploadMessage=MultilingualUtil.ConvertedString("Marks_msg3",LangFile);
-				}
-				data.setMessage(onUploadMessage);
-				if(mailId != null && mailId != "")
-					data.addMessage(mailMsg);
-				else
-					data.addMessage( MultilingualUtil.ConvertedString("mailNotification_msg2",(String)user.getTemp("LangFile")));
+				SendMail(data,user,courseHome,userName,marksExist);
 			}
 		}
 		else
@@ -198,6 +147,225 @@ public class UploadMarksAction extends SecureAction_Instructor
 	}
     }
 
+	/**
+	 *Below method for saving marks 
+	 */
+	 public void doSave(RunData data, Context context)
+		{// function start
+        		try{// 1 try
+				String LangFile=data.getUser().getTemp("LangFile").toString();
+				/**
+	                         * @param user Getting User object
+        	                 */
+				User user=data.getUser();
+
+				/**
+				 *set status null that shows status is not edit
+				 */
+				context.put("status","null");
+				ParameterParser pp=data.getParameters();
+			
+				/**
+		                 * @param cName getting course name which is set by setTemp() method
+                		 */
+				String cName=(String)user.getTemp("course_id");
+			
+				/**
+				 * getting actual path where marks have to be saved
+				 */
+				String coursesRealPath=TurbineServlet.getRealPath("/Courses");
+                                String destDir=coursesRealPath+"/"+cName+"/Marks/";
+				
+				File marksDir=new File(destDir);
+                                File marksFile=new File(marksDir,"MARK.txt");
+                                File tmpFile=new File(marksDir,"TMPMARK.txt");
+                                boolean marksExist=false;
+
+                                /**
+                                 * Check if the marks file exists
+                                 */
+                                if(marksFile.exists())
+                                {// 1 if
+                                        marksExist=true;
+                                }// end of 1 if
+                                marksDir.mkdirs();
+ 
+				/**
+				 *@param userName Getting username 
+				 */		
+				String userName=user.getName();
+			
+				/**
+				 *@param items String having values of spreadsheet
+				 */
+				String items = pp.getString("fieldValue");
+			
+				/**
+				 *@param tempFile Create file inside brihaspati's tmp folder having name as username.txt
+				 */
+			        File tempFile=new File(TurbineServlet.getRealPath("/tmp")+"/"+userName+".txt");
+			
+				/**
+				 * Write items of spreadsheet in tempFile
+				 */
+				try
+				{// 2 try
+					Writer output = null;
+					output = new BufferedWriter(new FileWriter(tempFile));
+					output.write(items);
+					output.close();
+				}// end of 2 try
+				catch(Exception e)
+				{//2 catch
+					ErrorDumpUtil.ErrorLog("Exception in writing temp marks file"+e);
+				}// end of 2 catch	
+				/**
+				 * Check length of temp file
+				 * if {length is 100, it gives file is empty
+				 */
+                       		long len = tempFile.length();
+				//ErrorDumpUtil.ErrorLog("length of temp file is"+len); 
+				if(len == 160)
+				{// 2 if
+					String UploadFile = MultilingualUtil.ConvertedString("brih_file",LangFile);
+					String  empty = MultilingualUtil.ConvertedString("brih_empty",LangFile);
+					data.setMessage(UploadFile+" "+empty);
+					tempFile.delete();
+					
+				}// end of 2 if
+				else
+				{// 2 else
+				/**
+				 * else Call StringUtil for writing values in MARK.txt and TMPMARK.txt
+				 */
+			        	StringUtil.insertCharSpreadsheet(tempFile.getAbsolutePath(),marksFile.getAbsolutePath(),tmpFile.getAbsolutePath(),',','-');
+					tempFile.delete();
+					SendMail(data,user,cName,userName,marksExist);
+					
+				}// end of 2 else
+			}// end of 1 try
+			catch(Exception ex)
+			{// 1 catch
+				data.setMessage("The error in Saving Marks !!"+ex);
+        		}// end of 1 catch
+		}// end of function
+	
+	/**
+	 *method for deleting already exist file
+	 */
+		public void doDelete(RunData data, Context context)
+		{// function start
+			try{// 1 try
+				/**
+                                 * @param user Getting User object
+                                 */
+				User user=data.getUser();
+				/**
+				 * @param pp instance of ParameterParser
+				 */
+                                ParameterParser pp=data.getParameters();
+				/**
+                                 * @param cName getting course id which is set by setTemp() method
+                                 */
+                                String cName=(String)user.getTemp("course_id");
+				/**
+                                 * getting actual path where marks saved
+                                 * @RETURN String
+                                 */
+                                String coursesRealPath=TurbineServlet.getRealPath("/Courses");
+                                String destDir=coursesRealPath+"/"+cName+"/Marks/MARK.txt";
+                                String tmpdestDir=coursesRealPath+"/"+cName+"/Marks/TMPMARK.txt";
+                                File marksDir=new File(destDir);
+                                File tmpmarksDir=new File(tmpdestDir);
+				/**	
+				 * Deleting MARK.txt & TMPMARK.txt if exist
+				 */
+				marksDir.delete();
+				tmpmarksDir.delete();
+				/**
+				 * set template UploadMarks after deleting txt file
+				 */
+				setTemplate(data,"call,UserMgmt_User,UploadMarks.vm");
+			}// end of 1 try
+			catch(Exception e)
+			{// 1 catch
+				data.setMessage("The error in delete Marks file!!"+e);
+			}// end of 1 catch
+
+		}// end of function
+	/**
+	 * below method for sending mail to instructor and students 
+	 */
+
+	public void SendMail(RunData data,User user, String courseHome,String userName, boolean marksExist)
+		{
+			try
+				{
+					String LangFile=data.getUser().getTemp("LangFile").toString();
+					String serverName= TurbineServlet.getServerName();
+                                	String serverPort= TurbineServlet.getServerPort();
+	                                String mailMsg = "";
+				 	String mailId="";
+	                                //String marksUploadStr="Marks are uploaded in"+courseHome;
+	                                String info_new ="";
+
+	                                if(serverPort == "8080")
+        	                                info_new = "marksUpload";
+	                                else
+        	                                info_new = "marksUpload_https";
+	                                Properties pr =MailNotification.uploadingPropertiesFile(TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties"));
+	                                String subject = MailNotification.subjectFormate(info_new, "", pr );
+	                                String message = MailNotification.getMessage(info_new, courseHome, "", "", "", serverName, serverPort,pr);
+	                                //ErrorDumpUtil.ErrorLog("\n\n\n\n Upload marks.java message="+message+"      subject="+subject);
+					Criteria crit=new Criteria();
+					crit.add(TurbineUserPeer.LOGIN_NAME,userName);
+                                	//mail for Instructor
+	                                try
+	                                {
+	                                        List v=TurbineUserPeer.doSelect(crit);
+	                                        TurbineUser element=(TurbineUser)v.get(0);
+	                                        mailId=element.getEmail();
+	                                        if(mailId != null && mailId != "")
+	                                                //mailMsg=MailNotification.sendMail(marksUploadStr, mailId, "", "Updation Mail", "", "", "", serverName, serverPort, (String)user.getTemp("LangFile"));
+	                                                mailMsg=MailNotification.sendMail(message, mailId, subject, "", (String)user.getTemp("LangFile"));
+	                                }
+	
+			
+			catch(Exception e)
+	                                        {data.setMessage("The error in sending mail to instructor for update/Upload marks !!"+e);}
+	
+	                                //mail for student
+	                                try{
+	                                        int grid=GroupUtil.getGID(courseHome);
+	                                        Vector usDetail=UserGroupRoleUtil.getUDetail(grid, 3);
+		                                        for(int i=0; i<usDetail.size(); i++){
+		                                                mailId=((CourseUserDetail) usDetail.elementAt(i)).getEmail().trim();
+	                                                if(mailId != null && mailId != ""){
+	                                                //mailMsg=MailNotification.sendMail(marksUploadStr, mailId, "", "Updation Mail", "", "", "", serverName, serverPort, (String)user.getTemp("LangFile"));
+	                                                mailMsg=MailNotification.sendMail(message, mailId, subject, "", (String)user.getTemp("LangFile"));
+	                                                }
+	 	                                       }
+	                                               usDetail=null;
+                	                }
+                        	        catch(Exception ex)
+                                	        { data.setMessage("The error in sending mail to student for update/Upload marks" + ex); }
+	
+
+        	                        String onUploadMessage=MultilingualUtil.ConvertedString("Marks_msg2",LangFile);
+                	                if(marksExist)
+                        	        {
+                                	        onUploadMessage=MultilingualUtil.ConvertedString("Marks_msg3",LangFile);
+                                	}
+                                	data.setMessage(onUploadMessage);
+                                	if(mailId != null && mailId != "")
+                                        	data.addMessage(mailMsg);
+                                	else
+                                        	data.addMessage( MultilingualUtil.ConvertedString("mailNotification_msg2",(String)user.getTemp("LangFile")));
+
+			}
+			catch(Exception ex)
+				{data.setMessage("The error in sending mail method");}
+  		}
     /**
      * Default action to perform if the specified action
      * cannot be executed.
@@ -208,6 +376,10 @@ public class UploadMarksAction extends SecureAction_Instructor
 	String action=data.getParameters().getString("actionName","");
 	if(action.equals("eventSubmit_doUpload"))
 		doUpload(data,context);
+	else if(action.equals("eventSubmit_doSave"))
+                doSave(data,context);
+	else if(action.equals("eventSubmit_doDelete"))
+		doDelete(data,context);
 	else
         	data.setMessage("Can't find the requested action! ");
     }
