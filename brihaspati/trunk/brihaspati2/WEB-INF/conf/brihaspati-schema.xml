@@ -134,9 +134,9 @@
 	<column name="END_DATE" required="true" type="DATE"/>
 	<column name="EXPIRY" required="true" type="INTEGER"/>
 	<column name="EXPIRY_DATE" required="true" type="DATE"/>
-	<column name="DUE_DAYS" required="true" type="INTEGER"/>
+	<column name="DUE_DAYS" required="true" type="INTEGER" default="1"/>
         <column name="DUE_DATE" required="true" type="DATE"/>
-
+	<column name="SEQ_NO" required="true" type="INTEGER"/>
 </table>
 <table name="USAGE_DETAILS" idMethod="idbroker">
 	<column name="ENTRY_ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>

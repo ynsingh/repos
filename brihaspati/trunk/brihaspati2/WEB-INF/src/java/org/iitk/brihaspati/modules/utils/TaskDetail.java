@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.utils;
 /*
  * @(#) TaskDetail.java
  *
- *  Copyright (c) 2005 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -38,6 +38,7 @@ package org.iitk.brihaspati.modules.utils;
 /**
  * In this class,set or get details of news 
  *  @author <a href="nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
+ *  @author <a href="kalpanagtm@gmail.com">Kalpana Gautam</a>
  */
 
 public class TaskDetail 
@@ -48,6 +49,7 @@ public class TaskDetail
 	private int StartDate;
 	private int EndDate;
 	private int Status;
+	private int seqno;
 	
 	public void setUser_Id(int uid)
 	{
@@ -97,4 +99,14 @@ public class TaskDetail
 	{
 		return Task_Id;
 	}
+	
+	public void setSeqNumber(int seqno)
+        {
+                this.seqno=seqno;
+        }
+        public int getSeqNumber()
+        {
+                return seqno;
+        }
+
 }

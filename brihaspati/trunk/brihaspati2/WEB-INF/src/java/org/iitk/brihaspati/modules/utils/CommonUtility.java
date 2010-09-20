@@ -57,7 +57,6 @@ import org.apache.turbine.services.servlet.TurbineServlet;
 
 //brihaspati
 import org.iitk.brihaspati.om.AssignmentPeer;
-import org.iitk.brihaspati.om.Assignment;
 import org.iitk.brihaspati.om.AttendenceSeetPeer;
 import org.iitk.brihaspati.om.AttendenceSeet;
 import org.iitk.brihaspati.om.CalInformationPeer;
@@ -65,20 +64,15 @@ import org.iitk.brihaspati.om.CoursesPeer;
 import org.iitk.brihaspati.om.Courses;
 import org.iitk.brihaspati.om.DbReceivePeer;
 import org.iitk.brihaspati.om.DbSendPeer;
-import org.iitk.brihaspati.om.DbSend;
 import org.iitk.brihaspati.om.GlossaryAliasPeer;
 import org.iitk.brihaspati.om.GlossaryPeer;
 import org.iitk.brihaspati.om.HintQuestionPeer;
 import org.iitk.brihaspati.om.LecturePeer;
-import org.iitk.brihaspati.om.Lecture;
 import org.iitk.brihaspati.om.MailReceivePeer;
 import org.iitk.brihaspati.om.MailSendPeer;
 import org.iitk.brihaspati.om.NewsPeer;
-import org.iitk.brihaspati.om.News;
 import org.iitk.brihaspati.om.NoticeReceivePeer;
-import org.iitk.brihaspati.om.NoticeReceive;
 import org.iitk.brihaspati.om.NoticeSendPeer;
-import org.iitk.brihaspati.om.NoticeSend;
 import org.iitk.brihaspati.om.ProxyUserPeer;
 import org.iitk.brihaspati.om.QuizPeer;
 import org.iitk.brihaspati.om.RemoteCoursesPeer;
@@ -101,7 +95,6 @@ import org.iitk.brihaspati.om.TurbineUserPeer;
 import org.iitk.brihaspati.om.UsageDetailsPeer;
 import org.iitk.brihaspati.om.UserConfigurationPeer;
 
-import org.apache.turbine.services.security.torque.om.TurbineUserGroupRole;
 import org.iitk.brihaspati.modules.actions.UploadAction;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.iitk.brihaspati.modules.actions.Groupmanagement;
@@ -112,6 +105,7 @@ import org.iitk.brihaspati.modules.actions.Groupmanagement;
  * 
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:kalpanagtm@gmail.com">Kalpana Gautam</a>
  * @version 1.0
  * @since 1.0
  * @see ExpiryUtil
@@ -241,7 +235,7 @@ public class CommonUtility{
                                         int cdt=Integer.parseInt(curdate);
                                         int diffday=cdt - fdt;
                                 //      compare it
-                                //      if grether than 4
+                                //      if greater than 4
                                         if(diffday>4){
                                                 File fle=list[i].getAbsoluteFile();
                                                 ErrorDumpUtil.ErrorLog("delete file path in util is :"+fle.toString());
@@ -277,9 +271,11 @@ public class CommonUtility{
                 {
                 	String Title=((Task)v.get(i)).getTitle();
                         int tid=((Task)v.get(i)).getTaskId();
+			int seqno=((Task)v.get(i)).getSeqNo();
                         TaskDetail tDetail=new TaskDetail();
                         tDetail.setTask_Id(tid);
                         tDetail.setTitle(Title);
+			tDetail.setSeqNumber(seqno);
                         listTask.add(tDetail);
                 }
  
@@ -433,7 +429,7 @@ public class CommonUtility{
 		HintQuestionPeer.executeQuery("OPTIMIZE TABLE HINT_QUESTION");
 
 //		MailReceivePeer.executeQuery("ANALYZE TABLE ID_TABLE");
-  //              MailReceivePeer.executeQuery("OPTIMIZE TABLE ID_TABLE");
+//              MailReceivePeer.executeQuery("OPTIMIZE TABLE ID_TABLE");
 
 		LecturePeer.executeQuery("ANALYZE TABLE LECTURE");
                 LecturePeer.executeQuery("OPTIMIZE TABLE LECTURE");

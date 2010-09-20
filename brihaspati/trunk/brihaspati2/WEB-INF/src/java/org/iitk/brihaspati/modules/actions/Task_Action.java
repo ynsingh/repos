@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)Task_Action.java
  *
- *  Copyright (c) 2005-2006 ETRG,IIT Kanpur.
+ *  Copyright (c) 2005-2010 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -35,12 +35,12 @@ package org.iitk.brihaspati.modules.actions;
  */
 
 import java.util.List;
-
 import java.sql.Date;
 
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.util.parser.ParameterParser;
+
 import org.apache.velocity.context.Context;
 import org.apache.torque.util.Criteria;
 
@@ -50,62 +50,77 @@ import org.iitk.brihaspati.om.Task;
 import org.iitk.brihaspati.om.TaskPeer;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
-import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 
 /**
 *
 *@author  <a href="nagendrakumarpal@yahoo.co.in">Nagendra kumar singh</a>
 *@author  <a href="singh_jaivir@rediffmail.com">Jaivir Singh</a>
+*@author  <a href="kalpanagtm@gmail.com">Kalpana Gautam</a>
 *
 */
-
-
 public class Task_Action extends SecureAction
 {
-
     /**
      * This method used for delete the task from database	
      * @param data Rundata
      * @param context Context
      * @exception genric exception
-     *
      */
-    public void doDelete(RunData data, Context context)
-        throws Exception
-        {
-	User user = data.getUser();
-	String LangFile=(String)user.getTemp("LangFile");
 
-   /**
-    * Code for getting the  task id
-    */
+	 public void doDelete(RunData data, Context context) throws Exception {
+                User user = data.getUser();
+                String LangFile=(String)user.getTemp("LangFile");
+        
+	        /**
+                * Code for getting the  task id
+                */
+                ParameterParser pp=data.getParameters();
+                String d=pp.getString("id");
+                int tid=Integer.parseInt(d);
+                int seqno=Integer.parseInt(data.getParameters().getString("seqno"));
 
-        ParameterParser pp=data.getParameters();
-        String d=pp.getString("id");
-        int tid=Integer.parseInt(d);
+                /**
+                 * Delete the task according task id 
+                 */
+                Criteria crit = new Criteria();
+                crit.add(TaskPeer.TASK_ID,tid);
+                crit.add(TaskPeer.SEQ_NO,seqno);
+		List w = TaskPeer.doSelect(crit);
+                TaskPeer.doDelete(crit);
+                w.clear();
+		crit = new Criteria();
+                crit.addAscendingOrderByColumn(TaskPeer.SEQ_NO);
+                crit.add(TaskPeer.USER_ID,UserUtil.getUID(data.getUser().getName()));
+                w = TaskPeer.doSelect(crit);
+	
+		/**
+		*Code for update the task
+		*/
+                for(int i=seqno-1;i<w.size();i++){
+                        try {
+                                int taskid =((Task)w.get(i)).getTaskId();
+                                String information="UPDATE TASK SET SEQ_NO='"+seqno+"' WHERE TASK_ID="+taskid;
+                                TaskPeer.executeStatement(information);
+                                seqno++;
 
-     /**
-      * Delete the task according taskid
-      */
-	Criteria crit = new Criteria();
-	crit.add(TaskPeer.TASK_ID,tid);
-	TaskPeer.doDelete(crit);
-	String msg1=MultilingualUtil.ConvertedString("Task_msg6",LangFile);
-        data.setMessage(msg1);
+                        }catch(Exception e){}
+                }
+                String msg1=MultilingualUtil.ConvertedString("Task_msg6",LangFile);
+                data.setMessage(msg1);
+        }
 
-	}
-    /**
-     * This method used for insert the task into database	
-     * @param data Rundata
-     * @param context Context
-     * @exception genric exception
-     */
-public void doInsert(RunData data, Context context) throws Exception
-    {
-       try{
-	 User user=data.getUser();
+    	/**
+     	 * This method used for insert the task into database	
+     	 * @param data Rundata
+     	 * @param context Context
+     	 * @exception genric exception
+     	 */
+	public void doInsert(RunData data, Context context) throws Exception {
+		try{
+        User user=data.getUser();
 	String LangFile=(String)user.getTemp("LangFile");
         String UserName=user.getName();
 
@@ -127,7 +142,7 @@ public void doInsert(RunData data, Context context) throws Exception
         String em=pp.getString("End_mon");
         String ey=pp.getString("End_year");
         String edate= ey + "-"  + em + "-" + ed;
-		context.put("edate",edate);
+	context.put("edate",edate);
         String et="";
         et= et + ey + em + ed;
         int et1=Integer.parseInt(et);
@@ -179,18 +194,23 @@ public void doInsert(RunData data, Context context) throws Exception
 	}
 	else{
 		if(sti1 >= currentdate){
-	 	crit = new Criteria();
-		crit.add(TaskPeer.TITLE,detailinfo);
-		crit.add(TaskPeer.START_DATE,Date.valueOf(sdate));
-		crit.add(TaskPeer.END_DATE,Date.valueOf(edate));
-		crit.add(TaskPeer.EXPIRY,exp);
-		crit.add(TaskPeer.EXPIRY_DATE,Date.valueOf(ExpiryUtil.getExpired(edate,Integer.parseInt(exp))));
-		crit.add(TaskPeer.USER_ID,userid);
-		crit.add(TaskPeer.STATUS,null);
-		crit.add(TaskPeer.DUE_DATE,Date.valueOf(sdate));
-		TaskPeer.doInsert(crit);
-		msg1=MultilingualUtil.ConvertedString("Task_msg3",LangFile);
-	        data.setMessage(msg1);
+			crit = new Criteria();
+        	        crit.add(TaskPeer.USER_ID,userid);
+			List w = TaskPeer.doSelect(crit);
+		
+		 	crit = new Criteria();
+			crit.add(TaskPeer.TITLE,detailinfo);
+			crit.add(TaskPeer.START_DATE,Date.valueOf(sdate));
+			crit.add(TaskPeer.END_DATE,Date.valueOf(edate));
+			crit.add(TaskPeer.EXPIRY,exp);
+			crit.add(TaskPeer.EXPIRY_DATE,Date.valueOf(ExpiryUtil.getExpired(edate,Integer.parseInt(exp))));
+			crit.add(TaskPeer.USER_ID,userid);
+			crit.add(TaskPeer.STATUS,null);
+			crit.add(TaskPeer.DUE_DATE,Date.valueOf(sdate));
+			crit.add(TaskPeer.SEQ_NO,w.size()+1);
+			TaskPeer.doInsert(crit);
+			msg1=MultilingualUtil.ConvertedString("Task_msg3",LangFile);
+		        data.setMessage(msg1);
 		}
                 else
                         msg1=MultilingualUtil.ConvertedString("Task_msg7",LangFile);
@@ -198,9 +218,72 @@ public void doInsert(RunData data, Context context) throws Exception
 	}
 	}
 	catch(Exception e){data.addMessage("The error is do Insert "+e);
-	ErrorDumpUtil.ErrorLog(e.toString());
+
 	}
    }
+	/**
+     * This method used for Up and down the task into database       
+     * @param data Rundata
+     * @param context Context
+     * @exception genric exception
+     */
+
+	public void doUp(RunData data, Context context,String up_down) throws Exception {
+                int seqno=Integer.parseInt(data.getParameters().getString("seqno"));
+                Criteria crit = new Criteria();
+                crit.addAscendingOrderByColumn(TaskPeer.SEQ_NO);
+                crit.add(TaskPeer.USER_ID,UserUtil.getUID(data.getUser().getName()));
+                List w = TaskPeer.doSelect(crit);
+                int j=1;
+
+		/**
+		 *Code for up the task according to seqno
+		 */
+
+	          if(up_down.equals("up")){		
+                        for(int i=0;i<w.size();i++){
+                                try {
+                                        int taskid =((Task)w.get(i)).getTaskId();
+                                        if(j == (seqno-1)) {
+
+                                                String information="UPDATE TASK SET SEQ_NO='"+seqno+"' WHERE TASK_ID="+taskid;
+                                                TaskPeer.executeStatement(information);
+                                        }else if(j == seqno) {
+                                                int k=j-1;
+
+                                                String information="UPDATE TASK SET SEQ_NO='"+k+"' WHERE TASK_ID="+taskid;
+                                                TaskPeer.executeStatement(information);
+                                                return;
+                                        }
+                                        j++;
+                                       }catch(Exception e){
+                                }
+                        }
+                }else{
+		
+		/**
+                 *Code for down the task according to seqno
+                 */
+
+                        for(int i=seqno-1;i<w.size();i++){
+                                try {
+                                        int taskid =((Task)w.get(i)).getTaskId();
+                                        if((seqno-1)==i) {
+                                                int k=seqno+1;
+                                                String information="UPDATE TASK SET SEQ_NO='"+k+"' WHERE TASK_ID="+taskid;
+                                                TaskPeer.executeStatement(information);
+                                        }else {
+                                                String information="UPDATE TASK SET SEQ_NO='"+seqno+"' WHERE TASK_ID="+taskid;
+                                                TaskPeer.executeStatement(information);
+                                                return;
+                                        }
+                                }catch(Exception e){ }
+                        }
+                }
+        }
+
+	
+	
     /**
      * This method move the task from list to current list
      * @param data Rundata
@@ -230,10 +313,12 @@ public void doMove(RunData data, Context context)
         String cdate=ExpiryUtil.getCurrentDate("-");
         String mvd=Date.valueOf(ExpiryUtil.getExpired(cdate,Integer.parseInt(tcdays))).toString();
         String rmvd=mvd.replaceAll("-","");
+	int seqno=Integer.parseInt(data.getParameters().getString("seqno"));
         int mvdate=Integer.parseInt(rmvd);
         crit=new Criteria();
         crit.add(TaskPeer.TASK_ID,tid);
-        List lst=TaskPeer.doSelect(crit);
+	crit.add(TaskPeer.SEQ_NO,seqno);
+	 List lst=TaskPeer.doSelect(crit);
         String exd="";
         if(lst.size() > 0 ){
         exd=((Task)(lst.get(0))).getExpiryDate().toString();
@@ -249,7 +334,7 @@ public void doMove(RunData data, Context context)
  */
                 crit = new Criteria();
 		crit.add(TaskPeer.TASK_ID,tid);
-	        crit.and(TaskPeer.STATUS,"1");
+	        crit.add(TaskPeer.STATUS,"1");
 	        List v=TaskPeer.doSelect(crit);
 		int info1=0;
 		String msg1="";
@@ -268,6 +353,7 @@ public void doMove(RunData data, Context context)
                            {
 				if(diffr<1){
                                 String information="UPDATE TASK SET STATUS=1,DUE_DAYS='"+tcdays+"',DUE_DATE='"+Date.valueOf(ExpiryUtil.getExpired(cdate,Integer.parseInt(tcdays)))+"' WHERE TASK_ID="+tid;
+
 				TaskPeer.executeStatement(information);
                                 msg1=MultilingualUtil.ConvertedString("Task_msg1",LangFile);
                                 data.setMessage(msg1);
@@ -298,10 +384,14 @@ public void doMove(RunData data, Context context)
                         doInsert(data,context);
                 else if(action.equals("eventSubmit_doMove"))
                         doMove(data,context);
+		else if(action.equals("eventSubmit_doUp"))
+                        doUp(data,context,"up");
+		else if(action.equals("eventSubmit_doDown"))
+		        doUp(data,context,"down");
                 else{
-			  String msg1=MultilingualUtil.ConvertedString("action_msg",LangFile);
-		          data.setMessage(msg1);
-		}
+        	         String msg1=MultilingualUtil.ConvertedString("action_msg",LangFile);
+		         data.setMessage(msg1);
+	            }
           }
 }
 
