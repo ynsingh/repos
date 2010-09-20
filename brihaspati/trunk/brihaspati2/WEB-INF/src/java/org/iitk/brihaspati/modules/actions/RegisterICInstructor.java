@@ -88,10 +88,11 @@ public class RegisterICInstructor extends SecureAction_Institute_Admin
 				* if password is empty then set password.
 				* password is the value of 0th position of email id
 				*/
-		 		if(passwd.equals(""))
+		 		if(passwd.equals("")){
 			 	passwd=email;
 				String []starr=passwd.split("@");
                 		passwd =starr[0];
+				}
 		 		/**
 		  		* Register a new course with instructor
 				* Here we give 100MB quota for course, once he is login in the system and immediate his quota is updated

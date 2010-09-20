@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens;
 /* 
  * @(#)OnlineRegistration.java
  *
- *  Copyright (c) 2008, 2009 ETRG,IIT Kanpur.
+ *  Copyright (c) 2008-2010 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -38,24 +38,38 @@ package org.iitk.brihaspati.modules.screens;
 
 import java.util.List;
 import org.apache.turbine.util.RunData;
+import org.apache.torque.util.Criteria;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.util.parser.ParameterParser;
-import org.iitk.brihaspati.modules.utils.ListManagement;
 import org.apache.turbine.modules.screens.VelocityScreen;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
-import org.apache.turbine.services.servlet.TurbineServlet;
-
-
+//import org.apache.turbine.services.servlet.TurbineServlet;
+import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
  /**
  * @author <a href="mailto:omprakash_kgp@yahoo.co.in">Om Prakash</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">jaivir Singh</a>20092010
  */
-
+/**
+* This class called when user request for online registration as an Student,Instructor(course) and author.   
+*/
 public class OnlineRegistration extends VelocityScreen
 {
 	public void doBuildTemplate(RunData data, Context context)
 	{
 		try{
+			/**
+			*Get the list of Institute and set in context 
+			*for using in templates and
+			* set the status for User Registration 
+			*as well as Course Registration,count for tab colour.
+			*/
+			Criteria crit=new Criteria();
+			int addnot[]={0,2};
+			crit.addGroupByColumn(InstituteAdminRegistrationPeer.INSTITUTE_NAME);
+			crit.addNotIn(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,addnot);
+			List list=InstituteAdminRegistrationPeer.doSelect(crit);
+			context.put("instList",list);
  			ParameterParser pp=data.getParameters();
 			String lang=pp.getString("lang","english");
         	        context.put("lang",lang);
@@ -67,8 +81,7 @@ public class OnlineRegistration extends VelocityScreen
 				
 			else if(status.equals("CourseRegistration"))
 				context.put("status","CourseRegistration");
-			List CourseList=ListManagement.getCourseList();
-			context.put("courseList",CourseList);
+
 		}
 		catch(Exception e) { 	data.setMessage("Error in Online Registration !!" +e); }
 		

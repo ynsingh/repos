@@ -75,13 +75,13 @@
       <td>
          <a href=$link.setPage("call,Quota_Mgmt,Quota.vm").addPathInfo("mode","uquota").addPathInfo("status","nosearch").addPathInfo("count","1") style=text-decoration:none>$brih_quota $brih_mgmt</a>
       </td>
-   </tr>
+   </tr>*#
    <tr bgcolor="$ui.menuColor">
       <td>
          <a href=$link.setPage("call,OnLine_Rgtn,OnlineRegistration_Admin.vm").addPathInfo("status","CourseRegistration").addPathInfo("count","1") style=text-decoration:none>$brih_view $online_online $brih_reg</a>
       </td>
    </tr>
-<tr>
+#*<tr>
       <td>
         <a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype") style=text-decoration:none>$brih_tracking $brih_reports</a>
       </td>

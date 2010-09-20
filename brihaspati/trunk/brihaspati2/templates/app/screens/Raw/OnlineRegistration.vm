@@ -7,39 +7,38 @@
  * @author <a href="mailto:omprakash_kgp@yahoo.co.in">Om Prakash</a> 	
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @modify 20-03-2009
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>20092010 	
  *#
 
 $page.setTitle("Login Page | Online Registration ")
-<table bgcolor="$ui.menuColor" width=100%>
-<tr><td>
-		<font face="$ui.sansSerifFonts" size=3><b>
-			<a href=$link.setPage("BrihaspatiLogin.vm")> $brih_login $WikiPage </a>| $online_online $brih_reg   
+<table bgcolor="$ui.tableColor" width=100%>
+<tr bgcolor="$ui.menuColor"><td colspan=3>
+<a href=$link.setPage("BrihaspatiLogin.vm") style=text-decoration:none> $brih_login $WikiPage </a>| $online_online $brih_reg   
 </td></tr>
-</table>
+##</table>
 <form name=frm method="post" action="$link.setPage("OnlineRegistration.vm").addPathInfo("lang",$lang).setAction("OnlineRegistration")">
-<table align="left" bgcolor="$ui.tableColor" width=100%><tr><td colspan=2 align=right><img src="$content.getURI("/images/hand.gif")">
-	<font face="$ui.sansSerifFonts" size=3>
-	<a href=javascript:popupWin("/brihaspati2/docs/OnlineRegistration.html","newWin");>$brih_help</a>
-	</font></td></tr>
+##<table align="left" bgcolor="$ui.tableColor" width=100%>
 ##</table>
 $!data.getMessage()
 ##<table align=left bgcolor="$ui.tableColor" width="100%">
-<tr bgcolor="$ui.menuColor">
+<tr>
 #if($tdcolor != "1")
 <td>
 #elseif($tdcolor == "1")
 <td bgcolor="#AFDCEC">
 #end
-<b>
-<a href=$link.setPage("OnlineRegistration.vm").addPathInfo("lang",$lang).addPathInfo("status","UserResitration").addPathInfo("count","1")> $brih_student $brih_reg </a></b>
+<a href=$link.setPage("OnlineRegistration.vm").addPathInfo("lang",$lang).addPathInfo("status","UserResitration").addPathInfo("count","1") style=text-decoration:none> $brih_student $brih_reg </a>
 </td>
 #if($tdcolor != "2")
 <td>
 #elseif($tdcolor == "2")
 <td bgcolor="#AFDCEC">
 #end
-<b><a href=$link.setPage("OnlineRegistration.vm").addPathInfo("lang",$lang).addPathInfo("status","CourseRegistration").addPathInfo("count","2")> $brih_Instructor ($brih_course) $brih_reg </a></b>
+<a href=$link.setPage("OnlineRegistration.vm").addPathInfo("lang",$lang).addPathInfo("status","CourseRegistration").addPathInfo("count","2") style=text-decoration:none> $brih_Instructor ($brih_course) $brih_reg </a>
 </td>
+<td align=right><img src="$content.getURI("/images/hand.gif")">
+<a href=javascript:popupWin("/brihaspati2/docs/OnlineRegistration.html","newWin");>$brih_help</a>
+	</td>
 </tr>
 ##</table>
 ##<table align=center bgcolor="$ui.tableColor" border=2 cellpadding="5">
@@ -49,39 +48,41 @@ $!data.getMessage()
         	<b>$brih_usr $brih_reg </b>
 	</td>
         </tr>*#
+	  <tr>
+	  <td>$brih_select $RemoteInstitute $brih_name <font color=RED>*</font></td>
+	<td>
+    	##<select id="inst_id" name="instname" size=1 onChange="ChangeRole(document.frm,this);"/>
+    	<select name="instName" size=1 onChange="checkOption(document.frm,this);"/>
+	  <option> </option>
+	  #foreach($name in $instList)
+	  <option value="$name.getInstituteName()">$name.getInstituteName() </option>
+	  #end
+	  </select>
+	  <input type="submit" name="eventSubmit_doSearch" value="$brih_search"/>
+		<select id="group_id" name="group" size=1 onChange="ChangeRole(document.frm,this);"/>
+	  	<option></option>
+		#foreach($crsname in $courseList)
+		<option value="$crsname">$crsname</option>
+		#end	
+		</select>
+	  </td>
+	  </tr>
         <tr>
-        	#formCell ("$brih_usr $brih_name <font color=red>*</font>" "UNAME" "")
+	  	#formCell(" $brih_email $brih_ID <font color=red>*</font>" "EMAIL" "")
         </tr>
-        <tr bgcolor="$ui.menuColor">
+        <tr>
         	#formPasswordCell ("$brih_pwd" "PASSWD" "")
         </tr>
 	<tr>
 		#formCell(" $brih_first  $brih_name " "FNAME" "")
 	</tr>
-	<tr bgcolor="$ui.menuColor">
+	<tr>
 		#formCell(" $brih_last $brih_name " "LNAME" "")
 	</tr>
 	<tr>
 		#formCell(" $online_organisation " "ORGTN " "")
 	</tr>	
-	  <tr bgcolor="$ui.menuColor">
-	  	#formCell(" $brih_email $brih_ID <font color=red>*</font>" "EMAIL" "")
-	  </tr>
-	  <tr>
-	  <td>$brih_sel_course <font color=RED>*</font></b></td>
-	<td>
-    	<select id="group_id" name="group" size=1 onChange="ChangeRole(document.frm,this);"/>
-	  <option>
-	  #foreach($name in $courseList)
-	  #if($name.getName()!="global")
-	  <option value="$name.getName()">$name.getName()
-	   #end
-	   #end
-	   </option>
-	  </select>
-	 </td>
-	 </tr>
-	<tr bgcolor="$ui.menuColor"><td>$brih_sel_Role <font color="Red">*</font></td>
+	<tr><td>$brih_sel_Role <font color="Red">*</font></td>
         <td><select id="role_id" name="role" size=1 onChange="ChangeGroup(document.frm,this);"/>
 	<option>
 		<option value="student">$brih_student
@@ -90,8 +91,8 @@ $!data.getMessage()
 	</select>
 	</td>
 	</tr>
-	<tr>
-	<td colspan=2 align="left">
+	<tr bgcolor="$ui.menuColor">
+	<td colspan=3>
 	<input type="hidden" name="actionName">
         <input type="hidden" name="groupName" value="$name.getName()">
     	<input type="hidden" name="group_author">
@@ -99,6 +100,7 @@ $!data.getMessage()
     	<input type="button" name="eventSubmit_UserRegister" value="$brih_reg1" onClick="checkField(document.frm,this);"/> 
 	<input type="Reset" name="Reset" Value="$brih_clear"/>
 	<input type="hidden" name="count" value="$tdcolor"/>
+	<input type="hidden" name="status" value="$status"/>
 	</td>
 	</tr>
        
@@ -108,50 +110,50 @@ $!data.getMessage()
 ##////////////Course Registration///////////
 
 	#if($status == "CourseRegistration")	
-
-	#*<tr bgcolor="$ui.tableColor">
-          <td align=left colspan=2>
-           <font face="$ui.sansSerifFonts" size=3> <b> $brih_course $brih_reg </b>
-          </td>
-        </tr>*#
+	<tr>
+	<td>$brih_select $RemoteInstitute $brih_name <font color=RED>*</font></td>
+	<td>
+    	<select name="instName">
+	#foreach($name in $instList)
+	<option value="$name.getInstituteName()">$name.getInstituteName() </option>
+	#end
+	</select>
+	</td>
+        </tr>
         <tr>
             #formCell(" $brih_course $brih_ID <font color=red>*</font>" "COURSEID" "")
         </tr>
-        <tr bgcolor="$ui.menuColor">
+        <tr>
             #formCell("$brih_course $brih_name <font color=red>*</font>" "CNAME" "")
         </tr>
         <tr>
             #formCell(" $brih_dept " "DEPT" "")
         </tr>
  
-        <tr bgcolor="$ui.menuColor">
-           #formCell(" $brih_usr $brih_name <font color=red>*</font>" "UNAME" "")
+        <tr>
+            #formCell(" $brih_email $brih_ID <font color=red>*</font>" "EMAIL" "")
         </tr>
         <tr>
             #formPasswordCell(" $brih_pwd " "PASS" "")
         </tr>
-        <tr bgcolor="$ui.menuColor">
+        <tr>
 	
            #formCell(" $brih_first  $brih_name " "FNAME" "")
 	</tr>
 	<tr>
-
            #formCell(" $brih_last $brih_name " "LNAME" "")
 	</tr>	
-	<tr bgcolor="$ui.menuColor">
+	<tr>
 	   #formCell(" $online_organisation " "ORGTN" "")
 	</tr>
-	<tr>
-            #formCell(" $brih_email $brih_ID <font color=red>*</font>" "EMAIL" "")
-	</tr>
         <tr bgcolor="$ui.menuColor">
-            <td align=left colspan=2>
+            <td colspan=3>
     		<input type="hidden" name="actionName">
-    		<input type="hidden" name="count" value="$tdcolor">
     		<input type="button" name="eventSubmit_CourseRegister" value=" $brih_submit " onClick="checkCourseName(document.frm,this);"/>
        		 &nbsp;&nbsp;&nbsp;
     		<input type="reset" name="Clear" value=" $brih_clear " onClick="checkClear(document.frm,this);"/>
                 <input type="hidden" name="count" value="$tdcolor">
+                <input type="hidden" name="status" value="$status">
        	    </td>
         </tr>
 		
@@ -172,7 +174,7 @@ $!data.getMessage()
 	
 	function checkField(frm,field)
 	{
-		if((frm.UNAME.value!="")&&(frm.EMAIL.value!="")&&(frm.group.value!="")&&(frm.role.value!=""))
+		if((frm.EMAIL.value!="")&&(frm.group.value!="")&&(frm.role.value!=""))
 		{
 			var emailID=document.frm.EMAIL;
 			if (echeck(emailID.value)==false){
@@ -300,7 +302,7 @@ function echeck(str) {
 
         function checkCourseName(frm,field)
         {
-                if((frm.COURSEID.value!="")&&(frm.CNAME.value!="")&&(frm.UNAME.value!="")&&(frm.EMAIL.value!=""))
+                if((frm.COURSEID.value!="")&&(frm.CNAME.value!="")&&(frm.EMAIL.value!=""))
                 {
 			var emailID=document.frm.EMAIL;
                         if (echeck(emailID.value)==false){
@@ -323,6 +325,10 @@ function echeck(str) {
                 frm.CNAME.value="";
                 frm.UNAME.value="";
                 frm.EMAIL.value="";
+        }
+	function checkOption (frm,field)
+        {
+                frm.val.value=document.frm.instName.value;
         }
 
 

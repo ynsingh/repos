@@ -63,11 +63,13 @@ import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
  * @author  <a href="mailto:omprakash_kgp@yahoo.co.in">Om Prakash</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @modify 20-03-09, 08-07-2010
-
  */
 
-
-public class  OnlineRegistration_Admin extends SecureAction_Admin{
+/**
+ * This class called when institute admin accept or reject the request of registration of Student,Instructor(Course) and author
+ * @author  <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>20092010
+*/
+public class  OnlineRegistration_Admin extends SecureAction_Institute_Admin{
 
 	private String LangFile=null;
 	private String tokn="", uName="", gName="", mailid="";
@@ -149,7 +151,6 @@ public class  OnlineRegistration_Admin extends SecureAction_Admin{
 
       	public void AcceptUser(RunData data, Context context)
 	{
-
 		try{
 			Vector userlist=new Vector();
 			Vector indexList=new Vector();	
@@ -173,8 +174,6 @@ public class  OnlineRegistration_Admin extends SecureAction_Admin{
                                 mailid= splitedTokn [0];
                                 gName = splitedTokn [1];
                                 uName = splitedTokn [2];
-
-							
 				if(userlist!=null)
                         	{
                                   				
@@ -287,6 +286,8 @@ public class  OnlineRegistration_Admin extends SecureAction_Admin{
         public void doAcceptCourses(RunData data, Context context)
         {
                 try{
+			String instituteId=(data.getUser().getTemp("Institute_id").toString());
+			int instId=Integer.parseInt(instituteId);
                         Vector indexList=new Vector();
                         Vector courselist=new Vector();
 			String gidUname="", passwd="", cname="";
@@ -321,13 +322,19 @@ public class  OnlineRegistration_Admin extends SecureAction_Admin{
                                                         gname=((CourseUserDetail) courselist.elementAt(i)).getGroupName();
                                                         cname=((CourseUserDetail) courselist.elementAt(i)).getCourseName();
                                                         uname=((CourseUserDetail) courselist.elementAt(i)).getLoginName();
-                                                        if(passwd.equals(""))
-                                                                passwd=uname;
+							/**
+							*Set the Password if empty.
+							*password is the value of 0th position of mailid
+							*/
+                                                        if(passwd.equals("")){
+							String []starr=email.split("@");
+                					passwd=starr[0];
+							}
                                                         fname=((CourseUserDetail) courselist.elementAt(i)).getInstructorName();
                                                         lname=((CourseUserDetail) courselist.elementAt(i)).getUserName();
                                                        {
                                                                 try{
-                                                                        String msg=CourseManagement.CreateCourse(gname,cname,"","",uname,passwd,fname,lname,email,serverName,serverPort,LangFile,0);
+                                                                        String msg=CourseManagement.CreateCourse(gname,cname,"","",uname,passwd,fname,lname,email,serverName,serverPort,LangFile,instId);
 								/**
 									String subject="";
 									if(serverPort.equals("8080"))

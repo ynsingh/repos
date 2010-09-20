@@ -4,7 +4,7 @@ package org.iitk.brihaspati.modules.actions;
 /**
  * @(#)OnlineRegistration.java	
  *  
- *  Copyright (c) 2008, 2009, 2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2008-2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Properties;
 import java.sql.Date;
 import org.apache.turbine.util.RunData;
+import org.apache.torque.util.Criteria;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.services.servlet.TurbineServlet;
@@ -48,7 +49,7 @@ import org.iitk.brihaspati.modules.utils.XmlWriter;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.UserManagement;
-import org.iitk.brihaspati.modules.utils.CourseManagement;
+import org.iitk.brihaspati.modules.utils.ListManagement;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
@@ -57,13 +58,15 @@ import org.iitk.brihaspati.modules.utils.CourseManagement;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.MailNotification;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
-import org.iitk.brihaspati.modules.utils.SystemIndependentUtil;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
-
+import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
+import org.iitk.brihaspati.om.InstituteAdminRegistration;
+import org.iitk.brihaspati.om.InstituteAdminUserPeer;
+import org.iitk.brihaspati.om.InstituteAdminUser;
 
 /**
- * This class is responsible for adding a new user in specified group and 
+ * This class is called for requesting to add a new user in specified group and 
  * assigned a role to the system. 
  * 
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
@@ -71,6 +74,7 @@ import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @modify 20-03-09
  * @modified date: 08-07-2010
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>20092010
  */
 
 
@@ -117,15 +121,23 @@ public class OnlineRegistration extends VelocitySecureAction
                  * Retreiving details entered by the user
                  */
                 XmlWriter xmlWriter=null;
-		uname=pp.getString("UNAME");
-                passwd=pp.getString("PASSWD");
-                if(passwd.equals(""))
-                        passwd=uname;
 		fname=pp.getString("FNAME","");
 		lname=pp.getString("LNAME","");
 		orgtn=pp.getString("ORGTN","");
                 email=pp.getString("EMAIL");
+		uname=email;
+                passwd=pp.getString("PASSWD");
+                if(passwd.equals("")){
+		String []starr=email.split("@");
+                passwd=starr[0];
+		}
 		gname=pp.getString("group","");
+		String instituteid="";	
+		if(!gname.equals("author")){
+		String []gnamesplit=gname.split("_");
+		//String Agname=gnamesplit[0];
+		instituteid=gnamesplit[1];
+		}
                 String roleName=pp.getString("role","");
 		curDate = Integer.toString(Integer.parseInt(ExpiryUtil.getCurrentDate("")));
                 if(gname.equals(""))
@@ -232,7 +244,10 @@ public class OnlineRegistration extends VelocitySecureAction
 						xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineUser(path,"/OnlineUser.xml",indexList);
 				                TopicMetaDataXmlWriter.appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,curDate);
         				        xmlWriter.writeXmlFile();
-						sendMailToApproval(gname,LangFile,uname,"");
+						if(gname.equals("author"))
+						sendMailToApproval(gname,LangFile,uname,"",0);
+						else
+						sendMailToApproval(gname,LangFile,uname,"",(Integer.parseInt(instituteid)));
 			        	} //else 4
 				} //if 3
 
@@ -242,7 +257,7 @@ public class OnlineRegistration extends VelocitySecureAction
 	                		xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineUser(path,"/OnlineUser.xml",indexList);
 		        	        TopicMetaDataXmlWriter.appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,curDate);
         		        	xmlWriter.writeXmlFile();
-					sendMailToApproval(gname,LangFile,uname,"");
+					sendMailToApproval(gname,LangFile,uname,"",(Integer.parseInt(instituteid)));
 				} //else 3
 				String str=MultilingualUtil.ConvertedString("online_msg5",LangFile);
         		        data.setMessage(str);
@@ -269,19 +284,26 @@ public class OnlineRegistration extends VelocitySecureAction
                 /**
                  * store details from the page where user has entered them
                  */
-                String gname=pp.getString("COURSEID","").toUpperCase();
+                String instname=pp.getString("instName");
+		Criteria crit=new Criteria();
+		crit.add(InstituteAdminRegistrationPeer.INSTITUTE_NAME,instname);
+		List ialist=InstituteAdminRegistrationPeer.doSelect(crit);
+		int instituteid=((InstituteAdminRegistration)ialist.get(0)).getInstituteId();
+                gname=pp.getString("COURSEID","").toUpperCase();
                 String cname=pp.getString("CNAME","");
                 String dept=pp.getString("DEPT","");
-                String uname=pp.getString("UNAME");
-                String passwd=pp.getString("PASS");
-                if(passwd.equals(""))
-                        passwd=uname;
-                String fname=pp.getString("FNAME","");
-                String lname=pp.getString("LNAME","");
+                passwd=pp.getString("PASS");
+                fname=pp.getString("FNAME","");
+                lname=pp.getString("LNAME","");
 		String orgtn=pp.getString("ORGTN","");
-                String email=pp.getString("EMAIL","");
-		String curDate = Integer.toString(Integer.parseInt(ExpiryUtil.getCurrentDate("")));
-                String path=TurbineServlet.getRealPath("/OnlineUsers");
+                email=pp.getString("EMAIL","");
+		uname=email;
+                if(passwd.equals("")){
+		String []starr=email.split("@");
+                passwd=starr[0];
+		}
+		curDate = Integer.toString(Integer.parseInt(ExpiryUtil.getCurrentDate("")));
+                path=TurbineServlet.getRealPath("/OnlineUsers");
                 File filepath=new File(path);
                 XmlWriter xmlWriter=null;
                 if(!filepath.exists())
@@ -373,7 +395,7 @@ public class OnlineRegistration extends VelocitySecureAction
 					xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineCourse(path,"/courses.xml",indexList);
 	        	        	TopicMetaDataXmlWriter.appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,curDate);
 	        		        xmlWriter.writeXmlFile();
-					sendMailToApproval("fromCourse",LangFile,uname, cname);
+					sendMailToApproval("fromCourse",LangFile,uname, cname,instituteid);
 				} //else inner
         		}
 			else
@@ -382,15 +404,19 @@ public class OnlineRegistration extends VelocitySecureAction
                 		xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineCourse(path,"/courses.xml",indexList);
 		                TopicMetaDataXmlWriter.appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,curDate);
         		        xmlWriter.writeXmlFile();
-				sendMailToApproval("fromCourse",LangFile,uname, cname);
+				sendMailToApproval("fromCourse",LangFile,uname, cname,instituteid);
 			}
 		}
                 context.put("lang",lang);
                 String str=MultilingualUtil.ConvertedString("online_msg6",LangFile);
                 data.setMessage(str);
         }
-		
-	void sendMailToApproval(String gname, String LangFile, String unme, String courseName)
+	/**
+	* Method for get and send email.
+	*if request for role student then mail send to Instructor.
+	*else mail send to Institute admin.  
+	*/		
+	void sendMailToApproval(String gname, String LangFile, String unme, String courseName ,int instituteId)
 	{
 		int j=0;
 		String temp="";
@@ -401,7 +427,6 @@ public class OnlineRegistration extends VelocitySecureAction
 		try{
 			fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
        		        pr =MailNotification.uploadingPropertiesFile(fileName);
-	
 			//MsgForExpireTime = " A user ";
 			//String subMsgForExpireTime =", has requested for registration as student in your course"+" "+gname+" "+" on brihaspati. Kindly do the needful to approve or reject the request";
 			if(!gname.equals("fromCourse") && !gname.equals("author")) {
@@ -411,21 +436,22 @@ public class OnlineRegistration extends VelocitySecureAction
 					info_new="approvalOfonLineRegReqForStudent_https";
 				subject = MailNotification.subjectFormate(info_new, "", pr );
 				message = MailNotification.getMessage(info_new, gname, "", unme,"" , server_name, srvrPort,pr); 
-				//ErrorDumpUtil.ErrorLog("\n\n\nstudent approval message="+message+"      subject="+subject);
 ///////////////////////////////////////////////////////////////////////////////////////////
 				int counter=0;
 				int gid=GroupUtil.getGID(gname);
 				Vector uid=UserGroupRoleUtil.getUID(gid,2);
+				String []gnamesplit=gname.split("_");
+				String Agname=gnamesplit[0];
 				for(counter =0; counter<uid.size(); counter++)
 				{
 					String s=uid.elementAt(counter).toString();
 					List st=UserManagement.getUserDetail(s);
-				
                	        		for(j=0;j<st.size();j++)
 	                       		{
 						TurbineUser element1=(TurbineUser)st.get(j);
 						String userName = element1.getUserName();
-						boolean check_Primary=CourseManagement.IsPrimaryInstructor(gname,userName);
+						//boolean check_Primary=CourseManagement.IsPrimaryInstructor(gname,userName);
+						boolean check_Primary=CourseManagement.IsPrimaryInstructor(Agname,userName);
 						boolean check_Active=CourseManagement.CheckcourseIsActive(gid);
 						if(check_Primary==true && check_Active==false)
 						{
@@ -445,17 +471,29 @@ public class OnlineRegistration extends VelocitySecureAction
 			
 				subject = MailNotification.subjectFormate(info_new, "", pr );
 				message = MailNotification.getMessage(info_new, courseName, "", unme,"" , server_name, srvrPort,pr); 
-				//ErrorDumpUtil.ErrorLog("\n\n\n course Approval message="+message+"      subject="+subject+"\n uname="+unme+"	courseName="+courseName);
-///////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////
+				/**
+				 * Get email Id if role is author
+				 * {System admin}else
+				 * {Institute admin}
+				 * send the mail using util
+				 * see MailNotification util in utils  
+				 */
+				if(gname.equals("author")){
 				String s=Integer.toString(UserUtil.getUID("admin"));
 				List st=UserManagement.getUserDetail(s);
-				for(j=0;j<st.size();j++)
-	                        {
+				for(j=0;j<st.size();j++){
 					TurbineUser element1=(TurbineUser)st.get(j);
 					emailId = element1.getEmail();
-					//Mail_msg=MailNotification.sendMail(MsgForExpireTime+"a new course"+subMsgForExpireTime,emailId,"onlineRegRequest","Updation Mail","","","",server_name,srvrPort,LangFile);
-					Mail_msg=MailNotification.sendMail(message, emailId, subject, "", LangFile);
+					}
 				}
+				else{
+				Criteria crit=new Criteria();	
+				crit.add(InstituteAdminUserPeer.INSTITUTE_ID,instituteId);
+				List iadetlist=InstituteAdminUserPeer.doSelect(crit);
+				emailId=((InstituteAdminUser)iadetlist.get(0)).getAdminEmail();
+				}
+				Mail_msg=MailNotification.sendMail(message, emailId, subject, "", LangFile);
 			}
 		} //try close
 		catch(Exception e){ErrorDumpUtil.ErrorLog("Erro in approvalOfonLineRegReqForStudent"+e);}
@@ -542,6 +580,21 @@ public class OnlineRegistration extends VelocitySecureAction
 		catch(Exception e){ErrorDumpUtil.ErrorLog("Error in Exipiration of onLineRegReq"+e);}
 		return indexList;              
 	}
+        public void doSearch(RunData data, Context context) throws Exception
+        {
+		ParameterParser pp=data.getParameters();
+		String instName=pp.getString("instName");
+		String status=pp.getString("status");
+		ErrorDumpUtil.ErrorLog("instname---"+instName+"\nstatus===="+status);
+		Criteria crit=new Criteria();
+		crit.add(InstituteAdminRegistrationPeer.INSTITUTE_NAME,instName);
+		List lst=InstituteAdminRegistrationPeer.doSelect(crit);
+		int instituteId=((InstituteAdminRegistration)lst.get(0)).getInstituteId();
+		//List CourseList=CourseManagement.getInstituteCourseNUserDetails("All",Integer.toString(instituteId));
+		List CourseList=ListManagement.getInstituteCourseList(Integer.toString(instituteId));
+		ErrorDumpUtil.ErrorLog("clist in onlineregistration action==="+CourseList);
+		context.put("courseList",CourseList);
+	}
 	/**
 	 * This is the default method called when the button is not found
 	 * @param data RunData
@@ -553,9 +606,10 @@ public class OnlineRegistration extends VelocitySecureAction
 		String action=data.getParameters().getString("actionName","");
 		if(action.equals("eventSubmit_UserRegister"))
 			UserRegister(data,context);
-		
 		else if(action.equals("eventSubmit_CourseRegister"))
                         CourseRegister(data,context);
+		else if(action.equals("eventSubmit_doSearch"))
+                        doSearch(data,context);
 
 		else
 		{
