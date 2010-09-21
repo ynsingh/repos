@@ -40,21 +40,24 @@ import org.apache.turbine.om.security.User;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.services.servlet.TurbineServlet;
 
-import org.iitk.brihaspati.modules.screens.call.SecureScreen_Admin;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.DbDetail;
+import org.iitk.brihaspati.modules.screens.call.SecureScreen_Institute_Admin;
 
 
 
 /**
+ *This class contain the list of request of user registration and list of course registration.
+ * institute admin accept or reject the request.
+ 
+ * @author  <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author  <a href="mailto:omprakash_kgp@yahoo.co.in">Om Prakash</a>
- */
+*/
 
-
-public class OnlineRegistration_Admin extends SecureScreen_Admin {
+public class OnlineRegistration_Admin extends SecureScreen_Institute_Admin {
 
 	/**
 	 * Place all the data object in the context for use in the template.
