@@ -8,11 +8,6 @@
     </head>
     <body>
     <div class="wrapper">
-        <div class="nav">
-            <span class="menuButton"><a class="home" href="${createLinkTo(dir:'')}">Home</a></span>
-            <span class="menuButton"><g:link class="list" action="list">PartyDepartment List</g:link></span>
-            <span class="menuButton"><g:link class="create" action="create">New PartyDepartment</g:link></span>
-        </div>
         <div class="body">
             <h1>Edit Department</h1>
             <g:if test="${flash.message}">
@@ -40,7 +35,7 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="name">Name:</label>
+                                    <label for="name">Department Name:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:partyDepartmentInstance,field:'name','errors')}">
                                     <input type="text" id="name" name="name" value="${fieldValue(bean:partyDepartmentInstance,field:'name')}"/>
@@ -51,16 +46,22 @@
                                     <label for="party">Institution:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:partyDepartmentInstance,field:'party.code','errors')}">
-                                    <g:select optionKey="code" optionValue="code" from="${Party.list()}" name="party.code" value="${partyDepartmentInstance?.party?.code}" ></g:select>
+                                    <g:select optionKey="code" optionValue="code" from="${partyList}" name="party.code" value="${partyDepartmentInstance?.party?.code}" ></g:select>
                                 </td>
                             </tr> 
-                        
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="activeYesNo">Active:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:partyDepartmentInstance,field:'activeYesNo','errors')}">
+                                         <g:select name="activeYesNo" from="${['Y', 'N']}"  value="${fieldValue(bean:partyDepartmentInstance,field:'activeYesNo')}" />
+                                </td>
+                            </tr> 
                         </tbody>
                     </table>
                 </div>
                 <div class="buttons">
-                    <span class="button"><g:actionSubmit class="save" value="Update" /></span>
-                    <span class="button"><g:actionSubmit class="delete" onclick="return confirm('Are you sure?');" value="Delete" /></span>
+                    <span class="button"><g:actionSubmit class="save" value="Update" onClick="return validateDepartment()" /></span>
                 </div>
             </g:form>
         </div>

@@ -7,11 +7,7 @@
         <title>Investigator List</title>
     </head>
     <body>
-     <div class="wrapper"> 
-        <div class="nav">
-            <span class="menuButton"><a class="home" href="${createLinkTo(dir:'')}">Home</a></span>
-            <span class="menuButton"><g:link class="create" action="create">New Investigator</g:link></span>
-        </div>
+     <div class="wrapper">
         <div class="body">
             <h1>Investigator List</h1>
             <g:if test="${flash.message}">

@@ -1,94 +1,62 @@
-//import org.codehaus.groovy.grails.plugins.springsecurity.RedirectUtils
-//import org.grails.plugins.springsecurity.service.AuthenticateService
+import grails.converters.JSON
 
-import org.springframework.security.AuthenticationTrustResolverImpl
-import org.springframework.security.DisabledException
-import org.springframework.security.context.SecurityContextHolder as SCH
-import org.springframework.security.ui.AbstractProcessingFilter
-import org.springframework.security.ui.webapp.AuthenticationProcessingFilter
+import org.codehaus.groovy.grails.plugins.springsecurity.SpringSecurityUtils
+
+import org.springframework.security.authentication.AccountExpiredException
+import org.springframework.security.authentication.CredentialsExpiredException
+import org.springframework.security.authentication.DisabledException
+import org.springframework.security.authentication.LockedException
+import org.springframework.security.core.context.SecurityContextHolder as SCH
+import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+
+import grails.plugins.springsecurity.Secured
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 
-/**
- * Login Controller (Example).
- */
+@Secured(['permitAll'])
 class LoginController {
 
 	/**
-	 * Dependency injection for the authentication service.
+	 * Dependency injection for the authenticationTrustResolver.
 	 */
-	def authenticateService
+	def authenticationTrustResolver
 
 	/**
-	 * Dependency injection for OpenIDConsumer.
+	 * Dependency injection for the springSecurityService.
 	 */
-	def openIDConsumer
+	def springSecurityService
 
 	/**
-	 * Dependency injection for OpenIDAuthenticationProcessingFilter.
+	 * Default action; redirects to 'defaultTargetUrl' if logged in, /login/auth otherwise.
 	 */
-	def openIDAuthenticationProcessingFilter
-
-	private final authenticationTrustResolver = new AuthenticationTrustResolverImpl()
-
 	def index = {
-		if (isLoggedIn()) {
-			
-			 def userDetails = authenticateService.userDomain()
-     	 	println userDetails.getUsername()//get username
-     	 	println userDetails.getId()//get username
-     	 	
-     	 	 GrailsHttpSession gh=getSession()
-		     gh.putValue("UserId", userDetails.getId());
 			 
-			 def userMap=UserMap.find("from UserMap UM where UM.user.id="+userDetails.getId());
-	         println userMap.party.id
-	       def investigatorInstance = Investigator.find("from Investigator I where I.email='"+userDetails.getUsername()+"'")
+			 println "index"
+		if (springSecurityService.isLoggedIn()) {
+			
+			
+			
+			
+			
+			
+			 def user=SCH.context.authentication.principal.username
+			 def role= SCH.context.authentication.principal.authorities.iterator().next()
+			 
+			 GrailsHttpSession gh=getSession()
+		   
+			 println "role_______+-="+SCH.context.authentication.principal.authorities
+			 def userMap=UserMap.find("from UserMap UM where UM.user.username='"+user+"'");
+	         println "role_______+-="+role
+	         gh.putValue("UserId", userMap.user.id);
 	      
 	          def PartyID=userMap.party.id
 		          
 		      println PartyID
-		      
-	     
-	        gh.putValue("PartyID","('"+ PartyID.toString()+"')");	
-	         
-	         gh.putValue("Party", PartyID.toString());	
-			
-     	   if (authenticateService.ifAllGranted('ROLE_ADMIN')) {
-	        	 println "ROLE_ADMIN"
-	        	 gh.putValue("Role",  "ROLE_ADMIN");
-	          	 redirect uri:'/grantAllocation/mainDash.gsp'
-	         }
-     	   else	 if(authenticateService.ifAllGranted('ROLE_USER'))
-     			   {
-     		   
-     	    
- 	        	 println "ROLE_USER"
- 	        	gh.putValue("Role",  "ROLE_USER");
- 	          	 redirect uri:'/grantAllocation/mainDash.gsp'
-     	    }
-     	  else	if(authenticateService.ifAllGranted('ROLE_PI'))
-      		   
-   	    {
-	        	 println "ROLE_PI"
-	        	 def investigatorId = investigatorInstance.id
-	        	gh.putValue("Role",  "ROLE_PI");
-	        	gh.putValue("Pi",investigatorId.toString())
-	          	 redirect uri:'/grantAllocation/mainDash.gsp'
-   	    }
- 	          	
-     	   else	if(authenticateService.ifAllGranted('ROLE_SITEADMIN'))
-		   
-   	    {
-	        	 println "ROLE_USER"
-	        	gh.putValue("Role",  "ROLE_SITEADMIN");
-	          	 redirect uri:'/grantAllocation/mainDash.gsp'
-   	    }
-     	 
- 	          		
-     	 gh.putValue("Help",  "Project_List.htm");
-     	
-			 
-     		 
+		      gh.putValue("Party", PartyID);
+	          gh.putValue("PartyID","('"+ PartyID.toString()+"')");
+			redirect uri:'/grantAllocation/gmsFrame.gsp'
+				 gh.putValue("Role", role);
+			//redirect uri: SpringSecurityUtils.securityConfig.successHandler.defaultTargetUrl
 		}
 		else {
 			redirect action: auth, params: params
@@ -99,92 +67,28 @@ class LoginController {
 	 * Show the login page.
 	 */
 	def auth = {
-			 
-			
-
-		nocache response
-
-		if (isLoggedIn()) {
- GrailsHttpSession gh=getSession()
-			 
-			 if(null == gh.getValue("Role")  && null ==gh.getValue("Role") )
-				{
-					//Redirecting to index page if session is destroyed
-					redirect uri: '/logout'
-				}
-			
-			if (authenticateService.ifAllGranted('ROLE_ADMIN')) {
-	        	 println "ROLE_ADMIN"
-	        	 redirect uri:'/grantAllocation/mainDash.gsp'
-	         }
-			else
-				
-				redirect uri:'/grantAllocation/mainDash.gsp'
+			 println  "auth"
+		def config = SpringSecurityUtils.securityConfig
+		
+		if (springSecurityService.isLoggedIn()) {
+			println  "indexisLoggedIn"+SCH.context.authentication.principal.username
+			 println  "authisLoggedIn"
+			 redirect uri:'/projects/list'
 			return
 		}
 
-		String view
-		String postUrl
-		def config = authenticateService.securityConfig.security
-		if (config.useOpenId) {
-			view = 'openIdAuth'
-			postUrl = "${request.contextPath}/login/openIdAuthenticate"
-		}
-		else if (config.useFacebook) {
-			view = 'facebookAuth'
-			postUrl = "${request.contextPath}${config.facebook.filterProcessesUrl}"
-		}
-		else {
-			view = 'auth'
-			postUrl = "${request.contextPath}${config.filterProcessesUrl}"
-		}
-
-		render view: view, model: [postUrl: postUrl]
-	}
-
-	/**
-	 * Form submit action to start an OpenID authentication.
-	 */
-	def openIdAuthenticate = {
-		String openID = params['j_username']
-		try {
-			String returnToURL = RedirectUtils.buildRedirectUrl(
-					request, response, openIDAuthenticationProcessingFilter.filterProcessesUrl)
-			String redirectUrl = openIDConsumer.beginConsumption(request, openID, returnToURL)
-			redirect url: redirectUrl
-		}
-		catch (org.springframework.security.ui.openid.OpenIDConsumerException e) {
-			log.error "Consumer error: $e.message", e
-			redirect url: openIDAuthenticationProcessingFilter.authenticationFailureUrl
-		}
-	}
-
-	// Login page (function|json) for Ajax access.
-	def authAjax = {
-		nocache(response)
-		//this is example:
-		render """
-		<script type='text/javascript'>
-		(function() {
-			loginForm();
-		})();
-		</script>
-		"""
-	}
-
-	/**
-	 * The Ajax success redirect url.
-	 */
-	def ajaxSuccess = {
-		nocache(response)
-		render '{success: true}'
+		String view = 'auth'
+		String postUrl = "${request.contextPath}${config.apf.filterProcessesUrl}"
+		render view: view, model: [postUrl: postUrl,
+		                           rememberMeParameter: config.rememberMe.parameter]
 	}
 
 	/**
 	 * Show denied page.
 	 */
 	def denied = {
-		if (isLoggedIn() && authenticationTrustResolver.isRememberMe(SCH.context?.authentication)) {
+		if (springSecurityService.isLoggedIn() &&
+				authenticationTrustResolver.isRememberMe(SCH.context?.authentication)) {
 			// have cookie but the page is guarded with IS_AUTHENTICATED_FULLY
 			redirect action: full, params: params
 		}
@@ -194,35 +98,40 @@ class LoginController {
 	 * Login page for users with a remember-me cookie but accessing a IS_AUTHENTICATED_FULLY page.
 	 */
 	def full = {
+		def config = SpringSecurityUtils.securityConfig
 		render view: 'auth', params: params,
-			model: [hasCookie: authenticationTrustResolver.isRememberMe(SCH.context?.authentication)]
-	}
-
-	// Denial page (data|view|json) for Ajax access.
-	def deniedAjax = {
-		//this is example:
-		render "{error: 'access denied'}"
+			model: [hasCookie: authenticationTrustResolver.isRememberMe(SCH.context?.authentication),
+			        postUrl: "${request.contextPath}${config.apf.filterProcessesUrl}"]
 	}
 
 	/**
-	 * login failed
+	 * Callback after a failed login. Redirects to the auth page with a warning message.
 	 */
 	def authfail = {
 
-		def username = session[AuthenticationProcessingFilter.SPRING_SECURITY_LAST_USERNAME_KEY]
-		def msg = ''
-		def exception = session[AbstractProcessingFilter.SPRING_SECURITY_LAST_EXCEPTION_KEY]
+		def username = session[UsernamePasswordAuthenticationFilter.SPRING_SECURITY_LAST_USERNAME_KEY]
+		String msg = ''
+		def exception = session[AbstractAuthenticationProcessingFilter.SPRING_SECURITY_LAST_EXCEPTION_KEY]
 		if (exception) {
-			if (exception instanceof DisabledException) {
-				msg = "[$username] is disabled."
+			if (exception instanceof AccountExpiredException) {
+				msg = SpringSecurityUtils.securityConfig.errors.login.expired
+			}
+			else if (exception instanceof CredentialsExpiredException) {
+				msg = SpringSecurityUtils.securityConfig.errors.login.passwordExpired
+			}
+			else if (exception instanceof DisabledException) {
+				msg = SpringSecurityUtils.securityConfig.errors.login.disabled
+			}
+			else if (exception instanceof LockedException) {
+				msg = SpringSecurityUtils.securityConfig.errors.login.locked
 			}
 			else {
-				msg = "[$username] wrong username/password."
+				msg = SpringSecurityUtils.securityConfig.errors.login.fail
 			}
 		}
 
-		if (isAjax()) {
-			render "{error: '${msg}'}"
+		if (springSecurityService.isAjax(request)) {
+			render([error: msg] as JSON)
 		}
 		else {
 			flash.message = msg
@@ -231,22 +140,16 @@ class LoginController {
 	}
 
 	/**
-	 * Check if logged in.
+	 * The Ajax success redirect url.
 	 */
-	private boolean isLoggedIn() {
-		return authenticateService.isLoggedIn()
+	def ajaxSuccess = {
+		render([success: true, username: springSecurityService.authentication.name] as JSON)
 	}
 
-	private boolean isAjax() {
-		return authenticateService.isAjax(request)
-	}
-
-	/** cache controls */
-	private void nocache(response) {
-		response.setHeader('Cache-Control', 'no-cache') // HTTP 1.1
-		response.addDateHeader('Expires', 0)
-		response.setDateHeader('max-age', 0)
-		response.setIntHeader ('Expires', -1) //prevents caching at the proxy server
-		response.addHeader('cache-Control', 'private') //IE5.x only
+	/**
+	 * The Ajax denied redirect url.
+	 */
+	def ajaxDenied = {
+		render([error: 'access denied'] as JSON)
 	}
 }

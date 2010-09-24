@@ -1,5 +1,5 @@
 class UserMap {
-	User user
+	Person user
 	Party party;
 	String createdBy;
 	Date createdDate;

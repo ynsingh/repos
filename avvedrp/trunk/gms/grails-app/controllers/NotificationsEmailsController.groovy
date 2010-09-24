@@ -37,7 +37,7 @@ class NotificationsEmailsController {
         def notificationsEmailsInstance = NotificationsEmails.get( params.id )
 
         if(!notificationsEmailsInstance) {
-            flash.message = "NotificationsEmails not found with id ${params.id}"
+            flash.message = "NotificationsEmails not found"
             redirect(action:list)
         }
         else { return [ notificationsEmailsInstance : notificationsEmailsInstance ] }
@@ -47,11 +47,11 @@ class NotificationsEmailsController {
         def notificationsEmailsInstance = NotificationsEmails.get( params.id )
         if(notificationsEmailsInstance) {
             notificationsEmailsInstance.delete()
-            flash.message = "NotificationsEmails ${params.id} deleted"
+            flash.message = "NotificationsEmails deleted"
             redirect(action:list)
         }
         else {
-            flash.message = "NotificationsEmails not found with id ${params.id}"
+            flash.message = "NotificationsEmails not found"
             redirect(action:list)
         }
     }
@@ -60,7 +60,7 @@ class NotificationsEmailsController {
         def notificationsEmailsInstance = NotificationsEmails.get( params.id )
 
         if(!notificationsEmailsInstance) {
-            flash.message = "NotificationsEmails not found with id ${params.id}"
+            flash.message = "NotificationsEmails not found"
             redirect(action:list)
         }
         else {
@@ -73,7 +73,7 @@ class NotificationsEmailsController {
         if(notificationsEmailsInstance) {
             notificationsEmailsInstance.properties = params
             if(!notificationsEmailsInstance.hasErrors() && notificationsEmailsInstance.save()) {
-                flash.message = "NotificationsEmails ${params.id} updated"
+                flash.message = "NotificationsEmails updated"
                 redirect(action:show,id:notificationsEmailsInstance.id)
             }
             else {
@@ -81,7 +81,7 @@ class NotificationsEmailsController {
             }
         }
         else {
-            flash.message = "NotificationsEmails not found with id ${params.id}"
+            flash.message = "NotificationsEmails not found"
             redirect(action:edit,id:params.id)
         }
     }
@@ -95,7 +95,7 @@ class NotificationsEmailsController {
     def save = {
         def notificationsEmailsInstance = new NotificationsEmails(params)
         if(!notificationsEmailsInstance.hasErrors() && notificationsEmailsInstance.save()) {
-            flash.message = "NotificationsEmails ${notificationsEmailsInstance.id} created"
+            flash.message = "NotificationsEmails created"
             redirect(action:show,id:notificationsEmailsInstance.id)
         }
         else {
@@ -177,7 +177,7 @@ class NotificationsEmailsController {
     		 def notificationsInstance = Notification.get( params.id )
     		 println "hii id="+notificationsInstance
     	        if(!notificationsInstance) {
-    	            flash.message = "NotificationsEmails not found with id ${params.id}"
+    	            flash.message = "NotificationsEmails not found"
     	            redirect(action:partyNotificationsList)
     	        }
     	        else {
@@ -188,5 +188,22 @@ class NotificationsEmailsController {
     	        	if(proposalInstance){flash.message = "Proposal Submited for this Notification"}
     	        	return [ notificationsInstance : notificationsInstance,attachmentTypesInstance:attachmentTypesInstance,notificationsAttachmentsInstance:notificationsAttachmentsInstance,proposalInstance:proposalInstance ] }
     		
+    }
+    def publish = {
+    		println "publish params"+params
+    		GrailsHttpSession gh = getSession()
+    		def notificationInstance = Notification.get(params.id)
+    		def partyInstance = Party.findAll("from Party P")
+    		println "partyInstance=="+partyInstance
+    		//def notificationsEmailsInstance = new NotificationsEmails()
+    		for (partyid in partyInstance) 
+    		{
+    			def notificationsEmailsInstance = new NotificationsEmails()
+    			notificationsEmailsInstance.notification=notificationInstance
+    			notificationsEmailsInstance.party=partyid
+    			notificationsEmailsInstance.save()
+    			
+    		}
+    		redirect(controller:"notification",action:"list",id:notificationInstance.id)
     }
 }

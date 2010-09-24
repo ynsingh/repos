@@ -10,7 +10,7 @@ class Investigator
 	static constraints = 
 	{
 		
-		department(nullable:false,blank:false)
+		department(nullable:true,blank:false)
 		name(nullable:false,blank:false,unique: true)
 		email(email:true,blank:false,unique: true)
     }

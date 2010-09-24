@@ -6,7 +6,7 @@ class ProjectDepartmentMap {
 	Date createdDate;
 	String modifiedBy;
 	Date modifiedDate;
-	
+	char activeYesNo;
 	static constraints = {
 		
 		createdBy(nullable: true)

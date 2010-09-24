@@ -7,12 +7,7 @@
         <title>Create Sub Institution </title>         
     </head>
     <body>
-    <div class="wrapper"> 
-        <div class="nav">
-             <span class="menuButton"><a class="home" href="${createLinkTo(dir:'/login')}">Home</a></span>
-            <span class="menuButton"><g:link class="list" action="list">Institution List</g:link></span>
-        </div>
-        
+    <div class="wrapper">       
         <table class="tablewrapper">
         <tr>
         <td>

@@ -8,13 +8,6 @@
     </head>
     <body>
          <div class="wrapper">
-            <div class="nav">
-              <span class="menuButton"><a class="home" href="${createLinkTo(dir:'/login')}">Home</a></span>
-            <span class="menuButton"><g:link class="list" action="list">AccountHeads List</g:link></span>
-              <g:if test="${session.Role == 'ROLE_ADMIN'}"> 
-            <span class="menuButton"><g:link class="create" action="create">New AccountHeads</g:link></span>
-            </g:if>
-        </div>
         <div class="body">
             <h1>Show AccountHeads</h1>
             <g:if test="${flash.message}">

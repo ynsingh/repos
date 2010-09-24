@@ -3,6 +3,7 @@ class PartyDepartment {
 	Party party;
 	String departmentCode;
 	String name;
+	char activeYesNo;
 	String createdBy;
 	Date createdDate;
 	String modifiedBy;

@@ -1,82 +1,110 @@
+
+
+import org.springframework.util.StringUtils
+
+/**
+ * Requestmap controller.
+ */
 class RequestmapController {
-    
-    def index = { redirect(action:list,params:params) }
 
-    // the delete, save and update actions only accept POST requests
-    def allowedMethods = [delete:'POST', save:'POST', update:'POST']
+	def authenticateService
 
-    def list = {
-        if(!params.max) params.max = 10
-        [ requestmapInstanceList: Requestmap.list( params ) ]
-    }
+	// the delete, save and update actions only accept POST requests
+	static Map allowedMethods = [delete: 'POST', save: 'POST', update: 'POST']
 
-    def show = {
-        def requestmapInstance = Requestmap.get( params.id )
+	def index = {
+		redirect action: list, params: params
+	}
 
-        if(!requestmapInstance) {
-            flash.message = "Requestmap not found with id ${params.id}"
-            redirect(action:list)
-        }
-        else { return [ requestmapInstance : requestmapInstance ] }
-    }
+	def list = {
+		if (!params.max) {
+			params.max = 10
+		}
+		[requestmapList: Requestmap.list(params)]
+	}
 
-    def delete = {
-        def requestmapInstance = Requestmap.get( params.id )
-        if(requestmapInstance) {
-            requestmapInstance.delete()
-            flash.message = "Requestmap ${params.id} deleted"
-            redirect(action:list)
-        }
-        else {
-            flash.message = "Requestmap not found with id ${params.id}"
-            redirect(action:list)
-        }
-    }
+	def show = {
+		def requestmap = Requestmap.get(params.id)
+		if (!requestmap) {
+			flash.message = "Requestmap not found with id $params.id"
+			redirect action:list
+			return
+		}
+		[requestmap: requestmap]
+	}
 
-    def edit = {
-        def requestmapInstance = Requestmap.get( params.id )
+	def delete = {
+		def requestmap = Requestmap.get(params.id)
+		if (!requestmap) {
+			flash.message = "Requestmap not found with id $params.id"
+			redirect action:list
+			return
+		}
 
-        if(!requestmapInstance) {
-            flash.message = "Requestmap not found with id ${params.id}"
-            redirect(action:list)
-        }
-        else {
-            return [ requestmapInstance : requestmapInstance ]
-        }
-    }
+		requestmap.delete()
 
-    def update = {
-        def requestmapInstance = Requestmap.get( params.id )
-        if(requestmapInstance) {
-            requestmapInstance.properties = params
-            if(!requestmapInstance.hasErrors() && requestmapInstance.save()) {
-                flash.message = "Requestmap ${params.id} updated"
-                redirect(action:show,id:requestmapInstance.id)
-            }
-            else {
-                render(view:'edit',model:[requestmapInstance:requestmapInstance])
-            }
-        }
-        else {
-            flash.message = "Requestmap not found with id ${params.id}"
-            redirect(action:edit,id:params.id)
-        }
-    }
+		authenticateService.clearCachedRequestmaps()
 
-    def create = {
-        def requestmapInstance = new Requestmap()
-        requestmapInstance.properties = params
-        return ['requestmapInstance':requestmapInstance]
-    }
+		flash.message = "Requestmap $params.id deleted."
+		redirect(action: list)
+	}
 
-    def save = {
-        def requestmapInstance = new Requestmap(params)
-        if(!requestmapInstance.hasErrors() && requestmapInstance.save()) {
-            flash.message = "Requestmap ${requestmapInstance.id} created"
-            redirect(action:show,id:requestmapInstance.id)
-        }
-        else {
-            render(view:'create',model:[requestmapInstance:requestmapInstance])
-        }
-    }
+	def edit = {
+		def requestmap = Requestmap.get(params.id)
+		if (!requestmap) {
+			flash.message = "Requestmap not found with id $params.id"
+			redirect(action: list)
+			return
+		}
+
+		[requestmap: requestmap]
+	}
+
+	/**
+	 * Update action, called when an existing Requestmap is updated.
+	 */
+	def update = {
+
+		def requestmap = Requestmap.get(params.id)
+		if (!requestmap) {
+			flash.message = "Requestmap not found with id $params.id"
+			redirect(action: edit, id :params.id)
+			return
+		}
+
+		long version = params.version.toLong()
+		if (requestmap.version > version) {
+			requestmap.errors.rejectValue 'version', "requestmap.optimistic.locking.failure",
+				"Another user has updated this Requestmap while you were editing."
+			render view: 'edit', model: [requestmap: requestmap]
+			return
+		}
+
+		requestmap.properties = params
+		if (requestmap.save()) {
+			authenticateService.clearCachedRequestmaps()
+			redirect action: show, id: requestmap.id
+		}
+		else {
+			render view: 'edit', model: [requestmap: requestmap]
+		}
+	}
+
+	def create = {
+		[requestmap: new Requestmap(params)]
+	}
+
+	/**
+	 * Save action, called when a new Requestmap is created.
+	 */
+	def save = {
+		def requestmap = new Requestmap(params)
+		if (requestmap.save()) {
+			authenticateService.clearCachedRequestmaps()
+			redirect action: show, id: requestmap.id
+		}
+		else {
+			render view: 'create', model: [requestmap: requestmap]
+		}
+	}
 }

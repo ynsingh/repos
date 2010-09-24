@@ -29,11 +29,11 @@ class ProjectTypeController {
         if(projectTypeInstance) {
             projectTypeInstance.delete()
             flash.message = "ProjectType ${projectTypeInstance.type} deleted"
-            redirect(action:list)
+            redirect(action:create)
         }
         else {
             flash.message = "ProjectType not found with id ${params.id}"
-            redirect(action:list)
+            redirect(action:create)
         }
     }
 
@@ -42,7 +42,7 @@ class ProjectTypeController {
 
         if(!projectTypeInstance) {
             flash.message = "ProjectType not found with id ${params.id}"
-            redirect(action:list)
+            redirect(action:create)
         }
         else {
             return [ projectTypeInstance : projectTypeInstance ]
@@ -55,7 +55,7 @@ class ProjectTypeController {
             projectTypeInstance.properties = params
             if(!projectTypeInstance.hasErrors() && projectTypeInstance.save()) {
                 flash.message = "ProjectType ${projectTypeInstance.type} updated"
-                redirect(action:list,id:projectTypeInstance.id)
+                redirect(action:create,id:projectTypeInstance.id)
             }
             else {
                 render(view:'edit',model:[projectTypeInstance:projectTypeInstance])
@@ -73,7 +73,9 @@ class ProjectTypeController {
     	gh.putValue("Help","Project_Type.htm")
         def projectTypeInstance = new ProjectType()
         projectTypeInstance.properties = params
-        return ['projectTypeInstance':projectTypeInstance]
+        def projectTypeInstanceList=ProjectType.findAll("from ProjectType PT where PT.activeYesNo='Y'")
+        return ['projectTypeInstance':projectTypeInstance,
+                'projectTypeInstanceList': projectTypeInstanceList]
     }
 
     def save = {
@@ -87,7 +89,7 @@ class ProjectTypeController {
 	        if(projectTypeInstance.save()) 
 	        {
 	            flash.message = "ProjectType ${projectTypeInstance.type} created"
-	            redirect(action:list,id:projectTypeInstance.id)
+	            redirect(action:create,id:projectTypeInstance.id)
 	        }
 	        
 	        else {

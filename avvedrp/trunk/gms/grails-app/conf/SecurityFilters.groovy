@@ -6,20 +6,47 @@ class SecurityFilters {
     	   before  = {
     			   println "party"+session.Party
     			   println "actionname"+actionName
+    			   println "Role"+session.Role
+    			   println "party"+session.Party
+    			   println "controllerName"+controllerName
     			   
-        	  if(!session.Party && !actionName.equals('auth')&&!actionName.equals('mainDash')&&!actionName.equals('newUserCreate')&&!actionName.equals('saveNewUser')&&(actionName!=null))
+        	  if(!session.Party)
         	  {
-        		  println " herecf"
-        	
-        		 if(!params.toString().contains("login_error"))
-        		 {
         		  
-                	redirect(controller:'login',action:'auth')
-                    return false
-        		 }
-               }
-           }       
-   }
+        		  if(!"login".equals(controllerName)&& !"newUserCreate".equals(actionName)&& !"user".equals(controllerName)&& !"saveNewUser".equals(actionName))
+        		  {
+        		    redirect uri:'/login'
+        			  return false;
+        		  }
+        		  
+        	  }
+        	  else if("logout".equals(controllerName))
+        	  {
+        		  
+        	  }
+        	  else
+        	  {      		  
+        		  
+        		  
+             if(session.Role != 'ROLE_SITEADMIN' )
+            {
+    		def rolePrivilegesInstance = RolePrivileges.findAll("from RolePrivileges RP where RP.role.authority='"+session.Role+"' and RP.party.id="+session.Party+" and RP.controllerName='"+controllerName+"' and RP.actionName ='"+actionName+"'")  
+			println "rolePrivilegesInstance"+rolePrivilegesInstance
+				
+					if(!rolePrivilegesInstance)
+					{
+						
+						println "++++++++++invalid access page++++++++tytfgdsf****"
+						redirect uri:'/invalidAccess.gsp'
+						return false;
+						
+						
+					}
+				
+            }
+    	   }
+    	   }
+    } 
        
        catch(Exception e)
        {

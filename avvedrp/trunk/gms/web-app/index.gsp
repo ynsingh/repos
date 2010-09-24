@@ -10,20 +10,18 @@
     
       <div align="right">
   
-   <g:isLoggedIn>
-   Logged in as <b><g:loggedInUsername/></b> (<g:link controller='logout'>Logout</g:link>)
-   </g:isLoggedIn>
+  
+   
    
    
    </div> 
-
-      <g:isNotLoggedIn>
-			<%response.sendRedirect("login/auth.gsp")%>
-		</g:isNotLoggedIn>
-		
-		<g:isLoggedIn>
-			<%response.sendRedirect("grantAllocation/mainDash.gsp")%>
-		</g:isLoggedIn>
+  
+      
+         
+			<%response.sendRedirect("login")%>
+	
+		  
+	
  
         <h1 style="margin-left:20px;">Welcome to Grails</h1>
         <p style="margin-left:20px;width:80%">Congratulations, you have successfully started your first Grails application! At the moment

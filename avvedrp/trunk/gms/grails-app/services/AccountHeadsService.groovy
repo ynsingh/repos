@@ -5,7 +5,7 @@ class AccountHeadsService{
 	 * Function to get all active account heads.
 	 */
 	public List getActiveAccountHeads(String subQuery){
-		def accountHeadsInstanceList = AccountHeads.findAll( "from AccountHeads AH where AH.parent=NULL "+subQuery  ) 
+		def accountHeadsInstanceList = AccountHeads.findAll( "from AccountHeads AH where AH.parent=NULL and AH.activeYesNo='Y'"+subQuery  ) 
 		return accountHeadsInstanceList
 	}
 	
@@ -21,7 +21,7 @@ class AccountHeadsService{
 	 * Function to get sub account heads.
 	 */
 	public List getSubAccountHeads(Integer mainAccountHeadId){
-		def accountHeadsInstanceList=AccountHeads.findAll("from AccountHeads P where P.parent.id="+mainAccountHeadId)
+		def accountHeadsInstanceList=AccountHeads.findAll("from AccountHeads P where P.parent.id="+mainAccountHeadId+"and P.activeYesNo='Y'")
 		return accountHeadsInstanceList
 	}
 	

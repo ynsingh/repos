@@ -4,9 +4,9 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main" />
-        <title>Edit Investigator</title>
+        <title><g:message code="default.Investigator.EditInvestigator.head" /></title>         
     </head>
-     <!--  Import 'prototype' -->
+    <!--  Import 'prototype' -->
     <g:javascript library="prototype"/>
     <!-- Hook up the ajax code - 
     	 first of all we attach a listener to the 'institution' element to detect for any 'change' 
@@ -23,46 +23,21 @@
 		document.observe('dom:loaded', function() {
 		   $("institution").observe("change", respondToSelect);
 		   });
-		
-		 
-		 function respondToSelect(event)
-		 {
+	    function respondToSelect(event)
+		   {
 		       var baseUrl = "${createLink(controller:'investigator', action:'updateSelect')}"
 		       new Ajax.Updater("department",
 		          baseUrl,
 		          {method:'get', parameters: {selectedValue : $F("institution"),id : $F("id")} }
 		         );					        
-		 }
+		   }
 	</g:javascript>
-	<script>
-		function validate()
-		{
-			if(document.getElementById('name').value == '' || document.getElementById('name').value == null)
-			{
-				alert("Please Enter the Investigator Name");
-				document.getElementById('name').focus;
-				return false;
-			}
-			if(document.getElementById('institution').value == '' || document.getElementById('institution').value == null)
-			{
-				alert("Please select the Institution");
-				document.getElementById('institution').focus;
-				return false;
-			}
-			return true;
-		}
-	</script>
     <body>
-    <div class="wrapper"> 
-        <div class="nav">
-            <span class="menuButton"><a class="home" href="${createLinkTo(dir:'')}">Home</a></span>
-            <span class="menuButton"><g:link class="list" action="list">Investigator List</g:link></span>
-            
-        </div>
+      <div class="wrapper"> 
         <div class="body">
-            <h1>Edit Investigator</h1>
+            <h1><g:message code="default.Investigator.EditInvestigator.head" /></h1>
             <g:if test="${flash.message}">
-            <div class="message">${flash.message}</div>
+              <div class="message">${flash.message}</div>
             </g:if>
             <g:hasErrors bean="${investigatorInstance}">
             <div class="errors">
@@ -73,73 +48,73 @@
                 <input type="hidden" id="id" name="id" value="${investigatorInstance?.id}" />
                 <div class="dialog">
                     <table>
-                        <tbody>
+                       <tbody>
                          <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="name">Name:</label>
+                                    <label for="name"><g:message code="default.Name.label"/></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:investigatorInstance,field:'name','errors')}">
-                                    <input type="text" id="name" name="name" value="${fieldValue(bean:investigatorInstance,field:'name')}" disabled="true"/>
+                                	<input type="text" id="name" name="name" value="${fieldValue(bean:investigatorInstance,field:'name')}"/>                        
                                 </td>
-                            </tr> 
-                            <tr class="prop">
+                         </tr> 
+                         <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="designation">Designation:</label>
+                                    <label for="designation"><g:message code="default.Designation.label"/></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:investigatorInstance,field:'designation','errors')}">
                                     <input type="text" id="designation" name="designation" value="${fieldValue(bean:investigatorInstance,field:'designation')}"/>
                                 </td>
-                            </tr> 
-                            <tr class="prop">
+                         </tr> 
+                         <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="party">Institution:</label>
+                                    <label for="party"><g:message code="default.Institution.label"/></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:investigatorInstance,field:'party','errors')}">
                                     <g:select optionKey="id" id="institution" optionValue="code" from="${Party.list()}" name="party.id" value="${investigatorInstance?.party?.id}"></g:select>
                                 </td>
-                            </tr> 
-                            <tr class="prop">
+                         </tr> 
+                         <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="department">Department:</label>
+                                    <label for="department"><g:message code="default.Department.label"/></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:investigatorInstance,field:'department','errors')}">
                                    <div id="department">
-                                    <g:select optionKey="id" optionValue="departmentCode" from="${PartyDepartment.list()}" name="department.id" value="${investigatorInstance?.department?.id}"></g:select>
-                               		</div>
+                                      <g:select optionKey="id" optionValue="departmentCode" from="${PartyDepartment.list()}" name="department.id" value="${investigatorInstance?.department?.id}"></g:select>
+                               	   </div>
                                 </td>
-                            </tr> 
-                  			<tr class="prop">
+                         </tr> 
+                  	     <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="address">Address:</label>
+                                    <label for="address"><g:message code="default.Address.label"/></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:investigatorInstance,field:'address','errors')}">
                                     <input type="text" id="address" name="address" value="${fieldValue(bean:investigatorInstance,field:'address')}"/>
                                 </td>
-                            </tr> 
-                            <tr class="prop">
+                         </tr> 
+                         <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="email">Email:</label>
+                                    <label for="email"><g:message code="default.Email.label"/></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:investigatorInstance,field:'email','errors')}">
                                     <input type="text" id="email" name="email" value="${fieldValue(bean:investigatorInstance,field:'email')}"/>
                                 </td>
-                            </tr> 
-                            <tr class="prop">
+                         </tr> 
+                         <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="activeYesNo">Active:</label>
+                                    <label for="activeYesNo"><g:message code="default.Active.label"/></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:investigatorInstance,field:'activeYesNo','errors')}">
                                     <g:select name="activeYesNo" from="${['Y', 'N']}" value="${fieldValue(bean:investigatorInstance,field:'activeYesNo')}" />
                                 </td>
-                            </tr> 
-                        </tbody>
+                         </tr> 
+                       </tbody>
                     </table>
                 </div>
                 <div class="buttons">
-                    <span class="button"><g:actionSubmit class="save" value="Update" onClick="return validate()"/></span>
+                    <span class="button"><g:actionSubmit class="save" value="${message(code: 'default.Update.button')}" onClick="return validatePI()"/></span>
                 </div>
             </g:form>
         </div>
-         </div>
+      </div>
     </body>
 </html>

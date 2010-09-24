@@ -2,38 +2,13 @@
 	<meta name="layout" content="main" />
 	<title>Change Password</title>
 	<script>
-	function validatePassword()
-	{
-		if(document.getElementById("newPasswd").value == "" || document.getElementById("newPasswd").value == null )
-		{
-			document.getElementById("newPasswd").focus();
-			alert("Please Enter New Password");
-			return false;
-		}
-		if(document.getElementById("confirmNewPasswd").value == "" || document.getElementById("confirmNewPasswd").value == null )
-		{
-			document.getElementById("confirmNewPasswd").focus();
-			alert("Confirm Password");
-			return false;
-		}
-		if(document.getElementById("confirmNewPasswd").value != document.getElementById("newPasswd").value)
-    	{
-    		document.getElementById("confirmNewPasswd").focus();
-    		alert("Incorrect Password");
-    		return false;
-    	}
-		return true;
-	}
+
 	</script>
 </head>
 
 <body>
 <div class="wrapper">
-	<div class="nav">
-            <span class="menuButton"><a class="home" href="${createLinkTo(dir:'/login')}">Home</a></span>
-              
-           
-        </div>
+	
 
 	<div class="body">
 		<h1>Change Password</h1>
@@ -83,8 +58,8 @@
 								
 					<!-- <tr class="prop">
 						<td valign="top" class="name"><label for="passwd">New Password:</label></td>
-						<td valign="top" class="value ${hasErrors(bean:person,field:'passwd','errors')}">
-							<input type="password" id="passwd" name="passwd" value="${person.passwd?.encodeAsHTML()}"/>
+						<td valign="top" class="value ${hasErrors(bean:person,field:'password','errors')}">
+							<input type="password" id="passwd" name="passwd" value="${person.password?.encodeAsHTML()}"/>
 						</td>
 					</tr> -->
                         

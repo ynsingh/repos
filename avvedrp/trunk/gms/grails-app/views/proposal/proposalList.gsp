@@ -4,59 +4,41 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main" />
-        <title>Proposal List</title>
+        <title><g:message code="default.Proposal.ProposalList.head"/></title>
     </head>
     <body>
-    <div class="wrapper">
-        <div class="nav">
-            <span class="menuButton"><a class="home" href="${createLinkTo(dir:'')}">Home</a></span>
-       		<span class="menuButton"><g:link class="list" controller="notification" action="list">Notification List</g:link></span>
-       		
-        </div>
-         <div class="tablewrapper">
-       
-         <div class="body">
-            <h1>Proposal List</h1>
+      <div class="wrapper">
+        <div class="tablewrapper">
+          <div class="body">
+            <h1><g:message code="default.Proposal.ProposalList.head"/></h1>
             <g:if test="${flash.message}">
-            <div class="message">${flash.message}</div>
+              <div class="message">${flash.message}</div>
             </g:if>
             <div class="list">
                 <table>
                     <thead>
                         <tr>
-                         <input type="hidden" id="notificationId" name="notificationId" value="${fieldValue(bean:proposalInstance, field:'notification.id')}"/>
-                   	        <g:sortableColumn property="id" title="Id" />
-                   	        
-                   	        <th>Party</th>
-                        	<th>View Proposal</th>
-                   	        
-                        </tr>
+                          <input type="hidden" id="notificationId" name="notificationId" value="${fieldValue(bean:proposalInstance, field:'notification.id')}"/>
+                   	      <g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}" />
+                   	      <th><g:message code="default.Institution.label"/></th>
+                          <th><g:message code="default.ViewProposal.label"/></th>
+                   	    </tr>
                     </thead>
                     <tbody>
-                    <g:each in="${proposalInstanceList}" status="i" var="proposalInstance">
+                      <% int j=0 %>
+                      <g:each in="${proposalInstanceList}" status="i" var="proposalInstance">
+                        <% j++ %>
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-                        
-                            
-                             <td>${i+1}</td>
-                             <td>${fieldValue(bean:proposalInstance, field:'party.code')}</td>
-                        
-                            <td><g:link action="show" id="${proposalInstance.id}">View</g:link></td>
-                        
-                        
-                        
-                           
-                        
+                          <td>${j}</td>
+                          <td>${fieldValue(bean:proposalInstance, field:'party.code')}</td>
+                          <td><g:link action="show" id="${proposalInstance.id}"><g:message code="default.View.label"/></g:link></td>
                         </tr>
-                    </g:each>
+                      </g:each>
                     </tbody>
                 </table>
             </div>
-            <div class="paginateButtons">
-                <g:paginate total="${Proposal.count()}" />
-            </div>
-             </div>
-             </div>
+          </div>
         </div>
-        </div>
+      </div>
     </body>
 </html>

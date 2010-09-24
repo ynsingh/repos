@@ -5,7 +5,7 @@ class GrantPeriodService{
 	 * Function to get all grant periods.
 	 */
 	public List getAllGrantPeriods(def grantPeriodParams){
-		def grantPeriodInstanceList = GrantPeriod.list( grantPeriodParams )
+		def grantPeriodInstanceList = GrantPeriod.findAll("from GrantPeriod GP where GP.activeYesNo='Y'")
 		return grantPeriodInstanceList
 	}
 	
@@ -60,5 +60,18 @@ class GrantPeriodService{
 	    	
     	return grantPeriodInstance
 	}
+	
+	public List getDefaultGrantPeriod(def params)
+	{
+		def chkDefaultGrantPeriodInstance=GrantPeriod.findAll("from GrantPeriod GP where GP.defaultYesNo='Y'")
+		return chkDefaultGrantPeriodInstance
+	}
+	public GrantPeriod getGrantPeriod(def grantPeriodInstance)
+	{	
+		def grantPeriodDuplicateInstance=GrantPeriod.find("from GrantPeriod GP where GP.name='" + grantPeriodInstance.name+"'")
+	    	
+    	return grantPeriodDuplicateInstance
+	}
+	
 	
 }

@@ -4,46 +4,13 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main" />
-        <title>Create GrantAllocation</title>         
+        <title>Create GrantAllocation</title>        
     </head>
-    
-    <script>
-    function validate()
-    { 
-    if( ( (document.getElementById("granter").value) == 'null') || ( (document.getElementById("granter").value) == '') )
-    	    {
-    		    alert("Please enter granter");
-    		    return false;
-	    }
-     if(isNaN(document.getElementById("amountAllocated").value))
-    {
-    alert("Invalid Amount  ");
-    document.getElementById("amountAllocated").focus
-    return false;
-    }
-     if((document.getElementById("amountAllocated").value)=='')
-    {
-    alert("Please enter Proper Amount  ");
-    return false;
-    }
-    
-     if(eval(document.getElementById("amountAllocated").value)<=0)
-    {
-    alert("Please enter Proper Amount  ");
-    return false;
-    }    
-    
-    }
-     </script>
-    <body><div class="wrapper"> 
-        <div class="nav">
-            <span class="menuButton"><a class="home" href="${createLinkTo(dir:'/login')}">Home</a></span>
-            
-           <span class="menuButton"><a class="list"  href="../projectDash/${projectInstance.id}">Project List</a></span>
-           </div>
-<table class="tablewrapper" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td scope="col">  <div class="body">
+    <body>
+<div class="wrapper"> 
+<g:subMenuList/>
+<div class="proptable">
+ <div class="body">
             <h1>Project Allotment</h1>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
@@ -55,7 +22,7 @@
             </g:hasErrors>
             <g:form action="subGrantSaveExt" method="post" >
                 <div class="dialog">
-                    <table>
+        <table><tbody>
                         <tbody>
                         
                          <tr>
@@ -164,12 +131,11 @@
                     </table>
                 </div>
                 <div class="buttons">
-                    <span class="button"><input class="save" type="submit" value="Create" onClick="return validate()"  /></span>
+                    <span class="button"><input class="save" type="submit" value="Create" onClick="return validateSubGrantAllotExt()"  /></span>
                 </div>
-              </g:form></td>
-  </tr>
-  <tr>
-    <td scope="row"> 
+              </g:form>
+</div>
+ <div class="body">
     <g:if test="${grantAllocationInstanceList}">
     <div class="list">
                 <table width="97%" align="center" border="0" cellspacing="0" cellpadding="0">
@@ -240,14 +206,12 @@
                 </table>
             </div>
             </g:if>
-            </td>
-  </tr>
-</table>      
+     
 
 
-</div>
-
-                
+      </div>
+    </div>    
+   </div>             
            
       
        

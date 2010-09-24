@@ -7,10 +7,8 @@
         <title>AttachmentType List</title>
     </head>
     <body>
-        <div class="nav">
-            <span class="menuButton"><a class="home" href="${createLinkTo(dir:'')}">Home</a></span>
-            <span class="menuButton"><g:link class="create" action="create">New AttachmentType</g:link></span>
-        </div>
+      <div class="wrapper">
+      
         <div class="body">
             <h1>AttachmentType List</h1>
             <g:if test="${flash.message}">

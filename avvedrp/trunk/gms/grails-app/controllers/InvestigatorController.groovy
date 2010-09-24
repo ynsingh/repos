@@ -1,6 +1,9 @@
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
+import org.codehaus.groovy.grails.commons.ApplicationHolder as AH
+import org.apache.commons.validator.EmailValidator
 class InvestigatorController {
 	def authenticateService
+	def notificationsEmailsService
     def index = { redirect(action:list,params:params) }
 
     // the delete, save and update actions only accept POST requests
@@ -71,7 +74,7 @@ class InvestigatorController {
 
         if(!investigatorInstance) {
             flash.message = "Investigator not found with id ${params.id}"
-            redirect(action:list)
+            redirect(action:create)
         }
         else {
             return [ investigatorInstance : investigatorInstance ]
@@ -85,7 +88,7 @@ class InvestigatorController {
             investigatorInstance.properties = params
             if(!investigatorInstance.hasErrors() && investigatorInstance.save()) {
                 flash.message = "Investigator ${investigatorInstance.name} updated"
-                redirect(action:list,id:investigatorInstance.id)
+                redirect(action:create,id:investigatorInstance.id)
             }
             else {
                 render(view:'edit',model:[investigatorInstance:investigatorInstance])
@@ -110,27 +113,53 @@ class InvestigatorController {
        
         investigatorInstance.properties = params
         //investigatorInstance.department=department
-        return ['investigatorInstance':investigatorInstance,'partyinstance':partyinstance]
+       
+        def investigatorInstanceList
+        def investigatorService=new InvestigatorService()
+        println"@@@@@params@@@@@@"+params
+        String subQuery ="";
+      
+        if(params.sort != null && !params.sort.equals(""))
+        	subQuery=" order by I."+params.sort
+        if(params.order != null && !params.order.equals(""))
+        	subQuery =subQuery+" "+params.order
+      
+        if(gh.getValue("Role")=="ROLE_ADMIN")
+        {
+        	investigatorInstanceList = investigatorService.getAllInvestigators(subQuery)
+        }
+        else
+        {
+        	
+        	investigatorInstanceList =investigatorService.getInvestigatorsWithParty(gh.getValue("PartyID"),subQuery)
+        }
+        
+        return ['investigatorInstance':investigatorInstance,'partyinstance':partyinstance,
+                'investigatorInstanceList':investigatorInstanceList]
     }
 
     def save = {
+			def ctx = AH.application.mainContext
+			def springSecurityService=ctx.springSecurityService
         def investigatorInstance = new Investigator(params)
-        println "--------------------"+params.institution
         def partyinstance = Party.get(params.institution)
         investigatorInstance.party = partyinstance
+        EmailValidator emailValidator = EmailValidator.getInstance()
+		if (emailValidator.isValid(params.email))
+		{
         if(!investigatorInstance.hasErrors() && investigatorInstance.save()) {
             flash.message = "Investigator ${investigatorInstance.name} created"
-            def userInstance = new User()
+            def userInstance = new Person()
             userInstance.username = investigatorInstance.email
             def subName = investigatorInstance.email
             //Extracting username from emailId
             String userName = subName.substring(0,subName.indexOf('@'))
-            println "userName"+userName
+            
             userInstance.userRealName = investigatorInstance.name
-            println "userInstance"+userInstance
-            userInstance.passwd = authenticateService.encodePassword(userName)
+            
+            userInstance.password = springSecurityService.encodePassword(userName)
             userInstance.email = investigatorInstance.email
-            userInstance.enabled=true
+            userInstance.enabled=false
             //userInstance.save()
             def userService = new UserService()
             def userPiInstance = userService.saveNewPi(userInstance)
@@ -139,28 +168,34 @@ class InvestigatorController {
             userMapInstance.party = Party.get(params.institution)
             userMapInstance.createdBy="admin"
             userMapInstance.modifiedBy="admin"
-            println "userMapInstance"+userMapInstance
+            
             if(userMapInstance.save())
             {
-            	println "userMap Pi saved"
+            	String urlPath = request.getScheme() + "://" + request.getServerName() +":"+ request.getServerPort() + request.getContextPath()+"/user/userActivation/"
+            	def emailId = notificationsEmailsService.sendMessage(investigatorInstance.email,userName,investigatorInstance.name,userInstance.id,urlPath)
+            	
             }
-            redirect(action:list,id:investigatorInstance.id)
+            redirect(action:create,id:investigatorInstance.id)
         }
         else {
             render(view:'create',model:[investigatorInstance:investigatorInstance,partyinstance:partyinstance])
         }
+		}
+		else
+		{
+			flash.message = "Please provide a valid email address"
+			render(view:'create',model:[investigatorInstance:investigatorInstance,partyinstance:partyinstance])
+		}
     }
     def updateSelect = 
     {
-    	println "iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii"+params
-    	println ("2fffff"+params.selectedValue)
     	//String val=(params.selectedValue).toString()
     	if(params.selectedValue)
     	{
 	    	def institutionSelected = Party.find("from Party P where P.id="+params.selectedValue)
-	    	println "lllllllllllww" +institutionSelected;
+	    	
 	    	render (template:"selectDepartment", model : ['party' : institutionSelected])
-	    	println "after" +institutionSelected;  
+	    	  
     	}
     	else
     	{

@@ -8,12 +8,7 @@
     </head>
     <body>
     <div class="wrapper">
-        <div class="nav">
-              <span class="menuButton"><a class="home" href="${createLinkTo(dir:'/login')}">Home</a></span>
-                  <g:if test="${session.Role != 'ROLE_USER'}"> 
-            <span class="menuButton"><g:link class="create" action="create">New Grant Agency</g:link></span>
-            </g:if>
-        </div>
+    
         <div class="body">
             <h1>Grant Agency List</h1>
             <g:if test="${flash.message}">

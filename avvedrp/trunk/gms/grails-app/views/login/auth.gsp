@@ -1,6 +1,8 @@
 <head>
 
 <title>Login</title>
+
+
 <style type='text/css' media='screen'>
 body {
 text-align: center;
@@ -85,10 +87,28 @@ background-color: #d5e5ed;
   }
 /* dashboardBar end */
 </style>
+
+
+<script language="JavaScript" type="text/javascript">
+<!--
+function breakout_of_frame()
+{
+  // see http://www.thesitewizard.com/archive/framebreak.shtml
+  // for an explanation of this script and how to use it on your
+  // own website
+  if (top.location != location) {
+    top.location.href = document.location.href ;
+  }
+}
+-->
+</script>
 </head>
 
 
-<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+
+
+
+<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onload="breakout_of_frame()">
 
 <!-- Login Bar Start-->
 <div class="loginLink">
@@ -130,6 +150,9 @@ background-color: #d5e5ed;
     <tr>
    	 	<td>
   	 	 <g:link style="font-size:12px;font-weight: bold;" controller="user" action="newUserCreate">Register</g:link>
+      </td>
+      <td>
+  	 	 <g:link style="font-size:10px;" controller="user" action="forgotPassword">Forgot password?</g:link>
       </td>
       </tr>
     <tr>

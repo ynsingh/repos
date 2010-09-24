@@ -1,0 +1,71 @@
+.glossymenubody	{
+		background-color: #9DC6D9;
+		margin: 0 0 0 8;
+		padding: 0;
+
+}
+	.glossymenu{
+		margin: 0;
+		padding: 0;
+		width: 150px; /*width of menu*/
+		background: transparent;
+		border: 1px solid #53707f;
+		border-bottom-width: 1px;
+	}
+
+	.glossymenu a.menuitem{
+		background: #c6e3ef url(../images/accordion/glossyback.gif) repeat-x bottom left;
+		border-bottom: 1.5px solid #729cb2;
+		font: bold 11px Verdana;
+		color: #104d6b;
+		display: block;
+		position: relative; /*To help in the anchoring of the ".statusicon" icon image*/
+		width: auto;
+		padding: 7px 0 7px 7px;
+		text-decoration: none;
+	}
+
+
+	.glossymenu a.menuitem:visited, .glossymenu .menuitem:active{
+		color: #104d6b;
+	}
+
+	.glossymenu a.menuitem .statusicon{ /*CSS for icon image that gets dynamically added to headers*/
+		position: absolute;
+		top: 5px;
+		right: 5px;
+		border: none;
+	}
+
+	.glossymenu a.menuitem:hover{
+		background-image: url(../images/accordion/glossyback2.gif);
+	}
+
+	.glossymenu div.submenu{ /*DIV that contains each sub menu*/
+		background: #deebf2;
+		color: #0e4860;
+	}
+
+	.glossymenu div.submenu ul{ /*UL of each sub menu*/
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.glossymenu div.submenu ul li{
+		border-bottom: 1px solid #fff;
+	}
+
+	.glossymenu div.submenu ul li a{
+		display: block;
+		font: normal 12px Arial;
+		color: black;
+		text-decoration: none;
+		padding: 5px 0;
+		line-height: 17px;
+		padding-left: 8px;
+	}
+
+	.glossymenu div.submenu ul li a:hover{
+		background: #ffe7ce;
+	}

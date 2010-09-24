@@ -5,7 +5,55 @@
         <link rel="stylesheet" href="${createLinkTo(dir:'css',file:'main.css')}" />
         <link rel="shortcut icon" href="${createLinkTo(dir:'images',file:'favicon.ico')}" type="image/x-icon" />
         <calendar:resources lang="en" theme="tiger"/>
-        <script src="${createLinkTo(dir:'images',file:'jquery.tools.min.js')}"></script> 
+        <g:javascript library="jquery" plugin="jquery"/>
+         <g:javascript library="applicationValidation" />
+           
+          <script src="${createLinkTo(dir:'images',file:'jquery-1.3.2.js')}"></script>
+            <script src="${createLinkTo(dir:'images',file:'jquery.colorbox.js')}"></script>
+    		<link rel='stylesheet' href='/gms/plugins/modalbox-0.4/css/modalbox.css' />
+         <link rel="stylesheet"  href="${createLinkTo(dir:'images',file:'colorbox.css')}" type="text/css" media="screen" /> 
+                   
+           <script  src="${createLinkTo(dir:'images',file:'jquery.event.hover.js')}" type="text/javascript" > 
+        </script> 
+           
+        
+        <script type="text/javascript"> 
+            $(document).ready(function(){
+                     
+            
+			
+		$("ul#topnav li").hover(function() { //Hover over event on list item
+			$(this).css({ 'background' : '#fcdfa6 url(../../images/hr-menu-hover.jpg) repeat-x'}); //Add background color + image on hovered list item
+			$(this).find("span").show(); //Show the subnav
+		} , function() { //on hover out...
+			$(this).css({ 'background' : 'none'}); //Ditch the background
+			$(this).find("span").hide(); //Hide the subnav
+		});
+		
+		
+					//Examples of how to assign the ColorBox event to elements
+				$("a[rel='example1']").colorbox();
+				$("a[rel='example2']").colorbox({transition:"fade"});
+				$("a[rel='example3']").colorbox({transition:"none", width:"75%", height:"75%"});
+				$("a[rel='example4']").colorbox({slideshow:true});
+				$(".example5").colorbox();
+				$(".example6").colorbox({iframe:true, innerWidth:600, innerHeight:400});
+				$(".example7").colorbox({width:"80%", height:"90%", iframe:true});
+				$(".example8").colorbox({width:"50%", inline:true, href:"#inline_example1"});
+				$(".example9").colorbox({
+					onOpen:function(){ alert('onOpen: colorbox is about to open'); },
+					onLoad:function(){ alert('onLoad: colorbox has started to load the targeted content'); },
+					onComplete:function(){ alert('onComplete: colorbox has displayed the loaded content'); },
+					onCleanup:function(){ alert('onCleanup: colorbox has begun the close process'); },
+					onClosed:function(){ alert('onClosed: colorbox has completely closed'); }
+				});
+	
+		
+			
+		});
+		</script>
+		
+        
         <g:layoutHead />
         <g:javascript library="application" />				
     </head>
@@ -17,14 +65,7 @@
 
 </style>
 
-            <script type="text/javascript" src="${createLinkTo(dir:'images',file:'jquery.pngFix.pack.js')}"></script> 
-
-<script type="text/javascript"> 
-    $(document).ready(function(){ 
-        $(document).pngFix(); 
-    }); 
-</script> 
-
+  
     
 <script>
  function setValue()
@@ -42,7 +83,8 @@
 	  document.GrantsAndContractsStatement9Abstract.partyID.value=document.grantReport.party.value;
 	  document.GrantsAndContractsStatement9Abstract.projectType.value=document.grantReport.projectType.value; 
 	  document.OnGoingClinicalTrials.partyID.value=document.grantReport.party.value;
-	  document.OnGoingClinicalTrials.projectType.value=document.grantReport.projectType.value; 
+	  document.OnGoingClinicalTrials.projectType.value=document.grantReport.projectType.value;
+	   
 	  var day;
 	  var month;
 	  var year;
@@ -118,13 +160,67 @@ else if(eval('typeof(document.frmGrantTrackingReport)') != 'undefined'){
 	document.ProjectStatusReport.projectID.value = document.frmGrantTrackingReport.projects.value;
 	document.ProjectStatusReport.projectStatus.value = document.frmGrantTrackingReport.projectStatus.value;
 	if(document.frmGrantTrackingReport.projectStatus.value.indexOf("\'") == -1)
-		document.ProjectStatusReport.projectStatus.value = "\'"+document.frmGrantTrackingReport.projectStatus.value+"\'";
+	document.ProjectStatusReport.projectStatus.value = "\'"+document.frmGrantTrackingReport.projectStatus.value+"\'";
 	
   
 }
-   
+
+else if(eval('typeof(document.granteeReports)') != 'undefined')
+{
+	
+	document.List_of_grantees.partyID.value=document.granteeReports.party.value;
+	document.NotificationReport.partyID.value=document.granteeReports.party.value;	  
+	document.ProposalReport.partyID.value=document.granteeReports.party.value;
+}
+else if(eval('typeof(document.auditLoggingReport)') != 'undefined')
+{
+var day;
+	  var month;
+	  var year;
+	  day=document.auditLoggingReport.reportDate_day.value;
+	  year=document.auditLoggingReport.reportDate_year.value;
+	  month=document.auditLoggingReport.reportDate_month.value;
+	  document.AuditLogReport.reportDate.value = day+"/"+month+"/"+year;
+	  var today;
+	  var tomonth;
+	  var toyear;
+	  today=document.auditLoggingReport.reportDateTo_day.value;
+	  toyear=document.auditLoggingReport.reportDateTo_year.value;
+	  tomonth=document.auditLoggingReport.reportDateTo_month.value;
+	  document.AuditLogReport.reportDateTo.value = today+"/"+tomonth+"/"+toyear;
+	  
+	 }
+	 
+	 else if(eval('typeof(document.reportView)') != 'undefined')
+{
+      var day;
+	  var month;
+	  var year;
+	  day=document.reportView.reportDate_day.value;
+	  year=document.reportView.reportDate_year.value;
+	  month=document.reportView.reportDate_month.value;
+	  document.UtilizationCertificate.reportDate.value = day+"/"+month+"/"+year
+	  document.StatementOfAccounts.reportDate.value = day+"/"+month+"/"+year;
+	  
+	  var today;
+	  var tomonth;
+	  var toyear;
+	  today=document.reportView.reportDateTo_day.value;
+	  toyear=document.reportView.reportDateTo_year.value;
+	  tomonth=document.reportView.reportDateTo_month.value;
+	  document.UtilizationCertificatess.reportDateTo.value = day+"/"+month+"/"+year;
+	  document.StatementOfAccounts.reportDateTo.value = day+"/"+month+"/"+year;
+	  
+	 }
 
     }
+    
+    
+    
+       
+
+    
+    
     $(function() {
  
 	// if the function argument is given to overlay,
@@ -147,13 +243,20 @@ else if(eval('typeof(document.frmGrantTrackingReport)') != 'undefined'){
 });
     
     </script>
+    
+    
+    
   
 <body onload="setValue()"  >
- 
-	<div id="spinner" class="spinner" style="display:none;">
-    <img src="${createLinkTo(dir:'images',file:'spinner.gif')}" alt="Spinner" />
+ <!-- 
+ 	<div>
+	
+ <a href="${createLinkTo(dir:'/images/help',file:session.Help)}" target="right" title="Help" alt="Help" rel="#overlay" > 
+			<img src="${createLinkTo(dir:'images/themesky',file:'help.gif')}"/> 
+			</a>
+			<a class='example6' href="${createLinkTo(dir:'/images/help',file:session.Help)}" title="Help"><img src="${createLinkTo(dir:'images/themesky',file:'help.gif')}"/> </a>
+			
 	</div>
-    
 
 <!-- inner Banner Start-->
 
@@ -162,50 +265,11 @@ else if(eval('typeof(document.frmGrantTrackingReport)') != 'undefined'){
      
 
 
-<div class="innnerBanner">
-<div class="loginLink">
-	<span>
-	
-	
-	<a href="${createLinkTo(dir:'/user/changePassword')}"><img src="${createLinkTo(dir:'images/themesky',file:'key.gif')}"  title="Change Password" alt="Change Password" />&nbsp;&nbsp;|</a>&nbsp;&nbsp; <a href="${createLinkTo(dir:'/images/help',file:session.Help)}" title="Help" alt="Help" rel="#overlay" > 
-<img src="${createLinkTo(dir:'images/themesky',file:'help.gif')}"/> 
-</a> &nbsp;&nbsp;|</a>&nbsp;&nbsp;<a href="#"><img src="${createLinkTo(dir:'images/themesky',file:'aboutUs.jpg')}" title="About Us" alt="About Us"/>&nbsp;&nbsp;|</a>
-	<font face="verdana" color:#01518e; font-weight:bold; text-decoration: none>
-   	<g:isLoggedIn>
-   	<b><g:loggedInUsername/></b> (<g:link  controller='logout'>Logout</g:link>)
-   	</g:isLoggedIn></font>
-   	</span>
-   	
-   	  <g:isNotLoggedIn>
-         
-       <%
+
+
     
-     
-       %>
-       </g:isNotLoggedIn>
-	
-  	<g:if test="${session.PartyID == null}">   
-     	 <%
+          <g:layoutBody />
        
-       %>
-    </g:if>   
-</div>
-</div>
-
-
-<!-- inner Banner end-->   
-           <!-- overlayed element --> 
-<div class="apple_overlay" id="overlay"> 
- 
-	<!-- the external content is loaded inside this tag --> 
-	<div class="contentWrap"></div> 
- 
-</div> 
-	 
-    </div>
-  
-        <g:layoutBody />
-        
-       	
+       
     </body>	
 </html>

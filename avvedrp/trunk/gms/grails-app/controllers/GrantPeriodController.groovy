@@ -45,39 +45,92 @@ class GrantPeriodController {
         }
     }
 
-    def edit = {
-		def grantPeriodService = new GrantPeriodService()
-		def grantPeriodInstance = grantPeriodService.getGrantPeriodById(new Integer( params.id ))
+    def edit =
+                {
+		            def grantPeriodService = new GrantPeriodService()
+		            def grantPeriodInstance = grantPeriodService.getGrantPeriodById(new Integer( params.id ))
+                    if(!grantPeriodInstance)
+                      {
+                          flash.message = "GrantPeriod not found with id ${params.id}"
+                          redirect(action:list)
+                      }
+                    else
+                      {
+                          return [ grantPeriodInstance : grantPeriodInstance ]
+                      }
+                }
 
-        if(!grantPeriodInstance) {
-            flash.message = "GrantPeriod not found with id ${params.id}"
-            redirect(action:list)
-        }
-        else {
-            return [ grantPeriodInstance : grantPeriodInstance ]
-        }
-    }
-
-    def update = {
-		def grantPeriodService = new GrantPeriodService()
-		def grantPeriodInstance = grantPeriodService.updateGrantPeriod(params)
-		
-		if(grantPeriodInstance){
-			if(grantPeriodInstance.saveMode != null){
-				if(grantPeriodInstance.saveMode.equals("Updated")){
-					flash.message = "Grant Period  updated"
-	                redirect(action:list,id:grantPeriodInstance.id)
-				}
-			}
-			else {
-                render(view:'edit',model:[grantPeriodInstance:grantPeriodInstance])
-            }
-		}
-		else {
-            flash.message = "GrantPeriod not found with id ${params.id}"
-            redirect(action:edit,id:params.id)
-        }
-    }
+  def update =
+                {
+    		        def grantPeriodInstance = new GrantPeriod(params)
+                    def grantPeriodService = new GrantPeriodService()
+		            def chkDefaultGrantPeriodInstance=grantPeriodService.getDefaultGrantPeriod(params)
+    	            println"chkDefaultGrantPeriodInstance in edit"+chkDefaultGrantPeriodInstance.size()
+    	            if(chkDefaultGrantPeriodInstance)
+    	             {
+    		           if((chkDefaultGrantPeriodInstance[0].id != Long.parseLong(params.id)) && (chkDefaultGrantPeriodInstance.size()>=1) && (grantPeriodInstance.defaultYesNo == 'Y'))
+        	             {
+    	                   flash.message = "Default grant period must be unique"
+    		               redirect(action:edit,id:params.id)
+    	                 }
+    		           else
+    	                 {
+		                   grantPeriodInstance = grantPeriodService.updateGrantPeriod(params)
+		                   if(grantPeriodInstance)
+		                    {
+			                  if(grantPeriodInstance.saveMode != null)
+			                    {
+				                  if(grantPeriodInstance.saveMode.equals("Updated"))
+				                    {
+					                  flash.message = "Grant Period  updated"
+	                                  redirect(action:create,id:grantPeriodInstance.id)
+				                    }
+                                  else 
+			                        {
+                                      render(view:'edit',model:[grantPeriodInstance:grantPeriodInstance])
+                                    }
+		                        }
+    	                      else
+    	                        {
+                                  flash.message = "GrantPeriod not found with id ${params.id}"
+                                  redirect(action:edit,id:params.id)
+                                }
+		                    }
+    	                 }
+    	             }
+    	            else
+    	               {
+    		             if((chkDefaultGrantPeriodInstance.size()>=1) && (grantPeriodInstance.defaultYesNo == 'Y'))
+           	               {
+       	                     flash.message = "Default grant period must be unique"
+       		                 redirect(action:edit,id:params.id)
+       	                   }
+       		             else
+       	                   {
+   		                     grantPeriodInstance = grantPeriodService.updateGrantPeriod(params)
+   		                     if(grantPeriodInstance)
+   		                       {
+   			                     if(grantPeriodInstance.saveMode != null)
+   			                       {
+   				                    if(grantPeriodInstance.saveMode.equals("Updated"))
+   				                      {
+   					                    flash.message = "Grant Period  updated"
+   	                                    redirect(action:create,id:grantPeriodInstance.id)
+   				                      }
+   			                        else
+   			                          {
+                                        render(view:'edit',model:[grantPeriodInstance:grantPeriodInstance])
+                                      }
+   		                           }
+       	                         else
+       	                           {
+                                     flash.message = "GrantPeriod not found with id ${params.id}"
+                                     redirect(action:edit,id:params.id)
+                                   }
+   		                       }
+       	                   }  
+    	               }
+                }
 
     def create = {
     		GrailsHttpSession gh=getSession()
@@ -88,27 +141,57 @@ class GrantPeriodController {
     		//putting help pages in session
     		gh.putValue("Help","Create_Grant_Period.htm")	
         grantPeriodInstance.properties = params
-        return ['grantPeriodInstance':grantPeriodInstance]
+        def grantPeriodService = new GrantPeriodService()
+        def grantPeriodInstanceList = grantPeriodService.getAllGrantPeriods(params)
+       
+        return ['grantPeriodInstance':grantPeriodInstance,
+                'grantPeriodInstanceList': grantPeriodInstanceList]
     }
 
     def save = {
         def grantPeriodInstance = new GrantPeriod(params)
-        if(!grantPeriodInstance.hasErrors() ) {
+        if(!grantPeriodInstance.hasErrors() ) 
+        {
         	grantPeriodInstance.createdBy="admin"
     		grantPeriodInstance.modifiedBy="admin"
     		
 			def grantPeriodService = new GrantPeriodService()
-    		grantPeriodInstance = grantPeriodService.saveGrantPeriod(grantPeriodInstance)
-			if(grantPeriodInstance.saveMode != null){
-				if(grantPeriodInstance.saveMode.equals("Saved")){
-					flash.message = "Grant Period created"
-		            redirect(action:list,id:grantPeriodInstance.id)
-				}
-			}
-			else {
-	            render(view:'create',model:[grantPeriodInstance:grantPeriodInstance])
-	        }
-            
+        	println"grantPeriodInstance"+grantPeriodInstance.defaultYesNo
+        	def chkDefaultGrantPeriodInstance=grantPeriodService.getDefaultGrantPeriod(params)
+        	println"chkDefaultGrantPeriodInstance"+chkDefaultGrantPeriodInstance.size()
+        	
+        	def grantPeriodDuplicateInstance = grantPeriodService.getGrantPeriod(grantPeriodInstance)
+        	
+        	if(grantPeriodDuplicateInstance)
+        	{
+        	    flash.message = "Grant period Already exists"
+	        	redirect(action:create,id:grantPeriodInstance.id)
+        	}
+        	else
+        	{
+        		if(grantPeriodInstance.defaultYesNo=='Y' && chkDefaultGrantPeriodInstance.size()>0)
+	            {
+	        	    flash.message = "Default grant period must be unique"
+	        		redirect(action:create,id:grantPeriodInstance.id)
+	        	}
+	        	
+	        	else
+	        	{
+	        		grantPeriodInstance = grantPeriodService.saveGrantPeriod(grantPeriodInstance)
+	        		if(grantPeriodInstance.saveMode != null)
+	        		{
+	        			if(grantPeriodInstance.saveMode.equals("Saved"))
+	        			{
+	        				flash.message = "Grant Period created"
+	        				redirect(action:create,id:grantPeriodInstance.id)
+	        			}
+	        		}
+	        		else 
+	        		{
+	        			render(view:'create',model:[grantPeriodInstance:grantPeriodInstance])
+	        		}
+	        	}
+        	}
         }
         
     }

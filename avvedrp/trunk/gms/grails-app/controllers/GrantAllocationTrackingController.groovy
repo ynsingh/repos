@@ -1,6 +1,7 @@
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 
 class GrantAllocationTrackingController {
+	def grantAllocationService
     
     def index = { redirect(action:list,params:params) }
 
@@ -107,13 +108,30 @@ class GrantAllocationTrackingController {
 		println params
 		def dataSecurityService = new DataSecurityService()
 		GrailsHttpSession gh=getSession()
+		def grantAllocationInstanceList=[]
+		println "**************grantAllocationInstanceList 1 "+grantAllocationInstanceList  
+        try{
+        	grantAllocationInstanceList = grantAllocationService.getAll()
+        	println "**************grantAllocationInstanceList 222222 "+grantAllocationInstanceList 
+		}
+		  catch(Exception e)
+		{
+			
+		}
+		def projectsList=[]
+        
+        for(int i=0;i<grantAllocationInstanceList.size();i++)
+        {
+        
+        	projectsList.add(grantAllocationInstanceList[i].projects)
+        }
+			
+			
+			
+			
 		
-		/* Get projects mapped to the login user */
-//		def projectInstanceList = dataSecurityService.getProjectsOfLoginUser(gh.getValue("ProjectID"))
-		def projectInstanceList = dataSecurityService.getProjectsForLoginUser(gh.getValue("PartyID"))
-			//Projects.findAll("from Projects P where P.activeYesNo='Y' and P.id in " +gh.getValue("ProjectID"))
 		
-		return[projectInstanceList:projectInstanceList]
+	    return[projectInstanceList:projectsList]
     }
     
     def showReport = {

@@ -8,6 +8,9 @@ class AccountHeadsController {
 
     def list = {
 		def accountHeadsService = new AccountHeadsService()
+			
+       
+        
         if(!params.max) params.max = 10
         
         String subQuery ="";
@@ -94,7 +97,7 @@ class AccountHeadsController {
 		
         if(!accountHeadsInstance) {
             flash.message = "AccountHeads not found with id ${params.id}"
-            redirect(action:list)
+            redirect(action:create)
         }
         else {
             return [ accountHeadsInstance : accountHeadsInstance ]
@@ -115,7 +118,7 @@ class AccountHeadsController {
 					}
 					else	
 					{
-						redirect(action:list,id:accountHeadsInstance.id)
+						redirect(action:create,id:accountHeadsInstance.id)
 					}
 				}
 				else if(accountHeadsInstance.saveMode.equals( "Duplicate")){
@@ -134,13 +137,27 @@ class AccountHeadsController {
     }
 
     def create = {
-    		GrailsHttpSession gh=getSession()	
+    	
+    	GrailsHttpSession gh=getSession()	
         def accountHeadsInstance = new AccountHeads()
         gh.removeValue("Help")
 		//putting help pages in session
 		gh.putValue("Help","Create_Account_Head.htm")
         accountHeadsInstance.properties = params
-        return ['accountHeadsInstance':accountHeadsInstance]
+        
+        String subQuery ="";
+       
+        if(params.sort != null && !params.sort.equals(""))
+        	subQuery=" order by AH."+params.sort
+        if(params.order != null && !params.order.equals(""))
+        	subQuery =subQuery+" "+params.order
+
+    	def accountHeadsInstanceList
+    	def accountHeadsService = new AccountHeadsService()
+       	accountHeadsInstanceList = accountHeadsService.getActiveAccountHeads(subQuery)
+
+        return ['accountHeadsInstance':accountHeadsInstance,
+                'accountHeadsInstanceList': accountHeadsInstanceList]
     }
 
     def save = {
@@ -161,44 +178,33 @@ class AccountHeadsController {
 					}
 					else	
 					{
-						redirect(action:list,id:accountHeadsInstance.id)
+						redirect(action:create,id:accountHeadsInstance.id)
 					}
         		}
         		else if(accountHeadsInstance.saveMode.equals("Duplicate")){
-        			flash.message = "AccountHead Already Exists"
+        			
+        				
     				if(accountHeadsInstance.parent !=null)
 					{
+    					flash.message = "AccountHead Already Exists"
     					redirect(action:showSubAccountHeads,id:accountHeadsInstance.parent.id)
 					}
+    				else
+    				{
+    					flash.message = "AccountHead Already Exists"
+    					redirect(action:create,id:accountHeadsInstance.id)
+    				}
+        		}
+        	}
     				else
     				{
     					render(view:'create',model:[accountHeadsInstance:accountHeadsInstance])
     				}
         		}
         	}
-        	else {
-        		if(accountHeadsInstance.parent !=null)
-				{
-					redirect(action:showSubAccountHeads,id:accountHeadsInstance.parent.id)
-				}
-				else
-				{
-					render(view:'create',model:[accountHeadsInstance:accountHeadsInstance])
-				}
-            }
-        }
-        else {
-        	if(accountHeadsInstance.parent !=null)
-			{
-				redirect(action:showSubAccountHeads,id:accountHeadsInstance.parent.id)
-			}
-			else
-			{
-				render(view:'create',model:[accountHeadsInstance:accountHeadsInstance])
-			}
-        }
-    }
-    
+        	
+        
+      
     def showSubAccountHeads = {
 		def accountHeadsService = new AccountHeadsService()
         def accountHeadsInstance = new AccountHeads()

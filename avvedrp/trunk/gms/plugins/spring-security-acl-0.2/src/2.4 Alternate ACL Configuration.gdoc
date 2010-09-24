@@ -1,0 +1,65 @@
+Configuring ACL support happens in two places; you configure [AclEntryVoter|http://static.springsource.org/spring-security/site/docs/3.0.x/apidocs/org/springframework/security/acls/AclEntryVoter.html]s that have one or more associated permissions and a domain class (which can be an abstract base class), and you configure which service methods use which voters. Often there will be a 1-1 relationship between these but since they're separate, you can re-use the voters for multiple service methods. And you may not even need custom voters; if you only want to secure methods with roles, or if you only need return value checking, then you wouldn't configure any voters, but you'd still configure method restrictions.
+
+There are two types of ACL checks; method return value and method parameter. The plugin creates two voters for return value checks; one for single values (@AFTER_ACL_READ@) and one for collections (@AFTER_ACL_COLLECTION_READ@). Each requires that the authenticated user have @BasePermission.READ@. An optimization would be to allow access to admins (who have been granted @BasePermission.ADMINISTRATION@); to configure this, redefine the beans in <code>grails-app/conf/spring/resources.groovy</code>:
+
+{code}
+import org.springframework.security.acls.afterinvocation.AclEntryAfterInvocationCollectionFilteringProvider
+import org.springframework.security.acls.afterinvocation.AclEntryAfterInvocationProvider
+
+beans = {
+   afterAclCollectionRead(AclEntryAfterInvocationCollectionFilteringProvider,
+        ref('aclService'),
+        [BasePermission.READ, BasePermission.ADMINISTRATION])
+
+   afterAclRead(AclEntryAfterInvocationProvider,
+        ref('aclService'),
+        [BasePermission.READ, BasePermission.ADMINISTRATION])
+}
+{code}
+
+Voters for method parameter checks (the first parameter of the specified type or a subclass is checked) can be configured either in @Config.groovy@ or in domain class annotations. Putting the configuration in @Config.groovy@ keeps everything in one place, whereas the annotations let you put the declarations where they apply, so they're self-documenting. Use whichever approach you prefer.
+
+To configure them in @Config.groovy@, use the @grails.plugins.springsecurity.acl.voters@ property, e.g.
+
+{code}
+import org.springframework.security.acls.domain.BasePermission
+
+grails.plugins.springsecurity.acl.voters = [
+
+    aclReportWriteVoter: [
+      configAttribute: 'ACL_REPORT_WRITE',
+      permissions: [BasePermission.ADMINISTRATION,
+                    BasePermission.WRITE],
+      domainObjectClass: Report],
+
+    aclReportDeleteVoter: [
+      configAttribute: 'ACL_REPORT_DELETE',
+      permissions: [BasePermission.ADMINISTRATION,
+                    BasePermission.DELETE],
+      domainObjectClass: Report]
+   ]
+}
+{code}
+
+which creates a 'write' voter and a 'delete' voter. The equivalent annotations would be:
+{code}
+import grails.plugins.springsecurity.acl.AclVoter
+import grails.plugins.springsecurity.acl.AclVoters
+
+@AclVoters([
+   @AclVoter(name='aclReportWriteVoter',
+             configAttribute='ACL_REPORT_WRITE',
+             permissions=['ADMINISTRATION', 'WRITE']),
+   @AclVoter(name='aclReportDeleteVoter',
+             configAttribute='ACL_REPORT_DELETE',
+             permissions=['ADMINISTRATION', 'DELETE'])
+])
+class Report {
+   String name
+}
+{code}
+
+Note that since you cannot use an annotation more than once, in a case like this where there can be multiple voter annotations for a domain class they need to be defined as attributes of a containing annotation (@AclVoters@). If you only have a single voter then you can annotate the class with that and omit the containing annotation.
+
+The voter configuration should be fairly clear; there's a @name@ parameter that's used as the Spring bean name (so it must be unique), a @configAttribute@ parameter that's arbitrary but typically uses a naming convention where it starts with 'ACL_',  and one or more permissions. The one limitation of annotations over the static configuration is that annotations cannot have @Permission@s as parameters, so @String@s are used instead. This limits you to naming fields of the [BasePermission|http://static.springsource.org/spring-security/site/docs/3.0.x/apidocs/org/springframework/security/acls/domain/BasePermission.html] class. If you have custom permission classes you'll need to use the static configuration.
+

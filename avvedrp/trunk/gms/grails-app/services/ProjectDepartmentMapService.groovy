@@ -9,7 +9,7 @@ class ProjectDepartmentMapService {
     		partyDepartmentList = PartyDepartment.findAll("from PartyDepartment PD where PD.party.id="+partyId)
     	return partyDepartmentList;
     }
-    public ProjectDepartmentMap[] getProjectDepartmentMapList(String partyId)
+    public ProjectDepartmentMap[] getProjectDepartmentMapList(def partyId)
     {
     	def projectDepartmentMapList = ProjectDepartmentMap.findAll("from ProjectDepartmentMap PM where PM.projects.id in (select GA.projects.id from GrantAllocation GA where GA.party.id='"+partyId+"')")
 

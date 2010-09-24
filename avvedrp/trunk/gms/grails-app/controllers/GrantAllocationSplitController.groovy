@@ -1,6 +1,6 @@
 import java.text.*;
 import java.util.*;
-import ConvertToIndainRS
+
 import grails.converters.*
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 class GrantAllocationSplitController extends GmsController  {
@@ -46,7 +46,9 @@ class GrantAllocationSplitController extends GmsController  {
             println "grantAllocationSplitList"+grantAllocationSplitList
             grantAllocationSplitInstance.properties = params
             grantAllocationSplitInstance.projects=projectsInstance;
-    		ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();	 
+    		 grantAllocationSplitInstance.grantAllocation=grantAllocationInstanceList[0]	 
+    		ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
+    		println"grantAllocationSplitInstance"+grantAllocationInstanceList[0].party.code
             return ['grantAllocationSplitInstance':grantAllocationSplitInstance,'grantAllocationInstanceList':grantAllocationInstanceList,'grantAllocationSplitDetailsList':grantAllocationSplitDetailsList,'currencyFormat':currencyFormatter]
     		}
     }
@@ -64,18 +66,42 @@ class GrantAllocationSplitController extends GmsController  {
 
     def delete = {
         def grantAllocationSplitService = new GrantAllocationSplitService()
-        Integer projectId = grantAllocationSplitService.deleteGrantAllocationSplit(new Integer(params.id))
+        def grantExpenseService = new GrantExpenseService()
+        def grantReceiptService = new GrantReceiptService()
         
-        if(projectId != null){
-        	if(projectId > 0){
-        		flash.message = "Grant Head Deleted"
-        			  redirect(action:list,id:projectId)
-        	}
-        }
-        else{
-        	flash.message = "GrantAllocationSplit not found with id ${params.id}"
-            redirect(action:list)
-        }
+		def grantAllocationSplitInstance = grantAllocationSplitService.getGrantAllocationSplitById(new Integer(params.id))
+		def grantExpenseInstance = grantExpenseService.getExpenseForGrantAllocationSplit(grantAllocationSplitInstance);
+		def grantReceiptInstance = grantReceiptService.getGrantReceiptForGrantAllocationSplit(grantAllocationSplitInstance);
+		println "" + grantAllocationSplitInstance
+		if(grantExpenseInstance)
+		{
+	
+			redirect(action:'edit',id:grantAllocationSplitInstance.id) 
+
+			flash.message = "Cannot delete the Head wise Allocation as Grant Expense is entered" 
+
+		}
+		else if(grantReceiptInstance)
+		{
+			redirect(action:'edit',id:grantAllocationSplitInstance.id) 
+
+			flash.message = "Cannot delete the Head wise Allocation as Grant is Received" 
+
+		}
+		else
+		{      
+			Integer projectId = grantAllocationSplitService.deleteGrantAllocationSplit(new Integer(params.id))
+			if(projectId != null){
+	        	if(projectId > 0){
+	        		flash.message = "Grant Head Deleted"
+	        			  redirect(action:list,id:projectId)
+	        	}
+	        }
+	        else{
+	        	flash.message = "GrantAllocationSplit not found"
+	            redirect(action:list)
+	        }
+		}
     }
 
     def edit = {

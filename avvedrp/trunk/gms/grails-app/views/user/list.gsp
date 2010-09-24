@@ -1,23 +1,10 @@
 <head>
 	<meta name="layout" content="main" />
-	<title>User List</title>
+	<title><g:message code="default.User.UserList.head"/></title>
 </head>
 
 <body>
  <div class="wrapper">
-	<div class="nav">
-		        <span class="menuButton"><a class="home" href="${createLinkTo(dir:'/login')}">Home</a></span>
-		        
-					 <g:if test="${(session.Role != 'ROLE_USER') && (session.Role != 'ROLE_PI')}"> 
-		            <span class="menuButton"><g:link class="create" action="create">New User</g:link></span>
-                  
-					 </g:if>
-					 <g:if test="${session.Role == 'ROLE_ADMIN'}"> 
-		           
-                    <span class="menuButton"><g:link class="create" controller="user" action="newUserCreate">New Site Admin</g:link></font></span> 
-					 </g:if>  
-	</div>
-
 	<div class="body">
 		<h1>User List</h1>
 		<g:if test="${flash.message}">
@@ -25,15 +12,16 @@
 		</g:if>
 		<g:if test="${userMapList}">
 		<div class="list">
-			<table>
+			<table cellpadding="0" cellspacing="0">
 			<thead>
 				<tr>
-					<g:sortableColumn property="id" title="Id" />
-					<g:sortableColumn property="user.username" title="Login Name" />
-					<g:sortableColumn property="user.userRealName" title="Full Name" />
-					<g:sortableColumn property="party.nameOfTheInstitution" title="Institution" />
-					<g:if test="${session.Role == 'ROLE_ADMIN'}"> 
+					<g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}" />
+					<g:sortableColumn property="user.username" title="${message(code: 'default.LoginName.label')}" />
+					<g:sortableColumn property="user.userRealName" title="${message(code: 'default.FullName.label')}" />
+					<g:sortableColumn property="party.nameOfTheInstitution" title="${message(code: 'default.Institution.label')}" />
 					<th>Edit</th>
+					<g:if test="${session.Role == 'ROLE_ADMIN'}"> 
+						<th><g:message code="default.Edit.label"/></th>
 					</g:if>
 					
 				</tr>
@@ -46,7 +34,7 @@
 					<td>${userMap.user.userRealName?.encodeAsHTML()}</td>
 					
 					<td>${userMap.party.nameOfTheInstitution}</td>
-			        <g:if test="${session.Role == 'ROLE_ADMIN'}"> 
+			        <g:if test="${session.Role == 'ROLE_SITEADMIN'}"> 
 					<td class="actionButtons">
 					 
 						<span class="actionButton">
@@ -64,11 +52,6 @@
             <g:else>
             <br>No Records Available</br>
             </g:else>
-
-		<div class="paginateButtons">
-			<g:paginate total="${User.count()}" />
-		</div>
-    </div>
-
+	    </div>
 	</div>
 </body>

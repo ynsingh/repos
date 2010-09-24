@@ -9,6 +9,7 @@
 // if(System.properties["${appName}.config.location"]) {
 //    grails.config.locations << "file:" + System.properties["${appName}.config.location"]
 // }
+grails.views.javascript.library="jquery"
 grails.mime.file.extensions = true // enables the parsing of file extensions from URLs into the request format
 grails.mime.types = [ html: ['text/html','application/xhtml+xml'],
                       xml: ['text/xml', 'application/xml'],
@@ -117,3 +118,7 @@ ckeditor {
 	
 }
 //log4j.logger.org.springframework.security='off,stdout'
+// Added by the Spring Security Core plugin:
+//grails.plugins.springsecurity.userLookup.userDomainClassName = 'Person.Authority'
+//grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'Person.AuthorityRequestmap'
+//grails.plugins.springsecurity.authority.className = 'Person.Requestmap'

@@ -8,10 +8,7 @@
     </head>
     <body>
     <div class="wrapper">
-        <div class="nav">
-           <span class="menuButton"><a class="home" href="${createLinkTo(dir:'/login')}">Home</a></span>
-            <span class="menuButton"><g:link class="create" action="create">New Grant Period</g:link></span>
-        </div>
+	
         <div class="body">
             <h1>GrantPeriod List</h1>
             <g:if test="${flash.message}">

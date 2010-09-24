@@ -7,41 +7,11 @@
         <title>Create Proposal</title> 
         <ckeditor:resources />            
     </head>
-        <script>
-        function validate()
-        {
-	    	if(document.getElementById("code").value == "")
-	    	{
-	    		alert("Please Enter the Proposal Code");
-			    document.getElementById("code").focus();
-			    return false;
-	    	}
-	    var proposalSubmitteddateYear = document.getElementById("proposalSubmitteddate_year").value;
-    	var proposalSubmitteddateMonth = document.getElementById("proposalSubmitteddate_month").value;
-    	var proposalSubmitteddateDate = document.getElementById("proposalSubmitteddate_day").value;
-	    	
-	    var proposalSubmissionLastDate = document.getElementById("proposalSubmissionLastDate").value;
-    	  		
-    	var proposalSubmissionLastDateYear=proposalSubmissionLastDate.substring(0,proposalSubmissionLastDate.indexOf("-"));
-    	var proposalSubmissionLastDateMonth=proposalSubmissionLastDate.substring(proposalSubmissionLastDate.indexOf("-")+1,proposalSubmissionLastDate.lastIndexOf("-"));
-    	var proposalSubmissionLastDateDate=proposalSubmissionLastDate.substring(proposalSubmissionLastDate.lastIndexOf("-")+1,proposalSubmissionLastDate.lastIndexOf(" "));
-	   	
-	   	var newproposalSubmitteddate = new Date(proposalSubmitteddateYear,proposalSubmitteddateMonth-1,proposalSubmitteddateDate);
-	   	var newproposalSubmissionLastDate = new Date(proposalSubmissionLastDateYear,proposalSubmissionLastDateMonth-1,proposalSubmissionLastDateDate); 
-	    
-	    if (newproposalSubmitteddate>newproposalSubmissionLastDate)
-    		{
-    			alert("Last Date for Proposal submission completed")
-    			return false;
-    		}	
-	    	return true;
-    	}
-    </script>
+    <g:javascript library="application"/>
+    <modalbox:modalIncludes/>
     <body>
+    
     <div class="wrapper">
-        <div class="nav">
-            <span class="menuButton"><a class="home" href="${createLinkTo(dir:'')}">Home</a></span>
-        </div>
         <div class="body">
             <h1>Create Proposal</h1>
             <g:if test="${flash.message}">
@@ -92,7 +62,7 @@
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:proposalInstance,field:'description','errors').encodeAsHTML()}">
 
-                                <fckeditor:editor name="description" width="100%" height="300" toolbar="Standard" fileBrowser="default">
+                                <fckeditor:editor name="description" width="100%" height="300" fileBrowser="default">
 									
 								</fckeditor:editor>  
                                 </td>
@@ -100,14 +70,15 @@
                         
                         </tbody>
                     </table>
+                    
                 </div>
                 <div class="buttons">
                 <%--
-                    <span class="button"><input class="save" type="submit" value="Save" onClick="return validate()" /></span>
+                    <span class="button"><input class="save" type="submit" value="Save" onClick="return validateProposal()" /></span>
                     
-                    <span class="button"><input class="submit" type="submit" value="Submit" onClick="return validate()" /></span>
+                    <span class="button"><input class="submit" type="submit" value="Submit" onClick="return validateProposal()" /></span>
                 --%>
-                	<span class="button"><g:actionSubmit class="save" action="save" value="Save" onClick="return validate()"  /></span>
+                	<span class="button"><g:actionSubmit class="save" action="save" value="Save" onClick="return validateProposal()"  /></span>
                    
               
                 </div>
@@ -130,6 +101,7 @@
                    	          
                    	       
                    	        <g:sortableColumn property="proposalDocumentationPath" title="UploadAttachments" />                 
+                   	      	<th>Application Form</th>
                    	      	<th>Edit and Submit</th>
                         </tr>
                     </thead>
@@ -142,7 +114,8 @@
                              <td>${fieldValue(bean:proposalInstance, field:'party.code')}</td>
                                <td><g:formatDate format="dd-MM-yyyy" date="${proposalInstance.proposalSubmitteddate}"/></td>
                             <td><g:link action="create" controller='notificationsAttachments' id="${fieldValue(bean:proposalInstance, field:'id')}" params="[documentType:'Proposal']">upload attachments</g:link></td>
-                            <td><g:link action="edit" id="${proposalInstance.id}">Edit</g:link></td>
+                         	<td><g:link action="applicationForm" controller='proposalApplication' id="${fieldValue(bean:proposalInstance, field:'id')}">Application</g:link></td>
+                         	<td><g:link action="edit" id="${proposalInstance.id}">Edit</g:link></td>
                             
                         
                            

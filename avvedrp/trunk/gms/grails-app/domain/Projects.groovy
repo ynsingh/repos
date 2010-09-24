@@ -20,12 +20,14 @@ class Projects {
 		projectEndDate(nullable:true)
 		name(blank:false)
 		code(blank:false)
+		investigator(nullable:true)
 		
 	}
 	
 	String saveMode;
 	double totAllAmount; 
-	static transients = [ "saveMode","totAllAmount" ]
+	Investigator investigator;
+	static transients = [ "saveMode","totAllAmount","investigator" ]
 
 
 }

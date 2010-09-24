@@ -1,6 +1,6 @@
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 class ProjectsPIMapController {
-    
+	def grantAllocationService
     def index = { redirect(action:list,params:params) }
 
     // the delete, save and update actions only accept POST requests
@@ -36,20 +36,41 @@ class ProjectsPIMapController {
 
     def edit = {
         def projectsPIMapInstance = ProjectsPIMap.get( params.id )
-
-        if(!projectsPIMapInstance) {
+        
+        if(!projectsPIMapInstance) 
+        {
             flash.message = "ProjectsPIMap not found with id ${params.id}"
             redirect(action:create)
         }
-        else {
-            return [ projectsPIMapInstance : projectsPIMapInstance ]
+        else 
+        {
+        	GrailsHttpSession gh=getSession()
+            def investigatorService = new InvestigatorService()
+            def investigatorList=[]
+         	investigatorList=investigatorService.getInvestigatorsWithParty(gh.getValue("PartyID"))
+         	println"investigatorList"+investigatorList
+         	
+            return [ projectsPIMapInstance : projectsPIMapInstance ,
+                     'investigatorList':investigatorList]
         }
     }
 
     def update = {
         def projectsPIMapInstance = ProjectsPIMap.get( params.id )
+        def pIMapInstance = new ProjectsPIMap()
+        def projectsService = new ProjectsService()
+        GrailsHttpSession gh=getSession()
         if(projectsPIMapInstance) {
             projectsPIMapInstance.properties = params
+            pIMapInstance = projectsService.checkPIofProject(gh.getValue("ProjectId"))
+            if(params.role== 'PI')
+            {
+            	if(pIMapInstance)
+            	{
+            		pIMapInstance.activeYesNo ='N'
+            		pIMapInstance.save()
+            	}
+            }
             if(!projectsPIMapInstance.hasErrors() && projectsPIMapInstance.save()) {
                 flash.message = "Updated Successfully"
                 redirect(action:create,id:projectsPIMapInstance.id)
@@ -64,41 +85,83 @@ class ProjectsPIMapController {
         }
     }
 
-    def create = {
-        def projectsPIMapInstance = new ProjectsPIMap()
+    def create = 
+    {
+		def projectsPIMapInstance = new ProjectsPIMap()
         projectsPIMapInstance.properties = params
+        
         GrailsHttpSession gh=getSession()
-          //Removing the old help session and putting the current session help file
-         gh.removeValue("Help")
-         gh.putValue("Help","Assign_Projects_to_PI.htm")
+        
+        /*Removing the old help session and putting the current session help file*/
+        gh.removeValue("Help")
+        gh.putValue("Help","Assign_Projects_to_PI.htm")
+        
         def dataSecurityService = new DataSecurityService()
-        //get all projects for the logined institution
-        def projectsList = dataSecurityService.getProjectsForLoginUser(gh.getValue("PartyID"));
-        def projectsPIMapInstanceList=[]
-        for(int i=0;i<projectsList.size();i++)
-        {
-        	println "projectsList[i].id"+ projectsList[i].id
-        	def projectsPIMap = dataSecurityService.getProjectsPIMapForLoginUser(projectsList[i].id);
-	        println "PIMAp"+ projectsPIMap
-			for(int j=0;j<projectsPIMap.size();j++)
-			{
-				projectsPIMapInstanceList.add(projectsPIMap[j])
-				println projectsPIMapInstanceList
-			}
-        }
+		def projectsService = new ProjectsService()
+		def projectsInstance = projectsService.getProjectById(gh.getValue("ProjectId"))
+       
+		def investigatorService = new InvestigatorService()
+        def investigatorList=[]
+    	investigatorList=investigatorService.getInvestigatorsWithParty(gh.getValue("PartyID"))
+    	println"investigatorList"+investigatorList
+    	
+        def projectsPIMapInstanceList=dataSecurityService.getProjectsPIMapForLoginUser(projectsInstance.id);
+	    
         return ['projectsPIMapInstance':projectsPIMapInstance,
                 'projectsPIMapInstanceList': projectsPIMapInstanceList,
-                'projectsList':projectsList]
+                'projectsInstance':projectsInstance,'investigatorList':investigatorList]
     }
 
     def save = {
-        def projectsPIMapInstance = new ProjectsPIMap(params)
-        if(!projectsPIMapInstance.hasErrors() && projectsPIMapInstance.save()) {
-            flash.message = "Created successfully"
-            redirect(action:create,id:projectsPIMapInstance.id)
+       println "params"+params
+		def projectsPIMapInstance = new ProjectsPIMap()
+        def projectsService = new ProjectsService()
+        
+        GrailsHttpSession gh=getSession() 
+        def investigatorInstance = Investigator.get(new Integer(params.investigator.id))
+        def PIprojectsInstance = projectsService.getProjectById(gh.getValue("ProjectId"))
+        println "project"+gh.getValue("ProjectId")
+        def pIMapInstance = projectsService.checkPIofProject(gh.getValue("ProjectId"))
+        projectsPIMapInstance.investigator = investigatorInstance
+        projectsPIMapInstance.projects = PIprojectsInstance
+        projectsPIMapInstance.role = params.role
+        projectsPIMapInstance.activeYesNo = params.activeYesNo
+        println"projectsPIMapInstance"+projectsPIMapInstance
+        def projectsInstance
+        if(params.role == 'PI')
+        {
+	        if(!pIMapInstance)
+	        {
+		        if(!projectsPIMapInstance.hasErrors() && projectsPIMapInstance.save())
+		        {
+		        	projectsInstance = projectsService.saveProjectAccessPermissionForPiMap(gh.getValue("ProjectId"),projectsPIMapInstance.investigator.id)
+		            flash.message = "Created successfully"
+		            redirect(action:create,model:[projectsPIMapInstance:projectsPIMapInstance,projectsInstance:PIprojectsInstance])
+		        }
+		        else
+		        {
+		            render(view:'create',model:[projectsPIMapInstance:projectsPIMapInstance,projectsInstance:PIprojectsInstance])
+		        }
+	        }
+	        else
+	        {
+	        	redirect(action:create,model:[projectsPIMapInstance:projectsPIMapInstance,projectsInstance:PIprojectsInstance]) 
+	        	flash.message = pIMapInstance.investigator.name + " is already assinged as PI for this project " 
+	        }
         }
-        else {
-            render(view:'create',model:[projectsPIMapInstance:projectsPIMapInstance])
+        else
+        {
+        	if(!projectsPIMapInstance.hasErrors() && projectsPIMapInstance.save())
+	        {
+	        	projectsInstance = projectsService.saveProjectAccessPermissionForPiMap(gh.getValue("ProjectId"),projectsPIMapInstance.investigator.id)
+	            flash.message = "Created successfully"
+	            redirect(action:create,model:[projectsPIMapInstance:projectsPIMapInstance,projectsInstance:PIprojectsInstance])
+	        }
+	        else
+	        {
+	            render(view:'create',model:[projectsPIMapInstance:projectsPIMapInstance,projectsInstance:PIprojectsInstance])
+	        }
         }
     }
+   
 }

@@ -6,7 +6,7 @@ class PartyService{
 	 */
 	public List getPartiesWithoutPartyType(String subQuery){
 		 
-		def partyInstanceList =Party.findAll( "from Party P where  P.partyType is NULL"+subQuery )
+		def partyInstanceList =Party.findAll( "from Party P where  P.partyType is NULL and P.activeYesNo='Y'"+subQuery )
 		return partyInstanceList
 	}
 	
@@ -115,7 +115,7 @@ class PartyService{
 	 * Function to get all active grant agencies.
 	 */
 	public List getActiveGrantAgency(String subQuery){
-		def partyInstanceList =Party.findAll( "from Party P where P.partyType='GA' "+subQuery ) 
+		def partyInstanceList =Party.findAll( "from Party P where P.partyType='GA' and P.activeYesNo='Y'"+subQuery ) 
 		return partyInstanceList
 	}
 	
@@ -176,7 +176,7 @@ class PartyService{
 	public PartyDepartment[] getPartyDepartment(def partyId)
 	{
 		
-		def partyDepartmentInstance =  PartyDepartment.findAll("from PartyDepartment P where P.party.id = " +partyId)
+		def partyDepartmentInstance =  PartyDepartment.findAll("from PartyDepartment P where P.party.id = " +partyId+ "and P.activeYesNo='Y'")
 		println "=====partyDepartmentInstance====== " + partyDepartmentInstance 
 		return partyDepartmentInstance
 	}

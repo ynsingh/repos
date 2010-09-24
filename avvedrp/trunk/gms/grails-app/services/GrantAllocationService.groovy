@@ -1,5 +1,9 @@
 import java.text.SimpleDateFormat;
-
+import org.springframework.security.access.prepost.PostFilter
+import org.springframework.security.access.prepost.PreAuthorize
+import org.springframework.security.acls.domain.BasePermission
+import org.springframework.security.acls.model.Permission
+import org.springframework.transaction.annotation.Transactional
 import java.util.Date;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -7,6 +11,33 @@ import java.text.NumberFormat;
 
 
 class GrantAllocationService {
+	
+	static transactional = false
+	
+	
+	def aclService
+	def aclUtilService
+	def springSecurityService
+	def projectsService
+
+	
+	
+	
+	
+	@PostFilter("hasPermission(filterObject, 'read') or hasPermission(filterObject, admin)")
+	List<GrantAllocation> getAll() {
+		println "Returning all GrantAllocation"
+		log.debug 'Returning all GrantAllocation'
+		GrantAllocation.list()
+	}
+
+
+	@PreAuthorize("hasPermission(#id, 'GrantAllocation', read) or hasPermission(#id, 'GrantAllocation', admin)")
+	GrantAllocation getById(Long id) {
+		log.debug "Returning GrantAllocation with id: $id"
+		GrantAllocation.get id
+	}
+	
 	
 	/**
 	 * Get all grant allocation for projects and parties
@@ -21,6 +52,16 @@ class GrantAllocationService {
 	 */
 	public GrantAllocation[] getGrantAllocationsForProject(def projectId){
 		 def sumAmt = GrantAllocation.executeQuery("select sum(GA.amountAllocated) as total from GrantAllocation  GA where   GA.projects= "+projectId+" group by GA.projects");
+		 return grantAllocationInstanceList
+	}
+	
+	
+	
+	/**
+	 * Get all grant allocation (where allocation type not fund) for projects 
+	 */
+	public GrantAllocation[] getGrantAllocationsForAssignedProject(def projectId){
+		 def grantAllocationInstanceList = GrantAllocation.executeQuery(" from GrantAllocation  GA where   GA.projects IN "+projectId);
 		 return grantAllocationInstanceList
 	}
 	
@@ -64,11 +105,15 @@ class GrantAllocationService {
 	 */
 	public Integer deleteGrantAllocation(Integer grantAllocationId){
 		 Integer grantAllocationDeletedId = null
+		 def projectsService = new ProjectsService()
 		 def grantAllocationInstance = getGrantAllocationById( grantAllocationId )
 		 if(grantAllocationInstance) {
-			 
+			
+			 def accessInstance = projectsService.deleteProjectAccessPermission(grantAllocationId)
+	            
 			 def projectInstance=Projects.get(grantAllocationInstance.projects.id)
-            grantAllocationInstance.delete()
+			 println "grantAllocationId  "+grantAllocationId
+			 grantAllocationInstance.delete()
            if(getGrantAllocationsByProject(projectInstance.id).size()==0)
         	  projectInstance.delete();
             grantAllocationDeletedId = grantAllocationInstance.id
@@ -249,7 +294,7 @@ class GrantAllocationService {
 	public Integer checkDuplicateFundAllot(def grantAllocationInstance){
 		def fundAllotId = 0
     	System.out.println("DuplicateFundAllot__Projid  "+grantAllocationInstance.projects.id+"  partyid "+grantAllocationInstance.party.id)
-    	def chkFundAllotInstance = GrantAllocation.find("from GrantAllocation GA where GA.projects= "+grantAllocationInstance.projects.id+" and GA.party="+grantAllocationInstance.party.id)
+    	def chkFundAllotInstance = GrantAllocation.find("from GrantAllocation GA where GA.projects= "+grantAllocationInstance.projects.id)
     	if(chkFundAllotInstance)
     		fundAllotId = chkFundAllotInstance.id
     		
@@ -285,7 +330,12 @@ class GrantAllocationService {
 	}
 	}
 	public GrantAllocation subGrantSaveExt(def grantAllocationInstance){
-		grantAllocationInstance.save()
+		Integer fundAllotId = null
+		println grantAllocationInstance
+    	if(grantAllocationInstance.save())
+    		fundAllotId = grantAllocationInstance.id
+   
+    		println fundAllotId
 	}
 	
 	/**
@@ -350,4 +400,46 @@ class GrantAllocationService {
 		println "+++++++++++++++++++++++ grantAllocation++++++++++++++++++++++++" + grantAllocation
 		return grantAllocation;
 	}
+	/**
+	 * Function to check whether the headwise allocation is done.
+	 */
+	public GrantAllocationSplit getGrantAllocationSplit(def grantAllocationInstance){
+		
+		def grantAllocationSplitInstance=GrantAllocationSplit.find("from GrantAllocationSplit GS where GS.grantAllocation="+grantAllocationInstance.id)
+		println"*********grantAllocationSplitInstance***********"+grantAllocationSplitInstance
+		
+	    return grantAllocationSplitInstance    
+		
+	}
+	/**
+	 * Function to check whether expense is entered against grant allocation.
+	 */
+	public GrantExpense getExpenseForGrantAllocation(def grantAllocationInstance){
+		
+		def grantExpenseInstance=GrantExpense.find("from GrantExpense GE where GE.grantAllocation="+grantAllocationInstance.id)
+		println"*********grantAllocationSplitInstance***********"+grantExpenseInstance
+		
+	    return grantExpenseInstance    
+		
+	}
+	/**
+	 * Function to check whether the funnd received against the fund allocation.
+	 */
+	public GrantReceipt getGrantReceiptForGrantAllocation(def grantAllocationInstance){
+		
+		def grantReceiptInstance=GrantReceipt.find("from GrantReceipt GR where GR.grantAllocation="+grantAllocationInstance.id)
+		println"*********grantAllocationSplitInstance***********"+grantReceiptInstance
+		
+	    return grantReceiptInstance    
+		
+	}
+	/**
+	 * Get all grant allocation for logged in user groupBy Projects 
+	 */
+	 @PostFilter("hasPermission(filterObject, 'read') or hasPermission(filterObject, admin)")
+	public GrantAllocation[] getGrantAllocationGroupByProjects(def partyID){
+		 def grantAllocationInstanceList=GrantAllocation.findAll("from GrantAllocation GA GROUP BY GA.projects");
+		 return grantAllocationInstanceList
+	}
+
 }

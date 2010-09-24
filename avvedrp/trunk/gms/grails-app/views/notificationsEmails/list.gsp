@@ -7,25 +7,6 @@
         <title>NotificationsEmails</title>
         <ckeditor:resources />
     </head>
-    <script>
-    function checkAll()
-    {
-    	if(document.demo.All.checked==true)
-    	{
-    		for(var i=0;i<document.demo.choices.length;i++)
-    		{
-    			document.demo.choices[i].checked=true;
-    		}
-    	}
-    	else
-    	{
-    		for(var i=0;i<document.demo.choices.length;i++)
-    		{
-    			document.demo.choices[i].checked=false;
-    		}
-    	}
-    }
-    </script>
     <body>
     <div class="wrapper"> 
         <div class="nav">
@@ -63,7 +44,7 @@
                    	       <%-- <g:sortableColumn property="id" title="Id" />
                         
                    	        <g:sortableColumn property="notificationId" title="Notification Id" /> --%>
-                        	<th><g:checkBox name="All" onclick="checkAll()" value="${All}" checked="false"/></th>
+                        	<th><g:checkBox name="All" onclick="notificationEmailCheckAll()" value="${All}" checked="false"/></th>
                    	        <th>Party Name</th>
                    	        <th>Email Address</th>
                    	        <th>Status</th>

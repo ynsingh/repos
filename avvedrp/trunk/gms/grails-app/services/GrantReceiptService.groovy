@@ -119,4 +119,16 @@ class GrantReceiptService{
 	return grantReceiptInstanceList
     }
 	*/
+	
+	/**
+	 * Function to check whether the funnd received against the headwise allocation.
+	 */
+	public GrantReceipt[] getGrantReceiptForGrantAllocationSplit(def grantAllocationSplitInstance){
+		
+		def grantReceiptInstance=GrantReceipt.find("from GrantReceipt GR where GR.grantAllocationSplit="+grantAllocationSplitInstance.id)
+		println"*********grantAllocationSplitInstance***********"+grantReceiptInstance
+		
+	    return grantReceiptInstance    
+		
+	}
 }

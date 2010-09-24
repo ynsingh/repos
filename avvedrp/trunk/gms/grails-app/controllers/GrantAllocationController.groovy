@@ -2,7 +2,7 @@
 	import java.util.Iterator;
 	import java.text.*;
 	import java.util.*;
-	import ConvertToIndainRS
+	
 	
 	import java.sql.*;
 
@@ -13,8 +13,38 @@
 	import net.sf.jasperreports.engine.JasperPrint;
 	import net.sf.jasperreports.engine.JasperRunManager;
 	import javax.servlet.ServletOutputStream;
+	
+	
+	import static org.springframework.security.acls.domain.BasePermission.ADMINISTRATION
+	import static org.springframework.security.acls.domain.BasePermission.DELETE
+	import static org.springframework.security.acls.domain.BasePermission.READ
+	import org.springframework.security.acls.domain.PrincipalSid
+	import org.springframework.security.acls.model.Permission
+	import org.springframework.security.acls.model.Sid
+	import org.springframework.dao.DataAccessException
 
-class GrantAllocationController extends GmsController {
+	import grails.plugins.springsecurity.Secured
+
+
+	import org.codehaus.groovy.grails.commons.ApplicationHolder as AH
+	import static org.springframework.security.acls.domain.BasePermission.ADMINISTRATION
+	import static org.springframework.security.acls.domain.BasePermission.DELETE
+	import static org.springframework.security.acls.domain.BasePermission.READ
+	import static org.springframework.security.acls.domain.BasePermission.WRITE
+	import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+	import org.springframework.security.core.authority.AuthorityUtils
+	import org.springframework.security.core.context.SecurityContextHolder as SCH
+	
+   class GrantAllocationController extends GmsController {
+		
+		private static final Permission[] HAS_DELETE = [DELETE, ADMINISTRATION]
+		private static final Permission[] HAS_ADMIN = [ADMINISTRATION]
+		
+		def aclPermissionFactory
+		def aclUtilService
+		def grantAllocationService
+		def projectsService
+		def springSecurityService
 
     def index = { 
     		
@@ -40,38 +70,95 @@ class GrantAllocationController extends GmsController {
     def delete = {
 		def grantAllocationService = new GrantAllocationService()
         def dataSecurityService = new DataSecurityService()
-		   def grantAllocationInstance=grantAllocationService.getGrantAllocationById(new Integer(params.id))
-
-		def grantAllocationId = grantAllocationService.deleteGrantAllocation(new Integer(params.id))
-		if(grantAllocationId != null){
-			if(grantAllocationId > 0){
-				GrailsHttpSession gh=getSession()
-	            if(gh.getValue("fromUrL")=="fundAllot") {
-	            	redirect(action:'fundAllot')
-	                flash.message = "Fund Allocation deleted" 
-	                	
-                }
-                else {
-                	if(gh.getValue("fromUrL")=="subGrantAllotExt")
-                	redirect(action:'subGrantAllotExt',id:gh.getValue("fromID"))
-                	else
-                		redirect(action:'subGrantAllot',id:gh.getValue("fromID"))	
-                	flash.message = "Project Allocation deleted"
-                }
-			}
-			else {
+		def grantAllocationInstance=grantAllocationService.getGrantAllocationById(new Integer(params.id))
+		
+		def grantAllocationSplitInstance = grantAllocationService.getGrantAllocationSplit(grantAllocationInstance);
+		def grantExpenseInstance = grantAllocationService.getExpenseForGrantAllocation(grantAllocationInstance);
+		def grantReceiptInstance = grantAllocationService.getGrantReceiptForGrantAllocation(grantAllocationInstance);
+		println "" + grantAllocationSplitInstance
+		if(grantAllocationSplitInstance)
+		{
+			if(grantAllocationInstance.projects.parent.id == null)
 				
-	            flash.message = "GrantAllocation not found with id ${params.id}"
-	            redirect(action:list)
-	        }
+			{
+				
+			redirect(action:'fundAllot') 
+			}
+			else
+			{
+				
+				redirect(action:'subGrantAllot',id:grantAllocationInstance.projects.parent.id) 
+			}
+			flash.message = "Cannot delete the fund allocation as the headwise allocation is done" 
 		}
+		else if(grantExpenseInstance)
+		{
+           if(grantAllocationInstance.projects.parent.id == null)
+				
+			{
+				
+			redirect(action:'fundAllot') 
+			}
+			else
+			{
+				
+				redirect(action:'subGrantAllot',id:grantAllocationInstance.projects.parent.id) 
+			}
+			flash.message = "Cannot delete the fund allocation as the Grant Expense is entered" 
+
+		}
+		else if(grantReceiptInstance)
+		{
+            if(grantAllocationInstance.projects.parent.id == null)
+				
+			{
+				
+			redirect(action:'fundAllot') 
+			}
+			else
+			{
+				
+				redirect(action:'subGrantAllot',id:grantAllocationInstance.projects.parent.id) 
+			}
+			flash.message = "Cannot delete the fund allocation as the Grant is Received" 
+
+		}
+		else
+		{
+			def grantAllocationId = grantAllocationService.deleteGrantAllocation(new Integer(params.id))
+			if(grantAllocationId != null){
+				if(grantAllocationId > 0){
+					GrailsHttpSession gh=getSession()
+		            if(gh.getValue("fromUrL")=="fundAllot") {
+		            	redirect(action:'fundAllot')
+		                flash.message = "Fund Allocation deleted" 
+		                	
+	                }
+	                else {
+	                	if(gh.getValue("fromUrL")=="subGrantAllotExt")
+	                	redirect(action:'subGrantAllotExt',id:gh.getValue("fromID"))
+	                	else
+	                		
+	                		redirect(action:'subGrantAllot',id:gh.getValue("fromID"))	
+	                	flash.message = "Project Allocation deleted"
+	                }
+				}
+				else {
+					
+		            flash.message = "GrantAllocation not found with id ${params.id}"
+		            redirect(action:list)
+		        }
+			}
+		}
+		
+		
 		
     }
 
     def edit = {
 		def grantAllocationService = new GrantAllocationService()
         def grantAllocationInstance=grantAllocationService.getGrantAllocationById(new Integer(params.id))
-          def dataSecurityService = new DataSecurityService()
+        def dataSecurityService = new DataSecurityService()
 		//checking  whether the user has access to the given projects
 		if(dataSecurityService.checkForAuthorisedAcsessInProjects(grantAllocationInstance.projects.id,new Integer(getUserPartyID()))==0)
 		{
@@ -158,7 +245,7 @@ class GrantAllocationController extends GmsController {
         	def grantAllocationInstance = new GrantAllocation()
         	grantAllocationInstance.properties = params
         
-        	def grantAllocationService = new GrantAllocationService()
+        	
         	def dataSecurityService = new DataSecurityService()
     		String subQuery="";
             if(params.sort != null && !params.sort.equals(""))
@@ -166,34 +253,68 @@ class GrantAllocationController extends GmsController {
             if(params.order != null && !params.order.equals(""))
             	subQuery =subQuery+" "+params.order
            
-            def grantAllocationInstanceList=grantAllocationService.getGrantAllocations(gh.getValue("PartyID"),subQuery)
+            def grantAllocationInstanceList
          
-            def projectsList=dataSecurityService.getProjectsForLoginUser(gh.getValue("PartyID"))
+            
+            try{
+            	grantAllocationInstanceList = grantAllocationService.getGrantAllocationGroupByProjects(gh.getValue("Party"))
+	
+    	}
+    	  catch(Exception e)
+    	{
+    		
+    	} 
+            
+    	  
+    	  println "projectsPIMapInstanceList"+ grantAllocationInstanceList
+            def projectsList=[]
             def projectsPIMapInstanceList=[]
             //get PI of projects
+            println"grantAllocationInstance"+params.id
+            def projectIdStart="("
+            def projectsInstance = projectsService.getProjectById(gh.getValue("ProjectId"))	
+            		
             for(int i=0;i<grantAllocationInstanceList.size();i++)
             {
-            	println "grantAllocationInstanceList"+ grantAllocationInstanceList[i].projects.id
+            	println "grantAllocationInstanceListdfd"+ grantAllocationInstanceList[i].projects.id
             	def projectsPIMapInstance = dataSecurityService.getProjectsPIMap(grantAllocationInstanceList[i].projects.id);
-            	println "PIMAp"+ projectsPIMapInstance
+            	println "PIMApxsdf"+ projectsPIMapInstance
             	projectsPIMapInstanceList.add(projectsPIMapInstance)
+            	projectsList.add(grantAllocationInstanceList[i].projects)
+            	projectIdStart=projectIdStart+grantAllocationInstanceList[i].projects.id+","
             }
-            println "projectsPIMapInstanceList"+ projectsPIMapInstanceList
-        	def partyinstance=Party.get(gh.getValue("Party"))
+            println "projectsPIMapInstanceList"+ projectIdStart
+            projectIdStart=projectIdStart.substring(0,projectIdStart.length()-1)+")"
+            println "projectsPIMapInstanceList"+ projectIdStart
+             println"grantAllocationInstanceList[0].projects.id"+grantAllocationInstanceList[0]
+            def grantAllocationInstanceListproj
+    	     if(grantAllocationInstanceList[0])
+    	     {
+           grantAllocationInstanceListproj = grantAllocationService.getGrantAllocationsForAssignedProject(projectIdStart)
+         println "grantAllocationInstanceListproj"+ grantAllocationInstanceListproj
+        	
+    	     }
+            def partyinstance=Party.get(gh.getValue("Party"))
         	println partyinstance
+    	     
         	ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
         	return ['grantAllocationInstance':grantAllocationInstance,
-                'grantAllocationInstanceList':grantAllocationInstanceList,
+        	        'grantAllocationInstanceList':grantAllocationInstanceListproj,
                 'projectsList':projectsList,'partyinstance':partyinstance,
                 'projectsPIMapInstanceList':projectsPIMapInstanceList,
-                'currencyFormat':currencyFormatter]
+                'currencyFormat':currencyFormatter,
+                'projectsInstance':projectsInstance]
     }
         
-    def funtSave = {
-    		println "*******************************IfuntSave***************"
-        def grantAllocationInstance = new GrantAllocation(params)
-
-        	grantAllocationInstance.createdBy="admin"
+    def funtSave = 
+    {
+    		println "*******************************IfuntSave***************"+params
+    		GrailsHttpSession gh=getSession()
+    		def grantAllocationInstance = new GrantAllocation(params)
+    		def projectsInstance = projectsService.getProjectById(gh.getValue("ProjectId"))	
+    		println "grantAllocationInstance.projects"+grantAllocationInstance.projects
+    		grantAllocationInstance.projects = projectsInstance
+    		grantAllocationInstance.createdBy="admin"
     		grantAllocationInstance.modifiedBy="admin"
     		grantAllocationInstance.DateOfAllocation=new Date();
     	    grantAllocationInstance.allocationType="Fund"
@@ -219,12 +340,18 @@ class GrantAllocationController extends GmsController {
     {
     		
     	GrailsHttpSession gh=getSession()
-    		
+     def grantAllocationInstance = new GrantAllocation()	
+    	
 		gh.removeValue("Help")
-	//putting help pages in session
-	gh.putValue("Help","SubProject_Allocation.htm")
+	    //putting help pages in session
+	    gh.putValue("Help","SubProject_Allocation.htm")
     	gh.putValue("fromUrL", "subGrantAllot");
     	gh.putValue("fromID", params.id);
+    	String subQuery="";
+        if(params.sort != null && !params.sort.equals(""))
+       	subQuery=" order by GA."+params.sort
+       	if(params.order != null && !params.order.equals(""))
+       	subQuery =subQuery+" "+params.order
     	def grantAllocationService = new GrantAllocationService()
     	def grantAllocation=grantAllocationService.getGrantAllocationById(new Integer(params.id))
     	def dataSecurityService = new DataSecurityService()
@@ -235,21 +362,18 @@ class GrantAllocationController extends GmsController {
 		}
 		else
 		{
-	        def grantAllocationInstance = new GrantAllocation()
+	        
 	        grantAllocationInstance.properties = params
 	        
 	        def projectInstance = Projects.get( params.id )
 	        projectInstance.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(projectInstance.id,getUserPartyID())
-	       
-	      
+	        
+	        def subProjectsList = dataSecurityService.getSubProjectsForProject(projectInstance)
+	        
 	        def partyInstance=Party.get(gh.getValue("Party"))
 	        grantAllocationInstance.granter=partyInstance;
 	        println "params"+params.id
-	        String subQuery="";
-            if(params.sort != null && !params.sort.equals(""))
-           	subQuery=" order by GA."+params.sort
-           	if(params.order != null && !params.order.equals(""))
-           	subQuery =subQuery+" "+params.order
+	        
 	        def grantAllocationInstanceList = grantAllocationService.getSubGrantAllocationsChild(new Integer(params.id),getUserPartyID(),subQuery)
 	        double sumAmountAllocated = 0.00
 	        def projectsPIMapInstanceList=[]
@@ -270,7 +394,7 @@ class GrantAllocationController extends GmsController {
 	                'grantAllocationInstanceList':grantAllocationInstanceList,
 	                'partyInstance':partyInstance,'grantAllocation':grantAllocation,
 	                'projectsPIMapInstanceList':projectsPIMapInstanceList,
-	                'currencyFormat':currencyFormatter]
+	                'currencyFormat':currencyFormatter,'subProjectsList':subProjectsList]
     	}
     	 /* }
     
@@ -309,7 +433,7 @@ class GrantAllocationController extends GmsController {
         	grantAllocationInstance.granter=partyInstance;
         println "params"+params.id
         
-        def grantAllocationInstanceList = grantAllocationService.getSubGrantAllocationInSort(new Integer(params.id))
+        def grantAllocationInstanceList = grantAllocationService.getSubGrantAllocationInSort(new Integer(params.id),subQuery)
         
         return ['grantAllocationInstance':grantAllocationInstance,'projectInstance':projectInstance,'grantAllocationInstanceList':grantAllocationInstanceList,'partyInstance':partyInstance,'grantAllocation':grantAllocation ]
 		//}
@@ -338,11 +462,11 @@ class GrantAllocationController extends GmsController {
 			def projectInstance = Projects.get( params.id )
 	        projectInstance.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(projectInstance.id,getUserPartyID())
 	       
-        	def partyInstance=Party.get(gh.getValue("Party"))
+        	def partyInstance=Party.get(new Long(gh.getValue("Party")))
         	grantAllocationInstance.party=partyInstance;
 			grantAllocationInstance.projects = projectInstance
 			
-			println "params"+params.id
+			println "params"+grantAllocationInstance.errors
 			String subQuery="";
 	        if(params.sort != null && !params.sort.equals(""))
 	       	subQuery=" order by GA."+params.sort
@@ -377,7 +501,8 @@ class GrantAllocationController extends GmsController {
 	 * */
     def subGrantSave = 
     {
-    	double sumAmount = 0.0
+		println "params = " + params
+		double sumAmount = 0.0
     	double totAllAmount = ((params.totAllAmount).toDouble()).doubleValue()
     	double amountAllocated = ((params.amountAllocated).toDouble()).doubleValue()
     	double newAmount = ((params.amount).toDouble()).doubleValue()
@@ -409,9 +534,40 @@ class GrantAllocationController extends GmsController {
 			Integer duplicateCheck = grantAllocationService.checkDuplicateFundAllot(grantAllocationInstance);
 			println "+++++++++++++++++++++++++++++++++++duplicateCheck++++++++++++++++++++++++" + duplicateCheck
 			println"((((grantallocproj))))"+grantAllocationInstance.projects.parent.id
-			if( duplicateCheck == 0 || duplicateCheck == null)
+			def grantAllocationList = grantAllocationService.getGrantAllocationsByProjectCode(grantAllocationInstance.projects.id)
+			/*if( duplicateCheck == 0 || duplicateCheck == null)
+			{*/
+			println "+++++++++++++++++++++++++++++++++++grantAllocationList++++++++++++++++++++++++" + grantAllocationList
+			def GrantAllocation 
+			def grantAllocationInstanceForAccess
+			def accessInstance
+			if(grantAllocationList)
 			{
-				def GrantAllocation = grantAllocationService.saveSubGrantAllocation(grantAllocationInstance)
+				if(grantAllocationList[0].party.id == grantAllocationInstance.party.id || grantAllocationList==null)
+				{
+					GrantAllocation = grantAllocationService.saveSubGrantAllocation(grantAllocationInstance)
+					println"+++++++++++GrantAllocation+++++++++"+ GrantAllocation
+					
+					if(GrantAllocation == null)
+					{
+					flash.message = "Headwise allocation is not done.So couldnot allocate"
+					}
+					else
+					{
+						grantAllocationInstanceForAccess = GrantAllocation.get(GrantAllocation.id)
+						println "grantAllocationInstanceForAccess = "+grantAllocationInstanceForAccess
+						accessInstance = projectsService.saveProjectAccessPermission(grantAllocationInstanceForAccess)
+						flash.message = "New allocation created "
+					}
+				}
+				else
+				{
+					flash.message = "Project already allotted to " + grantAllocationList[0].party.code
+				}
+			}
+			else
+			{
+				GrantAllocation = grantAllocationService.saveSubGrantAllocation(grantAllocationInstance)
 				println"+++++++++++GrantAllocation+++++++++"+ GrantAllocation
 				
 				if(GrantAllocation == null)
@@ -420,13 +576,17 @@ class GrantAllocationController extends GmsController {
 				}
 				else
 				{
+					grantAllocationInstanceForAccess = GrantAllocation.get(GrantAllocation.id)
+					println "grantAllocationInstanceForAccess = "+grantAllocationInstanceForAccess
+					accessInstance = projectsService.saveProjectAccessPermission(grantAllocationInstanceForAccess)
 					flash.message = "New allocation created "
 				}
 			}
-			else
+			/*else
 			{
-				flash.message = "Already Allotted to the same Recipient"
-			}
+				flash.message = "Project already allotted "
+			}*/
+
 		}
 		else
 		{
@@ -441,23 +601,36 @@ class GrantAllocationController extends GmsController {
     def subGrantSaveExt = {
     	
         def grantAllocationInstance = new GrantAllocation(params)
+        def grantAllocationInstanceNew = new GrantAllocation()
 		
         println "******************************subgrant save*************************"
-		println grantAllocationInstance.projects
-		println grantAllocationInstance.party
-		println grantAllocationInstance.granter
+        println "params =" + params
+       
+        grantAllocationInstanceNew.createdBy="admin"
+        	grantAllocationInstanceNew.modifiedBy="admin"
 		
-	    grantAllocationInstance.createdBy="admin"
-		grantAllocationInstance.modifiedBy="admin"
-		grantAllocationInstance.createdDate = new Date()
-		grantAllocationInstance.allocationType="grand"
-		grantAllocationInstance.code=""
-	
-		//def granterInstance = Party.get(grantAllocationInstance.granter.id)
-		//grantAllocationInstance.granter = granterInstance
-//                    	    grantAllocationInstance.save();
-		def grantAllocationService = new GrantAllocationService()
-        def GrantAllocation = grantAllocationService.subGrantSaveExt(grantAllocationInstance)	
+        		grantAllocationInstanceNew.allocationType="grand"
+        			grantAllocationInstanceNew.code="default "
+        				grantAllocationInstanceNew.projects= grantAllocationInstance.projects
+	        			grantAllocationInstanceNew.amountAllocated= grantAllocationInstance.amountAllocated
+	        			grantAllocationInstanceNew.DateOfAllocation= grantAllocationInstance.DateOfAllocation
+	        			grantAllocationInstanceNew.remarks= grantAllocationInstance.remarks
+	        			grantAllocationInstanceNew.sanctionOrderNo= grantAllocationInstance.sanctionOrderNo
+	        			
+	        			println grantAllocationInstance.party
+				
+						println grantAllocationInstance.hasErrors()
+						
+		def granterInstance = Party.get(grantAllocationInstance.granter.id)
+		grantAllocationInstanceNew.granter = granterInstance
+		def partyInstance = Party.get(grantAllocationInstance.party.id)
+		grantAllocationInstanceNew.party = partyInstance
+		
+		println grantAllocationInstanceNew.errors
+		
+                	  //  grantAllocationInstanceNew.save();
+		//def grantAllocationService = new GrantAllocationService()
+       def GrantAllocation = grantAllocationService.subGrantSaveExt(grantAllocationInstanceNew)	
         flash.message = "New Grant Allocation Created"
         redirect(action:'subGrantAllotExt',id:grantAllocationInstance.projects.id)
        
@@ -468,18 +641,37 @@ class GrantAllocationController extends GmsController {
     	
     	//get data from grant_allocation
     	
-	    	
-    	def grantAllocationInstanceList
+    	
+    	
+	    List<GrantAllocation> grantAllocationInstanceList 	
+    
     	def dataSecurityService = new DataSecurityService();
-    	if(gh.getValue("Role")=="ROLE_PI")
+    	println "Piiii"+gh.getValue("PartyID")
+    	
+    	try{
+          grantAllocationInstanceList = grantAllocationService.getAll()
+	
+    	}
+    	catch(Exception e)
+    	{
+    		
+    	}
+		
+		println grantAllocationInstanceList
+
+	
+    	
+    	
+    	/*if(gh.getValue("Role")=="ROLE_PI")
     	{
     		println "Piiii"
     		grantAllocationInstanceList=dataSecurityService.getProjectsWithGrantAllocationForLoginPi(gh.getValue("Pi"))
     	}
     	else{
+    		
     		grantAllocationInstanceList=dataSecurityService.getProjectsFromGrantAllocationForLoginUser(gh.getValue("PartyID"));
     	}	    	
-    	
+    	*/
     	
          
         [ grantAllocationInstanceList: grantAllocationInstanceList ]
@@ -553,8 +745,13 @@ class GrantAllocationController extends GmsController {
 		 def grantAllocationService = new GrantAllocationService()
 		 def pastGrantAllocation = grantAllocationService.getGrantAllocationById(new Integer(params.id))
 		 amountToBeUpdated = (sumAmount - (pastGrantAllocation.amountAllocated).doubleValue())
+		 println"grant"
 		 
+	        def grantAllocationUpdateInstance = grantAllocationService.getGrantAllocationById(new Integer(params.id))
+	        println"grantAllocationUpdateInstance"+grantAllocationUpdateInstance
 		 def grantAllocationInstance 
+		 if(grantAllocationUpdateInstance.projects.parent!=null)
+		 {
 		 if(Double.compare(projectAmount,amountToBeUpdated) >=0)
 		 {
 			 grantAllocationInstance = grantAllocationService.updateGrantAllocation(params)
@@ -564,12 +761,23 @@ class GrantAllocationController extends GmsController {
 			 flash.message = "Amount should not exceed the Amount allocated for Project"
 			 redirect(action:'editProAllot',id:pastGrantAllocation.id)
 		 }
+		 }
+		 else
+		 {
+			 grantAllocationInstance = grantAllocationService.updateGrantAllocation(params)
+		 }
 		 if(grantAllocationInstance)
 		 {
 			 if(grantAllocationInstance.isSaved)
 			 {
+				 if(grantAllocationUpdateInstance.projects.parent==null)
+				 {
+					 flash.message = "Project Allocation Updated"
+				 }
+				 else
+				 {
 				 flash.message = "Sub Project Allocation Updated"
-				
+				 }
 				 if(gh.getValue("fromUrL")=="subGrantAllotExt")
 					 redirect(action:'subGrantAllotExt',id:grantAllocationInstance.projects.id)
 				 else
@@ -599,15 +807,32 @@ class GrantAllocationController extends GmsController {
 		println params
 		GrailsHttpSession gh=getSession()
 		def dataSecurityService = new DataSecurityService();
+		def grantAllocationInstanceList
+		   
+        try{
+        	grantAllocationInstanceList = grantAllocationService.getAll()
+
+	}
+	  catch(Exception e)
+	{
 		
-		/* Get projects mapped to the login user */
-//    		def projectInstanceList = dataSecurityService.getProjectsOfLoginUser(gh.getValue("ProjectID"))
-		def projectInstanceList = dataSecurityService.getProjectsForLoginUser(gh.getValue("PartyID"))
+	}
+        
+        def projectsList=[]
+        def projectsPIMapInstanceList=[]
+        //get PI of projects
+        for(int i=0;i<grantAllocationInstanceList.size();i++)
+        {
+        
+        	projectsList.add(grantAllocationInstanceList[i].projects)
+        }
 		
-		/* Get parties mapped to the login user */
-		//def partyInstanceList =dataSecurityService.getPartiesOfLoginUser(gh.getValue("PartyID"))
+		
+		
+		
 	
-        return[projectInstanceList:projectInstanceList]
+	
+        return[projectInstanceList:projectsList]
     }
         
     
@@ -682,21 +907,31 @@ class GrantAllocationController extends GmsController {
     		def monthname=["Jan","Feb","Mar","Apr","May","Jun","July","Aug","Sep","Oct","Nov","Dec"]
     		def monthnameView=[]
     		def grantAllocationService = new GrantAllocationService()
-            def projectInstance = Projects.get( params.id )
+    		println "params.id"+params.id
+            Integer ProjectId=new Integer(params.id);
+            println "Long.parseLong(params.id)"+Long.parseLong(params.id)
+            // def grantAllocationInstanceId = projectsService.getProjectById(new Long(params.id))
+            def projectInstance
+            try{
+             projectInstance = projectsService.getProjectById(new Long(params.id))
+           
+            println "projectInstance"+projectInstance
+            //println "grantAllocationInstanceId"+grantAllocationInstanceId.projects
             projectInstance.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(projectInstance.id,getUserPartyID())
-           	def sumAmount = GrantExpense.executeQuery("select sum(GE.expenseAmount) as SumAmt from GrantExpense GE where GE.projects.id ="+ params.id) 
+           	def sumAmount = GrantExpense.executeQuery("select sum(GE.expenseAmount) as SumAmt from GrantExpense GE where GE.projects.id ="+ projectInstance.id) 
            	
-           	def sumGrantRecieve = GrantExpense.executeQuery("select sum(GR.amount) as SumAmt from GrantReceipt GR where GR.projects.id ="+ params.id)
+           	def sumGrantRecieve = GrantExpense.executeQuery("select sum(GR.amount) as SumAmt from GrantReceipt GR where GR.projects.id ="+ projectInstance.id)
            	
-           	 	def grantAllocationSplit = GrantAllocationSplit.findAll("from GrantAllocationSplit  GAS where  GAS.projects="+params.id);
+           	 	def grantAllocationSplit = GrantAllocationSplit.findAll("from GrantAllocationSplit  GAS where  GAS.projects="+projectInstance.id);
+             def grantAllocationInstance = GrantAllocation.find("from GrantAllocation  GA where  GA.projects="+projectInstance.id);
             
-    		  grantAllocationSplit = GrantAllocationSplit.executeQuery("select sum(GAS.amount) as SumAmt,GAS.accountHead.code from GrantAllocationSplit GAS where GAS.projects.id ="+ params.id+"and  GAS.grantAllocation.party.id ="+ getUserPartyID()+" group by GAS.accountHead.id")
+    		  grantAllocationSplit = GrantAllocationSplit.executeQuery("select sum(GAS.amount) as SumAmt,GAS.accountHead.code from GrantAllocationSplit GAS where GAS.projects.id ="+ projectInstance.id+"and  GAS.grantAllocation.party.id ="+ getUserPartyID()+" group by GAS.accountHead.id")
                               
                               
              def monthlyExpenseAndRecipts = GrantReceipt.executeQuery("SELECT MONTH(dateOfExpense) as Month ,"+ 
-									    " sum(expenseAmount) as  expAmt ,	(SELECT  sum(amount) as expAmt FROM GrantReceipt GR where GR.projects.id="+ params.id+"  	and  MONTHNAME(dateOfReceipt)=MONTHNAME(GA.dateOfExpense) "+
+									    " sum(expenseAmount) as  expAmt ,	(SELECT  sum(amount) as expAmt FROM GrantReceipt GR where GR.projects.id="+ projectInstance.id+"  	and  MONTHNAME(dateOfReceipt)=MONTHNAME(GA.dateOfExpense) "+
 							"	group by MONTHNAME(dateOfReceipt)) as reciept "+
-							"	 FROM GrantExpense GA where  GA.projects.id="+ params.id+"  group by MONTHNAME(GA.dateOfExpense) order by GA.dateOfExpense   asc")
+							"	 FROM GrantExpense GA where  GA.projects.id="+ projectInstance.id+"  group by MONTHNAME(GA.dateOfExpense) order by GA.dateOfExpense   asc")
 
 							 println  "monthlyExpenseAndRecipts "+monthlyExpenseAndRecipts
 							 GrailsHttpSession gh=getSession()
@@ -854,38 +1089,79 @@ class GrantAllocationController extends GmsController {
           
             else {
             	ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
-            	return [ projectInstance : projectInstance,sumAmount:sumAmount,grantAllocationSplit:grantAllocationSplit,resultPiechart:resultPiechart,resultLinechart:resultLinechart,rangelimit:rangelimit,sumGrantRecieve:sumGrantRecieve,'currencyFormat':currencyFormatter]}
-        }
+            	return [ projectInstance : projectInstance,sumAmount:sumAmount,
+            	         grantAllocationSplit:grantAllocationSplit,
+            	         resultPiechart:resultPiechart,resultLinechart:resultLinechart,
+            	         rangelimit:rangelimit,sumGrantRecieve:sumGrantRecieve,
+            	         'currencyFormat':currencyFormatter,
+            	         'grantAllocationInstance':grantAllocationInstance]
+            	}
+            }
+            catch(Exception e)
+            {
+            	redirect uri:'/invalidAccess.gsp'
+            }
+            }
         
         
     def grantReports = {
     		println params
     		GrailsHttpSession gh=getSession()
-    		def dataSecurityService = new DataSecurityService();
-
-    		def projectInstanceList = dataSecurityService.getProjectsForLoginUser(gh.getValue("PartyID"))
-
+    	
+    		//def dataSecurityService = new DataSecurityService();
+    		List<GrantAllocation> grantAllocationInstance 	
+		
+	    	try{
+	    		grantAllocationInstance = grantAllocationService.getAll()
+		
+	    	}
+	    	catch(Exception e)
+	    	{
+	    		
+	    	}
+	    	def projectInstanceList=[]
+			for(int i=0;i<grantAllocationInstance.size();i++)
+			{
+				projectInstanceList.add(grantAllocationInstance[i].projects)
+				println projectInstanceList
+			}
+    		//def projectInstanceList = dataSecurityService.getProjectsForLoginUser(gh.getValue("PartyID"))
+    		println "projectInstanceList"+projectInstanceList
+    		return[projectInstanceList:projectInstanceList]
+        }
+		
+		def auditLoggingReport = {
+    		println params
+    		GrailsHttpSession gh=getSession()
+    	
+    		//def dataSecurityService = new DataSecurityService();
+    		List<GrantAllocation> grantAllocationInstance 	
+		
+	    	try{
+	    		grantAllocationInstance = grantAllocationService.getAll()
+		
+	    	}
+	    	catch(Exception e)
+	    	{
+	    		
+	    	}
+	    	def projectInstanceList=[]
+			for(int i=0;i<grantAllocationInstance.size();i++)
+			{
+				projectInstanceList.add(grantAllocationInstance[i].projects)
+				println projectInstanceList
+			}
+    		//def projectInstanceList = dataSecurityService.getProjectsForLoginUser(gh.getValue("PartyID"))
+    		println "projectInstanceList"+projectInstanceList
     		return[projectInstanceList:projectInstanceList]
         }
 //  For State of Accounts Report
     def reportView = {}
-    /* Get sql connection from properties file */
+    /* Get sql connection */
     private Connection getSqlConnection(){
-    	Properties props = new Properties()
-    	def webRootDir = servletContext.getRealPath("/")
-         println webRootDir
-    	
-    	FileInputStream fis = new FileInputStream(webRootDir+ "/images/gmsDb.properties" )
-    	props.load( fis )
-    	fis.close()
-    	
-    	String url = props.getProperty( "gmsDbUrl" )
-    	String user = props.getProperty("gmsDbUSer")
-    	String password = props.getProperty("gmsDbPassword")
-    	String driver = props.getProperty("gmsDbDriver")
-    	
-    	Class.forName(driver);
-        Connection con = DriverManager.getConnection (url,user,password);
+        /*getting the datasource instance from the GmsController
+         *as this class extends it*/
+		 Connection con = dataSource.getConnection()
     	return con
     }
 	
@@ -902,10 +1178,13 @@ class GrantAllocationController extends GmsController {
 				GrailsHttpSession gh=getSession()
 				println "priject id from session" +gh.getValue("ProjectID")
 				println "test =="	
-					println "inner =="	
-						def ProjectID=gh.getValue("ProjectID")
-					parameters.put("grantPeriod",params.grantPeriod)
+					println "inner =="
+					
+					def ProjectID=params.projects
+					//parameters.put("grantPeriod",params.grantPeriod)
 					parameters.put("projectID",ProjectID)
+					parameters.put("reportDateTo",params.reportDateTo_day+"/"+params.reportDateTo_month+"/"+params.reportDateTo_year)
+					parameters.put("reportDate",params.reportDate_day+"/"+params.reportDate_month+"/"+params.reportDate_year)
 					parameters.put("Path",webRootDir+"/reports/")
 					
 					def sql = getSqlConnection()
@@ -938,11 +1217,12 @@ class GrantAllocationController extends GmsController {
 			println "priject id from session" +gh.getValue("ProjectID")
 			println "test =="	
 				println "inner =="	
-					def ProjectID=gh.getValue("ProjectID")
-				parameters.put("grantPeriod",params.grantPeriod)
+					def ProjectID=params.projects
+				// parameters.put("grantPeriod",params.grantPeriod)
 				parameters.put("projectID",ProjectID)
 				parameters.put("Path",webRootDir+"/reports/")
-				
+				parameters.put("reportDateTo",params.reportDateTo_day+"/"+params.reportDateTo_month+"/"+params.reportDateTo_year)
+					parameters.put("reportDate",params.reportDate_day+"/"+params.reportDate_month+"/"+params.reportDate_year)
 				def sql = getSqlConnection()
 				
 				byte[] bytes = 

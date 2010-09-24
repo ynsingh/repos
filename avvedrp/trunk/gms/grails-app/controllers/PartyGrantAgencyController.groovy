@@ -57,7 +57,7 @@ class PartyGrantAgencyController {
 
         if(!partyInstance) {
             flash.message = "Grant Agency not found with id ${params.id}"
-            redirect(action:list)
+            redirect(action:create)
         }
         else {
             return [ partyInstance : partyInstance ]
@@ -72,7 +72,7 @@ class PartyGrantAgencyController {
 			if(partyInstance.saveMode != null){
 				if(partyInstance.saveMode.equals("Updated")){
 					flash.message = "Grant Agency ${params.code} updated"
-	                redirect(action:list,id:partyInstance.id)
+	                redirect(action:create,id:partyInstance.id)
 				}
 				else if(partyInstance.saveMode.equals("Duplicate")){
 					flash.message = "Grant Agency Already Exists"
@@ -98,7 +98,19 @@ class PartyGrantAgencyController {
        	gh.removeValue("Help")
    		//putting help pages in session
    		gh.putValue("Help","Create_Grant_Agency.htm")
-        return ['partyInstance':partyInstance]
+	
+        if(!params.max) params.max = 10
+        params.partyType = "GA"
+        String subQuery ="";
+        if(params.sort != null && !params.sort.equals(""))
+        	subQuery=" order by P."+params.sort
+        if(params.order != null && !params.order.equals(""))
+        	subQuery =subQuery+" "+params.order
+        	
+    	def partyService = new PartyService()
+        def partyInstanceList = partyService.getActiveGrantAgency(subQuery)
+        return ['partyInstance':partyInstance,
+                'partyInstanceList': partyInstanceList]
     }
 
     def save = {
@@ -116,7 +128,7 @@ class PartyGrantAgencyController {
            	if(partyInstance.saveMode != null){
            		if(partyInstance.saveMode.equals("Saved")){
            			flash.message = "Grant Agency ${partyInstance.code} created"
-		            redirect(action:list,id:partyInstance.id)
+		            redirect(action:create,id:partyInstance.id)
            		}
            		else if(partyInstance.saveMode.equals("Duplicate")){
            			flash.message = "Grant Agency Already Exists"

@@ -6,19 +6,6 @@
         <meta name="layout" content="main" />
         <title> Project Allocation</title>         
     </head>
-    <script>
-    function validate()
-    {
-     
-   
-    if(eval(document.getElementById("amountAllocated").value)+eval(document.getElementById("totAloAmt").value)>=eval(document.getElementById("totAmt").value))
-    {
-    alert("Amount Exceeded ,fund Allocation not possible ");
-    return false;
-    }
-    
-    }
-     </script>
     <body>
      <div class="wrapper"> 
         <div class="nav">
@@ -109,7 +96,7 @@
                     </table>
                 </div>
                 <div class="buttons">
-                    <span class="button"><input class="save" type="submit" onClick="return validate()"  value="Create" /></span>
+                    <span class="button"><input class="save" type="submit" onClick="return validateGrantAllocationCreate()"  value="Create" /></span>
                 </div>
               </g:form>
                 

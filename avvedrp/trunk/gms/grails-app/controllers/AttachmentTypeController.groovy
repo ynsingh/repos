@@ -14,8 +14,8 @@ class AttachmentTypeController {
         def attachmentTypeInstance = AttachmentType.get( params.id )
 
         if(!attachmentTypeInstance) {
-            flash.message = "AttachmentType not found with id ${params.id}"
-            redirect(action:list)
+            flash.message = "AttachmentType not found"
+            redirect(action:create)
         }
         else { return [ attachmentTypeInstance : attachmentTypeInstance ] }
     }
@@ -24,12 +24,12 @@ class AttachmentTypeController {
         def attachmentTypeInstance = AttachmentType.get( params.id )
         if(attachmentTypeInstance) {
             attachmentTypeInstance.delete()
-            flash.message = "AttachmentType ${params.id} deleted"
-            redirect(action:list)
+            flash.message = "AttachmentType is deleted"
+            redirect(action:create)
         }
         else {
-            flash.message = "AttachmentType not found with id ${params.id}"
-            redirect(action:list)
+            flash.message = "AttachmentType not found"
+            redirect(action:create)
         }
     }
 
@@ -37,8 +37,8 @@ class AttachmentTypeController {
         def attachmentTypeInstance = AttachmentType.get( params.id )
 
         if(!attachmentTypeInstance) {
-            flash.message = "AttachmentType not found with id ${params.id}"
-            redirect(action:list)
+            flash.message = "AttachmentType not found "
+            redirect(action:create)
         }
         else {
             return [ attachmentTypeInstance : attachmentTypeInstance ]
@@ -50,15 +50,15 @@ class AttachmentTypeController {
         if(attachmentTypeInstance) {
             attachmentTypeInstance.properties = params
             if(!attachmentTypeInstance.hasErrors() && attachmentTypeInstance.save()) {
-                flash.message = "AttachmentType ${params.id} updated"
-                redirect(action:list,id:attachmentTypeInstance.id)
+                flash.message = "AttachmentType is updated"
+                redirect(action:create,id:attachmentTypeInstance.id)
             }
             else {
                 render(view:'edit',model:[attachmentTypeInstance:attachmentTypeInstance])
             }
         }
         else {
-            flash.message = "AttachmentType not found with id ${params.id}"
+            flash.message = "AttachmentType not found"
             redirect(action:edit,id:params.id)
         }
     }
@@ -66,14 +66,16 @@ class AttachmentTypeController {
     def create = {
         def attachmentTypeInstance = new AttachmentType()
         attachmentTypeInstance.properties = params
-        return ['attachmentTypeInstance':attachmentTypeInstance]
+        def attachmentTypeInstanceList= AttachmentType.list( params )
+        return ['attachmentTypeInstance':attachmentTypeInstance,
+                'attachmentTypeInstanceList': attachmentTypeInstanceList]
     }
 
     def save = {
         def attachmentTypeInstance = new AttachmentType(params)
         if(!attachmentTypeInstance.hasErrors() && attachmentTypeInstance.save()) {
-            flash.message = "AttachmentType ${attachmentTypeInstance.id} created"
-            redirect(action:list,id:attachmentTypeInstance.id)
+            flash.message = "AttachmentType is created"
+            redirect(action:create,id:attachmentTypeInstance.id)
         }
         else {
             render(view:'create',model:[attachmentTypeInstance:attachmentTypeInstance])

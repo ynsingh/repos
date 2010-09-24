@@ -1,15 +1,17 @@
 import java.text.*;
 import java.util.*;
-import ConvertToIndainRS
+
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 class GrantReceiptController extends GmsController {
-    
+	def projectsService
     def index = { redirect(action:list,params:params) }
       
     // the delete, save and update actions only accept POST requests
     def allowedMethods = [delete:'POST', save:'POST', update:'POST']
 
     def list = {
+    
+        
         if(!params.max) params.max = 10
         println"params"+params
         
@@ -71,7 +73,7 @@ class GrantReceiptController extends GmsController {
         else {
         	def totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(grantReceiptInstance.projects.id,getUserPartyID())
         	def totalAmountReceived = grantReceiptService.getSumOfGrantReceviedByProjects(grantReceiptInstance.projects.id)
-            grantReceiptInstance.balanceAmt = totAllAmount - totalAmountReceived - grantReceiptInstance.amount
+            grantReceiptInstance.balanceAmt = totAllAmount - totalAmountReceived + grantReceiptInstance.amount
             return [ grantReceiptInstance : grantReceiptInstance,accountHeadList:accountHeadList]
         }
 		}
@@ -104,10 +106,26 @@ class GrantReceiptController extends GmsController {
         gh.removeValue("Help")
        		//putting help pages in session
        	gh.putValue("Help","Grant_Receipt.htm")
-        grantReceiptInstance.properties = params
-        println"++++++++++++++++++params+++++++"+params
-        
-        def projectsInstance = Projects.get(new Integer(params.id))
+		if(params.grantReceiptInstanceId)
+		{
+			grantReceiptInstance = grantReceiptService.getGrantReceiptById(new Integer(params.grantReceiptInstanceId))
+		}
+		else
+		{
+			grantReceiptInstance.properties = params
+		}
+        def projectsInstance 
+        if(params.id ==null)
+        {
+        	projectsInstance = projectsService.getProjectById(new Long(params.projectId))
+        	//projectsInstance = Projects.get(new Integer(params.projectId))
+        	
+        }
+        else
+        {
+        	projectsInstance = projectsService.getProjectById(new Long(params.id))
+        	// projectsInstance = Projects.get(new Integer(params.id))
+        }
           def dataSecurityService = new DataSecurityService()
 		//checking  whether the user has access to the given projects
 		if(dataSecurityService.checkForAuthorisedAcsessInProjects(projectsInstance.id,new Integer(getUserPartyID()))==0)
@@ -120,7 +138,15 @@ class GrantReceiptController extends GmsController {
 		else
 		{
         projectsInstance.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(projectsInstance.id,getUserPartyID())
-		def grantAllocationInstanceList=grantAllocationService.getGrantAllocationsByProject(params.id)
+		def grantAllocationInstanceList
+        if(params.id ==null)
+        {
+        	grantAllocationInstanceList=grantAllocationService.getGrantAllocationsByProject(params.projectId)
+        }
+        else
+        {
+        	grantAllocationInstanceList=grantAllocationService.getGrantAllocationsByProject(params.id)
+        }
 		String subQuery="";
         if(params.sort != null && !params.sort.equals(""))
        	subQuery=" order by GA."+params.sort
@@ -129,17 +155,27 @@ class GrantReceiptController extends GmsController {
    
         grantReceiptInstance.projects=projectsInstance
         def accountHeadList=grantAllocationSplitService.getAccountHeadByProject(grantReceiptInstance.projects.id)
-        def grantReceiptList=grantReceiptService.getGrantReceiptByProjects(params.id,subQuery)
-        
+        def grantReceiptList
+        def totalAmountReceived
+        def summaryList
+        if(params.id ==null)
+        {
+        	grantReceiptList=grantReceiptService.getGrantReceiptByProjects(params.projectId,subQuery)
+        	totalAmountReceived = grantReceiptService.getSumOfGrantReceviedByProjects(params.projectId)
+        	summaryList =  grantReceiptService.getGrantReceiptSummary(params.projectId)
+        }
+        else
+        {
+        	grantReceiptList=grantReceiptService.getGrantReceiptByProjects(params.id,subQuery)
+        	totalAmountReceived = grantReceiptService.getSumOfGrantReceviedByProjects(params.id)
+        	summaryList =  grantReceiptService.getGrantReceiptSummary(params.id)
+        }
         //def grantRecieptInstanceList=grantReceiptService.getGrantReceiptBySort(params.id,subQuery)
-        
-        def totalAmountReceived = grantReceiptService.getSumOfGrantReceviedByProjects(params.id)
-        
+         
         grantReceiptInstance.balanceAmt = projectsInstance.totAllAmount - totalAmountReceived
-        
-        	
-        def summaryList =  grantReceiptService.getGrantReceiptSummary(params.id)
+        println "grantAllocationInstanceList"+grantAllocationInstanceList.size()
         grantReceiptInstance.grantAllocation = grantAllocationInstanceList[0]
+
         ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
         return ['grantReceiptInstance':grantReceiptInstance,'grantReceiptInstanceList':grantReceiptList,'summaryList':summaryList,'grantAllocationInstanceList':grantAllocationInstanceList,'accountHeadList':accountHeadList,'currencyFormat':currencyFormatter]
 		}
@@ -157,10 +193,57 @@ class GrantReceiptController extends GmsController {
     		grantReceiptInstance.createdDate=new Date()
         	grantReceiptInstance = grantReceiptService.saveGrantReceipt(grantReceiptInstance,new Integer(params.projectId))
         	flash.message = "Grant Recieved"
-        	redirect(action:create,id:grantReceiptInstance.projects.id)
+        		redirect(action:create,id:grantReceiptInstance.projects.id,params:[grantReceiptInstanceId:grantReceiptInstance.id])
         }
         else {
             render(view:'create',model:[grantReceiptInstance:grantReceiptInstance])
         }
     }
+    def clear = {
+    		def grantReceiptService = new GrantReceiptService();
+    		def grantAllocationService = new GrantAllocationService()
+        	def grantAllocationSplitService=new GrantAllocationSplitService()	
+            def grantReceiptInstance = new GrantReceipt()
+    		
+    	    grantReceiptInstance.properties = params
+    		
+            println"++++++++++++++++++params+++++++"+params
+            
+            def projectsInstance = Projects.get(new Integer(params.projectId))
+              def dataSecurityService = new DataSecurityService()
+    		//checking  whether the user has access to the given projects
+    		if(dataSecurityService.checkForAuthorisedAcsessInProjects(projectsInstance.id,new Integer(getUserPartyID()))==0)
+    		{
+    			
+    					
+    					 redirect uri:'/invalidAccess.gsp'
+
+    		}
+    		else
+    		{
+            projectsInstance.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(projectsInstance.id,getUserPartyID())
+    		def grantAllocationInstanceList=grantAllocationService.getGrantAllocationsByProject(params.projectId)
+    		String subQuery="";
+            if(params.sort != null && !params.sort.equals(""))
+           	subQuery=" order by GA."+params.sort
+           if(params.order != null && !params.order.equals(""))
+           	subQuery =subQuery+" "+params.order
+       
+            grantReceiptInstance.projects=projectsInstance
+            def accountHeadList=grantAllocationSplitService.getAccountHeadByProject(grantReceiptInstance.projects.id)
+            def grantReceiptList=grantReceiptService.getGrantReceiptByProjects(params.projectId,subQuery)
+            
+            //def grantRecieptInstanceList=grantReceiptService.getGrantReceiptBySort(params.id,subQuery)
+            
+            def totalAmountReceived = grantReceiptService.getSumOfGrantReceviedByProjects(params.projectId)
+            
+            grantReceiptInstance.balanceAmt = projectsInstance.totAllAmount - totalAmountReceived
+            
+            	
+            def summaryList =  grantReceiptService.getGrantReceiptSummary(params.projectId)
+            grantReceiptInstance.grantAllocation = grantAllocationInstanceList[0]
+            ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
+            redirect(action:create,id:params.projectId,'grantReceiptInstance':grantReceiptInstance,'grantReceiptInstanceList':grantReceiptList,'summaryList':summaryList,'grantAllocationInstanceList':grantAllocationInstanceList,'accountHeadList':accountHeadList,'currencyFormat':currencyFormatter)
+    		}
+        }
 }

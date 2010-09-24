@@ -1,0 +1,31 @@
+<plugin name='spring-security-acl' version='0.2' grailsVersion='1.2.2 &gt; *'>
+  <author>Burt Beckwith</author>
+  <authorEmail>beckwithb@vmware.com</authorEmail>
+  <title>ACL support for the Spring Security plugin.</title>
+  <description>ACL support for the Spring Security plugin.</description>
+  <documentation>http://grails.org/plugin/spring-security-acl</documentation>
+  <resources>
+    <resource>BuildConfig</resource>
+    <resource>Config</resource>
+    <resource>DataSource</resource>
+    <resource>DefaultAclSecurityConfig</resource>
+    <resource>org.codehaus.groovy.grails.plugins.springsecurity.acl.AclClass</resource>
+    <resource>org.codehaus.groovy.grails.plugins.springsecurity.acl.AclEntry</resource>
+    <resource>org.codehaus.groovy.grails.plugins.springsecurity.acl.AclObjectIdentity</resource>
+    <resource>org.codehaus.groovy.grails.plugins.springsecurity.acl.AclSid</resource>
+    <resource>test.TestReport</resource>
+    <resource>org.grails.plugins.springsecurity.service.acl.AclService</resource>
+    <resource>org.grails.plugins.springsecurity.service.acl.AclUtilService</resource>
+    <resource>test.TestClassAnnotatedService</resource>
+    <resource>test.TestGrailsAnnotatedService</resource>
+    <resource>test.TestRunAsService</resource>
+    <resource>test.TestSecureService</resource>
+    <resource>test.TestSpringAnnotatedService</resource>
+    <resource>test.TestStaticConfiguredService</resource>
+    <resource>grails.plugins.springsecurity.acl.SecurityAclTagLib</resource>
+  </resources>
+  <dependencies>
+    <plugin name='springSecurityCore' version='0.4 &gt; *' />
+  </dependencies>
+  <behavior />
+</plugin>

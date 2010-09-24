@@ -1,19 +1,14 @@
-
-
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main" />
-        <title>Edit Projects PI Map</title>
+        <title><g:message code="default.projectsPIMap.EditProjectsToPI.head"/></title>
     </head>
     <body>
+    <g:subMenuProjects/>
     <div class="wrapper">
-        <div class="nav">
-            <span class="menuButton"><a class="home" href="${createLinkTo(dir:'')}">Home</a></span>
-            <span class="menuButton"><g:link class="create" action="create">New Projects PI Map</g:link></span>
-        </div>
         <div class="body">
-            <h1>Edit ProjectsPIMap</h1>
+            <h1><g:message code="default.projectsPIMap.EditProjectsToPI.head"/></h1>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
@@ -30,37 +25,45 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="investigator">Investigator:</label>
+                                    <label for="investigator"><g:message code="default.Investigator.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:projectsPIMapInstance,field:'investigator','errors')}">
-                                    <g:select optionKey="id" optionValue="name" from="${Investigator.list()}" name="investigator.id" value="${projectsPIMapInstance?.investigator?.id}" ></g:select>
+                                  <!--  <g:select optionKey="id" optionValue="name" from="${investigatorList}" name="investigator.id" value="${projectsPIMapInstance?.investigator?.id}" disabled="true"></g:select> -->
+                               		${projectsPIMapInstance.investigator.name}
                                 </td>
                             </tr> 
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="projects">Projects:</label>
+                                    <label for="projects"><g:message code="default.Projects.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:projectsPIMapInstance,field:'projects','errors')}">
-                                    <g:select optionKey="id" optionValue="code" from="${Projects.list()}" name="projects.id" value="${projectsPIMapInstance?.projects?.id}" ></g:select>
+                                   <strong> ${projectsPIMapInstance.projects.code}</strong>
+                                   <input type="hidden" id="projectId" name="projectId" value="${projectsPIMapInstance.projects.id}"/>
                                 </td>
                             </tr> 
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="role">Role:</label>
+                                    <label for="role"><g:message code="default.Role.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:projectsPIMapInstance,field:'role','errors')}">
                                      <g:select id="role" name="role"  from="${['PI','CO-PI']}" value="${projectsPIMapInstance?.role}" ></g:select>
                                 </td>
                             </tr> 
-                        
+	                        <tr class="prop">
+	                                <td valign="top" class="name">
+	                                    <label for="activeYesNo"><g:message code="default.Active.label"/>:</label>
+	                                </td>
+	                                <td valign="top" class="value ${hasErrors(bean:projectsPIMapInstance,field:'activeYesNo','errors')}">
+	                                    <g:select name="activeYesNo" from="${['Y', 'N']}"  value="${projectsPIMapInstance?.activeYesNo}" />
+	                                </td>
+		                      </tr>    
                         </tbody>
                     </table>
                 </div>
                 <div class="buttons">
-                    <span class="button"><g:actionSubmit class="save" value="Update" /></span>
-                    <span class="button"><g:actionSubmit class="delete" onclick="return confirm('Are you sure?');" value="Delete" /></span>
+                    <span class="button"><g:actionSubmit class="save" value="${message(code: 'default.Update.button')}" /></span>
                 </div>
             </g:form>
         </div>

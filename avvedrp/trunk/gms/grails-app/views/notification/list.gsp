@@ -4,86 +4,60 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main" />
-        <title>Notification List</title>
+        <title><g:message code="default.Notification.NotificationList.head"/></title>
     </head>
-  
     <body>
+      <g:subMenuNotification/>
         <div class="wrapper">
-        <div class="nav">
-            <span class="menuButton"><a class="home" href="${createLinkTo(dir:'')}">Home</a></span>
-            <span class="menuButton"><g:link class="create" action="create">New Notification</g:link></span>
-        </div>
-        <div class="tablewrapper">
-        <div class="body">
-            <h1>Notification List</h1>
+          <div class="body">
+            <h1><g:message code="default.Notification.NotificationList.head"/></h1>
             <g:if test="${flash.message}">
-            <div class="message">${flash.message}</div>
+              <div class="message">${flash.message}</div>
             </g:if>
             <g:if test="${notificationInstanceList}">
-            <div class="list">
-                <table>
+              <div class="list">
+                <table cellpadding="0" cellspacing="0">
                     <thead>
                         <tr>
-                             <g:sortableColumn property="id" title="SlNo" />
-                   	        
-                        
-                   	        <g:sortableColumn property="project.code" title="Project" />
-                   	    
-                   	        <g:sortableColumn property="project.projectType.type" title="Project Type" />
-                   	       <g:sortableColumn property="notificationCode" title="Notification Code" />
-                   	    
-                   	        <g:sortableColumn property="notificationDate" title="Notification Date" />
-
-                            <g:sortableColumn property="proposalSubmissionLastDate" title="Last Date for Proposal Submission" />
-                   	        <g:sortableColumn property="applicationForm" title="Application Form" />
-                   	        
-                   	        <g:sortableColumn property="eligibilitydocument" title="Upload Attachments" />
-                       		
-                       		<th>Send Mail</th>
-                       		
-                       		<th>Proposals</th>
-                   	        
-                   	        <th>Edit</th>
-                        
+                            <g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}" />
+                   	        <g:sortableColumn property="project.name" title="${message(code: 'default.Projects.label')}" />
+                            <g:sortableColumn property="project.projectType.type" title="${message(code: 'default.ProjectType.label')}" />
+                   	        <g:sortableColumn property="notificationCode" title="${message(code: 'default.NotificationCode.label')}" />
+                   	        <g:sortableColumn property="notificationDate" title="${message(code: 'default.NotificationDate.label')}" />
+                            <g:sortableColumn property="proposalSubmissionLastDate" title="${message(code: 'default.LastProposalSubmissionDate.label')}" />
+                   	        <g:sortableColumn property="applicationForm" title="${message(code: 'default.ApplicationForm.label')}" />
+                   	        <g:sortableColumn property="eligibilitydocument" title="${message(code: 'default.UploadAttachments.label')}"  />
+                       		<th><g:message code="default.Publish.label"/></th>
+                            <th><g:message code="default.Proposals.label"/></th>
+                   	        <th><g:message code="default.Edit.label"/></th>
                         </tr>
                     </thead>
                     <tbody>
-                    <g:each in="${notificationInstanceList}" status="i" var="notificationInstance">
+                      <% int j=0 %>
+                      <g:each in="${notificationInstanceList}" status="i" var="notificationInstance">
+                        <%  j++ %>
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-                              <td>${(i + 1)}</td>
-                        
-                            
-                        
-                            <td>${fieldValue(bean:notificationInstance, field:'project.code')}</td>
-                        
+                            <td>${j}</td>
+                            <td>${fieldValue(bean:notificationInstance, field:'project.name')}</td>
                             <td>${fieldValue(bean:notificationInstance, field:'project.projectType.type')}</td>
                             <td>${fieldValue(bean:notificationInstance, field:'notificationCode')}</td>
-                        <td><g:formatDate format="dd-MM-yyyy" date="${notificationInstance.notificationDate}"/></td>
+                            <td><g:formatDate format="dd-MM-yyyy" date="${notificationInstance.notificationDate}"/></td>
                             <td><g:formatDate format="dd-MM-yyyy" date="${notificationInstance.proposalSubmissionLastDate}"/></td>
-                             <td><a href="${createLinkTo(dir:'proposalApplication',file:notificationInstance.applicationForm,absolute:true)}" target="_new">${notificationInstance.applicationForm}</a></td>
-                            
-                           
-                            
-                           <td><g:link action="create" controller='notificationsAttachments' id="${fieldValue(bean:notificationInstance, field:'id')}" params="[documentType:'Notification']">Upload Attachments</g:link></td>
-                          
-                            <td><g:link action="list" controller='notificationsEmails' id="${fieldValue(bean:notificationInstance, field:'id')}">Send Mail</g:link></td>
-                             
-                            <td><g:link action="proposalList" controller='proposal' id="${fieldValue(bean:notificationInstance, field:'id')}">Proposals</g:link></td>
-                             
-                            <td><g:link action="edit" id="${fieldValue(bean:notificationInstance, field:'id')}">edit</g:link></td>
-                            
-                            </tr>
-                    </g:each>
+                            <td> <g:if test="${notificationInstance.applicationForm}"><g:link action="downloadApplicationForm" controller='notification' id="${fieldValue(bean:notificationInstance, field:'id')}" params="[documentType:'Notification']"><g:message code="default.View.label"/></g:link> </g:if></td>
+                            <td><g:link action="create" controller='notificationsAttachments' id="${fieldValue(bean:notificationInstance, field:'id')}" params="[documentType:'Notification']"><g:message code="default.Attach.label"/></g:link></td>
+                            <td><g:link action="publishNotification" controller='notification' id="${fieldValue(bean:notificationInstance, field:'id')}"><g:message code="default.Publish.label"/></g:link></td>
+                            <td><g:link action="proposalList" controller='proposal' id="${fieldValue(bean:notificationInstance, field:'id')}"><g:message code="default.View.label"/></g:link></td>
+                            <td><g:link action="edit" id="${fieldValue(bean:notificationInstance, field:'id')}"><g:message code="default.Edit.label"/></g:link></td>
+                        </tr>
+                      </g:each>
                     </tbody>
                 </table>
-            </div>
+              </div>
             </g:if>
             <g:else>
-            <br>
-            No Records Available</br>
+              <br><g:message code="default.NoRecordsAvailable.label"/></br>
             </g:else>
-            </div>
-            </div>
+          </div>
         </div>
     </body>
 </html>

@@ -4,17 +4,13 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main" />
-        <title>Edit ProjectDepartmentMap</title>
+        <title><g:message code="default.projectsDepartmentMap.EditProjectsToDepartment.head"/></title>
     </head>
     <body>
+    <g:subMenuProjects/>
     <div class="wrapper">
-        <div class="nav">
-            <span class="menuButton"><a class="home" href="${createLinkTo(dir:'')}">Home</a></span>
-            <span class="menuButton"><g:link class="list" action="list">ProjectDepartmentMap List</g:link></span>
-            
-        </div>
         <div class="body">
-            <h1>Edit ProjectDepartmentMap</h1>
+            <h1><g:message code="default.projectsDepartmentMap.EditProjectsToDepartment.head"/></h1>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
@@ -31,26 +27,32 @@
                          </tr>
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="partyDepartment">Project:</label>
+                                    <label for="partyDepartment"><g:message code="default.Projects.label"/>:</label>
                                 </td>
                             <td valign="top" class="value ${hasErrors(bean:projectDepartmentMapInstance,field:'projects','errors')}">
-                            <g:select optionKey="id" optionValue="code" from="${Projects.list()}" name="projects.id" value="${projectDepartmentMapInstance?.projects?.id}"></g:select>
+                            <strong>${projectDepartmentMapInstance.projects.code}</strong>
                         	</tr>
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="partyDepartment">Department:</label>
+                                    <label for="partyDepartment"><g:message code="default.Department.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:projectDepartmentMapInstance,field:'partyDepartment','errors')}">
-                                    <g:select optionKey="id" optionValue="departmentCode" from="${PartyDepartment.list()}" name="partyDepartment.id" value="${projectDepartmentMapInstance?.partyDepartment?.id}" ></g:select>
+                                    <g:select optionKey="id" optionValue="departmentCode" from="${partyDepartmentList}" name="partyDepartment.id" value="${projectDepartmentMapInstance?.partyDepartment?.id}" ></g:select>
                                 </td>
                             </tr> 
-                        
+                        	<tr class="prop">
+	                                <td valign="top" class="name">
+	                                    <label for="activeYesNo"><g:message code="default.Active.label"/>:</label>
+	                                </td>
+	                                <td valign="top" class="value ${hasErrors(bean:projectDepartmentMapInstance,field:'activeYesNo','errors')}">
+	                                    <g:select name="activeYesNo" from="${['Y', 'N']}"  value="${projectDepartmentMapInstance?.activeYesNo}" />
+	                                </td>
+		                      </tr>   
                         </tbody>
                     </table>
                 </div>
                 <div class="buttons">
-                    <span class="button"><g:actionSubmit class="save" value="Update" /></span>
-                    <span class="button"><g:actionSubmit class="delete" onclick="return confirm('Are you sure?');" value="Delete" /></span>
+                    <span class="button"><g:actionSubmit class="save" value="${message(code: 'default.Update.button')}" /></span>
                 </div>
             </g:form>
         </div>

@@ -211,6 +211,16 @@ class GrantExpenseService {
     	return grantExpenseSummaryList
     	
     }
-	 
-	
+	/**
+	 * Function to check whether expense is entered against headwise allocation.
+	 */
+	public GrantExpense[] getExpenseForGrantAllocationSplit(def grantAllocationSplitInstance){
+		
+		def grantExpenseInstance=[]
+		grantExpenseInstance = GrantExpense.findAll(" from GrantExpense GE where GE.grantAllocationSplit.id = " + grantAllocationSplitInstance.id)
+		println"*********grantAllocationSplitInstance***********"+grantExpenseInstance
+		
+	    return grantExpenseInstance    
+		
+	}	
 }

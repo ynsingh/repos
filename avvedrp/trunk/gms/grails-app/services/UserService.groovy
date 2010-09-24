@@ -98,8 +98,8 @@ class UserService{
 	/**
 	 * Function to get user by id.
 	 */
-	public User getUserById(Integer userId){
-		def person = User.get(userId)
+	public Person getUserById(Integer userId){
+		def person = Person.get(userId)
 		return person
 	}
 	
@@ -124,7 +124,7 @@ class UserService{
 		//deleting user from user_map
 		def userInstance = UserMap.find("from UserMap UM where UM.user = "+person.id)
 			userInstance.delete()
-			Role.findAll().each { it.removeFromPeople(person) }
+			Authority.findAll().each { it.removeFromPeople(person) }
 			person.delete()
 				
 		return person.id
@@ -136,8 +136,30 @@ class UserService{
 	public Integer updateUser(def person,def params){
 		Integer userId = null
 		if (person.save()) {
-			Role.findAll().each { it.removeFromPeople(person) }
+			Authority.findAll().each { it.removeFromPeople(person) }
+			println"+++params.authoritiesupdate+++"+params.authorities
+			
+				
+			if(params.authorities == '1')
+			{
+				
 			addRoles(person,params)
+			}
+			
+				if(params.authorities == '2')
+			{
+				print "admin"
+			addRolesUser(person,params)
+			}
+				
+			if(params.authorities =='3')
+			{
+			addRolesSiteAdmin(person,params)
+			}
+			if(params.authorities =='4')
+			{
+			addRolesPi(person)
+			}
 			userId = person.id
 		}
 		return userId
@@ -149,7 +171,37 @@ class UserService{
 	public Integer saveUser(def person,def params){
 		Integer userId = null
 		if (person.save()) {
+			println "....params....."+params
+			println"+++params.authorities+++"+params.authorities
+			if(params.authorities == null)
+			{
+				addRolesUser(person,params)
+			}
+			if(params.authorities)
+			{
+				addSelectRoles(person,params)
+			}
+				
+		/*	if(params.authorities == '1')
+			{
+				
 			addRoles(person,params)
+			}
+			
+				if(params.authorities == '2')
+			{
+				print "admin"
+			addRolesUser(person,params)
+			}
+				
+			if(params.authorities =='3')
+			{
+			addRolesSiteAdmin(person,params)
+			}
+			if(params.authorities =='4')
+			{
+			addRolesPi(person)
+			}*/
 			addUserMap(person,params) 
 			userId = person.id
 		}
@@ -158,27 +210,64 @@ class UserService{
 	/**
 	 * Function to add roles to user
 	 */
+	 
+	 public void addSelectRoles(def person,def params) {
+			System.out.println params
+			
+			def roleInstance = getRolebyId(params)
+			println "++++++++++++++++roleInstance.authority+++++++++" +roleInstance.authority
+			println"+++params.usertype+++"+params.authorities
+			
+			//Authority.findByAuthority(roleInstance.authority).addToPeople(person)
+			def userRole=new UserRole()
+			userRole.user=person;
+			userRole.role=Authority.findByAuthority(roleInstance.authority);
+			userRole.save();
+			
+		}
+	
 	public void addRoles(def person,def params) {
 		System.out.println params
 		
 		def roleInstance = getRolebyId(params)
-		//println "++++++++++++++++roleInstance.authority+++++++++" +roleInstance.authority
-		if(params.usertype=="ROLE_ADMIN")
-		Role.findByAuthority(roleInstance.authority).addToPeople(person)
-		else
-		Role.findByAuthority('ROLE_USER').addToPeople(person)
+		println "++++++++++++++++roleInstance.authority+++++++++" +roleInstance.authority
+		println"+++params.usertype+++"+params.authorities
 		
+		Authority.findByAuthority(roleInstance.authority).addToPeople(person)
+		
+	}
+	
+public void addRolesUser(def person,def params) {
+	println"+++params.usertype+++"+params.authorities
+	  // if(params.authorities == 2)
+		//Authority.findByAuthority('ROLE_USER').addToPeople(person)
+		
+	def userRole=new UserRole()
+	userRole.user=person;
+	userRole.role=Authority.findByAuthority('ROLE_USER');
+	userRole.save();
 	}
 	
 	
 	public void addRolesSiteAdmin(def person,def params) {
-		
-		Role.findByAuthority('ROLE_SITEADMIN').addToPeople(person)
-		
+		  
+		// if(params.authorities == 3)
+		println"+++params.usertype+++"+params.authorities
+		//Authority.findByAuthority('ROLE_SITEADMIN').addToPeople(person)
+		def userRole=new UserRole()
+		userRole.user=person;
+		userRole.role=Authority.findByAuthority('ROLE_SITEADMIN');
+		userRole.save();
 	}
 	public void addRolesPi(def person)
 	{
-		Role.findByAuthority('ROLE_PI').addToPeople(person)
+		//Authority.findByAuthority('ROLE_PI').addToPeople(person)
+		
+//		Authority.findByAuthority('ROLE_SITEADMIN').addToPeople(person)
+		def userRole=new UserRole()
+		userRole.user=person;
+		userRole.role=Authority.findByAuthority('ROLE_PI');
+		userRole.save();
 	}
 	
 	public void addUserMap(def person,def params) {
@@ -206,7 +295,7 @@ class UserService{
 	 * Function to get roles.
 	 */
 	public List getRoles(){
-		def authorityList = Role.list()
+		def authorityList = Authority.list()
 		return authorityList
 	}
 	
@@ -220,7 +309,7 @@ class UserService{
 		}
 		return userId
 	}
-	public User saveNewUser(def userInstance,def params)
+	public Person saveNewUser(def userInstance,def params)
 	{
 		println "+++++++++++++++++++++++++saveNewUser++++++++++++++++++++++++++++"
 		if(userInstance.save())
@@ -232,7 +321,7 @@ class UserService{
 		}
 		return userInstance
 	}
-	public User saveNewPi(def userInstance)
+	public Person saveNewPi(def userInstance)
 	{
 		println "userInstance for Pi"
 		if(userInstance.save())
@@ -272,10 +361,17 @@ class UserService{
         println "+++++++++++++++++++++Party Id++++++++++++++" +party.id
        	return party
 	}
-	public Role getRolebyId(def params)
+	public Authority getRolebyId(def params)
 	{
-		def roleInstance = new Role()
-		roleInstance = Role.find("from Role R where R.id="+params.get("authorities"))
+		def roleInstance = new Authority()
+		roleInstance = Authority.find("from Authority R where R.id="+params.get("authorities"))
+		return roleInstance
+	}
+	/*Function to get active roles except Siteadmin and pi*/
+	public List getActiveRoles()
+	{
+		//def roleInstance = new Authority()
+		def roleInstance = Authority.findAll("from Authority R where R.authority NOT IN ('ROLE_SITEADMIN','ROLE_PI') and R.activeYesNo='Y'")
 		return roleInstance
 	}
 	public Party getParty(def person)
@@ -291,7 +387,7 @@ class UserService{
 	public Integer getUserByUserName(String userName){
 		println "+++++++++++++++++++++inside getUserByUserName++++++++++++++" +userName
 		Integer userId = null;
-		def person  = User.find("from User U where U.username='"+userName+"'");
+		def person  = Person.find("from Person U where U.username='"+userName+"'");
 		if(person)
 			userId = person.id
 		return userId

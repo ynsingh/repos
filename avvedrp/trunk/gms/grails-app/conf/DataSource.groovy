@@ -7,21 +7,21 @@ dataSource {
 hibernate {
     cache.use_second_level_cache=true
     cache.use_query_cache=true
-    cache.provider_class='com.opensymphony.oscache.hibernate.OSCacheProvider'
+    cache.provider_class='net.sf.ehcache.hibernate.EhCacheProvider'
 }
 // environment specific settings
 environments {
 	development {
 		dataSource {
 			dbCreate = "update" // one of 'create', 'create-drop','update'
-				url = "jdbc:mysql://192.168.18.103/gms_Ver1"
+				url = "jdbc:mysql://192.168.18.95/gms_upgrade"
 		}
 	}
 	
 	production {
-		dataSource {
-			dbCreate = "update"
-				url = "jdbc:mysql://localhost/gms_Ver"
-		}
+			dataSource {
+				dbCreate = "update"
+					jndiName = "java:comp/env/MySqlGrailsDS"
+			}
 	}
 }

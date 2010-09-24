@@ -8,10 +8,6 @@
     </head>
     <body>
     <div class="wrapper">
-        <div class="nav">
-            <span class="menuButton"><a class="home" href="${createLinkTo(dir:'')}">Home</a></span>
-            <span class="menuButton"><g:link class="create" action="create">New Projects PI Map</g:link></span>
-        </div>
         <div class="body">
             <h1>Projects PI Map List</h1>
             <g:if test="${flash.message}">

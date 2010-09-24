@@ -5,35 +5,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main" />
         <title>Create Institution</title>         
-    </head>
-    
-    <script>
-    function validateParty(){
-    	if(document.getElementById("nameOfTheInstitution").value == ""){
-    		alert("Please Enter Name");
-		    document.getElementById("nameOfTheInstitution").focus();
-		    return false;
-    	}
-    	if(document.getElementById("code").value == ""){
-    		alert("Please Enter Code");
-		    document.getElementById("code").focus();
-		    return false;
-    	}
-    	
-    	return true;
-    
-    }
-    </script>
-    
-    <body><div class="wrapper">
-        <div class="nav">
-             <span class="menuButton"><a class="home" href="${createLinkTo(dir:'/login')}">Home</a></span>
-            <span class="menuButton"><g:link class="list" action="list">Institution List</g:link></span>
-        </div>
-        
-        <g:if test="${session.Role != 'ROLE_ADMIN'}">
-		<% response.sendRedirect("../../invalidAccess.gsp")%>
-		</g:if>
+    </head> 
+    <body><div class="wrapper"> 
         <div class="body">
             <h1>Create Institution</h1>
             <g:if test="${flash.message}">

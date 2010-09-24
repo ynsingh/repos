@@ -1,230 +1,314 @@
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
+import org.codehaus.groovy.grails.commons.ApplicationHolder as AH
+import grails.util.GrailsUtil
+import org.codehaus.groovy.grails.commons.GrailsApplication
+import org.codehaus.groovy.grails.commons.ControllerArtefactHandler
+import org.springframework.beans.BeanWrapper
+import org.springframework.beans.PropertyAccessorFactory
 
-class ProjectsController extends GmsController{
-    
-    def index = { redirect(action:list,params:params) }
+class ProjectsController extends GmsController
+{
+	def index = { redirect(action:list,params:params) }
 
     // the delete, save and update actions only accept POST requests
     def allowedMethods = [delete:'POST', save:'POST', update:'POST']
 
-
-    
-     
-    def list = {
+    def grantAllocationService
+    def projectsService
+    def investigatorService    
+    def list = 
+    {
 		GrailsHttpSession gh=getSession()
+		
 		def grantAllocationWithprojectsInstanceList
 		def grandAllocationList
-		gh.removeValue("Help")
-		//putting help pages in session
-		gh.putValue("Help","Project_List.htm")
-        if(!params.max) params.max = 10
-        String subQuery="";
-        if(params.sort != null && !params.sort.equals(""))
-       	subQuery=" order by GA."+params.sort
-       	println "+params.sort"+params.sort
-       if(params.order != null && !params.order.equals(""))
-       	subQuery =subQuery+" "+params.order
 		
-        
-        def dataSecurityService = new DataSecurityService()
-		def projectsService = new ProjectsService()
-      //  grantAllocationOfprojectsInstanceList=dataSecurityService.getProjectsFromGrantAllocationForLoginUser(gh.getValue("PartyID"))
-            if(gh.getValue("Role")=="ROLE_PI")
-            {
-            	println "PI"
-            	grantAllocationWithprojectsInstanceList=dataSecurityService.getProjectsWithGrantAllocationForLoginPi(gh.getValue("Pi"))
-            }
-            else{
-        	grantAllocationWithprojectsInstanceList=dataSecurityService.getProjectsWithGrantAllocationForLoginUser(gh.getValue("PartyID"),subQuery)
-            }
-       
-        [ grantAllocationWithprojectsInstanceList: grantAllocationWithprojectsInstanceList ]
-   }
-
-
-    def show = {
+		gh.removeValue("Help")
+		gh.putValue("Help","Project_List.htm")//putting help pages in session
+		
+		if(!params.max) params.max = 10
+			String subQuery="";
+		if(params.sort != null && !params.sort.equals(""))
+			subQuery=" order by GA."+params.sort
+		println "+params.sort"+params.sort
+		if(params.order != null && !params.order.equals(""))
+			subQuery =subQuery+" "+params.order
+		
+		grantAllocationWithprojectsInstanceList = grantAllocationService
+													.getGrantAllocationGroupByProjects(gh.getValue("Party"))
+		
+		[ grantAllocationWithprojectsInstanceList: grantAllocationWithprojectsInstanceList ]
+    }
+	
+	def inactiveProjectsList = 
+	{
+		GrailsHttpSession gh=getSession()
+		
+		def grantAllocationWithprojectsInstanceList
+		def grandAllocationList
+		
+		gh.removeValue("Help")   		
+		gh.putValue("Help","Project_List.htm")//putting help pages in session
+		
+		if(!params.max) params.max = 10
+			String subQuery="";
+		if(params.sort != null && !params.sort.equals(""))
+			subQuery=" order by GA."+params.sort
+		println "+params.sort"+params.sort
+		if(params.order != null && !params.order.equals(""))
+			subQuery =subQuery+" "+params.order
+		
+		List<GrantAllocation> grantAllocationInstanceList = grantAllocationService.getAll()
+		[ grantAllocationWithprojectsInstanceList: grantAllocationInstanceList ]
+	}
+    def show = 
+    {
 		def projectsService = new ProjectsService()
 		def projectsInstance = projectsService.getProjectById(new Integer( params.id ))
-          def dataSecurityService = new DataSecurityService()
+		def dataSecurityService = new DataSecurityService()
 		//checking  whether the user has access to the given projects
 		if(dataSecurityService.checkForAuthorisedAcsessInProjects(new Integer( params.id ),new Integer(getUserPartyID()))==0)
 		{
-			
-					
-					 redirect uri:'/invalidAccess.gsp'
-
+			redirect uri:'/invalidAccess.gsp'
 		}
 		else
 		{
-        if(!projectsInstance) {
-            flash.message = "Projects not found with id ${params.id}"
-            redirect(action:list)
-        }
-        else { return [ projectsInstance : projectsInstance ] }
+			if(!projectsInstance) 
+			{
+				flash.message = "Projects not found with id ${params.id}"
+				redirect(action:list)
+			}
+			else 
+			{ 
+				return [ projectsInstance : projectsInstance ] 
+			}
 		}
     }
 
-    def delete = {
-		def projectsService = new ProjectsService()
-		Integer projectId = projectsService.deleteProject(new Integer(params.id))
-		 def dataSecurityService = new DataSecurityService()
-		//checking  whether the user has access to the given projects
-	     def projectsInstance = new Projects()
-        projectsInstance.properties = params
-		if(projectId != null){
-			if(projectId > 0){
-				 flash.message = "Project ${params.name} deleted"
-			}
-			else{
-				flash.message = "Grant allocation done for project ${params.name}. Not deleted"
-			}
-				if(projectsInstance.parent !=null)
-				{
-					redirect(action:showSubProjects,id:projectsInstance.parent.id)
-				}
-				else
-				{
-					redirect(action:list,id:projectsInstance.id)
-				}
-		}
-           
-			
-           
-        
-
-        else {
-            flash.message = "Project not found with id ${params.id}"
-            redirect(action:list)
-        }
-
-    }
-    
-    
-
-    def edit = {
+	def delete =
+	{
 		def projectsService = new ProjectsService()
 		def dataSecurityService = new DataSecurityService()
+		Integer projectId = projectsService.deleteProject(new Integer(params.id))
+		
+		//checking  whether the user has access to the given projects
+		def projectsInstance = new Projects() 
+		projectsInstance.properties = params
+		if(projectId != null)
+		{
+			if(projectId > 0)
+			{
+				 flash.message = "Project ${params.name} deleted"
+			}
+			else
+			{
+				flash.message = "Grant allocation done for project ${params.name}. Not deleted"
+			}
+			if(projectsInstance.parent !=null)
+			{
+				redirect(action:showSubProjects,id:projectsInstance.parent.id)
+			}
+			else
+			{
+				redirect(action:list,id:projectsInstance.id)
+			}
+		}
+		else 
+		{
+            flash.message = "Project not found with id ${params.id}"
+            redirect(action:list)
+		}
+    }
+    def edit = 
+    {
+		def projectsService = new ProjectsService()
+		def dataSecurityService = new DataSecurityService()
+		
 		GrailsHttpSession gh=getSession()
-		//putting help pages in session
-		gh.putValue("Help","New_Projects.htm")
+		gh.putValue("Help","New_Projects.htm")//putting help pages in session
 		def projectsInstance = projectsService.getProjectById(new Integer( params.id ))
-		
-		def projectid
-           
-    		if(params.flag=='Y')
-    		{
-    			projectid=projectsInstance.parent.id
-    		}
-    		else
-    		{
-    			projectid=projectsInstance.id
-    		}
-		
+
+		def projectid=projectsInstance.id
 		//checking  whether the user has access to the given projects
 		if(dataSecurityService.checkForAuthorisedAcsessInProjects(projectid,new Integer(getUserPartyID()))==0)
 		{
-			
-					
-					 redirect uri:'/invalidAccess.gsp'
-
+			redirect uri:'/invalidAccess.gsp'
 		}
 		else
 		{
-	
-
-        if(!projectsInstance) {
-            flash.message = "Project not found with id ${params.id}"
-            redirect(action:list)
-        }
-        else {
-            return [ projectsInstance : projectsInstance ]
-        }
+			if(!projectsInstance) 
+			{
+				flash.message = "Project not found with id ${params.id}"
+				redirect(action:list)
+			}
+			else 
+			{
+				gh.putValue("ProjectId",projectsInstance.id)
+				return [ projectsInstance : projectsInstance ]
+			}
 		}
     }
-    
-    
-    def subedit = {
-    		def projectsService = new ProjectsService()
-    		def dataSecurityService = new DataSecurityService()
-    		GrailsHttpSession gh=getSession()
-    		def projectsInstance = projectsService.getProjectById(new Integer( params.id ))
-    		
-    		def projectid
-           
-    		if(params.flag=='Y')
-    		{
-    			projectid=projectsInstance.parent.id
-    		}
-    		else
-    		{
-    			projectid=projectsInstance.id
-    		}
-    		    		
-    		//checking  whether the user has access to the given projects
-    		if(dataSecurityService.checkForAuthorisedAcsessInProjects(projectsInstance.parent.id,new Integer(getUserPartyID()))==0)
-    		{
-    			
-    					
-    					 redirect uri:'/invalidAccess.gsp'
+	def editsub =
+	{
+		def projectsService = new ProjectsService()
+		def dataSecurityService = new DataSecurityService()
+		
+		GrailsHttpSession gh=getSession()
+		gh.putValue("Help","New_Projects.htm")//putting help pages in session
+		
+		def projectsInstance = projectsService.getProjectById(new Integer( params.id ))
+		def projectid=projectsInstance.id
+		println"params"+params
+		println"projectid"+projectid
+		if(!projectsInstance)
+		{
+			flash.message = "Project not found with id ${params.id}"
+        	redirect(action:showSubProjects,id:params.parent.id)
+		}
+		else 
+		{
+			return [ projectsInstance : projectsInstance ]
+		}
+    }
 
-    		}
-    		else
-    		{
-    	
-
-            if(!projectsInstance) {
+	def subedit = 
+	{
+		def projectsService = new ProjectsService()
+		def dataSecurityService = new DataSecurityService()
+		GrailsHttpSession gh=getSession()
+		def projectsInstance = projectsService.getProjectById(new Integer( params.id ))
+		
+		def projectid
+       
+		if(params.flag=='Y')
+		{
+			projectid=projectsInstance.parent.id
+		}
+		else
+		{
+			projectid=projectsInstance.id
+		}
+		    		
+		//checking  whether the user has access to the given projects
+		if(dataSecurityService.checkForAuthorisedAcsessInProjects(projectsInstance.parent.id,
+																	new Integer(getUserPartyID()))==0)
+		{
+			 redirect uri:'/invalidAccess.gsp'
+		}
+		else
+		{
+			if(!projectsInstance)
+			{
                 flash.message = "Projects not found with id ${params.id}"
                 redirect(action:list)
-            }
-            else {
-                return [ projectsInstance : projectsInstance ]
-            }
-    		}
-        }
+			}
+			else 
+			{
+				return [ projectsInstance : projectsInstance ]
+			}
+		}
+	}
     
 
-    def update = {
-		def projectsService = new ProjectsService()
+    def update = 
+    {
+		
+		println".......params........."+params
 		def projectsInstance = projectsService.updateProject(params)	
-		if(projectsInstance){
-			if(projectsInstance.saveMode != null){
-				if(projectsInstance.saveMode.equals("Updated")){
+		def investigatorInstance=investigatorService.getInvestigatorById(params.investigator.id)
+		if(projectsInstance)
+		{
+			if(projectsInstance.saveMode != null)
+			{
+				if(projectsInstance.saveMode.equals("Updated"))
+				{
 					flash.message = "Project ${params.name} updated"
-						if(projectsInstance.parent !=null)
-						{
-							redirect(action:showSubProjects,id:projectsInstance.parent.id)
-						}
-						else
-						{
-							redirect(action:list,id:projectsInstance.id)
-						}
+					redirect(action:list,id:projectsInstance.id)
 				}
-				else if(projectsInstance.saveMode.equals("Duplicate")){
+				else if(projectsInstance.saveMode.equals("Duplicate"))
+				{
 					flash.message = "Project Already Exists"
-			    	render(view:'edit',model:[projectsInstance:projectsInstance])
+					render(view:'edit',model:[projectsInstance:projectsInstance])
+					}
+				else if(projectsInstance.saveMode.equals("NotUpdated"))
+				{
+					flash.message = "Project can not update,"+investigatorInstance.email+" is already assinged as Investigator for this project"
+						
+						render(view:'edit',model:[projectsInstance:projectsInstance])
 				}
 			}
-			else {
-                render(view:'edit',model:[projectsInstance:projectsInstance])
-            }
+			else 
+			{
+				render(view:'edit',model:[projectsInstance:projectsInstance])
+			}
 		}
-		else {
-            flash.message = "Project not found with id ${params.id}"
-            redirect(action:edit,id:params.id)
-        }
-    }
+		else 
+		{
+			flash.message = "Project not found with id ${params.id}"
+			redirect(action:edit,id:params.id)
+		}
+	}
+    
+	def subupdate =
+	{
+		def projectsService = new ProjectsService()
+		def projectsInstance = projectsService.updateProject(params)	
+		println"projectsInstance"+projectsInstance.saveMode
+		println"params.parent.id"+params.parent.id
+		if(projectsInstance)
+		{
+			if(projectsInstance.saveMode != null)
+			{
+				if(projectsInstance.saveMode.equals("Updated"))
+				{
+					flash.message = "Project ${params.name} updated"
+					println"projectsInstance after"+projectsInstance
+					redirect(action:showSubProjects,id:projectsInstance.parent.id)
+				}
+				else if(projectsInstance.saveMode.equals("Duplicate"))
+				{
+					flash.message = "Project Already Exists"
+					render(view:'editsub',model:[projectsInstance:projectsInstance])
+				}
+			}
+			else 
+			{
+		        render(view:'editsub',model:[projectsInstance:projectsInstance])
+		    }
+		}
+		else 
+		{
+		    flash.message = "Project not found with id ${params.id}"
+		    redirect(action:editsub,id:params.parent.id)
+		}
+	}
 
-    def create = {
-    	GrailsHttpSession gh=getSession()
-    	//putting help pages in session
-    	gh.putValue("Help","New_Projects.htm")
-    	def grantAllocationWithprojectsInstanceList
-        def projectsInstance = new Projects()
-        projectsInstance.properties = params
-        return ['projectsInstance':projectsInstance]
+    def create = 
+    {
+		def projectsService = new ProjectsService()
+		GrailsHttpSession gh=getSession()
+		gh.putValue("Help","New_Projects.htm")//putting help pages in session
+		
+		def grantAllocationWithprojectsInstanceList
+		def projectsInstance = new Projects()
+		projectsInstance.properties = params
+		println "params" +params
+		println "projectsInstance.id" +projectsInstance.id
+		if(params.id)
+		{
+	    	projectsInstance = projectsService.getProjectById(new Integer( params.id ))
+		}
+		return ['projectsInstance':projectsInstance]
     }
-
-    def save = {
+	
+	/*
+	 * @@ Save project details @@ 
+	 **** 1. Save the project details
+	 **** 2. Grant will be allocated to the project with amount 0.00
+	 **** 3. PI will be mapped to the project
+	 */
+    def save = 
+    {
 		params.createdBy = "user";
 		params.createdDate = new Date();
 		params.modifiedBy = "user";
@@ -234,134 +318,153 @@ class ProjectsController extends GmsController{
     	def projectsService = new ProjectsService()
     	
     	GrailsHttpSession gh=getSession()
-    	
-    	
+    	   	
     	projectsInstance = projectsService.saveProjects(projectsInstance,gh.getValue("UserId"))
+
     	
-    	
-    	if(projectsInstance.saveMode != null){
-    		if(projectsInstance.saveMode.equals("Saved")){
+    	if(projectsInstance.saveMode != null)
+    	{
+    		if(projectsInstance.saveMode.equals("Saved"))
+    		{
     			flash.message = "Project ${projectsInstance.name} created"
-	            
-    			redirect(action:list,id:projectsInstance.id)
-	                 
-	            
+    			gh.putValue("ProjectId",projectsInstance.id)
+    			redirect(action:create,id:projectsInstance.id)
     		}
-    		else if(projectsInstance.saveMode.equals("Duplicate")){
+    		else if(projectsInstance.saveMode.equals("Duplicate"))
+    		{
     			flash.message = "Project Already Exists"
     			render(view:'create',model:[projectsInstance:projectsInstance])
     		}
     	}
-    	else{
-    		flash.message = "Project Already Exists"
+    	else
+    	{
     		render(view:'create',model:[projectsInstance:projectsInstance])
     	}
     }
-    
-    
-    def saveSub = {
-    		params.createdBy = "user";
-    		params.createdDate = new Date();
-    		params.modifiedBy = "user";
-    		params.modifiedDate = new Date();
-        	def projectsInstance = new Projects(params)
-        	def projectsService = new ProjectsService()
-        	println params.parent
-        	def parentProjectsInstance = projectsService.getProjectById(new Integer( params.parent.id ))
-        	
-        	projectsInstance.projectType=parentProjectsInstance.projectType
-        	GrailsHttpSession gh=getSession()
-        	
-        	
-        	projectsInstance = projectsService.saveProjects(projectsInstance,gh.getValue("UserId"))
-        	
-        	
-        	if(projectsInstance.saveMode != null){
-        		if(projectsInstance.saveMode.equals("Saved")){
-        			flash.message = "Project ${projectsInstance.name} created"
-    	            
-        			redirect(action:showSubProjects,id:projectsInstance.parent.id)
-    	                 
-    	            
-        		}
-        		else if(projectsInstance.saveMode.equals("Duplicate")){
-        			flash.message = "Project Already Exists"
-        			render(view:'create',model:[projectsInstance:projectsInstance])
-        		}
-        	}
-        	else{
-        		flash.message = "Project Already Exists"
-        		render(view:'create',model:[projectsInstance:projectsInstance])
-        	}
-        }
+    def saveSub = 
+    {
+		params.createdBy = "user";
+		params.createdDate = new Date();
+		params.modifiedBy = "user";
+		params.modifiedDate = new Date();
+    	def projectsInstance = new Projects(params)
+    	def projectsService = new ProjectsService()
+    	println params.parent
+    	def parentProjectsInstance = projectsService.getProjectById(new Integer( params.parent.id ))
+    	
+    	projectsInstance.projectType=parentProjectsInstance.projectType
+    	GrailsHttpSession gh=getSession()
+    	
+    	projectsInstance = projectsService.saveProjects(projectsInstance,gh.getValue("UserId"))
+    	
+    	if(projectsInstance.saveMode != null)
+    	{
+    		if(projectsInstance.saveMode.equals("Saved"))
+    		{
+    			flash.message = "Project ${projectsInstance.name} created"
+    			redirect(action:showSubProjects,id:projectsInstance.parent.id)
+    		}
+    		else if(projectsInstance.saveMode.equals("Duplicate"))
+    		{
+    			flash.message = "Project Already Exists"
+    			render(view:'showSubProjects',model:[projectsInstance:projectsInstance])
+    		}
+    	}
+    	else
+    	{
+    		flash.message = "Project Already Exists"
+    		render(view:'showSubProjects',model:[projectsInstance:projectsInstance])
+    	}
+    }
         		 		
-    def proList = {
+    def proList = 
+    {
 		GrailsHttpSession gh=getSession()
-		//putting help pages in session
-		gh.putValue("Help","Project_List.htm")
-        if(!params.max) params.max = 10
+		gh.putValue("Help","Project_List.htm")//putting help pages in session
+        
+		if(!params.max) params.max = 10
         
         def dataSecurityService = new DataSecurityService()
         def projectsInstanceList=dataSecurityService.getProjectsOfLoginUser(gh.getValue("ProjectID"))
+        
         [ projectsInstanceList: projectsInstanceList ]
     }
     
-    def showSubProjects = {
+    def showSubProjects =
+    {
 		println "params"+params.id
-		 def dataSecurityService = new DataSecurityService()
-//		checking  whether the user has access to the given projects
+		def dataSecurityService = new DataSecurityService()
+		
+		//checking  whether the user has access to the given projects
 		if(dataSecurityService.checkForAuthorisedAcsessInProjects(new Integer( params.id ),new Integer(getUserPartyID()))==0)
 		{
-			
-					
-					 redirect uri:'/invalidAccess.gsp'
-
+			 redirect uri:'/invalidAccess.gsp'
 		}
 		else
 		{
-    	GrailsHttpSession gh=getSession()
-    	//putting help pages in session
-    	gh.putValue("Help","sub_Projects.htm")
-        def projectsInstance = new Projects()
-		def projectsInstanceList= new Projects();
-		
-		def projectsService = new ProjectsService()
-		def projectsList=projectsService.getProjectById(new Integer(params.id))
-		projectsInstance.parent=projectsList
-        projectsInstance.properties = params
-        String subQuery ="";
-        //GrailsHttpSession gh=getSession()
-        if(params.sort != null && !params.sort.equals(""))
-        	subQuery=" order by P."+params.sort
-        if(params.order != null && !params.order.equals(""))
-        	subQuery =subQuery+" "+params.order
-        
-        projectsInstanceList=projectsService.getActiveSubProjects(new Integer(params.id),subQuery)
-        return ['projectsInstance':projectsInstance,'projectsInstanceList':projectsInstanceList]
+	    	GrailsHttpSession gh=getSession()
+	    	gh.putValue("Help","sub_Projects.htm")//putting help pages in session
+	       
+	    	def projectsInstance = new Projects()
+			def projectsInstanceList= new Projects();
+			
+			def projectsService = new ProjectsService()
+			def projectsList=projectsService.getProjectById(new Integer(params.id))
+			projectsInstance.parent=projectsList
+	        projectsInstance.properties = params
+	        String subQuery ="";
+	        
+	        if(params.sort != null && !params.sort.equals(""))
+	        	subQuery=" order by P."+params.sort
+	        if(params.order != null && !params.order.equals(""))
+	        	subQuery =subQuery+" "+params.order
+	        
+	        projectsInstanceList=projectsService.getActiveSubProjects(new Integer(params.id),subQuery)
+	        def grantAllocationInstance = GrantAllocation.find("from GrantAllocation  GA where  GA.projects="+params.id);
+	        return ['projectsInstance':projectsInstance,'projectsInstanceList':projectsInstanceList,'grantAllocationInstance':grantAllocationInstance]
 		}
     }
     
-    def checkforAuthrizedUserInProjectDomain = {
-    		println "checkforAuthrizedUserInProjectDomain :"+params.id
-    		GrailsHttpSession gh=getSession()
-    		def grantAllocationWithprojectsInstanceList
-    		def dataSecurityService = new DataSecurityService()
-    		def projectsService = new ProjectsService()
-    		if(params.id!=null)
-    		{           
-            
-    		grantAllocationWithprojectsInstanceList=dataSecurityService.getProjectsFromGrantAllocationForLoginUser(gh.getValue("PartyID"),params.id)
-    		println "grantAllocationWithprojectsInstanceList :"+grantAllocationWithprojectsInstanceList
-             if(grantAllocationWithprojectsInstanceList.size()==0)
-             {
-            	 flash.message = "You are not authorized to acsess this project"
-            	 return -1;
-             }
-             else
-             {
-            	 return 1;
-             }
-    		}
-           
-       }
+    def checkforAuthrizedUserInProjectDomain =
+    {
+		println "checkforAuthrizedUserInProjectDomain :"+params.id
+		GrailsHttpSession gh=getSession()
+		def grantAllocationWithprojectsInstanceList
+		def dataSecurityService = new DataSecurityService()
+		def projectsService = new ProjectsService()
+		if(params.id!=null)
+		{           
+			grantAllocationWithprojectsInstanceList=dataSecurityService.getProjectsFromGrantAllocationForLoginUser(gh.getValue("PartyID"),params.id)
+			println "grantAllocationWithprojectsInstanceList :"+grantAllocationWithprojectsInstanceList
+			if(grantAllocationWithprojectsInstanceList.size()==0)
+			{
+				flash.message = "You are not authorized to acsess this project"
+				return -1;
+			}
+			else
+			{
+				return 1;
+			}
+		}           
+    }
+    def search = 
+    {
+        def projectsInstance = new Projects()
+        projectsInstance.properties = params
+        return ['projectsInstance':projectsInstance]        	       	
+    }
+    def searchProjects = 
+    {
+		def projectsInstance = new Projects(params)
+    	println params
+    	def projectsService = new ProjectsService()
+		GrailsHttpSession gh=getSession()
+    	def grantAllocationInstanceList = projectsService.searchProjects(projectsInstance,gh.getValue("Party"));
+		if (grantAllocationInstanceList.size()==0 )
+		{
+			 flash.message = "No records based on the entered criteria"
+		}
+		render(view:'search',model:['grantAllocationInstanceList':grantAllocationInstanceList])  
+    }
+    
 }

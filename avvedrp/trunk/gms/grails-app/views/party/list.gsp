@@ -4,23 +4,13 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main" />
-        <title>Institution List</title>
+        <title><g:message code="default.Institution.InstitutionList.head"/></title>
     </head>
     <body>
     <div class="wrapper"> 
-        <div class="nav">
-        
-              <span class="menuButton"><a class="home" href="${createLinkTo(dir:'/login')}">Home</a></span>
-              <g:if test="${session.Role == 'ROLE_ADMIN'}">  
-            <span class="menuButton"><g:link class="create" action="create">New Institution</g:link></span>
-            <span class="menuButton"><g:link controller="partyDepartment" class="create" action="create">Institution Department</g:link></span>
-            	</g:if>
-            	  <g:if test="${session.Role == 'ROLE_SITEADMIN'}">  
-		              <span class="menuButton"><g:link controller="partyDepartment" class="create" action="create">Institution Department</g:link></span>
-            	</g:if>
-        </div>
+  	
         <div class="body">
-            <h1>Institution List</h1>
+            <h1><g:message code="default.Institution.InstitutionList.head"/></h1>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
@@ -30,17 +20,17 @@
                     <thead>
                         <tr>
                         
-                   	        <g:sortableColumn property="id" title="SlNo" />
+                   	        <g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}"/>
                          
                              
-                             <g:sortableColumn property="nameOfTheInstitution" title="Name" />
-                            <g:sortableColumn property="code" title="Code" />
+                             <g:sortableColumn property="nameOfTheInstitution" title="${message(code: 'default.Name.label')}" />
+                            <g:sortableColumn property="code" title="${message(code: 'default.Code.label')}" />
                           
-                            <g:sortableColumn property="address" title="Address" />  
-                            <g:sortableColumn property="phone" title="Phone" />
-                            <g:sortableColumn property="email" title="Email" />
-                             <g:sortableColumn property="activeYesNo" title="Active" />
-                            <th>Edit</th>
+                            <g:sortableColumn property="address" title="${message(code: 'default.Address.label')}"/>  
+                            <g:sortableColumn property="phone" title="${message(code: 'default.Phone.label')}" />
+                            <g:sortableColumn property="email" title="${message(code: 'default.Email.label')}" />
+                             <g:sortableColumn property="activeYesNo" title="${message(code: 'default.Active.label')}"/>
+                            <th><g:message code="default.Edit.label"/></th>
                               
                         </tr>
                     </thead>
@@ -61,13 +51,13 @@
                             <td>${fieldValue(bean:partyInstance, field:'email')}</td>
                             
 	                        <td><g:if test="${fieldValue(bean:partyInstance, field:'activeYesNo') == 'Y'}">
-	    							 ${'YES'}
+	    							 <g:message code="default.YES.label"/>
 	    							 </g:if>
 	    							 <g:else>
-	    							 ${'NO'}
+	    							 <g:message code="default.NO.label"/>
 	    							 </g:else>
 	                           </td>
-                           <td><g:link action="edit" id="${fieldValue(bean:partyInstance, field:'id')}">Edit</g:link></td>
+                           <td><g:link action="edit" id="${fieldValue(bean:partyInstance, field:'id')}"><g:message code="default.Edit.label"/></g:link></td>
                         
                         </tr>
                     </g:each>
@@ -77,7 +67,7 @@
             </g:if>
             <g:else>
             <br>
-            No Records Available
+           <g:message code="default.NoRecordsAvailable.label"/>
             </br>
             </g:else>
              </div>

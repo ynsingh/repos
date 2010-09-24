@@ -4,26 +4,19 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main" />
-        <title>Projects List</title>
+        <title><g:message code="default.projects.list.head"/></title>
     </head>
     <body>
+    
     <div class="wrapper"> 
-        <div class="nav">
-        
-            <span class="menuButton"><a class="home" href="${createLinkTo(dir:'/login')}">Home</a></span>
-             <g:if test="${(session.Role != 'ROLE_PI')}">
-            <span class="menuButton"><g:link class="create" action="create">New Projects</g:link></span>
-            <g:if test="${(session.Role == 'ROLE_SITEADMIN') || (session.Role == 'ROLE_ADMIN')}"> 
-            <span class="menuButton"><g:link controller="projectDepartmentMap" class="create" action="create">Add Projects To Department</g:link></span>
-            <span class="menuButton"><g:link controller="projectType" class="create" action="create">Project Type</g:link></span>
-            <span class="menuButton"><g:link controller="investigator" class="create" action="create">PI</g:link></span>
-            <span class="menuButton"><g:link controller="projectsPIMap" class="create" action="create">Add Projects To PI</g:link></span>
-            </g:if>
-            </g:if>
-        </div>
-        
+       
         <div class="body">
-            <h1>Projects List</h1>
+        
+            
+            <h1><g:message code="default.projects.list.head"/></h1>        
+            <g:if test="${flash.error}">
+            <div class="errors">${flash.error}</div>
+            </g:if>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
@@ -33,58 +26,62 @@
                     <thead>
                         <tr>
                         
-                   	        <g:sortableColumn property="id" title="SlNo" />
+                   	        <g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}"/>
                    	              
                        		<%-- <g:sortableColumn property="parent" title="Main Project" /> --%>
                                  
                        
-                   	        <g:sortableColumn property="projects.name" title="Name" />
+                   	        <g:sortableColumn property="projects.name" title="${message(code: 'default.Name.label')}"/>
                                               
-                   	        <g:sortableColumn property="projects.code" title="Code" />
+                   	        <g:sortableColumn property="projects.code" title="${message(code: 'default.Code.label')}"/>
                    	        
-                   	        <g:sortableColumn property="projects.projectType.type" title="Project Type" />
-                                             
-                   	          <g:sortableColumn property="projects.activeYesNo" title="Active" />
-                   	          <th>Sub Projects</th>
-                   	          <th>Project Dash Board</th>
-                   	          <th>Project Closure</th>
-                   	          <th>Edit</th>
+                   	        <g:sortableColumn property="projects.projectType.type" title="${message(code: 'default.ProjectType.label')}"/>
                    	          
+                	        <th><g:message code="default.Attachments.label"/></th>
+                   	        <g:if test="${(session.Role == 'ROLE_SITEADMIN')}">   
+                   	       		<th><g:message code="default.Edit.label"/></th>
+                   	        </g:if>  
                         
                         </tr>
                     </thead>
                     <tbody>
+                    <% int j=0 %>
                     <g:each in="${grantAllocationWithprojectsInstanceList}" status="i" var="grantAllocationInstance">
-                        <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-                        
-                           <td>${i+1}</td>
-                                
-                                 <%-- <td>${fieldValue(bean:grantAllocationInstance, field:'projects.parent.code')}</td>--%>
-                               
-                        
-                           <td>${fieldValue(bean:grantAllocationInstance, field:'projects.name')}</td>
-                           <td>${fieldValue(bean:grantAllocationInstance, field:'projects.code')}</td>
-                           <td>${fieldValue(bean:grantAllocationInstance, field:'projects.projectType.type')}</td>
-                           <td><g:if test="${fieldValue(bean:grantAllocationInstance, field:'projects.activeYesNo') == 'Y'}">
-    							 ${'YES'}
-    							 </g:if>
-    							 <g:else>
-    							 ${'NO'}
-    							 </g:else>
-                           </td>
-                           <td><g:link  action="showSubProjects"  id="${grantAllocationInstance.projects.id}">Sub Projects</g:link></td>
-                              <td><g:link action="projectDash" controller='grantAllocation' id="${grantAllocationInstance.projects.id}">View</g:link></td>
-               
-                           <td><g:link  action="create" controller='projectTracking'  id="${grantAllocationInstance.projects.id}">Project Closure</g:link></td>
-                        <td><g:link action="edit" id="${grantAllocationInstance.projects.id}">Edit</g:link></td>
-                        </tr>
+                        <g:if test="${fieldValue(bean:grantAllocationInstance, field:'projects.activeYesNo') == 'Y'}">
+	                        <%  j++ %>
+	                        <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
+	                        
+	                           <td>${j}</td>
+	                                
+	                                 <%-- <td>${fieldValue(bean:grantAllocationInstance, field:'projects.parent.code')}</td>--%>
+	                               
+	                        
+	                           
+	                         <td><g:if test="${fieldValue(bean:grantAllocationInstance, field:'projects.activeYesNo') == 'Y'}"><g:link action="projectDash" controller='grantAllocation' id="${grantAllocationInstance.projects.id}">${grantAllocationInstance.projects.name}</g:link></g:if></td>
+	                           
+	                           <td>${fieldValue(bean:grantAllocationInstance, field:'projects.code')}</td>
+	                           <td>${fieldValue(bean:grantAllocationInstance, field:'projects.projectType.type')}</td>
+	                          
+	                           <td><g:if test="${Attachments.findByDomainId(grantAllocationInstance.projects.id)}">
+	                           <g:link action="list" controller="attachments" id="${grantAllocationInstance.projects.id}">Attachments</g:link>
+	                           </g:if>
+	                           <g:else>
+	                          <g:message code="default.NoAttachments.label"/>
+	                           </g:else>
+	                           </td>
+	                        
+	                        <g:if test="${(session.Role == 'ROLE_SITEADMIN')}">   
+	                       		<td><g:link action="edit" id="${grantAllocationInstance.projects.id}"><g:message code="default.Edit.label" /></g:link></td>
+	                        </g:if>
+	                        </tr>
+	                       </g:if>
                     </g:each>
                     </tbody>
                 </table>
             </div>
             </g:if>
             <g:else>
-            <br>No Records Available</br>
+            <br><g:message code="default.NoRecordsAvailable.label"/></br>
             </g:else>
           </div>  
         </div>

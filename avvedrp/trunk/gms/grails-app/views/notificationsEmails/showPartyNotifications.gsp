@@ -10,11 +10,6 @@
     <g:javascript library="application"/>
     <modalbox:modalIncludes/>
     <div class="wrapper">
-        <div class="nav">
-            <span class="menuButton"><a class="home" href="${createLinkTo(dir:'')}">Home</a></span>
-            <span class="menuButton"><g:link class="list" action="partyNotificationsList">Notification List</g:link></span>
-            
-        </div>
         <div class="tablewrapper">
         <div class="body">
             <h1>Show Notification</h1>

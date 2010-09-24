@@ -7,13 +7,6 @@
         <title>Show Projects</title>
     </head>
     <body>
-        <div class="nav">
-            <span class="menuButton"><a class="home" href="${createLinkTo(dir:'/login')}">Home</a></span>
-            <span class="menuButton"><g:link class="list" action="list">Projects List</g:link></span>
-              <g:if test="${session.Role == 'ROLE_ADMIN'}"> 
-            <span class="menuButton"><g:link class="create" action="create">New Projects</g:link></span>
-            </g:if>
-        </div>
         <div class="body">
             <h1>Show Projects</h1>
             <g:if test="${flash.message}">
@@ -21,9 +14,7 @@
             </g:if>
             <div class="dialog">
                 <table width="950">
-                    <tbody>
-
-                    
+                    <tbody>                   
                         <tr class="prop">
                             <td valign="top" class="name">Id:</td>
                             
@@ -63,7 +54,6 @@
                 <g:form>
                     <input type="hidden" name="id" value="${projectsInstance?.id}" />
                     <span class="button"><g:actionSubmit class="edit" value="Edit" /></span>
-                    <span class="button"><g:actionSubmit class="delete" onclick="return confirm('Are you sure?');" value="Delete" /></span>
                 </g:form>
             </div>
         </div>

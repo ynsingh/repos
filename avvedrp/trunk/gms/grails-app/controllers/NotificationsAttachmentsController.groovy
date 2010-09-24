@@ -1,3 +1,6 @@
+import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
+import org.codehaus.groovy.grails.commons.GrailsApplication
+import grails.util.GrailsUtil
 class NotificationsAttachmentsController {
     
     def index = { redirect(action:list,params:params) }
@@ -188,9 +191,22 @@ class NotificationsAttachmentsController {
 			            String fileName=downloadedfile.getOriginalFilename()
 			    		println "File Name--"+fileName+"  attachmenttype "+notificationsAttachmentsInstance.attachmentType
 			    		notificationsAttachmentsInstance.attachmentPath=fileName
-			            
-			            new File( "grails-app/views/appForm/" ).mkdirs()
-		            	downloadedfile.transferTo( new File( "grails-app/views/appForm/" + File.separatorChar + fileName) )
+			    		def attachmentsName='Attachments'
+			    		def gmsSettingsService = new GmsSettingsService()
+			    		def gmsSettingsInstance = gmsSettingsService.getGmsSettings(attachmentsName)
+			    		def webRootDir
+			    		 if ( GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_PRODUCTION)) 
+			            {
+			            	webRootDir = gmsSettingsInstance.value
+			            }
+			            if ( GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_DEVELOPMENT)) 
+			            {
+			            	webRootDir = gmsSettingsInstance.value
+			            	println "gmsSettingsInstance.value"+gmsSettingsInstance.value
+			            }
+			    		println "System.getProperty"+System.getProperty("user.home")
+			            new File( webRootDir).mkdirs()
+		            	downloadedfile.transferTo( new File( webRootDir + File.separatorChar + fileName) )
 		            	//notificationsAttachmentsInstance.attachmentType=attachmentTypeInstance
 		            	println "notificationsAttachmentsInstance" +notificationsAttachmentsInstance.attachmentPath
 		            	println "File Name--"+notificationsAttachmentsInstance.attachmentPath
@@ -239,10 +255,23 @@ class NotificationsAttachmentsController {
     def download = 
     {
  		def notificationsAttachmentsInstance = NotificationsAttachments.get( params.id )
- 		println"++++++++++++++id+++++++++++"+params
+ 		
  		String fileName = notificationsAttachmentsInstance.attachmentPath
- 		println"++++++++++++++++++filename+++++++++"+fileName
- 		def file = new File("grails-app/views/appForm/"+fileName)     
+ 		
+ 		def attachmentsName='Attachments'
+    	def gmsSettingsService = new GmsSettingsService()
+    	def gmsSettingsInstance = gmsSettingsService.getGmsSettings(attachmentsName)
+ 		
+ 		def webRootDir
+ 		 if ( GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_PRODUCTION)) 
+         {
+         	webRootDir = gmsSettingsInstance.value
+         }
+         if ( GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_DEVELOPMENT)) 
+         {
+         	webRootDir = gmsSettingsInstance.value
+         }
+ 		def file = new File(webRootDir+fileName)     
  		response.setContentType("application/octet-stream") 
  		response.setHeader("Content-disposition", "attachment;fileName=${file.getName()}") 
  		 

@@ -1,0 +1,70 @@
+/* CSS Document */
+
+
+
+
+.hrmenu-container {
+ padding:0px;
+ padding-left:8px;
+ margin:  auto;
+ text-align: left;
+ font: 10px normal Verdana, Arial, Helvetica, sans-serif;
+ 
+}
+.hrmenu  { 
+padding: 0px;
+margin: 0px;
+}
+.hrmenu td th { 
+padding: 0px;
+margin: 0px;
+}
+ 
+ 
+ul#topnav {
+font: 10px normal Verdana, Arial, Helvetica, sans-serif;
+	margin: 0; padding: 0;
+	width: 100%;
+	list-style: none;
+	position: relative;
+	font-size: 1.2em;
+	background: #ffffff url(hr-menu-bg.jpg) repeat-x;
+	border: 1px #ffffff solid;
+	height: 30px;
+	
+	}
+ul#topnav li {
+	float: left;
+	margin: 0;
+	 padding: 0;
+	color: #01518e;
+	}
+ul#topnav li a {
+	padding: 4px 12px;
+	display: block;
+	color: #01518e;
+	font-weight: 1.2em;
+	text-decoration: none;
+}
+ul#topnav li:hover { background: #fcdfa6 url(hr-menu-hover.jpg) repeat-x; }
+ul#topnav li span {
+	float: left;
+	padding: 5px 0;
+	position: absolute;
+	left: 0; top: 29px;
+	display: none;
+	width: 833px;
+	background: #fcdfa6;
+	border: 1px #ebb54b solid;
+	border-top: none;
+	color: #a67002;
+	-moz-border-radius-bottomright: 5px;
+	-khtml-border-radius-bottomright: 5px;
+	-webkit-border-bottom-right-radius: 5px;
+	-moz-border-radius-bottomleft: 5px;
+	-khtml-border-radius-bottomleft: 5px;
+	-webkit-border-bottom-left-radius: 5px;
+}
+ul#topnav li:hover span { display: block; }
+ul#topnav li span a { display: inline; }
+ul#topnav li span a:hover {text-decoration: underline;}

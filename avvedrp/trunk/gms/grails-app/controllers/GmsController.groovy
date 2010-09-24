@@ -7,11 +7,11 @@ import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
  */
 public class GmsController{
 
-	
+	def dataSource
 	def  getUserPartyID=
 	{
 			GrailsHttpSession gh=getSession()
-			return gh.getValue("Party")
+			return (Integer)gh.getValue("Party")
 	}
 	
 	def  getUserRole=
