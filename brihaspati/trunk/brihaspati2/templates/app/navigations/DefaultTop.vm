@@ -1,19 +1,18 @@
 $page.setBgColor("#ffffff")
-#set ($cid=$data.getUser().getTemp("course_id") )
-#set ($istat=$data.getUser().getTemp("istat") )
+
+#set($lang = $data.getUser().getTemp("lang").toString())
 #set ($instituteid=$data.getUser().getTemp("Institute_id") )
-#set ($instimg=$data.getUser().getTemp("instImg") )
 
 <head>
 <link rel="shortcut icon" href="$content.getURI("favicon.ico")" >
 <link rel="icon" type="image/gif" href="$content.getURI("images/animated_favicon.gif")">
 </head>
 
-#if($cid!="" && $istat) 
-        <img src="$content.getURI("images/Header/$cid")" width="100%" height="120px">
-#elseif($instituteid!="" && $instimg)
-	<img src="$content.getURI("images/Header/$instituteid")" >
+#if($instituteid!="" && $lang!="")
+	<table border=0><tr><td width="55%"><img src="$content.getURI("images/${lang}brihaspati3.png")"></td><td width="20%"><img src="$content.getURI("images/Logo/logo")"</td><td width="20%"><img src="$content.getURI("images/Logo/$instituteid")"</td></tr></table>
+#elseif($lang!="" && $instituteid=="")
+	<table border=0><tr><td width="55%"><img src="$content.getURI("images/${lang}brihaspati3.png")"></td><td colspan=2 width="40%"><img src="$content.getURI("images/Logo/logo")"</td></tr></table>
 #else
-        <img src="$content.getURI("images/brihaspati3.png")" >
+	<table border=0><tr><td width="55%"><img src="$content.getURI("images/englishbrihaspati3.png")"></td><td colspan=2 width="40%"><img src="$content.getURI("images/Logo/logo")"</td></tr></table>
 #end
 <hr>

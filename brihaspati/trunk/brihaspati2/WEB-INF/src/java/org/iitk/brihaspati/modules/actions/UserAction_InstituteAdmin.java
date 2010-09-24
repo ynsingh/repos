@@ -403,6 +403,44 @@ public class UserAction_InstituteAdmin extends SecureAction_Institute_Admin{
                         data.setMessage("The error in doExpire method -"+ex);
                 }
         }
+ /**
+          * ActionEvent responsible for upload institute logo in the system
+          * @param data RunData
+          * @param context Context
+          */
+        public void doUploadLogo(RunData data, Context context)
+        {
+                User user=data.getUser();
+                LangFile=(String)user.getTemp("LangFile");
+		String ImageName=(data.getUser().getTemp("Institute_id")).toString();
+//                String ImageName=(String)user.getTemp("course_id");
+                ParameterParser pp=data.getParameters();
+                FileItem file = pp.getFileItem("file");
+                String fileName=file.getName();
+                String imagesRealPath=TurbineServlet.getRealPath("/images");
+		String msg1;
+                if(fileName.endsWith("jpg")|| fileName.endsWith("gif")|| fileName.endsWith("png"))
+                {
+                        try{
+                                File filePath=new File(imagesRealPath+"/Logo/");
+                                filePath.mkdirs();
+                                filePath=new File(filePath+"/"+ImageName);
+                                file.write(filePath);
+                                msg1=MultilingualUtil.ConvertedString("c_msg5",LangFile);
+                                data.setMessage(msg1);
+                        }
+                        catch(Exception ex){data.setMessage("The Error in Uploading!! "+ex);}
+                }
+                else
+                {
+                        msg1=MultilingualUtil.ConvertedString("Profile_PhotoMsg2",LangFile);
+                        data.setMessage(msg1);
+                        setTemplate(data,"call,CourseMgmt_InstituteAdmin,UploadLogo.vm");
+                }
+
+
+        }
+
 
 	 /**
           * ActionEvent responsible if no method found in this action i.e. Default Method
@@ -426,8 +464,9 @@ public class UserAction_InstituteAdmin extends SecureAction_Institute_Admin{
 			doUploadMultiUser(data,context);
 		else if(action.equals("eventSubmit_doUploadphoto"))
 			doUploadMultiUserPhoto(data,context);
-		//else if(action.equals("eventSubmit_doChangeStatus"))
-		//	doChangeStatus(data,context);
+			
+		else if(action.equals("eventSubmit_doUploadLogo"))
+			doUploadLogo(data,context);
 		else
 		{
 			 /**

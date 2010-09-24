@@ -73,12 +73,16 @@ Map $brih_role $Repo_Perm </a></td>
            ##             <INPUT TYPE="CHECKBOX" NAME="$data" onClick="apprv_rej(this,document.frm);">
 		                        $data1
 			        </td>
+				#if($data2.getRoleId()>7)
 			        <td>
 					 <a href=$link.setPage("call,Root_Admin,RolePermissionMap.vm").addPathInfo("mode","map").addPathInfo("count","4").addPathInfo("rlid","$data2.getRoleId()").addPathInfo("rlnme","$data2.getRoleName()") style=text-decoration:none>$brih_update $brih_role $Repo_Perm </a>
 				</td>
 			        <td>
 					 <a href=$link.setPage("call,Root_Admin,RolePermissionMap.vm").setAction("RolePermissionMap").addPathInfo("actionName","eventSubmit_doDelete").addPathInfo("rlid","$data2.getRoleId()") style=text-decoration:none>$brih_delete $brih_role </a>
 				</td>
+				#else
+				<td>$brih_update $brih_role $Repo_Perm</td><td>$brih_delete $brih_role</td>
+				#end
 			        </tr>
 			        #end
 		        #set($j=$j+1)
