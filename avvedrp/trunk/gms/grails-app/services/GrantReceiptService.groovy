@@ -57,8 +57,26 @@ class GrantReceiptService{
 	 */
 	public GrantReceipt updateGrantReceipt(def grantReceiptParams){
 		def grantReceiptInstance = getGrantReceiptById( new Integer(grantReceiptParams.id ))
+		def fundTransferInstance = new FundTransfer()
 		if(grantReceiptInstance) {
 			grantReceiptInstance.properties = grantReceiptParams
+			
+			if(grantReceiptInstance.fundTransfer==null)
+			{
+				println "fundTransfer in service" + grantReceiptInstance.fundTransfer
+				if(grantReceiptInstance.grantAllocation)
+				{
+					fundTransferInstance.grantAllocation = grantReceiptInstance.grantAllocation
+					fundTransferInstance.amount = grantReceiptInstance.amount
+					fundTransferInstance.dateOfTransfer = grantReceiptInstance.dateOfReceipt
+					fundTransferInstance.createdBy = "admin"
+					fundTransferInstance.modifiedBy = "admin"
+					fundTransferInstance.save()		
+					grantReceiptInstance.fundTransfer = fundTransferInstance
+				}
+			}
+			
+			
             if(!grantReceiptInstance.hasErrors() && grantReceiptInstance.save()) {
             	grantReceiptInstance.isSaved = true
             }
@@ -74,14 +92,35 @@ class GrantReceiptService{
 	public GrantReceipt saveGrantReceipt(def grantReceiptInstance,Integer projectId){
 		def grantAllocationService = new GrantAllocationService()
 		def projects=Projects.get(projectId);
+		def fundTransferInstance = new FundTransfer()
 		
 		grantReceiptInstance.projects=projects
+		println "grantReceiptInstance in service" + grantReceiptInstance.grantAllocation
+		if(grantReceiptInstance.fundTransfer.id==null)
+		{
+			println "fundTransfer in service" + grantReceiptInstance.fundTransfer
+			if(grantReceiptInstance.grantAllocation)
+			{
+				fundTransferInstance.grantAllocation = grantReceiptInstance.grantAllocation
+				fundTransferInstance.amount = grantReceiptInstance.amount
+				fundTransferInstance.dateOfTransfer = grantReceiptInstance.dateOfReceipt
+				fundTransferInstance.createdBy = "admin"
+				fundTransferInstance.modifiedBy = "admin"
+				fundTransferInstance.save()		
+				grantReceiptInstance.fundTransfer = fundTransferInstance
+			}
+		}
+		
 		if(grantReceiptInstance.save())
-			grantReceiptInstance.isSaved = true
+		{
+			grantReceiptInstance.isSaved = true		
+		}
 		else
 			grantReceiptInstance.isSaved = false
-			
-		return grantReceiptInstance
+		
+		println "grantReceiptInstance in service" + grantReceiptInstance.id
+		def grantReceipt=GrantReceipt.get(grantReceiptInstance.id)
+		return grantReceipt
 	}
 	
 	/**

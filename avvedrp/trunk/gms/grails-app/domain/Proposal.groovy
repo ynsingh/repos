@@ -11,8 +11,8 @@ class Proposal
 	   {
 		code(nullable:false,blank:false)
 		proposalDocumentationPath(nullable:true)
-		description(nullable:true)
 		lockedYN(nullable:true)
+		description(nullable:true)
 		}
 		
 	}

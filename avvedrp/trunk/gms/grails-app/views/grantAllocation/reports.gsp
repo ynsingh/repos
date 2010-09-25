@@ -92,7 +92,7 @@
 					         <tr>
 					           <td valign="top" class="name">
                                    <g:jasperReport jasper="GrandSummaryReport" format="XLS,PDF,CSV,HTML" 
-                                   	name="${message(code: 'default.GrantExpenseReports.GrandSummaryReport.label')}" >
+                                   	name="${message(code: 'default.GrantExpenseReports.GrantSummaryReport.label')}" >
 							            <input type="hidden" name="id" value="${session.AppFormID}" />
 							            <input type="hidden" name="partyID" value="" />
 							            <input type="hidden" name="projectID" value="${session.ProjectID}" />

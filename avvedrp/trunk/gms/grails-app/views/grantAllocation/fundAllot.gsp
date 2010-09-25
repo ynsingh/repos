@@ -91,6 +91,8 @@
                    	        <g:sortableColumn property="party" title="${message(code: 'default.GrantAgency.label')}"/>
                    	        
                    	        <g:sortableColumn property="amountAllocated" title="${message(code: 'default.AmountAllocated.label')}"/>
+                           
+							<!--<th><g:message code="default.FundTransfer.label"/></th>-->                           
                            <g:sortableColumn property="Remarks" title="${message(code: 'default.Remarks.label')}"/>     
                    	       
                         
@@ -102,13 +104,18 @@
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                             <td>${(i + 1)}</td>
                             <td>${fieldValue(bean:grantAllocationInstance, field:'projects.code')}</td>
-                             <td>${fieldValue(bean:projectsPIMapInstanceList[i], field:'investigator.name')}</td>
+                             <td>${fieldValue(bean:projectsPIMapInstance, field:'investigator.name')}</td>
                                <td><g:formatDate format="dd-MM-yyyy" date="${grantAllocationInstance.projects.projectStartDate}"/></td>
                             <td><g:formatDate format="dd-MM-yyyy" date="${grantAllocationInstance.projects.projectEndDate}"/></td>
                             <td>${fieldValue(bean:grantAllocationInstance, field:'party.code')}</td>
                             
                              <td>${currencyFormat.ConvertToIndainRS(grantAllocationInstance.amountAllocated)}</td>
     	                     
+                       <!-- <td>
+                        	 <g:link action="create" controller="fundTransfer" id="${grantAllocationInstance.id}" params="[subMenu:'fundAllot']">
+                        		<g:message code="default.FundTransfer.label"/>
+                        	</g:link>
+                        </td>-->
                         <td>${fieldValue(bean:grantAllocationInstance, field:'remarks')}</td>
                             
                         <td><g:link action="edit" id="${grantAllocationInstance.id}"><g:message code="default.Edit.label"/></g:link></td>

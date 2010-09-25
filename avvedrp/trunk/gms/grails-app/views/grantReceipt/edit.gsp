@@ -1,5 +1,3 @@
-
-
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -39,11 +37,30 @@
                             
                             <tr class="prop">
 			                    <td valign="top" class="name">
-                                    <label for="grantAllocation"><g:message code="default.GrantAllocation.label"/></label>
-			                    </td>
-			                    <td valign="top" class="value ${hasErrors(bean:grantReceiptInstance,field:'grantAllocationSplit','errors')}">
-			                        <g:select optionKey="id" optionValue="accHeadPeriod"  from="${accountHeadList}" name="grantAllocationSplit.id" value="${grantReceiptInstance?.grantAllocationSplit?.id}" noSelection="['null':'select']"></g:select>
-			                    </td>
+                                    <label for="grantAllocation">
+                                    	<g:message code="default.GrantAllocation.label"/>
+                                    </label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(grantReceiptInstance,field:'grantAllocation','errors')}">
+                                    <g:select optionKey="id" optionValue="grantCode" from="${grantAllocationInstanceList}" name="grantAllocation.id" value="${grantReceiptInstance?.grantAllocation?.id}" noSelection="['null':'Select']"></g:select>
+                                </td>
+                            </tr> 
+			                                
+			                <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="fundTransfer">
+                                    	<g:message code="default.FundTransferred.label"/>
+                                    </label>
+                                </td>
+                                <g:if test="${fundTransferInstanceList}">
+	                                <td valign="top" class="value ${hasErrors(grantReceiptInstance,field:'grantAllocation','errors')}">
+	                                    <g:select optionKey="id" optionValue="amountCode" from="${fundTransferInstanceList}" name="fundTransfer.id" value="${grantReceiptInstance?.fundTransfer?.id}" noSelection="['null':'Select']"></g:select>
+	                                    
+	                                </td>
+	                            </g:if>
+	                            <g:else>
+	                            	<td>No Fund is Transferred</td>
+	                            </g:else>
 			                </tr> 
 			                                
 			                <tr class="prop">

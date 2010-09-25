@@ -25,9 +25,10 @@
 
 	<parameter name="partyID" isForPrompting="true" class="java.lang.String"/>
 	<parameter name="projectType" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="Path" isForPrompting="false" class="java.lang.String"/>
 	<queryString><![CDATA[SELECT 
       P.name AS ProjectTitle,
-      (SELECT I.name FROM investigator I,projectspimap PMAP WHERE I.id=PMAP.investigator_id AND PMAP.projects_id=P.id AND PMAP.role='PI') AS PI,
+      (SELECT I.name FROM investigator I,projectspimap PMAP WHERE I.id=PMAP.investigator_id AND PMAP.projects_id=P.id AND PMAP.role='PI' GROUP BY P.id) AS PI,
       PD.department_code AS Department,
       PRT.type AS ProjectType,
       (SELECT PY.name_of_the_institution FROM party PY,grant_allocation G WHERE PY.id=G.granter_id AND G.projects_id=GA.projects_id AND P.id=G.projects_id GROUP BY G.projects_id)AS FundingAgency,
@@ -97,12 +98,12 @@ GROUP BY PM.projects_id]]></queryString>
 			</band>
 		</background>
 		<title>
-			<band height="126"  isSplitAllowed="true" >
+			<band height="240"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="34"
-						y="35"
+						x="98"
+						y="155"
 						width="558"
 						height="23"
 						forecolor="#000000"
@@ -123,8 +124,8 @@ GROUP BY PM.projects_id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="207"
-						y="65"
+						x="238"
+						y="184"
 						width="220"
 						height="19"
 						forecolor="#000000"
@@ -145,8 +146,8 @@ GROUP BY PM.projects_id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="255"
-						y="12"
+						x="281"
+						y="127"
 						width="134"
 						height="13"
 						forecolor="#000000"
@@ -167,8 +168,8 @@ GROUP BY PM.projects_id]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="208"
-						y="91"
+						x="236"
+						y="208"
 						width="217"
 						height="18"
 						forecolor="#000000"
@@ -186,6 +187,49 @@ GROUP BY PM.projects_id]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{projectType}]]></textFieldExpression>
 				</textField>
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="719"
+						y="104"
+						width="64"
+						height="15"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-17"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+				</textField>
+				<image  scaleImage="FillFrame" vAlign="Top" hAlign="Left" isUsingCache="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="4"
+						y="5"
+						width="781"
+						height="97"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="image-5"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<graphicElement stretchType="NoStretch" pen="None" fill="Solid" 
+/>
+					<imageExpression class="java.lang.String"><![CDATA[$P{Path}+"/images/header2.jpg"]]></imageExpression>
+				</image>
 			</band>
 		</title>
 		<pageHeader>
@@ -194,32 +238,13 @@ GROUP BY PM.projects_id]]></queryString>
 		</pageHeader>
 		<columnHeader>
 			<band height="58"  isSplitAllowed="true" >
-				<rectangle radius="0" >
-					<reportElement
-						mode="Opaque"
-						x="5"
-						y="4"
-						width="739"
-						height="54"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="rectangle-1"
-						stretchType="NoStretch"
-						positionType="FixRelativeToBottom"
-						isPrintRepeatedValues="true"
-						isRemoveLineWhenBlank="false"
-						isPrintInFirstWholeBand="false"
-						isPrintWhenDetailOverflows="false"/>
-					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
-/>
-				</rectangle>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
 						x="42"
-						y="4"
+						y="1"
 						width="0"
-						height="54"
+						height="56"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-1"
@@ -236,9 +261,9 @@ GROUP BY PM.projects_id]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="190"
-						y="4"
+						y="1"
 						width="0"
-						height="54"
+						height="56"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-2"
@@ -255,9 +280,9 @@ GROUP BY PM.projects_id]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="268"
-						y="4"
+						y="1"
 						width="0"
-						height="54"
+						height="56"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-4"
@@ -274,9 +299,9 @@ GROUP BY PM.projects_id]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="351"
-						y="4"
+						y="1"
 						width="0"
-						height="54"
+						height="56"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-5"
@@ -293,9 +318,9 @@ GROUP BY PM.projects_id]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="428"
-						y="4"
+						y="1"
 						width="0"
-						height="54"
+						height="56"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-6"
@@ -312,9 +337,9 @@ GROUP BY PM.projects_id]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="494"
-						y="4"
+						y="1"
 						width="0"
-						height="54"
+						height="56"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-7"
@@ -331,9 +356,9 @@ GROUP BY PM.projects_id]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="582"
-						y="4"
+						y="1"
 						width="0"
-						height="54"
+						height="56"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-8"
@@ -350,9 +375,9 @@ GROUP BY PM.projects_id]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="664"
-						y="4"
+						y="1"
 						width="0"
-						height="54"
+						height="56"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-9"
@@ -563,6 +588,82 @@ GROUP BY PM.projects_id]]></queryString>
 					</textElement>
 				<text><![CDATA[Net Balance]]></text>
 				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						mode="Opaque"
+						x="5"
+						y="0"
+						width="739"
+						height="0"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="line-31"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
+/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						mode="Opaque"
+						x="5"
+						y="1"
+						width="0"
+						height="56"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="line-32"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
+/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						mode="Opaque"
+						x="743"
+						y="1"
+						width="0"
+						height="56"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="line-34"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
+/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						mode="Opaque"
+						x="5"
+						y="57"
+						width="739"
+						height="0"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="line-39"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
+/>
+				</line>
 			</band>
 		</columnHeader>
 		<detail>
@@ -571,7 +672,7 @@ GROUP BY PM.projects_id]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="5"
-						y="24"
+						y="25"
 						width="739"
 						height="0"
 						forecolor="#000000"
@@ -981,12 +1082,16 @@ GROUP BY PM.projects_id]]></queryString>
 			</band>
 		</columnFooter>
 		<pageFooter>
-			<band height="55"  isSplitAllowed="true" >
+			<band height="90"  isSplitAllowed="true" >
+			</band>
+		</pageFooter>
+		<lastPageFooter>
+			<band height="200"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="269"
-						y="10"
+						x="283"
+						y="5"
 						width="160"
 						height="30"
 						forecolor="#000000"
@@ -1004,16 +1109,16 @@ GROUP BY PM.projects_id]]></queryString>
 					</textElement>
 				<text><![CDATA[From Statement No:7]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="558"
-						y="13"
-						width="104"
-						height="22"
+						x="718"
+						y="171"
+						width="52"
+						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="textField-17"
+						key="textField"
 						stretchType="NoStretch"
 						positionType="FixRelativeToTop"
 						isPrintRepeatedValues="true"
@@ -1024,22 +1129,43 @@ GROUP BY PM.projects_id]]></queryString>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 				</textField>
+				<image  scaleImage="FillFrame" vAlign="Top" hAlign="Left" isUsingCache="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="18"
+						y="162"
+						width="677"
+						height="37"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="image-6"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<graphicElement stretchType="NoStretch" pen="None" fill="Solid" 
+/>
+					<imageExpression class="java.lang.String"><![CDATA[$P{Path}+"/images/footer1.jpg"]]></imageExpression>
+				</image>
 			</band>
-		</pageFooter>
+		</lastPageFooter>
 		<summary>
 			<band height="26"  isSplitAllowed="true" >
-				<rectangle radius="0" >
+				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
 						x="5"
 						y="0"
 						width="739"
-						height="25"
+						height="0"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="rectangle-2"
+						key="line-35"
 						stretchType="NoStretch"
 						positionType="FixRelativeToTop"
 						isPrintRepeatedValues="true"
@@ -1048,7 +1174,7 @@ GROUP BY PM.projects_id]]></queryString>
 						isPrintWhenDetailOverflows="false"/>
 					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
 />
-				</rectangle>
+				</line>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
@@ -1377,6 +1503,63 @@ GROUP BY PM.projects_id]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{ExpenditureTotal}]]></textFieldExpression>
 				</textField>
+				<line direction="TopDown">
+					<reportElement
+						mode="Opaque"
+						x="5"
+						y="25"
+						width="739"
+						height="0"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="line-36"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
+/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						mode="Opaque"
+						x="5"
+						y="0"
+						width="0"
+						height="25"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="line-37"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
+/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						mode="Opaque"
+						x="743"
+						y="0"
+						width="0"
+						height="25"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="line-38"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
+/>
+				</line>
 			</band>
 		</summary>
 </jasperReport>

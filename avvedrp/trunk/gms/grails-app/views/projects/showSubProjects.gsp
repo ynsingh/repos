@@ -2,7 +2,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main" />
-        <title><g:message code="default.CreateSubProjects.head" /></title>         
+        <title><g:message code="default.projects.CreateSubProjects.head"/></title>         
     </head>
     <body>
 	    <div class="wrapper"> 
@@ -13,7 +13,7 @@
 		    	value="${fieldValue(bean:projectsInstance, field:'parent.projectEndDate')}"/>
 	        
 	        <div class="body">
-        		<h1><g:message code="default.CreateSubProjects.head" /></h1>
+        		<h1><g:message code="default.projects.CreateSubProjects.head"/></h1>
 		        <g:hasErrors bean="${projectsInstance}">
 		            <div class="errors">
 		                <g:renderErrors bean="${projectsInstance}" as="List" />
@@ -48,7 +48,7 @@
 	                   				</td>
 					                
 					                <td  valign="top" class="name">
-					                    <g:if test="${grantAllocationInstance.granter!=null}"> 
+					                    <g:if test="${grantAllocationInstance.granter}"> 
 										    <g:message code="default.projects.Grantor.label" /> : 
 										    <strong>${grantAllocationInstance.granter.code}</strong>
 										    <br>

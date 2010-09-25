@@ -1,0 +1,139 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="layout" content="main" />
+		<g:set var="entityName" 
+			value="${message(code: 'projectEmployeeQualification.label', default: 'ProjectEmployeeQualification')}" />
+		<title><g:message code="default.create.label" args="[entityName]" /></title>
+		<script type="text/javascript">
+		</script>
+    </head>
+    <body>
+    	<div class="wrapper">   
+		<div class="body">
+			<h1><g:message code="default.ProjectEmployeeQualification.create.head" /></h1>
+	        <g:if test="${flash.message}">
+	        	<div class="message">${flash.message}</div>
+	        </g:if>
+	        <g:hasErrors bean="${projectEmployeeQualificationInstance}">
+	        	<div class="errors">
+	                <g:renderErrors bean="${projectEmployeeQualificationInstance}" as="list" />
+	            </div>
+	        </g:hasErrors>
+	        <g:form action="save" method="post" >  
+	        	<div class="dialog">   
+			        <table>
+			        	<tbody>
+				  			<tr>
+					    		<td width="15%" height="34" >
+					    			<label><g:message code="default.EmployeeName.label" /></label></td>    		
+					    		<td>${fieldValue(bean: projectEmployeeInstance,field: "empName")}
+					    				/ ${fieldValue(bean: projectEmployeeInstance,field: "empNo")}</td>
+					    			<input type="hidden" name="projectEmployee.id" id="projectEmployee.id" 
+					    				value="${projectEmployeeInstance.id}"/>
+					    		<td width="15%"><label><g:message code="default.Designation.label" /></label></td>
+								<td>${projectEmployeeInstance.employeeDesignation.Designation}</td>
+				 		    </tr>
+				  			<tr >
+					  		    <td><label><g:message code="default.ProjectEmployeeQualification.ExamName.label" /></label></td>
+					    		 <td valign="top" class="value ${hasErrors(bean: projectEmployeeQualificationInstance,
+					    		 	 	field: 'examname', 'errors')}">
+					                 <g:textField style='width: 200px; ' name="examname" 
+					                  	value="${projectEmployeeQualificationInstance?.examname}" />
+					              </td>
+					    		<td><label><g:message code="default.ProjectEmployeeQualification.University.label" /></label></td>
+					    		<td valign="top" class="value ${hasErrors(bean: projectEmployeeQualificationInstance, 
+					    				field: 'university', 'errors')}">
+					                <g:textField style='width: 200px; ' name="university" 
+					                	value="${projectEmployeeQualificationInstance?.university}" />
+					            </td>
+				  			</tr>
+				  			<tr >
+					    		<td ><label><g:message code="default.ProjectEmployeeQualification.PassoutYear.label" /></label></td>
+					    		<td><g:select name="passoutYear" 
+						    			from="${['2010', '2009', '2008','2007','2006','2005','2004','2003','2002','2001','2000']}" 
+						    			noSelection="['null':'select']"/> 
+						    	</td>
+					   			<td ><label><g:message code="default.ProjectEmployeeQualification.PercentageofMark.label" />
+					   				 </label></td>
+					      		<td ><g:textField name="percMark" 
+					      			value="${fieldValue(bean: projectEmployeeQualificationInstance, 
+					      			field: 'percMark')}" />
+					            </td>
+				  			</tr>
+				  			<tr>
+					   			<td><label><g:message code="default.Active.label" /></label></td>
+					    		<td><g:select name="status" from="${['Y','N']}" /></td>      
+				      		</tr>
+					   	</tbody>
+				   	</table>
+			   	</div>	
+		   		<div class="buttons">
+		   			<span class="button"><g:submitButton name="create" 
+		   				onClick="return validateProjectEmployeeQualification()" 
+		   				class="save" value="${message(code: 'default.Save.button')}" />
+	   				</span>
+	            </div>
+			</g:form>
+		</div>
+		
+	<div class="body">
+    	<div class="list">
+    		<g:if test="${projectEmployeeQualificationInstanceList}">
+    			<table> 	
+    				<thead>
+  						<tr>
+  							<g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}" />
+                       
+                   	        <g:sortableColumn property="examname" 
+                   	        	title="${message(code: 'default.ProjectEmployeeQualification.ExamName.label')}" />
+                   	        
+                   	        <g:sortableColumn property="university" 
+                   	        	title="${message(code: 'default.ProjectEmployeeQualification.University.label')}" />
+                                              
+                   	        <g:sortableColumn property="percMark" 
+                   	        	title="${message(code: 'default.ProjectEmployeeQualification.%ofMark.label')}" />
+                	       
+                   	       	<g:sortableColumn property="passoutYear" 
+                   	       		title="${message(code: 'default.ProjectEmployeeQualification.PassoutYear.label')}" />
+                   	       	
+                   	       	<th><g:message code="default.Edit.label" /></th>
+           	             </tr>
+               		 </thead>
+               	 	 <tbody>	
+            	 
+	     		 	 <g:each in="${projectEmployeeQualificationInstanceList}" status="i"  
+	     		 			var="projectEmployeeQualificationInstance">
+     		 			<tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
+								<td>${i+1}</td>
+	                        
+	                            <td>${fieldValue(bean: projectEmployeeQualificationInstance, field: "examname")}</td>
+	                        
+	                            <td>${fieldValue(bean: projectEmployeeQualificationInstance, field: "university")}</td>
+	                        
+	                            <td>${fieldValue(bean: projectEmployeeQualificationInstance, field: "percMark")}</td>
+	                            
+	                            <td>${fieldValue(bean: projectEmployeeQualificationInstance, field: "passoutYear")}</td>
+	                       
+		         				<g:hiddenField name="id" value="${projectEmployeeQualificationInstance?.id}" />
+		       						<input type="hidden" name="projectEmployee.id" id="projectEmployee.id" 
+		       							value="${projectEmployeeInstance.id}"/>
+		         	         	
+	         	         		<td><g:link  action="edit" params="['projectEmployee.id':projectEmployeeInstance.id]" 
+		         	         			id="${fieldValue(bean:projectEmployeeQualificationInstance,field:'id')}">
+		         	         			<g:message code="default.Edit.label" />
+	         	         			</g:link>
+	         	         		</td>
+       	                	</tr>
+                		</g:each>
+        	 		</tbody>
+    	 		</table>	
+        		</g:if>
+         		<g:else>
+         			<br><g:message code="default.NoRecordsAvailable.label"/></br>
+         		</g:else>
+			</div>
+		 </div>
+	  </div>
+   	</body>
+</html>

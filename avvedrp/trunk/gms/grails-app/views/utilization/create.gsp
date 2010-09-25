@@ -40,17 +40,26 @@
 		                            <td valign="top" class="value"><g:formatDate format="dd/MM/yyyy" 
 		                            		date="${projectInstance.projectEndDate}"/></td>
 	                            </tr>
-		                        <tr>
-		                         	<td valign="top" class="name">
-	                                    <label for="grantPeriod"><g:message code="default.GrantPeriod.label"/>:</label>
-		                         	<td valign="top" 
-		                         		class="value ${hasErrors(bean:grantAllocationSplitInstance,field:'grantPeriod','errors')}">
-                                    	<g:select optionKey="id" optionValue="name" 
-                                    		from="${GrantPeriod.findAll('from GrantPeriod GP order by defaultYesNo desc')}"  
-                                    			name="grantPeriod.id" value="${utilizationInstance?.grantPeriod?.id}"  >
-                            			</g:select>
-	                                </td>
-		                        </tr>
+	                            
+	                            <tr>
+		                        
+		                        <td valign="top" class ="name">
+		                         <label for ="startDate"><g:message code="default.StartDate.label"/></label>
+		                         
+		                           <td valign="top" class="value ${hasErrors(bean:utilizationInstance,field:'startDate','errors')}">
+                                    <calendar:datePicker name="startDate" value="${utilizationInstance?.startDate}" defaultValue="${new Date()}"  dateFormat= "%d/%m/%Y"/>
+                                </td>
+                            </tr>
+                                         
+                              <tr>
+		                        
+		                        <td valign="top" class ="name">
+		                         <label for ="endDate"><g:message code="default.EndDate.label"/></label>
+		                         
+		                           <td valign="top" class="value ${hasErrors(bean:utilizationInstance,field:'endDate','errors')}">
+                                    <calendar:datePicker name="endDate" value="${utilizationInstance?.endDate}" defaultValue="${new Date()}"  dateFormat= "%d/%m/%Y"/>
+                                </td>
+                            </tr>
                         		<div>    
 		                        <tr class="prop">
 	                                <td valign="top" class="name">

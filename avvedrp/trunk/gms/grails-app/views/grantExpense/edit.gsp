@@ -13,10 +13,12 @@
             <table width="100%" align="left">
         
              <tr class="prop">
-               <td valign="top" ><g:message code="default.ProjectCode.label"/></td>
+               <td valign="top" ><g:message code="default.ProjectCode.label"/>:</td>
                <td valign="top" ><strong>${fieldValue(bean:projectsInstance, field:'code')}</strong></td>
-               <td valign="top" ><g:message code="default.AmountAllocated.label"/></td>
-               <td valign="top" ><strong>${currencyFormat.ConvertToIndainRS(projectsInstance.totAllAmount)}</strong></td>
+               <td valign="top" ><g:message code="default.AmountAllocated.label"/>:</td>
+               <td valign="top" ><strong>
+               						<g:message code="default.Rs.label"/>
+               						${currencyFormat.ConvertToIndainRS(projectsInstance.totAllAmount)}</strong></td>
              </tr> 
             </table> 
           </div>

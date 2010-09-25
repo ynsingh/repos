@@ -19,8 +19,9 @@
                        	 		<tr>
                         			<g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}" />
                    	        		<g:sortableColumn property="projects" title="${message(code: 'default.Project.label')}" />
-                   	        		<g:sortableColumn property="grantPeriod" title="${message(code: 'default.GrantPeriod.label')}" />
                    	        		<g:sortableColumn property="grantee" title="${message(code: 'default.Grantee.label')}" />
+                   	        		<g:sortableColumn property="startDate" title="${message(code: 'default.StartDate.label')}" />
+                   	        		<g:sortableColumn property="endDate" title="${message(code: 'default.EndDate.label')}" />
                    	        		<g:sortableColumn property="submittedDate" title="${message(code: 'default.SubmittedDate.label')}" />
                    	                <th><g:message code="default.UtilizationCertificate.label"/></th>
                    	        		<th><g:message code="default.StatementOfAccounts.label"/></th>
@@ -33,16 +34,17 @@
 			                            <td>${i+1}</td>
 			                        
 			                            <td>${fieldValue(bean:utilizationInstance, field:'projects.name')}</td>
-			                        	<td>${fieldValue(bean:utilizationInstance, field:'grantPeriod.name')}</td>
 			                            <td>${fieldValue(bean:utilizationInstance, field:'grantee.nameOfTheInstitution')}</td>
+			                            <td><g:formatDate format="dd/MM/yyyy" date="${utilizationInstance.startDate}"/></td>
+			                            <td><g:formatDate format="dd/MM/yyyy" date="${utilizationInstance.endDate}"/></td>
 			                        	<td><g:formatDate format="dd/MM/yyyy" date="${utilizationInstance.submittedDate}"/></td>
 			                           	<td><g:link  controller='grantAllocation' action="utilizationCertificate"  
-			                           			params="[grantPeriod:utilizationInstance.grantPeriod.id,projects:utilizationInstance.projects.id]" 
+			                           			params="[id:utilizationInstance.id]" 
 			                           			target="_blank"><g:message code="default.View.label"/>
 		                           			</g:link>                           
 	                           			</td>
 										<td><g:link  controller='grantAllocation' action="showReports"  
-												params="[grantPeriod:utilizationInstance.grantPeriod.id,projects:utilizationInstance.projects.id]" 
+												params="[id:utilizationInstance.id]" 
 												target="_blank"><g:message code="default.View.label"/>
 											</g:link>                           
 										</td>

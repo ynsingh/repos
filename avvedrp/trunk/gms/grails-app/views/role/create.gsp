@@ -52,5 +52,40 @@
                 </div>
             </g:form>
         </div>
+        <div class="body">
+            <h1>Role List</h1>
+            <g:if test="${flash.message}">
+            <div class="message">${flash.message}</div>
+            </g:if>
+            <div class="list">
+                <table>
+                    <thead>
+                        <tr>
+                        
+                   	        <g:sortableColumn property="id" title="Id" />
+                        
+                   	        <g:sortableColumn property="authority" title="Authority" />
+                        
+                   	        <g:sortableColumn property="description" title="Description" />
+                        
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <g:each in="${roleInstanceList}" status="i" var="roleInstance">
+                        <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
+                        
+                            <td><g:link action="show" id="${roleInstance.id}">${fieldValue(bean:roleInstance, field:'id')}</g:link></td>
+                        
+                            <td>${fieldValue(bean:roleInstance, field:'authority')}</td>
+                        
+                            <td>${fieldValue(bean:roleInstance, field:'description')}</td>
+                        
+                        </tr>
+                    </g:each>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
     </body>
 </html>

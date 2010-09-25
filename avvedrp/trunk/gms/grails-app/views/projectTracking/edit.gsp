@@ -33,6 +33,7 @@
                        </div>
                     </g:hasErrors>
                     <g:form action="save" method="post" >
+                     <g:hiddenField name="id" value="${projectTrackingInstance?.id}" />
                         <div class="dialog">
                            <table>
                               <tbody>

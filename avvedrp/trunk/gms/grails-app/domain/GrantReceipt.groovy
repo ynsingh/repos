@@ -17,6 +17,7 @@ class GrantReceipt {
 	Date createdDate
 	String modifiedBy
 	Date modifiedDate
+	FundTransfer fundTransfer
 	
 	static constraints={
 		grantAllocation(nullable:true)
@@ -30,7 +31,10 @@ class GrantReceipt {
 	    ddBranch(nullable:true)
 		modifiedBy(nullable:true)
 		modifiedDate(nullable:true)
+		fundTransfer(nullable:true)
+		fundTransfer cascade:'all-delete-orphan'
 	}
+	
 	
 	boolean isSaved
 	double balanceAmt

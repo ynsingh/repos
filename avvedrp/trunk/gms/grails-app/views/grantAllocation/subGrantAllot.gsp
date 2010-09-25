@@ -179,8 +179,8 @@
                    	        
                    	        <g:sortableColumn property="amountAllocated" 
                    	        	title="${message(code:'default.GrantAllocation.GrantWithdrawal/Closure.label')}"/>
-                        
-                   	       <th><g:message code="default.Edit.label"/> </th>
+                        	<th><g:message code="default.FundTransfer.label"/></th>
+                   	       	<th><g:message code="default.Edit.label"/> </th>
                        </tr>
                     </thead>
                     <tbody>
@@ -212,6 +212,11 @@
 		                            id="${grantAllocationInstance.id}" params="[trackType:'withdraw']">
 		                            <g:message code="default.GrantAllocation.GrantWithdrawal/Closure.label"/>
 	                            </g:link>
+                            </td>
+                            <td>
+                            	<g:link action="create" controller="fundTransfer" id="${grantAllocationInstance.id}" params="[subMenu:'subGrantAllot']">
+                            		<g:message code="default.FundTransfer.label"/>
+                            	</g:link>
                             </td>
                             <td>
                             	<g:link action="editProAllot" id="${grantAllocationInstance.id}">

@@ -26,11 +26,12 @@
 	<parameter name="reportDate" isForPrompting="true" class="java.lang.String"/>
 	<parameter name="projectID" isForPrompting="true" class="java.lang.String"/>
 	<parameter name="reportDateTo" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="Path" isForPrompting="false" class="java.lang.String"/>
 	<queryString><![CDATA[SELECT 
 	P.name AS ProjectTitle,
 	P.code AS IDNo,
 	
-	(SELECT I.name FROM investigator I,projectspimap PMAP WHERE I.id=PMAP.investigator_id AND PMAP.projects_id=P.id AND PMAP.role='PI') AS PI,
+	(SELECT I.name FROM investigator I,projectspimap PMAP WHERE I.id=PMAP.investigator_id AND PMAP.projects_id=P.id AND PMAP.role='PI' GROUP BY P.id) AS PI,
 	CONCAT(YEAR(P.project_start_date)," - ",YEAR(P.project_end_date)) AS ProjectPeriod,
 	DATE_FORMAT(DATE(GE.date_of_expense),'%d/%m/%Y') AS DATE,
 	PD.department_code AS FundingDepartment,
@@ -47,7 +48,7 @@
 		projects ,
 		grant_allocation_split,grant_expense,grant_receipt,account_heads,grant_allocation
 	WHERE   
-	        projects.id= $P{projectID} 
+	        projects.id=$P{projectID} 
 		AND DATE(grant_expense.date_of_expense) BETWEEN STR_TO_DATE($P{reportDate},'%d/%M/%Y') AND STR_TO_DATE($P{reportDateTo},'%d/%M/%Y')
 		AND grant_allocation_split.account_head_id = account_heads.id
 		AND  grant_expense.grant_allocation_split_id = grant_allocation_split.id
@@ -134,12 +135,12 @@ GROUP BY GE.id]]></queryString>
 			</band>
 		</background>
 		<title>
-			<band height="91"  isSplitAllowed="true" >
+			<band height="274"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						mode="Transparent"
 						x="263"
-						y="7"
+						y="137"
 						width="134"
 						height="13"
 						forecolor="#000000"
@@ -160,9 +161,9 @@ GROUP BY GE.id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="70"
-						y="27"
-						width="518"
+						x="106"
+						y="167"
+						width="455"
 						height="26"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -182,8 +183,8 @@ GROUP BY GE.id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="272"
-						y="62"
+						x="282"
+						y="199"
 						width="96"
 						height="18"
 						forecolor="#000000"
@@ -201,6 +202,49 @@ GROUP BY GE.id]]></queryString>
 					</textElement>
 				<text><![CDATA[Daily Accounts]]></text>
 				</staticText>
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="587"
+						y="94"
+						width="81"
+						height="16"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-4"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+				</textField>
+				<image  scaleImage="FillFrame" vAlign="Top" hAlign="Left" isUsingCache="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="4"
+						y="5"
+						width="670"
+						height="83"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="image-1"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<graphicElement stretchType="NoStretch" pen="None" fill="Solid" 
+/>
+					<imageExpression class="java.lang.String"><![CDATA[$P{Path}+"/images/header2.jpg"]]></imageExpression>
+				</image>
 			</band>
 		</title>
 		<pageHeader>
@@ -208,7 +252,7 @@ GROUP BY GE.id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="10"
+						x="6"
 						y="10"
 						width="123"
 						height="20"
@@ -230,7 +274,7 @@ GROUP BY GE.id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="10"
+						x="6"
 						y="40"
 						width="123"
 						height="20"
@@ -252,7 +296,7 @@ GROUP BY GE.id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="10"
+						x="6"
 						y="70"
 						width="123"
 						height="20"
@@ -274,7 +318,7 @@ GROUP BY GE.id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="10"
+						x="6"
 						y="100"
 						width="123"
 						height="20"
@@ -296,7 +340,7 @@ GROUP BY GE.id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="10"
+						x="6"
 						y="130"
 						width="123"
 						height="20"
@@ -318,7 +362,7 @@ GROUP BY GE.id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="10"
+						x="6"
 						y="190"
 						width="123"
 						height="20"
@@ -340,7 +384,7 @@ GROUP BY GE.id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="10"
+						x="6"
 						y="160"
 						width="123"
 						height="20"
@@ -362,7 +406,7 @@ GROUP BY GE.id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="10"
+						x="6"
 						y="220"
 						width="123"
 						height="20"
@@ -384,7 +428,7 @@ GROUP BY GE.id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="134"
+						x="130"
 						y="10"
 						width="11"
 						height="20"
@@ -406,7 +450,7 @@ GROUP BY GE.id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="134"
+						x="130"
 						y="70"
 						width="11"
 						height="20"
@@ -428,7 +472,7 @@ GROUP BY GE.id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="134"
+						x="130"
 						y="100"
 						width="11"
 						height="20"
@@ -450,7 +494,7 @@ GROUP BY GE.id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="134"
+						x="130"
 						y="130"
 						width="11"
 						height="20"
@@ -472,7 +516,7 @@ GROUP BY GE.id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="134"
+						x="130"
 						y="160"
 						width="11"
 						height="20"
@@ -494,7 +538,7 @@ GROUP BY GE.id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="134"
+						x="130"
 						y="190"
 						width="11"
 						height="20"
@@ -516,7 +560,7 @@ GROUP BY GE.id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="134"
+						x="130"
 						y="220"
 						width="11"
 						height="20"
@@ -538,7 +582,7 @@ GROUP BY GE.id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="134"
+						x="130"
 						y="40"
 						width="11"
 						height="20"
@@ -560,7 +604,7 @@ GROUP BY GE.id]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="150"
+						x="146"
 						y="10"
 						width="518"
 						height="20"
@@ -582,7 +626,7 @@ GROUP BY GE.id]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="150"
+						x="146"
 						y="40"
 						width="516"
 						height="20"
@@ -604,7 +648,7 @@ GROUP BY GE.id]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="150"
+						x="146"
 						y="70"
 						width="517"
 						height="20"
@@ -626,7 +670,7 @@ GROUP BY GE.id]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="150"
+						x="146"
 						y="130"
 						width="517"
 						height="20"
@@ -648,7 +692,7 @@ GROUP BY GE.id]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="150"
+						x="146"
 						y="220"
 						width="516"
 						height="20"
@@ -670,7 +714,7 @@ GROUP BY GE.id]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="150"
+						x="146"
 						y="160"
 						width="517"
 						height="20"
@@ -692,7 +736,7 @@ GROUP BY GE.id]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="150"
+						x="146"
 						y="191"
 						width="514"
 						height="20"
@@ -714,7 +758,7 @@ GROUP BY GE.id]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="150"
+						x="146"
 						y="100"
 						width="517"
 						height="20"
@@ -737,32 +781,13 @@ GROUP BY GE.id]]></queryString>
 		</pageHeader>
 		<columnHeader>
 			<band height="60"  isSplitAllowed="true" >
-				<rectangle radius="0" >
-					<reportElement
-						mode="Transparent"
-						x="5"
-						y="3"
-						width="671"
-						height="56"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="rectangle-1"
-						stretchType="NoStretch"
-						positionType="FixRelativeToTop"
-						isPrintRepeatedValues="true"
-						isRemoveLineWhenBlank="false"
-						isPrintInFirstWholeBand="false"
-						isPrintWhenDetailOverflows="false"/>
-					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
-/>
-				</rectangle>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
 						x="61"
-						y="3"
+						y="1"
 						width="0"
-						height="56"
+						height="58"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-14"
@@ -779,9 +804,9 @@ GROUP BY GE.id]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="129"
-						y="3"
+						y="1"
 						width="0"
-						height="56"
+						height="58"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-15"
@@ -798,9 +823,9 @@ GROUP BY GE.id]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="185"
-						y="3"
+						y="1"
 						width="0"
-						height="56"
+						height="58"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-16"
@@ -817,9 +842,9 @@ GROUP BY GE.id]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="257"
-						y="3"
+						y="1"
 						width="0"
-						height="56"
+						height="58"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-17"
@@ -836,9 +861,9 @@ GROUP BY GE.id]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="327"
-						y="3"
+						y="1"
 						width="0"
-						height="56"
+						height="58"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-18"
@@ -855,9 +880,9 @@ GROUP BY GE.id]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="405"
-						y="3"
+						y="1"
 						width="0"
-						height="56"
+						height="58"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-19"
@@ -874,9 +899,9 @@ GROUP BY GE.id]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="470"
-						y="3"
+						y="1"
 						width="0"
-						height="56"
+						height="58"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-20"
@@ -893,9 +918,9 @@ GROUP BY GE.id]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="537"
-						y="3"
+						y="1"
 						width="0"
-						height="56"
+						height="58"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-21"
@@ -912,9 +937,9 @@ GROUP BY GE.id]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="615"
-						y="3"
+						y="1"
 						width="0"
-						height="56"
+						height="58"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-22"
@@ -930,7 +955,7 @@ GROUP BY GE.id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="10"
+						x="6"
 						y="13"
 						width="46"
 						height="43"
@@ -1147,6 +1172,101 @@ GROUP BY GE.id]]></queryString>
 					</textElement>
 				<text><![CDATA[Remarks]]></text>
 				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						mode="Opaque"
+						x="1"
+						y="0"
+						width="675"
+						height="0"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="line-31"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
+/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						mode="Opaque"
+						x="5"
+						y="59"
+						width="671"
+						height="0"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="line-32"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
+/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						mode="Opaque"
+						x="1"
+						y="59"
+						width="675"
+						height="0"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="line-33"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
+/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						mode="Opaque"
+						x="675"
+						y="1"
+						width="0"
+						height="58"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="line-34"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
+/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						mode="Opaque"
+						x="1"
+						y="1"
+						width="0"
+						height="58"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="line-35"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
+/>
+				</line>
 			</band>
 		</columnHeader>
 		<detail>
@@ -1154,10 +1274,10 @@ GROUP BY GE.id]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="5"
-						y="-1"
+						x="1"
+						y="0"
 						width="0"
-						height="24"
+						height="23"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-1"
@@ -1174,9 +1294,9 @@ GROUP BY GE.id]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="675"
-						y="-1"
+						y="0"
 						width="0"
-						height="24"
+						height="23"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-3"
@@ -1193,9 +1313,9 @@ GROUP BY GE.id]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="615"
-						y="-1"
+						y="0"
 						width="0"
-						height="24"
+						height="23"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-4"
@@ -1212,9 +1332,9 @@ GROUP BY GE.id]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="537"
-						y="-1"
+						y="0"
 						width="0"
-						height="24"
+						height="23"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-5"
@@ -1231,9 +1351,9 @@ GROUP BY GE.id]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="470"
-						y="-1"
+						y="0"
 						width="0"
-						height="24"
+						height="23"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-6"
@@ -1250,9 +1370,9 @@ GROUP BY GE.id]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="405"
-						y="-1"
+						y="0"
 						width="0"
-						height="24"
+						height="23"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-7"
@@ -1269,9 +1389,9 @@ GROUP BY GE.id]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="327"
-						y="-1"
+						y="0"
 						width="0"
-						height="24"
+						height="23"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-8"
@@ -1288,9 +1408,9 @@ GROUP BY GE.id]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="257"
-						y="-1"
+						y="0"
 						width="0"
-						height="24"
+						height="23"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-9"
@@ -1307,9 +1427,9 @@ GROUP BY GE.id]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="185"
-						y="-1"
+						y="0"
 						width="0"
-						height="24"
+						height="23"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-10"
@@ -1326,9 +1446,9 @@ GROUP BY GE.id]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="129"
-						y="-1"
+						y="0"
 						width="0"
-						height="24"
+						height="23"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-11"
@@ -1345,9 +1465,9 @@ GROUP BY GE.id]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="61"
-						y="-1"
+						y="0"
 						width="0"
-						height="24"
+						height="23"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-12"
@@ -1360,12 +1480,12 @@ GROUP BY GE.id]]></queryString>
 					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
 />
 				</line>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="10"
+						x="2"
 						y="4"
-						width="53"
+						width="59"
 						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1385,9 +1505,9 @@ GROUP BY GE.id]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="67"
+						x="62"
 						y="4"
-						width="59"
+						width="66"
 						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1451,9 +1571,9 @@ GROUP BY GE.id]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="5"
+						x="1"
 						y="23"
-						width="671"
+						width="675"
 						height="0"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1540,7 +1660,11 @@ GROUP BY GE.id]]></queryString>
 			</band>
 		</columnFooter>
 		<pageFooter>
-			<band height="232"  isSplitAllowed="true" >
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageFooter>
+		<lastPageFooter>
+			<band height="267"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						mode="Transparent"
@@ -1572,7 +1696,7 @@ GROUP BY GE.id]]></queryString>
 						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="staticText-33"
+						key="staticText-32"
 						stretchType="NoStretch"
 						positionType="FixRelativeToTop"
 						isPrintRepeatedValues="true"
@@ -1594,7 +1718,7 @@ GROUP BY GE.id]]></queryString>
 						height="20"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="staticText-34"
+						key="staticText-33"
 						stretchType="NoStretch"
 						positionType="FixRelativeToTop"
 						isPrintRepeatedValues="true"
@@ -1610,13 +1734,13 @@ GROUP BY GE.id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="241"
+						x="277"
 						y="151"
-						width="153"
+						width="95"
 						height="20"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="staticText-35"
+						key="staticText-34"
 						stretchType="NoStretch"
 						positionType="FixRelativeToTop"
 						isPrintRepeatedValues="true"
@@ -1629,16 +1753,37 @@ GROUP BY GE.id]]></queryString>
 					</textElement>
 				<text><![CDATA[From Statement 3]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<image  scaleImage="FillFrame" vAlign="Top" hAlign="Left" isUsingCache="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						mode="Transparent"
-						x="551"
-						y="149"
-						width="80"
-						height="21"
+						mode="Opaque"
+						x="46"
+						y="226"
+						width="551"
+						height="37"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="textField-4"
+						key="image-2"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<graphicElement stretchType="NoStretch" pen="None" fill="Solid" 
+/>
+					<imageExpression class="java.lang.String"><![CDATA[$P{Path}+"/images/footer1.jpg"]]></imageExpression>
+				</image>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="634"
+						y="234"
+						width="37"
+						height="18"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-5"
 						stretchType="NoStretch"
 						positionType="FixRelativeToTop"
 						isPrintRepeatedValues="true"
@@ -1649,38 +1794,19 @@ GROUP BY GE.id]]></queryString>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 				</textField>
 			</band>
-		</pageFooter>
+		</lastPageFooter>
 		<summary>
 			<band height="26"  isSplitAllowed="true" >
-				<rectangle radius="0" >
-					<reportElement
-						mode="Transparent"
-						x="5"
-						y="1"
-						width="671"
-						height="24"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="rectangle-2"
-						stretchType="NoStretch"
-						positionType="FixRelativeToTop"
-						isPrintRepeatedValues="true"
-						isRemoveLineWhenBlank="false"
-						isPrintInFirstWholeBand="false"
-						isPrintWhenDetailOverflows="false"/>
-					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
-/>
-				</rectangle>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
 						x="129"
-						y="1"
+						y="0"
 						width="0"
-						height="24"
+						height="25"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-13"
@@ -1719,9 +1845,9 @@ GROUP BY GE.id]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="185"
-						y="1"
+						y="0"
 						width="0"
-						height="24"
+						height="25"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-23"
@@ -1738,9 +1864,9 @@ GROUP BY GE.id]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="257"
-						y="1"
+						y="0"
 						width="0"
-						height="24"
+						height="25"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-24"
@@ -1757,9 +1883,9 @@ GROUP BY GE.id]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="327"
-						y="1"
+						y="0"
 						width="0"
-						height="24"
+						height="25"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-25"
@@ -1776,9 +1902,9 @@ GROUP BY GE.id]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="405"
-						y="1"
+						y="0"
 						width="0"
-						height="24"
+						height="25"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-26"
@@ -1795,9 +1921,9 @@ GROUP BY GE.id]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="470"
-						y="1"
+						y="0"
 						width="0"
-						height="24"
+						height="25"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-27"
@@ -1814,9 +1940,9 @@ GROUP BY GE.id]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="537"
-						y="1"
+						y="0"
 						width="0"
-						height="24"
+						height="25"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-28"
@@ -1833,9 +1959,9 @@ GROUP BY GE.id]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="615"
-						y="1"
+						y="0"
 						width="0"
-						height="24"
+						height="25"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-29"
@@ -1958,6 +2084,82 @@ GROUP BY GE.id]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{TotalActualFundAvailable}]]></textFieldExpression>
 				</textField>
+				<line direction="TopDown">
+					<reportElement
+						mode="Opaque"
+						x="1"
+						y="25"
+						width="675"
+						height="0"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="line-36"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
+/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						mode="Opaque"
+						x="1"
+						y="0"
+						width="0"
+						height="25"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="line-38"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
+/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						mode="Opaque"
+						x="675"
+						y="0"
+						width="0"
+						height="25"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="line-39"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
+/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						mode="Opaque"
+						x="1"
+						y="0"
+						width="675"
+						height="0"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="line-40"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
+/>
+				</line>
 			</band>
 		</summary>
 </jasperReport>

@@ -27,7 +27,7 @@
 					       					<strong>
 					       						<g:message code="default.Project.label" />
 				       							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				       							&nbsp;&nbsp;
+				       							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				       							: ${projectInstance.code}
 				       						</strong>
 					        				<br>
@@ -36,7 +36,7 @@
 										    	<strong>
 										    		<g:message code="default.Grantor.label" />
 										    		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				       								&nbsp;
+				       								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 										    		: ${grantAllocationInstance.granter.code}
 									    		</strong>
 									    		<br>
@@ -44,7 +44,7 @@
 							    	       	
 							    	       	<strong>
 								    	       	<g:message code="default.FundList.FundEstimated.label"/>
-								    	       	&nbsp;
+								    	       	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								    	       	: <g:message code="default.Rs.label"/>
 							    	       	</strong>
 							  				${currencyFormat.ConvertToIndainRS(projectInstance.totAllAmount)} 
@@ -52,32 +52,40 @@
 					       					
 					       					<strong>
 					       						<g:message code="default.FundList.FundReceived.label" />
-					       						&nbsp;&nbsp;&nbsp;
+					       						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					       						: <g:message code="default.Rs.label"/>
 					       					</strong> 
 				       						${currencyFormat.ConvertToIndainRS(sumGrantRecieve[0].doubleValue())} 
 					    					<br>
 					    					
 					    					<strong>
+								    	       	<g:message code="default.FundTransferred.label"/>
+								    	       	&nbsp;&nbsp;
+								    	       	: <g:message code="default.Rs.label"/>
+							    	       	</strong>
+							  					${currencyFormat.ConvertToIndainRS(fundTransferInstance)} 
+					    					<br>
+					    					
+					    					<strong>
 					    						<g:message code="default.FundList.FundUtilized.label" />
-					    						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					    						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					    						: <g:message code="default.Rs.label"/>
 					    					</strong> 
-				    						${currencyFormat.ConvertToIndainRS(sumAmount[0].doubleValue())} 
+					    					${currencyFormat.ConvertToIndainRS(sumAmount[0].doubleValue()+fundTransferInstance)}
 					    					<br>
 					    					
 					    					<strong><g:message code="default.FundList.Balance.label" />
 					    						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					    						&nbsp;&nbsp;
+					    						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					    						: <g:message code="default.Rs.label"/> 
 				    						</strong> 
-				    						${currencyFormat.ConvertToIndainRS(sumGrantRecieve[0].doubleValue()-
-				    						sumAmount[0].doubleValue())}
+					    						${currencyFormat.ConvertToIndainRS(sumGrantRecieve[0].doubleValue()-
+					    						sumAmount[0].doubleValue()-fundTransferInstance)}
 					    					<br>
 					     					
 					     					<strong>
 					     						<g:message code="default.FundList.ProjectDuration.label" />
-					     						&nbsp;:
+					     						&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;
 				     						</strong>
 				     							<g:formatDate format="dd MMM yyyy" date="${projectInstance.projectStartDate}"/>- 
 					      						<g:formatDate format="dd MMM yyyy" date="${projectInstance.projectEndDate}"/> 
@@ -87,7 +95,7 @@
 					     					
 					     					<strong>
 					     						<g:message code="default.FundList.DaysRemaining.label" />
-					     						&nbsp;:
+					     						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
 				     						</strong>
 					     						(${Math.round((projectInstance.projectEndDate.getTime()-
 					     							new Date().getTime())/86400000)} days)				    

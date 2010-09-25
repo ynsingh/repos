@@ -48,19 +48,22 @@ class AttachmentsController {
         //def attachmentsInstance = new Attachments(params)
         def attachmentsInstance = new Attachments()
         println "-=-=-=params-=-=-=-"+params.projects
+        def attachmentsName='Attachments'
+    	def gmsSettingsService = new GmsSettingsService()
+    	def gmsSettingsInstance = gmsSettingsService.getGmsSettings(attachmentsName)
         def webRootDir
         if ( GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_PRODUCTION)) 
         {
-        	webRootDir = servletContext.getRealPath("/")+"WEB-INF/grails-app/views/"
+        	webRootDir = gmsSettingsInstance.value
         }
         if ( GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_DEVELOPMENT)) 
         {
-        	webRootDir = "grails-app/views/"
+        	webRootDir = gmsSettingsInstance.value
         }
         	def downloadedfile = request.getFile("attachmentPath");
         if(!downloadedfile.empty) {
         	String fileName=downloadedfile.getOriginalFilename()
-        	downloadedfile.transferTo(new File(webRootDir+"appForm/" + File.separatorChar + fileName))
+        	downloadedfile.transferTo(new File(webRootDir+fileName))
         	println "params.achmentType.id"+params.attachmentType.id
         	attachmentsInstance.domain="Projects"
         	attachmentsInstance.domainId=params.projects

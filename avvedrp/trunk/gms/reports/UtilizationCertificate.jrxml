@@ -25,29 +25,28 @@
 
 	<parameter name="projectID" isForPrompting="true" class="java.lang.String"/>
 	<parameter name="grantPeriod" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="Path" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="reportDate" isForPrompting="false" class="java.util.Date"/>
+	<parameter name="reportDateTo" isForPrompting="false" class="java.util.Date"/>
 	<queryString><![CDATA[SELECT 
 	PJ.name AS ProjectName,
-	CONCAT(YEAR(GP.start_date),'-',YEAR(GP.end_date)) AS financialYear,
-	CONCAT(YEAR(GP.start_date)+1,'-',YEAR(GP.end_date)+1) AS nextFinancialYear,
-	YEAR(GP.end_date) AS currentYear,
+	CONCAT(YEAR($P{reportDate}),'-',YEAR($P{reportDateTo})) AS financialYear,
+	CONCAT(YEAR($P{reportDate})+1,'-',YEAR($P{reportDateTo})+1) AS nextFinancialYear,
+	YEAR($P{reportDateTo}) AS currentYear,
 	GR.reference_id AS LetterNo,
 	(SELECT 
 		SUM(total)
 	 FROM 
 		(SELECT 
-			SUM(GR.amount) AS total
+			IF(SUM(GR.amount) IS NULL,0,SUM(GR.amount)) AS total
 		FROM 
 			grant_receipt GR,
-			grant_allocation_split GS,
-			grant_period GP,
 			projects P 
 		WHERE 
 			
 			GR.projects_id =  P.id
-			AND GR.grant_allocation_split_id = GS.id
-			AND GS.grant_period_id = GP.id
-			AND GP.id=$P{grantPeriod}
 			AND (P.parent_id =$P{projectID} OR P.id =$P{projectID})
+			AND DATE(GR.date_of_receipt) BETWEEN $P{reportDate} AND $P{reportDateTo} 
 		GROUP BY 
 			GR.projects_id)AS Amount)AS Amount,
 	PY.name_of_the_institution AS Institution,
@@ -55,23 +54,26 @@
 		SUM(total) 
 	 FROM
 			(SELECT 
-				SUM(GE.expense_amount) AS total
+				IF(SUM(GE.expense_amount) IS NULL,0,SUM(GE.expense_amount)) AS total
 			FROM 
 				grant_expense GE,
-				grant_allocation_split GS,
-				grant_period GP,
+				-- grant_allocation_split GS,
+				-- grant_period GP,
 				projects P 
 			WHERE 
 				
 				GE.projects_id =  P.id
-				AND GE.grant_allocation_split_id = GS.id
-				AND GS.grant_period_id = GP.id
-				AND GP.id=$P{grantPeriod}
 				AND (P.parent_id =$P{projectID} OR P.id =$P{projectID})
+				AND DATE(GE.date_of_expense) BETWEEN $P{reportDate} AND $P{reportDateTo}
 			GROUP BY 
 				GE.projects_id
 			 ) AS ExpenseAmount
-	 ) AS ExpenseAmount
+	 ) AS ExpenseAmount,
+	 (SELECT IF(SUM(amount) IS NULL,0,SUM(amount)) FROM fund_transfer FT INNER JOIN 
+          grant_allocation ON(grant_allocation.id=FT.grant_allocation_id) INNER JOIN 
+          projects ON(projects.id=grant_allocation.projects_id)
+         WHERE projects.parent_id= $P{projectID} AND FT.date_of_transfer BETWEEN $P{reportDate} AND $P{reportDateTo} 
+	 ) AS FundAmt
 FROM 
 	projects PJ,
 	grant_receipt GR,
@@ -85,9 +87,9 @@ WHERE
 	AND GR.projects_id = GA.projects_id 
 	AND PY.id = GA.party_id
 	AND GR.projects_id = GE.projects_id
-	AND GE.grant_allocation_split_id = GS.id
-	AND GS.grant_period_id = GP.id
-	AND GP.id=$P{grantPeriod}
+	-- AND GE.grant_allocation_split_id = GS.id
+	-- AND GS.grant_period_id = GP.id
+	
 	AND (PJ.parent_id =$P{projectID} OR PJ.id =$P{projectID})
 GROUP BY 
 	PJ.id,GE.projects_id]]></queryString>
@@ -100,27 +102,31 @@ GROUP BY
 	<field name="Amount" class="java.lang.Double"/>
 	<field name="Institution" class="java.lang.String"/>
 	<field name="ExpenseAmount" class="java.lang.Double"/>
+	<field name="FundAmt" class="java.lang.Double"/>
 
-	<variable name="BalanceAmount" class="java.lang.Double" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[new Double($F{Amount}.doubleValue()-$F{ExpenseAmount}.doubleValue())]]></variableExpression>
+	<variable name="BalanceAmount" class="java.lang.Double" resetType="None" calculation="Nothing">
+		<variableExpression><![CDATA[new Double($F{Amount}.doubleValue()- $F{ExpenseAmount}.doubleValue())]]></variableExpression>
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
+	</variable>
+	<variable name="Totalfund" class="java.lang.Double" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[new Double($F{FundAmt}.doubleValue()+$F{ExpenseAmount}.doubleValue())]]></variableExpression>
 	</variable>
 		<background>
 			<band height="0"  isSplitAllowed="true" >
 			</band>
 		</background>
 		<title>
-			<band height="55"  isSplitAllowed="true" >
+			<band height="168"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						mode="Transparent"
 						x="10"
-						y="4"
+						y="107"
 						width="514"
 						height="42"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="staticText-1"
+						key="staticText-27"
 						stretchType="NoStretch"
 						positionType="FixRelativeToTop"
 						isPrintRepeatedValues="true"
@@ -134,6 +140,49 @@ GROUP BY
 				<text><![CDATA[GFR 19-A
 Utilization Certificate]]></text>
 				</staticText>
+				<image  scaleImage="FillFrame" vAlign="Top" hAlign="Left" isUsingCache="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="6"
+						y="7"
+						width="521"
+						height="70"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="image-2"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<graphicElement stretchType="NoStretch" pen="None" fill="Solid" 
+/>
+					<imageExpression class="java.lang.String"><![CDATA[$P{Path}+"/images/header2.jpg"]]></imageExpression>
+				</image>
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="435"
+						y="77"
+						width="87"
+						height="14"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-1"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+				</textField>
 			</band>
 		</title>
 		<pageHeader>
@@ -141,12 +190,12 @@ Utilization Certificate]]></text>
 			</band>
 		</pageHeader>
 		<columnHeader>
-			<band height="30"  isSplitAllowed="true" >
+			<band height="24"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						mode="Transparent"
 						x="10"
-						y="4"
+						y="3"
 						width="41"
 						height="20"
 						forecolor="#000000"
@@ -168,7 +217,7 @@ Utilization Certificate]]></text>
 					<reportElement
 						mode="Transparent"
 						x="54"
-						y="4"
+						y="3"
 						width="96"
 						height="20"
 						forecolor="#000000"
@@ -190,7 +239,7 @@ Utilization Certificate]]></text>
 					<reportElement
 						mode="Transparent"
 						x="154"
-						y="4"
+						y="3"
 						width="130"
 						height="20"
 						forecolor="#000000"
@@ -216,12 +265,12 @@ Utilization Certificate]]></text>
 					<reportElement
 						mode="Transparent"
 						x="30"
-						y="289"
+						y="299"
 						width="468"
 						height="75"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="staticText-5"
+						key="staticText-28"
 						stretchType="NoStretch"
 						positionType="FixRelativeToTop"
 						isPrintRepeatedValues="true"
@@ -239,12 +288,12 @@ Utilization Certificate]]></text>
 					<reportElement
 						mode="Transparent"
 						x="10"
-						y="289"
+						y="299"
 						width="20"
 						height="75"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="staticText-6"
+						key="staticText-29"
 						stretchType="NoStretch"
 						positionType="FixRelativeToTop"
 						isPrintRepeatedValues="true"
@@ -261,12 +310,12 @@ Utilization Certificate]]></text>
 					<reportElement
 						mode="Transparent"
 						x="10"
-						y="3"
+						y="13"
 						width="20"
 						height="80"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="staticText-7"
+						key="staticText-30"
 						stretchType="NoStretch"
 						positionType="FixRelativeToTop"
 						isPrintRepeatedValues="true"
@@ -283,12 +332,12 @@ Utilization Certificate]]></text>
 					<reportElement
 						mode="Transparent"
 						x="10"
-						y="369"
+						y="379"
 						width="488"
 						height="80"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="staticText-9"
+						key="staticText-31"
 						stretchType="NoStretch"
 						positionType="FixRelativeToTop"
 						isPrintRepeatedValues="true"
@@ -309,12 +358,12 @@ Utilization Certificate]]></text>
 					<reportElement
 						mode="Transparent"
 						x="54"
-						y="3"
+						y="13"
 						width="96"
-						height="18"
+						height="79"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="textField"
+						key="textField-2"
 						stretchType="NoStretch"
 						positionType="FixRelativeToTop"
 						isPrintRepeatedValues="true"
@@ -331,12 +380,12 @@ Utilization Certificate]]></text>
 					<reportElement
 						mode="Transparent"
 						x="172"
-						y="3"
+						y="13"
 						width="113"
 						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="textField"
+						key="textField-3"
 						stretchType="NoStretch"
 						positionType="FixRelativeToTop"
 						isPrintRepeatedValues="true"
@@ -353,12 +402,12 @@ Utilization Certificate]]></text>
 					<reportElement
 						mode="Transparent"
 						x="291"
-						y="3"
+						y="13"
 						width="124"
 						height="15"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="staticText-14"
+						key="staticText-32"
 						stretchType="NoStretch"
 						positionType="FixRelativeToTop"
 						isPrintRepeatedValues="true"
@@ -374,13 +423,13 @@ Utilization Certificate]]></text>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="412"
-						y="3"
-						width="86"
+						x="415"
+						y="13"
+						width="99"
 						height="15"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="textField"
+						key="textField-4"
 						stretchType="NoStretch"
 						positionType="FixRelativeToTop"
 						isPrintRepeatedValues="true"
@@ -397,12 +446,12 @@ Utilization Certificate]]></text>
 					<reportElement
 						mode="Transparent"
 						x="291"
-						y="18"
-						width="207"
-						height="99"
+						y="28"
+						width="224"
+						height="106"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="textField"
+						key="textField-5"
 						stretchType="NoStretch"
 						positionType="FixRelativeToTop"
 						isPrintRepeatedValues="true"
@@ -413,62 +462,18 @@ Utilization Certificate]]></text>
 					<textElement textAlignment="Justified" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Times New Roman" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA["of grants-in aid sanctioned during the financial year "+$F{financialYear}+" in favour of "+$F{Institution}+" for project entitled "+ "\""+$F{ProjectName}+"\"" + " under this Ministry/Department Letter No. given in the margin and Rs.Nil on account of the unspent balance of the previous"]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Transparent"
-						x="392"
-						y="114"
-						width="105"
-						height="15"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="textField"
-						stretchType="NoStretch"
-						positionType="FixRelativeToTop"
-						isPrintRepeatedValues="true"
-						isRemoveLineWhenBlank="false"
-						isPrintInFirstWholeBand="false"
-						isPrintWhenDetailOverflows="false"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Justified" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="Times New Roman" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{ExpenseAmount}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="###0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Transparent"
-						x="311"
-						y="157"
-						width="100"
-						height="15"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="textField"
-						stretchType="NoStretch"
-						positionType="FixRelativeToTop"
-						isPrintRepeatedValues="true"
-						isRemoveLineWhenBlank="false"
-						isPrintInFirstWholeBand="false"
-						isPrintWhenDetailOverflows="false"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Justified" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="Times New Roman" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{BalanceAmount}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA["of grants-in aid sanctioned during the financial year "+$F{financialYear}+" in favour of "+$F{Institution}+" for project entitled "+"\""+$F{ProjectName}+"\""+"under this Ministry/Department Letter No.given in the margin and Rs.Nil on account of the unspent balance of the previous"]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="291"
-						y="128"
-						width="207"
+						x="292"
+						y="141"
+						width="222"
 						height="29"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="staticText-16"
+						key="staticText-33"
 						stretchType="NoStretch"
 						positionType="FixRelativeToTop"
 						isPrintRepeatedValues="true"
@@ -479,18 +484,18 @@ Utilization Certificate]]></text>
 					<textElement textAlignment="Justified" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Times New Roman" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[has been utilized for the purpose for which it was sanctioned and that  the  balance of]]></text>
+				<text><![CDATA[has been utilized for the purpose for which it was sanctioned and that the  balance  of]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
 						mode="Transparent"
 						x="291"
-						y="113"
-						width="100"
+						y="126"
+						width="104"
 						height="15"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="staticText-17"
+						key="staticText-34"
 						stretchType="NoStretch"
 						positionType="FixRelativeToTop"
 						isPrintRepeatedValues="true"
@@ -507,12 +512,12 @@ Utilization Certificate]]></text>
 					<reportElement
 						mode="Transparent"
 						x="291"
-						y="157"
+						y="168"
 						width="20"
 						height="15"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="staticText-20"
+						key="staticText-35"
 						stretchType="NoStretch"
 						positionType="FixRelativeToTop"
 						isPrintRepeatedValues="true"
@@ -529,12 +534,12 @@ Utilization Certificate]]></text>
 					<reportElement
 						mode="Transparent"
 						x="408"
-						y="157"
-						width="100"
+						y="169"
+						width="119"
 						height="15"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="staticText-21"
+						key="staticText-36"
 						stretchType="NoStretch"
 						positionType="FixRelativeToTop"
 						isPrintRepeatedValues="true"
@@ -551,12 +556,12 @@ Utilization Certificate]]></text>
 					<reportElement
 						mode="Transparent"
 						x="154"
-						y="3"
+						y="13"
 						width="19"
 						height="15"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="staticText-22"
+						key="staticText-37"
 						stretchType="NoStretch"
 						positionType="FixRelativeToTop"
 						isPrintRepeatedValues="true"
@@ -573,12 +578,12 @@ Utilization Certificate]]></text>
 					<reportElement
 						mode="Transparent"
 						x="291"
-						y="172"
-						width="206"
-						height="106"
+						y="182"
+						width="223"
+						height="82"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="textField"
+						key="textField-8"
 						stretchType="NoStretch"
 						positionType="FixRelativeToTop"
 						isPrintRepeatedValues="true"
@@ -591,6 +596,50 @@ Utilization Certificate]]></text>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA["as on 31st March "+$F{currentYear}+" will be adjusted towards grants in aid payable during the next financial year i.e."+$F{nextFinancialYear}]]></textFieldExpression>
 				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="395"
+						y="126"
+						width="121"
+						height="15"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Times New Roman" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{Totalfund}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="313"
+						y="169"
+						width="93"
+						height="15"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-9"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Times New Roman" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[new Double(($F{Amount}.doubleValue())-($F{ExpenseAmount}.doubleValue()+$F{FundAmt}.doubleValue()))]]></textFieldExpression>
+				</textField>
 			</band>
 		</detail>
 		<columnFooter>
@@ -598,7 +647,11 @@ Utilization Certificate]]></text>
 			</band>
 		</columnFooter>
 		<pageFooter>
-			<band height="218"  isSplitAllowed="true" >
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageFooter>
+		<lastPageFooter>
+			<band height="140"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						mode="Transparent"
@@ -608,7 +661,7 @@ Utilization Certificate]]></text>
 						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="staticText-10"
+						key="staticText-23"
 						stretchType="NoStretch"
 						positionType="FixRelativeToTop"
 						isPrintRepeatedValues="true"
@@ -630,7 +683,7 @@ Utilization Certificate]]></text>
 						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="staticText-11"
+						key="staticText-24"
 						stretchType="NoStretch"
 						positionType="FixRelativeToTop"
 						isPrintRepeatedValues="true"
@@ -652,7 +705,7 @@ Utilization Certificate]]></text>
 						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="staticText-12"
+						key="staticText-25"
 						stretchType="NoStretch"
 						positionType="FixRelativeToTop"
 						isPrintRepeatedValues="true"
@@ -674,7 +727,7 @@ Utilization Certificate]]></text>
 						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="staticText-13"
+						key="staticText-26"
 						stretchType="NoStretch"
 						positionType="FixRelativeToTop"
 						isPrintRepeatedValues="true"
@@ -687,8 +740,51 @@ Utilization Certificate]]></text>
 					</textElement>
 				<text><![CDATA[Dean R&D]]></text>
 				</staticText>
+				<image  scaleImage="FillFrame" vAlign="Top" hAlign="Left" isUsingCache="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="15"
+						y="110"
+						width="461"
+						height="29"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="image-1"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<graphicElement stretchType="NoStretch" pen="None" fill="Solid" 
+/>
+					<imageExpression class="java.lang.String"><![CDATA[$P{Path}+"/images/footer1.jpg"]]></imageExpression>
+				</image>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="495"
+						y="115"
+						width="33"
+						height="18"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
 			</band>
-		</pageFooter>
+		</lastPageFooter>
 		<summary>
 			<band height="0"  isSplitAllowed="true" >
 			</band>

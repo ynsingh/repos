@@ -237,15 +237,14 @@
     {
     		GrailsHttpSession gh=getSession()
     		gh.removeValue("Help")
-		//putting help pages in session
-		gh.putValue("Help","Fund_Allocation.htm")
+    		//putting help pages in session
+    		gh.putValue("Help","Fund_Allocation.htm")
         	gh.putValue("fromUrL", "fundAllot");
         	gh.putValue("fromID", params.id);
         	
         	def grantAllocationInstance = new GrantAllocation()
         	grantAllocationInstance.properties = params
-        
-        	
+        	        	
         	def dataSecurityService = new DataSecurityService()
     		String subQuery="";
             if(params.sort != null && !params.sort.equals(""))
@@ -255,54 +254,25 @@
            
             def grantAllocationInstanceList
          
-            
-            try{
-            	grantAllocationInstanceList = grantAllocationService.getGrantAllocationGroupByProjects(gh.getValue("Party"))
-	
-    	}
-    	  catch(Exception e)
-    	{
-    		
-    	} 
-            
-    	  
-    	  println "projectsPIMapInstanceList"+ grantAllocationInstanceList
-            def projectsList=[]
-            def projectsPIMapInstanceList=[]
-            //get PI of projects
-            println"grantAllocationInstance"+params.id
+           	println"grantAllocationInstance"+params.id
             def projectIdStart="("
             def projectsInstance = projectsService.getProjectById(gh.getValue("ProjectId"))	
             		
-            for(int i=0;i<grantAllocationInstanceList.size();i++)
-            {
-            	println "grantAllocationInstanceListdfd"+ grantAllocationInstanceList[i].projects.id
-            	def projectsPIMapInstance = dataSecurityService.getProjectsPIMap(grantAllocationInstanceList[i].projects.id);
-            	println "PIMApxsdf"+ projectsPIMapInstance
-            	projectsPIMapInstanceList.add(projectsPIMapInstance)
-            	projectsList.add(grantAllocationInstanceList[i].projects)
-            	projectIdStart=projectIdStart+grantAllocationInstanceList[i].projects.id+","
-            }
-            println "projectsPIMapInstanceList"+ projectIdStart
-            projectIdStart=projectIdStart.substring(0,projectIdStart.length()-1)+")"
-            println "projectsPIMapInstanceList"+ projectIdStart
-             println"grantAllocationInstanceList[0].projects.id"+grantAllocationInstanceList[0]
+            def projectsPIMapInstance = dataSecurityService.getProjectsPIMap(projectsInstance.id);
+            println "PIMApxsdf"+ projectsPIMapInstance
             def grantAllocationInstanceListproj
-    	     if(grantAllocationInstanceList[0])
-    	     {
-           grantAllocationInstanceListproj = grantAllocationService.getGrantAllocationsForAssignedProject(projectIdStart)
-         println "grantAllocationInstanceListproj"+ grantAllocationInstanceListproj
+            grantAllocationInstanceListproj = grantAllocationService.getGrantAllocationsForAssignedProject(projectsInstance.id)
+            println "grantAllocationInstanceListproj"+ grantAllocationInstanceListproj
         	
-    	     }
             def partyinstance=Party.get(gh.getValue("Party"))
         	println partyinstance
     	     
         	ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
         	return ['grantAllocationInstance':grantAllocationInstance,
         	        'grantAllocationInstanceList':grantAllocationInstanceListproj,
-                'projectsList':projectsList,'partyinstance':partyinstance,
-                'projectsPIMapInstanceList':projectsPIMapInstanceList,
+                'partyinstance':partyinstance,
                 'currencyFormat':currencyFormatter,
+                'projectsPIMapInstance':projectsPIMapInstance,
                 'projectsInstance':projectsInstance]
     }
         
@@ -524,7 +494,8 @@
 		grantAllocationInstance.allocationType="grand"
 		grantAllocationInstance.code=""
 	
-		
+		def grantAllocationInstanceCheck = grantAllocationService.getGrantAllocationsByProjectIdAndPartyId(grantAllocationInstance.projects.id,grantAllocationInstance.party.id)
+		println "grantAllocationInstanceCheck "+grantAllocationInstanceCheck
 		def partyService = new PartyService();
 	
 		def grantAllocationService = new GrantAllocationService()
@@ -532,8 +503,8 @@
 		{
 			
 			Integer duplicateCheck = grantAllocationService.checkDuplicateFundAllot(grantAllocationInstance);
-			println "+++++++++++++++++++++++++++++++++++duplicateCheck++++++++++++++++++++++++" + duplicateCheck
-			println"((((grantallocproj))))"+grantAllocationInstance.projects.parent.id
+			
+			
 			def grantAllocationList = grantAllocationService.getGrantAllocationsByProjectCode(grantAllocationInstance.projects.id)
 			/*if( duplicateCheck == 0 || duplicateCheck == null)
 			{*/
@@ -546,7 +517,7 @@
 				if(grantAllocationList[0].party.id == grantAllocationInstance.party.id || grantAllocationList==null)
 				{
 					GrantAllocation = grantAllocationService.saveSubGrantAllocation(grantAllocationInstance)
-					println"+++++++++++GrantAllocation+++++++++"+ GrantAllocation
+					
 					
 					if(GrantAllocation == null)
 					{
@@ -554,10 +525,15 @@
 					}
 					else
 					{
+						
+						if(!grantAllocationInstanceCheck)
+						{
 						grantAllocationInstanceForAccess = GrantAllocation.get(GrantAllocation.id)
-						println "grantAllocationInstanceForAccess = "+grantAllocationInstanceForAccess
 						accessInstance = projectsService.saveProjectAccessPermission(grantAllocationInstanceForAccess)
+						}
+						
 						flash.message = "New allocation created "
+						
 					}
 				}
 				else
@@ -576,9 +552,13 @@
 				}
 				else
 				{
+					
+					if(!grantAllocationInstanceCheck)
+					{
 					grantAllocationInstanceForAccess = GrantAllocation.get(GrantAllocation.id)
-					println "grantAllocationInstanceForAccess = "+grantAllocationInstanceForAccess
 					accessInstance = projectsService.saveProjectAccessPermission(grantAllocationInstanceForAccess)
+					}
+					
 					flash.message = "New allocation created "
 				}
 			}
@@ -892,7 +872,8 @@
     
   
     
-    def projectDash = {
+def projectDash = 
+{
     		
     		def totmonths=new HashSet()
     		def expense=[]
@@ -915,16 +896,27 @@
             try{
              projectInstance = projectsService.getProjectById(new Long(params.id))
            
+             
+             
             println "projectInstance"+projectInstance
             //println "grantAllocationInstanceId"+grantAllocationInstanceId.projects
             projectInstance.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(projectInstance.id,getUserPartyID())
            	def sumAmount = GrantExpense.executeQuery("select sum(GE.expenseAmount) as SumAmt from GrantExpense GE where GE.projects.id ="+ projectInstance.id) 
-           	
+           	def sumTransferInstance = FundTransfer.executeQuery("select sum(FU.amount) as SumAmt from FundTransfer FU where FU.grantAllocation.projects.parent.id ="+ projectInstance.id)
+            println "sumTransferInstance"+ sumTransferInstance
+           	double fundTransferInstance=0;
+                              
+                              if(sumTransferInstance[0]==null)
+                            	  fundTransferInstance=0
+                            	  else
+                            		 fundTransferInstance=sumTransferInstance[0]
+                              
+                         println "fundTransferInstance"+ fundTransferInstance
            	def sumGrantRecieve = GrantExpense.executeQuery("select sum(GR.amount) as SumAmt from GrantReceipt GR where GR.projects.id ="+ projectInstance.id)
            	
            	 	def grantAllocationSplit = GrantAllocationSplit.findAll("from GrantAllocationSplit  GAS where  GAS.projects="+projectInstance.id);
              def grantAllocationInstance = GrantAllocation.find("from GrantAllocation  GA where  GA.projects="+projectInstance.id);
-            
+             
     		  grantAllocationSplit = GrantAllocationSplit.executeQuery("select sum(GAS.amount) as SumAmt,GAS.accountHead.code from GrantAllocationSplit GAS where GAS.projects.id ="+ projectInstance.id+"and  GAS.grantAllocation.party.id ="+ getUserPartyID()+" group by GAS.accountHead.id")
                               
                               
@@ -939,7 +931,8 @@
     		  					
 							 def totalExpense=0;
                               def totalReciept=0;
-            
+                             
+                              
 							 
                               monthnameView.add("0")
 							   balance.add(0)
@@ -1094,7 +1087,8 @@
             	         resultPiechart:resultPiechart,resultLinechart:resultLinechart,
             	         rangelimit:rangelimit,sumGrantRecieve:sumGrantRecieve,
             	         'currencyFormat':currencyFormatter,
-            	         'grantAllocationInstance':grantAllocationInstance]
+            	         'grantAllocationInstance':grantAllocationInstance,
+            	         'fundTransferInstance':fundTransferInstance]
             	}
             }
             catch(Exception e)
@@ -1167,78 +1161,127 @@
 	
 	
 	
-	def showReports={
-				File reportFile
-				println("Intim --->"+params)
-				def webRootDir = servletContext.getRealPath("/")
-				
-					reportFile = new File(webRootDir+ "/reports/StatementOFAccounts.jasper")
-					Map parameters = new HashMap();
-										
-				GrailsHttpSession gh=getSession()
-				println "priject id from session" +gh.getValue("ProjectID")
-				println "test =="	
-					println "inner =="
-					
-					def ProjectID=params.projects
-					//parameters.put("grantPeriod",params.grantPeriod)
-					parameters.put("projectID",ProjectID)
-					parameters.put("reportDateTo",params.reportDateTo_day+"/"+params.reportDateTo_month+"/"+params.reportDateTo_year)
-					parameters.put("reportDate",params.reportDate_day+"/"+params.reportDate_month+"/"+params.reportDate_year)
-					parameters.put("Path",webRootDir+"/reports/")
-					
-					def sql = getSqlConnection()
-					
-					byte[] bytes = 
-						JasperRunManager.runReportToPdf(
-								reportFile.getPath(), 
-							parameters, 
-							sql
-							);
-	
-					response.setContentType("application/pdf");
-					response.setContentLength(bytes.length);
-					ServletOutputStream ouputStream = response.getOutputStream();
-					ouputStream.write(bytes, 0, bytes.length);
-					sql.close()
-					ouputStream.flush();
-					ouputStream.close();
+	def showReports=
+	{
+		File reportFile
+		println("Intim --->"+params)
+		def webRootDir = servletContext.getRealPath("/")
+		def utilizationInstance = Utilization.get(params.id)
+		reportFile = new File(webRootDir+ "/reports/StatementOFAccounts.jasper")
+		Map parameters = new HashMap();
+								
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		
+		def ProjectID
+		if(utilizationInstance)
+		{
+			parameters.put("reportDateTo",utilizationInstance.endDate)
+			parameters.put("reportDate",utilizationInstance.startDate)
+			
+			
+			ProjectID =utilizationInstance.projects.id
+		}
+		else
+		{
+			Date startDate  = df.parse(params.reportDate_value)
+			Date endDate = df.parse(params.reportDateTo_value)
+			println "endDate" +endDate 
+			println "startDate" + startDate
+			parameters.put("reportDateTo",endDate)
+			parameters.put("reportDate",startDate)
+			ProjectID =params.projects
+		}
+			
+		GrailsHttpSession gh=getSession()
+		println "priject id from session" +gh.getValue("ProjectID")
+		println "test =="	
+		println "inner =="	
+		
+		
+		// parameters.put("grantPeriod",params.grantPeriod)
+		parameters.put("projectID",ProjectID.toString())
+		parameters.put("Path",webRootDir+"/reports/")
+		
+		def sql = getSqlConnection()
+		
+		byte[] bytes = 
+			JasperRunManager.runReportToPdf(
+					reportFile.getPath(), 
+				parameters, 
+				sql
+				);
+
+		response.setContentType("application/pdf");
+		response.setContentLength(bytes.length);
+		ServletOutputStream ouputStream = response.getOutputStream();
+		ouputStream.write(bytes, 0, bytes.length);
+		sql.close()
+		ouputStream.flush();
+		ouputStream.close();
 				
 	}
-	def utilizationCertificate={
-			File reportFile
-			println("Intimuti --->"+params)
-			def webRootDir = servletContext.getRealPath("/")
+	def utilizationCertificate=
+	{
+		File reportFile
+		println("params --->"+params)
+		def webRootDir = servletContext.getRealPath("/")
+		
+		def utilizationInstance = Utilization.get(params.id)
+		
+		reportFile = new File(webRootDir+ "/reports/UtilizationCertificate.jasper")
+		Map parameters = new HashMap();
+		
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+		def ProjectID
+		if(utilizationInstance)
+		{
+			println("utilizationInstance --->"+utilizationInstance)
+			println("utilizationInstance.startdate --->"+utilizationInstance.startDate)
+			println("utilizationInstance.end date --->"+utilizationInstance.endDate)
+
+			parameters.put("reportDateTo",utilizationInstance.endDate)
+			parameters.put("reportDate",utilizationInstance.startDate)
 			
-				reportFile = new File(webRootDir+ "/reports/UtilizationCertificate.jasper")
-				Map parameters = new HashMap();
-									
-			GrailsHttpSession gh=getSession()
-			println "priject id from session" +gh.getValue("ProjectID")
-			println "test =="	
-				println "inner =="	
-					def ProjectID=params.projects
-				// parameters.put("grantPeriod",params.grantPeriod)
-				parameters.put("projectID",ProjectID)
-				parameters.put("Path",webRootDir+"/reports/")
-				parameters.put("reportDateTo",params.reportDateTo_day+"/"+params.reportDateTo_month+"/"+params.reportDateTo_year)
-					parameters.put("reportDate",params.reportDate_day+"/"+params.reportDate_month+"/"+params.reportDate_year)
-				def sql = getSqlConnection()
-				
-				byte[] bytes = 
-					JasperRunManager.runReportToPdf(
-							reportFile.getPath(), 
-						parameters, 
-						sql
-						);
-				println "parameters =="	+ parameters
-				response.setContentType("application/pdf");
-				response.setContentLength(bytes.length);
-				ServletOutputStream ouputStream = response.getOutputStream();
-				ouputStream.write(bytes, 0, bytes.length);
-				sql.close()
-				ouputStream.flush();
-				ouputStream.close();
+			println "utilizationInstance.projects.id"+utilizationInstance.projects.id
+			ProjectID =utilizationInstance.projects.id
+		}
+		else
+		{
+			Date startDate  = df.parse(params.reportDate_value)
+			Date endDate = df.parse(params.reportDateTo_value)
+			println "endDate" +endDate 
+			println "startDate" + startDate
+			parameters.put("reportDateTo",endDate)
+			parameters.put("reportDate",startDate)
+			
+			ProjectID =params.projects
+		}
+
+		GrailsHttpSession gh=getSession()
+		println "priject id from session" +gh.getValue("ProjectID")
+		println "test =="	
+		println "inner =="	
+		
+		
+		// parameters.put("grantPeriod",params.grantPeriod)
+		parameters.put("projectID",ProjectID.toString())
+		parameters.put("Path",webRootDir+"/reports/")
+		def sql = getSqlConnection()
+		
+		byte[] bytes = 
+			JasperRunManager.runReportToPdf(
+					reportFile.getPath(), 
+				parameters, 
+				sql
+				);
+		println "parameters =="	+ parameters
+		response.setContentType("application/pdf");
+		response.setContentLength(bytes.length);
+		ServletOutputStream ouputStream = response.getOutputStream();
+		ouputStream.write(bytes, 0, bytes.length);
+		sql.close()
+		ouputStream.flush();
+		ouputStream.close();
 			
 }
 

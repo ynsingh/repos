@@ -192,24 +192,15 @@ var day;
 	 }
 	 
 	 else if(eval('typeof(document.reportView)') != 'undefined')
-{
-      var day;
-	  var month;
-	  var year;
-	  day=document.reportView.reportDate_day.value;
-	  year=document.reportView.reportDate_year.value;
-	  month=document.reportView.reportDate_month.value;
-	  document.UtilizationCertificate.reportDate.value = day+"/"+month+"/"+year
-	  document.StatementOfAccounts.reportDate.value = day+"/"+month+"/"+year;
-	  
-	  var today;
-	  var tomonth;
-	  var toyear;
-	  today=document.reportView.reportDateTo_day.value;
-	  toyear=document.reportView.reportDateTo_year.value;
-	  tomonth=document.reportView.reportDateTo_month.value;
-	  document.UtilizationCertificatess.reportDateTo.value = day+"/"+month+"/"+year;
-	  document.StatementOfAccounts.reportDateTo.value = day+"/"+month+"/"+year;
+	 {
+		  
+		  document.UtilizationCertificate.reportDate.value = document.reportView.reportDate.value;
+		  //document.StatementOfAccounts.reportDate.value = day+"/"+month+"/"+year;
+		  
+	
+		  
+		  document.UtilizationCertificatess.reportDateTo.value = document.reportView.reportDateTo.value;
+		 //document.StatementOfAccounts.reportDateTo.value = day+"/"+month+"/"+year;
 	  
 	 }
 

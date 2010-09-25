@@ -26,4 +26,16 @@ class InvestigatorService {
 	   def investigatorInstance = Investigator.get(investigatorId)
 	   return investigatorInstance
    }
+   
+   public List getUniqueEmail(def params)
+   {
+	   def chkUniqueEmailInstance = Investigator.findAll("from Investigator I where I.email= '" + params.email + "'")
+	   return chkUniqueEmailInstance
+   }
+   
+   public List getUniqueName(def params)
+   {
+	   def chkUniqueNameInstance = Investigator.findAll("from Investigator I where I.name= '" + params.name + "'")
+	   return chkUniqueNameInstance
+   }
 }

@@ -1,0 +1,177 @@
+import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
+class ProjectEmployeeController 
+{
+	def projectEmployeeService
+    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+	
+	def index = 
+    {
+        redirect(action: "list", params: params)
+    }
+
+    def list = 
+    {
+		params.max = Math.min(params.max ? params.int('max') : 10, 100)
+        [projectEmployeeInstanceList: ProjectEmployee.list(params),
+         projectEmployeeInstanceTotal: ProjectEmployee.count()]
+    }
+    
+	def create = 
+    {
+	println "params"+params
+        def projectEmployeeInstance = new ProjectEmployee()
+        projectEmployeeInstance.properties = params
+        def projectInstance
+        if(params.id)
+        {
+        	projectInstance = Projects.get(params.id)
+        }
+        def employeeDesignationInstance = EmployeeDesignation.list()
+        def projectEmployeeInstanceList=projectEmployeeService.getProjectEmployeeList(projectInstance)
+        return [projectEmployeeInstance: projectEmployeeInstance,
+                employeeDesignationInstance: employeeDesignationInstance,
+                projectEmployeeInstanceList:projectEmployeeInstanceList,
+                projectInstance:projectInstance]
+    }
+	/**
+	 * Method to save the Project Employee Details
+	 */
+    def save = 
+    {
+        def projectEmployeeInstance = new ProjectEmployee(params)
+        def projectInstance = Projects.get(params.projectId)
+        projectEmployeeInstance.projects=projectInstance
+        def projectEmployeeUniqueCheckstatus=projectEmployeeService.projectEmployeeUniqueCheck(projectEmployeeInstance)
+        if(projectEmployeeUniqueCheckstatus)
+        {
+        	flash.message = "${message(code: 'default.projectEmployees.AlreadyExists.message')}"
+        }
+        //projectEmployeeInstance.Status='Y'
+        def employeeDesignationInstance = EmployeeDesignation.list()
+        def projectEmployeeInstanceList=projectEmployeeService.getProjectEmployeeList(projectEmployeeInstance)
+        if (projectEmployeeInstance.save(flush: true))
+        {
+            flash.message ="${message(code: 'default.projectEmployees.CreateNew.message')}" 
+            redirect(action: "create", id:projectInstance.id)
+            		/*model: [projectEmployeeInstance: projectEmployeeInstance,
+                                               employeeDesignationInstance:employeeDesignationInstance,
+                                               projectEmployeeInstanceList:projectEmployeeInstanceList,
+                                               projectInstance:projectInstance])*/
+        }
+        else
+        {
+        	redirect(action: "create", id:projectInstance.id)
+        }
+    }
+    def show = 
+    {
+        def projectEmployeeInstance = ProjectEmployee.get(params.id)
+        if (!projectEmployeeInstance) 
+        {
+            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'projectEmployee.label', default: 'ProjectEmployee'), params.id])}"
+            redirect(action: "list")
+        }
+        else 
+        {
+            [projectEmployeeInstance: projectEmployeeInstance]
+        }
+    }
+
+    def edit = 
+    {
+        def projectEmployeeInstance = ProjectEmployee.get(params.id)
+        def employeeDesignationInstance = EmployeeDesignation.list()
+        if (!projectEmployeeInstance) 
+        {
+            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'projectEmployee.label', default: 'ProjectEmployee'), params.id])}"
+            redirect(action: "list")
+        }
+        else 
+        {
+            return [projectEmployeeInstance: projectEmployeeInstance,
+                    employeeDesignationInstance: employeeDesignationInstance]
+        }
+    }
+
+    def update = 
+    {
+        def projectEmployeeInstance = ProjectEmployee.get(params.id)
+        if (projectEmployeeInstance) 
+        {
+            if (params.version)
+            {
+                def version = params.version.toLong()
+                if (projectEmployeeInstance.version > version) 
+                {
+                    projectEmployeeInstance.errors.rejectValue("version", "default.optimistic.locking.failure", 
+                    						[message(code: 'projectEmployee.label',default: 'ProjectEmployee')] 
+                							as Object[], "Another user has updated this ProjectEmployee while you were editing")
+                    render(view: "edit", model: [projectEmployeeInstance: projectEmployeeInstance])
+                    return
+                }
+            }
+            projectEmployeeInstance.properties = params
+            if (!projectEmployeeInstance.hasErrors() && projectEmployeeInstance.save(flush: true))
+            {
+                flash.message = "Employee With Name ${params.empName} Updated"
+                redirect(action: "create", id: projectEmployeeInstance.id)
+            }
+            else 
+            {
+                render(view: "edit", model: [projectEmployeeInstance: projectEmployeeInstance])
+            }
+        }
+        else
+        {
+            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'projectEmployee.label', default: 'ProjectEmployee'), params.id])}"
+            redirect(action: "list")
+        }
+    }
+
+    def delete = 
+    {
+		def projectEmployeeInstance = ProjectEmployee.get(params.id)
+		def projectEmployeeQualificationInstance = ProjectEmployeeQualification.list()
+		def projectEmployeeExperienceInstance=ProjectEmployeeExperience.list()
+		def projectEmployeeSalaryDetailsInstance=ProjectEmployeeSalaryDetails.list()
+		println projectEmployeeQualificationInstance.projectEmployee.id
+        if (projectEmployeeInstance) 
+        {
+        	try 
+        	{     		
+                projectEmployeeInstance.save(flush: true)
+                
+                flash.message = "Employee With Name ${params.empName} deleted"
+                redirect(action: "create")
+            }
+        	catch(org.springframework.dao.DataIntegrityViolationException e)
+            {
+                flash.message ="Can't delete the Employee ${params.empName}" 
+                redirect(action: "create", id: params.id)
+            }
+        }
+        else 
+        {
+            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'projectEmployee.label', default: 'ProjectEmployee'), projectEmployeeInstance.empName])}"
+            redirect(action: "create")
+        }
+    }
+	
+	def addemp = 
+	{
+		def grantAllocationService = new GrantAllocationService()
+		GrailsHttpSession gh=getSession()
+		def dataSecurityService = new DataSecurityService()
+		def projectsList = dataSecurityService.getProjectsForLoginUser(gh.getValue("PartyID"))
+		def grandAllocationList = []
+		def grantAllocationInstance
+		for(int i=0;i<projectsList.size();i++)
+		{
+			grantAllocationInstance = grantAllocationService.getGrantAllocationByProjects(projectsList[i].id)
+			grandAllocationList.add(grantAllocationInstance)
+		}
+		
+		[ grandAllocationList: grandAllocationList]
+	}
+	
+}

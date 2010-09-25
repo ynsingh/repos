@@ -44,14 +44,14 @@ order by PT.date_of_tracking]]></queryString>
 			</band>
 		</background>
 		<title>
-			<band height="74"  isSplitAllowed="true" >
+			<band height="131"  isSplitAllowed="true" >
 				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="0"
-						y="37"
-						width="535"
-						height="31"
+						x="58"
+						y="102"
+						width="404"
+						height="24"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="textField-2"
@@ -67,6 +67,49 @@ order by PT.date_of_tracking]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA["Project Status Report"]]></textFieldExpression>
 				</textField>
+				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="457"
+						y="80"
+						width="74"
+						height="17"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-11"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+				</textField>
+				<image  scaleImage="FillFrame" vAlign="Top" hAlign="Left" isUsingCache="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="4"
+						y="5"
+						width="529"
+						height="73"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="image-1"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<graphicElement stretchType="NoStretch" pen="None" fill="Solid" 
+/>
+					<imageExpression class="java.lang.String"><![CDATA[$P{Path}+"/images/header2.jpg"]]></imageExpression>
+				</image>
 			</band>
 		</title>
 		<pageHeader>
@@ -255,9 +298,9 @@ order by PT.date_of_tracking]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="45"
-						y="0"
+						y="1"
 						width="0"
-						height="25"
+						height="23"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-1"
@@ -274,9 +317,9 @@ order by PT.date_of_tracking]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="0"
-						y="0"
+						y="1"
 						width="0"
-						height="25"
+						height="23"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-2"
@@ -293,7 +336,7 @@ order by PT.date_of_tracking]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="0"
-						y="1"
+						y="0"
 						width="535"
 						height="0"
 						forecolor="#000000"
@@ -331,9 +374,9 @@ order by PT.date_of_tracking]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="158"
-						y="0"
+						y="1"
 						width="0"
-						height="25"
+						height="23"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-5"
@@ -350,9 +393,9 @@ order by PT.date_of_tracking]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="241"
-						y="0"
+						y="1"
 						width="0"
-						height="25"
+						height="23"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-6"
@@ -369,9 +412,9 @@ order by PT.date_of_tracking]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="342"
-						y="0"
+						y="1"
 						width="0"
-						height="25"
+						height="23"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-7"
@@ -388,9 +431,9 @@ order by PT.date_of_tracking]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="415"
-						y="0"
+						y="1"
 						width="0"
-						height="25"
+						height="23"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-8"
@@ -407,9 +450,9 @@ order by PT.date_of_tracking]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="535"
-						y="0"
+						y="1"
 						width="0"
-						height="25"
+						height="23"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-9"
@@ -432,7 +475,7 @@ order by PT.date_of_tracking]]></queryString>
 						x="0"
 						y="0"
 						width="0"
-						height="30"
+						height="28"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-10"
@@ -470,7 +513,7 @@ order by PT.date_of_tracking]]></queryString>
 						x="535"
 						y="0"
 						width="0"
-						height="30"
+						height="28"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-12"
@@ -489,7 +532,7 @@ order by PT.date_of_tracking]]></queryString>
 						x="415"
 						y="0"
 						width="0"
-						height="30"
+						height="28"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-13"
@@ -508,7 +551,7 @@ order by PT.date_of_tracking]]></queryString>
 						x="342"
 						y="0"
 						width="0"
-						height="30"
+						height="28"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-14"
@@ -527,7 +570,7 @@ order by PT.date_of_tracking]]></queryString>
 						x="241"
 						y="0"
 						width="0"
-						height="30"
+						height="28"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-15"
@@ -546,7 +589,7 @@ order by PT.date_of_tracking]]></queryString>
 						x="158"
 						y="0"
 						width="0"
-						height="30"
+						height="28"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-16"
@@ -565,7 +608,7 @@ order by PT.date_of_tracking]]></queryString>
 						x="45"
 						y="0"
 						width="0"
-						height="30"
+						height="28"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-17"
@@ -717,17 +760,17 @@ order by PT.date_of_tracking]]></queryString>
 			</band>
 		</columnFooter>
 		<pageFooter>
-			<band height="34"  isSplitAllowed="true" >
-				<staticText>
+			<band height="32"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="177"
-						y="7"
-						width="66"
-						height="19"
+						x="505"
+						y="8"
+						width="26"
+						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
-						key="staticText-9"
+						key="textField-12"
 						stretchType="NoStretch"
 						positionType="FixRelativeToTop"
 						isPrintRepeatedValues="true"
@@ -738,32 +781,57 @@ order by PT.date_of_tracking]]></queryString>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[Generated on]]></text>
-				</staticText>
-				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Transparent"
-						x="245"
-						y="7"
-						width="53"
-						height="19"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="textField-11"
-						stretchType="NoStretch"
-						positionType="FixRelativeToTop"
-						isPrintRepeatedValues="true"
-						isRemoveLineWhenBlank="false"
-						isPrintInFirstWholeBand="false"
-						isPrintWhenDetailOverflows="false"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<textFieldExpression   class="java.util.Date"><![CDATA[new Date()]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 				</textField>
 			</band>
 		</pageFooter>
+		<lastPageFooter>
+			<band height="69"  isSplitAllowed="true" >
+				<image  scaleImage="FillFrame" vAlign="Top" hAlign="Left" isUsingCache="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="19"
+						y="32"
+						width="483"
+						height="31"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="image-2"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<graphicElement stretchType="NoStretch" pen="None" fill="Solid" 
+/>
+					<imageExpression class="java.lang.String"><![CDATA[$P{Path}+"/images/footer1.jpg"]]></imageExpression>
+				</image>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="505"
+						y="36"
+						width="26"
+						height="18"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.Integer"><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+			</band>
+		</lastPageFooter>
 		<summary>
 			<band height="0"  isSplitAllowed="true" >
 			</band>

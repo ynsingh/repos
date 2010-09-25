@@ -1,6 +1,9 @@
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
+import org.codehaus.groovy.grails.commons.ApplicationHolder as AH
+import grails.util.GrailsUtil
 class ProjectsPIMapController {
 	def grantAllocationService
+	def projectsService
     def index = { redirect(action:list,params:params) }
 
     // the delete, save and update actions only accept POST requests
@@ -24,6 +27,7 @@ class ProjectsPIMapController {
     def delete = {
         def projectsPIMapInstance = ProjectsPIMap.get( params.id )
         if(projectsPIMapInstance) {
+        	def projectsInstance = projectsService.checkFordeleteProjectAccessPermissionOfPiMap(params.projects.id,params.investigator.id)
             projectsPIMapInstance.delete()
             flash.message = "Deleted Successfully"
             redirect(action:create)
@@ -58,20 +62,16 @@ class ProjectsPIMapController {
     def update = {
         def projectsPIMapInstance = ProjectsPIMap.get( params.id )
         def pIMapInstance = new ProjectsPIMap()
-        def projectsService = new ProjectsService()
+       
         GrailsHttpSession gh=getSession()
-        if(projectsPIMapInstance) {
+        if(projectsPIMapInstance) 
+        {
             projectsPIMapInstance.properties = params
-            pIMapInstance = projectsService.checkPIofProject(gh.getValue("ProjectId"))
-            if(params.role== 'PI')
-            {
-            	if(pIMapInstance)
-            	{
-            		pIMapInstance.activeYesNo ='N'
-            		pIMapInstance.save()
-            	}
-            }
             if(!projectsPIMapInstance.hasErrors() && projectsPIMapInstance.save()) {
+                if(params.activeYesNo=='N')
+            			{
+            				projectsService.checkFordeleteProjectAccessPermissionOfPiMap(projectsPIMapInstance.projects.id,projectsPIMapInstance.investigator.id)
+            			}
                 flash.message = "Updated Successfully"
                 redirect(action:create,id:projectsPIMapInstance.id)
             }
@@ -115,7 +115,7 @@ class ProjectsPIMapController {
     def save = {
        println "params"+params
 		def projectsPIMapInstance = new ProjectsPIMap()
-        def projectsService = new ProjectsService()
+       
         
         GrailsHttpSession gh=getSession() 
         def investigatorInstance = Investigator.get(new Integer(params.investigator.id))
@@ -127,7 +127,11 @@ class ProjectsPIMapController {
         projectsPIMapInstance.role = params.role
         projectsPIMapInstance.activeYesNo = params.activeYesNo
         println"projectsPIMapInstance"+projectsPIMapInstance
+        def pIMapDuplicateInstance = projectsService.checkDuplicatePIofProject(PIprojectsInstance.id,investigatorInstance.id)
+        println"projectsPIMapInstance"+pIMapDuplicateInstance
         def projectsInstance
+        if(!pIMapDuplicateInstance)
+        {
         if(params.role == 'PI')
         {
 	        if(!pIMapInstance)
@@ -161,6 +165,12 @@ class ProjectsPIMapController {
 	        {
 	            render(view:'create',model:[projectsPIMapInstance:projectsPIMapInstance,projectsInstance:PIprojectsInstance])
 	        }
+        }
+        }
+        else
+        {
+        	redirect(action:create,model:[projectsPIMapInstance:projectsPIMapInstance]) 
+        	flash.message = investigatorInstance.name + " is already assinged as Investigator for this project " 
         }
     }
    

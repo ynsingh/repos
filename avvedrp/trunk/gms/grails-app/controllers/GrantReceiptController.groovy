@@ -55,7 +55,31 @@ class GrantReceiptController extends GmsController {
          def dataSecurityService = new DataSecurityService()
 		def grantAllocationSplitService=new GrantAllocationSplitService()
        def accountHeadList=grantAllocationSplitService.getAccountHeadByProject(grantReceiptInstance.projects.id)
-
+       
+       def fundTransferService=new FundTransferService();
+		def grantAllocationInstanceList
+        def fundTransferInstanceList
+        
+		if(grantReceiptInstance)
+        {
+			if(grantReceiptInstance.projects.id)
+	        {
+				grantAllocationInstanceList=grantAllocationService.getGrantAllocationsByProject(grantReceiptInstance.projects.id)
+	        	fundTransferInstanceList= fundTransferService.getFundTransferDetailsByProject(grantReceiptInstance.projects.id)
+	        }
+        }
+        
+		if(fundTransferInstanceList)
+		{
+			def  formatter = new SimpleDateFormat("dd/MM/yy");
+			for(int i=0;i<fundTransferInstanceList.size();i++)
+	    	{
+				String transferDate = formatter.format(fundTransferInstanceList[i].dateOfTransfer);
+				def numformatter = new DecimalFormat("#0.00");
+				println numformatter.format(fundTransferInstanceList[i].amount) 
+				fundTransferInstanceList[i].amountCode=transferDate + "-" + numformatter.format(fundTransferInstanceList[i].amount)
+	    	}
+		}
        //checking  whether the user has access to the given projects
 		if(dataSecurityService.checkForAuthorisedAcsessInProjects(grantReceiptInstance.projects.id,new Integer(getUserPartyID()))==0)
 		{
@@ -74,7 +98,9 @@ class GrantReceiptController extends GmsController {
         	def totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(grantReceiptInstance.projects.id,getUserPartyID())
         	def totalAmountReceived = grantReceiptService.getSumOfGrantReceviedByProjects(grantReceiptInstance.projects.id)
             grantReceiptInstance.balanceAmt = totAllAmount - totalAmountReceived + grantReceiptInstance.amount
-            return [ grantReceiptInstance : grantReceiptInstance,accountHeadList:accountHeadList]
+            return [ grantReceiptInstance : grantReceiptInstance,accountHeadList:accountHeadList,
+                     grantAllocationInstanceList:grantAllocationInstanceList,
+                     fundTransferInstanceList:fundTransferInstanceList]
         }
 		}
     }
@@ -139,19 +165,37 @@ class GrantReceiptController extends GmsController {
 		{
         projectsInstance.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(projectsInstance.id,getUserPartyID())
 		def grantAllocationInstanceList
-        if(params.id ==null)
+		def fundTransferService=new FundTransferService();
+        
+        def fundTransferInstanceList
+        
+		if(params.id ==null)
         {
         	grantAllocationInstanceList=grantAllocationService.getGrantAllocationsByProject(params.projectId)
+        	fundTransferInstanceList= fundTransferService.getFundTransferDetailsByProject(params.projectId)
+        	
         }
         else
         {
         	grantAllocationInstanceList=grantAllocationService.getGrantAllocationsByProject(params.id)
+        	fundTransferInstanceList= fundTransferService.getFundTransferDetailsByProject(params.id)
         }
+		if(fundTransferInstanceList)
+		{
+			def  formatter = new SimpleDateFormat("dd/MM/yy");
+			for(int i=0;i<fundTransferInstanceList.size();i++)
+	    	{
+				String transferDate = formatter.format(fundTransferInstanceList[i].dateOfTransfer);
+				def numformatter = new DecimalFormat("#0.00");
+				println numformatter.format(fundTransferInstanceList[i].amount) 
+				fundTransferInstanceList[i].amountCode=transferDate + "-" + numformatter.format(fundTransferInstanceList[i].amount)
+	    	}
+		}
 		String subQuery="";
         if(params.sort != null && !params.sort.equals(""))
-       	subQuery=" order by GA."+params.sort
-       if(params.order != null && !params.order.equals(""))
-       	subQuery =subQuery+" "+params.order
+        	subQuery=" order by GA."+params.sort
+       	if(params.order != null && !params.order.equals(""))
+       		subQuery =subQuery+" "+params.order
    
         grantReceiptInstance.projects=projectsInstance
         def accountHeadList=grantAllocationSplitService.getAccountHeadByProject(grantReceiptInstance.projects.id)
@@ -175,25 +219,78 @@ class GrantReceiptController extends GmsController {
         grantReceiptInstance.balanceAmt = projectsInstance.totAllAmount - totalAmountReceived
         println "grantAllocationInstanceList"+grantAllocationInstanceList.size()
         grantReceiptInstance.grantAllocation = grantAllocationInstanceList[0]
-
+        
         ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
-        return ['grantReceiptInstance':grantReceiptInstance,'grantReceiptInstanceList':grantReceiptList,'summaryList':summaryList,'grantAllocationInstanceList':grantAllocationInstanceList,'accountHeadList':accountHeadList,'currencyFormat':currencyFormatter]
+        return ['grantReceiptInstance':grantReceiptInstance,
+                'grantReceiptInstanceList':grantReceiptList,
+                'summaryList':summaryList,
+                'grantAllocationInstanceList':grantAllocationInstanceList,
+                'accountHeadList':accountHeadList,
+                'currencyFormat':currencyFormatter,
+                'fundTransferInstanceList':fundTransferInstanceList]
 		}
     }
 
     def save = {
-    		println params
+    	println params
 		def grantReceiptService = new GrantReceiptService();
+    	def grantAllocationService = new GrantAllocationService()
         def grantReceiptInstance = new GrantReceipt(params)
+        def fundTransferInstance = new FundTransfer()
+    	
+        if(params.fundTransfer)
+        {
+        	println"params.fundTransfer.id"+params.fundTransfer.id
+        	if(!params.fundTransfer.id == null)
+        		fundTransferInstance = FundTransfer.get(new Integer(params.fundTransfer.id))
+        }
         if(!grantReceiptInstance.hasErrors() ) {
         	
     	    grantReceiptInstance.createdBy="admin"
     		grantReceiptInstance.modifiedBy="admin"
         	grantReceiptInstance.modifiedBy="admin"
     		grantReceiptInstance.createdDate=new Date()
-        	grantReceiptInstance = grantReceiptService.saveGrantReceipt(grantReceiptInstance,new Integer(params.projectId))
+    	    println "grantReceiptInstance" + grantReceiptInstance.grantAllocation
+    	    if(fundTransferInstance)
+    	    {
+    	    	grantReceiptInstance.fundTransfer = fundTransferInstance
+    	    }
+    	    println "grantReceiptInstance*** in controller" +grantReceiptInstance.fundTransfer
+    	    
+    	    def grantAllocationInstanceList
+    		def fundTransferService=new FundTransferService();
+    	    def fundTransferInstanceList
+            
+    		if(params.id ==null)
+            {
+            	grantAllocationInstanceList=grantAllocationService.getGrantAllocationsByProject(params.projectId)
+            	fundTransferInstanceList= fundTransferService.getFundTransferDetailsByProject(params.projectId)
+            	
+            }
+            else
+            {
+            	grantAllocationInstanceList=grantAllocationService.getGrantAllocationsByProject(params.id)
+            	fundTransferInstanceList= fundTransferService.getFundTransferDetailsByProject(params.id)
+            }
+    	    if(fundTransferInstanceList)
+    		{
+    	    	println"amma"
+    			def  formatter = new SimpleDateFormat("dd/MM/yy");
+    			for(int i=0;i<fundTransferInstanceList.size();i++)
+    	    	{
+    				String transferDate = formatter.format(fundTransferInstanceList[i].dateOfTransfer);
+    				def numformatter = new DecimalFormat("#0.00");
+    				println numformatter.format(fundTransferInstanceList[i].amount) 
+    				fundTransferInstanceList[i].amountCode=transferDate + "-" + numformatter.format(fundTransferInstanceList[i].amount)
+    	    	}
+    		}
+    	    
+    	    grantReceiptInstance = grantReceiptService.saveGrantReceipt(grantReceiptInstance,new Integer(params.projectId))
         	flash.message = "Grant Recieved"
-        		redirect(action:create,id:grantReceiptInstance.projects.id,params:[grantReceiptInstanceId:grantReceiptInstance.id])
+        	redirect(action:create,id:grantReceiptInstance.projects.id,
+        			params:[grantReceiptInstanceId:grantReceiptInstance.id],
+        			        'fundTransferInstanceList':fundTransferInstanceList,
+        			        'grantAllocationInstanceList':grantAllocationInstanceList)
         }
         else {
             render(view:'create',model:[grantReceiptInstance:grantReceiptInstance])

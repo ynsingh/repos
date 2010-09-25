@@ -48,7 +48,7 @@
                                     <label for="role"><g:message code="default.Role.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:projectsPIMapInstance,field:'role','errors')}">
-                                     <g:select id="role" name="role"  from="${['PI','CO-PI']}" value="${projectsPIMapInstance?.role}" ></g:select>
+                                     <strong>${projectsPIMapInstance?.role}</strong>
                                 </td>
                             </tr> 
 	                        <tr class="prop">

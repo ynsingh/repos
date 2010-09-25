@@ -1,4 +1,6 @@
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
+import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 class UtilizationController {
     
     def index = { redirect(action:list,params:params) }
@@ -11,7 +13,7 @@ class UtilizationController {
 		println "partyid"+gh.getValue("Party")
 		def utilizationInstanceListbyparty
 		utilizationInstanceListbyparty = Utilization.findAll("from Utilization U where U.projects.id in (select GA.projects.id from GrantAllocation GA where GA.granter='"+gh.getValue("Party")+"')")
-			
+		println"...params....."+params	
         [ utilizationInstanceList: utilizationInstanceListbyparty ]
     }
 
@@ -81,30 +83,27 @@ class UtilizationController {
     def save = {
 		GrailsHttpSession gh=getSession()
 		println "uti"+params
-		def projectInstance = Projects.get(params.projects.id)
-        def utilizationInstance = new Utilization()
-        utilizationInstance.projects= Projects.get(params.projects.id)
+		def projectInstance = Projects.get(params.id)
+        def utilizationInstance = new Utilization(params)
+        utilizationInstance.projects= Projects.get(params.id)
         utilizationInstance.submittedDate=new Date()
 		utilizationInstance.grantee=Party.get(gh.getValue("Party"))
-		utilizationInstance.grantPeriod=GrantPeriod.get(params.grantPeriod.id)
-		def utilizationInstanceCheck = Utilization.findAll("from Utilization U where U.projects.id="+params.projects.id+" and U.grantPeriod.id="+params.grantPeriod.id)
-		if(!utilizationInstanceCheck)
-		{
+		// utilizationInstance.grantPeriod=GrantPeriod.get(params.grantPeriod.id)
+		println"....stesting..."
+		
+		println"utilizationInstance"+utilizationInstance
 			if(!utilizationInstance.hasErrors() && utilizationInstance.save()) 
 			{
+				
 				flash.message = "Utilization certificate submitted"
-				redirect(action:'create',id:params.projects.id)
+				redirect(action:'create',id:params.id)
 			}
 			else {
+				
             render(view:'create',model:[projectInstance:projectInstance])
 			}
 		}
-		else
-		{
-			 flash.message = "Utilization certificate for grant period "+utilizationInstance.grantPeriod.name+" already submitted"
-			render(view:'create',model:['utilizationInstance':utilizationInstance,'projectInstance':projectInstance])
-		}
-    }
+		
     def download ={
     		def utilizationInstance=Utilization.get(params.id)
     		println "utilizationid="+utilizationInstance.attachmentPath

@@ -48,6 +48,14 @@ class GrantAllocationService {
 	}
 	
 	/**
+	 * Get all grant allocation by using projectsId and partiesId
+	 */
+	public GrantAllocation[] getGrantAllocationsByProjectIdAndPartyId(def projectId,def partyId){
+		 def grantAllocationInstanceList=GrantAllocation.findAll("from GrantAllocation GA where GA.projects = "+projectId+" and GA.party = "+partyId);
+		 return grantAllocationInstanceList
+	}
+	
+	/**
 	 * Get all grant allocation (where allocation type not fund) for projects 
 	 */
 	public GrantAllocation[] getGrantAllocationsForProject(def projectId){
@@ -61,7 +69,7 @@ class GrantAllocationService {
 	 * Get all grant allocation (where allocation type not fund) for projects 
 	 */
 	public GrantAllocation[] getGrantAllocationsForAssignedProject(def projectId){
-		 def grantAllocationInstanceList = GrantAllocation.executeQuery(" from GrantAllocation  GA where   GA.projects IN "+projectId);
+		 def grantAllocationInstanceList = GrantAllocation.executeQuery(" from GrantAllocation GA where GA.projects IN ("+projectId +")");
 		 return grantAllocationInstanceList
 	}
 	
@@ -440,6 +448,10 @@ class GrantAllocationService {
 	public GrantAllocation[] getGrantAllocationGroupByProjects(def partyID){
 		 def grantAllocationInstanceList=GrantAllocation.findAll("from GrantAllocation GA GROUP BY GA.projects");
 		 return grantAllocationInstanceList
+	}
+	 public GrantAllocation getGrantAllocationByProjects(def projectID){
+		 def grantAllocationInstance=GrantAllocation.find("from GrantAllocation GA where GA.projects.id = "+projectID +" GROUP BY GA.projects");
+		 return grantAllocationInstance
 	}
 
 }

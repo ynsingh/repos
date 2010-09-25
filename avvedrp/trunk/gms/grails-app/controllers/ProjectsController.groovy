@@ -127,7 +127,12 @@ class ProjectsController extends GmsController
 		GrailsHttpSession gh=getSession()
 		gh.putValue("Help","New_Projects.htm")//putting help pages in session
 		def projectsInstance = projectsService.getProjectById(new Integer( params.id ))
-
+		if(projectsInstance)
+		{
+			def projectsPIMapInstance = projectsService.checkPIofProject(projectsInstance.id)
+			if(projectsPIMapInstance)
+				projectsInstance.investigator = projectsPIMapInstance.investigator
+		}
 		def projectid=projectsInstance.id
 		//checking  whether the user has access to the given projects
 		if(dataSecurityService.checkForAuthorisedAcsessInProjects(projectid,new Integer(getUserPartyID()))==0)
@@ -252,7 +257,7 @@ class ProjectsController extends GmsController
 	def subupdate =
 	{
 		def projectsService = new ProjectsService()
-		def projectsInstance = projectsService.updateProject(params)	
+		def projectsInstance = projectsService.updateSubProject(params)	
 		println"projectsInstance"+projectsInstance.saveMode
 		println"params.parent.id"+params.parent.id
 		if(projectsInstance)

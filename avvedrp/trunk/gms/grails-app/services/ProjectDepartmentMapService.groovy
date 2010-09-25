@@ -11,7 +11,7 @@ class ProjectDepartmentMapService {
     }
     public ProjectDepartmentMap[] getProjectDepartmentMapList(def partyId)
     {
-    	def projectDepartmentMapList = ProjectDepartmentMap.findAll("from ProjectDepartmentMap PM where PM.projects.id in (select GA.projects.id from GrantAllocation GA where GA.party.id='"+partyId+"')")
+    	def projectDepartmentMapList = ProjectDepartmentMap.findAll("from ProjectDepartmentMap PM where PM.projects.id in (select GA.projects.id from GrantAllocation GA where GA.party.id='"+partyId+"') and PM.activeYesNo='Y'")
 
     	return projectDepartmentMapList
     }

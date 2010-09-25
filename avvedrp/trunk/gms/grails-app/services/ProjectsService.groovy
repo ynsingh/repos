@@ -28,6 +28,7 @@ class ProjectsService{
 	private objectIdentityRetrievalStrategy
 	private sessionFactory
 	private springSecurityService
+	
 	def dataSource 
 	
 	/**
@@ -97,15 +98,49 @@ class ProjectsService{
         	Integer projectId = checkDuplicateProject(projectParams)
              if(projectId.intValue() == 0 || projectId.intValue() == projectsInstance.id.intValue()){
         	    projectsInstance.properties = projectParams 
-        	    if(!projectsInstance.hasErrors() && projectsInstance.save()&& checkPIForUpdateProject(projectParams)) {
+        	    
+        	    	if(!projectsInstance.hasErrors() && projectsInstance.save()&& checkPIForUpdateProject(projectParams)) {
         	    	
         	    	
-        	    	projectsInstance.saveMode = "Updated"
-                }
-        	    else
-        	    {
-        	    	projectsInstance.saveMode = "NotUpdated"
-        	    }
+        	    		projectsInstance.saveMode = "Updated"
+        	    	}
+        	    	else
+        	    	{
+        	    		projectsInstance.saveMode = "NotUpdated"
+        	    	}
+        	   
+        	    
+             }
+        	else
+    		    projectsInstance.saveMode = "Duplicate"
+        }
+		return projectsInstance
+        		   
+	}
+	
+	/**
+	 * Function to update sub project.
+	 */
+	
+	public Projects updateSubProject(def projectParams){
+		// updateProjectsPiMap(projectParams)
+		def projectsInstance = getProjectById(new Integer(projectParams.id ))
+		
+        if(projectsInstance) {
+        	projectsInstance.modifiedBy = "user";
+        	projectsInstance.modifiedDate = new Date();
+        	         
+        	/* Check whether Projects with same name already exists.*/
+        	Integer projectId = checkDuplicateProject(projectParams)
+             if(projectId.intValue() == 0 || projectId.intValue() == projectsInstance.id.intValue()){
+        	    projectsInstance.properties = projectParams 
+        	       
+        	    	if(!projectsInstance.hasErrors() && projectsInstance.save()) {
+            	    	
+            	    	
+        	    		projectsInstance.saveMode = "Updated"
+        	    	}
+        	    
              }
         	else
     		    projectsInstance.saveMode = "Duplicate"
@@ -197,31 +232,32 @@ class ProjectsService{
 		springSecurityService = ctx.springSecurityService
 		aclUtilService = ctx.aclUtilService
     	try{
-    	//aclService.createAcl objectIdentityRetrievalStrategy.createObjectIdentity(new Long(1), GrantAllocation.name)
+    	
+    		//aclService.createAcl objectIdentityRetrievalStrategy.createObjectIdentity(new Long(1), GrantAllocation.name)
+    		aclUtilService.addPermission grantAllocationInstance, userName,    ADMINISTRATION
+        	aclUtilService.addPermission projectsInstance, userName,    ADMINISTRATION
     	}
     	catch(Exception e)
     	{
     	}
-    	aclUtilService.addPermission grantAllocationInstance, userName,    ADMINISTRATION
-    	aclUtilService.addPermission projectsInstance, userName,    ADMINISTRATION
+    	
     
 	}
 	/*save access permission for each user(PI) 
 	 * during project Pi mapping*/
 	public def saveProjectAccessPermissionForPiMap(def projectsId,def investigatorId)
 	{
+		def grantAllocationService=new GrantAllocationService()
 		
 		
-		def grant = getGrantAllocationIdfromAcl(projectsId)
-		
+		def grantAllocationInstanceList = GrantAllocation.findAll("from GrantAllocation GA where GA.projects.id="+projectsId)
 		def investigatorInstance=Investigator.get(investigatorId)
-		
+		def grant = getGrantAllocationFromAcl(grantAllocationInstanceList)
 		
 		def projectsInstance = Projects.get(projectsId)
-		def grantAllocationInstance=GrantAllocation.get(grant.id)
+		def grantAllocationInstance=GrantAllocation.get(grant)
 		
 		def userName = investigatorInstance.email
-		
 		saveAccessPermissionForprojects(grantAllocationInstance,projectsInstance,investigatorInstance.email)
 	}
 	
@@ -252,15 +288,24 @@ class ProjectsService{
 	 */
 	public def checkFordeleteProjectAccessPermissionOfPiMap(def projectsId,def investigatorId)
 	{
-		def projectInstance = Projects.get(projectsId)
+		def checkFordelete
+		 def projectInstance = Projects.get(projectsId)
 		def grantAllocationInstance = GrantAllocation.findAll("from GrantAllocation GA where GA.projects.id="+projectsId)
 		def investigatorInstance=Investigator.get(investigatorId)
 						
 		def grantAllocationId = getGrantAllocationFromAcl(grantAllocationInstance,investigatorInstance)
+		if(grantAllocationId)
+		{
 		def grantallocationInstanceValue=GrantAllocation.get(grantAllocationId)
-		println "grantallocationInstanceValue"+grantallocationInstanceValue
+		
 		
 		deleteProjectAccessPermissionForAll(grantallocationInstanceValue,projectInstance,investigatorInstance.email)
+		checkFordelete = true
+		}
+		else
+		{
+			checkFordelete = false
+		}
 	}
 	
 	/**
@@ -275,9 +320,9 @@ class ProjectsService{
 			springSecurityService = ctx.springSecurityService
 			aclUtilService = ctx.aclUtilService
 			def value
-			println "projectsId "+projectsId
+			
 			def grantAllocationInstanceList = GrantAllocation.findAll("from GrantAllocation GA where GA.projects.id="+projectsId)
-			println "grantAllocationInstanceList "+grantAllocationInstanceList
+			
 			def aclDomain = org.codehaus.groovy.grails.plugins.springsecurity.acl.AclEntry
 			for(grantAllocationInstanceId in grantAllocationInstanceList)
 			{
@@ -285,6 +330,7 @@ class ProjectsService{
 				try
 				{
 					aclClassInstance=aclUtilService.readAcl(GrantAllocation,grantAllocationInstanceId.id)
+					
 				}
 				catch(Exception e)
 				{}
@@ -292,8 +338,9 @@ class ProjectsService{
 				{
 					value = grantAllocationInstanceId
 				}
-			println "aclClassInstance "+aclClassInstance
+			
 			}
+		 println "value  "+value
 		 return value
 	}
 	/**
@@ -322,13 +369,71 @@ class ProjectsService{
         if(result.id)
         {
         	value=result
+        	
         }
  		}
 		
 		def grantAllocationId
+		if(value)
+		{
 		for(id in value.id)
 		{
 			grantAllocationId=id
+			
+		}
+		}
+		else
+		{
+			grantAllocationId=null
+		}
+		
+		return grantAllocationId
+	}
+	
+	/**
+	 * Function to get grant allocation from acl using grant allocation id
+	 */
+	public def getGrantAllocationFromAcl(def grantAllocationInstance)
+	{
+		
+		def sql = new Sql(dataSource);
+		def result
+		def value
+ 		
+ 		for(grantId in grantAllocationInstance.id)
+ 		{
+        def query2 = "SELECT AO.object_id_identity,GA.id FROM"+ 
+        				" acl_object_identity AO,"+
+        				" acl_sid AIS,"+
+        				" acl_entry AE,"+
+        				" acl_class AC,grant_allocation GA WHERE"+ 
+        				" AE.acl_object_identity=AO.id"+
+        				" AND AO.object_id_class=AC.id"+
+        				" AND AC.class='GrantAllocation'"+
+        				" AND AO.object_id_identity=GA.id"+
+        				" AND GA.id="+grantId+
+        				" GROUP BY AO.object_id_identity";
+        result = sql.rows(query2);
+       
+        if(result.id)
+        {
+        	value=result
+        	
+        }
+ 		}
+		
+		def grantAllocationId
+		if(value)
+		{
+		for(id in value.id)
+		{
+			grantAllocationId=id
+			
+		}
+		}
+		else
+		{
+			grantAllocationId=null
 		}
 		
 		return grantAllocationId
@@ -351,21 +456,20 @@ class ProjectsService{
 	}
 	
 	/**
-	 * Function to deleting projet and grantallocation (sub project) from acl 
+	 * Function to call method of delete projet and grantallocation (sub project) from acl 
 	 */
 	public def deleteProjectAccessPermission(def grantAllocationId)
 	{
 		def accessInstance = null
 		def userInstance
 		def grantAllocationInstance = GrantAllocation.get(grantAllocationId)
-		println "grantAllocationInstance"+grantAllocationInstance
+		
 		def projectInstance = Projects.get(grantAllocationInstance.projects.id)
 		def userRoleInstance = UserRole.findAll("from UserRole UR where UR.role.authority='ROLE_SITEADMIN' and UR.user.id in (select UM.user.id from UserMap UM where UM.party.id='"+grantAllocationInstance.party.id +"')")
 		if((userRoleInstance.user).size() == 1)
 		{
 			userInstance = Person.get((userRoleInstance.user.id).get(0))
-		println "grantAllocationInstance"+grantAllocationInstance
-		println "userInstance"+userInstance.username
+		
 		
     	deleteProjectAccessPermissionForAll(grantAllocationInstance,projectInstance,userInstance.username)
     	accessInstance=1
@@ -579,16 +683,23 @@ class ProjectsService{
 			
 				println projectsPIMapInstancedelete
 				projectsPIMapInstancedelete.activeYesNo="N"
-				projectsPIMapInstancedelete.save()
-				checkFordeleteProjectAccessPermissionOfPiMap(projectsPIMapInstancedelete.projects.id,projectsPIMapInstancedelete.investigator.id)
-				def projectsPIMapInstance = new ProjectsPIMap();
-				projectsPIMapInstance.projects = Projects.get(project.id)
-				projectsPIMapInstance.investigator = Investigator.get(project.investigator.id)
-				projectsPIMapInstance.role = "PI"
-				projectsPIMapInstance.activeYesNo="Y"
-				projectsPIMapInstance.save()
-				saveProjectAccessPermissionForPiMap(projectInstance.id,projectsPIMapInstance.investigator.id)
-				checkPiInstance=true
+				if(checkFordeleteProjectAccessPermissionOfPiMap(projectsPIMapInstancedelete.projects.id,projectsPIMapInstancedelete.investigator.id))
+				{	
+					projectsPIMapInstancedelete.save()
+					def projectsPIMapInstance = new ProjectsPIMap();
+					projectsPIMapInstance.projects = Projects.get(project.id)
+					projectsPIMapInstance.investigator = Investigator.get(project.investigator.id)
+					projectsPIMapInstance.role = "PI"
+					projectsPIMapInstance.activeYesNo="Y"
+					projectsPIMapInstance.save()
+					saveProjectAccessPermissionForPiMap(projectInstance.id,projectsPIMapInstance.investigator.id)
+					checkPiInstance=true
+				}
+				else
+				{
+					checkPiInstance=false
+				}
+				
 			}
 			else
 			{

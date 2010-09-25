@@ -8,7 +8,7 @@
 	<body >
 		<div class="hrmenu-container" >	
 			<ul id="topnav">
-		        <li><g:link controller='projectsPIMap' action="create">Additional PI</g:link></li> 
+		        <li><g:link controller='projectsPIMap' action="create">Add PI</g:link></li> 
 		        <li><g:link controller='projectDepartmentMap' action="create">Add Department</g:link></li> 
 		        <li><g:link controller='grantAllocation' action="fundAllot">Fund Allocation</g:link></li>
 	    	</ul> 

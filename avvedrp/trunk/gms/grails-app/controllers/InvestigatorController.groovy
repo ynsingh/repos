@@ -4,6 +4,7 @@ import org.apache.commons.validator.EmailValidator
 class InvestigatorController {
 	def authenticateService
 	def notificationsEmailsService
+	def userService
     def index = { redirect(action:list,params:params) }
 
     // the delete, save and update actions only accept POST requests
@@ -81,24 +82,50 @@ class InvestigatorController {
         }
     }
 
-    def update = {
+    def update = 
+       	{
     		println "iiiiiiiiiiiiiiiiiiiiitest......................."
-        def investigatorInstance = Investigator.get( params.id )
-        if(investigatorInstance) {
-            investigatorInstance.properties = params
-            if(!investigatorInstance.hasErrors() && investigatorInstance.save()) {
-                flash.message = "Investigator ${investigatorInstance.name} updated"
-                redirect(action:create,id:investigatorInstance.id)
-            }
-            else {
-                render(view:'edit',model:[investigatorInstance:investigatorInstance])
-            }
-        }
-        else {
-            flash.message = "Investigator not found with id ${params.id}"
-            redirect(action:edit,id:params.id)
-        }
-    }
+    		def investigatorInstance = Investigator.get( params.id )
+    		def investigatorService = new InvestigatorService()
+    		if(investigatorInstance) 
+    		{
+    			investigatorInstance.properties = params
+    			def chkUniqueNameInstance = investigatorService.getUniqueName(params)
+    			def chkUniqueEmailInstance = investigatorService.getUniqueEmail(params)
+    			
+    			if(chkUniqueNameInstance && chkUniqueNameInstance[0].id != Long.parseLong(params.id))
+    			{
+    				flash.message = " Investigator exists with same name"
+    				redirect(action:edit,id:investigatorInstance.id)
+    			}
+    			else
+    			{
+    				if(chkUniqueEmailInstance && chkUniqueEmailInstance[0].id != Long.parseLong(params.id))
+    				{
+    					flash.message ="Investigator exists with same email"
+    					redirect(action:edit,id:investigatorInstance.id)
+    				}
+    				else
+    				{
+    					if(!investigatorInstance.hasErrors() && investigatorInstance.save()) 
+    					{
+    						flash.message = "Investigator ${investigatorInstance.name} updated"
+    						redirect(action:create,id:investigatorInstance.id)
+    					}
+    					else 
+    					{
+    					render(view:'edit',model:[investigatorInstance:investigatorInstance])
+    					}
+    				}
+    			}
+    		}
+    		else 
+    		{
+    			flash.message = "Investigator not found with id ${params.id}"
+    			redirect(action:edit,id:params.id)
+    		}
+    			
+    	}
 
     def create = {
     		
@@ -113,7 +140,7 @@ class InvestigatorController {
        
         investigatorInstance.properties = params
         //investigatorInstance.department=department
-       
+     
         def investigatorInstanceList
         def investigatorService=new InvestigatorService()
         println"@@@@@params@@@@@@"+params
@@ -138,54 +165,80 @@ class InvestigatorController {
                 'investigatorInstanceList':investigatorInstanceList]
     }
 
-    def save = {
-			def ctx = AH.application.mainContext
-			def springSecurityService=ctx.springSecurityService
+    def save =
+    {
+		def ctx = AH.application.mainContext
+		def springSecurityService=ctx.springSecurityService
         def investigatorInstance = new Investigator(params)
+		println"---params---"+params.name
+		def investigatorService=new InvestigatorService()
         def partyinstance = Party.get(params.institution)
         investigatorInstance.party = partyinstance
-        EmailValidator emailValidator = EmailValidator.getInstance()
-		if (emailValidator.isValid(params.email))
-		{
-        if(!investigatorInstance.hasErrors() && investigatorInstance.save()) {
-            flash.message = "Investigator ${investigatorInstance.name} created"
-            def userInstance = new Person()
-            userInstance.username = investigatorInstance.email
-            def subName = investigatorInstance.email
-            //Extracting username from emailId
-            String userName = subName.substring(0,subName.indexOf('@'))
+        def chkUniqueNameInstance = investigatorService.getUniqueName(params)
+        def chkUniqueEmailInstance = investigatorService.getUniqueEmail(params)
+        Integer userId  = userService.getUserByUserName(params.email)
+        println "userId"+userId
+        println"..............chkUniqueEmailInstance..........."+chkUniqueEmailInstance
+        println"..............chkUniqueNameInstance..........."+chkUniqueNameInstance
+        if(chkUniqueNameInstance || userId != null)
+        {
+        	flash.message = " Investigator exists with same name"
+        	redirect(action:create,id:investigatorInstance.id)
+        }
+        else
+        {
+          if(chkUniqueEmailInstance || userId != null)
+         {
+    	   flash.message ="Investigator exists with same email"
+    	   redirect(action:create,id:investigatorInstance.id)
+         }
+         else
+         {
+        	EmailValidator emailValidator = EmailValidator.getInstance()
+        	if (emailValidator.isValid(params.email))
+        	{
+        		if(!investigatorInstance.hasErrors() && investigatorInstance.save()) {
+        			flash.message = "Investigator ${investigatorInstance.name} created"
+        			def userInstance = new Person()
+        			userInstance.username = investigatorInstance.email
+        			def subName = investigatorInstance.email
+        			//Extracting username from emailId
+        			String userName = subName.substring(0,subName.indexOf('@'))
             
-            userInstance.userRealName = investigatorInstance.name
+        			userInstance.userRealName = investigatorInstance.name
             
-            userInstance.password = springSecurityService.encodePassword(userName)
-            userInstance.email = investigatorInstance.email
-            userInstance.enabled=false
-            //userInstance.save()
-            def userService = new UserService()
-            def userPiInstance = userService.saveNewPi(userInstance)
-            def userMapInstance = new UserMap()
-            userMapInstance.user = userInstance
-            userMapInstance.party = Party.get(params.institution)
-            userMapInstance.createdBy="admin"
-            userMapInstance.modifiedBy="admin"
+        			userInstance.password = springSecurityService.encodePassword(userName)
+        			userInstance.email = investigatorInstance.email
+        			userInstance.enabled=false
+        			//userInstance.save()
+        			def userService = new UserService()
+        			def userPiInstance = userService.saveNewPi(userInstance)
+        			def userMapInstance = new UserMap()
+        			userMapInstance.user = userInstance
+        			userMapInstance.party = Party.get(params.institution)
+        			userMapInstance.createdBy="admin"
+        			userMapInstance.modifiedBy="admin"
             
-            if(userMapInstance.save())
-            {
-            	String urlPath = request.getScheme() + "://" + request.getServerName() +":"+ request.getServerPort() + request.getContextPath()+"/user/userActivation/"
-            	def emailId = notificationsEmailsService.sendMessage(investigatorInstance.email,userName,investigatorInstance.name,userInstance.id,urlPath)
+        			if(userMapInstance.save())
+        			{
+        				String urlPath = request.getScheme() + "://" + request.getServerName() +":"+ request.getServerPort() + request.getContextPath()+"/user/userActivation/"
+        				def emailId = notificationsEmailsService.sendMessage(investigatorInstance.email,userName,investigatorInstance.name,userInstance.id,urlPath)
             	
-            }
-            redirect(action:create,id:investigatorInstance.id)
+        			}
+        			redirect(action:create,id:investigatorInstance.id)
+        		}
+        		else 
+        		{
+        			render(view:'create',model:[investigatorInstance:investigatorInstance,partyinstance:partyinstance])
+        		}
+	        }
+			else
+			{
+				flash.message = "Please provide a valid email address"
+				render(view:'create',model:[investigatorInstance:investigatorInstance,partyinstance:partyinstance])
+			}
+         }
         }
-        else {
-            render(view:'create',model:[investigatorInstance:investigatorInstance,partyinstance:partyinstance])
-        }
-		}
-		else
-		{
-			flash.message = "Please provide a valid email address"
-			render(view:'create',model:[investigatorInstance:investigatorInstance,partyinstance:partyinstance])
-		}
     }
     def updateSelect = 
     {

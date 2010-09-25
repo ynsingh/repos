@@ -1,7 +1,8 @@
 class Utilization {
 	Party grantee;
 	Projects projects;
-	GrantPeriod grantPeriod;
+	Date startDate;
+	Date endDate;
 	Date submittedDate;
 	String archiveYesNo;
 	String createdBy;

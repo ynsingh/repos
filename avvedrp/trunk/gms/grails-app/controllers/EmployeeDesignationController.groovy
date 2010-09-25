@@ -1,0 +1,124 @@
+class EmployeeDesignationController 
+{
+	static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+	def index = 
+	{
+    	redirect(action: "list", params: params)
+    }
+    def list = 
+    {
+        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+        [employeeDesignationInstanceList: EmployeeDesignation.list(params), 
+         employeeDesignationInstanceTotal: EmployeeDesignation.count()]
+    }
+	def create = 
+	{
+        def employeeDesignationInstance = new EmployeeDesignation()
+        employeeDesignationInstance.properties = params
+        def EmployeeDesignationService = new EmployeeDesignationService()
+        
+        def employeeDesignationInstanceList=EmployeeDesignationService.getemployeeDesignationList()
+        return [employeeDesignationInstance: employeeDesignationInstance, 
+                employeeDesignationInstanceList:employeeDesignationInstanceList]
+    }
+	def save = 
+	{
+        def employeeDesignationInstance = new EmployeeDesignation(params)
+        if (employeeDesignationInstance.save(flush: true)) 
+	        {
+	            flash.message = "Created New Employee Designation ${params.designation}"
+	            redirect(action: "create", id: employeeDesignationInstance.id)
+	        }
+	        else 
+	        {
+	            render(view: "create", model: [employeeDesignationInstance: employeeDesignationInstance])
+	        }
+	 }
+
+    def show = 
+	{
+        def employeeDesignationInstance = EmployeeDesignation.get(params.id)
+        if (!employeeDesignationInstance) 
+        {
+            flash.message = "${message(code: 'default.not.found.message',args: [message(code: 'employeeDesignation.label', default: 'EmployeeDesignation'), params.id])}"
+            redirect(action: "list")
+        }
+        else 
+        {
+            [employeeDesignationInstance: employeeDesignationInstance]
+        }
+    }
+
+    def edit = 
+    {
+        def employeeDesignationInstance = EmployeeDesignation.get(params.id)
+        if (!employeeDesignationInstance) 
+        {
+            flash.message = "${message(code: 'default.not.found.message',args: [message(code: 'employeeDesignation.label', default: 'EmployeeDesignation'), params.id])}"
+            redirect(action: "create")
+        }
+        else 
+        {
+            return [employeeDesignationInstance: employeeDesignationInstance]
+        }
+    }
+
+    def update = 
+    {
+	    def employeeDesignationInstance = EmployeeDesignation.get(params.id)
+	    if (employeeDesignationInstance) 
+	    {
+	        if (params.version) 
+	        {
+	            def version = params.version.toLong()
+	            if (employeeDesignationInstance.version > version) 
+	            { 
+	                employeeDesignationInstance.errors.rejectValue("version", "default.optimistic.locking.failure", 
+            		[message(code: 'employeeDesignation.label', default: 'EmployeeDesignation')] as Object[], 
+            		"Another user has updated this EmployeeDesignation while you were editing")
+	                render(view: "edit", model: [employeeDesignationInstance: employeeDesignationInstance])
+	                return
+	            }
+	        }
+	        employeeDesignationInstance.properties = params
+	        if (!employeeDesignationInstance.hasErrors() && employeeDesignationInstance.save(flush: true)) 
+	        {
+	            flash.message = "Updated Employee Designation ${params.designation}"
+	            redirect(action: "create", id: employeeDesignationInstance.id)
+	        }
+	        else 
+	        {
+	            render(view: "edit", model: [employeeDesignationInstance: employeeDesignationInstance])
+	        }
+	    }
+	    else 
+	    {
+	        flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'employeeDesignation.label', default: 'EmployeeDesignation'), params.id])}"
+	        redirect(action: "list")
+	    }
+    }
+
+    def delete = 
+    {
+        def employeeDesignationInstance = EmployeeDesignation.get(params.id)
+        if (employeeDesignationInstance) 
+        {
+        	try 
+        	{
+                employeeDesignationInstance.delete(flush: true)
+                flash.message = "Deleted Employee Designation ${params.designation}"
+                redirect(action: "create")
+            }
+            catch (org.springframework.dao.DataIntegrityViolationException e) 
+            {
+                flash.message ="Can't delete the Employee Designation ${params.designation}" 
+                redirect(action: "show", id: params.id)
+            }
+        }
+        else 
+        {
+            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'employeeDesignation.label', default: 'EmployeeDesignation'), params.id])}"
+            redirect(action: "list")
+        }
+    }
+}

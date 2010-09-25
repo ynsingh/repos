@@ -57,7 +57,7 @@
                				<strong>${fieldValue(bean:grantAllocationSplitInstance.grantAllocation.party,field:'code')}</strong>
                         </td>
                         <td valign="top" >
-                            <label for="party"><g:message code="default.AllocatedAmount.label"/>:</label>
+                            <label for="party"><g:message code="default.AllocatedAmount(Rs).label"/>:</label>
                         </td>
                         <td valign="top" >
                             <strong><g:message code="default.Rs.label" /> 
