@@ -4,7 +4,7 @@
  * All Rights Reserved.
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
- * @modified date: 10-08-2010 (Shaista)
+ * @modified date: 10-08-2010, 24-09-2010 (Shaista)
 *#
 $page.setTitle("Login in Brihaspati")
 $page.setBgColor($ui.bgcolor)
@@ -27,26 +27,26 @@ $page.setBgColor($ui.bgcolor)
         	<td align="right" colspan="3">
 			<select id="language" onChange ="javascript:OnChange();">
                                 #if ($lang == "urdu")
-                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","urdu")"> (Urdu) $brih_urdu </option>
+                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","urdu")"> $brih_urdu </option>
                                 #end
-                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","bangla")"> (Bangla) $brih_bangla
-        			<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","bhojpuri")">  (Bhojpuri) $brih_bhojpuri
-				<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","chinese")"> (Chinese) $brih_chinese
-				<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","dutch")">  (Dutch) $brih_dutch
+                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","bangla")"> ($brih_bangla1) $brih_bangla
+        			<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","bhojpuri")">  ($brih_bhojpuri1) $brih_bhojpuri
+				<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","chinese")"> ($brih_chinese1) $brih_chinese
+				<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","dutch")">  (Nederlands) $brih_dutch
                                 <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","english")"> (English) $brih_english
-                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","french")"> (French) $brih_french
-                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","german")"> (German) $brih_german
-				<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","gurmukhi")">(Gurmukhi) $brih_gurmukhi
-                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","hindi")"> (Hindi) $brih_hindi
-                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","italian")"> (Italian) $brih_italian
-				<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","japanese")"> (Japanese) $brih_japanese
-                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","korean")"> (Korean) $brih_korean
-			        <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","malayalam")"> (Malayalam) $brih_malayalam
-                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","marathi")"> (Marathi) $brih_marathi
-                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","russian")"> (Russian) $brih_russian
-        			<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","spanish")"> (Spanish) $brih_spanish
-        			<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","tamil")"> (Tamil) $brih_tamil
-                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","telugu")"> (Telugu) $brih_telugu
+                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","french")"> (Franýais) $brih_french
+                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","german")"> (Deutsch) $brih_german
+				<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","gurmukhi")">($brih_gurmukhi1) $brih_gurmukhi
+                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","hindi")"> ($brih_hindi1) $brih_hindi
+                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","italian")"> (Italiano) $brih_italian
+				<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","japanese")"> ($brih_japanese1) $brih_japanese
+                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","korean")"> ($brih_korean1) $brih_korean
+			        <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","malayalam")"> ($brih_malayalam1) $brih_malayalam
+                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","marathi")"> ($brih_marathi1) $brih_marathi
+                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","russian")"> ($brih_russian1) $brih_russian
+        			<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","spanish")"> (EspaýOB) $brih_spanish
+        			<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","tamil")"> ($brih_tamil1) $brih_tamil
+                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","telugu")"> ($brih_telugu1) $brih_telugu
                         </select>
 	        </td>
         	        <td align="right"> $brih_language $brih_select</td>

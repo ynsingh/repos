@@ -149,6 +149,7 @@ public class Index extends SecureScreen{
 			if(Admin_Role.size()!=0)
 			{
 	                        context.put("Role1","AdminRole");
+				//user.setTemp("role","turbine_root");
 			}
 
 			if(Instructor_Role.size()!=0)
