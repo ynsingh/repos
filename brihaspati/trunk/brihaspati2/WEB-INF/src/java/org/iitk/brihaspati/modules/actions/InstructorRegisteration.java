@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)InstructorRegisteration.java	
  *
- *  Copyright (c) 2005 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005,2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -45,15 +45,15 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
  *
  *  @author <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kumar Trivedi</a>
  *  @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
+ *  @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  */
  
 
-//public class InstructorRegisteration extends SecureAction_Admin
 public class InstructorRegisteration extends SecureAction
 {
 
 /**
- * Method for registering a new student
+ * Method for registering a new student,secondary instructor
  * @param data RunData instance
  * @param context Context instance
  * @return nothing
@@ -79,24 +79,22 @@ public class InstructorRegisteration extends SecureAction
 		String mod=pp.getString("mode");
 		context.put("mode",mod);
 		String gName=pp.getString("cName");
-		String []starr=gName.split("@");
-                String domainNameWithIid=starr[1];
-		String []str=domainNameWithIid.split("_");	
-                String domainName=str[0];
-		String uname=pp.getString("UNAME");
-		uname=uname+"@"+domainName;
+		String email=pp.getString("EMAIL");
 		String fname=pp.getString("FNAME");
 		String lname=pp.getString("LNAME");
-		String email=pp.getString("EMAIL");
 		String passwd=pp.getString("PASSWD");
-		if(passwd.equals(""))
-			passwd=uname;
-
+		/**
+		 *If password is empty, then set the password as value of 0th position of emailId.  
+		 */	
+		if(passwd.equals("")){
+			String []starr=email.split("@");
+                	passwd =starr[0];
+		}
 		String mail_msg="";
 		String serverName=data.getServerName();
                 int srvrPort=data.getServerPort();
                 String serverPort=Integer.toString(srvrPort);
-		String msg=UserManagement.CreateUserProfile(uname,passwd,fname,lname,email,gName,"instructor",serverName,serverPort,LangFile);
+		String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,email,gName,"instructor",serverName,serverPort,LangFile);
 		context.put("msg",msg);
 		data.setMessage(msg +" "+ mail_msg);
 

@@ -59,7 +59,8 @@ $!data.getMessage()
 		<td><b>$entry</b></td>
       </tr>
       <tr>
-        #formCell ("$brih_usr $brih_name <font color=red>*</font>" "UNAME" "")
+        #formCell("$brih_email $brih_ID" "EMAIL" "")
+        ##formCell ("$brih_usr $brih_name <font color=red>*</font>" "UNAME" "")
       </tr>
       <tr bgcolor="$ui.menuColor" >
         #formPasswordCell ("$brih_pwd" "PASSWD" "")
@@ -70,10 +71,10 @@ $!data.getMessage()
       <tr bgcolor="$ui.menuColor">
         #formCell("$brih_last $brih_name" "LNAME" "")
       </tr>
-      <tr>
+      #*<tr>
         #formCell("$brih_email $brih_ID" "EMAIL" "")
-      </tr>
-	<tr bgcolor="$ui.menuColor">
+      </tr>*#
+	<tr>
 	<td colspan=2 align=left>
 	    <input type="button" name="eventSubmit_doRegister" value="$brih_reg" onClick="checkField(document.frm,this);"/>
 	    <input type="reset" name="Clear" value="$brih_clear"/>
@@ -91,7 +92,7 @@ $!data.getMessage()
 <SCRIPT LANGUAGE="javascript">
         function checkField(frm,field)
         {
-                if(frm.UNAME.value!="")
+                if(frm.EMAIL.value!="")
                 {
                                 frm.actionName.value=field.name;
                                 frm.submit();

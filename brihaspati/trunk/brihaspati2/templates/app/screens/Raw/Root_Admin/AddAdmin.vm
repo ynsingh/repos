@@ -108,12 +108,8 @@ $page.setTitle("Login Page | Add Admin ")
 			                        <td>
                         				$admin_list.getAdminUname()
                 				</td>
-						<td>
-						<a href=$link.setPage("call,Root_Admin,AddAdmin.vm").setAction("Institute_RootAdmin").addPathInfo("username",$admin_list.getAdminUname()).addPathInfo("Institute_Id",$admin_list.getInstituteId()).addPathInfo("actionName","eventSubmit_doDelete") onclick="javascript:return confirm('Do you want to remove this institute admin')" style=text-decoration:none>$brih_remove</a>
-						<a href=$link.setPage("call,Root_Admin,UpdateInstituteAdmin.vm").addPathInfo("username",$admin_list.getAdminUname()).addPathInfo("Institute_Id",$admin_list.getInstituteId()).addPathInfo("count","2") style=text-decoration:none>$brih_edit</a>
-						</td>
-	
-				
+						<td><a href=$link.setPage("call,Root_Admin,AddAdmin.vm").setAction("Institute_RootAdmin").addPathInfo("username",$admin_list.getAdminUname()).addPathInfo("Institute_Id",$admin_list.getInstituteId()).addPathInfo("actionName","eventSubmit_doDelete") onclick="javascript:return confirm('Do you want to remove this institute admin')" style=text-decoration:none>$brih_remove</a></td>
+						<td><a href=$link.setPage("call,Root_Admin,UpdateInstituteAdmin.vm").addPathInfo("username",$admin_list.getAdminUname()).addPathInfo("Institute_Id",$admin_list.getInstituteId()).addPathInfo("status","instadminedit").addPathInfo("count","2") style=text-decoration:none>$brih_edit</a></td>
 					</tr>
 					#end
 				</table>

@@ -22,11 +22,9 @@
 </td></ir>
 </table>
 <table width=100% bgcolor="$ui.tableColor">
-<tr bgcolor="$ui.MenuColor">
-        <td>
-                <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","pendinglist").addPathInfo("count","1") style=text-decoration:none>$RemoteInstitute $brih_mgmt</a>
-        </td>
-        </tr>
+<tr>
+        <td><a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","pendinglist").addPathInfo("count","1") style=text-decoration:none>$RemoteInstitute $brih_mgmt</a></td>
+</tr>
 #*   <tr>
       <td>
          <a href=$link.setPage("call,UserMgmt_Admin,RegisterationManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_reg</a>
@@ -40,28 +38,21 @@
       </td>
    </tr>
 *#
-   <tr>
-      <td>
-         <a href=$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("listcourse","listcourse").addPathInfo("mode","All").addPathInfo("actionStat","Edit").addPathInfo("count","1") style=text-decoration:none>$brih_list $brih_mgmt</a>
+   <tr bgcolor="$ui.menuColor">
+      <td><a href=$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("listcourse","listcourse").addPathInfo("mode","All").addPathInfo("actionStat","Edit").addPathInfo("count","1") style=text-decoration:none>$brih_list $brih_mgmt</a>
               ##  <img src="$content.getURI("/images/$lang/listmanagement.jpg")"border=0></a><br>
       </td>
    </tr>
+   <tr>
+      <td><a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","personal") style=text-decoration:none>$personal $brih_calendar</a></td>
+   </tr>
+
    <tr bgcolor="$ui.menuColor">
-      <td>
-         <a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path","personal") style=text-decoration:none>$personal $brih_calendar</a>
-      </td>
+      <td><a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","1") style=text-decoration:none>$brih_communication</a></td>
    </tr>
 
    <tr>
-      <td>
-         <a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","1") style=text-decoration:none>$brih_communication</a>
-                ##<img src="$content.getURI("/images/$lang/communications.jpg")"border=0></a><br>
-      </td>
-   </tr>
-
-   <tr bgcolor="$ui.menuColor">
-      <td>
-         <a href=$link.setPage("call,Backups,Backups.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang == "hindi") $brih_ad $brih_Of1 $brih_backup #else $brih_ad $brih_backup #end</a>
+      <td><a href=$link.setPage("call,Backups,Backups.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang == "hindi") $brih_ad $brih_Of1 $brih_backup #else $brih_ad $brih_backup #end</a>
 ##       <img src="$content.getURI("/images/$lang/adminbackup.jpg")" border="0"></a>
       </td>
    </tr>
@@ -73,25 +64,18 @@
       </td>
    </tr>
 *#
-   <tr bgcolor="$ui.menuColor">
-      <td>
-         <a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("mode","adphase").addPathInfo("count","1") style=text-decoration:none>$brih_Ev $brih_mgmt</a>
-##                <img src="$content.getURI("/images/$lang/eventmanagement.jpg")"border=0></a><br>
-      </td>
-   </tr>
-	<tr><td>
-                <a href=$link.setPage("call,Root_Admin,RolePermissionMap.vm").addPathInfo("mode","all").addPathInfo("count","1") style=text-decoration:none>$brih_role $Repo_Perm $brih_mgmt</a>
-</td></tr>
-   <tr>
-      <td>
-         <a href=$link.setPage("call,AdminProfile,ChangePasswd.vm").addPathInfo("count","1") style=text-decoration:none>$brih_changePassword</a>
-      </td>
-   </tr>
-   <tr bgcolor="$ui.menuColor">
-      <td>
-         <a href=$link.setPage("call,AdminProfile,AdminParam.vm").addPathInfo("count","1") style=text-decoration:none>$Profile_user</a>
-      </td>
-   </tr>
+<tr bgcolor="$ui.menuColor">
+      <td><a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("mode","adphase").addPathInfo("count","1") style=text-decoration:none>$brih_Ev $brih_mgmt</a></td>
+</tr>
+<tr>
+	<td><a href=$link.setPage("call,Root_Admin,RolePermissionMap.vm").addPathInfo("mode","all").addPathInfo("count","1") style=text-decoration:none>$brih_role $Repo_Perm $brih_mgmt</a></td>
+</tr>
+<tr bgcolor="$ui.menuColor">
+      <td><a href=$link.setPage("call,AdminProfile,ChangePasswd.vm").addPathInfo("count","1") style=text-decoration:none>$brih_changePassword</a></td>
+</tr>
+<tr>
+      <td><a href=$link.setPage("call,AdminProfile,AdminParam.vm").addPathInfo("count","1") style=text-decoration:none>$Profile_user</a></td>
+</tr>
 #*
    <tr>
       <td>

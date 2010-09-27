@@ -38,6 +38,7 @@ import java.util.Properties;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.Vector;
+import java.sql.Date;
 
 //turbine classes
 
@@ -71,6 +72,7 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.StringUtil;
+import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.EncryptionUtil;
 import org.iitk.brihaspati.modules.utils.MailNotification;
 import org.iitk.brihaspati.modules.utils.SystemIndependentUtil;
@@ -190,7 +192,8 @@ public class Institute_RootAdmin extends VelocitySecureAction
                /** 
                *  Get parameters passed from templates.
                */
-
+		String curdate=ExpiryUtil.getCurrentDate("-");
+                Date rejectdate=Date.valueOf(curdate);
 		ParameterParser pp = data.getParameters();
 		String LangFile = (String)data.getUser().getTemp("LangFile");
                 String institutelist = data.getParameters().getString("deleteFileNames");
@@ -209,9 +212,12 @@ public class Institute_RootAdmin extends VelocitySecureAction
 					*/
                                         Criteria crit = new Criteria();
                                         crit.add(InstituteAdminRegistrationPeer.INSTITUTE_ID,instituteid);
+                                        crit.add(InstituteAdminRegistrationPeer.REGISTRATION_DATE,rejectdate);
                                         crit.add(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"2");
 					InstituteAdminRegistrationPeer.doUpdate(crit);
-					data.setMessage("Institute as well as institute admin has been rejected");								
+					String msg=MultilingualUtil.ConvertedString("instAreg_msg6",LangFile);
+					//data.setMessage("Institute as well as institute admin has been rejected");								
+					data.setMessage(msg);								
 					
 				}
 			}	
@@ -551,6 +557,7 @@ public class Institute_RootAdmin extends VelocitySecureAction
 		*/
 		String LangFile=data.getUser().getTemp("LangFile").toString();
 		ParameterParser pp = data.getParameters();
+		String status=pp.getString("status");
 		String instid=pp.getString("instituteid");
 		String instadname=pp.getString("iadname");
 		int uid=UserUtil.getUID(instadname);
@@ -572,6 +579,7 @@ public class Institute_RootAdmin extends VelocitySecureAction
 		* Update the field in 'INSTITUTE_ADMIN_REGISTRATION' table
 		*/	
 		Criteria crit=new Criteria();
+		if(status.equals("instituteedit")){
 		crit.add(InstituteAdminRegistrationPeer.INSTITUTE_ID,instid);	
 		crit.add(InstituteAdminRegistrationPeer.INSTITUTE_NAME,instname);	
 		crit.add(InstituteAdminRegistrationPeer.INSTIUTE_ADDRESS,instadd);	
@@ -583,11 +591,13 @@ public class Institute_RootAdmin extends VelocitySecureAction
 		crit.add(InstituteAdminRegistrationPeer.TYPE_OF_INSTITUTION,insttype);	
 		crit.add(InstituteAdminRegistrationPeer.INSTITUTE_WEBSITE,instwebsite);	
 		InstituteAdminRegistrationPeer.doUpdate(crit);
+		}
 		/**
 		* Update the field in 'INSTITUTE_ADMIN_USER' table
 		*/	
+		if(status.equals("instadminedit")){
 		crit=new Criteria();
-		crit.add(InstituteAdminUserPeer.ID,id);	
+		crit.add(InstituteAdminUserPeer.ID,id);
 		crit.add(InstituteAdminUserPeer.ADMIN_FNAME,adminfname);	
 		crit.add(InstituteAdminUserPeer.ADMIN_FNAME,adminfname);	
 		crit.add(InstituteAdminUserPeer.ADMIN_LNAME,adminlname);	
@@ -603,9 +613,10 @@ public class Institute_RootAdmin extends VelocitySecureAction
 		crit.add(TurbineUserPeer.LAST_NAME,adminlname);	
 		crit.add(TurbineUserPeer.EMAIL,email);
 		TurbineUserPeer.doUpdate(crit);
-		String msg=MultilingualUtil.ConvertedString("instAreg_msg4",LangFile);
 		data.setScreenTemplate("call,Root_Admin,AddAdmin.vm");
-		context.put("mode","viewadmin");	
+		context.put("mode","viewadmin");
+		}	
+		String msg=MultilingualUtil.ConvertedString("instAreg_msg4",LangFile);
 		data.setMessage(msg);
 	}
 	

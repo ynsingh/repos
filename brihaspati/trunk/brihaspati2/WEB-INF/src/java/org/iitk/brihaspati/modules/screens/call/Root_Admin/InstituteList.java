@@ -38,6 +38,7 @@ package org.iitk.brihaspati.modules.screens.call.Root_Admin;
 
 /**
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  */
 
 import java.util.Vector;
@@ -79,6 +80,7 @@ public class InstituteList extends SecureScreen_Admin
 			context.put("mode",mode);
 			String tdcolor=pp.getString("count","");
 			context.put("tdcolor",tdcolor);
+			String uname=(data.getUser()).getName();
 			Criteria crit = new Criteria();
 			
 
@@ -132,6 +134,32 @@ public class InstituteList extends SecureScreen_Admin
 				crit.add(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"2");
 				List rejectedlist=InstituteAdminRegistrationPeer.doSelect(crit);
 				context.put("rejectedlist",rejectedlist);
+				Vector instId=new Vector();
+				Vector instuser=new Vector();
+				List userdetail=null;
+				if(rejectedlist.size() !=0)
+				{
+                                	for(int i=0;i<rejectedlist.size();i++)
+					{
+						InstituteAdminRegistration inst=(InstituteAdminRegistration)(rejectedlist.get(i));
+                                                int instid=inst.getInstituteId();
+						instId.add(instid);
+                                        }
+					for(int k=0;k<instId.size();k++){
+					String Instid=(instId.get(k)).toString();
+					int InstId=Integer.parseInt(Instid);
+					crit = new Criteria();
+                        		crit.add(InstituteAdminUserPeer.INSTITUTE_ID,InstId);
+                        		userdetail=InstituteAdminUserPeer.doSelect(crit);
+					for(int j=0;j<userdetail.size();j++)
+					{
+						InstituteAdminUser instadminuser=(InstituteAdminUser)userdetail.get(j);
+						instuser.add(instadminuser);
+					}
+					}	
+                        		context.put("userdetail",instuser);
+					ErrorDumpUtil.ErrorLog("userdetail in reject mode=="+userdetail);
+                                }
 			}			
 		}
 		catch(Exception e)

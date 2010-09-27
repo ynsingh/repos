@@ -62,6 +62,8 @@ public class UpdateInstituteAdmin extends SecureScreen_Admin
 			context.put("instId",iid);
 			String iname=data.getParameters().getString("username");
 			context.put("iadname",iname);
+			String status=data.getParameters().getString("status");
+			context.put("status",status);
 			String count=data.getParameters().getString("count","");
                         context.put("tdcolor",count);
 			Criteria crit=new Criteria();
