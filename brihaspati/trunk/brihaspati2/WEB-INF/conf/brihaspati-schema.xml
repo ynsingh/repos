@@ -235,8 +235,8 @@
 </table>
 
 <table name="ASSIGNMENT">
-         <column name="ASSIGN_ID" required="true" size="32" primaryKey="true" type="VARCHAR"/>
-         <column name="GROUP_NAME" required="true" size="99" type="VARCHAR"/>
+         <column name="ASSIGN_ID" required="true" size="255" primaryKey="true" type="VARCHAR"/>
+         <column name="GROUP_NAME" required="true" size="255" type="VARCHAR"/>
          <column name="TOPIC_NAME" required="true" size="255" type="VARCHAR"/>
          <column name="CUR_DATE" required="true" type="DATE"/>
          <column name="DUE_DATE" required="true" type="DATE"/>
