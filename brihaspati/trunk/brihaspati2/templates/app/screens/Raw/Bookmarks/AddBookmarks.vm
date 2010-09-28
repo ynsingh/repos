@@ -5,6 +5,8 @@
  *  All Rights Reserved.
  *  @author <a href="mailto:seema_020504@yahoo.com ">Seema Pal</a>
  *  @author <a href="mailto:kshuklak@rediffmail.com ">Kishore kumar shukla</a>
+ *  @author <a href="mailto:smita37uiet@gmail.com ">Smita pal</a>
+ *  @modified date: 27-09-2010
  *  Contributors: Members of ETRG, I.I.T. Kanpur
  *#
 
@@ -22,7 +24,7 @@ $!data.getMessage()
 	</tr>
 </table> ##table 1 end
 <br>
-<table bgcolor="#e5e5e5" width="100%">
+<table bgcolor="$ui.menuColor" width="100%">
         <tr>
                 <td align="center"><b>
                 <a href=$link.setPage("call,Bookmarks,AddBookmarks.vm").addPathInfo("mode","addBmarks")>$brih_add $brih_Bookmark</a>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -33,25 +35,25 @@ $!data.getMessage()
 <br>
 <form name="frm" method="post" action=$link.setPage("call,Bookmarks,ManageBookmarks.vm").setAction("Bookmarks").addPathInfo("stat1","All").addPathInfo("Mode","NoBlank")>
 #if($mode =="addBmarks")
-<table bgcolor="#e5e5e5" width=100% > ## table 3 start
-<tr>
+<table bgcolor="$ui.tableColor" width=100% > ## table 3 start
+<tr bgcolor="$ui.menuColor">
 	<td><b>$brih_name:</b></td>
-	<td><input type="text"  size="31" name="name"  value=""/></td>
+	<td colspan="3"><input type="text"  size="31" name="name"  value=""/></td>
 </tr>
-<tr>
+<tr bgcolor="$ui.tableColor">
 	<td><b>$brih_Url/$brih_Location:</b></td>
-	<td><input type="text"  size="31" name="location"  value="http://"/></td>
+	<td colspan="3"><input type="text"  size="31" name="location"  value="http://"/></td>
 </tr>
-<tr>
+<tr bgcolor="$ui.menuColor">
         <td><b>$brih_Comment:</b></td>
         <td><input type="text"  size="50" name="comment"  value=""/></td>
 	<input type="hidden" name="type" value="general">
         <td><input type="button" name="eventSubmit_doCreateFolder" value="$brih_new $brih_Folder" onClick="SetDirName(document.frm,this);"/></td>
 </tr>
-<tr>
+<tr bgcolor="$ui.tableColor">
 	#if($Mode=="NoBlank")
         <td><b>$brih_select $brih_Folder:</b></td>
-	<td>
+	<td colspan="3">
                         <select name="foldername" size="1" onChange="Changefolder(document.frm,this);"/>
                                 <option>  - $brih_select - </option>
                                 #foreach($bdname in $dirvalue)
@@ -65,15 +67,15 @@ $!data.getMessage()
 	#end
 
 </tr>
-	<tr><td align="left">
+	<tr bgcolor="$ui.menuColor"><td align="left" colspan="3">
         	<input type="button" name="eventSubmit_doSave" value="$WikiSave" onClick="checkField(document.frm,this);"/>
 		<input type="submit" name="eventSubmit_doCancel" value="$brih_cancel"/>
 	</td></tr>
 </table>
 #end
 #if($mode=="Course" ||$mode=="Course_file")
-<table bgcolor="#e5e5e5" width=100% > ## table 3 start
-<tr>
+<table bgcolor="$ui.tableColor" width=100% > ## table 3 start
+<tr bgcolor="$ui.tableColor">
 	#if($mode=="Course")
 	<td><b> $brih_course $brih_name:</b></td>
 	#end
@@ -82,7 +84,7 @@ $!data.getMessage()
 	#end
 	<td><input type="text"  size="31" name="name"  value="$name"/></td>
 </tr>
-<tr>
+<tr bgcolor="$ui.menuColor">
 	#if($mode=="Course")
 	<td><b>$brih_title :</b></td>
 	#end
@@ -91,20 +93,20 @@ $!data.getMessage()
 	#end
 	<td><input type="text"  size="31" name="location"  value="$location"/></td>
 </tr>
-<tr>
+<tr bgcolor="$ui.tableColor">
         <td><b>$brih_Comment:</b></td>
         <td><input type="text"  size="50" name="comment"  value=""/></td>
 	##<input type="hidden" name="type" value="Course">
 	<input type="hidden" name="type" value="$mode">
 </tr>
-	<tr><td align="left">
+	<tr bgcolor="$ui.menuColor"><td align="left" colspan="2">
         	<input type="button" name="eventSubmit_doSave" value="$WikiSave" onClick="checkField2(document.frm,this);"/>
 		<input type="submit" name="eventSubmit_doCancel" value="$brih_cancel"/>
 	</td></tr>
 </table>
 #end
 <br>
-<table  bgcolor="#e5e5e5" width="100%">
+<table  bgcolor"$ui.tableColor" width="100%">
 #if($stat=="Move")
 #if($Mode=="NoBlank")
 <tr>

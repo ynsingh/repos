@@ -5,12 +5,18 @@
  *  All Rights Reserved.
  *  @author <a href="mailto:seema_020504@yahoo.com ">Seema Pal</a>
  *  @author <a href="mailto:kshuklak@rediffmail.com ">Kishore kumar shukla</a>
+ *  @author <a href="mailto:smita37uiet@gmail.com ">Smita pal</a>
+ *  @modified date:27-09-2010
  *  Contributors: Members of ETRG, I.I.T. Kanpur
  *#
 
 $page.setTitle("ManageBookmarks")
 $page.setBgColor($ui.bgcolor)
+## If some message has been set, that is retrieved and displayed.
 $!data.getMessage()
+
+## Retreiving the $lang (representing the choosen language for display, which
+## was set in the corresponding screen class.
 #set($lang=$data.getUser().getTemp("lang").toString())
 
 <table bgcolor="$ui.tableColor" width=100% > ##table 1 start
@@ -36,7 +42,7 @@ $!data.getMessage()
 
 </table> ##table 1 end
 <br>
-<table bgcolor="#e5e5e5" width="100%">
+<table bgcolor="$ui.menuColor" width="100%">
         <tr>
                 <td align="center"><b>
                 <a href=$link.setPage("call,Bookmarks,AddBookmarks.vm").addPathInfo("mode","addBmarks")>$brih_add $brih_Bookmark</a>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -49,9 +55,9 @@ $!data.getMessage()
 <br>
 #if($Mode=="NoBlank")
 <form name="frm" method="post" action="$link.setPage("call,Bookmarks,ManageBookmarks.vm")">
-<table  bgcolor="#e5e5e5" width="100%">
-<tr>
-        <td bgcolor="#e5e5e5" align="left"><b>$brih_Bookmark $brih_searchBy $brih_Folder$brih_name:</b>
+<table  bgcolor="$ui.tableColor" width="100%">
+<tr bgcolor="$ui.tableColor">
+        <td  align="left"><b>$brih_Bookmark $brih_searchBy $brih_Folder$brih_name:</b>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<select name="dirname" size="1" onChange="Changedir(document.frm,this);"/>
                                 <option>  - $brih_select - </option>
                                #foreach($bdname1 in $dirvalue1)
@@ -66,14 +72,14 @@ $!data.getMessage()
 </tr>
 </table>
 ##if($Mode=="NoBlank")
-<table  bgcolor="#e5e5e5" width="100%">
-<tr>
-        <td bgcolor="#d9e3ec" ><b>$brih_Bookmark</b></td>
-        <td bgcolor="#d9e3ec"colspan="5"><b>$brih_availableAction</td>
+<table  bgcolor="$ui.tableColor" width="100%">
+<tr bgcolor="$ui.menuColor">
+        <td bgcolor="$ui.menuColor" ><b>$brih_Bookmark</b></td>
+        <td bgcolor="$ui.menuColor"colspan="5"><b>$brih_availableAction</td>
 </tr>
 #set ( $count="" )
                 #foreach($btopics in $allTopics)
-<tr bgcolor="#e5e5e5">
+<tr bgcolor="ui.tableColor">
 	#if($btopics.type =="Course_file" || $btopics.type =="Course")
         <td>$btopics.Url</td>
 	#else
@@ -83,10 +89,17 @@ $!data.getMessage()
 <td><a href="javascript:void(0)"onclick="window.open('$btopics.Url')">$brih_view</a></td>
 #end
 #if($btopics.type=="Course")
-	<td><a href="$link.setPage("call,Bookmarks,AddBookmarks.vm").addPathInfo("btname",$btopics.Topic).addPathInfo("bturl",$btopics.Url).addPathInfo("bgroup",$btopics.Name).addPathInfo("stat","view").addPathInfo("stat1","All")">$brih_view</a></td>
+        <td><a href="$link.setPage("call,Bookmarks,AddBookmarks.vm").addPathInfo("btname",$btopics.Topic).addPathInfo("bturl",$btopics.Url).addPathInfo("bgroup",$btopics.Name).addPathInfo("stat","view").addPathInfo("stat1","All")">$brih_view</a></td>
 #end
+##making bookmark of file in Coursefile
 #if($btopics.type=="Course_file")
+##if file is flv than make  bookmark
+#if($btopics.Url.toLowerCase().endsWith("flv"))
+<td><a href=javascript:popupWin("$link.setPage("call,ViewFilePlayer.vm").addPathInfo("topic",$btopics.Topic).addPathInfo("dir",$btopics.Name).addPathInfo("type","content").addPathInfo("filename",$btopics.Url)","newWin")>$brih_view</a>&nbsp;&nbsp;</td>
+##else making  bookmarks for other files
+#else
 <td><a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("topic",$btopics.Topic).addPathInfo("dir",$btopics.Name).addPathInfo("type","Bookmarks").addPathInfo("filename",$btopics.Url)","newWin")>$brih_view</a>&nbsp;&nbsp;</td>
+#end
 #end
 #if($btopics.type=="general")
 <td><a href="$link.setPage("call,Bookmarks,AddBookmarks.vm").addPathInfo("btname",$btopics.Topic).addPathInfo("stat","Move").addPathInfo("stat1","All")">$brih_move</a></td>
@@ -100,7 +113,7 @@ $!data.getMessage()
        		 #end
 </tr>
 </table>
-<table bgcolor="#e5e5e5" width="100%"><tr><td align="left">
+<table bgcolor="$ui.tableColor" width="100%"><tr><td align="left">
 	#if($stat1!="Search")
 	#if($total_size <= $userConf)
                 <u><font color="white">$brih_first</font></u> &nbsp;
