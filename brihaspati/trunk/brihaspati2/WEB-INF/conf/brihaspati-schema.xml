@@ -294,6 +294,8 @@
         <column name="AFFILIATION" type="VARCHAR" size="255"/>
         <column name="INSTITUTE_WEBSITE" type="VARCHAR" size="255"/>
         <column name="INSTITUTE_STATUS" required="true" type="INTEGER" size="1" default="0"/>
+        <column name="REGISTRATION_DATE" type="DATE"/>
+        <column name="EXPIRY_DATE" type="DATE"/>
 
 </table>
 <table name="INSTITUTE_ADMIN_USER" idMethod="idbroker">
