@@ -1,39 +1,32 @@
 package org.bss.brihaspatisync.tools.audio_video;
+
+/**
+ * AudioVideoPanel.java
+ * See LICENCE file for usage and redistribution terms
+ * Copyright (c) 2010 ETRG, IIT Kanpur.
+ */
+
 import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import javax.media.ControllerEvent;
-import javax.media.ControllerListener;
 import javax.media.Manager;
-import javax.media.NoPlayerException;
-import javax.media.CannotRealizeException;
 import javax.media.Player;
 import javax.media.protocol.DataSource;
-import javax.media.RealizeCompleteEvent;
+
 import javax.swing.JPanel;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import java.io.*;
-import java.net.InetAddress;
-import javax.media.*;
-import javax.media.protocol.*;
-import javax.media.protocol.DataSource;
-import javax.media.format.*;
-import javax.media.control.TrackControl;
-import javax.media.control.FormatControl;
-import javax.media.control.QualityControl;
-import javax.media.rtp.*;
-import javax.media.rtp.rtcp.*;
-import com.sun.media.rtp.*;
-import java.util.Vector;
-import org.bss.brihaspatisync.gui.JoinSessionPanel;
-import org.bss.brihaspatisync.util.ClientObject;
+import javax.swing.JToolBar;
+import java.awt.BorderLayout;
+
 import org.bss.brihaspatisync.network.Log;
+import org.bss.brihaspatisync.util.ClientObject;
+import org.bss.brihaspatisync.gui.JoinSessionPanel;
+
+import org.bss.brihaspatisync.tools.audio_video.receiver.VideoReceive;
+import org.bss.brihaspatisync.tools.audio_video.receiver.AudioReceive;
+import org.bss.brihaspatisync.tools.audio_video.transmitter.AVTransmit3;
+
+/**
+ * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>	
+ * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>
+ */
 
 
 public class AudioVideoPanel extends JPanel{

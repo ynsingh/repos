@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?> 
-	<!-- JNLP File for Brihaspati_Sync client Application --> 
-<jnlp  spec="1.0+"  codebase="https://172.26.82.18:8443/brihaspatisync_client/jnlp"  href="brihaspatisync.jnlp">
+<!-- JNLP File for Brihaspati_Sync client Application
+     change IP address in the codebase field to the one used by your server.
+ --> 
+<jnlp  spec="1.0+"  codebase="https://172.26.82.19:8443/brihaspatisync_client/jnlp"  href="brihaspatisync.jnlp">
   	<information>
     		<title>Brihaspatisync Client</title>
     		<vendor>Ashish Yadav</vendor>
@@ -18,6 +20,8 @@
 		<j2se version="1.0+" />
 		<property name="sun.java2d.d3d" value="false"/>
 		<jar href="brihaspatisync.jar"/>
+		<jar href="poi-3.6-20091214.jar"/>
+                <jar href="poi-scratchpad-3.6-20091214.jar"/>
 	</resources>
 	<application-desc main-class="org.bss.brihaspatisync.Client"/>
 </jnlp>

@@ -17,15 +17,19 @@ import javax.swing.border.TitledBorder;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JScrollPane;
+import javax.swing.JLabel;
+import javax.swing.JTabbedPane;
+
 
 import java.util.Vector;
 import org.bss.brihaspatisync.tools.whiteboard.WhiteBoardPanel;
 import org.bss.brihaspatisync.tools.chat.ChatPanel;
 import org.bss.brihaspatisync.tools.presentation.PresentationPanel;
-
+import org.bss.brihaspatisync.tools.desktop_sharing.Desktop_Sharing;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
+ * @author <a href="mailto:arvindjss17@gmail.com"> Arvind Pal </a>
  */
 
 public class JoinSessionPanel extends JPanel implements ActionListener, MouseListener{
@@ -90,7 +94,6 @@ public class JoinSessionPanel extends JPanel implements ActionListener, MouseLis
 		//PPT Presentation Panel
                 JPanel chat_slide_Pane=new JPanel();
                 chat_slide_Pane.setLayout(new BorderLayout());
-		//pp_Pane.add(ChatPanel.getController().createGUI());//,BorderLayout.CENTER);
 
 		JPanel slide_Pane=new JPanel();
 		
@@ -110,11 +113,19 @@ public class JoinSessionPanel extends JPanel implements ActionListener, MouseLis
                 JSplitPane ul_av_Split=new JSplitPane(JSplitPane.VERTICAL_SPLIT,UserListPanel.getController().createGUI(),new_Pane);
 		ul_av_Split.setDividerLocation(220);
                 left_Pane.add(ul_av_Split);
-
-                //start for whiteboard,chat,remoteDesktop Panel
+		//TabbedPane start
+		JTabbedPane jtp = new JTabbedPane();
+		jtp.addTab(" White Board ", WhiteBoardPanel.getController().createGUI());
+		if(org.bss.brihaspatisync.util.ClientObject.getController().getUserRole().equals("student")){
+	                jtp.addTab(" Desktop Sharing ",Desktop_Sharing.getController());
+		}
+		//TabbedPane stop 
+                
+		//start for whiteboard,chat,remoteDesktop Panel
                	right_Pane=new JPanel();
 		right_Pane.setLayout(new BorderLayout());
-		right_Pane.add(WhiteBoardPanel.getController().createGUI(),BorderLayout.CENTER);
+		//right_Pane.add(WhiteBoardPanel.getController().createGUI(),BorderLayout.CENTER);
+		right_Pane.add(jtp,BorderLayout.CENTER);
 		right_Pane.setBackground(Color.WHITE);
         	splitPane=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left_Pane,right_Pane);
 		splitPane.setBackground(Color.WHITE);

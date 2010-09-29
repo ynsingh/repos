@@ -19,6 +19,7 @@ import org.bss.brihaspatisync.util.ClientObject;
 
 import org.bss.brihaspatisync.network.ReceiveQueueHandler;
 import org.bss.brihaspatisync.network.http.HTTPClient;
+import org.bss.brihaspatisync.network.desktop_sharing.HTTPDesktopSharing;
 import org.bss.brihaspatisync.network.Log;
 
 import org.bss.brihaspatisync.tools.whiteboard.WhiteBoardDraw;	
@@ -111,6 +112,8 @@ public class JoinSession {
            	try{
                 	UL_Timer=new Timer(true);
 			UL_Timer.schedule(UserListTimer.getController(),01,60*60*2);
+			HTTPDesktopSharing hds=new HTTPDesktopSharing();
+			hds.start();
                	}catch(Exception e){log.setLog("Error in user list timer"+e.getMessage());}
 		
                 try{

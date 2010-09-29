@@ -1,21 +1,29 @@
 package org.bss.brihaspatisync.tools.audio_video;
 
-import java.util.*;
-import java.io.*;
-import org.bss.brihaspatisync.util.ClientObject;
-import java.awt.Cursor;
+/**
+ * AVTransmitReceiveHandler.java
+ * See LICENCE file for usage and redistribution terms
+ * Copyright (c) 2010 ETRG, IIT Kanpur.
+ */
+
+
 import org.bss.brihaspatisync.network.Log;
+import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.tools.audio_video.receiver.AudioReceive;
 import org.bss.brihaspatisync.tools.audio_video.receiver.VideoReceive;
 import org.bss.brihaspatisync.tools.audio_video.transmitter.AVTransmit3;
+	
+/**
+ * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>      
+ * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>
+ */
+
 
 public class AVTransmitReceiveHandler extends Thread {
 
-  	private static AVTransmitReceiveHandler trHandler=null;
-	//private static Vector ipTabel=new Vector();
-	
 	private Log log=Log.getController();
-
+	
+  	private static AVTransmitReceiveHandler trHandler=null;
 
   	/** Getting the handler of the main controller class */
 	public static AVTransmitReceiveHandler getController(){
@@ -27,12 +35,11 @@ public class AVTransmitReceiveHandler extends Thread {
    	/**Constructor for the main controller */
    	public AVTransmitReceiveHandler() {
    		 String role=ClientObject.getController().getUserRole();
-   		 log.setLog("role================="+role);
    		 if(role.equals("student")){
    		 	log.setLog("start audio/vedio receive");
    		 	startReceiveAudio();
    		 	startReceiveVideo();
-   		 	 //AVFrame.getController();
+   		 	//AVFrame.getController();
    		 }else{
    		  	log.setLog("start audio/video transmit");
    		  	String result = AVTransmit3.getController().start();
