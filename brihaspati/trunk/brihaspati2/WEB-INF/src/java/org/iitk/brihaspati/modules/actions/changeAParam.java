@@ -34,6 +34,7 @@ package org.iitk.brihaspati.modules.actions;
  *  Contributors: Members of ETRG, I.I.T. Kanpur
  */
 import java.io.File;
+import org.apache.turbine.Turbine;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.om.security.User;
@@ -44,12 +45,13 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.QuotaUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.apache.turbine.services.security.TurbineSecurity;
+
 /**
  * @author <a href="mailto:chitvesh@yahoo.com">Chitvesh Dutta</a>
  * @author <a href="mailto:awadhk_t@yahoo.com">Awahesh Kumar Trivedi</a>
- * @author <a href="mailto:shaistashekh@hotmail.com"> Shaista </a>
- * @modified date: 17-10-2009
-
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
+ * @modified date: 17-10-2009, 29-09-2010
  */
 
 //public class changeAParam extends SecureAction_Admin{
@@ -91,6 +93,7 @@ public class changeAParam extends SecureAction{
 	 	String mailFrom = pp.getString("mailFrom","");	
 	 	String muName = pp.getString("muName","");	
 	 	String mPass = pp.getString("mPass","");	
+	 	String eMail = pp.getString("eMail","");	
 	 	String domainNM = pp.getString("mailDomain","");	
 	 	String aquota = pp.getString("cquota","");
 	 	String uquota = pp.getString("uquota","");
@@ -111,8 +114,9 @@ public class changeAParam extends SecureAction{
 		if (S.checkString(AFName)==-1 && S.checkString(ALName)==-1){
 			user.setFirstName(AFName);
 			user.setLastName(ALName);
+			user.setEmail(eMail);
 			TurbineSecurity.saveUser(user);
-				// for delete the file  and set the value for admin configuration
+			// for delete the file  and set the value for admin configuration
 		 	(new File(path)).delete();
 			AdminProperties.setValue(path,AdminConf,"brihaspati.admin.listconfiguration.value");
 			AdminProperties.setValue(path,AdminCrsExp,"brihaspati.admin.courseExpiry");
@@ -121,6 +125,7 @@ public class changeAParam extends SecureAction{
 			AdminProperties.setValue(path,mailFrom,"brihaspati.mail.smtp.from");
 			AdminProperties.setValue(path,muName,"brihaspati.mail.username");
 			AdminProperties.setValue(path,mPass,"brihaspati.mail.password");
+			AdminProperties.setValue(path,eMail,"brihaspati.mail.email");
 			AdminProperties.setValue(path,domainNM,"brihaspati.mail.local.domain.name");
 			AdminProperties.setValue(path,aquota,"brihaspati.admin.quota.value");
 			AdminProperties.setValue(path,uquota,"brihaspati.user.quota.value");
@@ -132,7 +137,7 @@ public class changeAParam extends SecureAction{
 			data.addMessage(m_u.ConvertedString("qmgmt_msg6",LangFile));
 			}
 		else
-			 prof_update=m_u.ConvertedString("usr_prof1",LangFile);
+			prof_update=m_u.ConvertedString("usr_prof1",LangFile);
 			data.setMessage(prof_update);
 	}	
 

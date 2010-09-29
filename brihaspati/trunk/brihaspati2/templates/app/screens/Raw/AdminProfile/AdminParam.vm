@@ -4,7 +4,8 @@
  * @author <a href="mailto:chitvesh@yahoo.com">Chitvesh Dutta</a>
  * @author <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
- * modified date: 17-10-2009
+ * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
+ * modified date: 17-10-2009, 29-09-2010
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 $page.setTitle("Admin Home | Change Parameters")
@@ -73,27 +74,31 @@ $!data.getMessage()
 	<td width="30"> <font face="$ui.sansSerifFonts"> #if($lang !="english") $LocalMail_mail $brih_Of1 $brih_pwd #else $LocalMail_mail $brih_pwd #end</font></td>	
         <td width="50"> <font face="$ui.sansSerifFonts"> <input type="password" size="30" name="mPass" value="$!mPassword"> </font></td>
     </tr>
-    <tr bgcolor="$ui.menuColor">
+	## formEmailCell("admin email")
+   <tr bgcolor="$ui.menuColor">
+        <td width=30><font face="$ui.sansSerifFonts"> $brih_admin $brih_email </td>             
+        <td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="eMail" value="$!eMail"></font></td>
+</tr>
+    <tr bgcolor="$ui.tableColor">
 	<td width=30><font face="$ui.sansSerifFonts">$brih_course $brih_quota ($brih_in $quota_sze)</td>	
 	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="cquota" value="$!cquota"></font></td>
 </tr>
-    <tr bgcolor="$ui.tableColor">
+    <tr bgcolor="$ui.menuColor">
 	<td width=30><font face="$ui.sansSerifFonts">$brih_usr $brih_quota ($brih_in $quota_sze)</td>	
 	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="uquota" value="$!uquota"></font></td>
-    </tr>
-    <tr bgcolor="$ui.menuColor">
-
+   </tr>
+   <tr bgcolor="$ui.tableColor">
 	<td width=30><font face="$ui.sansSerifFonts">$brih_home $brih_dir </td>	
 	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="hdir" value="$!hdir"></font></td>
-</tr>
-    <tr bgcolor="$ui.tableColor">
+   </tr>
+   <tr bgcolor="$ui.menuColor">
       <td colspan=2 bgcolor="$ui.menuColor">	
 	  <input type="hidden" name="actionName">
           <input type="button" name="eventSubmit_doUpdate" value="$brih_submit" onClick="checkValues(document.frm,this);"/>
 	  <input type="reset" name="reset" value="$brih_reset" onClick="checkClear(document.frm,this);"/>
 	  <input type="hidden" name="count" value="$tdcolor">
       </td>
-    </tr>
+   </tr>
 </form>
 </table>
 

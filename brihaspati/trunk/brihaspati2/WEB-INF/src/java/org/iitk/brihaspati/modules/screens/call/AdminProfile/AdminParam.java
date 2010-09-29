@@ -35,7 +35,6 @@ package org.iitk.brihaspati.modules.screens.call.AdminProfile;
  */
 import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
-//import org.iitk.brihaspati.modules.screens.call.SecureScreen_Admin;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.util.RunData;
@@ -48,6 +47,8 @@ import org.apache.velocity.context.Context;
  * @modified date: 17-10-2009
  * @author <a href="mailto:sharad23nov@yahoo.com ">Sharad Singhi</a> 
  * @author <a href="mailto:jaivir_singh@rediffmail.com">Jaivir Singh</a> 
+ * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a> 
+ * @modified date: 29-09-2010
  */
 
 
@@ -87,6 +88,8 @@ public class AdminParam extends SecureScreen{
 		 context.put("mPassword",mailpass);
 		 String domainNm = AdminProperties.getValue(path,"brihaspati.mail.local.domain.name");
 		 context.put("dName",domainNm);
+		 String email = AdminProperties.getValue(path,"brihaspati.mail.email");//admin email(add in turbinr_user)
+		 context.put("eMail","");
 		 String cquota = AdminProperties.getValue(path,"brihaspati.admin.quota.value");
 		 context.put("cquota",cquota);
 		 String uquota = AdminProperties.getValue(path,"brihaspati.user.quota.value");
@@ -103,6 +106,7 @@ public class AdminParam extends SecureScreen{
 		}
 		context.put("afname",user.getFirstName());
 		context.put("alname",user.getLastName());	
+		context.put("eMail",user.getEmail());	
 	}
 }
 
