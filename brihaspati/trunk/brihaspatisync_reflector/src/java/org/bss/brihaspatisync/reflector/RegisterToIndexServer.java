@@ -35,6 +35,7 @@ import org.bss.brihaspatisync.reflector.audio_video.TransmitHandlerThread;
 
 import org.bss.brihaspatisync.reflector.network.util.RuntimeObject;
 import org.bss.brihaspatisync.reflector.network.serverdata.UserListUtil;
+import org.bss.brihaspatisync.reflector.network.desktop_sharing.DesktopSharing;
 import org.bss.brihaspatisync.reflector.network.serverdata.UserListTimer;
 import java.util.Timer;
 
@@ -248,6 +249,7 @@ public class RegisterToIndexServer {
 	protected String startThreads(){
 		try {
 			HttpServer.getController().start(); 	/** port 9999  */
+			DesktopSharing.getController().start();
 			TCPServer.getController().start(); 	/** port 8888  */
 			//log.start();
 			TransmitHandlerThread.getControllerofHandler().start();

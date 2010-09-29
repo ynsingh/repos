@@ -9,7 +9,7 @@ package org.bss.brihaspatisync.reflector.network.util;
 
 import java.util.Vector;
 import org.bss.brihaspatisync.reflector.buffer_mgt.MyHashTable;
-
+import org.bss.brihaspatisync.reflector.network.desktop_sharing.HTTPDesktopSharing; 
 /**
  * @author <a href="mailto:arvindjss17@gmail.com"> Arvind Pal  </a>Created on 25Feb2009
  * @author <a href="mailto:ashish.knp@gmail.com"> Ashish Yadav </a>Review code and modify on 20March2009
@@ -57,9 +57,13 @@ public class RuntimeObject {
                 return (vector.contains(courseid_IP)) ? false : true ;
         }
 
-	public void setMastrerReflecterCourseid(String course_id){
-		if(!master_ref.contains(course_id))
+	public void setMastrerReflecterCourseid(String course_id,String client_ip){
+		if(!master_ref.contains(course_id)) {
         		master_ref.add(course_id);
+			try {
+				HTTPDesktopSharing.getController().setHTTPDesktopSharingIP(client_ip);
+			}catch(Exception e){}
+		}
         }
 	public Vector getMastrerReflecterCourseid(){
 		return master_ref;

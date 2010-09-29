@@ -43,9 +43,13 @@ public class  MyHashTable {
                                 Map.Entry e=(Map.Entry)itr.next();
                                 String key = (String)e.getKey();
                                 int value = ((Integer)e.getValue()).intValue();
-                                value=value-minpoint;
-				ht.put(key,value);
-                        }
+				if((value-minpoint) >0 ) {
+	                                value=value-minpoint;
+					ht.put(key,value);
+				}else {
+					ht.put(key,minpoint);
+				}
+			}
 		}catch(Exception e){
 			log.setString("Error in reSetPointer(int minpoint) in Hash table "+e.getMessage());
                 }

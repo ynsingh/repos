@@ -32,15 +32,17 @@ public class  BufferMgt extends Thread {
                         int psize=0;
                         pointer=hashTable.getPointer();
                         psize=pointer.size();
-                	if((pointer.size()) !=0){
+                	if((pointer.size()) >0){
         	        	psize=pointer.size();
 	                        int maxpointer=(Integer)pointer.get(0);
                                 int p1=(Integer)pointer.get((psize-1));
 				if(p1>0) {
 					p1=p1-1;
 	                        	if( (maxpointer-p1) >15) {
-        	        	        	hashTable.resetPointer(p1);
-						buffer.removeRange(0,p1);
+        	        	        	//hashTable.resetPointer(p1);
+						//buffer.removeRange(0,p1);
+        	        	        	hashTable.resetPointer(5);
+						buffer.removeRange(0,5);
         	        	      	} else {
 						hashTable.resetPointer(p1);
                                         	buffer.removeRange(0,p1);

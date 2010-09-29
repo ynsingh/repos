@@ -101,8 +101,7 @@ public class HttpRequestHandler {
 					RuntimeObject runtimeObject=RuntimeObject.getController();
 	                                if(strarray[0].equals("instructor")){  
 						/** ip for master reflector */
-						log.setString("Master reflector ip Course  "+strarray[1]);		
-        	                                runtimeObject.setMastrerReflecterCourseid(strarray[1]);
+        	                                runtimeObject.setMastrerReflecterCourseid(strarray[1],client_ip);
                 	                }
 					MyHashTable temp_ht=runtimeObject.getMyHashTable();
 					/** set All course id */ 
