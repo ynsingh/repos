@@ -147,7 +147,7 @@ public class Assignments extends SecureAction
                         String News= "New Assignment "+Duedate;
 							
 									
-                        String MessageBox=" Topic Name "+DB_subject1+" Grade "+Grade+" Instructions is "+DB_message1;
+                        String MessageBox="Course Number "+ courseid +" Topic Name "+DB_subject1+" Grade "+Grade+" Instructions is "+DB_message1;
 
                         /**
                         * Get the user name  and find the user id
@@ -270,12 +270,13 @@ public class Assignments extends SecureAction
                                                 crit.add(NewsPeer.EXPIRY,Edate);
                                                 crit.add(NewsPeer.EXPIRY_DATE,Post_date);
 						NewsPeer.doInsert(crit);
-						//ErrorDumpUtil.ErrorLog("Insert1====>sunil"+MessageBox);
+						//ErrorDumpUtil.ErrorLog("In news Insert1====>"+MessageBox);
                                                 /**
 						* Insert the Aissignment Info
                 		                * from the Assignment table
                                 	        */
 
+					//	ErrorDumpUtil.ErrorLog("I am here 279 ====>"+MessageBox);
 						Criteria crit1=new Criteria();
                                                 crit1.add(AssignmentPeer.ASSIGN_ID,agroup_name);
                                                 crit1.add(AssignmentPeer.GROUP_NAME,courseid);
@@ -284,11 +285,17 @@ public class Assignments extends SecureAction
                                                 crit1.add(AssignmentPeer.DUE_DATE,Post_date);
                                                 crit1.add(AssignmentPeer.PER_DATE,Post_date);
                                                 crit1.add(AssignmentPeer.GRADE,Grade);
-						if(mode.equals("Update")){
-								AssignmentPeer.doUpdate(crit1);
-							}else{
-                                                		AssignmentPeer.doInsert(crit1);
-							}
+//						ErrorDumpUtil.ErrorLog("I am here 288 ====>"+agroup_name);
+//						ErrorDumpUtil.ErrorLog("I am here 288 ====>"+mode + agroup_name + courseid + DB_subject1 + Cur_date + Post_date + Post_date + Grade);
+//						ErrorDumpUtil.ErrorLog("I am here 288 ====>"+crit1);
+						if (mode.equals("Update")) {
+//							ErrorDumpUtil.ErrorLog("In Assignment Update====>");
+							AssignmentPeer.doUpdate(crit1);
+						} else {
+//							ErrorDumpUtil.ErrorLog("In Assignment Insert1====>"+crit1);
+                                                	AssignmentPeer.doInsert(crit1);
+						}
+	//					ErrorDumpUtil.ErrorLog("I am here 296 ====>");
 						File file=new File(Assign+"/__file.xml");
                                                 XmlWriter xmlwriter=null;
 						int kk = -1;
@@ -309,6 +316,7 @@ public class Assignments extends SecureAction
                                         		TopicMetaDataXmlWriter.appendUpdationMailElement(xmlwriter,fileName,username,Grade,Duedate);     
 						xmlwriter.writeXmlFile();
 
+//						ErrorDumpUtil.ErrorLog("I am here 314 ====>"+MessageBox);
 						/**
                                                 * Disply Message when assignment uploaded successfully
                                                 * and Assignment update successfully
@@ -441,7 +449,7 @@ public class Assignments extends SecureAction
                                 
 				/** check the txt formate */
 
-				ErrorDumpUtil.ErrorLog("aaaa    "+fileName1);
+		//		ErrorDumpUtil.ErrorLog("aaaa    "+fileName1);
                                 
 				if(fileName1.endsWith(".txt")||fileName1.endsWith(".pdf")||fileName1.endsWith(".html"))
                                 {
@@ -1116,9 +1124,9 @@ public class Assignments extends SecureAction
                        	context.put("mode",mode);
 			String courseid=(String)user.getTemp("course_id");
                        	String assignid=pp.getString("cid","");
-                       	ErrorDumpUtil.ErrorLog("\nassignid"+assignid);
+                       //	ErrorDumpUtil.ErrorLog("\nassignid"+assignid);
                        	String topicname=pp.getString("topic","");
-                       	ErrorDumpUtil.ErrorLog("\nmode"+mode+"\ntopicname"+assignid);
+                      // 	ErrorDumpUtil.ErrorLog("\nmode"+mode+"\ntopicname"+assignid);
 				
 			/**
                         *Delete Assingnment From database
@@ -1136,7 +1144,7 @@ public class Assignments extends SecureAction
 			String courseRealPath=TurbineServlet.getRealPath("/Courses");
 			String filepath=(courseRealPath+"/"+courseid+"/"+"/Assignment");
                        	File AssDir=new File(filepath+"/"+assignid);
-                       	ErrorDumpUtil.ErrorLog("\nassignid"+assignid+"\nfilepath"+filepath+"\nAssDir"+AssDir);
+                      // 	ErrorDumpUtil.ErrorLog("\nassignid"+assignid+"\nfilepath"+filepath+"\nAssDir"+AssDir);
                        	SystemIndependentUtil.deleteFile(AssDir);
 			//AssDir.delete();
                         data.setMessage("Assignment deleted successfully !!");
@@ -1169,7 +1177,7 @@ public class Assignments extends SecureAction
         {       try
                 {
                         String action=data.getParameters().getString("actionName","");
-			ErrorDumpUtil.ErrorLog("actionname"+action);
+	//		ErrorDumpUtil.ErrorLog("actionname"+action);
                         if(action.equals("brih_upload"))
                                 do_submit(data,context);
         	        else if(action.equals("eventSubmit_doDelete"))
