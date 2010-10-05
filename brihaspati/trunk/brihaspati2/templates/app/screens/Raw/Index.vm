@@ -8,6 +8,9 @@
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:smita37uiet@gmail.com">Smita</a>
  * @modified date: 05-04-2010, 10-08-2010 (Shaista)
+ * @Add FAQ link (05-09-2010)
+ * @author <a href="palseema30@gmail.com">ManoramaPal</a>
+ * @author <a href="kishore.shukla@gmail.com">Kishore Kumar Shukla</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
@@ -83,10 +86,11 @@ $!data.getMessage()
 <tr bgcolor="$ui.menuColor">
 #if($guest_login=="false" )
 	#if(($Role2=="InstructorRole")||($Role3=="StudentRole")||($Role4=="GAdminRole")||($Role5=="AuthorRole"))
-	<td width="33%" align="center" colspan="2"><a href=$link.setPage("call,UserMgmt_User,changePassword.vm").addPathInfo("status","homePage").addPathInfo("lang",$lang) style=text-decoration:none>$brih_changePassword</a>
+	<td width="25%" align="left" colspan="2"><a href=$link.setPage("call,UserMgmt_User,changePassword.vm").addPathInfo("status","homePage").addPathInfo("lang",$lang) style=text-decoration:none>$brih_changePassword</a>
 	</td>
-	<td width="33%" > <a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("mode","general")> $brih_chat</a> </td>
-	<td><a href=$link.setPage("call,UserMgmt_User,Profile.vm").addPathInfo("lang",$lang) style=text-decoration:none> #if($lang == "hindi") $brih_usr $brih_Of $Profile_user #else  $brih_usr $Profile_user #end </a></td>
+	<td width="25%" > <a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("mode","general")> $brih_chat</a> </td>
+	<td width="25%"><a href=$link.setPage("call,UserMgmt_User,Profile.vm").addPathInfo("lang",$lang) style=text-decoration:none> #if($lang == "hindi") $brih_usr $brih_Of $Profile_user #else  $brih_usr $Profile_user #end </a></td>
+	<td width="25%" align="left"><a href=$link.setPage("FAQlist.vm").addPathInfo("mode","alllist").addPathInfo("type","instadmin")>$brih_FAQ</a></td>
 	#end
 #end
 </tr>

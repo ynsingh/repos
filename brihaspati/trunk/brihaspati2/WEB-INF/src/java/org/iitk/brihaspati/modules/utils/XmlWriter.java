@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.utils;
 /*
  * @(#)XmlWriter.java
  *
- *  Copyright (c) 2005-2007 ETRG,IIT Kanpur.
+ *  Copyright (c) 2005-2007,2010 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -48,6 +48,9 @@ import org.xml.sax.Attributes;
 * @author <a href="mailto:ammuamit@hotmail.com">Amit Joshi</a>
 * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
 * @author <a href="mailto:nksinghiitk@yahoo.co.in">Nagendra Kumar Singh</a>
+* @modify 20-08-2010
+* @author: <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
+* @author: <a href="mailto:kishore.shukla@gmail.com">Kishore kumar shukla</a>
 */
 
 public class XmlWriter
@@ -302,7 +305,6 @@ public class XmlWriter
 			offset=fileOffset;
 		else if(element.equals("Desc"))
 			offset=dataOffset;
-///////////
 		else if(element.equals("Topic"))
                         offset=0;
 		else if(element.equals("Group"))
@@ -313,8 +315,10 @@ public class XmlWriter
                         offset=fileOffset;
                 else if(element.equals("Bookmarks"))
                         offset=fileOffset;
-///////////////////////////
-
+//----------------------------FAQ-------------
+		else if(element.equals("FAQ"))
+                        offset=fileOffset;
+//-------------------------------------------------
 		int array[]={seqno+offset};
 		parent.removeSubElements(array);
 		xmlData=(XmlData)v.elementAt(seqno);

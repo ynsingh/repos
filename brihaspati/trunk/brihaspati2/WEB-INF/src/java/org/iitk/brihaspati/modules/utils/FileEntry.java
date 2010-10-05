@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.utils;
 /*
  * @(#)FileEntry.java
  *
- *  Copyright (c) 2007 ETRG,IIT Kanpur.
+ *  Copyright (c) 2007,2010 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -39,6 +39,9 @@ package org.iitk.brihaspati.modules.utils;
  * @author <a href="mailto:ammuamit@hotmail.com">Amit Joshi</a>
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
+ * @modify 20-08-2010
+ * @author: <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
+ * @author: <a href="mailto:kishore.shukla@gmail.com">Kishore kumar shukla</a>
  */
 public class FileEntry
 {
@@ -72,6 +75,11 @@ public class FileEntry
 	private String emailId;
         private String status;
         private String url;
+//----------------------------------FAQ
+	private String Answer;
+        private String Version;
+        private String Faqid;
+//-----------------------------
         private String location;
 
 	private String Duedate;
@@ -347,7 +355,33 @@ public class FileEntry
                 {
                         return url;
                 }
+//----------------------------------FAQ start-------------------------------//
+		public void setAnswer(String Answer)
+                {
+                        this.Answer=Answer;
+                }
+                public String  getAnswer()
+                {
+                        return Answer;
+                }
+                public void setVersion(String Version)
+                {
+                        this.Version=Version;
+                }
+                public String  getVersion()
+                {
+                        return Version;
+                }
+                public void setFaqid(String Faqid)
+                {
+                        this.Faqid=Faqid;
+                }
+                public String  getFaqid()
+                {
+                        return Faqid;
+                }
 
+//----------------------------------FAQ end--------------------------------//
 	 public void setLocation(String location)
         {
                 this.location=location;

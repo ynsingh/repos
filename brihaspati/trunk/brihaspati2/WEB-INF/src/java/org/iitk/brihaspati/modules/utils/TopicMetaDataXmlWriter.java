@@ -54,6 +54,9 @@ import org.iitk.brihaspati.modules.utils.FileEntry;
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @modify 20-03-2009
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @modify 20-08-2010
+ * @author: <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
+ * @author: <a href="mailto:kishore.shukla@gmail.com">Kishore kumar shukla</a>
  */
 
 public class TopicMetaDataXmlWriter
@@ -775,6 +778,47 @@ public class TopicMetaDataXmlWriter
                 }
                 catch(Exception e){
                         ErrorDumpUtil.ErrorLog("The exception in xmlwriterutil in line 323::"+e);
+                        System.out.println("See Exception message in ExceptionLog.txt file:: ");
+                }
+
+              return xmlWriter;
+        }
+ //--------------------------------------------------FAQ----------------------------//
+        public static void appendFAQ(XmlWriter xmlWriter,String Id,String QuesId,String Question,String Answer,String Version)
+        {
+                AttributesImpl ats=new AttributesImpl();
+                ats.addAttribute("","Id","","",StringUtil.replaceXmlSpecialCharacters(Id));
+                ats.addAttribute("","QuesId","","",StringUtil.replaceXmlSpecialCharacters(QuesId));
+                ats.addAttribute("","Question","","",StringUtil.replaceXmlSpecialCharacters(Question));
+                ats.addAttribute("","Answer","","",StringUtil.replaceXmlSpecialCharacters(Answer));
+                ats.addAttribute("","Version","","",StringUtil.replaceXmlSpecialCharacters(Version));
+                xmlWriter.appendElement("FAQ",null,ats);
+        }
+	public static XmlWriter FaqXml(String filePath,String xmlfile)
+        {
+                XmlWriter xmlWriter=null;
+                File descFile=new File(filePath+"/"+xmlfile);
+                try{
+                         TopicMetaDataXmlReader topicMetaData=new TopicMetaDataXmlReader(filePath+"/"+xmlfile);
+                         String Faqdesc=topicMetaData.getTopicDescription();
+                         Vector v=topicMetaData.getFaqDetails();
+                         descFile.delete();
+                         writeWithRootOnly(descFile.getAbsolutePath());
+                         xmlWriter=new XmlWriter(filePath+"/"+xmlfile);
+                         for(int i=0;i<v.size();i++)
+                         {
+                                String Id=((FileEntry)v.get(i)).getFaqid();
+                                String QuesId=((FileEntry)v.get(i)).getquestionid();
+                                String Question=((FileEntry)v.get(i)).getquestion();
+                                String Answer=((FileEntry)v.get(i)).getAnswer();
+                                String Version=((FileEntry)v.get(i)).getVersion();
+                                appendFAQ(xmlWriter,Id,QuesId,Question,Answer,Version);
+                                xmlWriter.changeData("Desc",Faqdesc,0);
+                        }
+
+                }
+                catch(Exception e){
+                        ErrorDumpUtil.ErrorLog("The exception in xmlwriterutil [XmlWriter FaqXml]::"+e);
                         System.out.println("See Exception message in ExceptionLog.txt file:: ");
                 }
 

@@ -49,6 +49,9 @@ import org.iitk.brihaspati.modules.utils.XmlReader;
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @modify 20-03-2009
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @modify 20-08-2010
+ * @author: <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
+ * @author: <a href="mailto:kishore.shukla@gmail.com">Kishore kumar shukla</a>
  */
 
 public class TopicMetaDataXmlReader
@@ -661,5 +664,46 @@ public class TopicMetaDataXmlReader
 		}
 	return null;	
 	}
+	/**
+        *This method get all details of FAQ
+        *@return Vector
+        */
+        public Vector getFaqDetails()
+        {
+                        Vector vt=new Vector();
+                try
+                {
+                        XmlData files[]=xr.getElements("FAQ");
+                        if(files!=null)
+                        {
+                                Attributes ats;
+                                String Id,QuesId,Question,Answer,Version;
+                                for(int j=0;j<files.length;j++)
+                                {
+                                        FileEntry fileEntry=new FileEntry();
+                                        ats=files[j].getAttributes();
+                                        Id=ats.getValue("Id");
+                                        QuesId=ats.getValue("QuesId");
+                                        Question=ats.getValue("Question");
+                                        Answer=ats.getValue("Answer");
+                                        Version=ats.getValue("Version");
+
+                                        fileEntry.setFaqid(Id);
+                                        fileEntry.setquestionid(QuesId);
+                                        fileEntry.setquestion(Question);
+                                        fileEntry.setAnswer(Answer);
+                                        fileEntry.setVersion(Version);
+                                        vt.add(fileEntry);
+                                }
+                                return vt;
+                        }
+                }
+                catch(Exception e)
+                {
+                         ErrorDumpUtil.ErrorLog("The exception in xmlreaderutil in FaqDetailmethod ::"+e);
+                        System.out.println("See Exception message inExceptionLog.txt file:: ");
+                }
+        return null;
+        }
 }
 

@@ -310,6 +310,23 @@
 	
 	
 </table>
-
-
+<!-- ===============================FAQ==================================== -->
+<table name="FAQ" idMethod="idbroker">
+        <column name="FAQ_ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
+        <column name="CATEGORY" size="255" type="VARCHAR"/>
+        <column name="USER_ID" type="INTEGER"/>
+	<column name="GROUP_ID" type="INTEGER"/>
+        <column name="QUES_ID" required="true" type="INTEGER"/>
+        <column name="POST_TIME" type="DATE"/>
+        <column name="EXPIRY_DATE" required="true" type="DATE"/>
+        <column name="VOTE" size="255" type="VARCHAR"/>
+</table>
+<table name="FAQ_VOTE" idMethod="idbroker">
+        <column name="FAQ_ID" required="true" primaryKey="true" type="INTEGER"/>
+        <column name="USER_ID" required="true" primaryKey="true" type="INTEGER"/>
+        <column name="QUES_ID" required="true" type="INTEGER"/>
+        <column name="GOOD" type="INTEGER" Default="0"/>
+        <column name="OK" type="INTEGER" Default="0"/>
+        <column name="WORST" type="INTEGER" Default="0"/>
+</table>
 </database>

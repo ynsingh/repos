@@ -1,0 +1,566 @@
+#*
+ * @(#)FAQ.vm
+ * Copyright (c) 2010 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ *  @author <a href="mailto:seema_020504@yahoo.com ">Seema Pal</a>
+ *  @author <a href="mailto:kshuklak@rediffmail.com ">Kishore kumar shukla</a>
+ *
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+*#
+<head>
+## script for FCK editor
+<script type="text/javascript">
+        _editor_url = "$content.getURI("/scrpts/")";
+        _editor_lang = "en";
+</script>
+<script type="text/javascript" src="$content.getURI("/scrpts/htmlarea.js")"></script>
+<script type="text/javascript">
+        var editor = null;
+        function initEditor() {
+                editor = new HTMLArea("ta");
+                editor.generate();
+                return false;
+                var cfg = editor.config;
+                cfg.registerButton({
+                        id        : "my-hilite",
+                        tooltip   : "Highlight text",
+                        image     : "ed_custom.gif",
+                        textMode  : false,
+                        action    : function(editor) {
+                                editor.surroundHTML("<span class=\"hilite\">", "</span>");
+                        },
+                        context   : 'table'
+                });
+                cfg.toolbar.push(["linebreak", "my-hilite"]); var cfg = editor.config;
+                function clickHandler(editor, buttonId) {
+                        switch (buttonId) {
+                                case "my-toc":
+                                        editor.insertHTML("<h1>Table Of Contents</h1>");
+                                break;
+                                case "my-date":
+                                        editor.insertHTML((new Date()).toString());
+                                break;
+                                case "my-bold":
+                                        editor.execCommand("bold");
+                                        editor.execCommand("italic");
+                                break;
+                                case "my-hilite":
+                                        editor.surroundHTML("<span class=\"hilite\">", "</span>");
+                                break;
+                        }
+                };
+                Cfg.registerButton("my-toc",  "Insert TOC", "ed_custom.gif", false, clickHandler);
+                cfg.registerButton("my-date", "Insert date/time", "ed_custom.gif", false, clickHandler);
+                cfg.registerButton("my-bold", "Toggle bold/italic", "ed_custom.gif", false, clickHandler);
+                cfg.registerButton("my-hilite", "Hilite selection", "ed_custom.gif", false, clickHandler);
+                cfg.registerButton("my-sample", "Class: sample", "ed_custom.gif", false,
+                        function(editor) {
+                                if (HTMLArea.is_ie) {
+                                        editor.insertHTML("<span class=\"sample\">&nbsp;&nbsp;</span>");
+                                        var r = editor._doc.selection.createRange();
+                                        r.move("character", -2); r.moveEnd("character", 2); r.select();
+                                } else {
+                                        var n = editor._doc.createElement("span"); n.className = "sample"; editor.insertNodeAtSelection(n);
+                                        var sel = editor._iframe.contentWindow.getSelection();  sel.removeAllRanges(); var r = editor._doc.createRange();
+                                        r.setStart(n, 0); r.setEnd(n, 0); sel.addRange(r);
+                                }
+                        }
+                );
+                cfg.pageStyle = "body { background-color:  } .hilite { background-color: yellow; } "+ ".sample { color: green; font-family: monospace; }";
+                cfg.toolbar.push(["linebreak", "my-toc", "my-date", "my-bold", "my-hilite", "my-sample"]);
+               editor.generate();
+        }
+        function insertHTML() { var html = prompt("Enter some HTML code here"); if (html) { editor.insertHTML(html); } }
+        function highlight() { editor.surroundHTML('<span style="background-color: yellow">', '</span>'); }
+</script>
+##script for percentage bar
+<script type="text/javascript">
+function setcolor(obj,percentage,prop){
+        obj.style[prop] = "rgb(80%,"+(100-percentage)+"%,"+(100-percentage)+"%)";
+}
+        var prg_width = 200;
+        var charcnt =$totalvote;
+        var maxlimit =$totalstu;
+
+         function progress() {
+             var node = document.getElementById('progress');
+             var w    = node.style.width.match(/\d+/);
+
+             if (w == prg_width) {
+                 w = 0;
+             }
+                var percentage = parseInt(100 - (( maxlimit - charcnt) * 100)/maxlimit) ;
+                node.style.width =  parseInt(( prg_width*percentage)/100)+"px";
+                node.innerHTML="Vote: "+percentage+"%"
+                setcolor(node,percentage,"background-color");
+         }
+</script>
+</head>
+#if($mode=="faqcheck")
+<body onload="var progress_run_id = setInterval(progress, 250);">
+#else
+<body onload="initEditor()">
+#end
+$page.setTitle("FAQ")
+$page.setBgColor("bgcolor")
+## If some message has been set, that is retrieved and displayed.
+$!data.getMessage()
+## Retreiving the $lang (representing the choosen language for display, which
+## was set in corresponding the screen class.
+#set($lang = $data.getUser().getTemp("lang" ).toString())
+<table bgcolor="$ui.menuColor" width=100%>
+##creating link for FAQ according to the role
+<tr><td><b>
+	<font face="$ui.sansSerifFonts">
+	#if($data.getUser().getUserName() == "admin"  || $user_role == "institute_admin")
+	<a href=$link.setPage("Index.vm")>$brih_home</a>| 
+	<a href=$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("mode","alllist")>$brih_FAQ</a> |
+        #else
+        <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
+        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$coursename </a> |
+	<a href="$link.setPage("call,CourseMgmt_User,View.vm").addPathInfo("topic",$category).addPathInfo("count","1")">$brih_view $brih_content</a> |
+        #end
+	#if($modeadd!="ques" && $modeedit!="edit" && $mode!="faqcheck" && $stat!="addfav" && $stat!="unfav")
+	$brih_FAQ$brih_list 
+	#end
+	#if($modeadd=="ques")
+	<a href=$link.setPage("call,FAQ,FAQ.vm").addPathInfo("mode","alllist").addPathInfo("category",$category)>$brih_FAQ$brih_list</a> |
+	$brih_add $brih_Faq
+	#end
+	#if($modeedit=="edit")
+	<a href=$link.setPage("call,FAQ,FAQ.vm").addPathInfo("mode","alllist").addPathInfo("category",$category)>$brih_FAQ$brih_list</a> |
+	$brih_edit $brih_Faq
+	#end
+	#if($mode=="faqcheck")
+	<a href=$link.setPage("call,FAQ,FAQ.vm").addPathInfo("mode","alllist").addPathInfo("category",$category)>$brih_FAQ$brih_list</a> |
+	$brih_view$brih_Faq
+	#end
+	#if($stat == "addfav" || $stat == "unfav")
+	<a href=$link.setPage("call,FAQ,FAQ.vm").addPathInfo("mode","alllist").addPathInfo("category",$category)>$brih_FAQ$brih_list</a> |
+	#end
+	#if($stat == "addfav")
+	$brih_select $brih_fav
+	#end
+	#if($stat == "unfav")
+	$brih_select $brih_unfav
+	#end
+	</font>
+</b>
+## Creating the links for help regarding FAQ for student and instructor.
+        #if($user_role == "instructor")
+	<td align="right" colspan="7">
+        <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/FAQInst.html","newWin");>$brih_help</a>
+        #end
+        #if($user_role == "student")
+        <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/FAQStu.html","newWin");>$brih_help</a>
+        #end
+</td>
+</td></tr>
+</table>
+##links of course Management for instructors 
+<table width="100%" bgcolor="$ui.tableColor">
+<tr bgcolor="$ui.tableColor">
+#if($user_role == "instructor")
+        #if($tdcolor != "1")    
+        <td>
+        #elseif($tdcolor == "1")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,CourseMgmt_User,CourseContent.vm").addPathInfo("count","1")> #if($lang == "english")$brih_course  $brih_content #else $brih_content #end </a></td>
+        #if($tdcolor != "2")    
+        <td>
+        #elseif($tdcolor == "2")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,CourseMgmt_User,CourseManagement.vm").addPathInfo("count","2")> #if($lang !="english") $brih_content $brih_upload #else  $brih_upload $brih_course $brih_content #end </a></td>
+        #if($tdcolor != "3")    
+        <td>
+        #elseif($tdcolor == "3")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,CourseMgmt_User,Configuration.vm").addPathInfo("cName",$course).addPathInfo("count","3")>$brih_course $RemoteConfiguration</a></td>
+        #if($tdcolor != "4")    
+        <td>
+        #elseif($tdcolor == "4")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("count","4")> #if($lang == "english") $brih_upload $brih_course $brih_header #else $brih_course $brih_Of $brih_header  $brih_upload #end </a></td>
+        #if($tdcolor != "5")    
+        <td>
+ #elseif($tdcolor == "5")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,CourseMgmt_User,UploadImage.vm").addPathInfo("mode","NotUploadImage").addPathInfo("count","5")> #if($lang == "english") $RemoteConfiguration $brih_grade #else $brih_grade $RemoteConfiguration #end </a></td>
+        #if($tdcolor != "6")    
+        <td>
+        #elseif($tdcolor == "6")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,CourseMgmt_User,BrihaspatiEditor.vm").addPathInfo("count","6")>$brih_scorm $brih_packager</a></td>
+        #if($tdcolor != "7")
+         <td>
+         #elseif($tdcolor == "7")
+         <td bgcolor="#AFDCEC">
+         #end
+       <a href=$link.setPage("call,CourseMgmt_User,ScormPlayerList.vm").addPathInfo("count","7")>$brih_scorm $Repo_Player</a>
+         </td>
+ #end
+</tr>
+</table>
+##creating form for FAQ
+<form name="frm" method="post" action=$link.setPage("call,FAQ,FAQ.vm").setAction("FAQ")>
+##creating link add faq,favorite and unfavorite faq
+<table width="100%" bgcolor="$ui.tableColor">
+		<tr bgcolor="$ui.menuColor" width="100%"><td width="25%"><b>$brih_cat : $category</b>
+		&nbsp;&nbsp;&nbsp;&nbsp;<a href=$link.setPage("call,FAQ,FAQ.vm").addPathInfo("mode","alllist").addPathInfo("category",$category)>$brih_FAQ$brih_list</a></td>
+#if($modeedit!="edit")
+	<td width="25%" align="center"><a href="$link.setPage("call,FAQ,FAQ.vm").addPathInfo("modeadd","ques").addPathInfo("category",$category).addPathInfo("mode","alllist")">$brih_add $brih_FAQ</a></td>
+#end
+		#if($modeadd!="ques")
+		#if($user_role == "instructor")
+		<td width="25%" align="center"><a href="$link.setPage("call,FAQ,FAQ.vm").addPathInfo("stat","addfav").addPathInfo("category",$category)">$brih_fav $brih_FAQ</a></td>
+		<td width="25%" align="center"><a href="$link.setPage("call,FAQ,FAQ.vm").addPathInfo("stat","unfav").addPathInfo("category",$category)">$brih_select $brih_fav $brih_FAQ</a></td>
+		#end
+		#end
+		</td>
+		</tr>
+		</table> ##close table
+	## adding textarea for answer and textbox for question,expiry field
+	<table width="100%" bgcolor="$ui.tableColor"> ## table start
+        #if($modeadd=="ques")
+                <tr><td width="100%" colspan="5">$brih_add $brih_new $brih_qus</td></tr>
+                <tr><td>$brih_qus :</td>
+		##<textarea  id="ta" name="question" rows=5 cols=60></textarea></td></tr>
+		<td align="left"><input type="text" name="question" size="60" value=""></td></tr>
+                <tr bgcolor="$ui.tableColor"><td>$brih_answer :</td>
+		##<td><textarea id="ta" name="answer" rows=5 cols=60></textarea></td></tr>
+		<td align="left" width="10%"><textarea id="ta" name="answer" wrap="physical" rows=9 cols=80></textarea></td></tr>
+		#if($user_role == "instructor"||$user_role == "student")
+                <tr>
+                        <td>Rating Expiry for FAQ (in Days)</td>
+                        <td><input id="exp_id" type="text" name="expiry" value="7" size="26"></td>
+                </tr>
+                #end
+                <tr bgcolor="$ui.menuColor" width="100%"><td align="left" width="100%" colspan="5">&nbsp;&nbsp;&nbsp;
+		#if($data.getUser().getUserName() == "admin" ||$user_role == "institute_admin")
+               <input type="button" name="eventSubmit_doSaveQues" value="Save" onClick="checkField(document.frm,this);"/>
+		<input type="reset" name="reset" value="Clear" onClick="checkClear(document.frm,this);"/>
+		#else
+               <input type="button" name="eventSubmit_doSaveQues" value="Save" onClick="checkBlank(document.frm,this);"/>
+		<input type="reset" name="reset" value="Clear" onClick="checkClear(document.frm,this);"/>
+                #end
+                </td></tr><br><br>
+         #end
+	## passing mode(edit,ques) and status for checking the empty
+	## set count for the selcting values
+	## passing the value by addpathinfo for the using screen
+	## showing list of question and link of Edit and Delete
+        #if($modeadd!="ques" && $modeedit!="edit")
+	#if($status=="NoBlank")
+	#if($mode == "alllist"||$mode =="faqcheck")
+	<tr bgcolor="$ui.tableColor"><td><b>$brih_frequently $brih_asked $brih_qus</b></td></tr>
+        	#set ( $count = 1)
+		#foreach($faqdetail in $entrydetail)
+                  	#set ( $count1 = 1)
+			#foreach($faqques in $entryques)
+				#if($faqdetail.getQuesId()==$faqques.questionid)
+	                       		<tr bgcolor="$ui.tableColor">
+						<td width="40%" colspan="5">
+						<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
+						<a href="$link.setPage("call,FAQ,FAQ.vm").addPathInfo("category",$category).addPathInfo("quesid",$faqques.questionid).addPathInfo("mode","faqcheck")">$faqques.question</a></td>
+						#if($data.getUser().getUserName() == "admin"  || $user_role == "institute_admin")
+						<td width="30%"><a href="$link.setPage("call,FAQ,FAQ.vm").addPathInfo("category",$category).addPathInfo("mode","alllist").addPathInfo("quesid",$faqques.questionid).addPathInfo("modeedit","edit")">$brih_edit</a></td>
+						#end
+						#if($user_role!= "student")
+						<td width="30%"><a href="$link.setPage("call,FAQ,FAQ.vm").setAction("FAQ").addPathInfo("category",$category).addPathInfo("mode","alllist").addPathInfo("quesid",$faqques.questionid).addPathInfo("actionName","eventSubmit_doDeleteQues")" onclick="javascript:return confirm('Do you want to delete this FAQ')">$brih_delete</a></td>
+						#end
+						#if($user_role =="student" && $faqdetail.getUserId()=="$uid")
+						<td width="30%"><a href="$link.setPage("call,FAQ,FAQ.vm").setAction("FAQ").addPathInfo("category",$category).addPathInfo("mode","alllist").addPathInfo("quesid",$faqques.questionid).addPathInfo("actionName","eventSubmit_doDeleteQues")"  onclick="javascript:return confirm('Do you want to delete this FAQ')">$brih_delete</a></td>
+						#else
+						#if($user_role == "student")
+						<td width="20%"><u><font color="darkgrey">$brih_delete</a></font></u</td>
+						#end
+						#end
+					#end
+			#set ( $count=$count+1)
+			#end
+		#set ( $count1=$count1+1)
+		#end
+		</tr>
+	#end
+		</table> ##close table
+	##this part for selecting favorite and unfavorite
+	##this part for instructor only
+	<table width="100%" bgcolor="$ui.tableColor">
+	#if($stat == "addfav" || $stat == "unfav")
+	#if($empty=="noempty")
+        <tr bgcolor="$ui.tableColor"><td width="100%" colspan="5"><b>$brih_frequently $brih_asked $brih_qus</b></td></tr>
+        	<td colspan="5"><input type="CHECKBOX" name="checkAll" onClick="selectAll(this);">
+                	<b>$brih_selAll </b>
+                </td>
+       #end
+       #end
+	#if($stat == "addfav")
+			 #if( $empty=="noempty")
+                        #set ( $count="")
+                        	#foreach($favques in $favlist)
+                                	<tr bgcolor="$ui.tableColor">
+					#set($idAndques = "$!favques.question:$!favques.questionid")
+                                        <td width="5%"><INPUT TYPE="CHECKBOX" NAME="$idAndques" onClick="addDeleteList(this,document.frm);"></td>
+                                        	<td width="95%">$!favques.question</td>
+			#set ( $count = "$count$idAndques^" )
+                        #end
+			</tr>
+			<tr bgcolor="$ui.menuColor"><td align="left" colspan="10">
+                        <input type="button" name="eventSubmit_doSelectFav_Unfav" value="$brih_unfav" onClick="deleteConfirm(document.frm,this);"/>
+			</td></tr>
+			 #else
+                        <tr><td align="center"><b><font size="3">$brih_faqmsg1</font></td></tr>
+                        #end
+                        #end  ##fav
+               #if($stat == "unfav")
+			 #if( $empty=="noempty")
+                        #set ( $count = "" )  
+                        	#foreach($unfavques in $unfavlist)
+                                	<tr bgcolor="$ui.tableColor">
+					#set($idAndques = "$!unfavques.question:$!unfavques.questionid" )
+                                        <td width="5%"><INPUT TYPE="CHECKBOX" NAME="$idAndques" onClick="addDeleteList(this,document.frm);"></td>
+                                        	<td width="95%">$!unfavques.question</td>
+			#set ( $count = "$count$idAndques^" )
+                        #end
+			</tr>
+			<tr bgcolor="$ui.menuColor"><td align="left" colspan="10">
+                        <input type="button" name="eventSubmit_doSelectFav_Unfav" value="$brih_add$brih_fav" onClick="deleteConfirm(document.frm,this);"/>
+			</td></tr>
+			 #else
+                        <tr><td align="center"><b><font size="3">$brih_faqmsg1</font></td></tr>
+                        #end
+               #end  ##unfav
+		</table> ## close table
+		##this part for editing and adding answer for the particular question.
+		## showing the Answer for all users
+		## link for Rate faq
+		#if($mode=="faqcheck")
+		<table width="100%" bgcolor="$ui.tableColor">
+			#if($data.getUser().getUserName() == "admin"  || $user_role == "institute_admin")
+			<tr bgcolor="$ui.menuColor"><td width="100%" colspan="5"><b>$brih_qus: $ques </b>&nbsp;&nbsp;&nbsp;<a href="$link.setPage("call,FAQ,FAQ.vm").addPathInfo("quesid",$quesid).addPathInfo("category",$category).addPathInfo("modeedit","edit").addPathInfo("mode","alllist")">$brih_edit $brih_answer</a></td>
+			#else
+			<tr bgcolor="$ui.menuColor"><td width="100%" colspan="5"><b>$brih_qus: $ques </b>&nbsp;&nbsp;&nbsp;<a href="$link.setPage("call,FAQ,FAQ.vm").addPathInfo("quesid",$quesid).addPathInfo("category",$category).addPathInfo("modeedit","edit").addPathInfo("mode","alllist").addPathInfo("edittype","addedit")">
+			#if($relation=="before")
+			$brih_add $brih_answer</a></td>
+			##end
+			<td width="30%">Total voting percentage:<align="right"><div style="border: 1px solid black; width:200px; height:7px;"><div id="progress" style="height:7px; width:0px; background-color:red;"/></div></td>
+			#end
+			#end
+			</tr>
+			<tr bgcolor="$ui.tableColor"><td width="20%"><b>$brih_answer:</td></tr>
+			#if($data.getUser().getUserName() == "admin" || $user_role == "institute_admin")
+				#foreach($anslist in $queslist)
+					<tr width="100%"><td width="100%">
+						$anslist.Answer
+					</td></tr>
+				#end
+			#else
+			#set ( $count=1 )
+                        #foreach($list in $answerlist)
+			#set ( $count1=1 )
+				#foreach($anslist in $queslist)
+			#set ( $count2=1 )
+				 #foreach($ratelist in $votedetail)
+					#if($count== $count1 && $count2==$count1)
+					<tr width="100%"><td width="100%">
+						$count. $anslist.Answer
+						<a href="$link.setPage("call,FAQ,FAQ.vm").addPathInfo("quesid",$anslist.questionid).addPathInfo("faqid",$anslist.faqid).addPathInfo("category",$category).addPathInfo("modeedit","edit").addPathInfo("mode","alllist")"> #if($user_role!= "student")$brih_edit $brih_answer #end</a></td>
+							#if($user_role == "student" && $list.getVote()=="notattempt" && $relation=="before")
+							#if($ratelist.getFaqId()=="$anslist.faqid" && $ratelist.getUserId()== "$uid")
+							<td width="20%">$brih_rate$brih_Faq</a></td>
+							#else
+							<td width="20%"><a href="$link.setPage("call,FAQ,FAQ.vm").addPathInfo("faqid",$anslist.faqid).addPathInfo("quesid",$quesid).addPathInfo("category",$category).addPathInfo("modetype","rate").addPathInfo("mode","faqcheck")">$brih_rate$brih_Faq</a></td>
+							#end
+							#end
+                        				#if($modetype == "rate" && $faqid==$anslist.faqid)
+                       	 				<tr><td>
+                        				<input type="radio" name="ratetype" value="Good"/>$brih_good
+                        				<input type="radio" name="ratetype" value="OK"/>$brih_ok
+                        				<input type="radio" name="ratetype" value="Worst"/>$brih_worst
+                        				<input type="button" name="eventSubmit_doRateFaq" value="Submit" onClick="checkField1(document.frm,this);"/>
+                        				</td></tr>
+                        				#end ##moderate
+						#end ##count
+					#set ( $count2 = $count2+1 )
+					#end
+                       		#set ( $count1 = $count1+1 )
+                        	#end
+                        #set ( $count=$count+1) 
+                        #end
+                        #end
+			</td>
+			</tr>
+			<tr><td align="left"><img src="$content.getURI("/images/backtotop.gif")"><a href="#top" onclick="window.scrollTo(0,0); return false">$brih_backtotop</a></td></tr>
+			#end ##modefaqcheck
+			</table>
+                        </td></tr>
+			</table>
+#else
+<table bgcolor="$ui.tableColor" width="100%">
+<tr><td align="center"><b><font size="3">$brih_faqmsg $brih_cat</font></b></td></tr>
+</table>
+#end
+#end
+##this part for editing the Answer
+## showing question and answer for editing
+#if($modeedit=="edit")
+	<tr><td width="100%" colspan="5">$brih_add $brih_answer</td></tr>
+        <tr><td>$brih_qus :</td>
+	<td><input type="text" name="question" size="70" value="$ques" readonly></td></tr>
+        <tr><td>$brih_answer :</td>
+	#if($edittype=="addedit")
+	<td align="left" width="70%"><textarea id="ta" name="answer" rows=10 cols=90></textarea></td></tr>
+	#else
+	#if($data.getUser().getUserName() == "admin" || $user_role == "institute_admin")
+	#foreach($anslist in $queslist)
+	<td align="left" width="70%"><textarea id="ta" name="answer" rows=10 cols=90>$anslist.Answer</textarea></td></tr>
+	#end
+	#else
+	<td align="left" width="70%"><textarea id="ta" name="answer" rows=10 cols=90>$editans</textarea></td></tr>
+	#end
+	#end
+        <tr bgcolor="$ui.tableColor" width="100%"><td align="left" width="100%" colspan="5">&nbsp;&nbsp;&nbsp;
+        <input type="button" name="eventSubmit_doAddAnswer" value="Save" onClick="checkField2(document.frm,this);"/>
+#end
+</table>
+##passing hidden variables for use in action.
+	<input type="hidden" name="actionName">
+	<input type="hidden" name="category" value="$category">
+	<input type="hidden" name="mode" value="$mode">
+	<input type="hidden" name="edittype" value="$edittype">
+	<input type="hidden" name="stat" value="$stat">
+	<input type="hidden" name="faqid" value="$faqid">
+	<input type="hidden" name="ratetype" value="$ratetype">
+	<input type="hidden" name="quesid" value="$quesid">
+	<input type="hidden" name="userrole" value="$user_role">
+        <input type="hidden" name="courseid" value="$courseid">
+	<input type="hidden" name="deleteFileNames" value="">
+</form>
+<SCRIPT LANGUAGE="javascript">
+function checkField1(frm,field)
+{
+	frm.actionName.value=field.name;
+        frm.submit();
+}
+function checkField2(frm,field)
+{
+        editor.setMode("textmode")
+        if(frm.answer.value!="")
+        {
+                frm.actionName.value=field.name;
+                frm.submit();
+        }
+        else
+                alert("Answer can not be empty !!");
+        editor.setMode("wysiwyg")
+}
+function checkField(frm,field)
+{
+	editor.setMode("textmode")
+        if(frm.question.value!="" && frm.answer.value!="")
+        {
+		frm.actionName.value=field.name;
+                frm.submit();
+        }
+        else
+		alert("Question and Answer can not be empty !!");
+	 editor.setMode("wysiwyg")
+}
+function deleteConfirm(frm,field)
+{
+	var delfiles;
+        delfiles=frm.deleteFileNames.value;
+        if(delfiles.length!=0)
+        {
+        	if(confirm("Selected FAQ will be Favorite"))
+                {
+                        frm.actionName.value=field.name;
+                        frm.submit();
+                }
+       	}
+        else
+        alert("Please Select check box  !!");
+}
+function addDeleteList(field,frm)
+{
+if(field.checked)
+{
+frm.deleteFileNames.value=frm.deleteFileNames.value+field.name+"^";
+}
+                else
+                {
+                        var rmFile,index,actualString,preString,postString;
+                        actualString=frm.deleteFileNames.value;
+                        index=actualString.indexOf(field.name+"^",0);
+                        preString=actualString.substring(0,index);
+                        postString=actualString.substring(index+field.name.length+1);
+                        actualString=preString+postString;
+                        frm.deleteFileNames.value=actualString;
+                }
+}
+ function selectAll(field)
+{
+        if(field.checked)
+        {
+                var rmFile,index,actualString,pre=0,next=0;
+                actualString=document.frm.deleteFileNames.value="$count";
+                while( ( pre=actualString.indexOf("^",next) ) >=0 )
+                {
+                	var temp=actualString.substring(next,pre);
+                        next=pre+1;
+			temp = temp.replace(/&quot;/g,'"');
+                        temp = temp.replace(/&amp;/g,"&");
+                        temp = temp.replace(/&lt;/g,"<");
+                        temp =  temp.replace(/&gt;/g,">");
+                        rmFile=document.frm.elements[temp].checked=true;
+                }
+
+        }
+        else
+        {
+        	var rmFile,index,actualString,pre=0,next=0;
+                actualString=document.frm.deleteFileNames.value="$count";
+                while( ( pre=actualString.indexOf("^",next) ) >=0 )
+                {
+                         var temp=actualString.substring(next,pre);
+                         next=pre+1;
+                         rmFile=document.frm.elements[temp].checked=false;
+                 }
+                 document.frm.deleteFileNames.value="";
+           }
+}
+function checkBlank(frm,field)
+{
+	editor.setMode("textmode")
+        if(frm.question.value!="" && frm.answer.value!="")
+        {
+                if((frm.expiry.value>=1) && (frm.expiry.value<=7))
+                {
+                        frm.actionName.value=field.name;
+                        frm.submit();
+                }
+                else
+                        alert("Rating Time should not be less than 1 day and greater than 7 days");
+        }
+        else
+                alert("Question and Answer can not be empty !!");
+        editor.setMode("wysiwyg")
+}
+function popupWin(url,popupName)
+{
+        Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400,align=left");
+}
+function checkClear(frm,field)
+{
+	editor.setMode("textmode")
+	frm.question.value="";
+        frm.answer.value="";
+	editor.setMode("wysiwyg")
+}
+</script>
