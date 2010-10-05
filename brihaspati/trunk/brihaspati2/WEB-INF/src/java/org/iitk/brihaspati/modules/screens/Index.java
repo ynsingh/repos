@@ -45,6 +45,7 @@ import org.apache.velocity.context.Context;
 import org.apache.turbine.om.security.User;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.om.UserConfigurationPeer;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
@@ -61,13 +62,29 @@ import org.apache.turbine.services.session.TurbineSession;
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kumar Trivedi</a>
 * @author <a href="mailto:smita37uiet@gmail.com">Smita Pal</a>
-* @ mdified date 05-05-2010,13-07-2010
-
+* @ mdified date 05-05-2010,13-07-2010,5-10-2010(Smita)
  */
 
 public class Index extends SecureScreen{
 	public void doBuildTemplate( RunData data, Context context ){
 		try{
+                        /*
+                         * getting the current user 
+			 * & check current user is superAdmin,InsAdmin,Instructor,student or guest
+                         */
+			User user=data.getUser();
+                        String username=user.getName();
+                        int uid=UserUtil.getUID(username);
+                        String cInsId=null;
+                        if(uid==1){
+                                cInsId="mainA";
+                        }else if(uid==0){
+                                cInsId="guest";
+                        }
+                        else{
+                                cInsId=InstituteIdUtil.getSearch(uid);
+                        }
+
 			/**
 			 * code for Active User list
                          */
@@ -82,9 +99,9 @@ public class Index extends SecureScreen{
                                 }
 
                         //send list to vm
-                        context.put("activelist", actlst);
+                        /*context.put("activelist", actlst);
 			String role=data.getParameters().getString("role");
-			context.put("role",role);
+			context.put("role",role);*/
 			 /**
                          * code for Active User list With Time
                          */
@@ -92,26 +109,46 @@ public class Index extends SecureScreen{
                         Collection aul=TurbineSession.getActiveSessions();
                          for(Iterator i=aul.iterator();i.hasNext();)
                                         {
-                                                HttpSession session=(HttpSession) i.next();
+					 HttpSession session=(HttpSession) i.next();
                                                 User un =TurbineSession.getUserFromSession(session);
                                                 String u=un.getName();
+                                                //check for current session is not null
                                                 if(ve.contains(u)){
+                                                        int userid=UserUtil.getUID(u);
+                                                  String lInsId="";
+								  if((userid!=1) && (userid!=0)){
+                                                                       lInsId=InstituteIdUtil.getSearch(userid);
+                                                                }
+                                                //time calculation from session
                                                 Date creationTime = new Date(session.getCreationTime( ));
                                                 Date de=new Date();
                                                 long diff = de.getTime() - creationTime.getTime();
                                                 long diffHours = diff/(60 * 60 * 1000);
                                                 long diffHour = diff%(60 * 60 * 1000);
                                                 long diffMin=diffHour/(60*1000);
-                                                String h=u+" "+"("+diffHours+"Hrs"+" "+diffMin+"Min"+")";
-			                        ve1.add(h);
-	                                                }
+                                                        if(cInsId.equals("mainA")){
+                                                                String h=u+" "+"("+diffHours+"Hrs"+" "+diffMin+"Min"+")";
+                                                                ve1.add(h);
+                                                        }else if(cInsId.equals("guest")){
+                                                                if(u.equals(cInsId)){
+                                                                        String h=u+" "+"("+diffHours+"Hrs"+" "+diffMin+"Min"+")";
+                                                                        ve1.add(h);
+                                                                        }
+                                                        }
+                                                        else if(lInsId.equals(cInsId))
+                                                        {
+                                                                String h=u+" "+"("+diffHours+"Hrs"+" "+diffMin+"Min"+")";
+                                                                ve1.add(h);
+                                                        }
+                                                }
+
 
                                                }
-                                                context.put("VE1",ve1);
+                                                context.put("uList",ve1);
 
-			User user=data.getUser();
+			/*User user=data.getUser();
 			String username=user.getName();
-			int uid=UserUtil.getUID(username);
+			int uid=UserUtil.getUID(username);*/
 			context.put("Uid",uid);
 			/** 
 			 *	code for Photo display 
