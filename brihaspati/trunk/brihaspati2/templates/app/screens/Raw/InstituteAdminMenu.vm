@@ -86,6 +86,10 @@
         <a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype") style=text-decoration:none>$brih_tracking $brih_reports</a>
       </td>
 </tr>*#
-
+<tr bgcolor="$ui.menuColor">
+      <td>
+         <a href=$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("mode","alllist").addPathInfo("count","1")>$brih_FAQ</a>
+      </td>
+</tr>
 </table>
 
