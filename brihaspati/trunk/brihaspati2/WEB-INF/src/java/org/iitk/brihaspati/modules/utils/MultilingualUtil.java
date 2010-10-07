@@ -174,7 +174,9 @@ public  class MultilingualUtil{
                         String LangFile=new String();
                         String lang=Language;
 			try{
-	                        if(lang.equals("bangla"))
+	                        if(lang.equals("arabic"))
+	                               LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_ar.properties");
+	                        else if(lang.equals("bangla"))
 	                               LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_bn.properties");
 	                        else if(lang.equals("bhojpuri"))
 	                               LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_bh.properties");

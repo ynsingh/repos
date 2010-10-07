@@ -639,6 +639,7 @@
   <!-- =================================================================== -->
 
   <target name="removeTemplate" >
+	<delete dir="${Multilingual.TemplatePath}/arabic" />
 	<delete dir="${Multilingual.TemplatePath}/bangla" />
 	<delete dir="${Multilingual.TemplatePath}/bhojpuri" />
 	<delete dir="${Multilingual.TemplatePath}/call" />
