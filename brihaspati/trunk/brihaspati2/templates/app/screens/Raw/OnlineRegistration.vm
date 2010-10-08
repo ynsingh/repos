@@ -53,17 +53,25 @@ $!data.getMessage()
 	<td>
     	##<select id="inst_id" name="instname" size=1 onChange="ChangeRole(document.frm,this);"/>
     	<select name="instName" size=1 onChange="checkOption(document.frm,this);"/>
-	  <option> </option>
+	  <option>Select Institute </option>
 	  #foreach($name in $instList)
 	  <option value="$name.getInstituteName()">$name.getInstituteName() </option>
 	  #end
 	  </select>
 	  <input type="submit" name="eventSubmit_doSearch" value="$brih_search"/>
 		<select id="group_id" name="group" size=1 onChange="ChangeRole(document.frm,this);"/>
-	  	<option></option>
+	  	##<option></option>
+		#set($counter=1)
 		#foreach($crsname in $courseList)
-		<option value="$crsname">$crsname</option>
+		#set($counter1=1)
+		#foreach($instrctrname in $instructorList)
+		#if($counter==$counter1)
+		<option value="$crsname.getGroupName()">$crsname.getCourseName()-$instrctrname</option>
 		#end	
+		#set($counter1=$counter1+1)
+		#end
+		#set($counter=$counter+1)
+		#end
 		</select>
 	  </td>
 	  </tr>
@@ -86,7 +94,6 @@ $!data.getMessage()
         <td><select id="role_id" name="role" size=1 onChange="ChangeGroup(document.frm,this);"/>
 	<option>
 		<option value="student">$brih_student
-		<option value="author">$brih_author
 	</option>
 	</select>
 	</td>
@@ -158,7 +165,6 @@ $!data.getMessage()
         </tr>
 		
 	#end
-
 </table>
 
 ##  </div>

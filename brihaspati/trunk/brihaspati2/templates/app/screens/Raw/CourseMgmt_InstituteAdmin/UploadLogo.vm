@@ -14,7 +14,8 @@ $!data.getMessage()
 
 <table bgcolor="$ui.menuColor" width=100%>
 <tr><td>
-        <a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>$brih_home</a> |
+        ##<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>$brih_home</a> |
+        <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_home</a> |
         #if($lang=="hindi")
                 $RemoteInstitute $brih_of $brih_logo $brih_upload 
         #else

@@ -64,7 +64,8 @@ import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
 import org.iitk.brihaspati.om.InstituteAdminRegistration;
 import org.iitk.brihaspati.om.InstituteAdminUserPeer;
 import org.iitk.brihaspati.om.InstituteAdminUser;
-
+import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
+import org.apache.turbine.services.security.torque.om.TurbineUser;
 /**
  * This class is called for requesting to add a new user in specified group and 
  * assigned a role to the system. 
@@ -132,6 +133,7 @@ public class OnlineRegistration extends VelocitySecureAction
                 passwd=starr[0];
 		}
 		gname=pp.getString("group","");
+		ErrorDumpUtil.ErrorLog("gname at line 135 in user registration="+gname);
 		String instituteid="";	
 		if(!gname.equals("author")){
 		String []gnamesplit=gname.split("_");
@@ -477,7 +479,7 @@ public class OnlineRegistration extends VelocitySecureAction
 				 * {System admin}else
 				 * {Institute admin}
 				 * send the mail using util
-				 * see MailNotification util in utils  
+				 *@see MailNotification util in utils  
 				 */
 				if(gname.equals("author")){
 				String s=Integer.toString(UserUtil.getUID("admin"));
@@ -582,18 +584,57 @@ public class OnlineRegistration extends VelocitySecureAction
 	}
         public void doSearch(RunData data, Context context) throws Exception
         {
+		String LangFile=(String)data.getUser().getTemp("LangFile");
 		ParameterParser pp=data.getParameters();
 		String instName=pp.getString("instName");
 		String status=pp.getString("status");
-		ErrorDumpUtil.ErrorLog("instname---"+instName+"\nstatus===="+status);
 		Criteria crit=new Criteria();
 		crit.add(InstituteAdminRegistrationPeer.INSTITUTE_NAME,instName);
 		List lst=InstituteAdminRegistrationPeer.doSelect(crit);
 		int instituteId=((InstituteAdminRegistration)lst.get(0)).getInstituteId();
-		//List CourseList=CourseManagement.getInstituteCourseNUserDetails("All",Integer.toString(instituteId));
-		List CourseList=ListManagement.getInstituteCourseList(Integer.toString(instituteId));
-		ErrorDumpUtil.ErrorLog("clist in onlineregistration action==="+CourseList);
+		List CourseList=CourseManagement.getInstituteCourseNUserDetails("All",Integer.toString(instituteId));
 		context.put("courseList",CourseList);
+		Vector user_list=new Vector();
+		Vector InmeList=new Vector();
+		Vector nameList=new Vector();
+		List detail=null;
+		for(int i=0;i<CourseList.size();i++){
+			String gname=((CourseUserDetail)CourseList.get(i)).getGroupName();
+			String galias=((CourseUserDetail)CourseList.get(i)).getCAlias();
+			String instrctrnameWid=gname.replaceAll(galias,"");
+			String []instrname=instrctrnameWid.split("_");
+			String iname=instrname[0];
+                        user_list.addElement(iname);
+		}
+		for(int j=0;j<user_list.size();j++){
+			String loginname=(user_list.get(j)).toString();
+			crit=new Criteria();
+			crit.add(TurbineUserPeer.LOGIN_NAME,loginname);
+			detail=TurbineUserPeer.doSelect(crit);
+			for(int k=0;k<detail.size();k++){
+                        TurbineUser tudetail=(TurbineUser)detail.get(k);
+                        String fname=tudetail.getFirstName();
+                        String lname=tudetail.getLastName();
+                        String username=fname+" "+lname;
+                        ErrorDumpUtil.ErrorLog("instrctrnaem at last====="+username);
+                        InmeList.add(username);
+			//nameList.add(loginname);
+		}
+		/*for(int a=0;a<nameList.size();a++){
+			String lgnname=(nameList.get(a)).toString();
+			crit=new Criteria();
+			crit.add(TurbineUserPeer.LOGIN_NAME,lgnname);
+			detail=TurbineUserPeer.doSelect(crit);
+			for(int k=0;k<detail.size();k++){
+                        TurbineUser tudetail=(TurbineUser)detail.get(k);
+                        String fname=tudetail.getFirstName();
+                        String lname=tudetail.getLastName();
+                        String username=fname+" "+lname;
+                        ErrorDumpUtil.ErrorLog("instrctrnaem at last====="+username);
+                        InmeList.add(username);
+		}*/
+		}
+                context.put("instructorList",InmeList);
 	}
 	/**
 	 * This is the default method called when the button is not found

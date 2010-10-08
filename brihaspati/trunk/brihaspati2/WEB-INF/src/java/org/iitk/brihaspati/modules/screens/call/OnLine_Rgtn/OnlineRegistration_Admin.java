@@ -76,6 +76,7 @@ public class OnlineRegistration_Admin extends SecureScreen_Institute_Admin {
                 context.put("lang",lang);
 		String counter=pp.getString("count","");
 		context.put("tdcolor",counter);
+		String instituteid=data.getUser().getTemp("Institute_id").toString();
                 if(status.equals("UserResitration"))
                 {
                 	context.put("status","UserResitration");
@@ -100,6 +101,7 @@ public class OnlineRegistration_Admin extends SecureScreen_Institute_Admin {
 						String orgtn=((CourseUserDetail) list.elementAt(i)).getDept();
                                        	        String gname=((CourseUserDetail) list.elementAt(i)).getGroupName();
                                        	        String roleName=((CourseUserDetail) list.elementAt(i)).getRoleName();
+						if(gname.endsWith(instituteid)){
                                        	        DbDetail dbDetail= new DbDetail();
                                        	        dbDetail.setSender(uname);
                                        	        dbDetail.setPDate(passwd);
@@ -110,6 +112,7 @@ public class OnlineRegistration_Admin extends SecureScreen_Institute_Admin {
                                        	        dbDetail.setStatus(gname);
                                        	        dbDetail.setMsgID(roleName);
                                        	        entry.addElement(dbDetail);
+						}
                                        	}
                                	}
 

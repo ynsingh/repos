@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.Backups;
 /*
  * @(#)Restoration.java	
  *
- *  Copyright (c) 2006,2009 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2006,2009,2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -35,17 +35,18 @@ package org.iitk.brihaspati.modules.screens.call.Backups;
  *  Contributors: Members of ETRG, I.I.T. Kanpur 
  * 
  */
-import org.iitk.brihaspati.modules.screens.call.SecureScreen_Admin;
-import org.apache.turbine.util.parser.ParameterParser;
-import org.apache.velocity.context.Context;
 import org.apache.turbine.util.RunData;
+import org.apache.velocity.context.Context;
+import org.apache.turbine.util.parser.ParameterParser;
+import org.iitk.brihaspati.modules.screens.call.SecureScreen_Institute_Admin;
 
 /**
- *
+ * This class called for system restore and glossary restore.
  * @author <a href="mailto:mann_singh2004@yahoo.com">Manvendra Singh</a>
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  */
 
-public class Restoration extends SecureScreen_Admin
+public class Restoration extends SecureScreen_Institute_Admin
 {
     /**
      * Place all the data object in the context
