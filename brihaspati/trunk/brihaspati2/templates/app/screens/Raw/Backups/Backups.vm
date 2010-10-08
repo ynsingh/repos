@@ -1,6 +1,6 @@
 #*
  * @(#) Backups.vm
- * Copyright(c)2006 ETRG,IIT Kanpur.
+ * Copyright(c)2006,2010 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
@@ -13,64 +13,59 @@ $page.setTitle("Backups")
 $page.setBgColor("#ffffff")
 $!data.getMessage()
 
-<table bgcolor="$ui.menuColor" width=100% cellspacing=0>
-	<tr><td>
-		<font face="$ui.sansSerifFonts" size=3>
+<table bgcolor="$ui.menuColor" width=100%>
+<tr>
+	<td>
 		<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> | 
 		<a href=$link.setPage("call,Backups,Backups.vm").addPathInfo("count","1") style=text-decoration:none>$brih_backup</a> |
-		#if(($mode=="")&&($actionName==""))
+	#if(($mode=="")&&($actionName==""))
 		#if ($lang=="hindi") $brih_course $brih_Of1 $brih_backup #else $brih_course Wise $brih_backup #end
-		#elseif($mode=="blist") $brih_backup $brih_list #end
-		#if($actionName == "eventSubmit_doCompleteBackup")
-		$brih_system $brih_backup
-		#elseif($actionName == "eventSubmit_doGlossaryBackup")
-		$Glossary $brih_backup
-		#end
-		</font>
-	</td></tr>
+	#elseif($mode=="blist") 
+	$brih_backup $brih_list 
+	#end
+	#if($actionName == "eventSubmit_doCompleteBackup")
+	$brih_system $brih_backup
+	#elseif($actionName == "eventSubmit_doGlossaryBackup")
+	$Glossary $brih_backup
+	#end
+	</td>
+</tr>
 </table>
 <table width=100% bgcolor="$ui.tableColor">
-<tr><td>
-<table width=100% align=left bgcolor="$ui.tableColor">
 <tr>
-		#if($tdcolor!="1")
-		<td width=25%>
-		#elseif($tdcolor=="1")
-		<td width=25% bgcolor="#AFDCEC">
-		#end
-    		<a href=$link.setPage("call,Backups,Backups.vm").addPathInfo("count","1") style=text-decoration:none > #if($lang == "hindi") $brih_content $brih_Of1 $brih_backup #else $brih_backup $brih_content #end </a></td>
-		#if($tdcolor!="2")
-		<td width=25%>
-		#elseif($tdcolor=="2")
-		<td width=25% bgcolor="#AFDCEC">
-		#end
-		<a href="$link.setPage("call,Backups,Backups.vm").setAction("BackupAction").addPathInfo("actionName","eventSubmit_doCompleteBackup").addPathInfo("count","2")" style=text-decoration:none >$brih_system #if($lang == "hindi") $brih_Of1 #end $brih_backup</a></td>
-		#if($tdcolor!="3")
-		<td width=25%>
-		#elseif($tdcolor=="3")
-		<td width=25% bgcolor="#AFDCEC">
-		#end
-    		<a href=$link.setPage("call,Backups,Backups.vm").addPathInfo("mode","blist").addPathInfo("count","3") style=text-decoration:none>$brih_backup $brih_list</a></td>
-		#if($tdcolor!="4")
-		<td width=25%>
-		#elseif($tdcolor=="4")
-		<td width=25% bgcolor="#AFDCEC">
-		#end
-		<a href="$link.setPage("call,Backups,Backups.vm").setAction("BackupAction").addPathInfo("actionName","eventSubmit_doGlossaryBackup").addPathInfo("count","4")" style=text-decoration:none >$Glossary #if($lang == "hindi") $brih_Of1 #end $brih_backup</td>
+	#if($tdcolor!="1")
+	<td width=25%>
+	#elseif($tdcolor=="1")
+	<td width=25% bgcolor="#AFDCEC">
+	#end
+    	<a href=$link.setPage("call,Backups,Backups.vm").addPathInfo("count","1") style=text-decoration:none > #if($lang == "hindi") $brih_content $brih_Of1 $brih_backup #else $brih_backup $brih_content #end </a></td>
+	#if($tdcolor!="2")
+	<td width=25%>
+	#elseif($tdcolor=="2")
+	<td width=25% bgcolor="#AFDCEC">
+	#end
+	<a href="$link.setPage("call,Backups,Backups.vm").setAction("BackupAction").addPathInfo("actionName","eventSubmit_doCompleteBackup").addPathInfo("count","2")" style=text-decoration:none >$brih_system #if($lang == "hindi") $brih_Of1 #end $brih_backup</a></td>
+	#if($tdcolor!="3")
+	<td width=25%>
+	#elseif($tdcolor=="3")
+	<td width=25% bgcolor="#AFDCEC">
+	#end
+    	<a href=$link.setPage("call,Backups,Backups.vm").addPathInfo("mode","blist").addPathInfo("count","3") style=text-decoration:none>$brih_backup $brih_list</a></td>
+	#if($tdcolor!="4")
+	<td width=25%>
+	#elseif($tdcolor=="4")
+	<td width=25% bgcolor="#AFDCEC">
+	#end
+	<a href="$link.setPage("call,Backups,Backups.vm").setAction("BackupAction").addPathInfo("actionName","eventSubmit_doGlossaryBackup").addPathInfo("count","4")" style=text-decoration:none >$Glossary #if($lang == "hindi") $brih_Of1 #end $brih_backup</td>
 </tr>
-##</form>
-</table></td></tr>
-<tr><td>
-<table width=100% align=left bgColor="$ui.tableColor">
 #if(($mode=="") && ($mode != "blist"))
 <tr>
 	<left><blink><font color="red"><b>$brih_backup6</b></font></blink></left>
 <form name=frm method="post" action="$link.setAction("BackupAction").setPage("call,Backups,Backups.vm")">
+</tr>
         <div align="left">
         <table width=100% align=left>
-
       #if ($errorTemplate)
-</tr>
       <tr bgColor="$ui.menuColor">
         <td colspan="4">
           <table width=100%>
@@ -87,54 +82,49 @@ $!data.getMessage()
       </tr>
       #end
 
-                <tr bgColor="$ui.menuColor"><td colspan="3">
-                        <font size=4><b>$brih_backup7</b></font>
-                </td></tr>
-                <tr><td>
-                        <select name="courses">
-                                <option value="Courses">$Notice_All $brih_courses</option>
-                        #foreach($group in $courseList)
-				#if($data.getUser().getUserName() == "admin")
-                                	#if(($group.Name !="global") && ($group.Name !="author"))
-                               		<option value="$group.Name">$group.Name</option>
-                                	#end
-				#else
-                			#if($data.getUser().getTemp("role")=="institute_admin")
-                                        <option value="$group.getGroupName()">$group.getGroupName()</option>
-					#end
-				#end
-                        #end
-                        </select>
-                </td>
-                <td>
-                        <font face="$ui.sansSerifFonts">
-			#if($lang == "hindi")
-	                        <input type="button" name="eventSubmit_doCourseBackup" value="$brih_content $brih_Of1 $brih_backup" onClick="checkField(document.frm,this);"/>
-			#else
-	                        <input type="button" name="eventSubmit_doCourseBackup" value="$brih_content  $brih_backup" onClick="checkField(document.frm,this);"/>
+<tr bgColor="$ui.menuColor">
+<td colspan="3"><b>$brih_backup7</b></td>
+</tr>
+<tr>
+	<td><select name="courses">
+        <option value="Courses">$Notice_All $brih_courses</option>
+        #foreach($group in $courseList)
+		#if($data.getUser().getUserName() == "admin")
+                	#if(($group.Name !="global") && ($group.Name !="author")&&($group.Name !="institute_admin"))
+                	<option value="$group.Name">$group.Name</option>
+                       	#end
+		#else
+                	#if($data.getUser().getTemp("role")=="institute_admin")
+                        <option value="$group.getGroupName()">$group.getGroupName()</option>
 			#end
-			#if($lang == "hindi")
-                        <input type="button" name="eventSubmit_doStudent_db_backup" value="$brih_database $brih_Of1 $brih_backup" onClick="checkField(document.frm,this);"/>
-                        <input type="button" name="eventSubmit_doStudent_db_backup" value="$brih_database $brih_backup" onClick="checkField(document.frm,this);"/>
-                        <input type="hidden" name="actionName">
-                        <input type="hidden" name="count" value="$tdcolor">
-                        </font>
-                </td></tr>
-
-        </table>
-</div>
+		#end
+        #end
+        </select>
+        </td>
+        <td>
+		#if($lang == "hindi")
+	        <input type="button" name="eventSubmit_doCourseBackup" value="$brih_content $brih_Of1 $brih_backup" onClick="checkField(document.frm,this);"/>
+		#else
+	        <input type="button" name="eventSubmit_doCourseBackup" value="$brih_content  $brih_backup" onClick="checkField(document.frm,this);"/>
+		#end
+		#if($lang == "hindi")
+                <input type="button" name="eventSubmit_doStudent_db_backup" value="$brih_database $brih_Of1 $brih_backup" onClick="checkField(document.frm,this);"/>
+		#else
+                <input type="button" name="eventSubmit_doStudent_db_backup" value="$brih_database $brih_backup" onClick="checkField(document.frm,this);"/>
+		#end
+                <input type="hidden" name="actionName">
+                <input type="hidden" name="count" value="$tdcolor">
+         </td>
+</tr>
 </form>
 #end
-</table></td></tr>
-<tr><td>
 #if(($mode == "blist")||($actionName=="eventSubmit_doDeletebackup"))
-	<table bgcolor="$ui.tableColor" align="left" width=100%>
-        <tr bgcolor="$ui.menuColor"><td colspan="5" align=left>
+        <tr bgcolor="$ui.menuColor"><td colspan="5">
 	#if(!($list=="navil"))
 		#if($lang!="english") $QuestionBank_available $brih_backup $brih_Of $brih_list #else $brih_listOf $QuestionBank_available $brih_backup
-		 #end 
-		</td></tr>
-		<tr>
+	  	#end 
+	</td></tr>
+	<tr>
 	        #if($st != "ins")
 	        <td>Sr.No.</td>
 	        #end
@@ -146,20 +136,17 @@ $!data.getMessage()
 		#end 
 		</td>
 		<td>$brih_availableAction</td>
-		</tr>
-	        #set ($i=1)
-	        	#foreach($lst in $list)
-                		#if($st=="ins")
-					#if($lst.getName().startsWith($data.getUser().getTemp("course_id" ).toString()))
-					<tr>
-	                		## <td>$i</td>
-                        		<td>$lst.getName()</td>
-                        		<td>
-					<a href=$link.setPage("call,Backups,getZipfile.vm").addPathInfo("fName",$lst.getName()).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_download</a>
-					</td>
-                        		</tr>
-                			#end
-                		#else
+	</tr>
+	#set ($i=1)
+		#foreach($lst in $list)
+                	#if($st=="ins")
+				#if($lst.getName().startsWith($data.getUser().getTemp("course_id" ).toString()))
+				<tr>
+                        	<td>$lst.getName()</td>
+                        	<td><a href=$link.setPage("call,Backups,getZipfile.vm").addPathInfo("fName",$lst.getName()).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_download</a></td>
+                        	</tr>
+                		#end
+                	#else
 				#if($velocityCount%2==0)	
 				<tr bgcolor="$ui.tableColor">
 				#else
@@ -167,10 +154,10 @@ $!data.getMessage()
 				#end
 				<td>$i</td>
                 		<td>$lst.getName() </td>
-       	<td><a href=$link.setPage("call,Backups,getZipfile.vm").addPathInfo("fName",$lst.getName()).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_download</a> &nbsp;&nbsp;
+       				<td><a href=$link.setPage("call,Backups,getZipfile.vm").addPathInfo("fName",$lst.getName()).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_download</a> &nbsp;&nbsp;
 				<a href=$link.setAction("BackupAction").addPathInfo("actionName","eventSubmit_doDeletebackup").addPathInfo("fName",$lst.getName()).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_delete</a></td>
-                </tr>
-                		#end
+                		</tr>
+                	#end
 			#set ($i=$i+1)
         		#end
 #end
