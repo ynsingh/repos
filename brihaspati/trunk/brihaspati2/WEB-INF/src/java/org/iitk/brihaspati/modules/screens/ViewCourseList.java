@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.screens;
 /*
  * @(#) ViewCourseList.java	
  *
- *  Copyright (c) 2005, 2009 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005, 2009,2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -63,6 +63,7 @@ import org.apache.turbine.services.servlet.TurbineServlet;
  * @author <a href="nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * 
+ * @author <a href="singh_jaivir@rediffmail.com">Jaivir Singh</a>11102010
  */
 public class ViewCourseList extends VelocityScreen
 {
@@ -143,10 +144,14 @@ public class ViewCourseList extends VelocityScreen
 			   			String username=UserUtil.getLoginName(Integer.parseInt(uid.elementAt(j).toString()));
 			   			int userid=Integer.parseInt(uid.elementAt(j).toString());
 			  			/**
-			   			* check for primary Instructor because appear only primary
-			   			* Instructor
+			   			* check for primary Instructor 
+						* because appear only primary Instructor
+						* now group name contains InstituteId, so for checking for primary Instructor,get groupname without Institute Id.  
 			   			*/
-			   			boolean check=groupname.endsWith(username);
+						String gnme[]=groupname.split("_");
+						String gnameNiid=gnme[0];	
+			   			//boolean check=groupname.endsWith(username);
+			   			boolean check=gnameNiid.endsWith(username);
 		   	   			if(check==true)	
 			   			{
 							List entry=UserManagement.getUserDetail(Integer.toString(userid));
