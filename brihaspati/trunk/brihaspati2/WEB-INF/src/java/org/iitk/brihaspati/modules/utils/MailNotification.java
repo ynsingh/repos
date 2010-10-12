@@ -34,7 +34,7 @@ package org.iitk.brihaspati.modules.utils;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.File;
-import java.util.Vector;
+//import java.util.Vector;
 import java.util.Properties;
 import org.apache.commons.mail.SimpleEmail;
 import org.apache.commons.mail.Email;
@@ -85,7 +85,7 @@ public class MailNotification{
 	public static String subjectFormate(String info_new, String course_id, Properties pr ){
 
 		message = new StringBuffer(pr.getProperty("brihaspati.Mailnotification."+info_new+".subject"));
-		ErrorDumpUtil.ErrorLog(" originalSubject in MailNotification==========="+message);
+		//ErrorDumpUtil.ErrorLog(" originalSubject in MailNotification==========="+message);
                 return replaceString("course_id",course_id);
 	}
 
@@ -123,20 +123,25 @@ public class MailNotification{
 	 * @param replacement String The string with which the substring has to be replaced
 	 * @return String
 	 */
-
-	public static String replaceString(String searchString, String replacement){
-		 if(replacement.equals("")){
-			return(message.toString());
-                }
-                else{		
-		String str=message.toString();
-		int startIndex=str.indexOf(searchString);
-		int endIndex=searchString.length();
-		message.replace(startIndex,startIndex+endIndex,replacement);
-		ErrorDumpUtil.ErrorLog("message in replaceString() Mailnotification Util===="+message);
-		return(message.toString());
-		}
-	}
+        public static String replaceString(String searchString, String replacement){
+                try {
+			if(replacement.equals("")){
+                        	return(message.toString());
+                        }
+			else{
+                        	if(replacement.length()>0){
+					String str=message.toString();
+                                	int startIndex=str.indexOf(searchString);
+	                                int endIndex=searchString.length();
+                	                if(startIndex>0) {
+                        	        	message.replace(startIndex,startIndex+endIndex,replacement);
+                                	}
+        	                        return(message.toString());
+                	        }
+                	}
+                }catch(Exception e){ErrorDumpUtil.ErrorLog(" Error in replaceString method in mail notification.java "+e.getMessage());}
+                        return (message.toString());
+        }
 
 	/**
 	 * This method is used to send the mails with suitable messages

@@ -33,10 +33,13 @@ package org.iitk.brihaspati.modules.actions;
  */
 
 import java.util.List;
+import java.io.File;
+import java.util.Properties;
 
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.modules.actions.VelocitySecureAction;
+import org.apache.turbine.services.servlet.TurbineServlet;
 
 import org.apache.torque.util.Criteria;
 
@@ -49,9 +52,16 @@ import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
 import org.iitk.brihaspati.om.InstituteAdminRegistration;
 import org.iitk.brihaspati.om.InstituteAdminUserPeer;
 import org.iitk.brihaspati.om.InstituteAdminUser;
+import org.iitk.brihaspati.om.TurbineUser;
+import org.iitk.brihaspati.om.TurbineUserPeer;
 
 import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.iitk.brihaspati.modules.utils.EncryptionUtil;
+import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+import org.iitk.brihaspati.modules.utils.MailNotification;
+import org.iitk.brihaspati.modules.utils.EncryptionUtil;
+
+
 /**
  * 
  * 
@@ -75,8 +85,6 @@ public class InstituteRegistration extends VelocitySecureAction
                 if(action.equals("eventSubmit_InstituteRegister")){
                         InstituteRegister(rundata,context);
 		}
-		//---else if(action.equals("eventSubmit_doDelete"))
-                     //---   doDelete(rundata,context);
                 else
                 {
                         rundata.setMessage("Action not found");
@@ -90,7 +98,10 @@ public class InstituteRegistration extends VelocitySecureAction
 		try{
 			
 			rundata.setMessage("Test");
+			//String Lang = rundata.getUser().getTemp("lang").toString();
+			String lang="";
 			StringUtil str=new StringUtil();
+			Properties pr = new Properties();
 			ParameterParser parameterparser = rundata.getParameters();
 			institutename = parameterparser.getString("INAME");
 			instituteaddress = parameterparser.getString("IADDRESS");
@@ -109,16 +120,20 @@ public class InstituteRegistration extends VelocitySecureAction
 			instituteadminemail = parameterparser.getString("IADMINEMAIL");
 			instituteadmindesignation = parameterparser.getString("IADMINDESIGNATION");
 			String adminusername = instituteadminemail;
-			instituteadminpassword = parameterparser.getString("IADMINPASSWORD");
+			String instpassword = parameterparser.getString("IADMINPASSWORD");
+			String instituteadminpassword=EncryptionUtil.createDigest("MD5",instpassword);
 			//instituteadminusername=adminusername+"@"+institutedomain;
+	                lang=parameterparser.getString("lang","english");
+	                String Lang=MultilingualUtil.LanguageSelectionForScreenMessage(lang);
+			
 			 
 			if(str.checkString(adminusername)==-1 && str.checkString(instituteadminfname)==-1 && str.checkString(instituteadminlname)==-1)
 			{
-
+				boolean flag=false;
+				
 				Criteria criteria = new Criteria();
 				criteria.addGroupByColumn(InstituteAdminRegistrationPeer.INSTITUTE_ID);
 				List registeredinstitute=InstituteAdminRegistrationPeer.doSelect(criteria);
-				boolean flag=false;
 				if(registeredinstitute.size() !=0){
 					for(int i=0;i<registeredinstitute.size();i++){
 						InstituteAdminRegistration instituteregister=(InstituteAdminRegistration)(registeredinstitute.get(i));
@@ -131,15 +146,15 @@ public class InstituteRegistration extends VelocitySecureAction
 						}
 					}
 				}
-
+				
 				if(flag){
-	
+					
 					rundata.setMessage("Institute Already Registered ,Please Contact System Admin or Your Institute Admin for registered to you as a Institute Admin in same Institute");
 
 				}
 				else{
 					//Insert these values in InstituteAdminRegistration .
-
+					
 					criteria=new Criteria();
 					criteria.add(InstituteAdminRegistrationPeer.INSTITUTE_NAME,institutename);
 					criteria.add(InstituteAdminRegistrationPeer.INSTIUTE_ADDRESS,instituteaddress);
@@ -174,7 +189,35 @@ public class InstituteRegistration extends VelocitySecureAction
 					criteria.add(InstituteAdminUserPeer.ADMIN_UNAME,adminusername);
 					criteria.add(InstituteAdminUserPeer.ADMIN_PASSWORD,instituteadminpassword);
 					InstituteAdminUserPeer.doInsert(criteria);
-					rundata.setMessage("Institute Admin Registeration Successfull");
+                                        String server_name=TurbineServlet.getServerName();
+                                        String srvrPort=TurbineServlet.getServerPort();
+					ErrorDumpUtil.ErrorLog("servername==>"+server_name);
+					ErrorDumpUtil.ErrorLog("serverport==>"+srvrPort);
+                                        String subject="";
+                                        String messageFormate="";
+                                        String email="";
+                                        String Gname=institutename;
+					String fileName="",EMAIL="";
+					
+					//Get EMAIL of Sysadmin for sending email on registration of an institute.
+					criteria=new Criteria();
+					criteria.add(TurbineUserPeer.USER_ID,1);
+				        List adminemail=TurbineUserPeer.doSelect(criteria);
+					EMAIL=((TurbineUser)adminemail.get(0)).getEmail();
+					//Mail sending to the Sysadmin
+                                        fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
+					pr=MailNotification.uploadingPropertiesFile(fileName);
+                                        if(srvrPort.equals("8080"))
+                                                subject="newInstituteRegister";
+                                        else
+                                                subject="newInstituteRegisterhttps";
+                                        String subj = MailNotification.subjectFormate(subject, "", pr);
+					
+	                                messageFormate = MailNotification.getMessage(subject, Gname, "", "", "", server_name, srvrPort, pr);
+                                        String Mail_msg=MailNotification.sendMail(messageFormate, EMAIL, subj, "", Lang);
+
+
+					rundata.setMessage("Institute Registeration Successfull");
 				}
 			}
 			else{
@@ -186,41 +229,6 @@ public class InstituteRegistration extends VelocitySecureAction
 			rundata.setMessage("problem in registration method" +e);
 		}
 	}
-
-	/*
-	public void doDelete(RunData rundata, Context context) 
-	{
-		try{
-			ParameterParser pp=rundata.getParameters();
-			String InstituteId=pp.getString("instituteId");
-			String InstituteName=pp.getString("instituteName");
-			Criteria crit=new Criteria();
-			crit.add(InstituteAdminRegistrationPeer.INSTITUTE_ID,InstituteId);
-			InstituteAdminRegistrationPeer.doDelete(crit);
-			rundata.setMessage("Admin of" +InstituteName +"has been deleted");
-		}
-		catch (Exception e)
-		{
-			rundata.setMessage("problem in delete method" +e);
-		}
-	}
-	
-	public void doUpdate(RunData rundata, Context context) 
-	{
-		try{
-			ParameterParser pp=rundata.getParameters();
-			String InstituteId=pp.getString("instituteId");
-			String InstituteName=pp.getString("instituteName");
-			Criteria crit=new Criteria();
-			crit.add(InstituteAdminRegistrationPeer.INSTITUTE_ID,InstituteId);
-			InstituteAdminRegistrationPeer.doUpdate(crit);
-			rundata.setMessage("Details of" +InstituteName +"has been Updated");
-		}
-		catch (Exception e)
-		{
-			rundata.setMessage("problem in Update method" +e);
-		}
-	}*/
 
 }
 
