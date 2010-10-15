@@ -1,6 +1,6 @@
 #*
  * @(#)MailContent.vm
- *  Copyright (c) 2005,2009 ETRG,IIT Kanpur.
+ *  Copyright (c) 2005,2009, 2010 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *  Contributors: Members of ETRG, I.I.T. Kanpur
  *#
@@ -9,6 +9,8 @@
  * @author <a href="mailto:chitvesh@yahoo.com">Chitvesh Dutta</a>
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+ * @ modified date: 13-Oct-2010 (Shaista)
  *#
 #if($stat=="admns")
 $page.setTitle("Admin Home | Communication | Local Mail | Mails")
@@ -64,7 +66,7 @@ $!data.getMessage()
 				<img border=0 src="$content.getURI("/images/$lang/newmail1.gif")">$LocalMail_MailContent_msg2</a>
 				</td>
 			#else
-			<td><a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("mode","All") style=text-decoration:none>$LocalMail_MailContent_msg3</a></td>
+			<td><a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("mode","All").addPathInfo("count","3").addPathInfo("countTemp","2") style=text-decoration:none>$LocalMail_MailContent_msg3</a></td>
 	        	#end	
 		#end	
 	</b>
@@ -213,34 +215,34 @@ $!data.getMessage()
         <u><font color="white">$brih_first</font></u> &nbsp;
         <u><font color="white">$brih_pre</font></u> &nbsp;
 	#if($stat=="admns")
-<a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode","$mode").addPathInfo("stat",$stat).addPathInfo("count",$tdcolor) style=text-decoration:none>Next</a> &nbsp;
-      <a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode","$mode").addPathInfo("stat",$stat).addPathInfo("count",$tdcolor) style=text-decoration:none>Last</a> &nbsp;
+<a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode","$mode").addPathInfo("stat",$stat).addPathInfo("count",$tdcolor).addPathInfo("countTemp","2") style=text-decoration:none>Next</a> &nbsp;
+      <a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode","$mode").addPathInfo("stat",$stat).addPathInfo("count",$tdcolor).addPathInfo("countTemp","2") style=text-decoration:none>Last</a> &nbsp;
         #else
-        <a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode","$mode").addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_nxt</a> &nbsp;
-        <a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode","$mode").addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_last</a> &nbsp;
+        <a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode","$mode").addPathInfo("count",$tdcolor).addPathInfo("countTemp","2") style=text-decoration:none>$brih_nxt</a> &nbsp;
+        <a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode","$mode").addPathInfo("count",$tdcolor).addPathInfo("countTemp","2") style=text-decoration:none>$brih_last</a> &nbsp;
 	#end
         #elseif($endIndex == $total_size || $endIndex > $total_size)
 	 #if($stat=="admns")
-     <a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode","$mode").addPathInfo("stat",$stat).addPathInfo("count",$tdcolor) style=text-decoration:none>First</a> &nbsp;
-      <a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode","$mode").addPathInfo("stat",$stat).addPathInfo("count",$tdcolor) style=text-decoration:none>Previous</a> &nbsp;
+     <a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode","$mode").addPathInfo("stat",$stat).addPathInfo("count",$tdcolor).addPathInfo("countTemp","2") style=text-decoration:none>First</a> &nbsp;
+      <a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode","$mode").addPathInfo("stat",$stat).addPathInfo("count",$tdcolor).addPathInfo("countTemp","2") style=text-decoration:none>Previous</a> &nbsp;
 	#else
-     <a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode","$mode").addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_first</a> &nbsp;
-        <a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode","$mode").addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_pre</a> &nbsp;
+     <a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode","$mode").addPathInfo("count",$tdcolor).addPathInfo("countTemp","2") style=text-decoration:none>$brih_first</a> &nbsp;
+        <a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode","$mode").addPathInfo("count",$tdcolor).addPathInfo("countTemp","2") style=text-decoration:none>$brih_pre</a> &nbsp;
 	#end
         <u><font color="white">$brih_nxt</font></u> &nbsp;
         <u><font color="white">$brih_last</font></u> &nbsp;
 
         #else
 		#if($stat=="admns")
-     <a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode","$mode").addPathInfo("stat",$stat).addPathInfo("count",$tdcolor) style=text-decoration:none>First</a> &nbsp;
-      <a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode","$mode").addPathInfo("stat",$stat).addPathInfo("count",$tdcolor) style=text-decoration:none>Previous</a> &nbsp;
-     <a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex).addPathInfo("mode","$mode").addPathInfo("stat",$stat).addPathInfo("count",$tdcolor) style=text-decoration:none>Next</a> &nbsp;
-    <a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode","$mode").addPathInfo("stat",$stat).addPathInfo("count",$tdcolor) style=text-decoration:none>Last</a> &nbsp;
+     <a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode","$mode").addPathInfo("stat",$stat).addPathInfo("count",$tdcolor).addPathInfo("countTemp","2") style=text-decoration:none>First</a> &nbsp;
+      <a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode","$mode").addPathInfo("stat",$stat).addPathInfo("count",$tdcolor).addPathInfo("countTemp","2") style=text-decoration:none>Previous</a> &nbsp;
+     <a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex).addPathInfo("mode","$mode").addPathInfo("stat",$stat).addPathInfo("count",$tdcolor).addPathInfo("countTemp","2") style=text-decoration:none>Next</a> &nbsp;
+    <a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode","$mode").addPathInfo("stat",$stat).addPathInfo("count",$tdcolor).addPathInfo("countTemp","2") style=text-decoration:none>Last</a> &nbsp;
        		#else
-        <a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode","$mode").addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_first</a> &nbsp;
-        <a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode","$mode").addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_pre</a> &nbsp;
-        <a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex).addPathInfo("mode","$mode").addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_nxt</a> &nbsp;
-        <a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode","$mode").addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_last</a> &nbsp;
+        <a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode","$mode").addPathInfo("count",$tdcolor).addPathInfo("countTemp","2") style=text-decoration:none>$brih_first</a> &nbsp;
+        <a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode","$mode").addPathInfo("count",$tdcolor).addPathInfo("countTemp","2") style=text-decoration:none>$brih_pre</a> &nbsp;
+        <a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex).addPathInfo("mode","$mode").addPathInfo("count",$tdcolor).addPathInfo("countTemp","2") style=text-decoration:none>$brih_nxt</a> &nbsp;
+        <a href=$link.setPage("call,Local_Mail,MailContent.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode","$mode").addPathInfo("count",$tdcolor).addPathInfo("countTemp","2")style=text-decoration:none>$brih_last</a> &nbsp;
         	#end
         #end
 </td>

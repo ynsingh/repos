@@ -21,8 +21,9 @@ $!data.getMessage()
     <td colspan=6>
 	#if($modes=="adminmail")
 	<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_Of1 $brih_home</a> |
+	##<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","1") style=text-decoration:none>$brih_communication</a> |
 	<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","1") style=text-decoration:none>$brih_communication</a> |
-	<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("mod","adminmail").addPathInfo("count","1") style=text-decoration:none>$brih_localmail</a> |
+	<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("mod","adminmail").addPathInfo("count","4") style=text-decoration:none>$brih_localmail</a> |
  	<a href=$link.setPage("call,Local_Mail,MailCompose.vm").addPathInfo("status","compose") style=text-decoration:none>$LocalMail_MailContent_msg1</a> |
 	#else
 	<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>$brih_home</a> |
@@ -108,14 +109,15 @@ $!data.getMessage()
                 <td bgcolor="#AFDCEC">
                 #end
                 <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4") style=text-decoration:none>$DiscussionBoard</td>
-                #if($tdcolor!="5")
-                <td>
-                #elseif($tdcolor == "5")
-                <td bgcolor="#AFDCEC">
+		#if($data.getUser().getTemp("role") != "student")
+                	#if($tdcolor!="5")
+	                <td>
+        	        #elseif($tdcolor == "5")
+                	<td bgcolor="#AFDCEC">
+	                #end
+        	        <a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status","fromCourse").addPathInfo("count","5") style=text-decoration:none>$brih_news</td>
                 #end
-                <a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status","fromCourse").addPathInfo("count","5") style=text-decoration:none>$brih_news</td>
-                #end
-        ##end
+	#end
 </tr>
 ##</table>
 #set ( $headings = ["$brih_usr $brih_name"] )
@@ -136,7 +138,8 @@ $!data.getMessage()
         </td>
 	<td>
 	#if($modes=="adminmail")
-		<b><a href=$link.setPage("call,Local_Mail,viewall.vm").addPathInfo("mode","All").addPathInfo("mod","adminmail") style=text-decoration:none>$brih_listUsr</a></b>
+		##<b><a href=$link.setPage("call,Local_Mail,viewall.vm").addPathInfo("mode","All").addPathInfo("mod","adminmail") style=text-decoration:none>$brih_listUsr</a></b>
+		<b><a href=$link.setPage("call,Local_Mail,viewall.vm").addPathInfo("mode","All").addPathInfo("mod","adminmail").addPathInfo("count","4") style=text-decoration:none>$brih_listUsr</a></b>
 	#else
 		<b><a href=$link.setPage("call,Local_Mail,viewall.vm").addPathInfo("mode","courseWiseAll") style=text-decoration:none>$brih_usr $brih_of $cname</a></b> |
 		<b><a href=$link.setPage("call,Local_Mail,viewall.vm").addPathInfo("mode","All") style=text-decoration:none>$brih_listUsr</a></b>

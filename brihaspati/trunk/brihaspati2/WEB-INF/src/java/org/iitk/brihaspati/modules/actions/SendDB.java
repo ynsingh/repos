@@ -1,7 +1,7 @@
 package org.iitk.brihaspati.modules.actions;
 
 /*
- * Copyright (c) 2005-2007 ETRG,IIT Kanpur.
+ * Copyright (c) 2005-2007, 2010 ETRG,IIT Kanpur.
  * All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or
@@ -69,7 +69,7 @@ import org.iitk.brihaspati.modules.utils.FileEntry;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;   
 import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
-import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+//import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 
@@ -88,6 +88,8 @@ import java.io.FileOutputStream;
  *  @author <a href="sumanrjpt@yahoo.co.in">Suman Rajput</a>
  *  @author <a href="rekha_20july@yahoo.co.in">Rekha Pal</a>
  *  @author <a href="nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+ * @ modified date: 13-Oct-2010 (Shaista)
  */
 public class SendDB extends SecureAction
 {
@@ -104,6 +106,7 @@ public class SendDB extends SecureAction
 
 			int Status=0; 
 			//boolean Status=false;
+			context.put("count",data.getParameters().getString("count",""));
 		        String LangFile=data.getUser().getTemp("LangFile").toString();
 			ParameterParser pp=data.getParameters();
                         String UserName=data.getUser().getName();
@@ -111,7 +114,7 @@ public class SendDB extends SecureAction
 			String DB_subject=pp.getString("contentTopic");
 			String mode=pp.getString("mode1","");
                         String grpname=pp.getString("val","");
-                        ErrorDumpUtil.ErrorLog("In send DB java action mode"+mode+"\ngrpname----"+grpname);
+                        //ErrorDumpUtil.ErrorLog("In send DB java action mode"+mode+"\ngrpname----"+grpname);
 			/**
 			* Check for special character in Topic Name excluding Re: /Re:Re:Re:
 			*/
@@ -339,6 +342,8 @@ public class SendDB extends SecureAction
 	{
 		try
 		{
+			context.put("count",data.getParameters().getString("count",""));
+			context.put("countTemp",data.getParameters().getString("countTemp",""));
                         String LangFile=data.getUser().getTemp("LangFile").toString();
 			int Status=0;
 		 	String UserName=data.getUser().getName();
@@ -460,6 +465,8 @@ public class SendDB extends SecureAction
  	public void doDelete(RunData data, Context context) throws Exception
 	{
 		try{
+			context.put("count",data.getParameters().getString("count",""));
+			context.put("countTemp",data.getParameters().getString("countTemp",""));
  			ParameterParser pp=data.getParameters();
 			String UserName=data.getUser().getName();
 			int userid=UserUtil.getUID(UserName);
@@ -590,6 +597,7 @@ public class SendDB extends SecureAction
         {
                 try
                 {
+			context.put("count",data.getParameters().getString("count",""));
                         String LangFile=data.getUser().getTemp("LangFile").toString();
                         ParameterParser pp=data.getParameters();
                         String UserName=data.getUser().getName();
@@ -700,11 +708,15 @@ public class SendDB extends SecureAction
 	
 	public void doShowArchive(RunData data , Context context)
         {
+		context.put("count",data.getParameters().getString("count",""));
+		context.put("countTemp",data.getParameters().getString("countTemp",""));
                 data.setScreenTemplate("call,Dis_Board,Archive.vm");
         }
 
         public void doShowDBContent(RunData data , Context context)
         {
+		context.put("count",data.getParameters().getString("count",""));
+		context.put("countTemp",data.getParameters().getString("countTemp",""));
                 data.setScreenTemplate("call,Dis_Board,DBContent.vm");
         }
 	

@@ -40,14 +40,17 @@ package org.iitk.brihaspati.modules.screens.call.Notice_User;
  * @author <a href="mailto:madhavi_mungole@hotmail.com ">Madhavi Mungole</a>
  * @author <a href="mailto:awadhesh_trivedi">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
- * @ modified date: 26-07-2010
+ * @ modified date: 26-07-2010, 13-Oct-2010 (Shaista)
  */
 
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
+import org.iitk.brihaspati.modules.utils.CourseUtil;
+//import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.Notice_SRDetail;
 import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.om.security.TurbineUser;
@@ -83,14 +86,30 @@ public class DeletePosted extends SecureScreen_Instructor
 			Criteria crit=new Criteria();
 
 			/**
-			 * @param cName getting course name which is set by setTemp() method
-			 * @param courseid getting group name which is set by setTemp() method
+			 * @param courseid getting group name from parameter parser which is sent by link
+			 * @param cName getting course name according to groupname
+			 * Course name is seta  in context to display
 			 */
 			
 		
-			String cName=(String)(user.getTemp("course_name"));
-			String courseid=(String)(user.getTemp("course_id"));
-			
+			//String cName=(String)(user.getTemp("course_name"));
+			String cName ="", courseid ="";
+			ParameterParser pp = data.getParameters();
+			courseid = pp.getString("courseId","");
+			String userInCourse=(String)(user.getTemp("course_id"));
+			//ErrorDumpUtil.ErrorLog("\n\n\n\n\nfrom delete Posted  courseId="+courseid +"\n userInCourse="+userInCourse);
+			if( userInCourse!=null && !userInCourse.equals("") && courseid.equals(""))
+			{
+				courseid = userInCourse;
+				cName=(String)user.getTemp("course_name");
+			}
+			else
+			{
+	                        user.setTemp("course_id",courseid);
+				cName=CourseUtil.getCourseName(courseid);
+				user.setTemp("course_name",cName);
+			}
+
 			/**
 			 * @param Username getting user name 
 			 * @param name Selecting  list according to user name
@@ -116,19 +135,24 @@ public class DeletePosted extends SecureScreen_Instructor
 			int user_id=UserUtil.getUID(Username);
 			int group_id=GroupUtil.getGID(courseid);
 			
+			
 			/**
 			 * @param tdcolor setting the color for current feature 
 			 */
 			context.put("tdcolor",data.getParameters().getString("count",""));
+			context.put("tdcolor1",data.getParameters().getString("countTemp",""));
 			/**
 			 * Retreives the notice details from MESSAGE_SEND table
 			 * according to group_id and user id to display the list of Notices to delete
 			 * @param messageDetails having the details of notices towhome it is send
 			 * if{ there is no notice shows the message }
-			 * else {all the notice detail is set in Notice_SRDetail (which is a util class) Object 
-			 * add this Notice_SRDetail (which is a util class) Object in a vector named, noticeSentRec }
+			 * else {
+			 * all the notice detail is set in Notice_SRDetail (which is a util class) Object 
+			 * add this Notice_SRDetail (which is a util class) Object in a vector named, noticeSentRec 
 			 * if {vector named, noticeSentRec is empty it shows proper message}
 			 * else{ vector named, noticeSentRec, vector size & course name is put in context }
+			 *
+			 * } else close
 			 */
 
 			crit=new Criteria();
@@ -164,15 +188,15 @@ public class DeletePosted extends SecureScreen_Instructor
 				data.setMessage(MultilingualUtil.ConvertedString("notice_msg4",LangFile));
 			}
 			context.put("Mas_size",Integer.toString(noticeSentRec.size()));
+			context.put("courseId",courseid);
 			context.put("Course",cName);
 			String desc=data.getParameters().getString("desc","");
                 	String topicDesc="";
 	
 			/**
 			 * @param msg_id String, gets message id according to notice id
-			 * @param flag String, gets flag whether notice is read or unread
-			 * put desc & flag  in context
 			 * @param desc String
+			 * set desc in context to display
 			 * bydefault it is null else have String "Notice_Des"
 			 * if { desc is equal "Notice_Des" 
 			 * Gets Notice object according to message id
@@ -186,8 +210,6 @@ public class DeletePosted extends SecureScreen_Instructor
 			if(desc.equals("Notice_Des"))
 			{
 				String msg_id=data.getParameters().getString("notice_id","");
-				String flag=data.getParameters().getString("flag");
-                		context.put("flag",flag);
                 		context.put("desc",desc);
 				crit=new Criteria();
                         	crit.add(NoticeSendPeer.NOTICE_ID,msg_id);

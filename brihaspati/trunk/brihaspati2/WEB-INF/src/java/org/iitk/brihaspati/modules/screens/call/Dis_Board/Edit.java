@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.screens.call.Dis_Board;
 
 /*
  * @(#)Edit.java	
- *  Copyright (c) 2005-2006 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006, 2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -66,6 +66,8 @@ import org.apache.torque.util.Criteria;
  * @author  <a href="aktri@iitk.ac.in">Awadhesh Kumar Trivedi</a>
  * @author  <a href="sumanrjpt@yahoo.co.in">Suman Rajput</a>
  * @author  <a href="rekha_20july@yahoo.co.in">Rekha Pal</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+ * @ modified date: 13-Oct-2010 (Shaista)
  */
 
 public class Edit extends SecureScreen
@@ -98,6 +100,8 @@ public class Edit extends SecureScreen
                         context.put("sender",sender);
                         context.put("tdcolor",pp.getString("count",""));             
                         context.put("ExDay",expday);
+			context.put("tdcolor",data.getParameters().getString("count",""));
+			context.put("tdcolor1",data.getParameters().getString("countTemp",""));
 			if(data.getUser().getTemp("role").equals("instructor"))
 			{
 				EditStat ="ProvidePerm";

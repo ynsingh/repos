@@ -1,13 +1,15 @@
 #*
  * @(#)DB.vm
- * Copyright (c) 2005-2006,2009 ETRG,IIT Kanpur.
+ * Copyright (c) 2005-2006,2009, 2010 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * Contributors: Members of ETRG, I.I.T. Kanpur
  *@author <a href="mailto:aktri@iitk.ac.in">Awadhesh Kumar Trivedi</a>
  *@author <a href="mailto:sumanrjpt@yahoo.co.in">Suman Rajput</a>
  *@author <a href="mailto:rekha_20july@yahoo.co.in">Rakha Pal</a>
  *@author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  *@modified date: 20-08-2010 (Sunil Kumar),
+ * @ modified date: 13-Oct-2010 (Shaista)
  *#
 
 #set($lang = $data.getUser().getTemp("lang" ).toString())
@@ -25,47 +27,63 @@ $!data.getMessage()
        </td></tr>
 </table>
 <table bgcolor="$ui.tableColor" width=100%>
-#if($data.getUser().getUserName()!= "guest")
 <tr>
-   #if($mode1 != "DGeneral")
-	#if($tdcolor != "1")
-	<td>
-	#elseif($tdcolor=="1")
-	<td bgcolor="#AFDCEC">
+#if($data.getUser().getTemp("role") == "guest")
+	#if($tdcolor!="4")
+		<td>
+	#elseif($tdcolor == "4")
+        	<td bgcolor="#AFDCEC">
 	#end
-	<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_localmail</a></td>
-	#if($tdcolor != "2")
-	<td>
-	#elseif($tdcolor=="2")
-	<td bgcolor="#AFDCEC">
+                <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4")>$DiscussionBoard</td>
+#else
+##if($data.getUser().getUserName()!= "guest")
+	#if($mode1 != "DGeneral")
+		#if($tdcolor != "1")
+        		<td>
+	        #elseif($tdcolor=="1")
+		        <td bgcolor="#AFDCEC">
+	        #end
+		<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_localmail</a></td>
+		#if($tdcolor != "2")
+        		<td>
+	        #elseif($tdcolor=="2")
+		        <td bgcolor="#AFDCEC">
+	        #end
+		<a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2")>$brih_chat</a></td>
+		#if($tdcolor != "3")
+        		<td>
+	        #elseif($tdcolor=="3")
+		        <td bgcolor="#AFDCEC">
+	        #end
+		#if($data.getUser().getTemp("role") == "student")	
+        		<a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3").addPathInfo("countTemp","2")>$Notice_NoticeContent_msg1</td>
+		#else
+			<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3").addPathInfo("countTemp","1")>$brih_Notices</td>
+		#end
+		#if($tdcolor != "4")
+        		<td>
+	        #elseif($tdcolor=="4")
+		        <td bgcolor="#AFDCEC">
+	        #end
+        	<a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4")>$DiscussionBoard</td>
+		#if($data.getUser().getTemp("role")!= "student")	
+			#if($tdcolor != "5")
+	        		<td>
+	        	#elseif($tdcolor=="5")
+			        <td bgcolor="#AFDCEC">
+        		#end
+			<a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status","fromCourse").addPathInfo("count","5")>$brih_news</td>
+		#end
 	#end
-	<a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2")>$brih_chat</a></td>
-	#if($tdcolor != "3")
-	<td>
-	#elseif($tdcolor=="3")
-	<td bgcolor="#AFDCEC">
-	#end
-        <a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3")>$Notice_NoticeContent_msg1</td>
-	#if($tdcolor != "4")
-	<td>
-	#elseif($tdcolor=="4")
-	<td bgcolor="#AFDCEC">
-	#end
-        <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4")>$DiscussionBoard</td>
-	#if($tdcolor != "5")
-	<td>
-	#elseif($tdcolor=="5")
-	<td bgcolor="#AFDCEC">
-	#end
-        <a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status","fromCourse").addPathInfo("count","5")>$brih_news</td>
 #end
 </tr>
-#end
 	<form name="frm" ENCTYPE="multipart/form-data" METHOD="POST" action="$link.setPage("call,Dis_Board,DB.vm").setAction("SendDB")">
 #if($mode1 == "DGeneral")
- 	<tr bgcolor="$ui.menuColor"><td colspan=2><b>$DisBoard_WorkGroup:&nbsp&nbsp<font color=green> $brih_general $DiscussionBoard</font></b>
+ 	##<tr bgcolor="$ui.menuColor"><td colspan=2><b>$DisBoard_WorkGroup:&nbsp&nbsp<font color=green> $brih_general $DiscussionBoard</font></b>
+ 	<tr bgcolor="$ui.menuColor"><td colspan=5><b>$DisBoard_WorkGroup:&nbsp&nbsp<font color=green> $brih_general $DiscussionBoard</font></b>
 #else
- 	<tr bgcolor="$ui.menuColor"><td colspan=2><b>$DisBoard_WorkGroup:&nbsp&nbsp<font color=green>$courseid</font></b>
+ 	##<tr bgcolor="$ui.menuColor"><td colspan=2><b>$DisBoard_WorkGroup:&nbsp&nbsp<font color=green>$courseid</font></b>
+ 	<tr bgcolor="$ui.menuColor"><td colspan=5><b>$DisBoard_WorkGroup:&nbsp&nbsp<font color=green>$courseid</font></b>
 #end
  	</td></tr>
 	<tr><td colspan=5>
@@ -84,7 +102,7 @@ $!data.getMessage()
 			<input type="hidden" name="course_id" value=$courseid>
 		</td>
 	#end
-		<td>
+		<td colspan="5" align="left">
 			#if($mode1 == "DGeneral")
 			   <INPUT TYPE="button" NAME="eventSubmit_doShowArchive" VALUE=" $brih_general $brih_arch">
 			#else

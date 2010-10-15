@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.Local_Mail;
 /*
  * @(#) Mail.java	
  *
- *  Copyright (c) 2005-2006 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006, 2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -48,6 +48,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 import com.workingdogs.village.Record;
 import org.iitk.brihaspati.modules.utils.UserUtil; 
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil; 
 import org.iitk.brihaspati.om.MailReceivePeer;
 /**
  *   This class contains code for all Messages in a local mail account.
@@ -55,12 +56,22 @@ import org.iitk.brihaspati.om.MailReceivePeer;
  * @author  <a href="mailto:chitvesh@yahoo.com">chitvesh dutta</a>
  * @author  <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author  <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+ * @ modified date: 13-Oct-2010 (Shaista)
  *    
  */
 
 //public class Mail extends VelocitySecureScreen
 public class Mail extends SecureScreen
 {
+	
+	/**
+	 * This class count unread messages and total messages according to user id
+	 * If unread messages doesn't exist set zero to display
+	 * if total messages doesn't exist set zero to display
+	 * else set the values for unread and total messages,  getting from databases to display
+	 */  
+
 	 /**
 	   * This method for Authorisation check 
 	   * @param data RunData instance
@@ -114,7 +125,7 @@ public class Mail extends SecureScreen
 			String counter=data.getParameters().getString("count","");
 			context.put("tdcolor",counter);
 			/**
-		  	* Getting the CourseId and CourseName from Temp variables
+		  	* Getting the CourseId and CourseName from Temp variables to set screen menu for display
 		  	*/
                 	String dir=(String)user.getTemp("course_id");
 			String coursename=(String)user.getTemp("course_name");
@@ -122,6 +133,7 @@ public class Mail extends SecureScreen
 		  	* Getting the userId of logged user from Turbine_User table
 		  	* @see UserUtil in Utils
 		  	*/
+
 			String user_name = user.getName();
 			String F_name = user.getFirstName();
 			int user_id = UserUtil.getUID(user_name);
@@ -152,7 +164,7 @@ public class Mail extends SecureScreen
 				totalMsg=item.getValue("TOTAL").asString();
 			}
 		  	/**
-		   	* Adds the information to context
+		   	* Adds the information to context to display
 		   	*/
 		
 			context.put("unread",unreads);

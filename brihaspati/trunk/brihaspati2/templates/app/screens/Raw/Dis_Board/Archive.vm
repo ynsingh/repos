@@ -1,12 +1,14 @@
 #*
  * @(#)Archive.vm
- * Copyright (c)2005-2006 ETRG,IIT Kanpur.
+ * Copyright (c)2005-2006, 2009, 2010 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @author <a href="mailto:aktri@iitk.ac.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:sumanrjpt@yahoo.co.in">Suman Rajput</a>
  * @author <a href="mailto:rekha_20july@yahoo.co.in">Rekha Pal</a>
  * @author <a href="sneha.srivastava24@gmail.com">Sneha Srivastava</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+ * @ modified date: 13-Oct-2010 (Shaista)
 
  *#
 
@@ -38,19 +40,25 @@ $!data.getMessage()
         #elseif($tdcolor=="3")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3")>$brih_Notices</td>
+	#if($data.getUser().getTemp("role") == "student")
+                 <a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3") style=text-decoration:none> $Notice_NoticeContent_msg1</a>
+        #else
+	        <a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3")>$brih_Notices</td>
+	#end
         #if($tdcolor != "4")
         <td>
         #elseif($tdcolor=="4")
         <td bgcolor="#AFDCEC">
         #end
         <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4")>$DiscussionBoard</td>
-        #if($tdcolor != "5")
-        <td>
-        #elseif($tdcolor=="5")
-        <td bgcolor="#AFDCEC">
-        #end
-        <a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status","fromCourse").addPathInfo("count","5")>$brih_news</td>
+	#if($data.getUser().getTemp("role") != "student")
+	        #if($tdcolor != "5")
+        	<td>
+	        #elseif($tdcolor=="5")
+        	<td bgcolor="#AFDCEC">
+	        #end
+        	<a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status","fromCourse").addPathInfo("count","5")>$brih_news</td>
+	#end
 </tr>
 
 </table>
@@ -99,6 +107,7 @@ $!data.getMessage()
 			<INPUT TYPE="hidden" name="Deleteper" value="Archive_Deleted">
 			<INPUT TYPE="hidden" name="DB_subject" value="">
 			<INPUT TYPE="hidden" name="course_id" value="$course_id">
+                        <INPUT TYPE="hidden" NAME="count" VALUE="$tdcolor">
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;				
 			#if($mode!="Search")
 				#if($total_size<= $AdminConf)

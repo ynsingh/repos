@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.screens.call.Dis_Board;
 
 /*
  * @(#)DBContent.java
- *  Copyright (c) 2005-2006 ETRG,IIT Kanpur.
+ *  Copyright (c) 2005-2006, 2010 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -64,6 +64,8 @@ import java.util.LinkedList;
 /**
  * This class contains code for all discussion are shows
  * @author  <a href="arvindjss17@yahoomail.co.in">Aarvind Pal</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+ * @ modified date: 13-Oct-2010 (Shaista)
  */
 
 public class Multithread extends SecureScreen
@@ -89,6 +91,7 @@ public class Multithread extends SecureScreen
                         String Username=data.getUser().getName();
                         context.put("UserName",Username);
 			context.put("tdcolor",pp.getString("count",""));
+			context.put("tdcolor1",pp.getString("countTemp",""));
                         /**
                         * Retrive the UserId from Turbine_User table
                         * @see UserUtil

@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.screens.call.Dis_Board;
 
 /*
  * @(#)DBContent.java	
- *  Copyright (c) 2005-2007,2009 ETRG/IIT Kanpur. 
+ *  Copyright (c) 2005-2007,2009, 2010 ETRG/IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -69,6 +69,8 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
  * @author  <a href="aktri@iitk.ac.in">Awadhesh Kumar Trivedi</a>
  * @author  <a href="sumanrjpt@yahoo.co.in">Suman Rajput</a>
  * @author  <a href="rekha_20july@yahoo.co.in">Rekha Pal</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+ * @ modified date: 13-Oct-2010 (Shaista)
  */
 
 public class DBContent extends SecureScreen
@@ -93,6 +95,8 @@ public class DBContent extends SecureScreen
 			String frompath=data.getParameters().getString("from");
                         context.put("from",frompath);
                         context.put("tdcolor",pp.getString("count",""));
+			ErrorDumpUtil.ErrorLog("\n\n\nDBContent.java countTemp=" +pp.getString("countTemp",""));
+                        context.put("tdcolor1",pp.getString("countTemp",""));
            		/**	
 	    		* Retrive the UserId from Turbine_User table
 	    		* @see UserUtil

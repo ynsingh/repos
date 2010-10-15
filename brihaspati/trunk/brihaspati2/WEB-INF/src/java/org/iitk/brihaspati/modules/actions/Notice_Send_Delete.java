@@ -89,7 +89,7 @@ import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @modified date: 28-01-2010
- * @modified date: 08-07-2010
+ * @modified date: 08-07-2010, 13-Oct-2010
  */
 public class Notice_Send_Delete extends SecureAction
 {
@@ -107,11 +107,12 @@ public class Notice_Send_Delete extends SecureAction
 			User user=data.getUser();
 			String LangFile=(String)user.getTemp("LangFile");
 			ParameterParser pp=data.getParameters();	
+			String flagFrom=pp.getString("flag","");	
 			String UserName=user.getName();
 			int userid=UserUtil.getUID(UserName);	
 			String uid=Integer.toString(userid);
 			int group_id=0;
-
+			context.put("flag",flagFrom);
 			Criteria crit=new Criteria();
 			String courses[]=pp.getStrings("course_list");
 			int rec_no=0, notice_expiry=0;
@@ -120,17 +121,17 @@ public class Notice_Send_Delete extends SecureAction
 			else
 	 			rec_no=courses.length;
 			String mode=pp.getString("mode1","notice");
-
 			/**
 		 	* Retrieve the notice details from the screen with the help of 
 		 	* ParameterParser
 		 	*/
-
+			context.put("count",pp.getString("count",""));
+			context.put("countTemp",pp.getString("countTemp",""));
+			ErrorDumpUtil.ErrorLog("Count temp="+pp.getString("countTemp",""));
 			String notice_role=pp.getString("role");
 			notice_message=pp.getString("message");	
 
 			String notice_subject=pp.getString("subject");
-			ErrorDumpUtil.ErrorLog("nsubject at line 130=="+notice_subject);	
 			/**
 			 *   Replace special character and scripts
 			 */
@@ -420,10 +421,14 @@ public class Notice_Send_Delete extends SecureAction
 	public void doDelete(RunData data,Context context)
 	{
 		try{
+			ParameterParser pp=data.getParameters();
+			context.put("count",pp.getString("count",""));
+			context.put("countTemp",pp.getString("countTemp",""));
 			String LangFile=(String)data.getUser().getTemp("LangFile");
 			String course_id=(String)data.getUser().getTemp("course_id");
 			Criteria crit=new Criteria();
-			String noticeList=data.getParameters().getString("deleteFileNames","");
+			//String noticeList=data.getParameters().getString("deleteFileNames","");
+			String noticeList=pp.getString("deleteFileNames","");
 			if(!noticeList.equals(""))
 			{
 			StringTokenizer st=new StringTokenizer(noticeList,"^");
@@ -514,12 +519,17 @@ public class Notice_Send_Delete extends SecureAction
         {
                 try{
                         String LangFile=(String)data.getUser().getTemp("LangFile");
-		//	String nflag=pp.getString("flag","");
+			//String nflag=pp.getString("flag","");
 			ParameterParser pp=data.getParameters();
+			String nflag=pp.getString("nflag","");
+			context.put("nflag",nflag);
 			String Fheading=pp.getString("message","");
 		//	String Fheadexp=pp.getString("expiry","");
-			String fhrole=pp.getString("role");
-			if(fhrole.equals("turbine_root")){
+			//String fhrole=pp.getString("role");
+			//String fhrole=(String)data.getUser().getTemp("role");
+			String fhrole=data.getUser().getUserName();
+			//if(fhrole.equals("turbine_root")){
+			if(fhrole.equals("admin")){
 			String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Notification.properties";
 			(new File(path)).delete();
 			AdminProperties.setValue(path,Fheading,"brihaspati.admin.flashHeading.value");

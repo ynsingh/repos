@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.Notice_User;
 /*
  * @(#)Notices.java	
  *
- *  Copyright (c) 2005 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005, 2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -39,15 +39,19 @@ package org.iitk.brihaspati.modules.screens.call.Notice_User;
 /**
  * @author <a href="mailto:madhavi_mungole@hotmail.com">Madhavi Mungole</a>
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+ * @ modified date: 13-Oct-2010 (Shaista)
  */
 
 import java.util.Vector;
 import java.util.List;
 
 import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.om.security.User;
 import org.apache.velocity.context.Context;
 
+import org.iitk.brihaspati.modules.utils.CourseUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.CourseUtil;
@@ -61,6 +65,9 @@ import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 public class Notices extends SecureScreen
 {
 	/**
+	 * It is getting All courses list for Admin if Admin Loggedin and setting in context to display
+	 * Getting institute wise CourseList if Institute's admin logged in and setting in context to display
+	 * Getting Course list inwhich user is register as an instructor and setting in context to display
 	 * Loads the template screen
 	 */
 	public void doBuildTemplate( RunData data, Context context ) {
@@ -72,16 +79,23 @@ public class Notices extends SecureScreen
                         User user=data.getUser();
                         String loginname=user.getName();
                         int user_id=UserUtil.getUID(loginname);
+			ParameterParser pp = data.getParameters();
                         //used for group management
-                        String mode1=data.getParameters().getString("mode1","");
+                        //String mode1=data.getParameters().getString("mode1","");
+                        String mode1=pp.getString("mode1","");
                         context.put("mode1",mode1);
-                        String grpname=data.getParameters().getString("val1","");
+                        //String grpname=data.getParameters().getString("val1","");
+                        String grpname=pp.getString("val1","");
                         context.put("val",grpname);
 
-                        String flag=data.getParameters().getString("nflag","");
+                        //String flag=data.getParameters().getString("nflag","");
+                        String flag=pp.getString("nflag","");
+			
                         context.put("nflag",flag);
-                        String counter=data.getParameters().getString("count","");
+                        //String counter=data.getParameters().getString("count","");
+                        String counter=pp.getString("count","");
                         context.put("tdcolor",counter);
+                        context.put("tdcolor1",pp.getString("countTemp",""));
                         /**
                          * Retreives all courses for use of Admin and Institute Admin
                          */
@@ -103,6 +117,7 @@ public class Notices extends SecureScreen
                         	//context.put("clist",CList);
 				}
 			}
+			ErrorDumpUtil.ErrorLog("clist out of admin loop====="+CList);
                         context.put("clist",CList);
                         //CList=null;
                         /**
@@ -120,8 +135,25 @@ public class Notices extends SecureScreen
                                 courselist.addElement(coursename);
                                 groupIdList.addElement(group_name);
                         }
-
-                        String C_Name=(String)(user.getTemp("course_name"));
+			String courseid="", C_Name="", userInCourse ="";
+			courseid=pp.getString("courseId","");
+			userInCourse=(String)user.getTemp("course_id");
+			ErrorDumpUtil.ErrorLog("\n\n\n\nfrom Notices.java  courseId="+courseid+"\n userInCourse="+userInCourse);
+			if( userInCourse!=null && !userInCourse.equals("") && courseid.equals(""))
+			{
+				ErrorDumpUtil.ErrorLog("\n\nin if from Notices.java  courseId="+courseid+"\n userInCourse="+userInCourse);
+				courseid = userInCourse;
+                        	C_Name=(String)(user.getTemp("course_name"));
+			}
+			else
+			{
+				ErrorDumpUtil.ErrorLog("\n\nin else from Notices.java  courseId="+courseid+"\n userInCourse="+userInCourse);
+				user.setTemp("course_id",courseid);
+				C_Name=CourseUtil.getCourseName(courseid);
+				user.setTemp("course_name",C_Name);
+			}
+			context.put("courseId",courseid);
+                        //String C_Name=(String)(user.getTemp("course_name"));
                         context.put("course",C_Name);
                         context.put("courselist",courselist);
                         context.put("groupIdList",groupIdList);

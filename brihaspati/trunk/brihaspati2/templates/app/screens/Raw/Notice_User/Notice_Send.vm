@@ -1,9 +1,11 @@
 #*
  * @(#) Notice_Send.vm
- * Copyright (c) 2005 ETRG,IIT Kanpur.
+ * Copyright (c) 2005, 2010 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto:madhavi_mungole@hotmail.com ">Madhavi Mungole</a>
  * @author <a href="mailto:awadhesh_trivedi">Awadhesh Kumar Trivedi</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+ * @ modified date: 13-Oct-2010 (Shaista)
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
@@ -20,7 +22,7 @@ $page.setTitle("Home | $course | Communication | Notices | Send Notice")
 		<font face="$ui.sansSerifFonts">
 		 #if($data.getUser().getUserName() == "admin")
 	                <a href=$link.setPage("call,Admin.vm")><b>$brih_ad $brih_home</a> |
-        	        <a href=$link.setPage("call,Notice_User,Notices.vm")>$brih_Notices</a> | 
+        	        <a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3")>$brih_Notices</a> | 
 			#if($nflag == "fh")
 				$brih_flash $brih_heading
 			#else
@@ -34,7 +36,7 @@ $page.setTitle("Home | $course | Communication | Notices | Send Notice")
         	        	<a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm")><b>$brih_grp $brih_mgmt</a> |
 	                #else
 				<a href=$link.setPage("call,CourseMgmt_User,Communication.vm")><b>$brih_communication</a> |  
-				<a href=$link.setPage("call,Notice_User,Notices.vm")>$brih_Notices</a> |
+				<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3")>$brih_Notices</a> |
 			#end
 			$Notice_NoticeSend_msg1 
 		#end

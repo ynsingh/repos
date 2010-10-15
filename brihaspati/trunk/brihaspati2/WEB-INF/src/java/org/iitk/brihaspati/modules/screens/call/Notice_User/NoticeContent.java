@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.Notice_User;
 /*
  * @(#)NoticeContent.java	
  *
- *  Copyright (c) 2005 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005,2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -37,11 +37,15 @@ package org.iitk.brihaspati.modules.screens.call.Notice_User;
 
 /**
  *  @author: <a href="mailto:madhavi_mungole@hotmail.com">Madhavi Mungole</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+ * @ modified date: 13-Oct-2010 (Shaista)
  */
 
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+//import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.CourseUtil;
 import org.iitk.brihaspati.modules.utils.Notice_SRDetail;
 import org.iitk.brihaspati.om.NoticeSend;
 import org.iitk.brihaspati.om.NoticeSendPeer;
@@ -68,15 +72,39 @@ public class NoticeContent extends SecureScreen{
 			User user=data.getUser();
 			Criteria crit=new Criteria();
 			context.put("tdcolor",pp.getString("count",""));	
+			context.put("tdcolor1",pp.getString("countTemp",""));	
 			/**
-			 * Get the course Id from user's temporary variable and then find the
-			 * course alias with the help of util class
+			 * Getting the course Id from user's temporary variable and with the help of Parameter Parser
+			 * if{ userInCourse(getting from Temporary variable) is not null and courseId (getting from  parameter Parser) is null so 
+			 * courseid would be  userInCourse (getting from Temporary variable) 
+			 * }
+			 * else { course id is set in temporary variable
+			 * and get course name with the help of util class
+			 * and course name is set in temporary variable
+			 * }
+			 * Set course id to display Screen menu (Left Side Menu Bar)
 			 * @see CourseUtil.java in utils
 			 */		
-
-			String flag=pp.getString("flag");
+			String courseName ="",userInCourse="";
+			String flag=pp.getString("flag","");
 			String user_role=(String)user.getTemp("role");
 			String courseId="";
+			courseId=pp.getString("courseId","");
+			userInCourse=(String)user.getTemp("course_id");
+			//ErrorDumpUtil.ErrorLog("\n\n\n\n from courseContent.java userInCourse="+userInCourse+"\n courseId="+courseId);
+			if( userInCourse!=null && !userInCourse.equals("") && courseId.equals("")){
+				//ErrorDumpUtil.ErrorLog("\n in if from courseContent.java userInCourse="+userInCourse+"\n courseId="+courseId);
+				courseId=userInCourse;
+				courseName=(String)user.getTemp("course_name");
+			}
+			else
+			{
+				//ErrorDumpUtil.ErrorLog("\n in else from courseContent.java userInCourse="+userInCourse+"\n courseId="+courseId);
+				user.setTemp("course_id",courseId);
+				courseName=CourseUtil.getCourseName(courseId);
+				user.setTemp("course_name",courseName);
+			}
+	/**	
 			if(flag.equals("FromNotices"))
 			{
 				courseId=(String)user.getTemp("course_id");
@@ -85,7 +113,8 @@ public class NoticeContent extends SecureScreen{
 			{
 				courseId=pp.getString("courseId");
 			}
-			String courseName=(String)user.getTemp("course_name");
+**/
+			//String courseName=(String)user.getTemp("course_name");
 			context.put("CName",courseName);
 			context.put("courseId",courseId);
 			context.put("user_role",user_role);
@@ -102,8 +131,7 @@ public class NoticeContent extends SecureScreen{
 				role_id=3;
 
 			/**
-			 * Get the user name and find his id. Get the group id with the help of
-			 * group name.
+			 * Get the user name and find user id. Get the group id with the help of group name.
 			 * @see UserUtil.java in utils 
 			 * @see GroupUtil.java in utils 
 			 */

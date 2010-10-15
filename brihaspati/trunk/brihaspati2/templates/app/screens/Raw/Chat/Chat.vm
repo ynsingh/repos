@@ -6,7 +6,7 @@
  * @author <a href="mailto:awadhk_t@yahoo.com ">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:shaistashekh@hotmail.com ">Shaista Bano</a>
- * @modified date: 10-aug-2010 (Shaista)
+ * @modified date: 10-aug-2010 (Shaista), 06-oct-2010
 *#
 
 $page.setTitle("Chat")
@@ -14,7 +14,10 @@ $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
 
 #set($lang = $data.getUser().getTemp("lang" ).toString())
-#if ($lang == "bangla")
+#if ($lang == "arabic")
+        #set($lang="ar")
+
+#elsif ($lang == "bangla")
         #set($lang="bn")
 
 #elseif ($lang == "dutch")
@@ -56,7 +59,7 @@ $!data.getMessage()
 			<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> | 
 		
 			##<a href=$link.setPage("call,CourseMgmt_User,Communication.vm")>$brih_communication</a> | $brih_chat
-			<a href=$link.setPage("call,Local_Mail,Mail.vm")>$brih_communication</a> |
+			<a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_communication</a> |
 		#end  
 		  $brih_chat
 		</font>
@@ -67,14 +70,21 @@ $!data.getMessage()
 </table>
 <table align=left bgcolor="$ui.tableColor" width=100%>
 <tr>
-	#if($mode == "general")
-		#if($tdcolor!="2")
-			<td>
-	        #elseif($tdcolor == "2")
-		       	<td bgcolor="#AFDCEC">
-	        #end
+#if($data.getUser().getTemp("role") == "guest")
+	#if($tdcolor!="4")
+		<td>
+	#elseif($tdcolor == "4")
+        	<td bgcolor="#AFDCEC">
+	#end
+                <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4")>$DiscussionBoard</td>
+#elseif($mode == "general")
+	#if($tdcolor!="2")
+		<td>
+        #elseif($tdcolor == "2")
+	       	<td bgcolor="#AFDCEC">
+        #end
 		<a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2").addPathInfo("mode",$mode)>Chat</a></td>
-	#else
+#else
 		#if($tdcolor!="1")
 	        	<td>
 	        #elseif($tdcolor == "1")
@@ -92,20 +102,27 @@ $!data.getMessage()
         	#elseif($tdcolor == "3")
 		        <td bgcolor="#AFDCEC">
         	#end
-		<a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3")>$Notice_NoticeContent_msg1</td>
+		#if( $data.getUser().getTemp("role") == "student")
+                        <a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3").addPathInfo("countTemp","2") style=text-decoration:none> $Notice_NoticeContent_msg1</a></td>
+               #else
+			##<a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("flag","FromNotices").addPathInfo("count","3")>$Notice_NoticeContent_msg1</td>
+			<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3").addPathInfo("countTemp","1")>$brih_Notices</td>
+		#end
 		#if($tdcolor!="4")
 		        <td>
         	#elseif($tdcolor == "4")
 	        	<td bgcolor="#AFDCEC">
         	#end
 		<a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4")>$DiscussionBoard</td>
-		#if($tdcolor!="5")
-		        <td>
-        	#elseif($tdcolor == "5")
-		        <td bgcolor="#AFDCEC">
+		#if( $data.getUser().getTemp("role") != "student")
+			#if($tdcolor!="5")
+		        	<td>
+	        	#elseif($tdcolor == "5")
+			        <td bgcolor="#AFDCEC">
+        		#end
+			<a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status","fromCourse").addPathInfo("count","5")>$brih_news</td>
         	#end
-		<a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status","fromCourse").addPathInfo("count","5")>$brih_news</td>
-       	#end
+#end
 </tr>
 </table>
 #if($username=="guest")

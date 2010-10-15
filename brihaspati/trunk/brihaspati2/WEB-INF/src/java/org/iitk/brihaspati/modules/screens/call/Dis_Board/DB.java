@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.Dis_Board;
 /*
  * @(#)DB.java	
  *
- *  Copyright (c) 2005-2006 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006, 2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -60,6 +60,8 @@ import org.iitk.brihaspati.om.DbReceivePeer;
  *   @author  <a href="aktri@iitk.ac.in">Awadhesh Kumar Trivedi</a>
  *   @author  <a href="sumanrjpt@yahoo.co.in">Suman Rajput</a>
  *   @author  <a href="rekha_20july@yahoo.co.in">Rekha Pal</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+ * @ modified date: 13-Oct-2010 (Shaista)
  */
 
 public class DB extends SecureScreen
@@ -83,7 +85,9 @@ public class DB extends SecureScreen
             		int gid=GroupUtil.getGID(dir);
 			String filePath=data.getServletContext().getRealPath("/Courses")+"/"+dir+"/DisBoard";
 			File dirHandle=new File(filePath);
+			context.put("mode1",data.getParameters().getString("mode1",""));
 			context.put("tdcolor",data.getParameters().getString("count",""));
+			context.put("tdcolor1",data.getParameters().getString("countTemp",""));
 			if(!(dirHandle.exists())){
 				dirHandle.mkdirs();
 			}

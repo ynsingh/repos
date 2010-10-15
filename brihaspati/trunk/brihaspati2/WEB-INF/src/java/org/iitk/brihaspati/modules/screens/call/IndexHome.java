@@ -55,6 +55,7 @@ import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.CourseUtil;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.CommonUtility;//
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;//
 import org.iitk.brihaspati.modules.utils.StudentInstructorMAP;
 import org.iitk.brihaspati.modules.utils.NoticeUnreadMsg;
 import org.iitk.brihaspati.om.UserConfigurationPeer;
@@ -94,6 +95,9 @@ public class IndexHome extends SecureScreen{
  * }
  */
 		try{
+		/**
+		 * Getting User Detail & user id
+		**/
 			User user=data.getUser();
 		        System.gc();	
 			String username=user.getName();
@@ -106,37 +110,49 @@ public class IndexHome extends SecureScreen{
 			int u_id=UserUtil.getUID(username);
 			String id=Integer.toString(u_id);
 			/**
-                        * Code for "Today's Events"
                         * Get the current date
+			* Getting Task list according to current date  & setting to display 
                         */
                         String Cdate=ExpiryUtil.getCurrentDate("-");
-			/**
-			  * Code for Display Task
-			  */
 			Vector taskList=CommonUtility.DisplayTask(u_id,Cdate);	
 			context.put("taskList",taskList);
-
+			/**
+			 * Getting last login time from database according to user name & setting it to display while user is registered in a new course
+			 */
 			Criteria crit=new Criteria();
 			crit.add(TurbineUserPeer.LOGIN_NAME,username);		
 			List v=TurbineUserPeer.doSelect(crit);
-
 			Timestamp tStamp=(Timestamp)((TurbineUser)v.get(0)).getLastLogin();
 			context.put("lastlogin",tStamp);
 
-
+			/**
+			 * if user is guest set guest login true
+			 * else set guest login false
+			 */
 			if(user.getName().equals("guest")){
 				context.put("guest_login","true");
 			}
 			else{
 				context.put("guest_login","false");
 			}
+			/**
+			 * Getting Role from parameter parser
+			 * if role is null get from temporary variable 
+			 */
+
 			ParameterParser pp=data.getParameters();
 			String Role="";
 				Role=pp.getString("role","");
 			if(Role.equals(""))
 				Role=(String)user.getTemp("role");
 			context.put("user_role",Role);
-			
+
+			/**
+			 * Getting configuration Parameter 
+			 * if configuration parameter is not empty set it to display
+			 * else set default value as 10 
+			 */
+
 			crit=new Criteria();
                         crit.add(UserConfigurationPeer.USER_ID,Integer.toString(u_id));
                         List user_conf=UserConfigurationPeer.doSelect(crit);
@@ -150,39 +166,46 @@ public class IndexHome extends SecureScreen{
 				user.setTemp("confParam","10");
 			}
 			// This is check for set temp variables
+			/**
+			 * @param course_name String, Default value should set as null
+			 * @param course_id String, Default value should set as null
+			 */ 
 			user.setTemp("course_name","");
                         user.setTemp("course_id","");
 			user.setTemp("role",Role);
-
-				/**
-				 * get groupName according to user id & role id
-				 * set course name for whole session in temporary variable according to group name
-				 * set  group name for whole session in temporary variable according to group name
-				 * if { there is any new message it indicate new message }
-				 */
-
                         Vector unread_inst=new Vector();
                         Vector unread_stud=new Vector();
-                        
+			/**
+			 * if role is instructor 
+			 * Getting List of course's object according to user id in which user is instructor
+			 * to show the list of courses 
+			 * Getting unread message & setting it to display
+			*/
 			if(Role.equals("instructor"))
 			{
-				
 				Vector course_inst=StudentInstructorMAP.getIMAP(u_id);
+				ErrorDumpUtil.ErrorLog("course_inst"+course_inst);
                         	context.put("inst",course_inst);
-				//Unread Notices
+				// getting Unread Notices
 				unread_inst=NoticeUnreadMsg.getUnreadNotice(u_id,2,"All");
 				context.put("unread_msg",unread_inst);
 			}
+			/**
+			 * else if role is student 
+			 * Getting List of course's object in which user is student  to show the list of courses 
+			 *  gettign unread message & setting it to display
+			*/
                         else if(Role.equals("student"))
 			{
 				Vector course_stud=StudentInstructorMAP.getSMAP(u_id);
+				ErrorDumpUtil.ErrorLog("course_stud"+course_stud);
                         	context.put("stud",course_stud);
-				//Unread Notices
+				// getting Unread Notices
 				unread_stud=NoticeUnreadMsg.getUnreadNotice(u_id,3,"All");
 				context.put("unread_msg",unread_stud);
 			}
                         /**
-                        * Retreive the current time from System date
+                        * Retreive the current time from System date and it to display for setting task colour
                         */
                         String date=new Date().toString();
                         String ch=date.substring(11,13);
@@ -191,13 +214,14 @@ public class IndexHome extends SecureScreen{
                         context.put("currenttime",currtime);
                         /**
                         * Sending object Integer to context
+			* to set begining time and ending time into INT to compare 
                         */
 
                         Integer ii = new Integer(1000);
                         context.put("INT",ii);
                         /**
-                         * Retreive the events from the database based on today's date for the
-                         * specific user
+                         * Retreive the list of events from the database based on today's date for the
+                         * specific user to display
                          */
                         crit=new Criteria();
                         crit.add(CalInformationPeer.GROUP_ID,"1");
@@ -242,6 +266,7 @@ public class IndexHome extends SecureScreen{
                         }
 
 			System.gc();
+			//Retrieving list of book mark from xml files to display
 			String filePath=data.getServletContext().getRealPath("/Bookmarks"+"/"+username);
                         File f=new File(filePath+"/BookmarksList.xml");
 			TopicMetaDataXmlReader topicmetadata=null;

@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.Notice_User;
 /*
  * @(#)Notice_Send.java	
  *
- *  Copyright (c) 2005-2007 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2007, 2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -39,6 +39,8 @@ package org.iitk.brihaspati.modules.screens.call.Notice_User;
 /**
  * @author <a href="mailto:madhavi_mungole@hotmail.com">Madhavi Mungole</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+ * @ modified date: 13-Oct-2010 (Shaista)
  */
 
 import java.util.Vector;
@@ -51,7 +53,6 @@ import org.apache.velocity.context.Context;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.CourseUtil;
-import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.ListManagement;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
@@ -78,6 +79,7 @@ public class Notice_Send extends SecureScreen{
 
                         String flag=data.getParameters().getString("nflag","");
 			context.put("nflag",flag);
+			context.put("count",data.getParameters().getString("count",""));
 
 			/**
 			 * Retreives all courses for use of admin
