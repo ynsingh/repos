@@ -9,7 +9,7 @@ $page.setBgColor("#ffffff")
 </head>
 
 #if($instituteid!="" && $lang!="")
-	<table border=0><tr><td width="55%"><img src="$content.getURI("images/${lang}brihaspati3.png")"></td><td width="20%"><img src="$content.getURI("images/Logo/logo")"</td><td width="20%"><img src="$content.getURI("images/Logo/$instituteid")"</td></tr></table>
+	<table border=0><tr><td width="55%"><img src="$content.getURI("images/${lang}brihaspati3.png")"></td><td width="20%"><img src="$content.getURI("images/Logo/logo")"</td><td width="20%"><img height="112px" src="$content.getURI("images/Logo/$instituteid")"</td></tr></table>
 #elseif($lang!="" && $instituteid=="")
 	<table border=0><tr><td width="55%"><img src="$content.getURI("images/${lang}brihaspati3.png")"></td><td colspan=2 width="40%"><img src="$content.getURI("images/Logo/logo")"</td></tr></table>
 #else
