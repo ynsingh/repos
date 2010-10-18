@@ -417,9 +417,10 @@ public class UserAction_InstituteAdmin extends SecureAction_Institute_Admin{
                 ParameterParser pp=data.getParameters();
                 FileItem file = pp.getFileItem("file");
                 String fileName=file.getName();
+		fileName=fileName.toLowerCase();
                 String imagesRealPath=TurbineServlet.getRealPath("/images");
 		String msg1;
-                if(fileName.endsWith("jpg")|| fileName.endsWith("gif")|| fileName.endsWith("png"))
+                if(fileName.endsWith("jpg")|| fileName.endsWith("gif")|| fileName.endsWith("png")||fileName.endsWith("jpeg"))
                 {
                         try{
                                 File filePath=new File(imagesRealPath+"/Logo/");
