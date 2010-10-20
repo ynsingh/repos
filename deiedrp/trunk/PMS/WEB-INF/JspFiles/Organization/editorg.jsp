@@ -23,7 +23,8 @@ jQuery(document).ready(function(){
 jQuery(function() {
 		jQuery("#accordion").accordion({ collapsible: true,
 		header: 'h3',
-		fillSpace: false
+		fillSpace: false,
+		autoHeight: false
 		});
 				
 	});
@@ -45,13 +46,7 @@ jQuery(function() {
 	
 	</head>
 	<body onload="cityGenerate()">
-	<%
-	String mysession=(String)session.getAttribute("mysession");
-	if(mysession==null)
-	{
-		response.sendRedirect("login.jsp");
-	 }
-	%>
+	
 	<%!
 		CachedRowSet crs_org=null;
 	 %>
@@ -63,7 +58,7 @@ jQuery(function() {
 	 %>
 	<div style="padding-left:100px;padding-right:100px;padding-top:40px;">
 	<div id="accordion">
-	<h3><a href="#">Edit to desired organization -</a></h3>
+	<h3><a href="#"><bean:message key="title.editOrganization"/> -</a></h3>
 	<div>
 	 <html:javascript formName="editorgform" />
 		<html:form action="editorg" onsubmit="return validateEditorgform(this);">
@@ -79,20 +74,20 @@ jQuery(function() {
 		<table cellspacing="1" cellpadding="6" border="0" align="center">
 		<tr class="form-element">
 		<td  class="form-label">
-		Organization Name : </td>
+		<bean:message key="label.orgName"/> : </td>
 			<td class="form-widget"><html:text property="iname" size="40" value="<%=crs_org.getString(2)%>"/></td>
 			<td class="form-label">
-			Phone No : </td>
+			<bean:message key="label.orgPhone"/> : </td>
 			<td class="form-widget"><html:text property="iphoneno" size="40" value="<%=crs_org.getString(6)%>"/><html:errors property="iphoneno"/></td></tr>
 			<tr class="form-element"><td class="form-label">
-			Fax No. :</td>
+			<bean:message key="label.orgFax"/> :</td>
 			<td class="form-widget"> <html:text property="ifax" size="40" value="<%=crs_org.getString(7)%>"/><html:errors property="ifax"/></td>
 			<td class="form-label">
-			WebSite :</td>
+			<bean:message key="label.orgwebSite"/> :</td>
 			<td class="form-widget"> <html:text property="iurl" size="40" value="<%=crs_org.getString(8)%>"/>
 			</td></tr>
 			<tr class="form-element"><td class="form-label">
-			State : </td>
+			<bean:message key="label.orgState"/> : </td>
 			<td class="form-widget">
 			<html:select property="istate" value="<%=crs_org.getString(4)%>" indexed="istate" style="width: 260px;" 
 			 onchange="cityGenerate()">
@@ -106,22 +101,22 @@ jQuery(function() {
 			</html:select>
 			<html:errors property="istate"/></td>
 			<td class="form-label">
-			City : </td>
+			<bean:message key="label.orgCity"/> : </td>
 			<td class="form-widget">
 			<html:select property="icity" style="width: 260px;">
 			 </html:select>
 			<html:errors property="icity"/></td></tr>
 			<tr class="form-element"><td class="form-label">
-			Address :</td>
+			<bean:message key="label.orgAddress"/> :</td>
 			<td class="form-widget"><html:textarea property="iaddress" rows="2" cols="37" value="<%=crs_org.getString(3)%>"/><html:errors property="iaddress"/>
 			</td></tr>
 			
 			</table><br>
 			<table align="center">
 		<tr><td>
-			<html:submit value="Save Change" styleClass="butStnd"/></td>
-			<td><html:reset styleClass="butStnd" onclick="cityGenerate();"/></td>
-			<td><html:button property="back" value="Cancel" styleClass="butStnd" onclick="history.back();" /></td>
+			<input type="submit" value='<bean:message key="label.saveChanges.button" />' class="butStnd"/></td>
+			<td><input type="reset" value='<bean:message key="label.reset.button" />' class="butStnd" onclick="cityGenerate();"/></td>
+			<td><input type="button" value='<bean:message key="label.cancel.button" />' class="butStnd" onclick="history.back();" /></td>
 			</tr></table>
 			<input type="hidden" name="cityValue" id="cityValue" value="<%=crs_org.getString(5)%>" size="20" readonly="readonly"/>
 			<html:errors property="cityValue"/>

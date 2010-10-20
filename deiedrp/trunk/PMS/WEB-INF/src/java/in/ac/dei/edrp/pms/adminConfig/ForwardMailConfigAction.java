@@ -1,6 +1,4 @@
-package in.ac.dei.edrp.pms.task;
-
-import in.ac.dei.edrp.pms.viewer.checkRecord;
+package in.ac.dei.edrp.pms.adminConfig;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,14 +9,12 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 /** 
- * MyEclipse Struts
- *Creation date: 11-05-2010
- * XDoclet definition:
+ * Creation date: 26-june-2010
  * @struts:action scope="null" validate="true"
- * @struts:action-forward name="page.assigntask" path="assigntask"
+ * @author <a href="http://aniltiwaripms.blogspot.com" target="_blank">Anil Kumar Tiwari</a> 
  */
 
-public class ForwardAssignTaskAction extends Action{
+public class ForwardMailConfigAction extends Action{
 	/** 
 	 * Method execute
 	 * @param mapping
@@ -32,20 +28,14 @@ public class ForwardAssignTaskAction extends Action{
 		ActionForm form,
 		HttpServletRequest request,
 		HttpServletResponse response) {
-		String forwardString="assigntask";
+		String forwardString="invalid";
 		HttpSession session=request.getSession();
 		if((String)session.getAttribute("mysession")!=null)
 		{	
-		if(((String)session.getAttribute("authority")).equalsIgnoreCase("User"))
-		{
-			String add_role_permission=checkRecord.AuthorityChecker("assign_task", 
-				(String)session.getAttribute("roleid"));
-			if(add_role_permission==null || add_role_permission.equalsIgnoreCase("Not Allow"))
+			if(((String)session.getAttribute("authority")).equalsIgnoreCase("Super Admin"))
 			{
-				request.setAttribute("message", "Sorry!!! You are not an authorized person for this operation.");
-				forwardString="notAssigning";
+					forwardString="mailConfigPage";
 			}
-		}
 		}
 		return mapping.findForward(forwardString);
 		

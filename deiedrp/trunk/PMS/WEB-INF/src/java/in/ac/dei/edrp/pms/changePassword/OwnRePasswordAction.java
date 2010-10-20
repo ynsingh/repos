@@ -26,7 +26,7 @@ import java.sql.*;
  * @struts.action path="/changepasswordaction" name="passwordform" input="/WEB-INF/JspFiles/changepassword/changepassword.jsp" scope="request" validate="true"
  * @struts.action-forward name="success" path="page.changepasswordsuccess"
  */
-public class RePasswordAction extends Action {
+public class OwnRePasswordAction extends Action {
 	/*
 	 * Generated Methods
 	 */
@@ -53,7 +53,7 @@ public class RePasswordAction extends Action {
 			ps.setString(3, passwordform.getOldpassword());
 			int x=ps.executeUpdate();
 			if(x>0)
-				request.setAttribute("passinfo","Your own password has been changed successfully!");
+				request.setAttribute("passinfo","Your own password has been changed successfully.");
 			
 		}catch(Exception e){
 			//System.out.println("Exception is coming in RePasswordAction.java "+e);

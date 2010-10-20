@@ -1,4 +1,4 @@
-<%@ page language="java" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -45,20 +45,15 @@ jQuery(function() {
   }
   ); 
  }
+ 	
  </script>
   </head>
   
   <body>
-  <%
-	String mysession=(String)session.getAttribute("mysession");
-	if(mysession==null)
-	{		
-		response.sendRedirect("login.jsp");  
-	}
-  %>
+  
  <div style="padding-left:100px;padding-right:100px;padding-top:40px;">
 	<div id="accordion">
-	<h3><a href="#"> Add New Member -</a></h3>
+	<h3><a href="#"> <bean:message key="title.addNewMemberPage"/> -</a></h3>
 	<div>
  		 <html:javascript formName="newmemberform" dynamicJavascript="true"
 			staticJavascript="true" />
@@ -77,22 +72,22 @@ jQuery(function() {
 			<html:errors property="user"/>	
 			</td></tr>
         <tr class="form-element">
-          <td class="form-label">Email-id :</td>
+          <td class="form-label"><bean:message key="label.emailid"/> :</td>
           <td class="form-widget"><html:text property="emailid" indexed="emailid" value="" size="40" onchange="seeMember()" /><font color="red" size="2">*</font></td>
-          <td class="form-label">Phone No. :</td>
-          <td class="form-widget"><html:text property="phoneno" value="" size="40"/>
+          <td class="form-label"><bean:message key="label.phoneNo"/> :</td>
+          <td class="form-widget"><html:text property="phoneno" title="Mob.No/(PhoneNo. with STD code)" value="" size="40"/>
           <html:errors property="phoneno"/>
           </td>
         </tr> 	
         <tr class="form-element">
-          <td class="form-label">First Name :</td>
+          <td class="form-label"><bean:message key="label.firstName"/> :</td>
           <td class="form-widget"><html:text property="firstname" value="" size="40" /><font color="red" size="2">*</font></td>
-          <td class="form-label">Last Name :</td>
+          <td class="form-label"><bean:message key="label.lastName"/> :</td>
           <td class="form-widget"><html:text property="lastname" value="" size="40"/><font color="red" size="2">*</font></td>
         </tr>
         
        <tr class="form-element">
-          <td class="form-label">Experience :</td>
+          <td class="form-label"><bean:message key="label.experience"/> :</td>
           <td class="form-widget">
            <html:select property="experience" value="--Select--">
            <html:option value="--Select--"></html:option>
@@ -102,16 +97,13 @@ jQuery(function() {
             %>
           <html:option value="<%=String.valueOf(i) %>"></html:option>
           <%} %>
-          </html:select>Year<font color="red" size="2">*</font></td>
-          <td class="form-label">Skills :</td>
+          </html:select><bean:message key="label.year"/><font color="red" size="2">*</font></td>
+          <td class="form-label"><bean:message key="label.skills"/> :</td>
           <td class="form-widget"><html:textarea property="skill" value="" rows="2" cols="38"/></td>
         </tr>
-        <c:if test="${sessionScope.authority=='Super Admin'}">
-        <input type="hidden" value="a" name="rolename" id="rolename"/>
-        </c:if>
         <c:if test="${sessionScope.authority=='User'}">
       <tr class="form-element">
-		<td  class="form-label">Role in Organization :</td>
+		<td  class="form-label"><bean:message key="label.role.in.organization"/> :</td>
 		<td class="form-widget">
 		<html:select property="rolename" style="width: 270px;">
 		<html:option value="--Select--"></html:option>
@@ -126,15 +118,20 @@ jQuery(function() {
 		 <html:errors property="rolename"/>
 			 </td></tr>
       </c:if>
-        
-        
+    
       </table>
       <table align="center">	
 			  
 			<tr><td><BR><br>	  
-			<html:submit value="Add Member" styleClass="butStnd"/>
-			<html:reset styleClass="butStnd"/>
-			<html:button property="back" value="Cancel" styleClass="butStnd" onclick="history.back();" />
+			<input type="submit" value='<bean:message key="label.addMember.button"/>' class="butStnd"/>
+			<input type="reset" value='<bean:message key="label.reset.button" />' class="butStnd" onclick="location.href='addmember.do'"/>
+			<c:if test="${sessionScope.authority=='User'}">
+			<input type="button" value='<bean:message key="label.cancel.button" />' class="butStnd" onclick="location.href='mainwelcome.do'" />
+			</c:if>
+			<c:if test="${sessionScope.authority=='Super Admin'}">
+			<input type="hidden" value="a" name="rolename" id="rolename"/>
+			<input type="button" value='<bean:message key="label.cancel.button" />' class="butStnd" onclick="location.href='welcome.do'" />
+			</c:if>
 			<input type="hidden" name="emailid2" id="emailid2" value="" size="20" readonly="readonly"/>
 			<html:errors property="emailid2"/>
             </td>

@@ -33,42 +33,33 @@
 	}
 	</script>
   <body>
-  <%! String mysession=null;
+  <%!
   	String key=null;
   	String key1=null;
 	 %>
-	<%
-		//new CustomRequestProcessor().processNoCache(request, response);
-		mysession=(String)session.getAttribute("mysession");
-		if(mysession==null)
-		{
-			response.sendRedirect("login.jsp");  
-		}
-	else{
-	%>
-  
-	<%
+	 
+  <%
 	 key=request.getParameter("key");
 	 if(key==null)
 	 key="10";
 	 key1=request.getParameter("key1");
-	
-	 
+
   %>
   <% request.setAttribute("projectTeam", new OrgMemberList(key1)); %>
   
   <div id="main_title" align="left">
-		    <font color="#0044ff">Project Team :</font>
+		    <font color="#0044ff"><bean:message key="title.projectTeam"/> :</font>
 		     </div><br>
 	
   	 <div align="left">
 	<input type="hidden" id="proj" name="proj" value="<%=key1 %>">
-	Number of records to be displayed:
+	<bean:message key="title.numberOfRecords"/>:
   <html:select style="color:#0044ff" property="nrec" name="nrec" value="<%=key %>" onchange="fnrec();">	
     <html:option value="5" >5</html:option>
     <html:option value="10" >10</html:option>
     <html:option value="15" >15</html:option>
     <html:option value="20" >20</html:option>
+    <html:option value="25" >25</html:option>
    </html:select>
 	<html:errors property="nrec"/>
 	<div align="right">
@@ -76,7 +67,7 @@
 	if(((String)session.getAttribute("authority")).equalsIgnoreCase("User"))//the authority is user or super admin
 		{
 	 %>
-	  <html:link action="assignproject">New Member<img border="0" title="Edit" src="img/user1_add.png" width="15" "height="15" ></html:link>
+	  <html:link action="assignproject"><bean:message key="label.newMember"/><img border="0" title="Edit" src="img/user1_add.png" width="15" "height="15" ></html:link>
 	 <%} %>
 	 </div>
 	</div>
@@ -84,7 +75,6 @@
 	 <logic:notEmpty name="projectTeam" property="list">
 	 
  <display:table name="projectTeam.list" id="row" defaultsort="1" export="false" pagesize="<%=Integer.parseInt(key) %>" requestURI="/viewProjTeam.do" decorator="in.ac.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >
-				   
 		<display:column property="userid" group="1" title="User ID" sortable="true" />
 		<display:column property="portalname" title="Permitted By" sortable="true" />
 		<display:column property="orgname" title="Project" sortable="true" />
@@ -93,15 +83,14 @@
 		<%=((MemberBean)pageContext.getAttribute("row")).getRolename()%>
 		</html:link>
 		</display:column>
-				
 </display:table>
    
     </logic:notEmpty>
     
      <logic:empty name="projectTeam" property="list">
-     <br><font color="#550003" size="2">No member exist on this project.</font><br><br>
-     <html:button property="back" value="Back" styleClass="butStnd" onclick="history.back();" />
+     <br><font color="#550003" size="2"><bean:message key="label.memberNotInPoject"/></font><br><br>
+     <input type="button" value='<bean:message key="label.back.button" />' class="butStnd" onclick="history.back();" />
     </logic:empty>
-  		<%} %>
+  
   </body>
 </html:html>

@@ -9,6 +9,26 @@
 <script type="text/javascript" src="javascript/jquery.js"></script>
 <script type="text/javascript" src="javascript/jquery-ui.min.js"></script>
 <script type="text/javascript">
+function show(){
+var taskDiv=document.all("taskDiv");
+var taskVisibility=document.getElementById("taskVisibility").value;
+
+if(taskVisibility=="show task list")
+{
+document.getElementById("taskVisibility").value="hide task list";
+taskDiv.style.visibility="visible";
+}
+else
+{
+document.getElementById("taskVisibility").value="show task list";
+taskDiv.style.visibility="hidden";
+}
+}
+function hide(){
+var taskDiv=document.all("taskDiv");
+taskDiv.style.visibility="hidden";
+}
+
 jQuery.noConflict();
 jQuery(document).ready(function(){
 
@@ -29,17 +49,21 @@ jQuery(function() {
 </script>
 
 </head>
-<body> 
+<body onload="hide();"> 
+
 <div style="padding-top: 8px;padding-left: 50px;width: 90%;">
 	<div id="accordion">
-	<h3><a href="#"> Gantt Chart : ${param.key1}-</a></h3>
+	<h3><a href="#"> <bean:message key="title.ganttChart"/> : ${param.key1}-</a></h3>
+	
 	<div>
 
 <jsp:include page="/loadGanttChart.do?pname=${param.key1}"/>
-</div></div></div>
-<div style="padding-top: 5px;padding-left: 50px;width: 90%;">
+</div></div>
+<input type="button" id="taskVisibility" value="show task list" onclick="show();">
+</div>
+<div id="taskDiv" style="padding-top: 5px;padding-left: 50px;width: 90%;">
 <div id="accordion1">
-	<h3><a href="#"> Task List : ${param.key1}-</a></h3>
+	<h3><a href="#"> <bean:message key="title.taskList"/> : ${param.key1}-</a></h3>
 	<div>
 <jsp:include page="/loadProjectTask.do?key1=${param.key1}"/>
 </div></div></div>

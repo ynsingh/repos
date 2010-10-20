@@ -32,9 +32,8 @@
   	<form-bean name="editform" type="in.ac.dei.edrp.pms.updation.EditForm" />
   	<form-bean name="projassignform" type="in.ac.dei.edrp.pms.member.ProjAssignForm" />
   	<form-bean name="taskform" type="in.ac.dei.edrp.pms.task.TaskForm" />
-  	<form-bean name="assignTaskform" type="in.ac.dei.edrp.pms.task.AssignTaskForm" />
   	<form-bean name="edittaskform" type="in.ac.dei.edrp.pms.updation.EditTaskForm" />
-  	  
+  	<form-bean name="assignedTaskform" type="in.ac.dei.edrp.pms.task.AssignedTaskForm" />
   	 	<!-- Starting For organization -->
   	
     <form-bean name="editorgform" type="in.ac.dei.edrp.pms.organization.OrgForm" />
@@ -48,7 +47,7 @@
   <global-exceptions />
   <global-forwards>
   
-  <!-- for View portals -->
+   <!-- for View portals -->
 	
 	<forward name="portalList"
 	path="/portalList.do"
@@ -98,6 +97,17 @@
 </global-forwards>
 <action-mappings >
 
+
+<action
+      attribute="assignedTaskform"
+      input="page.UserTaskList"
+      name="assignedTaskform"
+      path="/assignedTask"
+      scope="request"
+      type="in.ac.dei.edrp.pms.task.AssignedTaskAction" >
+      <forward name="taskAssignfail" path="page.orginfo"/>
+     </action>
+
 	<action
      	 attribute="loginform"
      	 input="/login.jsp"
@@ -134,28 +144,32 @@
 	</action>
 	
 	<!-- Change Password Start -->
-	
+	<action
+      path="/changeOwnpassword"
+      type="in.ac.dei.edrp.pms.changePassword.ChangeOwnPasswordAction">
+      <forward name="forwardOwnPass" path="page.changeownpassword" />
+      </action>
 	    <action
     	attribute="passwordform"
       	input="page.changepassword"
       	name="passwordform"
-      	path="/changeadminpassword"
+      	path="/changeOwnLoginpassword"
       	scope="request"
       	validate="true"
-      	type="in.ac.dei.edrp.pms.changePassword.RePasswordAction">
+      	type="in.ac.dei.edrp.pms.changePassword.OwnRePasswordAction">
    	  	<forward name="passinfo" path="page.changepasswordMessage" />
      </action>
-    <action
-      path="/changeOwnpassword"
-      type="in.ac.dei.edrp.pms.changePassword.ChangePasswordAction">
-      <forward name="forwardPass" path="page.changepassword" />
+    
+        <action
+      path="/resetUserpassword"
+      type="in.ac.dei.edrp.pms.changePassword.ResetUserPasswordAction">
+      <forward name="forwardResetUserPass" path="page.changeuserpassword" />
       </action>
-        
         <action
     	attribute="userpasswordform"
       	input="page.changepassword"
       	name="userpasswordform"
-      	path="/changeuserpassword"
+      	path="/changeUserpassword"
       	scope="request"
       	validate="true"
       	type="in.ac.dei.edrp.pms.changePassword.UserRePasswordAction">
@@ -530,30 +544,12 @@
          <forward name="invalid" path="/logout.jsp" />
       </action>
 
-<action
-      path="/assigntask"
-      type="in.ac.dei.edrp.pms.task.ForwardAssignTaskAction" >
-      <forward name="assigntask" path="page.assigntask"/>
-       <forward name="notAssigning" path="page.orginfo"/>
-      </action>
- 
- <action
-      attribute="assignTaskform"
-      input="page.assigntask"
-      name="assignTaskform"
-      path="/assignTask"
-      scope="request"
-      validate="true"
-      type="in.ac.dei.edrp.pms.task.AssignTaskAction" >
-     <forward name="taskAssignsuccess" path="page.assigntask" />
-     <forward name="taskAssignfail" path="page.orginfo"/>
-     </action>
  
  <action        
       path="/editTask"
       type="in.ac.dei.edrp.pms.updation.ForwardEditTaskAction">
       <forward name="edittask" path="edit.task"/>
-      <forward name="edittaskfail" path="page.reupdationFail" />
+      <forward name="updationfail" path="page.updationFail" />
      </action>
 
 
@@ -648,7 +644,15 @@
      scope="request">
       <forward name="searchorg" path="page.searchorganization" />
         </action>
-   
+        <!-- back to people search page -->
+   <action
+     path="/backuserSearchPage"
+     input="/page.peoplesuccess"
+     name="backorgsearchform"
+     type="in.ac.dei.edrp.pms.organization.SearchOrganisationAction"
+     scope="request">
+      <forward name="searchorg" path="page.peoplesearch" />
+        </action>
    <!-- For Edit and Remove Organization -->
 	
 	<action

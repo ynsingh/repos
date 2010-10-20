@@ -16,11 +16,12 @@ public class TaskFields {
 	private String taskid;
 	private String project_code;
 	private String editauthority;
+	private String assign_task_permission;
 	//Parameterised constructor
 	public TaskFields(String taskName, String resourceName,String no_of_days ,String schedule_start_date,
 			String schedule_end_date, String actual_start_date,String actual_end_date,String gchart_color,
 			String per_completed, String task_status,String dependency,String taskid,
-			String project_code,String editauthority){
+			String project_code,String editauthority,String assign_task_permission){
 		this.taskName=taskName;
 		 this.resourceName=resourceName;
 		 this.no_of_days=no_of_days;
@@ -35,6 +36,7 @@ public class TaskFields {
 		this.taskid=taskid;
 		this.project_code=project_code;
 		this.editauthority=editauthority;//to hold authorities Allow/Not Allow
+		this.assign_task_permission=assign_task_permission;
 			}
 
 	//getter and setter methods
@@ -150,6 +152,14 @@ public class TaskFields {
 
 	public void setProject_code(String project_code) {
 		this.project_code = project_code;
+	}
+
+	public String getAssign_task_permission() {
+		return assign_task_permission;
+	}
+
+	public void setAssign_task_permission(String assign_task_permission) {
+		this.assign_task_permission = assign_task_permission;
 	}
 
 

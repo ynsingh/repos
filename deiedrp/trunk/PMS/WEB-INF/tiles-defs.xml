@@ -141,8 +141,13 @@
 	
 	<!-- Change Password Starts here -->
 	
-	<definition name="page.changepassword" extends="base.definition">
-	<put name="title" value="Change Password" />
+	<definition name="page.changeownpassword" extends="base.definition">
+	<put name="title" value="Change Own Password" />
+	<put name="body" value="/WEB-INF/JspFiles/Password/changeOwnPassword.jsp" />
+	</definition>
+	
+	<definition name="page.changeuserpassword" extends="base.definition">
+	<put name="title" value="Change User Password" />
 	<put name="body" value="/WEB-INF/JspFiles/Password/changeUserPassword.jsp" />
 	</definition>
 	
@@ -211,11 +216,7 @@
 	<put name="title" value="Task Updation Fail" />
 	<put name="body" value="/WEB-INF/JspFiles/ForError/updationFail.jsp" />
 	</definition>
-	<definition name="page.reupdationFail" extends="base.definition">
-	<put name="title" value="Exception Handler" />
-	<put name="body" value="/WEB-INF/JspFiles/ForError/TaskUpdationHandler.jsp" />
-	</definition>
-		
+			
 	<!-- Tiles Definition of chart fail page -->
 	<definition name="chart.fail" extends="base.definition">
 	<put name="title" value="Have No Task" />
@@ -234,19 +235,7 @@
 	<put name="title" value="Add New Task" />
 	<put name="body" value="/WEB-INF/JspFiles/task/newtask.jsp" />
 	</definition>
-	
-	<!-- Tiles Definition of task assign page -->
-	<definition name="page.assigntask" extends="base.definition">
-	<put name="title" value="Assigning Task" />
-	<put name="body" value="/WEB-INF/JspFiles/task/AssignTask.jsp" />
-	</definition>
-	
-	<!-- Tiles Definition of task assign success page -->
-	<definition name="page.taskAssignsuccess" extends="base.definition">
-	<put name="title" value="Task Assigned Success" />
-	<put name="body" value="/WEB-INF/JspFiles/ForError/taskAssignSuccess.jsp" />
-	</definition>
-	
+		
 	<!-- Tiles Definition of Task List for super admin -->
 	<definition name="page.adminTaskList" extends="base.definition">
 	<put name="title" value="List Of Task" />

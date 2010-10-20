@@ -18,6 +18,8 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 import java.sql.*;
+import java.util.Locale;
+import java.util.ResourceBundle;
 /** 
  * MyEclipse Struts
  * Creation date: 20-Aug-2010
@@ -51,15 +53,17 @@ public class UserRePasswordAction extends Action {
 				int x=ps.executeUpdate();
 				if(x>0)
 				{
+					Locale locale = new Locale("en", "US");
+					ResourceBundle message = ResourceBundle.getBundle("in\\ac\\dei\\edrp\\pms\\propertiesFile\\ApplicationResources",locale);
+
 				String url="http://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath();
-				String s4="Welcome to Project Management System," +
-					"\n Your password has been changed successfully.\n " +
-					"click on the following link," +url+
-					" and proceed by your login.\n" +
-					" User Id: "+userpasswordform.getUserid().trim()+
-					"\n New Password: "+userpasswordform.getRepassworduser().toLowerCase()+
-					"\n Thanks !";
+				String s4=message.getString("body.text.mail.changePassword") + " "+url+
+				"\n"+message.getString("label.user")+": "+userpasswordform.getUserid()+
+				"\n"+message.getString("label.newPassword")+": "+userpasswordform.getRepassworduser().toLowerCase()+
+				"\n "+message.getString("body.text.mail.note")+
+				"\n "+message.getString("body.text.mail.thanks");
 			boolean	bool=SendingMail.sendMail(s4,userpasswordform.getUserid().trim(),
+						message.getString("mail.subject.changepassword.user"),
 						ReadPropertiesFile.mailConfig(getServlet().getServletContext().getRealPath("/")+"WEB-INF/"));
 
 				if(bool)

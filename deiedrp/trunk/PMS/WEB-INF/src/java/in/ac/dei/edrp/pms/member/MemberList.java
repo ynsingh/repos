@@ -21,7 +21,8 @@ public class MemberList{
 		fillList();
 		else if(uid.equalsIgnoreCase("Inactive"))
 		fillList(uid);
-		
+		else if(uid.equalsIgnoreCase("All"))
+			fillAllList(uid);
 	}
 	public MemberList(String keySearch,String searchOption) {
         fillList(keySearch,searchOption);
@@ -43,7 +44,7 @@ public class MemberList{
 			while(rs.next())
 			{
 								
-	list.add(new MemberBean(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6)));
+	list.add(new MemberBean(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),"",""));
 
 			}
 			
@@ -67,7 +68,7 @@ public class MemberList{
 			ResultSet rs=st.executeQuery();
 			while(rs.next())
 			{
-	list.add(new MemberBean(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),""));
+	list.add(new MemberBean(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),"","Inactive",""));
 			}
 			
 		}
@@ -77,6 +78,35 @@ public class MemberList{
 			MyDataSource.freeConnection(con);
 		}
 	}
+	
+	
+	//for showing the list of all users
+	public void fillAllList(String uid){
+		Connection con=null;
+		try{
+			fillList(uid);
+			con=MyDataSource.getConnection();//This method Established the connection from the database MySql
+			
+			PreparedStatement st=con.prepareStatement("select distinct u.user_id,u.first_name,u.last_name," +
+					"u.skills,u.experince,uro.status from user_in_org uo,user_role_in_org uro," +
+					"user_info u where uo.valid_user_id=u.user_id and " +
+					"uo.valid_key=uro.valid_key and uro.permittedby=" +
+					"(select l.login_user_id from login l where l.authority='Super Admin')");
+			
+			ResultSet rs=st.executeQuery();
+			while(rs.next())
+			{
+	list.add(new MemberBean(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),"",rs.getString(6),""));
+			}
+			
+		}
+		catch(Exception e){System.out.println(e);}
+		finally
+		{
+			MyDataSource.freeConnection(con);
+		}
+	}
+	
 	//above method is end here
 	public void fillList(String keySearch,String searchOption) {
 		Connection con=null;
@@ -93,7 +123,7 @@ public class MemberList{
                     
             while (rs.next()) {
                 list.add(new MemberBean(rs.getString(1), rs.getString(2),
-                        rs.getString(3), rs.getString(4),rs.getString(5),""));
+                        rs.getString(3), rs.getString(4),rs.getString(5),"","",""));
             }
         }
 		catch(Exception e){}

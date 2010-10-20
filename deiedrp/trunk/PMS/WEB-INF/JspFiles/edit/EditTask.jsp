@@ -1,7 +1,6 @@
 <%@ page import="java.sql.*" language="java" pageEncoding="UTF-8"%>
 <%@ page import="javax.sql.rowset.CachedRowSet" %>
 <%@ page import="in.ac.dei.edrp.pms.dataBaseConnection.MyDataSource;"%>
-
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%> 
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
    
@@ -77,13 +76,7 @@
  </script>
 	</head>
 	<body onload="taskGenerate()">
-	<%
-	String mysession=(String)session.getAttribute("mysession");
-	if(mysession==null)
-	{
-		response.sendRedirect("login.jsp");
-	}
-	%>
+	
 	<%!
 		Connection con=null;
 		ResultSet rs=null;
@@ -92,7 +85,7 @@
 	 %>
 	<div style="padding-left:100px;padding-right:100px;padding-top:40px;">
 	<div id="accordion">
-	<h3><a href="#">Edit To Desired Task -</a></h3>
+	<h3><a href="#"><bean:message key="title.editTask"/> -</a></h3>
 	<div>
 	<html:javascript formName="edittaskform" />
 	<html:form action="/go4" onsubmit="return validateEdittaskform(this);">	
@@ -107,9 +100,9 @@
 		  <table cellspacing="1" cellpadding="6" border="0" align="center">
 		  <tr>
 		<td>
-		<input type="hidden" name="orgportal" id="orgportal" value="<%=(String)session.getAttribute("validOrgInPortal") %>" size="20" readonly="readonly"/>
+		<input type="hidden" name="orgportal" id="orgportal" value="${sessionScope.validOrgInPortal}" size="20" readonly="readonly"/>
 			<html:errors property="orgportal"/>
-		<input type="hidden" name="uname" id="uname" value="<%=(String)session.getAttribute("uid") %>" size="20" readonly="readonly"/>
+		<input type="hidden" name="uname" id="uname" value="${sessionScope.uid}" size="20" readonly="readonly"/>
 			<html:errors property="uname"/>
 		<!-- <input type="hidden" name="projAStartDate" id="projAStartDate" value="<%=crs_task.getString(14)%>" size="20" readonly="readonly"/>
 			<html:errors property="projAStartDate"/>
@@ -120,69 +113,69 @@
 		</td></tr>
 		<tr class="form-element">
 		<td  class="form-label">
-			Project : 
+			<bean:message key="label.projectName"/> : 
 			</td>
 		<td class="form-widget">
 		<html:text property="projectName" style="color: blue;" value="<%=crs_task.getString(1)%>" disabled="true" size="40" />
 		<html:errors property="projectName"/></td></tr>
 		<tr class="form-element">
 		<td  class="form-label">
-			Task Id : 
+			<bean:message key="label.taskId"/> : 
 			</td>
 		<td class="form-widget">
 		<html:text property="taskId" style="color: black;" indexed="taskId" value="<%=crs_task.getString(2)%>" disabled="true" size="40" />
 		<html:errors property="taskId"/></td>
 		<td  class="form-label">
-			Task Name : 
+			<bean:message key="label.taskName"/> : 
 			</td>
 		<td class="form-widget">
 		<html:text property="taskName" style="color: black;" disabled="true" indexed="taskName" value="<%=crs_task.getString(3)%>"  size="40" />
 		<html:errors property="taskName"/></td></tr>
 		<tr class="form-element">
 		<td class="form-label">
-			No of days to do this task: 
+			<bean:message key="label.numberOfDays"/>: 
 			</td>
 		<td class="form-widget">
 		<html:text property="no_of_days" style="color: black;" disabled="true" indexed="no_of_days" size="10" value="<%=crs_task.getString(4)%>"/>
 		<html:errors property="no_of_days"/></td><td class="form-label">
-			Gantt Chart Color :</td><td class="form-widget"> 
+			<bean:message key="label.ganttChartColor"/> :</td><td class="form-widget"> 
 			 <div id="colorpicker201" style="position: fixed;padding-left: 195px"></div>
 	<input type="text" id="gantt_chart_color" name="gantt_chart_color" size="9" readonly="readonly" value="<%=crs_task.getString(9)%>" />&nbsp;<input type="button" onclick="showColorGrid2('gantt_chart_color','sample_1');" value="...">&nbsp;<input type="text" ID="sample_1" size="1" value="">
 			<html:errors property="gantt_chart_color"/></td></tr>
 		<tr class="form-element"><td  class="form-label">
-			Schedule Start Date :</td>
+			<bean:message key="label.scheduleStartDate"/> :</td>
 			<td class="form-widget">
 			<input type="text" name="taskStartDate" id="taskStartDate" readonly="readonly" value="<%=crs_task.getString(5)%>" />
-			(YYYY-MM-DD)
+			<bean:message key="label.dateFormat"/>
 			</td>
 			<td  class="form-label">
-			Schedule End Date :</td>
+			<bean:message key="label.scheduleEndDate"/> :</td>
 			<td class="form-widget">
 			<input type="text" name="taskEndDate" id="taskEndDate" readonly="readonly" value="<%=crs_task.getString(6)%>"/>
-			(YYYY-MM-DD)
+			<bean:message key="label.dateFormat"/>
 			</td></tr>
 		 <tr class="form-element"><td  class="form-label">
-			Actual Start Date :</td>
+			<bean:message key="label.actualStartDate"/> :</td>
 			<td class="form-widget">
 			<input type="text" name="actualStartDate" id="actualStartDate" value="<%=crs_task.getString(7)%>"/>
-			(YYYY-MM-DD)<font color="red" size="2">*</font></td>
+			<bean:message key="label.dateFormat"/><font color="red" size="2">*</font></td>
 			<td  class="form-label">
-			Actual End Date :</td>
+			<bean:message key="label.actualEndDate"/> :</td>
 			<td class="form-widget">
 			<input type="text" name="actualEndDate" id="actualEndDate" <%if(crs_task.getString(8)==null){ %> value="" <%}else {%> value="<%=crs_task.getString(8)%>"<%} %>/>
-			(YYYY-MM-DD)
+			<bean:message key="label.dateFormat"/>
 			</td></tr>
 						
 			<tr class="form-element">
 		<td  class="form-label">
-			Task Completed : 
+			<bean:message key="label.taskCompleted"/> : 
 			</td>
 		<td class="form-widget">
 			<html:text property="task_percentage_completion" size="5" value="<%=crs_task.getString(10)%>"/><strong><font color="#0000ff">%</font>
 			<font color="red" size="2">*</font></strong><html:errors property="task_percentage_completion"/>
 			</td>
 			<td  class="form-label">
-			Status :
+			<bean:message key="label.status"/> :
 			</td>
 			<td class="form-widget">
 			<html:select property="status" value="<%=crs_task.getString(11)%>" >
@@ -198,7 +191,7 @@
 	</html:select><font color="red" size="2">*</font><html:errors property="status"/></td>
 			</tr>
 			<tr class="form-element"><td class="form-label">
-			Dependency :(if any)</td>
+			<bean:message key="label.dependency"/> :</td>
 			<td class="form-widget">
 			<%
 			try{
@@ -227,14 +220,14 @@
 			<html:errors property="taskDependencyValue"/>
 			</td>
 			<td  class="form-label">
-			Task Description :</td><td class="form-widget">
+			<bean:message key="label.taskDescription"/> :</td><td class="form-widget">
 			 <html:textarea property="remark"  rows="2" cols="38" value="<%=crs_task.getString(13)%>"/>
 			 <html:errors property="remark"/></td></tr>
 			</table>
 			<table align="center">
-			<tr><td><html:submit value="Save Change" styleClass="butStnd"/></td>
-			<td><html:reset styleClass="butStnd" onclick="taskGenerate()"/></td>
-			<td><html:button property="back" value="Cancel" styleClass="butStnd" onclick="history.back();" /></td>
+			<tr><td><input type="submit" value='<bean:message key="label.saveChanges.button" />' class="butStnd" /></td>
+			<td><input type="reset" value='<bean:message key="label.reset.button" />' class="butStnd" onclick="taskGenerate()"/></td>
+			<td><input type="button" value='<bean:message key="label.cancel.button" />' class="butStnd" onclick="history.back();" /></td>
 			</tr>
 			</table>
 		</html:form>

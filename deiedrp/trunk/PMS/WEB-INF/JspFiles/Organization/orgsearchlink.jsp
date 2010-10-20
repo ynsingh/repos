@@ -22,35 +22,28 @@
   </head>
   
   <body>
-  <%
-	String mysession=(String)session.getAttribute("mysession");
-	if(mysession==null)
-	{
-		response.sendRedirect("login.jsp");
-	 }
-	%>
-	
+ 	
  <html:form action="/searchorg">
   		<div id="main_title">
-	<font color="#0044ff">	Searching By:</font>
+	<font color="#0044ff"><bean:message key="title.searchPage"/>:</font>
 		 </div>
 		 <br><br><br>
 		<table cellspacing="2" cellpadding="2" border="0" align="center">
 		<tr class="form-element">
 		<td  class="form-label">
-		<html:radio property="searchOption" value="Organisation Name">Organisation Name</html:radio>
-		<html:radio property="searchOption" value="Organisation City">Organisation City</html:radio>
-		<html:radio property="searchOption" value="Organisation State">Organisation State</html:radio>
+		<html:radio property="searchOption" value="Organisation Name"><bean:message key="label.orgName"/></html:radio>
+		<html:radio property="searchOption" value="Organisation City"><bean:message key="label.searchOrgCity"/></html:radio>
+		<html:radio property="searchOption" value="Organisation State"><bean:message key="label.searchOrgState"/></html:radio>
 		</td>
 		</tr>
 		<tr></tr><tr></tr>
 		<tr class="form-element">
 		<td  class="form-label">
-		Enter Searched String : 
+		<bean:message key="label.searchString"/> : 
 		</td>
 		<td class="form-widget">
 		<html:text property="keysearch" size="40" value=""/><html:errors property="keysearch"/></td>
-		<td class="form-widget"><html:submit value="Search" styleClass="butStnd"/></td>
+		<td class="form-widget"><input type="submit" value='<bean:message key="label.search.button" />' class="butStnd"/></td>
 		</tr>
 	</table>
     </html:form>

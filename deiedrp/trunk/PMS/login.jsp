@@ -62,7 +62,7 @@
 			<tr><td valign="middle" bgcolor="#e8eefa" bordercolor=#000000 style="border:1px solid #ccc;">	
 				<div style="float:left;padding-top:10px">
 					<div style="font: normal;font-family: Arial, Helvetica, sans-serif;font-size:14px;text-align: center;" align="center" style="color:#000000;">
-					   <bean:message key="label.sign" />?<br>
+					   <bean:message key="label.sign" /><br>
 						</div>
 						   <div align="center" style="background-color:#e8eefa">
 						    <html:errors property="login"/>

@@ -23,25 +23,27 @@ jQuery(function() {
 		});
 	});
 });
+
+
 </script>
 	</head>
 	<body>
 	<div style="padding-left:100px;padding-right:100px;padding-top:40px;">
 	<div id="accordion">
-	<h3><a href="#"><bean:message key="addportalmessage"/> -</a></h3>
+	<h3><a href="#"><bean:message key="title.addOrgIntoPortal"/> -</a></h3>
 	<div>
 	<html:javascript formName="addorginportalform" dynamicJavascript="true"	staticJavascript="true" />
 	<html:form action="/add_org_in_portal" onsubmit="return validateAddorginportalform(this)">
 		<br>
 		<div align="center">
-		  	<html:errors property="addorgportal"/>
+		  	<html:errors property="addOrgIntoPortalMessage"/>
 		   </div>
 		  <br><br>
 	 <table cellspacing="2" cellpadding="10" width="50%" border="0" align="center">
 		 <tr></tr>
 		<tr class="form-element">
 		 <td class="form-label">
-			<bean:message key="addportalname"/> :</td>
+			<bean:message key="label.selectPortal"/> :</td>
 		<td class="form-widget">
 			<select id="portalname" name="portalname" style="width: 270px;">
 			<option>--Select--</option>
@@ -57,7 +59,7 @@ jQuery(function() {
 		<tr></tr>		
 		<tr class="form-element">
 		 <td class="form-label">
-			<bean:message key="addportalorg"/> :</td>
+			<bean:message key="label.selectOrganization"/> :</td>
 		<td class="form-widget">
 			<select id="organisation" name="organisation" style="width: 270px;">
 			<option>--Select--</option>
@@ -72,7 +74,7 @@ jQuery(function() {
 		</td></tr><tr></tr>	
 		<tr class="form-element">
 		 <td class="form-label">
-		<bean:message key="addportalemailid"/> :</td>
+		<bean:message key="label.emailid"/> :</td>
 		<td class="form-widget"> 
 		 <html:select property="emailid" indexed="emailid" value="${param.userid}" style="width: 270px;">
 			<html:option value="--Select--"></html:option>
@@ -106,7 +108,7 @@ jQuery(function() {
 		<tr></tr>
 		<tr class="form-element">
 		 <td class="form-label">
-			<bean:message key="addportalrole"/> :</td>
+			<bean:message key="label.selectRole"/> :</td>
 		<td class="form-widget">
 			<select id="role" name="role" style="width: 270px;">
 			<option>--Select--</option>
@@ -122,9 +124,9 @@ jQuery(function() {
 		 <table style="padding-top: 30px;" align="center">	
 			<tr></tr><tr></tr><tr></tr>		  
 			<tr><td>
-			<html:submit value="Done" styleClass="butStnd"/>
-			<html:reset styleClass="butStnd"/>
-			<html:button property="back" value="Back" styleClass="butStnd" onclick="history.back();" />
+			<input type="submit" value='<bean:message key="label.done.button" />' class="butStnd"/>
+			<input type="reset" value='<bean:message key="label.reset.button" />' class="butStnd" onclick="location.href='addorg_in_portal.do'"/>
+			<input type="button" value='<bean:message key="label.cancel.button" />' class="butStnd" onclick="location.href='welcome.do'" />
             </td></tr>
 			</table>
 		</html:form>

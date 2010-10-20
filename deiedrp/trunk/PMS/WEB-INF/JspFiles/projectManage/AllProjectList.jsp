@@ -1,5 +1,4 @@
-<%@ page import="java.sql.*" language="java" pageEncoding="UTF-8"%>
-<%@ page import="in.ac.dei.edrp.pms.dataBaseConnection.MyDataSource"%>
+<%@ page language="java" pageEncoding="UTF-8"%>
 <%@ page import="in.ac.dei.edrp.pms.projmanage.ProjectList"%>
 <%@ page import="in.ac.dei.edrp.pms.viewer.checkRecord" %>
 <%@ page import="in.ac.dei.edrp.pms.projmanage.ProjectFields;"%>
@@ -7,6 +6,8 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%@ taglib uri="http://displaytag.sf.net" prefix="display" %>
+<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -65,25 +66,18 @@
 	</head>
   <body onload="rowchange();">
     
-  <div id="main_title" align="left"><font color="#0044ff">Project List:</font></div><br>
+  <div id="main_title" align="left"><font color="#0044ff"><bean:message key="title.viewPrroject"/>:</font></div><br>
 <%! 
 	String key=null;
 	String key1=null; 
 	String key2=null; 
-	Connection con=null;
-	PreparedStatement ps=null;
-	ResultSet rs=null;
 %>
 <%
 	 key=request.getParameter("key");
 	 if(key==null)
 	 key="10";
 	 key1=request.getParameter("key1");
-	 if(key1==null)
-		key1="";
 	 key2=request.getParameter("key2");
-	 if(key2==null)
-		key2="";
  %>
   	<% 
  		 String portal_id=checkRecord.duplicacyChecker("Portal_ID","portal","Portal_Name",key1);
@@ -92,54 +86,37 @@
    		 request.setAttribute("projectList", new ProjectList(key1,key2));
    	%>	
  <div align="left">
-	Portal:
-  <html:select style="color:#0044ff;width: 250px;" indexed="portalname" property="portalname" name="portalname" value="<%=key1 %>" onchange="orgGenerate();" >	
+	<bean:message key="menu.portal"/>:
+  <html:select style="color:#0044ff;width: 250px;" indexed="portalname" property="portalname" name="portalname" value="${param.key1}" onchange="orgGenerate();" >	
     <html:option value="--Select--"></html:option>
-			<% 
-			try{
-			con=MyDataSource.getConnection();
-				ps=con.prepareStatement("select portal_name from portal order by portal_name asc");
-			rs=ps.executeQuery();
-			while(rs.next())
-				{
-			%>
-			<html:option value="<%= rs.getString(1)%>"></html:option>
-			<%
-			}
-			}
-			catch(SQLException e){}
-			finally{MyDataSource.freeConnection(con);}
-			 %>
+			<sql:query var="portalList" dataSource="jdbc/mydb">
+				select portal_name from portal order by portal_name asc
+			</sql:query>
+			<c:forEach var="row" items="${portalList.rows}">
+			<html:option value="${row.portal_name}"></html:option>
+			</c:forEach>
 			</html:select>
 	<html:errors property="portalname"/>
-	Organization:
-  <html:select style="color:#0044ff;width: 250px;" indexed="orgname" property="orgname" name="orgname" value="<%=key2 %>" onchange="fnrec();">	
-		<% 
-			try{
-			con=MyDataSource.getConnection();
-				ps=con.prepareStatement("select o.org_name from organisation o,portal p,org_into_portal oip "+
-				"where oip.portal_id=p.portal_id and oip.org_id=o.org_id and "+
-				"p.portal_name=?");
-				ps.setString(1,key1);
-			rs=ps.executeQuery();
-			while(rs.next())
-				{
-			%>
-			<html:option value="<%= rs.getString(1)%>"></html:option>
-			<%
-			}
-			}
-			catch(SQLException e){}
-			finally{MyDataSource.freeConnection(con);}
-			 %>
-   </html:select>
+	<bean:message key="menu.organization"/>:
+  <html:select style="color:#0044ff;width: 250px;" indexed="orgname" property="orgname" name="orgname" value="${param.key2}" onchange="fnrec();">	
+		<sql:query var="orgList" dataSource="jdbc/mydb">
+				select o.org_name from organisation o,portal p,org_into_portal oip 
+				where oip.portal_id=p.portal_id and oip.org_id=o.org_id and 
+				p.portal_name=?
+				<sql:param value="${param.key1}"/>
+			</sql:query>
+			<c:forEach var="row" items="${orgList.rows}">
+			<html:option value="${row.org_name}"></html:option>
+			</c:forEach>
+		  </html:select>
  <html:errors property="orgname"/>
-	Number of records to be displayed:
+	<bean:message key="title.numberOfRecords"/>:
   <html:select property="nrec" name="nrec" value="<%=key %>" onchange="fnrec();">	
     <html:option value="5">5</html:option>
     <html:option value="10">10</html:option>
     <html:option value="15">15</html:option>
     <html:option value="20">20</html:option>
+    <html:option value="25" >25</html:option>
         </html:select>
 			<html:errors property="nrec"/>
 	</div>
@@ -159,7 +136,7 @@
 		<display:column property="scheduleEndDate" title="Plan End Date" sortable="true" />
 		<display:column property="actualStartDate" title="Actual Start Date" sortable="true" />
 		<display:column property="actualEndDate" title="Actual End Date" sortable="true" />
-		<display:column property="tbudget" title="Target Budget (Rs.)" format="{0,number,0,000.00}"
+		<display:column property="tbudget" style="text-align: right;" title="Target Budget (Rs.)" format="{0,number,0,000.00}"
 		 sortable="true" />
 		<display:column property="priority" title="Priority" sortable="true" />
 		<display:column property="status" title="Status" sortable="true" />
@@ -210,10 +187,10 @@
 	</display:table>
 	 </logic:notEmpty>
     <logic:empty name="projectList" property="list">
-   <br><font color="#550003" size="2">No project will found in desired portal and organization.</font><br><br>
-    <html:button property="back" value="Back" styleClass="butStnd" onclick="history.back();" />
+   <br><font color="#550003" size="2"><bean:message key="label.projectListInfo"/></font><br><br>
     </logic:empty>
-  		
+    <br>
+  	<input type="button" value='<bean:message key="label.back.button" />' class="butStnd" onclick="location.href='welcome.do'" />
   </body>
 </html:html>
 

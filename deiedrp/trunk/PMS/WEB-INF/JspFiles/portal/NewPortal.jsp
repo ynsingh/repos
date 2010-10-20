@@ -32,7 +32,6 @@ jQuery(function() {
 </script>
 	<script type="text/javascript">
 	function seePortal() {
-	
 	var name = DWRUtil.getValue("portalname");
 	var info="portal";
    DynamicList.seeExistence(name,info,function(data)
@@ -44,18 +43,10 @@ jQuery(function() {
  </script>
 	</head>
 	<body>
-	
-	<%
-	String mysession=(String)session.getAttribute("mysession");
-	if(mysession==null)
-	{
-		response.sendRedirect("login.jsp");  
-	}
-	%>
-	
+
 <div style="padding-left:100px;padding-right:100px;padding-top:40px;">
 	<div id="accordion">
-	<h3><a href="#">Create Portal -</a></h3>
+	<h3><a href="#"><bean:message key="title.portalPage"/> -</a></h3>
 	<div>
 	<html:javascript formName="newportalform" dynamicJavascript="true" staticJavascript="true" />
 	<html:form action="/addportal" onsubmit="return validateNewportalform(this);">
@@ -70,19 +61,21 @@ jQuery(function() {
 		<tr class="form-element">
 		<td class="form-label">
 		
-		Portal Name : 
+		<bean:message key="label.portalName"/> : 
 		</td>
 		<td class="form-widget">
 		<html:text property="portalname" indexed="portalname" size="35" value="" onchange="seePortal()"/><font color="red" size="2">*</font></td></tr>
 		<tr class="form-element">
 		<td  class="form-label">
-			Portal Description :</td><td class="form-widget">
+			<bean:message key="label.portalDescription"/> :</td><td class="form-widget">
 			<html:textarea property="portaldescription" value="" rows="3" cols="33"/>
 			<html:errors property="portaldescription"/></td></tr>
 			</table><br><br>
 			<table align="center">
-			<tr><td><html:submit value="Add" styleClass="butStnd" /></td><td><html:reset value="Reset" styleClass="butStnd"/>
-			<html:button property="back" value="Back" styleClass="butStnd" onclick="history.back();" />
+			<tr><td>
+			<input type="submit" value='<bean:message key="label.add.button" />' class="butStnd" /></td>
+			<td><input type="reset" value='<bean:message key="label.reset.button" />' class="butStnd"/>
+			<input type="button" value='<bean:message key="label.back.button" />' class="butStnd" onclick="history.back();" />
 
 			<input type="hidden" name="portalname2" id="portalname2" value="" size="20" readonly="readonly"/>
 			<html:errors property="portalname2"/>

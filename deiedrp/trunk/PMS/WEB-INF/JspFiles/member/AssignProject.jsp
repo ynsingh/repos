@@ -1,7 +1,8 @@
-<%@ page import="java.sql.*" language="java" pageEncoding="ISO-8859-1"%>
-<%@ page import="in.ac.dei.edrp.pms.dataBaseConnection.MyDataSource"%>
+<%@ page language="java" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%> 
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
+<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
  
 <html> 
 	<head>
@@ -30,34 +31,12 @@
 	</head>
 		
 	<body onload="roleGenerate();">
-	<%!
-		Connection con=null;
-		PreparedStatement ps=null;
-		ResultSet rs=null;
-		String uid=null;
-		String user=null;
-		 %>
-	<%
-	String mysession=(String)session.getAttribute("mysession");
-	if(mysession==null)
-	{
-		response.sendRedirect("login.jsp");  
-	}
-	else
-	{
-	user=request.getParameter("userid");
-	%>
+
 	<html:javascript formName="projassignform" />
 	<html:form action="/assign" onsubmit="return validateProjassignform(this);" >			
-	
-		<%
-		uid=(String)session.getAttribute("uid");
-		con=MyDataSource.getConnection();
-	 	%>
-		
-		<div id="main_title"><font color="#0044ff">
+	<div id="main_title"><font color="#0044ff">
 		   
-		        Add Members into project:
+		        <bean:message key="title.assignProjectPage"/> :
 		  	
 		 </font> </div>
 		 <br><br><br>
@@ -68,81 +47,61 @@
 		  <table cellspacing="2" cellpadding="10" width="40%" border="0" align="center">
 	<tr><td>
 	<input type="hidden" name="orgportal" id="orgportal" 
-	value="<%=(String)session.getAttribute("validOrgInPortal") %>" size="20" readonly="readonly"/>
+	value="${sessionScope.validOrgInPortal}" size="20" readonly="readonly"/>
 		<html:errors property="orgportal"/>
 	</td></tr>
 			<tr class="form-element">
 			<td  class="form-label">
-			Project Name :</td><td class="form-widget">
+			<bean:message key="label.projectName"/> :</td><td class="form-widget">
 			 <html:select property="projectName" style="width: 270px;">
 			<html:option value="--Select--"></html:option>
-			<% 
-			try{
-				ps=con.prepareStatement("select distinct p.project_name from project p where "+
-			"p.enable=0 and p.valid_org_inportal=? order by p.project_name asc");
-			ps.setString(1,(String)session.getAttribute("validOrgInPortal"));
-			rs=ps.executeQuery();
-			while(rs.next())
-				{
-			%>
-			<html:option value="<%= rs.getString(1)%>"></html:option>
-			<%
-			}
-			}
-			catch(SQLException e){}
-			 %>
+			<sql:query var="project" dataSource="jdbc/mydb">
+				select distinct p.project_name from project p where 
+			p.enable=0 and p.valid_org_inportal=? order by p.project_name asc
+				 <sql:param value="${sessionScope.validOrgInPortal}"/>
+			</sql:query>
+			<c:forEach var="row" items="${project.rows}">
+			<html:option value="${row.project_name}"></html:option>
+			</c:forEach>
 			</html:select><font color="red" size="2">*</font>
 			<html:errors property="projectName"/>
 			</td></tr>
 			<tr></tr>
 		<tr class="form-element">
-		<td  class="form-label">User E-mail id :</td>
+		<td  class="form-label"><bean:message key="label.emailid"/> :</td>
 		<td class="form-widget"> 
-		 <html:select property="userId" indexed="userId" value="<%=user%>" onchange="roleGenerate();" style="width: 270px;">
+		 <html:select property="userId" indexed="userId" value="${param.userid}" onchange="roleGenerate();" style="width: 270px;">
 			<html:option value="--Select--"></html:option>
-			<% 
-			try{
-				ps=con.prepareStatement("select valid_user_id from user_in_org where "+
-			"valid_orgportal=? order by valid_user_id asc");
-			ps.setString(1,(String)session.getAttribute("validOrgInPortal"));
-			rs=ps.executeQuery();
-			while(rs.next())
-				{
-			%>
-			<html:option value="<%= rs.getString(1)%>"></html:option>
-			<%
-			}
-			}
-			catch(SQLException e){}
-			 %>
+			<sql:query var="userList" dataSource="jdbc/mydb">
+				select valid_user_id from user_in_org where 
+						valid_orgportal=? order by valid_user_id asc
+				 <sql:param value="${sessionScope.validOrgInPortal}"/>
+			</sql:query>
+			<c:forEach var="row" items="${userList.rows}">
+			<html:option value="${row.valid_user_id}"></html:option>
+			</c:forEach>
 			</html:select>
 			<font color="red" size="2">*</font>
 		<html:errors property="userId"/>
 		</td></tr>
 		<tr></tr>
 		<tr class="form-element">
-		<td  class="form-label">Role Name :</td>
+		<td  class="form-label"><bean:message key="label.roleName"/> :</td>
 		<td class="form-widget">
 		<select id="roleName" name="roleName" style="width: 270px;">
 		 </select><font color="red" size="2">*</font>
 		 <html:errors property="roleName"/>
-			 </td></tr>
-			 
-			
-		  </table>
+			 </td></tr></table>
 		  <table align="center" style="padding-top: 50px;">	
 		 <tr><td>
-			<html:submit value="Assign Project" styleClass="butStnd"/>
-			<html:reset styleClass="butStnd" onclick="roleGenerate();"/>
-			<html:button property="back" value="Back" styleClass="butStnd" onclick="history.back();" />
+			<input type="submit" value='<bean:message key="label.assignProject.button"/>' class="butStnd"/>
+			<input type="reset" value='<bean:message key="label.reset.button" />' class="butStnd"  onclick="roleGenerate();"/>
+			<input type="button" value='<bean:message key="label.back.button" />' class="butStnd" onclick="history.back();" />
           </td></tr>
 			</table>
 			
 			</html:form>
-			<%
-				MyDataSource.freeConnection(con);
-				}
-		 	%>
+			
 	</body>
 </html>
 

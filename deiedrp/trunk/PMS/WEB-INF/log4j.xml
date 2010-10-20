@@ -4,26 +4,47 @@
 <!--@author Anil Kumar Tiwari mailto:aniltiwari08@gmail.com        -->
 <!-- ================================================================= -->
 <log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
+<root>
+        <level value="INFO" />
+        <appender-ref ref="CA" />
+</root>
 <!-- Console Appender -->
 	<appender name="CA" class="org.apache.log4j.ConsoleAppender">
+		<param name="Threshold" value="INFO"/>
+        <param name="Target" value="System.out"/>
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%-4r [%t] %-5p %c %x - %m%n" />
 		</layout>
 	</appender>
 <!-- File Appender -->
-	<appender name="FA" class="org.apache.log4j.FileAppender">
-		<param name="File" value="${catalina.home}//log file//PMSLog.log"/>
-		<!--value="C://Users//Documents and Settings//Desktop//log file//PMSLog.log"/> 
-		Set the logger level of File Appender that can be DEBUG,INFO,WARN,ERROR,FATAL -->
+	<appender name="LoginFA" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="${catalina.home}//log file//LoginLog.log"/>
+		<!--value="${catalina.home}//logs//PMSLog.log"/> -->
+		<!--Set the logger level of File Appender that can be TRACE,DEBUG,INFO,WARN,ERROR,FATAL -->
+		<param name="Threshold" value="DEBUG"/>
+		 <param name="MaxFileSize" value="50KB"/>
+    <!-- Keep one backup file -->
+        <param name="MaxBackupIndex" value="4"/>
+        <param name="ImmediateFlush" value="true"/>
+		
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{MM/dd/yy hh:mm:ss a } %-5p %C %M - %m%n" />
+		</layout>
+	</appender>
+	<appender name="MailFA" class="org.apache.log4j.FileAppender">
+		<param name="File" value="${catalina.home}//log file//MailLog.log"/>
 		<param name="Threshold" value="ERROR"/>
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d{MM/dd/yy hh:mm:ss a } %-5p %C %M - %m%n" />
 		</layout>
 	</appender>
 <!-- Order of using logger level DEBUG,INFO,WARN,ERROR,FATAL -->
-	<root>
-		<level value="INFO" />
-		<!-- <appender-ref ref="CA" /> -->
-		<appender-ref ref="FA" />
-	</root>
+	<logger name="in.ac.dei.edrp.pms.adminConfig">   
+      <level value="INFO" />
+      <appender-ref ref="MailFA"/>      
+   </logger>
+	<logger name="in.ac.dei.edrp.pms.login">   
+      <level value="ERROR" />
+      <appender-ref ref="LoginFA"/>      
+   </logger>
 </log4j:configuration>

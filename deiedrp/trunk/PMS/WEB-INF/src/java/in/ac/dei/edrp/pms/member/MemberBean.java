@@ -12,20 +12,26 @@ public class MemberBean {
 	private String rolename;
 	private String valid_key;
 	private String editPermission;
+	private String editPasswordPermission;
+	private String status;
 	
 	//constructors
 	public MemberBean(){}
 	public MemberBean(String userid, String portalname, String orgname,
-			String rolename,String valid_key,String editPermission){
+			String rolename,String valid_key,String editPermission,
+			String status,String editPasswordPermission){
 		this.userid = userid;
 		this.portalname = portalname;
 		this.rolename = rolename;
 		this.orgname = orgname;
 		this.valid_key=valid_key;
 		this.editPermission=editPermission;
+		this.editPasswordPermission = editPasswordPermission;
+		this.status=status;
 	}
 
 	//getter and setter methods
+	
 	/**The method getEditPermission return the edit authority permission  */
 	public String getEditPermission() {
 		return editPermission;
@@ -63,5 +69,17 @@ public class MemberBean {
 	}
 	public void setOrgname(String orgname) {
 		this.orgname = orgname;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public String getEditPasswordPermission() {
+		return editPasswordPermission;
+	}
+	public void setEditPasswordPermission(String editPasswordPermission) {
+		this.editPasswordPermission = editPasswordPermission;
 	}
 }

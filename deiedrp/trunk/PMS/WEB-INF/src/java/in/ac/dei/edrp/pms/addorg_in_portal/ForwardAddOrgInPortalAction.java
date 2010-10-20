@@ -26,6 +26,7 @@ public class ForwardAddOrgInPortalAction extends Action {
 		ActionForm form,
 		HttpServletRequest request,
 		HttpServletResponse response) {
+			
 	return mapping.findForward("addorgportal");
 	}
 }

@@ -23,7 +23,7 @@ $.widget("ech.multiselect", {
 options: {
 header: true,
 height: 175, /* height of the checkbox container (scroll) in pixels */
-minWidth: 225, /* min width of the entire widget in pixels. setting to 'auto' will disable */
+minWidth: 325, /* min width of the entire widget in pixels. setting to 'auto' will disable */
 checkAllText: 'Check all',
 uncheckAllText: 'Uncheck all',
 noneSelectedText: 'Select authorities',
@@ -147,7 +147,7 @@ _bindEvents: function(){
 var self = this;
 
 function clickHandler(){
-self[ self._isOpen ? 'close' : 'open' ]();
+self[ self._isOpen ? 'close' : 'open' ]();//comments for always open to select list by anil
 return false;
 }
 
@@ -193,7 +193,7 @@ this.menu.find('div.ui-multiselect-header a').bind('click', function(e){
 
 // close link
 if($(this).hasClass('ui-multiselect-close')){
-self.close();
+self.close();//used for disable the close button written by anil
 
 // check all / uncheck all
 } else {
@@ -266,7 +266,7 @@ $(document).bind('click', function(e){
 var $target = $(e.target);
 
 if(self._isOpen && !$target.closest('div.ui-multiselect-menu').length && !$target.is('button.ui-multiselect')){
-self.close();
+//self.close(); //comment by anil
 }
 });
 },

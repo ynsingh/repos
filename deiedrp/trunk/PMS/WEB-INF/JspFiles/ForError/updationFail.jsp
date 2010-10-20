@@ -1,7 +1,7 @@
 <%@ page language="java"  pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean" %>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html" %>
-<%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic" %>
+
 <html>
 <link rel="stylesheet" href="style/style.css" type="text/css"></link>
    <body>

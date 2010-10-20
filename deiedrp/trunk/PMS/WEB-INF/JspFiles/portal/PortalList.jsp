@@ -29,7 +29,7 @@
   
   <logic:notEmpty name="portalList" property="list">
   <div id="main_title" align="left">
-		    <font color="#0044ff">Portal List:</font></div><br>
+		    <font color="#0044ff"><bean:message key="title.viewPortalPage"/> :</font></div><br>
 <%!  String key=null;%>
 <%
 	 key=request.getParameter("key");
@@ -37,25 +37,26 @@
 	 key="10";
   %>
  <div align="left">
-	Number of records to be displayed:
+	<bean:message key="title.numberOfRecords"/>:
   <html:select property="nrec" name="nrec" value="<%=key %>" onchange="fnrec();">	
     <html:option value="5" >5</html:option>
     <html:option value="10" >10</html:option>
     <html:option value="15" >15</html:option>
     <html:option value="20" >20</html:option>
+    <html:option value="25" >25</html:option>
         </html:select>
 			<html:errors property="nrec"/>
 	<div align="right">
-			<html:link action="newportal">New Portal<img border="0" title="Edit" src="img/user1_add.png" width="15" "height="15" ></html:link>
+			<html:link action="newportal"><bean:message key="link.newPortal"/><img border="0" title="Edit" src="img/user1_add.png" width="15" "height="15" ></html:link>
 	</div>
 	</div>
   
  <display:table name="portalList.list" defaultsort="1"  id="row" export="true" pagesize="<%=Integer.parseInt(key) %>" requestURI="/portalList.do" class="dataTable" >
-		<display:column property="portalname" title="Portal Name" sortable="true">
+		<display:column property="portalname" sortable="true">
 		</display:column>
-		<display:column property="portaldescription" title="Portal Description" sortable="true" />
-		<display:column property="createdby" title="Created By" sortable="true" />
-		<display:column property="createdon" title="Created On" sortable="true" />
+		<display:column property="portaldescription"  sortable="true" />
+		<display:column property="createdby"  sortable="true" />
+		<display:column property="createdon" sortable="true" />
 		
 		<display:column media="html" title="Actions">
 		<html:link href="editPortal.do" paramProperty="portalid" paramId="portalkey" paramName="row">
@@ -73,10 +74,10 @@
 	 </logic:notEmpty>
     <logic:empty name="portalList" property="list">
    
-   <br><font color="#550003" size="2">Nothing found to display.for adding new portal click on this link--></font>
-    		<html:link action="newportal">New Portal<img border="0" title="Edit" src="img/user1_add.png" width="15" "height="15" ></html:link>
+   <br><font color="#550003" size="2"><bean:message key="title.portalRecordsNotFound"/>--></font>
+    		<html:link action="newportal"><bean:message key="link.newPortal"/><img border="0" title="Edit" src="img/user1_add.png" width="15" "height="15" ></html:link>
 	   <br><br>
-    <html:button property="back" value="Back" styleClass="butStnd" onclick="history.back();" />
+    <input type="button" value='<bean:message key="label.back.button" />' class="butStnd" onclick="history.back();" />
     </logic:empty>
   		
   </body>

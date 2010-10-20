@@ -1,4 +1,4 @@
-<%@ page language="java" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -20,19 +20,19 @@
 					</div>
 					</div>
 					<div align="right" >
-		<b><font size="1">Welcome,</font></b>
+		<b><font size="1"><bean:message key="header.welcome"/></font></b>
 		<font size="1">
 		  		<c:out value="${sessionScope.uid}"/> | </font>
 		 
-				<html:link action="logout" styleClass="B"> <font size="-1">Logout</font> </html:link> |
-				<html:link styleClass="B" action="changeOwnpassword"> Change Password </html:link> </div>		
+				<html:link action="logout" styleClass="B"> <font size="-1"><bean:message key="header.logout"/></font> </html:link> |
+				<html:link styleClass="B" action="changeOwnpassword"><bean:message key="header.changePassword"/></html:link> </div>		
 				
 				<div style="padding-top: 5px">
-				<b><font size="1">Portal:</font></b><font color="#1425FF"> <c:out value="${sessionScope.portalname}"/> </font>
+				<b><font size="1"><bean:message key="menu.portal"/>:</font></b><font color="#1425FF"> <c:out value="${sessionScope.portalname}"/> </font>
 				<br>
-				<b><font size="1">Organization:</font></b><font color="#1425FF"> <c:out value="${sessionScope.orgname}"/></font>
+				<b><font size="1"><bean:message key="menu.organization"/>:</font></b><font color="#1425FF"> <c:out value="${sessionScope.orgname}"/></font>
 				<br>
-				<b><font size="1">Role:</font></b><font color="#1425FF"> <c:out value="${sessionScope.rolename}"/></font>
+				<b><font size="1"><bean:message key="menu.role"/>:</font></b><font color="#1425FF"> <c:out value="${sessionScope.rolename}"/></font>
 				
 				</div>
 		    </td>
@@ -45,44 +45,44 @@
 <dl class="dropdown">
   <dt id="one1-ddheader" onmouseover="ddMenu('one1',1)" onmouseout="ddMenu('one1',-1)">
   
-  <html:link action="welcome" style="padding:0px;background-color:#336699;font-weight:bold;color:#ffffff;"> Home</html:link>
+  <html:link action="welcome" style="padding:0px;background-color:#336699;font-weight:bold;color:#ffffff;"><bean:message key="menu.home"/></html:link>
   </dt>
   </dl>
 </td>
 <td>
 <dl class="dropdown">
-  <dt id="one-ddheader" onmouseover="ddMenu('one',1)" onmouseout="ddMenu('one',-1)">Roles</dt>
+  <dt id="one-ddheader" onmouseover="ddMenu('one',1)" onmouseout="ddMenu('one',-1)"><bean:message key="menu.role"/></dt>
   <dd id="one-ddcontent" onmouseover="cancelHide('one')" onmouseout="ddMenu('one',-1)">
     <ul class="ss">
-      <li><html:link styleClass="underline" action="newrole">Add Roles</html:link></li>
-      <li><html:link styleClass="underline" action="viewrole">View Roles</html:link></li>
+      <li><html:link styleClass="underline" action="newrole"><bean:message key="submenu.role.addRole"/></html:link></li>
+      <li><html:link styleClass="underline" action="viewrole"><bean:message key="submenu.role.viewRoles"/></html:link></li>
       </ul>
   </dd>
 </dl>
 </td>
 <td>
 <dl class="dropdown">
-  <dt id="two-ddheader" onmouseover="ddMenu('two',1)" onmouseout="ddMenu('two',-1)">Member</dt>
+  <dt id="two-ddheader" onmouseover="ddMenu('two',1)" onmouseout="ddMenu('two',-1)"><bean:message key="menu.member"/></dt>
   <dd id="two-ddcontent" onmouseover="cancelHide('two')" onmouseout="ddMenu('two',-1)">
     <ul class="ss">
-		<li><html:link styleClass="underline" action="addmember"> Add Member </html:link></li>
-      <li><html:link styleClass="underline" action="viewmember"> View Members </html:link></li>
-      <li><html:link styleClass="underline" action="searchpeople"> People Search </html:link></li>
+		<li><html:link styleClass="underline" action="addmember"> <bean:message key="submenu.member.addMember"/> </html:link></li>
+      <li><html:link styleClass="underline" action="viewmember"> <bean:message key="submenu.member.viewMembers"/> </html:link></li>
+      <li><html:link styleClass="underline" action="searchpeople"> <bean:message key="submenu.member.peopleSearch"/> </html:link></li>
     </ul>
   </dd>
 </dl>
 </td>
   <td>
    <dl class="dropdown">
-  <dt id="three-ddheader" onmouseover="ddMenu('three',1)" onmouseout="ddMenu('three',-1)">Project Management</dt>
+  <dt id="three-ddheader" onmouseover="ddMenu('three',1)" onmouseout="ddMenu('three',-1)"><bean:message key="menu.projectManagement"/></dt>
   <dd id="three-ddcontent" onmouseover="cancelHide('three')" onmouseout="ddMenu('three',-1)">
     <ul class="ss">
-    <li><html:link styleClass="underline" action="newproject" > Add Project </html:link></li>
-      <li><html:link styleClass="underline" action="viewproject"> View Project </html:link></li>
+    <li><html:link styleClass="underline" action="newproject" > <bean:message key="submenu.projectManagement.addProject"/> </html:link></li>
+      <li><html:link styleClass="underline" action="viewproject"> <bean:message key="submenu.projectManagement.viewProject"/> </html:link></li>
      <!-- <li><html:link styleClass="underline" action="assignproject"> Create Project Team </html:link></li>
         <li><html:link styleClass="underline" action="searchproject"> Search Project </html:link></li>
       <li><html:link styleClass="underline" action="updateoperation"> Update Operation </html:link></li>-->
-      <li><html:link styleClass="underline" action="drawGanttChart">View Gantt Chart </html:link></li>
+      <li><html:link styleClass="underline" action="drawGanttChart"><bean:message key="submenu.projectManagement.viewProject.viewGanttChart"/> </html:link></li>
             
     </ul>
   </dd>
@@ -92,12 +92,11 @@
 
 <td>
 <dl class="dropdown">
-  <dt id="four-ddheader" onmouseover="ddMenu('four',1)" onmouseout="ddMenu('four',-1)">Task</dt>
+  <dt id="four-ddheader" onmouseover="ddMenu('four',1)" onmouseout="ddMenu('four',-1)"><bean:message key="menu.task"/></dt>
   <dd id="four-ddcontent" onmouseover="cancelHide('four')" onmouseout="ddMenu('four',-1)">
     <ul class="ss">
-      <li><html:link styleClass="underline" action="newtask"> Create Task </html:link></li>
-      <li><html:link styleClass="underline" action="assigntask"> Assign Task </html:link></li>
-      <li><html:link styleClass="underline" action="viewtask"> View Task </html:link></li>
+      <li><html:link styleClass="underline" action="newtask"> <bean:message key="submenu.task.createTask"/> </html:link></li>
+      <li><html:link styleClass="underline" action="viewtask"> <bean:message key="submenu.task.viewTask"/> </html:link></li>
       
    </ul>
   </dd>
@@ -105,11 +104,11 @@
 </td>
 <td>
 <dl class="dropdown">
-  <dt id="five-ddheader" onmouseover="ddMenu('five',1)" onmouseout="ddMenu('five',-1)">Organization</dt>
+  <dt id="five-ddheader" onmouseover="ddMenu('five',1)" onmouseout="ddMenu('five',-1)"><bean:message key="menu.organization"/></dt>
   <dd id="five-ddcontent" onmouseover="cancelHide('five')" onmouseout="ddMenu('five',-1)">
     <ul class="ss">
-      <li><html:link styleClass="underline" action="vieworganization"> View Organization </html:link></li>
-     <li><html:link styleClass="underline" action="searchorganization"> Search Organization</html:link></li>
+      <li><html:link styleClass="underline" action="vieworganization"> <bean:message key="submenu.organization.viewOrganization"/> </html:link></li>
+     <li><html:link styleClass="underline" action="searchorganization"><bean:message key="submenu.organization.searchOrganization"/></html:link></li>
     </ul>
   </dd>
 </dl>
@@ -131,7 +130,7 @@
  <td>
 <dl class="dropdown">
   <dt id="one-ddheader" style="width: 100px;" onmouseover="ddMenu('nine',1)" onmouseout="ddMenu('nine',-1)">
-  <html:link action="help" style="padding:0px;width: 100px;background-color:#336699;font-weight:bold;color:#ffffff;"> Help</html:link>
+  <html:link action="help" style="padding:0px;width: 100px;background-color:#336699;font-weight:bold;color:#ffffff;"><bean:message key="menu.help"/></html:link>
   </dt>
   </dl>
 </td>

@@ -21,11 +21,11 @@
 					</div>
 					</div>
 					<div align="right">
-		<b><font size="1">Welcome,</font></b>
+		<b><font size="1"><bean:message key="header.welcome"/></font></b>
 		<font size="1">
 		  		<c:out value="${sessionScope.uid}"/> | </font>
-		 		<html:link action="logout" styleClass="B"> <font size="-1">Logout</font> </html:link> |
-				<html:link styleClass="B" action="changeOwnpassword"> Change Password </html:link> 	</div>				
+		 		<html:link action="logout" styleClass="B"> <font size="-1"><bean:message key="header.logout"/></font> </html:link> |
+				<html:link styleClass="B" action="changeOwnpassword"><bean:message key="header.changePassword"/></html:link> 	</div>				
 		 </td>
 		 </tr>
 		<tr>
@@ -35,27 +35,25 @@
 <tr>
 <td>
 <dl class="dropdown">
-  <dt id="one-ddheader" onmouseover="ddMenu('one',1)" onmouseout="ddMenu('one',-1)">
-  
-  <html:link action="welcome" style="padding:0px;background-color:#336699;font-weight:bold;color:#ffffff;"> Home</html:link>
+  <dt>
+   <html:link action="welcome" style="padding:0px;background-color:#336699;font-weight:bold;color:#ffffff;"><bean:message key="menu.home"/></html:link>
   </dt>
   </dl>
 </td>
 <td>
 <dl class="dropdown">
-  <dt id="one-ddheader" onmouseover="ddMenu('eight',1)" onmouseout="ddMenu('eight',-1)">
-  
-  <html:link action="mailconfig" style="padding:0px;background-color:#336699;font-weight:bold;color:#ffffff;"> Mail Configuration</html:link>
+  <dt >
+   <html:link action="mailconfig" style="padding:0px;background-color:#336699;font-weight:bold;color:#ffffff;"><bean:message key="menu.mailConfiguration"/></html:link>
   </dt>
   </dl>
 </td>
 <td>
 <dl class="dropdown">
-  <dt id="two-ddheader" onmouseover="ddMenu('two',1)" onmouseout="ddMenu('two',-1)">Portal</dt>
+  <dt id="two-ddheader" onmouseover="ddMenu('two',1)" onmouseout="ddMenu('two',-1)"><bean:message key="menu.portal"/></dt>
   <dd id="two-ddcontent" onmouseover="cancelHide('two')" onmouseout="ddMenu('two',-1)">
     <ul class="ss">
-      <li><html:link styleClass="underline" action="newportal">Create Portal</html:link></li>
-      <li><html:link styleClass="underline" action="viewportal">View Portal</html:link></li>
+      <li><html:link styleClass="underline" action="newportal"><bean:message key="submenu.portal.createPortal"/></html:link></li>
+      <li><html:link styleClass="underline" action="viewportal"><bean:message key="submenu.portal.viewPortal"/></html:link></li>
     </ul>
   </dd>
  </dl>
@@ -63,12 +61,12 @@
 
 <td>
 <dl class="dropdown">
-  <dt id="three-ddheader" onmouseover="ddMenu('three',1)" onmouseout="ddMenu('three',-1)">Organization</dt>
+  <dt id="three-ddheader" onmouseover="ddMenu('three',1)" onmouseout="ddMenu('three',-1)"><bean:message key="menu.organization"/></dt>
   <dd id="three-ddcontent" onmouseover="cancelHide('three')" onmouseout="ddMenu('three',-1)">
     <ul class="ss">
-      <li><html:link styleClass="underline" action="neworganization">Add Organization</html:link></li>
-      <li><html:link styleClass="underline" action="vieworganization">View Organization</html:link></li>
-      <li><html:link styleClass="underline" action="searchorganization">Search Organization</html:link></li>
+      <li><html:link styleClass="underline" action="neworganization"><bean:message key="submenu.organization.addOrganization"/></html:link></li>
+      <li><html:link styleClass="underline" action="vieworganization"><bean:message key="submenu.organization.viewOrganization"/></html:link></li>
+      <li><html:link styleClass="underline" action="searchorganization"><bean:message key="submenu.organization.searchOrganization"/></html:link></li>
     </ul>
   </dd>
 </dl>
@@ -76,25 +74,25 @@
 
 <td>
 <dl class="dropdown">
-  <dt id="four-ddheader" onmouseover="ddMenu('four',1)" onmouseout="ddMenu('four',-1)">Roles</dt>
+  <dt id="four-ddheader" onmouseover="ddMenu('four',1)" onmouseout="ddMenu('four',-1)"><bean:message key="menu.role"/></dt>
   <dd id="four-ddcontent" onmouseover="cancelHide('four')" onmouseout="ddMenu('four',-1)">
     <ul class="ss">
-      <li><html:link styleClass="underline" action="newrole">Add Roles</html:link></li>
-      <li><html:link styleClass="underline" action="viewrole">View Roles</html:link></li>
+      <li><html:link styleClass="underline" action="newrole"><bean:message key="submenu.role.addRole"/></html:link></li>
+      <li><html:link styleClass="underline" action="viewrole"><bean:message key="submenu.role.viewRoles"/></html:link></li>
       </ul>
   </dd>
 </dl>
 </td>
 <td>
 <dl class="dropdown">
-  <dt id="six-ddheader" onmouseover="ddMenu('six',1)" onmouseout="ddMenu('six',-1)">Member</dt>
-  <dd id="six-ddcontent" onmouseover="cancelHide('six')" onmouseout="ddMenu('six',-1)">
+  <dt id="five-ddheader" onmouseover="ddMenu('five',1)" onmouseout="ddMenu('five',-1)"><bean:message key="menu.member"/></dt>
+  <dd id="five-ddcontent" onmouseover="cancelHide('five')" onmouseout="ddMenu('five',-1)">
     <ul class="ss">
-      <li><html:link styleClass="underline" action="addmember"> Add Member </html:link></li>
-      <li><html:link styleClass="underline" action="viewmember"> View Members </html:link></li>
-    <li><html:link styleClass="underline" action="addorg_in_portal">Add Organization into Portal</html:link></li>
+      <li><html:link styleClass="underline" action="addmember"> <bean:message key="submenu.member.addMember"/> </html:link></li>
+      <li><html:link styleClass="underline" action="viewmember"> <bean:message key="submenu.member.viewMembers"/> </html:link></li>
+    <li><html:link styleClass="underline" action="addorg_in_portal"><bean:message key="submenu.member.addOrganizationIntoPortal"/></html:link></li>
      <!--   <li><html:link styleClass="underline" action="assignproject"> Assign Project </html:link></li>-->
-      	<li><html:link styleClass="underline" action="searchpeople"> People Search </html:link></li>
+      	<li><html:link styleClass="underline" action="searchpeople"> <bean:message key="submenu.member.peopleSearch"/> </html:link></li>
       </ul>
   </dd>
 </dl>
@@ -102,11 +100,11 @@
 
 <td>
   <dl class="dropdown">
-  <dt id="five-ddheader" onmouseover="ddMenu('five',1)" onmouseout="ddMenu('five',-1)">Project Management</dt>
-  <dd id="five-ddcontent" onmouseover="cancelHide('five')" onmouseout="ddMenu('five',-1)">
+  <dt id="six-ddheader" onmouseover="ddMenu('six',1)" onmouseout="ddMenu('six',-1)"><bean:message key="menu.projectManagement"/></dt>
+  <dd id="six-ddcontent" onmouseover="cancelHide('six')" onmouseout="ddMenu('six',-1)">
     <ul class="ss">
    <!--   <li><html:link styleClass="underline" action="newproject" > Add Project </html:link></li>-->
-      <li><html:link styleClass="underline" action="viewproject"> View Project </html:link></li>
+      <li><html:link styleClass="underline" action="viewproject"><bean:message key="submenu.projectManagement.viewProject"/></html:link></li>
    <!--     <li><html:link styleClass="underline" action="searchproject"> Search Project </html:link></li>
       <li><html:link styleClass="underline" action="updateoperation"> Update Operation </html:link></li>
       <li><html:link styleClass="underline" action="drawGanttChart">View Gantt Chart </html:link></li>-->
@@ -130,9 +128,8 @@
  -->
  <td>
 <dl class="dropdown">
-  <dt id="one-ddheader" style="width: 100px;" onmouseover="ddMenu('nine',1)" onmouseout="ddMenu('nine',-1)">
-  
-  <html:link action="help" style="padding:0px;width: 100px;background-color:#336699;font-weight:bold;color:#ffffff;"> Help</html:link>
+  <dt>
+   <html:link action="help" style="padding:0px;width: 100px;background-color:#336699;font-weight:bold;color:#ffffff;"><bean:message key="menu.help"/></html:link>
   </dt>
   </dl>
 </td>

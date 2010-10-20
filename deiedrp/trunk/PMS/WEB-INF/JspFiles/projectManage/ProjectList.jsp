@@ -174,7 +174,7 @@ jQuery('a.close, #fade').live('click', function() { //When clicking on the close
    (String)session.getAttribute("validOrgInPortal"),(String)session.getAttribute("roleid"))); %>
   
   <div id="main_title" align="left">
-		    <font color="#0044ff">Project List:</font></div><br>
+		    <font color="#0044ff"><bean:message key="title.viewPrroject"/>:</font></div><br>
 <%!  String key=null;%>
 <%
 	 key=request.getParameter("key");
@@ -183,16 +183,17 @@ jQuery('a.close, #fade').live('click', function() { //When clicking on the close
   %>
  
  <div align="left">
-	Number of records to be displayed:
+	<bean:message key="title.numberOfRecords"/>:
   <html:select property="nrec" name="nrec" value="<%=key %>" onchange="fnrec();">	
     <html:option value="5">5</html:option>
     <html:option value="10">10</html:option>
     <html:option value="15">15</html:option>
     <html:option value="20">20</html:option>
+    <html:option value="25" >25</html:option>
         </html:select>
 			<html:errors property="nrec"/>
 			<div id="button">
-				<html:link action="newproject">New Project<img border="0" title="Add new project" src="img/user1_add.png" width="15" "height="15" ></html:link>
+				<html:link action="newproject"><bean:message key="label.newProject"/><img border="0" title="Add new project" src="img/user1_add.png" width="15" "height="15" ></html:link>
 			</div>
 	</div>
    <logic:notEmpty name="projectList" property="list">
@@ -203,16 +204,20 @@ jQuery('a.close, #fade').live('click', function() { //When clicking on the close
 		<logic:equal name="row" property="enable" value="1">No</logic:equal>
 		</display:column>
 		<display:column title="Project Name" sortable="true">
+		<logic:equal name="row" property="enable" value="0">
 		<html:link title="click for view the Task List" href="projectDetails.do" paramProperty="project_name" paramId="key1" paramName="row">
 		<%=((ProjectFields)pageContext.getAttribute("row")).getProject_name()%>
-		</html:link>
+		</html:link></logic:equal>
+		<logic:equal name="row" property="enable" value="1">
+		<%=((ProjectFields)pageContext.getAttribute("row")).getProject_name()%>
+		</logic:equal>
 		</display:column>	
 		<display:column property="scheduleStartDate" title="Plan Start Date" sortable="true" />
 		<display:column property="scheduleEndDate" title="Plan End Date" sortable="true" />
 		<display:column property="actualStartDate" title="Actual Start Date" sortable="true" />
 		<display:column property="actualEndDate" title="Actual End Date" sortable="true" />
 		
-		<display:column property="tbudget" title="Target Budget (Rs.)" format="{0,number,0,000.00}"
+		<display:column property="tbudget" style="text-align: right;" title="Target Budget (Rs.)" format="{0,number,0,000.00}"
 		 sortable="true" />
 		<display:column property="priority" title="Priority" sortable="true" />
 		<display:column property="status" title="Status" sortable="true" />
@@ -271,15 +276,15 @@ jQuery('a.close, #fade').live('click', function() { //When clicking on the close
 	</display:table>
 	 </logic:notEmpty>
     <logic:empty name="projectList" property="list">
-   <br><font color="#550003" size="2">Nothing found to display.</font><br><br>
-    <html:button property="back" value="Back" styleClass="butStnd" onclick="history.back();" />
+   <br><font color="#550003" size="2"><bean:message key="label.noProjectFound"/></font><br><br>
+    <input type="button" value='<bean:message key="label.back.button" />' class="butStnd" onclick="history.back();" />
     </logic:empty>
     
     
      <!-- for open popup window -->
  
   	<div id="popup_name" class="popup_block">
- 	<div class="title">Select Employees</div>
+ 	<div class="title"><bean:message key="title.popupWindow"/></div>
  	 <p>
    		<html:form action="/addTeam" >			
    		<input type="hidden" name="pcode" id="pcode"><html:errors property="pcode"/>
@@ -290,7 +295,7 @@ jQuery('a.close, #fade').live('click', function() { //When clicking on the close
 		<table cellspacing="1" cellpadding="1" width="auto" border="0" align="center">
 			<tr class="form-element">
 				<td  class="form-label">
-					Project Name :
+					<bean:message key="label.projectName"/> :
 			  	<input type="text" name="projectName" 
 			  	id="projectName" size="70" readonly="readonly" 
 			  	style="border: none;background-color: threedlightshadow;color: blue;">
@@ -300,7 +305,7 @@ jQuery('a.close, #fade').live('click', function() { //When clicking on the close
 		<table cellspacing="1" cellpadding="6" width="auto" border="0" align="center">
 			<tr class="form-element"><td class="form-label">
      		<div class="div">
-     		<div> Organization Employee</div><br>
+     		<div> <bean:message key="label.orgEmployee"/></div><br>
      		<select class="select" multiple="multiple" id="select1" name="select1" style="width: 270px;">
 			</select><html:errors property="select1"/>
 			 <div align="center">
@@ -310,7 +315,7 @@ jQuery('a.close, #fade').live('click', function() { //When clicking on the close
     	</div>  
      <div class="div">
     	<div>
-   		Project Team</div><br>
+   		<bean:message key="label.projectTeam"/></div><br>
      	<select class="select" multiple="multiple" id="select2" name="select2" style="width: 270px;">
      	 </select> <html:errors property="select2"/>
      	<div align="center"> 
@@ -322,8 +327,8 @@ jQuery('a.close, #fade').live('click', function() { //When clicking on the close
     </table> 
     <table align="center">
     <tr><td>
-    <html:submit value="Create Team" styleClass="butStnd"/>
-    <html:reset value="Reset" styleClass="butStnd" onclick="getPname()"/>
+    <input type="submit" value='<bean:message key="label.createTeam.button" />' class="butStnd"/>
+    <input type="reset" value='<bean:message key="label.reset.button" />' class="butStnd" onclick="getPname()"/>
     </td></tr></table>
     </html:form>
   	</p>

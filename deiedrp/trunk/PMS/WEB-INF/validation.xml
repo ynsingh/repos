@@ -20,14 +20,11 @@
 <field property="password" depends="required" >
 <arg0 key="mail.password" />
 </field>
-<field property="subject" depends="required" >
-<arg0 key="mail.subject" />
-</field>
 </form>
 
 <form name="portalnameform" >
 <field property="portalname" depends="selectoption" >
-<arg0 key="err.portalname" />
+<arg0 key="label.portalName" />
 </field>
 </form>
 
@@ -67,24 +64,33 @@
 <var-name>mask</var-name>
 <var-value>^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x | ext)\d{1,5}){0,1}$</var-value></var>
 </field>
-<field property="firstname" depends="required" >
+<field property="firstname" depends="required,maxlength" >
 <arg0 key="firstname.value" />
+<arg1 key="${var:maxlength}" name="maxlength" resource="false" />
+<var>
+<var-name>maxlength</var-name>
+<var-value>255</var-value></var>
 </field>
-<field property="lastname" depends="required" >
+<field property="lastname" depends="required,maxlength" >
 <arg0 key="lastname.value" />
+<arg1 key="${var:maxlength}" name="maxlength" resource="false" />
+<var>
+<var-name>maxlength</var-name>
+<var-value>255</var-value></var>
 </field>
 <field property="experience" depends="selectoption" >
 <arg0 key="err.experience" />
 </field>
 <field property="rolename" depends="selectoption" >
-<arg0 key="err.role" />
+<arg0 key="error.role" />
 </field>
 </form>
 
 <form name="newroleform" >
-<field property="rolename" depends="required,checkduplicacy,minlength" >
-<arg0 key="rolename.value" />
+<field property="rolename" depends="required,checkduplicacy,minlength,maxlength" >
+<arg0 key="error.roleName" />
 <arg1 key="${var:minlength}" name="minlength" resource="false" />
+<arg1 key="${var:maxlength}" name="maxlength" resource="false" />
 <var>
        <var-name>secondProperty</var-name>
        <var-value>rolename2</var-value>
@@ -92,23 +98,29 @@
 <var>
 <var-name>minlength</var-name>
 <var-value>3</var-value></var>
-
+<var>
+<var-name>maxlength</var-name>
+<var-value>255</var-value></var>
 </field>
 </form>
 <form name="editroleform" >
-<field property="rolename" depends="required,minlength" >
-<arg0 key="rolename.value" />
+<field property="rolename" depends="required,minlength,maxlength" >
+<arg0 key="error.roleName" />
 <arg1 key="${var:minlength}" name="minlength" resource="false" />
+<arg1 key="${var:maxlength}" name="maxlength" resource="false" />
 <var>
 <var-name>minlength</var-name>
 <var-value>3</var-value></var>
-
+<var>
+<var-name>maxlength</var-name>
+<var-value>255</var-value></var>
 </field>
 </form>
 <form name="newportalform" >
-<field property="portalname" depends="required,checkduplicacy,minlength" >
-<arg0 key="portalname.value" />
+<field property="portalname" depends="required,checkduplicacy,minlength,maxlength" >
+<arg0 key="label.portalName" />
 <arg1 key="${var:minlength}" name="minlength" resource="false" />
+<arg1 key="${var:maxlength}" name="maxlength" resource="false" />
 <var>
        <var-name>secondProperty</var-name>
        <var-value>portalname2</var-value>
@@ -116,32 +128,37 @@
 <var>
 <var-name>minlength</var-name>
 <var-value>3</var-value></var>
-
+<var>
+<var-name>maxlength</var-name>
+<var-value>255</var-value></var>
 </field>
 </form>
 <form name="editportalform" >
-<field property="portalname" depends="required,minlength" >
-<arg0 key="portalname.value" />
+<field property="portalname" depends="required,minlength,maxlength" >
+<arg0 key="label.portalName" />
 <arg1 key="${var:minlength}" name="minlength" resource="false" />
+<arg1 key="${var:maxlength}" name="maxlength" resource="false" />
 <var>
 <var-name>minlength</var-name>
 <var-value>3</var-value></var>
-
+<var>
+<var-name>maxlength</var-name>
+<var-value>255</var-value></var>
 </field>
 </form>
 
 <form name="addorginportalform">
 <field property="portalname" depends="selectoption" >
-<arg0 key="err.portalname" />
+<arg0 key="label.portalName" />
 </field>
 <field property="organisation" depends="selectoption" >
-<arg0 key="err.organization" />
+<arg0 key="error.organization" />
 </field>
 <field property="emailid" depends="selectoption" >
-<arg0 key="err.emailid" />
+<arg0 key="error.emailid" />
 </field>
 <field property="role" depends="selectoption" >
-<arg0 key="err.role" />
+<arg0 key="error.role" />
 </field>
 </form>
 
@@ -245,7 +262,7 @@
 <form name="projectform" >
 <field property="pname" depends="required,mask,minlength,maxlength,checkduplicacy" >
 <msg name="mask" key="projectForm.ProjectName.mask" />
-<arg0 key="err.name" />
+<arg0 key="error.projectName" />
 <arg1 key="${var:minlength}" name="minlength" resource="false" />
 <arg1 key="${var:maxlength}" name="maxlength" resource="false" />
 <var>
@@ -327,7 +344,7 @@
 </field> -->
 
 <field property="status" depends="selectoption" >
-<arg0 key="err.status" />
+<arg0 key="error.status" />
 </field>
 
 <field property="gcolor" depends="required" >
@@ -394,7 +411,7 @@
 
 <form name="orgform" >
 <field property="iname" depends="required,minlength,maxlength,checkduplicacy" >
-<arg0 key="oerr.name" />
+<arg0 key="label.organizationName" />
 <arg1 key="${var:minlength}" name="minlength" resource="false" />
 <arg1 key="${var:maxlength}" name="maxlength" resource="false" />
 <var>
@@ -470,7 +487,7 @@
 
 <form name="editorgform" >
 <field property="iname" depends="required,minlength,maxlength" >
-<arg0 key="oerr.name" />
+<arg0 key="label.organizationName" />
 <arg1 key="${var:minlength}" name="minlength" resource="false" />
 <arg1 key="${var:maxlength}" name="maxlength" resource="false" />
 <var>
@@ -551,10 +568,10 @@
 
 <form name="projassignform" >
 <field property="userId" depends="selectoption,email" >
-<arg0 key="err.emailid" />
+<arg0 key="error.emailid" />
 </field>
 <field property="roleName" depends="selectoption" >
-<arg0 key="err.role" />
+<arg0 key="error.role" />
 </field>
 <field property="projectName" depends="selectoption" >
 <arg0 key="err.projname" />
@@ -564,7 +581,7 @@
 						<!-- validation on task form -->
 <form name="taskform">
 <field property="projectName" depends="selectoption" >
-<arg0 key="err.name" />
+<arg0 key="error.projectName" />
 </field>
 <field property="taskName" depends="required,checkduplicacy" >
 <arg0 key="task.name" />
@@ -625,7 +642,7 @@
 <arg0 key="task.name" />
 </field>
 <field property="assignedTo" depends="selectoption" >
-<arg0 key="err.assignto" />
+<arg0 key="error.assignto" />
 </field>
 </form>
 <!-- assigning task end here -->
@@ -675,7 +692,7 @@
 </var>
 </field>
 <field property="status" depends="selectoption" >
-<arg0 key="err.status" />
+<arg0 key="error.status" />
 </field>
 </form>
 
@@ -698,7 +715,7 @@
 <arg0 key="uploadfile.name" />
 </field>
 <field property="projectName" depends="selectoption" >
-<arg0 key="err.name" />
+<arg0 key="error.projectName" />
 </field>
 </form>
 

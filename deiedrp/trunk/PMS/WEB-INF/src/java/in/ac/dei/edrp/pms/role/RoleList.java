@@ -22,14 +22,17 @@ public class RoleList {
 		}
 		
 		/*
-		 * This constructor calls the fillList() method,
-		 * which returns all the roles for view.
+		 * This constructor calls the fillList(roleid) method,
+		 * which returns all authorities of the desired role for view.
 		 */
 		public RoleList(String roleid){
 		
 			fillList(roleid);
 		}
 				
+		/*
+		 * it is used for adding new role and editing the roles.
+		 */
 		public RoleList(String userid,int validorgportal,String role_in_org){
 			
 			fillRoleList(role_in_org);
@@ -71,35 +74,22 @@ public class RoleList {
 		
 		public void fillRoleList(String roleid){
 			Connection con=null;
-			String s[]=new String[14];
+			//String s[]=new String[14];
 			try{
-				for(int i=0;i<14;i++)
-				{
-					s[i]="Not Allow";
-				}
+				
 				con=MyDataSource.getConnection();//This method Established the connection from the database MySql
 				PreparedStatement ps=null;
-				ps=con.prepareStatement("select dfa.add_org,dfa.edit_remove_org,dfa.add_project," +
-						"dfa.edit_disable_project,dfa.add_member,dfa.edit_remove_member," +
-						"dfa.assign_project,dfa.edit_member_authority,dfa.assign_task,"+
-				"dfa.edit_remove_task,dfa.upload_documents,dfa.dwnld_remove_doc," +
-				"dfa.add_role,dfa.edit_remove_role from role r,default_authority dfa " +
-				"where r.role_id=dfa.role_id and r.role_id=?");
+				ps=con.prepareStatement("select dfa.authorities" +
+						" from role r,default_authority dfa " +
+				"where r.role_id=dfa.role_id and r.role_id=? order by dfa.authorities asc");
 				ps.setString(1, roleid);
 				ResultSet rs=ps.executeQuery();
-				int i=0;
+				
 				while(rs.next())
-				{	i=0;
-					while(i<14)
-					{
-						i++;
-						if(rs.getString(i).equalsIgnoreCase("allow"))
-						{							
-							s[i-1]=rs.getString(i);
-						}
-					}
+				{
+					list.add(new RoleFields(rs.getString(1)));
 				}
-				list.add(new RoleFields(s));
+				
 				
 			}
 			catch(Exception e){System.out.println("error in role list anil="+e);}
@@ -116,18 +106,13 @@ public class RoleList {
 				con=MyDataSource.getConnection();//This method Established the connection from the database MySql
 				PreparedStatement ps=null;
 				ps=con.prepareStatement("select r.role_id,r.Role_Name,r.description,"+
-				"dfa.add_org,dfa.edit_remove_org,dfa.add_project,dfa.edit_disable_project,dfa.add_member,"+
-				"dfa.edit_remove_member,dfa.assign_project,dfa.edit_member_authority,dfa.assign_task,"+
-				"dfa.edit_remove_task,dfa.upload_documents,dfa.dwnld_remove_doc," +
-				"dfa.add_role,dfa.edit_remove_role from role r,default_authority dfa "+
-				"where dfa.role_id=r.Role_ID and r.Role_ID=?");
+				"dfa.authorities from role r,default_authority dfa "+
+				"where dfa.role_id=r.Role_Id and r.Role_Id=?");
 				ps.setString(1, roleid);
 				ResultSet rs=ps.executeQuery();
 				while(rs.next())
 				{
-					list.add(new RoleFields(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),
-							rs.getString(6),rs.getString(7),rs.getString(8),rs.getString(9),rs.getString(10),rs.getString(11),
-							rs.getString(12),rs.getString(13),rs.getString(14),rs.getString(15),rs.getString(16),rs.getString(17)));
+					list.add(new RoleFields(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4)));
 				}
 			}
 			catch(Exception e){}

@@ -30,7 +30,7 @@
   
   <logic:notEmpty name="roleList" property="list">
   <div id="main_title" align="left">
-		    <font color="#0044ff">Role List:</font></div><br>
+		    <font color="#0044ff"><bean:message key="title.roleList"/>:</font></div><br>
 <%!  String key=null;%>
 <%
 	 key=request.getParameter("key");
@@ -38,16 +38,17 @@
 	 key="10";
   %>
  <div align="left">
-	Number of records to be displayed:
+	<bean:message key="title.numberOfRecords"/>:
   <html:select property="nrec" name="nrec" value="<%=key %>" onchange="fnrec();">	
     <html:option value="5" >5</html:option>
     <html:option value="10" >10</html:option>
     <html:option value="15" >15</html:option>
     <html:option value="20" >20</html:option>
+    <html:option value="25" >25</html:option>
         </html:select>
 			<html:errors property="nrec"/>
 			<div align="right">
-	<html:link action="newrole">New Role<img border="0" title="Edit" src="img/user1_add.png" width="15" "height="15" ></html:link>
+	<html:link action="newrole"><bean:message key="label.newRole"/><img border="0" title="Edit" src="img/user1_add.png" width="15" "height="15" ></html:link>
 			</div>
 	</div>
   
@@ -89,10 +90,10 @@
 	</display:table>
 	 </logic:notEmpty>
     <logic:empty name="roleList" property="list">
-   <br><font color="#550003" size="2">Nothing found to display.for adding new role click on this link--></font>
-   <html:link action="newrole">New Role<img border="0" title="Edit" src="img/user1_add.png" width="15" "height="15" ></html:link>
+   <br><font color="#550003" size="2"><bean:message key="label.roleRecordsNotFound"/>--></font>
+   <html:link action="newrole"><bean:message key="label.newRole"/><img border="0" title="Edit" src="img/user1_add.png" width="15" "height="15" ></html:link>
    <br><br>
-    <html:button property="back" value="Back" styleClass="butStnd" onclick="history.back();" />
+    <input type="button" value='<bean:message key="label.back.button" />' class="butStnd" onclick="history.back();" />
     </logic:empty>
   		
   </body>

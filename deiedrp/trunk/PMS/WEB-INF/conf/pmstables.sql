@@ -113,26 +113,12 @@ INSERT INTO `city` (`state_id`,`city_id`,`city_name`) VALUES
 
 DROP TABLE IF EXISTS `default_authority`;
 CREATE TABLE `default_authority` (
-  `authority_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `add_org` varchar(10) NOT NULL,
-  `edit_remove_org` varchar(10) NOT NULL,
-  `add_project` varchar(10) NOT NULL,
-  `edit_disable_project` varchar(10) NOT NULL,
-  `add_member` varchar(10) NOT NULL,
-  `edit_remove_member` varchar(10) NOT NULL,
-  `assign_project` varchar(10) NOT NULL,
-  `edit_member_authority` varchar(10) NOT NULL,
-  `assign_task` varchar(10) NOT NULL,
-  `edit_remove_task` varchar(10) NOT NULL,
-  `upload_documents` varchar(10) NOT NULL,
-  `dwnld_remove_doc` varchar(10) NOT NULL,
   `role_id` int(10) unsigned NOT NULL,
-  `add_role` varchar(10) NOT NULL,
-  `edit_remove_role` varchar(10) NOT NULL,
-  PRIMARY KEY (`authority_id`),
+  `authorities` varchar(255) NOT NULL,
+  PRIMARY KEY (`role_id`,`authorities`),
   KEY `role_id` (`role_id`),
   CONSTRAINT `role_id` FOREIGN KEY (`role_id`) REFERENCES `role` (`Role_Id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `default_authority`

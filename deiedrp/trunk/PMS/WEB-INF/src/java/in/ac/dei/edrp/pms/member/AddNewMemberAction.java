@@ -1,6 +1,8 @@
 package in.ac.dei.edrp.pms.member;
 
 import java.sql.*;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -125,19 +127,21 @@ public class AddNewMemberAction extends Action {
 						ps1.setString(3,pass1);
 						ps1.executeUpdate();
 						}
+					
 						
-						String url="http://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath();
-						String s4="Welcome to Project Management System," +
-							"\n Your account has been created successfully.\n " +
-							"click on the following link," +url+
-							" and proceed by your login.\n" +
-							" User Id: "+newmemberform.getEmailid().trim()+
-							"\n Password: "+pass1+
-							"\n Note:- After login, Please change your password for security point of view."+
-							"\n Thanks !";
+					String url="http://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath();
+					Locale locale = new Locale("en", "US");
+					ResourceBundle message = ResourceBundle.getBundle("in\\ac\\dei\\edrp\\pms\\propertiesFile\\ApplicationResources",locale);
+					String s4=message.getString("body.text.mail") + " "+url+
+							"\n"+message.getString("label.user")+": "+newmemberform.getEmailid().trim()+
+							"\n"+message.getString("label.password")+": "+pass1+
+							"\n "+message.getString("body.text.mail.note")+
+							"\n "+message.getString("body.text.mail.thanks");
 						bool=SendingMail.sendMail(s4,newmemberform.getEmailid().trim(),
+								message.getString("mail.subject.newmember.addedby.instituteadmin"),
 								ReadPropertiesFile.mailConfig(getServlet().getServletContext().getRealPath("/")+"WEB-INF/"));
-						//System.out.println("body="+s4);
+//						System.out.println("body="+s4);
+//						request.setAttribute("message",s4);
 					}
 				}
 			}

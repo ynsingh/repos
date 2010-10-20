@@ -1,11 +1,10 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
-
 <%@ page import="in.ac.dei.edrp.pms.control.CustomRequestProcessor"%>
-<%@ page import="in.ac.dei.edrp.pms.viewer.checkRecord;"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@ taglib uri="http://struts.apache.org/tags-tiles" prefix="tiles"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html:html>
   <head>
@@ -43,25 +42,13 @@
 <table border="1" cellspacing="0" cellpadding="0" height="100%" width="100%">
 <tr><td class="header123" colspan="2" width="100%" height="13%">
 
-  <%
-  	if(mysession!=null)
-  	{
-  		/* Getting the User_iD which is currently logged in. */
-   		String uid=(String)session.getAttribute("uid"); //both lines are commented on 12 april
-		if(checkRecord.duplicacyChecker("Authority","login","login_user_id",uid).equalsIgnoreCase("Super Admin"))
-		{
- 	%>
-<tiles:insert attribute="adminheader" />
-	<%
-	}
-	else
-	{
- 	%>
-<tiles:insert attribute="header"/>
-	<%
-	} 
-	}
-	%>
+  <c:choose>
+		<c:when test="${sessionScope.authority=='Super Admin'}">
+			<tiles:insert attribute="adminheader" />
+		</c:when>
+		<c:otherwise>
+			<tiles:insert attribute="header"/>
+		</c:otherwise></c:choose>
 </td></tr>
 <tr><td>
 <table border="0" cellspacing="0" height="100%" width="100%">

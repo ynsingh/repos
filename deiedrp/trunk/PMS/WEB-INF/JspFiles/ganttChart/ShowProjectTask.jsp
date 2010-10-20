@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.sql.*" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="UTF-8"%>
 <%@ page import="in.ac.dei.edrp.pms.task.TaskFields"%>
 <%@ page import="in.ac.dei.edrp.pms.task.TaskList;"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
@@ -33,10 +33,7 @@
 	String key=null;
 	String key1=null; 
 	String key2=null; 
-  	Connection con=null;
-  	PreparedStatement ps=null;
-   	ResultSet rs=null;
-  	 int flag=0;
+  	int flag=0;
    %>
    <%
 	 key=request.getParameter("key");
@@ -54,14 +51,14 @@
  
  <input type="hidden" name="pname" id="pname" value="<%=key1 %>"/>   
   <div align="left">
- Show category:
+ <bean:message key="label.showCategory"/>:
  <html:select style="color:#0044ff" property="show" name="show" value="<%=key2 %>" onchange="fnrec();">	
     <html:option value="Assigned">Assigned</html:option>
     <html:option value="Not Assigned">Not Assigned</html:option>
     <html:option value="Completed" >Completed</html:option>
     </html:select>
 	<html:errors property="show"/>
-	Number of records to be displayed:
+	<bean:message key="title.numberOfRecords"/>:
   <html:select property="nrec" name="nrec" value="<%=key %>" onchange="fnrec();">	
     <html:option value="5">5</html:option>
     <html:option value="10">10</html:option>
@@ -70,13 +67,13 @@
         </html:select>
 			<html:errors property="nrec"/>
 	<div align="right">
-		<html:link action="newtask">New Task<img border="0" title="Add new task" src="img/user1_add.png" width="15" "height="15" ></html:link>
+		<html:link action="newtask"><bean:message key="label.newTask"/><img border="0" title="Add new task" src="img/user1_add.png" width="15" "height="15" ></html:link>
 	</div>
  </div>
     <logic:empty name="taskList" property="list"><br><font color="#0000ff" size="2">
-    This type of task does not exist in the selected project.</font>
+    <bean:message key="label.recordsInfo"/></font>
     <br><br>
-    <html:button property="back" value="Back" styleClass="butStnd" onclick="history.back();" />
+    <input type="button" value='<bean:message key="label.back.button"/>' class="butStnd" onclick="history.back();" />
     </logic:empty>
    <logic:notEmpty name="taskList" property="list">
  <display:table name="taskList.list" defaultsort="1" id="row" export="false" pagesize="<%=Integer.parseInt(key) %>" requestURI="/projectDetails.do" decorator="in.ac.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >

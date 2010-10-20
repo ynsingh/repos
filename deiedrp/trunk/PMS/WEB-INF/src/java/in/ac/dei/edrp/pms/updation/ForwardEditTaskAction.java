@@ -42,7 +42,7 @@ public class ForwardEditTaskAction extends Action {
 		HttpServletRequest request,
 		HttpServletResponse response) {
 		Connection con=null;
-		String forwardmsg="edittaskfail";
+		String forwardmsg="updationfail";
 		HttpSession session=request.getSession();
 		try{
 			/*

@@ -9,28 +9,6 @@ BODY {
 	font-size: 10pt;
 }
 
-ul {
-	margin-left: 25px;
-}
-
-dl {
-	margin-top: 0px; padding-left: 1px;
-}
-dt {
-	margin-top: 0.5em;
-	color: #000099;
-	font-weight: bold;
-}
-dd {
-	margin-bottom: 0px; margin-left: 1.5em;
-}
-
-
-em {
-	font-weight: bold;
-	text-decoration: none;
-	font-style: normal;
-}
 
 A:link {
 	color: #08245b;

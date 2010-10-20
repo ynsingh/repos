@@ -1,11 +1,12 @@
-<%@ page language="java" import="java.sql.*" pageEncoding="UTF-8"%>
-<%@ page import="in.ac.dei.edrp.pms.dataBaseConnection.MyDataSource"%>
+<%@ page language="java" pageEncoding="UTF-8"%>
 <%@ page import="in.ac.dei.edrp.pms.task.TaskFields"%>
 <%@ page import="in.ac.dei.edrp.pms.task.TaskList;"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%@ taglib uri="http://displaytag.sf.net" prefix="display" %>
+<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html:html>
@@ -34,11 +35,7 @@
 	String key=null;
 	String key1=null; 
 	String key2=null; 
-  	Connection con=null;
-  	PreparedStatement ps=null;
-   	ResultSet rs=null;
-  	 int flag=0;
-   %>
+    %>
    <%
 	 key=request.getParameter("key");
 	 if(key==null)
@@ -53,50 +50,42 @@
    <% request.setAttribute("taskList", new TaskList(key1,key2,
    (String)session.getAttribute("validOrgInPortal"))); %>	
  
-    <div id=main_title><font color="#0044ff">Task List:</font></div><br>
+    <div id=main_title><font color="#0044ff"><bean:message key="title.taskList"/>:</font></div><br>
   <div align="left">
-	Select Project:
+	<bean:message key="label.selectProject"/>:
   <html:select style="color:#0044ff;width: 250px;" indexed="projname" property="projname" name="projname" value="<%=key1 %>" onchange="fnrec();">	
 		<html:option value="--Select--"></html:option>
-		<% 
-			try{
-			con=MyDataSource.getConnection();
-				ps=con.prepareStatement("select distinct p.project_name from project p"+
-									" where p.valid_org_inportal=?");
-			ps.setString(1,(String)session.getAttribute("validOrgInPortal"));
-			rs=ps.executeQuery();
-			while(rs.next())
-			{
-			%>
-			<html:option value="<%= rs.getString(1)%>"></html:option>
-			<%
-			}
-			}
-			catch(SQLException e){}
-			finally{MyDataSource.freeConnection(con);}
-			 %>
-   </html:select>
+		<sql:query var="projectList" dataSource="jdbc/mydb">
+				select distinct p.project_name from project p
+								where p.valid_org_inportal=?
+					<sql:param value="${sessionScope.validOrgInPortal}"/>
+			</sql:query>
+			<c:forEach var="row" items="${projectList.rows}">
+			<html:option value="${row.project_name}"></html:option>
+			</c:forEach>
+	</html:select>
  <html:errors property="projname"/>
- Show category:
+<bean:message key="label.showCategory"/>:
  <html:select style="color:#0044ff" property="show" name="show" value="<%=key2 %>" onchange="fnrec();">	
     <html:option value="Assigned" >Assigned</html:option>
     <html:option value="Not Assigned" >Not Assigned</html:option>
     <html:option value="Completed" >Completed</html:option>
     </html:select>
 	<html:errors property="show"/>
-	Number of records to be displayed:
+	<bean:message key="title.numberOfRecords"/>:
   <html:select property="nrec" name="nrec" value="<%=key %>" onchange="fnrec();">	
     <html:option value="5">5</html:option>
     <html:option value="10">10</html:option>
     <html:option value="15">15</html:option>
     <html:option value="20">20</html:option>
+    <html:option value="25" >25</html:option>
         </html:select>
 			<html:errors property="nrec"/>
 	</div>
     <logic:empty name="taskList" property="list"><br><font color="#0000ff" size="2">
-    This type of task does not exist in the selected project.</font>
+    <bean:message key="label.recordsInfo"/></font>
     <br><br>
-    <html:button property="back" value="Back" styleClass="butStnd" onclick="history.back();" />
+    <input type="button" value='<bean:message key="label.back.button" />' class="butStnd" onclick="history.back();" />
     </logic:empty>
    <logic:notEmpty name="taskList" property="list">
  <display:table name="taskList.list" defaultsort="1" id="row" export="true" pagesize="<%=Integer.parseInt(key) %>" requestURI="/viewtask.do" decorator="in.ac.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >

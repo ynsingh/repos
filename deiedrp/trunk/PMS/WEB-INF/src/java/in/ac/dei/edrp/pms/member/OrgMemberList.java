@@ -21,17 +21,20 @@ public class OrgMemberList{
 	}
 	
 	public OrgMemberList(String type,String orgportal,String user_id,String role_in_org){
-		String editPermission=checkRecord.AuthorityChecker("edit_remove_member", role_in_org);
+		String editPermission = checkRecord.AuthorityChecker("edit_remove_member", role_in_org);
+		String editPasswordPermission = checkRecord.AuthorityChecker("changed_user_password", role_in_org);
 		if(type.equalsIgnoreCase("Active"))
-		fillList(orgportal,editPermission);
+			fillActiveUserList(orgportal,editPermission,editPasswordPermission);
 		else if(type.equalsIgnoreCase("Inactive"))
-		fillList(type,orgportal,editPermission);
-		
+			fillInactiveUserList(orgportal,editPermission,editPasswordPermission);
+		else if(type.equalsIgnoreCase("All"))
+			fillAllUserList(orgportal,editPermission,editPasswordPermission);
 	}
 	
 
 	//fill the list of active users of an organization
-	public void fillList(String orgportal,String editPermission){
+	public void fillActiveUserList(String orgportal,String editPermission,
+			String editPasswordPermission){
 		Connection con=null;
 		try{
 			con=MyDataSource.getConnection();//This method Established the connection from the database MySql
@@ -46,10 +49,9 @@ public class OrgMemberList{
 			{
 								
 	list.add(new MemberBean(rs.getString(1),rs.getString(2),rs.getString(3),
-			rs.getString(4),rs.getString(5),editPermission));
+			rs.getString(4),rs.getString(5),editPermission,"",editPasswordPermission));
 
 			}
-			
 		}
 		catch(Exception e){}
 		finally
@@ -59,7 +61,8 @@ public class OrgMemberList{
 	}
 
 	//for showing the list of inactive users of an organization
-	public void fillList(String uid,String orgportal,String editPermission){
+	public void fillInactiveUserList(String orgportal,String editPermission,
+			String editPasswordPermission){
 		Connection con=null;
 		try{
 			con=MyDataSource.getConnection();//This method Established the connection from the database MySql
@@ -72,7 +75,36 @@ public class OrgMemberList{
 			while(rs.next())
 			{
 	list.add(new MemberBean(rs.getString(1),rs.getString(2),rs.getString(3),
-			rs.getString(4),rs.getString(5),editPermission));
+			rs.getString(4),rs.getString(5),editPermission,"Inactive",editPasswordPermission));
+			}
+			
+		}
+		catch(Exception e){System.out.println(e);}
+		finally
+		{
+			MyDataSource.freeConnection(con);
+		}
+	}
+	
+	//for showing the list of all users active/inactive
+	public void fillAllUserList(String orgportal,String editPermission,String editPasswordPermission){
+		Connection con=null;
+		try{
+			fillInactiveUserList(orgportal,editPermission,editPasswordPermission);
+			con=MyDataSource.getConnection();//This method Established the connection from the database MySql
+			
+			PreparedStatement st=con.prepareStatement("select distinct u.user_id,u.first_name," +
+					"u.last_name,u.skills,u.experince,v.Status from user_in_org uio,user_info u," +
+					"validatetab v,project p,role r where v.valid_user_key=uio.valid_key and" +
+					" uio.valid_orgportal=? and v.valid_project_code=p.project_code and " +
+					"r.role_id=v.valid_role_id and v.Status='Active' and " +
+					"u.user_id=uio.valid_user_id");
+			st.setString(1,orgportal);
+			ResultSet rs=st.executeQuery();
+			while(rs.next())
+			{
+	list.add(new MemberBean(rs.getString(1),rs.getString(2),rs.getString(3),
+			rs.getString(4),rs.getString(5),editPermission,rs.getString(6),editPasswordPermission));
 			}
 			
 		}
@@ -96,7 +128,7 @@ public class OrgMemberList{
 			while(rs.next())
 			{
 	list.add(new MemberBean(rs.getString(1),rs.getString(2),rs.getString(3),
-			rs.getString(4),rs.getString(5),""));
+			rs.getString(4),rs.getString(5),"","",""));
 			}
 			
 		}

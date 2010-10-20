@@ -12,13 +12,7 @@
   </head>
   
   <body>
-  <%
-	String mysession=(String)session.getAttribute("mysession");
-	if(mysession==null)
-	{
-		response.sendRedirect("login.jsp");
-	}
-	%>
+ 
   <div id="main_title"><font color="#0044ff">Organization Detail: </font></div>
   <br><br>
  <% 

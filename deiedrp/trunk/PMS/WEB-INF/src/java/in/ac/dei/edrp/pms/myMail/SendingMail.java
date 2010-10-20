@@ -1,6 +1,7 @@
 package in.ac.dei.edrp.pms.myMail;
 
 import java.util.*;
+
 import javax.mail.*;
 import javax.mail.internet.*;
 
@@ -20,7 +21,7 @@ public class SendingMail {
 	 * @return boolean 
 	 * @throws Exception
 	 */
-	   public static boolean sendMail(String bodyText,String mailTo,
+	   public static boolean sendMail(String bodyText,String mailTo,String subject,
 			  Map<String, String> mailData) throws Exception {  
 	boolean sent=false;
 	
@@ -62,7 +63,7 @@ public class SendingMail {
                           InternetAddress.parse(mailTo,false));
 		           final String encoding = "UTF-8";  
 		      
-		           message.setSubject(mailData.get("subject").toString(), encoding);  
+		           message.setSubject(subject, encoding);  
 		           message.setText(bodyText, encoding); 
 		           System.out.println("Mail to:aniltiwari08@gmail.com");
 		           Transport.send(message);
@@ -74,13 +75,15 @@ public class SendingMail {
 		   }  
 	   
 	   public static boolean checkMailValidation(String serverName,String port,
-			   String userid,String userpassword,String subject) throws Exception {  
+			   String userid,String userpassword,String subject,String body) throws Exception {  
 		   boolean sent=false;
 	try{
 		 			Properties props = System.getProperties();  
-//         	   props.setProperty("proxySet","true");
-// 	    	   props.setProperty("http.proxyHost", "10.151.0.16");
-//     		   props.setProperty("http.proxyPort", "80");
+//		         	   props.setProperty("proxySet","true");
+//		 	    	   props.setProperty("http.proxyHost", "10.151.0.16");
+//		     		   props.setProperty("http.proxyPort", "80");
+//		     		  props.put("http.proxyUser", "");
+//		     		 props.put("http.proxyPassword", "");
     		          username=userid.trim();
     		          password=userpassword.trim();
     		          props.setProperty("mail.smtp.port",port);
@@ -108,9 +111,8 @@ public class SendingMail {
     		          message.setRecipients(Message.RecipientType.TO, 
     		          InternetAddress.parse(mailFrom,false));
     		          final String encoding = "UTF-8";  
-     
     		          message.setSubject(subject, encoding);  
-    		          message.setText("This is a system generated mail for confirmation of your email id and password for PMS", encoding); 
+    		          message.setText(body, encoding); 
     		          System.out.println("Mail to:aniltiwari08@gmail.com");
           				Transport.send(message);
           				sent=true;

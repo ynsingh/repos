@@ -10,6 +10,8 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.servlet.http.*;
 import java.sql.*;
+import java.util.Locale;
+
 import javax.sql.DataSource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -69,6 +71,10 @@ public class LoginAction extends Action {
 		Connection con=null;		
 		LoginForm loginform = (LoginForm) form;// TODO Auto-generated method stub
 		HttpSession session = request.getSession(true);
+		
+		Locale locale = new Locale("en", "US");
+		session.setAttribute("org.apache.struts.action.LOCALE", locale);
+		
 		//session.setMaxInactiveInterval(5);
 		 //logger.debug("Sample anil debug message");
 		       
@@ -91,7 +97,7 @@ public class LoginAction extends Action {
 			
 		PreparedStatement ps=con.prepareStatement("select l.Authority from login l where l.login_user_id=?" +
 				" and l.Password=SHA1(?)");// and Authority=?");
-		ps.setString(1,loginform.getUid().toLowerCase());
+		ps.setString(1,(String)session.getAttribute("mysession"));
 		ps.setString(2,loginform.getPass().trim());
 		//ps.setString(2,loginform.getAuthority());
 		ResultSet rs=ps.executeQuery();
@@ -111,8 +117,9 @@ public class LoginAction extends Action {
 		}
 			else
 			{
+				logger.debug("invalid id and password debug");
 				logger.info("invalid id Sample info message");
-		        logger.error("invalid id and password");
+		        logger.error("invalid id and password error");
 		        
 				ActionErrors errors = new ActionErrors();
 				ActionMessage error = new ActionMessage("error.login.invalid");
@@ -124,8 +131,9 @@ public class LoginAction extends Action {
 		}
 		catch(Exception e)
 		{
+			logger.debug("invalid id and password debug");
 			logger.info("invalid id Sample info message");
-			logger.error("invalid id and password "+e);
+	        logger.error("Exception Message",e);
 
 			ActionErrors errors = new ActionErrors();
 			ActionMessage error = new ActionMessage("error.login.invalid");
@@ -139,7 +147,7 @@ public class LoginAction extends Action {
 		{
 			MyDataSource.freeConnection(con);
 		}
-		//}
+		
 		/*
 		 * calling to that page which is assigned in variable forwardString.
 		 * */	

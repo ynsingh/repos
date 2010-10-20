@@ -9,36 +9,29 @@
 		<link rel="stylesheet" href="<html:rewrite page='/style/main.css'/>" type="text/css"></link>
 	</head>
 	<body>
-	<%
-	String mysession=(String)session.getAttribute("mysession");
-	if(mysession==null)
-	{
-		response.sendRedirect("login.jsp");
-	 }
-	%>
-  
+	  
 		<html:javascript formName="peoplesearchform" />
 		<html:form action="/searchaction" onsubmit="return validatePeoplesearchform(this);">
 		<div id="main_title"><font color="#0044ff">
-		Searching By:</font>
+		<bean:message key="title.searchPage"/>:</font>
 		 </div>
 		 <br><br>
 		  <br>
 		<table cellspacing="2" cellpadding="2" border="0" align="center">
 		<tr class="form-element">
 		<td  class="form-label">
-		<html:radio property="searchOption" value="User eMail">User E-mail id</html:radio>
-		<html:radio property="searchOption" value="User Name">User Name</html:radio>		
+		<html:radio property="searchOption" value="User eMail"><bean:message key="label.userEmailid"/></html:radio>
+		<html:radio property="searchOption" value="User Name"><bean:message key="label.userName"/></html:radio>		
 		</td>
 		</tr>
 			<tr></tr><tr></tr>
 		<tr class="form-element">
 		<td  class="form-label">
-		Enter Searched String : 
+		<bean:message key="label.searchString"/> : 
 		</td>
 		<td class="form-widget">
 		<html:text property="keySearch" value="" size="40"/><html:errors property="keySearch"/>
-		<td class="form-widget"><html:submit value="Search" styleClass="butStnd"/></td>
+		<td class="form-widget"><input type="submit" value='<bean:message key="label.search.button" />' class="butStnd"/></td>
 		</tr>
 	</table>
 		</html:form>

@@ -8,6 +8,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,7 +45,7 @@ public class AddTeamAction extends Action{
 		HttpServletRequest request,
 		HttpServletResponse response){
 		PmsTeamForm pmsteamform = (PmsTeamForm) form;
-		String s[]=pmsteamform.getSelect2();
+		String newProjectTeam[]=pmsteamform.getSelect2();
 		String roleid=null;
 		String forwardString="invalid";
 		HttpSession session=request.getSession();
@@ -53,14 +55,14 @@ public class AddTeamAction extends Action{
 		
 		if(Integer.parseInt(pmsteamform.getDefValueOfSelect2())==-1)
 		{
-			s=null;
+			newProjectTeam=null;
 		}
 				
 		String uid=(String)session.getAttribute("uid");
 		String permittedBy=uid;
 		try{
 			
-		if(s!=null)
+		if(newProjectTeam!=null)
 		{
 		String userrole=null;
 		String userid=null;
@@ -71,10 +73,12 @@ public class AddTeamAction extends Action{
 		 * established database connection.
 		 * */
 		con=MyDataSource.getConnection();
-		for(int i=0;i<pmsteamform.getSelect2().length;i++)
+		
+		
+		for(int i=0;i<newProjectTeam.length;i++)
 		{
 			//System.out.println("select2="+s[i]);
-			StringTokenizer stringTokenizer = new StringTokenizer(s[i],"()");
+			StringTokenizer stringTokenizer = new StringTokenizer(newProjectTeam[i],"()");
 			userid=stringTokenizer.nextToken().trim();
 			userrole=stringTokenizer.nextToken();
 					//System.out.println(userid);
@@ -99,22 +103,17 @@ public class AddTeamAction extends Action{
 	    }
 		}
 		//for removing
-		ArrayList<String> firstList = new ArrayList<String>();
-		ArrayList<String> secondList = new ArrayList<String>();
-		for(int i=0;i<pmsteamform.getSelect2().length;i++)
-		{
-			//System.out.println("(select2)in first list="+s[i]);
-			firstList.add(s[i]);
-		}
-		String s2[]=new DynamicList().generateProjectTeamList(pmsteamform.getProjectName(), orgportal,0);
-		for(int i=0;i<s2.length;i++)
-		{
-		//System.out.println("in second list="+s2[i]);
-			secondList.add(s2[i]);
-		}
+		
+		List<String> list1 = Arrays.asList(newProjectTeam);
+		ArrayList<String> firstList=new ArrayList<String>(list1);
+		
+		ArrayList<String> secondList=new DynamicList().generateProjectTeamList(pmsteamform.getProjectName(), orgportal,0);
+//		List<String> list2 = Arrays.asList(wholeProjectTeam);
+//		ArrayList<String> secondList = new ArrayList<String>(list2);
+		
 		//System.out.println("first List="+firstList);
 		//System.out.println("second List="+secondList);
-		// Remove all elements in firstList from secondList
+		// Remove all elements of firstList from secondList
 		secondList.removeAll(firstList);
 
 		// Show the "after" list
@@ -155,7 +154,7 @@ public class AddTeamAction extends Action{
 		}
 
 		}//if closed
-		else //if(s==null)
+		else //if(newProjectTeam==null)
 		{
 			ps=con.prepareStatement("delete from validatetab where valid_project_code=" +
 					"(select project_code from project where " +

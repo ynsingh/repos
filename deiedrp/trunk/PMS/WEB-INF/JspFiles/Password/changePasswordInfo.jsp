@@ -12,8 +12,8 @@
 </head>
 <body>
 	<div style="font: normal;color: blue;font-size: medium;padding-top: 6%;padding-left: 5%;">
-	Dear, '<%=(String)session.getAttribute("uid")%>' <%=request.getAttribute("passinfo") %>
+	<bean:message key="label.dear"/> '<%=(String)session.getAttribute("uid")%>' <%=request.getAttribute("passinfo") %>
 		</div>	<br><br>	
-		<html:button property="back" value="Back" styleClass="butStnd" onclick="history.back();" />					  		
+		<input type="button" value='<bean:message key="label.back.button" />' class="butStnd" onclick="history.back();" />					  		
 </body>
 </html>

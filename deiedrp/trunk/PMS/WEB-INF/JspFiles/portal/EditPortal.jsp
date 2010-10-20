@@ -26,13 +26,7 @@ jQuery(function() {
 </script>
 	</head>
 	<body>
-	<%
-	String mysession=(String)session.getAttribute("mysession");
-	if(mysession==null)
-	{
-		response.sendRedirect("login.jsp");
-	 }
-	%>
+	
 	<%!
 		CachedRowSet crs_portal=null;
 	 %>
@@ -42,7 +36,7 @@ jQuery(function() {
 	%>
 	<div style="padding-left:100px;padding-right:100px;padding-top:40px;">
 	<div id="accordion">
-	<h3><a href="#"> Edit to desired portal -</a></h3>
+	<h3><a href="#"> <bean:message key="title.editPortalPage"/> -</a></h3>
 	<div>
 	 	<html:javascript formName="editportalform" />
 		<html:form action="/editingportal" onsubmit="return validateEditportalform(this);">
@@ -59,20 +53,20 @@ jQuery(function() {
 		<tr class="form-element">
 		<td  class="form-label">
 		
-		Portal Name : 
+		<bean:message key="label.portalName"/> : 
 		</td>
 		<td class="form-widget">
 		<html:text property="portalname" size="35" value="<%=crs_portal.getString(2)%>"/></td></tr>
 		<tr class="form-element">
 		<td class="form-label">
-			Portal Description :</td><td class="form-widget">
+			<bean:message key="label.portalDescription"/> :</td><td class="form-widget">
 			<html:textarea property="portaldescription" value="<%=crs_portal.getString(3)%>" rows="3" cols="33"/>
 			<html:errors property="portaldescription"/></td></tr>
 			</table><br><br>
 			<table align="center">
-			<tr><td><html:submit value="Save Changes" styleClass="butStnd"/></td>
-			<td><html:reset styleClass="butStnd"></html:reset></td>
-			<td><html:button property="back" value="Cancel" styleClass="butStnd" onclick="history.back();" /></td>
+			<tr><td><input type="submit" value='<bean:message key="label.saveChanges.button" />' class="butStnd" /></td>
+			<td><input type="reset" value='<bean:message key="label.reset.button" />' class="butStnd"/></td>
+			<td><input type="button" value='<bean:message key="label.cancel.button" />' class="butStnd" onclick="history.back();" /></td>
 			</tr></table>
 		</html:form>
 		</div>

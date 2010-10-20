@@ -96,7 +96,8 @@ public class OrgList {
 					ps=con.prepareStatement("select distinct o.Org_Name,o.Org_Address,c.city_name,"+
 					  		"s.state_name,o.org_phone,o.Org_Fax,o.Org_Url,o.org_id "+ 
 					  		" from organisation o,state s,city c "+
-					  		"where o.Org_State=s.state_id and o.org_city=c.city_id and s.state_id=c.state_id and o.org_city like ? ");
+					  		"where o.org_city=c.city_id and c.state_id=o.org_state " +
+					  		"and s.state_id=c.state_id and c.city_name like ? ");
 					//System.out.println("Query running according to organisation City");
 				}
 				else

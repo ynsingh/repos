@@ -39,7 +39,6 @@
     alert("not defined");
   }
 	</script>
-	
 
  </body>
 </html>

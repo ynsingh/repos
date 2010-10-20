@@ -19,21 +19,23 @@ public class TaskList {
 		//for super admin
 		public TaskList(String projectname,String type,String validOrgInPortal)
 		{
-			fillList(projectname,type,validOrgInPortal,"");	
+			fillList(projectname,type,validOrgInPortal,"","");	
 		}
 		//for user
 		public TaskList(String projectname,String type,String validOrgInPortal,String role_in_org)
 		{
-			String edit=checkRecord.AuthorityChecker("edit_remove_task", role_in_org);
+			String edit = checkRecord.AuthorityChecker("edit_remove_task", role_in_org);
+			String assign_task_permission = checkRecord.AuthorityChecker("assign_task", role_in_org);
 			//System.out.println("edit authority of task="+edit);
 			//if(flag==1)
-			fillList(projectname,type,validOrgInPortal,edit);	
+			fillList(projectname,type,validOrgInPortal,edit,assign_task_permission);	
 		}
 
 		
 		//fill the list for viewing the project list
 		 
-		public void fillList(String projectname,String type,String validOrgInPortal,String edit){
+		public void fillList(String projectname,String type,String validOrgInPortal,
+				String edit,String assign_task_permission){
 			PreparedStatement ps=null;
 			Connection con=null;
 			//System.out.println("soption="+soption);
@@ -77,7 +79,7 @@ public class TaskList {
 				{
 			list.add(new TaskFields(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),
 					rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8),rs.getString(9),
-					rs.getString(10),rs.getString(11),rs.getString(12),rs.getString(13),edit));
+					rs.getString(10),rs.getString(11),rs.getString(12),rs.getString(13),edit,assign_task_permission));
 
 				}
 				

@@ -8,6 +8,6 @@
   <body>
         <h2><font size="2" color="#0000ff"><bean:message key="chart.fail"/></font></h2>
         <br>
-        <html:button property="back" value="Back" styleClass="butStnd" onclick="history.back();" />
+        <input type="button" value='<bean:message key="label.back.button" />' class="butStnd" onclick="history.back();" />
   </body>
 </html>

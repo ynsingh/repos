@@ -9,6 +9,8 @@ import in.ac.dei.edrp.pms.viewer.CodeGenerator;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -133,27 +135,27 @@ public class AddOrgInPortalAction extends Action {
 				//System.out.println("valid code"+valid_code);
 				String url="http://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath();
 				//System.out.println("url="+url);
-				String s4="Welcome to Project Management System," +
-						"\n Your account has been created successfully.\n " +
-						"click on the following link, " +url+
-						" and proceed by your login.\n" +
-						" User Id: "+orgportalform.getEmailid().trim()+
-						"\n Password: "+pass1+
-						"\n Note:- After login, Please change your password for security point of view."+
-						"\n Thanks !";
+				Locale locale = new Locale("en", "US");
+				ResourceBundle message = ResourceBundle.getBundle("in\\ac\\dei\\edrp\\pms\\propertiesFile\\ApplicationResources",locale);
+				String s4=message.getString("body.text.mail") + " "+url+
+				"\n"+message.getString("label.user")+": "+orgportalform.getEmailid().trim()+
+				"\n"+message.getString("label.password")+": "+pass1+
+				"\n "+message.getString("body.text.mail.note")+
+				"\n "+message.getString("body.text.mail.thanks");
 				boolean bool=SendingMail.sendMail(s4,orgportalform.getEmailid().trim(),
+						message.getString("mail.subject.newmember.addedby.superadmin"),
 						ReadPropertiesFile.mailConfig(getServlet().getServletContext().getRealPath("/")+"WEB-INF/"));
 				ActionErrors errors = new ActionErrors();
 				ActionMessage error=null;
 				if(bool)
 				{
-					error = new ActionMessage("msg.addorg_in_portal.added");
+					error = new ActionMessage("msg.addorg_in_portal.mailSuccess");
 				}
 				else
 				{
-					error = new ActionMessage("msg.addorg_in_portal.added1");
+					error = new ActionMessage("msg.addorg_in_portal.mailFail");
 				}
-					errors.add("addorgportal",error);
+					errors.add("addOrgIntoPortalMessage",error);
 				saveErrors(request,errors);
 				forwardmsg="addorginportalsuccess"; 
 				//System.out.println("body="+s4);

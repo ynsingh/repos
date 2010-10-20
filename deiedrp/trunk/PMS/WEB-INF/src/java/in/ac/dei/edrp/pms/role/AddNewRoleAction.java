@@ -35,7 +35,8 @@ public class AddNewRoleAction extends Action {
 		HttpServletResponse response) {
 		RoleForm newroleform = (RoleForm) form;
 		HttpSession session=request.getSession();
-		//System.out.println("role name="+newroleform.getRolename()+"member="+newroleform.getAddmember()+", org="+newroleform.getAddorg());
+		
+		
 		Connection con=null;
 		String forwardmsg="rolefail";
 		try{
@@ -46,7 +47,7 @@ public class AddNewRoleAction extends Action {
 		con=MyDataSource.getConnection();
 		if(checkRecord.twoFieldDuplicacyChecker("Role_ID","role","Role_Name",newroleform.getRolename().trim(),"ValidOrgPortal",(String)session.getAttribute("validOrgInPortal"))!=null)
 		{
-			System.out.println("already exist.");
+			System.out.println("role already exist.");
 			return mapping.findForward("rolesuccess");
 		}
 		/*
@@ -73,24 +74,23 @@ public class AddNewRoleAction extends Action {
 			/*
 			 * Inserting the record into default_authority table.
 			 */
-			PreparedStatement authority=con.prepareStatement("insert into default_authority values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-			authority.setInt(1,0);
-			authority.setString(2,newroleform.getAddorg());
-			authority.setString(3,newroleform.getEditorg());
-			authority.setString(4,newroleform.getAddproject());
-			authority.setString(5,newroleform.getEditproject());
-			authority.setString(6,newroleform.getAddmember());
-			authority.setString(7,newroleform.getEditmember());
-			authority.setString(8,newroleform.getAssignproject());
-			authority.setString(9,newroleform.getEditauthority());
-			authority.setString(10,newroleform.getAssigntask());
-			authority.setString(11,newroleform.getEdittask());
-			authority.setString(12,newroleform.getUploaddoc());
-			authority.setString(13,newroleform.getDownloaddoc());
-			authority.setInt(14,Integer.parseInt(checkRecord.twoFieldDuplicacyChecker("Role_ID","role","Role_Name",newroleform.getRolename().trim(),"ValidOrgPortal",(String)session.getAttribute("validOrgInPortal"))));
-			authority.setString(15,newroleform.getAddrole());
-			authority.setString(16,newroleform.getEditrole());
-			authority.executeUpdate();
+			String authority[]=newroleform.getAuthorities();
+			if(authority!=null){
+			PreparedStatement pstmt = null;
+			String roleid=checkRecord.twoFieldDuplicacyChecker("Role_ID","role","Role_Name",newroleform.getRolename().trim(),"ValidOrgPortal",(String)session.getAttribute("validOrgInPortal"));
+			con.setAutoCommit(false);
+		      String query = "insert into default_authority(role_id, authorities) values(?, ?)";
+		      pstmt = con.prepareStatement(query);
+		      for(int i=0;i<authority.length;i++)
+				{
+		       	    pstmt.setInt(1, Integer.parseInt(roleid));
+				    pstmt.setString(2, authority[i]);
+				    pstmt.addBatch();
+				}
+		      int[] updateCounts = pstmt.executeBatch();
+		      System.out.println("Successfully executed; totalInsertion=" + updateCounts.length);
+		      con.commit();
+			}
 			forwardmsg="rolesuccess"; 
 		}
 			

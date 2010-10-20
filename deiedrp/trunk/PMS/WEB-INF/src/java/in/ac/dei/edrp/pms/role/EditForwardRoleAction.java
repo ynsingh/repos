@@ -49,8 +49,8 @@ public class EditForwardRoleAction extends Action {
 			 */
 		//request.setAttribute("message","The desired portal has been deleted.");
 		con=MyDataSource.getConnection();
-		PreparedStatement ps=con.prepareStatement("select * from role r,default_authority d"+
-	" where r.Role_ID=? and r.role_id=d.role_id");
+		PreparedStatement ps=con.prepareStatement("select * from role "+
+													"where Role_Id=?");
 	    ps.setString(1,request.getParameter("rolekey"));
 	    ResultSet rs_role=ps.executeQuery();
 	    CachedRowSet crs = new CachedRowSetImpl();

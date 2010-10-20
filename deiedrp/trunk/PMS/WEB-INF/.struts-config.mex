@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <FlowViewLayout Version="1.2">
+  <StrutsActivity path="/assignedTask.do" location="50,3850" dimension="252,88" />
   <StrutsActivity path="/login.do" location="50,50" dimension="134,96" />
   <StrutsActivity path="/welcome.do" location="50,250" dimension="124,96" />
   <StrutsActivity path="/mainwelcome.do" location="50,3650" dimension="285,96" />
   <StrutsActivity path="/logout.do" location="350,50" dimension="142,96" />
-  <StrutsActivity path="/changeadminpassword.do" location="2750,3850" dimension="307,88" />
   <StrutsActivity path="/changeOwnpassword.do" location="1250,2850" dimension="257,96" />
-  <StrutsActivity path="/changeuserpassword.do" location="3350,3850" dimension="325,88" />
+  <StrutsActivity path="/changeOwnLoginpassword.do" location="4250,2350" dimension="329,88" />
+  <StrutsActivity path="/resetUserpassword.do" location="4250,3350" dimension="344,88" />
+  <StrutsActivity path="/changeUserpassword.do" location="4250,3550" dimension="329,88" />
   <StrutsActivity path="/help.do" location="3950,3750" dimension="315,88" />
+  <StrutsActivity path="/addTeam.do" location="950,3850" dimension="232,88" />
   <StrutsActivity path="/mailconfig.do" location="1550,3750" dimension="315,88" />
   <StrutsActivity path="/addMailConfig.do" location="2150,3750" dimension="275,88" />
   <StrutsActivity path="/newportal.do" location="3650,1250" dimension="282,96" />
@@ -50,8 +53,6 @@
   <StrutsActivity path="/newtask.do" location="1850,250" dimension="128,96" />
   <StrutsActivity path="/task.do" location="2150,250" dimension="122,96" />
   <StrutsActivity path="/viewtask.do" location="650,2050" dimension="151,96" />
-  <StrutsActivity path="/assigntask.do" location="3950,2950" dimension="280,88" />
-  <StrutsActivity path="/assignTask.do" location="3950,3450" dimension="240,88" />
   <StrutsActivity path="/editTask.do" location="1850,850" dimension="169,96" />
   <StrutsActivity path="/go4.do" location="50,450" dimension="186,96" />
   <StrutsActivity path="/deleteTask.do" location="2150,450" dimension="182,96" />
@@ -64,6 +65,7 @@
   <StrutsActivity path="/searchorg.do" location="950,1450" dimension="163,96" />
   <StrutsActivity path="/orgSearchList.do" location="2450,1550" dimension="214,96" />
   <StrutsActivity path="/backbutton.do" location="3050,2250" dimension="246,96" />
+  <StrutsActivity path="/backuserSearchPage.do" location="3650,450" dimension="320,88" />
   <StrutsActivity path="/editorgpage.do" location="50,1650" dimension="148,96" />
   <StrutsActivity path="/editorg.do" location="650,1650" dimension="183,96" />
   <StrutsActivity path="/deleteorg.do" location="1550,1650" dimension="196,96" />
@@ -83,19 +85,21 @@
   <StrutsActivity path="orgSearchList;6" location="50,1850" dimension="133,81" />
   <StrutsActivity path="welcome;6" location="950,250" dimension="110,81" />
   <StrutsActivity path="updateOperation;6" location="1850,1250" dimension="152,81" />
+  <StrutsActivity path="page.orginfo" location="2750,1150" dimension="98,51" />
+  <StrutsActivity path="page.UserTaskList" location="3950,2850" dimension="117,49" />
   <StrutsActivity path="/WEB-INF/JspFiles/common/index.jsp" location="350,250" dimension="231,51" />
   <StrutsActivity path="/login.jsp" location="50,650" dimension="80,51" />
   <StrutsActivity path="page.welcome" location="350,850" dimension="107,51" />
   <StrutsActivity path="/Portal_Org_Selection.jsp" location="3350,950" dimension="162,51" />
   <StrutsActivity path="page.userProjectList" location="3650,1050" dimension="136,51" />
+  <StrutsActivity path="page.changeownpassword" location="2750,2050" dimension="158,49" />
   <StrutsActivity path="page.changepasswordMessage" location="950,2850" dimension="194,51" />
   <StrutsActivity path="page.changepassword" location="2750,650" dimension="148,51" />
+  <StrutsActivity path="page.changeuserpassword" location="4250,2550" dimension="159,49" />
   <StrutsActivity path="/logout.jsp" location="350,650" dimension="88,51" />
   <StrutsActivity path="page.pmsHelpPage" location="3050,2850" dimension="121,49" />
-  <StrutsActivity path="page.pmsTeamPage" location="650,3850" dimension="126,49" />
   <StrutsActivity path="page.mailConfigPage" location="2750,3750" dimension="130,49" />
   <StrutsActivity path="page.newportal" location="3650,1450" dimension="112,51" />
-  <StrutsActivity path="page.orginfo" location="2750,1150" dimension="98,51" />
   <StrutsActivity path="/WEB-INF/JspFiles/portal/ViewPortal.jsp" location="3650,2850" dimension="241,51" />
   <StrutsActivity path="page.portallist" location="3650,3050" dimension="105,51" />
   <StrutsActivity path="edit.portal" location="1850,3350" dimension="84,51" />
@@ -128,10 +132,7 @@
   <StrutsActivity path="/WEB-INF/JspFiles/ganttChart/ShowGanttChart.jsp" location="4250,2150" dimension="276,49" />
   <StrutsActivity path="page.assignproject" location="950,1850" dimension="129,51" />
   <StrutsActivity path="page.newtask" location="2150,650" dimension="102,51" />
-  <StrutsActivity path="page.UserTaskList" location="3950,2850" dimension="117,49" />
-  <StrutsActivity path="page.assigntask" location="3950,3150" dimension="107,49" />
   <StrutsActivity path="edit.task" location="650,1050" dimension="74,51" />
-  <StrutsActivity path="page.reupdationFail" location="3350,750" dimension="135,51" />
   <StrutsActivity path="page.updationFail" location="350,1250" dimension="125,51" />
   <StrutsActivity path="page.fail" location="950,1250" dimension="75,51" />
   <StrutsActivity path="/WEB-INF/JspFiles/task/ReviewTask.jsp" location="50,1250" dimension="236,51" />
@@ -143,6 +144,7 @@
   <StrutsActivity path="/WEB-INF/JspFiles/Organization/orgSearch.jsp" location="2450,2150" dimension="275,51" />
   <StrutsActivity path="page.orgsuccess" location="350,2250" dimension="117,51" />
   <StrutsActivity path="/page.orgsuccess" location="3050,2450" dimension="122,51" />
+  <StrutsActivity path="/page.peoplesuccess" location="4250,1050" dimension="130,49" />
   <StrutsActivity path="page.editorgpage" location="650,2250" dimension="123,51" />
   <StrutsActivity path="page.editorgfail" location="2450,3350" dimension="113,51" />
   <StrutsActivity path="page.newupload" location="2450,2550" dimension="118,51" />
@@ -153,6 +155,9 @@
   <StrutsActivity path="page.viewDownLoad" location="1550,2650" dimension="140,51" />
   <StrutsActivity path="/WebRoot/WEB-INF/JspFiles/fileList.jsp" location="2750,2750" dimension="237,51" />
   <StrutsActivity path="/updateOperation.do" location="1550,1150" dimension="141,75" />
+  <StrutsActivity path="page.assigntask" location="3950,3150" dimension="107,49" />
+  <StrutsActivity path="page.reupdationFail" location="3350,750" dimension="135,51" />
+  <StrutsActivity path="page.pmsTeamPage" location="650,3850" dimension="126,49" />
   <StrutsActivity path="page.searchproject" location="950,850" dimension="130,51" />
   <StrutsActivity path="/search.success" location="3050,2050" dimension="112,51" />
   <StrutsActivity path="/WEB-INF/JspFiles/searching/viewdesiredproject.jsp" location="1250,1450" dimension="304,51" />
@@ -233,7 +238,7 @@
   <StrutsActivity path="/WEB-INF/JspFiles/projectManage/vieworg.jsp" location="4250,3250" dimension="253,49" />
   <StrutsActivity path="/WEB-INF/JspFiles/p/vieworg.jsp" location="3050,2950" dimension="187,49" />
   <StrutsActivity path="page.wecome" location="4250,2250" dimension="96,49" />
-  <StrutsActivity path="/addTeam.do" location="950,3850" dimension="232,88" />
+  <StrutsActivity path="portallist" location="2750,1950" dimension="70,49" />
   <StrutsTransition id="/download.do,loadfile,/WEB-INF/JspFiles/upload/fileList.jsp,1" routingType="0">
     <AutomaticBendpoints>
       <AbsolutePoint location="1655,2546" />
@@ -248,12 +253,6 @@
       <AbsolutePoint location="644,3802" />
       <AbsolutePoint location="644,668" />
       <AbsolutePoint location="438,668" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
-  <StrutsTransition id="/assignTask.do,taskAssignsuccess,page.assigntask,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="4042,3450" />
-      <AbsolutePoint location="4042,3199" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/neworganization.do,neworg,page.neworganization,1" routingType="0">
@@ -301,10 +300,19 @@
       <AbsolutePoint location="90,701" />
     </AutomaticBendpoints>
   </StrutsTransition>
+  <StrutsTransition id="/assignedTask.do,taskAssignfail,page.orginfo,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="50,3894" />
+      <AbsolutePoint location="-79,3894" />
+      <AbsolutePoint location="-79,1338" />
+      <AbsolutePoint location="2769,1338" />
+      <AbsolutePoint location="2769,1201" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
   <StrutsTransition id="page.newportal,null,/addportal.do,2" routingType="0">
     <AutomaticBendpoints>
-      <AbsolutePoint location="3706,1501" />
-      <AbsolutePoint location="3706,1650" />
+      <AbsolutePoint location="3676,1501" />
+      <AbsolutePoint location="3676,1650" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/deleteMember.do,deletemember,page.memberList,1" routingType="0">
@@ -323,6 +331,22 @@
       <AbsolutePoint location="1514,2075" />
     </AutomaticBendpoints>
   </StrutsTransition>
+  <StrutsTransition id="page.UserTaskList,null,/assignedTask.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="4008,2899" />
+      <AbsolutePoint location="4008,2916" />
+      <AbsolutePoint location="3695,2916" />
+      <AbsolutePoint location="3695,3020" />
+      <AbsolutePoint location="3526,3020" />
+      <AbsolutePoint location="3526,3665" />
+      <AbsolutePoint location="3330,3665" />
+      <AbsolutePoint location="3330,3895" />
+      <AbsolutePoint location="1625,3895" />
+      <AbsolutePoint location="1625,4031" />
+      <AbsolutePoint location="206,4031" />
+      <AbsolutePoint location="206,3938" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
   <StrutsTransition id="edit.task,null,/go4.do,2" routingType="0">
     <AutomaticBendpoints>
       <AbsolutePoint location="650,1075" />
@@ -334,8 +358,17 @@
   </StrutsTransition>
   <StrutsTransition id="/editingportal.do,viewPortalList,/WEB-INF/JspFiles/portal/ViewPortal.jsp,1" routingType="0">
     <AutomaticBendpoints>
-      <AbsolutePoint location="3800,3250" />
-      <AbsolutePoint location="3800,2901" />
+      <AbsolutePoint location="3869,3250" />
+      <AbsolutePoint location="3869,2901" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="page.changepassword,null,/changeUserpassword.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2805,701" />
+      <AbsolutePoint location="2805,824" />
+      <AbsolutePoint location="4735,824" />
+      <AbsolutePoint location="4735,3594" />
+      <AbsolutePoint location="4579,3594" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/deleteMember.do,deleteOrgmember,page.OrgMemberList,1" routingType="0">
@@ -354,15 +387,6 @@
       <AbsolutePoint location="1629,1365" />
       <AbsolutePoint location="1629,1595" />
       <AbsolutePoint location="2450,1595" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
-  <StrutsTransition id="page.changepassword,null,/changeuserpassword.do,2" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="2809,701" />
-      <AbsolutePoint location="2809,816" />
-      <AbsolutePoint location="4670,816" />
-      <AbsolutePoint location="4670,3894" />
-      <AbsolutePoint location="3675,3894" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/go.do,success,page.newproject,1" routingType="0">
@@ -398,11 +422,10 @@
   </StrutsTransition>
   <StrutsTransition id="edit.portal,null,/editingportal.do,2" routingType="0">
     <AutomaticBendpoints>
-      <AbsolutePoint location="1933,3401" />
-      <AbsolutePoint location="1933,3716" />
-      <AbsolutePoint location="3468,3716" />
-      <AbsolutePoint location="3468,3298" />
-      <AbsolutePoint location="3650,3298" />
+      <AbsolutePoint location="1892,3401" />
+      <AbsolutePoint location="1892,3438" />
+      <AbsolutePoint location="3779,3438" />
+      <AbsolutePoint location="3779,3346" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/login.do,invalid,/login.jsp,1" routingType="0">
@@ -419,12 +442,6 @@
       <AbsolutePoint location="2700,2116" />
       <AbsolutePoint location="2700,1175" />
       <AbsolutePoint location="2750,1175" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
-  <StrutsTransition id="/assigntask.do,assigntask,page.assigntask,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="4042,3038" />
-      <AbsolutePoint location="4042,3150" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/welcome.do,showWelcome,page.welcome,1" routingType="0">
@@ -489,11 +506,11 @@
   </StrutsTransition>
   <StrutsTransition id="/editProject.do,editproject,edit.project,1" routingType="0">
     <AutomaticBendpoints>
-      <AbsolutePoint location="526,1746" />
-      <AbsolutePoint location="526,1971" />
-      <AbsolutePoint location="887,1971" />
-      <AbsolutePoint location="887,1675" />
-      <AbsolutePoint location="950,1675" />
+      <AbsolutePoint location="500,1746" />
+      <AbsolutePoint location="500,1979" />
+      <AbsolutePoint location="1182,1979" />
+      <AbsolutePoint location="1182,1675" />
+      <AbsolutePoint location="1040,1675" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/addorg_in_portal.do,addorgportal,page.addorginportal,1" routingType="0">
@@ -517,15 +534,6 @@
       <AbsolutePoint location="2407,320" />
       <AbsolutePoint location="2407,675" />
       <AbsolutePoint location="2252,675" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
-  <StrutsTransition id="/changeadminpassword.do,passinfo,page.changepasswordMessage,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="2750,3916" />
-      <AbsolutePoint location="1241,3916" />
-      <AbsolutePoint location="1241,3395" />
-      <AbsolutePoint location="1106,3395" />
-      <AbsolutePoint location="1106,2901" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="edit.role,null,/editingrole.do,2" routingType="0">
@@ -585,10 +593,14 @@
   </StrutsTransition>
   <StrutsTransition id="roleList;6,null,/roleList.do,1" routingType="0">
     <AutomaticBendpoints>
-      <AbsolutePoint location="3450,490" />
-      <AbsolutePoint location="4173,490" />
-      <AbsolutePoint location="4173,2916" />
-      <AbsolutePoint location="3588,2916" />
+      <AbsolutePoint location="3350,490" />
+      <AbsolutePoint location="2437,490" />
+      <AbsolutePoint location="2437,389" />
+      <AbsolutePoint location="1798,389" />
+      <AbsolutePoint location="1798,2189" />
+      <AbsolutePoint location="1510,2189" />
+      <AbsolutePoint location="1510,2902" />
+      <AbsolutePoint location="3350,2902" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/projectDetails.do,showDetails,page.showDetails,1" routingType="0">
@@ -599,8 +611,8 @@
   </StrutsTransition>
   <StrutsTransition id="/editPortal.do,editportal,edit.portal,1" routingType="0">
     <AutomaticBendpoints>
-      <AbsolutePoint location="3050,3325" />
-      <AbsolutePoint location="1892,3325" />
+      <AbsolutePoint location="3050,3295" />
+      <AbsolutePoint location="1892,3295" />
       <AbsolutePoint location="1892,3350" />
     </AutomaticBendpoints>
   </StrutsTransition>
@@ -627,10 +639,10 @@
   </StrutsTransition>
   <StrutsTransition id="/editProject.do,projectupdationfail,projectUpdation.fail,1" routingType="0">
     <AutomaticBendpoints>
-      <AbsolutePoint location="504,1746" />
-      <AbsolutePoint location="504,2422" />
-      <AbsolutePoint location="1241,2422" />
-      <AbsolutePoint location="1241,3274" />
+      <AbsolutePoint location="441,1650" />
+      <AbsolutePoint location="441,1646" />
+      <AbsolutePoint location="1244,1646" />
+      <AbsolutePoint location="1244,3274" />
       <AbsolutePoint location="1250,3274" />
     </AutomaticBendpoints>
   </StrutsTransition>
@@ -715,12 +727,6 @@
       <AbsolutePoint location="2497,2950" />
     </AutomaticBendpoints>
   </StrutsTransition>
-  <StrutsTransition id="/optiontransfer.do,pmsTeamPage,page.pmsTeamPage,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="303,3894" />
-      <AbsolutePoint location="650,3894" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
   <StrutsTransition id="page.mailConfigPage,null,/addMailConfig.do,2" routingType="0">
     <AutomaticBendpoints>
       <AbsolutePoint location="2750,3774" />
@@ -762,21 +768,11 @@
       <AbsolutePoint location="734,650" />
       <AbsolutePoint location="734,395" />
       <AbsolutePoint location="1179,395" />
-      <AbsolutePoint location="1179,35" />
-      <AbsolutePoint location="3865,35" />
-      <AbsolutePoint location="3865,1075" />
-      <AbsolutePoint location="3786,1075" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
-  <StrutsTransition id="/optiontransfer.do,invalid,/logout.jsp,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="50,3894" />
-      <AbsolutePoint location="-25,3894" />
-      <AbsolutePoint location="-25,1116" />
-      <AbsolutePoint location="472,1116" />
-      <AbsolutePoint location="472,627" />
-      <AbsolutePoint location="402,627" />
-      <AbsolutePoint location="402,650" />
+      <AbsolutePoint location="1179,128" />
+      <AbsolutePoint location="4669,128" />
+      <AbsolutePoint location="4669,1225" />
+      <AbsolutePoint location="3718,1225" />
+      <AbsolutePoint location="3718,1101" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/viewtask.do,invalid,/logout.jsp,1" routingType="0">
@@ -836,16 +832,6 @@
       <AbsolutePoint location="3755,3075" />
     </AutomaticBendpoints>
   </StrutsTransition>
-  <StrutsTransition id="/changeuserpassword.do,passinfo,page.changepasswordMessage,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="3512,3938" />
-      <AbsolutePoint location="3512,4061" />
-      <AbsolutePoint location="851,4061" />
-      <AbsolutePoint location="851,3595" />
-      <AbsolutePoint location="1076,3595" />
-      <AbsolutePoint location="1076,2901" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
   <StrutsTransition id="/editRole.do,editrole,edit.role,1" routingType="0">
     <AutomaticBendpoints>
       <AbsolutePoint location="491,3146" />
@@ -864,10 +850,10 @@
   </StrutsTransition>
   <StrutsTransition id="/editPortal.do,editportalfail,/WEB-INF/JspFiles/portal/ViewPortal.jsp,1" routingType="0">
     <AutomaticBendpoints>
-      <AbsolutePoint location="3331,3250" />
-      <AbsolutePoint location="3331,3214" />
-      <AbsolutePoint location="3770,3214" />
-      <AbsolutePoint location="3770,2901" />
+      <AbsolutePoint location="3201,3250" />
+      <AbsolutePoint location="3201,3184" />
+      <AbsolutePoint location="3778,3184" />
+      <AbsolutePoint location="3778,2901" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/mailconfig.do,mailConfigPage,page.mailConfigPage,1" routingType="0">
@@ -887,17 +873,6 @@
       <AbsolutePoint location="301,621" />
       <AbsolutePoint location="120,621" />
       <AbsolutePoint location="120,650" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
-  <StrutsTransition id="/changeOwnpassword.do,forwardPass,page.changepassword,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="1378,2850" />
-      <AbsolutePoint location="1378,2816" />
-      <AbsolutePoint location="2195,2816" />
-      <AbsolutePoint location="2195,2665" />
-      <AbsolutePoint location="2971,2665" />
-      <AbsolutePoint location="2971,686" />
-      <AbsolutePoint location="2898,686" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/editingrole.do,editrolefail,page.roleinfo,1" routingType="0">
@@ -980,20 +955,12 @@
   </StrutsTransition>
   <StrutsTransition id="/drawGanttChart.do,charterror,chart.fail,1" routingType="0">
     <AutomaticBendpoints>
-      <AbsolutePoint location="2659,173" />
-      <AbsolutePoint location="3007,173" />
-      <AbsolutePoint location="3007,1128" />
-      <AbsolutePoint location="2913,1128" />
-      <AbsolutePoint location="2913,1357" />
-      <AbsolutePoint location="3797,1357" />
-      <AbsolutePoint location="3797,1582" />
-      <AbsolutePoint location="3536,1582" />
-      <AbsolutePoint location="3536,2013" />
-      <AbsolutePoint location="2813,2013" />
-      <AbsolutePoint location="2813,2322" />
-      <AbsolutePoint location="337,2322" />
-      <AbsolutePoint location="337,2075" />
-      <AbsolutePoint location="350,2075" />
+      <AbsolutePoint location="2659,165" />
+      <AbsolutePoint location="2963,165" />
+      <AbsolutePoint location="2963,2316" />
+      <AbsolutePoint location="500,2316" />
+      <AbsolutePoint location="500,2086" />
+      <AbsolutePoint location="426,2086" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="page.newrole,null,/addrole.do,2" routingType="0">
@@ -1070,17 +1037,6 @@
       <AbsolutePoint location="1609,3050" />
     </AutomaticBendpoints>
   </StrutsTransition>
-  <StrutsTransition id="page.changepassword,null,/changeadminpassword.do,2" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="2771,701" />
-      <AbsolutePoint location="2771,871" />
-      <AbsolutePoint location="2264,871" />
-      <AbsolutePoint location="2264,992" />
-      <AbsolutePoint location="2133,992" />
-      <AbsolutePoint location="2133,3894" />
-      <AbsolutePoint location="2750,3894" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
   <StrutsTransition id="/editorgpage.do,editorgpage,page.editorgpage,1" routingType="0">
     <AutomaticBendpoints>
       <AbsolutePoint location="198,1698" />
@@ -1102,14 +1058,6 @@
       <AbsolutePoint location="3436,2301" />
     </AutomaticBendpoints>
   </StrutsTransition>
-  <StrutsTransition id="/assignTask.do,taskAssignfail,page.orginfo,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="4190,3494" />
-      <AbsolutePoint location="4570,3494" />
-      <AbsolutePoint location="4570,1153" />
-      <AbsolutePoint location="2848,1153" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
   <StrutsTransition id="/viewproject.do,invalid,/logout.jsp,1" routingType="0">
     <AutomaticBendpoints>
       <AbsolutePoint location="650,656" />
@@ -1120,6 +1068,14 @@
     <AutomaticBendpoints>
       <AbsolutePoint location="3436,2146" />
       <AbsolutePoint location="3436,2250" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/backuserSearchPage.do,searchorg,page.peoplesearch,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="3650,494" />
+      <AbsolutePoint location="3616,494" />
+      <AbsolutePoint location="3616,1675" />
+      <AbsolutePoint location="3479,1675" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/searchaction.do,success,page.peoplesuccess,1" routingType="0">
@@ -1134,12 +1090,6 @@
       <AbsolutePoint location="2750,2386" />
       <AbsolutePoint location="2509,2386" />
       <AbsolutePoint location="2509,2550" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
-  <StrutsTransition id="page.assigntask,null,/assignTask.do,2" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="4003,3199" />
-      <AbsolutePoint location="4003,3450" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/editorg.do,editorgfail,page.editorgfail,1" routingType="0">
@@ -1170,6 +1120,13 @@
       <AbsolutePoint location="168,875" />
     </AutomaticBendpoints>
   </StrutsTransition>
+  <StrutsTransition id="/resetUserpassword.do,forwardResetUserPass,page.changeuserpassword,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="4575,3350" />
+      <AbsolutePoint location="4575,2574" />
+      <AbsolutePoint location="4409,2574" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
   <StrutsTransition id="/viewdownload.do,viewdownloadlist,page.viewDownLoad,1" routingType="0">
     <AutomaticBendpoints>
       <AbsolutePoint location="3129,446" />
@@ -1177,6 +1134,14 @@
       <AbsolutePoint location="1840,613" />
       <AbsolutePoint location="1840,2675" />
       <AbsolutePoint location="1690,2675" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
+  <StrutsTransition id="/changeUserpassword.do,passinfo,page.changepasswordMessage,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="4414,3638" />
+      <AbsolutePoint location="4414,3708" />
+      <AbsolutePoint location="1068,3708" />
+      <AbsolutePoint location="1068,2901" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/deleteRole.do,deleterole,/WEB-INF/JspFiles/role/ViewRole.jsp,1" routingType="0">
@@ -1250,6 +1215,13 @@
       <AbsolutePoint location="50,3676" />
     </AutomaticBendpoints>
   </StrutsTransition>
+  <StrutsTransition id="/changeOwnLoginpassword.do,passinfo,page.changepasswordMessage,1" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="4414,2394" />
+      <AbsolutePoint location="4414,2875" />
+      <AbsolutePoint location="1047,2875" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
   <StrutsTransition id="/editTask.do,edittask,edit.task,1" routingType="0">
     <AutomaticBendpoints>
       <AbsolutePoint location="1850,898" />
@@ -1276,15 +1248,17 @@
   <StrutsTransition id="/viewmember.do,viewOrgMember,page.OrgMemberList,1" routingType="0">
     <AutomaticBendpoints>
       <AbsolutePoint location="3242,1116" />
-      <AbsolutePoint location="4610,1116" />
-      <AbsolutePoint location="4610,3575" />
+      <AbsolutePoint location="4699,1116" />
+      <AbsolutePoint location="4699,3116" />
+      <AbsolutePoint location="3496,3116" />
+      <AbsolutePoint location="3496,3575" />
       <AbsolutePoint location="2892,3575" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="edit.project,null,/go3.do,2" routingType="0">
     <AutomaticBendpoints>
-      <AbsolutePoint location="1040,1675" />
-      <AbsolutePoint location="1250,1675" />
+      <AbsolutePoint location="1040,1657" />
+      <AbsolutePoint location="1250,1657" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/addnewmember.do,addmemberfail,page.orginfo,1" routingType="0">
@@ -1339,8 +1313,8 @@
       <AbsolutePoint location="750,1795" />
       <AbsolutePoint location="2277,1795" />
       <AbsolutePoint location="2277,1316" />
-      <AbsolutePoint location="2769,1316" />
-      <AbsolutePoint location="2769,1201" />
+      <AbsolutePoint location="2751,1316" />
+      <AbsolutePoint location="2751,1201" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/addTeam.do,pmsTeamPage,page.userProjectList,1" routingType="0">
@@ -1354,10 +1328,18 @@
       <AbsolutePoint location="3650,1075" />
     </AutomaticBendpoints>
   </StrutsTransition>
-  <StrutsTransition id="page.pmsTeamPage,null,/addTeam.do,2" routingType="0">
+  <StrutsTransition id="/changeOwnpassword.do,forwardOwnPass,page.changeownpassword,1" routingType="0">
     <AutomaticBendpoints>
-      <AbsolutePoint location="776,3874" />
-      <AbsolutePoint location="950,3874" />
+      <AbsolutePoint location="1378,2850" />
+      <AbsolutePoint location="1378,2744" />
+      <AbsolutePoint location="273,2744" />
+      <AbsolutePoint location="273,1437" />
+      <AbsolutePoint location="1396,1437" />
+      <AbsolutePoint location="1396,41" />
+      <AbsolutePoint location="4567,41" />
+      <AbsolutePoint location="4567,2022" />
+      <AbsolutePoint location="2835,2022" />
+      <AbsolutePoint location="2835,2050" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/help.do,invalid,/logout.jsp,1" routingType="0">
@@ -1413,10 +1395,18 @@
       <AbsolutePoint location="433,701" />
     </AutomaticBendpoints>
   </StrutsTransition>
+  <StrutsTransition id="page.changepassword,null,/changeOwnLoginpassword.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="2814,701" />
+      <AbsolutePoint location="2814,815" />
+      <AbsolutePoint location="4545,815" />
+      <AbsolutePoint location="4545,2350" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
   <StrutsTransition id="/addportal.do,portalsuccess,page.newportal,1" routingType="0">
     <AutomaticBendpoints>
-      <AbsolutePoint location="3747,1650" />
-      <AbsolutePoint location="3747,1501" />
+      <AbsolutePoint location="3706,1650" />
+      <AbsolutePoint location="3706,1501" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/add_org_in_portal.do,addorginportalfail,page.addorgintoportalinfo,1" routingType="0">
@@ -1436,13 +1426,11 @@
       <AbsolutePoint location="462,2650" />
     </AutomaticBendpoints>
   </StrutsTransition>
-  <StrutsTransition id="/editTask.do,edittaskfail,page.reupdationFail,1" routingType="0">
+  <StrutsTransition id="/editTask.do,updationfail,page.updationFail,1" routingType="0">
     <AutomaticBendpoints>
-      <AbsolutePoint location="1993,850" />
-      <AbsolutePoint location="1993,128" />
-      <AbsolutePoint location="3725,128" />
-      <AbsolutePoint location="3725,775" />
-      <AbsolutePoint location="3485,775" />
+      <AbsolutePoint location="1850,915" />
+      <AbsolutePoint location="459,915" />
+      <AbsolutePoint location="459,1250" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/add_org_in_portal.do,addorginportalsuccess,page.addorginportal,1" routingType="0">
@@ -1474,6 +1462,12 @@
       <AbsolutePoint location="2150,298" />
     </AutomaticBendpoints>
   </StrutsTransition>
+  <StrutsTransition id="/page.peoplesuccess,null,/backuserSearchPage.do,2" routingType="0">
+    <AutomaticBendpoints>
+      <AbsolutePoint location="0,0" />
+      <AbsolutePoint location="0,0" />
+    </AutomaticBendpoints>
+  </StrutsTransition>
   <StrutsTransition id="/loadProjectTask.do,TaskList_ofUser,/WEB-INF/JspFiles/ganttChart/ShowProjectTask.jsp,1" routingType="0">
     <AutomaticBendpoints>
       <AbsolutePoint location="0,0" />
@@ -1495,8 +1489,8 @@
       <AbsolutePoint location="2782,3184" />
       <AbsolutePoint location="3015,3184" />
       <AbsolutePoint location="3015,1265" />
-      <AbsolutePoint location="2751,1265" />
-      <AbsolutePoint location="2751,1201" />
+      <AbsolutePoint location="2799,1265" />
+      <AbsolutePoint location="2799,1201" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/go3.do,projectupdationfail,projectUpdation.fail,1" routingType="0">
@@ -1512,13 +1506,6 @@
       <AbsolutePoint location="1399,2965" />
       <AbsolutePoint location="1399,3265" />
       <AbsolutePoint location="1374,3265" />
-    </AutomaticBendpoints>
-  </StrutsTransition>
-  <StrutsTransition id="/assigntask.do,notAssigning,page.orginfo,1" routingType="0">
-    <AutomaticBendpoints>
-      <AbsolutePoint location="4090,2950" />
-      <AbsolutePoint location="4090,1175" />
-      <AbsolutePoint location="2848,1175" />
     </AutomaticBendpoints>
   </StrutsTransition>
   <StrutsTransition id="/deleteTask.do,taskDeletionFail,page.fail,1" routingType="0">

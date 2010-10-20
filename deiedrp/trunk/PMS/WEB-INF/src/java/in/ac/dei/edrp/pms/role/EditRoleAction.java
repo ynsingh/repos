@@ -9,6 +9,10 @@ import in.ac.dei.edrp.pms.viewer.checkRecord;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,103 +23,158 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
-/** 
- * MyEclipse Struts
- * Creation date: 24-02-2010
+/**
+ * MyEclipse Struts Creation date: 24-04-2010 Modified Date: 22-09-2010 XDoclet
+ * definition:
  * 
- * XDoclet definition:
  * @struts.action validate="true"
- * @struts.action-forward name="viewRoleList" path="/WEB-INF/JspFiles/role/ViewRole.jsp"
+ * @struts.action-forward name="viewRoleList"
+ *                        path="/WEB-INF/JspFiles/role/ViewRole.jsp"
  */
 /**
- * This Action class is only for forwarding  the request to next view of edit role.
+ * This Action class is only for forwarding the request to next view of edit
+ * role.
  */
 public class EditRoleAction extends Action {
 	/*
 	 * Generated Methods
 	 */
 
-	/** 
-	 * Method execute
-	 * This method returns the forward name for /viewRoleList Action
-	  * @param mapping It holds the action mapping information  used to invoke a struts action
-	 * @param form It holds the object of bean class
-	 * @param request The HTTP servlet request,which is going to be processed
-	 * @param response The HTTP servlet response,which is going to be created.
+	/**
+	 * Method execute This method returns the forward name for /viewRoleList
+	 * Action
+	 * 
+	 * @param mapping
+	 *            It holds the action mapping information used to invoke a
+	 *            struts action
+	 * @param form
+	 *            It holds the object of bean class
+	 * @param request
+	 *            The HTTP servlet request,which is going to be processed
+	 * @param response
+	 *            The HTTP servlet response,which is going to be created.
 	 * @return ActionForward returns viewRoleList for next view
 	 */
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) {
-			
-		RoleForm editroleform = (RoleForm)form;
-		HttpSession session=request.getSession();
-		/*
-		 * The variable forwardmsg holds success or updateoperation.
-		 * success for viewdesiredproject.jsp page.
-		 * updateoperation for UpdateOperation.jsp page. 
-		 * */
-		String forwardmsg="editrolefail";
-		Connection con=null;
-			
-		try{
-				request.setAttribute("message","Role updation failed,because this role name is already exist. !!");
-				
-				con=MyDataSource.getConnection();//This method Established the connection from the database MySql
-				if(!editroleform.getRolename().trim().equalsIgnoreCase(editroleform.getOldrolename().trim()))
-				{
-					if(checkRecord.twoFieldDuplicacyChecker("Role_ID","role","Role_Name",editroleform.getRolename().trim(),"ValidOrgPortal",(String)session.getAttribute("validOrgInPortal"))!=null)
+
+		RoleForm editroleform = (RoleForm) form;
+		HttpSession session = request.getSession();
+		String forwardmsg = "editrolefail";
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		try {
+			request
+					.setAttribute("message",
+							"Role updation failed,because this role name is already exist.");
+
+			con = MyDataSource.getConnection();// This method Established the
+			// connection from the database
+			// MySql
+			if (!editroleform.getRolename().trim().equalsIgnoreCase(
+					editroleform.getOldrolename().trim())) {
+				if (checkRecord.twoFieldDuplicacyChecker("Role_ID", "role",
+						"Role_Name", editroleform.getRolename().trim(),
+						"ValidOrgPortal", (String) session
+								.getAttribute("validOrgInPortal")) != null) {
+					return mapping.findForward("editrolefail");
+				}
+			}
+
+			/*
+			 * update the 'role' and 'default_authority' table with the desired
+			 * values.
+			 */
+			PreparedStatement ps = con
+					.prepareStatement("update role set Role_Name=?,description=?,updated_on=NOW()"
+							+ " where role_id=?");
+			ps.setString(1, editroleform.getRolename().trim());
+			ps.setString(2, editroleform.getRoledescription());
+			ps.setInt(3, Integer.parseInt(editroleform.getRoleid()));
+			int n = ps.executeUpdate();
+
+			String authority[] = editroleform.getAuthorities();
+			if (authority != null) {
+				con.setAutoCommit(false);
+				String query = "insert into default_authority(role_id, authorities) values(?, ?)";
+				pstmt = con.prepareStatement(query);
+				for (int i = 0; i < authority.length; i++) {
+					//System.out.println("authority=" + authority[i]);
+					PreparedStatement check = con
+							.prepareStatement("select authorities from "
+									+ "default_authority d,role r where d.role_id=? and r.role_id=d.role_id"
+									+ " and d.authorities=?");
+
+					check.setInt(1, Integer.parseInt(editroleform.getRoleid()));
+					check.setString(2, authority[i]);
+					ResultSet rs = check.executeQuery();
+					if (!rs.next())// It means this authority not assign to this role.
 					{
-						return mapping.findForward("editrolefail");
+						pstmt.setInt(1, Integer.parseInt(editroleform
+								.getRoleid()));
+						pstmt.setString(2, authority[i]);
+						pstmt.addBatch();
 					}
+
 				}
-			
-		/*
-		 * update the 'role' and 'default_authority' table with the desired values.
-		 * */
-				PreparedStatement ps = con.prepareStatement("update role set Role_Name=?,description=?,updated_on=NOW()"+
-					   " where role_id=?");
-			    ps.setString(1,editroleform.getRolename().trim());
-				ps.setString(2,editroleform.getRoledescription());
-				ps.setInt(3,Integer.parseInt(editroleform.getRoleid()));
-				ps.executeUpdate();
-				
-			ps = con.prepareStatement("update default_authority set add_org=?,edit_remove_org=?,"+
-					"add_project=?,edit_disable_project=?,add_member=?,edit_remove_member=?,"+
-					"assign_project=?,edit_member_authority=?,assign_task=?,"+
-					"edit_remove_task=?,upload_documents=?,dwnld_remove_doc=?," +
-					"add_role=?,edit_remove_role=? where role_id=?");
-				    
-			ps.setString(1,editroleform.getAddorg());
-			ps.setString(2,editroleform.getEditorg());
-			ps.setString(3,editroleform.getAddproject());
-			ps.setString(4,editroleform.getEditproject());
-			ps.setString(5,editroleform.getAddmember());
-			ps.setString(6,editroleform.getEditmember());
-			ps.setString(7,editroleform.getAssignproject());
-			ps.setString(8,editroleform.getEditauthority());
-			ps.setString(9,editroleform.getAssigntask());
-			ps.setString(10,editroleform.getEdittask());
-			ps.setString(11,editroleform.getUploaddoc());
-			ps.setString(12,editroleform.getDownloaddoc());
-			ps.setString(13,editroleform.getAddrole());
-			ps.setString(14,editroleform.getEditrole());
-			ps.setInt(15,Integer.parseInt(editroleform.getRoleid()));
-			
-			int n=ps.executeUpdate();
-				if(n>0) /*if n is greater than zero it means update operation is successful.*/
+				int[] updateCounts = pstmt.executeBatch();
+				System.out.println("Successfully executed; totalInsertion="
+						+ updateCounts.length);
+				con.commit();
+
+				// for removing
+				List<String> list = Arrays.asList(authority);
+				ArrayList<String> firstList = new ArrayList<String>(list);
+				ArrayList<String> secondList = new ArrayList<String>();
+
+				PreparedStatement check = con
+						.prepareStatement("select authorities from "
+								+ "default_authority d,role r where "
+								+ "d.role_id=? and r.role_id=d.role_id");
+				check.setInt(1, Integer.parseInt(editroleform.getRoleid()));
+				ResultSet rs = check.executeQuery();
+				while (rs.next()) {
+					secondList.add(rs.getString(1));
+				}
+
+				secondList.removeAll(firstList);
+				con.setAutoCommit(false);
+				String deleteQuery = "delete from default_authority "
+						+ "where role_id=? and authorities=?";
+				pstmt = con.prepareStatement(deleteQuery);
+				for (int i = 0; i < secondList.size(); i++) {
+					pstmt.setInt(1, Integer.parseInt(editroleform.getRoleid()));
+					pstmt.setString(2, secondList.get(i).trim());
+					pstmt.addBatch();
+				}
+				int[] updatetotal = pstmt.executeBatch();
+				System.out.println("Successfully executed; totalDeletion="
+						+ updatetotal.length);
+				con.commit();
+				if (n > 0) /*
+							 * if n is greater than zero it means update
+							 * operation is successful.
+							 */
 				{
-					forwardmsg="viewRoleList";
+					forwardmsg = "viewRoleList";
 				}
+			} else {//if authority==null
+				con.setAutoCommit(false);
+				String deleteQuery = "delete from default_authority"
+						+ " where role_id=?";
+				pstmt = con.prepareStatement(deleteQuery);
+				pstmt.setInt(1, Integer.parseInt(editroleform.getRoleid()));
+				pstmt.executeUpdate();
+				con.commit();
+				forwardmsg = "viewRoleList";
 			}
-			catch(Exception e)
-			{
-				System.out.println("error in edit role action="+e);
-			}
-			finally
-			{
-				MyDataSource.freeConnection(con);
-			}
-			return mapping.findForward(forwardmsg);//calling to that jsp page which is assigned in variable forwardmsg.
-			
+
+		} catch (Exception e) {
+			System.out.println("error in edit role action=" + e);
+		} finally {
+			MyDataSource.freeConnection(con);
 		}
+		return mapping.findForward(forwardmsg);
+
 	}
+}

@@ -40,7 +40,6 @@ public class EditAction extends Action {
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) {
 		EditForm editform = (EditForm) form;// TODO Auto-generated method stub
-		
 		HttpSession session=request.getSession();
 		String forwardmsg="projectupdationfail";
 		Connection con=null;

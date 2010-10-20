@@ -18,7 +18,7 @@ import org.apache.struts.action.ActionMapping;
  * XDoclet definition:
  * @struts.action path="/changepassword" 
  */
-public class ChangePasswordAction extends Action {
+public class ResetUserPasswordAction extends Action {
 	/*
 	 * Generated Methods
 	 */
@@ -33,6 +33,6 @@ public class ChangePasswordAction extends Action {
 	 */
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) {
-		return mapping.findForward("forwardPass");
+		return mapping.findForward("forwardResetUserPass");
 	}
 }
