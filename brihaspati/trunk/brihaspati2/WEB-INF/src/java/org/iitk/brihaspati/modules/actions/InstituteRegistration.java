@@ -121,7 +121,7 @@ public class InstituteRegistration extends VelocitySecureAction
 			instituteadmindesignation = parameterparser.getString("IADMINDESIGNATION");
 			String adminusername = instituteadminemail;
 			String instpassword = parameterparser.getString("IADMINPASSWORD");
-			String instituteadminpassword=EncryptionUtil.createDigest("MD5",instpassword);
+			//String instituteadminpassword=EncryptionUtil.createDigest("MD5",instpassword);
 			//instituteadminusername=adminusername+"@"+institutedomain;
 	                lang=parameterparser.getString("lang","english");
 	                String Lang=MultilingualUtil.LanguageSelectionForScreenMessage(lang);
@@ -187,7 +187,7 @@ public class InstituteRegistration extends VelocitySecureAction
 					criteria.add(InstituteAdminUserPeer.ADMIN_EMAIL,instituteadminemail);
 					criteria.add(InstituteAdminUserPeer.ADMIN_DESIGNATION,instituteadmindesignation);
 					criteria.add(InstituteAdminUserPeer.ADMIN_UNAME,adminusername);
-					criteria.add(InstituteAdminUserPeer.ADMIN_PASSWORD,instituteadminpassword);
+					criteria.add(InstituteAdminUserPeer.ADMIN_PASSWORD,instpassword);
 					InstituteAdminUserPeer.doInsert(criteria);
                                         String server_name=TurbineServlet.getServerName();
                                         String srvrPort=TurbineServlet.getServerPort();
