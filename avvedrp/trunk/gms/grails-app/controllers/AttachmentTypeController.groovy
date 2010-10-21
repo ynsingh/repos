@@ -14,7 +14,7 @@ class AttachmentTypeController {
         def attachmentTypeInstance = AttachmentType.get( params.id )
 
         if(!attachmentTypeInstance) {
-            flash.message = "AttachmentType not found"
+            flash.message = "${message(code: 'default.AttachmentTypenotfound.label')}"
             redirect(action:create)
         }
         else { return [ attachmentTypeInstance : attachmentTypeInstance ] }
@@ -24,11 +24,11 @@ class AttachmentTypeController {
         def attachmentTypeInstance = AttachmentType.get( params.id )
         if(attachmentTypeInstance) {
             attachmentTypeInstance.delete()
-            flash.message = "AttachmentType is deleted"
+            flash.message = "${message(code: 'default.deleted.label')}"
             redirect(action:create)
         }
         else {
-            flash.message = "AttachmentType not found"
+            flash.message = "${message(code: 'default.AttachmentTypenotfound.label')}"
             redirect(action:create)
         }
     }
@@ -37,7 +37,7 @@ class AttachmentTypeController {
         def attachmentTypeInstance = AttachmentType.get( params.id )
 
         if(!attachmentTypeInstance) {
-            flash.message = "AttachmentType not found "
+            flash.message = "${message(code: 'default.AttachmentTypenotfound.label')}"
             redirect(action:create)
         }
         else {
@@ -50,7 +50,7 @@ class AttachmentTypeController {
         if(attachmentTypeInstance) {
             attachmentTypeInstance.properties = params
             if(!attachmentTypeInstance.hasErrors() && attachmentTypeInstance.save()) {
-                flash.message = "AttachmentType is updated"
+                flash.message = "${message(code: 'default.updated.label')}"
                 redirect(action:create,id:attachmentTypeInstance.id)
             }
             else {
@@ -58,7 +58,7 @@ class AttachmentTypeController {
             }
         }
         else {
-            flash.message = "AttachmentType not found"
+            flash.message = "${message(code: 'default.AttachmentTypenotfound.label')}"
             redirect(action:edit,id:params.id)
         }
     }
@@ -74,7 +74,7 @@ class AttachmentTypeController {
     def save = {
         def attachmentTypeInstance = new AttachmentType(params)
         if(!attachmentTypeInstance.hasErrors() && attachmentTypeInstance.save()) {
-            flash.message = "AttachmentType is created"
+            flash.message = "${message(code: 'default.created.label')}"
             redirect(action:create,id:attachmentTypeInstance.id)
         }
         else {

@@ -23,6 +23,8 @@
                             <g:sortableColumn property="notificationDate" title="${message(code: 'default.NotificationDate.label')}" />
                             <g:sortableColumn property="proposalSubmissionLastDate" title="${message(code: 'default.LastProposalSubmissionDate.label')}" />
                    	        <th><g:message code="default.Grantor.label"/></th>
+                   	        <th><g:message code="default.NotificationDetails.label"/></th>
+                   	        <th><g:message code="default.UploadProposalDoc.label"/></th>
                    	        <th><g:message code="default.Status.label"/></th>
                    	        <th><g:message code="default.Apply.label"/></th>
                    	    </tr>
@@ -37,8 +39,18 @@
                             <td><g:formatDate format="dd-MM-yyyy" date="${partyNotificationsInstance.notification.notificationDate}"/></td>
                            	<td><g:formatDate format="dd-MM-yyyy" date="${partyNotificationsInstance.notification.proposalSubmissionLastDate}"/></td>
                            	<td>${GrantAllocation.findByProjects(partyNotificationsInstance.notification.project).party.nameOfTheInstitution}</td>
-                           	<td><%def proposalStatus = Proposal.find("from Proposal where party.id="+session.Party+" and notification.id="+partyNotificationsInstance.notification.id+" and lockedYN='N'")%>
+                           	<td><g:link action="showPartyNotifications" controller="notificationsEmails" id="${partyNotificationsInstance.notification.id}">View</g:link></td>
+                           	<td><%def proposalStatus = Proposal.find("from Proposal where party.id="+session.Party+" and notification.id="+partyNotificationsInstance.notification.id)%>
                            	    <g:if test="${proposalStatus}">
+                           	      <g:link action="create" controller='notificationsAttachments' id="${fieldValue(bean:proposalStatus, field:'id')}" params="[documentType:'Proposal']"><g:message code="default.Upload.label"/></g:link>
+                           	    </g:if>
+                           	    <g:else>
+                           	      <g:message code="default.Upload.label"/>
+                           	    </g:else>
+                            </td>
+                           	
+                           	<td>
+                           	 <g:if test="${proposalStatus?.lockedYN =='N'}">
                            	      <g:message code="default.Submitted.label"/>
                            	    </g:if>
                            	    <g:else>

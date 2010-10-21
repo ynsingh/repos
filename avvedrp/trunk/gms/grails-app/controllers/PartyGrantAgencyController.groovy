@@ -32,7 +32,7 @@ class PartyGrantAgencyController {
 		def partyInstance = partyService.getPartyById(new Integer(params.id ))
 
         if(!partyInstance) {
-            flash.message = "Grant Agency not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
         else { return [ partyInstance : partyInstance ] }
@@ -43,11 +43,11 @@ class PartyGrantAgencyController {
 		Integer partyId = partyService.deleteParty(new Integer(params.id))
 		
 		if(partyId != null){
-			flash.message = "Grant Agency ${params.code} deleted"
+			flash.message = "${message(code: 'default.deleted.label')}"
 			redirect(action:list)
 		}
 		else {
-            flash.message = "Grant Allocation done by Grant Agency ${params.code},so could not delete"
+            flash.message = "${message(code: 'default.couldnotdeleteGrantAgency.label')}"
             redirect(action:list)
         }
     }
@@ -56,7 +56,7 @@ class PartyGrantAgencyController {
         def partyInstance = Party.get( params.id )
 
         if(!partyInstance) {
-            flash.message = "Grant Agency not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:create)
         }
         else {
@@ -71,11 +71,11 @@ class PartyGrantAgencyController {
 		if(partyInstance){
 			if(partyInstance.saveMode != null){
 				if(partyInstance.saveMode.equals("Updated")){
-					flash.message = "Grant Agency ${params.code} updated"
+					flash.message = "${message(code: 'default.updated.label')}"
 	                redirect(action:create,id:partyInstance.id)
 				}
 				else if(partyInstance.saveMode.equals("Duplicate")){
-					flash.message = "Grant Agency Already Exists"
+					flash.message =  "${message(code: 'default.AlreadyExists.label')}"
 	    	    	render(view:'edit',model:[partyInstance:partyInstance])
 				}
 			}
@@ -84,7 +84,7 @@ class PartyGrantAgencyController {
             }
 		}
 		else {
-            flash.message = "Grant Agency not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:edit,id:params.id)
         }
     }
@@ -127,11 +127,11 @@ class PartyGrantAgencyController {
            	
            	if(partyInstance.saveMode != null){
            		if(partyInstance.saveMode.equals("Saved")){
-           			flash.message = "Grant Agency ${partyInstance.code} created"
+           			flash.message = "${message(code: 'default.created.label')}"
 		            redirect(action:create,id:partyInstance.id)
            		}
            		else if(partyInstance.saveMode.equals("Duplicate")){
-           			flash.message = "Grant Agency Already Exists"
+           			flash.message =  "${message(code: 'default.AlreadyExists.label')}"
                     render(view:'create',model:[partyInstance:partyInstance])
            		}
            	}

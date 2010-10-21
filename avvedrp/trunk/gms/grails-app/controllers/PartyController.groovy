@@ -42,7 +42,7 @@ class PartyController  extends GmsController {
 		def partyInstance = partyService.getPartyById(new Integer(params.id ))
 
         if(!partyInstance) {
-            flash.message = "Institution not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
         else { return [ partyInstance : partyInstance ] }
@@ -53,11 +53,11 @@ class PartyController  extends GmsController {
 		Integer partyId = partyService.deleteParty(new Integer(params.id))
 		
 		if(partyId != null){
-			flash.message = "Institution ${params.nameOfTheInstitution} deleted"
+			flash.message = "${message(code: 'default.deleted.label')}"
 			redirect(action:list)
 		}
 		else {
-            flash.message = "Institution ${params.code} involved in grant Allocation,so could not delete"
+            flash.message = "${message(code: 'default.Institutioncouldnotdelete.label')}" 
             redirect(action:list)
         }
     }
@@ -70,7 +70,7 @@ class PartyController  extends GmsController {
 			 redirect uri:'/invalidAccess.gsp'
         }
         if(!partyInstance) {
-            flash.message = "Institution not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
         else {
@@ -85,11 +85,11 @@ class PartyController  extends GmsController {
 		if(partyInstance){
 			if(partyInstance.saveMode != null){
 				if(partyInstance.saveMode.equals("Updated")){
-					flash.message = "Institution ${params.nameOfTheInstitution} updated"
+					flash.message = "${message(code: 'default.updated.label')}"
 	                redirect(action:list,id:partyInstance.id)
 				}
 				else if(partyInstance.saveMode.equals("Duplicate")){
-					flash.message = "Institution Already Exists"
+					flash.message = "${message(code: 'default.AlreadyExists.label')}"
 	    	    	render(view:'edit',model:[partyInstance:partyInstance])
 				}
 			}
@@ -98,7 +98,7 @@ class PartyController  extends GmsController {
             }
 		}
 		else {
-            flash.message = "Institution not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:edit,id:params.id)
         }
     		
@@ -124,11 +124,11 @@ class PartyController  extends GmsController {
            	
            	if(partyInstance.saveMode != null){
            		if(partyInstance.saveMode.equals("Saved")){
-           			flash.message = "Institution ${partyInstance.nameOfTheInstitution} created"
+           			flash.message = "${message(code: 'default.created.label')}"
 		            redirect(action:list,id:partyInstance.id)
            		}
            		else if(partyInstance.saveMode.equals("Duplicate")){
-           			flash.message = "Institution Already Exists"
+           			flash.message =  "${message(code: 'default.AlreadyExists.label')}"
                     render(view:'create',model:[partyInstance:partyInstance])
            		}
            	}

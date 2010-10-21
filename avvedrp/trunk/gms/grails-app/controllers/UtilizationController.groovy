@@ -21,7 +21,7 @@ class UtilizationController {
         def utilizationInstance = Utilization.get( params.id )
 
         if(!utilizationInstance) {
-            flash.message = "Utilization not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
         else { return [ utilizationInstance : utilizationInstance ] }
@@ -31,11 +31,11 @@ class UtilizationController {
         def utilizationInstance = Utilization.get( params.id )
         if(utilizationInstance) {
             utilizationInstance.delete()
-            flash.message = "Utilization ${params.id} deleted"
+            flash.message = "${message(code: 'default.deleted.label')}"
             redirect(action:list)
         }
         else {
-            flash.message = "Utilization not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
     }
@@ -44,7 +44,7 @@ class UtilizationController {
         def utilizationInstance = Utilization.get( params.id )
 
         if(!utilizationInstance) {
-            flash.message = "Utilization not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
         else {
@@ -57,7 +57,7 @@ class UtilizationController {
         if(utilizationInstance) {
             utilizationInstance.properties = params
             if(!utilizationInstance.hasErrors() && utilizationInstance.save()) {
-                flash.message = "Utilization ${params.id} updated"
+                flash.message ="${message(code: 'default.updated.label')}"
                 redirect(action:show,id:utilizationInstance.id)
             }
             else {
@@ -65,7 +65,7 @@ class UtilizationController {
             }
         }
         else {
-            flash.message = "Utilization not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:edit,id:params.id)
         }
     }
@@ -95,7 +95,7 @@ class UtilizationController {
 			if(!utilizationInstance.hasErrors() && utilizationInstance.save()) 
 			{
 				
-				flash.message = "Utilization certificate submitted"
+				flash.message = "${message(code: 'default.Utilizationcertificatesubmitted.label')}"
 				redirect(action:'create',id:params.id)
 			}
 			else {

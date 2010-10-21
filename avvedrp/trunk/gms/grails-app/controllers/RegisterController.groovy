@@ -62,7 +62,7 @@ class RegisterController {
 		}
 
 		if (!person) {
-			flash.message = "[Illegal Access] User not found with id ${params.id}"
+			flash.message = "${message(code: 'default.notfond.label')}"
 			redirect action: index
 			return
 		}
@@ -86,7 +86,7 @@ class RegisterController {
 		}
 
 		if (!person) {
-			flash.message = "[Illegal Access] User not found with id ${params.id}"
+			flash.message = "${message(code: 'default.notfond.label')}"
 			redirect action: index, id: params.id
 			return
 		}
@@ -99,7 +99,7 @@ class RegisterController {
 			}
 			else {
 				person.passwd = ''
-				flash.message = 'The passwords you entered do not match.'
+				flash.message = "${message(code: 'default.passwordsdonotmatch.label')}"
 				render view: 'edit', model: [person: person]
 				return
 			}
@@ -142,21 +142,21 @@ class RegisterController {
 		def role = Authority.findByAuthority(defaultRole)
 		if (!role) {
 			person.passwd = ''
-			flash.message = 'Default Role not found.'
+			flash.message = "${message(code: 'default.DefaultRolenotfound.label')}"
 			render view: 'index', model: [person: person]
 			return
 		}
 
 		if (params.captcha.toUpperCase() != session.captcha) {
 			person.passwd = ''
-			flash.message = 'Access code did not match.'
+			flash.message = "${message(code: 'default.Accesscodenotmatch.label')}"
 			render view: 'index', model: [person: person]
 			return
 		}
 
 		if (params.passwd != params.repasswd) {
 			person.passwd = ''
-			flash.message = 'The passwords you entered do not match.'
+			flash.message = "${message(code: 'default.passwordsdonotmatch.label')}"
 			render view: 'index', model: [person: person]
 			return
 		}

@@ -49,7 +49,10 @@ class GrantAllocationSplitController extends GmsController  {
     		 grantAllocationSplitInstance.grantAllocation=grantAllocationInstanceList[0]	 
     		ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
     		println"grantAllocationSplitInstance"+grantAllocationInstanceList[0].party.code
-            return ['grantAllocationSplitInstance':grantAllocationSplitInstance,'grantAllocationInstanceList':grantAllocationInstanceList,'grantAllocationSplitDetailsList':grantAllocationSplitDetailsList,'currencyFormat':currencyFormatter]
+            return ['grantAllocationSplitInstance':grantAllocationSplitInstance,
+                    'grantAllocationInstanceList':grantAllocationInstanceList,
+                    'grantAllocationSplitDetailsList':grantAllocationSplitDetailsList,
+                    'currencyFormat':currencyFormatter]
     		}
     }
 
@@ -58,7 +61,7 @@ class GrantAllocationSplitController extends GmsController  {
         def grantAllocationSplitInstance = grantAllocationSplitService.getGrantAllocationSplitById(new Integer(params.id))
 
         if(!grantAllocationSplitInstance) {
-            flash.message = " GrantAllocationSplit not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
         else { return [ grantAllocationSplitInstance : grantAllocationSplitInstance ] }
@@ -78,14 +81,14 @@ class GrantAllocationSplitController extends GmsController  {
 	
 			redirect(action:'edit',id:grantAllocationSplitInstance.id) 
 
-			flash.message = "Cannot delete the Head wise Allocation as Grant Expense is entered" 
+			flash.message ="${message(code: 'default.CannotdeleteHeadwiseAllocation.label')}"
 
 		}
 		else if(grantReceiptInstance)
 		{
 			redirect(action:'edit',id:grantAllocationSplitInstance.id) 
 
-			flash.message = "Cannot delete the Head wise Allocation as Grant is Received" 
+			flash.message ="${message(code: 'default.CannotdeleteHeadwiseAllocationGrantReceived.label')}"
 
 		}
 		else
@@ -93,12 +96,12 @@ class GrantAllocationSplitController extends GmsController  {
 			Integer projectId = grantAllocationSplitService.deleteGrantAllocationSplit(new Integer(params.id))
 			if(projectId != null){
 	        	if(projectId > 0){
-	        		flash.message = "Grant Head Deleted"
+	        		flash.message = "${message(code: 'default.GrantHeadDeleted.label')}"
 	        			  redirect(action:list,id:projectId)
 	        	}
 	        }
 	        else{
-	        	flash.message = "GrantAllocationSplit not found"
+	        	flash.message = "${message(code: 'default.notfond.label')}"
 	            redirect(action:list)
 	        }
 		}
@@ -124,7 +127,7 @@ class GrantAllocationSplitController extends GmsController  {
 		{
         if(!grantAllocationSplitInstance) 
         {
-            flash.message = "GrantAllocationSplit not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
         else 
@@ -157,7 +160,11 @@ class GrantAllocationSplitController extends GmsController  {
             }
         }
     }
-		render(view:'edit',model:['grantAllocationSplitInstance':grantAllocationSplitInstance,'accountHeadInstanceList':accountHeadInstanceList])
+		NumberFormat formatter = new DecimalFormat("#0.00");
+		
+		render(view:'edit',model:['grantAllocationSplitInstance':grantAllocationSplitInstance,
+		                          'accountHeadInstanceList':accountHeadInstanceList,
+		                          'amount':formatter.format(grantAllocationSplitInstance.amount)])
     }
 
     def update = {
@@ -176,7 +183,7 @@ class GrantAllocationSplitController extends GmsController  {
         		grantAllocationSplitInstance.accountHead = AccountHeads.get(grantAllocationSplitInstance.accountHead.id)
         	}
 			if(grantAllocationSplitInstance.isSaved){
-				flash.message = "Grant Heads Updated"
+				flash.message = "${message(code: 'default.updated.label')}"
 				
 				  redirect(action:list,id:grantAllocationSplitInstance.projects.id)
 			}
@@ -185,7 +192,7 @@ class GrantAllocationSplitController extends GmsController  {
 			}
 		}
 		else {
-            flash.message = "GrantAllocationSplit not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:edit,id:params.id)
 		}
     }
@@ -223,7 +230,10 @@ class GrantAllocationSplitController extends GmsController  {
         grantAllocationSplitInstance.grantAllocation=grantAllocationInstance;
        
         ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
-        return ['grantAllocationSplitInstance':grantAllocationSplitInstance,'grantAllocationInstance':grantAllocationInstance,'grantAllocationInstanceList':grantAllocationInstanceList,'currencyFormat':currencyFormatter]
+        return ['grantAllocationSplitInstance':grantAllocationSplitInstance,
+                'grantAllocationInstance':grantAllocationInstance,
+                'grantAllocationInstanceList':grantAllocationInstanceList,
+                'currencyFormat':currencyFormatter]
 		}
     }
 
@@ -261,8 +271,8 @@ class GrantAllocationSplitController extends GmsController  {
         	grantAllocationSplitInstance =grantAllocationSplitService.saveGrantAllocationSplit(grantAllocationSplitInstance,new Integer(params.projectId)) 
         	}
         	else
-        	{flash.message = "Grant can not Allocated to Heads"}
-            flash.message = "Grant is Allocated to Heads"
+        	{flash.message = "${message(code: 'default.GrantcannotAllocatedHeads.label')}"}
+            flash.message = "${message(code: 'default.GrantAllocated.label')}"
             	  redirect(action:list,id:params.projectId)
         }
         else {

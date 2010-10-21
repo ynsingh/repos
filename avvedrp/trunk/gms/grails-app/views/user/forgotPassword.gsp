@@ -21,7 +21,8 @@
    	</span>
    	</div>
 	</div>  
-
+<div id="messageBox">
+		</div>
 	<div class="body">
 		<div style="background-color:#386890;width:100%;height: 5%"> </div>
 		<h1></h1>
@@ -61,8 +62,8 @@
 			      			<p>&nbsp;</p>
 			      			<p>&nbsp;<input class="text_field" id="email" name="email" type="text" /></p>
 			
-			      
-			      			<p>&nbsp;<input id="resend_password_submit" name="commit" type="submit" value="Send" /></p>
+			      			<p>&nbsp;</p>
+			      			<p>&nbsp;<input id="submit" name="commit" type="submit" value="Send" onClick='displayAlertMessage("Please wait");' />&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" onClick="Redirect()"  value="Cancel" /></p>
 			    			<p>&nbsp;</p>
 			    			</fieldset>
 			  		</div>

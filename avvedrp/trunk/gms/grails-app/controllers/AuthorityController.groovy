@@ -23,7 +23,7 @@ class AuthorityController {
     def save = {
         def authorityInstance = new Authority(params)
         if (authorityInstance.save(flush: true)) {
-            flash.message = "Created Role ${authorityInstance.authority}" 
+            flash.message = "${message(code: 'default.created.label')}"
             redirect(action: "create", id: authorityInstance.id)
         }
         else {
@@ -34,7 +34,7 @@ class AuthorityController {
     def show = {
         def authorityInstance = Authority.get(params.id)
         if (!authorityInstance) {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'authority.label', default: 'Authority'), params.id])}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action: "list")
         }
         else {
@@ -45,7 +45,7 @@ class AuthorityController {
     def edit = {
         def authorityInstance = Authority.get(params.id)
         if (!authorityInstance) {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'authority.label', default: 'Authority'), params.id])}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action: "list")
         }
         else {
@@ -60,14 +60,16 @@ class AuthorityController {
                 def version = params.version.toLong()
                 if (authorityInstance.version > version) {
                     
-                    authorityInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'authority.label', default: 'Authority')] as Object[], "Another user has updated this Authority while you were editing")
+                    authorityInstance.errors.rejectValue("version", "default.optimistic.locking.failure", 
+                    		[message(code: 'authority.label', default: 'Authority')] as Object[], 
+                    		"Another user has updated this Authority while you were editing")
                     render(view: "edit", model: [authorityInstance: authorityInstance])
                     return
                 }
             }
             authorityInstance.properties = params
             if (!authorityInstance.hasErrors() && authorityInstance.save(flush: true)) {
-            	 flash.message = "Updated Role ${authorityInstance.authority}" 
+            	 flash.message = "${message(code: 'default.updated.label')}"
                 redirect(action: "create", id: authorityInstance.id)
             }
             else {
@@ -75,7 +77,7 @@ class AuthorityController {
             }
         }
         else {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'authority.label', default: 'Authority'), params.id])}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action: "create")
         }
     }
@@ -85,16 +87,16 @@ class AuthorityController {
         if (authorityInstance) {
             try {
                 authorityInstance.delete(flush: true)
-                flash.message = "${message(code: 'default.deleted.message', args: [message(code: 'authority.label', default: 'Authority'), params.id])}"
+                flash.message = "${message(code: 'default.deleted.label')}"
                 redirect(action: "list")
             }
             catch (org.springframework.dao.DataIntegrityViolationException e) {
-                flash.message = "${message(code: 'default.not.deleted.message', args: [message(code: 'authority.label', default: 'Authority'), params.id])}"
+                flash.message = "${message(code: 'default.inuse.label')}"
                 redirect(action: "show", id: params.id)
             }
         }
         else {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'authority.label', default: 'Authority'), params.id])}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action: "list")
         }
     }

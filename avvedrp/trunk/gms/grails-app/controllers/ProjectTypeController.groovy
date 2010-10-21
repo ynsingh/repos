@@ -18,7 +18,7 @@ class ProjectTypeController {
         def projectTypeInstance = ProjectType.get( params.id )
 
         if(!projectTypeInstance) {
-            flash.message = "ProjectType not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
         else { return [ projectTypeInstance : projectTypeInstance ] }
@@ -28,11 +28,11 @@ class ProjectTypeController {
         def projectTypeInstance = ProjectType.get( params.id )
         if(projectTypeInstance) {
             projectTypeInstance.delete()
-            flash.message = "ProjectType ${projectTypeInstance.type} deleted"
+            flash.message = "${message(code: 'default.deleted.label')}"
             redirect(action:create)
         }
         else {
-            flash.message = "ProjectType not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:create)
         }
     }
@@ -41,7 +41,7 @@ class ProjectTypeController {
         def projectTypeInstance = ProjectType.get( params.id )
 
         if(!projectTypeInstance) {
-            flash.message = "ProjectType not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:create)
         }
         else {
@@ -54,7 +54,7 @@ class ProjectTypeController {
         if(projectTypeInstance) {
             projectTypeInstance.properties = params
             if(!projectTypeInstance.hasErrors() && projectTypeInstance.save()) {
-                flash.message = "ProjectType ${projectTypeInstance.type} updated"
+                flash.message = "${message(code: 'default.updated.label')}"
                 redirect(action:create,id:projectTypeInstance.id)
             }
             else {
@@ -62,7 +62,7 @@ class ProjectTypeController {
             }
         }
         else {
-            flash.message = "ProjectType not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:edit,id:params.id)
         }
     }
@@ -88,7 +88,7 @@ class ProjectTypeController {
         
 	        if(projectTypeInstance.save()) 
 	        {
-	            flash.message = "ProjectType ${projectTypeInstance.type} created"
+	            flash.message = "${message(code: 'default.created.label')}"
 	            redirect(action:create,id:projectTypeInstance.id)
 	        }
 	        

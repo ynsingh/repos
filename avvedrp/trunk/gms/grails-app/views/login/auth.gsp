@@ -149,10 +149,10 @@ function breakout_of_frame()
       </tr>
     <tr>
    	 	<td>
-  	 	 <g:link style="font-size:12px;font-weight: bold;" controller="user" action="newUserCreate">Register</g:link>
+  	 	 <g:link style="font-size:12px;font-weight: bold;text-decoration:none;color: #7D053F;" onmouseover="this.style.textDecoration ='underline';" onmouseout="this.style.textDecoration='none';" controller="user" action="newUserCreate">Register</g:link>
       </td>
       <td>
-  	 	 <g:link style="font-size:10px;" controller="user" action="forgotPassword">Forgot password?</g:link>
+  	 	 <g:link style="font-size:10px;text-decoration:none;color: #7D053F;" onmouseover="this.style.textDecoration ='underline';" onmouseout="this.style.textDecoration='none';" controller="user" action="forgotPassword">Forgot password?</g:link>
       </td>
       </tr>
     <tr>

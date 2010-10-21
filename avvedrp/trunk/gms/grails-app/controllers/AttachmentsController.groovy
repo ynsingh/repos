@@ -41,7 +41,9 @@ class AttachmentsController {
     	{
     		
     	}
-        return [attachmentsInstance: attachmentsInstance,grantAllocationInstanceList:grantAllocationInstanceList,attachmentsInstanceList:attachmentsInstanceList,projects:params.id]
+        return [attachmentsInstance: attachmentsInstance,
+                grantAllocationInstanceList:grantAllocationInstanceList,
+                attachmentsInstanceList:attachmentsInstanceList,projects:params.id]
     }
 
     def save = {
@@ -71,12 +73,12 @@ class AttachmentsController {
         	attachmentsInstance.attachmentPath=fileName
         }
         else {
-            flash.message = 'file cannot be empty'
+            flash.message = "${message(code: 'default.fileEmpty.label')}"
             redirect(action:'create')
          }
 
         if (attachmentsInstance.save(flush: true)) {
-            flash.message = "File uploaded successfully"
+            flash.message = "${message(code: 'default.Fileuploaded.label')}"
             redirect(action: "create", id: attachmentsInstance.domainId)
         }
         else {
@@ -88,7 +90,7 @@ class AttachmentsController {
     def show = {
         def attachmentsInstance = Attachments.get(params.id)
         if (!attachmentsInstance) {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'attachments.label', default: 'Attachments'), params.id])}"
+            flash.message = "${message(code: 'default.FilenotFound.label')}"
             redirect(action: "list")
         }
         else {
@@ -99,7 +101,7 @@ class AttachmentsController {
     def edit = {
         def attachmentsInstance = Attachments.get(params.id)
         if (!attachmentsInstance) {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'attachments.label', default: 'Attachments'), params.id])}"
+            flash.message = "${message(code: 'default.FilenotFound.label')}"
             redirect(action: "list")
         }
         else {
@@ -114,14 +116,16 @@ class AttachmentsController {
                 def version = params.version.toLong()
                 if (attachmentsInstance.version > version) {
                     
-                    attachmentsInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'attachments.label', default: 'Attachments')] as Object[], "Another user has updated this Attachments while you were editing")
+                    attachmentsInstance.errors.rejectValue("version", "default.optimistic.locking.failure", 
+                    		[message(code: 'attachments.label', default: 'Attachments')] as Object[], 
+                    		"Another user has updated this Attachments while you were editing")
                     render(view: "edit", model: [attachmentsInstance: attachmentsInstance])
                     return
                 }
             }
             attachmentsInstance.properties = params
             if (!attachmentsInstance.hasErrors() && attachmentsInstance.save(flush: true)) {
-                flash.message = "${message(code: 'default.updated.message', args: [message(code: 'attachments.label', default: 'Attachments'), attachmentsInstance.id])}"
+                flash.message = "${message(code: 'default.updated.label')}"
                 redirect(action: "show", id: attachmentsInstance.id)
             }
             else {
@@ -129,7 +133,7 @@ class AttachmentsController {
             }
         }
         else {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'attachments.label', default: 'Attachments'), params.id])}"
+            flash.message = "${message(code: 'default.FilenotFound.label')}"
             redirect(action: "list")
         }
     }
@@ -139,37 +143,40 @@ class AttachmentsController {
         if (attachmentsInstance) {
             try {
                 attachmentsInstance.delete(flush: true)
-                flash.message = "Document deleted successfully"
+                flash.message = "${message(code: 'default.deleted.label')}"
                 redirect(action: "create",id:params.domainId)
             }
             catch (org.springframework.dao.DataIntegrityViolationException e) {
-                flash.message = "${message(code: 'default.not.deleted.message', args: [message(code: 'attachments.label', default: 'Attachments'), params.id])}"
+                flash.message = "${message(code: 'default.Fileinuse.label')}"
                 redirect(action: "show", id: params.id)
             }
         }
         else {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'attachments.label', default: 'Attachments'), params.id])}"
+            flash.message = "${message(code: 'default.FilenotFound.label')}"
             redirect(action: "list")
         }
     }
 	
 	def downloadAttachments = {
 		def attachmentsInstance = Attachments.get( params.id )
+		def gmsSettingsService = new GmsSettingsService()
  		println"++++++++++++++id+++++++++++"+params
+ 		def attachmentsName='Attachments'
+ 		def gmsSettingsInstance = gmsSettingsService.getGmsSettings(attachmentsName)
  		def webRootDir
  		String fileName = attachmentsInstance.attachmentPath
  		attachmentsInstance.openedYesNo='Y'
  		attachmentsInstance.save()
  		 if ( GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_PRODUCTION)) 
         {
-        	webRootDir = servletContext.getRealPath("/")+"WEB-INF/grails-app/views/"
+ 			webRootDir = gmsSettingsInstance.value
         }
         if ( GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_DEVELOPMENT)) 
         {
-        	webRootDir = "grails-app/views/"
+        	webRootDir = gmsSettingsInstance.value
         }
  		println"++++++++++++++++++filename+++++++++"+fileName
- 		def file = new File(webRootDir+"appForm/"+fileName)     
+ 		def file = new File(webRootDir+fileName)     
  		response.setContentType("application/octet-stream") 
  		response.setHeader("Content-disposition", "attachment;fileName=${file.getName()}") 
  		 

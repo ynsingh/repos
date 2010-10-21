@@ -18,8 +18,8 @@
 					<g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}" />
 					<g:sortableColumn property="user.username" title="${message(code: 'default.LoginName.label')}" />
 					<g:sortableColumn property="user.userRealName" title="${message(code: 'default.FullName.label')}" />
-					<g:sortableColumn property="party.nameOfTheInstitution" title="${message(code: 'default.Institution.label')}" />
-					<th>Edit</th>
+					<g:sortableColumn property="authority.description" title="${message(code: 'default.Role.label')}" />
+				    <th>Edit</th>
 					<g:if test="${session.Role == 'ROLE_ADMIN'}"> 
 						<th><g:message code="default.Edit.label"/></th>
 					</g:if>
@@ -32,8 +32,7 @@
 					<td>${i+1}</td>
 					<td>${userMap.user.username?.encodeAsHTML()}</td>
 					<td>${userMap.user.userRealName?.encodeAsHTML()}</td>
-					
-					<td>${userMap.party.nameOfTheInstitution}</td>
+				    <td>${authorityList[i].description}</td>
 			        <g:if test="${session.Role == 'ROLE_SITEADMIN'}"> 
 					<td class="actionButtons">
 					 

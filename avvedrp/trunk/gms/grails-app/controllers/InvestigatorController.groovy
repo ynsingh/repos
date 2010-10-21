@@ -39,7 +39,7 @@ class InvestigatorController {
         def investigatorInstance = Investigator.get( params.id )
 
         if(!investigatorInstance) {
-            flash.message = "Investigator not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
         else { return [ investigatorInstance : investigatorInstance ] }
@@ -52,17 +52,17 @@ class InvestigatorController {
         	if(chkPrjctInstance[0]==null)
         	{
             investigatorInstance.delete()
-            flash.message = "Investigator ${investigatorInstance.name} deleted"
+            flash.message = "${message(code: 'default.deleted.label')}"
             redirect(action:list)
         	}
         	else
         	{
-        		flash.message = "Investigator investigated a project.So could not be deleted"
+        		flash.message = "${message(code: 'default.investigatorinuse.label')}"
         			redirect(action:list)
         	}
         }
         else {
-            flash.message = "Investigator not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
     }
@@ -74,7 +74,7 @@ class InvestigatorController {
     	def investigatorInstance = Investigator.get( params.id )
 
         if(!investigatorInstance) {
-            flash.message = "Investigator not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:create)
         }
         else {
@@ -95,21 +95,21 @@ class InvestigatorController {
     			
     			if(chkUniqueNameInstance && chkUniqueNameInstance[0].id != Long.parseLong(params.id))
     			{
-    				flash.message = " Investigator exists with same name"
+    				flash.message = "${message(code: 'default.investigatorexistswithsamename.label')}"
     				redirect(action:edit,id:investigatorInstance.id)
     			}
     			else
     			{
     				if(chkUniqueEmailInstance && chkUniqueEmailInstance[0].id != Long.parseLong(params.id))
     				{
-    					flash.message ="Investigator exists with same email"
+    					flash.message ="${message(code: 'default.investigatorexistswithsameEmail.label')}"
     					redirect(action:edit,id:investigatorInstance.id)
     				}
     				else
     				{
     					if(!investigatorInstance.hasErrors() && investigatorInstance.save()) 
     					{
-    						flash.message = "Investigator ${investigatorInstance.name} updated"
+    						flash.message = "${message(code: 'default.updated.label')}"
     						redirect(action:create,id:investigatorInstance.id)
     					}
     					else 
@@ -121,7 +121,7 @@ class InvestigatorController {
     		}
     		else 
     		{
-    			flash.message = "Investigator not found with id ${params.id}"
+    			flash.message = "${message(code: 'default.notfond.label')}"
     			redirect(action:edit,id:params.id)
     		}
     			
@@ -182,14 +182,14 @@ class InvestigatorController {
         println"..............chkUniqueNameInstance..........."+chkUniqueNameInstance
         if(chkUniqueNameInstance || userId != null)
         {
-        	flash.message = " Investigator exists with same name"
+        	flash.message = "${message(code: 'default.investigatorexistswithsamename.label')}"
         	redirect(action:create,id:investigatorInstance.id)
         }
         else
         {
           if(chkUniqueEmailInstance || userId != null)
          {
-    	   flash.message ="Investigator exists with same email"
+    	   flash.message ="${message(code: 'default.investigatorexistswithsameEmail.label')}"
     	   redirect(action:create,id:investigatorInstance.id)
          }
          else
@@ -198,7 +198,7 @@ class InvestigatorController {
         	if (emailValidator.isValid(params.email))
         	{
         		if(!investigatorInstance.hasErrors() && investigatorInstance.save()) {
-        			flash.message = "Investigator ${investigatorInstance.name} created"
+        			flash.message = "${message(code: 'default.created.label')}"
         			def userInstance = new Person()
         			userInstance.username = investigatorInstance.email
         			def subName = investigatorInstance.email
@@ -234,7 +234,7 @@ class InvestigatorController {
 	        }
 			else
 			{
-				flash.message = "Please provide a valid email address"
+				flash.message = "${message(code: 'default.EntervalidEmailAddress.label')}"
 				render(view:'create',model:[investigatorInstance:investigatorInstance,partyinstance:partyinstance])
 			}
          }

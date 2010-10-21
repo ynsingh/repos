@@ -62,7 +62,7 @@
    			<div class="dialog">
    		 		<table>
 	   		 	   <tbody>
-	   		 	     <g:if test="${params.id}">
+	   		 	     <g:if test="${params.applicationFormView=='proposalView'}">
 	   		 		   <tr>
 	   		 		      <td>
 	   		 		         <table>
@@ -98,7 +98,7 @@
 					 </tr>
 				   </tbody>
 				</table>
-				<g:if test="${params.id}">
+				<g:if test="${params.applicationFormView=='proposalView'}">
 					<div class="buttons">
       					<input type="submit" name="save" value="${message(code: 'default.Save.button')}" onclick="submitForm()">
       				</div>

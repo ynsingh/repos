@@ -55,7 +55,7 @@
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:investigatorInstance,field:'department','errors')}">
                                    <div id="department">
-                                    <g:select optionKey="id" optionValue="departmentCode" from="${PartyDepartment.findAllByParty(Party.findById(session.Party))}" name="department.id" value="${investigatorInstance?.department?.id}"></g:select>
+                                    <g:select optionKey="id" id="department.id" optionValue="departmentCode" from="${PartyDepartment.findAllByParty(Party.findById(session.Party))}" name="department.id" value="${investigatorInstance?.department?.id}"></g:select>
                                		</div>
                                 </td>
                             </tr> 

@@ -37,7 +37,7 @@ class ProjectEmployeeExperienceController
         //projectEmployeeExperienceInstance.Status='Y'
          if (projectEmployeeExperienceInstance.save(flush: true)) 
 	     {
-	       flash.message = "Experience with Oraganization Name ${params.organizationName} is Created" 
+	       flash.message = "${message(code: 'default.created.label')}"
 	       redirect(action: "create", id: projectEmployeeInstance.id)
 	     }
         else 
@@ -52,7 +52,7 @@ class ProjectEmployeeExperienceController
         def projectEmployeeExperienceInstance = ProjectEmployeeExperience.get(params.id)
         if (!projectEmployeeExperienceInstance) 
         {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'projectEmployeeExperience.label', default: 'ProjectEmployeeExperience'), params.id])}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action: "list")
         }
         else 
@@ -67,7 +67,7 @@ class ProjectEmployeeExperienceController
         def projectEmployeeInstance = ProjectEmployee.get(params.projectEmployee.id)
         if (!projectEmployeeExperienceInstance) 
         {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'projectEmployeeExperience.label', default: 'ProjectEmployeeExperience'), params.id])}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action: "list")
         }
         else 
@@ -100,7 +100,7 @@ class ProjectEmployeeExperienceController
             projectEmployeeExperienceInstance.properties = params
             if (!projectEmployeeExperienceInstance.hasErrors() && projectEmployeeExperienceInstance.save(flush: true)) 
             {
-                flash.message = "Experience with Oraganization ${params.organizationName} is updated"
+                flash.message = "${message(code: 'default.updated.label')}"
                 redirect(action: "create", id: projectEmployeeInstance.id)
             }
             else 
@@ -110,7 +110,7 @@ class ProjectEmployeeExperienceController
         }
         else 
         {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'projectEmployeeExperience.label', default: 'ProjectEmployeeExperience'), params.id])}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action: "list")
         }
     }
@@ -126,18 +126,18 @@ class ProjectEmployeeExperienceController
             {
             	//projectEmployeeExperienceInstance.Status='D'
                 projectEmployeeExperienceInstance.save(flush: true)
-                flash.message = "Experience with Oraganization ${params.organizationName} is Deleted"
+                flash.message = "${message(code: 'default.deleted.label')}"
                 redirect(action: "create",id:projectEmployeeInstance.id)
             }
             catch (org.springframework.dao.DataIntegrityViolationException e) 
             {
-                flash.message = "${message(code: 'default.not.deleted.message', args: [message(code: 'projectEmployeeExperience.label', default: 'ProjectEmployeeExperience'), projectEmployeeExperienceInstance.OrganizationName])}"
+                flash.message = "${message(code: 'default.inuse.label')}"
                 redirect(action: "create", id: params.id)
             }
         }
         else 
         {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'projectEmployeeExperience.label', default: 'ProjectEmployeeExperience'),  projectEmployeeExperienceInstance.OrganizationName])}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action: "create")
         }
     }

@@ -37,7 +37,7 @@ class NotificationsEmailsController {
         def notificationsEmailsInstance = NotificationsEmails.get( params.id )
 
         if(!notificationsEmailsInstance) {
-            flash.message = "NotificationsEmails not found"
+            flash.message = "${message(code: 'default.FilenotFound.label')}"
             redirect(action:list)
         }
         else { return [ notificationsEmailsInstance : notificationsEmailsInstance ] }
@@ -47,11 +47,11 @@ class NotificationsEmailsController {
         def notificationsEmailsInstance = NotificationsEmails.get( params.id )
         if(notificationsEmailsInstance) {
             notificationsEmailsInstance.delete()
-            flash.message = "NotificationsEmails deleted"
+            flash.message = "${message(code: 'default.deleted.label')}"
             redirect(action:list)
         }
         else {
-            flash.message = "NotificationsEmails not found"
+            flash.message = "${message(code: 'default.FilenotFound.label')}"
             redirect(action:list)
         }
     }
@@ -60,7 +60,7 @@ class NotificationsEmailsController {
         def notificationsEmailsInstance = NotificationsEmails.get( params.id )
 
         if(!notificationsEmailsInstance) {
-            flash.message = "NotificationsEmails not found"
+            flash.message = "${message(code: 'default.FilenotFound.label')}"
             redirect(action:list)
         }
         else {
@@ -73,7 +73,7 @@ class NotificationsEmailsController {
         if(notificationsEmailsInstance) {
             notificationsEmailsInstance.properties = params
             if(!notificationsEmailsInstance.hasErrors() && notificationsEmailsInstance.save()) {
-                flash.message = "NotificationsEmails updated"
+                flash.message = "${message(code: 'default.updated.label')}"
                 redirect(action:show,id:notificationsEmailsInstance.id)
             }
             else {
@@ -81,7 +81,7 @@ class NotificationsEmailsController {
             }
         }
         else {
-            flash.message = "NotificationsEmails not found"
+            flash.message = "${message(code: 'default.FilenotFound.label')}"
             redirect(action:edit,id:params.id)
         }
     }
@@ -95,7 +95,7 @@ class NotificationsEmailsController {
     def save = {
         def notificationsEmailsInstance = new NotificationsEmails(params)
         if(!notificationsEmailsInstance.hasErrors() && notificationsEmailsInstance.save()) {
-            flash.message = "NotificationsEmails created"
+            flash.message = "${message(code: 'default.created.label')}"
             redirect(action:show,id:notificationsEmailsInstance.id)
         }
         else {
@@ -146,7 +146,7 @@ class NotificationsEmailsController {
     		}
     		else
     		{
-    			flash.message = "Institution not selected"
+    			flash.message = "${message(code: 'default.Institutionnotselected.label')}"
     			redirect(action:list,id:params.notificationId)
     		}
     	  }
@@ -177,7 +177,7 @@ class NotificationsEmailsController {
     		 def notificationsInstance = Notification.get( params.id )
     		 println "hii id="+notificationsInstance
     	        if(!notificationsInstance) {
-    	            flash.message = "NotificationsEmails not found"
+    	            flash.message = "${message(code: 'default.FilenotFound.label')}"
     	            redirect(action:partyNotificationsList)
     	        }
     	        else {
@@ -185,7 +185,7 @@ class NotificationsEmailsController {
     	        	def attachmentTypesInstance = AttachmentType.findAll("from AttachmentType AT where AT.documentType='Notification'")
     	        	def proposalInstance = Proposal.find("from Proposal P where P.notification="+params.id+"and P.party.id='"+gh.getValue("Party")+"'and P.lockedYN='N'")
 
-    	        	if(proposalInstance){flash.message = "Proposal Submited for this Notification"}
+    	        	if(proposalInstance){flash.message = "${message(code: 'default.ProposalSubmited.label')}"}
     	        	return [ notificationsInstance : notificationsInstance,attachmentTypesInstance:attachmentTypesInstance,notificationsAttachmentsInstance:notificationsAttachmentsInstance,proposalInstance:proposalInstance ] }
     		
     }
@@ -193,7 +193,7 @@ class NotificationsEmailsController {
     		println "publish params"+params
     		GrailsHttpSession gh = getSession()
     		def notificationInstance = Notification.get(params.id)
-    		def partyInstance = Party.findAll("from Party P")
+    		def partyInstance = Party.findAll("from Party P where P.id!="+gh.getValue("Party"))
     		println "partyInstance=="+partyInstance
     		//def notificationsEmailsInstance = new NotificationsEmails()
     		for (partyid in partyInstance) 

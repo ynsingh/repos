@@ -26,7 +26,7 @@ class EmployeeDesignationController
         def employeeDesignationInstance = new EmployeeDesignation(params)
         if (employeeDesignationInstance.save(flush: true)) 
 	        {
-	            flash.message = "Created New Employee Designation ${params.designation}"
+	            flash.message ="${message(code: 'default.created.label')}"
 	            redirect(action: "create", id: employeeDesignationInstance.id)
 	        }
 	        else 
@@ -40,7 +40,7 @@ class EmployeeDesignationController
         def employeeDesignationInstance = EmployeeDesignation.get(params.id)
         if (!employeeDesignationInstance) 
         {
-            flash.message = "${message(code: 'default.not.found.message',args: [message(code: 'employeeDesignation.label', default: 'EmployeeDesignation'), params.id])}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action: "list")
         }
         else 
@@ -54,7 +54,7 @@ class EmployeeDesignationController
         def employeeDesignationInstance = EmployeeDesignation.get(params.id)
         if (!employeeDesignationInstance) 
         {
-            flash.message = "${message(code: 'default.not.found.message',args: [message(code: 'employeeDesignation.label', default: 'EmployeeDesignation'), params.id])}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action: "create")
         }
         else 
@@ -83,7 +83,7 @@ class EmployeeDesignationController
 	        employeeDesignationInstance.properties = params
 	        if (!employeeDesignationInstance.hasErrors() && employeeDesignationInstance.save(flush: true)) 
 	        {
-	            flash.message = "Updated Employee Designation ${params.designation}"
+	            flash.message = "${message(code: 'default.updated.label')}"
 	            redirect(action: "create", id: employeeDesignationInstance.id)
 	        }
 	        else 
@@ -93,7 +93,7 @@ class EmployeeDesignationController
 	    }
 	    else 
 	    {
-	        flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'employeeDesignation.label', default: 'EmployeeDesignation'), params.id])}"
+	        flash.message = "${message(code: 'default.notfond.label')}"
 	        redirect(action: "list")
 	    }
     }
@@ -106,18 +106,18 @@ class EmployeeDesignationController
         	try 
         	{
                 employeeDesignationInstance.delete(flush: true)
-                flash.message = "Deleted Employee Designation ${params.designation}"
+                flash.message = "${message(code: 'default.deleted.label')}"
                 redirect(action: "create")
             }
             catch (org.springframework.dao.DataIntegrityViolationException e) 
             {
-                flash.message ="Can't delete the Employee Designation ${params.designation}" 
+                flash.message ="${message(code: 'default.inuse.label')}"
                 redirect(action: "show", id: params.id)
             }
         }
         else 
         {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'employeeDesignation.label', default: 'EmployeeDesignation'), params.id])}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action: "list")
         }
     }

@@ -20,7 +20,7 @@ class NotificationsAttachmentsController {
 
         if(!notificationsAttachmentsInstance) 
         {
-            flash.message = "NotificationsAttachments not found with id ${params.id}"
+            flash.message = "${message(code: 'default.FilenotFound.label')}"
             redirect(action:list)
         }
         else { return [ notificationsAttachmentsInstance : notificationsAttachmentsInstance ] }
@@ -33,7 +33,7 @@ class NotificationsAttachmentsController {
         if(notificationsAttachmentsInstance)
         {
             notificationsAttachmentsInstance.delete()
-            flash.message = "The Record is deleted Succesfully"
+            flash.message = "${message(code: 'default.deleted.label')}"
                 println "+++++++++++++++++++params+++++++++++++++++++" +params
                 if(params.documentType == 'Proposal')
                 {
@@ -47,7 +47,7 @@ class NotificationsAttachmentsController {
         }
         else 
         {
-            flash.message = "The Record could not deleted"
+            flash.message = "${message(code: 'default.inuse.label')}"
             if(params.documentType == 'Proposal')
             {
             redirect(action:create,id:notificationsAttachmentsInstance.proposal.id,params:[documentType:params.documentType])
@@ -67,7 +67,7 @@ class NotificationsAttachmentsController {
 
         if(!notificationsAttachmentsInstance) 
         {
-            flash.message = "NotificationsAttachments not found with id ${params.id}"
+            flash.message = "${message(code: 'default.FilenotFound.label')}"
             redirect(action:list)
         }
         else 
@@ -84,7 +84,7 @@ class NotificationsAttachmentsController {
             notificationsAttachmentsInstance.properties = params
             if(!notificationsAttachmentsInstance.hasErrors() && notificationsAttachmentsInstance.save())
             {
-                flash.message = "NotificationsAttachments ${params.id} updated"
+                flash.message = "${message(code: 'default.updated.label')}"
                 redirect(action:show,id:notificationsAttachmentsInstance.id)
             }
             else 
@@ -94,7 +94,7 @@ class NotificationsAttachmentsController {
         }
         else 
         {
-            flash.message = "NotificationsAttachments not found with id ${params.id}"
+            flash.message = "${message(code: 'default.FilenotFound.label')}"
             redirect(action:edit,id:params.id)
         }
     }
@@ -126,7 +126,8 @@ class NotificationsAttachmentsController {
         def notificationsAttachmentsList=notificationsAttachmentsService.getNotificationsAttachmentsByNotification(params)
         println "+++++++++++notificationsAttachmentsList+++++++++++"+ notificationsAttachmentsList
 
-        return ['notificationsAttachmentsInstance':notificationsAttachmentsInstance,'notificationsAttachmentsInstanceList':notificationsAttachmentsList]
+        return ['notificationsAttachmentsInstance':notificationsAttachmentsInstance,
+                'notificationsAttachmentsInstanceList':notificationsAttachmentsList]
     }
 
     def save = 
@@ -167,7 +168,6 @@ class NotificationsAttachmentsController {
 		        {
 			    	
 	            	 
-		        	flash.message = "File already uploaded"	
 		        		//MultipartRequestHolder.setMultipartRequest(null)
 		        		if(documentTypefromParam == 'Proposal')
 		        		{
@@ -213,7 +213,7 @@ class NotificationsAttachmentsController {
 		            	println "notificationsAttachmentsInstance********" +notificationsAttachmentsInstance
 		            	//notificationsAttachmentsInstance.attachmentType=attachmentTypeInstance		                 
 		            	notificationsAttachmentsInstance.save()
-			            flash.message = "File Uploaded Successfully"
+			            flash.message = "${message(code: 'default.Fileuploaded.label')}"
 			            	 println "notificationsAttachmentsInstance44" +notificationsAttachmentsInstance
 			          
 			            	 params.clear()
@@ -225,7 +225,7 @@ class NotificationsAttachmentsController {
 			            {
 			            	//def notid = Proposal.find("from Proposal P where P.")
 			            	println "proposalId="+notificationsAttachmentsInstance.notification.id
-			            	redirect(controller:"proposal",action:"create",id:notificationsAttachmentsInstance.proposal.notification.id)
+			            	redirect(controller:"notificationsEmails",action:"partyNotificationsList")
 			            }
 			            else
 			            {
@@ -239,7 +239,7 @@ class NotificationsAttachmentsController {
 		            {
 		            	params.clear()
 		            	//MultipartRequestHolder.setMultipartRequest(null)
-		            	flash.message = "please select file to be uploaded"	
+		            	flash.message = "${message(code: 'default.SelectFile.label')}"	
 		            	redirect(action:create,id:notificationsAttachmentsInstance.notification.id,params:[documentType:documentTypefromParam])
 		            }
 		        }

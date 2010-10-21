@@ -30,7 +30,7 @@ class GrantExpenseController extends GmsController {
         def grantExpenseInstance =  grantExpenseService.getGrantExpenseById(new Integer(params.id))
         
         if(!grantExpenseInstance) {
-            flash.message = "Grant Expense not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
         else { return [ grantExpenseInstance : grantExpenseInstance ] }
@@ -43,12 +43,12 @@ class GrantExpenseController extends GmsController {
 		
 		if(grantAllocationId != null){
 			if(grantAllocationId > 0){
-				flash.message = "Grant Expense deleted"
+				flash.message = "${message(code: 'default.deleted.label')}"
 				redirect(action:create,id:grantExpenseInstance.projects.id)
 			}
 		}
 		else{
-			flash.message = "Grant Expense not found with id ${params.id}"
+			flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
 		}
     }
@@ -96,14 +96,20 @@ class GrantExpenseController extends GmsController {
     	def grantExpenseSummaryList = grantExpenseService.getGrantExpenseTotalForAProject(projectsInstance)
         ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
         if(!grantExpenseInstance) {
-            flash.message = "Grant Expense not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
         else {
         	grantExpenseInstance.dateFrom = dateFrom
         	grantExpenseInstance.dateTo = dateTo
-        	
-            return [ 'projectsInstance':projectsInstance,'grantExpenseInstance' : grantExpenseInstance,'grantExpenseInstanceList':grantExpenseInstanceList,'grantExpenseSummaryList':grantExpenseSummaryList,'currencyFormat':currencyFormatter,'accountHeadList':accountHeadList ]
+        	NumberFormat formatter = new DecimalFormat("#0.00");
+            return [ 'projectsInstance':projectsInstance,
+                     'grantExpenseInstance' : grantExpenseInstance,
+                     'grantExpenseInstanceList':grantExpenseInstanceList,
+                     'grantExpenseSummaryList':grantExpenseSummaryList,
+                     'currencyFormat':currencyFormatter,
+                     'accountHeadList':accountHeadList,
+                     'amount':formatter.format(grantExpenseInstance.expenseAmount)]
         }
 		}
     }
@@ -113,7 +119,7 @@ class GrantExpenseController extends GmsController {
 		def grantExpenseInstance = grantExpenseService.updateGrantExpense(params)
         if(grantExpenseInstance) {
             if(grantExpenseInstance.isSaved){	
-                flash.message = " Expense Entry updated"
+                flash.message = "${message(code: 'default.updated.label')}"
                 redirect(action:create,id:grantExpenseInstance.projects.id)
             }
             else {
@@ -121,7 +127,7 @@ class GrantExpenseController extends GmsController {
             }
         }
         else {
-            flash.message = "Grant Expense not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:edit,id:params.id)
         }
     }
@@ -190,11 +196,13 @@ class GrantExpenseController extends GmsController {
 		}
         grantExpenseInstance.properties = params
         ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
+        NumberFormat formatter = new DecimalFormat("#0.00");
          return ['projectsInstance':projectsInstance,'grantExpenseInstance':grantExpenseInstance,
                  'grantExpenseInstanceList':grantExpenseInstanceList,
                  'grantExpenseSummaryList':grantExpenseSummaryList,
                  'grantAllocationInstanceList':grantAllocationInstanceList,
-                 'currencyFormat':currencyFormatter,'accountHeadList':accountHeadList]
+                 'currencyFormat':currencyFormatter,'accountHeadList':accountHeadList,
+                 'amount':formatter.format(grantExpenseInstance.expenseAmount)]
 		}
     	}
     	else {    			
@@ -209,7 +217,7 @@ class GrantExpenseController extends GmsController {
 		
 		grantExpenseInstance = grantExpenseService.saveGrantExpense(grantExpenseInstance) 
 		if(grantExpenseInstance.isSaved){
-            flash.message = "Expense details Created"
+            flash.message = "${message(code: 'default.created.label')}"
             redirect(action:create,id:grantExpenseInstance.projects.id,params:[grantExpenseId:grantExpenseInstance.id])
         }
         else {
@@ -284,7 +292,10 @@ class GrantExpenseController extends GmsController {
         ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
    	      print"projectsInstance.id"+projectsInstance.id   
    	   print"params"+params     
-   	return['projectsInstance':projectsInstance,'grantExpenseInstance':grantExpenseInstance,'grantExpenseInstanceList':grantExpenseInstanceList,'currencyFormat':currencyFormatter]
+   	return['projectsInstance':projectsInstance,
+   	       'grantExpenseInstance':grantExpenseInstance,
+   	       'grantExpenseInstanceList':grantExpenseInstanceList,
+   	       'currencyFormat':currencyFormatter]
 		}
     }
     
@@ -323,7 +334,9 @@ class GrantExpenseController extends GmsController {
     	/* Get summary of expenses */
     	def grantExpenseSummaryList = grantExpenseService.getGrantExpenseSummaryForAProject(projectsInstance)
     	ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
-        return ['projectsInstance':projectsInstance,'grantExpenseSummaryList':grantExpenseSummaryList,'currencyFormat':currencyFormatter]
+        return ['projectsInstance':projectsInstance,
+                'grantExpenseSummaryList':grantExpenseSummaryList,
+                'currencyFormat':currencyFormatter]
     }
     }
     
@@ -383,13 +396,15 @@ class GrantExpenseController extends GmsController {
         	grantExpenseInstance.dateFrom = dateFrom
         	grantExpenseInstance.dateTo = dateTo
             grantExpenseInstance.properties = params
+            NumberFormat formatter = new DecimalFormat("#0.00");
             ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
     		redirect(action:create,id:params.projects.id,'projectsInstance':projectsInstance,
     				'grantExpenseInstance':grantExpenseInstance,
                     'grantExpenseInstanceList':grantExpenseInstanceList,
                     'grantExpenseSummaryList':grantExpenseSummaryList,
                     'grantAllocationInstanceList':grantAllocationInstanceList,
-                    'currencyFormat':currencyFormatter,'accountHeadList':accountHeadList)
+                    'currencyFormat':currencyFormatter,'amount':formatter.format(grantExpenseInstance.expenseAmount),
+                    'accountHeadList':accountHeadList)
     		}
         	}
         	else {    			

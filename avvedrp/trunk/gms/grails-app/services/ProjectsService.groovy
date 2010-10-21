@@ -124,7 +124,7 @@ class ProjectsService{
 	
 	public Projects updateSubProject(def projectParams){
 		// updateProjectsPiMap(projectParams)
-		def projectsInstance = getProjectById(new Integer(projectParams.id ))
+		def projectsInstance = getProjectById(projectParams.id )
 		
         if(projectsInstance) {
         	projectsInstance.modifiedBy = "user";
@@ -611,12 +611,11 @@ class ProjectsService{
 			println "subqry  = "+subqry 
 			if(!subqry.equals(""))
 			{
-				grantAllocationInstanceList = GrantAllocation.findAll("from GrantAllocation GA where GA.party.id = "+ Party +" AND " + subqry)
+				grantAllocationInstanceList = GrantAllocation.findAll("from GrantAllocation GA where GA.party.id = "+ Party +" AND " + subqry+" GROUP BY GA.projects")
 			}
 			else
-			{
-				
-				grantAllocationInstanceList = GrantAllocation.findAll("from GrantAllocation GA where GA.party.id = "+ Party)
+			{	
+				grantAllocationInstanceList = GrantAllocation.findAll("from GrantAllocation GA where GA.party.id = "+ Party+" GROUP BY GA.projects")
 			}
 	
 		}

@@ -102,7 +102,7 @@
                             	
                             	<td>${projectEmployeeSalaryDetailsInstance.salaryComponent.Name}</td>
                                 
-                                <td><g:formatNumber number="${projectEmployeeSalaryDetailsInstance.salaryAmount}" format="###,##0.00" /></td>
+                                <td>${currencyFormat.ConvertToIndainRS(projectEmployeeSalaryDetailsInstance.salaryAmount)}</td>
                             	
                             	<td><g:formatDate format="MM/dd/yyyy" date="${projectEmployeeSalaryDetailsInstance.withEffectFrom}"/></td>
                         

@@ -26,7 +26,7 @@ class UserController extends GmsController {
 		redirect action: list, params: params
 	}
 
-	def list = {
+	 def list = {
 		
 		GrailsHttpSession gh=getSession()
         gh.removeValue("Help")
@@ -38,6 +38,7 @@ class UserController extends GmsController {
 		def userMapList
 		def userService = new UserService()
 		 String subQuery ="";
+		def authorityList = []
         //GrailsHttpSession gh=getSession()
         if(params.sort != null && !params.sort.equals(""))
         	subQuery=" order by UM."+params.sort
@@ -51,16 +52,35 @@ class UserController extends GmsController {
 		  {
 			  userMapList = userService.getAllUsersFromSite(getUserPartyID(),subQuery)
 		  }
-			  
-		
-		[userMapList: userMapList]
+		if(userMapList)
+		  {
+			 for(int i=0;i<userMapList.size();i++)		 
+			 {				 				 
+				 /*
+				  * 1.get userRoleInstance based on the user id
+				  * 2. get authorityInstsnce based on the role
+				  */
+				 
+				  def userRoleInstance = userService.getuserRole(userMapList[i].user.id)		  
+				  println "ROLE INSTANCE -->" + userRoleInstance.role
+					
+				  if(userRoleInstance.role)
+				  {
+					  def authorityInstsnce = userService.getauthority(userRoleInstance.role.id)
+					  println "AUTHORITY INSTANCE -->" +authorityInstsnce
+					  authorityList.add(authorityInstsnce)
+				  }
+			  }
+		   }
+		[userMapList: userMapList,authorityList:authorityList]	  
+ 
 	}
-
+	
 	def show = {
 		def userService = new UserService()
 		def person = userService.getUserById(new Integer(params.id))
 		if (!person) {
-			flash.message = "User not found with id $params.id"
+			flash.message = "${message(code: 'default.notfond.label')}"
 			redirect action: list
 			return
 		}
@@ -73,6 +93,10 @@ class UserController extends GmsController {
 	 * Person delete action. Before removing an existing person,
 	 * he should be removed from those authorities which he is involved.
 	 */
+	 
+
+	 
+	 
 	def delete = {
 
 		def userService = new UserService()
@@ -81,17 +105,17 @@ class UserController extends GmsController {
 			def authPrincipal = authenticateService.principal()
 			//avoid self-delete if the logged-in user is an admin
 			if (!(authPrincipal instanceof String) && authPrincipal.username == person.username) {
-				flash.message = "You can not delete yourself, please login as another admin and try again"
+				flash.message = "${message(code: 'default.cannotdeleteyourself.label')}"
 			}
 			else {
 				
 				//first, delete this person from People_Authorities table.
 				Integer userId = userService.deleteUser(person)
-				flash.message = "User ${params.username} deleted."
+				flash.message = "${message(code: 'default.deleted.label')}"
 				}
 		}
 		else {
-			flash.message = "User not found with id $params.id"
+			flash.message = "${message(code: 'default.notfond.label')}"
 		}
 
 		redirect action: list
@@ -105,7 +129,7 @@ class UserController extends GmsController {
 		def grantAllocationInstance = new GrantAllocation();
 		grantAllocationInstance.party=party;
 		if (!person) {
-			flash.message = "User not found with id $params.id"
+			flash.message = "${message(code: 'default.notfond.label')}"
 			redirect action: list
 			return
 		}
@@ -144,12 +168,12 @@ class UserController extends GmsController {
 		}
 		Integer personId = userService.updateUser(person,params)
 		if (!personId) {
-			flash.message = "User not found with id $params.id"
+			flash.message ="${message(code: 'default.notfond.label')}"
 			redirect action: edit, id: params.id
 		}
 			else
 			{
-				flash.message = "User ${params.username} updated successfully"
+				flash.message = "${message(code: 'default.updated.label')}"
 				redirect action:list,id:params.id
 			}
 		
@@ -185,7 +209,7 @@ class UserController extends GmsController {
 		println "+++++++++++++++++++++++++userInst++++++++++++++++++++++++++++"+ userId
 		if(userId)
 		{
-			flash.message = "User Name already exists"
+			flash.message = "${message(code: 'default.UserNamealreadyexists.label')}"
 			redirect action: create
 		}
 		def person = new Person()
@@ -194,7 +218,6 @@ class UserController extends GmsController {
 		person.userRealName=params.userRealName
 		person.email=params.email
 		person.password=params.password
-		
 		person.password = springSecurityService.encodePassword(params.password)
 		person.enabled=false
 		println "paswwod"+params.password
@@ -205,7 +228,7 @@ class UserController extends GmsController {
 	    if(personId != null){
 	    	String urlPath = request.getScheme() + "://" + request.getServerName() +":"+ request.getServerPort() + request.getContextPath()+"/user/userActivation/"
 	    	def emailId = notificationsEmailsService.sendMessage(params.email,params.password,params.userRealName,personId,urlPath)
-	    	flash.message = "User ${params.username} created"
+	    	flash.message = "${message(code: 'default.created.label')}"
 			redirect action: list, id: personId
 		}
 		else {
@@ -215,7 +238,7 @@ class UserController extends GmsController {
 		}
 		else
 		{
-			flash.message = "Please provide a valid email address"
+			flash.message = "${message(code: 'default.EntervalidEmailAddress.label')}"
 				def authorityList = userService.getRoles()
 			render view: 'create', model: [authorityList: authorityList, person: params]
 		}
@@ -235,7 +258,7 @@ class UserController extends GmsController {
 		def person = userService.getUserById(new Integer(params.id))
 		System.out.println("person  "+person)
 		if (!person) {
-			flash.message = "User not found with id $params.id"
+			flash.message ="${message(code: 'default.notfond.label')}"
 			redirect action: changePassword, id: params.id
 			return
 		}
@@ -252,7 +275,7 @@ class UserController extends GmsController {
 		def oldPasswd = springSecurityService.encodePassword(params.oldPasswd)
 		def oldPassword = person.password
 		if(!oldPasswd.equals(oldPassword)){
-			flash.message = "Old password not correct"
+			flash.message ="${message(code: 'default.Oldpasswordnotcorrect.label')}"
 			redirect action: changePassword, id: person.id
 		}
 		else{
@@ -262,11 +285,11 @@ class UserController extends GmsController {
 				
 				Integer personId = userService.updatePassword(person)
 				if(personId != null){
-					flash.message = "Password changed"
+					flash.message = "${message(code: 'default.Passwordchanged.label')}"
 					redirect action: changePassword, id: personId
 				}
 				else{
-					flash.message = "Password not changed"
+					flash.message = "${message(code: 'default.Passwordnotchanged.label')}"
 					render view: 'changePassword', model: [person: person]
 				}
 			}
@@ -285,7 +308,7 @@ class UserController extends GmsController {
 		def dataSecurityService = new DataSecurityService()
 		def person = dataSecurityService.getUserOfLoginUser(userId)
 		if (!person) {
-			flash.message = "User not found with id $params.id"
+			flash.message = "${message(code: 'default.notfond.label')}"
 			
 		}
 				
@@ -320,6 +343,7 @@ class UserController extends GmsController {
 		
 	}
 	def saveNewUser = {
+			println "+++++++++++++++++++++++++params++++++++++++++++++++++++++++"+ params
 			println "+++++=save new user+++++++++"
 			EmailValidator emailValidator = EmailValidator.getInstance()
 			if (emailValidator.isValid(params.email))
@@ -345,7 +369,7 @@ class UserController extends GmsController {
 			println "+++++++++++++++++++++++++userInst++++++++++++++++++++++++++++"+ userId
 			if(userId)
 			{
-				flash.message = "User Name already exists"
+				flash.message = "${message(code: 'default.UserNamealreadyexists.label')}"
 				redirect uri: '/user/newUserCreate.gsp'
 			}
 			else
@@ -383,7 +407,7 @@ class UserController extends GmsController {
 			println "+++++++++++++++++++++++++after call addParty++++++++++++++++++++++++++++" 
 			if((partyInstance.saveMode != null) && (partyInstance.saveMode.equals("Duplicate")))
 	       		 {
-	       			flash.message = "Institution Already Exists"
+	       			flash.message = "${message(code: 'default.InstitutionAlreadyExists.label')}"
 	               redirect uri: '/user/newUserCreate.gsp'
 	       		}
 			else
@@ -468,7 +492,7 @@ class UserController extends GmsController {
 			}
 			else
 			{
-				flash.message = "Please provide a valid email address"
+				flash.message = "${message(code: 'default.EntervalidEmailAddress.label')}"
 				
 				render(view: "newUserCreate", model: [person: params])
 			}
@@ -497,7 +521,8 @@ class UserController extends GmsController {
 	 * Action to change password
 	 */
 	def sendNewPassword = {
-			
+			if(params.email)
+			{
 			def userId = userService.getUserByUserName(params.email)
 			def ctx = AH.application.mainContext
 			def springSecurityService=ctx.springSecurityService
@@ -506,17 +531,55 @@ class UserController extends GmsController {
 			{
 				def userInstance = userService.getUserById(userId)
 				def subName=userInstance.username
-				String newPassword = subName.substring(0,subName.indexOf('@'))
-				String urlPath = request.getScheme() + "://" + request.getServerName() +":"+ request.getServerPort() + request.getContextPath()+"/user/userActivation/"
-				userInstance.password=springSecurityService.encodePassword(newPassword)
-				userInstance.enabled=false
-				userInstance.save()
-				def emailId = notificationsEmailsService.sendChangePassword(userInstance.email,newPassword,userInstance.username,userInstance.id,urlPath)
-				redirect uri: '/login/auth.gsp'
+				println userInstance.email
+				println "params.email"+params.email
+				String newPassword 
+				println "subName.indexOf('@') "+subName.indexOf('@')
+				if(subName.indexOf('@') < 0)
+				{
+				newPassword = subName.substring(0,1)
+				println "newPassword for invalid"+newPassword
+				
+				}
+				else
+				{
+					newPassword = subName.substring(0,subName.indexOf('@'))
+					println "newPassword"+newPassword
+					
+				}
+				EmailValidator emailValidator = EmailValidator.getInstance()
+					if(userInstance.email)
+					{
+						if (emailValidator.isValid(userInstance.email))
+						{
+							userInstance.password=springSecurityService.encodePassword(newPassword)
+							userInstance.enabled=false
+							userInstance.save()
+							String urlPath = request.getScheme() + "://" + request.getServerName() +":"+ request.getServerPort() + request.getContextPath()+"/user/userActivation/"
+							def emailId = notificationsEmailsService.sendChangePassword(userInstance.email,newPassword,userInstance.username,userInstance.id,urlPath)
+							redirect uri: '/user/forgotPasswordConfirm.gsp'
+						}
+						else
+						{
+							flash.message = "${message(code: 'default.noEmailAddressAssociated.label')}" 
+							render(view: "forgotPassword", model: [person: params])
+						}
+					}
+					else
+					{
+						flash.message = "${message(code: 'default.noEmailAddressAssociated.label')}" 
+						render(view: "forgotPassword", model: [person: params])
+					}
+				}
+				else
+				{
+					flash.message = "${message(code: 'default.enterValidUserName.label')}"
+					render(view: "forgotPassword", model: [person: params])
+				}
 			}
 			else
 			{
-				flash.message = "Please enter a valid username"
+				flash.message = "${message(code: 'default.enterValidUserName.label')}"
 				render(view: "forgotPassword", model: [person: params])
 			}
 	}
@@ -623,7 +686,9 @@ class UserController extends GmsController {
 				grantAllocationList=grantAllocationInstance
 			}
 			
-			render (template:"projectNameSelect", model : ['grantAllocationInstance' : grantAllocationList,'userMapInstance':userMapInstance,'projectInstance':projectInstance])
+			render (template:"projectNameSelect", model : ['grantAllocationInstance' : grantAllocationList,
+			                                               'userMapInstance':userMapInstance,
+			                                               'projectInstance':projectInstance])
 			}
 			else
 			{

@@ -114,46 +114,58 @@
 	 }
 
 else if(eval('typeof(document.frmreport)') != 'undefined')
-
 {
 	
-       document.HeadWiseExpendture.projectID.value=document.frmreport.projects.value;
-	 
-     
+      document.HeadWiseExpendture.projectID.value=document.frmreport.projects.value;
       document.HeadWiseExpendture.partyID.value=document.frmreport.party.value;
-  
-       document.HeadWiseExpendture.periodID.value=document.frmreport.grantPeriod.value;
-       
-       
-         document.ProjectWiseExpendture.projectID.value=document.frmreport.projects.value;
-  
-        document.ProjectWiseExpendture.partyID.value=document.frmreport.party.value;
-  
-        document.ProjectWiseExpendture.periodID.value=document.frmreport.grantPeriod.value;
-        
-        
-         document.HeadWiseExpendtureNEw.projectID.value=document.frmreport.projects.value;
-  
-        document.HeadWiseExpendtureNEw.partyID.value=document.frmreport.party.value;
-  
-         document.HeadWiseExpendtureNEw.periodID.value=document.frmreport.grantPeriod.value;
-        
-         document.GrandAgencyReport.partyID.value=document.frmreport.party.value;
-         document.GrandSummaryReport.partyID.value=document.frmreport.party.value;
-		  
-  
-       
-
-       
-         document.InstitutionWiseGrandAgencyReport.projectID.value=document.frmreport.projects.value;
-
-        document.InstitutionWiseGrandAgencyReport.partyID.value=document.frmreport.party.value;
-         document.ProjectAssosiate.partyID.value=document.frmreport.party.value;
+      
+      document.ProjectWiseExpendture.projectID.value=document.frmreport.projects.value;
+      document.ProjectWiseExpendture.partyID.value=document.frmreport.party.value;
+      
+      document.HeadWiseExpendtureNEw.projectID.value=document.frmreport.projects.value;
+      document.HeadWiseExpendtureNEw.partyID.value=document.frmreport.party.value;
+      
+      document.GrandAgencyReport.partyID.value=document.frmreport.party.value;
+      document.GrandSummaryReport.partyID.value=document.frmreport.party.value;
+      document.InstitutionWiseGrandAgencyReport.projectID.value=document.frmreport.projects.value;
+      document.InstitutionWiseGrandAgencyReport.partyID.value=document.frmreport.party.value;
+      document.ProjectAssosiate.partyID.value=document.frmreport.party.value;
          
-		
-        
+      var day;
+	  var month;
+	  var year;
+	  
+	  day=document.frmreport.reportDate_day.value;
+	  year=document.frmreport.reportDate_year.value;
+	  month=document.frmreport.reportDate_month.value;
+	 
+	  document.HeadWiseExpendture.reportDate.value = day+"/"+month+"/"+year;	  
+	  document.GrandAgencyReport.reportDate.value = day+"/"+month+"/"+year;
+	  document.HeadWiseExpendtureNEw.reportDate.value = day+"/"+month+"/"+year;
+	  document.GrandSummaryReport.reportDate.value = day+"/"+month+"/"+year;
+	  document.InstitutionWiseGrandAgencyReport.reportDate.value = day+"/"+month+"/"+year;
+	  document.ProjectAssosiate.reportDate.value = day+"/"+month+"/"+year;
+	  document.ProjectWiseExpendture.reportDate.value = day+"/"+month+"/"+year;
+	  
+	  var today;
+	  var tomonth;
+	  var toyear;
+	  
+	  today=document.frmreport.reportDateTo_day.value;
+	  toyear=document.frmreport.reportDateTo_year.value;
+	  tomonth=document.frmreport.reportDateTo_month.value;
+	  
+	  document.HeadWiseExpendture.reportDateTo.value = today+"/"+tomonth+"/"+toyear;
+      document.GrandAgencyReport.reportDateTo.value = today+"/"+tomonth+"/"+toyear;
+      document.HeadWiseExpendtureNEw.reportDateTo.value = today+"/"+tomonth+"/"+toyear;
+      document.GrandSummaryReport.reportDateTo.value = today+"/"+tomonth+"/"+toyear;
+      document.InstitutionWiseGrandAgencyReport.reportDateTo.value = today+"/"+tomonth+"/"+toyear;	
+      document.ProjectAssosiate.reportDateTo.value = today+"/"+tomonth+"/"+toyear;
+      document.ProjectWiseExpendture.reportDateTo.value = today+"/"+tomonth+"/"+toyear; 
 }
-else if(eval('typeof(document.frmGrantTrackingReport)') != 'undefined'){
+else if(eval('typeof(document.frmGrantTrackingReport)') != 'undefined')
+{
+	
 	document.GrantAllocationStatusReport.projectID.value = document.frmGrantTrackingReport.projects.value;
 	document.GrantAllocationStatusReport.grantStatus.value = document.frmGrantTrackingReport.grantAllocationStatus.value;
 	

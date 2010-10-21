@@ -36,8 +36,19 @@ class ProjectsController extends GmsController
 		
 		grantAllocationWithprojectsInstanceList = grantAllocationService
 													.getGrantAllocationGroupByProjects(gh.getValue("Party"))
+													
+		def  pIMapList =[]
+		def pIMapInstance
+
+		for(int i=0;i<grantAllocationWithprojectsInstanceList.size();i++)
+		{
+			pIMapInstance=projectsService.checkPIofProject(grantAllocationWithprojectsInstanceList[i].projects.id)
+			
+			pIMapList.add(pIMapInstance)
+			
+		}
 		
-		[ grantAllocationWithprojectsInstanceList: grantAllocationWithprojectsInstanceList ]
+		[ 'grantAllocationWithprojectsInstanceList': grantAllocationWithprojectsInstanceList,'pIMapList':pIMapList ]
     }
 	
 	def inactiveProjectsList = 
@@ -75,7 +86,7 @@ class ProjectsController extends GmsController
 		{
 			if(!projectsInstance) 
 			{
-				flash.message = "Projects not found with id ${params.id}"
+				flash.message = "${message(code: 'default.notfond.label')}"
 				redirect(action:list)
 			}
 			else 
@@ -98,11 +109,11 @@ class ProjectsController extends GmsController
 		{
 			if(projectId > 0)
 			{
-				 flash.message = "Project ${params.name} deleted"
+				 flash.message = "${message(code: 'default.deleted.label')}"
 			}
 			else
 			{
-				flash.message = "Grant allocation done for project ${params.name}. Not deleted"
+				flash.message = "${message(code: 'default.cannotDeleteProject.label')}"
 			}
 			if(projectsInstance.parent !=null)
 			{
@@ -115,7 +126,7 @@ class ProjectsController extends GmsController
 		}
 		else 
 		{
-            flash.message = "Project not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
 		}
     }
@@ -143,7 +154,7 @@ class ProjectsController extends GmsController
 		{
 			if(!projectsInstance) 
 			{
-				flash.message = "Project not found with id ${params.id}"
+				flash.message = "${message(code: 'default.notfond.label')}"
 				redirect(action:list)
 			}
 			else 
@@ -167,7 +178,7 @@ class ProjectsController extends GmsController
 		println"projectid"+projectid
 		if(!projectsInstance)
 		{
-			flash.message = "Project not found with id ${params.id}"
+			flash.message = "${message(code: 'default.notfond.label')}"
         	redirect(action:showSubProjects,id:params.parent.id)
 		}
 		else 
@@ -204,7 +215,7 @@ class ProjectsController extends GmsController
 		{
 			if(!projectsInstance)
 			{
-                flash.message = "Projects not found with id ${params.id}"
+                flash.message = "${message(code: 'default.notfond.label')}"
                 redirect(action:list)
 			}
 			else 
@@ -227,17 +238,17 @@ class ProjectsController extends GmsController
 			{
 				if(projectsInstance.saveMode.equals("Updated"))
 				{
-					flash.message = "Project ${params.name} updated"
+					flash.message ="" +projectsInstance.name+ "&nbsp;"+"${message(code: 'default.updated.label')}" 
 					redirect(action:list,id:projectsInstance.id)
 				}
 				else if(projectsInstance.saveMode.equals("Duplicate"))
 				{
-					flash.message = "Project Already Exists"
+					flash.message = "${message(code: 'default.AlreadyExists.label')}"
 					render(view:'edit',model:[projectsInstance:projectsInstance])
 					}
 				else if(projectsInstance.saveMode.equals("NotUpdated"))
 				{
-					flash.message = "Project can not update,"+investigatorInstance.email+" is already assinged as Investigator for this project"
+					flash.message = "${message(code: 'default.cannotupdate.label')}"+investigatorInstance.email+ "${message(code: 'default.alreadyassigned.label')}"
 						
 						render(view:'edit',model:[projectsInstance:projectsInstance])
 				}
@@ -249,7 +260,7 @@ class ProjectsController extends GmsController
 		}
 		else 
 		{
-			flash.message = "Project not found with id ${params.id}"
+			flash.message = "${message(code: 'default.notfond.label')}"
 			redirect(action:edit,id:params.id)
 		}
 	}
@@ -266,13 +277,13 @@ class ProjectsController extends GmsController
 			{
 				if(projectsInstance.saveMode.equals("Updated"))
 				{
-					flash.message = "Project ${params.name} updated"
+					flash.message = "${message(code: 'default.updated.label')}"
 					println"projectsInstance after"+projectsInstance
 					redirect(action:showSubProjects,id:projectsInstance.parent.id)
 				}
 				else if(projectsInstance.saveMode.equals("Duplicate"))
 				{
-					flash.message = "Project Already Exists"
+					flash.message = "${message(code: 'default.AlreadyExists.label')}"
 					render(view:'editsub',model:[projectsInstance:projectsInstance])
 				}
 			}
@@ -283,7 +294,7 @@ class ProjectsController extends GmsController
 		}
 		else 
 		{
-		    flash.message = "Project not found with id ${params.id}"
+		    flash.message = "${message(code: 'default.notfond.label')}"
 		    redirect(action:editsub,id:params.parent.id)
 		}
 	}
@@ -331,13 +342,13 @@ class ProjectsController extends GmsController
     	{
     		if(projectsInstance.saveMode.equals("Saved"))
     		{
-    			flash.message = "Project ${projectsInstance.name} created"
+    			flash.message = "${message(code: 'default.created.label')}"
     			gh.putValue("ProjectId",projectsInstance.id)
     			redirect(action:create,id:projectsInstance.id)
     		}
     		else if(projectsInstance.saveMode.equals("Duplicate"))
     		{
-    			flash.message = "Project Already Exists"
+    			flash.message = "${message(code: 'default.AlreadyExists.label')}"
     			render(view:'create',model:[projectsInstance:projectsInstance])
     		}
     	}
@@ -366,18 +377,18 @@ class ProjectsController extends GmsController
     	{
     		if(projectsInstance.saveMode.equals("Saved"))
     		{
-    			flash.message = "Project ${projectsInstance.name} created"
+    			flash.message = "${message(code: 'default.created.label')}"
     			redirect(action:showSubProjects,id:projectsInstance.parent.id)
     		}
     		else if(projectsInstance.saveMode.equals("Duplicate"))
     		{
-    			flash.message = "Project Already Exists"
+    			flash.message = "${message(code: 'default.AlreadyExists.label')}"
     			render(view:'showSubProjects',model:[projectsInstance:projectsInstance])
     		}
     	}
     	else
     	{
-    		flash.message = "Project Already Exists"
+    		flash.message = "${message(code: 'default.AlreadyExists.label')}"
     		render(view:'showSubProjects',model:[projectsInstance:projectsInstance])
     	}
     }
@@ -426,7 +437,9 @@ class ProjectsController extends GmsController
 	        
 	        projectsInstanceList=projectsService.getActiveSubProjects(new Integer(params.id),subQuery)
 	        def grantAllocationInstance = GrantAllocation.find("from GrantAllocation  GA where  GA.projects="+params.id);
-	        return ['projectsInstance':projectsInstance,'projectsInstanceList':projectsInstanceList,'grantAllocationInstance':grantAllocationInstance]
+	        return ['projectsInstance':projectsInstance,
+	                'projectsInstanceList':projectsInstanceList,
+	                'grantAllocationInstance':grantAllocationInstance]
 		}
     }
     
@@ -443,7 +456,7 @@ class ProjectsController extends GmsController
 			println "grantAllocationWithprojectsInstanceList :"+grantAllocationWithprojectsInstanceList
 			if(grantAllocationWithprojectsInstanceList.size()==0)
 			{
-				flash.message = "You are not authorized to acsess this project"
+				flash.message = "${message(code: 'default.notAuthorizedAccess.label')}"
 				return -1;
 			}
 			else
@@ -467,7 +480,7 @@ class ProjectsController extends GmsController
     	def grantAllocationInstanceList = projectsService.searchProjects(projectsInstance,gh.getValue("Party"));
 		if (grantAllocationInstanceList.size()==0 )
 		{
-			 flash.message = "No records based on the entered criteria"
+			 flash.message = "${message(code: 'default.notfond.label')}"
 		}
 		render(view:'search',model:['grantAllocationInstanceList':grantAllocationInstanceList])  
     }

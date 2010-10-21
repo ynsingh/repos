@@ -26,7 +26,7 @@ class GrantReceiptController extends GmsController {
         def grantReceiptInstance = grantReceiptService.getGrantReceiptById(new Integer(params.id))
 
         if(!grantReceiptInstance) {
-            flash.message = "GrantReceipt not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
         else { return [ grantReceiptInstance : grantReceiptInstance ] }
@@ -38,12 +38,12 @@ class GrantReceiptController extends GmsController {
 		
 		if(projectid != null){
 			if(projectid > 0){
-				flash.message = "GrantReceived deleted"
+				flash.message = "${message(code: 'default.deleted.label')}"
 					redirect(action:create,id:projectid)
 			}
 		}
 		else {
-            flash.message = "GrantReceipt not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
 		}
     }
@@ -91,16 +91,17 @@ class GrantReceiptController extends GmsController {
 		else
 		{
         if(!grantReceiptInstance) {
-            flash.message = "GrantReceipt not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
         else {
+        	NumberFormat formatter = new DecimalFormat("#0.00");
         	def totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(grantReceiptInstance.projects.id,getUserPartyID())
         	def totalAmountReceived = grantReceiptService.getSumOfGrantReceviedByProjects(grantReceiptInstance.projects.id)
             grantReceiptInstance.balanceAmt = totAllAmount - totalAmountReceived + grantReceiptInstance.amount
             return [ grantReceiptInstance : grantReceiptInstance,accountHeadList:accountHeadList,
                      grantAllocationInstanceList:grantAllocationInstanceList,
-                     fundTransferInstanceList:fundTransferInstanceList]
+                     fundTransferInstanceList:fundTransferInstanceList,amount:formatter.format(grantReceiptInstance.amount)]
         }
 		}
     }
@@ -110,7 +111,7 @@ class GrantReceiptController extends GmsController {
         def grantReceiptInstance = grantReceiptService.updateGrantReceipt(params)
         if(grantReceiptInstance) {
         	if(grantReceiptInstance.isSaved){
-        		flash.message = "Grant Recieved updated"
+        		flash.message = "${message(code: 'default.updated.label')}"
     			redirect(action:create,id:grantReceiptInstance.projects.id)
         	}
         	else {
@@ -118,19 +119,20 @@ class GrantReceiptController extends GmsController {
             }
         }
         else {
-            flash.message = "GrantReceipt not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:edit,id:params.id)
         }
     }
 
     def create = {
+			println "params="+params
 		def grantReceiptService = new GrantReceiptService();
 		def grantAllocationService = new GrantAllocationService()
     	def grantAllocationSplitService=new GrantAllocationSplitService()	
         def grantReceiptInstance = new GrantReceipt()
         GrailsHttpSession gh=getSession()
         gh.removeValue("Help")
-       		//putting help pages in session
+       	//putting help pages in session
        	gh.putValue("Help","Grant_Receipt.htm")
 		if(params.grantReceiptInstanceId)
 		{
@@ -215,10 +217,11 @@ class GrantReceiptController extends GmsController {
         	summaryList =  grantReceiptService.getGrantReceiptSummary(params.id)
         }
         //def grantRecieptInstanceList=grantReceiptService.getGrantReceiptBySort(params.id,subQuery)
-         
+        NumberFormat formatter = new DecimalFormat("#0.00") 
         grantReceiptInstance.balanceAmt = projectsInstance.totAllAmount - totalAmountReceived
         println "grantAllocationInstanceList"+grantAllocationInstanceList.size()
         grantReceiptInstance.grantAllocation = grantAllocationInstanceList[0]
+        
         
         ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
         return ['grantReceiptInstance':grantReceiptInstance,
@@ -227,7 +230,8 @@ class GrantReceiptController extends GmsController {
                 'grantAllocationInstanceList':grantAllocationInstanceList,
                 'accountHeadList':accountHeadList,
                 'currencyFormat':currencyFormatter,
-                'fundTransferInstanceList':fundTransferInstanceList]
+                'fundTransferInstanceList':fundTransferInstanceList,
+                ,'amount':formatter.format(grantReceiptInstance.amount)]
 		}
     }
 
@@ -237,12 +241,16 @@ class GrantReceiptController extends GmsController {
     	def grantAllocationService = new GrantAllocationService()
         def grantReceiptInstance = new GrantReceipt(params)
         def fundTransferInstance = new FundTransfer()
-    	
-        if(params.fundTransfer)
+    	def grantReceiptInstanceCheck 
+    	println "grantReceiptInstanceCheck ="+grantReceiptInstanceCheck
+    	if(params.fundTransfer)
         {
-        	println"params.fundTransfer.id"+params.fundTransfer.id
-        	if(!params.fundTransfer.id == null)
+        	
+        	if(params.fundTransfer.id != "null")
+        	{
         		fundTransferInstance = FundTransfer.get(new Integer(params.fundTransfer.id))
+        		grantReceiptInstanceCheck = GrantReceipt.find("from GrantReceipt where fundTransfer.id="+params.fundTransfer.id)
+        	}
         }
         if(!grantReceiptInstance.hasErrors() ) {
         	
@@ -254,6 +262,7 @@ class GrantReceiptController extends GmsController {
     	    if(fundTransferInstance)
     	    {
     	    	grantReceiptInstance.fundTransfer = fundTransferInstance
+    	    	//grantReceiptInstance.amount=fundTransferInstance.amount
     	    }
     	    println "grantReceiptInstance*** in controller" +grantReceiptInstance.fundTransfer
     	    
@@ -284,13 +293,20 @@ class GrantReceiptController extends GmsController {
     				fundTransferInstanceList[i].amountCode=transferDate + "-" + numformatter.format(fundTransferInstanceList[i].amount)
     	    	}
     		}
-    	    
+    	    if(!grantReceiptInstanceCheck)
+    	    {
     	    grantReceiptInstance = grantReceiptService.saveGrantReceipt(grantReceiptInstance,new Integer(params.projectId))
         	flash.message = "Grant Recieved"
         	redirect(action:create,id:grantReceiptInstance.projects.id,
         			params:[grantReceiptInstanceId:grantReceiptInstance.id],
         			        'fundTransferInstanceList':fundTransferInstanceList,
         			        'grantAllocationInstanceList':grantAllocationInstanceList)
+    	    }
+    	    else
+    	    {
+    	    	flash.message = "${message(code: 'default.Amountalreadyreceived.label')}"
+    	    	redirect(action:create,id:params.projectId)
+    	    }
         }
         else {
             render(view:'create',model:[grantReceiptInstance:grantReceiptInstance])
@@ -340,7 +356,51 @@ class GrantReceiptController extends GmsController {
             def summaryList =  grantReceiptService.getGrantReceiptSummary(params.projectId)
             grantReceiptInstance.grantAllocation = grantAllocationInstanceList[0]
             ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
-            redirect(action:create,id:params.projectId,'grantReceiptInstance':grantReceiptInstance,'grantReceiptInstanceList':grantReceiptList,'summaryList':summaryList,'grantAllocationInstanceList':grantAllocationInstanceList,'accountHeadList':accountHeadList,'currencyFormat':currencyFormatter)
+            NumberFormat formatter = new DecimalFormat("#0.00")
+            redirect(action:create,id:params.projectId,
+            		'grantReceiptInstance':grantReceiptInstance,
+            		'grantReceiptInstanceList':grantReceiptList,
+            		'summaryList':summaryList,
+            		'grantAllocationInstanceList':grantAllocationInstanceList,
+            		'accountHeadList':accountHeadList,'currencyFormat':currencyFormatter,
+            		'amount':formatter.format(grantReceiptInstance.amount)
+            		)
     		}
         }
+	def selectAmount = {
+			println params
+			def fundTransferInstance = new FundTransfer()
+			def grantReceiptInstanceCheck = GrantReceipt.findAll("from GrantReceipt where fundTransfer.id="+params.id)
+			  
+			if(params.id != "null")
+			{	
+				if(grantReceiptInstanceCheck)
+				{
+					println "grant receipt against fund transfer"
+					def numformatter = new DecimalFormat("#0.00");
+                    render(text:"<input type='text' id='amount' name='amount' value='0.00' style='text-align: right' readOnly=true /><font face='verdana' color='#C00000'>Transferred fund already received</font>", contentType:'text/html')
+
+
+				
+				}
+				else
+				{
+					fundTransferInstance = FundTransfer.get(params.id)
+					println "no --- grant receipt against fund transfer"
+					def numformatter = new DecimalFormat("#0.00");
+				    println numformatter.format(fundTransferInstance.amount) 
+						render(text:"<input type='text' id='amount' name='amount' value='${numformatter.format(fundTransferInstance.amount)}' style='text-align: right' readOnly=true />", contentType:'text/html')
+
+				
+				}
+			}
+			else
+			{
+				def grantReceiptInstance=new GrantReceipt()
+				def numformatter = new DecimalFormat("#0.00");
+				println numformatter.format(grantReceiptInstance.amount.amount) 
+				render(text:"<input type='text' id='amount' name='amount' value='${numformatter.format(grantReceiptInstance.amount)}' style='text-align: right' readOnly=true />", contentType:'text/html')
+			}
+			
+	}
 }

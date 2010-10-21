@@ -81,7 +81,7 @@
                      	</tr>
               			<tr class="prop">
                           <td valign="top" class="name"><g:message code="default.ApplicationForm.label"/></td>
-                          <td><a href="${g.createLink(controller:'proposalApplication',action:'applicationForm')}"><g:message code="default.View.label"/></a></td>
+                          <td><a href="${g.createLink(controller:'proposalApplication',action:'applicationForm',params:[id:proposalInstance.notification.id,applicationFormView:'notificationView'])}"><g:message code="default.View.label"/></a></td>
                         </tr>
                         
                     </tbody>

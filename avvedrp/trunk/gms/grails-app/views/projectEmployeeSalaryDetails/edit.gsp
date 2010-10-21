@@ -45,8 +45,7 @@
 		                                </td>
 		                                <td valign="top" 
 		                                	class="value ${hasErrors(bean: projectEmployeeSalaryDetailsInstance, field:'salaryAmount','errors')}">
-		                                    <g:textField name="salaryAmount" 
-		                                    	value="${projectEmployeeSalaryDetailsInstance.salaryAmount}" />
+		                                    <g:textField name="salaryAmount" value="${amount}" />
 		                                </td>
 		                             </tr>
 		                        	                            	                        

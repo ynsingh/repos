@@ -29,7 +29,7 @@ class UserMapController {
 		def userMapInstance = userService.getUserMapById(new Integer(params.id))
 
         if(!userMapInstance) {
-            flash.message = "UserMap not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
         else { return [ userMapInstance : userMapInstance ] }
@@ -39,11 +39,11 @@ class UserMapController {
         def userService = new UserService()
         Integer userMapId = userService.deleteUserMap(new Integer(params.id))
         if(userMapId != null){
-            flash.message = "User Mapping  deleted"
+            flash.message = "${message(code: 'default.deleted.label')}"
             redirect(action:create)
         }
         else {
-            flash.message = "UserMap not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
     }
@@ -53,7 +53,7 @@ class UserMapController {
 		def userMapInstance = userService.getUserMapById(new Integer(params.id))
 
         if(!userMapInstance) {
-            flash.message = "UserMap not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
         else {
@@ -67,11 +67,11 @@ class UserMapController {
 		if(userMapInstance){
 			if(userMapInstance.saveMode != null){
 				if(userMapInstance.saveMode.equals("Updated")){
-					flash.message = "User Map details updated"
+					flash.message = "${message(code: 'default.updated.label')}"
 	                redirect(action:create,id:userMapInstance.id)
 				}
 				else if(userMapInstance.saveMode.equals("Duplicate")){
-					flash.message = "User Map already exists"
+					flash.message = "${message(code: 'default.UserMapexists.label')}"
 					render(view:'edit',model:[userMapInstance:userMapInstance])
 				}
 			}
@@ -80,7 +80,7 @@ class UserMapController {
             }
 		}
 		else {
-            flash.message = "UserMap not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:edit,id:params.id)
         }
     }
@@ -104,13 +104,15 @@ class UserMapController {
         /* Get users assigned to projects */
         def userMapInstanceList = dataSecurityService.getUsersAssignedToProjects(gh.getValue("Role"),gh.getValue("ProjectID"))
         
-        return ['userMapInstance':userMapInstance,userMapInstanceList: userMapInstanceList,userInstanceList:userInstanceList,projectsInstanceList:projectsInstanceList,partyInstanceList:partyInstanceList]
+        return ['userMapInstance':userMapInstance,userMapInstanceList: userMapInstanceList,
+                userInstanceList:userInstanceList,projectsInstanceList:projectsInstanceList,
+                partyInstanceList:partyInstanceList]
     }
 
     def save = {
         def userMapInstance = new UserMap(params)
         if(!userMapInstance.hasErrors() ) {
-            flash.message = "User Mapped to Project"
+            flash.message ="${message(code: 'default.UserMappedtoProject.label')}"
             
     	    userMapInstance.createdBy="admin"
     		userMapInstance.modifiedBy="admin"
@@ -122,7 +124,7 @@ class UserMapController {
     				userMapInstance.save()
     			}
     			else{
-        			flash.message = "User Already Mapped to Project"
+        			flash.message = "${message(code: 'default.UserAlreadyMappedtoProject.label')}"
         		}
     		}
 			redirect(action:create)

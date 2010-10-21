@@ -87,7 +87,8 @@
                                              <label for="expenseAmount"><g:message code="default.ExpenseAmount(Rs).label"/></label> 
                                          </td>
                                          <td valign="top" class="value ${hasErrors(bean:grantExpenseInstance,field:'expenseAmount','errors')}"> 
-                                             <input type="text" id="expenseAmount" name="expenseAmount" value="${grantExpenseInstance.expenseAmount}" style="text-align: right" /> 
+                                             <input type="text" id="expenseAmount" name="expenseAmount" value="${amount}" style="text-align: right" />
+                                 
                                          </td>
                                     </tr>
                 
@@ -170,7 +171,7 @@
                                          <label for="dateOfExpense"><g:message code="default.DateFrom.label"/></label> 
                                     </td>
                                     <td> 
-                                         <calendar:datePicker name="dateFrom" defaultValue="${new Date()}" value="${grantExpenseInstance.dateFrom}" dateFormat= "%d/%m/%Y"/> 
+                                         <calendar:datePicker name="dateFrom" defaultValue="${new Date()}" value="${projectsInstance?.projectStartDate}" dateFormat= "%d/%m/%Y"/> 
                                          <g:hiddenField name="id" value="${grantExpenseInstance?.projects?.id}" /> 
                                     </td>
                                 </tr>

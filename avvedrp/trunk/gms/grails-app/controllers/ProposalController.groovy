@@ -1,11 +1,12 @@
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
+import grails.converters.JSON
 class ProposalController {
     
     def index = { redirect(action:list,params:params) }
 
     // the delete, save and update actions only accept POST requests
     def allowedMethods = [delete:'POST', save:'POST', update:'POST']
-
+    def proposalService
     def list = 
     {
         if(!params.max) params.max = 10
@@ -19,7 +20,7 @@ class ProposalController {
 
         if(!proposalInstance) 
         {
-            flash.message = "Proposal not found"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
         else 
@@ -41,12 +42,12 @@ class ProposalController {
         if(proposalInstance) 
         {
             proposalInstance.delete()
-            flash.message = "Proposal deleted"
+            flash.message = "${message(code: 'default.deleted.label')}"
             redirect(action:create,id:proposalInstance.notification.id)
         }
         else 
         {
-            flash.message = "Proposal not found"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:create)
         }
     }
@@ -57,7 +58,7 @@ class ProposalController {
 
         if(!proposalInstance) 
         {
-            flash.message = "Proposal not found"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:create)
         }
         else
@@ -74,7 +75,7 @@ class ProposalController {
             proposalInstance.properties = params
             if(!proposalInstance.hasErrors() && proposalInstance.save()) 
             {
-                flash.message = "Proposal updated"
+                flash.message = "${message(code: 'default.updated.label')}"
                 redirect(action:create,id:proposalInstance.notification.id)
             }
             else 
@@ -83,7 +84,7 @@ class ProposalController {
             }
         }
         else {
-            flash.message = "Proposal not found "
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:edit,id:params.id)
         }
     }
@@ -121,6 +122,7 @@ class ProposalController {
 
     def save =
     {
+    		def applicationFormView='proposalView'
     		GrailsHttpSession gh = getSession()
     		def proposalNotificationInstance = Proposal.find("from Proposal P where P.notification="+params.id+" and P.party="+gh.getValue("Party")+" and P.lockedYN='N'")
     	if(!proposalNotificationInstance)
@@ -151,16 +153,19 @@ class ProposalController {
         if(proposalNotificationInstance)
         {
         	gh.putValue("ProposalId",proposalNotificationInstance.id)
-        	flash.message = "Proposal allready created for this notification"
+        	flash.message = "${message(code: 'default.Proposalalreadycreated.label')}"
         	println "Proposal allready created for this notification"
-        	redirect(controller:"proposalApplication",action:"applicationForm",params:[id:proposalInstance.notification.id,proposalId:proposalInstance.id])
+        	redirect(controller:"proposalApplication",action:"applicationForm",
+        			params:[id:proposalInstance.notification.id,proposalId:proposalInstance.id])
         }
         else if(!proposalInstance.hasErrors() && proposalInstance.save())
         {
         	gh.putValue("ProposalId",proposalInstance.id)
-            flash.message = "Proposal created Successfully"
+            flash.message = "${message(code: 'default.created.label')}"
             println "Proposal created Successfully"
-            redirect(controller:"proposalApplication",action:"applicationForm",params:[id:proposalInstance.notification.id,proposalId:proposalInstance.id])
+            redirect(controller:"proposalApplication",action:"applicationForm",
+            		params:[id:proposalInstance.notification.id,proposalId:proposalInstance.id,
+            		        applicationFormView:applicationFormView])
         }
         else 
         {
@@ -170,7 +175,7 @@ class ProposalController {
     	}
     	else
     	{
-    		flash.message = "Proposal already submitted"
+    		flash.message = "${message(code: 'default.Proposalalreadysubmitted.label')}"
     		redirect(controller:"notificationsEmails",action:"partyNotificationsList")
     	}
     }
@@ -178,17 +183,19 @@ class ProposalController {
     {
     		println "Notification Id="+params.id
     		def notificationInstance = Notification.get(params.id)
-    		def proposalInstanceList = Proposal.findAll("from Proposal P where P.notification.id="+params.id+" and P.lockedYN='N'")
+    		def proposalInstanceList = proposalService.getProposalByNotification(params.id)
+    		println "proposalInstanceList.size()"+proposalInstanceList.size()
     		if(proposalInstanceList)
     		{
     		return [ proposalInstanceList: proposalInstanceList ]
     		}
     		else
     		{
-    			flash.message = "No Proposal for Notification "+notificationInstance.notificationCode
+    			flash.message =" ${message(code: 'default.NoProposal.label')} "+notificationInstance.notificationCode
     			redirect(controller:'notification',action:'list')
     		}
     }
+    
     def submitProposal = 
     {
     		println "Submit*******"
@@ -207,7 +214,7 @@ class ProposalController {
     	        println "++++++++++documentType++++++"+ params.documentType
     	        if(!proposalInstance.hasErrors() && proposalInstance.save())
     	        {
-    	            flash.message = "Proposal created and Submited Successfully for project ${proposalInstance.notification.project.name}"
+    	            flash.message = "${message(code: 'default.ProposalSibmitted.label')}" +proposalInstance.notification.project.name
     	            redirect(controller:'notificationsEmails',action:'partyNotificationsList',id:proposalInstance.notification.id)
     	        }
     	        else 
@@ -225,7 +232,7 @@ class ProposalController {
     	            proposalInstance.lockedYN='N'
     	            if(!proposalInstance.hasErrors() && proposalInstance.save()) 
     	            {
-    	                flash.message = "Proposal Submited for Notification of Project ${proposalInstance.notification.project.name}"
+    	                flash.message = "${message(code: 'default.ProposalSibmitted.label')}" +proposalInstance.notification.project.name
     	                redirect(controller:'notificationsEmails',action:'partyNotificationsList',id:proposalInstance.notification.id)
     	            }
     	            else 
@@ -234,7 +241,7 @@ class ProposalController {
     	            }
     	        }
     	        else {
-    	            flash.message = "Proposal not found"
+    	            flash.message = "${message(code: 'default.notfond.label')}"
     	            redirect(action:edit,id:params.id)
     	        }
     		}
@@ -245,7 +252,7 @@ class ProposalController {
 
             if(!proposalInstance) 
             {
-                flash.message = "Proposal not found"
+                flash.message = "${message(code: 'default.notfond.label')}"
                 redirect(action:list)
             }
             else 

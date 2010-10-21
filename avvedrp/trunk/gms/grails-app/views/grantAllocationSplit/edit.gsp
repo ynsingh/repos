@@ -86,7 +86,7 @@
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:grantAllocationSplitInstance,field:'amount','errors')}">
                                     <input type="text" id="amount" name="amount" 
-                                    value="${grantAllocationSplitInstance.amount}" style="text-align: right" />
+                                    value="${amount}" style="text-align: right" />
                                 </td>
                             </tr> 
                             <tr >

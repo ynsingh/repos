@@ -17,7 +17,7 @@ class GrantAllocationTrackingController {
         def grantAllocationTrackingInstance = GrantAllocationTracking.get( params.id )
 
         if(!grantAllocationTrackingInstance) {
-            flash.message = "GrantAllocationTracking not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
         else { return [ grantAllocationTrackingInstance : grantAllocationTrackingInstance ] }
@@ -27,11 +27,11 @@ class GrantAllocationTrackingController {
         def grantAllocationTrackingInstance = GrantAllocationTracking.get( params.id )
         if(grantAllocationTrackingInstance) {
             grantAllocationTrackingInstance.delete()
-            flash.message = "GrantAllocationTracking ${params.id} deleted"
+            flash.message = "${message(code: 'default.deleted.label')}"
             redirect(action:list)
         }
         else {
-            flash.message = "GrantAllocationTracking not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
     }
@@ -40,7 +40,7 @@ class GrantAllocationTrackingController {
         def grantAllocationTrackingInstance = GrantAllocationTracking.get( params.id )
 
         if(!grantAllocationTrackingInstance) {
-            flash.message = "GrantAllocationTracking not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
         else {
@@ -53,7 +53,7 @@ class GrantAllocationTrackingController {
         if(grantAllocationTrackingInstance) {
             grantAllocationTrackingInstance.properties = params
             if(!grantAllocationTrackingInstance.hasErrors() && grantAllocationTrackingInstance.save()) {
-                flash.message = "Grant Allocation Tracking ${params.id} updated"
+                flash.message = "${message(code: 'default.updated.label')}"
                 redirect(action:create,id:grantAllocationTrackingInstance.grantAllocation.id)
             }
             else {
@@ -62,7 +62,7 @@ class GrantAllocationTrackingController {
             }
         }
         else {
-            flash.message = "Grant Allocation Tracking not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
         	redirect(action:create,id:params.grantAllocation.id)
         }
     }
@@ -83,7 +83,10 @@ class GrantAllocationTrackingController {
             grantAllocationTrackingInstance.properties = params
     	}
     	grantAllocationTrackingInstance.trackType = params.trackType
-        return ['grantAllocationInstance':grantAllocationInstance, 'grantAllocationTrackingInstance':grantAllocationTrackingInstance]
+    	ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
+        return ['grantAllocationInstance':grantAllocationInstance,
+                'currencyFormat':currencyFormatter,
+                'grantAllocationTrackingInstance':grantAllocationTrackingInstance]
     }
 
     def save = {
@@ -95,7 +98,7 @@ class GrantAllocationTrackingController {
 		def grantAllocationTrackingInstance = grantAllocationService.saveOrUpdateGrantAllocationTracking(params)
 		if(grantAllocationTrackingInstance){
 			if(grantAllocationTrackingInstance.saveMode != null){
-				flash.message = "Grant Allocation ${grantAllocationTrackingInstance.grantAllocationStatus} "
+				flash.message = "${message(code: 'default.GrantAllocation.label')}" +grantAllocationTrackingInstance.grantAllocationStatus 
 				redirect(action:create,id:grantAllocationTrackingInstance.grantAllocation.id,params:[trackType:params.trackType])
 			}
 			else{

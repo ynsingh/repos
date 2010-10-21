@@ -25,7 +25,7 @@ class PersonController {
 	def show = {
 		def person = Person.get(params.id)
 		if (!person) {
-			flash.message = "Person not found with id $params.id"
+			flash.message = "${message(code: 'default.notfond.label')}"
 			redirect action: list
 			return
 		}
@@ -50,17 +50,17 @@ class PersonController {
 			def authPrincipal = authenticateService.principal()
 			//avoid self-delete if the logged-in user is an admin
 			if (!(authPrincipal instanceof String) && authPrincipal.username == person.username) {
-				flash.message = "You can not delete yourself, please login as another admin and try again"
+				flash.message = "${message(code: 'default.cannotdeleteyourself.label')}"
 			}
 			else {
 				//first, delete this person from People_Authorities table.
 				Authority.findAll().each { it.removeFromPeople(person) }
 				person.delete()
-				flash.message = "Person $params.id deleted."
+				flash.message = "${message(code: 'default.deleted.label')}"
 			}
 		}
 		else {
-			flash.message = "Person not found with id $params.id"
+			flash.message = "${message(code: 'default.notfond.label')}"
 		}
 
 		redirect action: list
@@ -70,7 +70,7 @@ class PersonController {
 
 		def person = Person.get(params.id)
 		if (!person) {
-			flash.message = "Person not found with id $params.id"
+			flash.message = "${message(code: 'default.notfond.label')}"
 			redirect action: list
 			return
 		}
@@ -85,7 +85,7 @@ class PersonController {
 
 		def person = Person.get(params.id)
 		if (!person) {
-			flash.message = "Person not found with id $params.id"
+			flash.message = "${message(code: 'default.notfond.label')}"
 			redirect action: edit, id: params.id
 			return
 		}

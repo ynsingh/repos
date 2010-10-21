@@ -6,7 +6,7 @@ class ProjectDepartmentMapService {
     {
     	def partyDepartmentList
     	if(partyId)
-    		partyDepartmentList = PartyDepartment.findAll("from PartyDepartment PD where PD.party.id="+partyId)
+    		partyDepartmentList = PartyDepartment.findAll("from PartyDepartment PD where PD.party.id="+partyId+"and PD.activeYesNo='Y'")
     	return partyDepartmentList;
     }
     public ProjectDepartmentMap[] getProjectDepartmentMapList(def partyId)

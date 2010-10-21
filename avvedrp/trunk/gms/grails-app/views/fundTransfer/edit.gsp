@@ -57,7 +57,7 @@
                                     <label for="amount"><g:message code="fundTransfer.amounttransferred.label" />:</label>
                                 </td>
                                 <td valign="top" class="name">
-                                	<g:textField name="amount" value="${fundTransferInstance?.amount}" />
+                                	<g:textField name="amount" value="${amount}" />
                         		</td>
                         	</tr>                             
                             <tr class="prop">
@@ -73,7 +73,7 @@
                     </table>
                 </div>
                 <div class="buttons">
-                    <span class="button"><g:actionSubmit class="save" action="update" value="${message(code: 'default.button.update.label', default: 'Update')}" /></span>
+                    <span class="button"><g:actionSubmit class="save" action="update" value="${message(code: 'default.button.update.label', default: 'Update')}" onClick="return validateFundTransffered()"/></span>
                    
                 </div>
                 </div>

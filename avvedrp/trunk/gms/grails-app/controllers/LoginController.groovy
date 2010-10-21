@@ -53,8 +53,10 @@ class LoginController {
 		          
 		      println PartyID
 		      gh.putValue("Party", PartyID);
+	          gh.putValue("Help","Project_List.htm")
 	          gh.putValue("PartyID","('"+ PartyID.toString()+"')");
-			redirect uri:'/grantAllocation/gmsFrame.gsp'
+	          redirect uri:'/grantAllocation/gmsFrame.gsp'
+			
 				 gh.putValue("Role", role);
 			//redirect uri: SpringSecurityUtils.securityConfig.successHandler.defaultTargetUrl
 		}

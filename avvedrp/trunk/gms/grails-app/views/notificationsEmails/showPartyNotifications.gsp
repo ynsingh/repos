@@ -110,23 +110,7 @@
                     </tbody>
                 </table>
             </div>
-            <g:if test="${!proposalInstance}">
-            <div class="singlebutton">
-            					
-                     			<g:form controller="proposal" action="create" id="${fieldValue(bean:notificationsInstance, field:'id')}">  
-                     			<span class="button"><g:actionSubmit value="Create Proposal" action="create"/> </span> 
-                     			</g:form> 
-                     			
-                     			
-                     		</div>
-                     		</g:if>
-                     			<g:else>
-                     			<%--<div class="message">Proposal Submited for this Notification</div>
-                     			
-                     			<h1 style="color:33CCFF">Proposal Submited for this Notification</h1>
-                     			--%>
-                     			<modalbox:createLink controller = "proposal" action="showProposal" id="${notificationsInstance.id}" title="Proposal" width="500">Show Submited Proposal</modalbox:createLink>
-                     			</g:else>
+            
            
              </div>
               </div>

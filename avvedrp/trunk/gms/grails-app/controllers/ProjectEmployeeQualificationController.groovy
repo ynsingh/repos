@@ -42,13 +42,16 @@ class ProjectEmployeeQualificationController
         def employeeDesignationInstance = EmployeeDesignation.get(params.id)
         if (projectEmployeeQualificationInstance.save(flush: true)) 
         {
-        	flash.message ="New Qualification ${params.examname} is Created" 
+        	flash.message ="${message(code: 'default.created.label')}"
             redirect(action: "create", id: projectEmployeeInstance.id)
         }
         else 
         {
         	println "not created"
-            render(view: "create", model: ['projectEmployeeQualificationInstance': projectEmployeeQualificationInstance,'projectEmployeeInstance':projectEmployeeInstance,'employeeDesignationInstance':employeeDesignationInstance])
+            render(view: "create", 
+            		model: ['projectEmployeeQualificationInstance': projectEmployeeQualificationInstance,
+            		        'projectEmployeeInstance':projectEmployeeInstance,
+            		        'employeeDesignationInstance':employeeDesignationInstance])
         }
     }
 
@@ -57,7 +60,7 @@ class ProjectEmployeeQualificationController
         def projectEmployeeQualificationInstance = ProjectEmployeeQualification.get(params.id)
         if (!projectEmployeeQualificationInstance) 
         {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'projectEmployeeQualification.label', default: 'ProjectEmployeeQualification'), params.id])}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action: "list")
         }
         else 
@@ -75,7 +78,7 @@ class ProjectEmployeeQualificationController
 		println "________________projectEmployeeQualificationInstance"+projectEmployeeQualificationInstance
 	    if (!projectEmployeeQualificationInstance) 
 	    {
-	        flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'projectEmployeeQualification.label', default: 'ProjectEmployeeQualification'), params.id])}"
+	        flash.message = "${message(code: 'default.notfond.label')}"
 	        redirect(action: "list")
 	    }
         else 
@@ -106,7 +109,7 @@ class ProjectEmployeeQualificationController
             projectEmployeeQualificationInstance.properties = params
             if (!projectEmployeeQualificationInstance.hasErrors() && projectEmployeeQualificationInstance.save(flush: true)) 
             {
-                flash.message = "Qualification ${params.examname} Updated" 
+                flash.message = "${message(code: 'default.updated.label')}"
                 redirect(action: "create", id: projectEmployeeInstance.id)
             }
             else 
@@ -116,7 +119,7 @@ class ProjectEmployeeQualificationController
         }
         else 
         {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'projectEmployeeQualification.label', default: 'ProjectEmployeeQualification'), projectEmployeeQualificationInstance.Examname])}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action: "create")
         }
     }
@@ -134,18 +137,18 @@ class ProjectEmployeeQualificationController
             {
             	//projectEmployeeQualificationInstance.Status='D'
                 projectEmployeeQualificationInstance.save(flush: true)
-                flash.message = "Qualification ${params.examname} deleted" 
+                flash.message = "${message(code: 'default.deleted.label')}"
                 redirect(action: "create",id:projectEmployeeInstance.id)
             }
             catch (org.springframework.dao.DataIntegrityViolationException e) 
             {
-                flash.message = "${message(code: 'default.not.deleted.message', args: [message(code: 'projectEmployeeQualification.label', default: 'ProjectEmployeeQualification'), projectEmployeeQualificationInstance.Examname])}"
+                flash.message = "${message(code: 'default.inuse.label')}"
                 redirect(action: "create", id:projectEmployeeInstance.id)
             }
         }
         else 
         {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'projectEmployeeQualification.label', default: 'ProjectEmployeeQualification'), projectEmployeeQualificationInstance.Examname])}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action: "create", id:projectEmployeeInstance.id)
         }
     }

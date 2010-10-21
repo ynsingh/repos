@@ -109,15 +109,16 @@
 	<a class="menuitem submenuheader" href="#"><g:message code="default.Reports.label"/></a>
 	<div class="submenu">
 		<ul>
+		    <li><a href="${createLinkTo(dir:'grantAllocation/reports')}" target="right"><g:message code="default.ProjectReports.label"/></a></li>
 			<li><a href="${createLinkTo(dir:'grantAllocationTracking/grantAllocationTrackingReports')}" target="right"><g:message code="default.ProjectStatusReports.label"/></a></li>
 			<li><a href="${createLinkTo(dir:'utilization/list')}" target="right"><g:message code="default.UtilizationCertificates.label"/></a></li>      	
 			<li><a href="${createLinkTo(dir:'grantAllocation/grantReports')}" target="right"><g:message code="default.StatisticalReports.label"/></a></li>
 			<li><a href="${createLinkTo(dir:'notification/granteeReports')}" target="right"><g:message code="default.GrantAgencyReports.label"/></a></li>
 			<li><a href="${createLinkTo(dir:'grantAllocation/auditLoggingReport')}" target="right"><g:message code="default.AuditLoggingReport.label"/></a></li>
-			<li><a href="${createLinkTo(dir:'grantAllocation/reports')}" target="right"><g:message code="default.More.label"/></a></li>
-			
+						
 		</ul>
 	</div>
+	<div><a class="menuitem" href="${createLinkTo(dir:'user/changePassword')}" target="right"><g:message code="default.ChangePassword.label"/></a></div>	
 	<div><a class="menuitem" href="${createLinkTo(dir:'logout')}" target="_parent"><g:message code="default.Logout.label"/></a></div>	
 	</div>
 	

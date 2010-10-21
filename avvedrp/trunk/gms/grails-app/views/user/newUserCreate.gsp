@@ -1,6 +1,7 @@
 <head>
 	<meta name="layout" content="main" />
 	<title>Create Site Admin</title>
+	<g:javascript library="jquery" />
 </head>
 <body>
 	<div class="wrapper">
@@ -20,7 +21,8 @@
    	</span>
    	</div>
 	</div>  
-
+<div id="messageBox">
+		</div>
 	<div class="body">
 		<h1>Create Site Admin</h1>
 		<g:if test="${flash.message}">
@@ -32,6 +34,7 @@
 		</div>
 		</g:hasErrors>
 		<g:form action="saveNewUser">
+		
 			<div class="dialog">
 			<table><tr><td></td></tr><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td>
@@ -80,7 +83,8 @@
 			</div>
 
 			<div class="buttons">
-				<span class="buttons"><input class="inputbutton" type="submit"  onClick="return validateRegisterUser()" value="Create" /></span>
+				<span class="buttons"><input class="inputbutton" id="submit" type="submit"  onClick='return combineAlertAndRegister();' disableOnClick="true" value="Create" /></span>
+				<span class="buttons"><input class="inputbutton" type="button" onClick="Redirect()"  value="Cancel" /></span>
 			</div>
 
 		</g:form>

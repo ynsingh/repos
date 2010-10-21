@@ -63,7 +63,7 @@
                                 <label for="expenseAmount"><g:message code="default.ExpenseAmount(Rs).label"/></label> 
                             </td>
                             <td valign="top" class="value ${hasErrors(bean:grantExpenseInstance,field:'expenseAmount','errors')}">
-                                <input type="text" id="expenseAmount" name="expenseAmount" value="${grantExpenseInstance.expenseAmount}" style="text-align: right" />
+                                <input type="text" id="expenseAmount" name="expenseAmount" value="${amount}" style="text-align: right" />
                                 <g:hiddenField name="grantAllocation.id" value="${grantExpenseInstance?.grantAllocation?.id}" />
                             </td>
                         </tr> 

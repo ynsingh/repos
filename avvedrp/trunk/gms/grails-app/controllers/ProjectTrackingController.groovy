@@ -18,7 +18,7 @@ class ProjectTrackingController {
 		def projectTrackingInstance = projectsService.getProjectTrackingById(new Integer( params.id ))
 
         if(!projectTrackingInstance) {
-            flash.message = "ProjectTracking not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
         else { return [ projectTrackingInstance : projectTrackingInstance ] }
@@ -28,11 +28,11 @@ class ProjectTrackingController {
         def projectsService = new ProjectsService()
         Integer projectId = projectsService.deleteProjectTracking(new Integer(params.id))
         if(projectId != null){
-            flash.message = "Project Closure deleted successfully"
+            flash.message = "${message(code: 'default.deleted.label')}"
         	redirect(action:create,id:projectId)
         }
         else {
-            flash.message = "Project Closure not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
     }
@@ -42,7 +42,7 @@ class ProjectTrackingController {
 		def projectTrackingInstance = projectsService.getProjectTrackingById(new Integer( params.id ))
 
         if(!projectTrackingInstance) {
-            flash.message = "Project Closure not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
         else {
@@ -63,7 +63,7 @@ class ProjectTrackingController {
 		
 		if(projectTrackingInstance){
 			if(projectTrackingInstance.saveMode != null){
-				flash.message = "Project Closure updated successfully"
+				flash.message = "${message(code: 'default.updated.label')}"
 				redirect(action:create,id:projectTrackingInstance.projects.id)
 			}
 			else {
@@ -71,7 +71,7 @@ class ProjectTrackingController {
             }
 		}
 		else {
-            flash.message = "Project Closure not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:create,id:params.projects.id)
         }
     }
@@ -87,7 +87,9 @@ class ProjectTrackingController {
         def projectTrackingInstance = new ProjectTracking()
 		projectTrackingInstance.projects = projectsInstance
         projectTrackingInstance.properties = params
-        return ['projectsInstance':projectsInstance, 'projectTrackingInstance':projectTrackingInstance, 'projectTrackingInstanceList':projectTrackingInstanceList]
+        return ['projectsInstance':projectsInstance, 
+                'projectTrackingInstance':projectTrackingInstance, 
+                'projectTrackingInstanceList':projectTrackingInstanceList]
     }
 
     def save = {
@@ -100,7 +102,7 @@ class ProjectTrackingController {
         def projectTrackingInstance = new ProjectTracking(params)
 		projectTrackingInstance = projectsService.saveProjectTracking(projectTrackingInstance)
     	if(projectTrackingInstance.saveMode != null){
-            flash.message = "Project Closure is created successfully"
+            flash.message = "${message(code: 'default.created.label')}"
             redirect(action:create,id:projectTrackingInstance.projects.id)
         }
         else {

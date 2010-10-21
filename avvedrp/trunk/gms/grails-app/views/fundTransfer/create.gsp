@@ -5,6 +5,7 @@
         <g:set var="entityName" value="${message(code: 'fundTransfer.label', default: 'FundTransfer')}" />
         <title><g:message code="default.FundTransfer.head"/></title>
     </head>
+    
     <body>
     	<g:if test="${params.subMenu == 'fundAllot'}">
         	<g:subMenuProjects/>
@@ -78,7 +79,7 @@
                     </table>
                 </div>
                 <div class="buttons">
-                    <span class="button"><g:submitButton name="create" class="save" value="${message(code: 'default.button.create.label', default: 'Create')}" /></span>
+                    <span class="button"><g:submitButton name="create" class="save" value="${message(code: 'default.button.create.label', default: 'Create')}"  onClick="return validateFundTransffered()"/></span>
             </div>
                 </div>
                 <div class="list">
@@ -118,7 +119,7 @@
                             
                             <td>${currencyFormat.ConvertToIndainRS(fundTransferInstance.amount)}</td>                       
                                                  
-                            <td><g:formatDate date="${fundTransferInstance.dateOfTransfer}" format= "dd/mm/yyyy"/></td>
+                            <td><g:formatDate date="${fundTransferInstance.dateOfTransfer}" format= "dd/MM/yyyy"/></td>
                             
                         	<td><g:link action="edit" id="${fundTransferInstance.id}" params="[subMenu:'subGrantAllot']"><g:message code="default.Edit.label"/></g:link></td>
                         </tr>

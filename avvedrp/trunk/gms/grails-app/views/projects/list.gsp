@@ -33,11 +33,11 @@
                        
                    	        <g:sortableColumn property="projects.name" title="${message(code: 'default.Name.label')}"/>
                                               
-                   	        <g:sortableColumn property="projects.code" title="${message(code: 'default.Code.label')}"/>
+                   	        <g:sortableColumn property="granter.code" title="${message(code: 'default.Grantor.label')}"/>
                    	        
-                   	        <g:sortableColumn property="projects.projectType.type" title="${message(code: 'default.ProjectType.label')}"/>
+                   	        <th><g:message code="default.Investigator.label"/></th>
                    	          
-                	        <th><g:message code="default.Attachments.label"/></th>
+                	        <th align="center"><img src="/gms/images/attach1.png"/></th>
                    	        <g:if test="${(session.Role == 'ROLE_SITEADMIN')}">   
                    	       		<th><g:message code="default.Edit.label"/></th>
                    	        </g:if>  
@@ -47,9 +47,11 @@
                     <tbody>
                     <% int j=0 %>
                     <g:each in="${grantAllocationWithprojectsInstanceList}" status="i" var="grantAllocationInstance">
+                   
                         <g:if test="${fieldValue(bean:grantAllocationInstance, field:'projects.activeYesNo') == 'Y'}">
 	                        <%  j++ %>
 	                        <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
+	                       
 	                        
 	                           <td>${j}</td>
 	                                
@@ -57,16 +59,25 @@
 	                               
 	                        
 	                           
-	                         <td><g:if test="${fieldValue(bean:grantAllocationInstance, field:'projects.activeYesNo') == 'Y'}"><g:link action="projectDash" controller='grantAllocation' id="${grantAllocationInstance.projects.id}">${grantAllocationInstance.projects.name}</g:link></g:if></td>
+	                         <td><g:if test="${fieldValue(bean:grantAllocationInstance, field:'projects.activeYesNo') == 'Y'}">
+	                         		<g:link action="projectDash" controller='grantAllocation' id="${grantAllocationInstance.projects.id}">
+	                         			${grantAllocationInstance.projects.name} - ${fieldValue(bean:grantAllocationInstance, field:'projects.code')}
+	                         		</g:link>
+	                         	 </g:if>
+	                        </td>
 	                           
-	                           <td>${fieldValue(bean:grantAllocationInstance, field:'projects.code')}</td>
-	                           <td>${fieldValue(bean:grantAllocationInstance, field:'projects.projectType.type')}</td>
-	                          
+	                           <td>${fieldValue(bean:grantAllocationInstance, field:'granter.code')}</td>
+	                           <td><g:if test="${pIMapList[i]!=null}">
+	                         
+	                           ${pIMapList[i].investigator.name}
+	                           </g:if>
+	                           </td>                           
 	                           <td><g:if test="${Attachments.findByDomainId(grantAllocationInstance.projects.id)}">
-	                           <g:link action="list" controller="attachments" id="${grantAllocationInstance.projects.id}">Attachments</g:link>
+	                           <g:link action="list" controller="attachments" id="${grantAllocationInstance.projects.id}">
+	                           <img src="/gms/images/attach1.png"/></g:link>
 	                           </g:if>
 	                           <g:else>
-	                          <g:message code="default.NoAttachments.label"/>
+	                          
 	                           </g:else>
 	                           </td>
 	                        
@@ -74,7 +85,9 @@
 	                       		<td><g:link action="edit" id="${grantAllocationInstance.projects.id}"><g:message code="default.Edit.label" /></g:link></td>
 	                        </g:if>
 	                        </tr>
+	                        
 	                       </g:if>
+	                      
                     </g:each>
                     </tbody>
                 </table>

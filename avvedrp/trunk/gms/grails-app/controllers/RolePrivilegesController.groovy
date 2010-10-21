@@ -23,7 +23,7 @@ class RolePrivilegesController {
         def rolePrivilegesInstance = RolePrivileges.get( params.id )
 
         if(!rolePrivilegesInstance) {
-            flash.message = "RolePrivileges not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
         else { return [ rolePrivilegesInstance : rolePrivilegesInstance ] }
@@ -64,7 +64,7 @@ class RolePrivilegesController {
         def rolePrivilegesInstance = RolePrivileges.get( params.id )
 
         if(!rolePrivilegesInstance) {
-            flash.message = "RolePrivileges not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
         else {
@@ -77,7 +77,7 @@ class RolePrivilegesController {
         if(rolePrivilegesInstance) {
             rolePrivilegesInstance.properties = params
             if(!rolePrivilegesInstance.hasErrors() && rolePrivilegesInstance.save()) {
-                flash.message = "RolePrivileges ${params.id} updated"
+                flash.message = "${message(code: 'default.updated.label')}"
                 redirect(action:show,id:rolePrivilegesInstance.id)
             }
             else {
@@ -85,7 +85,7 @@ class RolePrivilegesController {
             }
         }
         else {
-            flash.message = "RolePrivileges not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:edit,id:params.id)
         }
     }
@@ -168,7 +168,8 @@ class RolePrivilegesController {
     	
     		
     			
-    		render (template:"actionNameSelect", model : ['actionNameList' : actionCollection,'rolePrivilegesInstance':rolePrivilegesInstance])
+    		render (template:"actionNameSelect", model : ['actionNameList' : actionCollection,
+    		                                              'rolePrivilegesInstance':rolePrivilegesInstance])
     		}
     		else
     		{
@@ -204,7 +205,7 @@ class RolePrivilegesController {
     		def rolePrivilegesService = new RolePrivilegesService()
     		def rolePrivilegesSaveStatus = rolePrivilegesService.saveRolePrivileges(params,actionInstanceList,gh.getValue("Party"))
         if(rolePrivilegesSaveStatus) {
-            flash.message = "RolePrivileges ${rolePrivilegesInstance.id} created"
+            flash.message = "${message(code: 'default.created.label')}"
            //redirect(action:create,id:rolePrivilegesInstance.id)
             redirect(action:getActionName,params:[filename:rolePrivilegesInstance.controllerName,role:rolePrivilegesInstance.role.id])
         }
@@ -254,7 +255,7 @@ class RolePrivilegesController {
 	       			controllerInfo.actions = actions.sort()
 	       			data << controllerInfo
 	       		}
-	       		flash.message = "RolePrivileges created"
+	       		flash.message = "${message(code: 'default.created.label')}"
 	       		redirect(action:newRolePrivileges)
 	       	
     }

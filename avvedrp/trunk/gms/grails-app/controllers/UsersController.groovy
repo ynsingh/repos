@@ -14,7 +14,7 @@ class UsersController {
         def usersInstance = Users.get( params.id )
 
         if(!usersInstance) {
-            flash.message = "Users not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
         else { return [ usersInstance : usersInstance ] }
@@ -24,11 +24,11 @@ class UsersController {
         def usersInstance = Users.get( params.id )
         if(usersInstance) {
             usersInstance.delete()
-            flash.message = "Users ${params.id} deleted"
+            flash.message = "${message(code: 'default.deleted.label')}"
             redirect(action:list)
         }
         else {
-            flash.message = "Users not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
     }
@@ -37,7 +37,7 @@ class UsersController {
         def usersInstance = Users.get( params.id )
 
         if(!usersInstance) {
-            flash.message = "Users not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
         else {
@@ -50,7 +50,7 @@ class UsersController {
         if(usersInstance) {
             usersInstance.properties = params
             if(!usersInstance.hasErrors() && usersInstance.save()) {
-                flash.message = "Users ${params.id} updated"
+                flash.message = "${message(code: 'default.updated.label')}"
                 redirect(action:show,id:usersInstance.id)
             }
             else {
@@ -58,7 +58,7 @@ class UsersController {
             }
         }
         else {
-            flash.message = "Users not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:edit,id:params.id)
         }
     }
@@ -72,7 +72,7 @@ class UsersController {
     def save = {
         def usersInstance = new Users(params)
         if(!usersInstance.hasErrors() && usersInstance.save()) {
-            flash.message = "Users ${usersInstance.id} created"
+            flash.message = "${message(code: 'default.created.label')}"
             redirect(action:show,id:usersInstance.id)
         }
         else {

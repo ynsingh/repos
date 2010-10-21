@@ -26,9 +26,8 @@
 		            <td valign="top" >
 		            	<strong>
 		            		<span style ="font-family:rupee">R</span>
-		            		<g:formatNumber number="${grantAllocationInstance.amountAllocated}" 
-		            		format="###,##0.00" />
-		        		</strong>
+		            		${currencyFormat.ConvertToIndainRS(grantAllocationInstance.amountAllocated)}
+		                </strong>
 		    		</td>
 	    		</tr>  
       		</table>  

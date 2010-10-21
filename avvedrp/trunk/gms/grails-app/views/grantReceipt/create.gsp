@@ -41,6 +41,9 @@
  
          <div class="body">
             <h1><g:message code="default.GrantReceipt.CreateGrantReceipt.head"/></h1>
+            <g:if test="${flash.error}">
+            <div class="errors">${flash.error}</div>
+            </g:if>
             <g:if test="${flash.message}">
               <div class="message">${flash.message}</div>
             </g:if>
@@ -87,7 +90,10 @@
                                 </td>
                                 <g:if test="${fundTransferInstanceList}">
 	                                <td valign="top" class="value ${hasErrors(grantReceiptInstance,field:'grantAllocation','errors')}">
-	                                    <g:select optionKey="id" optionValue="amountCode" from="${fundTransferInstanceList}" name="fundTransfer.id" value="${grantReceiptInstance?.fundTransfer?.id}" noSelection="['null':'Select']"></g:select>
+	                                    <g:select optionKey="id" 
+	                                    onchange="${remoteFunction(controller:'grantReceipt', action:'selectAmount',update:'grantAmt',params:'\'id=\' + this.value')}" 
+	                                    onFocus="${remoteFunction(controller:'grantReceipt', action:'selectAmount',update:'grantAmt',params:'\'id=\' + this.value')}" 
+	                                    optionValue="amountCode" from="${fundTransferInstanceList}" name="fundTransfer.id" id="fundTransfer.id" value="${grantReceiptInstance?.fundTransfer?.id}" noSelection="['null':'Select']"></g:select>
 	                                    
 	                                </td>
 	                            </g:if>
@@ -110,7 +116,9 @@
                                     </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:grantReceiptInstance,field:'amount','errors')}">
-                                    <input type="text" id="amount" name="amount" value="${grantReceiptInstance.amount}" style="text-align: right" />
+                                 <div id="grantAmt">
+                                    <input type="text" id="amount" name="amount" value="${amount}" style="text-align: right" onFocus="return validateFundTransfer();" />
+                                 </div>
                                     <input type="hidden" id="projectId" name="projectId" value="${fieldValue(bean:grantReceiptInstance.projects, field:'id')}"/>
                                 </td>
                             </tr>      
@@ -173,7 +181,7 @@
                     </table>
                 </div>
                 <div class="buttons">
-                    <span class="button"><g:actionSubmit class="save" action="save" value="${message(code: 'default.Create.button')}" onClick="return validateGrantReceipt()"  /></span>
+                    <span class="button"><g:actionSubmit class="save" action="save" value="${message(code: 'default.Create.button')}" onClick="return validateGrantReceipt()" /></span>
                     <span class="button"><span class="button"><g:actionSubmit class="delete" action="clear" value="${message(code: 'default.Clear.button')}" /></span></span> 
                 </div>
             </g:form>

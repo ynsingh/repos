@@ -23,7 +23,7 @@ class ExpenseRequestController {
         def expenseRequestInstance = ExpenseRequest.get( params.id )
 
         if(!expenseRequestInstance) {
-            flash.message = "ExpenseRequest not found with id ${params.id}"
+            flash.message = "${message(code: 'default.ExpenseRequestnotFound.label')}"
             redirect(action:list)
         }
         else { return [ expenseRequestInstance : expenseRequestInstance ] }
@@ -33,11 +33,11 @@ class ExpenseRequestController {
         def expenseRequestInstance = ExpenseRequest.get( params.id )
         if(expenseRequestInstance) {
             expenseRequestInstance.delete()
-            flash.message = "ExpenseRequest deleted successfully"
+            flash.message = "${message(code: 'default.deleted.label')}"
             redirect(action:list)
         }
         else {
-            flash.message = "ExpenseRequest not found with id ${params.id}"
+            flash.message = "${message(code: 'default.ExpenseRequestnotFound.label')}"
             redirect(action:list)
         }
     }
@@ -56,11 +56,12 @@ class ExpenseRequestController {
 		def grantAllocationInstanceList=grantAllocationService.getGrantAllocationsByProjectCode(gh.getValue("ProjectID"))
 
         if(!expenseRequestInstance) {
-            flash.message = "ExpenseRequest not found with id ${params.id}"
+            flash.message = "${message(code: 'default.ExpenseRequestnotFound.label')}"
             redirect(action:list)
         }
         else {
-            return [ expenseRequestInstance : expenseRequestInstance,grantAllocationInstanceList:grantAllocationInstanceList ]
+            return [ expenseRequestInstance : expenseRequestInstance,
+                     grantAllocationInstanceList:grantAllocationInstanceList ]
         }
     }
 
@@ -70,7 +71,7 @@ class ExpenseRequestController {
             expenseRequestInstance.properties = params
             println"+params.id+++"+params.id
             if(!expenseRequestInstance.hasErrors() && expenseRequestInstance.save()) {
-                flash.message = "ExpenseRequest updated successfully"
+                flash.message = "${message(code: 'default.updated.label')}"
                 redirect(action:list,id:expenseRequestInstance.id)
             }
             else {
@@ -78,7 +79,7 @@ class ExpenseRequestController {
             }
         }
         else {
-            flash.message = "ExpenseRequest not found with id ${params.id}"
+            flash.message = "${message(code: 'default.ExpenseRequestnotFound.label')}"
             redirect(action:edit,id:params.id)
         }
     }
@@ -99,7 +100,10 @@ class ExpenseRequestController {
 		println"&&&&&&&&&&&&grantAllocationId&&&&&&&&&&&&&&&"+grantAllocationInstanceList[0].id
 		def accountHeadList=grantAllocationSplitService.getAccountHeadOfProject(gh.getValue("ProjectID"))
         println"%%%%accountHeadList%%%%"+accountHeadList
-        return ['expenseRequestInstance':expenseRequestInstance,'projectsInstance':projectsInstance,'grantAllocationInstanceList':grantAllocationInstanceList,'accountHeadList':accountHeadList]
+        return ['expenseRequestInstance':expenseRequestInstance,
+                'projectsInstance':projectsInstance,
+                'grantAllocationInstanceList':grantAllocationInstanceList,
+                'accountHeadList':accountHeadList]
     }
 
     def save = {
@@ -132,13 +136,13 @@ class ExpenseRequestController {
         	
         	if(balanceAmt >= expenseRequestInstance.requestedAmount)
         	{
-           flash.message = "Requested fund is available"
+           flash.message = "${message(code: 'default.FundAvailable.label')}"
           expenseRequestInstance.fundAvailableYesNo='Y'
             redirect(action:create,id:expenseRequestInstance.id)
         	}
         	else
         	 {
-        		flash.message = "Requested fund is not available"
+        		flash.message = "${message(code: 'default.FundnotAvailable.label')}"
         		expenseRequestInstance.fundAvailableYesNo='N'
         	   redirect(action:create,id:expenseRequestInstance.id)
         }
@@ -149,7 +153,7 @@ class ExpenseRequestController {
         else
         {
         	expenseRequestInstance.fundAvailableYesNo='N'
-        	flash.message ="Requested fund is not available"
+        	flash.message ="${message(code: 'default.FundnotAvailable.label')}"
         	redirect(action:create,id:expenseRequestInstance.id)
         }
         }

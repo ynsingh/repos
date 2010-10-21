@@ -56,7 +56,7 @@
 	                                  <label for="cost"><g:message code="default.itemPurchase.Cost(Rs).label" /></label>
 	                                </td>
 	                                <td valign="top" class="value ${hasErrors(bean: itemPurchaseInstance, field: 'cost', 'errors')}">
-	                                    <g:textField name="cost" value="${itemPurchaseInstance.cost}" />
+	                                    <g:textField name="cost" value="${amount}" />
 	                                </td>
 	                            </tr>
 	                        

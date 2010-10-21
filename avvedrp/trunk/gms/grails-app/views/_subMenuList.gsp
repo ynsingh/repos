@@ -11,7 +11,6 @@
 		        <li> 
 					<a href="#"><g:message code="default.Allocation.label"/></a> 
 		            <span> 
-						<g:link  controller='projects' action="showSubProjects"  id="${session.ProjectID}"><g:message code="default.SubProjects.label"/></g:link> |
 						<g:link  controller='grantAllocation' action="subGrantAllot" id="${session.ProjectID}"><g:message code="default.SuballocateProject.label"/></g:link> |
 						<g:link  controller='grantAllocationSplit' action="list" id="${session.ProjectID}"><g:message code="default.HeadwiseAllocation.label"/></g:link> 
 		            </span> 

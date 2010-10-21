@@ -11,6 +11,11 @@ class ProposalService {
 	   println "Proposal Id="+proposalInstanceList.id
 	   return proposalInstanceList;
    }
+   public List getProposalByNotification(def notificationId)
+   {
+	   def proposalInstanceList = Proposal.findAll("from Proposal P where P.notification.id="+notificationId+" and P.lockedYN='N'")
+	   return proposalInstanceList
+   }
     
     
 }

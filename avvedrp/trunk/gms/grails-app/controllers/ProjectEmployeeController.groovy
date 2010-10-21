@@ -44,14 +44,14 @@ class ProjectEmployeeController
         def projectEmployeeUniqueCheckstatus=projectEmployeeService.projectEmployeeUniqueCheck(projectEmployeeInstance)
         if(projectEmployeeUniqueCheckstatus)
         {
-        	flash.message = "${message(code: 'default.projectEmployees.AlreadyExists.message')}"
+        	flash.message = "${message(code: 'default.AlreadyExists.label')}"
         }
         //projectEmployeeInstance.Status='Y'
         def employeeDesignationInstance = EmployeeDesignation.list()
         def projectEmployeeInstanceList=projectEmployeeService.getProjectEmployeeList(projectEmployeeInstance)
         if (projectEmployeeInstance.save(flush: true))
         {
-            flash.message ="${message(code: 'default.projectEmployees.CreateNew.message')}" 
+            flash.message ="${message(code: 'default.created.label')}" 
             redirect(action: "create", id:projectInstance.id)
             		/*model: [projectEmployeeInstance: projectEmployeeInstance,
                                                employeeDesignationInstance:employeeDesignationInstance,
@@ -68,7 +68,7 @@ class ProjectEmployeeController
         def projectEmployeeInstance = ProjectEmployee.get(params.id)
         if (!projectEmployeeInstance) 
         {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'projectEmployee.label', default: 'ProjectEmployee'), params.id])}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action: "list")
         }
         else 
@@ -83,7 +83,7 @@ class ProjectEmployeeController
         def employeeDesignationInstance = EmployeeDesignation.list()
         if (!projectEmployeeInstance) 
         {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'projectEmployee.label', default: 'ProjectEmployee'), params.id])}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action: "list")
         }
         else 
@@ -105,7 +105,8 @@ class ProjectEmployeeController
                 {
                     projectEmployeeInstance.errors.rejectValue("version", "default.optimistic.locking.failure", 
                     						[message(code: 'projectEmployee.label',default: 'ProjectEmployee')] 
-                							as Object[], "Another user has updated this ProjectEmployee while you were editing")
+                							as Object[], 
+                							"Another user has updated this ProjectEmployee while you were editing")
                     render(view: "edit", model: [projectEmployeeInstance: projectEmployeeInstance])
                     return
                 }
@@ -113,7 +114,7 @@ class ProjectEmployeeController
             projectEmployeeInstance.properties = params
             if (!projectEmployeeInstance.hasErrors() && projectEmployeeInstance.save(flush: true))
             {
-                flash.message = "Employee With Name ${params.empName} Updated"
+                flash.message = "${message(code: 'default.updated.label')}"
                 redirect(action: "create", id: projectEmployeeInstance.id)
             }
             else 
@@ -123,7 +124,7 @@ class ProjectEmployeeController
         }
         else
         {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'projectEmployee.label', default: 'ProjectEmployee'), params.id])}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action: "list")
         }
     }
@@ -141,18 +142,18 @@ class ProjectEmployeeController
         	{     		
                 projectEmployeeInstance.save(flush: true)
                 
-                flash.message = "Employee With Name ${params.empName} deleted"
+                flash.message = "${message(code: 'default.deleted.label')}"
                 redirect(action: "create")
             }
         	catch(org.springframework.dao.DataIntegrityViolationException e)
             {
-                flash.message ="Can't delete the Employee ${params.empName}" 
+                flash.message ="${message(code: 'default.inuse.label')}"
                 redirect(action: "create", id: params.id)
             }
         }
         else 
         {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'projectEmployee.label', default: 'ProjectEmployee'), projectEmployeeInstance.empName])}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action: "create")
         }
     }

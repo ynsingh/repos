@@ -5,6 +5,7 @@
         <title><g:message code="default.FundAllocation.EditFundAllocation.head"/> </title>
     </head>
     <body>
+    <g:subMenuProjects/>
     <div class="wrapper"> 
         <div class="body">
             <h1><g:message code="default.FundAllocation.EditFundAllocation.head"/></h1>
@@ -49,7 +50,8 @@
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:grantAllocationInstance,field:'amountAllocated','errors')}">
                                     <input type="text" id="amountAllocated" name="amountAllocated" 
-                                    	value="${grantAllocationInstance.amountAllocated}" style="text-align: right" />
+                                    	value="${amount}" style="text-align: right" format="0.00" />
+                                    	
                                 </td>
                             </tr> 
                         

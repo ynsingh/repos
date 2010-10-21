@@ -36,7 +36,7 @@ class NotificationController {
         def notificationInstance = Notification.get( params.id )
 
         if(!notificationInstance) {
-            flash.message = "Notification not found with id ${params.id}"
+            flash.message = "${message(code: 'default.FilenotFound.label')}"
             redirect(action:list)
         }
         else { return [ notificationInstance : notificationInstance ] }
@@ -47,14 +47,14 @@ class NotificationController {
         if(notificationInstance) {
            if(notificationInstance.delete())
            {
-            flash.message = "Notification deleted"
+            flash.message = "${message(code: 'default.deleted.label')}"
             redirect(action:list)
            }
-           else{flash.message = "Notification could not delete"
+           else{flash.message = "${message(code: 'default.Fileinuse.label')}"
                redirect(action:list)}
         }
         else {
-            flash.message = "Notification not found with id ${params.id}"
+            flash.message = "${message(code: 'default.FilenotFound.label')}"
             redirect(action:list)
         }
     }
@@ -63,7 +63,7 @@ class NotificationController {
         def notificationInstance = Notification.get( params.id )
 
         if(!notificationInstance) {
-            flash.message = "Notification not found"
+            flash.message = "${message(code: 'default.FilenotFound.label')}"
             redirect(action:list)
         }
         else {
@@ -107,19 +107,19 @@ class NotificationController {
    	        	}
             }
             if(!notificationInstance.hasErrors() && notificationInstance.save()) {
-                flash.message = "Notification updated"
+                flash.message = flash.message = "${message(code: 'default.updated.label')}"
                 redirect(action:list,id:notificationInstance.id)
             }
             else {
                 render(view:'edit',model:[notificationInstance:notificationInstance])
             }
            } else {
-               flash.message = "Notification already published so can not update"
+               flash.message = "${message(code: 'default.Notificationalreadypublished.label')}"
                    redirect(action:edit,id:params.id)
                }
         	}
         else {
-            flash.message = "Notification not found"
+            flash.message = "${message(code: 'default.FilenotFound.label')}"
             redirect(action:edit,id:params.id)
         }
     }
@@ -172,7 +172,8 @@ class NotificationController {
     	println "grantAllocationWithprojectsInstanceList "+grantAllocationWithprojectsInstanceList
         //grantAllocationWithprojectsInstanceList=dataSecurityService.getProjectsFromGrantAllocationForLoginUser(gh.getValue("PartyID"))
       
-        return ['notificationInstance':notificationInstance,'grantAllocationWithprojectsInstanceList':grantAllocationWithprojectsInstanceList]
+        return ['notificationInstance':notificationInstance,
+                'grantAllocationWithprojectsInstanceList':grantAllocationWithprojectsInstanceList]
     }
 
     def save={	
@@ -202,7 +203,7 @@ class NotificationController {
 	    		downloadedfile.transferTo( new File( webRootDir + File.separatorChar + fileName+".gsp") )
     		}
         if(!notificationInstance.hasErrors() && notificationInstance.save()) {
-            flash.message = "Notification created"
+            flash.message = "${message(code: 'default.created.label')}"
             	
           redirect(action:list,id:notificationInstance.id)
         }
@@ -257,7 +258,9 @@ class NotificationController {
     		def notificationsInstance = Notification.get(params.id)
     		def notificationsAttachmentsInstance = NotificationsAttachments.findAll("from NotificationsAttachments NA where NA.notification.id="+params.id)
     		def notificationsEmailsInstance = NotificationsEmails.findAll("from NotificationsEmails NE where NE.notification.id="+params.id)
-    		[notificationsInstance:notificationsInstance,notificationsAttachmentsInstance:notificationsAttachmentsInstance,notificationsEmailsInstance:notificationsEmailsInstance]
+    		[notificationsInstance:notificationsInstance,
+    		 notificationsAttachmentsInstance:notificationsAttachmentsInstance,
+    		 notificationsEmailsInstance:notificationsEmailsInstance]
     		
     }
 	def listReport = {

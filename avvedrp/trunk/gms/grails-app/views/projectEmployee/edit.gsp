@@ -53,7 +53,7 @@
 	                        
 	                            <tr class="prop">
 	                                <td valign="top" class="name">
-	                                  <label for="employeeDesignation"><g:message code="default.Designation.label"/></label></label>
+	                                  <label for="employeeDesignation"><g:message code="default.Designation.label"/></label>
 	                                </td>
 	                                <td><g:select name='employeeDesignation.id' optionKey="id" optionValue="Designation" 
 	                                		from="${employeeDesignationInstance}" value="${projectEmployeeInstance?.employeeDesignation?.id}">

@@ -48,11 +48,13 @@
 	                   				</td>
 					                
 					                <td  valign="top" class="name">
+					                <g:if test="${grantAllocationInstance}">
 					                    <g:if test="${grantAllocationInstance.granter}"> 
 										    <g:message code="default.projects.Grantor.label" /> : 
 										    <strong>${grantAllocationInstance.granter.code}</strong>
 										    <br>
 									    </g:if>
+									</g:if>
 				                    </td>
 			                    </tr> 
                                                  

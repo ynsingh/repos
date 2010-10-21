@@ -1,9 +1,11 @@
+import java.text.*;
+import java.util.*;
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 class ItemPurchaseController 
 {
 	def itemPurchaseService
 	static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
-	
+	ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
 	def index = 
 	{
         redirect(action: "list", params: params)
@@ -28,6 +30,7 @@ class ItemPurchaseController
         def itemPurchaseInstanceList=itemPurchaseService.getItemPurchaseList(projectInstance)
         return [itemPurchaseInstance: itemPurchaseInstance,
                 itemPurchaseInstanceList:itemPurchaseInstanceList,
+                currencyFormat:currencyFormatter,
                 projectInstance:projectInstance]
     }
 	
@@ -40,7 +43,7 @@ class ItemPurchaseController
         println "projectInstance="+projectInstance
         if (itemPurchaseInstance.save(flush: true)) 
         {
-            flash.message = "New Item ${params.name} is created"
+            flash.message = "${message(code: 'default.created.label')}"
             redirect(action: "create", id: projectInstance.id)
         }
         else 
@@ -54,7 +57,7 @@ class ItemPurchaseController
         def itemPurchaseInstance = ItemPurchase.get(params.id)
         if (!itemPurchaseInstance) 
         {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'itemPurchase.label', default: 'ItemPurchase'), params.id])}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action: "list")
         }
         else 
@@ -68,12 +71,14 @@ class ItemPurchaseController
         def itemPurchaseInstance = ItemPurchase.get(params.id)
         if (!itemPurchaseInstance) 
         {
-            flash.message = "${message(code: 'default.not.found.message',args: [message(code: 'itemPurchase.label', default: 'ItemPurchase'), params.id])}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action: "list")
         }
         else 
         {
-            return [itemPurchaseInstance: itemPurchaseInstance]
+        	NumberFormat formatter = new DecimalFormat("#0.00");
+            return [itemPurchaseInstance: itemPurchaseInstance,
+                    amount:formatter.format(itemPurchaseInstance.cost)]
         }
     }
 
@@ -98,7 +103,7 @@ class ItemPurchaseController
             itemPurchaseInstance.properties = params
             if (!itemPurchaseInstance.hasErrors() && itemPurchaseInstance.save(flush: true)) 
             {
-                flash.message = "Item ${params.name} is updated"
+                flash.message = "${message(code: 'default.updated.label')}"
                 redirect(action: "create", id: itemPurchaseInstance.id)
             }
             else 
@@ -108,7 +113,7 @@ class ItemPurchaseController
         }
         else 
         {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'itemPurchase.label', default: 'ItemPurchase'),itemPurchaseInstance.Name])}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action: "create")
         }
     }
@@ -122,18 +127,18 @@ class ItemPurchaseController
             {
             	itemPurchaseInstance.Status='D'
                 itemPurchaseInstance.save(flush: true)
-                flash.message = "Item ${params.name} deleted"
+                flash.message = "${message(code: 'default.deleted.label')}"
                 redirect(action: "create")
             }
             catch (org.springframework.dao.DataIntegrityViolationException e) 
             {
-                flash.message = "${message(code: 'default.not.deleted.message', args: [message(code: 'itemPurchase.label', default: 'ItemPurchase'), itemPurchaseInstance.Name])}"
+                flash.message = "${message(code: 'default.inuse.label')}"
                 redirect(action: "create", id: params.id)
             }
         }
         else 
         {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'itemPurchase.label', default: 'ItemPurchase'), itemPurchaseInstance.Name])}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action: "create")
         }
     }
@@ -145,9 +150,7 @@ class ItemPurchaseController
 		def grandAllocationList = []
 		def grantAllocationInstance
 		
-		
 		def projectsList = dataSecurityService.getProjectsForLoginUser(gh.getValue("PartyID"))
-		println projectsList
 		
 		for(int i=0;i<projectsList.size();i++)
 		{

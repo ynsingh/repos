@@ -441,6 +441,12 @@ class GrantAllocationService {
 	    return grantReceiptInstance    
 		
 	}
+	
+	public FundTransfer getFundTransferForGrantAllocation(def grantAllocationInstance)
+	{
+		def fundTransferInstance=FundTransfer.find("from FundTransfer FT where FT.grantAllocation="+grantAllocationInstance.id)
+		return fundTransferInstance
+	}
 	/**
 	 * Get all grant allocation for logged in user groupBy Projects 
 	 */
@@ -453,5 +459,21 @@ class GrantAllocationService {
 		 def grantAllocationInstance=GrantAllocation.find("from GrantAllocation GA where GA.projects.id = "+projectID +" GROUP BY GA.projects");
 		 return grantAllocationInstance
 	}
+	 
+	 /*
+	  * Function to check grantAllocation is there in GrantAllocationSplit
+	  */
+	 public GrantAllocation checkGrantAllocationSplitByProjectId(def grantAllocationInstance){
+			
+			def chkhdallocinstance=GrantAllocationSplit.findAll("from GrantAllocationSplit GS where GS.projects="+grantAllocationInstance.projects.parent.id)
+			println"*********chkhdallocinstance***********"+chkhdallocinstance[0]
+			if(chkhdallocinstance[0])
+			{
+			
+			
+		    return grantAllocationInstance    
+			
+			}
+		}
 
 }

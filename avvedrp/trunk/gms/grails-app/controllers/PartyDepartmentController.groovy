@@ -21,7 +21,7 @@ class PartyDepartmentController {
         def partyDepartmentInstance = PartyDepartment.get( params.id )
 
         if(!partyDepartmentInstance) {
-            flash.message = "Department not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
         else { return [ partyDepartmentInstance : partyDepartmentInstance ] }
@@ -31,11 +31,11 @@ class PartyDepartmentController {
         def partyDepartmentInstance = PartyDepartment.get( params.id )
         if(partyDepartmentInstance) {
             partyDepartmentInstance.delete()
-            flash.message = "Department deleted"
+            flash.message = "${message(code: 'default.deleted.label')}"
             redirect(action:list)
         }
         else {
-            flash.message = "Department not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
     }
@@ -46,7 +46,7 @@ class PartyDepartmentController {
         def dataSecurityService = new DataSecurityService()
         def partyList = dataSecurityService.getPartiesOfLoginUser(gh.getValue("PartyID"));
         if(!partyDepartmentInstance) {
-            flash.message = "Department not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:create)
         }
         else {
@@ -59,7 +59,7 @@ class PartyDepartmentController {
         if(partyDepartmentInstance) {
             partyDepartmentInstance.properties = params
             if(!partyDepartmentInstance.hasErrors() && partyDepartmentInstance.save()) {
-                flash.message = "Department updated Successfully"
+                flash.message ="${message(code: 'default.updated.label')}"
                 redirect(action:create,id:partyDepartmentInstance.id)
             }
             else {
@@ -67,7 +67,7 @@ class PartyDepartmentController {
             }
         }
         else {
-            flash.message = "Department not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:edit,id:params.id)
         }
     }
@@ -93,7 +93,7 @@ class PartyDepartmentController {
         def partyDepartmentInstance = new PartyDepartment(params)
         partyDepartmentInstance.createdBy="admin";
         if(!partyDepartmentInstance.hasErrors() && partyDepartmentInstance.save()) {
-            flash.message = "Department created Successfully"
+            flash.message = "${message(code: 'default.created.label')}"
             redirect(action:create,id:partyDepartmentInstance.id)
         }
         else {

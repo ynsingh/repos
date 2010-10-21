@@ -14,7 +14,7 @@
                         	<label for="projects"><g:message code="default.Project.label"/>:</label>
                         </td>
                             <td valign="top" >
-                             	<strong>  ${fieldValue(bean:projectInstance,field:'code')} </strong>
+                             	<strong>  ${fieldValue(bean:projectInstance,field:'parent.code')} </strong>
                             </td>
                             <td valign="top" class="name">
                                 <label for="party"> <g:message code="default.Grantor.label"/> :</label>
@@ -28,7 +28,7 @@
                             <td valign="top" >
                              	<strong>
                                  	<g:message code="default.Rs.label" />
-                                 	${currencyFormat.ConvertToIndainRS(projectInstance.totAllAmount)}
+                                 	${currencyFormat.ConvertToIndainRS(projectInstance.parent.totAllAmount)}
                                  </strong>
                              </td>
                          </tr> 
@@ -49,28 +49,97 @@
 					            </g:hasErrors>
 					            <g:form action="subGrantSave" method="post" >
 					                <div class="dialog">
+					                <g:hiddenField name="parentProjectStartDate" 
+		    							value="${fieldValue(bean:projectInstance, field:'parent.projectStartDate')}"/>
+		   						 	<g:hiddenField name="parentProjectEndDate" 
+		    							value="${fieldValue(bean:projectInstance, field:'parent.projectEndDate')}"/>
+					                <g:hiddenField id="parentid" name="parent.id" 
+	                                     	value="${fieldValue(bean:projectInstance, field:'parent.id')}"/>
 					                    <table>
 					                        <tbody>
                         						<tr>
 					                                <td valign="top" class="name">
 					                                    <label for="project">
-					                                    	<g:message code="default.GrantAllocation.SubProjects.label"/>
+					                                    	<g:message code="default.GrantAllocation.SubProjects.label"/> <g:message code="default.Name.label"/>
 					                                    </label>
 			                                           	<input type="hidden" id="project" name="project" 
-			                                           		value="${fieldValue(bean:projectInstance, field:'id')}"/>
+			                                           		value="${fieldValue(bean:projectInstance, field:'parent.id')}"/>
 					                                    <input type="hidden" id="grantAllotId" name="grantAllotId" 
 					                                    	value="${fieldValue(bean:grantAllocation, field:'id')}"/>
 					                                    <input type="hidden" id="grantor" name="grantor" 
 					                                     	value="${fieldValue(bean:partyInstance, field:'id')}"/>
 				                                	</td>
                                 					<td valign="top" 
-						                                class="value ${hasErrors(bean:grantAllocationInstance,field:'projects','errors')}">
-					                                    <g:select id="subProject" optionKey="id" optionValue="code" 
-						                                    from="${subProjectsList}" name="projects.id" 
-					                                    	value="${grantAllocationInstance?.projects?.id}" noSelection="['null':'Select']">
-					                                	</g:select>
-					                                </td>
-                          							<td valign="top" class="name">
+	                                					class="value ${hasErrors(bean:projectInstance,field:'name','errors')}">
+	                                    				<input type="text" size="35" id="name" name="name" 
+	                                    					value="${fieldValue(bean:projectInstance,field:'name')}"/>
+                                 		 			</td>
+                                 		 			<td  valign="top" class="name">
+	                                    				<label for="code"><g:message code="default.Code.label"/>:</label>
+	                                				</td>
+                                 		 			<td valign="top" 
+	                                					class="value ${hasErrors(bean:projectInstance,field:'code','errors')}">
+	                                    				<input type="text" id="code" name="code" 
+	                                    					value="${fieldValue(bean:projectInstance,field:'code')}"/>
+	                               				 	</td>
+                          							
+					                            </tr> 
+				                        	<tr>
+				                        	
+				                        	<tr class="prop">
+		                   			<td colspan="3"><div align="left">
+			                   			<label for="dateRangeFrom">
+			                   				<g:message code="default.projects.MainProjectStartDate.label"/>: 
+		                   				</label>
+			                    		<strong>
+			                    			<g:formatDate date="${projectInstance?.parent?.projectStartDate}" 
+			                    			format="dd/MM/yyyy"/> 
+		                    			</strong>
+			                    		<label for="dateRangeTo"><g:message code="default.EndDate.label"/>: </label>              
+			                    		<strong> 
+			                    			<g:formatDate date="${projectInstance?.parent?.projectEndDate}" 
+			                    			format="dd/MM/yyyy"/> 
+		                    			</strong> 
+		                    		</td>
+	                    		</tr> 
+                            	
+                            	<tr class="prop">
+		                            <td valign="top" class="name">
+			                            <label for="projectStartDate">
+			                            	<g:message code="default.StartDate.label"/>:
+		                            	</label>
+		                            </td>
+		                            <td valign="top" 
+		                            	class="value ${hasErrors(bean:projectInstance,field:'projectStartDate','errors')}">
+		                            	<calendar:datePicker name="projectStartDate" 
+		                            		value="${projectInstance?.projectStartDate}" defaultValue="${new Date()}" 
+		                            		dateFormat= "%d/%m/%Y"/>
+		                            </td>
+		                            
+		                            <td valign="top" class="name">
+			                            <label for="projectEndDate">
+			                            	<g:message code="default.EndDate.label"/>:
+		                            	</label>
+		                            </td>
+		                            <td colspan="3"  valign="top" 
+		                            	class="value ${hasErrors(bean:projectInstance,field:'projectEndDate','errors')}">
+		                            	<calendar:datePicker name="projectEndDate" value="${projectInstance?.projectEndDate}" 
+		                            		defaultValue="${new Date()}" dateFormat= "%d/%m/%Y"/>
+		                            </td>
+                             	</tr> 
+				                        	
+				                                <td valign="top" class="name">
+				                                    <label for="dateOfAllocation">
+				                                    	<g:message code="default.DateOfAllocation.label"/>:
+				                                    </label>
+				                                </td>
+				                                <td valign="top" 
+				                                	class="value ${hasErrors(bean:grantAllocationInstance,field:'dateOfAllocation','errors')}">
+													<calendar:datePicker name="dateOfAllocation" defaultValue="${new Date()}" 
+				                                     	value="${grantAllocationInstance?.dateOfAllocation}" dateFormat= "%d/%m/%Y"   />
+				                                </td>
+				                          		
+				                          		<td valign="top" class="name">
                                     					<label for="party">
                                     						<g:message code="default.GrantAllocation.Recipient.label"/>:
                                     					</label>
@@ -83,42 +152,11 @@
 						                                    noSelection="['null':'Select']">
 					                                    </g:select>
 					                                </td>
-					                            </tr> 
-				                        	<tr>
-				                                <td valign="top" class="name">
-				                                    <label for="dateOfAllocation">
-				                                    	<g:message code="default.DateOfAllocation.label"/>:
-				                                    </label>
-				                                </td>
-				                                <td valign="top" 
-				                                	class="value ${hasErrors(bean:grantAllocationInstance,field:'dateOfAllocation','errors')}">
-													<calendar:datePicker name="dateOfAllocation" defaultValue="${new Date()}" 
-				                                     	value="${grantAllocationInstance?.dateOfAllocation}" dateFormat= "%d/%m/%Y"   />
-				                                </td>
-				                          
-				                              	<td valign="top" class="name">
-				                                    <label for="amountAllocated">
-				                                    	<g:message code="default.AmountAllocated(Rs).label"/>:
-			                                    	</label>
-				                                </td>
-				                                <td valign="top" 
-				                                class="value ${hasErrors(bean:grantAllocationInstance,field:'amountAllocated','errors')}">
-				                                    <input type="text" id="amountAllocated" name="amountAllocated" 
-				                                    value="${fieldValue(bean:grantAllocationInstance,field:'amountAllocated')}" 
-				                                    style="text-align: right"/>
-				                                </td>
+				                          		
+				                              	
 				                            </tr>
                             			<tr >
                             	            <td valign="top" class="name">
-                                    			<label for="remarks"><g:message code="default.Remarks.label"/>:</label>
-                                			</td>
-                                			<td valign="top" 
-                                				class="value ${hasErrors(bean:grantAllocationInstance,field:'remarks','errors')}">
-                                      			<g:textArea name="remarks" 
-                                      			value="${fieldValue(bean:grantAllocationInstance,field:'remarks')}" 
-                                      					rows="3" cols="30"/>
-                                			</td>
-                                            <td valign="top" class="name">
                                     			<label for="sanctionOrderNo">
                                     				<g:message code="default.GrantAllocation.SanctionOrderNo.label"/>:
                                 				</label>
@@ -129,17 +167,42 @@
 			                                    value="${fieldValue(bean:grantAllocationInstance,field:'sanctionOrderNo')}" 
 			                                    	style="text-align: right"/>
 			                                     <input type="hidden" id="totAllAmount" name="totAllAmount" 
-			                                     	value="${projectInstance.totAllAmount}"/>
+			                                     	value="${projectInstance.parent.totAllAmount}"/>
 			                                	<input type="hidden" id="amount" name="amount" 
 			                                		value="${grantAllocationInstance.totAllAmount}"/>
 			                                </td>
+                                			
+                                			<td valign="top" class="name">
+				                                    <label for="amountAllocated">
+				                                    	<g:message code="default.AmountAllocated(Rs).label"/>:
+			                                    	</label>
+				                                </td>
+				                                <td valign="top" 
+				                                class="value ${hasErrors(bean:grantAllocationInstance,field:'amountAllocated','errors')}">
+				                                    <input type="text" id="amountAllocated" name="amountAllocated" 
+				                                    value="${fieldValue(bean:grantAllocationInstance,field:'amountAllocated')}" 
+				                                    style="text-align: right"/>
+				                                </td>
+                                			
+                                            
 			                            </tr> 
+			                            <tr>
+			                            <td valign="top" class="name">
+                                    			<label for="remarks"><g:message code="default.Remarks.label"/>:</label>
+                                			</td>
+                                			<td valign="top" 
+                                				class="value ${hasErrors(bean:grantAllocationInstance,field:'remarks','errors')}">
+                                      			<g:textArea name="remarks" 
+                                      			value="${fieldValue(bean:grantAllocationInstance,field:'remarks')}" 
+                                      					rows="3" cols="30"/>
+                                			</td>
+			                            </tr>
                         			</tbody>
                     			</table>
                 			</div>
             				<div class="buttons">
                     			<span class="button"><input class="save" type="submit" 
-                    				value="${message(code: 'default.Create.button')}"  onClick="return validateSubGrantAllot()" />
+                    				value="${message(code: 'default.Create.button')}"  onClick="return validateSubProject();return validateSubGrantAllot();" />
                     			</span>
                 			</div>
               			</g:form>

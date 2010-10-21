@@ -20,7 +20,7 @@ class ProjectDepartmentMapController {
         def projectDepartmentMapInstance = ProjectDepartmentMap.get( params.id )
 
         if(!projectDepartmentMapInstance) {
-            flash.message = "ProjectDepartmentMap not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
         else { return [ projectDepartmentMapInstance : projectDepartmentMapInstance ] }
@@ -30,11 +30,11 @@ class ProjectDepartmentMapController {
         def projectDepartmentMapInstance = ProjectDepartmentMap.get( params.id )
         if(projectDepartmentMapInstance) {
             projectDepartmentMapInstance.delete()
-            flash.message = "ProjectDepartmentMap  deleted"
+            flash.message = "${message(code: 'default.deleted.label')}"
             redirect(action:create)
         }
         else {
-            flash.message = "ProjectDepartmentMap not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:create)
         }
     }
@@ -43,7 +43,7 @@ class ProjectDepartmentMapController {
         def projectDepartmentMapInstance = ProjectDepartmentMap.get( params.id )
 
         if(!projectDepartmentMapInstance) {
-            flash.message = "ProjectDepartmentMap not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
         else 
@@ -80,7 +80,7 @@ class ProjectDepartmentMapController {
         if(projectDepartmentMapInstance) {
             projectDepartmentMapInstance.properties = params
             if(!projectDepartmentMapInstance.hasErrors() && projectDepartmentMapInstance.save()) {
-                flash.message = "ProjectDepartmentMap is updated"
+                flash.message ="${message(code: 'default.updated.label')}"
                 redirect(action:create,id:projectDepartmentMapInstance.id)
             }
             else {
@@ -88,7 +88,7 @@ class ProjectDepartmentMapController {
             }
         }
         else {
-            flash.message = "ProjectDepartmentMap not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:edit,id:params.id)
         }
     }
@@ -122,7 +122,7 @@ class ProjectDepartmentMapController {
         def projectsInstance = projectsService.getProjectById(gh.getValue("ProjectId"))
         projectDepartmentMapInstance.projects = projectsInstance
         if(!projectDepartmentMapInstance.hasErrors() && projectDepartmentMapInstance.save()) {
-            flash.message = "ProjectDepartmentMap created for ${projectDepartmentMapInstance.projects.code}"
+            flash.message = "${message(code: 'default.created.label')}"
             redirect(action:create,model:[id:projectDepartmentMapInstance.id,projectsInstance:projectsInstance])
         }
         else {

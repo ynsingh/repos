@@ -1,8 +1,11 @@
+import java.text.*;
+import java.util.*;
+
 class ProjectEmployeeSalaryDetailsController 
 {
 	def projectEmployeeSalaryDetailsService
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
-
+	ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
     def index = 
     {
         redirect(action: "list", params: params)
@@ -24,7 +27,9 @@ class ProjectEmployeeSalaryDetailsController
         def projectEmployeeSalaryDetailsInstanceList=projectEmployeeSalaryDetailsService.getSalaryList(params.id)
         // println "projectEmployeeInstance = " + projectEmployeeInstance
         return [projectEmployeeSalaryDetailsInstance: projectEmployeeSalaryDetailsInstance,
-                projectEmployeeInstance:projectEmployeeInstance,salaryComponentInstance:salaryComponentInstance,
+                projectEmployeeInstance:projectEmployeeInstance,
+                currencyFormat:currencyFormatter,
+                salaryComponentInstance:salaryComponentInstance,
                 projectEmployeeSalaryDetailsInstanceList:projectEmployeeSalaryDetailsInstanceList ]
     }
 
@@ -56,7 +61,7 @@ class ProjectEmployeeSalaryDetailsController
         }       
         if (projectEmployeeSalaryDetailsInstance.save(flush: true)) 
         {
-            flash.message = "New Salary Details created"
+            flash.message = "${message(code: 'default.created.label')}"
             redirect(action: "create", id: projectEmployeeInstance.id)
         }
         else 
@@ -74,7 +79,7 @@ class ProjectEmployeeSalaryDetailsController
         def projectEmployeeSalaryDetailsInstance = ProjectEmployeeSalaryDetails.get(params.id)
         if (!projectEmployeeSalaryDetailsInstance) 
         {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'projectEmployeeSalaryDetails.label', default: 'ProjectEmployeeSalaryDetails'), params.id])}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action: "list")
         }
         else 
@@ -90,12 +95,16 @@ class ProjectEmployeeSalaryDetailsController
         def salaryComponentInstance = SalaryComponent.list()
         if (!projectEmployeeSalaryDetailsInstance) 
         {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'projectEmployeeSalaryDetails.label', default: 'ProjectEmployeeSalaryDetails'), params.id])}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action: "list")
         }
         else 
         {
-            return [projectEmployeeSalaryDetailsInstance: projectEmployeeSalaryDetailsInstance,projectEmployeeInstance:projectEmployeeInstance,salaryComponentInstance:salaryComponentInstance]
+        	NumberFormat formatter = new DecimalFormat("#0.00");
+            return [projectEmployeeSalaryDetailsInstance: projectEmployeeSalaryDetailsInstance,
+                    projectEmployeeInstance:projectEmployeeInstance,
+                    amount:formatter.format(projectEmployeeSalaryDetailsInstance.salaryAmount),
+                    salaryComponentInstance:salaryComponentInstance]
         }
     }
 
@@ -110,14 +119,18 @@ class ProjectEmployeeSalaryDetailsController
                 def version = params.version.toLong()
                 if (projectEmployeeSalaryDetailsInstance.version > version) 
                 {
-                  projectEmployeeSalaryDetailsInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'projectEmployeeSalaryDetails.label', default: 'ProjectEmployeeSalaryDetails')] as Object[], "Another user has updated this ProjectEmployeeSalaryDetails while you were editing")
-                    render(view: "edit", model: [projectEmployeeSalaryDetailsInstance: projectEmployeeSalaryDetailsInstance])
+                  projectEmployeeSalaryDetailsInstance.errors.rejectValue("version", "default.optimistic.locking.failure", 
+                		  [message(code: 'projectEmployeeSalaryDetails.label', 
+                				  default: 'ProjectEmployeeSalaryDetails')] as Object[], 
+                				  "Another user has updated this ProjectEmployeeSalaryDetails while you were editing")
+                    render(view: "edit", 
+                    		model: [projectEmployeeSalaryDetailsInstance: projectEmployeeSalaryDetailsInstance])
                     return
                 }
             }
             projectEmployeeSalaryDetailsInstance.properties = params
             if (!projectEmployeeSalaryDetailsInstance.hasErrors() && projectEmployeeSalaryDetailsInstance.save(flush: true)) {
-                flash.message = "Salary details updated"
+                flash.message = "${message(code: 'default.updated.label')}"
                 redirect(action: "create", id: projectEmployeeInstance.id)
             }
             else 
@@ -127,7 +140,7 @@ class ProjectEmployeeSalaryDetailsController
         }
         else 
         {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'projectEmployeeSalaryDetails.label', default: 'ProjectEmployeeSalaryDetails'), params.id])}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action: "list")
         }
     }
@@ -142,18 +155,18 @@ class ProjectEmployeeSalaryDetailsController
             {
             	//projectEmployeeSalaryDetailsInstance.Status='D'
                 projectEmployeeSalaryDetailsInstance.save(flush: true)
-                flash.message = "${message(code: 'default.deleted.message', args: [message(code: 'projectEmployeeSalaryDetails.label', default: 'ProjectEmployeeSalaryDetails'), params.id])}"
+                flash.message = "${message(code: 'default.deleted.label')}"
                 redirect(action: "create", id: projectEmployeeInstance.id)
             }
             catch (org.springframework.dao.DataIntegrityViolationException e) 
             {
-                flash.message = "${message(code: 'default.not.deleted.message', args: [message(code: 'projectEmployeeSalaryDetails.label', default: 'ProjectEmployeeSalaryDetails'), params.id])}"
+                flash.message = "${message(code: 'default.inuse.label')}"
                 redirect(action: "create", id: projectEmployeeInstance.id)
             }
         }
         else 
         {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'projectEmployeeSalaryDetails.label', default: 'ProjectEmployeeSalaryDetails'), params.id])}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action: "create", id: projectEmployeeInstance.id)
         }
     }

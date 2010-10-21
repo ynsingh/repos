@@ -26,7 +26,7 @@ class RequestmapController {
 	def show = {
 		def requestmap = Requestmap.get(params.id)
 		if (!requestmap) {
-			flash.message = "Requestmap not found with id $params.id"
+			flash.message = "${message(code: 'default.notfond.label')}"
 			redirect action:list
 			return
 		}
@@ -36,7 +36,7 @@ class RequestmapController {
 	def delete = {
 		def requestmap = Requestmap.get(params.id)
 		if (!requestmap) {
-			flash.message = "Requestmap not found with id $params.id"
+			flash.message = "${message(code: 'default.notfond.label')}"
 			redirect action:list
 			return
 		}
@@ -45,14 +45,14 @@ class RequestmapController {
 
 		authenticateService.clearCachedRequestmaps()
 
-		flash.message = "Requestmap $params.id deleted."
+		flash.message = "${message(code: 'default.deleted.label')}"
 		redirect(action: list)
 	}
 
 	def edit = {
 		def requestmap = Requestmap.get(params.id)
 		if (!requestmap) {
-			flash.message = "Requestmap not found with id $params.id"
+			flash.message = "${message(code: 'default.notfond.label')}"
 			redirect(action: list)
 			return
 		}
@@ -67,7 +67,7 @@ class RequestmapController {
 
 		def requestmap = Requestmap.get(params.id)
 		if (!requestmap) {
-			flash.message = "Requestmap not found with id $params.id"
+			flash.message = "${message(code: 'default.notfond.label')}"
 			redirect(action: edit, id :params.id)
 			return
 		}

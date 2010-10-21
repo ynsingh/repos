@@ -170,4 +170,11 @@ class GrantReceiptService{
 	    return grantReceiptInstance    
 		
 	}
+	
+	public GrantReceipt[] chkReceiveFundTransfer(def fundTransfer)
+	{
+		def chkReceiveFund=GrantReceipt.findAll("from GrantReceipt GP where GP.fundTransfer="+fundTransfer.id)
+		return chkReceiveFund
+	}
+	
 }

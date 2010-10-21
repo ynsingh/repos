@@ -69,7 +69,26 @@ html * {
 
 img,td { behavior: url(../images/iepngfix.htc) }
 
-
+#messageBox {
+        position: absolute;
+        align: center;
+        top: 2%;
+        left: 35%;
+        display : none;
+        z-index: 1000;
+        background: #A8A8A8 url(../images/loadSpin.gif) repeat-x;
+        background-repeat:no-repeat;
+		background-position:20%;
+        padding: 0px;
+        border: 1px solid #CCCCCC;
+        text-align: center;
+        font-weight: bold;
+        width: 0;
+        margin-right: auto;
+		margin-left: auto;
+		-webkit-border-radius: 8px;
+		-moz-border-radius: 8px;
+    }
 .framebody {
 	background-image:url(../images/themesky/bg.jpg);
 	background-repeat: repeat-x;
@@ -641,6 +660,8 @@ background-color: #FFFFFF
 	text-align: center;
 	}
 <!-- Main Container End -->
+
+
 
 
 

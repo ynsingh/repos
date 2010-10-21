@@ -20,7 +20,7 @@ class GmsSettingsController {
     def save = {
         def gmsSettingsInstance = new GmsSettings(params)
         if (gmsSettingsInstance.save(flush: true)) {
-            flash.message = "${message(code: 'default.created.message', args: [message(code: 'gmsSettings.label', default: 'GmsSettings'), gmsSettingsInstance.id])}"
+            flash.message = "${message(code: 'default.created.label')}"
             redirect(action: "show", id: gmsSettingsInstance.id)
         }
         else {
@@ -31,7 +31,7 @@ class GmsSettingsController {
     def show = {
         def gmsSettingsInstance = GmsSettings.get(params.id)
         if (!gmsSettingsInstance) {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'gmsSettings.label', default: 'GmsSettings'), params.id])}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action: "list")
         }
         else {
@@ -42,7 +42,7 @@ class GmsSettingsController {
     def edit = {
         def gmsSettingsInstance = GmsSettings.get(params.id)
         if (!gmsSettingsInstance) {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'gmsSettings.label', default: 'GmsSettings'), params.id])}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action: "list")
         }
         else {
@@ -57,14 +57,16 @@ class GmsSettingsController {
                 def version = params.version.toLong()
                 if (gmsSettingsInstance.version > version) {
                     
-                    gmsSettingsInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'gmsSettings.label', default: 'GmsSettings')] as Object[], "Another user has updated this GmsSettings while you were editing")
+                    gmsSettingsInstance.errors.rejectValue("version", "default.optimistic.locking.failure", 
+                    		[message(code: 'gmsSettings.label', default: 'GmsSettings')] as Object[], 
+                    		"Another user has updated this GmsSettings while you were editing")
                     render(view: "edit", model: [gmsSettingsInstance: gmsSettingsInstance])
                     return
                 }
             }
             gmsSettingsInstance.properties = params
             if (!gmsSettingsInstance.hasErrors() && gmsSettingsInstance.save(flush: true)) {
-                flash.message = "${message(code: 'default.updated.message', args: [message(code: 'gmsSettings.label', default: 'GmsSettings'), gmsSettingsInstance.id])}"
+                flash.message = "${message(code: 'default.updated.label')}"
                 redirect(action: "show", id: gmsSettingsInstance.id)
             }
             else {
@@ -72,7 +74,7 @@ class GmsSettingsController {
             }
         }
         else {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'gmsSettings.label', default: 'GmsSettings'), params.id])}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action: "list")
         }
     }
@@ -82,16 +84,16 @@ class GmsSettingsController {
         if (gmsSettingsInstance) {
             try {
                 gmsSettingsInstance.delete(flush: true)
-                flash.message = "${message(code: 'default.deleted.message', args: [message(code: 'gmsSettings.label', default: 'GmsSettings'), params.id])}"
+                flash.message = "${message(code: 'default.deleted.label')}"
                 redirect(action: "list")
             }
             catch (org.springframework.dao.DataIntegrityViolationException e) {
-                flash.message = "${message(code: 'default.not.deleted.message', args: [message(code: 'gmsSettings.label', default: 'GmsSettings'), params.id])}"
+                flash.message = "${message(code: 'default.inuse.label')}"
                 redirect(action: "show", id: params.id)
             }
         }
         else {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'gmsSettings.label', default: 'GmsSettings'), params.id])}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action: "list")
         }
     }

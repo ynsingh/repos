@@ -43,7 +43,7 @@ class AccountHeadsController {
         }
 
         if(!accountHeadsInstance) {
-            flash.message = "AccountHead not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
         else { return [ accountHeadsInstance : accountHeadsInstance ] }
@@ -64,7 +64,7 @@ class AccountHeadsController {
     		 
 		if(accountHeadId != null){
 			
-			flash.message = "AccountHead ${params.name} deleted"
+			flash.message = "${message(code: 'default.deleted.label')}"
 			
 				if(accountHeadsInstance.parent !=null)
 				{
@@ -81,7 +81,7 @@ class AccountHeadsController {
     			
     
 		else {
-            flash.message = "Sub AccountHead exists.Cannot be deleted"
+            flash.message = "${message(code: 'default.notbedeletedAccountHead.label')}"
             redirect(action:list)
         }
     }
@@ -96,7 +96,7 @@ class AccountHeadsController {
         }
 		
         if(!accountHeadsInstance) {
-            flash.message = "AccountHeads not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:create)
         }
         else {
@@ -111,7 +111,7 @@ class AccountHeadsController {
 		if(accountHeadsInstance){
 			if(accountHeadsInstance.saveMode != null){
 				if(accountHeadsInstance.saveMode.equals( "Updated")){
-					flash.message = "AccountHead ${params.name} updated"
+					flash.message = "${message(code: 'default.updated.label')}"
 					if(accountHeadsInstance.parent !=null)
 					{
 						redirect(action:showSubAccountHeads,id:accountHeadsInstance.parent.id)
@@ -122,7 +122,7 @@ class AccountHeadsController {
 					}
 				}
 				else if(accountHeadsInstance.saveMode.equals( "Duplicate")){
-					flash.message = "AccountHead Already Exists"
+					flash.message = "${message(code: 'default.AlreadyExists.label')}"
 	    	    	render(view:'edit',model:[accountHeadsInstance:accountHeadsInstance])
 				}
 			}
@@ -131,7 +131,7 @@ class AccountHeadsController {
 			}
 		}
 		else {
-            flash.message = "AccountHead not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:edit,id:params.id)
         }
     }
@@ -171,7 +171,7 @@ class AccountHeadsController {
         	accountHeadsInstance = accountHeadsService.saveAccountHeads(accountHeadsInstance)
         	if(accountHeadsInstance.saveMode != null){
         		if(accountHeadsInstance.saveMode.equals("Saved")){
-        			flash.message = "AccountHead ${accountHeadsInstance.name} created"
+        			flash.message = "${message(code: 'default.created.label')}"
     				if(accountHeadsInstance.parent !=null)
 					{
 						redirect(action:showSubAccountHeads,id:accountHeadsInstance.parent.id)
@@ -186,12 +186,12 @@ class AccountHeadsController {
         				
     				if(accountHeadsInstance.parent !=null)
 					{
-    					flash.message = "AccountHead Already Exists"
+    					flash.message = "${message(code: 'default.AlreadyExists.label')}"
     					redirect(action:showSubAccountHeads,id:accountHeadsInstance.parent.id)
 					}
     				else
     				{
-    					flash.message = "AccountHead Already Exists"
+    					flash.message = "${message(code: 'default.AlreadyExists.label')}"
     					redirect(action:create,id:accountHeadsInstance.id)
     				}
         		}

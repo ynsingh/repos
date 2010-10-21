@@ -52,9 +52,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="paginateButtons">
-                <g:paginate total="${attachmentsInstanceTotal}" />
-            </div>
+            
         </div>
         </div>
     </body>

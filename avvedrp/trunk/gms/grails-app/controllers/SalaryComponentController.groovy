@@ -30,7 +30,7 @@ class SalaryComponentController
         def salaryComponentInstance = new SalaryComponent(params)
         if (salaryComponentInstance.save(flush: true)) 
         {
-            flash.message = "Created New Salary Component ${params.name}"
+            flash.message ="${message(code: 'default.created.label')}"
             redirect(action: "create", id: salaryComponentInstance.id)
         }
         else 
@@ -44,7 +44,7 @@ class SalaryComponentController
         def salaryComponentInstance = SalaryComponent.get(params.id)
         if (!salaryComponentInstance) 
         {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'salaryComponent.label', default: 'SalaryComponent'), params.id])}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action: "list")
         }
         else 
@@ -58,7 +58,7 @@ class SalaryComponentController
         def salaryComponentInstance = SalaryComponent.get(params.id)
         if (!salaryComponentInstance) 
         {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'salaryComponent.label', default: 'SalaryComponent'), params.id])}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action: "list")
         }
         else 
@@ -88,7 +88,7 @@ class SalaryComponentController
             salaryComponentInstance.properties = params
             if (!salaryComponentInstance.hasErrors() && salaryComponentInstance.save(flush: true)) 
             {
-                flash.message = "Updated Salary Component ${params.name}"
+                flash.message = "${message(code: 'default.updated.label')}"
                 redirect(action: "create", id: salaryComponentInstance.id)
             }
             else 
@@ -98,7 +98,7 @@ class SalaryComponentController
         }
         else 
         {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'salaryComponent.label', default: 'SalaryComponent'), params.id])}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action: "list")
         }
     }
@@ -111,18 +111,18 @@ class SalaryComponentController
             try 
             {
                 salaryComponentInstance.delete(flush: true)
-                flash.message = "Deleted Salary Component ${params.name}"
+                flash.message = "${message(code: 'default.deleted.label')}"
                 redirect(action: "create")
             }
             catch (org.springframework.dao.DataIntegrityViolationException e) 
             {
-                flash.message = "Can't delete the component ${params.name}"
+                flash.message = "${message(code: 'default.inuse.label')}"
                 redirect(action: "create", id: params.id)
             }
         }
         else 
         {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'salaryComponent.label', default: 'SalaryComponent'), params.id])}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action: "create")
         }
     }

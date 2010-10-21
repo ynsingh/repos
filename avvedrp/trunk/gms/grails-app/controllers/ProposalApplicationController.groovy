@@ -20,7 +20,7 @@ class ProposalApplicationController {
         def proposalApplicationInstance = ProposalApplication.get( params.id )
 
         if(!proposalApplicationInstance) {
-            flash.message = "ProposalApplication not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
         else { return [ proposalApplicationInstance : proposalApplicationInstance ] }
@@ -30,11 +30,11 @@ class ProposalApplicationController {
         def proposalApplicationInstance = ProposalApplication.get( params.id )
         if(proposalApplicationInstance) {
             proposalApplicationInstance.delete()
-            flash.message = "ProposalApplication ${params.id} deleted"
+            flash.message = "${message(code: 'default.deleted.label')}"
             redirect(action:list)
         }
         else {
-            flash.message = "ProposalApplication not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
     }
@@ -43,7 +43,7 @@ class ProposalApplicationController {
         def proposalApplicationInstance = ProposalApplication.get( params.id )
 
         if(!proposalApplicationInstance) {
-            flash.message = "ProposalApplication not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
         else {
@@ -56,7 +56,7 @@ class ProposalApplicationController {
         if(proposalApplicationInstance) {
             proposalApplicationInstance.properties = params
             if(!proposalApplicationInstance.hasErrors() && proposalApplicationInstance.save()) {
-                flash.message = "ProposalApplication ${params.id} updated"
+                flash.message = "${message(code: 'default.updated.label')}"
                 redirect(action:show,id:proposalApplicationInstance.id)
             }
             else {
@@ -64,7 +64,7 @@ class ProposalApplicationController {
             }
         }
         else {
-            flash.message = "ProposalApplication not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:edit,id:params.id)
         }
     }
@@ -80,7 +80,7 @@ class ProposalApplicationController {
     		saveformDetails()
         def proposalApplicationInstance = new ProposalApplication(params)
         if(!proposalApplicationInstance.hasErrors() && proposalApplicationInstance.save()) {
-            flash.message = "ProposalApplication ${proposalApplicationInstance.id} created"
+            flash.message = "${message(code: 'default.created.label')}"
             redirect(action:show,id:proposalApplicationInstance.id)
         }
         else {

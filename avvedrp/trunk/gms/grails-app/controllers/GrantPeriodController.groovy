@@ -25,7 +25,7 @@ class GrantPeriodController {
 		def grantPeriodInstance = grantPeriodService.getGrantPeriodById(new Integer( params.id ))
 
         if(!grantPeriodInstance) {
-            flash.message = "GrantPeriod not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
         else { return [ grantPeriodInstance : grantPeriodInstance ] }
@@ -36,11 +36,11 @@ class GrantPeriodController {
 		Integer grantPeriodId = grantPeriodService.deleteGrantPeriod(new Integer(params.id))
 		
 		if(grantPeriodId != null){
-			flash.message = "GrantPeriod  deleted"
+			flash.message = "${message(code: 'default.deleted.label')}"
             redirect(action:list)
 		}
 		else {
-            flash.message = "GrantPeriod not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
     }
@@ -51,7 +51,7 @@ class GrantPeriodController {
 		            def grantPeriodInstance = grantPeriodService.getGrantPeriodById(new Integer( params.id ))
                     if(!grantPeriodInstance)
                       {
-                          flash.message = "GrantPeriod not found with id ${params.id}"
+                          flash.message = "${message(code: 'default.notfond.label')}"
                           redirect(action:list)
                       }
                     else
@@ -70,7 +70,7 @@ class GrantPeriodController {
     	             {
     		           if((chkDefaultGrantPeriodInstance[0].id != Long.parseLong(params.id)) && (chkDefaultGrantPeriodInstance.size()>=1) && (grantPeriodInstance.defaultYesNo == 'Y'))
         	             {
-    	                   flash.message = "Default grant period must be unique"
+    	                   flash.message = "${message(code: 'default.Defaultgrantperiodmustunique.label')}"
     		               redirect(action:edit,id:params.id)
     	                 }
     		           else
@@ -82,7 +82,7 @@ class GrantPeriodController {
 			                    {
 				                  if(grantPeriodInstance.saveMode.equals("Updated"))
 				                    {
-					                  flash.message = "Grant Period  updated"
+					                  flash.message = "${message(code: 'default.updated.label')}"
 	                                  redirect(action:create,id:grantPeriodInstance.id)
 				                    }
                                   else 
@@ -92,7 +92,7 @@ class GrantPeriodController {
 		                        }
     	                      else
     	                        {
-                                  flash.message = "GrantPeriod not found with id ${params.id}"
+                                  flash.message = "${message(code: 'default.notfond.label')}"
                                   redirect(action:edit,id:params.id)
                                 }
 		                    }
@@ -102,7 +102,7 @@ class GrantPeriodController {
     	               {
     		             if((chkDefaultGrantPeriodInstance.size()>=1) && (grantPeriodInstance.defaultYesNo == 'Y'))
            	               {
-       	                     flash.message = "Default grant period must be unique"
+       	                     flash.message = "${message(code: 'default.Defaultgrantperiodmustunique.label')}"
        		                 redirect(action:edit,id:params.id)
        	                   }
        		             else
@@ -114,7 +114,7 @@ class GrantPeriodController {
    			                       {
    				                    if(grantPeriodInstance.saveMode.equals("Updated"))
    				                      {
-   					                    flash.message = "Grant Period  updated"
+   					                    flash.message = "${message(code: 'default.updated.label')}"
    	                                    redirect(action:create,id:grantPeriodInstance.id)
    				                      }
    			                        else
@@ -124,7 +124,7 @@ class GrantPeriodController {
    		                           }
        	                         else
        	                           {
-                                     flash.message = "GrantPeriod not found with id ${params.id}"
+                                     flash.message = "${message(code: 'default.notfond.label')}"
                                      redirect(action:edit,id:params.id)
                                    }
    		                       }
@@ -164,14 +164,14 @@ class GrantPeriodController {
         	
         	if(grantPeriodDuplicateInstance)
         	{
-        	    flash.message = "Grant period Already exists"
+        	    flash.message = "${message(code: 'default.AlreadyExists.label')}"
 	        	redirect(action:create,id:grantPeriodInstance.id)
         	}
         	else
         	{
         		if(grantPeriodInstance.defaultYesNo=='Y' && chkDefaultGrantPeriodInstance.size()>0)
 	            {
-	        	    flash.message = "Default grant period must be unique"
+	        	    flash.message = "${message(code: 'default.Defaultgrantperiodmustunique.label')}"
 	        		redirect(action:create,id:grantPeriodInstance.id)
 	        	}
 	        	
@@ -182,7 +182,7 @@ class GrantPeriodController {
 	        		{
 	        			if(grantPeriodInstance.saveMode.equals("Saved"))
 	        			{
-	        				flash.message = "Grant Period created"
+	        				flash.message = "${message(code: 'default.created.label')}"
 	        				redirect(action:create,id:grantPeriodInstance.id)
 	        			}
 	        		}

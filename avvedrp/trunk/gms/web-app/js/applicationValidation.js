@@ -313,9 +313,57 @@ function validateProject(){
 		return false;
 		}
 		
+	if( ( (document.getElementById("recipient").value) == 'null') || ( (document.getElementById("recipient").value) == '') )
+    {
+	    alert("Please enter the Recipient");
+	    return false;
+    }
+    if(isNaN(document.getElementById("amountAllocated").value))
+    {
+	    alert("Invalid Amount  ");
+	    document.getElementById("amountAllocated").focus
+	    return false;
+    }
+    if((document.getElementById("amountAllocated").value)=='')
+    {
+	    alert("Please enter the Amount Allocated  ");
+	    return false;
+    }
+    if(eval(document.getElementById("amountAllocated").value)<=0)
+    {
+	    alert("Please enter the Amount Allocated   ");
+	    return false;
+    }      
+		
    	return true;
 
 }
+
+function validateFundTransffered()
+{
+
+var transferDateYear = document.getElementById("dateOfTransfer_year").value;
+var transferDateMonth = document.getElementById("dateOfTransfer_month").value;
+var transferDateDate = document.getElementById("dateOfTransfer_day").value;
+var TransferDate = new Date(transferDateYear,transferDateMonth-1,transferDateDate);
+   
+ var d = new Date();
+
+var curr_date = d.getDate();
+
+var curr_month = d.getMonth();
+
+var curr_year = d.getFullYear();
+
+var Today = new Date(curr_year,curr_month,curr_date);
+
+ if(TransferDate > Today)
+    {
+        alert("Date of Transfer should be less than current date");
+        return false; 
+    }
+    
+    }
 function validateAccountHead()
 {
 	if(document.getElementById("name").value == ""){
@@ -440,11 +488,7 @@ function validateReportViewConfirmPrint()
 }
 function validateSubGrantAllot()
 {     
-    if( ( (document.getElementById("subProject").value) == 'null') || ( (document.getElementById("subProject").value) == '') )
-    {
-	    alert("Please enter Sub project");
-	    return false;
-    }
+    
     if( ( (document.getElementById("recipient").value) == 'null') || ( (document.getElementById("recipient").value) == '') )
     {
 	    alert("Please enter the Recipient");
@@ -593,6 +637,12 @@ function validatePI()
 		document.getElementById('institution').focus;
 		return false;
 	}
+	if(document.getElementById('department.id').value == '' || document.getElementById('department.id').value == null)
+	{
+		alert("Please select the Department");
+		document.getElementById('department.id').focus;
+		return false;
+	}
 	if(document.getElementById('email').value == '')
 	{
 		alert("Please Enter the email");
@@ -660,7 +710,7 @@ function validateNotificationCreate()
 	} 
 	if( ( (document.getElementById("myFile").value) == 'null') || ( (document.getElementById("myFile").value) == '') )
     {
-	    alert("Please upload a application form");
+ 		alert("Please upload a application form");
 	    document.getElementById("myFile").focus();
 	    return false;
     }
@@ -1276,4 +1326,42 @@ function validateEmployeeDesignation()
 	    return false;
 	}
 	return true;
+}
+
+  function Redirect()
+        {
+       
+         	 
+         window.location="../login";
+        }
+function validateFundTransfer()
+{
+if(document.getElementById("fundTransfer.id").value == 'null' || document.getElementById("fundTransfer.id").value == '' )
+	{
+		alert("Please Select a Fund Transfer");
+	    document.getElementById("name").focus();
+	    return false;
+	}
+	return true;
+}
+
+function displayAlertMessage(message) 
+{
+	jQuery('submit').attr('disabled', 'disabled')
+	var timeOut = 2000;
+	jQuery('#messageBox').text(message).fadeIn()
+	jQuery('#messageBox').css({'display' : 'block', 'padding' : '10px','border': '1px solid #B0B0B0','width': '25%'})
+	setTimeout(function() 
+	{
+	jQuery('#messageBox').fadeOut()
+	jQuery('#messageBox').css("display", "none")
+	}, timeOut * 1000);
+}
+
+function combineAlertAndRegister() 
+{
+	var retvalue;
+	retvalue = validateRegisterUser();
+	if(retvalue == true) { return displayAlertMessage("Please wait"); }
+	return retvalue
 }

@@ -106,7 +106,7 @@
 								        
 								        <td>${fieldValue(bean: itemPurchaseInstance, field: "billNo")}</td>
 								        
-								        <td><g:formatNumber number="${itemPurchaseInstance.cost}" format="###,##0.00" /></td>
+								        <td>${currencyFormat.ConvertToIndainRS(itemPurchaseInstance.cost)}</td>
 								            <g:hiddenField name="id" value="${itemPurchaseInstance?.id}" />
 								        
 								        <td><g:link controller="itemPurchase" action="edit" 

@@ -6,6 +6,8 @@
     </head>
     <body>
     <div class="wrapper">
+    <g:hiddenField name="parentProjectStartDate" value="${grantAllocationInstance?.projects?.parent?.projectStartDate}"/>
+    <g:hiddenField name="parentProjectEndDate" value="${grantAllocationInstance?.projects?.parent?.projectEndDate}"/>
         <div class="body">
 	        <g:if test="${grantAllocationInstance.projects.parent ==null}"> 
 	        	<h1><g:message code="default.EditSubProjectAllotment.head"/></h1>
@@ -22,6 +24,7 @@
 	            </div>
             </g:hasErrors>
             <g:form method="post" action="updateProAllot" >
+            <input type="hidden" name="projects.id" value="${grantAllocationInstance?.projects?.id}" />
                 <input type="hidden" name="id" value="${grantAllocationInstance?.id}" />
                 <div class="dialog">
                   <table>
@@ -32,12 +35,36 @@
                             </td>
                             <td valign="top" 
                             	class="value ${hasErrors(bean:grantAllocationInstance,field:'projects','errors')}">
-                                <g:select optionKey="id" optionValue="code" from="${Projects.list()}" 
-                                	name="projects.id" value="${grantAllocationInstance?.projects?.id}" 
-                                	disabled="true">
-                            	</g:select>
+                                <input type="text" size="45" id="name" name="name" value="${fieldValue(bean:grantAllocationInstance?.projects,field:'name')}"/>
                             </td>
                        </tr> 
+                       <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="code">Code:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'code','errors')}">
+                                    <input type="text" id="code" name="code" value="${fieldValue(bean:grantAllocationInstance?.projects,field:'code')}"/>
+                                </td>
+                            </tr>
+                       
+                       <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="projectStartDate">Start Date:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'projectStartDate','errors')}">
+                                    <calendar:datePicker name="projectStartDate" value="${grantAllocationInstance?.projects?.projectStartDate}" defaultValue="${new Date()}" dateFormat= "%d/%m/%Y" />
+                                </td>
+                            </tr> 
+                            
+                            
+                             <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="projectEndDate">End Date:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'projectEndDate','errors')}">
+                                    <calendar:datePicker name="projectEndDate" value="${grantAllocationInstance?.projects?.projectEndDate}" defaultValue="${new Date()}" dateFormat= "%d/%m/%Y"/>
+                                </td>
+                            </tr>
                        
                        <tr class="prop">
 	                       	<td valign="top" class="name">
@@ -46,8 +73,9 @@
 	                        	</label>
 	                        </td>
 	                        <td valign="top" class="value ${hasErrors(bean:grantAllocationInstance,field:'party','errors')}">
-	                            <g:select optionKey="id" optionValue="code" from="${Party.list()}" name="party.id" 
+	                            <g:select optionKey="id" optionValue="code" from="${Party.list()}" id="recipient" name="party.id" 
 	                            	value="${grantAllocationInstance?.party?.id}" disabled="true">
+	                            	
 	                        	</g:select>
 	                        </td>
                     	</tr> 
@@ -86,7 +114,7 @@
                             <td valign="top" 
                             	class="value ${hasErrors(bean:grantAllocationInstance,field:'amountAllocated','errors')}">
                                 <input type="text" id="amountAllocated" name="amountAllocated" 
-                                	value="${grantAllocationInstance.amountAllocated}" style="text-align: right" />
+                                	value="${amount}" style="text-align: right" />
                                <input type="hidden" id="totAllAmount" name="totAllAmount" 
                                		value="${projectInstance.totAllAmount}"/>
                                <input type="hidden" id="amount" name="amount" value="${grantAllocationInstance.totAllAmount}"/>
@@ -107,7 +135,7 @@
                 <div class="buttons">
                     <span class="button"><input class="save" type="submit" 
                     	value="${message(code: 'default.Update.button')}" 
-                    	onclick="return validateEditProAllot()" />
+                    	onclick="return validateSubProject()" />
                 	</span>
                     <span class="button"><g:actionSubmit class="delete" 
                     	onclick="return confirm('Are you sure?');" 

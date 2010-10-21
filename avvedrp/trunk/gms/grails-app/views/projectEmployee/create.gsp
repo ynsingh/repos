@@ -32,7 +32,8 @@
 						  		    <td ><label><g:message code="default.projectEmployees.EmployeeNumber.label"/></label></td>
 						    		<td><g:textField name="empNo" value="${projectEmployeeInstance?.empNo}"/></td>
 						    		<td><label><g:message code="default.projectEmployees.DateOfBirth.label"/></label></td>
-						    		<td><calendar:datePicker name="DOB" value="${projectEmployeeInstance?.dOB}" /></td>
+						    		<td><calendar:datePicker name="DOB" value="${projectEmployeeInstance?.dOB}" 
+						    		defaultValue="${new Date()}" dateFormat= "%d/%m/%Y"/></td>
 					  			</tr>
 					  			<tr>
 						    		<td><label><g:message code="default.JoiningDate.label"/></label></td>

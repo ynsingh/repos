@@ -18,7 +18,7 @@ class ProjectsPIMapController {
         def projectsPIMapInstance = ProjectsPIMap.get( params.id )
 
         if(!projectsPIMapInstance) {
-            flash.message = "ProjectsPIMap not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:create)
         }
         else { return [ projectsPIMapInstance : projectsPIMapInstance ] }
@@ -29,11 +29,11 @@ class ProjectsPIMapController {
         if(projectsPIMapInstance) {
         	def projectsInstance = projectsService.checkFordeleteProjectAccessPermissionOfPiMap(params.projects.id,params.investigator.id)
             projectsPIMapInstance.delete()
-            flash.message = "Deleted Successfully"
+            flash.message = "${message(code: 'default.deleted.label')}"
             redirect(action:create)
         }
         else {
-            flash.message = "ProjectsPIMap not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:create)
         }
     }
@@ -43,7 +43,7 @@ class ProjectsPIMapController {
         
         if(!projectsPIMapInstance) 
         {
-            flash.message = "ProjectsPIMap not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:create)
         }
         else 
@@ -72,7 +72,7 @@ class ProjectsPIMapController {
             			{
             				projectsService.checkFordeleteProjectAccessPermissionOfPiMap(projectsPIMapInstance.projects.id,projectsPIMapInstance.investigator.id)
             			}
-                flash.message = "Updated Successfully"
+                flash.message = "${message(code: 'default.updated.label')}"
                 redirect(action:create,id:projectsPIMapInstance.id)
             }
             else {
@@ -80,7 +80,7 @@ class ProjectsPIMapController {
             }
         }
         else {
-            flash.message = "ProjectsPIMap not found with id ${params.id}"
+            flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:edit,id:params.id)
         }
     }
@@ -139,7 +139,7 @@ class ProjectsPIMapController {
 		        if(!projectsPIMapInstance.hasErrors() && projectsPIMapInstance.save())
 		        {
 		        	projectsInstance = projectsService.saveProjectAccessPermissionForPiMap(gh.getValue("ProjectId"),projectsPIMapInstance.investigator.id)
-		            flash.message = "Created successfully"
+		            flash.message = "${message(code: 'default.created.label')}"
 		            redirect(action:create,model:[projectsPIMapInstance:projectsPIMapInstance,projectsInstance:PIprojectsInstance])
 		        }
 		        else
@@ -150,7 +150,7 @@ class ProjectsPIMapController {
 	        else
 	        {
 	        	redirect(action:create,model:[projectsPIMapInstance:projectsPIMapInstance,projectsInstance:PIprojectsInstance]) 
-	        	flash.message = pIMapInstance.investigator.name + " is already assinged as PI for this project " 
+	        	flash.message = pIMapInstance.investigator.name + "${message(code: 'default.alreadyAssignedPI.label')}"
 	        }
         }
         else
@@ -158,7 +158,7 @@ class ProjectsPIMapController {
         	if(!projectsPIMapInstance.hasErrors() && projectsPIMapInstance.save())
 	        {
 	        	projectsInstance = projectsService.saveProjectAccessPermissionForPiMap(gh.getValue("ProjectId"),projectsPIMapInstance.investigator.id)
-	            flash.message = "Created successfully"
+	            flash.message = "${message(code: 'default.created.label')}"
 	            redirect(action:create,model:[projectsPIMapInstance:projectsPIMapInstance,projectsInstance:PIprojectsInstance])
 	        }
 	        else
@@ -170,7 +170,7 @@ class ProjectsPIMapController {
         else
         {
         	redirect(action:create,model:[projectsPIMapInstance:projectsPIMapInstance]) 
-        	flash.message = investigatorInstance.name + " is already assinged as Investigator for this project " 
+        	flash.message = investigatorInstance.name + "${message(code: 'default.alreadyAssignedPI.label')}"
         }
     }
    

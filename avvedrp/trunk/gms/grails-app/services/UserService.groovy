@@ -392,4 +392,24 @@ public void addRolesUser(def person,def params) {
 			userId = person.id
 		return userId
 	}
+	
+	/*
+	 * Function to get user Role Id using User Id.
+	 */
+	 
+   public UserRole getuserRole(def userId)
+	{
+	 def userRoleInstance = UserRole.find("from UserRole UR where UR.user.id = "+userId)
+	 return userRoleInstance
+	}
+	
+	/*
+	 * Function to get Authority using Role Id.
+	 */
+	 
+	 public Authority getauthority(def roleId)
+	 {
+		 def  authorityInstsnce = Authority.find("from Authority A where A.id in ("+ roleId+")")
+		 return authorityInstsnce
+		}
 }

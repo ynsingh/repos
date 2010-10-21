@@ -77,7 +77,7 @@
                                     <label for="amount"><g:message code="default.Amount.label"/></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:grantReceiptInstance,field:'amount','errors')}">
-                                    <input type="text" id="amount" name="amount" value="${grantReceiptInstance.amount}" style="text-align: right" />
+                                    <input type="text" id="amount" name="amount" value="${amount}" style="text-align: right" />
                                     <input type="hidden" id="grantAllocationID" name="grantAllocationID" value="${fieldValue(bean:grantReceiptInstance.grantAllocation, field:'id')}"/>
                                     <input type="hidden" id="balanceAmt" name="balanceAmt" value="${grantReceiptInstance?.balanceAmt}" />
                                 </td>
