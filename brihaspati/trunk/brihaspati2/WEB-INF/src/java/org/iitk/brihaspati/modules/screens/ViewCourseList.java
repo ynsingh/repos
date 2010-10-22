@@ -50,10 +50,13 @@ import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.ListManagement;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.apache.turbine.services.security.torque.om.TurbineUser;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.services.servlet.TurbineServlet;
+import org.iitk.brihaspati.om.InstituteAdminRegistration;
+import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
 
 /**
  * This class contains code for display details of all registered courses 
@@ -106,6 +109,7 @@ public class ViewCourseList extends VelocityScreen
 				crit.add(table,str,(Object)(searchString+"%"),crit.LIKE);
 			}
                 	List q=CoursesPeer.doSelect(crit);
+			Vector vct=new Vector();
 			if(q.size()==0)
 			{
 				if(searchString.equals(""))
@@ -128,15 +132,31 @@ public class ViewCourseList extends VelocityScreen
 			else
 			{	
 				Vector Details= new Vector();
+				Vector inamevect= new Vector();
 		 		for(int i=0;i<q.size();i++)
 	         		{
 		 			byte b= ((Courses)(q.get(i))).getActive();
 		 			String groupname=((Courses)(q.get(i))).getGroupName().toString();
+					String rmid[]=groupname.split("_");
+					String Iid=rmid[1];
+					vct.add(Iid);
 		 			String courseName=((Courses)(q.get(i))).getCname().toString();
+		 			String galias=((Courses)(q.get(i))).getGroupAlias().toString();
 		     			// get Active Course
 					String act=Byte.toString(b);
 					//get group id 
 		   			int GID=GroupUtil.getGID(groupname);
+					/**
+					 *Get Institutename accoding to Institute Id
+					 */
+					List instnamelist=null;
+					for(int n=0;n<vct.size();n++){
+						String iid=vct.get(n).toString();
+						int InstId=Integer.parseInt(iid);
+						crit=new Criteria();
+						crit.add(InstituteAdminRegistrationPeer.INSTITUTE_ID,InstId);
+						instnamelist=InstituteAdminRegistrationPeer.doSelect(crit);
+					}
 		   			//get all userid in specified group as Instructor role
 					Vector uid=UserGroupRoleUtil.getUID(GID,2);
 		   			for(int j=0;j<uid.size();j++)
@@ -150,6 +170,7 @@ public class ViewCourseList extends VelocityScreen
 			   			*/
 						String gnme[]=groupname.split("_");
 						String gnameNiid=gnme[0];	
+						String gnameid=gnme[1];	
 			   			//boolean check=groupname.endsWith(username);
 			   			boolean check=gnameNiid.endsWith(username);
 		   	   			if(check==true)	
@@ -162,12 +183,15 @@ public class ViewCourseList extends VelocityScreen
                                 				String lastName=(element.getLastName()).toString();
                                 				String email=(element.getEmail()).toString();
                                 				String userName=firstName+" "+lastName;
+							String institutename=((InstituteAdminRegistration)instnamelist.get(0)).getInstituteName().toString();
                                 				CourseUserDetail cuDetail=new CourseUserDetail();
-                                				cuDetail.setGroupName(groupname);
+                                				//cuDetail.setGroupName(groupname);
+                                				cuDetail.setGroupName(institutename);
                    						cuDetail.setEmail(email);
 		   						cuDetail.setActive(act);
                    						cuDetail.setInstructorName(userName);
                    						cuDetail.setCourseName(courseName);
+                   						cuDetail.setCAlias(galias);
                                 				Details.add(cuDetail);
                         				}
 			  			}

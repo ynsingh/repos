@@ -37,19 +37,26 @@ package org.iitk.brihaspati.modules.screens;
  */
 
 import java.util.List;
+import java.util.Vector;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.modules.screens.VelocityScreen;
 import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
+import org.iitk.brihaspati.om.InstituteAdminRegistration;
 import org.iitk.brihaspati.om.InstituteAdminUserPeer;
+import org.iitk.brihaspati.om.InstituteAdminUser;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.CommonUtility;
+import org.iitk.brihaspati.modules.utils.AdminProperties;
+import org.iitk.brihaspati.modules.utils.ListManagement;
 
 
 /**
 * Class for to display for list of approved institute.
 * @author <a href="nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
+* @author <a href="singh_jaivir@rediffmail.com">Jaivir Singh</a>21102010
 */
 
 public class ViewInstituteList extends VelocityScreen
@@ -72,11 +79,67 @@ public class ViewInstituteList extends VelocityScreen
                         crit.add(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"1");
                         crit.or(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"3");
                         List instdetail=InstituteAdminRegistrationPeer.doSelect(crit);
-                        context.put("Inslist",instdetail);
-			crit = new Criteria();
-			crit.addGroupByColumn(InstituteAdminUserPeer.INSTITUTE_ID);
-			List instdetail1=InstituteAdminUserPeer.doSelect(crit);
-                        context.put("Inslist1",instdetail1);
+			/**
+			 *Get InstituteId and using this InstituteId in 'INSTITUTEADMINUSER' to get details of institute admin(user) of that Institute.
+			 */
+			Vector iidvector=new Vector(); 
+			Vector vct=new Vector();
+				for(int i=0;i<instdetail.size();i++){
+					InstituteAdminRegistration iar=(InstituteAdminRegistration)instdetail.get(i);
+					int iid=iar.getInstituteId();
+					crit = new Criteria();
+					crit.add(InstituteAdminUserPeer.INSTITUTE_ID,iid);
+					List instdetail1=InstituteAdminUserPeer.doSelect(crit);
+					for(int k=0;k<instdetail1.size();k++){
+						InstituteAdminUser iau=(InstituteAdminUser)instdetail1.get(k);
+						vct.add(iau);
+						int againiid=iau.getInstituteId();
+						crit=new Criteria();
+						crit.add(InstituteAdminRegistrationPeer.INSTITUTE_ID,againiid);
+						List lst1=InstituteAdminRegistrationPeer.doSelect(crit);
+						for(int j=0;j<lst1.size();j++){
+							InstituteAdminRegistration iaregistration=(InstituteAdminRegistration)lst1.get(j);
+							iidvector.add(iaregistration);
+						}
+					}
+					CommonUtility.PListing(data ,context ,vct);
+				}
+			/**
+			 * code for pagination.
+			*/	
+			String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+			int AdminConf = Integer.valueOf(AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value"));
+			context.put("AdminConf",new Integer(AdminConf));
+			context.put("AdminConf_str",Integer.toString(AdminConf));
+			int startIndex=pp.getInt("startIndex",0);
+			String status=new String();
+			int t_size=iidvector.size();
+			if(iidvector.size()!=0){
+                                int value[]=new int[7];
+                                value=ListManagement.linkVisibility(startIndex,t_size,AdminConf);
+                                int k=value[6];
+                                context.put("k",String.valueOf(k));
+                                Integer total_size=new Integer(t_size);
+                                context.put("total_size",total_size);
+				int eI=value[1];
+                                Integer endIndex=new Integer(eI);
+                                context.put("endIndex",endIndex);
+                                 int check_first=value[2];
+                                context.put("check_first",String.valueOf(check_first));
+
+                                int check_pre=value[3];
+                                context.put("check_pre",String.valueOf(check_pre));
+
+                                int check_last1=value[4];
+                                context.put("check_last1",String.valueOf(check_last1));
+
+                                int check_last=value[5];
+                                context.put("check_last",String.valueOf(check_last));
+
+                                context.put("startIndex",String.valueOf(eI));
+                                Vector splitlist=ListManagement.listDivide(iidvector,startIndex,AdminConf);
+                        	context.put("Inslist",splitlist);
+			}
 
 		}
 		catch(Exception e)
