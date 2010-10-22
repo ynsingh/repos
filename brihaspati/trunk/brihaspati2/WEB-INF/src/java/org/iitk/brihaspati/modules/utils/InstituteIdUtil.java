@@ -34,13 +34,19 @@ package org.iitk.brihaspati.modules.utils;
 import java.io.*;
 import java.lang.*;
 import java.util.List;
+import java.util.Date;
 import java.util.Vector;
+import java.util.Collections;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.StringTokenizer;
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.services.security.torque.om.TurbineUser;
 import org.apache.turbine.services.security.torque.om.TurbineUserGroupRole;
 import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
 import org.iitk.brihaspati.om.InstituteAdminUserPeer;
+import org.iitk.brihaspati.om.UsageDetailsPeer;
+import org.iitk.brihaspati.om.UsageDetails;
 import org.iitk.brihaspati.om.InstituteAdminUser;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 /**
@@ -63,13 +69,19 @@ public class InstituteIdUtil
                                 for(int k=0;k<=v.size();k++){
                                 TurbineUserGroupRole element=(TurbineUserGroupRole)v.get(k);
                                 int s=(element.getGroupId());
+				if(s!=2){
                                 String gname=GroupUtil.getGroupName(s);
                                 StringTokenizer st=new  StringTokenizer(gname,"_");
                                 for(int j=0;st.hasMoreTokens();j++){
                                                 String instid=st.nextToken();
                                                 e=st.nextToken();
                                         }
-                                }
+                                }else
+                               {
+					e="author";
+
+                              }
+			     }
 
                 }catch(Exception ex){}
                 return e;
@@ -114,7 +126,83 @@ public class InstituteIdUtil
                 return f;
         }
 
+	public static Vector getAllInstId(int uid)
+        {
+                Vector instidlist=new Vector();
+                String e="";
+                Criteria crit=new Criteria();
+                int[] uId2 ={0,1};
+                try{
+                crit.add(TurbineUserGroupRolePeer.USER_ID,uid);
+                crit.andNotIn(TurbineUserGroupRolePeer.GROUP_ID,uId2);
+                List v=TurbineUserGroupRolePeer.doSelect(crit);
 
+                        for(int k=0;k<=v.size();k++){
+                                TurbineUserGroupRole element=(TurbineUserGroupRole)v.get(k);
+                                int s=(element.getGroupId());
+                                if(s==3){
+                                        String username=UserUtil.getLoginName(uid);
+                                        crit=new Criteria();
+                                        crit.add(InstituteAdminUserPeer.ADMIN_UNAME,username);
+                                        List v3=InstituteAdminUserPeer.doSelect(crit);
+                                        for(int b=0;b<v3.size();b++)
+                                        {
+                                                InstituteAdminUser el=(InstituteAdminUser)v3.get(b);
+                                                int aid=(el.getInstituteId());
+                                                e = Integer.toString(aid);
+                                                instidlist.add(e);
+                                        }
+                                }else if(s==2){
+				e="author";
+				instidlist.add(e);
+				}
+                                else
+                                {
+                                        String gname=GroupUtil.getGroupName(s);
+                                        StringTokenizer st=new  StringTokenizer(gname,"_");
+                                        for(int j=0;st.hasMoreTokens();j++){
+                                                String instid=st.nextToken();
+                                                e=st.nextToken();
+                                                instidlist.add(e);
+						}
+                                        
+                                }
+                        }
+                }catch(Exception ex){}
+                return instidlist;
+//        }
+}
+	public static String getTimeCalculation(int uid)
+	{	String utime=null;
+		try{
+			Date de=new Date();
+                	DateFormat df = DateFormat.getDateInstance();
+                	String s = df.format(de);
+                	Criteria crit=new Criteria();
+                	crit.add(UsageDetailsPeer.USER_ID,uid);
+               		 List v=UsageDetailsPeer.doSelect(crit);
+                	Vector vec=new Vector();
+                 	for(int p=0;p<v.size();p++) {
+                 		UsageDetails element=(UsageDetails)v.get(p);
+                        	Date time=(element.getLoginTime());
+                        	long te=time.getTime();
+                        	String s1 = df.format(time);
+                        	if(s.equals(s1))
+                        	vec.add(te);
+                	}
+                	Object obm = Collections.max(vec);
+                	String str1 = obm.toString();
+                	long l = Long.parseLong(str1.trim());
+                	long diff = de.getTime() - l;
+                	long diffHours = diff/(60 * 60 * 1000);
+                	long diffHour = diff%(60 * 60 * 1000);
+                	long diffMin=diffHour/(60*1000);
+			//String username=user.getName();
+			utime=+diffHours+"Hrs"+" "+diffMin+"Min";
+		}catch(Exception ex){}
+                return utime;
+
+	}
 }
 
 

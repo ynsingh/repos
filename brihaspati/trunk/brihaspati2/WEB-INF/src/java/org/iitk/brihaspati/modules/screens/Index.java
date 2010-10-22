@@ -38,7 +38,7 @@ package org.iitk.brihaspati.modules.screens;
 import java.util.Date;
 import java.util.Vector;
 import java.util.List;
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
@@ -75,16 +75,15 @@ public class Index extends SecureScreen{
 			User user=data.getUser();
                         String username=user.getName();
                         int uid=UserUtil.getUID(username);
-                        String cInsId=null;
-                        if(uid==1){
-                                cInsId="mainA";
-                        }else if(uid==0){
-                                cInsId="guest";
+			Vector cId=new Vector();
+			if(uid==1){
+                                cId.add("mainA");
+			}else if(uid==0){
+                                cId.add("guest");
                         }
-                        else{
-                                cInsId=InstituteIdUtil.getSearch(uid);
-                        }
-
+			else{
+				cId=(InstituteIdUtil.getAllInstId(uid));
+			}
 			/**
 			 * code for Active User list
                          */
@@ -106,46 +105,52 @@ public class Index extends SecureScreen{
                          * code for Active User list With Time
                          */
 			Vector ve1=new Vector();
+			Vector ve2=new Vector();
+
                         Collection aul=TurbineSession.getActiveSessions();
                          for(Iterator i=aul.iterator();i.hasNext();)
-                                        {
-					 HttpSession session=(HttpSession) i.next();
-                                                User un =TurbineSession.getUserFromSession(session);
-                                                String u=un.getName();
-                                                //check for current session is not null
-                                                if(ve.contains(u)){
-                                                        int userid=UserUtil.getUID(u);
-                                                  String lInsId="";
-								  if((userid!=1) && (userid!=0)){
-                                                                       lInsId=InstituteIdUtil.getSearch(userid);
-                                                                }
-                                                //time calculation from session
-                                                Date creationTime = new Date(session.getCreationTime( ));
-                                                Date de=new Date();
-                                                long diff = de.getTime() - creationTime.getTime();
-                                                long diffHours = diff/(60 * 60 * 1000);
-                                                long diffHour = diff%(60 * 60 * 1000);
-                                                long diffMin=diffHour/(60*1000);
-                                                        if(cInsId.equals("mainA")){
-                                                                String h=u+" "+"("+diffHours+"Hrs"+" "+diffMin+"Min"+")";
-                                                                ve1.add(h);
-                                                        }else if(cInsId.equals("guest")){
-                                                                if(u.equals(cInsId)){
-                                                                        String h=u+" "+"("+diffHours+"Hrs"+" "+diffMin+"Min"+")";
-                                                                        ve1.add(h);
-                                                                        }
-                                                        }
-                                                        else if(lInsId.equals(cInsId))
-                                                        {
-                                                                String h=u+" "+"("+diffHours+"Hrs"+" "+diffMin+"Min"+")";
-                                                                ve1.add(h);
-                                                        }
-                                                }
-
-
-                                               }
-                                                context.put("uList",ve1);
-
+                         {
+				HttpSession session=(HttpSession) i.next();
+                                User un =TurbineSession.getUserFromSession(session);
+                                String u=un.getName();
+                                //check for current session is not null
+                                if(ve.contains(u)){
+                                	int userid=UserUtil.getUID(u);
+				        Vector lId=new Vector();
+					if((userid!=1) && (userid!=0)){
+						  lId=InstituteIdUtil.getAllInstId(userid);
+						}
+                                //time calculation for given userid
+					String time=InstituteIdUtil.getTimeCalculation(userid);
+					for (int x = 0; x < cId.size(); x++)
+				 	{
+						Object e=cId.get(x);
+						if(e.equals("mainA")){
+							  String h=u+" "+"("+time+")";
+                                        		ve2.add(h);
+						}else if(e.equals("guest")){
+							if(u.equals(e)){
+								String h=u+" "+"("+time+")";
+                                                 		ve2.add(h);
+                                       			}
+						}else if(lId.contains(e)){
+							String h=u+" "+"("+time+")";
+							Vector ve3=new Vector();
+                                                	ve3.add(h);
+							for(int m=0;m<ve3.size();m++){
+								String instid=(String)ve3.get(m);
+								if(!ve2.contains(instid)){
+                        			                         ve2.add(instid);
+                                        				}
+                                				}
+							
+						}
+					}//end of for loop for cId value
+                                               
+			 	}//end of first if loop
+			}//end of first for loop
+                                                context.put("uList",ve2);
+						
 			/*User user=data.getUser();
 			String username=user.getName();
 			int uid=UserUtil.getUID(username);*/
