@@ -347,8 +347,11 @@ $!data.getMessage()
 			#else
 			<tr bgcolor="$ui.menuColor"><td width="100%" colspan="5"><b>$brih_qus: $ques </b>&nbsp;&nbsp;&nbsp;<a href="$link.setPage("call,FAQ,FAQ.vm").addPathInfo("quesid",$quesid).addPathInfo("category",$category).addPathInfo("modeedit","edit").addPathInfo("mode","alllist").addPathInfo("edittype","addedit")">
 			#if($relation=="before")
+			#foreach($list in $answerlist)
+			#if($list.getVote()=="notattempt")
 			$brih_add $brih_answer</a></td>
-			##end
+			#end
+			#end
 			<td width="30%">Total voting percentage:<align="right"><div style="border: 1px solid black; width:200px; height:7px;"><div id="progress" style="height:7px; width:0px; background-color:red;"/></div></td>
 			#end
 			#end

@@ -101,6 +101,7 @@ public class FAQ extends SecureAction
 			context.put("modetype",modetype);
 			String categoryold=pp.getString("category","");
 			String category=pp.getString("catname","");
+			String inst_id=(String)user.getTemp("Institute_id");
 			/* Check for special character*/
 			if(StringUtil.checkString(category) != -1)
                         {
@@ -117,6 +118,7 @@ public class FAQ extends SecureAction
 			roleid=7;
 			String gname=GroupUtil.getGroupName(uid,roleid);
 			int gid=GroupUtil.getGID(gname);
+			gid=Integer.parseInt((Integer.toString(gid))+inst_id);
 			/*Getting currentdate and expdate by using ExpiryUtil*/
 			String Cur_date=ExpiryUtil.getCurrentDate("-");
                         Date Post_date=Date.valueOf(Cur_date);

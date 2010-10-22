@@ -47,9 +47,11 @@ import org.apache.turbine.om.security.User;
 import org.apache.torque.util.Criteria;
 
 import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 
 import org.iitk.brihaspati.om.FaqPeer;
 import org.iitk.brihaspati.om.Faq;
@@ -93,8 +95,15 @@ public class FAQ_Ques extends SecureScreen
 			String categoryval=pp.getString("categoryval","");
 			context.put("categoryval",categoryval);
 			String actionName=pp.getString("actionName","");
+			String  inst_id=(String)user.getTemp("Institute_id");
 			int uid=UserUtil.getUID(username);
-
+			int roleid=0;
+			if(username.equals("admin"))
+                        roleid=1;
+                        else
+                        roleid=7;
+                        String gname=GroupUtil.getGroupName(uid,roleid);
+                        int gid=GroupUtil.getGID(gname);
 			/**
 			*Getting the Faq category list from the Database
 			*using CommonUtility (PListing method) for pagination
@@ -111,8 +120,16 @@ public class FAQ_Ques extends SecureScreen
                         	{
                         		Faq element=(Faq)(u.get(m));
                                 	String cat_Name=element.getCategory();
-					if(!entry.contains(cat_Name))
+                                	String groupid=Integer.toString(element.getGroupId());
+                                	int quesid=element.getQuesId();
+					if((gid== 3) && (groupid.endsWith(inst_id)) && quesid==0)
 					{
+						if(!entry.contains(cat_Name))
+                                		entry.addElement(cat_Name);
+					}
+					if(gid ==1)
+					{
+						if(!entry.contains(cat_Name))
                                 		entry.addElement(cat_Name);
 					}
                         	} //for

@@ -87,6 +87,12 @@ $!data.getMessage()
 	<td width=30><font face="$ui.sansSerifFonts">$brih_usr $brih_quota ($brih_in $quota_sze)</td>	
 	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="uquota" value="$!uquota"></font></td>
    </tr>
+##--------------------------------------FAQ---------------------
+    <tr bgcolor="$ui.tableColor">
+        <td width=30><font face="$ui.sansSerifFonts">$brih_Faq $brih_expiry</td>
+        <td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="AdminFaqExp" value="$!FaqExp"></font></td>
+    </tr>
+##--------------------------------------FAQ---------------------
    <tr bgcolor="$ui.tableColor">
 	<td width=30><font face="$ui.sansSerifFonts">$brih_home $brih_dir </td>	
 	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="hdir" value="$!hdir"></font></td>
@@ -105,7 +111,7 @@ $!data.getMessage()
 <SCRIPT LANGUAGE="javascript">
 function checkValues(frm,field)
 {
-	if((frm.AFName.value!="") && (frm.ALName.value!="") && (frm.AdminConf.value!=""))
+	if((frm.AFName.value!="") && (frm.ALName.value!="") && (frm.AdminConf.value!="") && (frm.AdminFaqExp.value!=""))
         {
 		if(frm.AdminConf.value>=1 && frm.AdminConf.value<=100)
 		{
@@ -115,8 +121,11 @@ function checkValues(frm,field)
                         	{
 					if(isNumberString(frm.uquota.value))
 		                        {
-                		               	frm.actionName.value=field.name;
-                                		frm.submit();
+						if(isNumberString(frm.AdminFaqExp.value))
+						{
+                		               		frm.actionName.value=field.name;
+                                			frm.submit();
+						}
                         		}
                         	}
 			}

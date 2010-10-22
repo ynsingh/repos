@@ -39,6 +39,7 @@ import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 
 /**
  * @author <a href="mailto:chitvesh@yahoo.com ">Chitvesh Dutta</a> 
@@ -99,6 +100,11 @@ public class AdminParam extends SecureScreen{
 			hdir=System.getProperty("user.home");
 		 }
 		 context.put("hdir",hdir);
+		//----------------------------------FAQ---------------------------
+                 String FaqExp = AdminProperties.getValue(path,"brihaspati.admin.FaqExpiry");
+                 context.put("FaqExp",new Integer(FaqExp));
+		//----------------------------------FAQ---------------------------
+
 		}
 		catch(Exception e) {	
 			data.addMessage(MultilingualUtil.ConvertedString("adm_msg1",LangFile)); 

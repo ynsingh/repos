@@ -86,12 +86,14 @@ $!data.getMessage()
 <tr bgcolor="$ui.menuColor">
 #if($guest_login=="false" )
 	#if(($Role2=="InstructorRole")||($Role3=="StudentRole")||($Role4=="GAdminRole")||($Role5=="AuthorRole"))
-	<td width="25%" align="left" colspan="2"><a href=$link.setPage("call,UserMgmt_User,changePassword.vm").addPathInfo("status","homePage").addPathInfo("lang",$lang) style=text-decoration:none>$brih_changePassword</a>
+	<td width="25%" align="center" colspan="2"><a href=$link.setPage("call,UserMgmt_User,changePassword.vm").addPathInfo("status","homePage").addPathInfo("lang",$lang) style=text-decoration:none>$brih_changePassword</a>
 	</td>
-	<td width="25%" > <a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("mode","general")> $brih_chat</a> </td>
-	<td width="25%"><a href=$link.setPage("call,UserMgmt_User,Profile.vm").addPathInfo("lang",$lang) style=text-decoration:none> #if($lang == "hindi") $brih_usr $brih_Of $Profile_user #else  $brih_usr $Profile_user #end </a></td>
-	<td width="25%" align="left"><a href=$link.setPage("FAQlist.vm").addPathInfo("mode","alllist").addPathInfo("type","instadmin")>$brih_FAQ</a></td>
+	<td width="25%" align="center"> <a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("mode","general")> $brih_chat</a> </td>
+	<td width="25%" align="center"><a href=$link.setPage("call,UserMgmt_User,Profile.vm").addPathInfo("lang",$lang) style=text-decoration:none> #if($lang == "hindi") $brih_usr $brih_Of $Profile_user #else  $brih_usr $Profile_user #end </a></td>
 	#end
+#end
+#if($Role7=="InstituteAdminRole" || $Role3=="StudentRole" || $Role2=="InstructorRole")
+        <td width="25%" align="center"><a href=$link.setPage("FAQlist.vm").addPathInfo("mode","alllist").addPathInfo("type","instadmin")>FAQ</a></td>
 #end
 </tr>
 </table>

@@ -98,7 +98,7 @@ public class changeAParam extends SecureAction{
 	 	String aquota = pp.getString("cquota","");
 	 	String uquota = pp.getString("uquota","");
 	 	String hdir = pp.getString("hdir","");
-		
+		String AdminFaqExp=pp.getString("AdminFaqExp","");
 		/**
 		 * Replacing the variable value from Property file
 		 * Update the first,last name configuration parameter values for Admin
@@ -130,6 +130,7 @@ public class changeAParam extends SecureAction{
 			AdminProperties.setValue(path,aquota,"brihaspati.admin.quota.value");
 			AdminProperties.setValue(path,uquota,"brihaspati.user.quota.value");
 			AdminProperties.setValue(path,hdir,"brihaspati.home.dir.value");
+			AdminProperties.setValue(path,AdminFaqExp,"brihaspati.admin.FaqExpiry");
 			prof_update=m_u.ConvertedString("usr_prof",LangFile);
 			data.setMessage(prof_update);
 			boolean qct=QuotaUtil.CreateandUpdate();	

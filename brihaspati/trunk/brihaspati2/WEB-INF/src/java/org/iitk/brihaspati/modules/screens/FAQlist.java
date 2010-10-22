@@ -56,6 +56,7 @@ import org.iitk.brihaspati.modules.utils.FileEntry;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.ListManagement;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
@@ -86,6 +87,8 @@ public class FAQlist extends VelocityScreen
                         context.put("lang",lang);
 			String category=pp.getString("category","");
 			context.put("category",category);
+			String userid1=pp.getString("userid1","");
+			context.put("userid1",userid1);
 			String mode=pp.getString("mode","");
 			context.put("mode",mode);
 			String quesid=pp.getString("quesid","");
@@ -102,9 +105,10 @@ public class FAQlist extends VelocityScreen
 			Vector entry=new Vector();
 			Vector queslist=new Vector();
 			Vector gidlist=new Vector();
+			Vector gidlist1=new Vector();
+			Vector allAdminuname=new Vector();
 			String username="",filePath="";
 			int uid=0,gid=0;
-			int[]  uId2={1,0,3,2};
 			//getting istitute id for the institute admin FAQs
 			if(type.equals("instadmin"))
 			{
@@ -112,24 +116,15 @@ public class FAQlist extends VelocityScreen
 				User user=data.getUser();
                         	username=data.getUser().getName();
 				uid=UserUtil.getUID(username);
-				/*getting group id for the FAQ*/
-				Criteria crit=new Criteria();
-                        	crit.add(TurbineUserGroupRolePeer.USER_ID,uid);
-				crit.andNotIn(TurbineUserGroupRolePeer.GROUP_ID,uId2);
-                        	List v=TurbineUserGroupRolePeer.doSelect(crit);
-				for(int i=0;i<v.size();i++)
-				{
-                                	TurbineUserGroupRole element=(TurbineUserGroupRole)v.get(i);
-                                	int s=(element.getGroupId());
-					String gname=GroupUtil.getGroupName(s);
-					StringTokenizer st=new StringTokenizer(gname,"_");
-					for(int j=0;st.hasMoreTokens();j++)
-                                	{ //first 'for' loop
-                                        	String instid=st.nextToken();
-						String ef=st.nextToken();
-                                		gidlist.add(ef);
-					}
+                               	gidlist=InstituteIdUtil.getAllInstId(uid);
+				for(int m=0;m<gidlist.size();m++){
+                                	String instid=(String)gidlist.get(m);
+                                	if(!gidlist1.contains(instid))
+                                	{
+                                        	gidlist1.addElement(instid);
+                                	}
                         	}
+				/*getting group id for the FAQ*/
 			}
 			if(mode.equals("alllist"))
 			{
@@ -141,11 +136,12 @@ public class FAQlist extends VelocityScreen
                         	Criteria crit=new Criteria();
 				if(type.equals("instadmin"))
 				{
-					for(int i=0;i<gidlist.size();i++)
+					for(int i=0;i<gidlist1.size();i++)
 					{
 						gid=Integer.parseInt(gidlist.elementAt(i).toString());
-                        			crit.add(FaqPeer.GROUP_ID,3);
-                        			crit.add(FaqPeer.USER_ID,gid);
+						String inst_id="3";
+						gid=Integer.parseInt(inst_id+(Integer.toString(gid)));
+                        			crit.add(FaqPeer.GROUP_ID,gid);
                         			u=FaqPeer.doSelect(crit);
 						if(u.size()!=0)
 						{
@@ -153,10 +149,11 @@ public class FAQlist extends VelocityScreen
                         				{
                         					Faq element=(Faq)(u.get(m));
                                 				String cat_Name=element.getCategory();
-								if(!entry.contains(cat_Name))
-								{
-                                					entry.addElement(cat_Name);
-								}
+								String userid=Integer.toString(element.getUserId());
+								FAQDetail faqdetail= new FAQDetail();
+                                         			faqdetail.setCategory(cat_Name);
+                                                		faqdetail.setUserId(userid);
+                                				entry.addElement(faqdetail);
 							}
                         			} 
 					}
@@ -171,9 +168,14 @@ public class FAQlist extends VelocityScreen
                         			{
                         				Faq element=(Faq)(u.get(m));
                                 			String cat_Name=element.getCategory();
-							if(!entry.contains(cat_Name))
+							String userid=Integer.toString(element.getUserId());
+							String Quesid=Integer.toString(element.getQuesId());
+							if(Integer.parseInt(Quesid)==0)
 							{
-                                				entry.addElement(cat_Name);
+								FAQDetail faqdetail= new FAQDetail();
+                                                                faqdetail.setCategory(cat_Name);
+                                                                faqdetail.setUserId(userid);
+                                                                entry.addElement(faqdetail);
 							}
                         			} //for
 					}
@@ -189,22 +191,18 @@ public class FAQlist extends VelocityScreen
 				TopicMetaDataXmlReader topicmetadata;
 				if(type.equals("instadmin"))
 				{
-					for(int i=0;i<gidlist.size();i++)
+                        		username=UserUtil.getLoginName(Integer.parseInt(userid1));
+                        		filePath=data.getServletContext().getRealPath("/UserArea")+"/"+username+"/FAQ";
+					file=new File(filePath+"/"+category+".xml");
+					if(file.exists())
 					{
-						gid=Integer.parseInt(gidlist.elementAt(i).toString());
-                        			username=UserUtil.getLoginName(gid);
-                        			filePath=data.getServletContext().getRealPath("/UserArea")+"/"+username+"/FAQ";
-						file=new File(filePath+"/"+category+".xml");
-						if(file.exists())
-						{
-							topicmetadata=new TopicMetaDataXmlReader(filePath+"/"+category+".xml");
-                        				entry=topicmetadata.getFaqDetails();
-						}
+						topicmetadata=new TopicMetaDataXmlReader(filePath+"/"+category+".xml");
+                        			entry=topicmetadata.getFaqDetails();
 					}
 				}
 				else
 				{
-					username=UserUtil.getLoginName(1);
+					username=UserUtil.getLoginName(Integer.parseInt(userid1));
                         		filePath=data.getServletContext().getRealPath("/UserArea")+"/"+username+"/FAQ";
 					file=new File(filePath+"/"+category+".xml");
 					if(file.exists())
