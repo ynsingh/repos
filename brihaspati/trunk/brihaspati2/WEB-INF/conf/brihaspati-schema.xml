@@ -7,7 +7,7 @@
 <!--                                                                      -->
 <!-- ==================================================================== -->
 <!-- ==================================================================== -->
-<database name="brihaspati">
+<database name="brihaspati" defaultIdMethod="idbroker">
   <table name="NOTE" idMethod="idbroker">
     <column name="NOTE_ID" required="true" primaryKey="true" type="INTEGER"/>
     <column name="POSTED_BY" size="255" type="VARCHAR"/>
@@ -329,4 +329,59 @@
         <column name="OK" type="INTEGER" Default="0"/>
         <column name="WORST" type="INTEGER" Default="0"/>
 </table>
+<!-- ===============================TIME TABLE==================================== -->
+<table name="events" description="Entire List of Timetable Events">
+    <column name="event" required="false" type="BLOB" description="Event Object"/>
+  </table>
+
+  <table name="table_id" description="Unique ID for each timetable with its corresponding path">
+    <column name="id" primaryKey="true" autoIncrement="true" required="true" type="INTEGER" description="Id of the timetable"/>
+    <column name="path" size="255" type="VARCHAR"/>
+    <column name="user" size="255" type="VARCHAR"/>
+    <column name="department" size="255" type="VARCHAR"/>
+    <column name="date" type="DATE"/>
+  </table>
+
+  <table name="fac_info" description="Faculty Information">
+        <column name="fac_id" type="INTEGER"/>
+        <column name="name" required="true" size="255" type="VARCHAR"/>
+        <column name="department" required="true" size="255" type="VARCHAR"/>
+        <column name="institute" required="true" size="255" type="VARCHAR"/>
+        <column name="id" required="true" size="10" type="VARCHAR"/>
+  </table>
+
+  <table name="faculty_course" description="Faculty to Course Mapping">
+        <column name="course_code" required="true" size="10" type="VARCHAR"/>
+        <column name="faculty_id"  required="true" size="10" type="VARCHAR"/>
+  </table>
+
+  <table name="course_info" description="Course Information">
+        <column name="course_code" size="10" required="true" type="VARCHAR"/>
+        <column name="course_type" size="3" required="true" type="VARCHAR"/>
+        <column name="events_per_week" type="INTEGER"/>
+        <column name="duration" type="INTEGER"/>
+        <column name="computer" type="INTEGER"/>
+        <column name="projector" type="INTEGER"/>
+        <column name="venue_code" size="10" type="VARCHAR"/>
+        <column name="scheduled" type="INTEGER"/>
+  </table>
+<table name="batch" description="Batch Information">
+        <column name="batch_code" required="true" size="10" type="VARCHAR"/>
+        <column name="strength" type="INTEGER"/>
+        <column name="batch_name" size="255" type="VARCHAR"/>
+  </table>
+
+  <table name="batch_course" description="Batch to Course Mapping">
+        <column name="course_code" required="true" size="10" type="VARCHAR"/>
+        <column name="batch_code" required="true" size="10" type="VARCHAR"/>
+  </table>
+
+  <table name="venue" description="Venue Information">
+        <column name="code" required="true" size="10" type="VARCHAR"/>
+        <column name="capacity" required="true" type="INTEGER"/>
+        <column name="ncomputers" type="INTEGER"/>
+        <column name="projector" type="INTEGER"/>
+        <column name="type" type="INTEGER"/>
+  </table>
+
 </database>

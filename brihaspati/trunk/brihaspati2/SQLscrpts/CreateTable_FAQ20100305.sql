@@ -28,5 +28,5 @@ CREATE TABLE FAQ_VOTE
     			    PRIMARY KEY(FAQ_ID,USER_ID)
 );
 
-insert into ID_TABLE (id_table_id, table_name, next_id, quantity) VALUES (133, 'FAQ_VOTE', 1000, 10);
 insert into ID_TABLE (id_table_id, table_name, next_id, quantity) VALUES (132, 'FAQ', 1000, 10);
+insert into ID_TABLE (id_table_id, table_name, next_id, quantity) VALUES (133, 'FAQ_VOTE', 1000, 10);

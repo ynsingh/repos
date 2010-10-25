@@ -1,0 +1,32 @@
+$page.DefaultDoctype
+$page.setBgColor("$ui.bgcolor")
+$page.setTitle("Generate Timetable")
+
+#set($user = $data.getUser().getName())
+#set($lang = $data.getUser().getTemp("lang" ).toString())
+#set($department = $data.getSession().getAttribute("department"))
+
+#set($uploadDir = $data.getSession().getAttribute("uploadDir"))
+#set($reportDir = $data.getSession().getAttribute("reportDir"))
+
+#set($path = $data.getSession().getAttribute("path"))
+
+
+<br/>
+<a href="$content.getURI("/reports/$path/html/batch")"> Batches </a> <br />
+<a href="$content.getURI("/reports/$path/html/faculty")"> Faculty </a> <br />
+<a href="$content.getURI("/reports/$path/html/room")"> Rooms </a> <br />
+
+#if($valid == "true")
+There were no conflicts with the time table. Would you like to save the changes?
+<form action="$link.setPage("call,Timetable,bfr_html.vm").setAction("GenerateTimeTable")" method="post">
+	<input type="hidden" name="eventSlotMap" size="40" value="$eventSlotMap" />
+	<input type="hidden" name="tableId" size="40" value="$tableId" />
+	<input type="submit" name="eventSubmit_doCommit" value="Send" />
+</form>
+#elseif($valid == "false")
+$msg
+#end
+#if($commit == "commit")
+$msg
+#end

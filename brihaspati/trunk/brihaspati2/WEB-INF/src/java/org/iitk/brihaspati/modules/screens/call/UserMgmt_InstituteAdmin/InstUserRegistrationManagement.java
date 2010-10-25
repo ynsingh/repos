@@ -123,9 +123,9 @@ public class InstUserRegistrationManagement extends SecureScreen_Institute_Admin
                         /**
                         * For setting the Institute header
                         */
-                                File f=new File(TurbineServlet.getRealPath("/images")+"/Header/"+instituteId);
-                                boolean istat1=f.exists();
-                                user.setTemp("instImg",istat1);
+                        //        File f=new File(TurbineServlet.getRealPath("/images")+"/Header/"+instituteId);
+                         //       boolean istat1=f.exists();
+                           //     user.setTemp("instImg",istat1);
 
 			}	
                         String query="";

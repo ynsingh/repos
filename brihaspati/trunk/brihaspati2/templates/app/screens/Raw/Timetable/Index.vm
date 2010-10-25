@@ -1,0 +1,16 @@
+$page.DefaultDoctype
+$page.setBgColor("$ui.bgcolor")
+$page.setTitle("Select Department")
+
+#set($Brihaspatilanguage = $data.getUser().getTemp("lang" ).toString()) 
+<table rules="cols">
+	<tr>
+		<td valign="top" width="300px">
+		#parse("screens/$Brihaspatilanguage/Timetable/DepartmentMenu.vm")
+		</td>
+		<td valign="top">
+		#parse("screens/$Brihaspatilanguage/Timetable/DepartmentData.vm") 
+		</td>
+	</tr>
+</table>
+

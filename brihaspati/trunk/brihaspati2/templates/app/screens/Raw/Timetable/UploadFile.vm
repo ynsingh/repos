@@ -1,0 +1,13 @@
+$page.DefaultDoctype
+$page.setBgColor("$ui.bgcolor")
+$page.setTitle("Upload file")
+#set($lang = $data.getUser().getTemp("lang" ).toString())
+
+Please select the file for uploading:
+<br/><br/>
+<form action="$link.setPage("call,Timetable,Index.vm").setAction("TimetableAction")" enctype="multipart/form-data" method="post">
+	<input type="file" name="file" size="40">
+	<input type="hidden" name="actionName" value="eventSubmit_doUpload"> 
+	<input type="submit" name="eventSubmit_doPerform" value=Submit>
+</form>
+<br/>

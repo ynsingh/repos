@@ -1,0 +1,21 @@
+	<div align="left" >
+		<a href=$link.setPage("call,Timetable,Index.vm").addPathInfo("department","CSE").setActionEvent("TimetableAction", "doSetdepartment") style="text-decoration:none"> Computer Science </a>
+		<br/>
+		<a href=$link.setPage("call,Timetable,Index.vm").addPathInfo("department","ECE").setActionEvent("TimetableAction", "doSetdepartment") style="text-decoration:none"> Electronics & Communication </a>
+		<br/>	
+		<a href=$link.setPage("call,Timetable,Index.vm").addPathInfo("department","EE").setActionEvent("TimetableAction", "doSetdepartment") style="text-decoration:none"> Electrical Engineering </a>
+		<br/>	
+		<a href=$link.setPage("call,Timetable,Index.vm").addPathInfo("department","ME").setActionEvent("TimetableAction", "doSetdepartment") style="text-decoration:none"> Mechanical Engineering </a>
+		<br/>	
+		<a href=$link.setPage("call,Timetable,Index.vm").addPathInfo("department","CE").setActionEvent("TimetableAction", "doSetdepartment") style="text-decoration:none"> Civil Engineering </a>
+		<br/>	
+		<a href=$link.setPage("call,Timetable,Index.vm").addPathInfo("department","CH").setActionEvent("TimetableAction", "doSetdepartment") style="text-decoration:none"> Chemical Engineering </a>
+		<br/>
+		<a href=$link.setPage("call,Timetable,Index.vm").addPathInfo("department","MA").setActionEvent("TimetableAction", "doSetdepartment") style="text-decoration:none"> Mathematics </a>
+		<br/>
+		<a href=$link.setPage("call,Timetable,Index.vm").addPathInfo("department","PH").setActionEvent("TimetableAction", "doSetdepartment") style="text-decoration:none"> Physics </a>
+
+		<br/> 
+		<a href=$link.setPage("call,Timetable,SelectDepartments.vm").addPathInfo("mode","get").setActionEvent("TimetableAction", "doManagedepartment") style="text-decoration:none"> Manage Department </a>
+
+	</div>

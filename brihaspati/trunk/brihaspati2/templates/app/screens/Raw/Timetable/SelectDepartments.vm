@@ -1,0 +1,35 @@
+$page.DefaultDoctype
+$page.setBgColor("$ui.bgcolor")
+$page.setTitle("Select Department")
+
+#set($Brihaspatilanguage = $data.getUser().getTemp("lang" ).toString()) 
+#set($dirList = $data.getRequest().getAttribute("dirList"))
+<br/>
+Manage Departments : select those which you want to be present.
+<br/>
+<br/>
+<form action="$link.setPage("call,Timetable,Index.vm").addPathInfo("mode","update").setActionEvent("TimetableAction","doManagedepartment")" method="post">
+
+	<input type="checkbox" name="department" value="Computer Science~CSE" /> Computer Science <br/>
+	<input type="checkbox" name="department" value="Electrical Engineering~EE" /> Electrical Engineering <br/>
+	<input type="checkbox" name="department" value="Mechanical Engineering~ME" /> Mechanical Engineering<br/>
+	<input type="checkbox" name="department" value="Civil Engineering~CE" /> Civil Engineering<br/>
+	<input type="checkbox" name="department" value="Chemical Engineering~CH" /> Chemical Engineering<br/>
+	<input type="checkbox" name="department" value="Architecture & Planning~AR" /> Architecture & Planning<br/>
+	<input type="checkbox" name="department" value="Biotechnology~BT" /> Biotechnology <br/>
+	<input type="checkbox" name="department" value="Chemistry~CY" /> Chemistry<br/>
+	<input type="checkbox" name="department" value="Earthquake Engineering~EQ" /> Earthquake Engineering<br/>
+	<input type="checkbox" name="department" value="Earth Sciences~ES" /> Earth Sciences<br/>
+	<input type="checkbox" name="department" value="Humanities & Social Sciences~HS" /> Humanities & Social Sciences<br/>
+	<input type="checkbox" name="department" value="Hydrology~HY" /> Hydrology<br/>
+	<input type="checkbox" name="department" value="Management Studies~MBA" /> Management Studies<br/>
+	<input type="checkbox" name="department" value="Mathematics~MA" /> Mathematics<br/>
+	<input type="checkbox" name="department" value="Metallurgical and Materials Engineering~MT" /> Metallurgical and Materials Engineering<br/>
+	<input type="checkbox" name="department" value="Physics~PH" /> Physics<br/>
+	<input type="checkbox" name="department" value="Water Resources Development~WRD" /> Water Resources Development<br/>
+	<input type="checkbox" name="department" value="Paper Technology~PP" /> Paper Technology <br/>
+
+	<input type="submit" value=Update /> <a href=$link.setPage("call,Timetable,Index.vm") > Back</a>
+
+
+</form>

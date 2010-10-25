@@ -1,0 +1,14 @@
+
+$page.DefaultDoctype
+$page.setBgColor("$ui.bgcolor")
+$page.setTitle("Generate Timetable")
+
+#set($lang = $data.getUser().getTemp("lang" ).toString())
+#set($department = $data.getSession().getAttribute("department"))
+#set(org.apache.velocity.texen.util.FileUtil@e701fb = $data.getSession().getAttribute("uploadedFiles"))
+
+<ul> #foreach($item in org.apache.velocity.texen.util.FileUtil@e701fb)
+	<li><a href="$link.setActionEvent()">$item</a></li>
+	<br/>
+#end
+</ul>
