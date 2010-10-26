@@ -105,6 +105,12 @@ $page.setBgColor("$ui.bgcolor")
             						<a href=$link.setPage("call,Calculator.vm") style=text-decoration:none>
 		   					<img src=$content.getURI("/images/calculater.JPG") style=border:0px solid;><font size=2>$brih_calculator</font></a>
                 					</td> ##12#h td closed
+							<td> ##13#h td
+                                                        <a href=$link.setActionEvent("TimetableAction", "doInit").setPage("call,Timetable,Index.vm") style=t
+ext-decoration:none>
+                                                        <font size=2>$brih_timetable</font></a>
+                                                        </td> ##13#h td closed
+
                 					<td> ##13#h td
                    					##<a href=$link.setAction("LogoutUser") style=text-decoration:none> 
                                 			<a href=$link.setAction("myLogout") style=text-decoration:none>
