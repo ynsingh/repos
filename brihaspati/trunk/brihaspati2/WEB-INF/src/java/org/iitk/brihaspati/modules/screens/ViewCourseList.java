@@ -137,9 +137,14 @@ public class ViewCourseList extends VelocityScreen
 	         		{
 		 			byte b= ((Courses)(q.get(i))).getActive();
 		 			String groupname=((Courses)(q.get(i))).getGroupName().toString();
-					String rmid[]=groupname.split("_");
+					//String rmid[]=groupname.split("_");
+					String rmid[]=groupname.split("@");
+					//String gn=rmid[0];
 					String Iid=rmid[1];
-					vct.add(Iid);
+					String mainid[]=Iid.split("_");
+					String actId=mainid[1];
+					//vct.add(Iid);
+					vct.add(actId);
 		 			String courseName=((Courses)(q.get(i))).getCname().toString();
 		 			String galias=((Courses)(q.get(i))).getGroupAlias().toString();
 		     			// get Active Course
@@ -168,10 +173,13 @@ public class ViewCourseList extends VelocityScreen
 						* because appear only primary Instructor
 						* now group name contains InstituteId, so for checking for primary Instructor,get groupname without Institute Id.  
 			   			*/
-						String gnme[]=groupname.split("_");
-						String gnameNiid=gnme[0];	
-						String gnameid=gnme[1];	
-			   			//boolean check=groupname.endsWith(username);
+						//String gnme[]=groupname.split("_");
+						String gnme[]=groupname.split("@");
+						String gnameNiid=gnme[0];
+						String gnameid=gnme[1];
+						String dnme[]=gnameid.split("_");
+						String domain=dnme[0];
+						gnameNiid=gnameNiid+"@"+domain;
 			   			boolean check=gnameNiid.endsWith(username);
 		   	   			if(check==true)	
 			   			{
