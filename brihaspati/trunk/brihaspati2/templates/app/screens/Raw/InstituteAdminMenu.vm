@@ -61,11 +61,6 @@
 ##                <img src="$content.getURI("/images/$lang/eventmanagement.jpg")"border=0></a><br>
       </td>
    </tr>
-   <tr>
-      <td>
-         <a href=$link.setPage("call,AdminProfile,ChangePasswd.vm").addPathInfo("count","1") style=text-decoration:none>$brih_changePassword</a>
-      </td>
-   </tr>
    #*<tr bgcolor="$ui.menuColor">
       <td>
          <a href=$link.setPage("call,AdminProfile,AdminParam.vm").addPathInfo("count","1") style=text-decoration:none>$Profile_user</a>
