@@ -46,6 +46,8 @@ import org.iitk.brihaspati.modules.actions.SecureAction_Institute_Admin;
  * @author <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kumar Trivedi</a> 
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a> 
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a> 
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a> 
+ * @modified date:20-10-2010
  */
 
 public class AddUser_Institute extends SecureAction_Institute_Admin 
@@ -84,6 +86,7 @@ public class AddUser_Institute extends SecureAction_Institute_Admin
 		/**
                  * Retreiving details entered by the user
                  */
+                String rollno = pp.getString("rollno","");
 		String gname=new String();
 		gname=pp.getString("group","");
 		if(gname.equals(""))
@@ -116,8 +119,7 @@ public class AddUser_Institute extends SecureAction_Institute_Admin
 		 * Adds the new user in the database.
 		 * @see UserManagement in utils
 		 */
-		//String msg=UserManagement.CreateUserProfile(uname,passwd,fname,lname,email,gname,roleName,serverName,serverPort,LangFile);
-		String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,email,gname,roleName,serverName,serverPort,LangFile);
+		String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,email,gname,roleName,serverName,serverPort,LangFile,rollno);
 
 		data.setMessage(msg);
 		}

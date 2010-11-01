@@ -37,7 +37,9 @@ package org.iitk.brihaspati.modules.actions;
  * @author  <a href="satyapalsingh@gmail.com">Satyapal Singh</a>
  * @author  <a href="singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @modified date: 08-07-2010
+ * @modified date: 20-10-2010
  */
 
 import java.util.Vector;
@@ -181,8 +183,9 @@ public class RemoveStudentCourse extends SecureAction_Admin{
                         String serverPort=Integer.toString(srvrPort);
 			String gName=pp.getString("group");
 			String uname=pp.getString("username");
+			String rollno = pp.getString("rollno","");
 			String roleName="student";
-			String msg=UserManagement.CreateUserProfile(uname,"","","","",gName,roleName,serverName,serverPort,LangFile);
+			String msg=UserManagement.CreateUserProfile(uname,"","","","",gName,roleName,serverName,serverPort,LangFile,rollno);
 			data.setMessage(msg);
 		}
 		catch(Exception e)

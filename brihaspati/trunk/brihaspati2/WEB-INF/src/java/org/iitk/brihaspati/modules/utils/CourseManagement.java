@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.utils;
 /*
  * @(#)CourseManagement.java
  *
- *  Copyright (c) 2004-2006,2009 ETRG,IIT Kanpur. http://www.iitk.ac.in/
+ *  Copyright (c) 2004-2006,2009,2010 ETRG,IIT Kanpur. http://www.iitk.ac.in/
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -60,6 +60,8 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
  * @author <a href="mailto:satyapal@gmail.com">Satyapal Singh</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @modified date: 20-10-2010
  */
 public class CourseManagement
 {
@@ -164,7 +166,8 @@ public class CourseManagement
 						/**
 				 		* Create a user(Primary Instructor) for the new Course
 				 		*/
-						String message2=UserManagement.CreateUserProfile(uname,passwd,fname,lname,email,newcid,"instructor",serverName,serverPort,file);
+						String rollno="";
+						String message2=UserManagement.CreateUserProfile(uname,passwd,fname,lname,email,newcid,"instructor",serverName,serverPort,file,rollno);
 						message=message1+message2;
 					}
 					catch(Exception e)

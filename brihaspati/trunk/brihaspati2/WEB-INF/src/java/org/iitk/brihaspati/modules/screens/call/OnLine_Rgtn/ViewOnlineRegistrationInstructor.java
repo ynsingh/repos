@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.OnLine_Rgtn;
 /*
  * @(#)ViewOnlineRegistrationInstructor.java
  *
- *  Copyright (c) 2008 ETRG,IIT Kanpur.
+ *  Copyright (c) 2008,2010 ETRG,IIT Kanpur.
  *  
  *  All Rights Reserved.
  *  Redistributions of source code must retain the above copyright
@@ -52,6 +52,8 @@ import org.iitk.brihaspati.modules.utils.DbDetail;
 /**
  * @author <a href="mailto:ynsingh@iitk.ac.in">Dr. Y. N. Singh </a>	
  * @author  <a href="mailto:omprakash_kgp@yahoo.co.in">Om Prakash</a>
+ * @author  <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @modified date: 20-10-2010
  */
 
 
@@ -101,6 +103,8 @@ public class ViewOnlineRegistrationInstructor extends SecureScreen_Instructor {
                                                 String orgtn=((CourseUserDetail) list.elementAt(i)).getDept();
                                	        	String email=((CourseUserDetail) list.elementAt(i)).getEmail();
                                	               	String roleName=((CourseUserDetail) list.elementAt(i)).getRoleName();
+                               	               	String rollno=((CourseUserDetail) list.elementAt(i)).getRollNo();
+						//ErrorDumpUtil.ErrorLog("in view online registration------>"+rollno);
                                	        	DbDetail dbDetail= new DbDetail();
                                	        	dbDetail.setSender(uname);
                                	        	dbDetail.setPDate(passwd);
@@ -110,6 +114,7 @@ public class ViewOnlineRegistrationInstructor extends SecureScreen_Instructor {
                                	        	dbDetail.setMSubject(email);
                                	        	dbDetail.setStatus(gname);
                                	        	dbDetail.setMsgID(roleName);
+                               	        	dbDetail.setRollno(rollno);
                                	        	entry.addElement(dbDetail);
 					}
 					

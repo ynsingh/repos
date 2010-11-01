@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_User;
 /*
  * @(#)ViewMarks.java	
  *
- *  Copyright (c) 2005-2006 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006, 2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -35,6 +35,8 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_User;
  * 
  */
 import java.util.Vector;
+import java.util.List;
+import org.apache.torque.util.Criteria;
 import java.util.StringTokenizer;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -45,21 +47,43 @@ import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.om.security.User;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Student;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.om.StudentRollnoPeer;
+import org.iitk.brihaspati.om.StudentRollno;
  /** 
   * In this class, View Marks from Marks file uploading by group instructor
   * @author <a href="mailto:ammu_india@yahoo.com">Amit Joshi</a>
   * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
+  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+  * @modified date: 20-10-2010
   */
  
 public class ViewMarks extends SecureScreen_Student 
 {
+	private String rollno;
 	public void doBuildTemplate(RunData data,Context context)
 	{
 		
 		try
 		{	
 			User user=data.getUser();
-			String checkUser=user.getName(); 
+			String checkUser=user.getName();
+			/**
+			 * Get rollno from table 
+			 */
+			try
+			{
+				Criteria crit=new Criteria();
+	                        crit.add(StudentRollnoPeer.EMAIL_ID,checkUser);
+	                        List v=StudentRollnoPeer.doSelect(crit);
+				//ErrorDumpUtil.ErrorLog("list in view marks---------------->"+v);
+				StudentRollno element=(StudentRollno)v.get(0);
+	                        rollno=element.getRollNo();
+				//ErrorDumpUtil.ErrorLog("roll no of selected student---------------->"+rollno);
+			}
+			catch(Exception e)
+			{ 
+				ErrorDumpUtil.ErrorLog("Error inside getting value in view marks"+e);
+			}
 			String dir=(String)user.getTemp("course_id");
 			context.put("course",(String)user.getTemp("course_name"));
 			String filePath=TurbineServlet.getRealPath("/Courses")+"/"+dir+"/Marks/MARK.txt";
@@ -83,7 +107,8 @@ public class ViewMarks extends SecureScreen_Student
 				sTokenizer=new StringTokenizer(line,",");
 				try{
 					String userName=sTokenizer.nextToken().trim();
-					if(checkUser.equals(userName))
+					//if(checkUser.equals(userName))
+					if(rollno.equals(userName))
 					{
 						Vector markDetail=new Vector();
 						while(sTokenizer.hasMoreTokens())

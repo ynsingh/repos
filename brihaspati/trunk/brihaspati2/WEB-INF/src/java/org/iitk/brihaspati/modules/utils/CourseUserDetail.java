@@ -39,6 +39,8 @@ package org.iitk.brihaspati.modules.utils;
  *  In this class all details of Course and User are set and get in Velocity Screens
  *  @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  *  @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
+ *  @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ *  @modified date: 20-10-2010
  */
 
 import java.util.Date;
@@ -60,6 +62,7 @@ public class CourseUserDetail
 	private String userName;
 	private String loginName;
 	private String userEmail;
+	private String userRollno;
 	private String Err_user;
 	private String Err_type;
 	private String CMsg;
@@ -186,6 +189,14 @@ public class CourseUserDetail
 	public String getEmail()
 	{
 		return userEmail;
+	}
+	public void setRollNo(String rollno)
+	{
+		this.userRollno=rollno;
+	}
+	public String getRollNo()
+	{
+		return userRollno;
 	}
 	// Massages for Removal Case
 	public void setErr_User(String Err_User)

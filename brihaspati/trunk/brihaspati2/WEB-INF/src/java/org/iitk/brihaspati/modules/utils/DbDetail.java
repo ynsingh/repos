@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.utils;
 /*
  * @(#)DbDetail.java
  *
- *  Copyright (c) 2005-2007 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2007,2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -39,6 +39,8 @@ package org.iitk.brihaspati.modules.utils;
  *  @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  *  @author(modify) <a href="mailto:sumanrjpt@yahoo.co.in">Suman Rajput</a>
  *  @author (modify)<a href="mailto:rekha_20july@yahoo.co.in">Rekha Pal</a>
+ *  @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ *  @modified date: 20-10-2010
  */
 
 /**
@@ -54,6 +56,7 @@ public class DbDetail
 	private String PublishDate;
 	private String Status;
 	private String ExpiryDate;
+	private String RollNo;
 	private String Permission;
 	private String GrpmgmtType;
 
@@ -96,6 +99,14 @@ public class DbDetail
 	public String getMsgID()
 	{
 		return Msgid;
+	}
+	public void setRollno(String rollno)
+	{
+		this.RollNo=rollno;
+	}
+	public String getRollno()
+	{
+		return RollNo;
 	}
 	public void setExpiryDate(String ExDate)
 	{

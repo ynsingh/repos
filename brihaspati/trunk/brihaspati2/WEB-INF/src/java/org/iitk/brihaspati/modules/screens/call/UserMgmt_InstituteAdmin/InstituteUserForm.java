@@ -51,6 +51,8 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
   *
   * @author  <a href="singh_jaivir@rediffmail.com">Jaivir Singh</a>
   * @author  <a href="sharad23nov@yahoo.com">Sharad Singh</a>
+  * @author  <a href="richa.tandon1@gmail.com">Richa Tandon</a>
+  * @modified date:20-10-2010
   */
 public class InstituteUserForm extends SecureScreen_Institute_Admin{
 	 /**
@@ -70,7 +72,9 @@ public class InstituteUserForm extends SecureScreen_Institute_Admin{
 			context.put("tdcolor",counter);
 			int uid=UserUtil.getUID(userName);
 			List userList=UserManagement.getUserDetail(Integer.toString(uid));
+			List userRollNo=UserManagement.getUserRollNo(userName);
 			context.put("udetail",userList);
+			context.put("urollno",userRollNo);
 			context.put("Process",modetype);
 			context.put("mode",mode);
 			context.put("status",stat);

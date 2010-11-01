@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.OnLine_Rgtn;
 /*
  * @(#) OnlineRegistration_Admin.java
  *
- *  Copyright (c) 2008 ETRG,IIT Kanpur.
+ *  Copyright (c) 2008, 2010 ETRG,IIT Kanpur.
  *  
  *  All Rights Reserved.
  *  Redistributions of source code must retain the above copyright
@@ -55,7 +55,9 @@ import org.iitk.brihaspati.modules.screens.call.SecureScreen_Institute_Admin;
  
  * @author  <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author  <a href="mailto:omprakash_kgp@yahoo.co.in">Om Prakash</a>
-*/
+ * @author  <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @modified date: 20-10-2010
+ */
 
 public class OnlineRegistration_Admin extends SecureScreen_Institute_Admin {
 
@@ -101,6 +103,8 @@ public class OnlineRegistration_Admin extends SecureScreen_Institute_Admin {
 						String orgtn=((CourseUserDetail) list.elementAt(i)).getDept();
                                        	        String gname=((CourseUserDetail) list.elementAt(i)).getGroupName();
                                        	        String roleName=((CourseUserDetail) list.elementAt(i)).getRoleName();
+                                       	        String rollno=((CourseUserDetail) list.elementAt(i)).getRollNo();
+						//ErrorDumpUtil.ErrorLog("Roll No in screen file------>"+rollno);
 						if(gname.endsWith(instituteid)){
                                        	        DbDetail dbDetail= new DbDetail();
                                        	        dbDetail.setSender(uname);
@@ -111,7 +115,9 @@ public class OnlineRegistration_Admin extends SecureScreen_Institute_Admin {
 						dbDetail.setGrpmgmtType(orgtn);
                                        	        dbDetail.setStatus(gname);
                                        	        dbDetail.setMsgID(roleName);
+                                       	        dbDetail.setRollno(rollno);
                                        	        entry.addElement(dbDetail);
+						//ErrorDumpUtil.ErrorLog("entry in screen file------>"+entry);
 						}
                                        	}
                                	}

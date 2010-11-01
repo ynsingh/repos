@@ -64,6 +64,8 @@ import org.iitk.brihaspati.om.DbReceivePeer;
 import org.iitk.brihaspati.om.NoticeSendPeer;
 import org.iitk.brihaspati.om.UsageDetailsPeer;
 import org.iitk.brihaspati.om.NoticeReceivePeer;
+import org.iitk.brihaspati.om.StudentRollnoPeer;
+import org.iitk.brihaspati.om.StudentRollno;
 import org.iitk.brihaspati.om.UserConfigurationPeer;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
@@ -87,7 +89,9 @@ import babylon.babylonPasswordEncryptor;
  * @author <a href="mailto:madhavi_mungole@hotmail.com">Madhavi Mungole</a>
  * @author <a href="mailto:satyapalsingh@gmail.com">Satyapal Singh</a>
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @modified date: 08-07-2010
+ * @modified date: 20-10-2010
  */
 
 public class UserManagement
@@ -104,9 +108,10 @@ public class UserManagement
 		 * @param Email String The email of new user who has to be registered
 		 * @param GroupName String The group in which the user has to be registered	   
 		 * @param Role String The role of the new user 
+		 * @param RollNo String The rollno of the new user 
 		 * @return String
 		 */
-	public static String CreateUserProfile(String UName,String Passwd,String FName,String LName,String Email,String GroupName,String Role,String serverName,String serverPort,String file)
+	public static String CreateUserProfile(String UName,String Passwd,String FName,String LName,String Email,String GroupName,String Role,String serverName,String serverPort,String file,String RollNo)
 	{
     		babylonUserTool tool=new babylonUserTool();	
 		String message=new String();
@@ -123,6 +128,7 @@ public class UserManagement
 				String userRole=new String();
 			try{
 				String Mail_msg=new String();
+				String Rollno_msg="";
 				String email_existing=new String();
 				String cAlias=new String();
 				String dept=new String();
@@ -166,6 +172,13 @@ public class UserManagement
 					}
 					else
 					{
+						/**
+						 * if role is student then insert roll no in table
+						 */
+						if(Role.equals("student")){
+						Rollno_msg = InsertRollNo(UName,RollNo,file);
+						//ErrorDumpUtil.ErrorLog("return value inside if part\n"+Rollno_msg);
+						}
 						User existingUser=TurbineSecurity.getUser(UName);
 						TurbineSecurity.grant(existingUser,user_group,user_role);
 						crit=new Criteria();
@@ -232,10 +245,10 @@ public class UserManagement
 						*/
 
 						InsertMessages(UName,GroupName,Role);
+						
+						message=Msg+" "+Msg2+" "+Rollno_msg +" "+Mail_msg;
 
-						message=Msg+" "+Msg2+" "+Mail_msg;
-
-					}
+					}//role else part end
 					}
 					catch(Exception e)
 					{
@@ -243,11 +256,10 @@ public class UserManagement
 					
 					}
 				}
+				//user exist start 
 				else
 				{
-					ErrorDumpUtil.ErrorLog("This is in else");
 					try{
-						ErrorDumpUtil.ErrorLog("Test1");
 		 				User new_user=TurbineSecurity.getUserInstance();
 			 			/**
 			  			* Sets the data entered by the user in a blank user object
@@ -361,6 +373,13 @@ public class UserManagement
 						
 						TurbineSecurity.grant(new_user,global,role_of_user);
 						TurbineSecurity.grant(new_user,user_group,user_role);
+						/**
+						 * Insert roll no in table if role is student
+						 */
+						if(Role.equals("student")){
+						Rollno_msg = InsertRollNo(UName,RollNo,file);
+						//ErrorDumpUtil.ErrorLog("return value from insert in else rollno\n"+Rollno_msg);
+						}
 						String NewUser= new String();
 						if(serverPort.equals("8080"))
 							NewUser="newUser";
@@ -370,7 +389,6 @@ public class UserManagement
                                                  * This mail will specify the user name and password of the new user
                                                  * @see MailNotification in utils
                                                  */
-//////////////////////////////////////////////////////////////////////////////////////////////////
 						pr =MailNotification.uploadingPropertiesFile(fileName);
                                                 subject = MailNotification.subjectFormate(NewUser, "", pr );
                                                 messageFormate = MailNotification.getMessage(NewUser, "", "", UName, Passwd, serverName, serverPort,pr);
@@ -379,7 +397,6 @@ public class UserManagement
 						MailNotification.sendMail(messageFormate, email_new, subject, "", file);
 						subject = ""; messageFormate ="";
                                                	subject = MailNotification.subjectFormate(userRole, "", pr );
-//////////////////////////////////////////////////////////////////////////////////////////////////////
 						if(Role.equals("author"))
 						{
 							//Mail_msg=message+MailNotification.sendMail(userRole,email_new,"","","","",fileName,serverName,serverPort,file);
@@ -422,7 +439,8 @@ public class UserManagement
 							String Msg2 =MultilingualUtil.ConvertedString("u_msg5",file);
 							Msg=Msg1+""+Msg2;
 						}
-						message=Msg+" "+Mail_msg;
+						message=Msg+" "+Rollno_msg+" "+Mail_msg;
+							
 						
 					}
 					catch(Exception e)
@@ -506,24 +524,13 @@ public class UserManagement
                                 subject="deleteUserhttps";
                         String email="";
              		TurbineUser element=(TurbineUser)UserManagement.getUserDetail(uid).get(0);
-			ErrorDumpUtil.ErrorLog("DeleteInstructor======"+element);
                         email=element.getEmail();
                         String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
-			ErrorDumpUtil.ErrorLog("fileName at line 507===="+fileName);
                         String rmsg=CourseManagement.RemoveCourse(Gname,"ByCourseMgmt",LangFile);
-			ErrorDumpUtil.ErrorLog("message in DeleteInstructor method=="+rmsg);
-			//////////////////////////////////////////////////////////////////////////////
 			Properties pr =MailNotification.uploadingPropertiesFile(fileName);
-			ErrorDumpUtil.ErrorLog("pr at line 512=="+pr);
 			String subj = MailNotification.subjectFormate(subject, "", pr );
-			ErrorDumpUtil.ErrorLog("subject at line 514=="+subj);
                         messageFormate = MailNotification.getMessage(subject, Gname, "", "", "", server_name, srvrPort,pr);
-			ErrorDumpUtil.ErrorLog("messageFormate at line 516=="+messageFormate);
-			//ErrorDumpUtil.ErrorLog("DeleteInstructor----------- subject="+subj+"		messageFormate="+messageFormate);
-                        //String Mail_msg=MailNotification.sendMail(subject,email,"","","","",fileName,server_name,srvrPort,LangFile);
                         String Mail_msg=MailNotification.sendMail(messageFormate, email, subj, "", LangFile);
-			ErrorDumpUtil.ErrorLog("mail msge at line 520=="+Mail_msg);
-			/////////////////////////////////////////////////////////////////////////////////
                         Message=rmsg+" "+Mail_msg;
 
                 }
@@ -577,6 +584,42 @@ public class UserManagement
 		}
 		return roleExist;
 	}
+	/**
+	 * In this method,Insert Roll No in table
+	 * 
+	 * @param uname String The userid of the user
+	 * @param Rollno String The rollno of the user 
+	 */
+
+	public static String InsertRollNo(String uname,String Rollno,String File)
+        {
+			String Msg ="";
+                try
+                {
+                        Criteria crit=new Criteria();
+			crit.add(StudentRollnoPeer.ROLL_NO,Rollno);
+			List v=StudentRollnoPeer.doSelect(crit);
+			if((v.size())!=0)
+			{
+				String Msg1 =MultilingualUtil.ConvertedString("rollno",File);
+				String Msg2 =MultilingualUtil.ConvertedString("Wikiaction6",File);
+				Msg = Msg1+" "+Msg2;
+			}
+			else
+			{
+				Criteria crit1 = new Criteria();
+                        	crit1.add(StudentRollnoPeer.EMAIL_ID,uname);
+                        	crit1.and(StudentRollnoPeer.ROLL_NO,Rollno);
+				StudentRollnoPeer.doInsert(crit1);
+				Msg = "";
+			}
+                }
+                catch(Exception e){
+                        ErrorDumpUtil.ErrorLog("This is the exception in Insert Roll No :--utils(UserManagement) "+e);
+                }
+		return Msg;
+        }
+
 	/**
 	 * In this method,get all role of user in particular group
 	 * 
@@ -636,6 +679,66 @@ public class UserManagement
                         ErrorDumpUtil.ErrorLog("This is the exception in get user details -utils(UserManagement)  :- "+e);
 					
 		}
+		return v;
+	}
+	/**
+	 * In this method, get roll no of specific user
+	 * 
+	 * @param uid String The userid of the user
+	 * @return List 
+	 */
+
+	public static List getUserRollNo(String uid)
+	{
+		List v=null;
+		try
+		{
+			Criteria crit=new Criteria();
+			crit.add(StudentRollnoPeer.EMAIL_ID,uid);
+			v=StudentRollnoPeer.doSelect(crit);
+			//ErrorDumpUtil.ErrorLog("return roll no in util--------->"+v);
+		}
+		catch(Exception e)
+		{
+                        ErrorDumpUtil.ErrorLog("This is the exception in get Roll No of specific user -utils(UserManagement)  :- "+e);
+					
+		}
+		return v;
+	}
+	/**
+	 * In this method, get list of roll no of all user
+	 * 
+	 * @param gid Integer The groupid of the user
+	 * @param roleid Integer The roleid of the user
+	 * @return List 
+	 */
+	public static List getListOfRollNo(int gid,int roleid)
+	{
+		List v=null;
+		Vector ve = new Vector();
+		try
+		{
+			List ulist = new Vector();
+			String Rollno ;
+			List rollno = new Vector();
+			ulist=UserGroupRoleUtil.getUDetail(gid,3);
+			for(int i=0;i<ulist.size();i++)
+			{
+				CourseUserDetail element=(CourseUserDetail)ulist.get(i);
+				String email = element.getEmail();
+				rollno = getUserRollNo(email);
+				StudentRollno element1 = (StudentRollno)rollno.get(0);
+				Rollno = element1.getRollNo();
+				String Email = element1.getEmailId();
+				ve.add(Rollno);		
+			}
+		}
+		catch(Exception e)
+		{
+                        ErrorDumpUtil.ErrorLog("This is the exception in getting list of Roll No  -utils(UserManagement)  :- "+e);
+					
+		}
+		v = ve;
 		return v;
 	}
 	/*Modified for getting User according to Institute wise.
@@ -717,9 +820,10 @@ public class UserManagement
 	 * @param fName String The FirstName of the user 
 	 * @param lName String The LastName of the user 
 	 * @param eMail String The Email of the user 
+	 * @param RollNo String The Rollno of the user 
 	 * @return String
 	 */
-	public static String updateUserDetails(String userName,String fName,String lName,String eMail,String file)
+	public static String updateUserDetails(String userName,String fName,String lName,String eMail,String file,String RollNo)
 	{
 		String msg=new String();
 		try
@@ -736,6 +840,18 @@ public class UserManagement
                 		user.setEmail(eMail);
 
                 	TurbineSecurity.saveUser(user);
+			if(!RollNo.equals(""))
+			{	
+				List Rollno = new Vector();
+				Rollno = getUserRollNo(userName);
+				StudentRollno element = (StudentRollno)Rollno.get(0);
+				//ErrorDumpUtil.ErrorLog("roll no list in update user management-------\n"+element);
+	                        int id = element.getId();
+				Criteria crit=new Criteria();
+	                        crit.add(StudentRollnoPeer.ID,id);
+	                        crit.add(StudentRollnoPeer.ROLL_NO,RollNo);
+				StudentRollnoPeer.doUpdate(crit);
+			}
                 	String profileOf=MultilingualUtil.ConvertedString("profileOf",file);
                         String update_msg=MultilingualUtil.ConvertedString("update_msg",file);
 			if(file.endsWith("hi.properties"))

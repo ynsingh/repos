@@ -310,6 +310,7 @@
 	
 	
 </table>
+
 <!-- ===============================FAQ==================================== -->
 <table name="FAQ" idMethod="idbroker">
         <column name="FAQ_ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
@@ -328,6 +329,17 @@
         <column name="GOOD" type="INTEGER" Default="0"/>
         <column name="OK" type="INTEGER" Default="0"/>
         <column name="WORST" type="INTEGER" Default="0"/>
+</table>
+
+
+<table name="STUDENT_ROLLNO" idMethod="idbroker">
+	<column name="ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
+	<column name="EMAIL_ID" required="true" type="VARCHAR" size="255"/>
+        <column name="ROLL_NO" required="true" type="VARCHAR" size="255" />
+        <column name="PROGRAM" required="true" type="VARCHAR" size="255"/>
+	<unique>
+	   	<unique-column name="ROLL_NO"/>
+	</unique>
 </table>
 <!-- ===============================TIME TABLE==================================== -->
 <table name="events" description="Entire List of Timetable Events">

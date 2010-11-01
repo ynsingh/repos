@@ -1,7 +1,7 @@
 package org.iitk.brihaspati.modules.utils;
 
 /*@(#)RegisterMultiUser.java
- *  Copyright (c) 2005-2006 ETRG,IIT Kanpur. http://www.iitk.ac.in/
+ *  Copyright (c) 2005-2006,2010 ETRG,IIT Kanpur. http://www.iitk.ac.in/
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -46,6 +46,8 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
  *  @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  *  @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a> 
  *  @author <a href="mailto:madhavi_mungole@hotmail.com">Madhavi Mungole</a> 
+ *  @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a> 
+ *  @modified date: 20-10-2010
  */
 
 public class RegisterMultiUser
@@ -144,7 +146,8 @@ public class RegisterMultiUser
 							}
 						}
 					if(error==0){
-							String str=UserManagement.CreateUserProfile(email,passwd,first_name,last_name,email,Gname,Role,serverName,serverPort,Langfile);
+							String rollno="";
+							String str=UserManagement.CreateUserProfile(email,passwd,first_name,last_name,email,Gname,Role,serverName,serverPort,Langfile,rollno);
 								error=3;
 								errMsg=str;
 						}

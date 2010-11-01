@@ -5,8 +5,9 @@
  *
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a> 
  * @author <a href="mailto:omprakash_kgp@yahoo.co.in">Om Prakash</a>
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
- * @modify 20-03-2009
+ * @modify 20-03-2009 , 20-10-2010
 *#
 
 
@@ -70,6 +71,9 @@ $brih_view $brih_course $brih_reg
                 <td align=center>
                         <b> $brih_email </b>
                 </td>
+		<td align=center>
+                        <b> $brih_rollno </b>
+                </td>
                 <td align=center>
                         <b> $brih_course $brih_ID </b>
                 </td>
@@ -106,7 +110,11 @@ $brih_view $brih_course $brih_reg
                         $e.getMSubject() ##Mail id
  
                 </td>
-                <td >
+		<td>
+                        $e.getRollno() ##Roll No
+
+                </td>
+                <td>
                         $e.getStatus() ## group name
                 </td>
  
@@ -117,7 +125,7 @@ $brih_view $brih_course $brih_reg
         #end
  
         <tr bgcolor="$ui.menuColor">
-                <td align="left" colspan=8>
+                <td align="left" colspan=9>
                 <input type="hidden" name="actionName" value="">
                 <input type="button" name="eventSubmit_AcceptUser" value="$online_accept" onClick="AcceptField(document.frm,this);">
                 <input type="button" name="eventSubmit_RejectUser" value="$online_reject" onClick="AcceptField(document.frm,this);">

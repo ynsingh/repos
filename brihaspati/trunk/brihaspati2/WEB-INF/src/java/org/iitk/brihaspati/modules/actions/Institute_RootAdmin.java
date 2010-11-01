@@ -82,6 +82,8 @@ import babylon.babylonUserTool;
  *
  * @author <a href="mailto:singh_jaivir.rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @modified date:20-10-2010
  */
 
 /** 
@@ -168,7 +170,8 @@ public class Institute_RootAdmin extends VelocitySecureAction
 					String serverName=data.getServerName();
 	                                int srvrPort=data.getServerPort();
 					String serverPort=Integer.toString(srvrPort);
-					String usermgmt = usermanagement.CreateUserProfile(i_adminuname,i_adminpassword,i_adminfname,i_adminlname,i_adminemail,"institute_admin","institute_admin",serverName,serverPort,LangFile);
+					String rollno = data.getParameters().getString("rollno","");
+					String usermgmt = usermanagement.CreateUserProfile(i_adminuname,i_adminpassword,i_adminfname,i_adminlname,i_adminemail,"institute_admin","institute_admin",serverName,serverPort,LangFile,rollno);
 					crit= new Criteria();
                                         crit.add(InstituteAdminRegistrationPeer.INSTITUTE_ID,instituteid);
                                         crit.add(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"1");
@@ -253,6 +256,7 @@ public class Institute_RootAdmin extends VelocitySecureAction
 			String adminemail = pp.getString("IADMINEMAIL");
 			String adminusername = adminemail;
 			String adminpass = adminemail;
+			String rollno = pp.getString("rollno","");
                         /**
                         *   Create password string by spliting email with "@" . 
                         */
@@ -305,7 +309,7 @@ public class Institute_RootAdmin extends VelocitySecureAction
 							*   Create User Profile to call UserManagement util Method							  *   CreateUserProfile. 
 							*/
 							LangFile=(String)data.getUser().getTemp("LangFile");
-							usermgmt = usermanagement.CreateUserProfile(adminusername,password,adminfname,adminlname,adminemail,"institute_admin","institute_admin",serverName,serverPort,LangFile);
+							usermgmt = usermanagement.CreateUserProfile(adminusername,password,adminfname,adminlname,adminemail,"institute_admin","institute_admin",serverName,serverPort,LangFile,rollno);
 							/**
 							*Update institute status if institute is orphan to active.    							  */
 							if(inststat==3)

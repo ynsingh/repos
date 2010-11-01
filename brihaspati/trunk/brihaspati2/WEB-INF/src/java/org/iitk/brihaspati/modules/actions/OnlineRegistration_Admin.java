@@ -62,7 +62,8 @@ import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
  * @author  <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar singh</a>
  * @author  <a href="mailto:omprakash_kgp@yahoo.co.in">Om Prakash</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
- * @modify 20-03-09, 08-07-2010
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @modify 20-03-09, 08-07-2010, 20-10-2010
  */
 
 /**
@@ -73,7 +74,7 @@ public class  OnlineRegistration_Admin extends SecureAction_Institute_Admin{
 
 	private String LangFile=null;
 	private String tokn="", uName="", gName="", mailid="";
-        private String uname="", gname="", email="", fname="", lname="", passwd="";
+        private String uname="", gname="", email="", fname="", lname="", passwd="", rollno="";
 	private String [] splitedTokn ;
 
         public void RejectUser(RunData data, Context context)
@@ -183,6 +184,8 @@ public class  OnlineRegistration_Admin extends SecureAction_Institute_Admin{
 						email=((CourseUserDetail) userlist.elementAt(i)).getEmail();
 						uname=((CourseUserDetail) userlist.elementAt(i)).getLoginName();
 	        	                        gname=((CourseUserDetail) userlist.elementAt(i)).getGroupName();
+	        	                        rollno=((CourseUserDetail) userlist.elementAt(i)).getRollNo();
+						//ErrorDumpUtil.ErrorLog("rollno in online registration admin action\n"+rollno);
                                                 if(email.equals(mailid) && gname.equals(gName) && uname.equals(uName))
 						{
                 	                	        roleName=((CourseUserDetail) userlist.elementAt(i)).getRoleName();
@@ -192,7 +195,7 @@ public class  OnlineRegistration_Admin extends SecureAction_Institute_Admin{
 							if(uname!=null)
 							{
 								try{
-			              					String msg=UserManagement.CreateUserProfile(uname,passwd,fname,lname,email,gname,roleName,serverName,serverPort,LangFile);
+			              					String msg=UserManagement.CreateUserProfile(uname,passwd,fname,lname,email,gname,roleName,serverName,serverPort,LangFile,rollno);
 									data.setMessage(msg);
 								}
 								catch(Exception e){

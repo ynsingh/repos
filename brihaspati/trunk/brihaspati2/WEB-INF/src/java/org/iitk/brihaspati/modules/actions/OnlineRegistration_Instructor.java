@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#) OnlineRegistration_Instructor.java	
  *
- *  Copyright (c) 2008, 2009 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2008, 2009, 2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -63,7 +63,9 @@ import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
  * 
  * @author  <a href="mailto:omprakash_kgp@yahoo.co.in">Om Prakash</a>
  * @author  <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+ * @author  <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @modify 20-03-09
+ * @modify 20-10-2010
  */
 
 
@@ -71,7 +73,7 @@ public class  OnlineRegistration_Instructor extends SecureAction{
 
 	private String LangFile=null;
 	private String tokn="", userName="", groupName="", mailId="" ;
-	private String uname="", gname="", email="";
+	private String uname="", gname="", email="", rollno="";
 	private String [] splitedTokn ;
 
 
@@ -193,6 +195,7 @@ public class  OnlineRegistration_Instructor extends SecureAction{
 						uname=((CourseUserDetail) userlist.elementAt(i)).getLoginName();
                                                	gname=((CourseUserDetail) userlist.elementAt(i)).getGroupName();
 						email=((CourseUserDetail) userlist.elementAt(i)).getEmail();
+						rollno=((CourseUserDetail) userlist.elementAt(i)).getRollNo();
                                         	//if(email.equals(mailid))
 						if(uname.equals(userName) && gname.equals(groupName) && email.equals(mailId))
 						{
@@ -205,7 +208,7 @@ public class  OnlineRegistration_Instructor extends SecureAction{
 							if(uname!=null)
 							{
 								try{
-			              					String msg=UserManagement.CreateUserProfile(uname,passwd,fname,lname,email,gname,roleName,serverName,serverPort,LangFile);
+			              					String msg=UserManagement.CreateUserProfile(uname,passwd,fname,lname,email,gname,roleName,serverName,serverPort,LangFile,rollno);
 									data.setMessage(msg);
 								}
 								catch(Exception e){

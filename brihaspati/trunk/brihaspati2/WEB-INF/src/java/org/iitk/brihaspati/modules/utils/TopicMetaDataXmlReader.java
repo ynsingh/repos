@@ -52,6 +52,7 @@ import org.iitk.brihaspati.modules.utils.XmlReader;
  * @modify 20-08-2010
  * @author: <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
  * @author: <a href="mailto:kishore.shukla@gmail.com">Kishore kumar shukla</a>
+ * @author: <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  */
 
 public class TopicMetaDataXmlReader
@@ -478,7 +479,7 @@ public class TopicMetaDataXmlReader
                 if(file!=null)
                 {
                         Attributes ats;
-                        String uname,passwd,fname,lname,orgtn,email,gname,roleName,registerationDate;
+                        String uname,passwd,fname,lname,orgtn,email,gname,roleName,registerationDate,rollno;
                         for(int j=0;j<file.length;j++)
                         {
 
@@ -494,6 +495,7 @@ public class TopicMetaDataXmlReader
                                 gname=ats.getValue("gname");
                                 roleName=ats.getValue("roleName");
                                 registerationDate =ats.getValue("registerationDate");
+                                rollno =ats.getValue("rollno");
 
                                 fileEntry.setLoginName(uname);
                                 fileEntry.setActive(passwd);
@@ -504,6 +506,7 @@ public class TopicMetaDataXmlReader
                                 fileEntry.setGroupName(gname);
                                 fileEntry.setRoleName(roleName);
 				fileEntry.setCreateDate(registerationDate);
+				fileEntry.setRollNo(rollno);
                                 v.addElement(fileEntry);
                         }
                         return v;

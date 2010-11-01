@@ -68,6 +68,7 @@ import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a> 
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a> 
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a> 
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a> 
  */
 public class UserAction_Instructor extends SecureAction_Instructor
 {
@@ -99,6 +100,7 @@ public class UserAction_Instructor extends SecureAction_Instructor
 
 			ParameterParser pp=data.getParameters();
 			String gName=data.getUser().getTemp("course_id").toString();
+			String rollno = pp.getString("rollno","");
 			String email=pp.getString("EMAIL");
 			String passwd=pp.getString("PASSWD");
 			/**
@@ -113,7 +115,7 @@ public class UserAction_Instructor extends SecureAction_Instructor
 			}
 			String fname=pp.getString("FNAME");
 			String lname=pp.getString("LNAME");
-			String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,email,gName,"student",serverName,serverPort,LangFile);
+			String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,email,gName,"student",serverName,serverPort,LangFile,rollno);
 			data.setMessage(msg);
 
 		}
@@ -307,7 +309,9 @@ public class UserAction_Instructor extends SecureAction_Instructor
                 String fname=StringUtil.replaceXmlSpecialCharacters(pp.getString("firstname"));
                 String lname=StringUtil.replaceXmlSpecialCharacters(pp.getString("lastname"));
                 String email=StringUtil.replaceXmlSpecialCharacters(pp.getString("email"));
-                String msg=UserManagement.updateUserDetails(uname,fname,lname,email,LangFile);
+                String rollno=StringUtil.replaceXmlSpecialCharacters(pp.getString("rollno",""));
+		//ErrorDumpUtil.ErrorLog("value of rollno in user action instructor\n"+rollno);
+                String msg=UserManagement.updateUserDetails(uname,fname,lname,email,LangFile,rollno);
                 data.setMessage(msg);
         }
 	/**

@@ -45,6 +45,8 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
  *
  *  @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  *  @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
+ *  @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ *  @modified date: 20-10-2010
  */
  
 
@@ -83,6 +85,7 @@ public class InstructorRegisteration_Institute extends SecureAction_Institute_Ad
 		String lname=pp.getString("LNAME");
 		String email=pp.getString("EMAIL");
 		String passwd=pp.getString("PASSWD");
+		String rollno =pp.getString("rollno","");
 		if(passwd.equals(""))
 			passwd=uname;
 
@@ -93,7 +96,7 @@ public class InstructorRegisteration_Institute extends SecureAction_Institute_Ad
 		String InstituteId=(data.getUser().getTemp("Institute_Id")).toString();
 		ErrorDumpUtil.ErrorLog("iid at line 93 in RegisterSecInstructor==="+InstituteId);
 		int instituteId=Integer.parseInt(InstituteId); 	
-		String msg=UserManagement.CreateUserProfile(uname,passwd,fname,lname,email,gName,"instructor",serverName,serverPort,LangFile);
+		String msg=UserManagement.CreateUserProfile(uname,passwd,fname,lname,email,gName,"instructor",serverName,serverPort,LangFile,rollno);
 		context.put("msg",msg);
 		data.setMessage(msg +" "+ mail_msg);
 

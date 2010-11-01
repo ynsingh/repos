@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#) AddUser.java	
  *
- *  Copyright (c) 2004-2006,2009 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2004-2006,2009,2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -46,6 +46,8 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
  * @author <a href="mailto:madhavi_mungole@hotmail.com">Madhavi Mungole</a> 
  * @author <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kumar Trivedi</a> 
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a> 
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @modified date: 20-10-2010 
  */
 
 public class AddUser extends SecureAction_Admin 
@@ -83,6 +85,7 @@ public class AddUser extends SecureAction_Admin
 		/**
                  * Retreiving details entered by the user
                  */
+                String rollno = pp.getString("rollno","");
 		String gname=new String();
 		//String roleName=new String();
 		gname=pp.getString("group","");
@@ -127,7 +130,7 @@ public class AddUser extends SecureAction_Admin
 		 * Adds the new user in the database.
 		 * @see UserManagement in utils
 		 */
-		String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,email,gname,roleName,serverName,serverPort,LangFile);
+		String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,email,gname,roleName,serverName,serverPort,LangFile,rollno);
 		ErrorDumpUtil.ErrorLog("msg at line 131====="+msg);
 		data.setMessage(msg);
 		}

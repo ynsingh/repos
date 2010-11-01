@@ -81,7 +81,8 @@ import org.iitk.brihaspati.om.CoursesPeer;
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
- * @modified date: 08-07-2010
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @modified date: 08-07-2010, 20-10-2010
  */
 
 public class UserAction_InstituteAdmin extends SecureAction_Institute_Admin{
@@ -158,7 +159,9 @@ public class UserAction_InstituteAdmin extends SecureAction_Institute_Admin{
 		String fname=StringUtil.replaceXmlSpecialCharacters(pp.getString("firstname"));
 	 	String lname=StringUtil.replaceXmlSpecialCharacters(pp.getString("lastname"));
          	String email=StringUtil.replaceXmlSpecialCharacters(pp.getString("email"));
-		String msg=UserManagement.updateUserDetails(uname,fname,lname,email,LangFile);
+         	String rollno=StringUtil.replaceXmlSpecialCharacters(pp.getString("rollno",""));
+		//ErrorDumpUtil.ErrorLog("value of roll no in user action institute admin\n"+rollno);
+		String msg=UserManagement.updateUserDetails(uname,fname,lname,email,LangFile,rollno);
 	 	data.setMessage(msg);
 	}
     	/**

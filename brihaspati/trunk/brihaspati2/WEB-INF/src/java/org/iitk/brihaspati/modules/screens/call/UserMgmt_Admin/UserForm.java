@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_Admin;
 /*
  * @(#)UserForm.java	
  *
- *  Copyright (c) 2004 - 2006 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2004 - 2006,2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -42,6 +42,7 @@ import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Admin;
 import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 /**
   * This class contains code for edit user profile according specific username
   * Grab all the records in a table using a Peer, and
@@ -50,6 +51,8 @@ import org.iitk.brihaspati.modules.utils.UserUtil;
   *
   * @author  <a href="awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
   * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a> 
+  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a> 
+  * @modified date:20-10-2010
   */
 public class UserForm extends SecureScreen_Admin{
 	 /**
@@ -69,7 +72,10 @@ public class UserForm extends SecureScreen_Admin{
 			context.put("tdcolor",counter);
 			int uid=UserUtil.getUID(userName);
 			List userList=UserManagement.getUserDetail(Integer.toString(uid));
+			List userRollNo=UserManagement.getUserRollNo(userName);
+			//ErrorDumpUtil.ErrorLog("rollno list in user form screen---------->"+userRollNo);
 			context.put("udetail",userList);
+			context.put("urollno",userRollNo);
 			context.put("Process",modetype);
 			context.put("mode",mode);
 			context.put("status",stat);

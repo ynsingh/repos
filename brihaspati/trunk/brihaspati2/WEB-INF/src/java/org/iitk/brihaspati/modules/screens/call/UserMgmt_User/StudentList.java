@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_User;
 /*
  * @(#)StudentList.java	
  *
- *  Copyright (c) 2005-2006 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006, 2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -39,6 +39,8 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_User;
  * @author <a href="awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
  * @author <a href="manjaripal@yahoo.co.in">Manjari Pal</a>
+ * @author <a href="richa.tandon1@gmail.com">Richa Tandon</a>
+ * @modified date: 20-10-2010
  */
 
 import java.util.Vector;
@@ -50,10 +52,14 @@ import org.apache.turbine.om.security.User;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Instructor;
 import org.iitk.brihaspati.modules.utils.ListManagement;
+import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
+import org.iitk.brihaspati.om.StudentRollnoPeer;
+import org.apache.torque.util.Criteria;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
 /**
   * This class contains code for listing of all user without admin and guest
@@ -87,6 +93,7 @@ public class StudentList extends SecureScreen_Instructor{
 		LangFile=(String)user.getTemp("LangFile");
 			context.put("tdcolor",data.getParameters().getString("count","")); 
 			Vector userList=new Vector();
+			List usrlist=new Vector();
 			String course_id=(String)user.getTemp("course_id");
 			String course_name=(String)user.getTemp("course_name");
 			context.put("course",course_name);
@@ -101,6 +108,10 @@ public class StudentList extends SecureScreen_Instructor{
 			{
 				userList=UserGroupRoleUtil.getUDetail(g_id,3);
                         	context.put("mode","All");
+				Criteria crit1 = new Criteria();
+				usrlist=StudentRollnoPeer.doSelect(crit1);
+				//ErrorDumpUtil.ErrorLog("return value in screen file----------------->"+usrlist);
+				context.put("rollnolist",usrlist);
 			}
 			else
 			{
