@@ -323,10 +323,10 @@ public class Data implements Constants {
 				String last_course_code = null;
 				ArrayList<Batch> batchList = null;
 				Course course = null;
-				String queryString = "select C.course_code,C.course_type,F.faculty_id," +
-				"C.events_per_week,C.duration,C.computer,C.projector, C.venue_code, C.scheduled from course C," +
-				"faculty_course F  where C.course_code = F.course_code  " +
-				"order by course_code";
+				String queryString = "SELECT C.COURSE_CODE,C.COURSE_TYPE,F.FACULTY_ID," +
+				"C.EVENTS_PER_WEEK,C.DURATION,C.COMPUTER,C.PROJECTOR, C.VENUE_CODE, C.SCHEDULED FROM COURSE_INFO C," +
+				"FACULTY_COURSE F  WHERE C.COURSE_CODE = F.COURSE_CODE  " +
+				"ORDER BY COURSE_CODE";
 				Connection con = Torque.getConnection();
 				if(null == con) {
 					throw new TimetableException("Null Connection given in loadEventlist");
@@ -354,9 +354,9 @@ public class Data implements Constants {
 						courses.add(course_num,course);
 						courseToEvents.add(course_num,new ArrayList<Integer>());
 											
-						PreparedStatement ps = con.prepareStatement("select b.batch_code,b.strength,b.batch_name" +
-								" from batch_course bc,batch b where" +
-								" bc.course_code = ? and bc.batch_code = b.batch_code");
+						PreparedStatement ps = con.prepareStatement("SELECT B.BATCH_CODE,B.STRENGTH,B.BATCH_NAME" +
+								" FROM BATCH_COURSE BC,BATCH B WHERE" +
+								" BC.COURSE_CODE = ? AND BC.BATCH_CODE = B.BATCH_CODE");
 						ps.setString(1, course_code);
 						ResultSet rs2 = ps.executeQuery();
 						

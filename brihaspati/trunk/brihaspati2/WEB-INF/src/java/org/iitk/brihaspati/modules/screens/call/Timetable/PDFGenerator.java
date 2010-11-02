@@ -37,6 +37,7 @@ public class PDFGenerator implements Constants {
 	private ArrayList<Faculty> facultyList = null;
 	private float[] colWidths = {1.7f,2.2f,2.2f,2.2f,2.2f,2.2f};
 	
+	String department = null;
 	public PDFGenerator () throws TimetableException {
 		eventList = new ArrayList<Event>();
 		roomList = new ArrayList<Room>();
@@ -58,6 +59,7 @@ public class PDFGenerator implements Constants {
 		roomList = new ArrayList<Room>();
 		batchList = new ArrayList<Batch>();
 		facultyList = new ArrayList<Faculty>();
+		department = Methods.getDepartment(tableId);
 		eventList = Data.getInstance().getEventList();
 		roomList = Data.getInstance().getRoomList();
 		batchList = Data.getInstance().getBatchList();
@@ -86,6 +88,7 @@ public class PDFGenerator implements Constants {
 		roomList = new ArrayList<Room>();
 		batchList = new ArrayList<Batch>();
 		facultyList = new ArrayList<Faculty>();
+		department = Methods.getDepartment(tableId);
 		this.eventList = eventList;
 		roomList = Methods.getRoomList(eventList);
 		batchList = Methods.getBatchList(eventList);
@@ -246,7 +249,7 @@ public class PDFGenerator implements Constants {
 			p= new Paragraph("Indian Institute of Technology, Roorkee",f);
 			p.setAlignment(Element.ALIGN_CENTER);
 			document.add(p);
-			p = new Paragraph(facultyDepartment,f);
+			p = new Paragraph(department,f);
 			p.setAlignment(Element.ALIGN_CENTER);
 			document.add(p);
 			f = new Font(Font.TIMES_ROMAN,Font.DEFAULTSIZE,Font.NORMAL);
@@ -381,7 +384,7 @@ public class PDFGenerator implements Constants {
 			p= new Paragraph("Indian Institute of Technology, Roorkee",f);
 			p.setAlignment(Element.ALIGN_CENTER);
 			document.add(p);
-			p = new Paragraph("Department of Computer Science",f);
+			p = new Paragraph(department,f);
 			p.setAlignment(Element.ALIGN_CENTER);
 			document.add(p);
 			f = new Font(Font.TIMES_ROMAN,Font.DEFAULTSIZE,Font.NORMAL);
@@ -515,7 +518,7 @@ public class PDFGenerator implements Constants {
 			p= new Paragraph("Indian Institute of Technology, Roorkee",f);
 			p.setAlignment(Element.ALIGN_CENTER);
 			document.add(p);
-			p = new Paragraph("Department of Computer Science",f);
+			p = new Paragraph(department,f);
 			p.setAlignment(Element.ALIGN_CENTER);
 			document.add(p);
 			f = new Font(Font.TIMES_ROMAN,Font.DEFAULTSIZE,Font.NORMAL);
@@ -844,7 +847,7 @@ public class PDFGenerator implements Constants {
 		text += p;
 		p = "<h2 align=\"center\">Indian Institute of Technology, Roorkee</h2>";
 		text += p;
-		p = "<h4 align=\"center\">Department of Computer Science</h4>";
+		p = "<h4 align=\"center\">" + department + "</h4>";
 		text += p;
 		p = "<p align=\"center\">Spring Semester 2010-2011</p>";
 		text += p;

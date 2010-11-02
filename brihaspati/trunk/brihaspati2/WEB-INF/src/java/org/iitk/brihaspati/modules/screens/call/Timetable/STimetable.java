@@ -390,34 +390,9 @@ public class STimetable implements Constants {
 		System.out.println("Successfully saved events");
 	}
 
-	public String getPath(String tableId) {
-		String queryString = "select path from table_id where id=" + tableId;
-		String path = null;
-		if(null == tableId || tableId.equals("")){
-			System.out.println("Empty table id passed in getPath");
-			return null;
-		}
-		try{
-			Connection con = Torque.getConnection();
-			if(null == con) {
-				System.out.println("Null Connection given in loadFromFile");
-				return null;
-			}
-			Statement st = con.createStatement();
-			ResultSet rs = st.executeQuery(queryString);
-			rs.next();
-			path = rs.getString(1).trim();
-			System.out.println("Load from file path: " + path);
-		} catch (Exception e) {
-			System.out.println("Error while fetching path: " + e);
-			return null;
-		}
-		return path;
-	}
-
 	public ArrayList<Event> loadFromFile(String tableId) {
 		String path = null;
-		path = getPath(tableId);
+		path = Methods.getPath(tableId);
 		if(path == null || path.equals("")) {
 			System.out.println("Null path returned in loadFromFile");
 			return null;
@@ -448,7 +423,7 @@ public class STimetable implements Constants {
 		t.setDate(new Date());
 		t.setDepartment(department);
 		t.save();
-		return Integer.toString(t.getId());
+		return Integer.toString(t.getTabId());
 	}
 
 	public void displayPenalty() {
