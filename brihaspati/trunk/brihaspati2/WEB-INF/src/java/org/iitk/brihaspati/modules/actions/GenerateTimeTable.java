@@ -115,7 +115,7 @@ public class GenerateTimeTable extends VelocityAction {
 		data.getSession().setAttribute("uploadDir", uploadDir);
 		data.getSession().setAttribute("path", username + "/" + department + "/" + uploadDir + "/report~" + newDir );
 		try {
-			Methods.checkDirectoryPath(path);
+			Utils.checkDirectoryPath(path);
 		} catch (Exception e) {
 			context.put("msg","Unable to create directory for this instance");
 			return;
@@ -194,7 +194,7 @@ public class GenerateTimeTable extends VelocityAction {
 		String department =(String)data.getSession().getAttribute("department");
 		String eventSlotMap = data.getRequest().getParameter("eventSlotMap");
 		String tableId = data.getRequest().getParameter("tableId");
-		String path = best.getPath(tableId);
+		String path = Methods.getPath(tableId);
 		Hashtable<Integer, Integer> eventSlotHash = Methods.getEventSlotHash(eventSlotMap);
 		System.out.println(eventSlotHash);
 		ArrayList<Event> eventsInDB = new ArrayList<Event>();
@@ -229,7 +229,7 @@ public class GenerateTimeTable extends VelocityAction {
 		}
 		context.put("msg", msg);
 		context.put("commit", "commit");
-		context.put("errorMsgs", Methods.getErrorMsgs());
+		context.put("errorMsgs", Utils.getErrorMsgs());
 		System.out.println("------------------------- Leaving Commit------------------------------");
 	}
 	
@@ -248,7 +248,7 @@ public class GenerateTimeTable extends VelocityAction {
 		Event event = null;
 		eventSlotMap = null;
 		
-	        String filePath = best.getPath(tableId);	
+	        String filePath = Methods.getPath(tableId);	
 		String []output = filePath.split("/");
 		Vector qwer = new Vector();
 		String finals = "";
