@@ -1,8 +1,12 @@
 #set($directories = $data.getSession().getAttribute("directories"))
+#set($user = $data.getUser().getName())
 
+#if(!($user.equals("guest")))
 <div align="left" >
 	<a href=$link.setPage("call,Timetable,SelectDepartments.vm").addPathInfo("mode","get").setActionEvent("TimetableAction", "doManagedepartment") style="text-decoration:none"> Manage Department </a>
-	<br/> <br/>
+	<br/>
+#end
+	<br/>
 
 #if($directories.size() > 0)
 	#foreach( $key in $directories.keySet())
