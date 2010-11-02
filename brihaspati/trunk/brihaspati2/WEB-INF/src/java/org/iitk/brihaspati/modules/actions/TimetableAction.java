@@ -3,8 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 import java.io.*;
 import java.util.*;
 
-import jxl.Workbook;
-import jxl.demo.XML;
+import jxl.*;
 import jxl.read.biff.BiffException;
 
 import org.apache.velocity.context.Context;
@@ -14,8 +13,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.logging.*;
 
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
-import org.iitk.brihaspati.modules.screens.call.Timetable.TimetableException;
-import org.iitk.brihaspati.modules.screens.call.Timetable.Methods;
+import org.iitk.brihaspati.modules.screens.call.Timetable.*;
 
 public class TimetableAction extends SecureAction
 {
@@ -46,10 +44,10 @@ public class TimetableAction extends SecureAction
 	
 		String path = "/reports/" + username + "/" + department + "/" + newDir;
 		String dirPath = data.getServletContext().getRealPath(path) + "/";
-		Methods.checkDirectoryPath(dirPath);
+		Utils.checkDirectoryPath(dirPath);
 		
 		String filePath = dirPath + file;
-		System.out.println("Filepath for uploaded file is " + filePath);
+		System.out.println("Filepath for uploaded xls file is " + filePath);
 
 		String xlsFile = filePath + "." + fileExtension;
 		fileItem.write(new File(xlsFile));
@@ -76,13 +74,44 @@ public class TimetableAction extends SecureAction
 		return;
 	}
 	
-	public void generateXml(String xlsFile) throws BiffException, IOException {
+	
+	public void generateXml(String xlsFile) throws IOException, BiffException {
 		String encoding = "UTF8";
 		boolean formatInfo = false;
 
 		String file=xlsFile;
-		Workbook w = Workbook.getWorkbook(new File(file));
-		new XML(w,System.out, encoding, formatInfo, xmlFile);
+		Workbook workbook = Workbook.getWorkbook(new File(file));
+		
+		FileWriter bw=new FileWriter(new File(xmlFile));
+		bw.write("<?xml version=\"1.0\" ?>\n");
+		bw.write("<workbook>\n");
+		for (int sheet = 0; sheet < workbook.getNumberOfSheets(); sheet++)
+		{
+			Sheet s = workbook.getSheet(sheet);
+			bw.write("  <sheet>\n");
+			bw.write("    <name>["+s.getName()+"]</name>\n");
+			Cell[] row = null;
+			for (int i = 0 ; i < s.getRows() ; i++)
+			{
+				bw.write("    <row number=\"" + i + "\">\n");
+				row = s.getRow(i);
+
+				for (int j = 0 ; j < row.length; j++)
+				{
+					if (row[j].getType() != CellType.EMPTY)
+					{
+						bw.write("      <col number=\"" + j + "\">");
+						bw.write(row[j].getContents());
+						bw.write("</col>\n");
+					}
+				}
+				bw.write("    </row>\n");
+			}
+			bw.write("  </sheet>\n");
+		}
+		bw.write("</workbook>");
+		bw.close();
+		
 	}
 	
 	public void doInit( RunData data, Context context) throws Exception
@@ -169,7 +198,7 @@ public class TimetableAction extends SecureAction
 				}
 				if(!flag) {
 					String filePath = filesPath + "/" + departments[i];
-					Methods.checkDirectoryPath(filePath);
+					Utils.checkDirectoryPath(filePath);
 				}
 			}
 			data.getSession().setAttribute("department", "");
@@ -198,7 +227,7 @@ public class TimetableAction extends SecureAction
 		String username = user.getName();
 		String path = "/reports/" + username + "/" ;
 		String filesPath=data.getServletContext().getRealPath(path);
-		Methods.checkDirectoryPath(filesPath);
+		Utils.checkDirectoryPath(filesPath);
 		
 		Hashtable<String, String> dirs = new Hashtable<String, String>();
 		File directory = new File(filesPath);
@@ -226,7 +255,7 @@ public class TimetableAction extends SecureAction
 		String path = "/reports/" + username + "/" + department;
 		String filesPath=data.getServletContext().getRealPath(path)+ "/";
 		
-		Methods.checkDirectoryPath(filesPath);
+		Utils.checkDirectoryPath(filesPath);
 		
 		File directory = new File(filesPath);
 		File[] dir = directory.listFiles();	
