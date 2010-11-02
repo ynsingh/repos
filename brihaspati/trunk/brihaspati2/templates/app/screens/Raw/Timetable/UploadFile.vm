@@ -5,9 +5,29 @@ $page.setTitle("Upload file")
 
 Please select the file for uploading:
 <br/><br/>
-<form action="$link.setPage("call,Timetable,Index.vm").setAction("TimetableAction")" enctype="multipart/form-data" method="post">
-	<input type="file" name="file" size="40">
-	<input type="hidden" name="actionName" value="eventSubmit_doUpload"> 
-	<input type="submit" name="eventSubmit_doPerform" value=Submit>
-</form>
+<table>
+	<form action="$link.setPage("call,Timetable,Index.vm").setAction("TimetableAction")" enctype="multipart/form-data" method="post">
+		<tr>
+			<td>File:</td>
+			<td><input type="file" name="file" size="40"></td>
+		</tr>
+		<tr>
+			<td>Semester:</td>
+			<td><input type="text" name="semester" size="40"></td>
+		</tr>
+		<tr>
+			<td>Institute:</td>
+			<td><input type="text" name="institute" size="40"></td>
+		</tr>
+		<tr>
+			<td><input type="hidden" name="actionName" value="eventSubmit_doUpload"></td>
+			<td><input type="submit" name="eventSubmit_doPerform" value=Submit></td>
+		</tr>
+	</form>
+</table>
+
+<br/>
+<a href="https://docs.google.com/document/pub?id=12xdj1pAyzilZEzN-NU_wNmK4z-8OJT6RLFDPE48Pq00">Input File Instructions</a><br/>
+You can upload a sample input file after downloading it from here:
+<a href="https://spreadsheets.google.com/pub?key=0Apm5enqokhDidHAtdGVSalpfNVg0akFvMVkwOTJwTXc&hl=en&output=xls">Download Sample File</a>
 <br/>
