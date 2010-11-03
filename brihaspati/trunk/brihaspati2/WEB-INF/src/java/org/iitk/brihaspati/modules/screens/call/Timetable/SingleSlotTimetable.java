@@ -319,11 +319,8 @@ public class SingleSlotTimetable extends STimetable  {
 			ArrayList<Integer> eventsWithR = new ArrayList<Integer>();
 			ArrayList<Integer> busyRooms = new ArrayList<Integer>();
 			ArrayList<Integer> occupiedRooms = (null == parentTimetable)?null
-																		:parentTimetable
-																				.getRoomsInSlot(slotIndex);
-			Util.assignRoomsToEvents(numRooms, eventsWithoutR, eventsWithR,
-												busyRooms, occupiedRooms,
-												roomsForEvent, roomOfEvent);
+			:parentTimetable.getRoomsInSlot(slotIndex);
+			//Util.assignRoomsToEvents(numRooms, eventsWithoutR, eventsWithR,	busyRooms, occupiedRooms, roomsForEvent, roomOfEvent);
 			addEventsToUnassigned(eventsWithoutR);
 			setEventsAndRoomsInSlot(slotIndex, eventsWithR, busyRooms);
 	}
