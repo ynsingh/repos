@@ -40,7 +40,7 @@ package org.iitk.brihaspati.modules.utils;
  *  @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  *  @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  *  @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
- *  @modified date: 20-10-2010
+ *  @modified date: 20-10-2010,3-11-2010
  */
 
 import java.util.Date;
@@ -66,6 +66,7 @@ public class CourseUserDetail
 	private String Err_user;
 	private String Err_type;
 	private String CMsg;
+	private String userProgm;
 	/**
 	 * Course details
 	 */ 
@@ -197,6 +198,14 @@ public class CourseUserDetail
 	public String getRollNo()
 	{
 		return userRollno;
+	}
+	public void setProgm(String progm)
+	{
+		this.userProgm=progm;
+	}
+	public String getProgm()
+	{
+		return userProgm;
 	}
 	// Massages for Removal Case
 	public void setErr_User(String Err_User)

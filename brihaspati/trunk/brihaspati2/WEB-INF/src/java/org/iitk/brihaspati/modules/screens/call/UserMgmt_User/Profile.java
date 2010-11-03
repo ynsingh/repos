@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_User;
 /*
  * @(#)Profile.java	
  *
- *  Copyright (c) 2006-2007 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2006-2007 ,2010ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -46,13 +46,19 @@ import org.apache.turbine.om.security.User;
 import org.iitk.brihaspati.om.HintQuestion;
 import org.iitk.brihaspati.om.HintQuestionPeer;
 import org.iitk.brihaspati.om.TurbineUserPeer;
+import org.iitk.brihaspati.om.StudentRollnoPeer;
+import org.iitk.brihaspati.om.StudentRollno;
 import org.iitk.brihaspati.om.UserConfiguration;
 import org.iitk.brihaspati.om.UserConfigurationPeer;
 import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.UserManagement;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 /**
  * @author <a href="mailto:singhnk@iitk.ac.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @modified date:3-11-2010
  */
 
 
@@ -99,6 +105,17 @@ public class Profile extends SecureScreen
 	crt.add(HintQuestionPeer.QUESTION_ID,qid);
 	List qname=HintQuestionPeer.doSelect(crt);
 	context.put("qname",qname);
+	
+	/**
+	 * Get user rollno record through username
+	 * if record size is grater then zero it shows user have rollno
+	 */
+	List v=UserManagement.getUserRollNo(username);
+		if(v.size()>0){
+			StudentRollno element=(StudentRollno)v.get(0);
+			String rno=element.getRollNo();
+			context.put("rollno",rno);
+		}
 	}
 	catch(Exception e){data.setMessage("The error in profile"+e);}
     }

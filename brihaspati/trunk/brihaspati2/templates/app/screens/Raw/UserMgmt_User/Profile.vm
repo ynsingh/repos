@@ -1,11 +1,13 @@
  #*
   * @(#)Profile.vm
-  * Copyright (c) 2006,2009 ETRG,IIT Kanpur.
+  * Copyright (c) 2006,2009,2010 ETRG,IIT Kanpur.
   * All Rights Reserved
   * @author <a href="mailto:singhnk@iitk.ac.in ">Nagendra Kumar Singh</a>
   * @author <a href="mailto:satyapal@iitk.ac.in ">Satyapal Singh</a>
   * @author <a href="mailto:ynsingh@iitk.ac.in ">Yatindra Nath Singh</a>
   * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+  * @modified date:3-11-2010
   * Contributors: Members of ETRG, I.I.T. Kanpur
   *#
 
@@ -34,6 +36,9 @@ $!data.getMessage()
 	 </tr>
 	   #end
 	 <tr>
+           #formCell("$brih_rollno " "rollno" "$!rollno")
+         </tr>
+	 <tr>
 	   #fileUpload("$brih_photo" "PHOTO")
 	 </tr>
 	 <tr>
@@ -43,11 +48,11 @@ $!data.getMessage()
 	   <td>#if($lang=="hindi") $brih_qus $brih_select #else $brih_select $brih_qus #end</td>
 	    <td>
 		 <select name="que" size=1 onChange="clearAnswer(document.frm,this);"/>
-                 <option value=$!qid> #foreach($q in $qname) $q.getQuestionName() #end
+                 <option value=$!qid> #foreach($q in $qname) $q.getQuestionName() #end</option>
                  #foreach($questions in $question)
-                        <option value="$questions.getQuestionId()">$questions.getQuestionName()
+                        <option value="$questions.getQuestionId()">$questions.getQuestionName()</option>
                  #end
-                 </option>
+                
               </select>
             </td>
                 <tr>

@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)ProfileUser.java	
  *
- *  Copyright (c) 2006-2007 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2006-2007 ,2010ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -35,6 +35,8 @@ package org.iitk.brihaspati.modules.actions;
  *  
  */
 import java.io.File;
+import java.util.List;
+import java.util.Vector;
 import java.util.StringTokenizer; 
 
 import org.apache.turbine.Turbine;
@@ -45,12 +47,15 @@ import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.util.security.AccessControlList;
 import org.apache.turbine.om.security.peer.TurbineUserPeer; 
+import org.iitk.brihaspati.om.StudentRollnoPeer;
+import org.iitk.brihaspati.om.StudentRollno;
 import org.apache.turbine.services.security.TurbineSecurity; 
 import org.apache.commons.fileupload.FileItem; 
 import org.apache.torque.util.Criteria;
 
 import org.iitk.brihaspati.om.UserConfigurationPeer; 
 import org.iitk.brihaspati.modules.utils.UserUtil;  
+import org.iitk.brihaspati.modules.utils.UserManagement;  
 import org.iitk.brihaspati.modules.utils.StringUtil;  
 import org.iitk.brihaspati.modules.actions.SecureAction;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
@@ -64,6 +69,8 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
  * @author <a href="mailto:singh_jaivir@rediffmail.com ">Jaivir Singh</a>
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in ">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:satyapal@iitk.ac.in ">Satyapal Singh</a>
+ * @author <a href="mailto:richa.tandon1@gmail.com ">Richa Tandon</a>
+ * @modified date:3-11-2010
  */
 
 public class ProfileUser extends SecureAction
@@ -101,6 +108,7 @@ public class ProfileUser extends SecureAction
 	  String eMail=pp.getString("EMAIL");
 	  String qid=pp.getString("que","");
           String ans=pp.getString("ANSWER");	 		  
+          String rollno=pp.getString("rollno");	 		  
 	  User user=data.getUser();
           String mail_msg="";
           String LangFile=(String)user.getTemp("LangFile");	        		
@@ -132,6 +140,7 @@ public class ProfileUser extends SecureAction
             * Checking for the illegal characters in the data entered
             * If found then the error message is given
             */
+	  String rollmsg="";
 	  String msg1=""; 
           if(S.checkString(fName)==-1 && S.checkString(lName)==-1)//if1
 	  {
@@ -187,6 +196,29 @@ public class ProfileUser extends SecureAction
 	                		crit.add(TurbineUserPeer.LAST_NAME,lName);
         	        		crit.add(TurbineUserPeer.EMAIL,eMail);
                 			TurbineUserPeer.doUpdate(crit);
+				       /**
+	        			* This is the updation in table STUDENT_ROLLNO in the database.
+				        */ 		
+					List Rollno = new Vector();
+	                                Rollno = UserManagement.getUserRollNo(loginName);
+					/**
+	                                 * Get user rollno through login name 
+	                                 * if list is not zero it shows user already have rollno & update it
+	                                 * else insert into table
+        	                         */ 
+					if(Rollno.size()>0){
+	        	                        StudentRollno element = (StudentRollno)Rollno.get(0);
+        	                	        int id = element.getId();
+                	                	crit=new Criteria();
+	                	                crit.add(StudentRollnoPeer.ID,id);
+                				crit.add(StudentRollnoPeer.EMAIL_ID,loginName);
+	                			crit.add(StudentRollnoPeer.ROLL_NO,rollno);
+	                			StudentRollnoPeer.doUpdate(crit);
+					}
+                	                else{
+                        	                rollmsg=UserManagement.InsertRollNo(loginName,rollno,LangFile);
+                                	}
+	
 					File filePath=new File(imagesRealPath+"/Photo/");
 					filePath.mkdirs();
 					filePath=new File(filePath+"/"+PhotoName);
@@ -223,8 +255,29 @@ public class ProfileUser extends SecureAction
                 		crit.add(TurbineUserPeer.LAST_NAME,lName);
                 		crit.add(TurbineUserPeer.EMAIL,eMail);
                 		TurbineUserPeer.doUpdate(crit);
-				 msg1=MultilingualUtil.ConvertedString("Profile_PhotoMsg3",LangFile);
-           			data.setMessage(msg1);
+				
+				/**
+				 * Get user rollno through login name 
+				 * if list is not zero it shows user already have rollno & update it
+				 * else insert into table
+				 */	
+				List Rollno = new Vector();
+                                Rollno = UserManagement.getUserRollNo(loginName);
+				if(Rollno.size()>0){
+               		                StudentRollno element = (StudentRollno)Rollno.get(0);
+                        	        int id = element.getId();
+                                	crit=new Criteria();
+	                                crit.add(StudentRollnoPeer.ID,id);
+        	                        crit.add(StudentRollnoPeer.EMAIL_ID,loginName);
+                	                crit.add(StudentRollnoPeer.ROLL_NO,rollno);
+                        	        StudentRollnoPeer.doUpdate(crit);
+				}
+				else{
+					rollmsg=UserManagement.InsertRollNo(loginName,rollno,LangFile);
+				}
+				msg1=MultilingualUtil.ConvertedString("Profile_PhotoMsg3",LangFile);
+           			data.setMessage(msg1+" "+rollmsg);
+
                 }
 	  }//if1	
           else

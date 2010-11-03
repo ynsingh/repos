@@ -40,7 +40,7 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_User;
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
  * @author <a href="manjaripal@yahoo.co.in">Manjari Pal</a>
  * @author <a href="richa.tandon1@gmail.com">Richa Tandon</a>
- * @modified date: 20-10-2010
+ * @modified date: 20-10-2010, 3-11-2010
  */
 
 import java.util.Vector;
@@ -93,7 +93,7 @@ public class StudentList extends SecureScreen_Instructor{
 		LangFile=(String)user.getTemp("LangFile");
 			context.put("tdcolor",data.getParameters().getString("count","")); 
 			Vector userList=new Vector();
-			List usrlist=new Vector();
+			List rusrlist;
 			String course_id=(String)user.getTemp("course_id");
 			String course_name=(String)user.getTemp("course_name");
 			context.put("course",course_name);
@@ -104,14 +104,17 @@ public class StudentList extends SecureScreen_Instructor{
 			String query="";
 			String valueString="";
                         String Mode=data.getParameters().getString("mode");
+
+			/**
+			 * Getting list of user rollno record 
+			 */
+			rusrlist=UserManagement.getListOfRollNo(g_id,3);
+                        context.put("rollnolist",rusrlist);
+
 			if(Mode.equals("All"))
 			{
 				userList=UserGroupRoleUtil.getUDetail(g_id,3);
                         	context.put("mode","All");
-				Criteria crit1 = new Criteria();
-				usrlist=StudentRollnoPeer.doSelect(crit1);
-				//ErrorDumpUtil.ErrorLog("return value in screen file----------------->"+usrlist);
-				context.put("rollnolist",usrlist);
 			}
 			else
 			{

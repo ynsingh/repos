@@ -8,7 +8,7 @@
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @modified date: 07-04-2010
- * @modified date: 20-10-2010
+ * @modified date: 20-10-2010,3-11-2010
  *     
  *#
 #set($lang = $data.getUser().getTemp("lang" ).toString())
@@ -144,21 +144,35 @@ $!data.getMessage()
 		#headerCell($heading)
           #end
         </tr>
-	
-	#set($counter=0)
-        	#foreach ($urecord in $userlist)
-        		#set($counter1=0)
-        			#foreach ($urecord1 in $rollnolist)
-			 		#if($!urecord.getLoginName()== $!urecord1.getEmailId())
-						#if($velocityCount%2==0)
-			                                <tr bgcolor="$ui.tableColor">
-		                                #else
-		        	                        <tr bgcolor="$ui.menuColor">
-		                                #end                    
-	        			<td>$!urecord.getLoginName()</td>
-			         	<td>$!urecord.getUserName()</td>
-			        	<td><a href=mailto:$!urecord.getEmail()>$!urecord.getEmail()</a></td>
+		## get the user record list
+                #foreach ($urecord in $userlist)
+                        #if($velocityCount%2==0)
+                        	<tr bgcolor="$ui.tableColor">
+                        #else
+                                <tr bgcolor="$ui.menuColor">
+                       #end                    
+                	## Get one record from the list
+	                ## get login name  of user
+                        <td>$!urecord.getLoginName()</td>
+        	        ## get name of User
+                        <td>$!urecord.getUserName()</td>
+                	## get Email of User
+		      	<td><a href=mailto:$!urecord.getEmail()>$!urecord.getEmail()</a></td>
+	                ## get the list of student RollNO of that course 
+			#set($flag=true)
+        		#foreach ($urecord1 in $rollnolist)
+	        	        ## get Email id form this list
+                		## Compare Email id of both list
+			 		#if($!urecord.getLoginName()== $!urecord1.getEmail())
+        			        ## if email exist then get the roll no of that student 
 					<td>$!urecord1.getRollNo()</td>
+					#set($flag=false)
+					#end
+			#end
+				#if($flag==true)
+					<td></td>
+                                #end
+	
 			        	<td>
 			                <a href=$link.setPage("call,UserMgmt_User,UserForm_Instructor.vm").addPathInfo("status","update").addPathInfo("username",$urecord.getLoginName()).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_update</a> &nbsp;
 		        	        <a href=$link.setPage("call,UserMgmt_User,UserForm_Instructor.vm").addPathInfo("status","remove").addPathInfo("username",$urecord.getLoginName()).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_remove</a> &nbsp;
@@ -166,10 +180,6 @@ $!data.getMessage()
 			##                <a href=javascript:popupWin("$link.setScreen("call,ViewPhoto").addPathInfo("username",$urecord.getLoginName())","newWin");>$brih_view $brih_photo </a>
 			            	</td>
 			        </tr>
-					#end
-       			#set($counter1 = $counter1 +1)
-	    			#end	
-       	 #set($counter = $counter +1)
 	        #end
       </table>
          <tr>

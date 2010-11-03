@@ -52,27 +52,34 @@ import org.iitk.brihaspati.om.StudentRollno;
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in ">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
- * @modified date: 20-10-2010
+ * @modified date: 20-10-2010,3-11-2010
  */
   
 public class UserForm_Instructor extends SecureScreen_Instructor{
 
 	public void doBuildTemplate( RunData data, Context context ){
 		try{
+		Criteria crit=new Criteria();
+		String Rollno="";
 		String course_name=(String)data.getUser().getTemp("course_name");
 		String username=data.getParameters().getString("username");
-                //ErrorDumpUtil.ErrorLog("username in student list update---------------->"+username);
 		String status=data.getParameters().getString("status");
 		context.put("tdcolor",data.getParameters().getString("count",""));
-		Criteria crit=new Criteria();
 		crit.add(TurbineUserPeer.LOGIN_NAME,username);
 		List details=TurbineUserPeer.doSelect(crit);
-		Criteria crit1=new Criteria();
-		crit1.add(StudentRollnoPeer.EMAIL_ID,username);
-                List v=StudentRollnoPeer.doSelect(crit1);
+		/**
+		 * Getting user rollno record 
+		 * if record size is not zero it shows user already have rollno
+		 */
+		crit=new Criteria();
+		crit.add(StudentRollnoPeer.EMAIL_ID,username);
+                List v=StudentRollnoPeer.doSelect(crit);
                 //ErrorDumpUtil.ErrorLog("list in view marks---------------->"+v);
-                StudentRollno element=(StudentRollno)v.get(0);
-                String Rollno=element.getRollNo();
+		if(v.size()!=0)
+		{
+	                StudentRollno element=(StudentRollno)v.get(0);
+	                Rollno=element.getRollNo();
+		}
 		context.put("rollno",Rollno);
 		context.put("course",course_name);
 		context.put("stat",status);

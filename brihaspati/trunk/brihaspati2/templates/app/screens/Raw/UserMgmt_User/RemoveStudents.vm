@@ -141,7 +141,7 @@ $!data.getMessage()
 	<a href=$link.setPage("call,UserMgmt_User,RemoveStudents.vm").addPathInfo("startIndex",$check_last) style=text-decoration:none>$brih_last</a> &nbsp;
 
 	#elseif($endIndex == $total_size || $endIndex > $total_size)
-	<a href=$link.setPage("call,UserMgmt_User,RemoveStudents.vm").addPathInfo("startIndex",$check_first) style=text-decoration:none>$brih_first</a> &ibsp;
+	<a href=$link.setPage("call,UserMgmt_User,RemoveStudents.vm").addPathInfo("startIndex",$check_first) style=text-decoration:none>$brih_first</a> &nbsp;
 	<a href=$link.setPage("call,UserMgmt_User,RemoveStudents.vm").addPathInfo("startIndex",$check_pre) style=text-decoration:none>$brih_pre</a> &nbsp;
 	<font color="white">$brih_nxt</font> &nbsp;
 	<font color="white">$brih_last</font> &nbsp;

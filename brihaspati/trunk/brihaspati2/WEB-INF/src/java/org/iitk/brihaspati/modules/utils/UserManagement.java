@@ -91,7 +91,7 @@ import babylon.babylonPasswordEncryptor;
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @modified date: 08-07-2010
- * @modified date: 20-10-2010
+ * @modified date: 20-10-2010, 3-11-2010
  */
 
 public class UserManagement
@@ -175,7 +175,7 @@ public class UserManagement
 						/**
 						 * if role is student then insert roll no in table
 						 */
-						if(Role.equals("student")){
+						if((Role.equals("student"))&& (!(RollNo.equals("")))){
 						Rollno_msg = InsertRollNo(UName,RollNo,file);
 						//ErrorDumpUtil.ErrorLog("return value inside if part\n"+Rollno_msg);
 						}
@@ -376,7 +376,7 @@ public class UserManagement
 						/**
 						 * Insert roll no in table if role is student
 						 */
-						if(Role.equals("student")){
+						if((Role.equals("student"))&&(!(RollNo.equals("")))){
 						Rollno_msg = InsertRollNo(UName,RollNo,file);
 						//ErrorDumpUtil.ErrorLog("return value from insert in else rollno\n"+Rollno_msg);
 						}
@@ -696,7 +696,6 @@ public class UserManagement
 			Criteria crit=new Criteria();
 			crit.add(StudentRollnoPeer.EMAIL_ID,uid);
 			v=StudentRollnoPeer.doSelect(crit);
-			//ErrorDumpUtil.ErrorLog("return roll no in util--------->"+v);
 		}
 		catch(Exception e)
 		{
@@ -714,23 +713,35 @@ public class UserManagement
 	 */
 	public static List getListOfRollNo(int gid,int roleid)
 	{
-		List v=null;
-		Vector ve = new Vector();
+		Vector ulist = new Vector();
+		Vector urlist = new Vector();
 		try
 		{
-			List ulist = new Vector();
-			String Rollno ;
-			List rollno = new Vector();
+			/**
+			 * Getting record of students & then take email
+			 * from email get user rollnorecord from rollno table 
+			 */
+			List rollrecord = new Vector();
 			ulist=UserGroupRoleUtil.getUDetail(gid,3);
 			for(int i=0;i<ulist.size();i++)
 			{
 				CourseUserDetail element=(CourseUserDetail)ulist.get(i);
 				String email = element.getEmail();
-				rollno = getUserRollNo(email);
-				StudentRollno element1 = (StudentRollno)rollno.get(0);
-				Rollno = element1.getRollNo();
-				String Email = element1.getEmailId();
-				ve.add(Rollno);		
+				rollrecord = getUserRollNo(email);
+				/**
+				 * If Rollrecord is zero it shows user have not rollno
+				 */
+				if(rollrecord.size()!=0)
+				{
+					StudentRollno element1 = (StudentRollno)rollrecord.get(0);
+					String Rollno = element1.getRollNo();
+					String progm = element1.getProgram();
+					CourseUserDetail cDetails=new CourseUserDetail();
+	                                cDetails.setEmail(email);
+	                                cDetails.setRollNo(Rollno);
+	                                cDetails.setProgm(progm);
+	                                urlist.add(cDetails);
+				}
 			}
 		}
 		catch(Exception e)
@@ -738,8 +749,7 @@ public class UserManagement
                         ErrorDumpUtil.ErrorLog("This is the exception in getting list of Roll No  -utils(UserManagement)  :- "+e);
 					
 		}
-		v = ve;
-		return v;
+		return urlist;
 	}
 	/*Modified for getting User according to Institute wise.
           Call in getUserListMethod inListManagement Util.
@@ -828,6 +838,7 @@ public class UserManagement
 		String msg=new String();
 		try
 		{
+			String rollmsg = "";
                 	User user = TurbineSecurity.getUser(userName);
                 	user.setFirstName(fName);
                 	user.setLastName(lName);
@@ -844,22 +855,35 @@ public class UserManagement
 			{	
 				List Rollno = new Vector();
 				Rollno = getUserRollNo(userName);
-				StudentRollno element = (StudentRollno)Rollno.get(0);
-				//ErrorDumpUtil.ErrorLog("roll no list in update user management-------\n"+element);
-	                        int id = element.getId();
-				Criteria crit=new Criteria();
-	                        crit.add(StudentRollnoPeer.ID,id);
-	                        crit.add(StudentRollnoPeer.ROLL_NO,RollNo);
-				StudentRollnoPeer.doUpdate(crit);
+				/**
+				 * If list of rollno is greater than zero it shows list have value
+				 * Then update rollno of student 
+				 */
+				if(Rollno.size()>0)
+				{
+					StudentRollno element = (StudentRollno)Rollno.get(0);
+		                        int id = element.getId();
+					Criteria crit=new Criteria();
+		                        crit.add(StudentRollnoPeer.ID,id);
+		                        crit.add(StudentRollnoPeer.ROLL_NO,RollNo);
+					StudentRollnoPeer.doUpdate(crit);
+				}
+				/**
+				 * else insert value in table
+				 */
+				else
+				{
+                                        rollmsg=UserManagement.InsertRollNo(userName,RollNo,file);
+                                }
 			}
                 	String profileOf=MultilingualUtil.ConvertedString("profileOf",file);
                         String update_msg=MultilingualUtil.ConvertedString("update_msg",file);
 			if(file.endsWith("hi.properties"))
-                                msg=userName+" "+profileOf+" "+update_msg;
+                                msg=userName+" "+profileOf+" "+update_msg+" "+rollmsg;
                         else if(file.endsWith("urd.properties"))
-                                msg=profileOf+" "+update_msg +" "+userName;
+                                msg=profileOf+" "+update_msg +" "+userName+" "+rollmsg;
                         else
-                                msg= profileOf+" "+userName+" "+update_msg;
+                                msg= profileOf+" "+userName+" "+update_msg+" "+rollmsg;
 
 
 			ErrorDumpUtil.ErrorLog(userName +" Profile has been changed");
