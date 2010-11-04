@@ -58,7 +58,7 @@
 			  		<div >
 			    			<fieldset>
 			    			<p>&nbsp;</p>
-			      			<p>&nbsp;<label for="email">Please type your <strong>email address</strong> or <strong>User Name</strong> below.</label></p>
+			      			<p>&nbsp;<label for="email">Please type your <strong>User Name</strong> below.</label></p>
 			      			<p>&nbsp;</p>
 			      			<p>&nbsp;<input class="text_field" id="email" name="email" type="text" /></p>
 			

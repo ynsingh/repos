@@ -16,6 +16,10 @@
 	                               	<table width="80%" align="left">
 	                            		<tbody>
 	                            			<tr>
+	                            			<td valign="top" 
+				                                	<input type="hidden" id="party" name="party" 
+				                                      value="${Party.find('from Party P where P.activeYesNo=\'Y\' and P.id in '+session.PartyID).id}"/>
+			                                    </td>
 									         <td class='name'><g:message code="default.ReportDateFrom.label"/></td>
 								          	  <td> 
 										      	<input type="hidden" name="reportDate" value="struct" />
@@ -392,6 +396,7 @@
                        	<g:jasperReport jasper="AuditLogReport" format="XLS,PDF,CSV,HTML" 
                        		name="${message(code: 'default.AuditLogReport.label')}" >
 			            	<input type="hidden" name="id" value="${session.AppFormID}" />
+			            	<input type="hidden" name="partyID" value="" />
 			            	<input type="hidden" name="reportDate" value="" />
 			            	<input type="hidden" name="reportDateTo" value="" />
 			             	<input type="hidden" name="Path" value="${application.getRealPath("reports")}" />

@@ -21,6 +21,9 @@
             </g:hasErrors>
             <form action="funtSave" method="post" >
                 <div class="dialog">
+                <g:hiddenField name="ProjectStartDate" 
+		    					value="${fieldValue(bean:projectsInstance, field:'projectStartDate')}"/>
+		    
                     <table>
                         <tbody>
                         
@@ -49,6 +52,14 @@
                                 <td valign="top" class="value ${hasErrors(bean:grantAllocationInstance,field:'code','errors')}">
                                     <input type="text" id="code" name="code" value="${fieldValue(bean:grantAllocationInstance,field:'code')}"/>
                                 </td>-->
+                          <td valign="top" class="name">
+                                    <label for="dateOfAllocation"><g:message code="default.DateOfAllocation.label"/>:</label>
+                                </td>
+                                <td valign="top" 
+                                	class="value ${hasErrors(bean:grantAllocationInstance,field:'dateOfAllocation','errors')}">
+                                    <calendar:datePicker name="dateOfAllocation" defaultValue="${new Date()}" 
+                                    	value="${grantAllocationInstance?.dateOfAllocation}" dateFormat= "%d/%m/%Y"/>
+                                </td>
                             
                                 <td valign="top" class="name">
                                     <label for="amountAllocated"><g:message code="default.AmountAllocated(Rs).label"/>:</label>
@@ -89,7 +100,7 @@
                             <g:sortableColumn property="projects.projectEndDate" title="${message(code: 'default.ProjectEndDate.label')}" />
                             
                    	        <g:sortableColumn property="party" title="${message(code: 'default.GrantAgency.label')}"/>
-                   	        
+                   	        <th><g:message code="default.DateOfAllocation.label"/></th>
                    	        <g:sortableColumn property="amountAllocated" title="${message(code: 'default.AmountAllocated.label')}"/>
                            
 							<!--<th><g:message code="default.FundTransfer.label"/></th>-->                           
@@ -108,7 +119,7 @@
                                <td><g:formatDate format="dd-MM-yyyy" date="${grantAllocationInstance.projects.projectStartDate}"/></td>
                             <td><g:formatDate format="dd-MM-yyyy" date="${grantAllocationInstance.projects.projectEndDate}"/></td>
                             <td>${fieldValue(bean:grantAllocationInstance, field:'party.code')}</td>
-                            
+                            <td><g:formatDate format="dd-MM-yyyy" date="${grantAllocationInstance.dateOfAllocation}"/></td>
                              <td>${currencyFormat.ConvertToIndainRS(grantAllocationInstance.amountAllocated)}</td>
     	                     
                        <!-- <td>

@@ -96,18 +96,19 @@
                                 <td valign="top" class="name">
                                     <label for="ddDate"><g:message code="default.DD/ChequeDate.label"/></label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean:grantReceiptInstance,field:'ddNo','errors')}">
-                                    <input type="text" id="ddNo" name="ddNo" value="${fieldValue(bean:grantReceiptInstance,field:'ddNo')}" style="text-align: right" />
+                                <td valign="top" class="value ${hasErrors(bean:grantReceiptInstance,field:'ddDate','errors')}">
+                                    <calendar:datePicker name="ddDate" defaultValue="${new Date()}" value="${grantReceiptInstance?.ddDate}" dateFormat= "%d/%m/%Y"/>
                                 </td>
+                                
                             </tr> 
                    
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="ddNo"><g:message code="default.DD/ChequeNo.label"/></label>
                                 </td>
-                                    <td valign="top" class="value ${hasErrors(bean:grantReceiptInstance,field:'ddDate','errors')}">
-                                    <calendar:datePicker name="ddDate" defaultValue="${new Date()}" value="${grantReceiptInstance?.ddDate}" dateFormat= "%d/%m/%Y"/>
-                                </td>
+                                 <td valign="top" class="value ${hasErrors(bean:grantReceiptInstance,field:'ddNo','errors')}">
+                                    <input type="text" id="ddNo" name="ddNo" value="${fieldValue(bean:grantReceiptInstance,field:'ddNo')}" style="text-align: right" />
+                                </td>   
                             </tr> 
                             
                             <tr class="prop">

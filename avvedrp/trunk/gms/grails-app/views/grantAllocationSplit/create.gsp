@@ -38,6 +38,13 @@
 			    alert("Please enter Proper Amount  ");
 			    return false;
 		    }
+		    
+		    if(parseFloat(document.getElementById("amount").value) > parseFloat(document.getElementById("UnAll").value))
+		{
+			alert("Please Enter Amount Less Than Or Equal To UnAllocated Amount");
+			document.getElementById("amount").focus();
+			return false;
+		}
 	    }   
 	</script> 
 	<g:javascript library="scriptaculous" /> 
@@ -54,16 +61,7 @@
 		                   		</strong>   
 		                    </td>
 		                    <td valign="top" >
-		                      <label for="party"> <g:message code="default.Institution.label"/> :</label>
-		                    </td>
-		                    <td valign="top" >
-			                    <strong>  
-			                    	${fieldValue(bean:grantAllocationSplitInstance.grantAllocation.party,field:'code')} 
-		                    	</strong>
-			                                    
-		                    </td>     
-                            <td valign="top" >
-                            	<label for="party"> <g:message code="default.AllocatedAmount(Rs).label"/>:</label>
+                            	<label for="party"> <g:message code="default.HeadAllocation.GrantAmount.label"/>:</label>
                             </td>
                             <td valign="top" >
                             	<strong>
@@ -71,6 +69,26 @@
                                  	${currencyFormat.ConvertToIndainRS(grantAllocationSplitInstance.projects.totAllAmount)}
                              	</strong>
                          	</td>
+		                    
+		                    </tr> 
+		                     <tr>  
+	                         	<td valign="top" >
+			                      <label for="party"> <g:message code="default.Institution.label"/> :</label>
+			                    </td>
+			                    <td valign="top" >
+				                    <strong>  
+				                    	${fieldValue(bean:grantAllocationSplitInstance.grantAllocation.party,field:'code')} 
+			                    	</strong>
+			                    </td>  
+		                        <td valign="top" >
+		                            	<label for="party"> <g:message code="default.HeadAllocation.UnallocatedAmount(Rs).label"/>:</label>
+		                            </td>
+		                            <td valign="top" >
+		                            	<strong>
+		                                 	<span style ="font-family:rupee">R</span> 
+		                                 	${currencyFormat.ConvertToIndainRS(unAllocatedAmount)}
+		                             	</strong>
+		                         	</td>
                         </tr> 
                     </table>
                 </div>

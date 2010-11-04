@@ -20,6 +20,9 @@
             <g:form method="post" >
                 <input type="hidden" name="id" value="${grantAllocationInstance?.id}" />
                 	<div class="dialog">
+                	<g:hiddenField name="ProjectStartDate" 
+		    					value="${fieldValue(bean:projectsInstance, field:'projectStartDate')}"/>
+		    
                       <table>
                         <tbody>
                         	<tr class="prop">

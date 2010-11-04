@@ -79,7 +79,7 @@
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:investigatorInstance,field:'department','errors')}">
                                    <div id="department">
-                                      <g:select optionKey="id" optionValue="departmentCode" from="${PartyDepartment.list()}" name="department.id" value="${investigatorInstance?.department?.id}"></g:select>
+                                      <g:select optionKey="id" optionValue="departmentCode" from="${departmentList}" name="department.id" value="${investigatorInstance?.department?.id}"></g:select>
                                	   </div>
                                 </td>
                          </tr> 

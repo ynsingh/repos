@@ -49,14 +49,17 @@
                                      <input type="hidden" id="institution" name="institution" value="${fieldValue(bean:partyinstance,field:'id')}"/>
             						</td>
                             </tr> 
+                            
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="department"><g:message code="default.Department.label"/></label>
+                                   
                                 </td>
+                                 
                                 <td valign="top" class="value ${hasErrors(bean:investigatorInstance,field:'department','errors')}">
-                                   <div id="department">
-                                    <g:select optionKey="id" id="department.id" optionValue="departmentCode" from="${PartyDepartment.findAllByParty(Party.findById(session.Party))}" name="department.id" value="${investigatorInstance?.department?.id}"></g:select>
-                               		</div>
+                                  
+                                    <g:select optionKey="id" optionValue="departmentCode" from="${departmentList}" name="department.id" value="${investigatorInstance?.department?.id}"></g:select>
+                               		
                                 </td>
                             </tr> 
                   			<tr class="prop">

@@ -26,6 +26,8 @@
             <g:form method="post" >
                 <g:hiddenField name="id" value="${fundTransferInstance?.id}" />
                 <g:hiddenField name="version" value="${fundTransferInstance?.version}" />
+                <g:hiddenField name="ProjectStartDate" 
+                value="${grantAllocationInstance.projects.projectStartDate}"/>
                 <div class="dialog">
                     <table>
                         <tbody>

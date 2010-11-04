@@ -29,7 +29,6 @@
                             <g:sortableColumn property="address" title="${message(code: 'default.Address.label')}"/>  
                             <g:sortableColumn property="phone" title="${message(code: 'default.Phone.label')}" />
                             <g:sortableColumn property="email" title="${message(code: 'default.Email.label')}" />
-                             <g:sortableColumn property="activeYesNo" title="${message(code: 'default.Active.label')}"/>
                             <th><g:message code="default.Edit.label"/></th>
                               
                         </tr>
@@ -50,13 +49,6 @@
                             
                             <td>${fieldValue(bean:partyInstance, field:'email')}</td>
                             
-	                        <td><g:if test="${fieldValue(bean:partyInstance, field:'activeYesNo') == 'Y'}">
-	    							 <g:message code="default.YES.label"/>
-	    							 </g:if>
-	    							 <g:else>
-	    							 <g:message code="default.NO.label"/>
-	    							 </g:else>
-	                           </td>
                            <td><g:link action="edit" id="${fieldValue(bean:partyInstance, field:'id')}"><g:message code="default.Edit.label"/></g:link></td>
                         
                         </tr>

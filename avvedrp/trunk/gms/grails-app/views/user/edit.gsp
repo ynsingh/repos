@@ -28,7 +28,8 @@
 						<tr class="prop">
 							<td valign="top" class="name"><label for="username"><g:message code="default.LoginName.label"/>:</label></td>
 							<td valign="top" class="value ${hasErrors(bean:person,field:'username','errors')}">
-								<input type="text" id="username" name="username" value="${person.username?.encodeAsHTML()}"/>
+								${fieldValue(bean:person, field:'username')}
+								
 							</td>
 						</tr>
 	

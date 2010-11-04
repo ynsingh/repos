@@ -76,16 +76,6 @@
                                 </td>
                             </tr> 
                         
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="activeYesNo"><g:message code="default.Active.label"/>:</label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean:partyInstance,field:'activeYesNo','errors')}">
-                                    <g:select name="activeYesNo" from="${['Y', 'N']}"  value="${fieldValue(bean:partyInstance,field:'activeYesNo')}" />
-                                </td>
-                            </tr> 
-                        
-                            
                         
                         </tbody>
                     </table>

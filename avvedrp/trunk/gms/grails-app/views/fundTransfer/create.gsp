@@ -26,6 +26,8 @@
             </g:hasErrors>
             <g:form action="save" method="post" >
                 <div class="dialog">
+                <g:hiddenField name="ProjectStartDate" 
+                value="${grantAllocationInstance.projects.projectStartDate}"/>
                     <table>
                         <tbody>
                                                                          

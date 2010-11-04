@@ -186,7 +186,10 @@ else if(eval('typeof(document.granteeReports)') != 'undefined')
 }
 else if(eval('typeof(document.auditLoggingReport)') != 'undefined')
 {
-var day;
+
+document.AuditLogReport.partyID.value = document.auditLoggingReport.party.value;
+
+      var day;
 	  var month;
 	  var year;
 	  day=document.auditLoggingReport.reportDate_day.value;
