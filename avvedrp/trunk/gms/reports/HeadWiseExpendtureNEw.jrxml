@@ -27,45 +27,49 @@
 	<parameter name="projectID" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="partyID" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="periodID" isForPrompting="false" class="java.lang.String"/>
-	<queryString><![CDATA[SELECT ga.id, ah.name  AS AcHead ,gas.amount BudjAmt,IF(SUM(ge.expense_amount) IS NULL,0,SUM(ge.expense_amount)) AS ExpAmt ,p.name AS ProjectName,
-pa.name_of_the_institution AS InstName,grp.name grantPeriod,
-(SELECT  SUM(grntRcpt1.amount) 
+	<parameter name="reportDate" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="reportDateTo" isForPrompting="false" class="java.lang.String"/>
+	<queryString><![CDATA[SELECT ah.name  AS AcHead ,gs.amount BudjAmt,p.name AS ProjectName,
+pa.name_of_the_institution AS InstName,
+(SELECT  IF(SUM(grntRcpt1.amount) IS NULL,0,SUM(grntRcpt1.amount))
 FROM grant_allocation_split grntAllocSplit1 INNER JOIN grant_allocation grntAlloc1
 ON(grntAllocSplit1.grant_allocation_id=grntAlloc1.id ) LEFT JOIN grant_receipt grntRcpt1
- ON  (grntRcpt1.grant_allocation_split_id=grntAllocSplit1.id AND  grntRcpt1.grant_allocation_id=grntAlloc1.id  )
-WHERE grntAlloc1.id=ga.id
-GROUP BY grntAlloc1.id) AS FuntAmt,
+ ON  (grntRcpt1.grant_allocation_split_id=grntAllocSplit1.id)
+WHERE grntAllocSplit1.id=gs.id AND DATE(grntRcpt1.date_of_receipt) BETWEEN STR_TO_DATE($P{reportDate},'%d/%M/%Y') AND STR_TO_DATE($P{reportDateTo},'%d/%M/%Y') 
+GROUP BY grntAllocSplit1.id) AS FuntAmt,
 (SELECT  SUM(grntRcpt2.amount) 
-FROM grant_allocation_split grntAllocSplit2 INNER JOIN grant_allocation grntAlloc2
-ON(grntAllocSplit2.grant_allocation_id=grntAlloc2.id ) INNER JOIN grant_receipt grntRcpt2
- ON  (grntRcpt2.grant_allocation_split_id=grntAllocSplit2.id AND  grntRcpt2.grant_allocation_id=grntAlloc2.id  )
-WHERE grntAlloc2.id=ga.id
-GROUP BY grntAlloc2.id) AS FundRcvd,
+FROM  grant_allocation grntAlloc2
+ INNER JOIN grant_receipt grntRcpt2
+ ON  (grntRcpt2.grant_allocation_id=grntAlloc2.id)
+WHERE  grntAlloc2.projects_id= p.id AND DATE(grntRcpt2.date_of_receipt) BETWEEN STR_TO_DATE($P{reportDate},'%d/%M/%Y') AND STR_TO_DATE($P{reportDateTo},'%d/%M/%Y') 
+GROUP BY p.id) AS FundRcvd,
+(SELECT IF(SUM(ge.expense_amount) IS NULL,0,SUM(ge.expense_amount))  FROM grant_allocation_split gas 
+LEFT JOIN grant_expense ge ON (ge.projects_id=gas.projects_id 
+AND ge.grant_allocation_split_id=gas.id)
+WHERE  gas.id = gs.id AND DATE(ge.date_of_expense) BETWEEN STR_TO_DATE($P{reportDate},'%d/%M/%Y') AND STR_TO_DATE($P{reportDateTo},'%d/%M/%Y')  GROUP BY gas.id)AS ExpAmt ,
 (SELECT IF(SUM(amount) IS NULL,0,SUM(amount)) FROM fund_transfer FT INNER JOIN 
           grant_allocation ON(grant_allocation.id=FT.grant_allocation_id) INNER JOIN 
           projects ON(projects.id=grant_allocation.projects_id)
-         WHERE projects.parent_id= $P{projectID}) AS FundTrnfd
-FROM account_heads ah,grant_allocation_split gas,grant_expense ge,grant_allocation ga,
-projects p,party pa ,grant_period grp  
-WHERE ah.id= gas.account_head_id AND
-gas.grant_allocation_id=ga.id AND
-ge.grant_allocation_id=ga.id AND
-ge.grant_allocation_split_id=gas.id AND
- p.id=ge.projects_id AND
+         WHERE projects.parent_id= $P{projectID} AND DATE(FT.date_of_transfer) BETWEEN STR_TO_DATE($P{reportDate},'%d/%M/%Y') AND STR_TO_DATE($P{reportDateTo},'%d/%M/%Y') 
+         GROUP BY grant_allocation.id) AS FundTrnfd
+FROM account_heads ah,grant_allocation_split gs,grant_expense ge,grant_allocation ga,
+projects p,party pa  
+WHERE ah.id= gs.account_head_id AND
+gs.grant_allocation_id=ga.id AND
+gs.projects_id=p.id AND 
+ga.projects_id=p.id AND
+
 pa.id=ga.party_id
-AND grp.id=gas.grant_period_id
-AND gas.grant_period_id=$P{periodID}
+
 AND p.id=$P{projectID}
 AND pa.id=$P{partyID}
-GROUP BY gas.id]]></queryString>
+GROUP BY gs.id]]></queryString>
 
-	<field name="id" class="java.lang.Long"/>
 	<field name="AcHead" class="java.lang.String"/>
 	<field name="BudjAmt" class="java.lang.Double"/>
 	<field name="ExpAmt" class="java.lang.Double"/>
 	<field name="ProjectName" class="java.lang.String"/>
 	<field name="InstName" class="java.lang.String"/>
-	<field name="grantPeriod" class="java.lang.String"/>
 	<field name="FuntAmt" class="java.lang.Double"/>
 	<field name="FundRcvd" class="java.lang.Double"/>
 	<field name="FundTrnfd" class="java.lang.Double"/>
@@ -77,7 +81,7 @@ GROUP BY gas.id]]></queryString>
 		<variableExpression><![CDATA[$F{ExpAmt}]]></variableExpression>
 	</variable>
 	<variable name="FundAmt" class="java.lang.Double" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[$F{FundRcvd}]]></variableExpression>
+		<variableExpression><![CDATA[$F{FuntAmt}]]></variableExpression>
 	</variable>
 	<variable name="PercTotal" class="java.lang.Double" resetType="Report" calculation="Nothing">
 	</variable>
@@ -137,28 +141,6 @@ GROUP BY gas.id]]></queryString>
 					</textElement>
 				<text><![CDATA[Funds Received during the period :]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Band" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Transparent"
-						x="227"
-						y="65"
-						width="94"
-						height="23"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="textField-14"
-						stretchType="NoStretch"
-						positionType="FixRelativeToTop"
-						isPrintRepeatedValues="true"
-						isRemoveLineWhenBlank="false"
-						isPrintInFirstWholeBand="false"
-						isPrintWhenDetailOverflows="false"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="10" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{FundAmt}]]></textFieldExpression>
-				</textField>
 				<staticText>
 					<reportElement
 						mode="Transparent"
@@ -181,7 +163,7 @@ GROUP BY gas.id]]></queryString>
 					</textElement>
 				<text><![CDATA[Fund Transfered]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
 						x="227"
@@ -201,9 +183,9 @@ GROUP BY gas.id]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{FundTrnfd}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{FundTrnfd}!=null?$F{FundTrnfd}:new Double(0)]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
 						x="227"
@@ -223,7 +205,7 @@ GROUP BY gas.id]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[new Double($V{ExpAmt}.doubleValue()+$F{FundTrnfd}.doubleValue())]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[new Double(($V{ExpAmt}!=null?$V{ExpAmt}:new Double(0)).doubleValue()+($F{FundTrnfd}!=null?$F{FundTrnfd}:new Double(0)).doubleValue())]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00 %" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -245,7 +227,29 @@ GROUP BY gas.id]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{FuntAmt}!=null?new Double(($F{FundTrnfd}.doubleValue()/$F{FuntAmt}.doubleValue())):$F{FundTrnfd}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{FundRcvd}!=null?new Double(($F{FundTrnfd}!=null?$F{FundTrnfd}:new Double(0)).doubleValue()/($F{FundRcvd}!=null?$F{FundRcvd}:new Double(0)).doubleValue()):($F{FundTrnfd}!=null?$F{FundTrnfd}:new Double(0))]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="229"
+						y="67"
+						width="100"
+						height="18"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{FundRcvd}!=null?$F{FundRcvd}:new Double(0)]]></textFieldExpression>
 				</textField>
 			</band>
 			</groupFooter>
@@ -413,50 +417,6 @@ GROUP BY gas.id]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{InstName}]]></textFieldExpression>
 				</textField>
-				<staticText>
-					<reportElement
-						mode="Transparent"
-						x="17"
-						y="55"
-						width="77"
-						height="17"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="staticText-9"
-						stretchType="NoStretch"
-						positionType="FixRelativeToTop"
-						isPrintRepeatedValues="true"
-						isRemoveLineWhenBlank="false"
-						isPrintInFirstWholeBand="false"
-						isPrintWhenDetailOverflows="false"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<text><![CDATA[Financial Year:]]></text>
-				</staticText>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Transparent"
-						x="99"
-						y="55"
-						width="428"
-						height="17"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="textField"
-						stretchType="NoStretch"
-						positionType="FixRelativeToTop"
-						isPrintRepeatedValues="true"
-						isRemoveLineWhenBlank="false"
-						isPrintInFirstWholeBand="false"
-						isPrintWhenDetailOverflows="false"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{grantPeriod}]]></textFieldExpression>
-				</textField>
 			</band>
 		</pageHeader>
 		<columnHeader>
@@ -592,7 +552,7 @@ GROUP BY gas.id]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{ExpAmt}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{ExpAmt}!=null?$F{ExpAmt}:new Double(0)]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00 %" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -614,7 +574,7 @@ GROUP BY gas.id]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{FuntAmt}!=null?new Double(($F{ExpAmt}.doubleValue()/$F{FuntAmt}.doubleValue())):$F{ExpAmt}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{FundRcvd}!=null?new Double(($F{ExpAmt}!=null?$F{ExpAmt}:new Double(0)).doubleValue()/($F{FundRcvd}!=null?$F{FundRcvd}:new Double(0)).doubleValue()):($F{ExpAmt}!=null?$F{ExpAmt}:new Double(0))]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

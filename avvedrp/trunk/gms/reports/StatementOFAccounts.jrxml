@@ -1413,7 +1413,7 @@ $F{BudgetAmount}]]></variableExpression>
 				<textField isStretchWithOverflow="false" pattern="dd-MM-yy" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="290"
+						x="295"
 						y="431"
 						width="17"
 						height="18"
@@ -1503,7 +1503,7 @@ $F{BudgetAmount}]]></variableExpression>
 						mode="Transparent"
 						x="233"
 						y="431"
-						width="57"
+						width="63"
 						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -1589,7 +1589,7 @@ $F{BudgetAmount}]]></variableExpression>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="309"
+						x="312"
 						y="431"
 						width="74"
 						height="18"
@@ -1630,7 +1630,7 @@ $F{BudgetAmount}]]></variableExpression>
 					</textElement>
 				<textFieldExpression   class="java.util.Date"><![CDATA[$P{reportDateTo}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
 						x="388"
@@ -1922,7 +1922,7 @@ $F{BudgetAmount}]]></variableExpression>
 		</pageFooter>
 		<lastPageFooter>
 			<band height="151"  isSplitAllowed="true" >
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
 						x="280"
@@ -2306,7 +2306,7 @@ $F{BudgetAmount}]]></variableExpression>
 					</textElement>
 				<text><![CDATA[FUND TRANSFERED]]></text>
 				</staticText>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
 						x="386"
@@ -2328,7 +2328,7 @@ $F{BudgetAmount}]]></variableExpression>
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{FundAmt}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
 						x="385"

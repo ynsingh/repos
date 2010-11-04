@@ -89,8 +89,14 @@ class FundTransferController {
     }
 
     def edit = {
+    	 println"params"+params
         def fundTransferInstance = FundTransfer.get(params.id)
-        def grantAllocationInstance = GrantAllocation.get(params.grantAllocationId)
+        println"fundTransferInstance"+fundTransferInstance
+        //def grantAllocationInstance = GrantAllocation.get(params.grantAllocationId)
+        def grantAllocationInstance = GrantAllocation.get(fundTransferInstance.grantAllocationId)
+       
+        //println"grantAllocationInstance"+grantAllocationInstance
+        println"fundTransferInstance.grantAllocation"+fundTransferInstance.grantAllocation.id
         if (!fundTransferInstance) {
             flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action: "create",params:[subMenu:params.subMenu,currencyFormat:currencyFormatter])

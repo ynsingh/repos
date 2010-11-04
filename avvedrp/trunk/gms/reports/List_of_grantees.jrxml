@@ -37,7 +37,8 @@ FROM
  
 WHERE
   PT.party_type IS NULL
-  AND PT.id NOT IN ($P{partyID})]]></queryString>
+  AND PT.id NOT IN ($P{partyID})
+order by PT.code]]></queryString>
 
 	<field name="granteeName" class="java.lang.String"/>
 	<field name="granteeCode" class="java.lang.String"/>

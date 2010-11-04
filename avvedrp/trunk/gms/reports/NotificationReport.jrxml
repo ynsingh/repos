@@ -330,15 +330,11 @@ GROUP BY NT.notification_code]]></queryString>
 					</textElement>
 				<text><![CDATA[Last Date For Proposal Submission]]></text>
 				</staticText>
-			</band>
-		</columnHeader>
-		<detail>
-			<band height="37"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
 						x="10"
-						y="0"
+						y="57"
 						width="473"
 						height="0"
 						forecolor="#000000"
@@ -353,6 +349,10 @@ GROUP BY NT.notification_code]]></queryString>
 					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
 />
 				</line>
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="37"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"

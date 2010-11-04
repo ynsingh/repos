@@ -6,9 +6,9 @@
 		 columnCount="1"
 		 printOrder="Vertical"
 		 orientation="Landscape"
-		 pageWidth="935"
+		 pageWidth="878"
 		 pageHeight="595"
-		 columnWidth="875"
+		 columnWidth="818"
 		 columnSpacing="0"
 		 leftMargin="30"
 		 rightMargin="30"
@@ -27,21 +27,23 @@
 	<parameter name="projectID" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="partyID" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="periodID" isForPrompting="false" class="java.lang.String"/>
-	<queryString><![CDATA[SELECT ga.id,ga.amount_allocated,p.code ProjectCode ,p.name ProjectName,pa.code Instituion,
+	<parameter name="reportDate" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="reportDateTo" isForPrompting="false" class="java.lang.String"/>
+	<queryString><![CDATA[SELECT p.id,ga.id,ga.amount_allocated,p.code ProjectCode ,p.name ProjectName,pa.code Instituion,
 pa1.code GrandAgency,
 
 (SELECT  IF(SUM(gr1.amount) IS NULL,0,SUM(gr1.amount)) FROM grant_allocation ga1 LEFT JOIN grant_receipt gr1
-ON (  gr1.grant_allocation_id=ga1.id  ) WHERE ga1.id=ga.id
+ON (  gr1.grant_allocation_id=ga1.id  ) WHERE ga1.id=ga.id AND DATE(gr1.date_of_receipt) BETWEEN STR_TO_DATE($P{reportDate},'%d/%M/%Y') AND STR_TO_DATE($P{reportDateTo},'%d/%M/%Y') 
 GROUP BY ga1.id) AS FuntAmt,
 (SELECT IF(SUM(FT.amount) IS NULL,0,SUM(FT.amount)) FROM grant_allocation GA LEFT JOIN 
          fund_transfer FT  ON(GA.id=FT.grant_allocation_id)
-         WHERE GA.id=ga.id GROUP BY GA.id) AS FundTransfd,
+         WHERE GA.id=ga.id AND DATE(FT.date_of_transfer) BETWEEN STR_TO_DATE($P{reportDate},'%d/%M/%Y') AND STR_TO_DATE($P{reportDateTo},'%d/%M/%Y') GROUP BY GA.id) AS FundTransfd,
 
 (SELECT  IF(SUM(gr2.expense_amount) IS NULL,0,SUM(gr2.expense_amount)) 
 FROM grant_allocation ga2
 LEFT JOIN grant_expense gr2
  ON  (  gr2.grant_allocation_id=ga2.id  )
-WHERE ga2.id=ga.id
+WHERE ga2.id=ga.id AND DATE(gr2.date_of_expense) BETWEEN STR_TO_DATE($P{reportDate},'%d/%M/%Y') AND STR_TO_DATE($P{reportDateTo},'%d/%M/%Y') 
 GROUP BY ga2.id) AS FuntExp
 
 FROM grant_allocation ga,
@@ -50,7 +52,7 @@ WHERE
  p.id=ga.projects_id AND
 pa.id=ga.party_id AND pa1.id=ga.granter_id  
 AND pa1.id =$P{partyID}
-order by pa.id]]></queryString>
+ORDER BY pa.id]]></queryString>
 
 	<field name="id" class="java.lang.Long"/>
 	<field name="amount_allocated" class="java.lang.Double"/>
@@ -83,7 +85,7 @@ order by pa.id]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="236"
+						x="209"
 						y="132"
 						width="409"
 						height="31"
@@ -105,7 +107,7 @@ order by pa.id]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="768"
+						x="733"
 						y="98"
 						width="79"
 						height="16"
@@ -127,9 +129,9 @@ order by pa.id]]></queryString>
 				<image  scaleImage="FillFrame" vAlign="Top" hAlign="Left" isUsingCache="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="66"
+						x="42"
 						y="5"
-						width="775"
+						width="746"
 						height="93"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -171,7 +173,7 @@ order by pa.id]]></queryString>
 						isPrintWhenDetailOverflows="false"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="10" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<text><![CDATA[SlNo]]></text>
 				</staticText>
@@ -193,7 +195,7 @@ order by pa.id]]></queryString>
 						isPrintWhenDetailOverflows="false"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="10" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<text><![CDATA[Project]]></text>
 				</staticText>
@@ -202,8 +204,8 @@ order by pa.id]]></queryString>
 						mode="Opaque"
 						x="1"
 						y="39"
-						width="871"
-						height="1"
+						width="811"
+						height="0"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-2"
@@ -234,7 +236,7 @@ order by pa.id]]></queryString>
 						isPrintWhenDetailOverflows="false"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="10" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<text><![CDATA[Project Code]]></text>
 				</staticText>
@@ -256,7 +258,7 @@ order by pa.id]]></queryString>
 						isPrintWhenDetailOverflows="false"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="10" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<text><![CDATA[Fund Allocation]]></text>
 				</staticText>
@@ -278,7 +280,7 @@ order by pa.id]]></queryString>
 						isPrintWhenDetailOverflows="false"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="10" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<text><![CDATA[Institution]]></text>
 				</staticText>
@@ -300,7 +302,7 @@ order by pa.id]]></queryString>
 						isPrintWhenDetailOverflows="false"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="10" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<text><![CDATA[Total Funds Received ]]></text>
 				</staticText>
@@ -329,9 +331,9 @@ order by pa.id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="741"
+						x="660"
 						y="4"
-						width="59"
+						width="62"
 						height="32"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -344,14 +346,14 @@ order by pa.id]]></queryString>
 						isPrintWhenDetailOverflows="false"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="10" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<text><![CDATA[Total Funds Utilized]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="812"
+						x="730"
 						y="4"
 						width="62"
 						height="32"
@@ -366,31 +368,9 @@ order by pa.id]]></queryString>
 						isPrintWhenDetailOverflows="false"/>
 					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="10" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<text><![CDATA[Outstanding Funds]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						mode="Transparent"
-						x="649"
-						y="4"
-						width="85"
-						height="32"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="staticText-14"
-						stretchType="NoStretch"
-						positionType="FixRelativeToTop"
-						isPrintRepeatedValues="true"
-						isRemoveLineWhenBlank="false"
-						isPrintInFirstWholeBand="false"
-						isPrintWhenDetailOverflows="false"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[Fund Transfered]]></text>
+				<text><![CDATA[Outstanding Funds]]></text>
 				</staticText>
 			</band>
 		</columnHeader>
@@ -401,7 +381,7 @@ order by pa.id]]></queryString>
 						mode="Opaque"
 						x="1"
 						y="36"
-						width="871"
+						width="811"
 						height="0"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -572,9 +552,9 @@ order by pa.id]]></queryString>
 				<textField isStretchWithOverflow="true" pattern="#,##0.00 " isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="734"
+						x="644"
 						y="4"
-						width="66"
+						width="79"
 						height="13"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -594,7 +574,7 @@ order by pa.id]]></queryString>
 				<textField isStretchWithOverflow="true" pattern="#,##0.00 %" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="807"
+						x="733"
 						y="4"
 						width="67"
 						height="13"
@@ -611,29 +591,7 @@ order by pa.id]]></queryString>
 					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{FuntExp}!=null?new Double(($F{FuntExp}.doubleValue()+$F{FundTransfd}.doubleValue())/$F{FuntAmt}.doubleValue()):$F{FuntAmt}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Transparent"
-						x="647"
-						y="4"
-						width="84"
-						height="13"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="textField"
-						stretchType="NoStretch"
-						positionType="FixRelativeToTop"
-						isPrintRepeatedValues="true"
-						isRemoveLineWhenBlank="false"
-						isPrintInFirstWholeBand="false"
-						isPrintWhenDetailOverflows="false"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{FundTransfd}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{FuntExp}!=null?new Double(($F{FuntExp}!=null?$F{FuntExp}:new Double(0)).doubleValue()/($F{FuntAmt}!=null?$F{FuntAmt}:new Double(0)).doubleValue()):($F{FuntAmt}!=null?$F{FuntAmt}:new Double(0))]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
@@ -646,7 +604,7 @@ order by pa.id]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="851"
+						x="794"
 						y="1"
 						width="24"
 						height="18"
@@ -672,7 +630,7 @@ order by pa.id]]></queryString>
 				<image  scaleImage="FillFrame" vAlign="Top" hAlign="Left" isUsingCache="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="136"
+						x="89"
 						y="55"
 						width="638"
 						height="37"
@@ -693,7 +651,7 @@ order by pa.id]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="851"
+						x="794"
 						y="64"
 						width="24"
 						height="18"

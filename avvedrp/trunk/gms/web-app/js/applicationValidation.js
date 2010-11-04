@@ -357,13 +357,24 @@ var curr_year = d.getFullYear();
 
 var Today = new Date(curr_year,curr_month,curr_date);
 
+var projectStartDate = document.getElementById("ProjectStartDate").value;
+    var projectStartDateYear=projectStartDate.substring(0,projectStartDate.indexOf("-"));
+    var projectStartDateMonth=projectStartDate.substring(projectStartDate.indexOf("-")+1,projectStartDate.lastIndexOf("-"));
+    var projectStartDateDate=projectStartDate.substring(projectStartDate.lastIndexOf("-")+1,projectStartDate.lastIndexOf(" "));
+    		
+ var ProjectStartDate = new Date(projectStartDateYear,projectStartDateMonth-1,projectStartDateDate);
+
  if(TransferDate > Today)
     {
         alert("Date of Transfer should be less than current date");
         return false; 
     }
-    
-    }
+ if(TransferDate < ProjectStartDate)
+   {
+   alert("Date of Transfer should be greater than or equal to Project Start Date");
+   return false;
+   }
+ }
 function validateAccountHead()
 {
 	if(document.getElementById("name").value == ""){
@@ -425,7 +436,26 @@ function validateGrantAllocationEdit()
     {
     alert("Please enter a valid Amount");
     return false;
-    }    
+    } 
+    var allocationDateYear = document.getElementById("dateOfAllocation_year").value;
+    var allocationDateMonth = document.getElementById("dateOfAllocation_month").value;
+	var allocationDateDate = document.getElementById("dateOfAllocation_day").value;
+	
+	var AllocationDate = new Date(allocationDateYear,allocationDateMonth-1,allocationDateDate);
+		
+	var projectStartDate = document.getElementById("ProjectStartDate").value;
+    var projectStartDateYear=projectStartDate.substring(0,projectStartDate.indexOf("-"));
+    var projectStartDateMonth=projectStartDate.substring(projectStartDate.indexOf("-")+1,projectStartDate.lastIndexOf("-"));
+    var projectStartDateDate=projectStartDate.substring(projectStartDate.lastIndexOf("-")+1,projectStartDate.lastIndexOf(" "));
+    		
+    var ProjectStartDate = new Date(projectStartDateYear,projectStartDateMonth-1,projectStartDateDate);
+    		
+   if(AllocationDate < ProjectStartDate)
+   {
+   alert("Allocation Date should be greater than Project Start Date");
+   return false;
+   }  	
+   return true;   
 
 }
 function validateEditProAllot()
@@ -451,7 +481,7 @@ function validateEditProAllot()
 
 }
 function validateFundAllot()
-{     
+{     	
     if(isNaN(document.getElementById("amountAllocated").value))
     {
 	    alert("Invalid Amount  ");
@@ -468,7 +498,27 @@ function validateFundAllot()
 	    alert("Please enter Proper Amount  ");
 	    return false;
     }
-    return true;
+    	
+    var allocationDateYear = document.getElementById("dateOfAllocation_year").value;
+    var allocationDateMonth = document.getElementById("dateOfAllocation_month").value;
+	var allocationDateDate = document.getElementById("dateOfAllocation_day").value;
+	
+	var AllocationDate = new Date(allocationDateYear,allocationDateMonth-1,allocationDateDate);
+		
+	var projectStartDate = document.getElementById("ProjectStartDate").value;
+    var projectStartDateYear=projectStartDate.substring(0,projectStartDate.indexOf("-"));
+    var projectStartDateMonth=projectStartDate.substring(projectStartDate.indexOf("-")+1,projectStartDate.lastIndexOf("-"));
+    var projectStartDateDate=projectStartDate.substring(projectStartDate.lastIndexOf("-")+1,projectStartDate.lastIndexOf(" "));
+    		
+    var ProjectStartDate = new Date(projectStartDateYear,projectStartDateMonth-1,projectStartDateDate);
+    		
+   if(AllocationDate < ProjectStartDate)
+   {
+   alert("Allocation Date should be greater than Project Start Date");
+   return false;
+   }  	
+   return true;
+    
 
 }
 function validateReportViewConfirmPrint()
@@ -581,6 +631,38 @@ function validateGrantExpense()
 	    alert("Please enter Proper Amount  ");
 	    return false;
     }
+    
+   if(((document.getElementById("grantAllocationSplit.id").value) == 'null') || ( (document.getElementById("grantAllocationSplit.id").value) == '' ) )
+   {
+   alert("Please select Account Head");
+   return false;
+   }
+    
+    if(((document.getElementById("modeOfPayment").value) == 'null') || ( (document.getElementById("modeOfPayment").value) == '' ) )
+    {
+    alert("Please select Mode Of Payment");
+    return false;
+    }
+    
+    if((document.getElementById("ddNo").value)=='')
+    {
+	    alert("Please enter DD/Cheque No  ");
+	    return false;
+    }	
+    
+    if((document.getElementById("bankName").value)=='')
+    {
+	    alert("Please enter Bank Name  ");
+	    return false;
+    }
+    
+    if((document.getElementById("ddBranch").value)=='')
+    {
+	    alert("Please enter Bank Branch  ");
+	    return false;
+    }
+    
+	
 }
 function validateGrantPeriod()
 {
@@ -595,6 +677,12 @@ function validateGrantPeriod()
 function validateGrantReceipt()
 {
  
+    if((document.getElementById("referenceId").value)=='')
+    {
+	    alert("Please enter Funds Received Order No.  ");
+	    return false;
+    }	
+    
     if((document.getElementById("amount").value)=='')
     {
 	    alert("Please enter Proper Amount  ");
@@ -616,12 +704,39 @@ function validateGrantReceipt()
 	    alert("Please enter Proper Amount  ");
 	    return false;
     }
-	if(parseFloat(document.getElementById("amount").value) > parseFloat(document.getElementById("balanceAmt").value))
+    
+    if(parseFloat(document.getElementById("amount").value) > parseFloat(document.getElementById("balanceAmt").value))
 		{
 			alert("Please Enter Amount Less Than Or Equal To Balance Amount");
 			document.getElementById("amount").focus();
 			return false;
-		}    
+		}   
+    
+    if(((document.getElementById("modeOfPayment").value) == 'null') || ( (document.getElementById("modeOfPayment").value) == '' ) )
+    {
+    alert("Please select Mode Of Payment");
+    return false;
+    }
+    
+    if((document.getElementById("ddNo").value)=='')
+    {
+	    alert("Please enter DD/Cheque No  ");
+	    return false;
+    }	
+    
+    if((document.getElementById("bankName").value)=='')
+    {
+	    alert("Please enter Bank Name  ");
+	    return false;
+    }
+    
+    if((document.getElementById("ddBranch").value)=='')
+    {
+	    alert("Please enter Bank Branch  ");
+	    return false;
+    }
+    
+	 
 }
 function validatePI()
 {

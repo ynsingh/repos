@@ -533,7 +533,7 @@ Utilization Certificate]]></text>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="408"
+						x="413"
 						y="169"
 						width="119"
 						height="15"
@@ -596,7 +596,7 @@ Utilization Certificate]]></text>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA["as on 31st March "+$F{currentYear}+" will be adjusted towards grants in aid payable during the next financial year i.e."+$F{nextFinancialYear}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
 						x="395"
@@ -618,12 +618,12 @@ Utilization Certificate]]></text>
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{Totalfund}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
 						x="313"
 						y="169"
-						width="93"
+						width="102"
 						height="15"
 						forecolor="#000000"
 						backcolor="#FFFFFF"

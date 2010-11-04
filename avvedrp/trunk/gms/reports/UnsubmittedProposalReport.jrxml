@@ -395,15 +395,11 @@ GROUP BY PR.code]]></queryString>
 					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
 />
 				</line>
-			</band>
-		</columnHeader>
-		<detail>
-			<band height="34"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
 						x="5"
-						y="0"
+						y="49"
 						width="515"
 						height="0"
 						forecolor="#000000"
@@ -418,6 +414,10 @@ GROUP BY PR.code]]></queryString>
 					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
 />
 				</line>
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="34"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"

@@ -49,6 +49,7 @@ class AttachmentsController {
     def save = {
         //def attachmentsInstance = new Attachments(params)
         def attachmentsInstance = new Attachments()
+        attachmentsInstance.domainId=params.projects
         println "-=-=-=params-=-=-=-"+params.projects
         def attachmentsName='Attachments'
     	def gmsSettingsService = new GmsSettingsService()
@@ -65,26 +66,35 @@ class AttachmentsController {
         	def downloadedfile = request.getFile("attachmentPath");
         if(!downloadedfile.empty) {
         	String fileName=downloadedfile.getOriginalFilename()
-        	downloadedfile.transferTo(new File(webRootDir+fileName))
-        	println "params.achmentType.id"+params.attachmentType.id
-        	attachmentsInstance.domain="Projects"
-        	attachmentsInstance.domainId=params.projects
-        	attachmentsInstance.attachmentType=AttachmentType.get(params.attachmentType.id)
-        	attachmentsInstance.attachmentPath=fileName
+        	if((fileName.lastIndexOf(".EXE")==-1)&&(fileName.lastIndexOf(".exe")==-1))
+			{
+        		downloadedfile.transferTo(new File(webRootDir+fileName))
+        		println "params.achmentType.id"+params.attachmentType.id
+        		attachmentsInstance.domain="Projects"
+        		attachmentsInstance.domainId=params.projects
+        		attachmentsInstance.attachmentType=AttachmentType.get(params.attachmentType.id)
+        		attachmentsInstance.attachmentPath=fileName
+        		if (attachmentsInstance.save(flush: true)) {
+                    flash.message = "${message(code: 'default.Fileuploaded.label')}"
+                    
+                }
+                else {
+                	println "error ="
+                	//redirect(action: "create", id: attachmentsInstance.domainId)//, model: [attachmentsInstance: attachmentsInstance])
+                }
+			}
+        	else 
+            {
+            	flash.message = "${message(code: 'default.ExeFile.label')}"	
+            	
+            }
         }
         else {
             flash.message = "${message(code: 'default.fileEmpty.label')}"
-            redirect(action:'create')
+            
          }
-
-        if (attachmentsInstance.save(flush: true)) {
-            flash.message = "${message(code: 'default.Fileuploaded.label')}"
-            redirect(action: "create", id: attachmentsInstance.domainId)
-        }
-        else {
-        	println "error ="
-            render(view: "create")//, model: [attachmentsInstance: attachmentsInstance])
-        }
+        redirect(action: "create", id: attachmentsInstance.domainId)
+        
     }
 
     def show = {
@@ -176,8 +186,27 @@ class AttachmentsController {
         	webRootDir = gmsSettingsInstance.value
         }
  		println"++++++++++++++++++filename+++++++++"+fileName
- 		def file = new File(webRootDir+fileName)     
- 		response.setContentType("application/octet-stream") 
+ 		def file = new File(webRootDir+fileName) 
+ 		def fname=file.getName()
+ 		
+ 		if (fname.indexOf(".gif")>-1) {
+	         response.setContentType("image/gif");
+	      } else if (fname.indexOf(".pdf")>-1) {
+	         response.setContentType("application/pdf");
+	      } else if (fname.indexOf(".doc")>-1) {
+	         response.setContentType("application/msword");
+	      }else if (fname.indexOf(".xls")>-1){
+	    	 response.setContentType("application/vnd.ms-excel");
+	      }else if (fname.indexOf(".xlsx")>-1){
+	    	 response.setContentType("application/vnd.ms-excel");
+	      }else if(fname.indexOf(".docx")>-1) {
+	    	 response.setContentType("application/msword");
+	      }else if(fname.indexOf(".ppt")>-1) {
+	    	 response.setContentType("application/ppt");
+	      }else if(fname.indexOf(".pptx")>-1) {
+	    	 response.setContentType("application/ppt");
+	      }
+ 		
  		response.setHeader("Content-disposition", "attachment;fileName=${file.getName()}") 
  		 
  		response.outputStream << file.newInputStream() // Performing a binary stream copy 

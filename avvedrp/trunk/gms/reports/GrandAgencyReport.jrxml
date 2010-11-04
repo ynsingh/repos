@@ -27,23 +27,27 @@
 	<parameter name="projectID" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="partyID" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="periodID" isForPrompting="false" class="java.lang.String"/>
-	<queryString><![CDATA[SELECT pa1.id as id,count(ga1.id) as number,p.id as projectID,sum(ga1.amount_allocated) as sumAmt,
-pa1.code Instituion,pa2.code as grantAgency,
+	<parameter name="reportDate" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="reportDateTo" isForPrompting="false" class="java.lang.String"/>
+	<queryString><![CDATA[SELECT pa1.id AS id,COUNT(ga1.id) AS number,p.id AS projectID,SUM(ga1.amount_allocated) AS sumAmt,
+pa1.code Instituion,pa2.code AS grantAgency,
 
-(SELECT  sum(gr.amount) 
+(SELECT  SUM(gr.amount) 
 FROM grant_allocation ga
 LEFT JOIN grant_receipt gr
  ON  (  gr.grant_allocation_id=ga.id  )
-WHERE ga.party_id=pa1.id and ga.projects_id=p.id
-group by ga.party_id)as FuntAmt
+WHERE ga.party_id=pa1.id AND ga.granter_id=pa2.id 
+AND DATE(gr.date_of_receipt) BETWEEN STR_TO_DATE($P{reportDate},'%d/%M/%Y') AND STR_TO_DATE($P{reportDateTo},'%d/%M/%Y')
+GROUP BY pa1.id)AS FuntAmt
 
 FROM grant_allocation ga1,
 projects p ,party pa1 ,party pa2 
 WHERE 
-p.id=ga1.projects_id AND
+p.id=ga1.projects_id AND 
 pa1.id=ga1.party_id AND pa2.id=ga1.granter_id 
+
 AND pa2.id =$P{partyID}
-group by pa1.id]]></queryString>
+GROUP BY pa1.id]]></queryString>
 
 	<field name="id" class="java.lang.Long"/>
 	<field name="number" class="java.lang.Long"/>

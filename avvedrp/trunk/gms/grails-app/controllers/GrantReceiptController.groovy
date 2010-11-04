@@ -110,13 +110,36 @@ class GrantReceiptController extends GmsController {
 		def grantReceiptService = new GrantReceiptService();
         def grantReceiptInstance = grantReceiptService.updateGrantReceipt(params)
         if(grantReceiptInstance) {
-        	if(grantReceiptInstance.isSaved){
+            def fundTransferInstance = new FundTransfer()
+        	if(params.fundTransfer)
+            {
+            	
+            	if(params.fundTransfer.id != "null")
+            	{
+            		fundTransferInstance = FundTransfer.get(new Integer(params.fundTransfer.id))
+            	}
+            }
+        	println"grantReceiptInstance.dateOfReceipt"+grantReceiptInstance.dateOfReceipt
+	    	println"fundTransferInstance.dateOfTransfer"+fundTransferInstance.dateOfTransfer
+	    	if((fundTransferInstance) && (fundTransferInstance.dateOfTransfer > grantReceiptInstance.dateOfReceipt))
+	    	 {
+	    		println"____testing____"
+	    		grantReceiptInstance.fundTransfer = fundTransferInstance
+	    		flash.message="${message(code: 'default.ReceiptDateValidationAgainstFundtransfer.label')}"
+	    			redirect(action:edit,id:params.id)
+	    	}
+	    	else
+	    	{
+	    		if(grantReceiptInstance.isSaved)
+	    		{
         		flash.message = "${message(code: 'default.updated.label')}"
     			redirect(action:create,id:grantReceiptInstance.projects.id)
-        	}
-        	else {
+	    		}
+	    		else 
+	    		{
                 render(view:'edit',model:[grantReceiptInstance:grantReceiptInstance])
-            }
+	    		}
+	    	}
         }
         else {
             flash.message = "${message(code: 'default.notfond.label')}"
@@ -252,18 +275,33 @@ class GrantReceiptController extends GmsController {
         		grantReceiptInstanceCheck = GrantReceipt.find("from GrantReceipt where fundTransfer.id="+params.fundTransfer.id)
         	}
         }
-        if(!grantReceiptInstance.hasErrors() ) {
+        if(!grantReceiptInstance.hasErrors() ) 
+        {
         	
     	    grantReceiptInstance.createdBy="admin"
     		grantReceiptInstance.modifiedBy="admin"
         	grantReceiptInstance.modifiedBy="admin"
     		grantReceiptInstance.createdDate=new Date()
     	    println "grantReceiptInstance" + grantReceiptInstance.grantAllocation
-    	    if(fundTransferInstance)
-    	    {
-    	    	grantReceiptInstance.fundTransfer = fundTransferInstance
-    	    	//grantReceiptInstance.amount=fundTransferInstance.amount
-    	    }
+    	    
+    	    	
+    	    	println"grantReceiptInstance.dateOfReceipt"+grantReceiptInstance.dateOfReceipt
+    	    	println"fundTransferInstance.dateOfTransfer"+fundTransferInstance.dateOfTransfer
+    	    	if((fundTransferInstance) && (fundTransferInstance.dateOfTransfer > grantReceiptInstance.dateOfReceipt))
+    	    	 {
+    	    		println"____testing____"
+    	    		grantReceiptInstance.fundTransfer = fundTransferInstance
+    	    		flash.message="${message(code: 'default.ReceiptDateValidationAgainstFundtransfer.label')}"
+    	    			redirect(action:create,id:params.projectId)
+    	    	}
+    	    	else
+    	    	{
+    	    		if(fundTransferInstance)
+    	    	    {
+    	    		println"........testing outside....."
+    	    		grantReceiptInstance.fundTransfer = fundTransferInstance
+    	    	    grantReceiptInstance.amount=fundTransferInstance.amount
+    	            }
     	    println "grantReceiptInstance*** in controller" +grantReceiptInstance.fundTransfer
     	    
     	    def grantAllocationInstanceList
@@ -296,7 +334,7 @@ class GrantReceiptController extends GmsController {
     	    if(!grantReceiptInstanceCheck)
     	    {
     	    grantReceiptInstance = grantReceiptService.saveGrantReceipt(grantReceiptInstance,new Integer(params.projectId))
-        	flash.message = "Grant Recieved"
+        	flash.message = "${message(code: 'default.Grantreceived.label')}"
         	redirect(action:create,id:grantReceiptInstance.projects.id,
         			params:[grantReceiptInstanceId:grantReceiptInstance.id],
         			        'fundTransferInstanceList':fundTransferInstanceList,
@@ -307,10 +345,12 @@ class GrantReceiptController extends GmsController {
     	    	flash.message = "${message(code: 'default.Amountalreadyreceived.label')}"
     	    	redirect(action:create,id:params.projectId)
     	    }
+    	  }
         }
         else {
             render(view:'create',model:[grantReceiptInstance:grantReceiptInstance])
         }
+      
     }
     def clear = {
     		def grantReceiptService = new GrantReceiptService();

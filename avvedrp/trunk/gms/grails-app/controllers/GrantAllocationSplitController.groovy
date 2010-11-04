@@ -207,7 +207,7 @@ class GrantAllocationSplitController extends GmsController  {
 		
         def projectsInstance = Projects.get(new Integer(params.id))
         def grantAllocationInstance = GrantAllocation.get(new Integer(params.grantAllotId))
-        
+        def unAllocatedAmount = params.UnAll
           def dataSecurityService = new DataSecurityService()
 		//checking  whether the user has access to the given projects
 		if(dataSecurityService.checkForAuthorisedAcsessInProjects(projectsInstance.id,new Integer(getUserPartyID()))==0)
@@ -233,7 +233,8 @@ class GrantAllocationSplitController extends GmsController  {
         return ['grantAllocationSplitInstance':grantAllocationSplitInstance,
                 'grantAllocationInstance':grantAllocationInstance,
                 'grantAllocationInstanceList':grantAllocationInstanceList,
-                'currencyFormat':currencyFormatter]
+                'currencyFormat':currencyFormatter,
+				'unAllocatedAmount':grantAllocationSplitInstance.unAllocatedAmt]
 		}
     }
 

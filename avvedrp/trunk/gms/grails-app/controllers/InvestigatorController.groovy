@@ -71,14 +71,16 @@ class InvestigatorController {
        	
     	println "------------------params------"+ params
     	println "------------------params------"+params
+    	GrailsHttpSession gh=getSession()
     	def investigatorInstance = Investigator.get( params.id )
-
+    	def partyDepartmentService=new PartyDepartmentService()
+        def departmentList=partyDepartmentService.getActiveDepartment(gh.getValue("PartyID"))
         if(!investigatorInstance) {
             flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:create)
         }
         else {
-            return [ investigatorInstance : investigatorInstance ]
+            return [ investigatorInstance : investigatorInstance ,'departmentList':departmentList]
         }
     }
 
@@ -143,6 +145,7 @@ class InvestigatorController {
      
         def investigatorInstanceList
         def investigatorService=new InvestigatorService()
+        def partyDepartmentService=new PartyDepartmentService()
         println"@@@@@params@@@@@@"+params
         String subQuery ="";
       
@@ -150,7 +153,8 @@ class InvestigatorController {
         	subQuery=" order by I."+params.sort
         if(params.order != null && !params.order.equals(""))
         	subQuery =subQuery+" "+params.order
-      
+        def departmentList=partyDepartmentService.getActiveDepartment(gh.getValue("PartyID"))
+        println"departmentList"+departmentList
         if(gh.getValue("Role")=="ROLE_ADMIN")
         {
         	investigatorInstanceList = investigatorService.getAllInvestigators(subQuery)
@@ -162,7 +166,7 @@ class InvestigatorController {
         }
         
         return ['investigatorInstance':investigatorInstance,'partyinstance':partyinstance,
-                'investigatorInstanceList':investigatorInstanceList]
+                'investigatorInstanceList':investigatorInstanceList,'departmentList':departmentList]
     }
 
     def save =

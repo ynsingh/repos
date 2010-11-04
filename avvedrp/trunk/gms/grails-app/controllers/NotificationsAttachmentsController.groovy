@@ -189,7 +189,9 @@ class NotificationsAttachmentsController {
             	
 		            	
 			            String fileName=downloadedfile.getOriginalFilename()
-			    		println "File Name--"+fileName+"  attachmenttype "+notificationsAttachmentsInstance.attachmentType
+			            if((fileName.lastIndexOf(".EXE")==-1)&&(fileName.lastIndexOf(".exe")==-1))
+			            
+			            {
 			    		notificationsAttachmentsInstance.attachmentPath=fileName
 			    		def attachmentsName='Attachments'
 			    		def gmsSettingsService = new GmsSettingsService()
@@ -202,29 +204,21 @@ class NotificationsAttachmentsController {
 			            if ( GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_DEVELOPMENT)) 
 			            {
 			            	webRootDir = gmsSettingsInstance.value
-			            	println "gmsSettingsInstance.value"+gmsSettingsInstance.value
 			            }
-			    		println "System.getProperty"+System.getProperty("user.home")
-			            new File( webRootDir).mkdirs()
+			    		new File( webRootDir).mkdirs()
 		            	downloadedfile.transferTo( new File( webRootDir + File.separatorChar + fileName) )
 		            	//notificationsAttachmentsInstance.attachmentType=attachmentTypeInstance
-		            	println "notificationsAttachmentsInstance" +notificationsAttachmentsInstance.attachmentPath
-		            	println "File Name--"+notificationsAttachmentsInstance.attachmentPath
-		            	println "notificationsAttachmentsInstance********" +notificationsAttachmentsInstance
 		            	//notificationsAttachmentsInstance.attachmentType=attachmentTypeInstance		                 
 		            	notificationsAttachmentsInstance.save()
 			            flash.message = "${message(code: 'default.Fileuploaded.label')}"
-			            	 println "notificationsAttachmentsInstance44" +notificationsAttachmentsInstance
+			            	 
 			          
 			            	 params.clear()
-			            println "documentTypefromParam"+documentTypefromParam
-			            println "documentTypefromParam"+params
-			           // MultipartRequestHolder.setMultipartRequest(null)
+			            // MultipartRequestHolder.setMultipartRequest(null)
 			            
 			            if(documentTypefromParam == 'Proposal')
 			            {
 			            	//def notid = Proposal.find("from Proposal P where P.")
-			            	println "proposalId="+notificationsAttachmentsInstance.notification.id
 			            	redirect(controller:"notificationsEmails",action:"partyNotificationsList")
 			            }
 			            else
@@ -233,7 +227,12 @@ class NotificationsAttachmentsController {
 			            	//redirect(action:create,id:notificationsAttachmentsInstance.notification.id,params:[documentType:documentTypefromParam])
 			            }
 
-		           
+			            }
+			            else 
+			            {
+			            	flash.message = "${message(code: 'default.ExeFile.label')}"
+				            redirect(action:create,id:notificationsAttachmentsInstance.notification.id,params:[documentType:documentTypefromParam])
+			            }
 		            }
 		            else
 		            {
@@ -271,8 +270,27 @@ class NotificationsAttachmentsController {
          {
          	webRootDir = gmsSettingsInstance.value
          }
- 		def file = new File(webRootDir+fileName)     
- 		response.setContentType("application/octet-stream") 
+ 		def file = new File(webRootDir+fileName)   
+ 		def fname=file.getName()
+ 		
+	      if (fname.indexOf(".gif")>-1) {
+	         response.setContentType("image/gif");
+	      } else if (fname.indexOf(".pdf")>-1) {
+	         response.setContentType("application/pdf");
+	      } else if (fname.indexOf(".doc")>-1) {
+	         response.setContentType("application/msword");
+	      }else if (fname.indexOf(".xls")>-1){
+	    	 response.setContentType("application/vnd.ms-excel");
+	      }else if (fname.indexOf(".xlsx")>-1){
+	    	 response.setContentType("application/vnd.ms-excel");
+	      }else if(fname.indexOf(".docx")>-1) {
+	    	 response.setContentType("application/msword");
+	      }else if(fname.indexOf(".ppt")>-1) {
+	    	 response.setContentType("application/ppt");
+	      }else if(fname.indexOf(".pptx")>-1) {
+	    	 response.setContentType("application/ppt");
+	      } 
+ 		 
  		response.setHeader("Content-disposition", "attachment;fileName=${file.getName()}") 
  		 
  		response.outputStream << file.newInputStream() // Performing a binary stream copy 

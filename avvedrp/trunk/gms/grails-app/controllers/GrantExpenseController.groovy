@@ -115,17 +115,33 @@ class GrantExpenseController extends GmsController {
     }
 
     def update = {
+    		println"params"+params
 		def grantExpenseService = new GrantExpenseService()
 		def grantExpenseInstance = grantExpenseService.updateGrantExpense(params)
         if(grantExpenseInstance) {
-            if(grantExpenseInstance.isSaved){	
-                flash.message = "${message(code: 'default.updated.label')}"
-                redirect(action:create,id:grantExpenseInstance.projects.id)
-            }
-            else {
+        	println"grantExpenseInstance.dateOfExpense in update"+grantExpenseInstance.dateOfExpense
+    		println"grantExpenseInstance.grantAllocation.DateOfAllocation in update"+grantExpenseInstance.grantAllocation.DateOfAllocation
+    		if(grantExpenseInstance.dateOfExpense < grantExpenseInstance.grantAllocation.DateOfAllocation)
+    		{
+    			println"....testing.."
+    			flash.message="${message(code: 'default.DateValidationAgainstAllocationdate.label')}"
+    			redirect(action:edit,id:params.id)
+    		}
+    		else
+    		{
+    			if(grantExpenseInstance.isSaved)
+    			{	
+    				flash.message = "${message(code: 'default.updated.label')}"
+    				redirect(action:create,id:grantExpenseInstance.projects.id)
+    			}
+    		
+    			else 
+    			{
                 render(view:'edit',model:[grantExpenseInstance:grantExpenseInstance])
-            }
+            	}
+    		}
         }
+        	
         else {
             flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:edit,id:params.id)
@@ -214,8 +230,17 @@ class GrantExpenseController extends GmsController {
 		params.createdBy="admin"
 		params.createdDate = new Date()
         def grantExpenseInstance = new GrantExpense(params)
+		println"grantExpenseInstance.dateOfExpense"+grantExpenseInstance.dateOfExpense
+		println"grantExpenseInstance.grantAllocation.DateOfAllocation"+grantExpenseInstance.grantAllocation.DateOfAllocation
+		if(grantExpenseInstance.dateOfExpense < grantExpenseInstance.grantAllocation.DateOfAllocation)
+		{
+			flash.message="${message(code: 'default.DateValidationAgainstAllocationdate.label')}"
+			redirect(action:create,id:grantExpenseInstance.projects.id)
+		}
+		else
+		{
+		grantExpenseInstance = grantExpenseService.saveGrantExpense(grantExpenseInstance)
 		
-		grantExpenseInstance = grantExpenseService.saveGrantExpense(grantExpenseInstance) 
 		if(grantExpenseInstance.isSaved){
             flash.message = "${message(code: 'default.created.label')}"
             redirect(action:create,id:grantExpenseInstance.projects.id,params:[grantExpenseId:grantExpenseInstance.id])
@@ -223,6 +248,7 @@ class GrantExpenseController extends GmsController {
         else {
             render(view:'create',model:[grantExpenseInstance:grantExpenseInstance])
         }
+		}
     }
     
     def listExpenses = {
@@ -300,24 +326,24 @@ class GrantExpenseController extends GmsController {
     }
     
     def listSummaryExpenses = {
-		def grantExpenseService = new GrantExpenseService()
+    	def grantExpenseService = new GrantExpenseService()
 		def grantAllocationService = new GrantAllocationService()
 		GrailsHttpSession gh=getSession()
-    
-		
         gh.removeValue("Help")
-       		//putting help pages in session
+       	//putting help pages in session
        	gh.putValue("Help","Grant_Expense_Summary.htm")
     	/* Get grant allocation details. */
     	def projectId
+    	
     	if(params.id)
     		projectId = params.id
-    	else
+    	else if(params.projects)
     		projectId = params.projects.id
-    		println "projectId"+projectId
-    		 def projectsInstance = Projects.get(new Integer(projectId))
-    		 
-    		  def dataSecurityService = new DataSecurityService()
+    	else
+    		projectId = gh.getValue("ProjectID")
+    	println "projectId"+projectId
+    	def projectsInstance = Projects.get(new Integer(projectId))
+    	def dataSecurityService = new DataSecurityService()
 		//checking  whether the user has access to the given projects
 		if(dataSecurityService.checkForAuthorisedAcsessInProjects(projectsInstance.id,new Integer(getUserPartyID()))==0)
 		{
@@ -330,13 +356,27 @@ class GrantExpenseController extends GmsController {
 		{
     	       projectsInstance.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(projectsInstance.id,getUserPartyID())
 		
-
     	/* Get summary of expenses */
-    	def grantExpenseSummaryList = grantExpenseService.getGrantExpenseSummaryForAProject(projectsInstance)
     	ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
+    	def grantAllocationSplitService=new GrantAllocationSplitService()
+    	def grantExpenseSummaryList = grantExpenseService.getGrantExpenseSummaryForAProject(projectsInstance) 
+    	def accountHeadList = grantExpenseService.getAccountHeadListByProject(projectId)
+    	def accHeadOfGSplit = []
+    	for(int i=0;i<grantExpenseSummaryList.size();i++ )
+    	{
+    		def accountHead = AccountHeads.get(grantExpenseSummaryList[i].grantAllocationSplit.accountHead.id) 
+			println "accountHead-->"+accountHead
+			String accName = accountHead.name+ " | " +grantExpenseSummaryList[i].grantAllocationSplit.grantPeriod.name
+			println "accName-->"+accName
+			accHeadOfGSplit[i] = accName
+			println "accHeadOfGSplit-->"+accHeadOfGSplit
+    	}
+      	
         return ['projectsInstance':projectsInstance,
                 'grantExpenseSummaryList':grantExpenseSummaryList,
-                'currencyFormat':currencyFormatter]
+                'currencyFormat':currencyFormatter,
+                'accountHeadList':accountHeadList,
+                'accHeadOfGSplit':accHeadOfGSplit]
     }
     }
     
@@ -407,11 +447,59 @@ class GrantExpenseController extends GmsController {
                     'accountHeadList':accountHeadList)
     		}
         	}
-        	else {    			
+        	else 
+        	{    			
         			redirect uri:'/invalidAccess.gsp'}
-        }
-    
-   
+           }
+    def listHeadwiseExpenses = {
+    		
+    		GrailsHttpSession gh=getSession()
+    		println "GrailsHttpSession -->"+gh
+    		def projectId
+        	projectId = gh.getValue("ProjectID")
+        	def projectsInstance = Projects.get(new Integer(projectId))
+    		def grantExpenseService = new GrantExpenseService()
+    		def grantAllocationSplitList
+    		println "params.name -->"+params.name
+
+    		if((params.name).equals(null) || (params.name).equals(''))
+    		{
+    			println "params.name -->"+params.name
+    			grantAllocationSplitList = grantExpenseService.getGrantAllocationSplitListByProjectId(projectId)
+    		}
+    		else
+    		{
+    			grantAllocationSplitList=grantExpenseService.getGrantAllocationSplitListByAccountHeadAndprojectId(params.name,projectId)
+    		}
+    		println "grantAllocationSplitList -->"+grantAllocationSplitList.id
+    		def grantExpenseSummaryList = grantExpenseService.getGrantExpenseSummaryListBygrantAllocationSplitList(grantAllocationSplitList)
+    		//def grantExpenseSummaryList =[]
+    		//def grantExpenseInstanceList = []
+    		def accountHeadList = grantExpenseService.getAccountHeadListByProject(projectId)
+    		def accHeadOfGSplit = []
+    		for(int i=0;i<grantAllocationSplitList.size();i++ )
+            {
+    			
+    			
+    			def accountHead = AccountHeads.get(grantAllocationSplitList[i].accountHead.id) 
+    			println "accountHead-->"+accountHead
+    			String accName = accountHead.name+ " | " +grantAllocationSplitList[i].grantPeriod.name
+    			println "accName-->"+accName
+    			accHeadOfGSplit[i] = accName
+    			println "accHeadOfGSplit-->"+accHeadOfGSplit
+            }
+    		println "grantExpenseSummaryList out-->"+grantExpenseSummaryList
+    		def grantAllocationService = new GrantAllocationService()
+    		projectsInstance.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(projectsInstance.id,new Integer(getUserPartyID()))
+    		ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
+    		render(view:'listSummaryExpenses',model:['projectsInstance':projectsInstance,
+                    'grantExpenseSummaryList':grantExpenseSummaryList,
+                    'currencyFormat':currencyFormatter,
+                    'accountHeadList':accountHeadList,
+                    'accHeadOfGSplit':accHeadOfGSplit
+                    ])
+    		
+    }
    
     
 }

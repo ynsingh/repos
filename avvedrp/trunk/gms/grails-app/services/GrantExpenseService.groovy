@@ -223,4 +223,80 @@ class GrantExpenseService {
 	    return grantExpenseInstance    
 		
 	}	
+	
+	/**
+	 * Function to get Account Head List 
+	 */
+	public List getAccountHeadListByProject(def projectId){
+		def grantAllocationSplitList=GrantAllocationSplit.findAll("from GrantAllocationSplit GS where GS.projects.id="+projectId+" group by GS.accountHead.id")
+    	def accountHeadList = []
+    	
+    	for(int i=0;i<grantAllocationSplitList.size();i++ )
+        {
+			accountHeadList[i] = grantAllocationSplitList[i].accountHead
+			
+        }
+		return accountHeadList
+	}
+	/*
+	 * Function to get GrantAllocationSplitList By Account Head Name And Project Id.
+	 */
+	public List getGrantAllocationSplitListByAccountHeadAndprojectId(def name,def projectId){
+		
+		def grantAllocationSplitList=GrantAllocationSplit.findAll("from GrantAllocationSplit GS where GS.accountHead.id="+name+ "and GS.projects.id="+projectId)
+	
+	return grantAllocationSplitList
+	}
+	/*
+	 * Function to get GrantAllocationSplitList based on Project Id.
+	 */
+	public List getGrantAllocationSplitListByProjectId(def projectId){
+		
+		def grantAllocationSplitList=GrantAllocationSplit.findAll("from GrantAllocationSplit GS where GS.projects.id="+projectId)
+	
+	return grantAllocationSplitList
+	}
+	/*
+	 * Function to Get grant expense summary list based on selected account head. 
+	 */
+	 
+	 public List getGrantExpenseSummaryListBygrantAllocationSplitList(def grantAllocationSplitList){
+		 def grantExpenseInstanceList = []
+		 def grantExpenseSummaryList = []
+		 for(int i=0;i<grantAllocationSplitList.size();i++ )
+         {
+ 			grantExpenseInstanceList[i] = new GrantExpense()
+ 			def expList = GrantExpense.findAll("from GrantExpense GE where GE.grantAllocationSplit.id="+grantAllocationSplitList[i].id)
+ 			println "expList -->"+expList
+ 			double sumAmount = 0.0
+ 			for(int j=0;j<expList.size();j++)
+ 			{
+ 				println "expList[j].expenseAmount -->"+expList[j].expenseAmount
+ 				sumAmount = sumAmount+expList[j].expenseAmount
+ 			}
+ 			println "sumAmount -->"+sumAmount
+         	
+ 			double balance
+ 			balance = grantAllocationSplitList[i].amount-sumAmount
+ 			println "balance -->"+balance
+ 		
+ 			
+  			grantExpenseInstanceList[i].balanceAmount = balance
+  			grantExpenseInstanceList[i].expenseAmount = grantAllocationSplitList[i].amount
+  			
+  			  		
+ 			grantExpenseSummaryList.add(grantExpenseInstanceList[i])
+         }
+		
+		
+		return grantExpenseSummaryList
+		
+		
+		
+	}
+	 
+	 
 }
+
+
+

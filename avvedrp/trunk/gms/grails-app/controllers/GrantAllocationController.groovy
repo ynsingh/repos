@@ -165,7 +165,9 @@
 		def grantAllocationService = new GrantAllocationService()
         def grantAllocationInstance=grantAllocationService.getGrantAllocationById(new Integer(params.id))
         def dataSecurityService = new DataSecurityService()
+		GrailsHttpSession gh=getSession()
 		//checking  whether the user has access to the given projects
+		def projectsInstance = projectsService.getProjectById(gh.getValue("ProjectId"))
 		if(dataSecurityService.checkForAuthorisedAcsessInProjects(grantAllocationInstance.projects.id,new Integer(getUserPartyID()))==0)
 		{
 			
@@ -183,7 +185,7 @@
         	NumberFormat formatter = new DecimalFormat("#0.00");
             
              grantAllocationInstance.amountAllocated=  new Double(formatter.format(grantAllocationInstance.amountAllocated))
-        	return [ grantAllocationInstance : grantAllocationInstance,amount:formatter.format(grantAllocationInstance.amountAllocated) ]
+        	return [ projectsInstance:projectsInstance,grantAllocationInstance : grantAllocationInstance,amount:formatter.format(grantAllocationInstance.amountAllocated) ]
         }
 		}
     }
@@ -191,9 +193,11 @@
 
     def update = 
     {
+			
     	println "*******************************Inside update***************"
     	def grantAllocationService = new GrantAllocationService()
     	def grantAllocation = grantAllocationService.checkGrantAllotted(params)
+    	
     	if(grantAllocation)
     	{
 	    	flash.message = "${message(code: 'default.Amountcannotchangedallocatedtosubprojects.label')}"
@@ -207,6 +211,7 @@
 				if(grantAllocationInstance.isSaved)
 				{
 					GrailsHttpSession gh=getSession()
+					def projectsInstance = projectsService.getProjectById(gh.getValue("ProjectId"))
 					if(gh.getValue("fromUrL")=="fundAllot")
 					{
 						redirect(action:'fundAllot',id:grantAllocationInstance.id)
@@ -267,8 +272,10 @@
            	println"grantAllocationInstance"+params.id
             def projectIdStart="("
             def projectsInstance = projectsService.getProjectById(gh.getValue("ProjectId"))	
-            		
-            def projectsPIMapInstance = dataSecurityService.getProjectsPIMap(projectsInstance.id);
+            
+            //def projectsPIMapInstance = dataSecurityService.getProjectsPIMap(projectsInstance.id);
+            def projectsPIMapInstance = projectsService.checkPIofProject(projectsInstance.id)
+           println"projectsPIMapInstance"+projectsPIMapInstance
             println "PIMApxsdf"+ projectsPIMapInstance
             def grantAllocationInstanceListproj
             grantAllocationInstanceListproj = grantAllocationService.getGrantAllocationsForAssignedProject(projectsInstance.id)
@@ -296,7 +303,7 @@
     		grantAllocationInstance.projects = projectsInstance
     		grantAllocationInstance.createdBy="admin"
     		grantAllocationInstance.modifiedBy="admin"
-    		grantAllocationInstance.DateOfAllocation=new Date();
+    		// grantAllocationInstance.DateOfAllocation=new Date();
     	    grantAllocationInstance.allocationType="Fund"
     	    grantAllocationInstance.sanctionOrderNo="";
     	    grantAllocationInstance.code=""
@@ -512,6 +519,9 @@
     	
     	projectsInstance.parent=parentProjectsInstance
     	projectsInstance.projectType=parentProjectsInstance.projectType
+    	println"projectsInstance.parent.projectStartDate"+projectsInstance.parent.projectStartDate
+    	println"projectsInstance.projectStartDate"+projectsInstance.projectStartDate
+       
     	GrailsHttpSession gh=getSession()
     	
     	

@@ -232,6 +232,7 @@ class NotificationController {
  		def notificationInstance = Notification.get( params.id )
  		
  		String fileName = notificationInstance.applicationForm
+ 		def htmlFile = fileName.toString().substring(0,fileName.toString().lastIndexOf('.'))+".htm"
  		def attachmentsName='ApplicationForm'
 		def gmsSettingsService = new GmsSettingsService()
 		def gmsSettingsInstance = gmsSettingsService.getGmsSettings(attachmentsName)
@@ -244,12 +245,26 @@ class NotificationController {
         {
         	webRootDir = gmsSettingsInstance.value
         }
- 		def file = new File(webRootDir+fileName)    
- 		response.setContentType("application/octet-stream") 
- 		response.setHeader("Content-disposition", "attachment;fileName=${file.getName()}") 
+        def srcFile = new File(webRootDir+fileName)
+        def file = new File(webRootDir+htmlFile)   
+ 		if(srcFile.exists())
+ 		{
+ 			boolean exists = file.exists();
+ 			if(exists==false)
+ 			{
+ 				org.apache.commons.io.FileUtils.copyFile(srcFile, file)
+ 			}
+ 			//response.setContentType("application/octet-stream") 
+ 			response.setContentType("text/htm");
+ 			response.setHeader("Content-disposition", "attachment;fileName=${file.getName()}") 
  		 
- 		response.outputStream << file.newInputStream() // Performing a binary stream copy 
-
+ 			response.outputStream << file.newInputStream() // Performing a binary stream copy 
+ 		}
+ 		else
+ 		{
+ 			flash.message ="File does not exist"
+			redirect(controller:'notification',action:'list')
+ 		}
  		
  }
     def publishNotification =

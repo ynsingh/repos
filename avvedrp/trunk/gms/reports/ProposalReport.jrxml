@@ -6,9 +6,9 @@
 		 columnCount="1"
 		 printOrder="Vertical"
 		 orientation="Portrait"
-		 pageWidth="595"
+		 pageWidth="680"
 		 pageHeight="842"
-		 columnWidth="535"
+		 columnWidth="620"
 		 columnSpacing="0"
 		 leftMargin="30"
 		 rightMargin="30"
@@ -29,6 +29,7 @@
     PR.proposal_submitteddate AS submittedDate,
     NT.notification_code AS notificationCode,
     PR.code AS proposalCode,
+    PTY.code AS party,
     P.name AS project
     
 FROM
@@ -36,13 +37,15 @@ FROM
     notification NT,
     party PT,
     projects P,
-    grant_allocation GA
+    grant_allocation GA,
+    party PTY
     
 WHERE
     PT.id=$P{partyID}
     AND GA.party_id=PT.id
     AND GA.projects_id=NT.project_id
     AND PR.notification_id=NT.id
+    AND PR.party_id=PTY.id
     AND NT.project_id=P.id
     AND PR.lockedyn='N'
     
@@ -51,6 +54,7 @@ GROUP BY PR.code]]></queryString>
 	<field name="submittedDate" class="java.sql.Timestamp"/>
 	<field name="notificationCode" class="java.lang.String"/>
 	<field name="proposalCode" class="java.lang.String"/>
+	<field name="party" class="java.lang.String"/>
 	<field name="project" class="java.lang.String"/>
 
 		<background>
@@ -58,11 +62,11 @@ GROUP BY PR.code]]></queryString>
 			</band>
 		</background>
 		<title>
-			<band height="150"  isSplitAllowed="true" >
+			<band height="158"  isSplitAllowed="true" >
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="132"
+						x="173"
 						y="110"
 						width="279"
 						height="33"
@@ -86,7 +90,7 @@ GROUP BY PR.code]]></queryString>
 						mode="Opaque"
 						x="5"
 						y="3"
-						width="526"
+						width="609"
 						height="68"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -105,7 +109,7 @@ GROUP BY PR.code]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="454"
+						x="531"
 						y="75"
 						width="80"
 						height="17"
@@ -131,13 +135,13 @@ GROUP BY PR.code]]></queryString>
 			</band>
 		</pageHeader>
 		<columnHeader>
-			<band height="48"  isSplitAllowed="true" >
+			<band height="43"  isSplitAllowed="true" >
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
 						x="5"
 						y="9"
-						width="515"
+						width="608"
 						height="0"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -151,35 +155,13 @@ GROUP BY PR.code]]></queryString>
 					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
 />
 				</line>
-				<staticText>
-					<reportElement
-						mode="Transparent"
-						x="4"
-						y="46"
-						width="524"
-						height="0"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="staticText-2"
-						stretchType="NoStretch"
-						positionType="FixRelativeToTop"
-						isPrintRepeatedValues="true"
-						isRemoveLineWhenBlank="false"
-						isPrintInFirstWholeBand="false"
-						isPrintWhenDetailOverflows="false"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<text><![CDATA[Static text]]></text>
-				</staticText>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
 						x="5"
-						y="10"
+						y="9"
 						width="0"
-						height="38"
+						height="34"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-3"
@@ -195,10 +177,10 @@ GROUP BY PR.code]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="391"
-						y="10"
+						x="499"
+						y="9"
 						width="0"
-						height="38"
+						height="34"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-4"
@@ -215,9 +197,9 @@ GROUP BY PR.code]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="96"
-						y="10"
+						y="9"
 						width="0"
-						height="38"
+						height="34"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-5"
@@ -233,10 +215,10 @@ GROUP BY PR.code]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="268"
-						y="10"
+						x="377"
+						y="9"
 						width="0"
-						height="38"
+						height="34"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-7"
@@ -253,7 +235,7 @@ GROUP BY PR.code]]></queryString>
 					<reportElement
 						mode="Transparent"
 						x="7"
-						y="15"
+						y="13"
 						width="83"
 						height="29"
 						forecolor="#000000"
@@ -274,8 +256,8 @@ GROUP BY PR.code]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="393"
-						y="14"
+						x="501"
+						y="12"
 						width="109"
 						height="29"
 						forecolor="#000000"
@@ -296,8 +278,8 @@ GROUP BY PR.code]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="271"
-						y="14"
+						x="380"
+						y="12"
 						width="114"
 						height="29"
 						forecolor="#000000"
@@ -319,7 +301,7 @@ GROUP BY PR.code]]></queryString>
 					<reportElement
 						mode="Transparent"
 						x="98"
-						y="14"
+						y="12"
 						width="157"
 						height="29"
 						forecolor="#000000"
@@ -340,13 +322,73 @@ GROUP BY PR.code]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="520"
-						y="10"
+						x="613"
+						y="9"
 						width="0"
-						height="38"
+						height="34"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
 						key="line-14"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
+/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						mode="Opaque"
+						x="260"
+						y="9"
+						width="0"
+						height="34"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="line-16"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
+/>
+				</line>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="263"
+						y="12"
+						width="111"
+						height="29"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="staticText-8"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[Party]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						mode="Opaque"
+						x="5"
+						y="42"
+						width="608"
+						height="0"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="line-2"
 						stretchType="NoStretch"
 						positionType="FixRelativeToTop"
 						isPrintRepeatedValues="true"
@@ -364,27 +406,8 @@ GROUP BY PR.code]]></queryString>
 					<reportElement
 						mode="Opaque"
 						x="5"
-						y="0"
-						width="515"
-						height="0"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="line-2"
-						stretchType="NoStretch"
-						positionType="FixRelativeToTop"
-						isPrintRepeatedValues="true"
-						isRemoveLineWhenBlank="false"
-						isPrintInFirstWholeBand="false"
-						isPrintWhenDetailOverflows="false"/>
-					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
-/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						mode="Opaque"
-						x="5"
 						y="33"
-						width="515"
+						width="608"
 						height="0"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -420,7 +443,7 @@ GROUP BY PR.code]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="268"
+						x="377"
 						y="0"
 						width="0"
 						height="33"
@@ -439,7 +462,7 @@ GROUP BY PR.code]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="391"
+						x="499"
 						y="0"
 						width="0"
 						height="33"
@@ -499,7 +522,7 @@ GROUP BY PR.code]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="393"
+						x="501"
 						y="3"
 						width="109"
 						height="28"
@@ -521,7 +544,7 @@ GROUP BY PR.code]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="271"
+						x="381"
 						y="3"
 						width="112"
 						height="28"
@@ -544,7 +567,7 @@ GROUP BY PR.code]]></queryString>
 					<reportElement
 						mode="Transparent"
 						x="98"
-						y="4"
+						y="3"
 						width="156"
 						height="28"
 						forecolor="#000000"
@@ -565,7 +588,7 @@ GROUP BY PR.code]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="520"
+						x="613"
 						y="0"
 						width="0"
 						height="33"
@@ -581,6 +604,47 @@ GROUP BY PR.code]]></queryString>
 					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
 />
 				</line>
+				<line direction="TopDown">
+					<reportElement
+						mode="Opaque"
+						x="260"
+						y="0"
+						width="0"
+						height="33"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="line-17"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
+/>
+				</line>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="263"
+						y="3"
+						width="111"
+						height="28"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{party}]]></textFieldExpression>
+				</textField>
 			</band>
 		</detail>
 		<columnFooter>
@@ -592,8 +656,8 @@ GROUP BY PR.code]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="501"
-						y="30"
+						x="579"
+						y="28"
 						width="28"
 						height="18"
 						forecolor="#000000"
@@ -618,9 +682,9 @@ GROUP BY PR.code]]></queryString>
 				<image  scaleImage="FillFrame" vAlign="Top" hAlign="Left" isUsingCache="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Opaque"
-						x="34"
-						y="21"
-						width="457"
+						x="47"
+						y="26"
+						width="520"
 						height="36"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -639,8 +703,8 @@ GROUP BY PR.code]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="501"
-						y="30"
+						x="582"
+						y="35"
 						width="28"
 						height="18"
 						forecolor="#000000"

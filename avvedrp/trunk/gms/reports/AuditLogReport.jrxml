@@ -26,6 +26,7 @@
 	<parameter name="reportDate" isForPrompting="true" class="java.lang.String"/>
 	<parameter name="reportDateTo" isForPrompting="true" class="java.lang.String"/>
 	<parameter name="Path" isForPrompting="false" class="java.lang.String"/>
+	<parameter name="partyID" isForPrompting="false" class="java.lang.String"/>
 	<queryString><![CDATA[SELECT 
        AL.date_created AS DATE,
        AL.actor AS actor, 
@@ -37,15 +38,20 @@
        AL.persisted_object_id AS object,
        AL.persisted_object_version AS deletedversion,
        AL.property_name AS updatedfield
-FROM audit_log AL
+FROM audit_log AL,party P,person PSN,user_map UM
 
-WHERE DATE(AL.date_created) BETWEEN STR_TO_DATE($P{reportDate},'%d/%M/%Y') AND STR_TO_DATE($P{reportDateTo},'%d/%M/%Y')]]></queryString>
+WHERE 
+PSN.username=AL.actor AND
+PSN.id=UM.user_id
+AND UM.party_id=P.id AND
+P.id =$P{partyID} AND
+DATE(AL.date_created) BETWEEN STR_TO_DATE($P{reportDate},'%d/%M/%Y') AND STR_TO_DATE($P{reportDateTo},'%d/%M/%Y')]]></queryString>
 
-	<field name="DATE" class="java.util.Date"/>
+	<field name="DATE" class="java.sql.Timestamp"/>
 	<field name="actor" class="java.lang.String"/>
 	<field name="domain" class="java.lang.String"/>
 	<field name="ACTION" class="java.lang.String"/>
-	<field name="lastupdateddate" class="java.util.Date"/>
+	<field name="lastupdateddate" class="java.sql.Timestamp"/>
 	<field name="newvalue" class="java.lang.String"/>
 	<field name="oldvalue" class="java.lang.String"/>
 	<field name="object" class="java.lang.Long"/>
