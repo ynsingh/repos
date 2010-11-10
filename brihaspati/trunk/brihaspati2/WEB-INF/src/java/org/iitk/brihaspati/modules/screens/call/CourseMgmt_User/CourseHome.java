@@ -55,6 +55,7 @@ import org.iitk.brihaspati.modules.utils.NoticeUnreadMsg;
 import org.iitk.brihaspati.modules.utils.NewsHeadlinesUtil;
 import org.iitk.brihaspati.modules.utils.ListManagement;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.om.CalInformationPeer;
 import org.iitk.brihaspati.om.CoursesPeer;
 import org.iitk.brihaspati.om.CalInformation;
@@ -126,6 +127,15 @@ public class CourseHome extends SecureScreen{
 				File f=new File(TurbineServlet.getRealPath("/images")+"/Header/"+courseid);
 				boolean istat=f.exists();
 				user.setTemp("istat",istat);
+			/**
+ 			* For setting Institute id 	
+ 			*/
+				String[] temp1 = courseid.split("@");
+				String[] temp2 = temp1[1].split("_");
+				temp1[0]=temp2[1];
+				ErrorDumpUtil.ErrorLog("The Institute Id (In Course Home) is "+temp1[0]);
+				user.setTemp("Institute_id",temp1[0]);
+
 			}
 			/**
                         *Code for Survey Visible to students
