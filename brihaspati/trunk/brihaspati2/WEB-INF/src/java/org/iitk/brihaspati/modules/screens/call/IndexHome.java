@@ -70,7 +70,8 @@ import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kuamr Singh</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
- * @ modified date: 26-07-2010, 06-08-2010
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @ modified date: 26-07-2010, 06-08-2010, 09-11-2010
  */
 
 /* This screen class is called when User's selects a home location as instructor/
@@ -175,6 +176,14 @@ public class IndexHome extends SecureScreen{
 			user.setTemp("role",Role);
                         Vector unread_inst=new Vector();
                         Vector unread_stud=new Vector();
+			
+			/**
+			 * Getting message if any required field is empty 
+			 */
+			String LangFile=(String)data.getUser().getTemp("LangFile");
+			String Mssg = CommonUtility.CheckData(Role,username,LangFile);
+			context.put("message",Mssg);
+			
 			/**
 			 * if role is instructor 
 			 * Getting List of course's object according to user id in which user is instructor

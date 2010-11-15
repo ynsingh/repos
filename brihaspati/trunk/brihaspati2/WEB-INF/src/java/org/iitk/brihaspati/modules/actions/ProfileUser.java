@@ -206,7 +206,7 @@ public class ProfileUser extends SecureAction
 	                                 * if list is not zero it shows user already have rollno & update it
 	                                 * else insert into table
         	                         */ 
-					if(Rollno.size()>0){
+					if((Rollno.size()>0)&&(!rollno.equals(""))){
 	        	                        StudentRollno element = (StudentRollno)Rollno.get(0);
         	                	        int id = element.getId();
                 	                	crit=new Criteria();
@@ -215,7 +215,7 @@ public class ProfileUser extends SecureAction
 	                			crit.add(StudentRollnoPeer.ROLL_NO,rollno);
 	                			StudentRollnoPeer.doUpdate(crit);
 					}
-                	                else{
+                	                else if(!rollno.equals("")){
                         	                rollmsg=UserManagement.InsertRollNo(loginName,rollno,LangFile);
                                 	}
 	
@@ -263,7 +263,7 @@ public class ProfileUser extends SecureAction
 				 */	
 				List Rollno = new Vector();
                                 Rollno = UserManagement.getUserRollNo(loginName);
-				if(Rollno.size()>0){
+				if((Rollno.size()>0)&&(!rollno.equals(""))){
                		                StudentRollno element = (StudentRollno)Rollno.get(0);
                         	        int id = element.getId();
                                 	crit=new Criteria();
@@ -272,7 +272,7 @@ public class ProfileUser extends SecureAction
                 	                crit.add(StudentRollnoPeer.ROLL_NO,rollno);
                         	        StudentRollnoPeer.doUpdate(crit);
 				}
-				else{
+				else if(!rollno.equals("")){
 					rollmsg=UserManagement.InsertRollNo(loginName,rollno,LangFile);
 				}
 				msg1=MultilingualUtil.ConvertedString("Profile_PhotoMsg3",LangFile);

@@ -36,7 +36,7 @@ $!data.getMessage()
 	 </tr>
 	   #end
 	 <tr>
-           #formCell("$brih_rollno " "rollno" "$!rollno")
+           #formCell("$brih_rollno($brih_if $brih_student)" "rollno" "$!rollno")
          </tr>
 	 <tr>
 	   #fileUpload("$brih_photo" "PHOTO")

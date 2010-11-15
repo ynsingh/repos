@@ -92,11 +92,16 @@ import org.iitk.brihaspati.om.TurbineRolePeer;
 import org.iitk.brihaspati.om.TurbineRolePermissionPeer;
 import org.iitk.brihaspati.om.TurbineUserGroupRolePeer;
 import org.iitk.brihaspati.om.TurbineUserPeer;
+import org.iitk.brihaspati.om.TurbineUser;
 import org.iitk.brihaspati.om.UsageDetailsPeer;
 import org.iitk.brihaspati.om.UserConfigurationPeer;
+import org.iitk.brihaspati.om.StudentRollnoPeer;
+import org.iitk.brihaspati.om.StudentRollno;
 
 import org.iitk.brihaspati.modules.actions.UploadAction;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.actions.Groupmanagement;
 
 /**
@@ -106,6 +111,8 @@ import org.iitk.brihaspati.modules.actions.Groupmanagement;
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:kalpanagtm@gmail.com">Kalpana Gautam</a>
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @modified date:09-11-2010
  * @version 1.0
  * @since 1.0
  * @see ExpiryUtil
@@ -753,5 +760,57 @@ public static void grpLeader()
                 }
                 catch(Exception e){data.setMessage("The error in [PListing] of [CommonUtility Util] !!"+e);}
     }//method
+
+	/**
+	 * This method checks necessary data entered by user
+	 * @return Message
+	 */
+	public static String CheckData(String role,String email,String file)
+	{
+		String msg="";
+		String rollno="";
+		Criteria crit = new Criteria();
+		try
+		{
+				/** if role is instructor{
+			         *  getting detail from turbine user & check first name 
+			         *  If first name is null then show message
+			         * }
+				 */
+				if(role.equals("instructor"))
+				{
+					crit.add(TurbineUserPeer.LOGIN_NAME,email);
+					List v = TurbineUserPeer.doSelect(crit);
+					TurbineUser element = (TurbineUser)v.get(0);
+	                                String name = element.getFirstName();
+					if(name.equals(""))
+						msg=MultilingualUtil.ConvertedString("brih_alert",file);
+				}
+
+				/** if role is student{
+			         *   check his rollno & if it is null
+			         *   then show message
+				 */
+				if(role.equals("student"))
+				{
+					crit=new Criteria();
+	                                crit.add(StudentRollnoPeer.EMAIL_ID,email);
+	                                List v=StudentRollnoPeer.doSelect(crit);
+					if(v.size()!=0)
+					{
+		                                StudentRollno element=(StudentRollno)v.get(0);
+		                                rollno=element.getRollNo();
+					}
+						if(rollno.equals(""))
+						msg=MultilingualUtil.ConvertedString("brih_alert",file);
+					
+				}									
+		}
+		catch(Exception e)
+		{
+			ErrorDumpUtil.ErrorLog("The error in check data of[CommonUtility Util] !!"+e);
+		}
+		return msg;
+	}
 		
 }//end of class
