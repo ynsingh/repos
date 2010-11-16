@@ -61,11 +61,12 @@
 ##                <img src="$content.getURI("/images/$lang/eventmanagement.jpg")"border=0></a><br>
       </td>
    </tr>
-   #*<tr bgcolor="$ui.menuColor">
+   <tr bgcolor="$ui.menuColor">
       <td>
-         <a href=$link.setPage("call,AdminProfile,AdminParam.vm").addPathInfo("count","1") style=text-decoration:none>$Profile_user</a>
+         <a href=$link.setPage("call,AdminProfile,InstituteProfile.vm").addPathInfo("count","1").addPathInfo("iname","$iname") style=text-decoration:none>$Profile_user</a>
       </td>
    </tr>
+#*
    <tr>
       <td>
          <a href=$link.setPage("call,Quota_Mgmt,Quota.vm").addPathInfo("mode","uquota").addPathInfo("status","nosearch").addPathInfo("count","1") style=text-decoration:none>$brih_quota $brih_mgmt</a>
