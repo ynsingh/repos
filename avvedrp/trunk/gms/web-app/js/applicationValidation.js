@@ -318,6 +318,12 @@ function validateProject(){
 	    alert("Please enter the Recipient");
 	    return false;
     }
+    if( ( (document.getElementById("investigator.id").value) == 'null') || ( (document.getElementById("investigator.id").value) == '') )
+    {
+	    alert("Please enter the Investigator");
+	    return false;
+    }
+    
     if(isNaN(document.getElementById("amountAllocated").value))
     {
 	    alert("Invalid Amount  ");
@@ -329,12 +335,12 @@ function validateProject(){
 	    alert("Please enter the Amount Allocated  ");
 	    return false;
     }
+    
     if(eval(document.getElementById("amountAllocated").value)<=0)
     {
 	    alert("Please enter the Amount Allocated   ");
 	    return false;
     }      
-		
    	return true;
 
 }
@@ -1479,4 +1485,55 @@ function combineAlertAndRegister()
 	retvalue = validateRegisterUser();
 	if(retvalue == true) { return displayAlertMessage("Please wait"); }
 	return retvalue
+}
+function isDate(txtDate){  
+  var objDate;  // date object initialized from the txtDate string  
+  var mSeconds; // milliseconds from txtDate  
+  
+  // date length should be 10 characters - no more, no less  
+  if (txtDate.length != 10) return false;  
+  
+  // extract day, month and year from the txtDate string  
+  // expected format is mm/dd/yyyy  
+  // subtraction will cast variables to integer implicitly  
+  var month   = txtDate.substring(3,5)  - 1;  
+  var day = txtDate.substring(0,2)  - 0; // because months in JS start with 0  
+  var year  = txtDate.substring(6,10) - 0;  
+  
+  // third and sixth character should be /  
+  if (txtDate.substring(2,3) != '/') return false;  
+  if (txtDate.substring(5,6) != '/') return false;  
+  
+  // test year range  
+  if (year < 999 || year > 3000) return false;  
+  
+  // convert txtDate to the milliseconds  
+  mSeconds = (new Date(year, month, day)).getTime();  
+  
+  // initialize Date() object from calculated milliseconds  
+  objDate = new Date();  
+  objDate.setTime(mSeconds);  
+  
+  // compare input parameter date and created Date() object  
+  // if difference exists then date isn't valid  
+  if (objDate.getFullYear() != year)  return false;  
+  if (objDate.getMonth()    != month) return false;  
+  if (objDate.getDate()     != day)   return false;  
+  
+  // otherwise return true  
+  return true;  
+}
+function checkDate(dateValue)
+{
+	Field=dateValue;
+	if(isDate(dateValue.value) || dateValue.value=="")
+	{
+		return true;
+	}
+	else
+	{
+		alert("Please enter a date in the format dd/mm/yyyy");
+		setTimeout("Field.focus();",0);
+		return false;
+	}
 }
