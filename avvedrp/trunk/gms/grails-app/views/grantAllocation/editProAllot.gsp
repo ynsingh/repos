@@ -81,6 +81,15 @@
                     	</tr> 
                             
                         <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="investigator"><g:message code="default.Investigator.label"/>:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'investigator','errors')}">
+                                    <g:select id="investigator.id" optionKey="id" optionValue="name" from="${Investigator.findAll('from Investigator I where I.activeYesNo=\'Y\' ')}" name="investigator.id" value="${projectsInstance?.investigator?.id}" noSelection="['null':'select']"></g:select>
+                                </td>
+                         	</tr>    
+                            
+                        <tr class="prop">
                             <td valign="top" class="name">
                                 <label for="party">
                                 	<g:message code="default.GrantAllocation.SanctionOrderNo.label"/>:

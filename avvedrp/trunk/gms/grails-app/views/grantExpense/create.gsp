@@ -22,6 +22,14 @@
         		</td>
 	        
              </tr> 
+             <tr>
+             <td>Current Balance:</td>
+             <td ><strong>
+	            		<g:message code="default.Rs.label" />
+	            		${currencyFormat.ConvertToIndainRS(grantExpenseInstance.currentBalance)}
+            		</strong>
+        		</td>
+              </tr>
       	   </table> 
       	 </div>  
          <div>

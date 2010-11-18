@@ -10,7 +10,7 @@
     <div class="wrapper">
       
         <div class="body">
-            <h1><g:message code="default.projects.Search.head"/></h1>
+            <h1><g:message code="default.projects.Search.head"/>&nbsp;<img src="${createLinkTo(dir:'images/themesky',file:'search_img.png')}"/></h1>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
@@ -20,10 +20,16 @@
             </div>
             </g:hasErrors>
             <g:form action="searchProjects" method="post" >
-                <div class="dialog">
+                <fieldset>
+                <div id="search">
+                <p>&nbsp;</p>
                     <table>
                         <tbody>
+                        
                         <tr class="prop">
+                        	<td valign="top">
+                                   &nbsp;
+                                </td>
                                 <td valign="top" class="name">
                                     <label for="name"><g:message code="default.Name.label"/>:</label>
                                 </td>
@@ -37,35 +43,30 @@
                                 <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'code','errors')}">
                                     <input type="text"  id="code" name="code" value="${fieldValue(bean:projectsInstance,field:'code')}"/>
                                 </td>
+                                <input type="hidden"  id="projectType" name="projectType.id" value="${projectsInstance?.projectType?.id}"/>
+                                <input type="hidden"  id="investigator.id" name="investigator.id" value="${projectsInstance?.investigator?.id}"/>
+                                <input type="hidden"  id="projectStartDate" name="projectStartDate" value="${projectsInstance?.projectStartDate}"/>
+                                <input type="hidden"  id="projectStartDateTo" name="projectStartDateTo" value="${projectsInstance?.projectStartDate}"/>
+                                <input type="hidden"  id="projectEndDate" name="projectEndDate" value="${projectsInstance?.projectEndDate}"/>
+                                <input type="hidden"  id="projectEndDateTo" name="projectEndDateTo" value="${projectsInstance?.projectEndDate}"/>
                             </tr> 
                         	
-                        	<tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="code"><g:message code="default.ProjectType.label"/>:</label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'projectType','errors')}">
-                                    <g:select optionKey="id" optionValue="type" id="projectType" from="${ProjectType.findAll('from ProjectType P where P.activeYesNo=\'Y\' ')}"  name="projectType.id" value="${projectsInstance?.projectType?.id}" noSelection="['null':'select']" ></g:select>
-                                </td>
-                           
-                                <td valign="top" class="name">
-                                    <label for="investigator"><g:message code="default.Investigator.label"/>:</label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'investigator','errors')}">
-                                    <g:select optionKey="id" optionValue="name" from="${Investigator.findAll('from Investigator I where I.activeYesNo=\'Y\' ')}" name="investigator.id" value="${projectsInstance?.investigator?.id}" noSelection="['null':'select']"></g:select>
-                                </td>
-                         </tr>                                                              
+                        	                                                        
                         </tbody>
                     </table>
+                    		
+                    		<p>&nbsp;</p>
+			      			<p ALIGN=CENTER>&nbsp;<input class="searchButton" value="                              " type="submit" onClick="" /></p>
+			    			<p ALIGN=RIGHT><g:remoteLink style="font-size:11px;font-weight: normal;color: #0033CC" action="advancedSearchProjects" id="Advance" update="search">Advanced Search</g:remoteLink>&nbsp;&nbsp;</p>
                 </div>
-                <div class="buttons">
-                    <span class="button"><input class="save" type="submit" onClick="" value="Search" /></span>
-                </div>
-            </g:form>
+                </fieldset>
+             </g:form>
         </div>
         
+        <g:if test="${grantAllocationInstanceList}">
         <div class="body">
-            <div class="list">
-                <table>
+             <div class="list">
+                  <table>
                     <thead>
   						<tr>
                         
@@ -118,10 +119,12 @@
                     </tbody>
                 </table>
             </div>
+            
            <div class="paginateButtons">
                
             </div> 
         </div>
+         </g:if>
         </div>
     </body>
 </html>

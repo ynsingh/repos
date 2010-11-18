@@ -21,112 +21,150 @@
            				<td>
  		 					<table width="100%"  border="0" cellspacing="0" cellpadding="0">
  			  					<tr>
- 									<td  width="33%" align="left">
+ 									<td>
 					<!-- info Start-->	
- 										<div class="prjInfo">
-					       					<strong>
-					       						<g:message code="default.Project.label" />
-				       							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				       							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				       							: ${projectInstance.code}
-				       						</strong>
-					        				<br>
-										    
-										    <g:if test="${grantAllocationInstance.granter!=null}"> 
-										    	<strong>
-										    		<g:message code="default.Grantor.label" />
-										    		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				       								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-										    		: ${grantAllocationInstance.granter.code}
-									    		</strong>
-									    		<br>
-									    	</g:if>
-							    	       	
-							    	       	<strong>
-								    	       	<g:message code="default.FundList.FundEstimated.label"/>
-								    	       	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-								    	       	: <g:message code="default.Rs.label"/>
-							    	       	</strong>
-							  				${currencyFormat.ConvertToIndainRS(projectInstance.totAllAmount)} 
-					    					<br>
-					       					
-					       					<strong>
-					       						<g:message code="default.FundList.FundReceived.label" />
-					       						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					       						: <g:message code="default.Rs.label"/>
-					       					</strong> 
-				       						${currencyFormat.ConvertToIndainRS(sumGrantRecieve[0].doubleValue())} 
-					    					<br>
-					    					
-					    					<strong>
-								    	       	<g:message code="default.FundTransferred.label"/>
-								    	       	&nbsp;&nbsp;
-								    	       	: <g:message code="default.Rs.label"/>
-							    	       	</strong>
-							  					${currencyFormat.ConvertToIndainRS(fundTransferInstance)} 
-					    					<br>
-					    					
-					    					<strong>
-					    						<g:message code="default.FundList.FundUtilized.label" />
-					    						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					    						: <g:message code="default.Rs.label"/>
-					    					</strong> 
-					    					${currencyFormat.ConvertToIndainRS(sumAmount[0].doubleValue()+fundTransferInstance)}
-					    					<br>
-					    					
-					    					<strong><g:message code="default.FundList.Balance.label" />
-					    						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					    						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					    						: <g:message code="default.Rs.label"/> 
-				    						</strong> 
-					    						${currencyFormat.ConvertToIndainRS(sumGrantRecieve[0].doubleValue()-
-					    						sumAmount[0].doubleValue()-fundTransferInstance)}
-					    					<br>
-					     					
-					     					<strong>
-					     						<g:message code="default.FundList.ProjectDuration.label" />
-					     						&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;
-				     						</strong>
-				     							<g:formatDate format="dd MMM yyyy" date="${projectInstance.projectStartDate}"/>- 
-					      						<g:formatDate format="dd MMM yyyy" date="${projectInstance.projectEndDate}"/> 
-						      					(${Math.round((projectInstance.projectEndDate.getTime()-
-						      					projectInstance.projectStartDate.getTime())/86400000)} days)
-					     					<br>
-					     					
-					     					<strong>
-					     						<g:message code="default.FundList.DaysRemaining.label" />
-					     						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
-				     						</strong>
-					     						(${Math.round((projectInstance.projectEndDate.getTime()-
-					     							new Date().getTime())/86400000)} days)				    
-			     						</div >
+										<table width=75%"  border="0" cellspacing="0" cellpadding="0">
+											<tr>
+												<td>
+			 										<div class="prjInfo">
+								       				   <strong>
+							       					      <g:message code="default.Project.label" />
+						       							  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						       							  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						       							  : ${projectInstance.code}
+							       						</strong>
+								        				<br>
+													    
+													    <g:if test="${grantAllocationInstance.granter!=null}"> 
+													    	<strong>
+													    		<g:message code="default.Grantor.label" />
+													    		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							       								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+													    		: ${grantAllocationInstance.granter.code}
+												    		</strong>
+												    		<br>
+												    		<strong>
+												    			<g:message code="default.FundList.ParentProject.label"/>
+												    			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 
+												    			${parentProjectInstance.code}
+												    		</strong>
+												    		<br>
+												    	</g:if>
+												    	<g:if test="${subProjectString}">
+										    	       	<strong>
+												    		<g:message code="default.FundList.Sub-Project/s.label"/>
+												    		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 
+												    		</strong>
+												    		${subProjectString}
+												    		<br>
+										    	       	</g:if>
+										    	       	
+										    	       	<strong>
+								     						<g:message code="default.FundList.ProjectDuration.label" />
+								     						:
+							     						</strong>
+							     							<g:formatDate format="dd MMM yyyy" date="${projectInstance.projectStartDate}"/>- 
+								      						<g:formatDate format="dd MMM yyyy" date="${projectInstance.projectEndDate}"/> 
+									      					(${Math.round((projectInstance.projectEndDate.getTime()-
+									      					projectInstance.projectStartDate.getTime())/86400000)} days)
+								     					<br>
+								     					
+								     					<strong>
+								     						<g:message code="default.FundList.DaysRemaining.label" />
+								     						&nbsp;:
+							     						</strong>
+								     						(${Math.round((projectInstance.projectEndDate.getTime()-
+								     							new Date().getTime())/86400000)} days)	
+										    	       	
+									    	       </div>
+							    	       		</td>
+						    	       		</tr>
+						    	        </table>
+					    	       	 </td>
+							    	 <td>
+						    	       	<table width="100%"  border="0" cellspacing="0" cellpadding="0">
+						    	       		<tr>
+							    	       		<td>
+							    	       			<div class="prjInfo">
+										    	       	<strong>
+											    	       	<g:message code="default.FundList.SanctionedAmount.label"/>
+											    	       &nbsp;&nbsp;&nbsp;
+											    	       	: <g:message code="default.Rs.label"/>
+										    	       	</strong>
+										  				${currencyFormat.ConvertToIndainRS(projectInstance.totAllAmount)} 
+								    					<br>
+								       					
+								       					<strong>
+								       						<g:message code="default.FundList.FundReceived.label" />
+								       						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								       						: <g:message code="default.Rs.label"/>
+								       					</strong> 
+							       						${currencyFormat.ConvertToIndainRS(sumGrantRecieve[0].doubleValue())} 
+								    					<br>
+								    					
+								    					<strong>
+								    						<g:message code="default.FundList.FundAwaiting.label" />
+															&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+															<g:message code="default.Rs.label"/> 
+														</strong>
+														${currencyFormat.ConvertToIndainRS(projectInstance.totAllAmount-sumGrantRecieve[0].doubleValue())}			     						
+							     						<br>
+								    					
+								    					<strong>
+															<g:message code="default.FundTransferred.label"/>
+															&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+											    	       		: <g:message code="default.Rs.label"/>
+									    	       		</strong>
+									  					${currencyFormat.ConvertToIndainRS(fundTransferInstance)} 
+								    					<br>
+								    					
+								    					<strong>
+								    						<g:message code="default.FundList.FundUtilized.label" />
+								    						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								    						: <g:message code="default.Rs.label"/>
+								    					</strong> 
+								    					${currencyFormat.ConvertToIndainRS(sumAmount[0].doubleValue()+fundTransferInstance)}
+								    					<br>
+								    					
+								    					<strong><g:message code="default.FundList.CurrentBalance.label" />
+								    						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								    						: <g:message code="default.Rs.label"/> 
+							    						</strong> 
+							    						${currencyFormat.ConvertToIndainRS(sumGrantRecieve[0].doubleValue()-
+								    						sumAmount[0].doubleValue()-fundTransferInstance)}
+								    					<br>
+							     					</div>
+		     									</td>
+			     						 	</tr>
+	     						       </table>
 									</td>
     				<!-- info End-->    				
 		  						</tr>
- 			  					<tr>
- 			    					<td align="left"> <table align="center" width="95%">
-  										<tr>
-    										<td  style="background-color: #cbe2f0; border: solid #FFFFFF 1px; 
+	  						</table>
+		  					<tr>
+		    					<td align="left"> <table align="center" width="95%">
+									<tr>
+										<td  style="background-color: #cbe2f0; border: solid #FFFFFF 1px; 
 	    										margin: 5px; border-right: none;" 
 	    										width="33%" align="left">
  							<!-- piechart Start-->	
-	 											<br>
-	 											<br>
-	 											<br>
-	 											<img src ="${resultPiechart}" align="middle" />	
+											<br>
+											<br>
+											<br>
+											<img src ="${resultPiechart}" align="middle" />	
  							<!-- piechart End--> 				
-								  			 </td>
-								  			 <td  style="background-color: #cbe2f0; border: solid #FFFFFF 1px; 
+							  			 </td>
+							  			 <td  style="background-color: #cbe2f0; border: solid #FFFFFF 1px; 
 								  			 		border-left: none; margin: 5px;" width="34%" align="right">
 						<!-- Linechart Start-->	
-			 								  	<img src ="${resultLinechart}" align="right" />
+	 								  	 	<img src ="${resultLinechart}" align="right" />
  						<!-- Linechart End --> 	
- 											  </td>
-										  </tr>
+										 </td>
+									  </tr>
 									</table>
 								</td>
   							</tr>
- 		  				</table>
+ 		  				
  		   <!-- Prodetials End-->
 	  				</td>
  			  	</tr>

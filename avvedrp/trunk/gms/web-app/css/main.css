@@ -204,6 +204,17 @@ input, select, textarea {
     padding: 2px 4px;
 
 }
+.searchButton{
+	color:  #ffffff;
+	font: 12px Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	background: #F0F8FF url(../images/themesky/search.jpg) repeat-x;
+	background-repeat:no-repeat;
+	background-position:center;
+    margin: 2px 0;
+    padding: 2px 4px;
+
+}
 
 @font-face {
 	font-family: 'rupee';

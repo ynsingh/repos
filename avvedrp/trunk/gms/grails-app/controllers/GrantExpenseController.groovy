@@ -148,10 +148,12 @@ class GrantExpenseController extends GmsController {
         }
     }
 
-    def create = {
+    def create = 
+    {
 		def grantExpenseService = new GrantExpenseService()
 		def grantAllocationService = new GrantAllocationService()
 		def grantAllocationSplitService=new GrantAllocationSplitService()
+		def grantReceiptService = new GrantReceiptService()
         GrailsHttpSession gh=getSession()
         gh.removeValue("Help")
        		//putting help pages in session
@@ -159,9 +161,13 @@ class GrantExpenseController extends GmsController {
     	/* Get grant allocation details. */
     	println "*********************************************create params.id "+params.id
     	def projectsInstance
+    	
     	if(params.id){
     		projectsInstance = Projects.get(new Integer(params.id))
+    		
     	//account head listing based on default grant period
+    	 
+    	
     	def accountHeadList=grantAllocationSplitService.getAccountHeadByProject(projectsInstance.id)
 
     	  def dataSecurityService = new DataSecurityService()
@@ -177,6 +183,10 @@ class GrantExpenseController extends GmsController {
 		{
     	 
    	     projectsInstance.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(projectsInstance.id,getUserPartyID())
+   	     double receivedAmount = grantReceiptService.getSumOfAmountReceivedForProject(projectsInstance.id)
+   	     println"receivedAmount"+receivedAmount
+   	  
+   	  
 		def grantAllocationInstanceList=grantAllocationService.getGrantAllocationsByProject(params.id)
     	 
     	/* Get already allocated expenses */
@@ -211,6 +221,21 @@ class GrantExpenseController extends GmsController {
 			
 		}
         grantExpenseInstance.properties = params
+        def expenseTotal=GrantExpense.executeQuery("select sum(GE.expenseAmount) from GrantExpense GE where GE.projects="+grantExpenseInstance.projects.id)
+        println"expenseTotal[0]"+expenseTotal[0]
+         if(expenseTotal[0])
+     	  {
+        	  
+        	 grantExpenseInstance.currentBalance = receivedAmount - expenseTotal[0]
+     		  println"currentBalance"+grantExpenseInstance.currentBalance
+     	  }
+         else
+         {
+        	 grantExpenseInstance.currentBalance = receivedAmount
+        	 println"currentBalance"+grantExpenseInstance.currentBalance
+         }
+       
+      
         ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
         NumberFormat formatter = new DecimalFormat("#0.00");
          return ['projectsInstance':projectsInstance,'grantExpenseInstance':grantExpenseInstance,
@@ -218,7 +243,7 @@ class GrantExpenseController extends GmsController {
                  'grantExpenseSummaryList':grantExpenseSummaryList,
                  'grantAllocationInstanceList':grantAllocationInstanceList,
                  'currencyFormat':currencyFormatter,'accountHeadList':accountHeadList,
-                 'amount':formatter.format(grantExpenseInstance.expenseAmount)]
+                 'amount':formatter.format(grantExpenseInstance.expenseAmount),]
 		}
     	}
     	else {    			
@@ -227,28 +252,60 @@ class GrantExpenseController extends GmsController {
 
     def save = {
 		def grantExpenseService = new GrantExpenseService()
+		def grantAllocationService = new GrantAllocationService()
 		params.createdBy="admin"
 		params.createdDate = new Date()
         def grantExpenseInstance = new GrantExpense(params)
-		println"grantExpenseInstance.dateOfExpense"+grantExpenseInstance.dateOfExpense
-		println"grantExpenseInstance.grantAllocation.DateOfAllocation"+grantExpenseInstance.grantAllocation.DateOfAllocation
-		if(grantExpenseInstance.dateOfExpense < grantExpenseInstance.grantAllocation.DateOfAllocation)
+		GrailsHttpSession gh=getSession()  
+		def allocatedAmount=grantAllocationService.getSumOfAmountAllocatedForProject(gh.getValue("ProjectID"),getUserPartyID())
+		println"allocatedAmount"+allocatedAmount
+		println"grantExpenseInstance.expenseAmount"+grantExpenseInstance.expenseAmount
+		def expenseTotal=GrantExpense.executeQuery("select sum(GE.expenseAmount) from GrantExpense GE where GE.projects="+grantExpenseInstance.projects.id)
+		//double expenseGrantTotal
+		double balanceAmnt
+		if(expenseTotal[0])
 		{
-			flash.message="${message(code: 'default.DateValidationAgainstAllocationdate.label')}"
-			redirect(action:create,id:grantExpenseInstance.projects.id)
+		//expenseGrantTotal= expenseTotal[0]+ grantExpenseInstance.expenseAmount
+		balanceAmnt= allocatedAmount- expenseTotal[0]
+		//println"expenseGrantTotal"+expenseGrantTotal
+		println"balanceAmnt"+balanceAmnt
 		}
 		else
 		{
-		grantExpenseInstance = grantExpenseService.saveGrantExpense(grantExpenseInstance)
-		
-		if(grantExpenseInstance.isSaved){
-            flash.message = "${message(code: 'default.created.label')}"
-            redirect(action:create,id:grantExpenseInstance.projects.id,params:[grantExpenseId:grantExpenseInstance.id])
-        }
-        else {
-            render(view:'create',model:[grantExpenseInstance:grantExpenseInstance])
-        }
+			//expenseGrantTotal = grantExpenseInstance.expenseAmount
+			balanceAmnt= allocatedAmount
+			//println"expenseGrantTotal"+expenseGrantTotal
+			println"balanceAmnt"+balanceAmnt
 		}
+		
+		if(grantExpenseInstance.expenseAmount > balanceAmnt)
+	    {
+	    	flash.message = "${message(code: 'default.ExpenseAmountValidationAgainstAllocatedAmount.label')}"
+	    	redirect(action:create,id:grantExpenseInstance.projects.id)
+	    }
+	    else
+	    {
+		
+	    	if(grantExpenseInstance.dateOfExpense < grantExpenseInstance.grantAllocation.DateOfAllocation)
+	    	{
+	    		flash.message="${message(code: 'default.DateValidationAgainstAllocationdate.label')}"
+	    		redirect(action:create,id:grantExpenseInstance.projects.id)
+	    	}
+	    	else
+	    	{
+	    		grantExpenseInstance = grantExpenseService.saveGrantExpense(grantExpenseInstance)
+		
+	    		if(grantExpenseInstance.isSaved)
+	    		{
+	    			flash.message = "${message(code: 'default.created.label')}"
+	    			redirect(action:create,id:grantExpenseInstance.projects.id,params:[grantExpenseId:grantExpenseInstance.id])
+	    		}
+	    		else 
+	    		{
+	    			render(view:'create',model:[grantExpenseInstance:grantExpenseInstance])
+	    		}
+	    	}
+	    }
     }
     
     def listExpenses = {

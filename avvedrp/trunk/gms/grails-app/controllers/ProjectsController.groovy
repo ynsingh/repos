@@ -1,4 +1,7 @@
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
+import java.text.SimpleDateFormat
+import java.text.*;
+import java.util.*;
 import org.codehaus.groovy.grails.commons.ApplicationHolder as AH
 import grails.util.GrailsUtil
 import org.codehaus.groovy.grails.commons.GrailsApplication
@@ -359,6 +362,7 @@ class ProjectsController extends GmsController
     }
     def saveSub = 
     {
+			println "save sub "+params.parent.id
 		params.createdBy = "user";
 		params.createdDate = new Date();
 		params.modifiedBy = "user";
@@ -474,15 +478,29 @@ class ProjectsController extends GmsController
     def searchProjects = 
     {
 		def projectsInstance = new Projects(params)
-    	println params
-    	def projectsService = new ProjectsService()
+    	
+    	   	
+    	
 		GrailsHttpSession gh=getSession()
-    	def grantAllocationInstanceList = projectsService.searchProjects(projectsInstance,gh.getValue("Party"));
+    	def grantAllocationInstanceList = projectsService.searchProjects(projectsInstance,gh.getValue("Party"),params);
 		if (grantAllocationInstanceList.size()==0 )
 		{
 			 flash.message = "${message(code: 'default.notfond.label')}"
 		}
 		render(view:'search',model:['grantAllocationInstanceList':grantAllocationInstanceList])  
+    }
+	def advancedSearchProjects = 
+    {
+			
+			if(params.id == "Advance")
+			{
+				render (template:"advancedSearch")
+			}
+			else if(params.id == "1")
+			{
+				render (template:"simpleSearch")
+			}
+			
     }
     
 }

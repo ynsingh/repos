@@ -12,7 +12,9 @@ import org.springframework.security.acls.domain.BasePermission
 import org.springframework.security.acls.model.Permission
 import org.springframework.transaction.annotation.Transactional
 import grails.plugins.springsecurity.Secured
-
+import java.text.SimpleDateFormat
+import java.text.*;
+import java.util.*;
 import groovy.sql.Sql;
 import org.codehaus.groovy.grails.commons.ApplicationHolder as AH
 
@@ -135,7 +137,7 @@ class ProjectsService{
              if(projectId.intValue() == 0 || projectId.intValue() == projectsInstance.id.intValue()){
         	    projectsInstance.properties = projectParams 
         	       
-        	    	if(!projectsInstance.hasErrors() && projectsInstance.save()) {
+        	    	if(!projectsInstance.hasErrors() && projectsInstance.save() && checkPIForUpdateProject(projectParams)) {
             	    	
             	    	
         	    		projectsInstance.saveMode = "Updated"
@@ -249,7 +251,6 @@ class ProjectsService{
 	{
 		def grantAllocationService=new GrantAllocationService()
 		
-		
 		def grantAllocationInstanceList = GrantAllocation.findAll("from GrantAllocation GA where GA.projects.id="+projectsId)
 		def investigatorInstance=Investigator.get(investigatorId)
 		def grant = getGrantAllocationFromAcl(grantAllocationInstanceList)
@@ -258,7 +259,15 @@ class ProjectsService{
 		def grantAllocationInstance=GrantAllocation.get(grant)
 		
 		def userName = investigatorInstance.email
-		saveAccessPermissionForprojects(grantAllocationInstance,projectsInstance,investigatorInstance.email)
+		println "grant "+grant
+		if(grantAllocationInstance)
+		{
+			saveAccessPermissionForprojects(grantAllocationInstance,projectsInstance,investigatorInstance.email)
+		}
+		else
+		{
+			saveAccessPermissionForprojects(grantAllocationInstanceList[0],projectsInstance,investigatorInstance.email)
+		}
 	}
 	
 	/**
@@ -267,7 +276,6 @@ class ProjectsService{
 	
 	public def saveProjectAccessPermission(def grantAllocationInstance)
 	{
-		println "=========saveProjectAccessPermission================"+grantAllocationInstance.party.id
 		def projectsInstance = Projects.get(grantAllocationInstance.projects.id)
 		def userMapInstance = UserMap.find("from UserMap UM where UM.party.id="+grantAllocationInstance.party.id)
 		def userInstance
@@ -288,8 +296,9 @@ class ProjectsService{
 	 */
 	public def checkFordeleteProjectAccessPermissionOfPiMap(def projectsId,def investigatorId)
 	{
+		
 		def checkFordelete
-		 def projectInstance = Projects.get(projectsId)
+		def projectInstance = Projects.get(projectsId)
 		def grantAllocationInstance = GrantAllocation.findAll("from GrantAllocation GA where GA.projects.id="+projectsId)
 		def investigatorInstance=Investigator.get(investigatorId)
 						
@@ -348,7 +357,6 @@ class ProjectsService{
 	 */
 	public def getGrantAllocationFromAcl(def grantAllocationInstance,def investigatorInstance)
 	{
-		
 		def sql = new Sql(dataSource);
 		def result
 		def value
@@ -395,7 +403,6 @@ class ProjectsService{
 	 */
 	public def getGrantAllocationFromAcl(def grantAllocationInstance)
 	{
-		
 		def sql = new Sql(dataSource);
 		def result
 		def value
@@ -564,51 +571,105 @@ class ProjectsService{
 	/**
 	 * Function to Search projects based on criteria.
 	 */
-	public List searchProjects(def projectsInstance,def Party)
+	@PostFilter("hasPermission(filterObject, 'read') or hasPermission(filterObject, admin)")
+	public List searchProjects(def projectsInstance,def Party,def params)
 	{
 		def grantAllocationInstanceList 
 		String subqry ="";
+		String query="";
 		if(projectsInstance != null)		
 		{
-			println "projectsInstance = "+projectsInstance
+			
 			if(projectsInstance.code != null && projectsInstance.code != "") 
 			{
-				println "projectsInstance.code  = "+projectsInstance.code 
+				
 				subqry = "GA.projects.code like '%"+ projectsInstance.code+ "%'"
-				println "subqry code = "+subqry 
+				
 			}
 			if(projectsInstance.name != null && projectsInstance.name != "")
 			{
-				println "projectsInstance.name  = "+projectsInstance.name 
+				
 				if(!subqry.equals(""))
 				{
 					subqry = subqry + " AND "
 				}
 				
 				subqry = subqry + "GA.projects.name like '%"+projectsInstance.name+ "%'"
-				println "subqry  name= "+subqry 
+				
 			}
 			if(projectsInstance.projectType != null)
 			{
-				println "projectsInstance.projectType  = "+projectsInstance.projectType 
+				
 				if(!subqry.equals(""))
 				{
 					subqry = subqry + " AND "
 				}
-				println "subqry  = "+subqry 
+				
 				subqry = subqry + "GA.projects.projectType.id = "+projectsInstance.projectType.id
 			}
-			/*if(projectsInstance.investigator != null)
+			if(projectsInstance.investigator?.id != null)
 			{
-				println "projectsInstance.investigator  = "+projectsInstance.investigator 
+				
 				if(!subqry.equals(""))
 				{
 					subqry = subqry + " AND "
 				}
-				println "subqry  = "+subqry 
-				subqry = subqry + "GA.projects.investigator.id = "+ projectsInstance.investigator.id
-			}*/
-			println "subqry  = "+subqry 
+				
+				subqry = subqry + "GA.projects in (  select PM.projects from ProjectsPIMap PM where PM.investigator.id = "+ projectsInstance.investigator.id+" and PM.role='PI' and PM.activeYesNo='Y') and GA.projects.activeYesNo='Y'"
+			}
+			
+			if(params.projectStartDate)
+			{
+				
+				if(!subqry.equals(""))
+				{
+					subqry = subqry + " AND "
+				}
+				
+				if(params.projectStartDateTo)
+				{
+					subqry = subqry + "DATE_FORMAT(GA.projects.projectStartDate, '%Y-%m-%d') between '"+formatDate(params.projectStartDate)+"' and '"+formatDate(params.projectStartDateTo)+"'"
+				}
+				else
+				{
+					subqry = subqry + "DATE_FORMAT(GA.projects.projectStartDate, '%Y-%m-%d') >='"+formatDate(params.projectStartDate)+"'"
+				}
+			}
+			else if(params.projectStartDateTo)
+			{
+				if(!subqry.equals(""))
+				{
+					subqry = subqry + " AND "
+				}
+				subqry = subqry + "DATE_FORMAT(GA.projects.projectStartDate, '%Y-%m-%d') <='"+formatDate(params.projectStartDateTo)+"'"
+			}
+			if(params.projectEndDate)
+			{
+				
+				
+				if(!subqry.equals(""))
+				{
+					subqry = subqry + " AND "
+				}
+				
+				if(params.projectEndDateTo)
+				{
+					subqry = subqry + "DATE_FORMAT(GA.projects.projectEndDate, '%Y-%m-%d') between '"+formatDate(params.projectEndDate)+"' and '"+formatDate(params.projectEndDateTo)+"'"
+				}
+				else
+				{
+					subqry = subqry + "DATE_FORMAT(GA.projects.projectEndDate, '%Y-%m-%d') >='"+formatDate(params.projectEndDate)+"'"
+				}
+			}
+			else if(params.projectEndDateTo)
+			{
+				if(!subqry.equals(""))
+				{
+					subqry = subqry + " AND "
+				}
+				subqry = subqry + "DATE_FORMAT(GA.projects.projectEndDate, '%Y-%m-%d') <='"+formatDate(params.projectEndDateTo)+"'"
+			}
+			
 			if(!subqry.equals(""))
 			{
 				grantAllocationInstanceList = GrantAllocation.findAll("from GrantAllocation GA where GA.party.id = "+ Party +" AND " + subqry+" GROUP BY GA.projects")
@@ -617,11 +678,11 @@ class ProjectsService{
 			{	
 				grantAllocationInstanceList = GrantAllocation.findAll("from GrantAllocation GA where GA.party.id = "+ Party+" GROUP BY GA.projects")
 			}
-	
 		}
 		
 		return grantAllocationInstanceList
-	}	
+	}
+		
 	/**
 	* Function to check whether the PI is added for a project.
 	*/
@@ -670,7 +731,7 @@ class ProjectsService{
 				checkPiInstance=false
 			}
 		}
-		else if(projectsPIMapInstancedelete.investigator.id == Long.parseLong(project.investigator.id))
+		else if(projectsPIMapInstancedelete.investigator.id == project.investigator.id)
 		{
 			println "checkPiInstance true"
 			checkPiInstance=true
@@ -684,6 +745,7 @@ class ProjectsService{
 				projectsPIMapInstancedelete.activeYesNo="N"
 				if(checkFordeleteProjectAccessPermissionOfPiMap(projectsPIMapInstancedelete.projects.id,projectsPIMapInstancedelete.investigator.id))
 				{	
+					
 					projectsPIMapInstancedelete.save()
 					def projectsPIMapInstance = new ProjectsPIMap();
 					projectsPIMapInstance.projects = Projects.get(project.id)
@@ -707,5 +769,16 @@ class ProjectsService{
 			}
 		}
 		return checkPiInstance
+	}
+	public def formatDate(def dateValue)
+	{
+		println "dateValue "+dateValue
+		DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		def formattedDate=formatter.parse(dateValue);
+		println "formattedDate "+formattedDate
+		DateFormat newFormatter = new SimpleDateFormat("yyyy-MM-dd");
+		def formattedDateValue=newFormatter.format(formattedDate)
+		
+		return formattedDateValue
 	}
 }

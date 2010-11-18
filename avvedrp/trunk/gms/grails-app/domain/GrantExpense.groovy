@@ -33,6 +33,7 @@ class GrantExpense {
 	Date dateTo
 	boolean isSaved
 	String accountHeadCode
-	static transients = [ "balanceAmount","dateFrom","dateTo","isSaved","accountHeadCode" ]
+	double currentBalance
+	static transients = [ "balanceAmount","dateFrom","dateTo","isSaved","accountHeadCode","currentBalance" ]
 
 }

@@ -177,4 +177,12 @@ class GrantReceiptService{
 		return chkReceiveFund
 	}
 	
+	public double getSumOfAmountReceivedForProject(def projectId){
+		 double totalAmt = 0.0
+		 def sumAmt = GrantReceipt.executeQuery("select sum(GR.amount) as total from GrantReceipt  GR where   GR.projects= "+projectId+" group by GR.projects");
+		 if(sumAmt[0]!=null)
+			 totalAmt = new Double(sumAmt[0]).doubleValue()
+			 
+		 return totalAmt
+	}
 }

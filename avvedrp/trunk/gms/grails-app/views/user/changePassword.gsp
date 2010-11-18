@@ -11,7 +11,7 @@
 	
 
 	<div class="body">
-		<h1>Change Password</h1>
+		<h1><g:message code="default.ChangePassword.label"/></h1>
 		<g:if test="${flash.message}">
 		<div class="message">${flash.message}</div>
 		</g:if>
@@ -29,7 +29,7 @@
 					<input type="hidden" name="version" value="${person.version}" />
 				
 					<tr class="prop">
-						<td valign="top" class="name"><label for="username">Login Name:</label></td>
+						<td valign="top" class="name"><label for="username"><g:message code="default.LoginName.label"/>:</label></td>
 						<td valign="top" class="value ${hasErrors(bean:person,field:'username','errors')}">
 							
 							${fieldValue(bean:person, field:'username')}
@@ -37,20 +37,20 @@
 					</tr>
 
 					<tr class="prop">
-						<td valign="top" class="name"><label for="passwd">Old Password:</label></td>
+						<td valign="top" class="name"><label for="passwd"><g:message code="default.OldPassword.label"/>:</label></td>
 						<td valign="top" >
 							<input type="password" id="oldPasswd" name="oldPasswd" />
 						</td>
 					</tr>
 					
 					<tr class="prop">
-						<td valign="top" class="name"><label for="passwd">New Password:</label></td>
+						<td valign="top" class="name"><label for="passwd"><g:message code="default.NewPassword.label"/>:</label></td>
 						<td valign="top" >
 							<input type="password" id="newPasswd" name="newPasswd" />
 						</td>
 					</tr>
 					<tr class="prop">
-						<td valign="top" class="name"><label for="passwd">Confirm Password:</label></td>
+						<td valign="top" class="name"><label for="passwd"><g:message code="default.ConfirmPassword.label"/>:</label></td>
 						<td valign="top" >
 							<input type="password" id="confirmNewPasswd" name="confirmNewPasswd" />
 						</td>
@@ -69,7 +69,7 @@
 			</div>
 
 			<div >
-				<input class="inputbutton" name="updatePassword" type="submit" value="Change Password" onClick="return validatePassword()" />
+				<input class="inputbutton" name="updatePassword" type="submit" value="${message(code: 'default.ChangePassword.label')}" onClick="return validatePassword()" />
 			</div>
 
 		</g:form>

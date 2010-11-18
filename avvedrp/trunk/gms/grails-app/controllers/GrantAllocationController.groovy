@@ -601,11 +601,9 @@
     					    		}
     					    	}
     					    	else
-    					    	{
     					    		flash.message = "${message(code: 'default.AlreadyExists.label')}"
     					    		
-    					    	}
-    							
+    					    	   							
     						}
     					}
     					else
@@ -616,8 +614,9 @@
     				else
     				{
     					//GrantAllocation = grantAllocationService.saveSubGrantAllocation(grantAllocationInstance)
-    					println"+++++++++++GrantAllocation+++++++++"+ GrantAllocation
+    					
     					GrantAllocation = grantAllocationService.checkGrantAllocationSplitByProjectId(grantAllocationInstance)
+    					
     					if(GrantAllocation == null)
     					{
     					flash.message = "${message(code: 'default.couldnotallocatenotdoneHeadwiseallocation.label')}"
@@ -626,6 +625,7 @@
     					{
     						println "projectsInstance - sumAmount) else"
     						projectsInstance = projectsService.saveProjects(projectsInstance,gh.getValue("UserId"))
+    						
 							if(projectsInstance.saveMode != null)
 							{
 								if(projectsInstance.saveMode.equals("Saved"))
@@ -642,15 +642,14 @@
 					    			}
 					    			else if(projectsInstance.saveMode.equals("Duplicate"))
 					    			{
-					    			flash.message = "${message(code: 'default.AlreadyExists.label')}"
+					    				flash.message = "${message(code: 'default.AlreadyExists.label')}"
 					    			
 					    			}
 					    		}
-					    		else
-					    		{
-					    		flash.message = "${message(code: 'default.AlreadyExists.label')}"
+								else
+					    			flash.message = "${message(code: 'default.AlreadyExists.label')}"
 					    		
-					    		}
+					    		
     					}
     				}
     				
@@ -772,6 +771,14 @@
     def editProAllot = {
 		def grantAllocationService = new GrantAllocationService()
 		def grantAllocationInstance = grantAllocationService.getGrantAllocationById(new Integer(params.id))
+		def projectsInstance = Projects.get(grantAllocationInstance.projects.id)
+        if(projectsInstance)
+		{
+			def projectsPIMapInstance = projectsService.checkPIofProject(projectsInstance.id)
+			if(projectsPIMapInstance)
+				projectsInstance.investigator = projectsPIMapInstance.investigator
+		}
+
 		  def projectInstance 
 		 println "ss "+grantAllocationInstance.projects
         if(grantAllocationInstance.projects.parent!=null) 
@@ -786,7 +793,8 @@
         	sumAmountAllocated = sumAmountAllocated + grantAllocationInstanceList[i].amountAllocated
         }
         grantAllocationInstance.totAllAmount = sumAmountAllocated
-
+       
+        
         def dataSecurityService = new DataSecurityService()
         //checking  whether the user has access to the given projects
 		if(dataSecurityService.checkForAuthorisedAcsessInProjects(projectInstance.id,new Integer(getUserPartyID()))==0)
@@ -806,7 +814,8 @@
 	        	NumberFormat formatter = new DecimalFormat("#0.00");
 	        	return [ grantAllocationInstance : grantAllocationInstance ,
 	        	         'projectInstance':projectInstance,
-	        	         'amount':formatter.format(grantAllocationInstance.amountAllocated)]
+	        	         'amount':formatter.format(grantAllocationInstance.amountAllocated),
+	        	         'projectsInstance':projectsInstance]
 	        }
         
 		}
@@ -823,6 +832,7 @@
      	 sumAmount = ((params.amountAllocated).toDouble()).doubleValue() + ((params.amount).toDouble()).doubleValue()
     	 GrailsHttpSession gh=getSession()
 		 def grantAllocationService = new GrantAllocationService()
+		def investigatorService = new InvestigatorService()
 		 def pastGrantAllocation = grantAllocationService.getGrantAllocationById(new Integer(params.id))
 		 amountToBeUpdated = (sumAmount - (pastGrantAllocation.amountAllocated).doubleValue())
 		 
@@ -840,7 +850,9 @@
 			def projectsInstance = new Projects()
 			 projectsInstance.properties=params
 			 projectsInstance.id=new Long(params.projects.id)
-			 
+			def investigatorInstance=investigatorService.getInvestigatorById(params.investigator.id)
+			projectsInstance.investigator = investigatorInstance
+			println "investigatorInstance----------->>>>>>>>>>>"+investigatorInstance
 			 def projectsInstanceSave = projectsService.updateSubProject(projectsInstance)
 			 if(projectsInstanceSave)
 			 {
@@ -1032,11 +1044,29 @@ def projectDash =
             def projectInstance
             try{
              projectInstance = projectsService.getProjectById(new Long(params.id))
-           
+             println "projectInstance"+projectInstance
+             def projectInstanceList = Projects.findAll("from Projects  P where  P.parent.id="+projectInstance.id)
+        	 def parentProjectInstance
+        	 String subProjectString="";
+        	 if(projectInstanceList)
+        	 {
+        		 for(int i=0;i<projectInstanceList.size();i++)
+        		 {
+        			 if(subProjectString =="")
+        			 {
+        				 subProjectString = subProjectString + projectInstanceList[i].code
+        			 }
+        			 else
+        			 {
+        				 subProjectString = subProjectString +", "+ projectInstanceList[i].code
+        			 }
+        		 }
+        	 }
+             if(projectInstance.parent)
+             {
+            	 parentProjectInstance = Projects.get(projectInstance.parent.id)
+             }
              
-             
-            println "projectInstance"+projectInstance
-            //println "grantAllocationInstanceId"+grantAllocationInstanceId.projects
             projectInstance.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(projectInstance.id,getUserPartyID())
            	def sumAmount = GrantExpense.executeQuery("select sum(GE.expenseAmount) as SumAmt from GrantExpense GE where GE.projects.id ="+ projectInstance.id) 
            	def sumTransferInstance = FundTransfer.executeQuery("select sum(FU.amount) as SumAmt from FundTransfer FU where FU.grantAllocation.projects.parent.id ="+ projectInstance.id)
@@ -1063,6 +1093,12 @@ def projectDash =
 							"	 FROM GrantExpense GA where  GA.projects.id="+ projectInstance.id+"  group by MONTHNAME(GA.dateOfExpense) order by GA.dateOfExpense   asc")
 
 							 println  "monthlyExpenseAndRecipts "+monthlyExpenseAndRecipts
+							
+							
+							 
+							 
+							 
+							 
 							 GrailsHttpSession gh=getSession()
 						        gh.putValue("ProjectID",projectInstance.id.toString());	
     		  					
@@ -1100,9 +1136,7 @@ def projectDash =
 								  if(sumGrantRecieve[0]==null)
 									  sumGrantRecieve[0]=0
 									
-									  
-									  
-									  
+									  									  
 								//drawing the line chart
 
 									  def chart1 = new GoogleChartBuilder()
@@ -1225,7 +1259,9 @@ def projectDash =
             	         rangelimit:rangelimit,sumGrantRecieve:sumGrantRecieve,
             	         'currencyFormat':currencyFormatter,
             	         'grantAllocationInstance':grantAllocationInstance,
-            	         'fundTransferInstance':fundTransferInstance]
+            	         'fundTransferInstance':fundTransferInstance,
+            	         'subProjectString':subProjectString,
+            	         'parentProjectInstance':parentProjectInstance]
             	}
             }
             catch(Exception e)

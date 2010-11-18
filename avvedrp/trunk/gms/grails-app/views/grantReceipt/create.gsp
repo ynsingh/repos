@@ -117,7 +117,7 @@
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:grantReceiptInstance,field:'amount','errors')}">
                                  <div id="grantAmt">
-                                    <input type="text" id="amount" name="amount" value="${amount}" style="text-align: right" onFocus="return validateFundTransfer();" />
+                                    <input type="text" id="amount" name="amount" value="${amount}" style="text-align: right" onClick="return validateFundTransfer();" />
                                  </div>
                                     <input type="hidden" id="projectId" name="projectId" value="${fieldValue(bean:grantReceiptInstance.projects, field:'id')}"/>
                                 </td>

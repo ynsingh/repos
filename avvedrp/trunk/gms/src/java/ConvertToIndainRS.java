@@ -16,7 +16,11 @@ public  class ConvertToIndainRS {
         String integral = formattedValue.replaceAll("\\D\\d++", "");
         String fraction = formattedValue.replaceAll("\\d++\\D", "");
         if(integral.length() <= 3) 
+        {
+        	if(isNegative)
+        		formattedValue = formatToNegative(formattedValue);
         	return formattedValue; 
+        }
         else
         {
         char lastDigitOfIntegral = integral.charAt(integral.length()-1);
@@ -25,10 +29,15 @@ public  class ConvertToIndainRS {
         formattedValue= integral.replaceAll("(?<=.)(?=(?:\\d{2})+$)", ",")+
                 lastDigitOfIntegral+"."+fraction;
         if(isNegative) {
-        	formattedValue = "- " + formattedValue;
+        	formattedValue = formatToNegative(formattedValue);
         }
                 return formattedValue;  
         }
         
+    }
+    public static String formatToNegative(String formattedValue)
+    {
+    	formattedValue = "- " + formattedValue;
+    	return formattedValue;   	
     }
 }

@@ -24,7 +24,7 @@
 <div id="messageBox">
 		</div>
 	<div class="body">
-		<h1>Create Site Admin</h1>
+		<h1><g:message code="default.CreateSiteAdmin.head"/></h1>
 		<g:if test="${flash.message}">
 		<div class="message">${flash.message}</div>
 		</g:if>
@@ -44,34 +44,34 @@
 					
 
 					<tr class="prop">
-						<td valign="top" class="name"><label for="userRealName">Full Name:</label></td>
+						<td valign="top" class="name"><label for="userRealName"><g:message code="default.FullName.label"/>:</label></td>
 						<td valign="top" class="value ${hasErrors(bean:person,field:'user','errors')}">
 							<input type="text" id="userRealName" name="userRealName" value="${person?.user?.userRealName?.encodeAsHTML()}"/>
 						</td>
 					</tr>
 
 					<tr class="prop">
-						<td valign="top" class="name"><label for="passwd">Password:</label></td>
+						<td valign="top" class="name"><label for="passwd"><g:message code="default.Password.label"/>:</label></td>
 						<td valign="top" class="value ${hasErrors(bean:person,field:'user','errors')}">
 							<input type="password" id="password" name="password" value="${person?.user?.passwd?.encodeAsHTML()}"/>
 						</td>
 					</tr>
 					
 					<tr class="prop">
-						<td valign="top" class="name"><label for="confirmPasswd">ConfirmPassword:</label></td>
+						<td valign="top" class="name"><label for="confirmPasswd"><g:message code="default.ConfirmPassword.label"/>:</label></td>
 						<td valign="top" class="value">
 							<input type="password" id="confirmPasswd" name="confirmPasswd" value=""/>
 						</td>
 					</tr>
 					<tr class="prop">
-						<td valign="top" class="name"><label for="email">Email:</label></td>
+						<td valign="top" class="name"><label for="email"><g:message code="default.Email.label"/>:</label></td>
 						<td valign="top" class="value ${hasErrors(bean:person,field:'user','errors')}">
 							<input type="text" id="email" name="email" value="${person?.user?.email?.encodeAsHTML()}"/>
 						</td>
 					</tr>                
                          <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="party">Institution Code:</label>
+                                    <label for="party"><g:message code="default.InstitutionCode.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:person,field:'party','errors')}">
                                     <input type="text" id="code" name="party.code" value="${person?.party?.code}" >
@@ -83,8 +83,8 @@
 			</div>
 
 			<div class="buttons">
-				<span class="buttons"><input class="inputbutton" id="submit" type="submit"  onClick='return combineAlertAndRegister();' disableOnClick="true" value="Create" /></span>
-				<span class="buttons"><input class="inputbutton" type="button" onClick="Redirect()"  value="Cancel" /></span>
+				<span class="buttons"><input class="inputbutton" id="submit" type="submit"  onClick='return combineAlertAndRegister();' disableOnClick="true" value="${message(code: 'default.Create.button')}"/></span>
+				<span class="buttons"><input class="inputbutton" type="button" onClick="Redirect()"  value="${message(code: 'default.Cancel.button')}" /></span>
 			</div>
 
 		</g:form>

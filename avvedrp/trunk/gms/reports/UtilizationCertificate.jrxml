@@ -30,9 +30,15 @@
 	<parameter name="reportDateTo" isForPrompting="false" class="java.util.Date"/>
 	<queryString><![CDATA[SELECT 
 	PJ.name AS ProjectName,
-	CONCAT(YEAR($P{reportDate}),'-',YEAR($P{reportDateTo})) AS financialYear,
-	CONCAT(YEAR($P{reportDate})+1,'-',YEAR($P{reportDateTo})+1) AS nextFinancialYear,
-	YEAR($P{reportDateTo}) AS currentYear,
+	(SELECT IF ( YEAR($P{reportDate}) - YEAR($P{reportDateTo}) = 0,
+         YEAR($P{reportDate}),
+	 CONCAT(YEAR($P{reportDate}),'-',YEAR($P{reportDateTo}))
+	 ))AS financialYear,
+	(SELECT IF ( YEAR($P{reportDate}) - YEAR($P{reportDateTo}) = 0,
+        YEAR($P{reportDate})+1,
+        CONCAT(YEAR($P{reportDate})+1,'-',YEAR($P{reportDateTo})+1)
+	))AS nextFinancialYear,
+	 YEAR($P{reportDateTo}) AS currentYear,
 	GR.reference_id AS LetterNo,
 	(SELECT 
 		SUM(total)
@@ -440,7 +446,7 @@ Utilization Certificate]]></text>
 					<textElement textAlignment="Justified" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Times New Roman" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{Amount}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{Amount}!=null?$F{Amount}:new Double(0)]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -638,7 +644,7 @@ Utilization Certificate]]></text>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Times New Roman" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[new Double(($F{Amount}.doubleValue())-($F{ExpenseAmount}.doubleValue()+$F{FundAmt}.doubleValue()))]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[new Double((($F{Amount}!=null?$F{Amount}:new Double(0)).doubleValue())-($F{ExpenseAmount}.doubleValue()+$F{FundAmt}.doubleValue()))]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
