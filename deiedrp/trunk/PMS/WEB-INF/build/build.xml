@@ -8,7 +8,7 @@
   <property file="build.properties"/>
 
   <!-- This value is currently set as a property because
-       the top level tdk build.xml file runs the "init" target
+       the top level pms build.xml file runs the "init" target
        as part of testing and texen doesn't obey the ${basedir}
        property so we must pass in the full path to the
        build.properties for use with the contextProperties attribute.
@@ -37,15 +37,15 @@
 
     <echo>
       ***
-      * ERROR : The 'tdk.home' property is not defined or
+      * ERROR : The 'pms.home' property is not defined or
       * is pointing to an invalid directory.
       *
-      * In your personal build.properties define tdk.home to
-      * point to an absolute path where your tdk is installed.
-      * Example: tdk.home=${user.home}/tdk
+      * In your personal build.properties define pms.home to
+      * point to an absolute path where your pms is installed.
+      * Example: pms.home=${user.home}/PMS
       ***
     </echo>
-    <fail message="ERROR: tdk.home not defined properly: ${pms.home}"/>
+    <fail message="ERROR: pms.home not defined properly: ${pms.home}"/>
   </target>
 
 
@@ -64,7 +64,7 @@
     <antcall target="compile"/>
     <antcall target="copy-props"/>
     <antcall target="javadoc"/>
-	<antcall target="createadminaccount"/>
+   <!-- <antcall target="createadminaccount"/> -->
 	
   </target>
 
@@ -128,7 +128,7 @@
   <target name="create-Dir" >
       <mkdir dir="${build.dest}"/>
       <mkdir dir="${build.dest}/in/ac/dei/edrp/pms/propertiesFile"/>
-     <!-- <mkdir dir="${build.webappRoot}/tmp"/>-->
+      <mkdir dir="${build.webappRoot}/tmp"/>
   </target>
 
   <!-- =================================================================== -->
