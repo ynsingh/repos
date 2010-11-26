@@ -37,6 +37,7 @@ import org.apache.turbine.om.security.User;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 
 /**
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a> 
@@ -50,14 +51,15 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 public class InstituteProfile extends SecureScreen{
 	public void doBuildTemplate(RunData data, Context context){
 		User user = data.getUser();
+		String instituteid=user.getTemp("Institute_id").toString();
 		//Get Institute name(iname)	
-		String iname=data.getParameters().getString("iname","");
+		String iname=InstituteIdUtil.getIstName(Integer.parseInt(instituteid));
                 context.put("iname",iname);
 		//set path InstituteName+Admin.properies
 		String path="";	
-		path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+iname+"Admin.properties";
+		path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+instituteid+"Admin.properties";
 		
-		String LangFile=data.getUser().getTemp("LangFile").toString();
+		String LangFile=user.getTemp("LangFile").toString();
 		context.put("tdcolor",data.getParameters().getString("count",""));
 		try{
 		/**

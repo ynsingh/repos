@@ -18,7 +18,7 @@ $!data.getMessage()
 </tr>
 ## Form action in InstchangeAParam.java
 <form name="frm" method="post" action="$link.setPage("call,AdminProfile,InstituteProfile.vm").setAction("InstchangeAParam")">
-    <tr><td><font size=4> $RemoteInstitute $brih_ap </font></td></tr>
+    <tr><td colspan=2><font size=4> $RemoteInstitute $brih_ap  ($iname)</font></td></tr>
     <tr bgcolor="$ui.menuColor">
       ##formCell("$brih_first $brih_name" "AFName" "$!afname")
 	<td width="30"> <font face="$ui.sansSerifFonts"> $brih_first $brih_name </font></td> 

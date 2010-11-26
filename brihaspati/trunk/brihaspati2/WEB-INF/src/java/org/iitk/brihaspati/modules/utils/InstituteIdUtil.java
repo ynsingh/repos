@@ -45,11 +45,15 @@ import org.apache.turbine.services.security.torque.om.TurbineUser;
 import org.apache.turbine.services.security.torque.om.TurbineUserGroupRole;
 import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
 import org.iitk.brihaspati.om.InstituteAdminUserPeer;
+import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
+import org.iitk.brihaspati.om.InstituteAdminRegistration;
 import org.iitk.brihaspati.om.UsageDetailsPeer;
 import org.iitk.brihaspati.om.UsageDetails;
 import org.iitk.brihaspati.om.InstituteAdminUser;
 import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 /**
+ * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
  * @author <a href="mailto:smita37uiet@gmail.com">Smita Pal</a>
  */
 public class InstituteIdUtil
@@ -86,6 +90,25 @@ public class InstituteIdUtil
                 }catch(Exception ex){}
                 return e;
  }
+	/* Get the Institute Name on the basis of Institute Id
+	*/
+	public static String getIstName(int instituteid){
+		String iName=null;
+		Criteria crit=new Criteria();
+		try{
+			crit.add(InstituteAdminRegistrationPeer.INSTITUTE_ID,instituteid);
+			List inm=InstituteAdminRegistrationPeer.doSelect(crit);
+			for(int k=0;k<=inm.size();k++){
+				InstituteAdminRegistration element=(InstituteAdminRegistration)inm.get(k);
+				iName=element.getInstituteName();
+			}
+		}
+		catch(Exception ex){	
+			ErrorDumpUtil.ErrorLog("The error in getIstName() - Institute Id Util class !!"+ex);
+		}
+
+	return iName;
+	}
         /*
          * getting the instituteid of institute admin by the help of userid
          */

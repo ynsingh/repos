@@ -11,7 +11,7 @@
 
 
 <table width="100%" bgcolor="$ui.MenuColor">
-<tr><td>$brih_ad $brih_menu</td></ir>
+<tr><td> $RemoteInstitute $brih_ad $brih_menu</td></ir>
 </table>
 <table width=100% bgcolor="$ui.tableColor">
  <tr>
@@ -63,7 +63,7 @@
    </tr>
    <tr bgcolor="$ui.menuColor">
       <td>
-         <a href=$link.setPage("call,AdminProfile,InstituteProfile.vm").addPathInfo("count","1").addPathInfo("iname","$iname") style=text-decoration:none>$Profile_user</a>
+         <a href=$link.setPage("call,AdminProfile,InstituteProfile.vm").addPathInfo("count","1") style=text-decoration:none>$Profile_user</a>
       </td>
    </tr>
 #*

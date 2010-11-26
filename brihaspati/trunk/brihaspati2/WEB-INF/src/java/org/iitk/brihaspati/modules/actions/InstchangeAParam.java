@@ -48,6 +48,7 @@ import org.apache.turbine.services.security.TurbineSecurity;
 
 /**
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
+ * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
  */
 
 //public class InstchangeAParam extends SecureAction_Admin{
@@ -79,9 +80,8 @@ public class InstchangeAParam extends SecureAction{
 
 		LangFile=(String)user.getTemp("LangFile");
 		ParameterParser pp=data.getParameters();
-		//Institute Name
-		String iname=pp.getString("iname","");
-                context.put("iname",iname);
+		//Institute Id
+		String instituteid=user.getTemp("Institute_id").toString(); 
 		//Admin First Name
 		String AFName=pp.getString("AFName","");
 		//Admin Last Name
@@ -111,7 +111,7 @@ public class InstchangeAParam extends SecureAction{
 		 */
 		//iname=Institute name
 		String path="";	
-		path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+iname+"Admin.properties";
+		path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+instituteid+"Admin.properties";
 		StringUtil S = new StringUtil();
 		String prof_update=null;
 		if (S.checkString(AFName)==-1 && S.checkString(ALName)==-1){
