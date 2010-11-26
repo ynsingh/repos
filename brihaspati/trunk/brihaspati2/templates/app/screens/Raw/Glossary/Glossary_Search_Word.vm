@@ -10,7 +10,9 @@
  * @author <a href="mailto:sharad23nov@yahoo.com ">Sharad Singh</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @modified date: 31-12-2009, 07-09-2010,
+ * @modified date: 22-11-2010 (Shaista)
 *#
 <head>
 ##This Script use for Fck Editor in Textarea.
@@ -99,11 +101,7 @@ $!data.getMessage()
 			<a href="$link.setPage("Index.vm")">$brih_home</a> |
 			#end
 			#set($lang = $data.getUser().getTemp("lang" ).toString())
-			#if ($lang == "hindi")
-				<a href="$link.setPage("call,Glossary,Glossary_Search_Word.vm").addPathInfo("count","1")">$Glossary</a> | $brih_word $brih_search
-			#else
-				<a href="$link.setPage("call,Glossary,Glossary_Search_Word.vm").addPathInfo("count","1")">$Glossary</a> | $brih_search $brih_word
-			#end
+			<a href=$link.setPage("call,Glossary,Glossary_Search_Word.vm").addPathInfo("count","1")> #if($lang =="hindi") $brih_word $brih_search #else $brih_search $brih_word #end 
 	</td>
 	</tr>
 </table>
@@ -115,14 +113,14 @@ $!data.getMessage()
 	#elseif($tdcolor=="1")
 	<td width=33% bgcolor="#AFDCEC">
 	#end
-	<a href=$link.setPage("call,Glossary,Glossary_Search_Word.vm").addPathInfo("count","1")>$brih_search $brih_word </td>
+	<a href=$link.setPage("call,Glossary,Glossary_Search_Word.vm").addPathInfo("count","1")> #if($lang =="hindi") $brih_word $brih_search #else $brih_search $brih_word #end </td>
       #if($guest_login=="false")
 	#if($tdcolor !="2")
        <td width=33%>
 	#elseif($tdcolor=="2")
 	<td width=33% bgcolor="#AFDCEC">
 	#end
-        <a href=$link.setPage("call,Glossary,Glossary_Insert_Word.vm").addPathInfo("mode","Insert").addPathInfo("count","2")>$brih_insert $brih_word </td>
+        <a href=$link.setPage("call,Glossary,Glossary_Insert_Word.vm").addPathInfo("mode","Insert").addPathInfo("count","2")> #if($lang =="hindi") $brih_word $brih_Of2 $brih_insert #else $brih_insert $brih_word #end </td>
 	#if($tdcolor !="3")
         <td>
 	#elseif($tdcolor=="3")

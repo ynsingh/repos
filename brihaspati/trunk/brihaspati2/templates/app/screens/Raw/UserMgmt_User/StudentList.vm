@@ -9,6 +9,7 @@
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @modified date: 07-04-2010
  * @modified date: 20-10-2010,3-11-2010
+ * @modified date: 22-11-2010 (Shaista)
  *     
  *#
 #set($lang = $data.getUser().getTemp("lang" ).toString())
@@ -34,15 +35,18 @@ $!data.getMessage()
 	</td>
 	<td align="right">
 	#if( $total_size!=0 )
-	#if( $endIndex < $total_size )
-		#if( $endIndex < $userConf )
-                [$k - $total_size] of $total_size
-		#else
-		[$k - $endIndex] of $total_size
-		#end
-	#else
-	[$k - $total_size] of $total_size
-	#end
+		#if( $endIndex < $total_size )
+        	        #if( $endIndex < $userConf )
+                	        ##[$k - $total_size] of $total_size
+                        	#if($lang == "hindi")  $total_size $brih_in $brih_from1 [$k - $total_size] #else [$k - $total_size] $brih_of $total_size #end
+	                #else
+        	                ##[$k - $endIndex] of $total_size
+                	         #if($lang == "hindi") $total_size $brih_in $brih_from1 [$k - $endIndex] #else [$k - $endIndex] $brih_of $total_size #end
+	                #end
+	       #else
+        	       ##[$k - $total_size] of $total_size
+                	#if($lang == "hindi")  $total_size $brih_in $brih_from1 [$k - $total_size] #else [$k - $total_size] $brih_of $total_size #end
+	       #end
 	#end
 	</td>
 </tr>

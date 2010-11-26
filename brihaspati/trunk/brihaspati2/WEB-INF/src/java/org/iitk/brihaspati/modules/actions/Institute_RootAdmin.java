@@ -83,7 +83,9 @@ import babylon.babylonUserTool;
  * @author <a href="mailto:singh_jaivir.rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
- * @modified date:20-10-2010
+ * @author: <a href="mailto:shaistashekh@hotmail.com">Shaista </a>
+ * @modified date:20-10-2010, 20-11-2010
+
  */
 
 /** 
@@ -111,7 +113,7 @@ public class Institute_RootAdmin extends VelocitySecureAction
 			*  Get parameters passed from templates.
 			*/
 			ParameterParser pp = data.getParameters();
-			String LangFile = (String)data.getUser().getTemp("LangFile");
+			LangFile = (String)data.getUser().getTemp("LangFile");
 			/** 
 			*  Get list of institute to be approved .
 			*/
@@ -198,7 +200,7 @@ public class Institute_RootAdmin extends VelocitySecureAction
 		String curdate=ExpiryUtil.getCurrentDate("-");
                 Date rejectdate=Date.valueOf(curdate);
 		ParameterParser pp = data.getParameters();
-		String LangFile = (String)data.getUser().getTemp("LangFile");
+		LangFile = (String)data.getUser().getTemp("LangFile");
                 String institutelist = data.getParameters().getString("deleteFileNames");
 		try{
                         /**
@@ -244,7 +246,8 @@ public class Institute_RootAdmin extends VelocitySecureAction
 			UserManagement usermanagement = new UserManagement();
                         ParameterParser pp = data.getParameters();
 			String usermgmt = "";
-                        String LangFile = (String)data.getUser().getTemp("LangFile");
+                        LangFile = (String)data.getUser().getTemp("LangFile");
+			MultilingualUtil mu = new MultilingualUtil();
                         String instadmininf = data.getParameters().getString("deleteFileNames");
 			/**
 			*   Get parameter passed from templates.
@@ -308,7 +311,7 @@ public class Institute_RootAdmin extends VelocitySecureAction
 							/**
 							*   Create User Profile to call UserManagement util Method							  *   CreateUserProfile. 
 							*/
-							LangFile=(String)data.getUser().getTemp("LangFile");
+							//LangFile=(String)data.getUser().getTemp("LangFile");
 							usermgmt = usermanagement.CreateUserProfile(adminusername,password,adminfname,adminlname,adminemail,"institute_admin","institute_admin",serverName,serverPort,LangFile,rollno);
 							/**
 							*Update institute status if institute is orphan to active.    							  */
@@ -322,12 +325,14 @@ public class Institute_RootAdmin extends VelocitySecureAction
 						}
 					}
 					else{
-						data.setMessage("special character are not allowed in email except @ and .");
+						data.setMessage(mu.ConvertedString("brih_specialSymbol&char", LangFile)+""+mu.ConvertedString("Notallow", LangFile)+""+(mu.ConvertedString("brih_exceptAtTheRate&Dot",LangFile) +"!!"));
+						//special character are not allowed in email except @ and .
 					}
 				}
 				else
 				{
-					data.setMessage("User is already exist as an Institute Admin ");
+					data.setMessage(mu.ConvertedString("brih_user", LangFile) +" "+mu.ConvertedString("Wikiaction6", LangFile) +" "+mu.ConvertedString("brih_asAn", LangFile)+" "+mu.ConvertedString("brih_institute", LangFile)+" "+mu.ConvertedString("brih_admin", LangFile));
+					//"User is already exist as an Institute Admin ");
 				}
 			}
 			catch(Exception ex){}	
@@ -512,7 +517,7 @@ public class Institute_RootAdmin extends VelocitySecureAction
                 */
                 if (noofadmin.size()==1)
                 {
-                	ErrorDumpUtil.ErrorLog("check for noadmin1=======>"+noofadmin.size());             
+                	//ErrorDumpUtil.ErrorLog("check for noadmin1=======>"+noofadmin.size());             
                         crit1=new Criteria();
                         crit1.add(InstituteAdminRegistrationPeer.INSTITUTE_ID,instituteid);
                         crit1.add(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,3);

@@ -5,22 +5,25 @@
  *
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a> 
  * @author <a href="mailto:singh_jaivir@rediff.com">Jaivir Singh</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @modified date: 22-11-2010
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * 
  *#
 $!data.getMessage()
 $page.setTitle("Login Page | Add Admin ")
+#set($lang=$data.getUser().getTemp("lang").toString())
 	
 	<table bgcolor="$ui.tableColor" width=100%>
 		<tr bgcolor="$ui.menuColor">
 			<td colspan=14>
 			<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> | 
 			<a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","pendinglist").addPathInfo("count","1") style=text-decoration:none>$RemoteInstitute $brih_mgmt</a> |
-			<a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","approved").addPathInfo("count","2") style=text-decoration:none>$brih_approved $RemoteInstitute $brih_list</a> | 
+			<a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","approved").addPathInfo("count","2") style=text-decoration:none>$brih_approved #if($lang =="hindi") $brih_institute $brih_Of #else $RemoteInstitute #end $brih_list</a> | 
 			#if($mode=="addadmin")
-			$brih_add $RemoteInstitute $brih_admin
+				#if($lang =="hindi") $RemoteInstitute $brih_admin $brih_add #else $brih_add $RemoteInstitute $brih_admin #end
 			#else
-			$brih_view $RemoteInstitute $brih_admin
+				#if($lang =="hindi") $brih_institute $brih_Of2 $brih_ad $brih_Of1 $brih_view #else $brih_view $RemoteInstitute $brih_admin #end
 			#end
 			 
 		</td></tr>
@@ -30,19 +33,19 @@ $page.setTitle("Login Page | Add Admin ")
                 #elseif($tdcolor == "1")
                 <td bgcolor="#AFDCEC">
                 #end
-		<a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","pendinglist").addPathInfo("count","1") style=text-decoration:none>$brih_pending $RemoteInstitute $brih_list</a></td>
+		<a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","pendinglist").addPathInfo("count","1") style=text-decoration:none>$brih_pending #if($lang =="hindi") $brih_institute $brih_Of #else $RemoteInstitute #end $brih_list</a></td>
 		#if($tdcolor != "2")
                 <td>
                 #elseif($tdcolor == "2")
                 <td bgcolor="#AFDCEC">
                 #end
-		<a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","approved").addPathInfo("count","2") style=text-decoration:none>$brih_approved $RemoteInstitute $brih_list</a></td>
+		<a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","approved").addPathInfo("count","2") style=text-decoration:none>$brih_approved #if($lang =="hindi") $brih_institute $brih_Of #else $RemoteInstitute #end $brih_list</a></td>
 		#if($tdcolor != "3")
                 <td>
                 #elseif($tdcolor == "3")
                 <td bgcolor="#AFDCEC">
                 #end
-  		<a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","reject").addPathInfo("count","3") style=text-decoration:none>$brih_rejected $RemoteInstitute $brih_list</a></td>
+  		<a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("mode","reject").addPathInfo("count","3") style=text-decoration:none>$brih_rejected #if($lang =="hindi") $brih_institute $brih_Of #else $RemoteInstitute #end $brih_list</a></td>
         </tr>
 
 	</table>
@@ -54,16 +57,24 @@ $page.setTitle("Login Page | Add Admin ")
                 	<td><input type="text" name="institutename" value="$Institute_Name" "readonly"></td>
                 </tr>
                 <tr>
-			#formCell ("$brih_ad $brih_first $brih_name<font color=red>*</font>" "IADMINFNAME" "")
+			###formCell ("$brih_ad $brih_first $brih_name<font color=red>*</font>" "IADMINFNAME" "")
+			<td>$brih_ad #if($lang =="hindi") $brih_Of1 #end $brih_first $brih_name <font color=red>*</font> </td>
+			<td> <input type="text" name="IADMINFNAME" value=""> </td>
                 </tr>
                 <tr bgcolor="$ui.menuColor">
-                        #formCell ("$brih_ad $brih_last $brih_name<font color=red>*</font>" "IADMINLNAME" "")
+                        ###formCell ("$brih_ad $brih_last $brih_name<font color=red>*</font>" "IADMINLNAME" "")
+	              <td>$brih_ad #if($lang =="hindi") $brih_Of1 #end $brih_last $brih_name <font color=red>*</font> </td>
+		      <td> <input type="text" name="IADMINLNAME" value=""> </td>
                 </tr>
                 <tr>
-			#formCell ("$brih_ad $Inst_designation<font color=red>*</font>" "IADMINDESIGNATION" "")
+			###formCell ("$brih_ad $Inst_designation<font color=red>*</font>" "IADMINDESIGNATION" "")
+			<td> $brih_ad #if($lang =="hindi") $brih_Of1 #end $Inst_designation <font color=red>*</font> </td>
+			<td> <input type="text" name="IADMINDESIGNATION" value=""> </td>
                 </tr>
                 <tr bgcolor="$ui.menuColor">  
-			#formCell ("$brih_ad $brih_email <font color=red>*</font>" "IADMINEMAIL" "")
+			###formCell ("$brih_ad $brih_email <font color=red>*</font>" "IADMINEMAIL" "")
+			<td> $brih_ad #if($lang =="hindi") $brih_Of1 #end $brih_email <font color=red>*</font> </td>
+			<td> <input type="text" name="IADMINEMAIL" value=""> </td>
                 </tr>
 
 		<tr>
@@ -84,11 +95,11 @@ $page.setTitle("Login Page | Add Admin ")
 		        <form name="frm" method="post" action="$link.setPage("call,Root_Admin,AddAdmin.vm").setAction("Institute_RootAdmin")">
 				<table  bgcolor="$ui.tableColor" width=100%>
 				        <tr bgcolor="$ui.menuColor">
-					        <td align=center>$brih_ad $brih_first $brih_name</td>
-					        <td align=center>$brih_ad $brih_last $brih_name</td>
-					        <td align=center>$brih_ad $brih_email</td>
-					        <td align=center>$brih_ad $Inst_designation</td>
-					        <td align=center>$brih_usr $brih_name</td>
+					        <td align=center>$brih_ad #if($lang =="hindi") $brih_Of1 #end $brih_first $brih_name</td>
+					        <td align=center>$brih_ad #if($lang =="hindi") $brih_Of1 #end $brih_last $brih_name</td>
+					        <td align=center>$brih_ad #if($lang =="hindi") $brih_Of1 #end $brih_email</td>
+					        <td align=center>$brih_ad #if($lang =="hindi") $brih_Of1 #end $Inst_designation</td>
+					        <td align=center>$brih_usr #if($lang =="hindi") $brih_Of1 #end $brih_name</td>
 					        <td align=center>$brih_availableAction</td>
         				</tr>
 					#foreach($admin_list in $adminlist )

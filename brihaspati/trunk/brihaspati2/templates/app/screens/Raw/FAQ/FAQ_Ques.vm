@@ -4,6 +4,8 @@
  * All Rights Reserved.
  *  @author <a href="mailto:seema_020504@yahoo.com ">Seema Pal</a>
  *  @author <a href="mailto:kshuklak@rediffmail.com ">Kishore kumar shukla</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @modified date: 22-11-2010
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 $page.setTitle("FAQ")
@@ -22,13 +24,13 @@ $!data.getMessage()
 	$brih_FAQ
 	#end
 	#if($mode=="add")
-	<a href=$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("mode","alllist")>$brih_FAQ</a> | $brih_add $brih_cat
+	<a href=$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("mode","alllist")>$brih_FAQ</a> | #if($lang == "hindi") $brih_cat $brih_add #else $brih_add $brih_cat #end
 	#end
 	#if($mode=="delete")
-	<a href=$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("mode","alllist")>$brih_FAQ</a> | $brih_delete $brih_cat
+	<a href=$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("mode","alllist")>$brih_FAQ</a> | #if($lang == "hindi") $brih_cat $brih_delete #else $brih_delete $brih_cat #end
 	#end
 	#if($mode=="edit")
-	<a href=$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("mode","alllist")>$brih_FAQ</a> | $brih_edit $brih_cat
+	<a href=$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("mode","alllist")>$brih_FAQ</a> |  #if($lang == "hindi") $brih_cat $brih_Of1 $brih_edit #else $brih_edit $brih_cat #end
 	#end
 	</font>
 </b></td>
@@ -37,14 +39,17 @@ $!data.getMessage()
                 #if( $total_size!=0 )
                         #if( $endIndex < $total_size )
                                 #if( $endIndex < $userConf )
-                                [$k - $total_size] of $total_size
+	                                #if($lang == "hindi")  $total_size $brih_in $brih_from1 [$k - $total_size] #else [$k - $total_size] $brih_of $total_size #end
                                 #elseif($k == $j)
-                                [$k - $total_size] of $total_size
+                	                ##[$k - $total_size] of $total_size
+        	                        #if($lang == "hindi")  $total_size $brih_in $brih_from1 [$k - $total_size] #else [$k - $total_size] $brih_of $total_size #end
                                 #else
-                                [$k - $endIndex] of $total_size
+	                                ##[$k - $endIndex] of $total_size
+					#if($lang == "hindi") $total_size $brih_in $brih_from1 [$k - $endIndex] #else [$k - $endIndex] $brih_of $total_size #end
                                 #end
                         #else
-                        [$k - $total_size] of $total_size
+                        	##[$k - $total_size] of $total_size
+      	                        #if($lang == "hindi")  $total_size $brih_in $brih_from1 [$k - $total_size] #else [$k - $total_size] $brih_of $total_size #end
                         #end
                 #end
         </td>
@@ -68,31 +73,31 @@ $!data.getMessage()
                         #elseif($tdcolor == "1")
 			<td width="30" bgcolor="#AFDCEC">
 			#end
-			<b><I><style=text-decoration:none>$brih_FAQ $brih_cat $brih_list</I></b></a></td>
+			<b><I><style=text-decoration:none>$brih_FAQ #if($lang == "hindi") $brih_Of #end $brih_cat $brih_list</I></b></a></td>
 			#if($tdcolor != "2")
                         <td width=30%>
                         #elseif($tdcolor == "2")
 			<td width="30" bgcolor="#AFDCEC">
 			#end
-			<b><I><a href=$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("mode","add").addPathInfo("count","2") style=text-decoration:none>$brih_add $brih_cat</I></b></a></td>
+			<b><I><a href=$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("mode","add").addPathInfo("count","2") style=text-decoration:none> #if($lang == "hindi") $brih_cat $brih_add #else $brih_add $brih_cat #end </I></b></a></td>
 			#if($tdcolor != "3")
                         <td width=30%>
                         #elseif($tdcolor == "3")
 			<td width="30" bgcolor="#AFDCEC">
 			#end
-			<b><I><a href=$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("mode","delete").addPathInfo("deltype","delcat").addPathInfo("count","3") style=text-decoration:none>$brih_delete $brih_cat</I></b></a></td>
+			<b><I><a href=$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("mode","delete").addPathInfo("deltype","delcat").addPathInfo("count","3") style=text-decoration:none> #if($lang == "hindi") $brih_cat $brih_delete #else $brih_delete $brih_cat #end</I></b></a></td>
 		</tr>
 	#end
 </table>
 <table width="100%" bgcolor="$ui.tableColor">
 	#if($mode=="edit")
-		<tr bgcolor="$ui.menuColor" width="100%"><td align="left" width="100%" colspan="5"><b><i>$brih_edit $brih_cat:<font size="3"> $category</font><b></i></td></tr>
+		<tr bgcolor="$ui.menuColor" width="100%"><td align="left" width="100%" colspan="5"><b><i> #if($lang == "hindi") $brih_cat $brih_Of1 $brih_edit #else $brih_edit $brih_cat #end :<font size="3"> $category</font><b></i></td></tr>
 	#end
 	#if($mode=="add")
-		<tr bgcolor="$ui.menuColor" width="100%"><td align="left" width="100%" colspan="5"><b><i>$brih_add $brih_cat<b></i></td></tr>
+		<tr bgcolor="$ui.menuColor" width="100%"><td align="left" width="100%" colspan="5"><b><i> #if($lang == "hindi") $brih_cat $brih_add #else $brih_add $brih_cat #end <b></i></td></tr>
 			<tr bgcolor="$ui.tableColor" width="100%">
 				<td align="left" width="100%">
-				<b>$brih_Exist $brih_cat $brih_list</b>
+				<b>$brih_Exist $brih_cat #if($lang == "hindi") $brih_Of #end $brih_list</b>
        				</td>
 				<td>
                        			<select name="categoryname" size="1"  onFocus=changeTopic(document.frm) onChange=changeTopic(document.frm)>
@@ -107,7 +112,7 @@ $!data.getMessage()
 	#end
 	#if($mode=="edit"||$mode=="add")
 		<tr bgcolor="$ui.menuColor">
-               		<td><b><font color=red>*</font>$brih_cat $brih_name:</b></td>
+               		<td><b><font color=red>*</font>$brih_cat #if($lang == "hindi") $brih_Of1 #end $brih_name:</b></td>
                		<td><input type="text" size="50" name="catname" onFocus=checkRadio()></td>
                	</tr>
 	#end
@@ -116,7 +121,7 @@ $!data.getMessage()
 	 ##<tr bgcolor="$ui.menuColor" width="100%"><td width="100%" colspan="5">
 	#if($mode=="alllist" ||$mode=="delete")
 		#if($status == "Noblank")
-			<tr bgcolor="$ui.menuColor" width="100%"><td width="100%" colspan="5"><b>$brih_frequently $brih_asked $brih_qus2 $brih_category</b>
+			<tr bgcolor="$ui.menuColor" width="100%"><td width="100%" colspan="5"><b>$brih_frequently $brih_asked $brih_qus2 #if($lang == "hindi") $brih_Of #end $brih_category</b>
 		#end
 	##</td></tr>
 </table>
@@ -142,7 +147,7 @@ $!data.getMessage()
 					</td>
 				#else
 					<td><a href="$link.setPage("call,FAQ,FAQ.vm").addPathInfo("category",$catlist).addPathInfo("mode","alllist")">$catlist</a></td>
-					<td><a href="$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("category",$catlist).addPathInfo("mode","edit")">$brih_edit $brih_cat</a></td>
+					<td><a href="$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("category",$catlist).addPathInfo("mode","edit")"> #if($lang == "hindi") $brih_cat $brih_Of1 $brih_edit #else $brih_edit $brih_cat #end </a></td>
 				#end
                 		</tr>
 		#set ( $count= "$count$!catlist^")
@@ -150,7 +155,7 @@ $!data.getMessage()
 		</tr>
         #end
 	#if($status == "blank" && $mode!="add")
-                        <tr bgcolor="$ui.menuColor" width="100%"><td width="100%" colspan="5" align="center"><b><font size="3">$brih_frequently $brih_asked $brih_qus2 $brih_category $brih_arenotexists.</font></b>
+                        <tr bgcolor="$ui.menuColor" width="100%"><td width="100%" colspan="5" align="center"><b><font size="3">$brih_frequently $brih_asked $brih_qus2  #if($lang == "hindi") $brih_Of #end $brih_category $brih_arenotexists.</font></b>
         #end
 </table>
 <table width="100%" bgcolor="$ui.tableColor">

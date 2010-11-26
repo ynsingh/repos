@@ -69,6 +69,8 @@ import org.iitk.brihaspati.om.FaqVotePeer;
 /**This class contain the code for Create, Delete and Update FAQ
 *@author: <a href="mailto:seema_020504@yahoo.com">Manorama Pal</a>
 *@author: <a href="mailto:kishore.shukla@gmail.com">Kishore kumar shukla</a>
+*@author: <a href="mailto:shaistashekh@hotmail.com">Shaista </a>
+*@modified date: 22-11-2010
 */
 
 
@@ -143,7 +145,8 @@ public class FAQ extends SecureAction
 					String categoryname=(element.getCategory());
 					if(categoryname.equals(category))
 						flag=true;
-						data.setMessage(MultilingualUtil.ConvertedString("brih_category",LangFile)+" "+MultilingualUtil.ConvertedString("brih_is",LangFile)+" "+MultilingualUtil.ConvertedString("Wikiaction6",LangFile));
+						//data.setMessage(MultilingualUtil.ConvertedString("brih_category",LangFile)+" "+MultilingualUtil.ConvertedString("brih_is",LangFile)+" "+MultilingualUtil.ConvertedString("Wikiaction6",LangFile));
+						data.setMessage(MultilingualUtil.ConvertedString("brih_category",LangFile)+" "+MultilingualUtil.ConvertedString("Wikiaction6",LangFile));
 				}
 				if(flag==false)
 				{
@@ -158,6 +161,9 @@ public class FAQ extends SecureAction
                         		FaqPeer.doInsert(crit);
 					context.put("mode","alllist");
 					//data.setMessage("Category Add Successfully !!");
+				if( LangFile.endsWith("hi.properties") || LangFile.endsWith("urd.properties"))
+					data.setMessage(MultilingualUtil.ConvertedString("brih_FAQ",LangFile)+" "+MultilingualUtil.ConvertedString("brih_successfully", LangFile)+" "+MultilingualUtil.ConvertedString("brih_Added", LangFile));
+                	        else
 					data.setMessage(MultilingualUtil.ConvertedString("brih_category",LangFile)+" "+MultilingualUtil.ConvertedString("brih_Added",LangFile)+" "+MultilingualUtil.ConvertedString("brih_successfully",LangFile));
 				}
 			}//if
@@ -346,7 +352,7 @@ public class FAQ extends SecureAction
                                                 if(Question.equals(ques))
                                                         found=true;
                                                         //data.setMessage("This Question is already exists !!");
-							data.setMessage(MultilingualUtil.ConvertedString("brih_This",LangFile)+" "+MultilingualUtil.ConvertedString("brih_qus",LangFile)+" "+MultilingualUtil.ConvertedString("brih_is",LangFile)+" "+MultilingualUtil.ConvertedString("Wikiaction6",LangFile));
+							data.setMessage(MultilingualUtil.ConvertedString("brih_This",LangFile)+" "+MultilingualUtil.ConvertedString("brih_qus",LangFile)+" "+MultilingualUtil.ConvertedString("Wikiaction6",LangFile));
                                         }//for
                                 }//if
                         }//else
@@ -360,7 +366,10 @@ public class FAQ extends SecureAction
                                 TopicMetaDataXmlWriter.appendFAQ(xmlWriter,Integer.toString(faq_id),Integer.toString(faq_id),Question,Answer,Float.toString(version));
                                 xmlWriter.writeXmlFile();
 				//data.setMessage("FAQ Add Successfully !!");
-				data.setMessage(MultilingualUtil.ConvertedString("brih_FAQ",LangFile)+" "+MultilingualUtil.ConvertedString("brih_Added",LangFile)+" "+MultilingualUtil.ConvertedString("brih_successfully",LangFile));
+				if( LangFile.endsWith("hi.properties") || LangFile.endsWith("urd.properties"))
+					data.setMessage(MultilingualUtil.ConvertedString("brih_FAQ",LangFile)+" "+MultilingualUtil.ConvertedString("brih_successfully", LangFile)+" "+MultilingualUtil.ConvertedString("brih_Added", LangFile));
+                	        else
+					data.setMessage(MultilingualUtil.ConvertedString("brih_FAQ",LangFile)+" "+MultilingualUtil.ConvertedString("brih_Added",LangFile)+" "+MultilingualUtil.ConvertedString("brih_successfully",LangFile));
                         }//
 		}
 		catch(Exception e){data.setMessage("Error in action FAQ:[SaveQues] !!"+e);}

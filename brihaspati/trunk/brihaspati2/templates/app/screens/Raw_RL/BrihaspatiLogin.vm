@@ -109,6 +109,12 @@ $page.setBgColor($ui.bgcolor)
 		</b></td></tr>
 
 		</tr>
+		<tr align="right"><td colspan="4" align="right" ><b>
+			<a href=$link.setPage("FAQlist.vm").addPathInfo("lang",$lang).addPathInfo("mode","alllist").addPathInfo("type","general")>$brih_FAQ $brih_list </a>
+			<img src="$content.getURI("/images/orange_sq_but.gif")">
+			
+		</b></td></tr>
+
 		</table>
 	</td> ## TD1 end
 	<td valign="top" width="50%"> ## TD2

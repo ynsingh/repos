@@ -37,8 +37,10 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_InstituteAdmin;
  */
 
 /**
+ * @author: <a href="mailto:shaistashekh@hotmail.com">Shaista </a>
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh 20100810</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh - 20100810</a>
+ * @modified date: 22-11-2010
  */
 
 
@@ -231,7 +233,10 @@ public class InstUserRegistrationManagement extends SecureScreen_Institute_Admin
                                          */
                                         String str=m_u.ConvertedString("listCourseReg",LangFile);
                                         String str1=m_u.ConvertedString("notExist",LangFile);
-                                        data.setMessage(str+" " +query+" "+"'" +valueString+"'"+" "+ str1);
+					if(LangFile.endsWith("hi.properties"))
+                                        	data.setMessage(query+" "+"'" +valueString+"'"+str+" "+str1);
+					else
+	                                        data.setMessage(str+" " +query+" "+"'" +valueString+"'"+" "+ str1);
                                 }
                                 status="blank";
                         }

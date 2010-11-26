@@ -57,8 +57,10 @@ import org.iitk.brihaspati.modules.utils.CourseUserDetail;
  *
  * This Action class for Registering a multiple course with Instructor(Primary) 
  * in the system from file.
+ * @author: <a href="mailto:shaistashekh@hotmail.com">Shaista </a>
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a> 
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a> 
+ * @modified date: 22-11-2010
  */
 public class RegisterIMCInstructor extends SecureAction_Institute_Admin
 {
@@ -81,6 +83,7 @@ public class RegisterIMCInstructor extends SecureAction_Institute_Admin
 		LangFile=(String)data.getUser().getTemp("LangFile");
 	        try
 		{
+			MultilingualUtil mu= new MultilingualUtil();
 			String instituteId=(data.getUser().getTemp("Institute_id").toString());
 			ErrorDumpUtil.ErrorLog("iid in action at line 86==="+instituteId);
 			int InstituteId=Integer.parseInt(instituteId);	
@@ -94,8 +97,12 @@ public class RegisterIMCInstructor extends SecureAction_Institute_Admin
                                  * Getting file value from temporary variable according to selection of Language
                                  * Replacing the static value from Property file
                                  */
-                                String upload_msg1=MultilingualUtil.ConvertedString("upload_msg2",LangFile);
-                                data.setMessage(upload_msg1+fileName);
+                                String upload_msg1=mu.ConvertedString("upload_msg2",LangFile);
+                                //data.setMessage(upload_msg1+fileName);
+				if(LangFile.endsWith("hi_properties"))
+	                                data.setMessage(mu.ConvertedString("brih_Uploaded",LangFile)+" "+mu.ConvertedString("brih_file",LangFile)+" : "+fileName+" "+mu.ConvertedString("brih_Of1",LangFile)+" "+mu.ConvertedString("brih_extention",LangFile)+mu.ConvertedString("brih_wrong",LangFile)+" "+mu.ConvertedString("brih_is",LangFile) +"<br>"+upload_msg1);
+				else
+	                                data.setMessage(upload_msg1+"<br>"+mu.ConvertedString("brih_Uploaded",LangFile)+" "+mu.ConvertedString("brih_file",LangFile)+" : "+fileName+", "+mu.ConvertedString("brih_extention",LangFile)+mu.ConvertedString("brih_is",LangFile)+" "+mu.ConvertedString("brih_wrong",LangFile)+"<br>"+upload_msg1);
                         }
                         else{
 				Date date=new Date();

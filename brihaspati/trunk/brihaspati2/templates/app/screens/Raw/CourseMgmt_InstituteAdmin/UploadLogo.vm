@@ -3,6 +3,8 @@
  * Copyright (c) 2010 BSS Kanpur.
  * All Rights Reserved.
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @modified date: 22-11-2010
  * Contributors: Members of Brihaspati software solutions Kanpur
 *#
 
@@ -17,7 +19,7 @@ $!data.getMessage()
         ##<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>$brih_home</a> |
         <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_home</a> |
         #if($lang=="hindi")
-                $RemoteInstitute $brih_of $brih_logo $brih_upload 
+                $RemoteInstitute $brih_logo $brih_upload 
         #else
                  $brih_upload $RemoteInstitute $brih_logo
         #end
@@ -28,7 +30,7 @@ $!data.getMessage()
 
 	<form name="frm" method="post" enctype="multipart/form-data" action="$link.setPage("call,CourseMgmt_InstituteAdmin,UploadLogo.vm").setAction("UserAction_InstituteAdmin")">
 <table width=100% bgcolor="$ui.tableColor" cellpadding="2" align="left">
-        <tr bgcolor="$ui.menuColor"><td colspan=2><b>$brih_upload $RemoteInstitute $brih_logo</b></td></tr>
+        <tr bgcolor="$ui.menuColor"><td colspan=2><b> #if($lang=="hindi") $RemoteInstitute $brih_logo $brih_upload #else $brih_upload $RemoteInstitute $brih_logo #end </b></td></tr>
         <tr>
 
                 #fileUpload ("$brih_at_file <font color=RED>*</font>" "file")

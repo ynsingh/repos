@@ -5,7 +5,8 @@
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:shaistashekh@gmail.com ">Shaista</a>  
- * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>  
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a> 
+ * @modified date: 22-11-2010 
  *#
 
 $page.setBgColor($ui.tableColor)
@@ -14,11 +15,13 @@ $page.setTitle("call,List Management | User List | Change Password")
 ##<table bgcolor="#d9e3ec" width=100% cellspacing=0>
 
 $!data.getMessage()
+#set($lang=$data.getUser().getTemp("lang" ).toString())
 <table bgcolor="$ui.menuColor" width=100% cellspacing=0>
 <tr><td><font face="$ui.sansSerifFonts" size=3>
 <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> |
 <a href=$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("mode","All").addPathInfo("listcourse","listcourse").addPathInfo("count","1") style=text-decoration:none>$brih_list_mgmt</a> |
-<a href=$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("mode","All").addPathInfo("count","2") style=text-decoration:none>$brih_listUsr</a> | $brih_changePassword1 $username
+<a href=$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("mode","All").addPathInfo("count","2") style=text-decoration:none>$brih_listUsr</a> | #if($lang == "hindi") $username $brih_Of1 $brih_changePassword1  #else $brih_changePassword1  $brih_for $username #end
+##$brih_changePassword1 $username
 </td></tr>
 </table>
 <table width=100% align=left bgcolor="$ui.tableColor">
@@ -34,7 +37,7 @@ $!data.getMessage()
 	#elseif($tdcolor == "2")
 	<td bgcolor="#AFDCEC">
 	#end
-        <a href=$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("mode","All").addPathInfo("count","2") style=text-decoration:none>$brih_view_all $brih_usr</td>
+        <a href=$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("mode","All").addPathInfo("count","2") style=text-decoration:none> #if($lang == "hindi") $brih_all $brih_usr $brih_Of1 $brih_view #else $brih_view_all $brih_usr #end </td>
 </tr>
 </table>
 <form name="frm" method="post" action="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").setAction("UserAction_Admin")">

@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /**
  * @(#)InstituteAdminRegistration.java
  *
- *  Copyright (c) 2009 ETRG,IIT Kanpur.
+ *  Copyright (c) 2009, 2010 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -66,7 +66,9 @@ import org.iitk.brihaspati.modules.utils.EncryptionUtil;
  * 
  * 
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
+ * @author: <a href="mailto:shaistashekh@hotmail.com">Shaista </a>
  * @Created Date
+ * @modified date: 22-11-2010
  */
 
 
@@ -97,7 +99,8 @@ public class InstituteRegistration extends VelocitySecureAction
 		
 		try{
 			
-			rundata.setMessage("Test");
+			//rundata.setMessage("Test");
+			MultilingualUtil mu = new MultilingualUtil();
 			//String Lang = rundata.getUser().getTemp("lang").toString();
 			String lang="";
 			StringUtil str=new StringUtil();
@@ -149,7 +152,8 @@ public class InstituteRegistration extends VelocitySecureAction
 				
 				if(flag){
 					
-					rundata.setMessage("Institute Already Registered ,Please Contact System Admin or Your Institute Admin for registered to you as a Institute Admin in same Institute");
+					rundata.setMessage(mu.ConvertedString("brih_institute", Lang)+""+mu.ConvertedString("brih_alreadyRegister", Lang)+", "+mu.ConvertedString("brih_pleaseContact", Lang)+""+mu.ConvertedString("brih_system", Lang)+""+mu.ConvertedString("brih_admin", Lang)+" / "+mu.ConvertedString("brih_institute", Lang)+""+mu.ConvertedString("brih_admin", Lang)+" "+mu.ConvertedString("brih_toRegAsAn", Lang)+""+mu.ConvertedString("brih_institute", Lang)+""+mu.ConvertedString("brih_admin", Lang)+" "+mu.ConvertedString("brih_inSame", Lang)+""+mu.ConvertedString("brih_institute", Lang));
+					//"Institute Already Registered, Please Contact System Admin or Your Institute Admin to register as an Institute Admin in same Institute"
 
 				}
 				else{
@@ -217,11 +221,13 @@ public class InstituteRegistration extends VelocitySecureAction
                                         String Mail_msg=MailNotification.sendMail(messageFormate, EMAIL, subj, "", Lang);
 
 
-					rundata.setMessage("Institute Registeration Successfull");
+					rundata.setMessage(mu.ConvertedString("brih_Institue", Lang)+""+mu.ConvertedString("brih_registration", Lang)+""+mu.ConvertedString("brih_successful", Lang)+""+mu.ConvertedString("brih_waitForApprove", Lang));
+					//"Institute Registeration Successfull"
 				}
 			}
 			else{
-				rundata.setMessage("Special symbol and character is not allowed");
+				rundata.setMessage(mu.ConvertedString("brih_specialSymbol&char", Lang)+""+mu.ConvertedString("Notallow", Lang)	);
+				//"Special symbol and character is not allowed"
 			}	
 		}
 		catch (Exception e)
