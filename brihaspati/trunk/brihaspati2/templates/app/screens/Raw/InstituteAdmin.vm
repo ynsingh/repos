@@ -41,7 +41,7 @@ $!data.getMessage()
 </tr>
 	
 	##<tr><td align="center">Institute Admin List</td></tr>
-	<tr><td align="center"> #if($lang =="hindi") $brih_institute $brih_Of2 #else $RemoteInstitute #end $brih_ad #if($lang =="hindi") $brih_Of #end $brih_list </td></tr>
+	<tr><td align="center"> #if($lang =="hindi") $brih_Institute $brih_Of2 #else $RemoteInstitute #end $brih_ad #if($lang =="hindi") $brih_Of #end $brih_list </td></tr>
 	#if($rldpage != "yes")
 		#foreach($lst in $list1)
 		##	#foreach($lst1 in $list1)

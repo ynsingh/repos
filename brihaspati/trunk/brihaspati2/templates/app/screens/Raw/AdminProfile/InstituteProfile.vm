@@ -13,12 +13,12 @@ $!data.getMessage()
 	<td colspan="2">
 	<font face="$ui.sansSerifFonts" size=3>
 	<b>
-     	<a href=$link.setPage("Index.vm")>$RemoteInstitute $brih_ad $brih_home</a> |$RemoteInstitute $brih_ap
+     	<a href=$link.setPage("Index.vm")> $RemoteInstitute $brih_ad $brih_home</a> | #if($lang =="hindi") $brih_Institute $brih_Of2 #else $RemoteInstitute #end $brih_ap
 	</td>
 </tr>
 ## Form action in InstchangeAParam.java
 <form name="frm" method="post" action="$link.setPage("call,AdminProfile,InstituteProfile.vm").setAction("InstchangeAParam")">
-    <tr><td colspan=2><font size=4> $RemoteInstitute $brih_ap  ($iname)</font></td></tr>
+    <tr><td colspan=2><font size=4> #if($lang =="hindi") $brih_Institute $brih_Of2 #else $RemoteInstitute #end $brih_ap  ($iname)</font></td></tr>
     <tr bgcolor="$ui.menuColor">
       ##formCell("$brih_first $brih_name" "AFName" "$!afname")
 	<td width="30"> <font face="$ui.sansSerifFonts"> $brih_first $brih_name </font></td> 
@@ -50,30 +50,32 @@ $!data.getMessage()
         <td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="eMail" value="$!eMail"></font></td>
 </tr>
     <tr bgcolor="$ui.tableColor">
-	<td width=30><font face="$ui.sansSerifFonts">$brih_course $brih_quota ($brih_in $quota_sze)</td>	
+	<td width=30><font face="$ui.sansSerifFonts">$brih_course #if($lang =="hindi") $brih_Of1 #end $brih_quota ($quota_sze)</td>	
 	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="cquota" value="$!cquota"></font></td>
 </tr>
     <tr bgcolor="$ui.menuColor">
-	<td width=30><font face="$ui.sansSerifFonts">$brih_usr $brih_quota ($brih_in $quota_sze)</td>	
+	<td width=30><font face="$ui.sansSerifFonts">$brih_usr #if($lang =="hindi") $brih_Of1 #end $brih_quota ( $quota_sze)</td>	
 	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="uquota" value="$!uquota"></font></td>
    </tr>
 ##--------------------------------------Institute Quota---------
+#******
     <tr bgcolor="$ui.tableColor">
-        <td width=30><font face="$ui.sansSerifFonts">Institute Quota (in MB)</td>
+        <td width=30><font face="$ui.sansSerifFonts"> $RemoteInstitute $brih_quota ($quota_sze)</td>
         <td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="iquota" value="$!iquota"></font></td>
     </tr>
+*#
 ##--------------------------------------Institute Quota---------
 ##--------------------------------------FAQ---------------------
-    <tr bgcolor="$ui.menuColor">
+    <tr bgcolor="$ui.tableColor">
         <td width=30><font face="$ui.sansSerifFonts">$brih_Faq $brih_expiry</td>
         <td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="AdminFaqExp" value="$!FaqExp"></font></td>
     </tr>
 ##--------------------------------------FAQ---------------------
-   <tr bgcolor="$ui.tableColor">
+    <tr bgcolor="$ui.menuColor">
 	<td width=30><font face="$ui.sansSerifFonts">$brih_home $brih_dir </td>	
 	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="hdir" value="$!hdir"></font></td>
    </tr>
-   <tr bgcolor="$ui.menuColor">
+   <tr bgcolor="$ui.tableColor">
       <td colspan=2 bgcolor="$ui.menuColor">	
 	  <input type="hidden" name="actionName">
           <input type="button" name="eventSubmit_doUpdate" value="$brih_submit" onClick="checkValues(document.frm,this);"/>
