@@ -11,7 +11,7 @@
 
 
 <table width="100%" bgcolor="$ui.MenuColor">
-<tr><td> $RemoteInstitute $brih_ad $brih_menu</td></ir>
+<tr><td>$RemoteInstitute $brih_ad $brih_menu</td></tr>
 </table>
 <table width=100% bgcolor="$ui.tableColor">
  <tr>
@@ -55,7 +55,7 @@
 ##                <img src="$content.getURI("/images/$lang/restoration.jpg")" border="0"></a><br>
       </td>
    </tr>
-   <tr bgcolor="$ui.menuColor">
+   <tr>
       <td>
          <a href=$link.setPage("call,EventMgmt_Admin,EventMgmt.vm").addPathInfo("mode","adphase").addPathInfo("count","1") style=text-decoration:none>$brih_Ev $brih_mgmt</a>
 ##                <img src="$content.getURI("/images/$lang/eventmanagement.jpg")"border=0></a><br>
@@ -72,7 +72,7 @@
          <a href=$link.setPage("call,Quota_Mgmt,Quota.vm").addPathInfo("mode","uquota").addPathInfo("status","nosearch").addPathInfo("count","1") style=text-decoration:none>$brih_quota $brih_mgmt</a>
       </td>
    </tr>*#
-   <tr bgcolor="$ui.menuColor">
+   <tr>
       <td>
          <a href=$link.setPage("call,OnLine_Rgtn,OnlineRegistration_Admin.vm").addPathInfo("status","CourseRegistration").addPathInfo("count","1") style=text-decoration:none>$brih_view $online_online $brih_reg</a>
       </td>
@@ -87,5 +87,10 @@
          <a href=$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("mode","alllist").addPathInfo("count","1")>$brih_FAQ</a>
       </td>
 </tr>
+<tr>
+      <td>
+         <a href=$link.setPage("call,Program,AddProgram.vm").addPathInfo("count","1") style=text-decoration:none>$brih_program $brih_mgmt</a>
+      </td>
+</tr>   
 </table>
 

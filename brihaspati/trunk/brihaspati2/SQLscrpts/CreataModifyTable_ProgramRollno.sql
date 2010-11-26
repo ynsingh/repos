@@ -1,0 +1,21 @@
+use brihaspati;
+
+alter table STUDENT_ROLLNO add INSTITUTE_ID VARCHAR(255);
+alter table STUDENT_ROLLNO ADD UNIQUE(ROLL_NO,PROGRAM,INSTITUTE_ID);
+
+drop table if exists PROGRAM;
+
+CREATE TABLE PROGRAM
+(
+	ID INTEGER NOT NULL,
+        PROGRAM_CODE VARCHAR (255) NOT NULL UNIQUE,
+        PROGRAM_NAME VARCHAR (255) NOT NULL,
+        DESCRP VARCHAR (255),
+        ALIAS_PCODE VARCHAR (255),
+        ALIAS_PNAME VARCHAR (255),
+	PRIMARY KEY(ID),
+        UNIQUE(PROGRAM_CODE)
+
+);
+insert into ID_TABLE (id_table_id, table_name, next_id, quantity) VALUES (143, 'PROGRAM', 1000, 10);
+

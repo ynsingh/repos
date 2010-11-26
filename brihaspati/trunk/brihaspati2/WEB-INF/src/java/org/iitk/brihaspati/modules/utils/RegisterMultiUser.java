@@ -95,13 +95,13 @@ public class RegisterMultiUser
 			{
 				StringTokenizer st2=new StringTokenizer(line,";",true);
 				entryNumber++;
-				String username="",first_name="",last_name="",email="", passwd="";
+				String username="",first_name="",last_name="",email="", passwd="", rollno="";
 				int error=0;
 				String mail_msg="";
 				String errMsg="";
 				
 	
-				if(st2.countTokens()<5)
+				if(st2.countTokens()<6)
 				{ 
 					error=1;
 				}
@@ -141,12 +141,17 @@ public class RegisterMultiUser
                               				if(!st2.hasMoreTokens()) 
 								{error=1;}
 							else { email=st2.nextToken().trim();
-				                        
-
-							}
-						}
+                       					}
+					
+						if(!st2.hasMoreTokens())
+							{error=1;}
+						else
+							{st2.nextToken();}
+							rollno=st2.nextToken().trim();
+							//ErrorDumpUtil.ErrorLog("rollno in register multiuser------------>\n"+rollno);
+							
+					}
 					if(error==0){
-							String rollno="";
 							String str=UserManagement.CreateUserProfile(email,passwd,first_name,last_name,email,Gname,Role,serverName,serverPort,Langfile,rollno);
 								error=3;
 								errMsg=str;
