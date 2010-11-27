@@ -46,7 +46,7 @@ $!data.getMessage()
     </tr>
 	## formEmailCell("admin email")
    <tr bgcolor="$ui.menuColor">
-        <td width=30><font face="$ui.sansSerifFonts"> $brih_admin $brih_email </td>             
+        <td width=30><font face="$ui.sansSerifFonts"> $brih_ad $brih_email </td>             
         <td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="eMail" value="$!eMail"></font></td>
 </tr>
     <tr bgcolor="$ui.tableColor">
@@ -57,14 +57,6 @@ $!data.getMessage()
 	<td width=30><font face="$ui.sansSerifFonts">$brih_usr #if($lang =="hindi") $brih_Of1 #end $brih_quota ( $quota_sze)</td>	
 	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="uquota" value="$!uquota"></font></td>
    </tr>
-##--------------------------------------Institute Quota---------
-#******
-    <tr bgcolor="$ui.tableColor">
-        <td width=30><font face="$ui.sansSerifFonts"> $RemoteInstitute $brih_quota ($quota_sze)</td>
-        <td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="iquota" value="$!iquota"></font></td>
-    </tr>
-*#
-##--------------------------------------Institute Quota---------
 ##--------------------------------------FAQ---------------------
     <tr bgcolor="$ui.tableColor">
         <td width=30><font face="$ui.sansSerifFonts">$brih_Faq $brih_expiry</td>

@@ -17,7 +17,7 @@
 #set($lang=$data.getUser().getTemp("lang").toString())
 <tr> <td>
 #if($lang == "hindi")
-        $brih_institute $brih_Of2 $brih_ad $brih_Of1 $brih_menu
+        $brih_Institute $brih_Of2 $brih_ad $brih_Of1 $brih_menu
 #else
         $RemoteInstitute $brih_ad $brih_menu
 #end 

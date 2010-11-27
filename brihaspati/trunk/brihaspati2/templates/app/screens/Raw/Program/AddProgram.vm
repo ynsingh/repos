@@ -50,11 +50,11 @@ $!data.getMessage()
 <table  bgcolor="$ui.tableColor" width=100%>
         <tr bgcolor="$ui.menuColor">
                 <td>$brih_program $brih_code <font color="red">*</td>
-                <td><input type="text" name="pcode" value="$pgcode"></td>
+                <td><input type="text" name="pcode" value="$pgcode" #if($status=="update") readonly #end></td>
 	</tr>
         <tr>
                 <td>$brih_program $brih_name <font color="red">*</td>
-                <td><input type="text" name="pname" value="$pgname"></td>
+                <td><input type="text" name="pname" value="$pgname" #if($status=="update") readonly #end></td>
         </tr>
         <tr bgcolor="$ui.menuColor">
                 <td>$brih_discrp</td>

@@ -62,10 +62,7 @@ public class AdminParam extends SecureScreen{
 	public void doBuildTemplate(RunData data, Context context){
 		User user = data.getUser();
 		String path="";	
-		//if((user.getName()).equals("admin"))
 			path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
-		//else
-		//	path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"InstituteAdmin.properties";
 		String LangFile=data.getUser().getTemp("LangFile").toString();
 		context.put("tdcolor",data.getParameters().getString("count",""));
 		try{
@@ -91,6 +88,8 @@ public class AdminParam extends SecureScreen{
 		 context.put("dName",domainNm);
 		 String email = AdminProperties.getValue(path,"brihaspati.mail.email");//admin email(add in turbinr_user)
 		 context.put("eMail","");
+		 String iquota = AdminProperties.getValue(path,"brihaspati.user.iquota.value");
+                 context.put("iquota",iquota);
 		 String cquota = AdminProperties.getValue(path,"brihaspati.admin.quota.value");
 		 context.put("cquota",cquota);
 		 String uquota = AdminProperties.getValue(path,"brihaspati.user.quota.value");

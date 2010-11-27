@@ -98,8 +98,6 @@ public class InstchangeAParam extends SecureAction{
 	 	String aquota = pp.getString("cquota","");
 		//User Quota
 	 	String uquota = pp.getString("uquota","");
-		//Institute Quota
-	 	String iquota = pp.getString("iquota","");
 		//Faq Expiry time in days
 		String AdminFaqExp=pp.getString("AdminFaqExp","");
 		//Home Directory
@@ -126,7 +124,7 @@ public class InstchangeAParam extends SecureAction{
 			AdminProperties.setValue(path,domainNM,"brihaspati.mail.local.domain.name");
 			AdminProperties.setValue(path,aquota,"brihaspati.admin.quota.value");
 			AdminProperties.setValue(path,uquota,"brihaspati.user.quota.value");
-			AdminProperties.setValue(path,iquota,"brihaspati.user.iquota.value");
+		//	AdminProperties.setValue(path,iquota,"brihaspati.user.iquota.value");
 			AdminProperties.setValue(path,hdir,"brihaspati.home.dir.value");
 			AdminProperties.setValue(path,AdminFaqExp,"brihaspati.admin.FaqExpiry");
 			prof_update=m_u.ConvertedString("usr_prof",LangFile);

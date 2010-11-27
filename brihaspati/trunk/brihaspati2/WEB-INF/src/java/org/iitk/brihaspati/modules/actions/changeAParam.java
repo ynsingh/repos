@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)changeAParam.java	
  *
- *  Copyright (c) 2005-2006,2009 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006,2009-2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -47,6 +47,7 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.apache.turbine.services.security.TurbineSecurity;
 
 /**
+ * @author <a href="mailto:nksinghiitk@yahoo.com">Nagendra Kumar Singh</a>
  * @author <a href="mailto:chitvesh@yahoo.com">Chitvesh Dutta</a>
  * @author <a href="mailto:awadhk_t@yahoo.com">Awahesh Kumar Trivedi</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
@@ -95,6 +96,7 @@ public class changeAParam extends SecureAction{
 	 	String mPass = pp.getString("mPass","");	
 	 	String eMail = pp.getString("eMail","");	
 	 	String domainNM = pp.getString("mailDomain","");	
+                String iquota = pp.getString("iquota","");
 	 	String aquota = pp.getString("cquota","");
 	 	String uquota = pp.getString("uquota","");
 	 	String hdir = pp.getString("hdir","");
@@ -105,10 +107,7 @@ public class changeAParam extends SecureAction{
 		 * @see AdminProperties in utils
 		 */
 		String path="";	
-		//if((user.getName()).equals("admin"))
 		path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
-		//else
-		//path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"InstituteAdmin.properties";
 		StringUtil S = new StringUtil();
 		String prof_update=null;
 		if (S.checkString(AFName)==-1 && S.checkString(ALName)==-1){
@@ -127,6 +126,7 @@ public class changeAParam extends SecureAction{
 			AdminProperties.setValue(path,mPass,"brihaspati.mail.password");
 			AdminProperties.setValue(path,eMail,"brihaspati.mail.email");
 			AdminProperties.setValue(path,domainNM,"brihaspati.mail.local.domain.name");
+			AdminProperties.setValue(path,iquota,"brihaspati.user.iquota.value");
 			AdminProperties.setValue(path,aquota,"brihaspati.admin.quota.value");
 			AdminProperties.setValue(path,uquota,"brihaspati.user.quota.value");
 			AdminProperties.setValue(path,hdir,"brihaspati.home.dir.value");

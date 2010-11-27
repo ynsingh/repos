@@ -78,8 +78,6 @@ public class InstituteProfile extends SecureScreen{
 		 context.put("cquota",cquota);
 		 String uquota = AdminProperties.getValue(path,"brihaspati.user.quota.value");
 		 context.put("uquota",uquota);
-		 String iquota = AdminProperties.getValue(path,"brihaspati.user.iquota.value");
-		 context.put("iquota",iquota);
 		 String hdir = AdminProperties.getValue(path,"brihaspati.home.dir.value");
 		 if(hdir.equals("")){
 			hdir=System.getProperty("user.home");
