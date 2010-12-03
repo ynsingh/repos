@@ -152,7 +152,7 @@ public class InstituteRegistration extends VelocitySecureAction
 				
 				if(flag){
 					
-					rundata.setMessage(mu.ConvertedString("brih_institute", Lang)+""+mu.ConvertedString("brih_alreadyRegister", Lang)+", "+mu.ConvertedString("brih_pleaseContact", Lang)+""+mu.ConvertedString("brih_system", Lang)+""+mu.ConvertedString("brih_admin", Lang)+" / "+mu.ConvertedString("brih_institute", Lang)+""+mu.ConvertedString("brih_admin", Lang)+" "+mu.ConvertedString("brih_toRegAsAn", Lang)+""+mu.ConvertedString("brih_institute", Lang)+""+mu.ConvertedString("brih_admin", Lang)+" "+mu.ConvertedString("brih_inSame", Lang)+""+mu.ConvertedString("brih_institute", Lang));
+					rundata.setMessage(mu.ConvertedString("brih_institute", Lang)+" "+mu.ConvertedString("brih_alreadyRegister", Lang)+", "+mu.ConvertedString("brih_pleaseContact", Lang)+" "+mu.ConvertedString("brih_system", Lang)+" "+mu.ConvertedString("brih_admin", Lang)+" /  "+mu.ConvertedString("brih_institute", Lang)+" "+mu.ConvertedString("brih_admin", Lang)+" "+mu.ConvertedString("brih_toRegAsAn", Lang)+" "+mu.ConvertedString("brih_institute", Lang)+" "+mu.ConvertedString("brih_admin", Lang)+" "+mu.ConvertedString("brih_inSame", Lang)+" "+mu.ConvertedString("brih_institute", Lang));
 					//"Institute Already Registered, Please Contact System Admin or Your Institute Admin to register as an Institute Admin in same Institute"
 
 				}
@@ -221,12 +221,12 @@ public class InstituteRegistration extends VelocitySecureAction
                                         String Mail_msg=MailNotification.sendMail(messageFormate, EMAIL, subj, "", Lang);
 
 
-					rundata.setMessage(mu.ConvertedString("brih_Institue", Lang)+""+mu.ConvertedString("brih_registration", Lang)+""+mu.ConvertedString("brih_successful", Lang)+""+mu.ConvertedString("brih_waitForApprove", Lang));
+					rundata.setMessage(mu.ConvertedString("brih_Institue", Lang)+" "+mu.ConvertedString("brih_registration", Lang)+" "+mu.ConvertedString("brih_successful", Lang)+" "+mu.ConvertedString("brih_waitForApprove", Lang));
 					//"Institute Registeration Successfull"
 				}
 			}
 			else{
-				rundata.setMessage(mu.ConvertedString("brih_specialSymbol&char", Lang)+""+mu.ConvertedString("Notallow", Lang)	);
+				rundata.setMessage(mu.ConvertedString("brih_specialSymbol&char", Lang)+" "+mu.ConvertedString("Notallow", Lang)	);
 				//"Special symbol and character is not allowed"
 			}	
 		}

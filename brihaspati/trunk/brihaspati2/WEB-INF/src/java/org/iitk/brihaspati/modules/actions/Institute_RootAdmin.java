@@ -325,7 +325,7 @@ public class Institute_RootAdmin extends VelocitySecureAction
 						}
 					}
 					else{
-						data.setMessage(mu.ConvertedString("brih_specialSymbol&char", LangFile)+""+mu.ConvertedString("Notallow", LangFile)+""+(mu.ConvertedString("brih_exceptAtTheRate&Dot",LangFile) +"!!"));
+						data.setMessage(mu.ConvertedString("brih_specialSymbol&char", LangFile)+" "+mu.ConvertedString("Notallow", LangFile)+" "+(mu.ConvertedString("brih_exceptAtTheRate&Dot",LangFile) +"!!"));
 						//special character are not allowed in email except @ and .
 					}
 				}
