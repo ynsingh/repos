@@ -41,10 +41,12 @@ class ItemPurchaseController
 		def projectInstance = Projects.get(params.projectId)
         itemPurchaseInstance.projects=projectInstance
         println "projectInstance="+projectInstance
+        itemPurchaseInstance.Status="Y" //15-11-2010
+        def itemPurchaseInstanceList=itemPurchaseService.getItemPurchaseList(projectInstance)
         if (itemPurchaseInstance.save(flush: true)) 
         {
             flash.message = "${message(code: 'default.created.label')}"
-            redirect(action: "create", id: projectInstance.id)
+            redirect(action: "create", id: projectInstance.id,itemPurchaseInstanceList:itemPurchaseInstanceList)
         }
         else 
         {
@@ -68,6 +70,7 @@ class ItemPurchaseController
 
     def edit = 
     {
+			
         def itemPurchaseInstance = ItemPurchase.get(params.id)
         if (!itemPurchaseInstance) 
         {
@@ -104,7 +107,8 @@ class ItemPurchaseController
             if (!itemPurchaseInstance.hasErrors() && itemPurchaseInstance.save(flush: true)) 
             {
                 flash.message = "${message(code: 'default.updated.label')}"
-                redirect(action: "create", id: itemPurchaseInstance.id)
+                //redirect(action: "create", id: itemPurchaseInstance.id)
+                redirect(action: "create", id: itemPurchaseInstance.projectsId)
             }
             else 
             {
@@ -125,15 +129,17 @@ class ItemPurchaseController
         {
             try 
             {
-            	itemPurchaseInstance.Status='D'
+            	//itemPurchaseInstance.Status='D' 15-11-2010
+            	itemPurchaseInstance.Status="N" //15-11-2010
                 itemPurchaseInstance.save(flush: true)
                 flash.message = "${message(code: 'default.deleted.label')}"
-                redirect(action: "create")
+                //redirect(action: "create")
+                redirect(action: "create", id: itemPurchaseInstance.projectsId)
             }
             catch (org.springframework.dao.DataIntegrityViolationException e) 
             {
                 flash.message = "${message(code: 'default.inuse.label')}"
-                redirect(action: "create", id: params.id)
+                redirect(action: "create", id: params.id)                
             }
         }
         else 
@@ -144,6 +150,7 @@ class ItemPurchaseController
     }
 	def purchase = 
 	{
+			
 		def grantAllocationService = new GrantAllocationService()
 		GrailsHttpSession gh=getSession()
 		def dataSecurityService = new DataSecurityService()

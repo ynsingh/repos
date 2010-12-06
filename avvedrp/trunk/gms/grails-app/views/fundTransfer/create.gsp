@@ -66,7 +66,7 @@
                                     <label for="amount"><g:message code="fundTransfer.amounttransferred.label" />:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: fundTransferInstance, field: 'amount', 'errors')}">
-                                    <g:textField name="amount" value="${fieldValue(bean: fundTransferInstance, field: 'amount')}" />
+                                    <g:textField id="amount" name="amount" value="${fieldValue(bean: fundTransferInstance, field: 'amount')}" />
                                 </td>
                                 <td valign="top" class="name">
                                     <label for="dateOfTransfer"><g:message code="fundTransfer.dateOfTransfer.label" />:</label>

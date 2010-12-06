@@ -69,13 +69,6 @@
 	                                    	value="${projectEmployeeExperienceInstance?.relievingDate}"/>
 	                                </td>
 	                            </tr>
-	                            <tr class="prop">
-	                            	<td valign="top" class="name">
-	                                	<label for="status"><g:message code="default.Active.label" /></label>
-	                                </td>
-	                                <td><g:select name="status" from="${['Y','N']}" value="${projectEmployeeExperienceInstance?.status}"/></td>
-	                            </tr>
-	                        
 	                    		<tr class="prop">
 	                                <td valign="top" class="name"> 
 	                        	</tr> 
@@ -87,6 +80,11 @@
 	                    <span class="button"><g:actionSubmit class="save" action="update" onClick="return validateProjectEmployeeExperience()" 
 	                    	value="${message(code: 'default.Update.button')}" />
 	                	</span>
+						<span class="button">
+							<g:actionSubmit class="delete"  action="delete" 
+							value="${message(code: 'default.Delete.button')}" 
+							onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
+						</span>
 	                </div>
 	            </g:form>
 	        </div>

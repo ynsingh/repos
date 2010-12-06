@@ -32,9 +32,9 @@
 						  		    <td ><label><g:message code="default.projectEmployees.EmployeeNumber.label"/></label></td>
 						    		<td><g:textField name="empNo" value="${projectEmployeeInstance?.empNo}"/></td>
 						    		<td><label><g:message code="default.projectEmployees.DateOfBirth.label"/></label></td>
-						    		<td><calendar:datePicker name="DOB" value="${projectEmployeeInstance?.dOB}" 
+						    		<td><calendar:datePicker name="dOB" value="${projectEmployeeInstance?.dOB}" 
 						    		defaultValue="${new Date()}" dateFormat= "%d/%m/%Y"/></td>
-					  			</tr>
+						    	</tr>
 					  			<tr>
 						    		<td><label><g:message code="default.JoiningDate.label"/></label></td>
 						    		<td><calendar:datePicker name="joiningDate" value="${projectEmployeeInstance?.joiningDate}" 
@@ -46,10 +46,8 @@
 					  			<tr>
 						   			<td> <label><g:message code="default.Designation.label"/></label></td>
 						   			<td><g:select name='employeeDesignation.id' optionKey="id" optionValue="Designation" 
-						   				from="${employeeDesignationInstance}" value="${projectEmployeeInstance?.employeeDesignation?.id}" 
-						   				noSelection="['null':'select']"></g:select></td>
-						   			<td><label><g:message code="default.Active.label"/></label></td>
-						   			<td><g:select name="status" from="${['Y','N']}" /> </td>			      		
+						   				from="${employeeDesignationInstanceList}" value="${projectEmployeeInstance?.employeeDesignation?.id}" 
+						   				noSelection="['null':'select']"></g:select></td>						   				
 					       		</tr>
 	             			</tbody>
 	  					</table>

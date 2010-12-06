@@ -7,8 +7,9 @@
     </head>
     <body>
     	<div class="wrapper">
+    	<g:subMenuList />
         	<div class="proptable"> 
-				<table class="tablewrapper" border="0" cellspacing="0" cellpadding="0">
+				<table class="tablewrapper" width="100%" align="left" border="0" cellspacing="0" cellpadding="0">
   					<tr>
     					<td scope="col"> 
 					        <div class="body">
@@ -71,7 +72,7 @@
 												<g:sortableColumn property="id" 
 														title="${message(code: 'default.SINo.label')}" />
                         
-                            					<th><g:message code="default.DocumentType.label" /></th>
+                            					<th><g:message code="default.AttachmentType.label" /></th>
                         
                         						<th><g:message code="default.Project.label"/></th>
                             
@@ -110,7 +111,7 @@
 					                                 	value="${attachmentsInstance.domainId}"/> 
 					                                 <input type="hidden" id="domainId" name="domain" 
 					                                 	value="${attachmentsInstance.domain}"/> 
-					                                 <td> <g:actionSubmit class="delete" onclick="return confirm('Are you sure?');" 
+					                                 <td> <g:actionSubmit class="delete" action="delete" onclick="return confirm('Are you sure?');" 
 					                                 		value="${message(code: 'default.Delete.button')}" />
 			                                 		 </td>
 			                         			  </g:form>

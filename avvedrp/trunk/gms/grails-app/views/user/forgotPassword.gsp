@@ -40,34 +40,35 @@
 					<g:form action="sendNewPassword">
 					<tr>
               			<td id="content" class="round-left column wide">
-					<div style="margin:1;padding:0;border:2px">
-					<h2>Forgot your password?</h2>
+							<div style="margin:1;padding:0;border:2px">
+							<h2><g:message code="default.Forgotyourpassword.head"/></h2>
 						</td>
 					</tr>
               		<tr>
               			<td id="content" class="round-left column wide">
-					<p>Admin will send password to the email address associated with your account.</p>
-					</td>
+							<p><g:message code="default.Forgotyourpassword.AckMessage.head"/></p>
+						</td>
 					</tr>
 					<tr>
               			<td valign="center">
-					<div>
-			  		<div>
+				  <div>
+			  				<div>
 					    
-					</div>
-			  		<div >
+							</div>
+			  			<div >
 			    			<fieldset>
 			    			<p>&nbsp;</p>
-			      			<p>&nbsp;<label for="email">Please type your <strong>User Name</strong> below.</label></p>
+			      			<p>&nbsp;<label for="email"><g:message code="default.Forgotyourpassword.InputMessage.label"/></label></p>
 			      			<p>&nbsp;</p>
 			      			<p>&nbsp;<input class="text_field" id="email" name="email" type="text" /></p>
 			
 			      			<p>&nbsp;</p>
-			      			<p>&nbsp;<input id="submit" name="commit" type="submit" value="Send" onClick='displayAlertMessage("Please wait");' />&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" onClick="Redirect()"  value="Cancel" /></p>
+			      			<p>&nbsp;<input id="submit" name="commit" type="submit" value="${message(code: 'default.Forgotyourpassword.Send.button')}"/>&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" onClick="Redirect()"  value="${message(code: 'default.Cancel.button')}"/> </p>
+			      			<!--<p>&nbsp;<input id="submit" name="commit" type="submit" value="Send" onClick='displayAlertMessage("Please wait");' />&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" onClick="Redirect()"  value="Cancel" /></p>-->
 			    			<p>&nbsp;</p>
 			    			</fieldset>
 			  		</div>
-				</div>
+				 </div>
 				</td>
 					</tr>
 			</div>

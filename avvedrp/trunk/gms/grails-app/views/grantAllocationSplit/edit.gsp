@@ -4,7 +4,41 @@
        <link rel="stylesheet" href="${createLinkTo(dir:'css',file:'main.css')}" />
         <title><g:message code="default.HeadAllocation.EditHeadAllocation.head"/> </title>
     </head>
+    <script>
+    function validateGrantAllocationSplit()
+{
+    if( ( (document.getElementById("grantPeriod.id").value) == 'null') || ( (document.getElementById("grantPeriod.id").value) == '') )
+    {
+         alert("Please enter the Grant Period ");
+         return false;
+    }
+    if(isNaN(document.getElementById("amount").value))
+    {
+	    alert("Invalid Amount  ");
+	    document.getElementById("amount").focus
+	    return false;
+    }
+    if((document.getElementById("amount").value)=='')
+    {
+	    alert("Please enter Proper Amount  ");
+	    return false;
+    }
+    if(eval(document.getElementById("amount").value)<=0)
+    {
+	    alert("Please enter Proper Amount  ");
+	    return false;
+    }
+    
+    if(parseFloat(document.getElementById("amount").value) > parseFloat(document.getElementById("unAllocatedAmt").value))
+	{
+	alert("Please Enter Amount Less Than Or Equal To UnAllocated Amount");
+	document.getElementById("amount").focus();
+	return false;
+	}
+}   
+    </script>
 	<style>
+	
 	    .tablewrapperpopup
 		{ 
 		padding: 0px;
@@ -26,11 +60,13 @@
 	            </g:hasErrors>
 	            <g:form method="post" >
 	                <input type="hidden" name="id" value="${grantAllocationSplitInstance?.id}" />
+	                <input type="hidden" id="unAllocatedAmt" name="unAllocatedAmt" value="${grantAllocationSplitInstance.unAllocatedAmt}"/>  
 	                <div class="dialog">
 	                    <table>
 	                        <tbody>
   								<g:javascript library="scriptaculous" />
                              	<tr>
+                             	
 	                                <td valign="top" class="name">
 	                                    <label for="grantPeriod"><g:message code="default.GrantPeriod.label"/>:</label>
 	                                </td>
@@ -103,11 +139,11 @@
                     </table>
                 </div>
                 <div class="buttons">
-                    <span class="button"><g:actionSubmit class="save" 
+                    <span class="button"><g:actionSubmit class="save" action="update"
 	                    value="${message(code: 'default.Update.button')}" 
 	                    onClick="return validateGrantAllocationSplit()"  />
                     </span>
-                    <span class="button"><g:actionSubmit class="delete" 
+                    <span class="button"><g:actionSubmit class="delete" action="delete" 
 	                    onclick="return confirm('Are you sure?');" 
 	                    value="${message(code: 'default.Delete.button')}" />
                     </span>

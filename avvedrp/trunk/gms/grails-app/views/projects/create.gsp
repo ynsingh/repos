@@ -1,5 +1,3 @@
-
-
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -49,7 +47,7 @@
                                     <label for="code"><g:message code="default.ProjectType.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'projectType','errors')}">
-                                    <g:select optionKey="id" optionValue="type" id="projectType" from="${ProjectType.findAll('from ProjectType P where P.activeYesNo=\'Y\' ')}"  name="projectType.id" value="${projectsInstance?.projectType?.id}" noSelection="['null':'select']"></g:select>
+                                    <g:select optionKey="id" optionValue="type" id="projectType" from="${ProjectType.findAll('from ProjectType P where P.activeYesNo=\'Y\' ')}"  name="projectType.id" value="${projectsInstance?.projectType?.id}" noSelection="['null':'select']" ></g:select>
                                 </td>
                             </tr> 
                            <tr class="prop">
@@ -57,8 +55,9 @@
                                     <label for="investigator"><g:message code="default.Investigator.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'investigator','errors')}">
-                                    <g:select optionKey="id" optionValue="name" from="${Investigator.findAll('from Investigator I where I.activeYesNo=\'Y\' ')}" name="investigator.id" value="${projectsInstance?.investigator?.id}" noSelection="['null':'select']"></g:select>
-                                </td>
+                                    <g:select optionKey="id" optionValue="name" from="${investigatorList}" name="investigator.id" value="${projectsInstance?.investigator?.id}" ></g:select>
+                                 </td>
+                            </tr> 
                          </tr>                           
                          <tr class="prop">
                                 <td valign="top" class="name">
@@ -78,19 +77,7 @@
                                     <calendar:datePicker name="projectEndDate" value="${projectsInstance?.projectEndDate}" defaultValue="${new Date()}"  dateFormat= "%d/%m/%Y"/>
                                 </td>
                             </tr>
-                            
-                            
-                            
-                            
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="activeYesNo"><g:message code="default.Active.label"/>:</label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'activeYesNo','errors')}">
-                                    <g:select name="activeYesNo" from="${['Y', 'N']}"  value="${fieldValue(bean:projectsInstance,field:'activeYesNo')}" />
-                                </td>
-                            </tr> 
-                        
+                         
                         </tbody>
                     </table>
                 </div>

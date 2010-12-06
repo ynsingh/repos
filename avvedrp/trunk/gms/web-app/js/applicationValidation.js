@@ -35,6 +35,11 @@ function checkAllDelete()
 function validate()
 { 
 		  var isChecked=0; 
+		  if(document.getElementById("user.id").value == 'null')
+		{
+			alert("Please Select a User");
+	   	 	return false;
+		}
 		if(document.accessPermission.projectName.length > 1)  
 		  { 
 		for(var i=0;i<document.accessPermission.projectName.length;i++)
@@ -69,6 +74,11 @@ function validate()
 function validateForDelete()
 { 
 		  var isChecked=0;  
+		  if(document.getElementById("user.id").value == 'null')
+		{
+			alert("Please Select a User");
+	   	 	return false;
+		}
 		if(document.accessPermission.projectId.length > 1)  
 		  {
 		for(var i=0;i<document.accessPermission.projectId.length;i++)
@@ -245,7 +255,7 @@ function validateProject(){
     	var newProjectEndDate = new Date(projectEndDateYear,projectEndDateMonth-1,projectEndDateDate);
     	 
     	
-    	if (newProjectStartDate>newProjectEndDate)
+    	if (newProjectStartDate>=newProjectEndDate)
     	{
     		alert("Project End Date should be greater than Start Date")
     		return false;
@@ -303,7 +313,7 @@ function validateProject(){
     		
     		if (newProjectStartDate>=newProjectEndDate)
     		{
-    			alert("Sub project End Date should be greater or equal to sub project Start Date")
+    			alert("Sub project End Date should be greater than sub project Start Date")
     			return false;
     		}
     		
@@ -340,7 +350,12 @@ function validateProject(){
     {
 	    alert("Please enter the Amount Allocated   ");
 	    return false;
-    }      
+    } 
+       if((document.getElementById("sanctionOrderNo").value)=='')
+    {
+	    alert("Please enter the Sanction Order No  ");
+	    return false;
+    }     
    	return true;
 
 }
@@ -380,6 +395,24 @@ var projectStartDate = document.getElementById("ProjectStartDate").value;
    alert("Date of Transfer should be greater than or equal to Project Start Date");
    return false;
    }
+   
+ if(isNaN(document.getElementById("amount").value))
+    {
+	    alert("Invalid Amount  ");
+	    document.getElementById("amount").focus
+	    return false;
+    }
+ if((document.getElementById("amount").value)=='')
+    {
+	    alert("Please enter the Amount ");
+	    return false;
+    }
+    
+ if(eval(document.getElementById("amount").value)<=0)
+    {
+	    alert("Please enter a valid Amount   ");
+	    return false;
+    } 
  }
 function validateAccountHead()
 {
@@ -591,29 +624,11 @@ function validateSubGrantAllotExt()
 	    return false;
     }    
 }
-function validateGrantAllocationSplit()
-{
-    if(isNaN(document.getElementById("amount").value))
-    {
-	    alert("Invalid Amount  ");
-	    document.getElementById("amount").focus
-	    return false;
-    }
-    if((document.getElementById("amount").value)=='')
-    {
-	    alert("Please enter Proper Amount  ");
-	    return false;
-    }
-    if(eval(document.getElementById("amount").value)<=0)
-    {
-	    alert("Please enter Proper Amount  ");
-	    return false;
-    }
-}   
+
 function refreshParentGrantAllocationSplit() 
 {
 	window.opener.location.href = window.opener.location.href;
-	if (window.opener.progressWindow)
+	if(window.opener.progressWindow)
 	{
 		window.opener.progressWindow.close()
 	}
@@ -1043,12 +1058,19 @@ function validatePassword()
 		alert("Incorrect Password");
 		return false;
 	}
+	var re = /^(?=.{6,12}$)(?=.*[A-Za-z])(?=.*[0-9])(?!.*[^A-Za-z0-9])(?!.*\s).*/;
+       if ( !re.test(document.getElementById("newPasswd").value) )
+          {
+             document.getElementById("newPasswd").focus();
+             alert('Your password must satisfy the following. \n\n* Password should be 6 to 12 character long. \n* Password should have at least one alphabet. \n* Password should have at least one numeric value. \n* Password should not have special characters.');
+             return false;
+          }
 	return true;
 }
 function validateUser()
 {
 	if(document.getElementById("userRealName").value == ""){
-		alert("Please Enter Full Name");
+		alert("Please Enter First Name");
 	    document.getElementById("userRealName").focus();
 	    return false;
 	}
@@ -1068,6 +1090,13 @@ function validateUser()
 		alert("Incorrect Password");
 		return false;
 	}
+	 var re = /^(?=.{6,12}$)(?=.*[A-Za-z])(?=.*[0-9])(?!.*[^A-Za-z0-9])(?!.*\s).*/;
+       if ( !re.test(document.getElementById("password").value) )
+          {
+             document.getElementById("password").focus();
+             alert('Your password must satisfy the following. \n\n* Password should be 6 to 12 character long. \n* Password should have at least one alphabet. \n* Password should have at least one numeric value. \n* Password should not have special characters.');
+             return false;
+          }
 	if(document.getElementById("authorities").value == "Select"){
 		alert("Please Select Role");
 	    document.getElementById("authorities").focus();
@@ -1169,7 +1198,7 @@ function validateDepartment()
 function validateRegisterUser()
 {
 	if(document.getElementById("userRealName").value == ""){
-		alert("Please Enter Full Name");
+		alert("Please Enter First Name");
 	    document.getElementById("userRealName").focus();
 	    return false;
 	}
@@ -1189,6 +1218,13 @@ function validateRegisterUser()
 		alert("Incorrect Password");
 		return false;
 	}
+	var re = /^(?=.{6,12}$)(?=.*[A-Za-z])(?=.*[0-9])(?!.*[^A-Za-z0-9])(?!.*\s).*/;
+       if ( !re.test(document.getElementById("password").value) )
+          {
+             document.getElementById("password").focus();
+             alert('Your password must satisfy the following. \n\n* Password should be 6 to 12 character long. \n* Password should have at least one alphabet. \n* Password should have at least one numeric value. \n* Password should not have special characters.');
+             return false;
+          }
 	var email = document.getElementById('email');
 	var filter = /^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$/;
 	if(email.value != "")
@@ -1286,7 +1322,7 @@ function validateProjectEmployee()
 	    document.getElementById("employeeDesignation.id").focus();
 	    return false;
 	}
-
+	
 	var employeeJoiningDateYear = document.getElementById("joiningDate_year").value;
 	var employeeJoiningDateMonth = document.getElementById("joiningDate_month").value;
 	var employeeJoiningDateDate = document.getElementById("joiningDate_day").value;
@@ -1306,6 +1342,30 @@ function validateProjectEmployee()
 			return false;
 		}
 	}
+	
+	var employeeDateOfBirthYear = document.getElementById("dOB_year").value;
+	var employeeDateOfBirthMonth = document.getElementById("dOB_month").value;
+	var employeeDateOfBirthDate = document.getElementById("dOB_day").value;
+	
+	var newEmployeeDateOfBirth = new Date(employeeDateOfBirthYear,employeeDateOfBirthMonth-1,employeeDateOfBirthDate);
+	
+	
+	var d = new Date();
+
+var curr_date = d.getDate();
+
+var curr_month = d.getMonth();
+
+var curr_year = d.getFullYear();
+
+var Today = new Date(curr_year,curr_month,curr_date);
+		
+	if(newEmployeeDateOfBirth > Today)
+	{
+			alert("Date of Birth sholud be less than Current Date")
+			return false;
+	}
+	
     return true;
 }
 
@@ -1460,9 +1520,10 @@ function validateFundTransfer()
 if(document.getElementById("fundTransfer.id").value == 'null' || document.getElementById("fundTransfer.id").value == '' )
 	{
 		alert("Please Select a Fund Transfer");
-	    document.getElementById("name").focus();
+	    document.getElementById("ddNo").focus();
 	    return false;
 	}
+	
 	return true;
 }
 
@@ -1537,3 +1598,5 @@ function checkDate(dateValue)
 		return false;
 	}
 }
+
+

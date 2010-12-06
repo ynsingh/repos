@@ -28,7 +28,7 @@
                                 <label for="controllerName"><g:message code="default.UserName.label"/>:</label>
                                 </td>
                                 <td>
-                                <g:select from="${userMapInstance.user}" name="user.id" optionValue="username" optionKey="id"
+                                <g:select from="${userMapInstance.user}" name="user.id" id="user.id" optionValue="username" optionKey="id"
                                 onchange="${remoteFunction(controller:'user',action:'getProjectName',update:'projectNameSel',params:'\'user=\'+this.value')};"
                                 value="${fieldValue(bean:rolePrivilegesInstance,field:'controllerName')}" noSelection="['null':'-Select-']"></g:select>
                                 </td>                                
@@ -79,8 +79,8 @@
       		<table>
       		<tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>
       		
-      			<g:submitToRemote class="addbutton" action="getandSaveAccessPermission" value="	  		     " update="[success:'actionNameSel',failure:'error']" />
-                <g:submitToRemote class="removebutton" action="delete" value="          " update="[success:'actionNameSel',failure:'error']" />
+      			<g:submitToRemote class="addbutton" action="getandSaveAccessPermission" value="	  		     " update="[success:'actionNameSel',failure:'error']" before="if(!validate()) return false"/>
+                <g:submitToRemote class="removebutton" action="deleteProjectFromAccespermision" value="          " update="[success:'actionNameSel',failure:'error']" before="if(!validateForDelete()) return false"/>
               </td></tr></table>  
                 </td>
                 <td width="45%">

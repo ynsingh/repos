@@ -40,10 +40,10 @@
 				<tr><td align="center">
        </td></tr>
                     <tr><td>
-       <b>Password has been sent to your email account with a link to activate your account.</b>
+       <b><g:message code="default.ForgotPassword.ConfirmationMessage.label"/></b>
                            </td></tr>
                            <tr><td>
-       <b>To access your Account,Please Activate Your Account</b>
+       <b><g:message code="default.ForgotPassword.Activation.label"/></b>
                            </td></tr>
                   
                   <tr><td><HR></td></tr>

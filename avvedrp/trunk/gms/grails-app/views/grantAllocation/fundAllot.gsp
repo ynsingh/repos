@@ -29,20 +29,27 @@
                         
                          <tr >
                                 <td valign="top" class="name">
-                                    <label for="projects"><g:message code="default.Projects.label"/>:</label>
+                                    <label for="projects"><g:message code="default.Project.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:grantAllocationInstance,field:'projects','errors')}">
                                    <strong> ${projectsInstance.code} </strong>
                                 </td>
-                            
+                                
+                                
                                 <td align="left" class="name">
+                                <g:if test="${projectsInstance.parent!=null}"
                                     <label for="party"><g:message code="default.GrantAgency.label"/>:</label>
                                 </td>
                                 <td>
-                                     <strong>  ${fieldValue(bean:partyinstance,field:'code')} </strong>
-                                       <input type="hidden" id="grantor" name="grantor" value="${fieldValue(bean:partyinstance, field:'id')}"/>
+                                     <strong>  ${partyinstance[0].code} </strong>
+                                       
                                 </td>
-                            </tr> 
+                                </tr>
+                                </g:if>
+                                <g:else>
+                                </tr>
+                                </g:else>
+                             
                         
                            
                            <tr>
@@ -98,9 +105,7 @@
                    	        <g:sortableColumn property="investigator.name" title="${message(code: 'default.PIName.label')}"/>
                             <g:sortableColumn property="projects.projectStartDate" title="${message(code: 'default.ProjectStartDate.label')}" />
                             <g:sortableColumn property="projects.projectEndDate" title="${message(code: 'default.ProjectEndDate.label')}" />
-                            
-                   	        <g:sortableColumn property="party" title="${message(code: 'default.GrantAgency.label')}"/>
-                   	        <th><g:message code="default.DateOfAllocation.label"/></th>
+                            <th><g:message code="default.DateOfAllocation.label"/></th>
                    	        <g:sortableColumn property="amountAllocated" title="${message(code: 'default.AmountAllocated.label')}"/>
                            
 							<!--<th><g:message code="default.FundTransfer.label"/></th>-->                           
@@ -118,7 +123,7 @@
                              <td>${fieldValue(bean:projectsPIMapInstance, field:'investigator.name')}</td>
                                <td><g:formatDate format="dd-MM-yyyy" date="${grantAllocationInstance.projects.projectStartDate}"/></td>
                             <td><g:formatDate format="dd-MM-yyyy" date="${grantAllocationInstance.projects.projectEndDate}"/></td>
-                            <td>${fieldValue(bean:grantAllocationInstance, field:'party.code')}</td>
+                        
                             <td><g:formatDate format="dd-MM-yyyy" date="${grantAllocationInstance.dateOfAllocation}"/></td>
                              <td>${currencyFormat.ConvertToIndainRS(grantAllocationInstance.amountAllocated)}</td>
     	                     

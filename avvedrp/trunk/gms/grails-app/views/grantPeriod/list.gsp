@@ -22,13 +22,12 @@
                         
                    	        <g:sortableColumn property="id" title="SlNo" />
                         
-                   	        <g:sortableColumn property="name" title="Name" />
-                        
+                   	        <g:sortableColumn property="name" title="Name" />                       
                    	        <g:sortableColumn property="startDate" title="Start Date" />
-                   	         
                    	        <g:sortableColumn property="endDate" title="End Date" />
-                        
+							<!--============== Commented on 12-11-2010 ==============================                         
                    	        <g:sortableColumn property="activeYesNo" title="Active" />
+                  	        =================================================================--->
                              <g:sortableColumn property="defaultYesNo" title="Default" />
                    	        <th>Edit</th>
                         
@@ -45,7 +44,7 @@
                             <td><g:formatDate format="dd/MM/yyyy" date="${grantPeriodInstance.startDate}"/></td>
                             
                             <td><g:formatDate format="dd/MM/yyyy" date="${grantPeriodInstance.endDate}"/></td>
-                        	
+							<!--============== Commented on 12-11-2010 ==============================                          	
                             <td>
                 	             <g:if test="${fieldValue(bean:grantPeriodInstance, field:'activeYesNo') == 'Y'}">
     							 ${'YES'}
@@ -54,6 +53,7 @@
     							 ${'NO'}
     							 </g:else>
                         	 </td>
+                   	        =================================================================--->                        	 
                         <td>
 	                        <g:if test="${fieldValue(bean:grantPeriodInstance, field:'defaultYesNo') == 'Y'}">
 	    							 ${'YES'}

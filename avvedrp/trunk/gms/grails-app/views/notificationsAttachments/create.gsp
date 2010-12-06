@@ -6,6 +6,7 @@
     </head>
     <body>
       <div class="wrapper">
+      <g:subMenuNotification/>
         <div class="body">
             <h1><g:message code="default.NotificationAttachments.UploadAttachments.head"/></h1>
             <g:if test="${flash.message}">
@@ -33,8 +34,8 @@
                              <label for="attachmentType"><g:message code="default.Type.label"/></label>
                          </td>
                          <td valign="top" class="value ${hasErrors(bean:notificationsAttachmentsInstance,field:'attachmentType','errors')}">
-                             <g:select optionKey="id" optionValue="type" from="${AttachmentType.findAllByDocumentType(params.documentType)}" name="attachmentType.id" value="${notificationsAttachmentsInstance?.attachmentType?.id}"  ></g:select>
-                         </td>
+                             <g:select optionKey="id" optionValue="type" from="${AttachmentType.findAllByDocumentTypeAndActiveYesNo(params.documentType,'Y')}" name="attachmentType.id" value="${notificationsAttachmentsInstance?.attachmentType?.id}"  ></g:select>
+                         </td>                       
                        </tr> 
                         
                        <tr class="prop">
@@ -58,9 +59,9 @@
                 <table width="97%" align="center" border="0" cellspacing="0" cellpadding="0">
                    <thead>
                        <tr>
-                          <g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}" />
+                          <th><g:message code="default.SINo.label"/></th>
                           <th><g:message code="default.Type.label"/></th>
-                          <g:sortableColumn property="attachmentPath" title="${message(code: 'default.AttachmentPath.label')}" />
+                          <th><g:message code="default.AttachmentPath.label"/></th>
                           <th><g:message code="default.Delete.label"/></th>
                        </tr>
                    </thead>
@@ -78,7 +79,7 @@
                    			 <input type="hidden"  name="notificationId" value="${notificationsAttachmentsInstance?.notification?.id}"/> 
                              <input type="hidden"  name="proposalId" value=""${notificationsAttachmentsInstance?.proposal?.id}"/>
                              <input type="hidden" id="documentType" name="documentType" value="${params.documentType}"/> 
-                             <td> <g:actionSubmit class="delete" onclick="return confirm('Are you sure?');" value="${message(code: 'default.Delete.button')}" /></td>
+                             <td> <g:actionSubmit class="delete" action="delete" onclick="return confirm('Are you sure?');" value="${message(code: 'default.Delete.button')}" /></td>
                          </g:form>
                        </tr>
                      </g:each>            

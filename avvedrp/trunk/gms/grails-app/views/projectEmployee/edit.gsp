@@ -56,7 +56,7 @@
 	                                  <label for="employeeDesignation"><g:message code="default.Designation.label"/></label>
 	                                </td>
 	                                <td><g:select name='employeeDesignation.id' optionKey="id" optionValue="Designation" 
-	                                		from="${employeeDesignationInstance}" value="${projectEmployeeInstance?.employeeDesignation?.id}">
+	                                		from="${employeeDesignationInstanceList}" value="${projectEmployeeInstance?.employeeDesignation?.id}">
                                 		</g:select></td>
 	                            </tr>
 	                        
@@ -76,21 +76,18 @@
 	                                <td valign="top" class="value ${hasErrors(bean: projectEmployeeInstance, field: 'relievingDate', 'errors')}">
 	                                    <calendar:datePicker name="relievingDate"  value="${projectEmployeeInstance?.relievingDate}"  defaultValue=""/>
 	                                </td>
-	                            </tr>
-	                            
-	                            <tr class="prop">
-	                                <td valign="top" class="name">
-	                                  <label for="status"><g:message code="default.Active.label"/></label>
-	                                </td>
-	                               <td> <g:select name="status" from="${['Y','N']}" value="${projectEmployeeInstance?.status}"/></td>
-	                            </tr>
-	                            
+	                            </tr>	                            
 	                     	</tbody>
 	                    </table>
 	                </div>
 	                <div class="buttons">
-	                    <span class="button" ><g:actionSubmit class="save" value="${message(code: 'default.Update.button')}" 
+	                    <span class="button" ><g:actionSubmit class="save" action="update" value="${message(code: 'default.Update.button')}" 
 	                    	onClick="return validateProjectEmployee()"/>
+						<span class="button">
+							<g:actionSubmit class="delete"  action="delete" 
+							value="${message(code: 'default.Delete.button')}" 
+							onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
+						</span>
 	                	</span>
 	                </div>     
 	            </g:form>

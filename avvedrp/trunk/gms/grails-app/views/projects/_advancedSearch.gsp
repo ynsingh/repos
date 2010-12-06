@@ -12,7 +12,7 @@
     $('.date-pick').datepicker({ dateFormat: 'dd/mm/yy' ,
 			showOn: "button",
 			buttonImage: "../images/themesky/calendar.gif",
-			buttonImageOnly: true
+			buttonImageOnly: true,changeYear: true,yearRange: '-50:+100'
 		});
   });
   </script>

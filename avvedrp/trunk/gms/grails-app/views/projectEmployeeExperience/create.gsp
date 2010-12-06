@@ -56,10 +56,12 @@
 			      					<td><g:textField style='width: 180px; ' name="designation" 
 			      						value="${projectEmployeeExperienceInstance?.designation}" /></td>
 			  					</tr>
+			  					<!---============================15-11-2010=============================
 			  					<tr>
 			   						<td><label><g:message code="default.Active.label" /></label></td>
 			   						<td><g:select name="status" from="${['Y','N']}" /> </td>
 			   					</tr>
+			   					=================================================================--->
 				   			</tbody>
 			   			</table>
 		   			</div>	

@@ -104,10 +104,11 @@ class NotificationsAttachmentsController {
     		println "noti create"
     		//MultipartRequestHolder.setMultipartRequest(null)
         def notificationsAttachmentsService = new NotificationsAttachmentsService();	
-        def notificationsAttachmentsInstance = new NotificationsAttachments()
+        def notificationsAttachmentsInstance = new NotificationsAttachments()        
         notificationsAttachmentsInstance.properties = params
         println "++++++++++documentType++++++"
         println "++++++++++documentType++++++"+ params.documentType
+        println "++++++++++Active Yes No++++++"+ params.activeYesNo
         if(params.documentType == 'Proposal')
         {
         	notificationsAttachmentsInstance.proposal=Proposal.get(params.id)

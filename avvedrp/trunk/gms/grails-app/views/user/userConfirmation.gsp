@@ -38,11 +38,11 @@
 			<table height="75%">
 				<tr align="center"><td> <font size="3" color="#660000"></font></td></tr>
 				<tr><td align="center">
-       <b>You have successfully activated your account   </td></tr>
+       <b><g:message code='default.successfullyactivatedaccount.message'/></td></tr>
                     <tr><td>
-       <b>To access your Account  <g:link action="auth" controller="login" >Log In</g:link></b>
+       <b><g:message code='default.accessyourAccount.message'/><g:link action="auth" controller="login" ><g:message code="default.login.label"/></g:link></b>
                            </td></tr>
-                  <tr><td>  After signing in, you can update Institution information.</td></tr>
+                  <tr><td><g:message code='default.canupdateInstitutioninformation.message'/>.</td></tr>
                   <tr><td><HR></td></tr>
 				</table><div></div>
 				</div>

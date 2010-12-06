@@ -2,7 +2,7 @@
 
 class ProjectEmployeeService {
 	/**
-	 * Function to get  employees list
+	 * Get the list of all employees based on project
 	 */
 	public List getProjectEmployeeList(def projectInstance){
 		
@@ -42,8 +42,14 @@ class ProjectEmployeeService {
 				projectEmployeeupdateSalaryDetailsStatuscheck[i].status='D'
 		}			
 		}
-		//println "projectEmployeeupadateStatuscheck.status"+projectEmployeeupadateStatuscheck.status
-		
 	}
-	
+	/*
+	 * Get the list of all Active Employees  based on designation
+	 */ 
+	public List getProjectEmployeeBasedOnDesignation(def employeeDesignationInstance)
+	{
+		def getProjectEmployee = ProjectEmployee.findAll("from ProjectEmployee PE where PE.employeeDesignation="+employeeDesignationInstance.id + " and PE.status='Y'")
+		return getProjectEmployee
+	}
+
 }

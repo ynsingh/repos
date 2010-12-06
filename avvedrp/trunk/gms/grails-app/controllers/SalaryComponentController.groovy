@@ -2,128 +2,159 @@ class SalaryComponentController
 {
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
-    def index = 
-    {
-        redirect(action: "list", params: params)
-    }
+	def index ={}
 
-    def list = 
-    {
-        params.max = Math.min(params.max ? params.int('max') : 10, 100)
-        [salaryComponentInstanceList: SalaryComponent.list(params), 
-         salaryComponentInstanceTotal: SalaryComponent.count()]
-    }
-
+    /**
+     * Method to perform create action
+     */
     def create = 
     {
-        def salaryComponentInstance = new SalaryComponent()
-        salaryComponentInstance.properties = params
-        def salaryComponentService = new SalaryComponentService()
-        def salaryComponentInstanceList=salaryComponentService.getsalaryComponentList()
-        
-        return [salaryComponentInstance: salaryComponentInstance, 
-                salaryComponentInstanceList:salaryComponentInstanceList]
+    	 def salaryComponentInstance = new SalaryComponent()
+         def salaryComponentService = new SalaryComponentService()
+    	 salaryComponentInstance.properties = params
+    	 
+    	 /*Getting the list of all active salary components*/
+         def salaryComponentInstanceList=salaryComponentService.getsalaryComponentList()
+         
+         return [salaryComponentInstance: salaryComponentInstance, 
+                 salaryComponentInstanceList:salaryComponentInstanceList]
     }
 
-    def save = 
+    /**
+     * Method to perform Save action
+     */
+	def save = 
     {
-        def salaryComponentInstance = new SalaryComponent(params)
-        if (salaryComponentInstance.save(flush: true)) 
-        {
-            flash.message ="${message(code: 'default.created.label')}"
-            redirect(action: "create", id: salaryComponentInstance.id)
+    	def salaryComponentService = new SalaryComponentService()
+    	def salaryComponentInstance = new SalaryComponent(params)
+    	def chkSalaryComponentInstance = salaryComponentService.checkDuplicateSalaryComponent(params)
+		if(chkSalaryComponentInstance)
+	    {
+	    	flash.message ="${message(code: 'default.AlreadyExists.label')}"
+	    	redirect(action: "create", id: salaryComponentInstance.id)
+	    }
+	    else
+	    {
+	    	/*save salary component details*/ 
+	    	salaryComponentInstance = salaryComponentService.saveSalaryComponent(params)
+	    	if (salaryComponentInstance) 
+	    	{
+	            flash.message ="${message(code: 'default.created.label')}"
+	            redirect(action: "create", id: salaryComponentInstance.id)
+	    	}
+	    	else 
+	    	{
+	    		render(view: "create", model: [salaryComponentInstance: salaryComponentInstance])
+	    	}
+	    }
+	}
+
+    /**
+     * Method to perform the edit action
+     */
+	def edit = 
+    {
+    	def salaryComponentService = new SalaryComponentService()
+    	/*Getting Salary Component based on id*/
+    	def salaryComponentInstance =salaryComponentService.getSalaryComponentById(new Integer( params.id ))
+        /**Check whether the salary component exists or not*/
+    	if (salaryComponentInstance) 
+        { 
+        	return [salaryComponentInstance: salaryComponentInstance]
         }
         else 
         {
-            render(view: "create", model: [salaryComponentInstance: salaryComponentInstance])
+        	 flash.message = "${message(code: 'default.notfond.label')}"
+             redirect(action: "create")
         }
     }
 
-    def show = 
-    {
-        def salaryComponentInstance = SalaryComponent.get(params.id)
-        if (!salaryComponentInstance) 
-        {
-            flash.message = "${message(code: 'default.notfond.label')}"
-            redirect(action: "list")
-        }
-        else 
-        {
-            [salaryComponentInstance: salaryComponentInstance]
-        }
-    }
-
-    def edit = 
-    {
-        def salaryComponentInstance = SalaryComponent.get(params.id)
-        if (!salaryComponentInstance) 
-        {
-            flash.message = "${message(code: 'default.notfond.label')}"
-            redirect(action: "list")
-        }
-        else 
-        {
-            return [salaryComponentInstance: salaryComponentInstance]
-        }
-    }
-
-    def update = 
-    {
-        def salaryComponentInstance = SalaryComponent.get(params.id)
-        if (salaryComponentInstance) 
-        {
-            if (params.version) 
-            {
-                def version = params.version.toLong()
-                if (salaryComponentInstance.version > version) 
-                {
-                    
-                    salaryComponentInstance.errors.rejectValue("version", "default.optimistic.locking.failure", 
-                    		[message(code: 'salaryComponent.label', default: 'SalaryComponent')] as Object[], 
-                    		"Another user has updated this SalaryComponent while you were editing")
-                    render(view: "edit", model: [salaryComponentInstance: salaryComponentInstance])
-                    return
-                }
-            }
-            salaryComponentInstance.properties = params
-            if (!salaryComponentInstance.hasErrors() && salaryComponentInstance.save(flush: true)) 
-            {
-                flash.message = "${message(code: 'default.updated.label')}"
-                redirect(action: "create", id: salaryComponentInstance.id)
-            }
-            else 
-            {
-                render(view: "edit", model: [salaryComponentInstance: salaryComponentInstance])
-            }
-        }
-        else 
-        {
-            flash.message = "${message(code: 'default.notfond.label')}"
-            redirect(action: "list")
-        }
-    }
-
+    /**
+     * Method to perform the update action
+     */
+	def update = 
+	{	
+    	Integer salaryComponentId = null
+    	def salaryComponentService = new SalaryComponentService()
+    	/*Getting Salary Component based on id*/
+		def salaryComponentInstance =salaryComponentService.getSalaryComponentById(new Integer( params.id ))
+		def chkSalaryComponentInstance = salaryComponentService.checkDuplicateSalaryComponent(params)
+		if(chkSalaryComponentInstance)
+		{
+			if((chkSalaryComponentInstance.id).equals(salaryComponentInstance.id))
+			{
+				salaryComponentId=salaryComponentService.updatesalaryComponent(params)
+			    if(salaryComponentId>0)/*Check if the Salary component updated successfully*/
+		        {
+		            flash.message = "${message(code: 'default.updated.label')}"
+		            redirect(action: "create", id: salaryComponentInstance.id)
+		        }
+				
+			}
+			else if(chkSalaryComponentInstance)
+		    {
+		    	flash.message ="${message(code: 'default.AlreadyExists.label')}"
+		    	redirect(action: "edit", id: params.id)  
+		    }
+		}
+	    else
+	    {
+		    if (salaryComponentInstance) 
+		    {
+		    	salaryComponentInstance.properties = params
+		        /*Updating the salary component details*/
+		        salaryComponentId=salaryComponentService.updatesalaryComponent(params)
+		       
+		        if(salaryComponentId>0)/*Check if the Salary component updated successfully*/
+		        {
+		            flash.message = "${message(code: 'default.updated.label')}"
+		            redirect(action: "create", id: salaryComponentInstance.id)
+		        }
+		        else if(salaryComponentId == 0)/*Check if the salary component is assigned to employee*/
+		        {
+		        	flash.message = "${message(code: 'default.usedinProjectEmployee.label')}"
+		        	redirect(action: "edit", id: params.id)  
+		        }
+		        else 
+		        {
+		            render(view: "edit", model: [salaryComponentInstance: salaryComponentInstance])
+		        }
+		    }
+		    else 
+		    {
+		        flash.message = "${message(code: 'default.notfond.label')}"
+		        redirect(action: "create")
+		    }
+	    }
+	}
+    
+    /*
+     * Method to perform the delete action
+     */
     def delete = 
     {
-        def salaryComponentInstance = SalaryComponent.get(params.id)
-        if (salaryComponentInstance) 
-        {
-            try 
-            {
-                salaryComponentInstance.delete(flush: true)
-                flash.message = "${message(code: 'default.deleted.label')}"
-                redirect(action: "create")
-            }
-            catch (org.springframework.dao.DataIntegrityViolationException e) 
-            {
-                flash.message = "${message(code: 'default.inuse.label')}"
-                redirect(action: "create", id: params.id)
-            }
-        }
+    	Integer salaryComponentId = null	
+    	def salaryComponentService = new SalaryComponentService()
+		def salaryComponentInstance = new SalaryComponent()
+		salaryComponentInstance.properties = params 
+		/*Deleting the salary Component Details*/
+		salaryComponentId =salaryComponentService.deleteSalaryComponent(params)
+		
+		if (salaryComponentId==0)/*Check if the salary component is assigned to employee*/
+		{
+			flash.message = "${message(code: 'default.usedinProjectEmployee.label')}"
+    		redirect(action: "edit", id: params.id)  
+		}
+		else if (salaryComponentId>0)/*Check if the Salary component deleted successfully*/
+		{	
+			flash.message = "${message(code: 'default.deleted.label')}"
+			redirect(action: "create")	          
+		}	           
         else 
         {
             flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action: "create")
-        }
+        }    
     }
+
 }

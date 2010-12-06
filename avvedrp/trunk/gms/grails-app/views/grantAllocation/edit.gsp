@@ -27,7 +27,7 @@
                         <tbody>
                         	<tr class="prop">
                             	<td valign="top" class="name">
-                                    <label for="projects"><g:message code="default.Projects.label"/>:</label>
+                                    <label for="projects"><g:message code="default.Project.label"/>:</label>
                                 </td>
                                 <td>
                                 <strong>  ${fieldValue(bean:grantAllocationInstance,field:'projects.code')} </strong>
@@ -74,7 +74,7 @@
                 </div>
                 <div class="buttons">
 
-                    <span class="button"><g:actionSubmit class="save" value="${message(code: 'default.Update.button')}" 
+                    <span class="button"><g:actionSubmit class="save" action="update" value="${message(code: 'default.Update.button')}" 
                     	onClick="return validateGrantAllocationEdit()" /></span>
 
                     <!-- <span class="button"><g:actionSubmit class="delete" onclick="return confirm('Are you sure?');" 

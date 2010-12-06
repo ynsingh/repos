@@ -1,4 +1,3 @@
-
 <html>
 <head>
 	<meta name="layout" content="main" />
@@ -34,9 +33,16 @@
 						</tr>
 	
 						<tr class="prop">
-							<td valign="top" class="name"><label for="userRealName"><g:message code="default.FullName.label"/>:</label></td>
+							<td valign="top" class="name"><label for="userRealName"><g:message code="default.FirstName.label"/>:</label></td>
 							<td valign="top" class="value ${hasErrors(bean:person,field:'userRealName','errors')}">
 								<input type="text" id="userRealName" name="userRealName" value="${person.userRealName?.encodeAsHTML()}"/>
+							</td>
+						</tr>
+							
+						<tr class="prop">	
+							<td valign="top" class="name"><label for="userSurName"><g:message code="default.LastName.label"/>:</label></td>
+							<td valign="top" class="value ${hasErrors(bean:person,field:'userSurName','errors')}">
+								<input type="text" id="userSurName" name="userSurName" value="${person.userSurName?.encodeAsHTML()}"/>
 							</td>
 						</tr>
 	
@@ -64,7 +70,7 @@
 				</div>
 	
 				<div class="buttons">
-					<span class="button"><g:actionSubmit class="save" onclick="return validateEditUser();" value="${message(code: 'default.Update.button')}" /></span>				
+					<span class="button"><g:actionSubmit class="save" action="update" onclick="return validateEditUser();" value="${message(code: 'default.Update.button')}" /></span>				
 				</div>
 			</g:form>
 		</div>

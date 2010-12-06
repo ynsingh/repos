@@ -115,20 +115,66 @@ class GrantExpenseController extends GmsController {
     }
 
     def update = {
-    		println"params"+params
+    		
 		def grantExpenseService = new GrantExpenseService()
-		def grantExpenseInstance = grantExpenseService.updateGrantExpense(params)
-        if(grantExpenseInstance) {
-        	println"grantExpenseInstance.dateOfExpense in update"+grantExpenseInstance.dateOfExpense
-    		println"grantExpenseInstance.grantAllocation.DateOfAllocation in update"+grantExpenseInstance.grantAllocation.DateOfAllocation
+    	def grantAllocationService = new GrantAllocationService()
+		
+		def grantExpenseOrginalInstance = grantExpenseService.getGrantExpenseById(new Integer(params.id))
+    	
+		def grantExpenseInstance = new GrantExpense(params)
+    		def grantExpenseWithOutSave = grantExpenseInstance
+				
+		
+		GrailsHttpSession gh=getSession()  
+    		def allocatedAmount=grantAllocationService.getSumOfAmountAllocatedForProject(gh.getValue("ProjectID"),getUserPartyID())
+    		def expenseTotal=GrantExpense.executeQuery("select sum(GE.expenseAmount) from GrantExpense GE where GE.projects="+grantExpenseInstance.projects.id)
+    		
+    		double balanceAmnt
+    		if(expenseTotal[0])
+    		{
+    		    balanceAmnt= (allocatedAmount+grantExpenseOrginalInstance.expenseAmount)- expenseTotal[0]
+    		}
+    		else
+    		{
+    			 balanceAmnt= allocatedAmount
+    		}
+    		
+    		if(grantExpenseInstance.expenseAmount > balanceAmnt)
+    	    {
+    	    	flash.message = "${message(code: 'default.ExpenseAmountValidationAgainstAllocatedAmount.label')}"
+    	    	redirect(action:edit,id:params.id)
+    	    }
+    	    else
+    	    {
+    		   def headAllcnAmnt=grantExpenseService.getAllocatedAmntHeadwise(grantExpenseInstance)
+    		   def headExpAmnt = grantExpenseService.getExpAmntHeadwise(grantExpenseInstance)
+    		   double headBalance
+    		   if (headExpAmnt[0])
+    		   {
+    			     headBalance = (headAllcnAmnt[0]+grantExpenseOrginalInstance.expenseAmount)-headExpAmnt[0]
+    		   }
+    		   else
+    		   {
+    			 headBalance = headAllcnAmnt[0] 
+    		   }
+    		   if(grantExpenseInstance.expenseAmount > headBalance)
+    		   {
+    			   flash.message = "${message(code: 'default.ExpenseAmountValidationAgaistHeadwiseAllcn.label')}"
+    			   redirect(action:edit,id:params.id)
+    		   }
+    		   else
+    		   {
+    			if(grantExpenseInstance) {
+        	
     		if(grantExpenseInstance.dateOfExpense < grantExpenseInstance.grantAllocation.DateOfAllocation)
     		{
-    			println"....testing.."
     			flash.message="${message(code: 'default.DateValidationAgainstAllocationdate.label')}"
+    			grantExpenseInstance=grantExpenseWithOutSave
     			redirect(action:edit,id:params.id)
     		}
     		else
     		{
+    			grantExpenseInstance = grantExpenseService.updateGrantExpense(params)
     			if(grantExpenseInstance.isSaved)
     			{	
     				flash.message = "${message(code: 'default.updated.label')}"
@@ -143,9 +189,12 @@ class GrantExpenseController extends GmsController {
         }
         	
         else {
-            flash.message = "${message(code: 'default.notfond.label')}"
+        	grantExpenseInstance=grantExpenseWithOutSave
+        	flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:edit,id:params.id)
         }
+    }
+    }
     }
 
     def create = 
@@ -285,7 +334,24 @@ class GrantExpenseController extends GmsController {
 	    }
 	    else
 	    {
-		
+		   def headAllcnAmnt=grantExpenseService.getAllocatedAmntHeadwise(grantExpenseInstance)
+		   def headExpAmnt = grantExpenseService.getExpAmntHeadwise(grantExpenseInstance)
+		   double headBalance
+		   if (headExpAmnt[0])
+		   {
+		     headBalance = headAllcnAmnt[0]-headExpAmnt[0]
+		   }
+		   else
+		   {
+			 headBalance = headAllcnAmnt[0] 
+		   }
+		   if(grantExpenseInstance.expenseAmount > headBalance)
+		   {
+			   flash.message = "${message(code: 'default.ExpenseAmountValidationAgaistHeadwiseAllcn.label')}"
+			   redirect(action:create,id:grantExpenseInstance.projects.id)
+		   }
+		   else
+		   {
 	    	if(grantExpenseInstance.dateOfExpense < grantExpenseInstance.grantAllocation.DateOfAllocation)
 	    	{
 	    		flash.message="${message(code: 'default.DateValidationAgainstAllocationdate.label')}"
@@ -305,6 +371,7 @@ class GrantExpenseController extends GmsController {
 	    			render(view:'create',model:[grantExpenseInstance:grantExpenseInstance])
 	    		}
 	    	}
+		   }
 	    }
     }
     

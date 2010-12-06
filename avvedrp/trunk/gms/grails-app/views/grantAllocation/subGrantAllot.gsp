@@ -31,6 +31,15 @@
                              	${currencyFormat.ConvertToIndainRS(projectInstance.parent.totAllAmount)}
                              </strong>
                         </td>
+                        <td valign="top" class="name">
+                            <label for="party"> <g:message code="default.BalanceAmount.label"/>:</label>
+                        </td>
+                        <td valign="top" >
+                         	<strong>
+                             	<g:message code="default.Rs.label" />
+                             	${currencyFormat.ConvertToIndainRS(grantAllocationInstance.balanceAmount)}
+                             </strong>
+                        </td>
                      </tr> 
                 </table>
             </div>
@@ -203,8 +212,7 @@
                 					</table>
             					</div>
 		        				<div class="buttons">
-		                			<span class="button"><input class="save" type="submit" 
-		                				value="${message(code: 'default.Create.button')}"  onClick="return validateSubProject();return validateSubGrantAllot();" />
+		                			<span class="button"><input class="save" type="submit" value="${message(code: 'default.Create.button')}"  onClick="return validateSubProject();return validateSubGrantAllot();" />
 		                			</span>
 		            			</div>
 		          			</g:form>

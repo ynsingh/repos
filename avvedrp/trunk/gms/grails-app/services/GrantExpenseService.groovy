@@ -294,7 +294,18 @@ class GrantExpenseService {
 		
 		
 	}
-	 
+	
+	 public List getAllocatedAmntHeadwise(def grantExpenseInstance)
+	 {
+		 def headAllcnAmnt=GrantAllocationSplit.executeQuery("select sum(GS.amount) from GrantAllocationSplit GS where GS.id="+grantExpenseInstance.grantAllocationSplitId)
+		 return headAllcnAmnt
+	 }
+	 public List getExpAmntHeadwise(def grantExpenseInstance)
+	 {
+		 def headExpAmnt=GrantExpense.executeQuery("select sum(GE.expenseAmount) from GrantExpense GE where GE.grantAllocationSplit.id="+grantExpenseInstance.grantAllocationSplitId)
+		 return headExpAmnt
+	 }
+	
 	 
 }
 

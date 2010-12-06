@@ -54,10 +54,6 @@
 					   			
 					   			<td><g:textArea name="remarks" value="${itemPurchaseInstance?.remarks}" /></td>
 				   			</tr>
-				   			<tr>
-					   			<td><label><g:message code="default.Active.label" /></label></td>
-					   			<td><g:select name="status" from="${['Y','N']}" /> </td>
-						   	</tr>
 					   	</tbody>
 				   	</table>
 			   	</div>	

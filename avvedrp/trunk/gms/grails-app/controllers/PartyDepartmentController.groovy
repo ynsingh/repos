@@ -6,84 +6,94 @@ class PartyDepartmentController {
 
     // the delete, save and update actions only accept POST requests
     def allowedMethods = [delete:'POST', save:'POST', update:'POST']
-
-    def list = {
-        if(!params.max) params.max = 10
-       
-        GrailsHttpSession gh=getSession()
-        def dataSecurityService = new DataSecurityService()
-        def partyService = new PartyService()
-        def partyDepartmentInstanceList = partyService.getPartyDepartment(gh.getValue("PartyID"))
-        [ partyDepartmentInstanceList: partyDepartmentInstanceList ]
-    }
-
-    def show = {
-        def partyDepartmentInstance = PartyDepartment.get( params.id )
-
-        if(!partyDepartmentInstance) {
-            flash.message = "${message(code: 'default.notfond.label')}"
-            redirect(action:list)
-        }
-        else { return [ partyDepartmentInstance : partyDepartmentInstance ] }
-    }
-
-    def delete = {
-        def partyDepartmentInstance = PartyDepartment.get( params.id )
-        if(partyDepartmentInstance) {
-            partyDepartmentInstance.delete()
-            flash.message = "${message(code: 'default.deleted.label')}"
-            redirect(action:list)
-        }
-        else {
-            flash.message = "${message(code: 'default.notfond.label')}"
-            redirect(action:list)
-        }
-    }
-
+/*============================= NEW =================================*/
+	def delete = {
+    		def projectDepartmentMapService= new ProjectDepartmentMapService()
+    		def investigatorService = new InvestigatorService()
+    		def partyDepartmentService = new PartyDepartmentService()
+    		def ProjectDepartmentMapInstance=projectDepartmentMapService.getProjectDepartmentMapByPartyDepartment(params.id)
+    		if (!ProjectDepartmentMapInstance)
+    		{	
+    			def investigatorInstance= investigatorService.getinvestigatorByDepartment(params.id)
+	    		if (!investigatorInstance)
+			    {	
+	    			def partyDepartmentInstance = partyDepartmentService.getPartyDepartmentById(params.id )
+			        if(partyDepartmentInstance) 
+			        {
+			        	partyDepartmentInstance.properties = params
+			        	partyDepartmentInstance = partyDepartmentService.deleteDepartment(partyDepartmentInstance)
+			        	flash.message = "${message(code: 'default.deleted.label')}"
+				        redirect(action:create)
+		        	}	
+			        else 
+			        {
+			            flash.message = "${message(code: 'default.notfond.label')}"
+			            redirect(action:create) //15-11-2010
+			        }
+		        }
+		        else
+		        {
+		            flash.message = "${message(code: 'default.usedinPI.label')}"		            
+			        redirect(action:edit, id:params.id) //15-11-2010	
+		        }
+	    	}
+	    	else    		
+			   {
+			      flash.message = "${message(code: 'default.usedinProjects.label')}"		            
+			      redirect(action:edit, id:params.id) //15-11-2010	
+			    }    		
+		  }
+/*========================== END ===================================*/
     def edit = {
-        def partyDepartmentInstance = PartyDepartment.get( params.id )
-         GrailsHttpSession gh=getSession()
-        def dataSecurityService = new DataSecurityService()
-        def partyList = dataSecurityService.getPartiesOfLoginUser(gh.getValue("PartyID"));
-        if(!partyDepartmentInstance) {
-            flash.message = "${message(code: 'default.notfond.label')}"
-            redirect(action:create)
-        }
-        else {
-            return [ 'partyDepartmentInstance' : partyDepartmentInstance,'partyList':partyList ]
-        }
-    }
+    		def partyDepartmentService = new PartyDepartmentService()
+    		def partyDepartmentInstance = partyDepartmentService.getPartyDepartmentById(params.id )
+    		GrailsHttpSession gh=getSession()
+    		def dataSecurityService = new DataSecurityService()
+    		def partyList = dataSecurityService.getPartiesOfLoginUser(gh.getValue("PartyID"));
+    		if(!partyDepartmentInstance) 
+    		{
+	            flash.message = "${message(code: 'default.notfond.label')}"
+	            redirect(action:create)
+    		}
+    		else {
+    			return [ 'partyDepartmentInstance' : partyDepartmentInstance,'partyList':partyList ]
+    		}
+    	}
 
     def update = {
-        def partyDepartmentInstance = PartyDepartment.get( params.id )
-        if(partyDepartmentInstance) {
-            partyDepartmentInstance.properties = params
-            if(!partyDepartmentInstance.hasErrors() && partyDepartmentInstance.save()) {
-                flash.message ="${message(code: 'default.updated.label')}"
-                redirect(action:create,id:partyDepartmentInstance.id)
+    		def partyDepartmentService = new PartyDepartmentService()
+    		partyDepartmentService = partyDepartmentService.updateDepartment(params)
+    		if(partyDepartmentService){
+    			if(partyDepartmentService.saveMode != null){
+    				if(partyDepartmentService.saveMode.equals("Updated")){
+    					flash.message = "${message(code: 'default.updated.label')}"
+    						redirect(action:create,id:partyDepartmentService.id)
+    				}
+    				else if(partyDepartmentService.saveMode.equals("Duplicate")){
+    					flash.message = "${message(code: 'default.AlreadyExists.label')}"
+    						redirect(action:create,id:partyDepartmentService.id)
+    				}
+    			}
+    			else {
+                    render(view:'edit',model:[partyDepartmentService:partyDepartmentService])
+                }
+    		}
+    		else {
+                flash.message = "${message(code: 'default.notfond.label')}"
+                redirect(action:edit,id:params.id)
             }
-            else {
-                render(view:'edit',model:[partyDepartmentInstance:partyDepartmentInstance])
-            }
-        }
-        else {
-            flash.message = "${message(code: 'default.notfond.label')}"
-            redirect(action:edit,id:params.id)
-        }
-    }
+    	
+    	}
 
     def create = {
         def partyDepartmentInstance = new PartyDepartment()
         partyDepartmentInstance.properties = params
         GrailsHttpSession gh=getSession()
         def dataSecurityService = new DataSecurityService()
-       	println "===== PartyID====== " +gh.getValue("PartyID")
-        def partyList = dataSecurityService.getPartiesOfLoginUser(gh.getValue("PartyID"));
-        
+       	def partyList = dataSecurityService.getPartiesOfLoginUser(gh.getValue("PartyID"));
         //getting Department List
         def partyService = new PartyService()
         def partyDepartmentInstanceList = partyService.getPartyDepartment(gh.getValue("PartyID"))
-
         return ['partyDepartmentInstance':partyDepartmentInstance,
                 'partyList':partyList,
                 'partyDepartmentInstanceList': partyDepartmentInstanceList ]
@@ -91,13 +101,32 @@ class PartyDepartmentController {
 
     def save = {
         def partyDepartmentInstance = new PartyDepartment(params)
-        partyDepartmentInstance.createdBy="admin";
-        if(!partyDepartmentInstance.hasErrors() && partyDepartmentInstance.save()) {
-            flash.message = "${message(code: 'default.created.label')}"
-            redirect(action:create,id:partyDepartmentInstance.id)
-        }
-        else {
-            render(view:'create',model:[partyDepartmentInstance:partyDepartmentInstance])
-        }
+        
+        if(!partyDepartmentInstance.hasErrors())
+        	{
+	        	partyDepartmentInstance.createdBy="admin";        
+	            partyDepartmentInstance.activeYesNo="Y" 
+	            def partyDepartmentService = new PartyDepartmentService()
+	            partyDepartmentInstance = partyDepartmentService.saveDepartment(partyDepartmentInstance)
+	            if(partyDepartmentInstance.saveMode != null)
+	            {
+	           		if(partyDepartmentInstance.saveMode.equals("Saved"))
+	           		{
+	           			flash.message = "${message(code: 'default.created.label')}"
+	           	        redirect(action:create,id:partyDepartmentInstance.id)
+	           		}
+	           		else if(partyDepartmentInstance.saveMode.equals("Duplicate"))
+	           		{
+	           			flash.message =  "${message(code: 'default.AlreadyExists.label')}"
+	           			redirect(action:create,id:partyDepartmentInstance.id)
+	           		}
+	           	}
+	           	else {
+	                render(view:'create',model:[partyDepartmentInstance:partyDepartmentInstance])
+	            }
+	        }
+        	else {
+        		render(view:'create',model:[partyDepartmentInstance:partyDepartmentInstance])
+        	}
     }
 }

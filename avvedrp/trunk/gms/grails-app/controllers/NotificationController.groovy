@@ -163,7 +163,7 @@ class NotificationController {
 		def dataSecurityService = new DataSecurityService()
         List<GrantAllocation> grantAllocationWithprojectsInstanceList 	
 		try{
-			grantAllocationWithprojectsInstanceList = grantAllocationService.getAll()
+			grantAllocationWithprojectsInstanceList = grantAllocationService.getGrantAllocationByActiveProjects()
 		}
     	catch(Exception e)
     	{
@@ -179,7 +179,30 @@ class NotificationController {
     def save={	
        print "+++++++++++++++save++++++++++++++++++++"
     		def notificationInstance = new Notification(params)
-    		
+       println "not projects"+notificationInstance.project
+       def notificationService = new NotificationService()
+       //GrailsHttpSession gh=getSession()
+       
+       //println"notificationInstanceList.notificationCode"+notificationInstanceList.notificationCode
+      def chkUniNotCodeInstance = notificationService.getNotificationCode(notificationInstance)
+       println"chkUniNotCodeInstance[0]"+chkUniNotCodeInstance[0]
+       if(chkUniNotCodeInstance)
+       {
+    	   flash.message ="Notification already exists"
+    	   redirect(action:create,id:notificationInstance.id)
+       }
+       else
+       {
+    	   def dataSecurityService = new DataSecurityService()
+       		List<GrantAllocation> grantAllocationWithprojectsInstanceList 	
+       		try{
+			grantAllocationWithprojectsInstanceList = grantAllocationService.getGrantAllocationByActiveProjects()
+       		}
+   			catch(Exception e)
+   			{
+   		
+   			}
+       
     		def downloadedfile = request.getFile('myFile')
     		def attachmentsName='ApplicationForm'
 			 def gmsSettingsService = new GmsSettingsService()
@@ -202,14 +225,18 @@ class NotificationController {
 	    		new File( webRootDir+"proposalApplication/" ).mkdirs()
 	    		downloadedfile.transferTo( new File( webRootDir + File.separatorChar + fileName+".gsp") )
     		}
-        if(!notificationInstance.hasErrors() && notificationInstance.save()) {
+    		if(!notificationInstance.hasErrors() && notificationInstance.save()) 
+    		{
             flash.message = "${message(code: 'default.created.label')}"
             	
-          redirect(action:list,id:notificationInstance.id)
-        }
-        else {
-            render(view:'create',model:[notificationInstance:notificationInstance])
-        }
+            redirect(action:list,id:notificationInstance.id)
+    		}
+    		else
+    		{
+        	println "not saved ==============="
+            render(view:'create',model:[notificationInstance:notificationInstance,grantAllocationWithprojectsInstanceList:grantAllocationWithprojectsInstanceList])
+    		}
+       }
     }
 
 

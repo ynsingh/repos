@@ -1,103 +1,163 @@
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 class ProjectTypeController {
     
-    def index = { redirect(action:list,params:params) }
+    def index = {}
 
     // the delete, save and update actions only accept POST requests
     def allowedMethods = [delete:'POST', save:'POST', update:'POST']
+    
+    
+    /**
+	 * Method to Perform the create action
+	 */
 
-    def list =
-    {
-        if(!params.max) params.max = 10
-         
-       
-        [ projectTypeInstanceList: ProjectType.list(params) ]
-    }
-
-    def show = {
-        def projectTypeInstance = ProjectType.get( params.id )
-
-        if(!projectTypeInstance) {
-            flash.message = "${message(code: 'default.notfond.label')}"
-            redirect(action:list)
-        }
-        else { return [ projectTypeInstance : projectTypeInstance ] }
-    }
-
-    def delete = {
-        def projectTypeInstance = ProjectType.get( params.id )
-        if(projectTypeInstance) {
-            projectTypeInstance.delete()
-            flash.message = "${message(code: 'default.deleted.label')}"
-            redirect(action:create)
-        }
-        else {
-            flash.message = "${message(code: 'default.notfond.label')}"
-            redirect(action:create)
-        }
-    }
-
-    def edit = {
-        def projectTypeInstance = ProjectType.get( params.id )
-
-        if(!projectTypeInstance) {
-            flash.message = "${message(code: 'default.notfond.label')}"
-            redirect(action:create)
-        }
-        else {
-            return [ projectTypeInstance : projectTypeInstance ]
-        }
-    }
-
-    def update = {
-        def projectTypeInstance = ProjectType.get( params.id )
-        if(projectTypeInstance) {
-            projectTypeInstance.properties = params
-            if(!projectTypeInstance.hasErrors() && projectTypeInstance.save()) {
-                flash.message = "${message(code: 'default.updated.label')}"
-                redirect(action:create,id:projectTypeInstance.id)
-            }
-            else {
-                render(view:'edit',model:[projectTypeInstance:projectTypeInstance])
-            }
-        }
-        else {
-            flash.message = "${message(code: 'default.notfond.label')}"
-            redirect(action:edit,id:params.id)
-        }
-    }
-
-    def create = {
-    	GrailsHttpSession gh=getSession()
-    	//Puting help page into session
-    	gh.putValue("Help","Project_Type.htm")
-        def projectTypeInstance = new ProjectType()
-        projectTypeInstance.properties = params
-        def projectTypeInstanceList=ProjectType.findAll("from ProjectType PT where PT.activeYesNo='Y'")
-        return ['projectTypeInstance':projectTypeInstance,
-                'projectTypeInstanceList': projectTypeInstanceList]
-    }
-
-    def save = {
-        def projectTypeInstance = new ProjectType(params)
-        if(!projectTypeInstance.hasErrors())
+    def create = 
         {
-        	projectTypeInstance.createdBy="admin"
-        	projectTypeInstance.createdDate = new Date();
-        	projectTypeInstance.modifiedBy="admin"
-        
-	        if(projectTypeInstance.save()) 
-	        {
-	            flash.message = "${message(code: 'default.created.label')}"
-	            redirect(action:create,id:projectTypeInstance.id)
-	        }
-	        
-	        else {
-	            render(view:'create',model:[projectTypeInstance:projectTypeInstance])
-	        }
+    		def projectTypeInstance = new ProjectType()
+        	def projectTypeService = new ProjectTypeService()
+        	GrailsHttpSession gh=getSession()
+        	
+        	//Puting help page into session
+        	gh.putValue("Help","Project_Type.htm")
+            projectTypeInstance.properties = params
+            
+            /* Getting all active project types */
+            def projectTypeInstanceList = projectTypeService.getAllProjectType()
+            return ['projectTypeInstance':projectTypeInstance,
+                    'projectTypeInstanceList': projectTypeInstanceList]
         }
-        else {
-            render(view:'create',model:[projectTypeInstance:projectTypeInstance])
+    
+    /**
+	 * Method to perform the save action
+	 */
+
+    def save = 
+        {
+            def projectTypeInstance = new ProjectType(params)
+            def projectTypeService = new ProjectTypeService()
+            if(!projectTypeInstance.hasErrors())
+            {
+            
+            	/* Save ProjectType details */
+            	projectTypeInstance = projectTypeService.saveProjectType(projectTypeInstance)
+            	if(projectTypeInstance.saveMode != null)
+            	{
+            		/*Checking whether the project type details are saved*/
+            		if(projectTypeInstance.saveMode.equals("Saved"))
+            		{
+    	                  flash.message = "${message(code: 'default.created.label')}"
+    	                  redirect(action:create,id:projectTypeInstance.id)
+            		}
+            		else
+            		{
+            			  render(view:'create',model:[projectTypeInstance:projectTypeInstance])
+            		}
+            	}	
+            	else 
+            	{
+            			render(view:'create',model:[projectTypeInstance:projectTypeInstance])
+            	}
+            }
+           
         }
-    }
-}
+    
+    /**
+	 * Method for performing the edit action
+	 */
+	 
+    def edit = 
+        {
+        	def projectTypeService = new ProjectTypeService()
+        	
+            /* Getting Project Type details based on id */
+            def projectTypeInstance = projectTypeService.getProjectTypeById(new Integer( params.id ))
+            if(!projectTypeInstance) 
+            {
+                flash.message = "${message(code: 'default.notfond.label')}"
+                redirect(action:create)
+            }
+            else 
+            {
+                return [ projectTypeInstance : projectTypeInstance ]
+            }
+        }
+    
+    /**
+	 * Method for performing the update action
+	 */
+
+    def update = 
+        {
+        	def projectTypeInstance = new ProjectType(params)
+            def projectTypeService = new ProjectTypeService()
+        		
+        	/* Update Project Type details */
+            projectTypeInstance = projectTypeService.updateProjectType(params)
+                
+            /* Check whether any project type exists */
+            if(projectTypeInstance)
+              {
+                if(projectTypeInstance.saveMode != null)
+                  {
+                	/* Check whether the project type details are updated */
+    	            if(projectTypeInstance.saveMode.equals("Updated"))
+    	              {
+    	                 /* Shows a message if the details are updated */
+                         flash.message = "${message(code: 'default.updated.label')}"
+                         redirect(action:create,id:projectTypeInstance.id)
+                      }
+                      else 
+                      {
+                         render(view:'edit',model:[projectTypeInstance:projectTypeInstance])
+                      }
+                  }
+                  else 
+                  {
+                	 flash.message = "${message(code: 'default.notfond.label')}"
+                	 redirect(action:edit,id:params.id)
+                  }
+              }
+        }
+  
+    /**
+	 * Method for performing the delete action
+	 */
+	 
+	def delete = 
+ 		 {
+		    def projectTypeService = new ProjectTypeService() 
+		    def projectsService =new ProjectsService()
+		  
+		    /* Getting project details with selected projectType */
+    	    def projectsInstance =projectsService.getProjectByProjectType(params)
+    	    
+    	    /* check whether the project type is type of any project */
+    	    if (!projectsInstance)
+    	    {    		
+	          def projectTypeInstance = ProjectType.get( params.id )
+	          if(projectTypeInstance) 
+	          {
+	             projectTypeInstance.properties = params
+	             
+	             /* Delete project type details*/
+	             Integer projectTypeId = projectTypeService.deleteProjectType(new Integer(params.id))
+		         if(projectTypeId != null)
+		         {
+		        	flash.message = "${message(code: 'default.deleted.label')}"
+		        	redirect(action:create)
+		         }           
+		         else 
+		         {
+		        	flash.message = "${message(code: 'default.notfond.label')}"
+		        	redirect(action:create)
+		         }
+	          }
+    	    }
+    	    else
+    	    {
+    	    	/* Shows the following message if the project type is already in use. */
+    	    	flash.message = "${message(code: 'default.usedinProjects.label')}"
+    	    	redirect(action: "edit", id: params.id)   
+    	    }    	   
+ 		 }
+ }

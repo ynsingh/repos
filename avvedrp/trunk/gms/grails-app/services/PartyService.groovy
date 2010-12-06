@@ -2,37 +2,37 @@
 class PartyService{
 	
 	/**
-	 * Function to get all active main parties with party type null.
+	 * Get Active Institution details based on id
 	 */
-	public List getPartiesWithoutPartyType(String subQuery){
-		 
-		def partyInstanceList =Party.findAll( "from Party P where  P.partyType is NULL and P.activeYesNo='Y'"+subQuery )
+	public List getPartyBasedOnId(Integer partyId)
+	{ 
+		def partyInstanceList =Party.findAll( "from Party P where  P.partyType is NULL and P.activeYesNo='Y' and P.id = "+partyId)
 		return partyInstanceList
 	}
 	
-	
-	
+	/**
+	 * Get All Active institution details 
+	 */
+	public List getAllActiveParties()
+	{ 
+		def partyInstanceList =Party.findAll( "from Party P where  P.partyType is NULL and P.activeYesNo='Y'")
+		return partyInstanceList
+	}
 	
 	/**
-	 * Function to get party by id
+	 * Get party based on id
 	 */
-	public Party getPartyById(Integer partyId){
-		def partyInstance = Party.get( partyId )
+	public Party getPartyById(def partyId)
+	{
+		def partyInstance = Party.get(partyId)
 		return partyInstance
 	}
 	
 	/**
-	 * Function to get sub parties
+	 * Delete party details based on Id
 	 */
-	public List getSubParties(Integer mainPartyId){
-		def partyInstanceList=Party.findAll("from Party P where P.activeYesNo='Y' and P.parent.id="+mainPartyId)
-		return partyInstanceList
-	}
-	
-	/**
-	 * Function to delete party.
-	 */
-	public Integer deleteParty(Integer partyId){
+	public Integer deleteParty(Integer partyId)
+	{
 		def partyDeletedId = null
 		def partyInstance = getPartyById( partyId )
 		//check fund allocation by party and grantagency
@@ -41,13 +41,14 @@ class PartyService{
 		println "partyFromGrantAllocationInstance"+partyFromGrantAllocationInstance
         if((!partyFromGrantAllocationInstance)&& (!partyFromGrantAllocationGrantorInstance))
         {
-		if(partyInstance) {
-        	if(partyInstance.delete()){
-        		partyDeletedId = partyInstance.id
-        	}
-        	else
-        		partyDeletedId = -1
-        }
+			if(partyInstance)
+			{
+				partyInstance.activeYesNo = "N"
+				if(partyInstance.save())
+	        		partyDeletedId = partyInstance.id
+	        	else
+	        		partyDeletedId = 0
+	        }
 		}
         else
         {
@@ -57,7 +58,7 @@ class PartyService{
 	}
 	
 	/**
-	 * Function to update party.
+	 * Update party details
 	 */
 	public Party updateParty(def partyParams){
 		def partyInstance = getPartyById( new Integer(partyParams.id ))
@@ -67,11 +68,11 @@ class PartyService{
         	
         	/* Check whether Institution with same name already exists.*/
             Integer partyId = checkDuplicateParty(partyParams)
-    	    if(partyId.intValue() == 0 || partyId.intValue() == partyInstance.id.intValue()){
+    	    if(partyId.intValue() == 0 || partyId.intValue() == partyInstance.id.intValue())
+    	    {
     	    	partyInstance.properties = partyParams
-	            if(!partyInstance.hasErrors() && partyInstance.save()) {
+    	    	if(!partyInstance.hasErrors() && partyInstance.save())
 	            	partyInstance.saveMode = "Updated"
-	            }
     	    }
     	    else
     	    	partyInstance.saveMode = "Duplicate"
@@ -80,14 +81,19 @@ class PartyService{
 	}
 	
 	/**
-	 * Function to save party.
+	 * Save party details
 	 */
-	public Party saveParty(def partyInstance){
-		/* Check whether Institution with same name already exists.*/
-	    if(checkDuplicateParty(partyInstance) == 0){
-           	if(partyInstance.save()){
+	public Party saveParty(def partyInstance)
+	{
+		partyInstance.createdBy="admin"
+       	partyInstance.createdDate = new Date();
+       	partyInstance.modifiedBy="admin"
+		
+       	/* Check whether Institution with same name already exists.*/
+	    if(checkDuplicateParty(partyInstance) == 0)
+	    {
+           	if(partyInstance.save())
            		partyInstance.saveMode = "Saved"
-           	}
 	    }
 	    else
 	    {
@@ -99,7 +105,7 @@ class PartyService{
 	}
 	
 	/**
-	 * Function to check whether party exists or not.
+	 * Checking whether party exists or not.
 	 */
 	public Integer checkDuplicateParty(def partyInstance){
     	def partyId = 0
@@ -112,17 +118,25 @@ class PartyService{
     }
 	
 	/**
-	 * Function to get all active grant agencies.
+	 * Getting the list of all active grant agencies.
 	 */
-	public List getActiveGrantAgency(String subQuery){
+	public List getActiveGrantAgency(def params)
+	{
+		params.partyType = "GA"
+		String subQuery ="";
+		if(params.sort != null && !params.sort.equals(""))
+			subQuery=" order by P."+params.sort
+		if(params.order != null && !params.order.equals(""))
+			subQuery =subQuery+" "+params.order
 		def partyInstanceList =Party.findAll( "from Party P where P.partyType='GA' and P.activeYesNo='Y'"+subQuery ) 
 		return partyInstanceList
 	}
 	
 	/**
-	 * Function to check whether grant agency exists or not.
+	 *Checking whether grant agency exists or not.
 	 */
-	private Integer checkDuplicateGrantAgency(def partyInstance){
+	private Integer checkDuplicateGrantAgency(def partyInstance)
+	{
     	def grantAgencyId = 0
     	System.out.println("DuplicateGrantAgency__ "+partyInstance.code)
     	def chkPartyInstance = Party.find("from Party P where P.code= '"+partyInstance.code+"' and P.activeYesNo='Y' and P.partyType='GA'")
@@ -137,17 +151,19 @@ class PartyService{
 	 */
 	public Party updateGrantAgency(def partyParams){
 		def partyInstance = getPartyById( new Integer(partyParams.id ))
-        if(partyInstance) {
+        if(partyInstance)
+        {
         	partyInstance.modifiedBy="admin"
             partyInstance.modifiedDate=new Date()
         	
         	/* Check whether Institution with same name already exists.*/
             Integer partyId = checkDuplicateGrantAgency(partyParams)
-    	    if(partyId.intValue() == 0 || partyId.intValue() == partyInstance.id.intValue()){
+    	    if(partyId.intValue() == 0 || partyId.intValue() == partyInstance.id.intValue())
+    	    {
     	    	partyInstance.properties = partyParams
-	            if(!partyInstance.hasErrors() && partyInstance.save()) {
+	            if(!partyInstance.hasErrors() && partyInstance.save()) 
 	            	partyInstance.saveMode = "Updated"
-	            }
+	            
     	    }
     	    else
     	    	partyInstance.saveMode = "Duplicate"
@@ -158,12 +174,18 @@ class PartyService{
 	/**
 	 * Function to save grant agency.
 	 */
-	public Party saveGrantAgency(def partyInstance){
+	public Party saveGrantAgency(def partyInstance)
+	{
+		partyInstance.partyType="GA" 
+		partyInstance.createdBy="admin"
+		partyInstance.createdDate = new Date();
+		partyInstance.modifiedBy="admin"
+		partyInstance.activeYesNo = "Y"
 		/* Check whether Institution with same name already exists.*/
-	    if(checkDuplicateGrantAgency(partyInstance) == 0){
-           	if(partyInstance.save()){
+	    if(checkDuplicateGrantAgency(partyInstance) == 0)
+	    {
+           	if(partyInstance.save())
            		partyInstance.saveMode = "Saved"
-           	}
 	    }
 	    else
 	    	partyInstance.saveMode = "Duplicate"
@@ -180,5 +202,5 @@ class PartyService{
 		println "=====partyDepartmentInstance====== " + partyDepartmentInstance 
 		return partyDepartmentInstance
 	}
-	
+
 }

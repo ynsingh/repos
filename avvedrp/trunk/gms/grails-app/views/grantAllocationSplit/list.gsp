@@ -82,7 +82,7 @@
 	    						<table width="840" border="0" cellspacing="0" cellpadding="0">
 	      							<tr> 
 	        							<td width="281">
-	        								<strong>${i+1})<g:message code="default.Project.label"/> : 
+	        								<strong>${i+1})<g:message code="default.Grant.label"/> : 
 	        									<g:message code="default.Rs.label" /> 
 	        									${currencyFormat.ConvertToIndainRS(grantAllocationInstanceList.amountAllocated)}
         									</strong>
@@ -104,6 +104,14 @@
 								 </table>
 							   </td>
   							</tr>
+  							<%
+						  	def totalGrantAlloctedAmt=GrantAllocationSplit.executeQuery("select sum(GA.amount)  from GrantAllocationSplit GA where GA.grantAllocation ="+grantAllocationInstanceList.id+" group by GA.grantAllocation");
+	                        def unallocateAmt
+	                        if(totalGrantAlloctedAmt[0]==null)
+	                        	unallocateAmt=grantAllocationInstanceList.amountAllocated
+	                        else
+	                        	unallocateAmt=grantAllocationInstanceList.amountAllocated-totalGrantAlloctedAmt[0]
+                        %>
   							<tr>
     							<td width="500" >
     								<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
@@ -116,7 +124,7 @@
 	        									</td>
 		            							<td width="169"> 
 		            								<g:link action="edit" id="${grantAllocationSplit[4]}"  rel="example3" 
-		            									params="['grantAllotId':grantAllocationInstanceList.id]" title="Edit  Allocation" >  
+		            									params="['grantAllotId':grantAllocationInstanceList.id,'UnAll':unallocateAmt]" title="Edit  Allocation" >  
 		            									<g:message code="default.Edit.label"/> 
 		        									</g:link> 
 		    									</td>
@@ -189,14 +197,7 @@
     						<td width="100">&nbsp;</td>
 					  	</tr>
 					   <tr>
-					  	<%
-						  	def totalGrantAlloctedAmt=GrantAllocationSplit.executeQuery("select sum(GA.amount)  from GrantAllocationSplit GA where GA.grantAllocation ="+grantAllocationInstanceList.id+" group by GA.grantAllocation");
-	                        def unallocateAmt
-	                        if(totalGrantAlloctedAmt[0]==null)
-	                        	unallocateAmt=grantAllocationInstanceList.amountAllocated
-	                        else
-	                        	unallocateAmt=grantAllocationInstanceList.amountAllocated-totalGrantAlloctedAmt[0]
-                        %>
+					  	
 
  						<td height="40">
  							<strong><g:message code="default.HeadAllocation.UnallocatedAmount(Rs).label"/> : <g:message code="default.Rs.label" />

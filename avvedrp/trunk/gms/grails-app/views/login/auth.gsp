@@ -61,11 +61,12 @@ background-color: #d5e5ed;
     position: relative;
 	float: right;
 	right:90px;
-	top: 45px;
+	top: 30px;
 	width:232px;
 	height:164px;
 	color: #01518e;
-	font-size:15px;
+	font-size:12px;
+	font-family: verdana, Helvetica, sans-serif;
 	font-weight: bold;
 	letter-spacing: 1px;
 	text-align:left;
@@ -90,17 +91,29 @@ background-color: #d5e5ed;
 
 
 <script language="JavaScript" type="text/javascript">
-<!--
-function breakout_of_frame()
-{
-  // see http://www.thesitewizard.com/archive/framebreak.shtml
-  // for an explanation of this script and how to use it on your
-  // own website
-  if (top.location != location) {
-    top.location.href = document.location.href ;
-  }
-}
--->
+
+	function breakout_of_frame()
+	{
+	  // see http://www.thesitewizard.com/archive/framebreak.shtml
+	  // for an explanation of this script and how to use it on your
+	  // own website
+	  if (top.location != location) {
+	    top.location.href = document.location.href ;
+	  }
+	}
+	
+
+	function Redirect()
+	{
+		var val = document.getElementById('language').value;
+		window.location="auth?lang="+val;
+		var index = document.getElementById('language').selectedIndex ; 
+		
+		document.getElementById('language').options[index].text;
+		return true;
+	}
+        
+
 </script>
 </head>
 
@@ -131,36 +144,66 @@ function breakout_of_frame()
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <form action='${postUrl}' method='POST' id='loginForm' class='cssform'>
     <tr>
-      <th width="49%" height="51" scope="col">User Name: </th>
+	    <td height="42">
+	    <label for="language"><g:message code="default.language.label"/>:</label>
+	    </td>
+       <td>
+	       <select id="language" onchange="Redirect()">
+	       <g:if test="${session.lang == ''}">
+	             <option id="1" value="en" selected >English</option>
+	 			 <option id="2" value="ml" >Malayalam</option>
+	 			 <option id="3" value="hi" >Hindi</option>
+	
+           </g:if>
+	       <g:if test="${session.lang == 'en'}">
+	             <option id="1" value="en"  selected>English</option>
+	 			 <option id="2" value="ml" >Malayalam</option>
+	 			 <option id="3" value="hi">Hindi</option>
+	
+           </g:if>
+	  			  <g:if test="${session.lang == 'ml'}">
+	             <option id="1" value="en"  >English</option>
+	 			 <option id="2" value="ml" selected >Malayalam</option>
+	 			 <option id="3" value="hi">Hindi</option>
+	
+           </g:if>
+             <g:if test="${session.lang == 'hi'}">
+	             <option id="1" value="en"  >English</option>
+	 			 <option id="2" value="ml" >Malayalam</option>
+	 			 <option id="3" value="hi" selected>Hindi</option>
+	
+           </g:if>
+			</select>
+        </td>
+    </tr>
+    <tr>
+      <th width="49%" height="42" scope="col"><g:message code="default.UserName.label"/>: </th>
       <th width="51%" scope="col">
       
          <input type="text" size="16" name='j_username' id='j_username' value='${request.remoteUser}' />
      </th>
       </tr>
     <tr>
-      <th height="53" scope="row">Password : </th>
+      <th height="42" scope="row"><g:message code="default.Password.label"/> : </th>
       <td>
        <input type='password' size="16" name='j_password' id='j_password' />
     </td>
       </tr>
     <tr>
-      <th height="52" scope="row">&nbsp;</th>
-      <td><input type='submit' value='Login' /></td>
+      <th height="30" scope="row">&nbsp;</th>
+      <td><input type='submit' value='<g:message code="default.login.label"/>' /></td>
       </tr>
     <tr>
    	 	<td>
-  	 	 <g:link style="font-size:12px;font-weight: bold;text-decoration:none;color: #7D053F;" onmouseover="this.style.textDecoration ='underline';" onmouseout="this.style.textDecoration='none';" controller="user" action="newUserCreate">Register</g:link>
+  	 	 <g:link style="font-size:12px;font-weight: normal;text-decoration:none;color: #7D053F;" onmouseover="this.style.textDecoration ='underline';" onmouseout="this.style.textDecoration='none';" controller="user" action="newUserCreate"><g:message code="default.Register.label"/> </g:link>
       </td>
       <td>
-  	 	 <g:link style="font-size:10px;text-decoration:none;color: #7D053F;" onmouseover="this.style.textDecoration ='underline';" onmouseout="this.style.textDecoration='none';" controller="user" action="forgotPassword">Forgot password?</g:link>
+  	 	 <g:link style="font-size:12px;font-weight: normal;text-decoration:none;color: #7D053F;" onmouseover="this.style.textDecoration ='underline';" onmouseout="this.style.textDecoration='none';" controller="user" action="forgotPassword"><g:message code="default.Forgotyourpassword.head"/> </g:link>
       </td>
       </tr>
     <tr>
       <th  scope="row">&nbsp;</th>
       <td align="right"><font size="1" face="Times">
-     
-      
-      
       </td>
       </tr>
       </form>

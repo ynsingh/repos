@@ -17,6 +17,7 @@ class GrantAllocation
 	Date modifiedDate;
 	
 	double totAllAmount
+	double balanceAmount
 	static constraints = {
 		
 		createdDate(nullable: true)
@@ -27,6 +28,6 @@ class GrantAllocation
     
 	boolean isSaved
 	String grantCode;
-    static transients = [ "totAllAmount","isSaved","grantCode" ]
+    static transients = [ "totAllAmount","isSaved","grantCode","balanceAmount" ]
 
 }

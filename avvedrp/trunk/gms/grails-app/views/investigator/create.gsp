@@ -78,14 +78,6 @@
                                     <input type="text" id="email" name="email" value="${fieldValue(bean:investigatorInstance,field:'email')}"/>
                                 </td>
                             </tr> 
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="activeYesNo"><g:message code="default.Active.label"/></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean:investigatorInstance,field:'activeYesNo','errors')}">
-                                    <g:select name="activeYesNo" from="${['Y', 'N']}"  value="${fieldValue(bean:investigatorInstance,field:'activeYesNo')}" />
-                                </td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -118,9 +110,7 @@
                    	        <g:sortableColumn property="address" title="${message(code: 'default.Address.label')}" />
                                          
                    	        <g:sortableColumn property="email" title="${message(code: 'default.Email.label')}" />
-                   	       
-                   	        <g:sortableColumn property="activeYesNo" title="${message(code: 'default.Active.label')}" />
-                   	       
+
                    	        <th><g:message code="default.Edit.label"/></th>
                         
                         </tr>
@@ -144,13 +134,6 @@
                             <td>${fieldValue(bean:investigatorInstance, field:'address')}</td>
                         
                             <td>${fieldValue(bean:investigatorInstance, field:'email')}</td>
-                            <td><g:if test="${fieldValue(bean:investigatorInstance, field:'activeYesNo') == 'Y'}">
-    							  <g:message code="default.YES.label"/>
-    							 </g:if>
-    							 <g:else>
-    							  <g:message code="default.NO.label"/>
-    							 </g:else>
-                           </td>
                             
                            <td><g:link action="edit" id="${fieldValue(bean:investigatorInstance, field:'id')}"><g:message code="default.Edit.label"/></g:link></td>
                         

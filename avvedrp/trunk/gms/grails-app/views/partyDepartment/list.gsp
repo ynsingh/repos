@@ -25,9 +25,7 @@
                    	        <g:sortableColumn property="name" title="Name" />
                    	        
                    	        <g:sortableColumn property="party" title="Party" />
-                   	        
-                   	        <g:sortableColumn property="activeYesNo" title="Active" />
-                   	        
+
                    	        <th>Edit</th>
                        
                         </tr>
@@ -43,9 +41,7 @@
                             <td>${fieldValue(bean:partyDepartmentInstance, field:'name')}</td>
                             
                             <td>${fieldValue(bean:partyDepartmentInstance, field:'party.code')}</td>
-                            
-                            <td>${fieldValue(bean:partyDepartmentInstance, field:'activeYesNo')}</td>
-                        
+
                         	<td><g:link action="edit" id="${partyDepartmentInstance.id}">Edit</g:link></td>
                         	
                         </tr>

@@ -70,8 +70,18 @@ class LoginController {
 	 */
 	def auth = {
 			 println  "auth"
+			 GrailsHttpSession gh=getSession()
 		def config = SpringSecurityUtils.securityConfig
-		
+		 println  "params:"+params
+		 if(params.lang!=null)
+		 {
+			 println  "params:"+params.lang
+			 gh.putValue("lang",params.lang) 
+		 }
+		 else
+		 {
+			 gh.putValue("lang","en")
+		 }
 		if (springSecurityService.isLoggedIn()) {
 			println  "indexisLoggedIn"+SCH.context.authentication.principal.username
 			 println  "authisLoggedIn"
@@ -116,19 +126,19 @@ class LoginController {
 		def exception = session[AbstractAuthenticationProcessingFilter.SPRING_SECURITY_LAST_EXCEPTION_KEY]
 		if (exception) {
 			if (exception instanceof AccountExpiredException) {
-				msg = SpringSecurityUtils.securityConfig.errors.login.expired
+				msg = "${message(code: 'default.errors.login.expired.label')}"
 			}
 			else if (exception instanceof CredentialsExpiredException) {
-				msg = SpringSecurityUtils.securityConfig.errors.login.passwordExpired
+				msg = "${message(code: 'default.errors.login.passwordExpired.label')}"
 			}
 			else if (exception instanceof DisabledException) {
-				msg = SpringSecurityUtils.securityConfig.errors.login.disabled
+				msg ="${message(code: 'default.errors.login.disabled.label')}"
 			}
 			else if (exception instanceof LockedException) {
-				msg = SpringSecurityUtils.securityConfig.errors.login.locked
+				msg = "${message(code: 'default.errors.login.locked.label')}"
 			}
 			else {
-				msg = SpringSecurityUtils.securityConfig.errors.login.fail
+				msg = "${message(code: 'default.errors.login.fail.label')}"
 			}
 		}
 

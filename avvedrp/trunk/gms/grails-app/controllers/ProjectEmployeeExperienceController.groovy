@@ -34,7 +34,7 @@ class ProjectEmployeeExperienceController
     {
         def projectEmployeeExperienceInstance = new ProjectEmployeeExperience(params)
         def projectEmployeeInstance = ProjectEmployee.get(params.projectEmployee.id)
-        //projectEmployeeExperienceInstance.Status='Y'
+        projectEmployeeExperienceInstance.Status="Y" //15-11-2010
          if (projectEmployeeExperienceInstance.save(flush: true)) 
 	     {
 	       flash.message = "${message(code: 'default.created.label')}"
@@ -122,6 +122,7 @@ class ProjectEmployeeExperienceController
 
         if (projectEmployeeExperienceInstance) 
         {
+        	projectEmployeeExperienceInstance.Status="N" //15-11-2010
             try 
             {
             	//projectEmployeeExperienceInstance.Status='D'

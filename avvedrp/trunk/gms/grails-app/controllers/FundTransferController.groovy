@@ -31,7 +31,8 @@ class FundTransferController {
         currencyFormat:currencyFormatter]
     }
 
-    def save = {
+    def save = 
+    {
     	println "params" +params
         def fundTransferInstance = new FundTransfer(params.id)
     	
@@ -40,41 +41,60 @@ class FundTransferController {
         def fundTransferInstanceList= fundTransferService.getFundTransferDetailsByProject(grantAllocationInstance.projects.id)
         fundTransferInstance.grantAllocation = grantAllocationInstance
         fundTransferInstance.createdBy="admin"
-    		fundTransferInstance.modifiedBy="admin"
-        println"fundTransferInstance.amount"+fundTransferInstance.amount
-        def chkFundTransferAmnt=fundTransferService.chkAmntValidation(fundTransferInstance)
-        println"chkFundTransferAmnt"+chkFundTransferAmnt[0].amountAllocated
-        
-        def totFundTransfered = FundTransfer.executeQuery("select sum(FT.amount) from FundTransfer FT where FT.grantAllocation.id="+fundTransferInstance.grantAllocationId)
+    	fundTransferInstance.modifiedBy="admin"
+    	
+    	def grantReceiptService=new GrantReceiptService()
+        def grantAllocationParentInstance=fundTransferService.getGrantAllocationByProjects(fundTransferInstance)
+        println"grantAllocationParentInstance"+grantAllocationParentInstance[0].granter
+        def chkgrantReceiptInstance=grantReceiptService.chkgrantReceiptInstanceForParent( fundTransferInstance)
+        if(grantAllocationParentInstance[0].granter && !chkgrantReceiptInstance[0] )
+        {
+          print"testing......"
+    		flash.message = "Fund can be transfered only if the grant has been received"
+    		redirect(action: "create",id:grantAllocationInstance.id)
+    	 }
        
-        double totalFund
-        if(totFundTransfered[0]!=null)
-        {
-        totalFund = new Double(totFundTransfered[0]).doubleValue() + fundTransferInstance.amount
-        println"totalFundtransfer"+totalFund
-        }
-        else
-        {
-        	totalFund = fundTransferInstance.amount 
-        }
-       if(chkFundTransferAmnt[0].amountAllocated < totalFund)
-       {
-    	   flash.message = "${message(code: 'default.FundTransferAmount.label')}"
-    	   redirect(action: "create",id:grantAllocationInstance.id)
-       }
-       else
-       {
-         if (fundTransferInstance.save(flush: true)) {
-            flash.message = "${message(code: 'default.created.label')}"
-             redirect(action: "create", id: grantAllocationInstance.id,params:[subMenu:params.subMenu,currencyFormat:currencyFormatter])
-         }
-         else {
-            render(view: "create", model: [fundTransferInstance: fundTransferInstance,
+         else
+          {
+        	  println"fundTransferInstance.amount"+fundTransferInstance.amount
+        	  def chkFundTransferAmnt=fundTransferService.chkAmntValidation(fundTransferInstance)
+        	  println"chkFundTransferAmnt"+chkFundTransferAmnt[0].amountAllocated
+        
+        	  def totFundTransfered = FundTransfer.executeQuery("select sum(FT.amount) from FundTransfer FT where FT.grantAllocation.id="+fundTransferInstance.grantAllocationId)
+       
+        	  double totalFund
+        	  if(totFundTransfered[0]!=null)
+        	  {
+        		  totalFund = new Double(totFundTransfered[0]).doubleValue() + fundTransferInstance.amount
+        		  println"totalFundtransfer"+totalFund
+        	  }
+        	  else
+        	  {
+        		  totalFund = fundTransferInstance.amount 
+        	  }
+        
+        	  if(chkFundTransferAmnt[0].amountAllocated < totalFund)
+        	  {
+        		  flash.message = "${message(code: 'default.FundTransferAmount.label')}"
+        		  redirect(action: "create",id:grantAllocationInstance.id)
+        	  }
+        	  else
+        	  {
+        		  if (fundTransferInstance.save(flush: true)) 
+        		  {
+        			  flash.message = "${message(code: 'default.created.label')}"
+        			  redirect(action: "create", id: grantAllocationInstance.id,params:[subMenu:params.subMenu,currencyFormat:currencyFormatter])
+        		  }
+        		  else 
+        		  {
+        			  render(view: "create", model: [fundTransferInstance: fundTransferInstance,
                                            grantAllocationInstance:grantAllocationInstance,
                                            currencyFormat:currencyFormatter],
                                            params:[subMenu:params.subMenu])
-         }
-       }
+        		  }
+        	  }
+          }
+        
     }
 
     def show = {

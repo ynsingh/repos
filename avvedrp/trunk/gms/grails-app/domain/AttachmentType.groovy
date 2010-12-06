@@ -6,6 +6,7 @@ class AttachmentType {
 	 Date createdDate;
 	 String modifiedBy;
 	 Date modifiedDate;
+	 char activeYesNo; //15-11-2010
 	 static constraints={
 	             type(nullable:false)
 	             description(nullable:true)

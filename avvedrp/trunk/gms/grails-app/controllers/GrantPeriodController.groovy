@@ -1,198 +1,198 @@
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 
-class GrantPeriodController {
+class GrantPeriodController 
+{
     
-    def index = { redirect(action:list,params:params) }
+	def index ={}
 
-    // the delete, save and update actions only accept POST requests
-    def allowedMethods = [delete:'POST', save:'POST', update:'POST']
+	// the delete, save and update actions only accept POST requests
+	def allowedMethods = [delete:'POST', save:'POST', update:'POST']
 
-    def list = {
-    		
-    	GrailsHttpSession gh=getSession()
+	/**
+	 * Method to Perform the create action
+	 */ 
+	def create = 
+    {
+        def grantPeriodInstance = new GrantPeriod()
+    	def grantPeriodService = new GrantPeriodService()
+		GrailsHttpSession gh=getSession()
         gh.removeValue("Help")
-       		//putting help pages in session
-       	gh.putValue("Help","Grant_Period_List.htm")	
-        if(!params.max) params.max = 10
-        
-        def grantPeriodService = new GrantPeriodService()
-        def grantPeriodInstanceList = grantPeriodService.getAllGrantPeriods(params)
-        [ grantPeriodInstanceList: grantPeriodInstanceList ]
-    }
-
-    def show = {
-		def grantPeriodService = new GrantPeriodService()
-		def grantPeriodInstance = grantPeriodService.getGrantPeriodById(new Integer( params.id ))
-
-        if(!grantPeriodInstance) {
-            flash.message = "${message(code: 'default.notfond.label')}"
-            redirect(action:list)
-        }
-        else { return [ grantPeriodInstance : grantPeriodInstance ] }
-    }
-
-    def delete = {
-		def grantPeriodService = new GrantPeriodService()
-		Integer grantPeriodId = grantPeriodService.deleteGrantPeriod(new Integer(params.id))
-		
-		if(grantPeriodId != null){
-			flash.message = "${message(code: 'default.deleted.label')}"
-            redirect(action:list)
-		}
-		else {
-            flash.message = "${message(code: 'default.notfond.label')}"
-            redirect(action:list)
-        }
-    }
-
-    def edit =
-                {
-		            def grantPeriodService = new GrantPeriodService()
-		            def grantPeriodInstance = grantPeriodService.getGrantPeriodById(new Integer( params.id ))
-                    if(!grantPeriodInstance)
-                      {
-                          flash.message = "${message(code: 'default.notfond.label')}"
-                          redirect(action:list)
-                      }
-                    else
-                      {
-                          return [ grantPeriodInstance : grantPeriodInstance ]
-                      }
-                }
-
-  def update =
-                {
-    		        def grantPeriodInstance = new GrantPeriod(params)
-                    def grantPeriodService = new GrantPeriodService()
-		            def chkDefaultGrantPeriodInstance=grantPeriodService.getDefaultGrantPeriod(params)
-    	            println"chkDefaultGrantPeriodInstance in edit"+chkDefaultGrantPeriodInstance.size()
-    	            if(chkDefaultGrantPeriodInstance)
-    	             {
-    		           if((chkDefaultGrantPeriodInstance[0].id != Long.parseLong(params.id)) && (chkDefaultGrantPeriodInstance.size()>=1) && (grantPeriodInstance.defaultYesNo == 'Y'))
-        	             {
-    	                   flash.message = "${message(code: 'default.Defaultgrantperiodmustunique.label')}"
-    		               redirect(action:edit,id:params.id)
-    	                 }
-    		           else
-    	                 {
-		                   grantPeriodInstance = grantPeriodService.updateGrantPeriod(params)
-		                   if(grantPeriodInstance)
-		                    {
-			                  if(grantPeriodInstance.saveMode != null)
-			                    {
-				                  if(grantPeriodInstance.saveMode.equals("Updated"))
-				                    {
-					                  flash.message = "${message(code: 'default.updated.label')}"
-	                                  redirect(action:create,id:grantPeriodInstance.id)
-				                    }
-                                  else 
-			                        {
-                                      render(view:'edit',model:[grantPeriodInstance:grantPeriodInstance])
-                                    }
-		                        }
-    	                      else
-    	                        {
-                                  flash.message = "${message(code: 'default.notfond.label')}"
-                                  redirect(action:edit,id:params.id)
-                                }
-		                    }
-    	                 }
-    	             }
-    	            else
-    	               {
-    		             if((chkDefaultGrantPeriodInstance.size()>=1) && (grantPeriodInstance.defaultYesNo == 'Y'))
-           	               {
-       	                     flash.message = "${message(code: 'default.Defaultgrantperiodmustunique.label')}"
-       		                 redirect(action:edit,id:params.id)
-       	                   }
-       		             else
-       	                   {
-   		                     grantPeriodInstance = grantPeriodService.updateGrantPeriod(params)
-   		                     if(grantPeriodInstance)
-   		                       {
-   			                     if(grantPeriodInstance.saveMode != null)
-   			                       {
-   				                    if(grantPeriodInstance.saveMode.equals("Updated"))
-   				                      {
-   					                    flash.message = "${message(code: 'default.updated.label')}"
-   	                                    redirect(action:create,id:grantPeriodInstance.id)
-   				                      }
-   			                        else
-   			                          {
-                                        render(view:'edit',model:[grantPeriodInstance:grantPeriodInstance])
-                                      }
-   		                           }
-       	                         else
-       	                           {
-                                     flash.message = "${message(code: 'default.notfond.label')}"
-                                     redirect(action:edit,id:params.id)
-                                   }
-   		                       }
-       	                   }  
-    	               }
-                }
-
-    def create = {
-    		GrailsHttpSession gh=getSession()
-         def grantPeriodInstance = new GrantPeriod()
-        
-        
-        	gh.removeValue("Help")
-    		//putting help pages in session
-    		gh.putValue("Help","Create_Grant_Period.htm")	
+    	
+        /*putting help pages in session*/
+    	gh.putValue("Help","Create_Grant_Period.htm")	
         grantPeriodInstance.properties = params
-        def grantPeriodService = new GrantPeriodService()
-        def grantPeriodInstanceList = grantPeriodService.getAllGrantPeriods(params)
        
+        /*Getting all active grant periods*/
+        def grantPeriodInstanceList = grantPeriodService.getAllGrantPeriods()
+        
         return ['grantPeriodInstance':grantPeriodInstance,
                 'grantPeriodInstanceList': grantPeriodInstanceList]
     }
-
-    def save = {
+    
+    /**
+	 * Method to Perform the save action
+	 */
+    def save = 
+    {
         def grantPeriodInstance = new GrantPeriod(params)
-        if(!grantPeriodInstance.hasErrors() ) 
+        def grantPeriodService = new GrantPeriodService()
+        if(!grantPeriodInstance.hasErrors()) 
         {
-        	grantPeriodInstance.createdBy="admin"
-    		grantPeriodInstance.modifiedBy="admin"
-    		
-			def grantPeriodService = new GrantPeriodService()
-        	println"grantPeriodInstance"+grantPeriodInstance.defaultYesNo
-        	def chkDefaultGrantPeriodInstance=grantPeriodService.getDefaultGrantPeriod(params)
-        	println"chkDefaultGrantPeriodInstance"+chkDefaultGrantPeriodInstance.size()
-        	
-        	def grantPeriodDuplicateInstance = grantPeriodService.getGrantPeriod(grantPeriodInstance)
-        	
-        	if(grantPeriodDuplicateInstance)
-        	{
-        	    flash.message = "${message(code: 'default.AlreadyExists.label')}"
-	        	redirect(action:create,id:grantPeriodInstance.id)
-        	}
-        	else
-        	{
-        		if(grantPeriodInstance.defaultYesNo=='Y' && chkDefaultGrantPeriodInstance.size()>0)
-	            {
-	        	    flash.message = "${message(code: 'default.Defaultgrantperiodmustunique.label')}"
-	        		redirect(action:create,id:grantPeriodInstance.id)
-	        	}
-	        	
-	        	else
-	        	{
-	        		grantPeriodInstance = grantPeriodService.saveGrantPeriod(grantPeriodInstance)
-	        		if(grantPeriodInstance.saveMode != null)
-	        		{
-	        			if(grantPeriodInstance.saveMode.equals("Saved"))
-	        			{
-	        				flash.message = "${message(code: 'default.created.label')}"
-	        				redirect(action:create,id:grantPeriodInstance.id)
-	        			}
-	        		}
-	        		else 
-	        		{
-	        			render(view:'create',model:[grantPeriodInstance:grantPeriodInstance])
-	        		}
-	        	}
-        	}
-        }
-        
+	    	 /* getting the list of default grant period */
+	         def chkDefaultGrantPeriodInstance=grantPeriodService.getDefaultGrantPeriod()
+	         
+	         /*Getting grant period details based on the name*/
+	         def grantPeriodDuplicateInstance = grantPeriodService.getGrantPeriod(grantPeriodInstance)
+	         /* check whether grant period exists with name entered */
+	         if(grantPeriodDuplicateInstance)
+	         {
+	        	 /* Shows the following message if the grant period name exists. */
+	        	 flash.message = "${message(code: 'default.AlreadyExists.label')}"
+		         redirect(action:create,id:grantPeriodInstance.id)
+	         }
+	         else
+	         {
+	        	 /*Checking if any default grant period exists and the grant period entered as default*/
+	        	 if(grantPeriodInstance.defaultYesNo=='Y' && chkDefaultGrantPeriodInstance.size()>0)
+		         {
+		        	 /* Shows the following message if any default grant period occurs. */
+		        	 flash.message = "${message(code: 'default.Defaultgrantperiodmustunique.label')}"
+		        	 redirect(action:create,id:grantPeriodInstance.id)
+		         }
+	        	 else
+	        	 {
+		        		/* Save grant period details*/
+		        		grantPeriodInstance = grantPeriodService.saveGrantPeriod(grantPeriodInstance)
+		        		if(grantPeriodInstance.saveMode != null)
+		        		{
+		        			if(grantPeriodInstance.saveMode.equals("Saved"))/*Checking whether the grant period details are saved*/
+		        			{
+		        				flash.message = "${message(code: 'default.created.label')}"
+		        				redirect(action:create,id:grantPeriodInstance.id)
+		        			}
+		        		}
+		        		else 
+		        		{
+		        			render(view:'create',model:[grantPeriodInstance:grantPeriodInstance])
+		        		}
+	        	 	}
+	         	}
+	        }     
     }
+    
+    /**
+	 * Method to Perform the edit action
+	 */   
+    def edit =
+    {
+		def grantPeriodService = new GrantPeriodService()
+		
+		/* Getting grant period details based on id */
+		def grantPeriodInstance = grantPeriodService.getGrantPeriodById(new Integer( params.id ))
+        if(!grantPeriodInstance)
+        {
+          flash.message = "${message(code: 'default.notfond.label')}"
+          redirect(action:list)
+        }
+        else
+          return [ grantPeriodInstance : grantPeriodInstance ]
+    }
+    
+    /**
+	 * Method to Perform the update action
+	 */
+
+	def update =
+	{
+		def grantPeriodInstance = new GrantPeriod(params)
+		def grantPeriodService = new GrantPeriodService()
+		
+		/* getting the list of default grant period */
+		def chkDefaultGrantPeriodInstance=grantPeriodService.getDefaultGrantPeriod()
+		/* check whether any grant period is default */
+		if(chkDefaultGrantPeriodInstance)
+		{
+			/*Should not allow user to set the grant period as default if any default grant period exists */ 
+			if((chkDefaultGrantPeriodInstance[0].id != Long.parseLong(params.id)) 
+    	    		&& (chkDefaultGrantPeriodInstance.size()>=1) 
+    	    		&& (grantPeriodInstance.defaultYesNo == 'Y'))
+			{
+    	    	 /* Shows the following message if any default grant period occurs. */
+    	    	 flash.message = "${message(code: 'default.Defaultgrantperiodmustunique.label')}"
+    		     redirect(action:edit,id:params.id)
+			}
+			else
+				updateGrantPeriod(grantPeriodInstance,params)//updating grant period
+		}
+		/* if no default grant period exists */
+		else
+		{
+			/*Should not allow user to set the grant period as default if any default grant period exists */ 
+			if((chkDefaultGrantPeriodInstance.size()>=1) && (grantPeriodInstance.defaultYesNo == 'Y'))
+			{
+				flash.message = "${message(code: 'default.Defaultgrantperiodmustunique.label')}"
+				redirect(action:edit,id:params.id)
+			}
+			else
+				updateGrantPeriod(grantPeriodInstance,params)//updating grant period
+		}
+	}
+	/*Update grant period*/
+	public updateGrantPeriod(def grantPeriodInstance,params)
+	{
+		def grantPeriodService = new GrantPeriodService()
+		/* Updating Grant Period details*/
+		grantPeriodInstance = grantPeriodService.updateGrantPeriod(params)
+		/* Check whether any grant period exists */
+		if(grantPeriodInstance)
+		{
+			if(grantPeriodInstance.saveMode != null)
+			{
+				/* Check whether the grant period details are updated */
+				if(grantPeriodInstance.saveMode.equals("Updated"))
+				{
+					/* Shows a message if the details are updated */
+					flash.message = "${message(code: 'default.updated.label')}"
+					redirect(action:create,id:grantPeriodInstance.id)
+				}
+				else 
+				{
+					render(view:'edit',model:[grantPeriodInstance:grantPeriodInstance])
+				}
+			}
+			else
+			{
+				flash.message = "${message(code: 'default.notfond.label')}"
+				redirect(action:edit,id:params.id)
+			}
+		}
+	}
+	
+    /**
+	 * Method to Perform the delete action
+	 */
+    def delete = 
+    {
+		def grantPeriodService = new GrantPeriodService()
+		/* Delete grant period details */
+		Integer grantPeriodId = grantPeriodService.deleteGrantPeriod(params)
+		if (grantPeriodId==0)
+		{
+			flash.message = "${message(code: 'default.usedinProjects.label')}"        	
+			redirect(action:edit,id:params.id)
+		}
+		else
+		{	
+			if(grantPeriodId != null)
+			{
+				flash.message = "${message(code: 'default.deleted.label')}"
+        		redirect(action:create)
+			}
+			else 
+			{
+	            flash.message = "${message(code: 'default.notfond.label')}"
+	            redirect(action:create)
+	        }
+		}
+    }   
 }

@@ -15,11 +15,7 @@
             <g:if test="${flash.message}">
               <div class="message">${flash.message}</div>
             </g:if>
-            <g:hasErrors bean="${authorityInstance}">
-              <div class="errors">
-                <g:renderErrors bean="${authorityInstance}" as="list" />
-              </div>
-            </g:hasErrors>
+            
             <g:form method="post" >
                 <g:hiddenField name="id" value="${authorityInstance?.id}" />
                 <g:hiddenField name="version" value="${authorityInstance?.version}" />
@@ -44,20 +40,17 @@
                                     <g:textField name="description" value="${authorityInstance?.description}" />
                                 </td>
                             </tr>
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="activeYesNo"><g:message code="default.Active.label"/></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean:authorityInstance,field:'activeYesNo','errors')}">
-                                    <g:select name="activeYesNo" from="${['Y', 'N']}"  value="${fieldValue(bean:authorityInstance,field:'activeYesNo')}" />
-                                </td>
-                            </tr> 
-                        
                         </tbody>
                     </table>
                 </div>
                 <div class="buttons">
-                    <span class="button"><g:actionSubmit class="save" action="update" value="${message(code: 'default.Update.button')}" onClick="return validateAuthority();" /></span>
+                    <span class="button"><g:actionSubmit class="save" action="update" value="${message(code: 'default.Update.button')}" onClick="return validateAuthority();" /></span>                    
+
+					<span class="button">
+						<g:actionSubmit class="delete"  action="delete" 
+						value="${message(code: 'default.Delete.button')}" 
+						onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
+					</span>
                 </div>
             </g:form>
           </div>

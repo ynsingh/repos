@@ -39,17 +39,7 @@
                                 <td valign="top" class="value ${hasErrors(bean:accountHeadsInstance,field:'code','errors')}">
                                     <input type="text" id="code" name="code" value="${fieldValue(bean:accountHeadsInstance,field:'code')}"/>
                                 </td>
-                            </tr> 
-                        
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="activeYesNo"><g:message code="default.Active.label"/></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean:accountHeadsInstance,field:'activeYesNo','errors')}">
-                                    <g:select name="activeYesNo" from="${['Y', 'N']}"  value="${fieldValue(bean:accountHeadsInstance,field:'activeYesNo')}" />
-                                </td>
-                            </tr> 
-                        
+                            </tr>                         
                         </tbody>
                     </table>
                 </div>
@@ -71,7 +61,6 @@
                             <g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}" />
                    	        <g:sortableColumn property="name" title="${message(code: 'default.Name.label')}" />
                    	        <g:sortableColumn property="code" title="${message(code: 'default.Code.label')}" />
-                   	        <g:sortableColumn property="activeYesNo" title="${message(code: 'default.Active.label')}" />
                    	        <th><g:message code="default.SubAccountHeads.label"/></th>
                    	        <th><g:message code="default.Edit.label"/></th>
                         </tr>
@@ -84,14 +73,6 @@
                            <td>${j}</td>
                            <td>${fieldValue(bean:accountHeadsInstance, field:'name')}</td>
                            <td>${fieldValue(bean:accountHeadsInstance, field:'code')}</td>
-                           <td>
-                	             <g:if test="${fieldValue(bean:accountHeadsInstance, field:'activeYesNo') == 'Y'}">
-    							   <g:message code="default.YES.label"/>
-    							 </g:if>
-    							 <g:else>
-    							   <g:message code="default.NO.label"/>
-    							 </g:else>
-                           </td>
                            <td><g:link  action="showSubAccountHeads"  id="${accountHeadsInstance.id}"><g:message code="default.AddSubAccountHeads.label"/></g:link></td>
                            <td><g:link action="edit" id="${accountHeadsInstance.id}"><g:message code="default.Edit.label"/></g:link></td>
                      </tr>

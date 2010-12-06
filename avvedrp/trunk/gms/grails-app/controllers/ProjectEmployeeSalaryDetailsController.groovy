@@ -23,7 +23,8 @@ class ProjectEmployeeSalaryDetailsController
         def projectEmployeeSalaryDetailsInstance = new ProjectEmployeeSalaryDetails(params) 
         	projectEmployeeSalaryDetailsInstance.properties = params
         def projectEmployeeInstance = ProjectEmployee.get(params.id)
-        def salaryComponentInstance = SalaryComponent.list()
+        //def salaryComponentInstance = SalaryComponent.list() 20-11-2010
+        def salaryComponentInstance = SalaryComponent.findAll("from SalaryComponent where activeYesNo='Y'") //20-11-2010
         def projectEmployeeSalaryDetailsInstanceList=projectEmployeeSalaryDetailsService.getSalaryList(params.id)
         // println "projectEmployeeInstance = " + projectEmployeeInstance
         return [projectEmployeeSalaryDetailsInstance: projectEmployeeSalaryDetailsInstance,
@@ -40,7 +41,7 @@ class ProjectEmployeeSalaryDetailsController
         def salaryComponentInstance = SalaryComponent.list()
         def projectEmployeeInstance = ProjectEmployee.get(params.projectEmployee.id)
         def projectEmployeeSalaryDetailsInstanceList=ProjectEmployeeSalaryDetails.list(params)
-        // projectEmployeeSalaryDetailsInstance.Status='Y'
+        projectEmployeeSalaryDetailsInstance.Status="Y" //15-11-2010
         def projectEmployeeSalaryInstanceCheck = 
         	ProjectEmployeeSalaryDetails.findAll("from ProjectEmployeeSalaryDetails PE where PE.projectEmployee.id='"
         			+projectEmployeeInstance.id+"' and PE.salaryComponent.id='"
@@ -154,6 +155,7 @@ class ProjectEmployeeSalaryDetailsController
             try 
             {
             	//projectEmployeeSalaryDetailsInstance.Status='D'
+            	projectEmployeeSalaryDetailsInstance.Status="N" //15-11-2010
                 projectEmployeeSalaryDetailsInstance.save(flush: true)
                 flash.message = "${message(code: 'default.deleted.label')}"
                 redirect(action: "create", id: projectEmployeeInstance.id)

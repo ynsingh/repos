@@ -127,51 +127,57 @@ class ProposalController {
     		def proposalNotificationInstance = Proposal.find("from Proposal P where P.notification="+params.id+" and P.party="+gh.getValue("Party")+" and P.lockedYN='N'")
     	if(!proposalNotificationInstance)
     	{
-    	def proposalInstance = Proposal.find("from Proposal P where P.notification="+params.id+" and P.party="+gh.getValue("Party"))
-        if(!proposalInstance)
-        {
-    	 proposalInstance = new Proposal()
-        }
-    	proposalInstance.notification=Notification.get(params.id)
-    	println "p id"+proposalInstance.notification.id
-        println "+++++++++++++++++++++params.notificationId++++++++++++" + params.notificationId
-        //proposalInstance.notification=Notification.get(params.notificationId)
-        proposalInstance.party=Party.get(gh.getValue("Party"))
-        proposalInstance.code=proposalInstance.notification.notificationCode+"-PR-"+proposalInstance.party.code
-        println "proposalInstance.code "+proposalInstance.code
-        proposalInstance.proposalSubmitteddate=new Date()
-        //def proposalInstanceCheck = Proposal.find("from Proposal P where P.notification="+params.id+"and P.party.id="+gh.getValue("Party") ) 
-        gh.putValue("Appform",proposalInstance.notification.applicationForm)
-       // if(proposalInstanceCheck){
-        //gh.putValue("ProposalId",proposalInstanceCheck.id)}
-        
-    	println "partyid"+proposalInstance.party
-        proposalInstance.lockedYN='Y'
-        println "++++++++++documentType++++++"+ params.documentType
-        
-        println "proposalNotificationInstance"+proposalNotificationInstance
-        if(proposalNotificationInstance)
-        {
-        	gh.putValue("ProposalId",proposalNotificationInstance.id)
-        	flash.message = "${message(code: 'default.Proposalalreadycreated.label')}"
-        	println "Proposal allready created for this notification"
-        	redirect(controller:"proposalApplication",action:"applicationForm",
-        			params:[id:proposalInstance.notification.id,proposalId:proposalInstance.id])
-        }
-        else if(!proposalInstance.hasErrors() && proposalInstance.save())
-        {
-        	gh.putValue("ProposalId",proposalInstance.id)
-            flash.message = "${message(code: 'default.created.label')}"
-            println "Proposal created Successfully"
-            redirect(controller:"proposalApplication",action:"applicationForm",
-            		params:[id:proposalInstance.notification.id,proposalId:proposalInstance.id,
-            		        applicationFormView:applicationFormView])
-        }
-        else 
-        {
-        	println "else----------"
-            render(view:'create',model:[proposalInstance:proposalInstance])
-        }
+    		def proposalInstance = proposalService.getProposalByNotificationAndParty(params.id,gh.getValue("Party"))
+    		if(!proposalInstance)
+    		{
+					proposalInstance = new Proposal()
+					 proposalInstance.notification=Notification.get(params.id)
+				 	 proposalInstance.party=Party.get(gh.getValue("Party"))
+				     proposalInstance.code=proposalInstance.notification.notificationCode+"-PR-"+proposalInstance.party.code
+				     proposalInstance.proposalSubmitteddate=new Date()
+				     gh.putValue("Appform",proposalInstance.notification.applicationForm)
+				  	 proposalInstance.lockedYN='Y'
+        		    	
+			        if(proposalNotificationInstance)
+			        {
+			        	gh.putValue("ProposalId",proposalNotificationInstance.id)
+			        	flash.message = "${message(code: 'default.Proposalalreadycreated.label')}"
+			        	println "Proposal allready created for this notification ---"
+			        	redirect(controller:"proposalApplication",action:"applicationForm",
+			        			params:[id:proposalInstance.notification.id,proposalId:proposalInstance.id])
+			        }
+			        else if(!proposalInstance.hasErrors() && proposalInstance.save())
+			        {
+			        	gh.putValue("ProposalId",proposalInstance.id)
+			            flash.message = "${message(code: 'default.created.label')}"
+			            println "Proposal created Successfully"
+			            redirect(controller:"proposalApplication",action:"applicationForm",
+			            		params:[id:proposalInstance.notification.id,proposalId:proposalInstance.id,
+			            		        applicationFormView:applicationFormView])
+			        }
+			        else 
+			        {
+			        	render(view:'create',model:[proposalInstance:proposalInstance])
+			        }
+    		}
+    		else
+    		{
+    			def proposalApplicationInstance = proposalService.getProposalApplicationByProposal(proposalInstance.id)
+    			if(proposalApplicationInstance?.controllerId)
+    			{
+    				render(view:"controllIdValidation",
+		            		model:[id:proposalInstance.notification.id,proposalId:proposalInstance.id,
+		            		        applicationFormView:applicationFormView])
+    			}
+    			else
+    			{
+    				gh.putValue("ProposalId",proposalInstance.id)
+    				gh.putValue("Appform",proposalInstance.notification.applicationForm)
+    				redirect(controller:"proposalApplication",action:"applicationForm",
+		            		params:[id:proposalInstance.notification.id,proposalId:proposalInstance.id,
+		            		        applicationFormView:applicationFormView])
+    			}
+    		}
     	}
     	else
     	{
@@ -211,7 +217,6 @@ class ProposalController {
     	        proposalInstance.code=proposalInstance.notification.notificationCode+"-PR-"+proposalInstance.party.code
     	        proposalInstance.proposalSubmitteddate=new Date()
     			gh.putValue("Appform",proposalInstance.notification.applicationForm)
-    	        println "++++++++++documentType++++++"+ params.documentType
     	        if(!proposalInstance.hasErrors() && proposalInstance.save())
     	        {
     	            flash.message = "${message(code: 'default.ProposalSibmitted.label')}" +proposalInstance.notification.project.name
@@ -227,8 +232,7 @@ class ProposalController {
     			def proposalInstance = Proposal.get( params.proposalId )
     	        if(proposalInstance) 
     	        {
-    	        	println "proposal="+proposalInstance
-    	            proposalInstance.properties = params
+    	        	proposalInstance.properties = params
     	            proposalInstance.lockedYN='N'
     	            if(!proposalInstance.hasErrors() && proposalInstance.save()) 
     	            {
@@ -256,12 +260,42 @@ class ProposalController {
                 redirect(action:list)
             }
             else 
-            { 	println "proposal="+params.id
+            { 
             	def notificationsAttachmentsInstance = NotificationsAttachments.findAll("from NotificationsAttachments NA where NA.proposal="+proposalInstance.id)
-            	println "notificationsAttachmentsInstance="+notificationsAttachmentsInstance.attachmentPath
             	return [ proposalInstance : proposalInstance,notificationsAttachmentsInstance:notificationsAttachmentsInstance ] 
             }
     		
+    }
+    def validateControllId = 
+    {
+    	def applicationFormView='proposalView'
+    	GrailsHttpSession gh = getSession()
+    	def proposalApplicationInstance = proposalService.getProposalApplicationByProposal(params.proposal.id) 
+    	if(params.controllerId)
+    	{
+    		if(proposalApplicationInstance.controllerId == params.controllerId)
+    		{
+    			gh.putValue("ProposalId",proposalApplicationInstance.proposal.id)
+    			gh.putValue("Appform",proposalApplicationInstance.proposal.notification.applicationForm)
+				redirect(controller:"proposalApplication",action:"applicationForm",
+	            		params:[id:proposalApplicationInstance.proposal.notification.id,proposalId:proposalApplicationInstance.proposal.id,
+	            		        applicationFormView:applicationFormView])
+    		}
+    		else
+    		{
+    			flash.message = "${message(code: 'default.ProposalControllIdNot.label')}" 
+    			render(view:"controllIdValidation",
+	            		model:[id:proposalApplicationInstance.proposal.notification.id,proposalId:proposalApplicationInstance.proposal.id,
+	            		        applicationFormView:applicationFormView])
+    		}
+    	}
+    	else
+    	{
+    		flash.message = "${message(code: 'default.ProposalControllIdNot.label')}" 
+    			render(view:"controllIdValidation",
+	            		model:[id:proposalApplicationInstance.proposal.notification.id,proposalId:proposalApplicationInstance.proposal.id,
+	            		        applicationFormView:applicationFormView])
+    	}
     }
     
 }

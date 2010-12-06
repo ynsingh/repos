@@ -4,6 +4,7 @@ import org.apache.commons.validator.EmailValidator
 class InvestigatorController {
 	def authenticateService
 	def notificationsEmailsService
+	def gmsSettingsService
 	def userService
     def index = { redirect(action:list,params:params) }
 
@@ -45,28 +46,43 @@ class InvestigatorController {
         else { return [ investigatorInstance : investigatorInstance ] }
     }
 
-    def delete = {
-        def investigatorInstance = Investigator.get( params.id )
-        if(investigatorInstance) {
-        	def chkPrjctInstance=Projects.findAll("from Projects P where P.principalInvestigatorName.id="+investigatorInstance.id)
-        	if(chkPrjctInstance[0]==null)
-        	{
-            investigatorInstance.delete()
-            flash.message = "${message(code: 'default.deleted.label')}"
-            redirect(action:list)
-        	}
-        	else
-        	{
-        		flash.message = "${message(code: 'default.investigatorinuse.label')}"
-        			redirect(action:list)
-        	}
-        }
-        else {
-            flash.message = "${message(code: 'default.notfond.label')}"
-            redirect(action:list)
-        }
-    }
-
+	/* ==================================== NEW =======================================*/
+    def delete = {	
+	    	def projectsPIMapInstance =ProjectsPIMap.findAll("from ProjectsPIMap PPM where PPM.investigator="+params.id + " and PPM.activeYesNo='Y'")
+	    	def projectsInstance=null
+	    	if (projectsPIMapInstance)
+	    		{projectsInstance =Projects.findAll("from Projects P where P.id="+ projectsPIMapInstance[0].projects.id + " and P.activeYesNo='Y'"	    				)
+	    		}	    			    	
+	     	if (!projectsInstance)
+	    	{			
+	            def investigatorInstance = Investigator.get( params.id )
+	            if(investigatorInstance) 
+	            {
+		    		investigatorInstance.activeYesNo="N"
+		        	if(!investigatorInstance.hasErrors() && investigatorInstance.save()) 
+		        	{ 
+		            flash.message = "${message(code: 'default.deleted.label')}"	                
+		            redirect(action:create)
+		        	}            	
+		        	else
+		        	{
+		    		flash.message = "${message(code: 'default.investigatorinuse.label')}"            			
+		    		redirect(action:create)
+		        	}
+	            }
+	            else 
+	            {
+	                flash.message = "${message(code: 'default.notfond.label')}"                
+	                redirect(action:create)
+	            }	            
+	    	}    
+	     	else
+	     	{
+	    		flash.message = "${message(code: 'default.usedinProjects.label')}"
+		        redirect(action: "edit", id: params.id)  	     		
+	     	}	     	
+        }    
+    /*==================================== END =======================================*/
     def edit = {
        	
     	println "------------------params------"+ params
@@ -201,6 +217,7 @@ class InvestigatorController {
         	EmailValidator emailValidator = EmailValidator.getInstance()
         	if (emailValidator.isValid(params.email))
         	{
+        		investigatorInstance.activeYesNo="Y" //15-11-2010	
         		if(!investigatorInstance.hasErrors() && investigatorInstance.save()) {
         			flash.message = "${message(code: 'default.created.label')}"
         			def userInstance = new Person()
@@ -219,14 +236,22 @@ class InvestigatorController {
         			def userPiInstance = userService.saveNewPi(userInstance)
         			def userMapInstance = new UserMap()
         			userMapInstance.user = userInstance
+        			println(userInstance)
         			userMapInstance.party = Party.get(params.institution)
         			userMapInstance.createdBy="admin"
         			userMapInstance.modifiedBy="admin"
-            
+        			
         			if(userMapInstance.save())
         			{
         				String urlPath = request.getScheme() + "://" + request.getServerName() +":"+ request.getServerPort() + request.getContextPath()+"/user/userActivation/"
-        				def emailId = notificationsEmailsService.sendMessage(investigatorInstance.email,userName,investigatorInstance.name,userInstance.id,urlPath)
+        				def mailContent=gmsSettingsService.getGmsSettingsValue("MailContent")
+        				//mail content
+        				String mailMessage="";
+        		        mailMessage="Dear "+investigatorInstance.name+", \n \n "+mailContent+".";
+        		        mailMessage+="\n \n LoginName    : "+investigatorInstance.email;
+        		        mailMessage+="\n Password     : "+userName;
+        		        mailMessage+="\n \n \n To activate your account,click on the following link   \t:"+urlPath+userInstance.id;
+        				def emailId = notificationsEmailsService.sendMessage(investigatorInstance.email,mailMessage)
             	
         			}
         			redirect(action:create,id:investigatorInstance.id)

@@ -1,3 +1,4 @@
+
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 
 
@@ -7,154 +8,122 @@ class PartyController  extends GmsController {
 
     // the delete, save and update actions only accept POST requests
     def allowedMethods = [delete:'POST', save:'POST', update:'POST']
-
-    def list = {
-        
-        String subQuery ="";
-        GrailsHttpSession gh=getSession()
-        //adding help page into session
-        gh.putValue("Help","Institution_List.htm")
-        if(params.sort != null && !params.sort.equals(""))
-        	subQuery=" order by P."+params.sort
-        if(params.order != null && !params.order.equals(""))
-        	subQuery =subQuery+" "+params.order
-        
-    	def partyInstanceList
-    	def dataSecurityService = new DataSecurityService()
-        def partyService = new PartyService()
-    	
-        if(getUserRole().equals('ROLE_ADMIN')){
-        	partyInstanceList = partyService.getPartiesWithoutPartyType(subQuery)
-        }
-        else
-        {
-        	subQuery=" and P.id="+getUserPartyID()
-        	partyInstanceList = partyService.getPartiesWithoutPartyType(subQuery)
-        }
-        
-   
-      
-        [ partyInstanceList: partyInstanceList ]
-    }
-
-    def show = {
-		def partyService = new PartyService()
-		def partyInstance = partyService.getPartyById(new Integer(params.id ))
-
-        if(!partyInstance) {
-            flash.message = "${message(code: 'default.notfond.label')}"
-            redirect(action:list)
-        }
-        else { return [ partyInstance : partyInstance ] }
-    }
-
-    def delete = {
-		def partyService = new PartyService()
-		Integer partyId = partyService.deleteParty(new Integer(params.id))
+    
+    /**
+     * Method to perform list action
+     */
+    def list = 
+    {
+		GrailsHttpSession gh=getSession()
+		/*Adding help page into session*/
+		gh.putValue("Help","Institution_List.htm")
 		
-		if(partyId != null){
-			flash.message = "${message(code: 'default.deleted.label')}"
-			redirect(action:list)
-		}
-		else {
-            flash.message = "${message(code: 'default.Institutioncouldnotdelete.label')}" 
-            redirect(action:list)
-        }
-    }
-
-    def edit = {
+		def partyInstanceList
+		def dataSecurityService = new DataSecurityService()
 		def partyService = new PartyService()
+		
+		/*Getting party details based on id*/
+		partyInstanceList = partyService.getPartyBasedOnId(getUserPartyID())
+		
+		[ partyInstanceList: partyInstanceList ]
+    }
+    
+    /**
+     * Method to perform edit action
+     */
+    def edit = 
+    {
+		def partyService = new PartyService()
+		
+		/*getting party details based on id*/
 		def partyInstance = partyService.getPartyById(new Integer(params.id ))
-        if(!getUserRole().equals('ROLE_ADMIN')){
-		if(!params.id.toString().equals(getUserPartyID().toString()))
-			 redirect uri:'/invalidAccess.gsp'
-        }
-        if(!partyInstance) {
+        if(!partyInstance)/*Checking whether the party exists or not*/
+        {
             flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
         }
-        else {
+        else 
+        {
             return [ partyInstance : partyInstance ]
         }
     }
 
-    def update = {
+    /**
+     * Method to perform update action
+     */
+    def update = 
+    {
 		def partyService = new PartyService()
+		/*Updating party details*/
 		def partyInstance = partyService.updateParty(params)
-		
-		if(partyInstance){
-			if(partyInstance.saveMode != null){
-				if(partyInstance.saveMode.equals("Updated")){
+		if(partyInstance)
+		{
+			if(partyInstance.saveMode != null)
+			{
+				if(partyInstance.saveMode.equals("Updated"))/*checking whether the party details are updated*/
+				{
 					flash.message = "${message(code: 'default.updated.label')}"
 	                redirect(action:list,id:partyInstance.id)
 				}
-				else if(partyInstance.saveMode.equals("Duplicate")){
+				else if(partyInstance.saveMode.equals("Duplicate")) /*Checking whether the party already exists*/
+				{
 					flash.message = "${message(code: 'default.AlreadyExists.label')}"
 	    	    	render(view:'edit',model:[partyInstance:partyInstance])
 				}
 			}
-			else {
+			else 
                 render(view:'edit',model:[partyInstance:partyInstance])
-            }
 		}
-		else {
+		else 
+		{
             flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:edit,id:params.id)
         }
     		
     }
 
-    def create = {
-        def partyInstance = new Party()
+    /**
+     * Method to perform the create action
+     */
+    def create = 
+    {
+    	def partyInstance = new Party()
         GrailsHttpSession gh=getSession()
+        
         //Adding Help page into session
         gh.putValue("Help","Institution.htm")
         return ['partyInstance':partyInstance]
     }
 
-    def save = {
+    /**
+     * Method to perform the save action
+     */
+    def save =
+    {
         def partyInstance = new Party(params)
-        if(!partyInstance.hasErrors() ) {
-        	partyInstance.createdBy="admin"
-           	partyInstance.createdDate = new Date();
-           	partyInstance.modifiedBy="admin"
-           	
-       		def partyService = new PartyService()
+        if(!partyInstance.hasErrors() )
+        {
+          	def partyService = new PartyService()
+          	/*Saving the party details*/
            	partyInstance = partyService.saveParty(partyInstance)
-           	
-           	if(partyInstance.saveMode != null){
-           		if(partyInstance.saveMode.equals("Saved")){
+           	if(partyInstance.saveMode != null)
+           	{
+           		if(partyInstance.saveMode.equals("Saved"))/*checking whether the party is saved.*/
+           		{
            			flash.message = "${message(code: 'default.created.label')}"
 		            redirect(action:list,id:partyInstance.id)
            		}
-           		else if(partyInstance.saveMode.equals("Duplicate")){
+           		else if(partyInstance.saveMode.equals("Duplicate"))/*Checking whether the party already exists*/
+           		{
            			flash.message =  "${message(code: 'default.AlreadyExists.label')}"
                     render(view:'create',model:[partyInstance:partyInstance])
            		}
            	}
-           	else {
+           	else 
                 render(view:'create',model:[partyInstance:partyInstance])
-            }
         }
-        else {
+        else
             render(view:'create',model:[partyInstance:partyInstance])
-        }
     }
-    
-   
-    def showSubInstitutions = {
-        def partyInstance = new Party()
-		def partyInstanceList= new Party();
-        
-        def partyService = new PartyService()
-		def partyList=partyService.getPartyById(new Integer(params.id))
-		partyInstance.parent=partyList
-		
-        partyInstance.properties = params
-        
-        partyInstanceList=partyService.getSubParties(new Integer(params.id))
-        return ['partyInstance':partyInstance,'partyInstanceList':partyInstanceList]
-    }
-   
-    
+       
 }

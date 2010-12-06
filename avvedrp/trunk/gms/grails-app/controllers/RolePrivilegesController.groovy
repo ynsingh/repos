@@ -8,6 +8,7 @@ import org.springframework.beans.PropertyAccessorFactory
 
 class RolePrivilegesController {
     def rolePrivilegesService
+    def userService
     def index = { redirect(action:list,params:params) }
 
     // the delete, save and update actions only accept POST requests
@@ -97,11 +98,8 @@ class RolePrivilegesController {
        //for reading controller name
         filename=grailsApplication.controllerClasses.logicalPropertyName
         
-       
-      
-       
-		
-        return ['rolePrivilegesInstance':rolePrivilegesInstance,'filename':filename]
+        def authorityInstanceList = userService.getAllRolls()   
+        return ['rolePrivilegesInstance':rolePrivilegesInstance,'filename':filename,'authorityInstanceList':authorityInstanceList]
     }
     
     //for listing action name assigned to each role 
@@ -213,8 +211,10 @@ class RolePrivilegesController {
             render(view:'create',model:[rolePrivilegesInstance:rolePrivilegesInstance])
         }
     }
-    def newRolePrivileges = {
-    		
+    def newRolePrivileges = 
+    {
+    		def authorityInstanceList = userService.getAllRolls()   		
+    		return[authorityInstanceList:authorityInstanceList]
     }
     def saveNewRolePriviliges = {
     		println "saveNewRolePriviliges+++++++++++++++"+params.authority

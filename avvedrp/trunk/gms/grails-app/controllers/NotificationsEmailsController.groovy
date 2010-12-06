@@ -202,7 +202,7 @@ class NotificationsEmailsController {
     			notificationsEmailsInstance.notification=notificationInstance
     			notificationsEmailsInstance.party=partyid
     			notificationsEmailsInstance.save()
-    			
+    			flash.message = "${message(code: 'default.NotificationPublished.label')}"
     		}
     		redirect(controller:"notification",action:"list",id:notificationInstance.id)
     }

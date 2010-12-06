@@ -46,14 +46,6 @@
                                     <g:textField name="description" value="${authorityInstance?.description}" />
                                 </td>
                             </tr>
-                        	<tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="activeYesNo"><g:message code="default.Active.label"/></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean:authorityInstance,field:'activeYesNo','errors')}">
-                                    <g:select name="activeYesNo" from="${['Y', 'N']}"  value="${fieldValue(bean:authorityInstance,field:'activeYesNo')}" />
-                                </td>
-                            </tr> 
                         </tbody>
                     </table>
                 </div>
@@ -76,10 +68,8 @@
                         
                             <g:sortableColumn property="authority" title="${message(code: 'default.Role.label')}" />
                         
-                            <g:sortableColumn property="description" title="${message(code: 'default.Description.label')}" />
-                        
-                        	<g:sortableColumn property="activeYesNo" title="${message(code: 'default.Active.label')}" />
-                        	
+                            <g:sortableColumn property="description" title="${message(code: 'default.Description.label')}" />                        
+
                         	<th><g:message code="default.Edit.label"/></th>
                         	
                         </tr>
@@ -91,20 +81,13 @@
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                         
                             <td>${j}</td>
-                        
-                            <td>${fieldValue(bean: authorityInstance, field: "authority")}</td>
-                        
+                                                    
+                            <td>${fieldValue(bean: authorityInstance, field: "authority")}</td>                        
+                            
                             <td>${fieldValue(bean: authorityInstance, field: "description")}</td>
-                        	
-                        	<td>
-                	             <g:if test="${fieldValue(bean:authorityInstance, field:'activeYesNo') == 'Y'}">
-    						    	<g:message code="default.YES.label"/>
-    							 </g:if>
-    							 <g:else>
-    							    <g:message code="default.NO.label"/>
-    							 </g:else>
-                        	</td>
+                            
                         	<td><g:link action="edit" id="${authorityInstance.id}"><g:message code="default.Edit.label"/></g:link></td>
+
                         </tr>
                       </g:each>
                     </tbody>

@@ -49,7 +49,7 @@
                                 <td valign="top" class="value ${hasErrors(bean:grantPeriodInstance,field:'endDate','errors')}">
                                     <calendar:datePicker name="endDate" value="${grantPeriodInstance?.endDate}" defaultValue="${new Date()}"  dateFormat= "%d/%m/%Y"/>
                             </td>
-                        
+                           <!--=============== Commented on 12-11-2010,to hide active field ==============
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="activeYesNo"><g:message code="default.Active.label"/></label>
@@ -58,7 +58,7 @@
                                          <g:select name="activeYesNo" from="${['Y', 'N']}"  value="${fieldValue(bean:grantPeriodInstance,field:'activeYesNo')}" />
                                 </td>
                             </tr> 
-                            
+                            ======================================================================-->
                             
                             <tr class="prop">
                                 <td valign="top" class="name">
@@ -73,7 +73,12 @@
                     </table>
                 </div>
                 <div class="buttons">
-                    <span class="button"><g:actionSubmit class="save" value="${message(code: 'default.Update.button')}" onClick="return validateGrantPeriod()"  /></span>
+                    <span class="button"><g:actionSubmit class="save" action="update" value="${message(code: 'default.Update.button')}" onClick="return validateGrantPeriod()"  /></span>
+					<span class="button">
+					<g:actionSubmit class="delete"  action="delete" 
+					value="${message(code: 'default.Delete.button')}" 
+					onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
+					</span>	
                 </div>
             </g:form>
           </div>

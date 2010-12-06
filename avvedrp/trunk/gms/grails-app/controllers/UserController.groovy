@@ -18,7 +18,7 @@ class UserController extends GmsController {
     def dataSecurityService
     def notificationsEmailsService
     def userService
-    
+    def gmsSettingsService
 	// the delete, save and update actions only accept POST requests
 	static Map allowedMethods = [delete: 'POST', save: 'POST', update: 'POST']
 
@@ -216,6 +216,7 @@ class UserController extends GmsController {
 		//person.properties = params
 		person.username=params.email
 		person.userRealName=params.userRealName
+		person.userSurName=params.userSurName
 		person.email=params.email
 		person.password=params.password
 		person.password = springSecurityService.encodePassword(params.password)
@@ -226,8 +227,15 @@ class UserController extends GmsController {
 			params.put("party.id",getUserPartyID())
 	    Integer personId = userService.saveUser(person,params)
 	    if(personId != null){
+	    	def mailContent=gmsSettingsService.getGmsSettingsValue("MailContent")
 	    	String urlPath = request.getScheme() + "://" + request.getServerName() +":"+ request.getServerPort() + request.getContextPath()+"/user/userActivation/"
-	    	def emailId = notificationsEmailsService.sendMessage(params.email,params.password,params.userRealName,personId,urlPath)
+	    	//mail content
+	    	String mailMessage="";
+	        mailMessage="Dear "+params.userRealName+", \n \n "+mailContent+".";
+	        mailMessage+="\n \n LoginName    : "+params.email;
+	        mailMessage+="\n Password     : "+params.password;
+	        mailMessage+="\n \n \n To activate your account,click on the following link   \t:"+urlPath+personId;
+	    	def emailId = notificationsEmailsService.sendMessage(params.email,mailMessage)
 	    	flash.message = "${message(code: 'default.created.label')}"
 			redirect action: list, id: personId
 		}
@@ -361,6 +369,7 @@ class UserController extends GmsController {
 			user.username= params.email
 			println "+++++++++++++++++++++++++params.user.username++++++++++++++++++++++++++++"+ params
 			user.userRealName = params.userRealName
+			user.userSurName = params.userSurName
 			user.password = params.password
 			user.email = params.email
 			user.password = springSecurityService.encodePassword(params.password)
@@ -418,6 +427,7 @@ class UserController extends GmsController {
 			        println " ++++++++++++++"+user.password
 			        println " ++++++++++++++"+user.email
 			        println " ++++++++++++++"+user.userRealName
+			        println " ++++++++++++++"+user.userSurName
 			        println " ++++++++++++++"+user.email
 			        println " ++++++++++++++"+user.enabled
 			        println " ++++++++++++++"+user.accountExpired
@@ -484,8 +494,16 @@ class UserController extends GmsController {
 		       	//creating role privileges for each role in the new party ending
 			    if(personId != null){
 			    	String urlPath = request.getScheme() + "://" + request.getServerName() +":"+ request.getServerPort() + request.getContextPath()+"/user/userActivation/"
-			    	def emailId = notificationsEmailsService.sendMessage(params.email,params.password,params.userRealName,personId,urlPath)
-					redirect uri: '/user/newUserConfirm.gsp'
+			    	def mailContent=gmsSettingsService.getGmsSettingsValue("MailContent")
+			    	//mail content
+			    	String mailMessage="";
+			        mailMessage="Dear "+params.userRealName+", \n \n "+mailContent+".";
+			        mailMessage+="\n \n LoginName    : "+params.email;
+			        mailMessage+="\n Password     : "+params.password;
+			        mailMessage+="\n \n \n To activate your account,click on the following link   \t:"+urlPath+personId;
+			    	def emailId = notificationsEmailsService.sendMessage(params.email,mailMessage)
+					//redirect uri: '/user/newUserConfirm'
+						render(view: "newUserConfirm")
 				}
 		       		 }
 			}
@@ -498,6 +516,7 @@ class UserController extends GmsController {
 			}
 			
 		}
+	def newUserConfirm={}
 	
 	/**
 	 * Action to activate a user
@@ -557,7 +576,7 @@ class UserController extends GmsController {
 							userInstance.save()
 							String urlPath = request.getScheme() + "://" + request.getServerName() +":"+ request.getServerPort() + request.getContextPath()+"/user/userActivation/"
 							def emailId = notificationsEmailsService.sendChangePassword(userInstance.email,newPassword,userInstance.username,userInstance.id,urlPath)
-							redirect uri: '/user/forgotPasswordConfirm.gsp'
+							redirect uri: '/user/forgotPasswordConfirm'
 						}
 						else
 						{
@@ -594,7 +613,7 @@ class UserController extends GmsController {
 	    	
 	    	
 	    	try{
-	    		grantAllocationInstance = grantAllocationService.getAll()
+	    		grantAllocationInstance = grantAllocationService.getGrantAllocationByActiveProjects()
 		
 	    	}
 	    	catch(Exception e)
@@ -641,6 +660,7 @@ class UserController extends GmsController {
 	//for listing project details of each user
 	def getProjectName = {
 			println "getProjectName"+params
+			GrailsHttpSession gh=getSession()
 			if(params.user)
 			{
 			
@@ -650,7 +670,7 @@ class UserController extends GmsController {
 	    	
 	    	
 	    	try{
-	    		grantAllocationInstance = grantAllocationService.getAll()
+	    		grantAllocationInstance = grantAllocationService.getGrantAllocationByActiveProjects()
 		
 	    	}
 	    	catch(Exception e)
@@ -660,7 +680,7 @@ class UserController extends GmsController {
 	    	if(params.user != "null")
 			{
 	    	//def projectsInstance = dataSecurityService.getAccessPermissionProjects()
-			GrailsHttpSession gh=getSession()
+			
 			def userMapInstance = UserMap.findAll("from UserMap UM where UM.party.id="+gh.getValue("PartyID"))
 			println "userMapInstance"+userMapInstance
 			println "params"+params.user
@@ -718,5 +738,6 @@ class UserController extends GmsController {
 			redirect(action:getProjectName,params:[user:params.user.id])
 			
 	}
+	def forgotPasswordConfirm = {}
 	
 }

@@ -25,18 +25,18 @@
  
         <table width="70%" align="center" class="table" cellspacing="5" cellpadding="5">
          <tr><td>
-       You are about to submit your completed application form. </td></tr>
+       <g:message code="default.Youareabouttosubmit.message"/></td></tr>
           <tr> 
       <td><table><tr><td>
       <g:form method="post" controller="proposal" >
       <input type=hidden id="id" name="id" value="${params.id}">
  <input type=hidden id="proposalId" name="proposalId" value="${params.proposalId}">
-   <g:actionSubmit class="inputbutton" value="Submit" action="submitProposal"/>
+   <g:actionSubmit class="inputbutton" value="${message(code: 'default.Submit.button')}" action="submitProposal"/>
    </g:form></td><td>
    <g:form method="post" controller="notificationsEmails" >
       <input type=hidden id="id" name="id" value="${params.id}">
  <input type=hidden id="proposalId" name="proposalId" value="${params.proposalId}">
-      <g:actionSubmit class="inputbutton" value="Cancel" action="partyNotificationsList"/>
+      <g:actionSubmit class="inputbutton" value="${message(code: 'default.Cancel.button')}" action="partyNotificationsList"/>
        </g:form></td></tr></table></td>
       <td colspan="2">
    

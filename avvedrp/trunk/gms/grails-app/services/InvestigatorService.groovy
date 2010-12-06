@@ -38,4 +38,55 @@ class InvestigatorService {
 	   def chkUniqueNameInstance = Investigator.findAll("from Investigator I where I.name= '" + params.name + "'")
 	   return chkUniqueNameInstance
    }
+   /**
+    * Function to get investigator by department
+    */
+    public getinvestigatorByDepartment(def department)
+   {
+    	def investigatorInstance=Investigator.findAll("from Investigator IT where IT.department="+department + " AND IT.activeYesNo='Y'")
+    	return investigatorInstance
+   }
+    /**
+	 * Function to get Project Pi Map by id.
+	 */
+   public getProjectsPIMapById(def investigatorMapId)
+   {
+	   def projectsPIMapInstance = ProjectsPIMap.get( investigatorMapId )
+	   return projectsPIMapInstance
+   }
+   /*
+ 	 * Function to save PI Map
+ 	 */
+ 	 public savePIMap(def projectsPIMapInstance)
+ 	{
+ 		if(projectsPIMapInstance)
+ 		{
+ 			projectsPIMapInstance.activeYesNo="Y"
+ 			def projectPIMapSaveInstance = updatePIMap(projectsPIMapInstance)
+	        return projectPIMapSaveInstance
+ 		}
+ 	}
+ 	/*
+ 	 * Function to update PI Map
+ 	 */
+ 	 public updatePIMap(def projectsPIMapInstance)
+ 	{
+ 		if(projectsPIMapInstance)
+ 		{
+ 			projectsPIMapInstance.save()
+	        return projectsPIMapInstance
+ 		}
+ 	}
+ 	/*
+  	 * Function to delete PI Map
+  	 */
+  	 public deletePIMap(def projectsPIMapInstance)
+  	{
+  		if(projectsPIMapInstance)
+  		{
+  			projectsPIMapInstance.activeYesNo="N"
+  			projectsPIMapInstance=updatePIMap(projectsPIMapInstance)
+ 	        return projectsPIMapInstance
+  		}
+  	}
 }

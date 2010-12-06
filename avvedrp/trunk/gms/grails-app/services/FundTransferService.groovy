@@ -11,5 +11,11 @@ class FundTransferService
 		def chkFundTransferAmnt = GrantAllocation.findAll("from GrantAllocation GA where GA.id = "+fundTransferInstance.grantAllocationId)
 		return chkFundTransferAmnt
 	}
+	
+	public List getGrantAllocationByProjects(def fundTransferInstance)
+	{
+		def grantAllocationParentInstance= GrantAllocation.findAll("from GrantAllocation GA where GA.projects ="+fundTransferInstance.grantAllocation.projects.parent.id)
+		return grantAllocationParentInstance
+	}
 
 }

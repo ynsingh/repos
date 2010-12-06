@@ -1,6 +1,6 @@
 <head>
 	<meta name="layout" content="main" />
-	<title>Change Password</title>
+	<title><g:message code="default.ChangePassword.label"/></title>
 	<script>
 
 	</script>
@@ -63,7 +63,6 @@
 						</td>
 					</tr> -->
                         
-
 				</tbody>
 				</table>
 			</div>
@@ -71,7 +70,6 @@
 			<div >
 				<input class="inputbutton" name="updatePassword" type="submit" value="${message(code: 'default.ChangePassword.label')}" onClick="return validatePassword()" />
 			</div>
-
 		</g:form>
 </div>
 	</div>

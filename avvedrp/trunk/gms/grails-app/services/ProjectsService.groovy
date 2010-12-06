@@ -56,27 +56,48 @@ class ProjectsService{
 	/**
 	 * Function to delete project.
 	 */
-	public Integer deleteProject(Integer projectId){
+
+/* ===================== 11-11-2010 NEW  FUNCTION TO DELELETE===================  */	
+	public Integer deleteProject(def projectParams)
+	{
 		Integer projectDeletedId = null
-		def projectsInstance = getProjectById(projectId)
-		// check for reference
-		def grantAllocationInstance = GrantAllocation.find("from GrantAllocation GA where GA.projects = "+projectId)
-        //if(projectsInstance) {
-        	if(!grantAllocationInstance)
-        	{
-        	
-            projectsInstance.delete()
-            projectDeletedId = projectsInstance.id
-        	}
-        	else{
-        		projectDeletedId = -1
-        	}
-        	//else
-        	//{
-        	//	projectDeletedId = null
-        	//}
-		return projectDeletedId
+		def projectsInstance = getProjectById(new Integer(projectParams.id ))
+		Integer projectId = new Integer(projectParams.id)
+		def GrantAllocationSplitInstance = GrantAllocationSplit.findAll("from GrantAllocationSplit GAS where GAS.projects = "+projectId)	
+		if(!GrantAllocationSplitInstance)		 
+		{
+	        if(projectsInstance) 
+	        {  			
+	        	projectsInstance.modifiedBy = "user";
+	        	projectsInstance.modifiedDate = new Date();
+				projectsInstance.activeYesNo = "N"
+				projectsInstance.properties = projectParams
+				if(!projectsInstance.hasErrors() && projectsInstance.save()&& checkPIForUpdateProject(projectParams)) 
+				{  
+					projectDeletedId = projectsInstance.id 	
+				}
+    	    	else
+    	    	{
+				 	projectDeletedId = -1    	
+				}
+			}		   
+	        else
+	        {     	
+	        	return projectDeletedId	        	
+	        }
+		}     
+		else
+		{   
+			projectDeletedId = 0		
+			return projectDeletedId			
+		}
 	}
+		
+	
+/*==========================================================*/
+
+
+
 	
 	/**
 	 * Function to update project.
@@ -158,6 +179,7 @@ class ProjectsService{
 		def userInstanse = Person.get(useriD)
 		/* Check whether Projects with same name already exists.*/
 		if(checkDuplicateProject(projectsInstance) == 0){
+			projectsInstance.activeYesNo = "Y" //=============11-11-2010
 			if(!projectsInstance.hasErrors() && projectsInstance.save()) {
 				projectsInstance.saveMode = "Saved"
 
@@ -669,6 +691,14 @@ class ProjectsService{
 				}
 				subqry = subqry + "DATE_FORMAT(GA.projects.projectEndDate, '%Y-%m-%d') <='"+formatDate(params.projectEndDateTo)+"'"
 			}
+			if(params.projectStatus != "null")
+			{
+				if(!subqry.equals(""))
+				{
+					subqry = subqry + " AND "
+				}
+				subqry = subqry + "GA.projects in (  select PT.projects from ProjectTracking PT where PT.projectStatus = '"+params.projectStatus+"')"
+			}
 			
 			if(!subqry.equals(""))
 			{
@@ -761,5 +791,112 @@ class ProjectsService{
 		def formattedDateValue=newFormatter.format(formattedDate)
 		
 		return formattedDateValue
+	}
+	/**
+	 * method to get grant search result
+	 */
+	
+	public def getGrantSearchResult(def params,def Party)
+	{
+		println "grant search result"+params
+		def grantAllocationInstanceList 
+		String subqry ="";
+		String query="";
+		if(params.minimumAmount != "")
+		{
+			
+			if(!subqry.equals(""))
+			{
+				subqry = subqry + " AND "
+			}
+			if(params.maximumAmount != "")
+			{
+				subqry = subqry + "GA.amountAllocated between "+params.minimumAmount+" and "+params.maximumAmount
+			}
+			else
+			{
+				subqry = subqry + "GA.amountAllocated >= "+params.minimumAmount
+			}
+		}
+		else if(params.maximumAmount != "")
+		{
+			if(!subqry.equals(""))
+			{
+				subqry = subqry + " AND "
+			}
+			subqry = subqry + "GA.amountAllocated <= "+params.maximumAmount
+		}
+		if(params.granter.id != "null")
+		{
+			
+			if(!subqry.equals(""))
+			{
+				subqry = subqry + " AND "
+			}
+			
+			subqry = subqry + "GA.granter.id = "+params.granter.id
+		}
+		if(params.investigator.id != "null")
+		{
+			
+			if(!subqry.equals(""))
+			{
+				subqry = subqry + " AND "
+			}
+			
+			subqry = subqry + "GA.projects in (  select PM.projects from ProjectsPIMap PM where PM.investigator.id = "+ params.investigator.id+" and PM.role='PI' and PM.activeYesNo='Y') and GA.projects.activeYesNo='Y'"
+		}
+		if(params.partyDepartment != "null")
+		{
+			
+			if(!subqry.equals(""))
+			{
+				subqry = subqry + " AND "
+			}
+			
+			subqry = subqry + "GA.projects in (  select PM.projects from ProjectDepartmentMap PM where PM.partyDepartment.id = "+ params.partyDepartment+" and PM.activeYesNo='Y')"
+		}
+		if(params.awardedDateFrom)
+		{
+			
+			if(!subqry.equals(""))
+			{
+				subqry = subqry + " AND "
+			}
+			
+			if(params.awardedDateTo)
+			{
+				subqry = subqry + "DATE_FORMAT(GA.dateOfAllocation, '%Y-%m-%d') between '"+formatDate(params.awardedDateFrom)+"' and '"+formatDate(params.awardedDateTo)+"'"
+			}
+			else
+			{
+				subqry = subqry + "DATE_FORMAT(GA.dateOfAllocation, '%Y-%m-%d') >='"+formatDate(params.awardedDateFrom)+"'"
+			}
+		}
+		else if(params.awardedDateTo)
+		{
+			if(!subqry.equals(""))
+			{
+				subqry = subqry + " AND "
+			}
+			subqry = subqry + "DATE_FORMAT(GA.dateOfAllocation, '%Y-%m-%d') <='"+formatDate(params.awardedDateTo)+"'"
+		}
+		
+		if(!subqry.equals(""))
+		{
+			grantAllocationInstanceList = GrantAllocation.findAll("from GrantAllocation GA where GA.party.id = "+ Party +" AND GA.projects.activeYesNo='Y' AND GA.amountAllocated !='0' AND " + subqry)
+		}
+		else
+		{	
+			grantAllocationInstanceList = GrantAllocation.findAll("from GrantAllocation GA where GA.party.id = "+ Party+" AND GA.projects.activeYesNo='Y' AND GA.amountAllocated !='0'")
+		}
+		return grantAllocationInstanceList
+	}
+	
+	/*Method to get project details with selected projectType */
+	public List getProjectByProjectType(def params)
+	{
+		def ProjectsInstance = Projects.findAll("from Projects PR where PR.projectType="+params.id)
+		return ProjectsInstance
 	}
 }

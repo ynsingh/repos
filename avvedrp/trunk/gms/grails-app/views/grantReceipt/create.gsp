@@ -98,7 +98,10 @@
 	                                </td>
 	                            </g:if>
 	                            <g:else>
-	                            	<td>No Fund is Transferred</td>
+	                            	<td>
+	                            	No Fund is Transferred
+	                            	<input type="hidden" id="fundTransfer.id" name="fundTransfer.id" value="null"/>
+	                            	</td>
 	                            </g:else>
 			                </tr> 
                             <tr class="prop">
@@ -117,7 +120,7 @@
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:grantReceiptInstance,field:'amount','errors')}">
                                  <div id="grantAmt">
-                                    <input type="text" id="amount" name="amount" value="${amount}" style="text-align: right" onClick="return validateFundTransfer();" />
+                                    <input type="text" id="amount" name="amount" value="${amount}" style="text-align: right" onClick="return validateFundTransfer();" readOnly=true/>
                                  </div>
                                     <input type="hidden" id="projectId" name="projectId" value="${fieldValue(bean:grantReceiptInstance.projects, field:'id')}"/>
                                 </td>

@@ -7,9 +7,15 @@ class NotificationsAttachmentsService
 		println "++++++++++++++params.documentType+++++++++" + params.documentType
 		if(params.documentType=='Notification')
 		{
-		notificationsAttachmentsList=NotificationsAttachments
+/*	19-11-2010
+ * 	notificationsAttachmentsList=NotificationsAttachments
 				.findAll("from NotificationsAttachments NA where NA.notification="
 						+params.id + " and NA.attachmentType.documentType='"+params.documentType+"'");
+		*/
+		notificationsAttachmentsList=NotificationsAttachments
+		.findAll("from NotificationsAttachments NA where NA.notification="
+				+params.id + " and NA.attachmentType.documentType='"+params.documentType+"'");
+
 		println "attachments="+notificationsAttachmentsList
 		}
 		else

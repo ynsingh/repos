@@ -4,6 +4,39 @@
         <link rel="stylesheet" href="${createLinkTo(dir:'css',file:'main.css')}" />
         <title><g:message code="default.HeadAllocation.title" /></title>         
     </head>
+     <script>
+    function validateGrantAllocationSplit()
+{
+    if( ( (document.getElementById("grantPeriod.id").value) == 'null') || ( (document.getElementById("grantPeriod.id").value) == '') )
+    {
+         alert("Please enter the Grant Period ");
+         return false;
+    }
+    if(isNaN(document.getElementById("amount").value))
+    {
+	    alert("Invalid Amount  ");
+	    document.getElementById("amount").focus
+	    return false;
+    }
+    if((document.getElementById("amount").value)=='')
+    {
+	    alert("Please enter Proper Amount  ");
+	    return false;
+    }
+    if(eval(document.getElementById("amount").value)<=0)
+    {
+	    alert("Please enter Proper Amount  ");
+	    return false;
+    }
+    
+    if(parseFloat(document.getElementById("amount").value) > parseFloat(document.getElementById("UnAll").value))
+	{
+	alert("Please Enter Amount Less Than Or Equal To UnAllocated Amount");
+	document.getElementById("amount").focus();
+	return false;
+	}
+}   
+    </script>
     <style>
 	    .tablewrapperpopup
 		{ 
@@ -13,40 +46,6 @@
 		}
 	</style>
 	
-	<script>
-    
-	    function validateGrantAllocationSplit()
-	    {
-	        if( ( (document.getElementById("grantPeriod.id").value) == 'null') || ( (document.getElementById("grantPeriod.id").value) == '') )
-		    {
-		         alert("Please enter the Grant Period ");
-		         return false;
-		    }
-		    if(isNaN(document.getElementById("amount").value))
-		    {
-			    alert("Invalid Amount  ");
-			    document.getElementById("amount").focus
-			    return false;
-		    }
-		    if((document.getElementById("amount").value)=='')
-		    {
-			    alert("Please enter Proper Amount  ");
-			    return false;
-		    }
-		    if(eval(document.getElementById("amount").value)<=0)
-		    {
-			    alert("Please enter Proper Amount  ");
-			    return false;
-		    }
-		    
-		    if(parseFloat(document.getElementById("amount").value) > parseFloat(document.getElementById("UnAll").value))
-		{
-			alert("Please Enter Amount Less Than Or Equal To UnAllocated Amount");
-			document.getElementById("amount").focus();
-			return false;
-		}
-	    }   
-	</script> 
 	<g:javascript library="scriptaculous" /> 
 	    <body>
 	    	<div class="tablewrapperpopup"> 
@@ -177,8 +176,7 @@
                 </div>
                 <div class="buttons">
                     <span class="button">
-                    	<input class="save" type="submit" value="${message(code: 'default.Create.button')}" 
-                    	onClick="return validateGrantAllocationSplit()" />
+                    	<input class="save" type="submit" onClick="return validateGrantAllocationSplit()" value="${message(code: 'default.Create.button')}"/>
                 	</span>
                  </div>
         	</g:form>

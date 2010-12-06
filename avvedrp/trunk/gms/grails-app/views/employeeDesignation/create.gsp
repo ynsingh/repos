@@ -10,9 +10,6 @@
        <div class="wrapper"> 
 	       <div class="body">
 	        	<h1><g:message code="default.CreateEmployeeDesignation.create.head"/></h1>
-	            <!-- <g:if test="${flash.message}">
-	            	<div class="message">${flash.message}</div>
-	            </g:if>-->
 	            <g:hasErrors bean="${employeeDesignationInstance}">
 	            	<div class="errors">
 	                	<g:renderErrors bean="${employeeDesignationInstance}" as="list" />
@@ -22,20 +19,17 @@
 	                <div class="dialog">
 	                    <table>
 	                        <tbody>
-	                        
 	                            <tr class="prop">
 	                                <td valign="top" class="name">
 	                                    <label for="designation"><g:message code="default.Designation.label" />
 	                                	</label>
 	                                </td>
-	                                
 	                                <td valign="top" class="value ${hasErrors(bean: employeeDesignationInstance, 
 	                                	field: 'designation', 'errors')}">
 	                                    <g:textField id="designation" name="designation" 
 	                                    	value="${employeeDesignationInstance?.designation}" />
 	                                </td>
 	                        	</tr>
-	                        
 	                        </tbody>
 	                    </table>
 	            	 </div>

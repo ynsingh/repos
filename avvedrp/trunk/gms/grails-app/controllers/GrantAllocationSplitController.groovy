@@ -109,10 +109,11 @@ class GrantAllocationSplitController extends GmsController  {
 
     def edit = {
 		def grantAllocationSplitService = new GrantAllocationSplitService()
+		
         def grantAllocationSplitInstance = grantAllocationSplitService.getGrantAllocationSplitById(new Integer(params.id))
            def dataSecurityService = new DataSecurityService()
 		def accountHeadInstanceList 
-		
+		def unAllocatedAmount = params.UnAll
 		//checking  whether the user has access to the given projects
 		println "--------------params ------------------" + params
 		def accountHeadsService =  new AccountHeadsService()
@@ -160,11 +161,15 @@ class GrantAllocationSplitController extends GmsController  {
             }
         }
     }
+		
+		
+		grantAllocationSplitInstance.unAllocatedAmt = grantAllocationSplitInstance.amount + new Double(params.UnAll)
 		NumberFormat formatter = new DecimalFormat("#0.00");
 		
 		render(view:'edit',model:['grantAllocationSplitInstance':grantAllocationSplitInstance,
 		                          'accountHeadInstanceList':accountHeadInstanceList,
-		                          'amount':formatter.format(grantAllocationSplitInstance.amount)])
+		                          'amount':formatter.format(grantAllocationSplitInstance.amount),
+		                          'unAllocatedAmount':grantAllocationSplitInstance.unAllocatedAmt])
     }
 
     def update = {
@@ -182,6 +187,8 @@ class GrantAllocationSplitController extends GmsController  {
         		println "==============else================" 
         		grantAllocationSplitInstance.accountHead = AccountHeads.get(grantAllocationSplitInstance.accountHead.id)
         	}
+			
+			
 			if(grantAllocationSplitInstance.isSaved){
 				flash.message = "${message(code: 'default.updated.label')}"
 				

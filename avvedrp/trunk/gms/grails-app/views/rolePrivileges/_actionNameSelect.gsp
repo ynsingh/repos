@@ -7,8 +7,8 @@
     		<div class="list">
 						<table>
 							<tr>
-									<th width="65%">Action Name</th>
-									<th><g:checkBox name="All" id="All" onclick="checkAllActions()" value="${All}" checked="false"/> Select All</th>
+									<th width="65%"><g:message code="default.ActionName.label"/></th>
+									<th><g:checkBox name="All" id="All" onclick="checkAllActions()" value="${All}" checked="false"/><g:message code="default.SelectAll.label" /></th>
 								</tr>
 							</table>
 							<div style="overflow: auto;height: 260px;border-width:5px;border-style:solid;border-width:thin;border-color:#FFFFFF">
@@ -37,8 +37,8 @@
     					<table>
 							
 								<tr>
-									<th width="65%">Action Name</th>
-									<th width="40%"><g:checkBox name="AllDel" onclick="checkAllActionDelete()" value="${AllDel}" checked="false"/> Select All</th>
+									<th width="65%"><g:message code="default.ActionName.label"/></th>
+									<th width="40%"><g:checkBox name="AllDel" onclick="checkAllActionDelete()" value="${AllDel}" checked="false"/> <g:message code="default.SelectAll.label" /></th>
 								</tr>
 							</table>
 							<div style="overflow: auto;height: 260px;border-width:5px;border-style:solid;border-width:thin;border-color:#FFFFFF">

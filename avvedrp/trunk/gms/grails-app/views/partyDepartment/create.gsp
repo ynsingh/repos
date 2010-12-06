@@ -4,13 +4,13 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main" />
-        <title>Create  Department</title>         
+        <title><g:message code="default.CreateDepartment.head"/></title>         
     </head>
     <body>
     <div class="wrapper">
 
         <div class="body">
-            <h1>Create Department</h1>
+            <h1><g:message code="default.CreateDepartment.head"/></h1>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
@@ -26,7 +26,7 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="departmentCode">Department Code:</label>
+                                	<label for="code"><g:message code="default.DepartmentCode.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:partyDepartmentInstance,field:'departmentCode','errors')}">
                                     <input type="text" id="departmentCode" name="departmentCode" value="${fieldValue(bean:partyDepartmentInstance,field:'departmentCode')}"/>
@@ -35,7 +35,7 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="name">Department Name:</label>
+                                    <label for="code"><g:message code="default.DepartmentName.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:partyDepartmentInstance,field:'name','errors')}">
                                     <input type="text" id="name" name="name" value="${fieldValue(bean:partyDepartmentInstance,field:'name')}"/>
@@ -43,30 +43,22 @@
                             </tr> 
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="party">Institution:</label>
+                                    <label for="code"><g:message code="default.Institution.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:partyDepartmentInstance,field:'party','errors')}">
                                     <g:select optionKey="id" optionValue="code" from="${partyList}" name="party.id" value="${partyDepartmentInstance?.party?.id}" ></g:select>
-                                </td>
-                            </tr> 
-                        	<tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="activeYesNo">Active:</label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean:partyDepartmentInstance,field:'activeYesNo','errors')}">
-                                         <g:select name="activeYesNo" from="${['Y', 'N']}"  value="${fieldValue(bean:partyDepartmentInstance,field:'activeYesNo')}" />
                                 </td>
                             </tr> 
                         </tbody>
                     </table>
                 </div>
                 <div class="buttons">
-                    <span class="button"><input class="save" type="submit" value="Create" onClick="return validateDepartment()" /></span>
+                    <span class="button"><input class="save" type="submit" value="${message(code: 'default.Create.button')}" onClick="return validateDepartment()" /></span>
                 </div>
             </g:form>
         </div>
          <div class="body">
-            <h1>Department List</h1>
+            <h1><g:message code="default.DepartmentList.head"/></h1>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
@@ -74,18 +66,11 @@
                 <table>
                     <thead>
                         <tr>
-                        
-                   	        <th>SlNo</th>
-                        
-                   	        <g:sortableColumn property="departmentCode" title="Department Code" />
-                        
-                   	        <g:sortableColumn property="name" title="Name" />
-                   	        
-                   	        <g:sortableColumn property="party" title="Party" />
-                   	        
-                   	        <g:sortableColumn property="activeYesNo" title="Active" />
-                   	        
-                   	        <th>Edit</th>
+                    	    <g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}"/>
+							<g:sortableColumn property="departmentCode" title="${message(code: 'default.DepartmentCode.label')}" />
+                   	        <g:sortableColumn property="departmentName" title="${message(code: 'default.DepartmentName.label')}" />
+                    	    <g:sortableColumn property="party" title="${message(code: 'default.Party.label')}" />
+                   	        <th><g:message code="default.Edit.label"/></th>
                        
                         </tr>
                     </thead>
@@ -100,16 +85,8 @@
                             <td>${fieldValue(bean:partyDepartmentInstance, field:'name')}</td>
                             
                             <td>${fieldValue(bean:partyDepartmentInstance, field:'party.code')}</td>
-                        
-                        	 <td><g:if test="${fieldValue(bean:partyDepartmentInstance, field:'activeYesNo') == 'Y'}">
-	    							 ${'YES'}
-	    							 </g:if>
-	    							 <g:else>
-	    							 ${'NO'}
-	    							 </g:else>
-	                         </td>
-                        	 
-                        	 <td><g:link action="edit" id="${partyDepartmentInstance.id}">Edit</g:link></td>
+
+                        	 <td><g:link action="edit" id="${partyDepartmentInstance.id}"><g:message code="default.Edit.label"/></g:link></td>
                         	
                         </tr>
                     </g:each>

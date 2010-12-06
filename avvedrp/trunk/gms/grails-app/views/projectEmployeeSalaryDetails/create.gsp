@@ -57,8 +57,6 @@
 									<td><calendar:datePicker name="withEffectFrom" defaultValue="${new Date()}" 
 										dateFormat="%d/%m/%Y"/>
 									</td>
-									<td><label><g:message code="default.Active.label" /></label></td>
-									<td><g:select name="status" from="${['Y','N']}" /> </td>
 									<!--<td><label>End Date</label></td>-->
 							  		<!--<td><calendar:datePicker name="endDate"/></td>-->
 								</tr>

@@ -8,7 +8,9 @@
     <body>
 		<div class="wrapper">
             <div class="body">
-	            <h1><g:message code="default.EditSalaryComponent.edit.head" /></h1>
+	           <h1>
+	            <g:message code="default.EditSalaryComponent.edit.head" />
+	           </h1>
 	            <g:if test="${flash.message}">
 	            	<div class="message">${flash.message}</div>
 	            </g:if>
@@ -37,11 +39,11 @@
 	                <div class="buttons">
 	                    <span class="button">
 	                    	<g:actionSubmit class="save" action="update" 
-	                    	value="${message(code: 'default.Update.button')}" onClick="return validateSalaryComponent()"/>
+	                    	 value="${message(code: 'default.Update.button')}" onClick="return validateSalaryComponent()"/>
                     	</span>
 	                    <span class="button"><g:actionSubmit class="delete" action="delete" 
-	                    	value="${message(code: 'default.Delete.button')}" 
-	                    	onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
+	                    	 value="${message(code: 'default.Delete.button')}" 
+	                    	 onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
                     	</span>
                 	</div>
 	            </g:form>

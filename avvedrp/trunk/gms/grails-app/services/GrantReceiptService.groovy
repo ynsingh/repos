@@ -185,4 +185,10 @@ class GrantReceiptService{
 			 
 		 return totalAmt
 	}
+	
+	public List chkgrantReceiptInstanceForParent(def fundTransferInstance)
+	{
+		def chkgrantReceiptInstance=GrantReceipt.findAll("from GrantReceipt GR where GR.projects="+fundTransferInstance.grantAllocation.projects.parent.id)
+		return chkgrantReceiptInstance
+	}
 }

@@ -51,7 +51,7 @@ WHERE  gas.id = gs.id AND DATE(ge.date_of_expense) BETWEEN STR_TO_DATE($P{report
           grant_allocation ON(grant_allocation.id=FT.grant_allocation_id) INNER JOIN 
           projects ON(projects.id=grant_allocation.projects_id)
          WHERE projects.parent_id= $P{projectID} AND DATE(FT.date_of_transfer) BETWEEN STR_TO_DATE($P{reportDate},'%d/%M/%Y') AND STR_TO_DATE($P{reportDateTo},'%d/%M/%Y') 
-         GROUP BY grant_allocation.id) AS FundTrnfd
+         ) AS FundTrnfd
 FROM account_heads ah,grant_allocation_split gs,grant_expense ge,grant_allocation ga,
 projects p,party pa  
 WHERE ah.id= gs.account_head_id AND
@@ -67,11 +67,11 @@ GROUP BY gs.id]]></queryString>
 
 	<field name="AcHead" class="java.lang.String"/>
 	<field name="BudjAmt" class="java.lang.Double"/>
-	<field name="ExpAmt" class="java.lang.Double"/>
 	<field name="ProjectName" class="java.lang.String"/>
 	<field name="InstName" class="java.lang.String"/>
 	<field name="FuntAmt" class="java.lang.Double"/>
 	<field name="FundRcvd" class="java.lang.Double"/>
+	<field name="ExpAmt" class="java.lang.Double"/>
 	<field name="FundTrnfd" class="java.lang.Double"/>
 
 	<variable name="BudgTotal" class="java.lang.Double" resetType="Report" calculation="Sum">

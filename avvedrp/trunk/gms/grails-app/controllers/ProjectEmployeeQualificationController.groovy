@@ -40,6 +40,7 @@ class ProjectEmployeeQualificationController
 		//projectEmployeeQualificationInstance.Status='Y'
         def projectEmployeeInstance = ProjectEmployee.get(params.projectEmployee.id)
         def employeeDesignationInstance = EmployeeDesignation.get(params.id)
+        projectEmployeeQualificationInstance.Status="Y" //15-11-2010
         if (projectEmployeeQualificationInstance.save(flush: true)) 
         {
         	flash.message ="${message(code: 'default.created.label')}"
@@ -136,6 +137,7 @@ class ProjectEmployeeQualificationController
             try 
             {
             	//projectEmployeeQualificationInstance.Status='D'
+            	projectEmployeeQualificationInstance.Status="N" //15-11-2010
                 projectEmployeeQualificationInstance.save(flush: true)
                 flash.message = "${message(code: 'default.deleted.label')}"
                 redirect(action: "create",id:projectEmployeeInstance.id)

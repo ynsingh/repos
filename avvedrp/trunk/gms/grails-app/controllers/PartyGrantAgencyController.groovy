@@ -1,80 +1,70 @@
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 
-
-class PartyGrantAgencyController {
-    
-    def index = { redirect(action:list,params:params) }
+class PartyGrantAgencyController 
+{
+    def index = {}
 
     // the delete, save and update actions only accept POST requests
     def allowedMethods = [delete:'POST', save:'POST', update:'POST']
 
-    def list = {
-    		
-    	GrailsHttpSession gh=getSession()
-        gh.removeValue("Help")
-        //putting help pages in session
-        gh.putValue("Help","Grant_Agency_List.htm")		
-        if(!params.max) params.max = 10
-        params.partyType = "GA"
-        String subQuery ="";
-        if(params.sort != null && !params.sort.equals(""))
-        	subQuery=" order by P."+params.sort
-        if(params.order != null && !params.order.equals(""))
-        	subQuery =subQuery+" "+params.order
-        	
-    	def partyService = new PartyService()
-        def partyInstanceList = partyService.getActiveGrantAgency(subQuery)
-        [ partyInstanceList: partyInstanceList ]
-    }
-
-    def show = {
+    /**
+     * Method to perform delete action
+     */
+	def delete = 
+    {
 		def partyService = new PartyService()
-		def partyInstance = partyService.getPartyById(new Integer(params.id ))
-
-        if(!partyInstance) {
-            flash.message = "${message(code: 'default.notfond.label')}"
-            redirect(action:list)
-        }
-        else { return [ partyInstance : partyInstance ] }
-    }
-
-    def delete = {
-		def partyService = new PartyService()
+		/*Delete Grant Agency details*/
 		Integer partyId = partyService.deleteParty(new Integer(params.id))
 		
-		if(partyId != null){
+		if(partyId != null)
+		{
 			flash.message = "${message(code: 'default.deleted.label')}"
-			redirect(action:list)
+			redirect(action:create)
 		}
-		else {
+		else 
+		{
             flash.message = "${message(code: 'default.couldnotdeleteGrantAgency.label')}"
-            redirect(action:list)
+            redirect(action:create)
         }
     }
-
-    def edit = {
-        def partyInstance = Party.get( params.id )
-
-        if(!partyInstance) {
+    
+    /**
+     * Method to perform edit action
+     */
+    def edit = 
+    {
+    	def partyService = new PartyService()
+    	/*Getting party details based on id*/
+    	def partyInstance = partyService.getPartyById(new Integer(params.id ))
+    	if(!partyInstance)
+        {
             flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:create)
         }
-        else {
+        else 
             return [ partyInstance : partyInstance ]
-        }
     }
-
-    def update = {
+    
+    /**
+     * Method to perform update action
+     */
+    def update =
+    {
 		def partyService = new PartyService()
+		/*Updating Grant agency details*/
 		def partyInstance = partyService.updateGrantAgency(params)
 		
-		if(partyInstance){
-			if(partyInstance.saveMode != null){
-				if(partyInstance.saveMode.equals("Updated")){
+		if(partyInstance)
+		{
+			if(partyInstance.saveMode != null)
+			{
+				if(partyInstance.saveMode.equals("Updated"))/*Checking whether the grant agency details updated*/
+				{
 					flash.message = "${message(code: 'default.updated.label')}"
 	                redirect(action:create,id:partyInstance.id)
 				}
-				else if(partyInstance.saveMode.equals("Duplicate")){
+				else if(partyInstance.saveMode.equals("Duplicate"))/*Checking whether the party already exists*/
+				{
 					flash.message =  "${message(code: 'default.AlreadyExists.label')}"
 	    	    	render(view:'edit',model:[partyInstance:partyInstance])
 				}
@@ -89,39 +79,33 @@ class PartyGrantAgencyController {
         }
     }
 
-    def create = {
+    /**
+     * Method to perform delete action
+     */
+    def create = 
+    {
         def partyInstance = new Party()
         GrailsHttpSession gh=getSession()
-        
-       
-       
        	gh.removeValue("Help")
    		//putting help pages in session
    		gh.putValue("Help","Create_Grant_Agency.htm")
 	
         if(!params.max) params.max = 10
-        params.partyType = "GA"
-        String subQuery ="";
-        if(params.sort != null && !params.sort.equals(""))
-        	subQuery=" order by P."+params.sort
-        if(params.order != null && !params.order.equals(""))
-        	subQuery =subQuery+" "+params.order
-        	
     	def partyService = new PartyService()
-        def partyInstanceList = partyService.getActiveGrantAgency(subQuery)
+        /*Getting all active grant agencies*/
+        def partyInstanceList = partyService.getActiveGrantAgency(params)
         return ['partyInstance':partyInstance,
                 'partyInstanceList': partyInstanceList]
     }
 
-    def save = {
+    /**
+     * Method to perform save action
+     */
+    def save = 
+    {
         def partyInstance = new Party(params)
-        System.out.println("****************save****************** "+params.parent)
-        if(!partyInstance.hasErrors() ) {
-        	partyInstance.partyType="GA" 
-            partyInstance.createdBy="admin"
-           	partyInstance.createdDate = new Date();
-           	partyInstance.modifiedBy="admin"
-           	
+        if(!partyInstance.hasErrors() ) 
+        {
        		def partyService = new PartyService()
            	partyInstance = partyService.saveGrantAgency(partyInstance)
            	

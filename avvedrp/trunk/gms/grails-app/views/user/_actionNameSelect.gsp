@@ -7,8 +7,8 @@
 						<table>
 							<thead>
 								<tr>
-									<th>Action Name</th>
-									<th><g:checkBox name="All" onclick="checkAllActions()" value="${All}" checked="false"/> Select All</th>
+									<th><g:message code="default.ActionName.label"/></th>
+									<th><g:checkBox name="All" onclick="checkAllActions()" value="${All}" checked="false"/><g:message code="default.SelectAll.label" /></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -25,14 +25,14 @@
 					
       		</td>
       		<td width="13%">
-      			<g:submitToRemote action="save" value="Add" update="[success:'actionNameSel',failure:'error']" before="if(!validateActions()) return false"/>
-                <g:submitToRemote action="delete" value="Delete" update="[success:'actionNameSel',failure:'error']" before="if(!validateActionForDelete()) return false"/></td><td width="45%">
+      			<g:submitToRemote action="save" value="${message(code: 'default.Add.button')}" update="[success:'actionNameSel',failure:'error']" before="if(!validateActions()) return false"/>
+                <g:submitToRemote action="delete" value="${message(code: 'default.Delete.button')}" update="[success:'actionNameSel',failure:'error']" before="if(!validateActionForDelete()) return false"/></td><td width="45%">
       			
     					<table>
 							<thead>
 								<tr>
-									<th>Action Name</th>
-									<th><g:checkBox name="AllDel" onclick="checkAllActionDelete()" value="${AllDel}" checked="false"/> Select All</th>
+									<th><g:message code="default.ActionName.label"/></th>
+									<th><g:checkBox name="AllDel" onclick="checkAllActionDelete()" value="${AllDel}" checked="false"/><g:message code="default.SelectAll.label" /></th>
 								</tr>
 							</thead>
 							<tbody>

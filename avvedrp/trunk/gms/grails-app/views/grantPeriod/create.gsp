@@ -50,16 +50,6 @@
                                     <calendar:datePicker name="endDate" value="${grantPeriodInstance?.endDate}" defaultValue="${new Date()}"  dateFormat= "%d/%m/%Y"/>
                                 </td>
                             </tr>
-                        
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="activeYesNo"><g:message code="default.Active.label"/></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean:grantPeriodInstance,field:'activeYesNo','errors')}">
-                                         <g:select name="activeYesNo" from="${['Y', 'N']}"  value="${fieldValue(bean:grantPeriodInstance,field:'activeYesNo')}" />
-                                </td>
-                            </tr> 
-                            
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="defaultYesNo"><g:message code="default.Default.label"/></label>
@@ -96,9 +86,7 @@
                    	        <g:sortableColumn property="startDate" title="${message(code: 'default.StartDate.label')}" />
                    	         
                    	        <g:sortableColumn property="endDate" title="${message(code: 'default.EndDate.label')}" />
-                        
-                   	        <g:sortableColumn property="activeYesNo" title="${message(code: 'default.Active.label')}" />
-                   	        
+
                             <g:sortableColumn property="defaultYesNo" title="${message(code: 'default.Default.label')}" />
                             
                    	        <th><g:message code="default.Edit.label"/></th>
@@ -118,15 +106,7 @@
                             <td><g:formatDate format="dd/MM/yyyy" date="${grantPeriodInstance.startDate}"/></td>
                             
                             <td><g:formatDate format="dd/MM/yyyy" date="${grantPeriodInstance.endDate}"/></td>
-                        	
-                            <td>
-                	            <g:if test="${fieldValue(bean:grantPeriodInstance, field:'activeYesNo') == 'Y'}">
-    							  <g:message code="default.YES.label"/>
-    							</g:if>
-    							<g:else>
-    							  <g:message code="default.NO.label"/>
-    							</g:else>
-                        	</td>
+                      	                         	
                             <td>
 	                            <g:if test="${fieldValue(bean:grantPeriodInstance, field:'defaultYesNo') == 'Y'}">
 	    						   <g:message code="default.YES.label"/>

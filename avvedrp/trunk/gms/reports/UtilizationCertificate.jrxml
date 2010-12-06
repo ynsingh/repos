@@ -39,7 +39,10 @@
         CONCAT(YEAR($P{reportDate})+1,'-',YEAR($P{reportDateTo})+1)
 	))AS nextFinancialYear,
 	 YEAR($P{reportDateTo}) AS currentYear,
-	GR.reference_id AS LetterNo,
+	(SELECT GR.reference_id FROM grant_receipt GR,projects P
+	WHERE GR.projects_id = P.id
+	AND P.id= $P{projectID} 
+	AND DATE(GR.date_of_receipt) BETWEEN $P{reportDate} AND $P{reportDateTo} GROUP BY GR.projects_id)AS LetterNo,
 	(SELECT 
 		SUM(total)
 	 FROM 
@@ -84,21 +87,13 @@ FROM
 	projects PJ,
 	grant_receipt GR,
 	party PY,
-	grant_expense GE,
-	grant_period GP,
-	grant_allocation_split GS,
 	grant_allocation GA
 WHERE 
 	GA.projects_id  = PJ.id
-	AND GR.projects_id = GA.projects_id 
 	AND PY.id = GA.party_id
-	AND GR.projects_id = GE.projects_id
-	-- AND GE.grant_allocation_split_id = GS.id
-	-- AND GS.grant_period_id = GP.id
-	
 	AND (PJ.parent_id =$P{projectID} OR PJ.id =$P{projectID})
 GROUP BY 
-	PJ.id,GE.projects_id]]></queryString>
+	PJ.id,GA.projects_id]]></queryString>
 
 	<field name="ProjectName" class="java.lang.String"/>
 	<field name="financialYear" class="java.lang.String"/>
@@ -115,7 +110,7 @@ GROUP BY
 		<initialValueExpression><![CDATA[new Double(0.0)]]></initialValueExpression>
 	</variable>
 	<variable name="Totalfund" class="java.lang.Double" resetType="Report" calculation="Nothing">
-		<variableExpression><![CDATA[new Double($F{FundAmt}.doubleValue()+$F{ExpenseAmount}.doubleValue())]]></variableExpression>
+		<variableExpression><![CDATA[new Double(($F{FundAmt}!=null?$F{FundAmt}:new Double(0)).doubleValue()+($F{ExpenseAmount}!=null?$F{ExpenseAmount}:new Double(0)).doubleValue())]]></variableExpression>
 	</variable>
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -402,7 +397,7 @@ Utilization Certificate]]></text>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Times New Roman" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{Amount}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{Amount}!=null?$F{Amount}:new Double(0)]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
@@ -607,29 +602,7 @@ Utilization Certificate]]></text>
 						mode="Transparent"
 						x="395"
 						y="126"
-						width="121"
-						height="15"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="textField"
-						stretchType="NoStretch"
-						positionType="FixRelativeToTop"
-						isPrintRepeatedValues="true"
-						isRemoveLineWhenBlank="false"
-						isPrintInFirstWholeBand="false"
-						isPrintWhenDetailOverflows="false"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
-						<font fontName="Times New Roman" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[$V{Totalfund}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Transparent"
-						x="313"
-						y="169"
-						width="102"
+						width="116"
 						height="15"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -644,7 +617,31 @@ Utilization Certificate]]></text>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Times New Roman" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[new Double((($F{Amount}!=null?$F{Amount}:new Double(0)).doubleValue())-($F{ExpenseAmount}.doubleValue()+$F{FundAmt}.doubleValue()))]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[new Double(($F{FundAmt}!=null?$F{FundAmt}:new Double(0)).doubleValue()+($F{ExpenseAmount}!=null?$F{ExpenseAmount}:new Double(0)).doubleValue())]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="312"
+						y="168"
+						width="102"
+						height="15"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-10"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
+						<font fontName="Times New Roman" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[new Double((($F{Amount}!=null?
+$F{Amount}:new Double(0)).doubleValue())-(($F{ExpenseAmount}!=null?
+$F{ExpenseAmount}:new Double(0)).doubleValue()+($F{FundAmt}!=null?$F{FundAmt}:new Double(0)).doubleValue()))]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

@@ -55,12 +55,6 @@
                                 <td valign="top" class="value ${hasErrors(bean:accountHeadsInstance,field:'code','errors')}">
                                     <input type="text" id="code" name="code" value="${fieldValue(bean:accountHeadsInstance,field:'code')}"/>
                                 </td>
-                                <td valign="top" class="name">
-                                    <label for="activeYesNo"><g:message code="default.Active.label"/></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean:accountHeadsInstance,field:'activeYesNo','errors')}">
-                                    <g:select name="activeYesNo" from="${['Y', 'N']}"  value="${fieldValue(bean:accountHeadsInstance,field:'activeYesNo')}" />
-                                </td>
                                 <td>
                                 </td>
                                 <td>
@@ -91,7 +85,6 @@
                             <g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}" />
                    	        <g:sortableColumn property="name" title="${message(code: 'default.Name.label')}" />
                    	        <g:sortableColumn property="code" title="${message(code: 'default.Code.label')}" />
-                   	        <g:sortableColumn property="activeYesNo" title="${message(code: 'default.Active.label')}" />
                    	        <th><g:message code="default.Edit.label"/></th>
                         </tr>
                     </thead>
@@ -103,14 +96,6 @@
                            <td>${j}</td>
                            <td>${fieldValue(bean:accountHeadsInstance, field:'name')}</td>
                            <td>${fieldValue(bean:accountHeadsInstance, field:'code')}</td>
-                           <td>
-                	           <g:if test="${fieldValue(bean:accountHeadsInstance, field:'activeYesNo') == 'Y'}">
-    							 <g:message code="default.YES.label"/>
-    						   </g:if>
-    						   <g:else>
-    							 <g:message code="default.NO.label"/>
-    						   </g:else>
-                           </td>
                            <td>
                                <input type="hidden" name="id" value="${accountHeadsInstance?.parent?.id}" />
                                <g:link action="edit" id="${accountHeadsInstance.id}"><g:message code="default.Edit.label"/></g:link></td>

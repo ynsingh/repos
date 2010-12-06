@@ -1,6 +1,6 @@
 <head>
 	<meta name="layout" content="main" />
-	<title>Create Site Admin</title>
+	<title><g:message code="default.CreateSiteAdmin.head"/></title>
 	<g:javascript library="jquery" />
 </head>
 <body>
@@ -44,11 +44,21 @@
 					
 
 					<tr class="prop">
-						<td valign="top" class="name"><label for="userRealName"><g:message code="default.FullName.label"/>:</label></td>
-						<td valign="top" class="value ${hasErrors(bean:person,field:'user','errors')}">
+
+						<td valign="top" class="name"><label for="userRealName"><g:message code="default.FirstName.label"/>:</label></td>
+			           	<td valign="top" class="value ${hasErrors(bean:person,field:'user','errors')}">
 							<input type="text" id="userRealName" name="userRealName" value="${person?.user?.userRealName?.encodeAsHTML()}"/>
 						</td>
 					</tr>
+                          
+                   <tr class="prop">
+
+						<td valign="top" class="name"><label for="userSurName"><g:message code="default.LastName.label"/>:</label></td>
+
+						<td valign="top" class="value ${hasErrors(bean:person,field:'user','errors')}">
+							<input type="text" id="userSurName" name="userSurName" value="${person?.user?.userSurName?.encodeAsHTML()}"/>
+						</td>
+					</tr>     
 
 					<tr class="prop">
 						<td valign="top" class="name"><label for="passwd"><g:message code="default.Password.label"/>:</label></td>

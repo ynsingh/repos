@@ -38,14 +38,14 @@
 			<table height="75%">
 				<tr align="center"><td> <font size="3" color="#660000"></font></td></tr>
 				<tr><td align="center">
-       <b>You have successfully created a siteadmin   </td></tr>
+       <b><g:message code='default.successfullycreatedsiteadmin.message'/></td></tr>
                     <tr><td>
-       <b>A confirmation email has been sent to you with a link to activate your account.</b>
+       <b><g:message code='default.confirmationemailhasbeensent.message'/>.</b>
                            </td></tr>
                            <tr><td>
-       <b>To access your Account,Please Activate Your Account</b>
+       <b><g:message code='default.PleaseActivateYourAccount.message'/></b>
                            </td></tr>
-                  <tr><td>  <g:link action="auth" controller="login" >Log In</g:link></td></tr>
+                  <tr><td>  <g:link action="auth" controller="login" ><g:message code="default.login.label"/></g:link></td></tr>
                   <tr><td><HR></td></tr>
 				</table><div></div>
 				</div>

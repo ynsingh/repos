@@ -97,8 +97,9 @@ class NotificationsEmailsService {
      * Function to send mail to users
      */
     
-    public boolean sendMessage(def emailId,def pass,def name,def personId,def urlPath)
+    public boolean sendMessage(def emailId,def mailMessage)
     {
+    	def mailServerStatus = true
     	def mailSubject=gmsSettingsService.getGmsSettingsValue("MailSubject")
     	def mailContent=gmsSettingsService.getGmsSettingsValue("MailContent")
         String host = gmsSettingsService.getGmsSettingsValue("MailHost")
@@ -121,19 +122,36 @@ class NotificationsEmailsService {
         InternetAddress to_address = new InternetAddress(emailId);
         message.addRecipient(Message.RecipientType.TO, to_address);
         
-        String mailMessage="";
+       /* String mailMessage="";
         mailMessage="Dear "+name+", \n \n "+mailContent+".";
         mailMessage+="\n \n LoginName    : "+emailId;
         mailMessage+="\n Password     : "+pass;
-        mailMessage+="\n \n \n To activate your account,click on the following link   \t:"+urlPath+personId;
+        mailMessage+="\n \n \n To activate your account,click on the following link   \t:"+urlPath+personId;*/
  
         message.setSubject(mailSubject);
         message.setText(mailMessage);
         Transport transport = session.getTransport("smtp");
+        try 
+        {
+        	println "transport connect"
         transport.connect(host, username, password);
+        }    
+        catch(Exception e)
+        {
+        	System.out.println ("SocketException e "+e)
+        	mailServerStatus=false
+        }
+        try
+        {
         transport.sendMessage(message, message.getAllRecipients());
+        }
+        catch(Exception e)
+        {
+        	println "e"+e
+        	mailServerStatus=false
+        }
         transport.close();
-        return true;
+        return mailServerStatus;
     }
     
     public boolean sendChangePassword(def emailId,def pass,def name,def personId,def urlPath)
@@ -154,6 +172,7 @@ class NotificationsEmailsService {
         props.put("mail.smtp.auth", "true");
  
         Session session = Session.getDefaultInstance(props, null);
+        session.setDebug(true);
         MimeMessage message = new MimeMessage(session);
         message.setFrom(new InternetAddress(from));
  

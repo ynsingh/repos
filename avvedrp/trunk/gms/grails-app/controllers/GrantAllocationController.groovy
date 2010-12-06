@@ -280,14 +280,30 @@
             def grantAllocationInstanceListproj
             grantAllocationInstanceListproj = grantAllocationService.getGrantAllocationsForAssignedProject(projectsInstance.id)
             println "grantAllocationInstanceListproj"+ grantAllocationInstanceListproj
+        	println"grantAllocationInstance"+projectsInstance
+            //def partyinstance=Party.get(gh.getValue("Party"))
+            def partyinstance
+            def partInstance
+            if(projectsInstance.parent!=null)
+            {
+            //def grantInstance = GrantAllocation.findAll("from GrantAllocation GA where GA.projects="+projectsInstance.parentId)
+            def grantInstance = grantAllocationService.getGrantAllocationInstanceForParentProject(projectsInstance)
+            println"grantInstance"+grantInstance
+           partyinstance=GrantAllocation.executeQuery("select GA.party from GrantAllocation GA where GA.id="+grantInstance[0].id)
+            println"partyinstance"+partyinstance
+            println"partyinstance.code"+partyinstance[0].code
+            }
+            else
+            {
+            	partInstance = Party.get(gh.getValue("Party"))
+            }
+            
         	
-            def partyinstance=Party.get(gh.getValue("Party"))
-        	println partyinstance
     	     
         	ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
         	return ['grantAllocationInstance':grantAllocationInstance,
         	        'grantAllocationInstanceList':grantAllocationInstanceListproj,
-                'partyinstance':partyinstance,
+                'partyinstance':partyinstance,'partInstance':partInstance,
                 'currencyFormat':currencyFormatter,
                 'projectsPIMapInstance':projectsPIMapInstance,
                 'projectsInstance':projectsInstance]
@@ -307,9 +323,22 @@
     	    grantAllocationInstance.allocationType="Fund"
     	    grantAllocationInstance.sanctionOrderNo="";
     	    grantAllocationInstance.code=""
-    	    def granterInstance=Party.get(new Integer(params.grantor))
+    	    def partInstance
+    	    // def granterInstance=Party.get(new Integer(params.grantor))
+    	    if(projectsInstance.parent!=null)
+    	    {
+    	    def grantInstance = grantAllocationService.getGrantAllocationInstanceForParentProject(projectsInstance)
+            println"grantInstance"+grantInstance
+           def partyinstance=GrantAllocation.executeQuery("select GA.party from GrantAllocation GA where GA.id="+grantInstance[0].id)
     				       
-    		grantAllocationInstance.party=granterInstance
+    		grantAllocationInstance.party=partyinstance[0]
+    	    }
+    	    
+    	    else
+    	    {
+    	    	partInstance = Party.get(gh.getValue("Party"))
+    	    grantAllocationInstance.party = partInstance
+    	    }
     	   	def grantAllocationService = new GrantAllocationService()
     	    
 		    def fundAllotId = grantAllocationService.saveFundAllocation(grantAllocationInstance)
@@ -317,8 +346,12 @@
 		    {
 		    	flash.message = "${message(code: 'default.created.label')}"
 	    		redirect(action:'fundAllot')
-		    }else{flash.message = "${message(code: 'default.FundAllocationnotcreated.label')}"
-	    		redirect(action:'fundAllot')}
+		    }
+		    else
+		    {
+		    	flash.message = "${message(code: 'default.FundAllocationnotcreated.label')}"
+	    		redirect(action:'fundAllot')
+	    	}
     	    
         
     }
@@ -327,9 +360,8 @@
     {
     		
     	GrailsHttpSession gh=getSession()
-     def grantAllocationInstance = new GrantAllocation()	
-    	
-		gh.removeValue("Help")
+        def grantAllocationInstance = new GrantAllocation()	
+    	gh.removeValue("Help")
 	    //putting help pages in session
 	    gh.putValue("Help","SubProject_Allocation.htm")
     	gh.putValue("fromUrL", "subGrantAllot");
@@ -349,8 +381,7 @@
 		}
 		else
 		{
-	        
-	        grantAllocationInstance.properties = params
+            grantAllocationInstance.properties = params
 	        def projectInstance = new Projects()
 	        projectInstance.parent = Projects.get( params.id )
 	        projectInstance.parent.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(projectInstance.parent.id,getUserPartyID())
@@ -367,14 +398,16 @@
 	        for(int i=0;i<grantAllocationInstanceList.size();i++)
 	        {
 	        	sumAmountAllocated = sumAmountAllocated + grantAllocationInstanceList[i].amountAllocated
+	        	
 	        	//get PI of projects
 	        	println "grantAllocationInstanceList"+ grantAllocationInstanceList[i].projects.id
             	def projectsPIMapInstance = dataSecurityService.getProjectsPIMap(grantAllocationInstanceList[i].projects.id);
     	        println "PIMAp"+ projectsPIMapInstance
    	        	projectsPIMapInstanceList.add(projectsPIMapInstance)
 	        }
-
+            
 	        grantAllocationInstance.totAllAmount = sumAmountAllocated
+	        grantAllocationInstance.balanceAmount=projectInstance.parent.totAllAmount - grantAllocationInstance.totAllAmount
 	        ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
 	        return ['grantAllocationInstance':grantAllocationInstance,
 	                'projectInstance':projectInstance,
@@ -1037,17 +1070,17 @@ def projectDash =
     		def monthname=["Jan","Feb","Mar","Apr","May","Jun","July","Aug","Sep","Oct","Nov","Dec"]
     		def monthnameView=[]
     		def grantAllocationService = new GrantAllocationService()
-    		println "params.id"+params.id
-            Integer ProjectId=new Integer(params.id);
-            println "Long.parseLong(params.id)"+Long.parseLong(params.id)
+    		def projectTrackingInstanceList = []
+    		Integer ProjectId=new Integer(params.id);
             // def grantAllocationInstanceId = projectsService.getProjectById(new Long(params.id))
             def projectInstance
+            
             try{
              projectInstance = projectsService.getProjectById(new Long(params.id))
-             println "projectInstance"+projectInstance
              def projectInstanceList = Projects.findAll("from Projects  P where  P.parent.id="+projectInstance.id)
         	 def parentProjectInstance
         	 String subProjectString="";
+             
         	 if(projectInstanceList)
         	 {
         		 for(int i=0;i<projectInstanceList.size();i++)
@@ -1244,14 +1277,15 @@ def projectDash =
 
 				       }
 								  
-                         
-							         
+									  			         
             if(!projectInstance) {
                 flash.message = "${message(code: 'default.notfond.label')}"
                 redirect(action:list)
             }
           
-            else {
+            else 
+            {
+            	projectInstance.status = params.projectStatus             	  	
             	ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
             	return [ projectInstance : projectInstance,sumAmount:sumAmount,
             	         grantAllocationSplit:grantAllocationSplit,
@@ -1458,7 +1492,8 @@ def projectDash =
 			
 }
 
-
+def menu = {}
+def top = {}
 
 
 }

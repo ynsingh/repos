@@ -8,9 +8,9 @@
 	<body >
 		<div class="hrmenu-container" >	
 			<ul id="topnav">
-		        <li><g:link controller='projectsPIMap' action="create">Add PI</g:link></li> 
-		        <li><g:link controller='projectDepartmentMap' action="create">Add Department</g:link></li> 
-		        <li><g:link controller='grantAllocation' action="fundAllot">Fund Allocation</g:link></li>
+		        <li><g:link controller='projectsPIMap' action="create"><g:message code="default.PIAddition.label"/></g:link></li> 
+		        <li><g:link controller='projectDepartmentMap' action="create"><g:message code="default.DepartmentAddition.label"/></g:link></li> 
+		        <li><g:link controller='grantAllocation' action="fundAllot"><g:message code="default.FundAllocation.label"/></g:link></li>
 	    	</ul> 
 		</div> 
 	</body>	

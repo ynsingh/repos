@@ -158,5 +158,22 @@ println"....accountHeadList..."+accountHeadList
 	
 	return accountHeadList
 }
+	/**
+	 * Get the list of grant allocation split based on grant period
+	 */
+	public GrantAllocationSplit[] getGrantAllocationSplitBasedOnGrantPeriod(def grantPeriodParams)
+	{
+		def grantAllocationSplitInstanceList=GrantAllocationSplit.findAll("FROM GrantAllocationSplit GAS WHERE GAS.grantPeriod="+grantPeriodParams.id)
+		return grantAllocationSplitInstanceList
+	}
+	
+	/**
+	 * Get the list of grant allocation split based on account head
+	 */
+	public GrantAllocationSplit[] getGrantAllocationSplitBasedOnAccountHead(def accountHeadsParams)
+	{
+		def grantAllocationSplitInstanceList=GrantAllocationSplit.findAll("from GrantAllocationSplit GAS where GAS.accountHead = "+accountHeadsParams.id)
+		return grantAllocationSplitInstanceList
+	}
 }
 	

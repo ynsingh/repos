@@ -50,20 +50,17 @@
                                 <td valign="top" class="value ${hasErrors(bean:accountHeadsInstance,field:'code','errors')}">
                                     <input type="text" id="code" name="code" value="${fieldValue(bean:accountHeadsInstance,field:'code')}"/>
                                 </td>
-                           </tr> 
-                           <tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="activeYesNo"><g:message code="default.Active.label"/></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean:accountHeadsInstance,field:'activeYesNo','errors')}">
-                                    <g:select name="activeYesNo" from="${['Y', 'N']}"  value="${fieldValue(bean:accountHeadsInstance,field:'activeYesNo')}" />
-                                </td>
-                           </tr> 
+                           </tr>                         
                         </tbody>
                    </table>
                 </div>
                 <div class="buttons">
-                    <span class="button"><g:actionSubmit class="save" value="${message(code: 'default.Update.button')}" onClick="return validateAccountHead()" /></span>
+                    <span class="button"><g:actionSubmit class="save" action="update" value="${message(code: 'default.Update.button')}" onClick="return validateAccountHead()" /></span>
+					<span class="button">
+					<g:actionSubmit class="delete"  action="delete" 
+					value="${message(code: 'default.Delete.button')}" 
+					onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
+					</span>
                 </div>
             </g:form>
         </div>

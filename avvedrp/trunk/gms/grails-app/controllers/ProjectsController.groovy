@@ -15,7 +15,8 @@ class ProjectsController extends GmsController
 
     // the delete, save and update actions only accept POST requests
     def allowedMethods = [delete:'POST', save:'POST', update:'POST']
-
+	def partyDepartmentService
+	def partyService
     def grantAllocationService
     def projectsService
     def investigatorService    
@@ -27,7 +28,7 @@ class ProjectsController extends GmsController
 		def grandAllocationList
 		
 		gh.removeValue("Help")
-		gh.putValue("Help","Project_List.htm")//putting help pages in session
+		gh.putValue("Help","_List.htm")//putting help pages in session
 		
 		if(!params.max) params.max = 10
 			String subQuery="";
@@ -42,12 +43,16 @@ class ProjectsController extends GmsController
 													
 		def  pIMapList =[]
 		def pIMapInstance
-
+		def projectInstanceList = []
 		for(int i=0;i<grantAllocationWithprojectsInstanceList.size();i++)
 		{
 			pIMapInstance=projectsService.checkPIofProject(grantAllocationWithprojectsInstanceList[i].projects.id)
 			
 			pIMapList.add(pIMapInstance)
+			/* Get Closed project details */
+			def projectTrackingInstanceCheck = grantAllocationService.getClosedProject(grantAllocationWithprojectsInstanceList[i].projects.id)
+			if(projectTrackingInstanceCheck)
+				grantAllocationWithprojectsInstanceList[i].projects.status = "Closed"
 			
 		}
 		
@@ -103,11 +108,14 @@ class ProjectsController extends GmsController
 	{
 		def projectsService = new ProjectsService()
 		def dataSecurityService = new DataSecurityService()
-		Integer projectId = projectsService.deleteProject(new Integer(params.id))
+		
 		
 		//checking  whether the user has access to the given projects
 		def projectsInstance = new Projects() 
 		projectsInstance.properties = params
+		println"params.id"+params.id
+		Integer projectId = projectsService.deleteProject(params)
+		
 		if(projectId != null)
 		{
 			if(projectId > 0)
@@ -133,6 +141,8 @@ class ProjectsController extends GmsController
             redirect(action:list)
 		}
     }
+    
+    
     def edit = 
     {
 		def projectsService = new ProjectsService()
@@ -140,13 +150,16 @@ class ProjectsController extends GmsController
 		
 		GrailsHttpSession gh=getSession()
 		gh.putValue("Help","New_Projects.htm")//putting help pages in session
+					
 		def projectsInstance = projectsService.getProjectById(new Integer( params.id ))
 		if(projectsInstance)
 		{
 			def projectsPIMapInstance = projectsService.checkPIofProject(projectsInstance.id)
 			if(projectsPIMapInstance)
 				projectsInstance.investigator = projectsPIMapInstance.investigator
-		}
+				
+	    }
+		
 		def projectid=projectsInstance.id
 		//checking  whether the user has access to the given projects
 		if(dataSecurityService.checkForAuthorisedAcsessInProjects(projectid,new Integer(getUserPartyID()))==0)
@@ -163,11 +176,18 @@ class ProjectsController extends GmsController
 			else 
 			{
 				gh.putValue("ProjectId",projectsInstance.id)
-				return [ projectsInstance : projectsInstance ]
+				def investigatorService = new InvestigatorService()
+                def investigatorList=[]
+    	        investigatorList=investigatorService.getInvestigatorsWithParty(gh.getValue("PartyID"))
+    	        return [ 'projectsInstance' : projectsInstance , 'investigatorList':investigatorList]
+		
 			}
 		}
-    }
-	def editsub =
+    
+	   
+  }
+   
+ 	def editsub =
 	{
 		def projectsService = new ProjectsService()
 		def dataSecurityService = new DataSecurityService()
@@ -190,6 +210,7 @@ class ProjectsController extends GmsController
 		}
     }
 
+	
 	def subedit = 
 	{
 		def projectsService = new ProjectsService()
@@ -305,8 +326,15 @@ class ProjectsController extends GmsController
     def create = 
     {
 		def projectsService = new ProjectsService()
+		
 		GrailsHttpSession gh=getSession()
 		gh.putValue("Help","New_Projects.htm")//putting help pages in session
+		println "session ............" +gh 
+		
+		def investigatorService = new InvestigatorService()
+         	def investigatorList=[]
+    		investigatorList=investigatorService.getInvestigatorsWithParty(gh.getValue("PartyID"))
+    		println "investigatorList........."+investigatorList
 		
 		def grantAllocationWithprojectsInstanceList
 		def projectsInstance = new Projects()
@@ -317,8 +345,10 @@ class ProjectsController extends GmsController
 		{
 	    	projectsInstance = projectsService.getProjectById(new Integer( params.id ))
 		}
-		return ['projectsInstance':projectsInstance]
-    }
+		return ['projectsInstance':projectsInstance,'investigatorList':investigatorList]
+		
+				
+	}
 	
 	/*
 	 * @@ Save project details @@ 
@@ -352,7 +382,8 @@ class ProjectsController extends GmsController
     		else if(projectsInstance.saveMode.equals("Duplicate"))
     		{
     			flash.message = "${message(code: 'default.AlreadyExists.label')}"
-    			render(view:'create',model:[projectsInstance:projectsInstance])
+    				gh.putValue("ProjectId",projectsInstance.id)
+        			redirect(action:create,id:projectsInstance.id)
     		}
     	}
     	else
@@ -472,7 +503,7 @@ class ProjectsController extends GmsController
     def search = 
     {
         def projectsInstance = new Projects()
-        projectsInstance.properties = params
+        //projectsInstance.properties = params
         return ['projectsInstance':projectsInstance]        	       	
     }
     def searchProjects = 
@@ -485,22 +516,28 @@ class ProjectsController extends GmsController
     	def grantAllocationInstanceList = projectsService.searchProjects(projectsInstance,gh.getValue("Party"),params);
 		if (grantAllocationInstanceList.size()==0 )
 		{
-			 flash.message = "${message(code: 'default.notfond.label')}"
+			// flash.message = "${message(code: 'default.notfond.label')}"
 		}
-		render(view:'search',model:['grantAllocationInstanceList':grantAllocationInstanceList])  
+		render(template:'simpleSearch',model:['grantAllocationInstanceList':grantAllocationInstanceList])  
     }
 	def advancedSearchProjects = 
     {
 			
-			if(params.id == "Advance")
-			{
-				render (template:"advancedSearch")
-			}
-			else if(params.id == "1")
-			{
-				render (template:"simpleSearch")
-			}
+			render(view:'advancedSearch')  
 			
     }
-    
+    def grantSearch = 
+    {
+			GrailsHttpSession gh=getSession()
+			def partyDepartmentInstance = partyService.getPartyDepartment(gh.getValue("Party"))
+			def partyInstance = partyService.getAllActiveParties()
+			[partyDepartmentInstance:partyDepartmentInstance,partyInstance:partyInstance]
+    }
+	def grantSearchResult =
+	{
+			println "grant search result"
+			GrailsHttpSession gh=getSession()
+			def grantAllocationInstanceList = projectsService.getGrantSearchResult(params,gh.getValue("Party"))
+			render(template:'grantSearchResult',model:['grantAllocationInstanceList':grantAllocationInstanceList])  
+	}
 }

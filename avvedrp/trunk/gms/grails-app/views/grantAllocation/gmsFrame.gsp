@@ -10,9 +10,9 @@ function noBack(){
 		
 
 <frameset frameborder="NO"  border="0" style="overflow:hidden" rows="20%,80%">
-	<frame src="top.gsp" name="top" scrolling="no" noresize="noresize" style="z-index:-1;overflow:hidden; height:100%; width:100%;">
+	<frame src="../grantAllocation/top" name="top" scrolling="no" noresize="noresize" style="z-index:-1;overflow:hidden; height:100%; width:100%;">
 		<frameset frameborder="NO" border="3"  cols="160px,*">
-			<frame src="menu.gsp" name="left">
+			<frame src="../grantAllocation/menu" name="left">
 			<frame src="../projects/list" name="right">
 		</frameset>
 </frameset> 

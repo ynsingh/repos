@@ -5,7 +5,9 @@ import org.codehaus.groovy.grails.commons.GrailsApplication
 import grails.util.GrailsUtil
 
 class ProposalApplicationController {
-    
+	def notificationsEmailsService
+	def userService
+	def proposalService
     def index = { redirect(action:list,params:params) }
 
     // the delete, save and update actions only accept POST requests
@@ -88,7 +90,6 @@ class ProposalApplicationController {
         }
     }
     def applicationForm = {
-    		println  "-------"+params 
     		def notificationInstance = Notification.get(params.id)
     		def attachmentsName='ApplicationForm'
     		def gmsSettingsService = new GmsSettingsService()
@@ -105,83 +106,60 @@ class ProposalApplicationController {
  	        	}
  	        	def srcFile = new File(gmsSettingsInstance.value+notificationInstance.applicationForm)
  	        	def targetFile = new File(webRootDir+notificationInstance.applicationForm)
- 	        	org.apache.commons.io.FileUtils.copyFile(srcFile, targetFile)
+ 	        	try
+ 	        	{
+ 	        		org.apache.commons.io.FileUtils.copyFile(srcFile, targetFile)
+ 	        	}
+ 	        	catch(Exception e)
+ 	        	{
+ 	        		
+ 	        	}
  	        	
-          
-			//	def proposalInstance = Proposal.get(new Integer(params.id))
-    	//	GrailsHttpSession gh=getSession()
-    	//	gh.putValue("AppForm",proposalInstance.notification.applicationForm)
-    		//[proposalInstance:proposalInstance]
+        
     		[notificationInstance:notificationInstance,gmsSettingsInstance:gmsSettingsInstance.value]
     }
-    def saveformDetails = {
-    		
-    		//saving the form details into the master and extention tables.
-    		//extention table values are stored as fields ,values
-    		def proposalApplicationInstance=new ProposalApplication()
-    		Set keyList=params.keySet()
-    		
-    		GrailsHttpSession gh=getSession()
-    		println "proposalApplicationInstance"+gh.getValue("ProposalId")
-    		Iterator itr=keyList.iterator()
-    		def proposalApplicationInstanceDb = ProposalApplication.find("from ProposalApplication PA where PA.proposal="+gh.getValue("ProposalId"))
-    		if(proposalApplicationInstanceDb)
-    		{
-    			proposalApplicationInstance=proposalApplicationInstanceDb
-    		}
-    		proposalApplicationInstance.proposal=Proposal.get(getSession().ProposalId)
-    		proposalApplicationInstance.applicationSubmitDate=new Date()
-    		proposalApplicationInstance.save()
-    		
-    		while(itr.hasNext())
-    		{
-    			Object obj=itr.next()
-    			if(obj.toString() !="action")
-    			{
-    			if(obj.toString()!="controller")
-    			{
-    			def proposalApplicationExtInstance=new ProposalApplicationExt()
-    			def proposalApplicationExtInstanceDb = ProposalApplicationExt.find("from ProposalApplicationExt PE where PE.proposalApplication="+proposalApplicationInstance.id+" and PE.field='"+obj+"'") 
-    			
-    			if(proposalApplicationExtInstanceDb)
-    			{
-    				proposalApplicationExtInstance=proposalApplicationExtInstanceDb
-    			}
-    			proposalApplicationExtInstance.proposalApplication=proposalApplicationInstance
-    			proposalApplicationExtInstance.field=obj.toString()
-    			proposalApplicationExtInstance.value=params.get(obj).toString()
-    			proposalApplicationExtInstance.save()
-    			
-    			println "Field="+obj.toString()
-    			println "Value="+params.get(obj).toString()}}
-    		}
-    }
+    
     
     def saveForm = {
-    		println("submitForm")
-    		println "params-"+params
-    		saveformDetails()
+    		
     		GrailsHttpSession gh = getSession()
+    		String urlPath = request.getScheme() + "://" + request.getServerName() +":"+ request.getServerPort() + request.getContextPath()+"/login/auth"
+    		def saveProposalApplication = proposalService.saveformDetails(params,gh.getValue("UserId"),gh.getValue("ProposalId"),urlPath)
     		def proposalInstance = Proposal.find("from Proposal P where P.id="+gh.getValue("ProposalId"))
-    		//redirect url: '..\confirm.gsp'
-    		//redirect uri: '/proposalApplication/confirm.gsp'  
-    		redirect(action:'confirm',params:[id:proposalInstance.notification.id,proposalId:proposalInstance.id])
+    		if(saveProposalApplication.saveFormStatus == true)
+    		{
+    		  	if(saveProposalApplication.controllerIdMail == true)
+    		{
+    			redirect(action:'mailConfirmation',params:[id:proposalInstance.notification.id,proposalId:proposalInstance.id])
+    		}
+    		else
+    		{
+    			
+    			redirect(action:'confirm',params:[id:proposalInstance.notification.id,proposalId:proposalInstance.id])
+    		}
+    		}
+    		else
+    		{
+    			String actionName='partyNotificationsList'
+    			render(view:'serverNotResponding',model:['id':proposalInstance.notification.id,'proposalId':proposalInstance.id,'actionName':actionName])
+    		}
     }
     def getForm = {
     		GrailsHttpSession gh = getSession()
-    		println "Session="+gh.getValue("ProposalId")
-    		def proposalApplicationInstance = ProposalApplication.find("from ProposalApplication PA where PA.proposal="+gh.getValue("ProposalId"))
-    		println "proposalApplicationInstance get"+proposalApplicationInstance
+    		def proposalApplicationInstance = proposalService.getProposalApplicationByProposal(gh.getValue("ProposalId"))
     		if(proposalApplicationInstance)
     		{
-    			def proposalApplicationExtResult = ProposalApplicationExt.findAll("from ProposalApplicationExt PE where PE.proposalApplication="+proposalApplicationInstance.id)
-    			println "proposalApplicationExtResult"+proposalApplicationExtResult
+    			def proposalApplicationExtResult =proposalService.getProposalApplicationExtByProposalApplication(proposalApplicationInstance.id) 
     			render proposalApplicationExtResult as JSON
     		}
     		
     }
     def confirm = 
     {
-    	//redirect(controller:'proposal',action:'create',id:params.id)	
+    	
+    }
+	def mailConfirmation = 
+    {
+    	
     }
 }

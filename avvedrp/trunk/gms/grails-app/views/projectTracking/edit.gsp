@@ -1,5 +1,3 @@
-
-
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -79,8 +77,8 @@
                            </table>
                         </div>
                         <div class="buttons">
-                             <span class="button"><g:actionSubmit class="save" value="${message(code: 'default.Update.button')}" onClick="return validateProjectTracking()"  /></span>
-                             <span class="button"><g:actionSubmit class="delete" onclick="return confirm('Are you sure?');" value="${message(code: 'default.Delete.button')}" /></span>
+                             <span class="button"><g:actionSubmit class="save" action="update" value="${message(code: 'default.Update.button')}" onClick="return validateProjectTracking()"  /></span>
+                             <span class="button"><g:actionSubmit class="delete" action="delete" onclick="return confirm('Are you sure?');" value="${message(code: 'default.Delete.button')}" /></span>
                         </div>
                     </g:form>
                  </td>

@@ -142,7 +142,7 @@
                        </table>
                      </div>
                      <div class="buttons">
-                       <span class="button"><g:actionSubmit class="save" value="${message(code: 'default.Update.button')}" onClick="return validateGrantReceipt()"  /></span>
+                       <span class="button"><g:actionSubmit class="save" action="update" value="${message(code: 'default.Update.button')}" onClick="return validateGrantReceipt()"  /></span>
                        <span class="button"><g:actionSubmit class="delete" onclick="return confirm('Are you sure?');" value="${message(code: 'default.Delete.button')}" /></span>
                      </div>
                    </g:form>

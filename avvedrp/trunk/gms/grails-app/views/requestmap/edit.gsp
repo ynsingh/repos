@@ -53,7 +53,7 @@
 			</div>
 
 			<div class="buttons">
-				<span class="button"><g:actionSubmit class="save" value="Update" /></span>
+				<span class="button"><g:actionSubmit class="save" value="Update" action="update"/></span>
 				<span class="button"><g:actionSubmit class="delete" onclick="return confirm('Are you sure?');" value="Delete" /></span>
 			</div>
 

@@ -58,4 +58,29 @@ class AttachmentsService {
     	def attachmentInstance = Attachments.findAll("from Attachments A where A.domain='Projects' and A.domainId="+projectId)
     	return attachmentInstance
     }
+    /*Function to find notification attachments by attachment type id*/
+     public List getnotificationById(def attachmentTypeId)
+   {
+	   def notificationInstance = NotificationsAttachments.findAll("from NotificationsAttachments NA where NA.attachmentType="+attachmentTypeId)
+	   return notificationInstance
+   }
+     /*Function to get all attachment type*/ 
+    public List getattachmentTypes()
+   {
+	   def attachmentInstance = AttachmentType.findAll("from AttachmentType AT where AT.activeYesNo='Y'")
+	   return attachmentInstance
+   } 
+    /*Function to get all attachment type by id*/ 
+    public def getattachmentTypes(def attachmentTypeId)
+    {
+ 	   def attachmentInstance = AttachmentType.get( attachmentTypeId )
+ 	   return attachmentInstance
+    }
+    /*Function to get all attachment type*/ 
+    public List getattachmentTypesByDocTypeAndType(def type,def docType)
+   {
+	   def attachmentInstanceList = AttachmentType.findAll("from AttachmentType AT where AT.activeYesNo='Y' and AT.type = '"+type+"' and AT.documentType='"+ docType +"'")
+	   return attachmentInstanceList
+   } 
+    
 }

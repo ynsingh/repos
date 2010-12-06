@@ -12,7 +12,7 @@
     <div class="wrapper">
         <div class="tablewrapper">
         <div class="body">
-            <h1>Show Notification</h1>
+            <h1><g:message code="default.Notification.PublishNotification.head"/></h1>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
@@ -21,7 +21,7 @@
                     <tbody>
                     
                       <tr class="prop">
-                            <td valign="top" class="name">Project:</td>
+                            <td valign="top" class="name"><g:message code="default.Project.label"/></td>
                             
                             <td valign="top" style="font-size:100%" class="value"><b>${notificationsInstance?.project?.name.encodeAsHTML()}</b></td>
                             
@@ -29,21 +29,21 @@
 
                     
                         <tr class="prop">
-                            <td valign="top" class="name">Date Of Notification:</td>
+                            <td valign="top" class="name"><g:message code="default.DateOfNotification.label"/></td>
                            <td><g:formatDate format="dd-MM-yyyy" date="${notificationsInstance.notificationDate}"/></td>
                             
                             
                         </tr>
                         
                          <tr class="prop">
-                            <td valign="top" class="name">Last Date for ProposalSubmission:</td>
+                            <td valign="top" class="name"><g:message code="default.LastProposalSubmissionDate.label"/></td>
                             <td><g:formatDate format="dd-MM-yyyy" date="${notificationsInstance.proposalSubmissionLastDate}"/></td>
                             
                             
                         </tr>
                     
                         <tr class="prop">
-                            <td valign="top" class="name">Description:</td>
+                            <td valign="top" class="name"><g:message code="default.Description.label"/></td>
                             
                             <td valign="top" class="value">${notificationsInstance.description}</td>
                             
@@ -58,14 +58,14 @@
                         
                     
                         <tr class="prop">
-                            <td valign="top" class="name">Type:</td>
+                            <td valign="top" class="name"><g:message code="default.Type.label"/></td>
                             
                             <td valign="top" class="value">${fieldValue(bean:notificationsInstance, field:'project.projectType.type')}</td>
                           
                         </tr>
                           
                         <tr class="prop">
-           					<td valign="top" class="name">Documentation:</td>
+           					<td valign="top" class="name"><g:message code="default.Documentation.label"/></td>
            					
            					<td valign="top" class="value">
            					
@@ -73,8 +73,8 @@
        							<div class="list">
        							<table >
        							 <thead>
-       							 <th>Document Type</th>
-       							 <th>View</th>
+       							 <th><g:message code="default.DocumentType.label"/></th>
+       							 <th><g:message code="default.View.label"/></th>
        							  </thead>
        							<tbody>
        							<tr>
@@ -87,7 +87,7 @@
        							${fieldValue(bean:notificationsAttachmentsInstance, field:'attachmentType.type')}
        							</td>
        							<td>
-       							<a href="${g.createLink(controller:'notificationsAttachments', action:'download', id:notificationsAttachmentsInstance.id)}"><g:message code="View" encodeAs="HTML" target="_blank"/></a>
+       							<a href="${g.createLink(controller:'notificationsAttachments', action:'download', id:notificationsAttachmentsInstance.id)}"><g:message code="default.View.label" encodeAs="HTML" target="_blank"/></a>
        							</td>
        							</tr>
        							
@@ -99,7 +99,7 @@
        							</div>
        							</g:if>
        							<g:else>
-     						No Documentation Attached
+     						<g:message code="default.NoDocumentationAttached.label"/>
 							</g:else>
                      		
                      		

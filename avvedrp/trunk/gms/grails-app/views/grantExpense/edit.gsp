@@ -46,6 +46,7 @@
                             </td>
                             <td valign="top" class="value ${hasErrors(bean:grantExpenseInstance,field:'dateOfExpense','errors')}">
                                 <calendar:datePicker name="dateOfExpense" defaultValue="${new Date()}" value="${grantExpenseInstance?.dateOfExpense}" dateFormat= "%d/%m/%Y"/>
+                            <g:hiddenField name="projects.id" value="${grantExpenseInstance?.projects?.id}" /> 
                             </td>
                         </tr> 
                         
@@ -73,7 +74,7 @@
                                 <label for="modeOfPayment"><g:message code="default.ModeOfPayment.label"/></label>
 			                </td>
 			                <td valign="top" class="value ${hasErrors(bean:grantExpenseInstance,field:'modeOfPayment','errors')}">
-			                    <g:select name="modeOfPayment" from="${['DD','Cheque','Cash' ,'BankTransfer']}"  value="${fieldValue(bean:grantExpenseInstance,field:'modeOfPayment')}" />
+			                    <g:select name="modeOfPayment" from="${['DD','Cheque','BankTransfer']}"  value="${fieldValue(bean:grantExpenseInstance,field:'modeOfPayment')}" />
 			                </td>
 			            </tr>      
 			                    
@@ -126,8 +127,8 @@
                     </table>
                   </div>
                   <div class="buttons">
-                    <span class="button"><g:actionSubmit class="save" value="${message(code: 'default.Update.button')}" onClick="return validateGrantExpense()"  /></span>
-                    <span class="button"><g:actionSubmit class="delete" onclick="return confirm('Are you sure?');" value="${message(code: 'default.Delete.button')}" /></span>
+                    <span class="button"><g:actionSubmit class="save" action="update" value="${message(code: 'default.Update.button')}" onClick="return validateGrantExpense()"  /></span>
+                    <span class="button"><g:actionSubmit class="delete" action="delete" onclick="return confirm('Are you sure?');" value="${message(code: 'default.Delete.button')}" /></span>
                   </div>
               </g:form>
             </div>

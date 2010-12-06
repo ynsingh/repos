@@ -382,10 +382,9 @@ public void addRolesUser(def person,def params) {
 		return party
 	}
 	/**
-	 * Function to get user by name.
+	 * Getting user by name.
 	 */
 	public Integer getUserByUserName(String userName){
-		println "+++++++++++++++++++++inside getUserByUserName++++++++++++++" +userName
 		Integer userId = null;
 		def person  = Person.find("from Person U where U.username='"+userName+"'");
 		if(person)
@@ -412,4 +411,75 @@ public void addRolesUser(def person,def params) {
 		 def  authorityInstsnce = Authority.find("from Authority A where A.id in ("+ roleId+")")
 		 return authorityInstsnce
 		}
+	/*
+	 * Getting All Active Rolls
+	 */
+	 public getAllRolls()
+	{
+		 def authorityInstanceList=Authority.findAll("from Authority AT where AT.activeYesNo='Y'")
+	     return authorityInstanceList
+	}
+
+	/*
+	 * Getting Authority By Id
+	 */
+	 public getRoleById(def RoleId)
+	{
+		 def authorityInstance = Authority.get(RoleId)
+	     return authorityInstance
+	}
+	/*
+	 * Save new Role
+	 */
+	 public saveRole(def authorityInstance)
+	{
+		 authorityInstance.activeYesNo="Y"
+		 def authorityInstanceSave = updateRole(authorityInstance)
+		 return authorityInstanceSave
+	}
+	/*
+	 * Delete Role
+	 */
+	 public deleteRole(def authorityInstance)
+	{
+		 authorityInstance.activeYesNo="N"
+		 def authorityInstanceDelete = updateRole(authorityInstance)
+		 return authorityInstanceDelete
+	}
+	/*
+	 * Update Role
+	 */
+	 public boolean updateRole(def authorityInstance)
+	{
+		def authorityInstanceUpdate =false 
+			if(!authorityInstance.hasErrors() && authorityInstance.save()) 
+			{
+				authorityInstanceUpdate=true
+			}
+			else
+			{
+				println "false++++++++++++++++"
+				authorityInstanceUpdate=false
+			}
+		return authorityInstanceUpdate
+	}
+	
+	 /*
+	  * Getting Authority details based on authority
+	  */
+	 public List getDuplicateRole(def authorityInstance)
+	 {
+		 def chkDuplicateRoleInstance
+		try
+		{
+		 chkDuplicateRoleInstance = Authority.findAll("from Authority AT where AT.authority = '"+ authorityInstance.authority+"'")
+		}
+		catch(Exception e)
+		{
+			
+		}
+		 return chkDuplicateRoleInstance
+		
+	 }
+
 }

@@ -44,16 +44,6 @@
                                 <td></td>
                                 <td></td>
                             </tr> 
-                        	<tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="activeYesNo"><g:message code="default.Active.label"/>:</label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean:projectDepartmentMapInstance,field:'activeYesNo','errors')}">
-                                    <g:select name="activeYesNo" from="${['Y', 'N']}"  value="${fieldValue(bean:projectDepartmentMapInstance,field:'activeYesNo')}" />
-                                </td>
-                                <td></td>
-                                <td></td>
-	                       	</tr>  
                         </tbody>
                     </table>
                 </div>
@@ -79,7 +69,6 @@
                             <th><g:message code="default.Projects.label"/></th>
                    	    	<th><g:message code="default.Department.label"/></th>
                    	    	<th><g:message code="default.Institution.label"/></th>
-                   	    	<g:sortableColumn property="activeYesNo" title="${message(code: 'default.Active.label')}" />
                    	    	<th><g:message code="default.Edit.label"/></th>
                         </tr>
                     </thead>
@@ -92,16 +81,7 @@
                             <td>${fieldValue(bean:projectDepartmentMapInstance, field:'projects.code')}</td>
                                                     	<td>${fieldValue(bean:projectDepartmentMapInstance, field:'partyDepartment.departmentCode')}</td>
                         	<td>${fieldValue(bean:projectDepartmentMapInstance, field:'partyDepartment.party.code')}</td>
-                            
-                            <td>
-                	             <g:if test="${fieldValue(bean:projectDepartmentMapInstance, field:'activeYesNo') == 'Y'}">
-    							 	<g:message code="default.YES.label"/>
-    							 </g:if>
-								 <g:else>
-	    							 <g:message code="default.NO.label"/>
-	    						 </g:else>
-                        	 </td>
-                            
+
                             <td><g:link action="edit" id="${fieldValue(bean:projectDepartmentMapInstance, field:'id')}"><g:message code="default.Edit.label"/></g:link></td>
                         </tr>
                     </g:each>

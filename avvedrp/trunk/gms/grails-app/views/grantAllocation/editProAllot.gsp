@@ -142,14 +142,10 @@
                 	</table>
                 </div>
                 <div class="buttons">
-                    <span class="button"><input class="save" type="submit" 
+                    <span class="button"><input class="save" type="submit" action="updateProAllot"   
                     	value="${message(code: 'default.Update.button')}" 
                     	onclick="return validateSubProject()" />
                 	</span>
-                    <span class="button"><g:actionSubmit class="delete" 
-                    	onclick="return confirm('Are you sure?');" 
-                    	value="${message(code: 'default.Delete.button')}" />
-                    </span>
                 </div>
             </g:form>
          </div>

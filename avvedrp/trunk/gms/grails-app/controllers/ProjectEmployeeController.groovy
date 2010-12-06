@@ -13,12 +13,12 @@ class ProjectEmployeeController
     {
 		params.max = Math.min(params.max ? params.int('max') : 10, 100)
         [projectEmployeeInstanceList: ProjectEmployee.list(params),
-         projectEmployeeInstanceTotal: ProjectEmployee.count()]
+        projectEmployeeInstanceTotal: ProjectEmployee.count()]
     }
     
 	def create = 
     {
-	println "params"+params
+	    println "params"+params
         def projectEmployeeInstance = new ProjectEmployee()
         projectEmployeeInstance.properties = params
         def projectInstance
@@ -26,43 +26,51 @@ class ProjectEmployeeController
         {
         	projectInstance = Projects.get(params.id)
         }
-        def employeeDesignationInstance = EmployeeDesignation.list()
+        //def employeeDesignationInstance = EmployeeDesignation.list()
+        def employeeDesignationService = new EmployeeDesignationService()
+        def employeeDesignationInstanceList =employeeDesignationService.getemployeeDesignationList()
         def projectEmployeeInstanceList=projectEmployeeService.getProjectEmployeeList(projectInstance)
         return [projectEmployeeInstance: projectEmployeeInstance,
-                employeeDesignationInstance: employeeDesignationInstance,
+                employeeDesignationInstanceList: employeeDesignationInstanceList,
                 projectEmployeeInstanceList:projectEmployeeInstanceList,
                 projectInstance:projectInstance]
     }
 	/**
 	 * Method to save the Project Employee Details
 	 */
-    def save = 
-    {
-        def projectEmployeeInstance = new ProjectEmployee(params)
-        def projectInstance = Projects.get(params.projectId)
-        projectEmployeeInstance.projects=projectInstance
-        def projectEmployeeUniqueCheckstatus=projectEmployeeService.projectEmployeeUniqueCheck(projectEmployeeInstance)
-        if(projectEmployeeUniqueCheckstatus)
-        {
-        	flash.message = "${message(code: 'default.AlreadyExists.label')}"
-        }
-        //projectEmployeeInstance.Status='Y'
-        def employeeDesignationInstance = EmployeeDesignation.list()
-        def projectEmployeeInstanceList=projectEmployeeService.getProjectEmployeeList(projectEmployeeInstance)
-        if (projectEmployeeInstance.save(flush: true))
-        {
-            flash.message ="${message(code: 'default.created.label')}" 
-            redirect(action: "create", id:projectInstance.id)
-            		/*model: [projectEmployeeInstance: projectEmployeeInstance,
-                                               employeeDesignationInstance:employeeDesignationInstance,
-                                               projectEmployeeInstanceList:projectEmployeeInstanceList,
-                                               projectInstance:projectInstance])*/
-        }
-        else
-        {
-        	redirect(action: "create", id:projectInstance.id)
-        }
-    }
+	 def save = 
+	    {
+	        def projectEmployeeInstance = new ProjectEmployee(params)
+	        def projectInstance = Projects.get(params.projectId)
+	        projectEmployeeInstance.projects=projectInstance
+	        def projectEmployeeUniqueCheckstatus=projectEmployeeService.projectEmployeeUniqueCheck(projectEmployeeInstance)
+	        if(projectEmployeeUniqueCheckstatus)
+	        {
+	        	flash.message = "${message(code: 'default.AlreadyExists.label')}"
+	        }
+	        projectEmployeeInstance.Status='Y'
+	        //def employeeDesignationInstance = EmployeeDesignation.list()
+	        println"params"+params
+	        def employeeDesignationService  = new EmployeeDesignationService()
+	        def employeeDesignationInstanceList = employeeDesignationService.getemployeeDesignationList()
+	        println"params"+params
+	        def projectEmployeeInstanceList=projectEmployeeService.getProjectEmployeeList(projectEmployeeInstance)
+	        println"projectEmployeeInstance"+projectEmployeeInstance
+	        //projectEmployeeInstance.Status="Y"
+	        if (projectEmployeeInstance.save(flush: true))
+	        {
+	            flash.message ="${message(code: 'default.created.label')}" 
+	            redirect(action: "create", id:projectInstance.id)
+	            	/*model: [projectEmployeeInstance: projectEmployeeInstance,
+	                                               employeeDesignationInstance:employeeDesignationInstance,
+	                                               projectEmployeeInstanceList:projectEmployeeInstanceList,
+	                                               projectInstance:projectInstance])*/
+	        }
+	        else
+	        {
+	        	redirect(action: "create", id:projectInstance.id)
+	        }
+	    }
     def show = 
     {
         def projectEmployeeInstance = ProjectEmployee.get(params.id)
@@ -77,22 +85,25 @@ class ProjectEmployeeController
         }
     }
 
-    def edit = 
-    {
-        def projectEmployeeInstance = ProjectEmployee.get(params.id)
-        def employeeDesignationInstance = EmployeeDesignation.list()
-        if (!projectEmployeeInstance) 
-        {
-            flash.message = "${message(code: 'default.notfond.label')}"
-            redirect(action: "list")
-        }
-        else 
-        {
-            return [projectEmployeeInstance: projectEmployeeInstance,
-                    employeeDesignationInstance: employeeDesignationInstance]
-        }
-    }
-
+	 def edit = 
+	    {
+	        def projectEmployeeInstance = ProjectEmployee.get(params.id)
+	        println"params"+params
+	        //def employeeDesignationInstance = EmployeeDesignation.list()
+	        def employeeDesignationService = new EmployeeDesignationService()
+	        def employeeDesignationInstanceList = employeeDesignationService.getemployeeDesignationList()
+	        println"params"+params
+	        if (!projectEmployeeInstance) 
+	        {
+	            flash.message = "${message(code: 'default.notfond.label')}"
+	            redirect(action: "list")
+	        }
+	        else 
+	        {
+	            return [projectEmployeeInstance: projectEmployeeInstance,
+	                    employeeDesignationInstanceList: employeeDesignationInstanceList]
+	        }
+	    }
     def update = 
     {
         def projectEmployeeInstance = ProjectEmployee.get(params.id)
@@ -104,9 +115,8 @@ class ProjectEmployeeController
                 if (projectEmployeeInstance.version > version) 
                 {
                     projectEmployeeInstance.errors.rejectValue("version", "default.optimistic.locking.failure", 
-                    						[message(code: 'projectEmployee.label',default: 'ProjectEmployee')] 
-                							as Object[], 
-                							"Another user has updated this ProjectEmployee while you were editing")
+                    [message(code: 'projectEmployee.label',default: 'ProjectEmployee')] as Object[], 
+                	"Another user has updated this ProjectEmployee while you were editing")
                     render(view: "edit", model: [projectEmployeeInstance: projectEmployeeInstance])
                     return
                 }
@@ -130,31 +140,35 @@ class ProjectEmployeeController
     }
 
     def delete = 
-    {
-		def projectEmployeeInstance = ProjectEmployee.get(params.id)
+    {		
+		def projectEmployeeInstance = ProjectEmployee.get(params.id)		
 		def projectEmployeeQualificationInstance = ProjectEmployeeQualification.list()
 		def projectEmployeeExperienceInstance=ProjectEmployeeExperience.list()
 		def projectEmployeeSalaryDetailsInstance=ProjectEmployeeSalaryDetails.list()
-		println projectEmployeeQualificationInstance.projectEmployee.id
+		//println projectEmployeeQualificationInstance.projectEmployee.id
         if (projectEmployeeInstance) 
-        {
+        {         	
         	try 
-        	{     		
-                projectEmployeeInstance.save(flush: true)
-                
+        	{   
+        		projectEmployeeInstance.Status="N" //15-11-2010
+                projectEmployeeInstance.save(flush: true)                
                 flash.message = "${message(code: 'default.deleted.label')}"
-                redirect(action: "create")
+                //redirect(action: "create")
+                redirect(action: "create", id: projectEmployeeInstance.projectsId) //15-11-2010
+                //redirect(action: "create", id: projectEmployeeInstance.id)
             }
         	catch(org.springframework.dao.DataIntegrityViolationException e)
             {
                 flash.message ="${message(code: 'default.inuse.label')}"
-                redirect(action: "create", id: params.id)
+                //redirect(action: "create", id: params.id)
+                redirect(action: "create", id: projectEmployeeInstance.projectsId) //15-11-2010
             }
         }
         else 
         {
-            flash.message = "${message(code: 'default.notfond.label')}"
-            redirect(action: "create")
+            flash.message = "${message(code: 'default.notfond.label')}"            
+            //redirect(action: "create", id: projectEmployeeInstance.id)
+            redirect(action: "create", id: projectEmployeeInstance.projectsId) //15-11-2010
         }
     }
 	

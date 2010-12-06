@@ -1,5 +1,3 @@
-
-
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -31,7 +29,7 @@
                                     <label for="role"><g:message code="default.Role.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:rolePrivilegesInstance,field:'role','errors')}">
-                                    <g:select optionKey="id" optionValue="authority" from="${Authority.list()}" name="role.id" value="${rolePrivilegesInstance?.role?.id}" ></g:select>
+                                    <g:select optionKey="id" optionValue="authority" from="${authorityInstanceList}" name="role.id" value="${rolePrivilegesInstance?.role?.id}" ></g:select>
                                 </td>
                                 <td valign="top" class="name">
                                     <label for="controllerName"><g:message code="default.Privilegesgroup.label"/>:</label>

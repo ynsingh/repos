@@ -22,9 +22,16 @@
 
 					
 					<tr class="prop">
-						<td valign="top" class="name"><label for="userRealName"><g:message code="default.FullName.label"/>:</label></td>
+						<td valign="top" class="name"><label for="userRealName"><g:message code="default.FirstName.label"/>:</label></td>
 						<td valign="top" class="value ${hasErrors(bean:person,field:'userRealName','errors')}">
 							<input type="text" id="userRealName" name="userRealName" value="${person.userRealName?.encodeAsHTML()}"/>
+						</td>
+					</tr>
+						
+					<tr class="prop">
+						<td valign="top" class="name"><label for="userSurName"><g:message code="default.LastName.label"/>:</label></td>
+						<td valign="top" class="value ${hasErrors(bean:person,field:'userSurName','errors')}">
+							<input type="text" id="userSurName" name="userSurName" value="${person.userSurName?.encodeAsHTML()}"/>
 						</td>
 					</tr>
 
@@ -49,8 +56,8 @@
 						<td valign="top" class="value ${hasErrors(bean:person,field:'email','errors')}">
 							<input type="text" id="email" name="email" value="${person.email?.encodeAsHTML()}"/>
 						</td>
-					</tr>
-						<tr class="prop">
+	               
+	               		<tr class="prop">
 						<td valign="top" class="name" align="left"><g:message code="default.AssignRoles.label"/>:</td>
 						<td> <g:select optionKey="id" optionValue="authority" from= "${authorityInstance}" id="authorities" name="authorities"  noSelection="['Select':'Select']"></g:select>
 						</td>

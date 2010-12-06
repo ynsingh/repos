@@ -111,6 +111,7 @@ class UserMapController {
 
     def save = {
         def userMapInstance = new UserMap(params)
+        println("userMapInstance = " + userMapInstance )
         if(!userMapInstance.hasErrors() ) {
             flash.message ="${message(code: 'default.UserMappedtoProject.label')}"
             

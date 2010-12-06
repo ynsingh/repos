@@ -7,10 +7,9 @@
     <body>
         <div class="wrapper"> 
 	        <div class="body">
-	            <h1><g:message code = "default.CreateSalaryComponent.create.head"/></h1>
-	                 <!--<g:if test="${flash.message}">
-	            	<div class="message">${flash.message}</div>
-	            </g:if>--> 
+	            <h1>
+	            	<g:message code = "default.CreateSalaryComponent.create.head"/>
+	            </h1>
 	            <g:hasErrors bean="${salaryComponentInstance}">
 		            <div class="errors">
 		                <g:renderErrors bean="${salaryComponentInstance}" as="list" />
@@ -24,14 +23,13 @@
 	                            <tr class="prop">
 	                                <td valign="top" class="name">
 	                                    <label for="name"><g:message code="default.SalaryComponent.label" /></label>
-	                                 </td>
+	                                </td>
 	                                
 	                                <td valign="top" class="value ${hasErrors(bean: salaryComponentInstance, field: 'name', 'errors')}">
 	                                    <input type="text" id="name" name="name" value="${salaryComponentInstance?.name}" />
 	                                </td>
 	                            </tr>
 	                            
-	                        
 	                        </tbody>
 	                    </table>
 	                </div>
@@ -43,24 +41,23 @@
 	        </div>
         </div>
         <div class="wrapper">
-        <div class="body">
-        	
-           <!-- <h1><g:message code="default.ListSalaryComponent.edit.head" /></h1>--> 
-            <g:if test="${flash.message}">
-            	<div class="message">${flash.message}</div>
-            </g:if>
-            <g:if test="${salaryComponentInstanceList}">
-            	<div class="list">
+            <div class="body">
+
+                <g:if test="${flash.message}">
+            	   <div class="message">${flash.message}</div>
+                </g:if>
+                <g:if test="${salaryComponentInstanceList}">
+            	   <div class="list">
             	      <table>
                     	<thead>
                         	<tr>
-                        
-	                          	<g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}" />
+                              	<g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}" />
 	                        
 	                            <g:sortableColumn property="name" title="${message(code: 'default.Name.label')}" />
-	                            
-	                            <th><g:message code="default.Edit.label"/></th>
-                        	</tr>
+	                          <th>
+	                            <g:message code="default.Edit.label"/>
+	                          </th>
+                        	 </tr>
                     	</thead>
 	                    <tbody>
 	                    	<g:each in="${salaryComponentInstanceList}" status="i" var="salaryComponentInstance">
@@ -77,12 +74,12 @@
                     			</tr>
                     		</g:each>
                     	</tbody>
-                </table>
-            </div>
-            </g:if>
+                     </table>
+                   </div>
+                </g:if>
             	<g:else>
-   		 			<br><g:message code="default.NoRecordsAvailable.label"/></br>
+   		 		   <br><g:message code="default.NoRecordsAvailable.label"/></br>
     			</g:else>
-    			</div>
+    		</div>
     </body>
 </html>

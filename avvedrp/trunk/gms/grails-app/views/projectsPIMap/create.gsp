@@ -50,14 +50,6 @@
                                     <g:select id="role" name="role"  from="${['PI','CO-PI']}" value="${projectsPIMapInstance?.role}" ></g:select>
                                 </td>
                             </tr> 
-	                        <tr class="prop">
-                                <td valign="top" class="name">
-                                    <label for="activeYesNo"><g:message code="default.Active.label"/>:</label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean:projectsPIMapInstance,field:'activeYesNo','errors')}">
-                                    <g:select name="activeYesNo" from="${['Y', 'N']}"  value="${fieldValue(bean:projectsPIMapInstance,field:'activeYesNo')}" />
-                                </td>
-	                       	</tr>    
                         </tbody>
                     </table>
                 </div>
@@ -85,9 +77,7 @@
                    	        <th><g:message code="default.Projects.label"/></th>
                    	    
                    	        <g:sortableColumn property="role" title="${message(code: 'default.Role.label')}"/>
-                        
-                        	<g:sortableColumn property="activeYesNo" title="${message(code: 'default.Active.label')}"/>
-                        	
+
                         	<th><g:message code="default.Edit.label"/></th>
                         </tr>
                     </thead>
@@ -101,16 +91,7 @@
                             <td>${fieldValue(bean:projectsPIMapInstance, field:'projects.code')}</td>
                         
                             <td>${fieldValue(bean:projectsPIMapInstance, field:'role')}</td>
-                            
-                            <td>
-                	             <g:if test="${fieldValue(bean:projectsPIMapInstance, field:'activeYesNo') == 'Y'}">
-    							 	<g:message code="default.YES.label"/>
-    							 </g:if>
-								 <g:else>
-	    							 <g:message code="default.NO.label"/>
-	    						 </g:else>
-                        	 </td>
-                        	 
+
                             <td><g:link action="edit" id="${projectsPIMapInstance.id}"><g:message code="default.Edit.label"/></g:link></td>
                         
                         </tr>

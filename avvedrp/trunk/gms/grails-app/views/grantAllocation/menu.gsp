@@ -1,7 +1,8 @@
 <html>
 	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 	<title><g:message code="default.GrantManagementSystem.title"/></title>
-	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	 
 	<script src="${createLinkTo(dir:'images',file:'jquery-1.3.2.min.js')}"></script>
 	<script src="${createLinkTo(dir:'images',file:'ddaccordion.js')}"></script>
 	<link rel="stylesheet"  href="${createLinkTo(dir:'images',file:'accordion.css')}" type="text/css" media="screen" />

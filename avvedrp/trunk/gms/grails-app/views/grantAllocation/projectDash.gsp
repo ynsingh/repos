@@ -13,7 +13,13 @@
 <!-- Main Container Start -->
 	<body>
     	<div class="wrapper">
-        	<g:subMenuList />
+    	<g:if test="${projectInstance.status=='Closed'}">
+    	</g:if>
+    	<g:else>
+    		<g:subMenuList/>
+    	</g:else>
+    	
+        	
         	<div class="dashbody">
  <!-- Prodetials Start-->	
 				<table width="100%" align="center" border="0" cellspacing="5" cellpadding="5">
@@ -73,9 +79,11 @@
 								     						<g:message code="default.FundList.DaysRemaining.label" />
 								     						&nbsp;:
 							     						</strong>
-								     						(${Math.round((projectInstance.projectEndDate.getTime()-
-								     							new Date().getTime())/86400000)} days)	
-										    	       	
+								     						(<g:if test="${Math.round((projectInstance.projectEndDate.getTime()-
+								     							new Date().getTime())/86400000) > 0}">${Math.round((projectInstance.projectEndDate.getTime()-
+								     							new Date().getTime())/86400000)} days
+								     							</g:if>
+								     							<g:else>0 days</g:else>)	    	
 									    	       </div>
 							    	       		</td>
 						    	       		</tr>
@@ -126,7 +134,7 @@
 								    					${currencyFormat.ConvertToIndainRS(sumAmount[0].doubleValue()+fundTransferInstance)}
 								    					<br>
 								    					
-								    					<strong><g:message code="default.FundList.CurrentBalance.label" />
+								    					<strong><g:message code="default.CurrentBalance.label" />
 								    						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								    						: <g:message code="default.Rs.label"/> 
 							    						</strong> 

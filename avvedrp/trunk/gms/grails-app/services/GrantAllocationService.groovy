@@ -450,9 +450,17 @@ class GrantAllocationService {
 	/**
 	 * Get all grant allocation for logged in user groupBy Projects 
 	 */
-	 @PostFilter("hasPermission(filterObject, 'read') or hasPermission(filterObject, admin)")
+	@PostFilter("hasPermission(filterObject, 'read') or hasPermission(filterObject, admin)")
 	public GrantAllocation[] getGrantAllocationGroupByProjects(def partyID){
 		 def grantAllocationInstanceList=GrantAllocation.findAll("from GrantAllocation GA GROUP BY GA.projects");
+		 return grantAllocationInstanceList
+	}
+	/**
+	 * Get all grant allocation with active projects for logged in user groupBy Projects 
+	 */
+	@PostFilter("hasPermission(filterObject, 'read') or hasPermission(filterObject, admin)")
+	public GrantAllocation[] getGrantAllocationByActiveProjects(){
+		 def grantAllocationInstanceList=GrantAllocation.findAll("from GrantAllocation GA where GA.projects.activeYesNo='Y' GROUP BY GA.projects");
 		 return grantAllocationInstanceList
 	}
 	 public GrantAllocation getGrantAllocationByProjects(def projectID){
@@ -474,6 +482,19 @@ class GrantAllocationService {
 		    return grantAllocationInstance    
 			
 			}
-		}
-
+	 }
+			
+	public List getGrantAllocationInstanceForParentProject(def projectsInstance)
+	{
+	def grantInstance = GrantAllocation.findAll("from GrantAllocation GA where GA.projects="+projectsInstance.parentId)
+	return grantInstance
+	}
+	/*
+	 *Method to get all closed projects list 
+	 */
+	  public getClosedProject(def projectId)
+	 {
+		  def projectTrackingInstanceCheck=ProjectTracking.find("from ProjectTracking PT where PT.projectStatus='Closed'and PT.projects.id="+projectId)
+		  return projectTrackingInstanceCheck
+	 }
 }

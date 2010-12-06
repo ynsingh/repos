@@ -21,7 +21,7 @@
             </g:hasErrors>
             <g:form action="searchProjects" method="post" >
                 <fieldset>
-                <div id="search">
+                
                 <p>&nbsp;</p>
                     <table>
                         <tbody>
@@ -49,6 +49,7 @@
                                 <input type="hidden"  id="projectStartDateTo" name="projectStartDateTo" value="${projectsInstance?.projectStartDate}"/>
                                 <input type="hidden"  id="projectEndDate" name="projectEndDate" value="${projectsInstance?.projectEndDate}"/>
                                 <input type="hidden"  id="projectEndDateTo" name="projectEndDateTo" value="${projectsInstance?.projectEndDate}"/>
+                                <input type="hidden"  id="projectStatus" name="projectStatus" value="null"/>
                             </tr> 
                         	
                         	                                                        
@@ -56,13 +57,16 @@
                     </table>
                     		
                     		<p>&nbsp;</p>
-			      			<p ALIGN=CENTER>&nbsp;<input class="searchButton" value="                              " type="submit" onClick="" /></p>
-			    			<p ALIGN=RIGHT><g:remoteLink style="font-size:11px;font-weight: normal;color: #0033CC" action="advancedSearchProjects" id="Advance" update="search">Advanced Search</g:remoteLink>&nbsp;&nbsp;</p>
-                </div>
+			      			<p ALIGN=CENTER>&nbsp;<g:submitToRemote class="searchButton" value="                              " onClick="" action="searchProjects" update="search" />
+			      			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			      			<g:actionSubmit value="${message(code: 'default.AdvancedSearch.button')}" action="advancedSearchProjects" id="1" />
+			      			<g:actionSubmit value="${message(code: 'default.GrantSearch.button')}" action="grantSearch" id="1" /></p>
+			    			<p ALIGN=RIGHT>&nbsp;&nbsp;</p>
+               
                 </fieldset>
              </g:form>
         </div>
-        
+        <div id="search">
         <g:if test="${grantAllocationInstanceList}">
         <div class="body">
              <div class="list">
@@ -70,20 +74,18 @@
                     <thead>
   						<tr>
                         
-                   	        <g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}"/>
-                       
-                   	        <g:sortableColumn property="projects.name" title="${message(code: 'default.Name.label')}" />
+                   	        <th><g:message code="default.SINo.label"/></th>
+                   	                              
+                   	        <th><g:message code="default.Name.label"/></th>
                                               
-                   	        <g:sortableColumn property="projects.code" title="${message(code: 'default.Code.label')}" />
+                   	        <th><g:message code="default.Code.label"/></th>
                 	       
-                   	       	<g:sortableColumn property="projects.projectType.type" title="${message(code: 'default.ProjectType.label')}"/>
+                   	       	<th><g:message code="default.ProjectType.label"/></th>
                    	       	
-                   	       	<g:sortableColumn property="projects.projectStartDate" title="${message(code: 'default.StartDate.label')}" />
+                   	       	<th><g:message code="default.StartDate.label"/></th>
                    	       	 
-                   	       	<g:sortableColumn property="projects.projectEndDate" title="${message(code: 'default.EndDate.label')}" />
-                   	       	
-                   	       	<g:sortableColumn property="projects.activeYesNo" title="${message(code: 'default.Active.label')}"/>
-                        
+                   	       	<th><g:message code="default.EndDate.label"/></th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -105,15 +107,6 @@
                         	<td><g:formatDate date="${projectsInstance.projects.projectStartDate}" format="dd/MM/yyyy"/></td>
                         	  
                         	<td><g:formatDate date="${projectsInstance.projects.projectEndDate}" format="dd/MM/yyyy"/></td>
-                        	
-                        	<td>
-	                        <g:if test="${fieldValue(bean:projectsInstance, field:'projects.activeYesNo') == 'Y'}">
-	    							 <g:message code="default.YES.label"/>
-	    							 </g:if>
-	    							 <g:else>
-	    							 <g:message code="default.NO.label"/>
-	    							 </g:else>
-                       		</td>
                         </tr>
                     </g:each>
                     </tbody>
@@ -125,6 +118,6 @@
             </div> 
         </div>
          </g:if>
-        </div>
+        </div></div>
     </body>
 </html>
