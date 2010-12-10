@@ -17,9 +17,9 @@ $!data.getMessage()
 	<tr><td>
 		<font face="$ui.sansSerifFonts"><b>
 		#if($mode != "private"  && $stat =="" )
-        	<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |  $personal $area  
+        	<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>$brih_home</a> |  $personal $area  
 		#else
-		<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |  <a href=$link.setPage("call,UserMgmt_User,PersonalArea.vm")>$personal $area</a> | $private $area
+		<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>$brih_home</a> |  <a href=$link.setPage("call,UserMgmt_User,PersonalArea.vm") style=text-decoration:none>$personal $area</a> | $private $area
 		#end
  		</font>
 	</td></tr>
@@ -31,20 +31,20 @@ $!data.getMessage()
     	<table align="left" width=100% bgcolor="$ui.tableColor">
 		<tr><td align="left" colspan=2><font size=4><b>$uname</b></font></td></tr>
         	<tr bgcolor="$ui.menuColor"><td align="left">
-			<a href="$link.setPage("call,UserMgmt_User,PersonalArea.vm").addPathInfo("mode","private").addPathInfo("stat","fromDirectory").addPathInfo("uname",$uname)">$private $area</a>
+			<a href=$link.setPage("call,UserMgmt_User,PersonalArea.vm").addPathInfo("mode","private").addPathInfo("stat","fromDirectory").addPathInfo("uname",$uname) style=text-decoration:none>$private $area</a>
 		</td>
 		<td align="left">
-                        <a href="$link.setPage("call,UserMgmt_User,SharedArea.vm")">$shared $area</a>
+                        <a href=$link.setPage("call,UserMgmt_User,SharedArea.vm") style=text-decoration:none>$shared $area</a>
                 </td>
 		</tr>
 		##<tr bgcolor="$ui.menuColor"><td align="left" colspan=2>
 		<tr><td align="left" colspan=2>
-			<a href="$link.setPage("call,UserMgmt_User,Upload_File.vm")">$brih_upload1</a><br>
+			<a href=$link.setPage("call,UserMgmt_User,Upload_File.vm") style=text-decoration:none>$brih_upload1</a><br>
 		</tr></td>
 		#if($data.getUser().getTemp("role").toString()=="instructor")
 		##<tr><td align="left" colspan=2>
 		<tr bgcolor="$ui.menuColor"><td align="left" colspan=2>
-  			<a href="$link.setPage("call,Repository_Mgmt,PermissionReceive.vm").addPathInfo("status","permissionreceive").addPathInfo("mode","frominstructor")">
+  			<a href=$link.setPage("call,Repository_Mgmt,PermissionReceive.vm").addPathInfo("status","permissionreceive").addPathInfo("mode","frominstructor") style=text-decoration:none>
 				$brih_view2 & $brih_delete1 #if($lang == "hindi") $brih_Of #end $Repo_Perm1
 			</a></b>
 		</td></tr>
@@ -63,8 +63,8 @@ $!data.getMessage()
 				#else
 				<tr bgcolor="$ui.menuColor">
 				#end
-				<td><a href="$link.setPage("call,UserMgmt_User,PersonalArea.vm").addPathInfo("mode", "private").addPathInfo("topic",$file).addPathInfo("stat","fromSubDirectory")">$file</a></td>
-					 <td><a href="$link.setPage("call,UserMgmt_User,PersonalArea.vm").setAction("UserAreaAction").addPathInfo("stat","fromDirectory").addPathInfo("mode","DirRemoval").addPathInfo("name",$uname).addPathInfo("topic",$file).addPathInfo("actionName","eventSubmit_doDelete")" onclick="javascript:return confirm('Do you want to delete this topic')">$brih_delete</a></td>
+				<td><a href=$link.setPage("call,UserMgmt_User,PersonalArea.vm").addPathInfo("mode", "private").addPathInfo("topic",$file).addPathInfo("stat","fromSubDirectory") style=text-decoration:none>$file</a></td>
+					 <td><a href=$link.setPage("call,UserMgmt_User,PersonalArea.vm").setAction("UserAreaAction").addPathInfo("stat","fromDirectory").addPathInfo("mode","DirRemoval").addPathInfo("name",$uname).addPathInfo("topic",$file).addPathInfo("actionName","eventSubmit_doDelete") style=text-decoration:none onclick="javascript:return confirm('Do you want to delete this topic')">$brih_delete</a></td>
 			</tr>	
 				#set($count=$count+1)
                 		#end
@@ -74,7 +74,7 @@ $!data.getMessage()
 	<table align="left" bgcolor="$ui.tableColor" width=100%>
 		#if($stat == "fromSubDirectory")
 			##<tr bgcolor="$ui.menuColor">
-                	<tr bgcolor="$ui.tableColor">
+                	<tr bgcolor="$ui.menuColor">
                         #if ($lang == "hindi")
        		 		<td align="center" colspan="4"><b><font color="green">$topic </font> $brih_topic $brih_file1
 			#else
@@ -85,14 +85,14 @@ $!data.getMessage()
 				#set($counter=0)
 				#foreach ($AllFiles in $FFfiles)
 				#if($velocityCount%2==0)
-                		<tr bgcolor="$ui.tableColor">
-				#else
                 		<tr bgcolor="$ui.menuColor">
+				#else
+                		<tr bgcolor="$ui.tableColor">
 				#end
 						<td>$!AllFiles.getName()</td> 				
-						<td><a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("area","private").addPathInfo("contents",$uname).addPathInfo("TotalFiles",$topic).addPathInfo("type","UserArea").addPathInfo("filename",$!AllFiles.getName())","newWin")>$brih_view</a></td>
-						<td><a href="$link.setPage("call,UserMgmt_User,PersonalArea.vm").setAction("UserAreaAction").addPathInfo("stat","fromSubDirectory").addPathInfo("name",$uname).addPathInfo("topic",$topic).addPathInfo("filename",$!AllFiles.getName()).addPathInfo("mode","private").addPathInfo("seq",$counter).addPathInfo("actionName","eventSubmit_doMove")">$brih_move</a>&nbsp;</td>
-						<td><a href="$link.setPage("call,UserMgmt_User,PersonalArea.vm").setAction("UserAreaAction").addPathInfo("mode","fileRemoval").addPathInfo("stat1","fromPrivate").addPathInfo("name",$uname).addPathInfo("topic",$topic).addPathInfo("filename",$!AllFiles.getName()).addPathInfo("seq",$counter).addPathInfo("stat",$stat).addPathInfo("actionName","eventSubmit_doDelete")" onclick="javascript:return confirm('Do you want to delete this file')">$brih_delete</a>&nbsp;</td>
+						<td><a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("area","private").addPathInfo("contents",$uname).addPathInfo("TotalFiles",$topic).addPathInfo("type","UserArea").addPathInfo("filename",$!AllFiles.getName())","newWin") style=text-decoration:none>$brih_view</a></td>
+						<td><a href=$link.setPage("call,UserMgmt_User,PersonalArea.vm").setAction("UserAreaAction").addPathInfo("stat","fromSubDirectory").addPathInfo("name",$uname).addPathInfo("topic",$topic).addPathInfo("filename",$!AllFiles.getName()).addPathInfo("mode","private").addPathInfo("seq",$counter).addPathInfo("actionName","eventSubmit_doMove") style=text-decoration:none>$brih_move</a>&nbsp;</td>
+						<td><a href=$link.setPage("call,UserMgmt_User,PersonalArea.vm").setAction("UserAreaAction").addPathInfo("mode","fileRemoval").addPathInfo("stat1","fromPrivate").addPathInfo("name",$uname).addPathInfo("topic",$topic).addPathInfo("filename",$!AllFiles.getName()).addPathInfo("seq",$counter).addPathInfo("stat",$stat).addPathInfo("actionName","eventSubmit_doDelete") style=text-decoration:none onclick="javascript:return confirm('Do you want to delete this file')">$brih_delete</a>&nbsp;</td>
 				</tr>
 				#set($counter=$counter+1) 
 				#end

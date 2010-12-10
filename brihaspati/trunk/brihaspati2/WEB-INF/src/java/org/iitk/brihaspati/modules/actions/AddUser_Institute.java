@@ -109,10 +109,12 @@ public class AddUser_Institute extends SecureAction_Institute_Admin
 		*break email using "@" and set the password as the value of email at 0th position.
 		*/
                 if(passwd.equals(""))
-		passwd=email;
-                String []starr=passwd.split("@");
-                String mailname=starr[0];
-                passwd=mailname;
+		{
+			passwd=email;
+                	String []starr=passwd.split("@");
+                	String mailname=starr[0];
+                	passwd=mailname;
+		}
 		/**
                  * Passing the value of file from temporary variable
                  * According to selection of Language.

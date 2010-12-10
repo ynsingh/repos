@@ -12,21 +12,20 @@ $!data.getMessage()
 #set($lang=$data.getUser().getTemp("lang").toString())
 
 <table bgcolor="$ui.tableColor" width=100%>
-<tr>
-<td>
-	<font face="$ui.sansSerifFonts"><b>
-	<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
- 	<a href=$link.setPage("call,UserMgmt_User,PersonalArea.vm")>$personal $area</a> | 
+<tr bgcolor="$ui.menuColor">
+<td colspan=5>
+	<a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>$brih_home</a> |
+ 	<a href=$link.setPage("call,UserMgmt_User,PersonalArea.vm") style=text-decoration:none>$personal $area</a> | 
 #if($lang == "hindi")
 	$brih_content $brih_upload 
 #else
 	$brih_upload $brih_content
 #end
-	</font>
 </td>
 </tr>
-</table>
-<table width="100%"><tr><td><b>$brih_space $!SpaceKb $quota_sze</b></td><td align="right"><b>$brih_usedspace   $!TUSize $quota_sze </b></td></tr></table>
+##</table>
+##<table width="100%"><tr><td><b>$brih_space $!SpaceKb $quota_sze</b></td><td align="right"><b>$brih_usedspace   $!TUSize $quota_sze </b></td></tr></table>
+<tr><td><b>$brih_space $!SpaceKb $quota_sze</b></td><td align="right"><b>$brih_usedspace   $!TUSize $quota_sze </b></td></tr>
 <table border="1" bgcolor="$ui.tableColor">
 #if($errorMess!="")
      <tr>
@@ -129,18 +128,18 @@ $!data.getMessage()
 		}
 		else
 		{
-			alert("Topic Name Can not Empty !!");
+			alert("Topic Name Can not be Empty !!");
 		}
 	}
 </script>
 ##<form name=uploadform method="post" enctype="multipart/form-data" action="$link.setPage("call,UserMgmt_User,Upload_File.vm").setAction("UserAreaAction")">
 <form name=uploadform method="post" enctype="multipart/form-data" action="$link.setPage("call,UserMgmt_User,Upload_File.vm").setAction("UserAreaAction").addPathInfo("mode","uarea")">
-  <div align="left">
-    <table align=center bgcolor="$ui.bgcolor" cellpadding="0">
+  ##<div align="left">
+    <table align=left bgcolor="$ui.tableColor" width=100%>
       #if ($errorTemplate)
       <tr>
-        <td colspan="4">
-          <table bgcolor="$ui.bgcolor">
+        <td>
+          <table bgcolor="$ui.tableColor">
             <tr>
               <td>
                 <img src="$ui.image($ui.alertImage,$data)">
@@ -153,32 +152,30 @@ $!data.getMessage()
         </td>
       </tr>
       #end
-	<tr>
+	<tr bgcolor="$ui.menuColor">
 		<img src="$content.getURI("/images/hand.gif")"><font color="red">$brih_UploadMsg</font>
 	</tr>
-<br><br>
+##<br><br>
       <tr>
-      <td colspan=4>
-	<b><input type="RADIO" name=topicExisting checked=true value="OLDTOPIC" onClick=blurTopicName(document.uploadform)>$brih_Exist $brih_topic
+      <td align=left>
+	<input type="RADIO" name=topicExisting checked=true value="OLDTOPIC" onClick=blurTopicName(document.uploadform)>$brih_Exist $brih_topic
 	<SELECT name=topicList onFocus=changeTopic(document.uploadform) onChange=changeTopic(document.uploadform)>
 	  <option></option>
 	  #foreach($topic in $allTopics)
 		<option>$topic</option>
 	  #end
 	</SELECT>
-	</td></tr>
-	<tr><td>
+	##</td>
+	##</tr>
+	##<tr>
+	##<td>
 	<input type="RADIO" name=topicExisting value="NEWTOPIC" ><b>$brih_new $brih_topic</b>
 	</td>
 	</tr>
-      <tr>
+      <tr bgcolor="$ui.menuColor">
 	##formCell ("Topic Name" "contentTopic" "")
-  	<td bgcolor="$ui.tableColor">
-  	<b><font face="$ui.sansSerifFonts">$brih_topic $brih_name</font> </b>
-	</td>
-	<td>
-	<input type="text" name=contentTopic onFocus=checkRadio() size=50>
-    	</td>
+  	<td>$brih_topic $brih_name</td>
+	<td><input type="text" name=contentTopic onFocus=checkRadio() size=50></td>
       <tr>
               #fileUpload ("1. &nbsp; $brih_at_file " "file1")</td> 
       </tr>
@@ -195,15 +192,12 @@ $!data.getMessage()
               #fileUpload ("5. &nbsp; $brih_at_file " "file5")</td> 
       </tr>
 
-      <tr>
-        <td colspan=5 align="center" bgcolor="$ui.buttonBoxColor">
-
-          <font face="$ui.sansSerifFonts">
+      <tr bgcolor="$ui.menuColor">
+        <td colspan=5 align="left">
 
           <input type="button" name="eventSubmit_doUpload" value="$brih_upload" onClick="validate(document.uploadform,this);"/>
 	<input type="hidden" name="actionName">
     
-          </font>
         </td>
       </tr>
     </table>
@@ -211,5 +205,5 @@ $!data.getMessage()
 <tr><td><a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("mod","userside")><b>$brih_localmail</b></a></td></tr>
 ##<tr><td><a href=$link.setPage("call,Local_Mail,Mail.vm")><b>$brih_localmail</b></a></td></tr>
 </table>*#
-  </div>
+##  </div>
 </form>

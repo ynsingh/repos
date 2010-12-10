@@ -15,7 +15,7 @@ $!data.getMessage()
 <tr>
 	<td>
 	<font face="$ui.sansSerifFonts" size=3>
-     	<a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> | 
+     	<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> | 
 	#if($st=="")
 	$brih_restore
 	#elseif($st=="db")
@@ -33,24 +33,28 @@ $!data.getMessage()
 		#elseif($tdcolor=="1")
 		<td bgcolor="#AFDCEC">
 		#end
-		<a href=$link.setPage("call,Backups,Restoration.vm").addPathInfo("count","1")>$brih_restore</a></td>
+		<a href=$link.setPage("call,Backups,Restoration.vm").addPathInfo("count","1") style=text-decoration:none>$brih_restore</a></td>
 		#if($tdcolor!="2")
 		<td>
 		#elseif($tdcolor=="2")
 		<td bgcolor="#AFDCEC">
 		#end
-		<a href=$link.setPage("call,Backups,Restoration.vm").addPathInfo("st","db").addPathInfo("count","2")>$brih_system $brih_restore</a></td>
+		<a href=$link.setPage("call,Backups,Restoration.vm").addPathInfo("st","db").addPathInfo("count","2") style=text-decoration:none>$brih_system $brih_restore</a></td>
 		#if($tdcolor!="3")
 		<td>
 		#elseif($tdcolor=="3")
 		<td bgcolor="#AFDCEC">
 		#end
-    		<a href=$link.setPage("call,Backups,Restoration.vm").addPathInfo("st","glsry").addPathInfo("count","3")>$Glossary $brih_restore</a></td>
+    		<a href=$link.setPage("call,Backups,Restoration.vm").addPathInfo("st","glsry").addPathInfo("count","3") style=text-decoration:none>$Glossary $brih_restore</a></td>
 </tr>
 #if($st == "glsry")
 <form name=uploadform method="post" enctype="multipart/form-data" action="$link.setPage("call,Glossary,Glossary.vm").setAction("AdminRestoreAction")" >
 #else
-<form name=uploadform  method="post" enctype="multipart/form-data" action="$link.setPage("call,Backups,Restoration.vm").setAction("AdminRestoreAction")" >
+	#if($data.getUser().getUserName() == "admin")
+	<form name=uploadform  method="post" enctype="multipart/form-data" action="$link.setPage("call,Backups,Restoration.vm").setAction("AdminRestoreAction")" >
+	#else
+	<form name=uploadform  method="post" enctype="multipart/form-data" action="$link.setPage("call,Backups,Restoration.vm").setAction("InstituteAdminRestoreAction")" >
+	#end
 #end
         <table width="100%" align="left">
       #if ($errorTemplate)

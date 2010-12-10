@@ -38,7 +38,7 @@ package org.iitk.brihaspati.modules.screens.call.Backups;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.util.parser.ParameterParser;
-import org.iitk.brihaspati.modules.screens.call.SecureScreen_Institute_Admin;
+import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 
 /**
  * This class called for system restore and glossary restore.
@@ -46,7 +46,7 @@ import org.iitk.brihaspati.modules.screens.call.SecureScreen_Institute_Admin;
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  */
 
-public class Restoration extends SecureScreen_Institute_Admin
+public class Restoration extends SecureScreen
 {
     /**
      * Place all the data object in the context
