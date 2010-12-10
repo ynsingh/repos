@@ -63,7 +63,8 @@ public class getZipfile extends  SecureScreen{
 			ParameterParser pp=data.getParameters();
 			String fileID=pp.getString("fName","");
 			String filePath= null;
-			filePath=TurbineServlet.getRealPath("/BackupData")+"/"+fileID;
+			String insID=(data.getUser().getTemp("Institute_id")).toString();
+			filePath=TurbineServlet.getRealPath("/BackupData")+"/"+insID+"/"+fileID;
 			File fileHnd=new File(filePath);
 			FileInputStream fis=new FileInputStream(filePath);		
 			out=data.getResponse().getOutputStream();

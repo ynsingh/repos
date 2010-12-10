@@ -50,6 +50,8 @@ import org.iitk.brihaspati.om.InstituteAdminRegistration;
 import org.iitk.brihaspati.om.UsageDetailsPeer;
 import org.iitk.brihaspati.om.UsageDetails;
 import org.iitk.brihaspati.om.InstituteAdminUser;
+import org.iitk.brihaspati.om.ProgramPeer;
+import org.iitk.brihaspati.om.Program;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 /**
@@ -58,7 +60,7 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
  */
 public class InstituteIdUtil
 {
-        /*
+        /**
          * getting institute id of instructor and studend user by the help of userid 
          */
         public static String getInstId(int uid)
@@ -90,7 +92,7 @@ public class InstituteIdUtil
                 }catch(Exception ex){}
                 return e;
  }
-	/* Get the Institute Name on the basis of Institute Id
+	/** Get the Institute Name on the basis of Institute Id
 	*/
 	public static String getIstName(int instituteid){
 		String iName=null;
@@ -98,10 +100,8 @@ public class InstituteIdUtil
 		try{
 			crit.add(InstituteAdminRegistrationPeer.INSTITUTE_ID,instituteid);
 			List inm=InstituteAdminRegistrationPeer.doSelect(crit);
-			for(int k=0;k<=inm.size();k++){
-				InstituteAdminRegistration element=(InstituteAdminRegistration)inm.get(k);
-				iName=element.getInstituteName();
-			}
+			InstituteAdminRegistration element=(InstituteAdminRegistration)inm.get(0);
+			iName=element.getInstituteName();
 		}
 		catch(Exception ex){	
 			ErrorDumpUtil.ErrorLog("The error in getIstName() - Institute Id Util class !!"+ex);
@@ -109,7 +109,24 @@ public class InstituteIdUtil
 
 	return iName;
 	}
-        /*
+	/** Get the Program name on the basis of programe code
+          */
+        public static String getPrgName(String PrgCode){
+                String pName=null;
+                Criteria crt=new Criteria();
+                try{
+                crt.add(ProgramPeer.PROGRAM_CODE,PrgCode);
+                List pnm=ProgramPeer.doSelect(crt);
+                Program element=(Program)pnm.get(0);
+                pName=element.getProgramName();
+                }
+                catch(Exception ex){
+                        ErrorDumpUtil.ErrorLog("The error in getPrgName() - Institute Id Util class !!"+ex);
+                }
+        return pName;
+        }
+
+        /**
          * getting the instituteid of institute admin by the help of userid
          */
         public static String getAdminInstId(int uid)
@@ -130,7 +147,7 @@ public class InstituteIdUtil
                         }catch(Exception ex){}
                         return ef;
  }
-        /*
+        /**
          * search method for given id  is a instituteAdmin or normal user
          */
         public static String getSearch(int uid)

@@ -83,7 +83,7 @@ $!data.getMessage()
         <td align=center>$Inst_landline</td>
         <td align=center>$RemoteInstitute $brih_domain</td>
         <td align=center>$Inst_type</td>
-        <td align=center> #if($lang == "hindi") $brih_institute $brih_Of #else $RemoteInstitute #end $Inst_website</td>
+        <td align=center> #if($lang == "hindi") $brih_Institute $brih_Of #else $RemoteInstitute #end $Inst_website</td>
         <td align=center>$brih_ad #if($lang == "hindi") $brih_Of1 #end $brih_first $brih_name</td>
 	<td align=center>$brih_ad #if($lang == "hindi") $brih_Of1 #end $brih_last $brih_name</td>
         <td align=center>$brih_ad #if($lang == "hindi") $brih_Of1 #end $brih_email</td>
@@ -168,9 +168,9 @@ $!data.getMessage()
 	<td>$applist.getInstituteId()</td>
 
 	<td><a href=$link.setPage("call,Root_Admin,AddAdmin.vm").addPathInfo("Institute_Id",$applist.getInstituteId()).addPathInfo("Institute_Name",$applist.getInstituteName()).addPathInfo("mode","addadmin").addPathInfo("count","2") style=text-decoration:none>
-	#if($lang=="hindi") $RemoteInstitute $brih_admin $brih_add #else $brih_add $RemoteInstitute $brih_admin #end</a></td>
+	#if($lang=="hindi") $RemoteInstitute $brih_ad $brih_add #else $brih_add $RemoteInstitute $brih_admin #end</a></td>
 	<td><a href=$link.setPage("call,Root_Admin,AddAdmin.vm").addPathInfo("Institute_Id",$applist.getInstituteId()).addPathInfo("Institute_Name",$applist.getInstituteName()).addPathInfo("mode","viewadmin").addPathInfo("count","2") style=text-decoration:none>
-#if($lang=="hindi")$brih_institute $brih_Of2 $brih_admin $brih_Of1 $brih_view #else $brih_view $RemoteInstitute $brih_admin #end</a></td>
+#if($lang=="hindi")$brih_Institute $brih_Of2 $brih_ad $brih_Of1 $brih_view #else $brih_view $RemoteInstitute $brih_admin #end</a></td>
 	<td><a href=$link.setPage("call,Root_Admin,UpdateInstituteAdmin.vm").addPathInfo("Institute_Id",$applist.getInstituteId()).addPathInfo("status","instituteedit").addPathInfo("count","2") style=text-decoration:none>
 #if($lang=="hindi")$brih_detail $brih_Of1 $brih_edit #else $brih_edit $brih_detail #end</a></td>
 	#*<td><a href=$link.setPage("call,Root_Admin,CrslistdeletedInstitute.vm").addPathInfo("Institute_Id",$applist.getInstituteId()).addPathInfo("Institute_Name",$applist.getInstituteName()).addPathInfo("mode","viewadmin").addPathInfo("count","2") style=text-decoration:none>
@@ -184,7 +184,7 @@ $!data.getMessage()
 	<tr bgcolor="$ui.menuColor">
         	<td>$brih_select</td>
 		<td>$RemoteInstitute $brih_name</td>
-		<td>$brih_instAdname</td>
+		<td> #if($lang=="hindi")$brih_Institute $brih_Of2 $brih_ad $brih_Of1 $brih_name #else $brih_instAdname #end</td>
 	</tr>
 	#foreach($rejectlist in $rejectedlist)
 	#foreach($udetail in $userdetail)
