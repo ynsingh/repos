@@ -6,7 +6,6 @@
 		<homepage href="http://www.brihaspatisolutions.co.in"/>
 		<description>Metadata &amp; Content Package Editor</description>
 		<description kind="tooltip">Metadata &amp; Content Package Editor</description>
-		<icon href="images/aloha128.gif"/>
 		<offline-allowed/>
 	</information>
 	<security>
@@ -14,17 +13,21 @@
 	</security>
 	<resources>
 		<j2se version="1.4+"/>
-		<jar href="brihaspati-editor.jar"/>
-		<jar href="lib/castor-0.9.5.3-xml.jar"/>
-		<jar href="lib/reload-dweezil.jar"/>
-		<jar href="lib/reload-jdom.jar"/>
-		<jar href="lib/jdom.jar"/>
-		<jar href="lib/reload-moonunit.jar"/>
-		<jar href="lib/reload-support.jar"/>
-		<jar href="lib/xml-apis.jar"/>
-		<jar href="lib/reload-diva.jar"/>
-		<jar href="lib/reload-moonunit.jar"/>
-		<jar href="lib/xercesImpl.jar"/>
+	        <jar href="brihaspati-editor.jar"/>
+	        <jar href="lib/jdom.jar"/>
+	        <jar href="lib/org.eclipse.emf.common_2.1.0.jar"/>
+	        <jar href="lib/org.eclipse.emf.ecore_2.1.0.jar"/>
+	        <jar href="lib/org.eclipse.xsd_2.1.1.jar"/>
+	        <jar href="lib/reload-diva.jar"/>
+	        <jar href="lib/reload-dweezil.jar"/>
+	        <jar href="lib/reload-jdom.jar"/>
+	        <jar href="lib/reload-moonunit.jar"/>
+	        <jar href="lib/reload-support.jar"/>
+	        <jar href="lib/serializer.jar"/>
+	        <jar href="lib/TableLayout.jar"/>
+	        <jar href="lib/xalan.jar"/>
+	        <jar href="lib/xercesImpl.jar"/>
+	        <jar href="lib/xml-apis.jar"/>
                 </resources>
-		<application-desc main-class="uk.ac.reload.editor.EditorFrame"/>
+        	<application-desc main-class="uk.ac.reload.editor.EditorFrame"/>
 </jnlp>

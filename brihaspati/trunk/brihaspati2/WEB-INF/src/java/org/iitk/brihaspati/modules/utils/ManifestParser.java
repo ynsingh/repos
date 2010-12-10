@@ -1,7 +1,9 @@
+package org.iitk.brihaspati.modules.utils;
+
 /*
  * @(#)ManifestParser.java
  *
- *  Copyright (c) 2005-2008,2009 ETRG,IIT Kanpur.
+ *  Copyright (c) 2009-2010 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -34,18 +36,18 @@
  *
  */
 
-
-package org.iitk.brihaspati.modules.utils;
 import java.io.FileReader;
 import java.util.Hashtable;
 import java.util.Vector;
-
 import nanoxml.XMLElement;
 
-/**This class contain the code Create, Delete, Update
+/**This class Read Manifest file with attributes and values
 * @author: <a href="mailto:seema_020504@yahoo.com">seema pal</a>
 * @author: <a href="mailto:kshuklak@rediffmail.com">kishore kumar shukla</a>
+* @modify 06-07-2010
+* @author <a href="mailto:palseema30@gmail.com">Seema Pal</a>
 */
+
 
 public class ManifestParser {
 	
@@ -81,14 +83,15 @@ public class ManifestParser {
 			Vector organizations_child = organizations.getChildren();
 			for ( int i = 0; i < organizations_child.size(); i++ ) {
 				organization = (XMLElement) organizations_child.elementAt(i);	
-			}
-			Vector organization_child = organization.getChildren();
-			for ( int i = 0; i < organization_child.size(); i++ ) {
-				XMLElement e = (XMLElement) organization_child.elementAt(i);
-				String element_name = e.getName();
-				if ( element_name.equals("item") ) {
-					int itemLevel = 0;
-					processItem(e, idseq, itemHash, runtimes, itemLevel, idenHash);
+			//}
+				Vector organization_child = organization.getChildren();
+				for ( int j = 0; j < organization_child.size(); j++ ) {
+					XMLElement e = (XMLElement) organization_child.elementAt(j);
+					String element_name = e.getName();
+					if ( element_name.equals("item") ) {
+						int itemLevel = 0;
+						processItem(e, idseq, itemHash, runtimes, itemLevel, idenHash);
+					}
 				}
 			}
 			//enumerate elements from resources
@@ -115,7 +118,6 @@ public class ManifestParser {
 					}
 				}
 			}
-	
 			if ( idseq.size() > 0 ) {
 				for ( int i = 0; i < idseq.size(); i++ ) {
 					Item item = (Item) idseq.elementAt(i);
@@ -190,7 +192,6 @@ public class ManifestParser {
 		String dir = args[0];
 		String filename = dir + "\\imsmanifest.xml";
 		System.out.println(filename);
-		ErrorDumpUtil.ErrorLog("\nfilename-----------------------"+filename);
 		Vector container = parse(filename);
 		Vector v = (Vector) container.elementAt(0);
 		Vector r = (Vector) container.elementAt(1);
