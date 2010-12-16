@@ -158,6 +158,7 @@ function Bs_SpreadSheet() {
 	* @see    var numRows
 	* @since  bs4.4
 	*/
+	//this.numCols = 5;
 	this.numCols = 15;
 	
 	/**
@@ -170,6 +171,7 @@ function Bs_SpreadSheet() {
 	* @since  bs4.4
 	*/
 	this.numRows = 80;
+	//this.numRows = 5;
 	
 	/**
 	* captions for the columns, if not defined then it goes A-Z.
@@ -640,6 +642,7 @@ function Bs_SpreadSheet() {
 	this.exportDataToCsv = function() {
 		var clean = new Array;
 		for (var i=0; i<this._data.length; i++) {
+			//alert("length of data in data to csv\n"+this._data.length);
 			clean[i] = new Array;
 			//alert('clean[' + i + ']'+clean[i]);
 			for (var j=0; j<this._data[i].length; j++) {
@@ -688,13 +691,16 @@ function Bs_SpreadSheet() {
 		}
 		
     layout    += '<div id="' + this.objectName + '_toolbarDiv" style="width:100%;"></div>';
+	//alert("layout for toolbar\n"+ layout );
     //layout    += '<div id="' + this.objectName + '_toolbarDiv" style=""></div>';
     layout    += '<div id="' + this.objectName + '_formulaDiv" style="width:100%; background-color:#D6D3CE; font-family:Arial, Helvetica, sans-serif; font-size:12px; color:#404040;">';
     //layout    += '<div id="' + this.objectName + '_formulaDiv" style="background-color:#D6D3CE; font-family:Arial, Helvetica, sans-serif; font-size:12px; color:#404040;">';
 		layout    += '<div style="position:absolute; left:' + (containerPos.x + 8) + 'px;">Field: <span id="' + this.objectName + '_fieldSpan" style="color:#000000;"></span></div>';
+		//alert("layout for field\n"+ layout );
 		layout    += '<div style="position:relative; left:120px;">Value: ';
 		//layout    += '<div id="' + this.objectName + '_valueSpan" style="position:absolute; width:' + (containerWidth -160) + 'px; color:#000000; background-color:#D6D3CE;"></div>';
 		layout    += '<span id="' + this.objectName + '_valueSpan" style="color:#000000;"></span>';
+		//alert("layout for value\n"+ layout );
 		layout    += '</div>';
 		layout    += '</div>';
 		
@@ -711,6 +717,7 @@ function Bs_SpreadSheet() {
 		//sheetDivOverflow = 'scroll';
 		//layout    += '<div id="' + this.objectName + '_spreadSheetDiv" style="height:' + sheetDivHeight + '; overflow:' + sheetDivOverflow + ';"></div>';
     document.getElementById(this._drawTagId).innerHTML = layout;
+	//alert("inner html for id\n"+document.getElementById(this._drawTagId).innerHTML);
     
     if (this.useToolbar) this._loadToolbar();
     
@@ -1207,19 +1214,29 @@ function Bs_SpreadSheet() {
 			{//1 if
 			var stemp = chk;
 			stemp = stemp.toLowerCase();
-			var chFrm = stemp.charAt(1);
+			var chFrm = stemp.substr(1,3);
+			//alert("chFrm \n\n"+chFrm);
 
 			/**
 			 * break formula and getting range of cell
 			 */
-			if(chFrm == "s")
+			if(chFrm == "sum")
 				{//2 if	
 					var temp = stemp.replace("=sum","");
 				}//end of 2 if
-			else
-				{//2 else
+			else if(chFrm == "ave")
+				{//1 else if
 					var temp = stemp.replace("=average","");
-				}//end of 2 else
+				}//end of 1 else if
+			else if(chFrm == "max")
+				{//2 else if
+                                        var temp = stemp.replace("=max","");
+                                }//end of 2 else if
+			else if(chFrm == "min")
+				{//3 else if
+                                        var temp = stemp.replace("=min","");
+                                }//end of 3 else if
+
                         		//alert("temp.length========"+temp.length);
                         		var str1 = temp.replace("(","");
                         		//alert("first replace"+str1);             
@@ -1228,102 +1245,262 @@ function Bs_SpreadSheet() {
                         		var msg = str2.split(':');
                         		//alert("msg length"+msg.length);
 					var tmpArray = new Array;
+					var charArray = new Array;
+                			var clean = new Array;
 					var Asval = new Array;
 					var sum = 0;
 					var avg = 0;
 					var tmpRow;
+					var strg = new Array;
 					var ch2;
+					var Maxval;
+					var Minval;
 					var nitem = 0;
+					var k = 0;
+					var l = 0;
                         			for(var j=0; j< msg.length; j++)
                         				{//1 for
                                 				var str3 = msg[j];//.trim();
                                 				var ch;
-                                				//alert("final value is "+str3);
+                                				//alert("final value is string"+str3);
                                 				ch = str3.charAt(0);
                                 				//alert("final character is "+ch);
 								Asval[j] = this.ascii_value(ch);
 								this.FindChar(ch);
-								//alert("value of s"+s);
+								//alert("return value of re\n"+re);
+								charArray[j] = str3.charAt(1);
 								ch2 = str3.charAt(1);
 								//alert("chat at[1]"+ch2);
 								tmpRow = ch2 -1;//gives row no.
 								tmpArray[j] = re;
                         				}//end of 1 for
-							//alert("First value"+tmpArray[0]+"second value"+tmpArray[1]);
+							//alert("First value\n"+tmpArray[0]+"second value\n"+tmpArray[1]);
+							//alert("First value of char \n"+charArray[0]+"second value of char\n"+charArray[1]);
+					var t1 = charArray[0]-1;// gives first col No.
+					//alert("value of t after subtraction\n\n"+t1);
+					var t2 = charArray[1]-1;// gives second col No.
+					//alert("value of t1 after subtraction\n\n"+t2);
 					/**
-					 * check if formula apply within column
+					 * check if formula apply within row
 					 */
-					var t = tmpArray[0];
-					var t1 = tmpArray[1];
-					if(t == t1)
+					if(charArray[0] == charArray[1])
 					{// 3 if
-						alert("formula can't apply for same column");
-					}// end of 3 if
-					
-					else
-					{//3 else
-                			var i=tmpRow;
-                			//alert("value i in array\n\n"+i);
-                			var clean = new Array;
-					var j;
-                        		clean[i] = new Array;
+        	        			var i=tmpRow;
+						var j;
+                	        		clean[i] = new Array;
 	
 						/**
 						 * loop for pick values from cell & sum it
 						 */        
                         			for( j=tmpArray[0]; j<=tmpArray[1]; j++) 
 							{//2 for
-								//alert("data value for sum------>"+this._data[i][j]['value']);
+								//alert("data value for sum data["+i+"]["+j+"]------>"+this._data[i][j]['value']);
+								//alert("length of data\n"+this._data.length);
 								if(((this._data[i][j]['value'])== "")||(typeof(this._data[i][j]['value'])== 'undefined')||((this._data[i][j]['value'])== "-")) //this check if any cell does not have value
-								{
-								this._data[i][j]['value'] = 0;
-								//alert("this._data[i][j]['value']"+this._data[i][j]['value']);
-								}
-                                				clean[i][j] = this._data[i][j]['value'];
-								//}
+								{// 4 if
+									this._data[i][j]['value'] = 0;
+									//alert("this._data[i][j]['value']"+this._data[i][j]['value']);
+									k = k + 1;
+									//alert("no of blank cells are\n\n"+k);		
+								}// end of 4 if
+                                				clean[i][j] = this._data[i][j]['value'];	
+								l = l + 1;
+								//alert("no of cells having values are\n\n"+l);
                                 				var item = clean[i][j];
+								if(item != "0")// this tells that cell does not have value
+								{// 5 if
+									/**
+									 * Check if cell have "#" it shows that cell having
+									 * value along with formula
+									 */
+									var indx = item.indexOf("#");
+									//alert("index of #\n"+indx);
+									if(indx > 0)
+									{// 6 if
+										/**
+										 * Then split item with "#"
+										 * Put first array value i.e. cell value
+										 */
+										var splitval = item.split("#");
+										//alert("split length of string\n"+splitval[0]);
+										item = splitval[0];
+									}// end of 6 if
+								}// end of 5 if
 								//alert("item for sum"+item);
 								var x = parseInt(item);
+								//alert("item for sum"+item);
 						  		sum = sum + x;
+								/**
+								 * Put value of each cell in another array
+								 * to find Min & max value
+								 */
+								strg[j] = x;
+							
 							}//end of 2 for
+								/**
+								 * Find Max & Min value in array
+								 */
+								//alert("strg outside loop\n"+strg.length);
+								Maxval = Math.max.apply(0,strg);
+								//alert("max in the given range\n\n"+Maxval);
+								Minval = Math.min.apply(0,strg);
+								//alert("min in the given range\n\n"+Minval);
+					}// end of 3 if
+					/**
+					 * check if formula apply within group
+					 */
+					else if((tmpArray[0]!=tmpArray[1])&&(charArray[0]!=charArray[1]))
+					{ // 7 if
+						for(var i=t1 ;i<=t2; i++)
+						{// 3 for
+							clean[i] = new Array; 
+							strg[i] = new Array; 
+							for(var j=tmpArray[0]; j<=tmpArray[1]; j++)
+							{// 4 for
+								//alert("data value for sum data["+i+"]["+j+"]------>"+this._data[i][j]['value']);
+                                                                //alert("length of data\n"+this._data.length);
+                                                                if(((this._data[i][j]['value'])== "")||(typeof(this._data[i][j]['value'])== 'undefined')||((this._data[i][j]['value'])== "-")) //this check if any cell does not have value
+                                                                {// 8 if
+	       	                                                         this._data[i][j]['value'] = 0;
+	                                                                //alert("this._data[i][j]['value']"+this._data[i][j]['value']);
+									k = k + 1;
+									//alert("no of blank cells are\n\n"+k);		
+                                                                }// end of 8 if
+                                                                clean[i][j] = this._data[i][j]['value'];
+								l = l + 1;
+								//alert("no of cells having values are\n\n"+l);
+                                                                var item = clean[i][j];
+                                                                //alert("item for sum"+item);
+								if(item != "0")// this tells that cell does not have value	
+								{// 9 if
+									/**
+									 * Check if cell have "#" it shows that cell having
+									 * value along with formula
+									 */
+									var indx = item.indexOf("#");
+	                                                                //alert("index of #\n"+indx);
+	                                                                if(indx > 0)
+	                                                                {// 10 if
+										/**
+										 * Then split item with "#"
+										 * Put first array value i.e. cell value
+										 */
+	                                                                        var splitval = item.split("#");
+	                                                                       //alert("split length of string\n"+splitval[0]);
+	                                                                        item = splitval[0];
+	                                                                }// end of 10 if
+								}// end of 9 if
+                                                                var x = parseInt(item);
+                                                                sum = sum + x;
+								//alert("sum is\n\n"+sum);
+								/**
+								 * Put value of each cell in another array
+								 * to find Min & max value
+								 */
+								strg[i][j] = x;
+								//alert("strg inside loop is------>"+strg[i][j]);
+								//alert("length of strg inside loop\n"+strg.length);
+                                                        }//end of 4 for
+						}// end of 3 for
+								/**
+								 * convert two dimensional array in one dimension
+								 * for finding min & max value within group
+								 */
+								var strgArray = new Array;
+								var q = 0;
+								for(var i = t1 ; i<=t2 ;i++)
+								{// 5 for
+									for(var j=tmpArray[0];j<= tmpArray[1];j++,q++)
+									{// 6 for
+										//alert("element inside strg\n\n"+strg[i][j]);
+										strgArray[q] = strg[i][j];
+										//alert(" strg after convert strgArray["+q+"]\n\n"+strgArray[q]);
+									}// end of 6 for
+								}// end of 5 for
+								/**
+								 * Find Max & Min value in array
+								 */
+								//alert("length of strg outside loop\n"+strgArray.length);
+								Maxval = Math.max.apply(0,strgArray);
+								//alert("max in the given range\n\n"+Maxval);
+								Minval = Math.min.apply(0,strgArray);
+								//alert("min in the given range\n\n"+Minval);
+						
+
+					}// end of 7 if
+					
+					/**
+					 * check if formula apply within column
+					 */
+					if(tmpArray[0]== tmpArray[1])
+					{// 11 if
+						for(var i = t1; i<= t2; i++)
+						{// 7 for
+							clean[i] = new Array;
+							var j = tmpArray[0];
+							 //alert("data value for sum data["+i+"]["+j+"]------>"+this._data[i][j]['value']);
+                                                                if(((this._data[i][j]['value'])== "")||(typeof(this._data[i][j]['value'])== 'undefined')||((this._data[i][j]['value'])== "-")) //this check if any cell does not have value
+                                                                {// 12 if
+	                                                                this._data[i][j]['value'] = 0;
+        	                                                        //alert("this._data[i][j]['value']\n"+this._data[i][j]['value']);
+									k = k + 1;
+									//alert("no of blank cells are\n\n"+k);		
+                                                                }// end of 12 if
+                                                                clean[i][j] = this._data[i][j]['value'];
+								l = l+1;
+								//alert("no of cells having values are\n\n"+l);
+                                                                var item = clean[i][j];
+                                                                //alert("item for sum"+item);
+								if(item != "0")// this tells that cell does not have value
+								{// 13 if
+									/**
+									 * Check if cell have "#" it shows that cell having
+									 * value along with formula
+									 */
+									var indx = item.indexOf("#");
+                                                                	//alert("index of #\n"+indx);
+                                                                	if(indx > 0)
+                                                                	{// 14 if
+										/**
+										 * Then split item with "#"
+										 * Put first array value i.e. cell value
+										 */
+                                                                        	var splitval = item.split("#");
+	                                                                        //alert("split length of string\n"+splitval[0]);
+	                                                                        item = splitval[0];
+	                                                                }// end of 14 if
+								}// end of 13 if
+                                                                var x = parseInt(item);
+                                                                sum = sum + x;
+								/**
+								 * Put value of each cell in another array
+								 * to find Min & max value
+								 */
+								strg[i] = x;
+                                                        }//end of 7 for
+								/**
+								 * Find Max & Min value in array
+								 */
+								//alert("strg outside loop\n"+strg.length);
+								Maxval = Math.max.apply(0,strg);
+								//alert("max in the given range\n\n"+Maxval);
+								Minval = Math.min.apply(0,strg);
+								//alert("min in the given range\n\n"+Minval);
+
+					}// end of 11 if
 					// put result value in cell
-					if(chFrm == "s")
-					{//4 if
+					if(chFrm == "sum")
+					{//9 if
 						cell.innerHTML= sum;
-					}// end of 4 if
+					}// end of 9 if
 					/**
 					 * average formula
 					 */
-					else
-					{// 4 else
-						/**
-						 * if any cell blank between formula then first check how many cells are blank
-						 */
-						var k = 0;
-						var r = 0;
-						//alert("tmpArray[0]"+tmpArray[0]+"\n\ntmpArray[1]"+tmpArray[1]);
-						for(r=tmpArray[0]; r<=tmpArray[1]; r++)
-						{//3 for
-						//	alert("this._data[i][r]['value']"+this._data[i][r]['value']);
-							if((this._data[i][r]['value'])== "0")
-							{ //5 if 
-							k = k + 1;	
-							//alert("no of blank cells are"+k);		
-							}// end of 5 if
-						}// end of 3 for		
-						/**
-						 * getting range of cells having formula  
-						 */
-						//alert("Asval[0]\n"+Asval[0]+"Asval[1]\n"+Asval[1]);
-						nitem = Asval[1]-Asval[0];
-						/**
-						 * subtract blank cell from range of cell
-						 */
-						nitem = nitem - k;
-						/**
-						 * get no. of cell having value then divide it from sum
-						 */
-						nitem = nitem + 1;
+					else if(chFrm == "ave")
+					{// 9 else
+						nitem = l - k;
+						//alert("value of l\n"+l+"\nvalue of k\n"+k);
+						//alert("item for average no\n"+nitem);
 						avg = sum/nitem;
 						/**
 						 * method for getting float value
@@ -1332,21 +1509,25 @@ function Bs_SpreadSheet() {
 						avg = avg.toString();
 						var pos = avg.indexOf('.');
 						if(pos > 0)
-						{// 6 if
-						var n,a,b,c;
-						n=avg.toString();
-						var tempArray=new Array();
-					    	tempArray=null;
-	   					tempArray=n.split('.');
-   						a=tempArray[0];
-					        b=tempArray[1];
-   						c=tempArray[1].substr(0,2);
-						avg = parseFloat(a+'.'+c);
-						cell.innerHTML = avg;
-						}// end of 6 if
+						{// 10 if
+							var n,a,b,c;
+							n=avg.toString();
+							var tempArray=new Array();
+						    	tempArray=null;
+		   					tempArray=n.split('.');
+	   						a=tempArray[0];
+						        b=tempArray[1];
+	   						c=tempArray[1].substr(0,2);
+							avg = parseFloat(a+'.'+c);
+							cell.innerHTML = avg;
+						}// end of 10 if
 						else
-						cell.innerHTML = avg;
-					}// end of 4 else
+							cell.innerHTML = avg;
+					}// end of 9 else
+					else if(chFrm == "max") // Max formula
+						cell.innerHTML = Maxval;
+					else if(chFrm == "min") // Min formula
+						cell.innerHTML = Minval; 
 					
 						/**
 						 * save formula along with value & cell position in array
@@ -1359,45 +1540,61 @@ function Bs_SpreadSheet() {
 							 * then Find Character value
 							 */
 							this.FindChar(Colchar);
-							var t = re;
+							var t = re; // gives col no.
+							var Rowchar = Col.charAt(1);
+							//alert("Rowchar\n\n"+Rowchar);
+							var i = Rowchar - 1; // gives row no.
 							//alert("return value"+t);
 							/**
 							 * get cell value at that position
 							 */
 							var tem = this._data[i][t]['value'];
-							//alert("value of cell having formula"+tem);
-							var temind = tem.indexOf("$");
+							tem = tem.toLowerCase();
+							//alert("value of cell having formula\n"+tem);
+							//alert("substring of cell value\n\n"+tem.substr(1,3));
+							var temstrg = tem.substr(1,3);
+							/*var temind = tem.indexOf("$");
 							if(temind!= '-1')
-							{
+							{// 11 if
 								var tespl = tem.split('$');
-								//alert("te"+tespl[1]);
+								alert("te"+tespl[1]);
 								tem = tespl[1];
-							}
+							}// end of 11 if*/
 							/**
 							 * get first character of cell value
 							 */
-							var teind = tem.indexOf("s");
-							//alert("index of s"+teind);
+							/*var teind = tem.indexOf("s");
+							alert("index of s\n"+teind);
 							if(teind!= '-1' )
 								var temch = tem.charAt(teind);
 							else
 							{
 								var teind = tem.indexOf("a");
-								//alert("index of a is"+teind);
+								alert("index of a is\n"+teind);
 							}
 							var temch = tem.charAt(teind);
-							//alert("tem ch is"+temch);
-							if(temch == "s")
+							alert("tem ch is\n"+temch);*/
+							//if(temch == "s")
+							if(temstrg == "sum")
 							{
 								this._data[i][t]['value']= sum + '#' + Col + '$'+ tem;
-								//alert("this._data[i][t]['value']"+this._data[i][t]['value']);
+								//alert("this._data["+i+"]["+t+"]\n"+this._data[i][t]['value']);
 							}
-							if(temch == "a")
+							else if(temstrg == "max")
+							{
+								this._data[i][t]['value']= Maxval + '#' + Col + '$'+ tem;
+								//alert("this._data["+i+"]["+t+"]\n"+this._data[i][t]['value']);
+							}
+							else if(temstrg == "min")
+							{
+								this._data[i][t]['value']= Minval + '#' + Col + '$'+ tem;
+								//alert("this._data["+i+"]["+t+"]\n"+this._data[i][t]['value']);
+							}
+							else if(temstrg == "ave")
 							{
 								this._data[i][t]['value']= avg + '#' + Col + '$'+ tem;
-								//alert("this._data[i][t]['value']"+this._data[i][t]['value']);
+								//alert("this._data["+i+"]["+t+"]\n"+this._data[i][t]['value']);
 							}
-					}//end of 3 else
 			}//end of 1 if
 			//else
 				//this.ChkEdit(cell);
@@ -1421,11 +1618,11 @@ function Bs_SpreadSheet() {
                                 }// end of 1 if
                                 else
                                 {// 1 else
-                                var tmp = document.uploadform.formulaDetail.value;
-                                //alert("formula value in check formula-------->"+tmp);
-                                var frtmp = tmp.split("/");//split each line of formula
-                                var flag;
-                                for(var y = 0; y<frtmp.length; y++)
+        	                        var tmp = document.uploadform.formulaDetail.value;
+	                                //alert("formula value in check formula-------->"+tmp);
+	                                var frtmp = tmp.split("/");//split each line of formula
+	                                var flag;
+	                                for(var y = 0; y<frtmp.length; y++)
                                         {// 1 for
                                                 var tmpval = frtmp[y];
                                                 //alert("split value of formula is"+tmpval);
@@ -1469,10 +1666,10 @@ function Bs_SpreadSheet() {
                                 var tmp = document.uploadform.formulaDetail.value;
 				if(tmp != "$formulaDetail")
 				{// 1 if
-                                //alert("formula value is-------->"+tmp);
-                                var frtmp = tmp.split("/");//split each line of formula
-                                //var flag;
-                                for(var y = 0; y<frtmp.length; y++)
+	                                //alert("formula value is-------->"+tmp);
+	                                var frtmp = tmp.split("/");//split each line of formula
+	                                //var flag;
+	                                for(var y = 0; y<frtmp.length; y++)
                                         {// 1 for
 						//alert("come in first for loop");
                                                 var tmpval = frtmp[y];
@@ -1497,8 +1694,12 @@ function Bs_SpreadSheet() {
                                                         * then Find Character value
                                                         */
                                                         this.FindChar(frch);
-                                                        var r = re;// gives column no. for calling cell having formula
+                                                        var col = re;// gives column no. for calling cell having formula
                                                         //alert("return value"+r);
+							var Rowchar = fr.charAt(1);
+							//alert("rowchar for edit cell\n"+Rowchar);
+							var row = Rowchar - 1;
+							//alert("row value  for edit cell\n"+row);
                                                         var tmpchk = st[u+1];
 							//alert("tmpchk in chkedit"+tmpchk);
 							var val = tmpchk.charAt(0);
@@ -1506,135 +1707,266 @@ function Bs_SpreadSheet() {
 				                        {//2 if
 					                        var stemp = tmpchk;
 					                        stemp = stemp.toLowerCase();
-					                        var chFrm = stemp.charAt(1);
+								var chFrm = stemp.substr(1,3)
 
-					                        /**
-					                        * break formula and getting range of cell
-					                        */
-					                        if(chFrm == "s")
-				                                {//3 if 
+        					                /**
+					                         * break formula and getting range of cell
+					                         */
+					                        if(chFrm == "sum")
+				                                {//2 if 
 				                                        var temp = stemp.replace("=sum","");
-				                                }//end of 3 if
-					                        else
-				                                {//1 else
+				                                }//end of 2 if
+					                        else if(chFrm == "ave")
+				                                {//1 else if
 				                                        var temp = stemp.replace("=average","");
-				                                }//end of 1 else
+				                                }//end of 1 else if 
+					                        else if(chFrm == "max")
+				                                {//2 else if
+				                                        var temp = stemp.replace("=max","");
+				                                }//end of 2 else if
+					                        else if(chFrm == "min")
+				                                {//3 else if
+				                                        var temp = stemp.replace("=min","");
+				                                }//end of 3 else if
+
 			                                        var str1 = temp.replace("(","");
 			                                        var str2 = str1.replace(")","");
 			                                        var msg = str2.split(':');
-			                                        var tmpArray = new Array;
+								var tmpArray = new Array;
+			                                        var charArray = new Array;
+			                                        var clean = new Array;
 			                                        var Asval = new Array;
+								var strg = new Array;
 			                                        var sum = 0;
 			                                        var avg = 0;
 			                                        var tmpRow;
 			                                        var ch2;
 			                                        var nitem = 0;
+			                                        var k = 0;
+			                                        var l = 0;
+								
 		                                                for(var j=0; j< msg.length; j++)
-								 {//3 for
-        	                                                        var str3 = msg[j];//.trim();
-									var ch;
-                        	                                        //alert("final value is "+str3);
-                                	                                ch = str3.charAt(0);
-                                        	                        //alert("final character is "+ch);
-                                                	                Asval[j] = this.ascii_value(ch);
-                                                        	        this.FindChar(ch);
-                                                                	//alert("value of s"+s);
+								{//3 for
+									var str3 = msg[j];//.trim();
+                                                                	var ch;
+	                                                                //alert("final value is string"+str3);
+	                                                                ch = str3.charAt(0);
+	                                                                //alert("final character is "+ch);
+	                                                                Asval[j] = this.ascii_value(ch);
+	                                                                this.FindChar(ch);
+	                                                                //alert("return value of re\n"+re);
+	                                                                charArray[j] = str3.charAt(1);
 	                                                                ch2 = str3.charAt(1);
 	                                                                //alert("chat at[1]"+ch2);
 	                                                                tmpRow = ch2 -1;//gives row no.
 	                                                                tmpArray[j] = re;
+
 	                                                        }//end of 3 for
         	                                                //alert("First value"+tmpArray[0]+"second value"+tmpArray[1]);
-			                                        var i=tmpRow;
-			                                        //alert("value i in array\n\n"+i);
-			                                        var clean = new Array;
-			                                        var j;
-	                		                        clean[i] = new Array;
+			                                        var t1 = charArray[0]-1;
+			                                        //alert("value of t after subtraction\n\n"+t1);
+			                                        var t2 = charArray[1]-1;
+			                                        //alert("value of t1 after subtraction\n\n"+t2);
+			                                        if(charArray[0] == charArray[1])
+			                                        {// 4 if
+				                                        var i=tmpRow;
+                                				        var j;
+				                                        clean[i] = new Array;
 
-                                        		        /**
-		                                                *loop for pick values from cell & sum it
-								 */ 
-		                                                for( j=tmpArray[0]; j<=tmpArray[1]; j++)
-	                                                        {//4 for
-        	                                                        //alert("data value for sum------>"+this._data[i][j]['value']);
-                	                                                if(((this._data[i][j]['value'])== "")||(typeof(this._data[i][j]['value'])== 'undefined')||((this._data[i][j]['value'])=="-")) //this check if any cell does not have value
-                        	                                        {// 4 if
-                                		                                this._data[i][j]['value'] = 0;
-                                                                	}// end of 4 if
-	                                                                clean[i][j] = this._data[i][j]['value'];
-                                                                var item = clean[i][j];
-                                                                var x = parseInt(item);
-                                                                sum = sum + x;
-								}//end of 4 for
-                                                                var to = document.getElementById('data[' + i + '][' + r + ']');
-                                                                //alert('value of sum for cell is data[' +i+ '][' +r+ ']');
-								if(chFrm == "s")
-								{//5 if
-                                                                to.innerHTML = sum;
-								this._data[i][r]['value']= sum + '#' + fr + '$'+ tmpchk;
-								//alert(" this._data["+i+"]["+r+"] in edit"+ this._data[i][r]['value']);
-								}// end of 5 if
-								else
-								{// 2 else
-								 /** 
-                                                		 * if any cell blank between formula then first check how 									many cells are blank
-                                                		 */
-                                                		var k = 0;
-                                                		var l = 0;
-                                                		//alert("tmpArray[0]"+tmpArray[0]+"\n\ntmpArray[1]"+tmpArray[1]);
-                                                		for(l=tmpArray[0]; l<=tmpArray[1]; l++)
-                                                		{//5 for
-                                                		//alert("this._data[i][l]['value']"+this._data[i][l]['value']);
-                                                        		if((this._data[i][l]['value'])== "0")
-                                                        		{ //6 if 
-                                                        			k = k + 1;      
-                                                        			//alert("no of blank cells are"+k);             
-                                                        		}// end of 6 if
-                                                		}// end of 5 for                
-                                                		/**
-                                                		* getting range of cells having formula  
-                                                		*/
-                                                		//alert("Asval[0]\n"+Asval[0]+"Asval[1]\n"+Asval[1]);
-                                                		nitem = Asval[1]-Asval[0];
-                                                		/**
-                                                		* subtract blank cell from range of cell
-                                                		*/
-                                                		nitem = nitem - k;
-                                                		/**
-                                                		* get no. of cell having value then divide it from sum
-                                                		*/
-                                                		nitem = nitem + 1;
-                                                		avg = sum/nitem;
-                                                		/**
-                                                		* method for getting float value
-                                                		* with two decimal place
-                                                		*/
-						 		avg = avg.toString();
-                                               	 		var pos = avg.indexOf('.');
+			                                                /**
+			                                                 * loop for pick values from cell & sum it
+			                                                 */
+			                                                for( j=tmpArray[0]; j<=tmpArray[1]; j++)
+		                                                        {//4 for
+                		                                                //alert("data value for first if data["+i+"]["+j+"]------>"+this._data[i][j]['value']);
+                                                		                if(((this._data[i][j]['value'])== "")||(typeof(this._data[i][j]['value'])== 'undefined')||((this._data[i][j]['value'])== "-")) //this check if any cell does not have value
+                                                                		{// 5 if
+			                                                                this._data[i][j]['value'] = 0;
+			                                                                k = k + 1;
+			                                                                //alert("no of blank cells are\n\n"+k);
+		                                                                }// 5 if
+                		                                                clean[i][j] = this._data[i][j]['value'];
+                	        	                                        l = l+1;
+                                		                                //alert("no of cells having values are\n\n"+l);
+                                                		                var item = clean[i][j];
+										if(item != "0")
+		                                                                {// 6 if
+                		                                                        var indx = item.indexOf("#");
+                                		                                        //alert("index of #\n"+indx);
+                                                		                        if(indx > 0)
+                                                                		        {// 7 if
+                                                                                		var splitval = item.split("#");
+		                                                                                //alert("split length of string\n"+splitval[0]);
+		                                                                                item = splitval[0];
+                		                                                        }// end of 7 if
+                                		                                }// end of 6 if
+
+                                                        		        //alert("item for sum"+item);
+                                                                		var x = parseInt(item);
+	                                                                	sum = sum + x;
+										strg[j] = x;
+		                                                        }//end of 4 for
+                                                                //alert("strg outside loop\n"+strg.length);
+                                                                Maxval = Math.max.apply(0,strg);
+                                                                //alert("max in the given range\n\n"+Maxval);
+                                                                Minval = Math.min.apply(0,strg);
+                                                                //alert("min in the given range\n\n"+Minval);
+
+                                 			       }//end of 4 if
+
+								else if((tmpArray[0]!=tmpArray[1])&&(charArray[0]!=charArray[1]))
+			                                        {// 8 if 
+			                                                for(var i=t1 ;i<=t2; i++)
+			                                                {// 5 for
+			                                                        clean[i] = new Array;
+			                                                        strg[i] = new Array;
+			                                                        for(var j=tmpArray[0]; j<=tmpArray[1]; j++)
+			                                                        {// 6 for
+			                                                                //alert("data value for another if data["+i+"]["+j+"]------>"+this._data[i][j]['value']);	
+			                                                                if(((this._data[i][j]['value'])== "")||(typeof(this._data[i][j]['value'])== 'undefined')||((this._data[i][j]['value'])== "-")) //this check if any cell does not have value
+                        			                                        {// 9 if
+				                                                                this._data[i][j]['value'] = 0;
+                                                                				k = k + 1;
+				                                                                //alert("no of blank cells are\n\n"+k);
+                                			                                }// end of 9 if 
+                                                        			        clean[i][j] = this._data[i][j]['value'];
+			                                                                l = l+1;
+			                                                                //alert("no of cells having values are\n\n"+l);
+			                                                                var item = clean[i][j];
+			                                                                //alert("item for sum"+item);
+											if(item != "0")
+			                                                                {// 10 if
+                        			                                                var indx = item.indexOf("#");
+                                                			                        //alert("index of #\n"+indx);
+                                                                        			if(indx > 0)
+			                                                                        {// 11 if
+			                                                                                var splitval = item.split("#");
+			                                                                                //alert("split length of string\n"+splitval[0]);
+			                                                                                item = splitval[0];
+                        			                                                }// end of 11 if
+                                                			                }// end of 10 if
+
+			                                                                var x = parseInt(item);
+			                                                                sum = sum + x;
+											strg[i][j] = x;
+                        			                                        //alert("sum is\n\n"+sum);
+			                                                        }//end of 6 for
+			                                                }// end of 5 for
+									var strgArray = new Array;
+	                                                                var q = 0;
+	                                                                for(var i = t1 ; i<=t2 ;i++)
+	                                                                {// 7 for
+	                                                                        for(var j=tmpArray[0];j<= tmpArray[1];j++,q++)
+	                                                                        {// 8 for
+	                                                                                //alert("element inside strg\n\n"+strg[i][j]);
+	                                                                                strgArray[q] = strg[i][j];
+	                                                                                //alert(" strg after convert strgArray["+q+"]\n\n"+strgArray[q]);
+	                                                                        }// end of 8 for
+                                                                	}// end of 7 for
+                                                                //alert("length of strg outside loop\n"+strgArray.length);
+                                                                Maxval = Math.max.apply(0,strgArray);
+                                                                //alert("max in the given range\n\n"+Maxval);
+                                                                Minval = Math.min.apply(0,strgArray);
+                                                                //alert("min in the given range\n\n"+Minval);
+
+
+
+                        			                }// end of 8 if
+								if(tmpArray[0] == tmpArray[1])
+			                                        {// 12 if
+			                                                for(var i = t1; i<= t2; i++)
+			                                                {// 9 for
+			                                                        clean[i] = new Array;
+			                                                        var j = tmpArray[0];
+			                                                         //alert("data value for last if data["+i+"]["+j+"]------>"+this._data[i][j]['value']);
+		                                                                if(((this._data[i][j]['value'])== "")||(typeof(this._data[i][j]['value'])== 'undefined')||((this._data[i][j]['value'])== "-")) //this check if any cell does not have value
+		                                                                {// 13 if 
+			                                                                this._data[i][j]['value'] = 0;
+			                                                                k = k + 1;
+			                                                                //alert("no of blank cells are\n\n"+k);
+		                                                                }// end of 13 if
+		                                                                clean[i][j] = this._data[i][j]['value'];
+		                                                                l = l+1;
+		                                                                //alert("no of cells having values are\n\n"+l);
+		                                                                var item = clean[i][j];
+		                                                                //alert("item for sum"+item);
+										if(item != "0")
+		                                                                {// 14 if
+		                                                                        var indx = item.indexOf("#");
+		                                                                        //alert("index of #\n"+indx);
+		                                                                        if(indx > 0)
+		                                                                        {// 15 if
+		                                                                                var splitval = item.split("#");
+		                                                                                //alert("split length of string\n"+splitval[0]);
+		                                                                                item = splitval[0];
+                		                                                        }// end of 15 if
+                                		                                }// end of 14 if
+
+		                                                                var x = parseInt(item);
+		                                                                sum = sum + x;
+										strg[i] = x;
+                                                        		}//end of 9 for
+										//alert("strg outside loop\n"+strg.length);
+										Maxval = Math.max.apply(0,strg);
+										//alert("max in the given range\n\n"+Maxval);
+										Minval = Math.min.apply(0,strg);
+										//alert("min in the given range\n\n"+Minval);
+		
+                			                        }// end of 12 if
+		                                        var to = document.getElementById('data[' + row + '][' + col + ']');
+							if(chFrm == "sum")
+							{//16 if
+        	                                                to.innerHTML = sum;
+								this._data[row][col]['value']= sum + '#' + fr + '$'+ tmpchk;
+								//alert(" this._data["+row+"]["+col+"] in edit"+ this._data[row][col]['value']);
+							}// end of 16 if
+							else if(chFrm == "ave")
+							{// 16 else
+
+								 nitem = l - k;
+		                                                avg = sum/nitem;
+                                		                /**
+                		                                 * method for getting float value
+                                                		 * with two decimal place 
+		                                                 */
+                		                                avg = avg.toString();
+                                		                var pos = avg.indexOf('.');
                                                 		if(pos > 0)
-                                                			{// 7 if
-                                                			var n,a,b,c;
-                                                			n=avg.toString();
-                                                			var tempArray=new Array();
+		                                                {// 17 if
+			                                                var n,a,b,c;
+			                                                n=avg.toString();
+			                                                var tempArray=new Array();
 			                                                tempArray=null;
-			                                                tempArray=n.split('.');
-			                                                a=tempArray[0];
-			                                                b=tempArray[1];
+                        			                        tempArray=n.split('.');
+                                                			a=tempArray[0];
+			                                                b=tempArray[1];	
 			                                                c=tempArray[1].substr(0,2);
 			                                                avg = parseFloat(a+'.'+c);
 			                                                to.innerHTML = avg;
-									this._data[i][r]['value']= avg + '#' + fr + '$'+ tmpchk;
-                                                                	//alert(" this._data["+i+"]["+r+"]in edit"+ this._data[i][r]['value']);
-
-		                                                	}// end of 7 if
+									this._data[row][col]['value']= avg + '#' + fr + '$'+ tmpchk;
+                        			                        //alert(" this._data["+row+"]["+col+"]in edit"+ this._data[row][col]['value']);
+                                                		}// end of 17 if
 		                                                else
-									{// 3 else
-			                                        	to.innerHTML = avg;
-									this._data[i][r]['value']= avg + '#' + fr + '$'+ tmpchk;
-                                                                	//alert(" this._data["+i+"]["+r+"] in edit"+ this._data[i][r]['value']);
-									}// end of 3 else
-								}// end of 2 else
-						
+								{// 17 else
+                                			                to.innerHTML = avg;
+									this._data[row][col]['value']= avg + '#' + fr + '$'+ tmpchk;
+                        			                        //alert(" this._data["+row+"]["+col+"] in edit"+ this._data[row][col]['value']);
+								}// end of 17 else
+							}// end of 16 else
+							else if(chFrm == "max")
+							{
+		                                                to.innerHTML = Maxval;
+								this._data[row][col]['value']= Maxval + '#' + fr + '$'+ tmpchk;
+                                                                //alert(" this._data["+row+"]["+col+"] in edit"+ this._data[row][col]['value']);
+							}
+			                                else if(chFrm == "min")	
+							{
+		                                                to.innerHTML = Minval;
+								this._data[row][col]['value']= Minval + '#' + fr + '$'+ tmpchk;
+                                                                //alert(" this._data["+row+"]["+col+"] in edit"+ this._data[row][col]['value']);
+							}
+
+						 
 							}//end of 2 if
 						break;
 						}//end of 2 for
@@ -1888,7 +2220,6 @@ function Bs_SpreadSheet() {
             //this._currentCell.innerHTML += "<br>\n";
             //return false; //alt-enter forces a newline
           }
-	alert("edit cell end in typing");
           this.editCellEnd(this._currentCell);
           ///this.cellSelect(this._currentCell);
           return false;
