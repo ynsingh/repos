@@ -59,6 +59,8 @@ import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
 /**
  * @author  <a href="nagendrakumarpal@yahoo.co.in">Nagendra kumar singh</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @modified date: 07-12-2010
  */
 
 public class SurveyAction extends SecureAction
@@ -140,7 +142,10 @@ public class SurveyAction extends SecureAction
 				if(checklist.size()!=0)
 				{
                            		 msg=MultilingualUtil.ConvertedString("survey_msg4",LangFile);
-					data.setMessage(msg +v);
+					if(LangFile.endsWith("_hi.properties"))
+						data.setMessage(v+" "+MultilingualUtil.ConvertedString("brih_in",LangFile)+" "+msg+" !!");
+					else
+						data.setMessage(msg+" " +v);
 				}
 				else{		
 				SurveyQuestionPeer.doInsert(crit);

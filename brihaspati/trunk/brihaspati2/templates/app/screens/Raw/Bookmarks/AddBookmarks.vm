@@ -6,7 +6,9 @@
  *  @author <a href="mailto:seema_020504@yahoo.com ">Seema Pal</a>
  *  @author <a href="mailto:kshuklak@rediffmail.com ">Kishore kumar shukla</a>
  *  @author <a href="mailto:smita37uiet@gmail.com ">Smita pal</a>
+ *  @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  *  @modified date: 27-09-2010
+ *  @modified date: 07-12-2010
  *  Contributors: Members of ETRG, I.I.T. Kanpur
  *#
 
@@ -17,7 +19,7 @@ $!data.getMessage()
 
 <table bgcolor="$ui.tableColor" width=100% > ##table 1 start
         <tr> <td><b>
-        <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> | $brih_add $brih_Bookmark
+        <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> | #if($lang == "hindi") $brih_Bookmark $brih_add #else $brih_add $brih_Bookmark #end
      </b></td>
 	<td align="right">
           <img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin2("/brihaspati2/docs/Addbookmarks.html","newWin");>$brih_help</a></td>
@@ -27,8 +29,8 @@ $!data.getMessage()
 <table bgcolor="$ui.menuColor" width="100%">
         <tr>
                 <td align="center"><b>
-                <a href=$link.setPage("call,Bookmarks,AddBookmarks.vm").addPathInfo("mode","addBmarks")>$brih_add $brih_Bookmark</a>&nbsp;&nbsp;&nbsp;&nbsp;
-                <a href=$link.setPage("call,Bookmarks,ManageBookmarks.vm").addPathInfo("stat1","All")>$brih_Manage $brih_Bookmark</a></b>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href=$link.setPage("call,Bookmarks,AddBookmarks.vm").addPathInfo("mode","addBmarks")> #if($lang == "hindi") $brih_Bookmark $brih_add #else $brih_add $brih_Bookmark #end </a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href=$link.setPage("call,Bookmarks,ManageBookmarks.vm").addPathInfo("stat1","All")> #if($lang == "hindi") $brih_Bookmark $brih_Of1 $brih_Manage #else $brih_Manage $brih_Bookmark #end </a></b>&nbsp;&nbsp;&nbsp;&nbsp;
                 </td>
         </tr>
 </table>
@@ -130,13 +132,13 @@ $!data.getMessage()
 #end
 #end
 </table>
-<table  bgcolor="#e5e5e5" width="100%">
+<table bgcolor="$ui.tableColor" width="100%">
 #if($stat=="Rename")
 <tr>
-<td align="left"><b><i>$brih_Rename $brih_forthe <font color="green"> $btname </font>$brih_Bookmark:</i></b>
+<td align="left"><b><i> #if($lang == "hindi") <font color="green"> $btname </font> $brih_forthe  $brih_Bookmark $brih_Of1 $brih_Rename #else $brih_Rename $brih_forthe <font color="green"> $btname </font>$brih_Bookmark: #end </b></i>
 <input type="text"  size="31" name="bname"  value=""/></td>
 </tr>
-<tr><td align="left">
+<tr bgcolor="$ui.menuColor"><td align="left">
          <input type="button" name="eventSubmit_doRename" value="$brih_Rename" onClick="checkselect1(document.frm,this);"/>
  <input type="submit" name="eventSubmit_doCancel" value="$brih_cancel"/>
 </td></tr>

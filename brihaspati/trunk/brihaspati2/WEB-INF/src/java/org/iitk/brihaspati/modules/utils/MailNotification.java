@@ -156,7 +156,7 @@ public class MailNotification{
 		
 		String email_new="";
 		String msg = "";
-		ErrorDumpUtil.ErrorLog("\n\n\n  message========"+ message+"	mail_id="+mail_id+"          subject="+subject+"	attachedFile="+attachedFile);
+		//ErrorDumpUtil.ErrorLog("\n\n\n  message========"+ message+"	mail_id="+mail_id+"          subject="+subject+"	attachedFile="+attachedFile);
 		try{ //try 1
 			 if(!mail_id.equals("")){
 				email_new=mail_id;

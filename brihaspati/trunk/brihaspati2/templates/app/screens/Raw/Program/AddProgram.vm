@@ -4,6 +4,8 @@
  * All Rights Reserved.
  *
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @modified date: 07-12-2010
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
@@ -12,6 +14,7 @@ $page.setTitle("AddProgram")
 
 $page.setBgColor($ui.bgcolor)
 <body>
+#set($lang = $data.getUser().getTemp("lang").toString())
 ## If some message has been set, that is retrieved and displayed.
 $!data.getMessage()
 ## Retreiving the $lang (representing the choosen language for display, which
@@ -23,8 +26,7 @@ $!data.getMessage()
                 <td>
                 <font face="$ui.sansSerifFonts">
                 <a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> |
-                <a href=$link.setPage("call,Program,AddProgram.vm").addPathInfo("count","1") style=text-decoration:none>$brih_program $brih_mgmt</a> |
-                $brih_add $brih_program
+                <a href=$link.setPage("call,Program,AddProgram.vm").addPathInfo("count","1") style=text-decoration:none>$brih_program $brih_mgmt</a> | #if($lang == "hindi") $brih_program $brih_add  #else $brih_add $brih_program #end
                 </td>
         </tr>
 </table> ##table close
@@ -37,7 +39,7 @@ $!data.getMessage()
         #elseif($tdcolor == "1")
                 <td bgcolor="#AFDCEC">
         #end
-                <a href=$link.setPage("call,Program,AddProgram.vm").addPathInfo("count","1") style=text-decoration:none>$brih_add $brih_program</a></td>
+                <a href=$link.setPage("call,Program,AddProgram.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang == "hindi") $brih_program $brih_add  #else $brih_add $brih_program #end </a></td>
         #if($tdcolor != "2")
                 <td>
         #elseif($tdcolor == "2")
@@ -53,7 +55,7 @@ $!data.getMessage()
                 <td><input type="text" name="pcode" value="$pgcode" #if($status=="update") readonly #end></td>
 	</tr>
         <tr>
-                <td>$brih_program $brih_name <font color="red">*</td>
+                <td>$brih_program #if($lang == "hindi") $brih_Of1 #end $brih_name <font color="red">*</td>
                 <td><input type="text" name="pname" value="$pgname" #if($status=="update") readonly #end></td>
         </tr>
         <tr bgcolor="$ui.menuColor">
@@ -61,11 +63,11 @@ $!data.getMessage()
                 <td><input type="text" name="descp" value="$descrp"></td>
         </tr>
         <tr>
-                <td>$brih_alias $brih_program $brih_code</td>
+                <td> #if($lang == "hindi") $brih_program $brih_code $brih_Of1 $brih_alias #else $brih_alias $brih_program $brih_code #end </td>
                 <td><input type="text" name="alspcode" value="$alspgcode"></td>
         </tr>
         <tr bgcolor="$ui.menuColor">
-                <td> $brih_alias $brih_program $brih_name</td>
+                <td> #if($lang == "hindi") $brih_program $brih_Of2 $brih_name $brih_Of1 $brih_alias #else $brih_alias $brih_program $brih_name #end </td>
                 <td><input type="text" name="alspname" value="$alspgname"></td>
         </tr>
 	#if($status=="update")

@@ -37,7 +37,8 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_User;
 /**
  * @author <a href="mailto:awadhesh_trivedi@yahoo.com">Awadhesh Kumar Trivedi</a> 
  * @author <a href="mailto:madhavi_mungole@hotmail.com">Madhavi Mungole</a> 
- * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a> 
+* @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @modified date: 07-12-2010 
  */
 
 import org.apache.turbine.util.RunData;
@@ -53,6 +54,7 @@ public class changePassword extends SecureScreen{
 		User user=data.getUser();
 		String userName=user.getName();
 		String stat=data.getParameters().getString("status","");
+		context.put("mode",data.getParameters().getString("mode",""));
 		context.put("status",stat);
 		context.put("uName",userName);
 	}

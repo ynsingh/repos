@@ -45,6 +45,7 @@ import org.apache.turbine.modules.screens.VelocityScreen;
 
 import org.iitk.brihaspati.modules.utils.XmlWriter;
 import org.iitk.brihaspati.modules.utils.FileEntry;
+import org.iitk.brihaspati.modules.utils.FileEntry;
 import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
@@ -55,6 +56,8 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 /**This class contain the code Create, Delete, Move,Save
 * @author: <a href="mailto:seema_020504@yahoo.com">seema pal</a>
 * @author: <a href="mailto:kshuklak@rediffmail.com">kishore kumar shukla</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @modified date: 07-12-2010
 */
 
 
@@ -297,6 +300,7 @@ public class Bookmarks extends SecureAction
                         String rename=pp.getString("bname","");
                         String name=pp.getString("btname","");
 			String stat=pp.getString("stat","");
+			String dirTemp=pp.getString("dirTemp","");
 			/** Getting the Bookmarks for the Rename.*/
 			String xmlfile="BookmarksList.xml",Bookmarkname="",urllocation="",dirname="",comment="",dirname1="",type="" ;
 			/**
@@ -330,6 +334,8 @@ public class Bookmarks extends SecureAction
 				*Reading xml file by TopicMetaDataXmlReader
 				*Check the name exists in the related folder.
 				*/
+				if(! dirTemp.equals("")) //if1
+				{
 				String path2=path+"/"+dirname1;
                                	topicmetadata=new TopicMetaDataXmlReader(path2+"/"+dirname1+"_des.xml");
                                	Vector collect1=topicmetadata.getBookmarksDetails();
@@ -345,9 +351,13 @@ public class Bookmarks extends SecureAction
 						Vector str=DeleteEntry(path2,dirname1+"_des.xml",name,data);
                                		}
 				}//for
+			} //if1
                     	}//if
 			//data.setMessage("Rename successfully. !!");
-			data.setMessage(MultilingualUtil.ConvertedString("brih_Rename",LangFile)+" "+MultilingualUtil.ConvertedString("brih_successfully",LangFile)+" "+"!!");
+			if(LangFile.endsWith("hi.properties"))
+				data.setMessage(MultilingualUtil.ConvertedString("brih_Rename",LangFile)+" "+MultilingualUtil.ConvertedString("brih_successful",LangFile)+" "+"!!");
+			else
+				data.setMessage(MultilingualUtil.ConvertedString("brih_Rename",LangFile)+" "+MultilingualUtil.ConvertedString("brih_successfully",LangFile)+" "+"!!");
                 }//try
                 catch(Exception e){
                                         ErrorDumpUtil.ErrorLog("Error in method:doRename !!"+e);

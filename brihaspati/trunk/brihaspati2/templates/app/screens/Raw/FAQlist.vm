@@ -5,12 +5,15 @@
  *
  *  @author <a href="mailto:seema_020504@yahoo.com ">Manorama Pal</a>
  *  @author <a href="mailto:kshuklak@rediffmail.com ">Kishore kumar shukla</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @modified date: 22-11-2010
  *
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 $page.setTitle("FAQ")
 $page.setBgColor("bgcolor")
 $!data.getMessage()
+#set($lang=$data.getUser().getTemp("lang").toString())
 <table bgcolor="$ui.menuColor" width=100%>
 <tr><td>
         <font face="$ui.sansSerifFonts" size=3>
@@ -30,14 +33,18 @@ $!data.getMessage()
                 #if( $total_size!=0 )
                         #if( $endIndex < $total_size )
                                 #if( $endIndex < $userConf )
-                                [$k - $total_size] of $total_size
+                                ##[$k - $total_size] of $total_size
+					#if($lang == "hindi")  $total_size $brih_in $brih_from1 [$k - $total_size] #else [$k - $total_size] $brih_of $total_size #end
                                 #elseif($k == $j)
-                                [$k - $total_size] of $total_size
+                                ##[$k - $total_size] of $total_size
+					#if($lang == "hindi")  $total_size $brih_in $brih_from1 [$k - $total_size] #else [$k - $total_size] $brih_of $total_size #end
                                 #else
-                                [$k - $endIndex] of $total_size
+                                ##[$k - $endIndex] of $total_size
+					#if($lang == "hindi") $total_size $brih_in $brih_from1 [$k - $endIndex] #else [$k - $endIndex] $brih_of $total_size #end
                                 #end
                         #else
-                        [$k - $total_size] of $total_size
+                        ##[$k - $total_size] of $total_size
+				#if($lang == "hindi")  $total_size $brih_in $brih_from1 [$k - $total_size] #else [$k - $total_size] $brih_of $total_size #end
                         #end
                 #end
         </td>
@@ -47,17 +54,17 @@ $!data.getMessage()
 <table width="100%" bgcolor="$ui.tableColor">
 #if($status=="NoBlank")
 	#if($mode=="alllist")
-		<tr bgcolor="$ui.menuColor" width="100%"><td width="100%" colspan="5"><b>$brih_frequently $brih_asked $brih_qus2 $brih_category</b></td></tr>
+		<tr bgcolor="$ui.menuColor" width="100%"><td width="100%" colspan="5"><b>$brih_frequently #if($lang == "hindi") $brih_asked1 $brih_qus2 $brih_Of #else  $brih_asked $brih_qus2 #end $brih_category </b></td></tr>
                		#foreach($catlist in $entry)
 				#if($velocityCount%2==0)
                 		<tr bgcolor="$ui.menuColor">
                 		#else
                 		<tr bgcolor="$ui.tableColor">
 				#end
-				<td><a href="$link.setPage("FAQlist.vm").addPathInfo("category",$catlist.getCategory()).addPathInfo("userid1",$catlist.getUserId()).addPathInfo("mode","list").addPathInfo("type",$type)">$catlist.getCategory()</a></td>
+				<td><a href="$link.setPage("FAQlist.vm").addPathInfo("category",$catlist.getCategory()).addPathInfo("userid1",$catlist.getUserId()).addPathInfo("mode","list").addPathInfo("type",$type).addPathInfo("lang",$lang)">$catlist.getCategory()</a></td>
 			#end
 	#else
-	<tr bgcolor="$ui.tableColor"><td><b>$brih_frequently $brih_asked $brih_qus2(FAQs)</b></td></tr>
+	<tr bgcolor="$ui.tableColor"><td><b>$brih_frequently #if($lang == "hindi") $brih_asked1 #else $brih_asked #end $brih_qus2(FAQs)</b></td></tr>
                	#foreach($list in $entry)
 			#if($velocityCount%2==0)
                 	<tr bgcolor="$ui.menuColor">
@@ -66,7 +73,7 @@ $!data.getMessage()
 			#end
 			<td width="40%" colspan="5">
 			<img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
-			<a href="$link.setPage("FAQlist.vm").addPathInfo("category",$category).addPathInfo("userid1",$userid1).addPathInfo("quesid",$list.questionid).addPathInfo("modefaq","faqcheck").addPathInfo("type",$type).addPathInfo("mode","$mode")">$list.question</a></td>
+			<a href="$link.setPage("FAQlist.vm").addPathInfo("category",$category).addPathInfo("userid1",$userid1).addPathInfo("quesid",$list.questionid).addPathInfo("modefaq","faqcheck").addPathInfo("type",$type).addPathInfo("mode","$mode").addPathInfo("lang",$lang)">$list.question</a></td>
 		#end
 		#end
 		 #if($modefaq=="faqcheck")
@@ -106,10 +113,10 @@ $!data.getMessage()
 		#end
 	#else
 		#if($mode=="alllist")
-		<tr><td align="center"><b><font size="3">$brih_frequently $brih_asked $brih_qus2 $brih_category $brih_arenotexists</font></td></tr> 
+		<tr><td align="center"><b><font size="3">$brih_frequently #if($lang == "hindi") $brih_asked1 $brih_qus2 $brih_Of #else  $brih_asked $brih_qus2 #end $brih_category $brih_arenotexists</font></td></tr> 
 		#end
 		#if($mode=="list")
-		<tr><td align="center"><b><font size="3">$brih_faqmsg $brih_cat</font></td></tr>
+		<tr><td align="center"><b><font size="3"> #if($lang == "hindi") $brih_faqmsg #else  $brih_faqmsg $brih_cat #end </font></td></tr>
 		#end
 	#end
 	 <tr><td align="left"><img src="$content.getURI("/images/backtotop.gif")"><a href="#top" onclick="window.scrollTo(0,0); return false">$brih_backtotop</a></td></tr>

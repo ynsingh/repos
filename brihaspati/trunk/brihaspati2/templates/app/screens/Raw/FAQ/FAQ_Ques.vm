@@ -5,7 +5,7 @@
  *  @author <a href="mailto:seema_020504@yahoo.com ">Seema Pal</a>
  *  @author <a href="mailto:kshuklak@rediffmail.com ">Kishore kumar shukla</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
- * @modified date: 22-11-2010
+ * @modified date: 22-11-2010, 07-12-2010
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 $page.setTitle("FAQ")
@@ -121,7 +121,7 @@ $!data.getMessage()
 	 ##<tr bgcolor="$ui.menuColor" width="100%"><td width="100%" colspan="5">
 	#if($mode=="alllist" ||$mode=="delete")
 		#if($status == "Noblank")
-			<tr bgcolor="$ui.menuColor" width="100%"><td width="100%" colspan="5"><b>$brih_frequently $brih_asked $brih_qus2 #if($lang == "hindi") $brih_Of #end $brih_category</b>
+			<tr bgcolor="$ui.menuColor" width="100%"><td width="100%" colspan="5"><b>$brih_frequently #if($lang == "hindi") $brih_asked1 $brih_qus2 $brih_Of #else $brih_asked $brih_qus2  #end $brih_category</b>
 		#end
 	##</td></tr>
 </table>
@@ -155,7 +155,7 @@ $!data.getMessage()
 		</tr>
         #end
 	#if($status == "blank" && $mode!="add")
-                        <tr bgcolor="$ui.menuColor" width="100%"><td width="100%" colspan="5" align="center"><b><font size="3">$brih_frequently $brih_asked $brih_qus2  #if($lang == "hindi") $brih_Of #end $brih_category $brih_arenotexists.</font></b>
+                        <tr bgcolor="$ui.menuColor" width="100%"><td width="100%" colspan="5" align="center"><b><font size="3">$brih_frequently #if($lang == "hindi") $brih_asked $brih_qus2 $brih_Of #else $brih_asked $brih_qus2 #end $brih_category $brih_arenotexists.</font></b>
         #end
 </table>
 <table width="100%" bgcolor="$ui.tableColor">

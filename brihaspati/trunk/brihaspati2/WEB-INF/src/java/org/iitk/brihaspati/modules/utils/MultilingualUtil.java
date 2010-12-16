@@ -32,14 +32,20 @@ package org.iitk.brihaspati.modules.utils;
              
 /**
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista Bano</a>
- * @modified date: 29-08-2010
+ * @modified date: 29-08-2010, 07-12-2010
  **/
 
-import java.io.FileInputStream;
+import java.nio.*;
+import java.nio.charset.*;
+
+import java.net.URL;
+import java.io.*;//FileInputStream;
+import java.io.InputStreamReader;
+import java.util.Properties;
 import java.util.PropertyResourceBundle;
 import org.apache.turbine.services.servlet.TurbineServlet;
 
-public  class MultilingualUtil{
+public class MultilingualUtil{
  
         /**
          * This method retreives the String in Unicode and Convert it into a UTF-8 String
@@ -47,19 +53,27 @@ public  class MultilingualUtil{
 	 * @param file_properties String file_properties Contains the name of property file for language
          * @return String
          */
- 
+	
+	
+
+	private static Properties prop=new Properties();
         public static String ConvertedString(String str,String file_properties){ 
 		String string_converted=new String();
-		try{	
+		try{
+			InputStream inputStream =new java.io.FileInputStream(new File(file_properties));
+                        prop.load(new InputStreamReader(inputStream,"UTF8"));
+			string_converted = prop.getProperty(str);
+/**
 			PropertyResourceBundle bundle=new PropertyResourceBundle(new FileInputStream(file_properties));
 			String mystr=bundle.getString(str);
 	                byte[] utf8 = mystr.getBytes("UTF-8");
                	        string_converted = new String(utf8, "UTF-8");
-                                                        
-		}	
+	
+**/
+		}
 		catch(Exception e)
 		{
-			string_converted="Error in property file variable not Match with property file :-"+e; 
+			string_converted="Error in property file variable not Match with property file :-"+e;
 		}
 		return string_converted;
 	}
@@ -190,6 +204,8 @@ public  class MultilingualUtil{
 	                               LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_fr.properties");
 				else if(lang.equals("german"))
                                 	LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_de.properties");
+				else if(lang.equals("greek"))
+                                	LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_gre.properties");
 				else if(lang.equals("gurmukhi"))
                                         LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_gu.properties");
 	                        else if(lang.equals("hindi"))

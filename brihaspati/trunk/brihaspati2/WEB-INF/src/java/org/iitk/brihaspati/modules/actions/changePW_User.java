@@ -39,7 +39,7 @@ package org.iitk.brihaspati.modules.actions;
  * @author <a href="mailto:madhavi_mungole@hotmail.com ">Madhavi Mungole</a>
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in ">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
- * @modified date: 08-07-2010
+ * @modified date: 08-07-2010, 07-12-2010
  */
 
 import org.apache.turbine.util.RunData;
@@ -79,6 +79,7 @@ public class changePW_User extends SecureAction
 
 			String oldPW=pp.getString("oldpassword","");
 			String newPW=pp.getString("newpassword","");
+			context.put("mode",data.getParameters().getString("mode",""));
 
 			/**
 		 	* Update the password and get appropriate message

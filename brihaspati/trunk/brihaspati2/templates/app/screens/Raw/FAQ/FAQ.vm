@@ -4,6 +4,8 @@
  * All Rights Reserved.
  *  @author <a href="mailto:seema_020504@yahoo.com ">Seema Pal</a>
  *  @author <a href="mailto:kshuklak@rediffmail.com ">Kishore kumar shukla</a>
+ *  @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ *  @modified date: 07-12-2010
  *
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
@@ -258,7 +260,7 @@ $!data.getMessage()
         #if($modeadd!="ques" && $modeedit!="edit")
 	#if($status=="NoBlank")
 	#if($mode == "alllist"||$mode =="faqcheck")
-	<tr bgcolor="$ui.tableColor"><td><b>$brih_frequently $brih_asked $brih_qus</b></td></tr>
+	<tr bgcolor="$ui.tableColor"><td><b>$brih_frequently #if($lang == "hindi") $brih_asked1 #else  $brih_asked #end $brih_qus</b></td></tr>
         	#set ( $count = 1)
 		#foreach($faqdetail in $entrydetail)
                   	#set ( $count1 = 1)
@@ -294,7 +296,7 @@ $!data.getMessage()
 	<table width="100%" bgcolor="$ui.tableColor">
 	#if($stat == "addfav" || $stat == "unfav")
 	#if($empty=="noempty")
-        <tr bgcolor="$ui.tableColor"><td width="100%" colspan="5"><b>$brih_frequently $brih_asked $brih_qus</b></td></tr>
+        <tr bgcolor="$ui.tableColor"><td width="100%" colspan="5"><b>$brih_frequently #if($lang == "hindi") $brih_asked1 #else $brih_asked #end $brih_qus</b></td></tr>
         	<td colspan="5"><input type="CHECKBOX" name="checkAll" onClick="selectAll(this);">
                 	<b>$brih_selAll </b>
                 </td>

@@ -597,7 +597,7 @@
         <property file="Control.properties"/>
         <target name="template" description="This part calls all the 3 action ant insert control  remove ">
                 <antcall target="removeTemplate"/>
-		<antcall target="unicodeConvert"/>
+		<!-- antcall target="unicodeConvert"/--> 
                 <antcall target="insert"/>
                 <antcall target="control"/>
                 <antcall target="remove"/>
@@ -648,6 +648,7 @@
 	<delete dir="${Multilingual.TemplatePath}/english" />
 	<delete dir="${Multilingual.TemplatePath}/french" />
 	<delete dir="${Multilingual.TemplatePath}/german" />
+	<delete dir="${Multilingual.TemplatePath}/greek" />
 	<delete dir="${Multilingual.TemplatePath}/gurmukhi" />
 	<delete dir="${Multilingual.TemplatePath}/hindi" />
 	<delete dir="${Multilingual.TemplatePath}/italian" />

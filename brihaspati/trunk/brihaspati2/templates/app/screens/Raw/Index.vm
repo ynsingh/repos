@@ -11,6 +11,7 @@
  * @Add FAQ link (05-09-2010)
  * @author <a href="palseema30@gmail.com">ManoramaPal</a>
  * @author <a href="kishore.shukla@gmail.com">Kishore Kumar Shukla</a>
+ * @modified date: 22-11-2010 Add lang parameter
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
@@ -93,7 +94,7 @@ $!data.getMessage()
 	#end
 #end
 #if($Role7=="InstituteAdminRole" || $Role3=="StudentRole" || $Role2=="InstructorRole")
-        <td width="25%" align="center"><a href=$link.setPage("FAQlist.vm").addPathInfo("mode","alllist").addPathInfo("type","instadmin")>FAQ</a></td>
+        <td width="25%" align="center"><a href=$link.setPage("FAQlist.vm").addPathInfo("mode","alllist").addPathInfo("type","instadmin").addPathInfo("lang",$lang)>$brih_FAQ</a></td>
 #end
 </tr>
 </table>

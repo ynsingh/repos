@@ -8,6 +8,7 @@
  * @modified date: 29-08-2010, 24-09-2010 (Shaista)
  * @author <a href="palseema30@gmail.com">ManoramaPal</a>
  * @author <a href="kishore.shukla@gmail.com">Kishore Kumar Shukla</a>
+ *  @modified date: 07-12-2010
 *#
 
 $page.setTitle("Login in Brihaspati")
@@ -105,6 +106,7 @@ $page.setBgColor($ui.bgcolor)
 	<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","dutch")"> $brih_dutch 
         <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","french")"> $brih_french 
         <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","german")"> $brih_german 
+        <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","greek")"> $brih_greek 
         <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","gurmukhi")"> $brih_gurmukhi 
         <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","hindi")"> $brih_hindi 
         <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","italian")"> $brih_italian
@@ -136,6 +138,8 @@ $page.setBgColor($ui.bgcolor)
         #elseif($lang == "german")
                 ##<option>$brih_german (Deutsch)</option>
                 <option>$brih_german </option>
+        #elseif($lang == "greek")
+	        <option> $brih_greek </option>
         #elseif($lang == "gurmukhi")
                 ##<option>$brih_gurmukhi ($brih_gurmukhi)</option>
                 <option>$brih_gurmukhi </option>
@@ -202,6 +206,10 @@ $page.setBgColor($ui.bgcolor)
         #if ($lang != "german")
                 <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","german")"> $brih_german (Deutsch) </option>
         #end
+
+        #if($lang == "greek")
+	        <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","greek")"> $brih_greek ($brih_greek1)
+	#end
 
         #if ($lang != "gurmukhi")
                 <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","gurmukhi")"> $brih_gurmukhi ($brih_gurmukhi1) </option>

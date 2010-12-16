@@ -24,7 +24,7 @@ $page.setBgColor($ui.bgcolor)
 		<table align="left" width="100%">
 		<tr align="right"><td align="right" colspan=4><font color="red">$!data.getMessage() </font></td></tr>
 		<tr align="right">
-        	<td align="right" colspan="3">
+        	<td colspan="3">
 			<select id="language" onChange ="javascript:OnChange();">
                                 #if ($lang == "urdu")
                                 	<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","urdu")"> $brih_urdu </option>
@@ -42,6 +42,7 @@ $page.setBgColor($ui.bgcolor)
                                 <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","english")"> (English) $brih_english
                                 <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","french")"> (Franýais) $brih_french
                                 <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","german")"> (Deutsch) $brih_german
+        			<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","greek")"> ($brih_greek1) $brih_greek 
 				<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","gurmukhi")">($brih_gurmukhi1) $brih_gurmukhi
                                 <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","hindi")"> ($brih_hindi1) $brih_hindi
                                 <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","italian")"> (Italiano) $brih_italian
@@ -54,7 +55,8 @@ $page.setBgColor($ui.bgcolor)
         			<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","tamil")"> ($brih_tamil1) $brih_tamil
                                 <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","telugu")"> ($brih_telugu1) $brih_telugu
                                 #if ($lang != "urdu")
-                                	<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","urdu")"> ($brih_urdu1( $brih_urdu </option>
+                                	<option align="right" value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","urdu")"> ($brih_urdu( $brih_urdu1 </option>
+                                	##<option align="right" value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","urdu")">  $brih_urdu </option>
                                 	##<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","urdu")"> $brih_urdu </option>
 				#end
                         </select>
