@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\Projects\\camsprojects\\Inventory\\report\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     employee_master.`emp_code` AS employee_master_emp_code,
+     employee_master.`emp_name` AS employee_master_emp_name,
+     department_master.`dept_name` AS department_master_dept_name,
+     designation_master_A.`desig_name` AS designation_master_A_desig_name,
+     employee_master.`emp_id` AS employee_master_emp_id
+FROM
+     `department_master` department_master INNER JOIN `employee_master` employee_master ON department_master.`dept_code` = employee_master.`emp_dept_code`
+     INNER JOIN `designation_master` designation_master ON employee_master.`emp_desig_code` = designation_master.`desig_code`
+     INNER JOIN `designation_master` designation_master_A ON employee_master.`emp_desig_code` = designation_master_A.`desig_code`]]>
+	</queryString>
+	<field name="employee_master_emp_code" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="employee_master_emp_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="department_master_dept_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="designation_master_A_desig_name" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="employee_master_emp_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="227" splitType="Stretch">
+			<subreport>
+				<reportElement x="17" y="93" width="524" height="100"/>
+				<subreportParameter name="emp_code">
+					<subreportParameterExpression><![CDATA[$F{employee_master_emp_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "report2.jasper"]]></subreportExpression>
+			</subreport>
+			<textField>
+				<reportElement x="112" y="22" width="100" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{employee_master_emp_code}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="346" y="22" width="195" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{employee_master_emp_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="112" y="55" width="100" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{department_master_dept_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="346" y="55" width="195" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{designation_master_A_desig_name}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="80" width="541" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="22" width="100" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Employee Code]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="55" width="100" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Department]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="229" y="22" width="100" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="229" y="55" width="100" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Designation]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>
