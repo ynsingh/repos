@@ -36,14 +36,14 @@
 			<div align="center" style="height: 65%">
 			
 			<table height="75%">
-				<tr align="center"><td> <font size="3" color="#660000"></font></td></tr>
+				<tr align="center"><td> <font size="3" color="#66000"></font></td></tr>
 				<tr><td align="center">
        </td></tr>
-                    <tr><td>
-       <b><g:message code="default.ForgotPassword.ConfirmationMessage.label"/></b>
+                   <tr><td>
+       <font size="3"><g:message code="default.ForgotPassword.ConfirmationMessage.label"/></font>
                            </td></tr>
                            <tr><td>
-       <b><g:message code="default.ForgotPassword.Activation.label"/></b>
+       <font size="3"><g:message code="default.ForgotPassword.Activation.label"/></font>
                            </td></tr>
                   
                   <tr><td><HR></td></tr>

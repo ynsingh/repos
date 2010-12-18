@@ -49,11 +49,17 @@ class ProjectTrackingController {
         	/* Get project details */
         	Integer projectId = projectTrackingInstance.projects.id
     		def projectsInstance = projectsService.getProjectById(projectId)
-    		
     		/* Get project tracking details if any */
     		def projectTrackingInstanceList = projectsService.getProjectTrackingByProject(projectsInstance) 
-    		
-            return [ projectsInstance:projectsInstance, projectTrackingInstance : projectTrackingInstance, projectTrackingInstanceList:projectTrackingInstanceList ]
+    		for(projectStatus in projectTrackingInstanceList.projectStatus)
+    		{
+    			if(projectStatus=='Closed')
+    			{
+    				projectsInstance.status='Closed'
+    			}
+    		}
+            
+    		return [ projectsInstance:projectsInstance, projectTrackingInstance : projectTrackingInstance, projectTrackingInstanceList:projectTrackingInstanceList ]
         }
     }
 
@@ -84,6 +90,13 @@ class ProjectTrackingController {
 		/* Get project tracking details if any */
 		def projectTrackingInstanceList = projectsService.getProjectTrackingByProject(projectsInstance) 
     		
+		for(projectStatus in projectTrackingInstanceList.projectStatus)
+    		{
+    			if(projectStatus=='Closed')
+    			{
+    				projectsInstance.status='Closed'
+    			}
+    		}
         def projectTrackingInstance = new ProjectTracking()
 		projectTrackingInstance.projects = projectsInstance
         projectTrackingInstance.properties = params
@@ -103,7 +116,7 @@ class ProjectTrackingController {
 		projectTrackingInstance = projectsService.saveProjectTracking(projectTrackingInstance)
     	if(projectTrackingInstance.saveMode != null){
             flash.message = "${message(code: 'default.created.label')}"
-            redirect(action:create,id:projectTrackingInstance.projects.id)
+            redirect(action:create,params:[id:projectTrackingInstance.projects.id,projectStatus:projectTrackingInstance.projectStatus])
         }
         else {
             render(view:'create',id:projectTrackingInstance.projects.id)

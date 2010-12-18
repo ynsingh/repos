@@ -36,7 +36,7 @@
    <g:form method="post" controller="notificationsEmails" >
       <input type=hidden id="id" name="id" value="${params.id}">
  <input type=hidden id="proposalId" name="proposalId" value="${params.proposalId}">
-      <g:actionSubmit class="inputbutton" value="${message(code: 'default.Cancel.button')}" action="partyNotificationsList"/>
+      <g:actionSubmit class="inputbutton" value="${message(code: 'default.Save.button')}" action="partyNotificationsList"/>
        </g:form></td></tr></table></td>
       <td colspan="2">
    

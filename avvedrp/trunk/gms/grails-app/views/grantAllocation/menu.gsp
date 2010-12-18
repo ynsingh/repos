@@ -97,16 +97,16 @@
 			<li><a href="${createLinkTo(dir:'authority/create')}" target="right"><g:message code="default.AddRole.label"/></a></li>
 			<li><a href="${createLinkTo(dir:'employeeDesignation/create')}" target="right"><g:message code="default.EmployeeDesignation.label"/></a></li>
 			<li><a href="${createLinkTo(dir:'salaryComponent/create')}" target="right"><g:message code="default.SalaryComponent.label"/></a></li>
-			
+			<li><a href="${createLinkTo(dir:'eligibilityCriteria/create')}" target="right"><g:message code="default.eligibilityCriteria.eligibilityCriteria.label"/></a></li>
 		</ul>
 	</div>
 </g:if>
 
-<g:if test="${session.Role == 'ROLE_SITEADMIN'}">
+<!--<g:if test="${session.Role == 'ROLE_SITEADMIN'}">
 	<div><a class="menuitem" href="${createLinkTo(dir:'projectEmployee/addemp')}" target="right" ><g:message code="default.HRManagement.label"/></a></div>
 	<div><a class="menuitem" href="${createLinkTo(dir:'itemPurchase/purchase')}" target="right"><g:message code="default.AssetManagement.label"/></a></div>
 	
-</g:if>
+</g:if>-->
 	<a class="menuitem submenuheader" href="#"><g:message code="default.Reports.label"/></a>
 	<div class="submenu">
 		<ul>

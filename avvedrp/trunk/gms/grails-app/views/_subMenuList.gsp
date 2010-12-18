@@ -32,13 +32,24 @@
 				<li> 
         			<g:link  action="create" controller='projectTracking'  id="${session.ProjectID}"><g:message code="default.ProjectClosure.label"/></g:link>
         		</li>
-        		<li> 
+        		     
+    	     	<li> 
+        			<g:link  controller='projectEmployee' action="create"   id="${session.ProjectID}"><g:message code="default.ProjectPersonnel.label"/></g:link>
+        	    </li>
+        	    
+    		    <li> 
+        			<g:link  controller='itemPurchase' action="create" id="${session.ProjectID}"><g:message code="default.Asset.label"/></g:link>
+        	    </li>
+        	    
+        	    <li> 
             		<a href="#"><g:message code="default.Reports.label"/></a> 
             		<span> 
 						<g:link  controller='grantAllocation' action="reportView"><g:message code="default.UtilizationCertificates.label"/></g:link>|
-						<g:link  controller='utilization' action="create" id="${session.ProjectID}"><g:message code="default.Submitutilizationcertificate.label"/></g:link>
+						<g:link  controller='utilization' action="create" id="${session.ProjectID}"><g:message code="default.Submitutilizationcertificate.label"/></g:link>|
+						<g:link  controller='projectEmployee' action="hrassetReports"><g:message code="default.AssetReports.label"/></g:link>
             		</span> 
-        		</li>       
+        		</li>  
+        	    
     		</ul> 
 		</div> 
     </body>	

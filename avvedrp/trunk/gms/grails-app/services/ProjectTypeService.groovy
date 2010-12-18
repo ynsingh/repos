@@ -74,4 +74,13 @@ class ProjectTypeService
 	    	return projectTypeInstance
 	}
 	
+	/*
+	 * Check Duplicate Type
+	 */
+	 public checkDuplicateType(def params)
+	{
+		 def chkProjectTypeInstance = ProjectType.find("from ProjectType PT where PT.type= '"+params.type+"' and PT.activeYesNo='Y'")
+		 return chkProjectTypeInstance
+	}
+	
 }

@@ -7,7 +7,8 @@
 	    </script>
     </head>
     <body>
-      <div class="wrapper">  
+      <div class="wrapper"> 
+      <g:subMenuList/>  
 	        <div class="body">
 	            <h1><g:message code="default.EditItemPurchase.edit.head"/></h1>
 	            <g:if test="${flash.message}">
@@ -65,7 +66,8 @@
 	                                  <label for="dateReceived"><g:message code="default.itemPurchase.DateReceived.label" /></label>
 	                                </td>
 	                                <td valign="top" class="value ${hasErrors(bean: itemPurchaseInstance, field: 'dateReceived', 'errors')}">
-	                                   <calendar:datePicker name="dateReceived" defaultValue="${new Date()}"/>
+	                                <calendar:datePicker name="dateReceived" defaultValue="${new Date()}" 
+					    				dateFormat="%d/%m/%Y"/>
 	                                </td>
 	                            </tr>
 	                                                                           

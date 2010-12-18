@@ -69,7 +69,14 @@
                                     <label for="investigator"><g:message code="default.Investigator.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'investigator','errors')}">
-                                      <g:select optionKey="id" optionValue="name" from="${investigatorList}" name="investigator.id" value="${projectsInstance?.investigator?.id}" ></g:select>                               </td>
+                                <g:if test="${projectsInstance.parent}">
+                                     ${projectsInstance?.investigator?.name}
+                                     <input type="hidden" name="investigator.id" value="${projectsInstance?.investigator?.id}" />
+                                     </td>
+                           		</g:if>
+                           		<g:else>
+                           		<g:select optionKey="id" optionValue="name" from="${investigatorList}" name="investigator.id" value="${projectsInstance?.investigator?.id}" ></g:select> 
+                           		</g:else>
                             </tr> 
                           
                           <tr class="prop">

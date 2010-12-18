@@ -37,16 +37,26 @@ class ProjectTypeController {
             def projectTypeService = new ProjectTypeService()
             if(!projectTypeInstance.hasErrors())
             {
-            
+              def chkProjectTypeInstance = projectTypeService.checkDuplicateType(params)
+              if(chkProjectTypeInstance)
+	          {
+	    	      flash.message ="${message(code: 'default.AlreadyExists.label')}"
+	    		  redirect(action: "create", id: projectTypeInstance.id)
+	          }
+              else
+              {
+             
             	/* Save ProjectType details */
             	projectTypeInstance = projectTypeService.saveProjectType(projectTypeInstance)
             	if(projectTypeInstance.saveMode != null)
             	{
+            		
+            		
             		/*Checking whether the project type details are saved*/
             		if(projectTypeInstance.saveMode.equals("Saved"))
             		{
     	                  flash.message = "${message(code: 'default.created.label')}"
-    	                  redirect(action:create,id:projectTypeInstance.id)
+    	                  redirect(action:"create",id:projectTypeInstance.id)
             		}
             		else
             		{
@@ -60,6 +70,7 @@ class ProjectTypeController {
             }
            
         }
+    }
     
     /**
 	 * Method for performing the edit action
@@ -70,11 +81,11 @@ class ProjectTypeController {
         	def projectTypeService = new ProjectTypeService()
         	
             /* Getting Project Type details based on id */
-            def projectTypeInstance = projectTypeService.getProjectTypeById(new Integer( params.id ))
+            def projectTypeInstance = projectTypeService.getProjectTypeById(new Integer(params.id ))
             if(!projectTypeInstance) 
             {
                 flash.message = "${message(code: 'default.notfond.label')}"
-                redirect(action:create)
+                redirect(action: "create")
             }
             else 
             {
@@ -87,16 +98,43 @@ class ProjectTypeController {
 	 */
 
     def update = 
-        {
-        	def projectTypeInstance = new ProjectType(params)
+    	{
+       
             def projectTypeService = new ProjectTypeService()
+        	def projectTypeInstance = projectTypeService.getProjectTypeById(new Integer(params.id ))
+        	def chkProjectTypeInstance = projectTypeService.checkDuplicateType(params)
+    		if(chkProjectTypeInstance)
+    	    {
+    			if((chkProjectTypeInstance.id).equals(projectTypeInstance.id))
+    			{
+    				  projectTypeInstance = projectTypeService.updateProjectType(params)
+        				if(projectTypeInstance.saveMode.equals( "Updated"))
+    			           	{
+    	        				/*Shows a message if the details are updated*/
+    	        				flash.message = "${message(code: 'default.updated.label')}"
+    			        		redirect(action: "create", id: projectTypeInstance.id)
+    			        	}
+    	        
+    			}
+    			else if(chkProjectTypeInstance)
+    			{
+    				flash.message ="${message(code: 'default.AlreadyExists.label')}"
+    				redirect(action: "edit", id:params.id)
+    			}
+    	    }
+    	    else
+    	    {
+    	    	if(projectTypeInstance) 
+    	    	{
+    	    		projectTypeInstance.properties = params
+        	
         		
-        	/* Update Project Type details */
-            projectTypeInstance = projectTypeService.updateProjectType(params)
-                
-            /* Check whether any project type exists */
-            if(projectTypeInstance)
-              {
+        	        /* Update Project Type details */
+                     projectTypeInstance = projectTypeService.updateProjectType(params)
+             
+                    /* Check whether any project type exists */
+               if(projectTypeInstance)
+               {
                 if(projectTypeInstance.saveMode != null)
                   {
                 	/* Check whether the project type details are updated */
@@ -104,20 +142,28 @@ class ProjectTypeController {
     	              {
     	                 /* Shows a message if the details are updated */
                          flash.message = "${message(code: 'default.updated.label')}"
-                         redirect(action:create,id:projectTypeInstance.id)
+                         redirect(action:"create",id:projectTypeInstance.id)
                       }
-                      else 
+                      else if (projectTypeInstance.saveMode == null)/*Check if the project type is assigned to project list*/
+                      {
+                    	  flash.message = "${message(code: 'default.usedinProjects.label')}"
+                  	      redirect(action: "edit", id: params.id) 
+                      }
+                      else
                       {
                          render(view:'edit',model:[projectTypeInstance:projectTypeInstance])
                       }
                   }
+              }
                   else 
                   {
                 	 flash.message = "${message(code: 'default.notfond.label')}"
-                	 redirect(action:edit,id:params.id)
+                	 redirect(action:"edit",id:params.id)
                   }
-              }
-        }
+            
+    	    	}
+    	    }
+    		} 
   
     /**
 	 * Method for performing the delete action
@@ -160,4 +206,4 @@ class ProjectTypeController {
     	    	redirect(action: "edit", id: params.id)   
     	    }    	   
  		 }
- }
+  }

@@ -29,6 +29,7 @@ class AttachmentsController {
        // attachmentsInstance.properties = params
        	def grantAllocationInstance = attachmentsService.getGrantAllocationForParty(gh.getValue("Party"))
 		def attachmentsInstanceList = attachmentsService.getProjectUploadedAttachments(params.id)
+		def attachmentTypeList =attachmentsService.getattachmentTypes()
 		println "attachmentsInstanceList "+attachmentsInstanceList
         List<GrantAllocation> grantAllocationInstanceList 	
         
@@ -43,7 +44,7 @@ class AttachmentsController {
     	}
         return [attachmentsInstance: attachmentsInstance,
                 grantAllocationInstanceList:grantAllocationInstanceList,
-                attachmentsInstanceList:attachmentsInstanceList,projects:params.id]
+                attachmentsInstanceList:attachmentsInstanceList,projects:params.id,attachmentTypeList: attachmentTypeList]
     }
 
     def save = {

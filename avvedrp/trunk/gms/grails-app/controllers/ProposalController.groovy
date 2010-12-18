@@ -187,13 +187,37 @@ class ProposalController {
     }
     def proposalList =
     {
-    		println "Notification Id="+params.id
-    		def notificationInstance = Notification.get(params.id)
-    		def proposalInstanceList = proposalService.getProposalByNotification(params.id)
-    		println "proposalInstanceList.size()"+proposalInstanceList.size()
+    		def notificationInstance
+    		def proposalInstanceList
+        	
+    		if(params.id)
+    		{
+    			notificationInstance = Notification.get(params.id)
+    			proposalInstanceList = proposalService.getProposalByNotification(params.id)
+    		}
+    		else
+    		{
+    			notificationInstance = Notification.get(params.notificationId)	
+    			proposalInstanceList = proposalService.getProposalByNotification(params.notificationId)
+    		}
+    		def notificationInstanceList
+    		def proposalStatusInstance = new EligibilityStatus()
+    		def EligibilityStatusList = []
+    		
     		if(proposalInstanceList)
     		{
-    		return [ proposalInstanceList: proposalInstanceList ]
+    			for(int i=0;i<proposalInstanceList.size();i++)
+    			{
+	    			proposalStatusInstance = EligibilityStatus.find("from EligibilityStatus ES where ES.proposal.id="+proposalInstanceList[i].id)
+	    			EligibilityStatusList.add(proposalStatusInstance)
+	    			
+    			}
+    		}
+    		
+    		if(proposalInstanceList)
+    		{
+    		return [proposalInstanceList: proposalInstanceList,notificationInstance:notificationInstance,
+    		        EligibilityStatusList:EligibilityStatusList]
     		}
     		else
     		{

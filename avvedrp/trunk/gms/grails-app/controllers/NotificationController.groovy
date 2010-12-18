@@ -16,7 +16,7 @@ class NotificationController {
            GrailsHttpSession gh=getSession()
            gh.removeValue("Help")
        		//putting help pages in session
-       	gh.putValue("Help","Notification_List.htm")
+       		gh.putValue("Help","Notification_List.htm")
             if(params.sort != null && !params.sort.equals(""))
             	subQuery=" order by N."+params.sort
             if(params.order != null && !params.order.equals(""))
@@ -28,8 +28,16 @@ class NotificationController {
             def notificationService = new NotificationService()
         	println"++++++notparams++++++"+params
         	notificationInstanceList=notificationService.getAllNotifications(subQuery,gh.getValue("Party"))
+        	def notificationsEmailsInstanceList = []
+        	for(int i=0;i<notificationInstanceList.size();i++)
+	        {
+        		def notificationsEmailInstance = NotificationsEmails.findAll("from NotificationsEmails NE where NE.notification.id="+notificationInstanceList[i].id)
+        		notificationsEmailsInstanceList.add(notificationsEmailInstance)
+        		
+	        }
         	
-            [ notificationInstanceList: notificationInstanceList ]
+    		
+            [ notificationInstanceList: notificationInstanceList,notificationsEmailsInstanceList:notificationsEmailsInstanceList ]
         }
     
     def show = {
@@ -188,7 +196,7 @@ class NotificationController {
        println"chkUniNotCodeInstance[0]"+chkUniNotCodeInstance[0]
        if(chkUniNotCodeInstance)
        {
-    	   flash.message ="Notification already exists"
+    	   flash.message = "${message(code: 'default.NotDuplicate.message')}"
     	   redirect(action:create,id:notificationInstance.id)
        }
        else

@@ -89,4 +89,12 @@ class InvestigatorService {
  	        return projectsPIMapInstance
   		}
   	}
+  	/**
+ 	 * Function to get Project Pi Map by id.
+ 	 */
+    public ProjectsPIMap getProjectsPIMapByProjectsId(def projectsId)
+    {
+ 	   def projectsPIMapInstance = ProjectsPIMap.find("from ProjectsPIMap PM where PM.role='PI' and PM.projects="+projectsId)
+ 	   return projectsPIMapInstance
+    }
 }

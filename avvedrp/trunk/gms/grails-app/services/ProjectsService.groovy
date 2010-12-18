@@ -706,7 +706,14 @@ class ProjectsService{
 			}
 			else
 			{	
-				grantAllocationInstanceList = GrantAllocation.findAll("from GrantAllocation GA where GA.party.id = "+ Party+" AND GA.projects.activeYesNo='Y' GROUP BY GA.projects")
+				if(params.selectAll)
+				{
+					grantAllocationInstanceList = GrantAllocation.findAll("from GrantAllocation GA where GA.party.id = "+ Party+" AND GA.projects.activeYesNo='Y' GROUP BY GA.projects")
+				}
+				else
+				{
+					grantAllocationInstanceList=[]					
+				}
 			}
 		}
 		
@@ -888,7 +895,14 @@ class ProjectsService{
 		}
 		else
 		{	
-			grantAllocationInstanceList = GrantAllocation.findAll("from GrantAllocation GA where GA.party.id = "+ Party+" AND GA.projects.activeYesNo='Y' AND GA.amountAllocated !='0'")
+			if(params.selectAll)
+			{
+				grantAllocationInstanceList = GrantAllocation.findAll("from GrantAllocation GA where GA.party.id = "+ Party+" AND GA.projects.activeYesNo='Y' AND GA.amountAllocated !='0'")
+			}
+			else
+			{
+				grantAllocationInstanceList=[]
+			}
 		}
 		return grantAllocationInstanceList
 	}

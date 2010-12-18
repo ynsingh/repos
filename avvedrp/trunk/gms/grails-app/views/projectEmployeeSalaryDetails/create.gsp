@@ -9,7 +9,8 @@
 		</script>
     </head>
     <body>  
-    	<div class="wrapper">   
+    	<div class="wrapper"> 
+    	<g:subMenuList/>   
 			<div class="body">
 		        <h1><g:message code="default.ProjectEmployeeSalary.create.head" /></h1>
 		        <g:if test="${flash.message}">

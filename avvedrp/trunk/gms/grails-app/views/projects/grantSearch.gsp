@@ -59,6 +59,12 @@
 		                   
 		                        <input type="text" size="14" id="maximumAmount" name="maximumAmount" value="${fieldValue(bean:projectsInstance,field:'code')}"/>
 		                    </td>
+		                    <td valign="top" class="name">
+                                    <label for="code"><g:message code="default.ListAll.label"/>:</label>
+                                </td>
+                                <td valign="top" class="value">
+                                   <g:checkBox name="selectAll" value="${true}" />
+                                </td>
 		                    
 		                </tr> 
 		            	
@@ -88,7 +94,7 @@
 		                        <label for="code"><g:message code="default.Department.label"/>:</label>
 		                    </td>
 		                    <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'projectType','errors')}">
-		                        <g:select optionKey="id" optionValue="name" id="partyDepartment" from="${partyDepartmentInstance}"  name="partyDepartment" value="" noSelection="['null':'select']" ></g:select>
+		                        <g:select optionKey="id" optionValue="departmentCode" id="partyDepartment" from="${partyDepartmentInstance}"  name="partyDepartment" value="" noSelection="['null':'select']" ></g:select>
 		                    </td>
 		             </tr>
 		             <tr class="prop">
@@ -108,7 +114,7 @@
 		            </tbody>
 		                        </table>
 		                        		<p>&nbsp;</p>
-		    			      			<p ALIGN=CENTER>&nbsp;<g:submitToRemote class="searchButton" value="                              " onClick="" action="grantSearchResult" update="search" />
+		    			      			<p ALIGN=CENTER>&nbsp;<g:submitToRemote class="searchButton" value="${message(code: 'default.Search.button')}" onClick="" action="grantSearchResult" update="search" />
 		    			      			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<g:actionSubmit value="${message(code: 'default.SimpleSearch.button')}" action="search" id="1" /></p>
 		    			    			
 			    			<p ALIGN=RIGHT>&nbsp;&nbsp;</p>

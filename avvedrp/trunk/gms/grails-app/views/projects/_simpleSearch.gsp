@@ -29,9 +29,17 @@
                             <td>${i+1}</td>
                         
                             <td>
-                            <g:link action="projectDash" controller='grantAllocation' id="${projectsInstance.projects.id}">
-                            ${fieldValue(bean:projectsInstance, field:'projects.name')}
-                            </g:link>
+                            <g:if test="${(projectsInstance.projects.status == 'Closed')}">   
+	                       				<g:link action="projectDash" controller='grantAllocation' id="${projectsInstance.projects.id}" params="[projectStatus:'Closed']">
+		                         			${projectsInstance.projects.name} - ${fieldValue(bean:projectsInstance, field:'projects.code')}
+		                         		</g:link>
+		                       		</g:if>
+		                       		<g:else>
+		                         		<g:link action="projectDash" controller='grantAllocation' id="${projectsInstance.projects.id}">
+		                         			${projectsInstance.projects.name} - ${fieldValue(bean:projectsInstance, field:'projects.code')}
+		                         		</g:link>
+		                         	</g:else>
+                            
                             </td>
                         	 
                         	<td>${fieldValue(bean:projectsInstance, field:'projects.code')}</td>

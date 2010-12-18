@@ -29,6 +29,7 @@ class ProjectsPIMapController {
    /*===============================================================*/
     def edit = {
         def projectsPIMapInstance = investigatorService.getProjectsPIMapById(params.id)
+        def projectsInstance
         if(!projectsPIMapInstance) 
         {
             flash.message = "${message(code: 'default.notfond.label')}"
@@ -40,8 +41,11 @@ class ProjectsPIMapController {
             def investigatorService = new InvestigatorService()
             def investigatorList=[]
          	investigatorList=investigatorService.getInvestigatorsWithParty(gh.getValue("PartyID"))
+         	projectsInstance = projectsService.getProjectById(projectsPIMapInstance.projects.id)
+         	println"projectsPIMapInstance.projects.id"+projectsPIMapInstance.projects.id
+         	println"projectsInstance"+projectsInstance
          	return [ projectsPIMapInstance : projectsPIMapInstance ,
-                     'investigatorList':investigatorList]
+                     'investigatorList':investigatorList,projectsInstance:projectsInstance]
         }
     }
 

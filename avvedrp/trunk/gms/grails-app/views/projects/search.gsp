@@ -43,6 +43,12 @@
                                 <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'code','errors')}">
                                     <input type="text"  id="code" name="code" value="${fieldValue(bean:projectsInstance,field:'code')}"/>
                                 </td>
+                                <td valign="top" class="name">
+                                    <label for="code"><g:message code="default.ListAllProjects.label"/>:</label>
+                                </td>
+                                <td valign="top" class="value">
+                                   <g:checkBox name="selectAll" value="${true}" />
+                                </td>
                                 <input type="hidden"  id="projectType" name="projectType.id" value="${projectsInstance?.projectType?.id}"/>
                                 <input type="hidden"  id="investigator.id" name="investigator.id" value="${projectsInstance?.investigator?.id}"/>
                                 <input type="hidden"  id="projectStartDate" name="projectStartDate" value="${projectsInstance?.projectStartDate}"/>
@@ -57,7 +63,7 @@
                     </table>
                     		
                     		<p>&nbsp;</p>
-			      			<p ALIGN=CENTER>&nbsp;<g:submitToRemote class="searchButton" value="                              " onClick="" action="searchProjects" update="search" />
+			      			<p ALIGN=CENTER>&nbsp;<g:submitToRemote class="searchButton" value="${message(code: 'default.Search.button')}" onClick="" action="searchProjects" update="search" />
 			      			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			      			<g:actionSubmit value="${message(code: 'default.AdvancedSearch.button')}" action="advancedSearchProjects" id="1" />
 			      			<g:actionSubmit value="${message(code: 'default.GrantSearch.button')}" action="grantSearch" id="1" /></p>

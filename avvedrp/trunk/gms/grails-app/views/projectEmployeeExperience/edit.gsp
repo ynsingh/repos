@@ -8,6 +8,7 @@
     </head>
     <body>
     	<div class="wrapper">
+    	<g:subMenuList/> 
 	    	<div class="body">
 	            <h1><g:message code="default.projectEmployeeExperience.edit.head" /></h1>
 	            <g:if test="${flash.message}">

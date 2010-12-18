@@ -9,9 +9,10 @@
     </head>
      
     <body>
-	    <div class="wrapper">   
+	    <div class="wrapper"> 
+	    <g:subMenuList/>   
 	        <div class="body">
-				<h1><g:message code="default.projectEmployees.create.head" /></h1>
+				<h1><g:message code="default.addprojectEmployees.create.head" /></h1>
 	            <g:if test="${flash.message}">
 	           		<div class="message">${flash.message}</div>
 	            </g:if>
@@ -22,8 +23,8 @@
 	                    	<tbody>
 				  				<tr>
 						    		<td><label><g:message code="default.ProjectName.label" /></label></td>
-						    		<td><strong>${projectInstance.name}</strong></td>
-					    			<input type="hidden" name="projectId" value="${projectInstance.id}"/>
+						    		<td><strong>${projectsInstance.name}</strong></td>
+					    			<input type="hidden" name="projectId" value="${projectsInstance.id}"/>
 					    		
 						    		<td><label><g:message code="default.EmployeeName.label" /></label></td>
 						    		<td><g:textField name="empName" value="${projectEmployeeInstance?.empName}"/></td>
@@ -75,11 +76,11 @@
 		                   	       	
 		                   	       	<th><g:message code="default.Edit.label"/></th>
 								    
-								    <th><g:message code="default.Action.label"/></th>
+								    <th><g:message code="default.Qualification.label"/></th>
 								    
-								    <th><g:message code="default.Action.label"/></th>
+								    <th><g:message code="default.Experience.label"/></th>
 								    
-								    <th><g:message code="default.Action.label"/></th>
+								    <th><g:message code="default.Salary.label"/></th>
 		                   	      
 		                        </tr>
 							</thead>

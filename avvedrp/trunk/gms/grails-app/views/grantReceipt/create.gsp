@@ -199,7 +199,8 @@
                         
                    	        <g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}" />
                    	        <g:sortableColumn property="dateOfReceipt" title="${message(code: 'default.ReceiptDate.label')}" />
-                            <g:sortableColumn property="grantAllocationSplit.accountHead.code" title="${message(code: 'default.AccountHeads.label')}" />
+                   	        <th><g:message code="default.AccountHeads.label"/></th>
+                   	        <!--<g:sortableColumn property="grantAllocationSplit.accountHead.code" title="${message(code: 'default.AccountHeads.label')}" />-->
                    	        <g:sortableColumn property="referenceId" title="${message(code: 'default.FundsReceivedOrderNo.label')}" />
                    	        <g:sortableColumn property="amount" title="${message(code: 'default.Amount.label')}" />
                    	        <g:sortableColumn property="modeOfPayment" title="${message(code: 'default.ModeOfPayment.label')}" />

@@ -15,4 +15,6 @@ class ProjectDepartmentMap {
 		modifiedDate(nullable: true)
 		
     }
+	String saveMode;
+	static transients = [ "saveMode" ]
 }

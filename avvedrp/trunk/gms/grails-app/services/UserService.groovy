@@ -481,5 +481,22 @@ public void addRolesUser(def person,def params) {
 		 return chkDuplicateRoleInstance
 		
 	 }
+	 
+	 public Person getUserName(def params)
+	 {
+			Integer userId = null;
+			def person  = Person.find("from Person P where P.username= '"+params.oldUsrName+"'");
+			
+			return person
+		}
+	 
+	 public Integer updateUserName(def person){
+			Integer userId = null
+			if (person.save()) {
+				userId = person.id
+			}
+			return userId
+		}
+
 
 }

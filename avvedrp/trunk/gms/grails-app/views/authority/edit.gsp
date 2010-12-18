@@ -28,8 +28,14 @@
                                   <label for="authority"><g:message code="default.Role.label"/></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: authorityInstance, field: 'authority', 'errors')}">
-                                    <g:textField name="authority" value="${authorityInstance?.authority}" />
+                                    <input type="text" id="authority" name="authority" style="width:250px"
+                                 value="${authorityInstance.authority}" onBlur="return validAuthority(this);"/>
+                                 <label for="role" style="color:blue;font-weight:bold"> <g:message code="default.Role.NameFormat.label"/></label> 
+  						       </td>
+                                <td valign="left">
+                                   
                                 </td>
+                               
                             </tr>
                         
                             <tr class="prop">

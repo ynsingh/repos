@@ -166,7 +166,7 @@
 				                                <td valign="top" 
 				                                	class="value ${hasErrors(bean:grantAllocationInstance,field:'party','errors')}">
 				                                    <g:select id="recipient" optionKey="id" optionValue="code" 
-					                                    from="${Party.findAll('from Party P where P.activeYesNo=\'Y\' ')}"  
+					                                    from="${Party.findAll('from Party P where P.activeYesNo=\'Y\' and P.partyType is null ')}"  
 					                                    name="party.id" value="${grantAllocationInstance?.party?.id}" 
 					                                    noSelection="['null':'Select']">
 				                                    </g:select>

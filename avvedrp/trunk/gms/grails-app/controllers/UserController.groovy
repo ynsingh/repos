@@ -528,7 +528,7 @@ class UserController extends GmsController {
 			{
 				userInstance.enabled=true
 				userInstance.save()
-				redirect uri: '/user/userConfirmation.gsp'
+				redirect uri: '/user/userConfirmation'
 			}
 			else
 			{
@@ -738,6 +738,76 @@ class UserController extends GmsController {
 			redirect(action:getProjectName,params:[user:params.user.id])
 			
 	}
+	
+	def changeUserName = {
+			GrailsHttpSession gh=getSession()
+			def userId = gh.getValue("UserId")
+			println"params"+params
+			def dataSecurityService = new DataSecurityService()
+			def person = dataSecurityService.getUserOfLoginUser(userId)
+			println"person"+person
+			if (!person) {
+				flash.message = "${message(code: 'default.notfond.label')}"
+				
+			}
+					
+			[person:person] 
+		}
+	
+	
+	def updateUserName=
+	{
+			println "params======"+params
+			def userService = new UserService()
+			// def dataSecurityService = new DataSecurityService()
+			//def ctx = AH.application.mainContext
+			// def springSecurityService=ctx.springSecurityService
+			def personInstance = new Person()
+		    System.out.println("params  "+params.oldUsrName)
+			def person = userService.getUserName(params)
+			System.out.println("person  "+person)
+			
+			if (!person) 
+			{
+				flash.message ="No user with this user name exists"
+				redirect action:changeUserName, id: params.id
+			}
+			else
+			{
+				println"params......"+params
+				// person.properties = params
+				//person.username = chkUserNameForUser[0].username
+				if (!params.newUsrName.equals(params.oldUsrName)) 
+				{
+					person.username = params.newUsrName
+					Integer personId = userService.updateUserName(person)
+					println"personId"+personId
+					if(personId != null)
+					{
+						def accessPermissionInstance = dataSecurityService.changeAccessPermission(personId,params)
+						flash.message = "UserName changed successfully"
+						redirect (action: "changeUserName", id :  personId)
+					}
+					else
+					{
+						flash.message = "UserName not changed"
+						render view: 'changeUserName', model: ['person': person]
+					}
+				}
+				else
+				{
+					flash.message = "The new username is same as old username"
+					render view: 'changeUserName', model: ['person': person]
+						
+				}
+				
+			}
+			
+			
+		}
+	
+	
 	def forgotPasswordConfirm = {}
+	def userConfirmation = {}
 	
 }

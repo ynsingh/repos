@@ -184,6 +184,17 @@ else if(eval('typeof(document.granteeReports)') != 'undefined')
 	document.NotificationReport.partyID.value=document.granteeReports.party.value;	  
 	document.ProposalReport.partyID.value=document.granteeReports.party.value;
 }
+
+else if(eval('typeof(document.hrassetReports)') != 'undefined')
+{
+	
+	document.EmployeeDetailsForProject.projectID.value=document.hrassetReports.projects.value;
+	document.ProjectItemPurchase.projectID.value=document.hrassetReports.projects.value;	  
+	document.QualificationOfEmployees.projectID.value=document.hrassetReports.projects.value;
+	document.ExperienceDetailsForEmployees.projectID.value=document.hrassetReports.projects.value;
+	document.SalaryDetailsOfEmployees.projectID.value=document.hrassetReports.projects.value;	  
+	
+}
 else if(eval('typeof(document.auditLoggingReport)') != 'undefined')
 {
 

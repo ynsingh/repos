@@ -39,13 +39,15 @@ class LoginController {
 			
 			
 			
-			 def user=SCH.context.authentication.principal.username
+			 Integer user=SCH.context.authentication.principal.id
 			 def role= SCH.context.authentication.principal.authorities.iterator().next()
 			 
 			 GrailsHttpSession gh=getSession()
 		   
 			 println "role_______+-="+SCH.context.authentication.principal.authorities
-			 def userMap=UserMap.find("from UserMap UM where UM.user.username='"+user+"'");
+			 println"user"+user
+			 def userMap=UserMap.find("from UserMap UM where UM.user.id="+user);
+			 println"userMap"+userMap
 	         println "role_______+-="+role
 	         gh.putValue("UserId", userMap.user.id);
 	      

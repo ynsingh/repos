@@ -179,6 +179,7 @@ class ProjectsController extends GmsController
 				def investigatorService = new InvestigatorService()
                 def investigatorList=[]
     	        investigatorList=investigatorService.getInvestigatorsWithParty(gh.getValue("PartyID"))
+    	        def projectsPiMapInstance=investigatorService.getProjectsPIMapByProjectsId(projectsInstance.id)
     	        return [ 'projectsInstance' : projectsInstance , 'investigatorList':investigatorList]
 		
 			}
@@ -254,8 +255,12 @@ class ProjectsController extends GmsController
     {
 		
 		println".......params........."+params
+		GrailsHttpSession gh=getSession()
+		
 		def projectsInstance = projectsService.updateProject(params)	
+		
 		def investigatorInstance=investigatorService.getInvestigatorById(params.investigator.id)
+		
 		if(projectsInstance)
 		{
 			if(projectsInstance.saveMode != null)
@@ -268,11 +273,12 @@ class ProjectsController extends GmsController
 				else if(projectsInstance.saveMode.equals("Duplicate"))
 				{
 					flash.message = "${message(code: 'default.AlreadyExists.label')}"
-					render(view:'edit',model:[projectsInstance:projectsInstance])
+						gh.putValue("ProjectId",projectsInstance.id)
+		    			redirect(action:edit,id:projectsInstance.id)
 					}
 				else if(projectsInstance.saveMode.equals("NotUpdated"))
 				{
-					flash.message = "${message(code: 'default.cannotupdate.label')}"+investigatorInstance.email+ "${message(code: 'default.alreadyassigned.label')}"
+					flash.message = "${message(code: 'default.cannotupdate.label')}"+investigatorInstance?.email+ "${message(code: 'default.alreadyassigned.label')}"
 						
 						render(view:'edit',model:[projectsInstance:projectsInstance])
 				}
@@ -308,7 +314,8 @@ class ProjectsController extends GmsController
 				else if(projectsInstance.saveMode.equals("Duplicate"))
 				{
 					flash.message = "${message(code: 'default.AlreadyExists.label')}"
-					render(view:'editsub',model:[projectsInstance:projectsInstance])
+						gh.putValue("ProjectId",projectsInstance.id)
+		    			redirect(action:edit,id:projectsInstance.id)
 				}
 			}
 			else 
@@ -511,9 +518,22 @@ class ProjectsController extends GmsController
 		def projectsInstance = new Projects(params)
     	
     	   	
-    	
-		GrailsHttpSession gh=getSession()
+    	GrailsHttpSession gh=getSession()
     	def grantAllocationInstanceList = projectsService.searchProjects(projectsInstance,gh.getValue("Party"),params);
+		def  pIMapList =[]
+		def pIMapInstance
+		def projectInstanceList = []
+		for(int i=0;i<grantAllocationInstanceList.size();i++)
+		{
+			pIMapInstance=projectsService.checkPIofProject(grantAllocationInstanceList[i].projects.id)
+			
+			pIMapList.add(pIMapInstance)
+			/* Get Closed project details */
+			def projectTrackingInstanceCheck = grantAllocationService.getClosedProject(grantAllocationInstanceList[i].projects.id)
+			if(projectTrackingInstanceCheck)
+				grantAllocationInstanceList[i].projects.status = "Closed"
+			
+		}
 		if (grantAllocationInstanceList.size()==0 )
 		{
 			// flash.message = "${message(code: 'default.notfond.label')}"
@@ -538,6 +558,20 @@ class ProjectsController extends GmsController
 			println "grant search result"
 			GrailsHttpSession gh=getSession()
 			def grantAllocationInstanceList = projectsService.getGrantSearchResult(params,gh.getValue("Party"))
+			def  pIMapList =[]
+		def pIMapInstance
+		def projectInstanceList = []
+		for(int i=0;i<grantAllocationInstanceList.size();i++)
+		{
+			pIMapInstance=projectsService.checkPIofProject(grantAllocationInstanceList[i].projects.id)
+			
+			pIMapList.add(pIMapInstance)
+			/* Get Closed project details */
+			def projectTrackingInstanceCheck = grantAllocationService.getClosedProject(grantAllocationInstanceList[i].projects.id)
+			if(projectTrackingInstanceCheck)
+				grantAllocationInstanceList[i].projects.status = "Closed"
+			
+		}
 			render(template:'grantSearchResult',model:['grantAllocationInstanceList':grantAllocationInstanceList])  
 	}
 }

@@ -71,7 +71,12 @@
 	                         	 </g:if>
 	                        </td>
 	                           
-	                           <td>${fieldValue(bean:grantAllocationInstance, field:'granter.code')}</td>
+	                           	<g:if test="${grantAllocationInstance.granter}">
+	                           		<td>${fieldValue(bean:grantAllocationInstance, field:'granter.code')}</td>
+	                           	</g:if>
+	                           	<g:else>
+	                          		<td>Self</td>
+	                           </g:else>
 	                           <td><g:if test="${pIMapList[i]!=null}">
 	                         
 	                           ${pIMapList[i].investigator.name}

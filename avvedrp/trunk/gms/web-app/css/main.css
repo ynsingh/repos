@@ -208,9 +208,12 @@ input, select, textarea {
 	color:  #ffffff;
 	font: 12px Arial, Helvetica, sans-serif;
 	font-weight: bold;
-	background: #F0F8FF url(../images/themesky/search.jpg) repeat-x;
+	background: transparent url(../images/themesky/searchCustom.jpg) repeat-x;
 	background-repeat:no-repeat;
 	background-position:center;
+	text-align: justify;
+	font-size:100%;
+	width:100px;
     margin: 2px 0;
     padding: 2px 4px;
 
@@ -643,6 +646,19 @@ background-color: #FFFFFF
 	background-image: url(../images/themesky/innerpageheader.jpg);
 	background-repeat: no-repeat;  
 	}
+.headerBg {
+ 	
+	background-color: #b9dcef;
+	background-image: url(../images/themesky/headerRepeat.jpg);
+	background-repeat:repeat-x; 
+	padding:0;
+	}	
+.headerTable td th {
+     
+ 
+  padding:0;
+
+}	
 	
 /* Inner Banner end */
 /* Login Bar Start */

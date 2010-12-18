@@ -65,25 +65,28 @@ class AttachmentTypeController {
 
     def update = {
     	def attachmentsService = new AttachmentsService()	
-        def attachmentTypeInstance = attachmentsService.getattachmentTypes(params.id)
-        if(attachmentTypeInstance) {
-            attachmentTypeInstance.properties = params
-            def attachmentInstanceList = attachmentsService.getattachmentTypesByDocTypeAndType(attachmentTypeInstance.type,attachmentTypeInstance.documentType)
+    	/*Getting Attachment Type based on id*/
+    	println "params "+params
+    	def attachmentTypeInstance = attachmentsService.getattachmentTypes(params.id)
+       if(attachmentTypeInstance) {
+            def attachmentInstanceList = attachmentsService.getattachmentTypesByDocTypeAndType(params.type,attachmentTypeInstance.documentType)
 	        if(attachmentInstanceList)
 	        {
 	        	if((attachmentInstanceList[0].id).equals(attachmentTypeInstance.id))
 		        {
-		        	saveAttachmentType(attachmentTypeInstance)
+	        		attachmentTypeInstance.properties = params
+	        		saveAttachmentType(attachmentTypeInstance)
 		        }
 	        	else
 	        	{
 		        	flash.message = "${message(code: 'default.AlreadyExists.label')}"
 			        redirect(action:edit,id:attachmentTypeInstance.id) 
 	        	}
-	        }
+	        }       
 	        
 	        else
 	        {
+	        	attachmentTypeInstance.properties = params
 	        	saveAttachmentType(attachmentTypeInstance)
 	        }
         }

@@ -8,11 +8,14 @@
     </head>
     <body>
         <div class="wrapper"> 
-        <g:subMenuList/>
+        <g:if test="${projectsInstance.status =='Closed'}">
+    	</g:if>
+    	<g:else>
+    		<g:subMenuList/>
+    	</g:else>
           <div class="body">
             <table>
-        
-                <tr>
+                   <tr>
 	                <td valign="top" ><g:message code="default.ProjectCode.label"/></td>
 	                <td valign="top" ><strong>${fieldValue(bean:projectsInstance, field:'code')}</strong></td>
                                

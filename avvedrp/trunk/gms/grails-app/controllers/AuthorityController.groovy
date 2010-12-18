@@ -21,7 +21,7 @@ class AuthorityController {
         def chkDuplicateRoleInstance = userService.getDuplicateRole(authorityInstance)
         if(chkDuplicateRoleInstance)
         {
-        	flash.message = "Role already exists"
+        	flash.message ="${message(code: 'default.RoleAlreadyExists.label')}"
         	redirect(action: "create", id: authorityInstance.id)
         }
         else

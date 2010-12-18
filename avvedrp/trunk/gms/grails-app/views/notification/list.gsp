@@ -45,9 +45,21 @@
                             <td><g:formatDate format="dd-MM-yyyy" date="${notificationInstance.proposalSubmissionLastDate}"/></td>
                             <td> <g:if test="${notificationInstance.applicationForm}"><g:link action="downloadApplicationForm" controller='notification' id="${fieldValue(bean:notificationInstance, field:'id')}" params="[documentType:'Notification']"><g:message code="default.View.label"/></g:link> </g:if></td>
                             <td><g:link action="create" controller='notificationsAttachments' id="${fieldValue(bean:notificationInstance, field:'id')}" params="[documentType:'Notification']"><g:message code="default.Attach.label"/></g:link></td>
-                            <td><g:link action="publishNotification" controller='notification' id="${fieldValue(bean:notificationInstance, field:'id')}"><g:message code="default.Publish.label"/></g:link></td>
+                            <g:if test="${!notificationsEmailsInstanceList[i]}">
+                            	<td><g:link action="publishNotification" controller='notification' id="${fieldValue(bean:notificationInstance, field:'id')}"><g:message code="default.Publish.label"/></g:link></td>
+                            </g:if>
+            				<g:else>
+            					<td>Published</td>
+        					</g:else>
                             <td><g:link action="proposalList" controller='proposal' id="${fieldValue(bean:notificationInstance, field:'id')}"><g:message code="default.View.label"/></g:link></td>
-                            <td><g:link action="edit" id="${fieldValue(bean:notificationInstance, field:'id')}"><g:message code="default.Edit.label"/></g:link></td>
+                            
+                            <g:if test="${!notificationsEmailsInstanceList[i]}">
+                            	<td><g:link action="edit" id="${fieldValue(bean:notificationInstance, field:'id')}"><g:message code="default.Edit.label"/></g:link></td>
+                            </g:if>
+            				<g:else>
+            					<td></td>
+        					</g:else>
+                            
                         </tr>
                       </g:each>
                     </tbody>

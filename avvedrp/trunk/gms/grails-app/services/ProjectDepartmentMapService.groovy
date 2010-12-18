@@ -14,9 +14,9 @@ class ProjectDepartmentMapService {
     /*
      * Function to get ProjectDepartmentMap by projects of the Party
      */
-    public ProjectDepartmentMap[] getProjectDepartmentMapList(def partyId)
+    public ProjectDepartmentMap[] getProjectDepartmentMapList(def partyId,def projectId)
     {
-    	def projectDepartmentMapList = ProjectDepartmentMap.findAll("from ProjectDepartmentMap PM where PM.projects.id in (select GA.projects.id from GrantAllocation GA where GA.party.id='"+partyId+"') and PM.activeYesNo='Y'")
+    	def projectDepartmentMapList = ProjectDepartmentMap.findAll("from ProjectDepartmentMap PM where PM.projects.id = "+projectId+ " and PM.activeYesNo='Y'")
 
     	return projectDepartmentMapList
     }
@@ -39,12 +39,14 @@ class ProjectDepartmentMapService {
      /*
  	 * Function to delete department Map
  	 */
- 	 public deleteDepartmentMap(def projectDepartmentMapInstance)
+ 	 public deleteDepartmentMap(def projectDepartmentMapParams)
  	{
- 		if(projectDepartmentMapInstance)
+ 		
+ 	def projectDepartmentMapInstance = 	getProjectDepartmentMapById( new Integer(projectDepartmentMapParams.id ))
+    if(projectDepartmentMapInstance)
  		{
  			projectDepartmentMapInstance.activeYesNo="N"
-	        projectDepartmentMapInstance=updateDepartmentMap(projectDepartmentMapInstance)
+	        projectDepartmentMapInstance=updateDepartmentMap(projectDepartmentMapParams)
 	        return projectDepartmentMapInstance
  		}
  	}
@@ -56,26 +58,41 @@ class ProjectDepartmentMapService {
   		if(projectDepartmentMapInstance)
   		{
   			projectDepartmentMapInstance.activeYesNo="Y"
-  			def projectDepartmentMapSaveInstance =updateDepartmentMap(projectDepartmentMapInstance)
- 	        return projectDepartmentMapSaveInstance
+  				if(projectDepartmentMapInstance.save())
+  					{
+  					projectDepartmentMapInstance.saveMode = "Saved"
+  			    	}
+  				    	
+  			    	return projectDepartmentMapInstance
+  				}
+  			
   		}
-  	}
+  
   	/*
   	 * Function to update department Map
   	 */
-  	 public updateDepartmentMap(def projectDepartmentMapInstance)
+  	 public updateDepartmentMap(def projectDepartmentMapParams)
   	{
-  		if(projectDepartmentMapInstance)
-  		{
-  			projectDepartmentMapInstance.save()
- 	        return projectDepartmentMapInstance
-  		}
-  	}
+  		def projectDepartmentMapInstance = getProjectDepartmentMapById( new Integer(projectDepartmentMapParams.id ))
+        if(projectDepartmentMapInstance) 
+        {
+        	
+        	projectDepartmentMapInstance.properties = projectDepartmentMapParams
+        	if(!projectDepartmentMapInstance.hasErrors() && projectDepartmentMapInstance.save())
+	    	{
+        		projectDepartmentMapInstance.saveMode = "Updated"
+            }
+    	}
+		return projectDepartmentMapInstance
+	}
+ 
   	
   	public ProjectDepartmentMap[] chkDuplicatePDMap(def projectDepartmentMapInstance)
   	{
+  		
   		def projectDepartmentMapDuplicateInstance = ProjectDepartmentMap.findAll("from ProjectDepartmentMap PM where PM.projects ="+projectDepartmentMapInstance.projects.id+"and PM.partyDepartment="+projectDepartmentMapInstance.partyDepartment.id+" and PM.activeYesNo='Y'")
   		return projectDepartmentMapDuplicateInstance
   	}
-     
+  	
+  	
 }

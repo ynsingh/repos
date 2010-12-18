@@ -388,4 +388,20 @@ class DataSecurityService {
     	println "after delete================"
     	return acl
  	}
+ 	
+ 	public def changeAccessPermission(def userId,def params)
+ 	{
+ 		println "after===================+++++++++"+dataSource
+ 		
+ 		def userInstance = Person.get(userId) 
+ 		def sql = new Sql(dataSource);
+ 		println "after===================+++++++++"+sql
+ 		def query3 = "UPDATE acl_sid"+
+ 					 " SET sid='"+userInstance.username+"'"+
+ 					 " WHERE sid ='"+params.oldUsrName+"'";
+ 		println"testing....."
+        def result = sql.execute(query3);
+         println"iiiiiiii"
+        return result
+ 	}
 }

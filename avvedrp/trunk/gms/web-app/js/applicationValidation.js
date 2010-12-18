@@ -1163,6 +1163,13 @@ function validateAuthority()
 	    alert("Please enter the Role");
 	    return false;
     }
+    
+   if((document.getElementById("authority").value) == 'ROLE_')
+   {
+      alert("Invalid Role!!!");
+      return false;
+      
+   }
     if( (document.getElementById("authority").value) )
     {
     	var roleName= new String(document.getElementById("authority").value)
@@ -1310,12 +1317,6 @@ function validateProjectEmployee()
 	    document.getElementById("empNo").focus();
 	    return false;
 	}
-	if(document.getElementById("joiningDate").value == "")
-	{
-		alert("Please Enter Joining Date");
-	    document.getElementById("joiningDate").focus();
-	    return false;
-	}
 	if( ( (document.getElementById("employeeDesignation.id").value) == 'null')  )
 	{
 	    alert("Please enter Designation");
@@ -1336,7 +1337,7 @@ function validateProjectEmployee()
  
 	if(document.getElementById("relievingDate").value !== "")
 	{
-    	if (newEmployeeJoiningDate>newEmployeeRelievingDate)
+    	if (newEmployeeJoiningDate > newEmployeeRelievingDate)
 		{
 			alert("Joining Date should be less than Relieving Date")
 			return false;
@@ -1348,18 +1349,11 @@ function validateProjectEmployee()
 	var employeeDateOfBirthDate = document.getElementById("dOB_day").value;
 	
 	var newEmployeeDateOfBirth = new Date(employeeDateOfBirthYear,employeeDateOfBirthMonth-1,employeeDateOfBirthDate);
-	
-	
 	var d = new Date();
-
-var curr_date = d.getDate();
-
-var curr_month = d.getMonth();
-
-var curr_year = d.getFullYear();
-
-var Today = new Date(curr_year,curr_month,curr_date);
-		
+	var curr_date = d.getDate();
+	var curr_month = d.getMonth();
+	var curr_year = d.getFullYear();
+	var Today = new Date(curr_year,curr_month,curr_date);
 	if(newEmployeeDateOfBirth > Today)
 	{
 			alert("Date of Birth sholud be less than Current Date")
@@ -1598,5 +1592,32 @@ function checkDate(dateValue)
 		return false;
 	}
 }
+function validAuthority(authority)
+{
+    
+    if( (document.getElementById("authority").value) )
+    {
+        
+    	var roleName= new String(document.getElementById("authority").value)
+		var rolePrefix;
+		rolePrefix = new String(roleName.substring(0,5));
+		
+		if(rolePrefix != 'ROLE_')
+		{
+		    document.getElementById("authority").value = "ROLE_"+roleName;
+			return true;
+		}
+	}
+}
 
+function validateEligibilityCriteria()
+{
+	if(document.getElementById("eligibilityCriteria").value == 'null' || document.getElementById("eligibilityCriteria").value == '' )
+	{
+		alert("Please Enter the Criteria Name");
+	    document.getElementById("eligibilityCriteria").focus();
+	    return false;
+	}
+	return true;
+}
 

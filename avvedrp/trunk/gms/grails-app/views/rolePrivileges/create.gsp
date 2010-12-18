@@ -29,7 +29,9 @@
                                     <label for="role"><g:message code="default.Role.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:rolePrivilegesInstance,field:'role','errors')}">
-                                    <g:select optionKey="id" optionValue="authority" from="${authorityInstanceList}" name="role.id" value="${rolePrivilegesInstance?.role?.id}" ></g:select>
+                                    <g:select optionKey="id" optionValue="authority" from="${authorityInstanceList}" name="role.id" 
+                                    onchange="${remoteFunction(controller:'rolePrivileges',action:'getActionName',update:'actionNameSel',params:'\'filename=\'+document.getElementById(\'controllerName\').value+\'&role=\'+this.value')};"
+                                    value="${rolePrivilegesInstance?.role?.id}" ></g:select>
                                 </td>
                                 <td valign="top" class="name">
                                     <label for="controllerName"><g:message code="default.Privilegesgroup.label"/>:</label>
@@ -41,10 +43,10 @@
                                 </td>                                
                                 <td>&nbsp;&nbsp;&nbsp;</td>
                                 <td valign="top" class="name">
-                                    <label for="description"><g:message code="default.Description.label"/>:</label>
+                                    &nbsp;&nbsp;&nbsp;
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:rolePrivilegesInstance,field:'description','errors')}">
-                                    <input type="text" id="description" name="description" value="${fieldValue(bean:rolePrivilegesInstance,field:'description')}"/>
+                                    &nbsp;&nbsp;&nbsp;
                                 </td>
                           </tr>                                                  
                           <tr class="prop">

@@ -116,7 +116,7 @@ class PartyGrantAgencyController
            		}
            		else if(partyInstance.saveMode.equals("Duplicate")){
            			flash.message =  "${message(code: 'default.AlreadyExists.label')}"
-                    render(view:'create',model:[partyInstance:partyInstance])
+           				redirect(action:create,id:partyInstance.id)
            		}
            	}
            	else {

@@ -9,6 +9,7 @@
     </head>
     <body>
     <div class="wrapper">   
+    <g:subMenuList/> 
 		<div class="body">
 		    <h1><g:message code="default.ProjectItemPurchase.create.head" /></h1>
 		    <g:if test="${flash.message}">
@@ -71,23 +72,13 @@
   						<thead>
 	  						<tr>
 	  							<g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}" />
-	                       
-	                   	        <g:sortableColumn property="Name" 
-	                   	        	title="${message(code: 'default.itemPurchase.NameOfItem.label')}" />
-	                   	        
-	                   	        <g:sortableColumn property="AssetCode" 
-	                   	        	title="${message(code: 'default.itemPurchase.AssetCode.label')}" />
-	                                              
-	                   	        <g:sortableColumn property="OrderNo" 
-	                   	        	title="${message(code: 'default.itemPurchase.OrderNo.label')}" />
-	                	       
+	                   	        <th><g:message code="default.itemPurchase.NameOfItem.label"/></th>
+	                   	        <th><g:message code="default.itemPurchase.AssetCode.label"/></th>
+	                   	        <th><g:message code="default.itemPurchase.OrderNo.label"/></th>
 	                   	       	<g:sortableColumn property="billNo" 
 	                   	       		title="${message(code: 'default.itemPurchase.BillNo.label')}" />
-	                   	       	
-	                   	       	<g:sortableColumn property="itemPurchaseInstance.cost" 
-	                   	       		title="${message(code: 'default.itemPurchase.Cost(Rs).label')}" />
-	                   	      
-	                   	         <th><g:message code="default.Edit.label"/></th>
+	                   	       	<th><g:message code="default.itemPurchase.Cost(Rs).label"/></th>
+	   							<th><g:message code="default.Edit.label"/></th>
 	           	             </tr>
 	   	               </thead>
 	   	               <tbody>	

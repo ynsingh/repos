@@ -5,7 +5,7 @@
         <g:set var="entityName" value="${message(code: 'authority.label', default: 'Authority')}" />
         <title><g:message code="default.Role.CreateRole.head"/></title>
    </head>
-   <body>
+    <body>
      <div class="wrapper">
        <table class="tablewrapper"> 
         <tr>
@@ -31,9 +31,10 @@
                                     <label for="role" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: authorityInstance, field: 'authority', 'errors')}">
-                                    <g:textField id="authority" name="authority" value="${authorityInstance?.authority}" />
-                                	 <label for="role" style="color:blue;font-weight:bold"> <g:message code="default.Role.NameFormat.label"/></label>
-                                </td>
+                            	<input type="text" id="authority" name="authority" style="width:250px"
+                                 value="ROLE_" onBlur="return validAuthority(this);"/>
+  						       <label for="role" style="color:blue;font-weight:bold"> <g:message code="default.Role.NameFormat.label"/></label> 
+  						       </td>
                                 <td valign="left">
                                    
                                 </td>

@@ -11,7 +11,7 @@ class ProjectDepartmentMapController {
 			def projectDepartmentMapInstance = projectDepartmentMapService.getProjectDepartmentMapById(params.id)
 			if(projectDepartmentMapInstance) 
 			{
-				projectDepartmentMapInstance = projectDepartmentMapService.deleteDepartmentMap(projectDepartmentMapInstance)
+				projectDepartmentMapInstance = projectDepartmentMapService.deleteDepartmentMap(params)
 	        	flash.message = "${message(code: 'default.deleted.label')}"
 	            redirect(action:create)
 	        }
@@ -30,6 +30,9 @@ class ProjectDepartmentMapController {
         }
         else 
         {
+        	def projectsService = new ProjectsService()
+        	println"projectDepartmentMapInstance.projects.id"+projectDepartmentMapInstance.projects.id
+        	def projectsInstance = projectsService.getProjectById(projectDepartmentMapInstance.projects.id) 
         	GrailsHttpSession gh=getSession()
             def dataSecurityService = new DataSecurityService()
             List<GrantAllocation> grantAllocationInstance 	
@@ -50,31 +53,56 @@ class ProjectDepartmentMapController {
             def partyDepartmentList = projectDepartmentMapService.getPartyDepartmentForUser(gh.getValue("PartyID"));
 
             return [ projectDepartmentMapInstance : projectDepartmentMapInstance ,
-                     'projectsList':projectsList,'partyDepartmentList':partyDepartmentList]
+                     'projectsList':projectsList,'partyDepartmentList':partyDepartmentList,'projectsInstance':projectsInstance]
         }
     }
 
     def update = {
 			def projectDepartmentMapService = new ProjectDepartmentMapService()
-			def projectDepartmentMapInstance = projectDepartmentMapService.getProjectDepartmentMapById(params.id)
-			if(projectDepartmentMapInstance) 
+			def projectDepartmentMapInstance = new ProjectDepartmentMap(params)
+			def partyDepartmentService = new PartyDepartmentService()
+			GrailsHttpSession gh=getSession() 
+			def projectsService = new ProjectsService()
+			println"params"+params
+			def projectsInstance = projectsService.getProjectById(params.projects.id)
+			projectDepartmentMapInstance.projects = projectsInstance
+	        def partyDepartmentInstance = partyDepartmentService.getPartyDepartmentById(params.partyDepartment.id)
+	        projectDepartmentMapInstance.partyDepartment = partyDepartmentInstance
+	        if(projectDepartmentMapInstance) 
 			{
-	            projectDepartmentMapInstance.properties = params
-	            def projectDepartmentMapUpdateInstance = projectDepartmentMapService.updateDepartmentMap(projectDepartmentMapInstance)
-	            if(projectDepartmentMapUpdateInstance) 
-	            {
-	                flash.message ="${message(code: 'default.updated.label')}"
-	                redirect(action:create,id:projectDepartmentMapInstance.id)
-	            }
-	            else {
-	                render(view:'edit',model:[projectDepartmentMapInstance:projectDepartmentMapInstance])
-	            }
-	        }
-	        else {
-	            flash.message = "${message(code: 'default.notfond.label')}"
-	            redirect(action:edit,id:params.id)
-	        }
-    }
+				
+				def projectDepartmentMapDuplicateInstance = projectDepartmentMapService.chkDuplicatePDMap(projectDepartmentMapInstance)
+                if(projectDepartmentMapDuplicateInstance && projectDepartmentMapDuplicateInstance[0].id != Long.parseLong(params.id))
+		        {
+		        	flash.message = "${message(code: 'default.PDMapDuplicate.message')}"
+		        	redirect(action:create,model:[id:projectDepartmentMapInstance.id,projectsInstance:projectsInstance,partyDepartmentInstance:partyDepartmentInstance])
+		        }
+		        else
+		        {
+		        	projectDepartmentMapInstance = projectDepartmentMapService.updateDepartmentMap(params)
+		        	if(projectDepartmentMapInstance.saveMode != null)
+					{
+						
+						if(projectDepartmentMapInstance.saveMode.equals("Updated"))
+						{
+	         
+							flash.message ="${message(code: 'default.updated.label')}"
+							redirect(action:create,model:[id:projectDepartmentMapInstance.id,projectsInstance:projectsInstance,partyDepartmentInstance:partyDepartmentInstance])
+						}
+						else 
+						{
+							render(view:'edit',model:[projectDepartmentMapInstance:projectDepartmentMapInstance,,projectsInstance:projectsInstance,partyDepartmentInstance:partyDepartmentInstance])
+						}
+					}
+						
+		        	else 
+		        	{
+		        		flash.message = "${message(code: 'default.notfond.label')}"
+		        		redirect(action:edit,id:params.id)
+		        	}
+		        }
+			}
+		}
 
     def create = {
         def projectDepartmentMapInstance = new ProjectDepartmentMap()
@@ -87,7 +115,7 @@ class ProjectDepartmentMapController {
     	def projectsService = new ProjectsService()
 		def projectsInstance = projectsService.getProjectById(gh.getValue("ProjectId"))
     	def partyDepartmentList = projectDepartmentMapService.getPartyDepartmentForUser(gh.getValue("PartyID"));
-    	def projectDepartmentMapInstanceList = projectDepartmentMapService.getProjectDepartmentMapList(gh.getValue("Party"))
+    	def projectDepartmentMapInstanceList = projectDepartmentMapService.getProjectDepartmentMapList(gh.getValue("Party"),gh.getValue("ProjectId"))
     	return ['projectDepartmentMapInstance':projectDepartmentMapInstance,
                 'projectsInstance':projectsInstance,'partyDepartmentList':partyDepartmentList,
                 'projectDepartmentMapInstanceList':projectDepartmentMapInstanceList]
@@ -105,17 +133,20 @@ class ProjectDepartmentMapController {
         def projectDepartmentMapDuplicateInstance = projectDepartmentMapService.chkDuplicatePDMap(projectDepartmentMapInstance)
         if(projectDepartmentMapDuplicateInstance)
         {
-        	flash.message = "The department is already mapped to same project"
+        	flash.message = "${message(code: 'default.PDMapDuplicate.message')}"
         		redirect(action:create,model:[id:projectDepartmentMapInstance.id,projectsInstance:projectsInstance])
         }
         else
         {
-        	def projectDepartmentMapSaveInstance = projectDepartmentMapService.saveDepartmentMap(projectDepartmentMapInstance)
-        	if(projectDepartmentMapSaveInstance) 
-        	{
-            flash.message = "${message(code: 'default.created.label')}"
-            redirect(action:create,model:[id:projectDepartmentMapInstance.id,projectsInstance:projectsInstance])
-        	}
+        	projectDepartmentMapInstance = projectDepartmentMapService.saveDepartmentMap(projectDepartmentMapInstance)
+        	if(projectDepartmentMapInstance.saveMode != null)
+		    {
+		      if(projectDepartmentMapInstance.saveMode.equals("Saved"))
+		      {
+		    	  flash.message = "${message(code: 'default.created.label')}"
+		    	  redirect(action:create,model:[id:projectDepartmentMapInstance.id,projectsInstance:projectsInstance])
+		      }
+		    }
         	else 
         	{
             render(view:'create',model:[projectDepartmentMapInstance:projectDepartmentMapInstance,projectsInstance:projectsInstance])

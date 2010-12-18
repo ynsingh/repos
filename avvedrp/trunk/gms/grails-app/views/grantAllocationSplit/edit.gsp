@@ -72,9 +72,11 @@
 	                                </td>
 	                                <td valign="top" 
 	                                	class="value ${hasErrors(bean:grantAllocationSplitInstance,field:'grantPeriod','errors')}">
-	                                    <g:select optionKey="id" optionValue="name" from="${GrantPeriod.list()}" 
-	                                    	name="grantPeriod.id" value="${grantAllocationSplitInstance?.grantPeriod?.id}" >
-	                                    </g:select>
+	                                    <g:select optionKey="id" optionValue="name" 
+                                    				from="${GrantPeriod.findAll('from GrantPeriod GP where GP.activeYesNo=\'Y\'order by defaultYesNo desc')}"  
+                                    				name="grantPeriod.id" value="${grantAllocationSplitInstance?.grantPeriod?.id}"  >
+                                				</g:select>
+	                                   
 	                                </td>
 	                            </tr> 
                             

@@ -18,22 +18,22 @@ class ProjectEmployeeController
     
 	def create = 
     {
-	    println "params"+params
-        def projectEmployeeInstance = new ProjectEmployee()
+		def projectEmployeeInstance = new ProjectEmployee()
+	    def projectsService = new ProjectsService()
         projectEmployeeInstance.properties = params
-        def projectInstance
+        def projectsInstance
         if(params.id)
         {
-        	projectInstance = Projects.get(params.id)
+        	projectsInstance = projectsService.getProjectById(params.id)
+    		
         }
-        //def employeeDesignationInstance = EmployeeDesignation.list()
         def employeeDesignationService = new EmployeeDesignationService()
         def employeeDesignationInstanceList =employeeDesignationService.getemployeeDesignationList()
-        def projectEmployeeInstanceList=projectEmployeeService.getProjectEmployeeList(projectInstance)
+        def projectEmployeeInstanceList=projectEmployeeService.getProjectEmployeeList(projectsInstance)
         return [projectEmployeeInstance: projectEmployeeInstance,
                 employeeDesignationInstanceList: employeeDesignationInstanceList,
                 projectEmployeeInstanceList:projectEmployeeInstanceList,
-                projectInstance:projectInstance]
+                projectsInstance:projectsInstance]
     }
 	/**
 	 * Method to save the Project Employee Details
@@ -49,14 +49,9 @@ class ProjectEmployeeController
 	        	flash.message = "${message(code: 'default.AlreadyExists.label')}"
 	        }
 	        projectEmployeeInstance.Status='Y'
-	        //def employeeDesignationInstance = EmployeeDesignation.list()
-	        println"params"+params
 	        def employeeDesignationService  = new EmployeeDesignationService()
 	        def employeeDesignationInstanceList = employeeDesignationService.getemployeeDesignationList()
-	        println"params"+params
 	        def projectEmployeeInstanceList=projectEmployeeService.getProjectEmployeeList(projectEmployeeInstance)
-	        println"projectEmployeeInstance"+projectEmployeeInstance
-	        //projectEmployeeInstance.Status="Y"
 	        if (projectEmployeeInstance.save(flush: true))
 	        {
 	            flash.message ="${message(code: 'default.created.label')}" 
@@ -88,11 +83,8 @@ class ProjectEmployeeController
 	 def edit = 
 	    {
 	        def projectEmployeeInstance = ProjectEmployee.get(params.id)
-	        println"params"+params
-	        //def employeeDesignationInstance = EmployeeDesignation.list()
 	        def employeeDesignationService = new EmployeeDesignationService()
 	        def employeeDesignationInstanceList = employeeDesignationService.getemployeeDesignationList()
-	        println"params"+params
 	        if (!projectEmployeeInstance) 
 	        {
 	            flash.message = "${message(code: 'default.notfond.label')}"
@@ -106,7 +98,7 @@ class ProjectEmployeeController
 	    }
     def update = 
     {
-        def projectEmployeeInstance = ProjectEmployee.get(params.id)
+		def projectEmployeeInstance = ProjectEmployee.get(params.id)
         if (projectEmployeeInstance) 
         {
             if (params.version)
@@ -124,8 +116,8 @@ class ProjectEmployeeController
             projectEmployeeInstance.properties = params
             if (!projectEmployeeInstance.hasErrors() && projectEmployeeInstance.save(flush: true))
             {
-                flash.message = "${message(code: 'default.updated.label')}"
-                redirect(action: "create", id: projectEmployeeInstance.id)
+            	flash.message = "${message(code: 'default.updated.label')}"
+            		redirect(action: "create",id: projectEmployeeInstance.projectsId)
             }
             else 
             {
@@ -187,6 +179,26 @@ class ProjectEmployeeController
 		}
 		
 		[ grandAllocationList: grandAllocationList]
+	}
+	
+	def listReport = {
+		println "+++++++++++++++++"+params
+    	
+		return['reportListInstance':params]
+		
+}
+	
+	def hrassetReports =
+	{
+		def projectEmployeeInstance = new ProjectEmployee(params)
+		GrailsHttpSession gh=getSession()
+		def dataSecurityService = new DataSecurityService()
+		def projectInstance = Projects.get(gh.getValue("ProjectID")) 
+		println"projectInstance "+projectInstance 
+		def projectsList = dataSecurityService.getProjectsForLoginUser(gh.getValue("PartyID"))
+		println"projectsList"+projectsList
+		return['projectsList':projectsList,'projectEmployeeInstance':projectEmployeeInstance,'projectInstance':projectInstance]
+		
 	}
 	
 }

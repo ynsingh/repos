@@ -8,6 +8,7 @@
     </head>
     <body>
     	<div class="wrapper">
+    	<g:subMenuList/> 
 	        <div class="body">
 	            <h1><g:message code="default.projectEmployees.edit.head"/></h1>
 	            <g:if test="${flash.message}">
@@ -47,7 +48,8 @@
 	                                  <label for="DOB"><g:message code="default.projectEmployees.DateOfBirth.label"/></label>
 	                                </td>
 	                                <td valign="top" class="value ${hasErrors(bean: projectEmployeeInstance, field: 'DOB', 'errors')}">
-	                                  <calendar:datePicker name="DOB"  value="${projectEmployeeInstance?.dOB}"  defaultValue=""/>
+	                                  <calendar:datePicker name="DOB"  value="${projectEmployeeInstance?.dOB}"  defaultValue="" 
+	                                  	dateFormat= "%d/%m/%Y"/>
 	                                </td>
 	                            </tr>
 	                        
@@ -65,7 +67,8 @@
 	                                  <label for="joiningDate"><g:message code="default.JoiningDate.label"/></label>
 	                                </td>
 	                                <td valign="top" class="value ${hasErrors(bean: projectEmployeeInstance, field: 'joiningDate', 'errors')}">
-	                                    <calendar:datePicker name="joiningDate"  value="${projectEmployeeInstance?.joiningDate}"  defaultValue=""/>
+	                                    <calendar:datePicker name="joiningDate" value="${projectEmployeeInstance?.joiningDate}" defaultValue="" 
+	                                    	dateFormat= "%d/%m/%Y"/>
 	                                </td>
 	                            </tr>
 	                                                                        
@@ -74,7 +77,8 @@
 	                                  <label for="relievingDate"><g:message code="default.RelievingDate.label"/></label>
 	                                </td>
 	                                <td valign="top" class="value ${hasErrors(bean: projectEmployeeInstance, field: 'relievingDate', 'errors')}">
-	                                    <calendar:datePicker name="relievingDate"  value="${projectEmployeeInstance?.relievingDate}"  defaultValue=""/>
+	                                    <calendar:datePicker name="relievingDate"  value="${projectEmployeeInstance?.relievingDate}"  defaultValue="" 
+	                                    	dateFormat= "%d/%m/%Y"/>
 	                                </td>
 	                            </tr>	                            
 	                     	</tbody>

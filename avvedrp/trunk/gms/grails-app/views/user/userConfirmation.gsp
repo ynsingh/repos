@@ -1,6 +1,6 @@
 <head>
 	<meta name="layout" content="main" />
-	<title>Create Site Admin</title>
+	<title><g:message code='default.CreateSiteAdmin.head'/></title>
 	
 </head>
 <body>

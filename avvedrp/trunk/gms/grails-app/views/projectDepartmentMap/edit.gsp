@@ -25,6 +25,7 @@
                     <table>
                         <tbody>        
                          </tr>
+                         <input type="hidden" name="projects.id" value="${projectsInstance?.id}" />
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="partyDepartment"><g:message code="default.Projects.label"/>:</label>

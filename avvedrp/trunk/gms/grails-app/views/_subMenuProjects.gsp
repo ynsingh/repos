@@ -10,7 +10,10 @@
 			<ul id="topnav">
 		        <li><g:link controller='projectsPIMap' action="create"><g:message code="default.PIAddition.label"/></g:link></li> 
 		        <li><g:link controller='projectDepartmentMap' action="create"><g:message code="default.DepartmentAddition.label"/></g:link></li> 
-		        <li><g:link controller='grantAllocation' action="fundAllot"><g:message code="default.FundAllocation.label"/></g:link></li>
+		        <g:if test="${projectsInstance.parent}"></g:if>
+		        <g:else>
+		        	<li><g:link controller='grantAllocation' action="fundAllot"><g:message code="default.FundAllocation.label"/></g:link></li>
+		        </g:else>
 	    	</ul> 
 		</div> 
 	</body>	

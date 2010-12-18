@@ -105,9 +105,7 @@
                 <div class="buttons">
                     <span class="button"><g:actionSubmit class="save" action="update" value="${message(code: 'default.Update.button')}" onClick="return validatePI()"/></span>
 					<span class="button">
-					<g:actionSubmit class="delete"  action="delete" 
-					value="${message(code: 'default.Delete.button')}" 
-					onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
+					
 					</span>	
                 </div>
             </g:form>

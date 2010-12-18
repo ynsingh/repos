@@ -45,14 +45,7 @@
 								<input type="text" id="userSurName" name="userSurName" value="${person.userSurName?.encodeAsHTML()}"/>
 							</td>
 						</tr>
-	
-						<tr class="prop">
-							<td valign="top" class="name"><label for="passwd"><g:message code="default.Password.label"/>:</label></td>
-							<td valign="top" class="value ${hasErrors(bean:person,field:'passwd','errors')}">
-								<input type="password" id="password" name="password" value="${person.password?.encodeAsHTML()}"/>
-							</td>
-						</tr>
-	
+													
 						<tr class="prop">
 							<td valign="top" class="name"><label for="enabled"><g:message code="default.Enabled.label"/>:</label></td>
 							<td valign="top" class="value ${hasErrors(bean:person,field:'enabled','errors')}">

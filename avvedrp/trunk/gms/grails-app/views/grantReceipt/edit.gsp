@@ -88,7 +88,7 @@
                                     <label for="modeOfPayment"><g:message code="default.ModeOfPayment.label"/></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:grantReceiptInstance,field:'modeOfPayment','errors')}">
-                                    <g:select name="modeOfPayment" from="${['DD','Cheque','Cash' ,'BankTransfer']}"  value="${fieldValue(bean:grantReceiptInstance,field:'modeOfPayment')}" />
+                                    <g:select name="modeOfPayment" from="${['DD','Cheque','BankTransfer']}"  value="${fieldValue(bean:grantReceiptInstance,field:'modeOfPayment')}" />
                                 </td>
                             </tr>      
 

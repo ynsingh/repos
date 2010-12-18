@@ -6,7 +6,11 @@
     </head>
     <body>
         <div class="wrapper"> 
-        <g:subMenuList/>
+        <g:if test="${projectsInstance.status =='Closed'}">
+    	</g:if>
+    	<g:else>
+    		<g:subMenuList/>
+    	</g:else>
           <div class="body">
             <table>
         
