@@ -979,3 +979,15 @@ CREATE TABLE `utilization` (
 UPDATE attachment_type SET active_yes_no='Y'
 UPDATE employee_designation SET active_yes_no='Y'
 UPDATE salary_component SET active_yes_no='Y'
+
+
+insert  into `gms_settings`(`id`,`version`,`created_by`,`created_date`,`modified_by`,`modified_date`,`name`,`value`) values (2,2,NULL,NULL,NULL,NULL,'ApplicationForm','/usr/local/MgmsSettings/Notification/');
+insert  into `gms_settings`(`id`,`version`,`created_by`,`created_date`,`modified_by`,`modified_date`,`name`,`value`) values (5,0,NULL,NULL,NULL,NULL,'MailSubject','Confirmation');
+insert  into `gms_settings`(`id`,`version`,`created_by`,`created_date`,`modified_by`,`modified_date`,`name`,`value`) values (6,0,NULL,NULL,NULL,NULL,'MailContent','An account has been created in GMS with the following user Id and Password');
+insert  into `gms_settings`(`id`,`version`,`created_by`,`created_date`,`modified_by`,`modified_date`,`name`,`value`) values (7,0,NULL,NULL,NULL,NULL,'MailHost','192.168.36.10');
+insert  into `gms_settings`(`id`,`version`,`created_by`,`created_date`,`modified_by`,`modified_date`,`name`,`value`) values (8,0,NULL,NULL,NULL,NULL,'MailPort','25');
+insert  into `gms_settings`(`id`,`version`,`created_by`,`created_date`,`modified_by`,`modified_date`,`name`,`value`) values (9,0,NULL,NULL,NULL,NULL,'MailUserName','');
+insert  into `gms_settings`(`id`,`version`,`created_by`,`created_date`,`modified_by`,`modified_date`,`name`,`value`) values (10,0,NULL,NULL,NULL,NULL,'MailPassword','');
+insert  into `gms_settings`(`id`,`version`,`created_by`,`created_date`,`modified_by`,`modified_date`,`name`,`value`) values (11,0,NULL,NULL,NULL,NULL,'MailFrom','no-reply@yourdomain.com');
+insert  into `gms_settings`(`id`,`version`,`created_by`,`created_date`,`modified_by`,`modified_date`,`name`,`value`) values (12,0,NULL,NULL,NULL,NULL,'Attachments','/usr/local/appform/');
+insert  into `gms_settings`(`id`,`version`,`created_by`,`created_date`,`modified_by`,`modified_date`,`name`,`value`) values (13,0,NULL,NULL,NULL,NULL,'','');
