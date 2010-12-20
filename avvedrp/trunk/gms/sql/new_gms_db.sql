@@ -981,13 +981,21 @@ UPDATE employee_designation SET active_yes_no='Y'
 UPDATE salary_component SET active_yes_no='Y'
 
 
-insert  into `gms_settings`(`id`,`version`,`created_by`,`created_date`,`modified_by`,`modified_date`,`name`,`value`) values (2,2,NULL,NULL,NULL,NULL,'ApplicationForm','/usr/local/MgmsSettings/Notification/');
-insert  into `gms_settings`(`id`,`version`,`created_by`,`created_date`,`modified_by`,`modified_date`,`name`,`value`) values (5,0,NULL,NULL,NULL,NULL,'MailSubject','Confirmation');
-insert  into `gms_settings`(`id`,`version`,`created_by`,`created_date`,`modified_by`,`modified_date`,`name`,`value`) values (6,0,NULL,NULL,NULL,NULL,'MailContent','An account has been created in GMS with the following user Id and Password');
-insert  into `gms_settings`(`id`,`version`,`created_by`,`created_date`,`modified_by`,`modified_date`,`name`,`value`) values (7,0,NULL,NULL,NULL,NULL,'MailHost','192.168.36.10');
-insert  into `gms_settings`(`id`,`version`,`created_by`,`created_date`,`modified_by`,`modified_date`,`name`,`value`) values (8,0,NULL,NULL,NULL,NULL,'MailPort','25');
-insert  into `gms_settings`(`id`,`version`,`created_by`,`created_date`,`modified_by`,`modified_date`,`name`,`value`) values (9,0,NULL,NULL,NULL,NULL,'MailUserName','');
-insert  into `gms_settings`(`id`,`version`,`created_by`,`created_date`,`modified_by`,`modified_date`,`name`,`value`) values (10,0,NULL,NULL,NULL,NULL,'MailPassword','');
-insert  into `gms_settings`(`id`,`version`,`created_by`,`created_date`,`modified_by`,`modified_date`,`name`,`value`) values (11,0,NULL,NULL,NULL,NULL,'MailFrom','no-reply@yourdomain.com');
-insert  into `gms_settings`(`id`,`version`,`created_by`,`created_date`,`modified_by`,`modified_date`,`name`,`value`) values (12,0,NULL,NULL,NULL,NULL,'Attachments','/usr/local/appform/');
-insert  into `gms_settings`(`id`,`version`,`created_by`,`created_date`,`modified_by`,`modified_date`,`name`,`value`) values (13,0,NULL,NULL,NULL,NULL,'','');
+
+/*Seed data for gms*/
+
+INSERT INTO `authority`(`id`,`version`,`active_yes_no`, `authority`,`description`)VALUES('1','0','Y','ROLE_SITEADMIN','ROLE_SITEADMIN');
+INSERT INTO `authority`(`id`,`version`,`active_yes_no`, `authority`,`description`)VALUES('2','0','Y','ROLE_PI','Investigator_Role');
+	
+INSERT INTO gms_settings (NAME,VALUE) VALUES ("Attachments","grails-app/views/appForm/")
+INSERT INTO gms_settings (NAME,VALUE) VALUES ("ApplicationForm","grails-app/views/appForm/")
+INSERT INTO gms_settings (NAME,VALUE) VALUES ("MailSubject","Confirmation")
+INSERT INTO gms_settings (NAME,VALUE) VALUES ("MailContent","You have successfully created a site admin")
+INSERT INTO gms_settings (NAME,VALUE) VALUES ("MailHost","192.168.36.10")
+INSERT INTO gms_settings (NAME,VALUE) VALUES ("MailPort","25")
+INSERT INTO gms_settings (NAME,VALUE) VALUES ("MailUserName","")
+INSERT INTO gms_settings (NAME,VALUE) VALUES ("MailPassword","")
+INSERT INTO gms_settings (NAME,VALUE) VALUES ("MailFrom","no-reply@yourdomain.com")
+
+
+
