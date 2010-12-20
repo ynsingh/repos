@@ -2,8 +2,7 @@
 SQLyog Community v8.3 
 MySQL - 5.0.19-nt : Database - gms_iit
 *********************************************************************
-*/
-
+*/
 /*!40101 SET NAMES utf8 */;
 
 /*!40101 SET SQL_MODE=''*/;
@@ -1121,15 +1120,15 @@ CREATE TABLE `utilization` (
 INSERT INTO `authority`(`id`,`version`,`active_yes_no`, `authority`,`description`)VALUES('1','0','Y','ROLE_SITEADMIN','ROLE_SITEADMIN');
 INSERT INTO `authority`(`id`,`version`,`active_yes_no`, `authority`,`description`)VALUES('2','0','Y','ROLE_PI','Investigator_Role');
 	
-INSERT INTO gms_settings (NAME,VALUE) VALUES ("Attachments","grails-app/views/appForm/")
-INSERT INTO gms_settings (NAME,VALUE) VALUES ("ApplicationForm","grails-app/views/appForm/")
-INSERT INTO gms_settings (NAME,VALUE) VALUES ("MailSubject","Confirmation")
-INSERT INTO gms_settings (NAME,VALUE) VALUES ("MailContent","You have successfully created a site admin")
-INSERT INTO gms_settings (NAME,VALUE) VALUES ("MailHost","192.168.36.10")
-INSERT INTO gms_settings (NAME,VALUE) VALUES ("MailPort","25")
-INSERT INTO gms_settings (NAME,VALUE) VALUES ("MailUserName","")
-INSERT INTO gms_settings (NAME,VALUE) VALUES ("MailPassword","")
-INSERT INTO gms_settings (NAME,VALUE) VALUES ("MailFrom","no-reply@yourdomain.com")
+INSERT INTO gms_settings (NAME,VALUE) VALUES ("Attachments","grails-app/views/appForm/");
+INSERT INTO gms_settings (NAME,VALUE) VALUES ("ApplicationForm","grails-app/views/appForm/");
+INSERT INTO gms_settings (NAME,VALUE) VALUES ("MailSubject","Confirmation");
+INSERT INTO gms_settings (NAME,VALUE) VALUES ("MailContent","You have successfully created a site admin");
+INSERT INTO gms_settings (NAME,VALUE) VALUES ("MailHost","192.168.36.10");
+INSERT INTO gms_settings (NAME,VALUE) VALUES ("MailPort","25");
+INSERT INTO gms_settings (NAME,VALUE) VALUES ("MailUserName","");
+INSERT INTO gms_settings (NAME,VALUE) VALUES ("MailPassword","");
+INSERT INTO gms_settings (NAME,VALUE) VALUES ("MailFrom","no-reply@yourdomain.com");
 
 
 
