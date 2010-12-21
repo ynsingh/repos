@@ -81,7 +81,7 @@ $!data.getMessage()
                 	<option>
 			<option value="mcq">$brih_multiplechoice $brih_qus $brih_type
 			<option value="tft">$brih_true/$brih_false $brih_type
-			<option value="maq">$brih_match $brih_type
+			<option value="maq" disabled="true">$brih_match $brih_type
 			<option value="sat">$brih_shortType $brih_answer $brih_type
 			<option value="lat">$brih_long $brih_answer $brih_type
 			</option>
