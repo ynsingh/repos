@@ -200,7 +200,8 @@ public class OnlineRegistration extends VelocitySecureAction
 					 	vc.addElement(uname+getNext()+"\n");
 				}
 				data.addMessage(MultilingualUtil.ConvertedString("u_msg",LangFile));
-                        	data.addMessage(MultilingualUtil.ConvertedString("online_msg10",LangFile) +vc.toString());
+                        //	data.addMessage(MultilingualUtil.ConvertedString("online_msg10",LangFile) +vc.toString());
+                        	data.addMessage(MultilingualUtil.ConvertedString("online_msg11",LangFile));
                                 setTemplate(data,"OnlineRegistration.vm");
 				return;
 			} //if 2					
@@ -236,7 +237,8 @@ public class OnlineRegistration extends VelocitySecureAction
 	                                {
         	                                data.addMessage(MultilingualUtil.ConvertedString("u_msg9",LangFile));
 						//data.addMessage(vc.toString());
-                        			data.addMessage(MultilingualUtil.ConvertedString("online_msg10",LangFile) +vc.toString());
+                        			//data.addMessage(MultilingualUtil.ConvertedString("online_msg10",LangFile) +vc.toString());
+                        			data.addMessage(MultilingualUtil.ConvertedString("online_msg11",LangFile));
                                 	        setTemplate(data,"OnlineRegistration.vm");
                                         	return;
 

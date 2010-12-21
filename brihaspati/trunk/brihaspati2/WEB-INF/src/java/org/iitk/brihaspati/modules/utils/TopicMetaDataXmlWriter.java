@@ -876,4 +876,129 @@ public class TopicMetaDataXmlWriter
 		}
         return xmlWriter;
         }
+	//OLES
+	public static void OLESRootOnly(String fileName) throws Exception
+        {
+                FileOutputStream fos=new FileOutputStream(fileName);
+                fos.write( ("<QuestionBank>\n</QuestionBank>").getBytes() );
+                fos.close();
+        }
+        public static void appendQues_Bank(XmlWriter xmlWriter,String Quesid,String Ques,String opt1,String opt2,String opt3,String opt4,String Answer,String Description,String ImgUrl)
+        {
+                AttributesImpl ats=new AttributesImpl();
+                ats.addAttribute("","Quesid","","",StringUtil.replaceXmlSpecialCharacters(Quesid));
+                ats.addAttribute("","Ques","","",StringUtil.replaceXmlSpecialCharacters(Ques));
+                ats.addAttribute("","opt1","","",StringUtil.replaceXmlSpecialCharacters(opt1));
+                ats.addAttribute("","opt2","","",StringUtil.replaceXmlSpecialCharacters(opt2));
+                ats.addAttribute("","opt3","","",StringUtil.replaceXmlSpecialCharacters(opt3));
+                ats.addAttribute("","opt4","","",StringUtil.replaceXmlSpecialCharacters(opt4));
+                ats.addAttribute("","Answer","","",StringUtil.replaceXmlSpecialCharacters(Answer));
+                ats.addAttribute("","Description","","",StringUtil.replaceXmlSpecialCharacters(Description));
+                ats.addAttribute("","ImgUrl","","",StringUtil.replaceXmlSpecialCharacters(ImgUrl));
+                xmlWriter.appendElement("Question",null,ats);
+        }
+        public static void appendQues_Bank1(XmlWriter xmlWriter,String Quesid,String Ques,String Answer,String Description,String ImgUrl)
+        {
+                AttributesImpl ats=new AttributesImpl();
+                ats.addAttribute("","Quesid","","",StringUtil.replaceXmlSpecialCharacters(Quesid));
+                ats.addAttribute("","Ques","","",StringUtil.replaceXmlSpecialCharacters(Ques));
+                ats.addAttribute("","Answer","","",StringUtil.replaceXmlSpecialCharacters(Answer));
+                ats.addAttribute("","Description","","",StringUtil.replaceXmlSpecialCharacters(Description));
+                ats.addAttribute("","ImgUrl","","",StringUtil.replaceXmlSpecialCharacters(ImgUrl));
+                xmlWriter.appendElement("Question",null,ats);
+        }
+        public static void appendQues_Banklist(XmlWriter xmlWriter,String Topicname,String Questiontype,String Difflevel,String Filename,String CreationDate)
+        {
+                AttributesImpl ats=new AttributesImpl();
+                ats.addAttribute("","Topicname","","",StringUtil.replaceXmlSpecialCharacters(Topicname));
+                ats.addAttribute("","Questiontype","","",StringUtil.replaceXmlSpecialCharacters(Questiontype));
+                ats.addAttribute("","Difflevel","","",StringUtil.replaceXmlSpecialCharacters(Difflevel));
+                ats.addAttribute("","Filename","","",StringUtil.replaceXmlSpecialCharacters(Filename));
+                ats.addAttribute("","CreationDate","","",CreationDate);
+		xmlWriter.appendElement("Question",null,ats);
+        }
+         public static XmlWriter Ques_BankXml(String filePath,String xmlfile)
+        {
+                XmlWriter xmlWriter=null;
+                File descFile=new File(filePath+"/"+xmlfile);
+                try{
+                         TopicMetaDataXmlReader topicMetaData=new TopicMetaDataXmlReader(filePath+"/"+xmlfile);
+                         Vector v=topicMetaData.getQuesBank_Detail();
+                         descFile.delete();
+                         OLESRootOnly(descFile.getAbsolutePath());
+                         xmlWriter=new XmlWriter(filePath+"/"+xmlfile);
+                        for(int i=0;i<v.size();i++)
+                         {
+                                String QuesId=((FileEntry)v.get(i)).getquestionid();
+                                String Question=((FileEntry)v.get(i)).getquestion();
+                                String opt1=((FileEntry)v.get(i)).getoptionA();
+                                String opt2=((FileEntry)v.get(i)).getoptionB();
+                                String opt3=((FileEntry)v.get(i)).getoptionC();
+                                String opt4=((FileEntry)v.get(i)).getoptionD();
+                                String Answer=((FileEntry)v.get(i)).getAnswer();
+                                String Description=((FileEntry)v.get(i)).getDescription();
+                                String ImgUrl=((FileEntry)v.get(i)).getUrl();
+                                appendQues_Bank(xmlWriter,QuesId,Question,opt1,opt2,opt3,opt4,Answer,Description,ImgUrl);
+                        }
+                }
+                catch(Exception e){
+                        ErrorDumpUtil.ErrorLog("The exception in xmlwriterutil [XmlWriter Ques_BankXml]::"+e);
+                        System.out.println("See Exception message in ExceptionLog.txt file:: ");
+                }
+              return xmlWriter;
+        }
+	public static XmlWriter Ques_BankXml1(String filePath,String xmlfile)
+        {
+                XmlWriter xmlWriter=null;
+                File descFile=new File(filePath+"/"+xmlfile);
+                try{
+                         TopicMetaDataXmlReader topicMetaData=new TopicMetaDataXmlReader(filePath+"/"+xmlfile);
+                         Vector v=topicMetaData.getQuesBank_Detail1();
+                         descFile.delete();
+                         OLESRootOnly(descFile.getAbsolutePath());
+                         xmlWriter=new XmlWriter(filePath+"/"+xmlfile);
+                         for(int i=0;i<v.size();i++)
+                         {
+                                String QuesId=((FileEntry)v.get(i)).getquestionid();
+                                String Question=((FileEntry)v.get(i)).getquestion();
+                                String Answer=((FileEntry)v.get(i)).getAnswer();
+                                String Description=((FileEntry)v.get(i)).getDescription();
+                                String ImgUrl=((FileEntry)v.get(i)).getUrl();
+                                appendQues_Bank1(xmlWriter,QuesId,Question,Answer,Description,ImgUrl);
+                        }
+                }
+                catch(Exception e){
+                        ErrorDumpUtil.ErrorLog("The exception in xmlwriterutil [XmlWriter Ques_BankXml1]::"+e);
+                        System.out.println("See Exception message in ExceptionLog.txt file:: ");
+                }
+              return xmlWriter;
+        }
+public static XmlWriter Ques_BankXmlist(String filePath,String xmlfile)
+        {
+                XmlWriter xmlWriter=null;
+                File descFile=new File(filePath+"/"+xmlfile);
+                try{
+                         TopicMetaDataXmlReader topicMetaData=new TopicMetaDataXmlReader(filePath+"/"+xmlfile);
+                         Vector v=topicMetaData.getQuesBanklist_Detail();
+                         descFile.delete();
+                         OLESRootOnly(descFile.getAbsolutePath());
+                         xmlWriter=new XmlWriter(filePath+"/"+xmlfile);
+                         for(int i=0;i<v.size();i++)
+                         {
+                                String topicname=((FileEntry)v.get(i)).getTopic();
+                                String Questiontype=((FileEntry)v.get(i)).getTypeofquestion();
+                                String Difflevel=((FileEntry)v.get(i)).getDifflevel();
+                                String Filename=((FileEntry)v.get(i)).getfileName();
+                                String CreationDate=((FileEntry)v.get(i)).getPDate();
+                                appendQues_Banklist(xmlWriter,topicname,Questiontype,Difflevel,Filename,CreationDate);
+                        }
+                }
+                catch(Exception e){
+                        ErrorDumpUtil.ErrorLog("The exception in xmlwriterutil [XmlWriter Ques_BankXmllist]::"+e);
+                        System.out.println("See Exception message in ExceptionLog.txt file:: ");
+                }
+              return xmlWriter;
+        }
+
+
 }

@@ -51,6 +51,11 @@
                         <a href=$link.setPage("call,Backups,BackupIns.vm").addPathInfo("count","1") style=text-decoration:none>$brih_backup</a>
                         </td>
                 </tr>
+		<tr bgcolor="$ui.menuColor">
+                        <td>
+			<a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style=text-decoration:none>$online_online $brih_examat $brih_system</a>
+			</td>
+		</tr>
  #end
  #if($data.getUser().getTemp("role") == "student")
                 <tr bgcolor="$ui.menuColor">

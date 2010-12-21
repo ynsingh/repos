@@ -260,6 +260,23 @@ $!data.getMessage()
 					</td>
 					## tracking Report
 				</tr>
+				<tr>
+					##Online Examination System 
+					<td align=center>
+					    <table border=0>
+					    <tr><td align=center>
+					    <font face="$ui.sansSerifFonts">
+					    <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style=text-decoration:none>
+						<img border=0 src="$content.getURI("/images/olexam.jpg")" width="50" height="50" ></a>
+					   </td></tr>
+					    <tr><td align=center>
+					    <font face="$ui.sansSerifFonts">
+					    <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style=text-decoration:none>$online_online $brih_examat $brih_system</a>
+					   </td></tr>
+					    </table>
+					</td>
+					##Online Examination System 
+				</tr>
 			#elseif($user_role=="student")
 				## inner row 1 open
 				<tr>

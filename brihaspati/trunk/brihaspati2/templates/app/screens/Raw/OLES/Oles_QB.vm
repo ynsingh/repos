@@ -1,0 +1,146 @@
+#*
+ * @(#)Oles_QB.vm
+ * Copyright (c) 2010 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ *  @author <a href="mailto:seema_020504@yahoo.com ">Seema Pal</a>
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+*#
+$page.setTitle("QuestionBank")
+$page.setBgColor("bgcolor")
+## If some message has been set, that is retrieved and displayed.
+$!data.getMessage()
+## Retreiving the $lang (representing the choosen language for display, which
+## was set in corresponding the screen class.
+#set($lang = $data.getUser().getTemp("lang" ).toString())
+<table bgcolor="$ui.menuColor" width=100%>
+##link for faq with modes(add,delete,alllist and edit)
+<tr><td><b>
+	<font face="$ui.sansSerifFonts">
+	<a href=$link.setPage("Index.vm")>$brih_home</a>|
+	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
+	$brih_queBank
+</b></td>
+ <td align=right>
+                #if( $total_size!=0 )
+                        #if( $endIndex < $total_size )
+                              #if( $endIndex < $userConf )
+                              [$k - $total_size] of $total_size
+                               #elseif($k == $j)
+                               [$k - $total_size] of $total_size
+                               #else
+                               [$k - $endIndex] of $total_size
+                               #end
+                        #else
+                        [$k - $total_size] of $total_size
+                        #end
+                #end
+                </td>
+</tr>
+</table>
+## Creating the links for help regarding FAQ 
+<table width="100%">
+<tr>
+<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES.html","newWin");>$brih_help</a></td>
+</tr>
+</table>
+##creating form for FAQ
+<form name="frm" method="post" action=$link.setPage("call,OLES,Oles_QB.vm").setAction("OnlineExaminationSystem")>
+## Adding links for  add category,showing list of Faq category and delte category
+<table width="100%" bgcolor="$ui.tableColor">
+		<tr bgcolor="$ui.tableColor">
+			#if($tdcolor != "1")
+                        <td>
+                        #elseif($tdcolor == "1")
+			<td bgcolor="#AFDCEC">
+			#end
+			<b><I><a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style=text-decoration:none>$brih_queBank</I></b></a></td>
+			#if($tdcolor != "2")
+                        <td>
+                        #elseif($tdcolor == "2")
+			<td bgcolor="#AFDCEC">
+			#end
+			<b><I><a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","2") style=text-decoration:none>$brih_generate $brih_exam</I></b></a></td>
+			#if($tdcolor != "3")
+                        <td>
+                        #elseif($tdcolor == "3")
+			<td bgcolor="#AFDCEC">
+			#end
+			<b><I><a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","3") style=text-decoration:none>$brih_QDannounce $brih_exam</I></b></a></td>
+			#if($tdcolor != "4")
+			<td>
+			#elseif($tdcolor == "4")
+			<td bgcolor="#AFDCEC">
+			#end
+			<b><I><a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","4") style=text-decoration:none>$brih_evaluation</I></b></a></td>
+			#if($tdcolor != "5")
+			<td>
+                        #elseif($tdcolor == "5")
+                        <td bgcolor="#AFDCEC">
+                        #end
+			<b><I><a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","5") style=text-decoration:none>$brih_result</I></b></a></td>
+		</tr>
+		<tr bgcolor="$ui.menuColor"><td colspan="5">
+		<b><a href="$link.setPage("call,OLES,Create_QB.vm").addPathInfo("mode","cnqb").addPathInfo("count","1")" style=text-decoration:none>$WikiCreate $brih_new $brih_queBank</a></b>
+		</td></tr>
+		<tr bgcolor="$ui.menuColor" width="100%"><td align="left" width="100%" colspan="5"><b><i><font size="3">$brih_queBank $brih_topics</font><b></i></td></tr>
+</table>
+<table width="100%" bgcolor="$ui.tableColor">
+		#foreach ($topics in $allTopics)
+				#if($velocityCount%2==0)
+                                <tr bgcolor="$ui.menuColor">
+                                #else
+                                <tr bgcolor="$ui.tableColor">
+                                #end
+					<td width="30%">$topics</td>
+				       	<td><a href="$link.setPage("call,OLES,Create_QB.vm").addPathInfo("addques","addques").addPathInfo("Topicname",$topics).addPathInfo("mode","cnqb").addPathInfo("count","1")" style=text-decoration:none>$brih_add $brih_question </a></td>
+                                        <td><a href="$link.setPage("call,OLES,View_QB.vm").addPathInfo("mode","alllist").addPathInfo("topic",$topics).addPathInfo("count","1")" style=text-decoration:none>$brih_view $brih_question</a></td>
+					<td><a href="$link.setPage("call,OLES,Oles_QB.vm").setAction("OnlineExaminationSystem").addPathInfo("mode","alllist").addPathInfo("deltype","topicdel").addPathInfo("topic",$topics).addPathInfo("actionName","eventSubmit_dodeletetopic")" style=text-decoration:none onclick="javascript:return confirm('Do you want to delete this topic')">$brih_delete $brih_topic</a></td>
+                                </tr>
+		#end
+	##</table>
+		##$userConf
+		##$userConf_string
+		<table bgcolor="#e5e5e5" width="100%"><tr bgcolor="$ui.menuColor"><td align="left">
+       		 #if($total_size <= $userConf)
+                <u><font color="white">$brih_first</font></u> &nbsp;
+                <u><font color="white">$brih_pre</font></u> &nbsp;
+                <u><font color="white">$brih_nxt</font></u> &nbsp;
+                <u><font color="white">$brih_last</font></u> &nbsp;
+                #elseif($startIndex == $userConf_string)
+                <u><font color="white">$brih_first</font></u> &nbsp;
+                <u><font color="white">$brih_pre</font></u> &nbsp;
+                <a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$startIndex)">$brih_nxt</a>&nbsp;
+                <a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$check_last)">$brih_last</a>&nbsp;
+                #elseif($endIndex == $total_size || $endIndex > $total_size)
+                <a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$check_first)">$brih_first</a>&nbsp;
+                <a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$check_pre)">$brih_pre</a> &nbsp;
+                <u><font color="white">$brih_nxt</font></u> &nbsp;
+                <u><font color="white">$brih_last</font></u> &nbsp;
+                #else
+                <a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$check_first)">$brih_first</a>&nbsp;
+                <a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$check_pre)">$brih_pre</a> &nbsp;
+                <a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex)">$brih_nxt</a> &nbsp;
+                <a href="$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("startIndex",$check_last)">$brih_last</a> &nbsp;
+                #end
+                </td></tr></table>
+
+</table>
+	<input type="hidden" name="actionName">
+	<input type="hidden" name="count" value="$tdcolor">
+</form>
+<SCRIPT LANGUAGE="javascript">
+function checkField(frm,field)
+{
+        if(frm.catname.value!="")
+        {
+		frm.actionName.value=field.name;
+                frm.submit();
+        }
+        else
+                alert("Please fill the Mandatory(*) Fields !!");
+}
+function popupWin(url,popupName)
+{
+        Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400,align=left");
+}
+</script>

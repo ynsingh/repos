@@ -684,7 +684,7 @@ public static void grpLeader()
                                                      xmlWriter.writeXmlFile();
                                                      str=grpAc.DeleteEntry(filepath,"GroupList",grpname,"grpdel",data);
                                                   }
-                                                       ErrorDumpUtil.ErrorLog("name"+grpname);
+                                             //          ErrorDumpUtil.ErrorLog("name"+grpname);
                                            }//for5
                                                                         //}//cond2
                                                                 //}//for3
@@ -704,7 +704,7 @@ public static void grpLeader()
                                                                 }
                                                         }//for6
                                                         str=grpAc.DeleteEntry(filepath,"Pollexptime",grpname,"grpdel",data);
-                                                                        ErrorDumpUtil.ErrorLog("name"+grpname);
+                                               //                         ErrorDumpUtil.ErrorLog("name"+grpname);
                                                 }
                                         }
                                 }

@@ -1,0 +1,172 @@
+#*
+
+ * @#Create_QB.vm
+ * Copyright (c) 2010 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ *  @author <a href="mailto:seema_020504@yahoo.com ">Seema Pal</a>
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+*#
+$page.setTitle("QuestionBank")
+$page.setBgColor("bgcolor")
+## If some message has been set, that is retrieved and displayed.
+$!data.getMessage()
+## Retreiving the $lang (representing the choosen language for display, which
+## was set in corresponding the screen class.
+#set($lang = $data.getUser().getTemp("lang" ).toString())
+<table bgcolor="$ui.menuColor" width=100%>
+##link for faq with modes(add,delete,alllist and edit)
+<tr><td><b>
+	<font face="$ui.sansSerifFonts">
+	<a href=$link.setPage("Index.vm")>$brih_home</a>|
+	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
+	<a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style=text-decoration:none>$brih_queBank</a> |
+	#if($addques=="addques")
+	$brih_add $brih_question
+	#else
+	$WikiCreate $brih_new $brih_queBank
+	#end
+</b></td>
+</tr>
+</table>
+## Creating the links for help regarding FAQ 
+<table width="100%">
+<tr>
+<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES.html","newWin");>$brih_help</a></td>
+</tr>
+</table>
+##creating form for FAQ
+##if($questype=="obo_ques")
+##<form name="frm" method="post" action=$link.setPage("call,OLES,Create_QB.vm")>
+##else
+<form name="frm" method="post" enctype="multipart/form-data" action=$link.setPage("call,OLES,Create_QB.vm").setAction("OnlineExaminationSystem")>
+##end
+## Adding links for  add category,showing list of Faq category and delte category
+<table width="100%" bgcolor="$ui.tableColor">
+		#if($mode=="cnqb")
+		<tr bgcolor="$ui.tableColor">
+			#if($tdcolor != "1")
+                        <td>
+                        #elseif($tdcolor == "1")
+			<td bgcolor="#AFDCEC">
+			#end
+			<b><I><a href=$link.setPage("call,OLES,Create_QB.vm").addPathInfo("mode",$mode).addPathInfo("typeques","upload_multiple").addPathInfo("count","1") style=text-decoration:none>$brih_add $brih_multiple1 $brih_qus</I></b></a></td>
+			#if($tdcolor != "2")
+                        <td>
+                        #elseif($tdcolor == "2")
+			<td bgcolor="#AFDCEC">
+			#end
+		<b><I><a href=$link.setPage("call,OLES,Create_QB.vm").addPathInfo("mode",$mode).addPathInfo("typeques","imgtypeques").addPathInfo("addques",$addques).addPathInfo("Topicname",$Topicname).addPathInfo("count","2") style=text-decoration:none>$brih_upload $brih_image $brih_qus</I></b></a></td>
+			#if($tdcolor != "3")
+                        <td>
+                        #elseif($tdcolor == "3")
+			<td bgcolor="#AFDCEC">
+			#end
+			<b><I><a href=$link.setPage("call,OLES,Create_QB.vm").addPathInfo("mode",$mode).addPathInfo("typeques","obo_ques").addPathInfo("addques",$addques).addPathInfo("Topicname",$Topicname).addPathInfo("count","3") style=text-decoration:none>$brih_onebyoneQues</I></b></a></td>
+		</tr>
+		<tr bgcolor="$ui.menuColor" width="100%"><td align="left" width="100%" colspan="5"><b><i><font size="3"> $WikiCreate $brih_queBank</font><b></i></td></tr>
+		<tr>
+                	<td><b>$brih_topic $brih_name</b><font color=Red>*</font></td>
+                	<td>
+			#if($addques=="addques")
+			<input type="text" name="Topicname" value="$Topicname" readonly></td>
+			#else
+			<input type="text" name="Topicname" value=""></td>
+			#end
+        	</tr>
+		<tr>
+                	<td><b>$brih_qus $brih_type</b><font color=Red>*</font>
+			</td>
+                	<td>
+			<select name="Questype" onChange="ChangeQuestype(document.frm);"/>
+                	<option>
+			<option value="mcq">$brih_multiplechoice $brih_qus $brih_type
+			<option value="tft">$brih_true/$brih_false $brih_type
+			<option value="maq">$brih_match $brih_type
+			<option value="sat">$brih_shortType $brih_answer $brih_type
+			<option value="lat">$brih_long $brih_answer $brih_type
+			</option>
+                	</select>
+                	</td>
+                </tr>
+		<tr> 
+                	<td><b>$brih_qus $brih_difflevel </b><font color=Red>*</font>
+			</td>
+                	<td>
+			<select name="difflevel" onChange="Changedifflevel(document.frm);"/>
+                	<option>
+			<option value="0-3">$brih_easy
+			<option value="4-6">$brih_medium
+			<option value="7-9">$brih_hard
+			</option>
+                	</select>
+                	</td>
+                </tr>
+		<tr>
+		#if($typeques!="imgtypeques")
+		#if($typeques!="obo_ques")
+		##if($typeques=="upload_multiple")
+                #fileUpload ("<b>Attach File </b><font color=Red>*</font>" "file")
+		#end
+		#end
+		</tr>
+		<tr bgcolor="$ui.menuColor" width="100%"><td align="left" width="100%" colspan="5">
+		#if($typeques=="obo_ques"||$typeques=="imgtypeques")
+                <input type="button" name="eventSubmit_doSetPage" value="$brih_submit" onClick="checkField1(document.frm,this);"/>
+		#else
+                <input type="button" name="eventSubmit_doUploadQues_Bank" value="$brih_submit" onClick="checkField(document.frm,this);"/>
+		#end
+		<input type="reset" name="reset" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
+		</td></tr>
+		#end
+</table>
+	<input type="hidden" name="actionName">
+	<input type="hidden" name="valQuestype">
+	<input type="hidden" name="valdifflevel">
+	<input type="hidden" name="typeques" value="$typeques">
+	<input type="hidden" name="mode" value="$mode">
+	<input type="hidden" name="page" value="$page">
+	<input type="hidden" name="status" value="$status">
+	<input type="hidden" name="addques" value="$addques">
+	<input type="hidden" name="count" value="$tdcolor">
+</form>
+<SCRIPT LANGUAGE="javascript">
+function checkField(frm,field)
+{
+        if(frm.file.value!="" && frm.Topicname.value!="" && frm.Questype.value!="" && frm.difflevel.value!="")
+        {
+		frm.actionName.value=field.name;
+                frm.submit();
+        }
+        else
+                alert("Please fill the Mandatory(*) Fields !!");
+}
+function checkField1(frm,field)
+{
+        if(frm.Topicname.value!="" && frm.Questype.value!="" && frm.difflevel.value!="")
+        {
+		frm.actionName.value=field.name;
+                frm.submit();
+        }
+        else
+                alert("Please fill the Mandatory(*) Fields !!");
+}
+function ChangeQuestype(frm,field)
+{
+	frm.valQuestype.value=document.frm.Questype.value;
+}
+function Changedifflevel(frm,field)
+{
+	frm.valdifflevel.value=document.frm.difflevel.value;
+}
+function checkClear(frm,field)
+{
+	frm.file.value=""
+	frm.Topicname.value=""
+	frm.Questype.value=""
+	frm.difflevel.value=""
+}
+function popupWin(url,popupName)
+{
+        Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400,align=left");
+}
+</script>

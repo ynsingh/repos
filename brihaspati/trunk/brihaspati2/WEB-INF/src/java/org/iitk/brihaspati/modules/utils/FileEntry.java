@@ -79,10 +79,14 @@ public class FileEntry
 	private String Answer;
         private String Version;
         private String Faqid;
-//-----------------------------
+	
         private String location;
 
 	private String Duedate;
+
+//-----------------------------OLES
+	private String Difflevel;
+        private String Description;
 
 	public void setemailId(String emailId)
         {
@@ -391,5 +395,23 @@ public class FileEntry
                 int index=location.lastIndexOf('/'); // truncate the relative path from the this.name
                 return location.substring(index+1);  // to retrieve the course name.
         }
+//OLES
+	public void setDifflevel(String Difflevel)
+        {
+                this.Difflevel=Difflevel;
+        }
+        public String  getDifflevel()
+        {
+                return Difflevel;
+        }
+        public void setDescription(String Description)
+        {
+                this.Description=Description;
+        }
+        public String  getDescription()
+        {
+                return Description;
+        }
+
 		
 }

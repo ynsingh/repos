@@ -708,5 +708,138 @@ public class TopicMetaDataXmlReader
                 }
         return null;
         }
+	//OLES
+	 /**
+ *         *This method get all details of OLES
+ *                 *@return Vector
+ *                         */
+        public Vector getQuesBank_Detail()
+        {
+                        Vector vt=new Vector();
+                try
+                {
+                        XmlData files[]=xr.getElements("Question");
+                        if(files!=null)
+                        {
+                                Attributes ats;
+                                String QuesId,Question,opt1,opt2,opt3,opt4,Answer,Description,ImgUrl;
+                                for(int j=0;j<files.length;j++)
+                                {
+                                        FileEntry fileEntry=new FileEntry();
+                                        ats=files[j].getAttributes();
+                                        QuesId=ats.getValue("Quesid");
+                                        Question=ats.getValue("Ques");
+                                        opt1=ats.getValue("opt1");
+                                        opt2=ats.getValue("opt2");
+                                        opt3=ats.getValue("opt3");
+                                        opt4=ats.getValue("opt4");
+                                        Answer=ats.getValue("Answer");
+                                        Description=ats.getValue("Description");
+                                        ImgUrl=ats.getValue("ImgUrl");
+
+                                        fileEntry.setquestionid(QuesId);
+                                        fileEntry.setquestion(Question);
+                                        fileEntry.setoptionA(opt1);
+                                        fileEntry.setoptionB(opt2);
+                                        fileEntry.setoptionC(opt3);
+                                        fileEntry.setoptionD(opt4);
+                                        fileEntry.setAnswer(Answer);
+                                        fileEntry.setDescription(Description);
+                                        fileEntry.setUrl(ImgUrl);
+                                        vt.add(fileEntry);
+                                }
+                                return vt;
+          }
+                }
+                catch(Exception e)
+                {
+                        ErrorDumpUtil.ErrorLog("The exception in xmlreaderutil in OLESmethod ::"+e);
+                        System.out.println("See Exception message inExceptionLog.txt file:: ");
+                }
+        return null;
+        }
+/**
+ *         *This method get all details of OLES
+ *                 *@return Vector
+ *                         */
+        public Vector getQuesBanklist_Detail()
+        {
+                        Vector vt=new Vector();
+                try
+                {
+                        XmlData files[]=xr.getElements("Question");
+                        if(files!=null)
+                        {
+                                Attributes ats;
+                                String Topicname,Questiontype,Difflevel,Filename,CreationDate;
+                                for(int j=0;j<files.length;j++)
+                                {
+                                        FileEntry fileEntry=new FileEntry();
+                                        ats=files[j].getAttributes();
+                                        Topicname=ats.getValue("Topicname");
+                                        Questiontype=ats.getValue("Questiontype");
+                                        Difflevel=ats.getValue("Difflevel");
+                                        Filename=ats.getValue("Filename");
+                                        CreationDate=ats.getValue("CreationDate");
+
+                                        fileEntry.setTopic(Topicname);
+                                        fileEntry.setTypeofquestion(Questiontype);
+                                        fileEntry.setDifflevel(Difflevel);
+                                        fileEntry.setfileName(Filename);
+                                        fileEntry.setPDate(CreationDate);
+                                        vt.add(fileEntry);
+                                }
+                                return vt;
+                        }
+                }
+                catch(Exception e)
+                {
+                        ErrorDumpUtil.ErrorLog("The exception in xmlreaderutil in OLESmethod ::"+e);
+                        System.out.println("See Exception message inExceptionLog.txt file:: ");
+                }
+        return null;
 }
+/**
+ *          *This method get all details of OLES
+ *                  *@return Vector
+ *                          */
+        public Vector getQuesBank_Detail1()
+        {
+                        Vector vt=new Vector();
+                try
+                {
+                        XmlData files[]=xr.getElements("Question");
+                        if(files!=null)
+                        {
+                                Attributes ats;
+                                String QuesId,Question,Answer,Description,ImgUrl;
+                                for(int j=0;j<files.length;j++)
+                                {
+                                        FileEntry fileEntry=new FileEntry();
+                                        ats=files[j].getAttributes();
+                                        QuesId=ats.getValue("Quesid");
+                                        Question=ats.getValue("Ques");
+                                        Answer=ats.getValue("Answer");
+                                        Description=ats.getValue("Description");
+                                        ImgUrl=ats.getValue("ImgUrl");
+
+                                        fileEntry.setquestionid(QuesId);
+                                        fileEntry.setquestion(Question);
+                                        fileEntry.setAnswer(Answer);
+                                        fileEntry.setDescription(Description);
+                                        fileEntry.setUrl(ImgUrl);
+                                        vt.add(fileEntry);
+                                }
+                                return vt;
+                        }
+                }
+                catch(Exception e)
+                {
+                        ErrorDumpUtil.ErrorLog("The exception in xmlreaderutil in OLESmethod ::"+e);
+                        System.out.println("See Exception message inExceptionLog.txt file:: ");
+                }
+        return null;
+}	
+
+}//end of  file
 

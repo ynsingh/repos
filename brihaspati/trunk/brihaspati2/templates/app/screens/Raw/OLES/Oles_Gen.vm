@@ -1,0 +1,27 @@
+#*
+ * @(#)Oles_Gen.vm
+ * Copyright (c) 2010 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ *  @author <a href="mailto:seema_020504@yahoo.com ">Seema Pal</a>
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+*#
+$page.setTitle("QuestionBank")
+$page.setBgColor("bgcolor")
+## If some message has been set, that is retrieved and displayed.
+$!data.getMessage()
+## Retreiving the $lang (representing the choosen language for display, which
+## was set in corresponding the screen class.
+#set($lang = $data.getUser().getTemp("lang" ).toString())
+<table bgcolor="$ui.menuColor" width=100%>
+##link for faq with modes(add,delete,alllist and edit)
+<tr><td><b>
+	<font face="$ui.sansSerifFonts">
+	<a href=$link.setPage("Index.vm")>Home</a>|
+	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
+	<a href=$link.setPage("call,OLES,Oles_QB.vm")>QuestionBank</a> 
+</b></td>
+</tr>
+</table>
+<table>
+<tr><td> This Page will be coming soon !! (under development)</td></tr>
+</table>

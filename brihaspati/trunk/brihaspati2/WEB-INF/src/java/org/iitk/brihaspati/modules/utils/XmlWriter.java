@@ -318,7 +318,10 @@ public class XmlWriter
 //----------------------------FAQ-------------
 		else if(element.equals("FAQ"))
                         offset=fileOffset;
-//-------------------------------------------------
+//-------------------------OLES------------------------
+		else if(element.equals("Question"))
+                        offset=0;
+
 		int array[]={seqno+offset};
 		parent.removeSubElements(array);
 		xmlData=(XmlData)v.elementAt(seqno);
