@@ -65,6 +65,7 @@ public class Insert_Multiple extends SecureScreen
 		{
 			ParameterParser pp=data.getParameters();
 			User user=data.getUser();
+			String crsId=(String)data.getUser().getTemp("course_id");
                 	String username=data.getUser().getName();
 			context.put("tdcolor",pp.getString("count",""));
 			context.put("course",(String)user.getTemp("course_name"));
@@ -97,7 +98,7 @@ public class Insert_Multiple extends SecureScreen
 				String difflevel12=pp.getString("difflevel","");
 				context.put("difflevel",difflevel12);
 				String fulltopic=edtopic+"_"+difflevel12+"_"+questiontype;
-				String filepath=QuestionBankPath+"/"+username;
+				String filepath=QuestionBankPath+"/"+username+"/"+crsId;
 				Vector Read=new Vector();
 				TopicMetaDataXmlReader tr=null;
 				tr =new TopicMetaDataXmlReader(filepath+"/"+fulltopic+".xml");

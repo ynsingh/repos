@@ -10,6 +10,7 @@ $page.setTitle("QuestionBank")
 $page.setBgColor("bgcolor")
 ## If some message has been set, that is retrieved and displayed.
 $!data.getMessage()
+$!Msg
 ## Retreiving the $lang (representing the choosen language for display, which
 ## was set in corresponding the screen class.
 #set($lang = $data.getUser().getTemp("lang" ).toString())
@@ -118,6 +119,18 @@ $!data.getMessage()
 		<input type="reset" name="reset" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
 		</td></tr>
 		#end
+		##foreach( $e in $Msg )
+		 ##       <tr bgcolor="$ui.tableColor">
+		 ##       <td align=center>
+		 ##       <font face="$ui.sansSerifFonts">$brih_entry <font color="brown">"$e.getErr_User()"</font>
+		 ##       </font>
+		 ##       </td>
+		 ##       <td align=center>
+		 ##       <font face="$ui.sansSerifFonts">$e.getErr_Type()</font>
+		 ##       </td>
+		 ##       </tr>
+		##end
+		
 </table>
 	<input type="hidden" name="actionName">
 	<input type="hidden" name="valQuestype">

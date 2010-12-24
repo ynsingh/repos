@@ -55,6 +55,7 @@ import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.apache.turbine.modules.screens.VelocityScreen;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 
@@ -68,6 +69,7 @@ public class OnlineExaminationSystem extends SecureAction
 	String QuestionBankPath=TurbineServlet.getRealPath("/QuestionBank");
 	
 	private String LangFile=new String();
+	private String crsId=new String();
 	/** This method is responsible for uploading multiple question in QBR in single step
  	  * @param data RunData instance
  	  * @param context Context instance
@@ -77,7 +79,9 @@ public class OnlineExaminationSystem extends SecureAction
 	{
 	        try
 		 {//try
+			CourseUserDetail MsgDetails=new CourseUserDetail();
 			LangFile=(String)data.getUser().getTemp("LangFile");
+			crsId=(String)data.getUser().getTemp("course_id");
 		 	ParameterParser pp=data.getParameters();
 			User user=data.getUser();
                         String username=data.getUser().getName();
@@ -86,7 +90,7 @@ public class OnlineExaminationSystem extends SecureAction
 			String difflevel=pp.getString("valdifflevel","");
 			String typeques=pp.getString("typeques","");
 			String addques=pp.getString("addques","");
-			String filepath=QuestionBankPath+"/"+username;
+			String filepath=QuestionBankPath+"/"+username+"/"+crsId;
 			File ff=new File(filepath);
                         if(!ff.exists())
                         ff.mkdirs();
@@ -193,7 +197,32 @@ public class OnlineExaminationSystem extends SecureAction
 							}//else4
 						}//else3
 					}//else2
+				/**
+   	                         * Adds the error message to a vector if all the required fields
+                                 * are not entered in the file. The entry number is also added.
+                                 */
+                        if( error!=0){//if error
+				context.put("Msg",MultilingualUtil.ConvertedString("error_msg6",LangFile));
+	/*
+                                MsgDetails=new CourseUserDetail();
+                                String ErrorEntryNumber=Integer.toString(entryNumber);
+                                MsgDetails.setErr_User(ErrorEntryNumber);
+                                if(error==1){
+                                String error_msg1=MultilingualUtil.ConvertedString("error_msg6",LangFile);
+                                MsgDetails.setErr_Type(error_msg1);
+
+                                }
+                                if(error==2){
+
+
+                                                String error_msg2=MultilingualUtil.ConvertedString("error_msg7",LangFile);
+                                                MsgDetails.setErr_Type(error_msg2);
+                                }
+                                ErrType.add(MsgDetails);
+*/
+                        }//endif error
 				}//while1
+	//			context.put("Msg",ErrType);
 				br.close();
                         	fr.close();
                         	f.delete();
@@ -249,6 +278,7 @@ public class OnlineExaminationSystem extends SecureAction
 	        	try
 		 	{//try
 				LangFile=(String)data.getUser().getTemp("LangFile");
+				crsId=(String)data.getUser().getTemp("course_id");
                         	ParameterParser pp=data.getParameters();
 				User user=data.getUser();
                         	String username=data.getUser().getName();
@@ -264,7 +294,7 @@ public class OnlineExaminationSystem extends SecureAction
                                 String option3=pp.getString("op3","");
                                 String option4=pp.getString("op4","");
 				String ImgUrl="";
-				String filepath=QuestionBankPath+"/"+username;
+				String filepath=QuestionBankPath+"/"+username+"/"+crsId;
                         	File ff=new File(filepath);
                         	if(!ff.exists())
                         	ff.mkdirs();
@@ -279,9 +309,9 @@ public class OnlineExaminationSystem extends SecureAction
                        		String Cur_date=ExpiryUtil.getCurrentDate("-");
 				String Quesid=getMaxQuesid(filepath,QBpath1,Questype,data);
                         	String quesimg=new String();
-				quesimg=Quesid+"_"+topic+"_"+difflevel+"_"+Questype;
 				if(typeques.equals("imgtypeques"))
 				{
+				//	quesimg=Quesid+"_"+topic+"_"+difflevel+"_"+Questype;
 					FileItem fileItem=pp.getFileItem("quesimg");
 					if(fileItem.getSize() >0)
                 			{
@@ -297,7 +327,7 @@ public class OnlineExaminationSystem extends SecureAction
                         			{ //first 'for' loop
                                 			fileExt=st.nextToken();
                                 			quesimg=Quesid+"_"+topic+"_"+difflevel+"_"+Questype;
-                                			context.put("ImageName1",Byte.toString(Filesize));
+                                			//context.put("ImageName1",Byte.toString(Filesize));
                         			}
                       				if(fileExt.equals("jpg")|| fileExt.equals("gif")|| fileExt.equals("png"))//if3
                         			{
@@ -305,7 +335,7 @@ public class OnlineExaminationSystem extends SecureAction
                                 			if(i>0 && i<10000)//if4
                                 			{
 								String imagepath=TurbineServlet.getRealPath("/images"+"/QuestionBank");
-								File imgPath=new File(imagepath+"/"+username+"/"+topic);
+								File imgPath=new File(imagepath+"/"+username+"/"+crsId+"/"+topic);
                                         			imgPath.mkdirs();
                                         			imgPath=new File(imgPath+"/"+quesimg);
 						//		ErrorDumpUtil.ErrorLog("\nfileItem======"+imgPath+"\nimgPath"+imgPath+"\nimagepath"+imagepath);
@@ -344,6 +374,7 @@ public class OnlineExaminationSystem extends SecureAction
 	        	try
 		 	{//try
 				LangFile=(String)data.getUser().getTemp("LangFile");
+				crsId=(String)data.getUser().getTemp("course_id");
                                 ParameterParser pp=data.getParameters();
 				User user=data.getUser();
                         	String username=data.getUser().getName();
@@ -353,7 +384,7 @@ public class OnlineExaminationSystem extends SecureAction
 				String topic=pp.getString("topic","");
 				String quesid=pp.getString("quesid","");
 				String dlevel=pp.getString("difflevel","");
-				String filepath=QuestionBankPath+"/"+username;
+				String filepath=QuestionBankPath+"/"+username+"/"+crsId;
 				String fulltopic=topic+"_"+dlevel+"_"+questiontype;
 				TopicMetaDataXmlReader topicmetadata=null;
 				if(deltype.equals("topicdel"))
@@ -396,7 +427,7 @@ public class OnlineExaminationSystem extends SecureAction
 								if(!imgurl.equals(""))
 								{
 									String imagepath=TurbineServlet.getRealPath("/images"+"/QuestionBank");
-                                                       			File imgPath=new File(imagepath+"/"+username+"/"+topic+"/"+imgurl);
+                                                       			File imgPath=new File(imagepath+"/"+username+"/"+crsId+"/"+topic+"/"+imgurl);
 									imgPath.delete();
 								//	ErrorDumpUtil.ErrorLog("imagepath===="+imagepath+"\nimgPath"+imgPath);
 								}
@@ -425,6 +456,7 @@ public class OnlineExaminationSystem extends SecureAction
 	        	try
 		 	{//try
 				LangFile=(String)data.getUser().getTemp("LangFile");
+				crsId=(String)data.getUser().getTemp("course_id");
                                 ParameterParser pp=data.getParameters();
 				User user=data.getUser();
 				String username=data.getUser().getName();
@@ -444,8 +476,9 @@ public class OnlineExaminationSystem extends SecureAction
                                 Vector collect=new Vector();
                                 Vector str=new Vector();
 				String deltype="quesdel";
+				
 				String fulltopic=topic+"_"+difflevel+"_"+questiontype;
-				String filepath=QuestionBankPath+"/"+username;
+				String filepath=QuestionBankPath+"/"+username+"/"+crsId;
                                 TopicMetaDataXmlReader topicmetadata=null;
                                 topicmetadata=new TopicMetaDataXmlReader(filepath+"/"+fulltopic+".xml");
                                 if(questiontype.equals("mcq"))
@@ -557,7 +590,7 @@ public class OnlineExaminationSystem extends SecureAction
                                                 if((topicname.equals(topic))&&(Questiontype.equals(Questiontype1))&&(Difflevel.equals(Difflevel1)))
 						{
                                                         found=true;
-                                                data.setMessage(MultilingualUtil.ConvertedString("brih_This",LangFile) +" "+MultilingualUtil.ConvertedString("GrpmgmtGroup",LangFile)+" "+MultilingualUtil.ConvertedString("Wikiaction6",LangFile)+" " +"!!");
+	                                                data.setMessage(MultilingualUtil.ConvertedString("assignment_msg3",LangFile) +"!!");
 						}
                                           }//for
                                 }//if

@@ -58,7 +58,7 @@ public class Create_QB extends SecureScreen{
 
 			User user=data.getUser();
 			ParameterParser pp=data.getParameters();
-			context.put("tdcolor",pp.getString("count",""));
+			context.put("tdcolor",pp.getString("count","1"));
 			context.put("course",(String)user.getTemp("course_name"));
 			String mode =pp.getString("mode","");
 			context.put("mode",mode);

@@ -63,6 +63,7 @@ public class View_QB extends SecureScreen{
 		try{
 
 			User user=data.getUser();
+			String crsId=(String)data.getUser().getTemp("course_id");
 			String username=data.getUser().getName();
 			ParameterParser pp=data.getParameters();
 			context.put("tdcolor",pp.getString("count",""));
@@ -80,7 +81,7 @@ public class View_QB extends SecureScreen{
 			String difflevel=pp.getString("difflevel","");
 			context.put("difflevel",difflevel);
 			String checkstatus=pp.getString("checkstatus","");
-			String filePath=data.getServletContext().getRealPath("/QuestionBank"+"/"+username);
+			String filePath=data.getServletContext().getRealPath("/QuestionBank"+"/"+username+"/"+crsId);
 			TopicMetaDataXmlReader topicmetadata=null;
                         Vector allQuestions=new Vector();
 			String fulltopic=topic+"_"+difflevel+"_"+questiontype;

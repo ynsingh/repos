@@ -65,9 +65,10 @@ public class Oles_QB extends SecureScreen{
 		try{
 
 			User user=data.getUser();
+			String crsId=(String)data.getUser().getTemp("course_id");
 			String username=data.getUser().getName();
 			ParameterParser pp=data.getParameters();
-			context.put("tdcolor",pp.getString("count",""));
+			context.put("tdcolor",pp.getString("count","1"));
 			context.put("course",(String)user.getTemp("course_name"));
 			String mode =pp.getString("mode","");
 			context.put("mode",mode);
@@ -75,7 +76,7 @@ public class Oles_QB extends SecureScreen{
 			context.put("topic",topic);
 			String instid=(String)user.getTemp("Institute_id");
 			String checkstatus=pp.getString("checkstatus","");
-			String filePath=data.getServletContext().getRealPath("/QuestionBank"+"/"+username);
+			String filePath=data.getServletContext().getRealPath("/QuestionBank"+"/"+username+"/"+crsId);
 			File f=new File(filePath+"/QBtopiclist.xml");
 			TopicMetaDataXmlReader topicmetadata=null;
                         Vector allTopics=new Vector();
@@ -84,13 +85,15 @@ public class Oles_QB extends SecureScreen{
                         {
 				topicmetadata=new TopicMetaDataXmlReader(filePath+"/QBtopiclist.xml");
                         	allTopics=topicmetadata.getQuesBanklist_Detail();
-				for(int i=0;i<allTopics.size();i++)
-                                {//for
-					String topicnew=((FileEntry) allTopics.elementAt(i)).getTopic();
-					if(!allcomtopics.contains(topicnew))
-                                        {
-                                                allcomtopics.addElement(topicnew);
-                                        }
+				if(allTopics!=null){
+					for(int i=0;i<allTopics.size();i++)
+        	                        {//for
+						String topicnew=((FileEntry) allTopics.elementAt(i)).getTopic();
+						if(!allcomtopics.contains(topicnew))
+                                	        {
+                                                	allcomtopics.addElement(topicnew);
+                                        	}
+					}
 				}
 			}
 			if(allTopics==null)
@@ -141,7 +144,7 @@ public class Oles_QB extends SecureScreen{
 		}//try
 		catch(Exception ex)
 		{
-		data.setMessage("The error in Oles_QB !! "+ex);
+		data.setMessage("The error in Oles_QB screen !! "+ex);
 		}
 	}
 }

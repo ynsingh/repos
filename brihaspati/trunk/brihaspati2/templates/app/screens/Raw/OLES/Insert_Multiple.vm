@@ -21,11 +21,11 @@ $!data.getMessage()
 	#end
 	#if($acttype=="viewques")
 	$brih_view $brih_qus
-	#end
-	#if($acttype=="editques")
+	#elseif($acttype=="editques")
 	$brih_edit $brih_qus
-	#end
+	#else
 	$brih_add $brih_qus
+	#end
         </b></td>
 </tr>
 </table>
