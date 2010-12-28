@@ -49,6 +49,7 @@ import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.om.UserConfigurationPeer;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.CommonUtility;
 import org.iitk.brihaspati.om.UserConfiguration;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -61,8 +62,9 @@ import org.apache.turbine.services.session.TurbineSession;
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kumar Trivedi</a>
-* @author <a href="mailto:smita37uiet@gmail.com">Smita Pal</a>
-* @ mdified date 05-05-2010,13-07-2010,5-10-2010(Smita)
+ * @author <a href="mailto:smita37uiet@gmail.com">Smita Pal</a>
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @ mdified date 05-05-2010,13-07-2010,5-10-2010(Smita),23-12-2010
  */
 
 public class Index extends SecureScreen{
@@ -224,6 +226,14 @@ public class Index extends SecureScreen{
 			else{
 				context.put("guest_login","false");
 			}
+			/**
+                          * Getting message if any required field is empty 
+                          */
+                        String LangFile=(String)data.getUser().getTemp("LangFile");
+                        String Mssg = CommonUtility.CheckData(username,LangFile);
+                        context.put("message",Mssg);
+
+
 		}
 		catch(Exception e){data.setMessage("The error is :- "+e);}
 	}

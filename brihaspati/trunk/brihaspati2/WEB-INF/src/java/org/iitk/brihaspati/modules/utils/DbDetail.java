@@ -40,7 +40,7 @@ package org.iitk.brihaspati.modules.utils;
  *  @author(modify) <a href="mailto:sumanrjpt@yahoo.co.in">Suman Rajput</a>
  *  @author (modify)<a href="mailto:rekha_20july@yahoo.co.in">Rekha Pal</a>
  *  @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
- *  @modified date: 20-10-2010
+ *  @modified date: 20-10-2010, 23-12-2010
  */
 
 /**
@@ -57,6 +57,7 @@ public class DbDetail
 	private String Status;
 	private String ExpiryDate;
 	private String RollNo;
+	private String PrgCode;
 	private String Permission;
 	private String GrpmgmtType;
 
@@ -107,6 +108,14 @@ public class DbDetail
 	public String getRollno()
 	{
 		return RollNo;
+	}
+	public void setPrgCode(String prgcode)
+	{
+		this.PrgCode=prgcode;
+	}
+	public String getPrgCode()
+	{
+		return PrgCode;
 	}
 	public void setExpiryDate(String ExDate)
 	{

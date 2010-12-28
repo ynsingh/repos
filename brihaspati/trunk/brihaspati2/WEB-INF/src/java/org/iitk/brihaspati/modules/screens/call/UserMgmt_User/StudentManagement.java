@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_User;
 /*
  * @(#) StudentManagement.java	
  *
- *  Copyright (c) 2005 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005,2010 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -35,17 +35,22 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_User;
  *  Contributors: Members of ETRG, I.I.T. Kanpur 
  * 
  */
-
+import java.util.List;
 import org.iitk.brihaspati.modules.utils.CourseUtil;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.om.security.User;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Instructor;
+import org.apache.torque.util.Criteria;
+import org.iitk.brihaspati.om.ProgramPeer;
+
 
 /**
  * This class responsible manage student management 
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in ">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @modify:23-12-2010
  */
 
 public class StudentManagement extends SecureScreen_Instructor
@@ -85,6 +90,11 @@ public class StudentManagement extends SecureScreen_Instructor
 		}
 		context.put("user_role",(String)user.getTemp("role"));
 		context.put("course",(String)user.getTemp("course_name"));
+		Criteria crit=new Criteria();
+                crit.addGroupByColumn(ProgramPeer.PROGRAM_CODE);
+                List plist=ProgramPeer.doSelect(crit);
+                context.put("prgList",plist);
+
 	}
 	catch(Exception e)
 	{

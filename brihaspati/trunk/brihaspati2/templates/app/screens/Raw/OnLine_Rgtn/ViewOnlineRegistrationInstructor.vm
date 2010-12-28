@@ -7,7 +7,7 @@
  * @author <a href="mailto:omprakash_kgp@yahoo.co.in">Om Prakash</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * Contributors: Members of ETRG, I.I.T. Kanpur
- * @modify 20-03-2009, 20-10-2010
+ * @modify 20-03-2009, 20-10-2010, 23-12-2010
 *#
 
 
@@ -88,6 +88,9 @@ $!data.getMessage()
 		<td align=center>
                         <b> $brih_rollno </b>
                 </td>
+		<td align=center>
+                        <b> $brih_program </b>
+                </td>
                 <td align=center>
                         <b> $brih_course $brih_ID </b>
                 </td>
@@ -123,6 +126,9 @@ $!data.getMessage()
 		<td>
                         $e.getRollno()
                 </td>
+		<td>
+                        $e.getPrgCode()
+                </td>
                 <td>
                         $e.getStatus()
                 </td>
@@ -134,7 +140,7 @@ $!data.getMessage()
         #end
  
         <tr>
-                <td colspan=9 bgcolor="$ui.menuColor">
+                <td colspan=10 bgcolor="$ui.menuColor">
                 <input type="hidden" name="actionName" value="">
                 <input type="button" name="eventSubmit_AcceptUser" value="$online_accept" onClick="AcceptField(document.frm,this);">
                 <input type="button" name="eventSubmit_RejectUser" value="$online_reject" onClick="AcceptField(document.frm,this);">

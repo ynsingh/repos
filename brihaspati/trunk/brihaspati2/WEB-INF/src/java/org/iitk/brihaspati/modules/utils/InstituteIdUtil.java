@@ -57,6 +57,8 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 /**
  * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
  * @author <a href="mailto:smita37uiet@gmail.com">Smita Pal</a>
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @modify date:23-12-2010
  */
 public class InstituteIdUtil
 {
@@ -109,24 +111,23 @@ public class InstituteIdUtil
 
 	return iName;
 	}
-	/** Get the Program name on the basis of programe code
-          */
-        public static String getPrgName(String PrgCode){
-                String pName=null;
-                Criteria crt=new Criteria();
-                try{
+	/* Get the Program name on the basis of programe code
+ 	*/
+	public static String getPrgName(String PrgCode){
+		String pName=null;
+		Criteria crt=new Criteria();
+		try{
                 crt.add(ProgramPeer.PROGRAM_CODE,PrgCode);
                 List pnm=ProgramPeer.doSelect(crt);
                 Program element=(Program)pnm.get(0);
                 pName=element.getProgramName();
-                }
-                catch(Exception ex){
+		}
+		catch(Exception ex){
                         ErrorDumpUtil.ErrorLog("The error in getPrgName() - Institute Id Util class !!"+ex);
                 }
-        return pName;
-        }
-
-        /**
+	return pName;
+	} 	
+        /*
          * getting the instituteid of institute admin by the help of userid
          */
         public static String getAdminInstId(int uid)

@@ -765,41 +765,41 @@ public static void grpLeader()
 	 * This method checks necessary data entered by user
 	 * @return Message
 	 */
-	public static String CheckData(String role,String email,String file)
+	public static String CheckData(String email,String file)
 	{
 		String msg="";
 		String rollno="";
+		int uid=UserUtil.getUID(email);
+		//ErrorDumpUtil.ErrorLog("uid in commonutility---------->"+uid);
+		Vector Student_Role=UserGroupRoleUtil.getGID(uid,3);
+		//ErrorDumpUtil.ErrorLog("Student_Role in commonutility--------->"+Student_Role);
 		Criteria crit = new Criteria();
 		try
 		{
-				/** if role is instructor{
-			         *  getting detail from turbine user & check first name 
+			        /**  getting detail from turbine user & check first name 
 			         *  If first name is null then show message
-			         * }
+			         * 
 				 */
-				if(role.equals("instructor"))
-				{
 					crit.add(TurbineUserPeer.LOGIN_NAME,email);
 					List v = TurbineUserPeer.doSelect(crit);
 					TurbineUser element = (TurbineUser)v.get(0);
 	                                String name = element.getFirstName();
 					if(name.equals(""))
 						msg=MultilingualUtil.ConvertedString("brih_alert",file);
-				}
 
 				/** if role is student{
 			         *   check his rollno & if it is null
 			         *   then show message
 				 */
-				if(role.equals("student"))
+				if(Student_Role.size()!=0)
 				{
 					crit=new Criteria();
 	                                crit.add(StudentRollnoPeer.EMAIL_ID,email);
-	                                List v=StudentRollnoPeer.doSelect(crit);
-					if(v.size()!=0)
+	                                List ve=StudentRollnoPeer.doSelect(crit);
+					if(ve.size()!=0)
 					{
-		                                StudentRollno element=(StudentRollno)v.get(0);
-		                                rollno=element.getRollNo();
+		                                StudentRollno element1=(StudentRollno)ve.get(0);
+		                                rollno=element1.getRollNo();
 					}
 						if(rollno.equals(""))
 						msg=MultilingualUtil.ConvertedString("brih_alert",file);

@@ -47,7 +47,7 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
  *  @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  *  @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  *  @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
- *  @modified date: 20-10-2010
+ *  @modified date: 20-10-2010, 23-12-2010
  */
  
 
@@ -86,6 +86,7 @@ public class InstructorRegisteration extends SecureAction
 		String lname=pp.getString("LNAME");
 		String passwd=pp.getString("PASSWD");
 		String rollno =pp.getString("rollno","");
+		String program =pp.getString("prg","");
 		/**
 		 *If password is empty, then set the password as value of 0th position of emailId.  
 		 */	
@@ -97,7 +98,7 @@ public class InstructorRegisteration extends SecureAction
 		String serverName=data.getServerName();
                 int srvrPort=data.getServerPort();
                 String serverPort=Integer.toString(srvrPort);
-		String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,email,gName,"instructor",serverName,serverPort,LangFile,rollno);
+		String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,email,gName,"instructor",serverName,serverPort,LangFile,rollno,program);
 		context.put("msg",msg);
 		data.setMessage(msg +" "+ mail_msg);
 

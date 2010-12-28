@@ -82,7 +82,7 @@ import org.iitk.brihaspati.om.CoursesPeer;
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
- * @modified date: 08-07-2010, 20-10-2010
+ * @modified date: 08-07-2010, 20-10-2010, 23-12-2010
  */
 
 public class UserAction_Admin extends SecureAction_Admin{
@@ -160,7 +160,9 @@ public class UserAction_Admin extends SecureAction_Admin{
          	String email=StringUtil.replaceXmlSpecialCharacters(pp.getString("email"));
 		String rollno=StringUtil.replaceXmlSpecialCharacters(pp.getString("rollno",""));
                 //ErrorDumpUtil.ErrorLog("value of rollno in user action admin\n"+rollno);
-		String msg=UserManagement.updateUserDetails(uname,fname,lname,email,LangFile,rollno);
+		String program=StringUtil.replaceXmlSpecialCharacters(pp.getString("prg",""));
+                //ErrorDumpUtil.ErrorLog("value of program in user action admin\n"+program);
+		String msg=UserManagement.updateUserDetails(uname,fname,lname,email,LangFile,rollno,program);
 	 	data.setMessage(msg);
 	}
     	/**

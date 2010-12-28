@@ -70,7 +70,7 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in ">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:satyapal@iitk.ac.in ">Satyapal Singh</a>
  * @author <a href="mailto:richa.tandon1@gmail.com ">Richa Tandon</a>
- * @modified date:3-11-2010
+ * @modified date:3-11-2010,23-12-2010
  */
 
 public class ProfileUser extends SecureAction
@@ -108,7 +108,8 @@ public class ProfileUser extends SecureAction
 	  String eMail=pp.getString("EMAIL");
 	  String qid=pp.getString("que","");
           String ans=pp.getString("ANSWER");	 		  
-          String rollno=pp.getString("rollno");	 		  
+	  int count = Integer.parseInt(pp.getString("count"));
+	  //ErrorDumpUtil.ErrorLog("count in profile action-------->"+count);
 	  User user=data.getUser();
           String mail_msg="";
           String LangFile=(String)user.getTemp("LangFile");	        		
@@ -198,27 +199,28 @@ public class ProfileUser extends SecureAction
                 			TurbineUserPeer.doUpdate(crit);
 				       /**
 	        			* This is the updation in table STUDENT_ROLLNO in the database.
-				        */ 		
-					List Rollno = new Vector();
-	                                Rollno = UserManagement.getUserRollNo(loginName);
-					/**
-	                                 * Get user rollno through login name 
-	                                 * if list is not zero it shows user already have rollno & update it
-	                                 * else insert into table
-        	                         */ 
-					if((Rollno.size()>0)&&(!rollno.equals(""))){
-	        	                        StudentRollno element = (StudentRollno)Rollno.get(0);
-        	                	        int id = element.getId();
-                	                	crit=new Criteria();
-	                	                crit.add(StudentRollnoPeer.ID,id);
-                				crit.add(StudentRollnoPeer.EMAIL_ID,loginName);
-	                			crit.add(StudentRollnoPeer.ROLL_NO,rollno);
-	                			StudentRollnoPeer.doUpdate(crit);
+				        */
+					for(int k=1;k<=count;k++) 
+					{
+						String InstName = pp.getString("instName"+k,"");
+						String PrgName = pp.getString("prg"+k,"");
+						String rollno = pp.getString("rollno"+k,"");
+					
+					List Rlrecord = new Vector();
+	                                String RlNo ="";
+	                                Rlrecord = UserManagement.getUserRollNo(loginName);	
+					//Rollno = UserManagement.getUserPrgRollNo(loginName,PrgName,InstName);
+	                                if((Rlrecord.size()>0)&&(!rollno.equals(""))){
+        	                                StudentRollno element = (StudentRollno)Rlrecord.get(0);
+                	                        int id = element.getId();
+                        	                RlNo = element.getRollNo();
 					}
-                	                else if(!rollno.equals("")){
-                        	                rollmsg=UserManagement.InsertRollNo(loginName,rollno,LangFile);
+					if(!rollno.equals(RlNo)){
+                        	                //rollmsg=UserManagement.InsertRollNo(loginName,rollno,LangFile);
+                        	                rollmsg=UserManagement.InsertPrgRollNo(loginName,rollno,PrgName,InstName,LangFile);
                                 	}
-	
+					}
+					
 					File filePath=new File(imagesRealPath+"/Photo/");
 					filePath.mkdirs();
 					filePath=new File(filePath+"/"+PhotoName);
@@ -257,23 +259,40 @@ public class ProfileUser extends SecureAction
                 		TurbineUserPeer.doUpdate(crit);
 				
 				/**
-				 * Get user rollno through login name 
-				 * if list is not zero it shows user already have rollno & update it
-				 * else insert into table
+				 * Getting values of template from parameterparser 
 				 */	
-				List Rollno = new Vector();
-                                Rollno = UserManagement.getUserRollNo(loginName);
-				if((Rollno.size()>0)&&(!rollno.equals(""))){
-               		                StudentRollno element = (StudentRollno)Rollno.get(0);
+				for(int k=1;k<=count;k++)
+                                {
+					String InstName = pp.getString("instName"+k,"");
+                        	        String PrgName = pp.getString("prg"+k,"");
+                                	String rollno = pp.getString("rollno"+k,"");
+
+				/**
+ 				 * Getting all detail of username from database 	
+ 				 */ 		
+				List Rlrecord = new Vector();
+				String RlNo ="";
+                                Rlrecord = UserManagement.getUserRollNo(loginName);
+				//Rollno = UserManagement.getUserPrgRollNo(loginName,PrgName,InstName);
+				//ErrorDumpUtil.ErrorLog("Rollno record in action file------>"+Rlrecord);
+				if((Rlrecord.size()>0)&&(!rollno.equals(""))){
+               		                StudentRollno element = (StudentRollno)Rlrecord.get(0);
                         	        int id = element.getId();
-                                	crit=new Criteria();
+                        	        RlNo = element.getRollNo();
+                                	/*crit=new Criteria();
 	                                crit.add(StudentRollnoPeer.ID,id);
-        	                        crit.add(StudentRollnoPeer.EMAIL_ID,loginName);
+        	                        //crit.add(StudentRollnoPeer.EMAIL_ID,loginName);
                 	                crit.add(StudentRollnoPeer.ROLL_NO,rollno);
-                        	        StudentRollnoPeer.doUpdate(crit);
+                        	        StudentRollnoPeer.doUpdate(crit);*/
 				}
-				else if(!rollno.equals("")){
-					rollmsg=UserManagement.InsertRollNo(loginName,rollno,LangFile);
+				/**
+ 				 * Check if existing rollno is not equal to present rollno 
+ 				 * then insert value in database
+ 				 */ 		
+				if(!rollno.equals(RlNo)){
+					//rollmsg=UserManagement.InsertRollNo(loginName,rollno,LangFile);
+					rollmsg=UserManagement.InsertPrgRollNo(loginName,rollno,PrgName,InstName,LangFile);
+				}
 				}
 				msg1=MultilingualUtil.ConvertedString("Profile_PhotoMsg3",LangFile);
            			data.setMessage(msg1+" "+rollmsg);

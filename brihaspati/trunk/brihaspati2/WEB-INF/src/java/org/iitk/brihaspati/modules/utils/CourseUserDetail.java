@@ -40,7 +40,7 @@ package org.iitk.brihaspati.modules.utils;
  *  @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  *  @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  *  @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
- *  @modified date: 20-10-2010,3-11-2010
+ *  @modified date: 20-10-2010,3-11-2010, 23-12-2010
  */
 
 import java.util.Date;
@@ -67,6 +67,10 @@ public class CourseUserDetail
 	private String Err_type;
 	private String CMsg;
 	private String userProgm;
+	private String Instnm;
+	private int Instid;
+	private String Prgcode;
+	private String Prgnm;
 	/**
 	 * Course details
 	 */ 
@@ -232,4 +236,38 @@ public class CourseUserDetail
 	{
 		return CMsg;
 	}
+	// for Program & InstituteId
+	public void setInstName(String instnm)
+        {
+                this.Instnm=instnm;
+        }
+        public String getInstName()
+        {
+                return Instnm;
+        }
+	public void setInstId(int instid)
+        {
+                this.Instid=instid;
+        }
+        public int getInstId()
+        {
+                return Instid;
+        }
+	public void setPrgCode(String prgcode)
+        {
+                this.Prgcode=prgcode;
+        }
+        public String getPrgCode()
+        {
+                return Prgcode;
+        }
+	public void setPrgName(String prgnm)
+        {
+                this.Prgnm=prgnm;
+        }
+        public String getPrgName()
+        {
+                return Prgnm;
+        }
+
 }

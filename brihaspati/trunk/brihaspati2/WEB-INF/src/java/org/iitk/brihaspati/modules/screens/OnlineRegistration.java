@@ -45,10 +45,13 @@ import org.apache.turbine.modules.screens.VelocityScreen;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 //import org.apache.turbine.services.servlet.TurbineServlet;
 import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
+import org.iitk.brihaspati.om.ProgramPeer;
  /**
  * @author <a href="mailto:omprakash_kgp@yahoo.co.in">Om Prakash</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">jaivir Singh</a>20092010
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>20092010
+ * @modify:23-12-2010
  */
 /**
 * This class called when user request for online registration as an Student,Instructor(course) and author.   
@@ -70,6 +73,10 @@ public class OnlineRegistration extends VelocityScreen
 			crit.addNotIn(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,addnot);
 			List list=InstituteAdminRegistrationPeer.doSelect(crit);
 			context.put("instList",list);
+			crit=new Criteria();
+	                crit.addGroupByColumn(ProgramPeer.PROGRAM_CODE);
+        	        List plist=ProgramPeer.doSelect(crit);
+                	context.put("prgList",plist);
  			ParameterParser pp=data.getParameters();
 			String lang=pp.getString("lang","english");
         	        context.put("lang",lang);

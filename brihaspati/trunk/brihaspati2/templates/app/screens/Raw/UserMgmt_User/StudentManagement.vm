@@ -6,7 +6,7 @@
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
- * @modified date:09-04-2010 , 20-10-2010,3-11-2010
+ * @modified date:09-04-2010 , 20-10-2010,3-11-2010,23-12-2010
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
@@ -93,7 +93,15 @@ $!data.getMessage()
         #*<tr bgcolor="$ui.menuColor">
                 #formCell("$brih_email $brih_ID" "EMAIL" "")
 	<td colspan=3></td>*#	
-        </tr>
+	<tr>
+	        <td>$brih_program</td>
+         	<td colspan=3><select name="prg" size=1 onChange="checkOption1(document.frm,this);"/>
+			<option>$brih_select $brih_program </option>
+			#foreach($progname in $prgList)
+				<option value="$progname.getProgramCode()">$progname.getProgramName() </option>
+			#end
+		</select></td>
+	</tr>
         <tr bgcolor="$ui.menuColor">
         <td align="left" colspan=5>
                 <input type="hidden" name="actionName">
@@ -105,17 +113,41 @@ $!data.getMessage()
 </table>
 </form>
 <SCRIPT LANGUAGE="javascript">
-        function checkField(frm,field)
+	function checkField(frm,field)
         {
                 if(frm.EMAIL.value!="")
                 {
-                                frm.actionName.value=field.name;
-                                frm.submit();
+                        if(frm.rollno.value=="")
+                        {
+                                if(frm.prg.value=="Select Program")
+                                {
+                                        frm.actionName.value=field.name;
+                                        frm.submit();
+                                }
+                                else
+                                {
+                                        alert("Please fill the Roll No Field!!");
+                                }
+                        }
+                        else if(frm.rollno.value!="")
+                        {
+                                if(frm.prg.value!="Select Program")
+                                {
+                                        frm.actionName.value=field.name;
+                                        frm.submit();
+                                }
+                                else 
+                                {
+                                        alert("Please fill the Program Field!!");
+                                }
+                        }
+                                
                 }
                 else
                 {
                         alert("Please fill the Mandatory(*) Fields !!");
                 }
         }
+
 </SCRIPT>
 

@@ -77,7 +77,7 @@ import org.apache.turbine.services.security.torque.om.TurbineUser;
  * @modified date: 08-07-2010
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>20092010
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
- * @modified date: 20-10-2010
+ * @modified date: 20-10-2010,23-12-2010
  */
 
 
@@ -95,7 +95,7 @@ public class OnlineRegistration extends VelocitySecureAction
 	private long noOfdays;
 	private Vector vc = new Vector();
 	private String  orgtn="",curDate="", path="";
-        private String uname="", gname="", email="", fname="", lname="", passwd="", rollno="";
+        private String uname="", gname="", email="", fname="", lname="", passwd="", rollno="", program="";
 	private Properties pr;
 	private String subject="", message="", info_new = "", fileName, Mail_msg="";
 
@@ -129,7 +129,9 @@ public class OnlineRegistration extends VelocitySecureAction
 		orgtn=pp.getString("ORGTN","");
                 email=pp.getString("EMAIL");
                 rollno=pp.getString("rollno","");
+                program=pp.getString("prg","");
 		//ErrorDumpUtil.ErrorLog("roll no in action file--------->\n"+rollno);
+		//ErrorDumpUtil.ErrorLog("program in onlineregistration action file--------->\n"+program);
 		uname=email;
                 passwd=pp.getString("PASSWD");
                 if(passwd.equals("")){
@@ -250,7 +252,7 @@ public class OnlineRegistration extends VelocitySecureAction
 						MsgForExpireTime = "forUser "; 
 						indexList = sendMail_MoreThanSevenDays(userlist, MsgForExpireTime, uname, server_name, srvrPort, LangFile);
 						xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineUser(path,"/OnlineUser.xml",indexList);
-				                TopicMetaDataXmlWriter.appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,curDate,rollno);
+				                TopicMetaDataXmlWriter.appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,curDate,rollno,program);
         				        xmlWriter.writeXmlFile();
 						if(gname.equals("author"))
 						sendMailToApproval(gname,LangFile,uname,"",0);
@@ -263,7 +265,7 @@ public class OnlineRegistration extends VelocitySecureAction
 				{
 					indexList.add(-1);
 	                		xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineUser(path,"/OnlineUser.xml",indexList);
-		        	        TopicMetaDataXmlWriter.appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,curDate,rollno);
+		        	        TopicMetaDataXmlWriter.appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,curDate,rollno,program);
         		        	xmlWriter.writeXmlFile();
 					sendMailToApproval(gname,LangFile,uname,"",(Integer.parseInt(instituteid)));
 				} //else 3

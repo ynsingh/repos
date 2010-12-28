@@ -61,7 +61,7 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
  * @author <a href="mailto:satyapal@gmail.com">Satyapal Singh</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
- * @modified date: 20-10-2010
+ * @modified date: 20-10-2010,23-12-2010
  */
 public class CourseManagement
 {
@@ -167,7 +167,8 @@ public class CourseManagement
 				 		* Create a user(Primary Instructor) for the new Course
 				 		*/
 						String rollno="";
-						String message2=UserManagement.CreateUserProfile(uname,passwd,fname,lname,email,newcid,"instructor",serverName,serverPort,file,rollno);
+						String program="";
+						String message2=UserManagement.CreateUserProfile(uname,passwd,fname,lname,email,newcid,"instructor",serverName,serverPort,file,rollno,program);
 						message=message1+message2;
 					}
 					catch(Exception e)

@@ -58,7 +58,7 @@ import org.iitk.brihaspati.modules.utils.FileEntry;
  * @author: <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
  * @author: <a href="mailto:kishore.shukla@gmail.com">Kishore kumar shukla</a>
  * @author: <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
- * @modified date: 20-10-2010
+ * @modified date: 20-10-2010, 23-12-2010
  */
 
 public class TopicMetaDataXmlWriter
@@ -177,7 +177,7 @@ public class TopicMetaDataXmlWriter
 	* @param gname String
 	* @param roleName String
 	*/
-	public static void appendOnlineUserElement(XmlWriter xmlWriter,String uname,String passwd,String fname,String lname,String orgtn,String email,String gname,String roleName, String registerationDate,String rollno)
+	public static void appendOnlineUserElement(XmlWriter xmlWriter,String uname,String passwd,String fname,String lname,String orgtn,String email,String gname,String roleName, String registerationDate,String rollno,String program)
         {
                 AttributesImpl ats=new AttributesImpl();
                 ats.addAttribute("","uname","","",StringUtil.replaceXmlSpecialCharacters(uname));
@@ -190,6 +190,7 @@ public class TopicMetaDataXmlWriter
                 ats.addAttribute("","roleName","","",StringUtil.replaceXmlSpecialCharacters(roleName));
 		ats.addAttribute("","registerationDate","","",StringUtil.replaceXmlSpecialCharacters(registerationDate));
                 ats.addAttribute("","rollno","","",StringUtil.replaceXmlSpecialCharacters(rollno));
+                ats.addAttribute("","program","","",StringUtil.replaceXmlSpecialCharacters(program));
                 xmlWriter.appendElement("File",null,ats);
 
         }
@@ -349,9 +350,11 @@ public class TopicMetaDataXmlWriter
 					String orgtn=((CourseUserDetail)v.get(i)).getDept();
 					String registerationDate=((CourseUserDetail)v.get(i)).getCreateDate();
 					String rollno=((CourseUserDetail)v.get(i)).getRollNo();
+					String program=((CourseUserDetail)v.get(i)).getPrgCode();
 					//ErrorDumpUtil.ErrorLog("roll no in write xml---------->\n"+rollno);
+					//ErrorDumpUtil.ErrorLog("program in write xml---------->\n"+program);
                                         //appendElement1(xmlWriter,uname,passwd,email,gname,roleName);
-                                        appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,registerationDate,rollno);
+                                        appendOnlineUserElement(xmlWriter,uname,passwd,fname,lname,orgtn,email,gname,roleName,registerationDate,rollno,program);
                                 }
                         }
                 }

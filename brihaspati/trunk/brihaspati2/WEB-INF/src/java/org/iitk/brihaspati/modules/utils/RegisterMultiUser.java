@@ -39,6 +39,7 @@ import java.util.StringTokenizer;
 
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 
 /**
  * This is the util class used to upload multiple users simultaneously
@@ -47,7 +48,7 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
  *  @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a> 
  *  @author <a href="mailto:madhavi_mungole@hotmail.com">Madhavi Mungole</a> 
  *  @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a> 
- *  @modified date: 20-10-2010
+ *  @modified date: 20-10-2010, 23-12-2010
  */
 
 public class RegisterMultiUser
@@ -95,7 +96,7 @@ public class RegisterMultiUser
 			{
 				StringTokenizer st2=new StringTokenizer(line,";",true);
 				entryNumber++;
-				String username="",first_name="",last_name="",email="", passwd="", rollno="";
+				String username="",first_name="",last_name="",email="", passwd="", rollno="" ,program="";
 				int error=0;
 				String mail_msg="";
 				String errMsg="";
@@ -118,7 +119,9 @@ public class RegisterMultiUser
 			      			if(!passwd.equals(";"))
 							{st2.nextToken();}
 						else 
-							{passwd=username;}
+							{String psd[]=username.split("@");
+							passwd=psd[0];}
+							//passwd=username;}
 			      			first_name=st2.nextToken().trim();
 			      			if(!first_name.equals(";"))
 						{
@@ -140,19 +143,43 @@ public class RegisterMultiUser
 							} else {last_name="";}
                               				if(!st2.hasMoreTokens()) 
 								{error=1;}
-							else { email=st2.nextToken().trim();
-                       					}
-					
+							else{	 
+								program=st2.nextToken().trim();
+							    }
+							//ErrorDumpUtil.ErrorLog("program in register multiuser------------>\n"+program);
+                       					if(!program.equals(";"))
+							{
+								if(!st2.hasMoreTokens())
+								{error=1;}
+								else
+								{st2.nextToken();}
+							} else {program="";}
+						}							
 						if(!st2.hasMoreTokens())
-							{error=1;}
+		                                         {error=1;}
 						else
-							{st2.nextToken();}
+                                                {
 							rollno=st2.nextToken().trim();
 							//ErrorDumpUtil.ErrorLog("rollno in register multiuser------------>\n"+rollno);
-							
-					}
+							if(rollno.equals(""))
+							{
+								if(program.equals(""))
+									{error=0;}
+								else
+									program="";
+							}
+							else
+							{			
+								if(program.equals(""))			
+									rollno="";
+								else	
+									error=0;
+							}
+	
+						}
 					if(error==0){
-							String str=UserManagement.CreateUserProfile(email,passwd,first_name,last_name,email,Gname,Role,serverName,serverPort,Langfile,rollno);
+							email=username;
+							String str=UserManagement.CreateUserProfile(email,passwd,first_name,last_name,email,Gname,Role,serverName,serverPort,Langfile,rollno,program);
 								error=3;
 								errMsg=str;
 						}

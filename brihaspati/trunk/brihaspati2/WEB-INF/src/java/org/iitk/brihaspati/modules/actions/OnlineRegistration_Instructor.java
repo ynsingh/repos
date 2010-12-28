@@ -65,7 +65,7 @@ import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
  * @author  <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @author  <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @modify 20-03-09
- * @modify 20-10-2010
+ * @modify 20-10-2010,23-12-2010
  */
 
 
@@ -73,7 +73,7 @@ public class  OnlineRegistration_Instructor extends SecureAction{
 
 	private String LangFile=null;
 	private String tokn="", userName="", groupName="", mailId="" ;
-	private String uname="", gname="", email="", rollno="";
+	private String uname="", gname="", email="", rollno="", program="";
 	private String [] splitedTokn ;
 
 
@@ -196,6 +196,7 @@ public class  OnlineRegistration_Instructor extends SecureAction{
                                                	gname=((CourseUserDetail) userlist.elementAt(i)).getGroupName();
 						email=((CourseUserDetail) userlist.elementAt(i)).getEmail();
 						rollno=((CourseUserDetail) userlist.elementAt(i)).getRollNo();
+						program=((CourseUserDetail) userlist.elementAt(i)).getPrgCode();
                                         	//if(email.equals(mailid))
 						if(uname.equals(userName) && gname.equals(groupName) && email.equals(mailId))
 						{
@@ -208,7 +209,7 @@ public class  OnlineRegistration_Instructor extends SecureAction{
 							if(uname!=null)
 							{
 								try{
-			              					String msg=UserManagement.CreateUserProfile(uname,passwd,fname,lname,email,gname,roleName,serverName,serverPort,LangFile,rollno);
+			              					String msg=UserManagement.CreateUserProfile(uname,passwd,fname,lname,email,gname,roleName,serverName,serverPort,LangFile,rollno,program);
 									data.setMessage(msg);
 								}
 								catch(Exception e){

@@ -75,6 +75,7 @@ import org.iitk.brihaspati.modules.utils.MailNotification;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.SystemIndependentUtil;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 //Babylon
 import babylon.babylonUserTool;
 import babylon.babylonPasswordEncryptor;
@@ -91,7 +92,7 @@ import babylon.babylonPasswordEncryptor;
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @modified date: 08-07-2010
- * @modified date: 20-10-2010, 3-11-2010
+ * @modified date: 20-10-2010, 3-11-2010 ,23-12-2010
  */
 
 public class UserManagement
@@ -111,7 +112,7 @@ public class UserManagement
 		 * @param RollNo String The rollno of the new user 
 		 * @return String
 		 */
-	public static String CreateUserProfile(String UName,String Passwd,String FName,String LName,String Email,String GroupName,String Role,String serverName,String serverPort,String file,String RollNo)
+	public static String CreateUserProfile(String UName,String Passwd,String FName,String LName,String Email,String GroupName,String Role,String serverName,String serverPort,String file,String RollNo,String Program)
 	{
     		babylonUserTool tool=new babylonUserTool();	
 		String message=new String();
@@ -175,9 +176,17 @@ public class UserManagement
 						/**
 						 * if role is student then insert roll no in table
 						 */
-						if((Role.equals("student"))&& (!(RollNo.equals("")))){
-						Rollno_msg = InsertRollNo(UName,RollNo,file);
-						//ErrorDumpUtil.ErrorLog("return value inside if part\n"+Rollno_msg);
+						if((Role.equals("student"))&& (!(RollNo.equals(""))))
+						{
+				                        Vector instid = InstituteIdUtil.getAllInstId(user_id);
+				                        //ErrorDumpUtil.ErrorLog("Institute id in Create User of userManagement util --------->"+instid);
+				                        for(int i=0;i<instid.size();i++)
+			                                {
+			                                        Object insId=instid.get(i);
+			                                        String InsId = insId.toString();
+								Rollno_msg = InsertPrgRollNo(UName,RollNo,Program,InsId,file);
+								//ErrorDumpUtil.ErrorLog("return value inside if part\n"+Rollno_msg);
+							}
 						}
 						User existingUser=TurbineSecurity.getUser(UName);
 						TurbineSecurity.grant(existingUser,user_group,user_role);
@@ -376,10 +385,19 @@ public class UserManagement
 						/**
 						 * Insert roll no in table if role is student
 						 */
-						if((Role.equals("student"))&&(!(RollNo.equals("")))){
-						Rollno_msg = InsertRollNo(UName,RollNo,file);
-						//ErrorDumpUtil.ErrorLog("return value from insert in else rollno\n"+Rollno_msg);
-						}
+						if((Role.equals("student"))&&(!(RollNo.equals(""))))
+						{
+							Vector instid = InstituteIdUtil.getAllInstId(u1);
+                                                        //ErrorDumpUtil.ErrorLog("Institute id in Create User of userManagement util --------->"+instid);
+                                                        for(int i=0;i<instid.size();i++)
+                                                        {
+                                                                Object insId=instid.get(i);
+                                                                String InsId = insId.toString();
+                                                                Rollno_msg = InsertPrgRollNo(UName,RollNo,Program,InsId,file);
+                                                                //ErrorDumpUtil.ErrorLog("return value inside if part\n"+Rollno_msg);
+                                                         }
+                                                }
+                                                                
 						String NewUser= new String();
 						if(serverPort.equals("8080"))
 							NewUser="newUser";
@@ -609,8 +627,48 @@ public class UserManagement
 			{
 				Criteria crit1 = new Criteria();
                         	crit1.add(StudentRollnoPeer.EMAIL_ID,uname);
-                        	crit1.and(StudentRollnoPeer.ROLL_NO,Rollno);
+                        	crit1.add(StudentRollnoPeer.ROLL_NO,Rollno);
 				StudentRollnoPeer.doInsert(crit1);
+				Msg = "";
+			}
+                }
+                catch(Exception e){
+                        ErrorDumpUtil.ErrorLog("This is the exception in Insert Roll No :--utils(UserManagement) "+e);
+                }
+		return Msg;
+        }
+	/**
+	 * In this method,Insert Roll No with program and institute id in table
+	 * 
+	 * @param uname String The userid of the user
+	 * @param Rollno String The rollno of the user 
+	 * @param Prg String The program of the user
+	 * @param Instid String the institute id of the user
+	 */
+	public static String InsertPrgRollNo(String uname,String Rollno,String Prg,String Instid,String File)
+        {
+			String Msg ="";
+                        Criteria crit=new Criteria();
+                try
+                {
+			crit.add(StudentRollnoPeer.ROLL_NO,Rollno);
+			crit.add(StudentRollnoPeer.PROGRAM,Prg);
+			crit.add(StudentRollnoPeer.INSTITUTE_ID,Instid);
+			List v=StudentRollnoPeer.doSelect(crit);
+			if((v.size())!=0)
+			{
+				String Msg1 =MultilingualUtil.ConvertedString("rollno",File);
+				String Msg2 =MultilingualUtil.ConvertedString("Wikiaction6",File);
+				Msg = Msg1+" "+Msg2;
+			}
+			else
+			{
+				crit = new Criteria();
+                        	crit.add(StudentRollnoPeer.EMAIL_ID,uname);
+                        	crit.add(StudentRollnoPeer.ROLL_NO,Rollno);
+                        	crit.add(StudentRollnoPeer.PROGRAM,Prg);
+                        	crit.add(StudentRollnoPeer.INSTITUTE_ID,Instid);
+				StudentRollnoPeer.doInsert(crit);
 				Msg = "";
 			}
                 }
@@ -700,6 +758,32 @@ public class UserManagement
 		catch(Exception e)
 		{
                         ErrorDumpUtil.ErrorLog("This is the exception in get Roll No of specific user -utils(UserManagement)  :- "+e);
+					
+		}
+		return v;
+	}
+	/**
+	 * In this method, get roll no with program of specific user
+	 * 
+	 * @param uid String The userid of the user
+	 * @param prg String Program of the user
+	 * @param Instid String Institute id of the user
+	 * @return List 
+	 */
+	public static List getUserPrgRollNo(String uid,String prg,String Instid)
+	{
+		List v=null;
+		try
+		{
+			Criteria crit=new Criteria();
+			crit.add(StudentRollnoPeer.EMAIL_ID,uid);
+			crit.add(StudentRollnoPeer.PROGRAM,prg);
+			crit.add(StudentRollnoPeer.INSTITUTE_ID,Instid);
+			v=StudentRollnoPeer.doSelect(crit);
+		}
+		catch(Exception e)
+		{
+                        ErrorDumpUtil.ErrorLog("This is the exception in get Roll No acoording to program of specific user -utils(UserManagement)  :- "+e);
 					
 		}
 		return v;
@@ -831,9 +915,10 @@ public class UserManagement
 	 * @param lName String The LastName of the user 
 	 * @param eMail String The Email of the user 
 	 * @param RollNo String The Rollno of the user 
+	 * @param Program String The Program of the user 
 	 * @return String
 	 */
-	public static String updateUserDetails(String userName,String fName,String lName,String eMail,String file,String RollNo)
+	public static String updateUserDetails(String userName,String fName,String lName,String eMail,String file,String RollNo,String Program)
 	{
 		String msg=new String();
 		try
@@ -851,10 +936,19 @@ public class UserManagement
                 		user.setEmail(eMail);
 
                 	TurbineSecurity.saveUser(user);
+			int uid=UserUtil.getUID(userName);
+			Vector instid = InstituteIdUtil.getAllInstId(uid);
+			for(int i=0;i<instid.size();i++)
+				{
+					Object insId=instid.get(i);				
+					String insid = insId.toString();
 			if(!RollNo.equals(""))
 			{	
 				List Rollno = new Vector();
 				Rollno = getUserRollNo(userName);
+				//ErrorDumpUtil.ErrorLog("program in updateuserdetail util --------->"+Program);
+				//Rollno = getUserPrgRollNo(userName,Program,insid);
+				//ErrorDumpUtil.ErrorLog("rollno record in updateuserdetail util --------->"+Rollno);
 				/**
 				 * If list of rollno is greater than zero it shows list have value
 				 * Then update rollno of student 
@@ -866,6 +960,7 @@ public class UserManagement
 					Criteria crit=new Criteria();
 		                        crit.add(StudentRollnoPeer.ID,id);
 		                        crit.add(StudentRollnoPeer.ROLL_NO,RollNo);
+					//crit.add(StudentRollnoPeer.PROGRAM,Program);
 					StudentRollnoPeer.doUpdate(crit);
 				}
 				/**
@@ -873,8 +968,9 @@ public class UserManagement
 				 */
 				else
 				{
-                                        rollmsg=UserManagement.InsertRollNo(userName,RollNo,file);
+                                        rollmsg=InsertPrgRollNo(userName,RollNo,Program,insid,file);
                                 }
+			}
 			}
                 	String profileOf=MultilingualUtil.ConvertedString("profileOf",file);
                         String update_msg=MultilingualUtil.ConvertedString("update_msg",file);

@@ -37,8 +37,10 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_User;
  */
 //Java classes
 import java.util.List;
+import java.util.Vector;
 //Apache classes
 import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.torque.util.Criteria;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.om.security.User;
@@ -47,6 +49,10 @@ import org.iitk.brihaspati.om.HintQuestion;
 import org.iitk.brihaspati.om.HintQuestionPeer;
 import org.iitk.brihaspati.om.TurbineUserPeer;
 import org.iitk.brihaspati.om.StudentRollnoPeer;
+import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
+import org.iitk.brihaspati.om.InstituteAdminRegistration;
+import org.iitk.brihaspati.om.ProgramPeer;
+import org.iitk.brihaspati.om.Program;
 import org.iitk.brihaspati.om.StudentRollno;
 import org.iitk.brihaspati.om.UserConfiguration;
 import org.iitk.brihaspati.om.UserConfigurationPeer;
@@ -54,11 +60,14 @@ import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
+import org.iitk.brihaspati.modules.utils.CourseUserDetail;
+
 /**
  * @author <a href="mailto:singhnk@iitk.ac.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
- * @modified date:3-11-2010
+ * @modified date:3-11-2010,23-12-2010
  */
 
 
@@ -107,19 +116,62 @@ public class Profile extends SecureScreen
 	context.put("qname",qname);
 	
 	/**
-	 * Get user rollno record through username
-	 * if record size is grater then zero it shows user have rollno
+	 * Get list of all registered institute 
 	 */
-	List v=UserManagement.getUserRollNo(username);
-		if(v.size()>0){
-			StudentRollno element=(StudentRollno)v.get(0);
-			String rno=element.getRollNo();
-			context.put("rollno",rno);
-		}
+
+	crt=new Criteria();
+	int addnot[]={0,2};
+        crt.addGroupByColumn(InstituteAdminRegistrationPeer.INSTITUTE_NAME);
+        crt.addNotIn(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,addnot);
+        List list=InstituteAdminRegistrationPeer.doSelect(crt);
+        context.put("instList",list);
+
+	/**
+	 * Get list of all registered program 
+	 */
+	crt=new Criteria();
+	crt.addGroupByColumn(ProgramPeer.PROGRAM_CODE);
+	List plist=ProgramPeer.doSelect(crt);
+	context.put("prgList",plist);
+
+	ParameterParser pp = data.getParameters();
+	String status = pp.getString("status","");
+	/**
+	 * Getting list of all institute according to user id
+	 * List of Rollno according to username
+	 */
+	//Vector InstId = InstituteIdUtil.getAllInstId(uid);
+	//List rlrecord=UserManagement.getUserPrgRollNo(username,Prgcode,InstId);
+	List rlrecord=UserManagement.getUserRollNo(username);
+	int rlsize = rlrecord.size();
+	Vector UsDetail = new Vector();
+	/**
+ 	 * Make record of all details of that username 	
+ 	 */ 	
+	for(int j=0;j<rlrecord.size();j++)
+	{
+		StudentRollno element4 = (StudentRollno)rlrecord.get(j);
+		int rlinstid = Integer.parseInt(element4.getInstituteId());
+		String RlIname=InstituteIdUtil.getIstName(rlinstid); 
+		String rlprgcode = element4.getProgram();
+		String pName =InstituteIdUtil.getPrgName(rlprgcode); 			
+		String rlrollno = element4.getRollNo();	
+		CourseUserDetail cDetails=new CourseUserDetail();
+		cDetails.setInstName(RlIname);
+		cDetails.setInstId(rlinstid);
+		cDetails.setPrgCode(rlprgcode);
+		cDetails.setPrgName(pName);
+		cDetails.setRollNo(rlrollno);
+		UsDetail.add(cDetails);
+		context.put("UDetail",UsDetail);
 	}
+               	context.put("count",rlsize);
+		if(rlsize==0)
+			context.put("sizecount",rlsize);
+	}
+
 	catch(Exception e){data.setMessage("The error in profile"+e);}
     }
 
 }
-
 

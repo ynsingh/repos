@@ -7,7 +7,7 @@
   * @author <a href="mailto:ynsingh@iitk.ac.in ">Yatindra Nath Singh</a>
   * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
   * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
-  * @modified date:3-11-2010
+  * @modified date:3-11-2010,23-12-2010
   * Contributors: Members of ETRG, I.I.T. Kanpur
   *#
 
@@ -35,9 +35,9 @@ $!data.getMessage()
 	   #formCell("$brih_email" "EMAIL" "$!ud.getEmail()")
 	 </tr>
 	   #end
-	 <tr>
+	 #*<tr>
            #formCell("$brih_rollno($brih_if $brih_student)" "rollno" "$!rollno")
-         </tr>
+         </tr>*#
 	 <tr>
 	   #fileUpload("$brih_photo" "PHOTO")
 	 </tr>
@@ -61,12 +61,73 @@ $!data.getMessage()
 		<tr>
                 #formCell("$brih_tcf" "TaskConf" "$!TaskConf")
                 </tr>
-
+		<tr>
+		<td>$RemoteInstitute $brih_name</td><td>$brih_program $brih_name</td><td>$brih_rollno</td>
+		</tr>
+		#*#if($status == "more")
+			#set ($counter = $counter +1)
+		#elseif($counter <1)
+			#set ($counter=1)
+		#end*#
+		#if($count<1)
+			#set($count=1)
+		#end
+		#set($temp=0)
+		##foreach($num in [1..$counter])
+		#foreach($num in [1..$count])
+			<tr>
+			<td><select name="instName$num" size=1  #if($sizecount==0) enabled #elseif($count>0) disabled #end/>
+				#set($temp1=0)
+                                #foreach($st in $UDetail)
+                                	#if($temp == $temp1)
+					<option value="$st.getInstId()">$!st.getInstName() </option>
+					#end
+	                                #set($temp1=$temp1+1)
+                                #end
+						<option>$brih_select $RemoteInstitute </option>
+						#foreach($name in $instList)
+					        <option value="$name.getInstituteId()">$name.getInstituteName() </option>
+				          	#end
+			        </select></td>	
+			<td><select name="prg$num" size=1 #if($sizecount==0) enabled #elseif($count>0) disabled #end/>
+				#set($temp1=0)
+				#foreach($st in $UDetail)
+                                        #if($temp == $temp1)
+					<option value="$st.getPrgCode()">$!st.getPrgName() </option>
+					#end
+                                        #set($temp1=$temp1+1)
+                                #end
+						<option>$brih_select $brih_program </option>
+					       	#foreach($prgname in $prgList)
+	        	        		<option value="$prgname.getProgramCode()">$prgname.getProgramName() </option>
+	                		  	#end
+				</select></td>
+			<td>	
+				#set($temp1=0)
+				#foreach($st in $UDetail)
+                                        #if($temp == $temp1)
+						<input type="text" name="rollno$num" value="$!st.getRollNo()" #if($count>0) readonly #end>
+					#end
+                                        #set($temp1=$temp1+1)
+                                #end
+					#if($sizecount == 0)
+					<input type="text" name="rollno$num" value="" #if($sizecount>0) readonly #end>
+					#end
+			</td></tr>
+                                #set($temp=$temp+1)
+		#end
+		<tr>
+		#*<td align="right" colspan=4>
+		<a href=$link.setPage("call,UserMgmt_User,Profile.vm").addPathInfo("status","more").addPathInfo("counter",$counter) style=text-decoration:none>More</a>
+		</td>*#
+		</tr>
 		<tr bgcolor="$ui.menuColor">
-                <td colspan=2>
+                <td colspan=7>
                  <input type="button" name="eventSubmit_doUpdate" value="$brih_submit" onClick="checkAnswer(document.frm,this);"/>                 
 		 <input type="reset"  value="$brih_reset"/>
 		 <input type="hidden" name="actionName"/>
+		 <input type="hidden" name="counter" value="$counter"/>
+		 <input type="hidden" name="count" value="$count"/>
                 </td>
           </tr>
      </table>
@@ -106,4 +167,12 @@ $!data.getMessage()
 			}
 		}
         }
+	function checkOption (frm,field)
+        {
+                frm.instnm.value=document.frm.instName.value;
+        }
+	function checkOption1 (frm,field)
+        {
+                frm.prgnm.value=document.frm.prg.value;
+	}
 </SCRIPT>

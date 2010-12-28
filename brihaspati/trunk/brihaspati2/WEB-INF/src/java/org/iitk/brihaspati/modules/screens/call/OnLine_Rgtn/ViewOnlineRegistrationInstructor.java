@@ -46,14 +46,13 @@ import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.DbDetail;
-
-
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 
 /**
  * @author <a href="mailto:ynsingh@iitk.ac.in">Dr. Y. N. Singh </a>	
  * @author  <a href="mailto:omprakash_kgp@yahoo.co.in">Om Prakash</a>
  * @author  <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
- * @modified date: 20-10-2010
+ * @modified date: 20-10-2010, 23-12-2010
  */
 
 
@@ -104,7 +103,10 @@ public class ViewOnlineRegistrationInstructor extends SecureScreen_Instructor {
                                	        	String email=((CourseUserDetail) list.elementAt(i)).getEmail();
                                	               	String roleName=((CourseUserDetail) list.elementAt(i)).getRoleName();
                                	               	String rollno=((CourseUserDetail) list.elementAt(i)).getRollNo();
+                               	               	String program=((CourseUserDetail) list.elementAt(i)).getPrgCode();
+						String prgname = InstituteIdUtil.getPrgName(program);	
 						//ErrorDumpUtil.ErrorLog("in view online registration------>"+rollno);
+						//ErrorDumpUtil.ErrorLog("program in view online registration------>"+program);
                                	        	DbDetail dbDetail= new DbDetail();
                                	        	dbDetail.setSender(uname);
                                	        	dbDetail.setPDate(passwd);
@@ -115,6 +117,7 @@ public class ViewOnlineRegistrationInstructor extends SecureScreen_Instructor {
                                	        	dbDetail.setStatus(gname);
                                	        	dbDetail.setMsgID(roleName);
                                	        	dbDetail.setRollno(rollno);
+						dbDetail.setPrgCode(prgname);
                                	        	entry.addElement(dbDetail);
 					}
 					

@@ -55,7 +55,7 @@ $!data.getMessage()
                 <td><input type="text" name="pcode" value="$pgcode" #if($status=="update") readonly #end></td>
 	</tr>
         <tr>
-                <td>$brih_program #if($lang == "hindi") $brih_Of1 #end $brih_name <font color="red">*</td>
+                <td>$brih_program  #if($lang == "hindi") $brih_Of1 #end $brih_name ($brih_b.$brih_tech, $brih_m.$brih_tech, $brih_b.$brih_sc, $brih_m.$brih_sc $brih_etc)<font color="red">*</td>
                 <td><input type="text" name="pname" value="$pgname" #if($status=="update") readonly #end></td>
         </tr>
         <tr bgcolor="$ui.menuColor">

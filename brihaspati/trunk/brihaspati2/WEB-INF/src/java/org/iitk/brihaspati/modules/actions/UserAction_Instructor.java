@@ -101,6 +101,7 @@ public class UserAction_Instructor extends SecureAction_Instructor
 			ParameterParser pp=data.getParameters();
 			String gName=data.getUser().getTemp("course_id").toString();
 			String rollno = pp.getString("rollno","");
+			String program = pp.getString("prg","");
 			String email=pp.getString("EMAIL");
 			String passwd=pp.getString("PASSWD");
 			/**
@@ -115,7 +116,7 @@ public class UserAction_Instructor extends SecureAction_Instructor
 			}
 			String fname=pp.getString("FNAME");
 			String lname=pp.getString("LNAME");
-			String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,email,gName,"student",serverName,serverPort,LangFile,rollno);
+			String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,email,gName,"student",serverName,serverPort,LangFile,rollno,program);
 			data.setMessage(msg);
 
 		}
@@ -310,8 +311,9 @@ public class UserAction_Instructor extends SecureAction_Instructor
                 String lname=StringUtil.replaceXmlSpecialCharacters(pp.getString("lastname"));
                 String email=StringUtil.replaceXmlSpecialCharacters(pp.getString("email"));
                 String rollno=StringUtil.replaceXmlSpecialCharacters(pp.getString("rollno",""));
-		//ErrorDumpUtil.ErrorLog("value of rollno in user action instructor\n"+rollno);
-                String msg=UserManagement.updateUserDetails(uname,fname,lname,email,LangFile,rollno);
+		String program=StringUtil.replaceXmlSpecialCharacters(pp.getString("prg",""));
+               //ErrorDumpUtil.ErrorLog("value of program in user action instructor\n"+program);
+                String msg=UserManagement.updateUserDetails(uname,fname,lname,email,LangFile,rollno,program);
                 data.setMessage(msg);
         }
 	/**

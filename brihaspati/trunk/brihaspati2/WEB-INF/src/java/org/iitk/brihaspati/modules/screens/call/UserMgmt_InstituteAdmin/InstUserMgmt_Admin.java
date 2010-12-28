@@ -39,6 +39,8 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_InstituteAdmin;
 /**
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @modify:23-12-2010
  */
 import java.util.List;
 import java.util.Vector;
@@ -54,6 +56,7 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.iitk.brihaspati.modules.utils.ListManagement;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.om.ProgramPeer;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Institute_Admin;
 
 /* This screen class is called when Institute admin add a user as Secondary Instructor,student and author.
@@ -87,6 +90,21 @@ public class InstUserMgmt_Admin extends SecureScreen_Institute_Admin
 		context.put("role",role);
 		}
 	}
+	/*
+ 	 * Getting list of program from database
+ 	 */ 	
+	try
+	{
+		Criteria crit1=new Criteria();
+	        crit1.addGroupByColumn(ProgramPeer.PROGRAM_CODE);
+	        List plist=ProgramPeer.doSelect(crit1);
+	        context.put("prgList",plist);
+	}
+	catch(Exception e)
+	{
+		ErrorDumpUtil.ErrorLog("Error in screen[InstUserMgmt_Admin.java] "+e);
+	}
+	
 	
 	/**
 	 * Institute admin view the student course list by search string selecting query(First name ,last name username and email )  
