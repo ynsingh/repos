@@ -77,6 +77,7 @@ public class ListManagement
 		Vector userDetails=new Vector();
 		try{
 			List user1=UserManagement.getUserDetail1("All",Institute_Id);
+//			ErrorDumpUtil.ErrorLog("User in ListMgmt getInstituteUserList Method======>"+user1);
 			userDetails=getInstituteUDetails(user1,"User");
 		}
 		catch(Exception e)
@@ -89,6 +90,7 @@ public class ListManagement
 		try{
 			List user=UserManagement.getUserDetail("All");
 			userDetails=getDetails(user,"User");
+			//ErrorDumpUtil.ErrorLog("Userlist in getUserList method in List Mgmt=====>"+userDetails);
 		}
 		catch(Exception e)
 		{}
@@ -111,7 +113,7 @@ public class ListManagement
 			 */
 			if(type.equals("User"))
 			{
-			for(int i=0;i<list.size();i++)
+			for( int i=0;i<list.size();i++)
 			{
 				TurbineUser element=(TurbineUser)(list.get(i));
 				//org.iitk.brihaspati.om.TurbineUser element=(org.iitk.brihaspati.om.TurbineUser)(list.get(i));
@@ -119,7 +121,13 @@ public class ListManagement
 				//String loginName=(element.getLoginName()).toString();
 				String firstName=(element.getFirstName()).toString();
 				String lastName=(element.getLastName()).toString();
-				String email=(element.getEmail()).toString();
+				//modified on 24-12-2010 by sharad
+				String email=null;
+				try{
+				//String email=(element.getEmail()).toString();
+				email=(element.getEmail()).toString();
+				}
+				catch(Exception e1){}
 				String userName=firstName+" "+lastName;
 				CourseUserDetail cuDetail=new CourseUserDetail();
 				cuDetail.setLoginName(loginName);
@@ -160,7 +168,7 @@ public class ListManagement
 			* @see MultilingualUtil in utils
 	                */
 			Details.add("The Error in Details"+ex);
-		}	
+		}
 	return(Details);
 	}
 	/**

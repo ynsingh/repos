@@ -91,8 +91,7 @@ import babylon.babylonPasswordEncryptor;
  * @author <a href="mailto:satyapalsingh@gmail.com">Satyapal Singh</a>
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
- * @modified date: 08-07-2010
- * @modified date: 20-10-2010, 3-11-2010 ,23-12-2010
+ * @modified date: 08-07-2010, 20-10-2010, 3-11-2010, 26-12-2010
  */
 
 public class UserManagement
@@ -128,7 +127,7 @@ public class UserManagement
 		{
 				String userRole=new String();
 			try{
-				String Mail_msg=new String();
+					String Mail_msg=new String();
 				String Rollno_msg="";
 				String email_existing=new String();
 				String cAlias=new String();
@@ -887,8 +886,12 @@ public class UserManagement
 			for(int u=0;u<UidVector.size();u++){
 				String userId=(UidVector.get(u)).toString(); 
 				int UserId=Integer.parseInt(userId);
+				ErrorDumpUtil.ErrorLog("UserId in List Mgmt ====>"+UserId);
 				crit=new Criteria();
-				crit.add(TurbineUserPeer.USER_ID,UserId);
+				//modified on 25-12-2010 by sharad
+				if(UserId!=0)
+				{
+					crit.add(TurbineUserPeer.USER_ID,UserId);
 				try{
 					tulist=TurbineUserPeer.doSelect(crit);
 					for(int r=0;r<tulist.size();r++){
@@ -897,6 +900,7 @@ public class UserManagement
                                 	}
 				}catch(Exception ex){}
 				v=v1;
+				}
 			}
                 }
                 catch(Exception e)
