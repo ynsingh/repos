@@ -107,6 +107,12 @@ class NotificationsEmailsService {
         String password = gmsSettingsService.getGmsSettingsValue("MailPassword") // your authsmtp password
         String port = gmsSettingsService.getGmsSettingsValue("MailPort")
         String from = gmsSettingsService.getGmsSettingsValue("MailFrom")
+        String isSSL = gmsSettingsService.getGmsSettingsValue("isSSL")
+        
+ 
+ 
+ 
+       /*   
  
         Properties props = System.getProperties();
         props.put("mail.smtp.host", host);
@@ -122,13 +128,7 @@ class NotificationsEmailsService {
         InternetAddress to_address = new InternetAddress(emailId);
         message.addRecipient(Message.RecipientType.TO, to_address);
         
-       /* String mailMessage="";
-        mailMessage="Dear "+name+", \n \n "+mailContent+".";
-        mailMessage+="\n \n LoginName    : "+emailId;
-        mailMessage+="\n Password     : "+pass;
-        mailMessage+="\n \n \n To activate your account,click on the following link   \t:"+urlPath+personId;*/
- 
-        message.setSubject(mailSubject);
+         message.setSubject(mailSubject);
         message.setText(mailMessage);
         Transport transport = session.getTransport("smtp");
         try 
@@ -151,6 +151,87 @@ class NotificationsEmailsService {
         	mailServerStatus=false
         }
         transport.close();
+        
+        */
+        
+          
+	                   
+	            
+	                String[] to={emailId};
+		       
+	         
+	               Properties props = new Properties();
+		               //Properties props=System.getProperties();
+		        props.put("mail.smtp.user", username);
+		        props.put("mail.smtp.host", host);
+		                if(!"".equals(port))
+		        props.put("mail.smtp.port", port);
+		               
+		     
+		      
+		                
+		               
+		               
+		               
+		                if(!"false".equals(isSSL))
+			       				  {
+			       				  System.out.println("SSL");
+			       				    props.put("mail.smtp.starttls.enable","true");  
+			       				    props.put("mail.smtp.socketFactory.port", port);
+			       						                
+			       				   props.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+			       					    		               
+			       				   props.put("mail.smtp.socketFactory.fallback", "false");
+			       					   }
+			       	    		        	    		        
+			       	    		             props.put("mail.smtp.auth", "true");
+			       	    		                if(true){
+			       	    		                props.put("mail.smtp.debug", "true");
+			       	    		                }else{
+			       	    		                props.put("mail.smtp.debug", "false");          
+			       	    		                }
+	    		                
+		               
+		               
+		               
+		                 props.put("mail.smtp.auth", "true");
+		               
+		               
+		               
+		               
+		               
+		               
+		        try
+		        {
+		                Session session = Session.getDefaultInstance(props, null);
+		               session.setDebug(true); 
+		            MimeMessage msg = new MimeMessage(session);
+	                    msg.setText(mailMessage);
+		            msg.setSubject(mailSubject);
+	                    msg.setFrom(new InternetAddress(from));
+		                        for(int i=0;i<to.length;i++){
+		            msg.addRecipient(Message.RecipientType.TO, new InternetAddress(emailId));
+		                        }
+		                         Transport transport = session.getTransport("smtp");
+		                         transport.connect(host, username, password);
+		                         transport.sendMessage(msg, msg.getAllRecipients());
+		                         transport.close();
+		                       return true;
+		        }
+		       catch (Exception mex)
+		        {
+		            mex.printStackTrace();
+		                        return false;
+	       } 
+	        
+	        
+	        
+        
+        
+        
+        
+        
+        
         return mailServerStatus;
     }
     
@@ -163,8 +244,80 @@ class NotificationsEmailsService {
         String password = gmsSettingsService.getGmsSettingsValue("MailPassword") // your authsmtp password
         String port = gmsSettingsService.getGmsSettingsValue("MailPort")
         String from = gmsSettingsService.getGmsSettingsValue("MailFrom")
+        String isSSL = gmsSettingsService.getGmsSettingsValue("isSSL")
+        
+        
+        
+            
+	    	                String[] to={emailId};
+	    		       
+	    	         
+	    	               Properties props = new Properties();
+	    		               //Properties props=System.getProperties();
+	    		        props.put("mail.smtp.user", username);
+	    		        props.put("mail.smtp.host", host);
+	    		                if(!"".equals(port))
+	    		        props.put("mail.smtp.port", port);
+	    		               
+	    		        
+	    		        
+	    		          if(!"false".equals(isSSL))
+				  {
+				  System.out.println("SSL");
+				    props.put("mail.smtp.starttls.enable","true");  
+				    props.put("mail.smtp.socketFactory.port", port);
+						                
+				   props.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+					    		               
+				   props.put("mail.smtp.socketFactory.fallback", "false");
+					   }
+	    		        	    		        
+	    		             props.put("mail.smtp.auth", "true");
+	    		                if(true){
+	    		                props.put("mail.smtp.debug", "true");
+	    		                }else{
+	    		                props.put("mail.smtp.debug", "false");          
+	    		                }
+	    		                
+	    		              
+	    		         String mailMessage="";
+				        mailMessage="Dear "+name+", \n \nYour Password changed successfully .";
+				        mailMessage+="\n \n LoginName    : "+name;
+				        mailMessage+="\n Password     : "+pass;
+        mailMessage+="\n \n \n To activate your account,click on the following link   \t:"+urlPath+personId;
+	    		        
+	    		 
+	    		        try
+	    		        {
+	    		                Session session = Session.getDefaultInstance(props, null);
+	    		               session.setDebug(true); 
+	    		            MimeMessage msg = new MimeMessage(session);
+	    	                    msg.setText(mailMessage);
+	    		            msg.setSubject(mailSubject);
+	    	                    msg.setFrom(new InternetAddress(from));
+	    		                        for(int i=0;i<to.length;i++){
+	    		            msg.addRecipient(Message.RecipientType.TO, new InternetAddress(emailId));
+	    		                        }
+	    		                         Transport transport = session.getTransport("smtp");
+	    		                         transport.connect(host, username, password);
+	    		                         transport.sendMessage(msg, msg.getAllRecipients());
+	    		                         transport.close();
+	    		                       return true;
+	    		        }
+	    		       catch (Exception mex)
+	    		        {
+	    		            mex.printStackTrace();
+	    		                        return false;
+	    	       } 
+	    	        
+	        
+        
+        
+        
+        
+        
  
-        Properties props = System.getProperties();
+        /*Properties props = System.getProperties();
         props.put("mail.smtp.host", host);
         props.put("mail.smtp.user", username);
         props.put("mail.smtp.password", password);
@@ -190,7 +343,7 @@ class NotificationsEmailsService {
         Transport transport = session.getTransport("smtp");
         transport.connect(host, username, password);
         transport.sendMessage(message, message.getAllRecipients());
-        transport.close();
+        transport.close();*/
         return true;
     }
    
