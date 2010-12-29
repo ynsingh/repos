@@ -1129,6 +1129,7 @@ INSERT INTO gms_settings (NAME,VALUE) VALUES ("MailPort","25");
 INSERT INTO gms_settings (NAME,VALUE) VALUES ("MailUserName","");
 INSERT INTO gms_settings (NAME,VALUE) VALUES ("MailPassword","");
 INSERT INTO gms_settings (NAME,VALUE) VALUES ("MailFrom","no-reply@yourdomain.com");
+insert  into `gms_settings`(`id`,`version`,`created_by`,`created_date`,`modified_by`,`modified_date`,`name`,`value`) values (14,0,NULL,NULL,NULL,NULL,'isSSL','true');
 
 
 
