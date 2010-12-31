@@ -49,6 +49,7 @@ import org.apache.torque.util.Criteria;
 import java.util.StringTokenizer;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.modules.screens.VelocityScreen;
+import org.apache.turbine.services.servlet.TurbineServlet;
 
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.FAQDetail;
@@ -59,6 +60,7 @@ import org.iitk.brihaspati.modules.utils.ListManagement;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
+import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
 import org.apache.turbine.services.security.torque.om.TurbineUserGroupRole;
@@ -219,8 +221,16 @@ public class FAQlist extends VelocityScreen
                         	status="NoBlank";
 				if(!mode.equals("alllist"))
 				context.put("entry",entry);
-				else
-				CommonUtility.PListing(data ,context ,entry);
+				else{
+					String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+                                	String conf =AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value");
+                                	int list_conf=Integer.parseInt(conf);
+                                	context.put("userConf",new Integer(list_conf));
+                                	context.put("userConf_string",conf);
+					Vector vct=CommonUtility.PListing(data ,context ,entry,list_conf);
+					ErrorDumpUtil.ErrorLog("vct at line 231======"+vct);
+					context.put("entry",vct);
+				}
 			}
 			else
                         {

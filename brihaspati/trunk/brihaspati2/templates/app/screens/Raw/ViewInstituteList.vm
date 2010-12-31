@@ -14,13 +14,13 @@ $!data.getMessage()
 <table bgcolor="$ui.menuColor" width=100%>
 <tr><td>
 	<font face="$ui.sansSerifFonts" size=3>
-	<a href=$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang",$lang)>$brih_login $WikiPage</a> |
+	<a href=$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang",$lang) style=text-decoration:none>$brih_login $WikiPage</a> |
 	$brih_reg2 $RemoteInstitute
 	</font>
 	</td>
 </tr>
 </table>
-#set($headings = ["$RemoteInstitute $brih_name","$RemoteInstitute $RemoteAddress","$brih_ad $brih_name","$brih_ad $brih_email"] )
+#set($headings = ["$RemoteInstitute $brih_name","$RemoteInstitute $RemoteAddress","$brih_ad $brih_name","$brih_view $brih_other $brih_name","$brih_ad $brih_email"] )
 <table align="left" bgcolor="$ui.menuColor" width=100%>
 <tr>
 	<td><b>$brih_reg2 $RemoteInstitute</b></font></td>
@@ -35,7 +35,8 @@ $!data.getMessage()
 		#set($counter1=1)
 		#foreach($ent1 in $entry)
 		#set($counter2=1)
-		#foreach($ent in $Inslist)
+		##foreach($ent in $Inslist)
+		#foreach($ent in $entry1)
 			#if($counter1==$counter2)
 				#if($velocityCount%2==0)
 					<tr bgcolor="$ui.tableColor">
@@ -45,7 +46,8 @@ $!data.getMessage()
 			<td>$ent.getInstituteName()</td>
 			<td>$ent.getInstiuteAddress() $ent.getCity()</td>
 			<td>$!ent1.getAdminFname() $!ent1.getAdminLname()</td>
-			<td><a href=mailto:$!ent1.getAdminEmail()>$!ent1.getAdminEmail()</a></td>
+			<td><a href=javascript:popupWin("$link.setPage("call,ViewANameList.vm").addPathInfo("instituteid",$ent.getInstituteId())","newWin") style=text-decoration:none>$brih_ad $brih_name</a></td>
+			<td><a href=mailto:$!ent1.getAdminEmail() style=text-decoration:none>$!ent1.getAdminEmail()</a></td>
 			</tr>
 			#end
 		#set($counter2=$counter2+1)
@@ -81,3 +83,10 @@ $!data.getMessage()
 	</td></tr>
 </table>
 </form>
+
+<SCRIPT language="JavaScript">
+        function popupWin(url,popupName)
+        {
+                Win1=window.open(url,popupName,"resizable,height=200,width=400");
+        }
+</SCRIPT>

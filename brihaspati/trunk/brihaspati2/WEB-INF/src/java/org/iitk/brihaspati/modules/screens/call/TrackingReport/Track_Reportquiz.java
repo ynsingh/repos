@@ -270,6 +270,14 @@ public class Track_Reportquiz extends SecureScreen
 			{
 				String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
                                 String AdminConf = AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value");
+				////////////////////////////////
+				//String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+                                //String conf =AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value");
+                                int list_conf=Integer.parseInt(AdminConf);
+
+                                //context.put("userConf",new Integer(list_conf));
+                                //context.put("userConf_string",conf);
+				////////////////////////
                                 context.put("userConf",new Integer(AdminConf));
                                 context.put("userConf_string",AdminConf);
 				int startIndex=pp.getInt("startIndex",0);
@@ -357,7 +365,8 @@ public class Track_Reportquiz extends SecureScreen
 					}
 				}
 				//}
-				CommonUtility.PListing(data,context,usrid);
+				Vector vct=CommonUtility.PListing(data,context,usrid,list_conf);
+				context.put("entry",vct);
 				context.put("chktype","userlog");
 				for(int k=0;k < usrid.size(); k++)
 				{
@@ -375,7 +384,10 @@ public class Track_Reportquiz extends SecureScreen
 					tmp=0;
 				}
 				int t_size=usrid3.size();
-                                int value[]=new int[7];
+				
+				Vector vct3=CommonUtility.PListing(data,context,usrid3,list_conf);
+				context.put("usrid3",vct3);
+                                /*int value[]=new int[7];
                                 value=ListManagement.linkVisibility(startIndex,t_size,Integer.parseInt(AdminConf));
                                 int k2=value[6];
                                 context.put("k",String.valueOf(k2));
@@ -400,7 +412,7 @@ public class Track_Reportquiz extends SecureScreen
                                 context.put("check_last",String.valueOf(check_last));
                                 context.put("startIndex",String.valueOf(eI));
                                 Vector splitlist=ListManagement.listDivide(usrid3,startIndex,Integer.parseInt(AdminConf));
-				context.put("usrid3",splitlist);
+				context.put("usrid3",splitlist);*/
 				//--------------------------tiotal access time-------------------//
 				for(int a=0;a<usrid.size();a++)
 				{
@@ -456,7 +468,10 @@ public class Track_Reportquiz extends SecureScreen
 					usrid6.addElement(time);
 				}
 				int t_size1=usrid6.size();
-                                int value1[]=new int[7];
+				
+				Vector vct6=CommonUtility.PListing(data,context,usrid6,list_conf);
+				context.put("usrid6",vct6);
+                                /*int value1[]=new int[7];
                                 value1=ListManagement.linkVisibility(startIndex,t_size1,Integer.parseInt(AdminConf));
                                 int k1=value1[6];
                                 context.put("k",String.valueOf(k1));
@@ -481,7 +496,7 @@ public class Track_Reportquiz extends SecureScreen
                                 context.put("check_last",String.valueOf(check_last3));
                                 context.put("startIndex",String.valueOf(eI1));
                                 Vector splitlist1=ListManagement.listDivide(usrid6,startIndex,Integer.parseInt(AdminConf));
-                                context.put("usrid6",splitlist1);
+                                context.put("usrid6",splitlist1);*/
 				//-------------------------change seconds in hh:mm:ss------------//
 				//--------------------------tiotal access time-------------------//
 				//--------------------------all course details-------------------//

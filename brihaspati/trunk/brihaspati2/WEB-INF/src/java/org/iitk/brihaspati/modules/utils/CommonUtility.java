@@ -719,19 +719,13 @@ public static void grpLeader()
            }
         }//close method
                                                                                 
-     public static void PListing( RunData data , Context context , Vector entry)
+	public static Vector PListing( RunData data , Context context , Vector entry,int list_conf )
         {
+                                Vector splitlist=new Vector();
                 try
                 {
                                 User user=data.getUser();
                                 ParameterParser pp=data.getParameters();
-				String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
-		                String conf =AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value");
-                                int list_conf=Integer.parseInt(conf);
-
-                                context.put("userConf",new Integer(list_conf));
-                                context.put("userConf_string",conf);
-
                                 int startIndex=pp.getInt("startIndex",0);
                                 int t_size=entry.size();
 
@@ -755,10 +749,11 @@ public static void grpLeader()
                                 int check_last=value[5];
                                 context.put("check_last",String.valueOf(check_last));
                                 context.put("startIndex",String.valueOf(eI));
-                                Vector splitlist=ListManagement.listDivide(entry,startIndex,list_conf);
-                                context.put("entry",splitlist);
+                                splitlist=ListManagement.listDivide(entry,startIndex,list_conf);
+                                //context.put("entry",splitlist);
                 }
                 catch(Exception e){data.setMessage("The error in [PListing] of [CommonUtility Util] !!"+e);}
+                return splitlist;
     }//method
 
 	/**

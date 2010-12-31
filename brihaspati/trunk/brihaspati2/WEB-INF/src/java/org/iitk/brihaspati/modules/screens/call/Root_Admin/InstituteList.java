@@ -54,11 +54,11 @@ import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
 import org.iitk.brihaspati.om.InstituteAdminRegistration;
 import org.iitk.brihaspati.om.InstituteAdminUserPeer;
 import org.iitk.brihaspati.om.InstituteAdminUser;
-import org.iitk.brihaspati.modules.utils.StringUtil;
-import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+import org.iitk.brihaspati.modules.utils.CommonUtility;
+import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Admin;
-
+import org.apache.turbine.services.servlet.TurbineServlet;
 /**
 *  Class for to display for pending , approved as well as rejected institute.
 */
@@ -70,7 +70,6 @@ public class InstituteList extends SecureScreen_Admin
 			
 			ParameterParser pp = data.getParameters();
 			String file = (String)data.getUser().getTemp("LangFile");
-			MultilingualUtil m_u = new MultilingualUtil();
 			/**
 			*  mode for approved(1) ,pending(0) as well as rejected(2) institute list
 			*  tdcolor for tab view
@@ -120,14 +119,19 @@ public class InstituteList extends SecureScreen_Admin
 				
 			}
 			if(mode.equals("approved")){
+				String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+                                String conf =AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value");
+                                int list_conf=Integer.parseInt(conf);
+                                context.put("userConf",new Integer(list_conf));
+                                context.put("userConf_string",conf);
+				crit=new Criteria();
                                 crit.addGroupByColumn(InstituteAdminRegistrationPeer.INSTITUTE_ID);
                                 crit.add(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"1");
                                 crit.or(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"3");
                                 List instdetail=InstituteAdminRegistrationPeer.doSelect(crit);
-                                context.put("approved",instdetail);
-                                
-
-
+				Vector vctr=new Vector(instdetail);
+                                Vector vct=CommonUtility.PListing(data,context,vctr,list_conf);
+                                context.put("approved",vct);
 			}			
 			if(mode.equals("reject")){
 				crit=new Criteria();
@@ -158,7 +162,6 @@ public class InstituteList extends SecureScreen_Admin
 					}
 					}	
                         		context.put("userdetail",instuser);
-					ErrorDumpUtil.ErrorLog("userdetail in reject mode=="+userdetail);
                                 }
 			}			
 		}

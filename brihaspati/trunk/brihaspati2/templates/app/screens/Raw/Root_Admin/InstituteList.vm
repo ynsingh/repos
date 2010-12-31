@@ -173,10 +173,33 @@ $!data.getMessage()
 #if($lang=="hindi")$brih_Institute $brih_Of2 $brih_ad $brih_Of1 $brih_view #else $brih_view $RemoteInstitute $brih_admin #end</a></td>
 	<td><a href=$link.setPage("call,Root_Admin,UpdateInstituteAdmin.vm").addPathInfo("Institute_Id",$applist.getInstituteId()).addPathInfo("status","instituteedit").addPathInfo("count","2") style=text-decoration:none>
 #if($lang=="hindi")$brih_detail $brih_Of1 $brih_edit #else $brih_edit $brih_detail #end</a></td>
-	#*<td><a href=$link.setPage("call,Root_Admin,CrslistdeletedInstitute.vm").addPathInfo("Institute_Id",$applist.getInstituteId()).addPathInfo("Institute_Name",$applist.getInstituteName()).addPathInfo("mode","viewadmin").addPathInfo("count","2") style=text-decoration:none>
-#if($lang=="hindi")$RemoteInstitute $brih_delete #else $brih_delete $RemoteInstitute #end</a></td>*#
 	</tr>		
 	#end
+	<tr><td>
+        #if($total_size <= $userConf)
+        <font color="white">$brih_first</font> &nbsp;
+        <font color="white">$brih_pre</font> &nbsp;
+        <font color="white">$brih_nxt</font> &nbsp;
+        <font color="white">$brih_last</font> &nbsp;
+
+        #elseif($startIndex == $userConf_string)
+        <font color="white">$brih_first</font> &nbsp;
+        <font color="white">$brih_pre</font> &nbsp;
+        <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode","approved") style=text-decoration:none>$brih_nxt</a> &nbsp;
+     <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode","approved") style=text-decoration:none>$brih_last</a> &nbsp;
+        #elseif($endIndex == $total_size || $endIndex > $total_size)
+        <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode","approved") style=text-decoration:none>$brih_first</a> &nbsp;
+     <a href=$link.setPage("ViewInstituteList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode","approved") style=text-decoration:none>$brih_pre</a> &nbsp;
+        <u><font color="white">$brih_nxt</font></u> &nbsp;
+        <u><font color="white">$brih_last</font></u> &nbsp;
+
+        #else
+	<a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode","approved") style=text-decoration:none>$brih_first</a> &nbsp;
+        <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode","approved") style=text-decoration:none>$brih_pre</a> &nbsp;
+        <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex).addPathInfo("mode","approved") style=text-decoration:none>$brih_nxt</a> &nbsp;
+        <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode","approved") style=text-decoration:none>$brih_last</a> &nbsp;
+        #end
+        </td></tr>
 	#end
 </table>
 <table width=100% bgcolor="$ui.tableColor">

@@ -45,10 +45,11 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.om.security.User;
 import org.apache.torque.util.Criteria;
-
+import org.apache.turbine.services.servlet.TurbineServlet;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
+import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
@@ -109,6 +110,11 @@ public class FAQ_Ques extends SecureScreen
 			*using CommonUtility (PListing method) for pagination
                         *put in the context for the use in templates
 			*/
+			String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+                        String conf =AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value");
+                        int list_conf=Integer.parseInt(conf);
+                        context.put("userConf",new Integer(list_conf));
+                        context.put("userConf_string",conf);
 			Vector entry=new Vector();
 			List u=null;
                         Criteria crit=new Criteria();
@@ -139,8 +145,10 @@ public class FAQ_Ques extends SecureScreen
 				status="Noblank";
 				if((mode.equals("delete"))||(mode.equals("add")))
 				context.put("entry",entry);
-				else
-				CommonUtility.PListing(data ,context ,entry);
+				else{
+				Vector vct=CommonUtility.PListing(data ,context ,entry,list_conf);
+				context.put("entry",vct);	
+				}
                         }//ifentry
                         else
 				status="blank";
