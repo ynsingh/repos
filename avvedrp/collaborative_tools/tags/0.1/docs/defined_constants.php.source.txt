@@ -1,0 +1,29 @@
+<?php
+	define('ROLE_ID_ADMIN',1000);
+	define('ROLE_ID_UNI_ADMIN',1001);
+	define('ROLE_ID_GUEST',1002);
+	define('ROLE_ID_HOD',1003);
+	define('ROLE_ID_TEACHER',1004);
+	//
+	define('PRIVI_ADD_SUBJECT',1);
+	define('PRIVI_EDIT_SUBJECT',2);
+	define('PRIVI_DELETE_SUBJECT',3);
+	//
+	define('PRIVI_ADD_TOPIC',4);
+	define('PRIVI_EDIT_TOPIC',5);
+	define('PRIVI_DELETE_TOPIC',6);
+	//
+	define('PRIVI_ADD_SUBTOPIC',7);
+	define('PRIVI_EDIT_SUBTOPIC',8);
+	define('PRIVI_DELETE_SUBTOPIC',9);
+	//
+	define('PRIVI_ADD_EXP',10);
+	define('PRIVI_EDIT_EXP',11);
+	define('PRIVI_DELETE_EXP',12);
+	//
+	define('PRIVI_EDIT_EXPDETAILS',13);
+	//
+	define('PRIVI_EDIT_USERDETAILS',14);
+	define('PRIVI_DELETE_USERDETAILS',15);
+	
+?>

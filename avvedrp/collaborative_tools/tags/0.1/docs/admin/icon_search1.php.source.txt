@@ -1,0 +1,33 @@
+<?php 
+$filename=glob("tab_icons/*.png");
+print_r($filename);
+
+/*foreach (glob("tab_icons/*.png") as $filename) {
+$file = $filename;
+$contents = ($file);
+//$string = implode($contents);
+echo $contents;
+echo "<br>";
+exit();
+}*/
+?>
+<table border="1">
+<tr>
+<?php
+$i==0;
+for($i=0;$i<count($filename);$i++)
+{?>
+	<td><img src="<?php echo $filename[$i]?>" > <?php echo $i.":".$filename[$i]?></td>
+    <?php	
+			if(($i%3)==0 and $i!=0)
+			{ ?>
+			</tr>
+			<tr>
+				
+			<?php }?>
+   
+    	
+ <?php }
+?>
+</tr>
+</table>

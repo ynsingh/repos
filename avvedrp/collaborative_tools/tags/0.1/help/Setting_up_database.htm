@@ -1,0 +1,112 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+ <meta name="generator" content="Adobe RoboHelp 8">
+<title>Setting up database</title>
+<link rel="StyleSheet" href="default.css" type="text/css">
+<script type="text/javascript" language="JavaScript">
+//<![CDATA[
+function reDo() {
+  if (innerWidth != origWidth || innerHeight != origHeight)
+     location.reload();
+}
+if ((parseInt(navigator.appVersion) == 4) && (navigator.appName == "Netscape")) {
+	origWidth = innerWidth;
+	origHeight = innerHeight;
+	onresize = reDo;
+}
+onerror = null; 
+//]]>
+</script>
+<style type="text/css">
+<!--
+div.WebHelpPopupMenu { position:absolute;
+left:0px;
+top:0px;
+z-index:4;
+visibility:hidden; }
+-->
+</style>
+<script type="text/javascript" language="javascript1.2" src="whmsg.js"></script>
+<script type="text/javascript" language="javascript" src="whver.js"></script>
+<script type="text/javascript" language="javascript1.2" src="whproxy.js"></script>
+<script type="text/javascript" language="javascript1.2" src="whutils.js"></script>
+<script type="text/javascript" language="javascript1.2" src="whlang.js"></script>
+<script type="text/javascript" language="javascript1.2" src="whtopic.js"></script>
+
+</head>
+
+<body><script type="text/javascript" language="javascript1.2">//<![CDATA[
+<!--
+if (window.gbWhTopic)
+{
+	var strUrl = document.location.href;
+	var bc = 0;
+	var n = strUrl.toLowerCase().indexOf("bc-");
+	if(n != -1)
+	{
+		document.location.href = strUrl.substring(0, n);
+		bc = strUrl.substring(n+3);
+	}
+
+	if (window.addTocInfo)
+	{
+	addTocInfo("Installation and Setup\nSetting up database");
+addButton("show",BTN_TEXT,"Show","","","","",0,0,"","","");
+
+	}
+	if (window.writeBtnStyle)
+		writeBtnStyle();
+
+	if (window.writeIntopicBar)
+		writeIntopicBar(1);
+
+	
+	document.write("<p style=\"text-align:right\"> ");
+AddMasterBreadcrumbs("Virtual_Lab_interface_3.htm", "", ">", "Home", "First_Topic.htm");
+document.write("<a href=\"System_Requirements.htm\">Installation and Setup<\/a> > Setting up database<\/p>");
+
+
+	if (window.setRelStartPage)
+	{
+	setRelStartPage("Virtual_Lab_interface_3.htm");
+
+		autoSync(1);
+		sendSyncInfo();
+		sendAveInfoOut();
+	}
+}
+else
+	if (window.gbIE4)
+		document.location.reload();
+
+//-->
+//]]></script>
+<h2>Setting up database:</h2>
+<p style="font-size: 12pt;">&#160;&#160;&#160;&#160;1. Create a new database 
+ and give an appropriate name.</p>
+<p style="font-size: 12pt;"><span style="font-size: 12pt;"><font size="3" style="font-size:12pt;">&#160;&#160;&#160;&#160;2. 
+ Select the newly created database and execute the database dumb provided.</font></span></p>
+<p style="font-size: 12pt;">&#160;&#160;&#160;&#160;3. Change the dbmanage.php 
+ &#160;and give the host name in $dbHost , Username in $dbUsername, </p>
+<p style="font-size: 12pt;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Password 
+ in &#160;&#160;$dbPassword and dbname in $dbName.</p>
+<p style="font-size: 12pt;">&#160;</p>
+<ul type="disc">
+	<li><p style="font-size: 12pt;">$dbHost=&quot;localhost&quot;;</p></li>
+	<li style="font-family: Arial, sans-serif;"><p style="font-size: 12pt;">$dbUsername=&quot;root&quot;;</p></li>
+	<li style="font-family: Arial, sans-serif;"><p style="font-size: 12pt;">$dbPassword=&quot;password&quot;;</p></li>
+	<li style="font-family: Arial, sans-serif;"><p style="font-size: 12pt;">$dbName='vlab_management';</p></li>
+</ul>
+<script type="text/javascript" language="javascript1.2">//<![CDATA[
+<!--
+if (window.writeIntopicBar)
+	writeIntopicBar(0);
+
+
+highlightSearch();
+//-->
+//]]></script>
+</body>
+</html>

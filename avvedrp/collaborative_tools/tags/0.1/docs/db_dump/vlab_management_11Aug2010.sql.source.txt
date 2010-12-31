@@ -1,0 +1,474 @@
+# HeidiSQL Dump 
+#
+# --------------------------------------------------------
+# Host:                 127.0.0.1
+# Database:             vlab_management
+# Server version:       5.1.36-community-log
+# Server OS:            Win32
+# Target-Compatibility: MySQL 5.1 and above
+# Extended INSERTs:     Y
+# max_allowed_packet:   1048576
+# HeidiSQL version:     3.0 Revision: 572
+# --------------------------------------------------------
+
+/*!40100 SET CHARACTER SET latin1*/;
+
+
+DROP TABLE IF EXISTS `avl_content_description`;
+
+#
+# Table structure for table 'avl_content_description'
+#
+
+CREATE TABLE `avl_content_description` (
+  `content_id` int(5) unsigned NOT NULL,
+  `content_description` mediumtext
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+
+#
+# Dumping data for table 'avl_content_description'
+#
+
+/*!40000 ALTER TABLE `avl_content_description` DISABLE KEYS*/;
+LOCK TABLES `avl_content_description` WRITE;
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `avl_content_description` ENABLE KEYS*/;
+
+
+DROP TABLE IF EXISTS `avl_content_details`;
+
+#
+# Table structure for table 'avl_content_details'
+#
+
+CREATE TABLE `avl_content_details` (
+  `content_id` int(5) unsigned NOT NULL AUTO_INCREMENT,
+  `content_type_id` int(5) unsigned NOT NULL,
+  `experiment_id` int(5) unsigned NOT NULL,
+  `external` enum('Y','N') NOT NULL DEFAULT 'Y',
+  PRIMARY KEY (`content_id`),
+  UNIQUE KEY `content_id` (`content_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+
+#
+# Dumping data for table 'avl_content_details'
+#
+
+/*!40000 ALTER TABLE `avl_content_details` DISABLE KEYS*/;
+LOCK TABLES `avl_content_details` WRITE;
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `avl_content_details` ENABLE KEYS*/;
+
+
+DROP TABLE IF EXISTS `avl_content_links`;
+
+#
+# Table structure for table 'avl_content_links'
+#
+
+CREATE TABLE `avl_content_links` (
+  `content_id` int(5) unsigned NOT NULL,
+  `content_link` varchar(255) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+
+#
+# Dumping data for table 'avl_content_links'
+#
+
+/*!40000 ALTER TABLE `avl_content_links` DISABLE KEYS*/;
+LOCK TABLES `avl_content_links` WRITE;
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `avl_content_links` ENABLE KEYS*/;
+
+
+DROP TABLE IF EXISTS `avl_content_type_master`;
+
+#
+# Table structure for table 'avl_content_type_master'
+#
+
+CREATE TABLE `avl_content_type_master` (
+  `content_type_id` int(5) unsigned NOT NULL AUTO_INCREMENT,
+  `content_type_name` varchar(100) NOT NULL,
+  PRIMARY KEY (`content_type_id`),
+  UNIQUE KEY `content_type_id` (`content_type_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+
+#
+# Dumping data for table 'avl_content_type_master'
+#
+
+/*!40000 ALTER TABLE `avl_content_type_master` DISABLE KEYS*/;
+LOCK TABLES `avl_content_type_master` WRITE;
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `avl_content_type_master` ENABLE KEYS*/;
+
+
+DROP TABLE IF EXISTS `avl_error_master`;
+
+#
+# Table structure for table 'avl_error_master'
+#
+
+CREATE TABLE `avl_error_master` (
+  `error_sl_no` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `error_id` varchar(50) NOT NULL,
+  `error_description` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`error_sl_no`),
+  UNIQUE KEY `error_sl_no` (`error_sl_no`,`error_id`),
+  KEY `error_id` (`error_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+
+
+#
+# Dumping data for table 'avl_error_master'
+#
+
+/*!40000 ALTER TABLE `avl_error_master` DISABLE KEYS*/;
+LOCK TABLES `avl_error_master` WRITE;
+INSERT INTO `avl_error_master` (`error_sl_no`, `error_id`, `error_description`) VALUES ('1','VLDBER000001','common_functions.php - university details -selecting university details '),
+	('2','VLDBER000002','common_model_functions.php:getTopics:selecting topic id and topic name while giving subject id'),
+	('3','VLDBER000003','common_model_functions.php:getSubName:select sub name'),
+	('4','VLDBER000004','common_model_functions.php:getSubTopic:select sub topic under one topic');
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `avl_error_master` ENABLE KEYS*/;
+
+
+DROP TABLE IF EXISTS `avl_experiment_branch_rel`;
+
+#
+# Table structure for table 'avl_experiment_branch_rel'
+#
+
+CREATE TABLE `avl_experiment_branch_rel` (
+  `experiment_branch_rel_id` int(5) unsigned NOT NULL AUTO_INCREMENT,
+  `experiment_id` int(5) unsigned NOT NULL,
+  `branch_id` int(5) unsigned NOT NULL,
+  `academic_year_from` date DEFAULT NULL,
+  `academic_year_to` date DEFAULT NULL,
+  `experiment_branch_status` enum('A','D') NOT NULL DEFAULT 'A',
+  PRIMARY KEY (`experiment_branch_rel_id`),
+  UNIQUE KEY `experiment_branch_rel_id` (`experiment_branch_rel_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+
+#
+# Dumping data for table 'avl_experiment_branch_rel'
+#
+
+/*!40000 ALTER TABLE `avl_experiment_branch_rel` DISABLE KEYS*/;
+LOCK TABLES `avl_experiment_branch_rel` WRITE;
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `avl_experiment_branch_rel` ENABLE KEYS*/;
+
+
+DROP TABLE IF EXISTS `avl_experiment_master`;
+
+#
+# Table structure for table 'avl_experiment_master'
+#
+
+CREATE TABLE `avl_experiment_master` (
+  `experiment_id` int(5) unsigned NOT NULL AUTO_INCREMENT,
+  `experiment_name` varchar(100) NOT NULL,
+  `experiment_description` varchar(255) DEFAULT NULL,
+  `experiment_type_id` int(5) unsigned NOT NULL,
+  `experiment_status` enum('A','D') DEFAULT 'A',
+  `owner` int(5) unsigned DEFAULT NULL,
+  PRIMARY KEY (`experiment_id`),
+  UNIQUE KEY `experiment_id` (`experiment_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+
+
+#
+# Dumping data for table 'avl_experiment_master'
+#
+
+/*!40000 ALTER TABLE `avl_experiment_master` DISABLE KEYS*/;
+LOCK TABLES `avl_experiment_master` WRITE;
+INSERT INTO `avl_experiment_master` (`experiment_id`, `experiment_name`, `experiment_description`, `experiment_type_id`, `experiment_status`, `owner`) VALUES (1,'Torsion Pendulam','The simulation virtualizes the torsion pendulum experiment .The user can view the effect of torsional oscillation in different experimental environment.',1,'A',NULL),
+	(2,'Projectile Motion','Projectile motion refers to the motion of an object projected into the air at an angle.',1,'A',NULL),
+	(3,'Collision balls','The abrupt change to the path of a moving body (or bodies) due to its interaction with other body (or bodies) is called collision. The magnitude and direction of the velocity of the colliding bodies may change in a collision.',1,'A',NULL);
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `avl_experiment_master` ENABLE KEYS*/;
+
+
+DROP TABLE IF EXISTS `avl_experiment_subtopic_rel`;
+
+#
+# Table structure for table 'avl_experiment_subtopic_rel'
+#
+
+CREATE TABLE `avl_experiment_subtopic_rel` (
+  `experiment_id` int(5) unsigned NOT NULL,
+  `sub_topic_id` int(5) unsigned NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+
+#
+# Dumping data for table 'avl_experiment_subtopic_rel'
+#
+
+/*!40000 ALTER TABLE `avl_experiment_subtopic_rel` DISABLE KEYS*/;
+LOCK TABLES `avl_experiment_subtopic_rel` WRITE;
+INSERT INTO `avl_experiment_subtopic_rel` (`experiment_id`, `sub_topic_id`) VALUES (1,1),
+	(2,1),
+	(3,1);
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `avl_experiment_subtopic_rel` ENABLE KEYS*/;
+
+
+DROP TABLE IF EXISTS `avl_experiment_type_master`;
+
+#
+# Table structure for table 'avl_experiment_type_master'
+#
+
+CREATE TABLE `avl_experiment_type_master` (
+  `experiment_typeid` int(5) unsigned NOT NULL AUTO_INCREMENT,
+  `experiment_type_name` varchar(100) NOT NULL,
+  PRIMARY KEY (`experiment_typeid`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+
+#
+# Dumping data for table 'avl_experiment_type_master'
+#
+
+/*!40000 ALTER TABLE `avl_experiment_type_master` DISABLE KEYS*/;
+LOCK TABLES `avl_experiment_type_master` WRITE;
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `avl_experiment_type_master` ENABLE KEYS*/;
+
+
+DROP TABLE IF EXISTS `avl_sub_topic_master`;
+
+#
+# Table structure for table 'avl_sub_topic_master'
+#
+
+CREATE TABLE `avl_sub_topic_master` (
+  `sub_topic_id` int(5) unsigned NOT NULL AUTO_INCREMENT,
+  `sub_topic_name` varchar(100) NOT NULL,
+  `topic_id` int(5) unsigned NOT NULL,
+  `sub_topic_status` enum('A','D') NOT NULL DEFAULT 'A',
+  PRIMARY KEY (`sub_topic_id`),
+  UNIQUE KEY `sub_topic_id` (`sub_topic_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+
+
+#
+# Dumping data for table 'avl_sub_topic_master'
+#
+
+/*!40000 ALTER TABLE `avl_sub_topic_master` DISABLE KEYS*/;
+LOCK TABLES `avl_sub_topic_master` WRITE;
+INSERT INTO `avl_sub_topic_master` (`sub_topic_id`, `sub_topic_name`, `topic_id`, `sub_topic_status`) VALUES (1,'Sub Topic 1',1,'A'),
+	(2,'Sub Topic 2',1,'A'),
+	(3,'Sub Topic 3',1,'A');
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `avl_sub_topic_master` ENABLE KEYS*/;
+
+
+DROP TABLE IF EXISTS `avl_subject_master`;
+
+#
+# Table structure for table 'avl_subject_master'
+#
+
+CREATE TABLE `avl_subject_master` (
+  `subject_id` int(5) unsigned NOT NULL AUTO_INCREMENT,
+  `subject_name` varchar(100) NOT NULL,
+  `subject_status` enum('A','D') NOT NULL DEFAULT 'A',
+  PRIMARY KEY (`subject_id`),
+  UNIQUE KEY `subject_id` (`subject_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+
+
+#
+# Dumping data for table 'avl_subject_master'
+#
+
+/*!40000 ALTER TABLE `avl_subject_master` DISABLE KEYS*/;
+LOCK TABLES `avl_subject_master` WRITE;
+INSERT INTO `avl_subject_master` (`subject_id`, `subject_name`, `subject_status`) VALUES (1,'Physics','A');
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `avl_subject_master` ENABLE KEYS*/;
+
+
+DROP TABLE IF EXISTS `avl_theme_master`;
+
+#
+# Table structure for table 'avl_theme_master'
+#
+
+CREATE TABLE `avl_theme_master` (
+  `theme_id` int(5) unsigned NOT NULL AUTO_INCREMENT,
+  `theme_name` varchar(255) NOT NULL,
+  PRIMARY KEY (`theme_id`),
+  UNIQUE KEY `theme_id` (`theme_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+
+#
+# Dumping data for table 'avl_theme_master'
+#
+
+/*!40000 ALTER TABLE `avl_theme_master` DISABLE KEYS*/;
+LOCK TABLES `avl_theme_master` WRITE;
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `avl_theme_master` ENABLE KEYS*/;
+
+
+DROP TABLE IF EXISTS `avl_topic_master`;
+
+#
+# Table structure for table 'avl_topic_master'
+#
+
+CREATE TABLE `avl_topic_master` (
+  `topic_id` int(5) unsigned NOT NULL AUTO_INCREMENT,
+  `topic_name` varchar(100) NOT NULL,
+  `subject_id` int(5) unsigned NOT NULL,
+  `topic_status` enum('A','D') NOT NULL DEFAULT 'A',
+  PRIMARY KEY (`topic_id`),
+  UNIQUE KEY `topic_id` (`topic_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+
+
+#
+# Dumping data for table 'avl_topic_master'
+#
+
+/*!40000 ALTER TABLE `avl_topic_master` DISABLE KEYS*/;
+LOCK TABLES `avl_topic_master` WRITE;
+INSERT INTO `avl_topic_master` (`topic_id`, `topic_name`, `subject_id`, `topic_status`) VALUES (1,'Topic 1',1,'A'),
+	(2,'Topic 2',1,'A'),
+	(3,'Topic 3',1,'A');
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `avl_topic_master` ENABLE KEYS*/;
+
+
+DROP TABLE IF EXISTS `avl_university_branch_master`;
+
+#
+# Table structure for table 'avl_university_branch_master'
+#
+
+CREATE TABLE `avl_university_branch_master` (
+  `branch_id` int(5) unsigned NOT NULL AUTO_INCREMENT,
+  `branch_name` varchar(100) NOT NULL,
+  `course_id` int(5) unsigned NOT NULL,
+  PRIMARY KEY (`branch_id`),
+  UNIQUE KEY `branch_id` (`branch_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+
+#
+# Dumping data for table 'avl_university_branch_master'
+#
+
+/*!40000 ALTER TABLE `avl_university_branch_master` DISABLE KEYS*/;
+LOCK TABLES `avl_university_branch_master` WRITE;
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `avl_university_branch_master` ENABLE KEYS*/;
+
+
+DROP TABLE IF EXISTS `avl_university_course_master`;
+
+#
+# Table structure for table 'avl_university_course_master'
+#
+
+CREATE TABLE `avl_university_course_master` (
+  `course_id` int(5) unsigned NOT NULL AUTO_INCREMENT,
+  `course_name` varchar(100) NOT NULL,
+  `university_id` int(5) unsigned NOT NULL,
+  PRIMARY KEY (`course_id`),
+  UNIQUE KEY `course_id` (`course_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+
+#
+# Dumping data for table 'avl_university_course_master'
+#
+
+/*!40000 ALTER TABLE `avl_university_course_master` DISABLE KEYS*/;
+LOCK TABLES `avl_university_course_master` WRITE;
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `avl_university_course_master` ENABLE KEYS*/;
+
+
+DROP TABLE IF EXISTS `avl_university_master`;
+
+#
+# Table structure for table 'avl_university_master'
+#
+
+CREATE TABLE `avl_university_master` (
+  `university_id` int(5) unsigned NOT NULL AUTO_INCREMENT,
+  `university_name` varchar(100) NOT NULL,
+  `university_place` varchar(100) DEFAULT NULL,
+  `theme_id` int(5) unsigned NOT NULL,
+  `url_of_site` varchar(255) NOT NULL,
+  PRIMARY KEY (`university_id`),
+  UNIQUE KEY `university_id` (`university_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1001 DEFAULT CHARSET=latin1;
+
+
+
+#
+# Dumping data for table 'avl_university_master'
+#
+
+/*!40000 ALTER TABLE `avl_university_master` DISABLE KEYS*/;
+LOCK TABLES `avl_university_master` WRITE;
+INSERT INTO `avl_university_master` (`university_id`, `university_name`, `university_place`, `theme_id`, `url_of_site`) VALUES (1,'Amrita Vishwa Vidyapeetham','Amritapuri',1,'www.amrita.edu');
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `avl_university_master` ENABLE KEYS*/;
+
+
+DROP TABLE IF EXISTS `avl_user_master`;
+
+#
+# Table structure for table 'avl_user_master'
+#
+
+CREATE TABLE `avl_user_master` (
+  `user_id` int(5) unsigned NOT NULL AUTO_INCREMENT,
+  `user_name` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `university_id` int(5) unsigned NOT NULL,
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `user_id` (`user_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+
+#
+# Dumping data for table 'avl_user_master'
+#
+
+/*!40000 ALTER TABLE `avl_user_master` DISABLE KEYS*/;
+LOCK TABLES `avl_user_master` WRITE;
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `avl_user_master` ENABLE KEYS*/;

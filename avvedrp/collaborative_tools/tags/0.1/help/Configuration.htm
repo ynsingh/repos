@@ -1,0 +1,117 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+ <meta name="generator" content="Adobe RoboHelp 8">
+<title>Configuration</title>
+<link rel="StyleSheet" href="default.css" type="text/css">
+<script type="text/javascript" language="JavaScript">
+//<![CDATA[
+function reDo() {
+  if (innerWidth != origWidth || innerHeight != origHeight)
+     location.reload();
+}
+if ((parseInt(navigator.appVersion) == 4) && (navigator.appName == "Netscape")) {
+	origWidth = innerWidth;
+	origHeight = innerHeight;
+	onresize = reDo;
+}
+onerror = null; 
+//]]>
+</script>
+<style type="text/css">
+<!--
+div.WebHelpPopupMenu { position:absolute;
+left:0px;
+top:0px;
+z-index:4;
+visibility:hidden; }
+-->
+</style>
+<script type="text/javascript" language="javascript1.2" src="whmsg.js"></script>
+<script type="text/javascript" language="javascript" src="whver.js"></script>
+<script type="text/javascript" language="javascript1.2" src="whproxy.js"></script>
+<script type="text/javascript" language="javascript1.2" src="whutils.js"></script>
+<script type="text/javascript" language="javascript1.2" src="whlang.js"></script>
+<script type="text/javascript" language="javascript1.2" src="whtopic.js"></script>
+
+</head>
+
+<body><script type="text/javascript" language="javascript1.2">//<![CDATA[
+<!--
+if (window.gbWhTopic)
+{
+	var strUrl = document.location.href;
+	var bc = 0;
+	var n = strUrl.toLowerCase().indexOf("bc-");
+	if(n != -1)
+	{
+		document.location.href = strUrl.substring(0, n);
+		bc = strUrl.substring(n+3);
+	}
+
+	if (window.addTocInfo)
+	{
+	addTocInfo("Installation and Setup\nConfiguration");
+addButton("show",BTN_TEXT,"Show","","","","",0,0,"","","");
+
+	}
+	if (window.writeBtnStyle)
+		writeBtnStyle();
+
+	if (window.writeIntopicBar)
+		writeIntopicBar(1);
+
+	
+	document.write("<p style=\"text-align:right\"> ");
+AddMasterBreadcrumbs("Virtual_Lab_interface_3.htm", "", ">", "Home", "First_Topic.htm");
+document.write("<a href=\"System_Requirements.htm\">Installation and Setup<\/a> > Configuration<\/p>");
+
+
+	if (window.setRelStartPage)
+	{
+	setRelStartPage("Virtual_Lab_interface_3.htm");
+
+		autoSync(1);
+		sendSyncInfo();
+		sendAveInfoOut();
+	}
+}
+else
+	if (window.gbIE4)
+		document.location.reload();
+
+//-->
+//]]></script>
+<h2>Configuration:</h2>
+<p>After installation,all the below mentioned config variables can be modified 
+ on <span style="font-style: italic;"><i>config.php</i></span> as per the project 
+ needs.</p>
+<p>&#160;</p>
+<p>//Choose the default theme name. </p>
+<p>&#160;define('DEFAULT_THEME','amrita');</p>
+<p>&#160;</p>
+<p>//Name of the folder that we create in root directory to copy the files. 
+ (www/vladmin)</p>
+<p>define('PROJECT_ROOT','vladmin');</p>
+<p>&#160;</p>
+<p>//Provide the email id of the project. All emails will be send from 
+ this email id.</p>
+<p>define('PROJECT_EMAILID','virtual_labs@amrita.edu');</p>
+<p>&#160;</p>
+<p>//Name your project. </p>
+<p>define('PROJECT_NAME','Amrita Virtual Lab');</p>
+<p>&#160;</p>
+<p>//choose the language file from the lan folder</p>
+<p>define('LANG','en_in');</p>
+<script type="text/javascript" language="javascript1.2">//<![CDATA[
+<!--
+if (window.writeIntopicBar)
+	writeIntopicBar(0);
+
+
+highlightSearch();
+//-->
+//]]></script>
+</body>
+</html>

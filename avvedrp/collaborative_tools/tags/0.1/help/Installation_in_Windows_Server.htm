@@ -1,0 +1,132 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+ <meta name="generator" content="Adobe RoboHelp 8">
+<title>Installation in Windows Server</title>
+<link rel="StyleSheet" href="default.css" type="text/css">
+<script type="text/javascript" language="JavaScript">
+//<![CDATA[
+function reDo() {
+  if (innerWidth != origWidth || innerHeight != origHeight)
+     location.reload();
+}
+if ((parseInt(navigator.appVersion) == 4) && (navigator.appName == "Netscape")) {
+	origWidth = innerWidth;
+	origHeight = innerHeight;
+	onresize = reDo;
+}
+onerror = null; 
+//]]>
+</script>
+<style type="text/css">
+<!--
+div.WebHelpPopupMenu { position:absolute;
+left:0px;
+top:0px;
+z-index:4;
+visibility:hidden; }
+-->
+</style>
+<script type="text/javascript" language="javascript1.2" src="whmsg.js"></script>
+<script type="text/javascript" language="javascript" src="whver.js"></script>
+<script type="text/javascript" language="javascript1.2" src="whproxy.js"></script>
+<script type="text/javascript" language="javascript1.2" src="whutils.js"></script>
+<script type="text/javascript" language="javascript1.2" src="whlang.js"></script>
+<script type="text/javascript" language="javascript1.2" src="whtopic.js"></script>
+
+</head>
+
+<body><script type="text/javascript" language="javascript1.2">//<![CDATA[
+<!--
+if (window.gbWhTopic)
+{
+	var strUrl = document.location.href;
+	var bc = 0;
+	var n = strUrl.toLowerCase().indexOf("bc-");
+	if(n != -1)
+	{
+		document.location.href = strUrl.substring(0, n);
+		bc = strUrl.substring(n+3);
+	}
+
+	if (window.addTocInfo)
+	{
+	addTocInfo("Installation and Setup\nInstallation in Windows Server");
+addButton("show",BTN_TEXT,"Show","","","","",0,0,"","","");
+
+	}
+	if (window.writeBtnStyle)
+		writeBtnStyle();
+
+	if (window.writeIntopicBar)
+		writeIntopicBar(1);
+
+	
+	document.write("<p style=\"text-align:right\"> ");
+AddMasterBreadcrumbs("Virtual_Lab_interface_3.htm", "", ">", "Home", "First_Topic.htm");
+document.write("<a href=\"System_Requirements.htm\">Installation and Setup<\/a> > Installation in Windows Server<\/p>");
+
+
+	if (window.setRelStartPage)
+	{
+	setRelStartPage("Virtual_Lab_interface_3.htm");
+
+		autoSync(1);
+		sendSyncInfo();
+		sendAveInfoOut();
+	}
+}
+else
+	if (window.gbIE4)
+		document.location.reload();
+
+//-->
+//]]></script>
+<h2 style="font-size: 18pt;">Installation in Window Server:</h2>
+<ol type="1">
+	<li><p>Install WAMP (Windows, Apache, MySQL, PHP) in the hosting server. 
+	 Make sure the mysql is also installed along with it. <br>
+	<br>
+	</p></li>
+	<li><p>Create a folder in the www folder of wamp installation (for 
+	 example: vlab) (PROJECT_ROOT in config.php). <br>
+	<br>
+	</p></li>
+	<li><p>Check out the files from the following link in to this folder 
+	 &lt;link&gt; .<br>
+	<br>
+	</p></li>
+	<li><p>&#160;Edit the config.php file. &#160;&#160;You can change the 
+	 default theme (DEFAULT_THEME) to your choice. &#160;Give the PROJECT_ROOT 
+	 name, the same name of the folder we created in www (say vlab). Change 
+	 the PROJECT_EMAILID, with the email id of your project group. <br>
+	<br>
+	</p></li>
+	<li><p>Create a database giving a database name (say: vlab_database). 
+	 Get the mysql database dump from db_dump folder and execute the same 
+	 in created database. <br>
+	<br>
+	</p></li>
+	<li><p>Edit the dbmanage.php. Give the dbName as the name created for 
+	 executing the dump(say: vlab_database)&#160;dbHost=’localhost’. &#160;Update 
+	 the dbUsername and dbPassword with that you provided while installing 
+	 the mysql. (By default Username will be ‘root’and ‘Password’ will 
+	 be blank or ‘root’ itself). &#160;<br>
+	<br>
+	</p></li>
+	<li><p>You installation should be complete by now. You can access the 
+	 &#160;site using browser with the URL http://localhost/{project folder 
+	 name}.</p></li>
+</ol>
+<script type="text/javascript" language="javascript1.2">//<![CDATA[
+<!--
+if (window.writeIntopicBar)
+	writeIntopicBar(0);
+
+
+highlightSearch();
+//-->
+//]]></script>
+</body>
+</html>

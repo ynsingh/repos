@@ -1,0 +1,57 @@
+﻿<?xml version='1.0' encoding='utf-8' ?>
+<tocdata>
+<book name="Installation and Setup" >
+  <item name="System requirements" url="System_Requirements.htm" />
+  <item name="Installation in Windows Server" url="Installation_in_Windows_Server.htm" />
+  <item name="Installation in Linux Server" url="Installation_in_Linux_Server.htm" />
+  <item name="Installation in Mac" url="Installation_on_Mac.htm" />
+  <item name="Configuration" url="Configuration.htm" />
+  <item name="Setting up database" url="Setting_up_database.htm" />
+</book>
+<book name="Modules" >
+  <book name="Authentication" url="Authnetication.htm" >
+    <item name="Authentication" url="Authnetication.htm#bc-1" />
+    <item name="Login" url="Login.htm" />
+    <item name="Single Sign-on" url="Single_Sign-on.htm" />
+  </book>
+  <book name="Content Manager" >
+    <item name="Add/ Edit Subject" url="Subject.htm" />
+    <item name="Add/ Edit Topic" url="Topic.htm" />
+    <book name="Add/ Edit Experiment" >
+      <item name="Edit Experiment" url="Experiment.htm" />
+      <item name="Edit Experiment Details" url="Edit_Experiment_Details.htm" />
+      <item name="Add/ Manage Tabs" url="Add__Manage_Tabs.htm" />
+      <item name="Add/Edit Simulator" url="Add_Simulator.htm" />
+      <item name="Re-Arrange Tabs" url="Reorder_Tabs.htm" />
+      <item name="Changing icon of tabs" url="Change_dafult_icon_of_tabs.htm" />
+      <item name="How to add video to experiment?" url="How_to_add_video_to_experiment_.htm" />
+      <item name="Equation editor" url="Equation_editor.htm" />
+    </book>
+  </book>
+  <book name="Template Management" >
+    <item name="Preview and Applying Template" url="Preview_Template.htm" />
+  </book>
+  <book name="Remote Trigger Scheduler" >
+    <item name="Remote trigger - How it works?" url="Remote_trigger_-_How_it_works__.htm" />
+  </book>
+  <book name="Manage Role" >
+    <item name=" Manage Role" url="Role_Manage.htm" />
+  </book>
+  <book name="Module Management" >
+    <item name="Module Management" url="Module_Management.htm" />
+  </book>
+  <book name="Localisation" >
+    <item name="Localisation" url="Localisation.htm" />
+  </book>
+  <book name="Manage Privileges" >
+    <item name="Manage Privileges" url="Manage_Privileges.htm" />
+  </book>
+  <book name="Indexing" >
+    <item name="Custom Search Engine" url="Google_Custom_Search_Engine.htm" />
+  </book>
+</book>
+<book name="Appendix" >
+  <item name="Glossary" url="Glossary.htm" />
+</book>
+
+</tocdata>

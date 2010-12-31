@@ -1,0 +1,184 @@
+﻿<html>
+<!-- Sitemap 1.0 -->
+<object type="text/site properties">
+  <param name="FrameName" value="bsscright">
+  <param name="SiteType" value="toc">
+  <param name="Image Width" value="16">
+</object>
+<ul>
+  <li><object type="text/sitemap">
+    <param name="Name" value="Installation and Setup">
+  </object>
+  <ul>
+    <li><object type="text/sitemap">
+      <param name="Name" value="System requirements">
+      <param name="Local" value="System_Requirements.htm">
+    </object>
+    <li><object type="text/sitemap">
+      <param name="Name" value="Installation in Windows Server">
+      <param name="Local" value="Installation_in_Windows_Server.htm">
+    </object>
+    <li><object type="text/sitemap">
+      <param name="Name" value="Installation in Linux Server">
+      <param name="Local" value="Installation_in_Linux_Server.htm">
+    </object>
+    <li><object type="text/sitemap">
+      <param name="Name" value="Installation in Mac">
+      <param name="Local" value="Installation_on_Mac.htm">
+    </object>
+    <li><object type="text/sitemap">
+      <param name="Name" value="Configuration">
+      <param name="Local" value="Configuration.htm">
+    </object>
+    <li><object type="text/sitemap">
+      <param name="Name" value="Setting up database">
+      <param name="Local" value="Setting_up_database.htm">
+    </object>
+    </ul>
+  <li><object type="text/sitemap">
+    <param name="Name" value="Modules">
+  </object>
+  <ul>
+    <li><object type="text/sitemap">
+      <param name="Name" value="Authentication">
+      <param name="Local" value="Authnetication.htm">
+    </object>
+    <ul>
+      <li><object type="text/sitemap">
+        <param name="Name" value="Authentication">
+        <param name="Local" value="Authnetication.htm">
+      </object>
+      <li><object type="text/sitemap">
+        <param name="Name" value="Login">
+        <param name="Local" value="Login.htm">
+      </object>
+      <li><object type="text/sitemap">
+        <param name="Name" value="Single Sign-on">
+        <param name="Local" value="Single_Sign-on.htm">
+      </object>
+      </ul>
+    <li><object type="text/sitemap">
+      <param name="Name" value="Content Manager">
+    </object>
+    <ul>
+      <li><object type="text/sitemap">
+        <param name="Name" value="Add/ Edit Subject">
+        <param name="Local" value="Subject.htm">
+      </object>
+      <li><object type="text/sitemap">
+        <param name="Name" value="Add/ Edit Topic">
+        <param name="Local" value="Topic.htm">
+      </object>
+      <li><object type="text/sitemap">
+        <param name="Name" value="Add/ Edit Experiment">
+      </object>
+      <ul>
+        <li><object type="text/sitemap">
+          <param name="Name" value="Edit Experiment">
+          <param name="Local" value="Experiment.htm">
+        </object>
+        <li><object type="text/sitemap">
+          <param name="Name" value="Edit Experiment Details">
+          <param name="Local" value="Edit_Experiment_Details.htm">
+        </object>
+        <li><object type="text/sitemap">
+          <param name="Name" value="Add/ Manage Tabs">
+          <param name="Local" value="Add__Manage_Tabs.htm">
+        </object>
+        <li><object type="text/sitemap">
+          <param name="Name" value="Add/Edit Simulator">
+          <param name="Local" value="Add_Simulator.htm">
+        </object>
+        <li><object type="text/sitemap">
+          <param name="Name" value="Re-Arrange Tabs">
+          <param name="Local" value="Reorder_Tabs.htm">
+        </object>
+        <li><object type="text/sitemap">
+          <param name="Name" value="Changing icon of tabs">
+          <param name="Local" value="Change_dafult_icon_of_tabs.htm">
+        </object>
+        <li><object type="text/sitemap">
+          <param name="Name" value="How to add video to experiment?">
+          <param name="Local" value="How_to_add_video_to_experiment_.htm">
+        </object>
+        <li><object type="text/sitemap">
+          <param name="Name" value="Equation editor">
+          <param name="Local" value="Equation_editor.htm">
+        </object>
+        </ul>
+      </ul>
+    <li><object type="text/sitemap">
+      <param name="Name" value="Template Management">
+    </object>
+    <ul>
+      <li><object type="text/sitemap">
+        <param name="Name" value="Preview and Applying Template">
+        <param name="Local" value="Preview_Template.htm">
+      </object>
+      </ul>
+    <li><object type="text/sitemap">
+      <param name="Name" value="Remote Trigger Scheduler">
+    </object>
+    <ul>
+      <li><object type="text/sitemap">
+        <param name="Name" value="Remote trigger - How it works?">
+        <param name="Local" value="Remote_trigger_-_How_it_works__.htm">
+      </object>
+      </ul>
+    <li><object type="text/sitemap">
+      <param name="Name" value="Manage Role">
+    </object>
+    <ul>
+      <li><object type="text/sitemap">
+        <param name="Name" value=" Manage Role">
+        <param name="Local" value="Role_Manage.htm">
+      </object>
+      </ul>
+    <li><object type="text/sitemap">
+      <param name="Name" value="Module Management">
+    </object>
+    <ul>
+      <li><object type="text/sitemap">
+        <param name="Name" value="Module Management">
+        <param name="Local" value="Module_Management.htm">
+      </object>
+      </ul>
+    <li><object type="text/sitemap">
+      <param name="Name" value="Localisation">
+    </object>
+    <ul>
+      <li><object type="text/sitemap">
+        <param name="Name" value="Localisation">
+        <param name="Local" value="Localisation.htm">
+      </object>
+      </ul>
+    <li><object type="text/sitemap">
+      <param name="Name" value="Manage Privileges">
+    </object>
+    <ul>
+      <li><object type="text/sitemap">
+        <param name="Name" value="Manage Privileges">
+        <param name="Local" value="Manage_Privileges.htm">
+      </object>
+      </ul>
+    <li><object type="text/sitemap">
+      <param name="Name" value="Indexing">
+    </object>
+    <ul>
+      <li><object type="text/sitemap">
+        <param name="Name" value="Custom Search Engine">
+        <param name="Local" value="Google_Custom_Search_Engine.htm">
+      </object>
+      </ul>
+    </ul>
+  <li><object type="text/sitemap">
+    <param name="Name" value="Appendix">
+  </object>
+  <ul>
+    <li><object type="text/sitemap">
+      <param name="Name" value="Glossary">
+      <param name="Local" value="Glossary.htm">
+    </object>
+    </ul>
+</ul>
+</html>

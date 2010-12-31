@@ -1,0 +1,102 @@
+<?php
+/**
+	* This files provides the user interface to edit an experiment details
+	* @author Vidya Mohan
+	* @version 29-11-2010
+*/
+?>
+<script language="javascript">
+
+function checkSequenceRepeat()
+{
+        var chks = document.getElementsByName('selTab[]'); //here tabTxt[] is the name of the textbox 
+        for (var i=0; i<chks.length; i++)
+        {	
+			for(var j=i+1; j<chks.length; j++)
+			{
+				if (chks[i].value==chks[j].value)
+				{
+					alert("Please select different order number for each tab.");
+					chks[j].focus();
+					return false;            
+				}
+			}
+        }
+}
+</script>
+<?php
+include('../execute_query.php');
+include('../dbmanage.php');
+include('../common_model_functions.php');
+extract($_POST);
+//
+if($edit_tabSequence=='Save')
+{	
+	$cntSelTab = count($selTab); 
+	if($cntSelTab == count(array_unique($selTab)))
+	{
+		for($m=0;$m<$cntSelTab;$m++){	
+			updateContentTypeDetails($selTab[$m],$tabSeqContentId[$m]);
+			$msg = "Saved";
+		}
+	}
+	else 
+	{
+		$msg = "Please select different order number for each tab.";
+	}
+}
+//
+$experimentId = "40";
+$contentTypeDetails = getContentTypeDetails($experimentId);
+$arrContent=count($contentTypeDetails);
+?>
+<form name="form1" id="form1" method="post" action="">
+<div align="center" style="color:#069"><b>Arrange Tabs</b></div>
+<table width="18%" border="1" class="myTable" align="center" bordercolor="#99CCFF">	
+<tr>
+<td width="77%" style="color:#069"><b>Tab Name</b></td>
+<td width="23%" style="color:#069"><b>Order</b></td>
+</tr>
+<?php
+$i=0;
+for($i=1; $i<=$arrContent;$i++)
+{
+	$displayArray[]=$i;
+}
+for($j=0;$j<$arrContent;$j++)
+{	
+?>
+    <tr>
+    <td><?php echo $contentTypeDetails[$j][2]; ?></td>
+    <input type="hidden" name="tabSeqContentId[]" id="tabSeqContentId[]" value="<?php echo $contentTypeDetails[$j][0]; ?>" />
+    <td><select name="selTab[]" id="selTab[]">
+    <?php
+    for($k=0;$k<$arrContent;$k++)
+    {
+        if($j==$k)
+        {
+            $selected = "selected";
+        }
+        else
+        {
+            $selected = "";
+        }
+    ?>
+    <option <?php echo $selected; ?> value="<?php echo $displayArray[$k]; ?>" ><?php echo $displayArray[$k]; ?></option>
+	<?php
+    }
+    ?>
+</select>
+</tr>
+<?php
+}
+?>
+<tr><td colspan="3" align="center"><input type="submit" value="Save" id="edit_tabSequence" name="edit_tabSequence" style="width:50px" onclick="return checkSequenceRepeat();" />&nbsp;&nbsp;
+<input type="button" value="Cancel" id="cancel" name="cancel" onclick=""  style="width:51px" />
+</td></tr>            
+</table>
+<br /><div align="center" style="color:#393; font:Verdana, Geneva, sans-serif"><?php echo "<b>".$msg."</b>"; ?></div>
+
+</form>
+
+

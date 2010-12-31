@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE polprojfile>
+<ppfml version="2.00" project="Virtual Lab Collaborative Platform">
+ <windowlist>
+  <window name="NewWindow" x="5%" y="5%" width="90%" height="90%" viewtype="doublepane" workspacestyle="DEFAULT" toolbar="off" locationbar="off" menu="off" resizable="yes" statusbar="off" usecurrentwindowsettings="yes" caption="NewWindow" skin="WebHelp_Skin_Files\Default\Default.skn">
+   <elements><element name="BrowseSequence" present="no" /><element name="SearchInput" present="no" /><element name="SkinInstruction" value="whskin_ep_ins.xml" />
+   </elements>
+   <agents defaultagent="toc">
+    <agent>toc
+    </agent>
+    <agent>ndx
+    </agent>
+    <agent>nls
+    </agent>
+   </agents>
+  </window>
+ </windowlist>
+ <contextmap>
+ </contextmap>
+ <topiclist defaulttopic="First_Topic.htm">
+  <topic>Glossary.htm
+  </topic>
+  <topic>MyCompany_Player_interactive.htm
+  </topic>
+  <topic>Beat_the_Clock!.htm
+  </topic>
+  <topic>MyCompany_Portable_MP3_Player.htm
+  </topic>
+  <topic>System_Requirements.htm
+  </topic>
+  <topic>Installation_in_Windows_Server.htm
+  </topic>
+  <topic>Introduction.htm
+  </topic>
+  <topic>First_Topic.htm
+  </topic>
+  <topic>Preview_Template.htm
+  </topic>
+  <topic>Developing_new_template.htm
+  </topic>
+  <topic>Applying_Template.htm
+  </topic>
+  <topic>Single_Sign-on.htm
+  </topic>
+  <topic>Authnetication.htm
+  </topic>
+  <topic>Remote_trigger_-_How_it_works__.htm
+  </topic>
+  <topic>Add__Manage_Tabs.htm
+  </topic>
+  <topic>Subject.htm
+  </topic>
+  <topic>Sub_Topic.htm
+  </topic>
+  <topic>Reorder_Tabs.htm
+  </topic>
+  <topic>Installation_in_Linux_Server.htm
+  </topic>
+  <topic>Login.htm
+  </topic>
+  <topic>Topic.htm
+  </topic>
+  <topic>Experiment.htm
+  </topic>
+  <topic>Installation_on_Mac.htm
+  </topic>
+  <topic>Change_dafult_icon_of_tabs.htm
+  </topic>
+  <topic>Equation_editor.htm
+  </topic>
+  <topic>Role_Manage.htm
+  </topic>
+  <topic>Add_Simulator.htm
+  </topic>
+  <topic>How_to_add_video_to_experiment_.htm
+  </topic>
+  <topic>Google_Custom_Search_Engine.htm
+  </topic>
+  <topic>Setting_up_database.htm
+  </topic>
+  <topic>Edit_Experiment_Details.htm
+  </topic>
+  <topic>Module_Management.htm
+  </topic>
+  <topic>Localisation.htm
+  </topic>
+  <topic>Configuration.htm
+  </topic>
+  <topic>Manage_Privileges.htm
+  </topic>
+ </topiclist>
+ <projectincludes>
+ </projectincludes>
+ <filenamemap>
+  <filenameentry moniker="wh_languagetype">
+   <filename>en_US
+   </filename>
+  </filenameentry>
+  <filenameentry moniker="toc">
+   <filename>Virtual_Lab_interface_3.hhc
+   </filename>
+  </filenameentry>
+  <filenameentry moniker="ndx">
+   <filename>Virtual_Lab_interface_3.hhk
+   </filename>
+  </filenameentry>
+  <filenameentry moniker="nls">
+   <filename>Virtual_Lab_interface_3.nla
+   </filename>
+  </filenameentry>
+  <filenameentry moniker="gls">
+   <filename>Virtual_Lab_interface_3.glo
+   </filename>
+  </filenameentry>
+  <filenameentry moniker="wh_lngfile">
+   <filename>Virtual_Lab_interface_3.lng
+   </filename>
+  </filenameentry>
+  <filenameentry moniker="wh_stoplist">
+   <filename>Virtual_Lab_interface_3.stp
+   </filename>
+  </filenameentry>
+  <filenameentry moniker="sym">
+   <filename>Virtual_Lab_interface_3.syn
+   </filename>
+  </filenameentry>
+ </filenamemap>
+</ppfml>
