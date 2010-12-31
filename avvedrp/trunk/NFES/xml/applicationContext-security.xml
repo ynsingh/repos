@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  - Sample namespace-based configuration
+  -
+  -->
+
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+    xmlns:beans="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+
+    <global-method-security pre-post-annotations="enabled">
+        <!-- AspectJ pointcut expression that locates our "post" method and applies security that way
+        <protect-pointcut expression="execution(* bigbank.*Service.post*(..))" access="ROLE_TELLER"/>
+        -->
+    </global-method-security>
+
+    <http use-expressions="true">
+        <intercept-url pattern="/Jsp/extreme/**" access="hasRole('ROLE_SUPERVISOR')"/>
+        <intercept-url pattern="/Jsp/**" access="isAuthenticated()" />
+        <!-- Disable web URI authorization, as we're using <global-method-security> and have @Secured the services layer instead
+        <intercept-url pattern="/listAccounts.html" access="isRememberMe()" />
+        <intercept-url pattern="/post.html" access="hasRole('ROLE_TELLER')" />
+        -->
+        <intercept-url pattern="/**" access="permitAll" />
+        <form-login login-page="/login.jsp" authentication-failure-url="/login.jsp?login_error=1" />
+        <logout logout-success-url="/login.jsp"/>
+        <remember-me />
+<!--
+    Uncomment to enable X509 client authentication support
+        <x509 />
+-->
+        <!-- Uncomment to limit the number of sessions a user can have 
+        <session-management invalid-session-url="/index.jsp">
+            <concurrency-control max-sessions="1" error-if-maximum-exceeded="true" />
+        </session-management>
+	-->
+    </http>
+
+    <!--
+    Usernames/Passwords are
+        rod/koala
+        dianne/emu
+        scott/wombat
+        peter/opal
+    -->
+    
+       
+    <!-- added for SHA1 password encryption by Hani -->
+    <beans:bean id="passwordEncoderBean" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">
+        <beans:constructor-arg value="256" />
+    </beans:bean>
+  	
+    <authentication-manager>
+        <authentication-provider>
+        	<!-- added for SHA1 password encryption by Hani -->
+        	<password-encoder ref='passwordEncoderBean'>
+        	        <salt-source user-property='username'/>
+      		</password-encoder>
+           	<jdbc-user-service data-source-ref="dataSource"/>
+        </authentication-provider>
+    </authentication-manager>
+    
+   <!-- added for JDBC authentication with db.properties by Rajitha-->
+   
+   	<beans:bean id="dbProperties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+   	     <beans:property name="location"><beans:value>file:..\conf\db.properties</beans:value></beans:property>
+   	</beans:bean>
+   	 
+   	 <beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+   	 		<beans:property name="driverClassName"><beans:value>com.mysql.jdbc.Driver</beans:value></beans:property>
+   	 		<beans:property name="url"><beans:value>jdbc:mysql:${dbname}</beans:value></beans:property>
+   	 		<beans:property name="username"><beans:value>${username}</beans:value></beans:property>
+   	 		<beans:property name="password"><beans:value>${password}</beans:value></beans:property>
+   	</beans:bean>
+   	
+	 <!-- end of addition by Rajitha-->
+
+	<!-- added for JDBC authentication by Ramesh 
+	<beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<beans:property name="driverClassName"><beans:value>com.mysql.jdbc.Driver</beans:value></beans:property>
+		<beans:property name="url"><beans:value>jdbc:mysql://localhost:3306/nfes_01</beans:value></beans:property>
+		<beans:property name="username" value="root"></beans:property>
+		<beans:property name="password" value="amma"></beans:property>
+	</beans:bean>
+	end of addition by Ramesh -->
+
+
+    <!-- Captcha integration -->
+    
+<beans:bean id="imageEngine" class="com.octo.captcha.engine.GenericCaptchaEngine">
+	<beans:constructor-arg index="0">
+		<beans:list>
+			<beans:ref bean="CaptchaFactory"/>
+		</beans:list>
+	</beans:constructor-arg>
+</beans:bean>
+
+<beans:bean id="CaptchaFactory" class="com.octo.captcha.image.gimpy.GimpyFactory" >
+	<beans:constructor-arg><beans:ref bean="wordgen"/></beans:constructor-arg>
+	<beans:constructor-arg><beans:ref bean="wordtoimage"/></beans:constructor-arg>
+</beans:bean>
+
+<beans:bean id="wordgen" class= "com.octo.captcha.component.word.wordgenerator.DictionaryWordGenerator" >
+	<beans:constructor-arg><beans:ref bean="filedict"/></beans:constructor-arg>
+</beans:bean>
+
+<beans:bean id="filedict" class="com.octo.captcha.component.word.FileDictionary" >
+	<beans:constructor-arg index="0"><beans:value>toddlist</beans:value></beans:constructor-arg>
+</beans:bean>
+
+<beans:bean id="wordtoimage" class="com.octo.captcha.component.image.wordtoimage.ComposedWordToImage" >
+	<beans:constructor-arg index="0"><beans:ref bean="fontGenRandom"/></beans:constructor-arg>
+	<beans:constructor-arg index="1"><beans:ref bean="backGenUni"/></beans:constructor-arg>
+	<beans:constructor-arg index="2"><beans:ref bean="simpleWhitePaster"/></beans:constructor-arg>
+</beans:bean>
+
+<beans:bean id="fontGenRandom" class="com.octo.captcha.component.image.fontgenerator.RandomFontGenerator" >
+	<beans:constructor-arg index="0"><beans:value>40</beans:value></beans:constructor-arg>
+	<beans:constructor-arg index="1"><beans:value>50</beans:value></beans:constructor-arg>
+	<beans:constructor-arg index="2">
+		<beans:list>
+			<beans:ref bean="fontArial"/>
+		</beans:list>
+	</beans:constructor-arg>
+</beans:bean>
+
+<beans:bean id="fontArial" class="java.awt.Font" >
+	<beans:constructor-arg index="0"><beans:value>Arial</beans:value></beans:constructor-arg>
+	<beans:constructor-arg index="1"><beans:value>0</beans:value></beans:constructor-arg>
+	<beans:constructor-arg index="2"><beans:value>10</beans:value></beans:constructor-arg>
+</beans:bean>
+
+<beans:bean id="backGenUni" class="com.octo.captcha.component.image.backgroundgenerator.UniColorBackgroundGenerator" >
+	<beans:constructor-arg index="0"><beans:value>300</beans:value></beans:constructor-arg>
+	<beans:constructor-arg index="1"><beans:value>100</beans:value></beans:constructor-arg>
+</beans:bean>
+
+<beans:bean id="simpleWhitePaster" class="com.octo.captcha.component.image.textpaster.SimpleTextPaster" >
+	<beans:constructor-arg type="java.lang.Integer" index="0">
+		<beans:value>3</beans:value>
+	</beans:constructor-arg>
+	<beans:constructor-arg type="java.lang.Integer" index="1">
+		<beans:value>5</beans:value>
+	</beans:constructor-arg>
+	<beans:constructor-arg type="java.awt.Color" index="2">
+		<beans:ref bean="colorGreen"/>
+	</beans:constructor-arg>
+</beans:bean>
+
+<beans:bean id="colorGreen" class="java.awt.Color" >
+	<beans:constructor-arg type="int" index="0"><beans:value>0</beans:value></beans:constructor-arg>
+	<beans:constructor-arg type="int" index="1"><beans:value>255</beans:value></beans:constructor-arg>
+	<beans:constructor-arg type="int" index="2"><beans:value>0</beans:value></beans:constructor-arg>
+</beans:bean>
+
+<beans:bean id="captchaService" class="com.octo.captcha.service.multitype.GenericManageableCaptchaService">
+	<beans:constructor-arg index="0"><beans:ref bean="imageEngine"/></beans:constructor-arg>
+	<beans:constructor-arg index="1"><beans:value>180</beans:value></beans:constructor-arg>
+	<beans:constructor-arg index="2"><beans:value>180000</beans:value></beans:constructor-arg>
+	<beans:constructor-arg type="int" index="3" value="75000"/> <!-- captchaStoreLoadBeforeGarbageCollection -->
+</beans:bean>
+
+
+	<!--    
+	<beans:bean id="captchaEngine" class="com.octo.captcha.engine.image.gimpy.SimpleListImageCaptchaEngine"/>
+
+	<beans:bean id="captchaService" class="com.octo.captcha.service.image.DefaultManageableImageCaptchaService" scope="singleton">
+		<beans:property name="captchaEngine" ref="captchaEngine"/>
+	</beans:bean>
+	
+	
+	<beans:bean id="captchaController" class="com.amritatech.acegi.CaptchaImageCreateController">
+		<beans:property name="jcaptchaService" ref="captchaService"/>
+		
+	</beans:bean>
+	
+	<beans:bean id="forgotPasswordController" class="com.amritatech.acegi.ForgotPasswordController">
+		<beans:property name="jcaptchaService" ref="captchaService"/>
+		<beans:property name="successUrl" value="/ForgotPwdSuccess.jsp"/>
+	</beans:bean>
+
+	<beans:bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<beans:property name="mappings">
+			<beans:props>
+				<beans:prop key="/captcha.html">captchaController</beans:prop>
+				<beans:prop key="/fp.html">forgotPasswordController</beans:prop>
+			</beans:props>
+		</beans:property>
+	</beans:bean>
+	
+	-->
+
+	<!-- End of Captcha integration -->
+	
+	<!--
+		To access the mailSender bean from your servlet, use the following code:
+		ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
+		org.springframework.mail.javamail.JavaMailSenderImpl bean = (org.springframework.mail.javamail.JavaMailSenderImpl) context.getBean("mailSender");
+		
+		Other references for how to send email: (use SimpleMailMessage class from Spring)
+		http://static.springsource.org/spring/docs/2.0.x/reference/mail.html
+	-->
+	<beans:bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<beans:property name="host" value="mail.mycompany.com"/>
+	</beans:bean>
+
+	<beans:bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="viewClass"><beans:value>org.springframework.web.servlet.view.JstlView</beans:value></beans:property>
+		<beans:property name="prefix"><beans:value>/WEB-INF/jsp/</beans:value></beans:property>
+		<beans:property name="suffix"><beans:value>.jsp</beans:value></beans:property>
+	</beans:bean>
+	
+</beans:beans>

@@ -1,0 +1,86 @@
+<project name="nfes" basedir=".">
+
+<property name="lib.dir"     value="lib"/>
+<property name="src.dir"     value="src"/>
+<property name="build.dir"   value="build"/>
+<property name="classes.dir" value="${build.dir}/classes"/>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete dir="nfes"/>
+    </target>
+   
+      <!-- Compile -->
+   
+    <target name="compile">
+        <mkdir dir="${classes.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${classes.dir}">
+         <classpath>
+         <fileset dir="${lib.dir}">
+	         <include name="**/*.jar"/>
+         </fileset>
+         </classpath>
+        </javac>
+    </target>
+   
+       <!-- PACKAGE -->
+   
+   <target name="package" depends="compile">
+    <echo>=== PACKAGE ===</echo>
+    <mkdir dir="nfes\WEB-INF\classes"/>
+    <copy todir="nfes\WEB-INF\classes">
+     <fileset dir="${classes.dir}">
+      <include name="**/*.class"/>
+     </fileset>
+    </copy>
+    <mkdir dir="nfes\WEB-INF\lib"/>
+    <copy todir="nfes\WEB-INF\lib">
+     <fileset dir="${lib.dir}">
+      <include name="**/*.jar"/>
+     </fileset>
+    </copy>
+    <copy file="xml\web.xml" tofile="nfes\WEB-INF\web.xml" overwrite="true" />
+    <copy file="xml\applicationContext-security.xml" tofile="nfes\WEB-INF\applicationContext-security.xml" overwrite="true" />
+    <mkdir dir="nfes\xml"/>
+    <copy file="xml\staff_profile_report_v0.xml" tofile="nfes\xml\staff_profile_report_v0.xml" overwrite="true" />
+    <mkdir dir="nfes\jsp"/>
+    <copy file="jsp\index.jsp" tofile="nfes\jsp\index.jsp" overwrite="true" />
+    <mkdir dir="nfes\js"/>
+    <copy todir="nfes\js">
+     <fileset dir="js">
+      <include name="**/*.js"/>
+     </fileset>
+    </copy>
+    <mkdir dir="nfes\css"/>
+    <copy todir="nfes\css">
+     <fileset dir="css">
+      <include name="**/*.css"/>
+     </fileset>
+    </copy>
+    <mkdir dir="nfes\images"/>
+    <copy todir="nfes\images">
+     <fileset dir="images">
+       <include name="**/*.*"/>
+     </fileset>
+    </copy>
+    <copy file="index.jsp" tofile="nfes\index.jsp" overwrite="true" />
+    <copy file="login.jsp" tofile="nfes\login.jsp" overwrite="true" />
+    <copy file="Account.jsp" tofile="nfes\Account.jsp" overwrite="true" />
+    <copy file="ForgotPwdSuccess.jsp" tofile="nfes\ForgotPwdSuccess.jsp" overwrite="true" />
+    <copy file="ForgotPassword.jsp" tofile="nfes\ForgotPassword.jsp" overwrite="true" />
+    <copy file="ActivateProfile.jsp" tofile="nfes\ActivateProfile.jsp" overwrite="true" />
+    
+    <!-- the ant war task. with all resources in place, create the war file -->
+    
+    <war destfile="nfes.war" webxml="nfes\WEB-INF\web.xml" basedir="nfes">
+    
+    <fileset dir="nfes"/>
+    <lib dir="nfes/WEB-INF/lib"/>
+    <classes dir="build/classes"/>
+     
+    </war>
+  <!--  <copy file="nfes.war" tofile="D:\Tomcat\webapps\nfes.war" overwrite="true" /> -->
+    
+   </target>
+    
+</project>

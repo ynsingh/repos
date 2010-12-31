@@ -1,0 +1,149 @@
+.rowBG1 {
+	background-color: FCFCFC;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+	color: #000000;
+
+}
+.rowBG2 {
+	background-color: E8E8E8;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+	color: #000000;
+}
+.tabBG1 {
+	background-color:#d6e3ef;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	color: #000000;
+}
+	
+.tabBG2 {
+	background-color:#d6e3ef;
+	border-top-width: 1px;
+	border-bottom-width: 1px;
+	border-right-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-right-style: solid;
+	border-top-color: #6C7D87;
+	border-bottom-color: #6C7D87;
+	border-right-color: #6C7D87;
+	border-left-color: #6C7D87;
+}
+.thead{
+	font-size: 13px;
+	font-weight: bold;
+	background-color:#fae0af;
+	border-collapse: collapse;
+	border-top-width: 1px;
+	border-bottom-width: 1px;
+	border-right-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-right-style: solid;
+	border-top-color: #CC9933;
+	border-bottom-color: #CC9933;
+	border-right-color: #CC9933;
+	border-left-color: #CC9933;
+	padding-top:6px;
+	padding-bottom:6px;
+	padding-right:6px;
+        padding-left:6px
+}
+
+.tabBG3 {
+	font-size: 13px;
+	font-weight: bold;
+	background-color:#f8f3e6;
+	border-collapse: collapse;
+	border-top-width: 1px;
+	border-bottom-width: 1px;
+	border-right-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-right-style: solid;
+	border-top-color: #6C7D87;
+	border-bottom-color: #6C7D87;
+	border-right-color: #6C7D87;
+	border-left-color: #6C7D87;
+	
+	
+}
+.tabBG4 {
+	background-color:#f8f3e6;
+	border-collapse: collapse;
+	border-top-width: 1px;
+	border-bottom-width: 1px;
+	border-right-width: 1px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-right-style: solid;
+	border-top-color: #CC9933;
+	border-bottom-color: #CC9933;
+	border-right-color: #CC9933;
+	border-left-color: #CC9933;
+	padding-top:4px;
+	padding-bottom:4px;
+	padding-right:4px;
+        padding-left:4px
+}
+
+.rowBG3 {
+        background-color: #000099;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+	color: #FFFFFF;
+}
+
+.row2Head { font-family : Verdana, Geneva, Arial, Helvetica, sans-serif; font-size : 14pt; color : #000000; text-decoration : none; ; font-weight: normal}
+
+.labeltext{font-family: Verdana, Helvetica, sans-serif;font-size: 11px;font-weight: normal;border-width:0px;background-color:transparent}
+
+.fostyles{text-decoration: none; background-color: #FFFFFF; BORDER-RIGHT: black 1px groove; BORDER-TOP: black 1px groove; FONT-SIZE: 10pt;BORDER-LEFT: black 1px groove; BORDER-BOTTOM: black 1px groove; FONT-FAMILY: Arial, Helvetica, sans-serif;}
+
+.pHeader {  background-color: 004D9C; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 15px; font-weight: bold; color: #FFFFFF; background-position: center}
+
+.dataTableRows {
+	font-family: Verdana, Helvetica, sans-serif;
+	font-size: 11px;
+	font-weight: normal;
+}
+
+.Header1{
+	background-color:#FFFFFF;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	color: #CC9933;
+	text-align:left;
+	width: 20%;
+	text-decoration:underline;
+}
+.Header2{
+	background-color:#FFFFFF;
+	width: 30px;
+	padding-right:0px;
+}
+.Header3{
+	background-color:#FFFFFF;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	color: #CC9933;
+	text-align:left;
+	width: 30%;
+	text-decoration:underline;
+}

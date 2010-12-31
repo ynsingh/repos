@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+version="2.5">
+
+<display-name>Welcome to Tomcat</display-name>
+<description>
+Welcome to Tomcat
+</description>
+
+   <display-name>Spring Security Tutorial Application</display-name>
+   
+       <!--
+         - Location of the XML file that defines the root application context
+         - Applied by ContextLoaderListener.
+         -->
+       <context-param>
+           <param-name>contextConfigLocation</param-name>
+           <param-value>
+              
+               /WEB-INF/applicationContext-security.xml
+           </param-value>
+       </context-param>
+   
+   
+       <filter>
+           <filter-name>springSecurityFilterChain</filter-name>
+           <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+       </filter>
+   
+       <filter-mapping>
+         <filter-name>springSecurityFilterChain</filter-name>
+         <url-pattern>/*</url-pattern>
+       </filter-mapping>
+       
+       
+               <listener>
+                   <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+               </listener>
+           
+               <!--
+                 - Publishes events for session creation and destruction through the application
+                 - context. Optional unless concurrent session control is being used.
+                 -->
+               <listener>
+                 <listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
+               </listener>
+           
+               <listener>
+                   <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+            </listener>
+
+    
+<servlet>
+<servlet-name>StaffProfileServlet</servlet-name>
+<servlet-class>com.erp.nfes.StaffProfileServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>StaffProfileServlet</servlet-name>
+<url-pattern>/StaffProfileServlet</url-pattern>
+</servlet-mapping>
+
+<servlet>
+<servlet-name>fileupload</servlet-name>
+<servlet-class>com.erp.nfes.fileupload</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>fileupload</servlet-name>
+<url-pattern>/fileupload</url-pattern>
+</servlet-mapping>
+
+<servlet>
+<servlet-name>loadFile</servlet-name>
+<servlet-class>com.erp.nfes.loadFile</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>loadFile</servlet-name>
+<url-pattern>/loadFile</url-pattern>
+</servlet-mapping>
+
+<servlet>
+<servlet-name>ProfileCreationServlet</servlet-name>
+<servlet-class>com.erp.nfes.ProfileCreationServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>ProfileCreationServlet</servlet-name>
+<url-pattern>/ProfileCreationServlet</url-pattern>
+</servlet-mapping>
+
+
+<servlet>
+<servlet-name>ProfileActivationServlet</servlet-name>
+<servlet-class>com.erp.nfes.ProfileActivationServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>ProfileActivationServlet</servlet-name>
+<url-pattern>/ProfileActivationServlet</url-pattern>
+</servlet-mapping>
+
+<servlet>
+<servlet-name>ForgotPasswordController</servlet-name>
+<servlet-class>com.erp.nfes.ForgotPasswordController</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>ForgotPasswordController</servlet-name>
+<url-pattern>/ForgotPasswordController</url-pattern>
+</servlet-mapping>
+
+<welcome-file-list>
+  <welcome-file>index.jsp</welcome-file>
+</welcome-file-list>
+
+</web-app>
