@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Schema name="StudentLearningToolUsage">
+    <Cube name="StudentLearningToolUsage">
+        <Table name="student_activity_events_fact"/>
+        <Dimension name="activity_date">
+            <Hierarchy name="activity_date" hasAll="true" allMemberName="All activity_date">
+                <Table name="student_activity_events_fact"/>
+                <Level name="student_activity_events_fact.activity_date" table="student_activity_events_fact" column="activity_date" uniqueMembers="false"/>
+            </Hierarchy>
+        </Dimension>
+        <Dimension name="tool" foreignKey="event_name">
+            <Hierarchy name="tool" hasAll="true" allMemberName="All tool" primaryKey="event_name">
+                <Table name="event_tool_map"/>
+                <Level name="event_tool_map.tool" table="event_tool_map" column="tool" uniqueMembers="false"/>
+            </Hierarchy>
+        </Dimension>
+        <Measure name="SUM of student_activity_events_fact.total_access_count" column="total_access_count" aggregator="sum" datatype="Integer" formatString="#,##0"/>
+        <Measure name="SUM of student_activity_events_fact.user_id" column="user_id" aggregator="count" datatype="String" formatString="#,##0"/>
+    </Cube>
+</Schema>

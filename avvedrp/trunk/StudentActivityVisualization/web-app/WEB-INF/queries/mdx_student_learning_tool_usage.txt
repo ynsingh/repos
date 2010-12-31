@@ -1,0 +1,4 @@
+with member [Measures].[Usage Count] as '[Measures].[SUM of student_activity_events_fact.total_access_count]'
+select NON EMPTY {[Measures].[Usage Count]} ON COLUMNS,
+  NON EMPTY Crossjoin({[activity_date.activity_date].[All activity_date]}, [tool.tool].[All tool].Children) ON ROWS
+from [StudentLearningToolUsage]

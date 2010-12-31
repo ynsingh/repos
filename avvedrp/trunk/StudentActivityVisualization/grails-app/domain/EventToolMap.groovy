@@ -1,0 +1,5 @@
+class EventToolMap {
+
+    static constraints = {
+    }
+}

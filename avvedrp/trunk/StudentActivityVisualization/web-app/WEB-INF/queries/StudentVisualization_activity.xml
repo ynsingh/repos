@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Schema name="StudentVisualization_activity">
+    <Cube name="StudentVisualization_activity">
+        <Table name="SST_SITEACTIVITY"/>
+        <Dimension name="Site" foreignKey="SITE_ID">
+            <Hierarchy name="Site" hasAll="true" allMemberName="All site" primaryKey="SITE_ID">
+                <Table name="SAKAI_SITE"/>
+                <Level name="SAKAI_SITE.TITLE" table="SAKAI_SITE" column="TITLE" uniqueMembers="false"/>
+            </Hierarchy>
+        </Dimension>
+        <Dimension name="Activity">
+            <Hierarchy name="Activity" hasAll="true" allMemberName="All Activities">
+                <Table name="SST_SITEACTIVITY"/>
+                <Level name="SST_SITEACTIVITY.EVENT_ID" table="SST_SITEACTIVITY" column="EVENT_ID" uniqueMembers="false"/>
+            </Hierarchy>
+        </Dimension>
+        <Measure name="Activity Count" column="ACTIVITY_COUNT" aggregator="sum" datatype="String" formatString="#,##0"/>
+    </Cube>
+</Schema>

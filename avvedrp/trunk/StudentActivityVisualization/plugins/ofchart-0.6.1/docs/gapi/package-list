@@ -1,0 +1,7 @@
+DefaultPackage
+grails-app.conf
+grails-app.controllers.org.codehaus.groovy.grails.plugins.ofchart.demo
+grails-app.taglib.org.codehaus.groovy.grails.plugins.ofchart.taglib
+scripts
+src.java.org.codehaus.groovy.grails.plugins.ofchart.demo
+test.unit.org.codehaus.groovy.grails.plugins.ofc.demo

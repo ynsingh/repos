@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Schema name="Student_Visualization">
+    <Cube name="Student_Visualization">
+        <Table name="SST_EVENTS"/>
+        <Dimension name="Site" foreignKey="SITE_ID">
+            <Hierarchy name="Site" hasAll="true" allMemberName="All site" primaryKey="SITE_ID">
+                <Table name="SAKAI_SITE"/>
+                <Level name="SAKAI_SITE.TITLE" table="SAKAI_SITE" column="TITLE" uniqueMembers="false"/>
+            </Hierarchy>
+        </Dimension>
+        <Dimension name="Event">
+            <Hierarchy name="Event" hasAll="true" allMemberName="All event" primaryKey="EVENT_ID">
+                <Table name="SST_EVENTS"/>
+                <Level name="SST_EVENTS.EVENT_ID" table="SST_EVENTS" column="EVENT_ID" uniqueMembers="false"/>
+            </Hierarchy>
+        </Dimension>
+        <Dimension name="First Name" foreignKey="USER_ID">
+            <Hierarchy name="First Name" hasAll="true" allMemberName="All Students" primaryKey="USER_ID">
+                <Table name="SAKAI_USER"/>
+                <Level name="SAKAI_USER.FIRST_NAME" table="SAKAI_USER" column="FIRST_NAME" uniqueMembers="false"/>
+            </Hierarchy>
+        </Dimension>
+        <Dimension name="Last Name" foreignKey="USER_ID">
+            <Hierarchy name="Last Name" hasAll="true" allMemberName="All last name" primaryKey="USER_ID">
+                <Table name="SAKAI_USER"/>
+                <Level name="SAKAI_USER.LAST_NAME" table="SAKAI_USER" column="LAST_NAME" uniqueMembers="false"/>
+            </Hierarchy>
+        </Dimension>
+        <Measure name="Event Count" column="EVENT_COUNT" aggregator="sum" datatype="Integer" formatString="#,##0"/>
+    </Cube>
+</Schema>

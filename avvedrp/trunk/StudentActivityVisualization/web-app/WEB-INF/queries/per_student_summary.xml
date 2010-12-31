@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Schema name="PerStudentSummary">
+    <Cube name="PerStudentSummary">
+        <Table name="student_activity_per_student_summary_fact"/>
+        <Dimension name="StudentName">
+            <Hierarchy name="StudentName" hasAll="true" allMemberName="All studentname">
+                <Table name="student_activity_per_student_summary_fact"/>
+                <Level name="student_activity_per_student_summary_fact.student_name" table="student_activity_per_student_summary_fact" column="student_name" uniqueMembers="false"/>
+            </Hierarchy>
+        </Dimension>
+        <Measure name="SUM of student_activity_per_student_summary_fact.view_count" column="view_count" aggregator="sum" datatype="Integer" formatString="#,##0"/>
+        <Measure name="SUM of student_activity_per_student_summary_fact.session_count" column="session_count" aggregator="sum" datatype="Integer" formatString="#,##0"/>
+        <Measure name="SUM of student_activity_per_student_summary_fact.time_spent" column="time_spent" aggregator="sum" datatype="Integer" formatString="#,##0"/>
+        <Measure name="SUM of student_activity_per_student_summary_fact.resources_count" column="resources_count" aggregator="sum" datatype="Integer" formatString="#,##0"/>
+    </Cube>
+</Schema>

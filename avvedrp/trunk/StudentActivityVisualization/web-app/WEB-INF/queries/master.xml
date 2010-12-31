@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Schema name="master">
+    <Cube name="master">
+        <Table name="master"/>
+
+         <Dimension name="Course" foreignKey="course">
+            <Hierarchy hasAll="true" allMemberName="All Courses" primaryKey="id">
+                <Table name="course_master"/>
+                <Level name="courses" column="course_description" uniqueMembers="true"/>
+            </Hierarchy>
+        </Dimension>
+
+         <Dimension name="User" foreignKey="userid">
+            <Hierarchy hasAll="true" allMemberName="All Users" primaryKey="id">
+                <Table name="person"/>
+                <Level name="users" column="username" uniqueMembers="true"/>                
+            </Hierarchy>
+        </Dimension>
+        
+        <Measure name="Activity Count" column="action" aggregator="count" datatype="String" formatString="#,##0"/>
+    </Cube>
+</Schema>
