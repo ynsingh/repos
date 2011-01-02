@@ -52,6 +52,7 @@ import org.iitk.brihaspati.modules.utils.EncryptionUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil; 
 import org.iitk.brihaspati.modules.utils.UserManagement; 
 import org.iitk.brihaspati.modules.utils.StringUtil;
+import org.iitk.brihaspati.modules.utils.PasswordUtil;
 import org.iitk.brihaspati.om.UserConfigurationPeer;
 import org.iitk.brihaspati.om.UserConfiguration;
 import org.iitk.brihaspati.om.HintQuestionPeer;
@@ -182,36 +183,13 @@ public class ForgotPassword extends VelocitySecureAction
         	        	if(!mailId.equals(""))
 				{
 					AccessControlList acl=TurbineSecurity.getACL(user);
-					byte[] pass=new byte[8];
-
-					/** 
-				   	* Random is a function for 
-				   	* generating random numbers. 
-				   	*/
-
-	        	        	Random rnd=new Random();
-					for(int i=0;i<8;i++)
-					{ 
-                	   			int inPass=rnd.nextInt(26);
-                   				int p1;
-		        			if((inPass%2)==0)
-						{ 
-	               					p1=inPass%10;
-        	              				pass[i]=(byte)(p1+48); 
-  			   			}
-        	   	  			else
-			  			{
-							pass[i]=(byte)(inPass+97);
-	                  			}	 
-					}
 					/**
 					* Get Server Name and Server Port
 					*/
 					String serverName=data.getServerName();
  					int srvrPort=data.getServerPort();
 					String serverPort=Integer.toString(srvrPort);
-        		        	//String str=new String(pass);
-        		        	String password=new String(pass);
+        		        	String password=PasswordUtil.randmPass();
 	        			String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
 					String msg1=new String();
 					try

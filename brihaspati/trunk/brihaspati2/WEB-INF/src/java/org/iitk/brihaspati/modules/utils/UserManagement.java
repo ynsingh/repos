@@ -76,6 +76,7 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.SystemIndependentUtil;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
+import org.iitk.brihaspati.modules.utils.PasswordUtil;
 //Babylon
 import babylon.babylonUserTool;
 import babylon.babylonPasswordEncryptor;
@@ -127,7 +128,18 @@ public class UserManagement
 		{
 				String userRole=new String();
 			try{
-					String Mail_msg=new String();
+				/**
+				* It is used if passwd is equal to ename of UName
+				* then set password to random password
+				*/
+				String spltunm[]=UName.split("@");
+				String gnme=spltunm[0];
+				if (gnme.equals(Passwd)||(Passwd==null))
+				{
+					Passwd=PasswordUtil.randmPass();
+				}
+
+				String Mail_msg=new String();
 				String Rollno_msg="";
 				String email_existing=new String();
 				String cAlias=new String();
@@ -177,15 +189,9 @@ public class UserManagement
 						 */
 						if((Role.equals("student"))&& (!(RollNo.equals(""))))
 						{
-				                        Vector instid = InstituteIdUtil.getAllInstId(user_id);
-				                        //ErrorDumpUtil.ErrorLog("Institute id in Create User of userManagement util --------->"+instid);
-				                        for(int i=0;i<instid.size();i++)
-			                                {
-			                                        Object insId=instid.get(i);
-			                                        String InsId = insId.toString();
-								Rollno_msg = InsertPrgRollNo(UName,RollNo,Program,InsId,file);
-								//ErrorDumpUtil.ErrorLog("return value inside if part\n"+Rollno_msg);
-							}
+							String actgname[]=GroupName.split("_");
+                                                        String InsId=actgname[1];
+							Rollno_msg = InsertPrgRollNo(UName,RollNo,Program,InsId,file);
 						}
 						User existingUser=TurbineSecurity.getUser(UName);
 						TurbineSecurity.grant(existingUser,user_group,user_role);
@@ -237,8 +243,6 @@ public class UserManagement
 						pr =MailNotification.uploadingPropertiesFile(fileName);
 				                subject = MailNotification.subjectFormate(userRole, "", pr );
 						messageFormate = MailNotification.getMessage(userRole, cAlias, dept, "", "", serverName, serverPort,pr);
-						//ErrorDumpUtil.ErrorLog("\n\n\n\n subject="+subject+"		messageFormate="+messageFormate);
-						//Mail_msg=message+MailNotification.sendMail(userRole,email_existing,cAlias,dept,"","",fileName,serverName,serverPort,file);
 						Mail_msg=message+MailNotification.sendMail(messageFormate, email_existing, subject, "", file);
 						pr = null;
 						subject ="";
@@ -386,15 +390,9 @@ public class UserManagement
 						 */
 						if((Role.equals("student"))&&(!(RollNo.equals(""))))
 						{
-							Vector instid = InstituteIdUtil.getAllInstId(u1);
-                                                        //ErrorDumpUtil.ErrorLog("Institute id in Create User of userManagement util --------->"+instid);
-                                                        for(int i=0;i<instid.size();i++)
-                                                        {
-                                                                Object insId=instid.get(i);
-                                                                String InsId = insId.toString();
-                                                                Rollno_msg = InsertPrgRollNo(UName,RollNo,Program,InsId,file);
-                                                                //ErrorDumpUtil.ErrorLog("return value inside if part\n"+Rollno_msg);
-                                                         }
+							String actgname[]=GroupName.split("_");
+                                                        String InsId=actgname[1];
+                                                        Rollno_msg = InsertPrgRollNo(UName,RollNo,Program,InsId,file);
                                                 }
                                                                 
 						String NewUser= new String();

@@ -113,7 +113,7 @@ public class  ASS_subm  extends  SecureScreen
 			Criteria crit1=new Criteria();
                         crit1.add(AssignmentPeer.GROUP_NAME,courseid);
                         List u=AssignmentPeer.doSelect(crit1);
-			ErrorDumpUtil.ErrorLog("a"+u.size());
+			ErrorDumpUtil.ErrorLog("Size of Assignment list -ASS_sub.java"+u.size());
                         boolean view=false,postAns=false,perdate=false;
                         if( u.size() != 0 )
                         {

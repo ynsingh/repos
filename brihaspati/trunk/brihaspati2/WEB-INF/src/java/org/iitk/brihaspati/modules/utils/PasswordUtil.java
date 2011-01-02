@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.utils;
 
 /*(#)PasswordUtil.java
  *
- *  Copyright (c) 2005 ETRG,IIT Kanpur. http://www.iitk.ac.in/
+ *  Copyright (c) 2005, 2010 ETRG,IIT Kanpur. http://www.iitk.ac.in/
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -33,12 +33,13 @@ package org.iitk.brihaspati.modules.utils;
  */
 
 /**
+ * @author: <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
  * @author: <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kumar Trivedi</a>
  * @author: <a href="mailto:madhavi_mungole@hotmail.com">Madhavi Mungole</a>
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
  * @modified date: 08-07-2010, 07-12-2010
  */
-
+import java.util.Random;
 import java.util.Properties;
 
 import org.apache.turbine.om.security.User;
@@ -206,5 +207,36 @@ public class PasswordUtil{
 		PasswordUtil.serverName = serverName;
 		PasswordUtil.serverPort = serverPort;	
 	}
+	/**
+         * Used to generate random password password
+         * @return String
+         */
 
-}
+	public static String randmPass(){
+		byte[] pass=new byte[8];
+
+               /** 
+               * Random is a function for 
+               * generating random numbers. 
+               */
+
+               	Random rnd=new Random();
+               	for(int i=0;i<8;i++)
+               	{
+  	        	int inPass=rnd.nextInt(26);
+                        int p1;
+                        if((inPass%2)==0)
+                     	{
+                                p1=inPass%10;
+                                pass[i]=(byte)(p1+48);
+                        }
+                        else
+                        {
+                        	pass[i]=(byte)(inPass+97);
+                        }
+                }
+		String password=new String(pass);
+		return password;
+	}
+
+	}
