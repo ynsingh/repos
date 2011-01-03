@@ -37,6 +37,8 @@ import java.io.File;
 import java.util.List;
 import java.util.Properties;
 import java.util.Vector;
+import java.util.LinkedHashSet;
+import java.util.Collection;
 //Turbine
 import org.apache.turbine.Turbine;
 import org.apache.torque.util.Criteria;
@@ -734,6 +736,7 @@ public class UserManagement
                         ErrorDumpUtil.ErrorLog("This is the exception in get user details -utils(UserManagement)  :- "+e);
 					
 		}
+		ErrorDumpUtil.ErrorLog("Total User====>"+v);
 		return v;
 	}
 	/**
@@ -881,10 +884,16 @@ public class UserManagement
 					UidVector.add(user_id);
 				}
 			}
+			//code for adding userid once in vector, modified by sharad on 31-12-2010
+
+			Collection noDup = new LinkedHashSet(UidVector);
+			UidVector.clear();
+			UidVector.addAll(noDup);
+
+			//put check for match userid exist.?
 			for(int u=0;u<UidVector.size();u++){
 				String userId=(UidVector.get(u)).toString(); 
 				int UserId=Integer.parseInt(userId);
-				ErrorDumpUtil.ErrorLog("UserId in List Mgmt ====>"+UserId);
 				crit=new Criteria();
 				//modified on 25-12-2010 by sharad
 				if(UserId!=0)

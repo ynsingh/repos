@@ -38,6 +38,8 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_InstituteAdmin;
 
 import java.util.List;
 import java.util.Vector;
+import java.util.LinkedHashSet;
+import java.util.Collection;
 
 import org.apache.velocity.context.Context;
 
@@ -92,6 +94,11 @@ public class InstUserAttendence_Sheet extends SecureScreen_Institute_Admin
 			String instituteId=(data.getUser().getTemp("Institute_id")).toString();
 			List list1=null;
 			Vector instList= InstituteDetailsManagement.getInstUserDeatil(instituteId);
+			//modified by sharad on 03-01-2010
+			Collection noDup = new LinkedHashSet(instList);
+                        instList.clear();
+                        instList.addAll(noDup);
+			//end
 			ParameterParser pp=data.getParameters();
 			String valueString =pp.getString("valueString","null");
 			String counter=pp.getString("count","");
