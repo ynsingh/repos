@@ -1,27 +1,218 @@
 #*
- * @(#)Oles_Gen.vm
- * Copyright (c) 2010 ETRG,IIT Kanpur.
+ * @#Oles_Gen.vm
+ * Copyright (c) 2010 DEI Agra.
  * All Rights Reserved.
- *  @author <a href="mailto:seema_020504@yahoo.com ">Seema Pal</a>
- * Contributors: Members of ETRG, I.I.T. Kanpur
+ * @author <a href="mailto:noopur.here@gmail.com ">Nupur Dixit</a>
+ * Contributors: Members of MHRD Project DEI Agra
 *#
-$page.setTitle("QuestionBank")
+
+$page.setTitle("Quiz Management")
 $page.setBgColor("bgcolor")
 ## If some message has been set, that is retrieved and displayed.
 $!data.getMessage()
 ## Retreiving the $lang (representing the choosen language for display, which
 ## was set in corresponding the screen class.
 #set($lang = $data.getUser().getTemp("lang" ).toString())
+
 <table bgcolor="$ui.menuColor" width=100%>
-##link for faq with modes(add,delete,alllist and edit)
 <tr><td><b>
 	<font face="$ui.sansSerifFonts">
 	<a href=$link.setPage("Index.vm")>Home</a>|
 	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
-	<a href=$link.setPage("call,OLES,Oles_QB.vm")>QuestionBank</a> 
+	#if($mode == "QuizDetail")
+		<a href=$link.setPage("call,OLES,Oles_Gen.vm")>Generate Exam</a> |
+			$brih_quiz #if($lang =="hindi") $brih_Of1 #end $brih_update
+	#else
+			$brih_quiz #if($lang =="hindi") $brih_Of1 #end $brih_setup
+	#end
 </b></td>
 </tr>
 </table>
-<table>
-<tr><td> This Page will be coming soon !! (under development)</td></tr>
+
+## Creating the links for help regarding FAQ 
+<table width="100%">
+<tr>
+<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES.html","newWin");>Help</a></td>
+</tr>
 </table>
+
+	#if($mode == "QuizDetail")
+		<form name="frm" method="get"  enctype="multipart/form-data" action=$link.setPage("call,OLES,Quiz_Detail.vm").setAction("OLES_Quiz")>
+	#else	
+		<form name="frm" method="get"  enctype="multipart/form-data" action=$link.setPage("call,OLES,Oles_Gen.vm").setAction("OLES_Quiz")>
+	#end
+	
+
+<table width="100%" bgcolor="$ui.tableColor">
+#if($mode == "QuizDetail")
+	<tr bgcolor="$ui.menuColor" width="100%">
+		<td align="left" width="100%" colspan="5"><b><i><font size="3"> $brih_quiz $brih_update</font><b></i></td>
+	</tr>
+#else
+
+	<tr bgcolor="$ui.tableColor">
+		#if($tdcolor != "1")
+        <td>
+         #elseif($tdcolor == "1")
+		<td bgcolor="#AFDCEC">
+		#end
+		<b><I><a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1").addPathInfo("mode","quizSetup") style=text-decoration:none>Quiz Setup</I></b></a></td>
+		#if($tdcolor != "2")
+        <td>
+        #elseif($tdcolor == "2")
+		<td bgcolor="#AFDCEC">
+		#end
+		<b><I><a href=$link.setPage("call,OLES,Create_Quiz.vm").addPathInfo("count","2").addPathInfo("type","selectQuiz") style=text-decoration:none>Quiz Creation</I></b></a></td>
+		#if($tdcolor != "3")
+        <td>
+        #elseif($tdcolor == "3")
+		<td bgcolor="#AFDCEC">
+		#end
+		<b><I><a href=$link.setPage("call,OLES,Quiz_Detail.vm").addPathInfo("mode","quizDetail").addPathInfo("count","3") style=text-decoration:none>Quiz Details</I></b></a></td>
+		#if($tdcolor != "4")
+        <td>
+        #elseif($tdcolor == "4")
+		<td bgcolor="#AFDCEC">
+		#end
+		<b><I><a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("mode","preview").addPathInfo("count","4") style=text-decoration:none>Preview</I></b></a></td>
+		</tr>
+		<tr bgcolor="$ui.menuColor" width="100%">
+			<td align="left" width="100%" colspan="5"><b><i><font size="3"> Quiz SetUp</font><b></i></td>
+		</tr>
+	#end
+	
+	#if($mode == "QuizDetail")
+	#foreach ($Quiz in $allQuiz)
+		<tr bgcolor="$ui.menuColor">	
+			<td><b> $brih_quiz #if($lang =="hindi") $brih_Of1 #end $brih_ID</b></td>
+			<td><input type="text" name="quizID" value=$!qid readonly></td>
+		</tr>	
+		<tr>
+       		<td><b>$brih_quiz $brih_title</b><font color=Red>*</font></td>                
+        	<td><input type="text" name="quizName" value=$Quiz.getQuizName() readonly></td>
+		</tr>
+        <tr>
+            <td><b>Maximum Marks</b><font color=Red>*</font></td>
+            <td><input type="text" name="maxMarks" value=$Quiz.getMaxMarks()></td>
+        </tr>
+        <tr>
+           	<td><b>Maximum Time</b><font color=Red>*</font></td>        	
+            <td><input type="text" name="maxTime" value=$Quiz.getMaxTime()></td>
+        </tr>
+		<tr>
+           	<td><b>Number Of Question</b><font color=Red>*</font></td>
+			<td><input type="text" name="numberQuestion" value=$Quiz.getnoQuestion()></td>
+        </tr>   
+	#end
+	#else
+		<tr bgcolor="$ui.menuColor">
+			<td><b> $brih_quiz #if($lang =="hindi") $brih_Of1 #end $brih_ID <font color=RED> *</font></b> </td>
+			<td> <input type="text" size=8 name="quizID" value="$!qid" "readonly"></td>
+		</tr>
+		<tr>
+			<td><b> $brih_quiz #if($lang =="hindi") $brih_Of1 #end $brih_title <font color=RED> *</font></b> </td>
+	        <td><input type="text" size=8 name="quizName" value=""></td>
+		</tr>		
+        <tr>
+            <td><b>Maximum Marks</b><font color=Red>*</font></td>
+            <td><input type="text" name="maxMarks" value=""></td>
+        </tr>
+        <tr>
+           	<td><b>Maximum Time</b><font color=Red>*</font></td>        	
+            <td><input type="text" name="maxTime" value=""></td>
+        </tr>
+		<tr>
+           	<td><b>Number Of Question</b><font color=Red>*</font></td>
+			<td><input type="text" name="numberQuestion" value=""></td>
+        </tr>                
+	#end	
+       
+		<tr bgcolor="$ui.menuColor" width="100%">
+			<td align="left" width="100%" colspan="5">
+			#if($mode == "QuizDetail")
+				<input type=button name="eventSubmit_doUpdate" value=$brih_update onClick="checkField(document.frm,this);"/>
+				<input type="hidden" name="mode" value=$mode >	
+				#*
+				<input type="hidden" name="quizid" value=$qid>	
+				<input type="hidden" name="title" value=$title>	
+				*#
+			#else
+			     
+				<input type="button" name="eventSubmit_doUploadQuiz" value=$brih_submit onClick="checkField(document.frm,this);"/>
+			#end		
+				<input type="reset" name="reset" value="Clear" onClick="checkClear(document.frm,this);"/>
+			</td>
+		</tr>
+	</table>
+	
+	<input type="hidden" name="actionName">
+	#*
+	<input type="hidden" name="valQuestype">
+	<input type="hidden" name="valdifflevel">
+	<input type="hidden" name="typeques" value="$typeques">
+	<input type="hidden" name="mode" value="$mode">
+	<input type="hidden" name="page" value="$page">
+	<input type="hidden" name="status" value="$status">
+	<input type="hidden" name="addques" value="$addques">
+	<input type="hidden" name="count" value="$tdcolor">
+	*#
+	
+</form>
+<SCRIPT LANGUAGE="javascript">
+
+        
+function checkField(frm,field){
+        if(frm.quizName.value!="" && frm.maxMarks.value!="" && frm.maxTime.value!="" && frm.numberQuestion.value!=""){
+        	var quizName=frm.quizName.value;
+			var temp="~`!@#%^&*()-+={[}]|\\:;'<,>./?\f\n\r\t\v";
+			var btype=new Boolean(true);	
+			for(k=0;k<temp.length;k++){
+            	for (n = 0; n < quizName.length; n++){
+                	if(temp.charAt(k) == quizName.charAt(n))
+                    	btype=false;				
+                }
+        	}			
+			if(btype){
+				if((frm.maxMarks.value>=10) && (frm.maxMarks.value<=100)){
+					if((frm.maxTime.value>=5) && (frm.maxTime.value<=120)){
+						if((frm.numberQuestion.value>=5) && (frm.numberQuestion.value<=20)){
+                                	frm.actionName.value=field.name;
+                                	frm.submit();
+                    	}
+                        else{
+        	                alert("The number of questions in a quiz should be between 5 to 20");
+                    	}
+                	}
+                	else{
+                		alert("The max time of a quiz should be between 5 to 120 minutes");
+                	}
+            	}
+            	else{
+            		alert("The max marks in a quiz should be between 10 to 100");
+            	}
+			}
+			else{
+				alert("Special cherector is not allowed in quiz name !!");	
+			}
+        }
+        else
+            alert("Please fill the Mandatory(*) Fields !!");
+}
+
+
+function checkClear(frm,field)
+{
+	frm.quizName.value=""
+	frm.maxMarks.value=""
+	frm.maxTime.value=""
+	frm.noQuestion.value=""
+}
+
+function popupWin(url,popupName)
+{
+        Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400,align=left");
+}
+</script>
+		
+
+

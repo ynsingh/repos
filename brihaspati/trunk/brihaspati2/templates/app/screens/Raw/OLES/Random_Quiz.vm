@@ -1,0 +1,129 @@
+#*
+ * @#Random_Quiz.vm
+ * Copyright (c) 2010 MHRD, DEI Agra.
+ * All Rights Reserved.
+ * @author <a href="mailto:aayushi.sr@gmail.com">Aayushi</a>
+ * Contributors: Members of MHRD, DEI Agra.
+*#
+$page.setTitle("Quiz Creation")
+$page.setBgColor("bgcolor")
+## If some message has been set, that is retrieved and displayed.
+$!data.getMessage()
+## Retreiving the $lang (representing the choosen language for display, which
+## was set in corresponding the screen class.
+#set($lang = $data.getUser().getTemp("lang" ).toString())
+
+<table bgcolor="$ui.menuColor" width=100%>
+	##link for faq with modes(add,delete,alllist and edit)
+	<tr><td><b>
+		<font face="$ui.sansSerifFonts">
+		<a href=$link.setPage("Index.vm")>Home</a>|
+		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
+		<a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1")>Generate Exam</a> |
+		<a href=$link.setPage("call,OLES,Create_Quiz.vm").addPathInfo("count","2")>Quiz Creation</a> |
+		#if($tdcolor=="1")
+			One By One
+		#else
+			Randomly
+		#end	
+	</b></td></tr>
+</table>
+
+## Creating the links for help regarding FAQ 
+<table width="100%">
+	<tr>
+		<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES.html","newWin");>Help</a></td>
+	</tr>
+</table>
+
+<form name="frm" method="post" enctype="multipart/form-data" action=$link.setPage("call,OLES,Create_Quiz.vm").setAction("OLES_Quiz")>
+<table width="100%" bgcolor="$ui.tableColor">
+	
+	<tr bgcolor="$ui.tableColor">
+		#if($tdcolor != "1")
+        		<td>
+        	#elseif($tdcolor == "1")
+			<td bgcolor="#AFDCEC">
+		#end
+			<b><I><a href=$link.setPage("call,OLES,Random_Quiz.vm").addPathInfo("mode","one").addPathInfo("count","1").addPathInfo("type",$type) style=text-decoration:none>One By One</I></b></a></td>
+		#if($tdcolor != "2")
+             		<td>
+        	#elseif($tdcolor == "2")
+			<td bgcolor="#AFDCEC">
+		#end
+			<b><I><a href=$link.setPage("call,OLES,Random_Quiz.vm").addPathInfo("mode","random").addPathInfo("count","2").addPathInfo("type",$type) style=text-decoration:none>Randomly</I></b></a></td>		
+	</tr>	
+	<tr bgcolor="$ui.menuColor" width="100%">
+		<td align="left" width="100%" colspan="5"><b><i><font size="3"> Randomly Quiz Generatiom </font><b></i></td>
+	</tr>
+	<tr>
+       		<td><b>Topic Name</b><font color=Red>*</font></td>                
+        	<td><select name=topicList >
+			<option>
+				#foreach($topic in $topicList)
+					<option value=$topic.getTopic()>$topic.getTopic()</option>
+		        	#end
+		        </option>
+		</select></td>
+	</tr>
+        <tr>
+        	<td><b>Type</b><font color=Red>*</font></td>
+        	<td><select name=typeList >
+                	<option>
+				<option value="mcq">Multiple Choice Question Type
+				<option value="tft">True/False Type
+				##<option value="maq" disabled="true">Matching Type
+				<option value="sat">Short Answer Type
+				<option value="lat">Long Answer Type
+			</option>
+                </select></td>        	
+        </tr>
+        <tr>
+        	<td><b>Difficulty Level</b><font color=Red>*</font></td>        	
+        	<td><select name="levelList" >
+                	<option>
+				<option value="0-3">Easy
+				<option value="4-6">Medium
+				<option value="7-9">Hard
+			</option>
+                </select></td> 
+        </tr>
+	<tr>
+        	<td><b>Number of Questions</b><font color=Red>*</font></td>
+		<td><input type="text" name="numberQuestion" value=""></td>
+        </tr>                
+	<tr>
+        	<td><b>Marks per Question</b><font color=Red>*</font></td>
+		<td><input type="text" name="marksQuestion" value=""></td>
+        </tr>
+       
+	<tr bgcolor="$ui.menuColor" width="100%">
+		<td align="left" width="100%" colspan="5">
+			<input type="button" name="eventSubmit_doUploadQuiz" value="Add and Finish" disabled ="true" onClick="checkValue(document.frm,this);"/>		
+			<input type="reset" name="reset" value="Clear" onClick="checkClear(document.frm,this);"/>
+		</td>
+	</tr>
+</table>
+
+<input type="hidden" name="mode" value=$mode >
+<input type="hidden" name="type" value="createQuiz" >
+<input type="hidden" name="count" value="$tdcolor">
+<input type="hidden" name="actionName" value="">
+</form>
+<script LANGUAGE="JAVASCRIPT">
+	
+	function popupWin(url,popupName)
+   	{
+    		Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=200,width=300,align=center");
+   	}
+   	
+	function checkValue(frm,field){
+		
+        	if(frm.topicList.value!="" && frm.typeList.value!="" && frm.levelList.value!="" && frm.numberQuestion.value!=""&& frm.marksQuestion.value!="")
+        	{
+        		
+        	}
+        	else
+            		alert("Please fill the Mandatory(*) Fields !!");            
+	}
+</script>
