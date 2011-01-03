@@ -1,0 +1,35 @@
+#myAccordion{
+	width:650px;
+
+ 	border: 1px solid #000000;
+	
+}
+#myAccordion dt{
+	line-height: 20px;
+	background-color: #a1ceeb;
+	border-top: 2px solid #000000;
+	border-bottom: 2px solid #a1ceeb;
+	padding: 0 10px;
+	font-weight: bold;
+	color: #000000;
+}
+#myAccordion dd{
+	overflow: auto;
+
+}
+#myAccordion p{
+	margin: 16px 10px;
+
+}
+#myAccordion dt.myAccordionHover
+{
+	background-color: #32bbfd;
+    border-bottom: 2px solid #32bbfd;
+    border-top: 2px solid #000000;
+}
+#myAccordion dt.myAccordionActive
+{
+	background-color: #2e6fa7;
+	border-top: 2px solid #000000;
+	border-bottom: 2px solid #000;
+}

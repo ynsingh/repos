@@ -1,0 +1,104 @@
+/* Copyright (c) 2006 Yahoo! Inc. All rights reserved. */
+
+/* Defaults */
+.ygtvtn { width:16px; height:22px;  background:  url(../img/default/tn.gif) 0 0 no-repeat; }
+.ygtvtm { width:16px; height:22px; cursor:pointer ; background: #ff0000 url(../img/default/tm.gif) 0 0 no-repeat; }
+.ygtvtmh { width:16px; height:22px; cursor:pointer ; background: #a1ceeb url(../img/default/tmh.gif) 0 0 no-repeat; }
+.ygtvtp { width:16px; height:22px; cursor:pointer ; background: #ffcccc url(../img/default/tp.gif) 0 0 no-repeat; }
+.ygtvtph { width:16px; height:22px; cursor:pointer ; background: #ffff00 url(../img/default/tph.gif) 0 0 no-repeat; }
+.ygtvln { width:16px; height:22px; background:  url(../img/default/ln.gif) 0 0 no-repeat; }
+.ygtvlm { width:16px; height:22px; cursor:pointer ; background: #a1ceeb url(../img/default/lm.gif) 0 0 no-repeat; }
+.ygtvlmh { width:16px; height:22px; cursor:pointer ; background: #a1ceeb url(../img/default/lmh.gif) 0 0 no-repeat; }
+.ygtvlp { width:16px; height:15px; cursor:pointer ; background:  #a1ceeb url(../img/default/lp.gif) 0 0 no-repeat; }
+.ygtvlph { width:16px; height:22px; cursor:pointer ; background: #a1ceeb url(../img/default/lph.gif) 0 0 no-repeat; }
+.ygtvloading { width:16px; height:22px; background: #a1ceeb url(../img/default/loading.gif) 0 0 no-repeat; }
+.ygtvdepthcell { width:16px; height:20px; background:  #a1ceeb url(../img/default/vline.gif) 0 0 no-repeat; }
+.ygtvblankdepthcell { width:0px; height:22px;   }
+.ygtvitem {  width:200px;  color: #009999;}
+.ygtvchildren {  width:600px;  color: #ff0099; }
+* html .ygtvchildren { height:5%; }
+.ygtvlabelel {
+    width:10px;
+}
+.ygtvlabel{
+
+    width:10px;
+    background-color: #a1ceeb;
+
+}
+.ygtvlabel:link{
+       display:table-cell;
+        background-color: #a1ceeb;
+      text-align: left;
+    font-weight: bold;
+    color: #000000;
+    height:60%;
+       padding: 0px 8px 7px 0px;
+
+}
+.ygtvlabel:hover {
+    display:table-cell;
+   	text-decoration: none;
+     text-align: left;
+
+     background-color: #a1ceeb;
+    padding: 0px 8px 7px 0px;
+}	
+.innerygtvlabel:link {
+   display:table-cell;
+     width:50%;
+    height:30%;
+    background-color: #c4defe;
+     color: #000000;
+}
+.innerygtvlabel:visited{
+   display:table-cell;
+     width:20px;
+    text-decoration: none;
+     text-align: left;
+     color: #000000;
+    background-color:  #c4defe;
+}
+
+ .innerygtvlabel:hover {
+     display:table-cell;
+     width:20px;
+    text-decoration: none;
+     text-align: left;
+     color: #000000;
+    background-color:  #32bbfd;
+  }
+
+.forColumn{
+  background-color: green;   
+}
+.ygtvspacer { height: 10px; width: 100px; margin: 2px; }
+
+/* via ID selector */
+
+
+/* via css class selector */
+.treemenu .ygtvtn {background: #666600;  width:1em; height:40px; }
+.treemenu .ygtvtm { background: #666600 url(../img/menu/collapse.gif) 0 6px no-repeat; width:1em; height:22px; cursor:pointer }
+.treemenu .ygtvtmh { background:  #666600 url(../img/menu/collapseh.gif) 0 6px no-repeat; width:1em; height:22px; cursor:pointer }
+.treemenu .ygtvtp { background:  #666600 url(../img/menu/expand.gif) 0 6px no-repeat; width:1em; height:22px; cursor:pointer }
+.treemenu .ygtvtph { background:  #666600 url(../img/menu/expandh.gif) 0 6px no-repeat; width:1em; height:22px; cursor:pointer }
+.treemenu .ygtvln { background:  #666600 ; width:1em; height:20px; }
+.treemenu .ygtvlm { background:  #666600 url(../img/menu/collapse.gif) 0 6px no-repeat; width:1em; height:22px; cursor:pointer }
+.treemenu .ygtvlmh { background:  #666600 url(../img/menu/collapseh.gif) 0 6px no-repeat; width:1em; height:22px; cursor:pointer }
+.treemenu .ygtvlp { background:  #666600 url(../img/menu/expand.gif) 0 6px no-repeat; width:1em; height:22px; cursor:pointer }
+.treemenu .ygtvlph { background: #666600  url(../img/menu/expandh.gif) 0 6px no-repeat; width:1em; height:22px; cursor:pointer }
+.treemenu .ygtvloading { background: #666600  url(../img/menu/loading.gif) 0 6px no-repeat; width:1em; height:22px; }
+.treemenu .ygtvdepthcell { background:  #666600; width:1em; height:20px; }
+.treemenu .ygtvblankdepthcell {background:  #666600 ;  width:1em; height:20px; }
+.treemenu .ygtvitem { border: 2px solid #660000;width:10em; }
+.treemenu .ygtvchildren {  width:1000em;}
+
+.treemenu .ygtvlabel, .ygtvlabel:link, .ygtvlabel:visited, .ygtvlabel:hover {
+	 width:100em;
+    font-size: 13px;
+}
+.treemenu .innerygtvlabel, .innerygtvlabel:link, .innerygtvlabel:visited, .innerygtvlabel:hover {
+	 width:100em;
+    font-size: 13px;
+}
