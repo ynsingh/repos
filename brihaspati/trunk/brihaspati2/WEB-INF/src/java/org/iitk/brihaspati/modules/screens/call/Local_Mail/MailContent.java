@@ -53,6 +53,10 @@ import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
+import org.apache.turbine.services.servlet.TurbineServlet;
+import org.iitk.brihaspati.modules.utils.AdminProperties;
+
+
 /** 
  * This class contains code to show Messages in specific user's Mailbox 
  *  
@@ -157,7 +161,15 @@ public class MailContent extends SecureScreen
 		  	*/
 			if(entry.size()!=0)
 			{
-				CommonUtility.PListing(data ,context ,entry);
+				String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+                                String conf =AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value");
+                                int list_conf=Integer.parseInt(conf);
+                                context.put("userConf",new Integer(list_conf));
+                                context.put("userConf_string",conf);
+                                Vector vctr= CommonUtility.PListing(data ,context ,entry,list_conf);
+                                context.put("entry",vctr);
+
+				//CommonUtility.PListing(data ,context ,entry);
 				context.put("status","Noblank");
 			}
 			else

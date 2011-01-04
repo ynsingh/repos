@@ -50,7 +50,8 @@ import org.iitk.brihaspati.modules.utils.CommonUtility;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
-
+import org.apache.turbine.services.servlet.TurbineServlet;
+import org.iitk.brihaspati.modules.utils.AdminProperties;
 /**
 * This class manage all online examination system 
 * @author <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
@@ -101,7 +102,15 @@ public class View_QB extends SecureScreen{
                         {
                                	checkstatus="NoBlank";
                                	context.put("allQues",allQuestions);
-                                CommonUtility.PListing(data,context,allQuestions);
+				String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+                                String conf =AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value");
+                                int list_conf=Integer.parseInt(conf);
+                                context.put("userConf",new Integer(list_conf));
+                                context.put("userConf_string",conf);
+                                Vector vctr= CommonUtility.PListing(data ,context ,allQuestions,list_conf);
+                                context.put("entry",vctr);
+
+                                //CommonUtility.PListing(data,context,allQuestions);
                        	}
                        	else
                        	{

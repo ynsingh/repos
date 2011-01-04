@@ -48,10 +48,10 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.apache.torque.util.Criteria;
 import org.iitk.brihaspati.om.RemoteCourses;
 import org.iitk.brihaspati.om.RemoteCoursesPeer;
-//import org.iitk.brihaspati.modules.screens.call.Local_Mail.MailContent;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
 import org.iitk.brihaspati.modules.screens.call.News.News_Add;
-
+import org.apache.turbine.services.servlet.TurbineServlet;
+import org.iitk.brihaspati.modules.utils.AdminProperties;
 /**
  * This class shows BUY/SELL Table 
  * @author <a href="mailto:manav_cv@yahoo.co.in">Manvendra Baghel</a>
@@ -84,8 +84,13 @@ public class ViewRemote extends SecureScreen_Instructor
 
 			if(entry.size()!=0)
 		        {
-				//mc.toContext(data ,context ,entry);
-				CommonUtility.PListing(data ,context ,entry);
+				String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+                        	String conf =AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value");
+                        	int list_conf=Integer.parseInt(conf);
+                        	context.put("userConf",new Integer(list_conf));
+                        	context.put("userConf_string",conf);
+				Vector vctr= CommonUtility.PListing(data ,context ,entry,list_conf);
+				context.put("entry",vctr);
                         	context.put("entrystatus","Noblank");
                 	}
             		else

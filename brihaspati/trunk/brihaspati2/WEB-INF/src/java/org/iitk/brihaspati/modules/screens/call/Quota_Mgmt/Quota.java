@@ -50,6 +50,10 @@ import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Admin;
 import org.apache.turbine.util.parser.ParameterParser;
+import org.apache.turbine.services.servlet.TurbineServlet;
+import org.iitk.brihaspati.modules.utils.AdminProperties;
+
+
 /**
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  */
@@ -110,7 +114,15 @@ public class Quota extends SecureScreen_Admin
                                 	context.put("valueString",valueString);
                                 	context.put("status","Search");
                         	}
-				CommonUtility.PListing(data ,context ,vct);
+				String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+                                String conf =AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value");
+                                int list_conf=Integer.parseInt(conf);
+                                context.put("userConf",new Integer(list_conf));
+                                context.put("userConf_string",conf);
+                                Vector vctr= CommonUtility.PListing(data ,context ,vct,list_conf);
+                                context.put("entry",vctr);
+
+				//CommonUtility.PListing(data ,context ,vct);
 			}
 			List clst;
 			Vector cvct=new Vector();
@@ -148,7 +160,15 @@ public class Quota extends SecureScreen_Admin
                                 	context.put("status","Search");
 
 				}
-			CommonUtility.PListing(data ,context ,cvct);
+				String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+                                String conf =AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value");
+                                int list_conf=Integer.parseInt(conf);
+                                context.put("userConf",new Integer(list_conf));
+                                context.put("userConf_string",conf);
+                                Vector vctr= CommonUtility.PListing(data ,context ,cvct,list_conf);
+                                context.put("entry",vctr);
+
+			//CommonUtility.PListing(data ,context ,cvct);
 			}
 			context.put("mode",mode);
 			if(mode.equals("edit")){
