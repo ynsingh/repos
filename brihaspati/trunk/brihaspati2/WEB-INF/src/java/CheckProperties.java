@@ -96,7 +96,8 @@ public class CheckProperties {
         reportFile=userhome+"/tdk-2.3_01/webapps/brihaspati2/missingTag.txt";
         mainFile1=userhome+"/tdk-2.3_01/webapps/brihaspati2/templates/app/screens/Var_english.properties";
         mainFile2=userhome+"/tdk-2.3_01/webapps/brihaspati2/WEB-INF/conf/BrihLang_en.properties";
-        checkFile1path=userhome+"/tdk-2.3_01/webapps/brihaspati2/WEB-INF/conf/MultilingualGUIFile";
+        //checkFile1path=userhome+"/tdk-2.3_01/webapps/brihaspati2/WEB-INF/conf/MultilingualGUIFile";
+        checkFile1path=userhome+"/tdk-2.3_01/webapps/brihaspati2/templates/app/screens";
         checkFile2path=userhome+"/tdk-2.3_01/webapps/brihaspati2/WEB-INF/conf";
 	doFileListing();
     }
@@ -111,7 +112,7 @@ public class CheckProperties {
 	String[] filesInDir1 = Directory1.list();
 	for(int i=0;i<filesInDir1.length;i++)
 	{
-		if(filesInDir1[i].startsWith("Var_"))
+		if(filesInDir1[i].startsWith("Var_")&& (!filesInDir1[i].startsWith("Var_english.properties")))
 		{
 			filenames1.add(filesInDir1[i]);
 		}
