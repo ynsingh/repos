@@ -1,0 +1,169 @@
+<?xml version="1.0"?>
+<!-- ================================================================= -->
+<!--@author Anil Kumar Tiwari mailto:aniltiwari08@gmail.com         -->
+<!-- ================================================================= -->
+
+<project name="omr" default="copy-props" basedir=".">
+
+  <property file="build.properties"/>
+
+  <!-- This value is currently set as a property because
+       the top level tdk build.xml file runs the "init" target
+       as part of testing and texen doesn't obey the ${basedir}
+       property so we must pass in the full path to the
+       build.properties for use with the contextProperties attribute.
+  -->
+  <property name="build.properties" value="build.properties"/>
+
+  <path id="classpath">
+    <fileset dir="${omr.home}/webapps/${omr.project}/WEB-INF/lib">
+      <include name="**/*.jar"/>
+    </fileset>
+	<fileset dir="${omr.home}/lib">
+	  <include name="**/servlet*.jar"/>
+	</fileset>
+  </path>
+
+
+  <!-- ================================================================ -->
+  <!-- S E T U P  T A R G E T                                           -->
+  <!-- ================================================================ -->
+  <!-- Check that properties are defined correctly.                     -->
+  <!-- ================================================================ -->
+
+  <target
+    name="setup"
+    unless="omr.home">
+
+    <echo>
+      ***
+      * ERROR : The 'tdk.home' property is not defined or
+      * is pointing to an invalid directory.
+      *
+      * In your personal build.properties define tdk.home to
+      * point to an absolute path where your tdk is installed.
+      * Example: tdk.home=${user.home}/tdk
+      ***
+    </echo>
+    <fail message="ERROR: tdk.home not defined properly: ${omr.home}"/>
+  </target>
+
+
+  <!-- ================================================================ -->
+  <!-- I N I T  T A R G E T                                             -->
+  <!-- ================================================================ -->
+  <!-- You will probably only run this target once. It will generate    -->
+  <!-- your sources for you and compile them.                           -->
+  <!-- ================================================================ -->
+
+  <target
+    name="init"
+    description="--> generates the full application">
+
+   <antcall target="create-Dir"/>
+    <antcall target="compile"/>
+    <antcall target="copy-props"/>
+    <antcall target="javadoc"/>
+	<antcall target="createadminaccount"/>
+	
+  </target>
+
+
+  <!-- =================================================================== -->
+  <!-- C O P Y D I S P L A Y A N D M E S S A G E P R O P E R T I E S       -->
+  <!-- =================================================================== -->
+
+  <target name="copy-props"
+	depends="compile"
+	description="--> copy display and message properties file">
+
+      <copy
+           file="${src.dir}/java/in/ac/dei/mhrd/omr/ApplicationResources.properties"
+           tofile="${build.dest}/in/ac/dei/mhrd/omr/ApplicationResources.properties"
+           overwrite="yes"
+           filtering="yes"
+      />
+ 
+ 
+  </target>
+  <!-- ====================================================================  -->
+  <!-- C R E A T E  D A T A B A S E  A D M I N A N D G U E S T A C C O U N T -->
+  <!-- ====================================================================  -->
+
+  <target name="createadminaccount">
+	
+	<sql
+      		autocommit="true"
+      		driver="${databaseDriver}"
+		onerror="continue"
+      		password="${databasePassword}"
+      		src="../conf/omrtables.sql"
+      		url="${createDatabaseUrl}"
+      		userid="${databaseUser}">
+      		<classpath refid="classpath"/>
+	</sql>
+	<echo message="============================================="/>
+	<echo message="All tables created successfully"/>
+	<echo message="============================================="/>
+
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- C R E A T E  D I R E C T O R I E S    				   -->
+  <!-- =================================================================== -->
+
+  <target name="create-Dir" >
+      <mkdir dir="${build.dest}"/>
+     
+      <mkdir dir="${build.webappRoot}/tmp"/>
+  </target> 
+
+  <!-- =================================================================== -->
+  <!-- J A V A D O C                                                       -->
+  <!-- =================================================================== -->
+	<target name="javadoc" description="javadoc documentation">
+                <javadoc destdir="${build.webappRoot}/javadoc" version="true" author="true" access="public"
+                         doctitle="Online OMR Evaluation System  Api" windowtitle="Online OMR Evaluation System Api"
+                         bottom="Copyright &#169; 2010 DEI Agra. All Right Reserved.">
+                        <fileset dir="${src.dir}/java/" defaultexcludes="yes">
+                        </fileset>
+			<fileset dir="${src.dir}/java/" defaultexcludes="yes">
+          			<include name="*.java"/>
+		        </fileset>
+                        <package name=" "/>
+                </javadoc>
+        </target>
+
+  <!-- =================================================================== -->
+  <!-- C O M P I L E                                                       -->
+  <!-- =================================================================== -->
+
+  <target
+    name="compile"
+    depends="create-Dir"
+    description="--> compiles the source code">
+
+    <javac srcdir="${src.dir}/java"
+      destdir="${build.dest}"
+      debug="${debug}"
+      deprecation="${deprecation}"
+      optimize="${optimize}">
+	
+      <classpath refid="classpath"/>
+    </javac>
+    
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- C L E A N                                                           -->
+  <!-- =================================================================== -->
+
+  <target
+    name="clean"
+    description="--> cleans up the build directory">
+
+    <delete dir="${build.dest}"/>
+    <mkdir dir="${build.dest}"/>
+  </target>
+
+</project>

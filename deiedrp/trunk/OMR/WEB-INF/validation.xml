@@ -1,0 +1,196 @@
+<!DOCTYPE form-validation PUBLIC
+        "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.3.0//EN"
+        "http://jakarta.apache.org/commons/dtds/validator_1_3_0.dtd">
+
+<!-- Name form Validation-->
+<form-validation>
+	<formset>
+			
+			<form name="resultSchedule">
+			 <field property="resultFrom" depends = "required, date, resultFromDate">
+			<arg position = "0" key="label.resultFrom"/>
+			<var>
+			  <var-name>datePatternStrict</var-name>
+			   <var-value>yyyy-MM-dd</var-value>
+			</var>
+			 </field>
+			 
+			 <field property="resultTo" depends = "required, date, currentDate">
+			<arg position = "0" key="label.resultTo"/>
+			<var>
+			  <var-name>datePatternStrict</var-name>
+			   <var-value>yyyy-MM-dd</var-value>
+			</var>
+			 </field>
+			</form>
+			
+			<form name="manageForm">
+			<field property="testNo" depends="required, maxlength, minlength, integer">
+				<arg position="0" key="label.testID" />
+				<arg position="1" key="${var:minlength}" resource="false"/>
+				<arg position="2" key="${var:maxlength}" resource="false"/>
+				<var> 
+				 <var-name>minlength</var-name>
+				  <var-value>6</var-value>
+				</var>
+				
+				<var> 
+				 <var-name>maxlength</var-name>
+				  <var-value>6</var-value>
+				</var>
+			</field>
+			
+			<field property="totalQuestion" depends = "required, intRange">
+			<arg position = "0" key="label.totalQues"/>
+			  <msg name="integer" key="error.TotalQues"/>
+				<arg position="1" key="${var:min}" resource="false"/>
+				<arg position="2" key="${var:max}" resource="false"/>
+				<var>
+				<var-name>min</var-name>
+				<var-value>1</var-value>
+				  </var>
+				<var> 
+				 <var-name>max</var-name>
+				  <var-value>120</var-value>
+				</var>
+			</field>
+	     
+	       <field property="totalSection" depends="required, intRange">
+			<msg name="required" key="error.section"/>
+				<arg position="0" key="label.section" />
+				<arg position="1" key="${var:min}" resource="false"/>
+				<arg position="2" key="${var:max}" resource="false"/>
+				<var>
+				<var-name>min</var-name>
+				<var-value>1</var-value>
+				  </var>
+				<var> 
+				 <var-name>max</var-name>
+				  <var-value>4</var-value>
+				</var>
+			</field>
+			
+			<field property="date" depends = "required, date">
+			<arg position = "0" key="label.ConductDate"/>
+			<var>
+			  <var-name>datePatternStrict</var-name>
+			   <var-value>yyyy-MM-dd</var-value>
+			</var>
+			 </field>
+			
+			</form>
+			<form name="testSetUpForm">
+			<field property="testName" depends="required, maxlength, uniqueTestName">
+				<arg position="0" key="label.testname" />
+				<arg position="1" key="${var:maxlength}" resource="false"/>
+				<var> 
+				 <var-name>maxlength</var-name>
+				  <var-value>20</var-value>
+				</var>
+			</field>
+			
+			<field property="testNo" depends="required, maxlength, minlength, integer">
+				<arg position="0" key="label.testID" />
+				<arg position="1" key="${var:maxlength}" resource="false"/>
+				<arg position="2" key="${var:maxlength}" resource="false"/>
+				<var> 
+				 <var-name>minlength</var-name>
+				  <var-value>6</var-value>
+				</var>
+				
+				<var> 
+				 <var-name>maxlength</var-name>
+				  <var-value>6</var-value>
+				</var>
+			</field>
+			
+			<field property="totalQues" depends = "required, intRange">
+			<arg position = "0" key="label.totalQues"/>
+			  <msg name="integer" key="error.TotalQues"/>
+				<arg position="1" key="${var:min}" resource="false"/>
+				<arg position="2" key="${var:max}" resource="false"/>
+				<var>
+				<var-name>min</var-name>
+				<var-value>1</var-value>
+				  </var>
+				<var> 
+				 <var-name>max</var-name>
+				  <var-value>120</var-value>
+				</var>
+			</field>
+	
+			
+			<field property="totalSec" depends="required, intRange">
+			<msg name="required" key="error.section"/>
+				<arg position="0" key="label.section" />
+				<arg position="1" key="${var:min}" resource="false"/>
+				<arg position="2" key="${var:max}" resource="false"/>
+				<var>
+				<var-name>min</var-name>
+				<var-value>1</var-value>
+				  </var>
+				<var> 
+				 <var-name>max</var-name>
+				  <var-value>4</var-value>
+				</var>
+			</field>
+			
+			<field property="sdate" depends = "required, date">
+			<arg position = "0" key="label.ConductDate"/>
+			<var>
+			  <var-name>datePatternStrict</var-name>
+			   <var-value>yyyy-MM-dd</var-value>
+			</var>
+			 </field>
+		</form>
+			
+			<form name="correctSheetBrowseForm123" >
+			<field property="correctPath" depends="required, sheet">
+			  <arg position="0" key="label.corrrectSheet"/>
+			</field>
+			
+			</form>
+			
+			<form name="wrongQuesForm">
+			<field property="qno" depends="required, integer, wrongQuesNo, existingWrongQuesNo">
+			  <arg position="0" key="label.Qno"/>
+			  </field>
+			<field property="testName" depends="required">
+			<msg name="required" key="error.wrong.test"/>  
+			<arg position="0" key="label.testname"/>
+			
+			</field>
+			</form>
+			
+			<form name="uploadResponseSheet">
+			<field property="testName" depends="required">
+			  <arg position="0" key="label.testname"/>
+			  </field>
+			</form>
+			
+		<form name="delQues">
+		 <field property="qno" depends="required, deleteWrongQuesNo">
+		 	 <arg position="0" key="label.Qno"/>
+		 </field>
+		</form>	
+		
+				
+		<form name="errorLogForm">
+		<field property="test" depends="required">
+		<msg name="required" key="error.Log.test"/>  
+			<arg position="0" key="label.testname"/>
+			
+		</field>
+		</form>
+		
+	<form name="uploadResponseSheet">
+	  <field property="zippedFolder" depends="required">
+			<arg position="0" key="label.zipFolder"/>
+					 </field>
+	
+	
+	</form>
+			
+	</formset>
+</form-validation>
+

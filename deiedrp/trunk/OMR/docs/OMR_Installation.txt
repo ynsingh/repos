@@ -1,0 +1,113 @@
+##############################################################################
+Copyright © 2009-2011 DEI Agra.
+Created by:- Anil Kumar Tiwari Email: aniltiwari08@gmail.com
+Created on 31 December 2010
+##############################################################################
+
+This document describes procedure to install OMR system on any Linux machine.
+
+Installing OMR for linux
+---------------------------------
+
+Download the following
+
+1. jdk-1_5_0_02-linux-i586-rpm.bin or higher version from http://java.sun.com
+2. apache-ant-1.8.1-bin.zip or higher version from http://ant.apache.org/
+3. download mysql from http://dev.mysql.com/downloads/
+	MySQL-shared-5.1.54.0
+	MySQl-server-5.1.54.0
+	MySQL-client-5.1.54.0
+	
+4. download apache tomcat from http://tomcat.apache.org/
+	apache-tomcat-6.0.20
+
+Configuration Steps to be followed
+-------------------------------------------------
+
+Step 1: Login as root.
+
+Step 2: Install JDK
+	# chmod +x jdk-1_5_0_02-linux-i586-rpm.bin
+	# ./jdk-1_5_0_02-linux-i586-rpm.bin
+
+It will show licence, you should opt
+
+	opt yes
+
+One can also use jdk-1_5_0_02-linux-i586-rpm for installing JDK using the following
+
+	# rpm -ivh jdk-1_5_0_02-linux-i586-rpm
+
+(Make sure no other installation of java exist in the path e.g., gcj (gnu
+Cjava compiler). These are usually installed when the linux is installed.)
+
+Step 3: Create User omr
+
+	# useradd omr
+	# passwd omr
+
+put any password as desired by you for the omr account.
+
+Step 4:	Install MYSQL
+
+	# rpm -ivh MySQL-shared-5.1.54.0
+	# rpm -ivh MySQl-server-5.1.54.0
+	# rpm -ivh MySQL-client-5.1.54.0
+
+Configure MYSQL
+
+   # mysql -u root mysql->GRANT ALL ON omr.* to omruser@127.0.0.1 IDENTIFIED BY 'omrpasswd';
+
+here 'omruser' is username for omr database and 'omrpasswd' is password for omr database.
+These will be later entered in <build.properties> file in omr system.
+
+Step 5: Logout and relgoin in linux machine as user 'omr'
+
+Step 6: Install tomcat
+
+	# gunzip apache-tomcat-6.0.20.tar.gz
+	# tar -xvf apache-tomcat-6.0.20.tar
+
+Step 7: Install ant
+
+	# unzip -a apache-ant-1.8.1-bin.tar.gz
+	# cd apache-ant-1.8.1
+	# chmod +x bin/*
+
+Step 8:	Update Environment Variable in .bashrc file in omr home
+Directory. In case any other shell is being used make changes in corresponding
+rc file in omr home directory. The following command should be
+replicated in rc file to avoid typing them again when loging in next time.
+
+   # JAVA_HOME=/usr/java/j2sdk-1_5_0
+   # ANT_HOME=/home/omr/apache-ant-1.8.1
+   # TOMCAT_HOME=/home/omr/apache-tomcat-6.0.20
+   # PATH=/usr/java/j2sdk-1_5_0/bin:/home/omr/apache-ant-1.8.1/:/home/omr/apache-tomcat-6.0.20:$PATH
+   # export JAVA_HOME ANT_HOME TOMCAT_HOME PATH 
+
+
+Step 9: Installing omr 
+
+ i) Go into the webapps folder of apache-tomcat and checkout the latest version of omr from this location
+	(http://202.141.40.215/repos/deiedrp/trunk/OMR)
+
+ii) Go into webapps\omr\WEB-INF\build folder and modify these two lines of build.properties file
+
+databaseUser = omruser //user of omr database
+databasePassword = omrpasswd //password of omr database
+
+iii) Now go into webapps\omr\WEB-INF\build directory and type the command 
+ # ant init 
+(if every thing is ok then message comes as Build successful..)
+
+iv)Go into the bin directory of tomcat and execute this command for start the tomcat
+
+# ./startup.sh
+
+v) Now open your browser and type this url into the address bar
+ 	http://localhost:8080/omr
+   or http://IP address of your server:port number on which your tomcat is running/omr
+
+
+ 
+Thanks.

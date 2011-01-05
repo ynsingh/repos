@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://struts.apache.org/dtds/struts-config_1_3.dtd">
+
+<struts-config>
+  <form-beans >
+    <form-bean name="testSetUpForm" type="in.ac.dei.mhrd.omr.TestSetUpForm" />
+    <form-bean name="sectionForm" type="in.ac.dei.mhrd.omr.SectionForm" />
+    <form-bean name="wrongQuesForm" type="in.ac.dei.mhrd.omr.WrongQuesForm" />
+    
+    <form-bean name="errorLogForm" type="in.ac.dei.mhrd.omr.ErrorLogForm" />
+    <form-bean name="errorLogForm123" type="in.ac.dei.mhrd.omr.ErrorLogForm" />
+    <form-bean name="processSheetForm" type="in.ac.dei.mhrd.omr.ProcessSheetForm" />
+    <form-bean name="processSheetForm123" type="in.ac.dei.mhrd.omr.ProcessSheetForm" />
+<form-bean name="correctSheetBrowseForm123" type="in.ac.dei.mhrd.omr.CorrectSheetBrowseForm" />
+    <form-bean name="resultForm" type="in.ac.dei.mhrd.omr.ResultForm" />
+    <form-bean name="resultForm123" type="in.ac.dei.mhrd.omr.ResultForm" />
+    
+    <form-bean name="updateTest" type="in.ac.dei.mhrd.omr.UpdateTestForm" />
+    <form-bean name="confirmAns" type="in.ac.dei.mhrd.omr.ConfirmAnsForm" />
+    <form-bean name="uploadResponseSheet" type="in.ac.dei.mhrd.omr.UploadResponseSheetForm" />
+    <form-bean name="resultSchedule" type="in.ac.dei.mhrd.omr.ResultManageForm" /> 
+    <form-bean name="manageWrongQues" type="in.ac.dei.mhrd.omr.ManageWrongQuesForm" />
+	<form-bean name="logInterfaceForm" type="in.ac.dei.mhrd.omr.LogInterfaceForm" />
+	 <form-bean name="manageForm" type="in.ac.dei.mhrd.omr.ManageForm" />
+    <form-bean name="delQues" type="in.ac.dei.mhrd.omr.DelQuesForm" />
+    <form-bean name="selectCorrectAns" type="in.ac.dei.mhrd.omr.SelectCorrectAnsForm" />
+    <form-bean name="answerForm" type="in.ac.dei.mhrd.omr.AnswerForm" />
+    
+   
+      
+	
+</form-beans>
+
+  <global-exceptions />
+  <global-forwards />
+  <action-mappings>
+ 
+   <action
+   name="editOptionForm"
+   attribute="editOptionForm"
+      input="/header.jsp"
+      path="/editTestOption"
+      scope="request"
+      validate="true"
+      cancellable="true"
+      type="in.ac.dei.mhrd.omr.EditTestOptionAction">
+      <forward name="editform1" path="/editJsp.jsp" />
+    </action>
+  
+  <action 
+  attribute = "errorLogForm"
+  name="errorLogForm"
+  scope = "request"
+    input = "/header.jsp"
+    path="/errOption" 
+    type="in.ac.dei.mhrd.omr.ErrOptionAction">
+      <forward name="errLog1" path="/errLog.jsp" />
+    </action>
+    
+    
+  
+    <action
+      attribute="testSetUpForm"
+      input="/testSetUpjsp.jsp"
+      name="testSetUpForm"
+      path="/test"
+      scope="request"
+      type="in.ac.dei.mhrd.omr.testSetUpAction">
+ <forward name="success" path="/SuccessUpdate.jsp" />
+ </action>
+    <action
+      attribute="sectionForm"
+      input="/sectionjsp.jsp"
+      name="sectionForm"
+      path="/section"
+      scope="request"
+      type="in.ac.dei.mhrd.omr.SectionAction">
+      <forward name="index" path="/index.jsp"/>
+    </action>
+    <action
+      attribute="correctAnswerForm"
+      input="/correctAnsJsp.jsp"
+      name="correctAnswerForm"
+      path="/correctAnsPath"
+      type="in.ac.dei.mhrd.omr.CorrectAns">
+      <forward name="index" path="/index.jsp"/>
+    </action>
+    <action
+      attribute="wrongQuesForm"
+      input="/WrongQues.jsp"
+      name="wrongQuesForm"
+      path="/wrong"
+      validate="true"
+      type="in.ac.dei.mhrd.omr.WrongQuesAction">
+      <forward name="WrongQ" path="/WrongQMsgJsp.jsp" />
+         </action>
+      <action
+      attribute="errorLogForm123"
+      input="/errLog.jsp"
+      name="errorLogForm123"
+      path="/err"
+      scope="request"
+      type="in.ac.dei.mhrd.omr.ErrorLogAction">
+      <forward name="dispalyerr" path="/DisplaryErr.jsp" />
+      </action>
+    <action
+      attribute="processSheetForm123"
+      input="/ProcessSheet.jsp"
+      name="processSheetForm123"
+      path="/processSheet"
+      scope="request"
+      type="in.ac.dei.mhrd.omr.ProcessSheetAction">
+      <forward name="index" path="/index.jsp" />
+      
+      </action>
+    <action
+      attribute="correctSheetBrowseForm123"
+      input="/correctScanSheet.jsp"
+      name="correctSheetBrowseForm123"
+      path="/correctBrowse"
+      validate="true"
+      type="in.ac.dei.mhrd.omr.CorrectSheetBrowseAction">
+      <forward name="confirmAns1" path="/confirmAnsJsp.jsp" />
+      </action>
+    <action
+      attribute="resultForm123"
+      input="/SelectResult.jsp"
+      name="resultForm123"
+      path="/result"
+      scope="session"
+      type="in.ac.dei.mhrd.omr.ResultAction">
+      <forward name="markList" path="/SectionDetail.jsp" />
+    </action>
+    
+    <action
+      attribute="editOptionForm123"
+      input="/editJsp.jsp"
+      name="editOptionForm123"
+      path="/edit"
+      scope="request"
+      validate="true"
+      type="in.ac.dei.mhrd.omr.EditOptionAction">
+      <forward name="updateJsp2" path="/UdateTestJsp.jsp" />
+    </action>
+    
+    <action
+      attribute="updateTest"
+      input="/UpdateTestJsp.jsp"
+      name="updateTest"
+      path="/update"
+      scope="request"
+      type="in.ac.dei.mhrd.omr.UpdateTestAction" >
+     <forward name="updatetestMsg" path="/updateMsgJsp.jsp"></forward> 
+     </action>
+    <action
+      attribute="confirmAns"
+      input="/confirmAnsJsp.jsp"
+      name="confirmAns"
+      path="/confirm"
+      scope="request"
+      type="in.ac.dei.mhrd.omr.ConfirmAnsAction">
+      <forward name="confirmAnsMsg1" path="/ConfirmAnsMsg.jsp" />
+    </action>
+    <action
+      attribute="uploadResponseSheet"
+      input="/uploadResponse.jsp"
+      name="uploadResponseSheet"
+      validate="true"
+      path="/uploadzip"
+      scope="request"
+      type="in.ac.dei.mhrd.omr.UploadResponseAction">
+      <forward name="home" path="/Home.jsp" />
+      <forward name="index" path="/index.jsp"/>
+    </action>
+    <action
+      attribute="resultSchedule"
+      input="/testjquery.jsp"
+      name="resultSchedule"
+      validate="true"
+      path="/manageResult"
+      scope="request"
+      type="in.ac.dei.mhrd.omr.ManageResultAction" >
+      <forward name="success1" path="/ConfirmAnsMsg.jsp" />
+      </action>
+    <action
+      attribute="manageWrongQues"
+      input="/manageWrongQues.jsp"
+      name="manageWrongQues"
+      validate="true"
+      path="/manageWrongQues"
+      type="in.ac.dei.mhrd.omr.ManageWrongQuesAction">
+      <forward name="editWrongQues" path="/delQues.jsp" />
+       <forward name="WrongQ" path="/WrongQMsgJsp.jsp" />
+    </action>
+   
+     <action
+      attribute="logInterfaceForm"
+      input="/logInterface.jsp"
+      name="logInterfaceForm"
+      path="/logInter"
+      scope="request"
+      type="in.ac.dei.mhrd.omr.LogInterAction" >
+      <forward name="erroLog" path="/DisplaryErr.jsp" />
+      <forward name="TestLog" path="/TestLog.jsp"/>
+     </action>
+      <action
+      attribute="manageForm"
+      input="/manage.jsp"
+      name="manageForm"
+      path="/manage"
+      scope="request"
+      type="in.ac.dei.mhrd.omr.ManageAction" >
+      <forward name="manage" path="/manageTest.jsp" />
+    </action>
+    <action
+      attribute="manageForm"
+      name="manageForm"
+      input="/manageTest.jsp"
+      path="/updateTestSetup"
+      scope="request"
+      type="in.ac.dei.mhrd.omr.UpdateTestSetupAction" >
+      <forward name="success" path="/SuccessUpdate.jsp" />
+    </action>
+    <action
+      attribute="delQues"
+      input="/delQues.jsp"
+      name="delQues"
+      path="/delQuesPath"
+      validate="true"
+      scope="request"
+      type="in.ac.dei.mhrd.omr.DelQuesAction">
+      <forward name="WrongQ" path="/WrongQMsgJsp.jsp" />
+    </action>
+    
+    <action
+      attribute="selectCorrectAns"
+      input="/SelectCorrectAnsJsp.jsp"
+      name="selectCorrectAns"
+      path="/selectCorrect"
+      scope="request"
+      type="in.ac.dei.mhrd.omr.SelectCorrectAnswerAction">
+      <forward name="fillCorrectAns" path="/fillAnswer.jsp" />
+    </action>
+    
+    <action
+      input="/ValidateAnswer.jsp"
+      name="answerForm"
+      path="/addAnswer"
+      type="in.ac.dei.mhrd.omr.AddAnswerAction" >
+      <forward name="correctAnsMsg" path="/WrongQMsgJsp.jsp" />
+      </action>
+    <action
+      attribute="answerForm"
+      input="/fillAnswer.jsp"
+      name="answerForm"
+      path="/validate"
+      scope="request"
+      type="in.ac.dei.mhrd.omr.ValidateAction" >
+      <forward name="populate" path="/ValidateAnswer.jsp" />
+    </action>
+    <action
+      attribute="resultForm123"
+      input="/SectionDetail.jsp"
+      name="resultForm123"
+      path="/displayResponse"
+      scope="request"
+      type="in.ac.dei.mhrd.omr.DisplayResponseAction" >
+      <forward name="response" path="/displayResponse.jsp" />
+    </action>
+    
+  </action-mappings>
+	
+  
+  <message-resources parameter="in.ac.dei.mhrd.omr.ApplicationResources" />
+  <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+        <set-property property="pathnames" value="/WEB-INF/validator-rules.xml,
+                                                  /WEB-INF/validation.xml"/>
+      </plug-in>
+</struts-config>
+

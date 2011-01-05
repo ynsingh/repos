@@ -1,0 +1,202 @@
+package in.ac.dei.mhrd.omr.img;
+import in.ac.dei.mhrd.omr.UploadResponseAction;
+
+import java.util.*;
+import java.sql.*;
+
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+import org.apache.log4j.xml.DOMConfigurator;
+
+
+/**
+ * Creation date: 12-06-2010
+ * @author Anshul Agarwal
+ * This class inserts the position of each circle in the student info. part of the sheet into the database
+ * and match the positions of the circles marked by the student from the database and retrieve the corresponding data
+ */
+
+public class CandidateDetail {
+	
+	double xstart;
+    double xend;                      
+	double blockUpperratio;
+	double blockMidRatio;
+	double blockLowerRatio;               /*starting and ending ratio of the circle in the y dir.*/
+	int value;
+	String field; 
+	private static Logger log = Logger.getLogger(CandidateDetail.class);
+
+	
+	/**
+	 *  This function should be called only for base sheet. 
+	    It inserts the details regarding position of each circle in the database
+	 * @param detail 
+	 */
+	
+	public static void inserStudentInfo(ArrayList<CandidateDetail> detail)
+	{
+		try
+		{
+			Connection con = Connect.prepareConnection();
+			PreparedStatement ps= con.prepareStatement("insert into student_info(xstart, xend, y_ratio1, y_ratio2, field, value ) values (?,?,?,?,?,?)");
+		     
+			
+		for(CandidateDetail ob : detail)
+		{
+	     ps.setDouble(1, ob.xstart);
+	     ps.setDouble(2, ob.xend);
+	     ps.setDouble(3, ob.blockUpperratio);
+	     ps.setDouble(4, ob.blockLowerRatio);
+	     ps.setString(5, ob.field);
+	 	 ps.setInt(6, ob.value);
+	 	 ps.addBatch();
+	    }
+		ps.executeBatch();
+		con.commit();
+		}
+		catch(Exception e){
+			log.error("error while inserting bubble position in stuent info part : " + e);
+		}
+
+}
+	
+	/**
+	 * This function returns true if xpos and ypos lies in the range stored in the database and retrieve corresponding values from the database
+	 * @param xpos : ratio of xcoord
+	 * @param ypos : ratio of y coord
+	 * @param obj
+	 * @return
+	 */
+	
+		
+	 public static boolean matchCandidateInfo(double xpos, double ypos,
+		        EachCandidateInfo obj,int y) {
+		        boolean b = false;
+
+		        try {
+		            Connection con = Connect.prepareConnection();
+		            /*
+		            System.out.println("pos in match :" + xpos);
+		            System.out.println("mid point in match :" + ypos);
+*/
+		            ResultSet rs;
+		            PreparedStatement psXcomponent = con.prepareStatement(
+		                    "select  field, value from student_info where (xstart <= ? And xend >=?)");
+		            psXcomponent.setDouble(1, xpos);
+		            psXcomponent.setDouble(2, xpos);
+
+		            ResultSet rsXcomponent = psXcomponent.executeQuery();
+
+		            if (rsXcomponent.next()) {
+		              /*  System.out.println("data retrieved from x component pos : " +
+		                    xpos);
+		                    */
+
+		                PreparedStatement ps = con.prepareStatement(
+		                        "select  field, value from student_info where (xstart <= ? And xend >= ?) And (y_ratio2 <= ? AND y_ratio1 >= ?)");
+		                ps.setDouble(1, xpos);
+		                ps.setDouble(2, xpos);
+		                ps.setDouble(3, ypos);
+		                ps.setDouble(4, ypos);
+		                rs = ps.executeQuery();
+
+		                boolean val = rs.next();
+		              //  System.out.println("resultset status : " + val);
+
+		                if (!val) {
+		                 /*   System.out.println("data not retrieved from y component : " +
+		                        ypos);
+		                        */
+		                    int counter =0; int tempy;
+
+		                    for (int i = 1;i<=10;i++) {
+		                    	counter =0;
+		                    	
+		                        
+		                        /*
+		                        ypos = (double) (RotateImg.AvgSheetHeight / (RotateImg.originY -
+		                            i));
+		                            */
+		                    	tempy=y+i; 
+		                    	do{
+		                        ypos = (double) (RotateImg.leftBlocks.get(RotateImg.leftBlocks.size() -
+                                        1).y - tempy) / (double) (tempy -
+                                    (RotateImg.leftBlocks.get(0)).y);
+		                       // System.out.println("tempy : " + i +" ypos : " + ypos);
+
+		                        PreparedStatement psYComponent = con.prepareStatement(
+		                                "select  field, value from student_info where (xstart <= ? And xend >= ?) And (y_ratio2 <= ? AND y_ratio1 >= ?)");
+		                        psYComponent.setDouble(1, xpos);
+		                        psYComponent.setDouble(2, xpos);
+		                        psYComponent.setDouble(3, ypos);
+		                        psYComponent.setDouble(4, ypos);
+		                        rs = psYComponent.executeQuery();
+		                        val = rs.next();
+
+		                        
+		                        if (val) {
+		                           // System.out.println(" match found ");
+
+		                            break;
+		                        }
+		                        tempy=y+(i* -1);
+		                        counter++;
+		                    }while(counter<=1); // end while
+		                        
+		                        if(val)
+		                        {
+		                        	break;
+		                        }
+		                   
+		                    } // end for
+		                } // end if(!rs.next())
+
+		                while (val) {
+		                	//System.out.println("inside val : ");
+		                    b = true;
+                                 if (rs.getString(1).startsWith("C")) {
+		                        String loc = rs.getString(1)
+		                                       .substring(rs.getString(1).length() - 1);
+		                        System.out.println("location in roll: " + loc);
+
+		                        if (obj.rno.get(Integer.parseInt(loc) - 1).equals("NA")) {
+		                            obj.rno.set(Integer.parseInt(loc) - 1,
+		                                rs.getString(2));
+		                        } else {
+		                        	System.out.println("previous value :" + obj.rno.get(Integer.parseInt(loc) - 1));
+		                            System.out.println("error in roll: sec value " + rs.getString(2));
+		                            obj.rno.set(Integer.parseInt(loc) - 1, "error");
+
+		                            // System.out.println("error in roll");
+		                        }
+		                    }else
+		                    	if (rs.getString(1).startsWith("T")) {
+			                        String loc = rs.getString(1)
+			                                       .substring(rs.getString(1).length() - 1);
+  
+			                        System.out.println("location in roll: " + loc);
+			                        
+			                        if (obj.tid.get(Integer.parseInt(loc) - 1).equals("NA")) {
+			                            obj.tid.set(Integer.parseInt(loc) - 1,
+			                                rs.getString(2));
+			                        } else {
+			                            //System.out.println("error in roll");
+			                        	
+			                        	System.out.println("previous value of tid :" + obj.tid.get(Integer.parseInt(loc) - 1));
+			                            System.out.println("error in tid: sec value " + rs.getString(2));
+			                            obj.tid.set(Integer.parseInt(loc) - 1, "error");
+
+			                            // System.out.println("error in roll");
+			                        }
+			                    }
+		                    val=rs.next();
+		                }
+		            }
+		     } catch (Exception e) {
+		            System.out.println("Error" + e);
+		        }
+
+		        return b;
+		    }
+}
