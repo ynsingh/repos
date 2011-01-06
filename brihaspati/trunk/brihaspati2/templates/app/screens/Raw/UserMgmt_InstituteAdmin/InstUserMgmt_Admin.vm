@@ -595,7 +595,12 @@ face="$ui.sansSerifFonts">$type</font>
                                 	        alert("Please fill the Program Field!!");
 	                                }
         	                }
-			}	
+			}
+			else
+                        {
+                                frm.actionName.value=field.name;
+                                frm.submit();
+                        }
                 }
                 else
                 {

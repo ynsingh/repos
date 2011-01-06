@@ -34,12 +34,14 @@ $!data.getMessage()
 	</font>
 #end
 ## if message have any value then show 
-#if($message!="")
-<table width=100% CellPadding=0 align=center>
-<tr>
-<td>$message &nbsp;<a href=$link.setPage("call,UserMgmt_User,Profile.vm")>$brih_click</a>
-</td>
-</tr>
+#if(($Role1!="AdminRole") || ($guest_login!="true"))  
+	#if($message!="")
+	<table width=100% CellPadding=0 align=center>
+        <tr>    
+        <td>$message &nbsp;<a href=$link.setPage("call,UserMgmt_User,Profile.vm")>$brih_click</a>
+        </td>   
+        </tr>
+	#end
 #end
 
 <table bgcolor="$ui.tableColor" width=85% align=right>
