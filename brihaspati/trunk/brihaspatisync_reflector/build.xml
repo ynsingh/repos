@@ -36,9 +36,10 @@
 
         <!-- -->
         <target name="sign" depends="jar">
-                <copy file="${build.dir}/syncreflector.jar" tofile="jnlp/syncreflector.jar"/>
+		<copy file="${build.dir}/syncreflector.jar" tofile="jnlp/syncreflector.jar"/>
+
                 <signjar keystore="jnlp/brihaspatisync"
-                         jar="jnlp/syncreflector.jar"
+                         jar="jnlp/*.jar"
                          alias="brihaspati_sync"
                          storepass="ashish" />
         </target>
