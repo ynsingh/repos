@@ -2,11 +2,10 @@
 	<!-- JNLP File for Brihaspati_Sync client Application --> 
 <jnlp  spec="1.0+"  codebase="https://172.26.82.18:8443/brihaspatisync_reflector/jnlp"  href="syncreflector.jnlp">
   	<information>
-    		<title>Brihaspatisync Client</title>
-    		<vendor>Ashish Yadav</vendor>
-    		<homepage href="http://www.brihaspatisolutions.co.in"/>
-    		<description>Brihaspatisync</description>
-    		<description kind="short">Brihaspatisync Client </description>
+    		<title>Brihaspatisync Reflector</title>
+    		<vendor>IIT Kanpur</vendor>
+    		<homepage href="http://www.iitk.ac.in"/>
+    		<description>Brihaspatisync reflector is a special module of project which work as a router to receive and forword media packets for brihaspatisync client components. it also manage the overlay multicast topology for this project.</description>
     		<icon href="images/info.gif"/>
     		<icon kind="splash" href="images/Title.jpg"/>
 		<!-- <offline-allowed/> -->
@@ -18,6 +17,7 @@
 		<j2se version="1.0+" />
 		<property name="sun.java2d.d3d" value="false"/>
 		<jar href="syncreflector.jar"/>
+
 	</resources>
 	<application-desc main-class="org.bss.brihaspatisync.reflector.Reflector"/>
 </jnlp>
