@@ -21,7 +21,7 @@ import org.bss.brihaspatisync.reflector.buffer_mgt.MyHashTable;
 import org.bss.brihaspatisync.reflector.network.tcp.TCPClient;
 import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
 
-import org.bss.brihaspatisync.reflector.network.util.RuntimeObject;
+import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
 import org.bss.brihaspatisync.reflector.network.serverdata.UserListUtil;
 
 import org.bss.brihaspatisync.reflector.network.serverdata.HandraiseAction;	
@@ -98,7 +98,7 @@ public class HttpRequestHandler {
 					String s=data_value[0];
 					String strarray[]=s.split(",");
 	                                data_value[0]=strarray[1];
-					RuntimeObject runtimeObject=RuntimeObject.getController();
+					RuntimeDataObject runtimeObject=RuntimeDataObject.getController();
 	                                if(strarray[0].equals("instructor")){  
 						/** ip for master reflector */
         	                                runtimeObject.setMastrerReflecterCourseid(strarray[1],client_ip);
