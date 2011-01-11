@@ -60,7 +60,7 @@ public class ProcessRequest extends HttpServlet {
 				InetAddress clientIP  = InetAddress.getByName(request.getRemoteAddr());
 				ServletContext context = getServletContext();
                                 File file=new File(context.getRealPath("indexServer.txt"));
-
+				
 				BufferedReader in = new BufferedReader(new FileReader(file));
                         	String line;
                         	while ((line = in.readLine()) != null) {
