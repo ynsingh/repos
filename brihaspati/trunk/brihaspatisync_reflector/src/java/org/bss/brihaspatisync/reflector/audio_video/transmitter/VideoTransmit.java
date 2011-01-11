@@ -1,11 +1,10 @@
 package org.bss.brihaspatisync.reflector.audio_video.transmitter;
 
-
-/*
+/**
  * VideoTransmit.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2009
+ * Copyright (c) 2010-2011
  */
 
 import java.awt.Dimension;
@@ -95,33 +94,6 @@ public class VideoTransmit {
 	  	ContentDescriptor cd = new ContentDescriptor(ContentDescriptor.RAW_RTP);
 	  	processor.setContentDescriptor(cd);
 
-/*		Format supported[];
-		Format chosen;
-		boolean atLeastOneTrack = false;
-
-        	log.setString("Getting the tracks length==>"+tracks.length);
-		for (int i = 0; i < 1; i++) {
-                        Format format = tracks[i].getFormat();
-                        if (  tracks[i].isEnabled() && format instanceof VideoFormat ) {
-                                Dimension size = ((VideoFormat)format).getSize();
-                                float frameRate = ((VideoFormat)format).getFrameRate();
-                                int w = (size.width % 8 == 0 ? size.width : (int)(size.width / 8) * 8);
-                                int h = (size.height % 8 == 0 ? size.height :(int)(size.height / 8) * 8);
-                                VideoFormat newFormat = new VideoFormat(VideoFormat.H263_RTP,
-                                                                       new Dimension(w, h),
-                                                                       Format.NOT_SPECIFIED,
-                                                                       Format.byteArray,
-                                                                       frameRate);
-                                tracks[i].setFormat(newFormat);
-                                System.err.println("Video transmitted as:");
-                                System.err.println("  " + newFormat);
-                                atLeastOneTrack=true;
-                        } else
-                                tracks[i].setEnabled(false);
-                }
-		if (!atLeastOneTrack)
-    			return "Couldn't set any of the tracks to a valid RTP format";
-	*/
 		result = waitForState(processor, Controller.Realized);
 		if (result == false)
     			return "Couldn't realize processor";
@@ -252,21 +224,27 @@ public class VideoTransmit {
 		}
     	}
         
+	/** Initialize session to transmit stream*/
 	public void createTransmitter(String str) {
                 try{
                         InetAddress ipAddr=InetAddress.getByName(str);
                         SessionAddress destAddr=new SessionAddress(ipAddr,port);
                         rtpvideo.addTarget(destAddr);
+			stream=rtpvideo.createSendStream(dataOutput,0);
+                        stream.start();
                         destAddr=null;
                 }catch(Exception e) { log.setString("Error createTransmitter in VideoTransmit.java "+e);}
         }
-
+	
+	/**Strat stream sender thread*/
         public void streamTransmitterStart() {
                 try{
                         stream=rtpvideo.createSendStream(dataOutput,0);
                         stream.start();
                 } catch(Exception ex) { log.setString("Error in transmission Stream for the Video===>"+ex); }
         }
+	
+	/**Stop strean sender thread*/
         public void streamTransmitterStop() {
                 try{
                         stream.stop();
@@ -274,6 +252,7 @@ public class VideoTransmit {
                 } catch(Exception ex) { log.setString("Error in transmission Stream for the Video===>"+ex); }
         }
 	
+	/**Start processor*/
 	public synchronized String start() {
                 String result=null;
                 result = createProcessor();

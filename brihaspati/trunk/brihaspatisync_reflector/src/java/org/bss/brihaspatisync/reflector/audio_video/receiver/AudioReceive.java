@@ -1,13 +1,11 @@
 package org.bss.brihaspatisync.reflector.audio_video.receiver;
 
-
-/*
+/**
  * AudioReceive.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2009
+ * Copyright (c) 2010-2011
  */
-
 
 import java.util.Vector;
 import java.net.InetAddress;
@@ -64,8 +62,8 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
 	
 	private int port=RuntimeDataObject.getController().getAudioPort();                                              
 
-	/** getting the clone datasource for the Audio */  
 
+	/** getting the clone datasource for the Audio */  
     	public static DataSource getDataSource() {
        		if(ds!=null) {
           		ds=Manager.createCloneableDataSource(ds);
@@ -73,15 +71,12 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
               	return ds;
     	}
 
-
 	/** geting the controller of AudioReceive */
-
     	public static AudioReceive getAudioReceiveController() {
        		if(av==null)
        			av=new AudioReceive();
        		return av; 
      	}
-     
 
     	public AudioReceive() { }
 
@@ -101,7 +96,6 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
     				mgrs[i] = (RTPManager) RTPManager.newInstance();
 				mgrs[i].addSessionListener(this);
 				mgrs[i].addReceiveStreamListener(this);
-                		ipAddr = InetAddress.getByName("172.26.82.21");
                 		localAddr= new SessionAddress(InetAddress.getLocalHost(),port);
                 		destAddr = new SessionAddress(InetAddress.getLocalHost(),port);//ipAddr,port);
 				mgrs[i].initialize(localAddr);

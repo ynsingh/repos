@@ -22,7 +22,7 @@ import java.io.InputStreamReader;
 
 import org.bss.brihaspatisync.reflector.buffer_mgt.BufferMgt;
 import org.bss.brihaspatisync.reflector.buffer_mgt.MyHashTable;
-import org.bss.brihaspatisync.reflector.network.util.RuntimeObject;
+import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
 import org.bss.brihaspatisync.reflector.network.serverdata.VectorClass;
 import org.bss.brihaspatisync.reflector.network.serverdata.UserListUtil;
 
@@ -89,7 +89,7 @@ public class MultiServerThread extends Thread {
 	                                                                        String courseid=str.substring(0,temp);
         	                                                                temp=temp+1;
                 	                                                        str=str.substring(temp,str.length());
-										MyHashTable temp_ht=RuntimeObject.getController().getMyHashTable();
+										MyHashTable temp_ht=RuntimeDataObject.getController().getMyHashTable();
 	                                                                        if(temp_ht.getStatus(courseid)) {
 											BufferMgt te=temp_ht.getValues(courseid);
                         	                                                        te.putByte(str,client_ip);
@@ -138,7 +138,7 @@ public class MultiServerThread extends Thread {
 							 */
 							for(int i=0 ; i<course_id.size();i++){
  								String courseid=course_id.get(i).toString();
-								MyHashTable tempht=RuntimeObject.getController().getUserListMyHashTable();
+								MyHashTable tempht=RuntimeDataObject.getController().getUserListMyHashTable();
 								VectorClass vectorclass=tempht.getCourseIdUserListVector(courseid);
 							        Vector v=vectorclass.getBackupTreeValue();
 								log.setString("Backup Tree value-------------"+v.toString());
@@ -157,7 +157,7 @@ public class MultiServerThread extends Thread {
 							}
 						}
 						else if(course_id.size() > 0) {
-							MyHashTable temp_ht=RuntimeObject.getController().getMyHashTable();
+							MyHashTable temp_ht=RuntimeDataObject.getController().getMyHashTable();
 							for(int i=0 ; i<course_id.size();i++) {
 								if(temp_ht.getStatus(course_id.get(i).toString())){
 									BufferMgt buffer_mgt=temp_ht.getValues(course_id.get(i).toString());

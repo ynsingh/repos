@@ -24,7 +24,7 @@ import org.bss.brihaspatisync.reflector.buffer_mgt.MyHashTable;
 
 import org.bss.brihaspatisync.reflector.Reflector;
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
-import org.bss.brihaspatisync.reflector.network.util.RuntimeObject;
+import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
 import org.bss.brihaspatisync.reflector.network.serverdata.VectorClass;
 import org.bss.brihaspatisync.reflector.network.serverdata.UserListUtil;
 
@@ -138,7 +138,7 @@ public class TCPClient implements Runnable{
 									String courseid=str.substring(0,temp);
 									temp=temp+1;
                                                 			str=str.substring(temp,str.length());
-									MyHashTable temp_ht=RuntimeObject.getController().getMyHashTable();
+									MyHashTable temp_ht=RuntimeDataObject.getController().getMyHashTable();
 									if(temp_ht.getStatus(courseid)) {
                                                                                 BufferMgt te=temp_ht.getValues(courseid);
                                                                                 te.putByte(str,client_ip);
@@ -157,7 +157,7 @@ public class TCPClient implements Runnable{
 							for (int l=0;l<course_id.size();l++) {
 								String courseid=course_id.get(l).toString();
 								TCPClient.getController().setcourseID(courseid);
-								MyHashTable tempht=RuntimeObject.getController().getUserListMyHashTable();
+								MyHashTable tempht=RuntimeDataObject.getController().getUserListMyHashTable();
 								VectorClass vectorclass=tempht.getCourseIdUserListVector(courseid);
 								Vector v=vectorclass.getBackupTreeValue();
                                         			log.setString("Backup Tree value-------------"+v.toString())
@@ -205,7 +205,7 @@ public class TCPClient implements Runnable{
 								out.println("Cource_id"+course_id.get(ipnumber-1));	
 								out.flush();
 							}else{
-								MyHashTable temp_ht=RuntimeObject.getController().getMyHashTable();
+								MyHashTable temp_ht=RuntimeDataObject.getController().getMyHashTable();
 								for(int i=0;i<course_id.size();i++) {
 									TCPUtil.getController().getString(course_id.get(i).toString(),"#Parent"+client_ip);
 									if(temp_ht.getStatus(course_id.get(i).toString())) {
@@ -234,8 +234,6 @@ public class TCPClient implements Runnable{
 		}).start();
 	}
         
-	
-
 	public Thread getRunner(){
                 return runner;
         }

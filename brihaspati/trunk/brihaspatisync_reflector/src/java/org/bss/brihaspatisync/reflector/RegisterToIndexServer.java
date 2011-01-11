@@ -33,7 +33,7 @@ import org.bss.brihaspatisync.reflector.network.http.HttpServer;
 
 import org.bss.brihaspatisync.reflector.audio_video.TransmitHandlerThread;
 
-import org.bss.brihaspatisync.reflector.network.util.RuntimeObject;
+import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
 import org.bss.brihaspatisync.reflector.network.serverdata.UserListUtil;
 import org.bss.brihaspatisync.reflector.network.desktop_sharing.DesktopSharing;
 import org.bss.brihaspatisync.reflector.network.serverdata.UserListTimer;
@@ -161,7 +161,7 @@ public class RegisterToIndexServer {
                                 }else{
                                         if(bufferReader(connection.getInputStream())){
                                                 if(setStatus(indexServer)){
-                                                        RuntimeObject.getController().setindexServerAddr(indexServer);
+                                                        RuntimeDataObject.getController().setindexServerAddr(indexServer);
                                                 }
                                         } else{
                                                 JOptionPane.showMessageDialog(null,"There is an error!! please try again");
@@ -183,7 +183,7 @@ public class RegisterToIndexServer {
                                 String user="loginName="+URLEncoder.encode(str[1].trim(),"UTF-8");
                                 String action="userAction="+URLEncoder.encode(str[2].trim(),"UTF-8");
                                 String indexServer =ServerIP+"/ProcessRequest?req=Permissions&"+lectid+"&"+user+"&"+action;
-				JOptionPane.showMessageDialog(null,indexServer);
+				//JOptionPane.showMessageDialog(null,indexServer);
                                 URL indexurl = new URL(indexServer);
                                 connection=HttpsUtil.getController().createHTTPConnection(indexurl);
                                 if(connection==null){
@@ -215,7 +215,7 @@ public class RegisterToIndexServer {
 				if(str.equals("successfull")){
                                        return true;
                                 }else{
-                                        JOptionPane.showMessageDialog(null,"There is an error!! please try again");
+                                        //JOptionPane.showMessageDialog(null,"There is an error!! please try again");
 					return false;
                                 }
 			}

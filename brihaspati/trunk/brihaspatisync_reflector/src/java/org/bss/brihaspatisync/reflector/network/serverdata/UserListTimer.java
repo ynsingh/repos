@@ -15,7 +15,7 @@ import java.net.URLEncoder;
 
 import org.bss.brihaspatisync.reflector.RegisterToIndexServer;
 import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
-import org.bss.brihaspatisync.reflector.network.util.RuntimeObject;
+import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
@@ -41,8 +41,8 @@ public class UserListTimer extends TimerTask{
 
         public void run(){
                try{
-                    	String index_url=RuntimeObject.getController().getindexServerAddr().trim()+"req=userlist&";    
-                        Vector masterReflector=RuntimeObject.getController().getMastrerReflecterCourseid();
+                    	String index_url=RuntimeDataObject.getController().getindexServerAddr().trim()+"req=userlist&";    
+                        Vector masterReflector=RuntimeDataObject.getController().getMastrerReflecterCourseid();
                         for(int i=0;i<masterReflector.size();i++){
                                 String lect_id = "lect_id="+URLEncoder.encode(masterReflector.get(i).toString(),"UTF-8");
                                 String url=index_url+lect_id;

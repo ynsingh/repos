@@ -1,7 +1,7 @@
 package org.bss.brihaspatisync.reflector.audio_video.transmitter;
 
 /**
- * AudioTransmit.java
+ * StudentAudioTransmit.java
  *
  * See LICENCE file for usage and redistribution terms
  * Copyright (c) 2010-2011
@@ -30,32 +30,31 @@ import javax.media.protocol.ContentDescriptor;
 
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
 import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
-import org.bss.brihaspatisync.reflector.audio_video.receiver.AudioReceive;
-
+import org.bss.brihaspatisync.reflector.audio_video.receiver.StudentAudioReceive;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>
  */
 
-public class AudioTransmit {
+public class StudentAudioTransmit {
 
-	private	int port=RuntimeDataObject.getController().getAudioPort();
+	private	int port=RuntimeDataObject.getController().getAudioHandraisePort();
 	private RTPManager rtpaudio;
 	private SendStream stream=null;
 	private InetAddress ipAddr=null;
 	private Processor processor = null;
 	private DataSource dataOutput = null;
-    	private static AudioTransmit av=null;    
+    	private static StudentAudioTransmit av=null;    
 	private MaintainLog log=MaintainLog.getController();
 	    	
-	public static AudioTransmit getAudioTransmitController() {
+	public static StudentAudioTransmit getAudioTransmitController() {
     		if(av==null)
-      			av=new AudioTransmit();
+      			av=new StudentAudioTransmit();
       		return av;
     	}
 	
-    	public AudioTransmit() { 
+    	public StudentAudioTransmit() { 
 		try {
 			rtpaudio=RTPManager.newInstance();
 			SessionAddress localAddr=new SessionAddress();
@@ -97,12 +96,13 @@ public class AudioTransmit {
 		
 	
    	private String createProcessor() {
-      		log.setString("we are in createProcessor ");
+      		System.out.println("we are in createProcessor ");
 		DataSource ds;
 		DataSource clone;
         	/**get the clone of the datasource of the audio for the transmission of Audio from the Capture Device*/
 	    	try {
-	        	ds=AudioReceive.getAudioReceiveController().getDataSource();	          
+	        	ds=StudentAudioReceive.getAudioReceiveController().getDataSource();
+			System.out.println("Datasource for handraise audio transmission : "+ds);	          
 		} catch (Exception e) {   return "Couldn't create DataSource";  }
 
 		/** Try to create a processor to handle the input media locator */
@@ -142,37 +142,40 @@ public class AudioTransmit {
     	}
 
 
-  	/**Initialize the target to transmit stream*/
+  	/**Initialize session for target to transmit stream*/
   	public String createTransmitter(String str) {
     		try{
 			ipAddr=InetAddress.getByName(str);
 			SessionAddress destAddr =new SessionAddress(ipAddr,port);
+			System.out.println("destination session address========> : "+destAddr);
 			rtpaudio.addTarget(destAddr);
 			destAddr=null;
        		}catch(Exception e) { log.setString("Error in initialize address to transmit Audio==>"+e); }
        		return null;
-  	}
-					 
+  	}					 
+
 	/**Start stream sender thread*/
 	public void streamTransmitterStart() {
                 try{
 			log.setString("DataSource==============>"+dataOutput);
                         stream=rtpaudio.createSendStream(dataOutput,0);
                         stream.start();
+			System.out.println("Student Handraise audio transmission is start");
                 } catch(Exception ex) { log.setString("Error in Start send stream for the audio===>"+ex); }
         }
 
-	/** Stop stream sender thread*/
+	/**Stop stream sender thread*/
         public void streamTransmitterStop() {
                 try{
                         stream.stop();
                         stream=null;
+			System.out.println("Student Handraise audio transmission is stop");
                 } catch(Exception ex) { log.setString("Error in stop send stream for the audio===>"+ex); }
         }
 	
 
 	/****************************************************************
-     	 * Convenience methods to handle processor's state changes
+     	 * Convenience methods to handle processor's state changes.
      	 ****************************************************************/
     
     	private Integer stateLock = new Integer(0);

@@ -8,9 +8,10 @@ package org.bss.brihaspatisync.reflector.network.serverdata;
  */
 
 import java.util.Vector;
+import java.util.StringTokenizer;
 import org.bss.brihaspatisync.reflector.buffer_mgt.MyHashTable;
 import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;	
-import org.bss.brihaspatisync.reflector.network.util.RuntimeObject;
+import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
@@ -23,9 +24,10 @@ public class UserListUtil {
        
 	private MaintainLog log=MaintainLog.getController();
 	 
-	private MyHashTable temp_ht=RuntimeObject.getController().getUserListMyHashTable();
+	private MyHashTable temp_ht=RuntimeDataObject.getController().getUserListMyHashTable();
 		
 	protected UserListUtil() { }
+	private boolean flag=false;
 
         public static UserListUtil getContriller() {
                 if(util == null)
@@ -45,11 +47,11 @@ public class UserListUtil {
 		}
 	}
 	
-	public void addDataForVector(String course_id,String data){
+	public void addDataForVector(String course_id,String data) {
                 try {
 			VectorClass vectorclass=temp_ht.getCourseIdUserListVector(course_id);
 			vectorclass.addValue(data);
-		}catch(Exception e){
+		} catch(Exception e){
 			log.setString("Error in UserListUtil.java line no 50 "+e.getMessage());
 		}
         }
@@ -62,7 +64,21 @@ public class UserListUtil {
 	                        Vector vector=vectorclass.getValue();
         	                for(int i=0;i<vector.size();i++){
                 	        	data=data+","+vector.get(i).toString();
-                        	}
+					String str=vector.get(i).toString();
+					StringTokenizer st = new StringTokenizer(str, "$");
+					while(st.hasMoreTokens()) {
+						String key = st.nextToken();
+    						String val = st.nextToken();
+						if(val.equals("Allow-Mic")){
+                        	                	System.out.println("Allow-Mic found");
+							if(!flag) {
+                                	                	flag=true;
+								RuntimeDataObject.getController().setHandraiseFlag(flag);
+							}
+                                     		}
+					}
+				}
+				vector.clear();
 			}
 		}catch(Exception e){
 			log.setString("Error in UserListUtil.java line no 62 "+e.getMessage());
