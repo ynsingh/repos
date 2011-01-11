@@ -278,6 +278,7 @@ public class ProcessRequest extends HttpServlet {
 				message=ReflectorManager.getController().getIP(lect_id,role);
 				ServerLog.getController().Log("message---> 1"+message);
 				if((!message.equals("UnSuccessfull")) && (!message.equals("Reflector is not running"))){
+					HandRaisePortHandler.getController().handRaisePortHandler(lect_id);
 					String ref_ip=message;
 					ServerLog.getController().Log("ref_ip ---> 2 "+ref_ip);
 					if(ref_ip.startsWith("current/")){
@@ -288,6 +289,8 @@ public class ProcessRequest extends HttpServlet {
 						String msg=PeerManager.getController().createPeer(lect_id,publicIP,user,role,status,privateIP,proxy,ref_ip);
 					}
        				}
+				String port=",port="+HandRaisePortHandler.getController().getPort(lect_id);
+				message	= message + port;	
 				ServerLog.getController().Log("message---> 4 "+message);
 				response.setContentLength(message.length());
                         	out.println(message);

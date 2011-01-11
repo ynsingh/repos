@@ -10,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.BufferedOutputStream;
+import java.net.URLDecoder;
 import org.w3c.dom.NodeList; 
 import org.w3c.dom.Node; 
 import org.w3c.dom.Document; 
@@ -109,9 +110,10 @@ public class PeerManager
 		Element element=null;
                 Node node=null;
                 String user="";
-		ServerLog.getController().Log("action-----> "+action+" userName ---->  "+userName+" LectureID "+LectureID);
-		try {		
-			DocumentBuilderFactory factory =DocumentBuilderFactory.newInstance();
+		try {	
+			userName=URLDecoder.decode(userName, "UTF-8");
+                	ServerLog.getController().Log("action-----> "+action+" userName ---->  "+userName+" LectureID "+LectureID);
+                	DocumentBuilderFactory factory =DocumentBuilderFactory.newInstance();
 	                factory.setValidating(false);
         	        factory.setIgnoringElementContentWhitespace(false);
                 	DocumentBuilder builder = factory.newDocumentBuilder();
