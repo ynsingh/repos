@@ -236,7 +236,7 @@ START BRIHASPATI
    or http://IP address of your server:8080/brihapati/servlet/brihaspati
 
    Login with userid admin (to get into as administrator.) The initial
-   password will be admin
+   password will be admin and set the profile.
 
 STOPPING THE BRIHASPATI
 -----------------------

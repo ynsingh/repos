@@ -144,10 +144,10 @@ $!data.getMessage()
         </td>
         </tr>
 	<tr>
-                #formCell ("$brih_rollno($brih_if $brih_student) <font color=red>*</font>" "rollno" "")
+                #formCell ("$brih_rollno($brih_if $brih_student) <font color=red></font>" "rollno" "")
 	</tr>
 	<tr bgcolor="$ui.menuColor">
-                <td>$brih_program($brih_if $brih_student) <font color=red>*</font></td>
+                <td>$brih_program($brih_if $brih_student) <font color=red></font></td>
                 <td colspan=3><select name="prg" size=1 onChange="checkOption1(document.frm,this);"/>
                         <option>$brih_select $brih_program </option>
                         #foreach($progname in $prgList)

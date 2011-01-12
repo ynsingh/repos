@@ -136,7 +136,7 @@ public class UserManagement
 				*/
 				String spltunm[]=UName.split("@");
 				String gnme=spltunm[0];
-				if (gnme.equals(Passwd)||(Passwd==null))
+				if ((gnme.equals(Passwd))||(Passwd==null))
 				{
 					Passwd=PasswordUtil.randmPass();
 				}
