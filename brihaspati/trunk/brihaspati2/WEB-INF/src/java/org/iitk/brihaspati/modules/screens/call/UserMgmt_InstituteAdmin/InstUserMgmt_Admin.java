@@ -40,7 +40,7 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_InstituteAdmin;
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
- * @modify:23-12-2010
+ * @modified date:23-12-2010, 11-01-2011
  */
 import java.util.List;
 import java.util.Vector;
@@ -52,10 +52,14 @@ import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
+import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.iitk.brihaspati.modules.utils.ListManagement;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
+import org.iitk.brihaspati.om.InstituteProgramPeer;
+import org.iitk.brihaspati.om.InstituteProgram;
 import org.iitk.brihaspati.om.ProgramPeer;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Institute_Admin;
 
@@ -90,15 +94,29 @@ public class InstUserMgmt_Admin extends SecureScreen_Institute_Admin
 		context.put("role",role);
 		}
 	}
-	/*
- 	 * Getting list of program from database
+	/**
+ 	 * Getting list of program from database according to institute
  	 */ 	
 	try
 	{
-		Criteria crit1=new Criteria();
-	        crit1.addGroupByColumn(ProgramPeer.PROGRAM_CODE);
-	        List plist=ProgramPeer.doSelect(crit1);
-	        context.put("prgList",plist);
+		int InstId=Integer.parseInt(instituteId);
+		Criteria crit=new Criteria();
+                crit.add(InstituteProgramPeer.INSTITUTE_ID,InstId);
+                List Instplist= InstituteProgramPeer.doSelect(crit);
+                Vector PrgDetail = new Vector();
+                for(int i=0;i<Instplist.size();i++)
+                {       
+                        InstituteProgram element = (InstituteProgram)Instplist.get(i);
+                        int prgcode = element.getProgramCode();
+                        String PrgCode = Integer.toString(prgcode);
+                        String prgName = InstituteIdUtil.getPrgName(PrgCode);
+                        CourseUserDetail cDetails=new CourseUserDetail();
+                        cDetails.setPrgName(prgName);
+                        cDetails.setPrgCode(PrgCode);
+                        PrgDetail.add(cDetails);
+                        context.put("PrgDetail",PrgDetail);
+                }   
+
 	}
 	catch(Exception e)
 	{

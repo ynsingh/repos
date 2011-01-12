@@ -37,21 +37,26 @@ package org.iitk.brihaspati.modules.screens;
 
 
 import java.util.List;
+import java.util.Vector;
 import org.apache.turbine.util.RunData;
 import org.apache.torque.util.Criteria;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.modules.screens.VelocityScreen;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
+import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 //import org.apache.turbine.services.servlet.TurbineServlet;
 import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
 import org.iitk.brihaspati.om.ProgramPeer;
+import org.iitk.brihaspati.om.InstituteProgramPeer;
+import org.iitk.brihaspati.om.InstituteProgram;
  /**
  * @author <a href="mailto:omprakash_kgp@yahoo.co.in">Om Prakash</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">jaivir Singh</a>20092010
- * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>20092010
- * @modify:23-12-2010
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @modified date:23-12-2010, 11-01-2011
  */
 /**
 * This class called when user request for online registration as an Student,Instructor(course) and author.   
@@ -73,11 +78,30 @@ public class OnlineRegistration extends VelocityScreen
 			crit.addNotIn(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,addnot);
 			List list=InstituteAdminRegistrationPeer.doSelect(crit);
 			context.put("instList",list);
-			crit=new Criteria();
-	                crit.addGroupByColumn(ProgramPeer.PROGRAM_CODE);
-        	        List plist=ProgramPeer.doSelect(crit);
-                	context.put("prgList",plist);
  			ParameterParser pp=data.getParameters();
+			String Val=pp.getString("val","");
+			context.put("Insname",Val);
+			/**
+ 			 * Getting list of program according to institute id 
+ 			 */ 
+			String InsNm=pp.getString("InstName","");
+			int InstId = InstituteIdUtil.getIst_Id(InsNm);
+	                crit=new Criteria();
+	                crit.add(InstituteProgramPeer.INSTITUTE_ID,InstId);
+	                List Instplist= InstituteProgramPeer.doSelect(crit);
+	                Vector PrgDetail = new Vector();
+	                for(int i=0;i<Instplist.size();i++)
+	                {
+	                        InstituteProgram element = (InstituteProgram)Instplist.get(i);
+	                        int prgcode = element.getProgramCode();
+	                        String PrgCode = Integer.toString(prgcode);
+	                        String prgName = InstituteIdUtil.getPrgName(PrgCode);
+	                        CourseUserDetail cDetails=new CourseUserDetail();
+	                        cDetails.setPrgName(prgName);
+	                        cDetails.setPrgCode(PrgCode);
+        	                PrgDetail.add(cDetails);
+	                        context.put("PrgDetail",PrgDetail);
+        	        }			
 			String lang=pp.getString("lang","english");
         	        context.put("lang",lang);
 			String status=pp.getString("status","");

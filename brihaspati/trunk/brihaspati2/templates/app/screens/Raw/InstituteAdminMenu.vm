@@ -99,7 +99,7 @@
 </tr>
 <tr>
       <td>
-         <a href=$link.setPage("call,Program,AddProgram.vm").addPathInfo("count","1") style=text-decoration:none>$brih_program $brih_mgmt</a>
+         <a href=$link.setPage("call,Program,MapProgram.vm").addPathInfo("count","1") style=text-decoration:none>$brih_program $brih_mgmt</a>
       </td>
 </tr>   
 </table>

@@ -34,18 +34,24 @@ $!data.getMessage()
 <form name="frm" method="Post" action="$link.setPage("call,Program,ProgramList.vm").setAction("AddProgram")">
 <table  bgcolor="$ui.tableColor" width=100%>
         <tr>
-        #if($tdcolor != "1")
-                <td>
-        #elseif($tdcolor == "1")
-                <td bgcolor="#AFDCEC">
-        #end
-                <a href=$link.setPage("call,Program,AddProgram.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang == "hindi") $brih_program $brih_add  #else $brih_add $brih_program #end </a></td>
+	#if($tdcolor != "1")
+		<td>
+	#elseif($tdcolor == "1")
+		<td bgcolor="#AFDCEC">
+	#end
+		<a href=$link.setPage("call,Program,MapProgram.vm").addPathInfo("count","1") style=text-decoration:none> $brih_map $brih_program </a></td>
         #if($tdcolor != "2")
                 <td>
         #elseif($tdcolor == "2")
                 <td bgcolor="#AFDCEC">
         #end
-                <a href=$link.setPage("call,Program,ProgramList.vm").addPathInfo("count","2") style=text-decoration:none>$brih_program $brih_list </a></td>
+                <a href=$link.setPage("call,Program,AddProgram.vm").addPathInfo("count","2") style=text-decoration:none> #if($lang == "hindi") $brih_program $brih_add  #else $brih_add $brih_program #end </a></td>
+        #if($tdcolor != "3")
+                <td>
+        #elseif($tdcolor == "3")
+                <td bgcolor="#AFDCEC">
+        #end
+                <a href=$link.setPage("call,Program,ProgramList.vm").addPathInfo("count","3") style=text-decoration:none>$brih_program $brih_list </a></td>
         </tr>
 </table>
 ##Table for Inserting data
@@ -62,16 +68,16 @@ $!data.getMessage()
                 <td>$brih_discrp</td>
                 <td><input type="text" name="descp" value="$descrp"></td>
         </tr>
-        <tr>
+        #*<tr>
                 <td> #if($lang == "hindi") $brih_program $brih_code $brih_Of1 $brih_alias #else $brih_alias $brih_program $brih_code #end </td>
                 <td><input type="text" name="alspcode" value="$alspgcode"></td>
-        </tr>
-        <tr bgcolor="$ui.menuColor">
+        </tr>*#
+       #* <tr bgcolor="$ui.menuColor">
                 <td> #if($lang == "hindi") $brih_program $brih_Of2 $brih_name $brih_Of1 $brih_alias #else $brih_alias $brih_program $brih_name #end </td>
                 <td><input type="text" name="alspname" value="$alspgname"></td>
-        </tr>
-	#if($status=="update")
+        </tr>*#
         <tr>
+	#if($status=="update")
                 <td colspan=2><input type="button" name="eventSubmit_doSubmit" value="$brih_update" onClick="checkValue(document.frm,this);"/></td>
 		<input type="hidden" name="status" value="$status">
 	#else

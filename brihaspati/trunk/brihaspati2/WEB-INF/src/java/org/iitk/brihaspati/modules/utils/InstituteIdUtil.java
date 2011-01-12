@@ -209,7 +209,7 @@ public class InstituteIdUtil
                                         
                                 }
                         }
-                }catch(Exception ex){}
+                }catch(Exception ex){ErrorDumpUtil.ErrorLog("Exception in getting all institute id according to  user id --[InstituteIdUtil]"+ex);}
                 return instidlist;
 //        }
 }
@@ -244,6 +244,27 @@ public class InstituteIdUtil
                 return utime;
 
 	}
-}
 
+
+	/** Get the Institute id on the basis of Institute Name
+	 */
+
+	public static int getIst_Id(String Inst_Name)
+	{
+                int inst_id=0;
+                Criteria crit=new Criteria();
+                try{
+                        crit.add(InstituteAdminRegistrationPeer.INSTITUTE_NAME,Inst_Name);
+                        List inm=InstituteAdminRegistrationPeer.doSelect(crit);
+                        InstituteAdminRegistration element=(InstituteAdminRegistration)inm.get(0);
+                	inst_id=element.getInstituteId();
+        	}
+		catch(Exception ex){
+                        ErrorDumpUtil.ErrorLog("The error in getIsteId() -Institute Id Util class !!"+ex);
+                }
+
+        return inst_id;
+        }
+
+}
 

@@ -31,6 +31,8 @@ package org.iitk.brihaspati.modules.actions;
  *EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 import java.util.List;
+import java.util.Vector;
+import java.util.StringTokenizer;
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
@@ -39,8 +41,11 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.om.ProgramPeer;
 import org.iitk.brihaspati.om.Program;
+import org.iitk.brihaspati.om.InstituteProgramPeer;
+import org.iitk.brihaspati.om.InstituteProgram;
 /**
 *@author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a> 
+*@modified date:11-01-2011
 */
 public class AddProgram extends SecureAction_Institute_Admin
 {
@@ -60,6 +65,7 @@ public class AddProgram extends SecureAction_Institute_Admin
 
 			Criteria crit=new Criteria();
 			String LangFile = data.getUser().getTemp("LangFile").toString();
+			int InstId =Integer.parseInt((String)data.getUser().getTemp("Institute_id"));
 			ParameterParser pp = data.getParameters();
 			String prgcode = (pp.getString("pcode")).toUpperCase();
 			String prgname = pp.getString("pname");
@@ -79,9 +85,13 @@ public class AddProgram extends SecureAction_Institute_Admin
 				crit.add(ProgramPeer.ALIAS_PCODE,alsprgcode);
 				crit.add(ProgramPeer.ALIAS_PNAME,alsprgname);
 				ProgramPeer.doInsert(crit);	
+				crit = new Criteria();
+				crit.add(InstituteProgramPeer.PROGRAM_CODE,prgcode);
+                                crit.add(InstituteProgramPeer.INSTITUTE_ID,InstId);
+                                InstituteProgramPeer.doInsert(crit);
 				String Add = MultilingualUtil.ConvertedString("brih_Added",LangFile);
 				String Program = MultilingualUtil.ConvertedString("brih_program",LangFile);
-				String success = MultilingualUtil.ConvertedString("QueBankUtil_msg5",LangFile);
+				String success = MultilingualUtil.ConvertedString("brih_successfully",LangFile);
 				data.setMessage(Add+" "+Program+" "+success);
 				
 			}
@@ -114,6 +124,107 @@ public class AddProgram extends SecureAction_Institute_Admin
 		}
 	}
 	/**
+         * This method performs the action for inserting the program for instutute
+         * @param data RunData
+         * @param context Context
+         * Here ProgramList has ProgramCode from Selected CheckBoxes for Inserting.
+         * Using StringTokenizer to break  string after "^".
+         */
+	
+	public void doSelect(RunData data, Context context)
+        {
+                try{
+			LangFile=(String)data.getUser().getTemp("LangFile");
+			int InstId =Integer.parseInt((String)data.getUser().getTemp("Institute_id"));
+                        String ProgramList=data.getParameters().getString("selectFileNames","");
+                        context.put("selectFile",ProgramList);
+			String programCode="";
+			/**
+	                 * Use StringTokenizer to break string after "^".
+                         */
+			StringTokenizer st=new StringTokenizer(ProgramList,"^");
+                        Vector v=new Vector();
+
+                        for(int i=0;st.hasMoreTokens();i++)
+                        {
+  		        	v.addElement(st.nextToken());
+                        }
+			/**
+	                 * All the programcode obtained from the list 
+                         * then insert into table one by one
+                         */
+			for(int i=0;i<v.size();i++)
+                        {
+	                        programCode=(v.elementAt(i).toString()).toUpperCase();
+				Criteria crit=new Criteria();
+				crit.add(InstituteProgramPeer.PROGRAM_CODE,programCode);
+	                        crit.add(InstituteProgramPeer.INSTITUTE_ID,InstId);
+	                        InstituteProgramPeer.doInsert(crit);					
+				String Instmsg = MultilingualUtil.ConvertedString("brih_instprg",LangFile);
+				String Slmsg= MultilingualUtil.ConvertedString("brih_successfully",LangFile);
+				data.setMessage(Instmsg+" "+Slmsg);
+			}
+			
+		}
+		catch(Exception ex)
+		{
+			ErrorDumpUtil.ErrorLog("Error in SelectProgram for institute action !!"+ex);
+		}
+	}
+	
+	/**
+ 	 * This method perform action for deleting program
+ 	 * @param data RunData
+ 	 * @param context Context
+ 	 */
+	  	
+	public void doDelete(RunData data, Context context)
+        {
+                try{
+			LangFile=(String)data.getUser().getTemp("LangFile");
+			ParameterParser pp = data.getParameters();
+                        String prgcode = (pp.getString("pcode")).toUpperCase();
+			int InstId =Integer.parseInt((String)data.getUser().getTemp("Institute_id"));
+			int[] instId ={InstId};
+			Criteria crit = new Criteria();
+			crit.add(InstituteProgramPeer.PROGRAM_CODE,prgcode);
+			crit.andNotIn(InstituteProgramPeer.INSTITUTE_ID,instId);
+			List v=InstituteProgramPeer.doSelect(crit);
+			if(v.size()!=0)
+			{
+				crit=new Criteria();
+				crit.add(InstituteProgramPeer.PROGRAM_CODE,prgcode);
+				crit.and(InstituteProgramPeer.INSTITUTE_ID,InstId);
+				InstituteProgramPeer.doDelete(crit);
+				String delmsg = MultilingualUtil.ConvertedString("brih_instdel",LangFile);
+				data.setMessage(delmsg);
+				setTemplate(data,"call,Program,ProgramList.vm");
+			}
+			else
+			{
+				crit=new Criteria();
+				crit.add(InstituteProgramPeer.PROGRAM_CODE,prgcode);
+				crit.and(InstituteProgramPeer.INSTITUTE_ID,InstId);
+				InstituteProgramPeer.doDelete(crit);
+				crit= new Criteria();
+				crit.add(ProgramPeer.PROGRAM_CODE,prgcode);
+				ProgramPeer.doDelete(crit);		
+				String Prgmsg = MultilingualUtil.ConvertedString("brih_program",LangFile);
+				String Dlmsg = MultilingualUtil.ConvertedString("brih_delete",LangFile);
+				String msg = MultilingualUtil.ConvertedString("brih_successfully",LangFile);
+				data.setMessage(Prgmsg+" "+Dlmsg+" "+msg);
+				setTemplate(data,"call,Program,ProgramList.vm");
+			}
+		}
+		catch(Exception e)
+		{
+			ErrorDumpUtil.ErrorLog("Error in Deleting Program action !!"+e);
+		}
+	}
+
+
+
+	/**
          * Default action to perform if the specified action
          * cannot be executed.
          */
@@ -123,6 +234,10 @@ public class AddProgram extends SecureAction_Institute_Admin
         	String action=data.getParameters().getString("actionName","");
 		if(action.equals("eventSubmit_doSubmit"))
                 	doInsert(data,context);
+		else if(action.equals("eventSubmit_doSelect"))
+                	doSelect(data,context);
+		else if(action.equals("eventSubmit_doDelete"))
+                	doDelete(data,context);
                 else
                 	data.setMessage("Cannot find the button");
 				
