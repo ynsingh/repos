@@ -199,7 +199,8 @@ public class Institute_RootAdmin extends VelocitySecureAction
                *  Get parameters passed from templates.
                */
 		String curdate=ExpiryUtil.getCurrentDate("-");
-                Date rejectdate=Date.valueOf(curdate);
+		String expdate=ExpiryUtil.getExpired(curdate,8);
+                Date rejectdate=Date.valueOf(expdate);
 		ParameterParser pp = data.getParameters();
 		LangFile = (String)data.getUser().getTemp("LangFile");
                 String institutelist = data.getParameters().getString("deleteFileNames");
@@ -218,7 +219,7 @@ public class Institute_RootAdmin extends VelocitySecureAction
 					*/
                                         Criteria crit = new Criteria();
                                         crit.add(InstituteAdminRegistrationPeer.INSTITUTE_ID,instituteid);
-                                        crit.add(InstituteAdminRegistrationPeer.REGISTRATION_DATE,rejectdate);
+                                        crit.add(InstituteAdminRegistrationPeer.EXPIRY_DATE,rejectdate);
                                         crit.add(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"2");
 					InstituteAdminRegistrationPeer.doUpdate(crit);
 					String msg=MultilingualUtil.ConvertedString("instAreg_msg6",LangFile);

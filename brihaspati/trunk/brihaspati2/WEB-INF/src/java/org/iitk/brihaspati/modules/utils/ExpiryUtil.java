@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.utils;
 
 
 /*@(#)ExpiryUtil.java
- *  Copyright (c) 2004-2006 ETRG,IIT Kanpur. http://www.iitk.ac.in/
+ *  Copyright (c) 2004-2006,2011 ETRG,IIT Kanpur. http://www.iitk.ac.in/
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -56,6 +56,7 @@ import org.iitk.brihaspati.om.NoticeReceivePeer;
 import org.iitk.brihaspati.om.TaskPeer;
 import org.iitk.brihaspati.om.Courses;
 import org.iitk.brihaspati.om.CoursesPeer;
+import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
 
 /**
  * This class gets current date from system, expiry date,data expired from database 
@@ -64,6 +65,7 @@ import org.iitk.brihaspati.om.CoursesPeer;
  * @author <a href=madhavi_mungole@hotmail.com>Madhavi Mungole</a>
  * @author <a href=awadhesh_trivedi@yahoo.co.in>Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  */
 
 public class ExpiryUtil{
@@ -357,7 +359,7 @@ public class ExpiryUtil{
 		boolean success=false;
 		try{
 				//here add survey and remote course
-			String str[]={"CalInfo","DisBoard","News","Notices","Task"};
+			String str[]={"CalInfo","DisBoard","News","Notices","Task","Institutedel"};
 			Criteria crit=new Criteria();
 			String current_date=getCurrentDate("-");
 			List v=null;
@@ -424,6 +426,13 @@ public class ExpiryUtil{
 					crit=new Criteria();
 					crit.add(TaskPeer.EXPIRY_DATE,(Object)current_date,crit.LESS_EQUAL);
 					TaskPeer.doDelete(crit);
+				}
+				else if(str[i].equals("Institutedel"))
+				{
+					crit=new Criteria();
+					crit.add(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"2");
+					crit.add(InstituteAdminRegistrationPeer.EXPIRY_DATE,(Object)current_date,crit.LESS_EQUAL);
+					InstituteAdminRegistrationPeer.doDelete(crit);
 				}
 			}
 	 

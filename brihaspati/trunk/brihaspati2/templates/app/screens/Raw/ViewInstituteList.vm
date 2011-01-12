@@ -18,6 +18,7 @@ $!data.getMessage()
 	$brih_reg2 $RemoteInstitute
 	</font>
 	</td>
+	<td>$brih_total $RemoteInstitute [$entry1.size()] </td>
 </tr>
 </table>
 #set($headings = ["$RemoteInstitute $brih_name","$RemoteInstitute $RemoteAddress","$brih_ad $brih_name","$brih_view $brih_other $brih_name","$brih_ad $brih_email"] )

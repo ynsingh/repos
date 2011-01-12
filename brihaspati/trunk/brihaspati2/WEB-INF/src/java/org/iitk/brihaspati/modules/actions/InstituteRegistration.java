@@ -65,9 +65,9 @@ import org.iitk.brihaspati.modules.utils.EncryptionUtil;
 /**
  * 
  * 
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
  * @author: <a href="mailto:shaistashekh@hotmail.com">Shaista </a>
- * @Created Date
  * @modified date: 22-11-2010
  */
 
@@ -99,7 +99,6 @@ public class InstituteRegistration extends VelocitySecureAction
 		
 		try{
 			
-			//rundata.setMessage("Test");
 			MultilingualUtil mu = new MultilingualUtil();
 			//String Lang = rundata.getUser().getTemp("lang").toString();
 			String lang="";
@@ -112,7 +111,14 @@ public class InstituteRegistration extends VelocitySecureAction
 			institutepincode = parameterparser.getString("IPINCODE");
 		
 			institutestate = parameterparser.getString("ISTATE");
-			institutelandline = parameterparser.getString("ILANDLINE");
+			//institutelandline = parameterparser.getString("ILANDLINE");
+			String ccode = parameterparser.getString("ccode");
+			String rcode = parameterparser.getString("rcode");
+			String phnum = parameterparser.getString("phnumber");
+			if(ccode.equals("91")) 
+			institutelandline=rcode+phnum;
+			else
+			institutelandline=ccode+rcode+phnum;
 			institutedomain = parameterparser.getString("IDOMAIN");		
 			institutetype = parameterparser.getString("ITYPE");
 			instituteaffiliation = parameterparser.getString("IAFFILIATION");
@@ -195,8 +201,6 @@ public class InstituteRegistration extends VelocitySecureAction
 					InstituteAdminUserPeer.doInsert(criteria);
                                         String server_name=TurbineServlet.getServerName();
                                         String srvrPort=TurbineServlet.getServerPort();
-					ErrorDumpUtil.ErrorLog("servername==>"+server_name);
-					ErrorDumpUtil.ErrorLog("serverport==>"+srvrPort);
                                         String subject="";
                                         String messageFormate="";
                                         String email="";
