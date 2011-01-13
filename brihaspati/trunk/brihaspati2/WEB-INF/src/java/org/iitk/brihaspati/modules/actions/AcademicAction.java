@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)AcademicAction.java	
  *
- *  Copyright (c) 2007 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2007,2011 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -56,6 +56,7 @@ import java.io.BufferedReader;
 import java.util.StringTokenizer;
 /*
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
  */
 
 public class AcademicAction extends SecureAction
@@ -77,15 +78,9 @@ public class AcademicAction extends SecureAction
 			ParameterParser pp=data.getParameters();
 			User user=data.getUser();
 			String instituteId=(data.getUser().getTemp("Institute_id")).toString();
-			String instname="";	
-			if(!instituteId.equals("")){
-			Criteria crit=new Criteria();
-                        crit.add(InstituteAdminRegistrationPeer.INSTITUTE_ID,instituteId);
-                        List lst=InstituteAdminRegistrationPeer.doSelect(crit);
-			instname=((InstituteAdminRegistration)lst.get(0)).getInstituteName();
+			if(instituteId.equals("")){
+				instituteId="Admin";
 			}	
-			else
-			instname="Admin";
 			String event=pp.getString("event");
 			StringTokenizer st=new StringTokenizer(event,";"); 
 			Vector v=new Vector();
@@ -101,10 +96,8 @@ public class AcademicAction extends SecureAction
 			String year=pp.getString("Start_year");
 			int iy=Integer.parseInt(year);		
 			String hd=pp.getString("etype");
-			//String prpdate=month+"."+year;
-			String prpdate=instname+"."+month+"."+year;
+			String prpdate=instituteId+"."+month+"."+year;
 			String path=data.getServletContext().getRealPath("/WEB-INF") +"/conf";
-			//String role=(data.getUser().getTemp("role")).toString();
 			String acdPath=path+"/"+"AcademicCalendar.properties";
 			String hldPath=path+"/"+"CalendarHolidays.properties";
 			String fpath="";	
@@ -164,10 +157,6 @@ public class AcademicAction extends SecureAction
 		try
 		{
 			String instituteId=(data.getUser().getTemp("Institute_id")).toString();
-			Criteria crit=new Criteria();
-                        crit.add(InstituteAdminRegistrationPeer.INSTITUTE_ID,instituteId);
-                        List lst=InstituteAdminRegistrationPeer.doSelect(crit);
-			String instname=((InstituteAdminRegistration)lst.get(0)).getInstituteName();
 			String LangFile=data.getUser().getTemp("LangFile").toString();
 			String msg="";  
 			ParameterParser pp=data.getParameters();
@@ -176,7 +165,10 @@ public class AcademicAction extends SecureAction
 			String year=pp.getString("Start_year");
 			String etype=pp.getString("etype");
 			context.put("etype",etype);
-			String date=instname+"."+month+"."+year;
+			if(instituteId.equals("")){
+				instituteId="Admin";
+			}	
+			String date=instituteId+"."+month+"."+year;
 			context.put("keydate",date);
 			String path=data.getServletContext().getRealPath("/WEB-INF") +"/conf";
 			String acdPath=path+"/"+"AcademicCalendar.properties";

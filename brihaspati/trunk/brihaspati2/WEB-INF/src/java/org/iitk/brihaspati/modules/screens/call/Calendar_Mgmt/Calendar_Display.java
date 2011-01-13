@@ -80,15 +80,9 @@ public class Calendar_Display extends SecureScreen{
 		try{
 			String instituteId=(data.getUser().getTemp("Institute_id")).toString();
                     	ErrorDumpUtil.ErrorLog("insid in display calendar=="+instituteId);
-                        String instname="";
-                        if(!instituteId.equals("")){
-                        Criteria crit=new Criteria();
-                        crit.add(InstituteAdminRegistrationPeer.INSTITUTE_ID,instituteId);
-                        List lst=InstituteAdminRegistrationPeer.doSelect(crit);
-                        instname=((InstituteAdminRegistration)lst.get(0)).getInstituteName();
+                        if(instituteId.equals("")){
+                        	instituteId="Admin";
                         }
-                        else
-                        instname="Admin";
 			/**
 			* Get the current date and time. Put it in context
 			*/
@@ -375,7 +369,7 @@ public class Calendar_Display extends SecureScreen{
 			* key will have value of month and year of which 
 			* you want holiday and academic event
 			*/
-			String key = instname+"."+dmonth + "."+year;
+			String key = instituteId+"."+dmonth + "."+year;
 			context.put("key",key);
 			Holiday(key,path1);
 			Holiday(key,path2);
