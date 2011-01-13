@@ -105,12 +105,13 @@ public class ViewInstituteList extends VelocityScreen
 				for(int k=0;k<instdetailUid.size();k++){
 				InstituteAdminUser iauid=(InstituteAdminUser)instdetailUid.get(k);
 				vct.add(iauid);
-			}
+				}
 				Vector vctr=CommonUtility.PListing(data ,context ,vct,list_conf);
 				context.put("entry",vctr);
 			}
 				Vector vctr1=CommonUtility.PListing(data ,context ,iidvector,list_conf);
 				context.put("entry1",vctr1);
+				context.put("institutenum",iidvector.size());
 		}
 		catch(Exception e)
 		{
