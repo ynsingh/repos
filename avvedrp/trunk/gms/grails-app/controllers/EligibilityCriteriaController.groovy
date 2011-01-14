@@ -62,32 +62,76 @@ class EligibilityCriteriaController {
     }
 
     def update = {
-        def eligibilityCriteriaInstance = EligibilityCriteria.get(params.id)
+    	
+    	def proposalService= new ProposalService()
+       // Get eligibilityCriteriaInstance by eligibilitycriteriaId
+        def eligibilityCriteriaInstance = proposalService.getEligibilityCriteriaById(params.id)
         if (eligibilityCriteriaInstance) {
-            if (params.version) {
+        if (params.version) 
+        {
                 def version = params.version.toLong()
-                if (eligibilityCriteriaInstance.version > version) {
+                if (eligibilityCriteriaInstance.version > version) 
+                {
                     
                     eligibilityCriteriaInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'eligibilityCriteria.label', default: 'EligibilityCriteria')] as Object[], "Another user has updated this EligibilityCriteria while you were editing")
                     render(view: "edit", model: [eligibilityCriteriaInstance: eligibilityCriteriaInstance])
                     return
                 }
-            }
-            eligibilityCriteriaInstance.properties = params
+        }
+        // Get duplicate EligibilityCriteria  
+        def chkEligibilityCriteriaInstance = proposalService.chkEligibilityCriteria(params.eligibilityCriteria)
+              	if(chkEligibilityCriteriaInstance)
+  				{
+               		if((chkEligibilityCriteriaInstance.id ).equals(eligibilityCriteriaInstance.id))
+             		
+              				{
+            					eligibilityCriteriaInstance.properties = params
+              					saveEligibilityCriteria(eligibilityCriteriaInstance)
+              				}
+              		else
+ 	        	 			{
+           		  			flash.message = "${message(code: 'default.AlreadyExists.label')}"
+            		  			redirect(action:edit,id:eligibilityCriteriaInstance.id) 
+ 	        	 			}
+             			}
+              	else
+              		{
+              			eligibilityCriteriaInstance.properties = params
+              			saveEligibilityCriteria(eligibilityCriteriaInstance)
+              		}
+        } 
+     else 
+       {
+         flash.message = "${message(code: 'default.EligibilityCriterianotfound.label')}"
+         redirect(action:edit,id:params.id)
+       }
+           /* eligibilityCriteriaInstance.properties = params
             if (!eligibilityCriteriaInstance.hasErrors() && eligibilityCriteriaInstance.save(flush: true)) {
             	flash.message = "${message(code: 'default.updated.label')}"
                 redirect(action: "create", id: eligibilityCriteriaInstance.id)
             }
-            else {
+           else {
                 render(view: "edit", model: [eligibilityCriteriaInstance: eligibilityCriteriaInstance])
             }
-        }
-        else {
+        
+           else {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'eligibilityCriteria.label', default: 'EligibilityCriteria'), params.id])}"
             redirect(action: "create")
-        }
+        }*/
     }
 
+ public saveEligibilityCriteria(def eligibilityCriteriaInstance)
+     {
+    	if (!eligibilityCriteriaInstance.hasErrors() && eligibilityCriteriaInstance.save(flush: true))
+    	{
+        	flash.message = "${message(code: 'default.updated.label')}"
+            redirect(action: "create", id: eligibilityCriteriaInstance.id)
+        }
+        else 
+        {
+            render(view: "edit", model: [eligibilityCriteriaInstance: eligibilityCriteriaInstance])
+        }	
+    }
     def delete = {
         def eligibilityCriteriaInstance = EligibilityCriteria.get(params.id)
         if (eligibilityCriteriaInstance) {

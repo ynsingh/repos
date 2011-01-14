@@ -1,8 +1,10 @@
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=windows-1251"/>
         <meta name="layout" content="main" />
-        <title><g:message code="default.projects.create.head"/></title>               
+        
+        <title><g:message code="default.projects.create.head"/></title>   
+        <script src="${createLinkTo(dir:'js',file:'vk_popup.js?vk_layout=AM Armenian Eastern')}"> </script>           
     </head>
     <body>
     	<g:if test="${projectsInstance.id}">
@@ -29,7 +31,7 @@
                                     <label for="name"><g:message code="default.Name.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'name','errors')}">
-                                    <input type="text" size="45" id="name" name="name" value="${fieldValue(bean:projectsInstance,field:'name')}"/>
+                                    <input type="text" size="45" id="name" name="name" onfocus="PopupVirtualKeyboard.attachInput(this)" value="${fieldValue(bean:projectsInstance,field:'name')}"/>
                                 </td>
                             </tr> 
                         
@@ -38,7 +40,7 @@
                                     <label for="code"><g:message code="default.Code.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'code','errors')}">
-                                    <input type="text"  id="code" name="code" value="${fieldValue(bean:projectsInstance,field:'code')}"/>
+                                    <input type="text"  id="code" name="code" onfocus="PopupVirtualKeyboard.attachInput(this)" value="${fieldValue(bean:projectsInstance,field:'code')}"/>
                                 </td>
                             </tr> 
                         	
@@ -83,6 +85,10 @@
                 </div>
                 <div class="buttons">
                     <span class="button"><input class="save" type="submit" onClick="return validateProject()" value="${message(code: 'default.Create.button')}" /></span>
+                    <div id="testb">
+				       <div id="td"></div>
+				       <input id="showkb" type="button" value="Keyboard" onclick="PopupVirtualKeyboard.toggle('testb','td'); return false;" />
+				      </div>
                 </div>
             </g:form>
         </div>

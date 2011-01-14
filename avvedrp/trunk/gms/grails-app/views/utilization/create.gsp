@@ -47,7 +47,7 @@
 		                         <label for ="startDate"><g:message code="default.StartDate.label"/></label>
 		                         
 		                           <td valign="top" class="value ${hasErrors(bean:utilizationInstance,field:'startDate','errors')}">
-                                    <calendar:datePicker name="startDate" value="${utilizationInstance?.startDate}" defaultValue="${new Date()}"  dateFormat= "%d/%m/%Y"/>
+                                    <calendar:datePicker name="startDate" value="${projectInstance.projectStartDate}" defaultValue="${new Date()}"  dateFormat= "%d/%m/%Y"/>
                                 </td>
                             </tr>
                                          

@@ -112,6 +112,7 @@ function validateForDelete()
 }
  function checkAllActions()
 {
+	 
 	if(document.rolePrivi.All.checked==true)
 	{
 		for(var i=0;i<document.rolePrivi.actionName.length;i++)
@@ -1000,8 +1001,8 @@ function fitThePage()
 	var frame = document.getElementById('editframe');
 	var objToResize = (frame.style) ? frame.style : frame;
 	
-	var defaultH = 925;
-	var defaultW = 925;
+	var defaultH = 650;
+	var defaultW = 650;
 	
 	objToResize.height = defaultH+'px';
 	objToResize.width = defaultW+'px';
@@ -1620,4 +1621,123 @@ function validateEligibilityCriteria()
 	}
 	return true;
 }
+ 
+ function checkAllMembers()
+    {
+      
+ 
+    	if(document.appAuthority.AllMembers.checked==true)
+    	{
+    		for(var i=0;i<document.appAuthority.person.length;i++)
+    		{
+    			document.appAuthority.person[i].checked=true;
+    		}
+    	}
+    	else
+    	{
+    		for(var i=0;i<document.appAuthority.person.length;i++)
+    		{
+    			document.appAuthority.person[i].checked=false;
+    		}
+    	}
+    }
+    
+    
+   function checkAllApprovalAuthorityDetails()
+    {
+      
+ 
+    	if(document.appAuthority.AllapprovalAuthorityDetail.checked==true)
+    	{
+    		for(var i=0;i<document.appAuthority.approvalAuthority.length;i++)
+    		{
+    			document.appAuthority.approvalAuthority[i].checked=true;
+    		}
+    	}
+    	else
+    	{
+    		for(var i=0;i<document.appAuthority.approvalAuthority.length;i++)
+    		{
+    			document.appAuthority.approvalAuthority[i].checked=false;
+    		}
+    	}
+    } 
+ 	function validateAppAuthorityMembers()
+	{ 
+		var isChecked=0;
+		if(document.appAuthority.person.length > 1)  
+		{
+			for(var i=0;i<document.appAuthority.person.length;i++)
+			{
+				if(document.appAuthority.person[i].checked==true)
+				{
+					isChecked++;
+				}
+				if (isChecked > 0) 
+				{ 
+					break; 
+				}
+			}
+			if (isChecked <= 0) 
+			{ 
+				alert('You didn\'t check a person name. Please check a box.'); 
+				return false;
+			}
+		}
+		else
+		{
+	       if(document.appAuthority.person.checked!=true)
+			{
+				alert('You didn\'t check a person name. Please check a box.'); 
+				return false;
+			}
+		}
+  
+  		return true;
+	}
+  
+  function validateAppAuthorityPersonForDelete()
+	{ 
+	
+	
+	
+	var isChecked=0;  
+		   if(document.appAuthority.approvalAuthority.length < 0)
+		   {
+		   	alert("All actions are deleted")
+		   }
+		  else if(document.appAuthority.approvalAuthority.length > 1)  
+		  {
+		for(var i=0;i<document.appAuthority.approvalAuthority.length;i++)
+		{	
+			if(document.appAuthority.approvalAuthority[i].checked==true)
+			{
+				isChecked++;
+			}
+			if (isChecked > 0) 
+			{ 
+				break; 
+			}
+		}
+		if (isChecked == 0) 
+		{ 
+			alert('You didn\'t an approvalAuthorityDetail  for delete. Please check a box.'); 
+			return false;
+		}
+	}
+		else
+		{
+			if(document.appAuthority.approvalAuthority.checked!=true)
+			{
+				alert('You didn\'t an approvalAuthorityDetail  for delete. Please check a box.'); 
+				return false;
+			}
+		}
+		
 
+   return true;
+		  
+	 
+	}
+		
+	

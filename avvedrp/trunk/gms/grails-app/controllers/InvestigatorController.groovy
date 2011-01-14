@@ -245,13 +245,15 @@ class InvestigatorController {
         			{
         				String urlPath = request.getScheme() + "://" + request.getServerName() +":"+ request.getServerPort() + request.getContextPath()+"/user/userActivation/"
         				def mailContent=gmsSettingsService.getGmsSettingsValue("MailContent")
+        				def mailFooter=gmsSettingsService.getGmsSettingsValue("MailFooter")
         				//mail content
         				String mailMessage="";
         		        mailMessage="Dear "+investigatorInstance.name+", \n \n "+mailContent+".";
         		        mailMessage+="\n \n LoginName    : "+investigatorInstance.email;
         		        mailMessage+="\n Password     : "+userName;
         		        mailMessage+="\n \n \n To activate your account,click on the following link   \t:"+urlPath+userInstance.id;
-        				def emailId = notificationsEmailsService.sendMessage(investigatorInstance.email,mailMessage)
+        				mailMessage+=mailFooter;
+        		        def emailId = notificationsEmailsService.sendMessage(investigatorInstance.email,mailMessage)
             	
         			}
         			redirect(action:create,id:investigatorInstance.id)

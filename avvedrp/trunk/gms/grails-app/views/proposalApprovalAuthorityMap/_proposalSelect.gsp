@@ -1,0 +1,1 @@
+ <g:select name="proposalId" from="${preProposalList}" optionKey="id" optionValue="projectTitle"  value="${fieldValue(bean: proposalApprovalAuthorityMapInstance, field: 'proposalId')}" />

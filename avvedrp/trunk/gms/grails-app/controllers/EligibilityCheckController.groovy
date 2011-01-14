@@ -52,7 +52,7 @@ class EligibilityCheckController {
         		                               proposalInstance:proposalInstance,eligibilityCriteriaInstanceList:eligibilityCriteriaInstanceList,id:proposalInstance.id])
         }
         else {
-            render(view: "create")
+        	render(view: "create")
         }
     }
 
@@ -144,9 +144,11 @@ class EligibilityCheckController {
         {
 		   	def proposalService = new ProposalService()
 		   	def eligibilityStatusInstance = new EligibilityStatus(params)
+		   
 		   	eligibilityStatusInstance.proposal = proposalInstance
 		   	eligibilityStatusInstance.description = params. description
 		   	eligibilityStatusInstance.eligibilitysStatus = params.status
+		   	
 		   	def notificationInstance = Notification.get(proposalInstance.notification.id)
 			def proposalInstanceList = proposalService.getProposalByNotification(proposalInstance.notification.id)
 			if (eligibilityStatusInstance.save(flush: true)) 
@@ -155,11 +157,22 @@ class EligibilityCheckController {
 		   		redirect(controller:"proposal",action:"proposalList",
 		        		params:[notificationId:notificationInstance.id,proposalId:eligibilityStatusInstance.proposal.id])
 		   	}
+       
+		   	else
+	        {
+		   		
+		   		println"params.eligibilityStatus"+params.eligibilityStatus
+	        	flash.message ="${message(code: 'default.EligibilityCheck.EnterStatus.message')}"
+	        		redirect(action: "create",params:[notificationId:notificationInstance.id,id:proposalInstance.id,eligibilityStatus:params.eligibilityStatus])
+	               
+	        }
         }
 		else {
+			
 		           render(view: "create", model: [eligibilityStatusInstance: eligibilityStatusInstance])
 		      }
-		   	
+        }
+        
 		    	
-    }
+    
 }

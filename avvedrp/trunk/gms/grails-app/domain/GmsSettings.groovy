@@ -1,6 +1,7 @@
 class GmsSettings {
 	String name;
 	String value;
+	char activeYesNo;
 	String createdBy;
 	Date createdDate;
 	String modifiedBy;

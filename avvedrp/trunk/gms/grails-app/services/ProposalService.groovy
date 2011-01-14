@@ -128,6 +128,31 @@ class ProposalService {
 	   def proposalApplicationExtResult = ProposalApplicationExt.findAll("from ProposalApplicationExt PE where PE.proposalApplication="+proposalApplicationId)
 	   return proposalApplicationExtResult
    }
+   
+   /*
+    * method to get eligibilityCriteriaInstance by eligibilitycriteriaId
+    */ 
+   
+   public getEligibilityCriteriaById(def eligibilitycriteriaId)
+  {
+	  def eligibilityCriteriaInstance = EligibilityCriteria.get(eligibilitycriteriaId)
+	  return eligibilityCriteriaInstance
+  }
+   
+   /*
+    * method to get duplicate eligibilityCriteria 
+    */ 
+   
+    public chkEligibilityCriteria(def eligibilityCriteria)
+  {
+	  def chkEligibilityCriteriaInstance = EligibilityCriteria.find("from EligibilityCriteria EC where EC.eligibilityCriteria= '"+eligibilityCriteria+"'")    
+      return chkEligibilityCriteriaInstance
+  
+  }
+   
+   
+   
+   
     
     
 }

@@ -32,6 +32,7 @@
                 	<table>
 	                    <thead>
 	                        <tr>
+	                        
 	                        	<g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}" />
 	                        
 	                            <g:sortableColumn property="eligibilityCriteria" title="${message(code: 'default.eligibilityCriteria.eligibilityCriteria.label')}" />
@@ -95,6 +96,7 @@
          		</div>
          		
         		<div class="buttons">
+        		<input type="hidden" name="eligibilityStatus" value="Review"/>
                      <g:actionSubmit value="${message(code: 'default.Submit.button')}" action="submit"/>
                 </div>
                 </g:if>

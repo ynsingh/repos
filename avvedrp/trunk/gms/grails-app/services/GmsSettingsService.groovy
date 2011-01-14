@@ -8,12 +8,12 @@ class GmsSettingsService {
     /*method for getting value of each name from gmssettings*/
     def getGmsSettings(def nameInstance)
     {
-    	def gmsSettingsInstance = GmsSettings.find("from GmsSettings where name='"+nameInstance+"'")
+    	def gmsSettingsInstance = GmsSettings.find("from GmsSettings where name='"+nameInstance+"' and activeYesNo='Y'")
     	return gmsSettingsInstance
     }
     def getGmsSettingsValue(def nameInstance)
     {
-    	def gmsSettingsInstance = GmsSettings.find("from GmsSettings where name='"+nameInstance+"'")
-    	return gmsSettingsInstance.value
+    	def gmsSettingsInstance = GmsSettings.find("from GmsSettings where name='"+nameInstance+"' and activeYesNo='Y'")
+    	return gmsSettingsInstance?.value
     }
 }

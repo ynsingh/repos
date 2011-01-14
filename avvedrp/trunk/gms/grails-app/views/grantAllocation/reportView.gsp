@@ -40,7 +40,7 @@
 								<td> 
 							        <input type="hidden" name="reportDate" value="struct" />
 
-									<calendar:datePicker name="reportDate" id="reportDate" value="" 
+									<calendar:datePicker name="reportDate" id="reportDate" value="${(Projects.get(session.ProjectID)).projectStartDate}" 
 													defaultValue="${new Date()}"  dateFormat= "%d/%m/%Y"/>
 								
 

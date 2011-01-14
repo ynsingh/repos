@@ -32,6 +32,7 @@ class UserController extends GmsController {
         gh.removeValue("Help")
        		//putting help pages in session
        	gh.putValue("Help","User_List.htm")	
+       	 
 		if (!params.max) {
 			params.max = 100
 		}
@@ -161,11 +162,11 @@ class UserController extends GmsController {
 		println "+++++++++++++++++++++++++params++++++++++++++++++++++++++++"+ params
 		println "person.password = "+ person.password
 		println "params.passwd = "+ params.password
-		def oldPassword = person.password
+		//def oldPassword = person.password
 		person.properties = params
-		if (!params.password.equals(oldPassword)) {
-			person.password = springSecurityService.encodePassword(params.password)
-		}
+		//if (!params.password.equals(oldPassword)) {
+		//	person.password = springSecurityService.encodePassword(params.password)
+		//}
 		Integer personId = userService.updateUser(person,params)
 		if (!personId) {
 			flash.message ="${message(code: 'default.notfond.label')}"
@@ -231,10 +232,10 @@ class UserController extends GmsController {
 	    	String urlPath = request.getScheme() + "://" + request.getServerName() +":"+ request.getServerPort() + request.getContextPath()+"/user/userActivation/"
 	    	//mail content
 	    	String mailMessage="";
-	        mailMessage="Dear "+params.userRealName+", \n \n "+mailContent+".";
+	        mailMessage="Dear "+params.userRealName+" "+params.userSurName+", \n \n "+mailContent+".";
 	        mailMessage+="\n \n LoginName    : "+params.email;
 	        mailMessage+="\n Password     : "+params.password;
-	        mailMessage+="\n \n \n To activate your account,click on the following link   \t:"+urlPath+personId;
+	        mailMessage+="\n \n \n To activate your account,click on the following link   \t:"+urlPath+personId+" \n";
 	    	def emailId = notificationsEmailsService.sendMessage(params.email,mailMessage)
 	    	flash.message = "${message(code: 'default.created.label')}"
 			redirect action: list, id: personId
@@ -495,13 +496,16 @@ class UserController extends GmsController {
 			    if(personId != null){
 			    	String urlPath = request.getScheme() + "://" + request.getServerName() +":"+ request.getServerPort() + request.getContextPath()+"/user/userActivation/"
 			    	def mailContent=gmsSettingsService.getGmsSettingsValue("MailContent")
+			    	def mailFooter=gmsSettingsService.getGmsSettingsValue("MailFooter")
 			    	//mail content
 			    	String mailMessage="";
-			        mailMessage="Dear "+params.userRealName+", \n \n "+mailContent+".";
+			        mailMessage="Dear "+params.userRealName+params.userSurName+", \n \n "+mailContent+".";
 			        mailMessage+="\n \n LoginName    : "+params.email;
 			        mailMessage+="\n Password     : "+params.password;
-			        mailMessage+="\n \n \n To activate your account,click on the following link   \t:"+urlPath+personId;
-			    	def emailId = notificationsEmailsService.sendMessage(params.email,mailMessage)
+			        mailMessage+="\n \n \n To activate your account,click on the following link   \t: "+urlPath+personId+" \n";
+			        mailMessage=mailMessage+" \n\n" 
+			    	mailMessage+=mailFooter
+			        def emailId = notificationsEmailsService.sendMessage(params.email,mailMessage)
 					//redirect uri: '/user/newUserConfirm'
 						render(view: "newUserConfirm")
 				}

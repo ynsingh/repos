@@ -91,7 +91,7 @@ FROM
 WHERE 
 	GA.projects_id  = PJ.id
 	AND PY.id = GA.party_id
-	AND (PJ.parent_id =$P{projectID} OR PJ.id =$P{projectID})
+	AND PJ.id =$P{projectID}
 GROUP BY 
 	PJ.id,GA.projects_id]]></queryString>
 
@@ -617,7 +617,7 @@ Utilization Certificate]]></text>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Times New Roman" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[new Double(($F{FundAmt}!=null?$F{FundAmt}:new Double(0)).doubleValue()+($F{ExpenseAmount}!=null?$F{ExpenseAmount}:new Double(0)).doubleValue())]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[new Double(($F{ExpenseAmount}!=null?$F{ExpenseAmount}:new Double(0)).doubleValue())]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
@@ -639,9 +639,8 @@ Utilization Certificate]]></text>
 					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Times New Roman" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[new Double((($F{Amount}!=null?
-$F{Amount}:new Double(0)).doubleValue())-(($F{ExpenseAmount}!=null?
-$F{ExpenseAmount}:new Double(0)).doubleValue()+($F{FundAmt}!=null?$F{FundAmt}:new Double(0)).doubleValue()))]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[new Double(($F{Amount}!=null?$F{Amount}:new Double(0)).doubleValue()-($F{ExpenseAmount}!=null?
+$F{ExpenseAmount}:new Double(0)).doubleValue())]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

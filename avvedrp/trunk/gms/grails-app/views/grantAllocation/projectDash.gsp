@@ -131,7 +131,7 @@
 								    						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								    						: <g:message code="default.Rs.label"/>
 								    					</strong> 
-								    					${currencyFormat.ConvertToIndainRS(sumAmount[0].doubleValue()+fundTransferInstance)}
+								    					${currencyFormat.ConvertToIndainRS(sumAmount[0].doubleValue())}
 								    					<br>
 								    					
 								    					<strong><g:message code="default.CurrentBalance.label" />

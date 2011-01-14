@@ -23,7 +23,7 @@
  
   <div class="body">
  
-        <table width="70%" align="center" class="table" cellspacing="5" cellpadding="5">
+        <table width="70%" align="center" class="table" >
          <tr><td>
        <g:message code="default.Youareabouttosubmit.message"/></td></tr>
           <tr> 
