@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+  <sqlMap namespace="StudentInfo">   
+
+  <typeAlias alias="StudentInfo" type="in.ac.dei.edrp.client.CM_StudentInfoGetter"/>
+
+   
+ <insert id="insertPersonalInfo"> 
+ insert into  ENTITY_STUDENT (`university_id`,`student_id`,`enrollment_number`,`first_name`,`middle_name`,`last_name`,`primary_email_id`,`secondary_email_id`,`date_of_birth`,`category_code`,`gender`,
+ `father_first_name`,`father_middle_name`,`father_last_name`,`mother_first_name`,`mother_middle_name`,`mother_last_name`,`registered_in_session`,`status`,`insert_time`,`modification_time`,`creator_id`,`modifier_id`)
+ 
+                        values(
+ 								'0001',
+ 								#user_id#,
+ 								null,
+ 								#first_name#,
+ 								#middle_name#,
+ 								#last_name#,
+ 								null,
+ 								null,
+ 								#date_of_birth#,
+ 								#category#,
+ 								#gender#,
+ 								#father_Fname#,
+ 								#father_Mname#,
+ 								#father_Lname#,
+ 								#mother_Fname#,
+ 								#mother_Mname#,
+ 								#mother_Lname#,
+ 								null,
+ 								null,
+ 								#insert_time#,
+ 								null,
+ 								#creator_id#,
+ 								null
+ 								);
+  </insert>
+   
+   
+   
+ <insert id="insertPaperCodeInfo"> 
+ insert into STUDENT_PAPER  (`program_id`,`registration_number`,`form_number`,`paper_code`,
+ `start_date`,`end_date`,`insert_time`,`modification_time`,`creator_id`,`modifier_id`,grouping) 
+  values(
+ 								#programId#,
+ 								#registrationNumber#,
+ 								#form_number#,
+ 								#papercode#,
+ 								#startdate#,
+ 								#enddate#,
+ 								#insert_time#,
+ 								null,
+ 								#creator_id#,
+ 								null,
+ 								#grouping#
+ 								
+ 								);
+  </insert>
+   
+      
+ <insert id="insertStudentFD"> 
+ insert into STUDENT_FIRST_DEGREE (`program_id`,`registration_number`,`form_number`,
+ `first_degree_code`,`insert_time`,`modification_time`,`creator_id`,`modifier_id`) 
+   
+   					values(
+ 								#programId#,
+ 								#registrationNumber#,
+ 								#form_number#,
+ 								#firstDegreeCode#,
+ 								#insert_time#,
+ 								null,
+ 								#creator_id#,
+ 								null
+ 								
+ 								
+ 								);
+  </insert>
+      
+ <insert id="insertstudentCallListInfo"> 
+ insert into STUDENT_CALL_LIST (`program_id`,`registration_number`,`component_id`,`marks_percentage`,`marks_obtained`,`total_marks`,`computed_marks`,
+ `entity_id`,`branch_code`,`score`,`actual_computed_marks`,`board_id`,`start_date`,`end_date`,`insert_time`,`modification_time`,`creator_id`,`modifier_id`) 
+ 
+ 						values(
+ 								
+ 								#programId#,
+ 								#registrationNumber#,
+ 								#componentID#,
+ 								#marksPercentage#,
+ 								#marksObtained#,
+ 								#totalMarks#,
+ 								NULL,
+ 								#entity_id#,
+ 								#branch#,
+ 								#score#,
+ 								null,
+ 								#board_id#,
+ 								#startdate#,
+ 								#enddate#,
+ 								#insert_time#,
+ 								null,
+ 								#creator_id#,
+ 								null
+ 								
+ 								
+ 						
+ 								
+ 								);
+  </insert>
+   
+     
+ <insert id="insertstudentSpWtInfo"> 
+ insert into STUDENT_SPECIAL_WEIGHTAGE (`university_id`,`program_id`,`registration_number`,`weightage_id`,
+ `start_date`,`end_date`,`insert_time`,`modification_time`,`creator_id`,`modifier_id`) 
+ 
+ 			values(
+ 
+ 								#university_code#,
+ 								#programId#,
+ 								#registrationNumber#,
+ 								#weightageID#,
+ 								#startdate#,
+ 								#enddate#,
+ 								#insert_time#,
+ 								#modification_time#,
+ 								#creator_id#,
+                                #modifier_id#
+ 			
+ 							
+ 								
+ 								);
+  </insert>
+   
+ 
+   
+   <resultMap id="stuInfoGetter" class="StudentInfo">
+ 
+    <result property="user_id" column="student_id"/>
+    <result property="first_name" column="first_name"/>
+    <result property="middle_name" column="middle_name"/>
+    <result property="last_name" column="last_name"/>
+    <result property="gender" column="gender"/>
+    <result property="date_of_birth" column="date_of_birth"/>
+    <result property="category" column="category_code"/>
+    <result property="father_Fname" column="father_first_name"/>
+    <result property="father_Mname" column="father_middle_name"/>
+    <result property="father_Lname" column="father_last_name"/>
+    <result property="mother_Fname" column="mother_first_name"/>
+    <result property="mother_Mname" column="mother_middle_name"/>
+    <result property="mother_Lname" column="mother_last_name"/>
+   
+
+  </resultMap>
+ 
+  <select id="GetStudentPersonalInfo" resultMap="stuInfoGetter"> 
+ 
+ 	SELECT * FROM  ENTITY_STUDENT where student_id IN(SELECT student_id from STUDENT_REGISTRATION where registration_number=#registrationNumber#)
+
+  </select>
+   <select id="CheckStudentPersonal" resultMap="stuInfoGetter"> 
+ 	SELECT * FROM  ENTITY_STUDENT 
+
+  </select>
+  
+  
+  
+  <resultMap id="enrolledStuInfoGetter" class="StudentInfo">
+ 
+    <result property="user_id" column="student_id"/>
+    <result property="first_name" column="student_first_name"/>
+    <result property="middle_name" column="student_middle_name"/>
+    <result property="last_name" column="student_last_name"/>
+    <result property="gender" column="gender"/>
+    <result property="date_of_birth" column="date_of_birth"/>
+    <result property="category_code" column="category_code"/>
+    <result property="father_Fname" column="father_first_name"/>
+    <result property="father_Mname" column="father_middle_name"/>
+    <result property="father_Lname" column="father_last_name"/>
+    <result property="mother_Fname" column="mother_first_name"/>
+    <result property="mother_Mname" column="mother_middle_name"/>
+    <result property="mother_Lname" column="mother_last_name"/>
+   
+
+  </resultMap>
+  
+  <select id="getEnrolledStudentPersonalInfo" resultMap="enrolledStuInfoGetter">
+		select * from courseregistration.STUDENT_MASTER where enrollment_number=#enrollment_number# ;
+  	</select> 
+ 
+  
+   
+   
+    <resultMap id="stuPaperGetter" class="StudentInfo">
+
+    <result property="papercode" column="paper_code"/>
+     <result property="programId" column="program_id"/>
+      <result property="grouping" column="grouping"/>
+  
+
+  </resultMap>
+ 
+  <select id="GetStudentPaperInfo" resultMap="stuPaperGetter"> 
+ SELECT paper_code,program_id, grouping FROM STUDENT_PAPER  where registration_number=#registrationNumber#
+
+  </select>
+  
+     <resultMap id="stuFDGetter" class="StudentInfo">
+
+    <result property="programId" column="first_degree_code"/>
+  
+
+  </resultMap>
+ 
+  <select id="GetStudentFDInfo" resultMap="stuFDGetter"> 
+ 
+ 
+SELECT first_degree_code FROM STUDENT_FIRST_DEGREE where registration_number=#registrationNumber# and first_degree_code IN(select program_id from ENTITY_PROGRAM_MASTER where UG_PG=#UGorPG#) ;
+ 
+
+  </select>
+  
+   
+    <resultMap id="stuSpWtGetter" class="StudentInfo">
+
+    <result property="weightageID" column="weightage_id"/>
+    <result property="insert_time" column="insert_time"/>
+    <result property="creator_id" column="creator_id"/>
+  
+  </resultMap>
+ 
+  <select id="GetStudentSpWt" resultMap="stuSpWtGetter"> 
+ SELECT weightage_id, insert_time,creator_id FROM STUDENT_SPECIAL_WEIGHTAGE where registration_number=#registrationNumber#
+
+  </select>
+ 
+ <select id="GetInsertCreator" resultMap="stuSpWtGetter"> 
+ SELECT weightage_id,insert_time,creator_id FROM STUDENT_SPECIAL_WEIGHTAGE where registration_number=#registrationNumber# and weightage_id=#weightageID#
+
+  </select>
+ 
+  <resultMap id="stuCallListGetter" class="StudentInfo">
+
+    <result property="componentID" column="component_id"/>
+     <result property="marksPercentage" column="marks_percentage"/>
+      <result property="marksObtained" column="marks_obtained"/>
+       <result property="totalMarks" column="total_marks"/>
+         <result property="score" column="score"/>
+           <result property="board_id" column="board_id"/>
+  
+
+  </resultMap>
+ 
+  <select id="GetStudentCallListInfo" resultMap="stuCallListGetter"> 
+ SELECT * FROM STUDENT_CALL_LIST where registration_number=#registrationNumber#
+
+  </select>
+  
+  
+    
+ <update id="updatePersonalInfo"> 
+ update  ENTITY_STUDENT set 
+ 								
+ 								first_name=#first_name#,
+ 								middle_name=#middle_name#,
+ 								last_name=#last_name#,
+ 								date_of_birth=#date_of_birth#,
+ 								category_code=#category#,
+ 								gender=#gender#,
+ 								father_first_name=#father_Fname#,
+ 								father_middle_name=#father_Mname#,
+ 								father_last_name=#father_Lname#,
+ 								mother_first_name=#mother_Fname#,
+ 								mother_middle_name=#mother_Mname#,
+ 								mother_last_name=#mother_Lname#,
+ 								modification_time=#modification_time#,
+                                modifier_id=#modifier_id#
+ 								
+ 								where student_id IN(SELECT student_id from STUDENT_REGISTRATION where registration_number=#registrationNumber#)
+ 								
+  </update>
+  
+   
+ <update id="updatePaperCode"> 
+ update STUDENT_PAPER set
+ 							 paper_code=#newpapercode#,
+ 							 modification_time=#modification_time#,
+                             modifier_id=#modifier_id#
+                                
+ 							where registration_number=#registrationNumber# and grouping=#grouping# and paper_code=#papercode# 
+  </update>
+  
+  <delete id="deletePaperCode"> 
+ delete from  STUDENT_PAPER  where program_id=#programId# and registration_number=#registrationNumber#
+  </delete>
+  
+   <delete id="deleteStudentSpWt"> 
+ delete from  STUDENT_SPECIAL_WEIGHTAGE where registration_number=#registrationNumber# and weightage_id=#weightageID#
+  </delete>
+ 
+   <delete id="deleteStudentcallList"> 
+ delete from  STUDENT_CALL_LIST where program_id=#programId# and registration_number=#registrationNumber#
+ and branch_code=#branch#
+  </delete>
+  
+  <update id="updateStuCallList"> 
+ update STUDENT_CALL_LIST set 
+                    
+                    
+                    marks_percentage=#marksPercentage#,
+                    marks_obtained=#marksObtained#,
+                    total_marks=#totalMarks#,
+                    score=#score#,
+                    board_id=#board_id#,
+                    modification_time=#modification_time#,
+                    modifier_id=#modifier_id#
+
+ 					where registration_number=#registrationNumber# and component_id=#componentID#
+  </update>
+  
+   <update id="updateStuWtID"> 
+ update STUDENT_SPECIAL_WEIGHTAGE set 
+                   
+                    modification_time=#modification_time#,
+                    modifier_id=#modifier_id#
+
+ 					where registration_number=#registrationNumber# and weightage_id=#weightageID#
+  </update>
+  
+    <delete id="deleteStudentFD"> 
+ delete from  STUDENT_FIRST_DEGREE where registration_number=#registrationNumber# and first_degree_code=#programId#
+ 
+  </delete>
+  
+   <update id="updateStudentFD"> 
+ update STUDENT_FIRST_DEGREE  set 
+ 						first_degree_code=#firstDegreeCode#,
+ 						modification_time=#modification_time#,
+                        modifier_id=#modifier_id#
+                        
+ 					where registration_number=#registrationNumber# and first_degree_code IN(Select program_id from ENTITY_PROGRAM_MASTER where ug_pg=#UGorPG#)
+  </update>
+  
+  <update id="updateStuReg"> 
+ update STUDENT_REGISTRATION set
+ 						     cos_value=#cos_value#,
+ 							 modification_time=#modification_time#,
+                             modifier_id=#modifier_id#
+                                
+ 							where registration_number=#registrationNumber# 
+  </update>
+    
+ <insert id="insertStuReg"> 
+ insert into STUDENT_REGISTRATION (`student_id`,`registration_number`,`form_number`,`cos_value`,
+ `start_date`,`end_date`,`insert_time`,`modification_time`,`creator_id`,`modifier_id`) 
+
+					 values(
+ 								
+ 								#user_id#,
+ 								#registrationNumber#,
+ 								#form_number#,
+ 								#cos_value#,
+ 								#startdate#,
+ 								#enddate#,
+ 								#insert_time#,
+ 								null,
+ 								#creator_id#,
+ 								null
+ 							
+ 								);
+  </insert>
+
+  <resultMap id="stuRegNo" class="StudentInfo">
+
+    <result property="registrationNumber" column="registration_number"/>
+    <result property="form_number" column="form_number"/>
+
+  </resultMap>
+ 
+  <select id="checkRegNo" resultMap="stuRegNo"> 
+ SELECT registration_number,form_number FROM STUDENT_REGISTRATION
+
+  </select>
+  
+  
+   <resultMap id="stuRegNo1" class="StudentInfo">
+
+    <result property="registrationNumber" column="registration_number"/>
+ 
+
+  </resultMap>
+ 
+  <select id="RegNoValid" resultMap="stuRegNo1"> 
+ SELECT registration_number FROM STUDENT_REGISTRATION
+
+  </select>
+  
+  
+ <resultMap id="stuProgIdRegNo" class="StudentInfo">
+
+    <result property="programId" column="program_id"/>
+     <result property="branch" column="branch_code"/>
+       <result property="entity_id" column="entity_id"/>
+
+
+  </resultMap>
+ 
+  <select id="checkProgIdRegNo" resultMap="stuProgIdRegNo"> 
+  select distinct(branch_code),program_id,entity_id  FROM STUDENT_CALL_LIST where registration_number =#registrationNumber#
+
+  </select>
+
+
+<resultMap id="stuRegNo" class="StudentInfo">
+
+    <result property="registrationNumber" column="registration_number"/>
+   
+
+  </resultMap>
+ 
+  <select id="GetRegNo" resultMap="stuRegNo"> 
+ SELECT registration_number  FROM STUDENT_CALL_LIST where program_id=#programId#
+
+  </select>
+  
+  
+<resultMap id="stuID" class="StudentInfo">
+
+    <result property="user_id" column="student_id"/>
+   
+
+  </resultMap>
+ 
+  <select id="GetStuId1" resultMap="stuID"> 
+ SELECT student_id  FROM STUDENT_REGISTRATION where registration_number =#registrationNumber#
+
+  </select>
+
+<resultMap id="stuRegNo11" class="StudentInfo">
+
+    <result property="registrationNumber" column="registration_number"/>
+   
+
+  </resultMap>
+ 
+  <select id="GetRegfromStuId" resultMap="stuRegNo11"> 
+ SELECT registration_number  FROM STUDENT_REGISTRATION where student_id =#user_id#
+
+  </select>  
+
+  
+
+<resultMap id="stuCat" class="StudentInfo">
+
+    <result property="category" column="category"/>
+    <result property="category_code" column="code"/>
+
+  </resultMap>
+ 
+  <select id="Category" resultMap="stuCat"> 
+ 
+ SELECT code,category  FROM CATEGORY
+
+  </select>
+
+<select id="getEnrolledStuCategory" resultMap="stuCat"> 
+ 
+ SELECT code,category  FROM CATEGORY where code=#category_code#
+
+</select>
+
+
+<resultMap id="board" class="StudentInfo">
+
+    <result property="board_name" column="board_name"/>
+    <result property="board_id" column="board_id"/>  
+
+  </resultMap>
+ 
+  <select id="BoardNames" resultMap="board"> 
+ 
+ SELECT board_name,board_id  FROM BOARD_MASTER
+
+  </select>
+  
+
+</sqlMap>
+

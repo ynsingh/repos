@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="ProgOfferedByInfo">
+
+<typeAlias alias="programMasterInfo1" type="in.ac.dei.edrp.client.CM_progMasterInfoGetter" />
+<typeAlias alias="employeeInfo" type="in.ac.dei.edrp.client.CM_employeeInfoGetter" />	
+	<typeAlias alias="BranchSpecializationInfo" type="in.ac.dei.edrp.client.CM_BranchSpecializationInfoGetter" />	
+	
+	
+	
+  <resultMap id="specList" class="programMasterInfo1">
+
+    <result property="specname" column="specialization_name"/>
+    <result property="specialization_code" column="specialization_code"/>
+    
+  </resultMap>
+	
+	<select id="specList1" resultMap="specList">
+		select distinct ss.specialization_name,ss.specialization_code from PROGRAM_BRANCHES bb,
+		ENTITY_PROGRAM_SPECIALIZATION_DETAIL s,PROGRAM_SPECIALIZATIONS ss , ENTITY_PROGRAM_MASTER m,
+		ENTITY_PROGRAM_BRANCH_DETAIL b where s.program_id LIKE #program_id# AND m.program_id=s.program_id 
+		AND s.branch=b.branch AND b.program_id=s.program_id AND s.specialization=ss.specialization_code AND
+		 bb.branch_code=b.branch AND b.branch LIKE #branchcode#
+	
+	</select>
+
+
+<resultMap id="specBranchList" class="programMasterInfo1">
+
+    <result property="specname" column="specialization_name"/>
+    <result property="branchname" column="branch_name"/>
+     <result property="specialization_code" column="specialization_code"/>
+    <result property="branchcode" column="branch_code"/>
+    
+  </resultMap>
+	
+	<select id="specBranchList" resultMap="specBranchList">
+		select distinct bb.branch_name,bb.branch_code, ss.specialization_name,ss.specialization_code from ENTITY_PROGRAM_BRANCH_DETAIL b,PROGRAM_BRANCHES bb,
+	   ENTITY_PROGRAM_SPECIALIZATION_DETAIL s, PROGRAM_SPECIALIZATIONS ss where b.program_id=#program_id# AND 
+	   b.program_id=s.program_id AND b.branch=s.branch AND b.branch=bb.branch_code AND 
+	   s.specialization=ss.specialization_code AND b.branch LIKE #branchcode# AND s.specialization LIKE #specialization_code#
+	
+	</select>
+
+	
+	<select id="specBranchNullList" resultMap="specBranchList">
+		 select distinct bb.branch_name,bb.branch_code,'None' specialization_name,'000' specialization_code from ENTITY_PROGRAM_BRANCH_DETAIL b,PROGRAM_BRANCHES bb 
+		 where b.program_id=#program_id# AND b.branch=bb.branch_code AND b.branch LIKE #branchcode#
+	
+	</select>
+	
+	
+	
+
+<resultMap id="MentorName" class="BranchSpecializationInfo"> 
+  <result property="first_name" column="first_name"/>
+  <result property="middle_name" column="middle_name"/>
+  <result property="last_name" column="last_name"/>
+  <result property="entity_employee_id" column="entity_employee_id"/>
+  </resultMap>
+  
+  <select id="selectMentorName" resultMap="MentorName">
+	select distinct first_name, middle_name, last_name, entity_employee_id  from ENTITY_EMPLOYEE where entity_employee_id LIKE #string#
+  </select>
+
+
+
+<resultMap id="LocationName" class="employeeInfo"> 
+  <result property="location_name" column="location_name"/>
+  <result property="location_id" column="location_id"/>
+  </resultMap>
+  
+  <select id="selectLocationName" resultMap="LocationName">
+	select location_name, location_id from ENTITY_LOCATION
+  </select>
+
+
+
+<resultMap id="ProgramOfferedByName" class="BranchSpecializationInfo"> 
+   <result property="entity_name" column="entity_name"/>
+     <result property="entity_id" column="entity_id"/>
+  </resultMap>
+
+
+ <select id="selectProgramOfferedByName" resultMap="ProgramOfferedByName">
+	select distinct em.entity_name,em.entity_id from ENTITY_MASTER em, PROGRAM_OFFERED_BY pob where pob.offered_by = em.entity_id
+  </select>
+  
+  
+  
+  <insert id="insertNewProgramOfferedBy">
+		insert into PROGRAM_OFFERED_BY 
+		( program_id, branch, specialization, offered_by, mentor, seats, location_id,insert_time,modification_time,creator_id,modifier_id )
+		values
+		( #program_id#, #branch#, #specialization#, #offered_by#, #mentor#, #seats#, #location_id#,#insert_time#,#modification_time#,#creator_id#,#modifier_id# )
+  </insert>
+  
+  
+  
+  <resultMap id="EntityID" class="BranchSpecializationInfo"> 
+  <result property="entity_id" column="entity_id"/>
+  </resultMap>
+  
+  <select id="selectEntityID" resultMap="EntityID">
+	select entity_id from ENTITY_MASTER where entity_name = #entity_name#
+  </select>  
+  
+  
+  
+  <resultMap id="ProgramOfferedBy" class="BranchSpecializationInfo"> 
+   <result property="program_name" column="program_name"/>	
+   <result property="program_id" column="program_id"/>
+   <result property="branch_name" column="branch_name"/>
+   <result property="branch" column="branch"/>
+   <result property="specialization_name" column="specialization_name"/>
+   <result property="specialization" column="specialization"/>
+   <result property="entity_name" column="entity_name"/>
+   <result property="entity_id" column="entity_id"/>
+   <result property="first_name" column="first_name"/>
+   <result property="middle_name" column="middle_name"/>
+   <result property="last_name" column="last_name"/>
+   <result property="entity_employee_id" column="entity_employee_id"/>
+   <result property="seats" column="seats"/>
+   <result property="location_name" column="location_name"/>
+   <result property="location_id" column="location_id"/>   
+  </resultMap>
+  
+  <select id="selectProgramOfferedBy" resultMap="ProgramOfferedBy">
+<!--	select distinct epm.program_name, epm.program_id, epbd.branch_name, epbd.branch, epsd.specialization_name, epsd.specialization,-->
+<!--	 em.entity_name, em.entity_id, ee.first_name, ee.middle_name, ee.last_name, ee.entity_employee_id, pob.seats,-->
+<!--	  el.location_name, el.location_id FROM ENTITY_PROGRAM_MASTER epm, ENTITY_PROGRAM_BRANCH_DETAIL epbd,-->
+<!--	   ENTITY_PROGRAM_SPECIALIZATION_DETAIL epsd, entity_employee ee, ENTITY_MASTER em, entity_location el,-->
+<!--	    PROGRAM_OFFERED_BY pob WHERE pob.offered_by = em.entity_id AND em.entity_name = #offered_by# AND epbd.branch -->
+<!--	     = pob.branch AND pob.program_id = epm.program_id AND epm.program_name = #program_name# AND epm.program_id -->
+<!--	      = pob.program_id AND epsd.specialization = pob.specialization AND ee.entity_employee_id = pob.mentor AND -->
+<!--	       el.location_id = pob.location_id-->
+
+<!--select distinct epm.program_name, epm.program_id, bb.branch_name, epbd.branch, ss.specialization_name, -->
+<!--epsd.specialization, em.entity_name, em.entity_id, ee.first_name, ee.middle_name, ee.last_name, -->
+<!--ee.entity_employee_id, pob.seats,  el.location_name, el.location_id FROM ENTITY_PROGRAM_MASTER epm, -->
+<!--ENTITY_PROGRAM_BRANCH_DETAIL epbd, ENTITY_PROGRAM_SPECIALIZATION_DETAIL epsd, ENTITY_EMPLOYEE ee, ENTITY_MASTER em, -->
+<!--ENTITY_LOCATION el, PROGRAM_OFFERED_BY pob,PROGRAM_BRANCHES bb,PROGRAM_SPECIALIZATIONS ss -->
+<!--WHERE pob.offered_by = em.entity_id AND em.entity_id LIKE #offered_by# AND epbd.branch = pob.branch AND -->
+<!--pob.program_id = epm.program_id AND epm.program_id LIKE #program_name# AND epm.program_id = pob.program_id AND -->
+<!--epsd.specialization = pob.specialization AND ee.entity_employee_id = pob.mentor AND el.location_id = pob.location_id -->
+<!--AND epbd.branch=bb.branch_code AND epsd.specialization=ss.specialization_code;-->
+select distinct epm.program_name, epm.program_id, bb.branch_name, pob.branch, ss.specialization_name,
+ pob.specialization, em.entity_name, em.entity_id, ee.first_name, ee.middle_name, ee.last_name, 
+ ee.entity_employee_id, pob.seats,  el.location_name, el.location_id FROM ENTITY_PROGRAM_MASTER epm, 
+ ENTITY_EMPLOYEE ee, ENTITY_MASTER em, ENTITY_LOCATION el, PROGRAM_OFFERED_BY pob,PROGRAM_BRANCHES bb,
+ PROGRAM_SPECIALIZATIONS ss WHERE pob.offered_by = em.entity_id AND pob.offered_by LIKE #offered_by# AND 
+ pob.program_id = epm.program_id AND pob.program_id LIKE #program_name# AND epm.program_id = pob.program_id AND
+  ss.specialization_code = pob.specialization AND ee.entity_employee_id = pob.mentor AND
+   el.location_id = pob.location_id AND pob.branch=bb.branch_code;
+
+  </select>
+  
+  
+  
+  <resultMap id="ProgramOfferingEntity" class="BranchSpecializationInfo"> 
+   <result property="program_name" column="program_name"/>
+     <result property="program_id" column="program_id"/>
+  </resultMap>
+  
+  <select id="selectProgramOfferingEntity" resultMap="ProgramOfferingEntity">
+	select distinct a.program_name,a.program_id from ENTITY_PROGRAM_MASTER a, PROGRAM_OFFERED_BY b, ENTITY_MASTER c 
+	where c.entity_id = #selectedProgramOfferedColumn# AND a.program_id = b.program_id AND b.offered_by = c.entity_id
+  </select>
+  
+  <update id="editProgramOfferingEntity">
+	update PROGRAM_OFFERED_BY set offered_by = #new_offered_by#, mentor = #new_entity_employee_id#, seats = #new_seats#,
+	 location_id = #new_location_id# WHERE program_id = #program_id# AND branch = #branch# AND specialization = #specialization#
+	  AND offered_by = #offered_by# AND mentor = #entity_employee_id# AND seats = #seats# AND location_id = #location_id#
+  </update>  
+  
+  
+  <delete id="deleteProgramOfferingEntity">
+  	delete from PROGRAM_OFFERED_BY WHERE program_id = #program_id# AND branch = #branch# AND specialization = #specialization# AND offered_by 
+  	  = #offered_by# AND mentor = #mentor# AND seats = #seats# AND location_id = #location_id#
+  </delete>
+  
+  
+  
+  
+	
+	</sqlMap>

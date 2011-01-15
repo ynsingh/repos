@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+
+<sqlMap namespace="programlist">
+
+	<typeAlias alias="programlist" type="in.ac.dei.edrp.client.CM_ProgramInfoGetter" />
+
+
+	<select id="selectprogramlist" resultClass="java.util.HashMap">
+
+		select
+		epm.program_name,em.entity_name from ENTITY_PROGRAM_MASTER
+		epm,ENTITY_MASTER
+		em,PROGRAM_OFFERED_BY pob where
+		epm.program_id=pob.program_id AND
+		substring(em.entity_id,5) =
+		substring(pob.Offered_by,5)Order by
+		em.entity_name
+
+</select>
+
+	<select id="getno_terms" resultClass="java.util.HashMap">
+
+		select
+		program_id,no_of_terms from ENTITY_PROGRAM_MASTER where
+		program_name=#program_name#
+
+
+</select>
+
+	<insert id="registrationdetails">
+		insert into
+		PROGRAM_REGISTRATION(program_id,entity_program_term_id,registration_start_date,last_date,add_drop_period,insert_time)
+		values(#program_id#,#entity_program_term_id#,#registration_start_date#,#last_date#,#add_drop_period#,#insert_time#)
+</insert>
+
+
+	<select id="selectterms" resultClass="java.util.HashMap">
+
+		select
+		entity_program_term_id from PROGRAM_REGISTRATION where
+		program_id=#program_id#
+</select>
+
+	<resultMap id="desi" class="programlist">
+
+		<result property="component" column="entity_description" />
+
+	</resultMap>
+
+	<select id="getentities" resultMap="desi">
+
+		select
+		distinct(entity_description) from UNIVERSITY_ENTITY_TYPE where
+		university_id=#university_id#
+</select>
+
+	<resultMap id="desi1" class="programlist">
+
+		<result property="entity_name" column="entity_name" />
+
+	</resultMap>
+
+	<select id="getentityname" resultMap="desi1">
+
+		select entity_name from
+		ENTITY_MASTER where entity_type=#entity_id# AND
+		university_id=#university_code#;
+</select>
+
+	<resultMap id="program" class="programlist">
+
+		<result property="program_name" column="program_name" />
+
+	</resultMap>
+
+	<select id="getprogramname" resultMap="program">
+
+		select distinct
+		epm.program_name from ENTITY_PROGRAM_MASTER
+		epm,PROGRAM_OFFERED_BY
+		pob,ENTITY_MASTER em,CALL_CUT_OFF
+		cco,UNIVERSITY_ENTITY_TYPE uet where
+		epm.program_id = pob.program_id
+		AND cco.program_id = pob.program_id AND
+		cco.settings=#settings# AND
+		em.university_id=uet.university_id AND
+		pob.Offered_by=em.entity_id AND
+		em.entity_name=#entity_type# AND
+		uet.university_id=#university_id#;
+</select>
+
+	<select id="getprogramname1" resultMap="program">
+
+		select distinct
+		epm.program_name from ENTITY_PROGRAM_MASTER epm,PROGRAM_OFFERED_BY
+		pob,UNIVERSITY_ENTITY_TYPE uet,CALL_CUT_OFF cco,ENTITY_MASTER em where
+		epm.program_id = pob.program_id AND cco.program_id = pob.program_id
+		AND uet.entity_type=em.entity_type AND pob.offered_by = em.entity_id
+		AND
+		cco.settings=#settings# AND
+		uet.entity_description=#entity_type# AND
+		uet.university_id=#university_id#;
+</select>
+
+	<select id="getprgdetails" resultClass="java.util.HashMap">
+
+		select
+		epm.program_name,pr.entity_program_term_id,pr.registration_start_date,pr.last_date,pr.add_drop_period
+		from ENTITY_PROGRAM_MASTER epm,PROGRAM_REGISTRATION pr,ENTITY_MASTER
+		em where
+		epm.program_id=pr.program_id AND
+		epm.program_name=#program_name# AND em.entity_type=#entity_type# AND
+		em.entity_name=#entity_name#
+
+</select>
+
+	<update id="updateprgdetails">
+		update PROGRAM_REGISTRATION SET
+		add_drop_period=#add_drop_period#,registration_start_date=#registration_start_date#,last_date=#last_date#,modification_time=#modification_time#
+		where
+		program_id
+		IN(select program_id from ENTITY_PROGRAM_MASTER where
+		program_name=#program_name#)AND
+		entity_program_term_id=#entity_program_term_id# 
+</update>
+
+	<resultMap id="entity" class="programlist">
+
+		<result property="entity_type" column="entity_type" />
+
+	</resultMap>
+
+	<select id="getentitytype" resultMap="entity">
+
+		select entity_type from
+		ENTITY_MASTER where entity_name=#entity_name#
+	
+	</select>
+
+	<resultMap id="entityi" class="programlist">
+
+		<result property="entity_type" column="entity_type" />
+
+	</resultMap>
+
+	<select id="getentityty" resultMap="entityi">
+
+		select entity_type from
+		UNIVERSITY_ENTITY_TYPE where entity_description=#entity_description#
+		AND university_id=#university_code#;
+	
+	</select>
+
+	<select id="getallprograms" resultClass="java.util.HashMap">
+
+		select
+		epm.program_name,pr.entity_program_term_id,pr.registration_start_date,pr.last_date,pr.add_drop_period
+		from ENTITY_PROGRAM_MASTER epm, PROGRAM_OFFERED_BY
+		pob,PROGRAM_REGISTRATION pr where pob.program_id=pr.program_id AND
+		epm.program_id=pob.program_id AND pob.offered_by IN (select
+		em.entity_id from ENTITY_MASTER em where em.entity_type IN (select
+		uet.entity_type from UNIVERSITY_ENTITY_TYPE uet where
+		entity_description=#entity_type#)) order by
+		pob.program_id,pr.entity_program_term_id;
+	
+	</select>
+
+	<select id="getallprogramswithotuvalue" resultClass="java.util.HashMap">
+
+		select
+		epm.program_name,pr.entity_program_term_id,pr.registration_start_date,pr.last_date,pr.add_drop_period
+		from ENTITY_PROGRAM_MASTER epm, PROGRAM_OFFERED_BY
+		pob,PROGRAM_REGISTRATION pr where pob.program_id=pr.program_id AND
+		epm.program_id=pob.program_id AND pob.offered_by IN (select
+		em.entity_id from ENTITY_MASTER em where
+		em.entity_name=#entity_name#);
+	
+	</select>
+
+	<resultMap id="getprogrms" class="programlist">
+
+		<result property="program_id" column="program_id" />
+		<result property="program_name" column="program_name" />
+		<result property="entity_id" column="entity_id" />
+		<result property="branch_name" column="branch_name" />
+		<result property="branch" column="branch" />
+
+
+	</resultMap>
+
+	<select id="getdistinctprograms" resultMap="getprogrms">
+
+		select distinct
+		epm.program_id,epm.program_name,em.entity_id,pbs.branch_name,pob.branch
+		from ENTITY_PROGRAM_MASTER epm,PROGRAM_OFFERED_BY pob,ENTITY_MASTER
+		em,PROGRAM_BRANCHES pbs,UNIVERSITY_ENTITY_TYPE uet where
+		epm.program_id=pob.program_id AND em.entity_id=pob.offered_by AND
+		pbs.branch_code=pob.branch AND pob.offered_by=em.entity_id AND
+		em.entity_type=uet.entity_type AND em.university_id=uet.university_id
+		AND uet.university_id=pbs.university_id AND
+		uet.entity_description=#entity_description# AND
+		uet.university_id=#university_code# AND
+		(pob.program_id NOT IN (select
+		program_id from CALL_CUT_OFF where
+		pob.branch IN(select branch_code
+		from CALL_CUT_OFF)))order by
+		pob.program_id;
+	
+	</select>
+
+	<select id="getindivisualprograms" resultMap="getprogrms">
+
+		select distinct
+		pob.program_id,epm.program_name,em.entity_id,pbs.branch_name,pob.branch
+		from ENTITY_PROGRAM_MASTER epm,PROGRAM_OFFERED_BY pob,ENTITY_MASTER
+		em,PROGRAM_BRANCHES pbs,UNIVERSITY_ENTITY_TYPE uet where
+		epm.program_id=pob.program_id AND pbs.branch_code=pob.branch AND
+		em.entity_id=pob.offered_by AND em.entity_type=uet.entity_type AND
+		em.university_id=uet.university_id AND
+		uet.university_id=pbs.university_id AND
+		uet.entity_description=#entity_type# AND
+		(pob.program_id,pob.branch)NOT
+		IN(select cco.program_id,cco.branch_code
+		from CALL_CUT_OFF cco where
+		cco.settings=#settings#) AND
+		uet.university_id=#university_code#order by
+		pob.program_id,pob.branch;
+	
+	</select>
+
+	<resultMap id="getprog" class="programlist">
+
+		<result property="program_name" column="program_name" />
+
+	</resultMap>
+
+	<select id="getentitytypeforprogramcomponent" resultMap="getprog">
+
+		select
+		epm.program_name from ENTITY_PROGRAM_MASTER epm,PROGRAM_OFFERED_BY
+		pob,ENTITY_MASTER em,PROGRAM_COMPONENTS pcs,UNIVERSITY_ENTITY_TYPE uet
+		where epm.program_id = pob.program_id AND
+		pob.program_id=pcs.program_id AND
+		pob.Offered_by=em.entity_id AND
+		em.university_id=uet.university_id AND uet.entity_type=em.entity_type
+		AND
+		em.entity_name=#entity_name# AND uet.university_id=#university_id#;
+</select>
+
+
+	<select id="getprogramnameforprogramcomponent" resultMap="getprog">
+
+		select
+		epm.program_name from ENTITY_PROGRAM_MASTER epm,PROGRAM_OFFERED_BY
+		pob,ENTITY_MASTER em,PROGRAM_COMPONENTS pcs,UNIVERSITY_ENTITY_TYPE uet
+		where epm.program_id = pob.program_id AND
+		pob.program_id=pcs.program_id AND pob.Offered_by=em.entity_id AND
+		em.university_id=uet.university_id AND uet.entity_type=em.entity_type
+		AND
+		uet.entity_description=#entity_description#
+		AND
+		uet.university_id=#university_id#;
+</select>
+
+	<select id="getentitytypeforfirstdegree" resultMap="getprog">
+
+		select
+		epm.program_name from ENTITY_PROGRAM_MASTER epm,PROGRAM_OFFERED_BY
+		pob,ENTITY_MASTER em,PROGRAM_DEGREE pcs,UNIVERSITY_ENTITY_TYPE uet
+		where epm.program_id = pob.program_id AND
+		pob.program_id=pcs.program_id AND pob.Offered_by=em.entity_id AND
+		uet.entity_type=em.entity_type AND em.entity_name=#entity_name# AND
+		em.university_id=uet.university_id AND
+		uet.university_id=#university_id#;
+</select>
+
+	<select id="getentitytypeforfirstdegree1" resultMap="getprog">
+
+		select
+		epm.program_name from ENTITY_PROGRAM_MASTER epm,PROGRAM_OFFERED_BY
+		pob,UNIVERSITY_ENTITY_TYPE uet,PROGRAM_DEGREE
+		pcs,ENTITY_MASTER em
+		where epm.program_id = pob.program_id AND
+		pob.program_id =
+		pcs.program_id AND uet.entity_type=em.entity_type AND
+		pob.offered_by =
+		em.entity_id AND em.university_id=uet.university_id AND
+		uet.entity_description=#entity_description#
+		AND
+		uet.university_id=#university_id#;
+</select>
+
+	<select id="getentitytypefromprgregis" resultMap="getprog">
+
+		select
+		epm.program_name from ENTITY_PROGRAM_MASTER
+		epm,PROGRAM_OFFERED_BY
+		pob,ENTITY_MASTER em,PROGRAM_REGISTRATION pcs
+		where epm.program_id =
+		pob.program_id AND
+		pob.program_id=pcs.program_id AND
+		substring(pob.Offered_by,5)=substring(em.entity_id,5) AND
+		em.entity_name=#entity_name# ;
+</select>
+
+	<select id="methodgetprgsfromfinalmerit" resultMap="getprog">
+
+		select
+		epm.program_name from ENTITY_PROGRAM_MASTER
+		epm,PROGRAM_OFFERED_BY
+		pob,ENTITY_MASTER em,FINAL_MERIT_COMPONENTS pcs,UNIVERSITY_ENTITY_TYPE
+		uet
+		where epm.program_id =
+		pob.program_id AND
+		pob.program_id=pcs.program_id AND
+		uet.entity_type=em.entity_type AND
+		em.university_id=uet.university_id AND
+		pob.Offered_by=em.entity_id AND
+		em.entity_name=#entity_name# AND
+		uet.university_id=#university_id#;
+</select>
+
+	<select id="methodgetprgsfromfinalmerit1" resultMap="getprog">
+
+		select
+		epm.program_name from ENTITY_PROGRAM_MASTER epm,PROGRAM_OFFERED_BY
+		pob,UNIVERSITY_ENTITY_TYPE uet,FINAL_MERIT_COMPONENTS
+		pcs,ENTITY_MASTER em where epm.program_id = pob.program_id AND
+		pob.program_id = pcs.program_id AND uet.entity_type=em.entity_type AND
+		em.university_id=uet.university_id AND pob.offered_by = em.entity_id
+		AND
+		uet.entity_description=#entity_name#
+		AND
+		uet.university_id=#university_id#;
+</select>
+
+
+</sqlMap>

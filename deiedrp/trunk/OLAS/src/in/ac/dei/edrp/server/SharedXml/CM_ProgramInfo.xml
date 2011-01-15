@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+  <sqlMap namespace="ProgramInfo">   
+
+  <typeAlias alias="progInfo" type="in.ac.dei.edrp.client.CM_ProgramInfoGetter"/>
+
+<!--  <resultMap id="progIDGetter" class="progInfo">-->
+<!---->
+<!--    <result property="program_id" column="program_id"/>-->
+<!--     <result property="Entity_program_TermID" column="Entity_program_TermID"/>-->
+<!--    <result property="course_code" column="course_code"/>-->
+<!--    <result property="Flag" column="Flag"/>-->
+<!--    <result property="Available" column="Available"/>-->
+<!--     <result property="optional" column="optional"/>-->
+<!--    <result property="course_type" column="course_type"/>-->
+<!--    <result property="credits" column="credits"/>-->
+<!--     <result property="lectures" column="lectures"/>-->
+<!--    <result property="tutorials" column="tutorials"/>-->
+<!--    <result property="practicals" column="practicals"/>-->
+<!--    <result property="units" column="units"/>-->
+<!---->
+<!--  </resultMap>-->
+<!-- -->
+<!--  <select id="selectProgDetails" resultMap="progIDGetter"> -->
+<!-- SELECT * FROM entity_program_course where program_id=#program_id# and Entity_program_TermID=#Entity_program_TermID#-->
+<!--  and status=#status#-->
+<!--  </select>-->
+  
+  <resultMap id="program_idGetter" class="progInfo">
+
+    <result property="program_id" column="program_id"/>
+    
+
+  </resultMap>
+ 
+  <select id="Getprogram_id" resultMap="program_idGetter"> 
+SELECT program_id FROM ENTITY_PROGRAM_MASTER where program_name=#program_name#
+					
+  </select>
+  
+  
+  <resultMap id="program_nameGetter" class="progInfo">
+
+    <result property="program_name" column="program_name"/>
+    
+
+  </resultMap>
+ 
+  <select id="Getprogram_name" resultMap="program_nameGetter"> 
+SELECT program_name FROM ENTITY_PROGRAM_MASTER
+					
+  </select>
+  
+   <resultMap id="program_offid" class="progInfo">
+
+    <result property="program_id" column="program_id"/>
+    
+
+  </resultMap>
+ 
+  <select id="Getprogram_offid" resultMap="program_offid"> 
+SELECT program_id FROM  PROGRAM_OFFERED_BY  
+					
+  </select>
+  
+   <resultMap id="program_nameGetter1" class="progInfo">
+
+    <result property="program_name" column="program_name"/>
+    <result property="program_id" column="program_id"/>
+    
+
+  </resultMap>
+ 
+  <select id="GetprogramOff" resultMap="program_nameGetter1"> 
+ SELECT program_name,program_id FROM ENTITY_PROGRAM_MASTER where  program_id IN ( SELECT program_id from  PROGRAM_OFFERED_BY  where offered_by IN(Select entity_id
+ from ENTITY_MASTER where entity_name=#entity_name#))
+					
+  </select>
+  
+  
+   <update id="editProg"> 
+  update ENTITY_PROGRAM_COURSE set credits =#credits# ,lectures=#lectures#,tutorials=#tutorials#,practicals=#practicals#,
+  units=#units#,Available=#Available# where course_code =#course_code# and program_id=#program_id#
+ 
+  </update>
+  
+  
+  <update id="disableProg"> 
+  update ENTITY_PROGRAM_COURSE set status=#status# where course_code =#course_code# 
+ 
+  </update>
+  
+  <insert id="insertProg"> 
+  insert into ENTITY_PROGRAM_COURSE values
+  (			
+  			#university_code#,		
+			#program_id#,	
+			#Entity_program_TermID#, 
+			#course_code#,		
+			#Flag#,			
+			null,
+			null,	
+			#Available#,	
+			null,		
+			#course_type#,		
+			#credits#,			
+			#lectures#,            
+			#tutorials#,		
+			#practicals#, 		
+			null,		
+			#units#	,		
+			null,	
+			null,    
+			null,	
+			null,		
+            #status#           
+                        )
+  
+ 
+  </insert>
+  
+
+   <resultMap id="checkProgramGetter" class="progInfo">
+
+    <result property="course_code" column="course_code"/>
+    
+
+  </resultMap>
+ 
+  <select id="checkProgram" resultMap="checkProgramGetter"> 
+ 	 
+SELECT Distinct course_code FROM ENTITY_PROGRAM_COURSE where university_code=#university_code# and program_id=#program_id#
+and Entity_program_TermID=#Entity_program_TermID# and  status=#status#
+		
+  </select>
+
+  
+  
+   <resultMap id="PaperCodeGetter" class="progInfo">
+
+    <result property="paper_code" column="paper_code"/>
+     <result property="paper_description" column="paper_description"/>
+    
+
+  </resultMap>
+ 
+  <select id="getPaperCode" resultMap="PaperCodeGetter"> 
+  SELECT paper_code, paper_description from PAPER_CODES where paper_code IN(SELECT paper_code from PROGRAM_PAPER_CODE  where grouping=#grouping# and program_id =#program_id#)
+		
+  </select>
+  
+   <resultMap id="FirstDegreeCodeGetter" class="progInfo">
+
+    <result property="program_name" column="program_name"/>
+    <result property="program_id" column="program_id"/>
+    
+
+  </resultMap>
+ 
+  <select id="getFirstDegreeCode" resultMap="FirstDegreeCodeGetter"> 
+  	 
+SELECT program_name,program_id FROM ENTITY_PROGRAM_MASTER where program_id IN (SELECT 	degree_code from PROGRAM_DEGREE where program_id=#program_id#
+and UG_PG=#UGorPG#)
+		
+  </select>
+   
+   <resultMap id="branch_name" class="progInfo">
+
+    <result property="branch_name" column="branch_name"/>
+     <result property="branch" column="branch_code"/>
+
+  </resultMap>
+ 
+  <select id="GetBranch" resultMap="branch_name"> 
+	
+	SELECT branch_name,branch_code FROM PROGRAM_BRANCHES where branch_code IN(Select branch from 
+		PROGRAM_OFFERED_BY where program_id=#program_id# And offered_by=#entity_id# ) and university_id=#university_id#
+					
+  </select>
+  
+  
+   <resultMap id="branch_id" class="progInfo">
+
+    <result property="branch" column="branch_code"/>
+    
+
+  </resultMap>
+ 
+  <select id="GetBranchID" resultMap="branch_id"> 
+  
+  SELECT branch_code FROM PROGRAM_BRANCHES where branch_name=#branch_name#
+	
+	<!--  SELECT branch_code FROM PROGRAM_BRANCHES where program_id=#program_id# and branch_name=#branch_name#-->
+	
+					
+  </select>
+  
+   <resultMap id="getcos_value" class="progInfo">
+
+    <result property="cos_value" column="cos_value"/>
+    
+
+  </resultMap>
+ 
+  <select id="GetCOS_value" resultMap="getcos_value"> 
+	
+	SELECT cos_value FROM CALL_CUT_OFF where program_id=#program_id# and offered_by=#entity_id# and branch_code=#branch# and 
+	cos_value LIKE #cos_value#
+					
+  </select>
+  
+  
+  
+  
+  <!-- 
+  CM_programInfo.xml
+   -->
+ 
+	<typeAlias alias="programInfo" type="in.ac.dei.edrp.client.CM_ProgramInfoGetter" />
+
+
+  <resultMap id="uniModeGetter" class="programInfo">
+
+    <result property="mode_name" column="mode_name"/>
+     <result property="program_mode" column="program_mode"/>
+
+  </resultMap>
+
+<select id="uniMode" resultMap="uniModeGetter">
+select mode_name,program_mode from UNIVERSITY_PROGRAM_MODE where university_id=#university_id#
+</select>
+
+
+ <resultMap id="uniTypeGetter" class="programInfo">
+
+    <result property="type_name" column="type_name"/>
+     <result property="program_type" column="program_type"/>
+
+  </resultMap>
+
+
+	<select id="uniType" resultMap="uniTypeGetter">
+	select type_name,program_type from UNIVERSITY_PROGRAM_TYPE where university_id=#university_id#
+	</select>
+
+
+
+  
+  <resultMap id="component_idGetter" class="progInfo">
+
+    <result property="component_id" column="component_id"/>
+    
+
+  </resultMap>
+ 
+  <select id="GetComponent_id" resultMap="component_idGetter"> 
+
+  SELECT component_id FROM COMPONENT_DESCRIPTION where description=#component#
+					
+  </select>
+   
+  <resultMap id="CheckAgeElig" class="progInfo">
+
+    <result property="entity_id" column="entity_id"/>
+    <result property="program_id" column="program_id"/>
+    <result property="branch_code" column="branch_code"/>  
+    <result property="category" column="category"/>
+    <result property="age_limit" column="age_limit"/>
+   
+
+  </resultMap>
+ 
+  <select id="checkProgAgeElig" resultMap="CheckAgeElig"> 
+  SELECT *  FROM PROGRAM_AGE_ELIGIBILITY 
+
+  </select>  
+  
+  
+   <resultMap id="CheckCompAgeElig" class="progInfo">
+
+    <result property="entity_id" column="entity_id"/>
+    <result property="program_id" column="program_id"/>
+    <result property="branch_code" column="branch_code"/>  
+    <result property="category" column="category"/>
+    <result property="component_id" column="component_id"/>
+    <result property="cut_off_percentage" column="cut_off_percentage"/>
+   
+
+  </resultMap>
+ 
+  <select id="checkProgCompElig" resultMap="CheckCompAgeElig"> 
+  SELECT *  FROM PROGRAM_COMPONENT_ELIGIBILITY 
+
+  </select>  
+  
+   <select id="getProgCompElig" resultMap="CheckCompAgeElig"> 
+  SELECT *  FROM PROGRAM_COMPONENT_ELIGIBILITY where entity_id=#entity_id#
+
+  </select>  
+  
+   <resultMap id="CheckComps" class="progInfo">
+
+    <result property="entity_id" column="offered_by"/>
+    <result property="program_id" column="program_id"/>
+    <result property="branch_code" column="branch_code"/>  
+     
+     </resultMap> 
+     
+  <select id="checkComponents" resultMap="CheckComps"> 
+  select distinct(branch_code),program_id,offered_by  FROM PROGRAM_COMPONENTS
+
+  </select>
+  
+  
+
+  <resultMap id="component_nameGetter" class="progInfo">
+
+    <result property="component" column="description"/>
+    
+
+  </resultMap>
+ 
+  <select id="GetComponent_name" resultMap="component_nameGetter"> 
+
+  SELECT description FROM COMPONENT_DESCRIPTION where component_id=#component_id#
+					
+  </select>
+  
+   <resultMap id="program" class="progInfo">
+
+    <result property="program_name" column="program_name"/>
+    
+
+  </resultMap>
+ 
+  <select id="GetprogramName" resultMap="program"> 
+
+	SELECT program_name FROM ENTITY_PROGRAM_MASTER where  program_id =#program_id#
+					
+  </select>
+  
+   <resultMap id="branch_name" class="progInfo">
+
+    <result property="branch_name" column="branch_name"/>
+    
+
+  </resultMap>
+ 
+  <select id="Getbranch_name" resultMap="branch_name"> 
+  
+  SELECT branch_name FROM PROGRAM_BRANCHES where branch_code=#branch#
+	
+					
+  </select>
+  
+   <update id="editProgAgeLimit"> 
+  update PROGRAM_AGE_ELIGIBILITY set
+  
+   age_limit =#age_limit#,
+   modification_time=#modification_time#,
+   modifier_id=#modifier_id#
+   
+    where  program_id=#program_id# and branch_code=#branch_code# and category=#category#
+ 
+  </update>
+  
+  
+   <update id="editProgCompElig"> 
+  update PROGRAM_COMPONENT_ELIGIBILITY set 
+  
+  cut_off_percentage =#cut_off_percentage#,
+  modification_time=#modification_time#,
+  modifier_id=#modifier_id#
+  
+    where  entity_id=#entity_id# and program_id=#program_id# and branch_code=#branch_code#
+  and component_id=#component_id# and category=#category#
+ 
+  </update>
+  
+  
+   <delete id="deleteProgAgeLimit"> 
+  delete from PROGRAM_AGE_ELIGIBILITY  where  program_id=#program_id# and branch_code=#branch_code#
+  and category=#category#
+ 
+  </delete>
+  
+  
+   <delete id="deleteProgCompElig"> 
+  delete from PROGRAM_COMPONENT_ELIGIBILITY where  entity_id=#entity_id# and program_id=#program_id# and branch_code=#branch_code#
+  and component_id=#component_id# and category=#category#
+  and category=#category#
+ 
+  </delete>
+   
+ <insert id="progEligibilityInfo"> 
+ insert into PROGRAM_AGE_ELIGIBILITY values(
+ 
+ 								#entity_id#,
+ 								#program_id#,
+ 								#branch_code#,
+ 								#category#,
+ 								#age_limit#,
+ 								#insert_time#,
+ 								null,
+ 								#creator_id#,
+ 								null
+ 					
+ 								
+ 								
+ 								);
+  </insert>
+  
+  
+   
+ <insert id="CompAgeEligibility"> 
+ insert into PROGRAM_COMPONENT_ELIGIBILITY values(
+ 
+ 								#entity_id#,
+ 								#program_id#,
+ 								#branch_code#,
+ 								#component_id#,
+ 								#category#,
+ 								#cut_off_percentage#,
+ 								#insert_time#,
+ 								null,
+ 								#creator_id#,
+ 								null
+ 					
+ 								
+ 								);
+  </insert>
+  
+  
+  <resultMap id="compCount" class="progInfo">
+
+    <result property="component_id" column="component_id"/>
+    
+
+  </resultMap>
+ 
+  <select id="GetPCcount" resultMap="compCount"> 
+  
+   SELECT component_id  FROM PROGRAM_COMPONENTS where  program_id=#program_id# and branch_code=#branch_code#
+	
+					
+  </select>
+  
+  
+  
+  
+  
+  
+  
+  
+  <resultMap id="progcomp" class="progInfo">
+
+    <result property="component_id" column="component_id"/>
+    <result property="type" column="type"/>
+    <result property="sequence" column="sequence_number"/>
+    <result property="board_flag" column="board_flag"/>
+    <result property="UGorPG" column="ug_pg"/>
+    <result property="weightage_flag" column="special_weightage_flag"/>
+    
+
+  </resultMap>
+ 
+  <select id="GetProgComponents" resultMap="progcomp"> 
+  
+   SELECT component_id,type,sequence_number,board_flag,ug_pg,special_weightage_flag  FROM PROGRAM_COMPONENTS 
+   where program_id=#program_id# and branch_code=#branch_code# order by sequence_number
+	
+					
+  </select>
+  
+  
+  <resultMap id="groupingGetter" class="progInfo">
+
+    <result property="grouping" column="grouping"/>
+    
+
+  </resultMap>
+ 
+  <select id="GetGrouping" resultMap="groupingGetter"> 
+
+  SELECT distinct grouping from PROGRAM_PAPER_CODE where program_id =#program_id# order by grouping			
+  </select>
+  
+  
+  
+    
+  <resultMap id="RegvalueGetter" class="progInfo">
+
+    <result property="value" column="value"/>
+    
+
+  </resultMap>
+ 
+  <select id="GetProgRegValue" resultMap="RegvalueGetter"> 
+
+  SELECT value from PROGRAM_REGISTRATION_NUMBER  where university_id =#university_id# AND entity_id=#entity_id# AND program_id=#program_id# and branch_code=#branch_code# 			
+  </select>
+  
+  <insert id="insertIntialProgRegValue" > 
+      insert into PROGRAM_REGISTRATION_NUMBER (university_id, entity_id, program_id, branch_code, value) values (#university_id#, #entity_id#, #program_id#, #branch_code#, #value#); 			
+  </insert>
+    
+   <update id="updateProgRegValue"> 
+   update PROGRAM_REGISTRATION_NUMBER set value=#value# where university_id =#university_id# AND entity_id=#entity_id# AND program_id=#program_id# and branch_code=#branch_code#
+ 						
+  </update>
+  
+  
+</sqlMap>

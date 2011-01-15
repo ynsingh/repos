@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="ProgTermInfo">
+
+	<typeAlias alias="programTermInfo"
+		type="in.ac.dei.edrp.client.CM_progTermDetailGetter" />
+
+
+	  <resultMap id="termList" class="programTermInfo">
+	  <result property="program_id" column="program_id"/>
+	    <result property="entity_program_term_id" column="entity_program_term_id"/>
+	    <result property="program_name" column="program_name"/>
+	    <result property="minimum_sgpa" column="minimum_sgpa"/>
+	    <result property="term_name" column="term_name"/>
+	    <result property="number_of_teaching_days" column="number_of_teaching_days"/>
+	    <result property="duration_in_weeks" column="duration_in_weeks"/>
+	    <result property="term_start_date" column="term_start_date"/>
+	    <result property="term_end_date" column="term_end_date"/>
+	    <result property="total_credits" column="total_credits"/>
+	  </resultMap>
+		
+		<select id="termList" resultMap="termList">
+		select t.program_id,t.entity_program_term_id,p.program_name,t.minimum_sgpa,t.term_name,t.number_of_teaching_days,
+		t.duration_in_weeks,t.term_start_date,t.term_end_date,t.total_credits
+		from ENTITY_PROGRAM_TERM_DETAILS t,ENTITY_PROGRAM_MASTER p
+		where t.program_id LIKE #program_id# AND t.entity_program_term_id LIKE #entity_program_term_id# AND t.program_id=p.program_id
+		</select>
+
+
+<insert id="insertTermDetails">
+insert into ENTITY_PROGRAM_TERM_DETAILS
+(entity_program_term_id,program_id,minimum_sgpa,term_name,number_of_teaching_days,
+duration_in_weeks,term_start_date,term_end_date,total_credits ,insert_time,
+modification_time,creator_id,modifier_id)
+values
+(#entity_program_term_id#,#program_id#,#minimum_sgpa#,#term_name#,#number_of_teaching_days#,
+#duration_in_weeks#,#term_start_date#,#term_end_date#,#total_credits#,#insert_time#,
+#modification_time#,#creator_id#,#modifier_id#)
+</insert>
+
+<update id="updateTermDetails">
+
+update ENTITY_PROGRAM_TERM_DETAILS set minimum_sgpa=#minimum_sgpa#,term_name=#term_name#,
+number_of_teaching_days=#number_of_teaching_days#,duration_in_weeks=#duration_in_weeks#,
+term_start_date=#term_start_date#,term_end_date=#term_end_date#,total_credits=#total_credits#,
+modification_time=#modification_time#,modifier_id=#modifier_id# 
+where program_id = #program_id# AND entity_program_term_id = #entity_program_term_id#
+
+
+</update>
+
+<delete id="deleteTermDetails">
+
+delete from ENTITY_PROGRAM_TERM_DETAILS 
+where program_id = #program_id# AND entity_program_term_id = #entity_program_term_id#
+
+</delete>
+
+
+</sqlMap>

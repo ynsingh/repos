@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+  <sqlMap namespace="instituteInfo">   
+
+  <typeAlias alias="instituteInfo" type="in.ac.dei.edrp.client.CM_instituteInfoGetter"/>
+
+  <resultMap id="InfoGetter" class="instituteInfo">
+
+    <result property="id" column="instituteID"/>
+ <!--   <result property="name" column="instituteName"/>  -->
+  </resultMap>
+ 
+  <select id="selectFromUserID" resultMap="InfoGetter"> 
+ 	select instituteID from USERINFO where uID=#string#
+  </select>
+  
+   <select id="selectFromInstiName" resultMap="InfoGetter"> 
+ 	select instituteID from INSTITUTE where instituteName =#string#
+  </select>
+  
+  
+  
+  
+  
+  <resultMap id="AllInfoGetter" class="instituteInfo">
+
+   <result property="id" column="instituteID"/>
+   <result property="name" column="instituteName"/>  
+   <result property="address" column="instituteAddress"/> 
+   <result property="city" column="instituteCity"/> 
+   <result property="state" column="instituteState"/> 
+   <result property="pincode" column="institutePincode"/> 
+  </resultMap>
+   
+  <select id="selectAllInstituteDetails" resultMap="AllInfoGetter">
+  select * from INSTITUTE
+  </select>
+  
+  
+  
+  
+  
+  <resultMap id="NameGetter" class="instituteInfo">
+   <result property="name" column="instituteName"/> 
+  </resultMap>
+  
+  <select id="selectInstituteName" resultMap="NameGetter">
+  select instituteName from INSTITUTE where instituteID=#id#
+  </select>
+  
+   
+</sqlMap>

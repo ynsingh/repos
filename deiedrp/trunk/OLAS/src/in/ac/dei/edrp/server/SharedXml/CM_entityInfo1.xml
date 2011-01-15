@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap 
+PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+"http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="CourseInfo1">
+<!-- To get Entity_description starts -->	
+<resultMap id="result" class="in.ac.dei.edrp.client.CM_entityInfoGetter">
+	   <result property="entity_description" column="entity_description"/>
+</resultMap>
+
+<select id="entityList1" resultMap="result">
+          select entity_description from UNIVERSITY_ENTITY_TYPE where university_id=#university_id#
+</select>
+
+<!-- To get Entity_NAME starts -->
+<resultMap id="resultname" class="in.ac.dei.edrp.client.CM_entityInfoGetter">
+	   <result property="entity_name" column="entity_name"/>
+</resultMap>
+
+<select id="entityNameList1" resultMap="resultname">
+          select entity_id,entity_name from ENTITY_MASTER where entity_type=#entity_type# AND university_id=#university_id#;
+</select>
+
+<!-- To get Program_name starts -->
+<resultMap id="resultprogram" class="in.ac.dei.edrp.client.CM_entityInfoGetter">
+	   <result property="program_name" column="program_name"/>
+</resultMap>
+
+<select id="programNameList1" resultMap="resultprogram">
+          select distinct p.program_name from PROGRAM_OFFERED_BY pob,ENTITY_PROGRAM_MASTER p where pob.offered_by=#offeredby# and pob.program_id=p.program_id;
+</select>
+
+<!-- To get Branch_name starts -->
+<resultMap id="resultbranch" class="in.ac.dei.edrp.client.CM_entityInfoGetter">
+	   <result property="program_name" column="branch_name"/>
+</resultMap>
+
+<select id="branchNameList1" resultMap="resultbranch">
+          select distinct b.branch_name from PROGRAM_BRANCHES b,PROGRAM_OFFERED_BY pob
+where b.branch_code=pob.branch and pob.program_id=#program_id# and pob.offered_by=#offeredby#;
+</select>
+
+
+
+
+</sqlMap>

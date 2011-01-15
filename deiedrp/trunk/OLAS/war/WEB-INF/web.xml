@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+    "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+
+<!--   Default page to serve -->
+  <welcome-file-list>
+    <welcome-file>CourseManagement.html</welcome-file>
+  </welcome-file-list>
+  
+<!--   Servlets -->
+
+     <servlet>
+    <servlet-name>Log4JInitServlet</servlet-name>
+    <servlet-class>in.ac.dei.edrp.server.SharedFiles.Log4JInitServlet</servlet-class>
+    <init-param>
+      <param-name>log4j-properties</param-name>
+      <param-value>/WEB-INF/log4j.properties</param-value>
+     </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  
+   <!--
+    <servlet-mapping>
+    <servlet-name>Log4JInitServlet</servlet-name>
+    <url-pattern>/coursemanagement/log4jMap</url-pattern>
+  </servlet-mapping>
+   
+       --> 
+ 
+  <servlet>
+    <servlet-name>connectServlet</servlet-name>
+    <servlet-class>in.ac.dei.edrp.server.CM_connectImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>connectServlet</servlet-name>
+    <url-pattern>/coursemanagement/hello1</url-pattern>
+  </servlet-mapping>
+  
+ 
+  <servlet>
+    <servlet-name>greetServlet</servlet-name>
+    <servlet-class>in.ac.dei.edrp.server.CM_connectRImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>greetServlet</servlet-name>
+    <url-pattern>/coursemanagement/helloR</url-pattern>
+  </servlet-mapping>
+  
+   <servlet>
+    <servlet-name>greetServletLogin</servlet-name>
+    <servlet-class>in.ac.dei.edrp.server.CM_LoginConnectSImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>greetServletLogin</servlet-name>
+    <url-pattern>/coursemanagement/helloLogin</url-pattern>
+  </servlet-mapping>
+  
+  
+      <servlet>
+    <servlet-name>superServlet</servlet-name>
+    <servlet-class>in.ac.dei.edrp.server.CM_connectDImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>superServlet</servlet-name>
+    <url-pattern>/coursemanagement/helloD</url-pattern>
+  </servlet-mapping>
+
+   <servlet>
+    <servlet-name>progOfferedByServlet</servlet-name>
+    <servlet-class>in.ac.dei.edrp.server.CM_progOfferedByImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>progOfferedByServlet</servlet-name>
+    <url-pattern>/coursemanagement/progOfferedBy</url-pattern>
+  </servlet-mapping>
+  
+  <!-- For Deepak Project -->
+<servlet>
+    <servlet-name>greet</servlet-name>
+    <servlet-class>in.ac.dei.edrp.server.GreetingServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>greet</servlet-name>
+    <url-pattern>/coursemanagement/greet</url-pattern>
+  </servlet-mapping>  
+  
+   <servlet>
+    <servlet-name>TempServlet</servlet-name>
+    <servlet-class>in.ac.dei.edrp.server.CM_connectTempImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>TempServlet</servlet-name>
+    <url-pattern>/coursemanagement/helloTemp</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>boardServlet</servlet-name>
+    <servlet-class>in.ac.dei.edrp.server.CM_boardImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>boardServlet</servlet-name>
+    <url-pattern>/coursemanagement/board</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>marksServlet</servlet-name>
+    <servlet-class>in.ac.dei.edrp.server.CM_manageMarksImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>marksServlet</servlet-name>
+    <url-pattern>/coursemanagement/helloManage</url-pattern>
+  </servlet-mapping>
+  <!-- Added by Deepak  -->
+  <servlet>
+    <servlet-name>exportServlet</servlet-name>
+    <servlet-class>in.ac.dei.edrp.server.ExportServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>exportServlet</servlet-name>
+    <url-pattern>/coursemanagement/export</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>exportServlet1</servlet-name>
+    <servlet-class>in.ac.dei.edrp.server.ExportServlet1</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>exportServlet1</servlet-name>
+    <url-pattern>/coursemanagement/exportcall</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>exportServlet2</servlet-name>
+    <servlet-class>in.ac.dei.edrp.server.ExportServlet2</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>exportServlet2</servlet-name>
+    <url-pattern>/coursemanagement/exportfinal</url-pattern>
+  </servlet-mapping>
+  
+   <servlet>
+    <servlet-name>addmarksservice</servlet-name>
+    <servlet-class>in.ac.dei.edrp.server.addmarks.AddMarksExcelServiceImpl</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>addmarksservice</servlet-name>
+    <url-pattern>/coursemanagement/addmarksservice</url-pattern>
+  </servlet-mapping>
+  
+  	<servlet>
+		<servlet-name>UploadQuestionsServlet</servlet-name>
+		<servlet-class>in.ac.dei.edrp.server.addmarks.GenerateExcelForAddmarks</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>UploadQuestionsServlet</servlet-name>
+		<url-pattern>/coursemanagement/addmarks</url-pattern>
+	</servlet-mapping>
+	
+</web-app>

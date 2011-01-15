@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+      
+    <!DOCTYPE sqlMapConfig PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN"
+    "http://www.ibatis.com/dtd/sql-map-config-2.dtd">
+  
+
+<sqlMapConfig>
+
+	
+	<properties resource="in/ac/dei/edrp/server/SharedXml/sqlMapConfig.properties"/>
+  <!-- Configure a built-in transaction manager.  If you\'re using an 
+       app server, you probably want to use its transaction manager 
+       and a managed datasource -->
+  <transactionManager type="JDBC">
+    <dataSource type="SIMPLE">
+
+      <property name="JDBC.Driver" value="com.mysql.jdbc.Driver"/>
+      <property name="JDBC.ConnectionURL" value="${url}"/>
+      <property name="JDBC.Username" value="${login}"/>
+      <property name="JDBC.Password" value="${password}"/>
+
+    </dataSource>
+  </transactionManager>
+
+  <!-- List the SQL Map XML files. They can be loaded from the 
+       classpath, as they are here (com.domain.data...)--> 
+     <sqlMap resource="in/ac/dei/edrp/server/SharedXml/CM_loginInfo.xml" />
+		<sqlMap resource="in/ac/dei/edrp/server/SharedXml/CM_instituteInfo.xml" />
+		<sqlMap resource="in/ac/dei/edrp/server/SharedXml/CM_entityInfo.xml"/>
+		<sqlMap resource="in/ac/dei/edrp/server/SharedXml/CM_UniversityInfo.xml"/>
+		<sqlMap resource="in/ac/dei/edrp/server/SharedXml/CM_progMasterInfo.xml"/>
+		<sqlMap resource="in/ac/dei/edrp/server/SharedXml/CM_progOfferedBy.xml"/>
+		<sqlMap resource="in/ac/dei/edrp/server/SharedXml/CM_progTermDetail.xml"/>
+		<sqlMap resource="in/ac/dei/edrp/server/SharedXml/CM_boardNormalization.xml"/>
+		<sqlMap resource="in/ac/dei/edrp/server/SharedXml/testMarks.xml"/>
+		
+		
+		<sqlMap resource="in/ac/dei/edrp/server/SharedXml/CM_ProgramInfo.xml" />
+		<sqlMap resource="in/ac/dei/edrp/server/SharedXml/CM_CourseInfo.xml" />
+		<sqlMap resource="in/ac/dei/edrp/server/SharedXml/CM_EntityInfo2.xml" />
+		<sqlMap resource="in/ac/dei/edrp/server/SharedXml/StudentInfo.xml" />
+		
+		
+		<sqlMap resource="in/ac/dei/edrp/server/SharedXml/CM_ProgramInfoD.xml" />
+		
+		<sqlMap resource="in/ac/dei/edrp/server/SharedXml/CM_entityInfo1.xml"/>
+		
+		<sqlMap resource="in/ac/dei/edrp/server/SharedXml/callcutoff.xml"/>
+		<sqlMap resource="in/ac/dei/edrp/server/SharedXml/programlist.xml"/>
+		
+		
+		
+		
+		
+		<sqlMap resource="in/ac/dei/edrp/server/SharedXml/CM_ReportInfo.xml"/>
+		
+
+
+</sqlMapConfig>

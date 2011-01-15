@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+  <sqlMap namespace="instituteInfo">   
+
+  <typeAlias alias="instituteInfo" type="in.ac.dei.edrp.client.CM_instituteInfoGetter"/>
+
+  <resultMap id="InfoGetter" class="instituteInfo">
+
+    <result property="id" column="instituteID"/>
+ <!--   <result property="name" column="instituteName"/>  -->
+  </resultMap>
+ 
+  <select id="selectFromUserID" resultMap="InfoGetter"> 
+ 	select instituteID from USERINFO where uID=#string#
+  </select>
+  
+   <select id="selectFromInstiName" resultMap="InfoGetter"> 
+ 	select instituteID from INSTITUTE where instituteName =#string#
+  </select>
+  
+  
+  
+  
+  
+  <resultMap id="AllInfoGetter" class="instituteInfo">
+
+   <result property="id" column="instituteID"/>
+   <result property="name" column="instituteName"/>  
+   <result property="address" column="instituteAddress"/> 
+   <result property="city" column="instituteCity"/> 
+   <result property="state" column="instituteState"/> 
+   <result property="pincode" column="institutePincode"/> 
+  </resultMap>
+   
+  <select id="selectAllInstituteDetails" resultMap="AllInfoGetter">
+  select * from INSTITUTE
+  </select>
+
+  
+   <select id="selectAllInstituteDetailsWithInstiName" resultMap="AllInfoGetter">
+  select * from INSTITUTE where instituteName = #string#
+  </select>
+  
+   <select id="selectAllInstituteDetailsWithInstiID" resultMap="AllInfoGetter">
+  select * from INSTITUTE where instituteID = #string#
+  </select>
+  
+     <select id="selectAllInstituteDetailsWithInstiCity" resultMap="AllInfoGetter">
+  select * from INSTITUTE where instituteCity = #string#
+  </select>
+  
+     <select id="selectAllInstituteDetailsWithInstiState" resultMap="AllInfoGetter">
+  select * from INSTITUTE where instituteState = #string#
+  </select> 
+  
+  
+  <resultMap id="NameIdGetter" class="instituteInfo">
+
+   <result property="name" column="instituteName"/>  
+   <result property="id" column="instituteID"/>
+
+  </resultMap>
+   
+  <select id="selectInstituteNameId" resultMap="NameIdGetter">
+  select instituteName,instituteID from INSTITUTE where instituteID=#id#
+  </select>
+  
+  <resultMap id="NameGetter" class="instituteInfo">
+   <result property="name" column="instituteName"/> 
+  </resultMap>
+  
+  <select id="selectInstituteName" resultMap="NameGetter">
+  select instituteName from INSTITUTE where instituteID=#id#
+  </select>
+  
+     
+  <resultMap id="SessionGetter" class="instituteInfo">
+   <result property="newSession" column="newSession"/> 
+  </resultMap>
+  
+     <select id="selectSession" resultMap="SessionGetter"> 
+ select newSession from INSTITUTESESSION where instituteID =#id# AND currentStatus=#status#
+  </select>
+  
+
+<typeAlias alias="sessionInformation" type="in.ac.dei.edrp.client.CM_sessionInfoGetter" />
+
+	<resultMap id="currentSession" class="sessionInformation">
+
+		<result property="newSession" column="newSession" />
+
+	</resultMap>
+
+	<select id="selectcurrentSession" resultMap="currentSession">
+		select newSession from INSTITUTESESSION where instituteID=#instituteID# AND
+		currentStatus=1	
+  </select>
+  
+ 
+  <resultMap id="designationGetter" class="instituteInfo">
+   <result property="designation" column="designation_description"/> 
+  </resultMap>
+  
+     <select id="getDesignation" resultMap="designationGetter"> 
+ select designation_description from ENTITY_DESIGNATIONS
+   </select>
+  
+ <insert id="newDesignation"> 
+ insert into ENTITY_DESIGNATIONS values(null,#designationID#,#designation#,null,null,null,null);
+  </insert>
+  
+  
+   
+  <delete id="deleteDesignation"> 
+ delete from ENTITY_DESIGNATIONS where designation_description =#designation#
+  </delete>
+  
+
+
+   
+</sqlMap>

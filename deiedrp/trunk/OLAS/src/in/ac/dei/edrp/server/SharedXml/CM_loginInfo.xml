@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="UserInfo">
+
+	<typeAlias alias="userInfo" type="in.ac.dei.edrp.client.CM_userInfoGetter" />
+
+	<typeAlias alias="passwordPolicy"
+		type="in.ac.dei.edrp.client.CM_passwordPolicyGetter" />
+
+	<!--
+		<resultMap id="userInfoGetter" class="userInfo"> <result
+		property="uID" column="uID" /> <result property="password"
+		column="password" /> <result property="role" column="role" />
+
+		</resultMap> <select id="selectAllUserInfo"
+		resultMap="userInfoGetter"> select uID,password,role from userInfo
+		where uID =#uID# AND password =#password# </select>
+	-->
+
+
+	<resultMap id="userInfoGetter" class="userInfo">
+		<result property="user_name" column="user_name" />
+		<result property="user_id" column="user_id" />
+		<result property="user_group_name" column="group_name" />
+
+	</resultMap>
+
+	<select id="selectAllUserInfo" resultMap="userInfoGetter">
+		select
+		user_id,group_name,user_name
+		from USER_INFO where user_name
+		=#user_name# AND password =SHA1(#password#)
+		</select>
+
+
+
+	<resultMap id="primaryauthority" class="userInfo">
+		<result property="page" column="menu_item_id" />
+		<result property="authority" column="authority" />
+		<result property="menu_item_name" column="menu_item_name" />
+
+	</resultMap>
+
+	<select id="getmainpages" resultMap="primaryauthority">
+		select
+		ug.menu_item_id,ug.authority,menu.menu_item_name from USER_GROUP
+		ug,USER_INFO ui,MENU_ITEMS_LIST menu where
+		ug.menu_item_id=menu.menu_item_id AND ug.user_group_id=ui.group_name
+		AND ui.user_name=#user_id#;
+		</select>
+
+	<select id="getprimaryauthorities" resultMap="primaryauthority">
+		select
+		ufa.menu_item_id,ufa.authority,menu.menu_item_name from
+		USER_FUNCTION_AUTHORITY ufa,USER_GROUP ug,USER_INFO ui,MENU_ITEMS_LIST
+		menu where ug.menu_item_id=ufa.menu_item_id AND
+		ufa.menu_item_id=menu.menu_item_id AND
+		ug.authority=1 AND ug.user_group_id=ui.group_name AND
+		ufa.function_user_id=ui.user_id AND ui.user_id=#user_id#;
+		</select>
+
+
+	<resultMap id="secondryauthority" class="userInfo">
+		<result property="authority" column="authority" />
+	</resultMap>
+
+	<select id="getsecondryauthorities" resultMap="secondryauthority">
+		select
+		ufa.authority from USER_FUNCTION_AUTHORITY ufa,MENU_ITEMS_LIST menu
+		where ufa.menu_item_id=menu.menu_item_id AND
+		menu.menu_item_name=#page# AND
+		ufa.function_user_id=#user_id#;
+		</select>
+
+	<select id="getauthorityonpage" resultMap="secondryauthority">
+		select ug.authority
+		from USER_GROUP ug,MENU_ITEMS_LIST menu,USER_INFO ui
+		where
+		ug.menu_item_id=menu.menu_item_id AND menu.menu_item_name=#page#
+		AND
+		ug.user_group_id=ui.group_name AND ui.user_id=#user_id#;
+
+		</select>
+
+
+
+	<resultMap id="passwordPolicyGetter" class="passwordPolicy">
+
+		<result property="minimum_length" column="minimum_length" />
+		<result property="maximum_length" column="maximum_length" />
+		<result property="expiry_period" column="expiry_period" />
+
+	</resultMap>
+
+	<select id="selectPasswordPolicy" resultMap="passwordPolicyGetter">
+		select
+		minimum_length,maximum_length,expiry_period from PASSWORD_POLICY
+  </select>
+</sqlMap>

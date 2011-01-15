@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+  <sqlMap namespace="UniversityInfo">   
+
+  <typeAlias alias="UniversityInfo" type="in.ac.dei.edrp.client.CM_UniversityInfoGetter"/>
+  <typeAlias alias="UserInfo" type="in.ac.dei.edrp.client.CM_userInfoGetter"/>
+
+  
+  	<insert id="insertNewUniversity">
+		insert into UNIVERSITY
+		(university_id, start_date, end_date, current_status, university_name, 
+		university_address, university_city, university_state, university_pincode, phone_number, 
+		other_phone, fax, insert_time, creator_id)
+		values(#universityCode#, #sessionStartDate#, #sessionEndDate#, 1, #universityName#, 
+		#universityAddress#, #universityCity#, #universityState#, #universityPincode#, 
+		#universityPhoneNumber#, #universityOtherPhoneNumber#, #universityFaxNumber#,
+		 #universityInsertTime#, #universityCreatorID#)
+  </insert>
+  
+
+  
+  
+  
+  <resultMap id="UniversityCode" class="UniversityInfo">
+  <result property="universityMaxCode" column="MAX(university_id)"/>
+  </resultMap>
+  
+  <select id = "selectMaxUniversityCode" resultMap="UniversityCode">
+  select MAX(university_id) from UNIVERSITY
+  </select>
+
+ <resultMap id="maxID" class="userInfo">
+  <result property="user_id" column="max(substr(user_id, -6))"/>
+  </resultMap>
+  
+  <select id="selectMaxUserID" resultMap="maxID">
+  select max(substr(user_id, -6)) from USER_INFO where substr(user_id,2,4) = #user_id#
+  </select>
+  
+  
+  
+  <resultMap id="University" class="UniversityInfo"> 
+  <result property="universityName"/> 
+  </resultMap>
+  
+  <select id="selectUniversityName" resultMap="University">
+  select university_name from UNIVERSITY
+  </select>
+  
+  
+  <resultMap id="UniversityCode" class="UniversityInfo">
+  <result property="universityCode" column="university_id"/>
+  </resultMap>
+  
+  <select id="selectUniversityID" resultMap="UniversityCode">
+  select university_id from UNIVERSITY where university_name LIKE #universityName#
+  </select>
+  
+
+  
+   <insert id="insertNewUser_info">
+		insert into USER_INFO
+		(user_id,group_name, user_name, password, registered_time, status)
+	    values(#user_id#, #user_group_name#, #user_name#, SHA1(#password#), #registered_timestamp#,
+		 #activated#)
+  </insert>
+
+  
+  
+  <resultMap id="AllUniversityInfo" class="UniversityInfo">
+
+   <result property="universityCode" column="university_id"/>
+   <result property="universityName" column="university_name"/>
+   <result property="universityAddress" column="university_address"/> 
+   <result property="universityCity" column="university_city"/> 
+   <result property="universityState" column="university_state"/> 
+   <result property="universityPincode" column="university_pincode"/> 
+   
+  </resultMap>
+   
+  <select id="selectAllUniversityDetails" resultMap="AllUniversityInfo">
+  select * from UNIVERSITY
+  </select>
+  
+   <select id="selectAllUniversityDetailsWithUniversityName" resultMap="AllUniversityInfo">
+  select * from UNIVERSITY where university_name = #string#
+  </select>
+  
+   <select id="selectAllUniversityDetailsWithUniversityID" resultMap="AllUniversityInfo">
+  select * from UNIVERSITY where university_id = #string#
+  </select>
+  
+     <select id="selectAllUniversityDetailsWithUniversityCity" resultMap="AllUniversityInfo">
+  select * from university where university_city = #string#
+  </select>
+  
+     <select id="selectAllUniversityDetailsWithUniversityState" resultMap="AllUniversityInfo">
+  select * from UNIVERSITY where university_state = #string#
+  </select> 
+  
+  
+  
+  
+  
+  
+  
+  
+<!-- Queries for dumping data into control tables-->
+  
+<insert id="dumpComponentDescription">
+  INSERT INTO `COMPONENT_DESCRIPTION` VALUES (#universityID#,'HS','High School','XX'),
+  (#universityID#,'IN','Intermediate','XX'),(#universityID#,'MA','MAT','XX'),
+  (#universityID#,'GT','GATE','XX'),(#universityID#,'XT','XAT','XX'),
+  (#universityID#,'CT','CAT','XX'),(#universityID#,'JE','IIT-JEE','XX'),
+  (#universityID#,'MT','Mathematics','XX'),(#universityID#,'BO','Botany','XX'),
+  (#universityID#,'ZO','Zoology','XX'),(#universityID#,'PM','PCM','XX'),
+  (#universityID#,'AM','AIEEE-MATHS','XX'),(#universityID#,'AP','AIEEE-PHYSICS + CHEMISTRY','XX'),
+  (#universityID#,'UG','Under Graduate','UG'),(#universityID#,'PG','Post Graduate','PG'),
+  (#universityID#,'P1','Post Graduate-Degree 1','PG'),(#universityID#,'U1','Under Graduate-Degree 1','UG'),
+  (#universityID#,'P2','Post Graduate-Degree 2','PG'),(#universityID#,'U2','Under Graduate-Degree 2','UG'),
+  (#universityID#,'PH','Physics','XX'),(#universityID#,'CH','CHEMISTRY','XX')
+  </insert>
+  <insert id="dumpProgramBranches">
+  INSERT INTO `PROGRAM_BRANCHES` VALUES (#universityID#,'000','None'),
+  (#universityID#,'001','Drawing And Painting'),(#universityID#,'002','English'),
+  (#universityID#,'003','Hindi'),(#universityID#,'004','Home Science'),
+  (#universityID#,'005','Music'),(#universityID#,'006','Sanskrit'),
+  (#universityID#,'007','Economics'),(#universityID#,'008','Political Science'),
+  (#universityID#,'009','Psychology'),(#universityID#,'010','Sociology'),
+  (#universityID#,'011','Botany'),(#universityID#,'012','Chemistry'),
+  (#universityID#,'013','Mathematics'),('0001','014','Physics'),
+  (#universityID#,'015','Zoology'),(#universityID#,'016','Computer Science'),
+  (#universityID#,'017','Electrical'),(#universityID#,'018','Mechanical'),
+  (#universityID#,'019','Sanskrit AND Culture'),(#universityID#,'020','Applied Economics'),
+  (#universityID#,'021','Engineering Systems'),(#universityID#,'022','Theology'),
+  (#universityID#,'023','Education'),(#universityID#,'024','Automobile'),
+  (#universityID#,'025','Electronics'),(#universityID#,'026','Leather Technology Footwear'),
+  (#universityID#,'027','Textile Designing'),(#universityID#,'028','Interior Designing and Decoration'),
+  (#universityID#,'029','Modern Office Management and Secretarial Practice'),(#universityID#,'030','Garment Technology');
+  </insert>
+  <insert id="dumpCosCode">
+  INSERT INTO `PROGRAM_COS_CODE` VALUES (#universityID#,concat(#universityID#,'001'),'001','A'),
+  (#universityID#,concat(#universityID#,'001'),'002','A'),(#universityID#,concat(#universityID#,'001'),'003','A'),
+  (#universityID#,concat(#universityID#,'001'),'004','A'),(#universityID#,concat(#universityID#,'001'),'005','A'),
+  (#universityID#,concat(#universityID#,'001'),'006','A'),(#universityID#,concat(#universityID#,'002'),'000','B'),
+  (#universityID#,concat(#universityID#,'003'),'007','C'),(#universityID#,concat(#universityID#,'003'),'008','C'),
+  (#universityID#,concat(#universityID#,'003'),'009','C'),(#universityID#,concat(#universityID#,'003'),'010','C'),
+  (#universityID#,concat(#universityID#,'004'),'000','D'),(#universityID#,concat(#universityID#,'005'),'000','E'),
+  (#universityID#,concat(#universityID#,'006'),'000','F'),(#universityID#,concat(#universityID#,'007'),'000','G'),
+  (#universityID#,concat(#universityID#,'008'),'000','H'),(#universityID#,concat(#universityID#,'009'),'000','I'),
+  (#universityID#,concat(#universityID#,'010'),'000','J'),(#universityID#,concat(#universityID#,'011'),'011','K'),
+  (#universityID#,concat(#universityID#,'011'),'012','L'),(#universityID#,concat(#universityID#,'011'),'013','M'),
+  (#universityID#,concat(#universityID#,'011'),'014','N'),(#universityID#,concat(#universityID#,'011'),'015','O'),
+  (#universityID#,concat(#universityID#,'011'),'016','P'),(#universityID#,concat(#universityID#,'012'),'017','Q'),
+  (#universityID#,concat(#universityID#,'012'),'018','R'),(#universityID#,concat(#universityID#,'014'),'020','S'),
+  (#universityID#,concat(#universityID#,'014'),'008','T'),(#universityID#,concat(#universityID#,'014'),'009','U'),
+  (#universityID#,concat(#universityID#,'014'),'010','V'),(#universityID#,concat(#universityID#,'021'),'021','D'),
+  (#universityID#,concat(#universityID#,'016'),'000','X'),(#universityID#,concat(#universityID#,'016'),'000','Y'),
+  (#universityID#,concat(#universityID#,'017'),'000','Z'),(#universityID#,concat(#universityID#,'017'),'000','A'),
+  (#universityID#,concat(#universityID#,'019'),'000','B'),(#universityID#,concat(#universityID#,'020'),'000','C'),
+  (#universityID#,concat(#universityID#,'021'),'021','D'),(#universityID#,concat(#universityID#,'021'),'016','E'),
+  (#universityID#,concat(#universityID#,'022'),'021','F'),(#universityID#,concat(#universityID#,'023'),'022','G'),
+  (#universityID#,concat(#universityID#,'023'),'023','H'),(#universityID#,concat(#universityID#,'024'),'000','I'),
+  (#universityID#,concat(#universityID#,'025'),'000','J'),(#universityID#,concat(#universityID#,'026'),'000','K'),
+  (#universityID#,concat(#universityID#,'027'),'000','L'),(#universityID#,concat(#universityID#,'028'),'000','M'),
+  (#universityID#,concat(#universityID#,'029'),'000','N'),(#universityID#,concat(#universityID#,'030'),'000','0'),
+  (#universityID#,concat(#universityID#,'031'),'000','P'),(#universityID#,concat(#universityID#,'032'),'000','Q'),
+  (#universityID#,concat(#universityID#,'033'),'000','R'),(#universityID#,concat(#universityID#,'034'),'000','S'),
+  (#universityID#,concat(#universityID#,'035'),'000','T'),(#universityID#,concat(#universityID#,'036'),'024','U'),
+  (#universityID#,concat(#universityID#,'036'),'017','V'),(#universityID#,concat(#universityID#,'036'),'018','W'),
+  (#universityID#,concat(#universityID#,'036'),'025','X'),(#universityID#,concat(#universityID#,'036'),'026','Y'),
+  (#universityID#,concat(#universityID#,'036'),'027','Z'),(#universityID#,concat(#universityID#,'036'),'028','A'),
+  (#universityID#,concat(#universityID#,'037'),'029','B'),(#universityID#,concat(#universityID#,'037'),'030','C'),
+  (#universityID#,concat(#universityID#,'037'),'004','D'),(#universityID#,concat(#universityID#,'038'),'000','E'),
+  (#universityID#,concat(#universityID#,'013'),'001','F'),(#universityID#,concat(#universityID#,'013'),'002','G'),
+  (#universityID#,concat(#universityID#,'013'),'003','H'),(#universityID#,concat(#universityID#,'013'),'019','I'),
+  (#universityID#,concat(#universityID#,'013'),'005','J');
+  
+  </insert>
+  <insert id="dumpProgramSpecialization">
+  INSERT INTO `PROGRAM_SPECIALIZATIONS` VALUES (#universityID#,'000','None'),
+  (#universityID#,'001','Sitar'),(#universityID#,'002','Tabla'),(#universityID#,'003','Vocal Music'),
+  (#universityID#,'004','International Business'),(#universityID#,'005','Human Development'),
+  (#universityID#,'006','Computer Applications'),(#universityID#,'007','Electronics'),
+  (#universityID#,'008','Computer Science');
+  </insert>
+  <insert id="dumpSeatReservationCategory">
+  INSERT INTO `SEAT_RESERVATION_CATEGORY` VALUES (#universityID#,'GN','General'),
+  (#universityID#,'SC','SC'),(#universityID#,'ST','ST'),(#universityID#,'BC','OBC');
+  </insert>
+  <insert id="dumpSystemValues">
+  INSERT INTO `SYSTEM_VALUES` VALUES (#universityID#,'PRGMID','001'),
+  (#universityID#,'ENTYID',#universityID#),(#universityID#,'WGHTID','00'),(#universityID#,'STUDID','000000000');
+  </insert>
+  <insert id="dumpEntityEmployee">
+  INSERT INTO `ENTITY_EMPLOYEE` VALUES (#user_id#,concat(#id#,'0001'),#user_name#,' ',' ',NULL,NULL,NULL,'001',NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+  </insert>
+  <insert id="dumpUniversityEntityType">
+  INSERT INTO `UNIVERSITY_ENTITY_TYPE` VALUES (#universityID#,'DEP','Department',3,NULL,NULL,NULL,NULL),
+  (#universityID#,'FAC','Faculty',2,NULL,NULL,NULL,NULL),(#universityID#,'INS','Institute',1,NULL,NULL,NULL,NULL);
+  </insert>
+  <insert id="dumpUniversityProgramMode">
+  INSERT INTO `UNIVERSITY_PROGRAM_MODE` VALUES (#universityID#,'Open Mode','o'),(#universityID#,'Dual Mode','d'),(#universityID#,'Integrated Mode','i');
+  </insert>
+  <insert id="dumpUniversityProgramType">
+  INSERT INTO `UNIVERSITY_PROGRAM_TYPE` VALUES (#universityID#,'Part Time','p'),(#universityID#,'Full Time','f');
+  </insert>
+  <insert id="dumpWeightageDescription">
+ INSERT INTO `WEIGHTAGE_DESCRIPTION` VALUES (#universityID#,'HS','High School'),
+ (#universityID#,'IN','Intermediate'),(#universityID#,'SW','Staff Ward'),
+ (#universityID#,'UG','Under Graduate');
+  </insert>
+   
+  
+  
+  
+</sqlMap>

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+  <sqlMap namespace="boardNormal">   
+
+  <typeAlias alias="entityInformation1" type="in.ac.dei.edrp.client.CM_entityInfoGetter" />
+ <typeAlias alias="programMasterInfo11" type="in.ac.dei.edrp.client.CM_progMasterInfoGetter" />
+  <typeAlias alias="boardNormalization" type="in.ac.dei.edrp.client.CM_boardNormalizationGetter" />
+ 
+ 
+ 
+ 
+ <resultMap id="selectentityDetailsForManage" class="entityInformation1">
+		<result property="entity_id" column="entity_id" />
+		<result property="entity_name" column="entity_name" />
+</resultMap>
+
+<select id="progOfferingEntity" resultMap="selectentityDetailsForManage">
+select distinct e.entity_id entity_id,e.entity_name entity_name from ENTITY_MASTER e,
+ PROGRAM_COMPONENTS b, PROGRAM_OFFERED_BY pob  where b.program_id=#program_id# 
+ AND e.entity_id=b.offered_by AND pob.offered_by=e.entity_id AND b.program_id=pob.program_id
+</select>
+ 
+  
+	
+	<resultMap id="progListGetter" class="programMasterInfo11">
+	
+	<result property="program_id" column="program_id"/>
+    <result property="program_name" column="program_name"/>
+    
+  	
+	</resultMap>
+	
+	<select id="progListforBoard" resultMap="progListGetter">
+select distinct m.program_id,m.program_name from PROGRAM_COMPONENTS a,ENTITY_PROGRAM_MASTER m 
+where a.program_id LIKE #program_id# AND a.board_flag=#branchname# AND a.program_id=m.program_id
+	</select>
+  
+  	<resultMap id="branchListGetter" class="programMasterInfo11">
+	
+	<result property="branchname" column="branch_name"/>
+   	<result property="branchcode" column="branch_code"/>
+   	
+	</resultMap>
+	
+	<select id="branchListforBoard" resultMap="branchListGetter">
+select distinct b.branch_name,b.branch_code from PROGRAM_BRANCHES b,PROGRAM_COMPONENTS c 
+where c.program_id=#program_id# AND
+c.offered_by=#creator_id# AND
+c.branch_code=b.branch_code AND
+c.board_flag='Y'
+	</select>
+  
+  
+ <resultMap id="compListGetter" class="boardNormalization">
+	
+	<result property="component_id" column="component_id"/>
+   	<result property="description" column="description"/>
+   	
+	</resultMap>
+	
+	<select id="compListforBoard" resultMap="compListGetter">
+select cd.component_id,cd.description from COMPONENT_DESCRIPTION cd,PROGRAM_COMPONENTS c 
+where c.program_id=#program_id# AND
+c.offered_by=#creator_id# AND
+c.branch_code=#branchcode# AND 
+c.component_id=cd.component_id
+AND c.board_flag='Y'
+	</select>
+  
+  
+  
+  
+   <resultMap id="boardListGetter" class="boardNormalization">
+	
+	<result property="board_id" column="board_id"/>
+   	<result property="board_name" column="board_name"/>
+   	
+	</resultMap>
+	
+	<select id="boardList" resultMap="boardListGetter">
+	
+	select board_id,board_name from BOARD_MASTER
+
+	</select>
+  
+  <insert id="addBoardNormalizationFactor">
+  insert into PROGRAM_BOARD 
+  (program_id,entity_id,branch_code,component_id,board,normalization_factor)
+  values
+  (#program_id#,#entity_id#,#branch_code#,#component_id#,#board_id#,#normalization_factor#)
+  </insert>
+  
+ 	
+	<select id="progListforBoardforManage" resultMap="progListGetter">
+select distinct m.program_id,m.program_name from PROGRAM_BOARD a,ENTITY_PROGRAM_MASTER m 
+where a.program_id LIKE #program_id# AND a.program_id=m.program_id
+	</select>
+  
+  
+  
+  <resultMap id="progListGetterManage" class="boardNormalization">
+   <result property="program_name" column="program_name"/>
+    <result property="program_id" column="program_id"/>
+  	 <result property="entity_name" column="entity_name"/>
+  	  <result property="entity_id" column="entity_id"/>
+  	   <result property="branch_name" column="branch_name"/>
+  	    <result property="branch_code" column="branch_code"/>
+  	     <result property="description" column="description"/>
+  	      <result property="component_id" column="component_id"/>
+  	       <result property="board_name" column="board_name"/>
+  	        <result property="board_id" column="board_id"/>
+  	         <result property="normalization_factor" column="normalization_factor"/>
+	</resultMap>
+  
+  
+  
+  
+  <select id="factorDetailList" resultMap="progListGetterManage">
+   select pm.program_name,pm.program_id,em.entity_name,em.entity_id,bb.branch_name,bb.branch_code,
+   cd.description,cd.component_id,bm.board_name,bm.board_id,
+   pb.normalization_factor from PROGRAM_BOARD pb,ENTITY_PROGRAM_MASTER pm,ENTITY_MASTER em,
+   PROGRAM_BRANCHES bb,COMPONENT_DESCRIPTION cd,BOARD_MASTER bm 
+   where pb.program_id LIKE #program_id# AND pb.program_id=pm.program_id AND 
+   pb.entity_id LIKE #entity_id# AND pb.entity_id=em.entity_id AND 
+   pb.branch_code LIKE #branch_code# AND pb.branch_code=bb.branch_code AND
+   pb.component_id LIKE #component_id# AND pb.component_id=cd.component_id AND
+   pb.board LIKE #board_id# AND pb.board=bm.board_id
+  </select>
+  
+  
+  
+  
+  <update id="updateBoardFactor">
+  update PROGRAM_BOARD set normalization_factor=#normalization_factor#
+where program_id LIKE #program_id# AND
+entity_id LIKE #entity_id# AND 
+branch_code LIKE #branch_code# AND 
+component_id LIKE #component_id# AND 
+board LIKE #board_id#
+  </update>
+  
+  
+   <delete id="deleteBoardFactor">
+  delete from PROGRAM_BOARD
+where program_id LIKE #program_id# AND
+entity_id LIKE #entity_id# AND 
+branch_code LIKE #branch_code# AND 
+component_id LIKE #component_id# AND 
+board LIKE #board_id#
+  </delete>
+  
+  
+  </sqlMap>

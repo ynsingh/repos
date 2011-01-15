@@ -1,0 +1,6 @@
+<!DOCTYPE picture[
+<!ELEMENT contact (image)>
+<!ELEMENT image>
+<!ELEMENT contact1 (image1)>
+<!ELEMENT image1>
+]>

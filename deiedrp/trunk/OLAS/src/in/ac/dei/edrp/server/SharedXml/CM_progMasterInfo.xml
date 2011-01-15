@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="ProgMasterInfo">
+
+<typeAlias alias="programMasterInfo" type="in.ac.dei.edrp.client.CM_progMasterInfoGetter" />
+	
+	
+  <resultMap id="progidGetter" class="programMasterInfo">
+
+    <result property="program_id" column="program_id"/>
+    
+  </resultMap>
+	
+	<select id="sysvalue" resultMap="progidGetter">
+	select value program_id from SYSTEM_VALUES where university_id=#university_id# AND code=#system_code#
+	</select>
+	
+	<update id="updatesysvalue">
+	update SYSTEM_VALUES set value=#system_value# where university_id=#university_id# AND code=#system_code#
+	</update>
+	
+	
+<insert id="insertintoprogmaster">
+insert into ENTITY_PROGRAM_MASTER 
+		 (program_id,program_code,program_name,program_type,program_mode,branch,specialization,number_of_terms,
+		 total_credits,number_of_attempt_allowed, max_number_of_fail_subjects ,fixed_duration,ug_pg,ten_codes,
+		 insert_time,modification_time,creator_id,modifier_id)
+		  values (#program_id#,#program_code#,#program_name#,#program_type#,#program_mode#,#branch#,#specilization#,#no_of_terms#,
+		 #total_credits#,#number_of_attempt_allowed#,#max_number_of_fail_subjects#,#fixed_duration#,#UGorPG#,#tencodes#,
+		 #insert_time#,#modification_time#,#creator_id#,#modifier_id#)
+</insert>
+	<!-- <insert id="insertintoprogmaster">
+insert into ENTITY_PROGRAM_MASTER 
+		 (program_id,program_code,program_name,program_type,program_mode,branch,specialization,no_of_terms,
+		 total_credits,Number_of_Attempt_allowed, max_Fail_Subjects ,Fixed_Duration,UGorPG,tencodes,
+		 insert_time,modification_time,creator_id,modifier_id)
+		  values (#program_id#,#program_code#,#program_name#,#program_type#,#program_mode#,#branch#,#specialization#,#no_of_terms#,
+		 #total_credits#,#Number_of_Attempt_allowed#,#Max_Number_of_Fail_Subjects#,#Fixed_Duration#,#UGorPG#,#tencodes#,
+		 #insert_time#,#modification_time#,#creator_id#,#modifier_id#)
+</insert> -->
+	
+	<insert id="insertprogduration">
+	insert into PROGRAM_DURATION 
+		  (program_id,minimum_duration,maximum_duration,start_day_month,insert_time,modification_time,creator_id,modifier_id)
+		   values 
+		  (#program_id#,#minimun_duration#,#maximum_duration#,#startdate#,
+		  #insert_time#,#modification_time#,#creator_id#,#modifier_id#)
+	</insert>
+	
+	<insert id="insertbranchdetail">
+	insert into ENTITY_PROGRAM_BRANCH_DETAIL 
+		  (program_id,branch) 
+		  values 
+		  (#program_id#,#branchcode#)
+	</insert>
+	
+	<insert id="insertspecdetail">
+	insert into ENTITY_PROGRAM_SPECIALIZATION_DETAIL 
+		  (program_id,branch,specialization)
+		  values 
+		  (#program_id#,#branchcode#,#specialization_code#)
+	</insert>
+	
+	<insert id="insertseatreserve">
+	insert into PROGRAM_SEAT_RESERVATION 
+		  (program_id,category_code,percentage_seats,insert_time,modification_time,creator_id,modifier_id) 
+		  values 
+		  (#program_id#,#category#,#percentage_seats#,#insert_time#,#modification_time#,#creator_id#,#modifier_id#)
+	</insert>
+	
+	
+	
+	<resultMap id="progListGetter" class="programMasterInfo">
+
+    <result property="program_id" column="program_id"/>
+    <result property="program_code" column="program_code"/>
+    <result property="program_name" column="program_name"/>
+    
+  </resultMap>
+	
+	<select id="selectProgList" resultMap="progListGetter">
+	select distinct program_id,program_code,program_name from ENTITY_PROGRAM_MASTER where program_id LIKE #university_id#
+	</select>
+	
+	 
+	
+	
+	<resultMap id="progMasterDetailGetter" class="programMasterInfo">
+	
+	<result property="program_id" column="program_id"/>
+    <result property="program_code" column="program_code"/>
+    <result property="program_name" column="program_name"/>
+    <result property="program_type" column="program_type"/>
+    <result property="program_mode" column="program_mode"/>
+    <result property="no_of_terms" column="number_of_terms"/>
+    <result property="total_credits" column="total_credits"/>
+    <result property="number_of_attempt_allowed" column="number_of_attempt_allowed"/>
+    <result property="max_number_of_fail_subjects" column="max_number_of_fail_subjects"/>
+    <result property="fixed_duration" column="fixed_duration"/>
+    <result property="UGorPG" column="ug_pg"/>
+    <result property="tencodes" column="ten_codes"/>
+  	
+	</resultMap>
+	
+	<select id="progBasicDetail" resultMap="progMasterDetailGetter">
+select distinct program_id,program_code,program_name,program_type,program_mode,number_of_terms,
+		 total_credits,number_of_attempt_allowed, max_number_of_fail_subjects ,fixed_duration,ug_pg,ten_codes from ENTITY_PROGRAM_MASTER where program_id LIKE #program_id#
+	</select>
+	
+	<select id="progBasicDetailFromCode" resultMap="progMasterDetailGetter">
+select distinct program_id,program_code,program_name,program_type,program_mode,number_of_terms,
+		 total_credits,number_of_attempt_allowed, max_number_of_fail_subjects ,fixed_duration,ug_pg,ten_codes from ENTITY_PROGRAM_MASTER where program_code LIKE #program_code#
+	</select>
+	
+	
+	<resultMap id="progDurationDetailGetter" class="programMasterInfo">
+	
+	<result property="program_id" column="program_id"/>
+    <result property="program_name" column="program_name"/>
+    <result property="program_code" column="program_code"/>
+    <result property="minimun_duration" column="minimum_duration"/>
+    <result property="maximum_duration" column="maximum_duration"/>
+    <result property="startdate" column="startdate"/>
+	</resultMap>
+	
+	<select id="progDurationDetail" resultMap="progDurationDetailGetter">
+ select distinct m.program_id program_id,m.program_name program_name,m.program_code program_code,d.minimum_duration minimum_duration,d.maximum_duration maximum_duration,d.start_day_month startdate from PROGRAM_DURATION d, ENTITY_PROGRAM_MASTER m where d.program_id LIKE #program_id# AND m.program_id=d.program_id
+	</select>
+		
+	
+	<resultMap id="progBranchDetailGetter" class="programMasterInfo">
+	<result property="program_id" column="program_id"/>
+	 <result property="program_name" column="program_name"/>
+    <result property="program_code" column="program_code"/>
+    <result property="branchname" column="branch_name"/>
+  <result property="branchcode" column="branch_code"/>  
+	</resultMap>
+	
+	
+	
+	<select id="progBranchDetail" resultMap="progBranchDetailGetter">
+	<!--  
+	select m.program_name program_name,m.program_code program_code,bd.branch_name,sd.specialization_name from ENTITY_PROGRAM_BRANCH_DETAIL bd,ENTITY_PROGRAM_SPECIALIZATION_DETAIL sd , ENTITY_PROGRAM_MASTER m where bd.program_id LIKE #program_id# AND bd.branch=sd.branch AND m.program_id=sd.program_id
+	-->
+	
+select distinct m.program_id program_id, m.program_name program_name,m.program_code program_code,b.branch_name,b.branch_code from ENTITY_PROGRAM_BRANCH_DETAIL bd,ENTITY_PROGRAM_MASTER m,PROGRAM_BRANCHES b where bd.program_id LIKE #program_id# AND m.program_id=bd.program_id AND bd.branch NOT IN ('000') AND bd.branch=b.branch_code
+	
+	</select>
+	
+	<resultMap id="progSpecDetailGetter" class="programMasterInfo">
+	<result property="program_id" column="program_id"/>
+	 <result property="program_name" column="program_name"/>
+    <result property="program_code" column="program_code"/>
+    <result property="branchname" column="branch_name"/>
+    <result property="specname" column="specialization_name"/>
+     <result property="specialization_code" column="specialization_code"/>
+	</resultMap>
+	
+	<select id="progSpecDetail" resultMap="progSpecDetailGetter">
+	<!--  
+	select m.program_name program_name,m.program_code program_code,s.specialization_name from ENTITY_PROGRAM_SPECIALIZATION_DETAIL s  , ENTITY_PROGRAM_MASTER m where s.program_id LIKE #program_id# AND s.branch='000' AND m.program_id=s.program_id
+	-->
+	select distinct m.program_id program_id, m.program_name program_name,m.program_code program_code,ss.specialization_name,ss.specialization_code,bb.branch_name branch_name from PROGRAM_BRANCHES bb,ENTITY_PROGRAM_SPECIALIZATION_DETAIL s,PROGRAM_SPECIALIZATIONS ss  , ENTITY_PROGRAM_MASTER m,ENTITY_PROGRAM_BRANCH_DETAIL b where s.program_id LIKE #program_id# AND m.program_id=s.program_id AND s.branch=b.branch AND b.program_id=s.program_id AND s.specialization=ss.specialization_code AND bb.branch_code=b.branch
+	</select>
+	
+	<resultMap id="progreserveDetailGetter" class="programMasterInfo">
+	<result property="program_id" column="program_id"/>
+	 <result property="program_name" column="program_name"/>
+    <result property="program_code" column="program_code"/>
+    <result property="category" column="category_name"/>
+    <result property="percentage_seats" column="percentage_seats"/>
+      <result property="category_code" column="category_code"/>
+	</resultMap>
+	
+	<select id="progReserveDetail" resultMap="progreserveDetailGetter">
+	select distinct m.program_id program_id,m.program_name program_name,m.program_code program_code,rr.category_name,r.percentage_seats,rr.category_code from  PROGRAM_SEAT_RESERVATION r ,SEAT_RESERVATION_CATEGORY rr, ENTITY_PROGRAM_MASTER m where r.program_id LIKE #program_id# AND m.program_id=r.program_id AND r.category_code=rr.category_code
+	</select>
+	
+	
+	<resultMap id="branchListGetter" class="programMasterInfo">
+	 <result property="branchcode" column="branch_code"/>
+    <result property="branchname" column="branch_name"/>
+   	</resultMap>
+	
+	<select id="branchList" resultMap="branchListGetter">
+	select branch_code,branch_name from PROGRAM_BRANCHES where university_id=#university_id#
+	</select>
+	
+	
+	
+	<resultMap id="specListGetter" class="programMasterInfo">
+	 <result property="specialization_code" column="specialization_code"/>
+    <result property="specname" column="specialization_name"/>
+   	</resultMap>
+	
+	<select id="specList" resultMap="specListGetter">
+	select specialization_code,specialization_name from PROGRAM_SPECIALIZATIONS where university_id=#university_id#
+	</select>
+	
+	
+	<resultMap id="categoryListGetter" class="programMasterInfo">
+	 <result property="category_code" column="category_code"/>
+    <result property="category" column="category_name"/>
+   	</resultMap>
+	
+	<select id="categoryList" resultMap="categoryListGetter">
+	select category_code,category_name from SEAT_RESERVATION_CATEGORY where university_id=#university_id#
+	</select>
+	
+	
+	<update id="updateProgBasicDetail">
+	
+update ENTITY_PROGRAM_MASTER set program_name=#program_name#, number_of_terms=#no_of_terms#,total_credits=#total_credits#,
+number_of_attempt_allowed=#number_of_attempt_allowed#,max_number_of_fail_subjects=#max_number_of_fail_subjects#,ug_pg=#UGorPG#,
+modification_time=#modification_time#,modifier_id=#modifier_id# where program_code=#program_code#
+	</update>
+	
+	<update id="updateProgDurationDetails1">
+	update PROGRAM_DURATION set minimum_duration=#minimun_duration# ,maximum_duration=#maximum_duration#,modification_time=#modification_time#,modifier_id=#modifier_id# where program_id=#program_id# 
+	</update>
+	
+	<update id="updateProgDurationDetails2">
+	update PROGRAM_DURATION set start_day_month=#startdate#,modification_time=#modification_time#,modifier_id=#modifier_id# where program_id=#program_id# AND start_day_month=#oldstartdate#
+	</update>
+	
+	<update id="updateSeatReserve">
+	update PROGRAM_SEAT_RESERVATION set percentage_seats=#percentage_seats# ,modification_time=#modification_time#,modifier_id=#modifier_id# where program_id=#program_id# AND category_code LIKE #category_code#
+	</update>
+	
+	
+	<delete id="deleteProgBasicDetails">
+	delete from ENTITY_PROGRAM_MASTER where program_id=#program_id#
+	</delete>
+	
+	<delete id="deleteProgDurationDetails">
+	delete from PROGRAM_DURATION where program_id=#program_id# AND start_day_month LIKE #startdate#
+	</delete>
+	
+	<delete id="deleteProgBranchDetails">
+	delete from ENTITY_PROGRAM_BRANCH_DETAIL where program_id=#program_id# AND branch LIKE #branchcode#
+	</delete>
+	
+	<delete id="deleteProgSpecDetails">
+	<!-- complete query by adding branch code also-->
+	delete from ENTITY_PROGRAM_SPECIALIZATION_DETAIL where program_id=#program_id# AND specialization LIKE #specialization_code#
+	</delete>
+	
+	<delete id="deleteProgReserveDetails">
+	delete from PROGRAM_SEAT_RESERVATION where program_id=#program_id# AND category_code LIKE #category_code#
+	</delete>
+	
+	
+	
+	<resultMap id="noOfTerms" class="programMasterInfo">
+	   <result property="no_of_terms" column="number_of_terms"/>
+   	</resultMap>
+	
+	<select id="noOfTerms" resultMap="noOfTerms">
+	select number_of_terms from ENTITY_PROGRAM_MASTER where program_id=#program_id#
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	</sqlMap>

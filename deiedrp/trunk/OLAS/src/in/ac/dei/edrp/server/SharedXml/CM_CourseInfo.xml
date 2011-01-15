@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+  <sqlMap namespace="CourseInfo">   
+
+  <typeAlias alias="courseInfo" type="in.ac.dei.edrp.client.CM_CourseInfoGetter"/>
+
+  <resultMap id="courseTypeNameGetter" class="courseInfo">
+
+    <result property="course_type_name" column="course_type_name"/>
+    
+
+  </resultMap>
+ 
+  <select id="courseTypeName" resultMap="courseTypeNameGetter"> 
+ 	 
+SELECT course_type_name FROM entity_course_type where university_code=#university_code#
+ and course_type=#course_type# and status=#status#
+					
+  </select>
+  
+  
+<!--  <resultMap id="courseCodeGetter" class="courseInfo">-->
+<!---->
+<!--    <result property="course_code" column="course_code"/>-->
+<!--    -->
+<!---->
+<!--  </resultMap>-->
+<!-- -->
+<!--  <select id="Getcoursecode" resultMap="courseCodeGetter"> -->
+<!--SELECT course_code FROM entity_course_master where university_code=#university_code# and status=#status#-->
+<!--					-->
+<!--  </select>-->
+
+<!--   <resultMap id="courseTypeGetter" class="courseInfo">-->
+<!---->
+<!--    <result property="course_type" column="course_type"/>-->
+<!--    -->
+<!---->
+<!--  </resultMap>-->
+<!-- -->
+<!--  <select id="GetcourseType" resultMap="courseTypeGetter"> -->
+<!--SELECT course_type FROM entity_course_type where university_code=#university_code# and status=#status#-->
+<!--					-->
+<!--  </select>-->
+  
+  
+<!--   <resultMap id="courseTypeNameGetter" class="courseInfo">-->
+<!---->
+<!--    <result property="course_type_name" column="course_type_name"/>-->
+<!--    -->
+<!---->
+<!--  </resultMap>-->
+<!-- -->
+<!--  <select id="GetcourseTypeName" resultMap="courseTypeNameGetter"> -->
+<!--SELECT course_type_name FROM entity_course_type where university_code=#university_code# and status=#status#-->
+<!--					-->
+<!--  </select>-->
+<!--  -->
+  
+<!--   <resultMap id="TypeIdGetter" class="courseInfo">-->
+<!---->
+<!--    <result property="course_type" column="course_type"/>-->
+<!--    -->
+<!---->
+<!--  </resultMap>-->
+<!-- -->
+<!--  <select id="GetTypeId" resultMap="TypeIdGetter"> -->
+<!--SELECT course_type FROM entity_course_type where university_code=#university_code# and course_type_name=#course_type_name#-->
+<!--					and status=#status#-->
+<!--  </select>-->
+<!--  -->
+<!--  -->
+<!--  -->
+<!--   <resultMap id="NameGetter" class="courseInfo">-->
+<!---->
+<!--    <result property="course_name" column="course_name"/>-->
+<!--    -->
+<!---->
+<!--  </resultMap>-->
+<!-- -->
+<!--  <select id="GetNameofCourse" resultMap="NameGetter"> -->
+<!--SELECT course_name FROM entity_course_master where university_code=#university_code# and status=#status#-->
+<!--					-->
+<!--  </select>-->
+<!--  -->
+<!--  -->
+<!--  -->
+<!--  -->
+<!--   <resultMap id="courseNameGetter" class="courseInfo">-->
+<!---->
+<!--    <result property="course_name" column="course_name"/>-->
+<!--    -->
+<!---->
+<!--  </resultMap>-->
+<!-- -->
+<!--  <select id="courseName" resultMap="courseNameGetter"> -->
+<!-- 	 -->
+<!--SELECT course_name FROM entity_course_master where university_code=#university_code#-->
+<!-- and course_code=#course_code# and status=#status#-->
+<!--		-->
+<!--  </select>-->
+<!--  -->
+<!--  -->
+<!--   -->
+<!--   <resultMap id="checkcourseGetter" class="courseInfo">-->
+<!---->
+<!--    <result property="course_code" column="course_code"/>-->
+<!--    -->
+<!---->
+<!--  </resultMap>-->
+<!-- -->
+<!--  <select id="checkcourse" resultMap="checkcourseGetter"> -->
+<!-- 	 -->
+<!--SELECT Distinct course_code FROM entity_course_master where university_code=#university_code# and status=#status#-->
+<!--		-->
+<!--  </select>-->
+<!--  -->
+<!--   -->
+<!--   <resultMap id="checkcourseTypeGetter" class="courseInfo">-->
+<!---->
+<!--    <result property="course_type" column="course_type"/>-->
+<!--    -->
+<!---->
+<!--  </resultMap>-->
+<!-- -->
+<!--  <select id="checkcourseType" resultMap="checkcourseTypeGetter"> -->
+<!--SELECT distinct course_type FROM entity_course_type where university_code=#university_code# and status=#status#-->
+<!--		-->
+<!--  </select>-->
+<!--  -->
+<!--  -->
+<!--   -->
+<!--   <resultMap id="ccGetter" class="courseInfo">-->
+<!---->
+<!--    <result property="course_code" column="course_code"/>-->
+<!--    -->
+<!---->
+<!--  </resultMap>-->
+<!-- -->
+<!--  <select id="GetcourseName" resultMap="ccGetter"> -->
+<!--SELECT course_code FROM entity_course_master where university_code=#university_code# and course_name=#course_name#-->
+<!--					-->
+<!--		-->
+<!--  </select>-->
+<!--  -->
+<!--  -->
+<!--  <delete id="deleteCourse"> -->
+<!-- update entity_course_master set status=#status# where university_code=#university_code# and course_code=#course_code#-->
+<!--   </delete>-->
+<!--  -->
+<!--    -->
+<!--  <delete id="deleteCourseType"> -->
+<!-- update entity_course_type set status=#status# where university_code=#university_code# and course_type=#course_type#-->
+<!--   </delete>-->
+<!--  -->
+<!--   <insert id="insertCourseType"> -->
+<!-- insert into Entity_Course_Type values (#university_code# ,#course_type#,#course_type_name#,#status#)-->
+<!--   </insert>-->
+<!--  -->
+<!--  -->
+<!--   <insert id="insertCourse"> -->
+<!-- insert into Entity_Course_Master values (#university_code# ,#course_code#,#course_name#,null,null,null,null,#status#)-->
+<!--   </insert>-->
+  
+  
+  
+</sqlMap>
