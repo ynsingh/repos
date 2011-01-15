@@ -40,7 +40,7 @@ public class MailConfigAction extends Action{
 			HttpServletResponse response) throws Exception {
 		MailConfigForm mailconfigform = (MailConfigForm) form;
 		Locale locale = new Locale("en", "US");
-		ResourceBundle message = ResourceBundle.getBundle("in\\ac\\dei\\edrp\\pms\\propertiesFile\\ApplicationResources",locale);
+		ResourceBundle message = ResourceBundle.getBundle("in/ac/dei/edrp/pms/propertiesFile/ApplicationResources",locale);
 
 		boolean bool=SendingMail.checkMailValidation(mailconfigform.getSmtpServerName(),
 				mailconfigform.getSmtpServerPort(),mailconfigform.getMailFrom(),
