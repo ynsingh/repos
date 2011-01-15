@@ -53,7 +53,7 @@ public class Response {
              * Check for duplicate Roll No.
              */
             ps = con.prepareStatement(
-            "SELECT distinct FileName FROM omrwebdb2.response where Testid=? AND RollNo=?");
+            "SELECT distinct FileName FROM response where TestId=? AND RollNo=?");
              ps.setInt(1, testid);
              ps.setInt(2, rno);
              ResultSet rsDuplicateRno = ps.executeQuery();

@@ -29,9 +29,8 @@
 		<tr><th><font face="Arial" color="#000040"><bean:message key="label.qno"/> </font></th><th><font face="Arial" color="#000040"><bean:message key="label.ans"/></font> </th></tr>
 		<%
 		 ansList = (ArrayList<String>)request.getAttribute("confirmAnsList");
-		 test= (Integer)request.getAttribute("correctAnsId");
-		String path=
-		(String)request.getAttribute("path");
+		test= (Integer)request.getAttribute("correctAnsId");
+		String path=(String)request.getAttribute("path");
 		String ques = (String)request.getAttribute("Ques");
 		   i=1;
 		 for( j = 1;j<ansList.size();j++){%>
@@ -40,7 +39,7 @@
 		}
 		
 		 %>
-		 <tr><td><html:hidden property="testid" value="<%=""+test%>"/>
+		 <tr><td><html:hidden property="testid" value="<%=String.valueOf(test)%>"/>
 		 <tr><td><html:hidden property="path" value="<%=path%>"/>
 		 <tr><td><html:hidden property="ques" value="<%=ques%>"/>
 		<tr>

@@ -108,9 +108,7 @@ public class testSetUpAction extends Action {
                      * Get the maximum(last) testId from the testheader to compute the next testid
                      */
                 PreparedStatement psTestDetail = con.prepareStatement("select max(TestId) from TestHeader");
-                ResultSet rsTestId=psTestDetail.executeQuery();
-                
-                
+                ResultSet rsTestId=psTestDetail.executeQuery();                
                 while(rsTestId.next()){
                 	if(rsTestId.getString(1)!=null){
                     lastTestId=rsTestId.getString(1);

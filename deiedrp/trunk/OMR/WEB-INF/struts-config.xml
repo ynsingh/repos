@@ -67,6 +67,7 @@
       scope="request"
       type="in.ac.dei.mhrd.omr.testSetUpAction">
  <forward name="success" path="/SuccessUpdate.jsp" />
+
  </action>
     <action
       attribute="sectionForm"
@@ -77,6 +78,7 @@
       type="in.ac.dei.mhrd.omr.SectionAction">
       <forward name="index" path="/index.jsp"/>
     </action>
+
     <action
       attribute="correctAnswerForm"
       input="/correctAnsJsp.jsp"
@@ -85,6 +87,7 @@
       type="in.ac.dei.mhrd.omr.CorrectAns">
       <forward name="index" path="/index.jsp"/>
     </action>
+
     <action
       attribute="wrongQuesForm"
       input="/WrongQues.jsp"
@@ -94,6 +97,7 @@
       type="in.ac.dei.mhrd.omr.WrongQuesAction">
       <forward name="WrongQ" path="/WrongQMsgJsp.jsp" />
          </action>
+
       <action
       attribute="errorLogForm123"
       input="/errLog.jsp"
@@ -103,6 +107,7 @@
       type="in.ac.dei.mhrd.omr.ErrorLogAction">
       <forward name="dispalyerr" path="/DisplaryErr.jsp" />
       </action>
+
     <action
       attribute="processSheetForm123"
       input="/ProcessSheet.jsp"
@@ -113,6 +118,7 @@
       <forward name="index" path="/index.jsp" />
       
       </action>
+
     <action
       attribute="correctSheetBrowseForm123"
       input="/correctScanSheet.jsp"
@@ -122,6 +128,7 @@
       type="in.ac.dei.mhrd.omr.CorrectSheetBrowseAction">
       <forward name="confirmAns1" path="/confirmAnsJsp.jsp" />
       </action>
+
     <action
       attribute="resultForm123"
       input="/SelectResult.jsp"
@@ -152,6 +159,7 @@
       type="in.ac.dei.mhrd.omr.UpdateTestAction" >
      <forward name="updatetestMsg" path="/updateMsgJsp.jsp"></forward> 
      </action>
+
     <action
       attribute="confirmAns"
       input="/confirmAnsJsp.jsp"
@@ -161,6 +169,7 @@
       type="in.ac.dei.mhrd.omr.ConfirmAnsAction">
       <forward name="confirmAnsMsg1" path="/ConfirmAnsMsg.jsp" />
     </action>
+
     <action
       attribute="uploadResponseSheet"
       input="/uploadResponse.jsp"
@@ -172,6 +181,7 @@
       <forward name="home" path="/Home.jsp" />
       <forward name="index" path="/index.jsp"/>
     </action>
+
     <action
       attribute="resultSchedule"
       input="/testjquery.jsp"
@@ -182,6 +192,7 @@
       type="in.ac.dei.mhrd.omr.ManageResultAction" >
       <forward name="success1" path="/ConfirmAnsMsg.jsp" />
       </action>
+
     <action
       attribute="manageWrongQues"
       input="/manageWrongQues.jsp"
@@ -249,6 +260,7 @@
       type="in.ac.dei.mhrd.omr.AddAnswerAction" >
       <forward name="correctAnsMsg" path="/WrongQMsgJsp.jsp" />
       </action>
+
     <action
       attribute="answerForm"
       input="/fillAnswer.jsp"
@@ -258,6 +270,7 @@
       type="in.ac.dei.mhrd.omr.ValidateAction" >
       <forward name="populate" path="/ValidateAnswer.jsp" />
     </action>
+
     <action
       attribute="resultForm123"
       input="/SectionDetail.jsp"
@@ -268,7 +281,15 @@
       <forward name="response" path="/displayResponse.jsp" />
     </action>
     
-  </action-mappings>
+
+ 	<action
+      input="/Menu.jsp"
+      path="/downLoadSheet"
+      type="in.ac.dei.mhrd.omr.DowLoadSheetAction">
+      <forward name="home" path="/Home.jsp" />
+    </action>
+  
+</action-mappings>
 	
   
   <message-resources parameter="in.ac.dei.mhrd.omr.ApplicationResources" />

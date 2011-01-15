@@ -33,7 +33,7 @@ public class Grace {
    	 		if(!wrongQues.isEmpty())
    	 		{
    	 				rsGraceMarks=null;
-   	 				ps=con.prepareStatement("select total_section from testheader where TestId=?");
+   	 				ps=con.prepareStatement("select Total_section from testheader where TestId=?");
    	 				ps.setInt(1, testId);
    	 				rsGraceMarks=ps.executeQuery();
    	 				rsGraceMarks.next();
@@ -85,7 +85,7 @@ public class Grace {
    	 					System.out.println("in discard");
    	 				try{
    	 					con=Connect.prepareConnection();
-   	 					ps=con.prepareStatement("select WrongQuestionNo from omrwebdb2.wrongquestion where TestId=? and status='D'");
+   	 					ps=con.prepareStatement("select WrongQuestionNo from wrongquestion where TestId=? and status='D'");
    	 					ps.setInt(1, testId);
    	 					rsDiscard=ps.executeQuery();
    	 						while(rsDiscard.next())
@@ -99,11 +99,11 @@ public class Grace {
    	 						rsDiscard=null;
    	 						if(!discardQues.isEmpty())
    	 						{
-   	 						ps=con.prepareStatement("select total_section from omrwebdb2.testheader where TestId=?");
+   	 						ps=con.prepareStatement("select Total_section from testheader where TestId=?");
    	 						ps.setInt(1, testId);
    	 						rsDiscard=ps.executeQuery();
    	 						rsDiscard.next();
-   	 						totalSection=rsDiscard.getInt("total_section");
+   	 						totalSection=rsDiscard.getInt("Total_section");
    	 						System.out.println("ts"+totalSection);
    	 						rsDiscard=null;
    	 						ps=con.prepareStatement("select Section_number,No_of_question,Neg_Marks,Marks_each_question from testsectiondetail " +

@@ -39,9 +39,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <body>
   <jsp:include page="Menu.jsp"></jsp:include><br/>
   <%!
-  ResultSet rsResponse=null;
-  ResultSet rsCorrectResponse=null;
-  
   String qry;
   int testid;
   String fileName=null; 
@@ -67,6 +64,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     %>
    
   <div align="left"><strong><font face="Arial" color="#000040"><bean:message key="label.rollno"/></font> 
+
   <%=rollno%></strong>
    <br/> <strong><font face="Arial" color="#000040"><bean:message key="label.filename"/></font> <%=sheetName.getName() %></strong>
     </div>

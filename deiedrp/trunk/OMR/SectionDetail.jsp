@@ -172,12 +172,12 @@
     			<%
     			//retrieving and calculating marks
     			//out.println("3 b4 sec detail");
-    			 query4="select No_of_question,marks_each_question from testsectiondetail where Section_number="+j+" and TestId="+testid;
+    			 query4="select No_of_question,Marks_each_question from testsectiondetail where Section_number="+j+" and TestId="+testid;
     			 PreparedStatement psTestDetail=con.prepareStatement(query4);
     			 rsMarks=psTestDetail.executeQuery(query4);
     			 rsMarks.next();
     			 noOfQuestion=rsMarks.getInt("No_of_question");
-    			 marksEachQuestion=rsMarks.getInt("marks_each_question");
+    			 marksEachQuestion=rsMarks.getInt("Marks_each_question");
     			 if(discardMarks.size()>0)
     			 out.print("M.M. :"+((noOfQuestion*marksEachQuestion)-discardMarks.get(j-1)));
     			 else
@@ -255,7 +255,7 @@
     				}
     				else
     				{
-    				sectionMarks=sectionMarks+rsAnswer.getInt("Correct_attempt")*crs1.getFloat("marks_each_question");
+    				sectionMarks=sectionMarks+rsAnswer.getInt("Correct_attempt")*crs1.getFloat("Marks_each_question");
     				}
     		    	%>
     		    </td>

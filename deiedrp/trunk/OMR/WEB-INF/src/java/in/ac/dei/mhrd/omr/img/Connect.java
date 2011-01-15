@@ -17,7 +17,7 @@ public class Connect {
 	{
 		Class.forName("com.mysql.jdbc.Driver"); // load driver
 		
-		Connection con = DriverManager.getConnection("jdbc:mysql://localhost/omrwebdb2?user=root&password=mysql");
+		Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/omr?user=root&password=mysql");
 		//con.setAutoCommit(false);
 		return con;
 	}

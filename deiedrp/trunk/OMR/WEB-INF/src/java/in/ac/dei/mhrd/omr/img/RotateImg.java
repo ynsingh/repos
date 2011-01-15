@@ -418,8 +418,8 @@ public class RotateImg {
               sectionDetailRs = ps.executeQuery();
                  
               ps = con.prepareStatement(
-              "Select count(*), c.sectionNumber from correctans c, response r where ((c.Ques_no=r.ques_no)AND (c.TestId=?)AND (c.Answer = r.ans)AND(c.TestId=r.TestId)AND (r.RollNo=?) AND (r.FileName=?)AND (c.Ques_no NOT IN (select WrongQuestionNo from wrongQuestion where testId=?))) group by c.sectionNumber");
-              ps.setInt(1, testid);
+              "Select count(*), c.SectionNumber from correctans c, response r where ((c.Ques_no=r.ques_no)AND (c.TestId=?)AND (c.Answer = r.ans)AND(c.TestId=r.TestId)AND (r.RollNo=?) AND (r.FileName=?)AND (c.Ques_no NOT IN (select WrongQuestionNo from wrongquestion where TestId=?))) group by c.SectionNumber");
+           ps.setInt(1, testid);
            ps.setInt(2, rno);
            ps.setString(3, fileName);
            ps.setInt(4, testid); 
@@ -435,7 +435,7 @@ public class RotateImg {
       System.out.println("correct Ans : " + correctAttRs.getInt(1));
       */
       ps = con.prepareStatement(
-      "Select count(*), c.sectionNumber from correctans c, response r where ((c.Ques_no=r.ques_no)AND (c.TestId=?)AND (c.Answer != r.ans)AND(c.TestId=r.TestId)AND (r.RollNo=?) AND (r.FileName=?) AND (c.Ques_no NOT IN (select WrongQuestionNo from wrongQuestion where testId=?))) group by c.sectionNumber");
+      "Select count(*), c.SectionNumber from correctans c, response r where ((c.Ques_no=r.ques_no)AND (c.TestId=?)AND (c.Answer != r.ans)AND(c.TestId=r.TestId)AND (r.RollNo=?) AND (r.FileName=?) AND (c.Ques_no NOT IN (select WrongQuestionNo from wrongquestion where TestId=?))) group by c.SectionNumber");
    ps.setInt(1, testid);
    ps.setInt(2, rno);
    ps.setString(3, fileName);
@@ -455,7 +455,7 @@ public class RotateImg {
  
 
   
-  /* System.out.println("correctr Attempt : " + correctAttempt);
+  /* System.out.println("correct Attempt : " + correctAttempt);
    System.out.println("wrong Attempt : " + wrongAttempt);
    System.out.println("unattempt : " + (noOfQues- (correctAttempt + wrongAttempt)));*/
     

@@ -37,7 +37,7 @@ public class CorrectAns {
 
             con.setAutoCommit(false);
             
-           /* PreparedStatement ps = con.prepareStatement("select Total_question, Total_section from testheader where Testid=?" );
+           /* PreparedStatement ps = con.prepareStatement("select Total_question, Total_section from testheader where TestId=?" );
             ps.setInt(1, testid);
             ResultSet secDetail = ps.executeQuery();
             while(secDetail.next()){
@@ -83,7 +83,7 @@ public class CorrectAns {
             
 */
             PreparedStatement ps = con.prepareStatement(
-            "SELECT Section_number, No_of_question FROM omrwebdb2.testsectiondetail where TestId = ?");
+            "SELECT Section_number, No_of_question from testsectiondetail where TestId = ?");
             ps.setInt(1, testid);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){

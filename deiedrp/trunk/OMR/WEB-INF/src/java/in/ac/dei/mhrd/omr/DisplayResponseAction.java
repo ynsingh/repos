@@ -81,7 +81,7 @@ public class DisplayResponseAction extends Action {
 		       System.out.println("Roll No"+rollno);
 		       request.setAttribute("rollNo", rollno);
 		     
-		       ps=con.prepareStatement("select ques_no,answer from correctans where testid=? order by ques_no");
+		       ps=con.prepareStatement("select Ques_no,answer from correctans where TestId=? order by Ques_no");
 		       ps.setInt(1, testid);
 		       rsCorrectResponse=ps.executeQuery();
 		       rsCorrectResponse.last();
@@ -91,7 +91,7 @@ public class DisplayResponseAction extends Action {
 		       while(rsCorrectResponse.next())
 	  			  	 {
 					correctAnswer[i]=(byte)rsCorrectResponse.getByte("answer");
-					corrQues.add(rsCorrectResponse.getInt("ques_no"));
+					corrQues.add(rsCorrectResponse.getInt("Ques_no"));
 					i++;
 					}
 		    
@@ -100,7 +100,7 @@ public class DisplayResponseAction extends Action {
 			request.setAttribute("corrAns", corrAns);
 			request.setAttribute("questionNo", corrQues);
 				rsCorrectResponse=null;
-				ps=con.prepareStatement("select ques_no,ans from response where testid=? and FileName=? order by ques_no");
+				ps=con.prepareStatement("select ques_no,ans from response where TestId=? and FileName=? order by Ques_no");
 				ps.setInt(1, testid);
 				ps.setString(2, sheetName.getName());
 				rsCorrectResponse=ps.executeQuery();

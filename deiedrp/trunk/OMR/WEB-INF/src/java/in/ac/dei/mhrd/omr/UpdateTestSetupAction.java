@@ -158,7 +158,7 @@ public class UpdateTestSetupAction extends Action {
 					int countTestHeader=ps.executeUpdate();
 				    System.out.println("count header :" + countTestHeader);
 				i=1;
-				qryTestSecDetail="update testsectiondetail set No_of_question=?,marks_each_question=?,Neg_Marks=? where TestId=? and Section_number=?";
+				qryTestSecDetail="update testsectiondetail set No_of_question=?,Marks_each_question=?,Neg_Marks=? where TestId=? and Section_number=?";
 				ps=con.prepareStatement(qryTestSecDetail);
 				//updating rest of the rows
 				while(i<=tempSection)

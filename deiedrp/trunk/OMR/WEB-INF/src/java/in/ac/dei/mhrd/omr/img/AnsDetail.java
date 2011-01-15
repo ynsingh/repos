@@ -90,8 +90,7 @@ public class AnsDetail {
                 PreparedStatement psXcomponent = con.prepareStatement(
                         "select  q_no, ans from ans_info where (xstart <= ? And xend >= ?)");
                 psXcomponent.setDouble(1, xpos);
-                psXcomponent.setDouble(2, xpos);
-                
+                psXcomponent.setDouble(2, xpos);                
                  rsXcomponent = psXcomponent.executeQuery();
                 }
                 catch(Exception e){

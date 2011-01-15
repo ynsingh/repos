@@ -14,7 +14,7 @@ public class CheckCorrectAns {
 	String qry;
 		try{
 		con=Connect.prepareConnection();
-		qry="select testid from correctans where TestId=?";
+		qry="select TestId from correctans where TestId=?";
 		ps=con.prepareStatement(qry);
 		ps.setInt(1,testId );
 		rsCheckCorrect=ps.executeQuery();

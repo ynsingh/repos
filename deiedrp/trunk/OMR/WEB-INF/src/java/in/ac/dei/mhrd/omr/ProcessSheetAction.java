@@ -175,7 +175,7 @@ public class ProcessSheetAction extends Action {
 				 * of the sheets starts
 				 */
 
-				ps = con.prepareStatement("update testheader set ProcessStartDate=now(), Test_status = 'S' where Test_name=?");
+				ps = con.prepareStatement("update testheader set ProcessStartDate=now(), Test_Status = 'S' where Test_name=?");
 				ps.setString(1, testName);
 				int updateStatus = ps.executeUpdate();
 				con.commit();
@@ -287,7 +287,7 @@ public class ProcessSheetAction extends Action {
                     request.setAttribute("RejectedSheets", countRejectedFolder.length);
 					if (countinputFolderSheet.length == (countProcessedSheet.length + countRejectedFolder.length)){
 						try{
-					ps = con.prepareStatement("update testheader set ProcessEndDate=now(), Test_status = 'P', ResultDisplayedFrom=now(), ResultDisplayedTo = DATE_ADD(now() ,INTERVAL '7' Day) where TestId=?");
+					ps = con.prepareStatement("update testheader set ProcessEndDate=now(), Test_Status = 'P', ResultDisplayedFrom=now(), ResultDisplayedTo = DATE_ADD(now() ,INTERVAL '7' Day) where TestId=?");
 					ps.setInt(1, testid);
 					int updateTestHeaderStatus = ps.executeUpdate();
 					con.commit();

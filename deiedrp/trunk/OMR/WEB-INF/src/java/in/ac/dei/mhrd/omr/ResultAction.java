@@ -85,7 +85,7 @@ public class ResultAction extends Action {
  	 			status.add(rsGraceMarks.getString("status"));
  	 			}
  	 		rsGraceMarks=null;
- 	 		ps=con.prepareStatement("select total_section from testheader where TestId=?");
+ 	 		ps=con.prepareStatement("select Total_section from testheader where TestId=?");
 				ps.setInt(1, testid);
 				rsGraceMarks=ps.executeQuery();
 				rsGraceMarks.next();
@@ -135,7 +135,8 @@ con.close();
 		 request.setAttribute("testid", testid);
 		
 		
-		 /*int testid = Integer.parseInt(resultForm.getTest());
+		 /*
+		 int testid = Integer.parseInt(resultForm.getTest());
 		 float marks;
 		 int correctAttempt=0;
 		 int wrongAttempt=0;

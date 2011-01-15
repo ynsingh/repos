@@ -132,7 +132,7 @@ public String[] populateResultNameList(String from, String to){
 		
 		System.out.println("Executing select statemt ");
          ps = con.prepareStatement(
-                "select Test_name from testheader where ResultDisplayedfrom<=now() AND ResultDisplayedTo >=now() AND Test_Status='P' AND Conduct_Date BETWEEN ? AND ?");
+                "select Test_name from testheader where ResultDisplayedFrom<=now() AND ResultDisplayedTo >=now() AND Test_Status='P' AND Conduct_date BETWEEN ? AND ?");
          ps.setTimestamp(1, timest);
          ps.setTimestamp(2, timeen);
        
@@ -186,7 +186,7 @@ public String[] populateLogNameList(String from, String to){
 		java.sql.Timestamp timeen = new java.sql.Timestamp(todate.getTime()); 
 		
          ps = con.prepareStatement(
-                "SELECT distinct Test_name FROM testheader where Test_status='P' AND Conduct_Date BETWEEN ? AND ?");
+                "SELECT distinct Test_name FROM testheader where Test_status='P' AND Conduct_date BETWEEN ? AND ?");
          ps.setTimestamp(1, timest);
          ps.setTimestamp(2, timeen);
        
@@ -242,7 +242,7 @@ public String[] populateWrongQuesName(String from, String to){
 		
 		System.out.println("Executing select statemt ");
          ps = con.prepareStatement(
-                "SELECT distinct Test_name FROM testheader where Test_status='R' AND Conduct_Date BETWEEN ? AND ?");
+                "SELECT distinct Test_name FROM testheader where Test_status='R' AND Conduct_date BETWEEN ? AND ?");
          ps.setTimestamp(1, timest);
          ps.setTimestamp(2, timeen);
        
@@ -280,7 +280,7 @@ try {
     ResultSet rs;
 
     PreparedStatement ps = con.prepareStatement(
-    "select count(*) from testheader t where t.Test_status='R' AND t.Conduct_Date<=now() AND t.TestId NOT IN (Select distinct TestId from correctans)");
+    "select count(*) from testheader t where t.Test_status='R' AND t.Conduct_date<=now() AND t.TestId NOT IN (Select distinct TestId from correctans)");
     rs = ps.executeQuery();
     rs.next();
     System.out.println("count inside name list: " + rs.getInt(1));
@@ -299,7 +299,7 @@ try {
 	
 	System.out.println("Executing select statemt ");
      ps = con.prepareStatement(
-            "SELECT t.Test_name, t.TestId FROM testheader t where Test_status='R' AND Conduct_Date<=now() AND Conduct_Date BETWEEN ? AND ? AND t.testId Not IN(Select distinct TestId from correctans)");
+            "SELECT t.Test_name, t.TestId FROM testheader t where Test_status='R' AND Conduct_date<=now() AND Conduct_date BETWEEN ? AND ? AND t.TestId Not IN(Select distinct TestId from correctans)");
      ps.setTimestamp(1, timest);
      ps.setTimestamp(2, timeen);
    
@@ -337,7 +337,7 @@ public String[] populateNameListProcess(String from, String to){
         ResultSet rs;
 
         PreparedStatement ps = con.prepareStatement(
-        "select count(*) from testheader t where t.upload_status='UPD' AND (t.Test_Status='S' OR t.Test_Status='R') AND (t.TestId IN (Select distinct TestId from correctans)) AND t.Conduct_Date<=now();");
+        "select count(*) from testheader t where t.upload_status='UPD' AND (t.Test_Status='S' OR t.Test_Status='R') AND (t.TestId IN (Select distinct TestId from correctans)) AND t.Conduct_date<=now();");
         rs = ps.executeQuery();
         rs.next();
         System.out.println("count inside name process: " + rs.getInt(1));
@@ -356,7 +356,7 @@ public String[] populateNameListProcess(String from, String to){
 		
 		
          ps = con.prepareStatement(
-                "select distinct t.Test_name from testheader t where t.upload_status='UPD' AND (t.Test_Status='S' OR t.Test_Status='R') AND (t.TestId IN (Select distinct TestId from correctans))AND t.Conduct_Date<=now() AND t.Conduct_Date BETWEEN ? AND ?");
+                "select distinct t.Test_name from testheader t where t.upload_status='UPD' AND (t.Test_Status='S' OR t.Test_Status='R') AND (t.TestId IN (Select distinct TestId from correctans))AND t.Conduct_Date<=now() AND t.Conduct_date BETWEEN ? AND ?");
          ps.setTimestamp(1, timest);
          ps.setTimestamp(2, timeen);
        
@@ -391,7 +391,7 @@ public String[] selectDate(){
         ResultSet rs;
         con.setAutoCommit(false);
         PreparedStatement ps = con.prepareStatement(
-        "select count(*) from testheader where upload_status='NUPD' AND conduct_Date<=now()");
+        "select count(*) from testheader where upload_status='NUPD' AND Conduct_date<=now()");
         rs = ps.executeQuery();
         rs.next();
         System.out.println("count : " + rs.getInt(1));
@@ -400,7 +400,7 @@ public String[] selectDate(){
  
         
          ps = con.prepareStatement(
-                "select distinct Conduct_Date from testheader where upload_status='NUPD' AND conduct_Date<=now() order BY(Conduct_date)");
+                "select distinct Conduct_date FROM testheader where upload_status='NUPD' AND Conduct_date<=now() order BY(Conduct_date)");
        
          rs = ps.executeQuery();
          
@@ -433,7 +433,7 @@ public String[] selectDateWrongQues(){
     ResultSet rs;
    con.setAutoCommit(false);
     PreparedStatement ps = con.prepareStatement(
-    "select count(*) from testheader where Test_status='R'");
+    "select count(*) from testheader where Test_Status='R'");
     rs = ps.executeQuery();
     rs.next();
     System.out.println("count : " + rs.getInt(1));
@@ -441,7 +441,7 @@ public String[] selectDateWrongQues(){
     testDate[0]=message.getString("msg.select");
     
      ps = con.prepareStatement(
-            "select distinct Conduct_Date from testheader where Test_status='R' order by Conduct_Date");
+            "select distinct Conduct_date from testheader where Test_Status='R' order by Conduct_date");
    
      rs = ps.executeQuery();
      
@@ -475,7 +475,7 @@ public String[] selectDateProcess(){
         ResultSet rs;
         con.setAutoCommit(false);
         PreparedStatement ps = con.prepareStatement(
-        "select count(*) from testheader t where t.upload_status='UPD' AND (t.Test_Status='S' OR t.Test_Status='R') AND (t.TestId IN (Select distinct TestId from correctans)) AND t.Conduct_Date<=now()");
+        "select count(*) from testheader t where t.upload_status='UPD' AND (t.Test_Status='S' OR t.Test_Status='R') AND (t.TestId IN (Select distinct TestId from correctans)) AND t.Conduct_date<=now()");
         rs = ps.executeQuery();
         rs.next();
         System.out.println("count inside date process: " + rs.getInt(1));
@@ -483,7 +483,7 @@ public String[] selectDateProcess(){
         testDate[0]=message.getString("msg.select");
 
         ps = con.prepareStatement(
-                "select distinct t.conduct_Date from testheader t where t.upload_status='UPD' AND (t.Test_Status='S' OR t.Test_Status='R') AND t.Conduct_Date<=now() AND (t.TestId IN (Select distinct TestId from correctans))order BY Conduct_Date");
+                "select distinct t.conduct_date from testheader t where t.upload_status='UPD' AND (t.Test_Status='S' OR t.Test_Status='R') AND t.Conduct_Date<=now() AND (t.TestId IN (Select distinct TestId from correctans))order BY Conduct_date");
        
          rs = ps.executeQuery();
          
@@ -515,7 +515,7 @@ try {
     ResultSet rs;
     con.setAutoCommit(false);
     PreparedStatement ps = con.prepareStatement(
-    "select count(*) from testheader t where Test_status='R' AND Conduct_Date<=now() AND t.TestId NOT IN (Select distinct TestId from correctans)");
+    "select count(*) from testheader t where Test_Status='R' AND Conduct_date<=now() AND t.TestId NOT IN (Select distinct TestId from correctans)");
     rs = ps.executeQuery();
     rs.next();
     System.out.println("count : " + rs.getInt(1));
@@ -524,7 +524,7 @@ try {
 
     
      ps = con.prepareStatement(
-            "select distinct Conduct_Date from testheader t where t.Test_status='R' AND t.Conduct_Date<=now() AND t.TestId NOT IN (Select distinct TestId from correctans) order BY Conduct_Date");
+            "select distinct Conduct_date from testheader t where t.Test_Status='R' AND t.Conduct_date<=now() AND t.TestId NOT IN (Select distinct TestId from correctans) order BY Conduct_date");
    
      rs = ps.executeQuery();
      
@@ -557,7 +557,7 @@ try {
     ResultSet rs;
     con.setAutoCommit(false);
     PreparedStatement ps = con.prepareStatement(
-    "select count(*) from testheader where Test_status='P' AND  ResultDisplayedfrom<=now() AND ResultDisplayedTo>=now()");
+    "select count(*) from testheader where Test_Status='P' AND  ResultDisplayedFrom<=now() AND ResultDisplayedTo>=now()");
     
     rs = ps.executeQuery();
     rs.next();
@@ -567,7 +567,7 @@ try {
 
     
      ps = con.prepareStatement(
-            "select distinct Conduct_Date from testheader where Test_status='P' AND  ResultDisplayedfrom<=now() AND ResultDisplayedTo>=now() order BY Conduct_Date");
+            "select distinct Conduct_date from testheader where Test_Status='P' AND  ResultDisplayedFrom<=now() AND ResultDisplayedTo>=now() order BY Conduct_date");
    
      rs = ps.executeQuery();
      
@@ -603,7 +603,7 @@ try {
     ResultSet rs;
     con.setAutoCommit(false);
     PreparedStatement ps = con.prepareStatement(
-    "select count(*) from testheader where Test_status='S' OR Test_status='P'");
+    "select count(*) from testheader where Test_Status='S' OR Test_Status='P'");
     rs = ps.executeQuery();
     rs.next();
     System.out.println("count : " + rs.getInt(1));
@@ -612,7 +612,7 @@ try {
 
     
      ps = con.prepareStatement(
-            "select distinct Conduct_Date from testheader where Test_status='S' OR Test_status='P' order BY Conduct_Date");
+            "select distinct Conduct_date from testheader where Test_Status='S' OR Test_Status='P' order BY Conduct_date");
    
      rs = ps.executeQuery();
      
@@ -669,7 +669,7 @@ try {
     ResultSet rs;
     con.setAutoCommit(false);
     PreparedStatement ps = con.prepareStatement(
-    "select count(*) from testheader where Test_status='P' AND ResultDisplayedTo>now()");
+    "select count(*) from testheader where Test_Status='P' AND ResultDisplayedTo>now()");
     rs = ps.executeQuery();
     rs.next();
     System.out.println("count : " + rs.getInt(1));
@@ -677,7 +677,7 @@ try {
     testDate[0]=message.getString("msg.select");
     
      ps = con.prepareStatement(
-            "select distinct Conduct_Date from testheader where Test_status='P' AND ResultDisplayedTo > now()");
+            "select distinct Conduct_date from testheader where Test_Status='P' AND ResultDisplayedTo > now()");
    
      rs = ps.executeQuery();
      
@@ -710,7 +710,7 @@ try {
     ResultSet rs;
     con.setAutoCommit(false);
     PreparedStatement ps = con.prepareStatement(
-    "select count(*) from testheader where Test_status='P' AND ResultDisplayedTo>now()");
+    "select count(*) from testheader where Test_Status='P' AND ResultDisplayedTo>now()");
     rs = ps.executeQuery();
     rs.next();
     System.out.println("count : " + rs.getInt(1));
@@ -729,7 +729,7 @@ try {
 	
 	
      ps = con.prepareStatement(
-            "SELECT Test_name FROM testheader where Test_status='P' AND ResultDisplayedTo>now() AND Conduct_Date BETWEEN ? AND ?");
+            "SELECT Test_name FROM testheader where Test_Status='P' AND ResultDisplayedTo>now() AND Conduct_date BETWEEN ? AND ?");
      ps.setTimestamp(1, timest);
      ps.setTimestamp(2, timeen);
    
