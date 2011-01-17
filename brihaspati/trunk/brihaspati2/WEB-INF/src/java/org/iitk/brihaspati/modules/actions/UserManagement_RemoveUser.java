@@ -355,7 +355,7 @@ public class UserManagement_RemoveUser extends SecureAction_Admin{
 						 * Delete all student one by one
 						 */
 						
-						message=umt.removeUserProfileWithMail(postString,preString,LangFile,subject,email,"","","",fileName,server_name,srvrPort);
+						message=umt.removeUserProfileWithMail(postString,preString,LangFile,subject,email,"","","","",fileName,server_name,srvrPort);
 						msg = message.split(":");
 			                	data.setMessage(msg[0]);
 	                                        CuDetail.setErr_User(postString);
@@ -404,7 +404,7 @@ public class UserManagement_RemoveUser extends SecureAction_Admin{
 								//TurbineUser element=(TurbineUser)UserManagement.getUserDetail(uid).get(0);
 								element=(TurbineUser)UserManagement.getUserDetail(uid).get(0);
                                 				email=element.getEmail();
-								message=umt.removeUserProfileWithMail(postString,preString,LangFile,subject,email,"","","",fileName,server_name,srvrPort);
+								message=umt.removeUserProfileWithMail(postString,preString,LangFile,subject,email,"","","","",fileName,server_name,srvrPort);
 								msg = message.split(":");
 				                		data.setMessage(msg[0]);
  								if(umt.flag.booleanValue()==false)
@@ -443,7 +443,7 @@ public class UserManagement_RemoveUser extends SecureAction_Admin{
 							//TurbineUser element=(TurbineUser)UserManagement.getUserDetail(uid).get(0);
 							element=(TurbineUser)UserManagement.getUserDetail(uid).get(0);
                                 			email=element.getEmail();
-							message=umt.removeUserProfileWithMail(postString,preString,LangFile,subject,email,"","","",fileName,server_name,srvrPort);
+							message=umt.removeUserProfileWithMail(postString,preString,LangFile,subject,email,"","","","",fileName,server_name,srvrPort);
 							msg = message.split(":");
 			                		data.setMessage(msg[0]);
                                                         if(umt.flag.booleanValue()==false)

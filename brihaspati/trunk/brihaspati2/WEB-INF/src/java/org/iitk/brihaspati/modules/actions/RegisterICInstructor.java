@@ -30,12 +30,15 @@ package org.iitk.brihaspati.modules.actions;
  *  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
  *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+import java.io.File;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.om.security.User;
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.utils.CourseManagement;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 /**
@@ -44,6 +47,7 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
  * in the system.
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  */
 public class RegisterICInstructor extends SecureAction_Institute_Admin
 {
@@ -65,8 +69,14 @@ public class RegisterICInstructor extends SecureAction_Institute_Admin
           		*Getting file value from temporary variable according to selection
           		*Replacing the value from Property file
          		**/
-				LangFile=(String)data.getUser().getTemp("LangFile");
+				//get Institute Name(iname)
+			         
+				String iname=data.getParameters().getString("iname","");
+		                context.put("iname",iname);
+	 		        LangFile=(String)data.getUser().getTemp("LangFile");
 				ParameterParser pp=data.getParameters();
+                               	String path = "";
+				path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"iname"+"Admin.properties";
 		 		/**
 		  		* Gather details from the page where user has entered them
 		  		*/
@@ -76,14 +86,17 @@ public class RegisterICInstructor extends SecureAction_Institute_Admin
 		 		String description=pp.getString("DESCRIPTION","");
 		 		//String uname=pp.getString("UNAME");
 		 		String fname=pp.getString("FNAME","");
-		 		String lname=pp.getString("LNAME","");
+		 	        String lname=pp.getString("LNAME","");
 		 		String email=pp.getString("EMAIL","");
 		 		String passwd=pp.getString("PASSWD","");
-		 		String serverName=data.getServerName();
+				String serverName=data.getServerName();
                  		int srvrPort=data.getServerPort();
                  		String serverPort=Integer.toString(srvrPort);
 				String instId=(data.getUser().getTemp("Institute_id")).toString();
 				int instituteId=Integer.parseInt(instId);
+				String instName=InstituteIdUtil.getIstName(instituteId); //added by Shikha
+                                                                
+
 				/**
 				* if password is empty then set password.
 				* password is the value of 0th position of email id
@@ -99,7 +112,7 @@ public class RegisterICInstructor extends SecureAction_Institute_Admin
 		  		* @see CourseManagement Utils
 		  		*/ 
 	 			//String msg=CourseManagement.CreateCourse(gname,cname,dept,description,uname,passwd,fname,lname,email,serverName,serverPort,LangFile,instituteId);
-	 			String msg=CourseManagement.CreateCourse(gname,cname,dept,description,email,passwd,fname,lname,email,serverName,serverPort,LangFile,instituteId);
+	 			String msg=CourseManagement.CreateCourse(gname,cname,dept,description,email,passwd,fname,lname,email,serverName,serverPort,LangFile,instituteId,instName); //modified by Shikha                   
 		 		data.setMessage(msg);
 		}
 		catch(Exception e)

@@ -50,6 +50,9 @@ import javax.mail.internet.*;
  * @author <a href=satyapalsingh@gmail.com>Satyapal Singh</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @modified date: 31-08-2005, 20-03-2009, 29-12-2009, 17-02-2010, 08-07-2010;
+ * @author <a href="mailto:shikha@gmail.com">Shikha Shukla</a>
+ * @modified date: 22-11-2010;
+
  */
 
 public class MailNotification{
@@ -116,9 +119,26 @@ public class MailNotification{
                 replaceString("server_name",server_name);
                	return(replaceString("server_port",server_port));
 	}
+	
+	public static String getMessage_new(String info,String FName,String LName,String i_name,String uName) throws Exception {
+                if(FName.length()>0){ 
+                        info=info.replaceAll("first_name",FName);
+		}
+                else
+		 info=info.replaceAll("first_name",uName);
+		if(LName.length()>0) {
+                        info=info.replaceAll("last_name",LName);
+		}
+                 else
+                 info=info.replaceAll("last_name","");
+		if(i_name.length()>0) {
+                        info=info.replaceAll("institute_admin",i_name);
+		}
+	          
+		 return info;
+        }
 
-	/**
-	 * This method replaces the a string with the replacement string
+         /* This method replaces the a string with the replacement string
 	 * @param searchString String The substring to be searched in the string
 	 * @param replacement String The string with which the substring has to be replaced
 	 * @return String
@@ -156,7 +176,7 @@ public class MailNotification{
 		
 		String email_new="";
 		String msg = "";
-		//ErrorDumpUtil.ErrorLog("\n\n\n  message========"+ message+"	mail_id="+mail_id+"          subject="+subject+"	attachedFile="+attachedFile);
+		ErrorDumpUtil.ErrorLog("\n\n\n  message========"+ message+"	mail_id="+mail_id+"          subject="+subject+"	attachedFile="+attachedFile);
 		try{ //try 1
 			 if(!mail_id.equals("")){
 				email_new=mail_id;
@@ -304,3 +324,4 @@ public class MailNotification{
 		}
 	}
 }
+

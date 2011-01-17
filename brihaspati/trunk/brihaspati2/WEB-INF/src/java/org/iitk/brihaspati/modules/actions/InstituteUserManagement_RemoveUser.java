@@ -35,6 +35,7 @@ package org.iitk.brihaspati.modules.actions;
 /** 
  * @author  <a href="singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author  <a href="sharad23nov@yahoo.com">Sharad Singh</a>
+ * @author  <a href="shikhashuklaa@gmail.com">Shikha Shukla</a>
  */
 
 import java.util.Vector;
@@ -53,6 +54,7 @@ import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.utils.MailNotification;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.apache.turbine.services.servlet.TurbineServlet;
@@ -80,7 +82,7 @@ public class InstituteUserManagement_RemoveUser extends SecureAction_Institute_A
 			ParameterParser pp=data.getParameters();
 			String status=new String();
 			String instituteId=(data.getUser().getTemp("Institute_id")).toString(); //add by Jaivir 19apr
-		
+		                                     
 			/**
 		 	* Get the group and role selected by the admin from the previous screen
 		 	*/
@@ -283,6 +285,11 @@ public class InstituteUserManagement_RemoveUser extends SecureAction_Institute_A
 	
 	public void doRemoveUser(RunData data, Context context)
 	{
+                   String  instituteId1=(data.getUser().getTemp("Institute_id")).toString();
+                   int instid=Integer.parseInt(instituteId1);
+                   String instName=InstituteIdUtil.getIstName(instid);
+                   
+            
 		try{
 			MultilingualUtil m_u=new MultilingualUtil();
 			ParameterParser pp=data.getParameters();
@@ -300,8 +307,8 @@ public class InstituteUserManagement_RemoveUser extends SecureAction_Institute_A
 			
 			/**
 		 	* Get the list of users for removal and role
-		 	*/
-
+		 	*/                      
+		
 			String userList=pp.getString("deleteFileNames","");
 			String user_role=pp.getString("role");
 			ErrorDumpUtil.ErrorLog("ulst in rmvusermethod at line 307=="+userList+"\nrole=="+user_role);
@@ -358,9 +365,11 @@ public class InstituteUserManagement_RemoveUser extends SecureAction_Institute_A
                         	        	email=element.getEmail();
 						/**
 						 * Delete all student one by one
-						 */
-						
-						message=umt.removeUserProfileWithMail(postString,preString,LangFile,subject,email,"","","",fileName,server_name,srvrPort);
+					 */
+                                        
+                                             
+                                              
+						message=umt.removeUserProfileWithMail(postString,preString,LangFile,subject,email,instName,"","","",fileName,server_name,srvrPort);
 						msg = message.split(":");
 			                	data.setMessage(msg[0]);
 	                                        CuDetail.setErr_User(postString);
@@ -396,8 +405,8 @@ public class InstituteUserManagement_RemoveUser extends SecureAction_Institute_A
 						* add instituteId in username for checking 
 						* either primary instructor or not
 						*/
-						String 	instituteId=(data.getUser().getTemp("Institute_id")).toString();
-						ErrorDumpUtil.ErrorLog("iid in doremoveUser method at line 303 in UserManagement_RemoveUser=="+instituteId);
+						String 	instituteId=(data.getUser().getTemp("Institute_id")).toString();                                                                                          
+                                                ErrorDumpUtil.ErrorLog("iid in doremoveUser method at line 303 in UserManagement_RemoveUser=="+instituteId);
 						String postStringWithInsId=postString+"_"+instituteId;
                                                 //boolean check_Primary=CourseManagement.IsPrimaryInstructor(preString,postString);
 						ErrorDumpUtil.ErrorLog("postStringWithInsId=="+postStringWithInsId);
@@ -425,7 +434,11 @@ public class InstituteUserManagement_RemoveUser extends SecureAction_Institute_A
 								element=(TurbineUser)UserManagement.getUserDetail(uid).get(0);
                                 				email=element.getEmail();
 								ErrorDumpUtil.ErrorLog("email at line 417="+email);
-								message=umt.removeUserProfileWithMail(postString,preString,LangFile,subject,email,"","","",fileName,server_name,srvrPort);
+	
+                                                                
+                                                           
+                                                                
+                                                		message=umt.removeUserProfileWithMail(postString,preString,LangFile,subject,email,instName,"","","",fileName,server_name,srvrPort);
 								ErrorDumpUtil.ErrorLog("message without split=="+message);
 								msg = message.split(":");
 								ErrorDumpUtil.ErrorLog("message with split=="+msg);
@@ -467,7 +480,11 @@ public class InstituteUserManagement_RemoveUser extends SecureAction_Institute_A
 							//TurbineUser element=(TurbineUser)UserManagement.getUserDetail(uid).get(0);
 							element=(TurbineUser)UserManagement.getUserDetail(uid).get(0);
                                 			email=element.getEmail();
-							message=umt.removeUserProfileWithMail(postString,preString,LangFile,subject,email,"","","",fileName,server_name,srvrPort);
+					                
+                                                      
+                                                        
+                                                       
+					         	message=umt.removeUserProfileWithMail(postString,preString,LangFile,subject,email,instName,"","","",fileName,server_name,srvrPort);
 							msg = message.split(":");
 			                		data.setMessage(msg[0]);
                                                         if(umt.flag.booleanValue()==false)

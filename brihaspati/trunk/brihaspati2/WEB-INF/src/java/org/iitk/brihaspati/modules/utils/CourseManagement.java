@@ -61,6 +61,7 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
  * @author <a href="mailto:satyapal@gmail.com">Satyapal Singh</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla</a>
  * @modified date: 20-10-2010,23-12-2010
  */
 public class CourseManagement
@@ -82,7 +83,7 @@ public class CourseManagement
 		 * @see UserManagement In this utils manage all details of user
 		 * 
 		 */
-		public static String CreateCourse(String groupalias,String cname,String dept,String desc,String uname,String passwd,String fname,String lname,String email,String serverName,String serverPort,String file,int institute_id) throws Exception
+		public static String CreateCourse(String groupalias,String cname,String dept,String desc,String uname,String passwd,String fname,String lname,String email,String serverName,String serverPort,String file,int institute_id,String iname) throws Exception
 		{
 			String message=new String();
 			/**
@@ -168,7 +169,7 @@ public class CourseManagement
 				 		*/
 						String rollno="";
 						String program="";
-						String message2=UserManagement.CreateUserProfile(uname,passwd,fname,lname,email,newcid,"instructor",serverName,serverPort,file,rollno,program);
+						String message2=UserManagement.CreateUserProfile(uname,passwd,fname,lname,iname,email,newcid,"instructor",serverName,serverPort,file,rollno,program);
 						message=message1+message2;
 					}
 					catch(Exception e)
@@ -338,7 +339,7 @@ public class CourseManagement
                         {
 
                                 String GName=((Courses)v.get(i)).getGroupName();
-				ErrorDumpUtil.ErrorLog("GName in crsManagement=="+GName);	
+				//ErrorDumpUtil.ErrorLog("GName in crsManagement=="+GName);	
                                 String courseName=((Courses)v.get(i)).getCname();
                                 String dept=((Courses)v.get(i)).getDept();
                                 String gAlias=((Courses)v.get(i)).getGroupAlias();
@@ -353,7 +354,7 @@ public class CourseManagement
                                 {
                                         int index=gAlias.length();
                                         String loginName=groupName.substring(index);
-					ErrorDumpUtil.ErrorLog("loginNamein old method====="+loginName);
+					//ErrorDumpUtil.ErrorLog("loginNamein old method====="+loginName);
 					StringTokenizer mdloginName=new StringTokenizer(loginName,"_");
                                                 String oldloginName="";
                                                 String InstId="";
@@ -447,7 +448,7 @@ public class CourseManagement
 		String msg="";
 		try{
 			int gid=GroupUtil.getGID(gName);
-			ErrorDumpUtil.ErrorLog("gid in crsmgmt in remove course mthd="+gid);	
+			//ErrorDumpUtil.ErrorLog("gid in crsmgmt in remove course mthd="+gid);	
 			boolean check_active=CheckcourseIsActive(gid);
 			if(check_active!=false || fromPath.equals("admin"))
 			{
@@ -465,7 +466,7 @@ public class CourseManagement
 						ErrorDumpUtil.ErrorLog("userName at line 461=="+userName);
 			   			UserManagement umt=new UserManagement();
 						msg=umt.removeUserProfile(userName,gName,file);
-						ErrorDumpUtil.ErrorLog("msg at line 464=="+msg);
+						//ErrorDumpUtil.ErrorLog("msg at line 464=="+msg);
 						}
 					}
 				}

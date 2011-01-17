@@ -186,7 +186,7 @@ public class RemoveStudentCourse extends SecureAction_Admin{
 			String rollno = pp.getString("rollno","");
 			String program = pp.getString("prg","");
 			String roleName="student";
-			String msg=UserManagement.CreateUserProfile(uname,"","","","",gName,roleName,serverName,serverPort,LangFile,rollno,program);
+			String msg=UserManagement.CreateUserProfile(uname,"","","","","",gName,roleName,serverName,serverPort,LangFile,rollno,program);  //modified by Shikha
 			data.setMessage(msg);
 		}
 		catch(Exception e)

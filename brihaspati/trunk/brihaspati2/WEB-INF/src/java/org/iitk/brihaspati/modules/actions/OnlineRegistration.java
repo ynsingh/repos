@@ -413,6 +413,7 @@ public class OnlineRegistration extends VelocitySecureAction
 				indexList.add(-1);
                 		xmlWriter=TopicMetaDataXmlWriter.WriteXml_OnlineCourse(path,"/courses.xml",indexList);
 		                TopicMetaDataXmlWriter.appendOnlineCrsElement(xmlWriter,gname,cname,uname,orgtn,email,fname,lname,curDate);
+
         		        xmlWriter.writeXmlFile();
 				sendMailToApproval("fromCourse",LangFile,uname, cname,instituteid);
 			}
@@ -446,6 +447,9 @@ public class OnlineRegistration extends VelocitySecureAction
 					info_new="approvalOfonLineRegReqForStudent_https";
 				subject = MailNotification.subjectFormate(info_new, "", pr );
 				message = MailNotification.getMessage(info_new, gname, "", unme,"" , server_name, srvrPort,pr); 
+				message=MailNotification.getMessage_new(message,fname,lname,"","");//added by Shikha
+				
+
 ///////////////////////////////////////////////////////////////////////////////////////////
 				int counter=0;
 				int gid=GroupUtil.getGID(gname);

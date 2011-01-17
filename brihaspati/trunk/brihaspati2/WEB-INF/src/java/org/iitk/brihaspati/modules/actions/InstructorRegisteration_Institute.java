@@ -97,7 +97,7 @@ public class InstructorRegisteration_Institute extends SecureAction_Institute_Ad
 		String InstituteId=(data.getUser().getTemp("Institute_Id")).toString();
 		ErrorDumpUtil.ErrorLog("iid at line 93 in RegisterSecInstructor==="+InstituteId);
 		int instituteId=Integer.parseInt(InstituteId); 	
-		String msg=UserManagement.CreateUserProfile(uname,passwd,fname,lname,email,gName,"instructor",serverName,serverPort,LangFile,rollno,program);
+		String msg=UserManagement.CreateUserProfile(uname,passwd,fname,lname,"",email,gName,"instructor",serverName,serverPort,LangFile,rollno,program); // modified by Shikha Shukla
 		context.put("msg",msg);
 		data.setMessage(msg +" "+ mail_msg);
 

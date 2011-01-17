@@ -116,7 +116,7 @@ public class UserAction_Instructor extends SecureAction_Instructor
 			}
 			String fname=pp.getString("FNAME");
 			String lname=pp.getString("LNAME");
-			String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,email,gName,"student",serverName,serverPort,LangFile,rollno,program);
+			String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,email,"",gName,"student",serverName,serverPort,LangFile,rollno,program); //modified by Shikha
 			data.setMessage(msg);
 
 		}
@@ -209,7 +209,7 @@ public class UserAction_Instructor extends SecureAction_Instructor
 					TurbineUser element=(TurbineUser)UserManagement.getUserDetail(uid).get(0);
                                 	email=element.getEmail();
 					subject=checkUserAvailabilityDifferntGroup(userName,serverPort);
-			                msg1=umt.removeUserProfileWithMail(userName,group,LangFile,subject,email,"","","",fileName,serverName,serverPort);
+			                msg1=umt.removeUserProfileWithMail(userName,group,LangFile,subject,email,"","","","",fileName,serverName,serverPort);
 		                	msg = msg1.split(":");
 	                		data.setMessage(msg[0]);
 					/**
@@ -350,7 +350,7 @@ public class UserAction_Instructor extends SecureAction_Instructor
                 */
 		String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
 		UserManagement umt= new UserManagement();
-		msg1=umt.removeUserProfileWithMail(userName,group,LangFile,subject,email,"","","",fileName,serverName,serverPort);
+		msg1=umt.removeUserProfileWithMail(userName,group,LangFile,subject,email,"","","","",fileName,serverName,serverPort);
                 msg = msg1.split(":");
 		data.setMessage(msg[0]);
 		data.addMessage(msg[1]);

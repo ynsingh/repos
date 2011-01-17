@@ -34,6 +34,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.om.security.User; 
 import org.apache.turbine.util.parser.ParameterParser;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
@@ -48,6 +49,9 @@ import org.iitk.brihaspati.modules.actions.SecureAction_Institute_Admin;
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a> 
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a> 
  * @modified date:20-10-2010,23-12-2010
+* @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla</a>
+
+
  */
 
 public class AddUser_Institute extends SecureAction_Institute_Admin 
@@ -122,7 +126,10 @@ public class AddUser_Institute extends SecureAction_Institute_Admin
 		 * Adds the new user in the database.
 		 * @see UserManagement in utils
 		 */
-		String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,email,gname,roleName,serverName,serverPort,LangFile,rollno,program);
+		  String instituteId=(data.getUser().getTemp("Institute_id")).toString();
+                 int instid=Integer.parseInt(instituteId);
+                 String instName=InstituteIdUtil.getIstName(instid);
+		String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,instName,email,gname,roleName,serverName,serverPort,LangFile,rollno,program);
 
 		data.setMessage(msg);
 		}

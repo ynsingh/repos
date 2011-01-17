@@ -49,6 +49,7 @@ import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
 //brihaspati classes
 import org.iitk.brihaspati.modules.utils.XmlWriter;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
@@ -63,6 +64,7 @@ import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
  * @author  <a href="mailto:omprakash_kgp@yahoo.co.in">Om Prakash</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla</a>
  * @modify 20-03-09, 08-07-2010, 20-10-2010, 23-12-2010
  */
 
@@ -76,10 +78,13 @@ public class  OnlineRegistration_Admin extends SecureAction_Institute_Admin{
 	private String tokn="", uName="", gName="", mailid="";
         private String uname="", gname="", email="", fname="", lname="", passwd="", rollno="", program="";
 	private String [] splitedTokn ;
-
+         
         public void RejectUser(RunData data, Context context)
         {
-                        Vector userlist=new Vector();
+                        String  instituteId=(data.getUser().getTemp("Institute_id")).toString();
+                        int instid=Integer.parseInt(instituteId);
+                        String instName=InstituteIdUtil.getIstName(instid);
+                       	Vector userlist=new Vector();
 			Vector indexList=new Vector();
 			String Mail_msg="";
 			context.put("status","UserResitration");	
@@ -126,6 +131,10 @@ public class  OnlineRegistration_Admin extends SecureAction_Institute_Admin{
                	                                if(email.equals(mailid) && gname.equals(gName) && uname.equals(uName))
 						{						
                                	                	message = MailNotification.getMessage(info_new, gname, "", uname, "", server_name, srvrPort,pr);
+							message = MailNotification.getMessage_new(message, "","",instName,"");
+
+							 
+
 							//ErrorDumpUtil.ErrorLog("OnlineRegistration_Admin.java RejectUser  message="+message);
 							//Mail_msg=MailNotification.sendMail(MsgForExpireTime+gname+subMsgForExpireTime,mailid,"onlineRegRequest","Updation Mail","","","",server_name,srvrPort,"");
 							Mail_msg=MailNotification.sendMail(message, mailid, subject, "",LangFile);
@@ -152,6 +161,9 @@ public class  OnlineRegistration_Admin extends SecureAction_Institute_Admin{
 
       	public void AcceptUser(RunData data, Context context)
 	{
+	
+                   
+                   
 		try{
 			Vector userlist=new Vector();
 			Vector indexList=new Vector();	
@@ -196,7 +208,7 @@ public class  OnlineRegistration_Admin extends SecureAction_Institute_Admin{
 							if(uname!=null)
 							{
 								try{
-			              					String msg=UserManagement.CreateUserProfile(uname,passwd,fname,lname,email,gname,roleName,serverName,serverPort,LangFile,rollno,program);
+			              					String msg=UserManagement.CreateUserProfile(uname,passwd,fname,lname,"",email,gname,roleName,serverName,serverPort,LangFile,rollno,program);
 									data.setMessage(msg);
 								}
 								catch(Exception e){
@@ -221,7 +233,11 @@ public class  OnlineRegistration_Admin extends SecureAction_Institute_Admin{
 
         public void doDeleteCourse(RunData data, Context context)
         {
-             try{
+                 String  instituteId=(data.getUser().getTemp("Institute_id")).toString();
+                 int instid=Integer.parseInt(instituteId);
+                 String instName=InstituteIdUtil.getIstName(instid);
+ 
+		 try{
                         User user=data.getUser();
                         ParameterParser pp=data.getParameters();
                         String path=TurbineServlet.getRealPath("/OnlineUsers");
@@ -267,6 +283,7 @@ public class  OnlineRegistration_Admin extends SecureAction_Institute_Admin{
                                                 if((email.equals(mailid)) && gName.equals(gname))
                                                 {
 							message = MailNotification.getMessage(info_new, gname, "", "", "", server_name, srvrPort,pr);
+							  message = MailNotification.getMessage_new(message, "","",instName,"");
 							//ErrorDumpUtil.ErrorLog("OnlineRegistration_Admin.java RejectCourse message="+message);
 							//Mail_msg=MailNotification.sendMail(MsgForExpireTime+gname+subMsgForExpireTime,mailid,"onlineRegRequest","Updation Mail","","","",server_name,srvrPort,"");
 							Mail_msg=MailNotification.sendMail(message, mailid, subject, "", LangFile);
@@ -338,7 +355,7 @@ public class  OnlineRegistration_Admin extends SecureAction_Institute_Admin{
                                                         lname=((CourseUserDetail) courselist.elementAt(i)).getUserName();
                                                        {
                                                                 try{
-                                                                        String msg=CourseManagement.CreateCourse(gname,cname,"","",uname,passwd,fname,lname,email,serverName,serverPort,LangFile,instId);
+                                                                        String msg=CourseManagement.CreateCourse(gname,cname,"","",uname,passwd,fname,lname,email,serverName,serverPort,LangFile,instId,"");
 								/**
 									String subject="";
 									if(serverPort.equals("8080"))

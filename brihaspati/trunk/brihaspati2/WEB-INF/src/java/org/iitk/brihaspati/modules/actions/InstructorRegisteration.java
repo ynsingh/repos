@@ -98,7 +98,7 @@ public class InstructorRegisteration extends SecureAction
 		String serverName=data.getServerName();
                 int srvrPort=data.getServerPort();
                 String serverPort=Integer.toString(srvrPort);
-		String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,email,gName,"instructor",serverName,serverPort,LangFile,rollno,program);
+		String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,"",email,gName,"instructor",serverName,serverPort,LangFile,rollno,program); //modified by Shikha
 		context.put("msg",msg);
 		data.setMessage(msg +" "+ mail_msg);
 

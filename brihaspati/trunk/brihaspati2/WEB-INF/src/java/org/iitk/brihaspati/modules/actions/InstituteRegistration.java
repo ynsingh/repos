@@ -68,6 +68,9 @@ import org.iitk.brihaspati.modules.utils.EncryptionUtil;
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
  * @author: <a href="mailto:shaistashekh@hotmail.com">Shaista </a>
+ * @author: <a href="mailto:shaistashekh@hotmail.com">Shaista </a>
+ * @modified date: 22-11-2010
+ * @author: <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>
  * @modified date: 22-11-2010
  */
 
@@ -222,6 +225,8 @@ public class InstituteRegistration extends VelocitySecureAction
                                         String subj = MailNotification.subjectFormate(subject, "", pr);
 					
 	                                messageFormate = MailNotification.getMessage(subject, Gname, "", "", "", server_name, srvrPort, pr);
+					 messageFormate=MailNotification.getMessage_new(messageFormate, "" ,"" ,institutename,instituteadminemail);
+
                                         String Mail_msg=MailNotification.sendMail(messageFormate, EMAIL, subj, "", Lang);
 
 
@@ -241,4 +246,5 @@ public class InstituteRegistration extends VelocitySecureAction
 	}
 
 }
+
 

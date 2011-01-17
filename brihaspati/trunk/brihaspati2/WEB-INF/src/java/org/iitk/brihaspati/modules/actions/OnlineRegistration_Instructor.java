@@ -209,7 +209,7 @@ public class  OnlineRegistration_Instructor extends SecureAction{
 							if(uname!=null)
 							{
 								try{
-			              					String msg=UserManagement.CreateUserProfile(uname,passwd,fname,lname,email,gname,roleName,serverName,serverPort,LangFile,rollno,program);
+			              					String msg=UserManagement.CreateUserProfile(uname,passwd,fname,lname,"",email,gname,roleName,serverName,serverPort,LangFile,rollno,program); //modified by Shikha
 									data.setMessage(msg);
 								}
 								catch(Exception e){

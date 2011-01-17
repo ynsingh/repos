@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.utils;
 
 /*
  *  @(#) UserManagement.java
- *  Copyright (c) 2005-2008, 2009,2010 ETRG,IIT Kanpur 
+ *  Copyright (c) 2005-2011 ETRG,IIT Kanpur 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -114,7 +114,7 @@ public class UserManagement
 		 * @param RollNo String The rollno of the new user 
 		 * @return String
 		 */
-	public static String CreateUserProfile(String UName,String Passwd,String FName,String LName,String Email,String GroupName,String Role,String serverName,String serverPort,String file,String RollNo,String Program)
+	public static String CreateUserProfile(String UName,String Passwd,String FName,String LName,String i_name,String Email,String GroupName,String Role,String serverName,String serverPort,String file,String RollNo,String Program)
 	{
     		babylonUserTool tool=new babylonUserTool();	
 		String message=new String();
@@ -245,7 +245,8 @@ public class UserManagement
 						pr =MailNotification.uploadingPropertiesFile(fileName);
 				                subject = MailNotification.subjectFormate(userRole, "", pr );
 						messageFormate = MailNotification.getMessage(userRole, cAlias, dept, "", "", serverName, serverPort,pr);
-						Mail_msg=message+MailNotification.sendMail(messageFormate, email_existing, subject, "", file);
+                                                messageFormate=MailNotification.getMessage_new(messageFormate,FName,LName,i_name,UName);
+              					Mail_msg=message+MailNotification.sendMail(messageFormate, email_existing, subject, "", file);
 						pr = null;
 						subject ="";
 						messageFormate = "";	
@@ -409,6 +410,7 @@ public class UserManagement
 						pr =MailNotification.uploadingPropertiesFile(fileName);
                                                 subject = MailNotification.subjectFormate(NewUser, "", pr );
                                                 messageFormate = MailNotification.getMessage(NewUser, "", "", UName, Passwd, serverName, serverPort,pr);
+						 messageFormate=MailNotification.getMessage_new( messageFormate,FName,LName,i_name,UName);
 						//ErrorDumpUtil.ErrorLog("\n\n\n\n subject="+subject+"		messageFormate="+messageFormate);
                                                 //MailNotification.sendMail(NewUser,email_new,"","",UName,Passwd,fileName,serverName,serverPort,file);
 						MailNotification.sendMail(messageFormate, email_new, subject, "", file);
@@ -418,12 +420,14 @@ public class UserManagement
 						{
 							//Mail_msg=message+MailNotification.sendMail(userRole,email_new,"","","","",fileName,serverName,serverPort,file);
                                                		messageFormate = MailNotification.getMessage(userRole, "", "", "", "", serverName, serverPort,pr);
+							 messageFormate=MailNotification.getMessage_new( messageFormate,FName,LName,i_name,UName);
 							//ErrorDumpUtil.ErrorLog("----------- subject="+subject+"		messageFormate="+messageFormate);
 							Mail_msg=message+MailNotification.sendMail(messageFormate, email_new, subject, "", file);
 						}
 						else
 						{
                                                		messageFormate = MailNotification.getMessage(userRole, cAlias, dept, "", "", serverName, serverPort,pr);
+							messageFormate=MailNotification.getMessage_new( messageFormate,FName,LName,i_name,UName);
 							//ErrorDumpUtil.ErrorLog("----------- subject="+subject+"		messageFormate="+messageFormate);
 							//Mail_msg=message+MailNotification.sendMail(userRole,email_new,cAlias,dept,"","",fileName,serverName,serverPort,file);
 							Mail_msg=message+MailNotification.sendMail(messageFormate, email_new, subject, "", file);
@@ -1509,7 +1513,7 @@ public class UserManagement
 	 * @param serverPort String Port Number of the server
 	 * @return String
 	**/
-        public String removeUserProfileWithMail(String userName, String group_name, String langFile, String info_new, String mail_id, String courseId, String dept, String userPassword, String file, String serverName, String serverPort )
+        public String removeUserProfileWithMail(String userName, String group_name, String langFile, String info_new, String mail_id,String instName,String courseId, String dept, String userPassword, String file, String serverName, String serverPort )
 	{
 		String Msg ="", Mail_msg = "";
 		try{
@@ -1518,6 +1522,7 @@ public class UserManagement
 			Properties pr =MailNotification.uploadingPropertiesFile(file);
         	        String subject = MailNotification.subjectFormate(info_new, "", pr );
                 	String message = MailNotification.getMessage(info_new, group_name, "", "", "", serverName, serverPort,pr);
+			message = MailNotification.getMessage_new(message,"","",instName,userName);
 	                //ErrorDumpUtil.ErrorLog("\n\n\n\n in UserManagement util  message="+message+"      subject="+subject);
 		////////////////////////////////////////
 		//String Mail_msg=MailNotification.sendMail(info_new,mail_id,group_name,"","","",file,serverName,serverPort,langFile);

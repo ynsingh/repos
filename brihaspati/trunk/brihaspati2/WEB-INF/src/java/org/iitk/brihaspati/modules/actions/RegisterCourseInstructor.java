@@ -91,7 +91,7 @@ public class RegisterCourseInstructor extends SecureAction_Admin
 				* Here we give 100MB quota for course, once he is login in the system and immediate his quota is updated
 		  		* @see CourseManagement Utils
 		  		*/ 
-		 		String msg=CourseManagement.CreateCourse(gname,cname,dept,description,uname,passwd,fname,lname,email,serverName,serverPort,LangFile,0);
+		 		String msg=CourseManagement.CreateCourse(gname,cname,dept,description,uname,passwd,fname,lname,email,serverName,serverPort,LangFile,0,""); //modified by Shikha
 		 		data.setMessage(msg);
 		}
 		catch(Exception e)

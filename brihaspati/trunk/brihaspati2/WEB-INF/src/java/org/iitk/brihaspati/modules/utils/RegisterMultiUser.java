@@ -179,7 +179,7 @@ public class RegisterMultiUser
 						}
 					if(error==0){
 							email=username;
-							String str=UserManagement.CreateUserProfile(email,passwd,first_name,last_name,email,Gname,Role,serverName,serverPort,Langfile,rollno,program);
+							String str=UserManagement.CreateUserProfile(email,passwd,first_name,last_name,"",email,Gname,Role,serverName,serverPort,Langfile,rollno,program); //modified by Shikha Shukla
 								error=3;
 								errMsg=str;
 						}
