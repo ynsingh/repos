@@ -45,7 +45,8 @@ import org.iitk.brihaspati.modules.utils.XmlData;
  * This class Read XML file
  * @author <a href="mailto:ammuamit@hotmail.com">Amit Joshi</a>
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
- *
+ * @modify 10-01-2011
+ * @author: <a href="mailto:noopur.here@gmail.com">Nupur Dixit</a>
  */
 
 public class XmlReader extends DefaultHandler
@@ -180,13 +181,22 @@ public class XmlReader extends DefaultHandler
 	public XmlData[] getElements(String element)
 	{
 		Vector vt=(Vector)elements.get(element);	
-		XmlData temp[]=new XmlData[vt.size()]; 
-		Enumeration Enum=vt.elements();	
-		for(int i=0;i<vt.size();i++)
-		{
-			temp[i]=(XmlData)Enum.nextElement();
+		ErrorDumpUtil.ErrorLog("value of vector"+vt);
+		/* modified by:nupur dixit (Dei agra) to return null if vector is null
+		 * to avoid null pointer exception
+		 */
+		if(vt==null){
+			return null;
 		}
-		return temp;
+		else{
+			XmlData temp[]=new XmlData[vt.size()]; 
+			Enumeration Enum=vt.elements();	
+			for(int i=0;i<vt.size();i++)
+			{
+				temp[i]=(XmlData)Enum.nextElement();
+			}
+			return temp;
+		}
 	}
 	/**
 	* This method for get File value from XMl File

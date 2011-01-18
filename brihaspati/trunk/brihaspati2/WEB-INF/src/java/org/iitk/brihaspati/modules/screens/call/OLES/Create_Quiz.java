@@ -98,18 +98,20 @@ public class Create_Quiz extends SecureScreen{
 			{
 				context.put("isFile","exist");
 				quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);				
-				quizList=quizmetadata.getInActiveQuiz_Detail();
+				quizList=quizmetadata.getStatusQuiz_Detail("INA");
 				ErrorDumpUtil.ErrorLog("quiz list "+quizList);
-				
-				if(quizList.size()!=0)
-				{
+				if(quizList!=null){
+					
+				if(quizList.size()!=0){
+					ErrorDumpUtil.ErrorLog("inside second if");
 	                context.put("quizList",quizList);
-	                //CommonUtility.PListing(data,context,quizList);
-	            }				
+	               //CommonUtility.PListing(data,context,quizList);
+	            }
+				}
 			}
 			else
 				context.put("isFile","");
-        }
+	        }
         catch(Exception e) 
         {
         	ErrorDumpUtil.ErrorLog("The exception in Create_Quiz type screen::"+e);
@@ -117,4 +119,3 @@ public class Create_Quiz extends SecureScreen{
         }
     }
 }
-

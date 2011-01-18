@@ -79,17 +79,21 @@ public class Random_Quiz extends SecureScreen{
         {
         	User user=data.getUser();
         	String mode =pp.getString("mode"," ");
+        	String quizMode =pp.getString("quizMode"," ");        			
         	String type = pp.getString("type","");
         	String count = pp.getString("count","");
-        	String courseid=(String)user.getTemp("course_id");
-        	
+        	String courseID=(String)user.getTemp("course_id");
+        	ErrorDumpUtil.ErrorLog("mode values "+mode+" quiz mode :"+quizMode+" type:"+type+" count:"+count+"courseID:"+courseID);
+        	String quizDetail="";
         	context.put("tdcolor",count);
         	context.put("course",(String)user.getTemp("course_name"));
 			context.put("mode",mode);
-			context.put("type",type);			
+			context.put("quizMode",quizMode);
+			context.put("type",type);
+			context.put("courseID",courseID);
 			
 			String username=user.getName();
-            String filePath=TurbineServlet.getRealPath("/QuestionBank"+"/"+username+"/"+courseid+"/");
+            String filePath=TurbineServlet.getRealPath("/QuestionBank"+"/"+username+"/"+courseID+"/");
             String quizPath="/QBtopiclist.xml";
             
             File file=new File(filePath+"/"+quizPath);
@@ -99,15 +103,48 @@ public class Random_Quiz extends SecureScreen{
 			if(file.exists())
 			{
 				topipcmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);				
-				topicList=topipcmetadata.getDetails();
+				topicList=topipcmetadata.getTopicNames();
 				ErrorDumpUtil.ErrorLog("allTopics "+topicList);
 				
 				if(topicList.size()!=0)
 				{
 	            	context.put("topicList",topicList);
-	               // CommonUtility.PListing(data,context,topicList);
+	                //CommonUtility.PListing(data,context,topicList);
 	            }	            
+			}			
+			
+			if(mode.equalsIgnoreCase("update")){
+				quizDetail = pp.getString("quizDetail","");
+				String quizName = pp.getString("quizName","");
+				String quizSetting = pp.getString("quizSetting","");
+				context.put("quizSetting",quizSetting);
+				String[] temp1 = quizSetting.split(",");
+				String topic=temp1[0];
+				context.put("topic",topic);
+				String questionType=temp1[1];
+				context.put("questionType",questionType);
+				String questionLevel=temp1[2];
+				context.put("questionLevel",questionLevel);
+				String markPerQuestion=temp1[3];
+				context.put("markPerQuestion",markPerQuestion);
+				String questionNumber=temp1[4];
+				context.put("questionNumber",questionNumber);
+				ErrorDumpUtil.ErrorLog("temp values "+temp1[0]+temp1[1]+temp1[2]+temp1[3]+temp1[4]);	
 			}
+			else{
+				quizDetail = pp.getString("quizName","");
+				context.put("quizName",quizDetail);
+			}
+			
+			context.put("quizDetail",quizDetail);
+			String[] temp = quizDetail.split(",");
+			String quizID=temp[0];
+			context.put("quizID",quizID);
+			String maxMarks=temp[1];
+			context.put("maxMarks",maxMarks);
+			String noQuestions=temp[2];
+			context.put("noQuestions",noQuestions);
+			ErrorDumpUtil.ErrorLog("temp values "+temp[0]+temp[1]+temp[2]);	
         }
         catch(Exception e) 
         {
@@ -116,4 +153,3 @@ public class Random_Quiz extends SecureScreen{
         }
     }
 }
-

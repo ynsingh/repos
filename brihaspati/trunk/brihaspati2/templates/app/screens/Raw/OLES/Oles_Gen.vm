@@ -9,7 +9,9 @@
 $page.setTitle("Quiz Management")
 $page.setBgColor("bgcolor")
 ## If some message has been set, that is retrieved and displayed.
+<font face="$ui.sansSerifFonts">
 $!data.getMessage()
+</font>
 ## Retreiving the $lang (representing the choosen language for display, which
 ## was set in corresponding the screen class.
 #set($lang = $data.getUser().getTemp("lang" ).toString())
@@ -19,8 +21,8 @@ $!data.getMessage()
 	<font face="$ui.sansSerifFonts">
 	<a href=$link.setPage("Index.vm")>Home</a>|
 	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
-	#if($mode == "QuizDetail")
-		<a href=$link.setPage("call,OLES,Oles_Gen.vm")>Generate Exam</a> |
+	<a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1")>Generate Exam</a> |
+	#if($mode == "QuizDetail")		
 			$brih_quiz #if($lang =="hindi") $brih_Of1 #end $brih_update
 	#else
 			$brih_quiz #if($lang =="hindi") $brih_Of1 #end $brih_setup
@@ -32,7 +34,7 @@ $!data.getMessage()
 ## Creating the links for help regarding FAQ 
 <table width="100%">
 <tr>
-<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES.html","newWin");>Help</a></td>
+<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin");>Help</a></td>
 </tr>
 </table>
 
@@ -74,7 +76,7 @@ $!data.getMessage()
         #elseif($tdcolor == "4")
 		<td bgcolor="#AFDCEC">
 		#end
-		<b><I><a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("mode","preview").addPathInfo("count","4") style=text-decoration:none>Preview</I></b></a></td>
+		<b><I><a href=$link.setPage("call,OLES,Oles_Other.vm").addPathInfo("mode","preview").addPathInfo("count","4") style=text-decoration:none>Preview</I></b></a></td>
 		</tr>
 		<tr bgcolor="$ui.menuColor" width="100%">
 			<td align="left" width="100%" colspan="5"><b><i><font size="3"> Quiz SetUp</font><b></i></td>
@@ -154,8 +156,8 @@ $!data.getMessage()
 	<input type="hidden" name="page" value="$page">
 	<input type="hidden" name="status" value="$status">
 	<input type="hidden" name="addques" value="$addques">
-	<input type="hidden" name="count" value="$tdcolor">
 	*#
+	<input type="hidden" name="count" value="$tdcolor">	
 	
 </form>
 <SCRIPT LANGUAGE="javascript">

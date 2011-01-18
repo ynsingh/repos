@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.CourseMgmt_User;
 /*
  * @(#)CourseHome.java	
  *
- *  Copyright (c) 2005-2006 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006, 2011 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -48,6 +48,8 @@ import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.services.servlet.TurbineServlet;
+import org.apache.turbine.util.security.AccessControlList;
+import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.torque.util.Criteria;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.om.security.User;
@@ -89,6 +91,11 @@ public class CourseHome extends SecureScreen{
                                 context.put("guest_login","false");
                         }
 
+			AccessControlList acl = data.getACL();
+                        acl = TurbineSecurity.getACL( data.getUser() );
+                        data.getSession().setAttribute( AccessControlList.SESSION_KEY,(Object)acl );
+                        data.setACL(acl);
+                        data.save();
 
 			/**
 			 * Retrieves the COURSE_ID of the course in which user has entered

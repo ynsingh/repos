@@ -36,6 +36,7 @@ package org.iitk.brihaspati.modules.screens.call.OLES;
  * 
  */
 
+import java.util.*;
 import java.util.List;
 import java.util.Vector;
 import org.iitk.brihaspati.om.Quiz;
@@ -57,11 +58,12 @@ import java.io.File;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlWriter;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
-
+import org.iitk.brihaspati.modules.utils.QuizFileEntry;
+import org.iitk.brihaspati.modules.utils.XmlWriter;
 /**
  *   This class contains code for displaying list of all active quiz 
  *   (active quiz=quizes which are already created)
- *   @author<a href="noopur.here@"gmail.com>Nupur Dixit</a>
+ *   @author<a href="noopur.here@gmail.com">Nupur Dixit</a>
  */
 
 
@@ -83,12 +85,13 @@ public class Quiz_Detail extends SecureScreen{
 			String filePath=data.getServletContext().getRealPath("/Courses"+"/"+courseid+"/Exam/");
 			QuizMetaDataXmlReader quizmetadata=null;
             Vector allQuiz=new Vector();
+            HashMap visibilityFlag = new HashMap(); 
             String quizPath="/Quiz.xml";
 			File f=new File(filePath+"/"+quizPath);
 			ErrorDumpUtil.ErrorLog("\nquiz path"+f.getName());
 			if(f.exists()){
 				quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);				
-				allQuiz=quizmetadata.getActiveQuiz_Detail();
+				allQuiz=quizmetadata.getStatusQuiz_Detail("ACT");
 				ErrorDumpUtil.ErrorLog("\nallQuizes"+allQuiz);
 			}
 			if(allQuiz==null)
@@ -96,10 +99,38 @@ public class Quiz_Detail extends SecureScreen{
                 if(allQuiz.size()!=0){
                    	checkstatus="NoBlank";
                    	context.put("allQuiz",allQuiz);
-//                    CommonUtility.PListing(data,context,allQuiz);
-                }
-               	else{
-                   	checkstatus="blank";
+                   	for(int i=0;i<allQuiz.size();i++){
+	                   	String quizid =((QuizFileEntry) allQuiz.elementAt(i)).getQuizID();
+	                   	String maxmarks =((QuizFileEntry) allQuiz.elementAt(i)).getMaxMarks();
+	                   	String maxquestions =((QuizFileEntry) allQuiz.elementAt(i)).getnoQuestion();
+	                   	String newFilePath=filePath+"/"+quizid+"/";
+	        	        String questionsPath=quizid+"_QuestionSetting.xml";        	                    	       
+	        	        ErrorDumpUtil.ErrorLog("quiz path "+newFilePath+questionsPath);
+	        	        File newFile=new File(newFilePath+questionsPath);
+	        	        if(!newFile.exists()){
+	        	        	data.setMessage("quizid_questionSetting.xml file does not exist");
+	//                    CommonUtility.PListing(data,context,allQuiz);
+	                	}
+						else{
+		                   	QuizMetaDataXmlReader questionReader = new QuizMetaDataXmlReader(newFilePath+"/"+questionsPath);
+		                    HashMap hm = new HashMap();
+		                    hm = questionReader.getQuizQuestionNoMarks(questionReader,quizid);
+		                    int mark =((Integer)hm.get("marks"));
+		                    int enteredQuestions = ((Integer)hm.get("noQuestion")); 
+		                    if(mark==(Integer.parseInt(maxmarks))||enteredQuestions==(Integer.parseInt(maxquestions))){
+				        		ErrorDumpUtil.ErrorLog("inside true ");
+				        		visibilityFlag.put(quizid, "true");			        				       
+				        	}
+				        	else{
+				        		ErrorDumpUtil.ErrorLog("inside false ");
+				        		visibilityFlag.put(quizid, "false");
+				        	}		   		
+						}//else    
+					}//for
+					context.put("visibilityFlag",visibilityFlag);
+                }//if
+				else{
+					checkstatus="blank";
                	}
 			context.put("checkstatus",checkstatus);
 		}//try

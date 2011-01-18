@@ -51,6 +51,8 @@ import org.xml.sax.Attributes;
 * @modify 20-08-2010
 * @author: <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
 * @author: <a href="mailto:kishore.shukla@gmail.com">Kishore kumar shukla</a>
+* @modify 10-01-2011
+* @author: <a href="mailto:noopur.here@gmail.com">Nupur Dixit</a>
 */
 
 public class XmlWriter
@@ -98,6 +100,33 @@ public class XmlWriter
 		v.addElement(xmlData);	
 		ht.put(element,v);
 	}
+	
+	/**
+	* In this method change attributes in xml
+	* @param element String
+	* @param nameValue Attributes 
+	* @param seqno Integer
+	*/
+	public void changeAttributes(String element,Attributes nameValue,int seqno) throws Exception
+	{
+		Vector v=(Vector)ht.get(element);
+		Vector parentVector=(Vector)ht.get(xmlReader.getRootElement());
+		XmlData parent=(XmlData)parentVector.elementAt(0);
+		int offset=0;
+		if((element.equals("File"))||(element.equals("Group")))
+			offset=fileOffset;
+		else if(element.equals("Desc"))
+			offset=dataOffset;
+		//Added by Nupur Dixit(Dei Agra)
+		else if (element.equals("Quiz"))
+			offset=dataOffset;
+	//		offset=0;  uncomment after testing
+		XmlData xmlnode=parent.getSubElement(seqno+offset);
+		xmlnode.setAttributes(nameValue);
+		v.set(seqno,xmlnode);
+		ht.put(element,v);
+	}
+	
 	/**
 	* In this method insert element in xml
 	* @param element String 
@@ -234,28 +263,7 @@ public class XmlWriter
 
 		ht.put(element,v);
 	}
-	/**
-	* In this method change attributes in xml
-	* @param element String
-	* @param nameValue Attributes 
-	* @param seqno Integer
-	*/
-	public void changeAttributes(String element,Attributes nameValue,int seqno) throws Exception
-	{
-		Vector v=(Vector)ht.get(element);
-		Vector parentVector=(Vector)ht.get(xmlReader.getRootElement());
-		XmlData parent=(XmlData)parentVector.elementAt(0);
-		int offset=0;
-		if((element.equals("File"))||(element.equals("Group")))
-			offset=fileOffset;
-		else if(element.equals("Desc"))
-			offset=dataOffset;
-	//		offset=0;  uncomment after testing
-		XmlData xmlnode=parent.getSubElement(seqno+offset);
-		xmlnode.setAttributes(nameValue);
-		v.set(seqno,xmlnode);
-		ht.put(element,v);
-	}
+	
 	/**
 	* In this method change data in xml
 	* @param element String 
@@ -296,6 +304,7 @@ public class XmlWriter
 
 	public XmlData removeElement(String element,int seqno)
 	{
+		ErrorDumpUtil.ErrorLog("coming inside xml writer "+seqno + element);
 		Vector v=(Vector)ht.get(element);
 		Vector parentVector=(Vector)ht.get(xmlReader.getRootElement());
 		XmlData parent=(XmlData)parentVector.elementAt(0);
@@ -321,9 +330,14 @@ public class XmlWriter
 //-------------------------OLES------------------------
 		else if(element.equals("Question"))
                         offset=0;
-
+//------------------------DEI Agra---------------------		
+		else if(element.equals("Quiz"))
+            offset=0;
+//----------------------------------------	
+		ErrorDumpUtil.ErrorLog("after offset setting "+offset + element);
 		int array[]={seqno+offset};
 		parent.removeSubElements(array);
+		ErrorDumpUtil.ErrorLog("after remove offset setting ");
 		xmlData=(XmlData)v.elementAt(seqno);
 		v.removeElementAt(seqno);
 		ht.put(element,v);

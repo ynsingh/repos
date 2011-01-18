@@ -20,11 +20,20 @@ $!data.getMessage()
 		<a href=$link.setPage("Index.vm")>Home</a>|
 		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
 		<a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1")>Generate Exam</a> |
-		<a href=$link.setPage("call,OLES,Create_Quiz.vm").addPathInfo("count","2")>Quiz Creation</a> |
-		#if($tdcolor=="1")
-			One By One
-		#else
-			Randomly
+		#if($quizMode == "random")
+			<a href=$link.setPage("call,OLES,Quiz_Detail.vm").addPathInfo("count","3")> 
+			Quiz #if($lang =="hindi")  #end Details </a>|
+			$quizMode
+			#if($mode == "update")				
+				$mode	
+			#end
+		#else	
+			<a href=$link.setPage("call,OLES,Create_Quiz.vm").addPathInfo("count","2")>Quiz Creation</a> |
+			#if($tdcolor=="1")
+				One By One
+			#else
+				Randomly
+			#end
 		#end	
 	</b></td></tr>
 </table>
@@ -36,32 +45,61 @@ $!data.getMessage()
 	</tr>
 </table>
 
-<form name="frm" method="post" enctype="multipart/form-data" action=$link.setPage("call,OLES,Create_Quiz.vm").setAction("OLES_Quiz")>
-<table width="100%" bgcolor="$ui.tableColor">
+#if($quizMode == "random")
+	#if($mode == "update")
+		#set($tdcolor="3")
+		<form name="frm" method="get"  enctype="multipart/form-data" action=$link.setPage("call,OLES,Update_Quiz_Question.vm").setAction("OLES_Quiz")>
+	#else
+		#set($tdcolor="3")
+		<form name="frm" method="get"  enctype="multipart/form-data" action=$link.setPage("call,OLES,Quiz_Detail.vm").setAction("OLES_Quiz")>
+	#end
+#else	
+	<form name="frm" method="post" enctype="multipart/form-data" action=$link.setPage("call,OLES,Random_Quiz.vm").setAction("OLES_Quiz")>
+#end
 	
+<table width="100%" bgcolor="$ui.tableColor">
+	#if($quizMode != "random")
 	<tr bgcolor="$ui.tableColor">
 		#if($tdcolor != "1")
         		<td>
         	#elseif($tdcolor == "1")
 			<td bgcolor="#AFDCEC">
 		#end
-			<b><I><a href=$link.setPage("call,OLES,Random_Quiz.vm").addPathInfo("mode","one").addPathInfo("count","1").addPathInfo("type",$type) style=text-decoration:none>One By One</I></b></a></td>
+			<b><I><a href=$link.setPage("call,OLES,OneByOne_Quiz.vm").addPathInfo("mode","one").addPathInfo("count","1").addPathInfo("type",$type).addPathInfo("quizName",$quizName) style=text-decoration:none>One By One</I></b></a></td>
 		#if($tdcolor != "2")
              		<td>
         	#elseif($tdcolor == "2")
 			<td bgcolor="#AFDCEC">
 		#end
-			<b><I><a href=$link.setPage("call,OLES,Random_Quiz.vm").addPathInfo("mode","random").addPathInfo("count","2").addPathInfo("type",$type) style=text-decoration:none>Randomly</I></b></a></td>		
+			<b><I><a href=$link.setPage("call,OLES,Random_Quiz.vm").addPathInfo("mode","random").addPathInfo("count","2").addPathInfo("type",$type).addPathInfo("quizName",$quizName) style=text-decoration:none>Randomly</I></b></a></td>		
 	</tr>	
 	<tr bgcolor="$ui.menuColor" width="100%">
 		<td align="left" width="100%" colspan="5"><b><i><font size="3"> Randomly Quiz Generatiom </font><b></i></td>
 	</tr>
+	#else
+		#if($mode == "update")
+			<tr bgcolor="$ui.menuColor" width="100%">
+				<td align="left" width="100%" colspan="5"><b><i><font size="3">Question Updation in Random Mode </font><b></i></td>
+			</tr>
+		#else
+			<tr bgcolor="$ui.menuColor" width="100%">
+				<td align="left" width="100%" colspan="5"><b><i><font size="3"> Randomly Question Addition </font><b></i></td>
+			</tr>
+		#end
+	#end
 	<tr>
-       		<td><b>Topic Name</b><font color=Red>*</font></td>                
+       		<td><b>Topic Name</b><font color=Red>*</font></td>  
+       		
+       		              
         	<td><select name=topicList >
 			<option>
 				#foreach($topic in $topicList)
+				#if($mode == "update")
+					#if($topic==$topic.getTopic())
+					<option value=$topic.getTopic() selectedIndex=true>$topic.getTopic()</option>
+					#else
 					<option value=$topic.getTopic()>$topic.getTopic()</option>
+		        	#end
 		        	#end
 		        </option>
 		</select></td>
@@ -99,7 +137,7 @@ $!data.getMessage()
        
 	<tr bgcolor="$ui.menuColor" width="100%">
 		<td align="left" width="100%" colspan="5">
-			<input type="button" name="eventSubmit_doUploadQuiz" value="Add and Finish" disabled ="true" onClick="checkValue(document.frm,this);"/>		
+			<input type="button" name="eventSubmit_randomQuiz" value="Add Questions" onClick="checkValue(document.frm,this);"/>		
 			<input type="reset" name="reset" value="Clear" onClick="checkClear(document.frm,this);"/>
 		</td>
 	</tr>
@@ -108,7 +146,16 @@ $!data.getMessage()
 <input type="hidden" name="mode" value=$mode >
 <input type="hidden" name="type" value="createQuiz" >
 <input type="hidden" name="count" value="$tdcolor">
+<input type="hidden" name="courseID" value="$courseID">
+<input type="hidden" name="quizID" value="$quizID">
+<input type="hidden" name="quizName" value="$quizName">
+<input type="hidden" name="maxMarks" value="$maxMarks">
+<input type="hidden" name="noQuestions" value="$noQuestions">
+<input type="hidden" name="topicName" value="">
+<input type="hidden" name="typeName" value="">
+<input type="hidden" name="levelName" value="">
 <input type="hidden" name="actionName" value="">
+<input type="hidden" name="quizMode" value="$quizMode">
 </form>
 <script LANGUAGE="JAVASCRIPT">
 	
@@ -121,9 +168,14 @@ $!data.getMessage()
 		
         	if(frm.topicList.value!="" && frm.typeList.value!="" && frm.levelList.value!="" && frm.numberQuestion.value!=""&& frm.marksQuestion.value!="")
         	{
-        		
+			frm.actionName.value=field.name;
+			frm.topicName.value=frm.topicList.options[frm.topicList.selectedIndex].value;
+			frm.typeName.value=frm.typeList.options[frm.typeList.selectedIndex].value;
+			frm.levelName.value=frm.levelList.options[frm.levelList.selectedIndex].value;
+        		frm.submit();
         	}
         	else
             		alert("Please fill the Mandatory(*) Fields !!");            
 	}
 </script>
+ 

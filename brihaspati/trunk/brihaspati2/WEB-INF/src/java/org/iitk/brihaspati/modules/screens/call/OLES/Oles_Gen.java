@@ -92,7 +92,8 @@ public class Oles_Gen extends SecureScreen{
 			{
 				String qname=pp.getString("qname","");
 				context.put("qid",qname);
-								
+				String quizMode=pp.getString("quizMode","");
+				context.put("quizMode",quizMode);
 				String filePath=data.getServletContext().getRealPath("/Courses"+"/"+crsId+"/Exam/");
 				QuizMetaDataXmlReader quizmetadata=null;
 	            Vector allQuiz=new Vector();
