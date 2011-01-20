@@ -1,6 +1,6 @@
 #*
  * @(#)InstituteUserForm.vm
- *  Copyright (c) 2005,2010 ETRG,IIT Kanpur.
+ *  Copyright (c) 2005,2010,2011 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *  Contributors: Members of ETRG, I.I.T. Kanpur
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
@@ -33,8 +33,9 @@ $!data.getMessage()
 <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("count","1") style=text-decoration:none>$brih_usr $brih_mgmt</a> |
 #else
 ##<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> |
-<a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("mode","All").addPathInfo("listcourse","listcourse").addPathInfo("count","1") style=text-decoration:none>$brih_list_mgmt</a> |
-<a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstAdminviewall.vm").addPathInfo("mode","All").addPathInfo("count","2") style=text-decoration:none>$brih_listUsr</a> |
+<a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstAdminviewall.vm").addPathInfo("mode","All").addPathInfo("count","1") style=text-decoration:none>$brih_list_mgmt</a> |
+##<a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("mode","All").addPathInfo("listcourse","listcourse").addPathInfo("count","1") style=text-decoration:none>$brih_list_mgmt</a> |
+##<a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstAdminviewall.vm").addPathInfo("mode","All").addPathInfo("count","2") style=text-decoration:none>$brih_listUsr</a> |
 #end
 #if($Process=="modify")
 	#if($lang == "hindi")
@@ -103,13 +104,19 @@ $!data.getMessage()
 	#elseif($tdcolor == "1")
 	<td bgcolor="#AFDCEC">
 	#end
-	<a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("listcourse","listcourse").addPathInfo("mode","All").addPathInfo("actionStat","Edit").addPathInfo("count","1") style=text-decoration:none>$brih_view_all1</a></td>
+        <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstAdminviewall.vm").addPathInfo("mode","All").addPathInfo("count","1") style=text-decoration:none>
+	#if($lang == "hindi")
+		$brih_listUsr
+	#else
+		$brih_view_all $brih_usr
+	#end
+	</a></td>
 	#if($tdcolor !="2")
 	<td>
 	#elseif($tdcolor == "2")
 	<td bgcolor="#AFDCEC">
 	#end
-        <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstAdminviewall.vm").addPathInfo("mode","All").addPathInfo("count","2") style=text-decoration:none>$brih_view_all $brih_usr</td>
+	<a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("listcourse","listcourse").addPathInfo("mode","All").addPathInfo("actionStat","Edit").addPathInfo("count","2") style=text-decoration:none>$brih_view_all1</a></td>
 </tr>
 #end
 </table>

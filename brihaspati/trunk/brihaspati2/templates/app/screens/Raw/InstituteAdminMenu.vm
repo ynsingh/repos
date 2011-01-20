@@ -41,7 +41,8 @@
    </tr>
    <tr bgcolor="$ui.menuColor">
       <td>
-         <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("listcourse","listcourse").addPathInfo("mode","All").addPathInfo("actionStat","Edit").addPathInfo("count","1") style=text-decoration:none>$brih_list $brih_mgmt</a>
+         ##<a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("listcourse","listcourse").addPathInfo("mode","All").addPathInfo("actionStat","Edit").addPathInfo("count","1") style=text-decoration:none>$brih_list $brih_mgmt</a>
+         <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstAdminviewall.vm").addPathInfo("mode","All").addPathInfo("count","1") style=text-decoration:none>$brih_list $brih_mgmt</a>
       </td>
    </tr>
    <tr>

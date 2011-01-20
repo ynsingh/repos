@@ -1,6 +1,6 @@
 #*
  * @(#) InstEditCourse.vm
- * Copyright (c) 2010 ETRG,IIT Kanpur.
+ * Copyright (c) 2010,2011 ETRG,IIT Kanpur.
  * All Rights Reserved.
  *
  * @author <a href="mailto:sharad23nov@yahoo.com ">Sharad Singh</a>
@@ -21,12 +21,12 @@ $!data.getMessage()
 
 <table bgcolor="$ui.menuColor" width=100%>
 <tr>
-	<td><font face="$ui.sansSerifFonts" size=3><a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> |
-     	##<a href=$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("listcourse","listcourse").addPathInfo("mode","All").addPathInfo("actionstat","Edit")>$brih_list_mgmt</a> |$brih_edit $brih_course : $Courseid
+	<td><font face="$ui.sansSerifFonts" size=3><a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> |
+        <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstAdminviewall.vm").addPathInfo("mode","All").addPathInfo("count","1") style=text-decoration:none>$brih_list_mgmt</a> |
 	#if($lang == "hindi")
-	<a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("mode","All").addPathInfo("listcourse","listcourse").addPathInfo("count","1")>$brih_listCourse</a> | $Courseid $brih_Of2 $brih_course $brih_edit 
+	<a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("mode","All").addPathInfo("listcourse","listcourse").addPathInfo("count","2") style=text-decoration:none>$brih_listCourse</a> | $Courseid $brih_Of2 $brih_course $brih_edit 
         #else
-	<a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("mode","All").addPathInfo("listcourse","listcourse").addPathInfo("count","1")>$brih_view_all $brih_course</a> | $brih_edit $brih_course : $Courseid
+	<a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("mode","All").addPathInfo("listcourse","listcourse").addPathInfo("count","2") style=text-decoration:none>$brih_view_all $brih_course</a> | $brih_edit $brih_course : $Courseid
         #end
 	</td>
 </tr>
@@ -38,14 +38,20 @@ $!data.getMessage()
 	#elseif($tdcolor=="1")
 	<td bgcolor="#AFDCEC">
 	#end
-        <a href="$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("listcourse","listcourse").addPathInfo("mode","All").addPathInfo("actionStat","Edit").addPathInfo("count","1")">$brih_view_all $brih_course</a>
+        <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstAdminviewall.vm").addPathInfo("mode","All").addPathInfo("count","1") style=text-decoration:none>
+	#if($lang == "hindi")
+		$brih_listUsr
+	#else
+		$brih_view_all $brih_usr
+	#end
+	</a></td>
         </td width=50%>
 	#if($tdcolor != "2")	
 	<td>
 	#elseif($tdcolor=="2")
 	<td bgcolor="#AFDCEC">
 	#end
-        <a href="$link.setPage("call,ListMgmt_InstituteAdmin,InstAdminviewall.vm").addPathInfo("mode","All").addPathInfo("count","2")">$brih_view_all $brih_usr</a></td>
+        <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("listcourse","listcourse").addPathInfo("mode","All").addPathInfo("actionStat","Edit").addPathInfo("count","2") style=text-decoration:none>$brih_view_all $brih_course</a>
 </tr>
 </table>
 
@@ -77,7 +83,7 @@ $!data.getMessage()
   	<td>
   		##<font face="$ui.sansSerifFonts">$brih_active </font> <br><br>
   		##<font face="$ui.sansSerifFonts">$brih_inactive</font>
-  		$brih_active <br>
+  		$brih_active <br> 
   		$brih_inactive
 	</td width=25%>
 	<td>
