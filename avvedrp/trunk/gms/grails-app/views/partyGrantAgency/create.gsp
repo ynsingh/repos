@@ -38,6 +38,7 @@
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:partyInstance,field:'code','errors')}">
                                     <input type="text" id="code" name="code" value="${fieldValue(bean:partyInstance,field:'code')}"/>
+                                    <label for="code" style="color:blue;font-weight:bold"> <g:message code="default.grantAgency.code.label"/></label>
                                 </td>
                             </tr> 
                         

@@ -45,8 +45,9 @@
                                 <td valign="top" class="name">
                                     <label for="code"><g:message code="default.Institution.label"/>:</label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean:partyDepartmentInstance,field:'party.code','errors')}">
-                                    <g:select optionKey="code" optionValue="code" from="${partyList}" name="party.code" value="${partyDepartmentInstance?.party?.code}" ></g:select>
+                                <td valign="top" class="value ${hasErrors(bean:partyDepartmentInstance,field:'party','errors')}">
+                                    <strong>${fieldValue(bean:partyDepartmentInstance, field:'party.code')}</strong>
+                                    <input type="hidden" id="party.id" name="party.id" value="${fieldValue(bean:partyDepartmentInstance,field:'party.id')}"/>
                                 </td>
                             </tr> 
 

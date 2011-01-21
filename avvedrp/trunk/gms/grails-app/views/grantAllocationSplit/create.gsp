@@ -42,15 +42,18 @@
 		{ 
 			padding: 0px;
 			text-align:left;
-			width: 500px; 
+			width: 650px; 
 		}
 	</style>
 	
-	<g:javascript library="scriptaculous" /> 
+	
 	    <body>
+	        
 	    	<div class="tablewrapperpopup"> 
+	    	<g:subMenuList/>
+	    	
 	        	<div class="proptable"> 
-	        		<table >
+	        		<table  align="left">
 	                   <tr>
 		                    <td valign="top">
 		                       <label for="project"><g:message code="default.Project.label"/>:</label>
@@ -91,6 +94,7 @@
                         </tr> 
                     </table>
                 </div>
+                
         		<table  class="tablewrapperpopup" border="0" cellspacing="0" cellpadding="0" >
     				<tr>
     					<td scope="col"><div >

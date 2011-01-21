@@ -43,12 +43,13 @@
 		{ 
 		padding: 0px;
 		text-align:left;
-		width: 500px; 
+		width: 650px; 
 		}
 	</style>
     <body>
         <div class="tablewrapperpopup">
         	<div class="tablewrapperpopup">
+        	<g:subMenuList/>
 	            <h1><g:message code="default.HeadAllocation.EditHeadAllocation.head"/></h1>
 	            <g:if test="${flash.message}">
 	            	<div class="message">${flash.message}</div>

@@ -39,7 +39,7 @@ class PartyDepartmentService
 	 */
 	public Integer checkDuplicateDepartment(def partyDepartmentInstance){
     	def departmentId = 0
-    	def chkDepartmentInstance = PartyDepartment.find("from PartyDepartment PD where PD.departmentCode= '"+partyDepartmentInstance.departmentCode+"' and PD.activeYesNo='Y'")
+    	def chkDepartmentInstance = PartyDepartment.find("from PartyDepartment PD where PD.departmentCode= '"+partyDepartmentInstance.departmentCode+"' and PD.activeYesNo='Y' and PD.party="+partyDepartmentInstance.party.id)
     	if(chkDepartmentInstance)
     		departmentId = chkDepartmentInstance.id
     		

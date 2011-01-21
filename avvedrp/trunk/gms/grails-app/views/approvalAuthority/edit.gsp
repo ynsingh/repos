@@ -50,7 +50,7 @@
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: approvalAuthorityInstance, field: 'approveMandatory', 'errors')}">
                                     
-                                    <g:select  name="approveMandatory" from ="${['Y','N']}"  value="${fieldValue(bean: approvalAuthorityInstance, field: 'approveMandatory')}" />
+                                    <g:select  name="approveMandatory" optionValue="key" optionKey="value" from ="${['Yes':'Y', 'No':'N']}"  value="${fieldValue(bean: approvalAuthorityInstance, field: 'approveMandatory')}" />
                                 </td>
                             </tr>
                         
@@ -59,14 +59,14 @@
                                   <label for="approveAll"><g:message code="default.approveAll.label"/></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: approvalAuthorityInstance, field: 'approveAll', 'errors')}">
-                                    <g:select name="approveAll" from="${['Y','N']}"  value="${fieldValue(bean: approvalAuthorityInstance, field: 'approveAll')}" />
+                                    <g:select name="approveAll" optionValue="key" optionKey="value" from ="${['Yes':'Y', 'No':'N']}"  value="${fieldValue(bean: approvalAuthorityInstance, field: 'approveAll')}" />
                                 </td>
                            
                                 <td valign="top" class="name">
                                   <label for="viewAll"><g:message code="default.viewAll.label"/></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: approvalAuthorityInstance, field: 'viewAll', 'errors')}">
-                                    <g:select name="viewAll" from ="${['Y', 'N']}" value="${fieldValue(bean: approvalAuthorityInstance, field: 'viewAll')}" />
+                                    <g:select name="viewAll" optionValue="key" optionKey="value" from ="${['Yes':'Y', 'No':'N']}" value="${fieldValue(bean: approvalAuthorityInstance, field: 'viewAll')}" />
                                 </td>
                             </tr>
                         
@@ -86,7 +86,7 @@
                     </table>
                 </div>
                 <div class="buttons">
-                    <span class="button"><g:actionSubmit class="save" action="update" value="${message(code: 'default.Update.button')}" /></span>
+                    <span class="button"><g:actionSubmit class="save" action="update" onClick="return validateApprovalAuthority()" value="${message(code: 'default.Update.button')}" /></span>
                     
                 </div>
             </g:form>

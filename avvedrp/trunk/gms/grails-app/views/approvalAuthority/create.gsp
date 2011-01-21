@@ -44,17 +44,19 @@
                              
                                <tr class= "prop">
                                  <td valign="top" class="name">
-                                     <label for="party"><g:message code ="default.Party.label" /></label>
+                                     <label for="party"><g:message code ="default.Institution.label" /></label>
                                  </td>
                                  <td valign="top" class="value ${hasErrors(bean:approvalAuthorityInstance, field:'party', 'errors')}">
-                                     <g:select optionKey="id" optionValue="code" from ="${partyInstance}" name ="party.id" value="${approvalAuthorityinstance?.party?.id}" ></g:select>
+                                     <strong>  ${partyInstance.code} </strong>
+                                     <input type="hidden" id="party.id" name="party.id" value="${fieldValue(bean:partyInstance,field:'id')}"/>
+                                     
                                  </td>           
                              
                                 <td valign="top" class="name">
                                     <label for="approveMandatory"><g:message code="default.approveMandatory.label" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: approvalAuthorityInstance, field: 'approveMandatory', 'errors')}">
-                                    <g:select  name="approveMandatory" from ="${['Y','N']}"  value="${fieldValue(bean: approvalAuthorityInstance, field: 'approveMandatory')}" />
+                                    <g:select  name="approveMandatory" optionValue="key" optionKey="value" from ="${['Yes':'Y', 'No':'N']}"  value="${fieldValue(bean: approvalAuthorityInstance, field: 'approveMandatory')}" />
                                 </td>
                                 </tr>
                             
@@ -68,14 +70,14 @@
                                     <label for="approveAll"><g:message code="default.approveAll.label" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: approvalAuthorityInstance, field: 'approveAll', 'errors')}">
-                                    <g:select name="approveAll" from="${['Y','N']}"  value="${fieldValue(bean: approvalAuthorityInstance, field: 'approveAll')}" />
+                                    <g:select name="approveAll" optionValue="key" optionKey="value" from ="${['Yes':'Y', 'No':'N']}"  value="${fieldValue(bean: approvalAuthorityInstance, field: 'approveAll')}" />
                                 </td>
                                 
                                 <td valign="top" class="name">
                                     <label for="viewAll"><g:message code="default.viewAll.label" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: approvalAuthorityInstance, field: 'viewAll', 'errors')}">
-                                    <g:select name="viewAll" from ="${['Y', 'N']}" value="${fieldValue(bean: approvalAuthorityInstance, field: 'viewAll')}" />
+                                    <g:select name="viewAll" optionValue="key" optionKey="value" from ="${['Yes':'Y', 'No':'N']}" value="${fieldValue(bean: approvalAuthorityInstance, field: 'viewAll')}" />
                                 </td>
                            </tr>
                         
@@ -103,7 +105,7 @@
                     </table>
                 </div>
                 <div class="buttons">
-                    <span class="button"><g:submitButton name="create" class="save" value="${message(code: 'default.Create.button')}" /></span>
+                    <span class="button"><g:submitButton name="create" class="save" onClick="return validateApprovalAuthority()" value="${message(code: 'default.Create.button')}" /></span>
                 </div>
             </g:form>
         </div>

@@ -200,16 +200,19 @@ class InvestigatorController {
         println "userId"+userId
         println"..............chkUniqueEmailInstance..........."+chkUniqueEmailInstance
         println"..............chkUniqueNameInstance..........."+chkUniqueNameInstance
-        if(chkUniqueNameInstance || userId != null)
+        /*if(chkUniqueNameInstance || userId != null)
         {
+        	println"chkUniqueNameInstance "+chkUniqueNameInstance 
         	flash.message = "${message(code: 'default.investigatorexistswithsamename.label')}"
         	redirect(action:create,id:investigatorInstance.id)
         }
         else
         {
+        */
           if(chkUniqueEmailInstance || userId != null)
          {
-    	   flash.message ="${message(code: 'default.investigatorexistswithsameEmail.label')}"
+        	  println"chkUniqueEmailInstance "+chkUniqueEmailInstance 
+    	   flash.message ="${message(code: 'default.UserNamealreadyexists.label')}"
     	   redirect(action:create,id:investigatorInstance.id)
          }
          else
@@ -218,7 +221,8 @@ class InvestigatorController {
         	if (emailValidator.isValid(params.email))
         	{
         		investigatorInstance.activeYesNo="Y" //15-11-2010	
-        		if(!investigatorInstance.hasErrors() && investigatorInstance.save()) {
+        		if(!investigatorInstance.hasErrors() && investigatorInstance.save()) 
+        		{
         			flash.message = "${message(code: 'default.created.label')}"
         			def userInstance = new Person()
         			userInstance.username = investigatorInstance.email
@@ -269,7 +273,7 @@ class InvestigatorController {
 				render(view:'create',model:[investigatorInstance:investigatorInstance,partyinstance:partyinstance])
 			}
          }
-        }
+        
     }
     def updateSelect = 
     {

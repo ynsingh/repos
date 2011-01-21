@@ -165,7 +165,7 @@
 		</g:if>
 		</ul>
 		</div>
-		<a class="menuitem submenuheader" href="#" ><g:message code="default.ProposalAuthorityMap.label"/></a>
+		<a class="menuitem submenuheader" href="#" ><g:message code="default.AssignProposal.label"/></a>
 	<div class="submenu">
 		<ul>
 		<g:if test="${session.Role == 'ROLE_SITEADMIN'}">

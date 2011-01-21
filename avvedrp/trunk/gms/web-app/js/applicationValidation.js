@@ -243,7 +243,17 @@ function validateProject(){
 	    alert("Please enter the Investigator");
 	    return false;
     }
-	
+    var name = document.getElementById("name");
+	var ichars = /^[a-zA-Z0-9\_\-'.\s]{1,50}$/;
+	if(name.value != "")
+	{ 
+		if (!ichars.test(name.value))
+		{ 
+			alert('Project name should not have special characters.');
+			name.focus;
+			return false;
+		}
+	}
 	var projectStartDateYear = document.getElementById("projectStartDate_year").value;
 	var projectStartDateMonth = document.getElementById("projectStartDate_month").value;
 	var projectStartDateDate = document.getElementById("projectStartDate_day").value;
@@ -261,6 +271,7 @@ function validateProject(){
     		alert("Project End Date should be greater than Start Date")
     		return false;
     	}
+    
     	return true;
     
     }
@@ -356,7 +367,8 @@ function validateProject(){
     {
 	    alert("Please enter the Sanction Order No  ");
 	    return false;
-    }     
+    }    
+    
    	return true;
 
 }
@@ -551,10 +563,22 @@ function validateFundAllot()
     var projectStartDateDate=projectStartDate.substring(projectStartDate.lastIndexOf("-")+1,projectStartDate.lastIndexOf(" "));
     		
     var ProjectStartDate = new Date(projectStartDateYear,projectStartDateMonth-1,projectStartDateDate);
-    		
+    
+    var projectEndDate = document.getElementById("ProjectEndDate").value;
+    var projectEndDateYear=projectEndDate.substring(0,projectEndDate.indexOf("-"));
+    var projectEndDateMonth=projectEndDate.substring(projectEndDate.indexOf("-")+1,projectEndDate.lastIndexOf("-"));
+    var projectEndDateDate=projectEndDate.substring(projectEndDate.lastIndexOf("-")+1,projectEndDate.lastIndexOf(" "));
+        		
+    var ProjectEndDate = new Date(projectEndDateYear,projectEndDateMonth-1,projectEndDateDate);
+    
    if(AllocationDate < ProjectStartDate)
    {
    alert("Allocation Date should be greater than Project Start Date");
+   return false;
+   }  
+   if(AllocationDate > ProjectEndDate)
+   {
+   alert("Allocation Date should be less than Project End Date");
    return false;
    }  	
    return true;
@@ -574,7 +598,7 @@ function validateReportViewConfirmPrint()
 		return false;
 	} 
 	document.viewStatementOfAccounts.target="_blank";
-	return true;
+  return true;
 }
 function validateSubGrantAllot()
 {     
@@ -683,17 +707,83 @@ function validateGrantExpense()
 	    alert("Please enter Bank Branch  ");
 	    return false;
     }
-    
-	
+    var ddNo = document.getElementById("ddNo");
+	var isInteger_re = /^\s*(\+|-)?\d+\s*$/;
+	if(ddNo.value != "")
+	{ 
+		if (!isInteger_re.test(ddNo.value))
+		{ 
+			alert('DD number should not have characters.');
+			ddNo.focus;
+			return false;
+		}
+	}
+    var bankName = document.getElementById("bankName");
+	var ichars = /^[a-zA-Z0-9\_\-'.\s]{1,50}$/;
+	if(bankName.value != "")
+	{ 
+		if (!ichars.test(bankName.value))
+		{ 
+			alert('Bank name should not have special characters.');
+			bankName.focus;
+			return false;
+		}
+	}	
+	var ddBranch = document.getElementById("ddBranch");
+	var ichars = /^[a-zA-Z0-9\_\-'.\s]{1,50}$/;
+	if(ddBranch.value != "")
+	{ 
+		if (!ichars.test(ddBranch.value))
+		{ 
+			alert('Branch name should not have special characters.');
+			ddBranch.focus;
+			return false;
+		}
+	}	
 }
 function validateGrantPeriod()
 {
+ 
+var startDateYear = document.getElementById("startDate_year").value;
+	var startDateMonth = document.getElementById("startDate_month").value;
+	var startDateDate = document.getElementById("startDate_day").value;
+	
+	var endDateYear = document.getElementById("endDate_year").value;
+	var endDateMonth = document.getElementById("endDate_month").value;
+	var endDateDate = document.getElementById("endDate_day").value;
+    	
+    	var newStartDate = new Date(startDateYear,startDateMonth-1,startDateDate);
+    	var newEndDate = new Date(endDateYear,endDateMonth-1,endDateDate);
+    	 
+    	
+    	if (newStartDate>=newEndDate)
+    	{
+    		alert(" End Date should be greater than Start Date")
+    		return false;
+    	}
+    
+    	
 	if(document.getElementById("name").value == "")
 	{
 		alert("Please Enter Name");
 	    document.getElementById("name").focus();
 	    return false;
 	}
+	var speclChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?";
+	
+	if(document.getElementById("name").value != "")
+	 {
+    	
+    	for (var i = 0; i < (document.getElementById("name").value.length); i++) 
+    	{
+   	 		if (speclChars.indexOf(document.getElementById("name").value.charAt(i)) != -1) 
+  			{
+  			alert ("Your Name has special characters. \nThese are not allowed.\n Please remove them and try again.");
+  			return false;
+  			}
+    	}
+ 
+	  }
 	return true;
 }
 function validateGrantReceipt()
@@ -757,8 +847,39 @@ function validateGrantReceipt()
 	    alert("Please enter Bank Branch  ");
 	    return false;
     }
-    
-	 
+  	var bankName = document.getElementById("bankName");
+	var ichars = /^[a-zA-Z0-9\_\-'.\s]{1,50}$/;
+	if(bankName.value != "")
+	{ 
+		if (!ichars.test(bankName.value))
+		{ 
+			alert('Bank Name should not have special characters.');
+			bankName.focus;
+			return false;
+		}
+	}
+	var ddBranch = document.getElementById("ddBranch");
+	var ichars = /^[a-zA-Z0-9\_\-'.\s]{1,50}$/;
+	if(ddBranch.value != "")
+	{ 
+		if (!ichars.test(ddBranch.value))
+		{ 
+			alert('Branch Name should not have special characters.');
+			ddBranch.focus;
+			return false;
+		}
+	}
+	var ddNo = document.getElementById("ddNo");
+	var isInteger_re = /^\s*(\+|-)?\d+\s*$/;
+	if(ddNo.value != "")
+	{ 
+		if (!isInteger_re.test(ddNo.value))
+		{ 
+			alert('DD/Cheque No should not have characters.');
+			ddNo.focus;
+			return false;
+		}
+	}
 }
 function validatePI()
 {
@@ -824,7 +945,7 @@ function validateNotificationCreate()
 	var newnotificationDate = new Date(notificationDateYear,notificationDateMonth-1,notificationDateDate);
 	var newproposalSubmissionLastDate = new Date(proposalSubmissionLastDateYear,proposalSubmissionLastDateMonth-1,proposalSubmissionLastDateDate);
 	 
-	if (newnotificationDate>newproposalSubmissionLastDate)
+	if (newnotificationDate>=newproposalSubmissionLastDate)
 	{
 		alert("Last Date for ProposalSubmission should be greater than Notification Date")
 		return false;
@@ -868,7 +989,7 @@ function validateNotificationEdit()
 	var newproposalSubmissionLastDate = new Date(proposalSubmissionLastDateYear,proposalSubmissionLastDateMonth-1,proposalSubmissionLastDateDate);
 	 
 	
-	if (newnotificationDate>newproposalSubmissionLastDate)
+	if (newnotificationDate>=newproposalSubmissionLastDate)
 	{
 		alert("Last Date for ProposalSubmission should be greater than Notification Date")
 		return false;
@@ -924,6 +1045,26 @@ function validateParty()
 	    document.getElementById("nameOfTheInstitution").focus();
 	    return false;
 	}
+	
+	var speclChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?";
+	
+	if(document.getElementById("nameOfTheInstitution").value != "")
+	 {
+    	
+    	for (var i = 0; i < (document.getElementById("nameOfTheInstitution").value.length); i++) 
+    	{
+    	 
+          //  var temp = document.getElementById("nameOfTheInstitution").value.length ; 
+    	// alert(temp);
+  	 		if (speclChars.indexOf(document.getElementById("nameOfTheInstitution").value.charAt(i)) != -1) 
+  			{
+  			alert ("Your name has special characters. \nThese are not allowed.\n Please remove them and try again.");
+  			return false;
+  			}
+    	}
+ 
+	  }
+	
 	if(document.getElementById("code").value == "")
 	{
 		alert("Please Enter Code");
@@ -957,6 +1098,12 @@ function validateProjectTracking()
 	    document.getElementById("percOfCompletion").focus();
 	    return false;
 	}
+	 if(eval(document.getElementById("percOfCompletion").value)<=0)
+    {
+	    alert("Please enter Proper Percentage");
+	    return false;
+    }
+	
 	return true;
 }
 function validateProposal()
@@ -1075,6 +1222,41 @@ function validateUser()
 	    document.getElementById("userRealName").focus();
 	    return false;
 	}
+	 var speclChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?";
+	
+	if(document.getElementById("userRealName").value != "")
+	 {
+    	
+    	for (var i = 0; i < (document.getElementById("userRealName").value.length); i++) 
+    	{
+    	 
+          //  var temp = document.getElementById("userRealName").value.length ; 
+    	// alert(temp);
+  	 		if (speclChars.indexOf(document.getElementById("userRealName").value.charAt(i)) != -1) 
+  			{
+  			alert ("Your username has special characters. \nThese are not allowed.\n Please remove them and try again.");
+  			return false;
+  			}
+    	}
+ 
+	  }
+	  
+	 if(document.getElementById("userSurName").value != "")
+	 {
+    	
+    	for (var i = 0; i < (document.getElementById("userSurName").value.length); i++) 
+    	{
+    	 
+          //  var temp = document.getElementById("userSurName").value.length ; 
+    	  // alert(temp);
+  	 		if (speclChars.indexOf(document.getElementById("userSurName").value.charAt(i)) != -1) 
+  			{
+  			alert ("Your username has special characters. \nThese are not allowed.\n Please remove them and try again.");
+  			return false;
+  			}
+    	}
+ 
+	  }
     if(document.getElementById("password").value == ""){
 		alert("Please enter Password");
 	    document.getElementById("password").focus();
@@ -1119,16 +1301,46 @@ function validateUser()
 }
 function validateEditUser()
 {
-	if(document.getElementById("username").value == ""){
-		alert("Please Enter Login Name");
-	    document.getElementById("username").focus();
-	    return false;
-	}
+
 	if(document.getElementById("userRealName").value == ""){
 		alert("Please Enter Full Name");
 	    document.getElementById("userRealName").focus();
 	    return false;
 	}
+	 var speclChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?";
+	
+	if(document.getElementById("userRealName").value != "")
+	 {
+    	
+    	for (var i = 0; i < (document.getElementById("userRealName").value.length); i++) 
+    	{
+    	 
+          //  var temp = document.getElementById("userRealName").value.length ; 
+    	// alert(temp);
+  	 		if (speclChars.indexOf(document.getElementById("userRealName").value.charAt(i)) != -1) 
+  			{
+  			alert ("Your username has special characters. \nThese are not allowed.\n Please remove them and try again.");
+  			return false;
+  			}
+    	}
+ 
+	  }
+	if(document.getElementById("userSurName").value != "")
+	 {
+    	
+    	for (var i = 0; i < (document.getElementById("userSurName").value.length); i++) 
+    	{
+    	 
+          //  var temp = document.getElementById("userSurName").value.length ; 
+    	  // alert(temp);
+  	 		if (speclChars.indexOf(document.getElementById("userSurName").value.charAt(i)) != -1) 
+  			{
+  			alert ("Your username has special characters. \nThese are not allowed.\n Please remove them and try again.");
+  			return false;
+  			}
+    	}
+ 
+	  }
     if(document.getElementById("password").value == ""){
 		alert("Please enter Password");
 	    document.getElementById("password").focus();
@@ -1318,6 +1530,17 @@ function validateProjectEmployee()
 	    document.getElementById("empNo").focus();
 	    return false;
 	}
+	var empNo = document.getElementById("empNo");
+	var ichars = /^[a-zA-Z0-9\_\-'.\s]{1,50}$/;
+	if(empNo.value != "")
+	{ 
+		if (!ichars.test(empNo.value))
+		{ 
+			alert('Employee Number should not have special characters.');
+			empNo.focus;
+			return false;
+		}
+	}
 	if( ( (document.getElementById("employeeDesignation.id").value) == 'null')  )
 	{
 	    alert("Please enter Designation");
@@ -1336,11 +1559,11 @@ function validateProjectEmployee()
 	var newEmployeeJoiningDate = new Date(employeeJoiningDateYear,employeeJoiningDateMonth-1,employeeJoiningDateDate);
 	var newEmployeeRelievingDate = new Date(employeeRelievingDateYear,employeeRelievingDateMonth-1,employeeRelievingDateDate);
  
-	if(document.getElementById("relievingDate").value !== "")
+	if(document.getElementById("relievingDate").value != 'null')
 	{
     	if (newEmployeeJoiningDate > newEmployeeRelievingDate)
 		{
-			alert("Joining Date should be less than Relieving Date")
+			alert("Joining Date should be less than Relieving Date");
 			return false;
 		}
 	}
@@ -1349,15 +1572,22 @@ function validateProjectEmployee()
 	var employeeDateOfBirthMonth = document.getElementById("dOB_month").value;
 	var employeeDateOfBirthDate = document.getElementById("dOB_day").value;
 	
+	
 	var newEmployeeDateOfBirth = new Date(employeeDateOfBirthYear,employeeDateOfBirthMonth-1,employeeDateOfBirthDate);
 	var d = new Date();
 	var curr_date = d.getDate();
 	var curr_month = d.getMonth();
 	var curr_year = d.getFullYear();
 	var Today = new Date(curr_year,curr_month,curr_date);
-	if(newEmployeeDateOfBirth > Today)
+		
+	if(newEmployeeDateOfBirth >= Today)
 	{
-			alert("Date of Birth sholud be less than Current Date")
+			alert("Date of Birth sholud be less than Current Date");
+			return false;
+	}
+	if(newEmployeeDateOfBirth >= newEmployeeJoiningDate)
+	{
+			alert("Date of Birth sholud be less than Joining Date")
 			return false;
 	}
 	
@@ -1445,6 +1675,12 @@ function validateProjectEmployeeQualification()
 	    document.getElementById("percMark").focus
 	    return false;
     }
+      if(eval(document.getElementById("percMark").value)<=0)
+    {
+	    alert("Please enter Invalid Percentage ");
+	    return false;
+    }
+    
 	return true;
 }
 
@@ -1481,6 +1717,7 @@ function validateProjectEmployeeSalaryDetails()
 	    document.getElementById("withEffectFrom").focus();
 	    return false;
 	}
+	
 	return true;
 }
 function validateSalaryComponent()
@@ -1695,10 +1932,44 @@ function validateEligibilityCriteria()
   
   		return true;
 	}
-  
+	
+	
+function validatePreProposal()
+  {
+  	if(document.getElementById("projectTitle").value == "")
+	{
+		alert("Please Enter the Project Title");
+	    document.getElementById("projectTitle").focus();
+	    return false;
+	}
+	return true;
+ }
+ 
+ function validateProposalCategory()
+{
+   if(document.getElementById("name").value == "")
+	{
+		alert("Please Enter the Name");
+	    document.getElementById("name").focus();
+	    return false;
+	}
+	return true;
+}
+
+function validateApprovalAuthority()
+{
+   if(document.getElementById("name").value == "")
+	{
+		alert("Please Enter the Name");
+	    document.getElementById("name").focus();
+	    return false;
+	}
+	return true;
+}
+	
+ 
   function validateAppAuthorityPersonForDelete()
 	{ 
-	
 	
 	
 	var isChecked=0;  
@@ -1739,5 +2010,47 @@ function validateEligibilityCriteria()
 		  
 	 
 	}
+	function checkAllApprovalAuthorityMap()
+	{
+	
+	 if(document.proposalApprovalAuthorityMap.AllApprovalAuthority.checked==true)
+    	{
+    		for(var i=0;i<document.proposalApprovalAuthorityMap.approvalAuthority.length;i++)
+    		{
+    			document.proposalApprovalAuthorityMap.approvalAuthority[i].checked=true;
+    		}
+    	}
+    	else
+    	{
+    		for(var i=0;i<document.proposalApprovalAuthorityMap.approvalAuthority.length;i++)
+    		{
+    			document.proposalApprovalAuthorityMap.approvalAuthority[i].checked=false;
+    		}
+    	}
+
+	}
+	
+
+	
+	function checkAllApprovalAuthorityDetails()
+	{
+	
+	 if(document.proposalApprovalAuthorityMap.AllapprovalAuthorityDetail.checked==true)
+    	{
+    		for(var i=0;i<document.proposalApprovalAuthorityMap.proposalApprovalAuthority.length;i++)
+    		{
+    			document.proposalApprovalAuthorityMap.proposalApprovalAuthority[i].checked=true;
+    		}
+    	}
+    	else
+    	{
+    		for(var i=0;i<document.proposalApprovalAuthorityMap.proposalApprovalAuthority.length;i++)
+    		{
+    			document.proposalApprovalAuthorityMap.proposalApprovalAuthority[i].checked=false;
+    		}
+    	}
+
+	}
+	
 		
 	

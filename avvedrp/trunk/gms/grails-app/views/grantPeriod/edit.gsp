@@ -38,7 +38,7 @@
                                     <label for="startDate"><g:message code="default.StartDate.label"/></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:grantPeriodInstance,field:'startDate','errors')}">
-                                <calendar:datePicker name="startDate" defaultValue="${new Date()}" value="${grantPeriodInstance?.startDate}" dateFormat= "%d/%m/%Y"/>
+                                <calendar:datePicker id="startDate" name="startDate" defaultValue="${new Date()}" value="${grantPeriodInstance?.startDate}" dateFormat= "%d/%m/%Y"/>
                                 </td>
                             </tr> 
                             
@@ -47,7 +47,7 @@
                                     <label for="endDate"><g:message code="default.EndDate.label"/></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:grantPeriodInstance,field:'endDate','errors')}">
-                                    <calendar:datePicker name="endDate" value="${grantPeriodInstance?.endDate}" defaultValue="${new Date()}"  dateFormat= "%d/%m/%Y"/>
+                                    <calendar:datePicker id="endDate" name="endDate" value="${grantPeriodInstance?.endDate}" defaultValue="${new Date()}"  dateFormat= "%d/%m/%Y"/>
                             </td>
                            <!--=============== Commented on 12-11-2010,to hide active field ==============
                             <tr class="prop">

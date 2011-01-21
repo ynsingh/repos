@@ -529,6 +529,20 @@ class ProjectsService{
 	}
 	
 	/**
+	  * Function to get active sub projects for closing main project.
+	  */
+	  
+	  public List getSubProjectsForClosingMainProject(def projectId)
+	{
+		  
+		  def subProjectInstanceList = Projects.findAll("from Projects PS where PS.parent.id= "+projectId)  
+		  return subProjectInstanceList 
+	}
+	  
+	  
+	  
+	  
+	/**
 	 * Function to get all project tracking by params
 	 */
 	public List getAllProjecTracking(def params){

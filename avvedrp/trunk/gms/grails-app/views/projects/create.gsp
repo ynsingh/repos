@@ -41,6 +41,7 @@
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'code','errors')}">
                                     <input type="text"  id="code" name="code" onfocus="PopupVirtualKeyboard.attachInput(this)" value="${fieldValue(bean:projectsInstance,field:'code')}"/>
+                                    <label for="code" style="color:blue;font-weight:bold"> <g:message code="default.projects.projectCode.label"/></label>
                                 </td>
                             </tr> 
                         	

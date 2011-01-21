@@ -23,6 +23,7 @@
                 <div class="dialog">
                 <g:hiddenField name="ProjectStartDate" 
 		    					value="${fieldValue(bean:projectsInstance, field:'projectStartDate')}"/>
+				<g:hiddenField name="ProjectEndDate" value="${projectsInstance?.projectEndDate}"/>
 		    
                     <table>
                         <tbody>

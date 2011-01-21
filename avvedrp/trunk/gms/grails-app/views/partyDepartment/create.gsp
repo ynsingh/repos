@@ -30,6 +30,7 @@
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:partyDepartmentInstance,field:'departmentCode','errors')}">
                                     <input type="text" id="departmentCode" name="departmentCode" value="${fieldValue(bean:partyDepartmentInstance,field:'departmentCode')}"/>
+                                    <label for="departmentCode" style="color:blue;font-weight:bold"> <g:message code="default.department.shortname.label"/></label> 
                                 </td>
                             </tr> 
                         
@@ -46,7 +47,8 @@
                                     <label for="code"><g:message code="default.Institution.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:partyDepartmentInstance,field:'party','errors')}">
-                                    <g:select optionKey="id" optionValue="code" from="${partyList}" name="party.id" value="${partyDepartmentInstance?.party?.id}" ></g:select>
+                                  <strong>  ${partyInstance.code}</strong>
+                                    <input type="hidden" id="party.id" name="party.id" value="${fieldValue(bean:partyInstance,field:'id')}"/>
                                 </td>
                             </tr> 
                         </tbody>
@@ -69,7 +71,7 @@
                     	    <g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}"/>
 							<g:sortableColumn property="departmentCode" title="${message(code: 'default.DepartmentCode.label')}" />
                    	        <g:sortableColumn property="departmentName" title="${message(code: 'default.DepartmentName.label')}" />
-                    	    <g:sortableColumn property="party" title="${message(code: 'default.Party.label')}" />
+                    	    <g:sortableColumn property="party" title="${message(code: 'default.Institution.label')}" />
                    	        <th><g:message code="default.Edit.label"/></th>
                        
                         </tr>

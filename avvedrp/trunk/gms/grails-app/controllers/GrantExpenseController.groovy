@@ -83,7 +83,7 @@ class GrantExpenseController extends GmsController {
         def dateFrom = new Date()
     	def dateTo = new Date()
        
-    		
+    	
     	if(params.dateFrom_value)
     		dateFrom = sdf.parse(params.dateFrom_value)
     		
@@ -244,7 +244,7 @@ class GrantExpenseController extends GmsController {
         def dateFrom = new Date()
     	def dateTo = new Date()
    	 
-		
+   	  println"params.dateFrom_value"+params.dateFrom_value
    	     println"++++++++++++params++++++++++"+params
     	println "new datefrom "	+params.dateFrom+ "new dateTo" +params.dateTo
     	if(params.dateFrom_value){
@@ -261,6 +261,25 @@ class GrantExpenseController extends GmsController {
     	def grantExpenseSummaryList = grantExpenseService.getGrantExpenseTotalForAProject(projectsInstance)
     		
         def grantExpenseInstance = new GrantExpense()
+		println"params^^^^^"+params
+		
+
+		if(params.expenseAmount)
+			
+		{
+			
+			def grantAllocationInstance = GrantAllocation.find("from GrantAllocation GA where GA.id ="+params.grantAllocationId)
+			def grantAllocationSplitInstance = GrantAllocationSplit.find("from GrantAllocationSplit GS where GS.id ="+params.accountHeadId)
+			grantExpenseInstance.expenseAmount=new Double(params.expenseAmount)
+			grantExpenseInstance.grantAllocation = grantAllocationInstance
+			grantExpenseInstance.grantAllocationSplit = grantAllocationSplitInstance
+			grantExpenseInstance.modeOfPayment = params.modeOfPayment
+			grantExpenseInstance.ddNo =params.ddNo
+			grantExpenseInstance.bankName = params.bankName
+			grantExpenseInstance.ddBranch = params.ddBranch
+			grantExpenseInstance.description = params.description
+			
+		}
     	grantExpenseInstance.projects = projectsInstance
     	grantExpenseInstance.dateFrom = dateFrom
     	grantExpenseInstance.dateTo = dateTo
@@ -330,7 +349,11 @@ class GrantExpenseController extends GmsController {
 		if(grantExpenseInstance.expenseAmount > balanceAmnt)
 	    {
 	    	flash.message = "${message(code: 'default.ExpenseAmountValidationAgainstAllocatedAmount.label')}"
-	    	redirect(action:create,id:grantExpenseInstance.projects.id)
+	    		 redirect(action:create,id:grantExpenseInstance.projects.id,params:[expenseAmount:grantExpenseInstance.expenseAmount,
+	    		                                     			                   grantAllocationId:grantExpenseInstance.grantAllocation.id,accountHeadId:grantExpenseInstance.grantAllocationSplit.id,
+	    		                                     			                   modeOfPayment:grantExpenseInstance.modeOfPayment,ddNo:grantExpenseInstance.ddNo,
+	    		                                     			                   bankName:grantExpenseInstance.bankName,ddBranch:grantExpenseInstance.ddBranch,
+	    		                                     			                   description:grantExpenseInstance.description])
 	    }
 	    else
 	    {
@@ -345,17 +368,27 @@ class GrantExpenseController extends GmsController {
 		   {
 			 headBalance = headAllcnAmnt[0] 
 		   }
+		   println"grantExpenseInstance.dateOfExpense"+grantExpenseInstance.dateOfExpense
+		   
 		   if(grantExpenseInstance.expenseAmount > headBalance)
 		   {
 			   flash.message = "${message(code: 'default.ExpenseAmountValidationAgaistHeadwiseAllcn.label')}"
-			   redirect(action:create,id:grantExpenseInstance.projects.id)
+			   redirect(action:create,id:grantExpenseInstance.projects.id,params:[expenseAmount:grantExpenseInstance.expenseAmount,
+			                   grantAllocationId:grantExpenseInstance.grantAllocation.id,accountHeadId:grantExpenseInstance.grantAllocationSplit.id,
+			                   modeOfPayment:grantExpenseInstance.modeOfPayment,ddNo:grantExpenseInstance.ddNo,
+			                   bankName:grantExpenseInstance.bankName,ddBranch:grantExpenseInstance.ddBranch,
+			                   description:grantExpenseInstance.description])
 		   }
 		   else
 		   {
 	    	if(grantExpenseInstance.dateOfExpense < grantExpenseInstance.grantAllocation.DateOfAllocation)
 	    	{
 	    		flash.message="${message(code: 'default.DateValidationAgainstAllocationdate.label')}"
-	    		redirect(action:create,id:grantExpenseInstance.projects.id)
+	    			 redirect(action:create,id:grantExpenseInstance.projects.id,params:[expenseAmount:grantExpenseInstance.expenseAmount,
+	    			                                     			                   grantAllocationId:grantExpenseInstance.grantAllocation.id,accountHeadId:grantExpenseInstance.grantAllocationSplit.id,
+	    			                                     			                   modeOfPayment:grantExpenseInstance.modeOfPayment,ddNo:grantExpenseInstance.ddNo,
+	    			                                     			                   bankName:grantExpenseInstance.bankName,ddBranch:grantExpenseInstance.ddBranch,
+	    			                                     			                   description:grantExpenseInstance.description])
 	    	}
 	    	else
 	    	{

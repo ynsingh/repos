@@ -1,0 +1,51 @@
+<%@ taglib uri="/taglib.tld" prefix="jade"%>
+<%@ page extends="com.salmonllc.jsp.JspServlet"%>
+<%@ page import="org.amma.aitf.hmoscore.services.conf.ApplicationConf" %>
+<html>
+<jade:page/>
+<jade:form name="pageForm">
+<title>AmritaVidya About Us</title>
+<link href="/STYLESHEETS/AhisDetailScreen.css" rel="stylesheet" type="text/css">
+<jade:body classname="mainbg" topmargin="0" />
+<table width="600" height="332"  border="0" align="center" cellpadding="0" cellspacing="0" >
+  <tr bgcolor="" valign="top">
+    <td height="0" valign="top"><table width="100%" border="0">
+        <tr> 
+          <td width="54%" rowspan="3" valign="top"><img src="/images/aboutus_new.jpg"> </td>
+          <td width="46%" >&nbsp;</td>
+        </tr>
+        <tr> 
+          <td><font><p><strong>Product Version :</strong>
+              <%@include file="build.version"%> <br>
+			  <br>
+			  <br>
+        <strong>Build Version:</strong>
+        <%
+        	String repVersion = ApplicationConf.getParam("AUMS_REP_VERSION");
+        	out.print((repVersion==null?"":repVersion));
+        %>
+			<br>
+        <strong>Database Version:</strong>
+        <%
+        	String dbVersion = ApplicationConf.getParam("AUMS_DB_VERSION");
+        	out.print((dbVersion==null?"":dbVersion));
+        %>
+
+		<br>
+              <b>MGMS : Multisite Grant Management System </b></p>
+              <p><br>
+              <a href="http://www.amritatech.com" target="_blank"><img src="/images/amrita_icon.gif" border="0" ></a>e:&nbsp;<a href="amritaerp@gmail.com">amritaerp@gmail.com</a><br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+w:&nbsp;<a href="http://sakshat.amrita.ac.in/erp/">http://sakshat.amrita.ac.in/erp/</a></p>
+              <p></p></font></td>
+        </tr>
+        <tr> 
+          <td >&nbsp;</td>
+        </tr>
+      </table></td>
+  </tr>
+</table>
+</jade:form>
+<jade:endbody/>
+<jade:endpage/>
+</html>

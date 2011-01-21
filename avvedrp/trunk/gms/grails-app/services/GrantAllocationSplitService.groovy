@@ -135,7 +135,7 @@ class GrantAllocationSplitService{
 //	Function to get Fund allocated account head with grant period
 	 public GrantAllocationSplit[] getAccountHeadByProject(def projectId)
 	 {
-	        def accountHeadList=GrantAllocationSplit.findAll("from GrantAllocationSplit GS where GS.projects.id="+projectId+" and GS.grantPeriod.defaultYesNo='Y' order by GS.accountHead.code asc")
+	        def accountHeadList=GrantAllocationSplit.findAll("from GrantAllocationSplit GS where GS.projects.id="+projectId+"  order by GS.accountHead.code asc")
 	        for(int i=0;i<accountHeadList.size();i++ )
 	        {
 	        	accountHeadList[i].accHeadPeriod=accountHeadList[i].accountHead.name.toUpperCase()+" ("+accountHeadList[i].grantPeriod.name+")"
