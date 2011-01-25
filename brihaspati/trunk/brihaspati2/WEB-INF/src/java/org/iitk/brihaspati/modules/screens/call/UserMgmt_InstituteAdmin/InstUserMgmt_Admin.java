@@ -107,8 +107,8 @@ public class InstUserMgmt_Admin extends SecureScreen_Institute_Admin
                 for(int i=0;i<Instplist.size();i++)
                 {       
                         InstituteProgram element = (InstituteProgram)Instplist.get(i);
-                        int prgcode = element.getProgramCode();
-                        String PrgCode = Integer.toString(prgcode);
+                        String PrgCode = element.getProgramCode();
+                       // String PrgCode = Integer.toString(prgcode);
                         String prgName = InstituteIdUtil.getPrgName(PrgCode);
                         CourseUserDetail cDetails=new CourseUserDetail();
                         cDetails.setPrgName(prgName);
