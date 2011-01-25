@@ -110,7 +110,7 @@ $!data.getMessage()
 	<tr>
                 <td>$brih_program($brih_if $brih_student)</td>
                 <td colspan=3><select name="prg" size=1 onChange="checkOption1(document.frm,this);"/>
-                        <option>$brih_select $brih_program </option>
+			<option value="Select Program"> #if($lang=="hindi") $brih_program $brih_select #else $brih_select $brih_program #end</option>
 			#foreach($progname in $PrgDetail)
 				<option value="$progname.getPrgCode()">$progname.getPrgName() </option>
 			#end
