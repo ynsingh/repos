@@ -5,10 +5,10 @@
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
- * @modified date: 22-11-2010
+ * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
+ * @modified date: 22-11-2010, 31-01-2011,
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
-
 $page.setTitle("Admin Home | User Management")
 $page.setBgColor("#ffffff")
 
@@ -27,7 +27,7 @@ $!data.getMessage()
      	<a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> | 
 	<a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("listcourse","listcourse").addPathInfo("mode","All").addPathInfo("actionstat","Edit").addPathInfo("count","1")">$brih_list_mgmt</a> |
         #if($mode!="Search")
-                         $brih_view_all1
+		$brih_view_all1
         #else
                 $brih_view_sel
         #end
@@ -36,13 +36,13 @@ $!data.getMessage()
         #if( $total_size!=0 )
         #if( $endIndex < $total_size )
                 #if( $endIndex < $AdminConf )
-	                #if($lang == "hindi") $total_size $brih_in $brih_from1 [$k - $total_size] #else [$k - $total_size] $brih_of $total_size #end
+	                #if($lang == "hindi") $total_size in $brih_from1 [$k - $total_size] #else [$k - $total_size] of $total_size #end
                 #else
-                	#if($lang == "hindi") $total_size $brih_in $brih_from1 [$k - $endIndex] #else [$k - $endIndex] $brih_of $total_size #end
+                	#if($lang == "hindi") $total_size in $brih_from1 [$k - $endIndex] #else [$k - $endIndex] of $total_size #end
                 #end
         #else
         	##[$k - $total_size] of $total_size
-		#if($lang == "hindi") $total_size $brih_in $brih_from1 [$k - $total_size] #else [$k - $total_size] $brih_of $total_size #end
+		#if($lang == "hindi") $total_size in $brih_from1 [$k - $total_size] #else [$k - $total_size] of $total_size #end
         #end
         #end
         </td>
@@ -52,31 +52,40 @@ $!data.getMessage()
 <table width=100% align=left bgcolor="$ui.tableColor">
 <tr>
 #if($tdcolor != "1")
-	<td width=15%> 
+	<td width="50%"> 
 #elseif($tdcolor == "1")
-	<td width=15% bgcolor="#AFDCEC">
-#end 
-<a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("listcourse","listcourse").addPathInfo("mode","All").addPathInfo("actionStat","Edit").addPathInfo("count","1")"> $brih_view_all1 </a></td>
+	<td width="50%" bgcolor="#AFDCEC">
+#end
+<a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("listcourse","listcourse").addPathInfo("mode","All").addPathInfo("actionStat","Edit").addPathInfo("count","1")"> $brih_view_all1</a></td>
 #if($tdcolor != "2")
-	<td align=center> 
+	<td width="50%"> 
 #elseif($tdcolor == "2")
-	<td align=center bgcolor="#AFDCEC">
+	<td width="50%" bgcolor="#AFDCEC">
 #end 
         <a href="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("mode","All").addPathInfo("count","2")"> #if($lang == "hindi") $brih_all $brih_usr $brih_Of1 $brih_view  #else $brih_view_all $brih_usr #end </a>
         </td>  
 	</tr>
 ##  </table>
-
 #if($listcourse =="listcourse")
 <form name="frm" method="post" action="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm")">
 <table width=100% align=left bgcolor="$ui.tableColor">
         <tr bgcolor="$ui.menuColor">
+## **************** Search By Institute *****************
+                <td><b>$brih_searchBy $RemoteInstitute</b></td>
+                <td align=left>
+			<select name="iname" size="1" onChange="Changename(document.frm,this);">
+                                <option>--Select--</option>
+                                #foreach ($iname in $instdetail)
+                                        <option value="$iname.getInstituteName()">$iname.getInstituteName()</option>
+                                #end
+                        </select>
+		</td>
                 <td><b>$brih_searchBy</b></td>
                 <td align=left>
                         <select name="queryList">
-                                <option value="CourseId"> $brih_course #if($lang == "hindi") $brih_Of1 #end $brih_ID</option>
-                                <option value="Course Name">$brih_course #if($lang == "hindi") $brih_Of1 #end $brih_name</option>
-                                <option value="Dept">$brih_dept </option>
+                                <option value="CourseId"> $brih_course #if($lang == "hindi")  #end ID</option>
+                                <option value="Course Name"> $brih_course #if($lang == "hindi")  #end Name</option>
+                                <option value="Dept"> $brih_dept </option>
                         </select>
                 </td>
                 <td align=left><b>$brih_match_str</b></td>
@@ -84,22 +93,22 @@ $!data.getMessage()
                         <input align=center type="text" name="valueString" value="">
                 </td>
                 <td>
-                        <input type="button" name="Search" value="$brih_search" onClick="checkNull(document.frm,this);">
+                        <input type="button" name="Search" value="Search" onClick="checkNull(document.frm,this);">
                         <input type="hidden" name="mode" value="Search">
                         <input type="hidden" name="listcourse" value="listcourse">
                         <input type="hidden" name="count" value="$tdcolor">
+			<input type="hidden" name="iname" value="$iname">
                 </td>
-                <td>
-                <td>
         </tr>
 </table>
 #if($status=="Noblank")
 	#if($lang == "hindi")
-		#set($headings = ["","$brih_course $brih_Of1 $brih_ID","$brih_course $brih_Of1 $brih_name","$brih_dept","$brih_desc","$brih_creation $brih_Da","$brih_status",""] )
+		#set($headings = ["","Course  ID","Course  Name","Department","Description","Creation Date","Status",""] )
 	#else
-		#set($headings = ["","$brih_course $brih_ID","$brih_course $brih_name","$brih_dept","$brih_desc","$brih_creation $brih_Da","$brih_status",""] )
+		#set($headings = ["","Course ID","Course Name","Department","Description","Creation Date","Status",""] )
 	#end
 ##<br>
+## #if($Inst_Name!="")
 <table bgcolor="$ui.tableColor" align="left" width="100%">
   <tr><td>
       <table cellspacing="1" cellpadding="1">
@@ -178,18 +187,18 @@ $!data.getMessage()
           #elseif($startIndex== $AdminConf_str)
           <u><font color="white">$brih_first</font></u> &nbsp;
           <u><font color="white">$brih_pre</font></u> &nbsp;
-       <a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor)">$brih_nxt</a> &nbsp;
-      <a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor)">$brih_last</a> &nbsp;
+       <a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("queryList1",$query1).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor)">$brih_nxt</a> &nbsp;
+      <a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("queryList1",$query1).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor)">$brih_last</a> &nbsp;
          #elseif($endIndex == $total_size || $endIndex > $total_size)
-      <a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor)">$brih_first</a> &nbsp;
-       <a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor)">$brih_pre</a> &nbsp;
+      <a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("queryList1",$query1).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor)">$brih_first</a> &nbsp;
+       <a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("queryList1",$query1).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor)">$brih_pre</a> &nbsp;
          <u><font color="white">$brih_nxt</font></u> &nbsp;
          <u><font color="white">$brih_last</font></u> &nbsp;
           #else
-        <a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor)">$brih_first</a> &nbsp;
-       <a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor)">$brih_pre</a> &nbsp;
-        <a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor)">$brih_nxt</a> &nbsp;
-			<a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor)">$brih_last</a> &nbsp;
+        <a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("queryList1",$query1).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor)">$brih_first</a> &nbsp;
+       <a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("queryList1",$query1).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor)">$brih_pre</a> &nbsp;
+        <a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("queryList1",$query1).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor)">$brih_nxt</a> &nbsp;
+	<a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("queryList1",$query1).addPathInfo("valueString",$valueString).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor)">$brih_last</a> &nbsp;
      #end
     #end
     </td>
@@ -198,6 +207,7 @@ $!data.getMessage()
 
 </table>
 #end
+## #end   ##check #if($inst_name!="")
 </form>
 <br>
 <table width=100% bgcolor="$ui.tableColor" align=left>
@@ -208,8 +218,7 @@ $!data.getMessage()
                         #if( $count == $count2 )
                         <tr bgcolor="$ui.menuColor">
                         <td align=center>
-                                <font face="$ui.sansSerifFonts">User
-Name <font color="brown">"$entry"</font></font>
+                                <font face="$ui.sansSerifFonts">User Name <font color="brown">"$entry"</font></font>
                         </td>
                         <td align=center>
                                 <font
@@ -224,7 +233,9 @@ face="$ui.sansSerifFonts">$type</font>
 </table>
 ##end
 #end
+
 </table>
+</body>
 <SCRIPT language="JavaScript">
         function popupWin(url,popupName)
         {
@@ -237,5 +248,11 @@ face="$ui.sansSerifFonts">$type</font>
                 else{
                         alert("The 'Match String' text box can not be NULL");
                 }
+        }
+	function Changename(frm,field)
+        {
+                if(frm.iname.value!="")
+                frm.submit();
+
         }
 </SCRIPT>

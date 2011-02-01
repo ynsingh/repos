@@ -50,15 +50,15 @@ $!data.getMessage()
 <table width=100% align=left bgcolor="$ui.tableColor">
 <tr>
 	#if($tdcolor !="1")
-        <td>
+        <td width="50%">
 	#elseif($tdcolor=="1")
-	<td bgcolor="#AFDCEC">	
+	<td width="50%" bgcolor="#AFDCEC">	
 	#end
    	<a href="$link.setPage("call,ListMgmt_Admin,List_Mgmt.vm").addPathInfo("listcourse","listcourse").addPathInfo("mode","All").addPathInfo("actionStat","Edit").addPathInfo("count","1")">$brih_view_all1</a></td>
 	#if($tdcolor !="2")
-        <td width=15%>
+        <td width="50%">
 	#elseif($tdcolor=="2")
-	<td bgcolor="#AFDCEC" width=15%>	
+	<td width="50%" bgcolor="#AFDCEC" >	
 	#end
         <a href="$link.setPage("call,ListMgmt_Admin,Adminviewall.vm").addPathInfo("mode","All").addPathInfo("count","2")"> #if($lang == "hindi") $brih_all $brih_usr $brih_Of1 $brih_view #else $brih_view_all $brih_usr #end </a></td>
 </tr>
