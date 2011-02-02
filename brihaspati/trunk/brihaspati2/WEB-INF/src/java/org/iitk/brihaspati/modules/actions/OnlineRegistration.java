@@ -628,7 +628,11 @@ public class OnlineRegistration extends VelocitySecureAction
                         String fname=tudetail.getFirstName();
                         String lname=tudetail.getLastName();
                         String username=fname+" "+lname;
-                        ErrorDumpUtil.ErrorLog("instrctrnaem at last====="+username);
+			if(org.apache.commons.lang.StringUtils.isBlank(username)){
+                               username=loginname;
+                        }
+
+                        //ErrorDumpUtil.ErrorLog("instrctrnaem at last====="+username);
                         InmeList.add(username);
 			//nameList.add(loginname);
 		}

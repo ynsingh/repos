@@ -246,6 +246,7 @@ public class CourseManagement
 			if(groupName.equals("All"))
 			{
 				crit.addGroupByColumn(CoursesPeer.GROUP_NAME);
+				crit.and(CoursesPeer.ACTIVE,1);
 			}
 			else
 			{
@@ -297,6 +298,9 @@ public class CourseManagement
 					String lastName=element.getLastName().toString();
 					String email=element.getEmail().toString();
 					String userName=firstName+lastName;
+					if(org.apache.commons.lang.StringUtils.isBlank(userName)){
+						userName=loginName;
+					}
 					cuDetail.setLoginName(loginName);
 					cuDetail.setUserName(userName);
 					cuDetail.setEmail(email);
@@ -315,7 +319,7 @@ public class CourseManagement
 		}
 		catch(Exception e)
 		{
-			ErrorDumpUtil.ErrorLog("The error in getCourseNUserDetails() - CourseManagement Utils "+e);
+			ErrorDumpUtil.ErrorLog("The error in getInstituteCourseNUserDetails() - CourseManagement Utils "+e);
 		}
 		return(details);
 	}
@@ -372,6 +376,10 @@ public class CourseManagement
                                         String lastName=element.getLastName().toString();
                                         String email=element.getEmail().toString();
                                         String userName=firstName+lastName;
+					if(org.apache.commons.lang.StringUtils.isBlank(userName)){
+                                                userName=loginName;
+                                        }
+
                                         cuDetail.setLoginName(loginName);
                                         cuDetail.setUserName(userName);
                                         cuDetail.setEmail(email);
