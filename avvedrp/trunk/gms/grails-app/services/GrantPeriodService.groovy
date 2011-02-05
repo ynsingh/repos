@@ -106,7 +106,7 @@ class GrantPeriodService
 	 */
 	public GrantPeriod getGrantPeriod(def grantPeriodInstance)
 	{	
-		def grantPeriodDuplicateInstance=GrantPeriod.find("from GrantPeriod GP where GP.name='" + grantPeriodInstance.name+"'")
+		def grantPeriodDuplicateInstance=GrantPeriod.find("from GrantPeriod GP where GP.activeYesNo = 'Y' and GP.name='" + grantPeriodInstance.name+"'")
 		return grantPeriodDuplicateInstance
 	}
 }

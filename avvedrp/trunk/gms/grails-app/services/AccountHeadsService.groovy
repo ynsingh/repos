@@ -16,6 +16,11 @@ class AccountHeadsService{
 	public List getSubAccountHeads(Integer mainAccountHeadId)
 	{
 		def accountHeadsInstanceList=AccountHeads.findAll("from AccountHeads P where P.parent.id="+mainAccountHeadId+"and P.activeYesNo='Y'")
+		for(int i=0;i<accountHeadsInstanceList.size();i++ )
+        {
+		 println"drtfgretr"
+		 accountHeadsInstanceList[i].accHeadCode=accountHeadsInstanceList[i].code+" -"+accountHeadsInstanceList[i].name
+        }
 		return accountHeadsInstanceList
 	}
 	

@@ -26,7 +26,7 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="project"><g:message code="default.Projects.label"/></label>
+                                    <label for="project"><g:message code="default.Projects.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:notificationInstance,field:'project','errors')}">
                                     <g:select optionKey="id" optionValue="code" from="${Projects.list()}" name="project.id" value="${notificationInstance?.project?.id}" noSelection="['null':'select']" disabled="true"></g:select>
@@ -35,7 +35,7 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="notificationCode"><g:message code="default.NotificationCode.label"/></label>
+                                    <label for="notificationCode"><g:message code="default.NotificationCode.label"/>:</label>
                                 </td>
                                 
                                 <td valign="top" class="value ${hasErrors(bean:notificationInstance,field:'notificationCode','errors')}">
@@ -45,7 +45,8 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="notificationDate"><g:message code="default.NotificationDate.label"/></label>
+                                    <label for="notificationDate"><g:message code="default.NotificationDate.label"/>:</label>
+                                    <label for="notificationDate" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:notificationInstance,field:'notificationDate','errors')}">
                                      <calendar:datePicker name="notificationDate" defaultValue="${new Date()}" value="${notificationInstance?.notificationDate}" dateFormat= "%d/%m/%Y"   />
@@ -54,7 +55,8 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="proposalSubmissionLastDate"><g:message code="default.LastProposalSubmissionDate.label"/></label>
+                                    <label for="proposalSubmissionLastDate"><g:message code="default.LastProposalSubmissionDate.label"/>:</label>
+                                    <label for="proposalSubmissionLastDate" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:notificationInstance,field:'proposalSubmissionLastDate','errors')}">
                                     <calendar:datePicker name="proposalSubmissionLastDate" defaultValue="${new Date()}" value="${notificationInstance?.proposalSubmissionLastDate}" dateFormat= "%d/%m/%Y"   />
@@ -63,7 +65,7 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="description"><g:message code="default.Description.label"/></label>
+                                    <label for="description"><g:message code="default.Description.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:notificationInstance,field:'description','errors')}">
    								    <fckeditor:editor name="description" width="100%" height="300" fileBrowser="default" >
@@ -74,7 +76,8 @@
                             
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="applicationForm"><g:message code="default.ApplicationForm.label"/></label>
+                                    <label for="applicationForm"><g:message code="default.ApplicationForm.label"/>:</label>
+                                    <label for="applicationForm" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 
                                 <td valign="top" class="value">

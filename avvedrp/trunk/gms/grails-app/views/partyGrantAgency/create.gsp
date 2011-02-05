@@ -25,7 +25,8 @@
                         
                           <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="nameOfTheInstitution"><g:message code="default.Name.label"/></label>
+                                    <label for="nameOfTheInstitution"><g:message code="default.Name.label"/>:</label>
+                                    <label for="nameOfTheInstitution" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:partyInstance,field:'nameOfTheInstitution','errors')}">
                                     <input type="text" size="45" id="nameOfTheInstitution" name="nameOfTheInstitution" value="${fieldValue(bean:partyInstance,field:'nameOfTheInstitution')}"/>
@@ -34,17 +35,18 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="code"><g:message code="default.Code.label"/></label>
+                                    <label for="code"><g:message code="default.Code.label"/>:</label>
+                                    <label for="code" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:partyInstance,field:'code','errors')}">
                                     <input type="text" id="code" name="code" value="${fieldValue(bean:partyInstance,field:'code')}"/>
-                                    <label for="code" style="color:blue;font-weight:bold"> <g:message code="default.grantAgency.code.label"/></label>
+                                    <label for="code" style="color:blue;font-weight:bold"> <g:message code="default.grantAgency.code.label"/>:</label>
                                 </td>
                             </tr> 
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="address"><g:message code="default.Address.label"/></label>
+                                    <label for="address"><g:message code="default.Address.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:partyInstance,field:'address','errors')}">
                                    <g:textArea name="address" value="${fieldValue(bean:partyInstance,field:'address')}" rows="3" cols="30"/>
@@ -53,7 +55,7 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="phone"><g:message code="default.Phone.label"/></label>
+                                    <label for="phone"><g:message code="default.Phone.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:partyInstance,field:'phone','errors')}">
                                     <input type="text" id="phone" name="phone" value="${fieldValue(bean:partyInstance,field:'phone')}"/>
@@ -62,7 +64,8 @@
                             
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="email"><g:message code="default.Email.label"/></label>
+                                    <label for="email"><g:message code="default.Email.label"/>:</label>
+                                    <label for="code" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:partyInstance,field:'email','errors')}">
                                     <input type="text" id="email" name="email" value="${fieldValue(bean:partyInstance,field:'email')}"/>
@@ -78,9 +81,7 @@
         </div>
         <div class="body">
             <h1><g:message code="default.GrantAgency.GrantAgencyList.head"/></h1>
-            <g:if test="${flash.message}">
-              <div class="message">${flash.message}</div>
-            </g:if>
+            
             <g:if test="${partyInstanceList}">
               <div class="list">
                 <table cellspacing="0" cellpadding="0">

@@ -20,17 +20,19 @@ class ApprovalAuthorityDetailController {
 
     def create = {
     	GrailsHttpSession gh=getSession()
+    	def userService = new UserService()
         def approvalAuthorityDetailInstance = new ApprovalAuthorityDetail()
         approvalAuthorityDetailInstance.properties = params
 
         def approvalAuthorityList = ApprovalAuthority.findAll("from ApprovalAuthority A where A.activeYesNo = 'Y' and A.party="+gh.getValue("Party"))
-      def approvalAuthorityInstance =ApprovalAuthority.get(params.id)
-        
-        println"approvalAuthorityInstance++++"+approvalAuthorityInstance
-       approvalAuthorityDetailInstance = ApprovalAuthorityDetail.findAll("from ApprovalAuthorityDetail AA where AA.activeYesNo='Y' and AA.approvalAuthority="+params.id)
+        def approvalAuthorityInstance =ApprovalAuthority.get(params.id)
+        approvalAuthorityDetailInstance = ApprovalAuthorityDetail.findAll("from ApprovalAuthorityDetail AA where AA.activeYesNo='Y' and AA.approvalAuthority="+params.id)
         
         println"approvalAuthorityDetailInstance++++"+approvalAuthorityDetailInstance
-        def userList = UserRole.findAll("from UserRole UR  where UR.role = "+(Authority.find("from Authority A where A.authority = 'ROLE_REVIEWER'"))?.id)
+        //def userList = UserRole.findAll("from UserRole UR  where UR.role = "+(Authority.find("from Authority A where A.authority = 'ROLE_REVIEWER'"))?.id)
+        def userList = userService.getAllUsersByPartyID(gh.getValue("PartyID"))
+        
+        
         println"userList"+userList
         
     	 
@@ -259,9 +261,8 @@ class ApprovalAuthorityDetailController {
  
  }
    def getAssignedMembers =   {
-    	
-    	println"++++ENTRY++++"+params
-    	println"++++getAssignedMembers++++"+params
+    	GrailsHttpSession gh=getSession()
+    	def userService = new UserService()
     	def approvalAuthorityDetailInstance = new ApprovalAuthorityDetail()
         approvalAuthorityDetailInstance.properties = params
         approvalAuthorityDetailInstance = ApprovalAuthorityDetail.findAll("from ApprovalAuthorityDetail AA where AA.activeYesNo='Y' and AA.approvalAuthority="+params.id)
@@ -269,7 +270,8 @@ class ApprovalAuthorityDetailController {
         println"approvalAuthorityDetailInstance++++"+approvalAuthorityDetailInstance.person
         def approvalAuthorityDetailPersonList =[]
     	def userInstance
-        def userList = UserRole.findAll("from UserRole UR  where UR.role = "+(Authority.find("from Authority A where A.authority = 'ROLE_REVIEWER'")).id)
+    	 def userList = userService.getAllUsersByPartyID(gh.getValue("PartyID"))
+       // def userList = UserRole.findAll("from UserRole UR  where UR.role = "+(Authority.find("from Authority A where A.authority = 'ROLE_REVIEWER'")).id)
         println".........."+(Authority.find("from Authority A where A.authority = 'ROLE_REVIEWER'")).id
         println"userList"+userList
         def userInstanceList =[]

@@ -25,7 +25,8 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="name"><g:message code="default.Name.label"/></label>
+                                    <label for="name"><g:message code="default.Name.label"/>:</label>
+                                    <label for="name" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:accountHeadsInstance,field:'name','errors')}">
                                     <input type="text" size="45" id="name" name="name" value="${fieldValue(bean:accountHeadsInstance,field:'name')}"/>
@@ -34,10 +35,12 @@
                             
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="code"><g:message code="default.Code.label"/></label>
+                                    <label for="code"><g:message code="default.Code.label"/>:</label>
+                                    <label for="code" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:accountHeadsInstance,field:'code','errors')}">
                                     <input type="text" id="code" name="code" value="${fieldValue(bean:accountHeadsInstance,field:'code')}"/>
+                                    <label for="code" style="color:blue;font-weight:bold"> <g:message code="default.accounthead.code.label"/>:</label>
                                 </td>
                             </tr>                         
                         </tbody>
@@ -50,9 +53,7 @@
         </div>
         <div class="body">
             <h1><g:message code="default.AccountHeads.AccountHeadsList.head"/></h1>
-            <g:if test="${flash.message}">
-              <div class="message">${flash.message}</div>
-            </g:if>
+           
             <g:if test="${accountHeadsInstanceList}">
               <div class="list">
                 <table cellspacing="0" cellpadding="0">

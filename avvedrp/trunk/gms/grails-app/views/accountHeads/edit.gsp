@@ -28,16 +28,18 @@
                            <tr class="prop">
                               <g:if test="${accountHeadsInstance.parent !=null}">
                                 <td valign="top" class="name">
-                                    <label for="parent"><g:message code="default.MainAccount.label"/></label>
+                                    <label for="parent"><g:message code="default.MainAccount.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:accountHeadsInstance,field:'parent','errors')}">
-                                    <g:select optionKey="id" optionValue="code" from="${AccountHeads.findAllByActiveYesNoAndParentIsNull('Y')}" name="parent.id" value="${accountHeadsInstance?.parent?.id}" noSelection="['null':'-Select-']"></g:select>
+                                   ${fieldValue(bean:accountHeadsInstance,field:'parent.code')}
+                                    <g:hiddenField id="parentid" name="parent.id" value="${fieldValue(bean:accountHeadsInstance, field:'parent.id')}"/>
                                 </td>
                               </g:if>
                            </tr> 
                            <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="name"><g:message code="default.Name.label"/></label>
+                                    <label for="name"><g:message code="default.Name.label"/>:</label>
+                                    <label for="name" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:accountHeadsInstance,field:'name','errors')}">
                                     <input type="text" size="45" id="name" name="name" value="${fieldValue(bean:accountHeadsInstance,field:'name')}"/>
@@ -45,10 +47,11 @@
                            </tr> 
                            <tr class="prop">
                                 <td valign="top" class="name">
-                                     <label for="code"><g:message code="default.Code.label"/></label>
-                                </td>
+                                     <label for="code"><g:message code="default.Code.label"/>:</label>
+                                     <label for="code" style="color:red;font-weight:bold"> * </label>                                </td>
                                 <td valign="top" class="value ${hasErrors(bean:accountHeadsInstance,field:'code','errors')}">
                                     <input type="text" id="code" name="code" value="${fieldValue(bean:accountHeadsInstance,field:'code')}"/>
+                                    <label for="code" style="color:blue;font-weight:bold"> <g:message code="default.accounthead.code.label"/>:</label>
                                 </td>
                            </tr>                         
                         </tbody>

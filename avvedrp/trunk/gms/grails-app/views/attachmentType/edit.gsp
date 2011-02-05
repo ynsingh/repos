@@ -26,7 +26,8 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="type"><g:message code="default.Type.label"/></label>
+                                    <label for="type"><g:message code="default.Type.label"/>:</label>
+                                    <label for="type" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:attachmentTypeInstance,field:'type','errors')}">
                                     <input type="text" id="type" name="type" value="${fieldValue(bean:attachmentTypeInstance,field:'type')}"/>
@@ -35,7 +36,7 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="description"><g:message code="default.Description.label"/></label>
+                                    <label for="description"><g:message code="default.Description.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:attachmentTypeInstance,field:'description','errors')}">
                                     <input type="text" id="description" name="description" value="${fieldValue(bean:attachmentTypeInstance,field:'description')}"/>

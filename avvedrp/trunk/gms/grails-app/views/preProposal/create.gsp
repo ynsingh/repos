@@ -42,17 +42,9 @@
                                     <g:textField name="remarks" value="${preProposalInstance?.remarks}" />
                                 </td>
                             </tr>
-                        
-                            
-                        
-                            
-                        
+                       
                             <tr class="prop">
-                              
-                                
-                                    <input type=hidden name="preProposalForm" value="${proposalApplicationForm}" />
-                              
-                          
+                                   <input type=hidden name="preProposalForm" value="${proposalApplicationForm}" />
                                 <td valign="top" class="name">
                                     <label for="defaultYesNo"><g:message code="default.Active.label"/></label>
                                 </td>
@@ -61,30 +53,24 @@
                                 </td>                           
                                </tr>
                         
-                            
-                        
-                            <tr class="prop">
-                                
-                          
+                           <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="proposalCategory"><g:message code="default.ProposalCategory.label"/></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: preProposalInstance, field: 'proposalCategory', 'errors')}">
-                                    <g:select name="proposalCategory.id" from="${ProposalCategory.list()}" optionKey="id" optionValue="name" value="${preProposalInstance?.proposalCategory?.id}"  />
-                                </td>
+                                    <g:select  optionKey="id" optionValue="name" id="proposalCategory" from="${ProposalCategory.findAll('from ProposalCategory PC where PC.activeYesNo=\'Y\' ')}"  name="proposalCategory.id" value="${preProposalInstance?.proposalCategory?.id}"  ></g:select>
+                                </td>        																											
                             </tr>
                         
                         </tbody>
                     </table>
                 </div>
                 <div class="buttons">
-                    <span class="button"><g:submitButton name="create" class="save" value="${message(code: 'default.Create.button')}" /></span>
+                    <span class="button"><g:submitButton name="create" onClick="return validatePreProposal()" class="save" value="${message(code: 'default.Create.button')}"  /></span>
                 </div>
-            </g:form>
+         </g:form>
         </div>
-        
-    
-        </div>
+       </div>
            
            
     </body>

@@ -40,16 +40,14 @@
 								<td> 
 							        <input type="hidden" name="reportDate" value="struct" />
 
-									<calendar:datePicker name="reportDate" id="reportDate" value="${(Projects.get(session.ProjectID)).projectStartDate}" 
-													defaultValue="${new Date()}"  dateFormat= "%d/%m/%Y"/>
+									<calendar:datePicker name="reportDate" id="reportDate" value="${(Projects.get(session.ProjectID)).projectStartDate}" defaultValue="${new Date()}"  dateFormat= "%d/%m/%Y"/>
 								
 
 							    </td>
 				   				<td class='name'><g:message code="default.ReportDateTo.label"/></td>
 							    <td> 
 									<input type="hidden" name="reportDateTo" value="struct" />
-									<calendar:datePicker name="reportDateTo" id="reportDateTo" value="" 
-													defaultValue="${new Date()}"  dateFormat= "%d/%m/%Y"/>
+									<calendar:datePicker name="reportDateTo" id="reportDateTo" value="" defaultValue="${new Date()}"  dateFormat= "%d/%m/%Y"/>
 									
 								</td>
 	                        </tr> 

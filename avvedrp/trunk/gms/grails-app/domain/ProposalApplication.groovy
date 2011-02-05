@@ -14,5 +14,7 @@ static constraints={
 					modifiedBy(nullable:true)
 					modifiedDate(nullable:true)
  }
+	boolean saveAll
+	static transients=["saveAll"]
 
 }

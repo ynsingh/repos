@@ -28,6 +28,7 @@ class UtilizationController {
     }
 
     def delete = {
+    		println";;;;;;params;;;;"+params
         def utilizationInstance = Utilization.get( params.id )
         if(utilizationInstance) {
             utilizationInstance.delete()

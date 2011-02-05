@@ -24,7 +24,7 @@ import org.springframework.security.core.authority.AuthorityUtils
 import org.springframework.security.core.context.SecurityContextHolder as SCH
 class ProjectsService{
 
-
+	static transactional = false
 	private aclService
 	private aclUtilService
 	private objectIdentityRetrievalStrategy
@@ -927,4 +927,14 @@ class ProjectsService{
 		def ProjectsInstance = Projects.findAll("from Projects PR where PR.projectType="+params.id)
 		return ProjectsInstance
 	}
+	
+	/*Method to get closed projects by using grantAllocation details */
+	
+	public def getClosedProjects(def grantAllocProjectId)
+	{
+		
+	 def closedProjectInstance = ProjectTracking.find("from ProjectTracking PT where PT.projectStatus = 'Closed' and PT.projects.id = "+grantAllocProjectId )
+		return closedProjectInstance
+	}
+	
 }

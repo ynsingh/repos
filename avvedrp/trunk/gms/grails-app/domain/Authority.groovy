@@ -17,7 +17,7 @@ class Authority {
 	char activeYesNo;
 
 	static constraints = {
-		authority(blank: false, unique: true)
+		authority(blank: false)
 		description()
 	}
 }

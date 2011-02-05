@@ -10,6 +10,7 @@
     	<div class="wrapper">
              <g:form action="listReport" method="post" name="granteeReports" >
 		         <div class="body">
+		         <h1><g:message code="default.GrantAgencyReports.label"/></h1>
 		         	<div class="dialog">
 		            	<table width="75%">
              				<input type="hidden" id="party" name="party" value="${partyInstance.id}"/>

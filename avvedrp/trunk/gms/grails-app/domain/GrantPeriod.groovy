@@ -12,7 +12,7 @@ class GrantPeriod {
 	Date modifiedDate;
 	
 	static constraints = {
-		name(blank:false, unique:true)
+		name(blank:false)
 		defaultYesNo(nullable: false)
 		createdDate(nullable: true)
 		modifiedDate(nullable: true)

@@ -15,7 +15,7 @@ class AttachmentTypeController {
         def attachmentTypeInstance = attachmentsService.getattachmentTypes(params.id)
 
         if(!attachmentTypeInstance) {
-            flash.message = "${message(code: 'default.AttachmentTypenotfound.label')}"
+        	flash.error = "${message(code: 'default.AttachmentTypenotfound.label')}"
             redirect(action:create)
         }
         else { return [ attachmentTypeInstance : attachmentTypeInstance ] }
@@ -38,14 +38,14 @@ class AttachmentTypeController {
 		        }        
 		        else 
 		        {
-		            flash.message = "${message(code: 'default.AttachmentTypenotfound.label')}"
+		        	flash.error = "${message(code: 'default.AttachmentTypenotfound.label')}"
 		            redirect(action:create)
 		        }
 		    }
    		}
    		else
    		{
-            flash.message = "${message(code: 'default.usedinProjects.label')}"
+   			flash.error = "${message(code: 'default.usedinProjects.label')}"
             redirect(action:edit,id:params.id)   			
    		}   		
         }
@@ -55,7 +55,7 @@ class AttachmentTypeController {
         def attachmentTypeInstance = attachmentsService.getattachmentTypes(params.id)
 
         if(!attachmentTypeInstance) {
-            flash.message = "${message(code: 'default.AttachmentTypenotfound.label')}"
+        	flash.error = "${message(code: 'default.AttachmentTypenotfound.label')}"
             redirect(action:create)
         }
         else {
@@ -79,7 +79,7 @@ class AttachmentTypeController {
 		        }
 	        	else
 	        	{
-		        	flash.message = "${message(code: 'default.AlreadyExists.label')}"
+	        		flash.error = "${message(code: 'default.AlreadyExists.label')}"
 			        redirect(action:edit,id:attachmentTypeInstance.id) 
 	        	}
 	        }       
@@ -91,7 +91,7 @@ class AttachmentTypeController {
 	        }
         }
         else {
-            flash.message = "${message(code: 'default.AttachmentTypenotfound.label')}"
+        	flash.error = "${message(code: 'default.AttachmentTypenotfound.label')}"
             redirect(action:edit,id:params.id)
         }
     }
@@ -124,14 +124,16 @@ class AttachmentTypeController {
 	        def attachmentInstanceList = attachmentsService.getattachmentTypesByDocTypeAndType(attachmentTypeInstance.type,attachmentTypeInstance.documentType)
 	        if(attachmentInstanceList)
 	        {
-	        	flash.message = "${message(code: 'default.AlreadyExists.label')}"
+	        	flash.error = "${message(code: 'default.AlreadyExists.label')}"
 		        redirect(action:create,id:attachmentTypeInstance.id) 
 	        }
 	        else 
 	        {
+	        	
 	        	attachmentTypeInstance.activeYesNo="Y" //15-11-2010
-		        if(!attachmentTypeInstance.hasErrors() && attachmentTypeInstance.save()) {
-		            flash.message = "${message(code: 'default.created.label')}"
+		        if(!attachmentTypeInstance.hasErrors() && attachmentTypeInstance.save()) 
+		        {
+		        	flash.message = "${message(code: 'default.created.label')}"
 		            redirect(action:create,id:attachmentTypeInstance.id)
 		        }
 		        else {

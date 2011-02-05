@@ -29,50 +29,51 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                  <label for="name"><g:message code="default.Name.label"/></label>
+                                  <label for="name"><g:message code="default.Name.label"/>:</label>
+                                  <label for="name" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: approvalAuthorityInstance, field: 'name', 'errors')}">
                                     <g:textField name="name" value="${approvalAuthorityInstance?.name}" />
                                 </td>
-                           
+                                
+                                
                                 <td valign="top" class="name">
-                                  <label for="email"><g:message code="default.Email.label"/></label>
+                                  <label for="viewAll"><g:message code="default.viewAll.label"/>:</label>
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean: approvalAuthorityInstance, field: 'email', 'errors')}">
-                                    <g:textField name="email" value="${approvalAuthorityInstance?.email}" />
+                                <td valign="top" class="value ${hasErrors(bean: approvalAuthorityInstance, field: 'viewAll', 'errors')}">
+                                    <g:select name="viewAll" optionValue="key" optionKey="value" from ="${['Yes':'Y', 'No':'N']}" value="${fieldValue(bean: approvalAuthorityInstance, field: 'viewAll')}" />
                                 </td>
+                           
+                                
                             </tr>
                         
                             
-                           
+                             <tr class="prop">
                                 <td valign="top" class="name">
-                                  <label for="approveMandatory"><g:message code="default.approveMandatory.label"/></label>
+                                  <label for="approveMandatory"><g:message code="default.approveMandatory.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: approvalAuthorityInstance, field: 'approveMandatory', 'errors')}">
                                     
                                     <g:select  name="approveMandatory" optionValue="key" optionKey="value" from ="${['Yes':'Y', 'No':'N']}"  value="${fieldValue(bean: approvalAuthorityInstance, field: 'approveMandatory')}" />
                                 </td>
-                            </tr>
-                        
-                            <tr class="prop">
-                                <td valign="top" class="name">
-                                  <label for="approveAll"><g:message code="default.approveAll.label"/></label>
+                              
+                              <td valign="top" class="name">
+                                  <label for="approveAll"><g:message code="default.approveAll.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: approvalAuthorityInstance, field: 'approveAll', 'errors')}">
                                     <g:select name="approveAll" optionValue="key" optionKey="value" from ="${['Yes':'Y', 'No':'N']}"  value="${fieldValue(bean: approvalAuthorityInstance, field: 'approveAll')}" />
                                 </td>
-                           
-                                <td valign="top" class="name">
-                                  <label for="viewAll"><g:message code="default.viewAll.label"/></label>
+                          </tr>
+                             <tr class="prop">
+                               <td valign="top" class="name">
+                                  <label for="email"><g:message code="default.Email.label"/>:</label>
+                               </td>
+                                <td valign="top" class="value ${hasErrors(bean: approvalAuthorityInstance, field: 'email', 'errors')}">
+                                    <g:textField name="email" value="${approvalAuthorityInstance?.email}" />
                                 </td>
-                                <td valign="top" class="value ${hasErrors(bean: approvalAuthorityInstance, field: 'viewAll', 'errors')}">
-                                    <g:select name="viewAll" optionValue="key" optionKey="value" from ="${['Yes':'Y', 'No':'N']}" value="${fieldValue(bean: approvalAuthorityInstance, field: 'viewAll')}" />
-                                </td>
-                            </tr>
-                        
-                            <tr class="prop">
+                             
                                 <td valign="top" class="name">
-                                  <label for="remarks"><g:message code="default.Remarks.label" /></label>
+                                  <label for="remarks"><g:message code="default.Remarks.label" />:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: approvalAuthorityInstance, field: 'remarks', 'errors')}">
                                     <g:textArea name="remarks" value="${approvalAuthorityInstance?.remarks}" style='width: 200px; height:75px;'/>

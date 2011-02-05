@@ -51,7 +51,8 @@ class FundTransferController {
         {
           print"testing......"
     		flash.message = "Fund can be transfered only if the grant has been received"
-    		redirect(action: "create",id:grantAllocationInstance.id)
+    		redirect(action: "create",id:grantAllocationInstance.id , params:[subMenu:params.subMenu])
+    		
     	 }
        
          else
@@ -76,7 +77,7 @@ class FundTransferController {
         	  if(chkFundTransferAmnt[0].amountAllocated < totalFund)
         	  {
         		  flash.message = "${message(code: 'default.FundTransferAmount.label')}"
-        		  redirect(action: "create",id:grantAllocationInstance.id)
+        		  redirect(action: "create",id:grantAllocationInstance.id ,params:[subMenu:params.subMenu])
         	  }
         	  else
         	  {

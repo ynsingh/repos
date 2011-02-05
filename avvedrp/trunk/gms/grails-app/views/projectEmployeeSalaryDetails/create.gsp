@@ -27,25 +27,28 @@
 						<table>
 							<tbody>
 								<tr>
-									<td><label><g:message code="default.EmployeeName.label" /></label></td>    		
+									<td><label><g:message code="default.EmployeeName.label" /></label>:</td>    		
 									<td>${fieldValue(bean: projectEmployeeInstance,field: "empName")}
 											(${fieldValue(bean: projectEmployeeInstance,field: "empNo")})
 									</td>
 										<input type="hidden" name="projectEmployee.id" id="projectEmployee.id" 
 											value="${projectEmployeeInstance.id}"/>
-									<td><label><g:message code="default.Designation.label" /></label></td>
+									<td><label><g:message code="default.Designation.label" /></label>:</td>
 									<td>${fieldValue(bean: projectEmployeeInstance.employeeDesignation,
 										field: "Designation")}</td>
 						    	</tr>
 								<tr >
-								    <td><label><g:message code="default.SalaryComponent.label" /></label></td>
+								    <td><label><g:message code="default.SalaryComponent.label" /></label>:
+								    <label for="SalaryComponent" style="color:red;font-weight:bold"> * </label>
+								    </td>
 								    <td><g:select name='salaryComponent.id' optionKey="id" optionValue="Name" 
 								    		from="${salaryComponentInstance}" noSelection="['null':'select']" 
 								    		value="${projectEmployeeSalaryDetailsInstance?.salaryComponent?.id}"></g:select>
 						    		</td>
 									<td><label><g:message code="default.ProjectEmployeeSalary.SalaryAmount.label" />
 											 (<g:message code="default.Rs.label" />)
-										</label>
+										</label>:
+										<label for="SalaryAmount" style="color:red;font-weight:bold"> * </label>
 									</td>
 									<td valign="top" class="value ${hasErrors(bean: projectEmployeeSalaryDetailsInstance, 
 										field: 'salaryAmount', 'errors')}">
@@ -54,8 +57,8 @@
 							        </td>
 						        </tr>
 								<tr >
-									<td><label><g:message code="default.ProjectEmployeeSalary.WithEffectFrom.label" /></label></td>
-									<td><calendar:datePicker name="withEffectFrom" defaultValue="${new Date()}" 
+									<td><label><g:message code="default.ProjectEmployeeSalary.WithEffectFrom.label" /></label>:</td>
+									<td><calendar:datePicker id="withEffectFrom" name="withEffectFrom" defaultValue="${new Date()}" 
 										dateFormat="%d/%m/%Y"/>
 									</td>
 									<!--<td><label>End Date</label></td>-->

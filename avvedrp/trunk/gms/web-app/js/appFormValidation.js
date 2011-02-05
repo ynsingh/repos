@@ -81,4 +81,77 @@ if((parent.right.frames['editframe'].document.forms[0].scstobc.value =="sc") ||
             
                 
    }
+   function returnFormResult(data)
+ {
+           
+         
+         
+               // evaluate the JSON
+            
+           result = eval(data);
+            
+            for(var i=0;i< parent.top.document.forms[0].elements.length;i++)
+            {
+              var element= parent.top.document.forms[0].elements[i];
+          
+                for(var j=0;j< result.length;j++)
+                {
+		                if(result[j].field==element.name)
+		                {
+		               	 element.value=result[j].value;
+		                 //element.readOnly=true;
+		                 break;
+		                }
+            	} 
+           }
+            
+                
+   }
+   function pageNavigation(field,page,lastPage,id)
+    {
+    	var pageNo = lastPage+1; 	
+    	
+    	if(pageNo<id)
+    	{
+    	    return false;
+    	}
+    	else
+    	{
+    	   return true;
+    	}
+    }
+    function pageValidation(field,page,id)
+    {
+    	field.style.backgroundColor='#a3c9de';
+    	field.style.textDecoration = 'none';
+    	return true;
+    }
+    function validateApplicationForm()
+	{
+		var Obj=document.getElementsByTagName('input');
+		for (var i = 0; i < Obj.length; i++)
+		{
+			if (Obj[i].type == "text") 
+			{
+				
+				if((Obj[i].value=="null")||(Obj[i].value==""))
+				{
+					alert("Please enter "+Obj[i].id);
+					return false;
+				}
+				
+			}
+		}
+		var ObjTextArea=document.getElementsByTagName('TEXTAREA');
+		for (var i = 0; i < ObjTextArea.length; i++)
+		{
+				if((ObjTextArea[i].value=="null")||(ObjTextArea[i].value==""))
+				{
+					alert("Please enter "+ObjTextArea[i].id);
+					return false;
+				}
+		}
+		return true;
+	}
+	
 

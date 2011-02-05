@@ -12,6 +12,13 @@
          alert("Please enter the Grant Period ");
          return false;
     }
+    
+    if( ( (document.getElementById("accountHead.id").value) == 'null') || ( (document.getElementById("accountHead.id").value) == '') )
+    {
+         alert("Please enter the Account Head ");
+         return false;
+    }
+   
     if(isNaN(document.getElementById("amount").value))
     {
 	    alert("Invalid Amount  ");
@@ -131,13 +138,14 @@
                             			<tr >
                                 			<td valign="top" class="name">
                                     			<label for="accountHead"><g:message code="default.AccountHead.label"/>:</label>
+                                    			<label for="accountHead" style="color:red;font-weight:bold"> * </label>
                                 			</td>
                                 			<td valign="top" class="value ${hasErrors(bean:grantAllocationSplitInstance,field:'accountHead','errors')}">
                                     			<g:select optionKey="id" 
-                                    				from="${AccountHeads.findAll('from AccountHeads AH where AH.parent.id is NULL and AH.activeYesNo=\'Y\' order by AH.name')}" 
-                                    				optionValue="name" name="accountHead.id" value="${grantAllocationSplitInstance?.accountHead?.id}" 
+                                    				from="${accountHeadList}" 
+                                    				optionValue="accHeadCode" name="accountHead.id" value="${grantAllocationSplitInstance?.accountHead?.id}" 
                                     				onchange="${remoteFunction(controller:'grantAllocationSplit',action:'updateSubAccount',update:'subAccountHead',  params:'\'accountHead=\' + this.value' )}" 
-                                    				onFocus="${remoteFunction(controller:'grantAllocationSplit',action:'updateSubAccount',update:'subAccountHead',  params:'\'accountHead=\' + this.value' )}" >
+                                    				onFocus="${remoteFunction(controller:'grantAllocationSplit',action:'updateSubAccount',update:'subAccountHead',  params:'\'accountHead=\' + this.value' )}" noSelection="['null':'-Select-']" >
                                     			</g:select>
                          					</td>
                             	 		</tr>
@@ -158,6 +166,7 @@
                         	<tr >
                                 <td valign="top" class="name">
                                     <label for="amount"><g:message code="default.Amount.label"/>:</label>
+                                    <label for="amount" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:grantAllocationSplitInstance,field:'amount','errors')}">
                                     <input type="text" id="amount" name="amount" value="${fieldValue(bean:grantAllocationSplitInstance,field:'amount')}" 

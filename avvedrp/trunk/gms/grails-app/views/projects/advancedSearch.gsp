@@ -28,9 +28,7 @@
   </script>
         <div class="body">
             <h1><g:message code="default.projects.Search.head"/>&nbsp;<img src="${createLinkTo(dir:'images/themesky',file:'search_img.png')}"/></h1>
-            <g:if test="${flash.message}">
-            <div class="message">${flash.message}</div>
-            </g:if>
+            
             <g:hasErrors bean="${projectsInstance}">
             <div class="errors">
                 <g:renderErrors bean="${projectsInstance}" as="list" />
@@ -134,7 +132,7 @@
 		            </tbody>
 		                        </table>
 		                        		<p>&nbsp;</p>
-		    			      			<p ALIGN=CENTER>&nbsp;<g:submitToRemote class="searchButton" value="${message(code: 'default.Search.button')}" onClick="" action="searchProjects" update="search" />
+		    			      			<p ALIGN=CENTER>&nbsp;<g:submitToRemote class="searchButton" value="${message(code: 'default.Search.button')}" onClick="" action="searchProjects" update="search" before="if(!validateadvancedSearchProjects()) return false" />
 		    			      			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<g:actionSubmit value="${message(code: 'default.SimpleSearch.button')}" action="search" id="1" /></p>
 		    			    			
 			    			<p ALIGN=RIGHT>&nbsp;&nbsp;</p>

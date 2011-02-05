@@ -7,7 +7,10 @@
     </head>
     <body>
     	<div class="wrapper">
-    	<g:subMenuList />
+    	<g:if test="${(trackType == 'Projects')}">
+    		<g:subMenuList />
+    	</g:if>
+		
         	<div class="proptable"> 
 				<table class="tablewrapper" width="100%" align="left" border="0" cellspacing="0" cellpadding="0">
   					<tr>
@@ -54,7 +57,7 @@
                 							</div>
 							                <div class="buttons">
 							                    <span class="button">
-								                    <g:submitButton name="create" class="save" 
+								                    <g:submitButton name="create" class="save" onClick="return validateAttachments()" 
 								                    	value="${message(code: 'default.Create.button')}" />
 							                    </span>
 							                </div>
@@ -73,8 +76,13 @@
 														title="${message(code: 'default.SINo.label')}" />
                         
                             					<th><g:message code="default.AttachmentType.label" /></th>
-                        
-                        						<th><g:message code="default.Project.label"/></th>
+                        						<g:if test="${(trackType == 'expenseRequestEntry')}">
+    												<th><g:message code="default.ExpenseDescription.label"/></th>
+										    	</g:if>
+												<g:else>
+										    		<th><g:message code="default.Project.label"/></th>
+										    	</g:else>
+                        						
                             
 					                            <g:sortableColumn property="attachmentPath" 
 					                            	title="${message(code: 'default.DocumentName.label')}" />
@@ -92,8 +100,18 @@
 					                        
 					                            <td>${fieldValue(bean: attachmentsInstance, field: "attachmentType.type")}</td>
 					                        
-					                                                   
-					                            <td>${(Projects.get(attachmentsInstance.domainId)).name}</td>
+					                             <g:if test="${(trackType == 'expenseRequestEntry')}">
+    													 <td>${(ExpenseRequestEntry.get(attachmentsInstance.domainId)).expenseDescription}</td>
+    												</g:if>
+													<g:else>
+														<g:if test="${(trackType == 'grantExpense')}">
+    													 <td>${(GrantExpense.get(attachmentsInstance.domainId)).projects.name}</td>
+    													</g:if>
+    													<g:else>
+											    	 <td>${(Projects.get(attachmentsInstance.domainId)).name}</td>
+											    	</g:else>     
+											    	</g:else>                      
+						                           
 					                            <td>${fieldValue(bean: attachmentsInstance, field: "attachmentPath")}</td>
 					                                                      
 					                            <td>

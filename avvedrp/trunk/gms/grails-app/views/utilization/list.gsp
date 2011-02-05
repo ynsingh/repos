@@ -25,6 +25,7 @@
                    	        		<g:sortableColumn property="submittedDate" title="${message(code: 'default.SubmittedDate.label')}" />
                    	                <th><g:message code="default.UtilizationCertificate.label"/></th>
                    	        		<th><g:message code="default.StatementOfAccounts.label"/></th>
+                   	        		<th>Delete</th>
             	                </tr>
                 			</thead>
                     		<tbody>
@@ -52,6 +53,10 @@
 			                          	<%-- <td><a href="${g.createLink(controller:'utilization',action:'download',id:utilizationInstance.id}">
 			                          				<g:message code="default.View.label"/></a></td>
 			                        	--%>
+			                        	<g:form>
+			                        	<input type="hidden" name="id" value="${utilizationInstance?.id}" />
+			                        	<td> <g:actionSubmit class="delete" action="delete" onclick="return confirm('Are you sure?');" value="${message(code: 'default.Delete.button')}" /></td>
+			                        	</g:form>
                         			</tr>
                     			</g:each>
                     		</tbody>

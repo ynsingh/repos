@@ -106,30 +106,52 @@ class GrantReceiptController extends GmsController {
 		}
     }
 
-    def update = {
+    def update = 
+    {
 		def grantReceiptService = new GrantReceiptService();
-        def grantReceiptInstance = grantReceiptService.updateGrantReceipt(params)
-        if(grantReceiptInstance) {
-            def fundTransferInstance = new FundTransfer()
-        	if(params.fundTransfer)
-            {
-            	
-            	if(params.fundTransfer.id != "null")
-            	{
-            		fundTransferInstance = FundTransfer.get(new Integer(params.fundTransfer.id))
-            	}
-            }
-        	println"grantReceiptInstance.dateOfReceipt"+grantReceiptInstance.dateOfReceipt
-	    	println"fundTransferInstance.dateOfTransfer"+fundTransferInstance.dateOfTransfer
-	    	if((fundTransferInstance) && (fundTransferInstance.dateOfTransfer > grantReceiptInstance.dateOfReceipt))
-	    	 {
-	    		println"____testing____"
-	    		grantReceiptInstance.fundTransfer = fundTransferInstance
-	    		flash.message="${message(code: 'default.ReceiptDateValidationAgainstFundtransfer.label')}"
-	    			redirect(action:edit,id:params.id)
-	    	}
-	    	else
-	    	{
+		def fundTransferInstance = new FundTransfer()
+    	if(params.fundTransfer)
+        {
+        	
+        	if(params.fundTransfer.id != "null")
+        	{
+        		fundTransferInstance = FundTransfer.get(new Integer(params.fundTransfer.id))
+        	}
+        }
+		def grantReceiptInstance = grantReceiptService.getGrantReceiptById(new Integer(params.id))
+		println"grantReceiptInstance"+grantReceiptInstance
+		println"params"+params
+		println"grantReceiptInstance.dateOfReceipt"+grantReceiptInstance.dateOfReceipt
+    	println"grantReceiptInstance.dateOfReceipt"+params.dateOfReceipt_value
+    	println"fundTransferInstance.dateOfTransfer"+fundTransferInstance.dateOfTransfer
+    	
+          //create SimpleDateFormat object with desired date format
+          SimpleDateFormat sdfDestination = new SimpleDateFormat("dd/MM/yyyy");
+     
+          //parse the date into another format
+          String strDate = sdfDestination.format(fundTransferInstance.dateOfTransfer);
+          println"strDate"+strDate
+          DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+          Date strtingDate = df.parse(strDate)
+          println"strtingDate"+strtingDate
+          
+          Date receiptDate = df.parse(params.dateOfReceipt_value)
+          println"receiptDate"+receiptDate
+          println"datediff" +(strtingDate > receiptDate)
+          
+    		if((fundTransferInstance) && (strtingDate > receiptDate))
+    	 {
+    		println"____testing____"
+    		grantReceiptInstance.fundTransfer = fundTransferInstance
+    		flash.message="${message(code: 'default.ReceiptDateValidationAgainstFundtransfer.label')}"
+    			redirect(action:edit,id:params.id)
+    	}
+    	else
+    	{
+         grantReceiptInstance = grantReceiptService.updateGrantReceipt(params)
+        if(grantReceiptInstance) 
+        {
+            
 	    		if(grantReceiptInstance.isSaved)
 	    		{
         		flash.message = "${message(code: 'default.updated.label')}"
@@ -140,11 +162,12 @@ class GrantReceiptController extends GmsController {
                 render(view:'edit',model:[grantReceiptInstance:grantReceiptInstance])
 	    		}
 	    	}
-        }
+       
         else {
             flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:edit,id:params.id)
         }
+    	}
     }
 
     def create = {

@@ -11,6 +11,7 @@
 	    <g:subMenuList/> 
 		    <g:form action="listReport" method="post" name="hrassetReports" >
 		    	<div class="body">
+		    	<h1><g:message code="default.AssetReports.label"/></h1>
 			    	<div class="dialog">
 			    		<table width="75%">
 	                        <tbody>

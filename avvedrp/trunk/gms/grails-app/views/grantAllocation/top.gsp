@@ -53,17 +53,20 @@ function noBack(){ window.history.forward(); }
 							<span>
 								<a href="${createLinkTo(dir:'/user/changePassword')}" target="right"><img src="${createLinkTo(dir:'images/themesky',file:'key.gif')}"  title="Change Password" alt="Change Password"  />&nbsp;&nbsp;|</a>&nbsp;&nbsp; 
 								
-								<img src="${createLinkTo(dir:'images/themesky',file:'help.gif')}" onClick="window.open('../images/HELPDOC/UntitledFrameset-15.html','mywindow','width=800,height=500,left=0,top=100,screenX=0,screenY=100')">  
+								<img src="${createLinkTo(dir:'images/themesky',file:'help.gif')}" onClick="window.open('../images/HELPDOC/UntitledFrameset-15.html','mywindow','width=800,height=500,left=0,top=100,screenX=0,screenY=100')" title="Help" alt="Help" />  
 								
 								</a> &nbsp;&nbsp;|</a>&nbsp;&nbsp;
 								
-							
-								
-								
-								<img src="${createLinkTo(dir:'images/themesky',file:'aboutUs.jpg')}"  onClick="window.open('../images/aboutUs/AboutUs_MGMS_new.html','mywindow','width=600,height=300,left=0,top=100,screenX=0,screenY=100')"> 
+								<img src="${createLinkTo(dir:'images/themesky',file:'aboutUs.jpg')}"  onClick="window.open('../images/aboutUs/AboutUs_MGMS_new.html','mywindow','width=600,height=300,left=0,top=100,screenX=0,screenY=100')" title="AboutUs" alt="AboutUs" /> 
 								</a> &nbsp;&nbsp;|</a>&nbsp;&nbsp;
+								
+								<img src="${createLinkTo(dir:'images/themesky',file:'icon_glossary.gif')}"  onClick="window.open('../images/Glossary/GlossaryFrameset.html','mywindow','width=800,height=500,left=0,top=100,screenX=0,screenY=100')" title="Glossary" alt="Glossary" /> 
+								</a> &nbsp;&nbsp;|</a>&nbsp;&nbsp;
+								
 								<font face="verdana" color:#01518e; font-weight:bold; text-decoration: none>
 					   			<b><sec:username/></b> (<g:link  controller='logout' target="_parent"><g:message code="default.Logout.label"/></g:link>)
+					   			
+					   			</span>
 						</div>
 						</div>
 						<div class="apple_overlay" id="overlay"> 

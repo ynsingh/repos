@@ -125,6 +125,7 @@ class UserController extends GmsController {
 	def edit = {
 
 		def userService = new UserService()
+		println"userParams"+params
 		def person = userService.getUserById(new Integer(params.id))
 		def party = userService.getParty(person)
 		def grantAllocationInstance = new GrantAllocation();
@@ -144,10 +145,16 @@ class UserController extends GmsController {
 	/**
 	 * Person update action.
 	 */
-	def update = {
+	def update =
+	{
+		def person = userService.getUserById(new Integer(params.id))
+		EmailValidator emailValidator = EmailValidator.getInstance()
+		if (emailValidator.isValid(params.email))
+		{
 
 		def userService = new UserService()
-		def person = userService.getUserById(new Integer(params.id))
+		
+		
 		def ctx = AH.application.mainContext
 		def springSecurityService=ctx.springSecurityService
 		
@@ -177,6 +184,15 @@ class UserController extends GmsController {
 				flash.message = "${message(code: 'default.updated.label')}"
 				redirect action:list,id:params.id
 			}
+		}
+		
+		else
+		{
+			flash.message = "${message(code: 'default.EntervalidEmailAddress.label')}"
+				def authorityInstance = userService.getActiveRoles() 
+				println"authorityInstance"+authorityInstance
+				redirect action: edit, id: person.id
+		}
 		
 		
 	}
@@ -248,8 +264,9 @@ class UserController extends GmsController {
 		else
 		{
 			flash.message = "${message(code: 'default.EntervalidEmailAddress.label')}"
-				def authorityList = userService.getRoles()
-			render view: 'create', model: [authorityList: authorityList, person: params]
+				def authorityInstance = userService.getActiveRoles() 
+				println"authorityInstance"+authorityInstance
+			render view: 'create', model: [authorityInstance:authorityInstance, person: params]
 		}
 	}
 	

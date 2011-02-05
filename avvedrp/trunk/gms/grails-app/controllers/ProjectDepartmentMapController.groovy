@@ -13,11 +13,11 @@ class ProjectDepartmentMapController {
 			{
 				projectDepartmentMapInstance = projectDepartmentMapService.deleteDepartmentMap(params)
 	        	flash.message = "${message(code: 'default.deleted.label')}"
-	            redirect(action:create)
+	            redirect(action:create,params:[id:params.projects.id])
 	        }
         else {
             flash.message = "${message(code: 'default.notfond.label')}"
-            redirect(action:create)
+            redirect(action:create,params:[id:params.projects.id])
         }
     }
 
@@ -63,7 +63,6 @@ class ProjectDepartmentMapController {
 			def partyDepartmentService = new PartyDepartmentService()
 			GrailsHttpSession gh=getSession() 
 			def projectsService = new ProjectsService()
-			println"params"+params
 			def projectsInstance = projectsService.getProjectById(params.projects.id)
 			projectDepartmentMapInstance.projects = projectsInstance
 	        def partyDepartmentInstance = partyDepartmentService.getPartyDepartmentById(params.partyDepartment.id)
@@ -75,7 +74,7 @@ class ProjectDepartmentMapController {
                 if(projectDepartmentMapDuplicateInstance && projectDepartmentMapDuplicateInstance[0].id != Long.parseLong(params.id))
 		        {
 		        	flash.message = "${message(code: 'default.PDMapDuplicate.message')}"
-		        	redirect(action:create,model:[id:projectDepartmentMapInstance.id,projectsInstance:projectsInstance,partyDepartmentInstance:partyDepartmentInstance])
+		        	redirect(action:create,model:[projectDepartmentMapInstance:projectDepartmentMapInstance,projectsInstance:projectsInstance,partyDepartmentInstance:partyDepartmentInstance],params:[id:params.projects.id])
 		        }
 		        else
 		        {
@@ -87,11 +86,11 @@ class ProjectDepartmentMapController {
 						{
 	         
 							flash.message ="${message(code: 'default.updated.label')}"
-							redirect(action:create,model:[id:projectDepartmentMapInstance.id,projectsInstance:projectsInstance,partyDepartmentInstance:partyDepartmentInstance])
+							redirect(action:create,model:[projectDepartmentMapInstance:projectDepartmentMapInstance,projectsInstance:projectsInstance,partyDepartmentInstance:partyDepartmentInstance],params:[id:params.projects.id])
 						}
 						else 
 						{
-							render(view:'edit',model:[projectDepartmentMapInstance:projectDepartmentMapInstance,,projectsInstance:projectsInstance,partyDepartmentInstance:partyDepartmentInstance])
+							render(view:'edit',model:[projectDepartmentMapInstance:projectDepartmentMapInstance,,projectsInstance:projectsInstance,partyDepartmentInstance:partyDepartmentInstance],params:[id:params.projects.id])
 						}
 					}
 						
@@ -105,7 +104,7 @@ class ProjectDepartmentMapController {
 		}
 
     def create = {
-        def projectDepartmentMapInstance = new ProjectDepartmentMap()
+       def projectDepartmentMapInstance = new ProjectDepartmentMap()
         projectDepartmentMapInstance.properties = params
        	GrailsHttpSession gh=getSession()
        	//Adding help page into session
@@ -113,9 +112,10 @@ class ProjectDepartmentMapController {
         def dataSecurityService = new DataSecurityService()
         def projectDepartmentMapService = new ProjectDepartmentMapService()
     	def projectsService = new ProjectsService()
-		def projectsInstance = projectsService.getProjectById(gh.getValue("ProjectId"))
+		def projectsInstance = projectsService.getProjectById(new Integer(params.id))
+		println"projectsInstance"+projectsInstance
     	def partyDepartmentList = projectDepartmentMapService.getPartyDepartmentForUser(gh.getValue("PartyID"));
-    	def projectDepartmentMapInstanceList = projectDepartmentMapService.getProjectDepartmentMapList(gh.getValue("Party"),gh.getValue("ProjectId"))
+    	def projectDepartmentMapInstanceList = projectDepartmentMapService.getProjectDepartmentMapList(gh.getValue("Party"),params.id)
     	return ['projectDepartmentMapInstance':projectDepartmentMapInstance,
                 'projectsInstance':projectsInstance,'partyDepartmentList':partyDepartmentList,
                 'projectDepartmentMapInstanceList':projectDepartmentMapInstanceList]
@@ -123,18 +123,19 @@ class ProjectDepartmentMapController {
 
     def save = 
     {
-		def projectsService = new ProjectsService()
-		GrailsHttpSession gh=getSession() 
-		def projectDepartmentMapService = new ProjectDepartmentMapService()
-    	def projectDepartmentMapInstance = new ProjectDepartmentMap(params)
-        def departmentInstance = PartyDepartment.get(new Integer(params.partyDepartment.id))
-        def projectsInstance = projectsService.getProjectById(gh.getValue("ProjectId"))
-        projectDepartmentMapInstance.projects = projectsInstance
-        def projectDepartmentMapDuplicateInstance = projectDepartmentMapService.chkDuplicatePDMap(projectDepartmentMapInstance)
+			def projectsService = new ProjectsService()
+			GrailsHttpSession gh=getSession() 
+			def projectDepartmentMapService = new ProjectDepartmentMapService()
+			def projectDepartmentMapInstance = new ProjectDepartmentMap(params)
+			def departmentInstance = PartyDepartment.get(new Integer(params.partyDepartment.id))
+			def projectsInstance = projectsService.getProjectById(new Integer(params.id))
+			println"projectsInstance"+projectsInstance
+			projectDepartmentMapInstance.projects = projectsInstance
+			def projectDepartmentMapDuplicateInstance = projectDepartmentMapService.chkDuplicatePDMap(projectDepartmentMapInstance)
         if(projectDepartmentMapDuplicateInstance)
         {
         	flash.message = "${message(code: 'default.PDMapDuplicate.message')}"
-        		redirect(action:create,model:[id:projectDepartmentMapInstance.id,projectsInstance:projectsInstance])
+        		redirect(action:create,model:[projectsInstance:projectsInstance],params:[id:projectsInstance.id])
         }
         else
         {
@@ -144,7 +145,7 @@ class ProjectDepartmentMapController {
 		      if(projectDepartmentMapInstance.saveMode.equals("Saved"))
 		      {
 		    	  flash.message = "${message(code: 'default.created.label')}"
-		    	  redirect(action:create,model:[id:projectDepartmentMapInstance.id,projectsInstance:projectsInstance])
+		    	  redirect(action:create,model:[projectDepartmentMapInstance:projectDepartmentMapInstance,projectsInstance:projectsInstance],,params:[id:projectsInstance.id])
 		      }
 		    }
         	else 

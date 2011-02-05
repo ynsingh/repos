@@ -175,7 +175,7 @@ class ProjectsController extends GmsController
 			}
 			else 
 			{
-				gh.putValue("ProjectId",projectsInstance.id)
+				
 				def investigatorService = new InvestigatorService()
                 def investigatorList=[]
     	        investigatorList=investigatorService.getInvestigatorsWithParty(gh.getValue("PartyID"))
@@ -268,7 +268,7 @@ class ProjectsController extends GmsController
 				if(projectsInstance.saveMode.equals("Updated"))
 				{
 					flash.message ="" +projectsInstance.name+ "&nbsp;"+"${message(code: 'default.updated.label')}" 
-					redirect(action:list,id:projectsInstance.id)
+					redirect(action:edit,id:projectsInstance.id)
 				}
 				else if(projectsInstance.saveMode.equals("Duplicate"))
 				{
@@ -534,10 +534,7 @@ class ProjectsController extends GmsController
 				grantAllocationInstanceList[i].projects.status = "Closed"
 			
 		}
-		if (grantAllocationInstanceList.size()==0 )
-		{
-			// flash.message = "${message(code: 'default.notfond.label')}"
-		}
+		
 		render(template:'simpleSearch',model:['grantAllocationInstanceList':grantAllocationInstanceList])  
     }
 	def advancedSearchProjects = 
@@ -572,6 +569,7 @@ class ProjectsController extends GmsController
 				grantAllocationInstanceList[i].projects.status = "Closed"
 			
 		}
+		
 			render(template:'grantSearchResult',model:['grantAllocationInstanceList':grantAllocationInstanceList])  
 	}
 }

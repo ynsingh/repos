@@ -8,7 +8,7 @@
     </head>
     <body>
         <div class="wrapper"> 
-        <g:if test="${projectsInstance.status =='Closed'}">
+        <g:if test="${projectsInstance?.status =='Closed'}">
     	</g:if>
     	<g:else>
     		<g:subMenuList/>
@@ -16,12 +16,16 @@
           <div class="body">
             <table>
                    <tr>
-	                <td valign="top" ><g:message code="default.ProjectCode.label"/></td>
+	                <td valign="top" ><g:message code="default.ProjectCode.label"/>:</td>
 	                <td valign="top" ><strong>${fieldValue(bean:projectsInstance, field:'code')}</strong></td>
-                               
-                    <td valign="top" ><g:message code="default.ProjectName.label"/></td>
+                    <td valign="top" ><g:message code="default.ProjectName.label"/>:</td>
                     <td valign="top" ><strong>${fieldValue(bean:projectsInstance, field:'name')}</strong></td>
-                </tr>  
+                 	<td colspan="3"><div align="left">
+			        <label for="dateRangeFrom"><g:message code="default.projects.ProjectStartDate.label"/>: </label>
+			        <strong><g:formatDate date="${projectsInstance?.projectStartDate}" format="dd/MM/yyyy"/> </strong>
+			        <label for="dateRangeTo"><g:message code="default.EndDate.label"/>: </label>              
+			        <strong><g:formatDate date="${projectsInstance?.projectEndDate}" format="dd/MM/yyyy"/></strong></td>
+                 </tr>
       	    </table> 
             <table class="tablewrapper" cellspacing="0" cellpadding="0">
               <tr>
@@ -42,7 +46,7 @@
                         
                                   <tr class="prop">
                                       <td valign="top" class="name">
-                                          <label for="projectStatus"><g:message code="default.ProjectStatus.label"/></label>
+                                          <label for="projectStatus"><g:message code="default.ProjectStatus.label"/></label>:
                                       </td>
                                       <td valign="top" class="value ${hasErrors(bean:projectTrackingInstance,field:'projectStatus','errors')}">
                                           <g:select name="projectStatus" from="${['Open','Deadline Passed','Grant Funded','Closed']}"  value="${fieldValue(bean:projectTrackingInstance,field:'projectStatus')}" />
@@ -52,25 +56,28 @@
                         
                                   <tr class="prop">
                                       <td valign="top" class="name">
-                                          <label for="percOfCompletion"><g:message code="default.PercentageOfCompletion.label"/></label>
+                                          <label for="percOfCompletion"><g:message code="default.PercentageOfCompletion.label"/></label>:
+                                          <label for="percOfCompletion" style="color:red;font-weight:bold"> * </label>
                                       </td>
                                       <td valign="top" class="value ${hasErrors(bean:projectTrackingInstance,field:'percOfCompletion','errors')}">
                                           <input type="text" id="percOfCompletion" name="percOfCompletion" value="${fieldValue(bean:projectTrackingInstance,field:'percOfCompletion')}" />
+                                          <input type="hidden" id="projectStartDate" name="projectStartDate" value="${projectsInstance.projectStartDate}"/>  
+                                          <input type="hidden" id="projectEndDate" name="projectEndDate" value="${projectsInstance.projectEndDate}"/>  
                                       </td>
                                   </tr>
                         
                                   <tr class="prop">
                                       <td valign="top" class="name">
-                                          <label for="dateOfTracking"><g:message code="default.Date.label"/></label>
+                                          <label for="dateOfTracking"><g:message code="default.Date.label"/></label>:
                                       </td>
                                       <td valign="top" class="value ${hasErrors(bean:projectTrackingInstance,field:'dateOfTracking','errors')}">
-                                          <calendar:datePicker name="dateOfTracking" defaultValue="${new Date()}" value="${projectTrackingInstance?.dateOfTracking}" dateFormat= "%d/%m/%Y"/>
+                                          <calendar:datePicker id="dateOfTracking" name="dateOfTracking" defaultValue="${new Date()}" value="${projectTrackingInstance?.dateOfTracking}" dateFormat= "%d/%m/%Y"/>
                                       </td>
                                   </tr>  
                             
                                   <tr class="prop">
                                       <td valign="top" class="name">
-                                          <label for="remarks"><g:message code="default.Remarks.label"/></label>
+                                          <label for="remarks"><g:message code="default.Remarks.label"/></label>:
                                       </td>
                                       <td valign="top" class="value ${hasErrors(bean:projectTrackingInstance,field:'remarks','errors')}">
                                           <g:textArea name="remarks" value="${fieldValue(bean:projectTrackingInstance,field:'remarks')}" rows="3" cols="30"/>
@@ -111,7 +118,7 @@
 	                              <td><g:formatNumber number="${projectTrackingInstance.percOfCompletion}" format="###,##0.00" /></td>
 	                              <td><g:formatDate format="dd/MM/yyyy" date="${projectTrackingInstance.dateOfTracking}"/></td>
 	                              <td>${fieldValue(bean:projectTrackingInstance, field:'remarks')}</td>
-	                              <td><g:link action="edit" id="${projectTrackingInstance.id}"><g:message code="default.Edit.label"/></g:link></td>
+	                              <td><g:link action="edit" id="${projectTrackingInstance?.id}"><g:message code="default.Edit.label"/></g:link></td>
 	                          </tr>
 	                        </g:each>
 	                      </tbody>

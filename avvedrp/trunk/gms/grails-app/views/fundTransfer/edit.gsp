@@ -57,6 +57,7 @@
                         	<tr class="prop">
                         		<td valign="top" class="name">
                                     <label for="amount"><g:message code="fundTransfer.amounttransferred.label" />:</label>
+                                    <label for="amount" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="name">
                                 	<g:textField name="amount" value="${amount}" />

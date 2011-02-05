@@ -1,5 +1,6 @@
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 import grails.converters.JSON
+import org.apache.commons.validator.EmailValidator
 class ProposalController {
     
     def index = { redirect(action:list,params:params) }
@@ -7,6 +8,10 @@ class ProposalController {
     // the delete, save and update actions only accept POST requests
     def allowedMethods = [delete:'POST', save:'POST', update:'POST']
     def proposalService
+    def approvalAuthorityDetailService
+    def partyService
+    def gmsSettingsService
+    def notificationsEmailsService
     def list = 
     {
         if(!params.max) params.max = 10
@@ -320,6 +325,107 @@ class ProposalController {
 	            		model:[id:proposalApplicationInstance.proposal.notification.id,proposalId:proposalApplicationInstance.proposal.id,
 	            		        applicationFormView:applicationFormView])
     	}
+    }
+    def uploadProposalApplication ={
+    		GrailsHttpSession gh = getSession()
+    		gh.removeValue("ProposalId")
+			
+	}
+    def validateProposalControllId = 
+    {
+    		GrailsHttpSession gh = getSession()
+    		
+    		if(params.controllerId)
+        	{
+    			def proposalApplicationInstance = proposalService.getProposalApplicationByControllerId(params.controllerId) 
+    			if(proposalApplicationInstance)
+        		{
+        			if(proposalApplicationInstance.proposal.lockedYN=='Y')
+        			{
+    				gh.putValue("ProposalId",proposalApplicationInstance.proposal.id)
+        			redirect(controller:"proposalApplication",action:"proposalAppPart1PersonalDetails",
+    	            		params:['proposalId':proposalApplicationInstance.proposal.id])
+        			}
+        			else if(proposalApplicationInstance.proposal.lockedYN=='N')
+        			{
+        				flash.message = "${message(code: 'default.FormSuccessfullySubmited.label')}" 
+                		render(view:"uploadProposalApplication")
+        			}
+        		}
+        		else
+        		{
+        			flash.message = "${message(code: 'default.ProposalControllIdNot.label')}" 
+        			render(view:"uploadProposalApplication")
+        		}
+        	}
+        	else
+        	{
+        		flash.message = "${message(code: 'default.ProposalControllIdNot.label')}" 
+        		render(view:"uploadProposalApplication")
+        	}	
+    }
+    def proposalSubmission={
+    		def proposalInstance = Proposal.get( params.proposalId )
+    		EmailValidator emailValidator = EmailValidator.getInstance()
+    		def mailContent=gmsSettingsService.getGmsSettingsValue("MailContent")
+			def mailFooter=gmsSettingsService.getGmsSettingsValue("MailFooter")
+	        if(proposalInstance) 
+	        {
+	        	proposalInstance.properties = params
+	            proposalInstance.lockedYN='N'
+	            def aprovalAuthorityDetailInstance = approvalAuthorityDetailService.getDefaultApprovalAuthorityDetailsByParty(proposalInstance.grantor.id)
+	            println "aprovalAuthorityDetailInstance "+aprovalAuthorityDetailInstance
+	            def proposalInstanceSave =proposalService.updateProposal(proposalInstance)
+	            for(aprovalAuthorityDetailValue in aprovalAuthorityDetailInstance)
+	            {
+	            	if(aprovalAuthorityDetailValue?.person?.email)
+					{
+						if (emailValidator.isValid(aprovalAuthorityDetailValue?.person?.email))
+						{
+							String mailMessage="";
+					        mailMessage="Dear Reviewer"+".";
+					        mailMessage+="\n \n one Project proposal has been uploaded on the site for reviewing.\n";
+					        mailMessage=mailMessage+" \n\n" 
+					    	mailMessage+=mailFooter
+					        def emailId = notificationsEmailsService.sendMessage(aprovalAuthorityDetailValue?.person?.email,mailMessage)
+						}
+					}
+	            }
+	            if(proposalInstanceSave) 
+	            {
+	                flash.message = "${message(code: 'default.ProposalSibmitted.label')}"
+	                redirect(action:'uploadProposalApplication')
+	            }
+	            else 
+	            {
+	                render(view:'uploadProposalApplication',model:[proposalInstance:proposalInstance])
+	            }
+	        }
+	        else {
+	            flash.message = "${message(code: 'default.notfond.label')}"
+	            redirect(action:uploadProposalApplication)
+	        }
+    }
+    def selectGrantorForProposal={
+    		def partyInstance=partyService.getAllActivePartiesAndGrantAgencies()
+    		//render (template:"selectGrantor", model :['partyInstance':partyInstance])
+    		[partyInstance:partyInstance]
+    		
+    }
+    def saveSelectGrantorForProposal={
+    		println params
+        	GrailsHttpSession gh = getSession()
+        	gh.removeValue("ProposalId")
+    		gh.putValue("Grantor",params.party.id)
+    		println "Grantor "+gh.getValue("Grantor")
+    		redirect(controller:"proposalApplication",action:"proposalAppPart1PersonalDetails")
+    	            		    		
+    }
+    def proposalApplicationList = 
+    {
+    		GrailsHttpSession gh=getSession()
+    		def proposalInstanceList = proposalService.getProposalApplicationListForReviewer(gh.getValue("UserId"),gh.getValue("Party"))
+    		[proposalInstanceList:proposalInstanceList]
     }
     
 }

@@ -9,6 +9,7 @@ class ApprovalAuthority {
 	char approveMandatory
 	char approveAll
 	char viewAll
+	char defaultYesNo
 	String remarks
 	char activeYesNo
 	Integer totalMembers

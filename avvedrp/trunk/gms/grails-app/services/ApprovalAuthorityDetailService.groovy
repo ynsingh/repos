@@ -85,5 +85,13 @@ class ApprovalAuthorityDetailService {
  			return approvalAuthorityDetailDeletedId			
  	  	}
  	}
+ 	/*
+ 	 * method to get approval authority details of default approval authority
+ 	 */
+ 	public List getDefaultApprovalAuthorityDetailsByParty(def party)
+  	{
+  		def approvalAuthorityDetailList = ApprovalAuthorityDetail.findAll("from ApprovalAuthorityDetail AD where AD.activeYesNo='Y' and AD.approvalAuthority.defaultYesNo='Y' and AD.approvalAuthority.party="+party)
+  		return approvalAuthorityDetailList
+  	}
  	
 }

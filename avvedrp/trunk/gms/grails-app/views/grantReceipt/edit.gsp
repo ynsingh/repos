@@ -28,7 +28,7 @@
                                                
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="dateOfReceipt"><g:message code="default.ReceiptDate.label"/></label>
+                                    <label for="dateOfReceipt"><g:message code="default.ReceiptDate.label"/></label>:
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:grantReceiptInstance,field:'dateOfReceipt','errors')}">
                                      <calendar:datePicker name="dateOfReceipt" defaultValue="${new Date()}" value="${grantReceiptInstance?.dateOfReceipt}" dateFormat= "%d/%m/%Y"/>
@@ -39,7 +39,7 @@
 			                    <td valign="top" class="name">
                                     <label for="grantAllocation">
                                     	<g:message code="default.GrantAllocation.label"/>
-                                    </label>
+                                    </label>:
                                 </td>
                                 <td valign="top" class="value ${hasErrors(grantReceiptInstance,field:'grantAllocation','errors')}">
                                     <g:select optionKey="id" optionValue="grantCode" from="${grantAllocationInstanceList}" name="grantAllocation.id" value="${grantReceiptInstance?.grantAllocation?.id}" noSelection="['null':'Select']"></g:select>
@@ -50,11 +50,11 @@
                                 <td valign="top" class="name">
                                     <label for="fundTransfer">
                                     	<g:message code="default.FundTransferred.label"/>
-                                    </label>
+                                    </label>:
                                 </td>
                                 <g:if test="${fundTransferInstanceList}">
 	                                <td valign="top" class="value ${hasErrors(grantReceiptInstance,field:'grantAllocation','errors')}">
-	                                    <g:select optionKey="id" optionValue="amountCode" from="${fundTransferInstanceList}" name="fundTransfer.id" value="${grantReceiptInstance?.fundTransfer?.id}" noSelection="['null':'Select']"></g:select>
+	                                    <g:select optionKey="id" optionValue="amountCode" from="${fundTransferInstanceList}" name="fundTransfer.id" value="${grantReceiptInstance?.fundTransfer?.id}" ></g:select>
 	                                    
 	                                </td>
 	                            </g:if>
@@ -65,7 +65,8 @@
 			                                
 			                <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="description"><g:message code="default.FundsReceivedOrderNo.label"/></label>
+                                    <label for="FundsReceivedOrderNo"><g:message code="default.FundsReceivedOrderNo.label"/></label>:
+                                    <label for="FundsReceivedOrderNo" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:grantReceiptInstance,field:'referenceId','errors')}">
                                     <input type="text" id="referenceId" name="referenceId" value="${fieldValue(bean:grantReceiptInstance,field:'referenceId')}" style="text-align: right" />
@@ -74,7 +75,7 @@
 
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="amount"><g:message code="default.Amount.label"/></label>
+                                    <label for="amount"><g:message code="default.Amount.label"/></label>:
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:grantReceiptInstance,field:'amount','errors')}">
                                     <input type="text" id="amount" name="amount" value="${amount}" style="text-align: right" disabled="true"/>
@@ -85,7 +86,8 @@
                             
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="modeOfPayment"><g:message code="default.ModeOfPayment.label"/></label>
+                                    <label for="modeOfPayment"><g:message code="default.ModeOfPayment.label"/></label>:
+                                     <label for="modeOfPayment" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:grantReceiptInstance,field:'modeOfPayment','errors')}">
                                     <g:select name="modeOfPayment" from="${['DD','Cheque','BankTransfer']}"  value="${fieldValue(bean:grantReceiptInstance,field:'modeOfPayment')}" />
@@ -94,7 +96,7 @@
 
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="ddDate"><g:message code="default.DD/ChequeDate.label"/></label>
+                                    <label for="ddDate"><g:message code="default.DD/ChequeDate.label"/></label>:
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:grantReceiptInstance,field:'ddDate','errors')}">
                                     <calendar:datePicker name="ddDate" defaultValue="${new Date()}" value="${grantReceiptInstance?.ddDate}" dateFormat= "%d/%m/%Y"/>
@@ -104,7 +106,8 @@
                    
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="ddNo"><g:message code="default.DD/ChequeNo.label"/></label>
+                                    <label for="ddNo"><g:message code="default.DD/ChequeNo.label"/></label>:
+                                    <label for="ddNo" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                  <td valign="top" class="value ${hasErrors(bean:grantReceiptInstance,field:'ddNo','errors')}">
                                     <input type="text" id="ddNo" name="ddNo" value="${fieldValue(bean:grantReceiptInstance,field:'ddNo')}" style="text-align: right" />
@@ -113,7 +116,8 @@
                             
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="bankName"><g:message code="default.BankName.label"/></label>
+                                    <label for="bankName"><g:message code="default.BankName.label"/></label>:
+                                    <label for="bankName" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:grantReceiptInstance,field:'bankName','errors')}">
                                     <input type="text" id="bankName" name="bankName" value="${fieldValue(bean:grantReceiptInstance,field:'bankName')}" style="text-align: right" />
@@ -122,7 +126,8 @@
                             
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="ddBranch"><g:message code="default.Branch.label"/></label>
+                                    <label for="ddBranch"><g:message code="default.Branch.label"/></label>:
+                                    <label for="ddBranch" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:grantReceiptInstance,field:'ddBranch','errors')}">
                                     <input type="text" id="ddBranch" name="ddBranch" value="${fieldValue(bean:grantReceiptInstance,field:'ddBranch')}" style="text-align: right" />
@@ -131,7 +136,7 @@
                        
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="description"><g:message code="default.Description.label"/></label>
+                                    <label for="description"><g:message code="default.Description.label"/></label>:
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:grantReceiptInstance,field:'description','errors')}">
                                   <g:textArea name="description" value="${fieldValue(bean:grantReceiptInstance,field:'description')}" rows="3" cols="30"/>

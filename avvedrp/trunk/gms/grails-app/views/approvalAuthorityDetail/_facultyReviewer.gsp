@@ -1,7 +1,7 @@
  <table width="100%">
   		<tr>
     		<td>
-    			<h1 align="left">Faculty</h1>
+    			<h1 align="left"><g:message code="default.Reviewer.label" /></h1>
     		<div class="list">
  
                             <table style="width: 100%;" cellpadding="0" cellspacing="0">
@@ -39,7 +39,7 @@
            </table>
             </td>
             <td>
-            	<h1 align="left">Assigned Members</h1>
+            	<h1 align="left"><g:message code="default.AssignedMembers.label" /></h1>
       			<div class="list">
     					     <table style="width: 100%;" cellpadding="0" cellspacing="0">
 			                     <tr>

@@ -1,4 +1,5 @@
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
+import org.apache.commons.validator.EmailValidator
 
 class ApprovalAuthorityController {
 
@@ -34,21 +35,63 @@ class ApprovalAuthorityController {
 
     }
 
-    def save = {
-    	def approvalAuthorityService = new ApprovalAuthorityService()
-        def approvalAuthorityInstance = new ApprovalAuthority(params)
+    def save = 
+    {
+    	 def approvalAuthorityInstance = new ApprovalAuthority(params)
+    	 def approvalAuthorityService = new ApprovalAuthorityService()
+    	 GrailsHttpSession gh=getSession()
+    	 EmailValidator emailValidator = EmailValidator.getInstance()
+    	if(approvalAuthorityInstance.email != null)
+    	{
+		if (emailValidator.isValid(params.email))
+		{
+    	
+       
     	println"params"+params
+    	def chkApprovalAuthorityInstance = approvalAuthorityService.checkDuplicateApprovalAuthority(params)
+		if(chkApprovalAuthorityInstance)
+	    {
+	    	flash.message ="${message(code: 'default.AlreadyExists.label')}"
+	    		redirect(action: "create", id: approvalAuthorityInstance.id)
+	    }
+		else
+	   {
     	approvalAuthorityInstance = approvalAuthorityService.saveApprovalAuthority(params)
     	
-    	
-        if (approvalAuthorityInstance) 
+    	  if (approvalAuthorityInstance) 
         {
             flash.message = "${message(code: 'default.created.label')}"
             redirect(action: "create", id: approvalAuthorityInstance.id)
         }
-        else {
+        else
+        {
             render(view: "create", id: approvalAuthorityInstance.id)
         }
+	   }
+    }
+		else
+		{
+			
+			def partyInstance = Party.get(gh.getValue("Party"))
+			def approvalAuthorityList = approvalAuthorityService.getActiveApprovalAuthority(gh.getValue("PartyID"))
+			flash.message = "${message(code: 'default.EntervalidEmailAddress.label')}"
+				render(view: "create", model:['approvalAuthorityInstance':approvalAuthorityInstance,'partyInstance':partyInstance,'approvalAuthorityList':approvalAuthorityList])
+		}
+    	}
+    	else
+ 	   {
+     	approvalAuthorityInstance = approvalAuthorityService.saveApprovalAuthority(params)
+     	
+     	  if (approvalAuthorityInstance) 
+         {
+             flash.message = "${message(code: 'default.created.label')}"
+             redirect(action: "create", id: approvalAuthorityInstance.id)
+         }
+         else
+         {
+             render(view: "create", id: approvalAuthorityInstance.id)
+         }
+ 	   }
     }
 
     def show = {
@@ -77,35 +120,81 @@ class ApprovalAuthorityController {
         }
     }
 
-    def update = {
+    def update = 
+    {
     	def approvalAuthorityService = new ApprovalAuthorityService()
     	def approvalAuthorityInstance = approvalAuthorityService.getApprovalAuthorityById(new Integer( params.id ))
-       
-        if (approvalAuthorityInstance) {
-            if (params.version) {
+   	   GrailsHttpSession gh=getSession()
+    	EmailValidator emailValidator = EmailValidator.getInstance()
+    	if(approvalAuthorityInstance.email != null)
+    	{
+		if (emailValidator.isValid(params.email))
+		{
+      if (approvalAuthorityInstance) 
+        {
+            if (params.version) 
+            {
                 def version = params.version.toLong()
-                if (approvalAuthorityInstance.version > version) {
+                if (approvalAuthorityInstance.version > version) 
+                {
                     
                     approvalAuthorityInstance.errors.rejectValue("version", "default.optimistic.locking.failure", [message(code: 'approvalAuthority.label', default: 'ApprovalAuthority')] as Object[], "Another user has updated this ApprovalAuthority while you were editing")
                     render(view: "edit", model: [approvalAuthorityInstance: approvalAuthorityInstance])
                     return
                 }
             }
-           
+            def chkApprovalAuthorityInstance = approvalAuthorityService.checkDuplicateApprovalAuthority(params)
+            println"chkApprovalAuthorityInstance"+chkApprovalAuthorityInstance
+    		println"params"+params
+    		if(chkApprovalAuthorityInstance && (chkApprovalAuthorityInstance[0].id!= Long.parseLong(params.id)))
+    	    {
+    	    println"sucess"
+    	    	flash.message ="${message(code: 'default.AlreadyExists.label')}"
+    	    		redirect(action: "create", id: approvalAuthorityInstance.id)
+    	    }
+    	    else
+    	    {
+                
              approvalAuthorityInstance = approvalAuthorityService.updateApprovalAuthority(params,approvalAuthorityInstance)
             if( approvalAuthorityInstance.saveMode.equals( "Updated"))
             {
                 flash.message = "${message(code: 'default.updated.label')}"
                 redirect(action: "create", id: approvalAuthorityInstance.id)
             }
-            else {
+            else 
+            {
                 render(view: "edit", model: [approvalAuthorityInstance: approvalAuthorityInstance])
             }
+    	    }
         }
         else {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'approvalAuthority.label', default: 'ApprovalAuthority'), params.id])}"
             redirect(action: "list")
         }
+    }
+		else
+		{
+			
+			def partyInstance = Party.get(gh.getValue("Party"))
+			
+			flash.message = "${message(code: 'default.EntervalidEmailAddress.label')}"
+				render(view: "edit", model:['approvalAuthorityInstance':approvalAuthorityInstance,'partyInstance':partyInstance])
+		}
+    	}
+    	else
+	    {
+            
+         approvalAuthorityInstance = approvalAuthorityService.updateApprovalAuthority(params,approvalAuthorityInstance)
+        if( approvalAuthorityInstance.saveMode.equals( "Updated"))
+        {
+            flash.message = "${message(code: 'default.updated.label')}"
+            redirect(action: "create", id: approvalAuthorityInstance.id)
+        }
+        else 
+        {
+            render(view: "edit", model: [approvalAuthorityInstance: approvalAuthorityInstance])
+        }
+	    }
     }
     
     def delete = 
@@ -143,5 +232,5 @@ class ApprovalAuthorityController {
 			}
     }
 
-   
-}
+}   
+

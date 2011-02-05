@@ -8,6 +8,7 @@
     	<div class="wrapper">
         	<g:form action="listReport" method="post" name="grantReport" >
          		<div class="body">
+         		<h1><g:message code="default.StatisticalReports.label"/></h1>
          			<div class="dialog">
              			<table width="95%">
                         	<tbody>
@@ -34,7 +35,7 @@
 				                                </td>
 				                                <td valign="top" class="value ${hasErrors(bean:grantAllocationInstance,field:'grantPeriod','errors')}">
 				                                    <g:select optionKey="id" optionValue="name" 
-				                                    	from="${GrantPeriod.findAll('from GrantPeriod GP order by defaultYesNo desc')}" 
+				                                    	from="${GrantPeriod.findAll('from GrantPeriod GP where GP.activeYesNo=\'Y\'order by defaultYesNo desc')}" 
 				                                    	onChange="setValue()" name="grantPeriod" value="id" >
 			                                    	</g:select>
 				                                    <input type="hidden" id="periodHidden" 

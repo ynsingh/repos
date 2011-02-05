@@ -97,4 +97,13 @@ class InvestigatorService {
  	   def projectsPIMapInstance = ProjectsPIMap.find("from ProjectsPIMap PM where PM.role='PI' and PM.projects="+projectsId)
  	   return projectsPIMapInstance
     }
+    
+  	/**
+  	 * Getting Investigator Instance by email.
+  	 */
+  	 public getInvestigatorByemail (def email)
+  	 {
+  		def investigatorInstance = Investigator.find("from Investigator I where I.email='"+email+"'")
+		return investigatorInstance
+  	 }
 }

@@ -7,7 +7,7 @@
         <title><g:message code="default.projectsDepartmentMap.EditProjectsToDepartment.head"/></title>
     </head>
     <body>
-    <g:subMenuProjects/>
+   <g:subMenuList/>
     <div class="wrapper">
         <div class="body">
             <h1><g:message code="default.projectsDepartmentMap.EditProjectsToDepartment.head"/></h1>

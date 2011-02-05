@@ -305,8 +305,14 @@ class GrantExpenseService {
 		 def headExpAmnt=GrantExpense.executeQuery("select sum(GE.expenseAmount) from GrantExpense GE where GE.grantAllocationSplit.id="+grantExpenseInstance.grantAllocationSplitId)
 		 return headExpAmnt
 	 }
-	
-	 
+	 /*
+	 * Getting GrantExpense by Request Code
+	 */
+	 public getGrantExpenseByRequestCode(def RequestCode)
+	 {
+		 def grantExpenseInstanceList = GrantExpense.findAll("from GrantExpense GE where GE.expenseRequestCode ='"+RequestCode+"'")
+		 return grantExpenseInstanceList
+	 }
 }
 
 

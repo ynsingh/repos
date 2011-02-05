@@ -27,7 +27,7 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="authority"><g:message code="default.Role.label"/></label>
+                                    <label for="authority"><g:message code="default.Role.label"/>:</label>
                                     <label for="role" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: authorityInstance, field: 'authority', 'errors')}">
@@ -41,7 +41,7 @@
                             </tr>
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="description"><g:message code="default.Description.label"/></label>
+                                    <label for="description"><g:message code="default.Description.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: authorityInstance, field: 'description', 'errors')}">
                                     <g:textField name="description" value="${authorityInstance?.description}" />
@@ -57,9 +57,7 @@
            </div>
            <div class="body">
              <h1></h1>
-             <g:if test="${flash.message}">
-               <div class="message">${flash.message}</div>
-             </g:if>
+           
              <div class="list">
                 <table>
                     <thead>

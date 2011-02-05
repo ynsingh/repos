@@ -22,36 +22,44 @@
 					<table>
 						<tbody>
 				            <tr>
-					    		<td><label><g:message code="default.ProjectName.label" /></label></td>
+					    		<td><label><g:message code="default.ProjectName.label" /></label>:</td>
 					    		<td><strong>${projectInstance.name}</strong></td>
 					    		<input type="hidden" name="projectId" value="${projectInstance.id}"/>
-					    		<td><label><g:message code="default.itemPurchase.NameOfItem.label" /></label></td>
+					    		<td><label><g:message code="default.itemPurchase.NameOfItem.label" /></label>:
+					    		<label for="NameOfItem" style="color:red;font-weight:bold"> * </label>
+					    		</td>
 					    		<td><g:textField name="name" value="${itemPurchaseInstance?.name}" /></td>
 				 		    </tr>
 				  			<tr>
-					  		    <td><label><g:message code="default.itemPurchase.AssetCode.label"/></label></td>
+					  		    <td><label><g:message code="default.itemPurchase.AssetCode.label"/></label>:
+					  		    <label for="AssetCode" style="color:red;font-weight:bold"> * </label>
+					  		    </td>
 					    		<td><g:textField name="assetCode" value="${itemPurchaseInstance?.assetCode}" /></td>
-					    		<td><label><g:message code="default.itemPurchase.DateReceived.label" /></label></td>
+					    		<td><label><g:message code="default.itemPurchase.DateReceived.label" /></label>:</td>
 					    		<td><calendar:datePicker name="dateReceived" defaultValue="${new Date()}" 
 					    				dateFormat="%d/%m/%Y"/></td>
 				  			</tr>
 				  			<tr>
-					    		<td><label><g:message code="default.itemPurchase.OrderNo.label" /></label></td>
+					    		<td><label><g:message code="default.itemPurchase.OrderNo.label" /></label>:
+					    		<label for="OrderNo" style="color:red;font-weight:bold"> * </label>
+					    		</td>
 					    		<td><g:textField name="orderNo" 
 					    			value="${fieldValue(bean: itemPurchaseInstance, field: 'orderNo')}" />
 				    			</td>
-					   			<td><label><g:message code="default.itemPurchase.BillNo.label" /></label></td>
+					   			<td><label><g:message code="default.itemPurchase.BillNo.label" /></label>:</td>
 					      		<td><g:textField name="billNo" 
 					      			value="${fieldValue(bean: itemPurchaseInstance, field: 'billNo')}" />
 				      			</td>
 				  			</tr>
 				  			<tr>
-					   			<td><label><g:message code="default.itemPurchase.Cost(Rs).label" /></label></td>
+					   			<td><label><g:message code="default.itemPurchase.Cost(Rs).label" /></label>:
+					   			<label for="Cost" style="color:red;font-weight:bold"> * </label>
+					   			</td>
 					   			
 					   			<td><g:textField name="cost" 
 					   				value="${fieldValue(bean: itemPurchaseInstance, field: 'cost')}" /></td>
 					   			
-					   			<td><label><g:message code="default.Remarks.label" /></label></td>
+					   			<td><label><g:message code="default.Remarks.label" /></label>:</td>
 					   			
 					   			<td><g:textArea name="remarks" value="${itemPurchaseInstance?.remarks}" /></td>
 				   			</tr>

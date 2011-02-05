@@ -82,5 +82,70 @@ class AttachmentsService {
 	   def attachmentInstanceList = AttachmentType.findAll("from AttachmentType AT where AT.activeYesNo='Y' and AT.type = '"+type+"' and AT.documentType='"+ docType +"'")
 	   return attachmentInstanceList
    } 
+    /* Getting Attachment using ExpenseRequestEntry Id*/
+    public getAttachmentsbyExpenseRequestEntryId(def domainId,def domain)
+    {
+    	def attachmentsInstance = Attachments.find("from Attachments AT where AT.domain = '"+domain+"' and AT.domainId='"+domainId+"'")
+    	return attachmentsInstance
+    }
     
+    /*Function to get all attachment type by domain*/ 
+    public List getattachmentTypesByDocType(def docType)
+   {
+	   def attachmentTypeInstance = AttachmentType.findAll("from AttachmentType AT where AT.activeYesNo='Y' and AT.documentType ='"+docType+"'")
+	   return attachmentTypeInstance
+   } 
+    
+    /* Getting AttachmentList using ExpenseRequestEntry Id*/
+    public getAttachmentListbyDomainIdAndDomain(def domainId,def domain)
+    {
+    	def attachmentsInstanceList = Attachments.findAll("from Attachments AT where AT.domain='"+domain+"' and AT.domainId='"+domainId+"'")
+    	return attachmentsInstanceList
+    }
+    /*Function to get a attachment type*/ 
+    public def getAttachmentTypesByDocumentTypeAndType(def type,def docType)
+   {
+	   def attachmentInstanceList = AttachmentType.find("from AttachmentType AT where AT.activeYesNo='Y' and AT.type = '"+type+"' and AT.documentType='"+ docType +"'")
+	   return attachmentInstanceList
+   } 
+    /*Function to save a attachments */ 
+    public def saveAttachments(def domain,def domainId,def fileName,def attachmentsTypeInstance)
+   {
+	   println "save attachments---"
+    	def attachmentInstanceStatus = false
+    	def attachmentsInstance=new Attachments()
+	   attachmentsInstance.domain=domain
+	   attachmentsInstance.domainId=domainId
+	   attachmentsInstance.openedYesNo='N'
+	   attachmentsInstance.attachmentPath=fileName
+	   attachmentsInstance.attachmentType=attachmentsTypeInstance
+	   if(attachmentsInstance.save())
+	   {
+		   println "save attachments--- saved"
+		   attachmentInstanceStatus=true
+	   }
+	   return attachmentInstanceStatus
+   } 
+/*Function to find attachments for a domain */
+    
+    public def getAttachmentsByDomainAndType(def domain,def type,def domainId)
+    {
+    	def attachmentInstance = Attachments.find("from Attachments A where A.domain='"+domain+"' and A.attachmentType.type='"+type+"' and A.domainId='"+domainId+"'")
+    	return attachmentInstance
+    }
+/*
+ * function to update attachments
+ */
+    public def updateAttachments(def attachmentsInstance)
+    {
+ 	   println "save attachments---"
+ 	  def attachmentInstanceStatus = false
+ 	   if(attachmentsInstance.save())
+ 	   {
+ 		   println "save attachments--- saved"
+ 		  attachmentInstanceStatus=true
+ 	   }
+ 	   return attachmentInstanceStatus
+    }
+
 }

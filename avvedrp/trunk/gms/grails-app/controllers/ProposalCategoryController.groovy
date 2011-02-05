@@ -13,21 +13,34 @@ class ProposalCategoryController {
 
     def create = {
         def proposalCategoryInstance = new ProposalCategory()
+        def proposalCategoryService = new ProposalCategoryService()
         proposalCategoryInstance.properties = params
-        return [proposalCategoryInstance: proposalCategoryInstance]
+        def proposalCategoryInstanceList=proposalCategoryService.getProposalCategoryList()        
+        return [proposalCategoryInstance: proposalCategoryInstance,
+                proposalCategoryInstanceList:proposalCategoryInstanceList]
     }
 
     def save = {
     	def proposalCategoryService = new ProposalCategoryService()
         def proposalCategoryInstance = new ProposalCategory(params)
+    	def chkProposalCategoryInstance = proposalCategoryService.checkDuplicateCategory(params)
+		if(chkProposalCategoryInstance)
+	    {
+	    	flash.message ="${message(code: 'default.AlreadyExists.label')}"
+	    		redirect(action: "create", id: proposalCategoryInstance.id)
+	    }
+		else
+	   {
     	proposalCategoryInstance =  proposalCategoryService.saveProposalCategory(params)
-        if (proposalCategoryInstance) {
+        if (proposalCategoryInstance)
+        {
             flash.message = "${message(code: 'default.ProposalCategoryCreated.label')}"
             redirect(action: "create", id: proposalCategoryInstance.id)
         }
         else {
             render(view: "create", model: [proposalCategoryInstance: proposalCategoryInstance])
         }
+	   }	
     }
 
     def show = {
@@ -67,6 +80,16 @@ class ProposalCategoryController {
                     return
                 }
             }
+            def chkProposalCategoryInstance = proposalCategoryService.checkDuplicateCategory(params)
+		
+		if(chkProposalCategoryInstance&&(chkProposalCategoryInstance.id!= Long.parseLong(params.id)))
+	    {
+	    println"sucess"
+	    	flash.message ="${message(code: 'default.AlreadyExists.label')}"
+	    		redirect(action: "create", id: proposalCategoryInstance.id)
+	    }
+	    else
+	    {
             
             proposalCategoryInstance = proposalCategoryService.updateProposalCategory( params,proposalCategoryInstance)
             if(proposalCategoryInstance.saveMode.equals( "Updated"))
@@ -74,10 +97,15 @@ class ProposalCategoryController {
                 flash.message = "${message(code: 'default.ProposalCategoryUpdated.label')}"
                 redirect(action: "create", id: proposalCategoryInstance.id)
             }
-            else {
+            
+            else 
+            {
                 render(view: "edit", model: [proposalCategoryInstance: proposalCategoryInstance])
             }
+           
         }
+        }
+        
         else {
             flash.message ="${message(code: 'default.ProposalCategoryNotFound.label')}"
             redirect(action: "list")

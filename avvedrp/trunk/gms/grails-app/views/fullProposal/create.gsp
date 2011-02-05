@@ -88,11 +88,7 @@
         </div>
         
         <div class="body">
-           
-            <g:if test="${flash.message}">
-            <div class="message">${flash.message}</div>
-            </g:if>
-            <div class="list">
+           <div class="list">
                 <table>
                     <thead>
                         <tr>

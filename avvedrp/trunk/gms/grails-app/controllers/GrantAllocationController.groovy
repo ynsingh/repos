@@ -165,9 +165,8 @@
 		def grantAllocationService = new GrantAllocationService()
         def grantAllocationInstance=grantAllocationService.getGrantAllocationById(new Integer(params.id))
         def dataSecurityService = new DataSecurityService()
-		GrailsHttpSession gh=getSession()
 		//checking  whether the user has access to the given projects
-		def projectsInstance = projectsService.getProjectById(gh.getValue("ProjectId"))
+		def projectsInstance = projectsService.getProjectById(grantAllocationInstance.projects.id)
 		if(dataSecurityService.checkForAuthorisedAcsessInProjects(grantAllocationInstance.projects.id,new Integer(getUserPartyID()))==0)
 		{
 			
@@ -185,7 +184,7 @@
         	NumberFormat formatter = new DecimalFormat("#0.00");
             
              grantAllocationInstance.amountAllocated=  new Double(formatter.format(grantAllocationInstance.amountAllocated))
-        	return [ projectsInstance:projectsInstance,grantAllocationInstance : grantAllocationInstance,amount:formatter.format(grantAllocationInstance.amountAllocated) ]
+        	return [projectsInstance:projectsInstance,grantAllocationInstance : grantAllocationInstance,amount:formatter.format(grantAllocationInstance.amountAllocated) ]
         }
 		}
     }
@@ -193,11 +192,10 @@
 
     def update = 
     {
-			
-    	println "*******************************Inside update***************"
     	def grantAllocationService = new GrantAllocationService()
     	def grantAllocation = grantAllocationService.checkGrantAllotted(params)
     	
+    	GrailsHttpSession gh=getSession()
     	if(grantAllocation)
     	{
 	    	flash.message = "${message(code: 'default.Amountcannotchangedallocatedtosubprojects.label')}"
@@ -210,16 +208,14 @@
 			{
 				if(grantAllocationInstance.isSaved)
 				{
-					GrailsHttpSession gh=getSession()
-					def projectsInstance = projectsService.getProjectById(gh.getValue("ProjectId"))
 					if(gh.getValue("fromUrL")=="fundAllot")
 					{
-						redirect(action:'fundAllot',id:grantAllocationInstance.id)
+						redirect(action:'fundAllot',model:[grantAllocationInstance:grantAllocationInstance],params:[id:params.projects.id])
 		                flash.message = "${message(code: 'default.updated.label')}"
 					}
 					else
 					{
-						redirect(action:'create',id:gh.getValue("fromID"))
+						redirect(action:'create',model:[grantAllocationInstance:grantAllocationInstance],params:[id:params.projects.id])
 						flash.message = "${message(code: 'default.updated.label')}"
 					}
 				}
@@ -250,7 +246,7 @@
     
     def fundAllot = 
     {
-    		GrailsHttpSession gh=getSession()
+			GrailsHttpSession gh=getSession()
     		gh.removeValue("Help")
     		//putting help pages in session
     		gh.putValue("Help","Fund_Allocation.htm")
@@ -259,8 +255,7 @@
         	
         	def grantAllocationInstance = new GrantAllocation()
         	grantAllocationInstance.properties = params
-        	        	
-        	def dataSecurityService = new DataSecurityService()
+      	    def dataSecurityService = new DataSecurityService()
     		String subQuery="";
             if(params.sort != null && !params.sort.equals(""))
             	subQuery=" order by GA."+params.sort
@@ -271,11 +266,10 @@
          
            	println"grantAllocationInstance"+params.id
             def projectIdStart="("
-            def projectsInstance = projectsService.getProjectById(gh.getValue("ProjectId"))	
-            
+            def projectsService = new ProjectsService()		
+            def projectsInstance = projectsService.getProjectById(params.id)	
             //def projectsPIMapInstance = dataSecurityService.getProjectsPIMap(projectsInstance.id);
             def projectsPIMapInstance = projectsService.checkPIofProject(projectsInstance.id)
-           println"projectsPIMapInstance"+projectsPIMapInstance
             println "PIMApxsdf"+ projectsPIMapInstance
             def grantAllocationInstanceListproj
             grantAllocationInstanceListproj = grantAllocationService.getGrantAllocationsForAssignedProject(projectsInstance.id)
@@ -301,21 +295,25 @@
         	
     	     
         	ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
+        	NumberFormat formatter = new DecimalFormat("#0.00");
         	return ['grantAllocationInstance':grantAllocationInstance,
         	        'grantAllocationInstanceList':grantAllocationInstanceListproj,
                 'partyinstance':partyinstance,'partInstance':partInstance,
                 'currencyFormat':currencyFormatter,
                 'projectsPIMapInstance':projectsPIMapInstance,
-                'projectsInstance':projectsInstance]
+                'projectsInstance':projectsInstance,
+                'amount':formatter.format(grantAllocationInstance.amountAllocated)]
     }
         
     def funtSave = 
     {
-    		println "*******************************IfuntSave***************"+params
+    		println "*******************************IfuntSave***************"+params.id
     		GrailsHttpSession gh=getSession()
     		def grantAllocationInstance = new GrantAllocation(params)
-    		def projectsInstance = projectsService.getProjectById(gh.getValue("ProjectId"))	
-    		println "grantAllocationInstance.projects"+grantAllocationInstance.projects
+    		//def projectsInstance = projectsService.getProjectById(new Integer(params.id))	
+    		def projectsInstance = Projects.get(params.id)
+    		println "projectsInstance"+projectsInstance
+    		println "grantAllocationInstance.projects"+grantAllocationInstance
     		grantAllocationInstance.projects = projectsInstance
     		grantAllocationInstance.createdBy="admin"
     		grantAllocationInstance.modifiedBy="admin"
@@ -345,12 +343,12 @@
 		    if(fundAllotId != null)
 		    {
 		    	flash.message = "${message(code: 'default.created.label')}"
-	    		redirect(action:'fundAllot')
+	    		redirect(action:'fundAllot',params:[id:params.id])
 		    }
 		    else
 		    {
 		    	flash.message = "${message(code: 'default.FundAllocationnotcreated.label')}"
-	    		redirect(action:'fundAllot')
+	    		redirect(action:'fundAllot',params:[id:params.id])
 	    	}
     	    
         
@@ -409,42 +407,16 @@
 	        grantAllocationInstance.totAllAmount = sumAmountAllocated
 	        grantAllocationInstance.balanceAmount=projectInstance.parent.totAllAmount - grantAllocationInstance.totAllAmount
 	        ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
+	        NumberFormat formatter = new DecimalFormat("#0.00");
 	        return ['grantAllocationInstance':grantAllocationInstance,
 	                'projectInstance':projectInstance,
 	                'grantAllocationInstanceList':grantAllocationInstanceList,
 	                'partyInstance':partyInstance,'grantAllocation':grantAllocation,
 	                'projectsPIMapInstanceList':projectsPIMapInstanceList,
-	                'currencyFormat':currencyFormatter,'subProjectsList':subProjectsList]
+	                'currencyFormat':currencyFormatter,'subProjectsList':subProjectsList,
+	                'amount':formatter.format(grantAllocationInstance.amountAllocated)]
     	}
-    	 /* }
-    
-    
-    def subGrantAllotExt = {
-    		
-    		GrailsHttpSession gh=getSession()
-    		gh.removeValue("Help")
-    		gh.putValue("Help","Grant_Alot_Ext_Agency.htm")
-    		gh.putValue("fromUrL", "subGrantAllotExt");
-    		gh.putValue("fromID", params.id);
-        def grantAllocationInstance = new GrantAllocation()
-        grantAllocationInstance.properties = params
-        
-        def grantAllocationService = new GrantAllocationService()
-        def grantAllocation=grantAllocationService.getGrantAllocationById(new Integer(params.id))
-        def dataSecurityService = new DataSecurityService()
-//      checking  whether the user has access to the given projects
-/*		if(dataSecurityService.checkForAuthorisedAcsessInProjects(new Integer(params.id),new Integer(getUserPartyID()))==0)
-		{
-			
-					
-					 redirect uri:'/invalidAccess.gsp'
-
-		}
-		else
-		{ */
-        
-        
-			def projectInstance = Projects.get( params.id )
+ 			def projectInstance = Projects.get( params.id )
 	        projectInstance.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(projectInstance.id,getUserPartyID())
 	       
         
@@ -459,7 +431,7 @@
                 'projectInstance':projectInstance,
                 'grantAllocationInstanceList':grantAllocationInstanceList,
                 'partyInstance':partyInstance,'grantAllocation':grantAllocation ]
-		//}
+		
     }
     
     def subGrantAllotExt = {
@@ -1371,7 +1343,6 @@ def projectDash =
 	def showReports=
 	{
 		File reportFile
-		println("Intim --->"+params)
 		def webRootDir = servletContext.getRealPath("/")
 		def utilizationInstance = Utilization.get(params.id)
 		reportFile = new File(webRootDir+ "/reports/StatementOFAccounts.jasper")
@@ -1430,7 +1401,6 @@ def projectDash =
 	def utilizationCertificate=
 	{
 		File reportFile
-		println("params --->"+params)
 		def webRootDir = servletContext.getRealPath("/")
 		
 		def utilizationInstance = Utilization.get(params.id)
@@ -1495,5 +1465,9 @@ def projectDash =
 def menu = {}
 def top = {}
 
-
+def gmsFrame = {
+			GrailsHttpSession gh=getSession()
+			def role = gh.getValue("Role")
+			[role:role]
+	}
 }

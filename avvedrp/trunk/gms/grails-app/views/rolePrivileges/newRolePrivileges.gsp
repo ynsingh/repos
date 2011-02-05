@@ -1,13 +1,13 @@
 <head>
 	<meta name="layout" content="main" />
-	<title><g:message code="default.User.CreateRolePrevileges.head "/></title>
+	<title><g:message code="default.User.CreateRolePrivileges.head"/></title>
 </head>
 
 <body>
 <div class="wrapper">
 	<div class="body">
 
-		<h1><g:message code="default.User.CreateRolePrevileges.head"/></h1>
+		<h1><g:message code="default.User.CreateRolePrivileges.head"/></h1>
 		<g:if test="${flash.message}">
 		<div class="message">${flash.message}</div>
 		</g:if>

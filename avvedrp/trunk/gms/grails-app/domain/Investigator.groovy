@@ -11,7 +11,7 @@ class Investigator
 	{
 		
 		department(nullable:true,blank:false)
-		name(nullable:false,blank:false,unique: true)
+		name(nullable:false,blank:false)
 		email(email:true,blank:false,unique: true)
     }
 }

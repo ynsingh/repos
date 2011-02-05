@@ -85,7 +85,7 @@
                     </table>
                 </div>
                 <div class="buttons">
-                    <span class="button"><g:submitButton name="create" class="save" value="${message(code: 'default.button.create.label', default: 'Create')}" /></span>
+                    <span class="button"><g:submitButton name="create" class="save" onClick="return validateApprovalAuthorityMap()" value="${message(code: 'default.Create.button')}" /></span>
                 </div>
             </g:form>
             <div class="list">

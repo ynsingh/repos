@@ -7,6 +7,7 @@
         <calendar:resources lang="en" theme="tiger"/>
         <g:javascript library="jquery" plugin="jquery"/>
          <g:javascript library="applicationValidation" />
+          <g:javascript library="appFormValidation" />
            
           <script src="${createLinkTo(dir:'images',file:'jquery-1.3.2.js')}"></script>
             <script src="${createLinkTo(dir:'images',file:'jquery.colorbox.js')}"></script>

@@ -64,23 +64,101 @@ class ProjectTrackingController {
     }
 
     def update = {
-		def projectsService = new ProjectsService()
-		def projectTrackingInstance = projectsService.updateProjectTracking(params)
+  
+    		def projectsService = new ProjectsService()
+    		def subProjectInstanceList = []
+    		def subProjectTrackingList = []
+
+        /* Get project details */
+			def projectsInstance = projectsService.getProjectById(new Integer(params.projects.id))
 		
-		if(projectTrackingInstance){
-			if(projectTrackingInstance.saveMode != null){
-				flash.message = "${message(code: 'default.updated.label')}"
-				redirect(action:create,id:projectTrackingInstance.projects.id)
-			}
-			else {
-                render(view:'create',id:projectTrackingInstance.projects.id)
-            }
-		}
-		else {
-            flash.message = "${message(code: 'default.notfond.label')}"
-            redirect(action:create,id:params.projects.id)
-        }
+	if(params.projectStatus =='Closed')
+	 {
+		    
+		/* Get sub project details */
+		 subProjectInstanceList = projectsService.getSubProjectsForClosingMainProject(params.projects.id)
+		 println"subProjectInstanceList"+subProjectInstanceList	
+		 def subProjectTrackingInstance 
+
+		 if(subProjectInstanceList)
+		    	{
+		    		for(int i=0;i<subProjectInstanceList.size();i++)
+		    			{
+		    		 
+		    		         println"subProjectInstanceList[i]"+subProjectInstanceList[i].id
+		    		         subProjectTrackingInstance = new ProjectTracking()
+		    		         subProjectTrackingInstance =  ProjectTracking.find("from ProjectTracking PT where PT.projects.id = "+subProjectInstanceList[i].id)	
+		    		         println"subProjectTrackingInstance"+subProjectTrackingInstance
+		    		         if(subProjectTrackingInstance)
+		    		        	 subProjectTrackingList.add(subProjectTrackingInstance)
+		    			}
+		   
+		    		if(subProjectTrackingList.size()== subProjectInstanceList.size())
+		    		{
+		    		  def projectTrackingInstance = projectsService.updateProjectTracking(params)
+		    		  		
+		    	  			if(projectTrackingInstance){
+		    	  				if(projectTrackingInstance.saveMode != null){
+		    	  						flash.message = "${message(code: 'default.updated.label')}"
+		    	  						redirect(action:create,id:projectTrackingInstance.projects.id)
+		    	  					}
+		    	  				else {
+		    	  						render(view:'create',id:projectTrackingInstance.projects.id)
+		    	  					}
+		    	  					}
+		    	  		else {
+		    	              flash.message = "${message(code: 'default.notfond.label')}"
+		    	              redirect(action:create,id:params.projects.id)
+		    	          }
+		    	   
+		        
+		    		}
+		    		 else
+					    {
+				            flash.message = "${message(code: 'default.notAllowed.label')}"
+					        redirect(action:create,id:params.projects.id)
+					    }
+		     }
+		    	else
+		    	{
+		    		def projectTrackingInstance = projectsService.updateProjectTracking(params)
+    		  		
+    	  			if(projectTrackingInstance){
+    	  					if(projectTrackingInstance.saveMode != null){
+    	  						flash.message = "${message(code: 'default.updated.label')}"
+    	  						redirect(action:create,id:projectTrackingInstance.projects.id)
+    	  						}
+    	  					else {
+    	  						render(view:'create',id:projectTrackingInstance.projects.id)
+    	  						}
+    	  						}
+    	  		  else {
+    	              flash.message = "${message(code: 'default.notfond.label')}"
+    	              redirect(action:create,id:params.projects.id)
+    	  		  		}
+		        
+		    	}
+      }
+    
+	else
+		{
+			def projectTrackingInstance = projectsService.updateProjectTracking(params)
+  		
+  				if(projectTrackingInstance){
+  					if(projectTrackingInstance.saveMode != null){
+  						flash.message = "${message(code: 'default.updated.label')}"
+  						redirect(action:create,id:projectTrackingInstance.projects.id)
+  						}
+  				   else {
+  						render(view:'create',id:projectTrackingInstance.projects.id)
+  					    }
+  				   }
+  				else {
+              flash.message = "${message(code: 'default.notfond.label')}"
+              redirect(action:create,id:params.projects.id)
+  					}
     }
+}
 
     def create = {
     		def projectsService = new ProjectsService()

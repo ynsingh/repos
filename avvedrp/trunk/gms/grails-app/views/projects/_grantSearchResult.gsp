@@ -10,7 +10,7 @@
                        
                    	        <th><g:message code="default.Name.label"/></th>
                                               
-                   	        <th><g:message code="default.Code.label"/></th>
+                   	        
                 	       
                    	       	<th><g:message code="default.GrantAgency.label"/></th>
                    	       	
@@ -41,8 +41,7 @@
 		                         	</g:else>
                             
                             </td>
-                        	 
-                        	<td>${fieldValue(bean:projectsInstance, field:'projects.code')}</td>
+                        	
                         	 
                         	<td>${fieldValue(bean:projectsInstance, field:'granter.nameOfTheInstitution')}</td>
                         	
@@ -64,7 +63,9 @@
             </div> 
             </g:if>
         <g:else>
-	    <g:message code="default.notfond.label"/>
+	    <g:if test="grantAllocationInstanceList.size()">
+        <div class="message"><g:message code="default.notfond.label"/></div>
+         </g:if>
 	    </g:else>
         </div>
         

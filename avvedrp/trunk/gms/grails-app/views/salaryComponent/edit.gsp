@@ -27,7 +27,8 @@
 	                        <tbody>
 	                            <tr class="prop">
 	                                <td valign="top" class="name">
-	                                  <label for="name"><g:message code="default.Name.label" /></label>
+	                                  <label for="name"><g:message code="default.SalaryComponent.label" />:</label>
+	                                  <label for="name" style="color:red;font-weight:bold"> * </label>
 	                                </td>
 	                                <td valign="top" class="value ${hasErrors(bean: salaryComponentInstance, field: 'name', 'errors')}">
 	                                    <g:textField id="name" name="name" value="${salaryComponentInstance?.name}" />

@@ -27,7 +27,8 @@
 	                        <tbody>
 	                        	<tr class="prop">
 	                                <td valign="top" class="name">
-	                                  <label for="name"><g:message code="default.itemPurchase.NameOfItem.label" /></label>
+	                                  <label for="name"><g:message code="default.itemPurchase.NameOfItem.label" /></label>:
+	                                  <label for="NameOfItem" style="color:red;font-weight:bold"> * </label>
 	                                </td>
 	                                <td valign="top" class="value ${hasErrors(bean: itemPurchaseInstance, field: 'name', 'errors')}">
 	                                    <g:textField name="name" value="${itemPurchaseInstance?.name}" />
@@ -36,7 +37,8 @@
 	                        
 	                            <tr class="prop">
 	                                <td valign="top" class="name">
-	                                  <label for="assetCode"><g:message code="default.itemPurchase.AssetCode.label" /></label>
+	                                  <label for="assetCode"><g:message code="default.itemPurchase.AssetCode.label" /></label>:
+	                                  <label for="AssetCode" style="color:red;font-weight:bold"> * </label>
 	                                </td>
 	                                <td valign="top" class="value ${hasErrors(bean: itemPurchaseInstance, field: 'assetCode', 'errors')}">
 	                                    <g:textField name="assetCode" value="${itemPurchaseInstance?.assetCode}" />
@@ -45,7 +47,7 @@
 	                        
 	                            <tr class="prop">
 	                                <td valign="top" class="name">
-	                                  <label for="billNo"><g:message code="default.itemPurchase.BillNo.label" /></label>
+	                                  <label for="billNo"><g:message code="default.itemPurchase.BillNo.label" /></label>:
 	                                </td>
 	                                <td valign="top" class="value ${hasErrors(bean: itemPurchaseInstance, field: 'billNo', 'errors')}">
 	                                    <g:textField name="billNo" value="${fieldValue(bean: itemPurchaseInstance, field: 'billNo')}" />
@@ -54,7 +56,8 @@
 	                        
 	                            <tr class="prop">
 	                                <td valign="top" class="name">
-	                                  <label for="cost"><g:message code="default.itemPurchase.Cost(Rs).label" /></label>
+	                                  <label for="cost"><g:message code="default.itemPurchase.Cost(Rs).label" /></label>:
+	                                  <label for="Cost" style="color:red;font-weight:bold"> * </label>
 	                                </td>
 	                                <td valign="top" class="value ${hasErrors(bean: itemPurchaseInstance, field: 'cost', 'errors')}">
 	                                    <g:textField name="cost" value="${amount}" />
@@ -63,17 +66,19 @@
 	                        
 	                            <tr class="prop">
 	                                <td valign="top" class="name">
-	                                  <label for="dateReceived"><g:message code="default.itemPurchase.DateReceived.label" /></label>
+	                                  <label for="dateReceived"><g:message code="default.itemPurchase.DateReceived.label" /></label>:
 	                                </td>
 	                                <td valign="top" class="value ${hasErrors(bean: itemPurchaseInstance, field: 'dateReceived', 'errors')}">
-	                                <calendar:datePicker name="dateReceived" defaultValue="${new Date()}" 
+	                                <calendar:datePicker name="dateReceived" value="${itemPurchaseInstance?.dateReceived}" defaultValue="${new Date()}" 
 					    				dateFormat="%d/%m/%Y"/>
+					    				
 	                                </td>
 	                            </tr>
 	                                                                           
 	                            <tr class="prop">
 	                                <td valign="top" class="name">
-	                                  <label for="orderNo"><g:message code="default.itemPurchase.OrderNo.label" /></label>
+	                                  <label for="orderNo"><g:message code="default.itemPurchase.OrderNo.label" /></label>:
+	                                  <label for="OrderNo" style="color:red;font-weight:bold"> * </label>
 	                                </td>
 	                                <td valign="top" class="value ${hasErrors(bean: itemPurchaseInstance, field: 'orderNo', 'errors')}">
 	                                    <g:textField name="orderNo" value="${fieldValue(bean: itemPurchaseInstance, field: 'orderNo')}" />
@@ -83,7 +88,7 @@
 	                            
 	                            <tr class="prop">
 	                                <td valign="top" class="name">
-	                                  <label for="remarks"><g:message code="default.Remarks.label" /></label>
+	                                  <label for="remarks"><g:message code="default.Remarks.label" /></label>:
 	                                </td>
 	                                <td valign="top" class="value ${hasErrors(bean: itemPurchaseInstance, field: 'remarks', 'errors')}">
 	                                    <g:textField style='width: 200px; height: 50px;' name="remarks" 

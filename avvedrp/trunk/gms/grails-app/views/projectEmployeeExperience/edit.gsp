@@ -30,7 +30,8 @@
 	                                <td valign="top" class="name">
 	                                  <label for="organizationName">
 	                                  	<g:message code="default.projectEmployeeExperience.OrganizationName.label"/>
-	                                  </label>
+	                                  </label>:
+	                                  <label for="OrganizationName" style="color:red;font-weight:bold"> * </label>
 	                                </td>
 	                                <td valign="top" 
 	                                	class="value ${hasErrors(bean: projectEmployeeExperienceInstance, field: 'organizationName','errors')}">
@@ -41,7 +42,8 @@
 	                            <tr class="prop">
 	                                <td valign="top" class="name">
 	                                  <label for="designation">
-	                                  	<g:message code="default.Designation.label" /></label>
+	                                  	<g:message code="default.Designation.label" /></label>:
+	                                  	<label for="Designation" style="color:red;font-weight:bold"> * </label>
 	                                </td>
 	                                <td valign="top" 
 	                                	class="value ${hasErrors(bean: projectEmployeeExperienceInstance, field: 'designation', 'errors')}">
@@ -52,22 +54,22 @@
 	                            <tr class="prop">
 	                                <td valign="top" class="name">
 	                                  <label for="joiningDate">
-	                                  	<g:message code="default.JoiningDate.label" /></label>
+	                                  	<g:message code="default.JoiningDate.label" /></label>:
 	                                </td>
 	                                <td valign="top" 
 	                                	class="value ${hasErrors(bean: projectEmployeeExperienceInstance, field: 'joiningDate', 'errors')}">
 	                                   <calendar:datePicker name="joiningDate"  
-	                                   		value="${projectEmployeeExperienceInstance?.joiningDate}" defaultValue=""/></td>
+	                                   		value="${projectEmployeeExperienceInstance?.joiningDate}" defaultValue="" dateFormat="%d/%m/%Y"/></td>
 	                            </tr>
 	                                                                   
 	                            <tr class="prop">
 	                                <td valign="top" class="name">
-	                                  <label for="relievingDate"><g:message code="default.RelievingDate.label" /></label>
+	                                  <label for="relievingDate"><g:message code="default.RelievingDate.label" /></label>:
 	                                </td>
 	                                <td valign="top" 
 	                                	class="value ${hasErrors(bean: projectEmployeeExperienceInstance, field: 'relievingDate', 'errors')}">
 	                                    <calendar:datePicker name="relievingDate" precision="day" 
-	                                    	value="${projectEmployeeExperienceInstance?.relievingDate}"/>
+	                                    	value="${projectEmployeeExperienceInstance?.relievingDate}" dateFormat="%d/%m/%Y"/>
 	                                </td>
 	                            </tr>
 	                    		<tr class="prop">

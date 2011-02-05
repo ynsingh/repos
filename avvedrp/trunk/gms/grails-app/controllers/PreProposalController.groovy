@@ -57,6 +57,15 @@ class PreProposalController {
     	def preProposalService = new PreProposalService()
         def preProposalInstance = new PreProposal(params)
     	GrailsHttpSession gh=getSession()
+    	def chkPreProposalInstance = preProposalService.checkDuplicatePreProposal(params)
+		if(chkPreProposalInstance)
+	    {
+	    	flash.message ="${message(code: 'default.AlreadyExists.label')}"
+	    		redirect(action: "create", id: preProposalInstance.id)
+	    }
+		else
+	   {
+    	
     	 preProposalInstance  = preProposalService.savePreProposal(params,gh.getValue("UserId"),gh.getValue("Party"))
         if (preProposalInstance) {
         	
@@ -67,6 +76,7 @@ class PreProposalController {
         else {
             render(view: "create", model: [preProposalInstance: preProposalInstance])
         }
+	   }
     }
 	
 	def preProposalApplication =
@@ -149,6 +159,19 @@ class PreProposalController {
                     return
                 }
             }
+            
+            
+            def chkPreProposalInstance = preProposalService.checkDuplicatePreProposal(params)
+    		println"chkPreProposalInstance"+chkPreProposalInstance
+            		if(chkPreProposalInstance&&(chkPreProposalInstance.id[0]!= Long.parseLong(params.id)))
+            	    {
+    
+    	    	flash.message ="${message(code: 'default.AlreadyExists.label')}"
+    	    		redirect(action: "create", id: preProposalInstance.id)
+    	    }
+    	    else
+    	    {
+                
             preProposalInstance = preProposalService.updatePreProposal(params,preProposalInstance)
             if( preProposalInstance.saveMode.equals( "Updated")) {
                 flash.message = "${message(code: 'default.updated.message', args: [message(code: 'preProposal.label', default: 'PreProposal'), preProposalInstance.id])}"
@@ -157,6 +180,7 @@ class PreProposalController {
             else {
                 render(view: "edit", model: [preProposalInstance: preProposalInstance])
             }
+        }
         }
         else {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'preProposal.label', default: 'PreProposal'), params.id])}"

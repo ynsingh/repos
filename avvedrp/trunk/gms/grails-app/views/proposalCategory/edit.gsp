@@ -30,34 +30,35 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                  <label for="name"><g:message code="default.Name.label" /></label>
+                                  <label for="name"><g:message code="default.Name.label" />:</label>
+                                  <label for="name" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: proposalCategoryInstance, field: 'name', 'errors')}">
                                     <g:textField name="name" value="${proposalCategoryInstance?.name}" />
                                 </td>
-                          
-                                <td valign="top" class="name">
-                                  <label for="remarks"><g:message code="default.Remarks.label" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: proposalCategoryInstance, field: 'remarks', 'errors')}">
-                                    <g:textField name="remarks" value="${proposalCategoryInstance?.remarks}" />
-                                </td>
-                            </tr>
+                          </tr>
                         
                             <tr class="prop">
                                  <td valign="top" class="name">
-                                    <label for="defaultYesNo"><g:message code="default.Active.label"/></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean:proposalCategoryInstance,field:'activeYesNo','errors')}">
+                                    <label for="defaultYesNo"><g:message code="default.Active.label"/>:</label>
+                                 </td>
+                                 <td valign="top" class="value ${hasErrors(bean:proposalCategoryInstance,field:'activeYesNo','errors')}">
                                     <g:select name="activeYesNo" from="${['Y', 'N']}"  value="${fieldValue(bean:proposalCategoryInstance,field:'activeYesNo')}" />
-                                </td>  
+                                 </td>  
                             </tr>
-                        
+                             <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="remarks"><g:message code="default.Remarks.label" />:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: proposalCategoryInstance, field: 'remarks', 'errors')}">
+                                    <g:textArea name="remarks" value="${proposalCategoryInstance?.remarks}" />
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="buttons">
-                    <span class="button"><g:actionSubmit class="save" action="update" value="${message(code: 'default.button.update.label', default: 'Update')}" /></span>
+                    <span class="button"><g:actionSubmit class="save" action="update" onClick="return validateProposalCategory()" value="${message(code: 'default.Update.button')}" /></span>
                    
                 </div>
             </g:form>

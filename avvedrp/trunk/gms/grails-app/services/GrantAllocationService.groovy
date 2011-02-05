@@ -497,4 +497,19 @@ class GrantAllocationService {
 		  def projectTrackingInstanceCheck=ProjectTracking.find("from ProjectTracking PT where PT.projectStatus='Closed'and PT.projects.id="+projectId)
 		  return projectTrackingInstanceCheck
 	 }
+	/*
+	 * Getting grantAllocation list using Party Id.
+	 */
+	public getGrantAllocationByPartyIdGroupByProjects(def PartyID)
+	{
+		def grantAllocationInstanceList = GrantAllocation.findAll("from GrantAllocation GA where GA.party.id="+PartyID+"GROUP BY GA.projects")	
+		return grantAllocationInstanceList
+	}
+	
+	
+	
+	
+	
+	
+	
 }

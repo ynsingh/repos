@@ -13,7 +13,7 @@ class SecurityFilters {
         	  if(!session.Party)
         	  {
         		  
-        		  if(!"login".equals(controllerName)&& !"newUserCreate".equals(actionName)&& !"user".equals(controllerName)&& !"saveNewUser".equals(actionName))
+        		  if(!"login".equals(controllerName)&& !"newUserCreate".equals(actionName)&& !"user".equals(controllerName)&& !"saveNewUser".equals(actionName)&& !"proposal".equals(controllerName)&& !"proposalApplication".equals(controllerName)&& !"attachments".equals(controllerName))
         		  {
         		    redirect uri:'/login'
         			  return false;

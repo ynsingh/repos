@@ -64,6 +64,7 @@
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="amount"><g:message code="fundTransfer.amounttransferred.label" />:</label>
+                                    <label for="amount" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: fundTransferInstance, field: 'amount', 'errors')}">
                                     <g:textField id="amount" name="amount" value="${fieldValue(bean: fundTransferInstance, field: 'amount')}" />

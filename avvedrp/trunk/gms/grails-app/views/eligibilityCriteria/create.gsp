@@ -23,7 +23,8 @@
 	                        
 	                            <tr class="prop">
 	                                <td valign="top" class="name">
-	                                    <label for="eligibilityCriteria"><g:message code="default.eligibilityCriteria.eligibilityCriteria.label"/></label>
+	                                    <label for="eligibilityCriteria"><g:message code="default.eligibilityCriteria.eligibilityCriteria.label"/>:</label>
+	                                    <label for="eligibilityCriteria" style="color:red;font-weight:bold"> * </label>
 	                                </td>
 	                                <td valign="top" class="value ${hasErrors(bean: eligibilityCriteriaInstance, field: 'eligibilityCriteria', 'errors')}">
 	                                    <g:textField name="eligibilityCriteria" value="${eligibilityCriteriaInstance?.eligibilityCriteria}" />
@@ -32,7 +33,7 @@
 	                        
 	                            <tr class="prop">
 	                                <td valign="top" class="name">
-	                                    <label for="mandatoryYesNo"><g:message code="default.Mandatory.label" /></label>
+	                                    <label for="mandatoryYesNo"><g:message code="default.Mandatory.label" />:</label>
 	                                </td>
 	                                <td valign="top" class="value ${hasErrors(bean: eligibilityCriteriaInstance, field: 'mandatoryYesNo', 'errors')}">
 	                                    <g:select name="mandatoryYesNo" from="${['Y', 'N']}"  value="${fieldValue(bean: eligibilityCriteriaInstance, field: 'mandatoryYesNo')}"/>
@@ -42,7 +43,7 @@
 	                        
 	                            <tr class="prop">
 	                                <td valign="top" class="name">
-	                                    <label for="remarks"><g:message code="default.Remarks.label" /></label>
+	                                    <label for="remarks"><g:message code="default.Remarks.label" />:</label>
 	                                </td>
 	                                <td valign="top" class="value ${hasErrors(bean: eligibilityCriteriaInstance, field: 'remarks', 'errors')}">
 	                                <g:textArea name="remarks" value="${eligibilityCriteriaInstance?.remarks}" rows="3" cols="30"/>

@@ -79,7 +79,9 @@ class FullProposalController {
    println"preProposalInstance....."+preProposalInstance
    println"preProposalInstance.createdBy"+fullProposalInstance.createdBy
     def preProposalService = new PreProposalService()
-    //GrailsHttpSession gh=getSession()
+    	 GrailsHttpSession gh=getSession()
+    	def preProposalInstanceList = FullProposal.findAll("from FullProposal F where F.preProposal="+preProposalInstance.id+" and F.preProposal.person.id="+gh.getValue("UserId"))
+   
     
     //println"notificationInstanceList.notificationCode"+notificationInstanceList.notificationCode
      
@@ -143,7 +145,7 @@ class FullProposalController {
     }else
     {
     	flash.message = "${message(code: 'default.SelectFile.label')}"
-    	render(view:'create',model:['fullProposalInstance': fullProposalInstance,'preProposalInstance':preProposalInstance])
+    	render(view:'create',model:['fullProposalInstance': fullProposalInstance,'preProposalInstance':preProposalInstance,'preProposalInstanceList':preProposalInstanceList])
     }
     }
 
@@ -306,7 +308,7 @@ class FullProposalController {
  			
  			fullProposalDetailInstance.save()
  			
-         flash.message = "${message(code: 'default.created.label')}"
+         flash.message = "${message(code: 'default.updated.label')}"
          	
          redirect(action:create,id:fullProposalInstance.preProposal.id)
  		}

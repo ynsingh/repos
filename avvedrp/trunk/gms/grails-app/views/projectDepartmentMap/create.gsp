@@ -7,7 +7,7 @@
         <title><g:message code="default.projectsDepartmentMap.AddProjectsToDepartment.head"/></title>         
     </head>
     <body>
-    <g:subMenuProjects/>
+    <g:subMenuList/>
     <div class="wrapper">
         <div class="body">
             <h1><g:message code="default.projectsDepartmentMap.AddProjectsToDepartment.head"/></h1>
@@ -28,7 +28,8 @@
                                     <label for="projects"><g:message code="default.Projects.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:projectDepartmentMapInstance,field:'projects','errors')}">
-                                   <strong>${projectsInstance.code}</strong>
+                                   <strong>${projectsInstance?.code}</strong>
+                                   <input type="hidden" name="id" value="${projectsInstance?.id}">
                                 </td>
                                 <td></td>
                                 <td></td>

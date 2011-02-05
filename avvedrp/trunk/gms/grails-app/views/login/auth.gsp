@@ -282,6 +282,18 @@ background-color: #d5e5ed;
       </td>
       <td>
   	 	 <g:link style="font-size:95%;font-weight: normal;text-decoration:none;color: #7D053F;" onmouseover="this.style.textDecoration ='underline';" onmouseout="this.style.textDecoration='none';" controller="user" action="forgotPassword"><g:message code="default.Forgotyourpassword.head"/> </g:link>
+  	 	 
+      </td>
+      
+      </tr>
+      <tr>
+      <td colspan="2">
+      &nbsp;
+      </td>
+      </tr>
+      <tr>
+      <td colspan="2">
+      <g:link style="font-size:95%;font-weight: normal;text-decoration:none;color: #7D053F;" onmouseover="this.style.textDecoration ='underline';" onmouseout="this.style.textDecoration='none';" controller="proposal" action="uploadProposalApplication"><g:message code="default.UploadProposal.head"/> </g:link>
       </td>
       </tr>
     <tr>

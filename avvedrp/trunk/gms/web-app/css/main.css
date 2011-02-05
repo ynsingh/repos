@@ -366,11 +366,11 @@ width: 100%;
 }
 
 div.errors {
-    background: #fff3f3;
-    border: 1px solid red;
+    background: #fff3f3 url(../images/skin/exclamation.png) 8px 50% no-repeat;
+    //border: 1px solid #fff3f3;
     color: #cc0000;
     margin: 10px 0 5px 0;
-    padding: 5px 0 5px 0;
+    padding: 5px 5px 5px 30px;
 }
 div.errors ul {
     list-style: none;
@@ -574,6 +574,24 @@ background: #fae7cf;
     text-align: left;
     
 }
+.prop .prname {
+    text-align: left;
+    vertical-align: middle;
+    text-align:right;
+    BORDER-BOTTOM: #E6F3F7 1px solid;
+    white-space: nowrap;
+}
+.prop .prvalue {
+    text-align: left;
+    BORDER-BOTTOM: #E6F3F7 1px solid;
+    
+}
+.prop .nameline {
+    text-align: left;
+    BORDER-BOTTOM: #E6F3F7 1px solid;
+    white-space: nowrap;
+    
+}
 
 /* ACTION BUTTONS */
 
@@ -659,6 +677,19 @@ background-color: #FFFFFF
   padding:0;
 
 }	
+.horizontalLine{
+	width:100%; 
+	border:#A9D0F5 2px solid;
+	background-color:#A9D0F5;
+	text-align:left;
+	font: 12px verdana;
+    font-weight: bold;
+    margin: .8em 0 .3em 0;
+}
+.mandatory{
+	color:red;
+	font-weight:bold;
+}
 	
 /* Inner Banner end */
 /* Login Bar Start */

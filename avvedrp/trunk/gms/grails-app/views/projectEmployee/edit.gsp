@@ -27,7 +27,8 @@
 	                        <tbody>
 	                        	<tr class="prop">
 	                                <td valign="top" class="name">
-	                                  <label for="empNo"><g:message code="default.projectEmployees.EmployeeNumber.label"/></label>
+	                                  <label for="empNo"><g:message code="default.projectEmployees.EmployeeNumber.label"/></label>:
+	                                  <label for="EmployeeNumber" style="color:red;font-weight:bold"> * </label></td>
 	                                </td>
 	                                <td valign="top" class="value ${hasErrors(bean: projectEmployeeInstance, field: 'empNo', 'errors')}">
 	                                    <g:textField name="empNo" value="${projectEmployeeInstance?.empNo}" />
@@ -36,7 +37,8 @@
 	                        
 	                            <tr class="prop">
 	                                <td valign="top" class="name">
-	                                  <label for="empName"><g:message code="default.EmployeeName.label" /></label>
+	                                  <label for="empName"><g:message code="default.EmployeeName.label" />:</label>
+	                                  <label for="empName" style="color:red;font-weight:bold"> * </label></td>
 	                                </td>
 	                                <td valign="top" class="value ${hasErrors(bean: projectEmployeeInstance, field: 'empName', 'errors')}">
 	                                    <g:textField name="empName" value="${projectEmployeeInstance?.empName}" />
@@ -45,7 +47,7 @@
 	                        
 	                          	<tr class="prop">
 	                                <td valign="top" class="name">
-	                                  <label for="DOB"><g:message code="default.projectEmployees.DateOfBirth.label"/></label>
+	                                  <label for="DOB"><g:message code="default.projectEmployees.DateOfBirth.label"/></label>:
 	                                </td>
 	                                <td valign="top" class="value ${hasErrors(bean: projectEmployeeInstance, field: 'DOB', 'errors')}">
 	                                  <calendar:datePicker name="DOB"  value="${projectEmployeeInstance?.dOB}"  defaultValue="" 
@@ -55,7 +57,8 @@
 	                        
 	                            <tr class="prop">
 	                                <td valign="top" class="name">
-	                                  <label for="employeeDesignation"><g:message code="default.Designation.label"/></label>
+	                                  <label for="employeeDesignation"><g:message code="default.Designation.label"/></label>:
+	                                  <label for="empName" style="color:red;font-weight:bold"> * </label>
 	                                </td>
 	                                <td><g:select name='employeeDesignation.id' optionKey="id" optionValue="Designation" 
 	                                		from="${employeeDesignationInstanceList}" value="${projectEmployeeInstance?.employeeDesignation?.id}">
@@ -64,7 +67,7 @@
 	                        
 	                            <tr class="prop">
 	                                <td valign="top" class="name">
-	                                  <label for="joiningDate"><g:message code="default.JoiningDate.label"/></label>
+	                                  <label for="joiningDate"><g:message code="default.JoiningDate.label"/></label>:
 	                                </td>
 	                                <td valign="top" class="value ${hasErrors(bean: projectEmployeeInstance, field: 'joiningDate', 'errors')}">
 	                                    <calendar:datePicker name="joiningDate" value="${projectEmployeeInstance?.joiningDate}" defaultValue="" 
@@ -74,7 +77,7 @@
 	                                                                        
 	                            <tr class="prop">
 	                                <td valign="top" class="name">
-	                                  <label for="relievingDate"><g:message code="default.RelievingDate.label"/></label>
+	                                  <label for="relievingDate"><g:message code="default.RelievingDate.label"/></label>:
 	                                </td>
 	                                <td valign="top" class="value ${hasErrors(bean: projectEmployeeInstance, field: 'relievingDate', 'errors')}">
 	                                    <calendar:datePicker name="relievingDate"  value="${projectEmployeeInstance?.relievingDate}"  defaultValue="" 

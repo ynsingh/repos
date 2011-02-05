@@ -142,6 +142,30 @@ class GrantAllocationSplitService{
 	        }
 	        return accountHeadList
 	 }
+
+	 public List getAccountHeadByNameandCode(def projectId)
+	 {
+		 def accountHeadList=AccountHeads.findAll("from AccountHeads AH where AH.parent.id is NULL and AH.activeYesNo='Y' order by AH.name")
+		 for(int i=0;i<accountHeadList.size();i++ )
+	        {
+			 println"drtfgretr"
+	        	accountHeadList[i].accHeadCode=accountHeadList[i].code+" -"+accountHeadList[i].name
+	        }
+		 println"accountHeadList"+accountHeadList
+	        return accountHeadList
+	 }
+	 
+	 public List getSubAccountHeadByNameandCode(def params)
+	 {
+		 def subAccountHead=AccountHeads.findAll("from AccountHeads AH where AH.activeYesNo='Y' and AH.parent.id="+params.accountHead)
+		 for(int i=0;i<subAccountHead.size();i++ )
+	        {
+			 println"drtfgretr"
+			 subAccountHead[i].accHeadCode=subAccountHead[i].code+" -"+subAccountHead[i].name
+	        }
+		 println"subAccountHead"+subAccountHead
+	        return subAccountHead
+	 }
 public List getAccountHeadOfProject(def projectId)
 {
 	

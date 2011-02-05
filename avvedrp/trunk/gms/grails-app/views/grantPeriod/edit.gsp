@@ -26,7 +26,9 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="name"><g:message code="default.Name.label"/></label>
+                                    <label for="name"><g:message code="default.Name.label"/>:</label>
+                                    <label for="name" style="color:red;font-weight:bold"> * </label>
+                                    
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:grantPeriodInstance,field:'name','errors')}">
                                     <input type="text" id="name" name="name" value="${fieldValue(bean:grantPeriodInstance,field:'name')}"/>
@@ -35,7 +37,9 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="startDate"><g:message code="default.StartDate.label"/></label>
+                                    <label for="startDate"><g:message code="default.StartDate.label"/>:</label>
+                                    <label for="startDate" style="color:red;font-weight:bold"> * </label>
+                                    
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:grantPeriodInstance,field:'startDate','errors')}">
                                 <calendar:datePicker id="startDate" name="startDate" defaultValue="${new Date()}" value="${grantPeriodInstance?.startDate}" dateFormat= "%d/%m/%Y"/>
@@ -44,7 +48,8 @@
                             
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="endDate"><g:message code="default.EndDate.label"/></label>
+                                    <label for="endDate"><g:message code="default.EndDate.label"/>:</label>
+                                    <label for="endDate" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:grantPeriodInstance,field:'endDate','errors')}">
                                     <calendar:datePicker id="endDate" name="endDate" value="${grantPeriodInstance?.endDate}" defaultValue="${new Date()}"  dateFormat= "%d/%m/%Y"/>
@@ -62,7 +67,8 @@
                             
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="defaultYesNo"><g:message code="default.Default.label"/></label>
+                                    <label for="defaultYesNo"><g:message code="default.Default.label"/>:</label>
+                                    
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:grantPeriodInstance,field:'defaultYesNo','errors')}">
                                          <g:select name="defaultYesNo" from="${['Y', 'N']}"  value="${fieldValue(bean:grantPeriodInstance,field:'defaultYesNo')}" />

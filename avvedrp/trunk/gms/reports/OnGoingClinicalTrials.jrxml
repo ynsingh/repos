@@ -1068,9 +1068,9 @@ Received]]></text>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="542"
+						x="541"
 						y="5"
-						width="56"
+						width="60"
 						height="22"
 						forecolor="#000000"
 						backcolor="#FFFFFF"

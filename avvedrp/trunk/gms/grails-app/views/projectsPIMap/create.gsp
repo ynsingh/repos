@@ -7,7 +7,7 @@
         <title><g:message code="default.projectsPIMap.AddProjectsToPI.head"/></title>         
     </head>
     <body>
-    <g:subMenuProjects/>
+    <g:subMenuList/>
     <div class="wrapper">
           <div class="body">
             <h1><g:message code="default.projectsPIMap.AddProjectsToPI.head"/></h1>
@@ -39,6 +39,7 @@
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:projectsPIMapInstance,field:'projects','errors')}">
                                     <strong>  ${projectsInstance.code} </strong> 
+                                    <input type="hidden" name="id" value="${projectsInstance.id}">
                                 </td>
                             </tr> 
                         
@@ -50,6 +51,7 @@
                                     <g:select id="role" name="role"  from="${['PI','CO-PI']}" value="${projectsPIMapInstance?.role}" ></g:select>
                                 </td>
                             </tr> 
+                           
                         </tbody>
                     </table>
                 </div>
@@ -77,8 +79,10 @@
                    	        <th><g:message code="default.Projects.label"/></th>
                    	    
                    	        <g:sortableColumn property="role" title="${message(code: 'default.Role.label')}"/>
-
+                   	        
+                             
                         	<th><g:message code="default.Edit.label"/></th>
+                        	
                         </tr>
                     </thead>
                     <tbody>
@@ -91,9 +95,14 @@
                             <td>${fieldValue(bean:projectsPIMapInstance, field:'projects.code')}</td>
                         
                             <td>${fieldValue(bean:projectsPIMapInstance, field:'role')}</td>
-
+                            
+                             <g:if test="${projectsPIMapInstance.role == 'CO-PI'}" >
                             <td><g:link action="edit" id="${projectsPIMapInstance.id}"><g:message code="default.Edit.label"/></g:link></td>
-                        
+                          
+                          </g:if>
+                          <g:else>
+                          <td></td>
+                          </g:else>
                         </tr>
                     </g:each>
                     </tbody>

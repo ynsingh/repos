@@ -26,34 +26,38 @@
 	        			<table>
 	        				<tbody>
   								<tr>
-			    					<td><label><g:message code="default.EmployeeName.label" /></label></td>
+			    					<td><label><g:message code="default.EmployeeName.label" /></label>:</td>
 			    					<td>${fieldValue(bean: projectEmployeeInstance,field: "empName")}
 			    					    | ${fieldValue(bean: projectEmployeeInstance,field: "empNo")}
 								     </td>
 			    					 <input type="hidden" name="projectEmployee.id" id="projectEmployee.id" 
 			    						value="${projectEmployeeInstance.id}"/>
-			    					<td><label><g:message code="default.Designation.label" /></label></td>
+			    					<td><label><g:message code="default.Designation.label" /></label>:</td>
 									<td>${projectEmployeeInstance.employeeDesignation.Designation}</td>
 			 		    		</tr>
  		   						<tr>
 			  		    			<td><label><g:message code="default.projectEmployeeExperience.OrganizationName.label"/>
-			  		    				</label></td>
+			  		    				</label>:
+			  		    				<label for="OrganizationName" style="color:red;font-weight:bold"> * </label>
+			  		    				</td>
 			    		 			<td valign="top" class="value ${hasErrors(bean: projectEmployeeExperienceInstance,
 					 					field: 'organizationName', 'errors')}">
 			                         	<g:textField name="organizationName" 
 			                         	value="${projectEmployeeExperienceInstance?.organizationName}" />
 			                        </td>
-			    					<td><label><g:message code="default.JoiningDate.label" /></label></td>
+			    					<td><label><g:message code="default.JoiningDate.label" /></label>:</td>
 			    					<td><calendar:datePicker name="joiningDate" defaultValue="${new Date()}" 
 			    						dateFormat="%d/%m/%Y" />
 		    						</td>
 			  					</tr>
 			  					<tr>
-			    					<td><label><g:message code="default.RelievingDate.label" /></label></td>
+			    					<td><label><g:message code="default.RelievingDate.label" /></label>:</td>
 			    					<td><calendar:datePicker name="relievingDate" defaultValue="${new Date()}" 
 			    						dateFormat="%d/%m/%Y"/>
 		    						</td>
-			   						<td><label><g:message code="default.Designation.label" /></label></td>
+			   						<td><label><g:message code="default.Designation.label" /></label>:
+			   						<label for="Designation" style="color:red;font-weight:bold"> * </label>
+			   						</td>
 			      					<td><g:textField style='width: 180px; ' name="designation" 
 			      						value="${projectEmployeeExperienceInstance?.designation}" /></td>
 			  					</tr>

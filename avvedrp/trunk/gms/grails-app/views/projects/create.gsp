@@ -7,10 +7,7 @@
         <script src="${createLinkTo(dir:'js',file:'vk_popup.js?vk_layout=AM Armenian Eastern')}"> </script>           
     </head>
     <body>
-    	<g:if test="${projectsInstance.id}">
-    		<g:subMenuProjects/>
-    	</g:if>
-		<div class="wrapper">   
+    	<div class="wrapper">   
         <div class="body">
         
             <h1><g:message code="default.projects.create.head"/></h1>
@@ -29,6 +26,7 @@
                               <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="name"><g:message code="default.Name.label"/>:</label>
+                                    <label for="name" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'name','errors')}">
                                     <input type="text" size="45" id="name" name="name" onfocus="PopupVirtualKeyboard.attachInput(this)" value="${fieldValue(bean:projectsInstance,field:'name')}"/>
@@ -38,6 +36,8 @@
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="code"><g:message code="default.Code.label"/>:</label>
+                                    <label for="code" style="color:red;font-weight:bold"> * </label>
+                                    
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'code','errors')}">
                                     <input type="text"  id="code" name="code" onfocus="PopupVirtualKeyboard.attachInput(this)" value="${fieldValue(bean:projectsInstance,field:'code')}"/>
@@ -48,6 +48,7 @@
                         	<tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="code"><g:message code="default.ProjectType.label"/>:</label>
+                                    <label for="projectyype" style="color:red;font-weight:bold"> * </label>  
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'projectType','errors')}">
                                     <g:select optionKey="id" optionValue="type" id="projectType" from="${ProjectType.findAll('from ProjectType P where P.activeYesNo=\'Y\' ')}"  name="projectType.id" value="${projectsInstance?.projectType?.id}" noSelection="['null':'select']" ></g:select>
@@ -65,9 +66,10 @@
                          <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="projectStartDate"><g:message code="default.StartDate.label"/>:</label>
+                                    <label for="projectStartDate" style="color:red;font-weight:bold"> * </label> 
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'projectStartDate','errors')}">
-                                <calendar:datePicker name="projectStartDate" defaultValue="${new Date()}" value="${projectsInstance?.projectStartDate}" dateFormat= "%d/%m/%Y"/>
+                                <calendar:datePicker id="projectStartDate" name="projectStartDate" defaultValue="${new Date()}" value="${projectsInstance?.projectStartDate}" dateFormat= "%d/%m/%Y"/>
                                     </td>
                             </tr> 
                             
@@ -75,9 +77,10 @@
                              <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="projectEndDate"><g:message code="default.EndDate.label"/>:</label>
+                                    <label for="projectEndDate" style="color:red;font-weight:bold"> * </label> 
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'projectEndDate','errors')}">
-                                    <calendar:datePicker name="projectEndDate" value="${projectsInstance?.projectEndDate}" defaultValue="${new Date()}"  dateFormat= "%d/%m/%Y"/>
+                                    <calendar:datePicker id="projectEndDate" name="projectEndDate" value="${projectsInstance?.projectEndDate}" defaultValue="${new Date()}"  dateFormat= "%d/%m/%Y"/>
                                 </td>
                             </tr>
                          

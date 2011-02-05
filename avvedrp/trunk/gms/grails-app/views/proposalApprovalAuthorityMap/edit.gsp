@@ -6,13 +6,13 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="layout" content="main" />
         <g:set var="entityName" value="${message(code: 'proposalApprovalAuthorityMap.label', default: 'ProposalApprovalAuthorityMap')}" />
-        <title><g:message code="default.edit.label" args="[entityName]" /></title>
+        <title><g:message code="default.EditAssignProposalToApprovalAuthority.label" args="[entityName]" /></title>
     </head>
     <body>
      <div class="wrapper">
        
         <div class="body">
-            <h1><g:message code="default.ProposalApprovalAuthorityMapEdit.label" args="[entityName]" /></h1>
+            <h1><g:message code="default.EditAssignProposalToApprovalAuthority.label" args="[entityName]" /></h1>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
@@ -70,13 +70,14 @@
                                     <g:select name="approvalAuthority.id" from="${approvalAuthorityInstance}" optionKey="id" optionValue = "name" value="${proposalApprovalAuthorityMapInstance?.approvalAuthority?.id}"  />
                                 </td>
                             
-                                <td valign="top" class="name">
-                                  <label for="activeYesNo"><g:message code="proposalApprovalAuthorityMap.activeYesNo.label" default="Active Yes No" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: proposalApprovalAuthorityMapInstance, field: 'activeYesNo', 'errors')}">
-                                     <g:select name="activeYesNo" from="${['Y', 'N']}"  value="${fieldValue(proposalApprovalAuthorityMapInstance,field:'activeYesNo')}" />
-                                </td>
-                            </tr>
+                           
+                                 <td valign="top" class="name">
+			                     <label for="activeYesNo"><g:message code="default.Active.label" /></label>
+			                       </td>
+		                               <td valign="top" class="value ${hasErrors(bean:proposalApprovalAuthorityMapInstance,field:'activeYesNo','errors')}">
+		                              <g:select name="activeYesNo" from="${['Y', 'N']}"  value="${fieldValue(bean:proposalApprovalAuthorityMapInstance,field:'activeYesNo')}" />
+                                   </td>  
+                           </tr>
                             
                             <tr class="prop">
                                 <td valign="top" class="name">
@@ -92,7 +93,7 @@
                     </table>
                 </div>
                 <div class="buttons">
-                    <span class="button"><g:actionSubmit class="save" action="update" value="${message(code: 'default.button.update.label', default: 'Update')}" /></span>
+                    <span class="button"><g:actionSubmit class="save" action="update"  onClick="return validateApprovalAuthorityMap()"  value="${message(code: 'default.Update.button')}" /></span>
                    
             </g:form>
         </div>

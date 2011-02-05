@@ -10,6 +10,7 @@
     	<div class="wrapper">
         	<g:form action="showReport" method="post" name="frmGrantTrackingReport" >
 	    		<div class="body">
+	    		<h1><g:message code="default.ProjectStatusReports.label"/></h1>
 	    				<div class="dialog">
     						<table >
 					    		<tbody>

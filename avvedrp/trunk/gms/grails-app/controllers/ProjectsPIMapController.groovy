@@ -17,12 +17,12 @@ class ProjectsPIMapController {
 	        {	        	
 	        	projectsPIMapInstance = investigatorService.deletePIMap(projectsPIMapInstance)
 	        	flash.message = "${message(code: 'default.deleted.label')}"
-	            redirect(action:create)
+	            redirect(action:create,params:[id:params.projectId])
 	        }
 	        else 
 	        {
 	            flash.message = "${message(code: 'default.notfond.label')}"
-	            redirect(action:create)
+	            redirect(action:create,params:[id:params.projectId])
 	        }
 	    }
 
@@ -51,8 +51,19 @@ class ProjectsPIMapController {
 
     def update = {
 		def projectsPIMapInstance = investigatorService.getProjectsPIMapById(params.id)
-        def pIMapInstance = new ProjectsPIMap()
+       
         GrailsHttpSession gh=getSession()
+        def pIMapInstance = projectsService.checkPIofProject(params.projectId)
+        println"pIMapInstance.investigator.id "+pIMapInstance.investigator.id 
+        println"projectsPIMapInstance.investigator.id "+projectsPIMapInstance.investigator.id
+        println"params.investigator"+params.investigator.id
+        if(pIMapInstance.investigator.id == new Integer(params.investigator.id))
+        {
+        	redirect(action:create,model:[projectsPIMapInstance:projectsPIMapInstance],params:[id:params.projectId]) 
+        	flash.message = pIMapInstance.investigator.name + "${message(code: 'default.alreadyAssignedPI.label')}"
+        }
+        else
+        {
         if(projectsPIMapInstance) 
         {
             projectsPIMapInstance.properties = params
@@ -63,16 +74,18 @@ class ProjectsPIMapController {
             			{
             				projectsService.checkFordeleteProjectAccessPermissionOfPiMap(projectsPIMapInstance.projects.id,projectsPIMapInstance.investigator.id)
             			}
+
                 flash.message = "${message(code: 'default.updated.label')}"
-                redirect(action:create,id:projectsPIMapInstance.id)
+                redirect(action:create,params:[id:params.projectId])
             }
             else {
-                render(view:'edit',model:[projectsPIMapInstance:projectsPIMapInstance])
+                render(view:'edit',model:[projectsPIMapInstance:projectsPIMapInstance],params:[id:params.projectId])
             }
         }
         else {
             flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:edit,id:params.id)
+        }
         }
     }
 
@@ -86,12 +99,12 @@ class ProjectsPIMapController {
         gh.putValue("Help","Assign_Projects_to_PI.htm")
         def dataSecurityService = new DataSecurityService()
 		def projectsService = new ProjectsService()
-		def projectsInstance = projectsService.getProjectById(gh.getValue("ProjectId"))
+		def projectsInstance = projectsService.getProjectById(new Integer(params.id))
 		def investigatorService = new InvestigatorService()
         def investigatorList=[]
     	investigatorList=investigatorService.getInvestigatorsWithParty(gh.getValue("PartyID"))
     	def projectsPIMapInstanceList=dataSecurityService.getProjectsPIMapForLoginUser(projectsInstance.id);
-	    return ['projectsPIMapInstance':projectsPIMapInstance,
+		return ['projectsPIMapInstance':projectsPIMapInstance,
                 'projectsPIMapInstanceList': projectsPIMapInstanceList,
                 'projectsInstance':projectsInstance,'investigatorList':investigatorList]
     }
@@ -101,8 +114,9 @@ class ProjectsPIMapController {
         GrailsHttpSession gh=getSession() 
         def investigatorInstance = investigatorService.getInvestigatorById(params.investigator.id)
         //def investigatorInstance = Investigator.get(new Integer(params.investigator.id))
-        def PIprojectsInstance = projectsService.getProjectById(gh.getValue("ProjectId"))
-        def pIMapInstance = projectsService.checkPIofProject(gh.getValue("ProjectId"))
+        def PIprojectsInstance = projectsService.getProjectById(new Integer(params.id))
+       	println"PIprojectsInstance----------->"+PIprojectsInstance
+        def pIMapInstance = projectsService.checkPIofProject(params.id)
         projectsPIMapInstance.investigator = investigatorInstance
         projectsPIMapInstance.projects = PIprojectsInstance
         projectsPIMapInstance.role = params.role
@@ -120,16 +134,16 @@ class ProjectsPIMapController {
 	            {
 	            	projectsInstance = projectsService.saveProjectAccessPermissionForPiMap(gh.getValue("ProjectId"),projectsPIMapInstance.investigator.id)
 		            flash.message = "${message(code: 'default.created.label')}"
-		            redirect(action:create,model:[projectsPIMapInstance:projectsPIMapInstance,projectsInstance:PIprojectsInstance])
+		            redirect(action:create,model:[projectsPIMapInstance:projectsPIMapInstance,projectsInstance:PIprojectsInstance],params:[id:PIprojectsInstance.id])
 		        }
 		        else
 		        {
-		            render(view:'create',model:[projectsPIMapInstance:projectsPIMapInstance,projectsInstance:PIprojectsInstance])
+		            render(view:'create',model:[projectsPIMapInstance:projectsPIMapInstance,projectsInstance:PIprojectsInstance],params:[id:PIprojectsInstance.id])
 		        }
 	        }
 	        else
 	        {
-	        	redirect(action:create,model:[projectsPIMapInstance:projectsPIMapInstance,projectsInstance:PIprojectsInstance]) 
+	        	redirect(action:create,model:[projectsPIMapInstance:projectsPIMapInstance,projectsInstance:PIprojectsInstance],params:[id:PIprojectsInstance.id]) 
 	        	flash.message = pIMapInstance.investigator.name + "${message(code: 'default.alreadyAssignedPI.label')}"
 	        }
         }
@@ -140,17 +154,17 @@ class ProjectsPIMapController {
             {
 	        	projectsInstance = projectsService.saveProjectAccessPermissionForPiMap(gh.getValue("ProjectId"),projectsPIMapInstance.investigator.id)
 	            flash.message = "${message(code: 'default.created.label')}"
-	            redirect(action:create,model:[projectsPIMapInstance:projectsPIMapInstance,projectsInstance:PIprojectsInstance])
+	            redirect(action:create,model:[projectsPIMapInstance:projectsPIMapInstance,projectsInstance:PIprojectsInstance],params:[id:PIprojectsInstance.id])
 	        }
 	        else
 	        {
-	            render(view:'create',model:[projectsPIMapInstance:projectsPIMapInstance,projectsInstance:PIprojectsInstance])
+	            render(view:'create',model:[projectsPIMapInstance:projectsPIMapInstance,projectsInstance:PIprojectsInstance],params:[id:PIprojectsInstance.id])
 	        }
         }
-        }
+       }
         else
         {
-        	redirect(action:create,model:[projectsPIMapInstance:projectsPIMapInstance]) 
+        	redirect(action:create,model:[projectsPIMapInstance:projectsPIMapInstance],params:[id:PIprojectsInstance.id]) 
         	flash.message = investigatorInstance.name + "${message(code: 'default.alreadyAssignedPI.label')}"
         }
     }

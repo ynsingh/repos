@@ -38,11 +38,84 @@ class GrantExpenseController extends GmsController {
 
     def delete = {
 		def grantExpenseService = new GrantExpenseService()
-		 def grantExpenseInstance =  grantExpenseService.getGrantExpenseById(new Integer(params.id))
+		def grantExpenseInstance =  grantExpenseService.getGrantExpenseById(new Integer(params.id))
+		def utilizationInstance = Utilization.findAll("from Utilization U where U.projects="+grantExpenseInstance.projects.id)
+ 				 
+ 			   println"utilizationInstance"+utilizationInstance
+ 			   if(utilizationInstance)
+ 			   {
+ 				   println"utilizationInstance..."
+ 				   Date temp;
+ 				   Date attr;
+ 				   for(int i=0;i<utilizationInstance.size(); i++)
+ 				   {
+ 					   println"grantExpenseInstance.dateOfExpense"+params.dateOfExpense_value
+ 					   
+ 					   println"utilizationInstance[i].startDate"+utilizationInstance[i].startDate
+ 					   println"utilizationInstance[i].endDate"+utilizationInstance[i].endDate
+ 					   temp = utilizationInstance[i].startDate
+ 					   for (int j=1;j<utilizationInstance.size();j++ )
+ 					   {
+ 					   if(utilizationInstance[i].startDate > utilizationInstance[j].startDate)
+ 					   {
+ 						   temp = utilizationInstance[j].startDate
+ 					   }
+ 					   }
+ 				   }
+ 				   
+ 				   for(int j=0;j<utilizationInstance.size(); j++)
+ 				   {
+ 					   println"grantExpenseInstance.dateOfExpense"+params.dateOfExpense_value
+ 					   
+ 					   println"utilizationInstance[j].startDate"+utilizationInstance[j].startDate
+ 					   println"utilizationInstance[j].endDate"+utilizationInstance[j].endDate
+ 					   attr = utilizationInstance[j].endDate
+ 					   for (int k=1;k<utilizationInstance.size();k++ )
+ 					   {
+ 					   if(utilizationInstance[j].endDate < utilizationInstance[k].endDate)
+ 					   {
+ 						   attr = utilizationInstance[k].endDate
+ 					   }
+ 					   }
+ 				   }
+ 					   println"temp"+temp
+ 					   println"attr"+attr
+ 					   SimpleDateFormat sdfDestination = new SimpleDateFormat("dd/MM/yyyy");
+ 					     
+ 				          //parse the date into another format
+ 				          String strDate = sdfDestination.format(temp);
+ 				          println"dateOfExpense"+params.dateOfExpense_value
+ 				          println"strDate"+strDate
+ 				          String edDate = sdfDestination.format(attr);
+ 				          println"edDate"+edDate
+ 				          DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+ 				          Date strtingDate = df.parse(strDate)
+ 				          println"strtingDate"+strtingDate
+ 				          Date endingDate = df.parse(edDate)
+ 				          println"endingDate"+endingDate
+ 				          Date expenseDate = df.parse(params.dateOfExpense_value)
+ 				          println"expenseDate"+expenseDate
+ 				          
+ 				          
+ 				          println"start date diff" + (expenseDate > strtingDate)
+ 				           println"end date diff" + (endingDate > expenseDate)
+ 				        	  
+ 				        
+ 				   if(( expenseDate > strtingDate) && (endingDate > expenseDate) )
+ 				   {
+ 						  flash.message="${message(code: 'default.expenseUtilizationCertificate.label')}"
+ 							 redirect(action:edit,id:params.id)
+ 				   }
+ 				          
+ 				
+    		else
+    		{
 		Integer grantAllocationId = grantExpenseService.deleteGrantExpense(new Integer(params.id))
 		
-		if(grantAllocationId != null){
-			if(grantAllocationId > 0){
+		if(grantAllocationId != null)
+		{
+			if(grantAllocationId > 0)
+			{
 				flash.message = "${message(code: 'default.deleted.label')}"
 				redirect(action:create,id:grantExpenseInstance.projects.id)
 			}
@@ -51,8 +124,24 @@ class GrantExpenseController extends GmsController {
 			flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list)
 		}
+    		}
     }
-
+ 			   else
+ 			   {
+ 				  Integer grantAllocationId = grantExpenseService.deleteGrantExpense(new Integer(params.id))
+ 					
+ 					if(grantAllocationId != null){
+ 						if(grantAllocationId > 0){
+ 							flash.message = "${message(code: 'default.deleted.label')}"
+ 							redirect(action:create,id:grantExpenseInstance.projects.id)
+ 						}
+ 					}
+ 					else{
+ 						flash.message = "${message(code: 'default.notfond.label')}"
+ 			            redirect(action:list)
+ 					}
+ 			   }
+    }
     def edit = {
 		def grantExpenseService = new GrantExpenseService()
 		def grantAllocationService = new GrantAllocationService()
@@ -74,7 +163,7 @@ class GrantExpenseController extends GmsController {
         /* Get grant allocation details. */
         Integer projectId = grantExpenseInstance.projects.id
         def projectsInstance = Projects.get(projectId)
-  	     projectsInstance.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(projectsInstance.id,getUserPartyID())
+        projectsInstance.totAllAmount=grantAllocationService.getSumOfAmountAllocatedForProject(projectsInstance.id,getUserPartyID())
 		def accountHeadList=grantAllocationSplitService.getAccountHeadByProject(projectsInstance.id)
 
     	
@@ -164,7 +253,8 @@ class GrantExpenseController extends GmsController {
     		   }
     		   else
     		   {
-    			if(grantExpenseInstance) {
+    			if(grantExpenseInstance) 
+    			{
         	
     		if(grantExpenseInstance.dateOfExpense < grantExpenseInstance.grantAllocation.DateOfAllocation)
     		{
@@ -172,6 +262,80 @@ class GrantExpenseController extends GmsController {
     			grantExpenseInstance=grantExpenseWithOutSave
     			redirect(action:edit,id:params.id)
     		}
+    		else
+ 		   {
+ 			   println"params"+params
+ 			   def utilizationInstance = Utilization.findAll("from Utilization U where U.projects="+grantExpenseInstance.projects.id)
+ 				 
+ 			   println"utilizationInstance"+utilizationInstance
+ 			   if(utilizationInstance)
+ 			   {
+ 				   println"utilizationInstance..."
+ 				   Date temp;
+ 				   Date attr;
+ 				   for(int i=0;i<utilizationInstance.size(); i++)
+ 				   {
+ 					   println"grantExpenseInstance.dateOfExpense"+params.dateOfExpense_value
+ 					   
+ 					   println"utilizationInstance[i].startDate"+utilizationInstance[i].startDate
+ 					   println"utilizationInstance[i].endDate"+utilizationInstance[i].endDate
+ 					   temp = utilizationInstance[i].startDate
+ 					   for (int j=1;j<utilizationInstance.size();j++ )
+ 					   {
+ 					   if(utilizationInstance[i].startDate > utilizationInstance[j].startDate)
+ 					   {
+ 						   temp = utilizationInstance[j].startDate
+ 					   }
+ 					   }
+ 				   }
+ 				   
+ 				   for(int j=0;j<utilizationInstance.size(); j++)
+ 				   {
+ 					   println"grantExpenseInstance.dateOfExpense"+params.dateOfExpense_value
+ 					   
+ 					   println"utilizationInstance[j].startDate"+utilizationInstance[j].startDate
+ 					   println"utilizationInstance[j].endDate"+utilizationInstance[j].endDate
+ 					   attr = utilizationInstance[j].endDate
+ 					   for (int k=1;k<utilizationInstance.size();k++ )
+ 					   {
+ 					   if(utilizationInstance[j].endDate < utilizationInstance[k].endDate)
+ 					   {
+ 						   attr = utilizationInstance[k].endDate
+ 					   }
+ 					   }
+ 				   }
+ 					   println"temp"+temp
+ 					   println"attr"+attr
+ 					   SimpleDateFormat sdfDestination = new SimpleDateFormat("dd/MM/yyyy");
+ 					     
+ 				          //parse the date into another format
+ 				          String strDate = sdfDestination.format(temp);
+ 				          println"dateOfExpense"+params.dateOfExpense_value
+ 				          println"strDate"+strDate
+ 				          String edDate = sdfDestination.format(attr);
+ 				          println"edDate"+edDate
+ 				          DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+ 				          Date strtingDate = df.parse(strDate)
+ 				          println"strtingDate"+strtingDate
+ 				          Date endingDate = df.parse(edDate)
+ 				          println"endingDate"+endingDate
+ 				          Date expenseDate = df.parse(params.dateOfExpense_value)
+ 				          println"expenseDate"+expenseDate
+ 				          
+ 				          
+ 				          println"start date diff" + (expenseDate > strtingDate)
+ 				           println"end date diff" + (endingDate > expenseDate)
+ 				        	  
+ 				        
+ 				   if(( expenseDate > strtingDate) && (endingDate > expenseDate) )
+ 				   {
+ 					   
+ 					
+ 						  flash.message="${message(code: 'default.expenseUtilizationCertificate.label')}"
+ 							 redirect(action:edit,id:params.id)
+ 				   }
+ 				          
+ 				
     		else
     		{
     			grantExpenseInstance = grantExpenseService.updateGrantExpense(params)
@@ -187,6 +351,22 @@ class GrantExpenseController extends GmsController {
             	}
     		}
         }
+ 			  else
+ 	    		{
+ 	    			grantExpenseInstance = grantExpenseService.updateGrantExpense(params)
+ 	    			if(grantExpenseInstance.isSaved)
+ 	    			{	
+ 	    				flash.message = "${message(code: 'default.updated.label')}"
+ 	    				redirect(action:create,id:grantExpenseInstance.projects.id)
+ 	    			}
+ 	    		
+ 	    			else 
+ 	    			{
+ 	                render(view:'edit',model:[grantExpenseInstance:grantExpenseInstance])
+ 	            	}
+ 	    		}
+ 		   }
+    			}
         	
         else {
         	grantExpenseInstance=grantExpenseWithOutSave
@@ -311,25 +491,28 @@ class GrantExpenseController extends GmsController {
                  'grantExpenseSummaryList':grantExpenseSummaryList,
                  'grantAllocationInstanceList':grantAllocationInstanceList,
                  'currencyFormat':currencyFormatter,'accountHeadList':accountHeadList,
-                 'amount':formatter.format(grantExpenseInstance.expenseAmount),]
+                 'amount':formatter.format(grantExpenseInstance.expenseAmount)]
 		}
     	}
     	else {    			
     			redirect uri:'/invalidAccess.gsp'}
     }
 
-    def save = {
+    def save = 
+    {
+		GrailsHttpSession gh=getSession()
 		def grantExpenseService = new GrantExpenseService()
 		def grantAllocationService = new GrantAllocationService()
 		params.createdBy="admin"
 		params.createdDate = new Date()
         def grantExpenseInstance = new GrantExpense(params)
-		GrailsHttpSession gh=getSession()  
+		  
 		def allocatedAmount=grantAllocationService.getSumOfAmountAllocatedForProject(gh.getValue("ProjectID"),getUserPartyID())
 		println"allocatedAmount"+allocatedAmount
 		println"grantExpenseInstance.expenseAmount"+grantExpenseInstance.expenseAmount
 		def expenseTotal=GrantExpense.executeQuery("select sum(GE.expenseAmount) from GrantExpense GE where GE.projects="+grantExpenseInstance.projects.id)
 		//double expenseGrantTotal
+		
 		double balanceAmnt
 		if(expenseTotal[0])
 		{
@@ -381,7 +564,7 @@ class GrantExpenseController extends GmsController {
 		   }
 		   else
 		   {
-	    	if(grantExpenseInstance.dateOfExpense < grantExpenseInstance.grantAllocation.DateOfAllocation)
+		   if(grantExpenseInstance.dateOfExpense < grantExpenseInstance.grantAllocation.DateOfAllocation)
 	    	{
 	    		flash.message="${message(code: 'default.DateValidationAgainstAllocationdate.label')}"
 	    			 redirect(action:create,id:grantExpenseInstance.projects.id,params:[expenseAmount:grantExpenseInstance.expenseAmount,
@@ -390,8 +573,86 @@ class GrantExpenseController extends GmsController {
 	    			                                     			                   bankName:grantExpenseInstance.bankName,ddBranch:grantExpenseInstance.ddBranch,
 	    			                                     			                   description:grantExpenseInstance.description])
 	    	}
-	    	else
-	    	{
+		 
+		   else
+		   {
+			   println"params"+params
+			   def utilizationInstance = Utilization.findAll("from Utilization U where U.projects="+grantExpenseInstance.projects.id)
+				 
+			   println"utilizationInstance"+utilizationInstance
+			   if(utilizationInstance)
+			   {
+				   println"utilizationInstance..."
+				   Date temp;
+				   Date attr;
+				   for(int i=0;i<utilizationInstance.size(); i++)
+				   {
+					   println"grantExpenseInstance.dateOfExpense"+params.dateOfExpense_value
+					   
+					   println"utilizationInstance[i].startDate"+utilizationInstance[i].startDate
+					   println"utilizationInstance[i].endDate"+utilizationInstance[i].endDate
+					   temp = utilizationInstance[i].startDate
+					   for (int j=1;j<utilizationInstance.size();j++ )
+					   {
+					   if(utilizationInstance[i].startDate > utilizationInstance[j].startDate)
+					   {
+						   temp = utilizationInstance[j].startDate
+					   }
+					   }
+				   }
+				   
+				   for(int j=0;j<utilizationInstance.size(); j++)
+				   {
+					   println"grantExpenseInstance.dateOfExpense"+params.dateOfExpense_value
+					   
+					   println"utilizationInstance[j].startDate"+utilizationInstance[j].startDate
+					   println"utilizationInstance[j].endDate"+utilizationInstance[j].endDate
+					   attr = utilizationInstance[j].endDate
+					   for (int k=1;k<utilizationInstance.size();k++ )
+					   {
+					   if(utilizationInstance[j].endDate < utilizationInstance[k].endDate)
+					   {
+						   attr = utilizationInstance[k].endDate
+					   }
+					   }
+				   }
+					   println"temp"+temp
+					   println"attr"+attr
+					   SimpleDateFormat sdfDestination = new SimpleDateFormat("dd/MM/yyyy");
+					     
+				          //parse the date into another format
+				          String strDate = sdfDestination.format(temp);
+				          println"dateOfExpense"+params.dateOfExpense_value
+				          println"strDate"+strDate
+				          String edDate = sdfDestination.format(attr);
+				          println"edDate"+edDate
+				          DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+				          Date strtingDate = df.parse(strDate)
+				          println"strtingDate"+strtingDate
+				          Date endingDate = df.parse(edDate)
+				          println"endingDate"+endingDate
+				          Date expenseDate = df.parse(params.dateOfExpense_value)
+				          println"expenseDate"+expenseDate
+				          
+				          
+				          println"start date diff" + (expenseDate > strtingDate)
+				           println"end date diff" + (endingDate > expenseDate)
+				        	  
+				        
+				   if(( expenseDate > strtingDate) && (endingDate > expenseDate) )
+				   {
+					   
+					
+						  flash.message="${message(code: 'default.expenseUtilizationCertificate.label')}"
+						  redirect(action:create,id:grantExpenseInstance.projects.id,params:[expenseAmount:grantExpenseInstance.expenseAmount,
+			    			                                     			                   grantAllocationId:grantExpenseInstance.grantAllocation.id,accountHeadId:grantExpenseInstance.grantAllocationSplit.id,
+			    			                                     			                   modeOfPayment:grantExpenseInstance.modeOfPayment,ddNo:grantExpenseInstance.ddNo,
+			    			                                     			                   bankName:grantExpenseInstance.bankName,ddBranch:grantExpenseInstance.ddBranch,
+			    			                                     			                   description:grantExpenseInstance.description])
+				   }
+				          
+				else
+	    	    {
 	    		grantExpenseInstance = grantExpenseService.saveGrantExpense(grantExpenseInstance)
 		
 	    		if(grantExpenseInstance.isSaved)
@@ -405,7 +666,23 @@ class GrantExpenseController extends GmsController {
 	    		}
 	    	}
 		   }
+			   else
+	    	    {
+	    		grantExpenseInstance = grantExpenseService.saveGrantExpense(grantExpenseInstance)
+		
+	    		if(grantExpenseInstance.isSaved)
+	    		{
+	    			flash.message = "${message(code: 'default.created.label')}"
+	    			redirect(action:create,id:grantExpenseInstance.projects.id,params:[grantExpenseId:grantExpenseInstance.id])
+	    		}
+	    		else 
+	    		{
+	    			render(view:'create',model:[grantExpenseInstance:grantExpenseInstance])
+	    		}
+	    	} 
+		   }
 	    }
+    }
     }
     
     def listExpenses = {

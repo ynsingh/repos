@@ -25,7 +25,8 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                  <label for="authority"><g:message code="default.Role.label"/></label>
+                                  <label for="authority"><g:message code="default.Role.label"/>:</label>
+                                  <label for="authority" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: authorityInstance, field: 'authority', 'errors')}">
                                     <input type="text" id="authority" name="authority" style="width:250px"
@@ -33,14 +34,12 @@
                                  <label for="role" style="color:blue;font-weight:bold"> <g:message code="default.Role.NameFormat.label"/></label> 
   						       </td>
                                 <td valign="left">
-                                   
-                                </td>
-                               
-                            </tr>
+                                 </td>
+                             </tr>
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                  <label for="description"><g:message code="default.Description.label"/></label>
+                                  <label for="description"><g:message code="default.Description.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: authorityInstance, field: 'description', 'errors')}">
                                     <g:textField name="description" value="${authorityInstance?.description}" />

@@ -1,8 +1,10 @@
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
+import java.util.*;
 class ProposalService {
 
    def userService
    def notificationsEmailsService
+   def partyService
 	/*
     * Method to list all proposals
     */
@@ -150,7 +152,87 @@ class ProposalService {
   
   }
    
-   
+    /*
+     * method to get proposalApplication by controllerId
+     */
+    public def getProposalApplicationByControllerId(def controllerId)
+    {
+ 	   def proposalApplicationInstance = ProposalApplication.find("from ProposalApplication PA where PA.controllerId='"+controllerId+"'")
+ 	   return proposalApplicationInstance
+    }
+    /*
+     * method to save proposalApplication
+     */
+    public def saveProposal(def params,def grantor)
+    {
+ 	   def proposalInstance = new Proposal()
+ 	   def dateValue = new Date()
+ 	   def grantorInstance=partyService.getPartyById(grantor)
+ 	  String uniqueId = UUID.randomUUID().toString();
+ 	  Random randomNumber = new Random();
+ 	  proposalInstance.code="PR-"+dateValue.getYear()+dateValue.getMonth()+1+dateValue.getDate()+dateValue.getSeconds()+dateValue.getMinutes()+dateValue.getHours()   
+ 	  proposalInstance.grantor=grantorInstance
+ 	  proposalInstance.proposalSubmitteddate=dateValue
+ 	  proposalInstance.lockedYN='Y'
+ 	  if(proposalInstance.save())
+ 	  {
+ 		 def proposalApplicationInstance = new ProposalApplication()
+ 		proposalApplicationInstance.proposal=proposalInstance
+ 		proposalApplicationInstance.applicationSubmitDate=dateValue
+ 		proposalApplicationInstance.controllerId=proposalInstance.code+randomNumber.nextInt()
+ 		
+ 		if(proposalApplicationInstance.save())
+ 		{
+ 			
+ 		}
+ 	  }
+ 	   return proposalInstance
+    }
+    public def saveProposalAppliction()
+    {
+    	
+    }
+    public def updateProposal(def proposalInstance)
+    {
+    	def proposalStatus = false
+    	proposalInstance.proposalSubmitteddate=new Date()
+    	if(proposalInstance.save())
+    	{
+    		proposalStatus = true
+    	}
+    	return proposalStatus
+    }
+    public def updateProposalApplication(def proposalApplicationInstance)
+    {
+    	def proposalStatus = false
+    	proposalApplicationInstance.applicationSubmitDate=new Date()
+    	if(proposalApplicationInstance.save())
+    	{
+    		proposalStatus = true
+    	}
+    	return proposalApplicationInstance
+    }
+    public def getProposalApplicationListForReviewer(def user,def party)
+    {
+    	def proposalApplicationInstanceList =ProposalApplication.findAll("from ProposalApplication P where P.proposal.grantor.id="+party) 
+    	return proposalApplicationInstanceList
+    }
+    /*
+     * method to get Last saved page number
+     */
+    def getMaxPageOfProposalApplicationExt(def proposalApplicationId)
+    {
+    	def proposalApplicationExtInstance = ProposalApplicationExt.executeQuery("select MAX(PE.page) from ProposalApplicationExt PE where PE.proposalApplication.id="+proposalApplicationId)
+    	return proposalApplicationExtInstance
+    }
+    /*
+     * method to get proposal application by id
+     */
+    def getProposalApplicationById(def proposalApplicationId)
+    {
+    	def proposalApplicationInstance = ProposalApplication.get(proposalApplicationId)
+    	return proposalApplicationInstance
+    }
    
    
     

@@ -156,9 +156,6 @@ class NotificationController {
                    redirect(action:list,id:notificationInstance.id)
         		
         }
-
-
-
     def create = {
         def notificationInstance = new Notification()
         GrailsHttpSession gh=getSession()
@@ -166,22 +163,39 @@ class NotificationController {
     		//putting help pages in session
     	gh.putValue("Help","Create_Notification.htm")
         notificationInstance.properties = params
-       
-		//def grantAllocationWithprojectsInstanceList
+ 		   //def grantAllocationWithprojectsInstanceList
 		def dataSecurityService = new DataSecurityService()
         List<GrantAllocation> grantAllocationWithprojectsInstanceList 	
 		try{
 			grantAllocationWithprojectsInstanceList = grantAllocationService.getGrantAllocationByActiveProjects()
-		}
+		   }
     	catch(Exception e)
     	{
-    		
-    	}
-    	println "grantAllocationWithprojectsInstanceList "+grantAllocationWithprojectsInstanceList
-        //grantAllocationWithprojectsInstanceList=dataSecurityService.getProjectsFromGrantAllocationForLoginUser(gh.getValue("PartyID"))
-      
-        return ['notificationInstance':notificationInstance,
-                'grantAllocationWithprojectsInstanceList':grantAllocationWithprojectsInstanceList]
+    	}	
+    	def grantAllocatedprojectsList =[]
+        def closedProjectList = [] 
+    	def closedProjectInstanceList = []
+        def closedProjectInstance
+        def projectsService = new ProjectsService()
+       for(int i=0;i<grantAllocationWithprojectsInstanceList.projects.size();i++)
+            {
+    	      closedProjectInstance =projectsService.getClosedProjects(grantAllocationWithprojectsInstanceList[i].projects.id )
+ 	          if(closedProjectInstance) 
+    	    	   closedProjectList.add(closedProjectInstance)
+            }
+       for(int i=0;i<grantAllocationWithprojectsInstanceList.projects.size();i++)
+       {
+      	grantAllocatedprojectsList.add(grantAllocationWithprojectsInstanceList[i].projects )
+
+       }
+       for(int i=0;i<closedProjectList.projects.size();i++)
+       {
+             
+        	closedProjectInstanceList.add(closedProjectList[i].projects)
+       }
+     grantAllocatedprojectsList.removeAll(closedProjectInstanceList)
+         return ['notificationInstance':notificationInstance,
+                'grantAllocationWithprojectsInstanceList':grantAllocatedprojectsList]
     }
 
     def save={	

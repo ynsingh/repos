@@ -226,13 +226,45 @@ function validateProject(){
 		alert("Please Enter Name");
 	    document.getElementById("name").focus();
 	    return false;
-	}
+	} 
+	
+	 var speclChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?0123456789";
+	
+	if(document.getElementById("name").value != "")
+	 {
+    	
+    	for (var i = 0; i < (document.getElementById("name").value.length); i++) 
+    	{
+   	 		if (speclChars.indexOf(document.getElementById("name").value.charAt(i)) != -1) 
+  			{
+  			alert ("Special characters and numbers are not allowed in Name.");
+  			return false;
+  			}
+    	}
+    }
+   
+    
 	if(document.getElementById("code").value == "")
 	{
 		alert("Please Enter Code");
 	    document.getElementById("code").focus();
 	    return false;
 	}
+	
+	 var speclChars = " !@#$%^&*()+=-[]\\\';,./{}|\":<>?0123456789";
+    
+    if(document.getElementById("code").value != "")
+	 {
+    	
+    	for (var i = 0; i < (document.getElementById("code").value.length); i++) 
+    	{
+   	 		if (speclChars.indexOf(document.getElementById("code").value.charAt(i)) != -1) 
+  			{
+  			alert ("Special characters and numbers are not allowed in code.");
+  			return false;
+  			}
+    	}
+    }
 	if( ( (document.getElementById("projectType").value) == 'null') || ( (document.getElementById("projectType").value) == '') )
     {
 	    alert("Please enter the Project Type");
@@ -243,17 +275,10 @@ function validateProject(){
 	    alert("Please enter the Investigator");
 	    return false;
     }
-    var name = document.getElementById("name");
-	var ichars = /^[a-zA-Z0-9\_\-'.\s]{1,50}$/;
-	if(name.value != "")
-	{ 
-		if (!ichars.test(name.value))
-		{ 
-			alert('Project name should not have special characters.');
-			name.focus;
-			return false;
-		}
-	}
+    
+   
+	
+	
 	var projectStartDateYear = document.getElementById("projectStartDate_year").value;
 	var projectStartDateMonth = document.getElementById("projectStartDate_month").value;
 	var projectStartDateDate = document.getElementById("projectStartDate_day").value;
@@ -283,6 +308,23 @@ function validateProject(){
 		    document.getElementById("name").focus();
 		    return false;
     	}
+    	
+    	
+          var speclChars = "!@#$%^&*()+=- []\\\';,./{}|\":<>?0123456789";
+	
+	if(document.getElementById("code").value != "")
+	 {
+    	
+    	for (var i = 0; i < (document.getElementById("code").value.length); i++) 
+    	{
+   	 		if (speclChars.indexOf(document.getElementById("code").value.charAt(i)) != -1) 
+  			{
+  			alert ("Special characters and numbers are not allowed in Code.");
+  			return false;
+  			}
+    	}
+    }
+    
     	if(document.getElementById("code").value == ""){
     		alert("Please Enter Code");
 		    document.getElementById("code").focus();
@@ -439,13 +481,47 @@ function validateAccountHead()
 	    document.getElementById("code").focus();
 	    return false;
 	}
+	
+	var speclChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?0123456789";
+	
+	if(document.getElementById("name").value != "")
+	 {
+    	
+    	for (var i = 0; i < (document.getElementById("name").value.length); i++) 
+    	{
+   	 		if (speclChars.indexOf(document.getElementById("name").value.charAt(i)) != -1) 
+  			{
+  			alert ("Special characters and numbers are not allowed in name.");
+  			return false;
+  			}
+    	}
+    }
+	
+	
+	var speclChars = "!@#$%^&*()+=- []\\\';,./{}|\":<>?0123456789";
+	
+	if(document.getElementById("code").value != "")
+	 {
+    	
+    	for (var i = 0; i < (document.getElementById("code").value.length); i++) 
+    	{
+   	 		if (speclChars.indexOf(document.getElementById("code").value.charAt(i)) != -1) 
+  			{
+  			alert ("Special characters and numbers are not allowed in code.");
+  			return false;
+  			}
+    	}
+    }
+	
+	
+	
 	return true;
 }
 function validateExpenseRequest()
 {
     if((document.getElementById("requestedAmount").value)=='')
     {
-	    alert("Please enter Proper Amount  ");
+	    alert("Please enter Proper Amount  "); 
 	    return false;
     }
      
@@ -602,7 +678,8 @@ function validateReportViewConfirmPrint()
 }
 function validateSubGrantAllot()
 {     
-    
+
+
     if( ( (document.getElementById("recipient").value) == 'null') || ( (document.getElementById("recipient").value) == '') )
     {
 	    alert("Please enter the Recipient");
@@ -677,6 +754,11 @@ function validateGrantExpense()
 	    alert("Please enter Proper Amount  ");
 	    return false;
     }
+    if(eval(document.getElementById("ddNo").value)<=0)
+    {
+	    alert("Please enter Proper DD/Cheque Number  ");
+	    return false;
+    }
     
    if(((document.getElementById("grantAllocationSplit.id").value) == 'null') || ( (document.getElementById("grantAllocationSplit.id").value) == '' ) )
    {
@@ -707,42 +789,82 @@ function validateGrantExpense()
 	    alert("Please enter Bank Branch  ");
 	    return false;
     }
-    var ddNo = document.getElementById("ddNo");
-	var isInteger_re = /^\s*(\+|-)?\d+\s*$/;
-	if(ddNo.value != "")
-	{ 
-		if (!isInteger_re.test(ddNo.value))
-		{ 
-			alert('DD number should not have characters.');
-			ddNo.focus;
-			return false;
-		}
-	}
-    var bankName = document.getElementById("bankName");
-	var ichars = /^[a-zA-Z0-9\_\-'.\s]{1,50}$/;
-	if(bankName.value != "")
-	{ 
-		if (!ichars.test(bankName.value))
-		{ 
-			alert('Bank name should not have special characters.');
-			bankName.focus;
-			return false;
-		}
-	}	
-	var ddBranch = document.getElementById("ddBranch");
-	var ichars = /^[a-zA-Z0-9\_\-'.\s]{1,50}$/;
-	if(ddBranch.value != "")
-	{ 
-		if (!ichars.test(ddBranch.value))
-		{ 
-			alert('Branch name should not have special characters.');
-			ddBranch.focus;
-			return false;
-		}
-	}	
+    
+    var speclChars = "!@#$%^&*()+=- []\\\';,./{}|\":<>?";
+	
+	if(document.getElementById("ddNo").value != "")
+	 {
+    	
+    	for (var i = 0; i < (document.getElementById("ddNo").value.length); i++) 
+    	{
+   	 		if (speclChars.indexOf(document.getElementById("ddNo").value.charAt(i)) != -1) 
+  			{
+  			alert ("Special characters and numbers are not allowed in DD number.");
+  			return false;
+  			}
+    	}
+    }
+	
+    
+    
+    var speclChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?0123456789";
+	
+	if(document.getElementById("bankName").value != "")
+	 {
+    	
+    	for (var i = 0; i < (document.getElementById("bankName").value.length); i++) 
+    	{
+   	 		if (speclChars.indexOf(document.getElementById("bankName").value.charAt(i)) != -1) 
+  			{
+  			alert ("Special characters and numbers are not allowed in Bank name .");
+
+  			return false;
+  			}
+    	}
+    }
+	
+      var speclChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?0123456789";
+	
+	if(document.getElementById("ddBranch").value != "")
+	 {
+    	
+    	for (var i = 0; i < (document.getElementById("ddBranch").value.length); i++) 
+    	{
+   	 		if (speclChars.indexOf(document.getElementById("ddBranch").value.charAt(i)) != -1) 
+  			{
+  			alert ("Special characters and numbers are not allowed in Branch name.");
+
+  			return false;
+  			}
+    	}
+    }
+	
+  
 }
 function validateGrantPeriod()
 {
+
+if(document.getElementById("name").value == "")
+	{
+		alert("Please Enter Name");
+	    document.getElementById("name").focus();
+	    return false;
+	}
+	var speclChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?";
+	
+	if(document.getElementById("name").value != "")
+	 {
+    	
+    	for (var i = 0; i < (document.getElementById("name").value.length); i++) 
+    	{
+   	 		if (speclChars.indexOf(document.getElementById("name").value.charAt(i)) != -1) 
+  			{
+  			alert ("Special characters are not allowed in Name.");
+  			return false;
+  			}
+    	}
+ 
+	  }
  
 var startDateYear = document.getElementById("startDate_year").value;
 	var startDateMonth = document.getElementById("startDate_month").value;
@@ -763,27 +885,7 @@ var startDateYear = document.getElementById("startDate_year").value;
     	}
     
     	
-	if(document.getElementById("name").value == "")
-	{
-		alert("Please Enter Name");
-	    document.getElementById("name").focus();
-	    return false;
-	}
-	var speclChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?";
 	
-	if(document.getElementById("name").value != "")
-	 {
-    	
-    	for (var i = 0; i < (document.getElementById("name").value.length); i++) 
-    	{
-   	 		if (speclChars.indexOf(document.getElementById("name").value.charAt(i)) != -1) 
-  			{
-  			alert ("Your Name has special characters. \nThese are not allowed.\n Please remove them and try again.");
-  			return false;
-  			}
-    	}
- 
-	  }
 	return true;
 }
 function validateGrantReceipt()
@@ -814,6 +916,11 @@ function validateGrantReceipt()
     if(eval(document.getElementById("amount").value)<=0)
     {
 	    alert("Please enter Proper Amount  ");
+	    return false;
+    }
+    if(eval(document.getElementById("ddNo").value)<=0)
+    {
+	    alert("Please enter Proper in DD/Cheque  Number ");
 	    return false;
     }
     
@@ -847,39 +954,54 @@ function validateGrantReceipt()
 	    alert("Please enter Bank Branch  ");
 	    return false;
     }
-  	var bankName = document.getElementById("bankName");
-	var ichars = /^[a-zA-Z0-9\_\-'.\s]{1,50}$/;
-	if(bankName.value != "")
-	{ 
-		if (!ichars.test(bankName.value))
-		{ 
-			alert('Bank Name should not have special characters.');
-			bankName.focus;
-			return false;
-		}
-	}
-	var ddBranch = document.getElementById("ddBranch");
-	var ichars = /^[a-zA-Z0-9\_\-'.\s]{1,50}$/;
-	if(ddBranch.value != "")
-	{ 
-		if (!ichars.test(ddBranch.value))
-		{ 
-			alert('Branch Name should not have special characters.');
-			ddBranch.focus;
-			return false;
-		}
-	}
-	var ddNo = document.getElementById("ddNo");
-	var isInteger_re = /^\s*(\+|-)?\d+\s*$/;
-	if(ddNo.value != "")
-	{ 
-		if (!isInteger_re.test(ddNo.value))
-		{ 
-			alert('DD/Cheque No should not have characters.');
-			ddNo.focus;
-			return false;
-		}
-	}
+    
+    
+    
+       var speclChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?0123456789";
+	
+	if(document.getElementById("bankName").value != "")
+	 {
+    	
+    	for (var i = 0; i < (document.getElementById("bankName").value.length); i++) 
+    	{
+   	 		if (speclChars.indexOf(document.getElementById("bankName").value.charAt(i)) != -1) 
+  			{
+  			alert ("Special characters and numbers are not allowed in Bank Name .");
+  			return false;
+  			}
+    	}
+    }
+  	
+	var speclChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?0123456789";
+	if(document.getElementById("ddBranch").value != "")
+	 {
+    	
+    	for (var i = 0; i < (document.getElementById("ddBranch").value.length); i++) 
+    	{
+   	 		if (speclChars.indexOf(document.getElementById("ddBranch").value.charAt(i)) != -1) 
+  			{
+  			alert ("Special characters and numbers are not allowed in Branch name.");
+  			return false;
+  			}
+    	}
+    }
+	
+	 var speclChars = "!@#$%^&*()+=- []\\\';,./{}|\":<>?";
+	
+	if(document.getElementById("ddNo").value != "")
+	 {
+    	
+    	for (var i = 0; i < (document.getElementById("ddNo").value.length); i++) 
+    	{
+   	 		if (speclChars.indexOf(document.getElementById("ddNo").value.charAt(i)) != -1) 
+  			{
+  			alert ("Special characters are not allowed in DD/Cheque No.");
+  			return false;
+  			}
+    	}
+    }
+	
+	
 }
 function validatePI()
 {
@@ -887,6 +1009,12 @@ function validatePI()
 	{
 		alert("Please Enter the Investigator Name");
 		document.getElementById('name').focus;
+		return false;
+	}
+	if(document.getElementById('designation').value == '' || document.getElementById('designation').value == null)
+	{
+		alert("Please Enter the Designation");
+		document.getElementById('designation').focus;
 		return false;
 	}
 	if(document.getElementById('institution').value == '' || document.getElementById('institution').value == null)
@@ -918,6 +1046,41 @@ function validatePI()
 			return false;
 		}
 	}
+	
+	
+	
+	
+	var speclChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?0123456789";
+	
+	if(document.getElementById("name").value != "")
+	 {
+    	
+    	for (var i = 0; i < (document.getElementById("name").value.length); i++) 
+    	{
+   	 		if (speclChars.indexOf(document.getElementById("name").value.charAt(i)) != -1) 
+  			{
+  			alert ("Special characters and numbers are not allowed in Name.");
+  			return false;
+  			}
+    	}
+    }
+	
+	var speclChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?0123456789";
+	
+	
+	if(document.getElementById("designation").value != "")
+	 {
+    	
+    	for (var i = 0; i < (document.getElementById("designation").value.length); i++) 
+    	{
+   	 		if (speclChars.indexOf(document.getElementById("designation").value.charAt(i)) != -1) 
+  			{
+  			alert ("Special characters and numbers are not allowed in Designation .");
+  			return false;
+  			}
+    	}
+    }
+    
 	return true;
 }
 function validateNotificationCreate()
@@ -1038,7 +1201,9 @@ function notificationEmailCheckAll()
 	}
 }
 function validateParty()
-{
+{ 
+
+
 	if(document.getElementById("nameOfTheInstitution").value == "")
 	{
 		alert("Please Enter Name");
@@ -1046,7 +1211,7 @@ function validateParty()
 	    return false;
 	}
 	
-	var speclChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?";
+	var speclChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?0123456789";
 	
 	if(document.getElementById("nameOfTheInstitution").value != "")
 	 {
@@ -1058,19 +1223,68 @@ function validateParty()
     	// alert(temp);
   	 		if (speclChars.indexOf(document.getElementById("nameOfTheInstitution").value.charAt(i)) != -1) 
   			{
-  			alert ("Your name has special characters. \nThese are not allowed.\n Please remove them and try again.");
+  			alert ("Special characters and numbers are not allowed in Name .");
   			return false;
   			}
     	}
  
 	  }
+	  
+	  var speclChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?0123456789";
 	
+	if(document.getElementById("code").value != "")
+	 {
+    	
+    	for (var i = 0; i < (document.getElementById("code").value.length); i++) 
+    	{
+    	 
+          //  var temp = document.getElementById("code").value.length ; 
+    	// alert(temp);
+  	 		if (speclChars.indexOf(document.getElementById("code").value.charAt(i)) != -1) 
+  			{
+  			alert ("Special characters and numbers are not allowed in Code .");
+  			return false;
+  			}
+    	}
+ 
+	  }
+	 
 	if(document.getElementById("code").value == "")
 	{
 		alert("Please Enter Code");
 	    document.getElementById("code").focus();
 	    return false;
 	}
+
+	 var str = document.getElementById('phone').value;
+    var oneDecimal = false;
+    var oneChar = 0;
+    str = str.toString();
+
+    for (var i = 0; i < str.length; i++)
+     {
+
+        oneChar = str.charAt(i).charCodeAt(0);
+       // characters outside of 0 through 9 not OK
+
+        if (oneChar < 48 || oneChar > 57)
+         {
+
+            alert("Enter only numbers into the Phone Number Field.");
+            str.focus;
+            return false;
+         }
+      }   
+
+   if(document.getElementById("email").value == "")
+	{
+		alert("Please Enter Email");
+	    document.getElementById("email").focus();
+	    return false;
+	}
+	
+	
+	
 	var email = document.getElementById('email');
 	var filter = /^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$/;
 	if(email.value != "")
@@ -1082,6 +1296,7 @@ function validateParty()
 			return false;
 		}
 	}
+	
 	return true;
 }
 function validateProjectTracking()
@@ -1103,8 +1318,29 @@ function validateProjectTracking()
 	    alert("Please enter Proper Percentage");
 	    return false;
     }
+    var projectStartDate = document.getElementById("projectStartDate").value;
+    var projectStartDateYear=projectStartDate.substring(0,projectStartDate.indexOf("-"));
+    var projectStartDateMonth=projectStartDate.substring(projectStartDate.indexOf("-")+1,projectStartDate.lastIndexOf("-"));
+    var projectStartDateDate=projectStartDate.substring(projectStartDate.lastIndexOf("-")+1,projectStartDate.lastIndexOf(" "));		
+    var ProjectStartDate = new Date(projectStartDateYear,projectStartDateMonth-1,projectStartDateDate);
 	
-	return true;
+	var projectEndDate = document.getElementById("projectEndDate").value;
+    var projectEndDateYear=projectEndDate.substring(0,projectEndDate.indexOf("-"));
+    var projectEndDateMonth=projectEndDate.substring(projectEndDate.indexOf("-")+1,projectEndDate.lastIndexOf("-"));
+    var projectEndDateDate=projectEndDate.substring(projectEndDate.lastIndexOf("-")+1,projectEndDate.lastIndexOf(" "));		
+    var ProjectEndDate = new Date(projectEndDateYear,projectEndDateMonth-1,projectEndDateDate);
+    
+    var projectclosureDateYear = document.getElementById("dateOfTracking_year").value;
+	var projectclosureDateMonth = document.getElementById("dateOfTracking_month").value;
+	var projectclosureDateDate = document.getElementById("dateOfTracking_day").value;
+	var newprojectclosureDateDate = new Date(projectclosureDateYear,projectclosureDateMonth-1,projectclosureDateDate);
+    
+    if((newprojectclosureDateDate < ProjectStartDate)||(newprojectclosureDateDate > ProjectEndDate))
+   {
+   alert("Project Closure Date should be in between Project Start Date and Project End Date ");
+   return false;
+   }  	
+   return true;   
 }
 function validateProposal()
 {
@@ -1206,6 +1442,12 @@ function validatePassword()
 		alert("Incorrect Password");
 		return false;
 	}
+	if(document.getElementById("oldPasswd").value == "" || document.getElementById("oldPasswd").value == null )
+	{
+		document.getElementById("oldPasswd").focus();
+		alert("Please Enter Old Password");
+		return false;
+	}
 	var re = /^(?=.{6,12}$)(?=.*[A-Za-z])(?=.*[0-9])(?!.*[^A-Za-z0-9])(?!.*\s).*/;
        if ( !re.test(document.getElementById("newPasswd").value) )
           {
@@ -1222,7 +1464,12 @@ function validateUser()
 	    document.getElementById("userRealName").focus();
 	    return false;
 	}
-	 var speclChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?";
+	if(document.getElementById("userSurName").value == ""){
+		alert("Please Enter Last Name");
+	    document.getElementById("userSurName").focus();
+	    return false;
+	}
+	 var speclChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?0123456789";
 	
 	if(document.getElementById("userRealName").value != "")
 	 {
@@ -1234,7 +1481,7 @@ function validateUser()
     	// alert(temp);
   	 		if (speclChars.indexOf(document.getElementById("userRealName").value.charAt(i)) != -1) 
   			{
-  			alert ("Your username has special characters. \nThese are not allowed.\n Please remove them and try again.");
+  			alert ("Special characters and numbers are not allowed in FirstName.");
   			return false;
   			}
     	}
@@ -1251,7 +1498,7 @@ function validateUser()
     	  // alert(temp);
   	 		if (speclChars.indexOf(document.getElementById("userSurName").value.charAt(i)) != -1) 
   			{
-  			alert ("Your username has special characters. \nThese are not allowed.\n Please remove them and try again.");
+  			alert ("Special characters and numbers are not allowed in LastName. .");
   			return false;
   			}
     	}
@@ -1307,7 +1554,13 @@ function validateEditUser()
 	    document.getElementById("userRealName").focus();
 	    return false;
 	}
-	 var speclChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?";
+	
+	if(document.getElementById("userSurName").value == ""){
+		alert("Please Enter Last Name");
+	    document.getElementById("userSurName").focus();
+	    return false;
+	}
+	 var speclChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?0123456789";
 	
 	if(document.getElementById("userRealName").value != "")
 	 {
@@ -1319,7 +1572,26 @@ function validateEditUser()
     	// alert(temp);
   	 		if (speclChars.indexOf(document.getElementById("userRealName").value.charAt(i)) != -1) 
   			{
-  			alert ("Your username has special characters. \nThese are not allowed.\n Please remove them and try again.");
+  			alert ("Special characters and numbers are not allowed in FirstName.");
+  			return false;
+  			}
+    	}
+ 
+	  }
+	  
+	   var speclChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?0123456789";
+	
+	if(document.getElementById("userSurName").value != "")
+	 {
+    	
+    	for (var i = 0; i < (document.getElementById("userSurName").value.length); i++) 
+    	{
+    	 
+          //  var temp = document.getElementById("userSurName").value.length ; 
+    	// alert(temp);
+  	 		if (speclChars.indexOf(document.getElementById("userSurName").value.charAt(i)) != -1) 
+  			{
+  			alert ("Special characters and numbers are not allowed in LastName.");
   			return false;
   			}
     	}
@@ -1335,7 +1607,7 @@ function validateEditUser()
     	  // alert(temp);
   	 		if (speclChars.indexOf(document.getElementById("userSurName").value.charAt(i)) != -1) 
   			{
-  			alert ("Your username has special characters. \nThese are not allowed.\n Please remove them and try again.");
+  			alert ("Special characters and numbers are not allowed in username.");
   			return false;
   			}
     	}
@@ -1362,15 +1634,37 @@ function validateEditUser()
 }
  function validateProjectType()
 {
-	if(document.getElementById("type").value == ""){
+      if(document.getElementById("type").value == ""){
 		alert("Please Enter the Project Type");
 	    document.getElementById("type").focus();
 	    return false;
 	}
+     var speclChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?0123456789";
+	
+	if(document.getElementById("userRealName").value != "")
+	 {
+    	
+    	for (var i = 0; i < (document.getElementById("type").value.length); i++) 
+    	{
+    	 
+          //  var temp = document.getElementById("type").value.length ; 
+    	// alert(temp);
+  	 		if (speclChars.indexOf(document.getElementById("type").value.charAt(i)) != -1) 
+  			{
+  			alert ("Special characters and numbers are not allowed in Type.");
+  			return false;
+  			}
+    	}
+ 
+	  }
+	
 	return true;
 }
 function validateAuthority()
 {     
+
+   
+    
     if( ( (document.getElementById("authority").value) == 'null') || ( (document.getElementById("authority").value) == '') )
     {
 	    alert("Please enter the Role");
@@ -1383,6 +1677,20 @@ function validateAuthority()
       return false;
       
    }
+     var speclChars = "!@#$%^&*()+=-_[]\\\';,./{}|\":<>?0123456789";
+	
+	if(document.getElementById("authority").value != "")
+	 {
+    	for (var i = 5; i < (document.getElementById("authority").value.length); i++) 
+    	{
+   	 		if (speclChars.indexOf(document.getElementById("authority").value.charAt(i)) != -1) 
+  			{
+  			alert ("Special characters and numbers are not allowed in Role.");
+  			return false;
+  			}
+    	}
+    }
+   
     if( (document.getElementById("authority").value) )
     {
     	var roleName= new String(document.getElementById("authority").value)
@@ -1402,6 +1710,36 @@ function validateAuthority()
 }
 function validateDepartment()
 {
+        var speclChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?0123456789";
+	
+	if(document.getElementById("name").value != "")
+	 {
+    	
+    	for (var i = 0; i < (document.getElementById("name").value.length); i++) 
+    	{
+   	 		if (speclChars.indexOf(document.getElementById("name").value.charAt(i)) != -1) 
+  			{
+  			alert ("Special characters and numbers are not allowed in Department Name.");
+  			return false;
+  			}
+    	}
+    }
+       var speclChars = "!@#$%^&*()+=- []\\\';,./{}|\":<>?0123456789";
+	
+	if(document.getElementById("departmentCode").value != "")
+	 {
+    	
+    	for (var i = 0; i < (document.getElementById("departmentCode").value.length); i++) 
+    	{
+   	 		if (speclChars.indexOf(document.getElementById("departmentCode").value.charAt(i)) != -1) 
+  			{
+  			alert ("Special characters and numbers are not allowed in Department Code.");
+  			return false;
+  			}
+    	}
+    }
+
+   
 	if(document.getElementById("departmentCode").value == ""){
 		alert("Please Enter Department Code");
 	    document.getElementById("departmentCode").focus();
@@ -1412,6 +1750,8 @@ function validateDepartment()
 	    document.getElementById("name").focus();
 	    return false;
 	}
+	
+	
 	return true;
 
 }
@@ -1420,6 +1760,12 @@ function validateRegisterUser()
 	if(document.getElementById("userRealName").value == ""){
 		alert("Please Enter First Name");
 	    document.getElementById("userRealName").focus();
+	    return false;
+	}
+	
+	if(document.getElementById("userSurName").value == ""){
+		alert("Please Enter last Name");
+	    document.getElementById("userSurName").focus();
 	    return false;
 	}
     if(document.getElementById("password").value == ""){
@@ -1466,6 +1812,22 @@ function validateRegisterUser()
 }
 function validateAttachmentType()
 {
+
+      var speclChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?0123456789";
+	
+	if(document.getElementById("type").value != "")
+	 {
+    	
+    	for (var i = 0; i < (document.getElementById("type").value.length); i++) 
+    	{
+   	 		if (speclChars.indexOf(document.getElementById("type").value.charAt(i)) != -1) 
+  			{
+  			alert ("Special characters and numbers are not allowed in Type.");
+  			return false;
+  			}
+    	}
+    }
+    
 	if(document.getElementById("type").value == "")
 	{
 		alert("Please Enter the Type");
@@ -1481,6 +1843,12 @@ function validateItemPurchase()
 	{
 		alert("Please Enter item name");
 	    document.getElementById("name").focus();
+	    return false;
+	}
+	if(document.getElementById("assetCode").value == "")
+	{
+		alert("Please Enter asset code");
+	    document.getElementById("assetCode").focus();
 	    return false;
 	}
 	if(document.getElementById("orderNo").value == 0)
@@ -1507,12 +1875,7 @@ function validateItemPurchase()
 	    document.getElementById("cost").focus
 	    return false;
     }
-	if(document.getElementById("assetCode").value == "")
-	{
-		alert("Please Enter asset code");
-	    document.getElementById("assetCode").focus();
-	    return false;
-	}
+	
 	return true;
 }
             
@@ -1524,23 +1887,40 @@ function validateProjectEmployee()
 	    document.getElementById("empName").focus();
 	    return false;
 	}
+	
+	
+	
+	var speclChars = "!@#$%^&*()+=- []\\\';,./{}|\":<>?";
+	
+	if(document.getElementById("empNo").value != "")
+	 {
+    	
+    	for (var i = 0; i < (document.getElementById("empNo").value.length); i++) 
+    	{
+   	 		if (speclChars.indexOf(document.getElementById("empNo").value.charAt(i)) != -1) 
+  			{
+  			alert ("Special characters and numbers are not allowed in Employee Number.");
+  			return false;
+  			}
+    	}
+    }
+    
 	if(document.getElementById("empNo").value == "")
 	{
 		alert("Please Enter Employee Number");
 	    document.getElementById("empNo").focus();
 	    return false;
 	}
-	var empNo = document.getElementById("empNo");
-	var ichars = /^[a-zA-Z0-9\_\-'.\s]{1,50}$/;
-	if(empNo.value != "")
-	{ 
-		if (!ichars.test(empNo.value))
-		{ 
-			alert('Employee Number should not have special characters.');
-			empNo.focus;
-			return false;
-		}
-	}
+	
+	
+	 if(eval(document.getElementById("empNo").value)<=0)
+    {
+	    alert("Please enter a valid Number ");
+	    return false;
+    }
+    
+   
+  
 	if( ( (document.getElementById("employeeDesignation.id").value) == 'null')  )
 	{
 	    alert("Please enter Designation");
@@ -1677,7 +2057,7 @@ function validateProjectEmployeeQualification()
     }
       if(eval(document.getElementById("percMark").value)<=0)
     {
-	    alert("Please enter Invalid Percentage ");
+	    alert("Please enter a valid Percentage ");
 	    return false;
     }
     
@@ -1722,6 +2102,21 @@ function validateProjectEmployeeSalaryDetails()
 }
 function validateSalaryComponent()
 {
+
+        var speclChars = "!@#$%^&*()+=[]\\\';,./{}|\"<>?0123456789";
+	
+	if(document.getElementById("name").value != "")
+	 {
+    	
+    	for (var i = 0; i < (document.getElementById("name").value.length); i++) 
+    	{
+   	 		if (speclChars.indexOf(document.getElementById("name").value.charAt(i)) != -1) 
+  			{
+  			alert ("Special characters and numbers are not allowed in Component Name.");
+  			return false;
+  			}
+    	}
+    }
 	if(document.getElementById("name").value == 'null' || document.getElementById("name").value == '' )
 	{
 		alert("Please Enter the Component Name");
@@ -1732,12 +2127,31 @@ function validateSalaryComponent()
 }
 function validateEmployeeDesignation()
 {
+
+
+   var speclChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?0123456789";
+	
+	if(document.getElementById("designation").value != "")
+	 {
+    	
+    	for (var i = 0; i < (document.getElementById("designation").value.length); i++) 
+    	{
+   	 		if (speclChars.indexOf(document.getElementById("designation").value.charAt(i)) != -1) 
+  			{
+  			alert ("Special characters and numbers are not allowed in Designation.");
+  			return false;
+  			}
+    	}
+    }
+    
+    
 	if(document.getElementById("designation").value == 'null' || document.getElementById("designation").value == '' )
 	{
 		alert("Please Enter the Designation");
 	    document.getElementById("designation").focus();
 	    return false;
 	}
+	
 	return true;
 }
 
@@ -1856,6 +2270,23 @@ function validateEligibilityCriteria()
 	    document.getElementById("eligibilityCriteria").focus();
 	    return false;
 	}
+	
+	
+	 var speclChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?0123456789";
+	
+	if(document.getElementById("eligibilityCriteria").value != "")
+	 {
+    	
+    	for (var i = 0; i < (document.getElementById("eligibilityCriteria").value.length); i++) 
+    	{
+   	 		if (speclChars.indexOf(document.getElementById("eligibilityCriteria").value.charAt(i)) != -1) 
+  			{
+  			alert ("Special characters and numbers are not allowed in Eligibility Criteria .");
+  			return false;
+  			}
+    	}
+    }
+    
 	return true;
 }
  
@@ -1947,6 +2378,21 @@ function validatePreProposal()
  
  function validateProposalCategory()
 {
+
+var speclChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?0123456789";
+	
+	if(document.getElementById("name").value != "")
+	 {
+    	
+    	for (var i = 0; i < (document.getElementById("name").value.length); i++) 
+    	{
+   	 		if (speclChars.indexOf(document.getElementById("name").value.charAt(i)) != -1) 
+  			{
+  			alert ("Special characters and numbers are not allowed in Category Name.");
+  			return false;
+  			}
+    	}
+    }
    if(document.getElementById("name").value == "")
 	{
 		alert("Please Enter the Name");
@@ -1957,15 +2403,143 @@ function validatePreProposal()
 }
 
 function validateApprovalAuthority()
-{
-   if(document.getElementById("name").value == "")
+{   
+          
+          var speclChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?0123456789";
+	
+	if(document.getElementById("name").value != "")
+	 {
+    	
+    	for (var i = 0; i < (document.getElementById("name").value.length); i++) 
+    	{
+   	 		if (speclChars.indexOf(document.getElementById("name").value.charAt(i)) != -1) 
+  			{
+  			alert ("Special characters and numbers are not allowed in Name.");
+  			return false;
+  			}
+    	}
+    }
+           if(document.getElementById("name").value == "")
 	{
 		alert("Please Enter the Name");
 	    document.getElementById("name").focus();
 	    return false;
 	}
+
+   	var email = document.getElementById('email');
+	var filter = /^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$/;
+	if(email.value != "")
+	{
+		if (!filter.test(email.value))
+		{
+			alert('Please provide a valid email address');
+			email.focus;
+			return false;
+		}
+	}
+	
+   
 	return true;
 }
+
+function validateApprovalAuthorityMap()
+{  
+
+    
+     if(document.getElementById("proposalId").value =="")
+    {
+    alert("Please enter a Proposal Title");
+    return false;
+    } 
+     if(document.getElementById("approvalAuthority.id").value =="")
+    {
+    alert("Please enter a Approval Authority");
+    return false;
+    } 
+    
+    var str = document.getElementById('approveOrder').value;
+    var oneDecimal = false;
+    var oneChar = 0;
+    str = str.toString();
+
+    for (var i = 0; i < str.length; i++)
+     {
+
+        oneChar = str.charAt(i).charCodeAt(0);
+       // characters outside of 0 through 9 not OK
+
+        if (oneChar < 48 || oneChar > 57)
+         {
+
+            alert("Enter only numbers into the Approve Order Field.");
+            str.focus;
+            return false;
+         }
+      }   
+ 
+     if(document.getElementById("approveOrder").value =="")
+    {
+    alert("Please enter a Approve Order");
+    return false;
+    } 
+    
+     var str = document.getElementById('processRestartOrder').value;
+    var oneDecimal = false;
+    var oneChar = 0;
+    str = str.toString();
+
+    for (var i = 0; i < str.length; i++)
+     {
+
+        oneChar = str.charAt(i).charCodeAt(0);
+       // characters outside of 0 through 9 not OK
+
+        if (oneChar < 48 || oneChar > 57)
+         {
+
+            alert("Enter only numbers into the Process Restart Order Field.");
+            str.focus;
+            return false;
+         }
+      }   
+    
+    if(document.getElementById("processRestartOrder").value =="")
+    {
+    alert("Please enter a Process RestartOrder");
+    return false;
+    } 
+    
+   
+     return true;
+ }
+   function validateUploadProposalForm()
+{     
+ 
+	var id_value = document.getElementById('attachmentPath').value;
+ 
+	if(id_value != '')
+	{ 
+		var valid_extensions = /(.html|.htm)$/i;   
+  		if(valid_extensions.test(id_value))
+  		{ 
+  			 return true;
+	}
+	else
+	 {
+ 		alert('This File Is Not Allowed')
+ 		return false;
+		}
+	} 	
+	if( ( (document.getElementById("attachmentPath").value) == 'null') || ( (document.getElementById("attachmentPath").value) == '') )
+    {
+ 		alert("Please upload a application form");
+	    document.getElementById("attachmentPath").focus();
+	    return false;
+    }
+		    
+	return true;
+}
+	
 	
  
   function validateAppAuthorityPersonForDelete()
@@ -1992,7 +2566,7 @@ function validateApprovalAuthority()
 		}
 		if (isChecked == 0) 
 		{ 
-			alert('You didn\'t an approvalAuthorityDetail  for delete. Please check a box.'); 
+			alert('You didn\'t Check an approvalAuthorityDetail  for delete. Please check a box.'); 
 			return false;
 		}
 	}
@@ -2000,7 +2574,7 @@ function validateApprovalAuthority()
 		{
 			if(document.appAuthority.approvalAuthority.checked!=true)
 			{
-				alert('You didn\'t an approvalAuthorityDetail  for delete. Please check a box.'); 
+				alert('You didn\'t Check an approvalAuthorityDetail  for delete. Please check a box.'); 
 				return false;
 			}
 		}
@@ -2032,10 +2606,10 @@ function validateApprovalAuthority()
 	
 
 	
-	function checkAllApprovalAuthorityDetails()
+	function checkAllApprovalAuthorityMapDetails()
 	{
 	
-	 if(document.proposalApprovalAuthorityMap.AllapprovalAuthorityDetail.checked==true)
+	 if(document.proposalApprovalAuthorityMap.AllapprovalAuthorityMapDetail.checked==true)
     	{
     		for(var i=0;i<document.proposalApprovalAuthorityMap.proposalApprovalAuthority.length;i++)
     		{
@@ -2052,5 +2626,183 @@ function validateApprovalAuthority()
 
 	}
 	
+	function validateProposalsubmit(dateValue)
+	{	
 		
+		
+		var elem = dateValue.split(" ");
+		var ldate = elem[0];
+		var lastDate = new Date(ldate);
+		
+		var d = new Date();
+		var curr_date = d.getDate();
+		var curr_month = d.getMonth();
+		var curr_year = d.getFullYear();
+		var Today = new Date(curr_year,curr_month,curr_date);
+		
+		if(Today >= lastDate)
+    	{
+        alert("Last Date for Proposal Submission is Expired");
+        return false; 
+    	}
+		return true;
+	}
+		
+	
+	function validateExpenseRequestEntry()
+	{
+		if( ( (document.getElementById("projects.id").value) == 'null') || ( (document.getElementById("projects.id").value) == '') )
+	    {
+		    alert("Please select a project");
+		    return false;
+	    }
+		if( ( (document.getElementById("expenseDescription").value) == 'null') || ( (document.getElementById("expenseDescription").value) == '') )
+	    {
+		    alert("Please enter the Expense Description");
+		    return false;
+	    }
+	    
+	    if(document.getElementById("expenseAmount").value == 0)
+		{
+			alert("Please Enter Expense amount");
+		    document.getElementById("expenseAmount").focus();
+		    return false;
+		}
+		if(document.getElementById("expenseAmount").value <= 0)
+		{
+			alert("Please Enter Proper Expense amount");
+		    document.getElementById("expenseAmount").focus();
+		    return false;
+		}
+		if(isNaN(document.getElementById("expenseAmount").value))
+		{
+		    alert("Invalid Expense Amount  ");
+		    document.getElementById("expenseAmount").focus();
+		    return false;
+	    }
+	    
+	    if(document.getElementById("invoiceAmount").value < 0)
+		{
+			alert("Please Enter Proper Invoice amount");
+		    document.getElementById("invoiceAmount").focus();
+		    return false;
+		}
+		if(isNaN(document.getElementById("invoiceAmount").value))
+		{
+		    alert("Invalid Invoice Amount  ");
+		    document.getElementById("invoiceAmount").focus();
+		    return false;
+	    }
+	    
+	return true;
+	
+	} 	
+	
+	function validateExpenseRequestDetails()
+	{
+		if(document.getElementById("invoiceAmount").value < 0)
+		{
+			alert("Please Enter Proper Invoice amount");
+		    document.getElementById("invoiceAmount").focus();
+		    return false;
+		}
+		if(isNaN(document.getElementById("invoiceAmount").value))
+		{
+		    alert("Invalid Invoice Amount  ");
+		    document.getElementById("invoiceAmount").focus();
+		    return false;
+	    }
+	    
+	    if((document.getElementById("approvalAuthority.id").value) == 'null')
+	    {
+		    alert("Please select an ApprovalAuthority to send request");
+		    return false;
+	    }
+    
+		    
+		return true;
+    }
+    function validateApprovalAuthorityApproveReject()
+    {
+    if((document.getElementById("approvalAuthority.id").value) == 'null')
+    {
+	    alert("Please select an ApprovalAuthority to send request");
+	    return false;
+    }
+    
+	return true;
+    
+    }
+    
+    function validateStatusApproveReject()
+    {
+    
+    myOption = -1;
+    
+		for (i=document.expenseApRej.status.length-1; i > -1; i--) 
+		{
+			if (document.expenseApRej.status[i].checked) 
+			{
+				myOption = i; i = -1;
+			}
+		}
+		if (myOption == -1) 
+		{
+		alert("Please select status of your evaluation");
+		return false;
+		}
+    
+    
+    
+	return true;
+    
+    }
+    function validateAttachments()
+    {
+    	if( ( (document.getElementById("attachmentType.id").value) == 'null') || ( (document.getElementById("attachmentType.id").value) == '') )
+	    {
+	 		alert("Please select attachment type");
+		    document.getElementById("attachmentType.id").focus();
+		    return false;
+	    }	
+	    return true;
+    }
+	function validateSearchProjects()
+{ 
+    if((document.getElementById("name").value =="") && (document.getElementById("code").value =="") && (document.getElementById("selectAll").checked!=true))
+    {
+    alert("Please select any search criteria");
+    return false;
+    }  
+   
+     return true;
+ }
+
+ function validateadvancedSearchProjects()
+ {
+ 
+ if((document.getElementById("name").value =="") && (document.getElementById("code").value =="") && (document.getElementById("selectAll").checked!=true) && (document.getElementById("projectType").selectedIndex=="0") && (document.getElementById("investigator.id").selectedIndex == "0") && (document.getElementById("projectStatus").selectedIndex == "0") && (document.getElementById("datepicker1").value=="") && (document.getElementById("datepickerTo").value=="") && (document.getElementById("datepicker2").value=="") && (document.getElementById("datepickerEndTo").value==""))
+    {
+    alert("Please select any search criteria");
+    return false;
+    }  
+   
+     return true;
+ }
+ 
+ 
+ 
+ 
+  function grantSearchProjects()
+ {
+ 
+ if((document.getElementById("minimumAmount").value =="") && (document.getElementById("maximumAmount").value =="") && (document.getElementById("selectAll").checked!=true) && (document.getElementById("granter").selectedIndex=="0") && (document.getElementById("investigator.id").selectedIndex=="0") && (document.getElementById("partyDepartment").selectedIndex=="0")&& (document.getElementById("datepicker1").value=="") && (document.getElementById("datepickerTo").value==""))
+    {
+    alert("Please select any search criteria");
+    return false;
+    }  
+   
+     return true;
+ 
+ }
 	

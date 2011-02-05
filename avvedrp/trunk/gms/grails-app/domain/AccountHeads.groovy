@@ -20,6 +20,7 @@ class AccountHeads {
 	
 	String saveMode;
 	String accHeadPeriod;
-	static transients = [ "saveMode","accHeadPeriod" ]
+	String accHeadCode;
+	static transients = [ "saveMode","accHeadPeriod","accHeadCode" ]
 
 }

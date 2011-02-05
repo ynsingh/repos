@@ -137,8 +137,6 @@ class UserService{
 		Integer userId = null
 		if (person.save()) {
 			Authority.findAll().each { it.removeFromPeople(person) }
-			println"+++params.authoritiesupdate+++"+params.authorities
-			
 				
 			if(params.authorities == '1')
 			{
@@ -148,7 +146,7 @@ class UserService{
 			
 				if(params.authorities == '2')
 			{
-				print "admin"
+				
 			addRolesUser(person,params)
 			}
 				
@@ -171,8 +169,6 @@ class UserService{
 	public Integer saveUser(def person,def params){
 		Integer userId = null
 		if (person.save()) {
-			println "....params....."+params
-			println"+++params.authorities+++"+params.authorities
 			if(params.authorities == null)
 			{
 				addRolesUser(person,params)
@@ -215,8 +211,6 @@ class UserService{
 			System.out.println params
 			
 			def roleInstance = getRolebyId(params)
-			println "++++++++++++++++roleInstance.authority+++++++++" +roleInstance.authority
-			println"+++params.usertype+++"+params.authorities
 			
 			//Authority.findByAuthority(roleInstance.authority).addToPeople(person)
 			def userRole=new UserRole()
@@ -230,16 +224,13 @@ class UserService{
 		System.out.println params
 		
 		def roleInstance = getRolebyId(params)
-		println "++++++++++++++++roleInstance.authority+++++++++" +roleInstance.authority
-		println"+++params.usertype+++"+params.authorities
 		
 		Authority.findByAuthority(roleInstance.authority).addToPeople(person)
 		
 	}
 	
 public void addRolesUser(def person,def params) {
-	println"+++params.usertype+++"+params.authorities
-	  // if(params.authorities == 2)
+	// if(params.authorities == 2)
 		//Authority.findByAuthority('ROLE_USER').addToPeople(person)
 		
 	def userRole=new UserRole()
@@ -272,19 +263,15 @@ public void addRolesUser(def person,def params) {
 	
 	public void addUserMap(def person,def params) {
 		
-		System.out.println "in addUserMap  :"+params.get("party.id")
-		System.out.println params
 		def userMap=new UserMap()
 		userMap.user=person
 			
 		def party=  Party.find("from Party  PA  where PA.id= "+params.get("party.id"))
-		System.out.println "in addUserMap party :"+party
 		userMap.party=party
 		
 		def userMapInstance= UserMap.find("from UserMap  UM  where UM.user = "+person.id)
 		if(userMapInstance)
 			userMapInstance.delete();
-		System.out.println "inside if userMap.party"+userMap
 		userMap.createdBy="admin"
      	userMap.modifiedBy="admin"
         userMap.save()
@@ -311,55 +298,39 @@ public void addRolesUser(def person,def params) {
 	}
 	public Person saveNewUser(def userInstance,def params)
 	{
-		println "+++++++++++++++++++++++++saveNewUser++++++++++++++++++++++++++++"
 		if(userInstance.save())
 		{
-			println "+++++++++++++++++++++++++after userInstance.save()++++++++++++++++++++++++++++"
-			println "+++++++++++++++++++++++++call addNewUserRoles++++++++++++++++++++++++++++"
 			addRolesSiteAdmin(userInstance,params)
-			println "+++++++++++++++++++++++++after addNewUserRoles++++++++++++++++++++++++++++"
+			
 		}
 		return userInstance
 	}
 	public Person saveNewPi(def userInstance)
 	{
-		println "userInstance for Pi"
 		if(userInstance.save())
 		{
-			println "userInstance for Pi saved"
 			addRolesPi(userInstance)
 		}
 		return userInstance
 	}
 	public Integer saveNewUserMap(def person,def params){
 		Integer userId = null
-		System.out.println "in saveNewUserMap  +++++++++++++:"+person.party.id
-		System.out.println params
 		def userMap=new UserMap()
 		userMap.user=person.user
 		def party=  Party.find("from Party  PA  where PA.id= "+params.get("party.id"))
-		System.out.println "in addUserMap party :"+party
 		userMap.party=person.party
-		
-		System.out.println "inside if addNewUserMap.party"+userMap
 		userMap.createdBy="admin"
      	userMap.modifiedBy="admin"
         userMap.save()
-        System.out.println "after save usermap  +++++++++++++:"+person.party.id
-		userId=userMap.user.id
-        
-		return userId
+        userId=userMap.user.id
+        return userId
 	}
 	public Party addParty(def partyInstance)
 	{
-		println "+++++++++++++++++++++inside addParty++++++++++++++"+partyInstance.nameOfTheInstitution
-		println "+++++++++++++++++++++before saveParty++++++++++++++"+partyInstance
-        def partyService = new PartyService()
+		def partyService = new PartyService()
         def party = new Party()
         party = partyService.saveParty(partyInstance)
-        println "+++++++++++++++++++++after saveParty++++++++++++++"
-        println "+++++++++++++++++++++Party Id++++++++++++++" +party.id
-       	return party
+        return party
 	}
 	public Authority getRolebyId(def params)
 	{
@@ -434,8 +405,20 @@ public void addRolesUser(def person,def params) {
 	 public saveRole(def authorityInstance)
 	{
 		 authorityInstance.activeYesNo="Y"
-		 def authorityInstanceSave = updateRole(authorityInstance)
-		 return authorityInstanceSave
+		 def authorityInstanceSave =false 
+		
+		  if(!authorityInstance.hasErrors() && authorityInstance.save()) 
+					{
+						println"true....."
+						authorityInstanceSave=true
+					}
+					else
+					{
+						println "false++++++++++++++++"
+						authorityInstanceSave=false
+					}
+				return authorityInstanceSave
+		 
 	}
 	/*
 	 * Delete Role
@@ -449,11 +432,14 @@ public void addRolesUser(def person,def params) {
 	/*
 	 * Update Role
 	 */
-	 public boolean updateRole(def authorityInstance)
+	 public boolean updateRole(def params)
 	{
 		def authorityInstanceUpdate =false 
+		def authorityInstance = getRoleById(params.id)
+		authorityInstance.properties = params
 			if(!authorityInstance.hasErrors() && authorityInstance.save()) 
 			{
+				println"true....."
 				authorityInstanceUpdate=true
 			}
 			else
@@ -467,12 +453,12 @@ public void addRolesUser(def person,def params) {
 	 /*
 	  * Getting Authority details based on authority
 	  */
-	 public List getDuplicateRole(def authorityInstance)
+	 public List getDuplicateRole(def params)
 	 {
 		 def chkDuplicateRoleInstance
 		try
 		{
-		 chkDuplicateRoleInstance = Authority.findAll("from Authority AT where AT.authority = '"+ authorityInstance.authority+"'")
+		 chkDuplicateRoleInstance = Authority.findAll("from Authority AT where AT.activeYesNo = 'Y' and AT.authority = '"+ params.authority+"'")
 		}
 		catch(Exception e)
 		{
@@ -497,6 +483,15 @@ public void addRolesUser(def person,def params) {
 			}
 			return userId
 		}
-
-
+	/*
+	 * Getting All users of a Party
+	 */
+	 public getAllUsersByPartyID(def PartyID)
+	 {
+		 def userMapList = UserMap.findAll("from UserMap UM where  UM.party = "+PartyID)
+		 return userMapList
+	 }
+	 
+	 
+	 
 }

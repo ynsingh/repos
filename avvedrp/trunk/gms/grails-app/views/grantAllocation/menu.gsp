@@ -28,177 +28,159 @@
 			//do nothing
 		}
 	})
-
-
 	</script>
-
-	
-</head>
-<body  class="glossymenubody">
-
-<div class="glossymenu">
-
-<g:if test="${(session.Role == 'ROLE_STAFF')}">
-<a class="menuitem submenuheader" href="#" ><g:message code="default.PreProposal.label"/></a>
-	<div class="submenu">
-		<ul>
-	
-		<li><a href="${createLinkTo(dir:'preProposal/create')}" target="right"><g:message code="default.AddNewProposal.label"/></a></li>
-		<li><a href="${createLinkTo(dir:'preProposal/list')}" target="right"><g:message code="default.PreProposalList.label"/></a></li>
-		</ul>
-		</div>
-		
-		<a class="menuitem submenuheader" href="#" ><g:message code="default.FullProposal.label"/></a>
-	<div class="submenu">
-		<ul>
-	
-		<li><a href="${createLinkTo(dir:'fullProposal/list')}" target="right"><g:message code="default.FullProposalList.label"/></a></li>
-		</ul>
-		</div>
-		
-		
-		</g:if>	
-		
-	<g:if test="${(session.Role == 'ROLE_REVIEWER')}">
-	<a class="menuitem submenuheader" href="#" ><g:message code="default.PreProposal.label"/></a>
-	<div class="submenu">
-		<ul>
-	
-		<li><a href="${createLinkTo(dir:'proposalApproval/list')}" target="right"><g:message code="default.PreProposalApproval.label"/></a></li>
-		<li><a href="${createLinkTo(dir:'proposalApproval/reviewerStatus')}" target="right"><g:message code="default.ViewReview.label"/></a></li>
-		</ul>
-		</div>
-		
-		<a class="menuitem submenuheader" href="#" ><g:message code="default.FullProposal.label"/></a>
-	<div class="submenu">
-		<ul>
-	
-		<li><a href="${createLinkTo(dir:'proposalApproval/fullProposalList')}" target="right"><g:message code="default.FullProposalApproval.label"/></a></li>
-		<li><a href="${createLinkTo(dir:'proposalApproval/fullProposalReview')}" target="right"><g:message code="default.ViewReview.label"/></a></li>
-		</ul>
-		</div>
-		
-		</g:if>	
-		
-		
-		 	
-		
-
-		
-<g:if test="${(session.Role != 'ROLE_USER') && (session.Role != 'ROLE_STAFF')&& (session.Role != 'ROLE_REVIEWER')}">
-	<a class="menuitem submenuheader" href="#" ><g:message code="default.Projects.label"/></a>
-	<div class="submenu">
-		<ul>
-		
-		
-		
-		 	<g:if test="${session.Role == 'ROLE_SITEADMIN'}">
-				<li><a href="${createLinkTo(dir:'projects/create')}" target="right"><g:message code="default.AddProjects.label"/></a></li>
-				<li><a href="${createLinkTo(dir:'projects/list')}" target="right"><g:message code="default.ProjectList.label"/></a></li>
-				<li><a href="${createLinkTo(dir:'projects/search')}" target="right"><g:message code="default.SearchProjects.label"/></a></li>
-				<!-- <li><a href="${createLinkTo(dir:'projects/inactiveProjectsList')}" target="right">Inactive Projects</a></li> -->
-			</g:if>	
-			<g:if test="${(session.Role == 'ROLE_PROJECTADMIN') || (session.Role == 'ROLE_SITEADMIN')}">		  
-				<li><a href="${createLinkTo(dir:'notification/list')}" target="right"><g:message code="default.CallForProposal.label"/></a></li>
-				<li><a href="${createLinkTo(dir:'notificationsEmails/partyNotificationsList')}" target="right"><g:message code="default.ProposalManagement.label"/></a></li>
+	</head>
+	<body  class="glossymenubody">
+		<div class="glossymenu">
+			<g:if test="${(session.Role == 'ROLE_STAFF')}">
+				<a class="menuitem submenuheader" href="#" ><g:message code="default.PreProposal.label"/></a>
+				<div class="submenu">
+					<ul>
+					<li><a href="${createLinkTo(dir:'preProposal/create')}" target="right"><g:message code="default.AddNewProposal.label"/></a></li>
+					<li><a href="${createLinkTo(dir:'preProposal/list')}" target="right"><g:message code="default.PreProposalList.label"/></a></li>
+					</ul>
+				</div>
+				<a class="menuitem submenuheader" href="#" ><g:message code="default.FullProposal.label"/></a>
+				<div class="submenu">
+					<ul>
+					<li><a href="${createLinkTo(dir:'fullProposal/list')}" target="right"><g:message code="default.FullProposalList.label"/></a></li>
+					</ul>
+				</div>
 			</g:if>	
 			
-		</ul>
-	</div>
-</g:if>
-<g:if test="${(session.Role != 'ROLE_SITEADMIN') && (session.Role != 'ROLE_STAFF')&& (session.Role != 'ROLE_REVIEWER')}">
-	<a class="menuitem submenuheader" href="#" ><g:message code="default.Award.label"/></a>
-	<div class="submenu">
-		<ul>
-			<li><a href="${createLinkTo(dir:'projects/list')}" target="right"><g:message code="default.ProjectList.label"/></a></li>
-			<li><a href="${createLinkTo(dir:'projects/search')}" target="right"><g:message code="default.SearchProjects.label"/></a></li>
-		</ul>
-	</div>
-</g:if>	
-<g:if test="${(session.Role == 'ROLE_PROJECTADMIN') || (session.Role == 'ROLE_SITEADMIN')}">
-	<a class="menuitem submenuheader" href="#"><g:message code="default.Institution.label"/></a>
-	<div class="submenu">
-		<ul>
-			<li><a href="${createLinkTo(dir:'partyDepartment/create')}" target="right"><g:message code="default.AddDepartment.label"/></a></li>				 
-	        <li><a href="${createLinkTo(dir:'party/list')}" target="right"><g:message code="default.InstitutionList.label"/></a></li>         
-		</ul>
-	</div>
-</g:if>
-<g:if test="${session.Role == 'ROLE_SITEADMIN'}">
-	<a class="menuitem submenuheader" href="#"><g:message code="default.Users.label"/></a>
-	<div class="submenu">
-		<ul>
-			<li><a href="${createLinkTo(dir:'user/create')}" target="right"><g:message code="default.AddUser.label"/></a></li>				
-			<li><a href="${createLinkTo(dir:'user/list')}" target="right"><g:message code="default.UsersList.label"/></a></li>
-			<li><a href="${createLinkTo(dir:'user/accessControlEntry')}" target="right"><g:message code="default.ProjectPermission.label"/></a></li>
-			<li><a href="${createLinkTo(dir:'rolePrivileges/create')}" target="right"><g:message code="default.AccessPermission.label"/></a></li>
-			<li><a href="${createLinkTo(dir:'rolePrivileges/newRolePrivileges')}" target="right"><g:message code="default.RolePrivileges.label"/></a></li>
-		</ul>
-	</div>
-</g:if>
-<g:if test="${session.Role == 'ROLE_SITEADMIN' || (session.Role == 'ROLE_PROJECTADMIN')}">
-	<a class="menuitem submenuheader" href="#"><g:message code="default.Masters.label"/></a>
-	<div class="submenu">
-		<ul>
-			<li><a href="${createLinkTo(dir:'partyGrantAgency/create')}" target="right"><g:message code="default.GrantAgency.label"/></a></li>
-			<li><a href="${createLinkTo(dir:'accountHeads/create')}" target="right"><g:message code="default.AccountHead.label"/></a></li>
-			<li><a href="${createLinkTo(dir:'grantPeriod/create')}" target="right"><g:message code="default.GrantPeriod.label"/></a></li>
-			<li><a href="${createLinkTo(dir:'projectType/create')}" target="right"><g:message code="default.ProjectType.label"/></a></li>
-			<li><a href="${createLinkTo(dir:'attachmentType/create')}" target="right"><g:message code="default.AttachmentType.label"/></a></li>
-			<li><a href="${createLinkTo(dir:'investigator/create')}" target="right"><g:message code="default.PI.label"/></a></li>
-			<li><a href="${createLinkTo(dir:'authority/create')}" target="right"><g:message code="default.AddRole.label"/></a></li>
-			<li><a href="${createLinkTo(dir:'employeeDesignation/create')}" target="right"><g:message code="default.EmployeeDesignation.label"/></a></li>
-			<li><a href="${createLinkTo(dir:'salaryComponent/create')}" target="right"><g:message code="default.SalaryComponent.label"/></a></li>
-			<li><a href="${createLinkTo(dir:'eligibilityCriteria/create')}" target="right"><g:message code="default.eligibilityCriteria.eligibilityCriteria.label"/></a></li>
-			<li><a href="${createLinkTo(dir:'proposalCategory/create')}" target="right"><g:message code="default.ProposalCategory.label"/></a></li>
-		</ul>
-	</div>
-</g:if>
+			<g:if test="${(session.Role == 'ROLE_REVIEWER')}">
+				<a class="menuitem submenuheader" href="#" ><g:message code="default.PreProposal.label"/></a>
+				<div class="submenu">
+					<ul>
+					<li><a href="${createLinkTo(dir:'proposalApproval/list')}" target="right"><g:message code="default.PreProposalApproval.label"/></a></li>
+					<li><a href="${createLinkTo(dir:'proposalApproval/reviewerStatus')}" target="right"><g:message code="default.ViewReview.label"/></a></li>
+					</ul>
+				</div>
+				<a class="menuitem submenuheader" href="#" ><g:message code="default.FullProposal.label"/></a>
+				<div class="submenu">
+					<ul>
+					<li><a href="${createLinkTo(dir:'proposalApproval/fullProposalList')}" target="right"><g:message code="default.FullProposalApproval.label"/></a></li>
+					<li><a href="${createLinkTo(dir:'proposalApproval/fullProposalReview')}" target="right"><g:message code="default.ViewReview.label"/></a></li>
+					</ul>
+				</div>
+				<a class="menuitem submenuheader" href="#" ><g:message code="default.ProposalList.label"/></a>
+				<div class="submenu">
+					<ul>
+					<li><a href="${createLinkTo(dir:'proposal/proposalApplicationList')}" target="right"><g:message code="default.ProposalList.label"/></a></li>
+					</ul>
+				</div>
+			</g:if>	
+			<g:if test="${(session.Role != 'ROLE_USER') && (session.Role != 'ROLE_STAFF')&& (session.Role != 'ROLE_REVIEWER')&& (session.Role != 'ROLE_FINANCE')}">
+				<a class="menuitem submenuheader" href="#" ><g:message code="default.Projects.label"/></a>
+				<div class="submenu">
+					<ul>
+						<g:if test="${session.Role == 'ROLE_SITEADMIN'}">
+							<li><a href="${createLinkTo(dir:'projects/create')}" target="right"><g:message code="default.AddProjects.label"/></a></li>
+							<li><a href="${createLinkTo(dir:'projects/list')}" target="right"><g:message code="default.ProjectList.label"/></a></li>
+							<li><a href="${createLinkTo(dir:'projects/search')}" target="right"><g:message code="default.SearchProjects.label"/></a></li>
+							<!-- <li><a href="${createLinkTo(dir:'projects/inactiveProjectsList')}" target="right">Inactive Projects</a></li> -->
+						</g:if>	
+						<g:if test="${(session.Role == 'ROLE_PROJECTADMIN') || (session.Role == 'ROLE_SITEADMIN')}">		  
+							<li><a href="${createLinkTo(dir:'notification/list')}" target="right"><g:message code="default.CallForProposal.label"/></a></li>
+							<li><a href="${createLinkTo(dir:'notificationsEmails/partyNotificationsList')}" target="right"><g:message code="default.ProposalManagement.label"/></a></li>
+						</g:if>	
+					</ul>
+				</div>
+			</g:if>
+			<g:if test="${(session.Role != 'ROLE_SITEADMIN') && (session.Role != 'ROLE_STAFF')&& (session.Role != 'ROLE_REVIEWER')&& (session.Role != 'ROLE_FINANCE')}">
+				<a class="menuitem submenuheader" href="#" ><g:message code="default.Award.label"/></a>
+				<div class="submenu">
+					<ul>
+						<li><a href="${createLinkTo(dir:'projects/list')}" target="right"><g:message code="default.ProjectList.label"/></a></li>
+						<li><a href="${createLinkTo(dir:'projects/search')}" target="right"><g:message code="default.SearchProjects.label"/></a></li>
+					</ul>
+				</div>
+			</g:if>	
+			<g:if test="${(session.Role == 'ROLE_PROJECTADMIN') || (session.Role == 'ROLE_SITEADMIN')}">
+				<a class="menuitem submenuheader" href="#"><g:message code="default.Institution.label"/></a>
+				<div class="submenu">
+					<ul>
+						<li><a href="${createLinkTo(dir:'partyDepartment/create')}" target="right"><g:message code="default.AddDepartment.label"/></a></li>				 
+				        <li><a href="${createLinkTo(dir:'party/list')}" target="right"><g:message code="default.InstitutionList.label"/></a></li>         
+					</ul>
+				</div>
+			</g:if>
+			<g:if test="${session.Role == 'ROLE_SITEADMIN'}">
+				<a class="menuitem submenuheader" href="#"><g:message code="default.Users.label"/></a>
+				<div class="submenu">
+					<ul>
+						<li><a href="${createLinkTo(dir:'user/create')}" target="right"><g:message code="default.AddUser.label"/></a></li>				
+						<li><a href="${createLinkTo(dir:'user/list')}" target="right"><g:message code="default.UsersList.label"/></a></li>
+						<li><a href="${createLinkTo(dir:'user/accessControlEntry')}" target="right"><g:message code="default.ProjectPermission.label"/></a></li>
+						<li><a href="${createLinkTo(dir:'rolePrivileges/create')}" target="right"><g:message code="default.AccessPermission.label"/></a></li>
+						<li><a href="${createLinkTo(dir:'rolePrivileges/newRolePrivileges')}" target="right"><g:message code="default.RolePrivileges.label"/></a></li>
+					</ul>
+				</div>
+			</g:if>
+			<g:if test="${session.Role == 'ROLE_SITEADMIN' || (session.Role == 'ROLE_PROJECTADMIN')}">
+				<a class="menuitem submenuheader" href="#"><g:message code="default.Masters.label"/></a>
+				<div class="submenu">
+					<ul>
+						<li><a href="${createLinkTo(dir:'partyGrantAgency/create')}" target="right"><g:message code="default.GrantAgency.label"/></a></li>
+						<li><a href="${createLinkTo(dir:'accountHeads/create')}" target="right"><g:message code="default.AccountHead.label"/></a></li>
+						<li><a href="${createLinkTo(dir:'grantPeriod/create')}" target="right"><g:message code="default.GrantPeriod.label"/></a></li>
+						<li><a href="${createLinkTo(dir:'projectType/create')}" target="right"><g:message code="default.ProjectType.label"/></a></li>
+						<li><a href="${createLinkTo(dir:'attachmentType/create')}" target="right"><g:message code="default.AttachmentType.label"/></a></li>
+						<li><a href="${createLinkTo(dir:'investigator/create')}" target="right"><g:message code="default.PI.label"/></a></li>
+						<li><a href="${createLinkTo(dir:'authority/create')}" target="right"><g:message code="default.AddRole.label"/></a></li>
+						<li><a href="${createLinkTo(dir:'employeeDesignation/create')}" target="right"><g:message code="default.EmployeeDesignation.label"/></a></li>
+						<li><a href="${createLinkTo(dir:'salaryComponent/create')}" target="right"><g:message code="default.SalaryComponent.label"/></a></li>
+						<li><a href="${createLinkTo(dir:'eligibilityCriteria/create')}" target="right"><g:message code="default.eligibilityCriteria.eligibilityCriteria.label"/></a></li>
+						<li><a href="${createLinkTo(dir:'proposalCategory/create')}" target="right"><g:message code="default.ProposalCategory.label"/></a></li>
+					</ul>
+				</div>
+			</g:if>
+			
+			<g:if test="${(session.Role == 'ROLE_FINANCE')}">
+				<div><a class="menuitem" href="${createLinkTo(dir:'expenseRequestEntry/financeLogin')}" target="right"><g:message code="default.ExpenseRequestList.label"/></a></div>
+			</g:if>
+			
+			<a class="menuitem submenuheader" href="#" ><g:message code="default.ApprovalAuthority.label"/></a>
+				<div class="submenu">
+					<ul>
+						<li><a href="${createLinkTo(dir:'approvalAuthority/create')}" target="right"><g:message code="default.AddApprovalAuthority.label"/></a></li>
+					</ul>
+				</div>
+			<g:if test="${session.Role == 'ROLE_SITEADMIN'}">
+				<a class="menuitem submenuheader" href="#" ><g:message code="default.AssignProposal.label"/></a>
+					<div class="submenu">
+						<ul>
+							<li><a href="${createLinkTo(dir:'proposalApprovalAuthorityMap/create')}" target="right"><g:message code="default.AssignProposaltoApprovalAuthority.label"/></a></li>
+							<li><a href="${createLinkTo(dir:'preProposal/uploadProposalForm')}" target="right"><g:message code="default.UploadProposalForm.label"/></a></li>
+						</ul>
+					</div>
+			    </g:if>
+			
+			<g:if test="${(session.Role == 'ROLE_PI')}">
+				<div><a class="menuitem" href="${createLinkTo(dir:'expenseRequestEntry/create')}" target="right"><g:message code="default.ExpenseRequestEntry.label"/></a></div>
+			</g:if>
+			
+			
 
-<g:if test="${(session.Role != 'ROLE_USER') && (session.Role != 'ROLE_STAFF')&& (session.Role != 'ROLE_REVIEWER')}">
-	<a class="menuitem submenuheader" href="#" ><g:message code="default.ApprovalAuthority.label"/></a>
-	<div class="submenu">
-		<ul>
-		<g:if test="${session.Role == 'ROLE_SITEADMIN'}">
-		<li><a href="${createLinkTo(dir:'approvalAuthority/create')}" target="right"><g:message code="default.AddApprovalAuthority.label"/></a></li>
-		
-		</g:if>
-		</ul>
-		</div>
-		<a class="menuitem submenuheader" href="#" ><g:message code="default.AssignProposal.label"/></a>
-	<div class="submenu">
-		<ul>
-		<g:if test="${session.Role == 'ROLE_SITEADMIN'}">
-		<li><a href="${createLinkTo(dir:'proposalApprovalAuthorityMap/create')}" target="right"><g:message code="default.AssignProposaltoApprovalAuthority.label"/></a></li>
-		<li><a href="${createLinkTo(dir:'preProposal/uploadProposalForm')}" target="right"><g:message code="default.UploadProposalForm.label"/></a></li>
-		</g:if>
-		</ul>
-		</div>
-      
-        </g:if>
+				<g:if test="${(session.Role != 'ROLE_STAFF') && (session.Role != 'ROLE_REVIEWER')}">
+					<a class="menuitem submenuheader" href="#"><g:message code="default.Reports.label"/></a>
+					<div class="submenu">
+						<ul>
+						    <li><a href="${createLinkTo(dir:'grantAllocation/reports')}" target="right"><g:message code="default.ProjectReports.label"/></a></li>
+							<li><a href="${createLinkTo(dir:'grantAllocationTracking/grantAllocationTrackingReports')}" target="right"><g:message code="default.ProjectStatusReports.label"/></a></li>
+							<li><a href="${createLinkTo(dir:'utilization/list')}" target="right"><g:message code="default.UtilizationCertificates.label"/></a></li>      	
+							<li><a href="${createLinkTo(dir:'grantAllocation/grantReports')}" target="right"><g:message code="default.StatisticalReports.label"/></a></li>
+							<li><a href="${createLinkTo(dir:'notification/granteeReports')}" target="right"><g:message code="default.GrantAgencyReports.label"/></a></li>
+							<li><a href="${createLinkTo(dir:'grantAllocation/auditLoggingReport')}" target="right"><g:message code="default.AuditLoggingReport.label"/></a></li>
+										
+						</ul>
+					</div>
+				</g:if>
+				<div><a class="menuitem" href="${createLinkTo(dir:'expenseRequestEntry/expenseApprovalRequest')}" target="right"><g:message code="default.ExpenseApprovalRequestList.label"/></a></div>
+				<div><a class="menuitem" href="${createLinkTo(dir:'user/changePassword')}" target="right"><g:message code="default.ChangePassword.label"/></a></div>	
+				<div><a class="menuitem" href="${createLinkTo(dir:'logout')}" target="_parent"><g:message code="default.Logout.label"/></a></div>	
+			</div>
+	
+	</body>
 
-<!--<g:if test="${session.Role == 'ROLE_SITEADMIN'}">
-	<div><a class="menuitem" href="${createLinkTo(dir:'projectEmployee/addemp')}" target="right" ><g:message code="default.HRManagement.label"/></a></div>
-	<div><a class="menuitem" href="${createLinkTo(dir:'itemPurchase/purchase')}" target="right"><g:message code="default.AssetManagement.label"/></a></div>
-	
-</g:if>-->
-<g:if test="${(session.Role != 'ROLE_STAFF') && (session.Role != 'ROLE_REVIEWER')}">
-	<a class="menuitem submenuheader" href="#"><g:message code="default.Reports.label"/></a>
-	<div class="submenu">
-		<ul>
-		    <li><a href="${createLinkTo(dir:'grantAllocation/reports')}" target="right"><g:message code="default.ProjectReports.label"/></a></li>
-			<li><a href="${createLinkTo(dir:'grantAllocationTracking/grantAllocationTrackingReports')}" target="right"><g:message code="default.ProjectStatusReports.label"/></a></li>
-			<li><a href="${createLinkTo(dir:'utilization/list')}" target="right"><g:message code="default.UtilizationCertificates.label"/></a></li>      	
-			<li><a href="${createLinkTo(dir:'grantAllocation/grantReports')}" target="right"><g:message code="default.StatisticalReports.label"/></a></li>
-			<li><a href="${createLinkTo(dir:'notification/granteeReports')}" target="right"><g:message code="default.GrantAgencyReports.label"/></a></li>
-			<li><a href="${createLinkTo(dir:'grantAllocation/auditLoggingReport')}" target="right"><g:message code="default.AuditLoggingReport.label"/></a></li>
-						
-		</ul>
-	</div>
-	</g:if>
-	<div><a class="menuitem" href="${createLinkTo(dir:'user/changePassword')}" target="right"><g:message code="default.ChangePassword.label"/></a></div>	
-	<div><a class="menuitem" href="${createLinkTo(dir:'logout')}" target="_parent"><g:message code="default.Logout.label"/></a></div>	
-	</div>
-	
-</body>
 </html>

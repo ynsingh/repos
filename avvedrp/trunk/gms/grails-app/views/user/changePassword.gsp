@@ -37,20 +37,29 @@
 					</tr>
 
 					<tr class="prop">
-						<td valign="top" class="name"><label for="passwd"><g:message code="default.OldPassword.label"/>:</label></td>
+						<td valign="top" class="name">
+						<label for="passwd"><g:message code="default.OldPassword.label"/>:</label>
+						 <label for="passwd" style="color:red;font-weight:bold"> * </label>
+						</td>
 						<td valign="top" >
 							<input type="password" id="oldPasswd" name="oldPasswd" />
 						</td>
 					</tr>
 					
 					<tr class="prop">
-						<td valign="top" class="name"><label for="passwd"><g:message code="default.NewPassword.label"/>:</label></td>
+						<td valign="top" class="name">
+						<label for="passwd"><g:message code="default.NewPassword.label"/>:</label>
+						<label for="passwd" style="color:red;font-weight:bold"> * </label>
+						</td>
 						<td valign="top" >
 							<input type="password" id="newPasswd" name="newPasswd" />
 						</td>
 					</tr>
 					<tr class="prop">
-						<td valign="top" class="name"><label for="passwd"><g:message code="default.ConfirmPassword.label"/>:</label></td>
+						<td valign="top" class="name">
+						<label for="passwd"><g:message code="default.ConfirmPassword.label"/>:</label>
+						<label for="passwd" style="color:red;font-weight:bold"> * </label>
+						</td>
 						<td valign="top" >
 							<input type="password" id="confirmNewPasswd" name="confirmNewPasswd" />
 						</td>

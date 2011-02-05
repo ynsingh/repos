@@ -27,7 +27,8 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="name"><g:message code="default.Name.label" /></label>
+                                    <label for="name"><g:message code="default.Name.label" />:</label>
+                                    <label for="name" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: proposalCategoryInstance, field: 'name', 'errors')}">
                                     <g:textField name="name" value="${proposalCategoryInstance?.name}" />
@@ -36,7 +37,7 @@
                             <tr class="prop">
                             
                              <td valign="top" class="name">
-			                     <label for="defaultYesNo"><g:message code="default.Active.label" /></label>
+			                     <label for="defaultYesNo"><g:message code="default.Active.label" />:</label>
 			                       </td>
 		                  <td valign="top" class="value ${hasErrors(bean:proposalCategoryInstance,field:'activeYesNo','errors')}">
 		                  <g:select name="activeYesNo" from="${['Y', 'N']}"  value="${fieldValue(bean:proposalCategoryInstance,field:'activeYesNo')}" />
@@ -45,7 +46,7 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="remarks"><g:message code="default.Remarks.label" /></label>
+                                    <label for="remarks"><g:message code="default.Remarks.label" />:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: proposalCategoryInstance, field: 'remarks', 'errors')}">
                                     <g:textArea name="remarks" value="${proposalCategoryInstance?.remarks}" />
@@ -57,7 +58,7 @@
                     </table>
                 </div>
                 <div class="buttons">
-                    <span class="button"><g:submitButton name="create" class="save" value="${message(code: 'default.button.create.label', default: 'Create')}" /></span>
+                    <span class="button"><g:submitButton name="create" class="save" onClick="return validateProposalCategory()" value="${message(code: 'default.button.create.label', default: 'Create')}" /></span>
                 </div>
             </g:form>
         </div>
@@ -73,15 +74,15 @@
                     <thead>
                         <tr>
                         
-                            <g:sortableColumn property="id" title="${message(code: 'proposalCategory.id.label', default: 'Id')}" />
+                            <g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}" />
                         
-                            <g:sortableColumn property="name" title="${message(code: 'proposalCategory.name.label', default: 'Name')}" />
+                            <g:sortableColumn property="name" title="${message(code: 'default.Name.label')}" />
                         
-                            <g:sortableColumn property="remarks" title="${message(code: 'proposalCategory.remarks.label', default: 'Remarks')}" />
+                            <g:sortableColumn property="remarks" title="${message(code: 'default.Remarks.label')}" />
                         
-                            <g:sortableColumn property="activeYesNo" title="${message(code: 'proposalCategory.activeYesNo.label', default: 'Active Yes No')}" />
+                            <g:sortableColumn property="activeYesNo" title="${message(code: 'default.Active.label')}" />
                         
-                           <g:sortableColumn property="edit" title="${message(code: 'preProposal.edit.label', default: 'Edit')}" />
+                           <g:sortableColumn property="edit" title="${message(code: 'default.Edit.label')}" />
                         </tr>
                     </thead>
                     <tbody>
@@ -96,7 +97,7 @@
                         
                             <td>${fieldValue(bean: proposalCategoryInstance, field: "activeYesNo")}</td>
                             
-                          <td><g:link action="edit" id="${fieldValue(bean:proposalCategoryInstance, field:'id')}">Edit</g:link></td>
+                          <td><g:link action="edit" id="${fieldValue(bean:proposalCategoryInstance, field:'id')}"><g:message code="default.Edit.label" /></g:link></td>
                         
                         </tr>
                     </g:each>

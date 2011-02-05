@@ -6,7 +6,7 @@
     </head>
     <body>
         <div class="wrapper"> 
-        <g:if test="${projectsInstance.status =='Closed'}">
+        <g:if test="${projectsInstance?.status =='Closed'}">
     	</g:if>
     	<g:else>
     		<g:subMenuList/>
@@ -42,7 +42,7 @@
                         
                                   <tr class="prop">
                                       <td valign="top" class="name">
-                                          <label for="projectStatus"><g:message code="default.ProjectStatus.label"/></label>
+                                          <label for="projectStatus"><g:message code="default.ProjectStatus.label"/></label>:
                                       </td>
                                       <td valign="top" class="value ${hasErrors(bean:projectTrackingInstance,field:'projectStatus','errors')}">
                                           <g:select name="projectStatus" from="${['Open','Deadline Passed','Grant Funded','Closed']}"  value="${fieldValue(bean:projectTrackingInstance,field:'projectStatus')}" />
@@ -52,7 +52,8 @@
                         
                                   <tr class="prop">
                                       <td valign="top" class="name">
-                                          <label for="percOfCompletion"><g:message code="default.PercentageOfCompletion.label"/></label>
+                                          <label for="percOfCompletion"><g:message code="default.PercentageOfCompletion.label"/></label>:
+                                          <label for="percOfCompletion" style="color:red;font-weight:bold"> * </label>
                                       </td>
                                       <td valign="top" class="value ${hasErrors(bean:projectTrackingInstance,field:'percOfCompletion','errors')}">
                                           <input type="text" id="percOfCompletion" name="percOfCompletion" value="${fieldValue(bean:projectTrackingInstance,field:'percOfCompletion')}" />
@@ -61,7 +62,7 @@
                         
                                   <tr class="prop">
                                       <td valign="top" class="name">
-                                          <label for="dateOfTracking"><g:message code="default.Date.label"/></label>
+                                          <label for="dateOfTracking"><g:message code="default.Date.label"/></label>:
                                       </td>
                                       <td valign="top" class="value ${hasErrors(bean:projectTrackingInstance,field:'dateOfTracking','errors')}">
                                           <calendar:datePicker name="dateOfTracking" defaultValue="${new Date()}" value="${projectTrackingInstance?.dateOfTracking}" dateFormat= "%d/%m/%Y"/>
@@ -70,7 +71,7 @@
                             
                                   <tr class="prop">
                                       <td valign="top" class="name">
-                                          <label for="remarks"><g:message code="default.Remarks.label"/></label>
+                                          <label for="remarks"><g:message code="default.Remarks.label"/></label>:
                                       </td>
                                       <td valign="top" class="value ${hasErrors(bean:projectTrackingInstance,field:'remarks','errors')}">
                                           <g:textArea name="remarks" value="${fieldValue(bean:projectTrackingInstance,field:'remarks')}" rows="3" cols="30"/>

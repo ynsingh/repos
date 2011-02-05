@@ -8,6 +8,7 @@
 		<div class="wrapper">
 			<g:form action="listReport" method="post" name="auditLoggingReport" >
 				<div class="body">
+				<h1><g:message code="default.AuditLoggingReport.label"/></h1>
 			    	<div class="dialog">
 			        	<table width="95%">
 			            	<tbody>

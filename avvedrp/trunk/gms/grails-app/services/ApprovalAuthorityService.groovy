@@ -87,4 +87,12 @@ class ApprovalAuthorityService {
  			return approvalAuthorityDeletedId			
  	  	}
  	}
+     /*
+      * check Aupproval Authority exists
+      */
+     public checkDuplicateApprovalAuthority(def params)
+   	{
+   		 def chkApprovalAuthorityInstance = ApprovalAuthority.findAll("from  ApprovalAuthority A where A.name= '"+params.name+"' and A.activeYesNo = 'Y'")
+   		 return chkApprovalAuthorityInstance
+   	}
 }

@@ -27,6 +27,7 @@
                             <tr class="prop">
                                 <td valign="top" class="name">
                                 	<label for="code"><g:message code="default.DepartmentCode.label"/>:</label>
+                                    <label for="code" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:partyDepartmentInstance,field:'departmentCode','errors')}">
                                     <input type="text" id="departmentCode" name="departmentCode" value="${fieldValue(bean:partyDepartmentInstance,field:'departmentCode')}"/>
@@ -37,6 +38,7 @@
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="code"><g:message code="default.DepartmentName.label"/>:</label>
+                                    <label for="code" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:partyDepartmentInstance,field:'name','errors')}">
                                     <input type="text" id="name" name="name" value="${fieldValue(bean:partyDepartmentInstance,field:'name')}"/>
@@ -61,9 +63,7 @@
         </div>
          <div class="body">
             <h1><g:message code="default.DepartmentList.head"/></h1>
-            <g:if test="${flash.message}">
-            <div class="message">${flash.message}</div>
-            </g:if>
+           
             <div class="list">
                 <table>
                     <thead>

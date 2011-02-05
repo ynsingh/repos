@@ -89,6 +89,7 @@ class InvestigatorController {
     	println "------------------params------"+params
     	GrailsHttpSession gh=getSession()
     	def investigatorInstance = Investigator.get( params.id )
+    	def partyinstance=Party.get(gh.getValue("Party"))
     	def partyDepartmentService=new PartyDepartmentService()
         def departmentList=partyDepartmentService.getActiveDepartment(gh.getValue("PartyID"))
         if(!investigatorInstance) {
@@ -96,7 +97,7 @@ class InvestigatorController {
             redirect(action:create)
         }
         else {
-            return [ investigatorInstance : investigatorInstance ,'departmentList':departmentList]
+            return [ investigatorInstance : investigatorInstance ,'departmentList':departmentList,'partyinstance':partyinstance]
         }
     }
 
@@ -105,38 +106,72 @@ class InvestigatorController {
     		println "iiiiiiiiiiiiiiiiiiiiitest......................."
     		def investigatorInstance = Investigator.get( params.id )
     		def investigatorService = new InvestigatorService()
+    		def ctx = AH.application.mainContext
+    		def springSecurityService=ctx.springSecurityService
+    		def investigatorInstanceList
+    		GrailsHttpSession gh=getSession()
+    		def partyinstance=Party.get(gh.getValue("Party"))
+    		println"---params---"+params.name
+    		
     		if(investigatorInstance) 
     		{
     			investigatorInstance.properties = params
     			def chkUniqueNameInstance = investigatorService.getUniqueName(params)
     			def chkUniqueEmailInstance = investigatorService.getUniqueEmail(params)
     			
-    			if(chkUniqueNameInstance && chkUniqueNameInstance[0].id != Long.parseLong(params.id))
-    			{
-    				flash.message = "${message(code: 'default.investigatorexistswithsamename.label')}"
-    				redirect(action:edit,id:investigatorInstance.id)
-    			}
-    			else
-    			{
+    			
     				if(chkUniqueEmailInstance && chkUniqueEmailInstance[0].id != Long.parseLong(params.id))
     				{
-    					flash.message ="${message(code: 'default.investigatorexistswithsameEmail.label')}"
+    					flash.message ="${message(code: 'default.UserNamealreadyexists.label')}"
     					redirect(action:edit,id:investigatorInstance.id)
     				}
     				else
     				{
-    					if(!investigatorInstance.hasErrors() && investigatorInstance.save()) 
+    					EmailValidator emailValidator = EmailValidator.getInstance()
+    		        	if (emailValidator.isValid(params.email))
+    		        	{
+    		        		investigatorInstance.activeYesNo="Y" //15-11-2010	
+    		        		if(!investigatorInstance.hasErrors() && investigatorInstance.save()) 
+    		        		{
+    		        			flash.message = "${message(code: 'default.updated.label')}"
+    		        				redirect(action:create,id:investigatorInstance.id)
+    		        		}
+    		        		else 
+    		        		{
+    		        			render(view:'edit',model:[investigatorInstance:investigatorInstance,partyinstance:partyinstance])
+    		        		}
+    		        	}
+    		            
+    		        	
+    					else
     					{
-    						flash.message = "${message(code: 'default.updated.label')}"
-    						redirect(action:create,id:investigatorInstance.id)
+    						
+    						String subQuery ="";
+    				        if(params.sort != null && !params.sort.equals(""))
+    				        	subQuery=" order by I."+params.sort
+    				        if(params.order != null && !params.order.equals(""))
+    				        	subQuery =subQuery+" "+params.order
+    				        if(gh.getValue("Role")=="ROLE_ADMIN")
+    						        {
+    						        	investigatorInstanceList = investigatorService.getAllInvestigators(subQuery)
+    						        }
+    						        else
+    						        {
+    						        	
+    						        	investigatorInstanceList =investigatorService.getInvestigatorsWithParty(gh.getValue("PartyID"),subQuery)
+    						        }
+    						def partyDepartmentService = new PartyDepartmentService()
+    						def departmentList=partyDepartmentService.getActiveDepartment(gh.getValue("PartyID"))
+    						flash.message = "${message(code: 'default.EntervalidEmailAddress.label')}"
+    						render(view:'edit',model:[investigatorInstance:investigatorInstance,partyinstance:partyinstance,departmentList:departmentList,investigatorInstanceList:investigatorInstanceList])
     					}
-    					else 
-    					{
-    					render(view:'edit',model:[investigatorInstance:investigatorInstance])
-    					}
+    		         
+    				
+    					
+    					
     				}
     			}
-    		}
+    		
     		else 
     		{
     			flash.message = "${message(code: 'default.notfond.label')}"
@@ -190,13 +225,16 @@ class InvestigatorController {
 		def ctx = AH.application.mainContext
 		def springSecurityService=ctx.springSecurityService
         def investigatorInstance = new Investigator(params)
+		def investigatorInstanceList
 		println"---params---"+params.name
+		GrailsHttpSession gh=getSession()
 		def investigatorService=new InvestigatorService()
         def partyinstance = Party.get(params.institution)
         investigatorInstance.party = partyinstance
         def chkUniqueNameInstance = investigatorService.getUniqueName(params)
         def chkUniqueEmailInstance = investigatorService.getUniqueEmail(params)
         Integer userId  = userService.getUserByUserName(params.email)
+        
         println "userId"+userId
         println"..............chkUniqueEmailInstance..........."+chkUniqueEmailInstance
         println"..............chkUniqueNameInstance..........."+chkUniqueNameInstance
@@ -269,8 +307,25 @@ class InvestigatorController {
 	        }
 			else
 			{
+				
+				String subQuery ="";
+		        if(params.sort != null && !params.sort.equals(""))
+		        	subQuery=" order by I."+params.sort
+		        if(params.order != null && !params.order.equals(""))
+		        	subQuery =subQuery+" "+params.order
+		        if(gh.getValue("Role")=="ROLE_ADMIN")
+				        {
+				        	investigatorInstanceList = investigatorService.getAllInvestigators(subQuery)
+				        }
+				        else
+				        {
+				        	
+				        	investigatorInstanceList =investigatorService.getInvestigatorsWithParty(gh.getValue("PartyID"),subQuery)
+				        }
+				def partyDepartmentService = new PartyDepartmentService()
+				def departmentList=partyDepartmentService.getActiveDepartment(gh.getValue("PartyID"))
 				flash.message = "${message(code: 'default.EntervalidEmailAddress.label')}"
-				render(view:'create',model:[investigatorInstance:investigatorInstance,partyinstance:partyinstance])
+				render(view:'create',model:[investigatorInstance:investigatorInstance,partyinstance:partyinstance,departmentList:departmentList,investigatorInstanceList:investigatorInstanceList])
 			}
          }
         

@@ -87,4 +87,20 @@ class ProposalApprovalService {
     	def proposalApprovalInstanceList=ProposalApproval.findAll("from ProposalApproval PA where PA.approvalAuthorityDetail.person.id="+userId+"and PA.proposalApprovalAuthorityMap.proposalType='"+proposalType+"'")
     	return proposalApprovalInstanceList
     }
+    
+    
+    def getProposalApprovalInstanceListByProposalApprovalAuthorityMapInstance(def approvalAuthorityDetailInstanceList,def proposalApprovalAuthorityMapInstance)
+    {
+    	def proposalApprovalInstanceList = []
+    	for(int j=0;j<approvalAuthorityDetailInstanceList.size();j++)
+		{
+	    	def proposalApprovalInstance = ProposalApproval.find("from ProposalApproval PA where PA.proposalApprovalAuthorityMap.id = "+proposalApprovalAuthorityMapInstance.id +"and PA.approvalAuthorityDetail.id = "+approvalAuthorityDetailInstanceList[j].id)
+	    	if(proposalApprovalInstance)
+	    	{
+	    		proposalApprovalInstanceList.add(proposalApprovalInstance)
+	    	}
+		}
+    	return proposalApprovalInstanceList
+    }
+    
 }

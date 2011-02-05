@@ -27,15 +27,18 @@
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="code"><g:message code="default.DepartmentCode.label"/>:</label>
+                                    <label for="code" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:partyDepartmentInstance,field:'departmentCode','errors')}">
                                     <input type="text" id="departmentCode" name="departmentCode" value="${fieldValue(bean:partyDepartmentInstance,field:'departmentCode')}"/>
+                                    <label for="departmentCode" style="color:blue;font-weight:bold"> <g:message code="default.department.shortname.label"/></label>
                                 </td>
                             </tr> 
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="code"><g:message code="default.DepartmentName.label"/>:</label>
+                                    <label for="code" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:partyDepartmentInstance,field:'name','errors')}">
                                     <input type="text" id="name" name="name" value="${fieldValue(bean:partyDepartmentInstance,field:'name')}"/>

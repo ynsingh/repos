@@ -170,9 +170,9 @@ GROUP BY GE.id]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="141"
+						x="74"
 						y="207"
-						width="262"
+						width="440"
 						height="18"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -187,14 +187,14 @@ GROUP BY GE.id]]></queryString>
 					<textElement textAlignment="Center" verticalAlignment="Top" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<text><![CDATA[(During the period from                    to                   )]]></text>
+				<text><![CDATA[(During the period from                                                        to                                          )]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="268"
-						y="206"
-						width="53"
+						x="237"
+						y="208"
+						width="70"
 						height="14"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -214,9 +214,9 @@ GROUP BY GE.id]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="331"
-						y="206"
-						width="57"
+						x="405"
+						y="207"
+						width="69"
 						height="14"
 						forecolor="#000000"
 						backcolor="#FFFFFF"

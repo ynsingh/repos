@@ -38,6 +38,7 @@
                             <td>${fieldValue(bean:partyNotificationsInstance, field:'notification.project.name')}</td>
                             <td><g:formatDate format="dd-MM-yyyy" date="${partyNotificationsInstance.notification.notificationDate}"/></td>
                            	<td><g:formatDate format="dd-MM-yyyy" date="${partyNotificationsInstance.notification.proposalSubmissionLastDate}"/></td>
+                           	<g:hiddenField name="proposalSubmissionLastDate${i}" value="${partyNotificationsInstance.notification.proposalSubmissionLastDate}" />
                            	<td>${GrantAllocation.findByProjects(partyNotificationsInstance.notification.project).party.nameOfTheInstitution}</td>
                            	<td><g:link action="showPartyNotifications" controller="notificationsEmails" id="${partyNotificationsInstance.notification.id}"><g:message code="${message(code: 'default.View.label')}"/></g:link></td>
                            	<td><%def proposalStatus = Proposal.find("from Proposal where party.id="+session.Party+" and notification.id="+partyNotificationsInstance.notification.id)%>
@@ -59,7 +60,7 @@
                            	</td>
 							<td>
 							    <g:form controller="proposal" action="save" id="${partyNotificationsInstance.notification.id}">  
-                     			 <g:actionSubmit class="link" value="${message(code: 'default.Apply.button')}" action="save"/>  
+                     			 <g:actionSubmit class="link" value="${message(code: 'default.Apply.button')}" onClick="return validateProposalsubmit(document.getElementById('proposalSubmissionLastDate${i}').value)" action="save" />  
                      			</g:form>
 							</td>                        
                         </tr>

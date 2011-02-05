@@ -2,7 +2,7 @@
 <g:select 																	       
        from="${accountHead}"
        name="subAccountHead" 
-       optionKey="id" optionValue="name" value="accountHead.id" noSelection="['null':'-Select-']" >
+       optionKey="id" optionValue="accHeadCode" value="accountHead.id" noSelection="['null':'-Select-']" >
 </g:select>
 </g:if>
 <g:else>

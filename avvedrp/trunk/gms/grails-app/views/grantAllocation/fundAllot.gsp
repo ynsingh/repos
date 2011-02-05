@@ -1,5 +1,3 @@
-
-
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -7,7 +5,7 @@
         <title><g:message code="default.FundAllocation.CreateFundAllocation.head"/></title>         
     </head>
     <body>
-    	<g:subMenuProjects/>
+    	<g:subMenuList/>
         <div class="wrapper">
           <div class="body">
             <h1><g:message code="default.FundAllocation.CreateFundAllocation.head"/></h1>
@@ -19,7 +17,7 @@
                 <g:renderErrors bean="${grantAllocationInstance}" as="list" />
             </div>
             </g:hasErrors>
-            <form action="funtSave" method="post" >
+            <form method="post" >
                 <div class="dialog">
                 <g:hiddenField name="ProjectStartDate" 
 		    					value="${fieldValue(bean:projectsInstance, field:'projectStartDate')}"/>
@@ -34,6 +32,7 @@
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:grantAllocationInstance,field:'projects','errors')}">
                                    <strong> ${projectsInstance.code} </strong>
+                                   <input type="hidden" name="id" value="${projectsInstance.id}">
                                 </td>
                                 
                                 
@@ -68,16 +67,16 @@
                                     <calendar:datePicker name="dateOfAllocation" defaultValue="${new Date()}" 
                                     	value="${grantAllocationInstance?.dateOfAllocation}" dateFormat= "%d/%m/%Y"/>
                                 </td>
-                            
                                 <td valign="top" class="name">
                                     <label for="amountAllocated"><g:message code="default.AmountAllocated(Rs).label"/>:</label>
+                                    <label for="amountAllocated" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:grantAllocationInstance,field:'amountAllocated','errors')}">
-                                    <input type="text" id="amountAllocated" name="amountAllocated" value="${fieldValue(bean:grantAllocationInstance,field:'amountAllocated')}" style="text-align: right" />
+                                    <input type="text" id="amountAllocated" name="amountAllocated" value="${amount}" style="text-align: right" />
                                 </td>
                             </tr> 
                         
-                      
+                     
                             <tr>
                                 <td valign="top" class="name">
                                     <label for="remarks"><g:message code="default.Remarks.label"/>:</label>
@@ -90,8 +89,10 @@
                         </tbody>
                     </table>
                 </div>
-                 <input  class="inputbutton" type="submit" name="funtSave" value="${message(code: 'default.Save.button')}"  onClick="return validateFundAllot()" >
-            </form>
+             <div class="buttons">
+ 				<span class="button"><g:actionSubmit class="save" name="funtSave" action="funtSave" value="${message(code: 'default.Save.button')}" onClick="return validateFundAllot()" /></span>
+             </div>
+             </form>
                </div>
                           
         <div class="body">       

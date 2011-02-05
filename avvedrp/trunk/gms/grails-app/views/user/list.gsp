@@ -36,7 +36,7 @@
 					<td>${userMap.user.username?.encodeAsHTML()}</td>
 					<td>${userMap.user.userRealName?.encodeAsHTML()}</td>
 					<td>${userMap.user.userSurName?.encodeAsHTML()}</td>
-				    <td>${authorityList[i].description}</td>
+				    <td>${authorityList[i].authority}</td>
 			        <g:if test="${session.Role == 'ROLE_SITEADMIN'}"> 
 					<td class="actionButtons">
 					 

@@ -42,27 +42,39 @@
 				<tbody>
 
 					<tr class="prop">
-						<td valign="top" class="name"><label for="email"><g:message code="default.Email.label"/>:</label></td>
+						<td valign="top" class="name">
+						<label for="email"><g:message code="default.Email.label"/>:</label>
+						<label for="email" style="color:red;font-weight:bold"> * </label>
+						</td>
 						<td valign="top" class="value ${hasErrors(bean:person,field:'user','errors')}">
 							<input type="text" id="email" name="email" value="${person?.user?.email?.encodeAsHTML()}"/>
 						</td>
 					</tr>    
 					<tr class="prop">
-						<td valign="top" class="name"><label for="passwd"><g:message code="default.Password.label"/>:</label></td>
+						<td valign="top" class="name">
+						<label for="passwd"><g:message code="default.Password.label"/>:</label>
+						<label for="passwd" style="color:red;font-weight:bold"> * </label>
+						</td>
 						<td valign="top" class="value ${hasErrors(bean:person,field:'user','errors')}">
 							<input type="password" id="password" name="password" value="${person?.user?.passwd?.encodeAsHTML()}"/>
 						</td>
 					</tr>
 					
 					<tr class="prop">
-						<td valign="top" class="name"><label for="confirmPasswd"><g:message code="default.ConfirmPassword.label"/>:</label></td>
+						<td valign="top" class="name">
+						<label for="confirmPasswd"><g:message code="default.ConfirmPassword.label"/>:</label>
+						<label for="confirmPasswd" style="color:red;font-weight:bold"> * </label>
+						</td>
 						<td valign="top" class="value">
 							<input type="password" id="confirmPasswd" name="confirmPasswd" value=""/>
 						</td>
 					</tr>
 					<tr class="prop">
 
-						<td valign="top" class="name"><label for="userRealName"><g:message code="default.FirstName.label"/>:</label></td>
+						<td valign="top" class="name">
+						<label for="userRealName"><g:message code="default.FirstName.label"/>:</label>
+						<label for="userRealName" style="color:red;font-weight:bold"> * </label>
+						</td>
 			           	<td valign="top" class="value ${hasErrors(bean:person,field:'user','errors')}">
 							<input type="text" id="userRealName" name="userRealName" value="${person?.user?.userRealName?.encodeAsHTML()}"/>
 						</td>
@@ -70,7 +82,10 @@
                           
                    <tr class="prop">
 
-						<td valign="top" class="name"><label for="userSurName"><g:message code="default.LastName.label"/>:</label></td>
+						<td valign="top" class="name">
+						<label for="userSurName"><g:message code="default.LastName.label"/>:</label>
+						<label for="userSurName" style="color:red;font-weight:bold"> * </label>
+						</td>
 
 						<td valign="top" class="value ${hasErrors(bean:person,field:'user','errors')}">
 							<input type="text" id="userSurName" name="userSurName" value="${person?.user?.userSurName?.encodeAsHTML()}"/>
@@ -79,6 +94,7 @@
 	                 <tr class="prop">
 	                        <td valign="top" class="name">
 	                            <label for="party"><g:message code="default.InstitutionCode.label"/>:</label>
+	                            <label for="party" style="color:red;font-weight:bold"> * </label>
 	                        </td>
 	                        <td valign="top" class="value ${hasErrors(bean:person,field:'party','errors')}">
 	                            <input type="text" id="code" name="party.code" value="${person?.party?.code}" >

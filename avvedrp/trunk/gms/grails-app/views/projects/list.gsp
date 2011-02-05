@@ -36,10 +36,7 @@
                    	        <th><g:message code="default.Investigator.label"/></th>
                    	          
                 	        <th align="center"><img src="/gms/images/attach1.png"/></th>
-                   	        <g:if test="${(session.Role == 'ROLE_SITEADMIN')}">   
-                   	       		<th><g:message code="default.Edit.label"/></th>
-                   	        </g:if>  
-                        
+                   	       		<th><g:message code="default.projects.Status.label"/></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -54,10 +51,7 @@
 	                           <td>${j}</td>
 	                                
 	                                 <%-- <td>${fieldValue(bean:grantAllocationInstance, field:'projects.parent.code')}</td>--%>
-	                               
-	                        
-	                           
-	                         <td><g:if test="${fieldValue(bean:grantAllocationInstance, field:'projects.activeYesNo') == 'Y'}">
+	                        <td><g:if test="${fieldValue(bean:grantAllocationInstance, field:'projects.activeYesNo') == 'Y'}">
 	                         		<g:if test="${(grantAllocationInstance.projects.status == 'Closed')}">   
 	                       				<g:link action="projectDash" controller='grantAllocation' id="${grantAllocationInstance.projects.id}" params="[projectStatus:'Closed']">
 		                         			${grantAllocationInstance.projects.name} - ${fieldValue(bean:grantAllocationInstance, field:'projects.code')}
@@ -90,15 +84,11 @@
 	                          
 	                           </g:else>
 	                           </td>
-	                        
-	                        <g:if test="${(session.Role == 'ROLE_SITEADMIN')}">   
-	                        	<g:if test="${(grantAllocationInstance.projects.status == 'Closed')}">   
-	                       			<td><g:message code="default.Closed.label"/></td>
-	                       		</g:if>
-	                       		<g:else>
-	                       			<td><g:link action="edit" id="${grantAllocationInstance.projects.id}"><g:message code="default.Edit.label" /></g:link></td>
-	                       		</g:else>
-	                        </g:if>
+	                        	<td>
+		                        	<g:if test="${(grantAllocationInstance.projects.status == 'Closed')}">   
+		                       			<g:message code="default.Closed.label"/>
+		                       		</g:if>
+	                       		</td>
 	                        </tr>
 	                        
 	                       </g:if>

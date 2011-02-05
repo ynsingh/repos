@@ -23,14 +23,30 @@ class AttachmentsController {
     }
 
     def create = {
-        def attachmentsInstance = new Attachments()
+		
+		def attachmentsInstance = new Attachments()
         GrailsHttpSession gh=getSession()
-        println "params id"+params
-       // attachmentsInstance.properties = params
-       	def grantAllocationInstance = attachmentsService.getGrantAllocationForParty(gh.getValue("Party"))
-		def attachmentsInstanceList = attachmentsService.getProjectUploadedAttachments(params.id)
-		def attachmentTypeList =attachmentsService.getattachmentTypes()
-		println "attachmentsInstanceList "+attachmentsInstanceList
+        def trackType = params.trackType
+        def grantAllocationInstance = attachmentsService.getGrantAllocationForParty(gh.getValue("Party"))
+		def attachmentsInstanceList = []
+		def attachmentTypeList = []
+		if(params.trackType == 'expenseRequestEntry')
+		{
+			attachmentTypeList = attachmentsService.getattachmentTypesByDocType('Invoice')
+			attachmentsInstanceList =attachmentsService.getAttachmentListbyDomainIdAndDomain(params.id,'expenseRequestEntry')
+		}
+		else
+		 if(params.trackType == 'grantExpense')
+			{
+			 attachmentTypeList = attachmentsService.getattachmentTypesByDocType('Receipt')
+			 attachmentsInstanceList =attachmentsService.getAttachmentListbyDomainIdAndDomain(params.id,'grantExpense')
+			}
+		else
+		{
+			attachmentTypeList = attachmentsService.getattachmentTypesByDocType('Project')
+			attachmentsInstanceList =attachmentsService.getAttachmentListbyDomainIdAndDomain(params.id,'Projects')
+			
+		}
         List<GrantAllocation> grantAllocationInstanceList 	
         
     	    	
@@ -43,15 +59,15 @@ class AttachmentsController {
     		
     	}
         return [attachmentsInstance: attachmentsInstance,
-                grantAllocationInstanceList:grantAllocationInstanceList,
+                grantAllocationInstanceList:grantAllocationInstanceList,trackType: trackType,
                 attachmentsInstanceList:attachmentsInstanceList,projects:params.id,attachmentTypeList: attachmentTypeList]
     }
 
     def save = {
-        //def attachmentsInstance = new Attachments(params)
-        def attachmentsInstance = new Attachments()
-        attachmentsInstance.domainId=params.projects
-        println "-=-=-=params-=-=-=-"+params.projects
+		def attachmentsInstance = new Attachments()
+		def attachmentTypeInstance = AttachmentType.find("from AttachmentType AT where AT.activeYesNo='Y' and AT.id=" +params.attachmentType.id)       
+		def documentType = attachmentTypeInstance.documentType
+		attachmentsInstance.domainId=params.projects
         def attachmentsName='Attachments'
     	def gmsSettingsService = new GmsSettingsService()
     	def gmsSettingsInstance = gmsSettingsService.getGmsSettings(attachmentsName)
@@ -70,11 +86,24 @@ class AttachmentsController {
         	if((fileName.lastIndexOf(".EXE")==-1)&&(fileName.lastIndexOf(".exe")==-1))
 			{
         		downloadedfile.transferTo(new File(webRootDir+fileName))
-        		println "params.achmentType.id"+params.attachmentType.id
-        		attachmentsInstance.domain="Projects"
+        		attachmentsInstance.domain=attachmentTypeInstance.documentType
         		attachmentsInstance.domainId=params.projects
         		attachmentsInstance.attachmentType=AttachmentType.get(params.attachmentType.id)
         		attachmentsInstance.attachmentPath=fileName
+        		if (documentType == 'Invoice')
+        		{
+        			attachmentsInstance.domain="expenseRequestEntry"
+        		}
+        		else 
+    			 if(documentType == 'Receipt')
+    			 {
+    				attachmentsInstance.domain="grantExpense"
+    				
+    			 }
+    			else
+        		{
+        			attachmentsInstance.domain="Projects"
+        		}
         		if (attachmentsInstance.save(flush: true)) {
                     flash.message = "${message(code: 'default.Fileuploaded.label')}"
                     
@@ -94,7 +123,8 @@ class AttachmentsController {
             flash.message = "${message(code: 'default.fileEmpty.label')}"
             
          }
-        redirect(action: "create", id: attachmentsInstance.domainId)
+        def trackType = attachmentsInstance.domain
+        redirect(action: "create", id: attachmentsInstance.domainId,params:[trackType:trackType])
         
     }
 
@@ -154,8 +184,9 @@ class AttachmentsController {
         if (attachmentsInstance) {
             try {
                 attachmentsInstance.delete(flush: true)
+                def trackType = attachmentsInstance.domain
                 flash.message = "${message(code: 'default.deleted.label')}"
-                redirect(action: "create",id:params.domainId)
+                redirect(action: "create",id:params.domainId,params:[trackType:trackType])
             }
             catch (org.springframework.dao.DataIntegrityViolationException e) {
                 flash.message = "${message(code: 'default.Fileinuse.label')}"
@@ -171,7 +202,6 @@ class AttachmentsController {
 	def downloadAttachments = {
 		def attachmentsInstance = Attachments.get( params.id )
 		def gmsSettingsService = new GmsSettingsService()
- 		println"++++++++++++++id+++++++++++"+params
  		def attachmentsName='Attachments'
  		def gmsSettingsInstance = gmsSettingsService.getGmsSettings(attachmentsName)
  		def webRootDir
@@ -186,7 +216,6 @@ class AttachmentsController {
         {
         	webRootDir = gmsSettingsInstance.value
         }
- 		println"++++++++++++++++++filename+++++++++"+fileName
  		def file = new File(webRootDir+fileName) 
  		def fname=file.getName()
  		

@@ -31,36 +31,23 @@ class LoginController {
 	 */
 	def index = {
 			 
-			 println "index"
-		if (springSecurityService.isLoggedIn()) {
-			
-			
-			
-			
-			
-			
+		println "index"
+		if (springSecurityService.isLoggedIn()) 
+		{
 			 Integer user=SCH.context.authentication.principal.id
 			 def role= SCH.context.authentication.principal.authorities.iterator().next()
-			 
 			 GrailsHttpSession gh=getSession()
-		   
 			 println "role_______+-="+SCH.context.authentication.principal.authorities
-			 println"user"+user
 			 def userMap=UserMap.find("from UserMap UM where UM.user.id="+user);
-			 println"userMap"+userMap
-	         println "role_______+-="+role
+			 println "role_______+-="+role
 	         gh.putValue("UserId", userMap.user.id);
-	      
-	          def PartyID=userMap.party.id
-		          
-		      println PartyID
-		      gh.putValue("Party", PartyID);
-	          gh.putValue("Help","Project_List.htm")
-	          gh.putValue("PartyID","('"+ PartyID.toString()+"')");
-	          redirect uri:'/grantAllocation/gmsFrame.gsp'
-			
-				 gh.putValue("Role", role);
-			//redirect uri: SpringSecurityUtils.securityConfig.successHandler.defaultTargetUrl
+			 def PartyID=userMap.party.id
+		     gh.putValue("Party", PartyID);
+	         gh.putValue("Help","Project_List.htm")
+	         gh.putValue("PartyID","('"+ PartyID.toString()+"')");
+	         redirect uri:'/grantAllocation/gmsFrame'
+	         gh.putValue("Role", role);
+	        //redirect uri: SpringSecurityUtils.securityConfig.successHandler.defaultTargetUrl
 		}
 		else {
 			redirect action: auth, params: params
@@ -71,8 +58,8 @@ class LoginController {
 	 * Show the login page.
 	 */
 	def auth = {
-			 println  "auth"
-			 GrailsHttpSession gh=getSession()
+		println  "auth"
+		GrailsHttpSession gh=getSession()
 		def config = SpringSecurityUtils.securityConfig
 		 println  "params:"+params
 		 if(params.lang!=null)
@@ -86,7 +73,7 @@ class LoginController {
 		 }
 		if (springSecurityService.isLoggedIn()) {
 			println  "indexisLoggedIn"+SCH.context.authentication.principal.username
-			 println  "authisLoggedIn"
+			println  "authisLoggedIn"
 			 redirect uri:'/projects/list'
 			return
 		}

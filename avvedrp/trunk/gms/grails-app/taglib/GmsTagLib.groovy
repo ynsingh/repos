@@ -3,6 +3,7 @@ class GmsTagLib {
 
 	
   def grantAllocationService
+  def proposalService
   
 
  
@@ -12,7 +13,8 @@ class GmsTagLib {
          }
   
   def subMenuList = {attrs ->
-		  out << g.render(template: '/subMenuList')
+		  out << g.render(template: '/subMenuList',model:
+		       [projectsInstance:  Projects.get(session.ProjectID)])
          }
          
          def subMenuProjects = {attrs ->
@@ -22,5 +24,11 @@ class GmsTagLib {
 		 def subMenuNotification = {attrs ->
 		  out << g.render(template: '/subMenuNotification')
 		 }
+  def pageNavigation = {attrs ->
+  def proposalApplicationInstance = proposalService.getProposalApplicationById(attrs.proposalApplicationInstance)
+  def proposalApplicationExtInstance = proposalService.getMaxPageOfProposalApplicationExt(proposalApplicationInstance?.id)
+  out << g.render(template: '/pageNavigation',model:['page':new Integer(attrs.page),'proposalApplicationInstance':proposalApplicationInstance,'lastPage':proposalApplicationExtInstance[0]])
+ }
+  
   
     }

@@ -78,7 +78,7 @@
              <div class="buttons">
                    
                
-                    <span class="button"><g:actionSubmit class="save" action="update" value="${message(code: 'default.Save.button')}" onClick="return (document.getElementById('status').value = 'Saved');"/></span>
+                    <span class="button"><g:actionSubmit class="save" action="update" value="${message(code: 'default.Update.button')}" onClick="return (document.getElementById('status').value = 'Saved');"/></span>
                     <span class="button"><g:actionSubmit class="save" action="update" value="${message(code: 'default.Submit.button')}" onClick="return (document.getElementById('status').value = 'Submitted');"/></span>
                </div>
                 </g:form>

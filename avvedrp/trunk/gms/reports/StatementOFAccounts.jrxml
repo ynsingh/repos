@@ -101,6 +101,8 @@ AND (P.parent_id =$P{projectID} OR P.id =$P{projectID})
 		)
 	AS GrantUpToEndDate)AS GrantUpToEndDate,
 	(0.00) AS OpeningBalance,
+	
+	
 	(SELECT 
 		SUM(total) 
 	 FROM
@@ -117,6 +119,23 @@ AND (P.parent_id =$P{projectID} OR P.id =$P{projectID})
 		GROUP BY 
 			GR.projects_id
 	)AS ReceiptsDuringPeriod)AS ReceiptsDuringPeriod,
+	
+	(SELECT 
+		SUM(total) 
+	 FROM
+		(SELECT 
+			IF(SUM(GR.amount) IS NULL,0,SUM(GR.amount)) AS total
+		FROM 
+			grant_receipt GR,
+			projects P 
+		WHERE 
+			
+			GR.projects_id =  P.id
+			AND (P.parent_id =$P{projectID} OR P.id =$P{projectID})
+			AND DATE(GR.date_of_receipt) < $P{reportDate}
+		GROUP BY 
+			GR.projects_id
+	)AS ReceiptsOpeningPeriod)AS ReceiptsOpeningPeriod,
 	(SELECT 
 		SUM(total) 
 	 FROM
@@ -145,6 +164,23 @@ AND (P.parent_id =$P{projectID} OR P.id =$P{projectID})
 		WHERE 
 			
 			GE.projects_id =  P.id
+			AND P.id =$P{projectID}
+			AND DATE(GE.date_of_expense) < $P{reportDate} 
+		GROUP BY 
+			GE.projects_id
+		)AS TotalOpenExpenditure)AS TotalOpenExpenditure,
+		
+		(SELECT 
+		SUM(total) 
+	 FROM
+		(SELECT 
+			IF(SUM(GE.expense_amount) IS NULL,0,SUM(GE.expense_amount)) AS total
+		FROM 
+			grant_expense GE,
+			projects P 
+		WHERE 
+			
+			GE.projects_id =  P.id
 			AND (P.parent_id =$P{projectID} OR P.id =$P{projectID})
 			AND DATE(GE.date_of_expense) BETWEEN $P{reportDate} AND $P{reportDateTo} 
 		GROUP BY 
@@ -155,7 +191,13 @@ AND (P.parent_id =$P{projectID} OR P.id =$P{projectID})
           grant_allocation ON(grant_allocation.id=FT.grant_allocation_id) INNER JOIN 
           projects ON(projects.id=grant_allocation.projects_id)
          WHERE projects.parent_id= $P{projectID} AND FT.date_of_transfer BETWEEN $P{reportDate} AND $P{reportDateTo}
-	 ) AS FundAmt
+	 ) AS FundAmt,
+	 
+	 (SELECT IF(SUM(amount) IS NULL,0,SUM(amount)) FROM fund_transfer FT INNER JOIN 
+          grant_allocation ON(grant_allocation.id=FT.grant_allocation_id) INNER JOIN 
+          projects ON(projects.id=grant_allocation.projects_id)
+         WHERE projects.parent_id= $P{projectID} AND FT.date_of_transfer < $P{reportDate} 
+	 ) AS FundOpenAmt
 	
 FROM 
 	projects PJ,
@@ -190,9 +232,12 @@ GROUP BY
 	<field name="GrantUpToEndDate" class="java.lang.Double"/>
 	<field name="OpeningBalance" class="java.math.BigDecimal"/>
 	<field name="ReceiptsDuringPeriod" class="java.lang.Double"/>
+	<field name="ReceiptsOpeningPeriod" class="java.lang.Double"/>
 	<field name="TotalExpenditure" class="java.lang.Double"/>
+	<field name="TotalOpenExpenditure" class="java.lang.Double"/>
 	<field name="TotalExpense" class="java.lang.Double"/>
 	<field name="FundAmt" class="java.lang.Double"/>
+	<field name="FundOpenAmt" class="java.lang.Double"/>
 
 	<variable name="TotalBudgetAmount" class="java.lang.Double" resetType="Report" calculation="Sum">
 		<variableExpression><![CDATA[
@@ -1276,28 +1321,6 @@ $F{BudgetAmount}!=null?$F{BudgetAmount}:new Double(0)]]></variableExpression>
 					<reportElement
 						mode="Transparent"
 						x="388"
-						y="373"
-						width="121"
-						height="15"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="textField-82"
-						stretchType="NoStretch"
-						positionType="FixRelativeToTop"
-						isPrintRepeatedValues="true"
-						isRemoveLineWhenBlank="false"
-						isPrintInFirstWholeBand="false"
-						isPrintWhenDetailOverflows="false"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
-						<font fontName="Times New Roman" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{OpeningBalance}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Transparent"
-						x="388"
 						y="391"
 						width="121"
 						height="18"
@@ -1820,6 +1843,31 @@ $F{BudgetAmount}!=null?$F{BudgetAmount}:new Double(0)]]></variableExpression>
 						<font fontName="Verdana" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<textFieldExpression   class="java.lang.Double"><![CDATA[$F{GrantAllocated}!=null?$F{GrantAllocated}:new Double(0)]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="395"
+						y="372"
+						width="112"
+						height="18"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-105"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Times New Roman" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[new Double(
+(($F{ReceiptsOpeningPeriod}!=null?$F{ReceiptsOpeningPeriod}:new Double(0)).doubleValue()) - 
+(($F{TotalOpenExpenditure}!=null?$F{TotalOpenExpenditure}:new Double(0)).doubleValue()+($F{FundOpenAmt}!=null?$F{FundOpenAmt}:new Double(0)).doubleValue()))
+]]></textFieldExpression>
 				</textField>
 			</band>
 		</title>

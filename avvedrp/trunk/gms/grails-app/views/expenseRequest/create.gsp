@@ -4,7 +4,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main" />
-        <title>Create ExpenseRequest</title>         
+        <title>Create Expense Request</title>         
     </head>
     <body>
     <div class="wrapper">

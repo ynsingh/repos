@@ -141,6 +141,13 @@ class PreProposalService {
     	 def preProposalValue= PreProposal.find("from PreProposal P where P.preProposalStatus='Submitted' and P.id="+proposalId)
     	 return preProposalValue
      }
-     
+     /*
+   	 * Check Proposal Category 
+   	 */
+   	 public checkDuplicatePreProposal(def params)
+   	{
+   		 def chkPreProposalInstance = PreProposal.findAll("from PreProposal P where P.projectTitle= '"+params.projectTitle+"' and P.activeYesNo='Y'")
+   		 return chkPreProposalInstance
+   	}
 
 }

@@ -16,16 +16,36 @@ class ProposalApprovalAuthorityMapController {
 		GrailsHttpSession gh=getSession()
         def proposalApprovalAuthorityMapInstance = new ProposalApprovalAuthorityMap()
         def preProposalService = new PreProposalService()
+		def approvalAuthorityService = new ApprovalAuthorityService()
+		def proposalApprovalAuthorityMapInstanceList = []
         proposalApprovalAuthorityMapInstance.properties = params
         def preProposalList = preProposalService.getSubmittedPreProposal(gh.getValue("Party"))
-        def approvalAuthorityInstance = ApprovalAuthority.findAll("from ApprovalAuthority A where A.party="+gh.getValue("Party"))
-        println"preProposalList"+preProposalList
-        return ['proposalApprovalAuthorityMapInstance': proposalApprovalAuthorityMapInstance,'preProposalList':preProposalList,'proposalApprovalAuthorityMapInstanceList': ProposalApprovalAuthorityMap.list(params),'approvalAuthorityInstance':approvalAuthorityInstance]
+        def approvalAuthorityInstance = approvalAuthorityService.getActiveApprovalAuthority(gh.getValue("PartyID"))
+        def proposalApprovalAuthorityMapList = []
+        for(int i=0;i<approvalAuthorityInstance.size();i++)
+        {
+        	proposalApprovalAuthorityMapInstanceList = ProposalApprovalAuthorityMap.findAll("from ProposalApprovalAuthorityMap PAAM WHERE PAAM.approvalAuthority IN ("+approvalAuthorityInstance[i].id+") and PAAM.proposalType NOT IN('ExpenseRequest')")
+        	for(int j=0;j<proposalApprovalAuthorityMapInstanceList.size();j++)
+        		proposalApprovalAuthorityMapList.add(proposalApprovalAuthorityMapInstanceList[j])
+        	
+        }
+        
+        return ['proposalApprovalAuthorityMapInstance': proposalApprovalAuthorityMapInstance,'preProposalList':preProposalList,'proposalApprovalAuthorityMapInstanceList': proposalApprovalAuthorityMapList,'approvalAuthorityInstance':approvalAuthorityInstance]
     }
 
     def save = {
+		def proposalApprovalAuthorityMapService = new ProposalApprovalAuthorityMapService()
         def proposalApprovalAuthorityMapInstance = new ProposalApprovalAuthorityMap(params)
-       
+		println"params"+params
+        def proposalApprovalAuthorityMapData = proposalApprovalAuthorityMapService.checkDuplicateProposalApprovalAuthorityMap(params)
+        println"proposalApprovalAuthorityMapData"+proposalApprovalAuthorityMapData
+        if(proposalApprovalAuthorityMapData)
+        {
+        	flash.message ="${message(code: 'default.AlreadyExists.label')}"
+	    		redirect(action: "create", id: proposalApprovalAuthorityMapInstance.id)
+        }
+        else 
+        {
         if (proposalApprovalAuthorityMapInstance.save(flush: true)) {
         	
         	
@@ -46,6 +66,7 @@ class ProposalApprovalAuthorityMapController {
             render(view: "create", model: [proposalApprovalAuthorityMapInstance: proposalApprovalAuthorityMapInstance])
         }
     }
+	}
 
     def show = {
         def proposalApprovalAuthorityMapInstance = ProposalApprovalAuthorityMap.get(params.id)
@@ -60,8 +81,9 @@ class ProposalApprovalAuthorityMapController {
 
     def edit = {
 		GrailsHttpSession gh=getSession()
+		def approvalAuthorityService = new ApprovalAuthorityService()
         def proposalApprovalAuthorityMapInstance = ProposalApprovalAuthorityMap.get(params.id)
-        def approvalAuthorityInstance = ApprovalAuthority.findAll("from ApprovalAuthority A where A.party="+gh.getValue("Party"))
+        def approvalAuthorityInstance = approvalAuthorityService.getActiveApprovalAuthority(gh.getValue("PartyID"))
         println"params"+proposalApprovalAuthorityMapInstance
         
         def preProposalInstance = PreProposal.find("from PreProposal P where P.id ="+proposalApprovalAuthorityMapInstance.proposalId)
@@ -89,6 +111,17 @@ class ProposalApprovalAuthorityMapController {
                     return
                 }
             }
+            def proposalApprovalAuthorityMapService = new ProposalApprovalAuthorityMapService()
+           
+            def proposalApprovalAuthorityMapDetail = proposalApprovalAuthorityMapService.checkDuplicateEditProposalApprovalAuthorityMap(params)
+            println"proposalApprovalAuthorityMapDetail"+proposalApprovalAuthorityMapDetail
+            if(proposalApprovalAuthorityMapDetail)
+            {
+            	flash.message ="${message(code: 'default.AlreadyExists.label')}"
+    	    		redirect(action: "create", id: proposalApprovalAuthorityMapInstance.id)
+            }
+            else 
+            {
             proposalApprovalAuthorityMapInstance.properties = params
             if (!proposalApprovalAuthorityMapInstance.hasErrors() && proposalApprovalAuthorityMapInstance.save(flush: true)) {
                 flash.message = "${message(code: 'default.ProposalApprovalAuthorityMapUpdated.label')}"
@@ -96,6 +129,7 @@ class ProposalApprovalAuthorityMapController {
             }
             else {
                 render(view: "edit", model: [proposalApprovalAuthorityMapInstance: proposalApprovalAuthorityMapInstance])
+            }
             }
         }
         else {

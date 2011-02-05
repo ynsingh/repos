@@ -106,6 +106,7 @@ class GrantPeriodController
 	{
 		def grantPeriodInstance = new GrantPeriod(params)
 		def grantPeriodService = new GrantPeriodService()
+	
 		
 		/* getting the list of default grant period */
 		def chkDefaultGrantPeriodInstance=grantPeriodService.getDefaultGrantPeriod()
@@ -124,6 +125,7 @@ class GrantPeriodController
 			else
 				updateGrantPeriod(grantPeriodInstance,params)//updating grant period
 		}
+		
 		/* if no default grant period exists */
 		else
 		{
@@ -136,17 +138,35 @@ class GrantPeriodController
 			else
 				updateGrantPeriod(grantPeriodInstance,params)//updating grant period
 		}
-	}
+		}
+
+		
+		
+	
 	/*Update grant period*/
 	public updateGrantPeriod(def grantPeriodInstance,params)
 	{
 		def grantPeriodService = new GrantPeriodService()
+		
+		def grantPeriodDuplicateInstance = grantPeriodService.getGrantPeriod(grantPeriodInstance)
+		
+		 if(grantPeriodDuplicateInstance && (grantPeriodDuplicateInstance.id != Long.parseLong(params.id)))
+		 {
+				 flash.message = "${message(code: 'default.AlreadyExists.label')}"
+			         redirect(action:create,id:grantPeriodInstance.id)
+		 }
+		 else
+		 {
+        
+        
 		/* Updating Grant Period details*/
 		grantPeriodInstance = grantPeriodService.updateGrantPeriod(params)
 		/* Check whether any grant period exists */
 		if(grantPeriodInstance)
 		{
-			if(grantPeriodInstance.saveMode != null)
+			
+	         
+	      if(grantPeriodInstance.saveMode != null)
 			{
 				/* Check whether the grant period details are updated */
 				if(grantPeriodInstance.saveMode.equals("Updated"))
@@ -160,13 +180,16 @@ class GrantPeriodController
 					render(view:'edit',model:[grantPeriodInstance:grantPeriodInstance])
 				}
 			}
+	        
 			else
 			{
 				flash.message = "${message(code: 'default.notfond.label')}"
 				redirect(action:edit,id:params.id)
 			}
+	      }
 		}
-	}
+		}
+
 	
     /**
 	 * Method to Perform the delete action

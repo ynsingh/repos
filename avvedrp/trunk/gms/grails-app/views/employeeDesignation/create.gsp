@@ -21,8 +21,8 @@
 	                        <tbody>
 	                            <tr class="prop">
 	                                <td valign="top" class="name">
-	                                    <label for="designation"><g:message code="default.Designation.label" />
-	                                	</label>
+	                                    <label for="designation"><g:message code="default.Designation.label" />:</label>
+	                                    <label for="designation" style="color:red;font-weight:bold"> * </label>
 	                                </td>
 	                                <td valign="top" class="value ${hasErrors(bean: employeeDesignationInstance, 
 	                                	field: 'designation', 'errors')}">

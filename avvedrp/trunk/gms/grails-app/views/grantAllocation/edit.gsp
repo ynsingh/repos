@@ -5,7 +5,7 @@
         <title><g:message code="default.FundAllocation.EditFundAllocation.head"/> </title>
     </head>
     <body>
-    <g:subMenuProjects/>
+     <g:subMenuList/>
     <div class="wrapper"> 
         <div class="body">
             <h1><g:message code="default.FundAllocation.EditFundAllocation.head"/></h1>
@@ -22,7 +22,7 @@
                 	<div class="dialog">
                 	<g:hiddenField name="ProjectStartDate" 
 		    					value="${fieldValue(bean:projectsInstance, field:'projectStartDate')}"/>
-		    
+		    <g:hiddenField name="ProjectEndDate" value="${projectsInstance?.projectEndDate}"/>
                       <table>
                         <tbody>
                         	<tr class="prop">
@@ -50,6 +50,7 @@
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="amountAllocated"><g:message code="default.AmountAllocated(Rs).label"/>:</label>
+                                    <label for="amountAllocated" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:grantAllocationInstance,field:'amountAllocated','errors')}">
                                     <input type="text" id="amountAllocated" name="amountAllocated" 
@@ -75,7 +76,7 @@
                 <div class="buttons">
 
                     <span class="button"><g:actionSubmit class="save" action="update" value="${message(code: 'default.Update.button')}" 
-                    	onClick="return validateGrantAllocationEdit()" /></span>
+                    	onClick="return validateFundAllot()" /></span>
 
                     <!-- <span class="button"><g:actionSubmit class="delete" onclick="return confirm('Are you sure?');" 
                     	value="Delete" /></span> -->

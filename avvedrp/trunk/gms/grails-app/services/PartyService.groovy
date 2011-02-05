@@ -202,5 +202,13 @@ class PartyService{
 		println "=====partyDepartmentInstance====== " + partyDepartmentInstance 
 		return partyDepartmentInstance
 	}
+	/**
+	 * Get All Active institution details 
+	 */
+	public List getAllActivePartiesAndGrantAgencies()
+	{ 
+		def partyInstanceList =Party.findAll( "from Party P where P.activeYesNo='Y'")
+		return partyInstanceList
+	}
 
 }

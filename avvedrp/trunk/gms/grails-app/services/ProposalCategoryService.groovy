@@ -6,9 +6,21 @@ class ProposalCategoryService {
     def serviceMethod() {
 
     }
+    
+    /*
+     * List the details of all active Proposal Category
+     */
+    
+    
+    public List getProposalCategoryList()
+	{                                                                  
+		def proposalCategoryInstanceList=ProposalCategory.findAll("from ProposalCategory PC where PC.activeYesNo='Y'")			
+		return proposalCategoryInstanceList
+	}
     public saveProposalCategory(params)
     {
     	def proposalCategoryInstance = new ProposalCategory(params)
+    	proposalCategoryInstance.activeYesNo="Y" 
     	proposalCategoryInstance.save(flush: true)
     	return proposalCategoryInstance
     }
@@ -37,4 +49,13 @@ class ProposalCategoryService {
          }
       return proposalCategoryInstance
      }
+     
+      /*
+  	 * Check Proposal Category 
+  	 */
+  	 public checkDuplicateCategory(def params)
+  	{
+  		 def chkProposalCategoryInstance = ProposalCategory.find("from ProposalCategory PC where PC.name= '"+params.name+"' and PC.activeYesNo='Y'")
+  		 return chkProposalCategoryInstance
+  	}
 }

@@ -10,6 +10,8 @@
 	    <div class="wrapper">
 		    <g:form action="listReport" method="post" name="frmreport" >
 		    	<div class="body">
+		    	<h1><g:message code="default.ProjectReports.label"/></h1>
+		    	
 			    	<div class="dialog">
 			    		<table width="75%">
 	                        <tbody>

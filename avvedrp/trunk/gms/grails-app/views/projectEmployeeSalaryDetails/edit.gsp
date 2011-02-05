@@ -28,8 +28,9 @@
 		                        <tr class="prop">
 		                                <td valign="top" class="name">
 		                                  <label for="salaryComponentId">
-		                                  	 <g:message code="default.ProjectEmployeeSalary.SalaryComponentId.label" />
-	                                  	  </label>
+		                                  	 <g:message code="default.SalaryComponent.label" />
+		                              	  </label>:
+		                              	  <label for="SalaryComponent" style="color:red;font-weight:bold"> * </label>
 		                                </td>
 		                                <td><g:select name='salaryComponent.id' optionKey="id" optionValue="Name" 
 		                                		from="${salaryComponentInstance}" 
@@ -42,7 +43,8 @@
 		                                <td valign="top" class="name">
 		                                  <label for="salaryAmount"><g:message code="default.ProjectEmployeeSalary.SalaryAmount.label" />  
 		                                  		(<g:message code="default.Rs.label" />)
-		                                  </label>
+		                                  </label>:
+		                                  <label for="SalaryComponent" style="color:red;font-weight:bold"> * </label>
 		                                </td>
 		                                <td valign="top" 
 		                                	class="value ${hasErrors(bean: projectEmployeeSalaryDetailsInstance, field:'salaryAmount','errors')}">
@@ -53,12 +55,12 @@
 		                            <tr class="prop">
 		                                <td valign="top" class="name">
 		                                  <label for="withEffectFrom"><g:message code="default.ProjectEmployeeSalary.WithEffectFrom.label" />
-		                                  </label>
+		                                  </label>:
 		                                 </td>
 		                                <td valign="top" 
 		                                	class="value ${hasErrors(bean: projectEmployeeSalaryDetailsInstance, field:'withEffectFrom','errors')}">
 		                                    <calendar:datePicker name="withEffectFrom" precision="day" 
-		                                    	value="${projectEmployeeSalaryDetailsInstance?.withEffectFrom}"/>
+		                                    	value="${projectEmployeeSalaryDetailsInstance?.withEffectFrom}" dateFormat="%d/%m/%Y"/>
 		                                </td>
 		                              </tr>	                             
 

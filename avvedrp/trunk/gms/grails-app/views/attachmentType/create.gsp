@@ -10,9 +10,12 @@
       <div class="wrapper">
         <div class="body">
             <h1><g:message code="default.AttachmentType.CreateAttachmentType.head"/></h1>
-            <g:if test="${flash.message}">
-              <div class="message">${flash.message}</div>
-            </g:if>
+          	<g:if test="${flash.message}">
+				<div class="message">${flash.message}</div>
+			 </g:if>
+          	 <g:if test="${flash.error}">
+				<div class="errors">${flash.error}</div>
+			 </g:if>
             <g:hasErrors bean="${attachmentTypeInstance}">
              <div class="errors">
                 <g:renderErrors bean="${attachmentTypeInstance}" as="list" />
@@ -24,15 +27,17 @@
                         <tbody>
                             <tr>
                                 <td valign="top" class="name">
-                                    <label for="documentType"><g:message code="default.DocumentType.label"/></label>
+                                    <label for="documentType"><g:message code="default.DocumentType.label"/>:</label>
+                                    <label for="documentType" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:proposalInstance,field:'documentType','errors')}">
-                                    <g:select name="documentType" from="${['Proposal', 'Notification']}" value="${attachmentTypeInstance?.documentType}" ></g:select>
+                                    <g:select name="documentType" from="${['Proposal', 'Notification', 'Invoice', 'Receipt', 'Project']}" value="${attachmentTypeInstance?.documentType}" ></g:select>
                                 </td>
                             </tr>
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="type"><g:message code="default.Type.label"/></label>
+                                    <label for="type"><g:message code="default.Type.label"/>:</label>
+                                    <label for="type" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:attachmentTypeInstance,field:'type','errors')}">
                                     <input type="text" id="type" name="type" value="${fieldValue(bean:attachmentTypeInstance,field:'type')}"/>
@@ -41,7 +46,7 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="description"><g:message code="default.Description.label"/></label>
+                                    <label for="description"><g:message code="default.Description.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:attachmentTypeInstance,field:'description','errors')}">
                                     <g:textArea id="description" name="description" value="${fieldValue(bean:attachmentTypeInstance,field:'description')}" rows="3" cols="30"/>
@@ -57,10 +62,6 @@
         </div>
         
         <div class="body">
-            <h1></h1>
-            <g:if test="${flash.message}">
-              <div class="message">${flash.message}</div>
-            </g:if>
             <div class="list">
                 <table>
                     <thead>

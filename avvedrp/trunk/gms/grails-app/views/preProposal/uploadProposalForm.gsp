@@ -13,7 +13,7 @@
   					<tr>
     					<td scope="col"> 
 					        <div class="body">
-					            <h1>Upload Proposal Form</h1>
+					            <h1><g:message code="default.UploadProposalForm.head"/></h1>
 					            <g:if test="${flash.message}">
 					            	<div class="message">${flash.message}</div>
 					            </g:if>
@@ -30,12 +30,11 @@
                                                 	                
 						                            <tr class="prop">
 						                                <td valign="top" class="name">
-						                                    <label for="attachmentPath">
-						                                    Pre Proposal Application Form
-					                                    	</label>
+						                                    <label for="attachmentPath"><g:message code="default.PreProposalApplicationForm.label"/>:</label>
+						                         	    <label for="attachmentPath" style="color:red;font-weight:bold"> * </label>
 						                                 </td>
 						                                 <td valign="top" class="value">
-						                                    <input type="file" name="attachmentPath" id="attachmentPath"  />
+						                                    <input type="file" name="attachmentPath" id="attachmentPath"  /><g:message code="default.ApplicationFormat.label"/> 
 						                                 </td>
 						                             </tr>
                     							  </tbody>
@@ -43,7 +42,7 @@
                 							</div>
 							                <div class="buttons">
 							                    <span class="button">
-								                    <g:submitButton name="create" class="save" 
+								                    <g:submitButton name="create" class="save" onClick="return validateUploadProposalForm()"
 								                    	value="${message(code: 'default.Create.button',default: 'Create')}" />
 							                    </span>
 							                </div>

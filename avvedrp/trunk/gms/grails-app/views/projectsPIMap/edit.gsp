@@ -5,7 +5,7 @@
         <title><g:message code="default.projectsPIMap.EditProjectsToPI.head"/></title>
     </head>
     <body>
-    <g:subMenuProjects/>
+   <g:subMenuList/>
     <div class="wrapper">
         <div class="body">
             <h1><g:message code="default.projectsPIMap.EditProjectsToPI.head"/></h1>
@@ -28,8 +28,8 @@
                                     <label for="investigator"><g:message code="default.Investigator.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:projectsPIMapInstance,field:'investigator','errors')}">
-                                  <!--  <g:select optionKey="id" optionValue="name" from="${investigatorList}" name="investigator.id" value="${projectsPIMapInstance?.investigator?.id}" disabled="true"></g:select> -->
-                               		${projectsPIMapInstance.investigator.name}
+                                   <g:select optionKey="id" optionValue="name" from="${investigatorList}" name="investigator.id" value="${projectsPIMapInstance?.investigator?.id}" ></g:select>
+                               		
                                 </td>
                             </tr> 
                         
@@ -51,7 +51,7 @@
                                      <strong>${projectsPIMapInstance?.role}</strong>
                                 </td>
                             </tr> 
-
+                          
                         </tbody>
                     </table>
                 </div>

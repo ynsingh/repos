@@ -18,7 +18,7 @@ class AuthorityController {
     def save = 
     {
         def authorityInstance = new Authority(params)
-        def chkDuplicateRoleInstance = userService.getDuplicateRole(authorityInstance)
+        def chkDuplicateRoleInstance = userService.getDuplicateRole(params)
         if(chkDuplicateRoleInstance)
         {
         	flash.message ="${message(code: 'default.RoleAlreadyExists.label')}"
@@ -52,51 +52,35 @@ class AuthorityController {
 
     def update = 
     {
-    	def authorityInstance= new Authority()
-    	authorityInstance = userService.getRoleById(params.id)
-        if (authorityInstance) 
+    	def authorityInstance= new Authority(params)
+    	// println"authorityInstance......"+authorityInstance
+    	println"params"+params
+    
+        if (params.authority) 
         {
-            
-            authorityInstance.properties = params
-            println "authorityInstance "+authorityInstance.authority
-            def chkDuplicateRoleInstance = userService.getDuplicateRole(authorityInstance)
-            if(chkDuplicateRoleInstance)
-            {
-            	
-            	if((chkDuplicateRoleInstance[0].id).equals(authorityInstance.id))
+            def chkDuplicateRoleInstance = userService.getDuplicateRole(params)
+                       	
+            	if(chkDuplicateRoleInstance && ((chkDuplicateRoleInstance[0].id) != Long.parseLong(params.id)))
             	{
-            		if (userService.updateRole(authorityInstance))
-                	{
-            			flash.message = "${message(code: 'default.updated.label')}"
-                		redirect(action: "create", id: authorityInstance.id)
-                	}
-                	else 
-                	{
-                		println "same else"
-                		flash.message = "Role already exists"
-                		render(view: "edit", model: [authorityInstance: authorityInstance])
-                	}
+            		flash.message = "Role already exists"
+            			redirect(action: "create", id: params.id)
             	}
             	else
             	{
-	            	flash.message = "Role already exists"
-	            	redirect(action: "edit", id: authorityInstance.id)
+            		    authorityInstance = userService.updateRole(params)
+            		    println"authorityInstance"+authorityInstance
+            		    if(authorityInstance == true)
+            		    {
+            			flash.message = "${message(code: 'default.updated.label')}"
+                		redirect(action: "create", id: params.id)
+            		    }
+            		    else
+            		    {
+            		    	render(view:'edit',model:[params:params])
+            		    }
             	}
-            }
-            else
-            {
-            	if (userService.updateRole(authorityInstance))
-            	{
-        			flash.message = "${message(code: 'default.updated.label')}"
-            		redirect(action: "create", id: authorityInstance.id)
-            	}
-            	else 
-            	{
-            		flash.message = "Role already exists"
-            		render(view: "edit", model: [authorityInstance: authorityInstance])
-            	}
-            }
         }
+       
         else 
         {
             flash.message = "${message(code: 'default.notfond.label')}"
