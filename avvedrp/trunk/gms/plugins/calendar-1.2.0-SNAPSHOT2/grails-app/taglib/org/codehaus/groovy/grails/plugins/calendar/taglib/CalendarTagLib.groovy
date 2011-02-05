@@ -12,13 +12,13 @@ class CalendarTagLib {
 
         String name = attrs.remove('name')
 
-        String dateFormat = attrs.dateFormat ? attrs.remove('dateFormat') : "%m/%d/%Y"
+        String dateFormat = attrs.dateFormat ? attrs.remove('dateFormat') : "%dd/%mm/%Y"
         
         String showTime = attrs.showTime ? attrs.remove('showTime') : "false"
 
         String timeFormat = attrs.timeFormat ? attrs.remove('timeFormat') : "24"
 
-        String years = attrs.years ? "[${attrs.remove('years')}]" : "[1999,2999]"
+        String years = attrs.years ? "[${attrs.remove('years')}]" : "[1900,2999]"
 
         String singleClick = attrs.singleClick ? attrs.remove('singleClick') : "true"
         
