@@ -5,11 +5,6 @@
 <TITLE>Staff Profile Login</TITLE>
 <META http-equiv=Content-Type content="text/html; charset=UTF-8">
 
-<!--<link href="jsp/signfront.css" media="screen, projection" rel="stylesheet" type="text/css">
-<LINK media=screen href="jsp/style.css" type=text/css rel=stylesheet>-->
-
-<link href="css/style.css" rel="stylesheet" type="text/css"/>
-
 <META content="MSHTML 6.00.2900.5694" name=GENERATOR>
 
 
@@ -20,95 +15,55 @@
 function doLogin(){
 	document.forms[0].submit();
 }
-<!--Added by ManuSoman to prevent Special Symbol Entry in UserName Field-->
-<!--This fuction allows only alphanumerical characters,undescore,and dot in UserName field--> 
-var r={'special':/[^a-zA-Z0-9_.]/g};
-var c={'special':/(46)/g};
-var d={'special':/(95)/g};
-function valid(o,w)
-{
-  o.value = o.value.replace(c[w],'.');
-  o.value = o.value.replace(d[w],'_');
-  o.value = o.value.replace(r[w],'');
-}
- 
-<!--End of Added by ManuSoman-->
-
 </script>
+<title>Login NFES</title>
+<link href="./css/main.css" rel="stylesheet" type="text/css" />
+<link href="./css/dark_blue.css" rel="stylesheet" type="text/css" />
+<script src="./js/jquery-1.4.2.min.js" type="text/javascript"></script>
 </HEAD>
 
-<BODY  onload="document.f.j_username.focus();" >
+<BODY onload="document.f.j_username.focus();" >
 
 <form name="f" action="<c:url value='j_spring_security_check'/>" method="POST">
-		<table frame="box">
-		<fieldset>
-		
-			<legend>Log in</legend>
-			<%
-			if ((request.getParameter("login_error") != "")&&(request.getParameter("login_error") != null)) {%>
-			 	<div class="errorlogin">			
-					Your login attempt was not successful, try again.
-				</div>		             
-			<%  } 		 
-			%>
 		
 
-			<table >						
-			</tr>
-			<tr>
-			<td><label for="j_username">User Name</label></td>
- 			<td><input type="text" name='j_username'    value='<c:if test="${not empty param.login_error}"><c:out value="${SPRING_SECURITY_LAST_USERNAME}"/></c:if>'/></td>
+<img src="./images/loginheader.png"  width="100%" />
 
-			</tr>
-			<tr>
-			<td><label for="password">Password</label></td>
-			<td><input type="password" name='j_password'></td>
-			</tr>
-			
-			<tr>			
-			<td colspan="2"  align="right">
-			<!--<div align="left" style="padding-right:48px;">-->
-			<input type="button" align="Right" onClick="doLogin();"  width="10" value="Login" />
-			<!--</div>-->
-			</td>
-			<tr>			
-			<tr>
-			<td colspan="2"><hr></td>	
-			</tr>
-			
-			<td>			
-			<!--<label for="remember_me" style="padding: 0;"> &nbsp;&nbsp;&nbsp; &nbsp; Remember me?</label>
-			<input type="checkbox" id="remember_me"  name="remember_me" style="position: relative; top: 3px; margin: 0; "/>
-			-->
-			<a href="ForgotPassword.jsp">Forgot Password?</a>
-			</td>			
-			
-			<td align="right"><img src="../images/StaffReg.gif">	<a href="Account.jsp">Staff Registration</a></td>			
-			</tr>
-			</table>			
-
-			
-			
-			<br />
+<div id="login">
+	<h2 class="head-alt">Login</h2>
+	<ul class="tabs">
+		<li><a href="Account.jsp">Staff Registration</a></li>
+		<li><a href="ForgotPassword.jsp">Lost Password ?</a></li>
+	</ul>
+	<div class="panes">
+		<div>
+			<form action="index.html" method="post">
+				<fieldset>
+				<legend>Please enter user information!</legend>
+				<label for="username">Username:</label><input id="j_username" name="j_username" type="text" />
+				<label for="password">Password:</label><input id="j_password" name="j_password" type="password" />
+				<a name="button" onclick="doLogin()" class="button">Log in!</a>
+				</fieldset>
+			</form>
+		</div>
+	</div>
+</div>
+<%
+if ((request.getParameter("login_error") != "")&&(request.getParameter("login_error") != null)) {%>
+<div id="validation-summary">
 	
-				
-
-
-		</fieldset>
-		
-	</form>
-	<div>
-	  
-	  <!--<c:if test="${not empty param.login_error}">
-	    <div>			
-	     Your login attempt was not successful, try again.<br/>
-	     Reason: <c:out value="${fn:replace(SPRING_SECURITY_LAST_EXCEPTION.message, 'Bad credentials', 'Your User Name or Password entered is incorrect.')}"/>
-	    </div>			
-       </c:if>-->
-	   
-		
-	   
-    </div>
+	<div class="notification errors closable">
+		<h3>Please correct the errors!</h3>
+		<ul>
+			<li>Wrong username!</li>
+			<li>Wrong password!</li>
+		</ul>
+	</div>
+</div>		
+<%} 		 
+%>	
+</form>
+	
 </BODY>
 </HTML>
 

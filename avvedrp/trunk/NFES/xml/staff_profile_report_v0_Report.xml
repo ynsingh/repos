@@ -1,0 +1,133 @@
+<xsl:stylesheet version="1.0"
+   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+   xmlns:oioNS="http://devedge.netscape.com/2002/de"
+>
+
+<xsl:output method = "html"/>
+<xsl:template match="/">
+<html>
+<head>
+<link href="./css/oiostyles.css" rel="stylesheet" type="text/css"/>
+<style type="text/css" media="print">
+
+.noprint {display: none;}
+
+</style>
+<style type="text/css" media="screen">
+
+.nodisplay {display: none;}
+
+</style>
+
+
+<script language="javascript" src="./js/richtext.js">
+</script>
+
+
+
+
+</head>
+<body leftmargin="45" rightmargin="40" onLoad="replaceTags();">
+
+<form METHOD="POST" ACTION="" NAME="myForm">
+
+
+<h2 align="center"> Staff Profile Details</h2>
+<table border="0">
+<tr align="center">
+  <td><input type="submit" name="Submit" value=" Print " class="noprint" onclick="javascript:window.print();return false" /></td>
+  <td> <a href="javascript: history.go(-1)">Back</a></td>		  
+ </tr>
+</table>
+
+<!-- =============================== Brief Profile ==================================== -->
+<table border="0" width="100%" >
+<tr><td align="center" class="printtabhead" colspan="3">Brief Profile</td></tr>
+<tr><td width="20%" colspan="3"  class="printtab"><span style="color:red">Personal Details</span></td></tr>
+<tr>
+<td width="20%" class="printtab">Area of Study / Focus Area</td> 
+<td>:</td>
+<td width="80%" class="printtab"><xsl:value-of select="//FocusArea/oioNS:renderinfo" disable-output-escaping="yes"/></td> 
+</tr>
+<tr>
+<td width="20%" class="printtab">Research Interests</td>
+<td>:</td>
+<td width="80%" class="printtab"><xsl:value-of select="//ResearchInterests/oioNS:renderinfo" disable-output-escaping="yes"/></td>
+</tr>
+<tr>
+<td width="20%" class="printtab">Teaching Interests</td>
+<td>:</td>
+<td width="80%" class="printtab"><xsl:value-of select="//TeachingInterests/oioNS:renderinfo" disable-output-escaping="yes" /></td>
+</tr>
+<tr>
+<td width="20%" class="printtab">Positions Held</td>
+<td>:</td>
+<td width="80%" class="printtab"><xsl:value-of select="//PositionsHeld/oioNS:renderinfo" disable-output-escaping="yes"/></td>
+</tr>
+<tr>
+<td width="20%" colspan="3"  class="printtab"><span style="color:red">Contact Details</span></td>
+</tr>
+<tr>
+<td width="20%" class="printtab">Office Room Number</td>
+<td>:</td>
+<td width="80%" class="printtab"><xsl:apply-templates select="//OfficeRoomNum/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="20%" class="printtab">Office Phone Ext</td>
+<td>:</td>
+<td width="80%" class="printtab"><xsl:apply-templates select="//OfficePhoneExt/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="20%" class="printtab">Amrita Email ID </td>
+<td>:</td>
+<td width="80%" class="printtab"><xsl:apply-templates select="//EmailID/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="20%" class="printtab">Personal Email ID</td>
+<td>:</td>
+<td class="printtab"><xsl:apply-templates select="//Email/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="20%" class="printtab">Home Phone</td>
+<td>:</td>
+<td width="80%" class="printtab"><xsl:apply-templates select="//HomePhone/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="20%" class="printtab">Fax</td>
+<td>:</td>
+<td class="printtab"><xsl:apply-templates select="//Fax/oioNS:renderinfo" /></td>
+</tr>
+</table>
+
+<!-- =============================== Awards ==================================== -->
+<table border="1" width="100%" align="center">
+<tr><td align="center" class="printtabhead" colspan="5">Awards</td></tr>
+<tr align="center">
+<td width="20%" class="printtabHoriz">Name of Award / Recognition received</td>
+<td width="20%" class="printtabHoriz">Name of Agency</td>
+<td width="15%" class="printtabHoriz">Month and Year of receiving the award</td>
+<td width="20%" class="printtabHoriz">URL if any</td>
+<td width="25%" class="printtabHoriz">Remarks</td>
+</tr>
+<tr>
+<td width="20%" class="printtabHoriz">.</td>
+<td width="20%" class="printtabHoriz"></td>
+<td width="15%" class="printtabHoriz"></td>
+<td width="20%" class="printtabHoriz"></td>
+<td width="25%" class="printtabHoriz"></td>
+</tr>
+</table>
+
+
+<xsl:value-of select="//hiddenitem" disable-output-escaping="yes"/>
+</form>
+</body>
+</html>
+</xsl:template>
+<xsl:template match="@*|node()">
+    <xsl:copy>
+      <xsl:apply-templates select="@*|node()"/>
+    </xsl:copy>
+</xsl:template>
+
+</xsl:stylesheet>

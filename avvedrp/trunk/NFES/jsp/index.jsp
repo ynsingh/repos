@@ -20,7 +20,7 @@ profile=http://gmpg.org/xfn/11><TITLE>Staff Profile</TITLE>
 <DIV class=header>
 <DIV class=logo>
 <DIV class=indent>
-<img src="../images/NFES_header.jpg" >
+<img src="../images/loginheader.png" >
 </DIV></DIV>
 <DIV class=signup>
 
@@ -51,31 +51,32 @@ try
 		userId=rs.getInt(1);
 		email=rs.getString(2); 
 		userFullName=rs.getString(3); 
-	}
+	}	
 	conn1.close();
 	conn2=DriverManager.getConnection("jdbc:mysql:"+dbname,username,password);
-	PreparedStatement pst1=conn2.prepareStatement("select document_id from entity_document_master where entity_id="+userId);
+	PreparedStatement pst1=conn2.prepareStatement("select document_id from entity_document_master where entity_id="+userId + " and entity_type='staff'");
 	ResultSet rs1=pst1.executeQuery();
 	while(rs1.next())
 	{
-		documentId=rs1.getInt("document_id");
+		documentId=rs1.getInt("document_id");		
 		
 	}
 	conn2.close();
 }catch(Exception e)
 {
 }
-str="../StaffProfileServlet?action=CDOC-OPEN_A_DOCUMENT&entityId="+userId+"&documentId="+documentId;
+
+str="../StaffProfileServlet?action=CDOC-OPEN_A_DOCUMENT&entityId="+userId+"&documentId="+documentId+"&entitytype=staff&formName=staff_profile_report_v0";
 %>
 
 <FORM id="searchform" action="../j_spring_security_logout"  method="get" >
 
      <br />     	
-	<div style="float: left;" width="40%">   
-	<font color="#C68B13"><b>UserName:</b></font>&nbsp;&nbsp;<font color="#174664"><strong><%=userFullName%></strong></font>
-	</div>
-
-	<div style="float: right;" width="40%">
+  <div style="float: left;" width="40%">   
+	<font color="#C68B13"><b>UserName:</b></font>&nbsp;&nbsp;<font color="#174664"><strong><%=userFullName%></strong></font></div>
+	
+	<div style="float: right;" width="60%">
+	<a href="Myaccount.jsp" title="Change Password"><INPUT  type="image" src="../images/changepassword.jpg" ></a> </a>
 	<a href="../j_spring_security_logout"><INPUT  type="image" src="../images/logout.jpg" ></a>
 	</div>
 
@@ -83,7 +84,7 @@ str="../StaffProfileServlet?action=CDOC-OPEN_A_DOCUMENT&entityId="+userId+"&docu
 </FORM></DIV></DIV>
 
 
-<iframe src =<%=str%> width="100%" height="700px" frameborder="0">
+<iframe src =<%=str%> width="100%" height="1000px" frameborder="0">
 
   
 </iframe>

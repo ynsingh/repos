@@ -6,6 +6,7 @@
  */
 package com.erp.nfes;
 
+
 import java.rmi.RemoteException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,8 +27,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
 
-
-
 /**
  * @author ahis
  *
@@ -36,8 +35,6 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class HtmlTemplateHelper implements StaffProfileConstants {
 
-	
-	
 	/**
 	 * @param patientId
 	 * @param formName
@@ -53,12 +50,12 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 
 		StringBuffer actionStr = null;
 		String sql = getAimsDisplayStringSql(formName);
-		
+
 		String sqlstr = "";
 			//createConnectionIfNotExists();
-			
+
 			try {
-					
+
 					if (conn !=  null){
 						//create statement.
 						Statement st = conn.createStatement();
@@ -83,25 +80,32 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 							myQuestVO.setNextitem(rs.getString("nextitem"));
 							//get the item value from the table.
 							sqlstr = "select " + name + " from " + formName + "_values where idf='" + patientId + "' and number=" + number;
-				
+
 							Statement sst = conn.createStatement();
 							ResultSet rss = sst.executeQuery(sqlstr);
-							
+
 							if(rss.next()){
-								
+
+								//07-01-2011
+								if (rss.getString(1)!=null){
+									myQuestVO.setValue(rss.getString(1));
+								}else{
+									myQuestVO.setValue("");
+								}
+
 								actionStr = new StringBuffer();
 
 								//for manipulating entries from a pick one combo box.
 								actionStr = getValueIfPickControl(conn, formName,name,itemtype,rss.getString(1),userDeptId);
-								
+
 								actionStr = null;
 								actionStr = new StringBuffer(sqlstr.length() + 100);
 								actionStr.append("\n" + sqlstr + "\n");
-								
+
 								myQuestVO.setAction(actionStr.toString());
-								
+
 							}//end if.
-							
+
 							rss.close();
 
 							//add to the array list.
@@ -117,17 +121,17 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 
 							}
 			} catch (SQLException e) {
-			
+
 				e.printStackTrace();
-			} 
+			}
 
 		//return the array list containing the report data.
 		return queReport;
 	}
-	
-	
 
-	
+
+
+
 		/**
 		 * public StringBuffer getValueIfPickControl(....)
 		 * Function to get the value for a pick controls Pickone, Pickmany, Pickone_radio
@@ -143,9 +147,9 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 			strBuf.append("\n");
 			String qryString = "select description, action, choice, code from " + formName + "_itemtypes where name = '" + itemtype + "'";
 			//createConnectionIfNotExists();
-			
+
 			try {
-				
+
 				Statement st = conn.createStatement();
 				ResultSet rs = st.executeQuery(qryString);
 				rs.next();
@@ -162,9 +166,14 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 
 					int iter = (co.length >= ch.length ? ch.length : co.length);
 					int get = 0;
-					int actionInt = (action.trim().equals("pickone") ? 1 :
+					/*int actionInt = (action.trim().equals("pickone") ? 1 :
 												(action.trim().equals("pickmany") ? 2 :
 												(action.trim().equals("pickone_radio") ? 3 : 0)));
+					22-01-2011*/
+					int actionInt = (action.trim().equals("pickone") ? 1 :
+						(action.trim().equals("pickmany") ? 2 :
+						(action.trim().equals("pickone_radio") ? 3 :
+						(action.trim().equals("pickone_radio_choose") ? 3 : 0))));
 					switch (actionInt) {
 
 						case 1 :
@@ -209,7 +218,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 							break;
 
 						}//end case.
-						
+
 						case 0 :
 						default: break;
 
@@ -220,14 +229,14 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 				}
 				rs.close();
 			} catch (SQLException e) {
-			
+
 				e.printStackTrace();
 			}
 
 			return strBuf;
 		  }//end function.
 
-		  
+
 		  /**
 			 * getValuesIfBchControl(....)
 			 * Function to get the bch control values to array list.
@@ -243,7 +252,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 					QuestionsVO myQuestVO = null;
 					String sqlString = "select name from " + formName + "_items where itemtype = 'bchcontrol'";
 
-					
+
 					Statement st = conn.createStatement();
 					ResultSet rs = st.executeQuery(sqlString);
 
@@ -304,7 +313,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 				 */
 				//Merging : This function has changes merged from 4.0.7 aims branch for PM#2420
 				//static ArrayList getPrintFormElements(Connection hisconn,Connection conn, PersistenceManager pm, int patientId, int visitId, String formName,String parentDocumentId,String userDeptId) throws HisException, SQLException {
-					
+
 				static ArrayList getPrintFormElements(Connection conn, RequestParam userRequest) throws  SQLException {
 
 					String ptid, name, itemtype, str;
@@ -314,9 +323,9 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 
 					StringBuffer actionStr = new StringBuffer (10000);
 
-				
+
 						try {
-						
+
 							if(conn != null){
 								String sql = getAimsDisplayStringSql( userRequest.getFormName() );
 								Statement stmt = conn.createStatement();
@@ -335,8 +344,8 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 									myQuestVO.setItemtype(itemtype);
 									myQuestVO.setPrioritem(rs.getString("prioritem"));
 									myQuestVO.setNextitem(rs.getString("nextitem"));
-									
-									actionStr = getActionHtmlString(conn, 
+
+									actionStr = getActionHtmlString(conn,
 																	userRequest.getFormName(),
 																	name, itemtype,
 																	"", userRequest.getEntityId(),
@@ -350,7 +359,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 							}
 						} catch (SQLException e) {
 							e.printStackTrace();
-						} 
+						}
 
 					return arrMyQuest;
 				}
@@ -369,29 +378,29 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 				 */
 				//Merging : This function has changes merged from 4.0.7 aims branch for PM#2420
 					private static StringBuffer getActionHtmlString(
-							Connection conn, 
-							String formName, 
-							String name, 
-							String itemtype, 
-							String valuestring, 
-							String entityId, 
+							Connection conn,
+							String formName,
+							String name,
+							String itemtype,
+							String valuestring,
+							String entityId,
 							String number,
 							String parentDocumentId,
-							String userDeptId) 
+							String userDeptId)
 					throws SQLException {
-						
+
 						String action, choice, code, qryString;
 						StringBuffer htmlString = new StringBuffer (10000);
 
 						//Connection cn = null;
 						qryString = "select description, action, choice, code from " + formName + "_itemtypes where name = '" + itemtype + "'";
 						htmlString.append("\n");
-						
+
 								if (conn != null){
 									try {
-										
+
 										Statement state = conn.createStatement();
-										
+
 										ResultSet rss = state.executeQuery(qryString);
 										rss.next();
 										action = rss.getString("action");
@@ -402,7 +411,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 										if (action.equalsIgnoreCase("text_area")){
 											TextArea actionObj = new TextArea();
 											htmlString = actionObj.getObjectHtml( name, action, choice, code, valuestring);
-											
+
 										//	htmlString = null;
 										//	htmlString = new StringBuffer(10000);
 										//	htmlString.append("" );
@@ -437,7 +446,24 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 										else if(action.equalsIgnoreCase("file_upload") ){
 											UploadFile actionObj = new UploadFile();
 											htmlString = actionObj.getObjectHtml( name, action, choice, code, valuestring);
-										}/* ========== END ===========*/
+										}/* ========== Detail Form 12-01-2011===========*/
+										else if(action.equalsIgnoreCase("detail_form") ){
+											DetailForm actionObj = new DetailForm();
+											htmlString = actionObj.getObjectHtml( name, action, choice, code, valuestring,entityId);
+											}
+										/*========== Akhil ===========*/
+										else if(action.equalsIgnoreCase("pickone_radio_choose") ){
+											PickRadio actionObj = new PickRadio();
+											htmlString = actionObj.getObjectHtml01(name, action, choice, code, valuestring);
+										}
+										//Akhil End
+										//25-01-2011
+										else if(action.equalsIgnoreCase("pickone_master") ){
+											//System.out.println("pickone_master");
+											PickOneMaster actionObj = new PickOneMaster();
+											htmlString = actionObj.getObjectHtml(name, action, choice, code, valuestring);
+										}
+										//end
 										else{
 											htmlString.append(valuestring);//as general string.
 										}//end if.
@@ -464,18 +490,18 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 	 * @throws SQLException
 	 */
 	//Merging : This function has changes merged from 4.0.7 aims branch for PM#2420
-	
+
 	//public static ArrayList getEditableFormElements(Connection hisconn,Connection conn, PersistenceManager pm, String patientId, String visitId, String formName, String number,String userDeptId) throws HisException, SQLException {
 	//Commented SN
 	public static ArrayList getEditableFormElements(Connection conn,RequestParam userRequest,String number) throws SQLException {
-
+		//System.out.println("========getEditableFormElements");
 		ArrayList queReport = null;
 		QuestionsVO myQuestVO = null;
 		String name, itemtype, nVal = null;
 		StringBuffer actionStr = new StringBuffer (10000);
 		String sql = getAimsDisplayStringSql(userRequest.getFormName());
 		String sqlstr = "";
-		
+
 		try {
 			if (conn !=  null){
 				//create statement
@@ -483,7 +509,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 				//get the result set of the sql
 				ResultSet rs = st.executeQuery(sql);
 				//initialize the array list
-				
+
 				String valstr = getReportDataFromValuesQuery ( userRequest.getFormName(), userRequest.getEntityId(), number );
 				Statement vst = conn.createStatement();
 				ResultSet valuesRs = vst.executeQuery( valstr );
@@ -491,7 +517,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 					valuesRs.setFetchDirection( ResultSet.FETCH_REVERSE );
 					valuesRs.next();
 				}
-				
+
 				queReport = new ArrayList();
 				while(rs.next()){
 					//get the items to VO
@@ -507,22 +533,22 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 					myQuestVO.setItemtype(itemtype);
 					myQuestVO.setPrioritem(rs.getString("prioritem"));
 					myQuestVO.setNextitem(rs.getString("nextitem"));
-					
+
 					//get the item value from the table
 					nVal = valuesRs.getString( name );
-					
+
 					//actionStr = getActionHtmlString(conn, pm, formName, name, itemtype, nVal, patientId, visitId, number,"");
 					//commented sn for checking parentDocId
-					actionStr = getActionHtmlString(conn, 
+					actionStr = getActionHtmlString(conn,
 							                        userRequest.getFormName(),
-							                        name, itemtype, nVal, 
-							                        userRequest.getEntityId(), 
+							                        name, itemtype, nVal,
+							                        userRequest.getEntityId(),
 							                        number,"",
 							                        userRequest.getUserDepartmentId());
 
-				
+
 					myQuestVO.setAction(actionStr.toString());
-					
+
 					//add to the array list
 					queReport.add(myQuestVO);
 				}//end while
@@ -530,11 +556,11 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 				rs.close();
 			}//end if
 		} catch (SQLException e) {
-			
+
 			e.printStackTrace();
-			
-		} 
-		
+
+		}
+
 		//return the array list containing the report data
 		return queReport;
 	}
@@ -560,7 +586,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 	 * @param number
 	 * @param formName
 	 * @return bchVals
-	 * @throws SQLException 
+	 * @throws SQLException
 	 * @throws HisException
 	 * @throws SQLException
 	 */
@@ -613,7 +639,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 		}
 		return bchVals;
 		}
-					
+
 		/**
 		 * String getAimsDisplayStringSql(.)
 		 * Function to get a query string for all the items of a form
@@ -625,7 +651,10 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 			String SqlState;
 			SqlState = "select name, prompt, number, description, creator, time, itemtype, prioritem, nextitem from " +
 			  formName + "_items order by number";
+			//System.out.println("*******"+SqlState);
 			return SqlState;
+
+
 		}//end function.
 
 
@@ -636,11 +665,16 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 			String documentId = "";
 			ConnectDB conObj=new ConnectDB();
 			Connection connect = conObj.getMysqlConnection();
-			if (isValid(requestParam.getDocumentId()) && Integer.parseInt(requestParam.getDocumentId())>0){
+			//System.out.println("Document ID:"+requestParam.getDocumentId());
+
+			//if (isValid(requestParam.getDocumentId()) && Integer.parseInt(requestParam.getDocumentId())>0){
+			//&& requestParam.geteditwithNewDocID()!="1"
+			if (isValid(requestParam.getDocumentId()) && Integer.parseInt(requestParam.getDocumentId())>0 ){
 				documentId = requestParam.getDocumentId();
 				edit(documentId, tableName, controlMap, requestParam, connect);
 			}else{
 				long hisDocumentNumber = 0;
+				//System.out.println("New Document ID");
 				hisDocumentNumber = getNextSequenceNumber("EntityDocument", connect);
 				documentId = String.valueOf(hisDocumentNumber);
 				save(documentId, tableName, controlMap, requestParam,connect);
@@ -704,14 +738,40 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 					if (tmpAction.trim().equals("text_area")) {
 						answer = textToHtml(answer);
 					}
-					/*08-12-2010 To Extract File Name in IE*/
-					else if (tmpAction.trim().equals("file_upload")){						
-						int file_name_starts_from=answer.lastIndexOf("\\");						
-						if (file_name_starts_from>0){
-							answer=answer.substring(file_name_starts_from+1);							
+					else if (tmpAction.trim().equals("pickone_radio")||tmpAction.trim().equals("pickone_radio_choose")){
+						if (answer!="" || answer!=null){				//	to delete comma at first
+						answer=answer.substring(1);
+						}
+					}  /*08-12-2010 To Extract File Name in IE*/
+					else if (tmpAction.trim().equals("pickone")){
+						if (answer!="" || answer!=null){
+							if (answer.equals("Select")){
+							answer="";
+							}
 						}
 					}
+					else if (tmpAction.trim().equals("file_upload")){
+						int file_name_starts_from=answer.lastIndexOf("\\");
+						if (file_name_starts_from>0){
+							answer=answer.substring(file_name_starts_from+1);
+						}
+					}
+					else if (tmpAction.trim().equals("detail_form")){
+						int deleted_documentid_starts_from;
+						String deleted_document_ids=null;
 
+						//System.out.println("========Answer :"+answer);
+
+						deleted_documentid_starts_from =answer.indexOf("Deleted:",1);
+						if (deleted_documentid_starts_from>0){
+							deleted_document_ids=answer.substring(deleted_documentid_starts_from+8);
+							//System.out.println("======Del IDs :"+ deleted_document_ids+","+deleted_documentid_starts_from);
+							answer=answer.substring(0,deleted_documentid_starts_from-1);
+							//System.out.println("========Answer :"+answer);
+							deleteEntities(deleted_document_ids);
+						}
+
+					}
 					if (it.hasNext()) {
 						updatesql = updatesql + question + "='" + answer + "', ";
 					} else {
@@ -729,11 +789,11 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 				int currentDocumentStatus = requestParam.getStatusId();
 				int documentStatusId = 1;
 
-				updateReportDocumentIdMaster(conn, documentId,documentInfo.getNumber(), requestParam, documentStatusId);	
+				updateReportDocumentIdMaster(conn, documentId,documentInfo.getNumber(), requestParam, documentStatusId);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
+
 		}
 
 		/**
@@ -820,7 +880,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 
 		private static void save(String documentId, String tableName, HashMap valueMap, RequestParam requestParam,Connection conn) throws Exception {
 			String nextSeqQuery = "select coalesce((max(number) + 1),1) as newnumber from " + tableName + " where idf =" + requestParam.getEntityId();
-			System.out.println("nextSeqQuery : "+nextSeqQuery);
+			//System.out.println("nextSeqQuery : "+nextSeqQuery);
 			Statement sst = conn.createStatement();
 			ResultSet Rset = sst.executeQuery(nextSeqQuery);
 			Rset.next();
@@ -848,7 +908,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 				String sqlthree = "select ap.action from " + requestParam.getFormName() + "_itemtypes ap, " +
 									requestParam.getFormName() + "_items ai where ai.name = '" + question +
 									"' and ap.name = ai.itemtype";
-				
+
 				Rset = sst.executeQuery(sqlthree);
 				Rset.next();
 				String tmpAction = Rset.getString(1);
@@ -868,14 +928,41 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 
 				if (tmpAction.trim().equals("text_area")){
 					answer = textToHtml(answer);
-				}//end if.
-                /*08-12-2010 To Extract File Name in IE*/
-				else if (tmpAction.trim().equals("file_upload")){					
-					int file_name_starts_from=answer.lastIndexOf("\\");					
-					if (file_name_starts_from>0){
-						answer=answer.substring(file_name_starts_from+1);						
 				}
-				}	
+				else if (tmpAction.trim().equals("pickone_radio")||tmpAction.trim().equals("pickone_radio_choose")){
+					if (answer!="" || answer!=null){
+					answer=answer.substring(1);
+					}
+				}
+				else if (tmpAction.trim().equals("pickone")){
+					if (answer!="" || answer!=null){
+						if (answer.equals("Select")){
+						answer="";
+						}
+					}
+				}
+				/*08-12-2010 To Extract File Name in IE*/
+				else if (tmpAction.trim().equals("file_upload")){
+					int file_name_starts_from=answer.lastIndexOf("\\");
+					if (file_name_starts_from>0){
+						answer=answer.substring(file_name_starts_from+1);
+					}
+				}
+				else if (tmpAction.trim().equals("detail_form")){
+					int deleted_documentid_starts_from;
+					String deleted_document_ids=null;
+
+					//System.out.println("========Answer :"+answer);
+
+					deleted_documentid_starts_from =answer.indexOf("Deleted:",1);
+					if (deleted_documentid_starts_from>0){
+						deleted_document_ids=answer.substring(deleted_documentid_starts_from+8);
+						//System.out.println("======Del IDs :"+ deleted_document_ids+","+deleted_documentid_starts_from);
+						answer=answer.substring(0,deleted_documentid_starts_from-1);
+					//	System.out.println("========Answer :"+answer);
+						deleteEntities(deleted_document_ids);
+					}
+				}
 				sqlstrtwo = sqlstrtwo + "'" + answer + "'";
 
 				if (it.hasNext()){
@@ -926,7 +1013,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 
 				int amendedYesNo=0;
 				String amendedDocumentId="0";
-				
+
 				int currentStatus = 0;
 				DocumentInfo docInfo = getEntityDocumentInfo(documentId,conn);
 				if(docInfo != null){
@@ -961,7 +1048,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 		 * @param formName
 		 * @return
 		 * @throws HisHelperException
-		 * @throws SQLException 
+		 * @throws SQLException
 		 */
 		public static String getFormIdFromFormName ( Connection conn, String formName ) throws Exception, SQLException {
 
@@ -1007,7 +1094,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 
 			return false;
 		}
-		
+
 		public static DocumentInfo getEntityDocumentInfo(
 			String documentId,
 			Connection conn)
@@ -1017,7 +1104,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 			if ( isEmpty( documentId ) ) {
 				return documentInfo;
 			}
-			
+
 			StringBuffer sqlQry = new StringBuffer();
 			sqlQry.append( "SELECT rm.document_id, rm.entity_id,rm.entity_type, rm.form_id, rm.number, " )
 			      .append( " rm.amended_yesno, rm.amended_document_id, rm.addendum_yesno, rm.status_id," )
@@ -1030,6 +1117,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 			      .append( "WHERE rm.document_id = " ).append( documentId )
 			      .append( " AND rm.active_yesno = 1 AND fm.id = rm.form_id AND dm.id = fm.document_type_id" );
 
+
 			Statement st =null;
 			ResultSet rs = null;
 
@@ -1038,6 +1126,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 	    		rs = st.executeQuery(sqlQry.toString());
 
 	    		if ( rs.next() ) {
+	    			//System.out.println("*****************************************");
 	    			String formType = rs.getString("form_type");
 	    			String formName = rs.getString("form_name");
 	    			String version = rs.getString("version");
@@ -1133,7 +1222,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 					returnStatus = StaffProfileConstants.CDOC_DOCUMENT_OPEN_FOR_TRANSCRIPTION;
 				} else if ( submit.trim().equals( "" + StaffProfileConstants.CDOC_DOCUMENT_OPEN_FOR_APPROVAL ) ) {
 					returnStatus = StaffProfileConstants.CDOC_DOCUMENT_OPEN_FOR_APPROVAL;
-				} else if ( submit.trim().equals( "" + StaffProfileConstants.CDOC_DOCUMENT_PROVISIONAL ) ) { 
+				} else if ( submit.trim().equals( "" + StaffProfileConstants.CDOC_DOCUMENT_PROVISIONAL ) ) {
 					returnStatus = StaffProfileConstants.CDOC_DOCUMENT_PROVISIONAL;
 				}
 			}
@@ -1200,10 +1289,10 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 			if ( string.trim().length() < 1 ) return false;
 
 			return true;
-		}	
-		
+		}
+
 		public static  long getNextSequenceNumber( String series,Connection connect) throws SQLException {
-		   	
+
 			Connection con =  null;
 			ResultSet rs =  null;
 		    Statement updateStmt =  null;
@@ -1211,14 +1300,14 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 
 			long maxValue = 0L;
 			long startValue = 1L;
-           
-			try  {	
+
+			try  {
 				ConnectDB conObj=new ConnectDB();
 				con=conObj.getMysqlConnection();
 				updateStmt = con.createStatement();
 		    	String query = "SELECT max_number FROM profile_series WHERE series = ? FOR UPDATE";
-				statement = con.prepareStatement(query);				 
-				statement.setString( 1, series ); 				
+				statement = con.prepareStatement(query);
+				statement.setString( 1, series );
 
 				rs = statement. executeQuery();
 
@@ -1248,7 +1337,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 				}
 
 			}catch( SQLException e ){
-				e.printStackTrace() ;				
+				e.printStackTrace() ;
 
 			} finally{
 	     		statement.close();
@@ -1266,12 +1355,12 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 			Connection connect = conObj.getMysqlConnection();
 			ArrayList queReport =  getEditableFormElements(connect,userRequest,number);
 			return queReport;
-		}		
+		}
 //		=====================PRINT FUNCTION 06-12-2010=========================
 		/**
 		 * @param response
 		 */
-			public static void showErrorMessage ( HttpServletResponse response,String message ) 
+			public static void showErrorMessage ( HttpServletResponse response,String message )
 			{
 				String htmlstring = "<html>ERROR: " + message + "</html>";
 				try{
@@ -1280,23 +1369,23 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 					//log.error( "" + e1.getMessage() );
 					e1.printStackTrace();
 				}
-			}		
-		
-		
+			}
+
+
 		/**
 		 * @param request
 		 * @param response
 		 * @param userRequest
 		 */
-	public static ArrayList getXMLString(HttpServletRequest request, HttpServletResponse response, RequestParam userRequest)throws Exception {	 
+	public static ArrayList getXMLString(HttpServletRequest request, HttpServletResponse response, RequestParam userRequest)throws Exception {
 		Connection conn = null;
 		if (isEmpty(userRequest.getDocumentId()) && Integer.parseInt(userRequest.getDocumentId()) < 1){
 			showErrorMessage( response,"Invalid document id..." );
 			return null;
-		}	
+		}
 		//get the form object details from the database.
 		ArrayList questionVOsList = getReportFormForStaffs( userRequest.getEntityId(),userRequest.getFormName(),userRequest.getNumber(), userRequest.getUserDepartmentId());
-		int  addendumDocId = userRequest.getAddendumDocumentId();	
+		int  addendumDocId = userRequest.getAddendumDocumentId();
 		if( addendumDocId > 0 ){
 			ArrayList addendumList = new ArrayList();
 			 ConnectDB conObj=new ConnectDB();
@@ -1315,10 +1404,10 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 		//Xml header.
 		StringBuffer str = new StringBuffer (10000);
 		str.append ("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?> \n");
-		str.append("<?xml-stylesheet type=\"text/xsl\" href=\"./Jsp/discharge/Style_Sheets/" + userRequest.getFormName() + "_Report.xml\" ?> \n");
+		str.append("<?xml-stylesheet type=\"text/xsl\" href=\"./xml/" + userRequest.getFormName() + "_Report.xml\" ?> \n");
 		str.append("<OIO version=\"1.00\" xmlns:oioNS=\"http://devedge.netscape.com/2002/de\"> \n");
 		str.append ("\n" + "<form> \n" + "<name>" + userRequest.getFormName().trim() + "</name>\n");
-		str.append("<documentId></documentId>\n<docNumber></docNumber>\n\n");	
+		str.append("<documentId></documentId>\n<docNumber></docNumber>\n\n");
 		//iterate over ArrayList to generate Xml string for the questions.
 		QuestionsVO questVO = new QuestionsVO();
 		for (int cnt=0; cnt<questionVOsList.size(); cnt++){
@@ -1328,7 +1417,8 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 			str.append("	<description>" + questVO.getDescription() + "</description>\n");
 			str.append("	<oioNS:prompt>" + questVO.getPrompt() + "</oioNS:prompt>\n");
 			str.append("	<oioNS:itemtype>" + questVO.getItemtype() + "</oioNS:itemtype>\n");
-			str.append("	<oioNS:renderinfo>\n\n" + questVO.getAction() + "\n\n</oioNS:renderinfo>\n");
+			//str.append("	<oioNS:renderinfo>\n\n" + questVO.getAction() + "\n\n</oioNS:renderinfo>\n");  //07/01/2011
+			str.append("	<oioNS:renderinfo>\n\n" + questVO.getValue() + "\n\n</oioNS:renderinfo>\n"); //07/01/2011
 			str.append("</" + questVO.getName() + ">\n\n");
 			//as you iterate populate questionNames arrayList also.
 			questionNames.add(questVO.getName());
@@ -1338,7 +1428,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 		ArrayList returnList = new ArrayList();
 		returnList.add(questionNames);
 		returnList.add(str);
-		//end of the Xml string.	
+		//end of the Xml string.
 		return returnList;
 
 	}
@@ -1370,5 +1460,32 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 			}
 			return arrList;
 		}//end function.
+
+		public static void deleteEntities(String deletedDocmentIds)
+		{
+			Connection con =  null;
+			String sqlStr=null;
+
+			try  {
+			ConnectDB conObj=new ConnectDB();
+			con=conObj.getMysqlConnection();
+			Statement sst = con.createStatement();
+			Statement st = con.createStatement();
+
+			sqlStr="SELECT entity_id,entity_type,number FROM entity_document_master WHERE  document_id IN(" + deletedDocmentIds + ")";
+			ResultSet rs_delete = st.executeQuery(sqlStr);
+			while (rs_delete.next()){
+				String sql = "DELETE FROM staff_profile_"+ rs_delete.getString("entity_type")+ "_v0_values where idf =" + rs_delete.getString("entity_id") + " and number=" + rs_delete.getString("number");
+				//System.out.println("SQl : "+  sql);
+				sst.execute(sql);
+			}
+			String sql = "DELETE FROM entity_document_master where document_id IN (" + deletedDocmentIds +")" ;
+			//System.out.println("SQl : "+  sql);
+			sst.execute(sql);
+
+			}catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 
 }

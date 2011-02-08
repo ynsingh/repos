@@ -71,13 +71,14 @@ Welcome to Tomcat
 <url-pattern>/fileupload</url-pattern>
 </servlet-mapping>
 
+
 <servlet>
-<servlet-name>loadFile</servlet-name>
-<servlet-class>com.erp.nfes.loadFile</servlet-class>
+<servlet-name>filedownload</servlet-name>
+<servlet-class>com.erp.nfes.filedownload</servlet-class>
 </servlet>
 <servlet-mapping>
-<servlet-name>loadFile</servlet-name>
-<url-pattern>/loadFile</url-pattern>
+<servlet-name>filedownload</servlet-name>
+<url-pattern>/filedownload</url-pattern>
 </servlet-mapping>
 
 <servlet>
@@ -106,6 +107,16 @@ Welcome to Tomcat
 <servlet-mapping>
 <servlet-name>ForgotPasswordController</servlet-name>
 <url-pattern>/ForgotPasswordController</url-pattern>
+</servlet-mapping>
+
+
+<servlet>
+<servlet-name>ChangePasswordServlet</servlet-name>
+<servlet-class>com.erp.nfes.ChangePasswordServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>ChangePasswordServlet</servlet-name>
+<url-pattern>/ChangePasswordServlet</url-pattern>
 </servlet-mapping>
 
 <welcome-file-list>

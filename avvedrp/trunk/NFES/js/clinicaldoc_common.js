@@ -32,6 +32,7 @@
 //For Clinical form refreshing through ajax while closing pop-up window
 
 
+
 var PrescriptionUpdater = Class.create();
 PrescriptionUpdater.prototype = {
 	initialize: function() {
@@ -1279,7 +1280,7 @@ function disableHtmlButtons () {
 }
 
 
-function docHtmlSave () {
+function docHtmlSave () {	
 	disableHtmlButtons ();
 	setCdocPageAction ( "CDOC-SAVE_THE_DOCUMENT" );
 	document.forms[0].submit();
@@ -3093,4 +3094,229 @@ function checkSubFormMandatoryControles(){
 
 }
 
+//========================= Created By Rajitha.k , 18-01-2011 ====================================
+    
+function generateIds(tabname)
+{	
+	//alert("2....");	
+	var insertIds="";
+	var deletedids=" ";	
+	var doc_id="";
+	
+	var ctrlName=tabname;
+	ctrlName=ctrlName.replace("Tab_staff_profile_","");
+	ctrlName=ctrlName.replace("_v0","") +"_ID";   	
+	//alert(ctrlName);
 
+    	var mytable     = document.getElementById(tabname); 
+	var rowCount = mytable.rows.length;               		
+	//alert(rowCount);
+	for(var i=1; i<rowCount; i++) {   
+		doc_id=document.getElementById(tabname).rows[i].cells;     
+		doc_id=doc_id[0].innerHTML;
+				
+		//alert(deletedids+","+doc_id);		
+		if(doc_id.indexOf("#deleted")>0){			
+			if (deletedids==" "){					
+				deletedids="Deleted:"+doc_id.replace("#deleted","");
+				
+			}
+			else{			
+				deletedids=deletedids + "," +doc_id.replace("#deleted","");
+			}
+		}
+		else{			
+			if (insertIds==""){
+				insertIds=insertIds+doc_id;				
+			}
+			else{
+				insertIds=insertIds+","+doc_id;				
+			}			
+			
+		}
+		
+		
+	}	
+	if (deletedids!=" "){
+	     	document.getElementById(ctrlName).value=insertIds+","+deletedids;
+	     	}
+	else{
+		document.getElementById(ctrlName).value=insertIds
+	    }		
+	//alert(deletedids);
+	
+}
+
+
+	
+function addRow(documentId,formname,entitytype,tabledata){
+	
+	
+	/*var editRow=isDocumentIdExists(documentId,formname);
+	//alert("Edit Row:"+editRow);	
+	
+	if (editRow<=0){
+		//alert(1);
+		var editRow=getEditedrow(formname);
+		//alert(editRow);
+	}
+	
+	*/	
+	var editRow=getEditedrow(formname);	
+	tabname="Tab_"+formname;	
+	var mytable     = document.getElementById(tabname); 
+	var rowCount = mytable.rows.length;
+	//alert(rowCount);		
+	var TabElements = tabledata.split(",||");	
+	var colCount = (TabElements.length)
+	//alert(rowCount);
+
+	var i=0;	
+	
+	if (editRow>0){	
+		//alert("Edit :1");
+		var editRowcells=document.getElementById(tabname).rows[editRow].cells;		
+		//alert("Edit :2");
+		for (i=0;i<colCount;i++){
+		  editRowcells[i].innerHTML=TabElements[i];
+		}
+		//alert("Edit :3");
+	}	
+	else
+	{	//alert("New Row");
+		var x=document.getElementById(tabname).insertRow(rowCount);		
+		x.id="TR_"+TabElements[0];
+		//alert(x.id);
+		for (i=0;i<colCount;i++){	
+			var y=x.insertCell(i);					 
+			 y.innerHTML=TabElements[i];
+			 y.id="TD_"+TabElements[i];
+		}
+
+		var editbutton='<input type="BUTTON" value="Edit" name="EDIT'+ documentId + '" ONCLICK="showchildform('+"'"+formname+ "'" + ',' + "'" + '' + documentId + "'" +','+ "'" + '' + entitytype + "'" + ') />'	
+		var y=x.insertCell(i);		
+		y.innerHTML=editbutton;
+
+		var deletebutton='<input type="BUTTON" value="Delete" name="DELETE'+ documentId + '" ONCLICK="deleteRow(this.parentNode.parentNode.rowIndex,' + "'" +tabname+ "'"+') />'	
+		//alert(deletebutton);
+		var y=x.insertCell(i+1);		
+		y.innerHTML=deletebutton;
+	}	
+	generateIds(tabname);
+	hideIdColumn(tabname);
+	//alert("end");
+	
+}
+
+function isDocumentIdExists(documentId,formname){
+	//alert("Document Exists-Start");
+	tabname="Tab_"+formname;		
+	var mytable = document.getElementById(tabname); 
+	var rowCount= mytable.rows.length;
+	//alert("2:"+rowCount);
+	
+	var i=0;	
+	for (i=1;i<rowCount;i++){
+		var x=document.getElementById(tabname).rows[i].cells; 		
+		//alert("DocumentID:"+x[0].innerHTML);		
+		if (x[0].innerHTML==documentId){			
+			//alert("Document Exists-Found");
+			return i;	
+			break;
+		}
+	}
+	//alert("Document Exists-end");
+	return 0;
+}
+
+
+function hideIdColumn(tabname){		
+	var tbl  = document.getElementById(tabname);	
+	var rows = tbl.getElementsByTagName('TR');		
+	for (var row=0; row<rows.length;row++) {	      		      
+	      var cels = rows[row].getElementsByTagName('TD');
+	      cels[0].style.display='none';	      
+    }	
+	
+}
+
+
+
+function isMandatoryDataExists(frm) {
+
+mandatory_fields=document.forms[0].mandatory_fields.value;
+var fields= mandatory_fields.split("|") ;
+var msg="";
+for (var i=0;i<frm.length;i++){  	
+	if(frm.elements[i].type!="hidden"){	
+		for(var j=0;j<fields.length;j++){		
+		 if(fields[j]==frm.elements[i].name){ 		
+			if(frm.elements[i].value==""){ 					
+			alert("Please Fill Mandatory Values!!!");
+			msg="1";
+			break;
+			}
+		 } 	
+		}
+		if(msg=="1"){
+		break;  	
+		}
+	}	
+  }  
+  if(msg=="1") {
+  return 0
+  }
+  else {
+  return 1
+  };
+  	
+}
+
+
+
+
+function setEditmark(documentId,formname){
+		
+	var tabname="Tab_"+formname;		
+	var mytable = document.getElementById(tabname); 
+	var rowCount= mytable.rows.length;
+	var i=0;	
+	for (i=1;i<rowCount;i++){
+		var editRow=document.getElementById(tabname).rows[i].cells; 				
+		if (editRow[0].innerHTML==documentId){		
+			var cont= editRow[0].innerHTML;
+			cont=cont.replace("#Edit","");
+			editRow[0].innerHTML=cont+"#Edit";							
+		}
+		else {
+		var cont= editRow[0].innerHTML;
+		cont=cont.replace("#Edit","");
+		editRow[0].innerHTML=cont;
+		}
+	}
+	
+	
+}
+
+
+function getEditedrow(formname){
+		
+	var tabname="Tab_"+formname;		
+	var mytable = document.getElementById(tabname); 
+	var rowCount= mytable.rows.length;
+	var i=0;	
+
+	for (i=1;i<rowCount;i++){
+		var editRow=document.getElementById(tabname).rows[i].cells; 	
+		var cont= editRow[0].innerHTML;
+		if(cont.indexOf("#Edit")>0){
+		return i;
+		break;
+		//alert("2");
+		}
+		}
+		//alert("No Edit Row");
+	return 0;	
+}
+
+	

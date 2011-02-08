@@ -1,6 +1,5 @@
 package com.erp.nfes;
 
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
@@ -29,7 +28,6 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import com.erp.nfes.StringEncrypter.EncryptionException;
 import com.octo.captcha.service.CaptchaServiceException;
 import com.octo.captcha.service.multitype.GenericManageableCaptchaService;
-
 
 public class ForgotPasswordController extends HttpServlet {
 	private static final long serialVersionUID = 1L;       

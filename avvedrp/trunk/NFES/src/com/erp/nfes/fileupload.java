@@ -14,12 +14,11 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-
 public class fileupload extends HttpServlet {
 
 	private File tmpDir;
 	private File destinationDir;
-
+	int fs;
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		Properties prop = new Properties();
@@ -34,6 +33,7 @@ public class fileupload extends HttpServlet {
 			e.printStackTrace();
 		}
 		String TMP_DIR_PATH = prop.getProperty("TMP_DIR_PATH");
+		fs=Integer.parseInt(prop.getProperty("filesize"));
 		tmpDir = new File(TMP_DIR_PATH);
 		if(!tmpDir.isDirectory()) {
 			throw new ServletException(TMP_DIR_PATH + " is not a directory");
@@ -43,28 +43,28 @@ public class fileupload extends HttpServlet {
 		if(!destinationDir.isDirectory()) {
 			throw new ServletException(DESTINATION_DIR_PATH+" is not a directory");
 		}
-
+		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	  
+		
 		DiskFileItemFactory  fileItemFactory = new DiskFileItemFactory ();
 		/*
 		 *Set the size threshold, above which content will be stored on disk.
 		 */
-		fileItemFactory.setSizeThreshold(1*1024*1024); //1 MB
+		fileItemFactory.setSizeThreshold(fs*1024*1024);
 		/*
 		 * Set the temporary directory to store the uploaded files of size above threshold.
 		 */
 		fileItemFactory.setRepository(tmpDir);
-
+		
 		ServletFileUpload uploadHandler = new ServletFileUpload(fileItemFactory);
 		try {
 			/*
 			 * Parse the request
-			 */
-			List items = uploadHandler.parseRequest(request);
-			Iterator itr = items.iterator();
+			 */System.out.println("01");
+			List items = uploadHandler.parseRequest(request);System.out.println("02");
+			Iterator itr = items.iterator();System.out.println("03");
 			while(itr.hasNext()) {
 				FileItem item = (FileItem) itr.next();
 				/*

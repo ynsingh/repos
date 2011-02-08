@@ -19,7 +19,6 @@ package com.erp.nfes;
  *	@version	1.0
  */
 
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,7 +61,8 @@ public class RequestParam implements Serializable {
 	private int statusId;
 	private int addendumDocumentId;
 	private String number;
-
+	private String editwithNewDocID; 
+	
 	public String getNumber() {
 		return number;
 	}
@@ -70,7 +70,7 @@ public class RequestParam implements Serializable {
 	public void setNumber(String number) {
 		this.number = number;
 	}
-
+	
 	public int getAddendumDocumentId() {
 		return addendumDocumentId;
 	}
@@ -418,7 +418,13 @@ public class RequestParam implements Serializable {
 		this.headerImage = headerImage;
 	}
 
+	/*public String geteditwithNewDocID() {
+		return editwithNewDocID;
+	}
 
+	public void seteditwithNewDocID(String editwithNewDocID) {
+		this.number = editwithNewDocID;
+	}*/
 
 	
 }

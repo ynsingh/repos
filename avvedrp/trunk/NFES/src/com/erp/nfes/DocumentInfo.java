@@ -6,7 +6,6 @@ package com.erp.nfes;
  * Window>Preferences>Java>Code Generation>Code and Comments
  */
 
-
 import java.io.Serializable;
 import java.util.Date;
 

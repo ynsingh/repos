@@ -32,3 +32,13 @@ label.desc {
 }
 
 
+.success
+{
+color:#FFFFFF;
+text-align:center;
+background-color:#00FF00;
+color:#000099;
+font-size:16px;
+border: 1px #912B46 solid;
+width:auto
+} 

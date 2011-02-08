@@ -66,7 +66,7 @@
    <!-- added for JDBC authentication with db.properties by Rajitha-->
    
    	<beans:bean id="dbProperties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-   	     <beans:property name="location"><beans:value>file:..\conf\db.properties</beans:value></beans:property>
+   	     <beans:property name="location"><beans:value>file:../conf/db.properties</beans:value></beans:property>
    	</beans:bean>
    	 
    	 <beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">

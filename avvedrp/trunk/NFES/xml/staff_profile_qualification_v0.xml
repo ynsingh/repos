@@ -1,0 +1,127 @@
+<xsl:stylesheet version="1.0"
+   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+   xmlns:oioNS="http://devedge.netscape.com/2002/de"
+>
+
+<xsl:output method = "html"/>   
+<xsl:template match="/">
+<html>
+<head>
+<link href="./css/oiostyles.css" rel="stylesheet" type="text/css"/>
+<style type="text/css" media="print">
+
+.noprint {display: none;}
+
+</style>
+<script language="javascript" src="./js/richtext.js"></script>
+
+<style type="text/css">
+.style1 {
+	color: #0000FF;
+	font-weight: bold;
+}
+</style>
+
+
+<script type="text/javascript">
+
+function submitform(){
+var frmelement=document.getElementById("staff_profile_qualification_v0");
+if (isMandatoryDataExists(frmelement)=="1") {
+	docHtmlSave();
+}	
+}
+
+
+</script>
+
+
+</head>
+<body>
+
+<form method="post" action="./StaffProfileServlet" NAME="myForm" ID="staff_profile_qualification_v0"> 
+<font size="1" face="Verdana, Arial, Helvetica, sans-serif">
+
+
+<INPUT TYPE="HIDDEN" NAME="documentId"><xsl:attribute name="VALUE"><xsl:value-of select="//documentId"/>
+	</xsl:attribute></INPUT>
+<INPUT TYPE="HIDDEN" NAME="docNumber"><xsl:attribute name="VALUE"><xsl:value-of select="//docNumber"/>
+	</xsl:attribute></INPUT>
+<INPUT TYPE="HIDDEN" NAME="docType"><xsl:attribute name="VALUE"><xsl:value-of select="//docType"/>
+	</xsl:attribute></INPUT>
+<INPUT TYPE="HIDDEN" NAME="entityId"><xsl:attribute name="VALUE"><xsl:value-of select="//entityId"/>
+	</xsl:attribute></INPUT>
+<INPUT TYPE="HIDDEN" NAME="formName" VALUE="staff_profile_qualification_v0"></INPUT>
+<INPUT TYPE="HIDDEN" NAME="entitytype" VALUE="qualification"></INPUT>
+
+
+<!-- ================================= Qualification ======================================-->
+<div id="d1">
+<table width="100%" class="tabBG3">
+<tr>
+<td width="30%" colspan="2" align="center" class="thead">Qualification Details</td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//course_name/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//course_name/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//institution/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//institution/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//location/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//location/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//board/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//board/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//join_month/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//join_month/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//join_year/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//join_year/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//passing_year/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//passing_year/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//percentage/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//percentage/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//class/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//class/oioNS:renderinfo" /></td>
+</tr>
+</table>
+</div>
+
+
+
+<!--============================= Save,Save and Approve,Show Printable Buttons =============================-->
+<br />
+<script language="javascript" src="./js/clinicaldoc_common.js"></script>
+<table width="100%" class="tabBG3">
+     <tr ><td align="center" class="thead">
+    <input type="hidden" name="action" value="" /> 
+    <input type="button" name="btsave" value="  Save  " onClick="submitform()" />      
+    <input type="HIDDEN" name="mandatory_fields" value="course_name|institution|location|board|join_month|join_year" />
+     </td></tr>
+</table>
+
+</font>
+</form>
+</body>
+</html>
+</xsl:template>
+<xsl:template match="@*|node()">
+    <xsl:copy>
+      <xsl:apply-templates select="@*|node()"/>
+    </xsl:copy>
+</xsl:template>
+
+</xsl:stylesheet>

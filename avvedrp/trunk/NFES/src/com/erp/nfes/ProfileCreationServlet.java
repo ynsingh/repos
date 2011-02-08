@@ -1,7 +1,6 @@
 package com.erp.nfes;
 
-
-import java.io.FileInputStream;
+//import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -29,7 +28,6 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import com.erp.nfes.StringEncrypter.EncryptionException;
 import com.octo.captcha.service.CaptchaServiceException;
 import com.octo.captcha.service.multitype.GenericManageableCaptchaService;
-
 
 public class ProfileCreationServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;       
@@ -116,7 +114,7 @@ public class ProfileCreationServlet extends HttpServlet {
 			Statement sst = conn.createStatement();
 			ResultSet Rset = sst.executeQuery(nextSeqQuery);
 			Rset.next();
-			Integer userid = Rset.getInt("newid");
+			int userid = Rset.getInt("newid");
 			Rset.close();	        
 	        /*==========================================================*/
 			

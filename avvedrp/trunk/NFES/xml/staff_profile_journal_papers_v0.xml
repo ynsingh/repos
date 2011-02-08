@@ -1,0 +1,227 @@
+<xsl:stylesheet version="1.0"
+   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+   xmlns:oioNS="http://devedge.netscape.com/2002/de"
+>
+
+<xsl:output method = "html"/>
+<xsl:template match="/">
+<html>
+<head>
+<link href="./css/oiostyles.css" rel="stylesheet" type="text/css"/>
+<style type="text/css" media="print">
+
+.noprint {display: none;}
+
+</style>
+<script language="javascript" src="./js/richtext.js"></script>
+
+<style type="text/css">
+.style1 {
+	color: #0000FF;
+	font-weight: bold;
+}
+</style>
+<script language="javascript">
+var resume=0;
+function load()
+{
+	resume=0;
+}
+function dirty()
+{
+	resume=1;
+}
+
+function submitform01()
+{
+    var frmelement=document.getElementById("staff_profile_journal_papers_v0");
+    if (isMandatoryDataExists(frmelement)=="1")
+    {
+	if(resume==1)
+	{      if (document.forms[1].upload_paperfiles.value==""){
+			document.forms[0].upload_paper.value=document.forms[1].upload_paper.value 
+		}	
+		else
+		{
+	       		document.forms[0].upload_paper.value=document.forms[1].upload_paper.value + "|"+ document.forms[1].upload_paperfiles.value; 
+	       	}
+	       
+	        document.forms[1].submit();docHtmlSave();
+	}
+	else
+	{
+		document.forms[0].upload_paper.value=document.forms[1].upload_paperfiles.value
+		docHtmlSave();
+	}
+    }
+}
+
+</script>
+</head>
+<body onload="load()">
+
+<form method="post" action="./StaffProfileServlet" NAME="myForm" id="staff_profile_journal_papers_v0" >
+<font size="1" face="Verdana, Arial, Helvetica, sans-serif">
+
+
+<INPUT TYPE="HIDDEN" NAME="documentId"><xsl:attribute name="VALUE"><xsl:value-of select="//documentId"/>
+	</xsl:attribute></INPUT>
+<INPUT TYPE="HIDDEN" NAME="docNumber"><xsl:attribute name="VALUE"><xsl:value-of select="//docNumber"/>
+	</xsl:attribute></INPUT>
+<INPUT TYPE="HIDDEN" NAME="docType"><xsl:attribute name="VALUE"><xsl:value-of select="//docType"/>
+	</xsl:attribute></INPUT>
+<INPUT TYPE="HIDDEN" NAME="entityId"><xsl:attribute name="VALUE"><xsl:value-of select="//entityId"/>
+	</xsl:attribute></INPUT>
+<INPUT TYPE="HIDDEN" NAME="formName" VALUE="staff_profile_journal_papers_v0"></INPUT>
+<INPUT TYPE="HIDDEN" NAME="upload_paper" />
+<INPUT TYPE="HIDDEN" NAME="entitytype" VALUE="journal_papers"></INPUT>
+
+
+<!-- ================================= Journal Papers ======================================-->
+<div id="d1">
+<table width="100%" class="tabBG3">
+<tr>
+<td colspan="2" class="thead" align="center">Journal Papers Details</td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//journal_type/oioNS:prompt" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//journal_type/oioNS:renderinfo" /></td>
+</tr>
+
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//research_expertise_area/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//research_expertise_area/oioNS:renderinfo" /></td>
+</tr>
+
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//paper_associated_project/oioNS:prompt" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//paper_associated_project/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//project_name/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//project_name/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//paper_title/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//paper_title/oioNS:renderinfo" /></td>
+</tr>
+
+
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//author1/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//author1/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//author2/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//author2/oioNS:renderinfo" /></td>
+</tr>
+
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//journal_name/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//journal_name/oioNS:renderinfo" /></td>
+</tr>
+
+
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//volume/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//volume/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//issue_no/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//issue_no/oioNS:renderinfo" /></td>
+</tr>
+
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//month_year/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//month_year/oioNS:renderinfo" /></td>
+</tr>
+
+
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//abstract/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//abstract/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//pages/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//pages/oioNS:renderinfo" /></td>
+</tr>
+
+
+
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//impact_factor/oioNS:prompt" /></td>
+<td width="20%" class="tabBG4"><xsl:apply-templates select="//impact_factor/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//average_citation_index/oioNS:prompt" /></td>
+<td width="20%" class="tabBG4"><xsl:apply-templates select="//average_citation_index/oioNS:renderinfo" /></td>
+</tr>
+
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//indexed_in_scopus/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//indexed_in_scopus/oioNS:renderinfo" /></td>
+</tr>
+
+
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//language/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//language/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//affiliation/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//affiliation/oioNS:renderinfo" /></td>
+</tr>
+
+
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//url/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//url/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//keyword/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//keyword/oioNS:renderinfo" /></td>
+</tr>
+
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//other_details/oioNS:prompt" /></td>
+<td class="tabBG4"><xsl:apply-templates select="//other_details/oioNS:renderinfo" /></td>
+</tr>
+</table>
+</div>
+
+<!--============================= Upload File =============================-->
+
+ <div id="fu1">
+  <form method="post" action="./fileupload" NAME="myForm01" enctype="multipart/form-data">
+  <table width="100%" class="tabBG3">
+  <tr>
+  <td width="30%" class="tabBG4"><xsl:apply-templates select="//upload_paper/oioNS:prompt" /></td>
+  <td width="70%" class="tabBG4"><xsl:apply-templates select="//upload_paper/oioNS:renderinfo" /></td>
+  </tr>
+  </table>
+  </form>
+ </div> 
+ 
+<!--============================= Save,Save and Approve,Show Printable Buttons =============================-->
+<br />
+<script language="javascript" src="./js/clinicaldoc_common.js"></script>
+<table width="100%" class="tabBG3">
+     <tr ><td align="center" class="thead">
+    <input type="hidden" name="action" value="" />
+     <input type="button" name="btsave" value="  Save  " onclick="submitform01()" />
+      <input type="HIDDEN" name="mandatory_fields" value="journal_type|research_expertise_area|paper_associated_project|paper_title|author1|journal_name|volume|issue_no|month_year" />
+     </td></tr>
+</table>
+
+</font>
+</form>
+</body>
+</html>
+</xsl:template>
+<xsl:template match="@*|node()">
+    <xsl:copy>
+      <xsl:apply-templates select="@*|node()"/>
+    </xsl:copy>
+</xsl:template>
+
+</xsl:stylesheet>

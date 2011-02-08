@@ -5,6 +5,7 @@
  * Window>Preferences>Java>Code Generation>Code and Comments
  */
 package com.erp.nfes;
+
 /**
  * @author ahis
  *

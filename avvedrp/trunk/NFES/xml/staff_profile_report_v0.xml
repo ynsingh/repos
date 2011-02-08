@@ -14,11 +14,12 @@
 
 </style>
 <script language="javascript" src="./js/richtext.js"></script>
-
+<script language="javascript" src="./js/clinicaldoc_common.js"></script>
 <script language="javascript">
 
 var x="";
 var resume=0;
+
 
 
 function getRichValues(){
@@ -39,18 +40,20 @@ function getRichValues(){
 	document.getElementById("d15").style.display='none';
 	document.getElementById("d16").style.display='none';
 	document.getElementById("d17").style.display='none';
-	document.getElementById("d18").style.display='block';
+	document.getElementById("d18").style.display='none';
 	document.getElementById("d1").style.display='block';
-	document.getElementById("t1").style.color='#FF0000';
+	document.getElementById("fu1").style.display='block';
+	document.getElementById("t1").style.color='#FFFF00';
 	x="t1";resume=0;
 	return 1;
 }
 
 function show(id)
-{
+{	
+	
 	if(id=="d1")
 	{
-		document.getElementById(x).style.color='#000000';
+		document.getElementById(x).style.color='#FFFFFF';
 		x="t1";
 		document.getElementById(x).style.color='#0000FF';
 		document.getElementById("d2").style.display='none';
@@ -69,12 +72,13 @@ function show(id)
 		document.getElementById("d15").style.display='none';
 		document.getElementById("d16").style.display='none';
 		document.getElementById("d17").style.display='none';
-		document.getElementById("d18").style.display='block';
+		document.getElementById("d18").style.display='none';
 		document.getElementById("d1").style.display='block';
+		document.getElementById("fu1").style.display='block';
 	}
 	else if(id=="d2")
 	{
-		document.getElementById(x).style.color='#000000';
+		document.getElementById(x).style.color='#FFFFFF';
 		x="t2";
 		document.getElementById(x).style.color='#0000FF';
 		document.getElementById("d1").style.display='none';
@@ -94,11 +98,12 @@ function show(id)
 		document.getElementById("d16").style.display='none';
 		document.getElementById("d17").style.display='none';
 		document.getElementById("d18").style.display='none';
+		document.getElementById("fu1").style.display='none';
 		document.getElementById("d2").style.display='block';
 	}
 	else if(id=="d3")
 	{
-		document.getElementById(x).style.color='#000000';
+		document.getElementById(x).style.color='#FFFFFF';
 		x="t3";
 		document.getElementById(x).style.color='#0000FF';
 		document.getElementById("d1").style.display='none';
@@ -118,11 +123,12 @@ function show(id)
 		document.getElementById("d16").style.display='none';
 		document.getElementById("d17").style.display='none';
 		document.getElementById("d18").style.display='none';
+		document.getElementById("fu1").style.display='none';
 		document.getElementById("d3").style.display='block';
 	}
 	else if(id=="d4")
 	{
-		document.getElementById(x).style.color='#000000';
+		document.getElementById(x).style.color='#FFFFFF';
 		x="t4";
 		document.getElementById(x).style.color='#0000FF';
 		document.getElementById("d1").style.display='none';
@@ -142,11 +148,12 @@ function show(id)
 		document.getElementById("d16").style.display='none';
 		document.getElementById("d17").style.display='none';
 		document.getElementById("d18").style.display='none';
+		document.getElementById("fu1").style.display='none';
 		document.getElementById("d4").style.display='block';
 	}
 	else if(id=="d5")
 	{	
-		document.getElementById(x).style.color='#000000';
+		document.getElementById(x).style.color='#FFFFFF';
 		x="t5";
 		document.getElementById(x).style.color='#0000FF';
 		document.getElementById("d1").style.display='none';
@@ -166,11 +173,12 @@ function show(id)
 		document.getElementById("d16").style.display='none';
 		document.getElementById("d17").style.display='none';
 		document.getElementById("d18").style.display='none';
+		document.getElementById("fu1").style.display='none';
 		document.getElementById("d5").style.display='block';
 	}
 	else if(id=="d6")
 	{
-		document.getElementById(x).style.color='#000000';
+		document.getElementById(x).style.color='#FFFFFF';
 		x="t6";
 		document.getElementById(x).style.color='#0000FF';
 		document.getElementById("d1").style.display='none';
@@ -190,11 +198,12 @@ function show(id)
 		document.getElementById("d16").style.display='none';
 		document.getElementById("d17").style.display='none';
 		document.getElementById("d18").style.display='none';
+		document.getElementById("fu1").style.display='none';
 		document.getElementById("d6").style.display='block';
 	}
 	else if(id=="d7")
 	{
-		document.getElementById(x).style.color='#000000';
+		document.getElementById(x).style.color='#FFFFFF';
 		x="t7";
 		document.getElementById(x).style.color='#0000FF';
 		document.getElementById("d1").style.display='none';
@@ -214,11 +223,12 @@ function show(id)
 		document.getElementById("d16").style.display='none';
 		document.getElementById("d17").style.display='none';
 		document.getElementById("d18").style.display='none';
+		document.getElementById("fu1").style.display='none';
 		document.getElementById("d7").style.display='block';
 	}
 	else if(id=="d8")
 	{
-		document.getElementById(x).style.color='#000000';
+		document.getElementById(x).style.color='#FFFFFF';
 		x="t8";
 		document.getElementById(x).style.color='#0000FF';
 		document.getElementById("d1").style.display='none';
@@ -238,11 +248,12 @@ function show(id)
 		document.getElementById("d16").style.display='none';
 		document.getElementById("d17").style.display='none';
 		document.getElementById("d18").style.display='none';
+		document.getElementById("fu1").style.display='none';
 		document.getElementById("d8").style.display='block';
 	}
 	else if(id=="d9")
 	{
-		document.getElementById(x).style.color='#000000';
+		document.getElementById(x).style.color='#FFFFFF';
 		x="t9";
 		document.getElementById(x).style.color='#0000FF';
 		document.getElementById("d1").style.display='none';
@@ -262,11 +273,12 @@ function show(id)
 		document.getElementById("d16").style.display='none';
 		document.getElementById("d17").style.display='none';
 		document.getElementById("d18").style.display='none';
+		document.getElementById("fu1").style.display='none';
 		document.getElementById("d9").style.display='block';
 	}
 	else if(id=="d10")
 	{
-		document.getElementById(x).style.color='#000000';
+		document.getElementById(x).style.color='#FFFFFF';
 		x="t10";
 		document.getElementById(x).style.color='#0000FF';
 		document.getElementById("d1").style.display='none';
@@ -286,12 +298,13 @@ function show(id)
 		document.getElementById("d16").style.display='none';
 		document.getElementById("d17").style.display='none';
 		document.getElementById("d18").style.display='none';
+		document.getElementById("fu1").style.display='none';
 		document.getElementById("d10").style.display='block';
 		
 	}
 	else if(id=="d11")
 	{
-		document.getElementById(x).style.color='#000000';
+		document.getElementById(x).style.color='#FFFFFF';
 		x="t11";
 		document.getElementById(x).style.color='#0000FF';
 		document.getElementById("d1").style.display='none';
@@ -311,11 +324,12 @@ function show(id)
 		document.getElementById("d16").style.display='none';
 		document.getElementById("d17").style.display='none';
 		document.getElementById("d18").style.display='none';
+		document.getElementById("fu1").style.display='none';
 		document.getElementById("d11").style.display='block';
 	}
 	else if(id=="d12")
 	{
-		document.getElementById(x).style.color='#000000';
+		document.getElementById(x).style.color='#FFFFFF';
 		x="t12";
 		document.getElementById(x).style.color='#0000FF';
 		document.getElementById("d1").style.display='none';
@@ -335,11 +349,12 @@ function show(id)
 		document.getElementById("d16").style.display='none';
 		document.getElementById("d17").style.display='none';
 		document.getElementById("d18").style.display='none';
+		document.getElementById("fu1").style.display='none';
 		document.getElementById("d12").style.display='block';
 	}
 	else if(id=="d13")
 	{
-		document.getElementById(x).style.color='#000000';
+		document.getElementById(x).style.color='#FFFFFF';
 		x="t13";
 		document.getElementById(x).style.color='#0000FF';
 		document.getElementById("d1").style.display='none';
@@ -359,11 +374,12 @@ function show(id)
 		document.getElementById("d16").style.display='none';
 		document.getElementById("d17").style.display='none';
 		document.getElementById("d18").style.display='none';
+		document.getElementById("fu1").style.display='none';
 		document.getElementById("d13").style.display='block';
 	}
 	else if(id=="d14")
 	{
-		document.getElementById(x).style.color='#000000';
+		document.getElementById(x).style.color='#FFFFFF';
 		x="t14";
 		document.getElementById(x).style.color='#0000FF';
 		document.getElementById("d1").style.display='none';
@@ -383,11 +399,12 @@ function show(id)
 		document.getElementById("d16").style.display='none';
 		document.getElementById("d17").style.display='none';
 		document.getElementById("d18").style.display='none';
+		document.getElementById("fu1").style.display='none';
 		document.getElementById("d14").style.display='block';	
 	}
 	else if(id=="d15")
 	{
-		document.getElementById(x).style.color='#000000';
+		document.getElementById(x).style.color='#FFFFFF';
 		x="t15";
 		document.getElementById(x).style.color='#0000FF';
 		document.getElementById("d1").style.display='none';
@@ -407,11 +424,12 @@ function show(id)
 		document.getElementById("d16").style.display='none';
 		document.getElementById("d17").style.display='none';
 		document.getElementById("d18").style.display='none';
+		document.getElementById("fu1").style.display='none';
 		document.getElementById("d15").style.display='block';
 	}
 	else if(id=="d16")
 	{
-		document.getElementById(x).style.color='#000000';
+		document.getElementById(x).style.color='#FFFFFF';
 		x="t16";
 		document.getElementById(x).style.color='#0000FF';
 		document.getElementById("d1").style.display='none';
@@ -431,11 +449,12 @@ function show(id)
 		document.getElementById("d15").style.display='none';
 		document.getElementById("d17").style.display='none';
 		document.getElementById("d18").style.display='none';
+		document.getElementById("fu1").style.display='none';
 		document.getElementById("d16").style.display='block';	
 	}
-	else
+	else if(id=="d17")
 	{
-		document.getElementById(x).style.color='#000000';
+		document.getElementById(x).style.color='#FFFFFF';
 		x="t17";
 		document.getElementById(x).style.color='#0000FF';
 		document.getElementById("d1").style.display='none';
@@ -455,8 +474,35 @@ function show(id)
 		document.getElementById("d15").style.display='none';
 		document.getElementById("d16").style.display='none';
 		document.getElementById("d18").style.display='none';
+		document.getElementById("fu1").style.display='none';
 		document.getElementById("d17").style.display='block';	
 	}
+	else
+	{
+		document.getElementById(x).style.color='#FFFFFF';
+		x="t18";
+		document.getElementById(x).style.color='#0000FF';
+		document.getElementById("d1").style.display='none';
+		document.getElementById("d2").style.display='none';
+		document.getElementById("d3").style.display='none';
+		document.getElementById("d4").style.display='none';
+		document.getElementById("d5").style.display='none';
+		document.getElementById("d6").style.display='none';
+		document.getElementById("d7").style.display='none';
+		document.getElementById("d8").style.display='none';
+		document.getElementById("d9").style.display='none';
+		document.getElementById("d10").style.display='none';
+		document.getElementById("d11").style.display='none';
+		document.getElementById("d12").style.display='none';
+		document.getElementById("d13").style.display='none';
+		document.getElementById("d14").style.display='none';
+		document.getElementById("d15").style.display='none';
+		document.getElementById("d16").style.display='none';
+		document.getElementById("d17").style.display='none';
+		document.getElementById("fu1").style.display='none';
+		document.getElementById("d18").style.display='block';			
+	}
+	moveTop();
 }
 
 function change(a,b)
@@ -470,11 +516,11 @@ function change(a,b)
 	{
 	     if(b==x)
 	     {
-	     	document.getElementById(b).style.color='#FF0000';
+	     	document.getElementById(b).style.color='#FFFF00';
 	     }
 	     else
 	     {
-		document.getElementById(b).style.color='#000000';
+		document.getElementById(b).style.color='#FFFFFF';
 	     }
 	}
 }
@@ -487,22 +533,72 @@ function dirty()
 function submitform01()
 {
 	
-	if(resume==1)
-	{      document.forms[0].UploadResume.value=document.forms[1].UploadResume.value; 
-	       document.forms[1].submit();docHtmlSave();
-	}
-	else
-	{
-		docHtmlSave();
-	}
+	var frmelement=document.getElementById("staff_profile_report_v0");	
+	if (isMandatoryDataExists(frmelement)=="1") {    		
+	
+		if(resume==1)
+		{      if (document.forms[1].upload_resumefiles.value==""){
+				document.forms[0].upload_resume.value=document.forms[1].upload_resume.value 
+			}	
+			else{
+			document.forms[0].upload_resume.value=document.forms[1].upload_resume.value + "|"+ document.forms[1].upload_resumefiles.value; 
+			}
+
+		       document.forms[1].submit();docHtmlSave();
+		}
+		else
+		{
+			document.forms[0].upload_resume.value=document.forms[1].upload_resumefiles.value
+			docHtmlSave();
+		}
+	}	
+}
+
+function showchildform(formname,documentId,entity_type)
+{
+var entity_id=document.forms[0].entityId.value;
+var document_Id=documentId;
+setEditmark(documentId,formname);
+window.open("./jsp/showdetailedform.jsp?entityId="+entity_id+"&amp;documentId="+document_Id+"&amp;formname="+formname+"&amp;entitytype="+entity_type ,"DetailForm","width=1500,height=650,screenX=50,left=50,screenY=50,top=50,status=yes,menubar=no,scrollbars=yes,toolbar=no,modal=yes");
+}
+
+function deleteRow(i,tabname){     
+     
+     var delRow=document.getElementById(tabname).rows[i].cells;                    
+     var cont= delRow[0].innerHTML
+     var rowID="TR_"+cont;
+     cont=cont.replace("#deleted","");
+     delRow[0].innerHTML=cont+"#deleted";// delRow[0].innerHTML+"#deleted";          
+     //document.getElementById(tabname).deleteRow(i)          
+     document.getElementById(rowID).style.visibility="collapse";     
+     generateIds(tabname);      
 }
 
 </script>
 
+
+<script language="JavaScript1.2" 
+           type="text/javascript">
+
+function moveTop() 
+{   
+  window.parent.scroll(0,0);  
+}
+
+</script>
+
+
+<style type="text/css">
+.style1 {
+	color: #0000FF;
+	font-weight: bold;
+}
+</style>
+
 </head>
 <body onLoad="return getRichValues();">
 
-<form method="post" action="./StaffProfileServlet" NAME="myForm"> 
+<form method="post" action="./StaffProfileServlet" NAME="myForm" ID="staff_profile_report_v0"> 
 <font size="1" face="Verdana, Arial, Helvetica, sans-serif">
 
 <INPUT TYPE="HIDDEN" NAME="dobx"><xsl:attribute name="value"><xsl:value-of select="//patient/patientDob"/></xsl:attribute></INPUT>
@@ -516,8 +612,9 @@ function submitform01()
 <INPUT TYPE="HIDDEN" NAME="entityId"><xsl:attribute name="VALUE"><xsl:value-of select="//entityId"/>
 	</xsl:attribute></INPUT>
 <INPUT TYPE="HIDDEN" NAME="formName" VALUE="staff_profile_report_v0"></INPUT>
+<INPUT TYPE="HIDDEN" NAME="entitytype" VALUE="staff"></INPUT>
 
-<INPUT TYPE="HIDDEN" NAME="UploadResume"></INPUT>
+<INPUT TYPE="HIDDEN" NAME="upload_resume"></INPUT>
 
 
 
@@ -540,874 +637,371 @@ function submitform01()
         <table width="160px" cellspacing="0" class="tabBG2">
         <tr width="100%" height="10px"><td></td></tr>
         <tr width="100%"><td align="center">
-	<table width="145px" border="0" style="cursor:pointer;" cellspacing="0" class="tabBG1">
+	<table width="145px" border="1" style="cursor:pointer;" cellspacing="0" class="tabBG1">
 	<tr width="100%"><td></td>
-	<td id="t1" align="center" height="27px" background="./images/tab1.gif" onmouseover="change(1,'t1')" onmouseout="change(2,'t1')" onclick="show('d1')">Official Contact</td>
+	<td id="t1" align="center" height="27px" background="./images/tab1.png"  onmouseover="change(1,'t1')" onmouseout="change(2,'t1')" onclick="show('d1')" title="Profile">Profile</td>
 	<td></td></tr>
 	<tr width="100%"><td></td>
-	<td id="t2" align="center" height="27px" background="./images/tab1.gif" onmouseover="change(1,'t2')" onmouseout="change(2,'t2')" onclick="show('d2')">Accounts Detail</td>
+	<td id="t2" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t2')" onmouseout="change(2,'t2')" onclick="show('d2')" title="Awards">Awards</td>
 	<td></td></tr>
 	<tr width="100%"><td></td>
-	<td id="t3" align="center" height="27px" background="./images/tab1.gif" onmouseover="change(1,'t3')" onmouseout="change(2,'t3')" onclick="show('d3')">Accomplishments</td>
+	<td id="t3" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t3')" onmouseout="change(2,'t3')" onclick="show('d3')" title="Journal Papers">Journal Papers</td>
 	<td></td></tr>
 	<tr width="100%"><td></td>
-	<td id="t4" align="center" height="27px" background="./images/tab1.gif" onmouseover="change(1,'t4')" onmouseout="change(2,'t4')" onclick="show('d4')">Qualification</td>
+	<td id="t4" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t4')" onmouseout="change(2,'t4')" onclick="show('d4')" title="Conference Papers">Conference Papers</td>
 	<td></td></tr>
 	<tr width="100%"><td></td>
-	<td id="t5" align="center" height="27px" background="./images/tab1.gif" onmouseover="change(1,'t5')" onmouseout="change(2,'t5')" onclick="show('d5')">Prior Experience</td>
+	<td id="t5" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t5')" onmouseout="change(2,'t5')" onclick="show('d5')" title="Books/Chapters">Books/Chapters</td>
 	<td></td></tr>
 	<tr width="100%"><td></td>
-	<td id="t6" align="center" height="27px" background="./images/tab1.gif" onmouseover="change(1,'t6')" onmouseout="change(2,'t6')" onclick="show('d6')">Family</td>
+	<td id="t6" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t6')" onmouseout="change(2,'t6')" onclick="show('d6')" title="Invited Talks/Guest Lectures">Invited Talks</td>
 	<td></td></tr>
 	<tr width="100%"><td></td>
-	<td id="t7" align="center" height="27px" background="./images/tab1.gif" onmouseover="change(1,'t7')" onmouseout="change(2,'t7')" onclick="show('d7')">Papers Presented</td>
+	<td id="t7" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t7')" onmouseout="change(2,'t7')" onclick="show('d7')" title="Seminars / Conferences / Workshops / Training Attended">Seminars</td>
 	<td></td></tr>
 	<tr width="100%"><td></td>
-	<td id="t8" align="center" height="27px" background="./images/tab1.gif" onmouseover="change(1,'t8')" onmouseout="change(2,'t8')"  onclick="show('d8')">Books Written</td>
+	<td id="t8" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t8')" onmouseout="change(2,'t8')"  onclick="show('d8')" title="Projects">Projects</td>
 	<td></td></tr>
 	<tr width="100%"><td></td>
-	<td id="t9" align="center" height="27px" background="./images/tab1.gif" onmouseover="change(1,'t9')" onmouseout="change(2,'t9')" onclick="show('d9')">Research Projects</td>
+	<td id="t9" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t9')" onmouseout="change(2,'t9')" onclick="show('d9')" title="Patents">Patents</td>
 	<td></td></tr>
 	<tr width="100%"><td></td>
-	<td id="t10" align="center" height="27px" background="./images/tab1.gif" onmouseover="change(1,'t10')" onmouseout="change(2,'t10')" onclick="show('d10')">Consult: Offered</td>
+	<td id="t10" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t10')" onmouseout="change(2,'t10')" onclick="show('d10')" title="Media Publication">Media Publication</td>
 	<td></td></tr>
 	<tr width="100%"><td></td>
-	<td id="t11" align="center" height="27px" background="./images/tab1.gif" onmouseover="change(1,'t11')" onmouseout="change(2,'t11')" onclick="show('d11')">Brief Profile</td>
+	<td id="t11" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t11')" onmouseout="change(2,'t11')" onclick="show('d11')" title="Courses Taught">Courses Taught</td>
 	<td></td></tr>
 	<tr width="100%"><td></td>
-	<td id="t12" align="center" height="27px" background="./images/tab1.gif" onmouseover="change(1,'t12')" onmouseout="change(2,'t12')" onclick="show('d12')">Prof: memberships</td>
+	<td id="t12" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t12')" onmouseout="change(2,'t12')" onclick="show('d12')" title="Thesis/Student Project">Student Project</td>
 	<td></td></tr>
 	<tr width="100%"><td></td>
-	<td id="t13" align="center" height="27px" background="./images/tab1.gif" onmouseover="change(1,'t13')" onmouseout="change(2,'t13')" onclick="show('d13')">Staff Research</td>
+	<td id="t13" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t13')" onmouseout="change(2,'t13')" onclick="show('d13')" title="Faculty Exchange Program">Faculty Exchange</td>
 	<td></td></tr>
 	<tr width="100%"><td></td>
-	<td id="t14" align="center" height="27px" background="./images/tab1.gif" onmouseover="change(1,'t14')" onmouseout="change(2,'t14')" onclick="show('d14')">Papers Published</td>
+	<td id="t14" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t14')" onmouseout="change(2,'t14')" onclick="show('d14')" title="Professional Bodies/Societies">Professional Bodies</td>
 	<td></td></tr>
 	<tr width="100%"><td></td>
-	<td id="t15" align="center" height="27px" background="./images/tab1.gif" onmouseover="change(1,'t15')" onmouseout="change(2,'t15')" onclick="show('d15')">Staff Awards</td>
+	<td id="t15" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t15')" onmouseout="change(2,'t15')" onclick="show('d15')" title="Consultancy Offered">Consultancy Offered</td>
 	<td></td></tr>
 	<tr width="100%"><td></td>
-	<td id="t16" align="center" height="27px" background="./images/tab1.gif" onmouseover="change(1,'t16')" onmouseout="change(2,'t16')" onclick="show('d16')">Seminars</td>
+	<td id="t16" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t16')" onmouseout="change(2,'t16')" onclick="show('d16')" title="Governance">Governance</td>
 	<td></td></tr>
 	<tr width="100%"><td></td>
-	<td id="t17" align="center" height="27px" background="./images/tab1.gif" onmouseover="change(1,'t17')" onmouseout="change(2,'t17')" onclick="show('d17')">Training Prog</td>
+	<td id="t17" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t17')" onmouseout="change(2,'t17')" onclick="show('d17')" title="Review Committees">Review Committees</td>
+	<td></td></tr>
+	<tr width="100%"><td></td>
+	<td id="t18" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t18')" onmouseout="change(2,'t18')" onclick="show('d18')" title="Community Service">Community Service</td>
 	<td></td></tr>
 	</table>
-	</td></tr><tr width="100%" height="10px"><td></td></tr></table>
+	</td></tr><tr width="100%" height="10px"><td></td></tr>	
+	</table>
 
 </td>
 <td valign="top">
 
-<!-- ================================= Official Contact Table ======================================-->
-
-
+<!-- ================================= Brief Profile ======================================-->
 <div id="d1">
 <table width="100%" class="tabBG3">
-
 <tr>
-<td width="30%" class="tabBG4">Direct Phone Number :</td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//DirectPhoneNumber/oioNS:renderinfo" /></td>
+<td width="30%" colspan="2" align="center" class="thead">Personal Details</td>
 </tr>
-
 <tr>
-<td width="30%" class="tabBG4">Phone Internal Office :</td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//PhoneInternalOffice/oioNS:renderinfo" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//focus_area/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//focus_area/oioNS:renderinfo" /></td>
 </tr>
-
 <tr>
-<td width="30%" class="tabBG4">Mobile Number :</td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//MobileNumber/oioNS:renderinfo" /></td>
+<td colspan="2" class="thead" align="center"><xsl:apply-templates select="//qualification/oioNS:prompt" /></td>
 </tr>
-
 <tr>
-<td width="30%" class="tabBG4">Faculty Room No :</td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//FacultyRoomNo/oioNS:renderinfo" /></td>
+<td colspan="2" class="tabBG4"><xsl:apply-templates select="//qualification/oioNS:renderinfo" /></td>
 </tr>
-
 <tr>
-<td width="30%" class="tabBG4">Hostel/Residence :</td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//HostelResidence/oioNS:renderinfo" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//research_interests/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//research_interests/oioNS:renderinfo" /></td>
 </tr>
-
 <tr>
-<td width="30%" class="tabBG4">RoomNo/QuartersNo :</td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//RoomNoQuartersNo/oioNS:renderinfo" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//teaching_interests/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//teaching_interests/oioNS:renderinfo" /></td>
 </tr>
-
 <tr>
-<td width="30%" class="tabBG4">Phone-Residence/Hostel :</td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//PhoneResidenceHostel/oioNS:renderinfo" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//positions_held/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//positions_held/oioNS:renderinfo" /></td>
 </tr>
+<tr>
+<td width="30%" colspan="2" align="center" class="thead">Contact Details</td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//office_room_num/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//office_room_num/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//office_phone_ext/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//office_phone_ext/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//email_id/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//email_id/oioNS:renderinfo" /> </td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//email/oioNS:prompt" /></td>
+<td class="tabBG4"><xsl:apply-templates select="//email/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//home_phone/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//home_phone/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//fax/oioNS:prompt" /></td>
+<td class="tabBG4"><xsl:apply-templates select="//fax/oioNS:renderinfo" /></td>
+</tr>
+<!--<tr>
+<td width="30%" class="tabBG4">Upload Bio</td>
+<td width="70%" class="tabBG4"></td>
+</tr>-->
 
 </table>
-
 </div>
 
-<!--============================= Account Details Tables =============================-->
+
+<!--============================= Awards =============================-->
+
+
 
 <div id="d2">
+
 <table width="100%" class="tabBG3">
-
 <tr>
-<td width="30%" class="tabBG4">SB Account No :</td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//SBAccountNo/oioNS:renderinfo" /></td>
+<td colspan="2" class="thead" align="center"><xsl:apply-templates select="//awards/oioNS:prompt" /></td>
 </tr>
-
 <tr>
-<td width="30%" class="tabBG4">Bank :</td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//Bank/oioNS:renderinfo" /></td>
+<td colspan="2" class="tabBG4"><xsl:apply-templates select="//awards/oioNS:renderinfo" /></td>
 </tr>
-
-<tr>
-<td width="30%" class="tabBG4">Pan Card No :</td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//PanCardNo/oioNS:renderinfo" /></td>
-</tr>
-
-<tr>
-<td width="30%" class="tabBG4">PF No :</td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//PFNo/oioNS:renderinfo" /></td>
-</tr>
-
-<tr>
-<td width="30%" class="tabBG4">Passport No :</td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//PassportNo/oioNS:renderinfo" /></td>
-</tr>
-
-<tr>
-<td width="30%" class="tabBG4">Passport Valid Upto :</td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//PassportValidUpto/oioNS:renderinfo" /></td>
-</tr>
-
-</table></div>
+</table>
+</div>
 
 
-<!--============================= Accomplishments =============================-->
+
+<!--============================= Journal Papers =============================-->
 
 <div id="d3">
+
 <table width="100%" class="tabBG3">
-
-<tr ><th class="thead">Other Accomplishments</th></tr>
-<tr><td align="center" class="tabBG4"><xsl:apply-templates select="//OtherAccomplishments/oioNS:renderinfo" /></td>
+<tr>
+<td class="thead" align="center"><xsl:apply-templates select="//journal_papers/oioNS:prompt" /></td>
 </tr>
+<tr>
+<td class="tabBG4"><xsl:apply-templates select="//journal_papers/oioNS:renderinfo" /></td>
+</tr>
+</table>
+</div>
 
-</table></div>
+<!--============================= Conference Papers =============================-->
 
-
-<!--============================= Qualification=============================-->
 
 <div id="d4">
+
 <table width="100%" class="tabBG3">
-
 <tr>
-<th  class="thead">Course</th>
-<th  class="thead">Institution</th>
-<th  class="thead">Location</th>
-<th  class="thead">Board</th>
-<th  class="thead">Year</th>
-<th  class="thead">Month</th>
-<th  class="thead">Passing Year</th>
-<th  class="thead">%</th>
-<th  class="thead">Class</th>
-<th  class="thead">MainSubj</th>
+<td class="thead" align="center"><xsl:apply-templates select="//conference_papers/oioNS:prompt" /></td>
 </tr>
-
-<!--
 <tr>
-<td align="center" ><xsl:apply-templates select="//CourseHead/oioNS:renderinfo" /></td>
-<td align="center" ><xsl:apply-templates select="//InstitutionHeader/oioNS:renderinfo" /></td>
-<td align="center" ><xsl:apply-templates select="//LocationHeader/oioNS:renderinfo" /></td>
-<td align="center" ><xsl:apply-templates select="//BoardHeader/oioNS:renderinfo" /></td>
-<td align="center" ><xsl:apply-templates select="//YearHeader/oioNS:renderinfo" /></td>
-<td align="center" ><xsl:apply-templates select="//MonthHeader/oioNS:renderinfo" /></td>
-<td align="center" ><xsl:apply-templates select="//PassingYearHeader/oioNS:renderinfo" /></td>
-<td align="center" ><xsl:apply-templates select="//Percentage/oioNS:renderinfo" /></td>
-<td align="center" ><xsl:apply-templates select="//ClassHeader/oioNS:renderinfo" /></td>
-<td align="center" ><xsl:apply-templates select="//MainSubjHeader/oioNS:renderinfo" /></td>
+<td class="tabBG4"><xsl:apply-templates select="//conference_papers/oioNS:renderinfo" /></td>
 </tr>
--->
-
-<tr>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//CourseDetails/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//InstitutionDetails/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//LocationDetails/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//BoardDetails/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//YearDetails/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//MonthDetails/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//PassingYearDetails/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//PercentageDetails/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//ClassDetails/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//MainSubjDetails/oioNS:renderinfo" /></td>
-</tr>
-
-<tr>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//CourseDetails1/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//InstitutionDetails1/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//LocationDetails1/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//BoardDetails1/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//YearDetails1/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//MonthDetails1/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//PassingYearDetails1/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//PercentageDetails1/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//ClassDetails1/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//MainSubjDetails1/oioNS:renderinfo" /></td>
-</tr>
-
-
-<tr>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//CourseDetails2/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//InstitutionDetails2/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//LocationDetails2/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//BoardDetails2/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//YearDetails2/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//MonthDetails2/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//PassingYearDetails2/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//PercentageDetails2/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//ClassDetails2/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//MainSubjDetails2/oioNS:renderinfo" /></td>
-</tr>
-
-<tr>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//CourseDetails3/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//InstitutionDetails3/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//LocationDetails3/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//BoardDetails3/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//YearDetails3/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//MonthDetails3/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//PassingYearDetails3/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//PercentageDetails3/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//ClassDetails3/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//MainSubjDetails3/oioNS:renderinfo" /></td>
-</tr>
-
-<tr>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//CourseDetails4/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//InstitutionDetails4/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//LocationDetails4/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//BoardDetails4/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//YearDetails4/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//MonthDetails4/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//PassingYearDetails4/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//PercentageDetails4/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//ClassDetails4/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//MainSubjDetails4/oioNS:renderinfo" /></td>
-</tr>
-
 </table>
 </div>
+<!--============================= Books/Chapters =============================-->
 
-<!--============================= Prior Experience=============================-->
 
 <div id="d5">
+
 <table width="100%" class="tabBG3">
-
 <tr>
-<th class="thead">Prior Experience</th>
+<td class="thead" align="center"><xsl:apply-templates select="//books_chapter/oioNS:prompt" /></td>
 </tr>
-
-<!--
 <tr>
-<td><xsl:apply-templates select="//EperienceDetailsHead/oioNS:renderinfo" /></td>
-</tr>
--->
-
-<tr>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//EperienceDetails/oioNS:renderinfo" /></td>
+<td class="tabBG4"><xsl:apply-templates select="//books_chapter/oioNS:renderinfo" /></td>
 </tr>
 </table>
 </div>
 
-<!--============================= Family =============================-->
+
+<!--============================= Invited Talks/Guest Lectures =============================-->
 
 <div id="d6">
 <table width="100%" class="tabBG3">
-
 <tr>
-<th class="thead">Member Name</th>
-<th class="thead">Relation</th>
-<th class="thead">Profession</th>
+<td class="thead" align="center"><xsl:apply-templates select="//talks_lectures/oioNS:prompt" /></td>
 </tr>
-
-<!--<tr>
-<td align="center"><xsl:apply-templates select="//MemberNameHead/oioNS:renderinfo" /></td>
-<td align="center"><xsl:apply-templates select="//RelationHead/oioNS:renderinfo" /></td>
-<td align="center"><xsl:apply-templates select="//ProfessionHead/oioNS:renderinfo" /></td>
-</tr>-->
-
 <tr>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//MemberName/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//Relation/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//Profession/oioNS:renderinfo" /></td>
+<td class="tabBG4"><xsl:apply-templates select="//talks_lectures/oioNS:renderinfo" /></td>
 </tr>
-
-<tr>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//MemberName1/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//Relation1/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//Profession1/oioNS:renderinfo" /></td>
-</tr>
-
-<tr>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//MemberName2/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//Relation2/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//Profession2/oioNS:renderinfo" /></td>
-</tr>
-
-<tr>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//MemberName3/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//Relation3/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//Profession3/oioNS:renderinfo" /></td>
-</tr>
-
-<tr>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//MemberName4/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//Relation4/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//Profession4/oioNS:renderinfo" /></td>
-</tr>
-
 </table>
 </div>
 
-<!--============================= Papers Presented =============================-->
-
+<!--============================= Seminars / Conferences / Workshops / Training Attended =============================-->
 
 <div id="d7">
 <table width="100%" class="tabBG3">
-
 <tr>
-<!--<td>Paper Status</td>-->
-<td colspan="2" class="tabBG4"><xsl:apply-templates select="//PRStatusofpaper/oioNS:renderinfo" /></td>
-<!--<td>Paper Type</td>-->
-<td colspan="2" class="tabBG4"><xsl:apply-templates select="//PRPaperType/oioNS:renderinfo" /></td>
+<td class="thead" align="center"><xsl:apply-templates select="//training/oioNS:prompt" /></td>
 </tr>
-
-
 <tr>
-<td class="tabBG4">Title of Paper :</td>
-<td class="tabBG4"><xsl:apply-templates select="//RTitleofPaper/oioNS:renderinfo" /></td>
-<td class="tabBG4">Authors :</td>
-<td class="tabBG4"><xsl:apply-templates select="//PRAuthors/oioNS:renderinfo" /></td>
+<td class="tabBG4"><xsl:apply-templates select="//training/oioNS:renderinfo" /></td>
 </tr>
-
-<tr>
-<td class="tabBG4">JournalName :</td>
-<td class="tabBG4"><xsl:apply-templates select="//PRJournalName/oioNS:renderinfo" /></td>
-<td class="tabBG4">Volume :</td>
-<td class="tabBG4"><xsl:apply-templates select="//PRVolume/oioNS:renderinfo" /></td>
-</tr>
-
-<tr>
-<td class="tabBG4">Issue No :</td>
-<td class="tabBG4"><xsl:apply-templates select="//PRIssueNo/oioNS:renderinfo" /></td>
-<td class="tabBG4">Year :</td>
-<td class="tabBG4"><xsl:apply-templates select="//PRYear/oioNS:renderinfo" /></td>
-</tr>
-
-<tr>
-<td class="tabBG4">Pages :</td>
-<td class="tabBG4"><xsl:apply-templates select="//PRPages/oioNS:renderinfo" /></td>
-<td class="tabBG4">Impact Factor :</td>
-<td class="tabBG4"><xsl:apply-templates select="//PRImpactFactor/oioNS:renderinfo" /></td>
-</tr>
-
-<tr>
-<th colspan="4" align="left" class="tabBG4">Conference Proceedings</th>
-<!--<td><xsl:apply-templates select="//PRConferenceProceedings/oioNS:renderinfo" /></td>-->
-</tr>
-
-<tr>
-<td class="tabBG4">Name of Conference :</td>
-<td class="tabBG4"><xsl:apply-templates select="//AANameofConference/oioNS:renderinfo" /></td>
-<td class="tabBG4">Conference Location :</td>
-<td class="tabBG4"><xsl:apply-templates select="//AAConferenceLocation/oioNS:renderinfo" /></td>
-</tr>
-
-<tr>
-<td class="tabBG4">Conference Dates :</td>
-<td class="tabBG4"><xsl:apply-templates select="//AAConferenceDates/oioNS:renderinfo" /></td>
-<td class="tabBG4">Publisher and City :</td>
-<td class="tabBG4"><xsl:apply-templates select="//AAPublisherandCity/oioNS:renderinfo" /></td>
-</tr>
-
-<tr>
-<td class="tabBG4">Year :</td>
-<td class="tabBG4"><xsl:apply-templates select="//AAYear/oioNS:renderinfo" /></td>
-<td class="tabBG4">Pages :</td>
-<td class="tabBG4"><xsl:apply-templates select="//AAPages/oioNS:renderinfo" /></td>
-</tr>
-
 </table>
 </div>
 
 
-<!--============================= Books Written=============================-->
+<!--============================= Projects =============================-->
+
 
 <div id="d8">
 <table width="100%" class="tabBG3">
-
 <tr>
-<th class="thead">Books Written</th>
+<td class="thead" align="center"><xsl:apply-templates select="//projects/oioNS:prompt" /></td>
 </tr>
-<!--
 <tr>
-<td><xsl:apply-templates select="//BookDetails/oioNS:renderinfo" /></td>
+<td class="tabBG4"><xsl:apply-templates select="//projects/oioNS:renderinfo" /></td>
 </tr>
--->
-<tr>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//BookDetails1/oioNS:renderinfo" /></td>
-</tr>
-
 </table>
-</div>
+</div> 	
 
-<!--============================= Research Projects=============================-->
+<!--============================= Patents =============================-->
 
 <div id="d9">
 <table width="100%" class="tabBG3">
-
-<tr >
-<th colspan="2" class="thead">Project Details</th>
+<tr>
+<td class="thead" align="center"><xsl:apply-templates select="//patents/oioNS:prompt" /></td>
 </tr>
-<!--
 <tr>
-<td><xsl:apply-templates select="//ProjectDetailsHead/oioNS:renderinfo" /></td>
+<td class="tabBG4"><xsl:apply-templates select="//patents/oioNS:renderinfo" /></td>
 </tr>
--->
-<tr>
-<td colspan="2" align="center" class="tabBG4"><xsl:apply-templates select="//ProjectDetails1/oioNS:renderinfo" /></td>
-</tr>
-
-<tr>
-<td align="center" colspan="2" class="tabBG4"><b>Funded Research Projects</b></td>
-<!--<th><xsl:apply-templates select="//FundedResearchProjects/oioNS:renderinfo" /></th>-->
-</tr>
-
-<tr>
-<td class="tabBG4">Title of Project : 	</td>
-<td class="tabBG4"><xsl:apply-templates select="//TitleofProject/oioNS:renderinfo" /></td>
-</tr>
-
-<tr>
-<td class="tabBG4">Abstract : 	</td>
-<td class="tabBG4"><xsl:apply-templates select="//Abstract/oioNS:renderinfo" /></td>
-</tr>
-
-<tr>
-<td class="tabBG4">Principal Investigator(PI) : </td>
-<td class="tabBG4"><xsl:apply-templates select="//PrincipalInvestigator/oioNS:renderinfo" /></td>
-</tr>
-	
-<tr>
-<td class="tabBG4">Co-PI(s) :  </td>
-<td class="tabBG4"><xsl:apply-templates select="//CoPI/oioNS:renderinfo" /></td>
-</tr>
-	
-<tr>
-<td class="tabBG4">URL :</td>
-<td class="tabBG4"><xsl:apply-templates select="//URL/oioNS:renderinfo" /></td>
-</tr>
-	
-<tr>
-<td class="tabBG4">Duration of Project : </td>
-<td class="tabBG4"><xsl:apply-templates select="//DurationofProject/oioNS:renderinfo" /></td>
-</tr>
- 	
-<tr>
-<td class="tabBG4">Funding Agency :</td>
-<td class="tabBG4"><xsl:apply-templates select="//FundingAgency/oioNS:renderinfo" /></td>
-</tr>	
-
-<tr>
-<td class="tabBG4">Summary of Project :</td>
-<td class="tabBG4"><xsl:apply-templates select="//SummaryofProject/oioNS:renderinfo" /></td>
-</tr>	
-
-<tr>
-<td class="tabBG4">Project Grant/Assistance :</td>
-<td class="tabBG4"><xsl:apply-templates select="//ProjectGrantAssistance/oioNS:renderinfo" /></td>
-</tr>	 	
-<tr>
-<td class="tabBG4">Other Details :</td>
-<td class="tabBG4"><xsl:apply-templates select="//Otherdetails/oioNS:renderinfo" /></td>
-</tr>	  	
- 	
-
 </table>
 </div>
 
-<!--============================= Consult: Offered=============================-->
+<!--============================= Media Publication =============================-->
 
 <div id="d10">
 <table width="100%" class="tabBG3">
-
 <tr>
-<th class="thead">Consultancy Details</th>
+<td class="thead" align="center"><xsl:apply-templates select="//media_publication/oioNS:prompt" /></td>
 </tr>
-<!--
 <tr>
-<td><xsl:apply-templates select="//ConsultancyTitleHead/oioNS:renderinfo" /></td>
+<td class="tabBG4"><xsl:apply-templates select="//media_publication/oioNS:renderinfo" /></td>
 </tr>
--->
-<tr>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//ConsultancyDetails1/oioNS:renderinfo" /></td>
-</tr>
-
 </table>
 </div>
 
-<!--============================= Brief Profile =============================-->
+<!--============================= Courses Taught =============================-->
 
 <div id="d11">
 <table width="100%" class="tabBG3">
-
 <tr>
-<td class="tabBG4">Name :</td>
-<td class="tabBG4"><xsl:apply-templates select="//Name/oioNS:renderinfo" /></td>
-</tr>	 
-<tr>
-<td class="tabBG4">Designation :</td>
-<td class="tabBG4"><xsl:apply-templates select="//Designation/oioNS:renderinfo" /></td>
-</tr>	
- <tr>
-<td class="tabBG4">Areas of Interest :</td>
-<td class="tabBG4"><xsl:apply-templates select="//AreasofInterest/oioNS:renderinfo" /></td>
-</tr>		
- <tr>
-<td class="tabBG4">Biography :</td>
-<td class="tabBG4"><xsl:apply-templates select="//Biography/oioNS:renderinfo" /></td>
-</tr>	 	
- <tr>
-<td class="tabBG4">Email : </td>
-<td class="tabBG4"><xsl:apply-templates select="//Email/oioNS:renderinfo" /></td>
-</tr>	 	
- <tr>
-<td class="tabBG4">Phone : </td>
-<td class="tabBG4"><xsl:apply-templates select="//Phone/oioNS:renderinfo" /></td>
-</tr> 	
-<tr>
-<td class="tabBG4">Fax :</td>
-<td class="tabBG4"><xsl:apply-templates select="//Fax/oioNS:renderinfo" /></td>
-</tr> 	
-
+<td class="tabBG4" width="50%">Choose Academic term</td><td class="tabBG4">(Drop Down)</td>
+</tr>
 </table>
 </div>
 
-<!--============================= Prof: memberships =============================-->
+<!--============================= Thesis/Student Project =============================-->
 
 <div id="d12">
 <table width="100%" class="tabBG3">
-
 <tr>
-<th class="thead">Membership Details</th>
+<td class="thead" align="center"><xsl:apply-templates select="//thesis/oioNS:prompt" /></td>
 </tr>
-<!--
 <tr>
-<td><xsl:apply-templates select="//MMDetailsHead/oioNS:renderinfo" /></td>
+<td class="tabBG4"><xsl:apply-templates select="//thesis/oioNS:renderinfo" /></td>
 </tr>
--->
-<tr>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//MMDetails1/oioNS:renderinfo" /></td>
-</tr>
-
 </table>
 </div>
 
-<!--============================= Staff Research =============================-->
+<!--============================= Faculty Exchange Program =============================-->
 
 <div id="d13">
 <table width="100%" class="tabBG3">
 <tr>
-<th class="thead">PhDTitle</th>
-<th class="thead">Area</th>
-<th class="thead">University</th>
-<th class="thead">ProjGuided(PG)</th>
-<th class="thead">ProjGuided(PhD)</th>
-<th class="thead">ProjGuided(PostDoctoral)</th>
+<td class="thead" align="center"><xsl:apply-templates select="//faculty_exchange/oioNS:prompt" /></td>
 </tr>
-
-<!--<tr>
-<td><xsl:apply-templates select="//PhDTitleHead/oioNS:renderinfo" /></td>
-<td><xsl:apply-templates select="//AreaHead/oioNS:renderinfo" /></td>
-<td><xsl:apply-templates select="//UniversityHead/oioNS:renderinfo" /></td>
-<td><xsl:apply-templates select="//ProjGuided1/oioNS:renderinfo" /></td>
-<td><xsl:apply-templates select="//ProjGuided2/oioNS:renderinfo" /></td>
-<td><xsl:apply-templates select="//ProjGuided3/oioNS:renderinfo" /></td>
-</tr>-->
-
-
 <tr>
-<td class="tabBG4"><xsl:apply-templates select="//PhDTitle1/oioNS:renderinfo" /></td>
-<td class="tabBG4"><xsl:apply-templates select="//Area1/oioNS:renderinfo" /></td>
-<td class="tabBG4"><xsl:apply-templates select="//University1/oioNS:renderinfo" /></td>
-<td class="tabBG4"><xsl:apply-templates select="//ProjGuided11/oioNS:renderinfo" /></td>
-<td class="tabBG4"><xsl:apply-templates select="//ProjGuided12/oioNS:renderinfo" /></td>
-<td class="tabBG4"><xsl:apply-templates select="//ProjGuided13/oioNS:renderinfo" /></td>
+<td class="tabBG4"><xsl:apply-templates select="//faculty_exchange/oioNS:renderinfo" /></td>
 </tr>
-
-<tr>
-<td class="tabBG4"><xsl:apply-templates select="//PhDTitle2/oioNS:renderinfo" /></td>
-<td class="tabBG4"><xsl:apply-templates select="//Area2/oioNS:renderinfo" /></td>
-<td class="tabBG4"><xsl:apply-templates select="//University2/oioNS:renderinfo" /></td>
-<td class="tabBG4"><xsl:apply-templates select="//ProjGuided21/oioNS:renderinfo" /></td>
-<td class="tabBG4"><xsl:apply-templates select="//ProjGuided22/oioNS:renderinfo" /></td>
-<td class="tabBG4"><xsl:apply-templates select="//ProjGuided23/oioNS:renderinfo" /></td>
-</tr>
-
-<tr>
-<td class="tabBG4"><xsl:apply-templates select="//PhDTitle3/oioNS:renderinfo" /></td>
-<td class="tabBG4"><xsl:apply-templates select="//Area3/oioNS:renderinfo" /></td>
-<td class="tabBG4"><xsl:apply-templates select="//University3/oioNS:renderinfo" /></td>
-<td class="tabBG4"><xsl:apply-templates select="//ProjGuided31/oioNS:renderinfo" /></td>
-<td class="tabBG4"><xsl:apply-templates select="//ProjGuided32/oioNS:renderinfo" /></td>
-<td class="tabBG4"><xsl:apply-templates select="//ProjGuided33/oioNS:renderinfo" /></td>
-</tr>
-
 </table>
 </div>
 
-<!--================================= Papers Published ====================================================-->
+<!--================================= Professional Bodies / Societies ====================================================-->
 
 <div id="d14">
 <table width="100%" class="tabBG3">
-
 <tr>
-<td class="tabBG4">Paper Type</td>
-<td class="tabBG4"><xsl:apply-templates select="//Papertype/oioNS:renderinfo" /></td>
-<td class="tabBG4">Journal Type</td>
-<td class="tabBG4"><xsl:apply-templates select="//Journal/oioNS:renderinfo" /></td>
-</tr>
-
-
-<tr>
-<td class="tabBG4">Title of Paper :</td>
-<td class="tabBG4"><xsl:apply-templates select="//TitleofPaper/oioNS:renderinfo" /></td>
-<td class="tabBG4">Authors :</td>
-<td class="tabBG4"><xsl:apply-templates select="//Authors/oioNS:renderinfo" /></td>
-</tr>
-
-<tr>
-<td class="tabBG4">Journal Name  :</td>
-<td class="tabBG4"><xsl:apply-templates select="//JournalName/oioNS:renderinfo" /></td>
-<td class="tabBG4">Abstract :</td>
-<td class="tabBG4"><xsl:apply-templates select="//JAbstract/oioNS:renderinfo" /></td>
-</tr>
-
-<tr>
-<td class="tabBG4">Volume :</td>
-<td class="tabBG4"><xsl:apply-templates select="//JVolume/oioNS:renderinfo" /></td>
-<td class="tabBG4">Issue No :</td>
-<td class="tabBG4"><xsl:apply-templates select="//JIssueNo/oioNS:renderinfo" /></td>
-</tr>
-
-<tr>
-<td class="tabBG4">Month :</td>
-<td class="tabBG4"><xsl:apply-templates select="//JMonth/oioNS:renderinfo" /></td>
-<td class="tabBG4">Year :</td>
-<td class="tabBG4"><xsl:apply-templates select="//JYear/oioNS:renderinfo" /></td>
-</tr>
-
-<tr>
-<td class="tabBG4">Pages :</td>
-<td class="tabBG4"><xsl:apply-templates select="//JPages/oioNS:renderinfo" /></td>
-<td class="tabBG4">Project associated with the paper  :</td>
-<td class="tabBG4"><xsl:apply-templates select="//Projectassociatedwiththepaper/oioNS:renderinfo" /></td>
-</tr>
-
-<tr>
-<td class="tabBG4">Language   :</td>
-<td class="tabBG4"><xsl:apply-templates select="//Language/oioNS:renderinfo" /></td>
-<td class="tabBG4">URL :</td>
-<td class="tabBG4"><xsl:apply-templates select="//PPURL/oioNS:renderinfo" /></td>
-</tr>
-
-<tr>
-<td class="tabBG4">Other Details :</td>
-<td colspan="3" class="tabBG4"><xsl:apply-templates select="//PPOtherdetails/oioNS:renderinfo" /></td>
+<td class="thead" align="center"><xsl:apply-templates select="//professional_body/oioNS:prompt" /></td>
 </tr>
 <tr>
-<td class="tabBG4">Conference Proceedings  :</td>
-<td colspan="3" class="tabBG4"><xsl:apply-templates select="//ConferenceProceedings/oioNS:renderinfo" /></td>
-</tr>
-<tr>
-<td class="tabBG4">Title of Paper :</td>
-<td class="tabBG4"><xsl:apply-templates select="//PPTitleofPaper/oioNS:renderinfo" /></td>
-<td class="tabBG4">Abstract :</td>
-<td class="tabBG4"><xsl:apply-templates select="//PPAbstract/oioNS:renderinfo" /></td>
-</tr>
-<tr>
-<td class="tabBG4">Year :</td>
-<td class="tabBG4"><xsl:apply-templates select="//PPYear/oioNS:renderinfo" /></td>
-<td class="tabBG4">Pages :</td>
-<td class="tabBG4"><xsl:apply-templates select="//PPges/oioNS:renderinfo" /></td>
-</tr>
-<tr>
-<td class="tabBG4">Name of Conference  :</td>
-<td class="tabBG4"><xsl:apply-templates select="//PPNameofConference/oioNS:renderinfo" /></td>
-<td class="tabBG4">Conference Dates :</td>
-<td class="tabBG4"><xsl:apply-templates select="//PPConferenceDates/oioNS:renderinfo" /></td>
-</tr>
-<tr>
-<td class="tabBG4">Conference Venue :</td>
-<td class="tabBG4"><xsl:apply-templates select="//ConferenceVenue/oioNS:renderinfo" /></td>
-<td class="tabBG4">Name of the Organizer :</td>
-<td class="tabBG4"><xsl:apply-templates select="//NameoftheOrganizer/oioNS:renderinfo" /></td>
-</tr>
-<tr>
-<td class="tabBG4">Language :</td>
-<td class="tabBG4"><xsl:apply-templates select="//PLanguage/oioNS:renderinfo" /></td>
-<td class="tabBG4">URL :</td>
-<td class="tabBG4"><xsl:apply-templates select="//PURL/oioNS:renderinfo" /></td>
-</tr>
-<tr>
-<td class="tabBG4">Other Details :</td>
-<td colspan="3" class="tabBG4"><xsl:apply-templates select="//pOtherdetails/oioNS:renderinfo" /></td>
+<td class="tabBG4"><xsl:apply-templates select="//professional_body/oioNS:renderinfo" /></td>
 </tr>
 </table>
 </div>
 
 
-<!--============================= Staff Awards =============================-->
+<!--============================= Consultancy Offered =============================-->
 
 <div id="d15">
 <table width="100%" class="tabBG3">
 <tr>
-<th class="thead">Award Name</th>
-<th class="thead">Year</th>
-<th class="thead">Description</th>
+<td class="thead" align="center"><xsl:apply-templates select="//consultancy_offered/oioNS:prompt" /></td>
 </tr>
- 	
-
-<!--<tr>
-<td><xsl:apply-templates select="//AwardNameHead/oioNS:renderinfo" /></td>
-<td><xsl:apply-templates select="//YearHead/oioNS:renderinfo" /></td>
-<td><xsl:apply-templates select="//DescriptionHead/oioNS:renderinfo" /></td>
-</tr>-->
-
 <tr>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//AwardName/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//AwardYear/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//AwardDescription/oioNS:renderinfo" /></td>
+<td class="tabBG4"><xsl:apply-templates select="//consultancy_offered/oioNS:renderinfo" /></td>
 </tr>
-
-<tr>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//AwardName2/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//AwardYear2/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//AwardDescription2/oioNS:renderinfo" /></td>
-</tr>
-
-<tr>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//AwardName3/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//AwardYear3/oioNS:renderinfo" /></td>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//AwardDescription3/oioNS:renderinfo" /></td>
-</tr>
-
 </table>
 </div>
 
-<!--================================== Seminars ======================================================-->
+<!--================================== Governance ======================================================-->
 
 <div id="d16">
 <table width="100%" class="tabBG3">
-
 <tr>
-<td class="tabBG4">Seminar Type :</td>
-<td class="tabBG4"><xsl:apply-templates select="//SeminarType/oioNS:renderinfo" /></td>
-<td class="tabBG4">Name of Conference/Seminar/Workshops/Training attended  :</td>
-<td class="tabBG4"><xsl:apply-templates select="//NameofConferenceSeminarattendedWorkshopsTrainingattended/oioNS:renderinfo" /></td>
+<td class="thead" width="100%" align="center"><xsl:apply-templates select="//governance/oioNS:prompt" /></td>
 </tr>
-
 <tr>
-<td class="tabBG4">Duration of Conference  :</td>
-<td colspan="3" class="tabBG4"><xsl:apply-templates select="//NIDurationofConference/oioNS:renderinfo" /></td>
-</tr>
-
-<tr>
-<td colspan="4" class="tabBG4"><b>Location</b></td>
-<!--<td><xsl:apply-templates select="//NILocation/oioNS:renderinfo" /></td>-->
-</tr>
-
-<tr>
-<td class="tabBG4">City :</td>
-<td class="tabBG4"><xsl:apply-templates select="//NICity/oioNS:renderinfo" /></td>
-<td class="tabBG4">Country :</td>
-<td class="tabBG4"><xsl:apply-templates select="//NCountry/oioNS:renderinfo" /></td>
-</tr>
-
-<tr>
-<td class="tabBG4">State :</td>
-<td class="tabBG4"><xsl:apply-templates select="//NIState/oioNS:renderinfo" /></td>
-<td class="tabBG4">Source of Funding  :</td>
-<td class="tabBG4"><xsl:apply-templates select="//SourceofFunding/oioNS:renderinfo" /></td>
-</tr>
-
-<tr>
-<td class="tabBG4">Purpose of attending the Conference/Seminar  :</td>
-<td class="tabBG4"><xsl:apply-templates select="//NNPurposeofattendingtheConferenceSeminar/oioNS:renderinfo" /></td>
-<td class="tabBG4">Description :</td>
-<td colspan="3" class="tabBG4"> <xsl:apply-templates select="//NNDescription/oioNS:renderinfo" /></td>
-</tr>
-
-
-<tr>
-<td colspan="4" class="tabBG4"><b>Presented Paper</b></td>
-<!--<td><xsl:apply-templates select="//SPresentedPaper/oioNS:renderinfo" /></td>-->
-</tr>
-
-<tr>
-<td class="tabBG4">Title of Paper :</td>
-<td class="tabBG4"><xsl:apply-templates select="//STitleofPaper/oioNS:renderinfo" /></td>
-<td class="tabBG4">Author(s) :</td>
-<td class="tabBG4"><xsl:apply-templates select="//SAuthors/oioNS:renderinfo" /></td>
-</tr>
-	
-
-<tr>
-<td class="tabBG4">Abstract :</td>
-<td class="tabBG4"><xsl:apply-templates select="//SAbstract/oioNS:renderinfo" /></td>
-<td class="tabBG4">Project associated with the paper  :</td>
-<td class="tabBG4"><xsl:apply-templates select="//SProjectassociatedwiththepaper/oioNS:renderinfo" /></td>
-</tr>
-
-<tr>
-<td class="tabBG4">Language :</td>
-<td class="tabBG4"><xsl:apply-templates select="//SLanguage/oioNS:renderinfo" /></td>
-<td class="tabBG4">URL :</td>
-<td class="tabBG4"><xsl:apply-templates select="//SURL/oioNS:renderinfo" /></td>
-</tr>
-
-<tr>
-<td class="tabBG4">Other Details :</td>
-<td colspan="3" class="tabBG4"><xsl:apply-templates select="//SOtherdetails/oioNS:renderinfo" /></td>
+<td class="tabBG4" width="100%"><xsl:apply-templates select="//governance/oioNS:renderinfo" /></td>
 </tr>
 </table>
 </div>
 
-<!--============================= Training Prog=============================-->
+<!--============================= Review Committees =============================-->
 
 <div id="d17">
 <table width="100%" class="tabBG3">
+<tr>
+<td class="thead" align="center"><xsl:apply-templates select="//review_committees/oioNS:prompt" /></td>
+</tr>
+<tr>
+<td class="tabBG4" ><xsl:apply-templates select="//review_committees/oioNS:renderinfo" /></td>
+</tr>
+</table>
+</div>
 
-<tr>
-<th class="thead">Program Details</th>
-</tr>
-<!--
-<tr>
-<td><xsl:apply-templates select="//ProgramDetails/oioNS:renderinfo" /></td>
-</tr>
--->
-<tr>
-<td align="center" class="tabBG4"><xsl:apply-templates select="//ProgramDetails1/oioNS:renderinfo" /></td>
-</tr>
+<!--============================= Community Service =============================-->
 
+<div id="d18">
+<table width="100%" class="tabBG3">
+<tr>
+<td class="thead" align="center"><xsl:apply-templates select="//community_service/oioNS:prompt" /></td>
+</tr>
+<tr>
+<td class="tabBG4" ><xsl:apply-templates select="//community_service/oioNS:renderinfo" /></td>
+</tr>
 </table>
 </div>
 
 <!--============================= Upload Resume =============================-->
 
- <div id="d18">
+ <div id="fu1">
   <form method="post" action="./fileupload" NAME="myForm01" enctype="multipart/form-data">
   <table width="100%" class="tabBG3">
   <tr>
   <td width="30%" class="tabBG4">Upload Resume :</td>
-  <td width="70%" class="tabBG4"><xsl:apply-templates select="//UploadResume/oioNS:renderinfo" /></td>
+  <td width="70%" class="tabBG4"><xsl:apply-templates select="//upload_resume/oioNS:renderinfo" /></td>
   </tr>
   </table>
   </form>
@@ -1415,14 +1009,15 @@ function submitform01()
 
 <!--============================= Save,Save and Approve,Show Printable Buttons =============================-->
 <br />
-<script language="javascript" src="./js/clinicaldoc_common.js"></script>
 <table width="100%" class="tabBG3">
      <tr ><td align="center" class="thead">
     <input type="hidden" name="action" value="" /> 
      <input type="button" name="btsave" value="  Save  " onClick="submitform01();" />
-     <!-- <input type="button" name="btsapprove" value=" Save and Approve " onClick="submitForm();docHtmlSaveAndApprove();" />
-     <input type="button" name="btprintable" value=" Show Printable " onClick="docHtmlShowPrintable();" /> -->
-     </td></tr>
+     <!-- <input type="button" name="btsapprove" value=" Save and Approve " onClick="submitForm();docHtmlSaveAndApprove();" /> -->
+     <input type="button" name="btprintable" value="Print " onClick="docHtmlShowPrintable();" />           
+      <input type="HIDDEN" name="mandatory_fields" value="focus_area|office_room_num|office_phone_ext|email_id" />
+     </td>     
+     </tr>
 </table>
 
 </td>

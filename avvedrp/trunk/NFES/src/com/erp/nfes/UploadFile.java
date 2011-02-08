@@ -6,6 +6,7 @@
  */
 package com.erp.nfes;
 
+
 /**
  * @author ahis
  *
@@ -32,12 +33,25 @@ public class UploadFile {
 			}			
 			//set the html string to render.
 			if(value!=""){
-				html.append("<input type=\"file\" value=\"" + value + "\" name=\"" + name + "\" onclick=\"dirty()\" /><a href=\"./loadFile?filename="+value+"\" target=\"_blank\">"+value+"</a>");
+				html.append("<input type=\"file\" value=\"" + value + "\" name=\"" + name + "\" onclick=\"dirty()\" /><input type=\"HIDDEN\" value=\"" + value + "\" name=\"" + name + "files\" />");
 			}else{
-				html.append("<input type=\"file\" value=\"" + value + "\" name=\"" + name + "\" onclick=\"dirty()\" />");
+				html.append("<input type=\"file\" value=\"" + value + "\" name=\"" + name + "\" onclick=\"dirty()\" />"+ "<input type=\"HIDDEN\" value=\"" + value + "\" name=\"" + name + "files\" />");
 		    }
+			if (value!=""){
+				String uploaded_Files[]=value.split("\\|");
+				if(uploaded_Files.length>0){
+					String htmlStr=null;
+					htmlStr="<ul>";
+					for(int i = 0;i< uploaded_Files.length; i++){
+						htmlStr=htmlStr + "<li><a href=\"./filedownload?filename="+uploaded_Files[i]+"\" target=\"_blank\">"+uploaded_Files[i]+"</a></li>"; 
+					}
+					htmlStr=htmlStr + "</ul>";					
+					html.append(htmlStr);
+				}
+			}
 			return html;
 	}//end of function.
+
 	/**
 	 * 
 	 * @param name

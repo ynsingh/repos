@@ -1,0 +1,300 @@
+<xsl:stylesheet version="1.0"
+   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+   xmlns:oioNS="http://devedge.netscape.com/2002/de"
+>
+
+<xsl:output method = "html"/>
+<xsl:template match="/">
+<html>
+<head>
+<link href="./css/oiostyles.css" rel="stylesheet" type="text/css"/>
+<style type="text/css" media="print">
+
+.noprint {display: none;}
+
+</style>
+<script language="javascript" src="./js/richtext.js"></script>
+
+<style type="text/css">
+.style1 {
+	color: #0000FF;
+	font-weight: bold;
+}
+</style>
+<script language="javascript">
+var resume=0;
+var x=""
+function load()
+{
+	resume=0;
+	document.getElementById("d2").style.display='none';
+	document.getElementById("fu2").style.display='none';
+	document.getElementById("d1").style.display='block';
+	document.getElementById("fu1").style.display='block';
+	x="Thesis";
+}
+
+function load1()
+{	alert(document.getElementById("choose1").value);
+	resume=0;
+	if(document.getElementById("choose1").value==",Thesis"||document.getElementById("choose1").value=="")
+	{
+		document.getElementById("d2").style.display='none';
+		document.getElementById("fu2").style.display='none';
+		document.getElementById("d1").style.display='block';
+		document.getElementById("fu1").style.display='block';
+		x="Thesis";
+	}
+	else
+	{
+		document.getElementById("d1").style.display='none';
+		document.getElementById("fu1").style.display='none';
+		document.getElementById("d2").style.display='block';
+		document.getElementById("fu2").style.display='block';
+		x="Student Project";		
+	}
+}
+
+function dirty()
+{
+	resume=1;
+}
+
+function submitform01()
+{
+     if(x=="Thesis")
+     {
+	if(resume==1)
+	{      if (document.forms[1].thesis_uploadfiles.value==""){
+			document.forms[0].thesis_upload.value=document.forms[1].thesis_upload.value 
+		}	
+		else
+		{
+	       		document.forms[0].thesis_upload.value=document.forms[1].thesis_upload.value + "|"+ document.forms[1].thesis_uploadfiles.value; 
+	       	}
+	       
+	        document.forms[1].submit();docHtmlSave();
+	}
+	else
+	{
+		document.forms[0].thesis_upload.value=document.forms[1].thesis_uploadfiles.value
+		docHtmlSave();
+	}
+     }
+     else
+     {
+     	if(resume==1)
+	{      if (document.forms[2].project_uploadfiles.value==""){
+			document.forms[0].project_upload.value=document.forms[2].project_upload.value 
+		}	
+		else
+		{
+	       		document.forms[0].project_upload.value=document.forms[2].project_upload.value + "|"+ document.forms[2].project_uploadfiles.value; 
+	       	}
+	       
+	        document.forms[2].submit();docHtmlSave();
+	}
+	else
+	{
+		document.forms[0].project_upload.value=document.forms[2].project_uploadfiles.value
+		docHtmlSave();
+	}
+     }
+}
+
+function choose_click(value)
+{
+	if(value=="Thesis")
+	{
+		document.getElementById("d2").style.display='none';
+		document.getElementById("fu2").style.display='none';
+		document.getElementById("d1").style.display='block';
+		document.getElementById("fu1").style.display='block';
+		x="Thesis";
+	}
+	else
+	{
+		document.getElementById("d1").style.display='none';
+		document.getElementById("fu1").style.display='none';
+		document.getElementById("d2").style.display='block';
+		document.getElementById("fu2").style.display='block';
+		x="Student Project";
+	}
+}
+
+</script>
+</head>
+<body onload="load()">
+
+<form method="post" action="./StaffProfileServlet" NAME="myForm">
+<font size="1" face="Verdana, Arial, Helvetica, sans-serif">
+
+
+<INPUT TYPE="HIDDEN" NAME="documentId"><xsl:attribute name="VALUE"><xsl:value-of select="//documentId"/>
+	</xsl:attribute></INPUT>
+<INPUT TYPE="HIDDEN" NAME="docNumber"><xsl:attribute name="VALUE"><xsl:value-of select="//docNumber"/>
+	</xsl:attribute></INPUT>
+<INPUT TYPE="HIDDEN" NAME="docType"><xsl:attribute name="VALUE"><xsl:value-of select="//docType"/>
+	</xsl:attribute></INPUT>
+<INPUT TYPE="HIDDEN" NAME="entityId"><xsl:attribute name="VALUE"><xsl:value-of select="//entityId"/>
+	</xsl:attribute></INPUT>
+<INPUT TYPE="HIDDEN" NAME="formName" VALUE="staff_profile_thesis_v0"></INPUT>
+<INPUT TYPE="HIDDEN" NAME="thesis_upload" />
+<INPUT TYPE="HIDDEN" NAME="project_upload" />
+<INPUT TYPE="HIDDEN" NAME="entitytype" VALUE="thesis"></INPUT>
+
+
+<!-- ================================= Thesis/Student Project ======================================-->
+<div id="d0">
+<table width="100%" class="tabBG3">
+<tr>
+<td class="thead" align="center" colspan="2">Thesis/Student Project Details</td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4" ><xsl:apply-templates select="//choose/oioNS:prompt" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//choose/oioNS:renderinfo"/> </td>
+</tr>
+</table>
+</div>
+
+<div id="d1">
+<table width="100%" class="tabBG3">
+<tr>
+<td class="thead" align="center" colspan="2">Thesis</td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//thesis_title/oioNS:prompt" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//thesis_title/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//thesis_author/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//thesis_author/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//thesis_department_institution/oioNS:prompt" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//thesis_department_institution/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//thesis_course_programe/oioNS:prompt" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//thesis_course_programe/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//thesis_external_internal/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//thesis_external_internal/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//thesis_registration_month_year/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//thesis_registration_month_year/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//thesis_outcome/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//thesis_outcome/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//thesis_completion_month_year/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//thesis_completion_month_year/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//thesis_url/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//thesis_url/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//thesis_other_details/oioNS:prompt" /></td>
+<td class="tabBG4"><xsl:apply-templates select="//thesis_other_details/oioNS:renderinfo" /></td>
+</tr>
+</table>
+</div>
+
+<div id="d2">
+<table width="100%" class="tabBG3">
+<tr>
+<td class="thead" align="center" colspan="2">Student Project</td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//project_title/oioNS:prompt" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//project_title/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//project_student_group/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//project_student_group/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//project_student_name/oioNS:prompt" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//project_student_name/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//project_type/oioNS:prompt" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//project_type/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//project_academic_term/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//project_academic_term/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//project_start_month_year/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//project_start_month_year/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//project_outcome/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//project_outcome/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//project_completion_month_year/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//project_completion_month_year/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//project_url/oioNS:prompt" /></td>
+<td width="70%" class="tabBG4"><xsl:apply-templates select="//project_url/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//project_other_details/oioNS:prompt" /></td>
+<td class="tabBG4"><xsl:apply-templates select="//project_other_details/oioNS:renderinfo" /></td>
+</tr>
+</table>
+</div>
+
+<!--============================= Upload File =============================-->
+
+ <div id="fu1">
+  <form method="post" action="./fileupload" NAME="myForm01" enctype="multipart/form-data">
+  <table width="100%" class="tabBG3">
+  <tr>
+  <td width="30%" class="tabBG4"><xsl:apply-templates select="//thesis_upload/oioNS:prompt" /></td>
+  <td width="70%" class="tabBG4"><xsl:apply-templates select="//thesis_upload/oioNS:renderinfo" /></td>
+  </tr>
+  </table>
+  </form>
+ </div> 
+ <div id="fu2">
+   <form method="post" action="./fileupload" NAME="myForm02" enctype="multipart/form-data">
+   <table width="100%" class="tabBG3">
+   <tr>
+   <td width="30%" class="tabBG4"><xsl:apply-templates select="//project_upload/oioNS:prompt" /></td>
+   <td width="70%" class="tabBG4"><xsl:apply-templates select="//project_upload/oioNS:renderinfo" /></td>
+   </tr>
+   </table>
+   </form>
+ </div> 
+ 
+<!--============================= Save,Save and Approve,Show Printable Buttons =============================-->
+<br />
+<script language="javascript" src="./js/clinicaldoc_common.js"></script>
+<table width="100%" class="tabBG3">
+     <tr ><td align="center" class="thead">
+    <input type="hidden" name="action" value="" />
+     <input type="button" name="btsave" value="  Save  " onclick="submitform01()" />
+     </td></tr>
+</table>
+
+</font>
+</form>
+</body>
+</html>
+</xsl:template>
+<xsl:template match="@*|node()">
+    <xsl:copy>
+      <xsl:apply-templates select="@*|node()"/>
+    </xsl:copy>
+</xsl:template>
+
+</xsl:stylesheet>
