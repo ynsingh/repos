@@ -2,8 +2,7 @@
 SQLyog Community Edition- MySQL GUI v6.15
 MySQL - 5.0.37-community-nt : Database - studviz
 *********************************************************************
-*/
-
+*/
 /*!40101 SET NAMES utf8 */;
 
 /*!40101 SET SQL_MODE=''*/;
@@ -136,7 +135,7 @@ CREATE TABLE `institute` (
 
 /*Data for the table `institute` */
 
-insert  into `institute`(`id`,`version`,`address`,`code`,`email`,`name`) values (1,0,'Kerala','AMR','sathyaraj.pe@amritatech.com','Amrita Engineering College'),(2,0,'Uttar Pradesh','BTS','iitkanpur@test.com','BITS Pilani');
+insert  into `institute`(`id`,`version`,`address`,`code`,`email`,`name`) values (1,0,'Kerala','AMR','sathyaraj.pe@am.amrita.edu','Amrita Engineering College'),(2,0,'Uttar Pradesh','BTS','iitkanpur@test.com','BITS Pilani');
 
 /*Table structure for table `lms_usage` */
 
