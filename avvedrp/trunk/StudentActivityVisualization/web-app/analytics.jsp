@@ -42,13 +42,77 @@
 
 <body >
 
-	<div id="container">
+	<div id="wrapper">
+		<div id="head">
+			<div id="logo_user_details">&nbsp;</div>
+                        <div id="menus_wrapper">
+                            <div id="sec_menu">
+                                   <ul>
+                                        <%
+                                        String URL=session.getAttribute("ROLE").toString();
+                                        %>
+                                        <%
+                                        if(URL.equals("ROLE_ADMIN"))
+                                        {
+                                        %>
+                                           <li><a  class="house" href='<c:out value="courseActivity/listAdminOptions"/>'>Home</a></li>
+                                        <%
+                                        }
+                                        %>
+                                         <%
+                                        if(URL.equals("ROLE_STAFF"))
+                                        {
+                                        %>
+                                             <li><a  class="house" href='<c:out value="courseActivity/listSiteForLoginUser"/>'>Home</a></li>
+                                        <%
+                                        }
+                                        %>
+                                         <%
+                                        if(URL.equals("ROLE_STUDENT"))
+                                        {
+                                        %>
+                                             <li><a  class="house" href='<c:out value="courseActivity/studActivity"/>'>Home</a></li>
+                                        <%
+                                        }
+                                        %>
 
-        <div id="wrapper">
-            <div id="content">
 
-                <br />
-                <div id="box">
+                                         <%
+                                        if(URL.equals("ROLE_ADMIN"))
+                                        {
+                                        %>
+                                           <li><a  class="dashboard" href='<c:out value="dashboard/admindashboard"/>'>Dashboard</a></li>
+                                        <%
+                                        }
+                                        %>
+                                         <%
+                                        if(URL.equals("ROLE_STAFF"))
+                                        {
+                                        %>
+                                             <li><a  class="dashboard" href='<c:out value="dashboard/staffdashboard"/>'>Dashboard</a></li>
+                                        <%
+                                        }
+                                        %>
+
+
+
+                                        <%
+                                        if(URL.equals("ROLE_ADMIN"))
+                                        {
+                                        %>
+                                        <li><a href='<c:out value="authority/list"/>'  class="manage_page">Roles Privileges</a></li>
+                                        <li><a href='<c:out value="person/list"/>'  class="useradd">Users</a></li>
+                                        <%
+                                        }
+                                        %>
+                                        <li><a  class="house" href='<c:out value="siteHelp/help"/>' class="help">Help</a></li>
+                                        <li><a  class="house" href='<c:out value="logout"/>' class="logout">Logout</a></li>
+                                   </ul>
+                            </div>
+                            </div>
+                    </div>
+
+			<div id="content" style="padding-left:30px;">
 							   	<form action="analytics.jsp" method="post">
 								<c:url var="url" value='/'></c:url>
 
@@ -145,72 +209,11 @@
 
 
 							</form>
-                </div>
-            </div>
-          <%
-          String URL=session.getAttribute("ROLE").toString();
-          %>
+            </div> <!-- End of content div -->
 
-            <div id="sidebar">
-            <ul>
-            <li><h3><a href="#" class="manage">Manage</a></h3>
 
-            <ul>
-            <%
-            if(URL.equals("ROLE_ADMIN"))
-            {
-            %>
-               <li><a  class="house" href='<c:out value="courseActivity/listGraphAdmin"/>'>Home</a></li>
-            <%
-            }
-            %>
-             <%
-            if(URL.equals("ROLE_STAFF"))
-            {
-            %>
-                 <li><a  class="house" href='<c:out value="courseActivity/listSiteForLoginUser"/>'>Home</a></li>
-            <%
-            }
-            %>
-             <%
-            if(URL.equals("ROLE_STUDENT"))
-            {
-            %>
-                 <li><a  class="house" href='<c:out value="courseActivity/studActivity"/>'>Home</a></li>
-            <%
-            }
-            %>  
-
-            <%
-            if(URL.equals("ROLE_ADMIN"))
-            {
-            %>
-            <li><a href='<c:out value="authority/list"/>'  class="manage_page">Roles Privileges</a></li>
-            <li><a href='<c:out value="person/list"/>'  class="useradd">Users</a></li>
-            <%
-            }
-            %>
-            <li><a  class="house" href='<c:out value="siteHelp/help"/>' class="help">Help</a></li>
-            <li><a  class="house" href='<c:out value="logout"/>' class="logout">Logout</a></li>
-            </ul>
-            </li>
-            </ul>
-            </div>
-
-      </div>
-  <div id="footer">
-        <div id="credits">
-        </div>
-        <div id="styleswitcher">
-            <ul>
-                <li><a href="javascript: document.cookie='theme='; window.location.reload();" title="Default" id="defswitch">d</a></li>
-                <li><a href="javascript: document.cookie='theme=1'; window.location.reload();" title="Blue" id="blueswitch">b</a></li>
-                <li><a href="javascript: document.cookie='theme=2'; window.location.reload();" title="Green" id="greenswitch">g</a></li>
-                <li><a href="javascript: document.cookie='theme=3'; window.location.reload();" title="Brown" id="brownswitch">b</a></li>
-                <li><a href="javascript: document.cookie='theme=4'; window.location.reload();" title="Mix" id="mixswitch">m</a></li>
-            </ul>
-        </div><br />
-        </div>
+	</div>
+	 <div id="footer">
+          <div style="padding:8px 30px 20px 0px" align="right"><h4><font color="white">Developed by Amrita University under ERP, NME ICT, MHRD</h4></font></div>
 </div>
-
 </body>

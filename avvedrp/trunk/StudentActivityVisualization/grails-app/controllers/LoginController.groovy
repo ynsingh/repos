@@ -35,38 +35,60 @@ class LoginController {
 		  
 					 GrailsHttpSession gh=getSession()
 					 gh.putValue("env",grails.util.Environment.getCurrent())
+
+                                           if(authenticateService.ifAllGranted('ROLE_SUPERADMIN'))
+					{
+						ROLE="ROLE_SUPERADMIN"
+						gh.putValue("ROLE", ROLE);
+						redirect action: 'admindashboard', controller:'dashboard'
+					}
+
+                                         if (authenticateService.ifAllGranted('ROLE_STAFF'))
+                                         {
+                                                   ROLE="ROLE_STAFF"
+                                                   gh.putValue("ROLE", ROLE);
+                                                   redirect action: 'staffdashboard', controller:'dashboard'
+                                         }
+
 					 if (authenticateService.ifAllGranted('ROLE_ADMIN')) {
-						 ROLE="ROLE_ADMIN"
-			        	 	
+					        ROLE="ROLE_ADMIN"
 			        	 	gh.putValue("ROLE", ROLE);
-			        	 redirect action: 'listSiteForLoginUser', controller:'courseActivity'
-			         }
-					 
+                                                println("entered")
+			        	       // redirect action: 'listSiteForLoginUser', controller:'courseActivity'
+                                               redirect action: 'admindashboard', controller:'dashboard'
+                                               //render '<login><loginsuccess>yes</loginsuccess><controller>dashboard</controller><action>admindashboard</action></login>'
+			                 }
+
+                                         /*
 					 if (authenticateService.ifAllGranted('ROLE_STAFF')) {
 						 ROLE="ROLE_STAFF"
 			        	 	
 			        	 	gh.putValue("ROLE", ROLE);
 			        	 redirect action: 'listSiteForLoginUser', controller:'courseActivity'
-			         }
+			                    } */
 					 
 					 if (authenticateService.ifAllGranted('ROLE_STUDENT')) {
 						 ROLE="ROLE_STUDENT"
 			        	 
 			        	 gh.putValue("ROLE", ROLE);
-			        	 redirect action: 'listSiteForLoginUser', controller:'courseActivity'
+			        	 redirect action: 'studentdashboard', controller:'dashboard'
 			         }
+                                      /*
 					if(authenticateService.ifAllGranted('ROLE_SUPERADMIN'))
 					{
 						ROLE="ROLE_ADMIN"
 						gh.putValue("ROLE", ROLE);
 						redirect action: 'listLMS', controller:'courseActivity'
+                                                println "enetered"
 					}
+                                        */
+
 					
 					
-					def userDetails = authenticateService.userDomain()
-		        	 	
-		        	 	
-					 gh.putValue("UserId", userDetails.getUsername());
+					 def userDetails = authenticateService.userDomain()
+					 gh.putValue("UserId", userDetails.getUsername());                                      
+                                         def user_name=userDetails.getUsername().split("@");                                      
+                                         gh.putValue("currUsername", user_name[0]);
 					    
 		    	
 	        			
@@ -201,8 +223,9 @@ class LoginController {
 			render "{error: '${msg}'}"
 		}
 		else {
-			flash.message = msg
+			//flash.message = msg
 			redirect action: auth, params: params
+                        //  render '<login><loginsuccess>no</loginsuccess></login>'
 		}
 	}
 	

@@ -8,6 +8,10 @@ import jofc2.model.axis.YAxis
 import jofc2.model.axis.XAxis
 import jofc2.model.elements.BarChart
 import jofc2.OFC
+import grails.converters.*
+
+
+
 class CourseActivityController {
 	def dataSource
      	def index = { redirect(action:list,params:params) }
@@ -1123,21 +1127,337 @@ def DATE_CHART = {
     	   	
     	 
     }
-    def listGraphAdmin = {
-        	def siteList = []
-        	session['LMS']="Moodle"
-        	GrailsHttpSession gh=getSession()
-        	def sql=new Sql(dataSource);
-  		sql.eachRow("SELECT DISTINCT course AS SiteId,coursename AS SiteName FROM master")
-    	    	{
-    	    	   rowSite ->
-    	    	   CourseActivity siteInstance = new CourseActivity()
-    	    	   siteInstance.siteId = rowSite.SiteId
-    	    	   siteInstance.siteName = rowSite.siteName
-    	    	   siteList.add(siteInstance)
-    	      	}
-            	return [siteList:siteList]
+
+
+
+
+
+
+
+
+    //Newly Added   
+    def  listInstitutes = {
+                def sql=new Sql(dataSource);
+        	def instList = []  ;      
+                sql.rows("SELECT DISTINCT(insti_code) AS INSTITUTE FROM master order by insti_code asc").each
+                    { row ->
+                        instList.add(row.INSTITUTE)
+                    }
+
+                def cal = Calendar.instance;
+                def year = cal.get(Calendar.YEAR);
+                return [instList:instList,year:year]
       }
+
+
+
+    def redirectpage ={       
+         GrailsHttpSession gh=getSession()
+	 gh.putValue("sel_institute",params.institute)
+         gh.putValue("sel_year",params.year)
+         redirect action: 'listAdminOptions', controller:'courseActivity'
+    }
+
+     def listAdminOptions = {
+                GrailsHttpSession gh=getSession()
+                def sel_inst=gh.getValue("sel_institute");
+                def sel_year=gh.getValue("sel_year");
+        	def courseList = []
+        	def sql=new Sql(dataSource);         
+                sql.rows("SELECT DISTINCT(coursename) AS COURSE FROM master where insti_code ='"+sel_inst+"' and  DATE_FORMAT(date, '%Y')='"+sel_year+"'").each
+                    { row ->
+                        courseList.add(row.COURSE)
+                    }
+            	return [courseList:courseList,institute:sel_inst,year:sel_year]
+      }
+
+    def summaryStackChart={
+        GrailsHttpSession gh=getSession()
+        def sel_inst=gh.getValue("sel_institute");
+        def sel_year=gh.getValue("sel_year");
+        def sql=new Sql(dataSource);
+        def list1=sql.rows("select distinct(coursename) as COURSE from master where insti_code ='"+sel_inst+"' and  DATE_FORMAT(date, '%Y')='"+sel_year+"' order by coursename asc")
+        def list2=sql.rows("select distinct(module) as MODULE from master where insti_code ='"+sel_inst+"' and  DATE_FORMAT(date, '%Y')='"+sel_year+"' order by module asc")
+        String xml_cont='<institute>';
+        String x='';
+        for(a in list1)
+        {
+            xml_cont+='<courses>';
+            xml_cont+='<coursename>'+a.COURSE+'</coursename>'
+            for(b in list2)
+              {
+
+                    xml_cont+='<'+b.MODULE+'>'
+                    sql.rows("select count(action) as totcnt from master where  insti_code ='"+sel_inst+"' and  DATE_FORMAT(date, '%Y')='"+sel_year+"' and coursename ='"+a.COURSE+"' and module='"+b.MODULE+"'").each { row ->
+                    xml_cont+=row.totcnt
+                    xml_cont+='</'+b.MODULE+'>'
+                }
+              }
+             xml_cont+='</courses>'
+        }
+        xml_cont+='</institute>'
+        render(text:xml_cont,contentType:"text/xml",encoding:"UTF-8")
+    }
+
+    def  summaryStackChartGrid={
+        GrailsHttpSession gh=getSession()
+        def sel_inst=gh.getValue("sel_institute");
+        def sel_year=gh.getValue("sel_year");
+        def sql=new Sql(dataSource);
+        def query="SELECT coursename AS COURSE,module AS MODULE,count(action) AS USAGE_COUNT FROM master where insti_code ='"+sel_inst+"' and  DATE_FORMAT(date, '%Y')='"+sel_year+"' GROUP BY coursename,module"
+        def list=sql.rows(query)
+        render(contentType:"text/xml")
+              {
+                 components
+                   {
+                      for(a in list)
+                      {
+                        component()
+                        {
+                          course(a.COURSE)
+                          module(a.MODULE)
+                          count(a.USAGE_COUNT)
+                       }
+                     }
+                   }
+              }
+    }
+    def showSummary={
+        GrailsHttpSession gh=getSession()
+        def sel_inst=gh.getValue("sel_institute");
+        def sel_year=gh.getValue("sel_year");
+        return [institute:sel_inst,year:sel_year]
+    }
+
+
+   //For Visit Details
+    def visitDetails={
+        GrailsHttpSession gh=getSession()
+        def sel_inst=gh.getValue("sel_institute");
+        def sel_year=gh.getValue("sel_year");
+        def sql=new Sql(dataSource);
+        def query="SELECT coursename AS COURSE,count(action)AS TOTAL_VISITS FROM master where insti_code ='"+sel_inst+"' and  DATE_FORMAT(date, '%Y')='"+sel_year+"' GROUP BY coursename"
+        def list=sql.rows(query)
+        render(contentType:"text/xml")
+              {
+                 institutes
+                   {
+                      for(a in list)
+                      {
+                        courses()
+                        {
+                          coursename(a.COURSE)
+                          count(a.TOTAL_VISITS)
+                       }
+                     }
+                   }
+              }
+    }
+   def showVisitDetails={
+        GrailsHttpSession gh=getSession()
+        def sel_inst=gh.getValue("sel_institute");
+        def sel_year=gh.getValue("sel_year");
+        return [institute:sel_inst,year:sel_year]
+   }
+
+
+    //For Viusl Details
+      def showVisualDetails={
+          def sel_course=params.hidCourse1;
+          GrailsHttpSession gh=getSession();
+          gh.putValue("sel_course", sel_course);
+          def sel_inst=gh.getValue("sel_institute");
+          def sel_year=gh.getValue("sel_year");
+          return [institute:sel_inst,year:sel_year]
+      }
+      
+   def moduleList={
+        GrailsHttpSession gh=getSession()
+        def sel_inst=gh.getValue("sel_institute");
+        def sel_year=gh.getValue("sel_year");
+        def sel_course=gh.getValue("sel_course");
+        def sql=new Sql(dataSource);
+        def query="SELECT distinct(module) as MODULE FROM master where coursename='"+sel_course+"'";
+        def list=sql.rows(query);
+        render(contentType:"text/xml")
+              {
+                 institute
+                   {
+                      for(a in list)
+                      {
+                        module()
+                        {
+                          label(a.MODULE)
+                          data(a.MODULE)
+                       }
+                     }
+                   }
+              }
+   }
+
+    def visitDetailsChart={
+        GrailsHttpSession gh=getSession()
+        def sel_inst=gh.getValue("sel_institute");
+        def sel_year=gh.getValue("sel_year");
+        def sel_course=gh.getValue("sel_course");
+        def sel_module=params.module;
+        def sql=new Sql(dataSource);
+        def query="SELECT username AS USER,count(action) AS TOT_COUNT FROM master where ( module='"+sel_module+"' and coursename='"+sel_course+"' and insti_code ='"+sel_inst+"' and  DATE_FORMAT(date, '%Y')='"+sel_year+"' ) group by username";
+        def list=sql.rows(query);
+        render(contentType:"text/xml")
+              {
+                 courses
+                   {
+                      for(a in list)
+                      {
+                        modules()
+                        {
+                          username(a.USER)
+                          count(a.TOT_COUNT)
+                       }
+                     }
+                   }
+              }
+    }
+
+ 
+
+
+    //For Time Utilization
+       def showTimeUtilization={
+          def sel_course=params.hidCourse2;
+          GrailsHttpSession gh=getSession();
+          gh.putValue("sel_course", sel_course);
+          def sel_inst=gh.getValue("sel_institute");
+          def sel_year=gh.getValue("sel_year");
+          return [institute:sel_inst,course:sel_course,year:sel_year]
+      }
+
+      def dateList={
+        GrailsHttpSession gh=getSession()
+        def sel_inst=gh.getValue("sel_institute");
+        def sel_year=gh.getValue("sel_year");
+        def sel_course=gh.getValue("sel_course");
+        def sql=new Sql(dataSource);
+        def query="select distinct DATE_FORMAT(date,'%d-%m-%Y') as EVENTDATE from master where ( coursename='"+sel_course+"' and insti_code ='"+sel_inst+"' and  DATE_FORMAT(date, '%Y')='"+sel_year+"' ) group by date";
+        def list=sql.rows(query);
+        render(contentType:"text/xml")
+              {
+                 institute
+                   {
+                      for(a in list)
+                      {
+                        module()
+                        {
+                          label(a.EVENTDATE)
+                          data(a.EVENTDATE)
+                       }
+                     }
+                   }
+              }
+   }
+
+
+
+     def timeUtilChart={
+        GrailsHttpSession gh=getSession()
+        def sel_inst=gh.getValue("sel_institute");
+        def sel_year=gh.getValue("sel_year");
+        def sel_course=gh.getValue("sel_course");
+        def sel_date=params.date;
+        def sql=new Sql(dataSource);
+        def query="select count(action) as TOT_COUNT,username as USER from master where ( DATE_FORMAT(date, '%d-%m-%Y')='"+sel_date+"' and coursename='"+sel_course+"' and insti_code ='"+sel_inst+"' and  DATE_FORMAT(date, '%Y')='"+sel_year+"' ) group by username";
+        //println(query);
+        def list=sql.rows(query);
+        render(contentType:"text/xml")
+              {
+                 courses
+                   {
+                      for(a in list)
+                      {
+                        modules()
+                        {
+                          username(a.USER)
+                          count(a.TOT_COUNT)
+                       }
+                     }
+                   }
+              }
+    }
+
+
+
+
+    //For Student Summary
+
+     def showStudSummary={
+          def sel_course=params.hidCourse3;
+          GrailsHttpSession gh=getSession();
+          gh.putValue("sel_course", sel_course);
+          def sel_inst=gh.getValue("sel_institute");
+          def sel_year=gh.getValue("sel_year");
+          return [institute:sel_inst,course:sel_course,year:sel_year]
+      }
+
+
+    def studList={
+        GrailsHttpSession gh=getSession()
+        def sel_inst=gh.getValue("sel_institute");
+        def sel_year=gh.getValue("sel_year");
+        def sel_course=gh.getValue("sel_course");
+        def sql=new Sql(dataSource);
+        def query="SELECT distinct username AS USERNAME FROM master where ( coursename='"+sel_course+"' and insti_code ='"+sel_inst+"' and  DATE_FORMAT(date, '%Y')='"+sel_year+"' ) ORDER BY username asc";
+        def list=sql.rows(query);
+        render(contentType:"text/xml")
+              {
+                 institute
+                   {
+                      for(a in list)
+                      {
+                        user()
+                        {
+                          label(a.USERNAME)
+                          data(a.USERNAME)
+                       }
+                     }
+                   }
+              }
+   }
+
+ def studSummaryChart={
+        GrailsHttpSession gh=getSession()
+        def sel_inst=gh.getValue("sel_institute");
+        def sel_year=gh.getValue("sel_year");
+        def sel_course=gh.getValue("sel_course");
+        def sel_student=params.stud;
+        def sql=new Sql(dataSource);
+       // def query="select count(action) as TOT_COUNT,username as USER from master where ( DATE_FORMAT(date, '%d-%m-%Y')='"+sel_date+"' and coursename='"+sel_course+"' and insti_code ='"+sel_inst+"' and  DATE_FORMAT(date, '%Y')='"+sel_year+"' ) group by username";
+        def query="select count(action) as TOT_COUNT,module as MODULE from master where ( coursename='"+sel_course+"' and username='"+sel_student+"' and insti_code ='"+sel_inst+"' and  DATE_FORMAT(date, '%Y')='"+sel_year+"' ) group by module"
+       // println(query);
+        def list=sql.rows(query);
+        render(contentType:"text/xml")
+              {
+                 courses
+                   {
+                      for(a in list)
+                      {
+                        students()
+                        {
+                          module(a.MODULE)
+                          count(a.TOT_COUNT)
+                       }
+                     }
+                   }
+              }
+    }
+
+
+
+
+
+
+    
+
 
     def show = {
         	def courseActivityInstance = CourseActivity.get( params.id )
@@ -1222,6 +1542,45 @@ def DATE_CHART = {
             render(view:'create',model:[courseActivityInstance:courseActivityInstance])
         }
     }
+
+
+
+
+
+
+
+
+
+    def  test={
+        def sql=new Sql(dataSource);
+        def query="SELECT course AS SiteId,coursename AS TITLE,module AS EVENT_ID,count(action) AS EVENTNO FROM master  GROUP BY coursename,module"
+        def list=sql.rows(query)
+        render(contentType:"text/xml")
+              {
+                 components
+                   {
+                      for(a in list)
+                      {
+                        component()
+                        {
+                          title(a.TITLE)
+                          event(a.EVENT_ID)
+                          count(a.EVENTNO)
+                       }
+                     }
+                   }
+              }
+    }
+
+
+  def upload = {
+         def xml =request.getFile("file").inputStream.text
+      //    xml+="""<results>
+        //           <success>true</success>
+        //            </results>""";
+        render xml;
+  }
+
     
     /* Get sql connection from properties file */
     private Sql getSqlConnection()

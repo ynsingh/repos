@@ -9,12 +9,12 @@
  */
 class LmsTagLib {
 
-    def SideMenu = {attrs ->
-		  out << g.render(template: '/sideMenu')
+    def Menu = {attrs ->
+		  out << g.render(template: '/menu')
          }
 
-    def StyleSwitcher = {attrs ->
-		  out << g.render(template: '/styleSwitcher')
-         }
+    def Footer = {attrs ->
+		  out << g.render(template: '/footer')
+         }    
 }
 

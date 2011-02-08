@@ -1,7 +1,7 @@
 <html>
     <head>
         
-        <link rel="stylesheet" href="${createLinkTo(dir:'css',file:'main.css')}" />
+        <link rel="stylesheet" href="${createLinkTo(dir:'css',file:'general.css')}" />
         <link rel="shortcut icon" href="${createLinkTo(dir:'images',file:'favicon.ico')}" type="image/x-icon" />
         <g:layoutHead />
         <g:javascript library="application" />	
@@ -51,15 +51,15 @@
   
 
     <div class="headerTitle">
-    <p>Logged in as  ${session.UserId}<a class="list" href="${resource(dir:'/logout')}">&nbsp;(Logout)</a>
-    </p>
+    <!-- <p>Logged in as  ${session.UserId}<a class="list" href="${resource(dir:'/logout')}">&nbsp;(Logout)</a>
+    </p> -->
      </div>
     </div>
-       <div id="spinner" class="spinner" style="display:none;">
+     <!--   <div id="spinner" class="spinner" style="display:none;">
             <img src="${createLinkTo(dir:'images',file:'spinner.gif')}" alt="Spinner" />
         </div>	
 
-      <!--
+     
      	  <div class="nav" >
      	   <g:if test="${session.ROLE == 'ROLE_STAFF'}">
             <span class="menuButton"><a class="home" href="${resource(dir:'/courseActivity/listGraph.gsp')}">Home</a></span>

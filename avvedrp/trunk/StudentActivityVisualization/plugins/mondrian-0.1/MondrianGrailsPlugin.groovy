@@ -45,7 +45,7 @@ class MondrianGrailsPlugin {
 					'filter-class'("com.tonbeller.wcf.controller.RequestFilter")
 					'init-param' {
 						'param-name'("indexJSP")
-						'param-value'("/index.gsp")
+						'param-value'("/analytics.jsp?query=master")
 						'description'("forward to this page if session is new")
 					}
 					'init-param' {

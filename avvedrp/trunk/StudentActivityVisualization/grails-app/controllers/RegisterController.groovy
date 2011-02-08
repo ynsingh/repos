@@ -202,6 +202,7 @@ class RegisterController {
              {
               	   if (person.save())
                           {
+                                println(instituteInfo.email)
                                      //role.addToPeople(person)
                                      //Setting Default Roles
                                      //if(chkValidUser.userType=='staff')

@@ -1,10 +1,10 @@
 <head>
 	<meta name="layout" content="main" />
-	<title>Site Help</title>
-        <style>
+	<title>LMS List</title>
+	 <style>
 
           #jFlowSlide{ background:#FFFEF7; font-family: Georgia; }
-          #myController { font-family: Arial; font-weight: bold; padding:2px 0;  width:738px; background:#E0B225; }
+          #myController { font-family: Arial; font-weight: bold; padding:2px 0;  width:900px; background:#E0B225; }
           #myController span.jFlowSelected { background:#43A0D5;margin-right:0px; }
 
           .slide-wrapper { padding: 5px; }
@@ -29,8 +29,8 @@
                         slideWrapper : "#jFlowSlide", // must be id, use # sign
                         selectedWrapper: "jFlowSelected",  // just pure text, no sign
                         auto: true,		//auto change slide, default true
-                        width: "738px",
-                        height: "405px",
+                        width: "900px",
+                        height: "400px",
                         duration: 400,
                         prev: ".jFlowPrev", // must be class, use . sign
                         next: ".jFlowNext" // must be class, use . sign
@@ -38,20 +38,16 @@
         });
         </script>
        </head>
-
 <body>
-
-	<div id="container">
-
-        <div id="wrapper">
-            <div id="content">
-
-                <br />
-                <div id="box">
-                 <h3 >User Guidelines</h3>
-
-
-                		<div id="myController">
+	<div id="wrapper">
+		<div id="head">
+			<div id="logo_user_details">&nbsp;</div>	
+                        <g:menu/>                        
+		</div>
+ 
+	<div id="content" style="padding-left:50px;"> <!-- Start of content div -->
+<div style="padding-left: 10px;"><h3>User Guidelines</h3></div>
+					                		<div id="myController">
 					<span class="jFlowPrev">Prev</span>
 					<span class="jFlowControl">1</span>
 					<span class="jFlowControl">2</span>
@@ -61,14 +57,14 @@
 					<span class="jFlowNext">Next</span>
 				</div>
 		<div class="clear"></div>
-                 
-                 
-                 
-                 
-                 
-                 
-                 
-                 
+
+
+
+
+
+
+
+
                  <!-- First -->
 		 <div class="jflow-content-slider">
 		 	<div id="slides">
@@ -118,13 +114,13 @@
 		 								</ol>
 		 								<p>&nbsp;
 		 								</p>
-		 	
+
 		 			<div class="clear"></div>
 		 	</div>
-		 	
-		 	
-		 	
-		 	
+
+
+
+
 		  <!-- Second -->
 		 	<div class="jflow-content-slider">
 		 		<div id="slides">
@@ -138,16 +134,16 @@
 		 								<p>
 		 									Visualization :In this level system will visualize the data by using its own database. For the pictorial representation of data it will use the chart utility</p>
 		 								<p>	Web Service : Implementation of a web service which can be used by other users to post their data to the Visualization system.</p>
-		 				
+
 		 				<div class="clear"></div>
 		 				</div>
 		 		</div>
-		 	</div>	
-		 	
-		 		
-		 		
-		 		
-		 			
+		 	</div>
+
+
+
+
+
 		<!-- THird -->
 		 	<div class="jflow-content-slider">
 		 		<div id="slides">
@@ -157,26 +153,26 @@
 		 			<div class="clear"></div>
 		 			</div>
 		 		</div>
-		 	</div>	
-		 	
-		 	
-		 	
-		 	
-		 	
+		 	</div>
+
+
+
+
+
 		<!-- Fourth -->
 		 	<div class="jflow-content-slider">
 		 		<div id="slides">
 		 			<div class="slide-wrapper">
 		 			<h2>Kettle Transformation of System Database to .xml file</h2>
-		 						  <img src="../soft3.bmp">		
+		 						  <img src="../soft3.bmp">
 		 			<div class="clear"></div>
 		 			</div>
 		 	</div>
-		 	</div>	
-		 				
-		 				
-		 				
-		<!-- Fifth -->			
+		 	</div>
+
+
+
+		<!-- Fifth -->
 		 	<div class="jflow-content-slider">
 		 		<div id="slides">
 		 			<div class="slide-wrapper">
@@ -184,24 +180,20 @@
 		 			<img src="../soft4.bmp">
 		 			<div class="clear"></div>
 		 			</div>
-		 		</div>	
+		 		</div>
 	            </div>
-                 
-                 
-                            
-                 
-		
-	</div>
+
+
+
+
 
 	</div>
 
-                </div>
-            </div>
+	</div>
 
-            <g:sideMenu/>
+         </div> <!-- End of content div -->
 
-      </div>
-         <g:styleSwitcher/>
-</div>
 
+	</div>
+<g:footer/>
 </body>

@@ -48,10 +48,10 @@
                 </div>
             </div>
           
-            <g:sideMenu/>
+
           
       </div>
-         <g:styleSwitcher/>
+
 </div>
 
 </body>

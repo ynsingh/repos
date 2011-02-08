@@ -1,7 +1,7 @@
 <head>
 	<meta name="layout" content="main" />
-	<title>Home Page</title>
-        <script language="JavaScript" type="text/javascript">
+	<title>LMS List</title>
+         <script language="JavaScript" type="text/javascript">
 //--------------- LOCALIZEABLE GLOBALS ---------------
 var d=new Date();
 var monthname=new Array("January","February","March","April","May","June","July","August","September","October","November","December");
@@ -85,57 +85,54 @@ var TODAY = monthname[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear()
 
 </script>
        </head>
-
 <body>
+	<div id="wrapper">
+		<div id="head">
+			<div id="logo_user_details">&nbsp;</div>
 
-	<div id="container">
+                        <g:menu/>
 
-        <div id="wrapper">
-            <div id="content">
+		</div>
 
-                <br />
-                <div id="box">
-                  <div align ="center">
-	 	<h2>Course: ${session.siteName}</h2>
-	     </div>
-          <h3>User Activity Summary</h3>
-         <g:if test="${flash.message}">
-            <div class="message">${flash.message}</div>
-            </g:if>
+	<div id="content"> <!-- Start of content div -->
 
-        <g:formRemote name="userform" on404="alert('not found!')" update="updateChart" action="userusage" url="${[action:'userusage']}">
-            <table >
-            	<tbody>
-                	<tr>
-                	<td class="name">
-                       <label><strong>User:</strong></label>&nbsp;&nbsp;
-                       <g:select id="uname" name="uname" from="${studentList}" value="" noSelection="['':'Please Select...'] onchange="${remoteFunction(controller:'courseActivity',action:'userusage',update:'updateChart', params:'\'uname=\' + this.value' )}"/>
-                        </td>
-                        <td>	
+									<div align ="center">
+				<h2>Course: ${session.siteName}</h2>
+				</div>
+				<h3>User Activity Summary</h3>
+				<g:if test="${flash.message}">
+				<div class="message">${flash.message}</div>
+				</g:if>
 
-                    </tr>
-                </tbody>
-            </table>
-         </g:formRemote>
-            <br>
+				<g:formRemote name="userform" on404="alert('not found!')" update="updateChart" action="userusage" url="${[action:'userusage']}">
+				<table >
+				<tbody>
+				<tr>
+				<td class="name">
+				<label><strong>User:</strong></label>&nbsp;&nbsp;
+				<g:select id="uname" name="uname" from="${studentList}" value="" noSelection="['':'Please Select...'] onchange="${remoteFunction(controller:'courseActivity',action:'userusage',update:'updateChart', params:'\'uname=\' + this.value' )}"/>
+				</td>
+				<td>
 
-
-             <div class="list"  id="updateChart">
-             <ofchart:resources/>
-	     <g:javascript library="prototype"/>
-	     	   <center><ofchart:chart name="demo-chart" url="${createLink(action:'USER_ALLCOMP_LINE')}" width="600" height="400"/></center>
-             </div>
+				</tr>
+				</tbody>
+				</table>
+				</g:formRemote>
+				<br>
 
 
+				<div class="list"  id="updateChart">
+				<ofchart:resources/>
+				<g:javascript library="prototype"/>
+				<center><ofchart:chart name="demo-chart" url="${createLink(action:'USER_ALLCOMP_LINE')}" width="600" height="400"/></center>
+				</div>
 
 
-                </div>
-            </div>
 
-            <g:sideMenu/>
 
-      </div>
-         <g:styleSwitcher/>
-</div>
+         </div> <!-- End of content div -->
 
+
+	</div>
+<g:footer/>
 </body>

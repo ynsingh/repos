@@ -1,7 +1,7 @@
 <head>
 	<meta name="layout" content="main" />
-	<title>Home Page</title>
-        <script language="JavaScript" type="text/javascript">
+	<title>LMS List</title>
+	        <script language="JavaScript" type="text/javascript">
 //--------------- LOCALIZEABLE GLOBALS ---------------
 var d=new Date();
 var monthname=new Array("January","February","March","April","May","June","July","August","September","October","November","December");
@@ -85,50 +85,48 @@ var TODAY = monthname[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear()
 
 </script>
        </head>
-
 <body>
+	<div id="wrapper">
+		<div id="head">
+			<div id="logo_user_details">&nbsp;</div>
 
-	<div id="container">
+                        <g:menu/>
 
-        <div id="wrapper">
-            <div id="content">
+		</div>
 
-                <br />
-                <div id="box">
-          <h3 id="adduser">Student Wise Module Usage</h3>
-         <g:if test="${flash.message}">
-	             <div class="message">${flash.message}</div>
-	             </g:if>
+	<div id="content"> <!-- Start of content div -->
 
-
-<table>
-       <tbody>
-         <tr>
-                        <td>
-                            <label><strong>Select Module:</strong></label>&nbsp;&nbsp;<g:select id="authorSelection" name="modname" from="${siteList}" value="" noSelection="[null:'-- Select --']" onchange="${remoteFunction(controller:'courseActivity', action:'studAct',update:'updateMe', params:'\'modname=\' + this.value' )}" />
-                        </td>                       
-                    </tr>
-                 </tbody>
-            </table>
-
-            <br>
-          
-            <g:javascript library="prototype" />           
-             <div class="list"  id="updateMe">
-                <ofchart:resources/>
-		<g:javascript library="prototype"/>
-             </div>
+										<h3 id="adduser">Student Wise Module Usage</h3>
+					<g:if test="${flash.message}">
+					<div class="message">${flash.message}</div>
+					</g:if>
 
 
+					<table>
+					<tbody>
+					<tr>
+					<td>
+					<label><strong>Select Module:</strong></label>&nbsp;&nbsp;<g:select id="authorSelection" name="modname" from="${siteList}" value="" noSelection="[null:'-- Select --']" onchange="${remoteFunction(controller:'courseActivity', action:'studAct',update:'updateMe', params:'\'modname=\' + this.value' )}" />
+					</td>
+					</tr>
+					</tbody>
+					</table>
+
+					<br>
+
+					<g:javascript library="prototype" />
+					<div class="list"  id="updateMe">
+					<ofchart:resources/>
+
+					<g:javascript library="prototype"/>
+					</div>
 
 
-                </div>
-            </div>
-           
-            <g:sideMenu/>
-         
-      </div>
-         <g:styleSwitcher/>
-</div>
 
+
+         </div> <!-- End of content div -->
+
+
+	</div>
+<g:footer/>
 </body>

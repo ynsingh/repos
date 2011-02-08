@@ -1,6 +1,6 @@
 <head>
 	<meta name="layout" content="main" />
-	<title>Home Page</title>
+	<title>LMS List</title>
         <script language="JavaScript" type="text/javascript">
 //--------------- LOCALIZEABLE GLOBALS ---------------
 var d=new Date();
@@ -85,60 +85,58 @@ var TODAY = monthname[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear()
 
 </script>
        </head>
-
 <body>
+	<div id="wrapper">
+		<div id="head">
+			<div id="logo_user_details">&nbsp;</div>
 
-	<div id="container">
+                        <g:menu/>
 
-        <div id="wrapper">
-            <div id="content">
+		</div>
 
-                <br />
-                <div id="box">
-          <h2>&nbsp;&nbsp;Course: ${session.siteName}</h2>
-	 	<h3>Student Activity Chart</h3>
-             <g:if test="${flash.message}">
-            <div class="message">${flash.message}</div>
-            </g:if>
+	<div id="content"> <!-- Start of content div -->
 
-
-<table>
-       <tbody>
-         <tr>
-                        <td>
-                          <div>
-                          <div style="float:left;padding-top:18px;">
-                             <label><strong>Event Date:&nbsp;&nbsp;</strong></label>
-                          </div>
-                          <div>
-                             <g:formRemote name="myForm" on404="alert('not found!')" update="updateChart" action="date_learn.gsp" url="${[action:'date_learn.gsp']}">
-            				<g:select optionKey="eventId" optionValue="eventId" from="${eventList}" id="eventId" name="eventId" noSelection="[null:'-- Select --']" value="${eventId}" onchange="${remoteFunction(action:'date_learn',update:'updateChart', params:'\'eventId=\' + this.value' )}"/>
-            				<g:hiddenField name="siteId" value="${params.siteId}" />
-                                        </g:formRemote>
-                          </div>
-                          </div>
-                        </td>
-                    </tr>
-                 </tbody>
-            </table>
-
-            <br>
-
-            <div class="list"  id="updateChart">
-             <ofchart:resources/>
-	     <g:javascript library="prototype"/>
-             </div>
+										<h2>&nbsp;&nbsp;Course: ${session.siteName}</h2>
+					<h3>Student Activity Chart</h3>
+					<g:if test="${flash.message}">
+					<div class="message">${flash.message}</div>
+					</g:if>
 
 
+					<table>
+					<tbody>
+					<tr>
+					<td>
+					<div>
+					<div style="float:left;padding-top:18px;">
+					 <label><strong>Event Date:&nbsp;&nbsp;</strong></label>
+					</div>
+					<div>
+					 <g:formRemote name="myForm" on404="alert('not found!')" update="updateChart" action="date_learn.gsp" url="${[action:'date_learn.gsp']}">
+					<g:select optionKey="eventId" optionValue="eventId" from="${eventList}" id="eventId" name="eventId" noSelection="[null:'-- Select --']" value="${eventId}" onchange="${remoteFunction(action:'date_learn',update:'updateChart', params:'\'eventId=\' + this.value' )}"/>
+					<g:hiddenField name="siteId" value="${params.siteId}" />
+								</g:formRemote>
+					</div>
+					</div>
+					</td>
+					</tr>
+					</tbody>
+					</table>
+
+					<br>
+
+					<div class="list"  id="updateChart">
+					<ofchart:resources/>
+					<g:javascript library="prototype"/>
+					</div>
 
 
-                </div>
-            </div>
-           
-            <g:sideMenu/>
-          
-      </div>
-         <g:styleSwitcher/>
-</div>
 
+
+
+         </div> <!-- End of content div -->
+
+
+	</div>
+<g:footer/>
 </body>
