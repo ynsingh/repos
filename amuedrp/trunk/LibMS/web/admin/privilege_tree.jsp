@@ -1,5 +1,5 @@
-<%@page import="java.sql.ResultSet"%>
-<jsp:include page="header.jsp" flush="true" />
+<%@page import="java.sql.ResultSet,com.myapp.struts.*;"%>
+ <jsp:include page="header.jsp" flush="true" />
 
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
@@ -8,7 +8,13 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%
 String staff_id=(String)request.getAttribute("staff_id");
-
+String library_id = (String)session.getAttribute("library_id");
+String query = "select * from login where staff_id='"+ staff_id +"' and library_id='"+ library_id +"'";
+ResultSet staff_roll_rs=(ResultSet)MyQueryResult.getMyExecuteQuery(query);
+String staff_roll="";
+if(staff_roll_rs.next())
+   staff_roll = staff_roll_rs.getString("role");
+System.out.println("staff_roll="+staff_roll+"staff_id="+staff_id);
 String button=(String)request.getAttribute("button");
 
 if(button==null||staff_id!=null)
@@ -905,6 +911,7 @@ dhtmlXTreeObject.prototype._correctCheckStates=function(dhtmlObject){
  
  dhtmlXTreeObject.prototype.getSelectedItemId=function()
 {
+   
  if(this.lastSelected)
  if(this._globalIdStorageFind(this.lastSelected.parentObject.id))
  return this.lastSelected.parentObject.id;
@@ -1065,6 +1072,18 @@ dhtmlXTreeObject.prototype._correctCheckStates=function(dhtmlObject){
  
  
 dhtmlXTreeObject.prototype._checkParenNodes=function(itemId,htmlObject,shtmlObject){
+
+ if (itemId==1 || itemId==2 || itemId==3)
+     {
+         <%
+         System.out.println("staff_id="+staff_roll);
+         if (staff_roll.equals("staff"))
+             {%>
+
+             alert("You can not assigned this privilege to staff role");
+             return 0;
+          <%}%>
+     }
  if(shtmlObject){if(shtmlObject.parentObject.id==htmlObject.id)return 1;}
  if(htmlObject.id==itemId)return 1;
  if(htmlObject.parentObject)return this._checkParenNodes(itemId,htmlObject.parentObject);else return 0;
@@ -1342,16 +1361,24 @@ dhtmlXTreeObject.prototype._checkParenNodes=function(itemId,htmlObject,shtmlObje
 };
  
  dhtmlXTreeObject.prototype.setCheck=function(itemId,state){
+ 
  state=convertStringToBoolean(state);
  var sNode=this._globalIdStorageFind(itemId);
+
+ 
  if(!sNode)return;
  if(!this.tscheck)return this._setSubChecked(state,sNode);
  else this._setCheck(sNode,state);
  this._correctCheckStates(sNode.parentObject);
 };
  
- dhtmlXTreeObject.prototype._setCheck=function(sNode,state){
+         dhtmlXTreeObject.prototype._setCheck=function(sNode,state){
+         var sNode1=this._globalIdStorageFind(1);
+         var sNode2=this._globalIdStorageFind(2);
+         var sNode3=this._globalIdStorageFind(3);
+      
  var z=sNode.htmlNode.childNodes[0].childNodes[0].childNodes[1].childNodes[0];
+
  if(state=="notsure")sNode.checkstate=2;
  else if(state)sNode.checkstate=1;else sNode.checkstate=0;
  
@@ -1409,8 +1436,10 @@ dhtmlXTreeObject.prototype.getAllCheckedNames=function(){
 {
  list=this._getAllChecked(htmlNode.childNodes[i],list,mode);
 };
+
  if(list){
      document.getElementById("list11").value =  list;
+     
 return list;
 }else return "";
 };
@@ -1602,17 +1631,21 @@ this._clearMove(htmlObject);if(this._autoOpenTimer)clearTimeout(this._autoOpenTi
 						<br>
 	
 
-	
+                                                <%if (request.getAttribute("msg")!=null){
+                                                    String msg = (String)request.getAttribute("msg") ;
+                                                   // out.println("<script language=\"javascript\">alert(\""+msg+"\");</script>");
+                                                       }%>
+
 			<a href="javascript:void(0);" class="l" onclick="alert('You Assigned priveleges to the following activities:\n' + tree.getAllCheckedNames());">View list of checked Privilege</a><br><br>
                         <a href="javascript:void(0);" class="l" onclick="show_priveleges();">Show previously assigned privileges</a><br><br>
                         <input name="privilege_list" id="list11" type="hidden" />
-
+                       <!--<input type="checkbox" value="" onchange="return setAllUncheck();"/>Uncheck All Privileges&nbsp;&nbsp;-->
                         <input name="privilege_list1" id="list12" type="hidden" />
                         <input name="button" id="list12" type="hidden" value="<%=button%>" />
                         <input name="staff_id" id="staff_id" type="hidden" value="<%=staff_id%>" />
                         <input name="staff_name" id="staff_name" type="hidden" value="<%=staff_name%>" />
-                        <input name="submit_button" id="submit_button" type="submit" class="txt2"  value="Submit" onclick="tree.getAllChecked();"/>
-                       
+                        <input name="submit_button" id="submit_button" type="submit" class="txt2"  value="Submit" onclick="return validate();" />
+                       <input name="back" id="back" type="button" class="txt2"  value="Back" onclick="send();"/>
                         
 
                         </fieldset>
@@ -1622,34 +1655,105 @@ this._clearMove(htmlObject);if(this._autoOpenTimer)clearTimeout(this._autoOpenTi
 </html:form>
 
 
-
-<!--
-<XMP>
-<script>
-			tree=new dhtmlXTreeObject("treeboxbox_tree","100%","100%",0);
-			tree.setImagePath("treeImgs/");
-			//enable checkboxes
-			tree.enableCheckBoxes(1);
-			tree.loadXML("tree3.xml");
-			
-			//....
-			//check item
-			tree.setCheck(id,true);
-			//uncheck item
-			tree.setCheck(id,false);	
-			//check branch
-			tree.setSubChecked(id,true);
-			//uncheck branch
-			tree.setSubChecked(id,false);	
-			//check item
-			tree.setCheck(id,true);
-			//return ids of checked items
-			var list=tree.getAllChecked();
-                        var list1 = tree.getAllCheckedNames();
-</script>
-</XMP>-->
 	<script>
-			function treeload()
+                       function setAllUncheck(){
+                        tree.selectItem(100, 1);
+                        tree.setCheck(tree.getSelectedItemId(),0);
+                    
+                        for(var acq_i=101;acq_i<200;acq_i++)
+                            {
+                             tree.selectItem(acq_i,1 );
+                             tree.setCheck(tree.getSelectedItemId(),0);
+                            }
+                         
+                        tree.selectItem(200, 1);
+                        tree.setCheck(tree.getSelectedItemId(),0);
+                    
+                        for(var cat_i=201;cat_i<300;cat_i++)
+                            {
+                            
+                             tree.selectItem(cat_i,1 );
+                             tree.setCheck(tree.getSelectedItemId(),0);
+                            }
+
+                 // show privileges for circulation
+                         
+                         
+                        tree.selectItem(300, 1);
+                        tree.setCheck(tree.getSelectedItemId(),0);
+                    
+                        for(var cir_i=301;cir_i<400;cir_i++)
+                            {
+                             tree.selectItem(cir_i,1 );
+                             tree.setCheck(tree.getSelectedItemId(),0);
+                            }
+                            
+
+                  // show privileges for serial
+                         
+                        tree.selectItem(400, 1);
+                        tree.setCheck(tree.getSelectedItemId(),0);
+                    
+                        for(var ser_i=401;ser_i<500;ser_i++)
+                            {
+                             tree.selectItem(ser_i,1);
+                             tree.setCheck(tree.getSelectedItemId(),0);
+                            }
+        //Check the Role of User whom privilege has to Modified and willnot display these options if staff role is selected
+             
+                         
+                         // show privileges for Administrator
+
+                        tree.selectItem(1, 1);
+                        tree.setCheck(tree.getSelectedItemId(),0);
+                    
+                        tree.selectItem(3, 1);
+                        tree.setCheck(tree.getSelectedItemId(),0);
+
+                        
+                        tree.selectItem(2, 1);
+                        tree.setCheck(tree.getSelectedItemId(),0);
+
+                       }
+                       function validate()
+                       {
+                           
+                           var list= tree.getAllCheckedNames();
+                            tree.getAllChecked();
+                           if (list.length==0)
+                               {
+                               alert("No Specific Privilege Yet been selected");
+                               return false;
+                               }
+                               <%
+                                       if(staff_roll.equals("admin")==true){ %>
+                           var x = list.match(/administrator/gi);
+                           if(x==null){
+                               
+                               var t = confirm("Admin not selected:\n User Role Converts into staff\nPrivileges from system utilities and System setup are also removed?\n Do you want to continue");
+                               if (t==true){
+                                tree.selectItem(2, 0);
+                                tree.setCheck(tree.getSelectedItemId(),0);
+                                 tree.selectItem(3, 0);
+                                tree.setCheck(tree.getSelectedItemId(),0);
+                                tree.getAllChecked();
+                                   return true;
+                               }
+                                   return false;
+                           }<%}%>
+                           return true;
+                       }
+                       function selectedTree()
+                       {
+                           
+                       }
+                       function send()
+                        {
+                        window.location="/LibMS-Struts/admin/assign_privilege.jsp";
+                        return false;
+                        }
+			
+                        function treeload()
                         {
 
                        treeload1();
@@ -1658,18 +1762,16 @@ this._clearMove(htmlObject);if(this._autoOpenTimer)clearTimeout(this._autoOpenTi
                         }
                        function treeload1()
                        {
-                          /* tree=new dhtmlXTreeObject("treeboxbox_tree","100%","100%",0);
-			tree.setImagePath("images/");
-			tree.enableCheckBoxes(1);
-
-			tree.loadXML("tree3.xml");
-			*/
 			tree=new dhtmlXTreeObject("treeboxbox_tree2","100%","100%",0);
 			tree.setImagePath("/LibMS-Struts/images/");
 			tree.enableCheckBoxes(1);
 			tree.enableThreeStateCheckboxes(true);
-			tree.loadXML("tree3.xml");
-
+                                       <%
+                                       if(staff_roll.equals("staff")==true){ %>
+                        tree.loadXML("/LibMS-Struts/tree3_staff.xml");
+                        <%}else{%>
+                        tree.loadXML("/LibMS-Struts/tree3.xml");
+                        <%}%>
                        }
                        function show_priveleges()
                        {
@@ -1754,7 +1856,12 @@ ResultSet ser =(ResultSet)session.getAttribute("ser_privilege");
                              tree.setCheck(tree.getSelectedItemId(),<%=ser_check%>);<%
                             }
                             }
+                         
+        //Check the Role of User whom privilege has to Modified and willnot display these options if staff role is selected
+             
+                         
                          // show privileges for Administrator
+
                          iii=0;
                          if(pri.getString("administrator").equalsIgnoreCase("false"))
                             {
@@ -1767,6 +1874,7 @@ ResultSet ser =(ResultSet)session.getAttribute("ser_privilege");
                          iii=0;
                          if(pri.getString("utilities").equalsIgnoreCase("false"))
                             {
+                             iii=1;
                       %>
                         tree.selectItem(3, 1);
                         tree.setCheck(tree.getSelectedItemId(),<%=iii%>);
@@ -1795,16 +1903,7 @@ ResultSet ser =(ResultSet)session.getAttribute("ser_privilege");
 	</script>
 
     </div>
-    <div
-   style="
-      top: 800px;
-
-      position: absolute;
-
-      visibility: show;">
-        <jsp:include page="footer.jsp" />
-
-</div>
+  
 </body>
 
 </html>

@@ -4,11 +4,9 @@
  */
 
 package com.myapp.struts.admin;
-import  com.myapp.struts.DuplicateEntry;
-import com.myapp.struts.MyConnection;
 import com.myapp.struts.admin.AdminViewActionForm;
-import com.myapp.struts.opac.MyQueryResult;
 
+import  com.myapp.struts.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -60,7 +58,7 @@ int i=0;
      * @param request The HTTP Request we are processing.
      * @param response The HTTP Response we are processing.
      * @throws java.lang.Exception
-     * @return
+   
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -89,6 +87,7 @@ int i=0;
         courtesy=adminRegistrationActionForm.getCourtesy();
         gender=adminRegistrationActionForm.getGender();
         library_id=adminRegistrationActionForm.getLibrary_id();
+
       
         HttpSession session=request.getSession();
 
@@ -155,7 +154,7 @@ int i=0;
                     {
             //update login
                      sql = ("update  login set user_id='" + admin_email + "',user_name='" +
-                                 admin_fname+" "+admin_lname + "' where staff_id='"+staff_id+"' and library_id='"+ library_id + "'");
+                                 admin_fname+" "+admin_lname + "',password='"+admin_password+"' where staff_id='"+staff_id+"' and library_id='"+ library_id + "'");
 
                      i=MyQueryResult.getMyExecuteUpdate(sql);
                    if(i!=0)

@@ -36,7 +36,7 @@ private ResultSet privilege_resultset,acq_privilege_resultset,cat_privilege_resu
      * @param request The HTTP Request we are processing.
      * @param response The HTTP Response we are processing.
      * @throws java.lang.Exception
-     * @return
+    
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -64,6 +64,54 @@ private ResultSet privilege_resultset,acq_privilege_resultset,cat_privilege_resu
          }
          else
          {
+
+
+         String id="admin."+library_id;   //get Institute admin ID
+            if(staff_id.equals(id))
+           {
+
+                request.setAttribute("staff_name", staff_name);
+                request.setAttribute("library_id", library_id);
+                request.setAttribute("staff_id", staff_id);
+                request.setAttribute("msg1", "You Cannot Modify Priviege of Institute Admin");
+             return mapping.findForward("notfound");
+           }
+
+        id=(String)session.getAttribute("staff_id");  //cannot delete own account
+            if(staff_id.equals(id))
+            {
+
+
+               request.setAttribute("staff_name", staff_name);
+                request.setAttribute("library_id", library_id);
+                request.setAttribute("staff_id", staff_id);
+                request.setAttribute("msg1", "You Cannot Modify Priviliege of Own Account");
+                  return mapping.findForward("notfound");
+
+            }
+
+
+
+
+               String login_role=(String)session.getAttribute("login_role");    //cannot create co-admin
+         ResultSet rs1=MyQueryResult.getMyExecuteQuery("select * from login where staff_id='"+staff_id+"' and library_id='"+library_id+"'");
+
+            if(rs1.next())
+            {
+                if(rs1.getString("role").equals(login_role))
+                {
+                   request.setAttribute("staff_name", staff_name);
+                request.setAttribute("library_id", library_id);
+                request.setAttribute("staff_id", staff_id);
+                request.setAttribute("msg1", "You Cannot Update Priviliege of Admin");
+                return mapping.findForward("notfound");
+                }
+            }
+
+
+
+
+
              ResultSet rs=MyQueryResult.getMyExecuteQuery("select user_name from login where staff_id='"+staff_id+"' and library_id='"+ library_id + "'");
              if(rs.next())
                  staff_name=rs.getString("user_name");

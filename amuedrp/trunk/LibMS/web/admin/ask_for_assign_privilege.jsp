@@ -36,7 +36,8 @@ valign="top" style="" class="mess" align="center">
 						<br>
 						<br>
                                                 <%
-                                                ResultSet rs=MyQueryResult.getMyExecuteQuery("select user_name from login where staff_id='"+staff_id+"'");
+                                                String library_id=(String)session.getAttribute("library_id");
+                                                ResultSet rs=MyQueryResult.getMyExecuteQuery("select user_name from login where staff_id='"+staff_id+"' and library_id='"+library_id+"'");
                                                 String staff_name="";
                                                 if(rs.next())
                                               staff_name=rs.getString("user_name");
@@ -57,21 +58,11 @@ valign="top" style="" class="mess" align="center">
 
 
         </div>
-    <div
-   style="
-      top: 650px;
-
-      position: absolute;
-
-      visibility: show;">
-        <jsp:include page="footer.jsp" />
-
-</div>
+    
 
     </body>
-</html>
 
-<script>
+<script language="javascript" type="text/javascript">
     function show()
     {
 
@@ -82,5 +73,7 @@ location.href="./CheckedPrivilege.do?staff_id=<%=staff_id%>";
 
 
 
+
+</html>
 
     

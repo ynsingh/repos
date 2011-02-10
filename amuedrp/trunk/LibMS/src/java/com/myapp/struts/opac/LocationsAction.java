@@ -4,7 +4,7 @@
  */
 
 package com.myapp.struts.opac;
-
+import  com.myapp.struts.*;
 import java.sql.ResultSet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,7 +29,7 @@ public class LocationsAction extends org.apache.struts.action.Action {
      * @param request The HTTP Request we are processing.
      * @param response The HTTP Response we are processing.
      * @throws java.lang.Exception
-     * @return
+    
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -39,6 +39,14 @@ public class LocationsAction extends org.apache.struts.action.Action {
             String lib_id;
             HttpSession session = request.getSession();
             lib_id = (String)session.getAttribute("library_id");
+            if(lib_id==null)
+        {
+            return mapping.findForward("fail");
+
+        }
+        else
+        {
+
             String query="select distinct location from document where library_id='" + lib_id + "'";
 
             ResultSet rs=null;
@@ -46,5 +54,6 @@ public class LocationsAction extends org.apache.struts.action.Action {
             rs = MyQueryResult.getMyExecuteQuery(query);
             request.setAttribute("locationRs", rs);
         return mapping.findForward(SUCCESS);
+        }
     }
 }

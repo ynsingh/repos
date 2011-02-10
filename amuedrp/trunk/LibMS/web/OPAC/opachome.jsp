@@ -18,11 +18,22 @@ body
    color: #000000;
 }
 </style>
+
 <style type="text/css">
 a:active
 {
    color: #0000FF;
 }
+.rows          { background-color: white;border: solid 1px blue; }
+     .hiliterows    { background-color: pink; color: #000000; border: solid 1px blue; }
+     .alternaterows { background-color: #efefef; }
+     .header        { background-color: #c0003b; color: #FFFFFF;font-family:Tahoma;font-size: 12px;text-decoration: none;padding-left: 10px; }
+  .header1        { font-family:Tahoma;font-size: 12px;text-decoration: none;padding-left: 10px; }
+     .datagrid      { 
+    font-weight: normal;font-size: 10px;
+	  }
+     .item{ padding-left: 10px;}
+
 </style>
 <%!
     Locale locale=null;
@@ -61,95 +72,178 @@ locale1=(String)session.getAttribute("locale");
 
 
     <form method="post" action="opachomeRTL.jsp" name="form1">
-        <%--  <tr colspan="2" align="left" style="top:2%; font-family:Tahoma;font-size:15px;"><%=resource.getString("login.message.selectlanguage")%><select name="button" onchange="fun()"><option dir="<%=rtl%>"<%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("en")){ %>selected<%}%>>English</option><option dir="<%=rtl%>" <%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("ur")){ %>selected<%}%>>Urdu</option><option dir="<%=rtl%>" <%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("ar")){ %>selected<%}%>>Arabic</option><option dir="<%=rtl%>" <%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("hi")){ %>selected<%}%>>Hindi</option></select></tr>--%>
 
-<table style="position:absolute;left:100px;top:50px;width:604px;height:282px;z-index:4;border:2px #FFFFFF solid;" cellpadding="0" cellspacing="1" id="Table1">
+       
+     
+
+<table cellpadding="0" cellspacing="1" id="Table1">
  <%if(!page.equals(true)){%>
+ <tr><td align="right" valign="top">
+        <table  align="right" width="800x"  style="border:solid 1px #e0e8f5;">
+
+
+
+  <tr class="header"><td  width="800px" height="40px"  align="center" colspan="2" style="font-size: 18px;">
+
+
+		<%=resource.getString("opacmainframe.opachome.text1")%>
+
+
+
+        </td></tr>
+  <tr><td width="800px">
+              <table  height="300px" border="0" cellpadding="2" cellspacing="0" width="100%" frame="hspaces" >
+
+    <tbody><tr>
+            <td  align="right">
+    	<%=resource.getString("opacmainframe.opachome.text2")%>&nbsp;<img src="../images/orange_sq_but.gif"/>
+    </td>
+
+    </tr>
+<tr>
+    <td  class="tipstext" align="right">
+    	<%=resource.getString("opacmainframe.opachome.text3")%>&nbsp;<img src="../images/orange_sq_but.gif"/>
+    </td>
+
+    </tr>
     <tr>
-    <td align="right" valign="top"  style="border:1px #FFFFFF solid;height:49px;">
-<font style="font-size:27px"  color="#0099CC" face="Arial"><b><u><%=resource.getString("opacmainframe.opachome.text1")%></u></b></font><font style="font-size:11px" color="#000000" face="Arial"><br>
-</font></td>
-</tr>
-<tr>
-    <td align="right" valign="top"  style="border:1px #FFFFFF solid;height:25px;">
-<font style="font-size:13px" color="#FF0066" face="Arial"><b><%=resource.getString("opacmainframe.opachome.text2")%>&lt;&lt;</b></font></td>
-</tr>
+    <td  class="tipstext" align="right">
+    	<%=resource.getString("opacmainframe.opachome.text4")%>&nbsp;<img src="../images/orange_sq_but.gif"/>
+    </td>
 
-<tr>
-<td align="right" valign="top" style="border:1px #FFFFFF solid;height:23px;">
-<font style="font-size:13px" color="#990033" face="Arial"><b><%=resource.getString("opacmainframe.opachome.text3")%>&lt;&lt;</b></font></td>
-</tr>
-<tr>
-<td align="right" valign="top" style="border:1px #FFFFFF solid;height:26px;">
-<font style="font-size:13px" color="#FF00FF" face="Arial"><b><%=resource.getString("opacmainframe.opachome.text4")%>&lt;&lt;</b></font></td>
-</tr>
-<tr>
-<td align="right" valign="top" style="border:1px #FFFFFF solid;height:26px;">
-<font style="font-size:13px" color="#FFCC00" face="Arial"><b><%=resource.getString("opacmainframe.opachome.text5")%>&lt;&lt;</b></font></td>
+    </tr>
+    <tr>
+    <td  class="tipstext" align="right">
+    	<%=resource.getString("opacmainframe.opachome.text5")%>&nbsp;<img src="../images/orange_sq_but.gif"/>
+    </td>
 
-</tr>
-<tr>
-    <td align="right" valign="top" style="border:1px #FFFFFF solid;height:19px;">
-<font style="font-size:13px" color="#006600" face="Arial"><b><%=resource.getString("opacmainframe.opachome.text6")%>&lt;&lt;</b></font></td>
-</tr>
-<tr>
-<td align="right" valign="top" style="border:1px #FFFFFF solid;height:37px;">
-<font style="font-size:13px" color="#FF3300" face="Arial"><b><%=resource.getString("opacmainframe.opachome.text7")%>&lt;&lt</b></font></td>
-</tr>
+    </tr>
+    <tr>
+    <td class="tipstext" align="right">
+    	<%=resource.getString("opacmainframe.opachome.text6")%>&nbsp;<img src="../images/orange_sq_but.gif"/>
+    </td>
 
-<tr>
-<td align="right" valign="top" style="border:1px #FFFFFF solid;height:26px;">
-<font style="font-size:13px" color="#66CCFF" face="Arial"><b><%=resource.getString("opacmainframe.opachome.text8")%>&lt;&lt;</b></font></td>
-</tr>
-<tr>
-<td align="right" valign="top" style="border:1px #FFFFFF solid;height:19px;">
-<font style="font-size:13px" color="#CC0066" face="Arial"><b><%=resource.getString("opacmainframe.opachome.text9")%>&lt;&lt;</b></font></td>
-</tr>
+    </tr>
+    <tr>
+    <td  class="tipstext" align="right">
+    	Check Your Account history using MyAccount Option&nbsp;<img src="../images/orange_sq_but.gif"/>
+    </td>
+
+    </tr>
+     <tr>
+    <td  class="tipstext" align="right">
+    	<%=resource.getString("opacmainframe.opachome.text8")%>&nbsp;<img src="../images/orange_sq_but.gif"/>
+    </td>
+
+    </tr>
+     <tr>
+    <td  class="tipstext" align="right">
+    	<%=resource.getString("opacmainframe.opachome.text9")%>&nbsp;<img src="../images/orange_sq_but.gif"/>
+    </td>
+
+    </tr>
+
+  </tbody></table>
+
+
+
+
+
+      </td></tr></table>
+
+
+     </td></tr>
+
 
  <%}else{%>
+ <tr><td align="left" valign="top">
+        <table  align="left" width="800x"  style="border:solid 1px #e0e8f5;">
 
+
+
+  <tr class="header"><td  width="800px" height="40px"  align="center" colspan="2" style="font-size: 18px;">
+
+
+		<%=resource.getString("opacmainframe.opachome.text1")%>
+
+
+
+        </td></tr>
+  <tr><td width="800px">
+              <table class="header1" height="300px" border="0" cellpadding="2" cellspacing="0" width="100%" frame="hspaces" >
+   
  <tr>
-    <td align="left" valign="top"  style="border:1px #FFFFFF solid;height:49px;">
-<font style="font-size:27px"  color="#0099CC" face="Arial"><b><u><%=resource.getString("opacmainframe.opachome.text1")%></u></b></font><font style="font-size:11px" color="#000000" face="Arial"><br>
-</font></td>
-</tr>
-<tr>
-    <td align="left" valign="top"  style="border:1px #FFFFFF solid;height:25px;">
-<font style="font-size:13px" color="#FF0066" face="Arial"><b>&gt;&gt;<%=resource.getString("opacmainframe.opachome.text2")%></b></font></td>
-</tr>
+            <td align="left">
+    	<img src="../images/orange_sq_but.gif"/>&nbsp;<%=resource.getString("opacmainframe.opachome.text2")%>
+    </th>
 
+    </tr>
 <tr>
-<td align="left" valign="top" style="border:1px #FFFFFF solid;height:23px;">
-<font style="font-size:13px" color="#990033" face="Arial"><b>&gt;&gt;<%=resource.getString("opacmainframe.opachome.text3")%></b></font></td>
-</tr>
-<tr>
-<td align="left" valign="top" style="border:1px #FFFFFF solid;height:26px;">
-<font style="font-size:13px" color="#FF00FF" face="Arial"><b>&gt;&gt;<%=resource.getString("opacmainframe.opachome.text4")%></b></font></td>
-</tr>
-<tr>
-<td align="left" valign="top" style="border:1px #FFFFFF solid;height:26px;">
-<font style="font-size:13px" color="#FFCC00" face="Arial"><b>&gt;&gt;<%=resource.getString("opacmainframe.opachome.text5")%></b></font></td>
+    <td   align="left">
+    	<img src="../images/orange_sq_but.gif"/>&nbsp;<%=resource.getString("opacmainframe.opachome.text3")%>
+    </td>
 
-</tr>
-<tr>
-    <td align="left" valign="top" style="border:1px #FFFFFF solid;height:19px;">
-<font style="font-size:13px" color="#006600" face="Arial"><b>&gt;&gt;<%=resource.getString("opacmainframe.opachome.text6")%></b></font></td>
-</tr>
-<tr>
-<td align="left" valign="top" style="border:1px #FFFFFF solid;height:37px;">
-<font style="font-size:13px" color="#FF3300" face="Arial"><b>&gt;&gt;<%=resource.getString("opacmainframe.opachome.text7")%></b></font></td>
-</tr>
+    </tr>
+    <tr>
+    <td  align="left">
+    	<img src="../images/orange_sq_but.gif"/>&nbsp;<%=resource.getString("opacmainframe.opachome.text4")%>
+    </td>
 
-<tr>
-<td align="left" valign="top" style="border:1px #FFFFFF solid;height:26px;">
-<font style="font-size:13px" color="#66CCFF" face="Arial"><b>&gt;&gt;<%=resource.getString("opacmainframe.opachome.text8")%></b></font></td>
-</tr>
-<tr>
-<td align="left" valign="top" style="border:1px #FFFFFF solid;height:19px;">
-<font style="font-size:13px" color="#CC0066" face="Arial"><b>&gt;&gt;<%=resource.getString("opacmainframe.opachome.text9")%></b></font></td>
-</tr>
+    </tr>
+    <tr>
+    <td   align="left">
+    	<img src="../images/orange_sq_but.gif"/>&nbsp;<%=resource.getString("opacmainframe.opachome.text5")%>
+    </td>
 
+    </tr>
+    <tr>
+    <td  align="left">
+    	<img src="../images/orange_sq_but.gif"/>&nbsp;<%=resource.getString("opacmainframe.opachome.text6")%>
+    </td>
+
+    </tr>
+    <tr>
+    <td   align="left">
+    	<img src="../images/orange_sq_but.gif"/>&nbsp;Check Your Account history using MyAccount Option
+    </td>
+
+    </tr>
+     <tr>
+    <td   align="left">
+    	<img src="../images/orange_sq_but.gif"/>&nbsp;<%=resource.getString("opacmainframe.opachome.text8")%>
+    </td>
+
+    </tr>
+     <tr>
+    <td   align="left">
+    	<img src="../images/orange_sq_but.gif"/>&nbsp;<%=resource.getString("opacmainframe.opachome.text9")%>
+    </td>
+
+    </tr>
+   
+  </table>
+
+
+
+
+
+      </td></tr></table>
+      
+      
+     </td></tr>
+ 
  <%}%>
+  <%
+    String message=(String)request.getAttribute("msg");
+    if(message!=null){
+       %> <br>
+	           <TABLE class="datagrid" style="background-color: #E3E4FA;font-size:15px;"
+                   WIDTH="40%" border="1" align="center">
+		      <tr><th><%=message%></th></tr>
+		   </TABLE>
+   <% }else
+        message="";
+    %>
 </table>
     </form>
 </body>

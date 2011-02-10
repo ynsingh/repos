@@ -32,7 +32,7 @@ public class ShowCheckedPrivilegeAction extends org.apache.struts.action.Action 
      * @param request The HTTP Request we are processing.
      * @param response The HTTP Response we are processing.
      * @throws java.lang.Exception
-     * @return
+  
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -71,6 +71,7 @@ public class ShowCheckedPrivilegeAction extends org.apache.struts.action.Action 
         session.setAttribute("cat_privilege", cat_privilege_resultset);
         session.setAttribute("cir_privilege", cir_privilege_resultset);
         session.setAttribute("ser_privilege", ser_privilege_resultset);
+        request.setAttribute("staff_id", staff_id);
         return mapping.findForward(SUCCESS);
     }
 }

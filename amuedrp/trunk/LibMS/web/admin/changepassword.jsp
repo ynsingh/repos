@@ -100,22 +100,12 @@ if(rst!=null)
 
     </table>
         </div>
-    <div
-   style="
-      top: 650px;
-
-      position: absolute;
-
-      visibility: show;">
-        <jsp:include page="footer.jsp" />
-
-</div>
+   
 
 </html:form>
     </body>
-</html>
 
-<script>
+<script language="javascript" type="text/javascript">
 
     function check()
     {
@@ -146,46 +136,16 @@ if(rst!=null)
 
 
     }
- 
-   
+
+
       function send1()
     {
         window.location="/LibMS-Struts/admin/main.jsp";
         return false;
 
     }
- 
-   
+
+
     </script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+</html>

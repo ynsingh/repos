@@ -5,7 +5,7 @@
 
 package com.myapp.struts.admin;
 import com.myapp.struts.admin.AccountActionForm;
-import com.myapp.struts.opac.MyQueryResult;
+import  com.myapp.struts.*;
 import java.sql.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -38,7 +38,7 @@ public class AccountAction extends org.apache.struts.action.Action {
      * @param request The HTTP Request we are processing.
      * @param response The HTTP Response we are processing.
      * @throws java.lang.Exception
-     * @return
+    
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -95,7 +95,7 @@ public class AccountAction extends org.apache.struts.action.Action {
         }
         
 
-         if(button.equals("Change Password")||button.equals("View Account")||button.equals("Delete Account"))
+         if(button.equals("Update Account")||button.equals("View Account")||button.equals("Delete Account"))
          {
              
 
@@ -110,7 +110,7 @@ public class AccountAction extends org.apache.struts.action.Action {
                      if(rst1.next())
                     {
                          //update/view/delete account code
-                        rst=MyQueryResult.getMyExecuteQuery("select b.staff_id,a.user_id,a.user_name,a.password from login a inner join staff_detail b on a.user_id=b.emai_id and a.library_id=b.library_id where b.staff_id='"+staff_id+"'");
+                        rst=MyQueryResult.getMyExecuteQuery("select b.staff_id,a.user_id,a.user_name,a.password,a.role from login a inner join staff_detail b on a.user_id=b.emai_id and a.library_id=b.library_id where b.staff_id='"+staff_id+"' and b.library_id='"+library_id+"'");
 
 
                             if(rst.next())

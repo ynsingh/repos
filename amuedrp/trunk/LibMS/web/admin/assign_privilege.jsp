@@ -163,20 +163,10 @@ availableSelectList.innerHTML += ndValue+"\n";
 
 </td></tr></table>
         </div>
-    <div
-   style="
-      top: 650px;
-
-      position: absolute;
-
-      visibility: show;">
-        <jsp:include page="footer.jsp" />
-
-</div>
+   
 </html:form>
 
 </body>
-</html>
 <script language="javascript" type="text/javascript">
   function check1()
 {
@@ -213,3 +203,4 @@ availableSelectList.innerHTML += ndValue+"\n";
 }
 
 %>
+</html>

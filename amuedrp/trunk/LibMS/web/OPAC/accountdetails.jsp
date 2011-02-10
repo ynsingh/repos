@@ -10,7 +10,7 @@
 <html>
  <head>
      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<meta name="Mayank Saxena" content="MCA,AMU">
+
 <title>Account Details..</title>
 <style type="text/css">
 
@@ -19,7 +19,18 @@ body
    background-color: #FFFFFF;
    color: #000000;
 }
+th a:link      { text-decoration: none; color: black }
+     th a:visited   { text-decoration: none; color: black }
+     .rows          { background-color: white;border: solid 1px blue; }
+     .hiliterows    { background-color: pink; color: #000000; font-weight: bold;border: solid 1px blue; }
+     .alternaterows { background-color: #efefef; }
+     .header        { background-color: #c0003b; color: #FFFFFF;font-weight: bold;text-decoration: none;padding-left: 10px; }
+
+     .datagrid      {  font-family: arial; font-size: 9pt;
+	    font-weight: normal;}
+     .item{ padding-left: 10px;}
 </style>
+<link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
 <%!
     Locale locale=null;
     String locale1="en";
@@ -42,75 +53,33 @@ locale1=(String)session.getAttribute("locale");
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
     %>
-</head><body>
-    <%if(page.equals(true)){
-
-try
-{ /*Create string of connection url within specified
-    format with machine name, port number and database name.
-    Here machine name id localhost and
-    database name is library.*/
 
 
-%>
-<div id="tableBar" style="position: absolute; left: 0px; top: 20px; width: 748px; z-index: 6; height: 388px;">
-<table width="50%" height="10" border="1" align="center" vspace="30%" cellpadding="0" cellspacing="0" bordercolor="#330033">
-  <tr bgcolor="#D0EFF9">
-    
-      <td width="6%" height="10" align="center" valign="middle" bgcolor="#D0EFF9" top="50"> <a href="newdemand1.jsp" target="f3" style="text-decoration:none"> <font color="#C0003B"><b> <font size="1.9" face="Arial, Helvetica,sans-serif"><strong><%=resource.getString("opac.accountdetails.newdemand")%></strong></font></b></font></a></td>
-    <td width="6%" height="10" align="center" valign="middle" bgcolor="#D0EFF9" top="50"> <a href="reservationrequest1.jsp" target="f3" style="text-decoration:none"> <font color="#C0003B"><b> <font size="1.7" face="Arial, Helvetica,sans-serif"><%=resource.getString("opac.accountdetails.reservationrequest")%></font></b></font></a></td>
-    <td width="6%" height="10" align="center" valign="middle" bgcolor="#D0EFF9" top="50">
-     <A  href="opac_logout.jsp" style="text-decoration:none">
-      <font color="#C0003B"><b> <font size="1.7" face="Arial, Helvetica,sans-serif"><%=resource.getString("opac.accountdetails.logout")%></font></b></font></A>
-    </td>
-  </tr>
-</table>
-</div>
 
-<div id="wb_Text1" style="position: absolute; left: 150px; top: 20px;
-width: 650px; height: 19px; background-color: rgb(255, 255, 224);
-z-index: 0;" >
-<font style="font-size: 16px;" color="#c0003b" face="Arial" align="center"><b>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <%=resource.getString("opac.accountdetails.accountdetails")%></b></font></div>
-<div id="wb_Form1" style="position: absolute; left: 154px; top: 80px;
-width: 537px; height: 251px; z-index: 6;">
-
-<form name="Form1" method="post" id="Form1">
-<div id="wb_Text5" style="position:absolute;left:73px;top:20px;width:55px;height:15px;z-index:0;" align="left">
-    <font style="FONT-SIZE: 12px" face="Arial" color="#000000"><b><%=resource.getString("opac.accountdetails.finedue")%></b></font></div>
-<div id="wb_Text6" style="position:absolute;left:51px;top:107px;width:76px;height:15px;z-index:1;" align="left">
-<font style="FONT-SIZE: 12px" face="Arial" color="#000000"><b><%=resource.getString("opac.accountdetails.checkouts")%></b></font></div>
-<div id="wb_Text8" style="position:absolute;left:21px;top:138px;width:103px;height:30px;z-index:2;" align="right">
-<font style="font-size:12px" color="#000000" face="Arial"><b><%=resource.getString("opac.accountdetails.lastcheckoutdate")%></b></font></div>
 <%!
 String ID,status,lastchkoutdate,no_of_chkout ,reservation_made, fine ,name;
 ResultSet rs=null,rs1=null;
 %>
 <%
     ID = (String)session.getAttribute("id");
-     rs= (ResultSet)request.getAttribute("rs");
-     rs1= (ResultSet)request.getAttribute("rs1");
+     rs= (ResultSet)session.getAttribute("rs");
+    rs1= (ResultSet)session.getAttribute("rs1");
 
         rs.beforeFirst();
         boolean s=rs.next();
-//out.println(s);
+
    if(s)
-      { status=rs.getString(7);
+      { status=rs.getString(8);
         if(status.equals("Y"))
           {
-            name=rs.getString(2);
-            //fine=rs.getString(3);
-            no_of_chkout=rs.getString(4);
-            reservation_made=rs.getString(5);
-            lastchkoutdate=rs.getString(6);
+
+            name=rs.getString(3);
+
+            no_of_chkout=rs.getString(5);
+            reservation_made=rs.getString(6);
+            lastchkoutdate=rs.getString(7);
             session.setAttribute("memname",name);
-            
+
           }
         else
           {
@@ -121,143 +90,172 @@ ResultSet rs=null,rs1=null;
    else
        {
     response.sendRedirect("member.jsp?msg=Invalid Member,try again..");
+
        }
-   
-   
-   
-   
+
+
+
+
     while(rs1.next()){fine=rs1.getString(1);}
 
+        if(fine==null)
+            fine="0";
+        if(no_of_chkout==null)
+            no_of_chkout="";
+        if(lastchkoutdate==null)
+            lastchkoutdate="";
+
 
 %>
 
-<div id="wb_Text1" style="position: absolute; left: -5px; top: -59px;
-width: 610px; height: 19px;
-z-index: 0;" align="left">
- <font size="2" color="#c0003b" face="Arial, Helvetica,sans-serif">
-  <b>
-     <%=resource.getString("opac.accountdetails.welcome")%> <%=name%>..  </b> </font></div>
 
-<input type="text" id="TXTFINE" style="position:absolute;left:130px;top:14px;width:141px;height:18px;border:1px #C0C0C0 solid;font-family: Arial, Helvetica, sans-serif; color:TEAL;font-size:15px;z-index:3" name="TXTFINE" value="<%=fine%>" disabled="disabled">
-<input type="text" id="TXTCHECKOUT" style="position:absolute;left:130px;top:106px;width:142px;height:18px;border:1px #C0C0C0 solid;font-family: Arial, Helvetica, sans-serif; color:TEAL;font-size:15px;z-index:4" name="TXTCHECKOUT" value="<%=no_of_chkout%>" disabled="disabled">
-<input type="text" id="TXTRESERVATION" style="position:absolute;left:129px;top:47px;width:142px;height:18px;border:1px #C0C0C0 solid;font-family: Arial, Helvetica, sans-serif; color:TEAL;font-size:15px;z-index:5" name="TXTRESERVATION" value="<%=reservation_made%>" disabled="disabled">
-<input type="text" id="TXTCHKDATE" style="position:absolute;left:130px;top:141px;width:143px;height:18px;border:1px #C0C0C0 solid;font-family: Arial, Helvetica, sans-serif; color:TEAL;font-size:15px;z-index:6" name="TXTCHKDATE" value="<%=lastchkoutdate%>" disabled="disabled">
-<div id="wb_Text7" style="position:absolute;left:29px;top:46px;width:92px;height:30px;z-index:7;" align="right">
-<font style="font-size:12px" color="#000000" face="Arial"><b<%=resource.getString("opac.accountdetails.reservationmade")%></b></font></div>
-<%
-       /* fine=null;
-        no_of_chkout=null;
-        reservation_made=null;
-        lastchkoutdate=null;
-        name="Guest";*/
+</head><body>
+    <%if(page.equals(true))
+    {
+
 %>
-</form>
-<div id="wb_Text5" style="position:absolute;left:282px;top:16px;width:55px;height:15px;z-index:0;" align="left"> <a href="finedetails.jsp"><font style="FONT-SIZE: 12px" face="Arial" color="red"><strong><%=resource.getString("opac.accountdetails.details")%></strong></font></a></div>
-<div id="wb_Text5" style="position:absolute;left:282px;top:47px;width:55px;height:15px;z-index:0;" align="left"> <a href="reservationdetails.jsp"><font style="FONT-SIZE: 12px" face="Arial" color="red"><strong><%=resource.getString("opac.accountdetails.details")%></strong></font></a></div>
-</div>
-<%
-}catch(Exception ex){}      }
-else{
-%>
-<div id="tableBar" style="position: absolute; right: 0px; top: 20px; width: 748px; z-index: 6; height: 388px;">
-<table width="50%" height="10" border="1" align="center" vspace="30%" cellpadding="0" cellspacing="0" bordercolor="#330033">
-  <tr bgcolor="#D0EFF9">
-
-      <td width="6%" height="10" align="center" valign="middle" bgcolor="#D0EFF9" top="50"> <a href="newdemand1.jsp" target="f3" style="text-decoration:none"> <font color="#C0003B"><b> <font size="1.9" face="Arial, Helvetica,sans-serif"><strong><%=resource.getString("opac.accountdetails.newdemand")%></strong></font></b></font></a></td>
-    <td width="6%" height="10" align="center" valign="middle" bgcolor="#D0EFF9" top="50"> <a href="reservationrequest1.jsp" target="f3" style="text-decoration:none"> <font color="#C0003B"><b> <font size="1.7" face="Arial, Helvetica,sans-serif"><%=resource.getString("opac.accountdetails.reservationrequest")%></font></b></font></a></td>
-    <td width="6%" height="10" align="center" valign="middle" bgcolor="#D0EFF9" top="50">
-     <A  href="opac_logout.jsp" style="text-decoration:none">
-      <font color="#C0003B"><b> <font size="1.7" face="Arial, Helvetica,sans-serif"><%=resource.getString("opac.accountdetails.logout")%></font></b></font></A>
-    </td>
-  </tr>
-</table>
-</div>
-
-<div id="wb_Text1" style="position: absolute; right: 150px; top: 20px;
-width: 650px; height: 19px; background-color: rgb(255, 255, 224);
-z-index: 0;" >
-<font style="font-size: 16px;" color="#c0003b" face="Arial" align="center"><b>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <%=resource.getString("opac.accountdetails.accountdetails")%></b></font></div>
-<div id="wb_Form1" style="position: absolute; right: 154px; top: 80px;
-width: 537px; height: 251px; z-index: 6;">
 
 <form name="Form1" method="post" id="Form1">
-    <div id="wb_Text5" style="position:absolute;right:40px;top:20px;width:55px;height:15px;z-index:0;" align="right" dir="rtl">
-    <font style="FONT-SIZE: 12px" face="Arial" color="#000000"><b><%=resource.getString("opac.accountdetails.finedue")%></b></font></div>
-<div id="wb_Text6" style="position:absolute;right:40px;top:107px;width:76px;height:15px;z-index:1;" align="right" dir="rtl">
-<font style="FONT-SIZE: 12px" face="Arial" color="#000000"><b><%=resource.getString("opac.accountdetails.checkouts")%></b></font></div>
-<div id="wb_Text8" style="position:absolute;right:40px;top:138px;width:103px;height:30px;z-index:2;" align="right" dir="rtl">
-<font style="font-size:12px" color="#000000" face="Arial"><b><%=resource.getString("opac.accountdetails.lastcheckoutdate")%></b></font></div>
 
-<%
-    ID = (String)session.getAttribute("id");
-     rs= (ResultSet)request.getAttribute("rs");
-     rs1= (ResultSet)request.getAttribute("rs1");
+ <table  align="left" width="800px" class="datagrid" style="background-color: white;border:#c0003b 1px solid;margin:0px 0px 0px 0px;">
 
-        rs.beforeFirst();
-        boolean s=rs.next();
-//out.println(s);
-   if(s)
-      { status=rs.getString(7);
-        if(status.equals("Y"))
-          {
-            name=rs.getString(2);
-            //fine=rs.getString(3);
-            no_of_chkout=rs.getString(4);
-            reservation_made=rs.getString(5);
-            lastchkoutdate=rs.getString(6);
-            session.setAttribute("memname",name);
+      
 
-          }
-        else
-          {
-            response.sendRedirect("member.jsp?msg=Sorry, your Membership is cancelled" +
-                           " for somehow reason, please contact to your Library..");
-          }
-       }
-   else
-       {
-    response.sendRedirect("member.jsp?msg=Invalid Member,try again..");
-       }
+  <tr><td  width="800px"  style="background-color:#c0003b;color:white;font-family:Tahoma;font-size:12px" height="28px" align="left">
+          <table>
+              <tr><td width="640px" style="background-color:#c0003b;color:white;font-family:Tahoma;font-size:12px" height="28px" align="left"><b>
+               
+		     
+	&nbsp;&nbsp;
+                <a href="accountdetails.jsp" target="f3" style="text-decoration: none;color:white"><%=resource.getString("opac.accountdetails.home")%></a>&nbsp;|&nbsp;
+            <a href="newdemand2.jsp" target="f3" style="text-decoration: none;color:white"> <%=resource.getString("opac.accountdetails.newdemand")%></a>&nbsp;
+    |&nbsp;<a href="reservationrequest1.jsp" target="f3" style="text-decoration: none;color:white"> <%=resource.getString("opac.accountdetails.reservationrequest")%></a>
+
+            
 
 
+          </b>
+                  </td><td align="right" style="color:white;font-family:Tahoma;font-size:12px"><%=resource.getString("opac.accountdetails.hi")%>&nbsp;<%=name%>&nbsp;<b>|</b>&nbsp;<a href="home.do" target="f3" style="text-decoration: none;color:white"><%=resource.getString("opac.accountdetails.logout")%></a></td></tr></table>
+        </td></tr>
+  
+    
+
+    <tr><td height="300px" valign="top" class="btn1" align="left" colspan="2"><br><br>
+            <table width="500px" class="btn1">
+                <tr><td align="center" colspan="2" class="btn1" >
+                        <b>  <%=resource.getString("opac.accountdetails.accountdetails")%></b><br><br>
+        </td></tr>
+                <tr><td align="left"><b><%=resource.getString("opac.accountdetails.finedue")%></b></td><td align="left"><input type="text" id="TXTFINE" name="TXTFINE" value="<%=fine%>" disabled="disabled"><a href="view_finedetails.jsp" style="text-decoration: none;color:blue"><b>&nbsp;<%=resource.getString("opac.accountdetails.details")%></b></a></td></tr>
+                <tr><td align="left"><b><%=resource.getString("opac.accountdetails.checkouts")%></b></td><td align="left"><input type="text" id="TXTCHECKOUT"  name="TXTCHECKOUT" value="<%=no_of_chkout%>" disabled="disabled"></td></tr>
+                <tr><td align="left"><b><%=resource.getString("opac.accountdetails.reservation")%></b></td><td align="left"><input type="text" id="TXTRESERVATION" name="TXTRESERVATION" value="<%=reservation_made%>" disabled="disabled"><a href="view_reservation.jsp" style="text-decoration: none;color:blue"><b>&nbsp;<%=resource.getString("opac.accountdetails.details")%></b></a></td></tr>
+                <tr><td align="left"><b><%=resource.getString("opac.accountdetails.lastcheckoutdate")%></b></td><td align="left"><input type="text" id="TXTCHKDATE" name="TXTCHKDATE" value="<%=lastchkoutdate%>" disabled="disabled"></td></tr>
+                <tr><td colspan="2" align="left"><br><br><br>
+            <%
+    String message=(String)request.getAttribute("msg");
+    if(message!=null){
+       %> <br>
+	           <TABLE style="background-color: #E3E4FA;"
+                    border="1" align="center">
+		      <tr><th><%=message%></th></tr>
+		   </TABLE>
+   <% }else
+        message="";
+    %>
+
+        </td></tr>
+
+            </table>
 
 
-    while(rs1.next()){fine=rs1.getString(1);}
+
+        </td></tr>
+    
+
+</table>
+
+  
+    
 
 
-%>
-
-<div id="wb_Text1" style="position: absolute; right: -5px; top: -59px;
-width: 610px; height: 19px;
-z-index: 0;" align="right" dir="rtl">
- <font size="2" color="#c0003b" face="Arial, Helvetica,sans-serif">
-  <b>
-     <%=resource.getString("opac.accountdetails.welcome")%> <%=name%>  </b> </font></div>
-
-<input type="text" id="TXTFINE" style="position:absolute;right:130px;top:14px;width:141px;height:18px;border:1px #C0C0C0 solid;font-family: Arial, Helvetica, sans-serif; color:TEAL;font-size:15px;z-index:3" name="TXTFINE" value="<%=fine%>" disabled="disabled">
-<input type="text" id="TXTCHECKOUT" style="position:absolute;right:130px;top:106px;width:142px;height:18px;border:1px #C0C0C0 solid;font-family: Arial, Helvetica, sans-serif; color:TEAL;font-size:15px;z-index:4" name="TXTCHECKOUT" value="<%=no_of_chkout%>" disabled="disabled">
-<input type="text" id="TXTRESERVATION" style="position:absolute;right:129px;top:47px;width:142px;height:18px;border:1px #C0C0C0 solid;font-family: Arial, Helvetica, sans-serif; color:TEAL;font-size:15px;z-index:5" name="TXTRESERVATION" value="<%=reservation_made%>" disabled="disabled">
-<input type="text" id="TXTCHKDATE" style="position:absolute;right:130px;top:141px;width:143px;height:18px;border:1px #C0C0C0 solid;font-family: Arial, Helvetica, sans-serif; color:TEAL;font-size:15px;z-index:6" name="TXTCHKDATE" value="<%=lastchkoutdate%>" disabled="disabled">
-<div id="wb_Text7" style="position:absolute;right:40px;top:46px;width:92px;height:30px;z-index:7;" align="right">
-<font style="font-size:12px" color="#000000" face="Arial"><b><%=resource.getString("opac.accountdetails.reservationmade")%></b></font></div>
-<%
-       /* fine=null;
-        no_of_chkout=null;
-        reservation_made=null;
-        lastchkoutdate=null;
-        name="Guest";*/
-%>
 </form>
-<div id="wb_Text5" style="position:absolute;right:282px;top:16px;width:55px;height:15px;z-index:0;" align="right"> <a href="finedetails.jsp"><font style="FONT-SIZE: 12px" face="Arial" color="red"><strong><%=resource.getString("opac.accountdetails.details")%></strong></font></a></div>
-<div id="wb_Text5" style="position:absolute;right:282px;top:47px;width:55px;height:15px;z-index:0;" align="right"> <a href="reservationdetails.jsp"><font style="FONT-SIZE: 12px" face="Arial" color="red"><strong><%=resource.getString("opac.accountdetails.details")%></strong></font></a></div>
-</div>
-<%}%>
+ 
+
+
+<%
+}
+        else
+            {
+
+%>
+
+<form name="Form1" method="post" id="Form1">
+
+ <table  align="left" width="800px"  style="background-color: white;border:#c0003b 1px solid;margin:0px 0px 0px 0px;">
+
+      
+
+  <tr><td  width="800px"  style="background-color:#c0003b;color:white;font-family:Tahoma;font-size:12px" height="28px" align="right">
+          <table>
+              <tr>
+                  <td width="520px" align="left" style="color:white;font-family:Tahoma;font-size:12px"><a href="home.do" target="f3" style="text-decoration: none;color:white"><%=resource.getString("opac.accountdetails.logout")%></a>&nbsp;|&nbsp;<%=resource.getString("opac.accountdetails.hi")%>&nbsp;<%=name%></td>
+                  
+                  <td  style="background-color:#c0003b;color:white;font-family:Tahoma;font-size:12px" height="28px" align="right"><b>
+               
+		     
+	<a href="reservationrequest1.jsp" target="f3" style="text-decoration: none;color:white"> <%=resource.getString("opac.accountdetails.reservationrequest")%>
+        &nbsp;|&nbsp;    <a href="newdemand2.jsp" target="f3" style="text-decoration: none;color:white"> <%=resource.getString("opac.accountdetails.newdemand")%></a>&nbsp;
+        &nbsp;|&nbsp;    <a href="accountdetails.jsp" target="f3" style="text-decoration: none;color:white"><%=resource.getString("opac.accountdetails.home")%></a>
+            
+    </a>
+
+            
+
+
+          </b>
+                  </td></tr></table>
+        </td></tr>
+  
+    
+
+    <tr><td height="300px" valign="top" class="btn1" align="right" colspan="2"><br><br>
+            <table width="500px" class="btn1">
+                <tr><td align="center" colspan="2" class="btn1" >
+                        <b>  <%=resource.getString("opac.accountdetails.accountdetails")%></b><br><br>
+        </td></tr>
+                <tr><td align="right"><a href="view_finedetails.jsp" style="text-decoration: none;color:blue"><b>&nbsp;<%=resource.getString("opac.accountdetails.details")%></b></a><input type="text" id="TXTFINE" name="TXTFINE" value="<%=fine%>" disabled="disabled"></td><td align="left"><b><%=resource.getString("opac.accountdetails.finedue")%></b></td></tr>
+                <tr><td align="right"><input type="text" id="TXTCHECKOUT"  name="TXTCHECKOUT" value="<%=no_of_chkout%>" disabled="disabled"></td><td align="left"><b><%=resource.getString("opac.accountdetails.checkouts")%></b></td></tr>
+                <tr><td align="right"><b><a href="view_reservation.jsp" style="text-decoration: none;color:blue"><%=resource.getString("opac.accountdetails.details")%></a></b>&nbsp;<input type="text" id="TXTRESERVATION" name="TXTRESERVATION" value="<%=reservation_made%>" disabled="disabled"></td><td align="left"><b>Reservation Made</b></td></tr>
+                <tr><td align="right"><input type="text" id="TXTCHKDATE" name="TXTCHKDATE" value="<%=lastchkoutdate%>" disabled="disabled"></td><td align="left"><b><%=resource.getString("opac.accountdetails.lastcheckoutdate")%></b></td></tr>
+                <tr><td colspan="2" align="left"><br><br><br>
+            <%
+    String message=(String)request.getAttribute("msg");
+    if(message!=null){
+       %> <br>
+	           <TABLE style="background-color: #E3E4FA;"
+                    border="1" align="center">
+		      <tr><th><%=message%></th></tr>
+		   </TABLE>
+   <% }else
+        message="";
+    %>
+
+        </td></tr>
+
+            </table>
+
+
+
+        </td></tr>
+    
+
+</table>
+
+  
+    
+
+
+</form>
+ <%}%>
+
 </body>
 </html>

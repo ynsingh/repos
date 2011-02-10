@@ -7,7 +7,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
-<%@page import="java.sql.*,com.myapp.struts.opac.MyQueryResult" %>
+<%@page import="java.sql.*,com.myapp.struts.MyQueryResult" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -231,147 +231,17 @@ body
 </td></tr>
 <%}%>
         </table>
- <%--<table align="center"  class="txt" width="800px" style="font-family: arial;font-weight: bold;color:brown;font-size:13px">
-
-
-     <tr><td  align="left" colspan="2" ><br><br> <span class="txt"><img src="/LibMS-Struts/images/Institutereg.png">
-</span><br>
-             <br>
-            
-
-         </td></tr>
-
-            <%if(rst.next()){%>
-         
-            <tr><td width="150px">Institute Name</td><td><input type="text" id="Editbox1"   name="institute_name" value="<%=rst.getString(2)%>" tabindex="1" title="Enter Instutute Name" readonly></td><td>Courtesy</td><td><input type="text" id="Editbox2"   name="abbreviated_name" value="<%=rst.getString(3)%>" tabindex="2" readonly title="Abbrivated name e.g. AMU(aligarh muslim University)"></td></tr>
-             
-             <tr><td>Institute Abbrevitaion</td><td><input type="text" id="Editbox3"   name="institute_address" value="<%=rst.getString(4)%>" tabindex="3" readonly title="Enter Address of Institute"></td><td>First Name</td><td><input type="text" id="Editbox4"   name="city" value="<%=rst.getString(5)%>" tabindex="4" title="Enter City " readonly></td></tr>
-             
-             <tr><td>Institute Address</td><td><input type="text" id="Editbox5"   name="state" value="<%=rst.getString(6)%>" tabindex="5" title="Enter State" readonly></td><td>Country</td><td><input type="text" id="Editbox6"   name="country" value="<%=rst.getString(7)%>" tabindex="6" title="Enter Country" readonly></td></tr>
-             <tr><td>Pin Code</td><td><input type="text" id="Editbox7"  name="pin" value="<%=rst.getString(8)%>" tabindex="7" title="Enter PIN/ZIP Code" readonly></td></tr>
-             <tr><td>Courtesy</td><td>
-
-                     <select name="courtesy"  disabled size="1" id="courtesy"   tabindex="11" title="courtesy" style="width:148px">
-    <%if(rst.getString(22).equals("mr")){%>
-<option selected value="mr">Mr</option>
-<option value="mrs">Mrs</option>
-<option value="ms">Ms.</option>
-
-            <%}%>
-            <%if(rst.getString(22).equals("mrs")){%>
-<option  value="mr">Mr</option>
-<option selected value="mrs">Mrs</option>
-<option value="ms">Ms.</option>
-            <%}%>
-            <%if(rst.getString(22).equals("ms")){%>
-<option value="mr">Mr</option>
-<option value="mrs">Mrs</option>
-<option  selected value="ms">Ms.</option>
-            <%}%>
-
-</select>
-<input type="hidden" name="courtesy" value="<%=rst.getString(22)%>"/>
-
-
-                 </td></tr>
-             <tr><td>Admin First Name
-
-
-                 </td><td><input type="text" id="Editbox13"  name="admin_fname" value="<%=rst.getString(14)%>" tabindex="13" title="Enter first Name" readonly></td><td>Admin Last Name</td><td><input type="text" id="Editbox16"  name="admin_lname" value="<%=rst.getString(15)%>" tabindex="14" title="Enter Last Name" readonly></td></tr>
-             <tr><td>Admin Designation</td><td><input type="text" id="Editbox15"  name="admin_designation" value="<%=rst.getString(16)%>" tabindex="15" title="Enter Designation" readonly></td>
-             <td>gender</td><td>
-
-                     <select name="gender" size="1" disabled id="gender" style="width:148px"   tabindex="11" title="gender">
-    <%if(rst.getString(23).equals("male")){%>
-<option selected value="male">Male</option>
-<option value="female">Female</option>
-
-
-            <%}%>
-            <%if(rst.getString(23).equals("female")){%>
-<option  value="male">Male</option>
-<option selected value="female">Female</option>
-
-            <%}%>
-
-</select>
-
-            <input type="hidden" name="gender" value="<%=rst.getString(23)%>"/>
-
-
-
-                 </td>
-
-             </tr>
-             <tr><td>Landline no</td><td><input type="text" id="Editbox8"   name="land_line_no" value="<%=rst.getString(9)%>" tabindex="8" title="Enter Land Line No" readonly></td><td>Mobile no</td><td><input type="text" id="Editbox9"   name="mobile_no" value="<%=rst.getString(10)%>" tabindex="9" title="Enter Mobile No with STD Code" readonly></td></tr>
-             <input type="hidden" name="land_line_no" value="<%=rst.getString(9)%>"/>
-             <input type="hidden" name="mobile_no" value="<%=rst.getString(10)%>"/>
-             <tr><td>Institute Domain</td><td><input type="text" id="Editbox10" name="institute_domain" value="<%=rst.getString(11)%>" tabindex="10" title="Enter Institute Domain e.g amu.com" readonly></td>
-            <td>Type of Institute</td><td>
-                     <select name="type_of_institute" disabled id="type_of_institute" style="width:148px" >
-
-
-
-    <%if(rst.getString(12).equals("govt")){%>
-<option selected value="govt">Govt</option>
-<option value="semi govt">Semi Govt</option>
-<option value="self financed">Self Financed</option>
-<option value="other">Other</option>
-<option  value="Select">Select</option>
-            <%}%>
-            <%if(rst.getString(12).equals("semi_govt")){%>
-<option value="govt">Govt</option>
-<option selected value="semi govt">Semi Govt</option>
-<option value="self financed">Self Financed</option>
-<option value="other">Other</option>
-<option  value="Select">Select</option>
-            <%}%>
-            <%if(rst.getString(12).equals("self_financed")){%>
-<option  value="govt">Govt</option>
-<option value="semi govt">Semi Govt</option>
-<option selected value="self financed">Self Financed</option>
-<option value="other">Other</option>
-<option  value="Select">Select</option>
-            <%}%>
-            <%if(rst.getString(12).equals("other")){%>
-<option  value="govt">Govt</option>
-<option value="semi govt">Semi Govt</option>
-<option value="self financed">Self Financed</option>
-<option selected value="other">Other</option>
-<option  value="Select">Select</option>
-            <%}%>
-
-</select>
-
-
-                 </td>
-             </tr>
-             <tr><td>Password</td><td><input type="password" id="Editbox11" readonly  name="admin_password" value="<%=rst.getString("admin_password")%>" tabindex="17" title="Enter Password" readonly></td></tr>
-             <tr><td>Registration_id</td><td><input type="text" id="Editbox18"  name="registration_request_id" value="<%=rst.getInt(1)%>" tabindex="18" readonly></td></tr>
-            
-             <tr></tr>
-            
-             <tr></tr>
-             <tr><td>Website name</td><td><input type="text" id="Editbox12" readonly name="institute_website" value="<%=rst.getString(13)%>" tabindex="12" title="Enter Institute Website"></td></tr>
-             <tr><td>Email ID</td><td><input type="text"  id="Editbox14" readonly name="admin_email" value="<%=rst.getString(17)%>" tabindex="16" title="Enter E-mail Id"></td></tr>
-              <tr><td>Library Name</td><td><input type="text"  id="Editbox14" readonly name="library_name" value="<%=rst.getString("library_name")%>" tabindex="16" title="Enter Library Name"></td></tr>
-             <tr><td style="color:blue">Library ID</td><td><input type="text"  id="library_id" name="library_id" value="" tabindex="17" title="Enter Library Id"></td></tr>
-<tr><td colspan="4" align="center"><br><br>
-        <input type="submit" class="txt2"  id="submit" name="submit" value="Accept"><input type="button" class="txt2"    name="cancel" value="Back" onclick="quit();">
-</td></tr>
-<%}%>
-        </table>--%>
+ 
              
 
  </html:form>
 
 </body>
-</html>
 
 <script type="text/javascript"  language="javascript">
 function validation()
     {
-       
+
         var t= document.getElementById('library_id');
         var str="";
         if(t.value=="")
@@ -379,7 +249,7 @@ function validation()
             str+="\nPlease Enter  Library ID";
             alert(str);
             document.getElementById('library_id').focus();
-            
+
              return false;
             }
             return true;
@@ -387,6 +257,8 @@ function validation()
          }
 function quit()
 {
-    window.location="/LibMS-Struts/admin/admin_pending.jsp";
+    window.location="/LibMS-Struts/admin/view_pending.jsp";
 }
 </script>
+
+</html>

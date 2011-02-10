@@ -43,16 +43,54 @@
         </form>
 
 
+ 
+
+
         
          <form name="AdminRegistrationActionForm">
-            <field  property="institute_name"   depends="required">
-                	<arg key="AdminRegistrationActionForm.institute_name" />
-
-            </field>
-            <field  property="abbreviated_name"   depends="required">
+       <!--
+        <field  property="abbreviated_name"   depends="required">
                 	<arg key="AdminRegistrationActionForm.abbreviated_name" />
 
             </field>
+
+        <field  property="land_line_no"   depends="required,mask">
+                	<arg key="AdminRegistrationActionForm.land_line_no" />
+                        <var>
+                        <var-name>mask</var-name>
+                        <var-value>^[0-9]*$</var-value>
+                    </var>
+
+            </field>
+
+        <field  property="institute_domain"   depends="required">
+                	<arg key="AdminRegistrationActionForm.institute_domain" />
+
+            </field>
+
+            <field  property="admin_designation"   depends="required">
+                	<arg key="AdminRegistrationActionForm.admin_designation" />
+
+            </field>
+            <field  property="courtesy"   depends="required">
+                	<arg key="AdminRegistrationActionForm.courtesy" />
+
+            </field>
+            <field  property="pin"   depends="required">
+                	<arg key="AdminRegistrationActionForm.pin" />
+
+            </field>
+             <field  property="institute_website"   depends="required">
+                	<arg key="AdminRegistrationActionForm.institute_website" />
+
+            </field>
+
+       -->
+       <field  property="institute_name"   depends="required">
+                	<arg key="AdminRegistrationActionForm.institute_name" />
+
+            </field>
+           
             <field  property="institute_address"   depends="required">
                 	<arg key="AdminRegistrationActionForm.institute_address" />
 
@@ -65,22 +103,12 @@
                 	<arg key="AdminRegistrationActionForm.state" />
 
             </field>
-            <field  property="pin"   depends="required">
-                	<arg key="AdminRegistrationActionForm.pin" />
-
-            </field>
+            
             <field  property="country"   depends="required">
                 	<arg key="AdminRegistrationActionForm.country" />
 
             </field>
-            <field  property="land_line_no"   depends="required,mask">
-                	<arg key="AdminRegistrationActionForm.land_line_no" />
-                        <var>
-                        <var-name>mask</var-name>
-                        <var-value>^[0-9]*$</var-value>
-                    </var>
-
-            </field>
+           
             <field  property="mobile_no"   depends="required,mask">
                 	<arg key="AdminRegistrationActionForm.mobile_no" />
                         <var>
@@ -90,18 +118,12 @@
                        
 
             </field>
-            <field  property="institute_domain"   depends="required">
-                	<arg key="AdminRegistrationActionForm.institute_domain" />
-
-            </field>
+           
             <field  property="type_of_institute"   depends="required">
                 	<arg key="AdminRegistrationActionForm.type_of_institute" />
 
             </field>
-            <field  property="institute_website"   depends="required">
-                	<arg key="AdminRegistrationActionForm.institute_website" />
-
-            </field>
+           
             <field  property="admin_fname"   depends="required">
                 	<arg key="AdminRegistrationActionForm.admin_fname" />
 
@@ -110,10 +132,7 @@
                 	<arg key="AdminRegistrationActionForm.admin_lname" />
 
             </field>
-             <field  property="admin_designation"   depends="required">
-                	<arg key="AdminRegistrationActionForm.admin_designation" />
-
-            </field>
+             
              <field  property="admin_email"   depends="required,email">
                 	<arg key="AdminRegistrationActionForm.admin_email" />
                         <arg key="AdminRegistrationActionForm.admin_email" />
@@ -129,10 +148,7 @@
                 	<arg key="AdminRegistrationActionForm.library_name" />
 
             </field>
-             <field  property="courtesy"   depends="required">
-                	<arg key="AdminRegistrationActionForm.courtesy" />
-
-            </field>
+            
             <field property="gender" depends="required">
 
                 <arg key="AdminRegistrationActionForm.gender" />
@@ -140,117 +156,146 @@
          	
 	 </field>
 	
-
-                 
-
-
-      
-
-
-
         </form>
 
 
-    <form name="AdminViewActionForm">
-            <field  property="institute_name"   depends="required">
-                	<arg key="AdminViewActionForm.institute_name" />
-
-            </field>
-            <field  property="abbreviated_name"   depends="required">
-                	<arg key="AdminViewActionForm.abbreviated_name" />
-
-            </field>
-            <field  property="institute_address"   depends="required">
-                	<arg key="AdminViewActionForm.institute_address" />
-
-            </field>
-            <field  property="city"   depends="required">
-                	<arg key="AdminViewActionForm.city" />
-
-            </field>
-            <field  property="state"   depends="required">
-                	<arg key="AdminViewActionForm.state" />
-
-            </field>
-            <field  property="pin"   depends="required">
-                	<arg key="AdminViewActionForm.pin" />
-
-            </field>
-            <field  property="country"   depends="required">
-                	<arg key="AdminViewActionForm.country" />
-
-            </field>
-            <field  property="land_line_no"   depends="required">
-                	<arg key="AdminViewActionForm.land_line_no" />
-
-            </field>
-            <field  property="mobile_no"   depends="required">
-                	<arg key="AdminViewActionForm.mobile_no" />
-
-            </field>
-            <field  property="institute_domain"   depends="required">
-                	<arg key="AdminViewActionForm.institute_domain" />
-
-            </field>
-            <field  property="type_of_institute"   depends="required">
-                	<arg key="AdminViewActionForm.type_of_institute" />
-
-            </field>
-            <field  property="institute_website"   depends="required">
-                	<arg key="AdminViewActionForm.institute_website" />
-
-            </field>
-            <field  property="admin_fname"   depends="required">
-                	<arg key="AdminViewActionForm.admin_fname" />
-
-            </field>
-             <field  property="admin_lname"   depends="required">
-                	<arg key="AdminViewActionForm.admin_lname" />
-
-            </field>
-             <field  property="admin_designation"   depends="required">
-                	<arg key="AdminViewActionForm.admin_designation" />
-
-            </field>
-             <field  property="admin_email"   depends="required">
-                	<arg key="AdminViewActionForm.admin_email" />
-
-            </field>
-             <field  property="admin_password"   depends="required">
-                	<arg key="AdminViewActionForm.admin_password" />
-
-            </field>
-             <field  property="library_name"   depends="required">
-                	<arg key="AdminViewActionForm.library_name" />
-
-            </field>
-             <field  property="courtesy"   depends="required">
-                	<arg key="AdminViewActionForm.courtesy" />
-
-            </field>
-            <field property="library_id" depends="required">
-
-                <arg key="AdminViewActionForm.library_id" />
-
-                </field>
-	
-            <field property="gender" depends="required">
-
-                <arg key="AdminViewActionForm.gender" />
-
-
+<form name="NewMemberActionForm">
+     <field property="CMBLib" depends="select">
+                <arg key="NewMemberActionForm.CMBLib" />
+	 </field>
+      
+     <field property="CMBCAT" depends="select">
+                <arg key="NewMemberActionForm.CMBCAT" />
+	 </field>
+       <field property="TXTFNAME" depends="required">
+                <arg key="NewMemberActionForm.TXTFNAME" />
+	 </field>
+    <field property="TXTROLL" depends="required">
+                <arg key="NewMemberActionForm.TXTROLL" />
+	 </field>
+        <field property="TXTLNAME" depends="required">
+                <arg key="NewMemberActionForm.TXTLNAME" />
+	 </field>
+     <field property="TXTADD1" depends="required">
+                <arg key="NewMemberActionForm.TXTADD1" />
 	 </field>
 
+     <field property="TXTCITY" depends="required">
+                <arg key="NewMemberActionForm.TXTCITY" />
+	 </field>
+     <field property="TXTSTATE" depends="required">
+                <arg key="NewMemberActionForm.TXTSTATE" />
+	 </field>
+         <field property="TXTPIN" depends="required">
+                <arg key="NewMemberActionForm.TXTPIN" />
+	 </field>
+         <field property="TXTCOUNTRY" depends="required">
+                <arg key="NewMemberActionForm.TXTCOUNTRY" />
+	 </field>
+         <field property="TXTEMAIL" depends="required,email">
+                <arg key="NewMemberActionForm.TXTEMAIL" />
+                 <arg key="NewMemberActionForm.TXTEMAIL" />
+	 </field>
+         <field property="TXTPH1" depends="required">
+                <arg key="NewMemberActionForm.TXTPH1" />
+	 </field>
+    <field property="TXTPASS" depends="required">
+                <arg key="NewMemberActionForm.TXTPASS" />
+	 </field>
+</form>
+
+
+<form name="NewDemandActionForm">
+        <field property="TXTTITLE" depends="required">
+
+            <arg key="NewDemandActionForm.TXTTITLE"/>
+        </field>
+
+        <field property="CMBCAT" depends="select">
+
+            <arg key="NewDemandActionForm.CMBCAT"/>
+        </field>
+
+          <field property="TXTAUTHOR" depends="required">
+
+            <arg key="NewDemandActionForm.TXTAUTHOR"/>
+        </field>
+         <field property="TXTCOPY" depends="required">
+
+            <arg key="NewDemandActionForm.TXTCOPY"/>
+        </field>
+</form>
+
+
+<form name="ReservationRequetActionForm">
+        <field property="TXTTITLE" depends="required">
+
+            <arg key="ReservationRequetActionForm.TXTTITLE"/>
+        </field>
+
+        <field property="CMBCAT" depends="select">
+
+            <arg key="ReservationRequetActionForm.CMBCAT"/>
+        </field>
+
+          <field property="TXTAUTHOR" depends="required">
+
+            <arg key="ReservationRequetActionForm.TXTAUTHOR"/>
+        </field>
+         <field property="TXTCARDID" depends="required">
+
+            <arg key="ReservationRequetActionForm.TXTCARDID"/>
+        </field>
+        <field property="TXTCALLNO" depends="required">
+
+            <arg key="ReservationRequetActionForm.TXTCALLNO"/>
+        </field>
+        <field property="accessionno" depends="required">
+
+            <arg key="ReservationRequetActionForm.accessionno"/>
+        </field>
+</form>
 
 
 
 
 
 
+         
 
 
 
-        </form>
+
+<!-- Cataloguing Module Form-->
+<form name="BibliographicDetailEntryActionForm">
+    <field  property="title"   depends="required">
+                	<arg key="BibliographicDetailEntryActionForm.title" />
+
+            </field>
+   <field  property="author_main"   depends="required">
+                	<arg key="BibliographicDetailEntryActionForm.author_main" />
+
+            </field>
+   <field  property="document_type"   depends="select">
+                	<arg key="BibliographicDetailEntryActionForm.document_type" />
+
+            </field>
+   <field  property="isbn10"   depends="required">
+                	<arg key="BibliographicDetailEntryActionForm.isbn10" />
+
+            </field>
+   <field  property="call_no"   depends="required">
+                	<arg key="BibliographicDetailEntryActionForm.call_no" />
+
+            </field>
+               <field property="publishing_year" depends="integer">
+                <arg key="BibliographicDetailEntryActionForm.publishing_year"/>
+            </field>
+</form>
+
+
+
+
 
     </formset>
 

@@ -69,11 +69,7 @@ else{%>
          <%out.println(e);
         }
                     }
-finally
-  {
-    rs.close();
 
-  }
      %></font></div>
 <script language="JavaScript" type="text/javascript">
 <!-- HIDE CODE

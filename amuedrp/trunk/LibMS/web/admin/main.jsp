@@ -16,8 +16,13 @@
                 </td><td width="1200px">
 
 
-
-
+<%
+String msg=(String)request.getAttribute("msg");
+if (msg!=null)
+    {
+%>
+<%=msg%>
+<%}%>
 
 
             </td>               <td width="120px"  valign="top">  </td> </tr>
@@ -26,17 +31,6 @@
 
 
                 </div>
-<div
-   style="
-      top: 750;
-
-      position: absolute;
-
-      visibility: show;">
-        <jsp:include page="footer.jsp" />
-
-</div>
-
 
 
       </body>

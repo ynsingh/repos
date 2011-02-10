@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 21, 2011 8:43:24 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class catalog="libms" name="com.myapp.struts.hbm.Library" table="library">
+    <id name="libraryId" type="string">
+      <column length="20" name="library_id"/>
+      <generator class="assigned"/>
+    </id>
+    <property name="registrationId" type="java.lang.Integer">
+      <column name="registration_id"/>
+    </property>
+    <property name="libraryName" type="string">
+      <column length="50" name="library_name"/>
+    </property>
+    <property name="staffId" type="string">
+      <column length="100" name="staff_id"/>
+    </property>
+    <set inverse="true" name="bibliographicDetailses">
+      <key>
+        <column length="20" name="library_id" not-null="true"/>
+      </key>
+      <one-to-many class="com.myapp.struts.hbm.BibliographicDetails"/>
+    </set>
+    <set inverse="true" name="acqFinalDemandLists">
+      <key>
+        <column length="20" name="library_id" not-null="true"/>
+      </key>
+      <one-to-many class="com.myapp.struts.hbm.AcqFinalDemandList"/>
+    </set>
+    <set inverse="true" name="documentDetailses">
+      <key>
+        <column length="20" name="library_id" not-null="true"/>
+      </key>
+      <one-to-many class="com.myapp.struts.hbm.DocumentDetails"/>
+    </set>
+  </class>
+</hibernate-mapping>

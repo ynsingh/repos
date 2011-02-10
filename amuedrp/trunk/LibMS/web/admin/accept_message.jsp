@@ -19,12 +19,12 @@ String msg3=(String)request.getAttribute("accept_msg3");
         <tr><td   width="400px" height="600px" valign="top" style="" align="left" class="mess">
                
                 <br>
-                    <p align="left" >Institute Registration Details:-<br></p>
+                    <p align="left" >Institute Details:-<br></p>
                     
                     <p align="left" >Library ID    :<b><%=msg1%></b></p>
                     <p align="left"> Library Name  :<b><%=msg2%></b></p>
                     <p align="left" >Institute Name:<b><%=msg3%></b></p>
-
+                    <p align="left" >Institute is Successfully registered</b></p>
 
 
 
@@ -36,6 +36,7 @@ String msg3=(String)request.getAttribute("accept_msg3");
 
 <script language="javascript">
     alert("<%=msg%>");
+    
     parent.location.reload();
    // parent.document.getElementById('library_id').value="";
 

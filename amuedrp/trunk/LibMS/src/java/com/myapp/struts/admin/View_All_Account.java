@@ -12,7 +12,7 @@ import java.lang.String;
 import java.sql.*;
 import java.util.*;
 import javax.servlet.*;
-import com.myapp.struts.opac.*;
+import  com.myapp.struts.*;
 import java.io.IOException;
 import java.sql.*;
 import javax.servlet.ServletException;

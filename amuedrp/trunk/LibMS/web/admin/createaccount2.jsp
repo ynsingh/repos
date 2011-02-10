@@ -18,6 +18,7 @@ String staff_id=null;
 String first_name=null;
 String last_name=null;
 String user_name=null;
+String role=null;
 String library_id=(String)session.getAttribute("library_id");
 String password=null;
 
@@ -28,7 +29,7 @@ if(rst!=null)
     first_name=rst.getString(2);
     last_name=rst.getString(3);
     email_id=rst.getString(4);
-   
+  
     }
 if(rst1!=null)
     {
@@ -36,7 +37,7 @@ if(rst1!=null)
     email_id=rst1.getString(2);
     user_name=rst1.getString(3);
     password=rst1.getString(4);
-
+    role=rst1.getString("role");
 
     }
 
@@ -63,16 +64,48 @@ if(rst1!=null)
                 <fieldset style="border:solid 1px brown;height:300px;width:400px;padding-left: 5px;padding-right: 5px">
                     <legend><img src="images/StaffAccountLogin.png"/></legend>
                     <br><br><br>
-                    <table width="300px" align="center">
+                    <table width="400px" align="center">
                         <%
                         if(rst1!=null)
                             {
                             %>
+                      
+                        <tr><td colspan="2" height="5px"></td></tr>
+
                         <tr><td class="btn">Staff ID</td><td><input type="text" id="staff_id" name="staff_id"  readonly   value="<%=staff_id%>"></td></tr>
+                         <tr><td colspan="2" height="5px"></td></tr>
                         <tr><td class="btn">User Name</td><td><input type="text" id="user_name" name="user_name"  readonly   value="<%=user_name%>"></td></tr>
                         <tr><td colspan="2" height="5px" width="300px"></td></tr>
                         <tr><td class="btn" >Email/Login ID</td><td><input type="text" id="email_id" name="email_id" readonly     value="<%=email_id%>"/> </td></tr>
                         <tr><td colspan="2" height="5px" align="center"></td></tr>
+                        <tr><td class="btn" width="250px">Select Role</td><td width="250px">
+
+                                 <%  if(button.equals("View Account")||button.equals("Delete Account"))
+                                 {
+                                %>
+                                <input type="hidden" name="role" value="<%=role%>"/>
+                            <select id="role" size="1" name="role" disabled>
+                                      <%  }else{%>
+                                        <select id="role" size="1" name="role" >
+                                      <%}%>
+                               <%if(role.equals("admin")){%>
+                                    <option value="Select">Select Role</option>
+                                    <option selected value="admin">Admin</option>
+                                    <option value="staff">Staff</option>
+                                    <%}else if(role.equals("staff")){%>
+                                    <option value="Select">Select Role</option>
+                                    <option value="admin">Admin</option>
+                                    <option selected value="staff">Staff</option>
+                                    <%}else{%>
+                                    <option value="Select">Select Role</option>
+                                    <option selected value="insti-admin">Institute Admin</option>
+                                    <option value="staff">staff</option>
+                                    <option value="admin">Admin</option>
+                                    <%}%>
+
+                                </select>
+                         </td></tr>
+                             <tr><td colspan="2" height="5px" align="center"></td></tr>
                          
                           <%  if(button.equals("View Account")||button.equals("Delete Account"))
                         {
@@ -120,7 +153,7 @@ if(rst1!=null)
                         <input type="button" id="Button3" name="" value="Back" onclick=" return send1()" class="txt2"/>
                       <%
                         }
-                         else if(button.equals("Change Password"))
+                         else if(button.equals("Update Account"))
                             {
                         %>
                         <input type="submit" id="Button1" name="button" value="<%=button%>" class="txt2"/>
@@ -164,25 +197,20 @@ if(rst1!=null)
 
 </td></tr></table>
         </div>
-    <div
-   style="
-      top: 650px;
-
-      position: absolute;
-
-      visibility: show;">
-        <jsp:include page="footer.jsp" />
-
-</div>
-
+   
 </html:form>
-    </body>
-</html>
-
-<script>
+        <script language="javascript" type="text/javascript">
 
     function check()
     {
+        var role=document.getElementById('role').options[document.getElementById('role').selectedIndex].value;
+
+    if(role=="Select")
+        {
+            alert("Select Role");
+            document.getElementById('role').focus();
+            return false;
+        }
         var x=document.getElementById('password');
         if(x.value=="")
             {
@@ -210,14 +238,14 @@ if(rst1!=null)
 
 
     }
-  
+
       function send1()
     {
         window.location="/LibMS-Struts/admin/account.jsp";
         return false;
 
     }
- 
+
     function confirm1()
 {
    var answer = confirm ("Do you want to Delete Record?")
@@ -234,40 +262,6 @@ if (answer!=true)
     </script>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</body>
+    </body>
 </html>
+

@@ -83,64 +83,115 @@ locale1=(String)session.getAttribute("locale");
          <%if(page.equals(true)){%>
 
         <form method="post" action="JournalAction.do" target="f1" name="Form1">
-         <div id="wb_Text6" style="position:absolute;left:50px;top:0px;width:69px;height:16px;z-index:0;" align="left">
-<font style="FONT-SIZE: 13px" color="#000000" face="Arial"><b><%=resource.getString("opac.journals.library")%></b></font></div>
-<div style="position:absolute;left:100px;top:0px;width:100px;height:18px;border:1px #C0C0C0 solid;z-index:9">
-    <select name="CMBLib" size="1" onchange="funcSearch()" id="CMBLib" style="left:0px;top:0px;width:100%;height:100%;border-width:0px;font-family:Courier New;font-size:13px;">
+             <table  align="left" width="1200x" class="datagrid"   style="border:solid 1px #e0e8f5;" class="txt">
+
+
+
+  <tr class="header"><td  width="1000px" height="25px"  align="center">
+
+
+		Journal Search
+
+
+
+
+        </td></tr>
+  <tr style="background-color:#e0e8f5;"><td>library  <select name="CMBLib" size="1" onchange="funcSearch()" id="CMBLib">
     <%
         ResultSet rs = (ResultSet)session.getAttribute("libRs");
         String lib_id = (String)session.getAttribute("library_id");
+
         rs.beforeFirst();
-    %>
+
+    if(lib_id==null)
+    {%>
+
+    <option selected value="all">ALL</option>
+    <%}
+    else
+    {%>
     <option selected value="<%=lib_id%>"><%=lib_id.toUpperCase()%></option>
     <option value="all">ALL</option>
-    <%
 
+    <%
+    }
     while (rs.next())
             {
     %>
     <option value="<%= rs.getString(1) %>"><%=rs.getString(1).toUpperCase()%></option>
     <% } %>
+
 </select>
-</div>
+      </td></tr>
+    <tr style="background-color:#e0e8f5;"><td colspan="2">
+          <IFRAME  name="f1" style="background-color:#e0e8f5;" src="#" frameborder=0 height="400px" width="1200px" scrolling="no"  id="f1"></IFRAME>
+        </td>
+    </tr></table>
 
 
+        
+
+
+  
         </form>
 
- <IFRAME  name="f1" src="#" frameborder=0 scrolling="NO" style="position:absolute;color:deepskyblue;top:96px;left:24px;height:370px;width:550px;visibility:true;" id="f1"></IFRAME>
-<IFRAME  name="f2" src="#" frameborder=0 scrolling="NO" style="position:absolute;color:deepskyblue;top:96px;left:582px;height:370px;width:450px;visibility:true;" id="f2"></IFRAME>
+ 
+
 
 <%}else{%>
 
- <form method="post" action="JournalAction.do" target="f1" name="Form1">
-         <div id="wb_Text6" style="position:absolute;right:50px;top:0px;width:69px;height:16px;z-index:0;" align="right">
-<font style="FONT-SIZE: 13px" color="#000000" face="Arial"><b><%=resource.getString("opac.journals.library")%></b></font></div>
-<div style="position:absolute;right:100px;top:0px;width:100px;height:18px;border:1px #C0C0C0 solid;z-index:9">
-    <select name="CMBLib" size="1" onchange="funcSearch()" id="CMBLib" style="right:0px;top:0px;width:100%;height:100%;border-width:0px;font-family:Courier New;font-size:13px;">
+  <form method="post" action="JournalAction.do" target="f1" name="Form1">
+             <table  align="left" width="1200x" class="datagrid"  style="border:solid 1px #e0e8f5;" class="txt">
+
+
+
+  <tr class="header"><td  width="1000px" height="25px"  align="center">
+
+
+		<%=resource.getString("opac.journals.library")%>
+
+
+
+
+        </td></tr>
+  <tr style="background-color:#e0e8f5;"><td align="left">  <select name="CMBLib" size="1" onchange="funcSearch()" id="CMBLib">
     <%
         ResultSet rs = (ResultSet)session.getAttribute("libRs");
         String lib_id = (String)session.getAttribute("library_id");
+
         rs.beforeFirst();
-    %>
+
+    if(lib_id==null)
+    {%>
+
+    <option selected value="all">ALL</option>
+    <%}
+    else
+    {%>
     <option selected value="<%=lib_id%>"><%=lib_id.toUpperCase()%></option>
     <option value="all">ALL</option>
-    <%
 
+    <%
+    }
     while (rs.next())
             {
     %>
     <option value="<%= rs.getString(1) %>"><%=rs.getString(1).toUpperCase()%></option>
     <% } %>
-</select>
-</div>
+
+</select>library
+      </td></tr>
+    <tr style="background-color:#e0e8f5;"><td colspan="2">
+          <IFRAME  name="f1" style="background-color:#e0e8f5;" src="#" frameborder=0 height="400px" width="1200px" scrolling="no"  id="f1"></IFRAME>
+        </td>
+    </tr></table>
+
+
+
+
 
 
         </form>
-
- <IFRAME  name="f1" src="#" frameborder=0 scrolling="NO" style="position:absolute;color:deepskyblue;top:96px;right:24px;height:370px;width:550px;visibility:true;" id="f1"></IFRAME>
-<IFRAME  name="f2" src="#" frameborder=0 scrolling="NO" style="position:absolute;color:deepskyblue;top:96px;right:582px;height:370px;width:450px;visibility:true;" id="f2"></IFRAME>
-   
-   
    
    
    

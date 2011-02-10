@@ -4,7 +4,7 @@
  */
 
 package com.myapp.struts.opac;
-
+import  com.myapp.struts.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -28,20 +28,20 @@ public class AdditionalSearchAction extends org.apache.struts.action.Action {
      * @param request The HTTP Request we are processing.
      * @param response The HTTP Response we are processing.
      * @throws java.lang.Exception
-     * @return
+    
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-                        String subject,p2,p3,yr1,yr2,cf1,cf2,cf3,cmbyr,title,author,accno;
-                        String other,q,cnf1,cnf2,cnf3,cnf4,c1,c2,c3,op1,op2,op3,query="";
-                        String phrase;
-                        String db,callno,publ,loc,place,sort,field;
-                        ResultSet rs=null;
+         String subject,p2,p3,yr1,yr2,cf1,cf2,cf3,cmbyr,title,author,accno;
+         String other,q,cnf1,cnf2,cnf3,cnf4,c1,c2,c3,op1,op2,op3,query="";
+         String phrase;
+         String db,callno,publ,loc,place,sort,field;
+         ResultSet rs=null;
         HttpSession session = request.getSession();
         session.removeAttribute("Result");
-                        AdditionalSearchActionForm myForm = (AdditionalSearchActionForm)form;
+        AdditionalSearchActionForm myForm = (AdditionalSearchActionForm)form;
         String lib_id= myForm.getCMBLib();
         author=myForm.getTXTAUTHOR();
          title=myForm.getTXTTITLE();
@@ -58,10 +58,10 @@ public class AdditionalSearchAction extends org.apache.struts.action.Action {
 
 
 
-          query="select * from document";
+          query="select * from document_details where document_type!='%%'";
 
-        if(db.equals("combined")){query=query+" where db_category='combined'";}
-        else                     {query=query+" where category='"+db+"'";}
+        if(!db.equals("combined")){query="select * from document_details where document_type='"+db+"'";}
+       
         q=query;
       if(cnf1.equals("phrase")){op1="or";}
       else                     {op1=cnf1;}
@@ -69,47 +69,93 @@ public class AdditionalSearchAction extends org.apache.struts.action.Action {
        else                     {op2=cnf2;}
       if(cnf3.equals("phrase")){op3="or";}
        else                     {op3=cnf3;}
-              
+
         if(cnf1.equals("or") || cnf1.equals("and") || cnf2.equals("or") || cnf2.equals("and") || cnf3.equals("or"))
           {
-            if (!author.equals("") && !cnf1.equals("phrase")) query=query + " and author like '"+author+"%' ";
-            else if (!author.equals("")) query=query+" and author like '%"+author+"%' ";
-            if (author.equals("") && !title.equals("") && !cnf2.equals("phrase")) query=query + " and title like '"+title+"%' ";
-              else if(!title.equals("") && !cnf2.equals("phrase")) query = query + " " + op1 + " title like '" + title + "%' ";
-              else if(!title.equals("")) query = query + " or title like '%" + title + "%' ";
-            if (author.equals("") && title.equals("") && !subject.equals("") && !cnf3.equals("phrase") ) query=query + " and subject like '"+subject+"%'";
-              else if(!subject.equals("") && !cnf3.equals("phrase")) query = query + " " + op2 + " subject like '" + subject + "%'";
-            else if (!subject.equals("")) query=query+" or subject like '%"+subject+"%' ";
-        }
+            if (query.contains("where")==true)
+                {
+                if (!author.equals("") && !cnf1.equals("phrase")) query=query + " and author_main like '"+author+"%' ";
+                else if (!author.equals("")) query=query+" and author_main like '%"+author+"%' ";
+                if (author.equals("") && !title.equals("") && !cnf2.equals("phrase")) query=query + " and title like '"+title+"%' ";
+                  else if(!title.equals("") && !cnf2.equals("phrase")) query = query + " " + op1 + " title like '" + title + "%' ";
+                  else if(!title.equals("")) query = query + " or title like '%" + title + "%' ";
+                if (author.equals("") && title.equals("") && !subject.equals("") && !cnf3.equals("phrase") ) query=query + " and subject like '"+subject+"%'";
+                  else if(!subject.equals("") && !cnf3.equals("phrase")) query = query + " " + op2 + " subject like '" + subject + "%'";
+                else if (!subject.equals("")) query=query+" or subject like '%"+subject+"%' ";
+                }
+            else
+                {
+                if (!author.equals("") && !cnf1.equals("phrase")) query=query + cnf1+ " author_main like '"+author+"%' ";
+                else if (!author.equals("")) query=query+" where author_main like '%"+author+"%' ";
+                if (author.equals("") && !title.equals("") && !cnf2.equals("phrase")) query=query + cnf2+" title like '"+title+"%' ";
+                  else if(!title.equals("") && !cnf2.equals("phrase")) query = query + cnf2+"  title like '" + title + "%' ";
+                  else if(!title.equals("")) query = query + " where title like '%" + title + "%' ";
+                if (author.equals("") && title.equals("") && !subject.equals("") && !cnf3.equals("phrase") ) query=query + cnf3+" subject like '"+subject+"%'";
+                  else if(!subject.equals("") && !cnf3.equals("phrase")) query = query + cnf3+" subject like '" + subject + "%'";
+                else if (!subject.equals("")) query=query+" where subject like '%"+subject+"%' ";
+                }
+            }
 /*
         if(cnf1.equals("phrase")){query=query+" and author like '%"+author+"%' ";}
         if(cnf2.equals("phrase")) {query=query+" or title like '%"+title+"%' ";}
         if(cnf3.equals("phrase")) {query=query+" or subject like '%"+subject+"%' ";}*/
         if(!other.equalsIgnoreCase(""))
-        if(cnf4.equals("phrase"))
+        if (query.contains("where")==true)
          {
-            query=q+" and (author like'%"+other+"%' or title like '%"+other+"%' or subject like '%"+other+"%' or pub_yr like '%"+other+"%' " +
-                    "or publisher like '%"+other+"%' or accessionno like'%"+other+"%' or pubPlace like'%"+other+"%')";
+          if(cnf4.equals("phrase"))
+         {
+            query=q+" and (author_main like'%"+other+"%' or title like '%"+other+"%' or subject like '%"+other+"%' or publishing_year like '%"+other+"%' " +
+                    "or publisher_main like '%"+other+"%'  or publication_place like'%"+other+"%')";
          }
         else
         {
-            query=q+" and (author like'"+other+"%' or title like '"+other+"%' or subject like '"+other+"%' or pub_yr like '"+other+"%' " +
-                    "or publisher like '"+other+"%' or accessionno like'"+other+"%' or pubPlace like'"+other+"%')";
+            query=q+" and (author_main like'"+other+"%' or title like '"+other+"%' or subject like '"+other+"%' or publication_year like '"+other+"%' " +
+                    "or publisher_name like '"+other+"%' or accessionno like'"+other+"%' or publication_place like'"+other+"%')";
+        }
+        }
+        else
+        {
+          if(cnf4.equals("phrase"))
+         {
+            query=q+" where (author_main like'%"+other+"%' or title like '%"+other+"%' or subject like '%"+other+"%' or publishing_year like '%"+other+"%' " +
+                    "or publisher_name like '%"+other+"%'  or publication_place like'%"+other+"%')";
+         }
+        else
+        {
+            query=q+" where (author_main like'"+other+"%' or title like '"+other+"%' or subject like '"+other+"%' or publishing_year like '"+other+"%' " +
+                    "or publisher_name like '"+other+"%' or publication_Place like'"+other+"%')";
+        }
         }
 
+         if (query.contains("where")==true)
+         {
                 if(cnf4.equals("or") || cnf4.equals("and")){
-                   // query=query+" or author='"+other+"' or title='"+other+"' or subject='"+other+"' or pub_yr='"+other+"' " +
-                     //   "or publisher='"+other+"' or accessionNo='"+other+"' or pubplace='"+other+"'";
+                // query=query+" or author='"+other+"' or title='"+other+"' or subject='"+other+"' or pub_yr='"+other+"' " +
+                //   "or publisher='"+other+"' or accessionNo='"+other+"' or pubplace='"+other+"'";
                 if(cmbyr.equals("all")){query=query;}
-                if(cmbyr.equals("between")){query=query+" "+cnf4+" pub_yr between "+yr1+" and "+yr2;}
-                if(cmbyr.equals("upto")){query=query+" "+cnf4+" pub_yr <="+yr1;}
-                if(cmbyr.equals("after")){query=query+" "+cnf4+" pub_yr >="+yr1;}
-                                  }
-              if (!lib_id.equalsIgnoreCase("all"))
-            query = query+ " and library_id='"+ lib_id  +"'";
+                if(cmbyr.equals("between")){query=query+" "+cnf4+" publishing_year between "+yr1+" and "+yr2;}
+                if(cmbyr.equals("upto")){query=query+" "+cnf4+" publishing_year <="+yr1;}
+                if(cmbyr.equals("after")){query=query+" "+cnf4+" publishing_year >="+yr1;}
+          }
+         }
+         else
+          {
+                if(cnf4.equals("or") || cnf4.equals("and")){
+                // query=query+" or author='"+other+"' or title='"+other+"' or subject='"+other+"' or pub_yr='"+other+"' " +
+                //   "or publisher='"+other+"' or accessionNo='"+other+"' or pubplace='"+other+"'";
+                if(cmbyr.equals("all")){query=query;}
+                if(cmbyr.equals("between")){query=query+" where publishing_year between "+yr1+" and "+yr2;}
+                if(cmbyr.equals("upto")){query=query+" where publishing_year <="+yr1;}
+                if(cmbyr.equals("after")){query=query+" where publishing_year >="+yr1;}
+          }
+         }
+              if (!lib_id.equalsIgnoreCase("all") && query.contains("where")==true)
+                    query = query+ " and library_id='"+ lib_id  +"'";
+              else if (!lib_id.equalsIgnoreCase("all") && query.contains("where")==false)
+                  query = query+ " where library_id='"+ lib_id  +"'";
 
          //query=query+" order by "+cmbyr+" asc";
-             System.out.println("query="+query);
+             System.out.println("Additional query="+query);
               rs = MyQueryResult.getMyExecuteQuery(query);
               if (rs.next()) session.setAttribute("Result", rs);
         return mapping.findForward(SUCCESS);

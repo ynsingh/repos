@@ -54,7 +54,7 @@ public class AdvanceSearchActionForm extends org.apache.struts.action.ActionForm
      * This is the action called from the Struts framework.
      * @param mapping The ActionMapping used to select this instance.
      * @param request The HTTP Request we are processing.
-     * @return
+    
      */
     public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
         ActionErrors errors = new ActionErrors();

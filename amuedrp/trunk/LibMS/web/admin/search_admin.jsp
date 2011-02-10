@@ -24,22 +24,42 @@ document.Form1.submit();
 
 </script>
 </head>
-<body onload="fun()">
-    <div id="wb_Text1" style="position: absolute; left: 117px; top: 1px;
-width: 650px; height: 19px; background-color: rgb(255, 255, 255);
-z-index: 0;" >
-<font style="font-size: 16px;" color="#c0003b" face="Arial" align="center"><b>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        Browsing...</b></font></div>
-<div id="wb_Form1" style="position: absolute; left: 1px; top: 4px; width: 692px; height: 90px; z-index: 9;">
-<form name="Form1" action="search_institute.do" >
-<div style="border: 1px solid rgb(0, 85, 0); position: absolute; left: 24px; top: 62px; width: 122px; height: 18px;border:1px #C0C0C0 solid; z-index: 0;">
-    <select name="search_by" onChange="fun()" id="search_by" size="1" style="border-width: 0px; left: 0px; top: 0px; width: 100%; height: 100%; font-family: Arial; font-size: 13px;">
+<link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
+<body onload="fun()" class="datagrid">
+   
+
+<form name="Form1" action="search_institute.do"  >
+      <table  align="left" width="100%" class="datagrid"  style="border:solid 1px #e0e8f5;">
+
+
+
+  <tr class="header"><td  width="100%"   align="center" colspan="2">
+
+
+		Institute Search
+
+
+
+
+        </td></tr>
+  <tr style="background-color:#e0e8f5;"><td width="800px"  >
+          <table>
+              <tr><td >Enter Starting Keyword(s)</td><td><input  name="search_keyword" type="text" id="search_keyword" onkeyup="fun()"></td>
+              <td>
+
+
+<input type="reset" id="Button1" name="clear" value="CLEAR">
+
+
+      </td></tr>
+              
+
+          </table>
+      </td>
+      <td    align="left" valign="top">
+          <table >
+              <tr><td>in Field </td><td rowspan="2" valign="top">
+                      <select name="search_by" onChange="fun()" id="search_by" size="1">
 <option value="institute_name">Institute Name</option>
 <option value="library_name">Library Name</option>
 <option value="library_id">Library Id</option>
@@ -47,31 +67,46 @@ z-index: 0;" >
 
 
 </select>
-</div>
 
-<div id="wb_Text1" style="position: absolute; left: 24px; top: 39px; width: 39px; height: 20px; z-index: 2;" align="left">
-<font style="font-size: 13px;" color="#000000" face="Arial"><b>Field</b></font></div>
-<div id="wb_Text4" style="position: absolute; left: 24px; top: 12px; width: 63px; height: 16px; z-index: 3;" align="left">
-<font style="font-size: 13px;" color="#000000" face="Arial"><b>Database</b></font></div>
-    <input  name="search_keyword" type="text" id="search_keyword" onkeyup="fun()"  style="border: 1px solid rgb(0, 64, 64); position: absolute; left: 165px; top: 62px; width: 300px; height: 18px; font-family: Courier New; font-size: 13px; z-index: 4;">
-<div id="wb_Text3" style="position: absolute; left: 164px; top: 39px; width: 200px; height: 16px; z-index: 5;" align="left">
-<font style="font-size: 13px;" color="#000000" face="Arial"><b>Enter Starting Keyword(s)</b></font></div>
-<input type="reset" id="Button1" name="clear" value="CLEAR" style="position: absolute; left: 602px; top: 58px; width: 68px; height: 25px; font-family: Arial; font-weight: bold; font-size: 13px; z-index: 6;" >
+          
+     </td>
 
-<div id="wb_Text5" style="position:absolute;left:481px;top:30px;width:28px;height:16px;z-index:11;" align="left">
-<img src='/LibMS-Struts/images/sortby.gif'></div>
-<div style="position:absolute;left:483px;top:62px;width:102px;height:18px;border:1px #C0C0C0 solid;z-index:8">
-
-    <select name="sort_by" id="sort_by" size="1" onChange="fun()" id="" style="left:0px;top:0px;width:100%;height:100%;border-width:0px;font-family: Arial; font-size:13px;">
+              </tr></table></td></tr>
+  <tr class="header"><td align="left" colspan="2">Sort By</td></tr>
+   <tr style="background-color:#e0e8f5;">
+       <td align="left" colspan="2">
+           <table>
+                           <tr><td>Field</td><td><select name="sort_by" id="sort_by" size="1" onChange="fun()" id="">
 <option value="registration_id">Registeration Id</option>
 <option  value="library_name">Library Name</option>
 <option value="institute_name">Institute Name</option>
 <option value="city">City</option>
-</select>
-</div>
+</select></td>
+                           </tr></table>
+
+
+      </td>
+
+  </tr>
+  
+     
+
+       </table>
+
+
+
+   
+
+
+
+
+
+
+ 
+
 </form>
-</div>
-<IFRAME  name="f1" src="#" frameborder=0 scrolling="YES" style="position:absolute;color:deepskyblue;top:96px;left:24px;height:370px;width:650px;visibility:true;" id="f1"></IFRAME>
-<IFRAME  name="f2" src="#" frameborder=0 scrolling="NO" style="position:absolute;color:deepskyblue;top:96px;left:582px;height:370px;width:650px;visibility:true;" id="f2"></IFRAME>
+
+    <IFRAME  name="f1" src="#" frameborder=0  id="f1" width="100%" height="700px" ></IFRAME>
+
 </body>
 </html>

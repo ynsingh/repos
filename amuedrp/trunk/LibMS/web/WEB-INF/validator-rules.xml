@@ -78,6 +78,30 @@
                        javax.servlet.http.HttpServletRequest"
                    msg="errors.required"/>
 
+                 <validator name="daterequired"
+                   classname="org.apache.struts.validator.FieldChecks"
+                   method="validateRequired"
+                   methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionMessages,
+                       org.apache.commons.validator.Validator,
+                       javax.servlet.http.HttpServletRequest"
+                
+                   msg="errors.daterequired"
+                />
+                <validator name="select"
+                   classname="org.apache.struts.validator.FieldChecks"
+                   method="validateRequired"
+                   methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionMessages,
+                       org.apache.commons.validator.Validator,
+                       javax.servlet.http.HttpServletRequest"
+
+                   msg="errors.select"
+                />
         <validator name="requiredif"
                    classname="org.apache.struts.validator.FieldChecks"
                    method="validateRequiredIf"
@@ -310,6 +334,7 @@
                        org.apache.commons.validator.Validator,
                        javax.servlet.http.HttpServletRequest"
                    depends=""
+
                    msg="errors.date"
                    jsFunctionName="DateValidations"/>
 

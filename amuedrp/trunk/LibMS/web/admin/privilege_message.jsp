@@ -49,17 +49,7 @@ String lib=(String)request.getAttribute("library_id");
 
 </td></tr></table>
         </div>
-    <div
-   style="
-      top: 650px;
-
-      position: absolute;
-
-      visibility: show;">
-        <jsp:include page="footer.jsp" />
-
-</div>
-
+    
     </body>
 </html>
 

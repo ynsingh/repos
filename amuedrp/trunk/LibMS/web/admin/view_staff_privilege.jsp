@@ -197,14 +197,5 @@ else
  </table>
     </body>
 </div>
+ 
 </html>
- <div
-   style="
-      top: 650px;
-
-      position: absolute;
-
-      visibility: show;">
-        <jsp:include page="footer.jsp" />
-
-</div>

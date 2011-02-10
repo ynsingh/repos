@@ -8,6 +8,9 @@ public class RequestDoc {
     private String library_name;
     private String admin_email;
     private String status;
+    private String library_id;
+    private String working_status;
+    
 
    
    
@@ -79,6 +82,34 @@ public class RequestDoc {
      */
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    /**
+     * @return the library_id
+     */
+    public String getLibrary_id() {
+        return library_id;
+    }
+
+    /**
+     * @param library_id the library_id to set
+     */
+    public void setLibrary_id(String library_id) {
+        this.library_id = library_id;
+    }
+
+    /**
+     * @return the working_status
+     */
+    public String getWorking_status() {
+        return working_status;
+    }
+
+    /**
+     * @param working_status the working_status to set
+     */
+    public void setWorking_status(String working_status) {
+        this.working_status = working_status;
     }
 
     /**

@@ -4,7 +4,7 @@
  */
 
 package com.myapp.struts.opac;
-
+import  com.myapp.struts.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -28,7 +28,7 @@ public class AdvanceSearchAction extends org.apache.struts.action.Action {
      * @param request The HTTP Request we are processing.
      * @param response The HTTP Response we are processing.
      * @throws java.lang.Exception
-     * @return
+    
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -59,48 +59,12 @@ public class AdvanceSearchAction extends org.apache.struts.action.Action {
          c2=myForm.getCMB2();
          c3=myForm.getCMB3();
 
-        /* query="select * from document";
+        
 
-         if(db.equals("combined")){query=query+" where db_category='combined'";}
-         else                     {query=query+" where category='"+db+"'";}
-
-         if(c1.equals("or") && c2.equals("or"))  {op1="or";op2="or";}
-         if(c1.equals("or") && c2.equals("and")) {op1="or";op2="and";}
-         if(c1.equals("and") && c2.equals("or")) {op1="and";op2="or";}
-         if(c1.equals("and") && c2.equals("and")){op1="and";op2="and";}
-
-         if (!p1.equals("") && !p2.equals("") && !p3.equals(""))
-         {
-         if(cnf1.equals("or") && cnf2.equals("or") && cnf3.equals("or")) {query=query+" and "+cf1+" like '"+p1+"%' "+op1+" "+cf2+" like '"+p2+"%' "+op2+" "+cf3+" like '"+p3+"%'";}
-         if(cnf1.equals("or") && cnf2.equals("or") && cnf3.equals("and"))  {query=query+" and "+cf1+" like '%"+p1+"%' "+op1+" "+cf2+" like '%"+p2+"%' "+op2+" "+cf3+" like '%"+p3+"%'";}
-         if(cnf1.equals("or") && cnf2.equals("and") && cnf3.equals("or"))  {query=query+" and "+cf1+" like '%"+p1+"%' "+op1+" "+cf2+" like '%"+p2+"%' "+op2+" "+cf3+" like '%"+p3+"%'";}
-         if(cnf1.equals("and") && cnf2.equals("or") && cnf3.equals("or"))  {query=query+" and "+cf1+" like '%"+p1+"%' "+op1+" "+cf2+" like '%"+p2+"%' "+op2+" "+cf3+" like '%"+p3+"%'";}
-         if(cnf1.equals("and") && cnf2.equals("and") && cnf3.equals("or")) {query=query+" and "+cf1+" like '%"+p1+"%' "+op1+" "+cf2+" like '%"+p2+"%' "+op2+" "+cf3+" like '%"+p3+"%'";}
-         if(cnf1.equals("and") && cnf2.equals("or") && cnf3.equals("and")) {query=query+" and "+cf1+" like '%"+p1+"%' "+op1+" "+cf2+" like '%"+p2+"%' "+op2+" "+cf3+" like '%"+p3+"%'";}
-         if(cnf1.equals("or") && cnf2.equals("and") && cnf3.equals("and")) {query=query+" and "+cf1+" like '%"+p1+"%' "+op1+" "+cf2+" like '%"+p2+"%' "+op2+" "+cf3+" like '%"+p3+"%'";}
-         if(cnf1.equals("and") && cnf2.equals("and") && cnf3.equals("and")){query=query+" and "+cf1+" like '%"+p1+"%' "+op1+" "+cf2+" like '%"+p2+"%' "+op2+" "+cf3+" like '%"+p3+"%'";}
-        }
-         if(cmbyr.equals("all")){query=query;}
-         if(c3.equals("or")){
-            if(cmbyr.equals("between")){query=query+" or pub_yr between "+yr1+" and "+yr2;}
-            if(cmbyr.equals("upto")){query=query+" or pub_yr <="+yr1;}
-            if(cmbyr.equals("after")){query=query+" or pub_yr >="+yr1;}
-          }
-         if(c3.equals("and"))
-          {
-            if(cmbyr.equals("between")){query=query+" and pub_yr between "+yr1+" and "+yr2;}
-            if(cmbyr.equals("upto")){query=query+" and pub_yr <="+yr1;}
-            if(cmbyr.equals("after")){query=query+" and pub_yr >="+yr1;}
-          }
-
-         if (!lib_id.equalsIgnoreCase("all"))
-            query = query+ " and library_id='"+ lib_id  +"'";*/
-
-
-          query="select * from document";
-
-        if(db.equals("combined")){query=query+" where db_category='combined'";}
-        else                     {query=query+" where category='"+db+"'";}
+          query="select * from document_details";
+          int flag=0;
+          if(db.equals("combined")){query="select * from document_details "; flag=0;}
+        else                     {query=query+" where document_type='"+db+"' ";flag=1;}
             query1=query;
           if (!cf1.equalsIgnoreCase("any field"))
             {
@@ -109,7 +73,8 @@ public class AdvanceSearchAction extends org.apache.struts.action.Action {
             if(!c1.equalsIgnoreCase("phrase") && !p1.equalsIgnoreCase(""))
             {
                 p1 = p1.replace(" ",rep1);
-                p1 = " and " + cf1 + " like '%" + p1 + "%'";
+                if (flag==1) p1 = " and " + cf1 + " like '%" + p1 + "%'";
+                else {p1 = " where " + cf1 + " like '%" + p1 + "%'";flag=1;}
                 System.out.println("p1="+p1);
             }
 
@@ -121,13 +86,13 @@ public class AdvanceSearchAction extends org.apache.struts.action.Action {
                 String p11,p12,p13,p14,p15,p16,p17;
 
                 p11=p12=p13=p14=p15=p16=p17=p1;
-                String rep1 = "%' " + c1 + " author like '%";
+                String rep1 = "%' " + c1 + " author_name like '%";
                 String rep2 = "%' " + c1 + " title like '%";
                 String rep3 = "%' " + c1 + " subject like '%";
-                String rep4 = "%' " + c1 + " pub_yr like '%";
-                String rep5 = "%' " + c1 + " publisher like '%";
-                String rep6 = "%' " + c1 + " accessionno like '%";
-                String rep7 = "%' " + c1 + " pubPlace like '%";
+                String rep4 = "%' " + c1 + " publishing_year like '%";
+                String rep5 = "%' " + c1 + " publisher_name like '%";
+                //String rep6 = "%' " + c1 + " accessionno like '%";
+                String rep7 = "%' " + c1 + " publication_place like '%";
 
             if(!p1.equalsIgnoreCase(""))
             {
@@ -136,16 +101,21 @@ public class AdvanceSearchAction extends org.apache.struts.action.Action {
                 p13 = p13.replace(" ",rep3);
                 p14 = p14.replace(" ",rep4);
                 p15 = p15.replace(" ",rep5);
-                p16 = p16.replace(" ",rep6);
+               // p16 = p16.replace(" ",rep6);
                 p17 = p17.replace(" ",rep7);
 
-                p11 = " and (author like '%" + p11 + "%'";
+                if (flag==1)
+                    p11 = " and (author_main like '%" + p11 + "%'";
+                else{
+                    p11 = " where (author_main like '%" + p11 + "%'";
+                    flag=1;
+                }
                 p12 = " or title like '%" + p12 + "%'";
                 p13 = " or subject like '%" + p13 + "%'";
-                p14 = " or pub_yr like '%" + p14 + "%'";
-                p15 = " or publisher like '%" + p15 + "%'";
-                p16 = " or accessionno like '%" + p16 + "%'";
-                p17 = " or pubPlace like '%" + p17 + "%')";
+                p14 = " or publishing_year like '%" + p14 + "%'";
+                p15 = " or publisher_name like '%" + p15 + "%'";
+                //p16 = " or accessionno like '%" + p16 + "%'";
+                p17 = " or publication_place like '%" + p17 + "%')";
 
                 System.out.println("p11="+p11);
             }
@@ -171,13 +141,13 @@ public class AdvanceSearchAction extends org.apache.struts.action.Action {
                 String p11,p12,p13,p14,p15,p16,p17;
 
                 p11=p12=p13=p14=p15=p16=p17=p2;
-                String rep1 = "%' " + c2 + " author like '%";
+                String rep1 = "%' " + c2 + " author_main like '%";
                 String rep2 = "%' " + c2 + " title like '%";
                 String rep3 = "%' " + c2 + " subject like '%";
-                String rep4 = "%' " + c2 + " pub_yr like '%";
-                String rep5 = "%' " + c2 + " publisher like '%";
-                String rep6 = "%' " + c2 + " accessionno like '%";
-                String rep7 = "%' " + c2 + " pubPlace like '%";
+                String rep4 = "%' " + c2 + " publishing_year like '%";
+                String rep5 = "%' " + c2 + " publisher_name like '%";
+               // String rep6 = "%' " + c2 + " accessionno like '%";
+                String rep7 = "%' " + c2 + " publication_place like '%";
 
             if(!p2.equalsIgnoreCase(""))
             {
@@ -186,16 +156,16 @@ public class AdvanceSearchAction extends org.apache.struts.action.Action {
                 p13 = p13.replace(" ",rep3);
                 p14 = p14.replace(" ",rep4);
                 p15 = p15.replace(" ",rep5);
-                p16 = p16.replace(" ",rep6);
+               // p16 = p16.replace(" ",rep6);
                 p17 = p17.replace(" ",rep7);
 
-                p11 = " and (author like '%" + p11 + "%'";
+                p11 = " and (author_main like '%" + p11 + "%'";
                 p12 = " or title like '%" + p12 + "%'";
                 p13 = " or subject like '%" + p13 + "%'";
-                p14 = " or pub_yr like '%" + p14 + "%'";
-                p15 = " or publisher like '%" + p15 + "%'";
-                p16 = " or accessionno like '%" + p16 + "%'";
-                p17 = " or pubPlace like '%" + p17 + "%')";
+                p14 = " or publishing_year like '%" + p14 + "%'";
+                p15 = " or publisher_name like '%" + p15 + "%'";
+               // p16 = " or accessionno like '%" + p16 + "%'";
+                p17 = " or publication_place like '%" + p17 + "%')";
 
                 System.out.println("p11="+p11);
             }
@@ -221,13 +191,13 @@ public class AdvanceSearchAction extends org.apache.struts.action.Action {
                  String p11,p12,p13,p14,p15,p16,p17;
 
                 p11=p12=p13=p14=p15=p16=p17=p2;
-                String rep1 = "%' " + c2 + " author like '%";
+                String rep1 = "%' " + c2 + " author_main like '%";
                 String rep2 = "%' " + c2 + " title like '%";
                 String rep3 = "%' " + c2 + " subject like '%";
-                String rep4 = "%' " + c2 + " pub_yr like '%";
-                String rep5 = "%' " + c2 + " publisher like '%";
-                String rep6 = "%' " + c2 + " accessionno like '%";
-                String rep7 = "%' " + c2 + " pubPlace like '%";
+                String rep4 = "%' " + c2 + " publishing_year like '%";
+                String rep5 = "%' " + c2 + " publisher_name like '%";
+             //   String rep6 = "%' " + c2 + " accessionno like '%";
+                String rep7 = "%' " + c2 + " publication_place like '%";
 
             if(!p2.equalsIgnoreCase(""))
             {
@@ -236,16 +206,16 @@ public class AdvanceSearchAction extends org.apache.struts.action.Action {
                 p13 = p13.replace(" ",rep3);
                 p14 = p14.replace(" ",rep4);
                 p15 = p15.replace(" ",rep5);
-                p16 = p16.replace(" ",rep6);
+               // p16 = p16.replace(" ",rep6);
                 p17 = p17.replace(" ",rep7);
 
-                p11 = " and (author like '%" + p11 + "%'";
+                p11 = " and (author_main like '%" + p11 + "%'";
                 p12 = " or title like '%" + p12 + "%'";
                 p13 = " or subject like '%" + p13 + "%'";
-                p14 = " or pub_yr like '%" + p14 + "%'";
-                p15 = " or publisher like '%" + p15 + "%'";
-                p16 = " or accessionno like '%" + p16 + "%'";
-                p17 = " or pubPlace like '%" + p17 + "%')";
+                p14 = " or publishing_year like '%" + p14 + "%'";
+                p15 = " or publisher_name like '%" + p15 + "%'";
+             //   p16 = " or accessionno like '%" + p16 + "%'";
+                p17 = " or publication_place like '%" + p17 + "%')";
 
                 System.out.println("p11="+p11);
             }
@@ -298,13 +268,25 @@ public class AdvanceSearchAction extends org.apache.struts.action.Action {
                 if(cmbyr.equals("upto")){query=query+" "+cnf3+" pub_yr <="+yr1;}
                 if(cmbyr.equals("after")){query=query+" "+cnf3+" pub_yr >="+yr1;}
 */
-          if(cmbyr.equals("between")){query=query+" and pub_yr between "+yr1+" and "+yr2;}
-            if(cmbyr.equals("upto")){query=query+" and pub_yr <="+yr1;}
-            if(cmbyr.equals("after")){query=query+" and pub_yr >="+yr1;}
+          if(cmbyr.equals("between")){
+              if (flag==0){
+              query=query+" where publishing_year between "+yr1+" and "+yr2;flag=1;}
+              else{
+                  query=query+" and publishing_year between "+yr1+" and "+yr2;}
+              }
+            if (flag==0){
+            if(cmbyr.equals("upto")){query=query+" where publishing_year <="+yr1;flag=1;}
+            if(cmbyr.equals("after")){query=query+" where publishing_year >="+yr1;flag=1;}
 
-          if (!lib_id.equalsIgnoreCase("all"))
+            }
+            else
+             {
+            if(cmbyr.equals("upto")){query=query+" and publishing_year <="+yr1;}
+            if(cmbyr.equals("after")){query=query+" and publishing_year >="+yr1;}
+            }
+          if (!lib_id.equalsIgnoreCase("all") && flag==1)
             query = query+ " and library_id='"+ lib_id  +"'";
-
+          else if (!lib_id.equalsIgnoreCase("all") && flag==0) query = query+ " where library_id='"+ lib_id  +"'";
 
          
           System.out.println("Advance Query="+query);

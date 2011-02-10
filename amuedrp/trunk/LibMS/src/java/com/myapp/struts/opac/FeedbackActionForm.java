@@ -22,6 +22,7 @@ public class FeedbackActionForm extends org.apache.struts.action.ActionForm {
     private String name;
     private String email;
     private String comments;
+    private String CMBLib;
     /**
      *
      */
@@ -34,15 +35,15 @@ public class FeedbackActionForm extends org.apache.struts.action.ActionForm {
      * This is the action called from the Struts framework.
      * @param mapping The ActionMapping used to select this instance.
      * @param request The HTTP Request we are processing.
-     * @return
+    
      */
     public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
-        ActionErrors errors = new ActionErrors();
-        if (getName() == null || getName().length() < 1) {
-            errors.add("name", new ActionMessage("error.name.required"));
+       // ActionErrors errors = new ActionErrors();
+       // if (getName() == null || getName().length() < 1) {
+       //     errors.add("name", new ActionMessage("error.name.required"));
             // TODO: add 'error.name.required' key to your resources
-        }
-        return errors;
+       // }
+        return null;
     }
 
     /**
@@ -113,5 +114,15 @@ public class FeedbackActionForm extends org.apache.struts.action.ActionForm {
      */
     public void setComments(String comments) {
         this.comments = comments;
+    }
+
+   
+    public String getCMBLib() {
+        return CMBLib;
+    }
+
+    
+    public void setCMBLib(String CMBLib) {
+        this.CMBLib = CMBLib;
     }
 }

@@ -289,11 +289,11 @@ return true;  // date is valid
 
 
 </script>
-<link rel="stylesheet" href="/LibMS-Struts/admin/cupertino/jquery.ui.all.css" type="text/css">
-<script type="text/javascript" src="/LibMS-Struts/admin/jquery-1.4.2.min.js"></script>
-<script type="text/javascript" src="/LibMS-Struts/admin/jquery.ui.core.min.js"></script>
-<script type="text/javascript" src="/LibMS-Struts/admin/jquery.ui.widget.min.js"></script>
-<script type="text/javascript" src="/LibMS-Struts/admin/jquery.ui.datepicker.min.js"></script>
+<link rel="stylesheet" href="/LibMS-Struts/cupertino/jquery.ui.all.css" type="text/css">
+<script type="text/javascript" src="/LibMS-Struts/js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="/LibMS-Struts/js/jquery.ui.core.min.js"></script>
+<script type="text/javascript" src="/LibMS-Struts/js/jquery.ui.widget.min.js"></script>
+<script type="text/javascript" src="/LibMS-Struts/js/jquery.ui.datepicker.min.js"></script>
 <style type="text/css">
 .ui-datepicker
 {
@@ -409,7 +409,12 @@ availableSelectList = document.getElementById("searchResult");
 
 <fieldset style="border:solid 1px brown;padding-left: 20px;padding-right: 20px" ><legend><img src="/LibMS-Struts/images/staff.png"></legend>
                    
+ <br>  <table  width="800px" >
+                    <tr><td align="right">
 
+    <br> <font color="blue">  <b>Fields marked with asterisk (*) are Compuslory</b><br></font>
+
+               </td></tr> </table><br>
                             <%
                             if( button.equals("View"))
                                 {%>
@@ -499,7 +504,7 @@ availableSelectList = document.getElementById("searchResult");
 
                                 <tr><td width="250px">Father Name</td><td width="250px"><input type="text" id="father_name" disabled tabindex="10"  name="father_name" value="<%=father_name%>"></td>
 
-                                <td width="250px">Gender</td><td width="250px">
+                                <td width="250px">Employee's Gender</td><td width="250px">
 
                                 <select name="gender" size="1" id="gender" tabindex="11" style="width:148px;" disabled>
 
@@ -523,8 +528,10 @@ availableSelectList = document.getElementById("searchResult");
                                 <tr>
                                     <td width="250px">Mailing Address</td><td width="250px"><textarea name="address1" disabled id="address1" tabindex="12"  rows="5" cols="17"><%=address1%></textarea></td>
                                 <td width="250px" colspan="2">
-                                    <table width="">
-                                        <tr><td width="165px">City</td><td width="100px"><input type="text" id="city1" disabled  name="city1" tabindex="13" value="<%=city1%>"></td></tr>
+                                       
+
+                                    <table style="font-family: arial;font-weight: bold;color:brown;font-size:13px">
+                                        <tr><td width="185px">City</td><td width="100px"><input type="text" id="city1" disabled  name="city1" tabindex="13" value="<%=city1%>"></td></tr>
                                         <tr><td colspan="2" height="7px"></td></tr>
                                           <tr><td>State</td><td><input type="text" id="state1" disabled  name="state1" tabindex="14" value="<%=state1%>"></td></tr>
                                           <tr><td colspan="2" height="7px"></td></tr>
@@ -556,7 +563,7 @@ availableSelectList = document.getElementById("searchResult");
 <%=address2%>
                                     </textarea></td>
                                 <td width="250px" colspan="2">
-                                    <table>
+                                    <table style="font-family: arial;font-weight: bold;color:brown;font-size:13px">
                                         <tr><td width="165px">City</td><td width="100px"><input type="text" disabled id="city2" tabindex="20"  name="city2" value="<%=city2%>"></td></tr>
                                         <tr><td colspan="4" height="7px"></td></tr>
                                           <tr><td>State</td><td><input type="text" id="state2"  name="state2" disabled tabindex="21" value="<%=state2%>"></td></tr>
@@ -667,7 +674,7 @@ availableSelectList = document.getElementById("searchResult");
 
                                 <tr><td width="250px">Father Name</td><td width="250px"><input type="text" id="father_name"  tabindex="10"  name="father_name" value="<%=father_name%>"></td>
 
-                                <td width="250px">Gender</td><td width="250px">
+                                <td width="250px">Employee's Gender*</td><td width="250px">
 
                                 <select name="gender" size="1" id="gender" tabindex="11" style="width:148px;">
 
@@ -689,14 +696,14 @@ availableSelectList = document.getElementById("searchResult");
                                 </tr>
                                 <tr><td colspan="4" height="5px"></td></tr>
                                 <tr>
-                                    <td width="250px">Mailing Address</td><td width="250px"><textarea name="address1" id="address1" tabindex="12"  rows="5" cols="17"><%=address1%></textarea></td>
+                                    <td width="250px">Mailing Address*</td><td width="250px"><textarea name="address1" id="address1" tabindex="12"  rows="5" cols="17"><%=address1%></textarea></td>
                                 <td width="250px" colspan="2">
-                                    <table width="">
-                                        <tr><td width="165px">City</td><td width="100px"><input type="text" id="city1"  name="city1" tabindex="13" value="<%=city1%>"></td></tr>
+                                    <table style="font-family: arial;font-weight: bold;color:brown;font-size:13px" >
+                                        <tr><td width="185px">City*</td><td width="100px"><input type="text" id="city1"  name="city1" tabindex="13" value="<%=city1%>"></td></tr>
                                         <tr><td colspan="2" height="7px"></td></tr>
-                                          <tr><td>State</td><td><input type="text" id="state1"  name="state1" tabindex="14" value="<%=state1%>"></td></tr>
+                                          <tr><td>State*</td><td><input type="text" id="state1"  name="state1" tabindex="14" value="<%=state1%>"></td></tr>
                                           <tr><td colspan="2" height="7px"></td></tr>
-                                          <tr><td>Country</td><td><input type="text" id="country1"  name="country1" tabindex="15" value="<%=country1%>"/></td></tr>
+                                          <tr><td>Country*</td><td><input type="text" id="country1"  name="country1" tabindex="15" value="<%=country1%>"/></td></tr>
                                         <tr><td colspan="2" height="7px"></td></tr>
 
 
@@ -712,7 +719,7 @@ availableSelectList = document.getElementById("searchResult");
 
 
                                 <tr><td width="250px">ZIP Code</td><td width="250px"><input type="text" id="zip1" tabindex="16"  name="zip1" value="<%=zip1%>"></td>
-                           <td width="250px">Date of Birth</td><td width="250px"><input type="text" id="date_of_birth"   tabindex="17"  name="date_of_birth" value="<%=date_of_birth%>">
+                           <td width="250px">Date of Birth*</td><td width="250px"><input type="text" id="date_of_birth"   tabindex="17"  name="date_of_birth" value="<%=date_of_birth%>">
                             <br/> <div align="left" id="searchResult3" style="border:#000000; "></div>
                            </td>
                             </tr>
@@ -726,8 +733,8 @@ availableSelectList = document.getElementById("searchResult");
 <%=address2%>
                                     </textarea></td>
                                 <td width="250px" colspan="2">
-                                    <table>
-                                        <tr><td width="165px">City</td><td width="100px"><input type="text" id="city2" tabindex="20"  name="city2" value="<%=city2%>"></td></tr>
+                                    <table style="font-family: arial;font-weight: bold;color:brown;font-size:13px">
+                                        <tr><td width="187px">City</td><td width="100px"><input type="text" id="city2" tabindex="20"  name="city2" value="<%=city2%>"></td></tr>
                                         <tr><td colspan="4" height="7px"></td></tr>
                                           <tr><td>State</td><td><input type="text" id="state2"  name="state2" tabindex="21" value="<%=state2%>"></td></tr>
                                           <tr><td colspan="4" height="7px"></td></tr>
@@ -836,7 +843,7 @@ availableSelectList = document.getElementById("searchResult");
 
                                 <tr><td width="250px">Father Name</td><td width="250px"><input type="text" id="father_name" readonly tabindex="10"  name="father_name" value="<%=father_name%>"></td>
 
-                                <td width="250px">Gender</td><td width="250px">
+                                <td width="250px">Employee's Gender</td><td width="250px">
 
                                 <select name="gender" size="1" id="gender" tabindex="11" style="width:148px;" readonly>
 
@@ -860,8 +867,8 @@ availableSelectList = document.getElementById("searchResult");
                                 <tr>
                                     <td width="250px">Mailing Address</td><td width="250px"><textarea name="address1" readonly id="address1" tabindex="12"  rows="5" cols="17"><%=address1%></textarea></td>
                                 <td width="250px" colspan="2">
-                                    <table width="">
-                                        <tr><td width="165px">City</td><td width="100px"><input type="text" id="city1" readonly  name="city1" tabindex="13" value="<%=city1%>"></td></tr>
+                                    <table style="font-family: arial;font-weight: bold;color:brown;font-size:13px">
+                                        <tr><td width="185px">City</td><td width="100px"><input type="text" id="city1" readonly  name="city1" tabindex="13" value="<%=city1%>"></td></tr>
                                         <tr><td colspan="2" height="7px"></td></tr>
                                           <tr><td>State</td><td><input type="text" id="state1" readonly  name="state1" tabindex="14" value="<%=state1%>"></td></tr>
                                           <tr><td colspan="2" height="7px"></td></tr>
@@ -891,7 +898,7 @@ availableSelectList = document.getElementById("searchResult");
                             <tr>
                                 <td width="250px">Permanent Address</td><td width="250px"><textarea name="address2" readonly id="address2" tabindex="19"  rows="5" cols="17"><%=address2%></textarea></td>
                                 <td width="250px" colspan="2">
-                                    <table>
+                                    <table style="font-family: arial;font-weight: bold;color:brown;font-size:13px">
                                         <tr><td width="165px">City</td><td width="100px"><input type="text" readonly id="city2" tabindex="20"  name="city2" value="<%=city2%>"></td></tr>
                                         <tr><td colspan="4" height="7px"></td></tr>
                                           <tr><td>State</td><td><input type="text" id="state2"  name="state2" readonly tabindex="21" value="<%=state2%>"></td></tr>
@@ -973,21 +980,9 @@ availableSelectList = document.getElementById("searchResult");
 
 
 
-    <div
-   style="
-      top: 900px;
-
-      position: absolute;
-
-      visibility: show;">
-        <jsp:include page="footer.jsp" />
-
-</div>
+    
 </html:form>
 
-
-
-</html>
 <script type="text/javascript">
 
 
@@ -1039,12 +1034,12 @@ var str="Enter Following Values:-";
             document.getElementById('email_id').focus();
             return false;
         }
-    if(courtesy=="Select")
-   { str+="\n Select Courtesy";
-        alert(str);
-        document.getElementById('courtesy').focus();
-            return false;
-        }
+  //  if(courtesy=="Select")
+ //  { str+="\n Select Courtesy";
+ //       alert(str);
+ //       document.getElementById('courtesy').focus();
+  //          return false;
+  //      }
 
     if(first_name.value=="")
         {str+="\n Enter First Name ";
@@ -1060,36 +1055,36 @@ var str="Enter Following Values:-";
             return false;
 
       }
-      if(contact_no.value=="")
-       { str+="\n Enter Contact No";
-            alert(str);
-            document.getElementById('contact_no').focus();
-            return false;
+    //  if(contact_no.value=="")
+   //    { str+="\n Enter Contact No";
+    //        alert(str);
+   //         document.getElementById('contact_no').focus();
+   //         return false;
 
-       }
-        if (isNaN(contact_no.value))
-        {
-            str+="\n Enter Valid Contact No";
-            alert(str);
-            document.getElementById('contact_no').focus();
-            return false;
-        }
+  //     }
+   //     if (isNaN(contact_no.value))
+   //     {
+  //          str+="\n Enter Valid Contact No";
+   ///         alert(str);
+   //         document.getElementById('contact_no').focus();
+    //        return false;
+   //     }
 
-       if(mobile_no.value=="")
-       { str+="\n Enter mobile No";
-            alert(str);
-            document.getElementById('mobile_no').focus();
-            return false;
+    //   if(mobile_no.value=="")
+   //    { str+="\n Enter mobile No";
+   //         alert(str);
+    //        document.getElementById('mobile_no').focus();
+    //        return false;
 
-       }
+   //    }
 
-       if (isNaN(mobile_no.value))
-        {
-            str+="\n Enter Valid Mobile No";
-            alert(str);
-            document.getElementById('mobile_no').focus();
-            return false;
-        }
+    //   if (isNaN(mobile_no.value))
+     //   {
+      //      str+="\n Enter Valid Mobile No";
+     //       alert(str);
+    //        document.getElementById('mobile_no').focus();
+   //         return false;
+   //     }
 
     if(do_joining.value=="")
        { str+="\n Enter Date of Joining";
@@ -1110,13 +1105,13 @@ var str="Enter Following Values:-";
        if(dcheck_releaving()==false)
      return false;
 
-    if(father_name.value=="")
-       { str+="\n Enter Father_name";
-            alert(str);
-            document.getElementById('father_name').focus();
-            return false;
+   // if(father_name.value=="")
+  //     { str+="\n Enter Father_name";
+  //          alert(str);
+   //         document.getElementById('father_name').focus();
+   //         return false;
 
-       }
+  //     }
     if(gender=="Select")
       {  str+="\n Select Gender";
            alert(str);
@@ -1154,13 +1149,13 @@ var str="Enter Following Values:-";
             return false;
 
       }
-    if(zip1.value=="")
-     {   str+="\n Enter Zip Code";
-          alert(str);
-          document.getElementById('zip1').focus();
-            return false;
+  //  if(zip1.value=="")
+  //   {   str+="\n Enter Zip Code";
+   //       alert(str);
+   //       document.getElementById('zip1').focus();
+  //          return false;
 
-     }
+  //   }
     if(dob.value=="")
        { str+="\n Enter date of Birth";
             alert(str);
@@ -1174,41 +1169,41 @@ var str="Enter Following Values:-";
      return false;
 
 
-    if(address2.value=="")
-       { str+="\n Enter Address 2";
-            alert(str);
-            document.getElementById('address2').focus();
-            return false;
+  //  if(address2.value=="")
+   //    { str+="\n Enter Address 2";
+   //         alert(str);
+  //          document.getElementById('address2').focus();
+   //         return false;
 
-       }
-    if(city2.value=="")
-      {  str+="\n Enter city 2" ;
-           alert(str);
-           document.getElementById('city2').focus();
-            return false;
+  //     }
+  //  if(city2.value=="")
+   //   {  str+="\n Enter city 2" ;
+  //         alert(str);
+  //         document.getElementById('city2').focus();
+  //          return false;
 
-      }
-    if(state2.value=="")
-       { str+="\n Enter State 2";
-            alert(str);
-            document.getElementById('state2').focus();
-            return false;
+  //    }
+  //  if(state2.value=="")
+  //     { str+="\n Enter State 2";
+  //          alert(str);
+  //          document.getElementById('state2').focus();
+ //           return false;
 
-       }
-    if(country2.value=="")
-       { str+="\n Enter Country 2";
-            alert(str);
-            document.getElementById('country2').focus();
-            return false;
+ //      }
+ //   if(country2.value=="")
+  //     { str+="\n Enter Country 2";
+ //           alert(str);
+  //          document.getElementById('country2').focus();
+ //           return false;
 
-       }
-    if(zip2.value=="")
-      {  str+="\n Enter Zip Code 2";
-           alert(str);
-           document.getElementById('zip2').focus();
-            return false;
-
-      }
+ //      }
+ //   if(zip2.value=="")
+  //    {  str+="\n Enter Zip Code 2";
+ //          alert(str);
+ //          document.getElementById('zip2').focus();
+ //           return false;
+//
+ //     }
 if(IsDateGreater(do_joining.value,do_releaving.value)==true)
     {
        str+="\nDate of Releaving Should be greater than Date of Joining";
@@ -1348,3 +1343,6 @@ if(message1!=null||message2!=null)
 %>
 
 
+
+
+</html>

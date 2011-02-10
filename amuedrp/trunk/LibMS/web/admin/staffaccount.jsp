@@ -12,6 +12,7 @@
 String email_id=(String)request.getAttribute("user_id");
 String staff_id=(String)request.getAttribute("staff_id");
 String user_name=(String)request.getAttribute("user_name");
+String role=(String)request.getAttribute("role");
 
 String lib=(String)request.getAttribute("library_id");
 String msg=(String)request.getAttribute("msg");
@@ -38,8 +39,8 @@ String msg=(String)request.getAttribute("msg");
                     <br><br>
 
                     <p align="left" class="mess"> Login Id:<b><%=email_id%></b>
-                    <br>
-                  
+                    <br><br>
+                  <p align="left" class="mess"> User Role:<b><%=role%></b><br>
                            <br>
                     Staff Name:<b><%=user_name%></b><br><br>
                     <input type="hidden" name="user_name" value="<%=user_name%>"/>
@@ -65,27 +66,18 @@ String msg=(String)request.getAttribute("msg");
 
 
         </div>
-    <div
-   style="
-      top: 650px;
-
-      position: absolute;
-
-      visibility: show;">
-        <jsp:include page="footer.jsp" />
-
-</div>
+   
 
     </body>
-</html>
-<script language="javascript">
+    <script language="javascript">
     function message()
     {
         var a=alert("Login Account Created Successfully for:<%=user_name%>");
-       
-       
+
+
         location.href="/LibMS-Struts/admin/ask_for_assign_privilege.jsp?staff_id=<%=staff_id%>";
-   
+
         return false;
     }
 </script>
+</html>

@@ -7,7 +7,7 @@ package com.myapp.struts.admin;
 import java.io.*;
 
 import javax.servlet.*;
-import com.myapp.struts.opac.*;
+import  com.myapp.struts.*;
 import java.io.IOException;
 import java.sql.*;
 import javax.servlet.ServletException;

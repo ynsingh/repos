@@ -38,7 +38,7 @@ public class CreateAccountAction extends org.apache.struts.action.Action {
      * @param request The HTTP Request we are processing.
      * @param response The HTTP Response we are processing.
      * @throws java.lang.Exception
-     * @return
+    
      */
 
     private String user_name;
@@ -46,6 +46,7 @@ public class CreateAccountAction extends org.apache.struts.action.Action {
     private String password;
     private String library_id;
     private String email_id;
+    private String role;
     int i;
     Connection con;
     @Override
@@ -57,6 +58,7 @@ public class CreateAccountAction extends org.apache.struts.action.Action {
       user_name=caaction.getUser_name();
       password=caaction.getPassword();
       staff_id=caaction.getStaff_id();
+      role=caaction.getRole();
       HttpSession session=request.getSession();
       library_id=(String)session.getAttribute("library_id");
 
@@ -68,9 +70,11 @@ public class CreateAccountAction extends org.apache.struts.action.Action {
       request.setAttribute("staff_id", staff_id);
 
         request.setAttribute("staff_name", user_name);
+        request.setAttribute("role", role);
 
        con=MyConnection.getMyConnection();
-       String sql = ("INSERT INTO login(user_id,user_name,password,library_id,staff_id) VALUES ('" + email_id + "','" + user_name + "','" +password + "','" + library_id +"','"+staff_id+"')");
+
+       String sql = ("INSERT INTO login(user_id,user_name,password,library_id,staff_id,role) VALUES ('" + email_id + "','" + user_name + "','" +password + "','" + library_id +"','"+staff_id+"','"+role+"')");
 
 
        
@@ -79,7 +83,10 @@ public class CreateAccountAction extends org.apache.struts.action.Action {
         if(i!=0)
            
       {
+            if(role.equals("staff"))
             Privilege.assignStaffPrivilege(staff_id, library_id);
+            else if(role.equals("admin"))
+                Privilege.assignAdminPrivilege(staff_id, library_id);
 
 
          return mapping.findForward(SUCCESS);

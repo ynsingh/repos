@@ -4,10 +4,10 @@
  */
 
 package com.myapp.struts.admin;
-import com.myapp.struts.DuplicateEntry;
-import com.myapp.struts.admin.AdminViewActionForm;
-import com.myapp.struts.opac.MyQueryResult;
 
+import com.myapp.struts.admin.AdminViewActionForm;
+
+import  com.myapp.struts.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -52,7 +52,7 @@ private String pin1;
      * @param request The HTTP Request we are processing.
      * @param response The HTTP Response we are processing.
      * @throws java.lang.Exception
-     * @return
+    
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -114,7 +114,7 @@ private String pin1;
 
                 //insert into login
 
-                int j=MyQueryResult.getMyExecuteUpdate("insert into login(user_id,user_name,password,library_id,staff_id) values ('"+user_id+"','"+user_name+"','"+password+"','"+library_id+"','"+staff_id+"')");
+                int j=MyQueryResult.getMyExecuteUpdate("insert into login(user_id,user_name,password,library_id,staff_id,role) values ('"+user_id+"','"+user_name+"','"+password+"','"+library_id+"','"+staff_id+"','insti-admin')");
                 /*java mailing code to send it */
 
                 System.out.println(library_id);

@@ -99,11 +99,9 @@ rs.beforeFirst();
 	Ob = new LoginDoc ();
 	Ob.setuser_id(rs.getString("user_id"));
         Ob.setuser_name(rs.getString("user_name"));
-	Ob.setpassword(rs.getString("password"));
-	Ob.setquestion(rs.getString("question"));
 	Ob.setlibrary_id(rs.getString("library_id"));
         Ob.setStaff_id(rs.getString("staff_id"));
-        Ob.setans(rs.getString("ans"));
+        Ob.setRole(rs.getString("role"));
         
    loginList.add(Ob);
 
@@ -140,23 +138,24 @@ else
     </column>
 
     <column width="150">
-      <header value="User_ID" hAlign="left" styleClass="header"/>
-      <item   value="${doc.user_id}" hyperLink="/LibMS-Struts/admin/index4.jsp?id='${doc.staff_id}'"  hAlign="left"    styleClass="item"/>
+      <header value="Staff_Id" hAlign="left" styleClass="header"/>
+      <item   value="${doc.staff_id}" hyperLink="/LibMS-Struts/admin/index4.jsp?id=${doc.staff_id}"  hAlign="left"    styleClass="item"/>
     </column>
 
     <column width="100">
-      <header value="user_Name" hAlign="left" styleClass="header"/>
-      <item   value="${doc.user_name}" hAlign="left" hyperLink="/LibMS-Struts/admin/index4.jsp?id='${doc.staff_id}'"  styleClass="item"/>
+      <header value="Login Id" hAlign="left" styleClass="header"/>
+      <item   value="${doc.user_id}" hAlign="left" hyperLink="/LibMS-Struts/admin/index4.jsp?id=${doc.staff_id}"  styleClass="item"/>
     </column>
 
+      
     <column width="100">
-      <header value="question" hAlign="left" styleClass="header"/>
-      <item   value="${doc.question}" hyperLink="/LibMS-Struts/admin/index4.jsp?id='${doc.staff_id}'"  hAlign="left" styleClass="item"/>
+      <header value="User Name" hAlign="left" styleClass="header"/>
+      <item   value="${doc.user_name}" hyperLink="/LibMS-Struts/admin/index4.jsp?id=${doc.staff_id}"  hAlign="left" styleClass="item"/>
     </column>
-   
-    <column width="100">
-      <header value="ans" hAlign="left" styleClass="header"/>
-      <item   value="${doc.ans}" hyperLink="/LibMS-Struts/admin/index4.jsp?id='${doc.staff_id}'"  hAlign="left" styleClass="item"/>
+
+       <column width="100">
+      <header value="Role" hAlign="left" styleClass="header"/>
+      <item   value="${doc.role}" hyperLink="/LibMS-Struts/admin/index4.jsp?id=${doc.staff_id}"  hAlign="left" styleClass="item"/>
     </column>
  </columns>
 
@@ -167,7 +166,7 @@ else
        previousUrlVar="previous" pagesVar="pages"/>
   <order imgAsc="up.gif" imgDesc="down.gif"/>
 </ui:dataGrid>
-<table width="500" style="font-family: arial; font-size: 10pt" border=0>
+<table width="600" style="font-family: arial; font-size: 10pt" border=0>
 <tr>
 <td align="left">
 <c:if test="${previous != null}">

@@ -15,35 +15,67 @@ body
    background-color: #FFFFFF;
    color: #000000;
 }
+.rows          { background-color: white;border: solid 1px blue; }
+     .hiliterows    { background-color: pink; color: #000000; font-weight: bold;border: solid 1px blue; }
+     .alternaterows { background-color: #efefef; }
+     .header        { background-color: #c0003b; color: #FFFFFF;font-family:Tahoma;font-size: 12px;font-weight: bold;text-decoration: none;padding-left: 10px; }
+
+     .datagrid      {  font-family: arial; font-size: 9pt;
+	    font-weight: normal;}
+     .item{ padding-left: 10px;}
+
+
+
+
 </style>
+<link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
 <SCRIPT language="JAVASCRIPT">
-    function f()
+     function f()
     {
-       if(document.F1.CMBYR.value=="upto" || document.F1.CMBYR.value=="after")
-         {  
-            document.F1.TXTYR1.disabled=false;
-            document.F1.TXTYR1.style.backgroundColor = "#ffffff";
-            document.F1.TXTYR2.disabled=true;
-            document.F1.TXTYR2.style.backgroundColor = "#eeeeee";
-		
-	   }
-	 if(document.F1.CMBYR.value=="all")
+        if(document.getElementById('CMBYR').value=="upto" || document.getElementById('CMBYR').value=="after")
          {
-            document.F1.TXTYR1.disabled=true;
-            document.F1.TXTYR1.style.backgroundColor = "#eeeeee";
-            document.F1.TXTYR2.disabled=true;
-            document.F1.TXTYR2.style.backgroundColor = "#eeeeee";
-		
+            document.getElementById('TXTYR1').disabled=false;
+            document.getElementById('TXTYR1').style.backgroundColor = "#ffffff";
+            document.getElementById('TXTYR2').disabled=true;
+            document.getElementById('TXTYR2').style.backgroundColor = "#eeeeee";
+
 	   }
-        if(document.F1.CMBYR.value=="between")
-         {  
-            document.F1.TXTYR1.disabled=false;
-            document.F1.TXTYR1.style.backgroundColor = "#ffffff";
-            document.F1.TXTYR2.disabled=false;
-            document.F1.TXTYR2.style.backgroundColor = "#ffffff";
-            		
+           if(document.getElementById('CMBYR').value=="all")
+         {
+             document.getElementById('TXTYR1').disabled=true;
+            document.getElementById('TXTYR1').style.backgroundColor = "#eeeeee";
+            document.getElementById('TXTYR2').disabled=true;
+            document.getElementById('TXTYR2').style.backgroundColor = "#eeeeee";
+
+	   }
+        if(document.getElementById('CMBYR').value=="between")
+         {
+            document.getElementById('TXTYR1').disabled=false;
+            document.getElementById('TXTYR1').style.backgroundColor = "#ffffff";
+            document.getElementById('TXTYR2').disabled=false;
+            document.getElementById('TXTYR2').style.backgroundColor = "#ffffff";
+
 	   }
 
+    }
+    function validate()
+    {
+        if(document.getElementById('CMBYR').value=="between")
+            {
+                if((document.getElementById('TXTYR1').value=="") || (document.getElementById('TXTYR2').value==""))
+                {
+                    alert("Please specify year");
+                    return false;
+                }
+
+            }
+          if((document.getElementById('CMBYR').value=="upto")||(document.getElementById('CMBYR').value=="after"))
+          {
+              if(document.getElementById('TXTYR1').value==""){
+                  alert("Please specify year");
+                  return false;}
+          }
+               return true;
     }
 </SCRIPT>
 <%!
@@ -75,346 +107,695 @@ locale1=(String)session.getAttribute("locale");
 <body>
      <%if(page.equals(true)){%>
 
-    <div id="wb_Text1" style="position: absolute; left: 270px; top: 0px;
-width: 500px; height: 19px; background-color: rgb(255, 255, 255);
-z-index: 0;" >
-<font style="font-size: 16px;" color="#c0003b" face="Arial" align="center"><b>
-            <%=resource.getString("opac.advance.advancesearchtext")%></b></font></div>
-<div id="wb_Form1" style="position: absolute; left: 7px; top: 25px; width: 875px; height: 370px; z-index: 42;">
-<html:form  method="post" action="/OPAC/advance_search">
-<div style="border: 1px solid rgb(0, 85, 0); position: absolute; left: 50px; top: 35px; width: 104px; height: 18px; z-index: 0;">
-<select name="CMBFIELD1" size="1" style="border-width: 0px; left: 0px; top: 0px; width: 100%; height: 100%; font-family: Arial; font-size: 13px;">
+     <html:form  method="post" action="/OPAC/advance_search" onsubmit="return validate();">
+
+
+
+            <table  align="left" width="1200x" class="datagrid"  style="border:solid 1px #e0e8f5;">
+
+
+
+  <tr class="header"><td  width="1000px"  height="28px" align="center" colspan="2">
+
+
+		  <%=resource.getString("opac.advance.advancesearchtext")%>
+
+
+
+
+        </td></tr>
+  <tr style="background-color:#e0e8f5;"><td width="800px">
+          <table width="800px">
+              <tr><td width="130px">Search Keyword as</td><td><input name="TXTPHRASE1" type="text">
+</td></tr>
+              <tr>   <td>Connected Word As</td><td> <select name="CMB1" size="1">
+    <option value="or">OR</option>
+    <option value="and">AND</option>
+  </select>
+
+               
+
+                  </td><td align="left">  <select name="CMBF1" size="1">
+<option value="or">OR</option>
+<option value="and">AND</option>
+</select></td>
+
+      </tr>
+
+          </table>
+      </td>
+      <td    align="left" valign="top">
+          <table >
+              <tr><td>in Field </td><td rowspan="2" valign="top">
+
+          <select name="CMBFIELD1" size="1" >
 <option selected value="title">ANY FIELD</option>
 <option value="author">AUTHOR</option>
 <option value="title">TITLE</option>
-<option value="isbn">ISBN</option>
+<option value="isbn10">ISBN</option>
 <option value="subject">SUBJECT</option>
-<option value="pubplace">PLACE</option>
-<option value="publisher">PUBLISHER</option>
-</select>
-</div>
 
-<div style="border: 1px solid rgb(0, 85, 0); position: absolute; left: 50px; top: 91px; width: 104px; height: 18px; z-index: 27;">
-<select name="CMBFIELD2" size="1"  style="border-width: 0px; left: 0px; top: 0px; width: 100%; height: 100%; font-family: Arial; font-size: 13px;">
+</select>
+
+     </td>
+
+              </tr></table></td></tr>
+   <tr style="background-color:#e0e8f5;"><td width="800px"  >
+          <table width="800px">
+              <tr><td width="130px">Search Keyword as</td><td><input name="TXTPHRASE2"  type="text">
+</td></tr>
+              <tr>   <td >Connected Word As</td><td> <select name="CMB2" size="1" >
+    <option value="or">OR</option>
+    <option value="and">AND</option>
+                      </select></td><td align="left">      <select name="CMBF2" size="1">
+<option value="or">OR</option>
+<option value="and">AND</option>
+</select>
+</td>
+
+      </tr>
+
+          </table>
+      </td>
+      <td    align="left" valign="top">
+          <table >
+              <tr><td>in Field </td><td rowspan="2" valign="top">
+
+         <select name="CMBFIELD2" size="1"  >
 <option selected value="author">ANY FIELD</option>
 <option value="author">AUTHOR</option>
 <option value="title">TITLE</option>
-<option value="isbn">ISBN</option>
+<option value="isbn10">ISBN</option>
 <option value="subject">SUBJECT</option>
-<option value="pubplace">PLACE</option>
-<option value="publisher">PUBLISHER</option>
-</select>
-</div>
 
-<div style="border: 1px solid rgb(0, 85, 0); position: absolute; left: 50px; top: 159px; width: 104px; height: 18px; z-index: 26;">
-<select name="CMBFIELD3" size="1" style="border-width: 0px; left: 0px; top: 0px; width: 100%; height: 100%; font-family: Arial; font-size: 13px;">
+</select>
+
+
+     </td>
+
+              </tr></table></td></tr>
+    <tr style="background-color:#e0e8f5;"><td width="800px"  >
+          <table width="800px">
+              <tr><td width="130px">Search Keyword as</td><td><input name="TXTPHRASE3" type="text">
+
+</td></tr>
+              <tr>   <td >Connected Word As</td><td> <select name="CMB3" size="1">
+    <option value="or">OR</option>
+    <option value="and">AND</option>
+  </select></td><td>     <select name="CMBF3" size="1" >
+<option value="or">OR</option>
+<option value="and">AND</option>
+</select>
+</td>
+
+      </tr>
+
+          </table>
+      </td>
+      <td    align="left" valign="top">
+          <table >
+              <tr><td>in Field </td><td rowspan="2" valign="top">
+
+        <select name="CMBFIELD3" size="1" >
 <option selected value="subject">ANY FIELD</option>
 <option value="author">AUTHOR</option>
 <option value="title">TITLE</option>
-<option value="isbn">ISBN</option>
+<option value="isbn10">ISBN</option>
 <option value="subject">SUBJECT</option>
-<option value="pubplace">PLACE</option>
-<option value="publisher">PUBLISHER</option>
+
 </select>
-</div>
-
-<div id="wb_Text1" style="position: absolute; left: 4px; top: 38px; width: 39px; height: 16px; z-index: 1;" align="left">
-<font style="font-size: 13px;" color="#000000" face="Arial"><b><%=resource.getString("opac.advance.field")%></b></font></div>
-
-<input name="TXTPHRASE1" style="border: 1px solid rgb(0, 64, 64); position: absolute; left: 245px; top: 34px; width: 296px; height: 18px; font-family: Courier New; font-size: 13px; z-index: 2;" type="text">
-<input name="TXTPHRASE2" style="border: 1px solid rgb(0, 64, 64); position: absolute; left: 245px; top: 93px; width: 296px; height: 18px; font-family: Courier New; font-size: 13px; z-index: 24;"type="text">
-<input name="TXTPHRASE3" style="border: 1px solid rgb(0, 64, 64); position: absolute; left: 245px; top: 158px; width: 296px; height: 18px; font-family: Courier New; font-size: 13px; z-index: 25;"type="text">
-<input name="TXTYR2" style="border: 1px dotted rgb(139, 0, 0); position: absolute; left: 217px; top: 251px; width: 52px; height: 18px; font-family: Courier New; font-size: 13px; z-index: 11;" type="text">
-<input name="TXTYR1" style="border: 1px dotted rgb(139, 0, 0); position: absolute; left: 130px; top: 252px; width: 52px; height: 18px; font-family: Courier New; font-size: 13px; z-index: 12;" type="text">
 
 
-<div id="wb_Text7" style="position: absolute; left: 190px; top: 249px; width: 21px; height: 14px; z-index: 6;" align="left">---</div>
-<input id="Button2" name="" value="<%=resource.getString("opac.advance.find")%>" style="position: absolute; left: 250px; top: 280px; width: 68px; height: 25px; font-family: Arial; font-weight: bold; font-size: 13px; z-index: 15;" type="submit">
-<input id="Button1" name="" value="<%=resource.getString("opac.advance.clear")%>" style="position: absolute; left: 360px; top: 280px; width: 67px; height: 25px; font-family: Arial; font-weight: bold; font-size: 13px; z-index: 23;" type="reset">
+     </td>
 
-<div style="border: 1px solid rgb(0, 85, 0); position: absolute; left: 326px; top: 66px; width: 61px; height: 18px; z-index: 35;">
-  <select name="CMB1" size="1" style="border-width: 0px; left: 0px; top: 0px; width: 100%; height: 100%; font-family: Courier New; font-size: 13px;">
-    <option value="or">OR</option>
-    <option value="and">AND</option>
-  </select>
-</div>
-
-<div style="border: 1px solid rgb(0, 85, 0); position: absolute; left: 326px; top: 126px; width: 61px; height: 18px; z-index: 19;">
-  <select name="CMB2" size="1"  style="border-width: 0px; left: 0px; top: 0px; width: 100%; height: 100%; font-family: Courier New; font-size: 13px;">
-    <option value="or">OR</option>
-    <option value="and">AND</option>
-  </select>
-</div>
-
-<div style="border: 1px solid rgb(0, 85, 0); position: absolute; left: 326px; top: 186px; width: 61px; height: 18px; z-index: 19;">
-  <select name="CMB3" size="1"  style="border-width: 0px; left: 0px; top: 0px; width: 100%; height: 100%; font-family: Courier New; font-size: 13px;">
-    <option value="or">OR</option>
-    <option value="and">AND</option>
-  </select>
-</div>
-
-<div style="border: 1px solid rgb(0, 85, 0); position: absolute; left: 622px; top: 94px; width: 60px; height: 18px; z-index: 31;">
-<select name="CMBF2" size="1" style="border-width: 0px; left: 0px; top: 0px; width: 100%; height: 100%; font-family: Courier New; font-size: 13px;">
-<option value="or">OR</option>
-<option value="and">AND</option>
-</select>
-</div>
-
-<div style="border: 1px solid rgb(0, 85, 0); position: absolute; left: 622px; top: 156px; width: 60px; height: 18px; z-index: 33;">
-<select name="CMBF3" size="1"  style="border-width: 0px; left: 0px; top: 0px; width: 100%; height: 100%; font-family: Courier New; font-size: 13px;">
-<option value="or">OR</option>
-<option value="and">AND</option>
-</select>
-</div>
-
-<div style="border: 1px solid rgb(0, 85, 0); position: absolute; left: 622px; top: 33px; width: 60px; height: 18px; z-index: 30;">
-<select name="CMBF1" size="1" style="border-width: 0px; left: 0px; top: 0px; width: 100%; height: 100%; font-family: Courier New; font-size: 13px;">
-<option value="or">OR</option>
-<option value="and">AND</option>
-</select>
-</div>
-
-
-
-<div id="wb_Text11" style="position: absolute; left: 546px; top: 36px; width: 76px; height: 16px; z-index: 20;" align="left">
-<font style="font-size: 13px;" color="#000000" face="Arial"><b><%=resource.getString("opac.advance.connectas")%></b></font></div>
-<div id="wb_Text14" style="position: absolute; left: 4px; top: 94px; width: 39px; height: 16px; z-index: 28;" align="left">
-<font style="font-size: 13px;" color="#000000" face="Arial"><b><%=resource.getString("opac.advance.field")%></b></font></div>
-<div id="wb_Text15" style="position: absolute; left: 4px; top: 163px; width: 39px; height: 16px; z-index: 29;" align="left">
-<font style="font-size: 13px;" color="#000000" face="Arial"><b><%=resource.getString("opac.advance.field")%></b></font></div>
-<div id="wb_Text16" style="position: absolute; left: 546px; top: 96px; width: 76px; height: 16px; z-index: 32;" align="left">
-<font style="font-size: 13px;" color="#000000" face="Arial"><b><%=resource.getString("opac.advance.connectas")%></b></font></div>
-<div id="wb_Text17" style="position: absolute; left: 545px; top: 160px; width: 76px; height: 16px; z-index: 34;" align="left">
-<font style="font-size: 13px;" color="#000000" face="Arial"><b><%=resource.getString("opac.advance.connectas")%></b></font></div>
-<div id="wb_Text4" style="position: absolute; left: 546px; top: 6px; width: 65px; height: 16px; z-index: 36;" align="left">
-<font style="font-size: 13px;" color="#000000" face="Arial"><b><%=resource.getString("opac.advance.database")%></b></font></div>
-<div id="wb_Text12" style="position: absolute; left: 159px; top: 95px; width: 95px; height: 14px; z-index: 38;" align="left">
-<font style="font-size: 13px;" color="#000000" face="Arial"><b><%=resource.getString("opac.advance.enterphrase")%></b></font></div>
-<div id="wb_Text13" style="position: absolute; left: 159px; top: 161px; width: 92px; height: 16px; z-index: 39;" align="left">
-<font style="font-size: 13px;" color="#000000" face="Arial"><b><%=resource.getString("opac.advance.enterphrase")%></b></font></div>
-<div id="wb_Text3" style="position: absolute; left: 157px; top: 36px; width: 91px; height: 16px; z-index: 40;" align="left">
-<font style="font-size: 13px;" color="#000000" face="Arial"><b><%=resource.getString("opac.advance.enterphrase")%></b></font></div>
-<div style="border: 1px solid rgb(0, 85, 0); position: absolute; left:622px; top: 5px; width: 127px; height: 18px; z-index: 37;">
-<select name="CMBDB" size="1" style="border-width: 0px; left: 0px; top: 0px; width: 100%; height: 100%; font-family: Courier New; font-size: 13px;">
-    <option  selected value="combined">COMBINED</option>
+              </tr></table></td></tr>
+  <tr class="header"><td width="1000px"   align="left" >Restricted By</td><td align="left">Sort By</td></tr>
+   <tr style="background-color:#e0e8f5;"><td width="800px"   align="left">
+           <table  width="800px" ><tr><td align="500px">
+          <table>
+              <tr><td ><%=resource.getString("opac.simplesearch.database")%></td><td>
+                      <select name="CMBDB" size="1" id="CMBDB">
+<option value="combined" selected>COMBINED</option>
     <option value="book">BOOKS</option>
-    <option value="thesis">THESIS</option>
-    <option value="tsd/psd">TSD/PSD</option>
-    <option value="rd/r/rs">RD/R/RS</option>
-    <option value="journal">JOURNALS</option>
     <option value="cd">CDs</option>
-    <option value="ebook">EBOOKS</option>
-    <option value="articles">ARTICLES DATA</option>
+
 </select>
-</div>
-<%
-System.out.println(resource.getString("opac.advance.publicationyear"));%>
-<div id="wb_Text13" style="position: absolute; left: 6px; top: 222px; width: 130px; height: 16px; z-index: 29;" align="left">
- <font style="font-size: 13px;" color="#000000" face="Arial"><b><%= resource.getString("opac.advance.publicationyear")%></b></font>
-</div>
- 
-<div style="border: 1px solid rgb(0, 85, 0); position: absolute; left: 130px; top: 220px; width: 120px; height: 19px; z-index: 19;">
-<select name="CMBYR" onChange="f()" size="1" style="border-width: 0px; left: 0px; top: 0px; width: 100%; height: 100%; font-family: Courier New; font-size: 13px;">
-    <option value="all">Select Year</option>
-    <option value="all">ALL YEARS</option>
-    <option value="between">BETWEEN</option>
-    <option value="upto">UPTO</option>
-<option value="after">AFTER</option>
-</select>
-</div>
-<div id="wb_Text2" style="position:absolute;left:4px;top:6px;width:67px;height:16px;z-index:2;" align="left">
-<font style="FONT-SIZE: 13px" color="#000000" face="Arial"><b><%=resource.getString("opac.advance.library")%></b></font></div>
-<div style="position:absolute;left:50px;top:6px;width:100px;height:18px;border:1px #C0C0C0 solid;z-index:9">
-<select name="CMBLib" size="1" id="CMBLib" style="left:0px;top:0px;width:100%;height:100%;border-width:0px;font-family:Courier New;font-size:13px;">
+                  </td></tr>
+              <tr>   <td ><%=resource.getString("opac.simplesearch.library")%></td><td>
+                 <select name="CMBLib" size="1" id="CMBLib">
     <%
         ResultSet rs = (ResultSet)session.getAttribute("libRs");
         String lib_id = (String)session.getAttribute("library_id");
+
         rs.beforeFirst();
-    %>
+
+    if(lib_id==null)
+    {%>
+
+    <option selected value="all">ALL</option>
+    <%}
+    else
+    {%>
     <option selected value="<%=lib_id%>"><%=lib_id.toUpperCase()%></option>
     <option value="all">ALL</option>
-    <%
 
+    <%
+    }
     while (rs.next())
             {
     %>
     <option value="<%= rs.getString(1) %>"><%=rs.getString(1).toUpperCase()%></option>
     <% } %>
-</select>
-</div>
-</html:form>
-</div>
+</select></td>
+
+      </tr>
+
+          </table>
+                   </td><td align="left"><%=resource.getString("opac.additional.publicationyear")%>
+                                   <br/>
+                       <table>
+                           <tr><td rowspan="4"></td><td><select name="CMBYR" onChange=f() size="1" id="CMBYR" style="left:0px;top:0px;width:100%;height:100%;border-width:0px;font-family:Courier New;font-size:13px;">
+<option selected value="all">Select Year</option>
+<option value="all">ALL YEARS</option>
+<option value="between">BETWEEN</option>
+<option value="upto">UPTO</option>
+<option value="after">AFTER</option>
+</select></td><td>
+<input type="text" id="TXTYR1"  name="TXTYR1" style="width:50px"></td><td>
+<input type="text" id="TXTYR2"  name="TXTYR2" style="width:50px">
+</td></tr>
+
+
+
+                       </table>
+
+
+
+
+                   </td></tr></table>
+      </td>
+      <td align="left">
+           <table>
+                           <tr><td>Field</td><td> <select name="CMBSORT" size="1" id="CMBSORT">
+<option  value="author_main">AUTHOR</option>
+<option value="title">TITLE</option>
+<option value="isbn10">ISBN</option>
+<option value="publisher_name">PUBLISHER</option>
+</select></td>
+                           </tr></table>
+
+
+      </td>
+
+  </tr>
+  <tr><td>
+
+<input id="Button2" class="btn" name="" value="<%=resource.getString("opac.advance.find")%>"  type="submit">
+<input id="Button1" name="" class="btn" value="<%=resource.getString("opac.advance.clear")%>" type="reset">
+
+
+      </td></tr>
+           <tr class="header">
+                               <td colspan="2">
+
+
+                            <a name="tips">&nbsp;Search Tips</a>
+
+
+
+
+                            <table class="datagrid" style="background-color:#e0e8f5;color:black;" halign="right" border="0" cellpadding="2" cellspacing="0" width="100%" frame="hspaces" height="38" rules="rows">
+    <colgroup width="15%"></colgroup><colgroup width="1%"></colgroup><colgroup width="90%"></colgroup>
+    <tbody><tr>
+    <th colspan="3" class="tipstext">
+    	The user can make a advanced search using this option. The fields to be entered are:
+    </th>
+
+    </tr>
+
+    <tr>
+        <td class="txt2">
+    		Library
+    </td>
+    <td class="tipsheading">:</td>
+    <td class="tipstext">
+    		 Select from the combo box the Library on which the search is to be made.
+    </td>
+
+    </tr>
+      <tr>
+        <td class="txt2">
+    		Database
+    </td>
+    <td class="tipsheading">:</td>
+    <td class="tipstext">
+    		 Select from the combo box the database on which the search is to be made.
+    </td>
+
+    </tr>
+
+    <tr valign="top">
+    	<td class="txt2">
+    		Field
+   	</td>
+   	<td class="tipsheading">:</td>
+   	<td class="tipstext">
+    		Select from the combo box the field on which the search is to be made.
+    	</td>
+
+    </tr>
+
+    <tr valign="top">
+
+    	<td class="txt2">
+    		Search Keyword As
+    	</td>
+    	<td class="tipsheading">:</td>
+    	<td class="tipstext">
+    		 Give the word(s) or phrase on the basis of which the search is to be made.
+    	</td>
+
+    </tr>
+
+    <tr valign="top">
+    	<td class="txt2">
+    		Connected Word As
+    	</td>
+    	<td class="tipsheading">:</td>
+    	<td class="tipstext">
+    		 Select from the combo box the connector required between the search words.
+    	</td>
+
+    </tr>
+     <tr valign="top">
+    	<td class="txt2">
+    		In Field
+    	</td>
+    	<td class="tipsheading">:</td>
+    	<td class="tipstext">
+    		 Select from the combo box the Field in which searching has to made.
+    	</td>
+
+    </tr>
+    <tr valign="top">
+    	<td class="txt2" nowrap1="">
+    		Publication Year
+    	</td>
+    	<td class="tipsheading">:</td>
+    	<td class="tipstext">
+    		 Give the publishing year(s) within which a search has to be made.
+    	</td>
+
+    </tr>
+
+   <tr valign="top">
+   	<td class="txt2" align="right">
+   		Click Find
+    	</td>
+    	<td colspan="2" class="txt2">
+    		and the result is displayed. Thus , a advanced search can be made on any field, title-wise, author-wise or subject-wise.
+    	</td>
+
+   </tr></tbody></table>
+
+
+
+                               </td></tr>
+
+       </table>
+
+
+   </html:form>
+  
+
+
+
 
      <%}else{%>
 
-     <div  align="right"id="wb_Text1" style="position: absolute; right: 275px; top: 0px;
-width: 500px; height: 19px; background-color: rgb(255, 255, 255);
-z-index: 0;" >
-<font style="font-size: 16px;" color="#c0003b" face="Arial" align="center"><b>
-             <%=resource.getString("opac.advance.advancesearchtext")%></b></font></div>
-<div id="wb_Form1" style="position: absolute; right: 7px; top: 25px; width: 875px; height: 370px; z-index: 42;">
-<html:form  method="post" action="/OPAC/advance_search">
-<div style="border: 1px solid rgb(0, 85, 0); position: absolute; right: 45px; top: 35px; width: 104px; height: 18px; z-index: 0;">
-<select name="CMBFIELD1" size="1" style="border-width: 0px; left: 0px; top: 0px; width: 100%; height: 100%; font-family: Arial; font-size: 13px;">
+   
+<html:form  method="post" action="/OPAC/advance_search" onsubmit="return validate();">
+    
+    
+     <table  align="left" width="1200x" class="datagrid"  style="border:solid 1px #e0e8f5;">
+
+
+
+  <tr class="header"><td  width="1000px"  height="28px" align="center" colspan="2">
+
+
+		  <%=resource.getString("opac.advance.advancesearchtext")%>
+
+
+
+
+        </td></tr>
+  <tr style="background-color:#e0e8f5;">
+
+      <td    align="left" width="200px" valign="top">
+          <table >
+              <tr>
+                  <td>in Field </td>
+                  <td rowspan="2" valign="top">
+
+          <select name="CMBFIELD1" size="1" >
 <option selected value="title">ANY FIELD</option>
 <option value="author">AUTHOR</option>
 <option value="title">TITLE</option>
-<option value="isbn">ISBN</option>
+<option value="isbn10">ISBN</option>
 <option value="subject">SUBJECT</option>
-<option value="pubplace">PLACE</option>
-<option value="publisher">PUBLISHER</option>
-</select>
-</div>
 
-<div style="border: 1px solid rgb(0, 85, 0); position: absolute; right: 45px; top: 91px; width: 104px; height: 18px; z-index: 27;">
-<select name="CMBFIELD2" size="1"  style="border-width: 0px; left: 0px; top: 0px; width: 100%; height: 100%; font-family: Arial; font-size: 13px;">
-<option selected value="author">ANY FIELD</option>
+
+</select>
+
+     </td>
+
+              </tr></table></td>
+              <td width="800px" align="right">
+          <table width="800px" align="right">
+              <tr>
+                  <td align="right" colspan="2"><input name="TXTPHRASE1" type="text">
+</td><td align="left">Search Keyword as&nbsp;</td></tr>
+              <tr> <td align="center" width="500px"><select name="CMBF1" size="1">
+<option value="or">OR</option>
+<option value="and">AND</option>
+</select></td>
+<td align="right"> <select name="CMB1" size="1">
+    <option value="or">OR</option>
+    <option value="and">AND</option>
+  </select>
+
+
+
+                  </td> <td align="left">Connected Word As</td>
+      </tr>
+
+          </table>
+      </td>
+  </tr>
+  <tr style="background-color:#e0e8f5;">
+
+      <td    align="left" width="200px" valign="top">
+          <table >
+              <tr>
+                  <td>in Field </td>
+                  <td rowspan="2" valign="top">
+
+          <select name="CMBFIELD2" size="1" >
+<option selected value="title">ANY FIELD</option>
 <option value="author">AUTHOR</option>
 <option value="title">TITLE</option>
-<option value="isbn">ISBN</option>
+<option value="isbn10">ISBN</option>
 <option value="subject">SUBJECT</option>
-<option value="pubplace">PLACE</option>
-<option value="publisher">PUBLISHER</option>
-</select>
-</div>
 
-<div style="border: 1px solid rgb(0, 85, 0); position: absolute; right: 45px; top: 159px; width: 104px; height: 18px; z-index: 26;">
-<select name="CMBFIELD3" size="1" style="border-width: 0px; left: 0px; top: 0px; width: 100%; height: 100%; font-family: Arial; font-size: 13px;">
-<option selected value="subject">ANY FIELD</option>
+
+</select>
+
+     </td>
+
+              </tr></table></td>
+              <td width="800px" align="right">
+          <table width="800px" align="right">
+              <tr>
+                  <td align="right" colspan="2"><input name="TXTPHRASE2" type="text">
+</td><td align="left">Search Keyword as&nbsp;</td></tr>
+              <tr> <td align="center" width="500px"><select name="CMBF2" size="1">
+<option value="or">OR</option>
+<option value="and">AND</option>
+</select></td>
+<td align="right"> <select name="CMB2" size="1">
+    <option value="or">OR</option>
+    <option value="and">AND</option>
+  </select>
+
+
+
+                  </td> <td align="left">Connected Word As</td>
+      </tr>
+
+          </table>
+      </td>
+  </tr>
+  <tr style="background-color:#e0e8f5;">
+
+      <td    align="left" width="200px" valign="top">
+          <table >
+              <tr>
+                  <td>in Field </td>
+                  <td rowspan="2" valign="top">
+
+          <select name="CMBFIELD3" size="1" >
+<option selected value="title">ANY FIELD</option>
 <option value="author">AUTHOR</option>
 <option value="title">TITLE</option>
-<option value="isbn">ISBN</option>
+<option value="isbn10">ISBN</option>
 <option value="subject">SUBJECT</option>
-<option value="pubplace">PLACE</option>
-<option value="publisher">PUBLISHER</option>
+
 </select>
-</div>
 
-<div id="wb_Text1" style="position: absolute; right: 4px; top: 38px; width: 39px; height: 16px; z-index: 1;" align="left">
-<font style="font-size: 13px;" color="#000000" face="Arial"><b><%=resource.getString("opac.advance.field")%></b></font></div>
+     </td>
 
-<input name="TXTPHRASE1" style="border: 1px solid rgb(0, 64, 64); position: absolute; right: 245px; top: 34px; width: 296px; height: 18px; font-family: Courier New; font-size: 13px; z-index: 2;"     type="text">
-<input name="TXTPHRASE2" style="border: 1px solid rgb(0, 64, 64); position: absolute; right: 245px; top: 93px; width: 296px; height: 18px; font-family: Courier New; font-size: 13px; z-index: 24;"    type="text">
-<input name="TXTPHRASE3" style="border: 1px solid rgb(0, 64, 64); position: absolute; right: 245px; top: 158px; width: 296px; height: 18px; font-family: Courier New; font-size: 13px; z-index: 25;"   type="text">
-<input name="TXTYR2" style="border: 1px dotted rgb(139, 0, 0); position: absolute; right: 180px; top: 251px; width: 52px; height: 18px; font-family: Courier New; font-size: 13px; z-index: 11;"  type="text">
-<input name="TXTYR1" style="border: 1px dotted rgb(139, 0, 0); position: absolute; right: 90px; top: 252px; width: 52px; height: 18px; font-family: Courier New; font-size: 13px; z-index: 12;"  type="text">
-
-
-<div id="wb_Text7" style="position: absolute; right: 150px; top: 249px; width: 21px; height: 14px; z-index: 6;" align="right">---</div>
-<input id="Button2" name="" value="<%=resource.getString("opac.advance.find")%>" style="position: absolute; right: 250px; top: 280px; width: 68px; height: 25px; font-family: Arial; font-weight: bold; font-size: 13px; z-index: 15;" type="submit">
-<input id="Button1" name="" value="<%=resource.getString("opac.advance.clear")%>" style="position: absolute; right: 360px; top: 280px; width: 67px; height: 25px; font-family: Arial; font-weight: bold; font-size: 13px; z-index: 23;" type="reset">
-
-<div style="border: 1px solid rgb(0, 85, 0); position: absolute; right: 326px; top: 66px; width: 61px; height: 18px; z-index: 35;">
-  <select name="CMB1" size="1" style="border-width: 0px; right: 0px; top: 0px; width: 100%; height: 100%; font-family: Courier New; font-size: 13px;">
+              </tr></table></td>
+              <td width="800px" align="right">
+          <table width="800px" align="right">
+              <tr>
+                  <td align="right" colspan="2"><input name="TXTPHRASE3" type="text">
+</td><td align="left">Search Keyword as&nbsp;</td></tr>
+              <tr> <td align="center" width="500px"><select name="CMBF3" size="1">
+<option value="or">OR</option>
+<option value="and">AND</option>
+</select></td>
+<td align="right"> <select name="CMB3" size="1">
     <option value="or">OR</option>
     <option value="and">AND</option>
   </select>
-</div>
-
-<div style="border: 1px solid rgb(0, 85, 0); position: absolute; right: 326px; top: 126px; width: 61px; height: 18px; z-index: 19;">
-  <select name="CMB2" size="1"  style="border-width: 0px; right: 0px; top: 0px; width: 100%; height: 100%; font-family: Courier New; font-size: 13px;">
-    <option value="or">OR</option>
-    <option value="and">AND</option>
-  </select>
-</div>
-
-<div style="border: 1px solid rgb(0, 85, 0); position: absolute; right: 326px; top: 186px; width: 61px; height: 18px; z-index: 19;">
-  <select name="CMB3" size="1"  style="border-width: 0px; right: 0px; top: 0px; width: 100%; height: 100%; font-family: Courier New; font-size: 13px;">
-    <option value="or">OR</option>
-    <option value="and">AND</option>
-  </select>
-</div>
-
-<div style="border: 1px solid rgb(0, 85, 0); position: absolute;right: 622px; top: 94px; width: 60px; height: 18px; z-index: 31;">
-<select name="CMBF2" size="1" style="border-width: 0px; right: 0px; top: 0px; width: 100%; height: 100%; font-family: Courier New; font-size: 13px;">
-<option value="or">OR</option>
-<option value="and">AND</option>
-</select>
-</div>
-
-<div style="border: 1px solid rgb(0, 85, 0); position: absolute;right: 622px; top: 156px; width: 60px; height: 18px; z-index: 33;">
-<select name="CMBF3" size="1"  style="border-width: 0px; right: 0px; top: 0px; width: 100%; height: 100%; font-family: Courier New; font-size: 13px;">
-<option value="or">OR</option>
-<option value="and">AND</option>
-</select>
-</div>
-
-<div style="border: 1px solid rgb(0, 85, 0); position: absolute; right: 622px; top: 33px; width: 60px; height: 18px; z-index: 30;">
-<select name="CMBF1" size="1" style="border-width: 0px; right: 0px; top: 0px; width: 100%; height: 100%; font-family: Courier New; font-size: 13px;">
-<option value="or">OR</option>
-<option value="and">AND</option>
-</select>
-</div>
 
 
 
-<div id="wb_Text11" style="position: absolute; right: 546px; top: 36px; width: 76px; height: 16px; z-index: 20;" align="right">
-<font style="font-size: 13px;" color="#000000" face="Arial"><b><%=resource.getString("opac.advance.connectas")%></b></font></div>
-<div id="wb_Text14" style="position: absolute; right: 4px; top: 94px; width: 39px; height: 16px; z-index: 28;" align="right">
-<font style="font-size: 13px;" color="#000000" face="Arial"><b><%=resource.getString("opac.advance.field")%></b></font></div>
-<div id="wb_Text15" style="position: absolute; right: 4px; top: 163px; width: 39px; height: 16px; z-index: 29;" align="right">
-<font style="font-size: 13px;" color="#000000" face="Arial"><b><%=resource.getString("opac.advance.field")%></b></font></div>
-<div id="wb_Text16" style="position: absolute; right: 546px; top: 96px; width: 76px; height: 16px; z-index: 32;" align="right">
-<font style="font-size: 13px;" color="#000000" face="Arial"><b><%=resource.getString("opac.advance.connectas")%></b></font></div>
-<div id="wb_Text17" style="position: absolute; right: 545px; top: 160px; width: 76px; height: 16px; z-index: 34;" align="right">
-<font style="font-size: 13px;" color="#000000" face="Arial"><b><%=resource.getString("opac.advance.connectas")%></b></font></div>
-<div id="wb_Text4" style="position: absolute; right: 546px; top: 6px; width: 65px; height: 16px; z-index: 36;" align="right">
-<font style="font-size: 13px;" color="#000000" face="Arial"><b><%=resource.getString("opac.advance.database")%></b></font></div>
-<div id="wb_Text12" style="position: absolute;right: 159px; top: 95px; width: 95px; height: 14px; z-index: 38;" align="right">
-<font style="font-size: 13px;" color="#000000" face="Arial"><b><%=resource.getString("opac.advance.enterphrase")%></b></font></div>
-<div id="wb_Text13" style="position: absolute; right: 159px; top: 161px; width: 92px; height: 16px; z-index: 39;" align="right">
-<font style="font-size: 13px;" color="#000000" face="Arial"><b><%=resource.getString("opac.advance.enterphrase")%></b></font></div>
-<div id="wb_Text3" style="position: absolute; right: 157px; top: 36px; width: 91px; height: 16px; z-index: 40;" align="right">
-<font style="font-size: 13px;" color="#000000" face="Arial"><b><%=resource.getString("opac.advance.enterphrase")%></b></font></div>
-<div style="border: 1px solid rgb(0, 85, 0); position: absolute; right:622px; top: 5px; width: 127px; height: 18px; z-index: 37;">
-<select name="CMBDB" size="1" style="border-width: 0px; left: 0px; top: 0px; width: 100%; height: 100%; font-family: Courier New; font-size: 13px;">
-    <option  selected value="combined">COMBINED</option>
-    <option value="book">BOOKS</option>
-    <option value="thesis">THESIS</option>
-    <option value="tsd/psd">TSD/PSD</option>
-    <option value="rd/r/rs">RD/R/RS</option>
-    <option value="journal">JOURNALS</option>
-    <option value="cd">CDs</option>
-    <option value="ebook">EBOOKS</option>
-    <option value="articles">ARTICLES DATA</option>
-</select>
-</div>
+                  </td> <td align="left">Connected Word As</td>
+      </tr>
 
-<div id="wb_Text13" style="position: absolute;right: 4px; top: 222px; width: 130px; height: 16px; z-index: 29;" align="right">
- <font style="font-size: 13px;" color="#000000" face="Arial"><b>:<%=resource.getString("opac.advance.publicationyear")%></b></font>
-</div>
+          </table>
+      </td>
+  </tr>
+ 
 
-<div style="border: 1px solid rgb(0, 85, 0); position: absolute; right: 90px; top: 220px; width: 120px; height: 19px; z-index: 19;">
-<select name="CMBYR" onChange="f()" size="1" style="border-width: 0px; left: 0px; top: 0px; width: 100%; height: 100%; font-family: Courier New; font-size: 13px;">
-    <option value="all">Select Year</option>
-    <option value="all">ALL YEARS</option>
-    <option value="between">BETWEEN</option>
-    <option value="upto">UPTO</option>
+    <tr class="header">
+      <td align="right">Sort By</td><td width="1000px"   align="right" >&nbsp;Restricted By</td></tr>
+   <tr style="background-color:#e0e8f5;">
+
+      <td align="left">
+           <table>
+                           <tr><td>Field</td><td> <select name="CMBSORT" size="1" id="CMBSORT">
+<option  value="author_main">AUTHOR</option>
+<option value="title">TITLE</option>
+<option value="isbn10">ISBN</option>
+<option value="publisher_name">PUBLISHER</option>
+</select></td>
+                           </tr></table>
+
+
+      </td>
+  <td width="800px"   align="right">
+           <table  width="800px" ><tr>
+                  <td align="left"><%=resource.getString("opac.additional.publicationyear")%>
+                                   <br/>
+                       <table >
+                           <tr><td rowspan="4"></td><td><select name="CMBYR" onChange=f() size="1" id="CMBYR" style="left:0px;top:0px;width:100%;height:100%;border-width:0px;font-family:Courier New;font-size:13px;">
+<option selected value="all">Select Year</option>
+<option value="all">ALL YEARS</option>
+<option value="between">BETWEEN</option>
+<option value="upto">UPTO</option>
 <option value="after">AFTER</option>
+                                   </select></td><td align="right">
+<input type="text" id="TXTYR1"  name="TXTYR1" style="width:50px"></td><td align="right">
+<input type="text" id="TXTYR2"  name="TXTYR2" style="width:50px">
+</td></tr>
+
+
+
+                       </table>
+
+
+
+
+                   </td>
+                <td align="500px" align="right">
+          <table>
+              <tr><td ><%=resource.getString("opac.simplesearch.database")%></td><td>
+                      <select name="CMBDB" size="1" id="CMBDB">
+<option value="combined" selected>COMBINED</option>
+    <option value="book">BOOKS</option>
+    <option value="cd">CDs</option>
+
 </select>
-</div>
-<div id="wb_Text2" style="position:absolute;right:4px;top:6px;width:67px;height:16px;z-index:2;" align="right">
-<font style="FONT-SIZE: 13px" color="#000000" face="Arial"><b><%=resource.getString("opac.advance.library")%></b></font></div>
-<div style="position:absolute;right:45px;top:6px;width:100px;height:18px;border:1px #C0C0C0 solid;z-index:9">
-<select name="CMBLib" size="1" id="CMBLib" style="right:0px;top:0px;width:100%;height:100%;border-width:0px;font-family:Courier New;font-size:13px;">
+                  </td></tr>
+                   <tr>   <td ><%=resource.getString("opac.simplesearch.library")%></td><td>
+                  <select name="CMBLib" size="1" id="CMBLib">
     <%
         ResultSet rs = (ResultSet)session.getAttribute("libRs");
         String lib_id = (String)session.getAttribute("library_id");
+
         rs.beforeFirst();
-    %>
+
+    if(lib_id==null)
+    {%>
+
+    <option selected value="all">ALL</option>
+    <%}
+    else
+    {%>
     <option selected value="<%=lib_id%>"><%=lib_id.toUpperCase()%></option>
     <option value="all">ALL</option>
-    <%
 
+    <%
+    }
     while (rs.next())
             {
     %>
     <option value="<%= rs.getString(1) %>"><%=rs.getString(1).toUpperCase()%></option>
     <% } %>
 </select>
-</div>
+
+
+                  </td>
+
+      </tr>
+
+          </table>
+                   </td>
+               </tr></table>
+      </td>
+  </tr>
+
+
+
+
+ 
+  <tr><td  colspan="2" align="right">
+
+<input id="Button2" name="" class="btn" value="<%=resource.getString("opac.advance.find")%>"  type="submit">
+<input id="Button1" name="" class="btn" value="<%=resource.getString("opac.advance.clear")%>" type="reset">
+
+
+      </td></tr>
+    <tr class="header">
+       <td colspan="2" align="right">
+
+
+                            <a name="tips">&nbsp;Search Tips</a>
+
+
+
+
+                            <table class="datagrid" style="background-color:#e0e8f5;color:black" halign="left" border="0" cellpadding="2" cellspacing="0" width="100%" frame="hspaces" height="38" rules="rows">
+    <colgroup width="79%"></colgroup><colgroup width="1%"></colgroup><colgroup width="20%"></colgroup>
+    <tbody><tr>
+    <th colspan="3" class="tipstext">
+    	The user can make a advanced search using this option. The fields to be entered are:
+    </th>
+
+    </tr>
+
+    <tr>
+        <td class="tipstext" align="right">
+    		 Select from the combo box the database on which the search is to be made.
+    </td>
+
+
+    <td class="tipsheading">:</td>
+     <td class="txt2" align="right">
+    		Database
+    </td>
+    </tr>
+    <tr>
+        <td class="tipstext" align="right">
+    		 Select from the combo box the Library on which the search is to be made.
+    </td>
+
+
+    <td class="tipsheading">:</td>
+     <td class="txt2" align="right">
+    		Library
+    </td>
+    </tr>
+
+    <tr valign="top">
+
+
+   	<td class="tipstext" align="right">
+    		Select from the combo box the field on which the Sorting is to be made.
+    	</td>
+        <td class="tipsheading">:</td>
+<td class="txt2" align="right">
+    		Field
+   	</td>
+    </tr>
+
+    <tr valign="top">
+
+
+
+    	<td class="tipstext" align="right">
+    		 Give the word(s) or phrase on the basis of which the search is to be made.
+    	</td>
+        <td class="tipsheading">:</td>
+<td class="txt2" align="right">
+    		Search Keyword As
+    	</td>
+    </tr>
+
+    <tr valign="top">
+
+
+    	<td class="tipstext" align="right">
+    		 Select from the combo box the connector required between the search words.
+    	</td>
+        <td class="tipsheading">:</td>
+<td class="txt2" align="right">
+    		Connected Word As
+    	</td>
+    </tr>
+    <tr valign="top">
+
+
+    	<td class="tipstext" align="right">
+    		 Give the publishing year(s) within which a search has to be made.
+    	</td>
+        <td class="tipsheading">:</td>
+<td class="txt2"  align="right">
+    		Publication Year
+    	</td>
+    </tr>
+    <tr valign="top">
+
+
+    	<td class="tipstext" align="right">
+    		  Select from the combo box the Field required on which searching has to made.
+    	</td>
+        <td class="tipsheading">:</td>
+<td class="txt2"  align="right">
+    		In Field
+    	</td>
+    </tr>
+
+   <tr valign="top">
+
+    	<td colspan="2" class="txt2" align="right">
+    		Click on Find and the result is displayed. Thus , a advanced search can be made on  title-wise, author-wise or subject-wise etc.
+    	</td>
+
+   </tr></tbody></table>
+
+
+       
+
+       </table>
+
+
+
 </html:form>
-</div>
+
 
      <%}%>
 </body>

@@ -36,18 +36,18 @@ locale1=(String)session.getAttribute("locale");
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
     %>
-<table align="center">
+<table align="center" class="datagrid">
       <%if(page.equals(true)){%>
-      <tr><td colspan="2" align="center" height="50px" valign="bottom">
+      <tr><td colspan="2" align="center" height="50px" valign="top">
 
-                    <b><span style="font-family: Tahoma;font-size:14px">&copy; <%=resource.getString("login.message.footer")%></span></b>
+                    <span>&copy; <%=resource.getString("login.message.footer")%></span>
                 </td></tr>
 
 
         <%}else{%>
         <tr><td colspan="2" align="center" height="50px" valign="bottom">
 
-                    <b><span style="font-family: Tahoma;font-size:14px">&copy; <%=resource.getString("login.message.footer")%></span></b>
+                <span>&copy; <%=resource.getString("login.message.footer")%></span>
                 </td></tr>
 
 

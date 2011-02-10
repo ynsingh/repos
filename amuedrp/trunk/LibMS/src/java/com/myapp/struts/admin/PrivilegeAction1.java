@@ -34,7 +34,7 @@ public class PrivilegeAction1 extends org.apache.struts.action.Action {
      * @param request The HTTP Request we are processing.
      * @param response The HTTP Response we are processing.
      * @throws java.lang.Exception
-     * @return
+   
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -54,13 +54,44 @@ if(button.equals("Restore Previous Privilege"))
         privilegebackup[0].beforeFirst();
             Privilege priv=new Privilege();
             priv.rollbackPrivilege(privilegebackup,staff_id,library_id);
-            request.setAttribute("res","Privileage Successfully removed");
-            request.setAttribute("staff_id", staff_id);
-            request.setAttribute("staff_name", staff_name);
+         /*   String sql = "select * from privilege where staff_id='"+staff_id+"' and libary_id='"+library_id+"'";
+            ResultSet rs = MyQueryResult.getMyExecuteQuery(sql);
+            if(rs!=null)
+            {
+                rs.next();
+                if(rs.getString("Administrator").equals("false")){
+                    int i = MyQueryResult.getMyExecuteUpdate("update login set role='admin' where staff_id='"+staff_id+"' and library_id='"+library_id+"'");
+                    if (i>0){
+                            request.setAttribute("res","Privileage Successfully removed");
+                            request.setAttribute("staff_id", staff_id);
+                            request.setAttribute("staff_name", staff_name);
+                            request.setAttribute("privilege_list", privilege_list);
+                            System.out.println("staff name="+staff_name);
+                            return mapping.findForward("success");
+                    }
+                }
+            }
+
+*/
+            String sql = "select * from privilege where staff_id='"+staff_id+"' and library_id='"+library_id+"'";
+            ResultSet rs = MyQueryResult.getMyExecuteQuery(sql);
+            if(rs!=null)
+            {
+                rs.next();
+                if(rs.getString("administrator").equals("false")){
+                    int i = MyQueryResult.getMyExecuteUpdate("update login set role='admin' where staff_id='"+staff_id+"' and library_id='"+library_id+"'");
+                    
+
+                }
+                request.setAttribute("res","Privileage Successfully removed");
+                            request.setAttribute("staff_id", staff_id);
+                            request.setAttribute("staff_name", staff_name);
+                            request.setAttribute("privilege_list", privilege_list);
+                            System.out.println("staff name="+staff_name);
+                            return mapping.findForward("success");
+            }
+                
             
-            request.setAttribute("privilege_list", privilege_list);
-           System.out.println("staff name="+staff_name);
-            return mapping.findForward("success");
 }
 else
 {
@@ -71,7 +102,8 @@ else
            System.out.println("staff name111="+staff_name);
            return mapping.findForward("restore");
 }
-         
-        
+       System.out.println("staff name111="+staff_name);
+           return mapping.findForward("restore");
+    
     }
 }

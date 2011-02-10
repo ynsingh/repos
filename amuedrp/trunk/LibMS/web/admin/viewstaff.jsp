@@ -135,22 +135,22 @@ else
 
     <column width="50">
       <header value="Staff_ID" hAlign="left" styleClass="header"/>
-      <item   value="${doc.staff_id}" hyperLink="/LibMS-Struts/admin/index2.jsp?id='${doc.staff_id}'"  hAlign="left"    styleClass="item"/>
+      <item   value="${doc.staff_id}" hyperLink="/LibMS-Struts/admin/index2.jsp?id=${doc.staff_id}"  hAlign="left"    styleClass="item"/>
     </column>
 
     <column width="100">
       <header value="First_Name" hAlign="left" styleClass="header"/>
-      <item   value="${doc.first_name}" hAlign="left" hyperLink="/LibMS-Struts/admin/index2.jsp?id='${doc.staff_id}'"  styleClass="item"/>
+      <item   value="${doc.first_name}" hAlign="left" hyperLink="/LibMS-Struts/admin/index2.jsp?id=${doc.staff_id}"  styleClass="item"/>
     </column>
 
     <column width="100">
       <header value="Last_Name" hAlign="left" styleClass="header"/>
-      <item   value="${doc.last_name}" hyperLink="/LibMS-Struts/admin/index2.jsp?id='${doc.staff_id}'"  hAlign="left" styleClass="item"/>
+      <item   value="${doc.last_name}" hyperLink="/LibMS-Struts/admin/index2.jsp?id=${doc.staff_id}"  hAlign="left" styleClass="item"/>
     </column>
    
     <column width="100">
       <header value="Email_ID" hAlign="left" styleClass="header"/>
-      <item   value="${doc.email_id}" hyperLink="/LibMS-Struts/admin/index2.jsp?id='${doc.staff_id}'"  hAlign="left" styleClass="item"/>
+      <item   value="${doc.email_id}" hyperLink="/LibMS-Struts/admin/index2.jsp?id=${doc.staff_id}"  hAlign="left" styleClass="item"/>
     </column>
  </columns>
 
@@ -202,14 +202,5 @@ else
  </table>
     </body>
 </div>
+  
 </html>
- <div
-   style="
-      top: 650px;
-
-      position: absolute;
-
-      visibility: show;">
-        <jsp:include page="footer.jsp" />
-
-</div>

@@ -45,6 +45,7 @@ public class StaffDetailAction extends org.apache.struts.action.Action {
     private String father_name;
     private String gender;
     private String courtesy;
+    private String role;
     Connection con;
     int i=0;
 
@@ -55,7 +56,7 @@ public class StaffDetailAction extends org.apache.struts.action.Action {
      * @param request The HTTP Request we are processing.
      * @param response The HTTP Response we are processing.
      * @throws java.lang.Exception
-     * @return
+    
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -88,6 +89,7 @@ public class StaffDetailAction extends org.apache.struts.action.Action {
         father_name=staff.getFather_name();
         gender=staff.getGender();
         courtesy=staff.getCourtesy();
+       // role=staff.getRole();
         con=MyConnection.getMyConnection();
         System.out.println("..........."+do_joining+do_releaving+date_of_birth);
 

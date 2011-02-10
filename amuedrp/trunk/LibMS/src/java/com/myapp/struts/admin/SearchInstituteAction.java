@@ -33,7 +33,7 @@ public class SearchInstituteAction extends org.apache.struts.action.Action {
      * @param request The HTTP Request we are processing.
      * @param response The HTTP Response we are processing.
      * @throws java.lang.Exception
-     * @return
+   
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -43,7 +43,7 @@ public class SearchInstituteAction extends org.apache.struts.action.Action {
         search_by=institute.getSearch_by();
         sort_by=institute.getSort_by();
         search_keyword=institute.getSearch_keyword();
-        sql="select * from admin_registration where "+search_by+"='"+search_keyword+"' order by "+sort_by+" asc";
+        sql="select a.*,b.library_id from admin_registration a inner join library b on a.registration_id=b.registration_id  where a."+search_by+" like '"+search_keyword+"%' order by a."+sort_by+" asc";
         rst=MyQueryResult.getMyExecuteQuery(sql);
         request.setAttribute("search_institute_resultset",rst );
         return mapping.findForward("institute_search");

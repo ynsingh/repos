@@ -40,21 +40,11 @@ public class StaffDetailActionForm extends ValidatorForm {
     private String gender;
     private String courtesy;
     private String button;
+    private String role;
 
     
 
-    /**
-     * @return
-     */
-
-
-    /**
-     * @return
-     */
-
-    /**
-     *
-     */
+   
     public StaffDetailActionForm() {
         super();
         // TODO Auto-generated constructor stub
@@ -64,7 +54,7 @@ public class StaffDetailActionForm extends ValidatorForm {
      * This is the action called from the Struts framework.
      * @param mapping The ActionMapping used to select this instance.
      * @param request The HTTP Request we are processing.
-     * @return
+  
      */
     
     /**
@@ -362,16 +352,12 @@ public class StaffDetailActionForm extends ValidatorForm {
         this.gender = gender;
     }
 
-    /**
-     * @return the coutesy
-     */
+    
     public String getCourtesy() {
         return courtesy;
     }
 
-    /**
-     * @param coutesy the coutesy to set
-     */
+    
     public void setCourtesy(String courtesy) {
         this.courtesy = courtesy;
     }
@@ -409,5 +395,19 @@ public class StaffDetailActionForm extends ValidatorForm {
      */
     public void setStaff_id(String staff_id) {
         this.staff_id = staff_id;
+    }
+
+    /**
+     * @return the role
+     */
+    public String getRole() {
+        return role;
+    }
+
+    /**
+     * @param role the role to set
+     */
+    public void setRole(String role) {
+        this.role = role;
     }
 }

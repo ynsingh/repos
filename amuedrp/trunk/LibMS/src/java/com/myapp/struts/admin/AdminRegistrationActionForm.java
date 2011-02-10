@@ -40,9 +40,7 @@ private String gender;
 
 
 
-    /**
-     * @return
-     */
+    
     public String getInstitute_name() {
         return institute_name;
     }
@@ -106,9 +104,7 @@ private String gender;
     }
 
 
-    /**
-     * @param string
-     */
+    
         public void setRegistration_id(int i) {
         registration_id = i;
     }
@@ -172,16 +168,7 @@ private String gender;
          admin_password=string;
     }
 
-    /**
-     * @return
-     */
    
-
-    /**
-     * @param i
-     */
-   
-
     /**
      *
      */
@@ -194,7 +181,7 @@ private String gender;
      * This is the action called from the Struts framework.
      * @param mapping The ActionMapping used to select this instance.
      * @param request The HTTP Request we are processing.
-     * @return
+    
      */
     
 @Override

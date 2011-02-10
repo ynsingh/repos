@@ -20,6 +20,16 @@
     boolean page=true;
 %>
 <link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
+<noscript>
+<table cellpadding="0" cellspacing="0" border="0" width="550">
+<tr><td width="100%" valign="top" class="PPDesTxt"><b>Have you disabled JavaScript?</b></td></tr>
+
+<tr><td width="100%" valign="top" class="PPDesTxt">If you have disabled JavaScript, you must re-enable JavaScript to use this page.<a href="/LibMS-Struts/javascript.html">Click Here</a></td></tr>
+
+</table>
+
+
+</noscript>
 <script language="javascript">
 /*
 * Returns an new XMLHttpRequest object, or false if the browser
@@ -78,15 +88,7 @@ function search() {
   availableSelectList.innerHTML = "";
     var keyValue = document.getElementById("username").value;
 
-    if (echeck(keyValue)==false)
-    {
-		username.value="";
-		username.focus();
-		return false;
-	}
-else
-    {
-    keyValue = keyValue.replace(/^\s*|\s*$/g,"");
+    //keyValue = keyValue.replace(/^\s*|\s*$/g,"");
 if (keyValue.length >= 1)
 {
 availableSelectList = document.getElementById("searchResult");
@@ -102,9 +104,20 @@ req.send("getEmail_Id="+keyValue);
 
 }
 return true;
-}
-}
 
+}
+function submitLogin()
+{
+    var buttonvalue="Log In";
+    document.getElementById("button1").setAttribute("value", buttonvalue);
+    return true;
+}
+function submitForget()
+{
+    var buttonvalue="Forget Password";
+    document.getElementById("button1").setAttribute("value", buttonvalue);
+    return true;
+}
 function search1() {
 
  availableSelectList = document.getElementById("searchResult1");
@@ -221,9 +234,9 @@ availableSelectList = document.getElementById("searchResult");
  		 return true
 	}
 
+
+
 </script>
-
-
 
 <%
 try{
@@ -261,12 +274,30 @@ locale1=(String)session.getAttribute("locale");
 
     <form method="post" action="/LibMS-Struts/login.do" name="form1">
         <table align="center" style="border:solid 1px white;height:500px">
+              <%
+
+String str1=(String)request.getAttribute("msg");
+if(str1!=null)
+    {%>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size:18px;font-weight:bold;color:blue;" ><%=str1%></span>
+<%}%>
+
             <%
+
 String str=(String)request.getAttribute("registration_msg");
 if(str!=null)
     {%>
     &nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size:18px;font-weight:bold;color:blue;" ><%=str%></span>
 <%}%>
+
+            <%
+
+str=(String)request.getAttribute("msg1");
+if(str!=null)
+    {%>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size:18px;font-weight:bold;color:red;" ><%=str%></span>
+<%}%>
+
 
             <%if(page.equals(true)){%>
             <tr>
@@ -287,9 +318,16 @@ if(str!=null)
                                <br>
                             <span style="font-family: Arial;font-size:15px;" dir="<%=rtl%>"><br>
                                     <%=resource.getString("login.message.logo.center")%>
+
+                                   
+
                     <table cellpadding="5px">
                     <tr><td height="10px"></td><td></td></tr>
-                        <tr><td><img src="images/B.jpg" alt="" style="height:30px;width:40px;"  border="0" align="top" id="Image1" style=""></td><td align="top" > <span style="font-family: Tahoma;font-size:14px; color: #151B54;" ><b><%=resource.getString("login.image.acquisition")%></b></span></td><td width="800px" ><span style="font-family: Tahoma;font-size:14px; color: #006BF5;align:justify;" ><%=resource.getString("login.message.image.acquisition")%></span></td></tr>
+
+                      <tr><td><img src="images/B.jpg" alt="" style="height:30px;width:40px;"  border="0" align="top" id="Image1" style=""></td><td align="left"><span style="font-family: Tahoma;font-size:14px; color: #151B54;" ><b><a href="OPAC/OPACmain1.jsp"><%=resource.getString("login.image.opac")%></a></b></span></td><td width="800px" ><span style="font-family: Tahoma;font-size:14px; color: #006BF5;align:justify;" ><%=resource.getString("login.message.image.OPAC")%></span></td></tr>
+                        
+                        <tr><td height="10px"></td><td></td></tr>
+                           <tr><td><img src="images/B.jpg" alt="" style="height:30px;width:40px;"  border="0" align="top" id="Image1" style=""></td><td align="top" > <span style="font-family: Tahoma;font-size:14px; color: #151B54;" ><b><%=resource.getString("login.image.acquisition")%></b></span></td><td width="800px" ><span style="font-family: Tahoma;font-size:14px; color: #006BF5;align:justify;" ><%=resource.getString("login.message.image.acquisition")%></span></td></tr>
                         <tr><td height="10px"></td><td></td></tr>
                         <tr><td><img src="images/B.jpg" alt="" style="height:30px;width:40px;"  border="0" align="top" id="Image1" style=""></td><td align="left"><span style="font-family: Tahoma;font-size:14px; color: #151B54;" ><b><%=resource.getString("login.image.cataloging")%></b></span></td><td width="800px" ><span style="font-family: Tahoma;font-size:14px; color: #006BF5;align:justify;" ><%=resource.getString("login.message.image.cataloging")%></span></td></tr>
                         <tr><td height="10px"></td><td></td></tr>
@@ -297,8 +335,7 @@ if(str!=null)
                         <tr><td height="10px"></td><td></td></tr>
                         <tr><td><img src="images/B.jpg" alt="" style="height:30px;width:40px;"  border="0" align="top" id="Image1" style=""></td><td align="left"><span style="font-family: Tahoma;font-size:14px; color: #151B54;" ><b><%=resource.getString("login.image.serial")%></b></span></td><td width="800px" ><span style="font-family: Tahoma;font-size:14px; color: #006BF5;align:justify;" ><%=resource.getString("login.message.image.serial")%></span></td></tr>
                         <tr><td height="10px"></td><td></td></tr>
-                        <tr><td><img src="images/B.jpg" alt="" style="height:30px;width:40px;"  border="0" align="top" id="Image1" style=""></td><td align="left"><span style="font-family: Tahoma;font-size:14px; color: #151B54;" ><b><%=resource.getString("login.image.opac")%></b></span></td><td width="800px" ><span style="font-family: Tahoma;font-size:14px; color: #006BF5;align:justify;" ><%=resource.getString("login.message.image.OPAC")%></span></td></tr>
-                        <tr><td height="10px"></td><td></td></tr>
+                   
 
 
                       </table>
@@ -339,11 +376,11 @@ if(str!=null)
                     <tr>
                     <td>&nbsp;</td><td align="left" valign="bottom">
                         <br>
-                        <input type="submit" name="button" value="<%=resource.getString("login.button.sigin.login")%>" dir="rtl" /><input type="submit" name="button" value="<%=resource.getString("login.button.sigin.forgetpassword")%>"/>
+                        <input type="submit" name="button"  value="<%=resource.getString("login.button.sigin.login")%>" dir="rtl"  onclick="return submitLogin()" /><input type="submit" name="button" value="<%=resource.getString("login.button.sigin.forgetpassword")%>" onclick="return submitForget()" />
                     </td>
                     </tr>
                         </table>
-
+                    <input type="hidden" id="button1" name="button1" value=""/>
                     </td></tr>
 
                     
@@ -362,7 +399,7 @@ if(str!=null)
                 </td></tr>
             <tr><td colspan="2" align="center" height="50px" valign="top">
 
-                    <b><span style="font-family: Tahoma;font-size:14px">&copy; <%=resource.getString("login.message.footer")%></span></b>
+                    <b><span style="font-family: Tahoma;font-size:12px">&copy; <%=resource.getString("login.message.footer")%></span></b>
                 </td></tr>
 
         
@@ -405,11 +442,10 @@ if(str!=null)
                     <tr>
                    <td align="right" valign="bottom">
                         <br>
-                        <input type="submit" name="button" value="<%=resource.getString("login.button.sigin.forgetpassword")%>" dir="rtl"/><input type="submit" name="button" value="<%=resource.getString("login.button.sigin.login")%>" dir="rtl" />
-                    </td> <td>&nbsp;</td>
+                        <input type="submit" name="button" value="<%=resource.getString("login.button.sigin.forgetpassword")%>" onclick="return submitForget()" dir="rtl"/><input type="submit" name="button" value="<%=resource.getString("login.button.sigin.login")%>" dir="rtl" onclick="return submitLogin()" />                    </td> <td>&nbsp;</td>
                     </tr>
                         </table>
-
+<input type="hidden" id="button1" name="button1" value=""/>
                         <blockquote>&nbsp;</blockquote></td>
               </tr>
 
@@ -428,7 +464,8 @@ if(str!=null)
                     <%=resource.getString("login.message.logo.center")%>
                     <br>
                     <table cellpadding="5px">
-
+                       <tr><td><img src="images/B.jpg" alt="" style="height:30px;width:40px;"  border="0" align="top" id="Image1" style=""></td><td align="left"><span style="font-family: Tahoma;font-size:14px; color: #151B54;" ><b><a href="OPAC/OPACmain1.jsp"><%=resource.getString("login.image.opac")%></a></b></span></td><td width="800px" ><span style="font-family: Tahoma;font-size:14px; color: #006BF5;align:justify;" ><%=resource.getString("login.message.image.OPAC")%></span></td></tr>
+                        <tr><td height="10px"></td><td></td></tr>
                         <tr><td><img src="images/B.jpg" alt="" style="height:30px;width:40px;"  border="0" align="top" id="Image1" style=""></td><td align="right"><span style="font-size:14px; color: #151B54;" ><b><%=resource.getString("login.image.acquisition")%></b></span></td><td><span style="font-size:14px; color: #006BF5;align:justify;" ><%=resource.getString("login.message.image.acquisition")%></span></td></tr>
                         <tr><td height="10px"></td><td></td></tr>
                         <tr><td><img src="images/B.jpg" alt="" style="height:30px;width:40px;"  border="0" align="top" id="Image1" style=""></td><td align="right"><span style="font-size:14px; color: #151B54;" ><b><%=resource.getString("login.image.cataloging")%></b></span></td><td><span style="font-size:14px; color: #006BF5;align:justify;" ><%=resource.getString("login.message.image.cataloging")%></span></td></tr>
@@ -436,8 +473,8 @@ if(str!=null)
                         <tr><td><img src="images/B.jpg" alt="" style="height:30px;width:40px;"  border="0" align="top" id="Image1" style=""></td><td align="right"><span style="font-size:14px; color: #151B54;" ><b><%=resource.getString("login.image.circulation")%></b></span></td><td><span style="font-size:14px; color: #006BF5;align:justify;" ><%=resource.getString("login.message.image.circulation")%></span></td></tr>
                         <tr><td height="10px"></td><td></td></tr>
                         <tr><td><img src="images/B.jpg" alt="" style="height:30px;width:40px;"  border="0" align="top" id="Image1" style=""></td><td align="right"><span style="font-size:14px; color: #151B54;" ><b><%=resource.getString("login.image.serial")%></b></span></td><td><span style="font-size:14px; color: #006BF5;align:justify;" ><%=resource.getString("login.message.image.serial")%></span></td></tr>
-                        <tr><td height="10px"></td><td></td></tr>
-                        <tr><td><img src="images/B.jpg" alt="" style="height:30px;width:40px;"  border="0" align="top" id="Image1" style=""></td><td align="right"><span style="font-size:14px; color: #151B54;" ><b><%=resource.getString("login.image.opac")%></b></span></td><td><span style="font-size:14px; color: #006BF5;align:justify;" ><%=resource.getString("login.message.image.OPAC")%></span></td></tr>
+                       
+                        
                         <tr><td height="10px"></td><td></td></tr>
 
 
@@ -459,7 +496,7 @@ if(str!=null)
   </tr>
  <tr><td colspan="2" align="center" height="50px" valign="top">
 
-                    <b><span style="font-family: Tahoma;font-size:14px">&copy; <%=resource.getString("login.message.footer")%></span></b>
+                    <b><span style="font-family: Tahoma;font-size:12px">&copy; <%=resource.getString("login.message.footer")%></span></b>
                 </td></tr>
   <%}%>
   </table>
@@ -467,3 +504,4 @@ if(str!=null)
 
 </body>
 </html>
+

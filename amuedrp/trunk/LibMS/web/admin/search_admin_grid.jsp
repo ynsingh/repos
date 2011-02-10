@@ -53,13 +53,7 @@ function getQuery(id)
 </head>
 
 <body>
- <div
-   style="  top:0px;
-   left:5px;
-   right:5px;
-      position: absolute;
-
-      visibility: show;">
+ 
 <%!
 
 
@@ -91,6 +85,7 @@ rs.beforeFirst();
 	Ob.setInstitute_name(rs.getString(2));
 	Ob.setLibrary_name(rs.getString(21));
 	Ob.setAdmin_email(rs.getString(17));
+        Ob.setLibrary_id(rs.getString("library_id"));
 
    requestList.add(Ob);
 
@@ -144,8 +139,8 @@ else
     </column>
 
    <column width="100">
-   <header value="Action" hAlign="center" styleClass="header"/>
- <item  value="Edit" hyperLink="/LibMS-Struts/admin/index7.jsp?id=${doc.registration_id}"  hAlign="center" styleClass="item"/>
+   <header value="Library ID" hAlign="center" styleClass="header"/>
+ <item  value="${doc.library_id}" hyperLink="/LibMS-Struts/admin/index7.jsp?id=${doc.registration_id}"  hAlign="center" styleClass="item"/>
     </column>
  </columns>
 
@@ -195,20 +190,10 @@ if(msg!=null)
     </td></tr>
 </table>
 <%}%>
- </div>
+
     </body>
 
+
 </html>
-
-<div
-   style="
-      top: 650px;
-
-      position: absolute;
-
-      visibility: hidden;">
-        <jsp:include page="footer.jsp" />
-
-</div>
 
 

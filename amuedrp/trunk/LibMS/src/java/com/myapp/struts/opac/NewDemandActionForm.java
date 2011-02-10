@@ -9,25 +9,28 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-
+import org.apache.struts.validator.ValidatorForm;
 /**
  *
  * @author Faraz
  */
-public class NewDemandActionForm extends org.apache.struts.action.ActionForm {
+public class NewDemandActionForm extends ValidatorForm {
     
-    private String TXTLIBNAME;
+    
     private String TXTTITLE;
     private String CMBCAT;
     private String TXTAUTHOR;
+    private String TXTISBN;
+    private String issn;
+    private String callno;
     private String TXTPUB;
     private String TXTPUBYR;
-    private String TXTISBN;
+    private String TXTREMARK;
+    private String lang;
     private String TXTCOPY;
     private String TXTVOL;
     private String TXTEDITION;
-    private String TXTREMARK;
+    
 
     /**
      *
@@ -37,35 +40,7 @@ public class NewDemandActionForm extends org.apache.struts.action.ActionForm {
         // TODO Auto-generated constructor stub
     }
 
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param request The HTTP Request we are processing.
-     * @return
-     */
-    public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
-        ActionErrors errors = new ActionErrors();
-        if (getTXTAUTHOR() == null || getTXTAUTHOR().length() < 1) {
-            errors.add("author", new ActionMessage("error.author.required"));
-            // TODO: add 'error.name.required' key to your resources
-        }
-        return errors;
-    }
-
-    /**
-     * @return the TXTLIBNAME
-     */
-    public String getTXTLIBNAME() {
-        return TXTLIBNAME;
-    }
-
-    /**
-     * @param TXTLIBNAME the TXTLIBNAME to set
-     */
-    public void setTXTLIBNAME(String TXTLIBNAME) {
-        this.TXTLIBNAME = TXTLIBNAME;
-    }
-
+    
     /**
      * @return the TXTTITLE
      */
@@ -109,6 +84,48 @@ public class NewDemandActionForm extends org.apache.struts.action.ActionForm {
     }
 
     /**
+     * @return the TXTISBN
+     */
+    public String getTXTISBN() {
+        return TXTISBN;
+    }
+
+    /**
+     * @param TXTISBN the TXTISBN to set
+     */
+    public void setTXTISBN(String TXTISBN) {
+        this.TXTISBN = TXTISBN;
+    }
+
+    /**
+     * @return the issn
+     */
+    public String getIssn() {
+        return issn;
+    }
+
+    /**
+     * @param issn the issn to set
+     */
+    public void setIssn(String issn) {
+        this.issn = issn;
+    }
+
+    /**
+     * @return the callno
+     */
+    public String getCallno() {
+        return callno;
+    }
+
+    /**
+     * @param callno the callno to set
+     */
+    public void setCallno(String callno) {
+        this.callno = callno;
+    }
+
+    /**
      * @return the TXTPUB
      */
     public String getTXTPUB() {
@@ -137,17 +154,31 @@ public class NewDemandActionForm extends org.apache.struts.action.ActionForm {
     }
 
     /**
-     * @return the TXTISBN
+     * @return the TXTREMARK
      */
-    public String getTXTISBN() {
-        return TXTISBN;
+    public String getTXTREMARK() {
+        return TXTREMARK;
     }
 
     /**
-     * @param TXTISBN the TXTISBN to set
+     * @param TXTREMARK the TXTREMARK to set
      */
-    public void setTXTISBN(String TXTISBN) {
-        this.TXTISBN = TXTISBN;
+    public void setTXTREMARK(String TXTREMARK) {
+        this.TXTREMARK = TXTREMARK;
+    }
+
+    /**
+     * @return the lang
+     */
+    public String getLang() {
+        return lang;
+    }
+
+    /**
+     * @param lang the lang to set
+     */
+    public void setLang(String lang) {
+        this.lang = lang;
     }
 
     /**
@@ -192,17 +223,5 @@ public class NewDemandActionForm extends org.apache.struts.action.ActionForm {
         this.TXTEDITION = TXTEDITION;
     }
 
-    /**
-     * @return the TXTREMARK
-     */
-    public String getTXTREMARK() {
-        return TXTREMARK;
-    }
-
-    /**
-     * @param TXTREMARK the TXTREMARK to set
-     */
-    public void setTXTREMARK(String TXTREMARK) {
-        this.TXTREMARK = TXTREMARK;
-    }
+  
 }

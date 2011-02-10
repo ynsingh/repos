@@ -4,11 +4,11 @@
  */
 
 package com.myapp.struts.opac;
-
+import  com.myapp.struts.*;
 import com.myapp.struts.MyExecuteQueryAction;
 import java.sql.ResultSet;
 import java.util.*;
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.*;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -22,7 +22,7 @@ public class FeedbackAction extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
-    
+        String name, email, comments,cardno, date ,library_id;
     /**
      * This is the action called from the Struts framework.
      * @param mapping The ActionMapping used to select this instance.
@@ -30,7 +30,7 @@ public class FeedbackAction extends org.apache.struts.action.Action {
      * @param request The HTTP Request we are processing.
      * @param response The HTTP Response we are processing.
      * @throws java.lang.Exception
-     * @return
+    
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -38,7 +38,8 @@ public class FeedbackAction extends org.apache.struts.action.Action {
             throws Exception {
 
         FeedbackActionForm myForm = (FeedbackActionForm)form;
-        String name="", email="", comments="",cardno="", date="" ;
+
+HttpSession session=request.getSession();
 
     Calendar cal = new GregorianCalendar();
     int month = cal.get(Calendar.MONTH);
@@ -50,13 +51,19 @@ public class FeedbackAction extends org.apache.struts.action.Action {
     name=myForm.getName();
     email=myForm.getEmail();
     comments=myForm.getComments();
-
+library_id=myForm.getCMBLib();
+System.out.println(library_id);
 
     String queryString = "INSERT INTO feedback" +
-        "(cardno,name,email,comments,date) VALUES ('"+ cardno +"','"+ name +"','"+ email +"','"+ comments +"','"+ date +"')";
+        "(cardno,name,email,comments,date,library_id) VALUES ('"+ cardno +"','"+ name +"','"+ email +"','"+ comments +"','"+ date +"','"+library_id+"')";
 
     int no = MyQueryResult.getMyExecuteUpdate(queryString);
-        request.setAttribute("msg", "Your Feedback is sent Successfully to Library..");
-        return mapping.findForward(SUCCESS);
+        if(no>0)
+        {
+            request.setAttribute("msg", "Your Feedback is sent Successfully to Library..");
+        }
+            return mapping.findForward(SUCCESS);
+        
+        
     }
 }

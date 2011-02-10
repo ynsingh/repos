@@ -10,22 +10,15 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Untitled Page</title>
-<link rel="stylesheet" href="common.css">
+
 <style type="text/css">
     a{
-      color:#c0003b;
-        text-decoration:none;
-        font-size:12px;
+        text-decoration: none;
         font-weight: bold;
-
-}
-a:hover
-{
-    font-size:13px;
-color: pink ;
-        text-decoration:none;
-
-        font-weight: bold;
+        font-size: 12px;
+        color:brown;
+         font-family:Tahoma;
+        
 }
     </style>
     <%!
@@ -60,20 +53,20 @@ locale1=(String)session.getAttribute("locale");
 
 
     </head>
-    <body style="margin:0px 0px 0px 0px" >
+    <body  >
          <form method="post" action="mRTL.jsp" name="form1">
-<table cellpadding="3px">
+             <table  width="150px" valign="top" border="0">
     <%if(!page.equals(true)){%>
     <tr>
      <td/>
   </tr>
-  <tr align="right"><td><a class="menu" href="./OpacLib.do?name=newarrival" target="f3" dir="ltr" ><%=resource.getString("opacmainframe.mframe.newarrivals")%></a></td><td><img src="../images/orange_sq_but.gif"  align="right"/></td></tr>
-  <tr  align="right"><td><a class="menu" href="../OPAC/OpacLib.do?name=journal" target="f3" dir="ltr" ><%=resource.getString("opacmainframe.mframe.journals")%></a></td><td><img src="../images/orange_sq_but.gif"/></td></tr>
-  <tr  align="right"><td><a class="menu" href="../OPAC/member.jsp" target="f3" dir="ltr" ><%=resource.getString("opacmainframe.mframe.myaccount")%></a></td><td><img src="../images/orange_sq_but.gif"/></td></tr>
-  <tr  align="right"><td><a class="menu" href="http://catalog.loc.gov" target="f3" dir="ltr" ><%=resource.getString("opacmainframe.mframe.libofcong")%></a></td><td><img src="../images/orange_sq_but.gif"/></td></tr>
-  <tr  align="right"><td><a class="menu" href="../OPAC/Notice.do" target="f3" dir="ltr" ><%=resource.getString("opacmainframe.mframe.notices")%></a></td><td><img src="../images/orange_sq_but.gif"/></td></tr>
-  <tr  align="right"><td><a class="menu" href="../OPAC/Locations.do" target="f3" dir="ltr" ><%=resource.getString("opacmainframe.mframe.location")%></a></td><td><img src="../images/orange_sq_but.gif"/></td></tr>
-  <tr><td  align="right"><a class="menu" href="../OPAC/feedback.jsp" target="f3" dir="ltr" ><%=resource.getString("opacmainframe.mframe.feedback")%></a></td><td><img src="../images/orange_sq_but.gif"/></td></tr>
+  <tr align="right"><td><a  href="./OpacLib.do?name=newarrival" target="f3" dir="ltr" ><%=resource.getString("opacmainframe.mframe.newarrivals")%></a></td><td><img src="../images/orange_sq_but.gif"  align="right"/></td></tr>
+  <tr  align="right"><td><a href="../OPAC/OpacLib.do?name=journal" target="f3" dir="ltr" ><%=resource.getString("opacmainframe.mframe.journals")%></a></td><td><img src="../images/orange_sq_but.gif"/></td></tr>
+  <tr  align="right"><td><a  href="../OPAC/OpacLib.do?name=myaccount" target="f3" dir="ltr" ><%=resource.getString("opacmainframe.mframe.myaccount")%></a></td><td><img src="../images/orange_sq_but.gif"/></td></tr>
+  <tr  align="right"><td><a  href="http://catalog.loc.gov" target="f3" dir="ltr" ><%=resource.getString("opacmainframe.mframe.libofcong")%></a></td><td><img src="../images/orange_sq_but.gif"/></td></tr>
+  <tr  align="right"><td><a  href="../OPAC/Notice.do" target="f3" dir="ltr" ><%=resource.getString("opacmainframe.mframe.notices")%></a></td><td><img src="../images/orange_sq_but.gif"/></td></tr>
+  <tr  align="right"><td><a  href="../OPAC/Locations.do" target="f3" dir="ltr" ><%=resource.getString("opacmainframe.mframe.location")%></a></td><td><img src="../images/orange_sq_but.gif"/></td></tr>
+  <tr><td  align="right"><a  href="../OPAC/OpacLib.do?name=feedback" target="f3" dir="ltr" ><%=resource.getString("opacmainframe.mframe.feedback")%></a></td><td><img src="../images/orange_sq_but.gif"/></td></tr>
 
   <%}else{%>
 
@@ -81,13 +74,13 @@ locale1=(String)session.getAttribute("locale");
   <tr>
      <td/>
   </tr>
-  <tr align="left"><td><img src="../images/orange_sq_but.gif"/></td><td><a class="menu" href="./OpacLib.do?name=newarrival" target="f3" dir="rtl" ><%=resource.getString("opacmainframe.mframe.newarrivals")%> </a></td></tr>
-  <tr  align="left"><td><img src="../images/orange_sq_but.gif"/></td><td><a class="menu" href="../OPAC/OpacLib.do?name=journal" target="f3" dir="rtl" ><%=resource.getString("opacmainframe.mframe.journals")%></a></td></tr>
-  <tr  align="left"><td><img src="../images/orange_sq_but.gif"/></td><td><a class="menu" href="../OPAC/member.jsp" target="f3" dir="rtl" ><%=resource.getString("opacmainframe.mframe.myaccount")%>  </a></td></tr>
-  <tr  align="left"><td><img src="../images/orange_sq_but.gif"/></td><td><a class="menu" href="http://catalog.loc.gov" target="f3" dir="rtl" ><%=resource.getString("opacmainframe.mframe.libofcong")%> </a></td></tr>
-  <tr  align="left"><td><img src="../images/orange_sq_but.gif"/></td><td><a class="menu" href="../OPAC/Notice.do" target="f3" dir="rtl" ><%=resource.getString("opacmainframe.mframe.notices")%> </a></td></tr>
-  <tr  align="left"><td><img src="../images/orange_sq_but.gif"/></td><td><a class="menu" href="../OPAC/Locations.do" target="f3" dir="rtl" ><%=resource.getString("opacmainframe.mframe.location")%></a></td></tr>
-  <tr><td><img src="../images/orange_sq_but.gif"/></td><td  align="left"><a class="menu" href="../OPAC/feedback.jsp"  target="f3" dir="rtl" ><%=resource.getString("opacmainframe.mframe.feedback")%></a></td></tr>
+  <tr align="left"><td><img src="../images/orange_sq_but.gif"/></td><td><a  href="./OpacLib.do?name=newarrival" target="f3" dir="rtl" ><%=resource.getString("opacmainframe.mframe.newarrivals")%> </a></td></tr>
+  <tr  align="left"><td><img src="../images/orange_sq_but.gif"/></td><td><a  href="../OPAC/OpacLib.do?name=journal" target="f3" dir="rtl" ><%=resource.getString("opacmainframe.mframe.journals")%></a></td></tr>
+  <tr  align="left"><td><img src="../images/orange_sq_but.gif"/></td><td><a  href="../OPAC/OpacLib.do?name=myaccount" target="f3" dir="rtl" ><%=resource.getString("opacmainframe.mframe.myaccount")%>  </a></td></tr>
+  <tr  align="left"><td><img src="../images/orange_sq_but.gif"/></td><td><a  href="http://catalog.loc.gov" target="f3" dir="rtl" ><%=resource.getString("opacmainframe.mframe.libofcong")%> </a></td></tr>
+  <tr  align="left"><td><img src="../images/orange_sq_but.gif"/></td><td><a  href="../OPAC/Notice.do" target="f3" dir="rtl" ><%=resource.getString("opacmainframe.mframe.notices")%> </a></td></tr>
+  <tr  align="left"><td><img src="../images/orange_sq_but.gif"/></td><td><a  href="../OPAC/Locations.do" target="f3" dir="rtl" ><%=resource.getString("opacmainframe.mframe.location")%></a></td></tr>
+  <tr><td><img src="../images/orange_sq_but.gif"/></td><td  align="left"><a  href="../OPAC/OpacLib.do?name=feedback"  target="f3" dir="rtl" ><%=resource.getString("opacmainframe.mframe.feedback")%></a></td></tr>
 
 
 

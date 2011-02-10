@@ -24,9 +24,7 @@ public class AcqRegisterActionForm extends org.apache.struts.action.ActionForm {
 
     
 
-    /**
-     * @return
-     */
+  
     public String getStaff_id() {
         return staff_id;
     }
@@ -59,15 +57,10 @@ public class AcqRegisterActionForm extends org.apache.struts.action.ActionForm {
     public void setLibrary_id(String string) {
         library_id = string;
     }
-    /**
-     * @return
-     */
+    
  
 
-    /**
-     * @param i
-     */
-
+   
 
     /**
      *
@@ -81,11 +74,11 @@ public class AcqRegisterActionForm extends org.apache.struts.action.ActionForm {
      * This is the action called from the Struts framework.
      * @param mapping The ActionMapping used to select this instance.
      * @param request The HTTP Request we are processing.
-     * @return
+     
      */
     @Override
     public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
-        ActionErrors errors = new ActionErrors();
+       // ActionErrors errors = new ActionErrors();
         //if (getStaff_id() == null ) {
            // errors.add("name", new ActionMessage("error.name.required"));
             // TODO: add 'error.name.required' key to your resources

@@ -4,15 +4,18 @@
  */
 
 package com.myapp.struts;
+import java.util.*;
 
-import com.myapp.struts.opac.MyQueryResult;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import  com.myapp.struts.*;
+import javax.servlet.http.*;
+import javax.servlet.http.Cookie;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import java.sql.*;
+import java.util.*;
 import javax.servlet.http.HttpSession;
+
 /**
  *
  * @author Dushyant
@@ -27,8 +30,12 @@ public class LoginAction extends org.apache.struts.action.Action {
     String staff_id;
     String library_id;
     String button;
-    String locale,locale1;
-    
+String session_id;
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    boolean page=true;
+    Hashtable hashtable;
     /**
      * This is the action called from the Struts framework.
      * @param mapping The ActionMapping used to select this instance.
@@ -36,27 +43,63 @@ public class LoginAction extends org.apache.struts.action.Action {
      * @param request The HTTP Request we are processing.
      * @param response The HTTP Response we are processing.
      * @throws java.lang.Exception
-     * @return
+     
      */
+   
+
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception
     {
 
+HttpSession session=request.getSession();
+
+session_id=session.getId();
+System.out.println(session.getId());
+try{
+locale1=(String)session.getAttribute("locale");
+
+ 
+
+
+
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+       // System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;}
+    else{ rtl="RTL";page=false;}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+
 
  
            LoginActionForm loginActionForm=(LoginActionForm)form;
-            HttpSession session = request.getSession();
+           
             user_id=loginActionForm.getUsername();
             password=loginActionForm.getPassword();
-            button=loginActionForm.getButton();
-            locale = loginActionForm.getLocale();
-            locale1 = (String)session.getAttribute("locale");    
-           System.out.println("button="+button);
+            button=loginActionForm.getButton1();
+
+
+
+
+ //System.out.println(text2+"...........");
+
+
+
+
          if(button.equals("Log In"))
-           {        
-                    loginActionForm.setButton("");
+           {
+
+
+
+            
+                    //loginActionForm.setButton("");
                     con=MyConnection.getMyConnection();
                     stmt=con.prepareStatement("select * from login where user_id=? and password=?");
                     stmt.setString(1, user_id);
@@ -64,15 +107,25 @@ public class LoginAction extends org.apache.struts.action.Action {
                     rst=stmt.executeQuery();
                 if(rst.next())  //record found
                 {
-         
+                    session.setMaxInactiveInterval(60*40);
+
+                  /*  Cookie cookie = new Cookie ("library_id",rst.getString("library_id"));
+                    Cookie cookie1 = new Cookie ("staff_id",rst.getString("staff_id"));
+                  
+
+                    response.addCookie(cookie);
+                    response.addCookie(cookie1);
+                    */
+                  
                           session.setAttribute("library_id", rst.getString(4));
                           session.setAttribute("username", rst.getString(2));
                           session.setAttribute("staff_id",rst.getString("staff_id"));
+                          session.setAttribute("login_role",rst.getString("role"));
 
                            staff_id=rst.getString("staff_id");
                            library_id=rst.getString(4);
 
-                         if(rst.getString(1).equals("superadmin@gmail.com"))  //superadmin
+                         if(rst.getString(5).equals("admin.libms"))  //superadmin
                          {
                                 //pending
                                 con=MyConnection.getMyConnection();
@@ -139,7 +192,14 @@ public class LoginAction extends org.apache.struts.action.Action {
                              //  System.out.println(user_id+""+password+staff_id);
 
                             //check first login
+                ResultSet block=MyQueryResult.getMyExecuteQuery("select working_status from library where library_id='"+rst.getString("library_id")+"' and working_status='Blocked'");
+                 if(block.next())
+                 {
+                    request.setAttribute("msg1","Library is Blocked, Contact Admin.");
+                    return mapping.findForward("failure");
 
+                 }
+                 else{
                             if(rst.getString(6)==null)
                             {
                             ResultSet rs1=MyQueryResult.getMyExecuteQuery("select library_name from library where library_id='"+library_id+"'");
@@ -220,11 +280,13 @@ public class LoginAction extends org.apache.struts.action.Action {
                         
 
               //System.out.println("ok"+staff_id);
+                 }
+               
 
         }
         else
         {     
-                request.setAttribute("msg","Invalid user Name or Password");
+                request.setAttribute("msg1","Invalid user Name or Password");
                 return mapping.findForward("failure");
         }
 
@@ -236,7 +298,7 @@ public class LoginAction extends org.apache.struts.action.Action {
 
        else if(button.equals("Forget Password"))
             {
-                loginActionForm.setButton("");
+                //loginActionForm.setButton("");
                 con=MyConnection.getMyConnection();
                 stmt=con.prepareStatement("select * from login where user_id=? and question is not null");
                 stmt.setString(1, user_id);

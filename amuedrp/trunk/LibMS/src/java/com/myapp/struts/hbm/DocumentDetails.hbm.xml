@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 21, 2011 8:43:24 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class catalog="libms" name="com.myapp.struts.hbm.DocumentDetails" table="document_details">
+    <composite-id class="com.myapp.struts.hbm.DocumentDetailsId" name="id">
+      <key-property name="libraryId" type="string">
+        <column length="20" name="library_id"/>
+      </key-property>
+      <key-property name="documentId" type="int">
+        <column name="document_id"/>
+      </key-property>
+    </composite-id>
+    <many-to-one class="com.myapp.struts.hbm.Library" fetch="select" insert="false" name="library" update="false">
+      <column length="20" name="library_id" not-null="true"/>
+    </many-to-one>
+    <property name="biblioId" type="java.lang.Integer">
+      <column name="biblio_id"/>
+    </property>
+    <property name="serialId" type="string">
+      <column length="20" name="serial_id"/>
+    </property>
+    <property name="documentType" type="string">
+      <column length="20" name="document_type"/>
+    </property>
+    <property name="title" type="string">
+      <column length="200" name="title"/>
+    </property>
+    <property name="subtitle" type="string">
+      <column length="200" name="subtitle"/>
+    </property>
+    <property name="authorMain" type="string">
+      <column length="200" name="author_main"/>
+    </property>
+    <property name="authorSub" type="string">
+      <column length="200" name="author_sub"/>
+    </property>
+    <property name="publisherName" type="string">
+      <column length="200" name="publisher_name"/>
+    </property>
+    <property name="publicationPlace" type="string">
+      <column length="100" name="publication_place"/>
+    </property>
+    <property name="publishingYear" type="int">
+      <column length="10" name="publishing_year"/>
+    </property>
+    <property name="callNo" type="string">
+      <column length="30" name="call_no"/>
+    </property>
+    <property name="isbn10" type="string">
+      <column length="20" name="isbn10"/>
+    </property>
+    <property name="issn" type="string">
+      <column length="20" name="issn"/>
+    </property>
+    <property name="isbn13" type="string">
+      <column length="20" name="isbn13"/>
+    </property>
+    <property name="edition" type="string">
+      <column length="100" name="edition"/>
+    </property>
+    <property name="indexNo" type="string">
+      <column length="100" name="index_no"/>
+    </property>
+    <property name="noOfPages" type="string">
+      <column length="100" name="no_of_pages"/>
+    </property>
+    <property name="physicalWidth" type="string">
+      <column length="100" name="physical_width"/>
+    </property>
+    <property name="noOfCopy" type="string">
+      <column length="10" name="no_of_copy"/>
+    </property>
+    <property name="notes" type="string">
+      <column length="200" name="notes"/>
+    </property>
+    <property name="subject" type="string">
+      <column length="200" name="subject"/>
+    </property>
+    <property name="editor" type="string">
+      <column length="200" name="editor"/>
+    </property>
+    <property name="volumeNo" type="string">
+      <column length="5" name="volume_no"/>
+    </property>
+  </class>
+</hibernate-mapping>

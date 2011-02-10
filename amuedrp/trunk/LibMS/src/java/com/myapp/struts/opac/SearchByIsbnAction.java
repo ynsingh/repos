@@ -4,7 +4,7 @@
  */
 
 package com.myapp.struts.opac;
-
+import  com.myapp.struts.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -28,7 +28,7 @@ public class SearchByIsbnAction extends org.apache.struts.action.Action {
      * @param request The HTTP Request we are processing.
      * @param response The HTTP Response we are processing.
      * @throws java.lang.Exception
-     * @return
+    
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -41,7 +41,7 @@ public class SearchByIsbnAction extends org.apache.struts.action.Action {
         String lib_id=myForm.getCMBLib();
         isbn = myForm.getTXTKEY();
         if (session.getAttribute("Result")!=null) session.removeAttribute("Result");
-        query = "select * from document where isbn='" + isbn + "'";
+        query = "select * from document_details where isbn10='" + isbn + "'";
         if(!lib_id.equals("all"))
              query +=" and library_id='" + lib_id + "'";
 

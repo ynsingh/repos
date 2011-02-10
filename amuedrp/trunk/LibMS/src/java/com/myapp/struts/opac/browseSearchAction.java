@@ -4,6 +4,7 @@
  */
 
 package com.myapp.struts.opac;
+import  com.myapp.struts.*;
 import java.sql.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,7 +29,7 @@ public class browseSearchAction extends org.apache.struts.action.Action {
      * @param request The HTTP Request we are processing.
      * @param response The HTTP Response we are processing.
      * @throws java.lang.Exception
-     * @return
+    
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -46,28 +47,41 @@ public class browseSearchAction extends org.apache.struts.action.Action {
         db=myform.getCMBDB();
         sort=myform.getCMBSORT();
         field=myform.getCMBFIELD();
+        int flag=0;
+    query="select * from document_details";
+     
+        if(db.equals("combined")==false){query=query+" where document_type='"+db+"' and";flag=1;}
 
-    query="select * from document";
-    if(db.equals("combined")){query=query+" where db_category='combined'";}
-      else                     {query=query+" where category='"+db+"'";}
+     if (flag==0) query += " where ";
+    if(field.equals("any field"))
+       {
+         
+         query=query+" ( author_main like '%"+phrase+"%' or title like '%"+phrase+"%' or  publishing_year like '%"+phrase+"%' " +
+                    "or publisher_name like '%"+phrase+"%' or publication_place like '%"+phrase+"%')";
 
-     if(phrase.equals("")){phrase="";}
 
-
-     if(field.equals("any field"))
-       {query=query+" and( author like '%"+phrase+"%' or title like '%"+phrase+"%' or subject like '%"+phrase+"%' or pub_yr like '%"+phrase+"%' " +
-                    "or publisher like '%"+phrase+"%' or accessionno like '%"+phrase+"%' or pubPlace like '%"+phrase+"%')";}
-
-    
-
-     else {query=query+" and "+field+" like'%"+phrase+"%'";}
-if (!lib_id.equals("all")) query += " and library_id='" + lib_id + "'";
+     }
+     else {query=query+" "+field+" like'%"+phrase+"%'";}
+if (!lib_id.equalsIgnoreCase("all")) query += " and library_id='" + lib_id + "'";
     
                query=query+" order by "+sort+" asc";
 
-
+System.out.println("query="+query);
      rs = MyQueryResult.getMyExecuteQuery(query);
-     if (rs.next()) session.setAttribute("Result", rs);
+     
+     if(rs.next())
+  {
+
+  session.setAttribute("Result", rs);
+  session.setAttribute("database",db );
+
+
+
+
+
+     }
+
+
         return mapping.findForward(SUCCESS);
     }
 }

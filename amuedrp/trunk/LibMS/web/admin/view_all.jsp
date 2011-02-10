@@ -186,17 +186,8 @@ else
  </div>
     </body>
 
+
+
+
+
 </html>
-
-<div
-   style="
-      top: 650px;
-
-      position: absolute;
-
-      visibility: hidden;">
-        <jsp:include page="footer.jsp" />
-
-</div>
-
-

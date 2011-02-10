@@ -52,17 +52,7 @@ String lib=(String)request.getAttribute("Library_id");
 
 </td></tr></table>
         </div>
-    <div
-   style="
-      top: 650px;
-
-      position: absolute;
-
-      visibility: show;">
-        <jsp:include page="footer.jsp" />
-
-</div>
-
+  
 
 
 
@@ -80,15 +70,15 @@ String lib=(String)request.getAttribute("Library_id");
 
 
     </body>
-</html>
-<script language="javascript">
+    <script language="javascript">
     function message()
     {
-        
+
         var a=confirm("Do you want to create account of staff with staff Id:<%=staff_id%>");
         if(a==true)
             location.href="createaccount.jsp?staff_id=<%=staff_id%>&first_name=<%=first_name%>&last_name=<%=last_name%>";
-   
+
         return false;
     }
 </script>
+</html>

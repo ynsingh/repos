@@ -4,8 +4,8 @@
  */
 
 package com.myapp.struts.opac;
+import  com.myapp.struts.*;
 
-import com.myapp.struts.opac.MyQueryResult;
 import com.myapp.struts.opac.MyResultSetAction;
 import java.sql.ResultSet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +22,8 @@ import org.apache.struts.action.ActionMapping;
 public class MemberAction extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
-    private static final String SUCCESS = "success";
+   
+   
     
     /**
      * This is the action called from the Struts framework.
@@ -31,49 +32,77 @@ public class MemberAction extends org.apache.struts.action.Action {
      * @param request The HTTP Request we are processing.
      * @param response The HTTP Response we are processing.
      * @throws java.lang.Exception
-     * @return
+    
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String ID;
-        ResultSet rs=null,rs1=null,rs2=null,rs3=null;
+        String ID,password,lib_id,library_id;
+        ResultSet rs=null,rs1=null,rs2=null,rs3=null,rs5=null;
         HttpSession session = request.getSession();
         MemberActionForm myForm =(MemberActionForm)form; 
         
-        ID = myForm.getTXTMEMID().toUpperCase().trim();
+        ID = myForm.getTXTMEMID();
+        password=myForm.getTXTPASS();
+        lib_id=myForm.getCMBLib();
+        System.out.println(lib_id);
         session.setAttribute("id", ID);
-        System.out.println("ID"+ID);
-        String query= "select * from member_accounthistory where memid='"+ID+"'";
-        String query1= "select sum(fine) from fine_details where memid='"+ID+"'";
-        String query2= "select distinct fine_details.fine,fine_details.date,document.title,document.author,document.callno,document.publisher  from fine_details inner join document on fine_details.accessionno=document.accessionno where fine_details.memid='"+ID+"'";
-        String query3= "select * from reservationlist where card_id='"+ID+"'";
+        library_id=(String)session.getAttribute("library_id");
+
+        if(library_id==null){
+             session.setAttribute("library_id", lib_id);
+        }
+       
+        String query4= "select * from member where memid='"+ID+"' and library_id='"+lib_id+"' and password='"+password+"' and status='Y'";
+          rs5 = MyQueryResult.getMyExecuteQuery(query4);
+       if(rs5.next())
+       {
+
+
+        String query= "select * from member_accounthistory where memid='"+ID+"' and library_id='"+lib_id+"'";
+        String query1= "select sum(fine) from fine_details where memid='"+ID+"' and library_id='"+lib_id+"'";
+       String query2= "select distinct fine_details.fine,fine_details.date,document.title,document.author,document.callno,document.publisher  from fine_details inner join document on fine_details.accessionno=document.accessionno and fine_details.library_id=document.library_id where fine_details.memid='"+ID+"' and fine_details.library_id='"+lib_id+"'";
+        String query3= "select * from reservationlist where library_id='"+lib_id+"' and memid='"+ID+"'";
         rs = MyQueryResult.getMyExecuteQuery(query);
         rs1 = MyQueryResult.getMyExecuteQuery(query1);
         rs2 = MyQueryResult.getMyExecuteQuery(query2);
         rs3= MyQueryResult.getMyExecuteQuery(query3);
-        if(rs!=null && rs1!=null){
-        request.setAttribute("rs", rs);
-        request.setAttribute("rs1", rs1);}
-        session.setAttribute("finedetails_resultset", rs2);
+        if(rs!=null )
+            {
+                session.setAttribute("rs", rs);
+
+                session.setAttribute("rs1", rs1);
+                System.out.println("ok");
+                  session.setAttribute("finedetails_resultset", rs2);
         session.setAttribute("reservationdetails_resultset", rs3);
+        session.setAttribute("card_id",rs5.getString("card_id"));
+        session.setAttribute("mem_id",rs5.getString("memid"));
+        }
+      
         if (rs.next())
         {
-          String  status=rs.getString(7);
+          String  status=rs.getString(8);
+         
             if(!status.equals("Y")){
                 String msg = "Sorry, your Membership is cancelled" +
                            " for somehow reason, please contact to your Library..";
                 request.setAttribute("msg", msg);
-                return mapping.findForward("member");
+                return mapping.findForward("notfound");
+            }
+            else
+            {
+              System.out.println("err12");
+               return mapping.findForward("account");
             }
         }
+  }
  else
         {
-            String msg="Invalid Member,try again..";
+            String msg="Invalid Member";
             request.setAttribute("msg", msg);
-            return mapping.findForward("member");
+            return mapping.findForward("notfound");
         }
-        return mapping.findForward(SUCCESS);
+      return mapping.findForward("notfound");
     }
 }

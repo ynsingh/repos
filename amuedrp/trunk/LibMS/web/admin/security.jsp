@@ -90,17 +90,7 @@ String lib_name=(String)session.getAttribute("library_name");
 
 
     </body>
-</html>
- <div
-   style="
-      top: 650px;
-
-      position: absolute;
-
-      visibility: show;">
-        <jsp:include page="footer.jsp" />
-
-</div>
+     
 
    <script language="javascript" type="text/javascript">
 function check1()
@@ -121,7 +111,7 @@ function check1()
 
         return false;
     }
-          
+
 
 
   }
@@ -132,6 +122,8 @@ function check1()
        return false;
 
     }
-    
+
     </script>
 
+
+</html>

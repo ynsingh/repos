@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
 
+
 /**
  *
  * @author Dushyant
@@ -19,32 +20,25 @@ public class LoginActionForm extends org.apache.struts.action.ActionForm {
     private String username;
 
     private String password;
-private String button;
+private String button1;
 private String locale;
-    /**
-     * @return
-     */
+
+    
     public String getUsername() {
         return username;
     }
 
-    /**
-     * @param string
-     */
+    
     public void setUsername(String string) {
         username = string;
     }
 
-    /**
-     * @return
-     */
+   
     public String getPassword() {
         return password;
     }
 
-    /**
-     * @param i
-     */
+   
     public void setPassword(String string) {
         password = string;
     }
@@ -61,7 +55,7 @@ private String locale;
      * This is the action called from the Struts framework.
      * @param mapping The ActionMapping used to select this instance.
      * @param request The HTTP Request we are processing.
-     * @return
+     
      */
     @Override
     public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
@@ -72,18 +66,16 @@ private String locale;
         return null;
     }
 
-    /**
-     * @return the button
-     */
-    public String getButton() {
-        return button;
+  
+    public String getButton1() {
+         return button1;
+
+       
     }
 
-    /**
-     * @param button the button to set
-     */
-    public void setButton(String button) {
-        this.button = button;
+    
+    public void setButton1(String button1) {
+        this.button1 = button1;
     }
 
     /**

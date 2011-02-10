@@ -8,7 +8,7 @@
 <%@page contentType="text/html"%>
  <jsp:include page="header.jsp" flush="true" />
 <%@page pageEncoding="UTF-8"%>
-<%@page import="java.sql.*,com.myapp.struts.opac.MyQueryResult" %>
+<%@page import="java.sql.*,com.myapp.struts.MyQueryResult" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -19,8 +19,8 @@ String id1=request.getParameter("id");
 ResultSet rst;
 
 
-        // rst=MyQueryResult.getMyExecuteQuery("select * from staff_detail where staff_id="+id1);
-rst = (ResultSet)request.getAttribute("simple_resultset");
+         rst=(ResultSet)request.getAttribute("simple_resultset");
+rst.beforeFirst();
 rst.next();
 
 String staff_id=rst.getString("staff_id");
@@ -276,165 +276,7 @@ if( library_id== null) library_id="";
  </td></tr>
         </table>
 
-   <%-- <table width="800px" height="800px"  valign="top" align="center" >
-
-        <tr><td valign="top" height="800px" width="800px" align="center">
-                
-            
-<fieldset style="border:solid 1px brown;padding-left: 20px;padding-right: 20px" ><legend><img src="images/staff.png" height="45px" width="23px"/></legend>
-                    <br>
-                    <br>
-                    <span class="txt">Professional Details</span>
-                    <hr>
-                    <br>
-                    <table  style="font-family: arial;font-weight: bold;color:brown;font-size:13px">
-                                           
-                                <tr><td width="250px">Employee Id</td><td  colspan="1"><input type="text" id="staff_id" tabindex="1" disabled="true" name="staff_id" value="<%=rst.getString(1)%>"></td>
-                                    <td width="250px" >Email Id</td><td colspan="3"><input type="text" id="email_id"  tabindex="2"  name="email_id" value="<%=rst.getString(7)%>"></td>
-                                    </tr>
-                                  <tr><td colspan="4" height="5px"></td></tr>
-                                <tr><td width="250px">First Name
-                                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <select name="courtesy" size="1" id="courtesy" tabindex="3"  onchange="court(this.options[this.selectedIndex].value)">
-                                    <option value="Select">Select</option>
-                                       <%if(rst.getString(2).equals("mr"))
-                                       {%>
-                                    <option selected value="mr">Mr.</option>
-                                    <option value="mrs">Mrs.</option>
-                                    <option value="ms">Ms.</option>
-                                    <%}
-                                        else if(rst.getString(2).equals("Mrs.")){%>
-                                    <option  value="mr">Mr.</option>
-                                    <option selected value="mrs">Mrs.</option>
-                                    <option value="ms">Ms.</option>
-                                        <%}else{%>
-                                    <option  value="mr">Mr.</option>
-                                    <option  value="mrs">Mrs.</option>
-                                    <option selected value="ms">Ms.</option>
-                                    <%}%>
-                                    </select>
-
-
-
-                                    </td><td width="250px"><input type="text" id="first_name"  tabindex="4" name="first_name" value="<%=rst.getString(3)%>"></td>
-                                  <td width="250px">Last Name</td><td width="250px"><input type="text" id="last_name"  tabindex="5"  name="last_name" value="<%=rst.getString(4)%>"></td>
-                                </tr>
-                                    <tr><td colspan="4" height="5px"></td></tr>
-
-
-                         
-                              
-<tr><td width="250px">Contact No</td><td width="250px"><input type="text" id="contact_no"  tabindex="6"  name="contact_no" value="<%=rst.getString(5)%>"></td>
-                                <td width="250px">Mobile No</td><td width="250px"><input type="text" id="mobile_no"  tabindex="7"  name="mobile_no" value="<%=rst.getString(6)%>"></td>
-                                </tr>
-                                <tr><td colspan="4" height="5px"></td></tr>
-                                
-                                
-                                
-                                <tr><td colspan="4" height="5px"></td></tr>
-                            <tr><td width="250px">Date Of Joining</td><td width="250px"><input type="text" id="do_joining"  tabindex="8"  name="do_joining" value="<%=rst.getString(8)%>"></td>
-                           <td width="250px">Date Of Releaving</td><td width="250px"><input type="text" id="do_releaving"  tabindex="9"  name="do_releaving" value="<%=rst.getString(9)%>"></td>
-                            </tr>
-                    </table>
-                            <br><br>
-                            <br>
-                    <span class="txt">Professional Details</span>
-                    <hr>
-                    <br><br>
-                            <table  style="font-family: arial;font-weight: bold;color:brown;font-size:13px">
-
-                                <tr><td width="250px">Father Name</td><td width="250px"><input type="text" id="father_name"  tabindex="10"  name="father_name" value="<%=rst.getString(10)%>"></td>
-                                
-                                <td width="250px">Gender</td><td width="250px">
-
-                                <select name="gender" size="1" id="gender" tabindex="11">
-                                <option  value="Select">Select</option>
-                                    <%if(rst.getString(12).equals("male")){%>
-                                <option  value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <%}
-                                else
-                                { %>
-                                 <option value="Male">Male</option>
-                                <option selected value="Female">Female</option>
-                                <%}%>
-                                </select>
-
-
-                                </td>
-                                </tr>
-                                <tr><td colspan="4" height="5px"></td></tr>
-                                <tr>
-                                    <td width="250px">Mailing Address</td><td width="250px"><textarea name="address1" id="address1" tabindex="12"  rows="5" cols="17"><%=rst.getString(13)%></textarea></td>
-                                <td width="250px" colspan="2">
-                                    <table width="">
-                                        <tr><td width="165px">City</td><td width="100px"><input type="text" id="city1"  name="city1" tabindex="13" value="<%=rst.getString(14)%>"></td></tr>
-                                        <tr><td colspan="2" height="7px"></td></tr>
-                                          <tr><td>State</td><td><input type="text" id="state1"  name="state1" tabindex="14" value="<%=rst.getString(15)%>"></td></tr>
-                                          <tr><td colspan="2" height="7px"></td></tr>
-                                          <tr><td>Country</td><td><input type="text" id="country1"  name="country1" tabindex="15" value="<%=rst.getString(16)%>"/></td></tr>
-                                        <tr><td colspan="2" height="7px"></td></tr>
-
-
-                                    </table>
-
-
-
-                                </td>
-                                </tr>
-                               
-                                <tr><td colspan="4" height="5px"></td></tr>
-                               
-                            
-                            
-                                <tr><td width="250px">ZIP Code</td><td width="250px"><input type="text" id="zip1" tabindex="16"  name="zip1" value="<%=rst.getString(17)%>"></td>
-                           <td width="250px">Date of Birth</td><td width="250px"><input type="text" id="date_of_birth"   tabindex="17"  name="date_of_birth" value="<%=rst.getString(11)%>"></td>
-                            </tr>
-                            <tr><td colspan="4" height="5px"></td></tr>
-                            <tr><td width="250px" colspan="4"><input type="checkbox" id="Checkbox1" name="check" value="on" tabindex="18" onclick="return copy()" >&nbsp;&nbsp;<b>Click Me</b>(if permanent adress is same as mailing address)</td>
-
-                            </tr>
-                            <tr><td colspan="4" height="5px"></td></tr>
-                            <tr>
-                                <td width="250px">Permanent Address</td><td width="250px"><textarea name="address2" id="address2" tabindex="19"  rows="5" cols="17">
-<%=rst.getString(18)%>
-                                    </textarea></td>
-                                <td width="250px" colspan="2">
-                                    <table>
-                                        <tr><td width="165px">City</td><td width="100px"><input type="text" id="city2" tabindex="20"  name="city2" value="<%=rst.getString(19)%>"></td></tr>
-                                        <tr><td colspan="4" height="7px"></td></tr>
-                                          <tr><td>State</td><td><input type="text" id="state2"  name="state2" tabindex="21" value="<%=rst.getString(20)%>"></td></tr>
-                                          <tr><td colspan="4" height="7px"></td></tr>
-                                        <tr><td>Country</td><td><input type="text" id="country2"  name="country2" tabindex="22" value="<%=rst.getString(21)%>"></td></tr>
-                                        <tr><td colspan="4" height="7px"></td></tr>
-                                        <tr><td width="250px">ZIP Code</td><td width="250px" COLSPAN="3"><input type="text" id="zip2" tabindex="23"  name="zip2" value="<%=rst.getString(22)%>"></td>
-                                        <tr><td colspan="4" height="7px"></td></tr>
-                                        <tr><td colspan="4" height="7px"></td></tr>
-                            
-                                    </table>
-
-
-
-                                </td>
-                                </tr>
-                            </table>
-                             
-                            <br><br>
-
-                           
-                                <input type="button" id="Button3" name="button" value="Quit" onclick="history.back(-2);" class="btn" />
-                               
-                               
-                              
-     
-                             
-                               
-
-                            <br><br>
-</fieldset>
-            </td></tr>
-                
-    </table>--%>
-
+  
                         
 
 
@@ -489,19 +331,6 @@ if( library_id== null) library_id="";
 
 
 
-    <div
-   style="
-      top: 850px;
-
-      position: absolute;
-
-      visibility: show;">
-        <jsp:include page="footer.jsp" />
-
-</div>
-
-
-
+   
 
 </html>
-

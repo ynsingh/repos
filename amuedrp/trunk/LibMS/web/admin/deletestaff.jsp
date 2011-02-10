@@ -214,25 +214,13 @@ String msg3=request.getParameter("email_id");
 
 
 
-    <div
-   style="
-      top: 1150px;
-
-      position: absolute;
-
-      visibility: show;">
-        <jsp:include page="footer.jsp" />
-
-</div>
+  
 </html:form>
 
-
-
-</html>
 <script type="text/javascript">
     document.form1.employee_id.focus();
     function check()
-    { 
+    {
         if(document.form1.employee_id.value=="")
             {
               alert("Enter staff id..");
@@ -283,7 +271,7 @@ if (answer!=true)
 
 function copy(address1,address2,city1,city2,state1,state2,country1,country2,zip1,zip2)
 {
-      
+
     if(document.form1.checkbox1.checked==true)
         {
 
@@ -329,3 +317,6 @@ if(message1!=null||message2!=null)
 %>
 
 
+
+
+</html>

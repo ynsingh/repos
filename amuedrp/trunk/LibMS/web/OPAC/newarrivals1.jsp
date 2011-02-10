@@ -20,7 +20,16 @@ body
    background-color: #FFFFFF;
    color: #000000;
 }
+.rows          { background-color: white;border: solid 1px blue; }
+     .hiliterows    { background-color: pink; color: #000000; font-weight: bold;border: solid 1px blue; }
+     .alternaterows { background-color: #efefef; }
+     .header        { background-color: #c0003b; color: #FFFFFF;text-decoration: none;padding-left: 10px; }
+
+     .datagrid      {  font-family: arial; font-size: 9pt;
+	    font-weight: normal;}
+     .item{ padding-left: 10px;}
 </style>
+<link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
     <script language="javascript">
 function fun()
 {
@@ -60,104 +69,207 @@ locale1=(String)session.getAttribute("locale");
 <body onload="fun()">
     <%if(page.equals(true)){%>
 
-<div id="wb_Form1" style="position:absolute;left:30px;top:24px;width:348px;height:46px;z-index:7">
+
     <form name ="form1" method="post" action="/NewArrival">
+          <table  align="left" width="1200x" class="datagrid"  style="border:solid 1px #e0e8f5;" class="txt">
 
-<div style="border: 1px solid rgb(0, 85, 0); position: absolute; left: 270px; top: 45px; width: 122px; height: 18px;border:1px #C0C0C0 solid; z-index: 0;">
-<select name="CMBPERIOD" onChange="fun()" size="1" style="border-width: 0px; left: 0px; top: 0px; width: 100%; height: 100%; font-family: Arial; font-size: 13px;">
-<option value="2">within 2 months</option>
-<option value="6">within 6 months</option>
-<option value="12">within 1 year</option>
-</select>
-</div>
-<div id="wb_Text1" style="position: absolute; left: 270px; top: 25px; width: 100px; height: 20px; z-index: 2;" align="left">
-<font style="font-size: 13px;" color="#000000" face="Arial"><b><%=resource.getString("opac.newarrivals.selectperiod")%></b></font></div>
-<input type="radio" id="RadioButton1" onclick="fun()" name="r" value="book" style="position:absolute;left:0px;top:45px;z-index:0">
-<input type="radio" id="RadioButton2" name="r" onclick="fun()" value="journal" style="position:absolute;left:80px;top:45px;z-index:1">
-<div id="wb_Text1" style="position:absolute;left:23px;top:45px;width:45px;height:16px;z-index:2;" align="left">
-<font style="font-size:13px" color="#000000" face="Arial"><b><%=resource.getString("opac.newarrivals.books")%></b></font></div>
-<div id="wb_Text2" style="position:absolute;left:105px;top:45px;width:61px;height:16px;z-index:3;" align="left">
-<font style="font-size:13px" color="#000000" face="Arial"><b><%=resource.getString("opac.newarrivals.journals")%></b></font></div>
-<input type="radio" id="RadioButton3" name="r" onclick="fun()" value="others" style="position:absolute;left:175px;top:45px;z-index:4">
-<div id="wb_Text3" style="position:absolute;left:205px;top:45px;width:48px;height:16px;z-index:5;" align="left">
-<font style="font-size:13px" color="#000000" face="Arial"><b><%=resource.getString("opac.newarrivals.other")%></b></font></div>
 
-<div id="wb_Text6" style="position:absolute;left:5px;top:0px;width:69px;height:16px;z-index:0;" align="left">
-<font style="FONT-SIZE: 13px" color="#000000" face="Arial"><b><%=resource.getString("opac.newarrivals.library")%></b></font></div>
-<div style="position:absolute;left:55px;top:0px;width:100px;height:18px;border:1px #C0C0C0 solid;z-index:9">
-    <select name="CMBLib" size="1" onchange="fun()" id="CMBLib" style="left:0px;top:0px;width:100%;height:100%;border-width:0px;font-family:Courier New;font-size:13px;">
+
+  <tr class="header"><td  width="1000px" height="25px"  align="center">
+
+
+		New Arrivals
+
+
+
+
+        </td></tr>
+  <tr><td align="center" width="1200px" height="15px">
+          <table class="datagrid">
+              <tr><td width="150px">
+<%=resource.getString("opac.newarrivals.library")%>
+
+    <select name="CMBLib" size="1" onchange="fun()" id="CMBLib">
+
     <%
         ResultSet rs = (ResultSet)session.getAttribute("libRs");
         String lib_id = (String)session.getAttribute("library_id");
+
         rs.beforeFirst();
-    %>
+
+    if(lib_id==null)
+    {%>
+
+    <option selected value="all">ALL</option>
+    <%}
+    else
+    {%>
     <option selected value="<%=lib_id%>"><%=lib_id.toUpperCase()%></option>
     <option value="all">ALL</option>
-    <%
 
+    <%
+    }
     while (rs.next())
             {
     %>
     <option value="<%= rs.getString(1) %>"><%=rs.getString(1).toUpperCase()%></option>
     <% } %>
+
+
+
+
 </select>
-</div>
+
+                  </td><td width="500px" align="center">
+
+                      <input type="radio" id="RadioButton1" onclick="fun()" checked name="r" value="book" > <%=resource.getString("opac.newarrivals.books")%>
+<input type="radio" id="RadioButton2" name="r" onclick="fun()" value="journal"><%=resource.getString("opac.newarrivals.journals")%>
+<input type="radio" id="RadioButton3" name="r" onclick="fun()" value="others"><%=resource.getString("opac.newarrivals.other")%>
+                  </td><td width="300px">
+     <%=resource.getString("opac.newarrivals.selectperiod")%><select name="CMBPERIOD" onChange="fun()" size="1">
+<option value="2">within 2 months</option>
+<option value="6">within 6 months</option>
+<option value="12">within 1 year</option>
+</select>
+                  </td></tr></table>
+
+
+      </td></tr>
+
+<tr style="background-color:#e0e8f5;"><td  height="400px" valign="top"  >
+
+             <IFRAME  name="f1" style="background-color:#e0e8f5;" src="#" frameborder=0 height="400px" width="1200px" scrolling="no"  id="f1"></IFRAME>
+  
+
+      </td>
+      
+
+</tr>
+      
+          </table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     </form>
-</div>
-<IFRAME  name="f1" src="#" frameborder=0 scrolling="NO" style="position:absolute;color:deepskyblue;top:96px;left:24px;height:370px;width:550px;visibility:true;" id="f1"></IFRAME>
-<IFRAME  name="f2" src="#" frameborder=0 scrolling="NO" style="position:absolute;color:deepskyblue;top:96px;left:582px;height:370px;width:450px;visibility:true;" id="f2"></IFRAME>
+
 
 <%}else{%>
  
- <div id="wb_Form1" style="position:absolute;right:177px;top:24px;width:348px;height:46px;z-index:7">
-    <form name ="form1" method="post" action="/NewArrival">
+ <form name ="form1" method="post" action="/NewArrival">
+          <table  align="left" width="1200x" class="datagrid"   style="border:solid 1px #e0e8f5;" class="txt">
 
-<div style="border: 1px solid rgb(0, 85, 0); position: absolute; right: 290px; top: 13px; width: 122px; height: 18px;border:1px #C0C0C0 solid; z-index: 0;">
-<select name="CMBPERIOD" onChange="fun()" size="1" style="border-width: 0px; right: 0px; top: 0px; width: 100%; height: 100%; font-family: Arial; font-size: 13px;">
+
+
+  <tr class="header"><td  width="1000px" height="25px"  align="center">
+
+
+		New Arrivals
+
+
+
+
+        </td></tr>
+  <tr><td align="center" width="1200px" height="15px">
+          <table class="datagrid">
+              <tr><td width="300px">
+     <%=resource.getString("opac.newarrivals.selectperiod")%><select name="CMBPERIOD" onChange="fun()" size="1">
 <option value="2">within 2 months</option>
 <option value="6">within 6 months</option>
 <option value="12">within 1 year</option>
 </select>
-</div>
-<div id="wb_Text1" style="position: absolute; right: 290px; top: -5px; width: 100px; height: 20px; z-index: 2;" align="right">
-<font style="font-size: 13px;" color="#000000" face="Arial"><b><%=resource.getString("opac.newarrivals.selectperiod")%></b></font></div>
-<input type="radio" id="RadioButton1" onclick="fun()" name="r" value="book" style="position:absolute;right:38px;top:11px;z-index:0">
-<input type="radio" id="RadioButton2" name="r" onclick="fun()" value="journal" style="position:absolute;right:116px;top:11px;z-index:1">
-<div id="wb_Text1" style="position:absolute;right:61px;top:13px;width:45px;height:16px;z-index:2;" align="right">
-<font style="font-size:13px" color="#000000" face="Arial"><b><%=resource.getString("opac.newarrivals.books")%></b></font></div>
-<div id="wb_Text2" style="position:absolute;right:142px;top:13px;width:61px;height:16px;z-index:3;" align="right">
-<font style="font-size:13px" color="#000000" face="Arial"><b><%=resource.getString("opac.newarrivals.journals")%></b></font></div>
-<input type="radio" id="RadioButton3" name="r" onclick="fun()" value="others" style="position:absolute;right:211px;top:11px;z-index:4">
-<div id="wb_Text3" style="position:absolute;right:233px;top:13px;width:48px;height:16px;z-index:5;" align="right">
-<font style="font-size:13px" color="#000000" face="Arial"><b><%=resource.getString("opac.newarrivals.other")%></b></font></div>
+                  </td><td width="500px" align="center">
 
-<div id="wb_Text6" style="position:absolute;right:5px;top:50px;width:69px;height:16px;z-index:0;" align="right">
-<font style="FONT-SIZE: 13px" color="#000000" face="Arial"><b><%=resource.getString("opac.newarrivals.library")%></b></font></div>
-<div style="position:absolute;right:55px;top:50px;width:100px;height:18px;border:1px #C0C0C0 solid;z-index:9">
-    <select name="CMBLib" size="1" onchange="fun()" id="CMBLib" style="right:0px;top:0px;width:100%;height:100%;border-width:0px;font-family:Courier New;font-size:13px;">
+ <input type="radio" id="RadioButton1" onclick="fun()" name="r" value="book" > <%=resource.getString("opac.newarrivals.books")%>
+<input type="radio" id="RadioButton2" name="r" onclick="fun()" value="journal"><%=resource.getString("opac.newarrivals.journals")%>
+<input type="radio" id="RadioButton3" name="r" onclick="fun()" value="others"><%=resource.getString("opac.newarrivals.other")%>
+                  </td><td width="150px">
+<%=resource.getString("opac.newarrivals.library")%>
+
+    <select name="CMBLib" size="1" onchange="fun()" id="CMBLib">
+
     <%
         ResultSet rs = (ResultSet)session.getAttribute("libRs");
         String lib_id = (String)session.getAttribute("library_id");
+
         rs.beforeFirst();
-    %>
+
+    if(lib_id==null)
+    {%>
+
+    <option selected value="all">ALL</option>
+    <%}
+    else
+    {%>
     <option selected value="<%=lib_id%>"><%=lib_id.toUpperCase()%></option>
     <option value="all">ALL</option>
-    <%
 
+    <%
+    }
     while (rs.next())
             {
     %>
     <option value="<%= rs.getString(1) %>"><%=rs.getString(1).toUpperCase()%></option>
     <% } %>
+
+
+
+
 </select>
-</div>
+
+                  </td></tr></table>
+
+
+      </td></tr>
+
+<tr style="background-color:#e0e8f5;"><td  height="400px" valign="top"  >
+
+             <IFRAME  name="f1" style="background-color:#e0e8f5;" src="#" frameborder=0 height="400px" width="1200px" scrolling="no"  id="f1"></IFRAME>
+
+
+      </td>
+
+
+</tr>
+
+          </table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     </form>
-</div>
-<IFRAME  name="f1" src="#" frameborder=0 scrolling="YES" style="position:absolute;color:deepskyblue;top:96px;right:24px;height:370px;width:550px;visibility:true;" id="f1"></IFRAME>
-<IFRAME  name="f2" src="#" frameborder=0 scrolling="YES" style="position:absolute;color:deepskyblue;top:96px;right:582px;height:370px;width:450px;visibility:true;" id="f2"></IFRAME>
- 
- 
- 
   <%}%>
 
 </body>

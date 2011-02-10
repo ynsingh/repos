@@ -12,6 +12,7 @@ public class LoginDoc
         protected String staff_id;
         protected String question;
         protected String ans;
+        private String role;
 
      
      public String getuser_id() { return user_id;}
@@ -36,5 +37,19 @@ public class LoginDoc
 
    public String getans() { return ans;}
      public void setans(String ans) {this.ans = ans;}
+
+    /**
+     * @return the role
+     */
+    public String getRole() {
+        return role;
+    }
+
+    /**
+     * @param role the role to set
+     */
+    public void setRole(String role) {
+        this.role = role;
+    }
 
 			} //End of Class

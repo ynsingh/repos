@@ -17,6 +17,8 @@ import org.apache.struts.action.ActionMapping;
 public class MemberActionForm extends org.apache.struts.action.ActionForm {
     
     private String TXTMEMID;
+    private String TXTPASS;
+    private String CMBLib;
 
     /**
      *
@@ -30,7 +32,7 @@ public class MemberActionForm extends org.apache.struts.action.ActionForm {
      * This is the action called from the Struts framework.
      * @param mapping The ActionMapping used to select this instance.
      * @param request The HTTP Request we are processing.
-     * @return
+     
      */
     public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
         ActionErrors errors = new ActionErrors();
@@ -53,5 +55,33 @@ public class MemberActionForm extends org.apache.struts.action.ActionForm {
      */
     public void setTXTMEMID(String TXTMEMID) {
         this.TXTMEMID = TXTMEMID;
+    }
+
+    /**
+     * @return the TXTPASS
+     */
+    public String getTXTPASS() {
+        return TXTPASS;
+    }
+
+    /**
+     * @param TXTPASS the TXTPASS to set
+     */
+    public void setTXTPASS(String TXTPASS) {
+        this.TXTPASS = TXTPASS;
+    }
+
+    /**
+     * @return the CMBLib
+     */
+    public String getCMBLib() {
+        return CMBLib;
+    }
+
+    /**
+     * @param CMBLib the CMBLib to set
+     */
+    public void setCMBLib(String CMBLib) {
+        this.CMBLib = CMBLib;
     }
 }

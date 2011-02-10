@@ -64,9 +64,8 @@
         <url-pattern>/viewallprivilege</url-pattern>
         </servlet-mapping>
     <session-config>
-        <session-timeout>
-            30
-        </session-timeout>
+        <session-timeout>40
+              </session-timeout>
     </session-config>
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>

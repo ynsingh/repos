@@ -1,0 +1,44 @@
+/*
+    Document   : formstyle
+    Created on : Dec 29, 2010, 6:52:24 AM
+    Author     : Client
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/*
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+.textBoxWidth {
+    width:200px;
+}
+
+.txtStyle
+    {
+       font-family:Tahoma;
+    font-size:12px;
+    letter-spacing:1px;
+     padding-left:5px;
+     color:black;
+     width:200px;
+}
+.headerStyle{
+font-family: Tahoma;
+font-size: 15px;
+color:black;
+}
+.mandatory{
+    font-family: Tahoma;
+    color: blue;
+    font-size: 12px;
+}
+.star{
+    color: red;
+    font-size: 14px;
+}
+
+.table{
+    border-color:#CCCCCC;
+}

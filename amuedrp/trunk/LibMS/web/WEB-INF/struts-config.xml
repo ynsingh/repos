@@ -7,13 +7,21 @@
 
 <struts-config>
     <form-beans>
+ 
+   <!-- Cataloguing Form Naming-->
+        <form-bean name="OldTitleEntryActionForm" type="com.myapp.struts.cataloguing.OldTitleEntryActionForm"/>
+        <form-bean name="BibliographicDetailEntryActionForm" type="com.myapp.struts.cataloguing.BibliographicDetailEntryActionForm"/>
 
+
+
+       
         <!--Login Form Naming-->
 
         <form-bean name="LoginActionForm" type="com.myapp.struts.LoginActionForm"/>
-
+        <form-bean name="SuperAdminActionForm" type="com.myapp.struts.SuperAdminActionForm"/>
 
         <!--Admin Form Naming-->
+
 
         <form-bean name="CreateAccountActionForm" type="com.myapp.struts.admin.CreateAccountActionForm"/>
         <form-bean name="SecurityActionForm" type="com.myapp.struts.admin.SecurityActionForm"/>
@@ -25,6 +33,7 @@
         <form-bean name="AdminRegistrationActionForm" type="com.myapp.struts.admin.AdminRegistrationActionForm"/>
         <form-bean name="PrivilegeActionForm" type="com.myapp.struts.admin.PrivilegeActionForm"/>
         <form-bean name="SearchInstituteActionForm" type="com.myapp.struts.admin.SearchInstituteActionForm"/>
+        <form-bean name="ChangeWorkingStatusActionForm" type="com.myapp.struts.admin.ChangeWorkingStatusActionForm"/>
 
 
 
@@ -41,7 +50,7 @@
         <form-bean name="NewArrivalActionForm" type="com.myapp.struts.opac.NewArrivalActionForm"/>
         <form-bean name="MemberActionForm" type="com.myapp.struts.opac.MemberActionForm"/>
         <form-bean name="NewDemandActionForm" type="com.myapp.struts.opac.NewDemandActionForm"/>
-        <form-bean name="ReservationRequestActionForm" type="com.myapp.struts.opac.ReservationRequestActionForm"/>
+        <form-bean name="ReservationRequetActionForm" type="com.myapp.struts.opac.ReservationRequetActionForm"/>
          <form-bean name="NewMemberActionForm" type="com.myapp.struts.opac.NewMemberActionForm"/>
          <form-bean name="FeedbackActionForm" type="com.myapp.struts.opac.FeedbackActionForm"/>
          <form-bean name="JournalActionForm" type="com.myapp.struts.opac.JournalActionForm"/>
@@ -63,7 +72,55 @@
 
     <action-mappings>
 
-        <!--login Action Setting-->
+
+    
+
+
+<!--Cataloguing Action Mapping-->
+ <action path="/biblio10" scope="request" type="com.myapp.struts.admin.Biblio10Action"/>
+ <action path="/biblio13" scope="request" type="com.myapp.struts.admin.Biblio13Action"/>
+ <action attribute="BibliographicDetailEntryActionForm" path="/catBiblioAction" input="/cataloguing/cat_biblio.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.BibliographicDetailEntryAction">
+                      <forward name="failure" path="/cataloguing/cat_biblio.jsp"/>
+                      <forward name="new" path="/cataloguing/cat_biblio_entry1.jsp"/>
+                      <forward name="success" path="/cataloguing/cat_biblio_entry.jsp"/>
+                      <forward name="view" path="/cataloguing/cat_viewall_biblio.jsp" />
+                      <forward name="main" path="/admin/main.jsp" />
+                    </action>
+<action attribute="BibliographicDetailEntryActionForm" path="/catNewBiblio" input="/cataloguing/cat_biblio_entry1.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.NewEntryBiblioAction">
+                      <forward name="failure" path="/cataloguing/cat_biblio.jsp"/>
+                      <forward name="fail" path="/cataloguing/cat_biblio_entry1.jsp"/>
+                      <forward name="success" path="/cataloguing/cat_biblio.jsp"/>
+                    </action>
+
+<action attribute="BibliographicDetailEntryActionForm" path="/catBiblioDetailAction" input="/cataloguing/cat_biblio_entry.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.BiblioDetailsAction">
+                      <forward name="failure" path="/cataloguing/cat_biblio_entry.jsp"/>
+                       <forward name="fail" path="/cataloguing/cat_biblio_entry.jsp"/>
+                      <forward name="success" path="/cataloguing/cat_biblio.jsp"/>
+                    </action>
+ <action attribute="BibliographicDetailEntryActionForm" path="/catOldBiblioAction" input="/cataloguing/cat_old_title.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.BibliographicDetailEntryAction">
+                      <forward name="failure" path="/cataloguing/cat_old_title.jsp"/>
+                      <forward name="new" path="/cataloguing/cat_old_title_entry1.jsp"/>
+                      <forward name="success" path="/cataloguing/cat_old_title_entry.jsp"/>
+                      <forward name="view" path="/cataloguing/cat_viewall_biblio.jsp" />
+                      <forward name="main" path="/admin/main.jsp" />
+                    </action>
+ <action attribute="BibliographicDetailEntryActionForm" path="/catOldBiblio" input="/cataloguing/cat_old_title_entry1.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.NewEntryBiblioAction">
+                      <forward name="failure" path="/cataloguing/cat_old_title.jsp"/>
+                       <forward name="fail" path="/cataloguing/cat_old_title_entry1.jsp"/>
+                      <forward name="success" path="/cataloguing/cat_old_title.jsp"/>
+                    </action>
+ <action attribute="BibliographicDetailEntryActionForm" path="/catOldBiblioDetailAction" input="/cataloguing/cat_old_title_entry.jsp" name="BibliographicDetailEntryActionForm"   scope="request" type="com.myapp.struts.cataloguing.BiblioDetailsAction">
+                      <forward name="failure" path="/cataloguing/cat_old_title_entry.jsp"/>
+                      <forward name="fail" path="/cataloguing/cat_old_title_entry.jsp"/>
+                     <forward name="success" path="/cataloguing/cat_old_title.jsp"/>
+                    </action>
+
+  <action path="/cataloguing/viewAll" scope="request" type="com.myapp.struts.cataloguing.BibliographicDetailAction">
+                      <forward name="view" path="/cataloguing/cat_viewall_biblio.jsp" />
+                    </action>
+
+
+      <!--login Action Setting-->
 
            <action attribute="LoginActionForm" input="/login.jsp" name="LoginActionForm" path="/login" scope="session" type="com.myapp.struts.LoginAction" validate="true">
                         <forward name="success" path="/admin/main.jsp"/>
@@ -75,7 +132,17 @@
                         <forward name="login" path = "/login.jsp"/>
            </action>
 
+           <action  input="/manage_superadmin.jsp" name="SuperAdminActionForm" path="/manage_superadmin" scope="session" type="com.myapp.struts.SuperAdminAction" validate="true">
+                        <forward name="success" path="/manage_superadmin.jsp"/>
+                        <forward name="fail" path="/manage_superadmin.jsp"/>
+
+           </action>
+
+
  <action path="/adminemail" scope="request" type="com.myapp.struts.admin.LoginIdAction"/>
+  <action path="/logout" scope="request" type="com.myapp.struts.LogOutAction">
+         <forward name="success" path="/admin/logout.jsp"/>
+      </action>
   <action path="/adminpass" scope="request" type="com.myapp.struts.admin.PasswordAction"/>
  <action path="/institute_email" scope="request" type="com.myapp.struts.admin.InstiRegId"/>
 
@@ -117,7 +184,7 @@
 
                         <forward name="assign_privilege" path="/admin/pri_header.jsp"/>
                         <forward name="view_privilege" path="/admin/view_privilege.jsp"/>
-
+                        <forward name="failure" path="/admin/privilege_tree.jsp"/>
                     </action>
 
 
@@ -130,6 +197,7 @@
                     </action>
                 
                    <action path="/updatestaff" input="/admin/update_staff.jsp" name="StaffDetailActionForm"     scope="request" type="com.myapp.struts.admin.UpdateStaffAction">
+                        
                         <forward name="success" path="/admin/update_staff_message.jsp"/>
                         <forward name="duplicate" path="/admin/duplicate_message.jsp"/>
                    </action>
@@ -176,9 +244,12 @@
                     <action  attribute="AdminViewActionForm" path="/adminupdate" input="/admin/update_admin_detail.jsp" name="AdminViewActionForm"  scope="session" type="com.myapp.struts.admin.AdminUpdateAction1">
                         <forward name="success" path="/admin/update_admin.jsp"/>
                         <forward name="failure" path="/admin/update_admin_detail.jsp"/>
+
                     </action>
-
-
+                 <action path="/admin/viewblock" type="com.myapp.struts.admin.AdminBlockAction" scope="request">
+                      <forward name="success" path="/admin/admin_block.jsp"/>
+                    </action>
+               
                   
                     <action  path="/staffRegistration"  input="/admin/acq_register.jsp" name="AcqRegisterActionForm"  scope="request" type="com.myapp.struts.admin.AcqRegisterAction">
                          <forward name="duplicate" path="/admin/acq_register.jsp"/>
@@ -202,7 +273,7 @@
 
                     <action input="/admin/createaccount2.jsp" name="CreateAccountActionForm" path="/updateaccount" scope="request" type="com.myapp.struts.admin.UpdateAccountAction">
                        <forward name="success" path="/admin/staffaccount1.jsp"/>
-                        <forward name="error" path="/admin/error.jsp"/>
+                        <forward name="error" path="/admin/account.jsp"/>
                      </action>
 
 
@@ -223,17 +294,38 @@
                         
                      </action>
                    
+                    <action input="/admin/search_admin.jsp" name="SearchInstituteActionForm" path="/admin/search_institute" scope="request" type="com.myapp.struts.admin.SearchInstituteAction">
+                        <forward name="institute_search"  path="/admin/search_admin_grid.jsp"/>
+                     </action>
 
 
-                   <!--OPAC Action Setting-->
+                     <action path="/admin/block_library" scope="request" type="com.myapp.struts.admin.BlockLibraryAction">
+                       <forward name="success" path="/admin/admin_blocked.jsp"/>
+
+                     </action>
+                     <action path="/changeWorkingStatus" scope="request" name="ChangeWorkingStatusActionForm" type="com.myapp.struts.admin.ChangeWorkingStatusAction">
+                       <forward name="success" path="/admin/working_status_message.jsp"/>
+
+                     </action>
+
+
+     <!--OPAC Action Setting-->
                     <action input="/OPAC/simple.jsp" name="SimpleSearchActionForm" path="/simple_search" scope="request" type="com.myapp.struts.opac.SimpleSearchAction">
                         <forward name="success"  path="/OPAC/simple_search.jsp"/>
                     </action>
 
-                   
+                    <action path="/dept" scope="request" type="com.myapp.struts.opac.FacultyAction"/>
+                   <action path="/course" scope="request" type="com.myapp.struts.opac.CourseAction"/>
+                    <action path="/lib" scope="request" type="com.myapp.struts.opac.LibraryAction"/>
+
                      <action path="/OPAC/MyResultSet" type="com.myapp.struts.opac.MyResultSetAction" scope="request">
                         <forward name="success" path="/OPAC/newjsp.jsp"/>
+                      
+                     </action>
+                     <action path="/OPAC/MyResultSet1" type="com.myapp.struts.opac.MyResultSetAction1" scope="request">
+                        <forward name="success" path="/OPAC/newjsp.jsp"/>
                         <forward name="newarrival" path="/OPAC/newarrivalsdetails.jsp"/>
+                        <forward name="accessionno" path="/OPAC/newarrivalsdetails.jsp"/>
                      </action>
                      <action input="/OPAC/browse1.jsp" name="browseSearchActionForm" path="/OPAC/browse" scope="request" type="com.myapp.struts.opac.browseSearchAction">
                         <forward name="success"  path="/OPAC/browse.jsp"/>
@@ -260,32 +352,48 @@
                         <forward name="success"  path="/OPAC/journal.jsp"/>
                      </action>
                      <action input="/OPAC/member.jsp" name="MemberActionForm" path="/OPAC/MemberDetails" scope="request" type="com.myapp.struts.opac.MemberAction">
-                        <forward name="success"  path="/OPAC/accountdetails.jsp"/>
-                        <forward name="member"  path="/OPAC/member.jsp"/>
+                        <forward name="account"  path="/OPAC/accountdetails.jsp"/>
+                        <forward name="notfound"  path="/OPAC/member.jsp"/>
+                        <forward name="sessionexpired" path="/admin/main.jsp"/>
                      </action>
                      <action   path="/OPAC/MyExecuteQuery" scope="request" type="com.myapp.struts.MyExecuteQueryAction">
                         <forward name="fineDetail"  path="/OPAC/finedetails.jsp"/>
                         <forward name="reservationDetail"  path="/OPAC/reservationdetails.jsp"/>
                         <forward name="success"  path="/OPAC/home.jsp"/>
                      </action>
-                     <action input="/OPAC/newdemand1.jsp" name="NewDemandActionForm" path="/OPAC/NewDemand" scope="request" type="com.myapp.struts.opac.NewDemandAction">
-                        <forward name="success"  path="/OPAC/home.jsp"/>
+                     <action input="/OPAC/newdemand2.jsp" name="NewDemandActionForm" path="/OPAC/NewDemand" scope="request" type="com.myapp.struts.opac.NewDemandAction">
+                        <forward name="success"  path="/OPAC/accountdetails.jsp"/>
+                        <forward name="error"  path="/OPAC/accountdetails.jsp"/>
                      </action>
-                     <action input="/OPAC/reservationrequest1.jsp" name="ReservationRequestActionForm" path="/OPAC/ReservationRequest" scope="request" type="com.myapp.struts.opac.ReservationRequestAction">
-                        <forward name="success"  path="/OPAC/home.jsp"/>
+                     <action input="/OPAC/reservationrequest1.jsp" name="ReservationRequetActionForm" path="/OPAC/ReservationRequest" scope="request" type="com.myapp.struts.opac.ReservationRequestAction">
+                        <forward name="success"  path="/OPAC/accountdetails.jsp"/>
+                        <forward name="error"  path="/OPAC/accountdetails.jsp"/>
                      </action>
-                     <action input="/OPAC/newmember.jsp" name="NewMemberActionForm" path="/OPAC/NewMember" scope="request" type="com.myapp.struts.opac.NewMemberAction">
-                        <forward name="success"  path="/OPAC/home.jsp"/>
+
+                        <action   path="/OPAC/home" scope="request" type="com.myapp.struts.opac.LogoutAction">
+                        <forward name="success"  path="/OPAC/member.jsp"/>
+                        </action>
+
+                    <action path="/OPAC/MemberRegAction" type="com.myapp.struts.opac.MemberRegAction" scope="request">
+                        <forward name="success" path="/OPAC/newmember.jsp"/>
+                        <forward name="fail" path="/OPAC/error.jsp"/>
+                       
+                     </action>
+
+                     <action attribute="NewMemberActionForm" input="/OPAC/newmember.jsp" name="NewMemberActionForm" path="/NewMember1" scope="request" type="com.myapp.struts.opac.NewMemberAction">
+                        <forward name="success"  path="/OPAC/opachome.jsp"/>
                         <forward name="failure"  path="/OPAC/newmember.jsp"/>
                      </action>
                      <action   path="/OPAC/Notice" scope="request" type="com.myapp.struts.opac.NoticeAction">
+                         <forward name="fail"  path="/OPAC/error.jsp"/>
                         <forward name="success"  path="/OPAC/scroll.jsp"/>
                      </action>
                      <action   path="/OPAC/Locations" scope="request" type="com.myapp.struts.opac.LocationsAction">
+                         <forward name="fail"  path="/OPAC/error.jsp"/>
                         <forward name="success"  path="/OPAC/location.jsp"/>
                      </action>
                      <action input="/OPAC/feedback.jsp" name="FeedbackActionForm" path="/OPAC/Feedback" scope="request" type="com.myapp.struts.opac.FeedbackAction">
-                        <forward name="success"  path="/OPAC/home.jsp"/>
+                        <forward name="success"  path="/OPAC/opachome.jsp"/>
                      </action>
                      <action path="/OPAC/OpacLib" scope="request" type="com.myapp.struts.opac.OpacLibResultSetAction">
                         <forward name="simple"  path="/OPAC/simple.jsp"/>
@@ -297,10 +405,15 @@
                         <forward name="accno"  path="/OPAC/accno.jsp"/>
                         <forward name="journal"  path="/OPAC/journalinput.jsp"/>
                         <forward name="newarrival"  path="/OPAC/newarrivals1.jsp"/>
+                        <forward name="myaccount"  path="/OPAC/member.jsp"/>
+                        <forward name="feedback"  path="/OPAC/feedback.jsp"/>
+                        <forward name="newmember"  path="/OPAC/newmember.jsp"/>
+                        <forward name="notice"  path="/OPAC/feedback.jsp"/>
+                        <forward name="location"  path="/OPAC/feedback.jsp"/>
+
+
                      </action>
-                <action input="/admin/search_admin.jsp" name="SearchInstituteActionForm" path="/admin/search_institute" scope="request" type="com.myapp.struts.admin.SearchInstituteAction">
-                        <forward name="institute_search"  path="/admin/search_admin_grid.jsp"/>
-                     </action>
+              
 
 
     </action-mappings>
@@ -308,6 +421,10 @@
     <controller processorClass="org.apache.struts.tiles.TilesRequestProcessor"/>
 
     <message-resources parameter="com/myapp/struts/ApplicationResource"/>
+
+    
+    <message-resources
+		parameter="com.myapp.struts.validation" />
 
     <!-- ========================= Tiles plugin ===============================-->
     <!--
@@ -347,14 +464,5 @@
             property="pathnames"
             value="/WEB-INF/validator-rules.xml,/WEB-INF/validation.xml"/>
     </plug-in>
-
-    <message-resources
-		parameter="com.myapp.struts.admin.admin" />
-
-	<plug-in className="org.apache.struts.validator.ValidatorPlugIn">
-		<set-property property="pathnames"
-			value="/org/apache/struts/validator/validator-rules.xml,
-               /WEB-INF/validation.xml" />
-	</plug-in>
 
 </struts-config>

@@ -27,6 +27,19 @@ font-family:Tahoma;
 
      
     }
+    .btn2
+    {
+font-family:Tahoma;
+    font-size:13px;
+    letter-spacing:1px;
+     padding-left:10px;
+     color:brown;
+     text-align:center;
+    
+
+
+
+    }
     .txt1
     {
        font-family:Tahoma;
@@ -65,11 +78,147 @@ color:brown;
      color:brown;
       }
 
-      .err
+ .err
 {
 font-family: Arial,Helvetica,sans-serif;
 font-size:11px;
 letter-spacing:1px;
 color:red;
 font-weight:bold;
+
+}
+
+.txt3
+      {
+      font-family:Tahoma;
+    font-size:11px;
+    font-weight: bold;
+    letter-spacing:1px;
+     padding-left:5px;
+     color:black;
+    
+      }
+.btn1
+    {
+font-family:Tahoma;
+    font-size:13px;
+    letter-spacing:1px;
+     padding-left:10px;
+     color:brown;
+     text-align:center;
+   
+
+
+
+    }
+
+    .accountbar
+    {
+font-family:Tahoma;
+    font-size:13px;
+    letter-spacing:1px;
+     padding-left:10px;
+     
+     text-align:left;
+
+
+
+
+    }
+
+    .btn3
+    {
+font-family:Tahoma;
+    font-size:13px;
+    letter-spacing:1px;
+     padding-left:10px;
+     color:brown;
+     text-align:left;
+
+
+
+
+    }
+.opac_m
+      {
+      font-family:Tahoma;
+    font-size:11px;
+    font-weight: bold;
+    letter-spacing:1px;
+     padding-left:5px;
+     color:black;
+
+      }
+
+ 
+
+.opac_table_design
+{
+    background-color:white;
+    border:#cccccc solid 1px;
+    color:black;
+    font-family:Tahoma;
+    font-size:12px;
+
+}
+
+.opac_table_bar
+{
+    background-color:#cccccc;
+font-weight:bold;
+    color:black;
+    font-family:Tahoma;
+    font-size:12px;
+    text-align: center;
+    height:28px;
+}
+
+.opac_table_text
+{
+    color:black;
+    font-family:Tahoma;
+    font-size:12px;
+    text-align: right;
+    letter-spacing:1px;
+
+
+
+
+}
+.opac_table_textbox
+{
+    color:black;
+    font-family:Tahoma;
+    font-size:12px;
+    text-align:left;
+    letter-spacing:1px;
+    width:148px;
+    valign:bottom;
+
+
+
+}
+
+
+.opac_mandatory
+{
+    color:red;
+}
+
+.opac_search_bar
+{
+
+}
+
+     .rows          { background-color: white;border: solid 1px blue; }
+     .hiliterows    { background-color: pink; color: #000000; font-weight: bold;border: solid 1px blue; }
+     .alternaterows { background-color: #efefef; }
+     .header        { background-color: #c0003b; color: #FFFFFF;font-weight: bold;text-decoration: none;padding-left: 10px; }
+
+     .datagrid      {  font-family: arial; font-size: 9pt;
+	    font-weight: normal;}
+     .item{ padding-left: 10px;}
+     .login{
+
+         width:160px;height:18px;background-color:#FFFFFF;border-color:#BFDBFF;border-width:1px;border-style:solid;color:#006BF5;font-family:Verdana;font-size:11px;
 }

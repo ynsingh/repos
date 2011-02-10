@@ -2,6 +2,6 @@
 <Context antiJARLocking="true" path="/LibMS-Struts">
      <Resource name="jdbc/TestDB" auth="Container" type="javax.sql.DataSource"
                maxActive="100" maxIdle="30" maxWait="10000"
-               username="root" password="" driverClassName="com.mysql.jdbc.Driver"
-               url="jdbc:mysql://localhost:3307/libms"/>
+               username="libms" password="libmsamu" driverClassName="com.mysql.jdbc.Driver"
+               url="jdbc:mysql://localhost:3306/libms"/>
    </Context>

@@ -51,21 +51,11 @@ valign="top" style="" class="mess" align="center">
 
 
         </div>
-    <div
-   style="
-      top: 650px;
-
-      position: absolute;
-
-      visibility: show;">
-        <jsp:include page="footer.jsp" />
-
-</div>
+   
 
     </body>
-</html>
 
-<script>
+<script language="javascript" type="text/javascript">
     function show()
     {
         location.href="createaccount.jsp?staff_id=<%=staff_id%>&first_name=<%=first_name%>&last_name=<%=last_name%>&email_id=<%=email_id%>";
@@ -73,3 +63,5 @@ valign="top" style="" class="mess" align="center">
     </script>
 
 
+
+</html>

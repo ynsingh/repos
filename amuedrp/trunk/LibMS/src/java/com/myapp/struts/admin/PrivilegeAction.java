@@ -34,7 +34,7 @@ public class PrivilegeAction extends org.apache.struts.action.Action {
      * @param request The HTTP Request we are processing.
      * @param response The HTTP Response we are processing.
      * @throws java.lang.Exception
-     * @return
+    
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -53,10 +53,20 @@ public class PrivilegeAction extends org.apache.struts.action.Action {
         {
         privilege_list=privilege.getPrivilege_list();
         System.out.println(privilege_list);
+        if (privilege_list!="")
+        {
+
+
         Privilege priv=new Privilege();
 
-   privilege_backup_resultset=priv.backupPrivilege(staff_id,library_id);
-         session.setAttribute("privilege_backup",privilege_backup_resultset);
+        privilege_backup_resultset=priv.backupPrivilege(staff_id,library_id);
+        session.setAttribute("privilege_backup",privilege_backup_resultset);
+
+        
+
+
+
+
 
         priv.AssignPrivilege(privilege_list,staff_id, library_id);
         privilege_backup_resultset[0].next();
@@ -84,16 +94,7 @@ public class PrivilegeAction extends org.apache.struts.action.Action {
         cat_privilege_resultset.next();
         cir_privilege_resultset.next();
         ser_privilege_resultset.next();
-        //System.out.println(cir_privilege_resultset.getString(3));
-
-
-     /*   session.setAttribute("privilege", privilege_resultset);
-
-        session.setAttribute("acq_privilege", acq_privilege_resultset);
-        session.setAttribute("cat_privilege", cat_privilege_resultset);
-        session.setAttribute("cir_privilege", cir_privilege_resultset);
-        session.setAttribute("ser_privilege", ser_privilege_resultset);
-*/
+      
         request.setAttribute("privilege_resultset", privilege_resultset);
 
         request.setAttribute("acq_privilege_resultset", acq_privilege_resultset);
@@ -101,8 +102,35 @@ public class PrivilegeAction extends org.apache.struts.action.Action {
         request.setAttribute("cir_privilege_resultset", cir_privilege_resultset);
         request.setAttribute("ser_privilege_resultset", ser_privilege_resultset);
 
+         //check the privilege of admin role user and degrade it to staff role if administrator privielege
+         //not selected
+         ResultSet temp=MyQueryResult.getMyExecuteQuery("select * from privilege where staff_id='"+staff_id+"' and library_id='"+library_id+"'");
+         if(temp.next())
+         {
+         if(temp.getString("administrator").equals("true")){
+             int i=MyQueryResult.getMyExecuteUpdate("update login set role='staff' where staff_id='"+staff_id+"' and library_id='"+library_id+"'");
+             if(i==0){
+                request.setAttribute("staff_id", staff_id);
+                request.setAttribute("staff_name", staff_name);
+                request.setAttribute("msg", "Exception occured");
+                System.out.println(temp.getString("administrator"));
+                return mapping.findForward("failure");
+             }
+
+         }
+
+         }
+
+
+
+
         return mapping.findForward("assign_privilege");
 
+        }
+        request.setAttribute("staff_id", staff_id);
+        request.setAttribute("staff_name", staff_name);
+        request.setAttribute("msg", "No Specific Privilege assigned as yet");
+        return mapping.findForward("failure");
         }
 
         else      //if(button.equals("View Privilge"))

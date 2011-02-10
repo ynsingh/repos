@@ -34,7 +34,7 @@ public class NewArrivalActionForm extends org.apache.struts.action.ActionForm {
      * This is the action called from the Struts framework.
      * @param mapping The ActionMapping used to select this instance.
      * @param request The HTTP Request we are processing.
-     * @return
+    
      */
     public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
         ActionErrors errors = new ActionErrors();
@@ -44,16 +44,12 @@ public class NewArrivalActionForm extends org.apache.struts.action.ActionForm {
         return errors;
     }
 
-    /**
-     * @return the r
-     */
+   
     public String getR() {
         return r;
     }
 
-    /**
-     * @param r the r to set
-     */
+   
     public void setR(String r) {
         this.r = r;
     }

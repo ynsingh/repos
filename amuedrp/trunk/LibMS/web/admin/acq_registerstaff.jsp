@@ -119,7 +119,7 @@ for (var i = 0; i < em.length ; i++)
 {
 var ndValue = em[i].firstChild.nodeValue;
 availableSelectList.innerHTML += ndValue+"\n";
-
+document.getElementById("email_id").value="";
 
 }
 
@@ -225,11 +225,11 @@ return true;  // date is valid
 
 
 </script>
-<link rel="stylesheet" href="/LibMS-Struts/admin/cupertino/jquery.ui.all.css" type="text/css">
-<script type="text/javascript" src="/LibMS-Struts/admin/jquery-1.4.2.min.js"></script>
-<script type="text/javascript" src="/LibMS-Struts/admin/jquery.ui.core.min.js"></script>
-<script type="text/javascript" src="/LibMS-Struts/admin/jquery.ui.widget.min.js"></script>
-<script type="text/javascript" src="/LibMS-Struts/admin/jquery.ui.datepicker.min.js"></script>
+<link rel="stylesheet" href="/LibMS-Struts/cupertino/jquery.ui.all.css" type="text/css">
+<script type="text/javascript" src="/LibMS-Struts/js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="/LibMS-Struts/js/jquery.ui.core.min.js"></script>
+<script type="text/javascript" src="/LibMS-Struts/js/jquery.ui.widget.min.js"></script>
+<script type="text/javascript" src="/LibMS-Struts/js/jquery.ui.datepicker.min.js"></script>
 <style type="text/css">
 .ui-datepicker
 {
@@ -340,16 +340,18 @@ availableSelectList = document.getElementById("searchResult");
     <table width="800px" height="800px"  valign="top" align="center">
 
         <tr><td valign="top" height="800px" width="800px" align="center">
-                
-            
-<fieldset style="border:solid 1px brown;padding-left: 20px;padding-right: 20px" ><legend><img src="/LibMS-Struts/images/staff.png"></legend>
-                   
-                    <br>
-                   <br/>
+                <fieldset style="border:solid 1px brown;padding-left: 20px;padding-right: 20px" ><legend><img src="/LibMS-Struts/images/staff.png"></legend>
+                    <br>  <table  width="800px" >
+                    <tr><td align="right">
+
+    <br> <font color="blue">  <b>Fields marked with asterisk (*) are Compuslory</b><br></font>
+
+               </td></tr> </table><br>
                     <span class="txt">Professional Details</span>
                     <hr>
                     <br>
                     <table  style="font-family: arial;font-weight: bold;color:brown;font-size:13px" >
+                   
                                            
                         <tr><td width="250px">Employee Id</td><td  width="250px" ><input type="text" id="staff_id" style="width:180px" disabled="true" name="" value="<%=staff_id%>"></td><td width="250px" >Email Id*</td><td ><input type="text" id="email_id" onBlur="return search();" tabindex="1"  name="email_id" value="">
                                 <br/> <div align="left" id="searchResult" style="border:#000000; "></div>
@@ -409,7 +411,7 @@ availableSelectList = document.getElementById("searchResult");
 
                                 <tr><td width="250px">Father Name</td><td width="250px"><input type="text" id="father_name"  tabindex="9"  name="father_name" value=""></td>
                                 
-                                <td width="250px">Gender</td><td width="250px">
+                                <td width="250px">Employee's Gender*</td><td width="250px">
                                 <select name="gender" size="1" id="gender" tabindex="10">
                                 <option selected value="Select">Select</option>
                                 <option  value="male">Male</option>
@@ -424,11 +426,11 @@ availableSelectList = document.getElementById("searchResult");
                                 <td width="250px">Mailing Address*</td><td width="250px"><textarea name="address1" id="address1" tabindex="11"  rows="5" cols="17"></textarea></td>
                                 <td width="250px" colspan="2">
                                     <table style="font-family: arial;font-weight: bold;color:brown;font-size:13px">
-                                        <tr><td width="165px">City</td><td width="100px"><input type="text" id="city1" tabindex="12" name="city1" value=""></td></tr>
+                                        <tr><td width="185px">City*</td><td width="100px"><input type="text" id="city1" tabindex="12" name="city1" value=""></td></tr>
                                         <tr><td colspan="2" height="7px"></td></tr>
-                                          <tr><td>State</td><td><input type="text" id="state1"  name="state1" tabindex="13" value=""/></td></tr>
+                                          <tr><td>State*</td><td><input type="text" id="state1"  name="state1" tabindex="13" value=""/></td></tr>
                                           <tr><td colspan="2" height="7px"></td></tr>
-                                          <tr><td>Country</td><td><input type="text" id="country1"  name="country1" tabindex="14" value=""></td></tr>
+                                          <tr><td>Country*</td><td><input type="text" id="country1"  name="country1" tabindex="14" value=""></td></tr>
                                         <tr><td colspan="2" height="7px"></td></tr>
 
 
@@ -510,24 +512,11 @@ availableSelectList = document.getElementById("searchResult");
 
 
 </div>
-    <div
-   style="
-      top: 900px;
-
-      position: absolute;
-
-      visibility: show;">
-        <jsp:include page="footer.jsp" />
-
-</div>
-</html:form>
-
-
-
-</html>
-<script type="text/javascript">
-   
     
+</html:form>
+<script language="javascript" type="text/javascript">
+
+
      var gender;
     function validation()
     {
@@ -535,15 +524,16 @@ availableSelectList = document.getElementById("searchResult");
  //   availableSelectList1.innerHTML="";
   //  availableSelectList2.innerHTML="";
  //   availableSelectList3.innerHTML="";
- 
-    
+
+
     var email_id=document.getElementById('email_id');
 
-   
-	
+
+
 
     var gender=document.getElementById('gender').options[document.getElementById('gender').selectedIndex].text;
     var courtesy=document.getElementById('courtesy').options[document.getElementById('courtesy').selectedIndex].text;
+    
 
     var first_name=document.getElementById('first_name');
     var last_name=document.getElementById('last_name');
@@ -564,23 +554,24 @@ availableSelectList = document.getElementById("searchResult");
     var country2=document.getElementById('country2');
     var zip2=document.getElementById('zip2');
 
- 
+
 
 
 
 var str="Enter Following Values:-";
 
-    if(email_id.value=="")
+   //if(courtesy=="Select")
+   //{ str+="\n Select Role";
+    //    alert(str);
+     //   document.getElementById('role').focus();
+      //      return false;
+      //  }
+
+   if(email_id.value=="")
         {
             str+="\n Enter Email ID";
             alert(str);
             document.getElementById('email_id').focus();
-            return false;
-        }
-    if(courtesy=="Select")
-   { str+="\n Select Courtesy";
-        alert(str);
-        document.getElementById('courtesy').focus();
             return false;
         }
 
@@ -598,36 +589,36 @@ var str="Enter Following Values:-";
             return false;
 
       }
-      if(contact_no.value=="")
-       { str+="\n Enter Contact No";
-            alert(str);
-            document.getElementById('contact_no').focus();
-            return false;
+    //  if(contact_no.value=="")
+   //    { str+="\n Enter Contact No";
+   //         alert(str);
+   //         document.getElementById('contact_no').focus();
+   //         return false;
 
-       }
-        if (isNaN(contact_no.value))
-        {
-            str+="\n Enter Valid Contact No";
-            alert(str);
-            document.getElementById('contact_no').focus();
-            return false;
-        }
+  //     }
+      //  if (isNaN(contact_no.value))
+  //      {
+  //          str+="\n Enter Valid Contact No";
+  //          alert(str);
+  //          document.getElementById('contact_no').focus();
+  //          return false;
+  //      }
 
-       if(mobile_no.value=="")
-       { str+="\n Enter mobile No";
-            alert(str);
-            document.getElementById('mobile_no').focus();
-            return false;
+   //    if(mobile_no.value=="")
+   //    { str+="\n Enter mobile No";
+   //         alert(str);
+   //         document.getElementById('mobile_no').focus();
+   //         return false;
 
-       }
+    //   }
 
-       if (isNaN(mobile_no.value))
-        {
-            str+="\n Enter Valid Mobile No";
-            alert(str);
-            document.getElementById('mobile_no').focus();
-            return false;
-        }
+    //   if (isNaN(mobile_no.value))
+    //    {
+    //        str+="\n Enter Valid Mobile No";
+    //        alert(str);
+    //        document.getElementById('mobile_no').focus();
+    //        return false;
+    //    }
 
     if(do_joining.value=="")
        { str+="\n Enter Date of Joining";
@@ -648,13 +639,13 @@ var str="Enter Following Values:-";
        if(dcheck_releaving()==false)
      return false;
 
-    if(father_name.value=="")
-       { str+="\n Enter Father_name";
-            alert(str);
-            document.getElementById('father_name').focus();
-            return false;
+  //  if(father_name.value=="")
+  //     { str+="\n Enter Father_name";
+   //         alert(str);
+   //         document.getElementById('father_name').focus();
+    //        return false;
 
-       }
+   //    }
     if(gender=="Select")
       {  str+="\n Select Gender";
            alert(str);
@@ -692,13 +683,13 @@ var str="Enter Following Values:-";
             return false;
 
       }
-    if(zip1.value=="")
-     {   str+="\n Enter Zip Code";
-          alert(str);
-          document.getElementById('zip1').focus();
-            return false;
+  //  if(zip1.value=="")
+ //    {   str+="\n Enter Zip Code";
+  //        alert(str);
+  //        document.getElementById('zip1').focus();
+  //          return false;
 
-     }
+  //   }
     if(dob.value=="")
        { str+="\n Enter date of Birth";
             alert(str);
@@ -712,41 +703,41 @@ var str="Enter Following Values:-";
      return false;
 
 
-    if(address2.value=="")
-       { str+="\n Enter Address 2";
-            alert(str);
-            document.getElementById('address2').focus();
-            return false;
+  //  if(address2.value=="")
+   //    { str+="\n Enter Address 2";
+  //          alert(str);
+   //         document.getElementById('address2').focus();
+   //         return false;
 
-       }
-    if(city2.value=="")
-      {  str+="\n Enter city 2" ;
-           alert(str);
-           document.getElementById('city2').focus();
-            return false;
+   //    }
+  //  if(city2.value=="")
+  //    {  str+="\n Enter city 2" ;
+  //         alert(str);
+  //         document.getElementById('city2').focus();
+  //          return false;
 
-      }
-    if(state2.value=="")
-       { str+="\n Enter State 2";
-            alert(str);
-            document.getElementById('state2').focus();
-            return false;
+  //    }
+  //  if(state2.value=="")
+  //     { str+="\n Enter State 2";
+  //          alert(str);
+   //         document.getElementById('state2').focus();
+  //          return false;
 
-       }
-    if(country2.value=="")
-       { str+="\n Enter Country 2";
-            alert(str);
-            document.getElementById('country2').focus();
-            return false;
+  //     }
+  //  if(country2.value=="")
+   //    { str+="\n Enter Country 2";
+   //         alert(str);
+    //        document.getElementById('country2').focus();
+   //         return false;
 
-       }
-    if(zip2.value=="")
-      {  str+="\n Enter Zip Code 2";
-           alert(str);
-           document.getElementById('zip2').focus();
-            return false;
+  //     }
+   // if(zip2.value=="")
+   //   {  str+="\n Enter Zip Code 2";
+   //        alert(str);
+   //        document.getElementById('zip2').focus();
+    //        return false;
 
-      }
+   //   }
 if(IsDateGreater(do_joining.value,do_releaving.value)==true)
     {
        str+="\nDate of Releaving Should be greater than Date of Joining";
@@ -772,7 +763,7 @@ else
 
 
     }
-    
+
 
 
 function send()
@@ -811,11 +802,11 @@ return false;
 }
 function copy()
 {
-      
+
         if(document.getElementById('Checkbox1').checked==true)
         {
 
-       
+
         var a1=document.getElementById('address1');
         var a2=document.getElementById('city1');
         var a3=document.getElementById('state1');
@@ -828,7 +819,7 @@ function copy()
         document.getElementById('country2').value=a4.value;
         document.getElementById('zip2').value=a5.value;
 
-        
+
 
 
     }
@@ -865,3 +856,7 @@ if(message1!=null||message2!=null)
 %>
 
 
+
+
+
+</html>

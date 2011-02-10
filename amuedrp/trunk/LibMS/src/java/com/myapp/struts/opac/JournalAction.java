@@ -4,8 +4,8 @@
  */
 
 package com.myapp.struts.opac;
+import  com.myapp.struts.*;
 
-import com.myapp.struts.opac.MyQueryResult;
 import java.sql.ResultSet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,7 +30,7 @@ public class JournalAction extends org.apache.struts.action.Action {
      * @param request The HTTP Request we are processing.
      * @param response The HTTP Response we are processing.
      * @throws java.lang.Exception
-     * @return
+     
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,

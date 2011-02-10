@@ -18,6 +18,16 @@ String user_name=   (String) session.getAttribute("username");
 
 
 %>
+<script>
+    // call the repeater with a function as the argument
+function repeater()
+{
+  alert("Session is Expired.You Need to Login Again?")
+
+        parent.location.href="/LibMS-Struts/login.jsp";
+}
+window.setTimeout(repeater, 1800000);
+    </script>
 
        <body style="margin:0px 0px 0px 0px;">
 
@@ -43,9 +53,4 @@ String user_name=   (String) session.getAttribute("username");
            <hr/>
     </body>
 
-    <%
-         //response.setHeader("Cache-Control", "no-store, no-cache");
-         //       response.setHeader("Pragma", "no-cache");
-            //    response.setDateHeader("Expires", 0);
-%>
-
+   

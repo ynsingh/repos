@@ -6,8 +6,8 @@
 package com.myapp.struts.admin;
 import com.myapp.struts.MyConnection;
 import com.myapp.struts.admin.AdminRegistrationActionForm;
-import com.myapp.struts.opac.MyQueryResult;
 
+import  com.myapp.struts.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -55,7 +55,7 @@ int i=0;
      * @param request The HTTP Request we are processing.
      * @param response The HTTP Response we are processing.
      * @throws java.lang.Exception
-     * @return
+   
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -128,7 +128,7 @@ System.out.println(library_name);
                 stmt=con.prepareStatement("select max(registration_id) from admin_registration");
                 ResultSet rst=stmt.executeQuery();
                 rst.next();
-                String msg="Registered successfully with registration id :"+rst.getInt(1);
+                String msg="Request for registration accepted successfully with request id :"+rst.getInt(1);
                 // System.out.println(msg);
                 request.setAttribute("registration_msg", msg);
        }
@@ -137,7 +137,7 @@ System.out.println(library_name);
         catch(Exception e)
         {
         System.out.println(e);
-         String msg="Registration failure due to some error";
+         String msg="Request for registration failure due to some error";
         request.setAttribute("registration_msg", msg);
         session.invalidate();
          return mapping.findForward("failure");

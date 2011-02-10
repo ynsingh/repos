@@ -62,40 +62,30 @@ String msg1=(String)request.getAttribute("msg1");
 
 </td></tr></table>
         </div>
-    <div
-   style="
-      top: 650px;
-
-      position: absolute;
-
-      visibility: show;">
-        <jsp:include page="footer.jsp" />
-
-</div>
+  
 </html:form>
 
 </body>
-</html>
 <script language="javascript" type="text/javascript">
-   
-    
+
+
 function check1()
 {
     if(document.getElementById('staff_id').value=="")
     {
         alert("Enter Staff Id...");
-       
+
         document.getElementById('staff_id').focus();
-       
+
         return false;
     }
 
   }
 
- 
 
 
- 
+
+
   function quit()
   {
 
@@ -104,7 +94,7 @@ function check1()
   }
 
 
- 
+
     </script>
       <%     if (msg1!=null){
  %>
@@ -116,3 +106,4 @@ function check1()
 }
 
 %>
+</html>

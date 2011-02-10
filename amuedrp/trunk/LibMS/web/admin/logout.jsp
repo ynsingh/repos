@@ -33,7 +33,7 @@
 
                   <p align="center" class="txt2">Staff Logged Out Successfully
                     <br><br>
-                    Click Here <a href="../login.jsp">Home</a></p>
+                    Click Here <a href="/LibMS-Struts/login.jsp">Home</a></p>
                     
                     
                    
@@ -43,22 +43,14 @@
     
 </td></tr></table>
         </div>
-    <div
-   style="
-      top: 600px;
-
-      position: absolute;
-
-      visibility: show;">
-        <jsp:include page="footer.jsp" />
-
-</div>
+   
 
     </body>
-</html>
- <%
+    <%
                     session.invalidate();
 
 
 
                     %>
+</html>
+ 

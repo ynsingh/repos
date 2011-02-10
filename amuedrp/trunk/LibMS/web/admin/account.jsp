@@ -138,7 +138,7 @@ availableSelectList.innerHTML += ndValue+"\n";
                     
  <tr><td width="150px" align="center"><input type="submit" id="Button3" name="button" value="View Account" class="btn"  style="width:150px" /></td></tr>
  <tr><td width="150px" align="center"><input type="submit" id="Button4" name="button" value="Delete Account" class="btn"  style="width:150px"/></td></tr>
- <tr><td width="150px" align="center"><input type="submit" id="Button5" name="button" value="Change Password" class="btn"  style="width:150px"/></td></tr>
+ <tr><td width="150px" align="center"><input type="submit" id="Button5" name="button" value="Update Account" class="btn"  style="width:150px"/></td></tr>
  <tr><td width="150px" align="center"><input type="submit" id="Button6" name="button" value="Back" class="btn" onclick="return quit()" style="width:150px"/></td></tr>
  
 
@@ -158,20 +158,9 @@ availableSelectList.innerHTML += ndValue+"\n";
 
 </td></tr></table>
         </div>
-    <div
-   style="
-      top: 650px;
-
-      position: absolute;
-
-      visibility: show;">
-        <jsp:include page="footer.jsp" />
-
-</div>
+   
 </html:form>
-
-</body>
-</html>
+    </body>
 <script language="javascript" type="text/javascript">
   function check1()
 {
@@ -208,3 +197,5 @@ availableSelectList.innerHTML += ndValue+"\n";
 }
 
 %>
+
+</html>

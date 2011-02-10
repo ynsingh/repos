@@ -81,12 +81,19 @@ body
           <a href="/LibMS-Struts/admin/update_admin.jsp" target="f3" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" >
       <b style="color:white"> Modify Institute Record</a>&nbsp;|&nbsp;</b>
 <a href="/LibMS-Struts/admin/search_admin.jsp"  target="f3" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" >
-      <b style="color:white">Search Institute  </a></b>&nbsp;
+      <b style="color:white">Search Institute  </a>&nbsp;|&nbsp;</b>
+<a href="/LibMS-Struts/manage_superadmin.jsp"  target="f3" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" >
+      <b style="color:white">Manage SuperAdmin Account  </a>&nbsp;|</b>&nbsp;
+<a href="/LibMS-Struts/admin/block_admin.jsp"  target="f3" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" >
+      <b style="color:white">Delinquent Library List </a>|</b>&nbsp;
+<a href="/LibMS-Struts/admin/view_blocked_library.jsp"  target="f3" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" >
+    <b style="color:white">Change Working Status</b></a>&nbsp;
+    
 
       </td>
   </tr>
   <tr><td>
-            <font color="blue" size="+1"><b><br>
+            <font color="blue" size="-1"><b><br>
 Pending Requests for Institute Registration (<%=count%>)&nbsp;<a href="/LibMS-Struts/admin/view_pending.jsp" target="f3"> view pending </a>
 
     </b>
@@ -94,15 +101,16 @@ Pending Requests for Institute Registration (<%=count%>)&nbsp;<a href="/LibMS-St
 
       </td></tr>
   <tr><td align="left" style=" padding-left: 200px;">
-            <IFRAME  name="f3" src="#" frameborder=0 scrolling="yes" style="color:deepskyblue;left:5px;height:500px;width:800px;visibility:true;" id="f3"></IFRAME>
+            <IFRAME  name="f3" src="#" frameborder=0 scrolling="no" width="100%" style="color:deepskyblue;height:650px;left:5px;visibility:true;" id="f3"></IFRAME>
 
 
       </td></tr>
   
-  <tr><td><hr></td></tr>
-        <jsp:include page="adminfooter.jsp" />
+ 
+       
       
 </table>
+
     </div>
         </body>
    </html>

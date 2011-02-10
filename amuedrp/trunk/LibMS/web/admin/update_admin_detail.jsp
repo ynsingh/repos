@@ -8,7 +8,7 @@
 <%@page contentType="text/html"%>
 
 <%@page pageEncoding="UTF-8"%>
-<%@page import="java.sql.*,com.myapp.struts.opac.MyQueryResult" %>
+<%@page import="java.sql.*,com.myapp.struts.MyQueryResult" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -258,7 +258,7 @@ else
 
 
              <tr><td>Landline no</td><td><input type="text" id="land_line_no"   name="land_line_no" value="<%=land_line_no%>" tabindex="9" title="Enter Land Line No" ></td>
-             <td>Password</td><td><input type="password" id="admin_password"   name="admin_password" value="<%=admin_password%>"  title="Enter Password" readonly></td>
+             <td>Password</td><td><input type="password" id="admin_password"   name="admin_password" value="<%=admin_password%>"  title="Enter Password"/></td>
              </tr>
 
              <tr><td>Type of Institute</td><td><select name="type_of_institute" tabindex="10" id="type_of_institute" style="width:148px" >
@@ -319,8 +319,6 @@ else
     </html:form>
 
 </body>
-
-</html>
 <script>
     function quit()
     {
@@ -338,24 +336,24 @@ else
     var email_id=document.getElementById('admin_email');
     var type_of_institute=document.getElementById('type_of_institute').options[document.getElementById('type_of_institute').selectedIndex].text;
     var gender=document.getElementById('gender').options[document.getElementById('gender').selectedIndex].text;
-    var courtesy=document.getElementById('courtesy').options[document.getElementById('courtesy').selectedIndex].text;
+   // var courtesy=document.getElementById('courtesy').options[document.getElementById('courtesy').selectedIndex].text;
 
     var institute_name=document.getElementById('institute_name');
-    var abbreviated_name=document.getElementById('abbreviated_name');
+  //  var abbreviated_name=document.getElementById('abbreviated_name');
     var institute_address=document.getElementById('institute_address');
     var admin_fname=document.getElementById('admin_fname');
     var admin_lname=document.getElementById('admin_lname');
-    var institute_website=document.getElementById('institute_website');
-    var admin_designation=document.getElementById('admin_designation');
+ //   var institute_website=document.getElementById('institute_website');
+ //   var admin_designation=document.getElementById('admin_designation');
     var city=document.getElementById('city');
     var state=document.getElementById('state');
     var country=document.getElementById('country');
-    var pin=document.getElementById('pin');
-    var land_line_no=document.getElementById('land_line_no');
+  //  var pin=document.getElementById('pin');
+  //  var land_line_no=document.getElementById('land_line_no');
     var mobile_no=document.getElementById('mobile_no');
-    var institute_domain=document.getElementById('institute_domain');
+  //  var institute_domain=document.getElementById('institute_domain');
   var library_name=document.getElementById('library_name');
-   
+
   if (echeck(email_id.value)==false)
     {
 		email_id.value="";
@@ -373,20 +371,20 @@ if(institute_name.value=="")
             return false;
        }
 
-    if(abbreviated_name.value=="")
-      {  str+="\n Enter Abbreviated name";
-          alert(str);
-           document.getElementById('abbreviated_name').focus();
-            return false;
-       }
+   // if(abbreviated_name.value=="")
+   //   {  str+="\n Enter Abbreviated name";
+   ///       alert(str);
+   //        document.getElementById('abbreviated_name').focus();
+   //         return false;
+  //     }
 
-        if(courtesy=="Select")
-    {str+="\n Select Courtesy";
+   //     if(courtesy=="Select")
+   // {str+="\n Select Courtesy";
 
-     alert(str);
-            document.getElementById('courtesy').focus();
-            return false;
-       }
+  //   alert(str);
+   //         document.getElementById('courtesy').focus();
+   //         return false;
+   //    }
       if(institute_address.value=="")
        { str+="\n Enter institute Address"; alert(str);
             document.getElementById('institute_address').focus();
@@ -414,11 +412,11 @@ if(institute_name.value=="")
             document.getElementById('city').focus();
             return false;
        }
-       if(admin_designation.value=="")
-        {str+="\n Enter admin designation"; alert(str);
-            document.getElementById('admin_designation').focus();
-            return false;
-       }
+    //   if(admin_designation.value=="")
+    //    {str+="\n Enter admin designation"; alert(str);
+     //       document.getElementById('admin_designation').focus();
+    //        return false;
+    //   }
        if(state.value=="")
         {str+="\n Enter State"; alert(str);
             document.getElementById('state').focus();
@@ -447,11 +445,11 @@ if(institute_name.value=="")
             document.getElementById('admin_email').focus();
             return false;
        }
-       if(pin.value=="")
-       { str+="\n Enter pin Code"; alert(str);
-            document.getElementById('pin').focus();
-            return false;
-       }
+   //    if(pin.value=="")
+    //   { str+="\n Enter pin Code"; alert(str);
+    //        document.getElementById('pin').focus();
+    //        return false;
+    //   }
 
    if(gender=="Select")
        { str+="\n Select Gender"; alert(str);
@@ -459,18 +457,18 @@ if(institute_name.value=="")
             return false;
        }
 
-if(land_line_no.value=="")
-       { str+="\n Enter land line no"; alert(str);
-            document.getElementById('land_line_no').focus();
-            return false;
-       }
-       if (isNaN(land_line_no.value))
-        {
-            str+="\n Enter Valid Contact No";
-            alert(str);
-            document.getElementById('land_line_no').focus();
-            return false;
-        }
+//if(land_line_no.value=="")
+   //    { str+="\n Enter land line no"; alert(str);
+   //         document.getElementById('land_line_no').focus();
+   //         return false;
+   //    }
+   //    if (isNaN(land_line_no.value))
+  //      {
+    //        str+="\n Enter Valid Contact No";
+   //         alert(str);
+   //         document.getElementById('land_line_no').focus();
+   //         return false;
+   //     }
     if(type_of_institute=="Select")
     {str+="\n Select Type of Institute";
          alert(str);
@@ -478,18 +476,18 @@ if(land_line_no.value=="")
             return false;
        }
 
- 
-    if(institute_domain.value=="")
-      {  str+="\n Enter institute domain"; alert(str);
-            document.getElementById('institute_domain').focus();
-            return false;
-       }
-      
-     if(institute_website.value=="")
-        {str+="\n Enter website"; alert(str);
-            document.getElementById('institute_website').focus();
-            return false;
-       }
+
+  //  if(institute_domain.value=="")
+    //  {  str+="\n Enter institute domain"; alert(str);
+ //           document.getElementById('institute_domain').focus();
+  //          return false;
+   //    }
+
+  //   if(institute_website.value=="")
+  //      {str+="\n Enter website"; alert(str);
+  //          document.getElementById('institute_website').focus();
+  //          return false;
+   //    }
 
 if(str=="Enter Following Values:-")
     return true;
@@ -551,8 +549,8 @@ availableSelectList = document.getElementById("searchResult");
 		    availableSelectList.innerHTML += "Invalid E-mail ID"+"\n";
 		    return false
 		 }
- 
- 
+
+
  		 return true
 	}
 
@@ -560,3 +558,5 @@ availableSelectList = document.getElementById("searchResult");
 
 
 </script>
+
+</html>

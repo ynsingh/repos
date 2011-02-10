@@ -18,7 +18,7 @@ locale1=(String)session.getAttribute("locale");
     if(session.getAttribute("locale")!=null)
     {
         locale1 = (String)session.getAttribute("locale");
-        System.out.println("locale="+locale1);
+        //System.out.println("locale="+locale1);
     }
     else locale1="en";
 }catch(Exception e){locale1="en";}
@@ -27,7 +27,7 @@ locale1=(String)session.getAttribute("locale");
     else{ rtl="RTL";page=false;}
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
-    %>
+%>
     <script language="javascript">
         function fun()
         {
@@ -41,18 +41,15 @@ locale1=(String)session.getAttribute("locale");
 
 
 
-
           <%if(!page.equals(true)){%>
 
-          <%--      <%String username=(String)session.getAttribute("username");
-%>--%>
-
-<frameset rows="28%,62%,10%" border="0" frameborder=2 framespacing="0">
+         
+<frameset rows="16%,74%,10%" border="0" frameborder=2 framespacing="0">
 
 
   <frame name="f1" src="../OPAC/opacframe.jsp" frameborder=2 scrolling="NO"/>
 
-<frameset cols="85%,*">
+<frameset cols="89%,*">
 
     <frame name="f3" src="../OPAC/opachome.jsp" frameborder=2 scrolling="NO"/>
 
@@ -62,19 +59,18 @@ locale1=(String)session.getAttribute("locale");
 
 </frameset>
 
+
             <%}else{%>
 
 
 
-            <%--    <%String username=(String)session.getAttribute("username");
-
-if (username!=null){%>--%>
-<frameset rows="28%,62%,10%" border="0" frameborder=2 framespacing="0">
+          
+<frameset rows="16%,74%,10%" border="0" frameborder=2 framespacing="0">
 
 
-  <frame name="f1" src="../OPAC/opacframe.jsp" frameborder=2  scrolling="NO"/>
+  <frame name="f1" src="../OPAC/opacframe.jsp"  scrolling="no"/>
 
-<frameset cols="18%,*">
+<frameset cols="11%,*">
 
 
 <frame name="f2" src="../OPAC/m.jsp" frameborder=0 scrolling="NO" />

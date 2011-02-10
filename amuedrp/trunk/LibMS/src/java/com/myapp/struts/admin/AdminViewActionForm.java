@@ -59,9 +59,7 @@ private String gender;
 
 
 	}
-    /**
-     * @return
-     */
+   
     public String getLibrary_id() {
         return library_id;
     }
@@ -129,9 +127,6 @@ private String gender;
     }
 
 
-    /**
-     * @param string
-     */
         public void setRegistration_request_id(int i) {
         registration_request_id = i;
     }
@@ -195,18 +190,12 @@ private String gender;
          admin_password=string;
     }
 
-    /**
-     * @param string
-     */
+    
     public void setLibrary_id(String string) {
         library_id = string;
     }
      
-    /**
-     * @return
-     */
-
-
+   
     /**
      *
      */
@@ -219,7 +208,7 @@ private String gender;
      * This is the action called from the Struts framework.
      * @param mapping The ActionMapping used to select this instance.
      * @param request The HTTP Request we are processing.
-     * @return
+   
      */
      
    

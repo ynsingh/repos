@@ -1,6 +1,6 @@
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
-<%@page import="java.sql.*,com.myapp.struts.opac.MyQueryResult" %>
+<%@page import="java.sql.*,com.myapp.struts.MyQueryResult" %>
 
 <%
 String id=request.getParameter("id");

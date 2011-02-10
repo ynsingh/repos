@@ -5,9 +5,9 @@
 
 package com.myapp.struts.admin;
 
-import com.myapp.struts.MyConnection;
-import com.myapp.struts.opac.MyQueryResult;
 
+
+import  com.myapp.struts.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -57,7 +57,7 @@ int i=0;
      * @param request The HTTP Request we are processing.
      * @param response The HTTP Response we are processing.
      * @throws java.lang.Exception
-     * @return
+   
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,

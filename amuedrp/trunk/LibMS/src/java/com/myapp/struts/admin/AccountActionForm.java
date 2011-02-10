@@ -19,7 +19,7 @@ public class AccountActionForm extends org.apache.struts.action.ActionForm {
     private String staff_id;
     private String button;
     private String library_id;
-
+private String role;
    
     /**
      *
@@ -33,7 +33,7 @@ public class AccountActionForm extends org.apache.struts.action.ActionForm {
      * This is the action called from the Struts framework.
      * @param mapping The ActionMapping used to select this instance.
      * @param request The HTTP Request we are processing.
-     * @return
+     
      */
     public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
         ActionErrors errors = new ActionErrors();
@@ -81,5 +81,19 @@ public class AccountActionForm extends org.apache.struts.action.ActionForm {
      */
     public void setLibrary_id(String library_id) {
         this.library_id = library_id;
+    }
+
+    /**
+     * @return the role
+     */
+    public String getRole() {
+        return role;
+    }
+
+    /**
+     * @param role the role to set
+     */
+    public void setRole(String role) {
+        this.role = role;
     }
 }

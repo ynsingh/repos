@@ -7,7 +7,7 @@ package com.myapp.struts;
 import com.myapp.struts.admin.SecurityActionForm;
 import com.myapp.struts.admin.SecurityActionForm;
 import java.sql.*;
-import com.myapp.struts.opac.MyQueryResult;
+import  com.myapp.struts.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,7 +35,7 @@ public class ForgetAction extends org.apache.struts.action.Action {
      * @param request The HTTP Request we are processing.
      * @param response The HTTP Response we are processing.
      * @throws java.lang.Exception
-     * @return
+     
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,

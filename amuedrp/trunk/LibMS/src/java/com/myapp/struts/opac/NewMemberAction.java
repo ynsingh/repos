@@ -4,9 +4,9 @@
  */
 
 package com.myapp.struts.opac;
-
+import  com.myapp.struts.*;
 import java.util.*;
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.*;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -28,7 +28,7 @@ public class NewMemberAction extends org.apache.struts.action.Action {
      * @param request The HTTP Request we are processing.
      * @param response The HTTP Response we are processing.
      * @throws java.lang.Exception
-     * @return
+    
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -37,18 +37,18 @@ public class NewMemberAction extends org.apache.struts.action.Action {
 
         NewMemberActionForm myForm = (NewMemberActionForm)form;
 
-String lib_name,lib_id,category,fname,mname,lname,subject="",add1,add2,city,state,pin,country;
-String email,fax,ph1,ph2,req_date,faculty,dept,memid,rollno,course;
+String library_id,category,fname,mname,lname,password,add1,add2,city,state,pin,country;
+String email,fax,ph1,ph2,req_date,faculty,dept,rollno,course;
 String date;
-
+HttpSession session=request.getSession();
+//library_id=(String)session.getAttribute("library_id");
 Calendar cal = new GregorianCalendar();
     int month = cal.get(Calendar.MONTH);
     int year = cal.get(Calendar.YEAR);
     int day = cal.get(Calendar.DAY_OF_MONTH);
     date=day+"/"+(month+1)+"/"+year;
 
-    lib_name=myForm.getTXTLIBNAME();
-lib_id=myForm.getTXTLIBID();
+    
 category=myForm.getCMBCAT();
 fname=myForm.getTXTFNAME();
 mname=myForm.getTXTMNAME();
@@ -66,20 +66,35 @@ ph2=myForm.getTXTPH2();
 req_date=date;
 faculty=myForm.getTXTFACULTY();
 dept=myForm.getTXTDEPT();
-memid=request.getParameter("TXTID");
+password=myForm.getTXTPASS();
+library_id=myForm.getCMBLib();
+
 rollno=myForm.getTXTROLL();
 course=myForm.getTXTCOURSE();
 
+if(faculty.equals("Select"))
+    faculty="";
 
-String queryString = "INSERT INTO member VALUES ('"+ lib_name +"','"+ lib_id +"','"+ category +"','"+ fname +"','"+ mname +"','"+ lname +"'," +
-       "'"+ subject +"','"+ add1 +"','"+ add2 +"','"+ city +"','"+ state +"','"+ pin +"','"+ country +"','"+ email +"','"+ fax +"','"+ ph1 +"','"+ ph2 +"','"+ req_date +"','"+ faculty +"','"+ dept +"','"+ memid +"','"+ rollno +"','"+ course +"')";
+if(dept.equals("Select"))
+    dept="";
+if(course.equals("Select"))
+    course="";
 
+
+
+
+
+String queryString = "INSERT INTO member(library_id,category,fname,lname,mname,address1,address2,city,state,pin,country,email,fax,phone1,phone2,requestdate,faculty_id,dept_id,rollno,course,password) VALUES ('"+ library_id+"','"+ category +"','"+ fname +"','"+ mname +"','"+ lname +"'," +
+       "'"+  add1 +"','"+ add2 +"','"+ city +"','"+ state +"','"+ pin +"','"+ country +"','"+ email +"','"+ fax +"','"+ ph1 +"','"+ ph2 +"','"+ req_date +"','"+ faculty +"','"+ dept +"','"+ rollno +"','"+ course +"','"+password+"')";
+System.out.println("here");
 int no = MyQueryResult.getMyExecuteUpdate(queryString);
 if (no>0){
-String msg="Your Membership Request is sent to Library..";
+String msg="Your Membership Request sent successfully to Library";
 request.setAttribute("msg", msg);
+
         return mapping.findForward(SUCCESS);
         }
+
 return mapping.findForward("failure");
     }
 }

@@ -27,7 +27,7 @@ public class EmailAction extends org.apache.struts.action.Action {
      * @param request The HTTP Request we are processing.
      * @param response The HTTP Response we are processing.
      * @throws java.lang.Exception
-     * @return
+
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,

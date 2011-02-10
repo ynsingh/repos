@@ -13,6 +13,7 @@ String last_name=(String)request.getParameter("last_name");
 String email_id=(String)request.getParameter("email_id");
 session.setAttribute("first_name", first_name);
 session.setAttribute("last_name", last_name);
+String login_role=(String)session.getAttribute("login_role");
 %>
 <div
    style="  top:120px;
@@ -35,13 +36,39 @@ session.setAttribute("last_name", last_name);
         <tr><td   width="400px" height="500px" valign="top" style="" align="center">
                 <fieldset style="border:solid 1px brown;height:300px;width:300px;padding-left: 5px">
                     <legend><img src="/LibMS-Struts/images/StaffAccountLogin.png"/></legend><br>
-                    <table width="400px" align="center">
+                    <table width="500px" align="left">
+                       
+                        <tr><td colspan="2" height="5px"></td></tr>
                         <tr><td class="btn" width="250px">Staff ID</td><td width="250px"><input type="text" id="staff_id" name="staff_id" readonly  name="Editbox1" value="<%=staff_id%>"></td></tr>
                         <tr><td colspan="2" height="5px"></td></tr>
                         <tr><td class="btn">User Name</td><td><input type="text" id="user_name" name="user_name"   readonly  value="<%=first_name%> <%=last_name%>"></td></tr>
                         <tr><td colspan="2" height="5px"></td></tr>
                         <tr><td class="btn" >User/Login ID</td><td><input type="text" id="email_id" name="email_id"  readonly  name="Editbox2" value="<%=email_id%>"/> </td></tr>
                         <tr><td colspan="2" height="5px"></td></tr>
+                         <tr><td class="btn" width="250px">Select Role</td><td width="250px">
+                                <html:select styleId="role" property="role">
+                                    <%
+                                    if(login_role.equals("insti-admin"))
+                                    {%>
+
+                                    <html:option value="Select">Select Role</html:option>
+                                    <html:option value="staff">Staff</html:option>
+                                    <html:option value="admin">Admin</html:option>
+
+
+                                    <%}
+                                    else if(login_role.equals("admin"))
+                                    {%>
+                                    <html:option value="Select">Select Role</html:option>
+                                    <html:option value="staff">Staff</html:option>
+
+                                    <%}%>
+
+
+
+                                </html:select>
+                                </td></tr>
+                         <tr><td colspan="2" height="5px"></td></tr>
                         <tr><td class="btn">Password</td><td><input type="password" id="password"  name="password"    value=""></td></tr>
                         <tr><td colspan="2" height="5px"></td></tr>
                         <tr><td class="btn">Reenter Password</td><td><input type="password" id="password1"  name="password1"    value=""></td></tr>
@@ -49,7 +76,7 @@ session.setAttribute("last_name", last_name);
                         <tr><td colspan="2" align="center">
                                 <br>
                                 <br>
-                         <input type="submit" id="Button1"  value="Submit" class="btn" onclick="return dupli()">
+                         <input type="submit" id="Button1"  value="Submit" class="btn">
                          <input type="reset" id="Button2" value="Reset" onclick=" " class="btn">
                          <input type="button" id="Button3"  value="Back" onclick=" return quit()" class="btn">
 
@@ -82,21 +109,21 @@ session.setAttribute("last_name", last_name);
 
 
     </body>
-</html>
- <div
-   style="
-      top: 650px;
-
-      position: absolute;
-
-      visibility: show;">
-        <jsp:include page="footer.jsp" />
-
-</div>
+   
 
    <script language="javascript" type="text/javascript">
 function check1()
 {
+   var role1=document.getElementById('role').options[document.getElementById('role').selectedIndex].value;
+    if(role1=="Select")
+        {
+            alert("Select Role");
+            document.getElementById('role').focus();
+            return false;
+        }
+
+
+
    var x=document.getElementById('password');
         if(x.value=="")
             {
@@ -130,6 +157,8 @@ function check1()
        return false;
 
     }
-    
+
     </script>
 
+
+</html>

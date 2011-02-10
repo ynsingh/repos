@@ -6,7 +6,7 @@
 package com.myapp.struts.admin;
 
 import com.myapp.struts.admin.StaffDetailActionForm;
-import com.myapp.struts.opac.MyQueryResult;
+import  com.myapp.struts.*;
 import java.sql.*;
 import javax.servlet.http.*;
 import javax.servlet.http.HttpServletResponse;
@@ -56,7 +56,7 @@ public class UpdateStaffAction extends org.apache.struts.action.Action {
      * @param request The HTTP Request we are processing.
      * @param response The HTTP Response we are processing.
      * @throws java.lang.Exception
-     * @return
+    
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -117,29 +117,81 @@ public class UpdateStaffAction extends org.apache.struts.action.Action {
          
          if(button.equals("Update"))
          {
-                sql="select * from staff_detail where staff_id !='"+employee_id+"' and emai_id='"+email_id+"' and library_id='"+library_id+"'";
-                sql2="select * from login where user_id='"+email_id+"' and staff_id!='"+employee_id+"' and library_id='"+library_id+"'";
-                rst=MyQueryResult.getMyExecuteQuery(sql);
-                rst2=MyQueryResult.getMyExecuteQuery(sql2);
-                if(rst.next()||rst2.next())
+
+        String  id1=(String)session.getAttribute("staff_id");
+
+
+
+        String id="admin."+library_id;   //get Institute admin ID
+        if(employee_id.equals(id) && employee_id.equals(id1)==false)
+         {
+              ResultSet rs1=MyQueryResult.getMyExecuteQuery("select * from login where staff_id='"+employee_id+"' and library_id='"+library_id+"'");
+
+            if(rs1.next())
+            {
+         first_name=rs1.getString("user_name");
+
+            }
+               request.setAttribute("user_id", email_id);
+              request.setAttribute("staff_name",first_name );
+                request.setAttribute("library_id", library_id);
+                request.setAttribute("staff_id", employee_id);
+
+                request.setAttribute("msg", "You Cannot Update Institute Admin");
+                  return mapping.findForward("success");
+         }
+
+       //cannot delete own account
+      /*      if(employee_id.equals(id))
+            {
+
+
+                   request.setAttribute("user_id", email_id);
+
+                  request.setAttribute("staff_name",first_name+" "+last_name );
+                request.setAttribute("library_id", library_id);
+                request.setAttribute("staff_id", employee_id);
+
+                request.setAttribute("msg", "You Cannot Update Your Account for Staff Name :");
+                  return mapping.findForward("success");
+
+            }*/
+      id=(String)session.getAttribute("staff_id");
+         String login_role=(String)session.getAttribute("login_role");    //cannot create co-admin
+         ResultSet rs1=MyQueryResult.getMyExecuteQuery("select * from login where staff_id='"+employee_id+"' and library_id='"+library_id+"'");
+
+            if(rs1.next())
+            {
+                if(rs1.getString("role").equals(login_role) && (rs1.getString("staff_id").equals(id)==false))
                 {
-                     request.setAttribute("email_id", "This Email Already Exists");
+                   request.setAttribute("user_id", email_id);
 
-                     return mapping.findForward("duplicate");
+                  request.setAttribute("staff_name",first_name+" "+last_name );
+                request.setAttribute("library_id", library_id);
+                request.setAttribute("staff_id", employee_id);
+                
+                request.setAttribute("msg", "You Cannot Update Admin Name :");
+                  return mapping.findForward("success");
                 }
+            }
 
-             
-         sql = ("update  staff_detail set title='" + courtesy + "',first_name='" +
+
+
+       
+
+       
+
+             sql = ("update  staff_detail set title='" + courtesy + "',first_name='" +
                 first_name + "',last_name='" + last_name + "',contact_no='" + contact_no + "',mobile_no='" + mobile_no + "',emai_id='" +
                 email_id + "',date_joining='" + Date.valueOf(do_joining) + "',date_releaving='" +Date.valueOf( do_releaving) +"',father_name='"+ father_name +"',date_of_birth='"+
                 Date.valueOf(date_of_birth)+ "',gender='"+ gender  +"',address1='"+ address1 +"',city1='"+ city1 +"',state1='"+ state1 +"',country1='"+
                 country1 +"',zip1='"+ zip1 +"',address1='"+ address1 +"',city2='"+ city2 +"',state2='"+ state2 +"',country2='"+ country2 +
                 "',zip2='"+ zip2 +"' where library_id='"+library_id+"' and staff_id='"+employee_id+"'");
-        i=MyQueryResult.getMyExecuteUpdate(sql);
+              i=MyQueryResult.getMyExecuteUpdate(sql);
 
-            if(i!=0)
-            {
-        //admin table updated if staff is admin.library_id
+                   if(i!=0)
+                  {
+                //admin table updated if staff is admin.library_id
                 if(employee_id.equals("admin."+library_id))
                 {
                     sql="update admin_registration set city='"+city1+"',state='"+state1+"',Country='"+country1+"',pin='"+zip1+"',land_line_no='"+contact_no+"',mobile_no='"+mobile_no+"',admin_fname='"+first_name+"',admin_lname='"+last_name+"',admin_email='"+email_id+"',courtesy='"+courtesy+"',gender='"+gender+"' where staff_id='"+employee_id+"' and library_id='"+library_id+"'";
@@ -155,47 +207,97 @@ public class UpdateStaffAction extends org.apache.struts.action.Action {
                 }
                 }
                    //login updated
-    ResultSet rs=MyQueryResult.getMyExecuteQuery("select * from login where staff_id='"+employee_id+"' and library_id='"+library_id+"'");
-    if(rs.next())
-    {
+                ResultSet rs=MyQueryResult.getMyExecuteQuery("select * from login where staff_id='"+employee_id+"' and library_id='"+library_id+"'");
+                if(rs.next())
+                  {
 
 
-             sql = ("update  login set user_id='" + email_id + "',user_name='" +
+                  sql = ("update  login set user_id='" + email_id + "',user_name='" +
                                  first_name+" "+last_name + "' where staff_id='"+employee_id+"' and library_id='"+library_id+"'");
 
-            i=MyQueryResult.getMyExecuteUpdate(sql);
-            if(i!=0)
-            {
+                  i=MyQueryResult.getMyExecuteUpdate(sql);
+                 if(i!=0)
+                 {
                     request.setAttribute("staff_id",employee_id );
                     request.setAttribute("staff_name",first_name+" "+last_name );
                     request.setAttribute("msg", "Record Updated Suceessfully For ");
                     return mapping.findForward("success");
 
-            }
-    }
-    else
-    {
+                  }
+                   }
+                  else
+                {
                     request.setAttribute("staff_id",employee_id );
                     request.setAttribute("staff_name",first_name+" "+last_name );
                     request.setAttribute("msg", "Record Updated Suceessfully For ");
                     return mapping.findForward("success");
-    }
-            }
-            else
-            {
-            request.setAttribute("staff_id",employee_id );
+                 }
+                 }
+             else
+                {
+
+                     request.setAttribute("staff_id",employee_id );
                   request.setAttribute("staff_name",first_name+" "+last_name );
-            request.setAttribute("msg", "Sorry Record Updation UnSuceessfully For ");
-            return mapping.findForward("success");
+                    request.setAttribute("msg", "Sorry Record Updation UnSuceessfully For ");
+                 return mapping.findForward("success");
+                 }
+
+            
+      
          }
-    }
+
+
+
+               
 
 
 
 
          if(button.equals("Delete"))
          {
-             // System.out.println("kk");
+        
+            String id="admin."+library_id;   //get Institute admin ID
+   if(employee_id.equals(id))
+         {
+              request.setAttribute("user_id", email_id);
+                  request.setAttribute("staff_name",first_name+" "+last_name );
+                request.setAttribute("library_id", library_id);
+                request.setAttribute("staff_id", employee_id);
+                request.setAttribute("msg", "You Cannot Delete Institute Admin ");
+                  return mapping.findForward("success");
+         }
+
+        id=(String)session.getAttribute("staff_id");  //cannot delete own account
+            if(employee_id.equals(id))
+            {
+
+
+                     request.setAttribute("staff_name",first_name+" "+last_name );
+                request.setAttribute("library_id", library_id);
+                request.setAttribute("staff_id", employee_id);
+                request.setAttribute("msg", "You Cannot Delete Your Own Account for Staff Name ");
+                  return mapping.findForward("success");
+
+            }
+         String login_role=(String)session.getAttribute("login_role");    //cannot create co-admin
+         ResultSet rs=MyQueryResult.getMyExecuteQuery("select * from login where staff_id='"+employee_id+"' and library_id='"+library_id+"'");
+
+            if(rs.next())
+            {
+                if(rs.getString("role").equals(login_role))
+                {
+
+               request.setAttribute("staff_name",first_name+" "+last_name );
+                request.setAttribute("library_id", library_id);
+                request.setAttribute("staff_id", employee_id);
+
+                request.setAttribute("msg", "You Cannot Delete Admin Name :");
+                  return mapping.findForward("success");
+                }
+            }
+
+
+                ////////////////////////////////
              sql1="Delete from login where user_id=(select emai_id from staff_detail where staff_id='"+employee_id+"' and library_id='"+library_id+"')";
               int j=MyQueryResult.getMyExecuteUpdate(sql1);
 
@@ -226,8 +328,13 @@ public class UpdateStaffAction extends org.apache.struts.action.Action {
                request.setAttribute("msg", "Sorry Record Deletion UnSuceessfully For ");
               return mapping.findForward("success");
               }
-         }
-         return mapping.findForward("success");
-
-         }
+           
+       //////////////////////////////////////////////////
+                
+          }
+        return mapping.findForward("success");
+    }
 }
+        
+
+      

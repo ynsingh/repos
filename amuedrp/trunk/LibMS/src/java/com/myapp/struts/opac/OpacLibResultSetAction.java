@@ -4,7 +4,7 @@
  */
 
 package com.myapp.struts.opac;
-
+import  com.myapp.struts.*;
 import java.sql.ResultSet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,7 +29,7 @@ public class OpacLibResultSetAction extends org.apache.struts.action.Action {
      * @param request The HTTP Request we are processing.
      * @param response The HTTP Response we are processing.
      * @throws java.lang.Exception
-     * @return
+    
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -45,7 +45,7 @@ public class OpacLibResultSetAction extends org.apache.struts.action.Action {
 
         formname = request.getParameter("name");
 
-        sqlQuery = "select distinct library_id from document where library_id!='"+ lib_id +"'";
+        sqlQuery = "select distinct library_id from library where library_id!='"+ lib_id +"'";
 
         rs = MyQueryResult.getMyExecuteQuery(sqlQuery);
 
@@ -69,6 +69,19 @@ public class OpacLibResultSetAction extends org.apache.struts.action.Action {
             return mapping.findForward("journal");
         if (formname.equals("newarrival"))
             return mapping.findForward("newarrival");
+         if (formname.equals("myaccount"))
+            return mapping.findForward("myaccount");
+         if (formname.equals("feedback"))
+            return mapping.findForward("feedback");
+        if(formname.equals("newmember"))
+            return mapping.findForward("newmember");
+        if(formname.equals("location"))
+            return mapping.findForward("location");
+        if(formname.equals("notice"))
+            return mapping.findForward("notice");
+
+
+
 return mapping.findForward(SUCCESS);
 
     }

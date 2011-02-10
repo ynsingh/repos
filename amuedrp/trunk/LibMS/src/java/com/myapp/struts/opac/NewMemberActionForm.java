@@ -10,15 +10,16 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
-
+import org.apache.struts.validator.ValidatorForm;
 /**
  *
  * @author Faraz
  */
-public class NewMemberActionForm extends org.apache.struts.action.ActionForm {
+public class NewMemberActionForm   extends ValidatorForm {
     
-    private String TXTLIBNAME;
-    private String TXTLIBID;
+    
+    
+    private String CMBLib;
     private String CMBCAT;
     private String TXTFNAME;
     private String TXTMNAME;
@@ -37,6 +38,7 @@ public class NewMemberActionForm extends org.apache.struts.action.ActionForm {
     private String TXTDEPT;
     private String TXTROLL;
     private String TXTCOURSE;
+    private String TXTPASS;
 
    
  /**
@@ -53,43 +55,8 @@ public class NewMemberActionForm extends org.apache.struts.action.ActionForm {
      * @param request The HTTP Request we are processing.
      * @return
      */
-    public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
-        ActionErrors errors = new ActionErrors();
-        if (getTXTEMAIL() == null || getTXTEMAIL().length() < 1) {
-            errors.add("name", new ActionMessage("error.name.required"));
-            // TODO: add 'error.name.required' key to your resources
-        }
-        return errors;
-    }
-
-    /**
-     * @return the TXTLIBNAME
-     */
-    public String getTXTLIBNAME() {
-        return TXTLIBNAME;
-    }
-
-    /**
-     * @param TXTLIBNAME the TXTLIBNAME to set
-     */
-    public void setTXTLIBNAME(String TXTLIBNAME) {
-        this.TXTLIBNAME = TXTLIBNAME;
-    }
-
-    /**
-     * @return the TXTLIBID
-     */
-    public String getTXTLIBID() {
-        return TXTLIBID;
-    }
-
-    /**
-     * @param TXTLIBID the TXTLIBID to set
-     */
-    public void setTXTLIBID(String TXTLIBID) {
-        this.TXTLIBID = TXTLIBID;
-    }
-
+  
+    
     /**
      * @return the CMBCAT
      */
@@ -341,4 +308,42 @@ public class NewMemberActionForm extends org.apache.struts.action.ActionForm {
     public void setTXTCOURSE(String TXTCOURSE) {
         this.TXTCOURSE = TXTCOURSE;
     }
+    @Override
+	public void reset(ActionMapping mapping, HttpServletRequest request) {
+
+		// reset properties
+		
+
+
+	}
+
+    /**
+     * @return the TXTPASS
+     */
+    public String getTXTPASS() {
+        return TXTPASS;
+    }
+
+    /**
+     * @param TXTPASS the TXTPASS to set
+     */
+    public void setTXTPASS(String TXTPASS) {
+        this.TXTPASS = TXTPASS;
+    }
+
+    
+    /**
+     * @return the CMBLib
+     */
+    public String getCMBLib() {
+        return CMBLib;
+    }
+
+    /**
+     * @param CMBLib the CMBLib to set
+     */
+    public void setCMBLib(String CMBLib) {
+        this.CMBLib = CMBLib;
+    }
+
 }

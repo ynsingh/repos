@@ -9,15 +9,16 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
+import org.apache.struts.validator.ValidatorForm;
 
 /**
  *
  * @author Faraz
  */
-public class ReservationRequetActionForm extends org.apache.struts.action.ActionForm {
+public class ReservationRequetActionForm extends ValidatorForm {
     
-    private String TXTLIBNAME;
+    
+
     private String TXTCARDID;
     private String TXTTITLE;
     private String TXTAUTHOR;
@@ -28,7 +29,11 @@ public class ReservationRequetActionForm extends org.apache.struts.action.Action
     private String CMBCAT;
     private String TXTEDITION;
     private String TXTVOL;
-
+    private String issn;
+    private String lang;
+private String accessionno;
+private String no_of_copy;
+private String pub_year;
     
 
     /**
@@ -39,35 +44,9 @@ public class ReservationRequetActionForm extends org.apache.struts.action.Action
         // TODO Auto-generated constructor stub
     }
 
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param request The HTTP Request we are processing.
-     * @return
-     */
-    public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
-        ActionErrors errors = new ActionErrors();
-        if (getTXTAUTHOR() == null || getTXTAUTHOR().length() < 1) {
-            errors.add("name", new ActionMessage("error.name.required"));
-            // TODO: add 'error.name.required' key to your resources
-        }
-        return errors;
-    }
+   
 
-    /**
-     * @return the TXTLIBNAME
-     */
-    public String getTXTLIBNAME() {
-        return TXTLIBNAME;
-    }
-
-    /**
-     * @param TXTLIBNAME the TXTLIBNAME to set
-     */
-    public void setTXTLIBNAME(String TXTLIBNAME) {
-        this.TXTLIBNAME = TXTLIBNAME;
-    }
-
+   
     /**
      * @return the TXTCARDID
      */
@@ -206,5 +185,75 @@ public class ReservationRequetActionForm extends org.apache.struts.action.Action
      */
     public void setTXTVOL(String TXTVOL) {
         this.TXTVOL = TXTVOL;
+    }
+
+    /**
+     * @return the issn
+     */
+    public String getIssn() {
+        return issn;
+    }
+
+    /**
+     * @param issn the issn to set
+     */
+    public void setIssn(String issn) {
+        this.issn = issn;
+    }
+
+    /**
+     * @return the lang
+     */
+    public String getLang() {
+        return lang;
+    }
+
+    /**
+     * @param lang the lang to set
+     */
+    public void setLang(String lang) {
+        this.lang = lang;
+    }
+
+    /**
+     * @return the accessionno
+     */
+    public String getAccessionno() {
+        return accessionno;
+    }
+
+    /**
+     * @param accessionno the accessionno to set
+     */
+    public void setAccessionno(String accessionno) {
+        this.accessionno = accessionno;
+    }
+
+    /**
+     * @return the no_of_copy
+     */
+    public String getNo_of_copy() {
+        return no_of_copy;
+    }
+
+    /**
+     * @param no_of_copy the no_of_copy to set
+     */
+    public void setNo_of_copy(String no_of_copy) {
+        this.no_of_copy = no_of_copy;
+    }
+
+    /**
+     * @return the pub_year
+     */
+    public String getPub_year() {
+        return pub_year;
+    }
+
+    /**
+     * @param pub_year the pub_year to set
+     */
+    public void setPub_year(String pub_year) {
+        this.pub_year = pub_year;
     }
 }

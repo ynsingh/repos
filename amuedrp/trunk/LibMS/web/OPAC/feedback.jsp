@@ -34,32 +34,61 @@ return true;
 }
 else return false;
 }
-<!--The validateAll() function checks if any field is left blank by the customer and displays the alert message. -->
+
+
+
 function validateAll()
 {
+    var sel=document.getElementById('CMBLib').options[document.getElementById('CMBLib').selectedIndex].value;
+
+
+
+var cardno=document.forms[0].cardno.value;
+var comm=document.forms[0].comments.value;
 var email = document.forms[0].email.value;
 var name = document.forms[0].name.value;
 var reg = new RegExp("^[A-Za-z0-9_]{1,}[.]?[A-Za-z0-9_]{1,}@{1}([A-Za-z0-9_]+[.]{1})+[A-Za-z0-9_]{1,}$");
+
+if(isEmpty(sel))
+ {
+alert("Please Select Library ID.");
+document.getElementById('CMBLib').focus();
+return false;
+    }
+if(isEmpty(cardno))
+{
+alert("Please type your card no.");
+document.forms[0].cardno.focus();
+return false;
+}
+
 if(isEmpty(name))
 {
 alert("Please type your name.");
 document.forms[0].name.focus();
 return false;
 }
+
 else if(isEmpty(email))
 {
 alert("Please type your e-mail address.");
 document.forms[0].email.focus();
 return false;
 }
-else if(!isEmpty(email))
+//else if(!isEmpty(email))
+//{
+//if(!reg.test(email))
+//{
+//alert("Invalid E-mail address. Please re-enter.");
+//document.forms[0].email.focus();
+//return false;
+//}
+//}
+if(isEmpty(comm))
 {
-if(!reg.test(email))
-{
-alert("Invalid E-mail address. Please re-enter.");
-document.forms[0].email.focus();
+alert("Please type your Comment.");
+document.forms[0].comments.focus();
 return false;
-}
 }
 }
 <!--The func_subm() function submits the text field values to the server after validating them. -->
@@ -71,6 +100,10 @@ frmRegister.action="feedback.jsp";
 frmRegister.method="post";
 frmRegister.submit();
 }
+}
+function quit()
+{
+    location.href="/LibMS-Struts/OPAC/opachome.jsp";
 }
 </script>
 <%!
@@ -99,193 +132,151 @@ locale1=(String)session.getAttribute("locale");
 
 
 </head>
+<link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
 <body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
     <%if(page.equals(true)){%>
 
-    <FORM  name="form1"action="Feedback.do" method="post">
-<table align=center border=0 cellpadding=0 cellspacing=0 width="98%">
-<tbody>
-
-<!-- Top hyperlink row ends. --> </tbody>
-</table>
-  <div id="wb_Text3" style="position: absolute; left: 50px; top: 10px; width: 1000px; height: 22px; background-color: rgb(255, 255, 224); z-index: 7;" align="left">
-<font style="font-size: 19px;" color="#000000" face="Arial"><b> &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<%=resource.getString("opac.feedback.yourfeedback")%></b></font></div>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td>
- <br> <br>
-<table width="85%" border="0" cellspacing="0" cellpadding="0" align="center">
-      <tr>
-            <td width="20%">&nbsp;
-</td>
-            <td width="12%">&nbsp;
-</td>
-            <td colspan="2">&nbsp;
-</td>
-      </tr>
-      <tr>
-            <td width="20%">&nbsp;</td>
-            <td width="12%" align="left"><font face="Arial, Helvetica, sans-serif" size="2"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=resource.getString("opac.feedback.date")%>:</font>
-</td>
-<td colspan="2">
-                <input type="text" name="date1"  font="Arial" color="BLACK" disabled="disabled"  value=<%=date%>>
-            </td>
-     </tr><tr><td><br></td></tr>
-      <tr>
-            <td width="20%">&nbsp;</td>
-            <td width="12%" align="left"><font face="Arial, Helvetica, sans-serif" size="2"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=resource.getString("opac.feedback.cardno")%>:</font>
-</td>
-            <td colspan="2">
-            <input type="text" name="cardno">
-            </td>
-     </tr><tr><td><br></td></tr>
-      <tr>
-            <td width="20%">&nbsp;</td>
-            <td width="12%" align="left"><font face="Arial, Helvetica, sans-serif" size="2"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=resource.getString("opac.feedback.name")%>:</font>
-</td>
-            <td colspan="2">
-                <input type="text" name="name">
-            </td>
-     </tr><tr><td><br></td></tr>
-     <tr>
-            <td width="20%">&nbsp;
-</td>
-<td width="12%" align="left"><font face="Arial, Helvetica, sans-serif" size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=resource.getString("opac.feedback.email")%>:</font>
-</td>
-            <td colspan="2">
-            <input type="text" name="email">
-            </td>
-</tr><tr><td><br></td></tr>
-      <tr>
-          <td width="20%">&nbsp;
-</td>
-<td width="12%" align="left"><font face="Arial, Helvetica, sans-serif" size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=resource.getString("opac.feedback.comments")%>:</font>
-</td>
-            <td colspan="2">
-<textarea name="comments"> </textarea>
-            </td>
-</tr><tr><td><br></td></tr>
-      <tr>
-            <td width="20%">&nbsp;</td>
-            <td width="12%">&nbsp;</td>
-            <td colspan="2">&nbsp;</td>
-      </tr>
-      <tr>
-            <td height="29" width="20%">
-            <div align="center"> </div>
-            </td>
-            <td height="29" width="30%" colspan="3" align="right">
-                <div align="center">
-               <input class=bu type="submit" name="Submit" value="<%=resource.getString("opac.feedback.submit")%>" align="right">   <input class=bu type="reset" name="Cancel" value="<%=resource.getString("opac.feedback.cancel")%>" align="left">   </div>
-            </td>
-<td width="30%" height="29">&nbsp;
-</td>
-</tr>
-      </table>
-<hr color=#c0003b size=1>
+    <FORM  name="form1"action="Feedback.do" method="post" onsubmit="return validateAll();">
+<table  align="left" width="600px"  style="background-color: white;border:#c0003b 1px solid;margin:0px 0px 0px 0px;">
 
 
-</table>
+
+  <tr><td  width="600px"  style="background-color:#c0003b;color:white;font-family:Tahoma;font-size:12px" height="28px" align="left">
+          <table>
+              <tr><td width="600px" style="background-color:#c0003b;color:white;font-family:Tahoma;font-size:12px" height="28px" align="center"><b>
+
+		    <%=resource.getString("opac.feedback.yourfeedback")%>
+
+
+
+          </b>
+                  </td></tr>
+              </table>
+        </td></tr>
+
+  <tr><td class="btn1" width="600px" >
+          <br>
+
+          <table align="center" width="600px" >
+              <tr><td  align="right" colspan="2" class="mess" width="600px" >  <font color="blue">  <b><%=resource.getString("opac.feedback.note")%></b><br><br></font> </td></tr>
+ <tr><td style="width:130px" align="left">Library ID</td><td width="200px">
+         <select name="CMBLib"   id="CMBLib" size="1">
+    <%
+        ResultSet rs = (ResultSet)session.getAttribute("libRs");
+        String lib_id = (String)session.getAttribute("library_id");
+
+        rs.beforeFirst();
+
+    if(lib_id==null)
+    {%>
+
+    <option selected value="">ALL</option>
+    <%}
+    else
+    {%>
+   
+    <option value="">ALL</option>
+     <option selected value="<%=lib_id%>"><%=lib_id.toUpperCase()%></option>
+
+    <%
+    }
+    while (rs.next())
+            {
+    %>
+    <option value="<%= rs.getString(1) %>"><%=rs.getString(1).toUpperCase()%></option>
+    <% } %>
+</select></td></tr>
+              <tr><td style="width:130px" align="left"><%=resource.getString("opac.feedback.date")%>:</td><td>
+              <input type="text" name="date1"  font="Arial" color="BLACK" disabled="disabled"  value=<%=date%>>
+             </td></tr>
+
+              <tr><td style="width:130px" align="left"><%=resource.getString("opac.feedback.cardno")%>*:</td><td>
+                <input type="text" name="cardno">
+             </td></tr>
+              <tr><td style="width:130px" align="left"><%=resource.getString("opac.feedback.name")%>*:</td><td>
+                 <input type="text" name="name">
+             </td></tr>
+               <tr><td style="width:130px" align="left"><%=resource.getString("opac.feedback.email")%>*:</td><td>
+                 <input type="text" name="email">
+             </td></tr>
+               <tr><td style="width:130px" align="left"><%=resource.getString("opac.feedback.comments")%>*:</td><td>
+                 <input type="text" name="comments"/>
+             </td></tr>
+               <tr><td></td><td>
+              <input class="btn" type="submit" name="Submit" value="<%=resource.getString("opac.feedback.submit")%>" align="right">   <input class=btn type="reset" value="<%=resource.getString("opac.feedback.clear")%>" align="left">
+              <input class=btn type="button" name="Cancel" value="<%=resource.getString("opac.feedback.cancel")%>" align="left" onclick="quit();">
+                   </td></tr>
+
+            </table>
+          <br>
+      </td></tr></table>
+
+
+
+
+        
 
 </FORM>
             <%}else{%>
             
-            <FORM  name="form1"action="Feedback.do" method="post">
-<table align=center border=0 cellpadding=0 cellspacing=0 width="98%">
-<tbody>
 
-<!-- Top hyperlink row ends. --> </tbody>
-</table>
-  <div id="wb_Text3" style="position: absolute; left:180px;  top: 10px; width: 1000px; height: 22px; background-color: rgb(255, 255, 224); z-index: 7;" align="left">
-<font style="font-size: 19px;" color="#000000" face="Arial"><b>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;<%=resource.getString("opac.feedback.yourfeedback")%></b></font></div>
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td><br><br>
-<table width="85%" border="0" cellspacing="0" cellpadding="0" align="center">
-      <tr>
-            <td colspan="2">&nbsp;
-</td>
- 
-                  <td width="12%">&nbsp;
-</td>
-<td width="20%">&nbsp;
-</td>
-
-      </tr>
-          <tr>
-
-          <td>&nbsp;</td>
-
-          <td align="right">
-                <input type="text" name="date1"  font="Arial" color="BLACK" disabled="disabled"  value=<%=date%>>
-            </td>
-               <td align="left"><font face="Arial, Helvetica, sans-serif" size="2"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:<%=resource.getString("opac.feedback.date")%></font>
-</td>
-          </tr><tr><td><br></td></tr>
-           <tr>
-            <td>&nbsp;</td>
-
-            <td align="right">
-            <input type="text" name="cardno">
-            </td>
-                <td align="left"><font face="Arial, Helvetica, sans-serif" size="2"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:<%=resource.getString("opac.feedback.cardno")%></font>
-</td>
-           </tr><tr><td><br></td></tr>
-      <tr>
-            <td>&nbsp;</td>
-
-            <td align="right">
-                <input type="text" name="name">
-            </td>
-               <td align="left"><font face="Arial, Helvetica, sans-serif" size="2"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:<%=resource.getString("opac.feedback.name")%></font>
-</td>
-      </tr><tr><td><br></td></tr>
-     <tr>
-            <td>&nbsp;
-</td>
-
-<td align="right">
-            <input type="text" name="email">
-            </td>
-<td align="left"><font face="Arial, Helvetica, sans-serif" size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:<%=resource.getString("opac.feedback.email")%></font>
-</td>
-     </tr><tr><td><br></td></tr>
-      <tr>
-          <td>&nbsp;
-</td>
-
-<td align="right">
-<textarea name="comments"> </textarea>
-            </td>
-<td align="left"><font face="Arial, Helvetica, sans-serif" size="2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:<%=resource.getString("opac.feedback.comments")%></font>
-</td>
-      </tr>
-      <tr>
-           <td colspan="2">&nbsp;</td>
-           <td width="12%">&nbsp;</td>
-           <td width="20%">&nbsp;</td>
-        
-      </tr>
-      <tr>
-         <td width="30%" height="29">&nbsp;
-</td>
-
-            <td height="29" width="20%" align="right">
-                <div align="center">
-                <input class=bu type="reset" name="Cancel" value="<%=resource.getString("opac.feedback.cancel")%>" align="left"> <input class=bu type="submit" name="Submit" value="<%=resource.getString("opac.feedback.submit")%>" align="right">    </div>
-            </td>
-<td height="29" width="20%">
-            <div align="center"> </div>
-            </td>
-</tr>
-      </table>
-<hr color=#c0003b size=1>
+<FORM  name="form1"action="Feedback.do" method="post" onsubmit="return validateAll();">
+<table  align="left" width="600px"  style="background-color: white;border:#c0003b 1px solid;margin:0px 0px 0px 0px;">
 
 
-</table>
+
+  <tr><td  width="600px"  style="background-color:#c0003b;color:white;font-family:Tahoma;font-size:12px" height="28px" align="left">
+          <table>
+              <tr><td width="600px" style="background-color:#c0003b;color:white;font-family:Tahoma;font-size:12px" height="28px" align="center"><b>
+
+		    <%=resource.getString("opac.feedback.yourfeedback")%>
+
+
+
+          </b>
+                  </td></tr>
+              </table>
+        </td></tr>
+
+  <tr><td class="btn1" width="600px" >
+          <br>
+
+          <table align="center" width="600px" >
+              <tr><td  align="left" colspan="2" class="mess" width="600px" >  <font color="blue">  <b><%=resource.getString("opac.feedback.note")%></b><br><br></font> </td></tr>
+
+              <tr><td style="width:130px" align="right">
+              <input type="text" name="date1"  font="Arial" color="BLACK" disabled="disabled"  value=<%=date%>>
+             </td><td ><%=resource.getString("opac.feedback.date")%>:</td></tr>
+
+              <tr><td style="width:130px" align="right">
+                <input type="text" name="cardno">
+             </td><td style="width:130px" align="left">:*<%=resource.getString("opac.feedback.cardno")%></td></tr>
+              <tr><td style="width:130px" align="right">
+                 <input type="text" name="name">
+             </td><td style="width:130px" align="left">:*<%=resource.getString("opac.feedback.name")%></td></tr>
+               <tr><td style="width:130px" align="right">
+                 <input type="text" name="email">
+             </td><td style="width:130px" align="left">:*<%=resource.getString("opac.feedback.email")%></td></tr>
+               <tr><td style="width:130px" align="right">
+                 <input type="text" name="comments" />
+             </td><td style="width:130px" align="left">:*<%=resource.getString("opac.feedback.comments")%></td></tr>
+               <tr><td style="width:130px" align="right">
+              <input class=btn type="button" name="Cancel" value="<%=resource.getString("opac.feedback.cancel")%>" align="left" onclick="quit();">
+                       <input class=btn type="reset" value="<%=resource.getString("opac.feedback.clear")%>" align="left">
+               <input class="btn" type="submit" name="Submit" value="<%=resource.getString("opac.feedback.submit")%>" align="right">
+              
+                   </td><td></td></tr>
+
+            </table>
+          <br>
+      </td></tr></table>
+
+
+
+
+
 
 </FORM>
-            
             
             <%}%>
 

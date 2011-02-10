@@ -12,7 +12,7 @@ import java.lang.String;
 import java.sql.*;
 import java.util.*;
 import javax.servlet.*;
-import com.myapp.struts.opac.*;
+import  com.myapp.struts.*;
 import java.io.IOException;
 import java.sql.*;
 import javax.servlet.ServletException;
@@ -77,7 +77,7 @@ public class ViewAll extends HttpServlet {
         finally {
         //    out.close();
         }
-        RequestDispatcher requestDispatcher=getServletContext().getRequestDispatcher("/admin/viewstaff.jsp");
+         RequestDispatcher requestDispatcher=getServletContext().getRequestDispatcher("/admin/viewstaff.jsp");
 
             requestDispatcher.forward(request,response);
     } 

@@ -4,7 +4,7 @@
  */
 
 package com.myapp.struts.opac;
-
+import  com.myapp.struts.*;
 import java.sql.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,7 +33,7 @@ public class SimpleSearchAction extends org.apache.struts.action.Action {
      * @param request The HTTP Request we are processing.
      * @param response The HTTP Response we are processing.
      * @throws java.lang.Exception
-     * @return
+    
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -50,37 +50,57 @@ public class SimpleSearchAction extends org.apache.struts.action.Action {
         db = simpleform.getCMBDB();
         cnf = simpleform.getCMBCONN();
         sort= simpleform.getCMBSORT();
+        int flag=0;
 
+        String query = "select * from document_details";
+System.out.println(db+".............");
+         
+         
+        
+        if(db.equals("combined")==false){query=query+" where document_type='"+db+"' and";flag=1;}
 
-        String query = "select * from document";
-
-         if(db.equals("combined")){query=query+" where db_category='combined'";}
-         else if(db.equals("combined")){query=query+" where category='"+db+"'";}
-
-         if(cf.equals("any field")){query=query+" and (author like '%"+p+"%' or title like '%"+p+"%' or subject like '%"+p+"%' or pub_yr like '%"+p+"%' " +
-                    "or publisher like '%"+p+"%' or accessionno like '%"+p+"%' or pubPlace like '%"+p+"%')";
+        if (flag==1)
+        {
+        if(cf.equals("any field")){
+        query=query+" (author_main like '%"+p+"%' or title like '%"+p+"%' or publishing_year like '%"+p+"%' or publisher_name like '%"+p+"%' or  publication_place like '%"+p+"%')";
                                    }
          else{
-                query=query+" and "+cf+" like '%"+p+"%'";
+                query=query+" "+cf+" like '%"+p+"%'";
              }
 
 
          if(cmbyr.equals("all")){query=query;}
          if(cnf.equals("or") || cnf.equals("and"))
           {
-            if(cmbyr.equals("between")){query=query+" "+cnf+" pub_yr between "+yr1+" and "+yr2;}
-            if(cmbyr.equals("upto"))   {query=query+" "+cnf+" pub_yr <="+yr1;}
-            if(cmbyr.equals("after"))  {query=query+" "+cnf+" pub_yr >="+yr1;}
+            if(cmbyr.equals("between")){query=query+" "+cnf+" publishing_year between "+yr1+" and "+yr2;}
+            if(cmbyr.equals("upto"))   {query=query+" "+cnf+" publishing_year <="+yr1;}
+            if(cmbyr.equals("after"))  {query=query+" "+cnf+" publishing_year >="+yr1;}
           }
-        /* if(cnf.equals("and"))
-          {
-            if(cmbyr.equals("between")){query=query+" and pub_yr between "+yr1+" and "+yr2;}
-            if(cmbyr.equals("upto"))   {query=query+" and pub_yr <="+yr1;}
-            if(cmbyr.equals("after"))  {query=query+" and pub_yr >="+yr1;}
-          }*/
+       
         if (!lib_id.equalsIgnoreCase("all"))
             query = query+ " and library_id='"+ lib_id  +"'";
-        
+        }
+        else
+        {
+        if(cf.equals("any field")){
+        query=query+" where (author_main like '%"+p+"%' or title like '%"+p+"%' or publishing_year like '%"+p+"%' or publisher_name like '%"+p+"%' or  publication_place like '%"+p+"%')";
+                                   }
+         else{
+                query=query+" where "+cf+" like '%"+p+"%'";
+             }
+
+
+         if(cmbyr.equals("all")){query=query;}
+         if(cnf.equals("or") || cnf.equals("and"))
+          {
+            if(cmbyr.equals("between")){query=query+" "+cnf+" publishing_year between "+yr1+" and "+yr2;}
+            if(cmbyr.equals("upto"))   {query=query+" "+cnf+" publishing_year <="+yr1;}
+            if(cmbyr.equals("after"))  {query=query+" "+cnf+" publishing_year >="+yr1;}
+          }
+
+        if (!lib_id.equalsIgnoreCase("all"))
+            query = query+ " and library_id='"+ lib_id  +"'";
+        }
          query=query+" order by "+sort+" asc";
 
 
@@ -100,6 +120,15 @@ public class SimpleSearchAction extends org.apache.struts.action.Action {
   {
 
   session.setAttribute("simple_resultset", rs);
+  session.setAttribute("database",db );
+  session.setAttribute("pubyr",   cmbyr );
+  session.setAttribute("yr1",   yr1 );
+  session.setAttribute("yr2",   yr2 );
+  if(p.equals(""))
+      p="No Specify";
+  session.setAttribute("keyword","(Match All Words)="+p );
+
+  
   }
   
 

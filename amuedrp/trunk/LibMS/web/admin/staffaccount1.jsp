@@ -15,7 +15,10 @@ if(rs.next())
 String user_name=(String)request.getAttribute("user_name");
 
 String lib=(String)request.getAttribute("library_id");
+String role=(String)request.getAttribute("role");
 String msg=(String)request.getAttribute("msg");
+String msg1=(String)request.getAttribute("msg1");
+String btn=(String)request.getAttribute("btn");
 %>
 <%
 
@@ -46,10 +49,12 @@ String msg=(String)request.getAttribute("msg");
                    
                     <br><br><br>
 
-                    <p align="left" class="mess"> Login Id:<b><%=email_id%>
+                    <p align="left" class="mess"> Login Id:<b><%=email_id%></b>
                     <br><br>
-                  
-                          </b>
+                   <p align="left" class="mess"> User Role:<b><%=role%></b>
+                    <br><br>
+
+                          
                     Staff Name:<b><%=user_name%></b><br>
                     <input type="hidden" name="user_name" value="<b><%=user_name%></b>"/>
                     <br>Library ID:<b><%=lib%></b>
@@ -58,15 +63,31 @@ String msg=(String)request.getAttribute("msg");
                     if(msg!=null)
                         {
                         %>
-                        <%=msg%><b><%=user_name%></b>
+                        <%=msg%>
                         <%
                         }
                         else
                             {
                            %>
 
-                           <%}%><br><br>
-                    The confirmation email sent successfully.
+                           <%}%>
+                             <%
+                    if(msg1!=null)
+                        {
+                        %>
+                   <p class="err" >    <%=msg1%></p>
+                        <%
+                        }
+                        else
+                            {
+                           %>
+
+                           <%}%>
+
+
+                           <br><br>
+
+                    <%if(btn.equals("Create Account")){%>The confirmation email sent successfully.<%}%>
 
                     <%
                     session.setAttribute("staff_name",user_name);
@@ -76,39 +97,20 @@ String msg=(String)request.getAttribute("msg");
 
     </p>
 
-
-
-
-
-
-
-
-
-
-        </div>
-    <div
-   style="
-      top: 650px;
-
-      position: absolute;
-
-      visibility: show;">
-        <jsp:include page="footer.jsp" />
-
-</div>
-
+   </div>
+   
     </body>
-</html>
 
 <script language="javascript">
     function message()
     {
-       
-        
+
+
         var a=confirm("<b>Assign Privilege for staff with Login Id:<%=email_id%> Now?</b>");
         if(a==true)
             location.href="/LibMS-Struts/admin/privilege_tree.jsp?login_id=<%=email_id%>";
-   
+
         return false;
     }
 </script>
+</html>

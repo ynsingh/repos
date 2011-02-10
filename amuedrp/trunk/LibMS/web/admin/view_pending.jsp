@@ -124,7 +124,7 @@ else
 
     <column width="100">
       <header value="Registration_ID" hAlign="left" styleClass="header"/>
-      <item   value="${doc.registration_id}" hyperLink="admin\index1.jsp?id=${doc.registration_id}"  hAlign="left"    styleClass="item"/>
+      <item   value="${doc.registration_id}" hyperLink="index1.jsp?id=${doc.registration_id}"  hAlign="left"    styleClass="item"/>
     </column>
 
     <column width="200">
@@ -140,6 +140,10 @@ else
     <column width="100">
       <header value="Admin_Email" hAlign="left" styleClass="header"/>
       <item   value="${doc.admin_email}" hyperLink="index1.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
+    </column>
+       <column width="100">
+      <header value="Action" hAlign="left" styleClass="header"/>
+      <item   value="Accept" hyperLink="index1.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
     </column>
  </columns>
 

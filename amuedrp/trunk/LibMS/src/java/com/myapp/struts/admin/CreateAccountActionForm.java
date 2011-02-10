@@ -21,12 +21,10 @@ public class CreateAccountActionForm extends org.apache.struts.action.ActionForm
     private String staff_id;
     private String password;
     private String email_id;
+    private String role;
     private String button;
 
-    /**
-     * @return
-     */
-
+   
 
     /**
      *
@@ -40,7 +38,7 @@ public class CreateAccountActionForm extends org.apache.struts.action.ActionForm
      * This is the action called from the Struts framework.
      * @param mapping The ActionMapping used to select this instance.
      * @param request The HTTP Request we are processing.
-     * @return
+   
      */
     @Override
     public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
@@ -120,5 +118,19 @@ public class CreateAccountActionForm extends org.apache.struts.action.ActionForm
      */
     public void setButton(String button) {
         this.button = button;
+    }
+
+    /**
+     * @return the role
+     */
+    public String getRole() {
+        return role;
+    }
+
+    /**
+     * @param role the role to set
+     */
+    public void setRole(String role) {
+        this.role = role;
     }
 }

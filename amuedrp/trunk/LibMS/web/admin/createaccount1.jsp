@@ -20,6 +20,7 @@ String last_name=null;
 String user_name=null;
 String library_id=(String)session.getAttribute("library_id");
 String password=null;
+String login_role=(String)session.getAttribute("login_role");
 
 if(rst!=null)
     {
@@ -106,12 +107,36 @@ return true;
                              if(rst!=null)
                                  {
                                  %>
+                     
+                        <tr><td colspan="2" height="5px"></td></tr>
                         <tr><td class="txt2">Staff ID</td><td><input type="text" id="staff_id" name="staff_id"  readonly   value="<%=staff_id%>"></td></tr>
                          <tr><td colspan="2" height="5px"></td></tr>
                         <tr><td class="txt2">User Name</td><td><input type="text" id="user_name" name="user_name" readonly   value="<%=first_name%><%=last_name%> "></td></tr>
                         <tr><td colspan="2" height="5px"></td></tr>
                         <tr><td class="txt2" >Email/Login ID</td><td><input type="text" id="email_id" name="email_id" readonly    value="<%=email_id%>"/> </td></tr>
                         <tr><td colspan="2" height="5px"></td></tr>
+                           <tr><td class="txt2" width="250px" align="left">Select Role</td><td width="250px">
+                                <select id="role" size="1" name="role">
+                                    <%
+                                    if(login_role.equals("insti-admin"))
+                                    {%>
+
+                                    <option value="Select">Select Role</option>
+                                    <option value="staff">Staff</option>
+                                    <option value="admin">Admin</option>
+
+
+                                    <%}
+                                    else if(login_role.equals("admin"))
+                                    {%>
+                                    <option value="Select">Select Role</option>
+                                    <option value="staff">Staff</option>
+
+                                    <%}%>
+
+                                </select>
+                                </td></tr>
+                            <tr><td colspan="2" height="5px">
                        <tr><td class="txt2">Password</td><td><input type="password" id="password"  name="password"  onblur="return search();"  value=""></td></tr>
                         <tr><td colspan="2" height="5px">
                        
@@ -179,25 +204,24 @@ return true;
 
     </table>
         </div>
-    <div
-   style="
-      top: 650px;
-
-      position: absolute;
-
-      visibility: show;">
-        <jsp:include page="footer.jsp" />
-
-</div>
-
+   
 </html:form>
     </body>
-</html>
 
-<script>
+
+    <script  type="text/javascript" language="javascript">
 
     function check()
     {
+        var role=document.getElementById('role').options[document.getElementById('role').selectedIndex].value;
+
+    if(role=="Select")
+        {
+            alert("Select Role");
+            document.getElementById('role').focus();
+            return false;
+        }
+
         var x=document.getElementById('password');
         if(x.value=="")
             {
@@ -266,7 +290,7 @@ return true;
         return false;
 
     }
- 
+
     function confirm1()
 {
    var answer = confirm ("Do you want to Delete Record?")
@@ -282,41 +306,4 @@ if (answer!=true)
 }
     </script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</body>
 </html>

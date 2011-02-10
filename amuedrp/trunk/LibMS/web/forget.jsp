@@ -131,16 +131,7 @@
 
     </body>
 </html>
- <div
-   style="
-      top: 650px;
 
-      position: absolute;
-
-      visibility: show;">
-        <jsp:include page="admin/footer.jsp" />
-
-</div>
 
    <script language="javascript" type="text/javascript">
 document.getElementById('quest').options[document.getElementById('quest').selectedIndex].text='<%=question%>';

@@ -51,27 +51,18 @@ String email_id=(String)request.getAttribute("email_id");
     
 </td></tr></table>
         </div>
-    <div
-   style="
-      top: 650px;
-
-      position: absolute;
-
-      visibility: show;">
-        <jsp:include page="footer.jsp" />
-
-</div>
+   
 
     </body>
-</html>
-<script language="javascript">
+    <script language="javascript">
     function message()
     {
-        
+
         var a=alert("Staff registered  Successfully with Staff Id :<%=staff_id%>");
-       
-         
+
+
         location.href="/LibMS-Struts/admin/ask_for_create_account.jsp?staff_id=<%=staff_id%>&first_name=<%=first_name%>&last_name=<%=last_name%>&email_id=<%=email_id%>";
-  
+
     }
 </script>
+</html>

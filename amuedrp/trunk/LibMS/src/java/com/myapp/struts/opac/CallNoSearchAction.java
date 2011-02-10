@@ -4,7 +4,7 @@
  */
 
 package com.myapp.struts.opac;
-
+import  com.myapp.struts.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -28,7 +28,7 @@ public class CallNoSearchAction extends org.apache.struts.action.Action {
      * @param request The HTTP Request we are processing.
      * @param response The HTTP Response we are processing.
      * @throws java.lang.Exception
-     * @return
+     
      */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -40,11 +40,14 @@ public class CallNoSearchAction extends org.apache.struts.action.Action {
         String lib_id=myform.getCMBLib();
         String callno = myform.getTXTKEY();
         if (session.getAttribute("Result")!=null) session.removeAttribute("Result");
-        String query = "select * from document where callNo='"+ callno +"'";
+        String query = "select * from document_details where call_no='"+ callno +"'";
         if(!lib_id.equals("all"))
              query +=" and library_id='" + lib_id + "'";
         rs = MyQueryResult.getMyExecuteQuery(query);
        session.setAttribute("Result", rs);//resultset
+       request.setAttribute("lib_id",lib_id);
+       request.setAttribute("call_no",callno);
+       System.out.println(rs.next()+callno+lib_id);
         return mapping.findForward(SUCCESS);
     }
 }

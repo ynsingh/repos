@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
@@ -14,8 +16,17 @@ body
    background-color: #FFFFFF;
    color: #000000;
 }
+.rows          { background-color: white;border: solid 1px blue; }
+     .hiliterows    { background-color: pink; color: #000000; border: solid 1px blue; }
+     .alternaterows { background-color: #efefef; }
+     .header        { background-color: #c0003b; color: #FFFFFF;font-family:Tahoma;font-size: 12px;text-decoration: none;padding-left: 10px; }
+  .header1        { font-family:Tahoma;font-size: 12px;text-decoration: none;padding-left: 10px; }
+     .datagrid      {
+    font-weight: normal;
+	  }
+     .item{ padding-left: 10px;}
 </style>
-
+ <link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
 <script language="javascript">
 function fun()
 {
@@ -59,73 +70,211 @@ locale1=(String)session.getAttribute("locale");
 </head><body>
     <%if(page.equals(true)){%>
 
-<div id="wb_Form1" style="position: absolute; background-color: rgb(255, 255, 255); left: 65px; top: 0px; width: 438px; height: 40px; z-index: 4;">
 <form method="post" action="SearchByCallNo.do" target="f1" name="Form1">
-<div id="wb_Text1" style="position: absolute; left: 5px; top: 50px; width: 170px; height: 16px; z-index: 0;" align="left">
-<font style="font-size: 13px;" color="#000000" face="Arial"><b><%=resource.getString("opac.callno.entercallno")%></b></font></div>
-<input id="TXTKEY" style="border: 1px solid rgb(192, 192, 192); position: absolute; left: 170px; top: 50px; width: 224px; height: 18px; font-family: Courier New; font-size: 13px; z-index: 1;" name="TXTKEY" type="text">
-<input id="TXTPAGE" value="callno" style="border: 1px solid rgb(192, 192, 192); position: absolute; left: 135px; top: 13px; width: 224px; height: 18px; font-family: Courier New; font-size: 13px; z-index: 1;" name="TXTPAGE" type="hidden">
-<input type="submit" id="Button1" name="go" value="<%=resource.getString("opac.callno.go")%>" style="position: absolute; left: 170px; top: 90px; width: 55px; height: 25px; font-family: Arial; font-weight: bold; font-size: 13px; z-index: 2;">
-<div id="wb_Text6" style="position:absolute;left:80px;top:10px;width:69px;height:16px;z-index:0;" align="left">
-    <font style="FONT-SIZE: 13px" color="#000000" face="Arial"><b><%=resource.getString("opac.callno.library")%>&nbsp;:</b></font></div>
-<div style="position:absolute;left:170px;top:10px;width:100px;height:18px;border:1px #C0C0C0 solid;z-index:9">
-    <select name="CMBLib" size="1" onchange="funcSearch()" id="CMBLib" style="left:0px;top:0px;width:100%;height:100%;border-width:0px;font-family:Courier New;font-size:13px;">
+   <table align="left" width="1200x" class="datagrid" height="400px"  style="border:solid 1px #e0e8f5;">
+
+
+  <tr class="header"><td  width="800px"  height="28px" align="center" colspan="2">
+
+
+          <b>CallNo Search</b>
+
+
+
+
+        </td></tr>
+   <tr style="background-color:#e0e8f5;"><td width="800px" rowspan="2" >
+          <table>
+              <tr><td><%=resource.getString("opac.callno.entercallno")%></td><td>
+                      <input id="TXTKEY"  name="TXTKEY" type="text">
+<input id="TXTPAGE" value="callno" ame="TXTPAGE" type="hidden">
+
+
+
+                  </td></tr>
+
+
+
+
+          </table>
+       </td><td class="header">
+           Restricted By
+
+       </td>
+
+    </tr>
+    <tr style="background-color:#e0e8f5;" >
+          <td    align="left">
+          <table>
+              <tr><td><%=resource.getString("opac.callno.library")%></td><td  valign="top">
+        <select name="CMBLib" onchange="funcSearch()" size="1" id="CMBLib">
     <%
         ResultSet rs = (ResultSet)session.getAttribute("libRs");
         String lib_id = (String)session.getAttribute("library_id");
+
         rs.beforeFirst();
-    %>
+
+    if(lib_id==null)
+    {%>
+
+    <option selected value="all">ALL</option>
+    <%}
+    else
+    {%>
     <option selected value="<%=lib_id%>"><%=lib_id.toUpperCase()%></option>
     <option value="all">ALL</option>
-    <%
 
+    <%
+    }
     while (rs.next())
             {
     %>
     <option value="<%= rs.getString(1) %>"><%=rs.getString(1).toUpperCase()%></option>
     <% } %>
 </select>
-</div>
+
+
+
+     </td>
+
+              </tr></table></td>
+
+    </tr>
+
+    <tr><td>
+
+
+<input type="submit" class="btn" id="Button1" name="go" value="<%=resource.getString("opac.callno.go")%>" >
+
+<input type="reset" class="btn" id="Button2" name="" value="CLEAR">
+
+
+<script>
+    function back()
+    {
+        window.location="/LibMS-Struts/OPAC/OPACmain.jsp";
+
+    }
+    </script>
+      </td></tr>
+  <tr style="background-color:#e0e8f5;"><td  height="400px" valign="top" colspan="2" >
+
+             <IFRAME  name="f1" style="background-color:#e0e8f5;" src="#" frameborder=0 height="400px" width="1200px" scrolling="no"  id="f1"></IFRAME>
+
+
+      </td></tr>
+
+        </table>
+
+
 </form>
-</div>
-<IFRAME  name="f1" src="#" frameborder=0 scrolling="NO" style="position:absolute;color:deepskyblue;top:96px;left:24px;height:400px;width:815px;visibility:true;" id="f1" />
 
 <%}else{%>
 
-
- <div id="wb_Form1" style="position: absolute; background-color: rgb(255, 255, 255); right: 65px; top: 0px; width: 438px; height: 40px; z-index: 4;">
 <form method="post" action="SearchByCallNo.do" target="f1" name="Form1">
-<div id="wb_Text1" style="position: absolute; right: 65px; top: 50px; width: 124px; height: 16px; z-index: 0;" align="right">
-<font style="font-size: 13px;" color="#000000" face="Arial"><b>:<%=resource.getString("opac.callno.entercallno")%></b></font></div>
-<input id="TXTKEY" style="border: 1px solid rgb(192, 192, 192); position: absolute; right: 135px; top: 50px; width: 224px; height: 18px; font-family: Courier New; font-size: 13px; z-index: 1;" name="TXTKEY" type="text">
-<input id="TXTPAGE" value="callno" style="border: 1px solid rgb(192, 192, 192); position: absolute; right: 135px; top: 13px; width: 224px; height: 18px; font-family: Courier New; font-size: 13px; z-index: 1;" name="TXTPAGE" type="hidden">
-<input type="submit" id="Button1" name="go" value="<%=resource.getString("opac.callno.go")%>" style="position: absolute; right: 135px; top: 90px; width: 55px; height: 25px; font-family: Arial; font-weight: bold; font-size: 13px; z-index: 2;">
-<div id="wb_Text6" style="position:absolute;right:85px;top:10px;width:69px;height:16px;z-index:0;" align="right">
-    <font style="FONT-SIZE: 13px" color="#000000" face="Arial"><b>&nbsp;:<%=resource.getString("opac.callno.library")%></b></font></div>
-<div style="position:absolute;right:135px;top:10px;width:100px;height:18px;border:1px #C0C0C0 solid;z-index:9">
-    <select name="CMBLib" size="1" onchange="funcSearch()" id="CMBLib" style="right:0px;top:0px;width:100%;height:100%;border-width:0px;font-family:Courier New;font-size:13px;">
+   <table align="left" width="1200x" height="400px" class="datagrid"  style="border:solid 1px #e0e8f5;">
+
+
+  <tr class="header"><td  width="800px"  height="28px" align="center" colspan="2">
+
+
+          <b>CallNo Search</b>
+
+
+
+
+        </td></tr>
+   <tr style="background-color:#e0e8f5;">
+       <td align="right" class="header">
+           <b> Restricted By</b>
+
+       </td>
+       <td width="800px" rowspan="2" align="right">
+          <table class="datagrid">
+              <tr><td>
+                      <input id="TXTKEY"  name="TXTKEY" type="text">
+<input id="TXTPAGE" value="callno" ame="TXTPAGE" type="hidden">
+
+
+
+                  </td><td><%=resource.getString("opac.callno.entercallno")%></td></tr>
+
+
+
+
+          </table>
+       </td>
+
+    </tr>
+    <tr style="background-color:#e0e8f5;" >
+          <td    align="right">
+          <table class="datagrid">
+              <tr><td  valign="top">
+        <select name="CMBLib" onchange="funcSearch()" size="1" id="CMBLib">
     <%
         ResultSet rs = (ResultSet)session.getAttribute("libRs");
         String lib_id = (String)session.getAttribute("library_id");
+
         rs.beforeFirst();
-    %>
+
+    if(lib_id==null)
+    {%>
+
+    <option selected value="all">ALL</option>
+    <%}
+    else
+    {%>
     <option selected value="<%=lib_id%>"><%=lib_id.toUpperCase()%></option>
     <option value="all">ALL</option>
-    <%
 
+    <%
+    }
     while (rs.next())
             {
     %>
     <option value="<%= rs.getString(1) %>"><%=rs.getString(1).toUpperCase()%></option>
     <% } %>
 </select>
-</div>
-</form>
-</div>
-<IFRAME  name="f1" src="#" frameborder=0 scrolling="NO" style="position:absolute;color:deepskyblue;top:96px;right:24px;height:400px;width:815px;visibility:true;" id="f1" />
 
+
+
+     </td>
+
+           <td><%=resource.getString("opac.callno.library")%></td>   </tr></table></td>
+
+    </tr>
+
+    <tr><td align="right" colspan="2">
+
+
+<input type="reset" id="Button2" class="btn" name="" value="CLEAR"><input type="submit" class="btn" id="Button1" name="go" value="<%=resource.getString("opac.callno.go")%>" >
+
+
+
+
+<script>
+    function back()
+    {
+        window.location="/LibMS-Struts/OPAC/OPACmain.jsp";
+
+    }
+    </script>
+      </td></tr>
+  <tr style="background-color:#e0e8f5;"><td  height="400px" valign="top" colspan="2" >
+
+             <IFRAME  name="f1" style="background-color:#e0e8f5;" src="#" frameborder=0 height="400px" width="1200px" scrolling="no"  id="f1"></IFRAME>
+
+
+      </td></tr>
+
+        </table>
+
+
+</form>
 
  <%}%>
 
 
     </body></html>
+
+

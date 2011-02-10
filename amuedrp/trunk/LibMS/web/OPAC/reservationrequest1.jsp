@@ -5,13 +5,17 @@
 --%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ page errorPage = "ErrorPage.jsp" language="java"%>
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
+<%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
+
+
 <%@page import="java.sql.*"%>
 <%@ page import="java.util.*"%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<meta name="Mayank Saxena" content="MCA,AMU">
+
 <title>New Reservation...</title>
 
 <style type="text/css">
@@ -27,6 +31,57 @@ a:active
    color: #0000FF;
 }
 </style>
+<%!
+String ID,status,lastchkoutdate,no_of_chkout ,reservation_made, fine ,name;
+ResultSet rs=null,rs1=null;
+%>
+<%
+    ID = (String)session.getAttribute("id");
+     rs= (ResultSet)session.getAttribute("rs");
+    rs1= (ResultSet)session.getAttribute("rs1");
+
+        rs.beforeFirst();
+        boolean s=rs.next();
+
+   if(s)
+      { status=rs.getString(8);
+        if(status.equals("Y"))
+          {
+
+            name=rs.getString(3);
+
+            no_of_chkout=rs.getString(5);
+            reservation_made=rs.getString(6);
+            lastchkoutdate=rs.getString(7);
+            session.setAttribute("memname",name);
+
+          }
+        else
+          {
+            response.sendRedirect("member.jsp?msg=Sorry, your Membership is cancelled" +
+                           " for somehow reason, please contact to your Library..");
+          }
+       }
+   else
+       {
+    response.sendRedirect("member.jsp?msg=Invalid Member,try again..");
+
+       }
+
+
+
+
+    while(rs1.next()){fine=rs1.getString(1);}
+
+        if(fine==null)
+            fine="0";
+        if(no_of_chkout==null)
+            no_of_chkout="";
+        if(lastchkoutdate==null)
+            lastchkoutdate="";
+
+
+%>
 <%!
     Locale locale=null;
     String locale1="en";
@@ -52,123 +107,224 @@ locale1=(String)session.getAttribute("locale");
 
 
 </head>
+<link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
 <body>
 <%
-String card_id;
+String card_id,mem_id;
 //Retrieving the values of NewMember form in variables.
-card_id=(String)session.getAttribute("current_member_id");
+card_id=(String)session.getAttribute("card_id");
+mem_id=(String)session.getAttribute("mem_id");
+
  String name; 
   name=(String)session.getAttribute("memname");
 %>
- <%if(page.equals(true)){%>
 
-<div id="wb_Text1" style="position:absolute;left:34px;top:10px;width:615px;height:19px;background-color:#FFFFE0;z-index:23;" align="left">
-<font style="font-size:16px" color="#c0003b" face="Arial"><b>&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; <%=resource.getString("opac.myaccount.reservationrequest.text")%></b></font>
-</div>
-<div id="wb_Text2" style="position:absolute;left:3px;top:33px;width:583px;height:19px;background-color:#FFFFE0;z-index:23;" align="left">
-<font style="font-size:12px" color="#c0003b" face="Arial"><b> &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;<%=resource.getString("opac.myaccount.reservationrequest.welcome")%>&nbsp;  <%=name%> </b></font>
-</div>
-<div id="wb_Form1" style="position:absolute;left:31px;top:61px;width:624px;height:409px;z-index:24">
-<form name="Form1" method="post" action="reservationrequest.jsp" id="Form1">
-<div id="wb_Text2" style="position:absolute;left:20px;top:9px;width:81px;height:15px;z-index:0;" align="left">
-<font style="font-size:12px" color="#000000" face="Arial"><b><%=resource.getString("opac.myaccount.reservationrequest.libraryname")%></b></font></div>
-<div id="wb_Text3" style="position:absolute;left:54px;top:40px;width:47px;height:15px;z-index:1;" align="left">
-<font style="font-size:12px" color="#000000" face="Arial"><b><%=resource.getString("opac.myaccount.reservationrequest.cardid")%></b></font></div>
-<div id="wb_Text4" style="position:absolute;left:69px;top:75px;width:34px;height:15px;z-index:2;" align="left">
-<font style="font-size:12px" color="#000000" face="Arial"><b><%=resource.getString("opac.myaccount.reservationrequest.title")%></b></font></div>
-<div id="wb_Text5" style="position:absolute;left:58px;top:109px;width:44px;height:15px;z-index:3;" align="left">
-<font style="font-size:12px" color="#000000" face="Arial"><b><%=resource.getString("opac.myaccount.reservationrequest.author")%></b></font></div>
-<div id="wb_Text6" style="position:absolute;left:65px;top:141px;width:31px;height:15px;z-index:4;" align="left">
-<font style="font-size:12px" color="#000000" face="Arial"><b><%=resource.getString("opac.myaccount.reservationrequest.isbn")%></b></font></div>
-<div id="wb_Text7" style="position:absolute;left:56px;top:172px;width:44px;height:15px;z-index:5;" align="left">
-<font style="font-size:12px" color="#000000" face="Arial"><b><%=resource.getString("opac.myaccount.reservationrequest.callno")%></b></font></div>
-<div id="wb_Text8" style="position:absolute;left:42px;top:273px;width:61px;height:15px;z-index:6;" align="left">
-<font style="font-size:12px" color="#000000" face="Arial"><b><%=resource.getString("opac.myaccount.reservationrequest.publisher")%></b></font></div>
-<div id="wb_Text9" style="position:absolute;left:41px;top:327px;width:57px;height:15px;z-index:7;" align="left">
-<font style="font-size:12px" color="#000000" face="Arial"><b><%=resource.getString("opac.myaccount.reservationrequest.remark")%></b></font></div>
-<input type="text" id="TXTLIBNAME" style="position:absolute;left:106px;top:5px;width:268px;height:18px;border:1px #C0C0C0 solid;font-family:Courier New;font-size:13px;z-index:8" name="TXTLIBNAME" >
-<input type="text" disabled="true" id="TXTCARDID"  value="<%=card_id%> "style="position:absolute;left:106px;top:38px;width:183px;height:18px;border:1px #C0C0C0 solid;font-family:Courier New;font-size:13px;z-index:9" name="TXTCARDID" >
-<input type="hidden" id="id" value="<%=card_id%>"style="position:absolute;left:102px;top:69px;width:198px;height:18px;border:1px #C0C0C0 solid;font-family:Courier New;font-size:13px;z-index:11" name="id" >
-<input type="text" id="TXTTITLE" style="position:absolute;left:106px;top:70px;width:298px;height:18px;border:1px #C0C0C0 solid;font-family:Courier New;font-size:13px;z-index:10" name="TXTTITLE" >
-<input type="text" id="TXTAUTHOR" style="position:absolute;left:106px;top:104px;width:294px;height:18px;border:1px #C0C0C0 solid;font-family:Courier New;font-size:13px;z-index:11" name="TXTAUTHOR" >
-<input type="text" id="TXTISBN" style="position:absolute;left:106px;top:136px;width:178px;height:18px;border:1px #C0C0C0 solid;font-family:Courier New;font-size:13px;z-index:12" name="TXTISBN" >
-<input type="text" id="TXTCALLNO" style="position:absolute;left:106px;top:169px;width:177px;height:18px;border:1px #C0C0C0 solid;font-family:Courier New;font-size:13px;z-index:13" name="TXTCALLNO" >
-<input type="text" id="TXTPUBL" style="position:absolute;left:105px;top:269px;width:187px;height:18px;border:1px #C0C0C0 solid;font-family:Courier New;font-size:13px;z-index:14" name="TXTPUBL" >
-<textarea name="TXTREMARKS" id="TXTREMARKS" style="position:absolute;left:106px;top:306px;width:229px;height:63px;border:1px #C0C0C0 solid;font-family:Courier New;font-size:13px;z-index:15" rows="2" cols="24"></textarea>
-<input type="submit" id="Button1" name="" value="<%=resource.getString("opac.myaccount.reservationrequest.process")%>" style="position:absolute;left:393px;top:322px;width:73px;height:25px;font-family:Arial;font-size:13px;z-index:16">
-<div style="position:absolute;left:495px;top:75px;width:120px;height:18px;border:1px #C0C0C0 solid;z-index:17">
-<select name="CMBCAT" size="1" id="CMBCAT" style="left:0px;top:0px;width:100%;height:100%;border-width:0px;font-family:Courier New;font-size:13px;">
-<option selected VALUE="books">BOOK</option>
-<option value="journals">JOURNAL</option>
-<option value="others">OTHERS</option>
-</select>
-</div>
-<div id="wb_Text10" style="position:absolute;left:427px;top:78px;width:55px;height:15px;z-index:18;" align="left">
-<font style="font-size:12px" color="#000000" face="Arial"><b><%=resource.getString("opac.myaccount.reservationrequest.category")%></b></font></div>
-<div id="wb_Text11" style="position:absolute;left:56px;top:208px;width:44px;height:15px;z-index:19;" align="left">
-<font style="font-size:12px" color="#000000" face="Arial"><b><%=resource.getString("opac.myaccount.reservationrequest.edition")%></b></font></div>
-<div id="wb_Text12" style="position:absolute;left:52px;top:241px;width:49px;height:15px;z-index:20;" align="left">
-<font style="font-size:12px" color="#000000" face="Arial"><b><%=resource.getString("opac.myaccount.reservationrequest.volume")%></b></font></div>
-<input type="text" id="TXTEDITION" style="position:absolute;left:106px;top:203px;width:178px;height:18px;border:1px #C0C0C0 solid;font-family:Courier New;font-size:13px;z-index:21" name="TXTEDITION">
-<input type="text" id="TXTVOL" style="position:absolute;left:106px;top:236px;width:109px;height:18px;border:1px #C0C0C0 solid;font-family:Courier New;font-size:13px;z-index:22" name="TXTVOL" >
-</form>
-</div>
+<html:form method="post" action="/OPAC/ReservationRequest">
+
+  <%if(page.equals(true))
+    {
+
+%>
+
+<table  align="left" width="700px"  style="background-color: white;border:#c0003b 1px solid;margin:0px 0px 0px 0px;">
+
+
+
+  <tr><td  width="700px"  style="background-color:#c0003b;color:white;font-family:Tahoma;font-size:12px" height="28px" align="left">
+          <table>
+              <tr><td width="550px" style="background-color:#c0003b;color:white;font-family:Tahoma;font-size:12px" height="28px" align="left"><b>
+
+
+	&nbsp;&nbsp;
+                <a href="accountdetails.jsp" target="f3" style="text-decoration: none;color:white"><%=resource.getString("opac.accountdetails.home")%></a>&nbsp;|&nbsp;
+            <a href="newdemand2.jsp" target="f3" style="text-decoration: none;color:white"> <%=resource.getString("opac.accountdetails.newdemand")%></a>&nbsp;
+    |&nbsp;<a href="reservationrequest1.jsp" target="f3" style="text-decoration: none;color:white"> <%=resource.getString("opac.accountdetails.reservationrequest")%></a>
+
+
+
+
+          </b>
+                  </td><td align="right" style="color:white;font-family:Tahoma;font-size:12px"><%=resource.getString("opac.accountdetails.hi")%>&nbsp;<%=name%>&nbsp;<b>|</b>&nbsp;<a href="home.do" target="f3" style="text-decoration: none;color:white"><%=resource.getString("opac.accountdetails.logout")%></a></td></tr></table>
+        </td></tr>
+
+
+    
+      <tr><td colspan="3"  valign="top" class="btn1" align="center">
+             <table align="center" width="700px">
+ <tr><td align="center" style="color:Brown" colspan="3">
+         <table align="center" width="700px">
+             <tr><td width="350px" align="center">
+       <b><%=resource.getString("opac.myaccount.reservationrequest.text")%></b></td><td><font color="blue" align="right"> <b><%=resource.getString("opac.myaccount.reservationrequest.note")%></b><br><br></font>
+                 </td></table>
+         </td></tr>
+
+                 <tr><td align="left" width="150px"><%=resource.getString("opac.myaccount.reservationrequest.cardid")%></td><td align="left" width="200px"><html:text property="TXTCARDID"  value="<%=card_id%>" readonly="true"  /></td></tr>
+<tr><td align="left"><%=resource.getString("opac.myaccount.reservationrequest.category")%>*</td><td align="left">
+        <html:select property="CMBCAT" size="1">
+    <html:option value="">Select</html:option>
+<html:option value="books">BOOK</html:option>
+<html:option value="journals">JOURNAL</html:option>
+<html:option value="others">OTHERS</html:option>
+</html:select>
+
+
+    </td>
+<td  class="err" align="left">   <html:messages id="err_name"  property="CMBCAT">
+            <bean:write name="err_name" />
+             </html:messages>
+         </td>
+
+</tr>
+<tr><td align="left"><%=resource.getString("opac.myaccount.reservationrequest.accessionno")%>*</td><td align="left"><html:text  property="accessionno"/></td>
+<td  class="err" align="left">   <html:messages id="err_name"  property="accessionno">
+            <bean:write name="err_name" />
+             </html:messages>
+         </td>
+
+</tr>
+<tr><td align="left"><%=resource.getString("opac.myaccount.reservationrequest.title")%>*</td><td align="left"><html:text  property="TXTTITLE"  /></td>
+<td  class="err" align="left">   <html:messages id="err_name"  property="TXTTITLE">
+            <bean:write name="err_name" />
+             </html:messages>
+         </td>
+</tr>
+<tr><td align="left"><%=resource.getString("opac.myaccount.reservationrequest.author")%>*</td><td align="left"><html:text  property="TXTAUTHOR"  /></td>
+<td  class="err" align="left">   <html:messages id="err_name"  property="TXTAUTHOR">
+            <bean:write name="err_name" />
+             </html:messages>
+         </td>
+</tr>
+<tr><td align="left"><%=resource.getString("opac.myaccount.reservationrequest.isbn")%></td><td align="left"><html:text  property="TXTISBN"  /></td></tr>
+<tr><td align="left"><%=resource.getString("opac.myaccount.reservationrequest.issn")%></td><td align="left"><html:text  property="issn"  /></td></tr>
+<tr><td align="left"><%=resource.getString("opac.myaccount.reservationrequest.callno")%>*</td><td align="left"><html:text  property="TXTCALLNO"   /></td>
+<td  class="err" align="left">   <html:messages id="err_name"  property="TXTCALLNO">
+            <bean:write name="err_name" />
+             </html:messages>
+         </td>
+
+</tr>
+<tr><td align="left"><%=resource.getString("opac.myaccount.reservationrequest.publisher")%></td><td align="left"><html:text  property="TXTPUBL"   /></td></tr>
+<tr><td align="left"><%=resource.getString("opac.myaccount.reservationrequest.publishingyear")%></td><td align="left"><html:text  property="pub_year"  /></td></tr>
+<tr><td align="left"><%=resource.getString("opac.myaccount.reservationrequest.remark")%></td><td align="left"><html:textarea  property="TXTREMARKS"   rows="2" cols="24"/></td></tr>
+<tr><td align="left"><%=resource.getString("opac.myaccount.reservationrequest.language")%></td><td align="left"><html:text  property="lang" /></td></tr>
+<tr><td align="left"><%=resource.getString("opac.myaccount.reservationrequest.edition")%></td><td align="left"><html:text  property="TXTEDITION" /></td></tr>
+<tr><td align="left"><%=resource.getString("opac.myaccount.reservationrequest.volume")%></td><td align="left"><html:text  property="TXTVOL"  /></td></tr>
+
+<tr><td></td><td  align="left"><html:submit styleClass="btn"><%=resource.getString("opac.myaccount.reservationrequest.send")%></html:submit>&nbsp;&nbsp;<input type="button"   name="cancel" value="<%=resource.getString("opac.myaccount.reservationrequest.cancel")%>" class="txt2" onclick="quit()"><br/></td></tr>
+ </table>
+
+
+         </td></tr></table>
+
 <%}else{%>
-
-<div id="wb_Text1" style="position:absolute;right:34px;top:10px;width:615px;height:19px;background-color:#FFFFE0;z-index:23;" align="right">
-<font style="font-size:16px" color="#c0003b" face="Arial"><b>&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; <%=resource.getString("opac.myaccount.reservationrequest.text")%></b></font>
-</div>
-<div id="wb_Text2" style="position:absolute;right:3px;top:33px;width:583px;height:19px;background-color:#FFFFE0;z-index:23;" align="right">
-<font style="font-size:12px" color="#c0003b" face="Arial"><b> &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;<%=resource.getString("opac.myaccount.reservationrequest.welcome")%>&nbsp;  <%=name%> </b></font>
-</div>
-<div id="wb_Form1" style="position:absolute;right:31px;top:61px;width:624px;height:409px;z-index:24">
-<form name="Form1" method="post" action="reservationrequest.jsp" id="Form1">
-<div id="wb_Text2" style="position:absolute;right:20px;top:9px;width:81px;height:15px;z-index:0;" align="right">
-<font style="font-size:12px" color="#000000" face="Arial"><b><%=resource.getString("opac.myaccount.reservationrequest.libraryname")%></b></font></div>
-<div id="wb_Text3" style="position:absolute;right:54px;top:40px;width:47px;height:15px;z-index:1;" align="right">
-<font style="font-size:12px" color="#000000" face="Arial"><b><%=resource.getString("opac.myaccount.reservationrequest.cardid")%></b></font></div>
-<div id="wb_Text4" style="position:absolute;right:69px;top:75px;width:34px;height:15px;z-index:2;" align="right">
-<font style="font-size:12px" color="#000000" face="Arial"><b><%=resource.getString("opac.myaccount.reservationrequest.title")%></b></font></div>
-<div id="wb_Text5" style="position:absolute;right:58px;top:109px;width:44px;height:15px;z-index:3;" align="right">
-<font style="font-size:12px" color="#000000" face="Arial"><b><%=resource.getString("opac.myaccount.reservationrequest.author")%></b></font></div>
-<div id="wb_Text6" style="position:absolute;right:65px;top:141px;width:31px;height:15px;z-index:4;" align="right">
-<font style="font-size:12px" color="#000000" face="Arial"><b><%=resource.getString("opac.myaccount.reservationrequest.isbn")%></b></font></div>
-<div id="wb_Text7" style="position:absolute;right:56px;top:172px;width:44px;height:15px;z-index:5;" align="right">
-<font style="font-size:12px" color="#000000" face="Arial"><b><%=resource.getString("opac.myaccount.reservationrequest.callno")%></b></font></div>
-<div id="wb_Text8" style="position:absolute;right:42px;top:273px;width:61px;height:15px;z-index:6;" align="right">
-<font style="font-size:12px" color="#000000" face="Arial"><b><%=resource.getString("opac.myaccount.reservationrequest.publisher")%></b></font></div>
-<div id="wb_Text9" style="position:absolute;right:41px;top:327px;width:57px;height:15px;z-index:7;" align="right">
-<font style="font-size:12px" color="#000000" face="Arial"><b><%=resource.getString("opac.myaccount.reservationrequest.remark")%></b></font></div>
-<input type="text" id="TXTLIBNAME" style="position:absolute;right:106px;top:5px;width:268px;height:18px;border:1px #C0C0C0 solid;font-family:Courier New;font-size:13px;z-index:8" name="TXTLIBNAME" >
-<input type="text" disabled="true" id="TXTCARDID"  value="<%=card_id%> "style="position:absolute;right:106px;top:38px;width:183px;height:18px;border:1px #C0C0C0 solid;font-family:Courier New;font-size:13px;z-index:9" name="TXTCARDID" >
-<input type="hidden" id="id" value="<%=card_id%>"style="position:absolute;right:102px;top:69px;width:198px;height:18px;border:1px #C0C0C0 solid;font-family:Courier New;font-size:13px;z-index:11" name="id" >
-<input type="text" id="TXTTITLE" style="position:absolute;right:106px;top:70px;width:298px;height:18px;border:1px #C0C0C0 solid;font-family:Courier New;font-size:13px;z-index:10" name="TXTTITLE" >
-<input type="text" id="TXTAUTHOR" style="position:absolute;right:106px;top:104px;width:294px;height:18px;border:1px #C0C0C0 solid;font-family:Courier New;font-size:13px;z-index:11" name="TXTAUTHOR" >
-<input type="text" id="TXTISBN" style="position:absolute;right:106px;top:136px;width:178px;height:18px;border:1px #C0C0C0 solid;font-family:Courier New;font-size:13px;z-index:12" name="TXTISBN" >
-<input type="text" id="TXTCALLNO" style="position:absolute;right:106px;top:169px;width:177px;height:18px;border:1px #C0C0C0 solid;font-family:Courier New;font-size:13px;z-index:13" name="TXTCALLNO" >
-<input type="text" id="TXTPUBL" style="position:absolute;right:105px;top:269px;width:187px;height:18px;border:1px #C0C0C0 solid;font-family:Courier New;font-size:13px;z-index:14" name="TXTPUBL" >
-<textarea name="TXTREMARKS" id="TXTREMARKS" style="position:absolute;right:106px;top:306px;width:229px;height:63px;border:1px #C0C0C0 solid;font-family:Courier New;font-size:13px;z-index:15" rows="2" cols="24"></textarea>
-<input type="submit" id="Button1" name="" value="<%=resource.getString("opac.myaccount.reservationrequest.process")%>" style="position:absolute;right:393px;top:322px;width:73px;height:25px;font-family:Arial;font-size:13px;z-index:16">
-<div style="position:absolute;right:495px;top:75px;width:120px;height:18px;border:1px #C0C0C0 solid;z-index:17">
-<select name="CMBCAT" size="1" id="CMBCAT" style="right:0px;top:0px;width:100%;height:100%;border-width:0px;font-family:Courier New;font-size:13px;">
-<option selected VALUE="books">BOOK</option>
-<option value="journals">JOURNAL</option>
-<option value="others">OTHERS</option>
-</select>
-</div>
-<div id="wb_Text10" style="position:absolute;right:427px;top:78px;width:55px;height:15px;z-index:18;" align="right">
-<font style="font-size:12px" color="#000000" face="Arial"><b><%=resource.getString("opac.myaccount.reservationrequest.category")%></b></font></div>
-<div id="wb_Text11" style="position:absolute;right:56px;top:208px;width:44px;height:15px;z-index:19;" align="right">
-<font style="font-size:12px" color="#000000" face="Arial"><b><%=resource.getString("opac.myaccount.reservationrequest.edition")%></b></font></div>
-<div id="wb_Text12" style="position:absolute;right:52px;top:241px;width:49px;height:15px;z-index:20;" align="right">
-<font style="font-size:12px" color="#000000" face="Arial"><b><%=resource.getString("opac.myaccount.reservationrequest.volume")%></b></font></div>
-<input type="text" id="TXTEDITION" style="position:absolute;right:106px;top:203px;width:178px;height:18px;border:1px #C0C0C0 solid;font-family:Courier New;font-size:13px;z-index:21" name="TXTEDITION">
-<input type="text" id="TXTVOL" style="position:absolute;right:106px;top:236px;width:109px;height:18px;border:1px #C0C0C0 solid;font-family:Courier New;font-size:13px;z-index:22" name="TXTVOL" >
-</form>
-</div>
+<table  align="left" width="800px"  style="background-color: white;border:#c0003b 1px solid;margin:0px 0px 0px 0px;">
 
 
- <% } %>
 
+
+  <tr><td  width="800px"  style="background-color:#c0003b;color:white;font-family:Tahoma;font-size:12px" height="28px" align="right">
+          <table>
+              <tr>
+                  <td width="520px" align="left" style="color:white;font-family:Tahoma;font-size:12px"><a href="home.do" target="f3" style="text-decoration: none;color:white"><%=resource.getString("opac.accountdetails.logout")%></a>&nbsp;|&nbsp;<%=resource.getString("opac.accountdetails.hi")%>&nbsp;<%=name%></td>
+
+                  <td  style="background-color:#c0003b;color:white;font-family:Tahoma;font-size:12px" height="28px" align="right"><b>
+
+
+	&nbsp;&nbsp;<a href="reservationrequest1.jsp" target="f3" style="text-decoration: none;color:white"> <%=resource.getString("opac.accountdetails.reservationrequest")%>
+        &nbsp;|&nbsp;    <a href="newdemand2.jsp" target="f3" style="text-decoration: none;color:white"> <%=resource.getString("opac.accountdetails.newdemand")%></a>&nbsp;
+        &nbsp;|&nbsp;    <a href="accountdetails.jsp" target="f3" style="text-decoration: none;color:white"><%=resource.getString("opac.accountdetails.home")%></a>
+
+    </a>
+
+
+
+
+          </b>
+                  </td></tr></table>
+        </td></tr>
+
+
+
+      <tr><td colspan="3"  valign="top" class="btn1" align="center">
+             <table align="center" width="700px">
+ <tr><td align="center" style="color:Brown" colspan="3">
+         <table align="center" width="700px">
+             <tr><td width="400px"><font color="blue" align="right"> <b><%=resource.getString("opac.myaccount.reservationrequest.note")%></b><br><br></font>
+                 </td><td width="350px" align="center">
+       <b><%=resource.getString("opac.myaccount.reservationrequest.text")%></b></td></table>
+         </td></tr>
+
+                 <tr><td></td><td align="right" width="200px"><html:text property="TXTCARDID"  value="<%=card_id%>" readonly="true"  /></td><td align="left" width="150px"><%=resource.getString("opac.myaccount.reservationrequest.cardid")%></td></tr>
+<tr><td  class="err" align="right">   <html:messages id="err_name"  property="CMBCAT">
+            <bean:write name="err_name" />
+             </html:messages>
+         </td><td align="right">
+        <html:select property="CMBCAT" size="1">
+    <html:option value="">Select</html:option>
+<html:option value="books">BOOK</html:option>
+<html:option value="journals">JOURNAL</html:option>
+<html:option value="others">OTHERS</html:option>
+</html:select>
+
+
+    </td>
+<td align="left">*<%=resource.getString("opac.myaccount.reservationrequest.category")%></td>
+
+</tr>
+<tr><td  class="err" align="right">   <html:messages id="err_name"  property="accessionno">
+            <bean:write name="err_name" />
+             </html:messages>
+         </td><td align="right"><html:text  property="accessionno"/></td>
+<td align="left">*<%=resource.getString("opac.myaccount.reservationrequest.accessionno")%></td>
+
+</tr>
+<tr><td  class="err" align="right">   <html:messages id="err_name"  property="TXTTITLE">
+            <bean:write name="err_name" />
+             </html:messages>
+         </td><td align="right"><html:text  property="TXTTITLE"  /></td>
+<td align="left">*<%=resource.getString("opac.myaccount.reservationrequest.title")%></td>
+</tr>
+<tr><td  class="err" align="right">   <html:messages id="err_name"  property="TXTAUTHOR">
+            <bean:write name="err_name" />
+             </html:messages>
+         </td><td align="right"><html:text  property="TXTAUTHOR"  /></td>
+<td align="left">*<%=resource.getString("opac.myaccount.reservationrequest.author")%></td>
+</tr>
+<tr><td></td><td align="right"><html:text  property="TXTISBN"  /></td><td align="left"><%=resource.getString("opac.myaccount.reservationrequest.isbn")%></td></tr>
+<tr><td></td><td align="right"><html:text  property="issn"  /></td><td align="left"><%=resource.getString("opac.myaccount.reservationrequest.issn")%></td></tr>
+<tr><td  class="err" align="right">   <html:messages id="err_name"  property="TXTCALLNO">
+            <bean:write name="err_name" />
+             </html:messages>
+         </td><td align="right"><html:text  property="TXTCALLNO"   /></td>
+<td align="left">*<%=resource.getString("opac.myaccount.reservationrequest.callno")%></td>
+
+</tr>
+<tr><td></td><td align="right"><html:text  property="TXTPUBL"   /></td><td align="left"><%=resource.getString("opac.myaccount.reservationrequest.publisher")%></td></tr>
+<tr><td></td><td align="right"><html:text  property="pub_year"  /></td><td align="left"><%=resource.getString("opac.myaccount.reservationrequest.publishingyear")%></td></tr>
+<tr><td></td><td align="right"><html:textarea  property="TXTREMARKS"   rows="2" cols="24"/></td><td align="left"><%=resource.getString("opac.myaccount.reservationrequest.remark")%></td></tr>
+<tr><td></td><td align="right"><html:text  property="lang" /></td><td align="left"><%=resource.getString("opac.myaccount.reservationrequest.language")%></td></tr>
+<tr><td></td><td align="right"><html:text  property="TXTEDITION" /></td><td align="left"><%=resource.getString("opac.myaccount.reservationrequest.edition")%></td></tr>
+<tr><td></td><td align="right"><html:text  property="TXTVOL"  /></td><td align="left"><%=resource.getString("opac.myaccount.reservationrequest.volume")%></td></tr>
+
+<tr><td  align="right" colspan="2"><input type="button"   name="cancel" value="<%=resource.getString("opac.myaccount.reservationrequest.cancel")%>" class="txt2" onclick="quit()">&nbsp;&nbsp;<html:submit styleClass="btn"><%=resource.getString("opac.myaccount.reservationrequest.send")%></html:submit><br/></td><td></td></tr>
+ </table>
+
+
+         </td></tr></table>
+<%}%>
+
+
+<input type="hidden" id="id" value="<%=card_id%>" name="id"/>
+
+
+
+
+</html:form>
 </body>
 </html>
+<script>
+    function quit()
+    {
+        location.href="/LibMS-Struts/OPAC/accountdetails.jsp";
+    }
+</script>

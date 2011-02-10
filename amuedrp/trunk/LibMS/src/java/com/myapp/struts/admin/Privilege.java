@@ -16,6 +16,7 @@ public class Privilege {
     static Connection con;
   static  String  sql;
    static PreparedStatement stmt;
+  
   public static void   assignAdminPrivilege(String staff_id,String library_id)
   {
       try{
@@ -182,7 +183,7 @@ for(int i =0; i < substring.length; i++)
          "',acq_151='"+acq_privilege[51]+"',acq_152='"+acq_privilege[52]+"',acq_153='"+acq_privilege[53]+
          "',acq_154='"+acq_privilege[54]+"',acq_155='"+acq_privilege[55]+"',acq_156='"+acq_privilege[56]+
          "',acq_157='"+acq_privilege[57]+"',acq_158='"+acq_privilege[58]+"',acq_159='"+acq_privilege[59]+
-         "',acq_160='"+acq_privilege[61]+"',acq_161='"+acq_privilege[61]+"',acq_162='"+acq_privilege[62]+
+         "',acq_160='"+acq_privilege[60]+"',acq_161='"+acq_privilege[61]+"',acq_162='"+acq_privilege[62]+
          "',acq_163='"+acq_privilege[63]+"',acq_164='"+acq_privilege[64]+"',acq_165='"+acq_privilege[65]+
          "',acq_166='"+acq_privilege[66]+"',acq_167='"+acq_privilege[67]+"',acq_168='"+acq_privilege[68]+
          "',acq_169='"+acq_privilege[69]+"',acq_170='"+acq_privilege[70]+"',acq_171='"+acq_privilege[71]+
@@ -190,8 +191,8 @@ for(int i =0; i < substring.length; i++)
          "',acq_175='"+acq_privilege[75]+"',acq_176='"+acq_privilege[76]+"',acq_177='"+acq_privilege[77]+
          "',acq_178='"+acq_privilege[78]+"',acq_179='"+acq_privilege[79]+"',acq_180='"+acq_privilege[80]+
          "',acq_181='"+acq_privilege[81]+"',acq_182='"+acq_privilege[82]+"',acq_183='"+acq_privilege[83]+
-         "',acq_184='"+acq_privilege[84]+"',acq_185='"+acq_privilege[85]+"',acq_186='"+acq_privilege[87]+
-         "',acq_188='"+acq_privilege[88]+"',acq_187='"+acq_privilege[87]+"',acq_188='"+acq_privilege[88]+
+         "',acq_184='"+acq_privilege[84]+"',acq_185='"+acq_privilege[85]+"',acq_186='"+acq_privilege[86]+
+         "',acq_187='"+acq_privilege[87]+"',acq_188='"+acq_privilege[88]+
          "',acq_189='"+acq_privilege[89]+"',acq_190='"+acq_privilege[90]+"',acq_191='"+acq_privilege[91]+
          "',acq_192='"+acq_privilege[92]+"',acq_193='"+acq_privilege[93]+"',acq_194='"+acq_privilege[94]+
          "',acq_195='"+acq_privilege[95]+"',acq_196='"+acq_privilege[96]+"',acq_197='"+acq_privilege[97]+
@@ -218,7 +219,7 @@ for(int i =0; i < substring.length; i++)
          "',cat_251='"+cat_privilege[51]+"',cat_252='"+cat_privilege[52]+"',cat_253='"+cat_privilege[53]+
          "',cat_254='"+cat_privilege[54]+"',cat_255='"+cat_privilege[55]+"',cat_256='"+cat_privilege[56]+
          "',cat_257='"+cat_privilege[57]+"',cat_258='"+cat_privilege[58]+"',cat_259='"+cat_privilege[59]+
-         "',cat_260='"+cat_privilege[61]+"',cat_261='"+cat_privilege[61]+"',cat_262='"+cat_privilege[62]+
+         "',cat_260='"+cat_privilege[60]+"',cat_261='"+cat_privilege[61]+"',cat_262='"+cat_privilege[62]+
          "',cat_263='"+cat_privilege[63]+"',cat_264='"+cat_privilege[64]+"',cat_265='"+cat_privilege[65]+
          "',cat_266='"+cat_privilege[66]+"',cat_267='"+cat_privilege[67]+"',cat_268='"+cat_privilege[68]+
          "',cat_269='"+cat_privilege[69]+"',cat_270='"+cat_privilege[70]+"',cat_271='"+cat_privilege[71]+
@@ -226,9 +227,9 @@ for(int i =0; i < substring.length; i++)
          "',cat_275='"+cat_privilege[75]+"',cat_276='"+cat_privilege[76]+"',cat_277='"+cat_privilege[77]+
          "',cat_278='"+cat_privilege[78]+"',cat_279='"+cat_privilege[79]+"',cat_280='"+cat_privilege[80]+
          "',cat_281='"+cat_privilege[81]+"',cat_282='"+cat_privilege[82]+"',cat_283='"+cat_privilege[83]+
-         "',cat_284='"+cat_privilege[84]+"',cat_285='"+cat_privilege[85]+"',cat_286='"+cat_privilege[87]+
-         "',cat_288='"+cat_privilege[88]+"',cat_287='"+cat_privilege[87]+"',cat_288='"+cat_privilege[88]+
-         "',cat_289='"+cat_privilege[89]+"',cat_290='"+cat_privilege[90]+"',cat_291='"+cat_privilege[91]+
+         "',cat_284='"+cat_privilege[84]+"',cat_285='"+cat_privilege[85]+"',cat_286='"+cat_privilege[86]+
+         "',cat_287='"+cat_privilege[87]+"',cat_288='"+cat_privilege[88]+"',cat_289='"+cat_privilege[89]+
+         "',cat_290='"+cat_privilege[90]+"',cat_291='"+cat_privilege[91]+
          "',cat_292='"+cat_privilege[92]+"',cat_293='"+cat_privilege[93]+"',cat_294='"+cat_privilege[94]+
          "',cat_295='"+cat_privilege[95]+"',cat_296='"+cat_privilege[96]+"',cat_297='"+cat_privilege[97]+
          "',cat_298='"+cat_privilege[98]+"',cat_299='"+cat_privilege[99]+"' where staff_id='"+
@@ -254,7 +255,7 @@ for(int i =0; i < substring.length; i++)
          "',cir_351='"+cir_privilege[51]+"',cir_352='"+cir_privilege[52]+"',cir_353='"+cir_privilege[53]+
          "',cir_354='"+cir_privilege[54]+"',cir_355='"+cir_privilege[55]+"',cir_356='"+cir_privilege[56]+
          "',cir_357='"+cir_privilege[57]+"',cir_358='"+cir_privilege[58]+"',cir_359='"+cir_privilege[59]+
-         "',cir_360='"+cir_privilege[61]+"',cir_361='"+cir_privilege[61]+"',cir_362='"+cir_privilege[62]+
+         "',cir_360='"+cir_privilege[60]+"',cir_361='"+cir_privilege[61]+"',cir_362='"+cir_privilege[62]+
          "',cir_363='"+cir_privilege[63]+"',cir_364='"+cir_privilege[64]+"',cir_365='"+cir_privilege[65]+
          "',cir_366='"+cir_privilege[66]+"',cir_367='"+cir_privilege[67]+"',cir_368='"+cir_privilege[68]+
          "',cir_369='"+cir_privilege[69]+"',cir_370='"+cir_privilege[70]+"',cir_371='"+cir_privilege[71]+
@@ -298,9 +299,9 @@ for(int i =0; i < substring.length; i++)
          "',ser_475='"+ser_privilege[75]+"',ser_476='"+ser_privilege[76]+"',ser_477='"+ser_privilege[77]+
          "',ser_478='"+ser_privilege[78]+"',ser_479='"+ser_privilege[79]+"',ser_480='"+ser_privilege[80]+
          "',ser_481='"+ser_privilege[81]+"',ser_482='"+ser_privilege[82]+"',ser_483='"+ser_privilege[83]+
-         "',ser_484='"+ser_privilege[84]+"',ser_485='"+ser_privilege[85]+"',ser_486='"+ser_privilege[87]+
-         "',ser_488='"+ser_privilege[88]+"',ser_487='"+ser_privilege[87]+"',ser_488='"+ser_privilege[88]+
-         "',ser_489='"+ser_privilege[89]+"',ser_490='"+ser_privilege[90]+"',ser_491='"+ser_privilege[91]+
+         "',ser_484='"+ser_privilege[84]+"',ser_485='"+ser_privilege[85]+"',ser_486='"+ser_privilege[86]+
+         "',ser_487='"+ser_privilege[87]+"',ser_488='"+ser_privilege[88]+"',ser_489='"+ser_privilege[89]+
+         "',ser_490='"+ser_privilege[90]+"',ser_491='"+ser_privilege[91]+
          "',ser_492='"+ser_privilege[92]+"',ser_493='"+ser_privilege[93]+"',ser_494='"+ser_privilege[94]+
          "',ser_495='"+ser_privilege[95]+"',ser_496='"+ser_privilege[96]+"',ser_497='"+ser_privilege[97]+
          "',ser_498='"+ser_privilege[98]+"',ser_499='"+ser_privilege[99]+"' where staff_id='"+
@@ -417,7 +418,7 @@ pre_sql1="update privilege set acquisition='"+pre_privilege[0]+"',cataloguing='"
          "',acq_151='"+pre_acq_privilege[51]+"',acq_152='"+pre_acq_privilege[52]+"',acq_153='"+pre_acq_privilege[53]+
          "',acq_154='"+pre_acq_privilege[54]+"',acq_155='"+pre_acq_privilege[55]+"',acq_156='"+pre_acq_privilege[56]+
          "',acq_157='"+pre_acq_privilege[57]+"',acq_158='"+pre_acq_privilege[58]+"',acq_159='"+pre_acq_privilege[59]+
-         "',acq_160='"+pre_acq_privilege[61]+"',acq_161='"+pre_acq_privilege[61]+"',acq_162='"+pre_acq_privilege[62]+
+         "',acq_160='"+pre_acq_privilege[60]+"',acq_161='"+pre_acq_privilege[61]+"',acq_162='"+pre_acq_privilege[62]+
          "',acq_163='"+pre_acq_privilege[63]+"',acq_164='"+pre_acq_privilege[64]+"',acq_165='"+pre_acq_privilege[65]+
          "',acq_166='"+pre_acq_privilege[66]+"',acq_167='"+pre_acq_privilege[67]+"',acq_168='"+pre_acq_privilege[68]+
          "',acq_169='"+pre_acq_privilege[69]+"',acq_170='"+pre_acq_privilege[70]+"',acq_171='"+pre_acq_privilege[71]+
@@ -425,8 +426,8 @@ pre_sql1="update privilege set acquisition='"+pre_privilege[0]+"',cataloguing='"
          "',acq_175='"+pre_acq_privilege[75]+"',acq_176='"+pre_acq_privilege[76]+"',acq_177='"+pre_acq_privilege[77]+
          "',acq_178='"+pre_acq_privilege[78]+"',acq_179='"+pre_acq_privilege[79]+"',acq_180='"+pre_acq_privilege[80]+
          "',acq_181='"+pre_acq_privilege[81]+"',acq_182='"+pre_acq_privilege[82]+"',acq_183='"+pre_acq_privilege[83]+
-         "',acq_184='"+pre_acq_privilege[84]+"',acq_185='"+pre_acq_privilege[85]+"',acq_186='"+pre_acq_privilege[87]+
-         "',acq_188='"+pre_acq_privilege[88]+"',acq_187='"+pre_acq_privilege[87]+"',acq_188='"+pre_acq_privilege[88]+
+         "',acq_184='"+pre_acq_privilege[84]+"',acq_185='"+pre_acq_privilege[85]+"',acq_186='"+pre_acq_privilege[86]+
+         "',acq_187='"+pre_acq_privilege[87]+"',acq_188='"+pre_acq_privilege[88]+
          "',acq_189='"+pre_acq_privilege[89]+"',acq_190='"+pre_acq_privilege[90]+"',acq_191='"+pre_acq_privilege[91]+
          "',acq_192='"+pre_acq_privilege[92]+"',acq_193='"+pre_acq_privilege[93]+"',acq_194='"+pre_acq_privilege[94]+
          "',acq_195='"+pre_acq_privilege[95]+"',acq_196='"+pre_acq_privilege[96]+"',acq_197='"+pre_acq_privilege[97]+
@@ -462,8 +463,8 @@ pre_sql1="update privilege set acquisition='"+pre_privilege[0]+"',cataloguing='"
          "',cat_278='"+pre_cat_privilege[78]+"',cat_279='"+pre_cat_privilege[79]+"',cat_280='"+pre_cat_privilege[80]+
          "',cat_281='"+pre_cat_privilege[81]+"',cat_282='"+pre_cat_privilege[82]+"',cat_283='"+pre_cat_privilege[83]+
          "',cat_284='"+pre_cat_privilege[84]+"',cat_285='"+pre_cat_privilege[85]+"',cat_286='"+pre_cat_privilege[87]+
-         "',cat_288='"+pre_cat_privilege[88]+"',cat_287='"+pre_cat_privilege[87]+"',cat_288='"+pre_cat_privilege[88]+
-         "',cat_289='"+pre_cat_privilege[89]+"',cat_290='"+pre_cat_privilege[90]+"',cat_291='"+pre_cat_privilege[91]+
+         "',cat_287='"+pre_cat_privilege[87]+"',cat_288='"+pre_cat_privilege[88]+"',cat_289='"+pre_cat_privilege[89]+
+         "',cat_290='"+pre_cat_privilege[90]+"',cat_291='"+pre_cat_privilege[91]+
          "',cat_292='"+pre_cat_privilege[92]+"',cat_293='"+pre_cat_privilege[93]+"',cat_294='"+pre_cat_privilege[94]+
          "',cat_295='"+pre_cat_privilege[95]+"',cat_296='"+pre_cat_privilege[96]+"',cat_297='"+pre_cat_privilege[97]+
          "',cat_298='"+pre_cat_privilege[98]+"',cat_299='"+pre_cat_privilege[99]+"' where staff_id='"+
@@ -489,7 +490,7 @@ pre_sql1="update privilege set acquisition='"+pre_privilege[0]+"',cataloguing='"
          "',cir_351='"+pre_cir_privilege[51]+"',cir_352='"+pre_cir_privilege[52]+"',cir_353='"+pre_cir_privilege[53]+
          "',cir_354='"+pre_cir_privilege[54]+"',cir_355='"+pre_cir_privilege[55]+"',cir_356='"+pre_cir_privilege[56]+
          "',cir_357='"+pre_cir_privilege[57]+"',cir_358='"+pre_cir_privilege[58]+"',cir_359='"+pre_cir_privilege[59]+
-         "',cir_360='"+pre_cir_privilege[61]+"',cir_361='"+pre_cir_privilege[61]+"',cir_362='"+pre_cir_privilege[62]+
+         "',cir_360='"+pre_cir_privilege[60]+"',cir_361='"+pre_cir_privilege[61]+"',cir_362='"+pre_cir_privilege[62]+
          "',cir_363='"+pre_cir_privilege[63]+"',cir_364='"+pre_cir_privilege[64]+"',cir_365='"+pre_cir_privilege[65]+
          "',cir_366='"+pre_cir_privilege[66]+"',cir_367='"+pre_cir_privilege[67]+"',cir_368='"+pre_cir_privilege[68]+
          "',cir_369='"+pre_cir_privilege[69]+"',cir_370='"+pre_cir_privilege[70]+"',cir_371='"+pre_cir_privilege[71]+
@@ -525,7 +526,7 @@ pre_sql1="update privilege set acquisition='"+pre_privilege[0]+"',cataloguing='"
          "',ser_451='"+pre_ser_privilege[51]+"',ser_452='"+pre_ser_privilege[52]+"',ser_453='"+pre_ser_privilege[53]+
          "',ser_454='"+pre_ser_privilege[54]+"',ser_455='"+pre_ser_privilege[55]+"',ser_456='"+pre_ser_privilege[56]+
          "',ser_457='"+pre_ser_privilege[57]+"',ser_458='"+pre_ser_privilege[58]+"',ser_459='"+pre_ser_privilege[59]+
-         "',ser_460='"+pre_ser_privilege[61]+"',ser_461='"+pre_ser_privilege[61]+"',ser_462='"+pre_ser_privilege[62]+
+         "',ser_460='"+pre_ser_privilege[60]+"',ser_461='"+pre_ser_privilege[61]+"',ser_462='"+pre_ser_privilege[62]+
          "',ser_463='"+pre_ser_privilege[63]+"',ser_464='"+pre_ser_privilege[64]+"',ser_465='"+pre_ser_privilege[65]+
          "',ser_466='"+pre_ser_privilege[66]+"',ser_467='"+pre_ser_privilege[67]+"',ser_468='"+pre_ser_privilege[68]+
          "',ser_469='"+pre_ser_privilege[69]+"',ser_470='"+pre_ser_privilege[70]+"',ser_471='"+pre_ser_privilege[71]+
@@ -533,8 +534,8 @@ pre_sql1="update privilege set acquisition='"+pre_privilege[0]+"',cataloguing='"
          "',ser_475='"+pre_ser_privilege[75]+"',ser_476='"+pre_ser_privilege[76]+"',ser_477='"+pre_ser_privilege[77]+
          "',ser_478='"+pre_ser_privilege[78]+"',ser_479='"+pre_ser_privilege[79]+"',ser_480='"+pre_ser_privilege[80]+
          "',ser_481='"+pre_ser_privilege[81]+"',ser_482='"+pre_ser_privilege[82]+"',ser_483='"+pre_ser_privilege[83]+
-         "',ser_484='"+pre_ser_privilege[84]+"',ser_485='"+pre_ser_privilege[85]+"',ser_486='"+pre_ser_privilege[87]+
-         "',ser_488='"+pre_ser_privilege[88]+"',ser_487='"+pre_ser_privilege[87]+"',ser_488='"+pre_ser_privilege[88]+
+         "',ser_484='"+pre_ser_privilege[84]+"',ser_485='"+pre_ser_privilege[85]+"',ser_486='"+pre_ser_privilege[86]+
+         "',ser_487='"+pre_ser_privilege[87]+"',ser_488='"+pre_ser_privilege[88]+
          "',ser_489='"+pre_ser_privilege[89]+"',ser_490='"+pre_ser_privilege[90]+"',ser_491='"+pre_ser_privilege[91]+
          "',ser_492='"+pre_ser_privilege[92]+"',ser_493='"+pre_ser_privilege[93]+"',ser_494='"+pre_ser_privilege[94]+
          "',ser_495='"+pre_ser_privilege[95]+"',ser_496='"+pre_ser_privilege[96]+"',ser_497='"+pre_ser_privilege[97]+

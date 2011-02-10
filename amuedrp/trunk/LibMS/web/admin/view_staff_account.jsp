@@ -8,7 +8,7 @@
 <%@page contentType="text/html"%>
  <jsp:include page="header.jsp" flush="true" />
 <%@page pageEncoding="UTF-8"%>
-<%@page import="java.sql.*,com.myapp.struts.opac.MyQueryResult" %>
+<%@page import="java.sql.*,com.myapp.struts.MyQueryResult" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -19,7 +19,7 @@ String id1=request.getParameter("id");
 ResultSet rst;
 
 
-         rst=MyQueryResult.getMyExecuteQuery("select * from login where staff_id="+id1);
+         rst=(ResultSet)request.getAttribute("simple_resultset");
 
 rst.next();
 
@@ -29,21 +29,16 @@ if(user_id==null)
 String user_name=rst.getString("user_name");
 if(user_name==null)
     user_name="";
-String question=rst.getString("question");
-if(question==null)
-    question="";
-String ans=rst.getString("ans");
-if(ans==null)
-    ans="";
-String password=rst.getString("password");
-if(password==null)
-    password="";
+
 String library_id=rst.getString("library_id");
 if(library_id==null)
     library_id="";
 String staff_id=rst.getString("staff_id");
 if(staff_id==null)
     staff_id="";
+String role=rst.getString("role");
+if(role==null)
+    role="";
 %>
 
 
@@ -82,31 +77,24 @@ if(staff_id==null)
                     <table  class="txt2" >
                                            
                         <tr>
-                                    <td width="250px" >Email Id</td><td colspan="3"><input type="text" id="email_id"  tabindex="2"  name="email_id" value="<%=user_id%>"></td>
-                                    </tr>
+                            <td width="250px" >Email Id</td><td><input type="text" id="email_id"  tabindex="2"  name="email_id" value="<%=user_id%>" readonly></td>
+                        <td width="250px">Login Role</td><td width="250px"><input type="text" id="role"  tabindex="5"  name="role" value="<%=role%>" readonly></td>
+                        </tr>
                                   <tr><td colspan="4" height="5px"></td></tr>
                                 <tr><td width="250px">User Name
                                    
 
 
-                                    </td><td width="250px"><input type="text" id="user_name"  tabindex="4" name="user_name" value="<%=user_name%>"></td>
-                                  <td width="250px">Question</td><td width="250px"><input type="text" id="question"  tabindex="5"  name="question" value="<%=question%>"></td>
+                                    </td><td width="250px"><input type="text" id="user_name"  tabindex="4" name="user_name" value="<%=user_name%>" readonly></td>
+                                    <td width="250px">Staff ID</td><td width="250px"><input type="text" id="staff_id" readonly tabindex="9"  name="staff_id" value="<%=staff_id%>"></td>
+                                 
                                 </tr>
-                                    <tr><td colspan="4" height="5px"></td></tr>
-
-
-                         
-                              
-<tr><td width="250px">Answer</td><td width="250px"><input type="text" id="ans"  tabindex="6"  name="ans" value="<%=ans%>"></td>
-                                <td width="250px">Password</td><td width="250px"><input type="password" id="password"  tabindex="7" readonly name="password" value="<%=password%>"></td>
-                                </tr>
-                                <tr><td colspan="4" height="5px"></td></tr>
                                 
                                 
                                 
                                 <tr><td colspan="4" height="5px"></td></tr>
-                            <tr><td width="250px">Library ID</td><td width="250px"><input type="text" id="library_id"  tabindex="8"  name="library_id" value="<%=library_id%>"></td>
-                           <td width="250px">Staff ID</td><td width="250px"><input type="text" id="staff_id"  tabindex="9"  name="staff_id" value="<%=staff_id%>"></td>
+                            <tr><td width="250px">Library ID</td><td width="250px"><input type="text" readonly id="library_id"  tabindex="8"  name="library_id" value="<%=library_id%>"></td>
+                           
                             </tr>
                              <tr><td colspan="4" height="5px"></td></tr>
                              <tr><td colspan="4" height="5px"></td></tr>
@@ -134,26 +122,15 @@ if(staff_id==null)
 
 
 
-    <div
-   style="
-      top: 1000px;
-
-      position: absolute;
-
-      visibility: show;">
-        <jsp:include page="footer.jsp" />
-
-</div>
-
-
-
-
-</html>
-
-<script>
+    
+<script type="text/javascript" language="javascript">
     function send()
     {
         window.location="/LibMS-Struts/admin/main.jsp";
     }
 
 </script>
+
+
+</html>
+

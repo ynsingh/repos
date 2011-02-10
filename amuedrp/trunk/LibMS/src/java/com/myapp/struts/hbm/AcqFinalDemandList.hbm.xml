@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jan 21, 2011 8:43:24 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class catalog="libms" name="com.myapp.struts.hbm.AcqFinalDemandList" table="acq_final_demand_list">
+    <composite-id class="com.myapp.struts.hbm.AcqFinalDemandListId" name="id">
+      <key-property name="libraryId" type="string">
+        <column length="20" name="library_id"/>
+      </key-property>
+      <key-property name="controlNo" type="string">
+        <column length="10" name="control_no"/>
+      </key-property>
+    </composite-id>
+    <many-to-one class="com.myapp.struts.hbm.Library" fetch="select" insert="false" name="library" update="false">
+      <column length="20" name="library_id" not-null="true"/>
+    </many-to-one>
+    <property name="listId" type="string">
+      <column length="18" name="list_id"/>
+    </property>
+    <property name="isbn" type="string">
+      <column length="18" name="isbn"/>
+    </property>
+    <property name="title" type="string">
+      <column length="100" name="title"/>
+    </property>
+    <property name="subtitle" type="string">
+      <column length="100" name="subtitle"/>
+    </property>
+    <property name="author" type="string">
+      <column length="200" name="author"/>
+    </property>
+    <property name="price" type="string">
+      <column length="20" name="price"/>
+    </property>
+    <property name="totalAmount" type="string">
+      <column length="20" name="total_amount"/>
+    </property>
+    <property name="volume" type="string">
+      <column length="3" name="volume"/>
+    </property>
+    <property name="edition" type="string">
+      <column length="5" name="edition"/>
+    </property>
+    <property name="publisherId" type="string">
+      <column length="20" name="publisher_id"/>
+    </property>
+    <property name="bindId" type="string">
+      <column length="40" name="bind_id"/>
+    </property>
+  </class>
+</hibernate-mapping>

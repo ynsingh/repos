@@ -21,7 +21,7 @@ String staff_name=(String)request.getAttribute("staff_name");
         <link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
         <title>LibMS</title>
     </head>
-    <body >
+    <body>
    
 <div
    style="  top:120px;
@@ -48,16 +48,7 @@ String staff_name=(String)request.getAttribute("staff_name");
     
 </td></tr></table>
         </div>
-    <div
-   style="
-      top: 650px;
-
-      position: absolute;
-
-      visibility: show;">
-        <jsp:include page="footer.jsp" />
-
-</div>
+   
 
     </body>
 </html>
