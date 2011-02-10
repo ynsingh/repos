@@ -61,7 +61,7 @@ import org.iitk.brihaspati.modules.utils.InstituteIdUtil;//sk
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Admin;
 import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
 import org.iitk.brihaspati.om.InstituteAdminRegistration;
-//import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 
 public class List_Mgmt extends SecureScreen_Admin
 {
@@ -87,18 +87,11 @@ public class List_Mgmt extends SecureScreen_Admin
                         	context.put("stat",stat);
 	                        String query="";
                         	String valueString="";
-				String iname=data.getParameters().getString("iname","");
-        	                context.put("iname",iname);
-				//ErrorDumpUtil.ErrorLog("Institute Name 99====>>>"+iname);
                         	String Mode=data.getParameters().getString("mode","");
 				Vector uidvct=new Vector();
 		                List details=null;
 				/** institute options by this code*/
-				Criteria crit = new Criteria();
-                       		crit.addGroupByColumn(InstituteAdminRegistrationPeer.INSTITUTE_ID);
-                        	crit.add(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"1");
-                        	crit.or(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"3");
-                        	List instdetail=InstituteAdminRegistrationPeer.doSelect(crit);
+                        	List instdetail=InstituteIdUtil.getInstList();
                         	context.put("instdetail",instdetail);
 				//--------------------------------//	
                         	if(Mode.equals("All"))
@@ -106,8 +99,10 @@ public class List_Mgmt extends SecureScreen_Admin
         	                        courseList=CourseManagement.getCourseNUserDetails("All");
                 	                context.put("mode","All");
                         	}else{
-                	           	valueString = StringUtil.replaceXmlSpecialCharacters(data.getParameters().getString("valueString"));
-		                       	int inst_id=InstituteIdUtil.getIst_Id(iname);
+					String ciid=data.getParameters().getString("ciname","");
+				//	ErrorDumpUtil.ErrorLog("Institute Name 99====>>>"+ciid);
+
+                	           	valueString = StringUtil.replaceXmlSpecialCharacters(data.getParameters().getString("valueString",""));
 	                        	/**
 	        	                 * Get the search criteria and the search string
         	        	         * from the screen
@@ -120,16 +115,25 @@ public class List_Mgmt extends SecureScreen_Admin
 	                          	* Check for special characters
         	                  	*/
 	                                context.put("query",query);
-        	                        context.put("iname",iname);
                 	                context.put("valueString",valueString);
 					//if value not equals"NULL"then show course wise else show Selected Institute wise,
-					if(!valueString.equals(""))
+					if((org.apache.commons.lang.StringUtils.isBlank(valueString))&&(org.apache.commons.lang.StringUtils.isNotBlank(ciid))){
+        	        		       	courseList=CourseManagement.getInstituteCourseNUserDetails("All",ciid);
+        		                        context.put("cinme",InstituteIdUtil.getIstName(Integer.parseInt(ciid.trim())));
+					}
+					if((org.apache.commons.lang.StringUtils.isNotBlank(valueString))&&(org.apache.commons.lang.StringUtils.isBlank(ciid))){
 	                        	        courseList=ListManagement.getListBySearchString("CourseWise",query,valueString);
-					else
-        	        		       	courseList=CourseManagement.getInstituteCourseNUserDetails("All",Integer.toString(inst_id));
-						//ErrorDumpUtil.ErrorLog("Institute Name 107====>>>"+courseList);
-                        	        	context.put("mode","Search");
+        		                        context.put("cinme"," ");
+					}
+					if((org.apache.commons.lang.StringUtils.isNotBlank(valueString))&&(org.apache.commons.lang.StringUtils.isNotBlank(ciid))){
+						courseList=ListManagement.getInstituteListBySearchString("CourseWise",query,valueString,ciid);
+        		                        context.put("cinme",InstituteIdUtil.getIstName(Integer.parseInt(ciid.trim())));
+					}
+                        	        context.put("mode","Search");
+        		                context.put("ciid",ciid);
 				}
+
+
                         	String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
                         	int AdminConf = Integer.valueOf(AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value"));
 				//int AdminConf = AdminProperties.getValue(path);

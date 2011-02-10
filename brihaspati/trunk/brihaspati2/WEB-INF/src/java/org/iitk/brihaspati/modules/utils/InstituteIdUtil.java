@@ -58,10 +58,30 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
  * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
  * @author <a href="mailto:smita37uiet@gmail.com">Smita Pal</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
- * @modify date:23-12-2010
+ * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
+ * @modify date:23-12-2010,10-02-2011
  */
 public class InstituteIdUtil
 {
+
+	/**
+          * getting all institute list  //sunil
+          * return list
+          */
+        public static List getInstList()
+        {
+		List instdetail=null;
+		Criteria crit=new Criteria();
+		try{
+			crit.addGroupByColumn(InstituteAdminRegistrationPeer.INSTITUTE_ID);
+        	        crit.add(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"1");
+                	crit.or(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"3");
+	                instdetail=InstituteAdminRegistrationPeer.doSelect(crit);
+		}
+		catch(Exception ex){ErrorDumpUtil.ErrorLog("The error in getInstList() - Institute Id Util class !!"+ex);}
+
+		return instdetail;
+	}
         /**
          * getting institute id of instructor and studend user by the help of userid 
          */

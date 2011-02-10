@@ -39,6 +39,7 @@ package org.iitk.brihaspati.modules.screens.call.Root_Admin;
 /**
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
  */
 
 import java.util.Vector;
@@ -57,6 +58,7 @@ import org.iitk.brihaspati.om.InstituteAdminUser;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Admin;
 import org.apache.turbine.services.servlet.TurbineServlet;
 /**
@@ -124,11 +126,7 @@ public class InstituteList extends SecureScreen_Admin
                                 int list_conf=Integer.parseInt(conf);
                                 context.put("userConf",new Integer(list_conf));
                                 context.put("userConf_string",conf);
-				crit=new Criteria();
-                                crit.addGroupByColumn(InstituteAdminRegistrationPeer.INSTITUTE_ID);
-                                crit.add(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"1");
-                                crit.or(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"3");
-                                List instdetail=InstituteAdminRegistrationPeer.doSelect(crit);
+                                List instdetail=InstituteIdUtil.getInstList();
 				Vector vctr=new Vector(instdetail);
                                 Vector vct=CommonUtility.PListing(data,context,vctr,list_conf);
                                 context.put("approved",vct);
