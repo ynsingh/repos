@@ -116,7 +116,7 @@ public class UserAction_Instructor extends SecureAction_Instructor
 			}
 			String fname=pp.getString("FNAME");
 			String lname=pp.getString("LNAME");
-			String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,email,"",gName,"student",serverName,serverPort,LangFile,rollno,program); //modified by Shikha
+			String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,"",email,gName,"student",serverName,serverPort,LangFile,rollno,program); //modified by Shikha
 			data.setMessage(msg);
 
 		}
