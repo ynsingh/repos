@@ -93,7 +93,11 @@ $!data.getMessage()
 	#foreach($details in $idetail)
         #foreach($details1 in $idetail1)
         #if($details.getInstituteId()==$details1.getInstituteId())
-	<tr>
+        #if($velocityCount%2==0)
+        <tr bgcolor="$ui.menuColor">
+        #else
+        <tr bgcolor="$ui.tableColor">
+        #end 
 		<td align="center">
                 	<INPUT TYPE="CHECKBOX" NAME="$details.getInstituteId()" onClick="apprv_rej(this,document.frm);">
           	</td>
@@ -162,8 +166,11 @@ $!data.getMessage()
 		<td align="center" colspan="4">$brih_availableAction</td>
 	</tr>
 	#foreach($applist in $approved)
-
-	<tr>
+	#if($velocityCount%2==0)
+	<tr bgcolor="$ui.menuColor">
+	#else
+	<tr bgcolor="$ui.tableColor">
+	#end 
 	<td>$applist.getInstituteName()</td>
 	<td>$applist.getInstituteId()</td>
 
@@ -186,19 +193,19 @@ $!data.getMessage()
         #elseif($startIndex == $userConf_string)
         <font color="white">$brih_first</font> &nbsp;
         <font color="white">$brih_pre</font> &nbsp;
-        <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode","approved") style=text-decoration:none>$brih_nxt</a> &nbsp;
-     <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode","approved") style=text-decoration:none>$brih_last</a> &nbsp;
+        <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode","approved").addPathInfo("count","2") style=text-decoration:none>$brih_nxt</a> &nbsp;
+     <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode","approved").addPathInfo("count","2") style=text-decoration:none>$brih_last</a> &nbsp;
         #elseif($endIndex == $total_size || $endIndex > $total_size)
-        <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode","approved") style=text-decoration:none>$brih_first</a> &nbsp;
-     <a href=$link.setPage("ViewInstituteList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode","approved") style=text-decoration:none>$brih_pre</a> &nbsp;
+        <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode","approved").addPathInfo("count","2") style=text-decoration:none>$brih_first</a> &nbsp;
+     <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode","approved").addPathInfo("count","2") style=text-decoration:none>$brih_pre</a> &nbsp;
         <u><font color="white">$brih_nxt</font></u> &nbsp;
         <u><font color="white">$brih_last</font></u> &nbsp;
 
         #else
-	<a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode","approved") style=text-decoration:none>$brih_first</a> &nbsp;
-        <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode","approved") style=text-decoration:none>$brih_pre</a> &nbsp;
-        <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex).addPathInfo("mode","approved") style=text-decoration:none>$brih_nxt</a> &nbsp;
-        <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode","approved") style=text-decoration:none>$brih_last</a> &nbsp;
+	<a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode","approved").addPathInfo("count","2") style=text-decoration:none>$brih_first</a> &nbsp;
+        <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode","approved").addPathInfo("count","2") style=text-decoration:none>$brih_pre</a> &nbsp;
+        <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex).addPathInfo("mode","approved").addPathInfo("count","2") style=text-decoration:none>$brih_nxt</a> &nbsp;
+        <a href=$link.setPage("call,Root_Admin,InstituteList.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode","approved").addPathInfo("count","2") style=text-decoration:none>$brih_last</a> &nbsp;
         #end
         </td></tr>
 	#end
@@ -213,7 +220,11 @@ $!data.getMessage()
 	#foreach($rejectlist in $rejectedlist)
 	#foreach($udetail in $userdetail)
         #if($rejectlist.getInstituteId()==$udetail.getInstituteId())
-	<tr>
+        #if($velocityCount%2==0)
+        <tr bgcolor="$ui.menuColor">
+        #else
+        <tr bgcolor="$ui.tableColor">
+        #end 
 	<td>
        	<INPUT TYPE="CHECKBOX" NAME="$rejectlist.getInstituteId()" onClick="apprv_rej(this,document.frm);">
 	<td>$rejectlist.getInstituteName()</td>
