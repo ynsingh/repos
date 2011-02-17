@@ -17,7 +17,7 @@ import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
 
 public class VectorClass {
 
-	private Vector userlistvector=new Vector();
+	private String userlistvector="";
 	
 	private Vector backupTreeVector=new Vector(3);
 	
@@ -25,16 +25,12 @@ public class VectorClass {
 		
         public VectorClass() { }
 	
-	protected void clear(){
-                userlistvector.clear();
-        }
-	
 	protected void addValue(String str){
 		if(!str.equals("noUser"))
-                	userlistvector.add(str);
+                	userlistvector=str;
         }
 	
-	protected Vector getValue(){
+	protected String getValue(){
 		return userlistvector;
         }
 	

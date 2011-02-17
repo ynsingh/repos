@@ -73,15 +73,17 @@ public class StudentAudioReceive implements ReceiveStreamListener, SessionListen
 
 	/** geting the controller of AudioReceive */
 
+	/*
     	public static StudentAudioReceive getAudioReceiveController() {
        		if(av==null)
        			av=new StudentAudioReceive();
        		return av; 
      	}
+	*/
 
     	public StudentAudioReceive() { }
 
-	/**Initialise the RTPSession for the Receving of unicast audio from the same or the remote machine */
+	/**Initialise the RTPSession for the Receving of Handraise audio from student */
     	public boolean initialize() {
     		try {
 
@@ -131,8 +133,8 @@ public class StudentAudioReceive implements ReceiveStreamListener, SessionListen
 	    		close();
 	    		return false;
 		}
-
-        	JOptionPane.showMessageDialog(null,"You get the Handraise unicast Audio");
+		System.out.println("You get handraise Audio from student");
+        	//JOptionPane.showMessageDialog(null,"You get the Handraise Audio");
 		return true;
     	}
 
@@ -145,7 +147,7 @@ public class StudentAudioReceive implements ReceiveStreamListener, SessionListen
     	} 
 
     	public void close() { 
-        	System.out.println("Stopping AudioReceive & close all Session for receive Audio"); 
+        	System.out.println("Stopping Handraise AudioReceive & close all Session for receive Audio"); 
 		value=true;
 
        		/**If session is Initialise then close all of the Session */
@@ -155,6 +157,8 @@ public class StudentAudioReceive implements ReceiveStreamListener, SessionListen
                  			mgrs[i].removeTargets( "Closing session from Audio");
                  			mgrs[i].dispose();
                  			mgrs[i] = null;
+					ds=null;
+					initialize=0;
                			}
            		}
       		}

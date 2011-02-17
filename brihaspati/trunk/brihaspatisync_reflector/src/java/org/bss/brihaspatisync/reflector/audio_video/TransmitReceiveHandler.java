@@ -7,13 +7,17 @@ package org.bss.brihaspatisync.reflector.audio_video;
  * Copyright (c) 2011
  */
 
+import javax.media.protocol.DataSource;
+
 import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
 import org.bss.brihaspatisync.reflector.audio_video.receiver.AudioReceive;
 import org.bss.brihaspatisync.reflector.audio_video.receiver.StudentAudioReceive;
+import org.bss.brihaspatisync.reflector.audio_video.receiver.PresentationAudioReceive;
 import org.bss.brihaspatisync.reflector.audio_video.receiver.VideoReceive;
 import org.bss.brihaspatisync.reflector.audio_video.transmitter.VideoTransmit;
 import org.bss.brihaspatisync.reflector.audio_video.transmitter.AudioTransmit;
 import org.bss.brihaspatisync.reflector.audio_video.transmitter.StudentAudioTransmit;
+import org.bss.brihaspatisync.reflector.audio_video.transmitter.PresentationAudioTransmit;
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
 
 /**
@@ -25,9 +29,14 @@ public class TransmitReceiveHandler {
 
   	private static TransmitReceiveHandler trHandler=null;
 	private Thread stud_audio=null;
+	private Thread pres_audio=null;
 	private MaintainLog log=MaintainLog.getController();
-
-  	/** Controller for this class */
+	private StudentAudioTransmit student_audio_tranmit=null;
+	private PresentationAudioTransmit presentation_audio_tranmit=null;
+	private StudentAudioReceive student_audio_receiver=null;
+	private PresentationAudioReceive presentation_audio_receiver=null;
+  	
+	/** Controller for this class */
 	public static TransmitReceiveHandler getControllerofHandler(){
 		if(trHandler==null)
                		trHandler=new TransmitReceiveHandler();
@@ -65,7 +74,9 @@ public class TransmitReceiveHandler {
  	 */ 
 
 	public void startStudentReceiveAudio(){
-                if (!StudentAudioReceive.getAudioReceiveController().initialize()) {
+		if(student_audio_receiver==null)
+			student_audio_receiver=new StudentAudioReceive();	
+                if (!student_audio_receiver.initialize()) {
                         System.out.println("Failed to initialize the sessions for handraise audio receive.");
                 }
 
@@ -73,7 +84,46 @@ public class TransmitReceiveHandler {
                         public void run(){
 
                 try {
-                        while (!StudentAudioReceive.getAudioReceiveController().isDone()) {
+                        while (!student_audio_receiver.isDone()) {
+                                Thread.sleep(1000);
+                        }
+                } catch (Exception e) { }
+
+
+                        }
+                } ).start();
+		
+        }
+
+	/**
+	 * Close session for the receive audio from student.
+	 */ 	
+	public void stopStudentReceiveAudio(){
+		
+		try {
+			student_audio_receiver.close();
+			stud_audio.interrupt();
+			stud_audio=null;
+			student_audio_receiver=null;
+		} catch(Exception e){ System.out.println("Failed to stopStudentReceiveAudio handraise audio receive ."); }
+		
+	}
+
+	/**
+         * This is separate thread to start receive presentation audio from student. 
+         */
+	public void startPresentationReceiveAudio(){
+                if(presentation_audio_receiver==null)
+                        presentation_audio_receiver=new PresentationAudioReceive();
+                if (!presentation_audio_receiver.initialize()) {
+                        System.out.println("Failed to initialize the sessions for presentation audio receive.");
+                }
+
+                (pres_audio=new Thread(){
+                        public void run(){
+
+                try {
+                        while (!presentation_audio_receiver.isDone()) {
                                 Thread.sleep(1000);
                         }
                 } catch (Exception e) { }
@@ -85,13 +135,18 @@ public class TransmitReceiveHandler {
         }
 
 	/**
-	 * Close session for the receive audio from student.
-	 */ 	
-	public void stopStudentReceiveAudio(){
-		StudentAudioReceive.getAudioReceiveController().close();
-		stud_audio.interrupt();
-		stud_audio=null;
-	}
+         * Close session for the receive audio from student.
+         */	
+	 public void stopPresentationReceiveAudio(){
+
+                try {
+                        presentation_audio_receiver.close();
+                        pres_audio.interrupt();
+                        pres_audio=null;
+                        presentation_audio_receiver=null;
+                } catch(Exception e){ System.out.println("Failed to stopPresentationReceiveAudio handraise audio receive ."); }
+
+        }
 
    
 	/**
@@ -131,6 +186,45 @@ public class TransmitReceiveHandler {
                 VideoTransmit.getVideoTransmitController().stop();
 	}	   		
 	
+	public void startStudentAudioTransmit(){
+		try{
+       	 		if(student_audio_tranmit==null) {
+         			student_audio_tranmit=new StudentAudioTransmit();
+         			student_audio_tranmit.start();
+         		}
+		}catch(Exception e){System.out.println("Error in start Student audio Transmission.");}
+
+	}
+
+	public void stopStudentAudioTransmit(){
+		try {
+			if(student_audio_tranmit != null){
+				student_audio_tranmit.stop();
+                      		student_audio_tranmit=null;
+              		}
+		}catch(Exception e){System.out.println("Error in stop student audio transmission.");}
+
+	}
+
+	public void startPresentationAudioTransmit(){
+                try{
+                        if(presentation_audio_tranmit==null) {
+                                presentation_audio_tranmit=new PresentationAudioTransmit();
+                                presentation_audio_tranmit.start();
+                        }
+                }catch(Exception e){System.out.println("Error in start presentation audio Transmission.");}
+
+        }
+
+        public void stopPresentationAudioTransmit(){
+                try {
+                        if(presentation_audio_tranmit != null){
+                                presentation_audio_tranmit.stop();
+                                presentation_audio_tranmit=null;
+                        }
+                }catch(Exception e){System.out.println("Error in stop presentation audio transmission.");}
+        }
+
 	/**
  	 * When new client arrive it will added to transmitter target
 	 */
@@ -163,7 +257,7 @@ public class TransmitReceiveHandler {
          */
 
 	public void addTargetToHRTransmitter(String ip){
-                StudentAudioTransmit.getAudioTransmitController().createTransmitter(ip.trim());
+		student_audio_tranmit.createTransmitter(ip.trim());
                 System.out.println(ip+" : is added to transmit audio video");
         }
 
@@ -171,7 +265,7 @@ public class TransmitReceiveHandler {
          * Start predefine sendStream thread to start transmit handraise audio.
          */
 	public void startHRSendStream(){
-                        StudentAudioTransmit.getAudioTransmitController().streamTransmitterStart();
+                        student_audio_tranmit.streamTransmitterStart();
                         System.out.println("handraise audio send stream start");
         }
 	
@@ -179,7 +273,39 @@ public class TransmitReceiveHandler {
          * Stop predefine sendStream thread to stop transmit handraise audio.
          */
 	public void stopHRSendStream(){
-                        StudentAudioTransmit.getAudioTransmitController().streamTransmitterStop();
-                        System.out.println("handraise audio stream transmitter stop");
+		student_audio_tranmit.streamTransmitterStop();
+              	System.out.println("handraise audio stream transmitter stop");
+        }
+
+	 /**
+          * When new client arrive it will added to presentation audio transmitter target
+          */
+	public void addTargetToPresentationTransmitter(String ip){
+                presentation_audio_tranmit.createTransmitter(ip.trim());
+                System.out.println(ip+" : is added to transmit presentation audio video");
+        }
+
+	 /**
+          * Start predefine sendStream thread to start transmit presentation audio.
+          */
+	public void startPresentationSendStream(){
+             	presentation_audio_tranmit.streamTransmitterStart();
+             	System.out.println("presentation audio send stream start");
+        }
+
+	/**
+         * Stop predefine sendStream thread to stop transmit presentation audio.
+         */
+	public void stopPresentationSendStream(){
+             	presentation_audio_tranmit.streamTransmitterStop();
+             	System.out.println("presentation audio stream transmitter stop");
+        }
+
+
+	public DataSource getHRDataSource(){
+		return student_audio_receiver.getDataSource();
+	}
+	public DataSource getPresentationDataSource(){
+                return presentation_audio_receiver.getDataSource();
         }
 }	   		

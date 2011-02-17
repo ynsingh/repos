@@ -1,7 +1,7 @@
 package org.bss.brihaspatisync.reflector.audio_video.receiver;
 
 /**
- * AudioReceive.java
+ * PresentationAudioReceive.java
  *
  * See LICENCE file for usage and redistribution terms
  * Copyright (c) 2010-2011
@@ -34,13 +34,13 @@ import javax.media.rtp.event.RemotePayloadChangeEvent;
 import org.bss.brihaspatisync.reflector.Reflector;
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
 import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
+//import org.bss.brihaspatisync.reflector.audio_video.transmitter.AudioTransmit;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
- * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>
  */
 
-public class AudioReceive implements ReceiveStreamListener, SessionListener {
+public class PresentationAudioReceive implements ReceiveStreamListener, SessionListener {
 	
     	private static boolean value;
     	
@@ -52,15 +52,15 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
     	
 	private static RTPControl rtpc=null;
     	
-	private static AudioReceive av=null;
+	private static StudentAudioReceive av=null;
     	
 	private boolean dataReceived = false;
     	
 	private Object dataSync = new Object();
 
-	private MaintainLog log=MaintainLog.getController();
+	private int port=RuntimeDataObject.getController().getAudioPresentationPort();  //2006                                            
 	
-	private int port=RuntimeDataObject.getController().getAudioPort();                                              
+	private MaintainLog log=MaintainLog.getController();
 
 
 	/** getting the clone datasource for the Audio */  
@@ -71,21 +71,23 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
               	return ds;
     	}
 
-	/** geting the controller of AudioReceive */
-    	public static AudioReceive getAudioReceiveController() {
+	/** geting the controller of PresentationAudioReceive */
+
+	/*
+    	public static StudentAudioReceive getAudioReceiveController() {
        		if(av==null)
-       			av=new AudioReceive();
+       			av=new StudentAudioReceive();
        		return av; 
      	}
+	*/
 
-    	public AudioReceive() { }
+    	public PresentationAudioReceive() { }
 
-
-	/**Initialise the RTPSession for the Receving of unicast audio from the same or the remote machine */
+	/**Initialise the RTPSession for the Receving of presentation audio from the student */
     	public boolean initialize() {
     		try {
 
-			log.setString("audio Receive initialize");
+			log.setString("Presentation audio Receive initialize");
 	    		InetAddress ipAddr;
             		initialize=1;                                          
 	    		SessionAddress localAddr = new SessionAddress();
@@ -97,7 +99,7 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
 				mgrs[i].addSessionListener(this);
 				mgrs[i].addReceiveStreamListener(this);
                 		localAddr= new SessionAddress(InetAddress.getLocalHost(),port);
-                		destAddr = new SessionAddress(InetAddress.getLocalHost(),port);//ipAddr,port);
+                		destAddr = new SessionAddress(InetAddress.getLocalHost(),port);
 				mgrs[i].initialize(localAddr);
                 		BufferControl bc = (BufferControl)mgrs[i].getControl("javax.media.control.BufferControl");
 				if (bc != null)
@@ -124,16 +126,16 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
 
 		if (!dataReceived) {
 	    		log.setString("No RTP data was received.");
-            		JOptionPane.showMessageDialog(null,"Sorry You do not get the unicast Audio");
+            		JOptionPane.showMessageDialog(null,"Sorry You do not get the presentation unicast Audio");
             
            		/**If data does not receive then transmitAudio button become disabled */
          
 	    		close();
 	    		return false;
 		}
-
-        	System.out.println("You get Audio from instructor");//JOptionPane.showMessageDialog(null,"You get the unicast Audio");
-        	return true;
+		System.out.println("You get presentation Audio from student");
+        	//JOptionPane.showMessageDialog(null,"You get the presentation Audio");
+		return true;
     	}
 
     	public boolean isDone() {
@@ -145,7 +147,7 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
     	} 
 
     	public void close() { 
-        	log.setString("Stopping AudioReceive & close all Session for receive Audio"); 
+        	System.out.println("Stopping PresentationAudioReceive & close all Session for receive Audio"); 
 		value=true;
 
        		/**If session is Initialise then close all of the Session */
@@ -155,6 +157,8 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
                  			mgrs[i].removeTargets( "Closing session from Audio");
                  			mgrs[i].dispose();
                  			mgrs[i] = null;
+					ds=null;
+					initialize=0;
                			}
            		}
       		}
@@ -166,7 +170,7 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
     	public synchronized void update(SessionEvent evt) {
 		if (evt instanceof NewParticipantEvent) {
 	    		Participant p = ((NewParticipantEvent)evt).getParticipant();
-	    		log.setString("  - A new participant had just joined: " + p.getCNAME());
+	    		System.out.println("  - A new participant had just joined: " + p.getCNAME());
 		}
     	}
 
@@ -180,8 +184,8 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
 
 		if (evt instanceof RemotePayloadChangeEvent) {
      
-	    		log.setString("  - Received an RTP PayloadChangeEvent.");
-	    		log.setString("Sorry, cannot handle payload change.");
+	    		System.out.println("  - Received an RTP PayloadChangeEvent.");
+	    		System.out.println("Sorry, cannot handle payload change.");
 		}
     
 		else if (evt instanceof NewReceiveStreamEvent) {
@@ -189,20 +193,22 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
 				stream = ((NewReceiveStreamEvent)evt).getReceiveStream();
 		 		ds = stream.getDataSource();
 
+				System.out.println("Received Stduent Datasource ==> "+ds);
+
 	     			/** Find out the formats of the Audio */
  
 				RTPControl ctl = (RTPControl)ds.getControl("javax.media.rtp.RTPControl");
 				if (ctl != null){
-		    			log.setString("  - Recevied format of the new RTP stream if first: " + ctl.getFormat());
+		    			System.out.println("  - Recevied format of the new RTP stream if first: " + ctl.getFormat());
 				} else
-		    			log.setString("  - here we do not get a format of stream  and Recevied new RTP stream");
+		    			System.out.println("  - here we do not get a format of stream  and Recevied new RTP stream");
 
              			/**Find out is there any new user in this session */
 
 				if (participant == null)
-		    			log.setString("      The sender of this stream had yet to be identified.");
+		    			System.out.println("      The sender of this stream had yet to be identified.");
 				else {
-		    			log.setString("      The stream comes from: " + participant.getCNAME()); 
+		    			System.out.println("      The stream comes from: " + participant.getCNAME()); 
 				}
 
 				synchronized (dataSync) {
@@ -211,7 +217,7 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
 				}
 
 	    		} catch (Exception e) {
-				log.setString("NewReceiveStreamEvent exception " + e.getMessage());
+				System.out.println("NewReceiveStreamEvent exception " + e.getMessage());
 				return;
 	    		}
         
@@ -222,15 +228,15 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
  				/** Find out the formats. */
 
 				RTPControl ctl = (RTPControl)ds.getControl("javax.media.rtp.RTPControl");
-				log.setString("  - The previously unidentified stream ");
+				System.out.println("  - The previously unidentified stream ");
 				if (ctl != null)
-		    			log.setString("Received the format of the stream if 2nd==>" + ctl.getFormat());
-				log.setString("      had now been identified as sent by: " + participant.getCNAME());
+		    			System.out.println("Received the format of the stream if 2nd==>" + ctl.getFormat());
+				System.out.println("      had now been identified as sent by: " + participant.getCNAME());
 	     		}
 		}
 
 		else if (evt instanceof ByeEvent) {
-	     		log.setString("  - Got \"bye\" from: " + participant.getCNAME());
+	     		System.out.println("  - Got \"bye\" from: " + participant.getCNAME());
 		}
     	}
 }

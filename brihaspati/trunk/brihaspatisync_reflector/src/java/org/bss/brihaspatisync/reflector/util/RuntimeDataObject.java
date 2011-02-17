@@ -11,7 +11,6 @@ import java.util.Properties;
 import java.util.Vector;
 import java.io.InputStream;
 import org.bss.brihaspatisync.reflector.buffer_mgt.MyHashTable;
-import org.bss.brihaspatisync.reflector.network.desktop_sharing.HTTPDesktopSharing;
 
 /**
  * @author <a href="mailto:arvindjss17@gmail.com"> Arvind Pal  </a>
@@ -26,7 +25,8 @@ public class RuntimeDataObject {
 
         private String indexServerAddr="";
 
-        private boolean Handraiseflag=false;
+        private boolean handraiseflag=false;
+        private boolean presentationflag=false;
 
         private Vector vector= new  Vector();
 
@@ -118,6 +118,34 @@ public class RuntimeDataObject {
         }
 
 	/**
+         * Load Handraised audio port
+         */
+	public int getAudioPresentationPort(){
+                return Integer.parseInt(prop.getProperty("audio_presentation_port"));
+        }
+
+	/**
+         * Load Desktop Post port
+         */
+	public int getDesktopPostPort(){
+                return Integer.parseInt(prop.getProperty("desktop_post_port"));
+        }
+
+	/**
+         * Load Desktop Post port
+         */
+	public int getDesktopGetPort(){
+                return Integer.parseInt(prop.getProperty("desktop_get_port"));
+        }
+
+	/**
+         * Load ppt server port
+         */
+	public int getPPtServerPort(){
+                return Integer.parseInt(prop.getProperty("ppt_server_port"));
+        }
+
+	/**
  	 * Load video port
  	 */  
         public int getVedioPort(){
@@ -144,12 +172,9 @@ public class RuntimeDataObject {
                 return (vector.contains(courseid_IP)) ? false : true ;
         }
 
-        public void setMastrerReflecterCourseid(String course_id,String client_ip){
+        public void setMastrerReflecterCourseid(String course_id){
                 if(!master_ref.contains(course_id)) {
                         master_ref.add(course_id);
-                        try {
-                                HTTPDesktopSharing.getController().setHTTPDesktopSharingIP(client_ip);
-                        }catch(Exception e){}
                 }
         }
         public Vector getMastrerReflecterCourseid(){
@@ -202,14 +227,29 @@ public class RuntimeDataObject {
  	 * Set handraise flag to start or stop thread
  	 */  
         public void setHandraiseFlag(boolean value){
-                Handraiseflag=value;
+                handraiseflag=value;
         }
 
 	/**
  	 * get handraise flag
  	 */  	
         public boolean getHandraiseFlag(){
-                return Handraiseflag;
+                return handraiseflag;
         }
+
+	/**
+         * Set presentation flag to start or stop thread
+         */
+	public void setPresentationFlag(boolean value){
+                presentationflag=value;
+        }
+
+	/**
+         * get presentation flag
+         */
+	public boolean getPresentationFlag(){
+                return presentationflag;
+        }
+
 }
 

@@ -130,7 +130,8 @@ public class VideoReceive implements ReceiveStreamListener, SessionListener {
 	     		close();
 	    		return false;
 		}
-       		JOptionPane.showMessageDialog(null,"You get the unicast Video");
+		System.out.println("You get Video from instructor");
+       		//JOptionPane.showMessageDialog(null,"You get the unicast Video");
         	return true;
     	}
 

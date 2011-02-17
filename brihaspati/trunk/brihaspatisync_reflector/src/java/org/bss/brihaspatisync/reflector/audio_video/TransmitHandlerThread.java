@@ -11,8 +11,8 @@ import java.util.Vector;
 
 import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
-import org.bss.brihaspatisync.reflector.audio_video.receiver.StudentAudioReceive;	
 import org.bss.brihaspatisync.reflector.audio_video.transmitter.StudentAudioTransmit;	
+import org.bss.brihaspatisync.reflector.audio_video.transmitter.PresentationAudioTransmit;	
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
@@ -24,12 +24,16 @@ public class TransmitHandlerThread implements Runnable {
 	private Thread audio_video=null;
 	private Vector ipVectorforClient =new Vector(); //for instructor audio/video
 	private Vector ipVectorforHR =new Vector();     //for handraise audio
+	private Vector ipVectorforPres =new Vector();     //for presentation audio
+	private boolean hr_flag=false;
+	private boolean pres_flag=false;
 	
   	private static TransmitHandlerThread trHandler=null;
 	
 	private MaintainLog log=MaintainLog.getController();
 
 	private int j=0; 
+	private int m=0; 
 	private int k=1; 
 
 
@@ -102,24 +106,70 @@ public class TransmitHandlerThread implements Runnable {
 								if(l==0){
                                                         		try {
                                                                 		TransmitReceiveHandler.getControllerofHandler().startStudentReceiveAudio();
+                                                                		Thread.sleep(500);
                                                         		}catch(Exception e){System.out.println("Error on start Handraise receive audio "+e.getMessage());}
                                                         		try{
-                                                                		Thread.sleep(500);
+										TransmitReceiveHandler.getControllerofHandler().startStudentAudioTransmit();
+                                                        			l++;
                                                         		}catch(Exception ex){System.out.println("Error in wait to start handraise audio");}
-                                                        		StudentAudioTransmit.getAudioTransmitController().start();
-                                                        		l++;
 								}
 								if(l>0){
-									TransmitReceiveHandler.getControllerofHandler().stopHRSendStream();
                                                                 	try {
+										TransmitReceiveHandler.getControllerofHandler().stopHRSendStream();
                                                                         	Thread.sleep(500);
                                                         		}catch(Exception e){System.out.println("Error on stop Handraise send stream "+e.getMessage());}
 								}
 								TransmitReceiveHandler.getControllerofHandler().addTargetToHRTransmitter(ip);
         	                                                TransmitReceiveHandler.getControllerofHandler().startHRSendStream();
+								hr_flag=true;
 							}
-						}
-						// End of Handraise Audio
+						}else {
+							if(hr_flag){
+								try {
+									TransmitReceiveHandler.getControllerofHandler().stopStudentAudioTransmit();
+									TransmitReceiveHandler.getControllerofHandler().stopStudentReceiveAudio();
+									ipVectorforHR.clear();
+									l=0;
+									hr_flag=false;
+								} catch(Exception e){ System.out.println("Error on stop Handraise receiver and transmit thread "+e.getMessage());  }
+							}
+						}// End of Handraise Audio
+
+						if(RuntimeDataObject.getController().getPresentationFlag()){
+                                                        if(!ipVectorforPres.contains(ip)){
+                                                                ipVectorforPres.add(ip);
+                                                                if(m==0){
+                                                                        try {
+                                                                                TransmitReceiveHandler.getControllerofHandler().startPresentationReceiveAudio();
+                                                                                Thread.sleep(500);
+                                                                        }catch(Exception e){System.out.println("Error on start presentation receive audio "+e.getMessage());}
+                                                                        try{
+                                                                                TransmitReceiveHandler.getControllerofHandler().startPresentationAudioTransmit();
+                                                                                m++;
+                                                                        }catch(Exception ex){System.out.println("Error in wait to start presentation audio");}
+                                                                }
+                                                                if(m>0){
+                                                                        try {
+                                                                                TransmitReceiveHandler.getControllerofHandler().stopPresentationSendStream();
+                                                                                Thread.sleep(500);
+                                                                        }catch(Exception e){System.out.println("Error on stop Handraise send stream "+e.getMessage());}
+                                                                }
+                                                                TransmitReceiveHandler.getControllerofHandler().addTargetToPresentationTransmitter(ip);
+                                                                TransmitReceiveHandler.getControllerofHandler().startPresentationSendStream();
+                                                                pres_flag=true;
+                                                        }
+						}else {
+                                                        if(pres_flag){
+                                                                try {
+                                                                        TransmitReceiveHandler.getControllerofHandler().stopPresentationAudioTransmit();
+                                                                        TransmitReceiveHandler.getControllerofHandler().stopPresentationReceiveAudio();
+                                                                        ipVectorforPres.clear();
+                                                                        m=0;
+                                                                        pres_flag=false;
+                                                                } catch(Exception e){ System.out.println("Error on stop presentation receiver and transmit thread "+e.getMessage());  }
+                                                        }
+                                                }//end of presentation audio
+
 					}
 				}
 				audio_video.yield();

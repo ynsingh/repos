@@ -25,17 +25,18 @@ import javax.net.ssl.HttpsURLConnection;
 import org.bss.brihaspatisync.reflector.util.HttpsUtil;
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
 
-import org.bss.brihaspatisync.reflector.network.ftp.FTPServer;
+import org.bss.brihaspatisync.reflector.network.ppt.PPTGetAndPostServer;
 import org.bss.brihaspatisync.reflector.network.tcp.TCPServer;
 
 import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
-import org.bss.brihaspatisync.reflector.network.http.HttpServer;
+import org.bss.brihaspatisync.reflector.network.http.HttpGetPost;
 
 import org.bss.brihaspatisync.reflector.audio_video.TransmitHandlerThread;
 
 import org.bss.brihaspatisync.reflector.util.RuntimeDataObject;
 import org.bss.brihaspatisync.reflector.network.serverdata.UserListUtil;
-import org.bss.brihaspatisync.reflector.network.desktop_sharing.DesktopSharing;
+import org.bss.brihaspatisync.reflector.network.desktop_sharing.DesktopPostServer;
+import org.bss.brihaspatisync.reflector.network.desktop_sharing.DesktopGetServer;
 import org.bss.brihaspatisync.reflector.network.serverdata.UserListTimer;
 import java.util.Timer;
 
@@ -80,13 +81,14 @@ public class RegisterToIndexServer {
                         	JOptionPane.showMessageDialog(null,"Check your Network Connection or try again");
 			}else{
 				BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+				String temp="";
                                 String str="";
 				UserListUtil.getContriller().clearDataForVector(course_id);	
 				try {
 					while((str=in.readLine())!=null){
-						UserListUtil.getContriller().addDataForVector(course_id,str);	
+						temp=temp+","+str;	
 					}
-					
+					UserListUtil.getContriller().addDataForVector(course_id,temp);	
 				}finally {
 					if(in != null) {
                                         	in.close();
@@ -248,12 +250,13 @@ public class RegisterToIndexServer {
 
 	protected String startThreads(){
 		try {
-			HttpServer.getController().start(); 	/** port 9999  */
-			DesktopSharing.getController().start();
+			HttpGetPost.getController().start(); 	/** port 9999  */
+			DesktopGetServer.getController().start();//DesktopSharing.getController().start();
+			DesktopPostServer.getController().start();
 			TCPServer.getController().start(); 	/** port 8888  */
 			//log.start();
 			TransmitHandlerThread.getControllerofHandler().start();
-			FTPServer.getController().startThread();
+			PPTGetAndPostServer.getController().startThread();
 			try{
 				
         	                UL_Timer=new Timer(true);

@@ -1,7 +1,7 @@
 package org.bss.brihaspatisync.reflector.audio_video.transmitter;
 
 /**
- * StudentAudioTransmit.java
+ * PresentationAudioTransmit.java
  *
  * See LICENCE file for usage and redistribution terms
  * Copyright (c) 2010-2011
@@ -37,15 +37,15 @@ import org.bss.brihaspatisync.reflector.audio_video.receiver.StudentAudioReceive
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>
  */
 
-public class StudentAudioTransmit {
+public class PresentationAudioTransmit {
 
-	private	int port=RuntimeDataObject.getController().getAudioHandraisePort();
+	private	int port=RuntimeDataObject.getController().getAudioPresentationPort();
 	private RTPManager rtpaudio;
 	private SendStream stream=null;
 	private InetAddress ipAddr=null;
 	private Processor processor = null;
 	private DataSource dataOutput = null;
-    	private static StudentAudioTransmit av=null;    
+    	private static PresentationAudioTransmit av=null;    
 	private MaintainLog log=MaintainLog.getController();
 
 	/*	    	
@@ -56,12 +56,12 @@ public class StudentAudioTransmit {
     	}
 	*/
 	
-    	public StudentAudioTransmit() { 
+    	public PresentationAudioTransmit() { 
 		try {
 			rtpaudio=RTPManager.newInstance();
 			SessionAddress localAddr=new SessionAddress();
                 	rtpaudio.initialize(localAddr);
-		}catch(Exception e){System.out.println("Error in dispose of in Audeo ==> "+e);}	
+		}catch(Exception e){System.out.println("Error in dispose of in Audio ==> "+e);}	
 	}	    	
         
 
@@ -93,7 +93,7 @@ public class StudentAudioTransmit {
 	                        processor = null;
 			}else 
 				System.out.println("processor is already start ");
-		}catch(Exception e){System.out.println("Error in dispose in transmission of Audio===>"+e);}
+		}catch(Exception e){System.out.println("Error in dispose in transmission of presentation Audio===>"+e);}
 	} 
 		
 	
@@ -103,7 +103,7 @@ public class StudentAudioTransmit {
 		DataSource clone;
         	/**get the clone of the datasource of the audio for the transmission of Audio from the Capture Device*/
 	    	try {
-	        	ds=org.bss.brihaspatisync.reflector.audio_video.TransmitReceiveHandler.getControllerofHandler().getHRDataSource();//StudentAudioReceive.getAudioReceiveController().getDataSource();
+	        	ds=org.bss.brihaspatisync.reflector.audio_video.TransmitReceiveHandler.getControllerofHandler().getPresentationDataSource();//StudentAudioReceive.getAudioReceiveController().getDataSource();
 			System.out.println("Datasource for handraise audio transmission : "+ds);	          
 		} catch (Exception e) {   return "Couldn't create DataSource";  }
 

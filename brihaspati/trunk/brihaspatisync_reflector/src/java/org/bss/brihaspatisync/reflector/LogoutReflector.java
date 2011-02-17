@@ -21,11 +21,11 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 import org.bss.brihaspatisync.reflector.util.HttpsUtil;
-import org.bss.brihaspatisync.reflector.network.ftp.FTPServer;
+import org.bss.brihaspatisync.reflector.network.ppt.PPTGetAndPostServer;
 
 import org.bss.brihaspatisync.reflector.network.tcp.TCPServer;
 import org.bss.brihaspatisync.reflector.network.tcp.MaintainLog;
-import org.bss.brihaspatisync.reflector.network.http.HttpServer;
+import org.bss.brihaspatisync.reflector.network.http.HttpGetPost;
 import org.bss.brihaspatisync.reflector.audio_video.TransmitHandlerThread;
 
 
@@ -75,9 +75,9 @@ public class LogoutReflector {
                                			}
 					}
                        		}
-                		HttpServer.getController().stop();     /** port 9999  */
+                		HttpGetPost.getController().stop();     /** port 9999  */
        	        		TCPServer.getController().stop();      /** port 8888  */
-				FTPServer.getController().stopThread();
+				PPTGetAndPostServer.getController().stopThread();
               			log.stop();
               			TransmitHandlerThread.getControllerofHandler().stop();
 				Timer UL_Timer =riserver.getTimer();
@@ -97,9 +97,9 @@ public class LogoutReflector {
 	
 	protected void restartReflector(){
 		try {
-			HttpServer.getController().stop();     /** port 9999  */
+			HttpGetPost.getController().stop();     /** port 9999  */
                       	TCPServer.getController().stop();      /** port 8888  */
-                        FTPServer.getController().stopThread();
+                        PPTGetAndPostServer.getController().stopThread();
                         //log.stop();
                         TransmitHandlerThread.getControllerofHandler().stop();
                         Timer UL_Timer =riserver.getTimer();
