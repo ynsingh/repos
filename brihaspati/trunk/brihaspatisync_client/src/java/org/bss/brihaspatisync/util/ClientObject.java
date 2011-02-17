@@ -4,11 +4,12 @@ package org.bss.brihaspatisync.util;
  * ClientObject.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2007-2008
+ * Copyright (c) 2010-2011, ETRG, IIT Kanpur.
  */
 
 import java.util.Vector;
 import org.bss.brihaspatisync.http.HttpCommManager;
+
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
  * This class is used to store objects which are needed in runtime by this client.
@@ -30,14 +31,8 @@ public class ClientObject {
 	private Vector usrStatusVector=null;
 	private Vector usrNameVector=null;
 	private int av_port=2000;
-	private String AWBorHRbut=null;
-        private String tooltipRWB=null;
-        private String tooltipDWB=null;
-        private boolean flag=false;
-
-        private String denieWB=null;
-
 	private HttpCommManager commMgr = HttpCommManager.getController();
+
 	public static ClientObject getController(){
 		if(cb==null)
 			cb=new ClientObject();
@@ -93,9 +88,6 @@ public class ClientObject {
          * as well as instructor from HttpCommManager.
          */
 	public Vector getSessionList(Vector course, String indexServer){
-		//if(sessionList == null)
-		//	sessionList=HttpsUtil.getController().getSessionForCourse(course, indexServer);
-		//return sessionList;
 		return HttpsUtil.getController().getSessionForCourse(course, indexServer);
 	}
 
@@ -114,7 +106,6 @@ public class ClientObject {
         public Vector getInstCourseList(){
 		return commMgr.getInstCourseList();	
         }
-
 
 	/**
        	 * This method is used to retrive the list of sessions for course in which this client is treated as a student,
@@ -166,9 +157,6 @@ public class ClientObject {
 	/**
          * This method is used to get Parent peer ip address to start router entry, from JoinSession class.
          */
-//	public String getParentIP(){
-//		return parent_ip;
-//	}
 
 	/**
          * This method is used to get course name from InstructorCSPanel which is used to announce new session in this course.
@@ -198,39 +186,6 @@ public class ClientObject {
 		return usrNameVector;
 	}
 
-	public String getAWBorHRbut(){
-		if(usr_role.equals("instructor")){
-                        AWBorHRbut="Allow-WB";
-                        tooltipRWB="Allow student to Draw on Whiteboard";
-                        flag=false;
-                }else{
-                        AWBorHRbut="Hand-Raise";
-                        tooltipRWB="Request to draw on Whiteboard";
-                        flag=true;
-                }
-                denieWB="Denie-WB";
-                tooltipDWB="Denie student to Draw on Whiteboard ";
-                return this.AWBorHRbut;
-        }
-
-        public String gettooltipRWB(){
-                return this.tooltipRWB;
-        }
-
-        public String getdenieWB(){
-                return this.denieWB;
-        }
-
-        public String gettooltipDWB(){
-                return this.tooltipDWB;
-        }
-
-
-        public boolean getflag(){
-                return this.flag;
-        }
-
-
 	public void setIndexServerName(String value){
 		this.indexServerName=value;
         }
@@ -247,9 +202,6 @@ public class ClientObject {
 		this.lect_id=value;
         }
 
-  //      public void setParentIP(String value){
-//		this.parent_ip=value;
-  //      }
 
 	public void setCourseForAnnounce(String value){
                 this.courseForAnnounce=value;

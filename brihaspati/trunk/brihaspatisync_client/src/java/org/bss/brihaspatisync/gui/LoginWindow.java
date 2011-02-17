@@ -87,7 +87,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 	private Cursor defaultCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 
 
-	private Log log=Log.getController();
+	//private Log log=Log.getController();
 
 	
 	private static LoginWindow loginWindow=null;
@@ -214,7 +214,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                                 	passwordField.setText("");
 			JOptionPane.showMessageDialog(null,"Incorrect Entry.", "Message", JOptionPane.ERROR_MESSAGE);
 					}else {
-                                	log.setLog("Login Successfull");
+                                	System.out.println("Login Successfull");
 					JOptionPane.showMessageDialog(null,"Login Successfull");
 
 					client_obj.setUserName(usernameText.getText());
@@ -326,7 +326,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                         	passwordField.setText("");
 				JOptionPane.showMessageDialog(null,"Incorrect Entry.", "Message", JOptionPane.ERROR_MESSAGE);
 			}else {
-				log.setLog("Login Successfull");
+				System.out.println("Login Successfull");
 				JOptionPane.showMessageDialog(null,"Login Successfull");
 				client_obj.setUserName(usernameText.getText());
 				if(((client_obj.getStudSessionList())!=null)||((client_obj.getInstSessionList())!=null)){
@@ -349,7 +349,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 			Logout.getController().sendLogoutRequest();
 			
                  }else 
-			log.setLog("oop!! Incorrect Action in LoginWindow");
+			System.out.println("oop!! Incorrect Action in LoginWindow");
         }
 
         public void mousePressed(MouseEvent e) {}

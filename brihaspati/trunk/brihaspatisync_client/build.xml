@@ -91,7 +91,7 @@
 	<target name="clean" description="clean up">
                 <delete dir="${temp.dir}"/>
 		<delete dir="${build.dir}"/>
-                <delete dir="${bin.dir}/org"/>
+                <delete dir="${bin.dir}/org/bss"/>
 		<delete dir="${logs.dir}"/>
                 <delete dir="${doc.dir}"/>
         </target>

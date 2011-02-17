@@ -6,10 +6,12 @@ package org.bss.brihaspatisync.tools.audio_video;
  * Copyright (c) 2010 ETRG, IIT Kanpur.
  */
 
+import javax.media.protocol.DataSource;
 
 import org.bss.brihaspatisync.network.Log;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.tools.audio_video.receiver.AudioReceive;
+//import org.bss.brihaspatisync.tools.audio_video.receiver.HandraiseAudioReceive;
 import org.bss.brihaspatisync.tools.audio_video.receiver.VideoReceive;
 import org.bss.brihaspatisync.tools.audio_video.transmitter.AVTransmit3;
 	
@@ -19,10 +21,12 @@ import org.bss.brihaspatisync.tools.audio_video.transmitter.AVTransmit3;
  */
 
 
-public class AVTransmitReceiveHandler extends Thread {
+public class AVTransmitReceiveHandler {
 
-	private Log log=Log.getController();
+	private Thread hr_thread=null;
 	
+//	private HandraiseAudioReceive h_a_r=null;
+		
   	private static AVTransmitReceiveHandler trHandler=null;
 
   	/** Getting the handler of the main controller class */
@@ -36,25 +40,22 @@ public class AVTransmitReceiveHandler extends Thread {
    	public AVTransmitReceiveHandler() {
    		 String role=ClientObject.getController().getUserRole();
    		 if(role.equals("student")){
-   		 	log.setLog("start audio/vedio receive");
+   		 	System.out.println("start audio/vedio receive");
    		 	startReceiveAudio();
    		 	startReceiveVideo();
-   		 	//AVFrame.getController();
    		 }else{
-   		  	log.setLog("start audio/video transmit");
+   		  	System.out.println("start audio/video transmit");
    		  	String result = AVTransmit3.getController().start();
        	    		if (result != null) {
-        	   		log.setLog("Error : " + result);
+        	   		System.out.println("Error : " + result);
        			}
-   		 	//new AudioVideoPlayer();
    		 }
-   		 AudioVideoPanel.getController();
-   		
+   		 AudioVideoPanel.getController().startPlayer();
 	}
    
    	public void startReceiveAudio(){
      		if (!AudioReceive.getAudioReceiveController().initialize()) {
-        		log.setLog("Failed to initialize the sessions.");
+        		System.out.println("Failed to initialize the sessions.");
        		}
 		(new Thread(){
 			public void run(){
@@ -66,10 +67,27 @@ public class AVTransmitReceiveHandler extends Thread {
 		  	}
 	   	} ).start();
    	}
-   
-   	public void startReceiveVideo(){
+	
+	public void startReceiveHandraiseAudio(){
+		AudioVideoPanel.getController().startReceiveHandraiseAudio();	
+	}
+	
+	public void stopReceiveHandraiseAudio(){
+		AudioVideoPanel.getController().stopReceiveHandraiseAudio();
+	}
+
+	public void startReceivePresentationAudio(){
+                AudioVideoPanel.getController().startReceivePresentationAudio();
+        }
+
+        public void stopReceivePresentationAudio(){
+                AudioVideoPanel.getController().stopReceivePresentationAudio();
+        }
+
+   	
+	public void startReceiveVideo(){
      		if (!VideoReceive.getVideoReceiveController().initialize()) {
-               		log.setLog("Failed to initialize the sessions.");
+               		System.out.println("Failed to initialize the sessions.");
       		}
                 (new Thread(){
     			public void run(){

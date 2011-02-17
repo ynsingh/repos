@@ -4,7 +4,7 @@ package org.bss.brihaspatisync;
  * Client.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2007-2008 ETRG,IIT Kanpur.
+ * Copyright (c) 20011 ETRG,IIT Kanpur.
  */
 
 import javax.swing.UIManager;
@@ -27,8 +27,6 @@ public class Client {
 	
 	private static Client client=null;
 	
-	private Log log=Log.getController();
-	
 	public static Client getController(){
 		if(client==null)
 			client=new Client();
@@ -45,7 +43,6 @@ public class Client {
 
                 if(((ClientObject.getController().getIndexServerList()).size()) > 1){
                 	MainWindow.getController().getDesktop().add(LoginWindow.getController());
-			//log.start();
 		}else{
                 	JOptionPane.showMessageDialog(null,"Index server list not found. Please try again !!");
               	}

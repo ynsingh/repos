@@ -4,8 +4,9 @@ package org.bss.brihaspatisync.tools.chat;
  * ChatPanel.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2009-2010 ETRG,IIT Kanpur
+ * Copyright (c) 20011 ETRG,IIT Kanpur
  */
+
 import java.awt.*;
 import java.awt.Color;
 import java.awt.Font;
@@ -61,7 +62,7 @@ public class ChatPanel extends JPanel implements ActionListener,KeyListener,Mous
 	private JToolBar toolbar;
 	private UtilObject utilObject=UtilObject.getController();
 	private static ChatPanel chatPanel=null;
-	private Log log=Log.getController();
+//	private Log log=Log.getController();
 	private JScrollPane scrollpane=null;
 	int i=0;
 	Thread runner=null;
@@ -129,7 +130,7 @@ public class ChatPanel extends JPanel implements ActionListener,KeyListener,Mous
                                 	fileStream = new FileOutputStream(file);
                                 	byte[] bytes = textArea.getText().getBytes();
                                 	fileStream.write(bytes);
-                        	} catch (IOException F) {log.setLog("Error on svae chat==>"+F.getMessage());}
+                        	} catch (IOException F) {System.out.println("Error on svae chat==>"+F.getMessage());}
 				return;
       			}
       			if (rVal == JFileChooser.CANCEL_OPTION) {

@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.gui;
  * HandRaiseAction.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2007-2008 ETRG,Kanpur.
+ * Copyright (c) 2010-2011 ETRG,Kanpur.
  */
 
 import java.net.URLEncoder;
@@ -16,7 +16,8 @@ import java.awt.event.ActionListener;
 import org.bss.brihaspatisync.util.HttpsUtil;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.network.util.UtilObject;
-
+import org.bss.brihaspatisync.util.RuntimeDataObject;
+import org.bss.brihaspatisync.tools.whiteboard.WhiteBoardPanel;
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
  * @author <a href="mailto:arvindjass17@gmail.com">Arvind Pal </a>
@@ -29,13 +30,20 @@ public class HandRaiseAction implements ActionListener {
 	private ClientObject client_obj=ClientObject.getController();
 	private UtilObject utilObject=UtilObject.getController();
 	private String selectedUsername="";
-	protected static HandRaiseAction getController(){
+
+	/**
+ 	 * Controller for the class
+ 	 */
+	public static HandRaiseAction getController(){
 		if(hraction==null)
 			hraction=new HandRaiseAction();
 		return hraction;	
 	}
 
-	private void actionONRequest(String Request){
+	/**
+ 	 * Action for make signal for appropriate Handraise option (e.g request for whiteboard, request for audio mic, request for screen sharing etc.)
+ 	 */
+	public void actionONRequest(String Request){
                 String user="";
 		String lectid=null;
                 try{
@@ -48,16 +56,19 @@ public class HandRaiseAction implements ActionListener {
                         if((client_obj.getUserRole()).equals("student")){
                                 user="loginName="+URLEncoder.encode(client_obj.getUserName(),"UTF-8");
                         }else if((client_obj.getUserRole()).equals("instructor")){
-                                if(!selectedUsername.equals("")){
-                                	user="loginName="+URLEncoder.encode(selectedUsername,"UTF-8");
-					selectedUsername="";
+				if((!Request.equals("Share-Screen"))){
+                                	if(!selectedUsername.equals("")){
+                                		user="loginName="+URLEncoder.encode(selectedUsername,"UTF-8");
+						selectedUsername="";
+					}else{
+						JOptionPane.showMessageDialog(null,"Please select username ");
+                                       		return;
+					}
 				}else{
-					JOptionPane.showMessageDialog(null,"Please select username ");
-                                       	return;
+					user="loginName="+URLEncoder.encode(client_obj.getUserName(),"UTF-8");
 				}
 	              	}else
 				System.out.println("Insufficient User Role :"+client_obj.getUserRole());
-                        //String action="userAction="+URLEncoder.encode(Request,"UTF-8");
 			String indexServer1=client_obj.getIndexServerName();
 			if(!(indexServer1.equals(""))){
 				sb=sb.append("HandRaiseAction");
@@ -65,11 +76,6 @@ public class HandRaiseAction implements ActionListener {
                                 System.out.println(sb.toString());
                                 utilObject.setSendQueue(sb.toString());
                                 sb.delete(0, sb.length());
-				/*
-                        	String indexServer =indexServer1+"/ProcessRequest?req=Permissions&"+lectid+"&"+user+"&"+action;
-                        	if(!(HttpsUtil.getController().getIndexingMessage(indexServer)))
-					JOptionPane.showMessageDialog(null,"There is some problem to Please try again");
-				*/
 			}else{
 				System.out.println("Insufficient indexServer name in HandRaiseAction :");
 			}
@@ -77,21 +83,53 @@ public class HandRaiseAction implements ActionListener {
                 }catch(Exception ex){System.out.println("Error on actionPerformed in UserListPanel."+ex.getMessage());}
         }
 
-	public void actionPerformed( ActionEvent event )
-        {
+	public void actionPerformed( ActionEvent event ){
+
                 String cmd=event.getActionCommand();
                 if(cmd.equals("Allow-WB")) {
-                        System.out.println("Allow WB");
+                        System.out.println(cmd);
                         actionONRequest("Allow-WB");
                 }
-                if(cmd.equals("Denie-WB")) {
-                        System.out.println("Denie WB");
+                if((cmd.equals("Denie-WB"))|| (cmd.equals("Denie-Mic")) || (cmd.equals("Denie-Screen")) || (cmd.equals("Denie-PPT"))) {
+			System.out.println(cmd);
                         actionONRequest("available");
                 }
-                if(cmd.equals("Hand-Raise")) {
-                        System.out.println("Handraise");
-                        actionONRequest("Hand-Raise");
+                if(cmd.equals("Allow-Mic")) {
+                        System.out.println(cmd);
+                        actionONRequest("Allow-Mic");
                 }
+		if(cmd.equals("Allow-Screen")) {
+                        System.out.println(cmd);
+                        actionONRequest("Allow-Screen");
+                }
+		if(cmd.equals("Allow-PPT")) {
+                        System.out.println(cmd);
+                        actionONRequest("Allow-PPT");
+                }		
+
+		if(cmd.equals("Get-WB")) {
+                        System.out.println(cmd);
+                        actionONRequest("Get-WB");
+                }
+		if(cmd.equals("Get-Mic")) {
+                        System.out.println(cmd);
+                        actionONRequest("Get-Mic");
+                }
+		if(cmd.equals("Get-Screen")) {
+                        System.out.println(cmd);
+                        actionONRequest("Get-Screen");
+                }
+		if(cmd.equals("Get-PPT")) {
+                        System.out.println(cmd);
+                        actionONRequest("Get-PPT");
+                }
+		if(cmd.equals("Cancel-Allow-Screen")) {
+                        System.out.println(cmd);
+                        actionONRequest("Cancel-Allow-Screen");
+                }
+
+
+		
         }
 	
 	protected void setSelectedUsername(String str){	

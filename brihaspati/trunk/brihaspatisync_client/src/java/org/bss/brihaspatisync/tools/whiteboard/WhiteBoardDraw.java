@@ -82,7 +82,7 @@ public class WhiteBoardDraw extends JPanel implements ItemListener, MouseListene
 	private  Vector draw_vector=new Vector();
 	private static WhiteBoardDraw wb_draw=null;
 	private boolean checkFlag=false;
-	private Log log=Log.getController();
+//	private Log log=Log.getController();
 
 
 	public static WhiteBoardDraw getController(){
@@ -129,7 +129,7 @@ public class WhiteBoardDraw extends JPanel implements ItemListener, MouseListene
 		if (runner == null) {
                         runner = new Thread(this);
                        	runner.start();
-			log.setLog("WB_Student_Thread start");
+			System.out.println("WB_Student_Thread start");
 		}
         }
 
@@ -140,7 +140,7 @@ public class WhiteBoardDraw extends JPanel implements ItemListener, MouseListene
                 if (runner != null) {
                 	runner.stop();
                        	runner = null;
-			log.setLog("WB_Student_Thread stop");
+			System.out.println("WB_Student_Thread stop");
                 }
         }
 
@@ -321,7 +321,7 @@ public class WhiteBoardDraw extends JPanel implements ItemListener, MouseListene
 			
                         Font myfont=new Font(textname,Font.PLAIN,sizedata);
                         setFont(myfont);
-                        log.setLog("String of msg==>"+msgdata);
+                        System.out.println("String of msg==>"+msgdata);
                         g.drawString(msgdata,x1,y1);
                        	WhiteBoardDataSender.getController().sendUnicastPacket(col,figure,x1,y1,0,0,textname,sizedata,msgdata);
                         

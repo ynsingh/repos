@@ -42,7 +42,7 @@ public class HttpCommManager {
    	private static HttpCommManager httpsConnection=null;
 	
 	private HttpsUtil httpsUtil= HttpsUtil.getController();
-	private Log log=Log.getController();
+//	private Log log=Log.getController();
 
 	/**
 	 * Controller for the class.
@@ -61,11 +61,10 @@ public class HttpCommManager {
          */
 	public Vector connectToMasterServer() {
    		try {
-			/** First entry is kept as "Select", to signal the users that he need to make a choice of secondry indexing server.
+			/** First entry is kept as "Select", to signal the users that he need to make a choice of secondry indexing server,
 	        	 *  The url is created to retrieve the secondry indexing servers' list
         		 *  from master indexing server
          		 */
-			
 			String m_url=RuntimeDataObject.getController().getMasterUrl()+"/ProcessRequest?req=getISList";
                         if(!(m_url.equals(""))){
 				Vector indexServerList=httpsUtil.getvectorMessage(m_url,"noLecture");
@@ -73,15 +72,15 @@ public class HttpCommManager {
 				if(indexServerList.size()!=0){
 					return indexServerList;
                                 } else {
-                                        log.setLog("Error in getting secondary indexing Servers.");
+                                        System.out.println("Error in getting secondary indexing Servers.");
 					return indexServerList;
                                 }
 			
                         }else {
-                                log.setLog("Master URL not found. Clear the cache and download the new binary from www.brihaspatisolutions.co.in.\n");
+                                System.out.println("Master URL not found. Clear the cache and download the new binary from www.brihaspatisolutions.co.in.\n");
                         }
                 }catch (Exception ioe) {
-                        log.setLog("Error at connectToMasterServer()in HttpsConnection"+ioe.getMessage());
+                        System.out.println("Error at connectToMasterServer()in HttpsConnection"+ioe.getMessage());
                 }
 		return null;
    	}
@@ -100,18 +99,17 @@ public class HttpCommManager {
 				
 				String req_url=indexServer+"/ProcessRequest?req=login&"+usr+"&"+pass+"&"+ip;
                                 loginResult=httpsUtil.getvectorMessage(req_url,"noLecture");
-				log.setLog("loginResult====>"+loginResult.toString());
                                 serverDate=(String)loginResult.get(2);
 				if(loginResult!=null){
                                 	getCourseList((String)loginResult.get(0),indexServer);
                                         index=true;
   				}
 			}else{
-				log.setLog("No Sufficient Arguments to call connectToIndexServer()");
+				System.out.println("No Sufficient Arguments to call connectToIndexServer()");
 			}
 
          	}catch(Exception e){
-                	log.setLog("Error at connectToIndexserver()in HttpsConnection : "+e.getMessage());
+                	System.out.println("Error at connectToIndexserver()in HttpsConnection : "+e.getMessage());
                 }
 		return index;
         }
@@ -135,7 +133,7 @@ public class HttpCommManager {
 				}else{
 	                                instCourseList=httpsUtil.getvectorMessage(indexServer,"noLecture");
         			}
-			}catch(Exception e){log.setLog("Error at getCourseList()in HttpsConnection : "+e.getMessage());}    
+			}catch(Exception e){System.out.println("Error at getCourseList()in HttpsConnection : "+e.getMessage());}    
  		}
  		if(studCourseList!=null){
  			studSessionList=httpsUtil.getController().getSessionForCourse(studCourseList, indexServerName);

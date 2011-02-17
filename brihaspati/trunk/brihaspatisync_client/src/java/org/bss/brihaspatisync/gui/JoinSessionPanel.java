@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.gui;
  * JoinSessionPanel.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2007-2008
+ * Copyright (c) 2011, ETRG, IIT Kanpur.
  */
 
 import java.awt.Color;
@@ -19,13 +19,10 @@ import javax.swing.JSplitPane;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
-
-
 import java.util.Vector;
 import org.bss.brihaspatisync.tools.whiteboard.WhiteBoardPanel;
 import org.bss.brihaspatisync.tools.chat.ChatPanel;
 import org.bss.brihaspatisync.tools.presentation.PresentationPanel;
-import org.bss.brihaspatisync.tools.desktop_sharing.Desktop_Sharing;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
@@ -54,9 +51,6 @@ public class JoinSessionPanel extends JPanel implements ActionListener, MouseLis
    	public JPanel getAV_Panel(){
    		return av_Pane;
    	}
-	public JPanel getAV_Panel_Student(){
-                return av_Pane_new;
-        }
    	public JSplitPane getSplit_Panel(){
    		return splitPane;
    	}
@@ -75,22 +69,18 @@ public class JoinSessionPanel extends JPanel implements ActionListener, MouseLis
 		//start for userlist, Audio Vedio, and PPT Presentation Panel
 		left_Pane=new JPanel();
                 left_Pane.setLayout(new BorderLayout());
-                JPanel new_Pane=new JPanel();
+                
+		JPanel new_Pane=new JPanel();
                 new_Pane.setLayout(new BorderLayout());
 		
 		JPanel new_Pane1=new JPanel();
                 new_Pane1.setLayout(new BorderLayout());
 
 		//Audio Vedio Panel
-		
 		av_Pane=new JPanel();
                 av_Pane.setLayout(new BorderLayout());
 		av_Pane.setBackground(Color.BLACK);
 	
-		av_Pane_new=new JPanel();
-                av_Pane_new.setLayout(new BorderLayout());
-                av_Pane_new.setBackground(Color.BLACK);
-
 		//PPT Presentation Panel
                 JPanel chat_slide_Pane=new JPanel();
                 chat_slide_Pane.setLayout(new BorderLayout());
@@ -100,12 +90,8 @@ public class JoinSessionPanel extends JPanel implements ActionListener, MouseLis
 		JSplitPane chat_pp_Split=new JSplitPane(JSplitPane.VERTICAL_SPLIT,ChatPanel.getController().createGUI(),PresentationPanel.getController().createGUI());
                 chat_pp_Split.setDividerLocation(110);
 		chat_slide_Pane.add(chat_pp_Split);
-		//ins Audio vedio stream
-                JSplitPane chat_pp_Split1=new JSplitPane(JSplitPane.VERTICAL_SPLIT,av_Pane_new,chat_slide_Pane);
-                chat_pp_Split1.setDividerLocation(120);
-                new_Pane1.add(chat_pp_Split1);
 		
-		JSplitPane av_chat_Split=new JSplitPane(JSplitPane.VERTICAL_SPLIT,av_Pane,new_Pane1);
+		JSplitPane av_chat_Split=new JSplitPane(JSplitPane.VERTICAL_SPLIT,av_Pane, chat_slide_Pane);
 		av_chat_Split.setDividerLocation(160);
 
                 new_Pane.add(av_chat_Split);
@@ -113,18 +99,15 @@ public class JoinSessionPanel extends JPanel implements ActionListener, MouseLis
                 JSplitPane ul_av_Split=new JSplitPane(JSplitPane.VERTICAL_SPLIT,UserListPanel.getController().createGUI(),new_Pane);
 		ul_av_Split.setDividerLocation(220);
                 left_Pane.add(ul_av_Split);
-		//TabbedPane start
+	
+		//TabbedPane for whiteboard, screen share and ppt presentation.
 		JTabbedPane jtp = new JTabbedPane();
 		jtp.addTab(" White Board ", WhiteBoardPanel.getController().createGUI());
-		if(org.bss.brihaspatisync.util.ClientObject.getController().getUserRole().equals("student")){
-	                jtp.addTab(" Desktop Sharing ",Desktop_Sharing.getController());
-		}
-		//TabbedPane stop 
+	        jtp.addTab(" Desktop Sharing ",Desktop_Sharing.getController().createGUI());
                 
 		//start for whiteboard,chat,remoteDesktop Panel
                	right_Pane=new JPanel();
 		right_Pane.setLayout(new BorderLayout());
-		//right_Pane.add(WhiteBoardPanel.getController().createGUI(),BorderLayout.CENTER);
 		right_Pane.add(jtp,BorderLayout.CENTER);
 		right_Pane.setBackground(Color.WHITE);
         	splitPane=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, left_Pane,right_Pane);

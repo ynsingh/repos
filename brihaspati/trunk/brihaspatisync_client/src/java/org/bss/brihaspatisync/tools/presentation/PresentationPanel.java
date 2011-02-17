@@ -24,7 +24,7 @@ import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
 import java.io.File;
 import javax.swing.JProgressBar;
-import org.bss.brihaspatisync.network.ftp.FTPClient;
+import org.bss.brihaspatisync.network.ppt_sharing.GetAndPostPPT;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -86,25 +86,22 @@ public class PresentationPanel extends JPanel implements ActionListener {
   		JPanel labelPane=new JPanel();
 		JPanel bttnPane=new JPanel();
 
-		if((ClientObject.getController().getUserRole()).equals("instructor")){
-	               	browse=new JButton("Upload");
-               		browse.addActionListener(this);
+	        browse=new JButton("Upload");
+               	browse.addActionListener(this);
 			
-			pb = new JProgressBar(0, 20);
-	                pb.setValue(0);
-        	        pb.setStringPainted(true);
-			label = new JLabel("Upload .ppt File ");
-			labelPane.add(label);
-			labelPane.add(pb);			
+		pb = new JProgressBar(0, 20);
+	       	pb.setValue(0);
+       		pb.setStringPainted(true);
+		label = new JLabel("Upload .ppt File ");
+		labelPane.add(label);
+		labelPane.add(pb);			
+		browse.setEnabled(true);
+		slideShow=new JButton("Slide Show");
+       	        slideShow.addActionListener(this);
+		slideShow.setEnabled(false);
+		bttnPane.add(browse);
+               	bttnPane.add(slideShow);
 
-			browse.setEnabled(true);
-			slideShow=new JButton("Slide Show");
-        	        slideShow.addActionListener(this);
-			slideShow.setEnabled(false);
-			bttnPane.add(browse);
-                	bttnPane.add(slideShow);
-
-		}
 		mainPanel.add(labelPane,BorderLayout.CENTER);
 		mainPanel.add(bttnPane,BorderLayout.SOUTH);
 		return mainPanel;
@@ -114,7 +111,7 @@ public class PresentationPanel extends JPanel implements ActionListener {
                 if(ae.getSource()==browse){	
 			if (instcspanel == null) {
                                 instcspanel = new JFileChooser();
-                                FTPClient.getController().checkDirectory();
+                                GetAndPostPPT.getController().checkDirectory();
                         }else {
 		                int returnVal = instcspanel.showDialog(PresentationPanel.this,"Attach");
 				this.revalidate();
@@ -123,19 +120,13 @@ public class PresentationPanel extends JPanel implements ActionListener {
 					File src=new File(b.getAbsolutePath().toString());
                                         File dst=new File("temp/");
 					if(dst.exists()) {
-						timer.start();
 						try {
 							FileChooser.getController().start(src,dst);
 							label.setText("Uploading process ---");
 							browse.setEnabled(false);
-						}catch(Exception e){}
-                                        }else {
-                                                File f=new File("temp/");
-                                                f=new File(f.getAbsolutePath().toString());
-                                                if(!f.exists())
-                                                        f.mkdir();
-
-                                        }
+						}catch(Exception e){System.out.println("Errorrrrrrrrrrrrrrr"+e.getCause());}
+					}
+					timer.start();
                                         dst=null;
                                         src=null;
 					

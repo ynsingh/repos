@@ -37,8 +37,6 @@ public class ReceiveQueueHandler implements Runnable{
 
         private static ReceiveQueueHandler rqh=null;
 	
-	private Log log=Log.getController();
-	
 	private UtilObject utilobject = UtilObject.getController();
 
         /**
@@ -64,7 +62,7 @@ public class ReceiveQueueHandler implements Runnable{
 		if (runner == null) {
                         runner = new Thread(this);
 			runner.start();
-			log.setLog("ReceiveQueueHandler is Start");
+			System.out.println("ReceiveQueueHandler is Start");
                 }
         }
 
@@ -78,7 +76,7 @@ public class ReceiveQueueHandler implements Runnable{
                 if (runner != null) {
                         runner.stop();
 			runner = null;
-			log.setLog("ReceiveQueueHandler is Stop");
+			System.out.println("ReceiveQueueHandler is Stop");
              	}
         }
 
@@ -131,13 +129,4 @@ public class ReceiveQueueHandler implements Runnable{
 			}catch(Exception e){}
 		}	
 	}
-	
-        public Thread getRunner(){
-                return runner;
-        }
-
-	public void setRunner(){
-		this.runner=null;
-	}
-	
 }

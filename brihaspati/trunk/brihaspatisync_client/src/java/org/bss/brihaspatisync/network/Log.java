@@ -1,12 +1,12 @@
 package org.bss.brihaspatisync.network;
 
-
 /**
  * MaintainLog.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2009
+ * Copyright (c) 2011 ETRG, IIT Kanpur.
  */
+
 import java.util.Vector;
 import org.bss.brihaspatisync.util.ClientLog;
 
@@ -28,7 +28,6 @@ public class Log implements Runnable{
 	/**
         * Controller for the class.
         */
-
 	public static Log getController(){
                 if(ml==null){
                         ml=new Log();
@@ -36,7 +35,6 @@ public class Log implements Runnable{
                 return ml;
         }
 
-	private Log(){}
 
 	/**
         * Start MaintainLog Thread.

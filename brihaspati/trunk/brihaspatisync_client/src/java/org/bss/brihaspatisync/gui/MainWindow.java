@@ -70,7 +70,6 @@ public class MainWindow  extends JFrame implements ActionListener{
 	        
 		JMenu menu1 = new JMenu("Classroom");
 
-		/********** added *****************/
 		menuItem4=new JMenuItem("Logout");
              	menuItem4.setActionCommand("Logout");
               	menuItem4.setEnabled(false);
@@ -81,7 +80,6 @@ public class MainWindow  extends JFrame implements ActionListener{
               	menuItem5.setEnabled(false);
               	menuItem5.addActionListener(this);
               	menu1.add(menuItem5);
-		/**********************************/
 
 		menuItem1=new JMenuItem("Exit");
                 menuItem1.setActionCommand("Exit");
@@ -142,9 +140,7 @@ public class MainWindow  extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
                 if(e.getSource()==menuItem3){
 			new PreferenceWindow();
-                //        PreferenceWindow.getController().createGUI();
                 }
-		/*****************added*******************/
 		else if(e.getActionCommand().equals("Logout")){
 
                         desktop.removeAll();
@@ -156,8 +152,6 @@ public class MainWindow  extends JFrame implements ActionListener{
 
             	}else if(e.getActionCommand().equals("Sessionout")){
 			content.removeAll();//(1);
-                	//JDesktopPane desktop = new JDesktopPane();
-                	//desktop.setBackground(new Color(220,220,220));
 			JPanel p1=new JPanel();
 			p1.setLayout(new BorderLayout());
 			
@@ -185,22 +179,13 @@ public class MainWindow  extends JFrame implements ActionListener{
                	 	content.add(p1);
                 	content.validate();
 			content.repaint();
-			//content.remove(1);
-			//content.add(desktop,BorderLayout.CENTER);
-				
-			//desktop.add(CourseSessionWindow.getController());
-			//repaint();
-	        	//new SessionOut();//.getController();
-		/*****************************************/
          	}else if(e.getActionCommand().equals("Exit")){
 			Logout.getController().sendLogoutRequest();
                         System.exit(0);
-		/******************added******************/
                 }else{
 			JOptionPane.showMessageDialog(null,"wrong action please try again !!");
 
 		}
-		/******************************************/
         }
 
         public JDesktopPane getDesktop(){
@@ -218,14 +203,12 @@ public class MainWindow  extends JFrame implements ActionListener{
         protected JMenuItem getMenuItem3(){
                 return menuItem3;
         }
-	/************* added ***************/
         protected JMenuItem getMenuItem4(){
                 return menuItem4;
         }
         protected JMenuItem getMenuItem5(){
                 return menuItem5;
         }
-	/**********************************/
 
         public  Container getContainer(){
                 return content;

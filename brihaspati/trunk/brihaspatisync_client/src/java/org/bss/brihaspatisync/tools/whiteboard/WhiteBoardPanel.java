@@ -34,6 +34,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JTabbedPane;
 import org.bss.brihaspatisync.util.ClientObject;
+import org.bss.brihaspatisync.gui.HandRaiseAction;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
@@ -55,6 +56,7 @@ public class WhiteBoardPanel extends JPanel implements ActionListener, MouseList
 	private  JButton filledovalButton;
 	private  JButton filledroundrectButton;
 	private  JButton texter;
+	private JButton desk_share=null;
 	private  JLabel bold;
 	private  JLabel italic;
 	private  JLabel unline;
@@ -66,6 +68,8 @@ public class WhiteBoardPanel extends JPanel implements ActionListener, MouseList
 	private int font_Size=10;       // Size of Font
 	private int font_Style=Font.PLAIN;      // BOLD, ITALIC, UNDERLINE
 	private ClassLoader clr;
+	private String role=ClientObject.getController().getUserRole();
+
 
 
         public static WhiteBoardPanel getController(){
@@ -178,6 +182,12 @@ public class WhiteBoardPanel extends JPanel implements ActionListener, MouseList
                 colChoice.addItem(new ImageIcon(clr.getResource("resources/images/wb/color/white")));
 		toolBar.add(colChoice);
 
+		desk_share=new JButton("Share Screen",new ImageIcon(clr.getResource("resources/images/user/getscreen.jpeg")));
+		desk_share.setToolTipText("stop desktop screen sharing");
+		desk_share.setActionCommand("Share-Screen");
+		desk_share.addActionListener(this);
+		if(role.equals("instructor")) 
+			toolBar.add(desk_share);
 
 		mainPanel.add(toolBar,BorderLayout.PAGE_START);
 		mainPanel.add(WhiteBoardDraw.getController(),BorderLayout.CENTER);
@@ -233,35 +243,43 @@ public class WhiteBoardPanel extends JPanel implements ActionListener, MouseList
                 WhiteBoardDraw.getController().setTextChoice(f_Name);
                 WhiteBoardDraw.getController().setSizeChoice(fontsize);
                 WhiteBoardDraw.getController().setData(input_text);;
-		//mainPanel.validate();
 		mainPanel.revalidate();
 		return mainPanel;
 	}
 	
 	public void actionPerformed(ActionEvent ae) {
-                button_value=Integer.parseInt(ae.getActionCommand());
-		WhiteBoardDraw.getController().setFigure(button_value);
-		
-//		if(ae.getSource()==color){
-//			JColorChooser cc=new JColorChooser();
-//			Color newColor = cc.showDialog(null,"Select Drawing Color",null);
-//			WhiteBoardDraw.getController().setCurrentColor(newColor);
-//		}
+		String cmd=ae.getActionCommand();
+	 	if(cmd.equals("Share-Screen")) {
+                        HandRaiseAction.getController().actionONRequest("Share-Screen");
+			desk_share.setText("Stop Screen Share");
+			desk_share.setToolTipText("Stop desktop screen sharing");
+			desk_share.setIcon(new ImageIcon(clr.getResource("resources/images/user/allowscreen.jpeg")));
+			desk_share.setActionCommand("Stop-Share-Screen");
+                }
+
+		if(cmd.equals("Stop-Share-Screen")){
+                        HandRaiseAction.getController().actionONRequest("available");
+                        desk_share.setText("Screen Share");
+			desk_share.setIcon(new ImageIcon(clr.getResource("resources/images/user/getscreen.jpeg")));
+			desk_share.setToolTipText("start desktop screen sharing");
+                        desk_share.setActionCommand("Share-Screen");
+
+		}
+		if(!(cmd.equals("Share-Screen")) && (!(cmd.equals("Stop-Share-Screen")))){		
+			button_value=Integer.parseInt(cmd);
+                	WhiteBoardDraw.getController().setFigure(button_value);
+		}
+
         }
 
 	public void mouseClicked(MouseEvent e) { }
-
         public void mousePressed(MouseEvent e) {}
-
         public void mouseReleased(MouseEvent e) {}
-
         public void mouseEntered(MouseEvent e) {}
-
         public void mouseExited(MouseEvent e) {}
 
 	public int getButtonValue(){
 		return button_value;
 	}
-
 }
 

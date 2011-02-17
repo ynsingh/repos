@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.gui;
  * JoinSession.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2007-2008 ETRG, IIT Kanpur
+ * Copyright (c) 2011 ETRG, IIT Kanpur
  */
 
 import java.io.File;
@@ -19,14 +19,14 @@ import org.bss.brihaspatisync.util.ClientObject;
 
 import org.bss.brihaspatisync.network.ReceiveQueueHandler;
 import org.bss.brihaspatisync.network.http.HTTPClient;
-import org.bss.brihaspatisync.network.desktop_sharing.HTTPDesktopSharing;
 import org.bss.brihaspatisync.network.Log;
 
 import org.bss.brihaspatisync.tools.whiteboard.WhiteBoardDraw;	
 import org.bss.brihaspatisync.tools.audio_video.AVTransmitReceiveHandler;
 
 /**
- * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
+ * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>Created on dec2008
+ * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>Modified on jan2011
  */
 
 public class JoinSession {
@@ -80,11 +80,8 @@ public class JoinSession {
 				//get reflector ip from indexing server.
 				String ref_ip =HttpsUtil.getController().getReflectorAddress(indexServer);
 				if(!(ref_ip.equals(""))){
-					//make connection with is reflector to transmit or receive lecture.			
-					ref_Timer=  new Timer();
-                			synchronized(ref_Timer){
-                        			ref_Timer.schedule(new HTTPClient(ref_ip,Lecture_ID),01,200);
-                			}
+					// Thread for get userlist and other media data from reflector.
+                			new HTTPClient(ref_ip,Lecture_ID).start();
 				}else{
 					JOptionPane.showMessageDialog(null,"Reflector ip can't find!!");
 				}
@@ -109,22 +106,19 @@ public class JoinSession {
                 MainWindow.getController().getContainer().add(JoinSessionPanel.getController().createGUI(),BorderLayout.CENTER);
 		MainWindow.getController().getContainer().validate();
 		MainWindow.getController().getContainer().repaint();
+
+		// Timer to print user list in gui.
            	try{
                 	UL_Timer=new Timer(true);
-			UL_Timer.schedule(UserListTimer.getController(),01,60*60*2);
-			HTTPDesktopSharing hds=new HTTPDesktopSharing();
-			hds.start();
+			UL_Timer.schedule(UserListTimer.getController(),01,60*60*1);
                	}catch(Exception e){log.setLog("Error in user list timer"+e.getMessage());}
 		
                 try{
 			// start thread controller which can handle send and receive thread of network.
 			WhiteBoardDraw.getController().start();
                         ReceiveQueueHandler.getController().start();
+			HandRaiseThreadController.getController().start();
 			AVTransmitReceiveHandler.getController();
-			//if(client_obj.getUserRole().equals("student"))
-			//AVTransmitReceiveHandler.getController().AVReceiveHandler();
-                        //else
-                        //        AVTransmitReceiveHandler.getController().AVTransmitHandlerStart();
 		}catch(Exception ex){log.setLog("Error in Starting GUIThreads"+ex.getMessage());}
 		
 	}

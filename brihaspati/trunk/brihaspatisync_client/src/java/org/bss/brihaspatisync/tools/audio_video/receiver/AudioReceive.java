@@ -36,6 +36,7 @@ import javax.media.format.FormatChangeEvent;
 import javax.media.control.BufferControl;
 import org.bss.brihaspatisync.gui.MainWindow;
 import org.bss.brihaspatisync.util.ClientObject;
+import org.bss.brihaspatisync.util.RuntimeDataObject;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>      
@@ -50,10 +51,10 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
     	private Object dataSync = new Object();
     	private static AudioReceive av=null;
     	private static DataSource ds=null;
-    	private int port=ClientObject.getController().getAVPort();
+    	private int port=RuntimeDataObject.getController().getAudioPort();//ClientObject.getController().getAVPort();
     	private String IPAddress=ClientObject.getController().getReflectorIP();                                               
     	private static boolean value;
-	private Log log=Log.getController();
+//	private Log log=Log.getController();
     	private static RTPControl rtpc=null;
     	private static int initialize=0;
 
@@ -103,7 +104,7 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
     				mgrs[i].addTarget(destAddr);
 	   		}
        		} catch (Exception e){
-                	log.setLog("Cannot create the RTP Session: " + e.getMessage());
+                	System.out.println("Cannot create the RTP Session: " + e.getMessage());
                 	return value;
         	}
 
@@ -115,7 +116,7 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
 				while (!dataReceived && System.currentTimeMillis() - then < waitingPeriod) {
 					MainWindow.getController().getContainer().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		    			if (!dataReceived)
-						log.setLog("  - Waiting for RTP data to arrive...");
+						System.out.println("  - Waiting for RTP data to arrive...");
 		       			dataSync.wait(1000);
               			}
 	    		}
@@ -124,7 +125,7 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
 	  	} catch (Exception e) {}
 
 		if (!dataReceived) {
-	    		log.setLog("No RTP data was received.");
+	    		System.out.println("No RTP data was received.");
             		JOptionPane.showMessageDialog(null,"Sorry You do not get the unicast Audio");
             
            		/**If data does not receive then transmitAudio button become disabled */
@@ -146,7 +147,7 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
     	} 
 
     	public void close() { 
-        	log.setLog("Stopping AudioReceive & close all Session for receive Audio"); 
+        	System.out.println("Stopping AudioReceive & close all Session for receive Audio"); 
 		value=true;
 
        		/**If session is Initialise then close all of the Session */
@@ -168,7 +169,7 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
     	public synchronized void update(SessionEvent evt) {
 		if (evt instanceof NewParticipantEvent) {
 	    		Participant p = ((NewParticipantEvent)evt).getParticipant();
-	    		log.setLog("  - A new participant had just joined: " + p.getCNAME());
+	    		System.out.println("  - A new participant had just joined: " + p.getCNAME());
 		}
     	}
 
@@ -182,8 +183,8 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
 
 		if (evt instanceof RemotePayloadChangeEvent) {
      
-	    		log.setLog("  - Received an RTP PayloadChangeEvent.");
-	    		log.setLog("Sorry, cannot handle payload change.");
+	    		System.out.println("  - Received an RTP PayloadChangeEvent.");
+	    		System.out.println("Sorry, cannot handle payload change.");
 		}
     
 		else if (evt instanceof NewReceiveStreamEvent) {
@@ -195,16 +196,16 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
  
 				RTPControl ctl = (RTPControl)ds.getControl("javax.media.rtp.RTPControl");
 				if (ctl != null){
-		    			log.setLog("  - Recevied format of the new RTP stream if first: " + ctl.getFormat());
+		    			System.out.println("  - Recevied format of the new RTP stream if first: " + ctl.getFormat());
 				} else
-		    			log.setLog("  - here we do not get a format of stream  and Recevied new RTP stream");
+		    			System.out.println("  - here we do not get a format of stream  and Recevied new RTP stream");
 
              			/**Find out is there any new user in this session */
 
 				if (participant == null)
-		    			log.setLog("      The sender of this stream had yet to be identified.");
+		    			System.out.println("      The sender of this stream had yet to be identified.");
 				else {
-		    			log.setLog("      The stream comes from: " + participant.getCNAME()); 
+		    			System.out.println("      The stream comes from: " + participant.getCNAME()); 
 				}
 
 				synchronized (dataSync) {
@@ -213,7 +214,7 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
 				}
 
 	    		} catch (Exception e) {
-				log.setLog("NewReceiveStreamEvent exception " + e.getMessage());
+				System.out.println("NewReceiveStreamEvent exception " + e.getMessage());
 				return;
 	    		}
         
@@ -224,15 +225,15 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
  				/** Find out the formats. */
 
 				RTPControl ctl = (RTPControl)ds.getControl("javax.media.rtp.RTPControl");
-				log.setLog("  - The previously unidentified stream ");
+				System.out.println("  - The previously unidentified stream ");
 				if (ctl != null)
-		    			log.setLog("Received the format of the stream if 2nd==>" + ctl.getFormat());
-				log.setLog("      had now been identified as sent by: " + participant.getCNAME());
+		    			System.out.println("Received the format of the stream if 2nd==>" + ctl.getFormat());
+				System.out.println("      had now been identified as sent by: " + participant.getCNAME());
 	     		}
 		}
 
 		else if (evt instanceof ByeEvent) {
-	     		log.setLog("  - Got \"bye\" from: " + participant.getCNAME());
+	     		System.out.println("  - Got \"bye\" from: " + participant.getCNAME());
 		}
     	}
 }

@@ -18,7 +18,7 @@ import java.util.TimerTask;
 import org.bss.brihaspatisync.util.ClientObject;
 
 import org.bss.brihaspatisync.network.Log;
-import org.bss.brihaspatisync.network.http.HTTPUserList;
+import org.bss.brihaspatisync.util.RuntimeDataObject;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
@@ -30,33 +30,49 @@ public class UserListTimer extends TimerTask{
 	private static UserListTimer request=null;
 	private ClientObject client_obj=ClientObject.getController();
 	private Log log=Log.getController();
-
+	private Vector vector=new Vector();
 	
 	/**
 	 * Controller for class
 	 */
-        protected static UserListTimer getController() {
+        public static UserListTimer getController() {
                 if(request==null);
                 	request=new UserListTimer();
                 return request;
         }
 
-        private UserListTimer() { }
+        public UserListTimer() { }
 
         /**Overrides the run method */
 
         public void run(){
                 try{
 			String ref_ip =ClientObject.getController().getReflectorIP();
-			if(ref_ip != null){
+			if(ref_ip != null) {
 				String lect_id=client_obj.getLectureID();
-                        	if(!(lect_id.equals("")))
-					UserListPanel.getController().userlistPanel(HTTPUserList.getController().getUserList(ref_ip,lect_id));
-			}else 
-				log.setLog("ref_ip is blanck  in RequestuserList class");	
+                        	if(!(lect_id.equals(""))) {
+					vector.clear();
+					
+					try {
+						String str=RuntimeDataObject.getController().getUserList();
+						str=str.replaceAll(","," ");
+						if(str.length()>0){
+							java.util.StringTokenizer Tok = new java.util.StringTokenizer(str);
+                                                	while(Tok.hasMoreElements()) {
+                                                        	String str1=(String)Tok.nextElement();
+								vector.add(str1);
+                                                	}	
+							UserListPanel.getController().userlistPanel(vector);
+						}		
+					}catch(Exception e){ System.out.println("Error in RequestuserList class"+e.getMessage()); }
+					
+				}
+			} else { 
+				System.out.println("ref_ip is blanck  in RequestuserList class");	
+			}
 			
        		}catch(Exception ex){
-			log.setLog("Error in RequestuserList class"+ex.getMessage());
+			System.out.println("Error in RequestuserList class"+ex.getMessage());
 		}
 	}
 }

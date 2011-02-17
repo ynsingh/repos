@@ -32,8 +32,6 @@ public class ImageLoadforStudent extends JPanel {
 
 	private String LogfilePath="";
 
-	private Log log=Log.getController();
-
 	private Dimension area=new Dimension(0,0);
 
 	private static ImageLoadforStudent img=null;	
@@ -64,7 +62,7 @@ public class ImageLoadforStudent extends JPanel {
 	public void runSlide(int temp){
 		try {
 			if(LogfilePath.equals("")) {
-				String str="temp/presentation/";
+				String str="temp/";
 	        	        File existingFile=new File(str);
         	        	LogfilePath = existingFile.getAbsolutePath();
 			}

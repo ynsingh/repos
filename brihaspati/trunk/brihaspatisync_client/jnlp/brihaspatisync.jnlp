@@ -2,10 +2,10 @@
 <!-- JNLP File for Brihaspati_Sync client Application
      change IP address in the codebase field to the one used by your server.
  --> 
-<jnlp  spec="1.0+"  codebase="https://172.26.82.19:8443/brihaspatisync_client/jnlp"  href="brihaspatisync.jnlp">
+<jnlp  spec="1.0+"  codebase="https://172.26.82.18:8443/brihaspatisync_client/jnlp"  href="brihaspatisync.jnlp">
   	<information>
     		<title>Brihaspatisync Client</title>
-    		<vendor>Ashish Yadav</vendor>
+    		<vendor>IIT Kanpur</vendor>
     		<homepage href="http://www.brihaspatisolutions.co.in"/>
     		<description>Brihaspatisync</description>
     		<description kind="short">Brihaspatisync Client </description>

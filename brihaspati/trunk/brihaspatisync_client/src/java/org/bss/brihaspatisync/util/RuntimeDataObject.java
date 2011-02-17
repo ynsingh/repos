@@ -19,6 +19,12 @@ public class RuntimeDataObject {
 
         private Properties prop=null;
         private static RuntimeDataObject obj=null;
+	private boolean transmit_mic_flag=false;
+	private boolean presentation_mic_flag=false;
+	private boolean wb_flag=false;
+	private String userlist="";
+	private String masterReflectorIP="172.26.82.18";
+
         public static RuntimeDataObject getController(){
                 if(obj==null) {
                         obj=new RuntimeDataObject();
@@ -51,17 +57,67 @@ public class RuntimeDataObject {
 		return prop.getProperty("client_http_port");
         }
 
-        public int getRefAudioPort(){
+        public int getAudioPort(){
 		return Integer.parseInt(prop.getProperty("client_audio_port"));
         }
 
-        public int getRefVedioPort(){
+        public int getVedioPort(){
 		return Integer.parseInt(prop.getProperty("client_video_port"));
         }
 	
-	public int getClientFTPPort(){
-                return Integer.parseInt(prop.getProperty("client_ftp_port"));
+	public int getAudioHandraisePort() {
+                return Integer.parseInt(prop.getProperty("audio_handraise_port"));
         }
+
+	public int getPresentationAudioPort() {
+                return Integer.parseInt(prop.getProperty("presentation_audio_port"));
+        }
+
+	public int getPPTPort() {
+                return Integer.parseInt(prop.getProperty("client_ppt_port"));
+        }
+
+	public void setMasterReflectorIP(String ip){
+		masterReflectorIP=ip;
+	}
+
+	public String getMasterReflectorIP(){
+		return masterReflectorIP;
+	}
+	
+	public void setPresentationMicFlag(boolean value){
+                presentation_mic_flag=value;
+        }
+
+        public boolean getPresentationMicFlag(){
+                return presentation_mic_flag;
+        }
+	
+	public void setTransmitMicFlag(boolean value){
+		transmit_mic_flag=value;
+	}
+
+	public boolean getTransmitMicFlag(){
+		return transmit_mic_flag;
+	}
+	
+	public void setWBFlag(boolean value){
+		wb_flag=value;
+	}
+
+	public boolean getWBFlag(){
+		return wb_flag;
+	}
+
+	public String getUserList(){
+                return userlist;
+        }
+	
+	public void setUserList(String str){
+                userlist=str;
+        }
+
 }	
+
 
 

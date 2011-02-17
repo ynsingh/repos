@@ -61,7 +61,7 @@ public class CourseSessionWindow extends JInternalFrame {
 	  	add(mainPanel);
 	  	setLocation(200,50);
 	    	setVisible(true); 
-	    	setSize(700, 600);
+	    	setSize(750, 600);
 		setResizable(false);	
    	}
 }

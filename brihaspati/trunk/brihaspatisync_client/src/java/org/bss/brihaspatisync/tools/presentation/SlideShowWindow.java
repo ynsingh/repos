@@ -97,7 +97,7 @@ public class SlideShowWindow extends JFrame implements ActionListener {
 
 	public void actionPerformed(ActionEvent ae){
                 if(ae.getSource()==next){
-			f=new File("temp/presentation");
+			f=new File("temp/");
 			String str[]=f.list();	
 			if(temp==(str.length-1)){
 				JOptionPane.showMessageDialog(null," This is last .ppt !!");

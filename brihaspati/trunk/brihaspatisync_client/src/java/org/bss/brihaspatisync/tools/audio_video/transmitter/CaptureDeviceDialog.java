@@ -47,7 +47,7 @@ public class CaptureDeviceDialog extends Dialog implements ActionListener, ItemL
   	Choice audioFormatCombo;
   	Choice videoFormatCombo;
 
-	private Log log=Log.getController();
+//	private Log log=Log.getController();
 
 
   	public CaptureDeviceDialog(Frame parent, String title, boolean mode) {
@@ -236,7 +236,7 @@ public class CaptureDeviceDialog extends Dialog implements ActionListener, ItemL
   	}
 
   	public void itemStateChanged(ItemEvent ie) {
-    	log.setLog(ie.getSource().toString());
+    	System.out.println(ie.getSource().toString());
     	if (ie.getSource().equals(audioDeviceCombo))
       		displayAudioFormats();
     	else

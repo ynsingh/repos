@@ -51,6 +51,7 @@ import javax.media.rtp.rtcp.SourceDescription;
 
 import java.util.Vector;
 import org.bss.brihaspatisync.network.Log;
+import org.bss.brihaspatisync.util.RuntimeDataObject;
 import org.bss.brihaspatisync.util.ClientObject;
 
 /**
@@ -65,7 +66,7 @@ public class AVTransmit3 {
 	private CaptureDeviceInfo di= null;
 	private boolean encodingOk = false;
 	private String ipAddress=ClientObject.getController().getReflectorIP();
-	private int portBase=ClientObject.getController().getAVPort();
+	private int portBase=RuntimeDataObject.getController().getAudioPort();//ClientObject.getController().getAVPort();
 	private Processor processor = null;
 	private RTPManager rtpMgrs[];
 	private DataSource dataOutput = null;
@@ -76,12 +77,12 @@ public class AVTransmit3 {
     	private Format videoFormat;
   	private Format audioFormat;
   	static DataSource captured_ds=null;
-	private Log log=Log.getController();
+//	private Log log=Log.getController();
   
   	
   	private static AVTransmit3 av_trans=null;
   	
-  	public static AVTransmit3 getController(){
+  	public  static AVTransmit3 getController(){
   		if(av_trans==null){
   			av_trans=new AVTransmit3();
   		}
@@ -95,119 +96,120 @@ public class AVTransmit3 {
   	}
   	
   	
-    public AudioFormat getAudioFormat(){
-         if (format==null)
-         	format= new AudioFormat(AudioFormat.LINEAR,
-                                              8000,
-                                              8,
-                                              1);
+    	public AudioFormat getAudioFormat(){
+         	if (format==null){
+         		format= new AudioFormat(AudioFormat.LINEAR,
+                        	                      8000,
+                                	              8,
+                                        	      1);
+		}
          	return format;
         }
         
   	public CaptureDeviceInfo getCaptureDevice(){
-      	Vector devices= CaptureDeviceManager.getDeviceList( getAudioFormat());
-        if (devices.size() > 0) {
-        	di = (CaptureDeviceInfo) devices.elementAt(0);
+      		Vector devices= CaptureDeviceManager.getDeviceList( getAudioFormat());
+        	if (devices.size() > 0) {
+        		di = (CaptureDeviceInfo) devices.elementAt(0);
                   
-        }else {
-            log.setLog("Sorry!! No audio device found");
-       	}
-        return di;
+        	}else {
+            		System.out.println("Sorry!! No audio device found");
+       		}
+        	return di;
   	}
   	
   	void registerDevices() {
-    	CaptureDeviceDialog cdDialog = new CaptureDeviceDialog(new Frame(), "Capture Device", true);
-    	cdDialog.show();
-    	if (!cdDialog.hasConfigurationChanged())
-      		return;
+    		CaptureDeviceDialog cdDialog = new CaptureDeviceDialog(new Frame(), "Capture Device", true);
+    		cdDialog.show();
+    		if (!cdDialog.hasConfigurationChanged())
+      			return;
 
-    	//configuration has changed, update variables.
-    	audioCDI = cdDialog.getAudioDevice();
-    	if (audioCDI!=null) {
-      		audioDeviceName = audioCDI.getName();
-      		log.setLog("Audio Device Name: " + audioDeviceName);
-    	}
+    		//configuration has changed, update variables.
+    		audioCDI = cdDialog.getAudioDevice();
+    		if (audioCDI!=null) {
+      			audioDeviceName = audioCDI.getName();
+      			System.out.println("Audio Device Name: " + audioDeviceName);
+    		}
 
-    	videoCDI = cdDialog.getVideoDevice();
-    	if (videoCDI!=null) {
-      		videoDeviceName = videoCDI.getName();
-      		log.setLog("Video Device Name: " + videoDeviceName);
-    	}
+    		videoCDI = cdDialog.getVideoDevice();
+    		if (videoCDI!=null) {
+      			videoDeviceName = videoCDI.getName();
+      			System.out.println("Video Device Name: " + videoDeviceName);
+    		}
 
-    	//Get formats selected, to be used for creating DataSource
-    	videoFormat = cdDialog.getVideoFormat();
-    	audioFormat = cdDialog.getAudioFormat();
+    		//Get formats selected, to be used for creating DataSource
+    		videoFormat = cdDialog.getVideoFormat();
+    		audioFormat = cdDialog.getAudioFormat();
   	}
 
 
-    /**
-     * Starts the transmission. Returns null if transmission started ok.
-     * Otherwise it returns a string with the reason why the setup failed.
-     */
-    public synchronized String start() {
-        String result;
+    	/**
+     	 * Starts the transmission. Returns null if transmission started ok.
+     	 * Otherwise it returns a string with the reason why the setup failed.
+     	 */
+    	public synchronized String start() {
+        	String result;
 
-        // Create a processor for the specified media locator
-        // and program it to output JPEG/RTP
-        result = createProcessor();
-        if (result != null)
-            return result;
+        	// Create a processor for the specified media locator
+        	// and program it to output JPEG/RTP
+        	result = createProcessor();
+        	if (result != null)
+            		return result;
 
-        // Create an RTP session to transmit the output of the
-        // processor to the specified IP address and port no.
-        result = createTransmitter();
-        if (result != null) {
-            processor.close();
-            processor = null;
-            return result;
-        }
+        	// Create an RTP session to transmit the output of the
+        	// processor to the specified IP address and port no.
+        	result = createTransmitter();
+        	if (result != null) {
+            		processor.close();
+            		processor = null;
+            		return result;
+        	}
 
-        // Start the transmission
-        processor.start();
+        	// Start the transmission
+        	processor.start();
+        	return null;
+    	}
 
-        return null;
-    }
-
-    /**
-     * Stops the transmission if already started
-     */
-    public void stop() {
-        synchronized (this) {
-            if (processor != null) {
-                processor.stop();
-                processor.close();
-                processor = null;
-                for (int i = 0; i < rtpMgrs.length; i++) {
-                    rtpMgrs[i].removeTargets( "Session ended.");
-                    rtpMgrs[i].dispose();
-                }
-            }
-        }
-    }
-   private String createProcessor() {
-        DataSource ds=null;
-        DataSource clone;
+    	/**
+     	 * Stops the transmission if already started
+     	 */
+    	public void stop() {
+        	synchronized (this) {
+            		if (processor != null) {
+                		processor.stop();
+                		processor.close();
+                		processor = null;
+                		for (int i = 0; i < rtpMgrs.length; i++) {
+                    			rtpMgrs[i].removeTargets( "Session ended.");
+                    			rtpMgrs[i].dispose();
+                		}
+            		}
+        	}
+    	}
+   
+	private String createProcessor() {
+        	DataSource ds=null;
+        	DataSource clone;
         
 		if (audioCDI==null && videoCDI==null)
-      		registerDevices();
+      			registerDevices();
 
-    	try {
-      		if (!(audioCDI==null && videoCDI==null)) {
+    		try {
+      			if (!(audioCDI==null && videoCDI==null)) {
 
-     			DataSource[] dataSources = new DataSource[2];
-        		log.setLog("Creating data sources.");
+     				DataSource[] dataSources = new DataSource[2];
+	        		System.out.println("Creating data sources.");
 
-        		dataSources[0] = Manager.createDataSource(audioCDI.getLocator());
-        		dataSources[1] = Manager.createDataSource(videoCDI.getLocator());
-        		ds = Manager.createMergingDataSource(dataSources);        
-      		}
-      		else
-        		log.setLog("CDI not found.");
-    	}catch (Exception e) {
-      		log.setLog(e.toString());
-    	}
-    	 captured_ds = Manager.createCloneableDataSource(ds);//capture.getVideoDS());
-		 ds = ( ( SourceCloneable )captured_ds).createClone();
+	        		dataSources[0] = Manager.createDataSource(audioCDI.getLocator());
+        			dataSources[1] = Manager.createDataSource(videoCDI.getLocator());
+        			ds = Manager.createMergingDataSource(dataSources);        
+      			}
+      			else
+        			System.out.println("CDI not found.");
+    		}catch (Exception e) {
+      			System.out.println(e.toString());
+    		}
+    	 	captured_ds = Manager.createCloneableDataSource(ds);//capture.getVideoDS());
+		ds = ( ( SourceCloneable )captured_ds).createClone();
 	
         // Try to create a processor to handle the input media locator
         try {
@@ -327,7 +329,7 @@ public class AVTransmit3 {
 
                 		sendStream = rtpMgrs[i].createSendStream(dataOutput, i);
                 		sendStream.start();
-                		log.setLog("Audio transmission is start");
+                		System.out.println("Audio transmission is start");
             		} catch (Exception  e) {return e.getMessage();}
         	}
 
@@ -403,8 +405,7 @@ public class AVTransmit3 {
                         if (fmts[j].matches(jpegFmt)) {
                             qc = (QualityControl)cs[i];
                             qc.setQuality(val);
-                            log.setLog("- Setting quality to " +
-                                        val + " on " + qc);
+                            System.out.println("- Setting quality to " +val + " on " + qc);
                             break;
                         }
                     }

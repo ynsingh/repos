@@ -84,11 +84,11 @@ public class AnnounceSessionAction extends JPanel implements ActionListener{
 						}else
 							JOptionPane.showMessageDialog(null,"There is some problem in Announced Lecture  !!");
 					}else{
-						log.setLog("insufficient indexServer name in AnnounceSession :" + indexServerName);
+						System.out.println("insufficient indexServer name in AnnounceSession :" + indexServerName);
 					}//else
 				}//if
         		}catch(Exception ex){
-        			log.setLog("Error at actionPerformed()in AnnounceSessionPanel"+ex.getMessage());
+        			System.out.println("Error at actionPerformed()in AnnounceSessionPanel"+ex.getMessage());
         		}
 		}
      	}

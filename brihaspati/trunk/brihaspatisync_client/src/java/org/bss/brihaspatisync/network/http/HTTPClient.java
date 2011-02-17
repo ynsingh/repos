@@ -1,13 +1,11 @@
 package org.bss.brihaspatisync.network.http;
 
-/*
- * HTTPTimer.java
+/**
+ * HTTPClient.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2007-2008
+ * Copyright (c) 20011, ETRG, IIT Kanpur.
  */
-
-//import java.util.Vector;
 
 import java.awt.Frame;
 import java.lang.Long;
@@ -32,19 +30,24 @@ import org.bss.brihaspatisync.network.ReceiveQueueHandler;
 import org.bss.brihaspatisync.network.util.Queue;
 import org.bss.brihaspatisync.network.util.UtilObject;
 
+
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.PostMethod;
+
+import org.apache.commons.httpclient.*;
+import org.apache.commons.httpclient.auth.AuthScope;
+
 /**
  * @author <a href="mailto: ashish.knp@gmail.com"  >Ashish Yadav</a>
  * @author <a href="mailto: arvindjss17@gmail.com" > Arvind Pal </a>
  */
 
-public class HTTPClient extends TimerTask {
+public class HTTPClient extends Thread {
 
 	private String lect_id="";
 	
 	private String reflectorIP ="";
 	
-	private Log log=Log.getController();
-
 	private UtilObject utilObject=UtilObject.getController();
 
         private ClientObject clientObject=ClientObject.getController();
@@ -57,52 +60,60 @@ public class HTTPClient extends TimerTask {
 		this.reflectorIP=reflectorIP;
 		this.lect_id=lect_id;
         }
+	private HttpClient client = new HttpClient();
 
 	public void run() {
                 try {
-                        try {
-				String datastr="nodata";
-				try {
-					if(utilObject.getSendQueueSize() != 0) {
-                        	        	datastr=utilObject.getSendQueue();
-                                        	datastr=java.net.URLEncoder.encode(datastr);
-                                	}
-				}catch(Exception e){log.setLog("Error in Send data "+datastr); }
+			while(true){
+                        	try {
 				
-				String reg="";
-				if(clientObject.getParentReflectorIP()!= null ){
-                                        reg=clientObject.getParentReflectorIP();
-                                        clientObject.setParentReflectorIP("null");
-                                }else{
-                                        reg="null";
-                                }
-				String url="http://"+reflectorIP+":"+refHttpPort+"/"+clientObject.getUserRole()+","+lect_id+"req"+datastr+"req"+reg;
-				URL serverAddress = new URL(url);
-				HttpURLConnection connection = (HttpURLConnection)serverAddress.openConnection();
-                       		connection.setRequestMethod("GET");
-                        	connection.setDoOutput(true);
-                        	connection.connect();
-				try{
-                                	DataInputStream dis =new DataInputStream(new BufferedInputStream(connection.getInputStream()));
-                        		String str="";
-					while((str=dis.readUTF())!=null){
-						str=java.net.URLDecoder.decode(str);
-						utilObject.setRecQueue(str);
-				       	}
-                                	dis.close();
-                 		}catch(Exception ep){
-                        		try {
-                                		connection.disconnect();
-                                        	connection=null;
-                                	}catch(Exception ex){ 
-						log.setLog("connection is not disconnect()"+connection);
-					}
-                   		}	
-                  	}catch(Exception ex) { 
+					String datastr="nodata";
+					try {
+						if(utilObject.getSendQueueSize() != 0) {
+                        	        		datastr=utilObject.getSendQueue();
+							datastr=java.net.URLEncoder.encode(datastr);
+	
+                                		}
+					}catch(Exception e){System.out.println("Error in Send data "+datastr); }
+				
+					String reg="";
+					if(clientObject.getParentReflectorIP()!= null ){
+        	                                reg=clientObject.getParentReflectorIP();
+                	                        clientObject.setParentReflectorIP("null");
+                        	        }else{
+                                	        reg="null";
+                                	}
+	                        	PostMethod method = new PostMethod("http://"+reflectorIP+":"+refHttpPort);
 					
-				JOptionPane.showMessageDialog(null,"Reflector connection failed !!","Reflector Message",JOptionPane.ERROR_MESSAGE);
-
-				log.setLog(" HTTPClient could not connect  "+ex.getMessage()); 
+        	                	client.setConnectionTimeout(8000);
+                	        	method.setRequestBody(clientObject.getUserRole()+","+lect_id+"req"+datastr+"req"+reg);
+                        		method.setRequestHeader("Content-type","text/plain; charset=ISO-8859-1");
+	                        	int statusCode1 = client.executeMethod(method);
+        	                	java.io.BufferedReader rd = new java.io.BufferedReader(new java.io.InputStreamReader(method.getResponseBodyAsStream()));
+                	        	String str;
+                        		while((str = rd.readLine()) != null) {
+						java.util.StringTokenizer Tok = new java.util.StringTokenizer(str);
+						if (Tok.hasMoreElements()) {
+							String str1=(String)Tok.nextElement();
+							String str2=(String)Tok.nextElement();
+							str2=java.net.URLDecoder.decode(str2);
+							if(!str1.equals("nodata"))
+								RuntimeDataObject.getController().setUserList(str1);
+							if(!str1.equals("nodata"))
+								utilObject.setRecQueue(str2);	
+						}
+                        		}
+                        		method.releaseConnection();
+					try {
+						this.sleep(500);
+						this.yield();
+					}catch(Exception ww){
+						System.out.println("=================>  "+ww.getMessage());
+					}	
+	                  	}catch(Exception ex) { 
+					JOptionPane.showMessageDialog(null,"Reflector connection failed !!","Reflector Message",JOptionPane.ERROR_MESSAGE);
+					System.out.println(" HTTPClient could not connect  "+ex.getMessage()); 
+				}
 			}
          	}catch(Exception e){ 
 			

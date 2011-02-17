@@ -50,7 +50,7 @@ public class HttpsUtil{
 	
 	private HttpsURLConnection connection=null;
 	
-	private Log log=Log.getController();
+//	private Log log=Log.getController();
 
 		
 	public static HttpsUtil getController(){
@@ -107,7 +107,7 @@ public class HttpsUtil{
 						return true;
    					else
    						return false;
-   				}catch(Exception e){log.setLog("Error On Line 61"+e.getMessage());}
+   				}catch(Exception e){System.out.println("Error On Line 61"+e.getMessage());}
 				return false;
 			}		
 		});
@@ -181,7 +181,7 @@ public class HttpsUtil{
                            	}
 			}
                 }catch(Exception e){
-                        log.setLog("Error on getIndexingMessage(connection) HttpsUtil.java "+e.getMessage());
+                        System.out.println("Error on getIndexingMessage(connection) HttpsUtil.java "+e.getMessage());
                 }
 		return flag;
         }
@@ -202,7 +202,6 @@ public class HttpsUtil{
 				String str="";
                                 try{
                                         while((str=in.readLine())!=null){
-						log.setLog("str  -> "+str);
 						if(str.startsWith("current")){
 							String str1[]=str.split(",");
 							// store current reflector ipAddress
@@ -212,6 +211,9 @@ public class HttpsUtil{
 							// store parent reflector ipaddress of current reflector 
 							parent_ref_ip="parent"+str1[1].replaceAll("parent/","");
 							// set parent reflector ipaddress of current reflector in ClientObject 
+							// for use in runtime
+							String handraise_port=str1[2].replaceAll("port=","");
+							//RuntimeDataObject.getController().setAudioHandraisePort(handraise_port);
 							// for use in runtime
 							ClientObject.getController().setParentReflectorIP(parent_ref_ip);	
 						}					
@@ -225,7 +227,7 @@ public class HttpsUtil{
                                 }
                         }
                 }catch(Exception e){
-                        log.setLog("Error on getReflectorAddress() in HttpsUtil.java "+e.getMessage());
+                        System.out.println("Error on getReflectorAddress() in HttpsUtil.java "+e.getMessage());
                 }
                 return ref_ip;
         }
@@ -252,7 +254,7 @@ public class HttpsUtil{
                                 }
                         }
                 }catch(Exception e){
-                        log.setLog("Error on getvectorMessage(connection) HttpsUtil.java "+e.getMessage());
+                        System.out.println("Error on getvectorMessage(connection) HttpsUtil.java "+e.getMessage());
                         msgList.clear();
                         return msgList;
                 }
@@ -284,7 +286,7 @@ public class HttpsUtil{
                         	}
 
 			}catch(Exception e){
-                                log.setLog("Error at getSessionList()in HttpsConnection : "+e.getMessage());
+                                System.out.println("Error at getSessionList()in HttpsConnection : "+e.getMessage());
                         }
                 }
                 return userlist;
@@ -301,6 +303,7 @@ public class HttpsUtil{
 			return true;
 		else
 		    return false;  	
+		
    	}
 	
 		

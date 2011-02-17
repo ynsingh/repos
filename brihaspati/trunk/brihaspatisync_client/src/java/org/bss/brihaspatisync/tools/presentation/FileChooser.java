@@ -17,7 +17,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
 import org.bss.brihaspatisync.network.Log;
-import org.bss.brihaspatisync.network.ftp.FTPClient;
+
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
  * @author <a href="mailto:arvindjass17@gmail.com">Arvind Pal </a>
@@ -79,7 +79,6 @@ public class FileChooser implements Runnable {
 	public void run(){
                 while(rec_Flag){
                         try{
-				//label.setText("Uploading process ---");
 				ftpc.setlabelText("Uploading process -----");	
                         	dst=new File("temp/presentation.ppt");
                                	dst=new File(dst.getAbsolutePath().toString());
@@ -111,11 +110,9 @@ public class FileChooser implements Runnable {
                 in.close();
                 out.close();	
 		ftpc.setlabelText("Uploading process ---");
-    		FTPClient.getController().startFTPClient("POST");
 		ftpc.setlabelText("Uploading process -----");
 		PresentationPanel.getController().stopTimer(10000);
 		System.out.println("PPT File  Upload Successfully !! ");	
-		FTPClient.getController().createppt_TO_Images();
 		stop();
         }
 }
