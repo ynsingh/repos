@@ -71,6 +71,7 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
  * @author  <a href="rekha_20july@yahoo.co.in">Rekha Pal</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @ modified date: 13-Oct-2010 (Shaista)
+ * @ modified date: 15-Feb-2011 (Shaista)
  */
 
 public class DBContent extends SecureScreen
@@ -94,8 +95,7 @@ public class DBContent extends SecureScreen
 			context.put("UserName",Username);
 			String frompath=data.getParameters().getString("from");
                         context.put("from",frompath);
-                        context.put("tdcolor",pp.getString("count",""));
-			ErrorDumpUtil.ErrorLog("\n\n\nDBContent.java countTemp=" +pp.getString("countTemp",""));
+                        context.put("tdcolor",pp.getString("count","4"));
                         context.put("tdcolor1",pp.getString("countTemp",""));
            		/**	
 	    		* Retrive the UserId from Turbine_User table

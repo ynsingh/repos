@@ -8,7 +8,8 @@
  * @modified date: 29-08-2010, 24-09-2010 (Shaista)
  * @author <a href="palseema30@gmail.com">ManoramaPal</a>
  * @author <a href="kishore.shukla@gmail.com">Kishore Kumar Shukla</a>
- *  @modified date: 07-12-2010
+ * @modified date: 07-12-2010
+ * @modified date: 15-02-2011
 *#
 
 $page.setTitle("Login in Brihaspati")
@@ -107,6 +108,7 @@ $page.setBgColor($ui.bgcolor)
         <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","french")"> $brih_french 
         <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","german")"> $brih_german 
         <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","greek")"> $brih_greek 
+        <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","gujrati")"> $brih_gujrati 
         <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","gurmukhi")"> $brih_gurmukhi 
         <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","hindi")"> $brih_hindi 
         <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","italian")"> $brih_italian
@@ -114,6 +116,7 @@ $page.setBgColor($ui.bgcolor)
         <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","korean")"> $brih_korean 
         <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","marathi")"> $brih_marathi 
         <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","malayalam")"> $brih_malayalam 
+        <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","nepali")"> $brih_nepali 
         <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","russian")"> $brih_russian
         <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","spanish")"> $brih_spanish
 	<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","tamil")"> $brih_tamil
@@ -140,6 +143,8 @@ $page.setBgColor($ui.bgcolor)
                 <option>$brih_german </option>
         #elseif($lang == "greek")
 	        <option> $brih_greek </option>
+        #elseif($lang == "gujrati")
+	        <option> $brih_gujrati </option>
         #elseif($lang == "gurmukhi")
                 ##<option>$brih_gurmukhi ($brih_gurmukhi)</option>
                 <option>$brih_gurmukhi </option>
@@ -161,6 +166,8 @@ $page.setBgColor($ui.bgcolor)
         #elseif($lang == "marathi")
                 ##<option>$brih_marathi ($brih_marathi)</option>
                 <option>$brih_marathi </option>
+        #elseif($lang == "nepali")
+                <option>$brih_nepali </option>
 	#elseif($lang == "tamil")
                  ##<option>$brih_tamil ($brih_tamil)</option>
                  <option>$brih_tamil </option>
@@ -207,8 +214,12 @@ $page.setBgColor($ui.bgcolor)
                 <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","german")"> $brih_german (Deutsch) </option>
         #end
 
-        #if($lang == "greek")
+        #if($lang != "greek")
 	        <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","greek")"> $brih_greek ($brih_greek1)
+	#end
+	
+        #if($lang != "gujrati")
+		<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","gujrati")"> $brih_gujrati ($brih_gujrati1)
 	#end
 
         #if ($lang != "gurmukhi")
@@ -236,9 +247,15 @@ $page.setBgColor($ui.bgcolor)
         #if ($lang != "marathi")
                 <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","marathi")">$brih_marathi ($brih_marathi1) </option>
         #end
+
+        #if($lang != "nepali")
+	        <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","nepali")"> $brih_nepali ($brih_nepali1) 
+	#end
+
         #if ($lang != "russian")
                 <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","russian")"> $brih_russian ($brih_russian1) </option>
         #end
+
         #if ($lang != "spanish")
                 <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","spanish")"> $brih_spanish (EspaýOB) </option>
         #end

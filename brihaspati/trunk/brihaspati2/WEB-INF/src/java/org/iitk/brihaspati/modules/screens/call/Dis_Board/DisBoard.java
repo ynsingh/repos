@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.screens.call.Dis_Board;
 
 /*
  * @(#)DisBoard.java	
- *  Copyright (c) 2005-2007, 2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2007, 2010, 2011 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -65,6 +65,7 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
  * @author  <a href="rekha_20july@yahoo.co.in">Rekha Pal</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @ modified date: 13-Oct-2010 (Shaista)
+ * @ modified date: 13-Feb-2011 (Shaista)
  * 
  */
 
@@ -91,7 +92,7 @@ public class DisBoard extends SecureScreen
                         context.put("mode1",mode1);
                         String grpname=data.getParameters().getString("val1");
                         context.put("val",grpname);
-			context.put("tdcolor",data.getParameters().getString("count",""));	
+			context.put("tdcolor",data.getParameters().getString("count","4"));	
 			context.put("mode1",data.getParameters().getString("mode1",""));	
 
 		 	/**

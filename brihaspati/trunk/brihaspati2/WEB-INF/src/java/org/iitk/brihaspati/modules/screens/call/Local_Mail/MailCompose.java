@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.Local_Mail;
 /*
  * @(#)MailCompose.java	
  *
- *  Copyright (c) 2009 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2009, 2011 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -53,6 +53,8 @@ import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 /**
      
  * @author  <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+ * @ modified date: 13-Feb-2011 (Shaista)
 
  */
 
@@ -82,7 +84,7 @@ public class MailCompose extends SecureScreen
                 context.put("val",grpname);
 		String msg_id="", lang="";
 		lang= (String)user.getTemp("lang");
-		if( lang.equals("hindi") || lang.equals("marathi"))
+		if( (lang.equals("hindi") || lang.equals("marathi")) && !stat.equals(""))
 		{
 			String tempStat = stat;
 		        stat = tempStat.substring(0,5);

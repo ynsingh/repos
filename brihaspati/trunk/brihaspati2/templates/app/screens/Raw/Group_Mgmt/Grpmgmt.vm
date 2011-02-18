@@ -6,8 +6,11 @@
  *  @author <a href="mailto:kshuklak@rediffmail.com ">Kishore kumar shukla</a>
  *  @author <a href="mailto:singh_jaivir@rediffmail.com ">Jaivir Singh</a>
  *  @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
- * @modified date: 31-12-2009, 07-09-2010
- * Contributors: Members of ETRG, I.I.T. Kanpur
+ *  @modified date: 31-12-2009, 07-09-2010
+ *  @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ *  @modified date:jan 17- 2011
+ *  @modified date:Feb 15- 2011
+ *  Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 <head>
 ## This Script usr for Fck Editor in textarea.
@@ -96,45 +99,44 @@ $!data.getMessage()
 	#elseif($tdcolor=="1")
 	<td bgcolor="#AFDCEC">
 	#end
-	<a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm").addPathInfo("count","1")>$WikiCreate $brih_grp</a></td>
+	<a href=$link.setPage("call,Group_Mgmt,Grpmgmt.vm").addPathInfo("count","1")> #if($lang =="hindi") $brih_grp $brih_Of1 $WikiCreate #else $WikiCreate $brih_grp #end </a></td>
 	#if($tdcolor != "2")
 	<td>
 	#elseif($tdcolor=="2")
 	<td bgcolor="#AFDCEC">
 	#end
-    	<a href=$link.setPage("call,Group_Mgmt,Addmembers.vm").addPathInfo("count","2")>$brih_add/$brih_view $brih_member</a></td>
+    	<a href=$link.setPage("call,Group_Mgmt,Addmembers.vm").addPathInfo("count","2")> #if($lang =="hindi") $brih_member $brih_add/$brih_view #else $brih_add/$brih_view $brih_member #end </a></td>
 	#if($tdcolor != "3")
 	<td>
 	#elseif($tdcolor=="3")
 	<td bgcolor="#AFDCEC">
 	#end
-    	<a href=$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("count","3")>$brih_view/$brih_delete $brih_grp</a></td>
+    	<a href=$link.setPage("call,Group_Mgmt,Grp_View_Delete.vm").addPathInfo("count","3")> #if($lang =="hindi") $brih_grp $brih_Of1 $brih_view/$brih_delete #else  $brih_view/$brih_delete $brih_grp #end </a></td>
 	#if($tdcolor != "4")
 	<td>
 	#elseif($tdcolor=="4")
 	<td bgcolor="#AFDCEC">
 	#end
-    	<a href=$link.setPage("call,Group_Mgmt,Editgroup.vm").addPathInfo("count","4")>$brih_edit/$brih_remove $brih_member</a></td>
+    	<a href=$link.setPage("call,Group_Mgmt,Editgroup.vm").addPathInfo("count","4")> #if($lang =="hindi") $brih_member $brih_Of1 $brih_edit/$brih_remove #else $brih_edit/$brih_remove $brih_member #end </a></td>
 	#if($tdcolor != "5")
 	<td>
 	#elseif($tdcolor=="5")
 	<td bgcolor="#AFDCEC">
 	#end
-    	<a href=$link.setPage("call,Group_Mgmt,Activitygroup.vm").addPathInfo("count","5")>$brih_grp $brih_activity</a></td>
-	<td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Creategrp.html","newWin");>$brih_help</a></td>
+    	<a href=$link.setPage("call,Group_Mgmt,Activitygroup.vm").addPathInfo("count","5")> $brih_grp #if($lang =="hindi") $brih_Of #end $brih_activity</a></td>
 #else
 	#if($tdcolor != "1")
 	<td>
 	#elseif($tdcolor=="1")
 	<td bgcolor="#AFDCEC">
 	#end
-    	<a href=$link.setPage("call,Group_Mgmt,Signupform.vm").addPathInfo("count","1")>$brih_join $brih_grp</a></td>
+    	<a href=$link.setPage("call,Group_Mgmt,Signupform.vm").addPathInfo("count","1")> #if($lang =="hindi") $brih_grp $brih_in $brih_join #else $brih_join $brih_grp #end </a></td>
 	#if($tdcolor != "2")
 	<td>
 	#elseif($tdcolor=="2")
 	<td bgcolor="#AFDCEC">
 	#end
-    	<a href=$link.setPage("call,Group_Mgmt,ViewActivity.vm").addPathInfo("count","2")>$brih_view $brih_activity</a></td>
+    	<a href=$link.setPage("call,Group_Mgmt,ViewActivity.vm").addPathInfo("count","2")> #if($lang =="hindi") $brih_activity $brih_Of1 $brih_view #else $brih_view $brih_activity #end </a></td>
 	<td><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/joingroupactivity.html","newWin");>$brih_help</a></td>
 #end
 </tr>
@@ -144,42 +146,44 @@ $!data.getMessage()
 ##<form name="frm" method="post" action=$link.setPage("call,Group_Mgmt,Creategroup.vm").setAction("Groupmanagement")>
 <form name="frm" method="post" action=$link.setPage("call,Group_Mgmt,Grpmgmt.vm").setAction("Groupmanagement")>
 <table bgcolor="$ui.tableColor" width=100% > ## table 3 start
-<tr bgcolor="$ui.menuColor"><td colspan=5 valign="top"> ## td tr 1 satart
+	<tr bgcolor="$ui.menuColor"><td colspan=5 valign="top"> ## td tr 1 satart
                         ##<b><font size=5><I>$brih_course $brih_Groups</I></font></b>
                         #if($lang == "english")
                         <b><font size=5><I>$WikiCreate $brih_grp </I></font></b>
                         #else
-                        <b><font size=5><I>$brih_grp $WikiCreate</I></font></b>
+                        <b><font size=5><I>$brih_grp $brih_Of1 $WikiCreate</I></font></b>
                         #end
-                </td></tr> ##tr 1 end
+        </td></tr> ##tr 1 end
                 #if($flag == "true")
                         <tr><td> ## tr td 2 start
-                                <br>
                                 #if($lang=="english")
-                                &nbsp;&nbsp;<b>$WikiCreate $brih_grp : $brih_grpmsg1</b><br><br>
+                                &nbsp;&nbsp;<b>$WikiCreate $brih_grp: $brih_grpmsg1</b><br><br>
                                 #else
-                                &nbsp;&nbsp;<b>$brih_grp $WikiCreate : $brih_grpmsg1</b><br><br>
+                                &nbsp;&nbsp;<b>$brih_grp $brih_Of1 $WikiCreate: $brih_grpmsg1</b><br><br>
                                 #end
                                 #if($lang=="english")
                                 <input type="radio" checked="true" name="grouptype" value="usagegroup">$WikiCreate $brih_Usage $brih_grp<br>
                                 #else
-                                <input type="radio" checked="true" name="grouptype" value="usagegroup">$brih_Usage $brih_grp $WikiCreate<br>
+                                <input type="radio" checked="true" name="grouptype" value="usagegroup">$brih_Usage $brih_grp $brih_Of1 $WikiCreate<br>
                                 #end
                                 &nbsp;&nbsp;($brih_grpmsg2)<br><br>
-                                #if($lang=="english")
-                                <input type="radio" name="grouptype" value="Multiplegroup">$WikiCreate $brih_multiple1 $brih_grp<br>
-                                &nbsp;&nbsp;($brih_grpmsg7 $brih_grpmsg19 $brih_grpmsg20<br>
-                                &nbsp;&nbsp;$brih_grpmsg8)<br><br>
+                                <input type="radio" name="grouptype" value="Multiplegroup">
+                                #if($lang=="hindi")
+					$brih_multiple1 $brih_grp $brih_Of1 $WikiCreate<br>
+        	                        &nbsp;&nbsp;($brih_grpmsg8 $brih_grpmsg7<br>
+	                                &nbsp;&nbsp;&nbsp;$brih_grpmsg19 $brih_grpmsg20)<br><br>
                                 #else
-                                <input type="radio" name="grouptype" value="Multiplegroup">$brih_multiple1 $brih_grp $WikiCreate<br>
-                                &nbsp;&nbsp;($brih_grpmsg7 $brih_grpmsg19 $brih_grpmsg20) <br><br>
+					$WikiCreate $brih_multiple1 $brih_grp<br>
+                                	&nbsp;&nbsp;($brih_grpmsg7 $brih_grpmsg19 $brih_grpmsg20<br>
+	                                &nbsp;&nbsp;$brih_grpmsg8)<br><br>
 				#end
-                                #if($lang=="english")
-                                <input type="radio" name="grouptype" value="signupgroup">$WikiCreate $brih_grp $brih_signup<br>
+                                <input type="radio" name="grouptype" value="signupgroup">
+                                #if($lang=="hindi")
+					$brih_signup $brih_grp $brih_Of1 $WikiCreate<br><br>
                                 #else
-                                <input type="radio" name="grouptype" value="signupgroup">$brih_grp $brih_signup $WikiCreate<br>
+					$WikiCreate $brih_grp $brih_signup<br><br>
                                 #end
-                                &nbsp;&nbsp;($brih_grpmsg3)
+                                &nbsp;&nbsp;($brih_grpmsg3) <br>
                                 <tr bgcolor="$ui.tableHeaderColor"><td colspan="5">
                                 &nbsp;&nbsp;&nbsp;&nbsp;<input type="button" name="eventSubmit_doCreategrouptype" value="$brih_cont" onClick="checkField1(document.frm, this);"/>
                                 &nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" name="eventSubmit_doCancel" value="$brih_cancel">
@@ -187,18 +191,20 @@ $!data.getMessage()
                 #end
                 #if($actionName == "eventSubmit_doCreategrouptype" && $grouptype == "usagegroup")
                         <tr><td>
-                                #if($lang=="english")
-                                <center><b><font size=4>&nbsp;&nbsp;$WikiCreate $brih_Usage $brih_grp</font></b><br>
+                                <left><b><font size=4>&nbsp;&nbsp;
+                                #if($lang=="hindi")
+                                	$brih_Usage $brih_grp $brih_Of1 $WikiCreate
                                 #else
-                                <br>&nbsp<center><font size=4>$brih_Usage $brih_grp $WikiCreate</font>
+					$WikiCreate $brih_Usage $brih_grp
                                 #end
+				</font></b><br>
                                 <table  border="0" bgcolor="$ui.tableColor" width="100%" colspan=3>
-                                        <tr>
-                                        <td><b><font color=red>*</font>$brih_name $brih_Of1 $brih_grp :</b></td>
+                                        <tr bgcolor="$ui.menuColor">
+                                        <td><b><font color=red>*</font> #if($lang =="hindi") $brih_grp $brih_Of1 $brih_name #else $brih_name $brih_Of1 $brih_grp #end :</b></td>
                                         <td align="left"><input type="text"  size="31" name="groupname"  value=""/></td>
                                         </tr>
                                         <tr>
-                                        <td><b>$brih_desc $brih_Of1 $brih_grp:</b></td>
+                                        <td><b> #if($lang =="hindi") $brih_grp $brih_Of1 $brih_desc #else $brih_desc $brih_Of1 $brih_grp #end :</b></td>
                                         <td align="left" width="2"><textarea id="ta" name="groupdesc" rows=10 cols=80 ></textarea></td>
                                         </tr>
                                 </table>
@@ -210,68 +216,93 @@ $!data.getMessage()
                 <tr><td>
                         #if($grouptype == "Multiplegroup")
                                 #if($lang=="english")
-                                <br><b>&nbsp;&nbsp;$WikiCreate $brih_multiple1 $brih_grp :</b><br>
+                                <br><b>&nbsp;&nbsp;$WikiCreate $brih_multiple1 $brih_grp:</b><br>
                                 #else
-                                <br><b>&nbsp;&nbsp;$brih_multiple1 $brih_grp $WikiCreate :</b><br>
+                                <br><b>&nbsp;&nbsp;$brih_multiple1 $brih_grp $brih_Of1 $WikiCreate:</b><br>
                                #end
                         #else
                                 #if($lang=="english")
-                                <br><b>&nbsp;&nbsp;$WikiCreate $brih_grp $brih_signup :</b><br>
+                                <br><b>&nbsp;&nbsp;$WikiCreate $brih_grp $brih_signup:</b><br>
                                 #else
-                                <br><b>&nbsp;&nbsp; $brih_grp $brih_signup $WikiCreate :</b><br>
+                                <br><b>&nbsp;&nbsp; $brih_signup $brih_grp $brih_Of1 $WikiCreate:</b><br>
                                 #end
                         #end
                         &nbsp;&nbsp;$brih_grpmsg5<br>
                         &nbsp;&nbsp;$brih_grpmsg6<br><br>
-                        <table  border="0" bgcolor="$ui.tableColor" width="100%" colspan=5>
+                        <table  border="0" width="100%" >
                         #if($grouptype =="Multiplegroup")
-                                <tr>
+                                <tr bgcolor="$ui.menuColor"> <td bgcolor="$ui.menuColor" colspan="2"> 
                                 <input type="radio" name="groupmode" value="Mgroup"onClick="this.form.studentno.disabled=true;this.form.studentno.focus();" />
-                                $brih_grpmsg7 $brih_grpmsg19<br><br>
-                                <input type="radio"  checked="true" name="groupmode" value="MRgroup"onClick="this.form.studentno.disabled=false;this.form.studentno.focus();" />
+                                $brih_grpmsg7 $brih_grpmsg19 
+				</td> </tr>
+				<tr><td> 
+                                <input type="radio"  checked="true" name="groupmode" value="MRgroup"onClick="this.form.studentno.disabled=false;this.form.studentno.focus();" /> 
                                 #if($lang=="english")
                                 $brih_grpmsg7 $brih_grpmsg8 $brih_students
                                 #else
                                 $brih_grpmsg7 $brih_grpmsg8
                                 #end
-                                </tr>
+				</td> </tr>
+				 #set($boolFlag = false)
                         #end
-                        <tr>
+			#if($boolFlag)  
+                                <tr>
+                        #else
+                                <tr bgcolor="$ui.menuColor">
+                        #end
 			<td><b>
                                 <font color=red>*</font>
-                                $brih_name $brih_Of1 $brih_grp:</b>
+				#if($lang =="hindi")
+					$brih_grp $brih_Of1 $brih_name:
+				#else
+	                                $brih_name $brih_Of $brih_grp:
+				#end
+				</b>
                                 </td>
                                 <td>
                                 <input type="text"  size="31" name="groupname"  value=""/>
                                 </td>
                         </tr>
-                        <tr>
+			#if($boolFlag)
+                                <tr bgcolor="$ui.menuColor">
+                        #else
+                                <tr>
+                        #end
                                 <td>
-                                &nbsp;<b>$brih_default $brih_desc :</b>
+                                &nbsp;<b>$brih_default $brih_desc:</b>
                                 </td>
                                 <td width="2">
                                 <textarea id="ta" name="groupdesc"  rows=10 cols=80 ></textarea>
                                 </td>
                         </tr>
-                        <tr>
+			#if($boolFlag)
+                                <tr>
+                        #else
+                                <tr bgcolor="$ui.menuColor">
+                        #end
                                 <td><b>
                                 <font color=red>*</font>
-                                ##$brih_nos $brih_groups :</b>
+                                ##$brih_nos $brih_groups:</b>
                                 #if($lang=="english")
-                                $brih_nos $brih_grp :</b>
+                                $brih_nos $brih_grp:
                                 #else
-                                $brih_grp $brih_Of $brih_nos :</b>
+                                $brih_grp $brih_Of $brih_nos:>
                                 #end
+				</b>
                                 </td>
                                 <td>
                                 <input type="text" size="31" name="groupno" value="" onChange="validate(this)">
                                 </td>
                         </tr>
-                        <tr>
+			#if($boolFlag)
+                                <tr bgcolor="$ui.menuColor">
+                        #else
+                                <tr>
+                        #end
                                 <td><b><font color=red>*</font>
                                 ##$brih_nos $brih_students $brih_perg $brih_group:</b>
                                 #if($lang=="english")
-                                $brih_nos $brih_students $brih_perg :</b>
+                                $brih_nos $brih_students $brih_perg:</b>
                                 #else
 				$brih_perg $brih_grp $brih_in $brih_students $brih_Of $brih_nos:</b>
                                 #end
@@ -279,30 +310,30 @@ $!data.getMessage()
                                 <td>
                                 ##<input type="text" size="20" name="studentno" value="" onKeyUp="if (this.disabled) this.value=''" onChange="validate(this)">
                                 #if($grouptype == "Multiplegroup")
-                                <input type="text" size="31" name="studentno"  onClick="this.form.disabled=true" onChange="validate(this)">
+                         	       <input type="text" size="31" name="studentno"  onClick="this.form.disabled=true" onChange="validate(this)">
                                 #else
-                                <input type="text" size="31" name="studentno" onClick="this.form.enabled=true" onChange="validate(this)">
+                                	<input type="text" size="31" name="studentno" onClick="this.form.enabled=true" onChange="validate(this)">
                                 #end
                                 </td>
                         </tr>
                 </table>
         </tr></td>
         #end
-        <br><br>
+        ##<br><br>
         ## end of multiple group
-        <br>
+        ##<br>
         #if($actionName == "eventSubmit_doCreategrouptype" )
         #*<tr><td> ## td tr of 7
                <I><b><font size="3">$brih_students $brih_infos:</b></font>$brih_grpmsg4</b></I><br>
         </tr></td>*#
         <tr><td> ## td tr 8 start
                 <table bgcolor="$ui.tableColor" colspan="5" width="100%"> ## table 7 start
-                        <tr><td align="left" >&nbsp;&nbsp;&nbsp;
+                        <tr bgcolor="$ui.menuColor" ><td align="left" >&nbsp;&nbsp;&nbsp;
                         #if($grouptype=="usagegroup")
                           <input type="button" name="eventSubmit_doSavegroup" value="$WikiSave" onClick="checkField(document.frm,this);"/>
                         #end
                         #if($grouptype=="Multiplegroup")
-                          <input type="button" name="eventSubmit_doSavegroup" value="$WikiSave" onClick="checkField3(document.frm,this);"/>
+			  <input type="button" name="eventSubmit_doSavegroup" value="$WikiSave" onClick="checkField3(document.frm,this);"/>
                         #end
 			#if($grouptype=="signupgroup")
                           <input type="button" name="eventSubmit_doSavegroup" value="$WikiSave" onClick="checkField2(document.frm,this);"/>

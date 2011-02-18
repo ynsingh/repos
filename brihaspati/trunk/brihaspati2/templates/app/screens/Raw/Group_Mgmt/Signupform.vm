@@ -4,6 +4,8 @@
  *  All Rights Reserved.
  *  @author <a href="mailto:seema_020504@yahoo.com ">Seema Pal</a>
  *  @author <a href="mailto:kshuklak@rediffmail.com ">Kishore kumar shukla</a>
+ *  @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ *  @modified date:Feb 15- 2011
  * Contributors: Members of ETRG, I.I.T. Kanpur
  *#
 
@@ -33,20 +35,20 @@ $!data.getMessage()
 </table> ## table 2 end
 <form name="frm" method="post" action=$link.setPage("call,Group_Mgmt,Signupform.vm").setAction("Groupmanagement")>
 #if($Mode == "NoBlank")
-	<table bgcolor="$ui.tabelColor" width=70% > ## table 3 start
-		<tr bgcolor ="$ui.menuColor"><td colspan=5> ## td tr 1 start
+	<table bgcolor="$ui.tabelColor" width=100% > ## table 3 start
+		<tr bgcolor ="$ui.menuColor"><td  bgcolor ="$ui.menuColor" colspan=5> ## td tr 1 start
 			<b><font size=5><I> $brih_grp $brih_Of1 $brih_course :</I></font><font size=4><font color=green><I>$courseid</I></font></font></b>
 		</tr></td> ## td tr 1 end
 	<tr><td>
 	<b>$brih_grpmsg17</b><br><br>
                  <table bgcolor="$ui.tableColor" width="100%">
-			<tr>
-				<td>
+			<tr bgcolor ="$ui.menuColor">
+				<td bgcolor ="$ui.menuColor">
 				<b><font color="Red">*</font>
 				#if($lang=="english")
 				$brih_select $brih_grp :</b>
 				#else
-				$brih_grp $brih_select :</b>
+				$brih_grp $brih_Of3 $brih_select :</b>
 				#end
 				</td>
 				<td>
@@ -61,7 +63,8 @@ $!data.getMessage()
 			</tr>
 			<tr>
         			<td>
-                                <b>$brih_grp $brih_desc :</b>                                                                                                          	    </td>
+				<b>$brih_grp #if($lang=="hindi") $brih_Of1 #end $brih_desc :</b>
+				</td>
                         	<td>
                                 	##<textarea name="groupdesc" rows=5 cols=50 disabled>$!grpdesc</textarea>
                                 	<textarea name="groupdesc" rows=5 cols=50 disabled>[group description]</textarea>
@@ -69,7 +72,7 @@ $!data.getMessage()
 			</tr>
 	</table>
 	</tr></td>
-	<tr bgcolor="$ui.tableColor"><td align="center">
+	<tr bgcolor="$ui.menuColor"><td>
 	#if($lang=="english")
 	<input type="button" name="eventSubmit_doJoinGroup" value="$brih_join $brih_grp" onClick="checkField(document.frm,this);"/>
 	#else

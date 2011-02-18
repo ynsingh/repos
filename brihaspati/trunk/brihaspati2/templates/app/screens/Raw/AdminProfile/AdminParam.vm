@@ -6,7 +6,7 @@
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * modified date: 17-10-2009, 29-09-2010
- * @modified date: 22-11-2010
+ * @modified date: 22-11-2010, 15-02-2011
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 $page.setTitle("Admin Home | Change Parameters")
@@ -81,15 +81,15 @@ $!data.getMessage()
         <td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="eMail" value="$!eMail"></font></td>
    </tr>
    <tr bgcolor="$ui.tableColor">
-        <td width=30><font face="$ui.sansSerifFonts"> $RemoteInstitute $brih_quota ( #if($lang == "hindi")$quota_sze #else  $brih_in $quota_sze #end )</td>
+        <td width=30><font face="$ui.sansSerifFonts"> $RemoteInstitute $brih_quota ($quota_sze)</td>
         <td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="iquota" value="$!iquota"></font></td>
     </tr>
     <tr bgcolor="$ui.tableColor">
-	<td width=30><font face="$ui.sansSerifFonts">$brih_course $brih_quota ( #if($lang == "hindi")$quota_sze #else  $brih_in $quota_sze #end )</td>	
+	<td width=30><font face="$ui.sansSerifFonts">$brih_course $brih_quota ($quota_sze)</td>	
 	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="cquota" value="$!cquota"></font></td>
     </tr>
     <tr bgcolor="$ui.menuColor">
-	<td width=30><font face="$ui.sansSerifFonts">$brih_usr $brih_quota ( #if($lang == "hindi")$quota_sze #else $brih_in $quota_sze #end )</td>	
+	<td width=30><font face="$ui.sansSerifFonts">$brih_usr $brih_quota ($quota_sze)</td>	
 	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="uquota" value="$!uquota"></font></td>
    </tr>
 ##--------------------------------------FAQ---------------------

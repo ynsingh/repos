@@ -42,9 +42,21 @@ import org.apache.turbine.Turbine;
 import java.io.FileOutputStream;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.apache.turbine.services.servlet.TurbineServlet;
-import javax.mail.*;
-import javax.activation.*;
-import javax.mail.internet.*;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.InternetAddress;
+import javax.mail.Message;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.Multipart;
+import javax.mail.internet.MimeMultipart;
+import javax.activation.FileDataSource;
+import javax.activation.DataSource;
+import javax.activation.DataHandler;
+import javax.mail.Transport;
+//import javax.mail.*;
+//import javax.activation.*;
+//import javax.mail.internet.*;
 /**
  * This class is used to send the mail for the concerned activity
  * @author <a href=satyapalsingh@gmail.com>Satyapal Singh</a>

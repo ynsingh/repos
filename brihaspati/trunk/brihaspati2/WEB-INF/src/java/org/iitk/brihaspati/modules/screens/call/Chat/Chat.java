@@ -58,6 +58,7 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @modified date: 10-08-2010 (Shaista)
+ * @modified date: 10-02-2011 (Shaista)
  */
 
 public class Chat extends SecureScreen
@@ -77,9 +78,15 @@ public class Chat extends SecureScreen
 	  	String pword=data.getUser().getPassword();
 		String cid ="";
 		String mode1=data.getParameters().getString("mode","");
+		String stat=data.getParameters().getString("mode1","");
+		//ErrorDumpUtil.ErrorLog("mode1===="+stat+"\n\n\n grpName="+data.getParameters().getString("val1",""));
 		
 		/**
-		 * if { mode is general then room name is General} else {room name is group name}
+		 * if { mode is general then room name is General} 
+		   else {
+			if { status is equal to groupmanagemnt so room name is group name to chat group wise}
+			else{ room name is groupid to chat course wise}
+		    }
 		 * if {role is instructor then save the chat in a .txt file to play back } else {chat doesnt save in .txt file}
 		 * if{ Saved file is exist list of saved file is sent to babylon chat}
 		 * Sending babylon path to save & play back a file.
@@ -87,18 +94,21 @@ public class Chat extends SecureScreen
 		if(mode1.equals("general"))
 		{
 			cid="General";
-			//context.put("course","General");
+                	context.put("mode",mode1);
 		}
-		else
-		{
+		else {
+			if (stat.equals("grpmgmt"))
+			{
+				context.put("grpName",data.getParameters().getString("val1",""));
+				context.put("mode",stat);
+			}
 	  		cid=data.getUser().getTemp("course_id").toString();
                 	context.put("course",data.getUser().getTemp("course_name").toString());
 		}
-		context.put("tdcolor",data.getParameters().getString("count",""));
+		context.put("tdcolor",data.getParameters().getString("count","2"));
 	  	String hostIP=data.getServerName();
 	  	String codeBase=data.getServerScheme()+"://"+hostIP+":"+data.getServerPort()+data.getContextPath()+"/babylon/";
 		int uid=UserUtil.getUID(uname);
-                context.put("mode",mode1);
 
 /**
 		Criteria crt=new Criteria();

@@ -33,6 +33,7 @@ package org.iitk.brihaspati.modules.utils;
 /**
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista Bano</a>
  * @modified date: 29-08-2010, 07-12-2010
+ * @modified date: 15-02-2011
  **/
 
 import java.nio.*;
@@ -206,8 +207,10 @@ public class MultilingualUtil{
                                 	LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_de.properties");
 				else if(lang.equals("greek"))
                                 	LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_gre.properties");
-				else if(lang.equals("gurmukhi"))
+				else if(lang.equals("gujrati"))
                                         LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_gu.properties");
+				else if(lang.equals("gurmukhi"))
+                                        LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_pa.properties");
 	                        else if(lang.equals("hindi"))
 	                               LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_hi.properties");
 				else if(lang.equals("italian"))
@@ -233,7 +236,7 @@ public class MultilingualUtil{
 			} // End Try
 			catch(Exception e)
 			{
-				LangFile = "Exception to select a BrihLang_"+lang+".properties file";
+				LangFile = "Exception to select a BrihLang_"+lang+".properties file does nt exist";
 			}
         	                return LangFile;
         } //End LanguageSelection

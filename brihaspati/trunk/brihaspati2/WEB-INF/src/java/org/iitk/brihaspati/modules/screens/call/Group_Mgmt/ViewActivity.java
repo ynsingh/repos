@@ -39,6 +39,8 @@ package org.iitk.brihaspati.modules.screens.call.Group_Mgmt;
 /**
  *  @author: <a href="mailto:seema_020504@yahoo.com">Seemapal</a>
  *  @author: <a href="mailto:kshuklak@rediffmail.com">Kishore Kumar shukla</a>
+ *  @author: <a href="mailto:shastashekh@hotmail.com">Shaista</a>
+ *  @modified date: 15-02-2011
  */
 
 
@@ -78,6 +80,7 @@ public class ViewActivity extends SecureScreen
                         * Put it in the context for Using in templates
                         * @see UserUtil in Util.
                         */
+			File f1=null;
                 	User user=data.getUser();
 			String username=user.getName();
 			context.put("username",username);
@@ -175,46 +178,50 @@ public class ViewActivity extends SecureScreen
                                                        	context.put("mblist1",uName);
 						}//for3
 						uName = new Vector();
-						for(int s=0;s<list.size();s++)
-                                                {//for4
-                                                        uname=((FileEntry) list.elementAt(s)).getUserName();
-                                                        if(username.equals(uname))
-                                                        {
-                                                                gnam=grpname;
-                       						topicmetadata=new TopicMetaDataXmlReader(groupPath+"/Pollexptime__des.xml");
-                        					Vector grplist2=topicmetadata.getGroupDetails();
-								boolean found=false;
-								String check="";
-								if(grplist2!=null)
-								{
-									for(int b=0;b<grplist2.size();b++)
+						f1=new File(groupPath+"/Pollexptime__des.xml");
+						if(f1.exists())//f1.exists()
+						{
+							for(int s=0;s<list.size();s++)
+        	                                        {//for4
+                	                                        uname=((FileEntry) list.elementAt(s)).getUserName();
+                        	                                if(username.equals(uname))
+                                	                        {
+                                        	                        gnam=grpname;
+                       							topicmetadata=new TopicMetaDataXmlReader(groupPath+"/Pollexptime__des.xml");
+                        						Vector grplist2=topicmetadata.getGroupDetails();
+									boolean found=false;
+									String check="";
+									if(grplist2!=null)
 									{
-										String name1 =((FileEntry) grplist2.elementAt(b)).getName();
-										String stuno=((FileEntry) grplist2.elementAt(b)).getstudentno();
-										String expday=((FileEntry) grplist2.elementAt(b)).getUserName();
-										if(gnam.equals(name1))
+										for(int b=0;b<grplist2.size();b++)
 										{
-											context.put("stuno",stuno);
-											context.put("expday",expday);
+											String name1 =((FileEntry) grplist2.elementAt(b)).getName();
+											String stuno=((FileEntry) grplist2.elementAt(b)).getstudentno();
+											String expday=((FileEntry) grplist2.elementAt(b)).getUserName();
+											if(gnam.equals(name1))
+											{
+												context.put("stuno",stuno);
+												context.put("expday",expday);
+											}
+										}//for
+										for(int c=0;c<grplist2.size();c++)
+                        	                                                {
+                                	                                            	String name2 =((FileEntry) grplist2.elementAt(c)).getName();
+											if(gnam.equals(name2))
+											{
+												found=true;
+											}
 										}
-									}//for
-									for(int c=0;c<grplist2.size();c++)
-                                                                        {
-                                                                            	String name2 =((FileEntry) grplist2.elementAt(c)).getName();
-										if(gnam.equals(name2))
-										{
-											found=true;
-										}
+										if(found==false)
+											context.put("check","nocheck");
 									}
-									if(found==false)
-										context.put("check","nocheck");
-								}
-                                                        }
-						}//for4
+                        	                                }
+							}//for4
+						} // f1.exists()
 					}//if2
 				}//for1
 			}//if1
-			File f1=new File(groupPath+"/PollingList__des.xml");
+			f1=new File(groupPath+"/PollingList__des.xml");
 			if(f1.exists())
                        	topicmetadata=new TopicMetaDataXmlReader(groupPath+"/PollingList__des.xml");
                         Vector grplist1=topicmetadata.getGroupDetails();

@@ -73,6 +73,8 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 * and Selection of student for the Group.
 * @author: <a href="mailto:seema_020504@yahoo.com">seema pal</a>
 * @author: <a href="mailto:kshuklak@rediffmail.com">kishore kumar shukla</a>
+* @modified: <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+* @modifie date: 15-02-2011
 */
 
 
@@ -659,6 +661,7 @@ public class Groupmanagement extends SecureAction
 			String studentno=pp.getString("studentno","");
                         XmlWriter xmlWriter=null;
 			int seq=-1;
+			grpdesc=StringUtil.replaceXmlSpecialCharacters(grpdesc);
 
 			/** Get the current date of the system.*/
                 	Date date=new Date();

@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.Local_Mail;
 /*
  * @(#)MailTestMessage.java	
  *
- *  Copyright (c) 2005-2006, 2008 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006, 2008, 2010-2011 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -59,7 +59,7 @@ import org.iitk.brihaspati.om.MailSendPeer;
  * @author  <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author  <a href="mailto:rachanadwivedi22@gmail.com">Rachana Dwivedi</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
-
+ * @ modified date: 13-Feb-2011 (Shaista)
  */
 
 public class MailTestMessage extends VelocitySecureScreen
@@ -122,7 +122,7 @@ public class MailTestMessage extends VelocitySecureScreen
                 context.put("val",grpname);
 		String msg_id="", lang="";
 		lang= (String)user.getTemp("lang");
-		String counter=pp.getString("count","");
+		String counter=pp.getString("count","1");
 		context.put("tdcolor",counter);
 		//ErrorDumpUtil.ErrorLog("stat="+stat);
 		if (!stat.equals("")){

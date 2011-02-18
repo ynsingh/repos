@@ -10,6 +10,7 @@
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @author  <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @modified date: 31-12-2009, 10-04-2010,07-09-2010, 10-Oct-2010
+ * @modified date: 15-02-2011
 *#
 
 
@@ -193,11 +194,12 @@ $!data.getmessage()
 #end
 ##<tr> 
 ##<tr bgcolor="$ui.menuColor">
-<tr bgcolor="$ui.tableColor"> 
 	#if($mode1 == "grpmgmt")
+	<tr>
         	#formCell("$LocalMail_MailTestMessage_To<font color=Red>*</font>" "addressNames" "$!val")
 		<td colspan=4></td>
         #else
+	<tr bgcolor="$ui.tableColor"> 
 		#if($checkVector == "AddressBook")
 			#formCell("$LocalMail_MailTestMessage_To<font color=Red>*</font>" "addressNames" "$!userVector")
 			<td colspan=4></td>
@@ -206,14 +208,14 @@ $!data.getmessage()
 			<td colspan=4></td>
 		#end	
 	#end
-</tr>
+	</tr>
 #if($stat1=="insertcc")
 	<tr> 
 		#formCell("$LocalMail_CC" "addressNames1" "")
 		<td colspan=4></td>
 	</tr>	
 #end
-#if($stat1=="insertcc")
+#if(($stat1=="insertcc") || ($mode1 == "grpmgmt") )
 	##<tr bgcolor="$ui.menuColor">
 	<tr bgcolor="$ui.tableColor"> 
 #else 
@@ -224,7 +226,8 @@ $!data.getmessage()
 	<td colspan=4></td>
 </tr>
 <input type="hidden" name="hexaStr" value="">
-#if($stat1=="insertcc")
+###if($stat1=="insertcc")
+#if(($stat1=="insertcc") || ($mode1 == "grpmgmt") )
 	<tr>
 #else
 	##<tr bgcolor="$ui.menuColor"> 
@@ -244,7 +247,8 @@ $!data.getmessage()
 	</tr>
 #end
 ##<tr>
-#if($stat1=="insertcc")
+###if($stat1=="insertcc")
+#if(($stat1=="insertcc") || ($mode1 == "grpmgmt") )
 	##<tr>
 	<tr bgcolor="$ui.tableColor"> 
 #else
@@ -253,7 +257,8 @@ $!data.getmessage()
 	#fileUpload("$brih_at_file" "file")
 </tr>
 ##<tr bgcolor="$ui.menuColor">
-#if($stat1=="insertcc")
+###if($stat1=="insertcc")
+#if(($stat1=="insertcc") || ($mode1 == "grpmgmt") )
 	<tr bgcolor="$ui.menuColor"> 
 #else
 	##<tr>
