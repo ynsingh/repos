@@ -39,7 +39,7 @@ package org.iitk.brihaspati.modules.utils;
  * @author: <a href="mailto:noopur.here@gmail.com">Nupur Dixit</a>
  * @author: Aayushi
  */
-public class QuizFileEntry{
+public class QuizFileEntry implements Comparable<QuizFileEntry> {
 			
 	private char replacingChar='$'; //default value;	
 	
@@ -69,6 +69,12 @@ public class QuizFileEntry{
     private String option4;
     private String questionNumber;
     private String fileName;
+    private String id;
+    private String examDate;
+    private String expiryDate;
+    private String startTime;
+    private String endTime;
+    private String allowPractice;
 //-----------------------------OLES
 	
 //	public String getName()
@@ -89,8 +95,30 @@ public class QuizFileEntry{
 //		return temp;
 //	}	
 //---------------------------------Quiz(DEI Agra)-------------------------------
-        
-    	
+     /*
+      * compareTo method is overrided to make quizFileEntry objects comparable
+      */
+    public int compareTo(QuizFileEntry o1){
+    	ErrorDumpUtil.ErrorLog("o1 's question"+o1.getQuestion());
+    	ErrorDumpUtil.ErrorLog("this 's question"+this.getQuestion());
+    if (o1.getQuestion().equals(this.getQuestion())&& o1.getAnswer().equals(this.getAnswer())){ // Are they exactly the same instance?    	
+    	ErrorDumpUtil.ErrorLog("inside exactly same");
+    	return 0;
+    }
+	if (o1 == null){ // Is the object being compared null?
+		ErrorDumpUtil.ErrorLog("inside null situation");
+		return 1;
+	}
+
+	if (!(o1 instanceof QuizFileEntry)){ // Is the object being compared also a QuizFileEntry object?
+		ErrorDumpUtil.ErrorLog("inside wrong object type");
+		return 1;
+	}
+	ErrorDumpUtil.ErrorLog("after every condition check");
+    return 1;
+    }
+    
+    
 	public void setQuizID(String quizID){
 		this.quizID = quizID;
 	}
@@ -265,4 +293,46 @@ public class QuizFileEntry{
      {
              return fileName;
      }
+     public void setID(String id)
+     {
+             this.id=id;
+     }
+     public String  getID()
+     {
+             return id;
+     }
+     
+     public void setExamDate(String examDate){
+ 		this.examDate = examDate;
+ 	}
+ 	public String getExamDate(){
+ 		return examDate;
+ 	}
+ 	public void setExpiryDate(String expiryDate){
+		this.expiryDate = expiryDate;
+	}
+	public String getExpiryDate(){
+		return expiryDate;
+	}
+	public void setStartTime(String startTime){
+		this.startTime = startTime;
+	}
+	public String getStartTime(){
+		return startTime;
+	}
+	public void setEndTime(String endTime){
+		this.endTime = endTime;
+	}
+	public String getEndTime(){
+		return endTime;
+	}
+	public void setAllowPractice(String allowPractice){
+		this.allowPractice = allowPractice;
+	}
+	public String getAllowPractice(){
+		return allowPractice;
+	}
+	
+	
+     
 }

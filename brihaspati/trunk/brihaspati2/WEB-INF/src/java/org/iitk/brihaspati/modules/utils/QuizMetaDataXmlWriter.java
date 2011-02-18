@@ -211,7 +211,42 @@ public class QuizMetaDataXmlWriter
 		}
 		return xmlWriter;
 	}
-
+	
+	/**
+	* This method update file element in existing quizid_questionSetting.xml file with sequence number
+	* and all updated variables values
+	* @param file path String
+	* @param xmlfileName String
+	* @param seqno Integer
+	* @param topicName String
+	* @param question type String
+	* @param question Level String
+	* @param marks per question String
+	* @param number of question String 
+	* @param ID of row String  	
+	* @author <a href="mailto:noopur.here@gmail.com">Nupur Dixit</a>
+	*/
+	public static XmlWriter Update_QuizQuestionSetting(String filePath,String xmlfile, int seq, String topicName,String queType,String queLevel,String queMarks,String noQuestion,String ID)
+	{
+		XmlWriter xmlWriter=null;
+		try{		
+			xmlWriter=new XmlWriter(filePath+"/"+xmlfile);			
+			AttributesImpl ats=new AttributesImpl();		
+			ats.addAttribute("","TopicName","","",StringUtil.replaceXmlSpecialCharacters(topicName));			
+			ats.addAttribute("","QuestionType","","",StringUtil.replaceXmlSpecialCharacters(queType));			
+			ats.addAttribute("","QuestionLevel","","",StringUtil.replaceXmlSpecialCharacters(queLevel));			
+			ats.addAttribute("","QuestionMarks","","",StringUtil.replaceXmlSpecialCharacters(queMarks));			
+			ats.addAttribute("","QuestionNumber","","",StringUtil.replaceXmlSpecialCharacters(noQuestion));			
+			ats.addAttribute("","ID","","",StringUtil.replaceXmlSpecialCharacters(ID));						
+			xmlWriter.changeAttributes("QuizQuestions",ats,seq);
+			ErrorDumpUtil.ErrorLog("after new change attributes ");
+		}
+		catch(Exception e){
+			ErrorDumpUtil.ErrorLog("The exception in Quizxmlwriterutil [XmlWriter update_quizlist]::"+e);			
+		}
+		return xmlWriter;
+	}
+	
 	/**
 	* This method used to update the status of quiz if it is once created
 	* @param file path String
@@ -258,16 +293,19 @@ public class QuizMetaDataXmlWriter
      * @param number of question String      
      * @author <a href="mailto:aayushi.sr@gmail.com">Aayushi</a>
      */
-	public static void appendRandomQuizlist(XmlWriter xmlWriter,String topicName,String type,String level,String marks, String numberQuestion)
-	{		
-		AttributesImpl ats=new AttributesImpl();
-		ats.addAttribute("","TopicName","","",StringUtil.replaceXmlSpecialCharacters(topicName));		
-		ats.addAttribute("","QuestionType","","",StringUtil.replaceXmlSpecialCharacters(type));		
-		ats.addAttribute("","QuestionLevel","","",StringUtil.replaceXmlSpecialCharacters(level));		
-		ats.addAttribute("","QuestionMarks","","",StringUtil.replaceXmlSpecialCharacters(marks));		
-		ats.addAttribute("","QuestionNumber","","",StringUtil.replaceXmlSpecialCharacters(numberQuestion));		
-		xmlWriter.appendElement("QuizQuestions",null,ats);
-		ErrorDumpUtil.ErrorLog("random method in quizmetadataxmlwriter finished ");
+	public static void appendRandomQuizlist(XmlWriter xmlWriter,String topicName,String type,String level,String marks, String numberQuestion, String id)
+	{
+	    ErrorDumpUtil.ErrorLog("random method in quizmetadataxmlwriter begins ");
+	    AttributesImpl ats=new AttributesImpl();
+	    ats.addAttribute("","TopicName","","",StringUtil.replaceXmlSpecialCharacters(topicName));	    
+	    ats.addAttribute("","QuestionType","","",StringUtil.replaceXmlSpecialCharacters(type));
+	    ats.addAttribute("","QuestionLevel","","",StringUtil.replaceXmlSpecialCharacters(level));
+	    ats.addAttribute("","QuestionMarks","","",StringUtil.replaceXmlSpecialCharacters(marks));
+	    ats.addAttribute("","QuestionNumber","","",StringUtil.replaceXmlSpecialCharacters(numberQuestion));
+	    ats.addAttribute("","ID","","",StringUtil.replaceXmlSpecialCharacters(id));
+	  
+	    xmlWriter.appendElement("QuizQuestions",null,ats);
+	    ErrorDumpUtil.ErrorLog("random method in quizmetadataxmlwriter finished ");
 	}
 
 	/**
@@ -281,10 +319,11 @@ public class QuizMetaDataXmlWriter
      * @param option4 String
      * @param Answer String
      * @param file name String
-     * @param type of question String      
+     * @param type of question String  
+     * @param CreationDate String	    
      * @author <a href="mailto:aayushi.sr@gmail.com">Aayushi</a>
      */
-	public static void appendRandomQuizSettinglist(XmlWriter xmlWriter,String questionID,String question,String option1, String option2, String option3, String option4, String answer, String fileName, String typeName)
+	public static void appendRandomQuizSettinglist(XmlWriter xmlWriter,String questionID,String question,String option1, String option2, String option3, String option4, String answer, String fileName, String typeName, String marks, String creationDate)
 	{
 		AttributesImpl ats=new AttributesImpl();
 		ats.addAttribute("","QuestionID","","",StringUtil.replaceXmlSpecialCharacters(questionID));		
@@ -298,9 +337,149 @@ public class QuizMetaDataXmlWriter
 			ErrorDumpUtil.ErrorLog("option4 "+option4);
 		}
 		ats.addAttribute("","Answer","","",StringUtil.replaceXmlSpecialCharacters(answer));		
-		ats.addAttribute("","FileName","","",StringUtil.replaceXmlSpecialCharacters(fileName));		
-
+		ats.addAttribute("","QuestionMarks","","",StringUtil.replaceXmlSpecialCharacters(marks));		
+		ats.addAttribute("","FileName","","",StringUtil.replaceXmlSpecialCharacters(fileName));
+		ats.addAttribute("","CreationDate","","",StringUtil.replaceXmlSpecialCharacters(creationDate));	
 		xmlWriter.appendElement("QuizQuestions",null,ats);           
+	}
+	
+	/** This method is responsible for writing temporary xml file for final question list 
+	 * @param filepath String path to quizid_temp_question.xml
+	 * @param filename String quizid_temp_question.xml 
+	 * @param questionID String ID of question
+	 * @param question String question
+	 * @param options String option1, option2, option3, option4
+	 * @param answer String answer of question
+	 * @param Marks String marks per question
+	 * @param filename String filename of question
+	 * @param question type String type(mcq,tft,sat,lat)	 
+	 * @param CreationDate String	
+	 * @author nupur dixit 
+	 */
+	public static void xmlwriteFinalQuestion(String filePath,String quizXmlPath,String questionID,String question,String option1,String option2, String option3, String option4, String answer,String marksPerQuestion,String fileName,String typeName, String CreationDate){
+		try{
+			XmlWriter xmlWriter=null;
+			File Tempxmls=new File(filePath+"/"+quizXmlPath);
+			ErrorDumpUtil.ErrorLog("full quiz xml path"+Tempxmls.getAbsolutePath());
+			QuizMetaDataXmlReader quizMetaData=null;
+			/**
+			 *Checking for  xml file presence
+			 *@see QuizMetaDataXmlWriter in Util.
+			 */
+			if(!Tempxmls.exists()) {
+				QuizMetaDataXmlWriter.OLESRootOnly(Tempxmls.getAbsolutePath());
+			}						
+			xmlWriter=new XmlWriter(filePath+"/"+quizXmlPath);
+			QuizMetaDataXmlWriter.appendRandomQuizSettinglist(xmlWriter,questionID,question,option1,option2,option3,option4,answer,fileName,typeName,marksPerQuestion,CreationDate);
+			ErrorDumpUtil.ErrorLog("after append question");
+			xmlWriter.writeXmlFile();			
+		}//try
+		catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:xmlwriteQuizlist !!"+e);
+//			data.setMessage("See ExceptionLog !! " );
+		}//catch
+	}//method end
+
+	/**
+	 * This method update file element in existing quizid_question.xml file with sequence number
+	 * and all updated variables values
+	 * @param file path String
+	 * @param xmlfileName String
+	 * @param seqno Integer
+	 * @param questionid String
+	 * @param question String
+	 * @param option1 String
+	 * @param option2 String
+	 * @param option3 String
+	 * @param option4 String
+	 * @param answer String
+	 * @param marks per question String
+	 * @param file name String 
+	 * @author <a href="mailto:aayushi.sr@gmail.com">Aayushi</a>
+	 */
+	public static XmlWriter UpdateQuizQuestion(String filePath,String xmlfile, int seq, String questionID, String question, String option1, String option2, String option3, String option4, String answer, String questionMarks, String fileName)
+	{
+		XmlWriter xmlWriter=null;
+		try{
+			xmlWriter=new XmlWriter(filePath+"/"+xmlfile);
+			AttributesImpl ats=new AttributesImpl();
+			
+			ats.addAttribute("","QuestionID","","",StringUtil.replaceXmlSpecialCharacters(questionID));			
+			ats.addAttribute("","Question","","",StringUtil.replaceXmlSpecialCharacters(question));
+			ats.addAttribute("","OptionA","","",StringUtil.replaceXmlSpecialCharacters(option1));
+			ats.addAttribute("","OptionB","","",StringUtil.replaceXmlSpecialCharacters(option2));
+			ats.addAttribute("","OptionC","","",StringUtil.replaceXmlSpecialCharacters(option3));
+			ats.addAttribute("","OptionD","","",StringUtil.replaceXmlSpecialCharacters(option4));
+			ats.addAttribute("","Answer","","",StringUtil.replaceXmlSpecialCharacters(answer));			
+			ats.addAttribute("","QuestionMarks","","",StringUtil.replaceXmlSpecialCharacters(questionMarks));			
+			ats.addAttribute("","FileName","","",StringUtil.replaceXmlSpecialCharacters(fileName));			
+						
+			xmlWriter.changeAttributes("QuizQuestions",ats,seq-1);
+		}
+		catch(Exception e){
+			ErrorDumpUtil.ErrorLog("The exception in Quizxmlwriterutil [XmlWriter update_quizquestionlist]::"+e);			
+		}
+		return xmlWriter;
+	}
+	
+	
+	/**
+	* This method update file element in existing xml file with sequence number
+	* and all updated variables values
+	* @param file path String
+	* @param quizPath String
+	* @param seqno Integer
+	* @param quizid String
+	* @param start date String
+	* @param start time String
+	* @param end date String
+	* @param end time String
+	* @param allow practice String 
+	* @author <a href="mailto:aayushi.sr@gmail.com">Aayushi</a>
+	*/
+	public static XmlWriter announceQuiz(String filePath,String quizPath,int seq,String quizID,String startDate,String startTime,String endDate,String endTime,String allow)
+	{
+		XmlWriter xmlWriter=null;
+		try{
+			QuizMetaDataXmlReader quizMetaData=new QuizMetaDataXmlReader(filePath+"/"+quizPath);
+			Vector v=quizMetaData.getQuiz_Detail(quizID);			
+			xmlWriter=new XmlWriter(filePath+"/"+quizPath);
+			for(int i=0;i<v.size();i++)
+			{				
+				String quizName=((QuizFileEntry)v.get(i)).getQuizName();	
+				String maxMarks=((QuizFileEntry)v.get(i)).getMaxMarks();
+				String maxTime=((QuizFileEntry)v.get(i)).getMaxTime();
+				String noQuestion=((QuizFileEntry)v.get(i)).getnoQuestion();
+				String status=((QuizFileEntry)v.get(i)).getQuizStatus();
+				String fileName=((QuizFileEntry)v.get(i)).getQuizFileName();
+				String creationDate=((QuizFileEntry)v.get(i)).getCreationDate();
+				String modifiedDate=((QuizFileEntry)v.get(i)).getModifiedDate();
+				String quizMode = ((QuizFileEntry)v.get(i)).getQuizMode();
+								
+				AttributesImpl ats=new AttributesImpl();		
+				ats.addAttribute("","QuizID","","",StringUtil.replaceXmlSpecialCharacters(quizID));			
+				ats.addAttribute("","QuizName","","",quizName);			
+				ats.addAttribute("","MaxMarks","","",maxMarks);			
+				ats.addAttribute("","MaxTime","","",maxTime);			
+				ats.addAttribute("","NumberQuestion","","",noQuestion);			
+				ats.addAttribute("","status","","",status);			
+				ats.addAttribute("","Filename","","",fileName);			
+				ats.addAttribute("","CreationDate","","",creationDate);
+				ats.addAttribute("","ModifiedDate","","",modifiedDate);
+				ats.addAttribute("","QuizMode","","",quizMode);
+				ats.addAttribute("","ExamDate","","",StringUtil.replaceXmlSpecialCharacters(startDate));
+				ats.addAttribute("","StartTime","","",StringUtil.replaceXmlSpecialCharacters(startTime));
+				ats.addAttribute("","ExpiryDate","","",StringUtil.replaceXmlSpecialCharacters(endDate));
+				ats.addAttribute("","EndTime","","",StringUtil.replaceXmlSpecialCharacters(endTime));
+				ats.addAttribute("","AllowPractice","","",StringUtil.replaceXmlSpecialCharacters(allow));
+
+				xmlWriter.changeAttributes("Quiz",ats,seq);
+			}
+		}
+		catch(Exception e){
+			ErrorDumpUtil.ErrorLog("The exception in Quizxmlwriterutil [XmlWriter announceQuiz]::"+e);			
+		}
+		return xmlWriter;
 	}
 
 }

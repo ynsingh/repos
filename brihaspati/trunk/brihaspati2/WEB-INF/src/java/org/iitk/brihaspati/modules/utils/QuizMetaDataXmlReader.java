@@ -36,6 +36,10 @@ package org.iitk.brihaspati.modules.utils;
  *
  */
 
+import java.sql.Date;
+import java.sql.Time;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Vector;
 import org.xml.sax.Attributes;
@@ -48,30 +52,26 @@ import org.iitk.brihaspati.modules.utils.QuizFileEntry;
  * @author: <a href="mailto:aayushi.sr@gmail.com">Aayushi</a>
  */
 
-public class QuizMetaDataXmlReader
-{
+public class QuizMetaDataXmlReader{
 	XmlReader xr;
 	/**
 	 * This method create XmlReader type object 
 	 * @param file String
 	 */
-	public QuizMetaDataXmlReader(String file) throws Exception
-	{
+	public QuizMetaDataXmlReader(String file) throws Exception{
 		xr=new XmlReader(file);
 	}
+	
 	/**
 	 * This method get details of Topic Description 
 	 * @return String
 	 */
-
-	public String getTopicDescription()
-	{
+	public String getTopicDescription(){
 		XmlData xmlDesc=xr.getElement("Desc",0);
 		return xmlDesc.getData();
 	}
 
-	public String getActivity()
-	{
+	public String getActivity(){
 		XmlData xmlactivity=xr.getElement("activity",0);
 		return xmlactivity.getData();
 	}
@@ -81,19 +81,14 @@ public class QuizMetaDataXmlReader
 	 * @return Vector
 	 * @author Nupur Dixit
 	 **/
-	public Vector getQuesBanklist_Detail()
-	{
+	public Vector getQuesBanklist_Detail(){
 		Vector vt=new Vector();
-		try
-		{
+		try{
 			XmlData files[]=xr.getElements("Quiz");
-			ErrorDumpUtil.ErrorLog("before if inside quiz reader");
-			if(files!=null)
-			{
+			if(files!=null){
 				Attributes ats;
 				String quizID, quizName,maxMarks,maxTime,noQuestion,creationDate,fileName, status,quizMode,modifiedDate;				
-				for(int j=0;j<files.length;j++)
-				{
+				for(int j=0;j<files.length;j++){
 					QuizFileEntry fileEntry=new QuizFileEntry();
 					ats=files[j].getAttributes();					
 					quizID = ats.getValue("QuizID");
@@ -120,13 +115,12 @@ public class QuizMetaDataXmlReader
 				}
 				return vt;
 			}
-		}
-		catch(Exception e)
-		{
-			ErrorDumpUtil.ErrorLog("The exception in xmlreaderutil in OLESmethod ::"+e);			
+		}catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Util[QuizMetaDataXmlReader] method:getQuesBanklist_Detail !! "+e);		
 		}
 		return null;
 	}
+	
 	/**
 	 * This method get maximum quizid to generate new quizID           
 	 * @return String
@@ -137,12 +131,10 @@ public class QuizMetaDataXmlReader
 		Vector vt=new Vector();
 		try {
 			XmlData files[]=xr.getElements("Quiz");
-			ErrorDumpUtil.ErrorLog("before if inside quiz reader");
 			int max = 0;
 			if(files!=null) {
 				Attributes ats;
 				String quizID, quizName,maxMarks,maxTime,noQuestion,creationDate,fileName, status;
-				ErrorDumpUtil.ErrorLog("after if inside quiz reader"+files.length);
 				for(int j=0;j<files.length;j++) {
 					QuizFileEntry fileEntry=new QuizFileEntry();
 					ats=files[j].getAttributes();
@@ -156,45 +148,71 @@ public class QuizMetaDataXmlReader
 				return maxQuizID;
 			}
 			return maxQuizID;
-		}
-		catch(Exception e){
-			ErrorDumpUtil.ErrorLog("The exception in xmlreaderutil in OLESmethod ::"+e);			
+		}catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Util[QuizMetaDataXmlReader] method:getMaxQuizID !! "+e);			
 		}
 		return maxQuizID;
 	}
         
 	/**
-	 * This method get quiz_questions detail from the quizID_Questions.xml           
+	 * This method get quiz_questions detail from the quizID_Questions.xml except the specified topicid        
+	 * @param topicID String  
+	 * @return vector
+	 * @author Nupur Dixit.
+	 */
+	public Vector getQuizQuestionDetail(String id){
+		Vector vt=new Vector();
+		try{
+			XmlData files[]=xr.getElements("QuizQuestions");
+			if(files!=null){
+				Attributes ats;
+				for(int j=0;j<files.length;j++){
+					QuizFileEntry fileEntry=new QuizFileEntry();
+					ats=files[j].getAttributes();
+					if(ats.getValue("ID").equalsIgnoreCase(id)){						
+					}
+					else{
+						fileEntry.setID(ats.getValue("ID"));
+						fileEntry.setTopic(ats.getValue("TopicName"));
+						fileEntry.setQuestionType(ats.getValue("QuestionType"));
+						fileEntry.setQuestionLevel(ats.getValue("QuestionLevel"));
+						fileEntry.setMarksPerQuestion(ats.getValue("QuestionMarks"));
+						fileEntry.setQuestionNumber(ats.getValue("QuestionNumber"));						
+						vt.add(fileEntry);						
+					}					
+				}        			
+			}        		
+		}catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Util[QuizMetaDataXmlReader] method:getQuizQuestionDetail(id) !! "+e);			
+		}    
+		return vt;
+	}	
+	
+	/**
+	 * This method get quiz_questions detail from the quizID_QuestionSetting.xml           
 	 * @return vector
 	 * @author Aayushi Sr.
 	 */
-	public Vector getQuizQuestionDetail()
-	{
+	public Vector getQuizQuestionDetail(){
 		Vector vt=new Vector();
-		try
-		{
+		try{
 			XmlData files[]=xr.getElements("QuizQuestions");
-			if(files!=null)
-			{
+			if(files!=null){
 				Attributes ats;
-				ErrorDumpUtil.ErrorLog("length is == "+files.length);
-				for(int j=0;j<files.length;j++)
-				{
+				for(int j=0;j<files.length;j++){
 					QuizFileEntry fileEntry=new QuizFileEntry();
 					ats=files[j].getAttributes();
-					ErrorDumpUtil.ErrorLog("inside quiz reader"+j);
+					fileEntry.setID(ats.getValue("ID"));
 					fileEntry.setTopic(ats.getValue("TopicName"));
 					fileEntry.setQuestionType(ats.getValue("QuestionType"));
 					fileEntry.setQuestionLevel(ats.getValue("QuestionLevel"));
 					fileEntry.setMarksPerQuestion(ats.getValue("QuestionMarks"));
 					fileEntry.setQuestionNumber(ats.getValue("QuestionNumber"));
-					vt.add(fileEntry);        				                                        
+					vt.add(fileEntry);					
 				}        			
 			}        		
-		}
-		catch(Exception e)
-		{
-			ErrorDumpUtil.ErrorLog("The exception in xmlreaderutil in getquizquestiondetail ::"+e);			
+		}catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Util[QuizMetaDataXmlReader] method:getQuizQuestionDetail !! "+e);			
 		}    
 		return vt;
 	}
@@ -203,166 +221,236 @@ public class QuizMetaDataXmlReader
 	 * This method get total counting and marks counting of already inserted questions
 	 * @param xmlReader QuizMetaDataXmlReader (reader of quizId_questions.xml)
 	 * @param quizID String
+	 * @param id String
 	 * @return hashmap
-	 * @author nupur dixit
+	 * @author Nupur Dixit
+	 */
+	public HashMap getQuizQuestionNoMarks(QuizMetaDataXmlReader questionReader,String quizID, String id){
+		HashMap hm = new HashMap(); 
+		try{
+			int markscount = 0;
+			int numberofquestionsInserted = 0;
+			Vector questionList = new Vector();			
+			questionList = questionReader.getQuizQuestionDetail(id);
+			if(questionList!=null & questionList.size()!=0){	        		
+				for(int j=0;j<questionList.size();j++){
+					int question = Integer.parseInt(((QuizFileEntry) questionList.elementAt(j)).getQuestionNumber());
+					int marks = Integer.parseInt(((QuizFileEntry) questionList.elementAt(j)).getMarksPerQuestion());
+					numberofquestionsInserted = numberofquestionsInserted + question;
+					markscount = markscount + question*marks;
+				}				     	
+			}
+			hm.put("marks", markscount);
+			hm.put("noQuestion", numberofquestionsInserted);					        			        		        			        	        		      		
+		}catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Util[QuizMetaDataXmlReader] method:getQuizQuestionNoMarks(id) !! "+e);			
+		}    
+		return hm;	
+	}
+        
+	/**
+	 * This method get total counting and marks counting of already inserted questions
+	 * @param xmlReader QuizMetaDataXmlReader (reader of quizId_questions.xml)
+	 * @param quizID String
+	 * @return hashmap
+	 * @author Nupur Dixit
 	 */
 	public HashMap getQuizQuestionNoMarks(QuizMetaDataXmlReader questionReader,String quizID){
 		HashMap hm = new HashMap(); 
 		try{
 			int markscount = 0;
 			int numberofquestionsInserted = 0;
-			Vector questionList = new Vector();
+			Vector questionList = new Vector();			
 			questionList = questionReader.getQuizQuestionDetail();
 			if(questionList!=null & questionList.size()!=0){	        		
 				for(int j=0;j<questionList.size();j++){
-					markscount = markscount + Integer.parseInt(((QuizFileEntry) questionList.elementAt(j)).getMarksPerQuestion());
-					numberofquestionsInserted = numberofquestionsInserted + Integer.parseInt(((QuizFileEntry) questionList.elementAt(j)).getQuestionNumber());
+					int question = Integer.parseInt(((QuizFileEntry) questionList.elementAt(j)).getQuestionNumber());
+					int marks = Integer.parseInt(((QuizFileEntry) questionList.elementAt(j)).getMarksPerQuestion());
+					numberofquestionsInserted = numberofquestionsInserted + question;
+					markscount = markscount + question*marks;
 				}				     	
 			}
 			hm.put("marks", markscount);
-			hm.put("noQuestion", numberofquestionsInserted);
-			ErrorDumpUtil.ErrorLog("marks & number of question inserted "+markscount+numberofquestionsInserted);		        			        		        			        	        		      		
-		}
-		catch(Exception e){
-			ErrorDumpUtil.ErrorLog("The exception in xmlreaderutil in getQuizQuestionNoMarks ::"+e);			
+			hm.put("noQuestion", numberofquestionsInserted);					        			        		        			        	        		      		
+		}catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Util[QuizMetaDataXmlReader] method:getQuizQuestionNoMarks !! "+e);			
 		}    
 		return hm;	
-	}//method end
-        
+	}
+	
 	/**
-	 * This method get quiz detail on the basis of the passed status    
+     * This method get quiz detail on the basis of the passed status   
+     * @param status String
+     * @return vector
+     * @author Nupur Dixit
+     */
+    public Vector getStatusQuiz_Detail(String status){
+        Vector vt=new Vector();
+        try{
+            XmlData files[]=xr.getElements("Quiz");
+            if(files!=null){
+                Attributes ats;
+                String quizID, quizName,maxMarks,maxTime,noQuestion,creationDate,quizFileName, quizStatus,modifiedDate,quizMode;
+                String startDate, startTime, endDate, endTime, allowPractice;
+                for(int j=0;j<files.length;j++){
+                    QuizFileEntry fileEntry=new QuizFileEntry();
+                    ats=files[j].getAttributes();
+                    quizID = ats.getValue("QuizID");
+                    quizName = ats.getValue("QuizName");
+                    maxMarks = ats.getValue("MaxMarks");
+                    maxTime = ats.getValue("MaxTime");
+                    noQuestion = ats.getValue("NumberQuestion");
+                    creationDate = ats.getValue("CreationDate");
+                    quizFileName = ats.getValue("Filename");
+                    quizStatus = ats.getValue("status");
+                    quizMode = ats.getValue("QuizMode");
+                    modifiedDate = ats.getValue("ModifiedDate");
+                    startDate = ats.getValue("ExamDate");
+                    startTime = ats.getValue("StartTime");
+                    endDate = ats.getValue("ExpiryDate");
+                    endTime = ats.getValue("EndTime");
+                    allowPractice = ats.getValue("AllowPractice");
+                    if(quizStatus.equalsIgnoreCase(status)){
+                        fileEntry.setQuizID(quizID);
+                        fileEntry.setQuizName(quizName);
+                        fileEntry.setMaxMarks(maxMarks);
+                        fileEntry.setMaxTime(maxTime);
+                        fileEntry.setQuizStatus(quizStatus);
+                        fileEntry.setCreationDate(creationDate);
+                        fileEntry.setnoQuestion(noQuestion);
+                        fileEntry.setQuizFileName(quizFileName);
+                        fileEntry.setQuizMode(quizMode);
+                        fileEntry.setModifiedDate(modifiedDate);
+                        fileEntry.setExamDate(startDate);
+                        fileEntry.setStartTime(startTime);
+                        fileEntry.setExpiryDate(endDate);
+                        fileEntry.setEndTime(endTime);
+                        fileEntry.setAllowPractice(allowPractice);
+                        vt.add(fileEntry);
+                    }                                       
+                }
+                return vt;
+            }
+        }catch(Exception e){
+            ErrorDumpUtil.ErrorLog("Error in Util[QuizMetaDataXmlReader] method:getStatusQuiz_Detail !! "+e);           
+        }
+        return null;
+    }
+	/**
+	 * This method get quiz detail on the basis of the passed quizmode    
 	 * @param status String
 	 * @return vector
-	 * @author nupur dixit
+	 * @author Nupur Dixit
 	 */
-	public Vector getStatusQuiz_Detail(String status)
-	{
-		ErrorDumpUtil.ErrorLog("inside function "+status);
+	public Vector getModeQuiz_Detail(String quizMode){
 		Vector vt=new Vector();
-		try
-		{
+		try{
 			XmlData files[]=xr.getElements("Quiz");
-			ErrorDumpUtil.ErrorLog("before if inside quiz reader");
-			if(files!=null)
-			{
+			if(files!=null){
 				Attributes ats;
-				String quizID, quizName,maxMarks,maxTime,noQuestion,creationDate,quizFileName, quizStatus,modifiedDate,quizMode;
-				ErrorDumpUtil.ErrorLog("after if inside quiz reader"+files.length);
-				for(int j=0;j<files.length;j++)
-				{
+				String quizID, quizName,maxMarks,maxTime,noQuestion,quizmode;
+				for(int j=0;j<files.length;j++){
 					QuizFileEntry fileEntry=new QuizFileEntry();
 					ats=files[j].getAttributes();
-					ErrorDumpUtil.ErrorLog("inside for of quiz reader"+j);
 					quizID = ats.getValue("QuizID");
 					quizName = ats.getValue("QuizName");
 					maxMarks = ats.getValue("MaxMarks");
 					maxTime = ats.getValue("MaxTime");
 					noQuestion = ats.getValue("NumberQuestion");
-					creationDate = ats.getValue("CreationDate");
-					quizFileName = ats.getValue("Filename");
-					quizStatus = ats.getValue("status");
-					quizMode = ats.getValue("QuizMode");
-					modifiedDate = ats.getValue("ModifiedDate");
-					if(quizStatus.equalsIgnoreCase(status)){
+					quizmode = ats.getValue("QuizMode");
+					if(quizmode.equalsIgnoreCase(quizMode)){
 						fileEntry.setQuizID(quizID);
 						fileEntry.setQuizName(quizName);
 						fileEntry.setMaxMarks(maxMarks);
 						fileEntry.setMaxTime(maxTime);
-						fileEntry.setQuizStatus(quizStatus);
-						fileEntry.setCreationDate(creationDate);
 						fileEntry.setnoQuestion(noQuestion);
-						fileEntry.setQuizFileName(quizFileName);
 						fileEntry.setQuizMode(quizMode);
-						fileEntry.setModifiedDate(modifiedDate);
 						vt.add(fileEntry);
 					}                                        
 				}
 				return vt;
 			}
-		}
-		catch(Exception e)
-		{
-			ErrorDumpUtil.ErrorLog("The exception in xmlreaderutil in OLESmethod ::"+e);
+		}catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Util[QuizMetaDataXmlReader] method:getModeQuiz_Detail !! "+e);			
 		}
 		return null;
 	}
 
-
 	/**
-	 * This method get quiz detail on the basis of the passed quizID    
-	 * @param quizID String
-	 * @return vector
-	 * @author nupur dixit
-	 */        
-	public Vector getQuiz_Detail(String quizid)
-	{
-		Vector vt=new Vector();
-		try
-		{
-			XmlData files[]=xr.getElements("Quiz");
-			ErrorDumpUtil.ErrorLog("value of passes quiz id"+quizid);
-			if(files!=null)
-			{
-				Attributes ats;
-				String quizID, quizName,maxMarks,maxTime,noQuestion,creationDate,quizFileName, quizStatus,quizMode,modifiedDate; 			
-				for(int j=0;j<files.length;j++)
-				{
-					QuizFileEntry fileEntry=new QuizFileEntry();
-					ats=files[j].getAttributes();
-					ErrorDumpUtil.ErrorLog("inside for of quiz reader"+j);
-					quizID = ats.getValue("QuizID");
-					quizName = ats.getValue("QuizName");
-					maxMarks = ats.getValue("MaxMarks");
-					maxTime = ats.getValue("MaxTime");
-					noQuestion = ats.getValue("NumberQuestion");
-					creationDate = ats.getValue("CreationDate");
-					quizFileName = ats.getValue("Filename");
-					quizStatus = ats.getValue("status");
-					quizMode = ats.getValue("QuizMode");
-					modifiedDate = ats.getValue("ModifiedDate");        				
-					if(quizID.equalsIgnoreCase(quizid)){
-						fileEntry.setQuizID(quizID);
-						fileEntry.setQuizName(quizName);
-						fileEntry.setMaxMarks(maxMarks);
-						fileEntry.setMaxTime(maxTime);
-						fileEntry.setQuizStatus(quizStatus);
-						fileEntry.setCreationDate(creationDate);
-						fileEntry.setnoQuestion(noQuestion);
-						fileEntry.setQuizFileName(quizFileName);
-						fileEntry.setQuizMode(quizMode);
-						fileEntry.setModifiedDate(modifiedDate);
-						vt.add(fileEntry);
-						ErrorDumpUtil.ErrorLog("value of status in file entry"+fileEntry.getQuizStatus());
-					}                                        
-				}
-				ErrorDumpUtil.ErrorLog("size of vector"+vt.size());
-				return vt;
-			}
-		}
-		catch(Exception e)
-		{
-			ErrorDumpUtil.ErrorLog("The exception in xmlreaderutil in OLESmethod ::"+e);
-		}
-		return null;
-	}	
+     * This method get quiz detail on the basis of the passed quizID   
+     * @param quizID String
+     * @return vector
+     * @author Nupur Dixit
+     */       
+    public Vector getQuiz_Detail(String quizid){
+        Vector vt=new Vector();
+        try{
+            XmlData files[]=xr.getElements("Quiz");
+            if(files!=null)
+            {
+                Attributes ats;
+                String quizID, quizName,maxMarks,maxTime,noQuestion,creationDate,quizFileName, quizStatus,quizMode,modifiedDate;
+                String startDate, startTime, endDate, endTime, allowPractice;
+                for(int j=0;j<files.length;j++)
+                {
+                    QuizFileEntry fileEntry=new QuizFileEntry();
+                    ats=files[j].getAttributes();
+                    quizID = ats.getValue("QuizID");
+                    quizName = ats.getValue("QuizName");
+                    maxMarks = ats.getValue("MaxMarks");
+                    maxTime = ats.getValue("MaxTime");
+                    noQuestion = ats.getValue("NumberQuestion");
+                    creationDate = ats.getValue("CreationDate");
+                    quizFileName = ats.getValue("Filename");
+                    quizStatus = ats.getValue("status");
+                    quizMode = ats.getValue("QuizMode");
+                    modifiedDate = ats.getValue("ModifiedDate"); 
+                    startDate = ats.getValue("ExamDate");
+                    startTime = ats.getValue("StartTime");
+                    endDate = ats.getValue("ExpiryDate");
+                    endTime = ats.getValue("EndTime");
+                    allowPractice = ats.getValue("AllowPractice");
+                    if(quizID.equalsIgnoreCase(quizid)){
+                        fileEntry.setQuizID(quizID);
+                        fileEntry.setQuizName(quizName);
+                        fileEntry.setMaxMarks(maxMarks);
+                        fileEntry.setMaxTime(maxTime);
+                        fileEntry.setQuizStatus(quizStatus);
+                        fileEntry.setCreationDate(creationDate);
+                        fileEntry.setnoQuestion(noQuestion);
+                        fileEntry.setQuizFileName(quizFileName);
+                        fileEntry.setQuizMode(quizMode);
+                        fileEntry.setModifiedDate(modifiedDate);
+                        fileEntry.setExamDate(startDate);
+                        fileEntry.setStartTime(startTime);
+                        fileEntry.setExpiryDate(endDate);
+                        fileEntry.setEndTime(endTime);
+                        fileEntry.setAllowPractice(allowPractice);
+                        vt.add(fileEntry);                       
+                    }                                       
+                }
+                return vt;
+            }
+        }catch(Exception e){
+            ErrorDumpUtil.ErrorLog("Error in Util[QuizMetaDataXmlReader] method:getQuiz_Detail !! "+e);           
+        }
+        return null;
+    }    
 
 	/**
 	 * This method gets all questions from question bank for random quiz
 	 * @param type of question String
 	 * @return Vector
+	 * @author Aayushi Sr
 	 */
-	public Vector getRandomQuizQuestions(String typeName)
-	{
-		Vector vt=new Vector();
-		try
-		{
+	public Vector getRandomQuizQuestions(String typeName){
+		Vector<QuizFileEntry> vt=new Vector<QuizFileEntry>();
+		try{
 			XmlData files[]=xr.getElements("Question");
-			if(files!=null)
-			{
+			if(files!=null){
 				Attributes ats;
 				String questionID,question,option1,option2,option3,option4,answer;
-				for(int j=0;j<files.length;j++)
-				{
+				for(int j=0;j<files.length;j++){
 					QuizFileEntry fileEntry=new QuizFileEntry();
 					ats=files[j].getAttributes();
 					questionID=ats.getValue("Quesid");
@@ -386,87 +474,391 @@ public class QuizMetaDataXmlReader
 				}
 				return vt;
 			}
-		}
-		catch(Exception e)
-		{
-			ErrorDumpUtil.ErrorLog("The exception in quizmetadataxmlreaderutil in getrandomquizquestionsmethod ::"+e);			
+		}catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Util[QuizMetaDataXmlReader] method:getRandomQuizQuestions !! "+e);			
 		}
 		return null;
 	}
-
+	
+	/**
+     * This method gets all inserted questions for random quiz
+     * @param path of xml file String
+     * @param maximum number of question for quiz String
+     * @param maximum number of marks for quiz Integar
+     * @return String[]
+     * @author Nupur Dixit
+     */
+    public String[] getQuizQuestions(String questionBankQuestionsPath, String numberQuestion, int maxQuestions){
+        String vt[]=new String[2];
+        Arrays.fill(vt, "a");
+        try{
+            XmlData files[]=xr.getElements("QuizQuestions");
+            if(files!=null)
+            {
+                Attributes ats;
+                String questionNumber,fileName;
+                int count=0;
+                for(int j=0;j<files.length;j++){
+                    QuizFileEntry fileEntry=new QuizFileEntry();
+                    ats=files[j].getAttributes();
+                    questionNumber=ats.getValue("QuestionNumber");
+                    fileName=ats.getValue("TopicName")+"_"+ats.getValue("QuestionLevel")+"_"+ats.getValue("QuestionType")+".xml";
+                    if(fileName.equalsIgnoreCase(questionBankQuestionsPath)){
+                        count=count+Integer.parseInt(questionNumber);                        
+                    }                            
+                }
+                vt[0]=String.valueOf(count);                       
+                return vt;
+            }
+            else{
+                vt[0] = "firstEntry";
+                return vt;
+            }
+        }catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Util[QuizMetaDataXmlReader] method:getQuizQuestions !! "+e);
+        }
+        return vt;
+    }
+            
+    /**
+     * This method gets all inserted questions for random quiz
+     * @param path of xml file String
+     * @param topic id String
+     * @return String[]
+     * @author Nupur Dixit
+     */
+    public String[] getQuizQuestions(String questionBankQuestionsPath, String topicid){
+        String vt[]=new String[2];
+        Arrays.fill(vt, "a");
+        try{
+            XmlData files[]=xr.getElements("QuizQuestions");
+            if(files!=null){
+                Attributes ats;
+                String questionNumber,fileName,topicID;
+                int count=0;
+                for(int j=0;j<files.length;j++){
+                    QuizFileEntry fileEntry=new QuizFileEntry();
+                    ats=files[j].getAttributes();
+                    questionNumber=ats.getValue("QuestionNumber");
+                    fileName=ats.getValue("TopicName")+"_"+ats.getValue("QuestionLevel")+"_"+ats.getValue("QuestionType")+".xml";
+                    topicID = ats.getValue("ID");
+                    if(fileName.equalsIgnoreCase(questionBankQuestionsPath)){
+                    	if(topicID.equalsIgnoreCase(topicid)){                    	
+                    	}
+                    	else{
+                    		count=count+Integer.parseInt(questionNumber);
+                        }
+                    }                            
+                }
+                vt[0]=String.valueOf(count);                       
+                return vt;
+            }
+            else{
+                vt[0] = "firstUpdate";
+                return vt;
+            }
+        }catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Util[QuizMetaDataXmlReader] method:getQuizQuestions(id) !! "+e);
+        }
+        return vt;
+    }
 
 	/**
- 	 * This method gets all already inserted questions from quizid_question.xml on the 
- 	 * basis of the passed file name 
-	 * @param topicname_level_type.xml file name String
-	 * @return Vector
-	 */
-	public Vector getQuizQuestions(String questionBankQuestionsPath)
-	{
-		Vector vt=new Vector();
-		try
-		{
-			XmlData files[]=xr.getElements("QuizQuestions");
-			if(files!=null)
-			{
-				Attributes ats;
-				String questionID,fileName;
-				for(int j=0;j<files.length;j++)
-				{
-					QuizFileEntry fileEntry=new QuizFileEntry();
-					ats=files[j].getAttributes();
-					questionID=ats.getValue("QuestionID");
-					fileName=ats.getValue("FileName");                                 
-					if(fileName.equalsIgnoreCase(questionBankQuestionsPath))
-					{
-						fileEntry.setQuestionID(questionID);
-						fileEntry.setFileName(fileName);
-						vt.add(fileEntry);                                        
-					}                               
-				}
-				if(vt!=null){
-					if(vt.size()==0){
-						vt=null;                                	
-					}
-				}
-				return vt;
-			}
-		}
-		catch(Exception e)
-		{
-			ErrorDumpUtil.ErrorLog("The exception in quizmetadataxmlreaderutil in getquizquestionsmethod ::"+e);
-			System.out.println("See Exception message inExceptionLog.txt file:: ");
-		}
-		return null;
-	}
-
-	/**
-	 * This method gets all Topic names stored in QBtopiclist.xml (under question bank folder)
+	 * This method gets all Distinct Topic names stored in QBtopiclist.xml (under question bank folder)
 	 * @return vector
+	 * @author Nupur Dixit
 	 */
 	public Vector getTopicNames(){
-		try
-		{
+		try{
 			XmlData file[]=xr.getElements("Question");
-			if(file!=null)
-			{
+			if(file!=null){
+				int k=0;
+				boolean found=false;
 				Vector v=new Vector();
 				Attributes ats;
 				String topic;
-				for(int j=0;j<file.length;j++)
-				{
+				String a[] = new String[file.length];
+				Arrays.fill(a, "aa");
+				for(int j=0;j<file.length;j++){					
 					QuizFileEntry fileEntry=new QuizFileEntry();
 					ats=file[j].getAttributes();
 					topic=ats.getValue("Topicname");
-					fileEntry.setTopic(topic);                    
-					v.addElement(fileEntry);
+					//this coding to remove the duplicate topic names
+					for(int i=0;i<j;i++){
+						if(a[i].equalsIgnoreCase(topic)){	
+							found = true;
+							break;
+						}
+						else{
+							found = false;
+						}
+					}				
+					if(found){
+						continue;
+					}
+					else{
+						a[k] = topic;
+						k++;
+						fileEntry.setTopic(topic);                    
+						v.addElement(fileEntry);
+					}										
 				}
 				return v;
 			}
 		}catch(Exception e){
-			ErrorDumpUtil.ErrorLog("The exception in quizmetadataxmlreaderutil in gettopicnamemethod::"+e);
-			System.out.println("See Exception message in ExceptionLog.txt file:: ");
+			ErrorDumpUtil.ErrorLog("Error in Util[QuizMetaDataXmlReader] method:getTopicNames !! "+e);
 		}
 		return null;
-	}	    	     
-}//end of  file
+	}
+		
+	/**
+     * This method gets id stored in QuizSettings.xml
+     * @return String
+     * @author Aayushi Sr
+     */
+    public String getID_RandomQuiz(){
+        String maxID = "1";
+        Vector vt=new Vector();
+        try {
+            XmlData files[]=xr.getElements("QuizQuestions");
+            int max = 0;
+            if(files!=null) {
+                Attributes ats;
+                String id;
+                for(int j=0;j<files.length;j++) {
+                    QuizFileEntry fileEntry=new QuizFileEntry();
+                    ats=files[j].getAttributes();
+                    id = ats.getValue("ID");
+                    if(Integer.parseInt(id)>max){
+                        max = Integer.parseInt(id);
+                    }                   
+                }
+                maxID = ""+(max+1);
+                return maxID;
+            }
+            return maxID;
+        }catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Util[QuizMetaDataXmlReader] method:getID_RandomQuiz !! "+e);
+        }
+        return maxID;
+    }
+
+    /**
+	 * This method gets all question ids and filepaths (which are already inserted) from quizquestions file of a quiz
+	 * @return Vector
+	 * @author Nupur Dixit
+	 */
+	public Vector getInsertedQuizQuestions(){
+		Vector vt=new Vector();
+		try{
+			XmlData files[]=xr.getElements("QuizQuestions");
+			if(files!=null){
+				Attributes ats;
+				String questionID,fileName,marksQuestion;
+				String question,optA,optB,optC,optD,answer,type;
+				optA="";
+				optB="";
+				optC="";
+				optD="";
+				for(int j=0;j<files.length;j++){
+					QuizFileEntry fileEntry=new QuizFileEntry();
+					ats=files[j].getAttributes();
+					questionID=ats.getValue("QuestionID");
+					question = ats.getValue("Question");
+					fileName=ats.getValue("FileName");
+					int index=fileName.lastIndexOf('_'); 
+					type = fileName.substring((index+1),(index+4));
+					if(type.equalsIgnoreCase("mcq")){
+						optA = ats.getValue("OptionA");
+						optB = ats.getValue("OptionB");
+						optC = ats.getValue("OptionC");
+						optD = ats.getValue("OptionD");
+					}
+					answer = ats.getValue("Answer");
+					marksQuestion=ats.getValue("QuestionMarks");
+					fileEntry.setQuestionID(questionID);
+					fileEntry.setQuestion(question);
+					if(type.equalsIgnoreCase("mcq")){
+						fileEntry.setOption1(optA);
+						fileEntry.setOption2(optB);
+						fileEntry.setOption3(optC);
+						fileEntry.setOption4(optD);
+					}
+					fileEntry.setAnswer(answer);
+					fileEntry.setFileName(fileName);
+					fileEntry.setMarksPerQuestion(marksQuestion);
+					fileEntry.setQuestionType(type);
+					vt.add(fileEntry);
+				}				
+				return vt;
+			}
+		}catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Util[QuizMetaDataXmlReader] method:getInsertedQuizQuestions !! "+e);
+		}
+		return null;
+	}
+	
+	/**
+	 * This method gets all question ids and filepaths (which are already inserted) from quizquestions file of a quiz
+	 * @param id String
+	 * @return Vector
+	 * @author Aayushi Sr
+	 */
+	public Vector getInsertedQuizQuestions(String id){
+		Vector vt=new Vector();
+		try{
+			XmlData files[]=xr.getElements("QuizQuestions");
+			if(files!=null){
+				Attributes ats;
+				String questionID,fileName,marksQuestion;
+				ErrorDumpUtil.ErrorLog("files length "+files.length);
+				for(int j=0;j<files.length;j++){
+					if(Integer.parseInt(id)==j+1){						
+					}
+					else{
+						QuizFileEntry fileEntry=new QuizFileEntry();
+						ats=files[j].getAttributes();
+						questionID=ats.getValue("QuestionID");
+						fileName=ats.getValue("FileName");
+						marksQuestion=ats.getValue("QuestionMarks");
+						fileEntry.setQuestionID(questionID);
+						fileEntry.setFileName(fileName);
+						fileEntry.setMarksPerQuestion(marksQuestion);
+						vt.add(fileEntry);
+					}
+				}				
+				return vt;
+			}
+		}catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Util[QuizMetaDataXmlReader] method:getInsertedQuizQuestions(id) !! "+e);
+		}
+		return null;
+	}
+	
+	
+	/**
+	 * This method gets the id of inserted question of a quiz
+	 * @param id String
+	 * @return String
+	 * @author Aayushi Sr
+	 */
+	public String getInsertedQuizQuestionID(String id){		
+		try{
+			XmlData files[]=xr.getElements("QuizQuestions");
+			if(files!=null){
+				Attributes ats;
+				String questionID;
+				for(int j=0;j<files.length;j++){
+					if(Integer.parseInt(id)==j+1){
+						ats=files[j].getAttributes();
+						questionID=ats.getValue("QuestionID");
+						return questionID;
+					}					
+				}			
+			}
+		}catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Util[QuizMetaDataXmlReader] method:getInsertedQuizQuestionID !! "+e);
+		}
+		return null;
+	}
+	
+	/**
+	 * This method gets the list of all the quizzes ready to attempt by the students
+	 * @return vector
+	 * @exception generic Exception
+	 * @author Nupur Dixit
+	 */
+	public Vector readyToAttemptQuiz(){	
+		Vector vt = new Vector();
+		try{
+			XmlData files[]=xr.getElements("Quiz");
+			if(files!=null){
+				Attributes ats;
+				String quizid,quizName,creationDate,examDate,expiryDate,startTime,endTime,modifiedDate;
+
+				for(int j=0;j<files.length;j++){
+					QuizFileEntry fileEntry=new QuizFileEntry();
+					ats=files[j].getAttributes();
+					quizid=ats.getValue("QuizID");						
+					quizName=ats.getValue("QuizName");
+					creationDate=ats.getValue("CreationDate");
+					examDate=ats.getValue("ExamDate");
+					expiryDate=ats.getValue("ExpiryDate");
+					startTime=ats.getValue("StartTime");
+					endTime=ats.getValue("EndTime");
+					modifiedDate=ats.getValue("ModifiedDate");						
+					if(examDate==null){}
+					else{						
+						Calendar current = Calendar.getInstance();
+						Calendar examDt = Calendar.getInstance();
+						examDt.clear();
+						Calendar expiryDt = Calendar.getInstance();
+						expiryDt.clear();
+						String [] exDt = examDate.split("-");
+						String [] expDt = expiryDate.split("-");
+						String [] stTime = startTime.split(":");
+						String [] enTime = endTime.split(":");
+						examDt.set(Integer.parseInt(exDt[0]),(Integer.parseInt(exDt[1])-1), Integer.parseInt(exDt[2]),Integer.parseInt(stTime[0]),Integer.parseInt(stTime[1]));
+						expiryDt.set(Integer.parseInt(expDt[0]),(Integer.parseInt(expDt[1])-1), Integer.parseInt(expDt[2]),Integer.parseInt(enTime[0]),Integer.parseInt(enTime[1]));
+						if(current.compareTo(examDt)==1 || current.compareTo(examDt)==0){							
+							ErrorDumpUtil.ErrorLog("exam date is announced before the current date !");
+							if(current.compareTo(expiryDt)==1 || current.compareTo(expiryDt)==0){
+								ErrorDumpUtil.ErrorLog("quiz is expired !");
+							}
+							else{
+								fileEntry.setQuizID(quizid);
+								fileEntry.setQuizName(quizName);
+								vt.add(fileEntry);
+								ErrorDumpUtil.ErrorLog("quiz is ready to attempt !");
+							}
+						}
+						else{
+							ErrorDumpUtil.ErrorLog("quiz announce date is after the current date !");
+						}
+					}				
+				}	
+				return vt;
+			}
+		}catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Util[QuizMetaDataXmlReader] method:getInsertedQuizQuestionID !! "+e);
+			//data.setMessage("See Exception Log !!");
+		}
+		return null;
+	}
+	
+	/**
+	 * This method get quizzes having practice flag true(open for students' practice)  
+	 * @return vector
+	 * @author Nupur Dixit
+	 */
+	public Vector getPracticeQuiz_Detail(){
+		Vector vt=new Vector();
+		try{
+			XmlData files[]=xr.getElements("Quiz");
+			if(files!=null){
+				Attributes ats;
+				String quizID, quizName,allowPractice;
+				for(int j=0;j<files.length;j++){
+					QuizFileEntry fileEntry=new QuizFileEntry();
+					ats=files[j].getAttributes();
+					quizID = ats.getValue("QuizID");
+					quizName = ats.getValue("QuizName");
+					allowPractice = ats.getValue("AllowPractice");	
+					if(allowPractice==null){}
+					else{
+						if(allowPractice.equalsIgnoreCase("yes")){
+							fileEntry.setQuizID(quizID);
+							fileEntry.setQuizName(quizName);					
+							vt.add(fileEntry);
+						}   
+					}
+				}
+				return vt;
+			}
+		}catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Util[QuizMetaDataXmlReader] method:getPracticeeQuiz_Detail !! "+e);			
+		}
+		return null;
+	}
+
+}

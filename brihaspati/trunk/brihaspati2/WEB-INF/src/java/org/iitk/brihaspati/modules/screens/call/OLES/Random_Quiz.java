@@ -37,28 +37,18 @@ package org.iitk.brihaspati.modules.screens.call.OLES;
  */
 
 //Jdk
-import java.awt.Window;
 import java.io.File;
-import java.util.List;
 import java.util.Vector;
 //Turbine
 import org.apache.velocity.context.Context;
-import org.apache.torque.util.Criteria;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.util.parser.ParameterParser;
 //brihaspati
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
-import org.iitk.brihaspati.modules.utils.AdminProperties;
-import org.iitk.brihaspati.modules.utils.ListManagement;
-import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
-import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
-import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
-import org.iitk.brihaspati.modules.utils.FileEntry;
-import org.iitk.brihaspati.modules.utils.CommonUtility;
 
 /**
 * This class is used to create quiz randomly 
@@ -66,25 +56,23 @@ import org.iitk.brihaspati.modules.utils.CommonUtility;
 */
 
 public class Random_Quiz extends SecureScreen{
-
-	public void doBuildTemplate(RunData data,Context context) 
-	{
+	public void doBuildTemplate(RunData data,Context context){
 		/**
         *Retrieve the Parameters by using the Parameter Parser
         *Get the UserName and put it in the context
         *for template use
         */
         ParameterParser pp=data.getParameters();
-        try
-        {
+        try{
         	User user=data.getUser();
+        	
         	String mode =pp.getString("mode"," ");
         	String quizMode =pp.getString("quizMode"," ");        			
         	String type = pp.getString("type","");
         	String count = pp.getString("count","");
         	String courseID=(String)user.getTemp("course_id");
-        	ErrorDumpUtil.ErrorLog("mode values "+mode+" quiz mode :"+quizMode+" type:"+type+" count:"+count+"courseID:"+courseID);
         	String quizDetail="";
+        	
         	context.put("tdcolor",count);
         	context.put("course",(String)user.getTemp("course_name"));
 			context.put("mode",mode);
@@ -100,22 +88,17 @@ public class Random_Quiz extends SecureScreen{
             Vector topicList=new Vector();
 			QuizMetaDataXmlReader topipcmetadata=null;
 			
-			if(file.exists())
-			{
+			if(file.exists()){
 				topipcmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);				
 				topicList=topipcmetadata.getTopicNames();
-				ErrorDumpUtil.ErrorLog("allTopics "+topicList);
-				
-				if(topicList.size()!=0)
-				{
-	            	context.put("topicList",topicList);
-	                //CommonUtility.PListing(data,context,topicList);
-	            }	            
+					if(topicList.size()!=0){
+						context.put("topicList",topicList);
+					}	            
 			}			
-			
 			if(mode.equalsIgnoreCase("update")){
 				quizDetail = pp.getString("quizDetail","");
 				String quizName = pp.getString("quizName","");
+				context.put("quizName",quizName);
 				String quizSetting = pp.getString("quizSetting","");
 				context.put("quizSetting",quizSetting);
 				String[] temp1 = quizSetting.split(",");
@@ -129,13 +112,13 @@ public class Random_Quiz extends SecureScreen{
 				context.put("markPerQuestion",markPerQuestion);
 				String questionNumber=temp1[4];
 				context.put("questionNumber",questionNumber);
-				ErrorDumpUtil.ErrorLog("temp values "+temp1[0]+temp1[1]+temp1[2]+temp1[3]+temp1[4]);	
+				String topicID = temp1[5];
+				context.put("topicID",temp1[5]);
 			}
 			else{
 				quizDetail = pp.getString("quizName","");
 				context.put("quizName",quizDetail);
-			}
-			
+			}			
 			context.put("quizDetail",quizDetail);
 			String[] temp = quizDetail.split(",");
 			String quizID=temp[0];
@@ -143,11 +126,9 @@ public class Random_Quiz extends SecureScreen{
 			String maxMarks=temp[1];
 			context.put("maxMarks",maxMarks);
 			String noQuestions=temp[2];
-			context.put("noQuestions",noQuestions);
-			ErrorDumpUtil.ErrorLog("temp values "+temp[0]+temp[1]+temp[2]);	
+			context.put("noQuestions",noQuestions);				
         }
-        catch(Exception e) 
-        {
+        catch(Exception e) {
         	ErrorDumpUtil.ErrorLog("The exception in Random_Quiz screen::"+e);
         	data.setMessage("See ExceptionLog !! ");
         }

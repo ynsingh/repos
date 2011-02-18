@@ -15,16 +15,23 @@ $!data.getMessage()
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 <table bgcolor="$ui.menuColor" width=100%>
 ##link for faq with modes(add,delete,alllist and edit)
+#if($user_role == "instructor" )	
 <tr><td><b>
 	<font face="$ui.sansSerifFonts">
 	<a href=$link.setPage("Index.vm")>Home</a>|
 	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
-	<a href=$link.setPage("call,OLES,Oles_Gen.vm")>Generate Exam</a> |
-	Announce Exam
-	
+	<a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1")> OnLine Examination System</a>
 	
 </b></td>
 </tr>
+#elseif($user_role == "student" )	
+<tr><td>
+	<b>	<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
+		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> | $brih_quiz
+	</b>
+</td></tr>
+
+#end
 </table>
 ## Creating the links for help regarding FAQ 
 <table width="100%">

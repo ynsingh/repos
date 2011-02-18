@@ -60,6 +60,8 @@ public class Oles_Other extends SecureScreen{
 			ParameterParser pp=data.getParameters();
 			context.put("tdcolor",pp.getString("count",""));
 			context.put("course",(String)user.getTemp("course_name"));
+			String Role=(String)user.getTemp("role");
+            context.put("user_role",Role);
 		}//try
 		catch(Exception ex)
 		{

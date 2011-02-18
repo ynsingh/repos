@@ -5,8 +5,6 @@
  * @author <a href="mailto:noopur.here@gmail.com ">Nupur Dixit</a>
  * Contributors: Members of MHRD Project, DEI Agra
 *#
-
-##$page.addStyleSheet($dei_agra)
 $page.setTitle("Quiz Management")
 $page.setBgColor($ui.bgcolor)
 ##<link rel="stylesheet" type="text/css" href="/brihaspati2/resources/css/DEI_Agra.css" />
@@ -65,14 +63,13 @@ $page.setBgColor($ui.bgcolor)
 $!data.getMessage()
 
 <table bgcolor="$ui.menuColor" width=100%>
-
 	<tr>
 		<td><b><font face="$ui.sansSerifFonts">
 			<a href=$link.setPage("Index.vm")>$brih_home</a>|	
-	        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
-	        <a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1")>$brih_generate $brih_exam</a> |
-	         $brih_quiz $brih_detail 
-        </td>
+	        	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
+		        <a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1")>$brih_generate $brih_exam</a> |
+		        $brih_quiz $brih_detail 
+        	</td>
 	</tr>
 </table>
 
@@ -84,46 +81,42 @@ $!data.getMessage()
 </table>
 
 <form name="frm" method="post" action="$link.setPage("call,OLES,Quiz_Detail.vm").setAction("OLES_Quiz")">
-<table width="100%" bgcolor="$ui.tableColor">
-	
+<table width="100%" bgcolor="$ui.tableColor">	
 	<tr bgcolor="$ui.tableColor">
 		#if($tdcolor != "1")
         		<td>
          	#elseif($tdcolor == "1")
 			<td bgcolor="#AFDCEC">
 		#end
-			<b><I><a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1").addPathInfo("mode","quizSetup") style=text-decoration:none>$brih_quiz $brih_setup</I></b></a></td>
+		<b><I><a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1").addPathInfo("mode","quizSetup") style=text-decoration:none>$brih_quiz $brih_setup</I></b></a></td>
 		#if($tdcolor != "2")
         		<td>
         	#elseif($tdcolor == "2")
 			<td bgcolor="#AFDCEC">
 		#end
-			<b><I><a href=$link.setPage("call,OLES,Create_Quiz.vm").addPathInfo("count","2").addPathInfo("type","selectQuiz") style=text-decoration:none>$brih_quiz $brih_creation</I></b></a></td>
+		<b><I><a href=$link.setPage("call,OLES,Create_Quiz.vm").addPathInfo("count","2").addPathInfo("type","selectQuiz") style=text-decoration:none>$brih_quiz $brih_creation</I></b></a></td>
 		#if($tdcolor != "3")
         		<td>
         	#elseif($tdcolor == "3")
 			<td bgcolor="#AFDCEC">
 		#end
-			<b><I><a href=$link.setPage("call,OLES,Quiz_Detail.vm").addPathInfo("mode","quizDetail").addPathInfo("count","3") style=text-decoration:none>$brih_quiz $brih_detail</I></b></a></td>
+		<b><I><a href=$link.setPage("call,OLES,Quiz_Detail.vm").addPathInfo("mode","quizDetail").addPathInfo("count","3") style=text-decoration:none>$brih_quiz $brih_detail</I></b></a></td>
 		#if($tdcolor != "4")
         		<td>
         	#elseif($tdcolor == "4")
 			<td bgcolor="#AFDCEC">
 		#end
-			<b><I><a href=$link.setPage("call,OLES,Oles_Other.vm").addPathInfo("mode","preview").addPathInfo("count","4") style=text-decoration:none>$brih_preview</I></b></a></td>
-	</tr>
-		
+		<b><I><a href=$link.setPage("call,OLES,Preview_Quiz.vm").addPathInfo("mode","preview").addPathInfo("count","4") style=text-decoration:none>$brih_preview</I></b></a></td>
+	</tr>		
 </table>
-
-
 
 <table bgcolor="$ui.tableColor" width="100%">
 	<tr bgcolor="$ui.menuColor" width="100%">
 		<td align="left" width="100%" colspan="5"><b><i><font size="3"> $brih_quiz $brih_detail</font><b></i></td>
 	</tr>
-	#set($count="")
+	#set($coun="")
 	#if($allQuiz.size()!=0)
-       	#foreach($qid in $allQuiz)
+       		#foreach($qid in $allQuiz)
 			#if($velocityCount%2==0)
 				<tr bgcolor="$ui.menuColor">
 			#else
@@ -135,75 +128,74 @@ $!data.getMessage()
    			<td> 
    				$qid.getQuizName()
 			</td>			
-			<td>			 	
+			<td width="30%">			 	
 				#set($quizName="$qid.getQuizID(),$qid.getMaxMarks(),$qid.getnoQuestion()")			
-				<a href=$link.setPage("call,OLES,Random_Quiz.vm").addPathInfo("quizName",$quizName).addPathInfo("quizMode",$qid.getQuizMode()) onclick="if($visibilityFlag.get("$qid.getQuizID()")){alert('No more questions can be added...max marks/Question number limit is reached');return false}else return true">$brih_add $brih_more $brih_qus </a>
+				#if($qid.getQuizMode()=="random")			
+					<a href=$link.setPage("call,OLES,Random_Quiz.vm").addPathInfo("quizName",$quizName).addPathInfo("quizMode",$qid.getQuizMode()) onclick="if($visibilityFlag.get("$qid.getQuizID()")){alert('No more questions can be added...max marks/Question number limit is reached');return false}else return true">$brih_add $brih_more $brih_qus </a>
+				#else
+					<a href=$link.setPage("call,OLES,OneByOne_Quiz.vm").addPathInfo("quizName",$quizName).addPathInfo("quizMode",$qid.getQuizMode()) onclick="if($visibilityFlag.get("$qid.getQuizID()")){alert('No more questions can be added...max marks/Question number limit is reached');return false}else return true">$brih_add $brih_more $brih_qus </a>
+				#end
 			</td>
-			
 			<td>
-				<a href=$link.setPage("call,OLES,Quiz_Detail.vm").setAction("OLES_Quiz").addPathInfo("quizID",$qid.getQuizID()).addPathInfo("deltype","quizDel").addPathInfo("actionName","eventSubmit_doUpdate") onclick="javascript:return confirm('Do you want to delete this Quiz')"> $brih_delete </a>
+				<a href=$link.setPage("call,OLES,Quiz_Detail.vm").setAction("OLES_Quiz").addPathInfo("quizID",$qid.getQuizID()).addPathInfo("deltype","quizDel").addPathInfo("actionName","eventSubmit_doUpdate").addPathInfo("count","$tdcolor") onclick="javascript:return confirm('Do you want to delete this Quiz')"> $brih_delete </a>
 			</td>
 			<td>
-			<ul id="sddm" >
-    			<li >
-	<a href="#" onmouseover="mopen('$qid.getQuizID()')" onmouseout="mclosetime()" >$brih_update</a>
-			        <div id="$qid.getQuizID()" onmouseover="mcancelclosetime()" onmouseout="mclosetime()" >
-				        <a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("qname",$qid.getQuizID()).addPathInfo("mode","QuizDetail") >$brih_update $brih_quiz $brih_setting</a>
-				        <a href="#">Update Question Setting</a>	
-				        ##<a href=$link.setPage("call,OLES,Update_Quiz_Question.vm").addPathInfo("quizName",$qid.getQuizName()).addPathInfo("quizDetail",$quizName).addPathInfo("quizMode",$qid.getQuizMode())>$brih_update $brih_qus $brih_setting</a>				        
-			        </div>
-    			</li>
-			</ul>
-			<div style="clear:both"></div>
-				
+				<ul id="sddm" >
+		    			<li >
+						<a href="#" onmouseover="mopen('$qid.getQuizID()')" onmouseout="mclosetime()" >$brih_update</a>
+					        <div id="$qid.getQuizID()" onmouseover="mcancelclosetime()" onmouseout="mclosetime()" >
+						        <a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("qname",$qid.getQuizID()).addPathInfo("mode","QuizDetail") >$brih_update $brih_quiz $brih_setting</a>
+						        <a href=$link.setPage("call,OLES,Update_Quiz_Question.vm").addPathInfo("quizName",$qid.getQuizName()).addPathInfo("quizDetail",$quizName).addPathInfo("quizMode",$qid.getQuizMode())>$brih_update $brih_qus $brih_setting</a>				        
+					        </div>
+		    			</li>
+				</ul>
+				<div style="clear:both"></div>
 			</td>
-        </tr>
-        
-	<INPUT TYPE="hidden" NAME="qname" value=$qid.getQuizID() >
-	<INPUT TYPE="hidden" NAME="quizMode" value=$qid.getQuizMode() >
+        		</tr>
+        		<INPUT TYPE="hidden" NAME="qname" value=$qid.getQuizID() >
+			<INPUT TYPE="hidden" NAME="quizMode" value=$qid.getQuizMode() >
+			#set($coun="$coun$qid.getQuizID()^")
+		#end
 	
-	#set($count="$count$qid.getQuizID()^")
-	#end
-	
-	#if($allQuiz.size()!=0)
-	<tr bgcolor="$ui.menuColor">
-        <td colspan=7>
-            <input type="CHECKBOX" name="checkAll" onClick=selectAll(this);>
-            <font face="$ui.sansSerifFonts"><b>Select All </b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        	<input type="button" name="eventSubmit_doRemove" value=Delete onClick="checkField(document.frm,this);"/>
-			<input type="reset" value="Reset">
-        </td>
-	</tr>
-	#end	
+		#if($allQuiz.size()!=0)
+			<tr bgcolor="$ui.menuColor">
+			        <td colspan=7>
+			        	<input type="CHECKBOX" name="checkAll" onClick=selectAll(this);>
+			        	<font face="$ui.sansSerifFonts"><b>$brih_selAll</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="button" name="eventSubmit_doRemove" value="$brih_delete" onClick="checkField(document.frm,this);"/>
+					<input type="reset" value="$brih_reset">
+			        </td>
+			</tr>
+		#end	
 		<INPUT TYPE="hidden" NAME="deleteFileNames">	
-    	<input type="hidden" name="actionName">
-    	
+    		<input type="hidden" name="actionName">    	
 	#else
-	<tr>
-		<td>$brih_No_Quiz</td>
-	</tr>
+		<tr>
+			<td>$brih_No_Quiz</td>
+		</tr>
 	#end
 </table>
+<input type="hidden" name="count" value="$tdcolor"> 
 </form>
 </body>
 <SCRIPT LANGUAGE="javascript">
 
 	function popupWin(url,popupName){
-        Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400,align=left");
-    }
+	        Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400,align=left");
+	}
 
 	function checkField(frm,field){
 		if(frm.deleteFileNames.value!=""){
-			if(confirm('Do you want to delete this Quiz')){
-        		frm.actionName.value=field.name;
-        		frm.submit();
-        	}
-        	else{
-        		return false;
-        	}
+			if(confirm('Do you want to delete all the Quizzes')){
+	        		frm.actionName.value=field.name;
+        			frm.submit();
+        		}
+        		else{
+        			return false;
+        		}
 		}
-    	else{
-	    	alert("Please select checkbox for deletion !!");
+	    	else{
+		    	alert("Please select checkbox for deletion !!");
 		}
 	}
 
@@ -211,80 +203,75 @@ $!data.getMessage()
 		if(field.checked){
 			frm.deleteFileNames.value=frm.deleteFileNames.value+field.name+"^";
 		}
-        else{
-            var rmFile,index,actualString,preString,postString;
-            actualString=frm.deleteFileNames.value;
-            index=actualString.indexOf(field.name+"^",0);
-            preString=actualString.substring(0,index);
-            postString=actualString.substring(index+field.name.length+1);
-            actualString=preString+postString;
-            frm.deleteFileNames.value=actualString;
-        }
+        	else{
+			var rmFile,index,actualString,preString,postString;
+		        actualString=frm.deleteFileNames.value;
+		        index=actualString.indexOf(field.name+"^",0);
+		        preString=actualString.substring(0,index);
+		        postString=actualString.substring(index+field.name.length+1);
+		        actualString=preString+postString;
+		        frm.deleteFileNames.value=actualString;
+        	}
 	}
 	
 	function selectAll(field){
-    	if(field.checked){
-        	var rmFile,index,actualString,pre=0,next=0;
-        	actualString=document.frm.deleteFileNames.value="$count";
-        	while( ( pre=actualString.indexOf("^",next) ) >=0 ){
-            	var temp=actualString.substring(next,pre);
-             	next=pre+1;
-            	rmFile=document.frm.elements[temp].checked=true;
-            }
+	    	if(field.checked){
+	        	var rmFile,index,actualString,pre=0,next=0;
+        		actualString=document.frm.deleteFileNames.value="$coun";
+        		while( ( pre=actualString.indexOf("^",next) ) >=0 ){
+				var temp=actualString.substring(next,pre);
+        		     	next=pre+1;
+	       		    	rmFile=document.frm.elements[temp].checked=true;
+		        }
 		}
-    	else{
-        	var rmFile,index,actualString,pre=0,next=0;
-            actualString=document.frm.deleteFileNames.value="$count";
+	    	else{
+        		var rmFile,index,actualString,pre=0,next=0;
+        		actualString=document.frm.deleteFileNames.value="$coun";
 			while( ( pre=actualString.indexOf("^",next) ) >=0 ){
 				var temp=actualString.substring(next,pre);
-            	next=pre+1;
-            	rmFile=document.frm.elements[temp].checked=false;
-            }
-            document.frm.deleteFileNames.value="";
-       	}
+            			next=pre+1;
+            			rmFile=document.frm.elements[temp].checked=false;
+            		}
+		        document.frm.deleteFileNames.value="";
+       		}
 	}
+	
 	var timeout	= 500;
-var closetimer	= 0;
-var ddmenuitem	= 0;
+	var closetimer	= 0;
+	var ddmenuitem	= 0;
 
-// open hidden layer
-function mopen(id)
-{	
-	// cancel close timer
-	//alert("id"+id);
-	mcancelclosetime();
+	// open hidden layer
+	function mopen(id){	
+		// cancel close timer
+		mcancelclosetime();
 
-	// close old layer
-	if(ddmenuitem) ddmenuitem.style.visibility = 'hidden';
+		// close old layer
+		if(ddmenuitem) ddmenuitem.style.visibility = 'hidden';
 
-	// get new layer and show it
-	ddmenuitem = document.getElementById(id);
-	ddmenuitem.style.visibility = 'visible';
-
-}
-// close showed layer
-function mclose()
-{
-	if(ddmenuitem) ddmenuitem.style.visibility = 'hidden';
-}
-
-// go close timer
-function mclosetime()
-{
-	closetimer = window.setTimeout(mclose, timeout);
-}
-
-// cancel close timer
-function mcancelclosetime()
-{
-	if(closetimer)
-	{
-		window.clearTimeout(closetimer);
-		closetimer = null;
+		// get new layer and show it
+		ddmenuitem = document.getElementById(id);
+		ddmenuitem.style.visibility = 'visible';
 	}
-}
+	
+	// close showed layer
+	function mclose(){
+		if(ddmenuitem) ddmenuitem.style.visibility = 'hidden';
+	}
 
-// close layer when click-out
-document.onclick = mclose; 
+	// go close timer
+	function mclosetime(){
+		closetimer = window.setTimeout(mclose, timeout);
+	}
+
+	// cancel close timer
+	function mcancelclosetime(){
+		if(closetimer){
+			window.clearTimeout(closetimer);
+			closetimer = null;
+		}
+	}
+
+	// close layer when click-out
+	document.onclick = mclose; 
 </SCRIPT>
 </html>

@@ -5,34 +5,36 @@
  * @author <a href="mailto:aayushi.sr@gmail.com">Aayushi</a>
  * Contributors: Members of MHRD, DEI Agra.
 *#
-$page.setTitle("Quiz Creation")
+#if($mode == "update")
+	$page.setTitle("Question Setting Update")
+#else
+	$page.setTitle("Quiz Creation")
+#end
 $page.setBgColor("bgcolor")
 ## If some message has been set, that is retrieved and displayed.
 $!data.getMessage()
-## Retreiving the $lang (representing the choosen language for display, which
-## was set in corresponding the screen class.
+## Retreiving the $lang (representing the choosen language for display, which was set in corresponding the screen class.
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 
 <table bgcolor="$ui.menuColor" width=100%>
-	##link for faq with modes(add,delete,alllist and edit)
 	<tr><td><b>
 		<font face="$ui.sansSerifFonts">
-		<a href=$link.setPage("Index.vm")>Home</a>|
+		<a href=$link.setPage("Index.vm")>$brih_home</a>|
 		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
-		<a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1")>Generate Exam</a> |
+		<a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1")>$brih_generate $brih_exam</a> |
 		#if($quizMode == "random")
 			<a href=$link.setPage("call,OLES,Quiz_Detail.vm").addPathInfo("count","3")> 
-			Quiz #if($lang =="hindi")  #end Details </a>|
+			$brih_quiz #if($lang =="hindi") $brih_Of1 #end $brih_detail </a>|
 			$quizMode
 			#if($mode == "update")				
 				$mode	
 			#end
 		#else	
-			<a href=$link.setPage("call,OLES,Create_Quiz.vm").addPathInfo("count","2")>Quiz Creation</a> |
+			<a href=$link.setPage("call,OLES,Create_Quiz.vm").addPathInfo("count","2")>$brih_quiz $brih_creation</a> |
 			#if($tdcolor=="1")
-				One By One
+				$brih_onebyone
 			#else
-				Randomly
+				$brih_randomly
 			#end
 		#end	
 	</b></td></tr>
@@ -41,7 +43,7 @@ $!data.getMessage()
 ## Creating the links for help regarding FAQ 
 <table width="100%">
 	<tr>
-		<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES.html","newWin");>Help</a></td>
+		<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES.html","newWin");>$brih_help</a></td>
 	</tr>
 </table>
 
@@ -51,7 +53,7 @@ $!data.getMessage()
 		<form name="frm" method="get"  enctype="multipart/form-data" action=$link.setPage("call,OLES,Update_Quiz_Question.vm").setAction("OLES_Quiz")>
 	#else
 		#set($tdcolor="3")
-		<form name="frm" method="get"  enctype="multipart/form-data" action=$link.setPage("call,OLES,Quiz_Detail.vm").setAction("OLES_Quiz")>
+		<form name="frm" method="get"  enctype="multipart/form-data" action=$link.setPage("call,OLES,Random_Quiz.vm").setAction("OLES_Quiz")>
 	#end
 #else	
 	<form name="frm" method="post" enctype="multipart/form-data" action=$link.setPage("call,OLES,Random_Quiz.vm").setAction("OLES_Quiz")>
@@ -59,86 +61,121 @@ $!data.getMessage()
 	
 <table width="100%" bgcolor="$ui.tableColor">
 	#if($quizMode != "random")
-	<tr bgcolor="$ui.tableColor">
+		<tr bgcolor="$ui.tableColor">
 		#if($tdcolor != "1")
         		<td>
         	#elseif($tdcolor == "1")
 			<td bgcolor="#AFDCEC">
 		#end
-			<b><I><a href=$link.setPage("call,OLES,OneByOne_Quiz.vm").addPathInfo("mode","one").addPathInfo("count","1").addPathInfo("type",$type).addPathInfo("quizName",$quizName) style=text-decoration:none>One By One</I></b></a></td>
+		<b><I><a href=$link.setPage("call,OLES,OneByOne_Quiz.vm").addPathInfo("mode","one").addPathInfo("count","1").addPathInfo("type",$type).addPathInfo("quizName",$quizName) style=text-decoration:none>$brih_onebyone</I></b></a></td>
 		#if($tdcolor != "2")
              		<td>
         	#elseif($tdcolor == "2")
 			<td bgcolor="#AFDCEC">
 		#end
-			<b><I><a href=$link.setPage("call,OLES,Random_Quiz.vm").addPathInfo("mode","random").addPathInfo("count","2").addPathInfo("type",$type).addPathInfo("quizName",$quizName) style=text-decoration:none>Randomly</I></b></a></td>		
-	</tr>	
-	<tr bgcolor="$ui.menuColor" width="100%">
-		<td align="left" width="100%" colspan="5"><b><i><font size="3"> Randomly Quiz Generatiom </font><b></i></td>
-	</tr>
+		<b><I><a href=$link.setPage("call,OLES,Random_Quiz.vm").addPathInfo("mode","random").addPathInfo("count","2").addPathInfo("type",$type).addPathInfo("quizName",$quizName) style=text-decoration:none>$brih_randomly</I></b></a></td>		
+		</tr>	
+		<tr bgcolor="$ui.menuColor" width="100%">
+			<td align="left" width="100%" colspan="5"><b><i><font size="3"> $brih_randomly $brih_quiz $brih_generation </font><b></i></td>
+		</tr>
 	#else
 		#if($mode == "update")
 			<tr bgcolor="$ui.menuColor" width="100%">
-				<td align="left" width="100%" colspan="5"><b><i><font size="3">Question Updation in Random Mode </font><b></i></td>
+				<td align="left" width="100%" colspan="5"><b><i><font size="3">$brih_qus $brih_updation $brih_in $brih_random $brih_mode </font><b></i></td>
 			</tr>
 		#else
 			<tr bgcolor="$ui.menuColor" width="100%">
-				<td align="left" width="100%" colspan="5"><b><i><font size="3"> Randomly Question Addition </font><b></i></td>
+				<td align="left" width="100%" colspan="5"><b><i><font size="3"> $brih_randomly $brih_qus $brih_addition </font><b></i></td>
 			</tr>
 		#end
 	#end
 	<tr>
-       		<td><b>Topic Name</b><font color=Red>*</font></td>  
-       		
-       		              
-        	<td><select name=topicList >
-			<option>
-				#foreach($topic in $topicList)
-				#if($mode == "update")
-					#if($topic==$topic.getTopic())
-					<option value=$topic.getTopic() selectedIndex=true>$topic.getTopic()</option>
-					#else
-					<option value=$topic.getTopic()>$topic.getTopic()</option>
-		        	#end
-		        	#end
-		        </option>
+		<td><b>$brih_topic $brih_name</b><font color=Red>*</font></td>        		              
+        	<td><select name=topicList >		
+			#if($mode == "update")
+				#foreach($topicname in $topicList)				
+					#if($topicname.getTopic().toString()==$topic.toString())						
+						<option Selected value=$topicname.getTopic()>$topicname.getTopic()</option>
+					#else						
+						<option value=$topicname.getTopic()>$topicname.getTopic()</option>
+					#end
+				#end
+			#else
+				#foreach($topicname in $topicList)
+					<option value=$topicname.getTopic()>$topicname.getTopic()</option>
+				#end
+			#end	
 		</select></td>
 	</tr>
         <tr>
-        	<td><b>Type</b><font color=Red>*</font></td>
-        	<td><select name=typeList >
-                	<option>
-				<option value="mcq">Multiple Choice Question Type
-				<option value="tft">True/False Type
-				##<option value="maq" disabled="true">Matching Type
-				<option value="sat">Short Answer Type
-				<option value="lat">Long Answer Type
+        	<td><b>$brih_type</b><font color=Red>*</font></td>
+        	<td><select name=typeList >            	
+		    	#if($mode == "update")
+		    		#if($questionType=='mcq')	
+		    			#set($mcq='selected')                		
+				#elseif($questionType=='tft')							
+		    			#set($tft='selected')                		
+				#elseif($questionType=='sat')						
+		    			#set($sat='selected')							
+				#else						
+		    			#set($lat='selected')                		
+				#end
+			#end
+			<option value="mcq" $mcq>$brih_multiplechoice
+			<option value="tft" $tft>$brih_true/$brih_false
+			<option value="sat" $sat>$brih_shortType $brih_answer
+			<option value="lat" $lat>$brih_long $brih_answer
 			</option>
-                </select></td>        	
+            	</select></td>     	
         </tr>
         <tr>
-        	<td><b>Difficulty Level</b><font color=Red>*</font></td>        	
+        	<td><b>$brih_difflevel</b><font color=Red>*</font></td>        	
         	<td><select name="levelList" >
-                	<option>
-				<option value="0-3">Easy
-				<option value="4-6">Medium
-				<option value="7-9">Hard
+    			#if($mode == "update")
+    				#if($questionLevel=='0-3')	
+    					#set($easy='selected')										
+				#elseif($questionLevel=='4-6')							
+					#set($medium='selected')				
+				#else
+					#set($hard='selected')	
+				#end
+			#end                	
+			<option value="0-3" $easy>$brih_easy
+			<option value="4-6" $medium>$brih_medium
+			<option value="7-9" $hard>$brih_hard
 			</option>
-                </select></td> 
+            	</select></td> 
         </tr>
 	<tr>
-        	<td><b>Number of Questions</b><font color=Red>*</font></td>
-		<td><input type="text" name="numberQuestion" value=""></td>
+        	<td><b>$brih_nos $brih_qus2</b><font color=Red>*</font></td>
+		<td>
+		  	#if($mode == "update")
+		  		<input type="text" name="numberQuestion" value="$questionNumber">
+	  		#else
+	  			<input type="text" name="numberQuestion" value="">	
+  			#end	  	
+  		</td>
         </tr>                
 	<tr>
-        	<td><b>Marks per Question</b><font color=Red>*</font></td>
-		<td><input type="text" name="marksQuestion" value=""></td>
+        	<td><b>$brih_marks $brih_per $brih_qus</b><font color=Red>*</font></td>
+		<td>
+			#if($mode == "update")
+		  		<input type="text" name="marksQuestion" value="$markPerQuestion">
+	  		#else
+	  			<input type="text" name="marksQuestion" value="">		
+			#end	
+		</td>
         </tr>
-       
 	<tr bgcolor="$ui.menuColor" width="100%">
 		<td align="left" width="100%" colspan="5">
-			<input type="button" name="eventSubmit_randomQuiz" value="Add Questions" onClick="checkValue(document.frm,this);"/>		
-			<input type="reset" name="reset" value="Clear" onClick="checkClear(document.frm,this);"/>
+			#if($mode == "update")
+				<input type="button" name="eventSubmit_updateQuizQuestionSetting" value="$brih_update" onClick="checkValue(document.frm,this);"/>
+		  		<input type="reset" name="$brih_reset" value="$brih_restore $brih_original"/>
+			#else
+				<input type="button" name="eventSubmit_randomQuiz" value="$WikiSave & $brih_add $brih_more" onClick="checkValue(document.frm,this);"/>
+				<input type="button" name="eventSubmit_randomQuiz" value="$WikiSave & $brih_exit" onClick="checkValue(document.frm,this);">			
+				<input type="reset" name="reset" value="$brih_reset" onClick="checkClear(document.frm,this);"/>
+			#end
 		</td>
 	</tr>
 </table>
@@ -152,30 +189,57 @@ $!data.getMessage()
 <input type="hidden" name="maxMarks" value="$maxMarks">
 <input type="hidden" name="noQuestions" value="$noQuestions">
 <input type="hidden" name="topicName" value="">
+<input type="hidden" name="topicID" value="$topicID">
 <input type="hidden" name="typeName" value="">
 <input type="hidden" name="levelName" value="">
 <input type="hidden" name="actionName" value="">
 <input type="hidden" name="quizMode" value="$quizMode">
+<input type="hidden" name="page" value="">
+<input type="hidden" name="quizDetail" value="$quizID,$maxMarks,$noQuestions">
 </form>
 <script LANGUAGE="JAVASCRIPT">
 	
-	function popupWin(url,popupName)
-   	{
+	function popupWin(url,popupName){
     		Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=200,width=300,align=center");
    	}
    	
-	function checkValue(frm,field){
-		
-        	if(frm.topicList.value!="" && frm.typeList.value!="" && frm.levelList.value!="" && frm.numberQuestion.value!=""&& frm.marksQuestion.value!="")
-        	{
-			frm.actionName.value=field.name;
-			frm.topicName.value=frm.topicList.options[frm.topicList.selectedIndex].value;
-			frm.typeName.value=frm.typeList.options[frm.typeList.selectedIndex].value;
-			frm.levelName.value=frm.levelList.options[frm.levelList.selectedIndex].value;
-        		frm.submit();
+	function checkValue(frm,field){		
+        	if(frm.topicList.value!="" && frm.typeList.value!="" && frm.levelList.value!="" && frm.numberQuestion.value!=""&& frm.marksQuestion.value!=""){
+			if(isNumberString(frm.numberQuestion.value)){
+                                alert("Question Number should be an integer value");
+                                frm.numberQuestion.focus();                                
+                        }
+			else{
+				if(isNumberString(frm.marksQuestion.value)){
+                                	alert("Marks should be an integer value");
+                                	frm.marksQuestion.focus();                                
+                        	}
+				else{
+					frm.actionName.value=field.name;			
+					frm.topicName.value=frm.topicList.options[frm.topicList.selectedIndex].value;
+					frm.typeName.value=frm.typeList.options[frm.typeList.selectedIndex].value;
+					frm.levelName.value=frm.levelList.options[frm.levelList.selectedIndex].value;
+					if(field.value=="Save & Exit"){
+						frm.page.value="exit";
+					}
+        				frm.submit();
+				}
+			}			
         	}
         	else
             		alert("Please fill the Mandatory(*) Fields !!");            
 	}
+
+	function isNumberString(chString){
+                if(chString.length==0)
+                        return false;
+                var RefString="0123456789.";
+                for(count=0;count<chString.length;count++){
+                        var tempChar=chString.charAt(count);
+                        if(RefString.indexOf(tempChar)==-1){
+                                return true;
+                        }
+                }
+                return false;
+        }        
 </script>
- 

@@ -37,28 +37,18 @@ package org.iitk.brihaspati.modules.screens.call.OLES;
  */
 
 //Jdk
-import java.awt.Window;
 import java.io.File;
-import java.util.List;
 import java.util.Vector;
 //Turbine
 import org.apache.velocity.context.Context;
-import org.apache.torque.util.Criteria;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.util.parser.ParameterParser;
 //brihaspati
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
-import org.iitk.brihaspati.modules.utils.AdminProperties;
-import org.iitk.brihaspati.modules.utils.ListManagement;
-import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
-import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
-import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
-import org.iitk.brihaspati.modules.utils.FileEntry;
-import org.iitk.brihaspati.modules.utils.CommonUtility;
 
 /**
 * This class manages the creation of quiz in online examination system 
@@ -66,17 +56,14 @@ import org.iitk.brihaspati.modules.utils.CommonUtility;
 */
 
 public class Create_Quiz extends SecureScreen{
-
-	public void doBuildTemplate(RunData data,Context context) 
-	{
+	public void doBuildTemplate(RunData data,Context context){
 		/**
         *Retrieve the Parameters by using the Parameter Parser
         *Get the UserName and put it in the context
         *for template use
         */
         ParameterParser pp=data.getParameters();
-        try
-        {
+        try{
         	User user=data.getUser();
         	String mode =pp.getString("mode"," ");
         	String type = pp.getString("type","");
@@ -94,27 +81,21 @@ public class Create_Quiz extends SecureScreen{
 			Vector quizList=new Vector();
 			QuizMetaDataXmlReader quizmetadata=null;
 			
-			if(file.exists())
-			{
+			if(file.exists()){
 				context.put("isFile","exist");
 				quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);				
 				quizList=quizmetadata.getStatusQuiz_Detail("INA");
-				ErrorDumpUtil.ErrorLog("quiz list "+quizList);
 				if(quizList!=null){
-					
-				if(quizList.size()!=0){
-					ErrorDumpUtil.ErrorLog("inside second if");
-	                context.put("quizList",quizList);
-	               //CommonUtility.PListing(data,context,quizList);
-	            }
+					if(quizList.size()!=0){
+						context.put("quizList",quizList);	              
+					}
 				}
 			}
 			else
 				context.put("isFile","");
-	        }
-        catch(Exception e) 
-        {
-        	ErrorDumpUtil.ErrorLog("The exception in Create_Quiz type screen::"+e);
+        }
+        catch(Exception e){
+        	ErrorDumpUtil.ErrorLog("The exception in Create_Quiz screen::"+e);
         	data.setMessage("See ExceptionLog !! ");
         }
     }
