@@ -20,6 +20,49 @@ public class DepartmentDB {
     private PreparedStatement ps;
     private ResultSet rs;
 
+    public Department convert(String code)    {
+        try
+        {
+            Connection c = new CommonDB().getConnection();
+            ps=c.prepareStatement("select dept_code,dept_name from department_master where dept_name=?");
+            ps.setString(1, code);
+            rs =ps.executeQuery();
+            rs.next();
+            Department d = new Department();
+            d.setCode(rs.getInt(1));
+            d.setName(rs.getString(2));
+            rs.close();
+            ps.close();
+            c.close();
+            return d;
+
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public void update(ArrayList<Department> depts)    {
+        try
+        {
+            Connection c = new CommonDB().getConnection();
+            ps=c.prepareStatement("update department_master set dept_name=? where dept_code=?");
+            for(Department dp : depts)
+            {
+                ps.setString(1, dp.getName().toUpperCase());
+                ps.setInt(2, dp.getCode());
+                ps.executeUpdate();
+                ps.clearParameters();
+            }
+            ps.close();
+            c.close();
+        }
+        catch(Exception e)
+        {
+            //Logger.getAnonymousLogger().log(Log., e.getMessage());
+        }
+    }
     public ArrayList<Department> loadDepartments()   {
         try
         {
@@ -30,7 +73,7 @@ public class DepartmentDB {
             while(rs.next())
             {
                 Department dept = new Department();
-                dept.setNumber(rs.getInt(1));
+                dept.setCode(rs.getInt(1));
                 dept.setName(rs.getString(2));
                 data.add(dept);
             }
@@ -41,7 +84,7 @@ public class DepartmentDB {
         }
         catch(Exception e)
         {
-            e.printStackTrace();
+            //e.printStackTrace();
             return null;
         }
     }
@@ -50,7 +93,7 @@ public class DepartmentDB {
         {
             Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("insert into department_master(dept_name) values(?)",1);
-            ps.setString(1, dptName);
+            ps.setString(1, dptName.toUpperCase());
             ps.executeUpdate();
             rs=ps.getGeneratedKeys();
             rs.next();
@@ -62,7 +105,7 @@ public class DepartmentDB {
         }
         catch(Exception e)
         {
-            e.printStackTrace();
+            //e.printStackTrace();
             return e;
         }
 

@@ -30,7 +30,7 @@
                             <h:inputText value="#{TestEmployee.name}"/>
                             <h:outputText value="Department"/>
                             <h:selectOneMenu value="#{TestEmployee.department}">
-                                <f:selectItems value="#{DepartmentBean.departments}"/>
+                                <f:selectItems value="#{DepartmentControllerBean.departments}"/>
                             </h:selectOneMenu>                        
                         <h:commandButton value="Print" action="#{TestEmployee.processXYZ}"/>
                 </h:form>

@@ -6,6 +6,8 @@
 --%>
 <%@ taglib prefix="f" uri="http://java.sun.com/jsf/core" %>
 <%@ taglib prefix="h" uri="http://java.sun.com/jsf/html" %>
+<%@ taglib uri="http://richfaces.org/a4j" prefix="a4j"%>
+<%@ taglib uri="http://richfaces.org/rich" prefix="rich"%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
@@ -22,10 +24,12 @@
     <body>
     <body class="subpage" id="">
 
-        <div class="container_form">
-            <div class="xerror">Existing Users</div>
+        
+            
             <f:view>
-                <h:dataTable  styleClass="myTable" value="#{UserBean.allUser}" var="user" border="1">
+                <rich:panel header="Existing Users">
+                    <h:commandButton value="Add New" onclick="Richfaces.showModalPanel('pnl');"/>
+                <rich:dataTable  value="#{UserBean.allUser}" var="user" border="1">
                     <h:column>
                         <f:facet name="header">
                             <h:outputText value="User Name"/>
@@ -34,19 +38,20 @@
                     </h:column>
                     <h:column>
                         <f:facet name="header">
-                            <h:outputText  value="Administrator"/>
+                            <h:outputText  value="User Group"/>
                         </f:facet>
-                        <h:outputText value="#{user.admin}" />
+                        <h:outputText value="#{user.userGroup.name}" />
                     </h:column>
 
-                </h:dataTable>
+                </rich:dataTable>
+                </rich:panel>
 
 
-
-                <br />
+                
                 <h:outputText value="#{UserBean.message}"/>
 
-                <div class="xerror">Add New User</div>
+                <rich:modalPanel id="pnl">
+                    <rich:panel header="Add New User">
                 <h:form id="users">
                     <h:panelGroup layout="table" >
                         <h:panelGrid
@@ -56,28 +61,22 @@
                             <f:facet name="header">
                                 <h:outputText value="Add new user"/>
                             </f:facet>
-
-
                             <h:outputText value="User Name: "/>
                             <h:inputText value="#{UserBean.userName}"/>
-
                             <h:outputText value="Password: "/>
                             <h:inputSecret value="#{UserBean.password}"/>
-
-
                             <h:outputText value="Verify Password: "/>
                             <h:inputSecret value="#{UserBean.pass2}"/>
-
                             <h:outputText value="Administrator ?"/>
                             <h:selectBooleanCheckbox label="YES" value="#{UserBean.admin}"/>
-                            <h:commandButton styleClass="panel" value="Save" action="#{UserBean.save}"/>
+                            <h:commandButton styleClass="panel" value="Save" action="#{UserBean.save}" />
+                            <h:commandButton value="Close" onclick="Richfaces.hideModalPanel('pnl');" />
                         </h:panelGrid>
                         
                     </h:panelGroup>
-
-
-
                 </h:form>
+                </rich:panel>
+                </rich:modalPanel>
             </f:view>
 
     </body>

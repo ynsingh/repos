@@ -50,7 +50,7 @@ public class SalaryProfileDB {
         {
             Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("insert into salary_profile_master(sp_name) values(?)",1);
-            ps.setString(1, dptName);
+            ps.setString(1, dptName.toUpperCase());
             ps.executeUpdate();
             ps.close();
             c.close();

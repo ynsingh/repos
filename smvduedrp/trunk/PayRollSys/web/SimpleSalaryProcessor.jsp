@@ -24,7 +24,7 @@ System.out.println("Processor : Name : "+name);
 
 if(name==null||name.isEmpty())
     {
-        response.sendRedirect("SimpleSalaryData.jsp?empCode="+eCode);
+        response.sendRedirect("SimpleSalaryData.jsf?empCode="+eCode);
         return;
     }
 
@@ -85,11 +85,11 @@ for(int i=0;i<heads.size();i++)
     boolean b = new SalaryDataDB().save(salData);
     if(b)
         {
-          response.sendRedirect("SimpleSalaryData.jsp?empCode="+eCode+"&msg='Data Updated'");
+          response.sendRedirect("SimpleSalaryData.jsf?empCode="+eCode+"&msg='Data Updated'");
         }
     else
         {
-        response.sendRedirect("SimpleSalaryData.jsp?empCode="+eCode+"&msg='Data Not Updated'");
+        response.sendRedirect("SimpleSalaryData.jsf?empCode="+eCode+"&msg='Data Not Updated'");
         }
 
 %>

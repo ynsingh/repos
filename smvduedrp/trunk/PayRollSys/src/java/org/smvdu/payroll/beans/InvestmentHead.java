@@ -7,6 +7,7 @@ package org.smvdu.payroll.beans;
 
 import java.util.ArrayList;
 import javax.faces.model.SelectItem;
+import org.richfaces.component.UIComboBox;
 
 import org.smvdu.payroll.beans.db.InvestmentHeadDB;
 
@@ -15,6 +16,9 @@ import org.smvdu.payroll.beans.db.InvestmentHeadDB;
  * @author Algox
  */
 public class InvestmentHead  {
+
+
+    private UIComboBox masterCombo;
 
 
     private String  selectionLength = "Selection Length : ";
@@ -72,6 +76,27 @@ public class InvestmentHead  {
 
     private SelectItem[] allDepts;
     private String name;
+
+    private String underGroupName;
+    private int underGroupCode;
+
+    public int getUnderGroupCode() {
+        return underGroupCode;
+    }
+
+    public void setUnderGroupCode(int underGroupCode) {
+        this.underGroupCode = underGroupCode;
+    }
+
+    public String getUnderGroupName() {
+        return underGroupName;
+    }
+
+    public void setUnderGroupName(String underGroupName) {
+        this.underGroupName = underGroupName;
+    }
+    
+
 
     public void setAllDepts(SelectItem[] allDepts) {
         this.allDepts = allDepts;
@@ -200,7 +225,8 @@ public class InvestmentHead  {
 
     public void save()
     {
-        new InvestmentHeadDB().save(name,benefit,details);
+        Exception e = new InvestmentHeadDB().save(name,benefit,details,underGroupCode);
+        //.printStackTrace();
         name=null;
     }
     public InvestmentHead() {

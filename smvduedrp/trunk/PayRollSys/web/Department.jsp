@@ -7,6 +7,8 @@
 
 <%@ taglib prefix="f" uri="http://java.sun.com/jsf/core" %>
 <%@ taglib prefix="h" uri="http://java.sun.com/jsf/html" %>
+<%@ taglib uri="http://richfaces.org/a4j" prefix="a4j"%>
+<%@ taglib uri="http://richfaces.org/rich" prefix="rich"%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
@@ -21,35 +23,54 @@
         <link rel="stylesheet" type="text/css" href="css/table.css"/>
     </head>
     <body class="subpage" id="">
-        <div class="xerror">Existing Departments</div>
+ 
         <div class="container_form">
             <f:view>
-                <h:form id="departments">
-                    <h:panelGrid styleClass="myTable" columns="5">
-                        <h:dataTable value="#{DepartmentBean.allDepts}" var="dept" styleClass="table_full_fixed">
-                            <h:column>
+                <rich:panel header="Existing Departments">
+                    <h:commandButton onclick="Richfaces.showModalPanel('pnl');" value="Add New"/>
+                <h:form id="departments">                    
+                   
+                       
+                        <rich:dataTable binding="#{DepartmentBean.dataGrid}" value="#{DepartmentBean.departments}"
+                                        var="dept">
+                             <rich:panel>
+                            <rich:messages>
+                       <f:facet name="infoMarker">
+                            <h:graphicImage url="/img/success.png"/>
+                       </f:facet>
+                     
+                    </rich:messages>
+                            <h:column >
                                 <f:facet name="header">
                                     <h:outputText value="Code"/>
                                 </f:facet>
-                                <h:outputText value="#{dept.value}" />
+                                <h:outputText value="#{dept.number}" />
                             </h:column>
                             <h:column>
                                 <f:facet name="header">
                                     <h:outputText  value="Name"/>
                                 </f:facet>
-                                <h:outputText value="#{dept.label}" />
+                                <rich:inplaceInput value="#{dept.name}" />
                             </h:column>
-
-                        </h:dataTable>
+                        </rich:dataTable>
+                        </rich:panel>                    
+                    <h:panelGrid columns="2">
+                    <h:commandButton value="Update" action="#{DepartmentBean.update}"/>
+                    
                     </h:panelGrid>
                 </h:form>
-                <br />
-                <div class="xerror">Add New Department</div>
-                <h:form>
+                </rich:panel>
+               
+                <rich:modalPanel id="pnl">
+                    <rich:panel header="Add New Department">
+                    <h:form>
                     <h:inputText id="deptName" required="true" requiredMessage="Please Enter Department Name" value="#{DepartmentBean.name}"/>
                     <h:message styleClass="error" for="deptName" tooltip="Employee Type"/>
                     <h:commandButton value="Save" action="#{DepartmentBean.save}"  />
+                    <h:commandButton value="Close" onclick="Richfaces.hideModalPanel('pnl');" />
                 </h:form>
+                </rich:panel>
+                </rich:modalPanel>
             </f:view>
         </div>
     </body>

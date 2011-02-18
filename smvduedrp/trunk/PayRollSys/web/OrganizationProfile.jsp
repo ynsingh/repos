@@ -49,10 +49,7 @@
                             </f:facet>
                             <h:graphicImage value="#{OrgProfileBean.theFile}"/>
                         </h:column>
-
-                    </h:dataTable>               
-                    
-                    <h:commandButton value="Save" action="#{DesignationBean.save}"  />
+                    </h:dataTable>                      
                 </h:form>
 
             </f:view>

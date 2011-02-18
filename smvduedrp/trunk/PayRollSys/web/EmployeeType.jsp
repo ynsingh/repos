@@ -7,6 +7,8 @@
 
 <%@ taglib prefix="f" uri="http://java.sun.com/jsf/core" %>
 <%@ taglib prefix="h" uri="http://java.sun.com/jsf/html" %>
+<%@ taglib uri="http://richfaces.org/a4j" prefix="a4j"%>
+<%@ taglib uri="http://richfaces.org/rich" prefix="rich"%>
 
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -23,34 +25,46 @@
     <body class="subpage" id="">
         <div class="container_form">
             <f:view>
-                <h:form >
-                    <table>
-                        <thead>
-                            <tr ><th colspan="2">Add Employee Type</th></tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td width="28%">Existing Types</td>
-                                <td width="28%">
-                                    <html:select property="allTypes">
-                                    <html:options property="allTypes"/>
-                                    </html:select>
-                                </td>
-                            </tr>
+               
+                <rich:panel header="Existing Types">
+                    <h:commandButton onclick="Richfaces.showModalPanel('pnl');" value="Add New"/>
+                    <rich:messages>
+                       <f:facet name="infoMarker">
+                            <h:graphicImage url="/img/success.png"/>
+                       </f:facet>
 
+                    </rich:messages>
+                     <h:form>
+                         <rich:dataTable id="tbl" value="#{EmployeeTypeControllerBean.employeeTypes}" binding="#{EmployeeTypeControllerBean.dataGrid}" var="et">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Code"/>
+                            </f:facet>
+                            <h:outputText value="#{et.code}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Name"/>
+                            </f:facet>
+                            <rich:inplaceInput value="#{et.name}"/>
+                        </h:column>
+                    </rich:dataTable>
+                    <h:commandButton action="#{EmployeeTypeControllerBean.update}" value="Update"/>
+                    </h:form>
+                </rich:panel>
+                <rich:modalPanel id="pnl">
+                    <rich:panel header="Add New Employee Type">
+                        <h:form>
+                        <h:panelGrid columns="2">
+                            <h:outputText value="Type Name*"/>
+                            <h:inputText value="#{EmployeeTypeBean.name}"/>
+                            <h:commandButton  value="Save" action="#{EmployeeTypeBean.save}"/>
+                            <h:commandButton onclick="Richfaces.hideModalPanel('pnl');" value="Close"/>
+                        </h:panelGrid>
+                        </h:form>
+                    </rich:panel>
+                </rich:modalPanel>
 
-                        <tr>
-                            <td>New Type</td>
-                            <td width="72%"><html:text property="name" /></td>
-                        </tr>
-
-                        <tr>
-                            <td></td>
-                            <td><html:submit value="Save" /></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </h:form>
             </f:view>
         </div>
     </body>

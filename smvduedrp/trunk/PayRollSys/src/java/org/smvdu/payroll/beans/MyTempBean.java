@@ -5,6 +5,9 @@
 
 package org.smvdu.payroll.beans;
 
+import java.util.Date;
+import org.richfaces.component.html.HtmlCalendar;
+
 /**
  *
  * @author Algox
@@ -12,25 +15,49 @@ package org.smvdu.payroll.beans;
 public class MyTempBean {
 
 
-    private Employee emp;
 
-    public Employee getEmp() {
-        return emp;
+
+    private String date;
+
+    public String getDate() {
+        return date;
     }
 
-    public void setEmp(Employee emp) {
-        this.emp = emp;
+    public void setDate(String date) {
+        System.err.println("Setting date ..."+date);
+        this.date = date;
     }
 
-    private String code;
 
-    public String getCode() {
-        return emp.getCode();
+    private String label;
+
+    public String getLabel() {
+        return label;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setLabel(String label) {
+        this.label = label;
     }
+
+
+    private org.richfaces.component.html.HtmlCalendar cal;
+
+    public HtmlCalendar getCal() {
+        return cal;
+    }
+
+    public void setCal(HtmlCalendar cal) {
+        this.cal = cal;
+    }
+
+
+    public void print()
+    {
+        cal.getValue().toString();
+        label = date;
+    }
+
+
     
 
 }

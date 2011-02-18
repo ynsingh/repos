@@ -6,6 +6,9 @@
 package org.smvdu.payroll.beans;
 
 import java.util.ArrayList;
+import javax.faces.application.FacesMessage;
+import javax.faces.component.UIData;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import org.smvdu.payroll.beans.db.EmployeeTypeDB;
 
@@ -17,6 +20,16 @@ public class EmployeeType {
     
     private String name;
 
+    private UIData dataGrid;
+
+    public UIData getDataGrid() {
+        return dataGrid;
+    }
+
+    public void setDataGrid(UIData dataGrid) {
+        this.dataGrid = dataGrid;
+    }
+    
 
     private SelectItem[] items;
 
@@ -44,7 +57,16 @@ public class EmployeeType {
     public void setMessage(String message) {
         this.message = message;
     }
-    
+
+    public void update()
+    {
+        ArrayList<EmployeeType> types = (ArrayList<EmployeeType>)dataGrid.getValue();
+        for(EmployeeType et : types)
+        {
+            System.out.println("Name : "+et.getName()+", Code : "+et.getCode());
+        }
+        FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Departments Updated", ""));
+    }
 
     private ArrayList<EmployeeType> allTypes;
 
@@ -54,6 +76,7 @@ public class EmployeeType {
         return allTypes;
     }
 
+    @Override
     public String toString()
     {
         return name;
@@ -67,6 +90,7 @@ public class EmployeeType {
     {
         new EmployeeTypeDB().save(name);
         name=null;
+        FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "New Type Saved", ""));
     }
 
     /**

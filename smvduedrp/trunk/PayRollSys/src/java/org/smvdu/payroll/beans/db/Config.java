@@ -42,7 +42,6 @@ public class Config {
             CommonDB.setPortNo(ps.getProperty("post"));
             CommonDB.setUsername(ps.getProperty("user"));
             CommonDB.setPassword(ps.getProperty("password"));
-            CommonDB.setDbName(ps.getProperty("dbname"));
         }
         catch(Exception e)
         {

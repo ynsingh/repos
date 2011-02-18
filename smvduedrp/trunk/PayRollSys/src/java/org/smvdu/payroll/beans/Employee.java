@@ -6,6 +6,8 @@
 package org.smvdu.payroll.beans;
 
 import java.util.ArrayList;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import org.smvdu.payroll.beans.db.EmployeeDB;
 
@@ -14,15 +16,11 @@ import org.smvdu.payroll.beans.db.EmployeeDB;
  * @author Algox
  */
 public class Employee {
-    
-    
     private String code;
 
 
-
-
+    private int currentBasic;    
     private SelectItem[] codedEmp;
-
     public SelectItem[] getCodedEmp() {
         ArrayList<Employee> emps = new EmployeeDB().loadProfiles("");
         codedEmp = new SelectItem[emps.size()];
@@ -34,24 +32,27 @@ public class Employee {
         return codedEmp;
     }
 
+    public int getCurrentBasic() {
+        return currentBasic;
+    }
+
+    public void setCurrentBasic(int currentBasic) {
+        this.currentBasic = currentBasic;
+    }
+
+    
+
     public void setCodedEmp(SelectItem[] codedEmp) {
         this.codedEmp = codedEmp;
     }
-    
-
-
     private Employee emp;
-
     public Employee getEmp() {
         return emp;
     }
-
     public void setEmp(Employee emp) {
         this.emp = emp;
         System.err.println(" Name : "+emp.getName());
     }
-    
-
     public String getBandName() {
         return bandName;
     }
@@ -83,16 +84,7 @@ public class Employee {
     public void setTypeName(String typeName) {
         this.typeName = typeName;
     }
-    private String name;
-
-
-
-    private String deptName;
-    private String desigName;
-    private String typeName;
-    private String bandName;
-
-    private boolean male;
+    
 
     public boolean isMale() {
         return male;
@@ -106,6 +98,12 @@ public class Employee {
     private String email;
     private int dept ;
     private int desig;
+    private String name;
+    private String deptName;
+    private String desigName;
+    private String typeName;
+    private String bandName;
+    private boolean male;
     private int grade;
     private String address;
     private int srNo;
@@ -116,8 +114,28 @@ public class Employee {
     private String bankAccNo;
     private String pfAccNo;
     private String panNo;
-
     private String message;
+
+    private Department department;
+    private Designation designation;
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        System.out.println("Setting department : "+department.getName()+" Code : "+department.getCode());
+        this.department = department;
+    }
+
+    public Designation getDesignation() {
+        return designation;
+    }
+
+    public void setDesignation(Designation designation) {
+        this.designation = designation;
+    }
+    
 
     public String getMessage() {
         return message;
@@ -158,7 +176,11 @@ public class Employee {
         return bankAccNo;
     }
     public void updateProfile()   {
-         new EmployeeDB().update(this);
+         boolean b =new EmployeeDB().update(this);
+         if(b)
+         {
+             FacesContext.getCurrentInstance().addMessage("",new FacesMessage(FacesMessage.SEVERITY_INFO, "Employee Details Updated",""));
+         }
     }
     public void setBankAccNo(String bankAccNo) {
         this.bankAccNo = bankAccNo;
@@ -206,29 +228,52 @@ public class Employee {
        panNo = xemp.panNo;
        return xemp;
    }
-    public void getProfile()    {
+    public String getProfile()    {
        //System.err.println("Loading Profile for code :"+id);
-       Employee emp = new EmployeeDB().loadProfile(code);
+       Employee xemp = new EmployeeDB().loadProfile(code);
+       if(xemp==null)
+       {
+           xemp = getDefault();
+       }
+       //System.err.println("Name : "+emp.name);
+       type = xemp.type;
+       name = xemp.name;
+       code = xemp.code;
+       dob = xemp.dob;
+       doj = xemp.doj;
+       email = xemp.email;
+       
+       dept = xemp.dept;
+       desig = xemp.desig;
+       bankAccNo = xemp.bankAccNo;
+       pfAccNo = xemp.pfAccNo;
+       panNo = xemp.panNo;
+       return "EditEmployeeProfile.jsf";
+   }
+
+
+
+    public void fetchProfile()
+    {
+        Employee emp = new EmployeeDB().loadProfile(code);
        if(emp==null)
        {
            emp = getDefault();
        }
-       //System.err.println("Name : "+emp.name);
+       System.err.println("Name : "+emp.name);
        type = emp.type;
        name = emp.name;
-       code = emp.code;
-       dob = emp.dob;
-       doj = emp.doj;
-       email = emp.email;
-       
+       setCode(code);
        dept = emp.dept;
        desig = emp.desig;
+       dob = emp.dob;
+       doj = emp.doj;
+       phone = emp.phone;
        bankAccNo = emp.bankAccNo;
        pfAccNo = emp.pfAccNo;
+       email = emp.email;
        panNo = emp.panNo;
-   }
-
-
+    }
 
 
     public String loadProfile()    {
@@ -252,18 +297,48 @@ public class Employee {
        pfAccNo = emp.pfAccNo;
        email = emp.email;
        panNo = emp.panNo;
-       return "";
+       return "EditEmployeeProfile";
        
-   }  
+   }
+
+
+    private SelectItem[] empIdentity;
+
+    public SelectItem[] getEmpIdentity() {
+        ArrayList<Employee> loadProfiles = new EmployeeDB().loadProfiles("");
+        Employee em= null;
+        empIdentity = new SelectItem[loadProfiles.size()];
+        for(int i=0;i<loadProfiles.size();i++)
+        {
+            em = loadProfiles.get(i);
+            SelectItem si = new SelectItem(em.getEmpId(),em.getName());
+            empIdentity[i] = si;
+        }
+        
+        return empIdentity;
+    }
+
+    public void setEmpIdentity(SelectItem[] empIdentity) {
+        this.empIdentity = empIdentity;
+    }
+    
+
     public ArrayList<Employee> getAll()   {
        return new EmployeeDB().loadProfiles("");
    }
     public void save()    {
         try
         {
+            if(new EmployeeDB().codeExist(code))
+            {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Employee Code already exist("+code+")", "("+code+")"));
+                return;
+            }
             Exception ee=new EmployeeDB().save(this);
             if(ee==null)
-            message = " Profile Saved Code : "+code +"";
+            {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Employee Data Saved ("+code+")", "Employee Data Saved ("+code+")"));
+            }
             else
                 throw ee;
         }
@@ -278,6 +353,8 @@ public class Employee {
     }
     public void setDob(String dob) {
         this.dob = dob;
+        System.out.println(">> Date Of Birth : "+this.dob);
+        
     }
     public String getDoj() {
         return doj;
@@ -330,6 +407,7 @@ public class Employee {
     }
 
 
+    @Override
     public String toString()
     {
         return name;

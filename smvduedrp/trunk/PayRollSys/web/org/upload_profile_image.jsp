@@ -117,7 +117,7 @@
    }
    }
    }
-  response.sendRedirect("../Main.faces");
+  response.sendRedirect("../MainPage.jsf");
    %>
 
 

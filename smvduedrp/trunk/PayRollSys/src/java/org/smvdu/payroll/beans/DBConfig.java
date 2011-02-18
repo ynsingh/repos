@@ -5,6 +5,8 @@
 
 package org.smvdu.payroll.beans;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import org.smvdu.payroll.beans.db.CommonDB;
 
 /**
@@ -13,40 +15,39 @@ import org.smvdu.payroll.beans.db.CommonDB;
  */
 public class DBConfig {
 
-    private  String hostName;
+    private   String hostName;
     private  String port;
-    private  String username;
-    private  String password;
+    private   String username;
+    private   String password;
+    private  String dbName;
 
+    private boolean connected;
 
-
-    private String root;
-
-    public String getHostName() {
-        return hostName;
+    public boolean isConnected() {
+        connected =new CommonDB().testConnection(this);
+        return connected;
     }
 
-    public void setHostName(String hostName) {
-        this.hostName = hostName;
+    public void setConnected(boolean connected) {
+        this.connected = connected;
     }
-
-    public String getRoot() {
-        return System.getProperty("user.dir");
-    }
-
-    public void setRoot(String root) {
-        this.root = root;
-    }
-
-    private String dbName;
-
-    public String getDbName() {
+    
+    public  String getDbName() {
         return dbName;
+    }
+
+
+    public String buildConnection()
+    {
+        new CommonDB().testConnection(this);
+        FacesContext.getCurrentInstance().addMessage("", new FacesMessage(FacesMessage.SEVERITY_INFO, "Database Connected", "Database Connected Successfully. Plz Click on Login to Proceed"));
+        return "fail";
     }
 
     public void setDbName(String dbName) {
         this.dbName = dbName;
     }
+    
     public  String getHost() {
         return hostName;
     }
@@ -55,7 +56,7 @@ public class DBConfig {
         this.hostName = host;
     }
 
-    public  String getPassword() {
+    public   String getPassword() {
         return password;
     }
 
@@ -90,10 +91,11 @@ public class DBConfig {
     }
     
 
-    public String testConnection()
+    public boolean testConnection()
     {
-        message = new CommonDB().testConnection(this);
-        return "success";
+        
+       return new CommonDB().testConnection(this);
+
     }
 
 

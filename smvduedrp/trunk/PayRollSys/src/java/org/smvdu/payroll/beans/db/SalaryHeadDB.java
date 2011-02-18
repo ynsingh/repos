@@ -21,8 +21,83 @@ public class SalaryHeadDB {
     private ResultSet rs;
 
 
-    public void updateDefault(ArrayList<SalaryHead> heads,int code)
+
+
+    public ArrayList<String> getApplicableHeads(String empCode)
     {
+        try
+        {
+            Connection c = new CommonDB().getConnection();
+            ps=c.prepareStatement("select sh_name from salary_head_master "
+                + "where sh_id in (select st_sal_code from emp_salary_head_master "
+                + "where st_code =  (select emp_type_code from employee_master "
+                + "where emp_code=?) ) order by sh_id ");
+            ps.setString(1, empCode);
+            rs=ps.executeQuery();
+            ArrayList<String> data = new ArrayList<String>();
+            while(rs.next())
+            {
+                data.add(rs.getString(1));
+            }
+            rs.close();
+            ps.close();
+            c.close();
+            return data;
+
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public void updateDefaultvalue(ArrayList<SalaryHead> heads,int emptype)  {
+        try
+        {
+            Connection c = new CommonDB().getConnection();
+            ps=c.prepareStatement("delete from default_salary_master where ds_emp_type=?");
+            ps.setInt(1, emptype);
+            ps.executeUpdate();
+            ps.close();
+            ps=c.prepareStatement("update default_salary_master set ds_amount=? "
+                    + "where ds_sal_head=? and ds_emp_type=?");
+            for(SalaryHead sh : heads)
+            {
+                ps.setInt(1, sh.getDefaultValue());
+                ps.setInt(2, sh.getNumber());
+                ps.setInt(3, emptype);
+                ps.executeUpdate();
+                ps.clearParameters();
+            }
+            ps.close();
+            c.close();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    public void update(ArrayList<SalaryHead> heads)  {
+        try
+        {
+            Connection c = new CommonDB().getConnection();
+            ps=c.prepareStatement("update salary_head_master set sh_name=? where sh_id=?");
+            for(SalaryHead sh : heads)
+            {
+                ps.setString(1, sh.getName().toUpperCase());
+                ps.setInt(2, sh.getNumber());
+                ps.executeUpdate();
+                ps.clearParameters();
+            }
+            ps.close();
+            c.close();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    public void updateDefault(ArrayList<SalaryHead> heads,int code)    {
         try
         {
             Connection c = new CommonDB().getConnection();
@@ -47,6 +122,42 @@ public class SalaryHeadDB {
             e.printStackTrace();
         }
     }
+
+
+    public ArrayList<SalaryHead> loadAppliedHeads(int empType)   {
+        try
+        {
+            Connection c = new CommonDB().getConnection();
+            ps=c.prepareStatement("select sh_id,sh_name,sh_calc_type,sh_type "
+                    + "from emp_salary_head_master left join salary_head_master"
+                    + " on sh_id = st_sal_code where st_code=? order by sh_type");
+            ps.setInt(1, empType);
+            //System.err.println(">>> Type Code : "+empType);
+            rs=ps.executeQuery();
+            ArrayList<SalaryHead> data = new ArrayList<SalaryHead>();
+            while(rs.next())
+            {
+                SalaryHead sal = new SalaryHead();
+                sal.setNumber(rs.getInt(1));
+                sal.setName(rs.getString(2));
+                sal.setCalculationType(rs.getBoolean(3));
+                sal.setUnder(!rs.getBoolean(4));
+                data.add(sal);
+            }
+            rs.close();
+            ps.close();
+            c.close();
+            return data;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+
     public ArrayList<SalaryHead> loadSelectedHeads(int empType)   {
         try
         {
@@ -55,6 +166,7 @@ public class SalaryHeadDB {
                     + "salary_head_master left join default_salary_master "
                     + "on ds_sal_head = sh_id and ds_emp_type=? where sh_calc_type=0 ");
             ps.setInt(1, empType);
+            //System.err.println(">>> Type Code : "+empType);
             rs=ps.executeQuery();
             ArrayList<SalaryHead> data = new ArrayList<SalaryHead>();
             while(rs.next())
@@ -77,7 +189,6 @@ public class SalaryHeadDB {
             return null;
         }
     }
-
     public ArrayList<SalaryHead> loadSelectedDeductionHeads(int empType)   {
         try
         {
@@ -117,8 +228,8 @@ public class SalaryHeadDB {
             ps=c.prepareStatement("select st_sal_code,sh_name,ds_amount,sh_type from "
                     + "emp_salary_head_master left join salary_head_master "
                     + "on sh_id = st_sal_code left join default_salary_master "
-                    + "on ds_emp_type = st_code and ds_sal_head=sh_id where st_code=? and "
-                    + "sh_type=1 ");
+                    + "on ds_emp_type = st_code and ds_sal_head=sh_id where st_code=? "
+                    + " and sh_type=1 ");
             ps.setInt(1, empType);
             rs=ps.executeQuery();
             ArrayList<SalaryHead> data = new ArrayList<SalaryHead>();
@@ -247,7 +358,7 @@ public class SalaryHeadDB {
         {
             Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("insert into salary_head_master(sh_name,sh_type,sh_alias,sh_calc_type) values(?,?,?,?)");
-            ps.setString(1, form.getName());
+            ps.setString(1, form.getName().toUpperCase());
             ps.setBoolean(2, form.isUnder());
             ps.setString(3, form.getAlias());
             ps.setBoolean(4, form.isCalculationType());

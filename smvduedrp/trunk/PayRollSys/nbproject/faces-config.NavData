@@ -1,29 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Scene Scope="Project" version="2">
-    <Scope Scope="Faces Configuration Only"/>
+<Scene Scope="Faces Configuration Only" version="2">
+    <Scope Scope="Faces Configuration Only">
+        <Node id="EmployeeProfile.jsp" x="400" y="150" zoom="true"/>
+        <Node id="/MainPage.jsp" x="150" y="300" zoom="true"/>
+        <Node id="/auth/Login.jsp" x="150" y="150" zoom="true"/>
+        <Node id=" /SalaryOption.jsp" x="650" y="150" zoom="true"/>
+    </Scope>
     <Scope Scope="Project">
-        <Node id="testing/divtest.html" x="1900" y="150" zoom="true"/>
         <Node id="SalaryConfiguration.jsp" x="400" y="750" zoom="true"/>
+        <Node id="testing/divtest.html" x="1900" y="150" zoom="true"/>
+        <Node id="newjsp.jsp" x="900" y="1050" zoom="true"/>
         <Node id="FormulaViewer.jsp" x="650" y="750" zoom="true"/>
         <Node id="updates.html" x="900" y="300" zoom="true"/>
         <Node id="org/upload_profile_image.jsp" x="2400" y="150" zoom="true"/>
         <Node id="SearchEmployee.jsp" x="1150" y="300" zoom="true"/>
         <Node id="InvestmentPlanViewer.jsp" x="900" y="750" zoom="true"/>
         <Node id="js/custom-validation-example.html" x="1150" y="750" zoom="true"/>
+        <Node id="MyUpdates.jsp" x="1400" y="750" zoom="true"/>
         <Node id="org/PlainProfile.jsp" x="1900" y="450" zoom="true"/>
         <Node id="org/Profile.jsp" x="150" y="150" zoom="true"/>
         <Node id="account/AddUser.jsp" x="1150" y="600" zoom="true"/>
         <Node id="SimpleSalaryData.jsp" x="1650" y="300" zoom="true"/>
         <Node id="Database.jsp" x="1900" y="300" zoom="true"/>
+        <Node id="testing/Department.jsp" x="1150" y="900" zoom="true"/>
         <Node id="TestEmployee.jsp" x="650" y="600" zoom="true"/>
         <Node id="DefaultSalaryData.jsp" x="650" y="150" zoom="true"/>
         <Node id="js/onpage-example.html" x="650" y="1050" zoom="true"/>
         <Node id="SalaryOption.jsp" x="900" y="150" zoom="true"/>
         <Node id="js/Documentation.html" x="900" y="900" zoom="true"/>
-        <Node id="account/UserManager.jsp" x="150" y="1050" zoom="true"/>
-        <Node id="index.jsp" x="400" y="150" zoom="true"/>
         <Node id="SalaryHead.jsp" x="1650" y="150" zoom="true"/>
+        <Node id="index.jsp" x="400" y="150" zoom="true"/>
+        <Node id="Login_1.jsp" x="1650" y="600" zoom="true"/>
+        <Node id="account/UserManager.jsp" x="150" y="1050" zoom="true"/>
         <Node id="MonthlySalarySingle.jsp" x="650" y="450" zoom="true"/>
+        <Node id="org/NewProfile.jsp" x="650" y="1200" zoom="true"/>
         <Node id="SimpleSalaryProcessor.jsp" x="1400" y="450" zoom="true"/>
         <Node id=" /SalaryOption.jsp" x="1150" y="450" zoom="true"/>
         <Node id="BankStatement.jsp" x="1400" y="150" zoom="true"/>
@@ -35,22 +45,22 @@
         <Node id="account/ChangePass.jsp" x="650" y="900" zoom="true"/>
         <Node id="Main.jsp" x="150" y="450" zoom="false"/>
         <Node id="InvestmentHead.jsp" x="400" y="1050" zoom="true"/>
-        <Node id="Login.jsp" x="400" y="450" zoom="false"/>
         <Node id="ajax/SimpleQuery.jsp" x="400" y="1200" zoom="true"/>
         <Node id="newjsf.xhtml" x="2150" y="150" zoom="true"/>
         <Node id="OrganizationProfile.jsp" x="900" y="450" zoom="true"/>
         <Node id="EmployeeType.jsp" x="150" y="600" zoom="true"/>
         <Node id="account/Logout.jsp" x="150" y="750" zoom="true"/>
-        <Node id="testing/newhtml.html" x="150" y="1350" zoom="true"/>
         <Node id="DefaultSalaryProcessor.jsp" x="1150" y="150" zoom="true"/>
+        <Node id="testing/newhtml.html" x="150" y="1350" zoom="true"/>
         <Node id="Department.jsp" x="150" y="150" zoom="true"/>
         <Node id="EmployeeProfile.jsp" x="150" y="300" zoom="true"/>
         <Node id="SalaryProfile.jsp" x="1400" y="300" zoom="true"/>
-        <Node id="Designation.jsp" x="400" y="300" zoom="true"/>
+        <Node id="/auth/Login.jsp" x="400" y="450" zoom="false"/>
         <Node id="ConsolidatedMonthlySalaryViewer.jsp" x="400" y="900" zoom="true"/>
+        <Node id="Designation.jsp" x="400" y="300" zoom="true"/>
         <Node id="SalaryGrade.jsp" x="150" y="900" zoom="true"/>
-        <Node id="SalaryData.jsp" x="900" y="600" zoom="true"/>
         <Node id="js/together-msgbox-example.html" x="1650" y="450" zoom="true"/>
+        <Node id="SalaryData.jsp" x="900" y="600" zoom="true"/>
     </Scope>
     <Scope Scope="All Faces Configurations"/>
 </Scene>

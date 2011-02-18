@@ -6,6 +6,11 @@
 package org.smvdu.payroll.beans;
 
 import java.util.ArrayList;
+import java.util.List;
+import javax.faces.application.Application;
+import javax.faces.component.html.HtmlInputText;
+import javax.faces.component.html.HtmlPanelGrid;
+import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.event.ValueChangeListener;
@@ -15,13 +20,22 @@ import org.smvdu.payroll.beans.db.SalaryDataDB;
  *
  * @author Algox
  */
-public class SalaryData implements ValueChangeListener{
+public class SalaryData extends SalaryHead implements ValueChangeListener{
 
     private int headCode;
+    private boolean catagory;
     private String headName;
     private int headValue;
     private Employee employee;
+    public boolean isCatagory() {
+        return catagory;
+    }
 
+    public void setCatagory(boolean catagory) {
+        this.catagory = catagory;
+    }
+
+    
     public Employee getEmployee() {
         return employee;
     }
@@ -31,7 +45,16 @@ public class SalaryData implements ValueChangeListener{
     }
     
 
-   
+    private HtmlPanelGrid grid;
+
+    public HtmlPanelGrid getGrid() {
+        return grid;
+    }
+
+    public void setGrid(HtmlPanelGrid grid) {
+        this.grid = grid;
+    }
+    
 
     public int getHeadCode() {
         return headCode;
@@ -67,7 +90,21 @@ public class SalaryData implements ValueChangeListener{
 
     public void print()
     {
-        
+        Application app = FacesContext.getCurrentInstance().getApplication();
+        List list = grid.getChildren();
+        for(int i=0;i<list.size();i++)
+        {
+            try
+            {
+                HtmlInputText it = (HtmlInputText)app.createComponent(HtmlInputText.COMPONENT_TYPE);
+                int x = (Integer)it.getValue();
+                System.out.println("Value : "+x);
+            }
+            catch(Exception e)
+            {
+
+            }
+        }
         
     }
     public void setAllData(ArrayList<SalaryData> allData) {

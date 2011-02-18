@@ -19,11 +19,50 @@ a:hover {
 	display:inline; 
 	float: left;
 	position: relative;
+	margin-left: 5px;
+	margin-right: 10px;
+	padding-right: 5px;
+	width: 180px;
+}
+.mainpage .rightbar {
+	display:inline;
+	float: right;
+	position: relative;
 	margin-left: 10px;
 	margin-right: 10px;
 	padding-right: 10px;
 	width: 200px;
 }
+.mainpage .rightpage {
+	display:inherit;
+	float: left;
+	position: relative;
+	margin-left: 10px;
+	margin-right: 10px;
+	padding-right: 10px;
+	width: 90%;
+}
+
+.mainpage .rightbar .logo img {
+	padding: 10px;
+}
+
+.mainpage .rightbar p {
+	color: #22b195;
+	font-size: 11px;
+	line-height: 1.1;
+
+}
+
+.mainpage .rightbar h1 {
+	color: #5c8dc7;
+	font-size: 16px;
+	font-weight: bold;
+	line-height: 2;
+}
+
+
+
 
 .mainpage .sidebar .logo img { 
 	padding: 10px;
@@ -83,7 +122,7 @@ a:hover {
 	position: absolute;
 	margin: 0px;
 	background-color: #FFF;
-	min-width: 800px;
+	min-width: 1000px;
 	min-height: 1000px;
 	
 	}

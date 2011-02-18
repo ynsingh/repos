@@ -55,14 +55,6 @@
                                                 <!--<input name="password" class="v-text" type="password" /> -->
                                             </td>
                                         </tr>
-
-                                                 <tr>
-                                            <td><label for="password">Database Name </label> </td>
-                                            <td><h:inputText value="#{DBBean.dbName}"/>
-                                                <!--<input name="password" class="v-text" type="password" /> -->
-                                            </td>
-                                        </tr>
-
                                                  <tr>
                                             <td><label for="password">User Name </label> </td>
                                             <td><h:inputText value="#{DBBean.username}"/>
@@ -77,8 +69,7 @@
                                         </tr>
                                         <tr>
                                             <td>&nbsp;</td>
-                                            <td><h:commandButton action="#{DBBean.testConnection}" value="Save" />
-                                                <h:commandLink  action="Login.faces" value="Login"/>
+                                            <td><h:commandButton action="#{DBBean.testConnection}" value="Save" /><!--<input name="submit" type="button" value="Submit" /> -->
                                             </td>
                                         </tr>
                                     </table>

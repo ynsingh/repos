@@ -14,7 +14,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <%
            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().clear();
-           response.sendRedirect("Login.faces");
+           response.sendRedirect("Login.jsf");
         %>
     </head>
     <body>

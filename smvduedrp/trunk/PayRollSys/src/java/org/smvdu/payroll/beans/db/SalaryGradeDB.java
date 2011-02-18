@@ -20,6 +20,33 @@ public class SalaryGradeDB {
     private PreparedStatement ps;
     private ResultSet rs;
 
+
+
+    public void update(ArrayList<SalaryGrade> grades)
+    {
+        try
+        {
+            Connection c = new CommonDB().getConnection();
+            ps=c.prepareStatement("update salary_grade_master set grd_name=?"
+                    + ",grd_max=?,grd_min=? where grd_code=?");
+            for(SalaryGrade sg : grades)
+            {
+                ps.setString(1, sg.getName());
+                ps.setInt(2, sg.getMaxValue());
+                ps.setInt(3, sg.getMinValue());
+                ps.setInt(4, sg.getCode());
+                ps.executeUpdate();
+                ps.clearParameters();
+            }
+            ps.close();
+            c.close();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     public ArrayList<SalaryGrade> load()    {
         try
         {

@@ -6,6 +6,9 @@
 package org.smvdu.payroll.beans;
 
 import java.util.ArrayList;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
 import org.smvdu.payroll.beans.db.DesignationDB;
 
@@ -13,117 +16,38 @@ import org.smvdu.payroll.beans.db.DesignationDB;
  *
  * @author Algox
  */
-public class Designation  {
-    
-    private String name;
-
-    private int code;
-
-    public String toString()
-    {
-        return name;
-    }
-    /**
-     * @return
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * @param string
-     */
-    public void setName(String string) {
-        name = string.toUpperCase();
-    }
-
-    /**
-     * @return
-     */
-
-    private ArrayList<Designation> designations;
-
-    public ArrayList<Designation> getDesignations() {
-        return new DesignationDB().loadDesignations();
-    }
-
-    public void setDesignations(ArrayList<Designation> designations) {
-        this.designations = designations;
-    }
-    
-    public int getNumber() {
-        return code;
-    }
-
-    /**
-     * @param i
-     */
-    public void setNumber(int i) {
-        code = i;
-    }
-
-    public String getError() {
-        return error;
-    }
-
-    public void setError(String error) {
-        this.error = error;
-    }
-
-    private String message ="";
-
-    public String getMessage() {
-        return message;
-    }
-
-
+public class Designation  extends BaseBean implements Converter{
+   
     public void save()
     {
-        new DesignationDB().save(name);
-        name=null;
+        new DesignationDB().save(getName());
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
 
-    private SelectItem[] desigs;
+     private SelectItem[] arrayAsItem;
 
-    public SelectItem[] getDesigs() {
-        ArrayList<Designation> all = new DesignationDB().loadDesignations();
-        desigs = new SelectItem[all.size()];
-        Designation d = null;
-        for(int i=0;i<all.size();i++)
+    public SelectItem[] getArrayAsItem() {
+
+        ArrayList<Designation> designations = new DesignationDB().loadDesignations();
+        arrayAsItem = new SelectItem[designations.size()];
+        Designation dp = null;
+        for(int i=0;i<designations.size();i++)
         {
-            d =all.get(i);
-            SelectItem si = new SelectItem(d.code, d.name);
-            desigs[i]= si;
+            dp = designations.get(i);
+            SelectItem si = new SelectItem(dp.getCode(), dp.getName());
+            arrayAsItem[i] = si;
         }
-        return desigs;
+        return arrayAsItem;
     }
 
-    public void setDesigs(String[] desigs) {
-        ArrayList<Designation> des = new ArrayList<Designation>();
-        for(String s: desigs)
-        {
-            Designation d = new Designation();
-            d.setName(s);
-            des.add(d);
-        }
-        //this.desigs = des;
+    @Override
+    public Object getAsObject(FacesContext fc, UIComponent uic, String string) {
+       return new DesignationDB().convert(string);
     }
 
-
-
-    private String error = " <font color='green'>* Designation name Cannot be empty </font>";
-
-    /**
-     *
-     */
-    public Designation() {
-        super();
-        // TODO Auto-generated constructor stub
+    @Override
+    public String getAsString(FacesContext fc, UIComponent uic, Object o) {
+        System.out.println("Object class Desig : "+o.getClass().getSimpleName());
+        return o.toString();
     }
-
-   
 }

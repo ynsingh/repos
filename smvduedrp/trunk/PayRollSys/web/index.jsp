@@ -14,6 +14,6 @@
         <title>Payroll | Login</title>
     </head>
     <body>
-        <jsp:forward page="Login.faces"/>
+        <jsp:forward page="Login.jsf"/>
     </body>
 </html>

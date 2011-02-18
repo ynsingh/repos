@@ -6,7 +6,11 @@
 --%>
 <%@ taglib prefix="f" uri="http://java.sun.com/jsf/core" %>
 <%@ taglib prefix="h" uri="http://java.sun.com/jsf/html" %>
+<%@ taglib uri="http://richfaces.org/a4j" prefix="a4j"%>
+<%@ taglib uri="http://richfaces.org/rich" prefix="rich"%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 		<head>
@@ -56,26 +60,24 @@
 
 		<body id="" class="mainpage">
 <f:view>
-        <h:form>
+      
+           
 <div class="sidebar">
           <div class="logo">  </div>
-          <h1>Payroll System</h1>
-          <p> Logged-In At : <h:outputText value="#{OrgProfileBean.name}"/> </p>
-          <jsp:include page="org/PlainProfile.jsp"/>
-        </div>
-<div class="usermenu"> <p>
-    <a href="#" class="faded">[Login@<h:outputText value="#{UserBean.timeStamp}"/> as <b> <h:outputText  value="#{UserBean.userName}"/></b> ] </a>
-    |
-    <a href="./account/ChangePass.faces" onClick="return loadIframe('ifrm', this.href)"> Change Password</a>
-    |
-    <strong>
-        <h:commandLink action="account/Logout.faces">Logout </h:commandLink>
-    </strong>
-    | <strong>
-        <h:commandLink action="account/help/index.html">Help </h:commandLink>
-    </strong>
-    </p>
+          <rich:panel header="Institute Details">             
+              <h1>Payroll System</h1>
+              <hr width="100%"/>
+              <p> Logged-In At : <h:outputText value="#{OrgProfileBean.name}"/> </p>
+              <hr width="100%"/>
+              <jsp:include page="org/PlainProfile.jsp"/>
+              <h:commandButton value="Logout"/>
+              <hr width="100%"/>              
+              <h:commandButton onclick="Richfaces.showModalPanel('themepanel');" value="Change Theme"/>
+              <h:commandButton value="Help"/>
+          </rich:panel>
 </div>
+         
+
 <div class="body">
           <div class="nav-menu">
     <!-- navigation bar-->
@@ -84,52 +86,46 @@
 
 <li> <a href="#a">Employee</a>
 	<ul>
-	<li><a href="EmployeeProfile.faces" onClick="return loadIframe('ifrm', this.href)">Add New</a></li>
-	<li><a href="EditEmployeeProfile.faces" onClick="return loadIframe('ifrm', this.href)">Edit</a></li>
-	
-	<li><a href="SearchEmployee.faces" onClick="return loadIframe('ifrm', this.href)">Search </a></li>
-        
-        
+	<li><a href="employee/EmployeeProfile.jsf" onClick="return loadIframe('ifrm', this.href)">Add New</a></li>
+	<li><a href="employee/EditEmployeeProfile.jsf" onClick="return loadIframe('ifrm', this.href)">Edit</a></li>
+	<li><a href="employee/SearchEmployee.jsf" onClick="return loadIframe('ifrm', this.href)">Search </a></li>
     </ul>
 </li>
 <li><a href="#">Salary</a>
-
     <ul>
-        <li><a href="SalaryHead.faces" onClick="return loadIframe('ifrm', this.href)">Manage Salary Heads</a></li>
-        <li><a href="SalaryFormula.faces" onClick="return loadIframe('ifrm', this.href)">Edit Salary Formula</a></li>
-        <li><a href="FormulaViewer.faces" onClick="return loadIframe('ifrm', this.href)">View Salary Formula</a></li>
-        <li><a href="SalaryOption.faces" onClick="return loadIframe('ifrm', this.href)">Salary Head Setting </a></li>
+        
+        <li><a href="salary/SalaryFormula.jsf" onClick="return loadIframe('ifrm', this.href)">Edit Salary Formula</a></li>
+        <li><a href="FormulaViewer.jsf" onClick="return loadIframe('ifrm', this.href)">View Salary Formula</a></li>
+        <li><a href="SalaryOption.jsf" onClick="return loadIframe('ifrm', this.href)">Salary Head Setting </a></li>
         <li><a href="DefaultSalaryData.jsp" onClick="return loadIframe('ifrm', this.href)">Default Salary Value Setting </a></li>
-        <li><a href="SimpleSalaryData.jsp" onClick="return loadIframe('ifrm', this.href)">Process Monthly Salary Data </a></li>
+        <li><a href="SimpleSalaryData.jsf" onClick="return loadIframe('ifrm', this.href)">Process Monthly Salary Data </a></li>
     </ul>
 </li>
 <li><a href="#">Setup</a>
-
     <ul>
-        <li><a href="Department.faces" onClick="return loadIframe('ifrm', this.href)">Department</a></li>
-        <li><a href="account/AddUser.faces" onClick="return loadIframe('ifrm', this.href)">Add User</a></li>
-        <li><a href="Designation.faces" onClick="return loadIframe('ifrm', this.href)">Designation</a></li>
-        <li><a href="SalaryGrade.faces" onClick="return loadIframe('ifrm', this.href)">Manage Grades</a></li>
-       <li> <a href="SalaryProfile.faces" onClick="return loadIframe('ifrm', this.href)">Employee Types</a></li>
+        <li><a href="setup/Departments.jsf" onClick="return loadIframe('ifrm', this.href)">Department</a></li>        
+        <li><a href="setup/Designation.jsf" onClick="return loadIframe('ifrm', this.href)">Designation</a></li>
+        <li><a href="setup/SalaryGrade.jsf" onClick="return loadIframe('ifrm', this.href)">Manage Grades</a></li>
+       <li> <a href="SalaryProfile.jsf" onClick="return loadIframe('ifrm', this.href)">Employee Types</a></li>
+       <li><a href="setup/SalaryHead.jsf" onClick="return loadIframe('ifrm', this.href)">Manage Salary Heads</a></li>
+       <li><a href="account/AddUser.jsf" onClick="return loadIframe('ifrm', this.href)">Add User</a></li>
    </ul>
-
 </li>
 <li><a href="#">Tax Management</a>
     <ul>
-	<li><a href="InvestmentHead.faces" onClick="return loadIframe('ifrm', this.href)">Investment Heads</a></li>
-        <li><a href="InvestmentPlanViewer.faces" onClick="return loadIframe('ifrm', this.href)">Employees Investment Planing</a></li>
+	<li><a href="InvestmentHead.jsf" onClick="return loadIframe('ifrm', this.href)">Investment Heads</a></li>
+        <li><a href="InvestmentPlanViewer.jsf" onClick="return loadIframe('ifrm', this.href)">Employees Investment Planing</a></li>
     </ul>
-
 </li>
 <li><a href="#">Provident Fund</a>
-    
+
 </li>
 <li><a href="#">Leave</a>
-    
+
 
 </li>
 <li><a href="#">Loans & Advances</a>
-   
+
 
 </li>
 <li><a href="#">Report</a>
@@ -140,8 +136,8 @@
 </li>
 <li><a href="#">Account</a>
     <ul>
-	<li><a href="./account/ChangePass.faces" onClick="return loadIframe('ifrm', this.href)">Change Password</a></li>
-        <li><a href="account/Logout.faces"> Log Out</a></li>
+	<li><a href="./account/ChangePass.jsf" onClick="return loadIframe('ifrm', this.href)">Change Password</a></li>
+        <li><a href="account/Logout.jsf"> Log Out</a></li>
     </ul>
 </li>
 
@@ -152,14 +148,36 @@
           <div class="content-area" >
 
 
-              <iframe name="ifrm" id="ifrm" src="updates.html" style="background-color:#ffffff" width="100%" height="400px">Your browser doesn't support iframes.</iframe>
-              <p class="hfooter"> Developed By SMVDU . Developer Team  | 2010 </p>
+              <iframe name="ifrm" id="ifrm" src="MyUpdates.jsf" style="background-color:#ffffff" width="100%" height="400px">Your browser doesn't support iframes.</iframe>
+              
           </div>
     
 
 
 </div>
-    </h:form>
+   
+
+    <rich:modalPanel id="themepanel">
+        <f:facet name="controls">
+            <h:graphicImage value="/img/cls.png" style="cursor:pointer" onclick="Richfaces.hideModalPanel('themepanel')" />
+      </f:facet>
+        <f:facet name="header">
+            <h:outputText value="Theme Selector" />
+      </f:facet>
+            <h:form>
+            <h:panelGrid columns="3">
+                <h:outputText value="Select Theme"/>
+                <h:selectOneMenu onchange="submit();" value="#{ThemeBean.theme}">
+                    <f:selectItems value="#{ThemeBean.themes}"/>
+                </h:selectOneMenu>
+                <h:commandButton onclick="Richfaces.hideModalPanel('themepanel');" value="Close"/>
+            </h:panelGrid>
+            </h:form>
+        
+    </rich:modalPanel>
+
+
+
 </f:view>
 
 </body>

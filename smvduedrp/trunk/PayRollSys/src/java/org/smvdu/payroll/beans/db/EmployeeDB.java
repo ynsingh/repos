@@ -9,29 +9,37 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import javax.faces.context.FacesContext;
 import org.smvdu.payroll.beans.Department;
 import org.smvdu.payroll.beans.Designation;
 import org.smvdu.payroll.beans.Employee;
 import org.smvdu.payroll.beans.EmployeeType;
 import org.smvdu.payroll.beans.SalaryGrade;
+import org.smvdu.payroll.beans.UserInfo;
 
 /**
  *
  * @author Algox
  */
 public class EmployeeDB {
+    private int orgCode;
+
+    public EmployeeDB()  {
+        UserInfo ui = (UserInfo)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
+        orgCode = ui.getUserOrgCode();
+    }
 
     private PreparedStatement ps;
     private ResultSet rs;
 
 
 
-    public int getTypeCode(String empCode)
-    {
+    public int getTypeCode(String empCode)    {
         try
         {
             Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("select emp_type_code from employee_master where emp_code=?");
+            ps=c.prepareStatement("select emp_type_code from employee_master "
+                    + "where emp_code=?");
             ps.setString(1, empCode);
             rs=ps.executeQuery();
             rs.next();
@@ -47,28 +55,23 @@ public class EmployeeDB {
             return -1;
         }
     }
-
-
-
-
-
-
-
-    public Employee loadProfile(String s)  {
+    public Employee loadProfile(String empCode)  {
         try
         {
             Connection c = new CommonDB().getConnection();
             String q = "select emp_code,emp_name,dept_name,desig_name,"
                     + "emp_type_name,emp_id,emp_bank_accno,emp_pf_accno,emp_pan_no,"
-                    + " emp_type_code,emp_salary_grade,grd_name,emp_email,emp_dob,emp_doj,emp_phone"
-                    + "  from employee_master "
+                    + " emp_type_code,emp_salary_grade,grd_name,emp_email,emp_dob,"
+                    + "emp_doj,emp_phone  from employee_master "
                     + "left join designation_master on desig_code= emp_desig_code  "
                     + "left join department_master on dept_code = emp_dept_code "
                     + " left join employee_type_master on emp_type_id = emp_type_code "
-                    + "left join salary_grade_master on grd_code = emp_salary_grade where emp_code=?";
+                    + "left join salary_grade_master on grd_code = emp_salary_grade "
+                    + " where emp_code=? and emp_org_code=?";
             ps=c.prepareStatement(q);
-            System.err.println(q);
-            ps.setString(1, s);
+            System.err.println(">>>>>>>  "+q + empCode);
+            ps.setString(1, empCode);
+            ps.setInt(2, orgCode);
             rs=ps.executeQuery();
             Employee emp =null;
             if(rs.next())
@@ -82,7 +85,7 @@ public class EmployeeDB {
                 emp.setDeptName(dept.getName());
                 Designation desig = new Designation();
                 desig.setName(rs.getString(4));
-                emp.setDesig(desig.getNumber());
+                emp.setDesig(desig.getCode());
                 emp.setDesigName(desig.getName());
                 EmployeeType et = new EmployeeType();
                 et.setName(rs.getString(5));
@@ -116,14 +119,14 @@ public class EmployeeDB {
 
         }
     }
-
-    public boolean codeExist(String code)
-    {
+    public boolean codeExist(String code)    {
         try
         {
            Connection c = new CommonDB().getConnection();
-           ps=c.prepareStatement("select emp_name from employee_master where emp_code=?");
+           ps=c.prepareStatement("select emp_name from employee_master where "
+                   + "emp_code=? and emp_org_code=?");
            ps.setString(1, code);
+           ps.setInt(2, orgCode);
            rs=ps.executeQuery();
            rs.next();
            String s = rs.getString(1);
@@ -137,18 +140,21 @@ public class EmployeeDB {
             return false;
         }
     }
-
-
     public ArrayList<Employee> loadProfiles(String s)  {
         try
         {
             Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("select emp_code,emp_name,"
-                    + " dept_name,desig_name,emp_type_name,emp_id,grd_name,grd_max,grd_min "
-                    + " from employee_master left join designation_master on desig_code= emp_desig_code"
-                    + " left join department_master on dept_code = emp_dept_code "
-                    + " left join employee_type_master on emp_type_id = emp_type_code left join "
-                    + "salary_grade_master on grd_code=emp_salary_grade");
+            String q= "select emp_code,emp_name,"
+                    + " dept_name,desig_name,emp_type_name,emp_id,grd_name,grd_max,"
+                    + "grd_min,emp_phone,emp_email,emp_org_code   from "
+                    + "employee_master left join designation_master on desig_code= "
+                    + "emp_desig_code left join department_master on dept_code = "
+                    + "emp_dept_code  left join employee_type_master on emp_type_id "
+                    + "= emp_type_code left join salary_grade_master on grd_code=emp_salary_grade "
+                    + ""+s +" and emp_org_code=?";
+            //System.out.println("QUARY : "+q);
+            ps=c.prepareStatement(q);
+            ps.setInt(1, orgCode);
             rs=ps.executeQuery();
             ArrayList<Employee> data = new ArrayList<Employee>();
             int k=1;
@@ -163,7 +169,7 @@ public class EmployeeDB {
                 emp.setDeptName(dept.getName());
                 Designation desig = new Designation();
                 desig.setName(rs.getString(4));
-                emp.setDesig(desig.getNumber());
+                emp.setDesig(desig.getCode());
                 emp.setDesigName(desig.getName());
                 EmployeeType et = new EmployeeType();
                 et.setName(rs.getString(5));
@@ -176,6 +182,8 @@ public class EmployeeDB {
                 sg.setMaxValue(rs.getInt(8));
                 sg.setMinValue(rs.getInt(9));
                 emp.setBandName(sg.toString());
+                emp.setPhone(rs.getString(10));
+                emp.setEmail(rs.getString(11));
                 data.add(emp);
                 k++;
             }
@@ -191,9 +199,6 @@ public class EmployeeDB {
 
         }
     }
-
-
-
     public boolean update(Employee emp)   {
         try
         {
@@ -201,7 +206,8 @@ public class EmployeeDB {
             ps=c.prepareStatement("update employee_master set emp_name=?,"
                     + "emp_dept_code=?,emp_desig_code=?,emp_type_code=?,emp_phone=?,"
                     + "emp_email=?,emp_dob=?,emp_doj=?,emp_bank_accno=?,emp_pf_accno=?,emp_pan_no=?,"
-                    + "emp_salary_grade=? where emp_code=?");
+                    + "emp_salary_grade=?,emp_current_salary=? where emp_code=? and "
+                    + "emp_org_code=?");
             ps.setString(1, emp.getName());
             ps.setInt(2, emp.getDept());
             ps.setInt(3, emp.getDesig());
@@ -214,7 +220,9 @@ public class EmployeeDB {
             ps.setString(10, emp.getPfAccNo());
             ps.setString(11, emp.getPanNo());
             ps.setInt(12, emp.getGrade());
-             ps.setString(13, emp.getCode());
+            ps.setInt(13, emp.getCurrentBasic());
+            ps.setString(14, emp.getCode());
+            ps.setInt(15, orgCode);
             ps.executeUpdate();
             ps.close();
             c.close();
@@ -233,7 +241,7 @@ public class EmployeeDB {
             ps=c.prepareStatement("insert into employee_master(emp_code,emp_name,"
                     + "emp_dept_code,emp_desig_code,emp_type_code,emp_phone,"
                     + "emp_email,emp_dob,emp_doj,emp_bank_accno,emp_pf_accno,emp_pan_no,"
-                    + "emp_salary_grade,emp_gender) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                    + "emp_salary_grade,emp_gender,emp_org_code) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
             ps.setString(1, emp.getCode());
             ps.setString(2, emp.getName());
             ps.setInt(3, emp.getDept());
@@ -248,6 +256,7 @@ public class EmployeeDB {
             ps.setString(12, emp.getPanNo());
             ps.setInt(13, emp.getGrade());
             ps.setBoolean(14, emp.isMale());
+            ps.setInt(15, orgCode);
             ps.executeUpdate();
             ps.close();
             c.close();

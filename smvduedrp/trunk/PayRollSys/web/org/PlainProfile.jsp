@@ -15,25 +15,25 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <img align="center" alt="Logo Image"  src="org/uploadimg/logo.gif" width="100px" height="100px"/><br>
+        <img align="center" alt="Logo Image"  src="org/uploadimg/logo.gif" width="150px" height="150px"/><br>
     <%
     Org org = new Org().getProfile();
     if(org!=null)
         {
-            out.println(" <h1><i>"+org.tagLine+"</i> </h1> <br>");
-            out.println("<hr align='center' width'300px'/>");
+            out.println(" <h1><i>"+org.getTagLine()+"</i> </h1> <br>");
+            out.println("<hr align='center'/>");
 
-            out.println("Location : "+org.address1+" ");
-            out.println(""+org.address2+" <br>");
-            out.println(" Phone : "+org.phone+" <br>");
-            out.println("Website :   <a href='http://www."+org.web+"' target='_new'>"+org.web+"</a> <br>");
-            out.println("<b> E-Mail :  "+org.email+"</b><br>");
+            out.println("Location : "+org.getAddress1()+" ");
+            out.println(""+org.getAddress2()+" <br>");
+            out.println(" Phone : "+org.getPhone()+" <br>");
+            out.println("Website :   <a href='http://www."+org.getWeb()+"' target='_new'>"+org.getWeb()+"</a> <br>");
+            out.println("<b> E-Mail :  "+org.getEmail()+"</b><br>");
         }
 %>
 
-<hr align="center" width="300px"/>
+<hr align="center" />
 
-<input type="button" value="Update Details" onclick="window.location='org/Profile.jsp'"/>
+
 
         
     </body>

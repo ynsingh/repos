@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import javax.faces.context.FacesContext;
+import org.smvdu.payroll.beans.UserGroup;
 import org.smvdu.payroll.beans.UserInfo;
 
 /**
@@ -19,13 +21,19 @@ public class UserDB {
 
     private PreparedStatement ps;
     private ResultSet rs;
+    private UserInfo userBean;
 
-
+    public UserDB() {
+        userBean = (UserInfo)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("UserBean");
+    }
     public ArrayList<UserInfo> loadAll()    {
         try
         {
             Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("select * from user_master");
+            ps=c.prepareStatement("select user_id,user_name,grp_id,grp_name "
+                    + "from user_master left join user_group_master on "
+                    + " user_grp_id = grp_id where user_org_id=?");
+            ps.setInt(1, userBean.getUserOrgCode());
             rs=ps.executeQuery();
             ArrayList<UserInfo> data = new ArrayList<UserInfo>();
             while(rs.next())
@@ -33,8 +41,10 @@ public class UserDB {
                 UserInfo ui = new UserInfo();
                 ui.setUserId(rs.getInt(1));
                 ui.setUserName(rs.getString(2));
-                ui.setPassword(rs.getString(3));
-                ui.setAdmin(rs.getBoolean(4));
+                UserGroup ug = new UserGroup();
+                ug.setId(rs.getInt(3));
+                ug.setName(rs.getString(4));
+                ui.setUserGroup(ug);
                 data.add(ui);
             }
             rs.close();
@@ -53,10 +63,11 @@ public class UserDB {
         {
             Connection c = new CommonDB().getConnection();
             ps=c.prepareStatement("insert into user_master(user_name,user_pass,"
-                    + "user_admin) values(?,?,?)");
+                    + "user_org_id,user_group_id) values(?,?,?,?)");
             ps.setString(1, ui.getUserName());
             ps.setString(2, ui.getPassword());
-            ps.setBoolean(3, ui.isAdmin());
+            ps.setInt(3, ui.getUserOrgCode());
+            ps.setInt(4, ui.getGroupCode());
             ps.executeUpdate();
             ps.close();
             c.close();
@@ -88,9 +99,11 @@ public class UserDB {
         try
         {
             Connection c = new CommonDB().getConnection();
-            ps=c.prepareStatement("select user_id from user_master where user_name=? and user_pass=?");
+            ps=c.prepareStatement("select user_id from user_master where user_name=?"
+                    + " and user_pass=? and user_org_id=?");
             ps.setString(1, user);
             ps.setString(2, pass);
+            ps.setInt(3, userBean.getUserOrgCode());
             rs=ps.executeQuery();
             rs.next();
             int k = rs.getInt(1);

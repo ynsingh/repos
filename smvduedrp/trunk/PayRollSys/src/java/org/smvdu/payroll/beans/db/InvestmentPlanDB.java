@@ -9,7 +9,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import org.smvdu.payroll.beans.Employee;
 import org.smvdu.payroll.beans.InvestmentPlan;
 import org.smvdu.payroll.beans.InvestmentHead;
 
@@ -22,6 +21,44 @@ public class InvestmentPlanDB {
 
     private PreparedStatement ps;
     private ResultSet rs;
+
+
+
+    public void delete(int id)
+    {
+        try
+        {
+            Connection c = new CommonDB().getConnection();
+            ps=c.prepareStatement("delete from investment_plan_master where ip_id=?");
+            ps.setInt(1, id);
+            ps.executeUpdate();
+            ps.close();
+            c.close();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    public void savePlan(InvestmentPlan plan)
+    {
+        try
+        {
+            Connection c = new CommonDB().getConnection();
+            ps=c.prepareStatement("insert into investment_plan_master(ip_emp_id,"
+                    + "ip_ins_id,ip_amount) values(?,?,?)");
+            ps.setInt(1, plan.getEmpId());
+            ps.setInt(2, plan.getPlanCode());
+            ps.setInt(3, plan.getAmount());
+            ps.executeUpdate();
+            ps.close();
+            c.close();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 
     public ArrayList<InvestmentPlan> loadPlans(int empId)  {
         try
@@ -36,10 +73,8 @@ public class InvestmentPlanDB {
             while(rs.next())
             {
                 InvestmentPlan ip = new InvestmentPlan();
-                Employee emp = new Employee();
-                emp.setCode(rs.getString(1));
-                emp.setName(rs.getString(2));
-                ip.setEmpId(emp);
+                ip.setEmpCode(rs.getString(1));
+                ip.setEmpname(rs.getString(2));
                 InvestmentHead ih = new InvestmentHead();
                 ih.setName(rs.getString(3));
                 ip.setHeadId(ih);
