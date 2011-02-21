@@ -207,7 +207,7 @@ public class MultilingualUtil{
                                 	LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_de.properties");
 				else if(lang.equals("greek"))
                                 	LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_gre.properties");
-				else if(lang.equals("gujrati"))
+				else if(lang.equals("gujarati"))
                                         LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_gu.properties");
 				else if(lang.equals("gurmukhi"))
                                         LangFile=TurbineServlet.getRealPath("/WEB-INF/conf/BrihLang_pa.properties");

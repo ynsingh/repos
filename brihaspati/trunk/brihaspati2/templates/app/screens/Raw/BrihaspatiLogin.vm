@@ -108,7 +108,7 @@ $page.setBgColor($ui.bgcolor)
         <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","french")"> $brih_french 
         <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","german")"> $brih_german 
         <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","greek")"> $brih_greek 
-        <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","gujrati")"> $brih_gujrati 
+        <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","gujarati")"> $brih_gujarati 
         <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","gurmukhi")"> $brih_gurmukhi 
         <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","hindi")"> $brih_hindi 
         <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","italian")"> $brih_italian
@@ -143,8 +143,8 @@ $page.setBgColor($ui.bgcolor)
                 <option>$brih_german </option>
         #elseif($lang == "greek")
 	        <option> $brih_greek </option>
-        #elseif($lang == "gujrati")
-	        <option> $brih_gujrati </option>
+        #elseif($lang == "gujarati")
+	        <option> $brih_gujarati </option>
         #elseif($lang == "gurmukhi")
                 ##<option>$brih_gurmukhi ($brih_gurmukhi)</option>
                 <option>$brih_gurmukhi </option>
@@ -218,8 +218,8 @@ $page.setBgColor($ui.bgcolor)
 	        <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","greek")"> $brih_greek ($brih_greek1)
 	#end
 	
-        #if($lang != "gujrati")
-		<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","gujrati")"> $brih_gujrati ($brih_gujrati1)
+        #if($lang != "gujarati")
+		<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","gujarati")"> $brih_gujarati ($brih_gujarati1)
 	#end
 
         #if ($lang != "gurmukhi")
