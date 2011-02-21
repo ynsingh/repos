@@ -104,7 +104,7 @@ $page.setBgColor($ui.bgcolor)
 <tr><td>
 <form method="post" action="$link.setPage("call,CourseMgmt_User,Configuration.vm").setAction("OnlineConfiguration")">
          <tr bgcolor="$ui.menuColor"><td align="left">
-                <font size=4> <b>$onlinecourse</b></font>
+                <font size=4> <b>$onlineconfiguration</b></font>
          </td></tr>
          <tr><td bgcolor="$ui.tableColor" >
                 <table width=100%>
@@ -147,7 +147,7 @@ $page.setBgColor($ui.bgcolor)
                          </td></tr>
                 </table>
          </td></tr>
-         <tr><td  bgcolor="$ui.tableColor" align="left"> Online User Registration configuration is the facility	whereby you can configure setting(On Approval,Without Approval,Not Allowed) for the user to browse through your course content as well as use other course tools like mail,chat,discussion board etc. </td></tr>
+         <tr><td  bgcolor="$ui.tableColor" align="left"> $onlinecourse</td></tr>
 </form>
 </td></tr>
 
