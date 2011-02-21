@@ -60,10 +60,13 @@ import org.iitk.brihaspati.modules.utils.MailNotification;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
+import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
 import org.iitk.brihaspati.om.InstituteAdminRegistration;
 import org.iitk.brihaspati.om.InstituteAdminUserPeer;
 import org.iitk.brihaspati.om.InstituteAdminUser;
+import org.iitk.brihaspati.om.Courses;
+import org.iitk.brihaspati.om.CoursesPeer;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
 import org.apache.turbine.services.security.torque.om.TurbineUser;
 /**
@@ -77,6 +80,7 @@ import org.apache.turbine.services.security.torque.om.TurbineUser;
  * @modified date: 08-07-2010
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>20092010
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
  * @modified date: 20-10-2010,23-12-2010
  */
 
@@ -130,8 +134,6 @@ public class OnlineRegistration extends VelocitySecureAction
                 email=pp.getString("EMAIL");
                 rollno=pp.getString("rollno","");
                 program=pp.getString("prg","");
-		//ErrorDumpUtil.ErrorLog("roll no in action file--------->\n"+rollno);
-		//ErrorDumpUtil.ErrorLog("program in onlineregistration action file--------->\n"+program);
 		uname=email;
                 passwd=pp.getString("PASSWD");
                 if(passwd.equals("")){
@@ -139,7 +141,12 @@ public class OnlineRegistration extends VelocitySecureAction
                 passwd=starr[0];
 		}
 		gname=pp.getString("group","");
-		ErrorDumpUtil.ErrorLog("gname at line 135 in user registration="+gname);
+		//Get onlinecong value of the course added by sharad on 02022011
+		Criteria crit = new Criteria();
+		crit.add(CoursesPeer.GROUP_NAME,gname);
+		List onconf=CoursesPeer.doSelect(crit);
+		int onlineconf = ((Courses)(onconf.get(0))).getOnlineconf();
+                //end
 		String instituteid="";	
 		if(!gname.equals("author")){
 		String []gnamesplit=gname.split("_");
@@ -156,7 +163,11 @@ public class OnlineRegistration extends VelocitySecureAction
                 {
                         roleName=pp.getString("role_author");
                 }
+                lang=pp.getString("lang","english");
+                LangFile=MultilingualUtil.LanguageSelectionForScreenMessage(lang);
 
+		//for checking online configuration value for course added modified by sharad 
+		if(onlineconf==0){ 
                 path=data.getServletContext().getRealPath("/OnlineUsers");
                 File filepath=new File(path);
                 if(!filepath.exists())
@@ -172,10 +183,8 @@ public class OnlineRegistration extends VelocitySecureAction
 		}
 		TopicMetaDataXmlReader topicmetadata=new TopicMetaDataXmlReader(path+"/OnlineUser.xml");
                 Vector userlist = topicmetadata.getOnlineUserDetails();
-		lang=pp.getString("lang","english");
         	context.put("lang",lang);
 		context.put("status","UserResitration");
-		LangFile=MultilingualUtil.LanguageSelectionForScreenMessage(lang);
 		if(S.checkString(uname)==-1 && S.checkString(fname)==-1 && S.checkString(lname)==-1 && S.checkString(gname)==-1 && S.checkString(orgtn)==-1)
 		{ //if 1
 			boolean userExists = true;
@@ -258,6 +267,7 @@ public class OnlineRegistration extends VelocitySecureAction
 						sendMailToApproval(gname,LangFile,uname,"",0);
 						else
 						sendMailToApproval(gname,LangFile,uname,"",(Integer.parseInt(instituteid)));
+					
 			        	} //else 4
 				} //if 3
 
@@ -279,6 +289,15 @@ public class OnlineRegistration extends VelocitySecureAction
 			setTemplate(data,"OnlineRegistration.vm");
                         return;
                 } //else 1
+		}//end sharad
+		else{
+			String serverName=data.getServerName();
+                        int srvrPort=data.getServerPort();
+                        String serverPort=Integer.toString(srvrPort);
+                        String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,orgtn,email,gname,"student",serverName,serverPort,LangFile,rollno,program); 
+                        data.setMessage(msg);
+
+		}
 
 	} //method
 
@@ -605,6 +624,10 @@ public class OnlineRegistration extends VelocitySecureAction
 		List lst=InstituteAdminRegistrationPeer.doSelect(crit);
 		int instituteId=((InstituteAdminRegistration)lst.get(0)).getInstituteId();
 		List CourseList=CourseManagement.getInstituteCourseNUserDetails("All",Integer.toString(instituteId));
+		for(int p=0;p<CourseList.size();p++)
+		{
+			int onlineconf=((CourseUserDetail)CourseList.get(p)).getOnlineconf();
+		}
 		context.put("courseList",CourseList);
 		Vector user_list=new Vector();
 		Vector InmeList=new Vector();
@@ -632,7 +655,6 @@ public class OnlineRegistration extends VelocitySecureAction
                                username=loginname;
                         }
 
-                        //ErrorDumpUtil.ErrorLog("instrctrnaem at last====="+username);
                         InmeList.add(username);
 			//nameList.add(loginname);
 		}

@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.CourseMgmt_User;
 /*
  * @(#)Configuration.java        
  *
- *  Copyright (c) 2006 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2006,2011 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -36,7 +36,8 @@ package org.iitk.brihaspati.modules.screens.call.CourseMgmt_User;
  * 
  */
 
-
+import java.util.List;
+import org.apache.torque.util.Criteria;
 import  org.iitk.brihaspati.modules.screens.call.SecureScreen_Instructor;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.parser.ParameterParser;  
@@ -52,11 +53,16 @@ import org.iitk.brihaspati.om.RemoteCourses;
 import org.iitk.brihaspati.om.RemoteCoursesPeer;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.apache.turbine.util.security.AccessControlList;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+
+import org.iitk.brihaspati.om.CoursesPeer;
+import org.iitk.brihaspati.om.Courses;
 
 /**
  *
  * @author <a href="mailto:manav_cv@yahoo.co.in">Manvendra Baghel</a>
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
+ * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
  */
 
 public class Configuration extends SecureScreen_Instructor
@@ -76,6 +82,16 @@ public class Configuration extends SecureScreen_Instructor
 			String conf=(String)user.getTemp("confParam","10");
                         int list_conf=Integer.parseInt(conf);
 
+			//online registration configuration by sharad 01-01-2010
+			String courseId=data.getUser().getTemp("course_id").toString();
+			Criteria crit=new Criteria();
+	                crit.add(CoursesPeer.GROUP_NAME,courseId);
+                	List onlineconf = CoursesPeer.doSelect(crit);
+			int online_conf=((Courses)onlineconf.get(0)).getOnlineconf();
+			context.put("online_conf",online_conf);
+			ErrorDumpUtil.ErrorLog("onlineconf in screen=====>"+online_conf);
+
+			//code end
                         int startIndex=pp.getInt("updatestartIndex",0);
 			if(startIndex > 0)
 			{
@@ -87,7 +103,7 @@ public class Configuration extends SecureScreen_Instructor
 			if(!serial.equals(""))
 			{
 
-			 	Criteria crit=new Criteria();
+			 	crit=new Criteria();
 				crit.add(RemoteCoursesPeer.SR_NO, serial);
 				List l =  RemoteCoursesPeer.doSelect(crit);
 				rce =(org.iitk.brihaspati.om.RemoteCourses)l.get(0);
@@ -164,8 +180,6 @@ public class Configuration extends SecureScreen_Instructor
                  catch(Exception e)
   	         {        
                         data.addMessage("Error in screen [call,CourseMgmt_User,RemoteCourses] is "+ e);
-
-
                  }//catch
         }//function ends
 

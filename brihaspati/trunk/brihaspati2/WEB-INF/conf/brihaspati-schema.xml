@@ -22,7 +22,7 @@
     <column name="AUTHOR" size="255" type="VARCHAR"/>
     <column name="DEPT" size="255" type="VARCHAR"/>
 </table>
-<!-- Modify 22-11-05 -->
+<!-- Modify 22-11-05 ,10-02-2011-->
 <table name="COURSES">
 	<column name="GROUP_NAME" required="true" primaryKey="true" type="VARCHAR" size="99"/>
 	<column name="CNAME" size="255" type="VARCHAR"/>
@@ -34,6 +34,8 @@
 	<column name="LASTMODIFIED" type="DATE"/>
 	<column name="LASTACCESS" type="DATE"/>
 	<column name="QUOTA" required="true" type="NUMERIC" default="100"/>	
+	<column name="ONLINECONF" required="true" type="INTEGER" default="0"/>
+	
 </table>
 <table name="CAL_INFORMATION" idMethod="idbroker">
 	<column name="INFO_ID" required="true" primaryKey="true" type="INTEGER" autoIncrement="true"/>

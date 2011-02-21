@@ -40,6 +40,7 @@ package org.iitk.brihaspati.modules.utils;
  *  @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  *  @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  *  @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ *  @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
  *  @modified date: 20-10-2010,3-11-2010, 23-12-2010
  */
 
@@ -71,6 +72,7 @@ public class CourseUserDetail
 	private int Instid;
 	private String Prgcode;
 	private String Prgnm;
+	private int onlineconf;
 	/**
 	 * Course details
 	 */ 
@@ -269,5 +271,15 @@ public class CourseUserDetail
         {
                 return Prgnm;
         }
+	//added by sharad for course configuration for online user 10-02-2011
+        public void setOnlineconf(int onlineconf)
+        {
+                this.onlineconf=onlineconf;
+        }
+        public int getOnlineconf()
+        {
+                return onlineconf;
+        }
+
 
 }
