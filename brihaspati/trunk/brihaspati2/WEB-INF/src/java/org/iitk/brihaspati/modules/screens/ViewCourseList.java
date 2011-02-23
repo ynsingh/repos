@@ -158,9 +158,12 @@ public class ViewCourseList extends VelocityScreen
 					for(int n=0;n<vct.size();n++){
 						String iid=vct.get(n).toString();
 						int InstId=Integer.parseInt(iid);
+						try{
 						crit=new Criteria();
 						crit.add(InstituteAdminRegistrationPeer.INSTITUTE_ID,InstId);
 						instnamelist=InstituteAdminRegistrationPeer.doSelect(crit);
+						}
+						catch (Exception e){ErrorDumpUtil.ErrorLog("The exception is in getting institute name "+e);}
 					}
 		   			//get all userid in specified group as Instructor role
 					Vector uid=UserGroupRoleUtil.getUID(GID,2);
@@ -191,7 +194,11 @@ public class ViewCourseList extends VelocityScreen
                                 				String lastName=(element.getLastName()).toString();
                                 				String email=(element.getEmail()).toString();
                                 				String userName=firstName+" "+lastName;
-							String institutename=((InstituteAdminRegistration)instnamelist.get(0)).getInstituteName().toString();
+								String institutename="";
+								try{
+							 institutename=((InstituteAdminRegistration)instnamelist.get(0)).getInstituteName().toString();
+								}
+								catch (Exception e){ErrorDumpUtil.ErrorLog("I am here else321"+ e);}
                                 				CourseUserDetail cuDetail=new CourseUserDetail();
                                 				//cuDetail.setGroupName(groupname);
                                 				cuDetail.setGroupName(institutename);
