@@ -1,41 +1,41 @@
-#$*
- * @(#$) BrihaspatiLogin.vm
+#*
+ * @(#) BrihaspatiLogin.vm
  * Copyright (c) 2008,2009, 2010 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @modified date: 10-08-2010, 24-09-2010 (Shaista)
  * @modified date: 15-02-2011 (Shaista)
-*#$
+*#
 $page.setTitle("Login in Brihaspati")
 $page.setBgColor($ui.bgcolor)
 <form name="frm" method="post" action="$link.setAction("myLogin")">
 
 <table width="100%">
 <tr><td>
-#$#$<marquee direction="left">
-<font size=4>$!$fNoti</font>
-#$#$</morque>
+##<marquee direction="left">
+<font size=4>$!fNoti</font>
+##</morque>
 </td></tr>
 </table>
 
-<table align=left> #$#$ Ta1
-<tr> #$#$ tr1
-	<td valign="top" bgcolor="$ui.tableColor" width="25%"> #$#$ TD1 
+<table align=left> ## Ta1
+<tr> ## tr1
+	<td valign="top" bgcolor="$ui.tableColor" width="25%"> ## TD1 
 		<table align="left" width="100%">
-		<tr align="right"><td align="right" colspan=4><font color="red">$!$data.getMessage() </font></td></tr>
+		<tr align="right"><td align="right" colspan=4><font color="red">$!data.getMessage() </font></td></tr>
 		<tr align="right">
         	<td colspan="3">
 			<select id="language" onChange ="javascript:OnChange();">
-                                #$if ($lang == "urdu")
+                                #if ($lang == "urdu")
                                 	<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","urdu")"> $brih_urdu </option>
-				#$elseif($lang == "arabic")
+				#elseif($lang == "arabic")
 	                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","arabic")"> $brih_arabic </option>
-                                #$end
-				#$if($lang != "arabic")
+                                #end
+				#if($lang != "arabic")
 	                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","arabic")"> ($brih_arabic1) $brih_arabic </option>
-	                                #$#$<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","arabic")"> $brih_arabic </option>
-				#$end
+	                                ##<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","arabic")"> $brih_arabic </option>
+				#end
                                 <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","bangla")"> ($brih_bangla1) $brih_bangla
         			<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","bhojpuri")">  ($brih_bhojpuri1) $brih_bhojpuri
 				<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","chinese")"> ($brih_chinese1) $brih_chinese
@@ -57,11 +57,11 @@ $page.setBgColor($ui.bgcolor)
         			<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","spanish")"> (EspaýOB) $brih_spanish
         			<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","tamil")"> ($brih_tamil1) $brih_tamil
                                 <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","telugu")"> ($brih_telugu1) $brih_telugu
-                                #$if ($lang != "urdu")
+                                #if ($lang != "urdu")
                                 	<option align="right" value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","urdu")"> ($brih_urdu( $brih_urdu1 </option>
-                                	#$#$<option align="right" value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","urdu")">  $brih_urdu </option>
-                                	#$#$<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","urdu")"> $brih_urdu </option>
-				#$end
+                                	##<option align="right" value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","urdu")">  $brih_urdu </option>
+                                	##<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","urdu")"> $brih_urdu </option>
+				#end
                         </select>
 	        </td>
         	        <td align="right"> $brih_language $brih_select</td>
@@ -86,7 +86,7 @@ $page.setBgColor($ui.bgcolor)
 			</font>
 		</td>
 		</tr>
-		#$#$<input type=hidden name="LangFile" value="$LangFile">
+		##<input type=hidden name="LangFile" value="$LangFile">
 		<input type=hidden name="lang" value="$lang">
 		<input type=hidden name="flag" value="$flag">
 		<tr align="right"><td colspan=4 align="right">$brih_guestMsg2</td></tr>
@@ -121,8 +121,8 @@ $page.setBgColor($ui.bgcolor)
 		</b></td></tr>
 
 		</table>
-	</td> #$#$ TD1 end
-	<td valign="top" width="50%"> #$#$ TD2
+	</td> ## TD1 end
+	<td valign="top" width="50%"> ## TD2
 		<table align="left" bgcolor="$ui.tableColor">
 			<tr align="right"><td>
 				<b>$brih_msg</b>
@@ -141,18 +141,18 @@ $page.setBgColor($ui.bgcolor)
 			<ul><li> Synchronous tool</ul>
 			</td></tr>
 		</table>
-	</td> #$#$ TD2
+	</td> ## TD2
 	
-	<td valign="top" width="25%"> #$#$ TD3
+	<td valign="top" width="25%"> ## TD3
 		<table bgcolor="$ui.tableColor" width="100%">
 	        	<tr bgcolor="$ui.menuColor" align="right"><td>
 				<u><b>$brih_newsHeadline</b></u> <img src="$content.getURI("/images/newspaper.gif")">
         		</td></tr>
         		<tr align="right"><td><marquee scrollamount="1" direction="up" loop="2" width="100%" behaviour="slide">
-			#$if($status!="empty")
-	                	#$set($count=1)
-        		        #$foreach($news in $detail)
-		                        #$if($count % 2 == 0)
+			#if($status!="empty")
+	                	#set($count=1)
+        		        #foreach($news in $detail)
+		                        #if($count % 2 == 0)
 	               		                <font size=3>
 	                                	<table bgcolor="$ui.buttonBoxColor" width="100%">
 			                                <tr align=right>
@@ -163,30 +163,30 @@ $page.setBgColor($ui.bgcolor)
                 			                </tr>
                                 		</table>
 		                                </font>
-        	                        	#$set($count = $count + 1)
-		                        #$else
+        	                        	#set($count = $count + 1)
+		                        #else
 		                                <font size=3>
                 		                <table><tr align="right"> <td> <a href=javascript:popupWin("$link.setPage("call,ViewNews_Photo.vm").addPathInfo("newsid",$news.getNews_ID()).addPathInfo("date",$news.getPDate()).addPathInfo("user",$news.getSender())","newWin");>...$brih_more</a>
                                 $news.getNews_Subject() <image src="$content.getURI("/images/orangeLeft_arrow.gif")">
 
 		                                </td></tr></table>
                 		                </font>
-                                		#$set($count = $count + 1)
-		                        #$end
-		                #$end
-			#$else
+                                		#set($count = $count + 1)
+		                        #end
+		                #end
+			#else
 				<b>$brih_newsNo</b>
-			#$end
+			#end
         	        </marquee></td></tr>
 			<tr><td align="left">
 				&laquo;<a href="$link.setPage("News_All.vm").addPathInfo("lang",$lang)">$brih_news $brih_more </a>
-				#$#$<a href="$link.setPage("News_All.vm").addPathInfo("lang",$lang)">$brih_more $brih_news &raquo;</a>
+				##<a href="$link.setPage("News_All.vm").addPathInfo("lang",$lang)">$brih_more $brih_news &raquo;</a>
 	                </td></tr>
 		</tr>
 		</table>
-	</td> #$#$ TD3
-</tr> #$#$ tr1 end
-</table> #$#$ Ta1 end
+	</td> ## TD3
+</tr> ## tr1 end
+</table> ## Ta1 end
 </form>
 
 <SCRIPT language="JavaScript">
