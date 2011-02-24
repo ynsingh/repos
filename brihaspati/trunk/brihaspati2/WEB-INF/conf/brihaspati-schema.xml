@@ -416,7 +416,7 @@
 </table> 
 
 <table name="INSTITUTE_PROGRAM">
-	<column name="PROGRAM_CODE" required="true" type="VARCHAR"/>
+	<column name="PROGRAM_CODE" required="true" type="VARCHAR" size="255"/>
 	<column name="INSTITUTE_ID" required="true" type="INTEGER"/>
 	<unique>
 		<unique-column name="PROGRAM_CODE"/>

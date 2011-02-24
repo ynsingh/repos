@@ -149,11 +149,9 @@ public class CommonUtility{
                 for(int i=0;i<arr.length;i++)
                 {
                 	if(arr[i].endsWith("_Index")){
-		                StringTokenizer st=new StringTokenizer(arr[i],"_");
-                		if(st.hasMoreTokens()){
-			                String ne=st.nextToken();
-			                CreateIndexer.StartIndex(TurbineServlet.getRealPath("/Courses")+"/"+arr[i],TurbineServlet.getRealPath("/Courses")+"/"+ne);
-		                }
+				int l=arr[i].length();
+				String cst=arr[i].substring(0,l-6);
+			        CreateIndexer.StartIndex(TurbineServlet.getRealPath("/Courses")+"/"+arr[i],TurbineServlet.getRealPath("/Courses")+"/"+cst);
                 	}
                 }
 	}
