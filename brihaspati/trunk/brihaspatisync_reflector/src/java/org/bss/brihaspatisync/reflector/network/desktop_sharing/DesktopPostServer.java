@@ -95,7 +95,10 @@ class MyHandler implements HttpHandler {
 		                } while(!(count>4&&bytes[count-2]==(byte)-1 && bytes[count-1]==(byte)-39));
 		                BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
 		              	try {
-                                        BufferImage.getController().put(image);
+					if((BufferImage.getController().size()) < 50)
+                                        	BufferImage.getController().put(image);
+					else
+						BufferImage.getController().handleBuffer();
                                 }catch(Exception e){}
 		                responseBody.close();
     			}

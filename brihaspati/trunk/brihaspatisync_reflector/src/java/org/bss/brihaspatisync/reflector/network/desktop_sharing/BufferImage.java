@@ -58,6 +58,14 @@ public class BufferImage {
 			buffer.removeElementAt(0);
                 }
         }
+
+	public synchronized void handleBuffer(){
+		if(buffer.size() > 50){
+			for(int k=0; k<25; k++){
+                        	buffer.removeElementAt(k);
+			}
+                }
+	}
 	
 	/**
          * Return <b>true</b> if the buffer is empty.
