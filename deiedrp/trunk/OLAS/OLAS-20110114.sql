@@ -154,6 +154,32 @@ CREATE TABLE `COMPONENT_DESCRIPTION` (
   `description` varchar(35) DEFAULT NULL, 
   `ug_pg` char(2) DEFAULT NULL 
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1; 
+ /*!40000 ALTER TABLE `COMPONENT_DESCRIPTION` DISABLE KEYS */; 
+INSERT INTO `COMPONENT_DESCRIPTION` (`UNIVERSITY_id`,`component_id`,`description`,`ug_pg`) VALUES 
+ ('0001','HS','High School','XX'), 
+ ('0001','IN','Intermediate','XX'), 
+ ('0001','MA','MAT','XX'), 
+ ('0001','GT','GATE','XX'), 
+ ('0001','XT','XAT','XX'), 
+ ('0001','CT','CAT','XX'), 
+ ('0001','JE','IIT-JEE','XX'), 
+ ('0001','MT','Mathematics','XX'), 
+ ('0001','BO','Botany','XX'), 
+ ('0001','ZO','Zoology','XX'), 
+ ('0001','PM','PCM','XX'), 
+ ('0001','AM','AIEEE-MATHS','XX'), 
+ ('0001','AP','AIEEE-PHYSICS + CHEMISTRY','XX'), 
+ ('0001','UG','Under Graduate','UG'), 
+ ('0001','PG','Post Graduate','PG'), 
+ ('0001','P1','Post Graduate-Degree 1','PG'), 
+ ('0001','U1','Under Graduate-Degree 1','UG'), 
+ ('0001','P2','Post Graduate-Degree 2','PG'), 
+ ('0001','U2','Under Graduate-Degree 2','UG'), 
+ ('0001','PH','Physics','XX'), 
+ ('0001','CH','CHEMISTRY','XX'); 
+/*!40000 ALTER TABLE `COMPONENT_DESCRIPTION` ENABLE KEYS */; 
+
+
 
 
 -- 
@@ -223,6 +249,11 @@ CREATE TABLE `ENTITY_EMPLOYEE` (
   `creator_id` varchar(20) DEFAULT NULL, 
   `modifier_id` varchar(20) DEFAULT NULL 
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1; 
+/*!40000 ALTER TABLE `ENTITY_EMPLOYEE` DISABLE KEYS */; 
+INSERT INTO `ENTITY_EMPLOYEE` (`ENTITY_EMPLOYEE_id`,`parent_entity`,`first_name`,`middle_name`,`last_name`,`primary_email_id`,`secondary_email_id`,`qualification`,`designation`,`date_of_birth`,`date_of_joining`,`status`,`insert_time`,`modification_time`,`creator_id`,`modifier_id`) VALUES 
+ ('E0001000100000001','00010001','Nagendra Kumar Singh',NULL,NULL,NULL,'002',NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+ ('E0001000100000002','00010002','Premsewwak SudhishNULL,NULL,NULL,'002',NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+/*!40000 ALTER TABLE `ENTITY_EMPLOYEE` ENABLE KEYS */; 
 
 
 
@@ -236,6 +267,11 @@ CREATE TABLE `ENTITY_LOCATION` (
   `location_name` char(50) DEFAULT NULL, 
   `location_address` char(100) DEFAULT NULL 
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1; 
+INSERT INTO `ENTITY_LOCATION` (`location_id`,`location_name`,`location_address`) VALUES 
+ ('101','Agra','Dayalbagh, Agra(U.P.)'),
+ ('102','Kanpur','Kanpur(U.P.)'); 
+
+
 
 -- 
 -- Definition of table `ENTITY_MASTER` 
@@ -262,6 +298,10 @@ CREATE TABLE `ENTITY_MASTER` (
   `modifier_id` varchar(20) DEFAULT NULL 
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1; 
 
+INSERT INTO `ENTITY_MASTER` (`UNIVERSITY_id`,`entity_id`,`entity_type`,`entity_name`,`entity_address`,`entity_city`,`entity_state`,`entity_phone`,`fax`,`user_id`,`known_by`,`parent_entity_id`,`level`,`insert_time`,`modification_time`,`creator_id`,`modifier_id`) VALUES 
+ ('0001','00010001','INS','IIT Kanpur','Indian Institute Of Techonology Kanpur','Kanpur','UP','05122122121','45645',NULL,NULL,'0001',1,'2010-10-11 15:13:10',NULL,'E00010010000000001',NULL); 
+ ('0001','00010002','INS','DEI Agra','Dayalbagh educational institute Agra','Agra','UP','05622122121','45645',NULL,NULL,'0001',1,'2010-10-11 15:13:10',NULL,'E00010010000000001',NULL); 
+/*!40000 ALTER TABLE `ENTITY_MASTER` ENABLE KEYS */;
 
 
 -- 
@@ -440,6 +480,15 @@ CREATE TABLE `PAPER_CODES` (
   `paper_description` varchar(35) DEFAULT NULL, 
   `paper_code` char(2) DEFAULT NULL 
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1; 
+/*!40000 ALTER TABLE `PAPER_CODES` DISABLE KEYS */; 
+INSERT INTO `PAPER_CODES` (`paper_description`,`paper_code`) VALUES 
+ ('Maths','01'), 
+ ('Physics','02'), 
+ ('Chemistry','03'), 
+ ('Biology','04'), 
+ ('G.K.','05'); 
+/*!40000 ALTER TABLE `PAPER_CODES` ENABLE KEYS */; 
+
 
 
 -- 
@@ -520,7 +569,41 @@ CREATE TABLE `PROGRAM_BRANCHES` (
   `branch_code` char(3) DEFAULT NULL, 
   `branch_name` varchar(100) DEFAULT NULL 
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1; 
- 
+ /*!40000 ALTER TABLE `PROGRAM_BRANCHES` DISABLE KEYS */; 
+INSERT INTO `PROGRAM_BRANCHES` (`UNIVERSITY_id`,`branch_code`,`branch_name`) VALUES 
+ ('0001','000','None'), 
+ ('0001','001','Drawing And Painting'), 
+ ('0001','002','English'), 
+ ('0001','003','Hindi'), 
+ ('0001','004','Home Science'), 
+ ('0001','005','Music'), 
+ ('0001','006','Sanskrit'), 
+ ('0001','007','Economics'), 
+ ('0001','008','Political Science'), 
+ ('0001','009','Psychology'), 
+ ('0001','010','Sociology'), 
+ ('0001','011','Botany'), 
+ ('0001','012','Chemistry'), 
+ ('0001','013','Mathematics'), 
+ ('0001','014','Physics'), 
+ ('0001','015','Zoology'), 
+ ('0001','016','Computer Science'), 
+ ('0001','017','Electrical'), 
+ ('0001','018','Mechanical'), 
+ ('0001','019','Sanskrit & Culture'), 
+ ('0001','020','Applied Economics'), 
+ ('0001','021','Engineering Systems'), 
+ ('0001','022','Theology'), 
+ ('0001','023','Education'), 
+ ('0001','024','Automobile'), 
+ ('0001','025','Electronics'), 
+ ('0001','026','Leather Technology Footwear'), 
+ ('0001','027','Textile Designing'), 
+ ('0001','028','Interior Designing and Decoration'), 
+ ('0001','029','Modern Office Management and Secretarial Practice'), 
+ ('0001','030','Garment Technology'); 
+/*!40000 ALTER TABLE `PROGRAM_BRANCHES` ENABLE KEYS */; 
+
 
 -- 
 -- Definition of table `PROGRAM_COMPONENT_ELIGIBILITY` 
@@ -592,6 +675,82 @@ CREATE TABLE `PROGRAM_COS_CODE` (
   `branch_code` char(3) DEFAULT NULL, 
   `cos_code` char(1) DEFAULT NULL 
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1; 
+
+/*!40000 ALTER TABLE `PROGRAM_COS_CODE` DISABLE KEYS */; 
+INSERT INTO `PROGRAM_COS_CODE` (`UNIVERSITY_id`,`program_id`,`branch_code`,`cos_code`) VALUES 
+ ('0001','0001001','001','A'), 
+ ('0001','0001001','002','A'), 
+ ('0001','0001001','003','A'), 
+ ('0001','0001001','004','A'), 
+ ('0001','0001001','005','A'), 
+ ('0001','0001001','006','A'), 
+ ('0001','0001002','000','B'), 
+ ('0001','0001003','007','C'), 
+ ('0001','0001003','008','C'), 
+ ('0001','0001003','009','C'), 
+ ('0001','0001003','010','C'), 
+ ('0001','0001004','000','D'), 
+ ('0001','0001005','000','E'), 
+ ('0001','0001006','000','F'), 
+ ('0001','0001007','000','G'), 
+ ('0001','0001008','000','H'), 
+ ('0001','0001009','000','I'), 
+ ('0001','0001010','000','J'), 
+ ('0001','0001011','011','K'), 
+ ('0001','0001011','012','L'), 
+ ('0001','0001011','013','M'), 
+ ('0001','0001011','014','N'), 
+ ('0001','0001011','015','O'), 
+ ('0001','0001011','016','P'), 
+ ('0001','0001012','017','Q'), 
+ ('0001','0001012','018','R'), 
+ ('0001','0001014','020','S'), 
+ ('0001','0001014','008','T'), 
+ ('0001','0001014','009','U'), 
+ ('0001','0001014','010','V'), 
+ ('0001','0001021','021','D'), 
+ ('0001','0001016','000','X'), 
+ ('0001','0001016','000','Y'), 
+ ('0001','0001017','000','Z'), 
+ ('0001','0001017','000','A'), 
+ ('0001','0001019','000','B'), 
+ ('0001','0001020','000','C'), 
+ ('0001','0001021','021','D'), 
+ ('0001','0001021','016','E'), 
+ ('0001','0001022','021','F'), 
+ ('0001','0001023','022','G'), 
+ ('0001','0001023','023','H'), 
+ ('0001','0001024','000','I'), 
+ ('0001','0001025','000','J'), 
+ ('0001','0001026','000','K'), 
+ ('0001','0001027','000','L'), 
+ ('0001','0001028','000','M'), 
+ ('0001','0001029','000','N'), 
+ ('0001','0001030','000','0'), 
+ ('0001','0001031','000','P'), 
+ ('0001','0001032','000','Q'), 
+ ('0001','0001033','000','R'), 
+ ('0001','0001034','000','S'), 
+ ('0001','0001035','000','T'), 
+ ('0001','0001036','024','U'), 
+ ('0001','0001036','017','V'), 
+ ('0001','0001036','018','W'), 
+ ('0001','0001036','025','X'), 
+ ('0001','0001036','026','Y'), 
+ ('0001','0001036','027','Z'), 
+ ('0001','0001036','028','A'), 
+ ('0001','0001037','029','B'), 
+ ('0001','0001037','030','C'), 
+ ('0001','0001037','004','D'), 
+ ('0001','0001038','000','E'), 
+ ('0001','0001013','001','F'), 
+ ('0001','0001013','002','G'), 
+ ('0001','0001013','003','H'), 
+ ('0001','0001013','019','I'), 
+ ('0001','0001013','005','J'), 
+ ('0001','0001001','018','A'); 
+/*!40000 ALTER TABLE `PROGRAM_COS_CODE` ENABLE KEYS */; 
+
 
 
 
@@ -770,6 +929,19 @@ CREATE TABLE `PROGRAM_SPECIALIZATIONS` (
   `specialization_code` char(3) DEFAULT NULL, 
   `specialization_name` varchar(100) DEFAULT NULL 
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1; 
+/*!40000 ALTER TABLE `PROGRAM_SPECIALIZATIONS` DISABLE KEYS */; 
+INSERT INTO `PROGRAM_SPECIALIZATIONS` (`UNIVERSITY_id`,`specialization_code`,`specialization_name`) VALUES 
+ ('0001','000','None'), 
+ ('0001','001','Mechanical'), 
+ ('0001','002','Chemical'), 
+ ('0001','003','Cryptography'), 
+ ('0001','004','International Business'), 
+ ('0001','005','Human Development'), 
+ ('0001','006','Computer Applications'), 
+ ('0001','007','Electronics'), 
+ ('0001','008','Computer Science'); 
+/*!40000 ALTER TABLE `PROGRAM_SPECIALIZATIONS` ENABLE KEYS */;
+
 
 -- 
 -- Definition of table `SEAT_RESERVATION_CATEGORY` 
@@ -827,7 +999,14 @@ DROP TABLE IF EXISTS `SPECIAL_WEIGHTAGE_GROUP`;
 CREATE TABLE `SPECIAL_WEIGHTAGE_GROUP` ( 
   `grouping` char(2) DEFAULT NULL 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1; 
-
+/*!40000 ALTER TABLE `SPECIAL_WEIGHTAGE_GROUP` DISABLE KEYS */; 
+INSERT INTO `SPECIAL_WEIGHTAGE_GROUP` (`grouping`) VALUES 
+ ('G1'), 
+ ('G2'), 
+ ('G3'), 
+ ('G4'), 
+ ('G5'); 
+/*!40000 ALTER TABLE `SPECIAL_WEIGHTAGE_GROUP` ENABLE KEYS */; 
 
 
 -- 
@@ -1240,7 +1419,12 @@ CREATE TABLE `UNIVERSITY_PROGRAM_MODE` (
   `program_mode` char(1) DEFAULT NULL 
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1; 
 
-
+/*!40000 ALTER TABLE `UNIVERSITY_PROGRAM_MODE` DISABLE KEYS */; 
+INSERT INTO `UNIVERSITY_PROGRAM_MODE` (`UNIVERSITY_id`,`mode_name`,`program_mode`) VALUES 
+ ('0001','Open Mode','o'), 
+ ('0001','Dual Mode','d'), 
+ ('0001','Integrated Mode','i'); 
+/*!40000 ALTER TABLE `UNIVERSITY_PROGRAM_MODE` ENABLE KEYS */;
 
 -- 
 -- Definition of table `UNIVERSITY_PROGRAM_TYPE` 
