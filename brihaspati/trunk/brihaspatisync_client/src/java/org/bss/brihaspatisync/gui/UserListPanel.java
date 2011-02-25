@@ -43,8 +43,12 @@ public class UserListPanel {
 	private boolean pptFlag=true;		
 
 	private static UserListPanel ul_panel=null;
-	private String username=ClientObject.getController().getUserName();;	
-	private String role=ClientObject.getController().getUserRole();		
+	private ClientObject client_obj=ClientObject.getController();
+	private String username=client_obj.getUserName();;	
+	private String role=client_obj.getUserRole();	
+	private String a_status=client_obj.getAudioStatus();
+        private String v_status=client_obj.getVideoStatus();
+	
 	private HandRaisePanel handRaisePanel=HandRaisePanel.getController();
 
 	/**
@@ -141,13 +145,17 @@ public class UserListPanel {
 							if((user.equals(username)) && (status.equals("Allow-Screen") && (screenFlag))){
                                                                 screenFlag=false;
                                                                 HandRaiseThreadController.getController().startPostScreenFlag(true);
-								HandRaiseThreadController.getController().startpresaudioflag(true);
+                        			                if((a_status.equals("1"))&&(v_status.equals("1"))){
+									HandRaiseThreadController.getController().startpresaudioflag(true);
+								}
                                                         }
 					
                                                         if(screenFlag){
 								screenFlag=false;
 								HandRaiseThreadController.getController().startGetScreenFlag(true);
-								HandRaiseThreadController.getController().startPresAudioRec(true);
+                        			                if((a_status.equals("1"))&&(v_status.equals("1"))){
+									HandRaiseThreadController.getController().startPresAudioRec(true);
+								}
                                                         }
                                                 }catch(Exception sp){System.out.println("  Error in catch Allow-Mic ==========> ");}
 					}
@@ -184,7 +192,9 @@ public class UserListPanel {
 						if((screenFlag)){
 							screenFlag=false;
 							HandRaiseThreadController.getController().startGetScreenFlag(true);
-							HandRaiseThreadController.getController().startPresAudioRec(true);
+                                                        if((a_status.equals("1"))&&(v_status.equals("1"))){
+								HandRaiseThreadController.getController().startPresAudioRec(true);
+							}
 						}	
 					}
 
@@ -228,7 +238,9 @@ public class UserListPanel {
 				try {
                        			HandRaiseThreadController.getController().stopGetScreenFlag(true);
 					HandRaiseThreadController.getController().stopPostScreenFlag(true);
-					HandRaiseThreadController.getController().stopPresAudioRec(true);
+                        		if((a_status.equals("1"))&&(v_status.equals("1"))){
+                     				HandRaiseThreadController.getController().stopPresAudioRec(true);
+					}
 				} catch(Exception ex){}
 			}
 		}
@@ -260,13 +272,11 @@ public class UserListPanel {
                      		handRaisePanel.setEnableORDisable("available");
 			}		
 			if(!(statusVector.contains("Get-Mic"))){
-				
                                 if(statusVector.contains("Allow-Mic") && (flag)){
 					flag=false;	
                                         handRaisePanel.setEnableORDisable("Allow-Mic");
 					HandRaiseThreadController.getController().starthraudioflag(true);
 				}
-				
                         }else{
 				if(statusVector.contains("Get-Mic"))
 	                                handRaisePanel.setEnableORDisable("Get-Mic");

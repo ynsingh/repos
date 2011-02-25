@@ -4,7 +4,7 @@ package org.bss.brihaspatisync;
  * Client.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 20011 ETRG,IIT Kanpur.
+ * Copyright (c) 2011 ETRG,IIT Kanpur.
  */
 
 import javax.swing.UIManager;

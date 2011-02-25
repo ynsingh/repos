@@ -77,6 +77,7 @@ public class MainWindow  extends JFrame implements ActionListener{
              	menu1.add(menuItem4);
 
             	menuItem5=new JMenuItem("Sessionout");
+		menuItem4.setActionCommand("Sessionout");
               	menuItem5.setEnabled(false);
               	menuItem5.addActionListener(this);
               	menu1.add(menuItem5);

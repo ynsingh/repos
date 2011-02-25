@@ -76,7 +76,6 @@ public class JoinSession {
 			String indexName=client_obj.getIndexServerName();
 			if(!(indexName.equals(""))){
                 		String indexServer=indexName+"/ProcessRequest?req=join&"+lectid+"&"+username+"&"+role+"&"+st;
-
 				//get reflector ip from indexing server.
 				String ref_ip =HttpsUtil.getController().getReflectorAddress(indexServer);
 				if(!(ref_ip.equals(""))){
@@ -118,7 +117,13 @@ public class JoinSession {
 			WhiteBoardDraw.getController().start();
                         ReceiveQueueHandler.getController().start();
 			HandRaiseThreadController.getController().start();
-			AVTransmitReceiveHandler.getController();
+			String a_status=client_obj.getAudioStatus();
+			String v_status=client_obj.getVideoStatus();
+
+			if((a_status.equals("1"))&&(v_status.equals("1"))){
+				AVTransmitReceiveHandler.getController();
+			}
+
 		}catch(Exception ex){log.setLog("Error in Starting GUIThreads"+ex.getMessage());}
 		
 	}

@@ -22,6 +22,9 @@ public class ClientObject {
 	private String indexServerName="";
 	
 	private String localIP="";
+	private String a_status="";
+	private String v_status="";
+
 	private String usr_name="";
 	private String usr_role="";
 	private String lect_id="";
@@ -225,5 +228,22 @@ public class ClientObject {
 	public String getLocalIP(){
                 return this.localIP;
         }
+
+	public void setVideoStatus(String str){
+                this.v_status=str;
+        }
+
+        public void setAudioStatus(String str){
+                this.a_status=str;
+        }
+
+	public String getVideoStatus(){
+                return v_status;
+        }
+
+        public String getAudioStatus(){
+                return a_status;
+        } 
+	
 }
 

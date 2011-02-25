@@ -7,29 +7,38 @@ package org.bss.brihaspatisync.util;
  * Copyright (c) 2007-2008 ETRG, IIT Kanpur.
  */
 
-import java.util.Vector;
-
 import java.io.IOException;
 import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 
-
 import java.security.Security;
 import java.security.cert.Certificate;
 import javax.security.cert.X509Certificate;
 
 import java.net.URL;
+import java.net.ProxySelector;
+import java.net.Proxy;
+import java.net.PasswordAuthentication;
+import java.net.InetSocketAddress;
+import java.net.Authenticator;
+import java.net.URI;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
-
-//import java.util.Properties;
-import javax.swing.JOptionPane;
 import javax.net.ssl.SSLSession;
+
+import javax.swing.JOptionPane;
+
+import java.util.Vector;
 import java.util.StringTokenizer;
+import java.util.List;
+import java.util.Properties;
+import java.util.Iterator;
+
 import org.bss.brihaspatisync.Client;
 import org.bss.brihaspatisync.network.Log;
+import org.bss.brihaspatisync.gui.ProxyAuthenticator;
 
 
 /**
@@ -42,13 +51,16 @@ public class HttpsUtil{
 	
 	private URL indexurl=null;
    	
-	private String proxyhost=null;
-   	
-	private String proxyport=null;
+	private InetSocketAddress proxy_addr;
+        private Proxy proxy;
+        private List list;
+
  	
 	private static HttpsUtil httpsUtil=null;
 	
 	private HttpsURLConnection connection=null;
+
+	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
 	
 //	private Log log=Log.getController();
 
@@ -65,36 +77,37 @@ public class HttpsUtil{
    	 * The URL class is capable of handling http:// and https:// URLs
    	 */
    	public HttpsURLConnection createHTTPConnection(URL url) throws IOException {
-		/*try{
-                	Properties prop=new Properties();
-                        prop.load(new FileInputStream("./conf/conn.ini"));
-                        netType=Integer.parseInt(prop.getProperty("Type"));
-                        if(netType!=1){
-                                proxyhost=prop.getProperty("ProxyHost");
-                                proxyport=prop.getProperty("ProxyPort");
-                                proxyuser=prop.getProperty("ProxyUser");
-                                proxypass=prop.getProperty("ProxyPass");
-                        }
-        	}catch (Exception e){
-                        log.setLog("Error in reading of conn.ini file=====>"+e);
-        	}*/
-		
-		//Properties sysprops = System.getProperties();
-                //Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
-                //sysprops.put("java.protocol.handler.pkgs","javax.net.ssl.internal.www.protocol");
 
-        	//if(netType==1){
-                	connection = (HttpsURLConnection) url.openConnection();
-        	/*}else{
-                	sysprops.put("http.proxyHost",proxyhost);
-                	sysprops.put("http.proxyPort", proxyport);
-                	sun.misc.BASE64Encoder encoder = new sun.misc.BASE64Encoder();
-                	String proxyAuth=proxyuser+":"+proxypass;
-                	String encodedUserPwd =encoder.encode(proxyAuth.getBytes());
-                	connection = (HttpsURLConnection) url.openConnection();
-                	connection.setRequestProperty("Proxy-Authorization", "Basic " + encodedUserPwd);
-        	}*/
-	      	
+		try {
+                        System.setProperty("java.net.useSystemProxies","true");
+                        list = ProxySelector.getDefault().select( new URI(url.toString()));
+                        for (Iterator iter = list.iterator(); iter.hasNext(); ) {
+                                proxy = (Proxy) iter.next();
+                                proxy_addr = (InetSocketAddress)proxy.address();
+			}
+
+		}catch (Exception e) { e.printStackTrace();}
+
+              	if(proxy_addr != null) {
+                	runtime_object.setProxyHost(proxy_addr.getHostName());
+                      	runtime_object.setProxyPort(Integer.toString(proxy_addr.getPort()));
+			ProxyAuthenticator.getController().createGUI();
+		
+			if((!(runtime_object.getProxyHost()).equals("")) && (!(runtime_object.getProxyPort()).equals(""))){
+				Properties sysProps = System.getProperties();
+	        	     	sysProps.put( "proxySet", "true" );
+        	       		sysProps.put( "proxyHost", runtime_object.getProxyHost());
+              			sysProps.put( "proxyPort", runtime_object.getProxyPort());
+              			Authenticator authenticator = new Authenticator() {
+                						public PasswordAuthentication getPasswordAuthentication() {
+                                        				return (new PasswordAuthentication(runtime_object.getProxyUser(),runtime_object.getProxyPass().toCharArray()));
+         							}};
+	             		Authenticator.setDefault(authenticator);
+			}
+		}else{
+			System.out.println("you are using DIRECT connection");
+		}
+               	connection = (HttpsURLConnection) url.openConnection();
 		//SSL Certificate
       		connection.setHostnameVerifier(new HostnameVerifier() {
       			public boolean verify(String rserver, SSLSession sses) {
@@ -216,6 +229,10 @@ public class HttpsUtil{
 							//RuntimeDataObject.getController().setAudioHandraisePort(handraise_port);
 							// for use in runtime
 							ClientObject.getController().setParentReflectorIP(parent_ref_ip);	
+							String a_status=str1[3].replaceAll("A=","");
+							ClientObject.getController().setAudioStatus(a_status);
+							String v_status=str1[4].replaceAll("V=","");
+							ClientObject.getController().setVideoStatus(v_status);
 						}					
 						else{
 							JOptionPane.showMessageDialog(null,str);
@@ -313,13 +330,5 @@ public class HttpsUtil{
 	
 	public void setNetType(int type){
                 netType=type;
-        }
-		
-	public String getProxyHost(){
-		return proxyhost;
-	}
-	
-	public String getProxyPort(){
-		return proxyport;
         }
 }

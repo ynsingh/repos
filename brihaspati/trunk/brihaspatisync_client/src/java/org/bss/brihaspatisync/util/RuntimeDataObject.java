@@ -24,6 +24,11 @@ public class RuntimeDataObject {
 	private boolean wb_flag=false;
 	private String userlist="";
 	private String masterReflectorIP="172.26.82.18";
+	
+	private String proxy_host="";
+	private String proxy_port="";
+	private String proxy_user="";
+	private String proxy_pass="";
 
         public static RuntimeDataObject getController(){
                 if(obj==null) {
@@ -40,6 +45,39 @@ public class RuntimeDataObject {
                         prop.load(inputStream);
                 }catch(Exception e){ }
         }
+
+	public void setProxyHost(String value){
+		proxy_host=value;
+	}
+
+	public String getProxyHost(){
+		return proxy_host;
+        }
+
+	public void setProxyPort(String value){
+		proxy_port=value;
+        }
+
+	public String getProxyPort(){
+		return proxy_port;
+        }
+
+	public void setProxyUser(String value){
+		proxy_user=value;
+        }
+
+	public String getProxyUser(){
+		return proxy_user;
+        }
+	
+	public void setProxyPass(String value){
+		proxy_pass=value;
+        }
+
+	public String getProxyPass(){
+		return proxy_pass;
+        }
+
 
 	public String getMasterUrl(){
 		return prop.getProperty("MasterServerURL");
