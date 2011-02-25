@@ -1,7 +1,42 @@
+/*
+ * @(#) CorrectAns.java
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+
+
 package in.ac.dei.mhrd.omr.img;
 
 import ij.*;
-import in.ac.dei.mhrd.omr.ProcessSheetAction;
+import in.ac.dei.mhrd.omr.dbConnection.Connect;
+import in.ac.dei.mhrd.omr.processSheet.ProcessSheetAction;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,18 +46,22 @@ import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.xml.DOMConfigurator;
 
 /**
+ * This class defines the method that inserts correct answers into database
  *
+ * Creation date:09-29-2010
  * @author Anshul Agarwal
- * this class insert correct answer s into database
+ * @version 1.0
  */
 public class CorrectAns {
+	
+	private static Logger log = Logger.getLogger(CorrectAns.class);
+
     /**
      * Inserts correct answers into the database
      * @param correctAns : array contains correct answers
      * @param sec " section number
      */
 	
-	private static Logger log = Logger.getLogger(CorrectAns.class);
     public static int insertCorrectAns(byte[] correctAns, int testid) {
         int j=0;
         int sec=0;
@@ -31,58 +70,14 @@ public class CorrectAns {
         int totalQues=0;
         int ques=0;
         int[] noOfCorrectAns=null;
+        Connection con=null;
     	try {
             //establish connection with the database
-            Connection con = Connect.prepareConnection();
+            con = Connect.prepareConnection();
 
             con.setAutoCommit(false);
-            
-           /* PreparedStatement ps = con.prepareStatement("select Total_question, Total_section from testheader where TestId=?" );
-            ps.setInt(1, testid);
-            ResultSet secDetail = ps.executeQuery();
-            while(secDetail.next()){
-            	totalQues = secDetail.getInt(1);
-            	totalSec = secDetail.getInt(2);
-            }
-            sec= new int[totalSec];
-            ps = con.prepareStatement(
-             "select Section_number, No_of_question from testsectiondetail where TestID=?");
-            ps.setInt(1, testid);
-      ResultSet rs = ps.executeQuery();
-      while(rs.next()){
-    	  System.out.println("section number : " + rs.getString(1));
-    	  sec[i]=rs.getInt(2);
-    	  i++;
-    	  
-    	  System.out.println("no of quest : "+ rs.getString(2));
-    	  
-      }
-      System.out.println("section detail , sec length :" + sec.length + " i : "+ i);
-      System.out.println("total Sec : " + totalSec);
-      for(int k=0;k<totalSec;k++){
-    	  System.out.println("sec: " + k+ " : " + sec[k]);
-      
-         int secNo = k+1;
-            System.out.println("sec[k]: " + sec[k]);
-            for (int m = 1; m<=sec[k]; m++) {
-            	 ques++;
-             	System.out.println("Q " + ques+ ", Ans " + correctAns[ques]);
-             	//System.out.println("correct ans len :" +correctAns.length);
-              
-               ps = con.prepareStatement(
-                        "insert into correctans(TestId, Ques_no, Answer, SectionNumber) values (?,?,?,?)");
-                ps.setInt(1, testid);
-                ps.setInt(2, ques);
-                ps.setInt(3, correctAns[ques]);
-                ps.setInt(4, secNo);
-
-                j= ps.executeUpdate();
-                
-            }
-          }  
-            
-*/
-            PreparedStatement ps = con.prepareStatement(
+            System.out.println("inside correct");
+                      PreparedStatement ps = con.prepareStatement(
             "SELECT Section_number, No_of_question from testsectiondetail where TestId = ?");
             ps.setInt(1, testid);
             ResultSet rs = ps.executeQuery();
@@ -104,16 +99,19 @@ public class CorrectAns {
              
         }//end for
             	noOfCorrectAns= ps.executeBatch();
-                System.out.println("total Rows inserted in correct : "+ noOfCorrectAns.length);
+                log.info("total Rows inserted in correct : "+ noOfCorrectAns.length);
            }    
             
            con.commit();
       
-            con.close();
-            log.info("rows inserted : "+ noOfCorrectAns.length);
+        log.info("rows inserted : "+ noOfCorrectAns.length);
         } catch (Exception e) {
             log.error("error while insert in correct Ans: " + e);
         }
+        finally{
+        	Connect.freeConnection(con);
+        	}
+        
         return noOfCorrectAns.length;
     }
 }

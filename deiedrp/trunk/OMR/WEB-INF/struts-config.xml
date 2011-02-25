@@ -3,28 +3,26 @@
 
 <struts-config>
   <form-beans >
-    <form-bean name="testSetUpForm" type="in.ac.dei.mhrd.omr.TestSetUpForm" />
-    <form-bean name="sectionForm" type="in.ac.dei.mhrd.omr.SectionForm" />
-    <form-bean name="wrongQuesForm" type="in.ac.dei.mhrd.omr.WrongQuesForm" />
+    <form-bean name="testSetUpForm" type="in.ac.dei.mhrd.omr.testSetUp.TestSetUpForm" />
+    <form-bean name="wrongQuesForm" type="in.ac.dei.mhrd.omr.misprintedQues.WrongQuesForm" />
     
-    <form-bean name="errorLogForm" type="in.ac.dei.mhrd.omr.ErrorLogForm" />
-    <form-bean name="errorLogForm123" type="in.ac.dei.mhrd.omr.ErrorLogForm" />
-    <form-bean name="processSheetForm" type="in.ac.dei.mhrd.omr.ProcessSheetForm" />
-    <form-bean name="processSheetForm123" type="in.ac.dei.mhrd.omr.ProcessSheetForm" />
-<form-bean name="correctSheetBrowseForm123" type="in.ac.dei.mhrd.omr.CorrectSheetBrowseForm" />
-    <form-bean name="resultForm" type="in.ac.dei.mhrd.omr.ResultForm" />
-    <form-bean name="resultForm123" type="in.ac.dei.mhrd.omr.ResultForm" />
+    
+    <form-bean name="processSheetForm" type="in.ac.dei.mhrd.omr.processSheet.ProcessSheetForm" />
+    <form-bean name="processSheetForm123" type="in.ac.dei.mhrd.omr.processSheet.ProcessSheetForm" />
+<form-bean name="correctSheetBrowseForm123" type="in.ac.dei.mhrd.omr.correctAnswer.CorrectSheetBrowseForm" />
+    <form-bean name="resultForm" type="in.ac.dei.mhrd.omr.result.ResultForm" />
+    <form-bean name="resultForm123" type="in.ac.dei.mhrd.omr.result.ResultForm" />
     
     <form-bean name="updateTest" type="in.ac.dei.mhrd.omr.UpdateTestForm" />
-    <form-bean name="confirmAns" type="in.ac.dei.mhrd.omr.ConfirmAnsForm" />
-    <form-bean name="uploadResponseSheet" type="in.ac.dei.mhrd.omr.UploadResponseSheetForm" />
-    <form-bean name="resultSchedule" type="in.ac.dei.mhrd.omr.ResultManageForm" /> 
-    <form-bean name="manageWrongQues" type="in.ac.dei.mhrd.omr.ManageWrongQuesForm" />
-	<form-bean name="logInterfaceForm" type="in.ac.dei.mhrd.omr.LogInterfaceForm" />
-	 <form-bean name="manageForm" type="in.ac.dei.mhrd.omr.ManageForm" />
-    <form-bean name="delQues" type="in.ac.dei.mhrd.omr.DelQuesForm" />
-    <form-bean name="selectCorrectAns" type="in.ac.dei.mhrd.omr.SelectCorrectAnsForm" />
-    <form-bean name="answerForm" type="in.ac.dei.mhrd.omr.AnswerForm" />
+    <form-bean name="confirmAns" type="in.ac.dei.mhrd.omr.correctAnswer.ConfirmAnsForm" />
+    <form-bean name="uploadResponseSheet" type="in.ac.dei.mhrd.omr.uploadSheet.UploadResponseSheetForm" />
+    <form-bean name="resultSchedule" type="in.ac.dei.mhrd.omr.result.ResultManageForm" /> 
+    <form-bean name="manageWrongQues" type="in.ac.dei.mhrd.omr.misprintedQues.ManageWrongQuesForm" />
+	<form-bean name="logInterfaceForm" type="in.ac.dei.mhrd.omr.log.LogInterfaceForm" />
+	 <form-bean name="manageForm" type="in.ac.dei.mhrd.omr.testSetUp.ManageTestForm" />
+    <form-bean name="delQues" type="in.ac.dei.mhrd.omr.misprintedQues.DelQuesForm" />
+    <form-bean name="selectCorrectAns" type="in.ac.dei.mhrd.omr.correctAnswer.SelectCorrectAnsForm" />
+    <form-bean name="answerForm" type="in.ac.dei.mhrd.omr.correctAnswer.AnswerForm" />
     
    
       
@@ -32,59 +30,31 @@
 </form-beans>
 
   <global-exceptions />
-  <global-forwards />
+  <global-forwards>
+       <forward name="home" path="/Home.jsp" />
+      
+  </global-forwards>
   <action-mappings>
  
-   <action
-   name="editOptionForm"
-   attribute="editOptionForm"
-      input="/header.jsp"
-      path="/editTestOption"
-      scope="request"
-      validate="true"
-      cancellable="true"
-      type="in.ac.dei.mhrd.omr.EditTestOptionAction">
-      <forward name="editform1" path="/editJsp.jsp" />
-    </action>
-  
-  <action 
-  attribute = "errorLogForm"
-  name="errorLogForm"
-  scope = "request"
-    input = "/header.jsp"
-    path="/errOption" 
-    type="in.ac.dei.mhrd.omr.ErrOptionAction">
-      <forward name="errLog1" path="/errLog.jsp" />
-    </action>
-    
-    
   
     <action
       attribute="testSetUpForm"
       input="/testSetUpjsp.jsp"
       name="testSetUpForm"
       path="/test"
+      validate="true"
+      cancellable="true"
       scope="request"
-      type="in.ac.dei.mhrd.omr.testSetUpAction">
+      type="in.ac.dei.mhrd.omr.testSetUp.TestSetUpAction">
  <forward name="success" path="/SuccessUpdate.jsp" />
-
- </action>
-    <action
-      attribute="sectionForm"
-      input="/sectionjsp.jsp"
-      name="sectionForm"
-      path="/section"
-      scope="request"
-      type="in.ac.dei.mhrd.omr.SectionAction">
-      <forward name="index" path="/index.jsp"/>
-    </action>
-
+</action>
+ 
     <action
       attribute="correctAnswerForm"
       input="/correctAnsJsp.jsp"
       name="correctAnswerForm"
       path="/correctAnsPath"
-      type="in.ac.dei.mhrd.omr.CorrectAns">
+      type="in.ac.dei.mhrd.omr.correctAnswer.CorrectAns">
       <forward name="index" path="/index.jsp"/>
     </action>
 
@@ -94,27 +64,19 @@
       name="wrongQuesForm"
       path="/wrong"
       validate="true"
-      type="in.ac.dei.mhrd.omr.WrongQuesAction">
+      cancellable="true"
+      type="in.ac.dei.mhrd.omr.misprintedQues.WrongQuesAction">
       <forward name="WrongQ" path="/WrongQMsgJsp.jsp" />
          </action>
 
-      <action
-      attribute="errorLogForm123"
-      input="/errLog.jsp"
-      name="errorLogForm123"
-      path="/err"
-      scope="request"
-      type="in.ac.dei.mhrd.omr.ErrorLogAction">
-      <forward name="dispalyerr" path="/DisplaryErr.jsp" />
-      </action>
-
-    <action
+        <action
       attribute="processSheetForm123"
       input="/ProcessSheet.jsp"
       name="processSheetForm123"
       path="/processSheet"
+      cancellable="true"
       scope="request"
-      type="in.ac.dei.mhrd.omr.ProcessSheetAction">
+      type="in.ac.dei.mhrd.omr.processSheet.ProcessSheetAction">
       <forward name="index" path="/index.jsp" />
       
       </action>
@@ -125,7 +87,7 @@
       name="correctSheetBrowseForm123"
       path="/correctBrowse"
       validate="true"
-      type="in.ac.dei.mhrd.omr.CorrectSheetBrowseAction">
+      type="in.ac.dei.mhrd.omr.correctAnswer.CorrectSheetBrowseAction">
       <forward name="confirmAns1" path="/confirmAnsJsp.jsp" />
       </action>
 
@@ -134,39 +96,20 @@
       input="/SelectResult.jsp"
       name="resultForm123"
       path="/result"
+      cancellable="true"
       scope="session"
-      type="in.ac.dei.mhrd.omr.ResultAction">
+      type="in.ac.dei.mhrd.omr.result.ResultAction">
       <forward name="markList" path="/SectionDetail.jsp" />
     </action>
     
-    <action
-      attribute="editOptionForm123"
-      input="/editJsp.jsp"
-      name="editOptionForm123"
-      path="/edit"
-      scope="request"
-      validate="true"
-      type="in.ac.dei.mhrd.omr.EditOptionAction">
-      <forward name="updateJsp2" path="/UdateTestJsp.jsp" />
-    </action>
-    
-    <action
-      attribute="updateTest"
-      input="/UpdateTestJsp.jsp"
-      name="updateTest"
-      path="/update"
-      scope="request"
-      type="in.ac.dei.mhrd.omr.UpdateTestAction" >
-     <forward name="updatetestMsg" path="/updateMsgJsp.jsp"></forward> 
-     </action>
-
+   
     <action
       attribute="confirmAns"
       input="/confirmAnsJsp.jsp"
       name="confirmAns"
       path="/confirm"
       scope="request"
-      type="in.ac.dei.mhrd.omr.ConfirmAnsAction">
+      type="in.ac.dei.mhrd.omr.correctAnswer.ConfirmAnsAction">
       <forward name="confirmAnsMsg1" path="/ConfirmAnsMsg.jsp" />
     </action>
 
@@ -176,8 +119,9 @@
       name="uploadResponseSheet"
       validate="true"
       path="/uploadzip"
+      cancellable="true"
       scope="request"
-      type="in.ac.dei.mhrd.omr.UploadResponseAction">
+      type="in.ac.dei.mhrd.omr.uploadSheet.UploadResponseAction">
       <forward name="home" path="/Home.jsp" />
       <forward name="index" path="/index.jsp"/>
     </action>
@@ -188,8 +132,9 @@
       name="resultSchedule"
       validate="true"
       path="/manageResult"
+      cancellable="true"
       scope="request"
-      type="in.ac.dei.mhrd.omr.ManageResultAction" >
+      type="in.ac.dei.mhrd.omr.result.ManageResultAction" >
       <forward name="success1" path="/ConfirmAnsMsg.jsp" />
       </action>
 
@@ -198,19 +143,21 @@
       input="/manageWrongQues.jsp"
       name="manageWrongQues"
       validate="true"
+      cancellable="true"
       path="/manageWrongQues"
-      type="in.ac.dei.mhrd.omr.ManageWrongQuesAction">
+      type="in.ac.dei.mhrd.omr.misprintedQues.ManageWrongQuesAction">
       <forward name="editWrongQues" path="/delQues.jsp" />
        <forward name="WrongQ" path="/WrongQMsgJsp.jsp" />
-    </action>
+           </action>
    
      <action
       attribute="logInterfaceForm"
       input="/logInterface.jsp"
       name="logInterfaceForm"
+      cancellable="true"
       path="/logInter"
       scope="request"
-      type="in.ac.dei.mhrd.omr.LogInterAction" >
+      type="in.ac.dei.mhrd.omr.log.LogInterAction" >
       <forward name="erroLog" path="/DisplaryErr.jsp" />
       <forward name="TestLog" path="/TestLog.jsp"/>
      </action>
@@ -219,8 +166,9 @@
       input="/manage.jsp"
       name="manageForm"
       path="/manage"
+      cancellable="true"
       scope="request"
-      type="in.ac.dei.mhrd.omr.ManageAction" >
+      type="in.ac.dei.mhrd.omr.testSetUp.ManageTestAction" >
       <forward name="manage" path="/manageTest.jsp" />
     </action>
     <action
@@ -229,7 +177,7 @@
       input="/manageTest.jsp"
       path="/updateTestSetup"
       scope="request"
-      type="in.ac.dei.mhrd.omr.UpdateTestSetupAction" >
+      type="in.ac.dei.mhrd.omr.testSetUp.UpdateTestSetupAction" >
       <forward name="success" path="/SuccessUpdate.jsp" />
     </action>
     <action
@@ -237,10 +185,12 @@
       input="/delQues.jsp"
       name="delQues"
       path="/delQuesPath"
+      cancellable="true"
       validate="true"
       scope="request"
-      type="in.ac.dei.mhrd.omr.DelQuesAction">
+      type="in.ac.dei.mhrd.omr.misprintedQues.DelQuesAction">
       <forward name="WrongQ" path="/WrongQMsgJsp.jsp" />
+      <forward name="manageWrongQues" path ="/manageWrongQues.jsp"></forward>
     </action>
     
     <action
@@ -248,8 +198,9 @@
       input="/SelectCorrectAnsJsp.jsp"
       name="selectCorrectAns"
       path="/selectCorrect"
+      cancellable="true"
       scope="request"
-      type="in.ac.dei.mhrd.omr.SelectCorrectAnswerAction">
+      type="in.ac.dei.mhrd.omr.correctAnswer.SelectCorrectAnswerAction">
       <forward name="fillCorrectAns" path="/fillAnswer.jsp" />
     </action>
     
@@ -257,7 +208,7 @@
       input="/ValidateAnswer.jsp"
       name="answerForm"
       path="/addAnswer"
-      type="in.ac.dei.mhrd.omr.AddAnswerAction" >
+      type="in.ac.dei.mhrd.omr.correctAnswer.ChkBoxCorrectAnswerAction" >
       <forward name="correctAnsMsg" path="/WrongQMsgJsp.jsp" />
       </action>
 
@@ -267,7 +218,7 @@
       name="answerForm"
       path="/validate"
       scope="request"
-      type="in.ac.dei.mhrd.omr.ValidateAction" >
+      type="in.ac.dei.mhrd.omr.correctAnswer.ValidateAction" >
       <forward name="populate" path="/ValidateAnswer.jsp" />
     </action>
 
@@ -276,8 +227,8 @@
       input="/SectionDetail.jsp"
       name="resultForm123"
       path="/displayResponse"
-      scope="request"
-      type="in.ac.dei.mhrd.omr.DisplayResponseAction" >
+      scope="session"
+      type="in.ac.dei.mhrd.omr.result.DisplayResponseAction" >
       <forward name="response" path="/displayResponse.jsp" />
     </action>
     
@@ -285,9 +236,17 @@
  	<action
       input="/Menu.jsp"
       path="/downLoadSheet"
-      type="in.ac.dei.mhrd.omr.DowLoadSheetAction">
+      type="in.ac.dei.mhrd.omr.download.DowLoadSheetAction">
       <forward name="home" path="/Home.jsp" />
     </action>
+    <action
+      attribute="resultSchedule"
+      input="/SectionDetail.jsp"
+      name="resultSchedule"
+      path="/ExcelResult"
+      scope="request"
+      type="in.ac.dei.mhrd.omr.result.ExcelResultAction"
+      cancellable="true" />
   
 </action-mappings>
 	

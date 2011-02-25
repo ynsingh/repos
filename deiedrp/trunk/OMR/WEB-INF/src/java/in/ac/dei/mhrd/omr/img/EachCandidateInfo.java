@@ -1,26 +1,62 @@
+/*
+ * @(#) EachCandidateInfo.java
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+
+
 package in.ac.dei.mhrd.omr.img;
 
 import java.io.File;
-
-import java.sql.*;
-import com.mysql.jdbc.exceptions.*;
 import java.util.*;
-
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
-import org.apache.log4j.xml.DOMConfigurator;
 
-
-/*
- * This class displays the details filled by the student
+/**
+ * This class holds the CandidateID and testid
+ * @author Anshul
+ * Creation date:09-28-2010
+ * @version 1.0
+ *
  */
 public class EachCandidateInfo {
 	private static Logger log = Logger.getLogger(EachCandidateInfo.class);
 
-	 String roll = " -1";
+	 String roll = " -1";//initial value
 	  
 	    ArrayList<String> tid = new ArrayList<String>();
 		ArrayList<String> rno = new ArrayList<String>();
+		
+		/**
+		 * This constructor initializes the 8 digit rno and six digit testid 
+		 *  
+		 */
 	    
 	    public EachCandidateInfo() {
 	        rno.add(0, "NA");
@@ -40,98 +76,26 @@ public class EachCandidateInfo {
 				tid.add(5, "NA");
 				
 	    }    
-   /* public void insertCandidateInfo(String filename, int testid) {
-        File filepath = new File(filename);
-        boolean flag=true;
-
-        
-            
-			 * Entry in log table if there is any error
-			 
-            
-          
-            if(this.faculty==null ){
-            	CandidateDetail.errorMsg=CandidateDetail.errorMsg+" Faculty is missing";
-            	RotateImg.infoFlag = false;
-            	
-            }
-           if( this.sem==null ){
-        	   
-        	   CandidateDetail.errorMsg=CandidateDetail.errorMsg+" Semester is missing";
-        	   RotateImg.infoFlag = false;
-         }
-           if(this.qt==null){
-        	    CandidateDetail.errorMsg=CandidateDetail.errorMsg+" QT is missing";           
-        	   
-            	
-            	RotateImg.infoFlag = false;
-            }
-           if(this.rno.contains("NA"));
-          // System.out.println("Faculty: " +faculty + "sem : " + sem +" Qt :" + qt);
-       //	System.out.println("roll: " + rno.get(0)+ rno.get(1) + rno.get(2) + rno.get(3) + rno.get(4) + rno.get(5));
-      	 
-            if(RotateImg.infoFlag){
-            	try {
-                    
-                    Connection con = Connect.prepareConnection();
-
-            	System.out.println("b4 insert");
-            	System.out.println("TEstid : "+ testid);
-            	 
-            	roll = (rno.get(0)+ rno.get(1) + rno.get(2) + rno.get(3) + rno.get(4) + rno.get(5));
-            	 
-            	System.out.println("RollNo : " + Integer.parseInt(this.roll));
-            	PreparedStatement ps = con.prepareStatement(
-                "insert into candidate_detail(TestId, RollNo, Faculty, Semester, Qt) values (?,?,?,?,?)");
-
-            	ps.setInt(1, testid);
-        ps.setInt(2, Integer.parseInt(this.roll));
-        ps.setString(3, this.faculty);
-        ps.setString(4, this.sem);
-        ps.setString(5, this.qt);
-        ps.executeUpdate();
-            	
-            
-            	con.close();
-            } 
-            catch (MySQLIntegrityConstraintViolationException e){
-            	LogEntry.insert_Log(testid, filepath.getName(),
-                "This Roll No has already been processed .");
-            }
-            
-            catch (SQLException e) {
-            	LogEntry.insert_Log(testid, filepath.getName(),
-                "Err while processing the sheet! Reload the Sheet");
-               
-            } catch (Exception ex) {
-                System.out.println("error " + ex);
-            }
-}
-            	
-            else{
-            	System.out.println("Rotate in insert" + RotateImg.infoFlag);
-            	LogEntry.insert_Log(testid, filepath.getName(),
-                CandidateDetail.errorMsg);
-            	CandidateDetail.errorMsg=" ";
-            
-            }
-            	
-            	    }
-*/
-   
-	    public String display(String fileName, int testid)
+      
+	    /**
+	     * This method checks whether the candidate has filled
+	     * the rollno or test id properly or not 
+	     * @param fileName
+	     * @param testid
+	     * @return
+	     */
+	    public String getCandidateId(String fileName, int testid)
 		{
 	    	Locale obj = new Locale("en", "US");
 			ResourceBundle message = ResourceBundle.getBundle("in//ac//dei//mhrd//omr//ApplicationResources", obj);
 
-	    	String roll="-1";
+	    	String candidateId="-1";
 	    	String testno ="-1";
 	    	try{
 			
-			System.out.println("roll : " +(rno.get(0)+ rno.get(1) + rno.get(2) + rno.get(3) + rno.get(4) + rno.get(5)+ rno.get(6)+rno.get(7)));
-			System.out.println("tid : " +(tid.get(0)+ tid.get(1) + tid.get(2) + tid.get(3) + tid.get(4) + tid.get(5)));
+			//System.out.println("roll : " +(rno.get(0)+ rno.get(1) + rno.get(2) + rno.get(3) + rno.get(4) + rno.get(5)+ rno.get(6)+rno.get(7)));
+			//System.out.println("tid : " +(tid.get(0)+ tid.get(1) + tid.get(2) + tid.get(3) + tid.get(4) + tid.get(5)));
 			if(tid.contains("NA") || tid.contains("error")){
-				System.out.print("  error in Test no");
 				LogEntry.insert_Log(testid, new File(fileName).getName(), message.getString("code.E107"), message.getString("msg.E107"));
              	log.error(message.getString("msg.E107"));
 				
@@ -141,32 +105,27 @@ public class EachCandidateInfo {
 			  testno = (tid.get(0)+ tid.get(1) +tid.get(2) + tid.get(3) + tid.get(4) + tid.get(5));
 			  if(Integer.parseInt(testno)!=testid){
 				  LogEntry.insert_Log(testid, new File(fileName).getName(), message.getString("code.E107"), message.getString("msg.E107"));
-	             	log.error(message.getString("msg.E107"));
-	  			  System.out.println("tid in display " + testno);
-
-				  
-			  }
-			  }
+	             	log.info("error in roll no"+message.getString("msg.E107"));
+	  		 }
+			}
 			
 			
 
 			if(rno.contains("NA") || rno.contains("error")){ 
-				System.out.print("  error in Roll no");
 				LogEntry.insert_Log(testid, new File(fileName).getName(), message.getString("code.E106"), message.getString("msg.E106"));
-	           	log.error(message.getString("msg.E106"));
+	           	log.info("error in roll no"+message.getString("msg.E106"));
 			}
 			else{
 						
-			  roll = (rno.get(0)+ rno.get(1) + rno.get(2) + rno.get(3) + rno.get(4) + rno.get(5)+ rno.get(6)+ rno.get(7));
-			  System.out.println("roll in display " + roll);
+				candidateId = (rno.get(0)+ rno.get(1) + rno.get(2) + rno.get(3) + rno.get(4) + rno.get(5)+ rno.get(6)+ rno.get(7));
 			  
 				
 			  }
 	    	} catch (Exception e) {
-				System.out.println(" in each cand info");// TODO: handle exception
+		log.error("error in each cand info : " +e);// TODO: handle exception
 			}
 	    	//System.out.println("b4 return : " + roll);
-	    	return roll;
+	    	return candidateId;
 
 		}
 		

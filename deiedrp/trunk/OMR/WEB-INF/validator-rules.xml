@@ -71,8 +71,7 @@
                        javax.servlet.http.HttpServletRequest"
                   msg="errors.currentDate"/>
   
-  
-  <validator name="resultFromDate"
+   <validator name="resultFromDate"
             classname="in.ac.dei.mhrd.omr.OMRValidation"
                method="validateResultFromDate"
          methodParams="java.lang.Object,
@@ -82,8 +81,19 @@
                        org.apache.commons.validator.Validator,
                        javax.servlet.http.HttpServletRequest"
                   msg="errors.fromDate"/>
-   
-   
+  
+  
+  <validator name="resultDisplayPeriod"
+            classname="in.ac.dei.mhrd.omr.OMRValidation"
+               method="validateResultDisplayPeriod"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionMessages,
+                       org.apache.commons.validator.Validator,
+                       javax.servlet.http.HttpServletRequest"
+                  msg="errors.resultLastDate">
+                  </validator>   
    <validator name="wrongQuesNo"
             classname="in.ac.dei.mhrd.omr.OMRValidation"
                method="validateWrongQuesNo"
@@ -144,7 +154,18 @@
                   msg="errors.format"> 
                     </validator>    
                   
-   
+   <validator name="responseSheet"
+            classname="in.ac.dei.mhrd.omr.OMRValidation"
+               method="validateResponseSheet"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionMessages,
+                       org.apache.commons.validator.Validator,
+                       javax.servlet.http.HttpServletRequest"
+                  msg="errors.responseSheetformat"> 
+                    
+            </validator>  
    
    <validator name="maxQues"
             classname="in.ac.dei.mhrd.omr.OMRValidation"

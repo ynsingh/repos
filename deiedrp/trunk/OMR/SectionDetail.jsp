@@ -1,12 +1,46 @@
+<!-- 
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ * Author: Anshul Agarwal
+
+ -->
 <%@ page language="java" pageEncoding="ISO-8859-1"%>
 <%@ page import="java.sql.*" %>
-<%@ page import="in.ac.dei.mhrd.omr.img.*" %>
+
 <%@page import="javax.sql.rowset.CachedRowSet"%>
 <%@page import="com.sun.rowset.CachedRowSetImpl"%>
-<%@page import="in.ac.dei.mhrd.omr.Grace"%>
+<%@page import="in.ac.dei.mhrd.omr.result.GraceMarks"%>
+
 <%@page import="java.util.ArrayList"%>
-<%@page import="java.util.*"%>
-<%@page import="java.util.Set"%>
+
+<%@page import="in.ac.dei.mhrd.omr.dbConnection.Connect;"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -53,7 +87,10 @@
   </head>
   
   <body>
-  
+  <div>
+    <jsp:include page="header.jsp"></jsp:include>
+	</div>
+	<hr width="100%">
   <jsp:include page="Menu.jsp"></jsp:include><br/><br/>
         <%
         int alt=1;// color alteration
@@ -64,13 +101,18 @@
         //total no. of questions
         
         ArrayList<Float> discardMarks=new ArrayList<Float>();
-        int marksEachQuestion=-1;
+        float marksEachQuestion=-1;
         float graceMarks=0;
         float sectionMarks=0;
         float totalMarks=0;
         int rollNo;
+       // HttpSession sessionbj = request.getSession();
         int testid = (Integer)request.getAttribute("testid");
+                session.setAttribute("testid", testid);
+        
         String path=(String)request.getAttribute("imagePath");
+                session.setAttribute("imagePath", path);
+        
     		    int i = 1;
   				int j = 1;
 
@@ -96,22 +138,23 @@
         CachedRowSet crs=null;
         CachedRowSet crs1=null;
         PreparedStatement ps=null;
+        Connection con = null;
         %>
         <%
-        Grace grc=new Grace();
-        graceMarks=grc.graceMarks(testid);
-        discardMarks=grc.discardMarks(testid);
-        try{
-        Connection con = Connect.prepareConnection();
-        crs=new CachedRowSetImpl();
-        crs1=new CachedRowSetImpl();
-			 ps = con.prepareStatement("select Test_name,TestNo,Conduct_date from testheader where TestId="+testid);
-          
-		   rsTestHeader=ps.executeQuery();
-		    rsTestHeader.next();
-         %>
+        	GraceMarks grc=new GraceMarks();
+                graceMarks=grc.computeGraceMarks(testid);
+                discardMarks=grc.computeDiscardMarks(testid);
+                try{
+                 con = Connect.prepareConnection();
+                crs=new CachedRowSetImpl();
+                crs1=new CachedRowSetImpl();
+        	 ps = con.prepareStatement("select Test_name,TestNo,Conduct_date from testheader where TestId="+testid);
+                  
+        		   rsTestHeader=ps.executeQuery();
+        		    rsTestHeader.next();
+        %>
          <div align="center" style="color:darkblue;font-weight: bold;"><bean:message key="msg.Result"/> </div>
-  <div align="right"><u><a href="javascript:exportToExcel()" title="export"><bean:message key="link.exporttoexcel"/></a></u></div>
+  <div align="right"><u><a href="ExlResult.jsp"><bean:message key="link.exporttoexcel"/></a></u></div>
   <table style="color: darkblue">
   	<tr><td><font face="Arial" color="#000040"><bean:message key="label.testid"/> </font></td><td> <%=rsTestHeader.getObject("TestNo") %></td></tr>
   	<tr><td><font face="Arial" color="#000040"><bean:message key="label.testname"/></font></td><td> <%=rsTestHeader.getObject("Test_name")%> </td></tr>
@@ -120,6 +163,7 @@
   </table>
 		  <%
   					totalSection=(Integer)request.getAttribute("totalSection");
+  					session.setAttribute("totalSection", totalSection);
 					query1 = "select distinct(FileName),RollNo from attempt_info where TestId="+testid;
 					PreparedStatement psRno=con.prepareStatement(query1);
   					rsTotalSection = psRno.executeQuery();
@@ -176,12 +220,12 @@
     			 PreparedStatement psTestDetail=con.prepareStatement(query4);
     			 rsMarks=psTestDetail.executeQuery(query4);
     			 rsMarks.next();
-    			 noOfQuestion=rsMarks.getInt("No_of_question");
-    			 marksEachQuestion=rsMarks.getInt("Marks_each_question");
+    			 noOfQuestion=rsMarks.getInt(1);
+    			 marksEachQuestion=rsMarks.getFloat(2);
     			 if(discardMarks.size()>0)
-    			 out.print("M.M. :"+((noOfQuestion*marksEachQuestion)-discardMarks.get(j-1)));
+    			 out.print("M.M. :"+((noOfQuestion* marksEachQuestion)-discardMarks.get(j-1)));
     			 else
-    			 out.print("M.M. :"+((noOfQuestion*marksEachQuestion)));
+    			 out.print("M.M. :"+((noOfQuestion* marksEachQuestion)));
     			%>)
     			</td>
     	<%
@@ -304,6 +348,8 @@
     	<%
     		} catch (Exception e) {
     				
+    			}finally{
+    			Connect.freeConnection(con);
     			}
     	%>
   </body>

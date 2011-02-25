@@ -1,14 +1,56 @@
+/*
+ * @(#) Coordinates.java
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+
+
 package in.ac.dei.mhrd.omr.img;
 
 
 import java.util.*;
 
+import org.apache.log4j.Logger;
+
+
 /**
- * @ Author Anshul Agarwal
- * calculates the coordinates of the blocks 
+ * This class defines the method that calculates the coordinates of the blocks
+ * on the sheet
+ * Creation date:09-29-2010
+ * @Author Anshul Agarwal
+ * @version 1.0
+ *  
  */
 public class Coordinates {
-	
+	private static Logger log = Logger.getLogger(Coordinates.class);
+
 	int x;
 	int y;
 	
@@ -25,7 +67,7 @@ public class Coordinates {
 	
 	
 	/**
-	 * This function computes coordinates of top and bottom coordinates of the block
+	 * This method computes the top and bottom coordinates of the block
 	 * @param ip
 	 * @param xstart
 	 * @param xend
@@ -38,19 +80,12 @@ public class Coordinates {
      ArrayList<Coordinates> arr = new ArrayList<Coordinates>();
      //int block_height= 50;
 	 int block_height = (int)((ip.getHeight()*1.5)/100);
-	// System.out.println("block height : " + block_height);
-	// int block_height = 25;
+	
 	  int x=0,y=0, x1=0,y1=0, i=0;
 	  int block_dist=(int)((ip.getHeight()*2.5)/100);
-	  //System.out.println("block dist : " + block_dist);
-	 //int block_dist = 95;
-	//  int block_dist = 75;
+	  
 	  int block_width = (int)((ip.getWidth()*1.55)/100);
-	  //System.out.println("block width : " + block_width);
-	  //int block_width = 20;
-	 // xstart = 2320;
-	 // xend = 2460;
-	  /*
+	  	  /*
 	   * xcoord, ycoord, y1 are the coordinates of the top and bottom of the block x vl remain same
 	   */
 	  
@@ -66,7 +101,7 @@ public class Coordinates {
 	 int total_blocks = 23;
 	
 	
-	   for(y=ystart;y<ip.getHeight();y++){ //this looop is executing up to the length of the page
+	   for(y=ystart;y<ip.getHeight();y++){ //this loop is executing up to the length of the page
 		
 		   if(i==total_blocks) // break the loop if all blocks found
 		   {
@@ -140,9 +175,11 @@ public class Coordinates {
 							    
 								   i++;
 								
-								   /*System.out.println(i+" block found at top x:" +xcoord + "y:  "+ ycoord);
+								   /*
+								   System.out.println(i+" block found at top x:" +xcoord + "y:  "+ ycoord);
 								   System.out.println("Bottom Left x: " +xcoord + "y: "+y1);
-								   System.out.println("HEight :" +hy);*/
+								   System.out.println("HEight :" +hy);
+								   */
 								  
 								   y=y+block_dist; // distance between top corner of block
 								   

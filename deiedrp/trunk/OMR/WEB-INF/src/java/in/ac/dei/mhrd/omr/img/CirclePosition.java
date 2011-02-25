@@ -1,37 +1,79 @@
+/*
+ * @(#) CirclePosition.java
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+
+
 package in.ac.dei.mhrd.omr.img;
 
 import java.awt.Color;
 
 import java.util.*;
 
+import org.apache.log4j.Logger;
+
 
 /**
- * @author Anshul Agarwal
+ * This class finds the position of the circles marked by the student and 
+ * the associated information
  *
- * This class finds the position of the circles marked by the student and the associated information
+ * @author Anshul Agarwal
+ * Creation date:08-29-2010
+ * @version 1.0
  **/
 public class CirclePosition {
+	private static Logger log = Logger.getLogger(Coordinates.class);
+
 	
-	/**
-    * This function detects marked circles in the candidate's information part of the sheet and
-    *  
-    *
-    * @param ip :reference of image
+   /**
+	* This method detects marked circles in the candidate's information part of the sheet and
+    * 
+	* @param ip :reference of image
     * @param infoLeft : mid points of left side  blocks
     * @param infoRight : mid  points of right side blocks
     * @param xrtAvg : Average of x coordinates of the blocks on the right side
     * @param xleftAvg : Average of x coordinates of the blocks on the left side
     * @param xstart : where the processing begins
     * @param xend : where the processing ends
-    * @return
-    */
-    public static String getCandidateInfo(ij.process.ImageProcessor ip,
+    * @param filename
+	* @param testid
+	* @return
+	*/
+	public static String getCandidateInfo(ij.process.ImageProcessor ip,
         ArrayList<MidPoint> infoLeft, ArrayList<MidPoint> infoRight, double xrtAvg,
         double xleftAvg, int xstart, int xend, String filename, int testid) {
         int count = -1; //count the no. of rows
         int c = 0; // count the no. of circles
 
-        Double posStart;
+        Double posStart;// ratio of the starting position of the circle
         int x1; //coordinates of midpoint of left block
         int y1; //coordinates of midpoint of left block
         int x2; //coordinates of midpoint of right block
@@ -55,7 +97,7 @@ public class CirclePosition {
             x2 = ymidRight.xmp;
             y2 = ymidRight.mp;
             count++;
-
+             
             
             for (int i = xstart; i < xend; i++) {
                 y = (((y2 - y1) * (i - x1)) / (x2 - x1)) + y1; // compute y for each value of x using straight line equation
@@ -112,7 +154,7 @@ public class CirclePosition {
             }
         }
 
-       String roll =  Infoobj.display(filename, testid);
+       String roll =  Infoobj.getCandidateId(filename, testid);
         //System.out.println("total circle found : " + c);
        // System.out.println("tno in c p " + tno);
         //if r pno no is not -1 , insert into the database
@@ -123,19 +165,18 @@ public class CirclePosition {
         return roll;
             }
 
-    /**
-     *
-      @param ip :reference of image
+   /**
+    *
+    * @param ip :reference of image
     * @param infoLeft : mid points of left side  blocks
     * @param infoRight : mid  points of right side blocks
     * @param xrtAvg : Average of x coordinates of the blocks on the right side
     * @param xleftAvg : Average of x coordinates of the blocks on the left side
     * @param xstart : where the processing begins
     * @param xend : where the processing ends
-     * @param noOfQues : no of ques in each sec
-     * @param sec : section number
-     * @return
-     */
+    * @param noOfQues : no of questions
+    * @return
+    */
     public static byte[] getAns(ij.process.ImageProcessor ip,
         ArrayList<MidPoint> infoLeft, ArrayList<MidPoint> infoRight, double xrtAvg,
         double xleftAvg, int xstart, int xend, int no_of_ques) {
@@ -156,8 +197,8 @@ public class CirclePosition {
         	
             MidPoint ymidLeft = infoLeft.get(j); //retrieve midpoints of leftblocks
             MidPoint ymidRight = infoRight.get(j); // retrieve midpoint of right blocks
-            /**
-             * variables for straight line equation bw mid points of left & rt side blocks.
+            /*
+             * variables for straight line equation between mid points of left & right side blocks.
              */
             x1 = ymidLeft.xmp;
             y1 = ymidLeft.mp;
@@ -225,13 +266,13 @@ public class CirclePosition {
             } //end x loop
         } // end y loop
 
-        obj.displayAns();
+      //  obj.displayAns();
 
         return obj.response;
-    } // end function
+    } // end method
 
     /**
-     * This function returns true if group of 40 pixels found around a pixel
+     * This method returns true if group of pixel finds around a pixel
      * @param ip
      * @param xc
      * @param yc
@@ -242,16 +283,14 @@ public class CirclePosition {
         int i = 1;
         int j = 1;
         boolean found = false;
-        int pixelGroup=(int)(ip.getWidth()*1.1)/100;
+        int pixelGroup=(int)(ip.getWidth()*1.4)/100;
         
-        while ((i <= 6) && (j <= 6)) {
+        while ((i <= 8) && (j <= 8)) {
             j++;
             i++;
 
             if (ip.getPixelValue(xc + i, yc) == 0) {
                 connect++;
-               
-                
                 
             }
 

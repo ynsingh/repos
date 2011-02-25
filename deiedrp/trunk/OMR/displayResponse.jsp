@@ -1,11 +1,40 @@
-<%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
-<%@ page import="java.sql.*" %>
-<%@ page import="in.ac.dei.mhrd.omr.img.*" %>
+
+<!-- 
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ * Author: Anshul Agarwal
+
+ --> <%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
+
 <%@ page import="java.io.*" %>
 
-<%@ page import ="javax.servlet.http.HttpServletRequest"%>
-<%@ page import ="javax.servlet.http.HttpServletResponse" %>
-<%@page import="in.ac.dei.mhrd.omr.CollectData"%>
 
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
@@ -15,7 +44,6 @@
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -37,11 +65,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
+  <div>
+   <div>
+    <jsp:include page="header.jsp"></jsp:include>
+	</div>
+	<hr width="100%">
   <jsp:include page="Menu.jsp"></jsp:include><br/>
   <%!
   String qry;
   int testid;
   String fileName=null; 
+  String imgLocation="";
     int rollno=0;
     int row=0;
     byte [] responseAnswer;
@@ -59,8 +93,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    <%
    testid = (Integer)request.getAttribute("testid");
    fileName=(String)request.getAttribute("filename");	
+   System.out.println(fileName);
    File sheetName = new File(fileName);						
-   rollno=(Integer)request.getAttribute("rollNo");    
+   rollno=(Integer)request.getAttribute("rollNo");   
+  System.out.println("file name aftr replace :" + fileName);
+  imgLocation = "processedFolder" +"/"+testid+"/"+ sheetName.getName();
+  
     %>
    
   <div align="left"><strong><font face="Arial" color="#000040"><bean:message key="label.rollno"/></font> 
@@ -69,15 +107,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    <br/> <strong><font face="Arial" color="#000040"><bean:message key="label.filename"/></font> <%=sheetName.getName() %></strong>
     </div>
    <br/>
-  	<img src=<%=fileName%>  alt="response sheet" align="left" border="1"></img>
-  	
-	
-				<table align="left" width="35%" height="95%">
+   <table>
+       <tr><td valign="top">   
+     	<html:img src="<%=imgLocation%>"  height="1200px" width="750px" alt="response sheet" align="left" border="1"></html:img>
+	</td><td valign="top">
+				<table cellspacing="4" border="1">
  	 				
  	 				<tr>
- 	 				<td><b><bean:message key="label.qno"/> </b></td>
- 	 				<td><b><bean:message key="label.corrans"/> </b></td>
- 	 				<td><b> <bean:message key="label.response"/></b></td>
+ 	 				<td><font face="Arial" color="#000040"><bean:message key="label.qno"/> </font></td>
+ 	 				<td><font face="Arial" color="#000040"><bean:message key="label.corrans"/> </font></td>
+ 	 				<td><font face="Arial" color="#000040"> <bean:message key="label.response"/></font></td>
+ 	 				<td><Input Type="button" value = "BACK" onclick="history.back();"/></td>
  	 				</tr>
   				  	<%
   				  	
@@ -114,11 +154,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   							i=0;
   							}catch(Exception e)
   								{
-  								out.print("Exception:"+e.getMessage());
-  								out.print("exception cause"+e);
   								}
   							 %>	
   				</table>
+  				</td></tr></table>
   				<Input Type="button" value = "BACK" onclick="history.back();"/>
   </body>
 </html>

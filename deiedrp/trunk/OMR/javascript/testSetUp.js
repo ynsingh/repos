@@ -1,32 +1,57 @@
+	function validateTestName(){
+	var testName=dwr.util.getValue("testName");
+	//alert("testName: " + testName);
+	var infoStatus=false;
+	OMRValidation.validateTestNameJs(testName, function(data){
+	dwr.util.setValue("existTestName", data);
+	});
+	
+	}
+	
+	
 	function verify()
 			{
+			validateTestName();
+				var testname=dwr.util.getValue("testName");
+			
 			var i=1;
-			var totalSec=document.getElementById("totalSec");
+			var totalSec=dwr.util.getValue("totalSec");
 			var totalQues=0;
 			var totQues=0;
+			var cellval=0;
+			totQues=dwr.util.getValue("totalQues");			
+			var flag=true;
+			var a = dwr.util.getValue("existTestName");
 			
-			totQues=(document.getElementById("totalQues")).value;			
-			
-			
+  
+			a=a+"";
+if(totalSec > 0){
 	for (r=1; r < (document.getElementById('secTable')).rows.length; r=r+1)
 	 {
 	 	for(c=1;c<4;c=c+1)
 	 	{
    		cellval =(document.getElementById('secTable')).rows[r].cells[c].childNodes[0].value; //errors out with trow.cells being undefined
-       	  
             if (cellval.length < 1) {
                 alert("Please complete the entry for Section :"+r);
-                return false;
-                 					}
+                flag=false;
+                return flag;
+            }
                if(c==1)
                		{
+               		 if(parseInt(cellval)<1 || cellval==""){
+               		 alert("Please enter the number of questions in section "+r);
+               		 return false;
+               		 }
                		totalQues=parseInt(totalQues)+parseInt(cellval);
                		}
                if(c==2)
                	{
-               	if(parseFloat(cellval)>10 || parseFloat(cellval)<1)
+               	if(cellval==""){
+               	alert("Please Enter the marks for section : " + r);
+               	}else
+               	if(parseFloat(cellval)>10 || parseFloat(cellval)<0.25)
                		{
-               		alert("Marks of each question cannot be greater than 10 and less than 1 for section : "+r);
+               		alert("Marks of each question cannot be greater than 10 and less than 0.25 for section : "+r);
                		return false;
                		}
                		
@@ -40,35 +65,101 @@
                			return false;
                			}
                		}		
-      	}							
- 	}
+      	}//end col							
+ 	}//end row
  			if(totQues!=totalQues)
  				{
  				alert("Sum of no. of questions in each section should be equal to the total number of questions ");
  				return false;
  				}
- 			
-}
+ 				
+ 	       a = dwr.util.getValue("existTestName");
+            a = dwr.util.getValue("existTestName");
+  
+//	alert("a " +a);
+			
+ 	if(a==testname){
+		alert("Test Name already exist.");
+	return false;
+	}			
+ }//end if total section
+  else{
+  alert('Please fill all the mandatory fields.');
+  return false;
+  }
+  	
+}//func end
 
-		function remove(mytableid){
-		var mybody = document.getElementById("divId");
-		mybody.removeChild(mytableid);
-		}
+function removeRow(lastElement, tbody){
+  if (lastElement > 1){ 
+    if (lastElement > 2){ 
+    tbody.deleteRow(lastElement - 1);
+  }else{
+  alert('Please select the number of sections.');
+  }
+}
+}	
+	function addRow(index, tbody){
+	
+	// creates a <tr> element
+            mycurrent_row = document.createElement("tr");
+            sec_num = document.createElement("td");
+            sec_numTxt = document.createTextNode(index);
+            sec_num.appendChild(sec_numTxt);
+            mycurrent_row.appendChild(sec_num);
+            for(var i = 1; i < 4; i++) {
+                // creates a <td> element
+                mycurrent_cell = document.createElement("td");
+                // creates a text node
+	  mycurrent_txtbox = document.createElement("input");
+	  mycurrent_txtbox.setAttribute('type',"text");
+	   mycurrent_txtbox.setAttribute('name',"sectionDetail"+i);
+	   mycurrent_txtbox.setAttribute('id',"sectionDetail"+i);
+                //currenttext = document.createTextNode("cell is row "+j+", column "+i);
+                // appends the text node we created into the cell <td>
+                //mycurrent_cell.appendChild(currenttext);
+	mycurrent_cell.appendChild(mycurrent_txtbox);
+                // appends the cell <td> into the row <tr>
+                mycurrent_row.appendChild(mycurrent_cell);
+            }
+            // appends the row <tr> into <tbody>
+            tbody.appendChild(mycurrent_row);
+	
+	}	
 
 function display() {
-
-           
+	     validateTestName();
 		// get the reference for the body
         var mybody = document.getElementById("divId");
         var tableid = document.getElementById("secTableid");
-        if(tableid!=null)
-        {
-         remove(tableid);
-        }
-       
+        
          var setObj = document.getElementById("section"); 
          var val = setObj.options[setObj.selectedIndex].value; 
+        if(tableid!= null)
+        {
+         var tbody = document.getElementById("secTable");          
         
+        //get no. of rows in the table.
+  		 var lastElement=secTable.rows.length;
+  				 var index=lastElement-2;
+  				 	if(val>index)
+					{
+					for(var i=lastElement;i<=val;i=i+1)
+						{
+						addRow(i, tbody);
+						}
+					}
+				else
+					{
+					val= parseInt(val)+1;
+					for(i=lastElement; i>val ; i=i-1)
+					{
+					removeRow(i, tbody);
+					}
+					}
+         
+        }
+       else{
         // creates a <table> element and a <tbody> element
         mytable = document.createElement("table");
         mytable.setAttribute('id', "secTableid");
@@ -99,7 +190,7 @@ function display() {
         mytablebody.appendChild(my_row);
         // creating all cells
         for(var j = 1; j <= val; j++) {
-        
+       
             // creates a <tr> element
             mycurrent_row = document.createElement("tr");
             sec_num = document.createElement("td");
@@ -134,3 +225,4 @@ function display() {
         // sets the border attribute of mytable to 2;
       //  mytable.setAttribute("border", "2");
     }
+}

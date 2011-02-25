@@ -1,4 +1,40 @@
+/*
+ * @(#) Response.java
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+
+
 package in.ac.dei.mhrd.omr.img;
+
+import in.ac.dei.mhrd.omr.dbConnection.Connect;
 
 import java.io.File;
 
@@ -10,20 +46,18 @@ import java.util.ResourceBundle;
 
 import com.mysql.jdbc.exceptions.*;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
-import org.apache.log4j.xml.DOMConfigurator;
-
 
 
 /**
- *
+ * This class inserts the ques no, option, section into the database
+ * @creation date:09-27-2010 
  * @author Anshul Agarwal
- *This class inserts the ques no, option, section into the database
+ * @version 1.0
  */
 public class Response {
 	
 	/**
-	 * This function accepts CandidateID alias RollNo and an array of responses into the database
+	 * This method accepts CandidateID alias RollNo and an array of responses into the database
 	 * @param attemptAns
 	 * @param TestNo
 	 * @param str
@@ -37,7 +71,6 @@ public class Response {
 		ResourceBundle message = ResourceBundle.getBundle("in//ac//dei//mhrd//omr//ApplicationResources", obj);
 		int[] responseCount=null;
     	File fileName = new File(filepath);
-    	System.out.println("inside reponse insert");
     	Connection con=null;
     	int ques=0, sec=0;
     	int qno=0;
@@ -61,11 +94,10 @@ public class Response {
             	 if(rno!=-1){
             	 LogEntry.insert_Log(testid, fileName.getName(), message.getString("code.E102"), message.getString("msg.E102")+"in file "+ fileName.getName());
              	log.error(message.getString("msg.E102"));
-             	System.out.println("Duplicate Roll No found filename ,"+ fileName.getName());
             	 }
              }
              ps = con.prepareStatement(
-             "insert into Response(Testid, RollNo, ques_no, ans, SectionNumber, FileName) values (?,?,?,?,?,?)");
+             "insert into response(TestId, RollNo, ques_no, ans, SectionNumber, FileName) values (?,?,?,?,?,?)");
 
             while(rs.next()){
             	sec = rs.getInt(1);
@@ -90,32 +122,24 @@ public class Response {
             }
             responseCount = ps.executeBatch();
                        if(responseCount.length==attemptAns.length-1){
-                    	   System.out.println("All responses inserted successfully");
             	log.info("All responses inserted ");
             }
-           // log.info("Response inserted : " + responseCount.length);
             con.commit();
-            con.close();
+           // con.close();
 
         } catch(MySQLIntegrityConstraintViolationException e){
-        	
+        	//insert into log in case or duplicate rollno or CandidateId
         	LogEntry.insert_Log(testid, fileName.getName(), message.getString("code.E105"), message.getString("msg.E105"));
         	log.error(message.getString("msg.E105"));
         }
         
         catch (Exception e) {
-            System.out.println("error while insert in Response : " + e);
              log.error("Error while inserting responses");
         	LogEntry.insert_Log(testid, fileName.getName(),
             message.getString("code.E101"), message.getString("msg.E101")+e);
-            System.out.println("error while insert in Response : " + e);
         }
         finally{
-        	try{
-        	con.close();
-        	}catch(Exception e){
-        		
-        	}
+        	Connect.freeConnection(con);
         }
     }
 }

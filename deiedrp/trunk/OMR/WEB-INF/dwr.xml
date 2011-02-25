@@ -5,11 +5,14 @@
 
 <dwr>
   <allow>
-    <create creator="new" javascript="DisplayTestName">
-      <param name="class" value="in.ac.dei.mhrd.omr.DisplayTestName"/>
+    <create creator="new" javascript="ComboBoxOptions">
+      <param name="class" value="in.ac.dei.mhrd.omr.ComboBoxOptions"/>
     </create>
     <create creator="new" javascript="ResultDate">
-      <param name="class" value="in.ac.dei.mhrd.omr.ResultDate"/>
+      <param name="class" value="in.ac.dei.mhrd.omr.result.ResultDate"/>
+    </create>
+    <create creator="new" javascript="OMRValidation">
+      <param name="class" value="in.ac.dei.mhrd.omr.OMRValidation"/>
     </create>
     
   </allow>

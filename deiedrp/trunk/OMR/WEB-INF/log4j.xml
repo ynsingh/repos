@@ -1,32 +1,30 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
-
-<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
-
-   <appender name="consoleAppender" class="org.apache.log4j.ConsoleAppender">
-      <param name="Threshold" value="INFO" />   
-      
-      <layout class="org.apache.log4j.PatternLayout">
-         <param name="ConversionPattern" value="%d %-5p  [%c{1}] %m %n" />
-      </layout>
-   </appender>
-
-   <appender name="fileAppender" class="org.apache.log4j.RollingFileAppender">
-      <param name="Threshold" value="ERROR" />
-      <param name="File" value="E://sample.log"/>
-      <layout class="org.apache.log4j.PatternLayout">
-         <param name="ConversionPattern" value="%d %-5p  [%c{1}] %m %n" />
-      </layout>
-   </appender>
-
-   <logger name="javabeat.net.log4j" additivity="false" >   
-      <level value="INFO" />
-      <appender-ref ref="consoleAppender"/>      
-      <appender-ref ref="fileAppender"/>      
-   </logger>
-<root> 
-    <priority value ="debug" /> 
-    <appender-ref ref="fileAppender" /> 
-  </root>
-
+<!-- ================================================================= -->
+<!--@author Anshul Agarwal                                             -->
+<!-- ================================================================= -->
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
+<!-- Console Appender -->
+	<appender name="CA" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%-4r [%t] %-5p %c %x - %m%n" />
+		</layout>
+	</appender>
+<!-- File Appender -->
+	<appender name="FA" class="org.apache.log4j.FileAppender">
+		<param name="File" value="${catalina.home}//logfile//OMRLog.log"/>
+		<!--value="C://Users//Documents and Settings//Desktop//log file//OMRLog.log"/> 
+		Set the logger level of File Appender that can be DEBUG,INFO,WARN,ERROR,FATAL
+		 -->
+		<param name="Threshold" value="INFO"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{MM/dd/yy hh:mm:ss a } %-5p %C %M - %m%n" />
+		</layout>
+	</appender>
+<!-- Order of using logger level DEBUG,INFO,WARN,ERROR,FATAL -->
+	<root>
+		<level value="INFO" />
+		<!-- <appender-ref ref="CA" /> -->
+		<appender-ref ref="FA" />
+	</root>
 </log4j:configuration>

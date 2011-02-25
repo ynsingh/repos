@@ -50,10 +50,10 @@ div.vbUL1g2j7, table.vbUL1g2j7 .subContent,ul.vbUL1g2j7{
 .vbUL1g2j7 table tr,ul.vbUL1g2j7 li,ul.vbUL1g2j7 .separator:hover{
   font-size: 1px;
   cursor: pointer;
-  background-color: #306EFF;  
+  background-color:#3232CD;  
 }
 .vbUL1g2j7 tr.over,ul.vbUL1g2j7 li:hover{
-  background-color:lightblue;
+  background-color:#7EB6FF;
 }
 .vbUL1g2j7 table td,ul.vbUL1g2j7 li,ul.vbUL1g2j7 .separator:hover{
   border: solid #0500CE;
@@ -89,7 +89,7 @@ ul.vbUL1g2j7 li:hover>a{
   text-decoration: none;
 }
 .vbUL1g2j7 tr.popup {
-  background-color: lightblue;
+  background-color: #7EB6FF;
 }
 .vbUL1g2j7 tr.popup td {
   border-color: #040060;

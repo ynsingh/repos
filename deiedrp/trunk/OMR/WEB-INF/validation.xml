@@ -7,7 +7,7 @@
 	<formset>
 			
 			<form name="resultSchedule">
-			 <field property="resultFrom" depends = "required, date, resultFromDate">
+			 <field property="resultFrom" depends = "required, date, resultFromDate, resultDisplayPeriod">
 			<arg position = "0" key="label.resultFrom"/>
 			<var>
 			  <var-name>datePatternStrict</var-name>
@@ -15,7 +15,7 @@
 			</var>
 			 </field>
 			 
-			 <field property="resultTo" depends = "required, date, currentDate">
+			 <field property="resultTo" depends = "required, date, currentDate, resultDisplayPeriod">
 			<arg position = "0" key="label.resultTo"/>
 			<var>
 			  <var-name>datePatternStrict</var-name>
@@ -57,6 +57,8 @@
 	     
 	       <field property="totalSection" depends="required, intRange">
 			<msg name="required" key="error.section"/>
+			<msg name="intRange" key="error.section"/>
+			
 				<arg position="0" key="label.section" />
 				<arg position="1" key="${var:min}" resource="false"/>
 				<arg position="2" key="${var:max}" resource="false"/>
@@ -90,6 +92,7 @@
 			</field>
 			
 			<field property="testNo" depends="required, maxlength, minlength, integer">
+			    <msg name="integer" key="error.integer.testNo"/>
 				<arg position="0" key="label.testID" />
 				<arg position="1" key="${var:maxlength}" resource="false"/>
 				<arg position="2" key="${var:maxlength}" resource="false"/>
@@ -122,6 +125,8 @@
 			
 			<field property="totalSec" depends="required, intRange">
 			<msg name="required" key="error.section"/>
+		    <msg name="intRange" key="error.section"/>
+			
 				<arg position="0" key="label.section" />
 				<arg position="1" key="${var:min}" resource="false"/>
 				<arg position="2" key="${var:max}" resource="false"/>
@@ -162,14 +167,9 @@
 			</field>
 			</form>
 			
-			<form name="uploadResponseSheet">
-			<field property="testName" depends="required">
-			  <arg position="0" key="label.testname"/>
-			  </field>
-			</form>
 			
 		<form name="delQues">
-		 <field property="qno" depends="required, deleteWrongQuesNo">
+		 <field property="qno" depends="required, integer, deleteWrongQuesNo">
 		 	 <arg position="0" key="label.Qno"/>
 		 </field>
 		</form>	
@@ -184,9 +184,10 @@
 		</form>
 		
 	<form name="uploadResponseSheet">
-	  <field property="zippedFolder" depends="required">
-			<arg position="0" key="label.zipFolder"/>
-					 </field>
+	  <field property="zippedFolder" depends="required, responseSheet">
+	  		<msg name="responseSheet" key="errors.responseSheetformat"/>  
+	  		<arg position="0" key="label.zipFolder"/>
+	  </field>
 	
 	
 	</form>

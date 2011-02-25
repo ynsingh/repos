@@ -1,102 +1,50 @@
+<!-- 
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ * Author: Anshul Agarwal
+
+ -->
+
 <%@ page language="java" pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 
 <link rel="stylesheet" href="style/dropdown.css" type="text/css"></link>
-<script type="text/javascript" src="javascript/dropdown.js"></script>
-		<script type="text/javascript">
-		function msg(){
-		}
-</script>
 
 <body>
 
 
-<table style="border:0px solid #000066;width:100%;height:2%;" cellspacing="0px" cellpadding="0px" bgcolor=#C3D9FF>
-
-
-		<tr>
-	<td>
-
-    <table cellspacing="0" cellpadding="0" ><tr>
-    <td>
-<dl class="dropdown">
-  <dt id="one1-ddheader" >
-  
-  <html:link href="Menu.jsp" style="padding:0px;background-color:#336699;font-weight:bold;color:#ffffff;"> <bean:message key="link.home"/> </html:link>
-  </dt>
-  </dl>
-</td>
-<td>
-<dl class="dropdown">
-  <dt id="two-ddheader" onmouseover="ddMenu('two',1)" onmouseout="ddMenu('two',-1)"><bean:message key="link.test"/> </dt>
-  <dd id="two-ddcontent" onmouseover="cancelHide('two')" onmouseout="ddMenu('two',-1)">
-    <ul class="ss">
-		<li><html:link styleClass="underline" href ="testSetUpjsp.jsp"> <bean:message key = "link.TestSetUp"/> </html:link>
-		
-		</li>
-      <li><html:link styleClass="underline" action = "wrongTestOption"  ><bean:message key="link.setWrongQues"/> </html:link></li>
-      <li><html:link styleClass="underline" action="correctTest" onclick="msg();"><bean:message key="link.setCorrAns"/> </html:link></li>
-      	
-    </ul>
-  </dd>
-</dl>
-</td>
-  
-
-
-<td>
-<dl class="dropdown">
-  <dt id="four-ddheader" onmouseover="ddMenu('four',1)" onmouseout="ddMenu('four',-1)"><bean:message key="link.pro"/> </dt>
-  <dd id="four-ddcontent" onmouseover="cancelHide('four')" onmouseout="ddMenu('four',-1)">
-    <ul class="ss">
-      <li><html:link styleClass="underline" action="processTest"> <bean:message key="link.proSheet"/> </html:link></li>
-     
-   </ul>
-  </dd>
-</dl>
-</td>
-
-<td>
-   <dl class="dropdown">
-  <dt id="three-ddheader" onmouseover="ddMenu('three',1)" onmouseout="ddMenu('three',-1)"><bean:message key="link.log"/> </dt>
-  <dd id="three-ddcontent" onmouseover="cancelHide('three')" onmouseout="ddMenu('three',-1)">
-    <ul class="ss">
-    <li><html:link styleClass="underline" action="errOption" > <bean:message key="link.errLog"/> </html:link></li>
-      <li><html:link styleClass="underline" href = "ProcessLog.jsp"> <bean:message key="link.proLog"/> </html:link></li>
-     
-            
-    </ul>
-  </dd>
-</dl>
-</td>
-<td>
-<dl class="dropdown">
-  <dt id="five-ddheader" onmouseover="ddMenu('five',1)" onmouseout="ddMenu('five',-1)"><bean:message key="link.edit"/> </dt>
-  <dd id="five-ddcontent" onmouseover="cancelHide('five')" onmouseout="ddMenu('five',-1)">
-    <ul class="ss">
-      <li><html:link styleClass="underline" action = "editTestOption"> <bean:message key="link.testsetup"/> </html:link></li>
-    </ul>
-  </dd>
-</dl>
-</td>
-<td>
-<dl class="dropdown">
-  <dt id="six-ddheader" onmouseover="ddMenu('six',1)" onmouseout="ddMenu('six',-1)"><bean:message key="link.result"/> </dt>
-  <dd id="six-ddcontent" onmouseover="cancelHide('six')" onmouseout="ddMenu('six',-1)">
-    <ul class="ss">
-      <li><html:link styleClass="underline" action = "resultOption" > <bean:message key="link.viewmarks"/> </html:link></li>
-       
-           </ul>
-  </dd>
-</dl>
-</td>
-
-    </tr></table>
-   </td>
-</tr>
-
-  
-</table>
-
+<center>
+    <img src="img/Inst_Admin.PNG" align="right" width="16%" height="14%"/>
+	<h1><font color = " #3232CD"><center> <bean:message key="label.onOmrEvaSys"/></center> </font></h1>
+	        <font size="4" face = "calibri"><center><b><bean:message key="label.openSrcInitiative"/></b> </center></font>
+            <font size="3" face = "calibri"><center> <bean:message key="label.devUnder"/></center> </font></center>
+	
 </body>

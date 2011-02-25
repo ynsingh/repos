@@ -1,3 +1,37 @@
+/*
+ * @(#) CirclePosition.java
+ * Copyright (c) 2011 EdRP, Dayalbagh Educational Institute.
+ * All Rights Reserved.
+ *
+ * Redistribution and use in source and binary forms, with or
+ * without modification, are permitted provided that the following
+ * conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright
+ * notice, this  list of conditions and the following disclaimer.
+ *
+ * Redistribution in binary form must reproduce the above copyright
+ * notice, this list of conditions and the following disclaimer in
+ * the documentation and/or other materials provided with the
+ * distribution.
+ *
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED.  IN NO EVENT SHALL ETRG OR ITS CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL,SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT
+ * OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+ * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Contributors: Members of EdRP, Dayalbagh Educational Institute
+ */
+
+
 package in.ac.dei.mhrd.omr.img;
 
 import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
@@ -5,6 +39,8 @@ import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 import ij.ImagePlus;
 
 import ij.plugin.BMP_Writer;
+import in.ac.dei.mhrd.omr.dbConnection.Connect;
+import in.ac.dei.mhrd.omr.processSheet.ProcessSheetAction;
 
 import java.awt.Color;
 import java.awt.Image;
@@ -18,15 +54,21 @@ import java.sql.SQLException;
 
 import java.util.*;
 
+import org.apache.log4j.Logger;
+
 
 
 /**
- * @Author Anshul Agarwal
- * 
  * This class skew the tilted image and then process the image further
+ * Creation Date: 05-05-2010
+ * @Author Anshul Agarwal
+ * @version 1.0
+ * 
  */
 public class RotateImg {
 	
+	private static Logger log = Logger.getLogger(RotateImg.class);
+
 	public  static ArrayList<String> AnsList; 
     public static ArrayList<Coordinates> leftBlocks; // coordinates of left
 														// block
@@ -307,6 +349,8 @@ public class RotateImg {
             ip = implus.getChannelProcessor(); // load the image
            
         } catch (Exception e) {
+           System.out.println("error in loading mage");
+           log.error("error in loading mage");
 
             return;
         }
@@ -315,12 +359,14 @@ public class RotateImg {
 
         ip.erode(); // to remove the extra boundary pixels add during dilation
 
+        System.out.println("1");
         rotateImg(ip); // rotate to correct the tilt
 
         /*
 		 * stores the mid points of the blocks in the student info. part of the
 		 * sheet(first 10 blocks)
 		 */
+        System.out.println("2");
         ArrayList<MidPoint> studentDetail_mpLeft = MidPoint.compute_block_midPoint(leftBlocks,
                 1, 10, ip); // other sheets
         ArrayList<MidPoint> studentDetail_mpRight = MidPoint.compute_block_midPoint(RightBlocks,
@@ -330,11 +376,13 @@ public class RotateImg {
 		 * stores the coordinates of mid point of the blocks in left & right
 		 * side of the sheet(last 13 blocks)
 		 */
+        System.out.println("3");
         ArrayList<MidPoint> ansDetail_mpLeft = MidPoint.compute_block_midPoint(leftBlocks,
                 11, leftBlocks.size() - 1, ip); // other sheets
         ArrayList<MidPoint> ansDetail_mpRight = MidPoint.compute_block_midPoint(RightBlocks,
                 11, RightBlocks.size() - 1, ip); // other sheets
 
+        System.out.println("3");
         ip.erode();
         ip.erode();
 
@@ -342,18 +390,18 @@ public class RotateImg {
         //ip.dilate();
         RotateImg.infoFlag=true;
 
-        // This function returns the rno
+        // This function returns the roll no of the candidate
         
         rno= CirclePosition.getCandidateInfo(ip, studentDetail_mpLeft,
                 studentDetail_mpRight, (double)xyRtAvg[0], (double)xyLeftAvg[0],
                 (int) (ip.getWidth() * 7) / 100,
                 (int) (ip.getWidth() * 93) / 100, imgPath, testid);
-        
+        System.out.println("rno: " + rno);
         attemptAns = CirclePosition.getAns(ip, ansDetail_mpLeft,
                 ansDetail_mpRight, xyRtAvg[0], xyLeftAvg[0],
                 (int) (ip.getWidth() * 7) / 100,
                 (int) (ip.getWidth() * 94) / 100, noOfQues);
-        //System.out.println("size of attempt" + attemptAns.length);
+        System.out.println("size of attempt" + attemptAns.length);
         Response.insert_response(attemptAns, testid,
                 Integer.parseInt(rno), noOfQues, imgPath);
         //System.out.println("calling evaluate");
@@ -373,25 +421,18 @@ public class RotateImg {
 		  e) { System.out.println("Exception : " + e); }*/
 		 
           implus.flush();
-        
-                    // this function insert the responses in the database
-                                     /*
-										 * //this function evaluates the
-										 * responses and compute the total marks
-										 * EvaluateAns(str,
-										 * Integer.parseInt(rno)); } else { //
-										 * if there is error in the rno no,
-										 * filename & description is inserted in
-										 * the log table File filePath = new
-										 * File(str);
-										 * LogEntry.insert_Log(filePath.getName(),
-										 * "error in rno no."); }
-										 */
-       
-  
-       
-       
+             
     }
+    
+  /**
+   * This method computes the number of correct attempts, wrong attempts and unattempted 
+   * questions and insert this information into the database
+   * @param rno
+   * @param testid
+   * @param noOfQues
+   * @param fileName
+   */  
+    
     private void evaluateSheet(int rno, int testid, int noOfQues, String fileName){
     	int[] correctAttempt=new int[5];
     	int[] wrongAttempt=new int[5];
@@ -405,9 +446,9 @@ public class RotateImg {
     	ResultSet correctAttRs=null;
     	ResultSet wrongAttRs = null;
     	ResultSet sectionDetailRs=null;
-    	
+    	Connection con =null;
     	  try {
-              Connection con = Connect.prepareConnection();
+               con = Connect.prepareConnection();
               con.setAutoCommit(false);
              // System.out.println("inside eva");
               
@@ -480,9 +521,11 @@ public class RotateImg {
                  // sectionNumber++;
    }
  con.commit();                 
- con.close();
           } catch (Exception e) {
              System.out.println("error while insert in attempt rotate img" + e);
+          }
+          finally{
+        	  Connect.freeConnection(con);
           }
 
     }
@@ -534,101 +577,14 @@ public class RotateImg {
         */
     }
 
-    /*
-	 * void evaluateAns(String Filepath) { int correct_attempt = 0;
-	 * 
-	 * int unattempted = 0; int testNo; int total_marks = 0; int wrong = 0;
-	 * 
-	 * File filename = new File(Filepath); // to get the file name
-	 * 
-	 * try { total_marks = 0;
-	 * 
-	 * correct_attempt = 0; unattempted = 0; wrong = 0; Connection con1 =
-	 * Connect.prepareConnection(); PreparedStatement ps1 =
-	 * con1.prepareStatement( "select distinct(TestNo) from Response where
-	 * Filename=?"); ps1.setString(1, "Scan10067.BMP"); ResultSet rs1 =
-	 * ps1.executeQuery(); System.out.println("se 1 : "); while(rs1.next()){
-	 * testNo = Integer.parseInt(rs1.getString(1)); System.out.println("testNo : " +
-	 * testNo); for (int i = 1; i < noOfQues; i++) { Connection con =
-	 * Connect.prepareConnection(); PreparedStatement ps = con.prepareStatement(
-	 * "select ans from correctAns where ques_no=?"); ps.setInt(1, i);
-	 * 
-	 * 
-	 * ResultSet rs = ps.executeQuery();
-	 * 
-	 * PreparedStatement ps2 = con.prepareStatement( "select ans from Response
-	 * where ques_no=? AND TestNo = ?"); ps2.setInt(1, i); ps2.setInt(2,
-	 * testNo);
-	 * 
-	 * 
-	 * ResultSet rs2 = ps2.executeQuery();
-	 * 
-	 * if (rs.next() && rs2.next()) { if (rs.getInt(1) == rs2.getInt(1)) {
-	 * correct_attempt++; System.out.println("correct ans : " + i + " option : "+
-	 * rs2.getInt(1)); } else { wrong++; System.out.println("wrong : " + i + "
-	 * option : "+ rs2.getInt(1)); } } else { System.out.println("unattempted : " +
-	 * i); unattempted++; } }
-	 * 
-	 * sec1_marks = correct_attempt*4-wrong; total_marks = total_marks +
-	 * sec1_marks; System.out.println("sec1 marks :" + sec1_marks);
-	 * System.out.println("wtrong attempts :" + wrong);
-	 * System.out.println("correct attempts : " + correct_attempt);
-	 * correct_attempt = 0; unattempted = 0; wrong = 0;
-	 * 
-	 * System.out.println("sec 2 ");
-	 *  // compute correct attempts in second section for (int i = 1; i <
-	 * noOfQues; i++) { Connection con = Connect.prepareConnection();
-	 * PreparedStatement ps = con.prepareStatement( "select ans from correctAns
-	 * where ques_no=?"); ps.setInt(1, i);
-	 * 
-	 * 
-	 * ResultSet rs = ps.executeQuery();
-	 * 
-	 * PreparedStatement ps2 = con.prepareStatement( "select ans from Response
-	 * where ques_no=? AND TestNo=? AND sec=?"); ps2.setInt(1, i); ps2.setInt(2,
-	 * testNo);
-	 * 
-	 * ResultSet rs2 = ps2.executeQuery();
-	 * 
-	 * if (rs.next() && rs2.next()) { if (rs.getInt(1) == rs2.getInt(1)) {
-	 * 
-	 * System.out.println("correct" + i + " option : "+ rs2.getInt(1));
-	 * correct_attempt++; } else { System.out.println("wrong : " + i + " option : "+
-	 * rs2.getInt(1));
-	 * 
-	 * wrong++; } } else { System.out.println("unattempt : " + i);
-	 * unattempted++; } }
-	 * 
-	 * System.out.println("In sec section:"); sec2_marks =
-	 * correct_attempt*4-wrong; total_marks = total_marks + sec2_marks;
-	 * System.out.println("sec2 marks :" + sec2_marks);
-	 * System.out.println("wtrong attempts :" + wrong);
-	 * System.out.println("correct attempts : " + correct_attempt); /*
-	 * Connection con = Connect.prepareConnection();
-	 * 
-	 * //inserts rno details in the database PreparedStatement ps =
-	 * con.prepareStatement( "insert into marksinfo(TestNo, sec1, sec2, total,
-	 * FileName) values (?,?,?,?,?)"); ps.setInt(1, testNo); ps.setInt(2,
-	 * sec1_marks); ps.setInt(3, sec2_marks);
-	 * 
-	 * ps.setInt(4, total_marks); ps.setString(5, filename.getName());
-	 * 
-	 * int i = ps.executeUpdate(); System.out.println("row inserted: " + i);
-	 * 
-	 * sec1_marks = 0; sec2_marks = 0; wrong =0; correct_attempt=0; } }
-	 * 
-	 * 
-	 * catch (Exception e) { System.out.println("error in evaluate : " +
-	 * e.getMessage()); e.printStackTrace(); } }
-	 */
-
+    
     // ------------------------------process base
 	// sheet-------------------------------------------------------------//
     /**
 	 * 
 	 * @param str
 	 * @throws IOException
-	 *             This function process base sheet to be executed only once
+	 *             This method process base sheet to be executed only once
 	 */
     public void processBaseSheet(String str) throws IOException {
         implus = new ImagePlus(str);
