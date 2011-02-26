@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpSession;
+//import javax.servlet.http.HttpSession;
 import org.smvdu.payroll.beans.db.CommonDB;
 import org.smvdu.payroll.beans.db.OrgProfileDB;
 import org.smvdu.payroll.beans.db.UserDB;
@@ -231,8 +231,9 @@ public class UserInfo implements Serializable{
     }
     public String logout()   {
         ExternalContext ectx = FacesContext.getCurrentInstance().getExternalContext();
-        HttpSession session = (HttpSession)ectx.getSession(false);
-        session.invalidate();
+  //      HttpSession session = (HttpSession)ectx.getSession(false);
+    //    session.invalidate();
+    	ectx.invalidateSession();
         return "Logout.jsf";
     }
     public void set() {

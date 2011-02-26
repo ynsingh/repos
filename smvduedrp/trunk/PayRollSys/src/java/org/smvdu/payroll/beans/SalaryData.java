@@ -6,11 +6,11 @@
 package org.smvdu.payroll.beans;
 
 import java.util.ArrayList;
-import java.util.List;
-import javax.faces.application.Application;
-import javax.faces.component.html.HtmlInputText;
+//import java.util.List;
+//import javax.faces.application.Application;
+//import javax.faces.component.html.HtmlInputText;
 import javax.faces.component.html.HtmlPanelGrid;
-import javax.faces.context.FacesContext;
+//import javax.faces.context.FacesContext;
 import javax.faces.event.AbortProcessingException;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.event.ValueChangeListener;
@@ -90,7 +90,7 @@ public class SalaryData extends SalaryHead implements ValueChangeListener{
 
     public void print()
     {
-        Application app = FacesContext.getCurrentInstance().getApplication();
+  /*      Application app = FacesContext.getCurrentInstance().getApplication();
         List list = grid.getChildren();
         for(int i=0;i<list.size();i++)
         {
@@ -105,7 +105,7 @@ public class SalaryData extends SalaryHead implements ValueChangeListener{
 
             }
         }
-        
+    */    
     }
     public void setAllData(ArrayList<SalaryData> allData) {
         this.allData = allData;
