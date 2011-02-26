@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)InstituteUserManagement_RemoveUser.java	
  *
- *  Copyright (c) 2009-2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2009-2010,2011 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -36,6 +36,8 @@ package org.iitk.brihaspati.modules.actions;
  * @author  <a href="singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author  <a href="sharad23nov@yahoo.com">Sharad Singh</a>
  * @author  <a href="shikhashuklaa@gmail.com">Shikha Shukla</a>
+ * @author  <a href="tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modifydate: 26-02-2011 
  */
 
 import java.util.Vector;
@@ -59,6 +61,8 @@ import org.iitk.brihaspati.modules.utils.MailNotification;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.om.StudentExpiryPeer;
+import org.iitk.brihaspati.om.StudentExpiry;
 
 public class InstituteUserManagement_RemoveUser extends SecureAction_Institute_Admin{
 	/**
@@ -311,7 +315,6 @@ public class InstituteUserManagement_RemoveUser extends SecureAction_Institute_A
 		
 			String userList=pp.getString("deleteFileNames","");
 			String user_role=pp.getString("role");
-			ErrorDumpUtil.ErrorLog("ulst in rmvusermethod at line 307=="+userList+"\nrole=="+user_role);
 			context.put("role",user_role);
 			StringTokenizer st=new StringTokenizer(userList,"^");
 
@@ -365,11 +368,16 @@ public class InstituteUserManagement_RemoveUser extends SecureAction_Institute_A
                         	        	email=element.getEmail();
 						/**
 						 * Delete all student one by one
-					 */
-                                        
-                                             
-                                              
+						 */
 						message=umt.removeUserProfileWithMail(postString,preString,LangFile,subject,email,instName,"","","",fileName,server_name,srvrPort);
+						/**
+                                                * Delete Student from Student table
+                                                * With Expiry Date
+                                                * Add by @Tej
+                                                */
+						Criteria crit=new Criteria();
+                                                crit.add(StudentExpiryPeer.UID,uid);
+                                                StudentExpiryPeer.doDelete(crit);
 						msg = message.split(":");
 			                	data.setMessage(msg[0]);
 	                                        CuDetail.setErr_User(postString);

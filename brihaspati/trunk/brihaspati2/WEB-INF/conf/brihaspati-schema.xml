@@ -423,4 +423,16 @@
 		<unique-column name="INSTITUTE_ID"/>
 	</unique>
 </table>
+
+<table name="STUDENT_EXPIRY" idMethod="idbroker">
+	<column name="ID" required="true" primaryKey="true" type="INTEGER" autoIncrement="true"/>
+        <column name="UID" required="true" type="INTEGER"/>
+        <column name="EMAIL" required="true" type="VARCHAR" size="255"/>
+        <column name="CID" required="true" type="VARCHAR" size="255"/>
+        <column name="ROLL_NO" required="true" type="VARCHAR" size="255"/>
+        <column name="EXPIRY_DAYS" required="true" type="INTEGER"/>
+        <column name="EXPIRY_DATE" required="true" type="TIMESTAMP"/>
+        <column name="STATUS" required="true" type="VARCHAR" size="255" default="ENABLE"/>
+</table>
+
 </database>

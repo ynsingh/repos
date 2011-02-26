@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.screens.call.AdminProfile;
 
 /*
  * @(#)InstituteProfile.java	
- *  Copyright (c) 2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2010, 2011 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -41,6 +41,8 @@ import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 
 /**
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a> 
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a> 
+ * @modified date: 22-02-2011 (Tej)
  */
 
 /**
@@ -85,6 +87,12 @@ public class InstituteProfile extends SecureScreen{
 		 context.put("hdir",hdir);
                  String FaqExp = AdminProperties.getValue(path,"brihaspati.admin.FaqExpiry");
                  context.put("FaqExp",new Integer(FaqExp));
+		/**
+		* Get user's course's expiry date
+		* Add by @Tej
+		*/
+		String expdays = AdminProperties.getValue(path,"brihaspati.user.expdays.value");
+		context.put("expdays",expdays);
 		}
 		catch(Exception e) {	
 			data.addMessage(MultilingualUtil.ConvertedString("adm_msg1",LangFile)); 

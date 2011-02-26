@@ -38,6 +38,7 @@ import java.util.List;
 import java.sql.Date;
 import java.util.StringTokenizer;
 import java.io.File;
+import org.apache.turbine.util.RunData;
 
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.services.servlet.TurbineServlet;
@@ -57,6 +58,10 @@ import org.iitk.brihaspati.om.TaskPeer;
 import org.iitk.brihaspati.om.Courses;
 import org.iitk.brihaspati.om.CoursesPeer;
 import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
+import org.iitk.brihaspati.om.StudentExpiryPeer;
+import org.iitk.brihaspati.om.StudentExpiry;
+import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+import org.apache.turbine.util.RunData;
 
 /**
  * This class gets current date from system, expiry date,data expired from database 
@@ -66,6 +71,8 @@ import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
  * @author <a href=awadhesh_trivedi@yahoo.co.in>Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modified date: 26-02-2011
  */
 
 public class ExpiryUtil{
@@ -358,8 +365,13 @@ public class ExpiryUtil{
 	{
 		boolean success=false;
 		try{
-				//here add survey and remote course
-			String str[]={"CalInfo","DisBoard","News","Notices","Task","Institutedel"};
+		        /**
+			* here add survey and remote course
+			* add StudentCrsDisable as string in array for update table 
+			* add StudentDel as string in array for delete table 
+			* Added by @Tej
+			*/
+			String str[]={"CalInfo","DisBoard","News","Notices","Task","Institutedel","StudentCrsDisable","StudentDel"};
 			Criteria crit=new Criteria();
 			String current_date=getCurrentDate("-");
 			List v=null;
@@ -434,8 +446,70 @@ public class ExpiryUtil{
 					crit.add(InstituteAdminRegistrationPeer.EXPIRY_DATE,(Object)current_date,crit.LESS_EQUAL);
 					InstituteAdminRegistrationPeer.doDelete(crit);
 				}
-			}
-	 
+				/**
+				* update status field in table
+				* Added by @Tej
+				*/ 
+				else if(str[i].equals("StudentCrsDisable"))
+                                {
+					crit=new Criteria();
+                                        crit.addAscendingOrderByColumn(StudentExpiryPeer.ID);
+                                        v=StudentExpiryPeer.doSelect(crit);
+                                        String stat="DISABLE";
+                                        String cdate=getCurrentDate("");
+                                        int currdate=Integer.parseInt(cdate);
+                                        for(int j=0;j<v.size();j++)
+                                        {
+                                                StudentExpiry element=(StudentExpiry)v.get(j);
+                                                int id1=element.getId();
+                                                String information="UPDATE STUDENT_EXPIRY SET STATUS='"+stat+"' WHERE EXPIRY_DATE <="+currdate;
+                                                StudentExpiryPeer.executeStatement(information);
+
+                                        }
+
+                                }
+				/**
+ 				* delete record from table
+ 				* when student course expired 
+ 				* Added by @Tej
+ 				*/
+				else if(str[i].equals("StudentDel"))
+				{
+					boolean flag=false;
+        	                        //String LangFile=(String)data.getUser().getTemp("LangFile");
+					crit= new Criteria();
+                                	crit.addGroupByColumn(StudentExpiryPeer.ID);
+                                	List lst=StudentExpiryPeer.doSelect(crit);
+                                	for(int p=0;p<lst.size();p++) 
+					{
+                                        	StudentExpiry element=(StudentExpiry)lst.get(p);
+                                        	int usrid = element.getUid();
+                                        	String stat = element.getStatus();
+                                        	crit= new Criteria();
+                                        	crit.add(StudentExpiryPeer.UID,usrid);
+                                        	List lst1=StudentExpiryPeer.doSelect(crit);
+                                        	crit.add(StudentExpiryPeer.UID,usrid);
+                                        	crit.add(StudentExpiryPeer.STATUS,"DISABLE");
+                                        	List lst2=StudentExpiryPeer.doSelect(crit);
+                                                for(int k=0;k<lst2.size();k++)
+						{
+                                                        StudentExpiry element1=(StudentExpiry)lst2.get(k);
+                                                        String usrname=element1.getEmail();
+                                                	if(lst1.size()==lst2.size())
+							{
+                                                       		flag=true;
+                                                	}
+                                                	if(flag)
+							{
+                                                 		Vector msg1=UserManagement.RemoveUser(usrname,"");
+                                                         	crit=new Criteria();
+                                                         	crit.add(StudentExpiryPeer.UID,usrid);
+                                                         	StudentExpiryPeer.doDelete(crit);
+                                                	}
+						}
+					}
+	 			}
+	 		}
 			success=true;
 		}
 		catch(Exception ex)

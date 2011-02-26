@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call;
 /*
  * @(#)IndexHome.java	
  *
- *  Copyright (c) 2004-2006, 2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2004-2006, 2010, 2011 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -54,8 +54,8 @@ import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.CourseUtil;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
-import org.iitk.brihaspati.modules.utils.CommonUtility;//
-import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;//
+import org.iitk.brihaspati.modules.utils.CommonUtility;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.StudentInstructorMAP;
 import org.iitk.brihaspati.modules.utils.NoticeUnreadMsg;
 import org.iitk.brihaspati.om.UserConfigurationPeer;
@@ -63,14 +63,19 @@ import org.iitk.brihaspati.om.UserConfiguration;
 import org.iitk.brihaspati.om.CalInformationPeer;
 import org.iitk.brihaspati.om.CalInformation;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
-
+import org.iitk.brihaspati.om.StudentExpiryPeer;
+import org.iitk.brihaspati.om.StudentExpiry;
+import org.apache.turbine.services.security.torque.om.TurbineUser;
+import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
+import java.util.List;
 
 /**
  * @author <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kuamr Trivedi</a>
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kuamr Singh</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
- * @ modified date: 26-07-2010, 06-08-2010, 09-11-2010
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modified date: 26-07-2010, 06-08-2010, 09-11-2010, 22-02-2011
  */
 
 /* This screen class is called when User's selects a home location as instructor/
@@ -108,6 +113,7 @@ public class IndexHome extends SecureScreen{
                         context.put("lastname",lname);
 			
 			int u_id=UserUtil.getUID(username);
+			
 			String id=Integer.toString(u_id);
 			/**
                         * Get the current date
@@ -146,7 +152,6 @@ public class IndexHome extends SecureScreen{
 			if(Role.equals(""))
 				Role=(String)user.getTemp("role");
 			context.put("user_role",Role);
-
 			/**
 			 * Getting configuration Parameter 
 			 * if configuration parameter is not empty set it to display
@@ -199,8 +204,12 @@ public class IndexHome extends SecureScreen{
                         else if(Role.equals("student"))
 			{
 				Vector course_stud=StudentInstructorMAP.getSMAP(u_id);
-				ErrorDumpUtil.ErrorLog("course_stud"+course_stud);
                         	context.put("stud",course_stud);
+				// Get list from table, add by @Tej
+				crit=new Criteria(); 
+				crit.add(StudentExpiryPeer.UID,u_id);
+				List stud_list=StudentExpiryPeer.doSelect(crit);
+				context.put("stdlist",stud_list);
 				// getting Unread Notices
 				unread_stud=NoticeUnreadMsg.getUnreadNotice(u_id,3,"All");
 				context.put("unread_msg",unread_stud);
