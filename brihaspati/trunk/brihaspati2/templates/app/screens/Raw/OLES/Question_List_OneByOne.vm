@@ -1,0 +1,124 @@
+#*
+ * @#Question_List_OneByOne.vm
+ * Copyright (c) 2010 MHRD, DEI Agra.
+ * All Rights Reserved.
+ * @author <a href="mailto:aayushi.sr@gmail.com">Aayushi</a>
+ * @author <a href="mailto:noopur.here@gmail.com">Nupur Dixit</a>
+ * Contributors: Members of MHRD, DEI Agra.
+*#
+$page.setTitle("Question List")
+$page.setBgColor("bgcolor")
+## If some message has been set, that is retrieved and displayed.
+$!data.getMessage()
+## Retreiving the $lang (representing the choosen language for display, which
+## was set in corresponding the screen class.
+#set($lang = $data.getUser().getTemp("lang" ).toString())
+
+<table bgcolor="$ui.menuColor" width=100%>
+	<tr><td><b>
+		<font face="$ui.sansSerifFonts">
+		<a href=$link.setPage("Index.vm")>$brih_home</a>|
+		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
+		<a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1")>$brih_generate $brih_exam</a> |
+		<a href=$link.setPage("call,OLES,Create_Quiz.vm").addPathInfo("count","2")>$brih_quiz $brih_creation</a> |
+		$brih_onebyone
+	</b></td></tr>
+</table>
+
+## Creating the links for help regarding FAQ 
+<table width="100%">
+	<tr>
+		<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin");>$brih_help</a></td>
+	</tr>
+</table>
+<form name="frm" method="post" enctype="multipart/form-data" action=$link.setPage("call,OLES,OneByOne_Quiz.vm").setAction("OLES_Quiz")>
+<table width="100%" bgcolor="$ui.tableColor">
+	<tr align="center">
+		<td></td>
+		<td><b>$brih_qus</b></td>
+		<td><b>$brih_answer</b></td>
+		#if($typeName=="mcq")
+			<td></td>		
+			<td align="right"><b>$brih_option</b></td>		
+		#end
+	</tr>
+	#foreach($question in $questionVector)
+		<tr bgcolor="$ui.menuColor" width="100%" align="center">
+			#if($typeName=="mcq")
+				#if($mode=="update" && $question.getQuestionID()==$selectedQuestionID)
+					<td><input type="radio" name="g" value="$question.getQuestionID(),$question.getQuestion(),$question.getAnswer(),$question.getOption1(),$question.getOption2(),$question.getOption3(),$question.getOption4()" checked/>
+				#else
+					<td><input type="radio" name="g" value="$question.getQuestionID(),$question.getQuestion(),$question.getAnswer(),$question.getOption1(),$question.getOption2(),$question.getOption3(),$question.getOption4()"/>
+				#end
+			#else
+				#if($mode=="update" && $question.getQuestionID()==$selectedQuestionID)
+					<td><input type="radio" name="g" value="$question.getQuestionID(),$question.getQuestion(),$question.getAnswer()" checked/>
+				#else
+					<td><input type="radio" name="g" value="$question.getQuestionID(),$question.getQuestion(),$question.getAnswer()"/>
+				#end
+			#end
+			<td>$question.getQuestion()</td>
+			<td>$question.getAnswer()</td>
+			#if($typeName=="mcq")
+				<td><b>A: </b>$question.getOption1()</td>
+				<td><b>B: </b>$question.getOption2()</td>
+				<td><b>C: </b>$question.getOption3()</td>
+				<td><b>D: </b>$question.getOption4()</td>
+			#end
+		</tr>		
+	#end
+</table>
+<table width="100%" bgcolor="$ui.tableColor">
+	<tr>
+		<td align="left" width="100%" colspan="5">
+			<input type="button" name="eventSubmit_addQuestion" value="$brih_add $brih_qus" onClick="checkValue(document.frm,this);"/>
+			<input type="reset" name="reset" value="$brih_reset" onClick="checkClear(document.frm,this);"/>
+		</td>
+	</tr>
+</table>
+
+<input type="hidden" name="mode" value=$mode >
+<input type="hidden" name="count" value="$count">
+<input type="hidden" name="quizName" value="$quizName">
+<input type="hidden" name="topicName" value="$topicName">
+<input type="hidden" name="typeName" value="$typeName">
+<input type="hidden" name="levelName" value="$levelName">
+<input type="hidden" name="quizMode" value="$quizMode">
+<input type="hidden" name="actionName" value="">
+<input type="hidden" name="quizSetting" value="$quizSetting">
+<input type="hidden" name="quizDetail" value="$quizDetail">
+<input type="hidden" name="qName" value="$qName">
+</form>
+<script LANGUAGE="JAVASCRIPT">	
+	function popupWin(url,popupName){
+    		Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=200,width=300,align=center");
+   	}
+   	
+	function checkValue(frm,field){
+		var checked = false;
+		if(frm.g.length==undefined){
+			frm.g.length=1;
+		}
+		for (var i=0; i<frm.g.length; i++){ 
+			if(frm.g.length==1){
+				if(frm.g.checked){
+					checked=true;
+					frm.actionName.value=field.name;
+					frm.submit();
+     					break; 
+				}			
+			}
+			else{
+   				if (frm.g[i].checked){ 
+     					checked = true;
+					frm.actionName.value=field.name;
+					frm.submit();
+     					break; 
+    				} 
+			}
+   		}
+   		if(!checked)
+     			alert("you have to select a question"); 
+		return checked ;
+	} 	
+</script>

@@ -1,0 +1,205 @@
+#*
+ * @#Stored_Preview.vm
+ * Copyright (c) 2010 DEI Agra.
+ * All Rights Reserved.
+ * @author <a href="mailto:noopur.here@gmail.com ">Nupur Dixit</a>
+ * Contributors: Members of MHRD Project DEI Agra
+*#
+
+$page.setTitle("Quiz Preview")
+$page.setBgColor("bgcolor")
+
+## If some message has been set, that is retrieved and displayed.
+## Retreiving the $lang (representing the choosen language for display, which was set in corresponding the screen class.
+
+#set($lang = $data.getUser().getTemp("lang").toString())
+## Creating the links for help regarding FAQ 
+<table width="100%">
+	<tr>
+		<td align=right><img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin");>$brih_help</a></td>
+	</tr>
+</table>
+
+<table bgcolor="$ui.menuColor" width=100%>
+	<tr><td><b>
+		<font face="$ui.sansSerifFonts">
+		<a href=$link.setPage("Index.vm")>$brih_home</a>|
+		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
+		<a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1")>$brih_generate $brih_exam</a> |
+		<a href=$link.setPage("call,OLES,Preview_Quiz.vm").addPathInfo("count","4")>$brih_preview</a> | 
+		$!quizName
+	</b></td></tr>
+</table>
+
+#set($cnm = $data.getUser().getTemp("course_name" ).toString())
+<form name="frm" method="post"  enctype="multipart/form-data" action=$link.setPage("call,OLES,Preview_Quiz.vm")>
+
+<div align="left">
+<table align=center bgcolor="$ui.tableColor" border=0 cellpadding="5" width=100% >
+    <tr>
+    	<td align=center colspan=2 >
+    		<font size=4><b>$brih_quiz $brih_name : $quizName </b></font>
+        </td>
+    </tr>
+</table>
+<div style="border:1px solid black;">
+	<table align=center bgcolor="$ui.tableColor" cellpadding="5" width=100% >
+		<tr bgcolor="$ui.menuColor" font face="$ui.sansSerifFonts">
+			<td align=left width=20% >
+				<font color="$ui.fontColorBlue"><b> $brih_max $brih_qus 
+			</td>
+			<td align=left width=5% >
+				<input type="text" name="maxQuestion" value="$noQuestions" readonly style="width:30px" >
+			</td>
+			<td align=left width=25% >
+				<font color="$ui.fontColorBlue"><b>$brih_max $brih_marks
+			</td>
+			<td align=left width=5% >
+				<input type="text" name="maxMarks" value="$maxMarks" readonly style="width:30px">
+			</td>
+			<td align=left width=25%>
+				<font color="$ui.fontColorBlue"><b>$brih_max $brih_time		
+			</td>
+			<td align=left width=5%>
+				<input type="text" name="maxTime" value="$maxTime" readonly style="width:30px">
+			</td>
+		</tr>
+		<tr border="1" bgcolor="$ui.tableColor" font face="$ui.sansSerifFonts">
+			<td align=left width=20% > 
+				<font color="$ui.fontColorBlue"><b>$brih_entered $brih_qus
+			</td>
+			<td align=left width=5% >
+				<input type="text" name="enteredQuestion" value="$enteredQuestion" readonly style="width:30px">
+			</td>
+			<td align=left width=25%>
+				<font color="$ui.fontColorBlue"><b> $brih_entered $brih_marks
+			</td>
+			<td align=left width=5%>
+				<input type="text" name="marks" value="$marks" readonly style="width:30px">
+			</td>
+			<td colspan="2" >
+			</td>				
+		</tr>
+	</table>
+</div>
+
+#foreach($finalQ in $finalq)
+	#if($velocityCount%2==0)
+		<table align=center bgcolor="$ui.menuColor" cellpadding="3" width=100% >
+	#else
+		<table align=center bgcolor="$ui.tableColor" cellpadding="3" width=100%>
+	#end
+	<tr>
+		<td align=left colspan=2 width=30%>
+			<font size=4> <b>$brih_qus </b></font>
+		</td>
+		<td>
+			$!finalQ.getQuestion()
+		</td>
+		<td>
+			$!finalQ.getMarksPerQuestion()
+		</td>
+	</tr>
+	<tr>
+		<td align=left colspan=2 width=30% >
+		        <font size=4> <b>  $brih_answer    </b></font>
+	        </td>
+	        <td>
+			<table align=center border=0 cellpadding="5" width=100% >	
+				#set($a="")
+				#set($b="")
+				#set($c="")
+				#set($d="")			
+				#if($finalQ.getQuestionType() == "mcq")
+					#if($finalQ.getAnswer()=="$brih_a")
+						#set($a="checked")
+					#elseif($finalQ.getAnswer()=="$brih_b")
+						#set($b="checked")
+					#elseif($finalQ.getAnswer()=="$brih_c")
+						#set($c="checked")
+					#else
+						#set($d="checked")
+					#end
+	                	<tr> 
+		      			<td align=left colspan=2 > <b> $brih_a </b>
+						<INPUT TYPE="CHECKBOX" NAME="A" VALUE = "" $a disabled>
+						$!finalQ.getOption1()	
+        	      	        	</td>
+					<td align=left colspan=2 ><b> $brih_b </b>
+						<INPUT TYPE="CHECKBOX" NAME="B" VALUE = "" $b disabled>
+						$!finalQ.getOption2()
+					</td>
+				</tr>
+				<tr>					
+					<td align=left colspan=2 > <b> $brih_c </b>
+                       				<INPUT TYPE="CHECKBOX" NAME="C" VALUE ="" $c disabled>
+                        	            	$!finalQ.getOption3()
+                        		</td>
+                    			<td align=left colspan=2> <b> $brih_d </b>
+                   				<INPUT TYPE="CHECKBOX" NAME="D" VALUE ="" $d disabled>  
+						$!finalQ.getOption4()
+                        		</td>
+				</tr>
+				#end
+				#if($finalQ.getQuestionType() == "tft")
+				<tr>	
+					<td align=left colspan=2>
+						<input type="RADIO" name="field1"  value="A"  disabled>									
+						$brih_true	
+					</td>
+					<td align=left colspan=2 >
+						<input type="RADIO" name="field1" value="B"  disabled>							
+						$brih_false
+					</td>	
+				</tr>
+				#end			
+			</table>
+		</td>					
+	</tr>
+	#if($finalQ.getQuestionType()=="sat"||$finalQ.getQuestionType()=="lat")
+		<tr>
+			<td align=left colspan=2 width=30%>
+		            <font size=4> <b> $brih_correct  $brih_answer </b></font>
+		        </td>
+			<td align=left colspan=2>
+				<textarea name="message" wrap="physical" rows=2 cols=40 "readonly" > $!finalQ.getAnswer() </textarea>
+			</td>
+		</tr>	
+	#else
+		<tr>
+			<td align=left colspan=2 width=30%>
+        		        <font size=4> <b>$brih_correct  $brih_answer </b></font>
+        		</td>
+            		<td>
+		                $!finalQ.getAnswer()
+		        </td>
+		</tr>
+	#end
+	<hr style="height:1px;border-width:0;color:black;background-color:black" />				               
+#end 	
+</table>		
+</div>			
+<div style="border:1px solid black;">
+	<table align=center bgcolor="$ui.tableColor" cellpadding="5" width=100% >
+		<tr>
+			<td align=center>	
+				<input type="button" name="" value="$brih_back" onClick="checkValue(document.frm,this);">	
+			</td>
+		</tr>
+	</table>
+</div>	
+
+<input type="hidden" name="actionName" value="">		
+<input type="hidden" name="finalQuestion" value="$finalq">	
+<input type="hidden" name="quizID" value="$quizID">	
+<input type="hidden" name="count" value="$tdcolor">	
+<input type="hidden" name="quizDetail" value="$quizDetail">	
+<input type="hidden" name="quizName" value="$quizName">	
+</form>
+<SCRIPT LANGUAGE="javascript">	
+
+	function checkValue(frm,field){								
+		frm.submit();		
+	}	
+
+</script>
