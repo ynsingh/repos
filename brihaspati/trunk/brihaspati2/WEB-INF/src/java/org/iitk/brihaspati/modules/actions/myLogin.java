@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)myLogin.java	
  *
- *  Copyright (c) 2004-2008,2009 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2004-2008,2009,2011 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -58,6 +58,8 @@ import org.apache.commons.logging.LogFactory;
 
 import org.iitk.brihaspati.om.TurbineUserPeer;
 import org.iitk.brihaspati.om.TurbineUser;
+import org.iitk.brihaspati.om.StudentExpiryPeer;
+import org.iitk.brihaspati.om.StudentExpiry;
 import org.iitk.brihaspati.om.UsageDetailsPeer;
 import org.iitk.brihaspati.om.UserConfigurationPeer;
 import org.iitk.brihaspati.modules.utils.UserUtil;
@@ -66,6 +68,7 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
 import org.iitk.brihaspati.modules.utils.EncryptionUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.apache.turbine.services.session.TurbineSession;
 import org.apache.turbine.services.session.TurbineSessionService;
 import javax.servlet.http.HttpSession ;
@@ -82,10 +85,11 @@ import java.util.Vector;
  * NOTE :- Use 'Turbine.getConfiguration().getString(String str)' instead of
  * 'TurbineResources.getString(String str)'.This is deprecated in TDK2.3.
  *
- * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
+ *  @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
  *  @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kuamr Trivedi</a>
  *  @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  *  @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ *  @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  */
 
 public class myLogin extends VelocityAction{
@@ -113,7 +117,57 @@ public class myLogin extends VelocityAction{
 		String username = data.getParameters().getString("username", "" );
 		if(StringUtil.checkString(username) != -1) username="";
 		String password = data.getParameters().getString("password", "" );
-		User user=null;		
+		User user=null;
+		/**
+ 		*Insert record in table with status
+		*if user already exist in other table
+		*/
+ 		try{
+			boolean flag1=false;
+                        int []in={0,1};
+                        crit = new Criteria();
+                        crit.addGroupByColumn(TurbineUserPeer.USER_ID);
+                        crit.addNotIn(TurbineUserPeer.USER_ID,in);
+                        List lst1 =TurbineUserPeer.doSelect(crit);
+			String c_date=ExpiryUtil.getCurrentDate("-");
+                        String E_date=ExpiryUtil.getExpired(c_date,180);
+                        Date expdate=java.sql.Date.valueOf(E_date);
+			if(lst1.size()!=0)
+			{
+                        	for(int p=0;p<lst1.size();p++)
+                       	 	{
+                                	TurbineUser element=(TurbineUser)lst1.get(p);
+                                	int user_id1 = element.getUserId();
+                                	crit = new Criteria();
+                                	crit.addGroupByColumn(StudentExpiryPeer.UID);
+                                	List lst2 = StudentExpiryPeer.doSelect(crit);
+                                	for(int a=0; a<lst2.size();a++)
+                                	{
+                                        	StudentExpiry element1=(StudentExpiry)lst2.get(a);
+                                        	int user_id2=element1.getUid();
+                                        	if((Integer.toString(user_id1)).equals(Integer.toString(user_id2)))
+                                        	{
+                                                	flag1=true;
+                                        	}
+				
+					}
+                                	if(!flag1)
+                                	{
+                                		crit=new Criteria();
+                                        	crit.add(StudentExpiryPeer.UID,user_id1);
+                                        	crit.add(StudentExpiryPeer.EMAIL,"");
+                                        	crit.add(StudentExpiryPeer.CID,"");
+                                        	crit.add(StudentExpiryPeer.ROLL_NO,"");
+                                        	crit.add(StudentExpiryPeer.EXPIRY_DAYS,180);
+                                        	crit.add(StudentExpiryPeer.EXPIRY_DATE,expdate);
+                                        	crit.add(StudentExpiryPeer.STATUS,"ENABLE");
+                                        	StudentExpiryPeer.doInsert(crit);
+					}
+				}
+			}
+		}
+	        catch(Exception e){data.setMessage("exception is ! "+e);}
+
 			/** 
 			  *  Get the session if exist then remove and create new session
 			**/

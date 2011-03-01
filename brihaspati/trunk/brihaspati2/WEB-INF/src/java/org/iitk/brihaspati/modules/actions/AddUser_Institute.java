@@ -148,7 +148,6 @@ public class AddUser_Institute extends SecureAction_Institute_Admin
                         String c_date=ExpiryUtil.getCurrentDate("-");
                         String E_date=ExpiryUtil.getExpired(c_date,exp1);
                         Date expdate=Date.valueOf(E_date);
-			String expdate1 = expdate.toString();
 		/**
                  * Passing the value of file from temporary variable
                  * According to selection of Language.

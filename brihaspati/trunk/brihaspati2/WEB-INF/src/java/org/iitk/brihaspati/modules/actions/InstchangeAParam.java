@@ -49,6 +49,7 @@ import org.apache.turbine.services.security.TurbineSecurity;
 /**
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  */
 
 //public class InstchangeAParam extends SecureAction_Admin{
@@ -102,6 +103,8 @@ public class InstchangeAParam extends SecureAction{
 		String AdminFaqExp=pp.getString("AdminFaqExp","");
 		//Home Directory
 	 	String hdir = pp.getString("hdir","");
+		//Expiry Days
+		String expdays = pp.getString("expdays","");
 		/**
 		 * Replacing the variable value from Property file
 		 * Update the first,last name configuration parameter values for Institute Admin
@@ -127,6 +130,7 @@ public class InstchangeAParam extends SecureAction{
 		//	AdminProperties.setValue(path,iquota,"brihaspati.user.iquota.value");
 			AdminProperties.setValue(path,hdir,"brihaspati.home.dir.value");
 			AdminProperties.setValue(path,AdminFaqExp,"brihaspati.admin.FaqExpiry");
+			AdminProperties.setValue(path,expdays,"brihaspati.user.expdays.value");// Add by @tej
 			prof_update=m_u.ConvertedString("usr_prof",LangFile);
 			data.setMessage(prof_update);
 			boolean qct=QuotaUtil.CreateandUpdate();	
