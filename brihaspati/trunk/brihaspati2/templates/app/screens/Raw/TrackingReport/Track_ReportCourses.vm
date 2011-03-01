@@ -12,10 +12,10 @@ $page.setTitle("Tracking Report")
 $page.setBgColor("bgcolor")
 $!data.getMessage()
 #set($lang = $data.getUser().getTemp("lang" ).toString())
-<table bgcolor="$ui.tableColor" width=100%>
+<table bgcolor="$ui.menuColor" width=100%>
 <tr><td><b>
 	<font face="$ui.sansSerifFonts">
-	#if($data.getUser().getUserName() == "admin")
+	#if($data.getUser().getUserName() == "admin"|| $data.getUser().getTemp("role")=="institute_admin")
 	<a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> |
         #if($type =="active")
     	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")>$brih_tracking $brih_reports </a> |
@@ -33,7 +33,7 @@ $!data.getMessage()
         $brih_course $brih_reports
         #end
         #if($type =="quiz")
-    	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")>$brih_tracking $brih_reports </a> |
+    	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")>$brih_tracking $brih_reports</a> |
         $brih_quiz $brih_reports
         #end
         #if($type==" ")
@@ -45,7 +45,7 @@ $!data.getMessage()
 </table>
 <table width="100%">
 <tr><td align=right>
-	#if($data.getUser().getUserName() == "admin")
+	#if($data.getUser().getUserName() == "admin"|| $data.getUser().getTemp("role")=="institute_admin")
 	<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Trackadminreport.html","newWin");>$brih_help</a>
 	#else
 	<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/TrackInstreport.html","newWin");>$brih_help</a>
@@ -59,27 +59,27 @@ $!data.getMessage()
 <table  bgcolor="$ui.tableColor" width="100%" align="left" cellsapacing="0" cellpadding ="0">
 <tr bgcolor="$ui.menuColor" width="100%"><td width="100%" colspan="5"><b>$brih_usr $brih_course $brih_infos</b></td></tr>
 <tr bgclor="$ui.menuColor" align="left">
-        <td align="left" width="50%">$brih_usr $brih_name:
+        <td align="left" width="50%">$brih_usrName:
         <td align="left" width="50%"><b>$usrname</b>
 </tr>
 <tr bgclor="$ui.menuColor" >
-        <td align="left" width="50%">$brih_usr Role:
+        <td align="left" width="50%">$brih_usr $brih_role:
         <td align="left" width="50%"><b>$Rolename</b>
 </tr>
 <tr bgclor="$ui.menuColor">
-        <td align="left" width="50%">$brih_course/$brih_topics:
+        <td align="left" width="50%">$brih_num $brih_of $brih_topics:
 	#if($value =="noempty")
         <td align="left" width="50%"><b>$dc</b>
 	#else
-        <td align="left" width="50%"><b>$brih_trackmsg</b>
+        <td align="left" width="50%"><b>brih_trackmsg</b>
         #end
 </tr>
 <tr bgclor="$ui.menuColor" >
-        <td align="left" width="50%">Course Status:
+        <td align="left" width="50%">$brih_course $brih_status:
         <td align="left" width="50%"><b>$Active</b>
 </tr>
 <tr bgclor="$ui.menuColor" width="100%" aligh="left">
-        <td align="left" width="50%">$brih_joined:</td>
+        <td align="left" width="50%">$Res_join:</td>
         <td align="left" width="50%"><b>$jdate</td>
 </tr>
 <tr bgclor="$ui.menuColor">
@@ -89,7 +89,7 @@ $!data.getMessage()
 <table width="100%" align="left" cellsapacing="0" cellpadding ="0">
 <tr bgcolor="$ui.menuColor" width="100%">
 	#if($value =="noempty")
-        <td align="left" width="30%"><b>$brih_topic $brih_name:</td>
+        <td align="left" width="30%"><b>$brih_topics $brih_name:
         <td align="left" width="20%"><b>$brih_total $brih_noOf $brih_file</td>
         <td align="left" width="25%"><b>$brih_unpublish $brih_file</td>
         <td align="left" width="25%"><b>$brih_publish $brih_file</td>
@@ -125,24 +125,24 @@ $!data.getMessage()
  	#end
 </table>
 #end
-#if($data.getUser().getUserName() == "admin")
+#if($data.getUser().getUserName() == "admin" || $data.getUser().getTemp("role")=="institute_admin")
 #if($type =="active")
 <tr bgcolor="$ui.menuColor" width="100%"><td width="100%" colspan="5"><b><i>$brih_most $brih_active $brih_usr</i></b></td></tr>
-<tr bgcolor="$ui.tableColor">
-        <td align="left" width="30%"><b>$brih_usr $brih_name:</td>
-        <td align="left" width="30%"><b>$brih_total $brih_noOf $brih_accesses</td>
-        <td align="left" width="30%"><b>$brih_total $brih_trkaccess $brih_trktime</td>
+<tr bgcolor="$ui.tableColor" colspan="5">
+        <td align="left" width="40%"><b>$brih_usr $brih_name</td>
+        <td align="left" width="30%"><b>$brih_total $brih_nos $brih_access</td>
+        <td align="left" width="30%"><b>$brih_total $brih_access $brih_time</td>
 </tr>
 <tr bgcolor="$ui.menuColor">
         <td align="left" width="30%"><b>$uname</td>
         <td align="left" width="30%"><b>$tmp</td>
         <td align="left" width="30%"><b>$time</td>
 </tr>
-<tr bgcolor="$ui.menuColor" width="100%"><td width="100%" colspan="5"><b>$brih_most $brih_active $brih_courses </b></td></tr>
+<tr bgcolor="$ui.menuColor" width="100%"><td width="100%" colspan="5"><b>$brih_most $brih_active $brih_courses</b></td></tr>
 <tr bgcolor="$ui.tableColor">
-        <td align="left" width="30%"><b>$brih_course $brih_name:</td>
-        <td align="left" width="30%"><b>$brih_total $brih_noOf $brih_user $brih_trkaccess</td>
-        <td align="left" width="30%"><b>$brih_total $brih_trkaccess $brih_trktime</td>
+        <td align="left" width="30%"><b>$brih_course $brih_name</td>
+        <td align="left" width="30%"><b>$brih_total $brih_nos $brih_usr $brih_access</td>
+        <td align="left" width="30%"><b>$brih_total $brih_access $brih_time</td>
 <tr>
 <tr bgcolor="$ui.menuColor">
         <td align="left" width="30%"><b>$gname1</td>

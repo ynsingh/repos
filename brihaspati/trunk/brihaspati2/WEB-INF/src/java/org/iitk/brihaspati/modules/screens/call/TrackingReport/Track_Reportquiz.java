@@ -41,41 +41,45 @@ package org.iitk.brihaspati.modules.screens.call.TrackingReport;
  *@author: <a href="mailto:seema_020504@yahoo.com">Seemapal</a>
  *@author: <a href="mailto:kshuklak@rediffmail.com">Kishore Kumar shukla</a>
  */
+//Java
 import java.io.File;
 import java.util.List;
 import java.util.Vector;
 import java.util.ListIterator;
+import java.util.Calendar;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.text.DateFormat;
+//Apache turbine
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.om.security.User;
 import com.workingdogs.village.Record;
-import java.text.SimpleDateFormat;
-import java.text.DateFormat;
 import org.apache.torque.util.Criteria;
+import org.apache.turbine.util.parser.ParameterParser;
+import org.apache.turbine.services.security.torque.om.TurbineUser;
+import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
+import org.apache.turbine.services.security.torque.om.TurbineUserGroupRole;
+import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
+//Brihaspati
+import org.iitk.brihaspati.om.Quiz;
+import org.iitk.brihaspati.om.QuizPeer;
+import org.iitk.brihaspati.om.UsageDetails;
+import org.iitk.brihaspati.om.UsageDetailsPeer;
 import org.iitk.brihaspati.modules.utils.FileEntry;
 import org.iitk.brihaspati.modules.utils.UserUtil;
-import org.apache.turbine.util.parser.ParameterParser;
+import org.iitk.brihaspati.modules.utils.GroupUtil;
+import org.iitk.brihaspati.modules.utils.CourseUtil;
+import org.iitk.brihaspati.modules.utils.QuizDetail;
+import org.iitk.brihaspati.modules.utils.ExpiryUtil;
+import org.iitk.brihaspati.modules.utils.YearListUtil;
+import org.iitk.brihaspati.modules.utils.CommonUtility;
+import org.iitk.brihaspati.modules.utils.ListManagement;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
-import org.iitk.brihaspati.modules.utils.QuizDetail;
-import org.iitk.brihaspati.om.Quiz;
-import org.iitk.brihaspati.om.QuizPeer;
-import org.iitk.brihaspati.modules.utils.ExpiryUtil;
-import org.iitk.brihaspati.modules.utils.YearListUtil;
-import org.iitk.brihaspati.om.UsageDetailsPeer;
-import org.iitk.brihaspati.om.UsageDetails;
-import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
-import org.apache.turbine.services.security.torque.om.TurbineUser;
-import org.iitk.brihaspati.modules.utils.GroupUtil;
-import org.iitk.brihaspati.modules.utils.CourseUtil;
-import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
-import org.apache.turbine.services.security.torque.om.TurbineUserGroupRole;
-import org.iitk.brihaspati.modules.utils.CommonUtility;
-import org.iitk.brihaspati.modules.utils.ListManagement;
-import org.iitk.brihaspati.modules.utils.AdminProperties;
 
 public class Track_Reportquiz extends SecureScreen
 {
@@ -113,10 +117,12 @@ public class Track_Reportquiz extends SecureScreen
 			String quizmess =pp.getString("file","");
 			String grouptype =pp.getString("grouptype","");
 			context.put("grouptype",grouptype);
+			String userrole=data.getUser().getTemp("role").toString();
+                        String instituteId=(data.getUser().getTemp("Institute_id")).toString();
                         int uid1=UserUtil.getUID(username);
                         Criteria crit=new Criteria();
 			/** getting Rolename---------------*/
-			if(!username.equals("admin"))
+			if(userrole.equals("instructor"))
 			{
 				context.put("coursename",(String)user.getTemp("course_name"));
 				String courseid=(String)user.getTemp("course_id");
@@ -270,14 +276,7 @@ public class Track_Reportquiz extends SecureScreen
 			{
 				String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
                                 String AdminConf = AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value");
-				////////////////////////////////
-				//String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
-                                //String conf =AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value");
                                 int list_conf=Integer.parseInt(AdminConf);
-
-                                //context.put("userConf",new Integer(list_conf));
-                                //context.put("userConf_string",conf);
-				////////////////////////
                                 context.put("userConf",new Integer(AdminConf));
                                 context.put("userConf_string",AdminConf);
 				int startIndex=pp.getInt("startIndex",0);
@@ -311,60 +310,59 @@ public class Track_Reportquiz extends SecureScreen
 				String year1="",month1="",day1="";
 				if(actionName.equals("eventSubmit_doUserCourseInfo"))
 				{
-				year=pp.getString("fStart_year");
-                        	month=pp.getString("fStart_mon");
-                        	day=pp.getString("fStart_day");
-				context.put("fStart_year",year);
-				context.put("fStart_mon",month);
-				context.put("fStart_day",day);
-                        	String fdate=year+"-"+month+"-"+day;
-				Date fdate1= Date.valueOf(fdate);
-				long fdate2= fdate1.getTime();
-				year1=pp.getString("tStart_year");
-                        	month1=pp.getString("tStart_mon");
-                        	day1=pp.getString("tStart_day");
-				context.put("tStart_year",year1);
-				context.put("tStart_mon",month1);
-				context.put("tStart_day",day1);
-                        	String tdate=year1+"-"+month1+"-"+day1;
-				Date tdate1=Date.valueOf(tdate);
-                        	long tdate2= tdate1.getTime();
-                       		long  nodays=(fdate2-tdate2)/(24*3600*1000)+1;
-				String diff=Long.toString(nodays);
-				intdiff=Integer.parseInt(diff);
-				context.put("intdiff",intdiff);
-				//----------------------------------------------------------//
-				//Time
-				crit=new Criteria();
-                		crit.add(UsageDetailsPeer.USER_ID,uid1);
-				crit.addNotIn(UsageDetailsPeer.USER_ID,noUid);
-                		v=UsageDetailsPeer.doSelect(crit);
-				if(v !=null)
-				{
-					for(int i=0;i<v.size();i++)
+					year=pp.getString("fStart_year");
+                        		month=pp.getString("fStart_mon");
+                        		day=pp.getString("fStart_day");
+					context.put("fStart_year",year);
+					context.put("fStart_mon",month);
+					context.put("fStart_day",day);
+                        		String fdate=year+"-"+month+"-"+day;
+					Date fdate1= Date.valueOf(fdate);
+					long fdate2= fdate1.getTime();
+					year1=pp.getString("tStart_year");
+                        		month1=pp.getString("tStart_mon");
+                        		day1=pp.getString("tStart_day");
+					context.put("tStart_year",year1);
+					context.put("tStart_mon",month1);
+					context.put("tStart_day",day1);
+                        		String tdate=year1+"-"+month1+"-"+day1;
+					Date tdate1=Date.valueOf(tdate);
+                        		long tdate2= tdate1.getTime();
+                       			long  nodays=(fdate2-tdate2)/(24*60*60*1000);
+					String diff=Long.toString(nodays);
+					intdiff=Integer.parseInt(diff);
+					context.put("intdiff",intdiff);
+					//----------------------------------------------------------//
+					//Time
+					crit=new Criteria();
+                			crit.add(UsageDetailsPeer.USER_ID,uid1);
+					crit.addNotIn(UsageDetailsPeer.USER_ID,noUid);
+                			v=UsageDetailsPeer.doSelect(crit);
+					if(v !=null)
 					{
-						UsageDetails element=(UsageDetails)v.get(i);
-						uid3=element.getUserId();	
-						uname=UserUtil.getLoginName(uid3);	
-						eid=element.getEntryId();	
-						java.util.Date logindate=new java.util.Date();
-						logindate=(element.getLoginTime());
-						long ldate=logindate.getTime();
-						long ldays=(ldate-tdate2)/(24*3600*1000)+1;
-						String diff1=Long.toString(ldays);
-						int intdiff1=Integer.parseInt(diff1);
-						if(intdiff1 >= intdiff)
+						for(int i=0;i<v.size();i++)
 						{
-							if(!usrid.contains(uname))
+							UsageDetails element=(UsageDetails)v.get(i);
+							uid3=element.getUserId();	
+							uname=UserUtil.getLoginName(uid3);	
+							eid=element.getEntryId();	
+							java.util.Date logindate=new java.util.Date();
+							logindate=(element.getLoginTime());
+							long ldate=logindate.getTime();
+							long ldays=(ldate-tdate2)/(24*60*60*1000);
+							String diff1=Long.toString(ldays);
+							int intdiff1=Integer.parseInt(diff1);
+							if(intdiff1 >= intdiff)
 							{
-								usrid.addElement(uname);
+								if(!usrid.contains(uname))
+								{
+									usrid.addElement(uname);
+								}
+								usrid1.addElement(uid3);
+								usrid4.addElement(eid);
 							}
-							usrid1.addElement(uid3);
-							usrid4.addElement(eid);
 						}
 					}
-				}
-				//}
 				Vector vct=CommonUtility.PListing(data,context,usrid,list_conf);
 				context.put("entry",vct);
 				context.put("chktype","userlog");
@@ -384,35 +382,8 @@ public class Track_Reportquiz extends SecureScreen
 					tmp=0;
 				}
 				int t_size=usrid3.size();
-				
 				Vector vct3=CommonUtility.PListing(data,context,usrid3,list_conf);
 				context.put("usrid3",vct3);
-                                /*int value[]=new int[7];
-                                value=ListManagement.linkVisibility(startIndex,t_size,Integer.parseInt(AdminConf));
-                                int k2=value[6];
-                                context.put("k",String.valueOf(k2));
-                                Integer total_size=new Integer(t_size);
-                                context.put("total_size",total_size);
-
-                                int eI=value[1];
-                                Integer endIndex=new Integer(eI);
-                                context.put("endIndex",endIndex);
-                                //check_first shows the first five records
-                                int check_first=value[2];
-                                context.put("check_first",String.valueOf(check_first));
-                                //check_pre shows the first the previous list to the current records
-                                int check_pre=value[3];
-                                context.put("check_pre",String.valueOf(check_pre));
-                                //check_last1 gives the remainder values:-
-                                int check_last1=value[4];
-                                context.put("check_last1",String.valueOf(check_last1));
-
-                                //check_last shows the last records:-
-                                int check_last=value[5];
-                                context.put("check_last",String.valueOf(check_last));
-                                context.put("startIndex",String.valueOf(eI));
-                                Vector splitlist=ListManagement.listDivide(usrid3,startIndex,Integer.parseInt(AdminConf));
-				context.put("usrid3",splitlist);*/
 				//--------------------------tiotal access time-------------------//
 				for(int a=0;a<usrid.size();a++)
 				{
@@ -471,32 +442,6 @@ public class Track_Reportquiz extends SecureScreen
 				
 				Vector vct6=CommonUtility.PListing(data,context,usrid6,list_conf);
 				context.put("usrid6",vct6);
-                                /*int value1[]=new int[7];
-                                value1=ListManagement.linkVisibility(startIndex,t_size1,Integer.parseInt(AdminConf));
-                                int k1=value1[6];
-                                context.put("k",String.valueOf(k1));
-                                Integer total_size1=new Integer(t_size1);
-                                context.put("total_size",total_size1);
-
-                                int eI1=value[1];
-                                Integer endIndex1=new Integer(eI1);
-                                context.put("endIndex",endIndex1);
-                                //check_first shows the first five records
-                                int check_first1=value1[2];
-                                context.put("check_first",String.valueOf(check_first1));
-                                //check_pre shows the first the previous list to the current records
-                                int check_pre1=value1[3];
-                                context.put("check_pre",String.valueOf(check_pre1));
-                                //check_last1 gives the remainder values:-
-                                int check_last2=value1[4];
-                                context.put("check_last1",String.valueOf(check_last2));
-
-                                //check_last shows the last records:-
-                                int check_last3=value1[5];
-                                context.put("check_last",String.valueOf(check_last3));
-                                context.put("startIndex",String.valueOf(eI1));
-                                Vector splitlist1=ListManagement.listDivide(usrid6,startIndex,Integer.parseInt(AdminConf));
-                                context.put("usrid6",splitlist1);*/
 				//-------------------------change seconds in hh:mm:ss------------//
 				//--------------------------tiotal access time-------------------//
 				//--------------------------all course details-------------------//

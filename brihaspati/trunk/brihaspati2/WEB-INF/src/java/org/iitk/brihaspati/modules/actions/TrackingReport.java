@@ -54,6 +54,8 @@ import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
 import org.iitk.brihaspati.modules.utils.CourseUtil;
+import org.iitk.brihaspati.modules.utils.ListManagement;
+import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 
 import org.iitk.brihaspati.om.UsageDetailsPeer;
 import org.iitk.brihaspati.om.UsageDetails;
@@ -85,16 +87,18 @@ public class TrackingReport extends SecureAction
                         context.put("coursename",(String)user.getTemp("course_name"));
                         String courseid=(String)user.getTemp("course_id");
                         int g_id=GroupUtil.getGID(courseid);
+			String userrole=data.getUser().getTemp("role").toString();
+			String instituteId=(data.getUser().getTemp("Institute_id")).toString();
 			ParameterParser pp=data.getParameters();
 			String status=pp.getString("status","");
 			context.put("status",status);
-
                         /*Check for special characters*/
                         String matchvalue=StringUtil.replaceXmlSpecialCharacters(pp.getString("valueString"));
                         context.put("valueString",matchvalue);
 			Vector userList=new Vector();
 			Vector userList1=new Vector();
 			String studentname="";
+			List v2=null;
 			/**
                         *Selecting the particular course student detail
                         *put in the context for the use in templates.
@@ -115,6 +119,19 @@ public class TrackingReport extends SecureAction
 					studentname=element.getUserName().toString();
                                 	userList.addElement(studentname);
 				}
+
+			}
+			else if(userrole.equals("institute_admin"))
+			{
+				v2=ListManagement.getInstituteUserList(instituteId);
+				for(int i=0;i<v2.size();i++)
+                                {
+                                        /* This code is for Searching the group*/
+                                        /*and user by the String or character*/
+					CourseUserDetail element=(CourseUserDetail)(v2.get(i));
+                                        studentname=element.getLoginName().toString();
+                                        userList.addElement(studentname);
+                                }
 
 			}
 			else

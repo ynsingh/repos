@@ -41,39 +41,41 @@ package org.iitk.brihaspati.modules.screens.call.TrackingReport;
  *@author: <a href="mailto:seema_020504@yahoo.com">Seemapal</a>
  *@author: <a href="mailto:kshuklak@rediffmail.com">Kishore Kumar shukla</a>
  */
+//Java
 import java.io.File;
 import java.util.List;
 import java.util.Arrays;
 import java.util.Vector;
 import java.util.Date;
 import java.util.ListIterator;
+import java.text.SimpleDateFormat;
+//Apache turbine
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.om.security.User;
 import com.workingdogs.village.Record;
-
 import org.apache.torque.util.Criteria;
-import org.iitk.brihaspati.modules.utils.FileEntry;
-import org.iitk.brihaspati.modules.utils.GroupUtil;
-import org.iitk.brihaspati.modules.utils.UserUtil;
-import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.apache.turbine.util.parser.ParameterParser;
+import org.apache.turbine.services.security.torque.om.TurbineUser;
+import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
+import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
+import org.apache.turbine.services.security.torque.om.TurbineUserGroupRole;
+//Brihaspati
+import org.iitk.brihaspati.om.Courses;
+import org.iitk.brihaspati.om.CoursesPeer;
+import org.iitk.brihaspati.om.UsageDetails;
+import org.iitk.brihaspati.om.UsageDetailsPeer;
+import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.GroupUtil;
+import org.iitk.brihaspati.modules.utils.FileEntry;
+import org.iitk.brihaspati.modules.utils.ExpiryUtil;
+import org.iitk.brihaspati.modules.utils.CourseUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
-import org.iitk.brihaspati.modules.utils.ExpiryUtil;
-import java.text.SimpleDateFormat;
-import org.apache.turbine.services.security.torque.om.TurbineUser;
-import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
-import org.iitk.brihaspati.om.UsageDetailsPeer;
-import org.iitk.brihaspati.om.UsageDetails;
-import org.iitk.brihaspati.om.Courses;
-import org.iitk.brihaspati.om.CoursesPeer;
-import org.iitk.brihaspati.modules.utils.CourseUtil;
-import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
-import org.apache.turbine.services.security.torque.om.TurbineUserGroupRole;
 
 
 
@@ -108,10 +110,13 @@ public class Track_ReportCourses extends SecureScreen
 			context.put("type",type);
 			String usrname=pp.getString("usrname","");
 			context.put("usrname",usrname);
+			String userrole=data.getUser().getTemp("role").toString();
+                        String instituteId=(data.getUser().getTemp("Institute_id")).toString();
 			Criteria crit=new Criteria();
 			int noUid[]={0,1};
 			int uid1=UserUtil.getUID(username);
-			if(!username.equals("admin"))
+			//if(!username.equals("admin"))
+			if(userrole.equals("instructor"))
 			{
 				String tname=pp.getString("tname","");
 				context.put("tname",tname);
@@ -163,7 +168,7 @@ public class Track_ReportCourses extends SecureScreen
 				/*----------------------------course detail------------------------*/
 				String comPath=data.getServletContext().getRealPath("/Courses")+"/"+courseid;
                         	String filePath=comPath+"/Content";
-                        	File Path=new File(filePath+"/content__des.xml");
+                        	File Path=new File(filePath+"/coursecontent__des.xml");
 				Vector publish=new Vector();
 				Vector unpublish=new Vector();
 				Vector totallist=new Vector();
@@ -172,7 +177,7 @@ public class Track_ReportCourses extends SecureScreen
                         	if(Path.exists())
                         	{
                                 	TopicMetaDataXmlReader topicMetaData=null;
-					topicMetaData=new TopicMetaDataXmlReader(filePath+"/"+"content__des.xml");
+					topicMetaData=new TopicMetaDataXmlReader(filePath+"/"+"coursecontent__des.xml");
                                 	Vector dc=topicMetaData.getFileDetails();
 					if(dc!=null)
 					{
@@ -222,7 +227,7 @@ public class Track_ReportCourses extends SecureScreen
                                         	long loutdate=logoutdate.getTime();
                                                 if(cuid==uid)
                                                 {
-						ErrorDumpUtil.ErrorLog("\nunid3"+cuid);
+						//ErrorDumpUtil.ErrorLog("\nunid3"+cuid);
 							long elapsedTime5 =(loutdate - ldate)/1000;
                                                 	ttime=ttime+elapsedTime5;
                                                 	String seconds5 = Integer.toString((int)(ttime % 60));

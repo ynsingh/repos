@@ -87,12 +87,12 @@
          <a href=$link.setPage("call,OnLine_Rgtn,OnlineRegistration_Admin.vm").addPathInfo("status","CourseRegistration").addPathInfo("count","1") style=text-decoration:none> #if($lang == "hindi") $online_online $brih_reg $brih_Of1 $brih_view #else $brih_view $online_online $brih_reg #end </a>
       </td>
    </tr>
+*#
 <tr>
       <td>
         <a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype") style=text-decoration:none>$brih_tracking $brih_reports</a>
       </td>
 </tr>
-*#
 <tr bgcolor="$ui.menuColor">
       <td>
          <a href=$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("mode","alllist").addPathInfo("count","1")>$brih_FAQ</a>

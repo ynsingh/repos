@@ -285,6 +285,68 @@ public class InstituteIdUtil
 
         return inst_id;
         }
+	public static Vector getInst_Courselist(String inst_id)
+        {
+                Vector vct=new Vector();
+                try{
+                        List v=null;
+                        /**
+                        *select all group name from TURBINE_GROUP table.
+                        */
+                        Criteria crit=new Criteria();
+                        crit.addGroupByColumn(org.iitk.brihaspati.om.TurbineGroupPeer.GROUP_NAME);
+                        v=org.iitk.brihaspati.om.TurbineGroupPeer.doSelect(crit);
+                        /**
+                        *get group name one by one.and store in a vector whose GName ends with InstituteId.
+                        *return Vector.
+                        */
+                        for(int j=0;j<v.size();j++){
+                                String GName=((org.iitk.brihaspati.om.TurbineGroup)v.get(j)).getGroupName();
+                                if(GName.endsWith(inst_id)){
+                                        vct.add(GName);
+                                }
+                        }
+                }//try
+                catch(Exception ex){
+                        ErrorDumpUtil.ErrorLog("The error in getInst_Courselist() - Institute Id Util class !!"+ex);
+                }
+        return vct;
+        }
+	public static Vector getInstStudentDetail(String instituteId)
+        {
+                Vector vct=new Vector();
+                Vector uidvct=new Vector();
+                List details=null;
+                try{
+                        Criteria crit=new Criteria();
+                        List userList=UserManagement.getUserDetail1("All",instituteId);
+                        for(int i=0;i<userList.size();i++)
+                        {
+                                TurbineUser element=(TurbineUser)(userList.get(i));
+                                int userid=element.getUserId();
+                                vct.add(userid);
+                        }
+                        for(int j=0;j<vct.size();j++){
+                                String str=(vct.get(j)).toString();
+                                crit=new Criteria();
+                                crit.add(TurbineUserGroupRolePeer.USER_ID,str);
+                                details=TurbineUserGroupRolePeer.doSelect(crit);
+                                for(int r=0;r<details.size();r++){
+                                        TurbineUserGroupRole tugr=(TurbineUserGroupRole) (details.get(r));
+                                        int roleid=tugr.getRoleId();
+                                        String roleId=Integer.toString(roleid);
+                                        if(roleId.equals("3"))
+                                        {
+                                                int userid = tugr.getUserId();
+                                                uidvct.add(userid);
 
+                                        }
+                                }
+
+                        }
+                }
+                catch(Exception ex){}
+                return uidvct;
+        }
 }
 

@@ -12,16 +12,16 @@ $page.setTitle("Tracking Report")
 $page.setBgColor("bgcolor")
 $!data.getMessage()
 #set($lang = $data.getUser().getTemp("lang" ).toString())
-<table bgcolor="$ui.tableColor" width=100%>
+<table bgcolor="$ui.menuColor" width=100%>
 <tr><td><b>
 	<font face="$ui.sansSerifFonts">
-	#if($data.getUser().getUserName() == "admin")
+	#if($data.getUser().getUserName() == "admin" ||$data.getUser().getTemp("role")=="institute_admin")
 	<a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> |
 	#if($mode == "repotype")
 	$brih_tracking $brih_reports 
 	#end
 	#if($type =="user")
-	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")>$brih_tracking $brih_reports </a> |
+	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")>$brih_tracking $brih_reports</a> |
 	$brih_usr $brih_reports
 	#end
 	#else
@@ -32,11 +32,11 @@ $!data.getMessage()
 	#end
 	#if($type =="user")
 	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")>$brih_tracking $brih_reports </a> |
-	$brih_usr $brih_reports
+	$brih_usr $brih_reports	
 	#end
 	#if($type =="course")
 	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")>$brih_tracking $brih_reports </a> |
-	$brih_course $brih_reports
+	$brih_course $brih_reports 
 	#end
 	#if($type =="quiz")
 	<a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype")>$brih_tracking $brih_reports </a> |
@@ -50,21 +50,30 @@ $!data.getMessage()
 <tr><td align=right>
 	#if($data.getUser().getUserName() == "admin")
 	<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Trackadminreport.html","newWin");>$brih_help</a>
+	#elseif($data.getUser().getTemp("role")=="institute_admin")
+	<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Trackreport_Instadmin.html","newWin");>$brih_help</a>
 	#else
-	<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/TrackInstreport.html","newWin");>$brih_help</a>
+	<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/TrackInstreport.html","newWin");>$brih_help
 	#end
 </td></tr>
 </table>
+##if($actionName=="eventSubmit_doSearchvalue")
 <form name="frm" method="post" action=$link.setPage("call,TrackingReport,Track_Report.vm").setAction("TrackingReport")>
+##else
+##<form name="frm" method="post" action=$link.setPage("call,TrackingReport,Track_Report.vm")>
+##end
 <table width=100%>
 #if($mode == "repotype")
-##<tr bgcolor="$ui.menuColor"><b><i> $brih_tracking $brih_reports</i></b></tr>
+##<tr bgcolor="$ui.menuColor"><b><i> Tracking Report</i></b></tr>
 <tr bgcolor="$ui.tableColor"><td><b><i><a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("type","user")>$brih_usr $brih_reports</a></i></b></td>
-#if($data.getUser().getUserName()!= "admin")
+#if($data.getUser().getTemp("role")=="instructor")
 <td><b><i><a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("type","course")>$brih_course/$brih_lesson $brih_reports</a></i></b></td>
 <td><b><i><a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("type","quiz")>$brih_test/$brih_quiz $brih_reports</a></i></b></td>
 #end
 #if($data.getUser().getUserName() == "admin")
+<td><b><i><a href=$link.setPage("call,TrackingReport,TrkReport_Instadmin.vm").addPathInfo("type","Instadmin").addPathInfo("mode","repoinfo")>$RemoteInstitute $brih_admin $brih_reports</a></i></b></td>
+#end
+#if($data.getUser().getUserName() == "admin" || $data.getUser().getTemp("role")=="institute_admin")
 <td><b><i><a href=$link.setPage("call,TrackingReport,Track_Reportquiz.vm").addPathInfo("type","System").addPathInfo("mode","repoinfo")>$brih_system $brih_reports</a></i></b></td>
 <td><b><i><a href=$link.setPage("call,TrackingReport,Track_ReportCourses.vm").addPathInfo("type","active").addPathInfo("mode","repoinfo")>$brih_most $brih_active$brih_usr /$brih_active$brih_course </a></i></b></td></tr>
 #end
@@ -72,14 +81,14 @@ $!data.getMessage()
 #if($mode !="repotype" && $type !="System")
 <tr bgcolor="$ui.menuColor" width="100%">
         <td>
-        <b>$brih_match_str </b>
+        <b>Match String </b>
               <input align=center type="text" name="valueString" value="" >
               <input type="button" name="eventSubmit_doSearchvalue" value="$brih_search" onClick="checkNull(document.frm,this);">
               <input type="hidden" name="status" value="Search">
         </td>
         <td><b>$brih_select $brih_usr $brih_for $brih_reports:</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<select name="uname" size="1" onChange="Changename(document.frm,this);"/>
-        <option>  - $brih_select - </option>
-                                #if($data.getUser().getUserName() == "admin")
+        <option>  - Select - </option>
+                                #if($data.getUser().getUserName() == "admin"||$data.getUser().getTemp("role")=="institute_admin")
                                 #foreach($usrname in $userList1)
                                 <option value="$usrname.getLoginName()">$usrname.getLoginName()
                                 #end
@@ -96,7 +105,7 @@ $!data.getMessage()
 </tr>
 #end
 #if($status == "Search")
-<tr bgcolor="$ui.tableColor" width="100%"><td width="100%" colspan="5"><b> $brih_select $brih_usr $brih_for $brih_reports :</b>&nbsp;
+<tr bgcolor="$ui.tableColor" width="100%"><td width="100%" colspan="5"><b> $brih_select $brih_usr $brih_for $brih_reports:</b>&nbsp;
 #if($data.getUser().getUserName() == "admin")
 #foreach($usrname1 in $userList2)
 #if($type =="user")
@@ -125,16 +134,36 @@ $!data.getMessage()
 <table bgcolor="$ui.tableColor" width="100%" align="left" cellsapacing="0" cellpadding ="0">
 <tr bgcolor="$ui.menuColor" width="100%"><td width="100%" colspan="5"><b>$brih_usr $brih_general $brih_infos</b></td></tr>
 <tr bgclor="$ui.tableColor" align="left">
-        <td align="left" width="50%">$brih_usr $brih_name:
+        <td align="left" width="50%">$brih_usrName:
         <td align="left" width="50%"><b>$usrname</b>
 </tr>
 <tr bgclor="$ui.menuColor" >
-        <td align="left" width="50%">$brih_usr Role:
+        <td align="left" width="50%">$brih_usr $brih_role:
         <td align="left" width="50%"><b>$Rolename</b>
 </tr>
+<tr bgclor="$ui.menuColor" >
+        <td align="left" width="50%">$brih_usr $brih_rollno:
+	#if($empty=="falgrollnoprg")
+        <td align="left" width="50%"><b>-</b>
+	#else
+        <td align="left" width="50%"><b>$rollno</b>
+	#end
+</tr>
+<tr bgclor="$ui.menuColor" >
+        <td align="left" width="50%">$brih_usr $brih_program:
+	#if($empty=="falgrollnoprg")
+        <td align="left" width="50%"><b>-</b>
+	#else
+        <td align="left" width="50%"><b>$prgname</b>
+	#end
+</tr>
 <tr bgclor="$ui.menuColor">
-        <td align="left" width="50%">$brih_course/$brih_topics:
-	#if($data.getUser().getUserName() == "admin")
+	#if($data.getUser().getUserName() == "admin"||$data.getUser().getTemp("role")=="institute_admin")
+        <td align="left" width="50">$brih_course $brih_name:
+	#else
+        <td align="left" width="50%">$brih_topic:
+	#end
+	#if($data.getUser().getUserName() == "admin" || $data.getUser().getTemp("role")=="institute_admin")
         <td align="left" width="50%"><b>$dc</b>
 	#else
 	#if($value=="noempty")
@@ -146,14 +175,15 @@ $!data.getMessage()
 </tr>
 <tr bgclor="$ui.menuColor" width="100%" aligh="left">
         <td align="left" width="50%">$brih_trklanguage:</td>
-        <td align="left" width="50%"><b>$brih_english</td>
+        ##<td align="left" width="50%"><b>English</td>
+        <td align="left" width="50%"><b>$userLanguage</td>
 </tr>
 <tr bgclor="$ui.menuColor" width="100%" aligh="left">
         <td align="left" width="50%">$brih_active:</td>
         <td align="left" width="50%"><b>$Active</td>
 </tr>
 <tr bgclor="$ui.menuColor" width="100%" aligh="left">
-        <td align="left" width="50%">$brih_joined:</td>
+        <td align="left" width="50%">$Res_join:</td>
         <td align="left" width="50%"><b>$jdate</td>
 </tr>
 <tr bgcolor="$ui.menuColor" width="100%"><td td width="100%" colspan="5"><b>$brih_usr $brih_info $brih_on $brih_communication</b></td></tr>
@@ -166,7 +196,7 @@ $!data.getMessage()
         <td align="left" width="50%"><b>$readmess</td>
 </tr>
 <tr bgclor="$ui.menuColor" width="100%" aligh="left">
-        <td align="left" width="50%">$brih_unreadMsg:</td>
+        <td align="left" width="50%">$Notice_Unread $brih_indexHome_Msg:</id>
         <td align="left" width="50%"><b>$unreadmess</td>
 </tr>
 <tr bgclor="$ui.menuColor" width="100%" aligh="left">
@@ -174,15 +204,15 @@ $!data.getMessage()
         <td align="left" width="50%"><b>$DB</td>
 </tr>
 <tr bgclor="$ui.menuColor" width="100%" aligh="left">
-        <td align="left" width="50%">$Notice_Read $DiscussionBoard$brih_indexHome_Msg:</td>
+        <td align="left" width="50%">$Notice_Read $DiscussionBoard $brih_indexHome_Msg:</td>
         <td align="left" width="50%"><b>$readDB</td>
 </tr>
 <tr bgclor="$ui.menuColor" width="100%" aligh="left">
-        <td align="left" width="50%">$Notice_Unread $DiscussionBoard$brih_indexHome_Msg:</td>
+        <td align="left" width="50%">$Notice_Unread $DiscussionBoard $brih_indexHome_Msg:</td>
         <td align="left" width="50%"><b>$unreadDB</td>
 </tr>
 <tr bgclor="$ui.menuColor" width="100%" aligh="left">
-        <td align="left" width="50%">$brih_number $brih_Of1 $brih_Notices:</td>
+        <td align="left" width="50%">$brih_number $brih_Of $brih_Notices:</td>
         <td align="left" width="50%"><b>$notices</td>
 </tr>
 <tr bgcolor="$ui.menuColor" width="100%"><td td width="100%" colspan="5"><b>$brih_usr $brih_grp $brih_trkdetail</b></td></tr>
