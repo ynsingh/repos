@@ -152,7 +152,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
     		SouthPanel.setBackground(Color.LIGHT_GRAY);
     		titledBorder3 = BorderFactory.createTitledBorder("");
     		SouthPanel.setBorder(titledBorder3);
-    		bottomLabel=new JLabel("Advertiesment");
+    		bottomLabel=new JLabel("Advertisement");
     		SouthPanel.add(bottomLabel);
     	
     		panel.add(SouthPanel,BorderLayout.SOUTH);
@@ -214,8 +214,8 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                                 	passwordField.setText("");
 			JOptionPane.showMessageDialog(null,"Incorrect Entry.", "Message", JOptionPane.ERROR_MESSAGE);
 					}else {
-                                	System.out.println("Login Successfull");
-					JOptionPane.showMessageDialog(null,"Login Successfull");
+                                	System.out.println("Login Successful");
+					JOptionPane.showMessageDialog(null,"Login Successful");
 
 					client_obj.setUserName(usernameText.getText());
 					if(((client_obj.getStudSessionList())!=null)||((client_obj.getInstSessionList())!=null)){

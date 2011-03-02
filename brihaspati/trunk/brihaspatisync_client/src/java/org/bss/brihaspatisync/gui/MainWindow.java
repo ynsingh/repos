@@ -64,7 +64,7 @@ public class MainWindow  extends JFrame implements ActionListener{
  	private MainWindow(){
     		content = getContentPane();
     		content.setBackground(new Color(24,116,205));
-		setTitle("Welcome !  BrihaspatiSync Live Classroom");
+		setTitle("Welcome! BrihaspatiSync Live Classroom");
 
 		JMenuBar menuBar = new JMenuBar();
 	        
@@ -77,7 +77,7 @@ public class MainWindow  extends JFrame implements ActionListener{
              	menu1.add(menuItem4);
 
             	menuItem5=new JMenuItem("Sessionout");
-		menuItem4.setActionCommand("Sessionout");
+		menuItem5.setActionCommand("Sessionout");
               	menuItem5.setEnabled(false);
               	menuItem5.addActionListener(this);
               	menu1.add(menuItem5);
@@ -145,7 +145,7 @@ public class MainWindow  extends JFrame implements ActionListener{
 		else if(e.getActionCommand().equals("Logout")){
 
                         desktop.removeAll();
-                        desktop.add(new LoginWindow());
+                        desktop.add(LoginWindow.getcontroller());
                 	desktop.revalidate();
                 	desktop.validate();
                 	desktop.repaint();
