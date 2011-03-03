@@ -26,26 +26,23 @@
 	<parameter name="partyID" isForPrompting="true" class="java.lang.String"/>
 	<parameter name="Path" isForPrompting="false" class="java.lang.String"/>
 	<queryString><![CDATA[SELECT 
-P.name AS projectName,
 NT.notification_date AS notificationDate,
+NT.notification_title AS notificationTitle,
 NT.notification_code AS notificationCode,
 NT.proposal_submission_last_date AS lastProposalSubmissiondate
 FROM 
 notification NT,
 grant_allocation GA,
-projects P,
 party PT
 
 WHERE
     PT.id=$P{partyID}
-AND NT.project_id=GA.projects_id 
-AND NT.project_id=P.id
+AND NT.party_id=GA.party_id
 AND GA.party_id=PT.id
-
 GROUP BY NT.notification_code]]></queryString>
 
-	<field name="projectName" class="java.lang.String"/>
 	<field name="notificationDate" class="java.sql.Timestamp"/>
+	<field name="notificationTitle" class="java.lang.String"/>
 	<field name="notificationCode" class="java.lang.String"/>
 	<field name="lastProposalSubmissiondate" class="java.sql.Timestamp"/>
 
@@ -169,7 +166,7 @@ GROUP BY NT.notification_code]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="95"
+						x="97"
 						y="15"
 						width="0"
 						height="43"
@@ -267,28 +264,6 @@ GROUP BY NT.notification_code]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="97"
-						y="21"
-						width="126"
-						height="32"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="staticText-3"
-						stretchType="NoStretch"
-						positionType="FixRelativeToTop"
-						isPrintRepeatedValues="true"
-						isRemoveLineWhenBlank="false"
-						isPrintInFirstWholeBand="false"
-						isPrintWhenDetailOverflows="false"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<text><![CDATA[Project Name]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						mode="Transparent"
 						x="230"
 						y="21"
 						width="118"
@@ -349,6 +324,28 @@ GROUP BY NT.notification_code]]></queryString>
 					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
 />
 				</line>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="99"
+						y="21"
+						width="126"
+						height="32"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="staticText-6"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[Notification Title]]></text>
+				</staticText>
 			</band>
 		</columnHeader>
 		<detail>
@@ -394,7 +391,7 @@ GROUP BY NT.notification_code]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="95"
+						x="97"
 						y="0"
 						width="0"
 						height="37"
@@ -467,28 +464,6 @@ GROUP BY NT.notification_code]]></queryString>
 					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
 />
 				</line>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Transparent"
-						x="97"
-						y="4"
-						width="126"
-						height="30"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="textField"
-						stretchType="NoStretch"
-						positionType="FixRelativeToTop"
-						isPrintRepeatedValues="true"
-						isRemoveLineWhenBlank="false"
-						isPrintInFirstWholeBand="false"
-						isPrintWhenDetailOverflows="false"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{projectName}]]></textFieldExpression>
-				</textField>
 				<textField isStretchWithOverflow="false" pattern="dd/MM/yyyy" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
@@ -554,6 +529,28 @@ GROUP BY NT.notification_code]]></queryString>
 						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<textFieldExpression   class="java.util.Date"><![CDATA[$F{lastProposalSubmissiondate}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Transparent"
+						x="99"
+						y="4"
+						width="127"
+						height="30"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{notificationTitle}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

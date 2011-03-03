@@ -27,29 +27,25 @@
 	<queryString><![CDATA[SELECT 
     PR.proposal_submitteddate AS submittedDate,
     NT.notification_code AS notificationCode,
-    PR.code AS proposalCode,
-    PT.code AS party,
-    P.name AS project
+    NT.notification_title AS notificationTitle,
+    PR.code AS proposalCode
+    
     
 FROM
     proposal PR,
-    notification NT,
-    party PT,
-    projects P
+    notification NT
+    
     
 WHERE
     PR.notification_id=NT.id
-    AND PR.party_id=PT.id
-    AND NT.project_id=P.id
     AND PR.lockedyn='Y'
     
 GROUP BY PR.code]]></queryString>
 
-	<field name="submittedDate" class="java.util.Date"/>
+	<field name="submittedDate" class="java.sql.Timestamp"/>
 	<field name="notificationCode" class="java.lang.String"/>
+	<field name="notificationTitle" class="java.lang.String"/>
 	<field name="proposalCode" class="java.lang.String"/>
-	<field name="party" class="java.lang.String"/>
-	<field name="project" class="java.lang.String"/>
 
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -212,7 +208,7 @@ GROUP BY PR.code]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="96"
+						x="100"
 						y="12"
 						width="0"
 						height="38"
@@ -228,50 +224,12 @@ GROUP BY PR.code]]></queryString>
 					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
 />
 				</line>
-				<line direction="TopDown">
-					<reportElement
-						mode="Opaque"
-						x="193"
-						y="12"
-						width="0"
-						height="38"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="line-6"
-						stretchType="NoStretch"
-						positionType="FixRelativeToTop"
-						isPrintRepeatedValues="true"
-						isRemoveLineWhenBlank="false"
-						isPrintInFirstWholeBand="false"
-						isPrintWhenDetailOverflows="false"/>
-					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
-/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						mode="Opaque"
-						x="333"
-						y="12"
-						width="0"
-						height="38"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="line-7"
-						stretchType="NoStretch"
-						positionType="FixRelativeToTop"
-						isPrintRepeatedValues="true"
-						isRemoveLineWhenBlank="false"
-						isPrintInFirstWholeBand="false"
-						isPrintWhenDetailOverflows="false"/>
-					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
-/>
-				</line>
 				<staticText>
 					<reportElement
 						mode="Transparent"
 						x="7"
 						y="15"
-						width="83"
+						width="90"
 						height="29"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -292,7 +250,7 @@ GROUP BY PR.code]]></queryString>
 					<reportElement
 						mode="Transparent"
 						x="430"
-						y="16"
+						y="15"
 						width="87"
 						height="29"
 						forecolor="#000000"
@@ -313,9 +271,9 @@ GROUP BY PR.code]]></queryString>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="335"
+						x="103"
 						y="15"
-						width="87"
+						width="125"
 						height="29"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -331,50 +289,6 @@ GROUP BY PR.code]]></queryString>
 						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<text><![CDATA[Proposal code]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						mode="Transparent"
-						x="98"
-						y="15"
-						width="90"
-						height="29"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="staticText-6"
-						stretchType="NoStretch"
-						positionType="FixRelativeToTop"
-						isPrintRepeatedValues="true"
-						isRemoveLineWhenBlank="false"
-						isPrintInFirstWholeBand="false"
-						isPrintWhenDetailOverflows="false"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<text><![CDATA[Party]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						mode="Transparent"
-						x="196"
-						y="15"
-						width="133"
-						height="29"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="staticText-7"
-						stretchType="NoStretch"
-						positionType="FixRelativeToTop"
-						isPrintRepeatedValues="true"
-						isRemoveLineWhenBlank="false"
-						isPrintInFirstWholeBand="false"
-						isPrintWhenDetailOverflows="false"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<text><![CDATA[Project]]></text>
 				</staticText>
 				<line direction="TopDown">
 					<reportElement
@@ -414,6 +328,47 @@ GROUP BY PR.code]]></queryString>
 					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
 />
 				</line>
+				<line direction="TopDown">
+					<reportElement
+						mode="Opaque"
+						x="232"
+						y="12"
+						width="0"
+						height="38"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="line-16"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
+/>
+				</line>
+				<staticText>
+					<reportElement
+						mode="Transparent"
+						x="235"
+						y="15"
+						width="190"
+						height="29"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="staticText-6"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[Notification Title]]></text>
+				</staticText>
 			</band>
 		</columnHeader>
 		<detail>
@@ -459,25 +414,6 @@ GROUP BY PR.code]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="333"
-						y="0"
-						width="0"
-						height="33"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="line-10"
-						stretchType="NoStretch"
-						positionType="FixRelativeToTop"
-						isPrintRepeatedValues="true"
-						isRemoveLineWhenBlank="false"
-						isPrintInFirstWholeBand="false"
-						isPrintWhenDetailOverflows="false"/>
-					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
-/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						mode="Opaque"
 						x="428"
 						y="0"
 						width="0"
@@ -497,26 +433,7 @@ GROUP BY PR.code]]></queryString>
 				<line direction="TopDown">
 					<reportElement
 						mode="Opaque"
-						x="193"
-						y="0"
-						width="0"
-						height="33"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="line-12"
-						stretchType="NoStretch"
-						positionType="FixRelativeToTop"
-						isPrintRepeatedValues="true"
-						isRemoveLineWhenBlank="false"
-						isPrintInFirstWholeBand="false"
-						isPrintWhenDetailOverflows="false"/>
-					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
-/>
-				</line>
-				<line direction="TopDown">
-					<reportElement
-						mode="Opaque"
-						x="96"
+						x="100"
 						y="0"
 						width="0"
 						height="33"
@@ -556,7 +473,7 @@ GROUP BY PR.code]]></queryString>
 						mode="Transparent"
 						x="7"
 						y="3"
-						width="88"
+						width="91"
 						height="27"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -598,9 +515,9 @@ GROUP BY PR.code]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="336"
+						x="103"
 						y="3"
-						width="90"
+						width="126"
 						height="27"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -617,12 +534,31 @@ GROUP BY PR.code]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{proposalCode}]]></textFieldExpression>
 				</textField>
+				<line direction="TopDown">
+					<reportElement
+						mode="Opaque"
+						x="232"
+						y="0"
+						width="0"
+						height="33"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="line-17"
+						stretchType="NoStretch"
+						positionType="FixRelativeToTop"
+						isPrintRepeatedValues="true"
+						isRemoveLineWhenBlank="false"
+						isPrintInFirstWholeBand="false"
+						isPrintWhenDetailOverflows="false"/>
+					<graphicElement stretchType="NoStretch" pen="Thin" fill="Solid" 
+/>
+				</line>
 				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="98"
+						x="235"
 						y="3"
-						width="92"
+						width="190"
 						height="27"
 						forecolor="#000000"
 						backcolor="#FFFFFF"
@@ -637,29 +573,7 @@ GROUP BY PR.code]]></queryString>
 					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{party}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="false" pattern="" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
-						mode="Transparent"
-						x="196"
-						y="3"
-						width="135"
-						height="27"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="textField"
-						stretchType="NoStretch"
-						positionType="FixRelativeToTop"
-						isPrintRepeatedValues="true"
-						isRemoveLineWhenBlank="false"
-						isPrintInFirstWholeBand="false"
-						isPrintWhenDetailOverflows="false"/>
-					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
-					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica" size="10" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{project}]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{notificationTitle}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>

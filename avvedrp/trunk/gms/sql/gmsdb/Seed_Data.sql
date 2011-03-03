@@ -38,3 +38,9 @@ UPDATE `gms_settings` SET `active_yes_no`='Y' WHERE NAME <> 'ProposalForm';
 
 INSERT INTO `authority`(`authority`,`description`,`active_yes_no`) VALUES ('ROLE_FINANCE','ROLE_FINANCE','Y')
 
+/*****Seed Data Added for ProosalCategory table on march 1 2011 by Gurupriya****/
+
+insert  into `proposal_category`(`id`,`version`,`active_yes_no`,`created_by`,`created_date`,`modified_by`,`modified_date`,`name`,`remarks`) values (1,8,'Y',NULL,NULL,NULL,NULL,'Infrastructure','Ongoing research in emerging technologies');
+insert  into `proposal_category`(`id`,`version`,`active_yes_no`,`created_by`,`created_date`,`modified_by`,`modified_date`,`name`,`remarks`) values (2,2,'Y',NULL,NULL,NULL,NULL,'Research','Procurement, installation and maintenance of equipments');
+insert  into `proposal_category`(`id`,`version`,`active_yes_no`,`created_by`,`created_date`,`modified_by`,`modified_date`,`name`,`remarks`) values (3,2,'Y',NULL,NULL,NULL,NULL,'eContent','Data repositories');
+insert  into `proposal_category`(`id`,`version`,`active_yes_no`,`created_by`,`created_date`,`modified_by`,`modified_date`,`name`,`remarks`) values (4,1,'Y',NULL,NULL,NULL,NULL,'Network Facility','Centralization of data , control flow etc');

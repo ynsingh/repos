@@ -89,6 +89,13 @@ img,td { behavior: url(../images/iepngfix.htc) }
 		-webkit-border-radius: 8px;
 		-moz-border-radius: 8px;
     }
+.contentDiv{
+height: 38%;
+overflow: auto;
+}
+.contentFullDiv{
+
+}
 .framebody {
 	background-image:url(../images/themesky/bg.jpg);
 	background-repeat: repeat-x;
@@ -461,6 +468,14 @@ border:0px;
 background-color: #E6F3F7;
 
 }
+fieldset.border {
+border-radius: 1px;
+border:2px solid;
+-webkit-border-radius: 8px;
+-moz-border-radius: 8px;
+background-color: #CCE6F3;
+border-color:#A9D0F5;
+}
 
 /* LIST */
 
@@ -690,6 +705,14 @@ background-color: #FFFFFF
 	color:red;
 	font-weight:bold;
 }
+.footerdBar {
+	margin: 0 auto; 
+	width:847px;
+	height:48px;
+	text-align:center;
+	background-color: #b9dcef;
+	background-repeat: no-repeat;  
+	}
 	
 /* Inner Banner end */
 /* Login Bar Start */

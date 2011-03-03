@@ -30,7 +30,7 @@
 	<parameter name="reportDate" isForPrompting="false" class="java.lang.String"/>
 	<parameter name="reportDateTo" isForPrompting="false" class="java.lang.String"/>
 	<queryString><![CDATA[SELECT pr.name AS ProjectName,pr.code AS ProjectCode,pag.code AS Granter,pa.code AS Institution,
-ga.amount_allocated AS AmtAllocated,
+SUM(ga.amount_allocated) AS AmtAllocated,
 
 -- (SELECT I.name FROM investigator I,projectspimap PMAP,projects P WHERE I.id=PMAP.investigator_id AND PMAP.projects_id=P.id AND PMAP.role='PI'AND pr.id=P.id) AS ProjectMgr,
 -- (SELECT IF(SUM(FT.amount) IS NULL,0,SUM(FT.amount)) FROM grant_allocation GA 
