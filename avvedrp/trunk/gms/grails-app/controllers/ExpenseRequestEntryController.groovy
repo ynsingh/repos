@@ -37,14 +37,15 @@ class ExpenseRequestEntryController {
 				projectsList.add(projectInstance)
 	        }
 	    	ConvertToIndainRS currencyFormatter=new ConvertToIndainRS()
+	    	NumberFormat formatter = new DecimalFormat("#0.00")
 	        return [expenseRequestEntryInstance: expenseRequestEntryInstance,expenseRequestEntryInstanceList: expenseRequestEntryInstanceList,
-	                projectsList:projectsList,'currencyFormat':currencyFormatter]
+	                projectsList:projectsList,'currencyFormat':currencyFormatter,'amount':formatter.format(expenseRequestEntryInstance.expenseAmount),
+	                'invoiceAmount':formatter.format(expenseRequestEntryInstance.invoiceAmount)]
 	    }
 /*
  * Function to save Expense Request.
  */
     def save = {
-    	println "params "+params
     	GrailsHttpSession gh=getSession()
     	def dataSecurityService = new DataSecurityService()
     	def investigatorService = new InvestigatorService()
@@ -57,7 +58,12 @@ class ExpenseRequestEntryController {
     	params.level = 0
     	def investigatorInstance = investigatorService.getInvestigatorByemail(userInstance.email)
     	params.investigator = investigatorInstance
+    	if(params.invoiceAmount == "")
+    	{
+    		params.invoiceAmount = 0
+    	}
 		def expenseRequestEntryInstance = new ExpenseRequestEntry(params)
+    	
     	def cal = Calendar.instance
     	def year = cal.get(Calendar.YEAR)
     	def month = cal.get(Calendar.MONTH)+ 1
@@ -66,6 +72,7 @@ class ExpenseRequestEntryController {
     	cal.get(Calendar.HOUR_OF_DAY)+cal.get(Calendar.MINUTE)+cal.get(Calendar.SECOND)
     	//cal.time = new Date(time * 1000)
     	expenseRequestEntryInstance.expenseRequestCode = expenseRequestEntryInstance.projects.code + dat + investigatorInstance.id
+    	
     	if (expenseRequestEntryInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.label')}"
             redirect(action: "create", id: expenseRequestEntryInstance.id)
@@ -135,6 +142,10 @@ class ExpenseRequestEntryController {
                     return
                 }
             }
+            if(params.invoiceAmount == "")
+        	{
+        		params.invoiceAmount = 0
+        	}
             expenseRequestEntryInstance.properties = params
             if (!expenseRequestEntryInstance.hasErrors() && expenseRequestEntryInstance.save(flush: true)) {
                 flash.message = "${message(code: 'default.updated.label')}"
@@ -231,11 +242,15 @@ class ExpenseRequestEntryController {
  */     
     
     def submit = {
-    	GrailsHttpSession gh=getSession()
+		GrailsHttpSession gh=getSession()
     	def userService = new UserService()
     	def expenseRequestService = new ExpenseRequestService()
     	def proposalApprovalService = new ProposalApprovalService()
     	def proposalApprovalAuthorityMapService = new ProposalApprovalAuthorityMapService()
+		if(params.invoiceAmount == "")
+    	{
+    		params.invoiceAmount = 0
+    	}
     	def expenseRequestEntryInstance = expenseRequestService.getExpenseRequestEntryById(params.expenseRequestEntry)
 		expenseRequestEntryInstance.invoiceNo = params.invoiceNo
     	DateFormat df = new SimpleDateFormat("dd/MM/yyyy")
@@ -305,45 +320,84 @@ class ExpenseRequestEntryController {
     	def userService = new UserService()
     	def approvalAuthorityService = new ApprovalAuthorityService()
     	def expenseRequestService = new ExpenseRequestService()
-    	def proposalApprovalAuthorityMapInstanceList = ProposalApprovalAuthorityMap.findAll("from ProposalApprovalAuthorityMap PAM where PAM.proposalId =" +params.id+ " and PAM.proposalType = 'ExpenseRequest'")
+    	def proposalApprovalAuthorityMapService = new ProposalApprovalAuthorityMapService()
     	def approvalAuthorityInstanceList = []
     	def proposalApprovalInstanceList = []
     	int s=0
     	def sizeList = []
     	def approvalAuthorityDetailList = []
     	def proposalApprovalDetailInstanceList = []
+    	def proposalApprovalAuthorityMapInstanceList = []
+    	def expenseRequestEntryInstance = expenseRequestService.getExpenseRequestEntryById(params.id)
+    	proposalApprovalAuthorityMapInstanceList = ProposalApprovalAuthorityMap.findAll("from ProposalApprovalAuthorityMap PAM where PAM.proposalId =" +params.id+ " and PAM.proposalType = 'ExpenseRequest'")
+    	
     	for(int i=0;i<proposalApprovalAuthorityMapInstanceList.size();i++)
 		{
     		def approvalAuthorityInstance = ApprovalAuthority.get( proposalApprovalAuthorityMapInstanceList[i].approvalAuthority.id)
     		approvalAuthorityInstanceList.add(approvalAuthorityInstance)
 		}
-    	def expenseRequestEntryInstance = expenseRequestService.getExpenseRequestEntryById(params.id)
-    	for(int j=0;j<approvalAuthorityInstanceList.size();j++)
-		{
-    		def approvalAuthorityDetailInstanceList = ApprovalAuthorityDetail.findAll("from ApprovalAuthorityDetail AAD where AAD.activeYesNo = 'Y'and AAD.approvalAuthority.id =" +approvalAuthorityInstanceList[j].id)
-        	sizeList[s] = approvalAuthorityDetailInstanceList.size()
-        	s++
-    		for(int k=0;k<approvalAuthorityDetailInstanceList.size();k++)
-        	{
-        		def proposalApprovalInstance = ProposalApproval.find("from ProposalApproval PA where PA.proposalApprovalAuthorityMap.id =" +proposalApprovalAuthorityMapInstanceList[j].id+"and PA.approvalAuthorityDetail.id ="+approvalAuthorityDetailInstanceList[k].id)
-        		approvalAuthorityDetailList.add(approvalAuthorityDetailInstanceList[k])
-        		if(proposalApprovalInstance)
-        		{
-        			def proposalApprovalDetailInstance = ProposalApprovalDetail.find("from ProposalApprovalDetail PAD where PAD.proposalApproval.id ="+proposalApprovalInstance.id)
-            		proposalApprovalDetailInstanceList.add(proposalApprovalDetailInstance)
-            		
-        			proposalApprovalInstanceList.add(proposalApprovalInstance)
-        			
-        		}
-        		else
-        		{
-        			proposalApprovalInstanceList.add(null)
-        			
-        		}
-        		
-        	}
     		
-		}
+    		
+    	if(expenseRequestEntryInstance.status == 'Pending')
+    	{
+    		def expenseRequestMaxOrder = proposalApprovalAuthorityMapService.getPreProposalApprovalMaxOrder('ExpenseRequest',expenseRequestEntryInstance.id)
+	    	def newProposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService.getProposalApprovalAuthorityMapByApproveOrder(expenseRequestEntryInstance,expenseRequestMaxOrder[0])
+	    	for(int j=0;j<proposalApprovalAuthorityMapInstanceList.size();j++)
+	    	{
+	    		if(proposalApprovalAuthorityMapInstanceList[j].approveOrder == newProposalApprovalAuthorityMapInstance.approveOrder)
+		    	{
+		    		def approvalAuthorityDetailInstanceList = ApprovalAuthorityDetail.findAll("from ApprovalAuthorityDetail AAD where AAD.activeYesNo = 'Y'and AAD.approvalAuthority.id =" +proposalApprovalAuthorityMapInstanceList[j].approvalAuthority.id)
+		        	sizeList[s] = approvalAuthorityDetailInstanceList.size()
+		        	s++
+		        	for(int k=0;k<approvalAuthorityDetailInstanceList.size();k++)
+		        	{
+		        		def proposalApprovalInstance = ProposalApproval.find("from ProposalApproval PA where PA.proposalApprovalAuthorityMap.id =" +proposalApprovalAuthorityMapInstanceList[j].id+"and PA.approvalAuthorityDetail.id ="+approvalAuthorityDetailInstanceList[k].id)
+		        		approvalAuthorityDetailList.add(approvalAuthorityDetailInstanceList[k])
+		        		if(proposalApprovalInstance)
+		        		{
+		        			def proposalApprovalDetailInstance = ProposalApprovalDetail.find("from ProposalApprovalDetail PAD where PAD.proposalApproval.id ="+proposalApprovalInstance.id)
+		            		proposalApprovalDetailInstanceList.add(proposalApprovalDetailInstance)
+		            		proposalApprovalInstanceList.add(proposalApprovalInstance)
+		            		
+		        		}
+		        		else
+		        		{
+		        			proposalApprovalInstanceList.add(null)
+		        			
+		        		}
+		        		
+		        	}
+	    		
+				}
+		    	else
+		    	{
+		    		
+	    			proposalApprovalInstanceList = ProposalApproval.findAll("from ProposalApproval PA where PA.proposalApprovalAuthorityMap.id =" +proposalApprovalAuthorityMapInstanceList[j].id) 
+	    			sizeList[s] = proposalApprovalInstanceList.size()
+		        	s++
+		        	for(int l=0;l<proposalApprovalInstanceList.size();l++)
+		        	{
+		        		def proposalApprovalDetailInstance = ProposalApprovalDetail.find("from ProposalApprovalDetail PAD where PAD.proposalApproval.id ="+proposalApprovalInstanceList[l].id)
+	            		proposalApprovalDetailInstanceList.add(proposalApprovalDetailInstance)
+		        	}
+				}
+	    	}
+    	}
+    	else
+    	{
+    		for(int i=0;i<proposalApprovalAuthorityMapInstanceList.size();i++)
+			{
+    			proposalApprovalInstanceList = ProposalApproval.findAll("from ProposalApproval PA where PA.proposalApprovalAuthorityMap.id =" +proposalApprovalAuthorityMapInstanceList[i].id) 
+    			sizeList[s] = proposalApprovalInstanceList.size()
+	        	s++
+	        	for(int j=0;j<proposalApprovalInstanceList.size();j++)
+	        	{
+	        		def proposalApprovalDetailInstance = ProposalApprovalDetail.find("from ProposalApprovalDetail PAD where PAD.proposalApproval.id ="+proposalApprovalInstanceList[j].id)
+            		proposalApprovalDetailInstanceList.add(proposalApprovalDetailInstance)
+	        	}
+			}
+    		
+    	}
     	[proposalApprovalAuthorityMapInstanceList:proposalApprovalAuthorityMapInstanceList,approvalAuthorityInstanceList:approvalAuthorityInstanceList,
     	 expenseRequestEntryInstance:expenseRequestEntryInstance,sizeList:sizeList,
     	 proposalApprovalDetailInstanceList:proposalApprovalDetailInstanceList,approvalAuthorityDetailList:approvalAuthorityDetailList]
@@ -418,12 +472,15 @@ class ExpenseRequestEntryController {
     	def grantAllocationSplitService=new GrantAllocationSplitService()
     	def expenseRequestService = new ExpenseRequestService()
     	def grantExpenseService = new GrantExpenseService()
+    	def grantExpenseInstance = new GrantExpense()
     	def expenseRequestEntryInstance = expenseRequestService.getExpenseRequestEntryById(new Integer(params.id))
     	def accountHeadList=grantAllocationSplitService.getAccountHeadByProject(expenseRequestEntryInstance.projects.id)
     	def grantAllocationInstanceList=grantAllocationService.getGrantAllocationsByProject(expenseRequestEntryInstance.projects.id)
     	def grantExpenseInstanceList = grantExpenseService.getGrantExpenseByRequestCode(expenseRequestEntryInstance.expenseRequestCode)
+    	NumberFormat formatter = new DecimalFormat("#0.00")
     	[expenseRequestEntryInstance:expenseRequestEntryInstance,accountHeadList:accountHeadList,
-    	 grantAllocationInstanceList:grantAllocationInstanceList,grantExpenseInstanceList:grantExpenseInstanceList]
+    	 grantAllocationInstanceList:grantAllocationInstanceList,grantExpenseInstanceList:grantExpenseInstanceList,
+    	 'amount':formatter.format(grantExpenseInstance.expenseAmount),grantExpenseInstance:grantExpenseInstance]
     }
 /*
  * Function to save evaluation result of Expense Request.

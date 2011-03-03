@@ -18,6 +18,7 @@ class GrantExpense {
 	Date modifiedDate
 	
 	double balanceAmount
+	String expenseRequestCode
 	
 	static constraints={
 		grantAllocation(nullable:true)
@@ -26,6 +27,8 @@ class GrantExpense {
 		dateOfExpense(nullable:false)
 		modifiedBy(nullable:true)
 		modifiedDate(nullable:true)
+		
+		expenseRequestCode(nullable:true)
 		
 	}
 	

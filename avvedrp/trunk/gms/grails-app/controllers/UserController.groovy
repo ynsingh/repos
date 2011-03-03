@@ -253,7 +253,7 @@ class UserController extends GmsController {
 	        mailMessage+="\n Password     : "+params.password;
 	        mailMessage+="\n \n \n To activate your account,click on the following link   \t:"+urlPath+personId+" \n";
 	    	def emailId = notificationsEmailsService.sendMessage(params.email,mailMessage)
-	    	flash.message = "${message(code: 'default.created.label')}"
+	    	flash.message = "${message(code: 'default.UserCreated.label')}"
 			redirect action: list, id: personId
 		}
 		else {

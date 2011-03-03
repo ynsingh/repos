@@ -22,9 +22,12 @@ class ProposalApprovalAuthorityMapController {
         def preProposalList = preProposalService.getSubmittedPreProposal(gh.getValue("Party"))
         def approvalAuthorityInstance = approvalAuthorityService.getActiveApprovalAuthority(gh.getValue("PartyID"))
         def proposalApprovalAuthorityMapList = []
+		
+	
+		
         for(int i=0;i<approvalAuthorityInstance.size();i++)
         {
-        	proposalApprovalAuthorityMapInstanceList = ProposalApprovalAuthorityMap.findAll("from ProposalApprovalAuthorityMap PAAM WHERE PAAM.approvalAuthority IN ("+approvalAuthorityInstance[i].id+") and PAAM.proposalType NOT IN('ExpenseRequest')")
+        	proposalApprovalAuthorityMapInstanceList = ProposalApprovalAuthorityMap.findAll("from ProposalApprovalAuthorityMap PAAM WHERE PAAM.approvalAuthority IN ("+approvalAuthorityInstance[i].id+") and PAAM.proposalType NOT IN('ExpenseRequest','Proposal')")
         	for(int j=0;j<proposalApprovalAuthorityMapInstanceList.size();j++)
         		proposalApprovalAuthorityMapList.add(proposalApprovalAuthorityMapInstanceList[j])
         	
@@ -33,39 +36,47 @@ class ProposalApprovalAuthorityMapController {
         return ['proposalApprovalAuthorityMapInstance': proposalApprovalAuthorityMapInstance,'preProposalList':preProposalList,'proposalApprovalAuthorityMapInstanceList': proposalApprovalAuthorityMapList,'approvalAuthorityInstance':approvalAuthorityInstance]
     }
 
-    def save = {
+    def save = 
+    {
 		def proposalApprovalAuthorityMapService = new ProposalApprovalAuthorityMapService()
         def proposalApprovalAuthorityMapInstance = new ProposalApprovalAuthorityMap(params)
-		println"params"+params
-        def proposalApprovalAuthorityMapData = proposalApprovalAuthorityMapService.checkDuplicateProposalApprovalAuthorityMap(params)
-        println"proposalApprovalAuthorityMapData"+proposalApprovalAuthorityMapData
+        def proposalApprovalAuthorityMapData = proposalApprovalAuthorityMapService.checkDuplicateProposalApprovalAuthorityMap(proposalApprovalAuthorityMapInstance,params)
         if(proposalApprovalAuthorityMapData)
         {
-        	flash.message ="${message(code: 'default.AlreadyExists.label')}"
-	    		redirect(action: "create", id: proposalApprovalAuthorityMapInstance.id)
+        	flash.error ="${message(code: 'default.AlreadyExistsAuthorityApproveOrder.label')}"
+        	redirect(action: "create", id: proposalApprovalAuthorityMapInstance.id)
         }
         else 
         {
-        if (proposalApprovalAuthorityMapInstance.save(flush: true)) {
-        	
-        	
-        	def approvalAuthorityDetailInstance = ApprovalAuthorityDetail.findAll("from ApprovalAuthorityDetail AD where AD.activeYesNo='Y' and AD.approvalAuthority.id="+proposalApprovalAuthorityMapInstance.approvalAuthority.id)
-          
-        	for(approvalAuthorityDetails in approvalAuthorityDetailInstance)
-           {
-        	  
-        	  def proposalApprovalInstance = new ProposalApproval()
-        	  proposalApprovalInstance.proposalApprovalAuthorityMap=proposalApprovalAuthorityMapInstance
-        	   proposalApprovalInstance.approvalAuthorityDetail=approvalAuthorityDetails
-        	   proposalApprovalInstance.save()
-           }
-        	flash.message = "${message(code: 'default.ProposalApprovalAuthorityMapCreated.label')}"
-            redirect(action: "create", id: proposalApprovalAuthorityMapInstance.id)
+         	def proposalApprovalAuthorityMapList = ProposalApprovalAuthorityMap.findAll("from ProposalApprovalAuthorityMap PM where PM.activeYesNo='Y' and PM.proposalId="+params.proposalId+" and PM.proposalType='"+params.proposalType+"' and PM.approveOrder= "+params.approveOrder)
+        	if(proposalApprovalAuthorityMapList.size())
+        	{
+        		flash.error ="${message(code: 'default.AlreadyExistsApproveOrder.label')}"
+        		redirect(action: "create", id: proposalApprovalAuthorityMapInstance.id)
+        	}
+        	else
+        	{
+        		proposalApprovalAuthorityMapInstance.activeYesNo = 'Y'
+        		if (proposalApprovalAuthorityMapInstance.save(flush: true))
+	        	{
+	        		def approvalAuthorityDetailInstance = ApprovalAuthorityDetail.findAll("from ApprovalAuthorityDetail AD where AD.activeYesNo='Y' and AD.approvalAuthority.id="+proposalApprovalAuthorityMapInstance.approvalAuthority.id)
+	        		for(approvalAuthorityDetails in approvalAuthorityDetailInstance)
+	        		{
+	        	  
+	        			def proposalApprovalInstance = new ProposalApproval()
+	        			proposalApprovalInstance.proposalApprovalAuthorityMap=proposalApprovalAuthorityMapInstance
+	        			proposalApprovalInstance.approvalAuthorityDetail=approvalAuthorityDetails
+	        			proposalApprovalInstance.save()
+	        		}
+	        		flash.message = "${message(code: 'default.ProposalApprovalAuthorityMapCreated.label')}"
+	        		redirect(action: "create", id: proposalApprovalAuthorityMapInstance.id)
+	        	}
+	        	else
+	        	{
+	        		render(view: "create", model: [proposalApprovalAuthorityMapInstance: proposalApprovalAuthorityMapInstance])
+	        	}
+        	}
         }
-        else {
-            render(view: "create", model: [proposalApprovalAuthorityMapInstance: proposalApprovalAuthorityMapInstance])
-        }
-    }
 	}
 
     def show = {
@@ -84,23 +95,22 @@ class ProposalApprovalAuthorityMapController {
 		def approvalAuthorityService = new ApprovalAuthorityService()
         def proposalApprovalAuthorityMapInstance = ProposalApprovalAuthorityMap.get(params.id)
         def approvalAuthorityInstance = approvalAuthorityService.getActiveApprovalAuthority(gh.getValue("PartyID"))
-        println"params"+proposalApprovalAuthorityMapInstance
-        
+        def preProposalList = preProposalService.getSubmittedPreProposal(gh.getValue("Party"))
         def preProposalInstance = PreProposal.find("from PreProposal P where P.id ="+proposalApprovalAuthorityMapInstance.proposalId)
-        println"preProposalInstance"+preProposalInstance
-        
         if (!proposalApprovalAuthorityMapInstance) {
         	
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'proposalApprovalAuthorityMap.label', default: 'ProposalApprovalAuthorityMap'), params.id])}"
             redirect(action: "edit")
         }
         else {
-            return ['proposalApprovalAuthorityMapInstance': proposalApprovalAuthorityMapInstance,'approvalAuthorityInstance':approvalAuthorityInstance,'preProposalInstance':preProposalInstance]
+            return ['proposalApprovalAuthorityMapInstance': proposalApprovalAuthorityMapInstance,'approvalAuthorityInstance':approvalAuthorityInstance,'preProposalInstance':preProposalInstance,'preProposalList':preProposalList]
         }
     }
 
     def update = {
-        def proposalApprovalAuthorityMapInstance = ProposalApprovalAuthorityMap.get(params.id)
+       def proposalApprovalAuthorityMapInstance = ProposalApprovalAuthorityMap.get(params.id)
+       
+       
         if (proposalApprovalAuthorityMapInstance) {
             if (params.version) {
                 def version = params.version.toLong()
@@ -111,31 +121,66 @@ class ProposalApprovalAuthorityMapController {
                     return
                 }
             }
+            
             def proposalApprovalAuthorityMapService = new ProposalApprovalAuthorityMapService()
-           
-            def proposalApprovalAuthorityMapDetail = proposalApprovalAuthorityMapService.checkDuplicateEditProposalApprovalAuthorityMap(params)
-            println"proposalApprovalAuthorityMapDetail"+proposalApprovalAuthorityMapDetail
-            if(proposalApprovalAuthorityMapDetail)
-            {
+            def proposalApprovalAuthorityMapDetail = proposalApprovalAuthorityMapService.checkDuplicateProposalApprovalAuthorityMap(proposalApprovalAuthorityMapInstance,params)
+            	def proposalList = ProposalApprovalDetail.executeQuery(" from ProposalApprovalDetail PA where PA.proposalApproval.proposalApprovalAuthorityMap.proposalId ="+ proposalApprovalAuthorityMapInstance.proposalId +" and  PA.proposalApproval.proposalApprovalAuthorityMap.proposalType='"+proposalApprovalAuthorityMapInstance.proposalType+"'") 
+            	println "proposalList"+proposalList
+            	if(proposalList)
+            	{
+            		flash.message ="${message(code: 'default.ReviewStarts.message')}"
+            		redirect(action: "create", id: proposalApprovalAuthorityMapInstance.id)
+            	}
+            	else  if((proposalApprovalAuthorityMapDetail) && (proposalApprovalAuthorityMapDetail[0].id != Long.parseLong(params.id)))
+              {
             	flash.message ="${message(code: 'default.AlreadyExists.label')}"
-    	    		redirect(action: "create", id: proposalApprovalAuthorityMapInstance.id)
-            }
+    	    	redirect(action: "create", id: proposalApprovalAuthorityMapInstance.id)
+              }
+           
             else 
-            {
-            proposalApprovalAuthorityMapInstance.properties = params
-            if (!proposalApprovalAuthorityMapInstance.hasErrors() && proposalApprovalAuthorityMapInstance.save(flush: true)) {
-                flash.message = "${message(code: 'default.ProposalApprovalAuthorityMapUpdated.label')}"
-                redirect(action: "create", id: proposalApprovalAuthorityMapInstance.id)
+             {
+            	
+            	def proposalApprovalAuthorityMapList = ProposalApprovalAuthorityMap.findAll("from ProposalApprovalAuthorityMap PM where PM.activeYesNo='Y' and PM.proposalId="+params.proposalId+" and PM.proposalType='"+params.proposalType+"' and PM.approveOrder= "+params.approveOrder)
+            	
+	            	if(proposalApprovalAuthorityMapList.size())
+	            	{
+	            		
+	            		if(new Integer(params.id)==proposalApprovalAuthorityMapList[0].id)
+	            		{
+	            			proposalApprovalAuthorityMapInstance.properties = params
+		                		if (!proposalApprovalAuthorityMapInstance.hasErrors() && proposalApprovalAuthorityMapInstance.save(flush: true)) {
+			    	           			flash.message = "${message(code: 'default.ProposalApprovalAuthorityMapUpdated.label')}"
+			    		                redirect(action: "create", id: proposalApprovalAuthorityMapInstance.id)
+		    		            	}
+		    		            else {
+		    		                	render(view: "edit", model: [proposalApprovalAuthorityMapInstance: proposalApprovalAuthorityMapInstance])
+		    		                }
+	            		}
+	            		else
+	            		{
+		            		flash.error ="${message(code: 'default.AlreadyExistsApproveOrder.label')}"
+		            		redirect(action: "create", id: proposalApprovalAuthorityMapInstance.id)
+		            	}
+	            	}
+	            	else
+	            	{
+		            	proposalApprovalAuthorityMapInstance.properties = params
+	            		if (!proposalApprovalAuthorityMapInstance.hasErrors() && proposalApprovalAuthorityMapInstance.save(flush: true)) {
+		           			flash.message = "${message(code: 'default.ProposalApprovalAuthorityMapUpdated.label')}"
+			                redirect(action: "create", id: proposalApprovalAuthorityMapInstance.id)
+			            	}
+			            else {
+			                render(view: "edit", model: [proposalApprovalAuthorityMapInstance: proposalApprovalAuthorityMapInstance])
+			            }
+	            	}
+            	
             }
-            else {
-                render(view: "edit", model: [proposalApprovalAuthorityMapInstance: proposalApprovalAuthorityMapInstance])
-            }
-            }
+        
         }
-        else {
-            flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'proposalApprovalAuthorityMap.label', default: 'ProposalApprovalAuthorityMap'), params.id])}"
-            redirect(action: "list")
-        }
+     else {
+	        flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'proposalApprovalAuthorityMap.label', default: 'ProposalApprovalAuthorityMap'), params.id])}"
+	        redirect(action: "list")
+    }
     }
 
     def delete = {
@@ -158,7 +203,6 @@ class ProposalApprovalAuthorityMapController {
     }
     def getProposals =
     {
-    	println "params get "+params
     	def preProposalList 
     	GrailsHttpSession gh=getSession()
     	if(params.proposal=="PreProposal")
@@ -176,7 +220,6 @@ class ProposalApprovalAuthorityMapController {
     		}
     		render (template:"proposalSelect", model : ['preProposalList' : preProposalList])
     	}
-    	println "preProposalList "+preProposalList
     	//render (template:"proposalSelect", model : ['preProposalList' : preProposalList])
     }
 }

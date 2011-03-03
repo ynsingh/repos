@@ -6,6 +6,17 @@ class ProposalApplication {
     String modifiedBy;
     String controllerId;
     Date modifiedDate;
+    String name;
+    String designation;
+    String organisation;
+    String postalAddress;
+    String city;
+    String state;
+    String phone;
+    String fax;
+    String email;
+    String mobile;
+    ProposalCategory proposalCategory;
 static constraints={
 	
 					controllerId(nullable:true)
@@ -13,6 +24,17 @@ static constraints={
 					createdDate(nullable:true)
 					modifiedBy(nullable:true)
 					modifiedDate(nullable:true)
+					name(nullable:true)
+					designation(nullable:true)
+					organisation(nullable:true)
+					postalAddress(nullable:true)
+					city(nullable:true)
+					state(nullable:true)
+					phone(nullable:true)
+					fax(nullable:true)
+					email(nullable:true)
+					mobile(nullable:true)
+					proposalCategory(nullable:true)
  }
 	boolean saveAll
 	static transients=["saveAll"]

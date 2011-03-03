@@ -32,6 +32,7 @@ grails.converters.encoding="UTF-8"
 // enabled native2ascii conversion of i18n properties files
 grails.enable.native2ascii = true
 grails.mail.host="192.168.36.10"
+
 /*grails {
 	   mail {
 		   
@@ -84,7 +85,7 @@ log4j {
 }
 
 ckeditor {
-	config = "/js/myckconfig.js"
+	config = "/js/ckconfig.js"
     upload {
         basedir = "/tmp/storagearea/"
         baseurl = "/uploads/"
@@ -117,8 +118,15 @@ ckeditor {
 
 	
 }
+
+
+
+
+
 //log4j.logger.org.springframework.security='off,stdout'
-// Added by the Spring Security Core plugin:
-//grails.plugins.springsecurity.userLookup.userDomainClassName = 'Person.Authority'
-//grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'Person.AuthorityRequestmap'
-//grails.plugins.springsecurity.authority.className = 'Person.Requestmap'
+
+//log4j.logger.org.springframework.security='off,stdout'
+
+//log4j.logger.org.springframework.security='off,stdout'
+
+//log4j.logger.org.springframework.security='off,stdout'

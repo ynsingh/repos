@@ -101,9 +101,9 @@ class GrantExpenseController extends GmsController {
  				           println"end date diff" + (endingDate > expenseDate)
  				        	  
  				        
- 				   if(( expenseDate > strtingDate) && (endingDate > expenseDate) )
+ 				   if(( expenseDate >= strtingDate) && (endingDate >= expenseDate) )
  				   {
- 						  flash.message="${message(code: 'default.expenseUtilizationCertificate.label')}"
+ 						  flash.message="${message(code: 'default.expenseDeleteUtilizationCertificate.label')}"
  							 redirect(action:edit,id:params.id)
  				   }
  				          
@@ -327,11 +327,11 @@ class GrantExpenseController extends GmsController {
  				           println"end date diff" + (endingDate > expenseDate)
  				        	  
  				        
- 				   if(( expenseDate > strtingDate) && (endingDate > expenseDate) )
+ 				   if(( expenseDate >= strtingDate) && (endingDate >= expenseDate) )
  				   {
  					   
  					
- 						  flash.message="${message(code: 'default.expenseUtilizationCertificate.label')}"
+ 						  flash.message="${message(code: 'default.expenseUpdateUtilizationCertificate.label')}"
  							 redirect(action:edit,id:params.id)
  				   }
  				          
@@ -639,7 +639,7 @@ class GrantExpenseController extends GmsController {
 				           println"end date diff" + (endingDate > expenseDate)
 				        	  
 				        
-				   if(( expenseDate > strtingDate) && (endingDate > expenseDate) )
+				   if(( expenseDate >= strtingDate) && (endingDate >= expenseDate) )
 				   {
 					   
 					

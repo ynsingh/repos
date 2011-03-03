@@ -1,6 +1,6 @@
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 class NotificationsEmailsController {
-    
+	def notificationService
     def index = { redirect(action:list,params:params) }
 
     // the delete, save and update actions only accept POST requests
@@ -162,7 +162,8 @@ class NotificationsEmailsController {
             if(!params.max) params.max = 10
             def notificationsEmailsService = new NotificationsEmailsService()
     		println "party=="+gh.getValue("Party")
-            def partyNotificationsInstance = notificationsEmailsService.getNotificationsByParty(gh.getValue("Party"))
+            //def partyNotificationsInstance = notificationsEmailsService.getNotificationsByParty(gh.getValue("Party"))
+            def partyNotificationsInstance = notificationService.getAllPublishedNotification(gh.getValue("Party"))
             println "instance=="+partyNotificationsInstance
             [ partyNotificationsInstance : partyNotificationsInstance ]
     }

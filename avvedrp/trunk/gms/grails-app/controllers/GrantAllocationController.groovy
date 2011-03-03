@@ -2,10 +2,7 @@
 	import java.util.Iterator;
 	import java.text.*;
 	import java.util.*;
-	
-	
 	import java.sql.*;
-
 	import java.io.*
 	import net.sf.jasperreports.engine.JRException;
 	import net.sf.jasperreports.engine.JasperExportManager;
@@ -24,8 +21,7 @@
 	import org.springframework.dao.DataAccessException
 
 	import grails.plugins.springsecurity.Secured
-
-
+	
 	import org.codehaus.groovy.grails.commons.ApplicationHolder as AH
 	import static org.springframework.security.acls.domain.BasePermission.ADMINISTRATION
 	import static org.springframework.security.acls.domain.BasePermission.DELETE
@@ -35,25 +31,23 @@
 	import org.springframework.security.core.authority.AuthorityUtils
 	import org.springframework.security.core.context.SecurityContextHolder as SCH
 	
-   class GrantAllocationController extends GmsController {
+    class GrantAllocationController extends GmsController {
 		
-		private static final Permission[] HAS_DELETE = [DELETE, ADMINISTRATION]
-		private static final Permission[] HAS_ADMIN = [ADMINISTRATION]
-		
-		def aclPermissionFactory
-		def aclUtilService
-		def grantAllocationService
-		def projectsService
-		def springSecurityService
+	private static final Permission[] HAS_DELETE = [DELETE, ADMINISTRATION]
+	private static final Permission[] HAS_ADMIN = [ADMINISTRATION]
+	
+	def aclPermissionFactory
+	def aclUtilService
+	def grantAllocationService
+	def projectsService
+	def springSecurityService
 
     def index = { 
     		
     		redirect(action:list,params:params) 
     		}
 
-	
-
-    // the delete, save and update actions only accept POST requests
+	// the delete, save and update actions only accept POST requests
     def allowedMethods = [delete:'POST', save:'POST', update:'POST',funtSave:'POST']
 
     def list = {
@@ -71,12 +65,10 @@
 		def grantAllocationService = new GrantAllocationService()
         def dataSecurityService = new DataSecurityService()
 		def grantAllocationInstance=grantAllocationService.getGrantAllocationById(new Integer(params.id))
-		
 		def grantAllocationSplitInstance = grantAllocationService.getGrantAllocationSplit(grantAllocationInstance);
 		def grantExpenseInstance = grantAllocationService.getExpenseForGrantAllocation(grantAllocationInstance);
 		def grantReceiptInstance = grantAllocationService.getGrantReceiptForGrantAllocation(grantAllocationInstance);
 		def fundTransferInstance= grantAllocationService.getFundTransferForGrantAllocation(grantAllocationInstance);
-		println "" + grantAllocationSplitInstance
 		if(grantAllocationSplitInstance)
 		{
 			if(grantAllocationInstance.projects.parent.id == null)
@@ -234,12 +226,9 @@
 		GrailsHttpSession gh=getSession()
         def grantAllocationInstance = new GrantAllocation()
         grantAllocationInstance.properties = params
-        println"++++++++++++++++params++++++++++"+params
         def dataSecurityService = new DataSecurityService()
         def grantAllocationInstanceList=dataSecurityService.getGrantAllocationsForLoginUser(
         		"Fund",gh.getValue("ProjectID"),gh.getValue("PartyID"))
-        
-		println grantAllocationInstanceList
         return ['grantAllocationInstance':grantAllocationInstance,
                 'grantAllocationInstanceList':grantAllocationInstanceList]
     }
@@ -263,29 +252,20 @@
             	subQuery =subQuery+" "+params.order
            
             def grantAllocationInstanceList
-         
-           	println"grantAllocationInstance"+params.id
             def projectIdStart="("
             def projectsService = new ProjectsService()		
             def projectsInstance = projectsService.getProjectById(params.id)	
             //def projectsPIMapInstance = dataSecurityService.getProjectsPIMap(projectsInstance.id);
             def projectsPIMapInstance = projectsService.checkPIofProject(projectsInstance.id)
-            println "PIMApxsdf"+ projectsPIMapInstance
             def grantAllocationInstanceListproj
             grantAllocationInstanceListproj = grantAllocationService.getGrantAllocationsForAssignedProject(projectsInstance.id)
-            println "grantAllocationInstanceListproj"+ grantAllocationInstanceListproj
-        	println"grantAllocationInstance"+projectsInstance
-            //def partyinstance=Party.get(gh.getValue("Party"))
             def partyinstance
             def partInstance
             if(projectsInstance.parent!=null)
             {
-            //def grantInstance = GrantAllocation.findAll("from GrantAllocation GA where GA.projects="+projectsInstance.parentId)
-            def grantInstance = grantAllocationService.getGrantAllocationInstanceForParentProject(projectsInstance)
-            println"grantInstance"+grantInstance
-           partyinstance=GrantAllocation.executeQuery("select GA.party from GrantAllocation GA where GA.id="+grantInstance[0].id)
-            println"partyinstance"+partyinstance
-            println"partyinstance.code"+partyinstance[0].code
+	            //def grantInstance = GrantAllocation.findAll("from GrantAllocation GA where GA.projects="+projectsInstance.parentId)
+	            def grantInstance = grantAllocationService.getGrantAllocationInstanceForParentProject(projectsInstance)
+	            partyinstance=GrantAllocation.executeQuery("select GA.party from GrantAllocation GA where GA.id="+grantInstance[0].id)
             }
             else
             {
@@ -307,13 +287,10 @@
         
     def funtSave = 
     {
-    		println "*******************************IfuntSave***************"+params.id
     		GrailsHttpSession gh=getSession()
     		def grantAllocationInstance = new GrantAllocation(params)
     		//def projectsInstance = projectsService.getProjectById(new Integer(params.id))	
     		def projectsInstance = Projects.get(params.id)
-    		println "projectsInstance"+projectsInstance
-    		println "grantAllocationInstance.projects"+grantAllocationInstance
     		grantAllocationInstance.projects = projectsInstance
     		grantAllocationInstance.createdBy="admin"
     		grantAllocationInstance.modifiedBy="admin"
@@ -326,8 +303,7 @@
     	    if(projectsInstance.parent!=null)
     	    {
     	    def grantInstance = grantAllocationService.getGrantAllocationInstanceForParentProject(projectsInstance)
-            println"grantInstance"+grantInstance
-           def partyinstance=GrantAllocation.executeQuery("select GA.party from GrantAllocation GA where GA.id="+grantInstance[0].id)
+            def partyinstance=GrantAllocation.executeQuery("select GA.party from GrantAllocation GA where GA.id="+grantInstance[0].id)
     				       
     		grantAllocationInstance.party=partyinstance[0]
     	    }
@@ -388,8 +364,6 @@
 	        
 	        def partyInstance=Party.get(gh.getValue("Party"))
 	        grantAllocationInstance.granter=partyInstance;
-	        println "params"+params.id
-	        
 	        def grantAllocationInstanceList = grantAllocationService.getSubGrantAllocationsChild(new Integer(params.id),getUserPartyID(),subQuery)
 	        double sumAmountAllocated = 0.00
 	        def projectsPIMapInstanceList=[]
@@ -398,10 +372,8 @@
 	        	sumAmountAllocated = sumAmountAllocated + grantAllocationInstanceList[i].amountAllocated
 	        	
 	        	//get PI of projects
-	        	println "grantAllocationInstanceList"+ grantAllocationInstanceList[i].projects.id
-            	def projectsPIMapInstance = dataSecurityService.getProjectsPIMap(grantAllocationInstanceList[i].projects.id);
-    	        println "PIMAp"+ projectsPIMapInstance
-   	        	projectsPIMapInstanceList.add(projectsPIMapInstance)
+	        	def projectsPIMapInstance = dataSecurityService.getProjectsPIMap(grantAllocationInstanceList[i].projects.id);
+    	        projectsPIMapInstanceList.add(projectsPIMapInstance)
 	        }
             
 	        grantAllocationInstance.totAllAmount = sumAmountAllocated
@@ -423,8 +395,6 @@
       
         	def partyInstance=Party.get(gh.getValue("Party"))
         	grantAllocationInstance.granter=partyInstance;
-        println "params"+params.id
-        
         def grantAllocationInstanceList = grantAllocationService.getSubGrantAllocationInSort(new Integer(params.id),subQuery)
         
         return ['grantAllocationInstance':grantAllocationInstance,
@@ -460,8 +430,6 @@
         	def partyInstance=Party.get(new Long(gh.getValue("Party")))
         	grantAllocationInstance.party=partyInstance;
 			grantAllocationInstance.projects = projectInstance
-			
-			println "params"+grantAllocationInstance.errors
 			String subQuery="";
 	        if(params.sort != null && !params.sort.equals(""))
 	       	subQuery=" order by GA."+params.sort
@@ -473,9 +441,7 @@
             //get PI of projects
             for(int i=0;i<grantAllocationInstanceList.size();i++)
             {
-            	println "grantAllocationInstanceList"+ grantAllocationInstanceList[i].projects.id
             	def projectsPIMapInstance = dataSecurityService.getProjectsPIMap(grantAllocationInstanceList[i].projects.id);
-            	println "PIMAp"+ projectsPIMapInstance
             	projectsPIMapInstanceList.add(projectsPIMapInstance)
             }
 	        ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
@@ -496,11 +462,8 @@
 	 * */
     def subGrantSave = 
     {
-		println "params = " + params
-		println "params = " + params.parent.id
-		//params.createdBy = "user";
+		def investigatorService = new InvestigatorService()
 		params.createdDate = new Date();
-		//params.modifiedBy = "user";
 		params.modifiedDate = new Date();
 		double sumAmount = 0.0
     	double totAllAmount = ((params.totAllAmount).toDouble()).doubleValue()
@@ -510,184 +473,127 @@
     	def granterInstance
     	def grantAllocationInstance
     	def projectsInstance = new Projects(params)
-		
-		
 		projectsInstance.code=params.code
 		projectsInstance.name=params.name
 		projectsInstance.createdBy="user";
 		projectsInstance.modifiedBy = "user";
-		
 		projectsInstance.activeYesNo='Y'
 		//save projects
-		
 		def parentProjectsInstance = projectsService.getProjectById(new Long( params.parent.id ))
-    	
     	projectsInstance.parent=parentProjectsInstance
     	projectsInstance.projectType=parentProjectsInstance.projectType
-    	println"projectsInstance.parent.projectStartDate"+projectsInstance.parent.projectStartDate
-    	println"projectsInstance.projectStartDate"+projectsInstance.projectStartDate
-       
+    	def investigatorInstance = investigatorService.getInvestigatorById(new Integer(params.investigator.id)) 
+    	projectsInstance.investigator = investigatorInstance
     	GrailsHttpSession gh=getSession()
-    	
-    	
-    	
-		//grantAllocationInstance.projects=
-    	
-    		
-    			   			
-    			
-    			println params
-    			println params.grantor
-    			granterInstance=Party.get(new Integer(params.grantor))
-    			grantAllocationInstance = new GrantAllocation(params)
-    	        grantAllocationInstance.projects=projectsInstance
-    			grantAllocationInstance.granter=granterInstance
-    			println grantAllocationInstance.projects
-    			println grantAllocationInstance.party
-    			println grantAllocationInstance.granter
-    			
-    		    grantAllocationInstance.createdBy="admin"
-    			grantAllocationInstance.modifiedBy="admin"
-    			grantAllocationInstance.allocationType="grand"
-    			grantAllocationInstance.code=""
-    		
-    			def grantAllocationInstanceCheck = grantAllocationService.getGrantAllocationsByProjectIdAndPartyId(grantAllocationInstance.projects.id,grantAllocationInstance.party.id)
-    			println "grantAllocationInstanceCheck "+grantAllocationInstanceCheck
-    			def partyService = new PartyService();
-    		
-    			def grantAllocationService = new GrantAllocationService()
-    			if(Double.compare(totAllAmount,sumAmount) >=0 )
-    			{
-    				
-    				Integer duplicateCheck = grantAllocationService.checkDuplicateFundAllot(grantAllocationInstance);
-    				
-    				
-    				def grantAllocationList = grantAllocationService.getGrantAllocationsByProjectCode(grantAllocationInstance.projects.id)
-    				
-    				println "+++++++++++++++++++++++++++++++++++grantAllocationList++++++++++++++++++++++++" + grantAllocationList
-    				def GrantAllocation 
-    				def grantAllocationInstanceForAccess
-    				def accessInstance
-    				def GrantAllocationSave
-    				if(grantAllocationList)
-    				{
-    					if(grantAllocationList[0].party.id == grantAllocationInstance.party.id || grantAllocationList==null)
-    					{
-    						//GrantAllocation = grantAllocationService.saveSubGrantAllocation(grantAllocationInstance)
-    						GrantAllocation = grantAllocationService.checkGrantAllocationSplitByProjectId(grantAllocationInstance)
-
-    						if(GrantAllocation == null)
-    						{
-    						flash.message = "${message(code: 'default.couldnotallocatenotdoneHeadwiseallocation.label')}"
-    						}
-    						else
-    						{
-    							println "projectsInstance - sumAmount) >=0"
-    							projectsInstance = projectsService.saveProjects(projectsInstance,gh.getValue("UserId"))
-    							if(projectsInstance.saveMode != null)
-    							{
-    								if(projectsInstance.saveMode.equals("Saved"))
-    					    		{
-    									
-    									GrantAllocationSave = grantAllocationService.saveSubGrantAllocation(grantAllocationInstance)
-    									println "grant save - sumAmount) >=0"+GrantAllocationSave
-    									if(!grantAllocationInstanceCheck)
-    									{
-    										grantAllocationInstanceForAccess = GrantAllocation.get(GrantAllocation.id)
-    										accessInstance = projectsService.saveProjectAccessPermission(grantAllocationInstanceForAccess)
-    									}
-    							
-    									flash.message = "${message(code: 'default.Newallocationcreated.label')}"
-    					    		}
-    					    		else if(projectsInstance.saveMode.equals("Duplicate"))
-    					    		{
-    					    			flash.message = "${message(code: 'default.AlreadyExists.label')}"
-    					    			
-    					    		}
-    					    	}
-    					    	else
-    					    		flash.message = "${message(code: 'default.AlreadyExists.label')}"
-    					    		
-    					    	   							
-    						}
-    					}
-    					else
-    					{
-    						flash.message = "${message(code: 'default.ProjectAlreadyAllotted.label')}" + grantAllocationList[0].party.code
-    					}
-    				}
-    				else
-    				{
-    					//GrantAllocation = grantAllocationService.saveSubGrantAllocation(grantAllocationInstance)
-    					
-    					GrantAllocation = grantAllocationService.checkGrantAllocationSplitByProjectId(grantAllocationInstance)
-    					
-    					if(GrantAllocation == null)
-    					{
-    					flash.message = "${message(code: 'default.couldnotallocatenotdoneHeadwiseallocation.label')}"
-    					}
-    					else
-    					{
-    						println "projectsInstance - sumAmount) else"
-    						projectsInstance = projectsService.saveProjects(projectsInstance,gh.getValue("UserId"))
-    						
-							if(projectsInstance.saveMode != null)
+    	granterInstance=Party.get(new Integer(params.grantor))
+		grantAllocationInstance = new GrantAllocation(params)
+        grantAllocationInstance.projects=projectsInstance
+		grantAllocationInstance.granter=granterInstance
+    	grantAllocationInstance.createdBy="admin"
+		grantAllocationInstance.modifiedBy="admin"
+		grantAllocationInstance.allocationType="grand"
+		grantAllocationInstance.code=""
+		def grantAllocationInstanceCheck = grantAllocationService.getGrantAllocationsByProjectIdAndPartyId(grantAllocationInstance.projects.id,grantAllocationInstance.party.id)
+    	def partyService = new PartyService();
+    	def grantAllocationService = new GrantAllocationService()
+		if(Double.compare(totAllAmount,sumAmount) >=0 )
+		{
+			Integer duplicateCheck = grantAllocationService.checkDuplicateFundAllot(grantAllocationInstance);
+			def grantAllocationList = grantAllocationService.getGrantAllocationsByProjectCode(grantAllocationInstance.projects.id)
+			def GrantAllocation 
+			def grantAllocationInstanceForAccess
+			def accessInstance
+			def GrantAllocationSave
+			if(grantAllocationList)
+			{
+				if(grantAllocationList[0].party.id == grantAllocationInstance.party.id || grantAllocationList==null)
+				{
+					GrantAllocation = grantAllocationService.checkGrantAllocationSplitByProjectId(grantAllocationInstance)
+					if(GrantAllocation == null)
+					{
+						flash.message = "${message(code: 'default.couldnotallocatenotdoneHeadwiseallocation.label')}"
+					}
+					else
+					{
+						projectsInstance = projectsService.saveProjects(projectsInstance,gh.getValue("UserId"))
+						if(projectsInstance.saveMode != null)
+						{
+							if(projectsInstance.saveMode.equals("Saved"))
+				    		{
+								GrantAllocationSave = grantAllocationService.saveSubGrantAllocation(grantAllocationInstance)
+								if(!grantAllocationInstanceCheck)
+								{
+									grantAllocationInstanceForAccess = GrantAllocation.get(GrantAllocation.id)
+									accessInstance = projectsService.saveProjectAccessPermission(grantAllocationInstanceForAccess)
+								}
+								flash.message = "${message(code: 'default.Newallocationcreated.label')}"
+				    		}
+				    		else if(projectsInstance.saveMode.equals("Duplicate"))
+				    		{
+				    			flash.message = "${message(code: 'default.AlreadyExists.label')}"
+				    			
+				    		}
+				    	}
+				    	else
+				    		flash.message = "${message(code: 'default.AlreadyExists.label')}"
+			    	}
+				}
+				else
+				{
+					flash.message = "${message(code: 'default.ProjectAlreadyAllotted.label')}" + grantAllocationList[0].party.code
+				}
+			}
+			else
+			{
+				GrantAllocation = grantAllocationService.checkGrantAllocationSplitByProjectId(grantAllocationInstance)
+				if(GrantAllocation == null)
+				{
+					flash.message = "${message(code: 'default.couldnotallocatenotdoneHeadwiseallocation.label')}"
+				}
+				else
+				{
+					projectsInstance = projectsService.saveProjects(projectsInstance,gh.getValue("UserId"))
+					if(projectsInstance.saveMode != null)
+					{
+						if(projectsInstance.saveMode.equals("Saved"))
+			    		{
+							GrantAllocationSave = grantAllocationService.saveSubGrantAllocation(grantAllocationInstance)
+							if(!grantAllocationInstanceCheck)
 							{
-								if(projectsInstance.saveMode.equals("Saved"))
-					    		{
-									GrantAllocationSave = grantAllocationService.saveSubGrantAllocation(grantAllocationInstance)
-									println "GrantAllocationSave - sumAmount) else"+GrantAllocationSave
-									if(!grantAllocationInstanceCheck)
-									{
-										grantAllocationInstanceForAccess = GrantAllocation.get(GrantAllocation.id)
-										accessInstance = projectsService.saveProjectAccessPermission(grantAllocationInstanceForAccess)
-									}
-    						
-									flash.message = "${message(code: 'default.Newallocationcreated.label')}"
-					    			}
-					    			else if(projectsInstance.saveMode.equals("Duplicate"))
-					    			{
-					    				flash.message = "${message(code: 'default.AlreadyExists.label')}"
-					    			
-					    			}
-					    		}
-								else
-					    			flash.message = "${message(code: 'default.AlreadyExists.label')}"
-					    		
-					    		
-    					}
-    				}
-    				
-
-    			}
-    			else
-    			{
-    				flash.message = "${message(code: 'default.AmountshouldnotexceedAllocatedAmount.label')}" 
-    			}
-    			
-    			//flash.message = "${message(code: 'default.created.label')}"
-    			
-    		
-    	redirect(action:'subGrantAllot',id:parentProjectsInstance.id)
+								grantAllocationInstanceForAccess = GrantAllocation.get(GrantAllocation.id)
+								accessInstance = projectsService.saveProjectAccessPermission(grantAllocationInstanceForAccess)
+								def userInstanse = Person.get(gh.getValue("UserId"))
+								/*calling a method for save project access permission for pi*/
+						    	projectsService.saveAccessPermissionForprojects(grantAllocationInstance,projectsInstance,investigatorInstance.email)
+					    	
+							}
+							flash.message = "${message(code: 'default.Newallocationcreated.label')}"
+		    			}
+		    			else if(projectsInstance.saveMode.equals("Duplicate"))
+		    			{
+		    				flash.message = "${message(code: 'default.AlreadyExists.label')}"
+		    			
+		    			}
+		    		}
+					else
+		    			flash.message = "${message(code: 'default.AlreadyExists.label')}"
+			    }
+			}
+		}
+		else
+		{
+			flash.message = "${message(code: 'default.AmountshouldnotexceedAllocatedAmount.label')}" 
+		}
+		redirect(action:'subGrantAllot',id:parentProjectsInstance.id)
 		//end save projects
-		
-		
-		
-			
-	    
+	}
 
-    }
 
-    
     def subGrantSaveExt = {
     	
         def grantAllocationInstance = new GrantAllocation(params)
         def grantAllocationInstanceNew = new GrantAllocation()
-		
-        println "******************************subgrant save*************************"
-        println "params =" + params
-       
-        grantAllocationInstanceNew.createdBy="admin"
+		grantAllocationInstanceNew.createdBy="admin"
         	grantAllocationInstanceNew.modifiedBy="admin"
 		
         		grantAllocationInstanceNew.allocationType="grand"
@@ -698,20 +604,11 @@
 	        			grantAllocationInstanceNew.remarks= grantAllocationInstance.remarks
 	        			grantAllocationInstanceNew.sanctionOrderNo= grantAllocationInstance.sanctionOrderNo
 	        			
-	        			println grantAllocationInstance.party
-				
-						println grantAllocationInstance.hasErrors()
-						
 		def granterInstance = Party.get(grantAllocationInstance.granter.id)
 		grantAllocationInstanceNew.granter = granterInstance
 		def partyInstance = Party.get(grantAllocationInstance.party.id)
 		grantAllocationInstanceNew.party = partyInstance
-		
-		println grantAllocationInstanceNew.errors
-		
-                	  //  grantAllocationInstanceNew.save();
-		//def grantAllocationService = new GrantAllocationService()
-       def GrantAllocation = grantAllocationService.subGrantSaveExt(grantAllocationInstanceNew)	
+		def GrantAllocation = grantAllocationService.subGrantSaveExt(grantAllocationInstanceNew)	
         flash.message = "${message(code: 'default.Newallocationcreated.label')}"
         redirect(action:'subGrantAllotExt',id:grantAllocationInstance.projects.id)
        
@@ -727,8 +624,6 @@
 	    List<GrantAllocation> grantAllocationInstanceList 	
     
     	def dataSecurityService = new DataSecurityService();
-    	println "Piiii"+gh.getValue("PartyID")
-    	
     	try{
           grantAllocationInstanceList = grantAllocationService.getAll()
 	
@@ -738,11 +633,6 @@
     		
     	}
 		
-		println grantAllocationInstanceList
-
-	
-    	
-    	
     	/*if(gh.getValue("Role")=="ROLE_PI")
     	{
     		println "Piiii"
@@ -827,9 +717,6 @@
     }
     def updateProAllot = 
     {
-		 
-		println "++++++++++++++++++++++++++++++++++++++params+++++++++++++++++++++++++" + params
-
 		 double sumAmount = 0.0
     	 double projectAmount = 0.0
     	 double amountToBeUpdated = 0.0
@@ -845,6 +732,41 @@
 	        def grantAllocationUpdateInstance = grantAllocationService.getGrantAllocationById(new Integer(params.id))
 	        
 		 def grantAllocationInstance 
+		 def grantAllocationSplitInstance = grantAllocationService.getGrantAllocationSplit(grantAllocationUpdateInstance);
+			def grantExpenseInstance = grantAllocationService.getExpenseForGrantAllocation(grantAllocationUpdateInstance);
+			def grantReceiptInstance = grantAllocationService.getGrantReceiptForGrantAllocation(grantAllocationUpdateInstance);
+			def fundTransferInstance= grantAllocationService.getFundTransferForGrantAllocation(grantAllocationUpdateInstance);
+			println "" + grantAllocationSplitInstance
+			if(grantAllocationSplitInstance)
+			{
+				
+					flash.message = "${message(code: 'default.Cannotupdatedoneheadwiseallocation.label')}"
+					redirect(action:'subGrantAllot',id:grantAllocationUpdateInstance.projects.parent.id) 
+				
+				 
+			}
+			else if(grantExpenseInstance)
+			{
+				flash.message = "${message(code: 'default.CannotUpdateEnteredGrantExpense.label')}"
+					redirect(action:'subGrantAllot',id:grantAllocationUpdateInstance.projects.parent.id) 
+				 
+
+			}
+			else if(grantReceiptInstance)
+			{
+	            
+				flash.message = "${message(code: 'default.CannotUpdateReceivedGrant.label')}"
+					redirect(action:'subGrantAllot',id:grantAllocationUpdateInstance.projects.parent.id) 
+				
+
+			}
+			else if(fundTransferInstance)
+			{
+				flash.message = "${message(code: 'default.CannotUpdatedoneFundTransfer.label')}"
+				redirect(action:'subGrantAllot',id:grantAllocationUpdateInstance.projects.parent.id)
+			}
+			else
+			{
 		 if(grantAllocationUpdateInstance.projects.parent!=null)
 		 {
 		 if(Double.compare(projectAmount,amountToBeUpdated) >=0)
@@ -857,8 +779,7 @@
 			 projectsInstance.id=new Long(params.projects.id)
 			def investigatorInstance=investigatorService.getInvestigatorById(params.investigator.id)
 			projectsInstance.investigator = investigatorInstance
-			println "investigatorInstance----------->>>>>>>>>>>"+investigatorInstance
-			 def projectsInstanceSave = projectsService.updateSubProject(projectsInstance)
+			def projectsInstanceSave = projectsService.updateSubProject(projectsInstance)
 			 if(projectsInstanceSave)
 			 {
 				 if(projectsInstanceSave.saveMode != null)
@@ -928,6 +849,7 @@
 			 flash.message = "GrantAllocation not found with id ${params.id}"
 			 redirect(action:edit,id:params.id)
 		 }*/
+    }
     }
     
     def headMsg = {

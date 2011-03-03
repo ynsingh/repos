@@ -79,65 +79,46 @@ class SalaryComponentController
     	/*Getting Salary Component based on id*/
 		def salaryComponentInstance =salaryComponentService.getSalaryComponentById(new Integer( params.id ))
 		def chkSalaryComponentInstance = salaryComponentService.checkDuplicateSalaryComponent(params)
-		if(chkSalaryComponentInstance)
+		if(salaryComponentInstance)
 		{
-			if((chkSalaryComponentInstance.id).equals(salaryComponentInstance.id))
+			if((chkSalaryComponentInstance) && (chkSalaryComponentInstance.id != salaryComponentInstance.id))
 			{
-				salaryComponentId=salaryComponentService.updatesalaryComponent(params)
 				
+				flash.message ="${message(code: 'default.AlreadyExists.label')}"
+			    	redirect(action: "edit", id: params.id)  
+			    	
 				
-					
-					if(salaryComponentId >= 0)/*Check if the Salary component updated successfully*/
-					{
-		            flash.message = "${message(code: 'default.updated.label')}"
-		            redirect(action: "create", id: salaryComponentInstance.id)
-					}
+			       
 				}
 		
 				
 			else
 			{
-			 
-		    	flash.message ="${message(code: 'default.AlreadyExists.label')}"
-		    	redirect(action: "edit", id: params.id)  
-			}
-		}
-	    else
-	    {
-		    if (salaryComponentInstance) 
-		    {
-		    	//salaryComponentInstance.properties = params
-		        /*Updating the salary component details*/
-		        salaryComponentId=salaryComponentService.updatesalaryComponent(params)
-		       println"params////"+params
-		        if(salaryComponentId == 0)/*Check if the salary component is assigned to employee*/
-		        {
-		        	println"salaryComponentInstance.id"+salaryComponentInstance.id
-		           flash.message = "${message(code: 'default.usedinProjectEmployee.label')}"
-		        		redirect(action: "edit" ,id: params.id)  
-		        }
-		        else
-		        {
-		    	
-		        if(salaryComponentId>0)/*Check if the Salary component updated successfully*/
-		        {
-		            flash.message = "${message(code: 'default.updated.label')}"
-		            redirect(action: "create", id: salaryComponentInstance.id)
-		        }
-		         
-		        else 
+				salaryComponentId=salaryComponentService.updatesalaryComponent(params)
+				
+				println"salaryComponentId"+salaryComponentId
+				
+				if(salaryComponentId > 0)/*Check if the Salary component updated successfully*/
+				{
+	            flash.message = "${message(code: 'default.updated.label')}"
+	            redirect(action: "create", id: salaryComponentInstance.id)
+				}
+				else 
 		        {
 		            render(view: "edit", model: [salaryComponentInstance: salaryComponentInstance])
 		        }
-		        }
-		    }
+		    	
+			}
+		}
+	      
+		  
 		    else 
 		    {
 		        flash.message = "${message(code: 'default.notfond.label')}"
 		        redirect(action: "create")
 		    }
 	    }
-	}
+	
     
     /*
      * Method to perform the delete action

@@ -48,6 +48,15 @@ class ApprovalAuthorityController {
     	
        
     	println"params"+params
+    	def chkDefaultApprovalAuthority = approvalAuthorityService.chkDefaultAuthority(gh.getValue("PartyID"))
+    	println"chkDefaultApprovalAuthority"+chkDefaultApprovalAuthority
+    	if(chkDefaultApprovalAuthority && params.defaultYesNo == 'Y')
+    	{
+    		flash.message ="${message(code: 'default.defaultApprovalAuthority.label')}"
+	    		redirect(action: "create", id: approvalAuthorityInstance.id)
+    	}
+    	else
+    	{
     	def chkApprovalAuthorityInstance = approvalAuthorityService.checkDuplicateApprovalAuthority(params)
 		if(chkApprovalAuthorityInstance)
 	    {
@@ -69,6 +78,7 @@ class ApprovalAuthorityController {
         }
 	   }
     }
+		}
 		else
 		{
 			
@@ -80,6 +90,23 @@ class ApprovalAuthorityController {
     	}
     	else
  	   {
+    		def chkDefaultApprovalAuthority = approvalAuthorityService.chkDefaultAuthority(gh.getValue("PartyID"))
+        	println"chkDefaultApprovalAuthority"+chkDefaultApprovalAuthority
+        	if(chkDefaultApprovalAuthority && params.defaultYesNo == 'Y')
+        	{
+        		flash.message ="${message(code: 'default.defaultApprovalAuthority.label')}"
+    	    		redirect(action: "create", id: approvalAuthorityInstance.id)
+        	}
+        	else
+        	{
+        	def chkApprovalAuthorityInstance = approvalAuthorityService.checkDuplicateApprovalAuthority(params)
+    		if(chkApprovalAuthorityInstance)
+    	    {
+    	    	flash.message ="${message(code: 'default.AlreadyExists.label')}"
+    	    		redirect(action: "create", id: approvalAuthorityInstance.id)
+    	    }
+    		else
+    		{
      	approvalAuthorityInstance = approvalAuthorityService.saveApprovalAuthority(params)
      	
      	  if (approvalAuthorityInstance) 
@@ -93,6 +120,8 @@ class ApprovalAuthorityController {
          }
  	   }
     }
+ 	   }
+ 	   }
 
     def show = {
     	def approvalAuthorityService = new ApprovalAuthorityService()
@@ -126,7 +155,9 @@ class ApprovalAuthorityController {
     	def approvalAuthorityInstance = approvalAuthorityService.getApprovalAuthorityById(new Integer( params.id ))
    	   GrailsHttpSession gh=getSession()
     	EmailValidator emailValidator = EmailValidator.getInstance()
-    	if(approvalAuthorityInstance.email != null)
+    	println"params"+params
+    	println"params.email"+params.email
+    	if(params.email)
     	{
 		if (emailValidator.isValid(params.email))
 		{
@@ -143,6 +174,17 @@ class ApprovalAuthorityController {
                     return
                 }
             }
+            
+            def chkDefaultApprovalAuthority = approvalAuthorityService.chkDefaultAuthority(gh.getValue("PartyID"))
+        	println"chkDefaultApprovalAuthority"+chkDefaultApprovalAuthority
+        	if(chkDefaultApprovalAuthority && chkDefaultApprovalAuthority[0].id != Long.parseLong(params.id) 
+        			&& params.defaultYesNo == 'Y')
+        	{
+        		flash.message ="${message(code: 'default.defaultApprovalAuthority.label')}"
+    	    		redirect(action: "edit", id: approvalAuthorityInstance.id)
+        	}
+        	else
+        	{
             def chkApprovalAuthorityInstance = approvalAuthorityService.checkDuplicateApprovalAuthority(params)
             println"chkApprovalAuthorityInstance"+chkApprovalAuthorityInstance
     		println"params"+params
@@ -150,7 +192,7 @@ class ApprovalAuthorityController {
     	    {
     	    println"sucess"
     	    	flash.message ="${message(code: 'default.AlreadyExists.label')}"
-    	    		redirect(action: "create", id: approvalAuthorityInstance.id)
+    	    		redirect(action: "edit", id: approvalAuthorityInstance.id)
     	    }
     	    else
     	    {
@@ -166,6 +208,7 @@ class ApprovalAuthorityController {
                 render(view: "edit", model: [approvalAuthorityInstance: approvalAuthorityInstance])
             }
     	    }
+        	}
         }
         else {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'approvalAuthority.label', default: 'ApprovalAuthority'), params.id])}"
@@ -183,7 +226,27 @@ class ApprovalAuthorityController {
     	}
     	else
 	    {
-            
+    		def chkDefaultApprovalAuthority = approvalAuthorityService.chkDefaultAuthority(gh.getValue("PartyID"))
+        	println"chkDefaultApprovalAuthority"+chkDefaultApprovalAuthority
+        	if(chkDefaultApprovalAuthority && chkDefaultApprovalAuthority[0].id != Long.parseLong(params.id)
+        			&& params.defaultYesNo == 'Y'  )
+        	{
+        		flash.message ="${message(code: 'default.defaultApprovalAuthority.label')}"
+    	    		redirect(action: "edit", id: approvalAuthorityInstance.id)
+        	}
+        	else
+        	{
+            def chkApprovalAuthorityInstance = approvalAuthorityService.checkDuplicateApprovalAuthority(params)
+            println"chkApprovalAuthorityInstance"+chkApprovalAuthorityInstance
+    		println"params"+params
+    		if(chkApprovalAuthorityInstance && (chkApprovalAuthorityInstance[0].id!= Long.parseLong(params.id)))
+    	    {
+    	    println"sucess"
+    	    	flash.message ="${message(code: 'default.AlreadyExists.label')}"
+    	    		redirect(action: "edit", id: approvalAuthorityInstance.id)
+    	    }
+    	    else
+    	    {   
          approvalAuthorityInstance = approvalAuthorityService.updateApprovalAuthority(params,approvalAuthorityInstance)
         if( approvalAuthorityInstance.saveMode.equals( "Updated"))
         {
@@ -195,6 +258,8 @@ class ApprovalAuthorityController {
             render(view: "edit", model: [approvalAuthorityInstance: approvalAuthorityInstance])
         }
 	    }
+        	}
+    }
     }
     
     def delete = 

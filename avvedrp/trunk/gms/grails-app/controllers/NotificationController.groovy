@@ -4,6 +4,7 @@ import grails.util.GrailsUtil
 
 class NotificationController {
 	def grantAllocationService
+	def notificationService
     def index = { redirect(action:list,params:params) }
 
     // the delete, save and update actions only accept POST requests
@@ -83,13 +84,11 @@ class NotificationController {
 			println "--------------"+params
         def notificationInstance = Notification.get( params.id )
         if(notificationInstance) {
-        	def notificationEmailInstance = NotificationsEmails.find("from NotificationsEmails where notification.id="+params.id)
-           if(!notificationEmailInstance)
-           {
+        	
         	notificationInstance.properties = params
           
             /*uploading application form*/
-            if(request.getFile('myFile'))
+         /* if(request.getFile('myFile'))
             {
             def downloadedfile = request.getFile('myFile')
     		def attachmentsName='ApplicationForm'
@@ -104,7 +103,7 @@ class NotificationController {
    	        	{
    	        		webRootDir = gmsSettingsInstance.value
    	        	}
-   	        	if(!downloadedfile.empty)
+   	        	/*if(!downloadedfile.empty)
    	        	{
    	        		String fileName=downloadedfile.getOriginalFilename().toString().substring(0,downloadedfile.getOriginalFilename().toString().indexOf("."))
    	        		//String fileName=downloadedfile.getOriginalFilename()
@@ -113,19 +112,17 @@ class NotificationController {
    	        		new File( webRootDir ).mkdirs()
    	        		downloadedfile.transferTo( new File( webRootDir + File.separatorChar + fileName+".gsp") )
    	        	}
-            }
+            }*/
             if(!notificationInstance.hasErrors() && notificationInstance.save()) {
                 flash.message = flash.message = "${message(code: 'default.updated.label')}"
                 redirect(action:list,id:notificationInstance.id)
             }
+        
             else {
                 render(view:'edit',model:[notificationInstance:notificationInstance])
             }
-           } else {
-               flash.message = "${message(code: 'default.Notificationalreadypublished.label')}"
-                   redirect(action:edit,id:params.id)
-               }
-        	}
+        }
+       
         else {
             flash.message = "${message(code: 'default.FilenotFound.label')}"
             redirect(action:edit,id:params.id)
@@ -199,9 +196,8 @@ class NotificationController {
     }
 
     def save={	
-       print "+++++++++++++++save++++++++++++++++++++"
-    		def notificationInstance = new Notification(params)
-       println "not projects"+notificationInstance.project
+       def notificationInstance = new Notification(params)
+      
        def notificationService = new NotificationService()
        //GrailsHttpSession gh=getSession()
        
@@ -225,7 +221,7 @@ class NotificationController {
    		
    			}
        
-    		def downloadedfile = request.getFile('myFile')
+   			/*def downloadedfile = request.getFile('myFile')
     		def attachmentsName='ApplicationForm'
 			 def gmsSettingsService = new GmsSettingsService()
 			 def gmsSettingsInstance = gmsSettingsService.getGmsSettings(attachmentsName)
@@ -246,7 +242,7 @@ class NotificationController {
 	    		
 	    		new File( webRootDir+"proposalApplication/" ).mkdirs()
 	    		downloadedfile.transferTo( new File( webRootDir + File.separatorChar + fileName+".gsp") )
-    		}
+    		}*/
     		if(!notificationInstance.hasErrors() && notificationInstance.save()) 
     		{
             flash.message = "${message(code: 'default.created.label')}"
@@ -342,5 +338,21 @@ class NotificationController {
 			println"partyInstance"+partyInstance
 			return['partyInstance':partyInstance]
 	}
+	def publish = {
+    		
+    		def notificationInstance = Notification.get(params.id)
+    		notificationInstance.publishYesNo="Y"
+    		def notificationInstanceSaveStatus=notificationService.updateNotification(notificationInstance)
+    		if(notificationInstanceSaveStatus)
+    		{
+    			flash.message="${message(code: 'default.NotificationPublished.label')}"
+    	    	redirect(controller:"notification",action:"list")
+    		}
+    		else
+    		{
+    			
+    			redirect(controller:"notification",action:"list")
+    		}
+    }
 }
 

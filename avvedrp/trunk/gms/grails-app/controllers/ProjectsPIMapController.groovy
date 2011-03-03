@@ -12,12 +12,14 @@ class ProjectsPIMapController {
 
 	/* =========================== 18-11-2010==========================*/
    def delete = {
+			println"params----"+params
 			def projectsPIMapInstance = investigatorService.getProjectsPIMapById(params.id)
+			println"projectsPIMapInstance"+projectsPIMapInstance
 	        if(projectsPIMapInstance) 
 	        {	        	
 	        	projectsPIMapInstance = investigatorService.deletePIMap(projectsPIMapInstance)
 	        	flash.message = "${message(code: 'default.deleted.label')}"
-	            redirect(action:create,params:[id:params.projectId])
+	            redirect(action:create,id:projectsPIMapInstance.projects.id)
 	        }
 	        else 
 	        {
@@ -42,8 +44,6 @@ class ProjectsPIMapController {
             def investigatorList=[]
          	investigatorList=investigatorService.getInvestigatorsWithParty(gh.getValue("PartyID"))
          	projectsInstance = projectsService.getProjectById(projectsPIMapInstance.projects.id)
-         	println"projectsPIMapInstance.projects.id"+projectsPIMapInstance.projects.id
-         	println"projectsInstance"+projectsInstance
          	return [ projectsPIMapInstance : projectsPIMapInstance ,
                      'investigatorList':investigatorList,projectsInstance:projectsInstance]
         }
@@ -51,12 +51,11 @@ class ProjectsPIMapController {
 
     def update = {
 		def projectsPIMapInstance = investigatorService.getProjectsPIMapById(params.id)
-       
         GrailsHttpSession gh=getSession()
         def pIMapInstance = projectsService.checkPIofProject(params.projectId)
-        println"pIMapInstance.investigator.id "+pIMapInstance.investigator.id 
-        println"projectsPIMapInstance.investigator.id "+projectsPIMapInstance.investigator.id
-        println"params.investigator"+params.investigator.id
+        def investigatorInstance = investigatorService.getInvestigatorById(params.investigator.id)
+        def PIprojectsInstance = Projects.get(gh.getValue("ProjectID"))
+        def pIMapDuplicateInstance = projectsService.checkDuplicatePIofProject(PIprojectsInstance.id,investigatorInstance.id)
         if(pIMapInstance.investigator.id == new Integer(params.investigator.id))
         {
         	redirect(action:create,model:[projectsPIMapInstance:projectsPIMapInstance],params:[id:params.projectId]) 
@@ -64,6 +63,13 @@ class ProjectsPIMapController {
         }
         else
         {
+        	if(pIMapDuplicateInstance && pIMapDuplicateInstance.id != new Integer(params.id))
+            {
+            	redirect(action:create,model:[projectsPIMapInstance:projectsPIMapInstance],params:[id:PIprojectsInstance.id]) 
+            	flash.message = investigatorInstance.name + "${message(code: 'default.alreadyAssignedCoPI.label')}"
+            }
+            else
+            {
         if(projectsPIMapInstance) 
         {
             projectsPIMapInstance.properties = params
@@ -87,12 +93,16 @@ class ProjectsPIMapController {
             redirect(action:edit,id:params.id)
         }
         }
+        
+        }
+        
     }
 
     def create = 
     {
 		def projectsPIMapInstance = new ProjectsPIMap()
         projectsPIMapInstance.properties = params
+        println"params.id"+params
         GrailsHttpSession gh=getSession()
         /*Removing the old help session and putting the current session help file*/
         gh.removeValue("Help")
@@ -115,16 +125,14 @@ class ProjectsPIMapController {
         def investigatorInstance = investigatorService.getInvestigatorById(params.investigator.id)
         //def investigatorInstance = Investigator.get(new Integer(params.investigator.id))
         def PIprojectsInstance = projectsService.getProjectById(new Integer(params.id))
-       	println"PIprojectsInstance----------->"+PIprojectsInstance
-        def pIMapInstance = projectsService.checkPIofProject(params.id)
+       	def pIMapInstance = projectsService.checkPIofProject(params.id)
         projectsPIMapInstance.investigator = investigatorInstance
         projectsPIMapInstance.projects = PIprojectsInstance
         projectsPIMapInstance.role = params.role
         projectsPIMapInstance.activeYesNo = "Y" //params.activeYesNo 18-11-2010
         def pIMapDuplicateInstance = projectsService.checkDuplicatePIofProject(PIprojectsInstance.id,investigatorInstance.id)
         def projectsInstance
-        if(!pIMapDuplicateInstance)
-        {
+        
         if(params.role == 'PI')
         {
 	        if(!pIMapInstance)
@@ -149,10 +157,12 @@ class ProjectsPIMapController {
         }
         else
         {
+        	if(!pIMapDuplicateInstance)
+            {
         	def projectPIMapSaveInstance = investigatorService.savePIMap(projectsPIMapInstance)
             if(projectPIMapSaveInstance) 
             {
-	        	projectsInstance = projectsService.saveProjectAccessPermissionForPiMap(gh.getValue("ProjectId"),projectsPIMapInstance.investigator.id)
+            	projectsService.saveProjectAccessPermissionForPiMap(PIprojectsInstance.id,projectsPIMapInstance.investigator.id)
 	            flash.message = "${message(code: 'default.created.label')}"
 	            redirect(action:create,model:[projectsPIMapInstance:projectsPIMapInstance,projectsInstance:PIprojectsInstance],params:[id:PIprojectsInstance.id])
 	        }
@@ -161,11 +171,12 @@ class ProjectsPIMapController {
 	            render(view:'create',model:[projectsPIMapInstance:projectsPIMapInstance,projectsInstance:PIprojectsInstance],params:[id:PIprojectsInstance.id])
 	        }
         }
-       }
+      
         else
         {
         	redirect(action:create,model:[projectsPIMapInstance:projectsPIMapInstance],params:[id:PIprojectsInstance.id]) 
-        	flash.message = investigatorInstance.name + "${message(code: 'default.alreadyAssignedPI.label')}"
+        	flash.message = investigatorInstance.name + "${message(code: 'default.alreadyAssignedCoPI.label')}"
+        }
         }
     }
    

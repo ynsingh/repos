@@ -254,7 +254,6 @@ class ProjectsController extends GmsController
     def update = 
     {
 		
-		println".......params........."+params
 		GrailsHttpSession gh=getSession()
 		
 		def projectsInstance = projectsService.updateProject(params)	
@@ -332,22 +331,16 @@ class ProjectsController extends GmsController
 
     def create = 
     {
+		def projectsInstance = new Projects()
+		projectsInstance.properties = params
 		def projectsService = new ProjectsService()
-		
 		GrailsHttpSession gh=getSession()
 		gh.putValue("Help","New_Projects.htm")//putting help pages in session
 		println "session ............" +gh 
-		
 		def investigatorService = new InvestigatorService()
-         	def investigatorList=[]
-    		investigatorList=investigatorService.getInvestigatorsWithParty(gh.getValue("PartyID"))
-    		println "investigatorList........."+investigatorList
-		
-		def grantAllocationWithprojectsInstanceList
-		def projectsInstance = new Projects()
-		projectsInstance.properties = params
-		println "params" +params
-		println "projectsInstance.id" +projectsInstance.id
+        def investigatorList=[]
+    	investigatorList=investigatorService.getInvestigatorsWithParty(gh.getValue("PartyID"))
+    	def grantAllocationWithprojectsInstanceList
 		if(params.id)
 		{
 	    	projectsInstance = projectsService.getProjectById(new Integer( params.id ))
@@ -384,13 +377,13 @@ class ProjectsController extends GmsController
     		{
     			flash.message = "${message(code: 'default.created.label')}"
     			gh.putValue("ProjectId",projectsInstance.id)
-    			redirect(action:create,id:projectsInstance.id)
+    			redirect(action:create )
     		}
     		else if(projectsInstance.saveMode.equals("Duplicate"))
     		{
     			flash.message = "${message(code: 'default.AlreadyExists.label')}"
     				gh.putValue("ProjectId",projectsInstance.id)
-        			redirect(action:create,id:projectsInstance.id)
+        			redirect(action:create )
     		}
     	}
     	else

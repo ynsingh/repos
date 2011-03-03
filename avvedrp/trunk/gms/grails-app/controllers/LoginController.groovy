@@ -62,6 +62,7 @@ class LoginController {
 		GrailsHttpSession gh=getSession()
 		def config = SpringSecurityUtils.securityConfig
 		 println  "params:"+params
+		 println  "gh.getValue(ang):"+gh.getValue("lang")
 		 if(params.lang!=null)
 		 {
 			 println  "params:"+params.lang
@@ -69,8 +70,11 @@ class LoginController {
 		 }
 		 else
 		 {
-			 gh.putValue("lang","en")
-		 }
+			 if(gh.getValue("lang")==null)
+			 {
+				 gh.putValue("lang","en")
+			 }
+		}
 		if (springSecurityService.isLoggedIn()) {
 			println  "indexisLoggedIn"+SCH.context.authentication.principal.username
 			println  "authisLoggedIn"

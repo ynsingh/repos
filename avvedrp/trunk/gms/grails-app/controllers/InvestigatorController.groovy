@@ -261,7 +261,7 @@ class InvestigatorController {
         		investigatorInstance.activeYesNo="Y" //15-11-2010	
         		if(!investigatorInstance.hasErrors() && investigatorInstance.save()) 
         		{
-        			flash.message = "${message(code: 'default.created.label')}"
+        			flash.message = "${message(code: 'default.InvestigatorCreated.label')}"
         			def userInstance = new Person()
         			userInstance.username = investigatorInstance.email
         			def subName = investigatorInstance.email

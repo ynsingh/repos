@@ -59,8 +59,10 @@ class FullProposalController {
        fullProposalInstance.preProposal = preProposalInstance
      
        println " preProposalInstanceList "+preProposalInstanceList
-       def fullProposalStatus = FullProposal.find("from FullProposal F where F.preProposal="+preProposalInstance.id+" and F.proposalStatus = 'Submitted'")
+       def fullProposalStatus = FullProposal.find("from FullProposal F where F.preProposal="+preProposalInstance.id+" and F.proposalStatus in ('Submitted','Approved')")
        println"fullProposalStatus"+fullProposalStatus
+       
+       
        
        def fullProposalSavedStatus = FullProposal.find("from FullProposal F where F.preProposal="+preProposalInstance.id+" and F.proposalStatus in ('Saved','NeedMoreInfo')")
        println"fullProposalSavedStatus"+fullProposalSavedStatus
@@ -99,7 +101,7 @@ class FullProposalController {
  	       {
  	        	webRootDir = gmsSettingsInstance.value
  	       }
- 	       
+ 	      new File( webRootDir).mkdirs()
  	      def downloadedfile = request.getFile("myFile");
  	      println"downloadedfile"+downloadedfile
  	       
@@ -407,9 +409,12 @@ def fullProposalReviewalStatus =
 		
 		
 		println "currentApprovalAuthority "+currentApprovalAuthority
+		println"params.id"+fullProposalInstance.id
+		println"authorityInstance.proposalId"+authorityInstance.proposalId
 		//def authorityInstance = ApprovalAuthorityDetail.findAll("from ApprovalAuthorityDetail AD where AD.person ="+gh.getValue("UserId"))
-		
-		['fullProposalInstance':fullProposalInstance,'authorityInstance':authorityInstance,'currentApprovalAuthority':currentApprovalAuthority,'proposalDetailInstance':proposalDetailInstance,'proposalApprovalStatus':proposalApprovalStatus]
+		def proposalApprovalDetailInstanceList = ProposalApprovalDetail.findAll("from ProposalApprovalDetail PD where PD.proposalApproval.proposalApprovalAuthorityMap.proposalId="+fullProposalInstance.id+" and PD.proposalApproval.proposalApprovalAuthorityMap.proposalType='FullProposal' order by PD.proposalApproval.proposalApprovalAuthorityMap.approveOrder")
+		println"proposalApprovalDetailInstanceList"+proposalApprovalDetailInstanceList
+		['fullProposalInstance':fullProposalInstance,'authorityInstance':authorityInstance,'currentApprovalAuthority':currentApprovalAuthority,'proposalDetailInstance':proposalDetailInstance,'proposalApprovalStatus':proposalApprovalStatus,'proposalApprovalDetailInstanceList':proposalApprovalDetailInstanceList]
 	}
 
 }

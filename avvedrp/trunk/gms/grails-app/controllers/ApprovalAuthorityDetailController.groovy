@@ -302,71 +302,38 @@ class ApprovalAuthorityDetailController {
     
     def remove =
     {
-    	println"REMOVE++++++"
     	println"params"+params.approvalAuthority
     	def approvalAuthorityDetailInstance
     	GrailsHttpSession gh=getSession()
 		def authorityPersonInstanceList = params.approvalAuthority
 		def authorityPersonList=params.approvalAuthority.toString();
-		println "authorityPersonList"+authorityPersonList
 		def authorityPersonListSplit=authorityPersonList.split(',')
-		println "authorityPersonListSplit "+authorityPersonListSplit 
-     
-        if( authorityPersonListSplit.length == 1)
-           {
-  
-        	def authorityPersonDet=[]
+		if( authorityPersonListSplit.length == 1)
+        {
+			def authorityPersonDet=[]
            	authorityPersonDet.add(params.approvalAuthority)
-           	println "authorityPersonDet --"+authorityPersonDet
-          	authorityPersonInstanceList=authorityPersonDet 
-        	   
-        	   
-        	   
-        	   /*println "list ======"
-			def  authorityPersonArray=[]
-			authorityPersonArray.add(params.approvalAuthority)
-			authorityPersonInstanceList=authorityPersonArray
-			println "authorityPersonInstanceList"+authorityPersonInstanceList*/
-		}
-    	println"authorityPersonInstanceList"+authorityPersonInstanceList
+           	authorityPersonInstanceList=authorityPersonDet 
+    	}
     	for(int i=0;i<authorityPersonInstanceList.size();i++)
 		{
-    		println"authorityPersonInstanceList111111111111111"+authorityPersonInstanceList[i]
-			approvalAuthorityDetailInstance = ApprovalAuthorityDetail.find("from ApprovalAuthorityDetail AD where AD.id="+authorityPersonInstanceList[i])
-			println "approvalAuthorityDetailInstance "+approvalAuthorityDetailInstance
-			approvalAuthorityDetailInstance.activeYesNo='N'
+    		approvalAuthorityDetailInstance = ApprovalAuthorityDetail.find("from ApprovalAuthorityDetail AD where AD.id="+authorityPersonInstanceList[i])
+    		def evalAnswerInstance = EvalAnswer.find("from EvalAnswer EA where EA.person.id="+approvalAuthorityDetailInstance.person.id)
+			if(evalAnswerInstance)
+			{
+				flash.error = "${message(code: 'default.CannotRemove.message')}"
+					
+			}
+			else
+			{
+    		approvalAuthorityDetailInstance.activeYesNo='N'
 				if(approvalAuthorityDetailInstance.save())
 	    	    {
 	    	    println "saved"
 	    	    }
-			
+			}
 		}
+    	redirect(action:getAssignedMembers,id:approvalAuthorityDetailInstance.approvalAuthority.id)
     	
-   
-    	println"approvalAuthorityDetailInstance"+approvalAuthorityDetailInstance
-		redirect(action:getAssignedMembers,id:approvalAuthorityDetailInstance.approvalAuthority.id)
-    	
-    	
-    	
-    	/*def approvalAuthorityDetailInstance = new ApprovalAuthorityDetail() 
-    	approvalAuthorityDetailInstance.properties = params
-    	approvalAuthorityDetailInstance = ApprovalAuthorityDetail.find("from ApprovalAuthorityDetail AD where AD.id="+params.approvalAuthority)
-    	println "approvalAuthorityDetailInstance "+approvalAuthorityDetailInstance
-    	if(approvalAuthorityDetailInstance)
-    	{
-    		println"ENTRY"
-    		approvalAuthorityDetailInstance.activeYesNo='N'
-    		println "next "
-    	    if(approvalAuthorityDetailInstance.save())
-    	    {
-    	    println "saved"
-    	    }
-    	}
-    	
-    	
-    		println"approvalAuthorityDetailInstance"+approvalAuthorityDetailInstance
-    		redirect(action:getAssignedMembers,id:approvalAuthorityDetailInstance.approvalAuthority.id)*/
- 
     }
     
     

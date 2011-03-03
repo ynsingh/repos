@@ -101,11 +101,10 @@ class GrantAllocationSplitController extends GmsController  {
     }
 
     def edit = {
-		def grantAllocationSplitService = new GrantAllocationSplitService()
-		
+		def grantAllocationSplitService = new GrantAllocationSplitService()		
         def grantAllocationSplitInstance = grantAllocationSplitService.getGrantAllocationSplitById(new Integer(params.id))
         def dataSecurityService = new DataSecurityService()
-		def projectsInstance = Projects.get(new Integer(params.id))
+		def projectsInstance = Projects.get(grantAllocationSplitInstance.projects.id)
 		def accountHeadInstanceList 
 		def unAllocatedAmount = params.UnAll
 		//checking  whether the user has access to the given projects
@@ -164,12 +163,12 @@ class GrantAllocationSplitController extends GmsController  {
 			                          'accountHeadInstanceList':accountHeadInstanceList,
 			                          'amount':formatter.format(grantAllocationSplitInstance.amount),
 			                          'unAllocatedAmount':grantAllocationSplitInstance.unAllocatedAmt,
-			                          'accountHeadList':accountHeadList])
+			                          'accountHeadList':accountHeadList,amount:formatter.format(grantAllocationSplitInstance.amount)])
     	}
 
     def update = {
 		def grantAllocationSplitService = new GrantAllocationSplitService()
-	    def grantExpenseService = new GrantExpenseService()
+	        def grantExpenseService = new GrantExpenseService()
 		def grantAllocationSplitInstances = grantAllocationSplitService.getGrantAllocationSplitById(new Integer(params.id))
 		def grantExpenseInstance = grantExpenseService.getExpenseForGrantAllocationSplit(grantAllocationSplitInstances);
 		if(grantExpenseInstance)
@@ -178,41 +177,35 @@ class GrantAllocationSplitController extends GmsController  {
 				redirect(action:'edit',params:['id':grantAllocationSplitInstances.id,'UnAll':params.unAllocatedAmt,'unAllocatedAmount':grantAllocationSplitInstances.unAllocatedAmt]) 
           }
 		   else 
-		    {
-		def grantAllocationSplitInstanceCheck =grantAllocationSplitService.validateGrantAllocationSplit(params,params.projectId)
-			if(!grantAllocationSplitInstanceCheck)
-        	{     
-	    def grantAllocationSplitInstance = grantAllocationSplitService.updateGrantAllocationSplit(params)
-	 
-		if(grantAllocationSplitInstance) {
-			if((params.subAccountHead != "null") && (params.subAccountHead))
-        	{
-				grantAllocationSplitInstance.accountHead = AccountHeads.get(new Integer(params.subAccountHead))
-        	}
-			if((!params.subAccountHead) && (params.subAccountHead == "null") )
-        	{
-        		grantAllocationSplitInstance.accountHead = AccountHeads.get(grantAllocationSplitInstance.accountHead.id)
-        	}
-			
-			
+		    {	
+			   if(grantAllocationSplitInstances) {
+					if((params.subAccountHead != "null") && (params.subAccountHead))
+		        	{
+						params.accountHead = AccountHeads.get(new Integer(params.subAccountHead))
+		        	}
+					if((!params.subAccountHead) && (params.subAccountHead == "null") )
+		        	{
+						params.accountHead = AccountHeads.get(grantAllocationSplitInstances.accountHead.id)
+		        	}	  
+			   def grantAllocationSplitInstanceCheck = grantAllocationSplitService.validateGrantAllocationSplit(params,grantAllocationSplitInstances.projects.id)
+        if((!grantAllocationSplitInstanceCheck) || 	(grantAllocationSplitInstanceCheck[0].id == Long.parseLong(params.id)))
+		{     
+	    def grantAllocationSplitInstance = grantAllocationSplitService.updateGrantAllocationSplit(params)	
 			if(grantAllocationSplitInstance.isSaved){
 				flash.message = "${message(code: 'default.updated.label')}"
 				
-				  redirect(action:list,id:grantAllocationSplitInstance.projects.id)
+				  redirect(action:'list',id:grantAllocationSplitInstances.projects.id)
 			}
 			else{
-				render(view:'edit',model:[grantAllocationSplitInstance:grantAllocationSplitInstance])
+				redirect(action:'edit',id:grantAllocationSplitInstances.projects.id)
 			}
 		}
 		else {
             flash.message = "${message(code: 'default.notfond.label')}"
-            redirect(action:edit,id:params.id)
+            redirect(action:'list',id:grantAllocationSplitInstances.projects.id)
 		}
 	}
-	else
-	{
-	 redirect(action:list,id:params.projectId)
-	}
+	
     }
     }
 
@@ -246,11 +239,13 @@ class GrantAllocationSplitController extends GmsController  {
         grantAllocationSplitInstance.grantAllocation=grantAllocationInstance;
        
         ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
+        NumberFormat formatter = new DecimalFormat("#0.00");
         return ['grantAllocationSplitInstance':grantAllocationSplitInstance,
                 'grantAllocationInstance':grantAllocationInstance,
                 'grantAllocationInstanceList':grantAllocationInstanceList,
                 'currencyFormat':currencyFormatter,
-				'unAllocatedAmount':grantAllocationSplitInstance.unAllocatedAmt,'accountHeadList':accountHeadList]
+				'unAllocatedAmount':grantAllocationSplitInstance.unAllocatedAmt,'accountHeadList':accountHeadList,
+				'amount':formatter.format(grantAllocationSplitInstance.amount)]
 		}
     }
 

@@ -1,6 +1,7 @@
 class Notification {
 	
-    Projects project;	
+    Party party;
+	String notificationTitle;	
     String notificationCode;
     Date notificationDate;
     Date proposalSubmissionLastDate
@@ -11,10 +12,12 @@ class Notification {
     Date createdDate;
     String modifiedBy;
     Date modifiedDate;
+    char publicYesNo;
+    char publishYesNo;
 
 static constraints={
                     
-                    project(nullable:false)
+                   
                     notificationCode(blank:false,unique:true)
                     notificationDate(nullable:false)
                     proposalSubmissionLastDate(nullable:false)

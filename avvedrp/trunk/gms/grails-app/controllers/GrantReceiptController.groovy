@@ -461,8 +461,8 @@ class GrantReceiptController extends GmsController {
 			{
 				def grantReceiptInstance=new GrantReceipt()
 				def numformatter = new DecimalFormat("#0.00");
-				println numformatter.format(grantReceiptInstance.amount.amount) 
-				render(text:"<input type='text' id='amount' name='amount' value='${numformatter.format(grantReceiptInstance.amount)}' style='text-align: right' readOnly=true />", contentType:'text/html')
+				
+				render(text:"<input type='text' id='amount' name='amount' value='${numformatter.format(grantReceiptInstance.amount)}' style='text-align: right' readOnly=true onClick='return validateFundTransfer();' />", contentType:'text/html')
 			}
 			
 	}

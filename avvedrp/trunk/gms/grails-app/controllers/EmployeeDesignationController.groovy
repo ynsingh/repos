@@ -134,12 +134,7 @@ class EmployeeDesignationController
 						redirect(action: "list")
 			        }
 	        	}
-	        	else
-	        	{
-	        		/* Shows the following message if any employee exists of this particular designation. */
-	        		flash.message = "${message(code: 'default.usedinProjectEmployee.label')}"
-	        		redirect(action: "edit", id: params.id)    		   
-	        	}
+	        	
 		    }
 	    }
     }

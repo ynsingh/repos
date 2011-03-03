@@ -71,7 +71,22 @@ class AttachmentsController {
         def attachmentsName='Attachments'
     	def gmsSettingsService = new GmsSettingsService()
     	def gmsSettingsInstance = gmsSettingsService.getGmsSettings(attachmentsName)
-        def webRootDir
+        attachmentsInstance.domain=attachmentTypeInstance.documentType
+        if (documentType == 'Invoice')
+		{
+			attachmentsInstance.domain="expenseRequestEntry"
+		}
+		else 
+		 if(documentType == 'Receipt')
+		 {
+			attachmentsInstance.domain="grantExpense"
+			
+		 }
+		else
+		{
+			attachmentsInstance.domain="Projects"
+		}
+    	def webRootDir
         if ( GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_PRODUCTION)) 
         {
         	webRootDir = gmsSettingsInstance.value
@@ -86,24 +101,11 @@ class AttachmentsController {
         	if((fileName.lastIndexOf(".EXE")==-1)&&(fileName.lastIndexOf(".exe")==-1))
 			{
         		downloadedfile.transferTo(new File(webRootDir+fileName))
-        		attachmentsInstance.domain=attachmentTypeInstance.documentType
+        		
         		attachmentsInstance.domainId=params.projects
         		attachmentsInstance.attachmentType=AttachmentType.get(params.attachmentType.id)
         		attachmentsInstance.attachmentPath=fileName
-        		if (documentType == 'Invoice')
-        		{
-        			attachmentsInstance.domain="expenseRequestEntry"
-        		}
-        		else 
-    			 if(documentType == 'Receipt')
-    			 {
-    				attachmentsInstance.domain="grantExpense"
-    				
-    			 }
-    			else
-        		{
-        			attachmentsInstance.domain="Projects"
-        		}
+        		
         		if (attachmentsInstance.save(flush: true)) {
                     flash.message = "${message(code: 'default.Fileuploaded.label')}"
                     
@@ -123,6 +125,7 @@ class AttachmentsController {
             flash.message = "${message(code: 'default.fileEmpty.label')}"
             
          }
+        
         def trackType = attachmentsInstance.domain
         redirect(action: "create", id: attachmentsInstance.domainId,params:[trackType:trackType])
         
@@ -201,11 +204,15 @@ class AttachmentsController {
 	
 	def downloadAttachments = {
 		def attachmentsInstance = Attachments.get( params.id )
+		String fileName
+		def file
+		if(attachmentsInstance)
+		{
 		def gmsSettingsService = new GmsSettingsService()
  		def attachmentsName='Attachments'
  		def gmsSettingsInstance = gmsSettingsService.getGmsSettings(attachmentsName)
  		def webRootDir
- 		String fileName = attachmentsInstance.attachmentPath
+ 		fileName = attachmentsInstance.attachmentPath
  		attachmentsInstance.openedYesNo='Y'
  		attachmentsInstance.save()
  		 if ( GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_PRODUCTION)) 
@@ -216,7 +223,7 @@ class AttachmentsController {
         {
         	webRootDir = gmsSettingsInstance.value
         }
- 		def file = new File(webRootDir+fileName) 
+ 		file = new File(webRootDir+fileName) 
  		def fname=file.getName()
  		
  		if (fname.indexOf(".gif")>-1) {
@@ -242,4 +249,13 @@ class AttachmentsController {
  		response.outputStream << file.newInputStream() // Performing a binary stream copy 
  		
 	}
+	
+	else
+	{
+		file=new File("nofile"); 
+		response.setHeader("Content-disposition", "attachment;fileName=${file.getName()}") 
+		 
+ 		response.outputStream << file.newInputStream() // Performing a binary stream copy 
+ 		
+	}}
 }

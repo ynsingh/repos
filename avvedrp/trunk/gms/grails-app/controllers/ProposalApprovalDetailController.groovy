@@ -42,8 +42,9 @@ class ProposalApprovalDetailController {
         	def approvalAuthorityInstance = approvalAuthorityDetailService.getApprovalAuthorityDetailByApprovalAuthority(proposalApprovalDetailInstance.proposalApproval.approvalAuthorityDetail.approvalAuthority.id)
         	def proposalApprovalDetailByProposalStatus =proposalApprovalDetailService.getApprovedPreProposalApprovalDetailsByAuthorityAndProposalId(proposalApprovalDetailInstance.proposalApproval.approvalAuthorityDetail.approvalAuthority.id,proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.proposalId)
         	def proposalApprovalDetailByProposalRejectedStatus=proposalApprovalDetailService.getPreProposalApprovalDetailByProposalRejectedStatus(proposalApprovalDetailInstance.proposalApproval.approvalAuthorityDetail.approvalAuthority.id,proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.proposalId)
+        	def proposalApprovalDetailByProposalNeedMoreInfoStatus=proposalApprovalDetailService.getPreProposalApprovalDetailByProposalStatus(proposalApprovalDetailInstance.proposalApproval.approvalAuthorityDetail.approvalAuthority.id,proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.proposalId,"NeedMoreInfo","PreProposal")
         	println "proposalApprovalDetailInstance "+proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.approveOrder
-        				println "preProposalLevel "+preProposalInstance.preProposalLevel
+        	println "preProposalLevel "+preProposalInstance.preProposalLevel
         	if(proposalApprovalDetailByApprovalAuthority.size()==approvalAuthorityInstance.size())
         	{
         		if(approvalAuthorityInstance[0].approvalAuthority.approveAll=='Y')
@@ -66,7 +67,7 @@ class ProposalApprovalDetailController {
         			}
         			else
         			{
-        				if(proposalApprovalDetailByProposalRejectedStatus.size()==approvalAuthorityInstance.size())
+        				if(proposalApprovalDetailByProposalRejectedStatus.size()>proposalApprovalDetailByProposalNeedMoreInfoStatus.size())
         				{
         					if(preProposalInstance.preProposalLevel<proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.approveOrder)
             				{
