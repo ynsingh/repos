@@ -92,9 +92,16 @@
                             <td>${fieldValue(bean:attachmentTypeInstance, field:'type')}</td>
                         
                             <td>${fieldValue(bean:attachmentTypeInstance, field:'description')}</td>
-                        
-                            <td><g:link action="edit" id="${attachmentTypeInstance.id}"><g:message code="default.Edit.label"/></g:link></td>
-                        
+                            
+                            <g:if test="${(attachmentTypeInstance.type == 'CV' && attachmentTypeInstance.documentType == 'Proposal')|| 
+                                          (attachmentTypeInstance.type == 'DPR' && attachmentTypeInstance.documentType == 'Proposal')}">
+                            <td></td>
+                            
+                            </g:if>
+                            <g:else>
+                        	<td><g:link action="edit" id="${attachmentTypeInstance.id}"><g:message code="default.Edit.label"/></g:link></td>
+                        	</g:else>
+                            
                         </tr>
                      </g:each>
                     </tbody>

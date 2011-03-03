@@ -24,10 +24,13 @@ class GmsTagLib {
 		 def subMenuNotification = {attrs ->
 		  out << g.render(template: '/subMenuNotification')
 		 }
+  def subMenuLogin = {attrs ->
+  	out << g.render(template: '/subMenuLogin')
+  }
   def pageNavigation = {attrs ->
   def proposalApplicationInstance = proposalService.getProposalApplicationById(attrs.proposalApplicationInstance)
   def proposalApplicationExtInstance = proposalService.getMaxPageOfProposalApplicationExt(proposalApplicationInstance?.id)
-  out << g.render(template: '/pageNavigation',model:['page':new Integer(attrs.page),'proposalApplicationInstance':proposalApplicationInstance,'lastPage':proposalApplicationExtInstance[0]])
+  out << g.render(template: '/pageNavigation',model:['page':new Integer(attrs.page),'proposalApplicationInstance':proposalApplicationInstance,'lastPage':proposalApplicationExtInstance[0],'status':attrs.status])
  }
   
   

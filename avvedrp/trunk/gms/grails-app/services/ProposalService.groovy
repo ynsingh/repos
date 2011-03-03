@@ -5,6 +5,9 @@ class ProposalService {
    def userService
    def notificationsEmailsService
    def partyService
+   def notificationService
+   def proposalApprovalAuthorityMapService
+   def evalItemService
 	/*
     * Method to list all proposals
     */
@@ -123,11 +126,11 @@ class ProposalService {
    }
    
    /*
-    * method to get proposalApplicationExt Instance by proposalApplicationId
+    * method to get proposalApplicationExt Instance by proposalApplicationId and order by page and orderNo
     */
    public List getProposalApplicationExtByProposalApplication(def proposalApplicationId)
    {
-	   def proposalApplicationExtResult = ProposalApplicationExt.findAll("from ProposalApplicationExt PE where PE.proposalApplication="+proposalApplicationId)
+	   def proposalApplicationExtResult = ProposalApplicationExt.findAll("from ProposalApplicationExt PE where PE.proposalApplication="+proposalApplicationId+" order by page,orderNo")
 	   return proposalApplicationExtResult
    }
    
@@ -163,34 +166,74 @@ class ProposalService {
     /*
      * method to save proposalApplication
      */
-    public def saveProposal(def params,def grantor)
+    public def saveProposal(def params,def notification)
     {
  	   def proposalInstance = new Proposal()
  	   def dateValue = new Date()
- 	   def grantorInstance=partyService.getPartyById(grantor)
+ 	   def notificationInstance=notificationService.getNotificationById(notification)
  	  String uniqueId = UUID.randomUUID().toString();
  	  Random randomNumber = new Random();
  	  proposalInstance.code="PR-"+dateValue.getYear()+dateValue.getMonth()+1+dateValue.getDate()+dateValue.getSeconds()+dateValue.getMinutes()+dateValue.getHours()   
- 	  proposalInstance.grantor=grantorInstance
+ 	  proposalInstance.notification=notificationInstance
  	  proposalInstance.proposalSubmitteddate=dateValue
  	  proposalInstance.lockedYN='Y'
+ 	  proposalInstance.proposalVersion=new Integer(0);
  	  if(proposalInstance.save())
  	  {
- 		 def proposalApplicationInstance = new ProposalApplication()
- 		proposalApplicationInstance.proposal=proposalInstance
- 		proposalApplicationInstance.applicationSubmitDate=dateValue
- 		proposalApplicationInstance.controllerId=proposalInstance.code+randomNumber.nextInt()
+ 		
+ 	  }
+ 	   return proposalInstance
+    }
+    /*
+     * method to save proposalApplication
+     */
+    public def saveProposalAppliction(def proposalInstance,def params)
+    {
+    	def proposalApplicationInstanceCheck = getProposalApplicationByProposal(proposalInstance.id)
+    	def proposalApplicationInstance
+    	if(proposalApplicationInstanceCheck)
+    	{
+    		proposalApplicationInstance=proposalApplicationInstanceCheck
+    	}
+    	else
+    	{
+    		proposalApplicationInstance = new ProposalApplication()
+    		Random randomNumber = new Random();
+    		proposalApplicationInstance.proposal=proposalInstance
+    		proposalApplicationInstance.controllerId=proposalInstance.code+randomNumber.nextInt()
+    	}
+ 		proposalApplicationInstance.applicationSubmitDate=new Date()
+ 		proposalApplicationInstance.name=params.FirstName_1+" "+params.LastName_2
+ 		proposalApplicationInstance.designation=params.Designation_3
+ 		proposalApplicationInstance.organisation=params.Organisation_4
+ 		proposalApplicationInstance.postalAddress=params.PostalAddress_5
+ 		proposalApplicationInstance.city=params.City_6
+ 		proposalApplicationInstance.state=params.State_7
+ 		proposalApplicationInstance.phone=params.STD_8+"-"+params.Phone_9
+ 		proposalApplicationInstance.fax=params.FaxSTD_10+"-"+params.FaxPhone_11
+ 		proposalApplicationInstance.email=params.Email_12
+ 		proposalApplicationInstance.mobile=params.Mobile_13
+ 		proposalApplicationInstance.proposalCategory=ProposalCategory.find("from ProposalCategory PC where PC.name='"+params.ProjectCategory_14+"'")
  		
  		if(proposalApplicationInstance.save())
  		{
  			
  		}
- 	  }
- 	   return proposalInstance
+ 		
+    	return proposalApplicationInstance
     }
-    public def saveProposalAppliction()
+    public def updateProposalAppliction(def proposalInstance)
     {
-    	
+    	def proposalApplicationInstance 
+    	proposalApplicationInstance.proposal=proposalInstance
+ 		proposalApplicationInstance.applicationSubmitDate=new Date()
+ 		proposalApplicationInstance.controllerId=proposalInstance.code+randomNumber.nextInt()
+ 		if(proposalApplicationInstance.save())
+ 		{
+ 			
+ 		}
+ 		
+    	return proposalApplicationInstance
     }
     public def updateProposal(def proposalInstance)
     {
@@ -212,9 +255,26 @@ class ProposalService {
     	}
     	return proposalApplicationInstance
     }
+    /*
+     * method to get proposal application instance assigned to each reviewer of party
+     */
     public def getProposalApplicationListForReviewer(def user,def party)
     {
-    	def proposalApplicationInstanceList =ProposalApplication.findAll("from ProposalApplication P where P.proposal.grantor.id="+party) 
+    	/*method to get proposalApprovalAuthorityMapInstance of each user using approval authority of user*/
+    	def proposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService.getProposalApprovalAuthorityMapByReviewer(user,'Proposal')
+    	def proposalApplicationInstanceList = []
+    	if(proposalApprovalAuthorityMapInstance)
+    	{
+    		for(proposalId in proposalApprovalAuthorityMapInstance.proposalId)
+    		{
+    			def proposalApplicationInstance=getProposalApplicationByLockedNoProposal(proposalId)
+    			if(proposalApplicationInstance)
+    			{
+    				proposalApplicationInstanceList.add(proposalApplicationInstance)
+    			}
+    		}
+    	}
+    	
     	return proposalApplicationInstanceList
     }
     /*
@@ -233,8 +293,75 @@ class ProposalService {
     	def proposalApplicationInstance = ProposalApplication.get(proposalApplicationId)
     	return proposalApplicationInstance
     }
+    /*
+     * method to get proposal by id
+     */
+    def getProposalById(def proposalId)
+    {
+    	def proposalInstance = Proposal.get(proposalId)
+    	return proposalInstance
+    }
    
-   
-    
+    /*
+     * method to get proposalApplication by controllerId and notification
+     */
+    public def getProposalApplicationByControllerIdAndNotification(def controllerId,def notificationId)
+    {
+ 	   def proposalApplicationInstance = ProposalApplication.find("from ProposalApplication PA where PA.controllerId='"+controllerId+"' and PA.proposal.notification.id="+notificationId)
+ 	   return proposalApplicationInstance
+    }
+    /*
+     * method to get proposalApplication Instance by proposalId and locked no
+     */
+    public ProposalApplication getProposalApplicationByLockedNoProposal(def proposalId)
+    {
+ 	   def proposalApplicationInstance = ProposalApplication.find("from ProposalApplication PA where PA.proposal.lockedYN='N' and PA.proposal="+proposalId)
+ 	   return proposalApplicationInstance
+    }
+    /*
+     * method to get proposalApplicationExt Instance by proposalApplication Id 
+     */
+    public List getProposalApplicationExtByProposalApplicationId(def proposalApplicationId)
+    {
+ 	   def proposalApplicationExtResult = ProposalApplicationExt.findAll("from ProposalApplicationExt PE where PE.proposalApplication="+proposalApplicationId)
+ 	   return proposalApplicationExtResult
+    }
+    /*
+     * method to get search result of proposal application instance assigned to each reviewer of party
+     */
+    public def getProposalApplicationSearchListForReviewer(def user,def party,def params)
+    {
+    	/*method to get proposalApprovalAuthorityMapInstance of each user using approval authority of user*/
+    	def proposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService.getProposalApprovalAuthorityMapByReviewer(user,'Proposal')
+    	/*method to get evalAnswer of user*/
+    	def evalAnwserInstanceList = evalItemService.getEvalAnswerListByUser(user,party)
+    	def proposalInstanceList 
+    	if(params.status=='Reviewed')
+    	{
+    		proposalInstanceList=evalAnwserInstanceList?.proposal?.id 
+    	}
+    	else if(params.status=='NotReviewed')
+    	{
+    		proposalInstanceList=(proposalApprovalAuthorityMapInstance?.proposalId)-(evalAnwserInstanceList?.proposal.id)
+    	}
+    	else
+    	{
+    		proposalInstanceList=proposalApprovalAuthorityMapInstance?.proposalId 		
+    	}
+    	def proposalApplicationInstanceList = []
+    	if(proposalInstanceList)
+    	{
+    		for(proposalId in proposalInstanceList)
+    		{
+    			def proposalApplicationInstance=getProposalApplicationByLockedNoProposal(proposalId)
+    			if(proposalApplicationInstance)
+    			{
+    				proposalApplicationInstanceList.add(proposalApplicationInstance)
+    			}
+    		}
+    	}
+    	
+    	return proposalApplicationInstanceList
+    }
     
 }

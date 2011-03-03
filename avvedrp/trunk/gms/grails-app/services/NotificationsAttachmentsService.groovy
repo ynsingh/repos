@@ -49,4 +49,9 @@ class NotificationsAttachmentsService
 								.findAll("from AttachmentType  AT where  AT.documentType='"+params.documentType+"'");
 		return attachmentsList;
 	}
+	public List getNotificationAttachmentsByNotificationId(def type,def notificationId)
+	{
+		def notificationsAttachmentsInstance = NotificationsAttachments.findAll("from NotificationsAttachments NA where NA.attachmentType.documentType='"+type+"' and NA.notification="+notificationId)
+		return notificationsAttachmentsInstance;
+	}
 }

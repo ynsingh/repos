@@ -28,6 +28,7 @@ class PreProposalService {
     	preProposalInstance.preProposalSavedDate=new Date()
     	preProposalInstance.preProposalStatus="Saved"
     	preProposalInstance.preProposalLevel=new Integer(0)
+    	preProposalInstance.activeYesNo='Y'
     	if(preProposalInstance.save(flush: true))
     	{
     		println "hai"

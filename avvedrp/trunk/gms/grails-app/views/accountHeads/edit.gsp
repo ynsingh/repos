@@ -10,7 +10,13 @@
     <body>
       <div class="wrapper">
         <div class="body">
+        <g:if test="${accountHeadsInstance.parent !=null}">
+        <h1><g:message code="default.AccountHeads.EditSubAccountHeads.head"/></h1>
+        </g:if>
+        <g:else>
+        
             <h1><g:message code="default.AccountHeads.EditAccountHeads.head"/></h1>
+            </g:else>
             <g:if test="${flash.message}">
                <div class="message">${flash.message}</div>
             </g:if>

@@ -29,7 +29,7 @@ class ProjectTypeService
         {
         	/* setting the project type as inactive */
         	projectTypeInstance.activeYesNo="N"
-        	projectTypeInstance.delete()
+        	projectTypeInstance.save()
             projectTypeDeletedId = projectTypeInstance.id
         }
 		return projectTypeDeletedId

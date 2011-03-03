@@ -104,19 +104,11 @@ class ProjectsService{
 	 */
 	
 	public Projects updateProject(def projectParams){
-		// updateProjectsPiMap(projectParams)
 		def projectsInstance = getProjectById(new Integer(projectParams.id ))
 		
         if(projectsInstance) {
         	projectsInstance.modifiedBy = "user";
         	projectsInstance.modifiedDate = new Date();
-        	//if(projectParams.parent!=null)	{
-	        	//if(projectParams.parent.id.equals("0"))	{
-	        		//projectsInstance.parent = null;
-	        	  //	System.out.println("Executed")
-	        	//}
-        	//}
-          
         	/* Check whether Projects with same name already exists.*/
         	Integer projectId = checkDuplicateProject(projectParams)
              if(projectId.intValue() == 0 || projectId.intValue() == projectsInstance.id.intValue()){
@@ -124,7 +116,19 @@ class ProjectsService{
         	    
         	    	if(!projectsInstance.hasErrors() && projectsInstance.save()&& checkPIForUpdateProject(projectParams)) {
         	    	
-        	    	
+        	    		if(projectParams?.projectType.id)
+        	    		{
+        	    			def suProjectsList = getSubProjectsForClosingMainProject(projectsInstance.id);
+        	    			if(suProjectsList)
+        	    			{
+        	    				for(int i=0;i<suProjectsList.size();i++)
+        	    				{
+        	    					suProjectsList[i].projectType = projectsInstance.projectType;
+        	    					suProjectsList[i].save();
+        	    				}
+        	    			}
+        	    		}
+        	    		
         	    		projectsInstance.saveMode = "Updated"
         	    	}
         	    	else
@@ -272,7 +276,6 @@ class ProjectsService{
 	public def saveProjectAccessPermissionForPiMap(def projectsId,def investigatorId)
 	{
 		def grantAllocationService=new GrantAllocationService()
-		
 		def grantAllocationInstanceList = GrantAllocation.findAll("from GrantAllocation GA where GA.projects.id="+projectsId)
 		def investigatorInstance=Investigator.get(investigatorId)
 		def grant = getGrantAllocationFromAcl(grantAllocationInstanceList)
@@ -758,33 +761,83 @@ class ProjectsService{
 	public def checkPIForUpdateProject(def project)
 	{		
 		def checkPiInstance
-		def projectsPIMapInstanceList=ProjectsPIMap.find("from ProjectsPIMap PM where PM.projects.id="+project.id+" and PM.investigator.id="+project.investigator.id+" and PM.activeYesNo='Y'")
+		def projectsPIMapInstance=ProjectsPIMap.find("from ProjectsPIMap PM where PM.projects.id="+project.id+" and PM.investigator.id="+project.investigator.id+" and PM.activeYesNo='Y' and PM.role = 'PI'")
 		def projectInstance = Projects.get(project.id)
 		def projectsPIMapInstancedelete=ProjectsPIMap.find("from ProjectsPIMap PM where PM.projects="+project.id+" and PM.role = 'PI' and PM.activeYesNo='Y'")
-		if(projectsPIMapInstanceList)
+		def projectsPIMapCoPIInstancedelete = ProjectsPIMap.find("from ProjectsPIMap PM where PM.projects.id="+project.id+" and PM.investigator.id="+project.investigator.id+" and PM.activeYesNo='Y' and PM.role = 'CO-PI'")
+		if(projectsPIMapInstance)
 		{
 			checkPiInstance=true
 		}
 		else
 		{
 			if(!projectsPIMapInstancedelete)
-			{		
-				//Assign to project to PI and giving project access permission
-				savePIMapInstance(project,projectInstance)					
-				checkPiInstance=true
-			}
-			else
-			{
-				projectsPIMapInstancedelete.activeYesNo="N"
-				if(checkFordeleteProjectAccessPermissionOfPiMap(projectsPIMapInstancedelete.projects.id,projectsPIMapInstancedelete.investigator.id))
-				{						
-					projectsPIMapInstancedelete.save()
+			{	
+				if(!projectsPIMapCoPIInstancedelete)
+				{
 					//Assign to project to PI and giving project access permission
-					savePIMapInstance(project,projectInstance)
+					savePIMapInstance(project,projectInstance)					
 					checkPiInstance=true
 				}
 				else
-					checkPiInstance=false	
+				{
+					projectsPIMapCoPIInstancedelete.activeYesNo="N"
+						if(checkFordeleteProjectAccessPermissionOfPiMap(projectsPIMapCoPIInstancedelete.projects.id,projectsPIMapCoPIInstancedelete.investigator.id))
+						{		
+							projectsPIMapCoPIInstancedelete.save()
+							//Assign to project to PI and giving project access permission
+							savePIMapInstance(project,projectInstance)
+							checkPiInstance=true
+						}
+						else
+						{
+							checkPiInstance=false	
+						}
+				}
+			}
+			else
+			{
+				if(!projectsPIMapCoPIInstancedelete)
+				{
+					projectsPIMapInstancedelete.activeYesNo="N"
+						if(checkFordeleteProjectAccessPermissionOfPiMap(projectsPIMapInstancedelete.projects.id,projectsPIMapInstancedelete.investigator.id))
+						{		
+							projectsPIMapInstancedelete.save()
+							//Assign to project to PI and giving project access permission
+							savePIMapInstance(project,projectInstance)
+							checkPiInstance=true
+						}
+						else
+						{
+							checkPiInstance=false
+						}
+				}
+				else
+				{
+					projectsPIMapCoPIInstancedelete.activeYesNo="N"
+					if(checkFordeleteProjectAccessPermissionOfPiMap(projectsPIMapCoPIInstancedelete.projects.id,projectsPIMapCoPIInstancedelete.investigator.id))
+					{		
+						projectsPIMapCoPIInstancedelete.save()
+						
+						projectsPIMapInstancedelete.activeYesNo="N"
+							if(checkFordeleteProjectAccessPermissionOfPiMap(projectsPIMapInstancedelete.projects.id,projectsPIMapInstancedelete.investigator.id))
+							{		
+								projectsPIMapInstancedelete.save()
+								//Assign to project to PI and giving project access permission
+								savePIMapInstance(project,projectInstance)
+								checkPiInstance=true
+							}
+							else
+							{
+								checkPiInstance=false	
+							}
+					}
+					else
+					{
+						checkPiInstance=false	
+					}
+				}
+				
 			}	
 		}
 		return checkPiInstance

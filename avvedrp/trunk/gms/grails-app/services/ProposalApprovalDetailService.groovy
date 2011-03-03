@@ -72,6 +72,14 @@ class ProposalApprovalDetailService {
     	return proposalApprovalDetailByProposalRejectedStatus
     }
     /*
+     * method to get rejected Pre proposalApprovalDetail using approvalAuthorityId and proposalid
+     */
+    def getPreProposalApprovalDetailByProposalStatus(def approvalAuthorityId,def proposalId,def status,def proposalType)
+    {
+    	def proposalApprovalDetailByProposalStatus = ProposalApprovalDetail.findAll("from ProposalApprovalDetail PD where PD.activeYesNo='Y' and PD.proposalStatus='"+status+"' and PD.proposalApproval.approvalAuthorityDetail.approvalAuthority="+approvalAuthorityId+" and PD.proposalApproval.proposalApprovalAuthorityMap.proposalId="+proposalId+" and PD.proposalApproval.proposalApprovalAuthorityMap.proposalType='"+proposalType+"'")
+    	return proposalApprovalDetailByProposalStatus
+    }
+    /*
      * 
      */
     def inactivateProposalApprovalDetailForNeedMoreInfo(def proposalInstance)

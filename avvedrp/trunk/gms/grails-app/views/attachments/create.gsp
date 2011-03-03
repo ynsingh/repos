@@ -72,8 +72,7 @@
 					                <table width="97%" align="center" border="0" cellspacing="0" cellpadding="0">
 					                    <thead>
 					                        <tr>
-												<g:sortableColumn property="id" 
-														title="${message(code: 'default.SINo.label')}" />
+												<th><g:message code="default.SINo.label" /></th>
                         
                             					<th><g:message code="default.AttachmentType.label" /></th>
                         						<g:if test="${(trackType == 'expenseRequestEntry')}">
@@ -83,11 +82,8 @@
 										    		<th><g:message code="default.Project.label"/></th>
 										    	</g:else>
                         						
-                            
-					                            <g:sortableColumn property="attachmentPath" 
-					                            	title="${message(code: 'default.DocumentName.label')}" />
-                                                	                                                
-                            					<th><g:message code="default.View.label"/></th>
+                                                <th><g:message code="default.DocumentName.label" /></th>
+		                            			<th><g:message code="default.View.label"/></th>
                             					
                             					<th><g:message code="default.Delete.label"/></th>
                         					</tr>

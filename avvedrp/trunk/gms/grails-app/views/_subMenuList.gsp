@@ -8,21 +8,24 @@
 		<div class="hrmenu-container" >	
 	   		<ul id="topnav"> 
 		        <li> <g:link  controller='grantAllocation' action="projectDash" id="${session.ProjectID}"><g:message code="default.ProjectInfo.label"/></g:link>
-		            <span> 
-						<g:link  controller='projects' action="edit" id="${session.ProjectID}">Project Home</g:link> |
-						<g:link  controller='projectsPIMap' action="create" id="${session.ProjectID}">PI Addition</g:link> |<g:link  controller='projectDepartmentMap' action="create" id="${session.ProjectID}">Department Addition</g:link>  
-		            	<g:if test="${projectsInstance.parent}"></g:if>
-		        		<g:else>
-		        			|<g:link controller='grantAllocation' action="fundAllot" id="${session.ProjectID}"><g:message code="default.FundAllocation.label"/></g:link>
-		        		</g:else>
-		            </span> 
+		            <g:if test="${session.Role == 'ROLE_SITEADMIN'}">
+			            <span> 
+							<g:link  controller='projects' action="edit" id="${session.ProjectID}">Project Home</g:link> |
+							<g:link  controller='projectsPIMap' action="create" id="${session.ProjectID}">Co-PI Addition</g:link> |<g:link  controller='projectDepartmentMap' action="create" id="${session.ProjectID}">Department Addition</g:link>  
+			            	<g:if test="${projectsInstance.parent}"></g:if>
+			        		<g:else>
+			        			|<g:link controller='grantAllocation' action="fundAllot" id="${session.ProjectID}"><g:message code="default.FundAllocation.label"/></g:link>
+			        		</g:else>
+			            </span> 
+		            </g:if>
 		        
 		        </li> 
 		        <li> 
 					<a href="#"><g:message code="default.Allocation.label"/></a> 
 		            <span> 
-						<g:link  controller='grantAllocation' action="subGrantAllot" id="${session.ProjectID}"><g:message code="default.SuballocateProject.label"/></g:link> |
-						<g:link  controller='grantAllocationSplit' action="list" id="${session.ProjectID}"><g:message code="default.HeadwiseAllocation.label"/></g:link> 
+		                <g:link  controller='grantAllocationSplit' action="list" id="${session.ProjectID}"><g:message code="default.HeadwiseAllocation.label"/></g:link> |
+						<g:link  controller='grantAllocation' action="subGrantAllot" id="${session.ProjectID}"><g:message code="default.SuballocateProject.label"/></g:link> 
+						
 		            </span> 
 		        </li> 
 		        <li> 

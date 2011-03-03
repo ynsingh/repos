@@ -85,7 +85,13 @@
                             
                             <td>${fieldValue(bean: authorityInstance, field: "description")}</td>
                             
+                            <g:if test="${(authorityInstance.authority != 'ROLE_STAFF') && (authorityInstance.authority != 'ROLE_SITEADMIN') && (authorityInstance.authority != 'ROLE_PI') && (authorityInstance.authority != 'ROLE_PROPOSALADMIN') && (authorityInstance.authority != 'ROLE_REVIEWER') && (authorityInstance.authority != 'ROLE_USER') && (authorityInstance.authority != 'ROLE_FINANCE')}">
+                            
                         	<td><g:link action="edit" id="${authorityInstance.id}"><g:message code="default.Edit.label"/></g:link></td>
+                        	</g:if>
+                        	<g:else>
+                        	<td></td>
+                        	</g:else>
 
                         </tr>
                       </g:each>

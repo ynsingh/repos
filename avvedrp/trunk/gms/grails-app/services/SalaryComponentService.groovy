@@ -76,12 +76,6 @@ class SalaryComponentService
 		def salaryComponentInstance = getSalaryComponentById( new Integer(salaryComponentParams.id ))
 		if (salaryComponentInstance)
 		{
-			/*Get Employee Salary details based on the salary component*/
-			def projectEmployeeSalaryDetailsInstance=projectEmployeeSalaryDetailsService
-																.getEmployeeSalaryDetailsBasedOnComponent(salaryComponentInstance)			
-			/*Check whether any employee having this salary componet*/
-			if (!projectEmployeeSalaryDetailsInstance)
-			{
 				salaryComponentInstance.properties = salaryComponentParams
 				if(salaryComponentInstance.save())
 	            {
@@ -92,7 +86,7 @@ class SalaryComponentService
 			{
 				salaryComponentId=0			    
 			}	
-		}
+		
 		/*1.Returns the salary component instance id if the component updated successfully
 		 *2.Returns zero if the salary component is assigned to employees
 		 * */

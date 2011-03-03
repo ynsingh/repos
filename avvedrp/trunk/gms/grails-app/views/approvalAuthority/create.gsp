@@ -113,6 +113,9 @@
                             <g:sortableColumn property="approveMandatory" title="${message(code: 'default.approveMandatory.label')}" />
                         
                             <g:sortableColumn property="approveAll" title="${message(code: 'default.approveAll.label')}" />
+                            
+                            
+                            <g:sortableColumn property="defaultYesNo" title="${message(code: 'default.DefaultAuthority.label')}" />
                               
                             <th><g:message code="default.ApprovalAuthority.AddMembers.label"/></th>
                             
@@ -132,6 +135,8 @@
                             <td>${fieldValue(bean: approvalAuthorityInstance, field: "approveMandatory")}</td>
                         
                             <td>${fieldValue(bean: approvalAuthorityInstance, field: "approveAll")}</td>
+                            
+                            <td>${fieldValue(bean: approvalAuthorityInstance, field: "defaultYesNo")}</td>
                             
                             <td><g:link controller ="approvalAuthorityDetail" action="create" id="${approvalAuthorityInstance.id}"><g:message code="default.ApprovalAuthority.AddMembers.label"/></g:link></td>
                             

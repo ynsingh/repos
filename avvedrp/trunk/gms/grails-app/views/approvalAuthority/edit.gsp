@@ -71,7 +71,16 @@
                                 <td valign="top" class="value ${hasErrors(bean: approvalAuthorityInstance, field: 'email', 'errors')}">
                                     <g:textField name="email" value="${approvalAuthorityInstance?.email}" />
                                 </td>
+                                
+                                <td valign="top" class="name">
+                                    <label for="viewAll"><g:message code="default.DefaultAuthority.label" />:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: approvalAuthorityInstance, field: 'defaultYesNo', 'errors')}">
+                                    <g:select name="defaultYesNo" optionValue="key" optionKey="value" from ="${['Yes':'Y', 'No':'N']}" value="${fieldValue(bean: approvalAuthorityInstance, field: 'defaultYesNo')}" />
+                                </td>
+                                </tr>
                              
+                                <tr class="prop">
                                 <td valign="top" class="name">
                                   <label for="remarks"><g:message code="default.Remarks.label" />:</label>
                                 </td>

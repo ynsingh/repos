@@ -95,4 +95,18 @@ class ApprovalAuthorityService {
    		 def chkApprovalAuthorityInstance = ApprovalAuthority.findAll("from  ApprovalAuthority A where A.name= '"+params.name+"' and A.activeYesNo = 'Y'")
    		 return chkApprovalAuthorityInstance
    	}
+     
+     public List chkDefaultAuthority(String partyId)
+     {
+    	 def chkDefaultAuthorityInstance = ApprovalAuthority.findAll("from ApprovalAuthority AA where AA.defaultYesNo = 'Y' and AA.party="+partyId)
+    	 return chkDefaultAuthorityInstance
+     }
+     /*
+      * Get default active Approval Authority
+      */
+      public List getDefaultActiveApprovalAuthority(def partyId)
+     {
+     	def approvalAuthorityList = ApprovalAuthority.findAll("from ApprovalAuthority A where A.activeYesNo = 'Y' and A.defaultYesNo = 'Y' and A.party="+partyId)
+     	return approvalAuthorityList
+     }
 }
