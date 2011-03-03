@@ -1,0 +1,170 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<!-- DW6 -->
+<head>
+<!-- Copyright 2005 Macromedia, Inc. All rights reserved. -->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>MGMS Functional Documents</title>
+<link rel="stylesheet" href="emx_nav_left.css" type="text/css" />
+<script type="text/javascript">
+<!--
+var time = 3000;
+var numofitems = 7;
+
+//menu constructor
+function menu(allitems,thisitem,startstate){ 
+  callname= "gl"+thisitem;
+  divname="subglobal"+thisitem;  
+  this.numberofmenuitems = allitems;
+  this.caller = document.getElementById(callname);
+  this.thediv = document.getElementById(divname);
+  this.thediv.style.visibility = startstate;
+}
+
+//menu methods
+function ehandler(event,theobj){
+  for (var i=1; i<= theobj.numberofmenuitems; i++){
+    var shutdiv =eval( "menuitem"+i+".thediv");
+    shutdiv.style.visibility="hidden";
+  }
+  theobj.thediv.style.visibility="visible";
+}
+				
+function closesubnav(event){
+  if ((event.clientY <48)||(event.clientY > 107)){
+    for (var i=1; i<= numofitems; i++){
+      var shutdiv =eval('menuitem'+i+'.thediv');
+      shutdiv.style.visibility='hidden';
+    }
+  }
+}
+// -->
+</script>
+<style type="text/css">
+<!--
+body,td,th {
+	color: #000066;
+	background-color: #FFFFFF;
+}
+body {
+	background-color: #000099;
+}
+.style1 {color: #003399}
+.style2 {
+	color: #CC0000;
+	font-size: medium;
+}
+.style6 {font-size: small; font-weight: bold; color: #FFCC66;}
+-->
+</style>
+</head>
+<body onmousemove="closesubnav(event);">
+<div class="skipLinks">skip to: <a href="#content">page content</a> | <a href="#pageNav">links on this page</a> | <a href="#globalNav">site navigation</a> | <a href="#siteInfo">footer (site information)</a> </div>
+<div id="masthead">
+  <h1 id="siteName">&nbsp;&nbsp; Sakshat Amrita ERP <span class="style6">- An initiative under NME ICT of MHRD</span></h1>
+  <div id="utility"> <a href="http://www.amrita.edu" title="www.amrita.edu">AVVP</a> | <a href="http://www.sakshat.ac.in" title="www.sakshat.ac.in">Sakshat</a> | <a href="http://www.education.nic.in" title="ww.education.nic.in">MHRD</a> </div>
+  <div id="globalNav"><img alt="" src="glbnav_right.gif" height="32" width="4" id="gnr" />
+    <!--end globalLinks-->
+</div>
+  <!-- end globalNav -->
+ 
+<div id="pagecell1">
+  <!--pagecell1-->
+  <img alt="" src="tl_curve_white.gif" height="6" width="6" id="tl" /> <img alt="" src="tr_curve_white.gif" height="6" width="6" id="tr" />
+  <div id="pageName">
+    <h2>Multi Site Grant Management System </h2>
+    <img alt="small logo" src="amrita_edu_logo.PNG" height="58" width="192"/> </div>
+  <div id="pageNav">
+    <div class="style1" id="sectionLinks"> <a href="http://sakshat.amrita.ac.in/erp" target="_blank">About Sakshat Amrita </a><span class="style1"> <a href="MGMSDoc-Home.html">About MGMS </a> <a href="MGMSDoc-Roadmap.html">MGMS Roadmap </a> <a href="MGMSDoc-Releasedocs.html">Release Notes </a> <a href="MGMSDoc-Techdocs.html">Technical Documentation </a> </span><a href="MGMSDoc-Funcdocs.html">Functional Documentation</a> <a href="MGMSDoc-Userdocs.html">User Documentation</a> <a href="MGMSDoc-Misc.html">Miscellaneous </a> </div>
+    <div>
+      <h3 class="relatedLinks style2">&nbsp;</h3>
+      <h3 class="relatedLinks style2">&nbsp;</h3>
+    </div>
+    <img src="logo.png" width="178" height="68" />
+  </div>
+  <div id="content">
+    <div class="feature"> <img src="new sakshat logo.PNG" width="242" height="129" />
+      <h3>MGMS - Functional Documentation </h3>
+      <p align="justify">The functional specifications for the various functionalities have been arrived at after many thorough discussions with the users, developers and the implementation team.&nbsp; The system will be constanlty evolving and as such the documents provided below are &lsquo;living documents&rsquo; . The  specification will change, continuously, as the project proceeds. More details  will be added and the existing information edited as the requirements,  scenarios and use cases evolve in the course of the project.&nbsp; </p>
+    </div>
+    <div class="story">
+      <h3>Functional objective </h3>
+      <p align="justify"> Multisite GMS  provides for day to day project management.  Moreover, because the system is web-based, can be assessed from anywhere,  provides a medium for a collaborative working environment for internal/external  experts and reviewers.</p>
+      <p align="justify">In today&rsquo;s business environment, Grant-Giving Organizations need to be  ever more accountable to its officials and Government Departments and indeed  those who are accepted and rejected for various grants. MGMS can track each and  every application there by making accountability, reporting and governance much  easier. The system can also be easily integrated in future with leading  financial systems to better keep track of spending.</p>
+      <p align="justify"><strong>Highlights of MGMS </strong></p>
+      <ul>
+        <li>Easily accessible from anywhere,  for MGMS being a web deployed application.</li>
+        <li>Permission based <strong>security</strong> allows full or partial  access to screen and data depending on the user&rsquo;s needs.</li>
+        <li>Reports based on multiple  criteria.</li>
+      </ul>
+    </div>
+    <div class="story">
+      <table width="100%" cellpadding="0" cellspacing="0" summary="">
+        <tr valign="top">
+          <td>
+            <p> <a href="#" class="capsule">Post - Project Award Functionalities </a>The  features are involved with creation of the received project, assigning assets and team members, allocating funds to different accounts as per the terms &amp; conditions, possible sub allocation of parts of the project to other institutions (sub projects), project tracking etc. </p>
+            <ul>
+              <li><em><strong><a href="GMS_FncSpec/Post grant/MGMS_Spec_Asset Purchase.doc" target="_blank"><u>Asset purchase </u></a></strong></em></li>
+              <li><em><a href="GMS_FncSpec/Post grant/MGMS_Spec_HR.doc" target="_blank"><strong><u>Human Resource management </u></strong></a></em></li>
+              <li><em><a href="GMS_FncSpec/Post grant/MGMS_Spec_Create SiteAdmin.doc" target="_blank"><strong><u>Site administrator creation </u></strong></a></em></li>
+              <li><em><a href="GMS_FncSpec/Post grant/MGMS_Spec_Create-Edit Proj.doc" target="_blank"><strong><u>Project creation </u></strong></a></em></li>
+              <li><em><a href="GMS_FncSpec/Post grant/MGMS_Spec_Expenses entry-view.doc" target="_blank"><strong><u>Expense entry </u></strong></a></em></li>
+              <li><em><a href="GMS_FncSpec/Post grant/MGMS_FuncSpec_ExpenseReq.doc" target="_blank"><strong><u>Expense approval request </u></strong></a></em></li>
+              <li><em><a href="GMS_FncSpec/Post grant/MGMS_Spec_Grant Receipt.doc" target="_blank"><strong><u>Grant receipt </u></strong></a></em></li>
+              <li><em><a href="GMS_FncSpec/Post grant/MGMS_Spec_Head wise allocation.doc" target="_blank"><strong><u>Head-wise allocation </u></strong></a></em></li>
+              <li><em><a href="GMS_FncSpec/Post grant/MGMS_Spec_Project info view.doc" target="_blank"><strong><u>Project - home </u></strong></a></em></li>
+              <li><em><a href="GMS_FncSpec/Post grant/MGMS_Spec_Project Tracking.doc" target="_blank"><strong><u>Project tracking </u></strong></a></em></li>
+              <li><em><a href="GMS_FncSpec/Post grant/MGMS_Spec_Search Proj.doc" target="_blank"><strong><u>Project search </u></strong></a></em></li>
+              <li><em><a href="GMS_FncSpec/Post grant/MGMS_Spec_Sub-alloc proj.doc" target="_blank"><strong><u>Project sub allocation </u></strong></a></em></li>
+              <li><em><a href="GMS_FncSpec/Post grant/MGMS_Spec_Utilization Submit.doc" target="_blank"><strong><u>Utilization report submission </u></strong></a></em></li>
+            </ul>            
+            <p>&nbsp;</p>          </td>
+        </tr>
+        <tr valign="top">
+          <td>
+            <p> <a href="#" class="capsule">Pre-award Functionalities </a>Pre-award features enable users to create grant notifications, manage them within the institution, call for proposals, evaluate them and finally select the grantee. There is also provision to create and send proposals electronically across instiutions which use the MGMS </p>
+            <ul>
+              <li><em><strong><a href="GMS_FncSpec/Pre-grant/MGMS_Spec_Apply to proposal.doc" target="_blank"><u>Proposal Application </u></a></strong></em></li>
+              <li><em><a href="GMS_FncSpec/Pre-grant/MGMS_Spec_Call for proposal.doc" target="_blank"><strong><u>Grant  notification </u></strong></a></em></li>
+              <li><em><a href="GMS_FncSpec/Pre-grant/MGMS_Spec_Create Notification.doc" target="_blank"><strong><u>Notification Creation</u></strong></a></em></li>
+              <li><em><strong><a href="GMS_FncSpec/Pre-grant/MGMS_FuncSpec_Intern proposal eval.doc" target="_blank"><u>Internal Proposal Evaluation</u></a> </strong></em></li>
+              <li><em><a href="GMS_FncSpec/Pre-grant/MGMS_Spec_Proposal Evaluation.doc" target="_blank"><strong><u>Proposal prequalification </u></strong></a></em></li>
+              <li><em><a href="GMS_FncSpec/Pre-grant/MGMS_Spec_Proposal Mnagmnt.doc" target="_blank"><strong><u>Proposal Management </u></strong></a></em></li>
+            </ul>            
+            <p>&nbsp;</p>          </td>
+        </tr>
+        <tr valign="top">
+          <td>
+            <p> <a href="#" class="capsule">System Administration </a>  As the name suggests, these documents explain the features which are mainly used by the system administrators of the member institutions of MGMS. Tasks include registering the institution in MGMS, adding new users, assigning roles &amp; privileges, monitoring usage, generating MIS reports etc. </p>
+            <ul>
+              <li><em><strong><a href="GMS_FncSpec/Post grant/MGMS_Spec_Institution.doc" target="_blank"><u>Institution creation </u></a></strong></em></li>
+              <li><em><a href="GMS_FncSpec/Post grant/MGMS_Spec_Masters.doc" target="_blank"><strong><u>Settings</u></strong></a></em></li>
+              <li><em><a href="GMS_FncSpec/Post grant/MGMS_Spec_User Mngmnt.doc" target="_blank"><strong><u>User management </u></strong></a></em></li>
+              <li><em><a href="GMS_FncSpec/Post grant/MGMS_Spec_Log-in.doc" target="_blank"><strong><u>Login</u></strong></a></em></li>
+            </ul>
+            <p><a href="MGMSDoc-Home.html" target="_blank"></a></p>
+            <p>&nbsp;</p></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div id="siteInfo"><a href="#">About Us</a> | <a href="#">Site Map</a> | <a href="#">Privacy Policy</a> | <a href="#">Contact Us</a> | 
+    <p align="center">Open source development supported by Amrita and NME-ICT, MHRD</p>
+    <p align="center">&nbsp;</p>
+  </div>
+</div>
+<!--end pagecell1-->
+<br />
+<script type="text/javascript">
+    <!--
+      var menuitem1 = new menu(7,1,"hidden");
+			var menuitem2 = new menu(7,2,"hidden");
+			var menuitem3 = new menu(7,3,"hidden");
+			var menuitem4 = new menu(7,4,"hidden");
+			var menuitem5 = new menu(7,5,"hidden");
+			var menuitem6 = new menu(7,6,"hidden");
+			var menuitem7 = new menu(7,7,"hidden");
+    // -->
+    </script>
+</body>
+</html>
