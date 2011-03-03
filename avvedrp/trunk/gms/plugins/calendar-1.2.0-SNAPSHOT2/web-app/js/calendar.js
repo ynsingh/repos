@@ -957,8 +957,8 @@ Calendar.prototype.create = function (_par) {
 
         cell = Calendar.createElement("td",row);
         cell.className = "time"
-        cell.ttip = Calendar._TT["CLEAN"];
-        cell.innerHTML = Calendar._TT["CLEAN"];
+        //cell.ttip = Calendar._TT["CLEAN"];
+       // cell.innerHTML = Calendar._TT["CLEAN"];
 		cell.colSpan = cal.params.singleClick ? 8 : 4;
         cell.navtype = 666;
         cell.calendar = this;
