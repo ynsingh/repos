@@ -1,0 +1,8 @@
+DefaultPackage
+grails-app.conf
+grails-app.controllers.org.gualdi.grails.plugins.ckeditor
+grails-app.taglib.org.gualdi.grails.plugins.ckeditor
+scripts
+src.groovy.org.gualdi.grails.plugins.ckeditor
+src.groovy.org.gualdi.grails.plugins.ckeditor.exceptions
+src.groovy.org.gualdi.grails.plugins.ckeditor.utils

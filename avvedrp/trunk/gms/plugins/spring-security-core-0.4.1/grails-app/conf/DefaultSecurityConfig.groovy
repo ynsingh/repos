@@ -91,7 +91,7 @@ security {
 	failureHandler.useForward = false
 
 	// successHandler
-	successHandler.defaultTargetUrl = '/login/index'
+	successHandler.defaultTargetUrl = '/'
 	successHandler.alwaysUseDefault = false
 	successHandler.targetUrlParameter = ATRH.DEFAULT_TARGET_PARAMETER // 'spring-security-redirect'
 	successHandler.useReferer = false
