@@ -10,29 +10,33 @@
     if( ( (document.getElementById("grantPeriod.id").value) == 'null') || ( (document.getElementById("grantPeriod.id").value) == '') )
     {
          alert("Please enter the Grant Period ");
+         document.getElementById("grantPeriod.id").focus();
          return false;
     }
     
     if( ( (document.getElementById("accountHead.id").value) == 'null') || ( (document.getElementById("accountHead.id").value) == '') )
     {
          alert("Please enter the Account Head ");
+         document.getElementById("accountHead.id").focus();
          return false;
     }
    
     if(isNaN(document.getElementById("amount").value))
     {
 	    alert("Invalid Amount  ");
-	    document.getElementById("amount").focus
+	    document.getElementById("amount").focus();
 	    return false;
     }
-    if((document.getElementById("amount").value)=='')
+    if((document.getElementById("amount").value)==0)
     {
 	    alert("Please enter Proper Amount  ");
+	    document.getElementById("amount").focus();
 	    return false;
     }
     if(eval(document.getElementById("amount").value)<=0)
     {
 	    alert("Please enter Proper Amount  ");
+	    document.getElementById("amount").focus();
 	    return false;
     }
     
@@ -169,8 +173,9 @@
                                     <label for="amount" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:grantAllocationSplitInstance,field:'amount','errors')}">
-                                    <input type="text" id="amount" name="amount" value="${fieldValue(bean:grantAllocationSplitInstance,field:'amount')}" 
+                                    <input type="text" id="amount" name="amount" value="${amount}" 
                                     	style="text-align: right"/>
+                                    	
                                 </td>
                             </tr> 
                         

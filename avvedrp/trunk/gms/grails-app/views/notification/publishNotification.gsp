@@ -20,8 +20,8 @@
               <table>
                   <tbody>
                     <tr class="prop">
-                        <td valign="top" class="name"><g:message code="default.Projects.label"/></td>
-                        <td valign="top" style="font-size:100%" class="value"><b>${notificationsInstance?.project?.name.encodeAsHTML()}</b></td>
+                        <td valign="top" class="name"><g:message code="default.NotificationTitle.label"/></td>
+                        <td valign="top" style="font-size:100%" class="value"><b>${notificationsInstance?.notificationTitle.encodeAsHTML()}</b></td>
                     </tr>
 
                     <tr class="prop">
@@ -38,12 +38,7 @@
                         <td valign="top" class="name"><g:message code="default.Description.label"/></td>
                         <td valign="top" class="value">${notificationsInstance.description}</td>
                     </tr>
-                    
-                    <tr class="prop">
-                        <td valign="top" class="name"><g:message code="default.Type.label"/></td>
-                        <td valign="top" class="value">${fieldValue(bean:notificationsInstance, field:'project.projectType.type')}</td>
-                    </tr>
-                          
+                                                                  
                     <tr class="prop">
            				<td valign="top" class="name"><g:message code="default.Documentation.label"/></td>
            	            <td valign="top" class="value">
@@ -82,7 +77,8 @@
             </div>
             <g:if test="${!notificationsEmailsInstance}">
               <div class="singlebutton">
-                <g:form controller="notificationsEmails" action="publish" id="${fieldValue(bean:notificationsInstance, field:'id')}">  
+                <g:form action="publish" id="${fieldValue(bean:notificationsInstance, field:'id')}">  
+                <input type=hidden id="id" name="id" value="${notificationsInstance?.id}">
                   <span class="button"><g:actionSubmit class="inputbutton" value="${message(code: 'default.Publish.button')}" action="publish"/> </span> 
                 </g:form> 
               </div>

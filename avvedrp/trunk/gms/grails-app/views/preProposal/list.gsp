@@ -25,7 +25,7 @@
                             <th><g:message code="default.Institution.label"  /></th>
                             
                         
-                            <g:sortableColumn property="projectTitle" title="${message(code: 'default.ProjectTitle.label')}" />
+                            <g:sortableColumn property="projectTitle" title="${message(code: 'default.ProposalTitle.label')}" />
                         
                             
                         

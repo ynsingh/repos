@@ -89,21 +89,21 @@
                 <table>
                     <thead>
                         <tr>
-                        
-                            <g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}" />
-                        
-                            <g:sortableColumn property="grantAllocation.projects.code" title="${message(code: 'default.Project.label')}" />
-                        
-                            <g:sortableColumn property="grantAllocation.granter.code" title="${message(code: 'default.Grantor.label')}" />
-                        
-                            <g:sortableColumn property="grantAllocation.party.code" title="${message(code: 'default.Recepient.label')}" />
-                        
-                            <g:sortableColumn property="amountallocated" title="${message(code: 'default.AmountAllocated(Rs).label')}" />
-                        
-                            <g:sortableColumn property="amounttransferred" title="${message(code: 'fundTransfer.amounttransferred.label')}" />
+                             <th><g:message code="default.SINo.label"/></th>
                             
-                            <g:sortableColumn property="dateoftransfer" title="${message(code: 'fundTransfer.dateOfTransfer.label')}" />
-                        	<th><g:message code="default.Edit.label"/></th>
+                             <th><g:message code="default.Project.label"/></th>
+                              
+                             <th><g:message code="default.Grantor.label"/></th>
+                           
+							 <th><g:message code="default.Recepient.label"/></th>
+                            
+                             <th><g:message code="default.AmountAllocated.label"/></th>
+                           
+                             <th><g:message code="fundTransfer.amounttransferred.label"/></th>
+                           
+                             <th><g:message code="fundTransfer.dateOfTransfer.label"/></th>   
+                            
+                        	 <th><g:message code="default.Edit.label"/></th>
                         </tr>
                     </thead>
                     <tbody>

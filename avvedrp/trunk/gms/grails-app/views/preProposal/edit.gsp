@@ -29,7 +29,7 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="projectTitle"><g:message code="default.ProjectTitle.label"/></label>
+                                    <label for="projectTitle"><g:message code="default.ProposalTitle.label"/></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: preProposalInstance, field: 'projectTitle', 'errors')}">
                                     <g:textField name="projectTitle" value="${preProposalInstance?.projectTitle}" />

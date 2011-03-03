@@ -9,7 +9,7 @@
         <title><g:message code="default.PartIPersonalDetails.head"/></title>   
         <script src="${createLinkTo(dir:'js',file:'vk_popup.js?vk_layout=AM Armenian Eastern')}"> </script>           
     <script>
-      ${remoteFunction(action:'getForm', controller:'proposalApplication',onSuccess:'returnFormResult(data)')};
+      $(document).ready(function(){${remoteFunction(action:'getForm', controller:'proposalApplication',onSuccess:'returnFormResult(data)')};});
     </script>
     </head>
     <body>
@@ -32,7 +32,7 @@
 	</div>
 		
         <div class="body">
-        <g:pageNavigation page="1" proposalApplicationInstance="${proposalApplicationInstance?.id}"/>
+        <g:pageNavigation status="${params.status}" page="1" proposalApplicationInstance="${proposalApplicationInstance?.id}"/>
         
             <h1><g:message code="default.PartIPersonalDetails.head"/></h1>
             <g:if test="${flash.message}">
@@ -175,20 +175,27 @@
                     <g:if test="${params.status=='update'}">
                     <input type="hidden" name="status" value="update">
                     <input class="inputbutton" type="submit" value="${message(code: 'default.Update.button')}" onClick="return validateApplicationForm();"/>
+                    <g:actionSubmit class="inputbutton" action="proposalAppPreview" value="${message(code: 'default.Cancel.button')}" />
                     </g:if>
                     <g:else>
+                    <input type="hidden" name="status" value="save">
                     <input class="inputbutton" type="submit" value="${message(code: 'default.Create.button')}" onClick="return validateApplicationForm();"/>
+                    <input type="button" class="inputbutton" onClick="Redirect()"  value="${message(code: 'default.Cancel.button')}"/>
                     </g:else>
                     </span>
                     
                 </div>
             </g:form>
-            <g:pageNavigation page="1" proposalApplicationInstance="${proposalApplicationInstance?.id}"/>
+            <g:pageNavigation status="${params.status}" page="1" proposalApplicationInstance="${proposalApplicationInstance?.id}"/>
         </div>
                         </td>
         </tr><br/>
         
          </table>
          </div>
+         <div class="footerdBar">
+<br>
+<label style="text-align: center;font: bold 9px Verdana;color: #104d6b;"><g:message code="default.footerMsg.label"/></label>
+</div>
     </body>
 </html>

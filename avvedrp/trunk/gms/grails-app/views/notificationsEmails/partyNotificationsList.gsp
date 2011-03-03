@@ -19,7 +19,7 @@
                     <thead>
                         <tr>
                             <g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}"  />
-                            <th><g:message code="default.Projects.label"/></th>
+                            <th><g:message code="default.NotificationTitle.label"/></th>
                             <g:sortableColumn property="notificationDate" title="${message(code: 'default.NotificationDate.label')}" />
                             <g:sortableColumn property="proposalSubmissionLastDate" title="${message(code: 'default.LastProposalSubmissionDate.label')}" />
                    	        <th><g:message code="default.Grantor.label"/></th>
@@ -35,13 +35,13 @@
                         <% j++ %>
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                             <td>${j}</td>
-                            <td>${fieldValue(bean:partyNotificationsInstance, field:'notification.project.name')}</td>
-                            <td><g:formatDate format="dd-MM-yyyy" date="${partyNotificationsInstance.notification.notificationDate}"/></td>
-                           	<td><g:formatDate format="dd-MM-yyyy" date="${partyNotificationsInstance.notification.proposalSubmissionLastDate}"/></td>
-                           	<g:hiddenField name="proposalSubmissionLastDate${i}" value="${partyNotificationsInstance.notification.proposalSubmissionLastDate}" />
-                           	<td>${GrantAllocation.findByProjects(partyNotificationsInstance.notification.project).party.nameOfTheInstitution}</td>
-                           	<td><g:link action="showPartyNotifications" controller="notificationsEmails" id="${partyNotificationsInstance.notification.id}"><g:message code="${message(code: 'default.View.label')}"/></g:link></td>
-                           	<td><%def proposalStatus = Proposal.find("from Proposal where party.id="+session.Party+" and notification.id="+partyNotificationsInstance.notification.id)%>
+                            <td>${fieldValue(bean:partyNotificationsInstance, field:'notificationTitle')}</td>
+                            <td><g:formatDate format="dd-MM-yyyy" date="${partyNotificationsInstance.notificationDate}"/></td>
+                           	<td><g:formatDate format="dd-MM-yyyy" date="${partyNotificationsInstance.proposalSubmissionLastDate}"/></td>
+                           	<g:hiddenField name="proposalSubmissionLastDate${i}" value="${partyNotificationsInstance.proposalSubmissionLastDate}" />
+                           	<td>${fieldValue(bean:partyNotificationsInstance, field:'party.nameOfTheInstitution')}</td>
+                           	<td><g:link action="showPartyNotifications" controller="notificationsEmails" id="${partyNotificationsInstance.id}"><g:message code="${message(code: 'default.View.label')}"/></g:link></td>
+                           	<td><%def proposalStatus = Proposal.find("from Proposal where party.id="+session.Party+" and notification.id="+partyNotificationsInstance.id)%>
                            	    <g:if test="${proposalStatus}">
                            	      <g:link action="create" controller='notificationsAttachments' id="${fieldValue(bean:proposalStatus, field:'id')}" params="[documentType:'Proposal']"><img src="/gms/images/attach1.png"/></g:link>
                            	    </g:if>
@@ -59,8 +59,9 @@
                            	    </g:else>
                            	</td>
 							<td>
-							    <g:form controller="proposal" action="save" id="${partyNotificationsInstance.notification.id}">  
-                     			 <g:actionSubmit class="link" value="${message(code: 'default.Apply.button')}" onClick="return validateProposalsubmit(document.getElementById('proposalSubmissionLastDate${i}').value)" action="save" />  
+							    <g:form controller="proposal" action="save" id="${partyNotificationsInstance.id}">  
+                     			
+                     			<g:link action="uploadProposalApplication" controller="proposal" id="${partyNotificationsInstance.id}" onClick="return false;" ><g:message code="${message(code: 'default.Apply.label')}"/></g:link>  
                      			</g:form>
 							</td>                        
                         </tr>

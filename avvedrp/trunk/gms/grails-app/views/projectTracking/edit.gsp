@@ -20,6 +20,11 @@
                                
                     <td valign="top" ><g:message code="default.ProjectName.label"/></td>
                     <td valign="top" ><strong>${fieldValue(bean:projectsInstance, field:'name')}</strong></td>
+                    <td colspan="3"><div align="left">
+                    <label for="dateRangeFrom"><g:message code="default.projects.ProjectStartDate.label"/>: </label>
+			        <strong><g:formatDate date="${projectsInstance?.projectStartDate}" format="dd/MM/yyyy"/> </strong>
+			        <label for="dateRangeTo"><g:message code="default.EndDate.label"/>: </label>              
+			        <strong><g:formatDate date="${projectsInstance?.projectEndDate}" format="dd/MM/yyyy"/></strong></td>
                 </tr>  
       	    </table> 
             <table class="tablewrapper" cellspacing="0" cellpadding="0">
@@ -57,6 +62,8 @@
                                       </td>
                                       <td valign="top" class="value ${hasErrors(bean:projectTrackingInstance,field:'percOfCompletion','errors')}">
                                           <input type="text" id="percOfCompletion" name="percOfCompletion" value="${fieldValue(bean:projectTrackingInstance,field:'percOfCompletion')}" />
+ 					  <input type="hidden" id="projectStartDate" name="projectStartDate" value="${projectsInstance.projectStartDate}"/>  
+                                          <input type="hidden" id="projectEndDate" name="projectEndDate" value="${projectsInstance.projectEndDate}"/>                                       
                                       </td>
                                   </tr>
                         

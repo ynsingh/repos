@@ -6,7 +6,7 @@
         <title><g:message code="default.PARTIInformationRelatingDepartment.head"/></title>   
         <script src="${createLinkTo(dir:'js',file:'vk_popup.js?vk_layout=AM Armenian Eastern')}"> </script>           
    		<script>
-    ${remoteFunction(action:'getForm', controller:'proposalApplication',onSuccess:'returnFormResult(data)')};
+    $(document).ready(function(){${remoteFunction(action:'getForm', controller:'proposalApplication',onSuccess:'returnFormResult(data)')};});
     </script>
     </head>
     <body>
@@ -30,7 +30,7 @@
 	</div>  
 		
         <div class="body">
-        <g:pageNavigation page="2" proposalApplicationInstance="${proposalApplicationInstance?.id}"/>
+        <g:pageNavigation status="${params.status}" page="2" proposalApplicationInstance="${proposalApplicationInstance?.id}"/>
         
             <h1><g:message code="default.PARTIInformationRelatingDepartment.head"/></h1>
             <g:if test="${flash.message}">
@@ -51,7 +51,7 @@
                               <tr class="prop">
                                 <td colspan="2" class="nameline" style="text-align:right;"><font face="Arial, sans-serif" size="-1"><span style="color:#663366;">
                     		<label for="name"><b><g:message code="default.ControlNumber.label"/></b></label>:-${proposalApplicationInstance?.controllerId}<br/><br/>
-                    		<label for="name"><b><g:message code="default.Version.label"/></b></label>:-V${proposalApplicationInstance?.version}
+                    		<label for="name"><b><g:message code="default.Version.label"/></b></label>:-V${proposalApplicationInstance?.proposal?.proposalVersion}
                     		</span></font></td>
                             </tr>
                               <tr class="prop">
@@ -96,8 +96,9 @@
                          <tr class="prop">
                          	<td valign="top" class="prvalue">&nbsp;</td> 
                                 <td valign="top" class="prvalue">
-                                    <fckeditor:editor name="MajorAreasOfResearchInTheDepartment_4" width="100%" height="300" fileBrowser="default">
-						    </fckeditor:editor>
+                                <ckeditor:editor name="MajorAreasOfResearchInTheDepartment_4" height="200px" width="100%" toolbar="custom">
+								</ckeditor:editor>
+                                   
                                 </td>
                             </tr>
                                                
@@ -110,8 +111,8 @@
                          <tr class="prop">
                          	<td valign="top" class="prvalue">&nbsp;</td> 
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'code','errors')}">
-                                   <fckeditor:editor name="NamesDesignationOfPrincipalResearchers_5" width="100%" height="300" fileBrowser="default">
-						    </fckeditor:editor>
+                                  <ckeditor:editor name="NamesDesignationOfPrincipalResearchers_5" height="200px" width="100%" toolbar="custom">
+								</ckeditor:editor>
                                 </td>
                             </tr>
                                                  
@@ -120,8 +121,8 @@
                                     <label for="code">6.<g:message code="default.IsTtInterdisciplinaryProject.label"/></label>
                                 </td>
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'code','errors')}">
-                                    <g:radio name="IsTtInterdisciplinaryProject_6" value="Y"/><label for="IsTtInterdisciplinaryProject"><g:message code="default.YES.label"/></label>
-									<g:radio name="IsTtInterdisciplinaryProject_6" value="N" checked="true"/><label for="IsTtInterdisciplinaryProject"><g:message code="default.NO.label"/></label>
+                                    <g:radio name="IsTtInterdisciplinaryProject_6" value="Yes"/><label for="IsTtInterdisciplinaryProject"><g:message code="default.YES.label"/></label>
+									<g:radio name="IsTtInterdisciplinaryProject_6" value="No"/><label for="IsTtInterdisciplinaryProject"><g:message code="default.NO.label"/></label>
                                 </td>
                             </tr>
                             <tr class="prop">
@@ -129,8 +130,8 @@
                                     <label for="code">7.<g:message code="default.IsitInterInstitutionalProject.label"/></label>
                                 </td>
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'code','errors')}">
-                                    <g:radio name="IsitInterInstitutionalProject_7" value="Y"/><label for="IsitInterInstitutionalProject"><g:message code="default.YES.label"/></label>
-									<g:radio name="IsitInterInstitutionalProject_7" value="N" checked="true"/><label for="IsitInterInstitutionalProject"><g:message code="default.NO.label"/></label>
+                                    <g:radio name="IsitInterInstitutionalProject_7" value="Yes"/><label for="IsitInterInstitutionalProject"><g:message code="default.YES.label"/></label>
+									<g:radio name="IsitInterInstitutionalProject_7" value="No"/><label for="IsitInterInstitutionalProject"><g:message code="default.NO.label"/></label>
                                 </td>
                             </tr>
                             <tr class="prop">
@@ -138,8 +139,8 @@
                                     <label for="code">8.<g:message code="default.IsanyIndustryUseragencyparticipating.label"/></label>
                                 </td>
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'code','errors')}">
-                                    <g:radio name="IsanyIndustryUseragencyparticipating_8" value="Y"/><label for="IsitInterInstitutionalProject"><g:message code="default.YES.label"/></label>
-									<g:radio name="IsanyIndustryUseragencyparticipating_8" value="N" /><label for="IsitInterInstitutionalProject"><g:message code="default.NO.label"/></label>
+                                    <g:radio name="IsanyIndustryUseragencyparticipating_8" value="Yes"/><label for="IsitInterInstitutionalProject"><g:message code="default.YES.label"/></label>
+									<g:radio name="IsanyIndustryUseragencyparticipating_8" value="No" /><label for="IsitInterInstitutionalProject"><g:message code="default.NO.label"/></label>
                                 
                                 </td>
                             </tr>
@@ -152,8 +153,9 @@
                          <tr class="prop">
                          	<td valign="top" class="prvalue">&nbsp;</td> 
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'code','errors')}">
-                                    <fckeditor:editor name="BriefOfCompletedOngoingResearchProjects_9" width="100%" height="300" fileBrowser="default">
-						    </fckeditor:editor>
+                                    <ckeditor:editor name="BriefOfCompletedOngoingResearchProjects_9" height="200px" width="100%" toolbar="custom">
+								</ckeditor:editor>
+                                    
                                 </td>
                             </tr>
                             
@@ -166,20 +168,24 @@
                     <g:if test="${params.status=='update'}">
                     <input type="hidden" name="status" value="update">
                     <input class="inputbutton" type="submit" value="${message(code: 'default.Update.button')}" />
+                    <g:actionSubmit class="inputbutton" action="proposalAppPreview" value="${message(code: 'default.Cancel.button')}" />
                     </g:if>
                     <g:else>
+                    <input type="hidden" name="status" value="save">
                     <input class="inputbutton" type="submit" value="${message(code: 'default.Next.button')}" />
+                    <input type="button" class="inputbutton" onClick="Redirect()"  value="${message(code: 'default.Cancel.button')}"/>
                     </g:else>
                     </span>
                     
                 </div>
             </g:form>
-             <g:pageNavigation page="2" proposalApplicationInstance="${proposalApplicationInstance?.id}"/>
+             <g:pageNavigation status="${params.status}" page="2" proposalApplicationInstance="${proposalApplicationInstance?.id}"/>
         </div>
-                        </td>
-        </tr><br/>
-       
-         </table>
+                        
          </div>
+         <div class="footerdBar">
+<br>
+<label style="text-align: center;font: bold 9px Verdana;color: #104d6b;"><g:message code="default.footerMsg.label"/></label>
+</div>
     </body>
 </html>

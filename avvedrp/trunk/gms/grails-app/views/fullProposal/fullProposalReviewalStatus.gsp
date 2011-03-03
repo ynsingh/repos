@@ -31,6 +31,11 @@
       </tr>
       <tr>
       </tr>
+      <g:if test="${fullProposalInstance.proposalStatus=='Approved'}">  
+           <td><g:message code="default.FullProposalReviewalStatus.label"/>:<td>
+           <td><g:message code="default.ReviewCompleted.label"/><td>
+          </g:if> 
+          <g:else>
       <tr>
      
                 
@@ -65,6 +70,7 @@
       <td><g:message code="default.ReviewedMembersInCurrentAuthority.label"/>:<td>
       <td> ${proposalDetailInstance?.size()} </td>
       </tr>
+      </g:else>
       </g:if>
       <g:else>
      <g:message code="default.NoDetails.label"/>
@@ -75,6 +81,44 @@
        </div> 
        
      </div>
+     
+     <g:if test="${proposalApprovalDetailInstanceList}">
+       <div class="body">
+            <h1><g:message code="default.ReviewDetails.label" args="[entityName]" /></h1>
+       <div class="list">
+                <table>
+                    <thead>
+                        <tr>
+                        
+                            <g:sortableColumn property="id" title="${message(code: 'default.ApprovalAuthority.label', default: 'Id')}" />
+                        
+                            <g:sortableColumn property="name" title="${message(code: 'default.Reviewer.label', default: 'Name')}" />
+                        
+                            <g:sortableColumn property="remarks" title="${message(code: 'default.Remarks.label', default: 'Remarks')}" />
+                        
+                            
+                        
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <g:each in="${proposalApprovalDetailInstanceList}" status="i" var="proposalApprovalDetailInstanceList">
+                        <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
+                        
+                            
+                        
+                            <td>${fieldValue(bean: proposalApprovalDetailInstanceList.proposalApproval.proposalApprovalAuthorityMap.approvalAuthority, field: "name")}</td>
+                        
+                            <td>${fieldValue(bean: proposalApprovalDetailInstanceList.proposalApproval.approvalAuthorityDetail.person, field: "userRealName")}</td>
+                        
+                            <td>${fieldValue(bean: proposalApprovalDetailInstanceList, field: "remarks")}</td>
+                        
+                        </tr>
+                    </g:each>
+                    </tbody>
+                </table>
+            </div>
+     </div>
+     </g:if>
        </div>
     </body>
 </html>

@@ -23,14 +23,15 @@
           <div class="dialog">
             <table>
                 <tbody>
-                        
+                        <input type=hidden id="party.id" name="party.id" value="${session.Party}">
+                        <input type=hidden id="publishYesNo" name="publishYesNo" value="N">
                     <tr class="prop">
                         <td valign="top" class="name">
-                            <label for="project"><g:message code="default.Projects.label"/>:</label>
+                            <label for="project"><g:message code="default.NotificationTitle.label"/>:</label>
                             <label for="project" style="color:red;font-weight:bold"> * </label>
                         </td>
-                        <td valign="top" class="value ${hasErrors(bean:notificationInstance,field:'project','errors')}">
-                            <g:select optionKey="id" optionValue="code" id="projects" from="${grantAllocationWithprojectsInstanceList}"  name="project.id" value="${notificationInstance?.project?.id}" noSelection="['null':'select']"></g:select>                           
+                        <td valign="top" class="value ${hasErrors(bean:notificationInstance,field:'notificationTitle','errors')}">
+                             <input type="text" id="notificationTitle" name="notificationTitle" value="${fieldValue(bean:notificationInstance,field:'notificationTitle')}"/>                         
                         </td>
                     </tr> 
                         
@@ -63,26 +64,29 @@
                             <calendar:datePicker name="proposalSubmissionLastDate" defaultValue="${new Date()}" value="${notificationInstance?.proposalSubmissionLastDate}" dateFormat= "%d/%m/%Y"   />
                         </td>
                     </tr> 
-                        
+                    
+                    <tr class="prop">
+                        <td valign="top" class="name">
+                            <label for="publicYesNo"><g:message code="default.publicYesNo.label"/>:</label>
+                            <label for="proposalSubmissionLastDate" style="color:red;font-weight:bold"> * </label>
+                        </td>
+                        <td valign="top" class="value ${hasErrors(bean:notificationInstance,field: 'publicYesNo', 'errors')}"> 
+                          <g:select name="publicYesNo" optionValue="key" optionKey="value" from ="${['Yes':'Y', 'No':'N']}" value="${fieldValue(bean: notificationInstance, field: 'publicYesNo')}" />     
+                        </td>     
+                      </tr>      
+                                
                     <tr class="prop">
                         <td valign="top" class="name">
                             <label for="description"><g:message code="default.Description.label"/>:</label>
                         </td>
                         <td valign="top" class="value ${hasErrors(bean:notificationInstance,field:'description','errors').encodeAsHTML()}">
-                            <fckeditor:editor name="description" width="100%" height="300" fileBrowser="default">
-						    </fckeditor:editor>
+                            <ckeditor:editor name="description" width="100%" height="300" fileBrowser="default" toolbar="custom">
+						    </ckeditor:editor>
+						    
                         </td>
                     </tr> 
                         	
-                    <tr class="prop">
-                        <td valign="top" class="name">
-                            <label for="applicationForm"><g:message code="default.ApplicationForm.label"/>:</label>
-                            <label for="applicationForm" style="color:red;font-weight:bold"> * </label>
-                        </td>
-                        <td valign="top" class="value">
-                            <input type="file" id="myFile" name="myFile"/><g:message code="default.ApplicationFormat.label"/> 
-                        </td>
-                    </tr> 
+                  
                             
                 </tbody>
             </table>

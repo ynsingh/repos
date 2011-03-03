@@ -25,6 +25,7 @@
                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="type"><g:message code="default.Type.label"/></label>
+                                     <label for="name" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:projectTypeInstance,field:'type','errors')}">
                                     <input type="text" id="type" name="type" value="${fieldValue(bean:projectTypeInstance,field:'type')}"/>

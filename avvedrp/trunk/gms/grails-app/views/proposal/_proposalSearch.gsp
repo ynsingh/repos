@@ -1,27 +1,4 @@
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <meta name="layout" content="main" />
-        <title><g:message code="default.Proposal.ProposalList.head"/></title>
-        <resource:rating />
-    </head>
-    <body>
-        <div class="wrapper">
-        <div class="body">
-            <h1><g:message code="default.Proposal.ProposalList.head"/></h1>
-            <g:if test="${flash.message}">
-            <div class="message">${flash.message}</div>
-            </g:if>
-            <div style="text-align:right">
-            <g:form>
-            <b><label for="remarks${i}"><g:message code="default.Search.button"/></label></b>:
-            <g:select optionKey="key" optionValue="value" id="projectType" from="${['Reviewed':'Reviewed', 'NotReviewed':'Not Reviewed']}" name="status" noSelection="['null':'All']" ></g:select>
-                   <g:submitToRemote action="proposalSearch" value="${message(code: 'default.Search.button')}" update="search" />
-             </g:form>   
-                </div>
-            <div class="list">
-            <div id="search">
-                <table>
+<table>
                     <thead>
                         <tr>
                          <input type="hidden" id="notificationId" name="notificationId" value="${fieldValue(bean:proposalInstance, field:'notification.id')}"/>
@@ -66,9 +43,3 @@
                     </g:each>
                     </tbody>
                 </table>
-            </div>
-            </div>
-            </div>
-        </div>
-    </body>
-</html>

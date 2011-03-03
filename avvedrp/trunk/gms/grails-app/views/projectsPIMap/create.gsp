@@ -29,7 +29,7 @@
                                     <label for="investigator"><g:message code="default.Investigator.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:projectsPIMapInstance,field:'investigator','errors')}">
-                                    <g:select optionKey="id" optionValue="name" from="${investigatorList}" name="investigator.id" value="${projectsPIMapInstance?.investigator?.id}" ></g:select>
+                                    <g:select optionKey="id" optionValue="name" from="${investigatorList}" name="investigator.id" value="${projectsPIMapInstance?.investigator?.id}" noSelection="['null':'select']" ></g:select>
                                 </td>
                             </tr> 
                           
@@ -48,7 +48,7 @@
                                     <label for="role"><g:message code="default.Role.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:projectsPIMapInstance,field:'role','errors')}">
-                                    <g:select id="role" name="role"  from="${['PI','CO-PI']}" value="${projectsPIMapInstance?.role}" ></g:select>
+                                    <g:select id="role" name="role"  from="${['PI','CO-PI']}" value="${projectsPIMapInstance?.role}" noSelection="['null':'select']" ></g:select>
                                 </td>
                             </tr> 
                            
@@ -56,7 +56,7 @@
                     </table>
                 </div>
                 <div class="buttons">
-                    <span class="button"><input class="save" type="submit" value="${message(code: 'default.Create.button')}" /></span>
+                    <span class="button"><input class="save" type="submit" value="${message(code: 'default.Create.button')}" onClick="return validateProjectPIMap()"/></span>
                 </div>
             </g:form>
         </div>
@@ -81,7 +81,7 @@
                    	        <g:sortableColumn property="role" title="${message(code: 'default.Role.label')}"/>
                    	        
                              
-                        	<th><g:message code="default.Edit.label"/></th>
+                        	<th><g:message code="default.Delete.label"/></th>
                         	
                         </tr>
                     </thead>
@@ -97,7 +97,11 @@
                             <td>${fieldValue(bean:projectsPIMapInstance, field:'role')}</td>
                             
                              <g:if test="${projectsPIMapInstance.role == 'CO-PI'}" >
-                            <td><g:link action="edit" id="${projectsPIMapInstance.id}"><g:message code="default.Edit.label"/></g:link></td>
+                            <g:form>
+			                        	<input type="hidden" name="id" value="${projectsPIMapInstance?.id}" />
+			                        	
+			                        	<td> <g:actionSubmit class="delete" action="delete" onclick="return confirm('Are you sure?');" value="${message(code: 'default.Delete.button')}" /></td>
+			                        	</g:form>
                           
                           </g:if>
                           <g:else>

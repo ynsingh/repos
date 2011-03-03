@@ -6,7 +6,7 @@
         <title><g:message code="default.PartIPersonalDetails.head"/></title>   
         <script src="${createLinkTo(dir:'js',file:'vk_popup.js?vk_layout=AM Armenian Eastern')}"> </script>           
     	<script>
-    ${remoteFunction(action:'getForm', controller:'proposalApplication',onSuccess:'returnFormResult(data)')};
+    $(document).ready(function(){${remoteFunction(action:'getForm', controller:'proposalApplication',onSuccess:'returnFormResult(data)')};});
     </script>
     </head>
     <body>
@@ -30,7 +30,7 @@
 	</div>  
 		
         <div class="body">
-        <g:pageNavigation page="3" proposalApplicationInstance="${proposalApplicationInstance?.id}"/>
+        <g:pageNavigation status="${params.status}" page="3" proposalApplicationInstance="${proposalApplicationInstance?.id}"/>
         
             <h1><g:message code="default.PARTIIInformationRelatingDepartment.head"/></h1>
             <g:if test="${flash.message}">
@@ -51,7 +51,7 @@
                         <tr class="prop">
                                 <td colspan="2" class="nameline" style="text-align:right;"><font face="Arial, sans-serif" size="-1"><span style="color:#663366;">
                     		<label for="name"><b><g:message code="default.ControlNumber.label"/></b></label>:-${proposalApplicationInstance?.controllerId}<br/><br/>
-                    		<label for="name"><b><g:message code="default.Version.label"/></b></label>:-V${proposalApplicationInstance?.version}
+                    		<label for="name"><b><g:message code="default.Version.label"/></b></label>:-V${proposalApplicationInstance?.proposal?.proposalVersion}
                     		</span></font></td>
                             </tr>
                               <tr class="prop">
@@ -63,8 +63,8 @@
                            
                                  <td valign="top" style="width:200px;" class="prvalue">&nbsp;</td> 
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'name','errors')}">
-                                    <fckeditor:editor name="PrincipalInvestigatorDetails_1" width="100%" height="300" fileBrowser="default">
-						    </fckeditor:editor>
+                                    <ckeditor:editor name="PrincipalInvestigatorDetails_1" height="200px" width="100%" toolbar="custom">
+								</ckeditor:editor>
                                 </td>
                             </tr> 
                         
@@ -76,8 +76,8 @@
                             <tr class="prop">
                             	<td valign="top" class="prvalue">&nbsp;</td> 
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'code','errors')}">
-                                    <fckeditor:editor name="CoPrincipalInvestigatorDetails_2" width="100%" height="300" fileBrowser="default">
-						    </fckeditor:editor>
+                                    <ckeditor:editor name="CoPrincipalInvestigatorDetails_2" height="200px" width="100%" toolbar="custom">
+								</ckeditor:editor>
                                 </td>
                             </tr> 
                         	
@@ -90,8 +90,8 @@
                          <tr class="prop">
                          	<td valign="top" class="prvalue">&nbsp;</td> 
                                 <td valign="top" class="prvalue">
-                                    <fckeditor:editor name="InCaseJointProjectWithOtherInstitution_3" width="100%" height="300" fileBrowser="default">
-						    </fckeditor:editor>
+                                    <ckeditor:editor name="InCaseJointProjectWithOtherInstitution_3" height="200px" width="100%" toolbar="custom">
+								</ckeditor:editor>
                                 </td>
                             </tr>
                                                
@@ -104,8 +104,8 @@
                          <tr class="prop">
                          	<td valign="top" class="prvalue">&nbsp;</td> 
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'code','errors')}">
-                                   <fckeditor:editor name="InCaseIndustryOruserAgencyIsParticipating_4" width="100%" height="300" fileBrowser="default">
-						    </fckeditor:editor>
+                                   <ckeditor:editor name="InCaseIndustryOruserAgencyIsParticipating_4" height="200px" width="100%" toolbar="custom">
+								</ckeditor:editor>
                                 </td>
                             </tr>
                                                  
@@ -118,8 +118,8 @@
                          <tr class="prop">
                          	<td valign="top" class="prvalue">&nbsp;</td> 
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'code','errors')}">
-                                   <fckeditor:editor name="PresentCommitmentsOfThePrincipalInvestigators_5" width="100%" height="300" fileBrowser="default">
-						    </fckeditor:editor>
+                                   <ckeditor:editor name="PresentCommitmentsOfThePrincipalInvestigators_5" height="200px" width="100%" toolbar="custom">
+								</ckeditor:editor>
                                 </td>
                             </tr>
                             <tr class="prop">
@@ -131,8 +131,8 @@
                          <tr class="prop">
                          	<td valign="top" class="prvalue">&nbsp;</td> 
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'code','errors')}">
-                                   <fckeditor:editor name="PresentCommitmentsOfTheCoPrincipal_6" width="100%" height="300" fileBrowser="default">
-						    </fckeditor:editor>
+                                   <ckeditor:editor name="PresentCommitmentsOfTheCoPrincipal_6" height="200px" width="100%" toolbar="custom">
+								</ckeditor:editor>
                                 </td>
                             </tr>
                             
@@ -145,8 +145,8 @@
                          <tr class="prop">
                          	<td valign="top" class="prvalue">&nbsp;</td> 
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'code','errors')}">
-                                    <fckeditor:editor name="OtherMembersOfResearchGroup_7" width="100%" height="300" fileBrowser="default">
-						    </fckeditor:editor>
+                                    <ckeditor:editor name="OtherMembersOfResearchGroup_7" height="200px" width="100%" toolbar="custom">
+								</ckeditor:editor>
                                 </td>
                             </tr>
                             
@@ -159,6 +159,7 @@
                     <g:if test="${params.status=='update'}">
                     <input type="hidden" name="status" value="update">
                     <input class="inputbutton" type="submit" value="${message(code: 'default.Update.button')}" />
+                    <g:actionSubmit class="inputbutton" action="proposalAppPreview" value="${message(code: 'default.Cancel.button')}" />
                     </g:if>
                     <g:else>
                     <input class="inputbutton" type="submit" value="${message(code: 'default.Next.button')}" />
@@ -167,11 +168,15 @@
                     
                 </div>
             </g:form>
-             <g:pageNavigation page="3" proposalApplicationInstance="${proposalApplicationInstance?.id}"/>
+             <g:pageNavigation status="${params.status}" page="3" proposalApplicationInstance="${proposalApplicationInstance?.id}"/>
         </div>
                         
        
       
          </div>
+         <div class="footerdBar">
+<br>
+<label style="text-align: center;font: bold 9px Verdana;color: #104d6b;"><g:message code="default.footerMsg.label"/></label>
+</div>
     </body>
 </html>

@@ -28,6 +28,7 @@
    	</span>
    	</div>
 	</div> 
+	<g:subMenuLogin/>
 		    <div class="body">
         
         
@@ -42,6 +43,28 @@
             </g:hasErrors>
             <g:form action="validateProposalControllId" method="post" >
                 <div class="dialog">
+                <table border="0">
+                <tr>
+                <td style="BORDER-RIGHT: #A9D0F5 2px solid;width:50%;">
+                <table border="0">
+                <tr><td><g:message code="default.PropIntr.label"/></td></tr>
+                <tr><td>
+                <ul style="margin-left: 20;">
+                          <li><g:message code="default.PropIntr.PartI.label"/></li>
+                          <li><g:message code="default.PropIntr.PartII.label"/></li>
+                          <li><g:message code="default.PropIntr.PartIII.label"/></li>
+                          <li><g:message code="default.PropIntr.PartIV.label"/></li>
+                          <li><g:message code="default.PropIntr.PartV.label"/></li>
+                          <li><g:message code="default.PropIntr.PartVI.label"/></li>
+                          <li><g:message code="default.PropIntr.PartVII.label"/></li>
+                          <li><g:message code="default.PropIntr.preview.label"/></li>
+               </ul>
+               </td></tr>
+                </table>
+                
+                </td>
+                
+                <td>
                     <table border='0'>
                         <tbody>
                                   
@@ -67,23 +90,26 @@
                                 </td>
                         <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'name','errors')}">
                                     <g:actionSubmit value="${message(code: 'default.Submit.button')}" onClick="" action="validateProposalControllId" />
-                                &nbsp;&nbsp;&nbsp;&nbsp;<input type="button" onClick="Redirect()"  value="${message(code: 'default.Cancel.button')}"/>
+                                &nbsp;&nbsp;&nbsp;&nbsp;<input type="button" onClick="RedirectToLogin()"  value="${message(code: 'default.Cancel.button')}"/>
                                 </td>
                         </tr>           
                          <tr>
-            				<td colspan="2"><div style="width:100%; border:#4c99cc 1px solid;"></div></td>
+            				<td colspan="2"></td>
             			</tr>
             			
             			<tr>
             			
             				<td colspan="2">
-            				<div id="grantorList"><b><label><g:message code="default.ClickHereStart.label"/></label><g:link action="selectGrantorForProposal" controller='proposal' id="" ><g:message code="default.NewForm.label"/></g:link>
+            				<div id="grantorList"><b><label><g:message code="default.ClickHereStart.label"/></label><g:link action="proposalAppPart1PersonalDetails" controller='proposalApplication' id="" ><g:message code="default.NewForm.label"/></g:link>
             				</b>
             				</div></td>
             				
             			</tr>
             			
                         </tbody>
+                    </table>
+                    </td>
+                </tr>
                     </table>
                 </div>
                 
@@ -93,6 +119,10 @@
         </tr><br/>
         
          </table>
+         <div class="footerdBar">
+<br>
+<label style="text-align: center;font: bold 9px Verdana;color: #104d6b;"><g:message code="default.footerMsg.label"/></label>
+</div>
          </div>
     </body>
 </html>

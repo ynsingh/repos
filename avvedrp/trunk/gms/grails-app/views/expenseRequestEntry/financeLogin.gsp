@@ -23,6 +23,7 @@
 		                        	<th><g:message code="default.SINo.label"/></th>
 		                   	        <th><g:message code="default.Projects.label"/></th>
 		                   	        <th><g:message code="default.ExpenseDate.label"/></th>
+		                   	        <th><g:message code="default.ExpenseDescription.label"/></th>
 		                   	        <th><g:message code="default.RequestedAmount.label"/></th>
 		                   	        <th><g:message code="delault.RequestDetails.label"/></th>
 		                   	        <th><g:message code="default.ApprovalStatus.label"/></th>
@@ -37,6 +38,7 @@
 				                            <td>${i+1}</td>
 				                    		<td>${fieldValue(bean: expenseRequestInstance, field: "projects.code")}</td>
 				                    		<td><g:formatDate format="dd MMM yyyy" date="${expenseRequestInstance.dateOfExpense}"/></td>
+				                    		<td>${expenseRequestInstance.expenseDescription}</td>
 				                    		<td>${currencyFormat.ConvertToIndainRS(expenseRequestInstance.expenseAmount)}</td>
 		                         			<td>
 					                        	<g:link action="expenseRequestDetails" id="${expenseRequestInstance.id}">

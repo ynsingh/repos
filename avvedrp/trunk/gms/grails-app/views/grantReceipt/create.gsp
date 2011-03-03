@@ -94,7 +94,7 @@
 	                                    <g:select optionKey="id" 
 	                                    onchange="${remoteFunction(controller:'grantReceipt', action:'selectAmount',update:'grantAmt',params:'\'id=\' + this.value')}" 
 	                                    onFocus="${remoteFunction(controller:'grantReceipt', action:'selectAmount',update:'grantAmt',params:'\'id=\' + this.value')}" 
-	                                    optionValue="amountCode" from="${fundTransferInstanceList}" name="fundTransfer.id" id="fundTransfer.id" value="${grantReceiptInstance?.fundTransfer?.id}"></g:select>
+	                                    optionValue="amountCode" from="${fundTransferInstanceList}" name="fundTransfer.id" id="fundTransfer.id" value="${grantReceiptInstance?.fundTransfer?.id}" noSelection="['null':'select']"></g:select>
 	                                    
 	                                </td>
 	                            </g:if>

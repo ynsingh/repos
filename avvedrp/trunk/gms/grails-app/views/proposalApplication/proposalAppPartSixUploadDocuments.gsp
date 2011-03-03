@@ -6,7 +6,7 @@
         <title><g:message code="default.PartSixUploadDocuments.head"/></title>   
         <script src="${createLinkTo(dir:'js',file:'vk_popup.js?vk_layout=AM Armenian Eastern')}"> </script>           
     	<script>
-    ${remoteFunction(action:'getForm', controller:'proposalApplication',onSuccess:'returnFormResult(data)')};
+    $(document).ready(function(){${remoteFunction(action:'getForm', controller:'proposalApplication',onSuccess:'returnFormResult(data)')};});
     </script>
     </head>
     <body>
@@ -30,7 +30,7 @@
 	</div> 
 		
         <div class="body">
-        <g:pageNavigation page="6" proposalApplicationInstance="${proposalApplicationInstance?.id}"/>
+        <g:pageNavigation status="${params.status}" page="6" proposalApplicationInstance="${proposalApplicationInstance?.id}"/>
         
             <h1><g:message code="default.PartSixUploadDocuments.head"/></h1>
             <g:if test="${flash.message}">
@@ -51,7 +51,7 @@
                               <tr class="prop">
                                 <td colspan="2" class="nameline" style="text-align:right;"><font face="Arial, sans-serif" size="-1"><span style="color:#663366;">
                     		<label for="name"><b><g:message code="default.ControlNumber.label"/></b></label>:-${proposalApplicationInstance?.controllerId}<br/><br/>
-                    		<label for="name"><b><g:message code="default.Version.label"/></b></label>:-V${proposalApplicationInstance?.version}
+                    		<label for="name"><b><g:message code="default.Version.label"/></b></label>:-V${proposalApplicationInstance?.proposal?.proposalVersion}
                     		</span></font></td>
                             </tr>
                               <tr class="prop">
@@ -78,9 +78,11 @@
                                 <td valign="top"> 
                                 
                                     <g:message code="default.PleaseUploadCV.label"/>
+                                    <label for="name" class="mandatory"> * </label>
                                     <br />
                                     <br /><br />
                                     <g:message code="default.PleaseUploadDPR.label"/>
+                                    <label for="name" class="mandatory"> * </label>
                                 </td>
                                 <td valign="top"> 
                                     <input type="file" id="UploadCV" name="UploadCV"/>
@@ -101,6 +103,7 @@
                     <g:if test="${params.status=='update'}">
                     <input type="hidden" name="status" value="update">
                     <input class="inputbutton" type="submit" value="${message(code: 'default.Update.button')}" />
+                    <g:actionSubmit class="inputbutton" action="proposalAppPreview" value="${message(code: 'default.Cancel.button')}" />
                     </g:if>
                     <g:else>
                     <input class="inputbutton" type="submit" value="${message(code: 'default.Next.button')}" />
@@ -109,11 +112,15 @@
                     
                 </div>
             </g:form>
-            <g:pageNavigation page="6" proposalApplicationInstance="${proposalApplicationInstance?.id}"/>
+            <g:pageNavigation status="${params.status}" page="6" proposalApplicationInstance="${proposalApplicationInstance?.id}"/>
         </div>
                         
         
        
          </div>
+         <div class="footerdBar">
+<br>
+<label style="text-align: center;font: bold 9px Verdana;color: #104d6b;"><g:message code="default.footerMsg.label"/></label>
+</div>
     </body>
 </html>

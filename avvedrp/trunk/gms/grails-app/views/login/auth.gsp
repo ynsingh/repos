@@ -58,10 +58,10 @@ background-color: #d5e5ed;
 .loginUserPass table {
     position: relative;
 	float: right;
-	right:90px;
+	right:80px;
 	top: 30px;
-	width:28%;
-	height:20%;
+	width:35%;
+	height:18%;
 	color: #01518e;
 	font-size:95%;
 	font-family: verdana, Helvetica, sans-serif;
@@ -144,9 +144,10 @@ background-color: #d5e5ed;
 	    <label for="language"><g:message code="default.language.label"/>:</label>
 	    </td>
        <td>
+   
 	       <select id="language" onchange="Redirect()" style="font-size: 105%;">
 	       <g:if test="${session.lang == ''}">
-	             <option id="1" value="en" selected ><g:message code="default.lang.English.label"/></option>
+	             <option id="1" value="" selected ><g:message code="default.lang.English.label"/></option>
 	 			 <option id="2" value="ml" ><g:message code="default.lang.Malayalam.label"/></option>
 	 			 <option id="3" value="hi" ><g:message code="default.lang.Hindi.label"/></option>
 	 			 <option id="4" value="tl" ><g:message code="default.lang.Tamil.label"/></option>
@@ -293,7 +294,7 @@ background-color: #d5e5ed;
       </tr>
       <tr>
       <td colspan="2">
-      <g:link style="font-size:95%;font-weight: normal;text-decoration:none;color: #7D053F;" onmouseover="this.style.textDecoration ='underline';" onmouseout="this.style.textDecoration='none';" controller="proposal" action="uploadProposalApplication"><g:message code="default.UploadProposal.head"/> </g:link>
+      <g:link style="font-size:95%;font-weight: normal;text-decoration:none;color: #7D053F;" onmouseover="this.style.textDecoration ='underline';" onmouseout="this.style.textDecoration='none';" controller="proposal" action="notificationList"><g:message code="default.UploadProposal.head"/> </g:link>
       </td>
       </tr>
     <tr>

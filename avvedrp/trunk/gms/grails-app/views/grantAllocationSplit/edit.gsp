@@ -10,22 +10,25 @@
     if( ( (document.getElementById("grantPeriod.id").value) == 'null') || ( (document.getElementById("grantPeriod.id").value) == '') )
     {
          alert("Please enter the Grant Period ");
+         document.getElementById("grantPeriod.id").focus();
          return false;
     }
     if(isNaN(document.getElementById("amount").value))
     {
 	    alert("Invalid Amount  ");
-	    document.getElementById("amount").focus
+	    document.getElementById("amount").focus();
 	    return false;
     }
     if((document.getElementById("amount").value)=='')
     {
 	    alert("Please enter Proper Amount  ");
+	    document.getElementById("amount").focus();
 	    return false;
     }
     if(eval(document.getElementById("amount").value)<=0)
     {
 	    alert("Please enter Proper Amount  ");
+	    document.getElementById("amount").focus();
 	    return false;
     }
     

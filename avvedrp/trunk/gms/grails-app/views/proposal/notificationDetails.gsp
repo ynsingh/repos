@@ -4,15 +4,14 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main" />
-        <title>Show Notifications</title>
+        <title><g:message code="default.NotificationDetails.label"/></title>
     </head>
     <body>
     <g:javascript library="application"/>
     <modalbox:modalIncludes/>
     <div class="wrapper">
-        <div class="tablewrapper">
+        
         <div class="body">
-            <h1><g:message code="default.Notification.PublishNotification.head"/></h1>
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
@@ -96,6 +95,6 @@
            
              </div>
               </div>
-        </div>
+        
     </body>
 </html>

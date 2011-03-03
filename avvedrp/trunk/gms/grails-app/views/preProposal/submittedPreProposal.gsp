@@ -48,7 +48,7 @@
                         <tbody>
                         <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="projectTitle"><g:message code="preProposal.projectTitle.label" default="Project Title" /></label>
+                                    <label for="projectTitle"><g:message code="preProposal.projectTitle.label" default="Proposal Title" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: preProposalInstance, field: 'projectTitle', 'errors')}">
                                     <g:textField name="projectTitle" value="${preProposalInstance?.projectTitle}" disabled="true"/>

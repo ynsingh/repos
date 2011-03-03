@@ -28,7 +28,7 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="projectTitle"><g:message code="default.ProjectTitle.label"/></label>
+                                    <label for="projectTitle"><g:message code="default.ProposalTitle.label"/></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: preProposalInstance, field: 'projectTitle', 'errors')}">
                                     <g:textField name="projectTitle" value="${preProposalInstance?.projectTitle}" />
@@ -39,19 +39,11 @@
                                     <label for="remarks"><g:message code="default.Remarks.label" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: preProposalInstance, field: 'remarks', 'errors')}">
-                                    <g:textField name="remarks" value="${preProposalInstance?.remarks}" />
+                                    <g:textArea name="remarks" value="${preProposalInstance?.remarks}" />
                                 </td>
                             </tr>
-                       
-                            <tr class="prop">
-                                   <input type=hidden name="preProposalForm" value="${proposalApplicationForm}" />
-                                <td valign="top" class="name">
-                                    <label for="defaultYesNo"><g:message code="default.Active.label"/></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean:preProposalInstance,field:'activeYesNo','errors')}">
-                                    <g:select name="activeYesNo" from="${['Y', 'N']}"  value="${fieldValue(bean:preProposalInstance,field:'activeYesNo')}" />
-                                </td>                           
-                               </tr>
+                       <input type=hidden name="preProposalForm" value="${proposalApplicationForm}" />
+                          
                         
                            <tr class="prop">
                                 <td valign="top" class="name">

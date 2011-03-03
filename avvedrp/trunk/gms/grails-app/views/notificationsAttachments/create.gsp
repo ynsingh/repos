@@ -50,7 +50,7 @@
                   </table>
                </div>
                <div class="buttons">
-                    <span class="button"><input class="save" type="submit" value="${message(code: 'default.Create.button')}"  /></span>
+                    <span class="button"><input class="save" type="submit" value="${message(code: 'default.Create.button')}" onClick="return validateNotificationsAttachments()" /></span>
                </div>
              </g:form>
 

@@ -165,7 +165,7 @@
                             </div>
                             <div class="buttons"> 
                               <span class="button">
-                                <span class="button"><g:actionSubmit class="save" action="save" value="${message(code: 'default.Create.button')}" onClick="return validateGrantExpense()"  /></span>
+                                <span class="button"><g:actionSubmit value="${message(code: 'default.Create.button')}" onClick="return validateGrantExpense()" class="save" action="save"/></span>
                                 <span class="button"><span class="button"><g:actionSubmit class="delete" action="clear" value="${message(code: 'default.Clear.button')}" /></span></span>
                               </span> 
                             </div>

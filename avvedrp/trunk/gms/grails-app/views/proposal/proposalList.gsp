@@ -5,6 +5,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main" />
         <title><g:message code="default.Proposal.ProposalList.head"/></title>
+         <resource:rating />
     </head>
     <body>
       <div class="wrapper">
@@ -13,12 +14,7 @@
 		  	<h1><g:message code="default.Proposal.ProposalList.head"/></h1>
             <table width="100%">
      				<tr>
-                    	<td valign="top" class="name">
-                        	<label for="projects"><g:message code="default.Project.label"/>:</label>
-                        </td>
-                        <td valign="top" >
-                         	<strong>  ${fieldValue(bean:notificationInstance,field:'project.name')} </strong>
-                        </td>
+                    	
                         <td valign="top" class="name">
                         	<label for="notification"><g:message code="default.NotificationDate.label"/>:</label>
                         </td>
@@ -40,50 +36,45 @@
 		    <g:if test="${flash.message}">
 	              <div class="message">${flash.message}</div>
             </g:if>
-		            <div class="list">
-		                <table>
-		                    <thead>
-		                        <tr>
-		                          <input type="hidden" id="notificationId" name="notificationId" value="${fieldValue(bean:proposalInstance, field:'notification.id')}"/>
-		                   	      <g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}" />
-		                   	      <th><g:message code="default.ProposalCode.label"/></th>
-		                   	      <th><g:message code="default.Institution.label"/></th>
-		                          <th><g:message code="default.ViewProposal.label"/></th>
-		                          <th><g:message code="default.Eligibility.label"/></th>
-		                          <th><g:message code="default.ProposalStatus.label"/></th>
-		                   	    </tr>
-		                    </thead>
-		                    <tbody>
-			                    <% int j=0 %>
-				                    <g:each in="${proposalInstanceList}" status="i" var="proposalInstance">
-				                    	<% j++ %>
-				                        <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-				                        	<td>${j}</td>
-				                            <td>${fieldValue(bean:proposalInstance, field:'code')}</td>
-				                            <td>${fieldValue(bean:proposalInstance, field:'party.code')}</td>
-				                            <td><g:link action="show" id="${proposalInstance.id}"><g:message code="default.View.label"/></g:link></td>
-				                            <td>
-				                            	<g:if test="${EligibilityStatusList[i]}">   
-						                       		<g:link action="create" controller='eligibilityCheck' params="[eligibilityStatus:'Reviewed']" id="${fieldValue(bean:proposalInstance, field:'id')}"><g:message code="default.Reviewed.label"/></g:link>
-						                       			
-						                        </g:if>
-						                        <g:else>
-						                        	<g:link action="create" controller='eligibilityCheck' params="[eligibilityStatus:'Review']" id="${fieldValue(bean:proposalInstance, field:'id')}"><g:message code="default.Review.label"/></g:link>
-					                          		
-					                            </g:else>
-				                            </td>
-				                            <td>
-					                          <g:if test="${EligibilityStatusList[i]}">   
-					                          		${EligibilityStatusList[i]?.eligibilitysStatus}
-						                       		
-						                      </g:if>
-						                      <g:else>
-						                      		<g:message code="default.Pending.label"/>
-					                          		
-					                          </g:else>
-				                        	</td>
-				                        </tr>
-			                      </g:each>
+	            <div class="list">
+	                <table>
+	                    <thead>
+	                        <tr>
+		                     	<input type="hidden" id="notificationId" name="notificationId" value="${fieldValue(bean:proposalInstance, field:'notification.id')}"/>
+		               	        <g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}"/>
+		               	        
+		               	        <th><g:message code="default.TitleOfTheResearchProject.label"/></th>
+		               	        <th><g:message code="default.SubmittedBy.label"/></th>
+		                    	<th><g:message code="default.Organisation.label"/></th>
+		                    	
+		               	        <th><g:message code="default.View.label"/></th>
+		               	        <th><g:message code="default.ProposalVersion.label"/></th>
+		               	        <th><g:message code="default.proposalRating.label"/></th>
+		                    </tr>
+		                </thead>
+		                <tbody>
+			                <g:each in="${proposalApplicationInstanceList}" status="i" var="proposalApplicationInstance">
+			                    <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
+			                    
+			                        <td>${i+1}</td>
+			                        <% def proposalApplicationExtProjectInstance = ProposalApplicationExt.find("from ProposalApplicationExt PE where PE.field='TitleOfTheResearchProject_2' and PE.proposalApplication.id="+proposalApplicationInstance?.id)%>
+			                         <td>${proposalApplicationExtProjectInstance?.value}</td>
+			                         <td>${proposalApplicationInstance?.name}</td>
+			                         <td>${proposalApplicationInstance?.organisation}</td>
+			                         
+			                        <td><g:link action="proposalApplicationReview" controller='proposalApplication' id="${proposalApplicationInstance.id}"><g:message code="default.View.label"/></g:link></td>
+			                    	  <td>V${proposalApplicationInstance?.proposal?.proposalVersion}</td>
+			                    	  <td>
+			                        	<richui:rating dynamic="false" units="${maxScaleList[i]}" rating="${evalScoreInstanceList[i]?.totalScore}" showCurrent="false"/>
+			                       		<g:message code="default.AvgRating.label"/>:
+			                       		<g:if test="${evalScoreInstanceList[i]?.totalScore}">${evalScoreInstanceList[i]?.totalScore}</g:if>
+			                       		<g:else>0.0</g:else>
+			                       		(<g:if test="${evalScoreInstanceList[i]?.noOfReviewers}">${evalScoreInstanceList[i]?.noOfReviewers} </g:if>
+			                       		<g:else>0</g:else>
+			                       		<g:message code="default.votescast.label"/>)
+			                        </td>
+			                     </tr>
+			                </g:each>
 		                    </tbody>
 		                </table>
 		            </div>

@@ -24,14 +24,14 @@
 	                                    <label for="projects"><g:message code="default.Projects.label" /></label>
 	                                </td>
 	                                <td valign="top" class="value ${hasErrors(bean: expenseRequestEntryInstance, field: 'projects', 'errors')}">
-	                                    <g:select name="projects.id" from="${projectsList}" optionKey="id" optionValue="code" value="${expenseRequestEntryInstance?.projects?.id}" noSelection="['null':'--Select--']"/>
+	                                    <g:select name="projects.id" from="${projectsList}" optionKey="id" optionValue="code" value="${expenseRequestEntryInstance?.projects?.id}" noSelection="['null':'-Select-']"/>
 	                                </td>
 	                                
 	                                <td valign="top" class="name">
 	                                    <label for="purchaseOrderNo"><g:message code="default.PurchaseOrderNo.label" /></label>
 	                                </td>
 	                                <td valign="top" class="value ${hasErrors(bean: expenseRequestEntryInstance, field: 'purchaseOrderNo', 'errors')}">
-	                                    <g:textField name="purchaseOrderNo" value="${expenseRequestEntryInstance?.purchaseOrderNo}" />
+	                                    <g:textField name="purchaseOrderNo" value="${expenseRequestEntryInstance?.purchaseOrderNo}"/>
 	                                </td>
 	                                
 	                            </tr>
@@ -75,7 +75,7 @@
 	                                    <label for="expenseAmount"><g:message code="default.ExpenseAmount(Rs).label" /></label>
 	                                </td>
 	                                <td valign="top" class="value ${hasErrors(bean: expenseRequestEntryInstance, field: 'expenseAmount', 'errors')}">
-	                                    <g:textField name="expenseAmount" value="${fieldValue(bean: expenseRequestEntryInstance, field: 'expenseAmount')}" />
+	                                    <g:textField name="expenseAmount" value="${amount}" />
 	                                </td>
 	                                
 	                                
@@ -100,7 +100,7 @@
 	                                    <label for="invoiceAmount"><g:message code="default.InvoiceAmount.label" /></label>
 	                                </td>
 	                                <td valign="top" class="value ${hasErrors(bean: expenseRequestEntryInstance, field: 'invoiceAmount', 'errors')}">
-	                                    <g:textField name="invoiceAmount" value="${fieldValue(bean: expenseRequestEntryInstance, field: 'invoiceAmount')}" />
+	                                    <g:textField name="invoiceAmount" value="${invoiceAmount}"/>
 	                                </td>
 	                            </tr>
 	                        	

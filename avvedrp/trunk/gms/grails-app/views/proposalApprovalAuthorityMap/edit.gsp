@@ -34,7 +34,7 @@
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: proposalApprovalAuthorityMapInstance, field: 'proposalType', 'errors')}">
                                 <strong>${proposalApprovalAuthorityMapInstance?.proposalType}</strong>
-                                    
+                                 <input type=hidden name="proposalType" id = "proposalType" value="${proposalApprovalAuthorityMapInstance.proposalType}">   
                                 </td>
                            
                           
@@ -42,7 +42,8 @@
                                   <label for="proposalId"><g:message code="proposalApprovalAuthorityMap.proposalId.label" default="Proposal Title" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: proposalApprovalAuthorityMapInstance, field: 'proposalId', 'errors')}">
-                                    <strong>${preProposalInstance?.projectTitle} </strong>
+                                    <strong>${preProposalInstance?.projectTitle}</strong>
+                                    <input type=hidden name="proposalId" id = "proposalId" value="${proposalApprovalAuthorityMapInstance.proposalId}">
                                 </td>
                             </tr>
                         
@@ -63,39 +64,33 @@
                             </tr>
                         
                             <tr class="prop">
-                                <td valign="top" class="name">
-                                  <label for="approvalAuthority"><g:message code="proposalApprovalAuthorityMap.approvalAuthority.label" default="Approval Authority" /></label>
-                                </td>
-                                <td valign="top" class="value ${hasErrors(bean: proposalApprovalAuthorityMapInstance, field: 'approvalAuthority', 'errors')}">
-                                    <g:select name="approvalAuthority.id" from="${approvalAuthorityInstance}" optionKey="id" optionValue = "name" value="${proposalApprovalAuthorityMapInstance?.approvalAuthority?.id}"  />
-                                </td>
-                            
-                           
-                                 <td valign="top" class="name">
-			                     <label for="activeYesNo"><g:message code="default.Active.label" /></label>
-			                       </td>
-		                               <td valign="top" class="value ${hasErrors(bean:proposalApprovalAuthorityMapInstance,field:'activeYesNo','errors')}">
-		                              <g:select name="activeYesNo" from="${['Y', 'N']}"  value="${fieldValue(bean:proposalApprovalAuthorityMapInstance,field:'activeYesNo')}" />
-                                   </td>  
-                           </tr>
-                            
-                            <tr class="prop">
+                              
                                 <td valign="top" class="name">
                                   <label for="remarks"><g:message code="proposalApprovalAuthorityMap.remarks.label" default="Remarks" /></label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: proposalApprovalAuthorityMapInstance, field: 'remarks', 'errors')}">
                                     <g:textArea name="remarks" value="${proposalApprovalAuthorityMapInstance?.remarks}" />
                                 </td>
+                                
+                                 <td valign="top" class="name">
+                                  <label for="approvalAuthority"><g:message code="proposalApprovalAuthorityMap.approvalAuthority.label" default="Approval Authority" /></label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean: proposalApprovalAuthorityMapInstance, field: 'approvalAuthority', 'errors')}">
+                                    <g:select name="approvalAuthority.id" from="${approvalAuthorityInstance}" optionKey="id" optionValue = "name" value="${proposalApprovalAuthorityMapInstance?.approvalAuthority?.id}"  />
+                                </td>
+                                
                             </tr>
                         
                             
                         </tbody>
                     </table>
                 </div>
+              
                 <div class="buttons">
-                    <span class="button"><g:actionSubmit class="save" action="update"  onClick="return validateApprovalAuthorityMap()"  value="${message(code: 'default.Update.button')}" /></span>
-                   
+                    <span class="button"><g:actionSubmit class="save" action="update"  onClick="return validateEditApprovalAuthorityMap()"  value="${message(code: 'default.Update.button')}" /></span>
+                  </div> 
             </g:form>
+        </div>
         </div>
     </body>
 </html>

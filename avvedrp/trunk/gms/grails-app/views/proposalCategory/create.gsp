@@ -65,9 +65,7 @@
         
         <div class="body">
             <h1><g:message code="default.ProposalCategoryList.label" args="[entityName]" /></h1>
-            <g:if test="${flash.message}">
-            <div class="message">${flash.message}</div>
-            </g:if>
+            
             <div class="list">
             <g:if test="${ProposalCategory.list(params)}">
                 <table>
@@ -82,7 +80,8 @@
                         
                             <g:sortableColumn property="activeYesNo" title="${message(code: 'default.Active.label')}" />
                         
-                           <g:sortableColumn property="edit" title="${message(code: 'default.Edit.label')}" />
+                          	<th><g:message code="default.Edit.label"/></th>
+							
                         </tr>
                     </thead>
                     <tbody>

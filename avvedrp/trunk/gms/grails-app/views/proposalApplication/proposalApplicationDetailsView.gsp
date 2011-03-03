@@ -182,12 +182,7 @@
                                     </label>
                                 </td>
                             </tr>
-                         
-                            <tr class="prop">
-                                <td valign="top" colspan="2" style="width:200px;text-align:center;">
-                                    <g:link class="inputbutton" action="proposalAppPart1PersonalDetails" params="['proposalApplication.id':proposalApplicationInstance?.id,'status':'update']"><label for="name"><g:message code="default.Edit.label"/></label></g:link>
-                                </td>
-                           </tr>
+                                                     
                             <tr class="prop">
                                 <td valign="top" colspan="2" style="width:200px;" class="prname">
                                     <div class="horizontalLine"><g:message code="default.PARTIInformationRelatingDepartment.head"/></div>
@@ -202,18 +197,14 @@
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'name','errors')}">
                                 
                                     <label for="name">
-                                    ${proposalApplicationExtInstance?.value}
+                                    ${proposalApplicationExtInstance.value}
                                     
                                     </label>
                                 </td>
                             </tr> 
                             </g:if>
                             </g:each>
-                            <tr class="prop">
-                                <td valign="top" colspan="2" style="width:200px;text-align:center;">
-                                    <g:link class="inputbutton" action="proposalAppPartInformationOfDepartment" params="['proposalApplication.id':proposalApplicationInstance?.id,'status':'update']"><label for="name"><g:message code="default.Edit.label"/></label></g:link>
-                                </td>
-                           </tr>
+                            
                             <tr class="prop">
                                 <td valign="top" colspan="2" style="width:200px;" class="prname">
                                     <div class="horizontalLine"><g:message code="default.PARTIIInformationRelatingDepartment.head"/></div>
@@ -229,18 +220,14 @@
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'name','errors')}">
                                 
                                     <label for="name">
-                                    ${proposalApplicationExtInstance?.value}
+                                    ${proposalApplicationExtInstance.value}
                                     
                                     </label>
                                 </td>
                             </tr> 
                             </g:if>
                             </g:each>
-                            <tr class="prop">
-                                <td valign="top" colspan="2" style="width:200px;text-align:center;">
-                                    <g:link class="inputbutton" action="proposalAppPartThreeInformationRelatingDepartment" params="['proposalApplication.id':proposalApplicationInstance?.id,'status':'update']"><label for="name"><g:message code="default.Edit.label"/></label></g:link>
-                                </td>
-                           </tr>
+                            
                             <tr class="prop">
                                 <td valign="top" colspan="2" style="width:200px;" class="prname">
                                     <div class="horizontalLine"><g:message code="default.PARTFiveAboutResearchProject.head"/></div>
@@ -256,18 +243,14 @@
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'name','errors')}">
                                 
                                     <label for="name">
-                                    ${proposalApplicationExtInstance?.value}
+                                    ${proposalApplicationExtInstance.value}
                                     
                                     </label>
                                 </td>
                             </tr> 
                             </g:if>
                             </g:each>
-                            <tr class="prop">
-                                <td valign="top" colspan="2" style="width:200px;text-align:center;">
-                                    <g:link class="inputbutton" action="proposalAppPartFourAboutResearchProject" params="['proposalApplication.id':proposalApplicationInstance?.id,'status':'update']"><label for="name"><g:message code="default.Edit.label"/></label></g:link>
-                                </td>
-                           </tr>
+                            
                             <tr class="prop">
                                 <td valign="top" colspan="2" style="width:200px;" class="prname">
                                     <div class="horizontalLine"><g:message code="default.PartFiveDetailProjectReport.head"/></div>
@@ -283,18 +266,14 @@
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'name','errors')}">
                                 
                                     <label for="name">
-                                    ${proposalApplicationExtInstance?.value}
+                                    ${proposalApplicationExtInstance.value}
                                     
                                     </label>
                                 </td>
                             </tr> 
                             </g:if>
                             </g:each>
-                            <tr class="prop">
-                                <td valign="top" colspan="2" style="width:200px;text-align:center;">
-                                    <g:link class="inputbutton" action="proposalAppPartFiveDetailProjectReport" params="['proposalApplication.id':proposalApplicationInstance?.id,'status':'update']"><label for="name"><g:message code="default.Edit.label"/></label></g:link>
-                                </td>
-                           </tr>
+                            
                             <tr class="prop">
                                 <td valign="top" colspan="2" style="width:200px;" class="prname">
                                     <div class="horizontalLine"><g:message code="default.PartSixUploadDocuments.head"/></div>
@@ -310,7 +289,7 @@
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'name','errors')}">
                                 
                                     <label for="name">
-                                    ${proposalApplicationExtInstance?.value}
+                                    ${proposalApplicationExtInstance.value}
                                     
                                     </label>
                                 </td>
@@ -335,11 +314,7 @@
                                     
                                 </td>
                             </tr>
-                            <tr class="prop">
-                                <td valign="top" colspan="2" style="width:200px;text-align:center;">
-                                    <g:link class="inputbutton" action="proposalAppPartSixUploadDocuments" params="['proposalApplication.id':proposalApplicationInstance?.id,'status':'update']"><label for="name"><g:message code="default.Edit.label"/></label></g:link>
-                                </td>
-                           </tr>
+                            
                             <tr class="prop">
                                 <td valign="top" colspan="2" style="width:200px;" class="prname">
                                     <div class="horizontalLine"><g:message code="default.PartSevenDPRSummary.head"/></div>
@@ -355,7 +330,7 @@
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'name','errors')}">
                                 
                                     <label for="name">
-                                    ${proposalApplicationExtInstance?.value}
+                                    ${proposalApplicationExtInstance.value}
                                     
                                     </label>
                                 </td>
@@ -363,28 +338,24 @@
                             </g:if>
                             
                         </g:each>
-                            <tr class="prop">
-                                <td valign="top" colspan="2" style="width:200px;text-align:center;">
-                                    <g:link class="inputbutton" action="proposalAppSummary" params="['proposalApplication.id':proposalApplicationInstance?.id,'status':'update']"><label for="name"><g:message code="default.Edit.label"/></label></g:link>
-                                </td>
-                           </tr>
+                            
                          
                         </tbody>
                     </table>
-                    <input type=hidden id="proposalId" name="proposalId" value="${proposalApplicationInstance?.proposal?.id}">
+                      <input type=hidden id="proposalId" name="id" value="${proposalApplicationInstance?.id}">
                 </div>
-                <div class="horizontalLine"></div><div><fieldset class="border">
-                <p>&nbsp;</p>
-                	<p style="text-align:center"><label for="name"><g:message code="default.FinalProposalSubmissionConf.label"/></label></p>
-                    <p>&nbsp;</p>
-                    <p style="text-align:center">
-                    <input class="inputbutton" type="submit" value="${message(code: 'default.Finish.label')}" />
-                    &nbsp;&nbsp;&nbsp;&nbsp;<input type="button" class="inputbutton" onClick="Redirect()"  value="${message(code: 'default.Cancel.button')}"/>
-                    </p></fieldset>
+                <div>
+                    <span class="button">
+                     <g:actionSubmit class="inputbutton" controller="proposal" action="updateProposal" value="${message(code: 'default.Cancel.button')}" />
+                   
+                   
+                    </span>
+                    
                 </div>
+                
             </g:form>
         </div>
-                        
+                      
          </div>
          <div class="footerdBar">
 <br>

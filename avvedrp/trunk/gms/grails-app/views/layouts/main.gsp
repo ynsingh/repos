@@ -8,7 +8,7 @@
         <g:javascript library="jquery" plugin="jquery"/>
          <g:javascript library="applicationValidation" />
           <g:javascript library="appFormValidation" />
-           
+           <ckeditor:resources />
           <script src="${createLinkTo(dir:'images',file:'jquery-1.3.2.js')}"></script>
             <script src="${createLinkTo(dir:'images',file:'jquery.colorbox.js')}"></script>
     		<link rel='stylesheet' href='/gms/plugins/modalbox-0.4/css/modalbox.css' />
@@ -266,6 +266,11 @@ document.AuditLogReport.partyID.value = document.auditLoggingReport.party.value;
     
   
 <body onload="setValue()"  >
+<ckeditor:config var="toolbar_Mytoolbar">
+[
+    [ 'Source', '-', 'Bold', 'Italic' ]
+]
+</ckeditor:config>
  <!-- 
  	<div>
 	

@@ -36,7 +36,7 @@
                    	        <th><g:message code="default.Investigator.label"/></th>
                    	          
                 	        <th align="center"><img src="/gms/images/attach1.png"/></th>
-                   	       		<th><g:message code="default.projects.Status.label"/></th>
+                   	       		<th><g:message code="default.Status.label"/></th>
                         </tr>
                     </thead>
                     <tbody>

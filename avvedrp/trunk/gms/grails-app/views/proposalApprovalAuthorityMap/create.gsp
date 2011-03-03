@@ -17,6 +17,9 @@
             <g:if test="${flash.message}">
             <div class="message">${flash.message}</div>
             </g:if>
+            <g:if test="${flash.error}">
+            <div class="errors">${flash.error}</div>
+            </g:if>
             <g:hasErrors bean="${proposalApprovalAuthorityMapInstance}">
             <div class="errors">
                 <g:renderErrors bean="${proposalApprovalAuthorityMapInstance}" as="list" />
@@ -96,7 +99,7 @@
                             <g:sortableColumn property="id" title="${message(code: 'proposalApprovalAuthorityMap.id.label', default: 'Id')}" />
                         
                             <g:sortableColumn property="proposalType" title="Proposal Type" />
-                            <g:sortableColumn property="proposalType" title="Project Title" />
+                            <g:sortableColumn property="proposalType" title="${message(code: 'proposalApprovalAuthorityMap.proposalId.label', default:'Proposal Title')}" />
                             <g:sortableColumn property="proposalType" title="${message(code: 'proposalApprovalAuthorityMap.proposalType.label', default: 'Approval Authority')}" />
                         
                                                     

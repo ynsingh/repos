@@ -17,17 +17,11 @@
                     <tbody>
 
                        <tr class="prop">
-                          <td valign="top" class="name"><g:message code="default.ProposalCode.label"/></td>
+                          <td valign="top" class="name"><g:message code="default.NotificationTitle.label"/></td>
                           <td valign="top" class="value">${fieldValue(bean:proposalInstance, field:'code')}</td>
                        </tr>
                         
-                       <tr class="prop">
-                          <td valign="top" class="name"><g:message code="default.Projects.label"/></td>
-                          <td valign="top" class="value">${fieldValue(bean:proposalInstance, field:'notification.project.name')}</td>
-                            
-                       </tr>
-                    
-                       <tr class="prop">
+                        <tr class="prop">
                           <td valign="top" class="name"><g:message code="default.NotificationCode.label"/></td>
                           <td valign="top" class="value">${fieldValue(bean:proposalInstance, field:'notification.notificationCode')}</td>
                         </tr>
