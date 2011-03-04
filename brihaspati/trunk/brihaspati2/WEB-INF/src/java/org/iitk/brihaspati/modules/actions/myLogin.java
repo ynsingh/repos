@@ -58,8 +58,8 @@ import org.apache.commons.logging.LogFactory;
 
 import org.iitk.brihaspati.om.TurbineUserPeer;
 import org.iitk.brihaspati.om.TurbineUser;
-import org.iitk.brihaspati.om.StudentExpiryPeer;
-import org.iitk.brihaspati.om.StudentExpiry;
+//import org.iitk.brihaspati.om.StudentExpiryPeer;
+//import org.iitk.brihaspati.om.StudentExpiry;
 import org.iitk.brihaspati.om.UsageDetailsPeer;
 import org.iitk.brihaspati.om.UserConfigurationPeer;
 import org.iitk.brihaspati.modules.utils.UserUtil;
@@ -74,6 +74,8 @@ import org.apache.turbine.services.session.TurbineSessionService;
 import javax.servlet.http.HttpSession ;
 import java.util.Collection;
 import java.util.Vector;
+//import org.iitk.brihaspati.modules.utils.AdminProperties;
+
 
 //import java.util.Iterator;
 
@@ -118,59 +120,9 @@ public class myLogin extends VelocityAction{
 		if(StringUtil.checkString(username) != -1) username="";
 		String password = data.getParameters().getString("password", "" );
 		User user=null;
-		/**
- 		*Insert record in table with status
-		*if user already exist in other table
-		*/
- 		try{
-			boolean flag1=false;
-                        int []in={0,1};
-                        crit = new Criteria();
-                        crit.addGroupByColumn(TurbineUserPeer.USER_ID);
-                        crit.addNotIn(TurbineUserPeer.USER_ID,in);
-                        List lst1 =TurbineUserPeer.doSelect(crit);
-			String c_date=ExpiryUtil.getCurrentDate("-");
-                        String E_date=ExpiryUtil.getExpired(c_date,180);
-                        Date expdate=java.sql.Date.valueOf(E_date);
-			if(lst1.size()!=0)
-			{
-                        	for(int p=0;p<lst1.size();p++)
-                       	 	{
-                                	TurbineUser element=(TurbineUser)lst1.get(p);
-                                	int user_id1 = element.getUserId();
-                                	crit = new Criteria();
-                                	crit.addGroupByColumn(StudentExpiryPeer.UID);
-                                	List lst2 = StudentExpiryPeer.doSelect(crit);
-                                	for(int a=0; a<lst2.size();a++)
-                                	{
-                                        	StudentExpiry element1=(StudentExpiry)lst2.get(a);
-                                        	int user_id2=element1.getUid();
-                                        	if((Integer.toString(user_id1)).equals(Integer.toString(user_id2)))
-                                        	{
-                                                	flag1=true;
-                                        	}
-				
-					}
-                                	if(!flag1)
-                                	{
-                                		crit=new Criteria();
-                                        	crit.add(StudentExpiryPeer.UID,user_id1);
-                                        	crit.add(StudentExpiryPeer.EMAIL,"");
-                                        	crit.add(StudentExpiryPeer.CID,"");
-                                        	crit.add(StudentExpiryPeer.ROLL_NO,"");
-                                        	crit.add(StudentExpiryPeer.EXPIRY_DAYS,180);
-                                        	crit.add(StudentExpiryPeer.EXPIRY_DATE,expdate);
-                                        	crit.add(StudentExpiryPeer.STATUS,"ENABLE");
-                                        	StudentExpiryPeer.doInsert(crit);
-					}
-				}
-			}
-		}
-	        catch(Exception e){data.setMessage("exception is ! "+e);}
-
 			/** 
-			  *  Get the session if exist then remove and create new session
-			**/
+			 *  Get the session if exist then remove and create new session
+			 **/
 			try{
                                 Vector ve=new Vector();
                                 Collection aul=TurbineSession.getActiveUsers();
@@ -225,7 +177,6 @@ public class myLogin extends VelocityAction{
 				// Set the last_login date in the database.
  		
 				user.updateLastLogin();
-//////////////////////////////////////////////////////////////////////////////
 				List vec=null;
 				crit= new Criteria();
                                 crit.add(TurbineUserPeer.USER_ID,uid);
@@ -314,6 +265,8 @@ public class myLogin extends VelocityAction{
 				
 				log.info("this message would go to any facility configured to use the " + this.getClass().getName() + " Facility");
 			}
+
+
 			//If there is an error redirect to login page with a message"Cannot Login"
 			AccessControlList acl = data.getACL();
 			if( acl == null ){
@@ -355,7 +308,11 @@ public class myLogin extends VelocityAction{
 			{
 				data.setMessage("Error in selecting hint question.Exception is :- "+e);
 			}
-
+			/**
+ 			* Called the method from utils for Insert record when user (Student) already exist
+ 			* in Turbine User Table
+ 			*/
+			CommonUtility.InsertStuExpRecord();
 		}//end try1		
 		
 	         /** In case of an error, get the appropriate error message from

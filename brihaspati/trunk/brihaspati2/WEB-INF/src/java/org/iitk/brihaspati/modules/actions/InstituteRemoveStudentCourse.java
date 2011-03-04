@@ -39,9 +39,8 @@ package org.iitk.brihaspati.modules.actions;
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @modified date: 08-07-2010
- * @modified date: 20-10-2010,23-12-2010
+ * @modified date: 20-10-2010,23-12-2010,3-03-2011
  */
-
 import java.util.Vector;
 import java.util.Properties;
 import java.util.StringTokenizer;
@@ -187,7 +186,7 @@ public class InstituteRemoveStudentCourse extends SecureAction_Institute_Admin{
 			String program = pp.getString("prg","");
 			String roleName="student";
 			String msg=UserManagement.CreateUserProfile(uname,"","","","","",gName,roleName,serverName,serverPort,LangFile,rollno,program); // modified by Shikha
-			data.setMessage(msg);
+				       data.setMessage(msg);
 		}
 		catch(Exception e)
 		{

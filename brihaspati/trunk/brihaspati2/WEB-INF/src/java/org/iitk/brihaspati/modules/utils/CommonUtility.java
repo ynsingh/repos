@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.utils;
 
 
 /*@(#)CommonUtility.java
- *  Copyright (c) 2005-2008,2010 ETRG,IIT Kanpur. http://www.iitk.ac.in/
+ *  Copyright (c) 2005-2008,2010-2011 ETRG,IIT Kanpur. http://www.iitk.ac.in/
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -91,6 +91,7 @@ import org.iitk.brihaspati.om.TurbinePermissionPeer;
 import org.iitk.brihaspati.om.TurbineRolePeer;
 import org.iitk.brihaspati.om.TurbineRolePermissionPeer;
 import org.iitk.brihaspati.om.TurbineUserGroupRolePeer;
+import org.iitk.brihaspati.om.TurbineUserGroupRole;
 import org.iitk.brihaspati.om.TurbineUserPeer;
 import org.iitk.brihaspati.om.TurbineUser;
 import org.iitk.brihaspati.om.UsageDetailsPeer;
@@ -99,10 +100,11 @@ import org.iitk.brihaspati.om.StudentRollnoPeer;
 import org.iitk.brihaspati.om.StudentRollno;
 
 import org.iitk.brihaspati.modules.actions.UploadAction;
-import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.actions.Groupmanagement;
+import org.iitk.brihaspati.om.StudentExpiryPeer;
+
 
 /**
  * This class is used for call the method in mylogin 
@@ -112,7 +114,8 @@ import org.iitk.brihaspati.modules.actions.Groupmanagement;
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:kalpanagtm@gmail.com">Kalpana Gautam</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
- * @modified date:09-11-2010
+ * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
+ * @modified date:09-11-2010,03-03-2011
  * @version 1.0
  * @since 1.0
  * @see ExpiryUtil
@@ -805,5 +808,46 @@ public static void grpLeader()
 		}
 		return msg;
 	}
+	/**
+ 	* This method is used for Insert in expiry table
+ 	* with status and expiry date when 
+ 	* Record when Already exist 
+ 	*/
+	public static void InsertStuExpRecord()
+        {
+                 try{
+                        String c_date=ExpiryUtil.getCurrentDate("-");
+                        String E_date=ExpiryUtil.getExpired(c_date,120);
+                        Date expdate=java.sql.Date.valueOf(E_date);
+
+			Criteria crit=new Criteria();
+			crit.add(TurbineUserGroupRolePeer.ROLE_ID,3);
+			List stud_list=TurbineUserGroupRolePeer.doSelect(crit);
+			for(int i=0;i<stud_list.size();i++){
+                                TurbineUserGroupRole element=(TurbineUserGroupRole)stud_list.get(i);
+				int gid=element.getGroupId();
+				int uid=element.getUserId();
+				String groupName=GroupUtil.getGroupName(gid);
+
+				crit = new Criteria();
+				crit.add(StudentExpiryPeer.UID,uid);
+				crit.add(StudentExpiryPeer.CID,groupName);
+				List lst2 = StudentExpiryPeer.doSelect(crit);
+				
+				if(lst2.size()==0){
+					crit=new Criteria();
+                        	        crit.add(StudentExpiryPeer.UID,uid);
+                	                crit.add(StudentExpiryPeer.CID,"groupName");
+        	                        crit.add(StudentExpiryPeer.EXPIRY_DATE,expdate);
+	                                crit.add(StudentExpiryPeer.STATUS,"ENABLE");
+                                	StudentExpiryPeer.doInsert(crit);
+				}
+			}
+		}
+                catch(Exception e){
+                ErrorDumpUtil.ErrorLog("Exception in InsertStuExpRecord method in Common utility class! "+e);
+                }
+        }
+
 		
 }//end of class

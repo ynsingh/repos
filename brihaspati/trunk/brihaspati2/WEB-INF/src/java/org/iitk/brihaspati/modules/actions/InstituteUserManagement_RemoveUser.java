@@ -36,7 +36,6 @@ package org.iitk.brihaspati.modules.actions;
  * @author  <a href="singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author  <a href="sharad23nov@yahoo.com">Sharad Singh</a>
  * @author  <a href="shikhashuklaa@gmail.com">Shikha Shukla</a>
- * @author  <a href="tejdgurung20@gmail.com">Tej Bahadur</a>
  * @modifydate: 26-02-2011 
  */
 
@@ -61,8 +60,6 @@ import org.iitk.brihaspati.modules.utils.MailNotification;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.iitk.brihaspati.modules.utils.UserUtil;
-import org.iitk.brihaspati.om.StudentExpiryPeer;
-import org.iitk.brihaspati.om.StudentExpiry;
 
 public class InstituteUserManagement_RemoveUser extends SecureAction_Institute_Admin{
 	/**
@@ -92,7 +89,7 @@ public class InstituteUserManagement_RemoveUser extends SecureAction_Institute_A
 		 	*/
 
 			String gName=pp.getString("group");
-			ErrorDumpUtil.ErrorLog("group in search method at line 90======"+gName);
+		//	ErrorDumpUtil.ErrorLog("group in search method at line 90======"+gName);
 			context.put("group",gName);
 
 			String role=pp.getString("role");
@@ -370,14 +367,6 @@ public class InstituteUserManagement_RemoveUser extends SecureAction_Institute_A
 						 * Delete all student one by one
 						 */
 						message=umt.removeUserProfileWithMail(postString,preString,LangFile,subject,email,instName,"","","",fileName,server_name,srvrPort);
-						/**
-                                                * Delete Student from Student table
-                                                * With Expiry Date
-                                                * Add by @Tej
-                                                */
-						Criteria crit=new Criteria();
-                                                crit.add(StudentExpiryPeer.UID,uid);
-                                                StudentExpiryPeer.doDelete(crit);
 						msg = message.split(":");
 			                	data.setMessage(msg[0]);
 	                                        CuDetail.setErr_User(postString);
@@ -488,10 +477,6 @@ public class InstituteUserManagement_RemoveUser extends SecureAction_Institute_A
 							//TurbineUser element=(TurbineUser)UserManagement.getUserDetail(uid).get(0);
 							element=(TurbineUser)UserManagement.getUserDetail(uid).get(0);
                                 			email=element.getEmail();
-					                
-                                                      
-                                                        
-                                                       
 					         	message=umt.removeUserProfileWithMail(postString,preString,LangFile,subject,email,instName,"","","",fileName,server_name,srvrPort);
 							msg = message.split(":");
 			                		data.setMessage(msg[0]);

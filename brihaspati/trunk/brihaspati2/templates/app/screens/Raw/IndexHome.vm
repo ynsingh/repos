@@ -200,8 +200,8 @@ $!data.getMessage()
 					</tr>
 					#set ( $count1 = 1 )
 					#foreach($student in $stud)
-					#set ( $count3 = 1 )
-					#foreach($studentstts in $stdlist)
+					##set ( $count3 = 1 )
+					##foreach($studentstts in $stdlist)
 					##<tr>
 						#if($velocityCount%2 == 0)
                                                         <tr bgcolor="$ui.tableColor">
@@ -211,13 +211,14 @@ $!data.getMessage()
 
 						#set ( $count2 = 1 )
 						#foreach($message in $unread_msg)	
-							#if(($count1 == $count2) && ($count1 == $count3))
+							##if(($count1 == $count2) && ($count1 == $count3))
+							#if($count1 == $count2) 
 							<td align=center>
-							#if($studentstts.getStatus() == "ENABLE") 
+							##if($studentstts.getStatus() == "ENABLE") 
 							<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm").addPathInfo("courseId",$student.getGroupName()) style=text-decoration:none>$student.getCAlias() - $student.getCourseName()</a>
-							#else
-							<font color="red">* $student.getCAlias() - $student.getCourseName() - $brih_expired</font>
-							#end
+							##else
+							##<font color="red">* $student.getCAlias() - $student.getCourseName() - $brih_expired</font>
+							##end
 					##BlinkingText("New" $student.hasLastModifiedAfter($lastlogin))
 					## Putting "New" word as a superscript while any new course are registered 
 						#if( $student.hasLastModifiedAfter($lastlogin) )
@@ -248,8 +249,8 @@ $!data.getMessage()
 						#end
 						#end
 						#set ( $count2 = $count2+1 )
-						#end
-						#set ( $count3 = $count3+1 )
+						##end
+						##set ( $count3 = $count3+1 )
 						#end
 						#set ( $count1 = $count1+1 )	
 						</tr>

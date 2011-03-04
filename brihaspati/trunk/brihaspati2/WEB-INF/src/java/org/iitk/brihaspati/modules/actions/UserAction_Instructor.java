@@ -61,10 +61,7 @@ import org.apache.turbine.services.security.torque.om.TurbineUser;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
 import org.apache.turbine.services.security.torque.om.TurbineUserGroupRole;
 import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
-import org.iitk.brihaspati.om.StudentExpiryPeer;
-import org.iitk.brihaspati.om.StudentExpiry;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
-import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 /**
@@ -74,7 +71,6 @@ import org.iitk.brihaspati.modules.utils.GroupUtil;
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a> 
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a> 
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a> 
- * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a> 
  * @modified date: 26-02-2011
  */
 public class UserAction_Instructor extends SecureAction_Instructor
@@ -106,11 +102,6 @@ public class UserAction_Instructor extends SecureAction_Instructor
                         String serverPort=Integer.toString(srvrPort);
 
 			ParameterParser pp=data.getParameters();
-			String instituteid=user.getTemp("Institute_id").toString();
-			// Path for get value from properties file 
-			String path="";
-                	path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+instituteid+"Admin.properties";
-			// get Institute Id 
 			String gName=data.getUser().getTemp("course_id").toString();
 			String rollno = pp.getString("rollno","");
 			String program = pp.getString("prg","");
@@ -128,44 +119,12 @@ public class UserAction_Instructor extends SecureAction_Instructor
 			}
 			String fname=pp.getString("FNAME");
 			String lname=pp.getString("LNAME");
-			/**
-			 * Get expiry days from Properties file 
-			 * Modify by @tej
-			 */
-			String expdays = AdminProperties.getValue(path,"brihaspati.user.expdays.value");
-                        Integer exp1 = Integer.valueOf(expdays);
-			/**
-                        * Get current date and expiry date with yyyy-mm-dd format
-                        * Get user id 
-                        * @see ExpiryUtil from utils
-                        * @see UserUtil from utils
-                        * Added by @tej
-                        */
-                        String c_date=ExpiryUtil.getCurrentDate("-");
-                        String E_date=ExpiryUtil.getExpired(c_date,exp1);
-                        Date expdate=java.sql.Date.valueOf(E_date);
          		String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,email,"",gName,"student",serverName,serverPort,LangFile,rollno,program); //modified by Shikha
-
-		        /**
- 			* Insert data for Student registration with expiry date in table
- 			* Add userid
- 			* @see UserUtil in utils
- 			* Added by @tej
-			*/
-			int userid=UserUtil.getUID(email);
-			Criteria crit=new Criteria();
-			       crit.add(StudentExpiryPeer.UID,userid);
-                               crit.add(StudentExpiryPeer.EMAIL,email);
-                               crit.add(StudentExpiryPeer.CID,gName);
-                               crit.add(StudentExpiryPeer.ROLL_NO,rollno);
-                               crit.add(StudentExpiryPeer.EXPIRY_DAYS,expdays);
-                               crit.add(StudentExpiryPeer.EXPIRY_DATE,expdate);
-                               StudentExpiryPeer.doInsert(crit);
 			data.setMessage(msg);
 		}
 		catch (Exception ex)
 		{
-			data.setMessage("The error in Student Registration !!"+ex);
+			data.setMessage("The error in Student Registration !!Please Update the profile !!"+ex);
 		}
 	}
   	/**
@@ -255,16 +214,6 @@ public class UserAction_Instructor extends SecureAction_Instructor
 			                msg1=umt.removeUserProfileWithMail(userName,group,LangFile,subject,email,"","","","",fileName,serverName,serverPort);
 		                	msg = msg1.split(":");
 	                		data.setMessage(msg[0]);
-	
-					/**
- 					* Remove the Role of the Student 
-					* from Table with Expiry days
-					* @Tej
-					*/
-					Criteria crit=new Criteria();
-                                        crit.add(StudentExpiryPeer.UID,uid);
-                                        StudentExpiryPeer.doDelete(crit);
-
 					/**
 	                                String Mail_msg=MailNotification.sendMail(subject,email,"","","","",fileName,serverName,serverPort,LangFile);
 					data.setMessage(Mail_msg);
@@ -354,22 +303,6 @@ public class UserAction_Instructor extends SecureAction_Instructor
                 LangFile=(String)data.getUser().getTemp("LangFile"); 
                 ParameterParser pp=data.getParameters();
                 String uname=pp.getString("username");
-		/**
- 		* Getting the values of user id, expiry days
- 		* andExpiry date
- 		* Added By @Tej
- 		*/
-		int uid=UserUtil.getUID(uname);
-                String Gname=data.getUser().getTemp("course_id").toString();
-                User user=data.getUser();
-                String instituteid=user.getTemp("Institute_id").toString();
-                String path="";
-                path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+instituteid+"Admin.properties";
-                String expdays = AdminProperties.getValue(path,"brihaspati.user.expdays.value");
-                Integer exp1 = Integer.valueOf(expdays);
-                String c_date=ExpiryUtil.getCurrentDate("-");
-                String E_date=ExpiryUtil.getExpired(c_date,exp1);
-                Date expdate=java.sql.Date.valueOf(E_date);
 		if(StringUtil.checkString(uname) != -1)
 		{
                 	data.addMessage(MultilingualUtil.ConvertedString("usr_prof1",LangFile));
@@ -383,50 +316,12 @@ public class UserAction_Instructor extends SecureAction_Instructor
 		String program=StringUtil.replaceXmlSpecialCharacters(pp.getString("prg",""));
                //ErrorDumpUtil.ErrorLog("value of program in user action instructor\n"+program);
                 String msg=UserManagement.updateUserDetails(uname,fname,lname,email,LangFile,rollno,program);
-		/**
-                 * Update record in table with Expiry date  
-                 * Added By @Tej
-                 */
-		 Criteria crit = new Criteria();
-                 crit.add(StudentExpiryPeer.UID,uid);
-                 List lst1=StudentExpiryPeer.doSelect(crit);
-                        Criteria crit1=new Criteria();
-                        crit1.add(TurbineUserPeer.USER_ID,uid);
-                        List lst2=TurbineUserPeer.doSelect(crit1);
-                        if(lst1.size()!=lst2.size())
-                        {
-                                crit=new Criteria();
-                                           crit.add(StudentExpiryPeer.UID,uid);
-                                           crit.add(StudentExpiryPeer.EMAIL,email);
-                                           crit.add(StudentExpiryPeer.CID,Gname);
-                                           crit.add(StudentExpiryPeer.ROLL_NO,rollno);
-                                           crit.add(StudentExpiryPeer.EXPIRY_DAYS,expdays);
-                                           crit.add(StudentExpiryPeer.EXPIRY_DATE,expdate);
-                                           crit.add(StudentExpiryPeer.STATUS,"ENABLE");
-                                StudentExpiryPeer.doInsert(crit);
-                        }
-                        else
-                        {
-                                crit=new Criteria();
-                                crit.add(StudentExpiryPeer.UID,uid);
-                                List lst3=StudentExpiryPeer.doSelect(crit);
-                                for(int m=0;m<lst3.size();m++)
-                                {
-                                        StudentExpiry element=(StudentExpiry)lst3.get(m);
-                                        int id1= element.getId();
-                                        crit=new Criteria();
-                                        crit.add(StudentExpiryPeer.ID,id1);
-                                        crit.add(StudentExpiryPeer.EMAIL,email);
-                                        crit.add(StudentExpiryPeer.ROLL_NO,rollno);
-                                        StudentExpiryPeer.doUpdate(crit);
-                                }
-                        }
                 data.setMessage(msg);
 		}
-		 catch(Exception ex){
-                data.setMessage("The Error in Action UserAction_Intructor !!");
+		catch(Exception ex){
+                		data.setMessage("The Error in Action UserAction_Intructor doUpdate method !!");
                 }
-}
+	}
 
 	/**
           * ActionEvent responsible for removing a user from the system
@@ -466,15 +361,6 @@ public class UserAction_Instructor extends SecureAction_Instructor
                 msg = msg1.split(":");
 		data.setMessage(msg[0]);
 		data.addMessage(msg[1]);
-		/**
-                * Remove the Role of the Student 
-                * from Table with Expiry days
-                * Add by @Tej
-		*/
-		Criteria crit = new Criteria();
-		crit.add(StudentExpiryPeer.UID,uid);
-                StudentExpiryPeer.doDelete(crit);
-		
                 /**String Mail_msg=MailNotification.sendMail(subject,email,"","","","",fileName,serverName,serverPort,LangFile);
 		//data.setMessage(Mail_msg);
 		//UserManagement umgmt=new UserManagement();

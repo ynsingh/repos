@@ -31,7 +31,6 @@ package org.iitk.brihaspati.modules.actions;
  *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 import java.util.List;
-import java.sql.Date;
 import java.util.Vector;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
@@ -42,12 +41,8 @@ import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.actions.SecureAction_Institute_Admin;
-import org.iitk.brihaspati.om.StudentExpiryPeer;
-import org.iitk.brihaspati.om.StudentExpiry;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
-import org.apache.torque.util.Criteria;
-import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.apache.turbine.om.security.User;
 /**
  * This class is responsible for adding a new user in specified group and 
@@ -58,7 +53,6 @@ import org.apache.turbine.om.security.User;
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a> 
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a> 
  * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla</a>
- * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a> 
  * @modified date:20-10-2010,23-12-2010,26-02-2011
  */
 
@@ -95,10 +89,6 @@ public class AddUser_Institute extends SecureAction_Institute_Admin
 
 		LangFile=(String)data.getUser().getTemp("LangFile");
 		User user=data.getUser();
-		// Get Institute Id
-		String instituteid=user.getTemp("Institute_id").toString();
-		String path="";
-                path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+instituteid+"Admin.properties";
 		/**
                  * Retreiving details entered by the user
                  */
@@ -123,8 +113,6 @@ public class AddUser_Institute extends SecureAction_Institute_Admin
                 String email=pp.getString("EMAIL");
                 String passwd=pp.getString("PASSWD");
 		email=UserManagement.ChkMailId(email);
-		String expdays = AdminProperties.getValue(path,"brihaspati.user.expdays.value");
-                Integer exp1 = Integer.valueOf(expdays);
 
 		/**
 		*if password field is null,set the password.
@@ -139,16 +127,6 @@ public class AddUser_Institute extends SecureAction_Institute_Admin
 		}
 		
 		/**
-                * Get current date and expiry date with yyyy-mm-dd format
-                * Get user id
-                * @see ExpiryUtil from utils
-                * @see UserUtil from utils
-                * Modify by @Tej
-                */
-                        String c_date=ExpiryUtil.getCurrentDate("-");
-                        String E_date=ExpiryUtil.getExpired(c_date,exp1);
-                        Date expdate=Date.valueOf(E_date);
-		/**
                  * Passing the value of file from temporary variable
                  * According to selection of Language.
 		 * Adds the new user in the database.
@@ -159,26 +137,10 @@ public class AddUser_Institute extends SecureAction_Institute_Admin
                  int instid=Integer.parseInt(instituteId);
                  String instName=InstituteIdUtil.getIstName(instid);
 		 String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,instName,email,gname,roleName,serverName,serverPort,LangFile,rollno,program);
-
-		/**
- 		* Insert data in table for Student registratrion with expiry date
- 		* Add User Id 
- 		* @see UserUtil in utils
- 		* Add by @Tej
- 		*/
-		int userid=UserUtil.getUID(email);
-		Criteria crit=new Criteria();
-                       	       crit.add(StudentExpiryPeer.UID,userid);
-                               crit.add(StudentExpiryPeer.EMAIL,email);
-                       	       crit.add(StudentExpiryPeer.CID,gname);
-                               crit.add(StudentExpiryPeer.ROLL_NO,rollno);
-                               crit.add(StudentExpiryPeer.EXPIRY_DAYS,expdays);
-                               crit.add(StudentExpiryPeer.EXPIRY_DATE,expdate);
-                               StudentExpiryPeer.doInsert(crit);
 		data.setMessage(msg);
 		}
 		catch(Exception ex){
-		data.setMessage("The Error in Action AddUser_Institute");
+		data.setMessage("The Error in Action AddUser_Institute. Please Update the Profile !!");
 		}
 	}
 	/**

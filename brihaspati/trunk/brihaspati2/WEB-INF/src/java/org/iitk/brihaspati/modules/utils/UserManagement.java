@@ -33,6 +33,7 @@ package org.iitk.brihaspati.modules.utils;
  */
 
 //JDK
+import java.util.Date;
 import java.io.File;
 import java.util.List;
 import java.util.Properties;
@@ -69,6 +70,7 @@ import org.iitk.brihaspati.om.NoticeReceivePeer;
 import org.iitk.brihaspati.om.StudentRollnoPeer;
 import org.iitk.brihaspati.om.StudentRollno;
 import org.iitk.brihaspati.om.UserConfigurationPeer;
+import org.iitk.brihaspati.om.StudentExpiryPeer;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.StringUtil;
@@ -122,6 +124,18 @@ public class UserManagement
 		Properties pr ;
 		StringUtil S=new StringUtil();
 		Criteria crit=new Criteria();
+		String expdays="";
+		try{
+		String instituteid=Integer.toString(InstituteIdUtil.getIst_Id(i_name));
+		String path12=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+instituteid+"Admin.properties";
+		expdays = AdminProperties.getValue(path12,"brihaspati.user.expdays.value");
+		}
+		catch(Exception ex){ErrorDumpUtil.ErrorLog("This is the exception in getting path :--utils(UserManagement) "+ex);}
+                Integer exp1 = Integer.valueOf(expdays);		
+		String c_date=ExpiryUtil.getCurrentDate("-");
+                String E_date=ExpiryUtil.getExpired(c_date,exp1);
+                java.sql.Date expdate=java.sql.Date.valueOf(E_date);
+		int userid=UserUtil.getUID(UName);
 		/**
 		 * Checks if there are any illegal characters in the values
 		 * entered
@@ -197,6 +211,14 @@ public class UserManagement
 						}
 						User existingUser=TurbineSecurity.getUser(UName);
 						TurbineSecurity.grant(existingUser,user_group,user_role);
+
+						/** set student expiry */
+                				crit=new Criteria();
+				                crit.add(StudentExpiryPeer.UID,userid);
+				                crit.add(StudentExpiryPeer.CID,GroupName);
+				                crit.add(StudentExpiryPeer.EXPIRY_DATE,expdate);
+				                StudentExpiryPeer.doInsert(crit);
+
 						crit=new Criteria();
 						crit.add(TurbineUserPeer.LOGIN_NAME,UName);
 						List result=TurbineUserPeer.doSelect(crit);
@@ -397,6 +419,13 @@ public class UserManagement
                                                         String InsId=actgname[1];
                                                         Rollno_msg = InsertPrgRollNo(UName,RollNo,Program,InsId,file);
                                                 }
+
+						/** set student expiry */
+                				crit=new Criteria();
+				                crit.add(StudentExpiryPeer.UID,userid);
+				                crit.add(StudentExpiryPeer.CID,GroupName);
+				                crit.add(StudentExpiryPeer.EXPIRY_DATE,expdate);
+				                StudentExpiryPeer.doInsert(crit);
                                                                 
 						String NewUser= new String();
 						if(serverPort.equals("8080"))
@@ -480,7 +509,7 @@ public class UserManagement
 			}
 			catch(Exception ex)
 			{
-				message="The exception is here !!"+ex;
+				message="The exception in create user profile in user management util !!"+ex;
 			}
 		}
 		else
@@ -931,6 +960,10 @@ public class UserManagement
 	 * @param eMail String The Email of the user 
 	 * @param RollNo String The Rollno of the user 
 	 * @param Program String The Program of the user 
+	 * @param Expdays String The Expiry Days of the user 
+	 * @param Expdate Date The Expiry Date of the user 
+	 * @param Gname String The Group name of the user 
+	 *
 	 * @return String
 	 */
 	public static String updateUserDetails(String userName,String fName,String lName,String eMail,String file,String RollNo,String Program)
@@ -1026,15 +1059,15 @@ public class UserManagement
                         * the parameters passed
                         */
                         User user=TurbineSecurity.getUser(userName);
-			ErrorDumpUtil.ErrorLog("user in removeUserProfile= "+user);
+		//	ErrorDumpUtil.ErrorLog("user in removeUserProfile= "+user);
                         Group user_group=TurbineSecurity.getGroupByName(group_name);
-			ErrorDumpUtil.ErrorLog("usergroup at line 775 in removeUserProfile= "+user);
+		//	ErrorDumpUtil.ErrorLog("usergroup at line 775 in removeUserProfile= "+user);
 			int uid=UserUtil.getUID(userName);
 			int gid=GroupUtil.getGID(group_name);
 			int role=getRoleinCourse(uid,gid);
 			String roleName=UserGroupRoleUtil.getRoleName(role);
                         Role user_role=TurbineSecurity.getRoleByName(roleName);
-			ErrorDumpUtil.ErrorLog("user_role at line 781 in removeUserProfile= "+user);
+		//	ErrorDumpUtil.ErrorLog("user_role at line 781 in removeUserProfile= "+user);
                         Criteria crit=new Criteria();
 
                         /**
@@ -1067,7 +1100,7 @@ public class UserManagement
                                        	crit.add(TurbineUserGroupRolePeer.USER_ID,user_id);
 					crit.addNotIn(TurbineUserGroupRolePeer.GROUP_ID,i);
 					List check=TurbineUserGroupRolePeer.doSelect(crit);
-					ErrorDumpUtil.ErrorLog("lst from TurbineUserGroupRolePeer in rmvusrprfle==="+check);
+//					ErrorDumpUtil.ErrorLog("lst from TurbineUserGroupRolePeer in rmvusrprfle==="+check);
 					if(check.size()==0){
                                                	/**
                                                	* Remove the login details for the user
@@ -1081,14 +1114,22 @@ public class UserManagement
                                                 crit=new Criteria();
                                                 crit.add(UserConfigurationPeer.USER_ID,user_id);
                                                 UserConfigurationPeer.doDelete(crit);
-
+						/**
+ 						* Remove student membership from the courses
+						*/
+						crit=new Criteria();
+                	                        crit.add(StudentExpiryPeer.UID,user_id);
+                	                        crit.add(StudentExpiryPeer.CID,group_name);
+        	                                StudentExpiryPeer.doDelete(crit);
+	
+						
                                                	/**
                                                	* Finally remove the user profile from the
                                                	* database and babylon chat server
                                                	*/
                                       		TurbineSecurity.removeUser(user);
                                                	tool.deleteUser(userName);
-						ErrorDumpUtil.ErrorLog("testing after tooldeletion=======");	
+				//		ErrorDumpUtil.ErrorLog("testing after tooldeletion=======");	
                                                	/**
                        				* Delete the repository from the server for
                        				* this User

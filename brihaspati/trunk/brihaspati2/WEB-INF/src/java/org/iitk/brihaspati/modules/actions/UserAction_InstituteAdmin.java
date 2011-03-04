@@ -74,10 +74,6 @@ import org.iitk.brihaspati.om.TurbineRole;
 import org.iitk.brihaspati.om.TurbineRolePeer;
 import org.iitk.brihaspati.om.Courses;
 import org.iitk.brihaspati.om.CoursesPeer;
-import org.iitk.brihaspati.om.StudentExpiryPeer;
-import org.iitk.brihaspati.om.StudentExpiry;
-import org.iitk.brihaspati.modules.utils.AdminProperties;
-import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 /** 
  * This class contains code for registration, updation profile and password or
  * removal of user in the system
@@ -86,7 +82,6 @@ import org.iitk.brihaspati.modules.utils.ExpiryUtil;
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
- * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
  * @modified date: 08-07-2010, 20-10-2010, 26-12-2010
  */
 
@@ -151,25 +146,9 @@ public class UserAction_InstituteAdmin extends SecureAction_Institute_Admin{
      	  */
 	public void doUpdate(RunData data, Context context)
 	{
-		try{
 		LangFile=(String)data.getUser().getTemp("LangFile");	
 	 	ParameterParser pp=data.getParameters();
                 String uname=pp.getString("username");
-		 /**
-                 * Getting the values of user id, expiry days
-                 * andExpiry date
-                 * Added By @Tej
-                 */
-		int uid=UserUtil.getUID(uname);
-		User user=data.getUser();
-		String instituteid=user.getTemp("Institute_id").toString();
-                String path="";
-                path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+instituteid+"Admin.properties";
-		String expdays = AdminProperties.getValue(path,"brihaspati.user.expdays.value");
-                Integer exp1 = Integer.valueOf(expdays);
-		String c_date=ExpiryUtil.getCurrentDate("-");
-                String E_date=ExpiryUtil.getExpired(c_date,exp1);
-                Date expdate=java.sql.Date.valueOf(E_date);
 		if(StringUtil.checkString(uname) != -1)
                        {
                                data.addMessage(MultilingualUtil.ConvertedString("usr_prof1",LangFile));
@@ -184,27 +163,6 @@ public class UserAction_InstituteAdmin extends SecureAction_Institute_Admin{
                 //ErrorDumpUtil.ErrorLog("value of program in user action Institute Admin\n"+program);
 		String msg=UserManagement.updateUserDetails(uname,fname,lname,email,LangFile,rollno,program);
 		data.setMessage(msg);
-		 /**
-                  * Update record in table with Expiry date  
-                  * Added By @Tej
-                  */
-                Criteria crit=new Criteria();
-                crit.add(StudentExpiryPeer.UID,uid);
-                List lst=StudentExpiryPeer.doSelect(crit);
-                for(int m=0;m<lst.size();m++)
-                {
-                	StudentExpiry element=(StudentExpiry)lst.get(m);
-                        int id1= element.getId();
-                        	crit=new Criteria();
-                                        crit.add(StudentExpiryPeer.ID,id1);
-                                        crit.add(StudentExpiryPeer.EMAIL,email);
-                                        crit.add(StudentExpiryPeer.ROLL_NO,rollno);
-                                StudentExpiryPeer.doUpdate(crit);
-                                }
-		}
-		catch(Exception ex){
-                data.setMessage("The Error in Action UserAction_InstituteAdmin !!");
-                }
 	}
     	/**
      	  * ActionEvent responsible for updating user password in the system
@@ -350,14 +308,6 @@ public class UserAction_InstituteAdmin extends SecureAction_Institute_Admin{
 			//Mail_msg=MailNotification.sendMail(subject,email,"","","","",fileName,server_name,srvrPort,LangFile);
 			Mail_msg=MailNotification.sendMail(message, email, subject, "", LangFile);
 			Messages=UserManagement.RemoveUser(userName,LangFile);
-			/**
- 			* Remove details from table 
- 			* When Student Course Expired
- 			* Add by @Tej 
- 			*/
-			crit = new Criteria();
-			crit.add(StudentExpiryPeer.UID,uid);
-			StudentExpiryPeer.doDelete(crit);
 			context.put("error_Messages",Messages);
 			data.setMessage(Mail_msg);
 		}
@@ -428,7 +378,7 @@ public class UserAction_InstituteAdmin extends SecureAction_Institute_Admin{
 			LangFile=(String)data.getUser().getTemp("LangFile");
 			String Grp_List=data.getParameters().getString("deleteFileNames","");
                         String Gname="";
-			ErrorDumpUtil.ErrorLog("gname==========="+Gname);
+		//	ErrorDumpUtil.ErrorLog("gname==========="+Gname);
 			String msg="";
 			if(!Grp_List.equals(""))
                 	{
@@ -446,7 +396,7 @@ public class UserAction_InstituteAdmin extends SecureAction_Institute_Admin{
 						act="1";
 	                        	String CStatus=CourseManagement.UpdateCourseDetails(Gname,CourseName,"","",act,LangFile);
 			msg=UserManagement.DeleteInstructor(Gname,LangFile);
-					ErrorDumpUtil.ErrorLog("msg in util at line 395==="+msg);
+			//		ErrorDumpUtil.ErrorLog("msg in util at line 395==="+msg);
 				}
 			}
                         data.setMessage(msg);
