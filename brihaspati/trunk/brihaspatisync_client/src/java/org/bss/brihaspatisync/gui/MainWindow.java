@@ -145,7 +145,7 @@ public class MainWindow  extends JFrame implements ActionListener{
 		else if(e.getActionCommand().equals("Logout")){
 
                         desktop.removeAll();
-                        desktop.add(LoginWindow.getcontroller());
+                        desktop.add(new LoginWindow());
                 	desktop.revalidate();
                 	desktop.validate();
                 	desktop.repaint();

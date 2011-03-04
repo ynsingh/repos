@@ -51,8 +51,8 @@ public class HTTPClient extends Thread {
 	private UtilObject utilObject=UtilObject.getController();
 
         private ClientObject clientObject=ClientObject.getController();
-	
-	private final String refHttpPort=RuntimeDataObject.getController().getRefHttpPort();
+	private RuntimeDataObject runtime_object=RuntimeDataObject.getController();
+	private final String refHttpPort=runtime_object.getRefHttpPort();
 
 	public HTTPClient(){ }
 
@@ -83,11 +83,22 @@ public class HTTPClient extends Thread {
                         	        }else{
                                 	        reg="null";
                                 	}
-	                        	PostMethod method = new PostMethod("http://"+reflectorIP+":"+refHttpPort);
+					PostMethod method = new PostMethod("http://"+reflectorIP+":"+refHttpPort);
+
+                                        client.setConnectionTimeout(8000);
+                                        method.setRequestBody(clientObject.getUserRole()+","+lect_id+"req"+datastr+"req"+reg);
+                                        method.setRequestHeader("Content-type","text/plain; charset=ISO-8859-1");
+
+					// Http Proxy Handler
+					if((!(runtime_object.getProxyHost()).equals("")) && (!(runtime_object.getProxyPort()).equals(""))){
 					
-        	                	client.setConnectionTimeout(8000);
-                	        	method.setRequestBody(clientObject.getUserRole()+","+lect_id+"req"+datastr+"req"+reg);
-                        		method.setRequestHeader("Content-type","text/plain; charset=ISO-8859-1");
+						HostConfiguration config = client.getHostConfiguration();
+        					config.setProxy(runtime_object.getProxyHost(),Integer.parseInt(runtime_object.getProxyPort()));
+        					Credentials credentials = new UsernamePasswordCredentials(runtime_object.getProxyUser(), runtime_object.getProxyPass());
+        					AuthScope authScope = new AuthScope(runtime_object.getProxyHost(), Integer.parseInt(runtime_object.getProxyPort()));
+	        				client.getState().setProxyCredentials(authScope, credentials);
+					}
+
 	                        	int statusCode1 = client.executeMethod(method);
         	                	java.io.BufferedReader rd = new java.io.BufferedReader(new java.io.InputStreamReader(method.getResponseBodyAsStream()));
                 	        	String str;

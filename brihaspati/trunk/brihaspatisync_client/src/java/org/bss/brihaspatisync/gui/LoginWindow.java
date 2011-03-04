@@ -90,18 +90,18 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 	//private Log log=Log.getController();
 
 	
-	private static LoginWindow loginWindow=null;
+//	private static LoginWindow loginWindow=null;
 
 	/**
 	 * Controller for the class.
 	 */
-	public static LoginWindow getController(){
+/*	public static LoginWindow getController(){
 		if (loginWindow==null){
 			loginWindow=new LoginWindow();
 		}
 		return loginWindow;
 	}
-	
+*/	
 	/**
 	 * Constructor detail
 	 */

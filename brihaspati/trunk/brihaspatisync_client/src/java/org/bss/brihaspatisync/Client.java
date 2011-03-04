@@ -42,7 +42,7 @@ public class Client {
                	}catch(Exception e){System.out.println("Error on Loading Look&Feel");}
 
                 if(((ClientObject.getController().getIndexServerList()).size()) > 1){
-                	MainWindow.getController().getDesktop().add(LoginWindow.getController());
+                	MainWindow.getController().getDesktop().add(new LoginWindow());
 		}else{
                 	JOptionPane.showMessageDialog(null,"Index server list not found. Please try again !!");
               	}
