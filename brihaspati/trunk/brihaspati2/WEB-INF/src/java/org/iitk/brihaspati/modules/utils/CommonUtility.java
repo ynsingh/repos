@@ -828,16 +828,16 @@ public static void grpLeader()
 				int gid=element.getGroupId();
 				int uid=element.getUserId();
 				String groupName=GroupUtil.getGroupName(gid);
-
+                                String uname=UserUtil.getLoginName(uid);
 				crit = new Criteria();
-				crit.add(StudentExpiryPeer.UID,uid);
+				crit.add(StudentExpiryPeer.UID,uname);
 				crit.add(StudentExpiryPeer.CID,groupName);
 				List lst2 = StudentExpiryPeer.doSelect(crit);
 				
 				if(lst2.size()==0){
 					crit=new Criteria();
-                        	        crit.add(StudentExpiryPeer.UID,uid);
-                	                crit.add(StudentExpiryPeer.CID,"groupName");
+                        	        crit.add(StudentExpiryPeer.UID,uname);
+                	                crit.add(StudentExpiryPeer.CID,groupName);
         	                        crit.add(StudentExpiryPeer.EXPIRY_DATE,expdate);
 	                                crit.add(StudentExpiryPeer.STATUS,"ENABLE");
                                 	StudentExpiryPeer.doInsert(crit);

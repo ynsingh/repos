@@ -426,7 +426,7 @@
 
 <table name="STUDENT_EXPIRY" idMethod="idbroker">
 	<column name="ID" required="true" primaryKey="true" type="INTEGER" autoIncrement="true"/>
-        <column name="UID" required="true" type="INTEGER"/>
+        <column name="UID" required="true" type="VARCHAR" size="255"/>
         <column name="CID" type="VARCHAR" size="255"/>
         <column name="EXPIRY_DATE" type="TIMESTAMP"/>
         <column name="STATUS" required="true" type="VARCHAR" size="255" default="ENABLE"/>

@@ -214,7 +214,7 @@ public class UserManagement
 
 						/** set student expiry */
                 				crit=new Criteria();
-				                crit.add(StudentExpiryPeer.UID,userid);
+				                crit.add(StudentExpiryPeer.UID,UName);
 				                crit.add(StudentExpiryPeer.CID,GroupName);
 				                crit.add(StudentExpiryPeer.EXPIRY_DATE,expdate);
 				                StudentExpiryPeer.doInsert(crit);
@@ -422,7 +422,7 @@ public class UserManagement
 
 						/** set student expiry */
                 				crit=new Criteria();
-				                crit.add(StudentExpiryPeer.UID,userid);
+				                crit.add(StudentExpiryPeer.UID,UName);
 				                crit.add(StudentExpiryPeer.CID,GroupName);
 				                crit.add(StudentExpiryPeer.EXPIRY_DATE,expdate);
 				                StudentExpiryPeer.doInsert(crit);
@@ -1118,7 +1118,7 @@ public class UserManagement
  						* Remove student membership from the courses
 						*/
 						crit=new Criteria();
-                	                        crit.add(StudentExpiryPeer.UID,user_id);
+                	                        crit.add(StudentExpiryPeer.UID,userName);
                 	                        crit.add(StudentExpiryPeer.CID,group_name);
         	                                StudentExpiryPeer.doDelete(crit);
 	

@@ -40,6 +40,7 @@ import org.apache.turbine.services.security.torque.om.TurbineUserGroupRole;
 import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
 
 /**
+ * @author <a href="mailto:nksnghiitk@gmail.com">Nagendra Kumar Singh</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
  */
@@ -82,4 +83,24 @@ public class InstituteDetailsManagement
 		catch(Exception ex){}
 		return uidvct;	
 	}
+
+/** 
+ * This method is gives the institute id  from course id
+ */
+	public static String getInsId(String cName){
+		String insId="";
+		try{
+			String spcn[]=cName.split("@");
+			String lPart=spcn[1];
+			String iid[]=lPart.split("_");
+			insId=iid[1];
+		}
+		catch(Exception e){
+                ErrorDumpUtil.ErrorLog("The error in getInsId() - InstituteDetailsManagement class !!"+e);
+        	}
+        return insId;
+        }//end of Method
+
+
+
 }

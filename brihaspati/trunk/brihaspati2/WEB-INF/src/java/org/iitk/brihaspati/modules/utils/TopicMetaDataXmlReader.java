@@ -94,27 +94,27 @@ public class TopicMetaDataXmlReader
 		try
 		{	
 		XmlData files[]=xr.getElements("File");
-		ErrorDumpUtil.ErrorLog("fls in util"+files);
+	//	ErrorDumpUtil.ErrorLog("fls in util"+files);
 		if(files!=null)
 		{
 			Attributes ats;
 			String fileName,alias;
 			for(int j=0;j<files.length;j++)
 			{
-				ErrorDumpUtil.ErrorLog("vt return vale======"+"gfjgfdjsgfjdfghj");
+			//	ErrorDumpUtil.ErrorLog("vt return vale======"+"gfjgfdjsgfjdfghj");
 				FileEntry fileEntry=new FileEntry();	
 				ats=files[j].getAttributes();
 				fileName=ats.getValue("name");
 				alias=ats.getValue("alias");
 				String dateString=ats.getValue("publishingDate");
-				ErrorDumpUtil.ErrorLog("pbdate======"+dateString);
+			//	ErrorDumpUtil.ErrorLog("pbdate======"+dateString);
 
 				fileEntry.setName(fileName);
 				fileEntry.setAlias(alias);
 				fileEntry.setPDate(dateString);
 				
 				vt.add(fileEntry);
-				ErrorDumpUtil.ErrorLog("vt return vale======"+vt);
+			//	ErrorDumpUtil.ErrorLog("vt return vale======"+vt);
 			}
 			return vt;
 		}
@@ -225,7 +225,7 @@ public class TopicMetaDataXmlReader
 			for(int j=0;j<files.length;j++)
 			{
 				ats=files[j].getAttributes();
-				ErrorDumpUtil.ErrorLog("ats The exception in xmlreaderutil in line 222::"+ats);
+			//	ErrorDumpUtil.ErrorLog("ats The exception in xmlreaderutil in line 222::"+ats);
 				temp[j]=ats.getValue("name");
 			}
 			return temp;
@@ -395,7 +395,7 @@ public class TopicMetaDataXmlReader
                 Vector vt=new Vector();
                 try
                 {
-			ErrorDumpUtil.ErrorLog("345::=====");
+	//		ErrorDumpUtil.ErrorLog("345::=====");
                 XmlData files[]=xr.getElements("File");
                 if(files!=null)
                 {
@@ -657,7 +657,7 @@ public class TopicMetaDataXmlReader
 				fileEntry.setUserName(UName);
 				fileEntry.setLocation(locationidef);
 				vt.add(fileEntry);
-				ErrorDumpUtil.ErrorLog("vt return vale======"+vt);
+			//	ErrorDumpUtil.ErrorLog("vt return vale======"+vt);
 			}
 			return vt;
 		}

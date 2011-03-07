@@ -475,7 +475,8 @@ public class ExpiryUtil{
 						{
 						StudentExpiry elementt=(StudentExpiry)lstt.get(e);
 						int idd=elementt.getId();
-						int usid=elementt.getUid();
+						String uname=elementt.getUid();
+						int usid=UserUtil.getUID(uname);
 						String c_name=elementt.getCid();
 						int gid=GroupUtil.getGID(c_name);
 						crit=new Criteria();

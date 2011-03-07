@@ -59,6 +59,7 @@ import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
 import org.iitk.brihaspati.om.StudentRollnoPeer;
+import org.iitk.brihaspati.om.StudentExpiryPeer;
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
 /**
@@ -110,7 +111,14 @@ public class StudentList extends SecureScreen_Instructor{
 			 */
 			rusrlist=UserManagement.getListOfRollNo(g_id,3);
                         context.put("rollnolist",rusrlist);
-
+			/**
+ 			 * getting the list of student expiry in this course
+ 			 */
+			Criteria crit=new Criteria();
+			crit.add(StudentExpiryPeer.CID,course_id);
+			List explst=StudentExpiryPeer.doSelect(crit);
+			context.put("sexplst",explst);
+			
 			if(Mode.equals("All"))
 			{
 				userList=UserGroupRoleUtil.getUDetail(g_id,3);
@@ -144,7 +152,7 @@ public class StudentList extends SecureScreen_Instructor{
                           * Checks for Matching Records
                           */
 
-			Criteria crit=new Criteria();
+			crit=new Criteria();
 			crit.addJoin(TurbineUserPeer.USER_ID,TurbineUserGroupRolePeer.USER_ID);
 			crit.add("TURBINE_USER",str,(Object)(valueString+"%"),crit.LIKE);
 			crit.add(TurbineUserGroupRolePeer.ROLE_ID,3);

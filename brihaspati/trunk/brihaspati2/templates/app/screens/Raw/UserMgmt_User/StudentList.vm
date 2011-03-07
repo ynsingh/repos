@@ -178,11 +178,22 @@ $!data.getMessage()
                                 #end
 	
 			        	<td>
+					<a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("username",$urecord.getLoginName()).addPathInfo("count",$tdcolor).addPathInfo("mode", "All").setAction("UserAction_Instructor").addPathInfo("actionName","eventSubmit_doUpdatePass") style=text-decoration:none>$brih_changePassword</a> &nbsp;
+##			                <a href=$link.setPage("call,UserMgmt_User,UpdatePass_Ins.vm").addPathInfo("status","update").addPathInfo("username",$urecord.getLoginName()).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_changePassword</a> &nbsp;
 			                <a href=$link.setPage("call,UserMgmt_User,UserForm_Instructor.vm").addPathInfo("status","update").addPathInfo("username",$urecord.getLoginName()).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_update</a> &nbsp;
 		        	        <a href=$link.setPage("call,UserMgmt_User,UserForm_Instructor.vm").addPathInfo("status","remove").addPathInfo("username",$urecord.getLoginName()).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_remove</a> &nbsp;
 		                	<a href=$link.setPage("call,UserMgmt_User,Usertime_display.vm").addPathInfo("username",$urecord.getLoginName()).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_usageDetail</a> &nbsp
 			##                <a href=javascript:popupWin("$link.setScreen("call,ViewPhoto").addPathInfo("username",$urecord.getLoginName())","newWin");>$brih_view $brih_photo </a>
-			            	</td>
+					#foreach ($explst in $sexplst)
+						#if($explst.getUid() == $urecord.getLoginName())
+							#if ($explst.getExpiryDate())
+					<a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("username",$urecord.getLoginName()).addPathInfo("count",$tdcolor).addPathInfo("mode", "All").setAction("UserAction_Instructor").addPathInfo("actionName","eventSubmit_doExpDisb") style=text-decoration:none>$DisBoard_Expiry $DisBoard_DBmsg8</a> &nbsp;
+							#else
+					<a href=$link.setPage("call,UserMgmt_User,StudentList.vm").addPathInfo("username",$urecord.getLoginName()).addPathInfo("count",$tdcolor).addPathInfo("mode", "All").setAction("UserAction_Instructor").addPathInfo("actionName","eventSubmit_doExpEnab") style=text-decoration:none>$DisBoard_Expiry $DisBoard_DBmsg7</a> &nbsp;
+							#end
+						#end
+					#end
+					</td>
 			        </tr>
 	        #end
       </table>

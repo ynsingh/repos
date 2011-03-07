@@ -37,6 +37,7 @@ import java.io.File;
 import java.util.Date;
 import java.util.Vector;
 import java.util.List;
+import java.util.Properties;
 import java.util.StringTokenizer;
 //Turbine
 import org.apache.torque.util.Criteria;
@@ -64,6 +65,13 @@ import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
+import org.iitk.brihaspati.modules.utils.PasswordUtil;
+import org.apache.turbine.services.security.TurbineSecurity;
+import org.iitk.brihaspati.modules.utils.MailNotification;
+import org.iitk.brihaspati.om.StudentExpiryPeer;
+import org.iitk.brihaspati.modules.utils.AdminProperties;
+import org.iitk.brihaspati.modules.utils.InstituteDetailsManagement;
+
 /**
  * Register a new student and remove student in database
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a> 
@@ -245,6 +253,56 @@ public class UserAction_Instructor extends SecureAction_Instructor
 			data.setMessage("The Error in Student removal !!"+ex);
 		}
         }
+
+	/**
+         * ActionEvent responsible for updating user password in the system
+         * @param data RunData
+         * @param context Context
+         * @see PasswordUtil from Utils
+         */
+
+	public void doUpdatePass(RunData data, Context context)
+        {
+                try
+                {
+                        LangFile=(String)data.getUser().getTemp("LangFile");
+                        ParameterParser pp=data.getParameters();
+			/**
+                          * Get the user name and new password enterd by admin for the user.
+                          */
+			String userName=pp.getString("username");
+                        if(StringUtil.checkString(userName) != -1)
+                        {
+                               data.addMessage(MultilingualUtil.ConvertedString("usr_prof1",LangFile));
+                               return;
+                        }
+			String Passwd=PasswordUtil.randmPass();
+			//String Mail_msg=new String();
+			/**
+                         * This mail will specify the user name and password of the new user
+                         * @see MailNotification in utils
+                         */
+			String serverName=data.getServerName();
+                        int srvrPort=data.getServerPort();
+                        String serverPort=Integer.toString(srvrPort);
+			//String file=(String)data.getUser().getTemp("LangFile");
+			User user1 = TurbineSecurity.getUser(userName);
+                        String mailId=user1.getEmail();
+			String info_new = "newPassword";
+			String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
+			Properties pr =MailNotification.uploadingPropertiesFile(fileName);
+			String subject = MailNotification.subjectFormate(info_new, "", pr );
+			String messageFormat = MailNotification.getMessage(info_new, "", "", "", Passwd, serverName, serverPort,pr);
+			String msg=MailNotification.sendMail(messageFormat, mailId, subject, "", LangFile);
+			data.setMessage(msg);			
+                }
+                catch(Exception ex)
+                {
+                        data.setMessage("Password updataion failed! Error occured "+ex);
+
+                }
+        }
+
   	/**
           * ActionEvent responsible for register multiple user in the system
           * @param data RunData
@@ -502,6 +560,86 @@ public class UserAction_Instructor extends SecureAction_Instructor
 	}
 
 	/**
+         * ActionEvent responsible for updating student expiry status in perticular course
+         * @param data RunData
+         * @param context Context
+         */
+
+	public void doEnableExp(RunData data, Context context)
+        {
+                try
+                {
+                        LangFile=(String)data.getUser().getTemp("LangFile");
+                        ParameterParser pp=data.getParameters();
+			/**
+                          * Get the user name and new password enterd by admin for the user.
+                          */
+			String userName=pp.getString("username");
+                        if(StringUtil.checkString(userName) != -1)
+                        {
+                               data.setMessage(MultilingualUtil.ConvertedString("usr_prof1",LangFile));
+                               return;
+                        }
+			String cName=(String)data.getUser().getTemp("course_id");
+			String c_date=ExpiryUtil.getCurrentDate("-");
+			String expdays="";
+	                try{
+        		        String instituteid=InstituteDetailsManagement.getInsId(cName);
+		                String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+instituteid+"Admin.properties";
+                		expdays = AdminProperties.getValue(path,"brihaspati.user.expdays.value");
+                	}
+	                catch(Exception ex){ErrorDumpUtil.ErrorLog("This is the exception in getting path :--utils(UserManagement) "+ex);}
+        	        Integer exp1 = Integer.valueOf(expdays);
+
+			String E_date=ExpiryUtil.getExpired(c_date,exp1);
+			java.sql.Date expdate=java.sql.Date.valueOf(E_date);
+			String information="UPDATE STUDENT_EXPIRY SET EXPIRY_DATE='"+expdate+"' where UID='"+userName+"' and CID='"+cName+"'";
+                        StudentExpiryPeer.executeStatement(information);
+                        data.setMessage(userName+" expiry ");
+                        data.addMessage(MultilingualUtil.ConvertedString("update_msg",LangFile));
+                }
+                catch(Exception ex)
+                {
+                        data.setMessage("Student Expiry enable updataion failed! Error occured "+ex);
+
+                }
+        }
+
+	/**
+         * ActionEvent responsible for updating student expiry status in perticular course
+         * @param data RunData
+         * @param context Context
+         */
+
+	public void doDisableExp(RunData data, Context context)
+        {
+                try
+                {
+                        LangFile=(String)data.getUser().getTemp("LangFile");
+                        ParameterParser pp=data.getParameters();
+			/**
+                          * Get the user name and new password enterd by admin for the user.
+                          */
+			String userName=pp.getString("username");
+                        if(StringUtil.checkString(userName) != -1)
+                        {
+                               data.setMessage(MultilingualUtil.ConvertedString("usr_prof1",LangFile));
+                               return;
+                        }
+			String cName=(String)data.getUser().getTemp("course_id");
+			String information="UPDATE STUDENT_EXPIRY SET EXPIRY_DATE='0000-00-00 00:00:00' where UID='"+userName+"' and CID='"+cName+"'";
+                        StudentExpiryPeer.executeStatement(information);
+                        data.setMessage(userName+" expiry ");
+                        data.addMessage(MultilingualUtil.ConvertedString("update_msg",LangFile));
+                }
+                catch(Exception ex)
+                {
+                        data.setMessage("Student Expiry disable updataion failed! Error occured "+ex);
+
+                }
+        }
+
+	/**
 	 * This is the default method called if the button is not found
 	 * @param data RunData
 	 * @param context Context
@@ -524,6 +662,12 @@ public class UserAction_Instructor extends SecureAction_Instructor
                         doUploadImage(data,context);
 		else if(action.equals("eventSubmit_doGradecard"))
                         doGradecard(data,context);
+		else if(action.equals("eventSubmit_doUpdatePass"))
+                        doUpdatePass(data,context);
+		else if(action.equals("eventSubmit_doExpDisb"))
+                        doDisableExp(data,context);
+		else if(action.equals("eventSubmit_doExpEnab"))
+                        doEnableExp(data,context);
 		else
 			data.setMessage(MultilingualUtil.ConvertedString("usr_prof2",LangFile));
 	}
