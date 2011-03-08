@@ -125,16 +125,20 @@ public class UserManagement
 		StringUtil S=new StringUtil();
 		Criteria crit=new Criteria();
 		String expdays="";
+		String E_date="0000-00-00";
+		if(Role.equals("student")){
 		try{
-		String instituteid=Integer.toString(InstituteIdUtil.getIst_Id(i_name));
-		String path12=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+instituteid+"Admin.properties";
-		expdays = AdminProperties.getValue(path12,"brihaspati.user.expdays.value");
+			String instituteid=Integer.toString(InstituteIdUtil.getIst_Id(i_name));
+			String path12=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+instituteid+"Admin.properties";
+			expdays = AdminProperties.getValue(path12,"brihaspati.user.expdays.value");
 		}
 		catch(Exception ex){ErrorDumpUtil.ErrorLog("This is the exception in getting path :--utils(UserManagement) "+ex);}
                 Integer exp1 = Integer.valueOf(expdays);		
 		String c_date=ExpiryUtil.getCurrentDate("-");
-                String E_date=ExpiryUtil.getExpired(c_date,exp1);
+                E_date=ExpiryUtil.getExpired(c_date,exp1);
+		}
                 java.sql.Date expdate=java.sql.Date.valueOf(E_date);
+
 		int userid=UserUtil.getUID(UName);
 		/**
 		 * Checks if there are any illegal characters in the values
@@ -213,12 +217,13 @@ public class UserManagement
 						TurbineSecurity.grant(existingUser,user_group,user_role);
 
 						/** set student expiry */
-                				crit=new Criteria();
-				                crit.add(StudentExpiryPeer.UID,UName);
-				                crit.add(StudentExpiryPeer.CID,GroupName);
-				                crit.add(StudentExpiryPeer.EXPIRY_DATE,expdate);
-				                StudentExpiryPeer.doInsert(crit);
-
+						if(Role.equals("student")){
+                					crit=new Criteria();
+					                crit.add(StudentExpiryPeer.UID,UName);
+					                crit.add(StudentExpiryPeer.CID,GroupName);
+					                crit.add(StudentExpiryPeer.EXPIRY_DATE,expdate);
+				                	StudentExpiryPeer.doInsert(crit);
+						}
 						crit=new Criteria();
 						crit.add(TurbineUserPeer.LOGIN_NAME,UName);
 						List result=TurbineUserPeer.doSelect(crit);
@@ -421,11 +426,13 @@ public class UserManagement
                                                 }
 
 						/** set student expiry */
-                				crit=new Criteria();
-				                crit.add(StudentExpiryPeer.UID,UName);
-				                crit.add(StudentExpiryPeer.CID,GroupName);
-				                crit.add(StudentExpiryPeer.EXPIRY_DATE,expdate);
-				                StudentExpiryPeer.doInsert(crit);
+						if(Role.equals("student")){
+                					crit=new Criteria();
+					                crit.add(StudentExpiryPeer.UID,UName);
+					                crit.add(StudentExpiryPeer.CID,GroupName);
+					                crit.add(StudentExpiryPeer.EXPIRY_DATE,expdate);
+				                	StudentExpiryPeer.doInsert(crit);
+						}
                                                                 
 						String NewUser= new String();
 						if(serverPort.equals("8080"))

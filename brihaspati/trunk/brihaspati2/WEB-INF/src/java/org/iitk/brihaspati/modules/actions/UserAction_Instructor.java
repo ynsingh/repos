@@ -71,6 +71,7 @@ import org.iitk.brihaspati.modules.utils.MailNotification;
 import org.iitk.brihaspati.om.StudentExpiryPeer;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.iitk.brihaspati.modules.utils.InstituteDetailsManagement;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 
 /**
  * Register a new student and remove student in database
@@ -111,6 +112,10 @@ public class UserAction_Instructor extends SecureAction_Instructor
 
 			ParameterParser pp=data.getParameters();
 			String gName=data.getUser().getTemp("course_id").toString();
+			String instituteId=(data.getUser().getTemp("Institute_id")).toString();
+                        int instid=Integer.parseInt(instituteId);
+                        String Instname = InstituteIdUtil.getIstName(instid);
+
 			String rollno = pp.getString("rollno","");
 			String program = pp.getString("prg","");
 			String email=pp.getString("EMAIL");
@@ -127,7 +132,7 @@ public class UserAction_Instructor extends SecureAction_Instructor
 			}
 			String fname=pp.getString("FNAME");
 			String lname=pp.getString("LNAME");
-         		String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,email,"",gName,"student",serverName,serverPort,LangFile,rollno,program); //modified by Shikha
+         		String msg=UserManagement.CreateUserProfile(email,passwd,fname,lname,Instname,email,gName,"student",serverName,serverPort,LangFile,rollno,program); //modified by Shikha
 			data.setMessage(msg);
 		}
 		catch (Exception ex)
