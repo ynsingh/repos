@@ -49,6 +49,7 @@ public class BufferImage {
   	/**
          * Insert an Object in the buffer
          */
+	
         public synchronized void put(BufferedImage obj) {
         	buffer.addElement(obj);
         }
@@ -58,39 +59,37 @@ public class BufferImage {
 			buffer.removeElementAt(0);
                 }
         }
-
+	
+	
 	public synchronized void handleBuffer(){
-		if(buffer.size() > 50){
-			for(int k=0; k<25; k++){
-                        	buffer.removeElementAt(k);
-			}
-                }
+		for(int k=0; k<25; k++){
+                       	buffer.remove(k);
+		}
 	}
 	
+
 	/**
          * Return <b>true</b> if the buffer is empty.
          */
         
-	public boolean isEmpty() {
+	
+	private boolean isEmpty() {
                 return buffer.size() == 0;
         }
 	
+		
         /**
          * Return the size of the buffer
          */
-	public int size() {
-                return buffer.size();// == 0;
+	public synchronized int bufferSize() {
+                return buffer.size();
         }
-	
-
 	/**
          * Notify Queue
          */
-        
 	public synchronized void Notify(){
         	buffer.notify();
 	}
-	
 }
 
 class QueueEmptyException extends Exception { 

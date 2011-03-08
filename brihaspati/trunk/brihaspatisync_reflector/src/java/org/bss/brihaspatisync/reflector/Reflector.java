@@ -22,7 +22,7 @@ import java.awt.event.ActionListener;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a> created on 28Jan2009.
- * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal  </a> modify on 10Feb2009.
+ * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal  </a> modify on 08March2011.
  */
 
 public class Reflector {
@@ -106,8 +106,6 @@ public class Reflector {
                                 LogoutReflector.getController().stopReflector();
                                 label1.setText("Reflector stoped successfully.");
                                 System.exit(0);
-                        }else {
-				return;	
 			} 
 
                 }

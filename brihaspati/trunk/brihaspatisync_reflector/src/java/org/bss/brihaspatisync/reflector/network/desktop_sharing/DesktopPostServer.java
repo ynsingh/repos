@@ -80,28 +80,31 @@ public class DesktopPostServer {
 
 class MyHandler implements HttpHandler {
   	public void handle(HttpExchange exchange) throws IOException {
-		while(true){
-			String requestMethod = exchange.getRequestMethod();
-			if (requestMethod.equalsIgnoreCase("POST")) {
-      				Headers responseHeaders = exchange.getResponseHeaders();
-      				responseHeaders.set("Content-Type", "text/plain");
-      				exchange.sendResponseHeaders(200, 0);
-				OutputStream responseBody = exchange.getResponseBody();
-                		InputStream in = exchange.getRequestBody();
-		                byte[] bytes = new byte[1024*1024];
-		                int count = 0;
-                		do {
-                		        count+= in.read(bytes,count,bytes.length-count);
-		                } while(!(count>4&&bytes[count-2]==(byte)-1 && bytes[count-1]==(byte)-39));
-		                BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
-		              	try {
-					if((BufferImage.getController().size()) < 50)
-                                        	BufferImage.getController().put(image);
-					else
-						BufferImage.getController().handleBuffer();
-                                }catch(Exception e){}
-		                responseBody.close();
-    			}
-		}
+		try {
+			while(DesktopPostServer.getController().isRunning()){
+				String requestMethod = exchange.getRequestMethod();
+				if (requestMethod.equalsIgnoreCase("POST")) {
+      					Headers responseHeaders = exchange.getResponseHeaders();
+      					responseHeaders.set("Content-Type", "text/plain");
+      					exchange.sendResponseHeaders(200, 0);
+					OutputStream responseBody = exchange.getResponseBody();
+        	        		InputStream in = exchange.getRequestBody();
+			                byte[] bytes = new byte[1024*1024];
+		        	        int count = 0;
+                			do {
+	                		        count+= in.read(bytes,count,bytes.length-count);
+			                } while(!(count>4&&bytes[count-2]==(byte)-1 && bytes[count-1]==(byte)-39));
+			                BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
+		        	      	try {
+						if((BufferImage.getController().bufferSize()) < 50)
+                                        		BufferImage.getController().put(image);
+						else
+							BufferImage.getController().handleBuffer();
+						
+                	                }catch(Exception e){}
+		        	        responseBody.close();
+    				}
+			}
+		}catch(Exception ex){}
 	}
 }
