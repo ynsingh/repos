@@ -124,20 +124,19 @@ public class UserManagement
 		Properties pr ;
 		StringUtil S=new StringUtil();
 		Criteria crit=new Criteria();
-		String expdays="";
-		String E_date="0000-00-00";
+		java.sql.Date expdate=null;
 		if(Role.equals("student")){
-		try{
-			String instituteid=Integer.toString(InstituteIdUtil.getIst_Id(i_name));
-			String path12=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+instituteid+"Admin.properties";
-			expdays = AdminProperties.getValue(path12,"brihaspati.user.expdays.value");
+			try{
+				String instituteid=Integer.toString(InstituteIdUtil.getIst_Id(i_name));
+				String path12=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+instituteid+"Admin.properties";
+				String expdays = AdminProperties.getValue(path12,"brihaspati.user.expdays.value");
+		                Integer exp1 = Integer.valueOf(expdays);		
+				String c_date=ExpiryUtil.getCurrentDate("-");
+	                	String E_date=ExpiryUtil.getExpired(c_date,exp1);
+	                	expdate=java.sql.Date.valueOf(E_date);
+			}
+			catch(Exception ex){ErrorDumpUtil.ErrorLog("This is the exception in getting path :--utils(UserManagement) "+ex);}
 		}
-		catch(Exception ex){ErrorDumpUtil.ErrorLog("This is the exception in getting path :--utils(UserManagement) "+ex);}
-                Integer exp1 = Integer.valueOf(expdays);		
-		String c_date=ExpiryUtil.getCurrentDate("-");
-                E_date=ExpiryUtil.getExpired(c_date,exp1);
-		}
-                java.sql.Date expdate=java.sql.Date.valueOf(E_date);
 
 		int userid=UserUtil.getUID(UName);
 		/**
