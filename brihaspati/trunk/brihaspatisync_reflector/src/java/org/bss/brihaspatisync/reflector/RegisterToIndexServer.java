@@ -154,6 +154,7 @@ public class RegisterToIndexServer {
       		if(!ServerIP.equals("")){
                         try{
                                 String indexServer=ServerIP;
+						System.out.println("-------------------------------"+indexServer);
                                 String status= "status="+URLEncoder.encode("inactive", "UTF-8");
                                 String req_url=indexServer+"/ProcessRequest?req=reflector_registration&"+status;
                                 URL indexurl = new URL(req_url);
@@ -162,6 +163,7 @@ public class RegisterToIndexServer {
                                         JOptionPane.showMessageDialog(null,"Check your Network Connection or try again");
                                 }else{
                                         if(bufferReader(connection.getInputStream())){
+						System.out.println("-------------------------------"+indexServer);
                                                 if(setStatus(indexServer)){
                                                         RuntimeDataObject.getController().setindexServerAddr(indexServer);
                                                 }
@@ -228,6 +230,8 @@ public class RegisterToIndexServer {
 
 	private boolean  setStatus(String server){
 		try{
+			 System.out.println("-------------------------------");
+
 			String status= "status="+URLEncoder.encode("active", "UTF-8");
 			String req_url=server+"/ProcessRequest?req=reflector_status&"+status;
         	        URL indexurl = new URL(req_url);
@@ -250,6 +254,7 @@ public class RegisterToIndexServer {
 
 	protected String startThreads(){
 		try {
+			System.out.println("-------------------------------");
 			HttpGetPost.getController().start(); 	/** port 9999  */
 			DesktopGetServer.getController().start();//DesktopSharing.getController().start();
 			DesktopPostServer.getController().start();

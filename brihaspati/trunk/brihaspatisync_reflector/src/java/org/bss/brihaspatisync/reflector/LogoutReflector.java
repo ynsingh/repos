@@ -95,10 +95,10 @@ public class LogoutReflector {
 		}
 	}
 	
-	protected void restartReflector(){
+/*	protected void restartReflector(){
 		try {
-			HttpGetPost.getController().stop();     /** port 9999  */
-                      	TCPServer.getController().stop();      /** port 8888  */
+			HttpGetPost.getController().stop();     
+                      	TCPServer.getController().stop();      
                         PPTGetAndPostServer.getController().stopThread();
                         //log.stop();
                         TransmitHandlerThread.getControllerofHandler().stop();
@@ -113,8 +113,8 @@ public class LogoutReflector {
 		}catch(Exception e){
                         log.setString("Error on Logout Reflector ");
                 }
-
 	}
+	*/
 	      	
 	 
 }
