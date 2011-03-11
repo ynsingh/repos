@@ -72,7 +72,7 @@ public class Reflector {
                 			System.out.println("There is problem in starting Reflector.");
                              	}
                      	}else {
-                        	JOptionPane.showMessageDialog(null,"Reflector is already start successfully.");
+                        	JOptionPane.showMessageDialog(null,"Reflector is already running.");
 			}
 		}
 	}      	
@@ -99,7 +99,7 @@ public class Reflector {
 						label1.setText("There is problem in starting Reflector.");
 					}
                                 }else {
-                                      	JOptionPane.showMessageDialog(null,"Reflector is already start successfully.");
+                                      	JOptionPane.showMessageDialog(null,"Reflector is already running.");
 
                                 }
                         }else if(response1.startsWith("Stop Reflector")) {
