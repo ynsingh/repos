@@ -1,0 +1,4 @@
+insert  into `proposal_category`(`id`,`version`,`active_yes_no`,`created_by`,`created_date`,`modified_by`,`modified_date`,`name`,`remarks`) values (14,8,'Y',NULL,NULL,NULL,NULL,'Infrastructure','Ongoing research in emerging technologies');
+insert  into `proposal_category`(`id`,`version`,`active_yes_no`,`created_by`,`created_date`,`modified_by`,`modified_date`,`name`,`remarks`) values (15,2,'Y',NULL,NULL,NULL,NULL,'Research','Procurement, installation and maintenance of equipments');
+insert  into `proposal_category`(`id`,`version`,`active_yes_no`,`created_by`,`created_date`,`modified_by`,`modified_date`,`name`,`remarks`) values (16,2,'Y',NULL,NULL,NULL,NULL,'eContent','Data repositories');
+insert  into `proposal_category`(`id`,`version`,`active_yes_no`,`created_by`,`created_date`,`modified_by`,`modified_date`,`name`,`remarks`) values (17,1,'Y',NULL,NULL,NULL,NULL,'Network Facility','Centralization of data , control flow etc');
