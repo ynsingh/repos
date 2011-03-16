@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN"
+          "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+
+
+<struts-config>
+    <form-beans>
+
+
+        <!--Login Form Naming-->
+
+        <form-bean name="LoginActionForm" type="com.myapp.struts.LoginActionForm"/>
+        <form-bean name="SuperAdminActionForm" type="com.myapp.struts.SuperAdminActionForm"/>
+
+        <!--Admin Form Naming-->
+
+
+        <form-bean name="CreateAccountActionForm" type="com.myapp.struts.admin.CreateAccountActionForm"/>
+        <form-bean name="SecurityActionForm" type="com.myapp.struts.admin.SecurityActionForm"/>
+        <form-bean name="AccountActionForm" type="com.myapp.struts.admin.AccountActionForm"/>
+        <form-bean name="TestStrutsActionForm" type="com.myapp.struts.admin.TestStrutsActionForm"/>
+        <form-bean name="StaffDetailActionForm" type="com.myapp.struts.admin.StaffDetailActionForm"/>
+        <form-bean name="AcqRegisterActionForm" type="com.myapp.struts.admin.AcqRegisterActionForm"/>
+        <form-bean name="AdminViewActionForm" type="com.myapp.struts.admin.AdminViewActionForm"/>
+        <form-bean name="AdminRegistrationActionForm" type="com.myapp.struts.admin.AdminRegistrationActionForm"/>
+        <form-bean name="PrivilegeActionForm" type="com.myapp.struts.admin.PrivilegeActionForm"/>
+        <form-bean name="SearchInstituteActionForm" type="com.myapp.struts.admin.SearchInstituteActionForm"/>
+        <form-bean name="ChangeWorkingStatusActionForm" type="com.myapp.struts.admin.ChangeWorkingStatusActionForm"/>
+
+    </form-beans>
+
+    <global-exceptions>
+
+    </global-exceptions>
+
+    <global-forwards>
+        <forward name="out"  path="/login.jsp"/>
+    </global-forwards>
+
+    <action-mappings>
+         <!--login Action Setting-->
+
+           <action attribute="LoginActionForm" input="/login.jsp" name="LoginActionForm" path="/login" scope="request" type="com.myapp.struts.LoginAction" validate="true">
+                        <forward name="success" path="/admin/main.jsp"/>
+                        <forward name="failure" path="/login.jsp"/>
+                        <forward name="superadmin" path="/superadmin.do"/>
+                        <forward name="firstlogin" path="/admin/security.jsp"/>
+                        <forward name="fail" path="/login.jsp"/>
+                        <forward name="forgetpassword" path="/forget.jsp"/>
+                        <forward name="login" path = "/login.jsp"/>
+                        <forward name="logout" path = "/logout.do"/>
+           </action>
+           <action path="/superadmin" type="com.myapp.struts.superadminModuleAction">
+                              <forward name="success" path="/admin/admin_home.jsp"/>
+           </action>
+           <action  input="/manage_superadmin.jsp" name="SuperAdminActionForm" path="/manage_superadmin" scope="request" type="com.myapp.struts.SuperAdminAction" validate="true">
+                        <forward name="success" path="/manage_superadmin.jsp"/>
+
+                        <forward name="fail" path="/manage_superadmin.jsp"/>
+
+           </action>
+
+
+ <action path="/adminemail" scope="request" type="com.myapp.struts.admin.LoginIdAction"/>
+  <action path="/logout" scope="request" type="com.myapp.struts.LogOutAction">
+         <forward name="failure" path="/superadmin.do"/>
+          <forward name="success" path="/login.jsp"/>
+      </action>
+  <action path="/adminpass" scope="request" type="com.myapp.struts.admin.PasswordAction"/>
+ <action path="/institute_email" scope="request" type="com.myapp.struts.admin.InstiRegId"/>
+
+
+
+
+       <!--Admin Action Setting-->
+
+ <action path="/update_email" scope="request" type="com.myapp.struts.admin.UpdateStaffEmailAction"/>
+
+                <action attribute="AdminRegistrationActionForm" path="/registration" input="/admin/admin_registration.jsp" name="AdminRegistrationActionForm"   scope="request" type="com.myapp.struts.admin.AdminRegistrationAction" validate="true">
+                      <forward name="success" path="/login.jsp"/>
+                      <forward name="failure" path="/admin/admin_registration.jsp"/>
+                    </action>
+
+
+
+                    <action  path="/forget1"  input="/admin/security.jsp" name="SecurityActionForm"  scope="request" type="com.myapp.struts.admin.SecurityAction">
+                        <forward name="success" path="/admin/changepassword.jsp"/>
+                        <forward name="failure" path="/login.jsp"/>
+                    </action>
+
+                <action  path="/changepassword"  input="/admin/changepassword.jsp" name="CreateAccountActionForm"  scope="request" type="com.myapp.struts.admin.ChangePasswordAction">
+                        <forward name="success" path="/admin/main.jsp"/>
+
+                        <forward name="failure" path="/login.jsp"/>
+                    </action>
+
+
+                    <action   input="/admin/assign_privilege.jsp" name="AcqRegisterActionForm"  path="/assign_privilege"  scope="request" type="com.myapp.struts.admin.AssignPrivilegeAction">
+                         <forward name="notfound" path="/admin/assign_privilege.jsp"/>
+                        <forward name="assign" path="/admin/privilege_tree.jsp"/>
+                        <forward name="update/view" path="/assign_privilege1.do"/>
+
+                    </action>
+
+
+                     <action   input="/admin/privilege_tree.jsp" name="PrivilegeActionForm"  path="/assign_privilege1"  scope="request" type="com.myapp.struts.admin.PrivilegeAction">
+
+                        <forward name="assign_privilege" path="/admin/pri_header.jsp"/>
+                        <forward name="view_privilege" path="/admin/view_privilege.jsp"/>
+                        <forward name="failure" path="/admin/privilege_tree.jsp"/>
+                    </action>
+
+
+                <action   input="/admin/pri_header.jsp" name="PrivilegeActionForm"  path="/assign_privilege2"  scope="request" type="com.myapp.struts.admin.PrivilegeAction1">
+
+                        <forward name="success" path="/admin/privilege_message.jsp"/>
+                        <forward name="restore" path="/admin/privilege_message1.jsp"/>
+
+
+                    </action>
+
+                   <action path="/updatestaff" input="/admin/update_staff.jsp" name="StaffDetailActionForm"     scope="request" type="com.myapp.struts.admin.UpdateStaffAction">
+
+                        <forward name="success" path="/admin/update_staff_message.jsp"/>
+                        <forward name="duplicate" path="/admin/duplicate_message.jsp"/>
+                   </action>
+
+
+                        <action  path="/forget" input="/forget.jsp" name="SecurityActionForm"  scope="request" type="com.myapp.struts.ForgetAction">
+                        <forward name="success" path="/forget.jsp"/>
+                        <forward name="failure" path="/forget.jsp"/>
+                        </action>
+
+                    <action path="/confirm"  input="/admin/admin_pending.jsp" name="AdminViewActionForm" scope="request" type="com.myapp.struts.admin.AdminViewAction1">
+                        <forward name="success" path="/admin/accept_message.jsp"/>
+                        <forward name="failure" path="/admin/admin_pending.jsp"/>
+                        <forward name="error" path="/admin/error_message.jsp"/>
+                    </action>
+
+
+                    <action path="/admin/view" type="com.myapp.struts.admin.AdminViewAction" scope="request">
+                        <forward name="success" path="/admin/admin_approved.jsp"/>
+                    </action>
+
+                    <action path="/admin/view2" type="com.myapp.struts.admin.StaffViewAction" scope="request">
+                        <forward name="success" path="/admin/view_staff_detail.jsp"/>
+                    </action>
+
+                   <action path="/admin/view5" type="com.myapp.struts.admin.AdminViewAction" scope="request">
+                        <forward name="success" path="/admin/update_admin_detail.jsp"/>
+                    </action>
+
+
+
+                   <action path="/admin/view3" type="com.myapp.struts.admin.AdminUpdateAction" scope="request">
+                        <forward name="success" path="/admin/admin_approved.jsp"/>
+
+                    </action>
+                    <action path="/admin/view1" type="com.myapp.struts.admin.AdminPendingAction" scope="request">
+                        <forward name="success" path="/admin/admin_pending.jsp"/>
+                    </action>
+
+                    <action  attribute="AdminViewActionForm" path="/adminupdate" input="/admin/update_admin_detail.jsp" name="AdminViewActionForm"  scope="session" type="com.myapp.struts.admin.AdminUpdateAction1">
+                        <forward name="success" path="/admin/update_admin.jsp"/>
+                        <forward name="failure" path="/admin/update_admin_detail.jsp"/>
+
+                    </action>
+                 <action path="/admin/viewblock" type="com.myapp.struts.admin.AdminBlockAction" scope="request">
+                      <forward name="success" path="/admin/admin_block.jsp"/>
+                    </action>
+
+
+                    <action  path="/staffRegistration"  input="/admin/acq_register.jsp" name="AcqRegisterActionForm"  scope="request" type="com.myapp.struts.admin.AcqRegisterAction">
+                         <forward name="duplicate" path="/admin/acq_register.jsp"/>
+                        <forward name="register" path="/admin/acq_registerstaff.jsp"/>
+                        <forward name="update/view/delete" path="/admin/update_staff.jsp"/>
+
+                    </action>
+
+                       <action path="/email" scope="request" type="com.myapp.struts.admin.EmailAction"/>
+                <action path="/staff_id" scope="request" type="com.myapp.struts.admin.StaffIDAction"/>
+
+                     <action path="/registerstaff" attribute="StaffDetailActionForm" input="/admin/acq_registerstaff.jsp" name="StaffDetailActionForm"  scope="request" type="com.myapp.struts.admin.StaffDetailAction">
+                     <forward name="success" path="/admin/staff_register_message.jsp"/>
+                     <forward name="duplicate" path="/admin/duplicate_message.jsp"/>
+                     <forward name="error" path="/admin/staff_register_err.jsp"/>
+                     </action>
+                     <action path="/caccount" input="/admin/createaccount.jsp" name="CreateAccountActionForm"  scope="request" type="com.myapp.struts.admin.CreateAccountAction">
+                        <forward name="success" path="/admin/staffaccount.jsp"/>
+                        <forward name="error" path="/admin/error.jsp"/>
+                     </action>
+
+                    <action input="/admin/createaccount2.jsp" name="CreateAccountActionForm" path="/updateaccount" scope="request" type="com.myapp.struts.admin.UpdateAccountAction">
+                       <forward name="success" path="/admin/staffaccount1.jsp"/>
+                        <forward name="error" path="/admin/account.jsp"/>
+                     </action>
+
+
+                     <action input="/admin/createaccount1.jsp" name="CreateAccountActionForm" path="/createaccount" scope="request" type="com.myapp.struts.admin.CreateAccountAction">
+                       <forward name="success" path="/admin/staffaccount.jsp"/>
+                        <forward name="error" path="/admin/error.jsp"/>
+                     </action>
+
+
+                   <action input="/admin/account.jsp" name="AccountActionForm" path="/account1" scope="request" type="com.myapp.struts.admin.AccountAction">
+                       <forward name="not_found" path="/admin/account.jsp"/>
+                        <forward name="register" path="/admin/createaccount1.jsp"/>
+                        <forward name="view_account/delete_account/change_password" path="/admin/createaccount2.jsp"/>
+                     </action>
+
+                     <action path="/admin/CheckedPrivilege" scope="request" type="com.myapp.struts.admin.ShowCheckedPrivilegeAction">
+                       <forward name="success" path="/admin/privilege_tree.jsp"/>
+
+                     </action>
+
+                    <action input="/admin/search_admin.jsp" name="SearchInstituteActionForm" path="/admin/search_institute" scope="request" type="com.myapp.struts.admin.SearchInstituteAction">
+                        <forward name="institute_search"  path="/admin/search_admin_grid.jsp"/>
+                     </action>
+
+
+                     <action path="/admin/block_institute" scope="request" type="com.myapp.struts.admin.BlockLibraryAction">
+                       <forward name="success" path="/admin/admin_blocked.jsp"/>
+
+                     </action>
+                     <action path="/changeWorkingStatus" scope="request" name="ChangeWorkingStatusActionForm" type="com.myapp.struts.admin.ChangeWorkingStatusAction">
+                       <forward name="success" path="/admin/working_status_message.jsp"/>
+
+                     </action>
+
+    </action-mappings>
+
+    <controller processorClass="org.apache.struts.tiles.TilesRequestProcessor"/>
+
+    <message-resources parameter="com/myapp/struts/ApplicationResource"/>    
+    
+    <!-- ========================= Tiles plugin ===============================-->
+    <!--
+    This plugin initialize Tiles definition factory. This later can takes some
+    parameters explained here after. The plugin first read parameters from
+    web.xml, thenoverload them with parameters defined here. All parameters
+    are optional.
+    The plugin should be declared in each struts-config file.
+    - definitions-config: (optional)
+    Specify configuration file names. There can be several comma
+    separated file names (default: ?? )
+    - moduleAware: (optional - struts1.1)
+    Specify if the Tiles definition factory is module aware. If true
+    (default), there will be one factory for each Struts module.
+    If false, there will be one common factory for all module. In this
+    later case, it is still needed to declare one plugin per module.
+    The factory will be initialized with parameters found in the first
+    initialized plugin (generally the one associated with the default
+    module).
+    true : One factory per module. (default)
+    false : one single shared factory for all modules
+    - definitions-parser-validate: (optional)
+    Specify if xml parser should validate the Tiles configuration file.
+    true : validate. DTD should be specified in file header (default)
+    false : no validation
+
+    Paths found in Tiles definitions are relative to the main context.
+    -->
+    <plug-in className="org.apache.struts.tiles.TilesPlugin" >
+        <set-property property="definitions-config" value="/WEB-INF/tiles-defs.xml" />      
+        <set-property property="moduleAware" value="true" />
+    </plug-in>
+    
+    <!-- ========================= Validator plugin ================================= -->
+    <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+        <set-property
+            property="pathnames"
+            value="/WEB-INF/validator-rules.xml,/WEB-INF/validation.xml"/>
+    </plug-in>
+  
+</struts-config>

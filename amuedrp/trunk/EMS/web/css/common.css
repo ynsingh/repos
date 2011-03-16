@@ -1,0 +1,369 @@
+/******* FORM COMPONENTS - common to all forms *************/
+.formStyleTable					/* Edit */
+{
+	border:1px solid #FFDEBC;
+	
+	font-family:Verdana;
+	font-size:  9pt;
+	
+	border-collapse:collapse;
+
+	color: #000080;	
+	background-color: #EEEEFF;	
+}
+
+.buttonStyle					/* Edit */
+{
+	font-family:tahoma;
+	FONT-SIZE: 9pt;   
+	color:#BF4D00; 
+	background-color:#B9CFFF;
+	
+}
+
+.textboxStyle					/* Edit */
+{
+	border: 1px solid #6666FF;
+	FONT-FAMILY: "Arial Unicode MS","Verdana";
+	font-size:  9pt;
+}
+
+
+.textareaStyle					/* Edit */
+{
+	border:1px solid #6666FF;	
+	font-family:Verdana;
+	font-size:  9pt;
+	font-color: #F00000;
+
+}
+
+.selectStyle					/* Edit */
+{
+	
+	font-family:Tahoma;
+	font-size:9pt;
+}
+
+.anchorStyle					/* Edit */
+{
+	
+}
+
+.checkboxStyle					/* Edit */
+{
+	
+}
+
+.radioStyle					/* Edit */
+{
+	
+}
+
+.scrollbarTbl
+{
+    SCROLLBAR-FACE-COLOR: #f4f5ff;
+    SCROLLBAR-HIGHLIGHT-COLOR: #c0cfff;
+    SCROLLBAR-SHADOW-COLOR: #8899ff;
+    SCROLLBAR-3DLIGHT-COLOR: #f4f5ff;
+    SCROLLBAR-ARROW-COLOR: #0000a0;
+    SCROLLBAR-DARKSHADOW-COLOR: #8080a0;
+    SCROLLBAR-BASE-COLOR: #888888;
+}
+
+/********************** Main-Menu styles ***********************************/
+  /**** General table style ****/
+  .mainMenuTbl
+  {
+    border-color:#FFFFFF;
+    BORDER-COLLAPSE: collapse;
+  } 
+  
+  /**** headRow Style ****/		/* EDIT */
+  .mainMenuTRHead
+  {
+ 	background-color:#7b92ff;
+  }
+  
+  /**** Row Style ****/			/* EDIT */
+  .mainMenuTR
+  {
+    background-color:#e7e7ff;
+  }
+  
+  /******** Anchor style **************/
+  /*** HeadRow ***/				/* EDIT */
+  .mainMenuAHead
+  {
+    FONT-VARIANT:normal;
+    FONT-WEIGHT: bold;
+    Font-family:verdana;
+    font-size:12;
+    text-align:left;
+    text-decoration:none;
+    color:#e0EEf0;
+  }
+ 
+  /**** Row-Anchor****/
+  .mainMenuA					/* EDIT */
+  {
+    FONT-VARIANT:normal;
+    FONT-WEIGHT: normal;
+    Font-family:verdana;
+    font-size:12;    
+	COLOR:#0000C6;
+    text-decoration:none;
+    
+  }
+
+   /**** anchor style 3 ****/
+  .mainMenuDisA					/* EDIT */
+	{
+		text-decoration:none;
+		color:#e0AADD;
+		FONT-VARIANT:normal;
+    	FONT-WEIGHT: bold;
+    	Font-family:verdana;
+    	font-size:12;
+	}
+
+  /**** CAPTION OF TABLE ****/  /* EDIT */
+  .caption
+  {
+    /*FONT-VARIANT: SMALL-CAPS;*/
+    FONT-SIZE:15;
+    font-family:verdana;
+    /*FONT-WEIGHT:BOLD;*/
+    text-align:center;
+    border:1;
+
+    COLOR: #FFFFFF;
+    background-color:#0000a0;
+  }
+
+/****************************MAIN-MENU end********************************/
+/************************* Login From - patrons  ****/
+.loginTbl
+{
+	border-collapse:collapse;
+	background-color:#EEEEFF;
+}
+/*******/
+
+.loginHead
+{
+	padding:10;
+	text-align:middle;
+	text-valign:center;
+	font-family:Verdana;
+	font-weight:bold;
+	font-size=10pt;
+	border: 1px solid #A4C1FF;
+	color=#FFFFFF;
+	background-color:#0000A0;
+}
+/*******/
+
+.loginBody
+{
+	border-left-color:#FFAE9E;
+	border-top-color:#FFAE9E;
+	
+	border-right-color:#FFEECE;
+	border-bottom-color:#FFEECE;
+}
+
+.loginBodyTd1
+{
+	font-family:tahoma;
+	font-weight:bold;
+	font-size=9pt;
+	text-align: center;
+	
+	padding:5;
+	border: 1px solid #A4C1FF;
+	
+	color:#002BA8;
+	background-color:#A6C2FF;
+}
+
+.loginBodyTd2
+{
+	font-family:tahoma;
+	font-weight:bold;
+	font-size=9pt;
+	text-align: center;
+	padding:5;
+	border: 1px solid #A4C1FF;
+	
+	color:#002BA8;
+	background-color:#D2E1FF;
+}
+
+.loginBodyTd3
+{
+	font-family:tahoma;
+	font-weight:bold;
+	font-size=9pt;
+	text-align: center;
+	padding:5;
+	border: 1px solid #A4C1FF;
+	
+	color:#002BA8;
+	background-color:#FFCEAE;
+}
+/*******/
+
+.loginFoot
+{
+	padding:10;
+	font-family:Tahoma;
+	font-size:8pt;
+	text-align:center;
+	color:#000080;
+	background-color:#FFDBC4;
+}
+.loginRed
+{
+	padding:5;
+	color=#FF0000;
+	font-family:verdana;
+	font-size:8pt;
+	font-weight:bold;
+
+}
+/*********/
+.loginTextBox
+{
+	float: left; 
+	border: 1px solid #A4C1FF;
+}
+.loginComboBox
+{
+}
+/*************************** Login ended *********************************/
+/*************************** Member Info *********************************/
+.memberTBIN
+{
+	border-collapse:collapse;
+	background-color:#EEEEFF;
+}
+.memberTBOUT
+{
+	border-collapse:collapse;
+	background-color:#EEEE0F;
+
+}
+.memberTDINL
+{
+	font-family:verdana;
+	font-size:8pt;
+	text-align: left;
+
+	padding:0;
+	spacing:0;
+	border: 0px solid #A4C1FF;
+
+	color:#002BA8;
+	background-color:#EEEEFF;
+}
+.memberTDIN
+{
+    font-family:verdana;
+	font-size:8pt;
+	text-align: left;
+	font-weight:bold;
+
+	padding:0;
+	spacing:0;
+	border: 0px solid #A4C1FF;
+
+	color:#002BA8;
+	background-color:#EEEEFF;
+}
+
+.memberTDOUT
+{
+	font-family:verdana;
+	font-size:9pt;
+	text-align: left;
+
+	padding:5;
+	spacing:5;
+	border: 0px solid #A4C1F0;
+
+	color:#002BA8;
+	background-color:#A6C2F0;
+}
+/************************************************************************/
+/*************************** Message showing ****************************/
+.messageTD
+{
+    font-size: 12pt;
+    font-family: tahoma;
+    font-weight:bold;
+
+    text-decoration: none;
+	text-align:center;    
+
+    color: #FFFFFF;
+    background-color:#EE0000;
+}
+/**************************** Logo Header *******************************/
+.headerFont
+{
+    font-size: 18pt;
+    color: #000080;
+    font-style:italic;
+    font-weight:bold;
+    font-family: "Georgia";
+    text-decoration: none;
+}
+/***************************** title Menu *****************************/
+/*** Title Menu Table***/
+.titleMenu
+{
+    border: 0px; 
+    padding:0px;
+    margin: 0pt;
+    border-collapse: collapse;
+    
+    font-size: 11pt;
+    font-family: tahoma;
+    font-variant: small-caps;
+    
+    color: #ffffff;
+    background-color: #0000a0;
+}
+
+.aHrefTitleMenu
+{   
+	color:#FFFFFF;
+    text-decoration: none;
+}
+.aHrefTitleSite
+{
+	color:#0000EE;
+    text-decoration: none;
+}
+.aHrefTitleSelectSite
+{
+	color:#C65A10;
+    text-decoration: none;
+    font-weight:bold;
+}
+/*************************************************************************/
+/********journal header****************/
+.journalLink
+{
+    text-decoration:none;
+    font-size:11pt;
+	font-family:tahoma;
+	color:#C65A10;
+}
+
+.journalTD
+{
+}
+
+/********journal header end*********************/

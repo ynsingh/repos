@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 10, 2011 10:00:02 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="com.myapp.struts.hbm.Login" table="login" catalog="ems">
+        <id name="userId" type="string">
+            <column name="user_id" length="100" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="staffDetail" class="com.myapp.struts.hbm.StaffDetail" fetch="select">
+            <column name="staff_id" length="100" />
+            <column name="institute_id" length="20" />
+        </many-to-one>
+        <property name="userName" type="string">
+            <column name="user_name" length="50" />
+        </property>
+        <property name="password" type="string">
+            <column name="password" length="100" />
+        </property>
+        <property name="question" type="string">
+            <column name="question" length="1000" />
+        </property>
+        <property name="ans" type="string">
+            <column name="ans" length="500" />
+        </property>
+        <property name="role" type="string">
+            <column name="role" length="50" />
+        </property>
+    </class>
+</hibernate-mapping>

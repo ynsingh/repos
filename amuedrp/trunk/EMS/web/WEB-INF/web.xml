@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.5//EN"
+    "http://java.sun.com/j2ee/dtds/web-app_2_5.dtd">-->
+<web-app version="2.2" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_2.xsd">
+<resource-ref>
+     <res-ref-name>jdbc/ems</res-ref-name>
+     <res-type>javax.sql.DataSource</res-type>
+     <res-auth>Container</res-auth>
+
+ </resource-ref>
+    <servlet>
+        <servlet-name>action</servlet-name>
+        <servlet-class>org.apache.struts.action.ActionServlet</servlet-class>
+        <init-param>
+            <param-name>config</param-name>
+            <param-value>/WEB-INF/struts-config.xml</param-value>
+        </init-param>
+        <init-param>
+            <param-name>debug</param-name>
+            <param-value>2</param-value>
+        </init-param>
+        <init-param>
+            <param-name>detail</param-name>
+            <param-value>2</param-value>
+        </init-param>
+        <load-on-startup>2</load-on-startup>
+
+
+
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>action</servlet-name>
+        <url-pattern>*.do</url-pattern>
+    </servlet-mapping>
+        <servlet>
+        <servlet-name>dupli</servlet-name>
+        <servlet-class>com.myapp.struts.admin.dupl_email</servlet-class>
+        </servlet>
+        <servlet-mapping>
+        <servlet-name>dupli</servlet-name>
+        <url-pattern>/dupli</url-pattern>
+        </servlet-mapping>
+
+    <servlet>
+        <servlet-name>viewall</servlet-name>
+        <servlet-class>com.myapp.struts.admin.ViewAll</servlet-class>
+     </servlet>
+        <servlet-mapping>
+        <servlet-name>viewall</servlet-name>
+        <url-pattern>/viewall</url-pattern>
+        </servlet-mapping>
+
+ <servlet>
+        <servlet-name>view_all_account</servlet-name>
+        <servlet-class>com.myapp.struts.admin.View_All_Account</servlet-class>
+     </servlet>
+        <servlet-mapping>
+        <servlet-name>view_all_account</servlet-name>
+        <url-pattern>/view_all_account</url-pattern>
+        </servlet-mapping>
+
+
+        <servlet>
+        <servlet-name>viewallprivilege</servlet-name>
+        <servlet-class>com.myapp.struts.admin.ViewAllPrivilege</servlet-class>
+     </servlet>
+        <servlet-mapping>
+        <servlet-name>viewallprivilege</servlet-name>
+        <url-pattern>/viewallprivilege</url-pattern>
+        </servlet-mapping>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+    <welcome-file-list>
+        <welcome-file>login.jsp</welcome-file>
+    </welcome-file-list>
+    <jsp-config>
+        <taglib>
+            <taglib-uri>/WEB-INF/struts-bean.tld</taglib-uri>
+            <taglib-location>/WEB-INF/struts-bean.tld</taglib-location>
+        </taglib>
+        <taglib>
+            <taglib-uri>/WEB-INF/struts-html.tld</taglib-uri>
+            <taglib-location>/WEB-INF/struts-html.tld</taglib-location>
+        </taglib>
+        <taglib>
+            <taglib-uri>/WEB-INF/struts-logic.tld</taglib-uri>
+            <taglib-location>/WEB-INF/struts-logic.tld</taglib-location>
+        </taglib>
+        <taglib>
+            <taglib-uri>/WEB-INF/struts-nested.tld</taglib-uri>
+            <taglib-location>/WEB-INF/struts-nested.tld</taglib-location>
+        </taglib>
+        <taglib>
+            <taglib-uri>/WEB-INF/struts-tiles.tld</taglib-uri>
+            <taglib-location>/WEB-INF/struts-tiles.tld</taglib-location>
+        </taglib>
+        <taglib>
+            <taglib-uri>/WEB-INF/taglibs-datagrid.tld</taglib-uri>
+            <taglib-location>/WEB-INF/taglibs-datagrid.tld</taglib-location>
+         </taglib>
+
+    </jsp-config>
+</web-app>

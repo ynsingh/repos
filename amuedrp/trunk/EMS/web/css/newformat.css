@@ -1,0 +1,53 @@
+
+.table_design
+{
+    background-color:white;
+    border:#cccccc solid 1px;
+    color:black;
+    font-family:Tahoma;
+    font-size:12px;
+   
+}
+
+.table_bar
+{
+    background-color:#cccccc;
+font-weight:bold;
+    color:black;
+    font-family:Tahoma;
+    font-size:12px;
+    text-align: center;
+    height:28px;
+}
+
+.table_text
+{
+    color:black;
+    font-family:Tahoma;
+    font-size:12px;
+    text-align: right;
+    letter-spacing:1px;
+    
+      
+    
+      
+}
+.table_textbox
+{
+    color:black;
+    font-family:Tahoma;
+    font-size:12px;
+    text-align:left;
+    letter-spacing:1px;
+    width:148px;
+    valign:bottom;
+
+
+
+}
+
+
+.mandatory
+{
+    color:red;
+}
