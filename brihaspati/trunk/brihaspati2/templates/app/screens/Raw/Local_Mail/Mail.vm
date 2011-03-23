@@ -116,7 +116,8 @@ $!data.getMessage()
                 		<a href=$link.setPage("call,Notice_User,NoticeContent.vm").addPathInfo("courseId",$groupName).addPathInfo("flag","FromNotices").addPathInfo("count","3").addPathInfo("countTemp","2") style=text-decoration:none> $Notice_NoticeContent_msg1</a></td>
 			#else
 				##<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","1") style=text-decoration:none>$Notice_NoticeSend_msg1</a></td>
-				<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3").addPathInfo("countTemp","1") style=text-decoration:none>$Notice_NoticeSend_msg1</a></td>
+				##<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3").addPathInfo("countTemp","1") style=text-decoration:none>$Notice_NoticeSend_msg1</a></td>
+				<a href=$link.setPage("call,Notice_User,Notices.vm").addPathInfo("count","3").addPathInfo("countTemp","1") style=text-decoration:none>$brih_Notices</a></td>
 			#end
 			#if($tdcolor!="4")
 				<td>
