@@ -1177,6 +1177,8 @@ public class CM_connectTempImpl extends RemoteServiceServlet implements CM_conne
 		@SuppressWarnings("unchecked")
 		public CM_ProgramInfoGetter[] getBranch(String progId, String entity_id) throws Exception {
 			 List li;
+			 
+			 System.out.println("here"+progId+entity_id);
 
 		        //Begin The Try-Catch Loop		
 		        try {
@@ -1184,6 +1186,7 @@ public class CM_connectTempImpl extends RemoteServiceServlet implements CM_conne
 		        	 CM_ProgramInfoGetter CMDG = new CM_ProgramInfoGetter();
 		        	 
 		        	    String univ_id= progId.substring(0, 4);
+		        	    
 		        	   
 		        	    CMDG.setprogram_id(progId);
 		        	    CMDG.setEntity_id(entity_id);
@@ -1191,6 +1194,9 @@ public class CM_connectTempImpl extends RemoteServiceServlet implements CM_conne
 		        	    
 		        	 
 		                li = client.queryForList("GetBranch", CMDG);
+		                
+		                System.out.println("size of return"+li.size());
+		                
 		                return (CM_ProgramInfoGetter[]) li.toArray(new CM_ProgramInfoGetter[li.size()]);
 		          
 		        }  catch (Exception ex) {

@@ -330,8 +330,10 @@ public class Program_Comp_Eligibility{
         		Program=programCB.progCombo.getRawValue();
     					
     			progID=programCB.progCombo.getValue();
+    			
+    			System.out.println("here on client"+entity_id);
     					
-						connectTemp.getBranch(progID,null, new AsyncCallback<CM_ProgramInfoGetter[]>(){
+						connectTemp.getBranch(progID,entity_id, new AsyncCallback<CM_ProgramInfoGetter[]>(){
 
 							public void onFailure(Throwable caught) {
 								MessageBox.alert(cons.dbError(),caught.getMessage());	

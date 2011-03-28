@@ -176,8 +176,8 @@ and UG_PG=#UGorPG#)
  
   <select id="GetBranch" resultMap="branch_name"> 
 	
-	SELECT branch_name,branch_code FROM PROGRAM_BRANCHES where branch_code IN(Select branch from 
-		PROGRAM_OFFERED_BY where program_id=#program_id# And offered_by=#entity_id# ) and university_id=#university_id#
+	select distinct pbs.branch_name,pbs.branch_code FROM PROGRAM_BRANCHES pbs,PROGRAM_OFFERED_BY pob
+ where pob.branch=pbs.branch_code AND pob.program_id=#program_id# AND pob.offered_by=#entity_id#  AND pbs.university_id=#university_id#;
 					
   </select>
   

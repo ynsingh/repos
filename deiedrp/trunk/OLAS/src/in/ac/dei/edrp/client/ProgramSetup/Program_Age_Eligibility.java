@@ -288,7 +288,7 @@ public class Program_Age_Eligibility {
         		Program=programCB.progCombo.getRawValue();
         		progID=programCB.progCombo.getValue();
         		
-				connectTemp.getBranch(progID,null, new AsyncCallback<CM_ProgramInfoGetter[]>(){
+				connectTemp.getBranch(progID,entity_id, new AsyncCallback<CM_ProgramInfoGetter[]>(){
 
 					public void onFailure(Throwable caught) {
 						MessageBox.alert(cons.dbError(),caught.getMessage());	
