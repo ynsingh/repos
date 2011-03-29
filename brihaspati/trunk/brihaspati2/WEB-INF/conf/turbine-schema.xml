@@ -68,11 +68,11 @@
     
   <table name="TURBINE_USER" idMethod="idbroker">
     <column name="USER_ID" required="true" primaryKey="true" type="INTEGER"/>
-    <column name="LOGIN_NAME" required="true" size="32" type="VARCHAR"/>
+    <column name="LOGIN_NAME" required="true" size="255" type="VARCHAR"/>
     <column name="PASSWORD_VALUE" required="true" size="32" type="VARCHAR"/>
     <column name="FIRST_NAME" required="true" size="99" type="VARCHAR"/>
     <column name="LAST_NAME" required="true" size="99" type="VARCHAR"/>
-    <column name="EMAIL" size="99" type="VARCHAR"/>
+    <column name="EMAIL" size="255" type="VARCHAR"/>
     <column name="CONFIRM_VALUE" size="99" type="VARCHAR"/>
     <column name="MODIFIED" type="TIMESTAMP"/>
     <column name="CREATED" type="TIMESTAMP" default="20100120"/>
