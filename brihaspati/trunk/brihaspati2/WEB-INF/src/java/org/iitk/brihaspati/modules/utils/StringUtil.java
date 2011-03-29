@@ -1,7 +1,7 @@
 package org.iitk.brihaspati.modules.utils;
 
 /*@(#)StringUtil.java
- *  Copyright (c) 2003-2006,2010 ETRG,IIT Kanpur. http://www.iitk.ac.in/
+ *  Copyright (c) 2003-2006,2010, 2011 ETRG,IIT Kanpur. http://www.iitk.ac.in/
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -37,14 +37,11 @@ package org.iitk.brihaspati.modules.utils;
   * @modified date 15-09-2010
   */
 
-
 import java.io.File;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.util.StringTokenizer;
-
-// Copyright 2004, Y.N.Singh
 
 public class StringUtil
 {
@@ -52,13 +49,16 @@ public class StringUtil
 	 * This method checks for illegal characters in the string
 	 * @param to_be_checked String contains the string to be checked for illegal characters
 	 * @return int
+	 * These characters are invalid to avoid sql querry injection. These need to be removed and instead escaping and de-escaping routines need to be
+	 * inserted and used where direct sql querries are made.
 	 */
 
 	public static int checkString(String to_be_checked)
 	{
 		int x=-1;
 		//char illegal_characters[]={'!' , '@' , '#' , '$' , '%' , '^' , '&' , '*' , '(' , ')' , '-' , '=' , '+' , '<' , ',' , '>' , '.' , '/' , '?' ,  ';' , '\"' , '\'' , '{' , '[' , '}' , ']' } ;
-		char illegal_characters[]={'!' , '#' , '$' , '%' , '^' , '&' , '*' , '(' , ')' , '-' , '=' , '+' , '<' , ',' , '>' , '/' , '?' ,  ';' , '\"' , '\'' , '{' , '[' , '}' , ']' } ;
+		//char illegal_characters[]={'!' , '#' , '$' , '%' , '^' , '&' , '*' , '(' , ')' , '-' , '=' , '+' , '<' , ',' , '>' , '/' , '?' ,  ';' , '\"' , '\'' , '{' , '[' , '}' , ']' } ;
+		char illegal_characters[]={'!' , '#' , '$' , '%' , '^' , '&' , '*' , '(' , ')' ,  '=' , '+' , '<' , ',' , '>' , '/' , '?' ,  ';' , '\"' , '\'' , '{' , '[' , '}' , ']' } ;
 		for(int a=0;a<illegal_characters.length;a++)
 		{
 		    x=to_be_checked.indexOf(illegal_characters[a]);
