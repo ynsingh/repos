@@ -23,6 +23,11 @@ import java.awt.event.ActionListener;
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a> created on 28Jan2009.
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal  </a> modify on 08March2011.
+ * @author <a href="mailto:ynsingh@iitk.ac.in">Y.N.Singh</a>.
+ * History of changes.
+ * 20110330 - YNS - GUI based message output for non-GUI system start replaced by simple print output on console. RegisterToIndexServer
+ *    getcontroller is now called only once in startReflector() and the object reference is maintained for use later in same function,
+ *    instead calling it twice.
  */
 
 public class Reflector {
@@ -72,16 +77,17 @@ public class Reflector {
                 			System.out.println("There is problem in starting Reflector.");
                              	}
                      	}else {
-                        	JOptionPane.showMessageDialog(null,"Reflector is already running.");
+                        	System.out.println("Reflector is already running.");
 			}
 		}
 	}      	
 
 	private boolean startReflector() {
-		boolean indexServerList=RegisterToIndexServer.getController().connectToMasterServer();
+		RegisterToIndexServer regstToIndxSrv= RegisterToIndexServer.getController();
+		boolean indexServerList=regstToIndxSrv.connectToMasterServer();
                 if(indexServerList){
                 	flag=true;
-                        RegisterToIndexServer.getController().connectToIndexServer();
+                        regstToIndxSrv.connectToIndexServer();
               	}
 		return indexServerList;
 	} 
