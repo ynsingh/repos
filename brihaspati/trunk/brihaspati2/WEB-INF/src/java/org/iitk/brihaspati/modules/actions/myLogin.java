@@ -312,7 +312,7 @@ public class myLogin extends VelocityAction{
  			* Called the method from utils for Insert record when user (Student) already exist
  			* in Turbine User Table
  			*/
-			CommonUtility.InsertStuExpRecord();
+//			CommonUtility.InsertStuExpRecord();
 		}//end try1		
 		
 	         /** In case of an error, get the appropriate error message from
