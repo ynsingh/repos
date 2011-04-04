@@ -48,6 +48,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.torque.util.Criteria;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
+import org.apache.turbine.services.security.torque.om.TurbineUser;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.util.parser.ParameterParser;
@@ -56,8 +57,10 @@ import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.iitk.brihaspati.modules.utils.ListManagement;
+import org.iitk.brihaspati.modules.utils.CourseManagement;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
+import org.iitk.brihaspati.modules.utils.CourseManagement;
 import org.iitk.brihaspati.om.InstituteProgramPeer;
 import org.iitk.brihaspati.om.InstituteProgram;
 import org.iitk.brihaspati.om.ProgramPeer;
@@ -86,13 +89,50 @@ public class InstUserMgmt_Admin extends SecureScreen_Institute_Admin
 	  *@see ListManagement util in utils. 	
 	  */
 	String instituteId=(data.getUser().getTemp("Institute_id")).toString();
+	try{
 	if((mode.equals(""))||(mode.equals("AddMUser"))||(mode.equals("userdelete"))){	
-        	List CourseList=ListManagement.getInstituteCourseList(instituteId);
+        	//List CourseList=ListManagement.getInstituteCourseList(instituteId);
+		List CourseList=CourseManagement.getInstituteCourseNUserDetails("All",instituteId);
         	context.put("courseList",CourseList);
+		Vector user_list=new Vector();
+                Vector InmeList=new Vector();
+                Vector nameList=new Vector();
+                List detail=null;
+                for(int i=0;i<CourseList.size();i++){
+                        String gname=((CourseUserDetail)CourseList.get(i)).getGroupName();
+                        String galias=((CourseUserDetail)CourseList.get(i)).getCAlias();
+                        String instrctrnameWid=gname.replaceAll(galias,"");
+                        String []instrname=instrctrnameWid.split("_");
+                        String iname=instrname[0];
+                        user_list.addElement(iname);
+                }
+                for(int j=0;j<user_list.size();j++){
+                        String loginname=(user_list.get(j)).toString();
+                        Criteria crit=new Criteria();
+                        crit.add(TurbineUserPeer.LOGIN_NAME,loginname);
+                        detail=TurbineUserPeer.doSelect(crit);
+                        for(int k=0;k<detail.size();k++){
+                        TurbineUser tudetail=(TurbineUser)detail.get(k);
+                        String fname=tudetail.getFirstName();
+                        String lname=tudetail.getLastName();
+                        String username=fname+" "+lname;
+                        if(org.apache.commons.lang.StringUtils.isBlank(username)){
+                               username=loginname;
+                        }
+
+                        InmeList.add(username);
+                	}
+		}
+                context.put("instructorList",InmeList);
 		if(mode.equals("userdelete")){
 		String role=data.getParameters().getString("role");
 		context.put("role",role);
 		}
+	}
+	}
+	catch(Exception ex)
+	{
+		ErrorDumpUtil.ErrorLog("Error in screen[InstUserMgmt_Admin.java] "+ex);
 	}
 	/**
  	 * Getting list of program from database according to institute
