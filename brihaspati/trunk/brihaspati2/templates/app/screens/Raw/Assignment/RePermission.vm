@@ -1,8 +1,10 @@
 #*
  * @(#) RePermission.vm 
- * Copyright (c) 2007,2009 ETRG,IIT Kanpur.
+ * Copyright (c) 2007, 2009, 2011 ETRG,IIT Kanpur.
  * All Rights Reserved
  * @author <a href=" mailto:arvindjss17@gmail.com ">Arvind Pal</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @modified date: 04-04-2011 (Shaista)
  * Contributors: Members of ETRG, I.I.T. Kanpur
  *#
 
@@ -13,7 +15,7 @@ $!data.getMessage()
         <a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
         <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")> $coursename </a> | </b>
         <a href=$link.setPage("call,Assignment,ASS_subm.vm").addPathInfo("count","1")> $brih_assignment  </a>|</b>
-        <a href=$link.setPage("call,Assignment,AssView.vm")> </a>$brih_repost $Repo_Perm   </b>
+        <a href=$link.setPage("call,Assignment,AssView.vm")> </a>$brih_repost #if($lang == "hindi") $brih_Of #end $Repo_Perm   </b>
         </td></tr>
 </table> 
 <table width=100% bgcolor="$ui.tableColor">
@@ -33,9 +35,9 @@ $!data.getMessage()
 <form name=uploadform method="post" enctype="multipart/form-data"  action=$link.setPage("call,Assignment,RePermission.vm").setAction("Assignments")>
 ##<table Cell padding="20" Cell spacing="1" align="center" bgcolor="$ui.tableColor" border="1" width="75%" >
 <tr bgcolor="$ui.menuColor">
-	<td> <b>$brih_student $brih_name </b> </td>
-	<td> <b> $brih_topic $brih_name </b> </td>  
-	<td> <b> $brih_assignment  $brih_Da</b> </td>
+	<td> <b>$brih_student #if($lang == "hindi") $brih_Of1 #end $brih_name </b> </td>
+	<td> <b> $brih_topic #if($lang == "hindi") $brih_Of1 #end $brih_name </b> </td>  
+	<td> <b> $brih_assignment #if($lang == "hindi") $brih_Of #end $brih_Da</b> </td>
 <tr>
        	<td width="15%"> 
 	<SELECT id="std_name" name=topicList1 onFocus=changeTopic1(document.uploadform) onChange=changeTopic1(document.uploadform)>
@@ -83,7 +85,7 @@ $!data.getMessage()
                </tr>
 	<tr bgcolor="$ui.menuColor">
      		<td colspan=3>
-		<input type="button" name="Repermission" value="$Repo_Perm $brih_granted" onClick="checkBlank(document.uploadform,this);"  />
+		<input type="button" name="Repermission" value="$Repo_Perm #if($lang == "hindi") $brih_Of1 #end $brih_granted" onClick="checkBlank(document.uploadform,this);"  />
 		<input type="button" name="Reset" value="$brih_reset" onClick="checkBlank1(document.uploadform,this);"  />
 		<input type="hidden" name="actionName"> 
 		</td>

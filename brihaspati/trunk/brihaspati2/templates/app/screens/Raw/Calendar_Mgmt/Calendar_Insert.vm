@@ -24,7 +24,7 @@ $!data.getMessage()
   		$page.setTitle("Update Information Page in Calendar")
  	#end
   		<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path",$path)>$brih_calendar</a> | 
-  		<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Day.vm").addPathInfo("day",$day).addPathInfo("year",$year).addPathInfo("mon",$month_num).addPathInfo("path",$path)>$day of $month_name ' $year</a> |
+  		<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Day.vm").addPathInfo("day",$day).addPathInfo("year",$year).addPathInfo("mon",$month_num).addPathInfo("path",$path)>$day #if($lang == "english") $brih_Of #end $month_name ' $year</a> |
 	#if($mode=='insert')  
 		$brih_insert $brih_event $brih_detail
  	#else
@@ -42,7 +42,7 @@ $!data.getMessage()
   		$page.setTitle("Update Personal Information in Calendar")
  	#end
   		<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path",$path)>$personal $brih_calendar</a> | 
-  		<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Day.vm").addPathInfo("day",$day).addPathInfo("month",$month_name).addPathInfo("year",$year).addPathInfo("mon",$month_num).addPathInfo("path",$path)>$day of $month_name ' $year</a> |
+  		<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Day.vm").addPathInfo("day",$day).addPathInfo("month",$month_name).addPathInfo("year",$year).addPathInfo("mon",$month_num).addPathInfo("path",$path)>$day #if($lang == "english") $brih_Of #end $month_name ' $year</a> |
  	
 	#if($mode=='insert')  
 		$brih_insert $brih_event $brih_detail
@@ -65,7 +65,7 @@ $!data.getMessage()
 
 	<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
 	<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Display.vm").addPathInfo("path",$path)>$brih_calendar</a> |
-	<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Day.vm").addPathInfo("day",$day).addPathInfo("year",$year).addPathInfo("mon",$month_num).addPathInfo("path",$path)>$day of $month_name ' $year</a> |
+	<a href=$link.setPage("call,Calendar_Mgmt,Calendar_Day.vm").addPathInfo("day",$day).addPathInfo("year",$year).addPathInfo("mon",$month_num).addPathInfo("path",$path)>$day #if($lang == "english") $brih_Of #end $month_name ' $year</a> |
 
 	#if($mode=='insert')
 		$brih_insert $brih_event $brih_detail
@@ -135,7 +135,7 @@ $!data.getMessage()
        			</select>
 		</td>
 	</tr>
-     	<tr bgcolor="$ui.menuColor"> 
+     	<tr bgcolor="$ui.menuColor">  
         	#formCell("$Notice_NoticeSend_msg4 " "expiry" "1")
 	</tr>
   	<tr>

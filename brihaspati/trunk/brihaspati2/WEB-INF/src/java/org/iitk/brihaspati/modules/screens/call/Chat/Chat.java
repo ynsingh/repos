@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.Chat;
 /*
  * @(#) Chat.java
  *
- *  Copyright (c) 2005, 2009 ETRG,IIT Kanpur.
+ *  Copyright (c) 2005, 2009, 2010, 2011 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -58,7 +58,7 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @modified date: 10-08-2010 (Shaista)
- * @modified date: 10-02-2011 (Shaista)
+ * @modified date: 10-02-2011, 04-04-2011 (Shaista)
  */
 
 public class Chat extends SecureScreen
@@ -95,6 +95,13 @@ public class Chat extends SecureScreen
 		{
 			cid="General";
                 	context.put("mode",mode1);
+		}
+		else if(mode1.equals("instituteWise"))
+		{
+			cid = data.getParameters().getString("grpName","");
+                	context.put("mode",mode1);
+			context.put("grpName",cid);
+			
 		}
 		else {
 			if (stat.equals("grpmgmt"))

@@ -1,13 +1,13 @@
 #*
  * @(#) Chat.vm
- * Copyright (c) 2005,2009, 2010 ETRG,IIT Kanpur.
+ * Copyright (c) 2005,2009, 2010, 2011 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @author <a href="mailto:awadhk_t@yahoo.com ">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:shaistashekh@hotmail.com ">Shaista Bano</a>
  * @modified date: 10-aug-2010 (Shaista), 06-oct-2010, 07-dec-2010
- * @modified date: 15-Feb-2011 (Shaista)
+ * @modified date: 15-Feb-2011, 04-April-2011 (Shaista)
 *#
 
 $page.setTitle("Chat")
@@ -22,6 +22,9 @@ $!data.getMessage()
 
 #elseif ($lang == "dutch")
         #set($lang="nl")
+
+#elseif($lang =="english")
+        #set($lang="en")
 
 #elseif($lang =="french")
         #set($lang="fr")
@@ -56,15 +59,15 @@ $!data.getMessage()
 #elseif ($lang == "russian")
         #set($lang="ru")
 
-#elseif($lang =="english")
-        #set($lang="en")
+#elseif ($lang == "tamil")
+        #set($lang="ta")
 #end
 
 <table bgcolor="$ui.menuColor" width=100%>
 	<tr>
 		<td>
 		<font face="$ui.sansSerifFonts"><b>
-		#if($mode == "general")
+		#if(( $mode == "general") || ($mode == "instituteWise"))
 			<a href=$link.setPage("Index.vm")>$brih_home</a> |
 		#else
 			<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
@@ -89,13 +92,18 @@ $!data.getMessage()
         	<td bgcolor="#AFDCEC">
 	#end
                 <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4")>$DiscussionBoard</td>
-#elseif($mode == "general")
+#elseif( ($mode == "general") || ($mode == "instituteWise"))
 	#if($tdcolor!="2")
 		<td>
         #elseif($tdcolor == "2")
 	       	<td bgcolor="#AFDCEC">
         #end
-		<a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2").addPathInfo("mode",$mode)>$brih_chat</a></td>
+		#if($mode == "instituteWise")
+			<a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2").addPathInfo("mode",$mode).AddPathInfo("grpName",$grpName)>$brih_chat</a>
+		#else
+			<a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2").addPathInfo("mode",$mode)>$brih_chat</a>
+		#end
+		</td>
 #else
 		#if($tdcolor!="1")
 	        	<td>
@@ -168,6 +176,8 @@ $!data.getMessage()
 <applet archive="babylon.jar" code="babylon.babylonApplet.class" codebase=$codeBase width="0" height="0">
 	#if($mode == "general")
                 <param name="chatroom" value="general">
+        #elseif ($mode == "instituteWise")
+                <param name="chatroom" value=$grpName>
         #elseif ($mode == "grpmgmt")
                 <param name="chatroom" value=$grpName>
 	#else

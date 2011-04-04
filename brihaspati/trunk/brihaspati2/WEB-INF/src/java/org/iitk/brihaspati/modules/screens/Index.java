@@ -50,6 +50,7 @@ import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.om.UserConfigurationPeer;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.om.UserConfiguration;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -65,6 +66,7 @@ import org.apache.turbine.services.session.TurbineSession;
  * @author <a href="mailto:smita37uiet@gmail.com">Smita Pal</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @ mdified date 05-05-2010,13-07-2010,5-10-2010(Smita),23-12-2010
+ * @ mdified date 04-04-2011 (Shaista)
  */
 
 public class Index extends SecureScreen{
@@ -74,6 +76,8 @@ public class Index extends SecureScreen{
                          * getting the current user 
 			 * & check current user is superAdmin,InsAdmin,Instructor,student or guest
                          */
+			Vector instNameList = new Vector();
+			String instName = "";
 			User user=data.getUser();
                         String username=user.getName();
                         int uid=UserUtil.getUID(username);
@@ -84,7 +88,19 @@ public class Index extends SecureScreen{
                                 cId.add("guest");
                         }
 			else{
+				/**
+				 * Getting all institute id in a Vector in which logged in user is registered.
+				 * Adding unique name of the institute according to institute id in a Vector.
+				 * Putting the vector of institute name in context.
+				**/
 				cId=(InstituteIdUtil.getAllInstId(uid));
+				for(int inst = 0; inst < cId.size(); inst ++){
+					instName = InstituteIdUtil.getIstName(Integer.parseInt(cId.get(inst).toString()));
+					if(!instNameList.contains(instName)){
+						instNameList.add(instName);
+					}
+				}
+				context.put("instNameList",instNameList);
 			}
 			/**
 			 * code for Active User list

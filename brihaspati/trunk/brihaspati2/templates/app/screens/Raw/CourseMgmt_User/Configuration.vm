@@ -9,6 +9,7 @@
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
  * @modified date: 30-03-2010
+ * @modified date: 04-04-2011 (Shaista)
 *#
 
 $page.setTitle("Home | $course | Course Management |  Course Configuration for Guest")
@@ -115,26 +116,27 @@ $page.setBgColor($ui.bgcolor)
                                 #if($online_conf==1) 
                                 </select>
                                         <select name="onlineconf">
-                                        <option value="withoutapproval">Without Approval
-                                        <option value="onapproval">On Approval
-                                        <option value="notallowed">Not Allowed
+                                        <option value="withoutapproval">$brih_without $brih_approval
+ $brih_allowed
+                                        <option value="onapproval">$brih_on $brih_approval
+                                        <option value="notallowed">$brih_no $brih_allowed
                                         </option>
                                 </select>
                                 #elseif($online_conf==2)
                                 </select>
 
                                         <select name="onlineconf">
-                                        <option value="notallowed">Not Allowed
-                                        <option value="onapproval">On Approval
-                                        <option value="withoutapproval">Without Approval
+                                        <option value="notallowed"> $brih_no $brih_allowed
+                                        <option value="onapproval"> $brih_on $brih_approval
+                                        <option value="withoutapproval"> $brih_without $brih_approval
                                         </option>
                                 </select>
                                 #else   
                                 </select>
                                         <select name="onlineconf">
-                                        <option value="onapproval">On Approval
-                                        <option value="withoutapproval">Without Approval
-                                        <option value="notallowed">Not Allowed
+                                        <option value="onapproval"> $brih_on $brih_approval
+                                        <option value="withoutapproval"> $brih_without $brih_approval
+                                        <option value="notallowed"> $brih_no $brih_allowed
                                         </option>
                                 </select>
                                 #end
@@ -191,7 +193,7 @@ $page.setBgColor($ui.bgcolor)
 			</tr>
 			<tr> 
     				##formCell("$brih_Instructor $brih_name" "riname" "$!c2")
-				<td> #if($lang == "english") $brih_Instructor $brih_name #else $brih_Instructor $brih_Of1 $brih_name #end</td>
+				<td> $brih_Instructor #if($lang == "hindi") $brih_Of1 #end $brih_name </td>
 				<td> <input type="text" name="riname" value=""> </td>
 			</tr>
 			<tr bgcolor ="$ui.menuColor">
