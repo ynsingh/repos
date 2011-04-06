@@ -15,6 +15,7 @@
 <table width="100%" bgcolor="$ui.MenuColor">
 
 #set($lang=$data.getUser().getTemp("lang").toString())
+#set($instId=$data.getUser().getTemp("Institute_id"))
 <tr> <td>
 #if($lang == "hindi")
         $brih_Institute $brih_Of2 $brih_ad $brih_Of $brih_menu
@@ -26,7 +27,7 @@
 <table width=100% bgcolor="$ui.tableColor">
  <tr>
       <td>
-         <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("count","1").addPathInfo("mInststat","1") style=text-decoration:none>$brih_reg</a>
+         <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("count","1").addPathInfo("mInststat","1").addPathInfo("instituteId",$instId) style=text-decoration:none>$brih_reg</a>
       </td>
    </tr>
    <tr bgcolor="$ui.menuColor">
@@ -88,20 +89,27 @@
          <a href=$link.setPage("call,OnLine_Rgtn,OnlineRegistration_Admin.vm").addPathInfo("status","CourseRegistration").addPathInfo("count","1") style=text-decoration:none> #if($lang == "hindi") $online_online $brih_reg $brih_Of1 $brih_view #else $brih_view $online_online $brih_reg #end </a>
       </td>
    </tr>
-<tr>
+<tr bgcolor="$ui.menuColor">
       <td>
         <a href=$link.setPage("call,TrackingReport,Track_Report.vm").addPathInfo("mode","repotype") style=text-decoration:none>$brih_tracking $brih_reports</a>
       </td>
 </tr>
-<tr bgcolor="$ui.menuColor">
+<tr>
       <td>
          <a href=$link.setPage("call,FAQ,FAQ_Ques.vm").addPathInfo("mode","alllist").addPathInfo("count","1")>$brih_FAQ</a>
       </td>
 </tr>
-<tr>
+<tr bgcolor="$ui.menuColor">
       <td>
          <a href=$link.setPage("call,Program,MapProgram.vm").addPathInfo("count","1") style=text-decoration:none>$brih_program $brih_mgmt</a>
       </td>
-</tr>   
+</tr>  
+<tr>
+      <td>
+         ##<a href=$link.setPage("call,Quota_Mgmt,Quota.vm").addPathInfo("mode","cquota").addPathInfo("status","nosearch").addPathInfo("count","1") style=text-decoration:none>$brih_quota $brih_mgmt</a>
+         <a href=$link.setPage("call,Quota_Mgmt,Quota.vm").addPathInfo("status","nosearch").addPathInfo("count","1") style=text-decoration:none>$brih_quota $brih_mgmt</a>
+      </td>
+</tr>
+ 
 </table>
 

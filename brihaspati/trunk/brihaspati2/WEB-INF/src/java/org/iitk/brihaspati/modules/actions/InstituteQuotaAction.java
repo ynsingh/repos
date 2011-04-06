@@ -1,8 +1,8 @@
 package org.iitk.brihaspati.modules.actions;
 /*
- * @(#)QuotaAction.java
+ * @(#)InstituteQuotaAction.java
  *
- *  Copyright (c)2009 ETRG,IIT Kanpur.
+ *  Copyright (c)2011 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -42,18 +42,17 @@ import org.apache.velocity.context.Context;
 import org.apache.turbine.util.RunData;
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.util.parser.ParameterParser;
-import org.iitk.brihaspati.om.TurbineUserPeer;
-import org.iitk.brihaspati.om.CoursesPeer;
+import org.iitk.brihaspati.om.InstituteQuotaPeer;
 
 /**
- *
+ *This action is called when SysAdmin update the Institute Quota.
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
 */
 
-public class  QuotaAction extends SecureAction
+public class  InstituteQuotaAction extends SecureAction
 {
 	/**
-	 * In this method, Updation of Quota
+	 * In this method, Updation of Institute Quota
 	 * @param data RunData
 	 * @param context Context
 	 * @return nothing
@@ -63,52 +62,28 @@ public class  QuotaAction extends SecureAction
         {
 		try
 		{
-			String msg="";
-			Criteria crt=new Criteria();
-			String instituteId=(data.getUser().getTemp("Institute_id")).toString();
-			int instid=Integer.parseInt(instituteId);
-                        long LsValue=QuotaUtil.getFileSystemSpace(instid);
-			ErrorDumpUtil.ErrorLog("value from util in FileSystemSpace============"+LsValue);
-			String LangFile=data.getUser().getTemp("LangFile").toString();
 			ParameterParser pp=data.getParameters();
 			String mode=pp.getString("mode");
-			if(mode.equals("edit")){
-				String uid=pp.getString("uid");
-				String uquota=pp.getString("quota");
-				long ASpace=Long.valueOf(uquota).longValue();
-				
+			context.put("mode",mode);
+			String msg="";
+			Criteria crt=new Criteria();
+                        long LsValue=QuotaUtil.getFileSystemSpaceinGB();
+			String LangFile=data.getUser().getTemp("LangFile").toString();
+				String iid=pp.getString("instid");
+				String iquota=pp.getString("iquota");
+				long ASpace=Long.valueOf(iquota).longValue();
 				crt=new Criteria();
-				crt.add(TurbineUserPeer.USER_ID,uid);
-				crt.add(TurbineUserPeer.QUOTA,uquota);
+				crt.add(InstituteQuotaPeer.INSTITUTE_ID,iid);
+				crt.add(InstituteQuotaPeer.INSTITUTE_AQUOTA,iquota);
 				if(LsValue > ASpace){
-	                        	TurbineUserPeer.doUpdate(crt);
+	                        	InstituteQuotaPeer.doUpdate(crt);
+					msg=MultilingualUtil.ConvertedString("c_msg5",LangFile);
+                        		data.setMessage(msg);
 				}
 				else{
-					msg=MultilingualUtil.ConvertedString("qgmt_msg1",LangFile);
+					msg=MultilingualUtil.ConvertedString("qmgmt_msg1",LangFile);
 					data.addMessage(msg);	
-				//data.addMessage("Disk Space has not enough space for increasing the limit");	
 				}
-			}
-			if(mode.equals("cedit")){
-				String cname=pp.getString("cname");
-				String cquota=pp.getString("cquota");
-				String gname=pp.getString("grName");
-				long USpace=Long.valueOf(cquota).longValue();
-				ErrorDumpUtil.ErrorLog("qt value by parameter parser========"+USpace);
-				crt=new Criteria();
-				crt.add(CoursesPeer.GROUP_NAME,gname);
-				crt.add(CoursesPeer.QUOTA,cquota);
-				if(LsValue > USpace){
-					CoursesPeer.doUpdate(crt);
-				}
-				else{
-					msg=MultilingualUtil.ConvertedString("qgmt_msg1",LangFile);
-					data.addMessage(msg);	
-				//data.addMessage("Disk Space has not enough space for increasing the limit");	
-				}
-			}
-			msg=MultilingualUtil.ConvertedString("c_msg5",LangFile);
-                        data.setMessage(msg);	
 		}
 		catch(Exception ex)
 		{data.setMessage("The Error in updating the quota"+ex);}

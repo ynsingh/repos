@@ -53,7 +53,7 @@ $!data.getMessage()
                                 <tr bgcolor="$ui.menuColor">
                         #end
 
-		<td align=center><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("role",$role).addPathInfo("mInststat","1").addPathInfo("instituteId",$lst.getInstituteId()).addPathInfo("iname",$lst.getInstituteName()).addPathInfo("domainName",$lst.getInstituteDomain()).addPathInfo("reload","yes")>$lst.getInstituteName()</a></td>
+		<td align=center><a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("role",$role).addPathInfo("mInststat","1").addPathInfo("instituteId",$lst.getInstituteId()).addPathInfo("iname",$lst.getInstituteName()).addPathInfo("domainName",$lst.getInstituteDomain()).addPathInfo("reload","yes").addPathInfo("count","1") style=text-decoration:none>$lst.getInstituteName()</a></td>
 		</tr>
 		##		#end
 		##	#end

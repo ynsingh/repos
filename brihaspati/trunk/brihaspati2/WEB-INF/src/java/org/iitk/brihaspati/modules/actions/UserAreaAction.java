@@ -171,11 +171,10 @@ public class UserAreaAction extends SecureAction
 					  	long uquota=QuotaUtil.getUsrQuota(uid);
 						ErrorDumpUtil.ErrorLog("testing at line 172==="+uquota);
 						uquota = uquota - totalsize;
-						long disSpace=QuotaUtil.getFileSystemSpace();
-					ErrorDumpUtil.ErrorLog("testing at line 175==="+uquota+"\ndisSpace="+disSpace);
-
+						//long disSpace=QuotaUtil.getFileSystemSpace();
+						int instId=Integer.parseInt(data.getUser().getTemp("Institute_id").toString());
+						long disSpace=QuotaUtil.getFileSystemSpace(instId);
                 	                        if((uquota>fsize)&&(disSpace>fsize)){
-						ErrorDumpUtil.ErrorLog("testing at line 178==="+(uquota>fsize));
 	                				f.mkdirs();
 							flag=true;
 							if(flag){

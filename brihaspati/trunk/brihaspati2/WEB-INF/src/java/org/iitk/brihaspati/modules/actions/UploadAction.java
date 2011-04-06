@@ -99,6 +99,7 @@ public class UploadAction extends SecureAction_Instructor
 		context.put("pub",Pub);
 		Vector new_files_uploaded=new Vector();
 		XmlWriter xmlWriter=null;
+		int instituteId=Integer.parseInt(data.getUser().getTemp("Institute_id").toString());
 		if(contentTopic.equals(""))
 		{
 			String Mu_msg=MultilingualUtil.ConvertedString("uploadAction_msg ",LangFile);
@@ -129,7 +130,6 @@ public class UploadAction extends SecureAction_Instructor
 		String gname=GroupUtil.getGroupName(uid,2);
 		long dirS=QuotaUtil.getDirSizeInMegabytes(new File(coursesRealPath+"/"+courseHome));
                 boolean check=QuotaUtil.CompareQuotainCourse(dirS,gname);
-
                 if(check){
 		try
 		{
@@ -210,7 +210,7 @@ public class UploadAction extends SecureAction_Instructor
 					long fsize=fileItem.getSize()/1024/1024;
 					long uquota=QuotaUtil.getCrsQuota(gname);
 					uquota= uquota - dirS;
-					long disSpace=QuotaUtil.getFileSystemSpace();
+					long disSpace=QuotaUtil.getFileSystemSpace(instituteId);
 					if((uquota>fsize)&&(disSpace>fsize))
 					{
                                         	f.mkdirs();
@@ -236,7 +236,7 @@ public class UploadAction extends SecureAction_Instructor
 
                                         }
 					else{
-						data.setMessage("");
+						//data.setMessage("");
 						data.addMessage(MultilingualUtil.ConvertedString("qmgmt_msg5",LangFile));
 					}
 	

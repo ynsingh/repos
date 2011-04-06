@@ -19,7 +19,7 @@ $!data.getMessage()
 	<td colspan="2">
 	<font face="$ui.sansSerifFonts" size=3>
 	<b>
-     	<a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> | $brih_ap
+     	<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home</a> | $brih_ap
 	</td>
 </tr>
 <form name="frm" method="post" action="$link.setPage("call,AdminProfile,AdminParam.vm").setAction("changeAParam")">
@@ -81,19 +81,19 @@ $!data.getMessage()
         <td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="eMail" value="$!eMail"></font></td>
    </tr>
    <tr bgcolor="$ui.tableColor">
-        <td width=30><font face="$ui.sansSerifFonts"> $RemoteInstitute $brih_quota ($quota_sze)</td>
+        <td width=30><font face="$ui.sansSerifFonts"> $RemoteInstitute $brih_quota ($brih_qsizegb)</td>
         <td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="iquota" value="$!iquota"></font></td>
     </tr>
-    <tr bgcolor="$ui.tableColor">
+    <tr bgcolor="$ui.menuColor">
 	<td width=30><font face="$ui.sansSerifFonts">$brih_course $brih_quota ($quota_sze)</td>	
 	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="cquota" value="$!cquota"></font></td>
     </tr>
-    <tr bgcolor="$ui.menuColor">
+    <tr bgcolor="$ui.tableColor">
 	<td width=30><font face="$ui.sansSerifFonts">$brih_usr $brih_quota ($quota_sze)</td>	
 	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="uquota" value="$!uquota"></font></td>
    </tr>
 ##--------------------------------------FAQ---------------------
-    <tr bgcolor="$ui.tableColor">
+    <tr bgcolor="$ui.menuColor">
         <td width=30><font face="$ui.sansSerifFonts">$brih_Faq $brih_expiry</td>
         <td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="AdminFaqExp" value="$!FaqExp"></font></td>
     </tr>
@@ -101,6 +101,10 @@ $!data.getMessage()
    <tr bgcolor="$ui.tableColor">
 	<td width=30><font face="$ui.sansSerifFonts">$brih_home $brih_dir </td>	
 	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="hdir" value="$!hdir"></font></td>
+   </tr>
+   <tr bgcolor="$ui.menuColor">
+	<td width=30><font face="$ui.sansSerifFonts">$brih_upload $brih_size </td>	
+	<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" name="upldsze" value="$!upldsze"></font></td>
    </tr>
    <tr bgcolor="$ui.menuColor">
       <td colspan=2 bgcolor="$ui.menuColor">	

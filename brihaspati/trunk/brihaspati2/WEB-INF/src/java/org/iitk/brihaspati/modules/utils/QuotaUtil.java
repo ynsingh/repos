@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.utils;
 /*
  * @(#)QuotaUtil.java
  *
- *  Copyright (c) 2008-2009 ETRG,IIT Kanpur.
+ *  Copyright (c) 2008-2009,2011 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -48,6 +48,8 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.commons.io.FileSystemUtils;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
+import org.iitk.brihaspati.om.InstituteQuota;
+import org.iitk.brihaspati.om.InstituteQuotaPeer;
 
 
 /**
@@ -125,6 +127,7 @@ public class QuotaUtil {
 				}
 			}
 		}
+		ErrorDumpUtil.ErrorLog("size in getDirSize method======"+size);
 		return size;
 	}
 //This methods gives course quota from database of particular course
@@ -187,11 +190,11 @@ public class QuotaUtil {
 /*
 * This method return true if available disk space for new user
 */ 
-	public static long checkUsrSpace(){
+	public static long checkUsrSpace(int instId){
 		long differ=0;
 		try{
-                long dspace=getFileSystemSpace();
-                String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+                long dspace=getFileSystemSpace(instId);
+                String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+instId+"Admin.properties";
                 String SpacefPrp=AdminProperties.getValue(path,"brihaspati.user.quota.value");
                 long UQuota=new Long(SpacefPrp).longValue();
                 differ=dspace-UQuota;
@@ -203,11 +206,11 @@ public class QuotaUtil {
 /*
 * This method return true if available disk space for new user with course
 */
-        public static long checkUsrCrsSpace(){
+        public static long checkUsrCrsSpace(int instId){
 		long differ=0;
 		try{
-                long dspace=getFileSystemSpace();
-                String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+                long dspace=getFileSystemSpace(instId);
+                String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+instId+"Admin.properties";
                 String SpacefPrp=AdminProperties.getValue(path,"brihaspati.user.quota.value");
                 long UQuota=new Long(SpacefPrp).longValue();
                 String Spacefcrs=AdminProperties.getValue(path,"brihaspati.admin.quota.value");
@@ -221,15 +224,14 @@ public class QuotaUtil {
 /*
 * This method return Free disk space for brihaspati users
 */
-	public static long getFileSystemSpace() {
+	public static long getFileSystemSpace(int instId) {
 	         long fdisks =0;
 		 try{
-			 String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+			 String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+instId+"Admin.properties";
         	         String dirName=AdminProperties.getValue(path,"brihaspati.home.dir.value");
 			 if(dirName.equals("")){
 				dirName=System.getProperty("user.home");
 			 }
-//			ErrorDumpUtil.ErrorLog("The disk dir name"+dirName);
 	        	 fdisks = FileSystemUtils.freeSpaceKb(dirName);
 			 fdisks = fdisks/1024;
 //			ErrorDumpUtil.ErrorLog("The space is on the disk"+fdisks);
@@ -237,5 +239,87 @@ public class QuotaUtil {
 	             ex.printStackTrace();
         	 }
 	return fdisks;
+     }
+	public static long getFileSystemSpaceinGB() {
+	         long sysdisks =0;
+		 try{
+			 String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+        	         String dirName=AdminProperties.getValue(path,"brihaspati.home.dir.value");
+			 if(dirName.equals("")){
+				dirName=System.getProperty("user.home");
+			 }
+	        	 //sdisks = FileSystemUtils.freeSpace(dirName); //depricated
+	        	 long sdisks = FileSystemUtils.freeSpaceKb(dirName);
+			 sysdisks=(sdisks/1024)/1024;
+        	 } catch (Exception ex) {
+	             ex.printStackTrace();
+        	 }
+	return sysdisks;
+     }
+	public static long getInstituteQuota(String instituteId) {
+	         long instquota =0;
+		 try{
+			Criteria crit=new Criteria();
+			crit.add(InstituteQuotaPeer.INSTITUTE_ID,instituteId);
+                        List qtlist=InstituteQuotaPeer.doSelect(crit);
+                        for(int k=0;k<qtlist.size();k++)
+                        {
+                                InstituteQuota iq=(InstituteQuota)qtlist.get(k);
+                                BigDecimal iquota=iq.getInstituteAquota();
+                                instquota=iquota.longValue();
+                        }
+
+        	 } catch (Exception ex) {
+	             ex.printStackTrace();
+        	 }
+	return instquota;
+     }
+	public static long getInstituteUsedQuota(String instituteId) {
+	         long instusedquota =0;
+		 try{
+			Criteria crit=new Criteria();
+                        crit.addGroupByColumn(CoursesPeer.GROUP_NAME);
+                        List clst=CoursesPeer.doSelect(crit);
+                        Vector cvct=new Vector(clst);
+                        long qtvlue=0;
+                        Vector v=new Vector();
+                        for(int x=0;x<clst.size();x++)
+                        {
+                                Courses crs=(Courses)clst.get(x);
+                                String gnm=crs.getGroupName();
+                                if(gnm.endsWith(instituteId)){
+                                        BigDecimal qt=crs.getQuota();
+                                        qtvlue=qt.longValue();
+                                        v.add(qtvlue);
+                                }
+                        }
+                        long sumqt=0;
+                        for(int y=0;y<v.size();y++)
+                        {
+                                sumqt += (Long.valueOf(v.get(y).toString()).longValue());
+                        }
+                        instusedquota=sumqt/1024;
+
+        	 } catch (Exception ex) {
+	             ex.printStackTrace();
+        	 }
+	return instusedquota;
+     }
+	public static boolean CompareAllotedQuota(String instituteId){
+		boolean flag=false;
+		try{
+		long iquota=getInstituteQuota(instituteId);
+		long iqtinmb=iquota*1024;
+		long iusedquota=getInstituteUsedQuota(instituteId);
+		iusedquota=iusedquota*1024;
+                String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+instituteId+"Admin.properties";
+                String Coursequotasize =AdminProperties.getValue(path,"brihaspati.admin.quota.value");
+                long CQuota=new Long(Coursequotasize).longValue();
+		long remquota=iqtinmb-iusedquota;
+		if(remquota > CQuota){
+			flag=true;
+		}
+		}catch(Exception ex){}
+		return flag;
      }
 }

@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.AdminProfile;
 /*
  * @(#)AdminParam.java	
  *
- *  Copyright (c) 2005,2009,2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005,2009,2010,2011 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -57,7 +57,6 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
  * Loads the template page for Administrator
  */
 
-//public class AdminParam extends SecureScreen_Admin{
 public class AdminParam extends SecureScreen{
 	public void doBuildTemplate(RunData data, Context context){
 		User user = data.getUser();
@@ -103,6 +102,8 @@ public class AdminParam extends SecureScreen{
                  String FaqExp = AdminProperties.getValue(path,"brihaspati.admin.FaqExpiry");
                  context.put("FaqExp",new Integer(FaqExp));
 		//----------------------------------FAQ---------------------------
+                 String fupldsze = AdminProperties.getValue(path,"services.UploadService.size.max");
+                 context.put("upldsze",fupldsze);
 
 		}
 		catch(Exception e) {	

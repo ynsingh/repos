@@ -41,6 +41,7 @@ import org.iitk.brihaspati.modules.utils.CourseManagement;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.QuotaUtil;
 /**
  *
  * This Action class for Registering a particular course with Instructor(Primary) 
@@ -112,8 +113,16 @@ public class RegisterICInstructor extends SecureAction_Institute_Admin
 		  		* @see CourseManagement Utils
 		  		*/ 
 	 			//String msg=CourseManagement.CreateCourse(gname,cname,dept,description,uname,passwd,fname,lname,email,serverName,serverPort,LangFile,instituteId);
+	 			boolean check=QuotaUtil.CompareAllotedQuota(instId);
+				ErrorDumpUtil.ErrorLog("check at line 116 in registration action==========="+check);
+				if(check){
 	 			String msg=CourseManagement.CreateCourse(gname,cname,dept,description,email,passwd,fname,lname,email,serverName,serverPort,LangFile,instituteId,instName); //modified by Shikha                   
 		 		data.setMessage(msg);
+				}
+				else{
+					data.setMessage(MultilingualUtil.ConvertedString("qmgmt_msg7",LangFile));
+					//data.setMessage("For Register new Course ,the Space is not enough,so contact to Sysadmin");
+				}
 		}
 		catch(Exception e)
 		{

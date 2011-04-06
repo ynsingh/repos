@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_InstituteAdmin;
 /*
  * @(#)InstUserRegistrationManagement.java	
  *
- *  Copyright (c) 2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2010,2011 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -60,6 +60,7 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.CourseManagement;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.QuotaUtil;
 import org.iitk.brihaspati.om.TurbineUserPeer;
 import org.iitk.brihaspati.om.TurbineUser;
 import org.apache.turbine.om.security.User;
@@ -111,6 +112,17 @@ public class InstUserRegistrationManagement extends SecureScreen_Institute_Admin
 			user.setTemp("mInststat",minststat);
                         String instituteId=data.getParameters().getString("instituteId","");
                         context.put("instituteId",instituteId);
+			/**
+			 *get Institute Quota and Used Quota
+			 */  	
+			long instquota=QuotaUtil.getInstituteQuota(instituteId);
+			ErrorDumpUtil.ErrorLog("iqt in reg screen====="+instquota);
+                        context.put("allotedquota",instquota);
+			long qtingb=QuotaUtil.getInstituteUsedQuota(instituteId);
+			ErrorDumpUtil.ErrorLog("iusdqt in reg screen====="+qtingb);
+                        long remquota =(instquota - qtingb);
+			ErrorDumpUtil.ErrorLog("rrm qt in reg screen====="+remquota);
+                        context.put("rquota",remquota);
 			/**
 			* Set InstitutedId and domain name in temp variable
 			*/

@@ -19,9 +19,9 @@ $!data.getMessage()
 <tr>
 	<td>
      	<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_home </a> |
-	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("count","1") style=text-decoration:none>$brih_reg $brih_mgmt</a> |
+	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","1") style=text-decoration:none>$brih_reg $brih_mgmt</a> |
 	#if($mode=="")
-	$brih_course #if($lang == "hindi") $brih_Of1 $brih_reg1 #else $brih_reg #end
+	$brih_course #if($lang == "hindi") $brih_Of1 $brih_reg1 #else $brih_reg #end &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$brih_rem $brih_quota $!rquota $brih_qsizegb
 	#elseif($mode=="MCRegister")
 	$brih_multi_usr2
 	#else		
@@ -72,7 +72,7 @@ $!data.getMessage()
 	#elseif($tdcolor == "1")
         <td width=33% bgcolor="#AFDCEC">
 	#end
-      <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("count","1") style=text-decoration:none> #if($lang == "hindi") $brih_course $brih_Of1 $brih_reg1 #else $brih_reg1 $brih_course #end</a> </td> 
+      <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserRegistrationManagement.vm").addPathInfo("instituteId",$InstituteId).addPathInfo("count","1") style=text-decoration:none> #if($lang == "hindi") $brih_course $brih_Of1 $brih_reg1 #else $brih_reg1 $brih_course #end</a> </td> 
 	#if($tdcolor != "2")
         <td width=33%>
 	#elseif($tdcolor == "2")

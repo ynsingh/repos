@@ -298,7 +298,6 @@
         <column name="INSTITUTE_STATUS" required="true" type="INTEGER" size="1" default="0"/>
         <column name="REGISTRATION_DATE" type="TIMESTAMP"/>
         <column name="EXPIRY_DATE" type="TIMESTAMP" default="20201001"/>
-
 </table>
 <table name="INSTITUTE_ADMIN_USER" idMethod="idbroker">
 	<column name="ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
@@ -430,6 +429,10 @@
         <column name="CID" type="VARCHAR" size="255"/>
         <column name="EXPIRY_DATE" type="TIMESTAMP"/>
         <column name="STATUS" required="true" type="VARCHAR" size="255" default="ENABLE"/>
+</table>
+<table name="INSTITUTE_QUOTA">
+	<column name="INSTITUTE_ID" required="true" primaryKey="true" type="INTEGER"/>
+	<column name="INSTITUTE_AQUOTA" required="true" type="NUMERIC"/>
 </table>
 
 </database>

@@ -63,6 +63,7 @@ import org.iitk.brihaspati.om.TurbineUserGroupRolePeer;
 import org.iitk.brihaspati.om.TurbineUserGroupRole;
 import org.iitk.brihaspati.om.UsageDetailsPeer;
 import org.iitk.brihaspati.om.UserConfigurationPeer;
+import org.iitk.brihaspati.om.InstituteQuotaPeer;
 //import org.iitk.brihaspati.om.TurbineUserPeer;
 
 //utils classes
@@ -74,6 +75,7 @@ import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.iitk.brihaspati.modules.utils.EncryptionUtil;
+import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.iitk.brihaspati.modules.utils.MailNotification;
 import org.iitk.brihaspati.modules.utils.SystemIndependentUtil;
 import babylon.babylonUserTool;
@@ -180,7 +182,18 @@ public class Institute_RootAdmin extends VelocitySecureAction
                                         crit.add(InstituteAdminRegistrationPeer.INSTITUTE_ID,instituteid);
                                         crit.add(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"1");
 					InstituteAdminRegistrationPeer.doUpdate(crit);
-					data.setMessage(usermgmt);			
+					data.setMessage(usermgmt);
+					/**
+					 *Set Quota in 'INSTITUTE_QUOTA' table
+					 */
+                                        String path=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
+                                        String conf =AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value");
+                                        String instquota =AdminProperties.getValue(path,"brihaspati.user.iquota.value");
+                                        crit = new Criteria();
+                                        crit.add(InstituteQuotaPeer.INSTITUTE_ID,instituteid);
+                                        crit.add(InstituteQuotaPeer.INSTITUTE_AQUOTA,instquota);
+                                        InstituteQuotaPeer.doInsert(crit);
+			
 				}
 			}
 			
@@ -200,11 +213,12 @@ public class Institute_RootAdmin extends VelocitySecureAction
                *  Get parameters passed from templates.
                */
 		String curdate=ExpiryUtil.getCurrentDate("-");
-		String expdate=ExpiryUtil.getExpired(curdate,8);
+		String expdate=ExpiryUtil.getExpired(curdate,1);
                 Date rejectdate=Date.valueOf(expdate);
 		ParameterParser pp = data.getParameters();
 		LangFile = (String)data.getUser().getTemp("LangFile");
                 String institutelist = data.getParameters().getString("deleteFileNames");
+		String mode=(data.getParameters()).getString("mode","");
 		try{
                         /**
                         *    check for institute list not to be empty.  
@@ -223,6 +237,12 @@ public class Institute_RootAdmin extends VelocitySecureAction
                                         crit.add(InstituteAdminRegistrationPeer.EXPIRY_DATE,rejectdate);
                                         crit.add(InstituteAdminRegistrationPeer.INSTITUTE_STATUS,"2");
 					InstituteAdminRegistrationPeer.doUpdate(crit);
+					if(!mode.equals("reject"))
+					{
+					crit=new Criteria();
+					crit.add(InstituteQuotaPeer.INSTITUTE_ID,instituteid);
+					InstituteQuotaPeer.doDelete(crit);
+					}	
 					String msg=MultilingualUtil.ConvertedString("instAreg_msg6",LangFile);
 					//data.setMessage("Institute as well as institute admin has been rejected");								
 					data.setMessage(msg);								
