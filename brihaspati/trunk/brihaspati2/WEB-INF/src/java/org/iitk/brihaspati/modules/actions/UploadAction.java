@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.actions;
 /*
  * @(#)UploadAction.java
  *
- *  Copyright (c) 2005-2008,2009,2010 ETRG,IIT Kanpur.
+ *  Copyright (c) 2005-2011 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -79,13 +79,46 @@ import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 public class UploadAction extends SecureAction_Instructor
 {
     /**
-    * This method responsible for upload files
+    * This method responsible for uploadng of files
     * @param data Rundata
     * @param context Context
     */
-	private String LangFile=null; 
+    private String LangFile=null; 
+
     public void doUpload(RunData data, Context context)
     {
+/* psuedocode description
+ *     get the username from RunData, current course from context, ContentTopic, publishFlag from the parameterparser.
+ *     get the list of files uploaded in the course.
+ *     find the sum of sizes of all the uploaded files as sumSize.
+ *     Get the total space used, space allocated to be course.
+ *     Find the unused space.
+ *     If the unused space is more than sumSize {
+ *         Find the space used by the institute, and the space allocated.
+ *         If space available is more than required {
+ *            If the publishFlag is true {
+ *              for each file {
+ *                   place the file in contentTopic area
+ *                   update the xml descriptor
+ *              }
+ *            }
+ *            else {
+ *              for each file {
+ *                   place each file in the unpublish area of the ContentTopic
+ *              }
+ *            }
+ *        }
+ *        else {
+ *            put the message "Insitute quota will exceed with this upload. Request your institute admin to get the institute quota enhanced or upload smaller/less files, or create space by deleting existing ones."
+ *            Remove the files from temporary space.
+ *        }
+ *     }
+ *     else {
+ *         put the message "course quota will exceed with this upload. Upload smaller/less files, or create space by removing existing ones."
+ *         Remove the files from temporary space.
+ *     }
+ */
+              
 	try{
 		User user=data.getUser();
 		String uName=user.getName();
@@ -211,6 +244,7 @@ public class UploadAction extends SecureAction_Instructor
 					long uquota=QuotaUtil.getCrsQuota(gname);
 					uquota= uquota - dirS;
 					long disSpace=QuotaUtil.getFileSystemSpace(instituteId);
+					ErrorDumpUtil.ErrorLog("The value of quota in upload course content"+uquota+"and f size "+fsize +"and dspace "+disSpace);
 					if((uquota>fsize)&&(disSpace>fsize))
 					{
                                         	f.mkdirs();
