@@ -126,9 +126,9 @@ $!data.getMessage()
 	  	#set($counter1=1)
           	#foreach($instrctrname in $instructorList)
           		#if($counter==$counter1)
-          		<option value="$name.getGroupName()">$name.getCourseName()-$instrctrname</option>
+          		<option value="$name.getGroupName()">$name.getCAlias(): $name.getCourseName()-$instrctrname</option>
           		#end
-          	#set($couner1=$counter1+1)
+          	#set($counter1=$counter1+1)
           	#end
           #set($counter=$counter+1)
           #end
