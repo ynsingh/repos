@@ -76,6 +76,7 @@ public class Oles_Gen extends SecureScreen{
 			String status=pp.getString("status","");
 			String type =pp.getString("type","");
 			String checkstatus=pp.getString("checkstatus","");
+			String allow = pp.getString("allow","");
 			
 			context.put("tdcolor",pp.getString("count",""));
 			context.put("course",(String)user.getTemp("course_name"));						
@@ -86,7 +87,8 @@ public class Oles_Gen extends SecureScreen{
 			context.put("maxTime",maxTime);			
 			context.put("noQuestion",noQuestion);			
 			context.put("status",status);			
-			context.put("type",type);			
+			context.put("type",type);
+			context.put("allow",allow);
 			
 			if(mode.equals("QuizDetail")){
 				String qname=pp.getString("qname","");

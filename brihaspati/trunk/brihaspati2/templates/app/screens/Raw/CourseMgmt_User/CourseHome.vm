@@ -416,6 +416,26 @@ $!data.getMessage()
                                 </td>
 				</tr>
 				##inner row 3 close 
+				##=============================================================
+				## inner row 4 open
+				<tr>
+                ## inner column 1 (4)open
+				<td align=center>
+					<table border=0>
+						<tr><td align=center>
+     						<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","1") style=text-decoration:none><img border=0 src="$content.getURI("/images/exam.jpg")"></a>
+						</td></tr>
+						<tr><td align=center>
+							<font face="$ui.sansSerifFonts">
+	     					<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","1") style=text-decoration:none>							
+							$brih_exam </a><br>							
+						</td></tr>
+					</table>
+				</td>
+                ## inner column 1 (4)close                                                                         
+				</tr>
+				##inner row 4 close 
+				##=====================================================================
 			#end
 		#else  ## for guest is not login
 				## inner row 1 open

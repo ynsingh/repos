@@ -90,8 +90,9 @@ public class Quiz_Detail extends SecureScreen{
 			File f=new File(filePath+"/"+quizPath);
 			
 			if(f.exists()){
-				quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);				
-				allQuiz=quizmetadata.getStatusQuiz_Detail("ACT");			
+				quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);
+				allQuiz=quizmetadata.listActiveAndCurrentlyNotRunningQuiz();
+//				allQuiz=quizmetadata.getStatusQuiz_Detail("ACT");			
 			}
 			if(allQuiz==null)
                 return;
@@ -102,6 +103,7 @@ public class Quiz_Detail extends SecureScreen{
                 	String quizid =((QuizFileEntry) allQuiz.elementAt(i)).getQuizID();
                 	String maxmarks =((QuizFileEntry) allQuiz.elementAt(i)).getMaxMarks();
                 	String maxquestions =((QuizFileEntry) allQuiz.elementAt(i)).getnoQuestion();
+                	String allowPractice = ((QuizFileEntry) allQuiz.elementAt(i)).getAllowPractice();
                 	String newFilePath=filePath+"/"+quizid+"/";
                 	String questionsPath=quizid+"_QuestionSetting.xml";        	                    	       
                 	

@@ -94,12 +94,15 @@ $!data.getMessage()
 			##<td><input type="text" name="quizName" value=$Quiz.getQuizName() readonly></td>
 		</tr>
 		<tr>
-			<td><b>$brih_maximum $brih_marks</b><font color=Red>*</font></td>
+			<td><b>$brih_maximum $brih_marks</b><font color=Red>*</font></td>			
 			<td><input type="text" name="maxMarks" value=$Quiz.getMaxMarks()></td>
 		</tr>
 		<tr>
-			<td><b>$brih_maximum $brih_time</b><font color=Red>*</font></td>        	
-			<td><input type="text" name="maxTime" value=$Quiz.getMaxTime()></td>
+			<td><b>$brih_maximum $brih_time</b><font color=Red>*</font></td> 
+			#set($len = $Quiz.getMaxTime().indexOf(":")) 
+  			#set($mtime=$Quiz.getMaxTime().substring(0,$len))			
+			<td><input type="text" name="maxTime" value=$mtime></td>       	
+			##<td><input type="text" name="maxTime" value=$Quiz.getMaxTime()></td>
 		</tr>
 		<tr>
            		<td><b>$brih_nos $brih_qus2</b><font color=Red>*</font></td>
@@ -120,13 +123,19 @@ $!data.getMessage()
         	<td><input type="text" name="maxMarks" value=""></td>
         </tr>
         <tr>
-           	<td><b>$brih_maximum $brih_time</b><font color=Red>*</font></td>        	
+           	<td><b>$brih_maximum $brih_time</b><font color=Red>*</font></td>
+           	       	
 	        <td><input type="text" name="maxTime" value=""></td>
         </tr>
 	<tr>
            	<td><b>$brih_nos $brih_qus2</b><font color=Red>*</font></td>
 		<td><input type="text" name="numberQuestion" value=""></td>
-        </tr>                
+        </tr>  
+        <tr>
+		<td><b>$brih_allowpractice</b><font color=Red>*</font></td>        	
+		<td><input type="radio" name="allow" value="yes" checked>Yes
+       		<input type="radio" name="allow" value="no">No<br>		
+		</tr>              
 #end	
        
 <tr bgcolor="$ui.menuColor" width="100%">

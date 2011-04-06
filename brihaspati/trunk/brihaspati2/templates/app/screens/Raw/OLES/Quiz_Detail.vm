@@ -129,11 +129,15 @@ $!data.getMessage()
    				$qid.getQuizName()
 			</td>			
 			<td width="30%">			 	
-				#set($quizName="$qid.getQuizID(),$qid.getMaxMarks(),$qid.getnoQuestion()")			
-				#if($qid.getQuizMode()=="random")			
-					<a href=$link.setPage("call,OLES,Random_Quiz.vm").addPathInfo("quizName",$quizName).addPathInfo("quizMode",$qid.getQuizMode()) onclick="if($visibilityFlag.get("$qid.getQuizID()")){alert('No more questions can be added...max marks/Question number limit is reached');return false}else return true">$brih_add $brih_more $brih_qus </a>
+				#set($quizName="$qid.getQuizID(),$qid.getMaxMarks(),$qid.getnoQuestion(),$qid.getAllowPractice()")	
+				#if($qid.getAllowPractice()=="yes")
+					<a href=$link.setPage("call,OLES,Practice_Quiz.vm").addPathInfo("quizName",$quizName).addPathInfo("quizMode",$qid.getQuizMode()) onclick="if($visibilityFlag.get("$qid.getQuizID()")){alert('No more questions can be added...max marks/Question number limit is reached');return false}else return true">$brih_add $brih_more $brih_qus </a>		
 				#else
-					<a href=$link.setPage("call,OLES,OneByOne_Quiz.vm").addPathInfo("quizName",$quizName).addPathInfo("quizMode",$qid.getQuizMode()) onclick="if($visibilityFlag.get("$qid.getQuizID()")){alert('No more questions can be added...max marks/Question number limit is reached');return false}else return true">$brih_add $brih_more $brih_qus </a>
+					#if($qid.getQuizMode()=="random")			
+						<a href=$link.setPage("call,OLES,Random_Quiz.vm").addPathInfo("quizName",$quizName).addPathInfo("quizMode",$qid.getQuizMode()) onclick="if($visibilityFlag.get("$qid.getQuizID()")){alert('No more questions can be added...max marks/Question number limit is reached');return false}else return true">$brih_add $brih_more $brih_qus </a>
+					#else
+						<a href=$link.setPage("call,OLES,OneByOne_Quiz.vm").addPathInfo("quizName",$quizName).addPathInfo("quizMode",$qid.getQuizMode()) onclick="if($visibilityFlag.get("$qid.getQuizID()")){alert('No more questions can be added...max marks/Question number limit is reached');return false}else return true">$brih_add $brih_more $brih_qus </a>
+					#end
 				#end
 			</td>
 			<td>

@@ -1,0 +1,340 @@
+#*
+ * @#Attempt_Quiz.vm
+ * Copyright (c) 2010 DEI Agra.
+ * All Rights Reserved.
+ * @author <a href="mailto:noopur.here@gmail.com ">Nupur Dixit</a>
+ * Contributors: Members of MHRD Project DEI Agra
+*#
+<body onLoad="Init();">
+$page.setTitle("Attempt Quiz")
+<META HTTP-EQUIV="Expires" CONTENT="Tue, 01 Jan 1980 1:00:00 GMT"> 
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+$page.setBgColor("bgcolor")
+## Retreiving the $lang (representing the choosen language for display, which was set in corresponding the screen class.
+#set($lang = $data.getUser().getTemp("lang" ).toString())
+## Creating the links for help regarding FAQ 
+<table width="100%">
+	<tr>
+		<td align=left>
+			## If some message has been set, that is retrieved and displayed.
+			<font face="$ui.sansSerifFonts">
+				$!data.getMessage()
+			</font>
+		</td>
+		<td align=right>
+			<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Quizstudent.html","newWin");>$brih_help</a>
+		</td>
+	</tr>
+</table>
+
+#set($cnm = $data.getUser().getTemp("course_name" ).toString())
+
+<form name="frm" method="post"  enctype="multipart/form-data" action=$link.setPage("call,OLES,Attempt_Quiz.vm").setAction("OLES_AttemptQuiz")>
+<table  bgcolor="$ui.tableColor" border=0 cellpadding="2" width=100% >
+	<tr bgcolor="$ui.menuColor" >
+    	<td align=left width="40%" >    	    	
+    		<font size=3><b>$brih_quiz $brih_name: $!quizName </b></font>        
+		</td>
+		<td align=center width="20%">  
+			<font size=3><b>$brih_remaining $brih_time <input type="text" id="timerValue" name="timerValue" value="$!timerValue" size="5%"></b></font> 
+		</td>
+		<td align=right width="40%">	    	
+    		<font size=3><b>$brih_total $brih_time : $!maxTime </b></font>        
+		</td>
+	</tr>
+	<tr bgcolor="$ui.menuColor" >
+    	<td align=left >    	    	
+    		<font size=3><b>$brih_total $brih_marks : $!maxMarks </b></font>        
+		</td>
+		<td align=right colspan="2">    	    	
+    		<font size=3><b>$brih_total $brih_qus : $!maxQuestion </b></font>        
+		</td>
+	</tr>
+	<tr>
+		<td align=left>
+			<table border="1" align=center cellpadding="2" width=100% >
+				#foreach($qid in $quizQuestionList)
+				#set($rowNumber=$velocityCount)
+				#if($velocityCount%2==0)
+                	<tr bgcolor="$ui.menuColor">
+            	#else
+                	<tr bgcolor="$ui.tableColor">
+            	#end
+						<td align=left width="8%">
+							$velocityCount
+							#set($finAnswer="")		
+							#foreach($answer in $answerList)
+							#if(($qid.getQuestionID()==$answer.getQuestionID()) && ($qid.getFileName()==$answer.getFileName()))
+								<img src=$content.getURI("/images/rightred.JPG")>
+								#set($finAnswer=$answer.getAnswer())										
+							#end
+							#end																					
+						</td>								
+						<td>
+							#set($quesDetail="$qid.getQuestionID(),$qid.getFileName(),$qid.getQuestionType(),$qid.getMarksPerQuestion()")
+							#set($quizIDTime="$quizID,$maxTime")
+							#if($qid.getQuestionType()=="mcq")
+								<a href=$link.setPage("call,OLES,Attempt_Quiz.vm").addPathInfo("quizIDTime",$quizIDTime).addPathInfo("quizName",$quizName).addPathInfo("quesDetail",$quesDetail).addPathInfo("question",$qid.getQuestion()).addPathInfo("option1",$qid.getOption1()).addPathInfo("option2",$qid.getOption2()).addPathInfo("option3",$qid.getOption3()).addPathInfo("option4",$qid.getOption4()).addPathInfo("finalAnswer",$!finAnswer) style=text-decoration:none onClick="showAlert();">
+								#if($qid.getQuestion().length()>25)
+   									$qid.getQuestion().substring(0,25) .....
+								#else
+   									$qid.getQuestion()
+								#end
+								</a>
+							#else
+								<a href=$link.setPage("call,OLES,Attempt_Quiz.vm").addPathInfo("quizIDTime",$quizIDTime).addPathInfo("quizName",$quizName).addPathInfo("quesDetail",$quesDetail).addPathInfo("question",$qid.getQuestion()).addPathInfo("finalAnswer",$!finAnswer) onClick="showAlert();">
+								#if($qid.getQuestion().length()>25)
+   									$qid.getQuestion().substring(0,25) .....
+								#else
+   									$qid.getQuestion()
+								#end
+								</a>
+							#end										
+						</td>
+						<td width="5%">
+							$qid.getMarksPerQuestion() 
+						</td>
+					</tr>
+					#end						
+				</table>
+			</td>
+			<td align=right colspan="2">
+				<table border="1" align=center cellpadding="2" width=100% >				
+					<tr bgcolor="$ui.tableColor">				
+						<td width="30%">
+                   			<input type="hidden" name="markPerQues" value="$!markPerQues"><b>$brih_qus</b>
+               			</td>       		              
+        				<td><textarea rows="2" cols="40" name="question" readonly>$question</textarea>
+        				</td>															
+					</tr>
+	##tft
+					#if($quesType=="tft")
+						#if($!finalAnswer=="true")
+							#set($A="checked")
+							#set($B="")
+						#elseif($!finalAnswer=="false")
+							#set($A="")	
+							#set($B = "checked")
+						#end
+					<tr>
+						<td align=left>
+							<input type="RADIO" name="answer"  value="true" $!A>$brih_true	
+						</td>
+						<td align=left>
+							<input type="RADIO" name="answer" value="false" $!B>$brih_false
+						</td>	
+					</tr>
+					#elseif($quesType=="mcq")
+##mcq
+						#set($A="")
+						#set($B="")
+						#set($C="")
+						#set($D="")
+						#if($!finalAnswer=="A")
+							#set($A="checked")				
+						#elseif($!finalAnswer=="B")				
+							#set($B = "checked")
+						#elseif($!finalAnswer=="C")				
+							#set($C = "checked")
+						#elseif($!finalAnswer=="D")				
+							#set($D = "checked")
+						#end
+					<tr>
+						<td align=left> <b> A </b>
+							<input type="RADIO" name="answer"  value="A" $!A>$!option1							
+       		        	</td>
+						<td align=left ><b> B </b>
+							<input type="RADIO" name="answer"  value="B" $!B>$!option2						
+						</td>
+					</tr>
+					<tr>					
+						<td align=left> <b> C </b>
+							<input type="RADIO" name="answer"  value="C" $!C>$!option3
+            			</td>
+        				<td align=left> <b> D </b>
+           					<input type="RADIO" name="answer"  value="D" $!D>$!option4
+            			</td>
+					</tr>
+					#elseif($quesType=="lat" || $quesType=="sat")
+##sat & lat
+					<tr>
+						<td  align=left width="30%">
+							<b>$brih_answer</b>
+						<td align=left>
+							<textarea name="answer" id="textAnswer" wrap="physical" rows=2 cols=40 > $!finalAnswer </textarea>
+						</td>
+					</tr>
+					#else
+					<tr>
+						<td colspan="2">
+							$brih_instruct
+						</td>
+					</tr>
+					#end
+				<tr>
+					<td colspan="2" align=center>			
+						<input type="button" name="eventSubmit_saveAnswerQuiz" value="Save Answer" onClick="saveAnswer(document.frm,this);">
+						##<input type="button" name="" value="Start Timer" onClick="Init();">
+						##<input type="button" name="" value="Stop timer" onClick="StopTimer();">	
+					</td>
+				</tr>	
+			</table>
+		</td>
+	</tr>
+	<tr bgcolor="$ui.menuColor">
+		<td colspan="3" align=center>
+			<input type="button" name="eventSubmit_saveFinalQuiz" value="Submit Quiz" onClick="saveFinalQuiz(document.frm,this);">
+		</td>
+	</tr>
+</table>					    	
+<input type="hidden" name="quizID" value="$!quizID">
+<input type="hidden" name="quizName" value="$!quizName">
+<input type="hidden" name="maxTime" value="$!maxTime">		
+<input type="hidden" name="actionName">	
+<input type="hidden" name="quesID" value="$!quesID">
+<input type="hidden" name="question" value="$!question">
+<input type="hidden" name="fileName" value="$!fileName">
+<input type="hidden" name="quesType" value="$!quesType">
+<input type="hidden" name="option1" value="$!option1">
+<input type="hidden" name="option2" value="$!option2">
+<input type="hidden" name="option3" value="$!option3">
+<input type="hidden" name="option4" value="$!option4">
+<input type="hidden" name="finalAnswer">
+<input type="hidden" name="messageFlag">
+</div>
+</form>
+</body>
+
+<SCRIPT LANGUAGE="javascript">
+function saveAnswer(frm,field){		
+	var checked = false;	
+		if(frm.answer.length==undefined){
+			frm.answer.length=1;
+		}
+		for (var i=0; i<frm.answer.length; i++){ 
+			if(frm.answer.length==1){							
+				if(Trim(document.getElementById('textAnswer').value)==""){
+					alert("you have not entered anything in answer");
+					return checked; 
+				}
+				else{
+					checked=true;
+					frm.actionName.value=field.name;
+					frm.submit();
+					break; 
+				}								
+			}
+			else{
+   				if (frm.answer[i].checked){ 					
+					frm.finalAnswer.value=frm.answer[i].value;					
+ 					checked = true;
+					frm.actionName.value=field.name;
+					frm.submit();
+ 					break; 
+				} 
+			}
+   		}
+   		if(!checked)
+     			alert("you have not selected any option"); 
+		return checked ;
+	}
+	
+//this function is used to trim the leading and trailing white spaces in answer string
+function Trim(str)
+{
+    while (str.substring(0,1) == ' ') // check for white spaces from beginning
+    {
+        str = str.substring(1, str.length);
+    }
+    while (str.substring(str.length-1, str.length) == ' ') // check white space from end
+    {
+        str = str.substring(0,str.length-1);
+    }
+    return str;
+}
+
+var mins,secs,TimerRunning,TimerID;
+ TimerRunning=false;
+ var timerValu;
+ function Init() //call the Init function when u need to start the timer
+ {
+	timerValu = String(document.getElementById('timerValue').value);
+	var parseTime=timerValu.split(":");
+	mins=parseInt(parseTime[0],10);
+	secs=parseInt(parseTime[1],10);
+	StopTimer();
+ 	StartTimer();
+ }
+ 
+ function StopTimer()
+ {
+    if(TimerRunning)
+       clearTimeout(TimerID);
+    TimerRunning=false;
+ }
+ 
+ function StartTimer()
+ {
+    TimerRunning=true;			
+    document.frm.timerValue.value=Pad(mins)+":"+Pad(secs);
+    TimerID=self.setTimeout("StartTimer()",1000);
+    Check();    
+    if(mins==0 && secs==0)
+       StopTimer();    
+    if(secs==0)
+    {
+       mins--;
+       secs=60;
+    }
+    secs--;
+ }
+ 
+ function Check()
+ {
+	
+    if(mins==5 && secs==0){
+	secs=1;
+	StopTimer();
+       alert("You have only five minutes remaining");
+	StartTimer();
+}
+    else if(mins==0 && secs==0)
+    {
+	StopTimer();
+       alert("Your alloted time is over.");
+       document.frm.actionName.value="eventSubmit_saveFinalQuiz";
+       document.frm.submit();
+    }
+ }
+ 
+ function Pad(number) //pads the mins/secs with a 0 if its less than 10
+ {
+    if(number<10)
+       number=0+""+number;
+    return number;
+ }
+
+
+function showAlert() //called while question is saved 
+ {    
+    document.frm.actionName.value="eventSubmit_refreshQuiz";
+    document.frm.submit();
+ }
+
+function saveFinalQuiz(frm,field) //called while quiz is finally saved
+ {  
+	StopTimer();
+var confAnswer = confirm("Are you sure to submit Quiz?After Submission you won't be able to attempt again...");
+//alert(confAnswer);
+   if(confAnswer){
+	frm.actionName.value=field.name;
+	frm.messageFlag.value="submit";     
+        frm.submit();
+   }
+   else{
+      StartTimer();
+    }    
+ }
+
+
+</script>

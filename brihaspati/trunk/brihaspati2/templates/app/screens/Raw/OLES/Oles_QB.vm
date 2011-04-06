@@ -71,12 +71,12 @@ $!data.getMessage()
 			#elseif($tdcolor == "4")
 			<td bgcolor="#AFDCEC">
 			#end
-			<b><I><a href=$link.setPage("call,OLES,Oles_Other.vm").addPathInfo("count","4") style=text-decoration:none>$brih_evaluation</I></b></a></td>
+			<b><I><a href=$link.setPage("call,OLES,Evaluate.vm").addPathInfo("count","4") style=text-decoration:none>$brih_evaluation</I></b></a></td>
 			#if($tdcolor != "5")
 			<td>
-                        #elseif($tdcolor == "5")
-                        <td bgcolor="#AFDCEC">
-                        #end
+            #elseif($tdcolor == "5")
+            	<td bgcolor="#AFDCEC">
+            #end
 			<b><I><a href=$link.setPage("call,OLES,Oles_Other.vm").addPathInfo("count","5") style=text-decoration:none>$brih_result</I></b></a></td>
 		</tr>
 		<tr bgcolor="$ui.menuColor"><td colspan="5">

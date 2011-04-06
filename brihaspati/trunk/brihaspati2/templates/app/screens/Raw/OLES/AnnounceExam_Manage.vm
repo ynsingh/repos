@@ -8,7 +8,9 @@
 $page.setTitle("Announce Exam")
 $page.setBgColor("bgcolor")
 ## If some message has been set, that is retrieved and displayed.
+<font face="$ui.sansSerifFonts">
 $!data.getMessage()
+</font>
 ## Retreiving the $lang (representing the choosen language for display, which was set in corresponding the screen class.
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 
@@ -54,7 +56,7 @@ $!data.getMessage()
 		#elseif($tdcolor == "4")
 			<td bgcolor="#AFDCEC">
 		#end
-		<b><I><a href=$link.setPage("call,OLES,Oles_Other.vm").addPathInfo("count","4") style=text-decoration:none>$brih_evaluation</I></b></a></td>
+		<b><I><a href=$link.setPage("call,OLES,Evaluate.vm").addPathInfo("count","4") style=text-decoration:none>$brih_evaluation</I></b></a></td>
 		#if($tdcolor != "5")
 			<td>
 		#elseif($tdcolor == "5")
@@ -76,7 +78,8 @@ $!data.getMessage()
 	        		#if($quizList.size()!=0)
 	        			<select name=quizList>
 						#foreach($qid in $quizList)
-		        				<option value=$qid.getQuizID()>$qid.getQuizName()</option>
+						
+		        				<option value=$qid.getQuizID(),$!qid.getExamDate()>$qid.getQuizName()</option>
 	        				#end
 	        			</select> &nbsp;
 	        			<input type="button" name="eventSubmit_announceExam" value="$brih_submit" onClick="checkValue(document.frm,this);">
@@ -90,9 +93,10 @@ $!data.getMessage()
 		</td>
 	</tr>
 </table>
-<input type="hidden" name="count" value="1">
+<input type="hidden" name="count" value="3">
 <input type="hidden" name="quizID" value="">
 <input type="hidden" name="actionName" value="">
+<input type="hidden" name="mode" value="">
 </form>
 <script LANGUAGE="JAVASCRIPT">
 	function popupWin(url,popupName){
@@ -101,8 +105,20 @@ $!data.getMessage()
 
 	function checkValue(frm,field){		
 		if(frm.quizList.value !=""){			
-			frm.actionName.value=field.name;
-			frm.quizID.value=frm.quizList.options[frm.quizList.selectedIndex].value;
+			frm.actionName.value=field.name;			
+			var temp = new Array();
+			temp = ((frm.quizList.options[frm.quizList.selectedIndex].value).split(","));
+			frm.quizID.value = temp[0];	
+			//alert(temp[1]);
+			if(temp[1]==""){
+				frm.mode.value="new";
+				frm.count.value="1";
+				}
+				else{
+				frm.mode.value="update";
+				frm.count.value="2";
+				}
+			//frm.quizID.value=frm.quizList.options[frm.quizList.selectedIndex].value;
 			frm.submit();
 		}
 		else

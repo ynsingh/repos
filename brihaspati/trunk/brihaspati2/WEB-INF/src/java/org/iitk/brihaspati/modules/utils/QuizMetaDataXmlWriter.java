@@ -46,7 +46,9 @@ import org.iitk.brihaspati.modules.utils.XmlWriter;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.QuizFileEntry;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
-
+import org.apache.turbine.util.RunData;
+import org.apache.turbine.om.security.User;
+import org.apache.turbine.services.servlet.TurbineServlet;
 /**
  * This class generate Xml file with attributes and values
  * @author <a href="mailto:noopur.here@gmail.com">Nupur Dixit</a>
@@ -78,7 +80,7 @@ public class QuizMetaDataXmlWriter
      * @param CreationDate String     
      * @author <a href="mailto:noopur.here@gmail.com">Nupur Dixit</a>
      */
-	public static void appendQues_Banklist(XmlWriter xmlWriter,String quizID,String quizName,String maxMarks,String maxTime,String noQuestion,String status,String Filename,String CreationDate)
+	public static void appendQues_Banklist(XmlWriter xmlWriter,String quizID,String quizName,String maxMarks,String maxTime,String noQuestion,String status,String Filename,String CreationDate,String allow)
 	{
 		ErrorDumpUtil.ErrorLog("inside append question "+quizID);
 		AttributesImpl ats=new AttributesImpl();
@@ -91,7 +93,8 @@ public class QuizMetaDataXmlWriter
 		ats.addAttribute("","Filename","","",StringUtil.replaceXmlSpecialCharacters(Filename));		
 		ats.addAttribute("","CreationDate","","",CreationDate);
 		ats.addAttribute("","ModifiedDate","","",CreationDate);
-		ats.addAttribute("","QuizMode","","","");		     
+		ats.addAttribute("","QuizMode","","","");
+		ats.addAttribute("","AllowPractice","","",StringUtil.replaceXmlSpecialCharacters(allow));
 		xmlWriter.appendElement("Quiz",null,ats);
 		ErrorDumpUtil.ErrorLog("after append question "+quizID);
 	}
@@ -114,7 +117,7 @@ public class QuizMetaDataXmlWriter
 	* @param seqno Integer
 	* @author <a href="mailto:noopur.here@gmail.com">Nupur Dixit</a>
 	*/
-	public static void update_QuizList(XmlWriter xmlWriter,String quizID,String quizName,String maxMarks,String maxTime,String noQuestion,String status,String Filename,String CreationDate,String modifiedDate, String quizMode,int seq)
+	public static void update_QuizList(XmlWriter xmlWriter,String quizID,String quizName,String maxMarks,String maxTime,String noQuestion,String status,String Filename,String CreationDate,String modifiedDate, String quizMode,int seq,String allowPractice)
 	{
 		try{
 			ErrorDumpUtil.ErrorLog("inside update quiz "+quizID);
@@ -129,6 +132,7 @@ public class QuizMetaDataXmlWriter
 			ats.addAttribute("","CreationDate","","",CreationDate);
 			ats.addAttribute("","QuizMode","","",quizMode);
 			ats.addAttribute("","ModifiedDate","","",modifiedDate);
+			ats.addAttribute("","AllowPractice","","",allowPractice);
 
 			xmlWriter.changeAttributes("Quiz",ats,seq);
 			ErrorDumpUtil.ErrorLog("after change attributes ");
@@ -144,36 +148,36 @@ public class QuizMetaDataXmlWriter
 	* @param xmlFile String	
 	* @return xmlWriter XmlWriter
 	*/
-	public static XmlWriter Ques_BankXmlist(String filePath,String xmlfile)
-	{
-		XmlWriter xmlWriter=null;
-		File descFile=new File(filePath+"/"+xmlfile);		
-		try{
-			QuizMetaDataXmlReader quizMetaData=new QuizMetaDataXmlReader(filePath+"/"+xmlfile);
-			Vector v=quizMetaData.getQuesBanklist_Detail();
-			ErrorDumpUtil.ErrorLog("The vector size in write:ques_bankxmlist::"+v.size());
-			descFile.delete();
-			OLESRootOnly(descFile.getAbsolutePath());
-			xmlWriter=new XmlWriter(filePath+"/"+xmlfile);
-			for(int i=0;i<v.size();i++)
-			{
-				String quizID=((QuizFileEntry)v.get(i)).getQuizID();
-				String quizName=((QuizFileEntry)v.get(i)).getQuizName();
-				String maxMarks=((QuizFileEntry)v.get(i)).getMaxMarks();
-				String maxTime=((QuizFileEntry)v.get(i)).getMaxTime();
-				String status=((QuizFileEntry)v.get(i)).getQuizStatus();
-				String noQuestion=((QuizFileEntry)v.get(i)).getnoQuestion();
-				String Filename=((QuizFileEntry)v.get(i)).getQuizFileName();
-				String CreationDate=((QuizFileEntry)v.get(i)).getCreationDate();
-				ErrorDumpUtil.ErrorLog("before going to append question "+quizID+quizName+maxMarks+maxTime+status+noQuestion+Filename);
-				appendQues_Banklist(xmlWriter,quizID,quizName,maxMarks,maxTime,noQuestion,status,Filename,CreationDate);
-			}
-		}
-		catch(Exception e){
-			ErrorDumpUtil.ErrorLog("The exception in xmlwriterutil [XmlWriter Ques_BankXmllist]::"+e);			
-		}
-		return xmlWriter;
-	}
+//	public static XmlWriter Ques_BankXmlist(String filePath,String xmlfile)
+//	{
+//		XmlWriter xmlWriter=null;
+//		File descFile=new File(filePath+"/"+xmlfile);		
+//		try{
+//			QuizMetaDataXmlReader quizMetaData=new QuizMetaDataXmlReader(filePath+"/"+xmlfile);
+//			Vector v=quizMetaData.getQuesBanklist_Detail();
+//			ErrorDumpUtil.ErrorLog("The vector size in write:ques_bankxmlist::"+v.size());
+//			descFile.delete();
+//			OLESRootOnly(descFile.getAbsolutePath());
+//			xmlWriter=new XmlWriter(filePath+"/"+xmlfile);
+//			for(int i=0;i<v.size();i++)
+//			{
+//				String quizID=((QuizFileEntry)v.get(i)).getQuizID();
+//				String quizName=((QuizFileEntry)v.get(i)).getQuizName();
+//				String maxMarks=((QuizFileEntry)v.get(i)).getMaxMarks();
+//				String maxTime=((QuizFileEntry)v.get(i)).getMaxTime();
+//				String status=((QuizFileEntry)v.get(i)).getQuizStatus();
+//				String noQuestion=((QuizFileEntry)v.get(i)).getnoQuestion();
+//				String Filename=((QuizFileEntry)v.get(i)).getQuizFileName();
+//				String CreationDate=((QuizFileEntry)v.get(i)).getCreationDate();
+//				ErrorDumpUtil.ErrorLog("before going to append question "+quizID+quizName+maxMarks+maxTime+status+noQuestion+Filename);
+//				appendQues_Banklist(xmlWriter,quizID,quizName,maxMarks,maxTime,noQuestion,status,Filename,CreationDate);
+//			}
+//		}
+//		catch(Exception e){
+//			ErrorDumpUtil.ErrorLog("The exception in xmlwriterutil [XmlWriter Ques_BankXmllist]::"+e);			
+//		}
+//		return xmlWriter;
+//	}
 
 	/**
 	* This method update file element in existing xml file with sequence number
@@ -202,8 +206,9 @@ public class QuizMetaDataXmlWriter
 				String Filename=((QuizFileEntry)v.get(i)).getQuizFileName();
 				String CreationDate=((QuizFileEntry)v.get(i)).getCreationDate();
 				String quizMode = ((QuizFileEntry)v.get(i)).getQuizMode();
+				String allowPractice = ((QuizFileEntry)v.get(i)).getAllowPractice();
 				ErrorDumpUtil.ErrorLog("before going to update quiz part "+quizID+quizName+maxMarks+maxTime+status+noQuestion+Filename);
-				update_QuizList(xmlWriter,quizID,quizName,maxMarks,maxTime,noQuestion,status,Filename,CreationDate,modifiedDate,quizMode,seq);
+				update_QuizList(xmlWriter,quizID,quizName,maxMarks,maxTime,noQuestion,status,Filename,CreationDate,modifiedDate,quizMode,seq,allowPractice);
 			}
 		}
 		catch(Exception e){
@@ -273,8 +278,9 @@ public class QuizMetaDataXmlWriter
 				String Filename=((QuizFileEntry)v.get(i)).getQuizFileName();
 				String CreationDate=((QuizFileEntry)v.get(i)).getCreationDate();
 				String modifiedDate=((QuizFileEntry)v.get(i)).getModifiedDate();
+				String allowPractice = ((QuizFileEntry)v.get(i)).getAllowPractice();
 				ErrorDumpUtil.ErrorLog("before going to update quiz part "+quizID+quizName+maxMarks+maxTime+quizStatus+noQuestion+Filename);
-				update_QuizList(xmlWriter,quizID,quizName,maxMarks,maxTime,noQuestion,quizStatus,Filename,CreationDate,modifiedDate,quizMode,seq);
+				update_QuizList(xmlWriter,quizID,quizName,maxMarks,maxTime,noQuestion,quizStatus,Filename,CreationDate,modifiedDate,quizMode,seq,allowPractice);
 			}
 		}
 		catch(Exception e){
@@ -424,7 +430,7 @@ public class QuizMetaDataXmlWriter
 	
 	
 	/**
-	* This method update file element in existing xml file with sequence number
+	* This method update file element in existing quiz.xml file with sequence number
 	* and all updated variables values
 	* @param file path String
 	* @param quizPath String
@@ -437,7 +443,7 @@ public class QuizMetaDataXmlWriter
 	* @param allow practice String 
 	* @author <a href="mailto:aayushi.sr@gmail.com">Aayushi</a>
 	*/
-	public static XmlWriter announceQuiz(String filePath,String quizPath,int seq,String quizID,String startDate,String startTime,String endDate,String endTime,String allow)
+	public static XmlWriter announceQuiz(String filePath,String quizPath,int seq,String quizID,String startDate,String startTime,String endDate,String endTime)
 	{
 		XmlWriter xmlWriter=null;
 		try{
@@ -455,6 +461,7 @@ public class QuizMetaDataXmlWriter
 				String creationDate=((QuizFileEntry)v.get(i)).getCreationDate();
 				String modifiedDate=((QuizFileEntry)v.get(i)).getModifiedDate();
 				String quizMode = ((QuizFileEntry)v.get(i)).getQuizMode();
+				String allowPractice = ((QuizFileEntry)v.get(i)).getAllowPractice();
 								
 				AttributesImpl ats=new AttributesImpl();		
 				ats.addAttribute("","QuizID","","",StringUtil.replaceXmlSpecialCharacters(quizID));			
@@ -471,7 +478,7 @@ public class QuizMetaDataXmlWriter
 				ats.addAttribute("","StartTime","","",StringUtil.replaceXmlSpecialCharacters(startTime));
 				ats.addAttribute("","ExpiryDate","","",StringUtil.replaceXmlSpecialCharacters(endDate));
 				ats.addAttribute("","EndTime","","",StringUtil.replaceXmlSpecialCharacters(endTime));
-				ats.addAttribute("","AllowPractice","","",StringUtil.replaceXmlSpecialCharacters(allow));
+				ats.addAttribute("","AllowPractice","","",allowPractice);
 
 				xmlWriter.changeAttributes("Quiz",ats,seq);
 			}
@@ -481,5 +488,403 @@ public class QuizMetaDataXmlWriter
 		}
 		return xmlWriter;
 	}
+	
+	/** This method is responsible for writing student'a answer in userid.xml file 
+	 * @param filepath String path to userid.xml
+	 * @param filename String userid.xml 
+	 * @param data RunData	
+	 * @author nupur dixit 
+	 */
+	public static void xmlwriteFinalAnswer(String filePath,String quizXmlPath,RunData data){
+		try{
+			User user=data.getUser();
+			String courseid=(String)user.getTemp("course_id"); 
+			String quizID=data.getParameters().getString("quizID","");		
+			String quesID=data.getParameters().getString("quesID","");		
+			String fileName=data.getParameters().getString("fileName","");		
+			String studentAnswer=data.getParameters().getString("finalAnswer","");	
+			String quesType=data.getParameters().getString("quesType","");	
+			String awardedMarks = "";
+			ErrorDumpUtil.ErrorLog("\n inside save answer quiz \n  "+quizID+"\n"+quesID+"\n"+fileName+"\n"+studentAnswer);
+			String markPerQues = data.getParameters().getString("markPerQues","");
+			
+			XmlWriter xmlWriter=null;
+			File Tempxmls=new File(filePath+"/"+quizXmlPath);
+			ErrorDumpUtil.ErrorLog("full quiz xml path"+Tempxmls.getAbsolutePath());
+			QuizMetaDataXmlReader quizMetaData=null;
+			Vector<QuizFileEntry> questionVector = (Vector)user.getTemp("questionvector");  
+			String question,realAnswer,option1,option2,option3,option4;
+			question=realAnswer=option1=option2=option3=option4="";
+			
+//			String questionBankFilePath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/"+quizID+"/");
+//            String questionBankPath=quizID+"_Questions.xml"; 
+//            ErrorDumpUtil.ErrorLog("path to question's real answer "+questionBankFilePath+"/"+questionBankPath);
+//            quizMetaData=new QuizMetaDataXmlReader(questionBankFilePath+"/"+questionBankPath);				
+//			Vector insertedQuestion=quizMetaData.getInsertedQuizQuestions();
+//			if(insertedQuestion!=null){
+			if(questionVector!=null){
+//				for(int i=0;i<insertedQuestion.size();i++) {
+//					String quesid=((QuizFileEntry) insertedQuestion.elementAt(i)).getQuestionID();
+//					String filename=((QuizFileEntry) insertedQuestion.elementAt(i)).getFileName();
+//					String rightAnswer = ((QuizFileEntry) insertedQuestion.elementAt(i)).getAnswer();
+//					if((quesID.equals(quesid)) && (fileName.equals(filename)) ){
+//						if(answer.equalsIgnoreCase(rightAnswer)){
+//							awardedMarks = markPerQues;
+//							break;
+//						}
+//						else{
+//							awardedMarks = "0";
+//							break;
+//						}						
+//					}						
+//				}
+				for(int i=0;i<questionVector.size();i++) {
+					String quesid=((QuizFileEntry) questionVector.elementAt(i)).getQuestionID();
+					String filename=((QuizFileEntry) questionVector.elementAt(i)).getFileName();										
+					if((quesID.equals(quesid)) && (fileName.equals(filename)) ){
+						question = ((QuizFileEntry) questionVector.elementAt(i)).getQuestion();
+						realAnswer = ((QuizFileEntry) questionVector.elementAt(i)).getAnswer();
+						if(quesType.equalsIgnoreCase("mcq")){
+							option1=((QuizFileEntry) questionVector.elementAt(i)).getOption1();
+							option2=((QuizFileEntry) questionVector.elementAt(i)).getOption2();
+							option3=((QuizFileEntry) questionVector.elementAt(i)).getOption3();
+							option4=((QuizFileEntry) questionVector.elementAt(i)).getOption4();
+						}
+						if(studentAnswer.equalsIgnoreCase(realAnswer)){
+							awardedMarks = markPerQues;
+							break;
+						}
+						else{
+							awardedMarks = "0";
+							break;
+						}						
+					}						
+				}
+			}						
+			boolean foundDuplicate = false;
+			int seq=-1;
+			/**
+			 *Checking for  xml file presence
+			 *@see QuizMetaDataXmlWriter in Util.
+			 */
+			if(!Tempxmls.exists()) {
+				QuizMetaDataXmlWriter.OLESRootOnly(Tempxmls.getAbsolutePath());
+			}	
+			else{
+				quizMetaData=new QuizMetaDataXmlReader(filePath+"/"+quizXmlPath);				
+				Vector finalAnswer=quizMetaData.getFinalAnswer();
+				if(finalAnswer!=null){
+					for(int i=0;i<finalAnswer.size();i++) {
+						String quesid=((QuizFileEntry) finalAnswer.elementAt(i)).getQuestionID();
+						String filename=((QuizFileEntry) finalAnswer.elementAt(i)).getFileName();
+						if((quesID.equals(quesid)) && (fileName.equals(filename)) ){
+							foundDuplicate=true;
+							seq = i;
+							break;
+						}						
+					}
+				}
+			}
+			xmlWriter=new XmlWriter(filePath+"/"+quizXmlPath);
+			ErrorDumpUtil.ErrorLog("before append answer in writer");
+//			QuizMetaDataXmlWriter.appendAnswer(xmlWriter,quesID,fileName,answer,markPerQues,awardedMarks,seq);
+			QuizMetaDataXmlWriter.appendAnswerPractice(xmlWriter,quesID,fileName,question,studentAnswer,realAnswer,markPerQues,awardedMarks,option1,option2,option3,option4,quesType,seq);
+			ErrorDumpUtil.ErrorLog("after append answer in writer");
+			xmlWriter.writeXmlFile();
+			//========================this part is to add scores in final score.xml concurrently========================================
+			String scoreFilePath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/");
+	        String scorePath="score.xml";
+			QuizMetaDataXmlWriter.xmlwriteFinalScore(scoreFilePath, scorePath, data);			
+			//============================================================================
+			ErrorDumpUtil.ErrorLog("after append question");
+			xmlWriter.writeXmlFile();
+			data.setMessage("Answer is saved successfully" );
+		}//try
+		catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:xmlwriteQuizlist !!"+e);
+			data.setMessage("some problem to save answer kindly See ExceptionLog !! " );
+		}//catch
+	}//method end
+	/**
+     * This method append final answers in existing xml (userid.xml) file
+     * @param xmlWriter XmlWriter
+     * @param questionID String
+     * @param file name String     
+     * @param Answer String
+	 * @param marks per question String
+     * @param awarded marks String  
+     * @param sequence int	    
+     * @author <a href="mailto:noopur.here@gmail.com">Nupur Dixit</a>
+     */
+	public static void appendAnswer(XmlWriter xmlWriter,String questionID,String fileName,String answer,String markPerQues,String awardedMarks, int seq){
+		try{
+		AttributesImpl ats=new AttributesImpl();
+		ats.addAttribute("","QuestionID","","",StringUtil.replaceXmlSpecialCharacters(questionID));		
+		ats.addAttribute("","FileName","","",StringUtil.replaceXmlSpecialCharacters(fileName));				
+		ats.addAttribute("","Answer","","",StringUtil.replaceXmlSpecialCharacters(answer));				
+		ats.addAttribute("","QuestionMarks","","",StringUtil.replaceXmlSpecialCharacters(markPerQues));		
+		ats.addAttribute("","AwardedMarks","","",StringUtil.replaceXmlSpecialCharacters(awardedMarks));
+		ErrorDumpUtil.ErrorLog("after add attribute");
+		if(seq != -1){
+			ErrorDumpUtil.ErrorLog("inside seq != -1");
+			xmlWriter.changeAttributes("QuizQuestions",ats,seq);
+		}
+		else{
+			ErrorDumpUtil.ErrorLog("inside seq != -1 else");
+			xmlWriter.appendElement("QuizQuestions",null,ats); 
+		}		  
+		ErrorDumpUtil.ErrorLog("after append element");
+		}catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:xmlwriteQuizlist !!"+e);
+//			data.setMessage("some problem to save answer kindly See ExceptionLog !! " );
+		}
+	}
+	
+	/**
+     * This method append final answers in existing xml (userid.xml) file
+     * @param xmlWriter XmlWriter
+     * @param questionID String
+     * @param file name String     
+     * @param Answer String
+	 * @param marks per question String
+     * @param awarded marks String  
+     * @param sequence int	    
+     * @author <a href="mailto:noopur.here@gmail.com">Nupur Dixit</a>
+     */
+	public static void appendAnswerPractice(XmlWriter xmlWriter,String questionID,String fileName,String question,String studentAnswer,String realAnswer,String markPerQues,String awardedMarks,String option1,String option2,String option3,String option4,String quesType, int seq){
+		try{
+		AttributesImpl ats=new AttributesImpl();
+		ats.addAttribute("","QuestionID","","",StringUtil.replaceXmlSpecialCharacters(questionID));		
+		ats.addAttribute("","FileName","","",StringUtil.replaceXmlSpecialCharacters(fileName));
+		ats.addAttribute("","Question","","",StringUtil.replaceXmlSpecialCharacters(question));	
+		ats.addAttribute("","StudentAnswer","","",StringUtil.replaceXmlSpecialCharacters(studentAnswer));
+		ats.addAttribute("","InstructorAnswer","","",StringUtil.replaceXmlSpecialCharacters(realAnswer));
+		ats.addAttribute("","QuestionMarks","","",StringUtil.replaceXmlSpecialCharacters(markPerQues));		
+		ats.addAttribute("","AwardedMarks","","",StringUtil.replaceXmlSpecialCharacters(awardedMarks));
+		if(quesType.equalsIgnoreCase("mcq")){
+			ats.addAttribute("","OptionA","","",StringUtil.replaceXmlSpecialCharacters(option1));
+			ats.addAttribute("","OptionB","","",StringUtil.replaceXmlSpecialCharacters(option2));
+			ats.addAttribute("","OptionC","","",StringUtil.replaceXmlSpecialCharacters(option3));
+			ats.addAttribute("","OptionD","","",StringUtil.replaceXmlSpecialCharacters(option4));
+		}
+		ErrorDumpUtil.ErrorLog("after add attribute");
+		if(seq != -1){
+			ErrorDumpUtil.ErrorLog("inside seq != -1");
+			xmlWriter.changeAttributes("QuizQuestions",ats,seq);
+		}
+		else{
+			ErrorDumpUtil.ErrorLog("inside seq != -1 else");
+			xmlWriter.appendElement("QuizQuestions",null,ats); 
+		}		  
+		ErrorDumpUtil.ErrorLog("after append element");
+		}catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in quiz writer method :appendAnswerPractice !!"+e);
+//			data.setMessage("some problem to save answer kindly See ExceptionLog !! " );
+		}
+	}
+	
+	/** This method is responsible for writing final score.xml file 
+	 * @param filepath String path to score.xml
+	 * @param filename String score.xml 
+	 * @param RunData data
+	 * @author nupur dixit 
+	 */
+	public static void xmlwriteFinalScore(String filePath,String quizXmlPath,RunData data){
+		try{
+			User user=data.getUser();					
+			String uname=user.getName();			 
+            String uid=Integer.toString(UserUtil.getUID(uname));
+            String courseid=(String)user.getTemp("course_id");            
+			String quizID=data.getParameters().getString("quizID","");	
+			String messageFlag = data.getParameters().getString("messageFlag","");	
+			int totalScore=0;
+			int awardedMarks = 0;
+			String answerFilePath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/"+quizID+"/");
+            String answerPath=uid+".xml"; 
+            File answerFile=new File(answerFilePath+"/"+answerPath);
+            File scoreFile=new File(filePath+"/"+quizXmlPath);
+            ErrorDumpUtil.ErrorLog("path to search "+answerFilePath+"/"+answerPath);
+            XmlWriter xmlWriter=null;
+            QuizMetaDataXmlReader quizMetaData=null;
+            if(!scoreFile.exists()) {
+            	QuizMetaDataXmlWriter.OLESRootOnly(scoreFile.getAbsolutePath());
+            } 
+            //==============This part is use to overwrite the content of score.xml if entries are for the same user=================
+            QuizMetaDataXmlReader scoreData = null;
+            scoreData=new QuizMetaDataXmlReader(filePath+"/"+quizXmlPath);
+            int seq = -1;
+            seq = scoreData.getSeqOfAlreadyInsertedScore(filePath,quizXmlPath,quizID,uid);
+            ErrorDumpUtil.ErrorLog("sequence number in writer "+seq);
+            //============================================
+                      
+            xmlWriter=new XmlWriter(filePath+"/"+quizXmlPath);
+            if(!answerFile.exists()) {            		
+            	QuizMetaDataXmlWriter.writeScore(xmlWriter,quizID,uid,totalScore,seq);
+            	ErrorDumpUtil.ErrorLog("after append question");
 
+            }	
+            else{
+            	quizMetaData=new QuizMetaDataXmlReader(answerFilePath+"/"+answerPath);
+            	Vector studentAnswer = quizMetaData.getFinalAnswer();
+            	if(studentAnswer!=null && studentAnswer.size()!=0){
+            		for(int i=0;i<studentAnswer.size();i++) {
+            			awardedMarks=Integer.parseInt(((QuizFileEntry) studentAnswer.elementAt(i)).getAwardedMarks());
+            			totalScore = totalScore+awardedMarks;
+    				}
+            		ErrorDumpUtil.ErrorLog("total marks "+totalScore);
+            		QuizMetaDataXmlWriter.writeScore(xmlWriter,quizID,uid,totalScore,seq);
+    			}						            		
+            	else{
+            		QuizMetaDataXmlWriter.writeScore(xmlWriter,quizID,uid,totalScore,seq);
+            	}    				     			    					
+            }
+            xmlWriter.writeXmlFile();
+            if(messageFlag.equalsIgnoreCase("submit"))
+            	data.setMessage("score is saved successfully" ); 
+		}//try
+		catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in quizMetaXmlWriter:xmlwriteFinalScore !!"+e);
+			data.setMessage("some problem to save answer kindly See ExceptionLog !! " );
+		}//catch
+	}//method end
+	
+	/**
+     * This method write(append/overwrite) final scores in existing xml (score.xml) file
+     * @param xmlWriter XmlWriter
+     * @param quizID String
+     * @param user id String     
+     * @param total score String	 
+     * @param sequence int	    
+     * @author <a href="mailto:noopur.here@gmail.com">Nupur Dixit</a>
+     */
+	public static void writeScore(XmlWriter xmlWriter,String quizID,String userID, int totalScore, int seq){
+		try{
+		AttributesImpl ats=new AttributesImpl();
+		String score = String.valueOf(totalScore);
+		ats.addAttribute("","QuizID","","",StringUtil.replaceXmlSpecialCharacters(quizID));		
+		ats.addAttribute("","UserID","","",StringUtil.replaceXmlSpecialCharacters(userID));				
+		ats.addAttribute("","TotalScore","","",StringUtil.replaceXmlSpecialCharacters(score));				
+		ErrorDumpUtil.ErrorLog("after add attribute");
+		if(seq != -1){
+			ErrorDumpUtil.ErrorLog("inside seq != -1");
+			xmlWriter.changeAttributes("QuizQuestions",ats,seq);
+		}
+		else{
+			ErrorDumpUtil.ErrorLog("inside seq != -1 else");
+			xmlWriter.appendElement("QuizQuestions",null,ats); 
+		}		  
+		ErrorDumpUtil.ErrorLog("after append element");
+		}catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:xmlwriteQuizlist !!"+e);
+		}
+	}
+	
+	/** This method is responsible for writing student'a answer in userid.xml file 
+	 * @param filepath String path to userid.xml
+	 * @param filename String userid.xml 
+	 * @param data RunData	
+	 * @author nupur dixit 
+	 */
+	public static void xmlwriteFinalAnswerPractice(String filePath,String quizXmlPath,RunData data){
+		try{
+			User user=data.getUser();
+			String courseid=(String)user.getTemp("course_id"); 			
+            String courseAlias=CourseUtil.getCourseAlias(courseid);           
+            String courseArray[]=courseid.split("_");
+            int len = courseAlias.length();
+            int len1 = courseArray[0].length();
+            String instructorName = (courseid.substring(len, len1)).trim();
+            ErrorDumpUtil.ErrorLog("index "+courseid.substring(len, len1));
+                        
+			String quizID=data.getParameters().getString("quizID","");		
+			String quesID=data.getParameters().getString("quesID","");		
+			String fileName=data.getParameters().getString("fileName","");		
+			String studentAnswer=data.getParameters().getString("finalAnswer","");	
+			String quesType=data.getParameters().getString("quesType","");	
+			String awardedMarks = "";
+			ErrorDumpUtil.ErrorLog("\n inside save answer quiz \n  "+quizID+"\n"+quesID+"\n"+fileName+"\n"+studentAnswer);
+			String markPerQues = data.getParameters().getString("markPerQues","");
+			
+			XmlWriter xmlWriter=null;
+			File Tempxmls=new File(filePath+"/"+quizXmlPath);
+			ErrorDumpUtil.ErrorLog("full quiz xml path"+Tempxmls.getAbsolutePath());
+			QuizMetaDataXmlReader quizMetaData=null;
+			Vector<QuizFileEntry> questionVector = (Vector)user.getTemp("questionvector");  
+			String question,realAnswer,option1,option2,option3,option4;
+			question=realAnswer=option1=option2=option3=option4="";
+			
+//			String questionBankFilePath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/"+quizID+"/");
+//            String questionBankPath=quizID+"_Questions.xml"; 
+//            ErrorDumpUtil.ErrorLog("path to question's real answer "+questionBankFilePath+"/"+questionBankPath);
+//            quizMetaData=new QuizMetaDataXmlReader(questionBankFilePath+"/"+questionBankPath);				
+//			Vector insertedQuestion=quizMetaData.getInsertedQuizQuestions();
+			if(questionVector!=null){
+				for(int i=0;i<questionVector.size();i++) {
+					String quesid=((QuizFileEntry) questionVector.elementAt(i)).getQuestionID();
+					String filename=((QuizFileEntry) questionVector.elementAt(i)).getFileName();										
+					if((quesID.equals(quesid)) && (fileName.equals(filename)) ){
+						question = ((QuizFileEntry) questionVector.elementAt(i)).getQuestion();
+						realAnswer = ((QuizFileEntry) questionVector.elementAt(i)).getAnswer();
+						if(quesType.equalsIgnoreCase("mcq")){
+							option1=((QuizFileEntry) questionVector.elementAt(i)).getOption1();
+							option2=((QuizFileEntry) questionVector.elementAt(i)).getOption2();
+							option3=((QuizFileEntry) questionVector.elementAt(i)).getOption3();
+							option4=((QuizFileEntry) questionVector.elementAt(i)).getOption4();
+						}
+						if(studentAnswer.equalsIgnoreCase(realAnswer)){
+							awardedMarks = markPerQues;
+							break;
+						}
+						else{
+							awardedMarks = "0";
+							break;
+						}						
+					}						
+				}
+			}						
+			boolean foundDuplicate = false;
+			int seq=-1;
+			/**
+			 *Checking for  xml file presence
+			 *@see QuizMetaDataXmlWriter in Util.
+			 */
+			if(!Tempxmls.exists()) {
+				QuizMetaDataXmlWriter.OLESRootOnly(Tempxmls.getAbsolutePath());
+			}	
+			else{
+				quizMetaData=new QuizMetaDataXmlReader(filePath+"/"+quizXmlPath);				
+				Vector finalAnswer=quizMetaData.getFinalAnswer();
+				if(finalAnswer!=null){
+					for(int i=0;i<finalAnswer.size();i++) {
+						String quesid=((QuizFileEntry) finalAnswer.elementAt(i)).getQuestionID();
+						String filename=((QuizFileEntry) finalAnswer.elementAt(i)).getFileName();
+						if((quesID.equals(quesid)) && (fileName.equals(filename)) ){
+							foundDuplicate=true;
+							seq = i;
+							break;
+						}						
+					}
+				}
+			}
+			xmlWriter=new XmlWriter(filePath+"/"+quizXmlPath);
+			ErrorDumpUtil.ErrorLog("before append answer in writer");
+			QuizMetaDataXmlWriter.appendAnswerPractice(xmlWriter,quesID,fileName,question,studentAnswer,realAnswer,markPerQues,awardedMarks,option1,option2,option3,option4,quesType,seq);
+			ErrorDumpUtil.ErrorLog("after append answer in writer");
+			xmlWriter.writeXmlFile();
+//			//========================this part is to add scores in final score.xml concurrently========================================
+//			String scoreFilePath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/");
+//	        String scorePath="score.xml";
+//			QuizMetaDataXmlWriter.xmlwriteFinalScore(scoreFilePath, scorePath, data);			
+			//============================================================================
+//			ErrorDumpUtil.ErrorLog("after append question");
+//			xmlWriter.writeXmlFile();
+			data.setMessage("Answer is saved successfully" );
+		}//try
+		catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in quizwitere method : xmlwriteFinalAnswerPractice !!"+e);
+			data.setMessage("some problem to save answer kindly See ExceptionLog !! " );
+		}//catch
+	}//method end
+	
+	
 }

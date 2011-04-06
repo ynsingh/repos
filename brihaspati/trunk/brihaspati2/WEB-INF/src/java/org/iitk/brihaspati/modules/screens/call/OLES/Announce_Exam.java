@@ -83,6 +83,7 @@ public class Announce_Exam extends SecureScreen{
         	String maxMarks = pp.getString("maxMarks","");
         	String noQuestions = pp.getString("noQuestions","");
         	String creationDate = pp.getString("creationDate","");
+        	ErrorDumpUtil.ErrorLog("mode is :"+mode);
         	if(quizName!="")
         		context.put("quizName",quizName);
         	if(maxTime!="")

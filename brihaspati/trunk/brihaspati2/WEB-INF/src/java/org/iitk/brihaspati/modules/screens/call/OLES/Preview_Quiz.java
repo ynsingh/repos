@@ -46,6 +46,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.util.parser.ParameterParser;
 //brihaspati
+import org.iitk.brihaspati.modules.utils.QuizFileEntry;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
@@ -82,20 +83,49 @@ public class Preview_Quiz extends SecureScreen{
             
             File file=new File(filePath+"/"+quizPath);
 			Vector quizList=new Vector();
+			Vector finalQuizList=new Vector();
 			QuizMetaDataXmlReader quizmetadata=null;
 			
-			if(file.exists()){
-				context.put("isFile","exist");
-				quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);				
-				quizList=quizmetadata.getModeQuiz_Detail("random");
-				if(quizList!=null){
-					if(quizList.size()!=0){
-						context.put("quizList",quizList);
+			if(!file.exists()){
+				data.setMessage("No quiz is available to preview");
+				return;
+			}
+//				context.put("isFile","exist");
+				quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);	
+				quizList=quizmetadata.listActiveAndCurrentlyNotRunningQuiz(); 
+				//this code is to list all random and nonpractice quizzes
+				if(quizList==null && quizList.size()==0){
+					data.setMessage("No quiz is available to preview");
+					return;
+				}
+				else{					
+					for(int i=0;i<quizList.size();i++){
+						String quizName =((QuizFileEntry) quizList.elementAt(i)).getQuizName();
+						String quizMode = ((QuizFileEntry) quizList.elementAt(i)).getQuizMode();
+						String allowPractice =((QuizFileEntry) quizList.elementAt(i)).getAllowPractice();						
+						if(quizMode.equalsIgnoreCase("random")){
+							if(allowPractice.equalsIgnoreCase("no")){
+								finalQuizList.add(quizList.get(i));				
+							}
+						}						
+					}					
+					if(finalQuizList.size()==0){
+						data.setMessage("No quiz is available to preview");
+						return;
+					}
+					else{
+						context.put("quizList",finalQuizList);
 					}
 				}
-			}
-			else
-				context.put("isFile","");
+//				quizList=quizmetadata.getQuizDetailForPreview("random");
+//				if(quizList!=null){
+//					if(quizList.size()!=0){
+//						context.put("quizList",quizList);
+//					}
+//				}
+//			}
+//			else
+//				context.put("isFile","");
 	    }
         catch(Exception e) {
         	ErrorDumpUtil.ErrorLog("The exception in Preview_Quiz screen::"+e);

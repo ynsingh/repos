@@ -43,6 +43,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Arrays;
 import java.util.*;
+import java.util.Timer;
+import java.util.TimerTask;
 //Turbine
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.om.security.User;
@@ -51,6 +53,8 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.services.servlet.TurbineServlet;
 //Brihaspati
+import org.iitk.brihaspati.modules.utils.CourseUtil;
+import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.QuizFileEntry;
 import org.iitk.brihaspati.modules.utils.XmlWriter;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
@@ -66,7 +70,7 @@ import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
  * @author <a href="mailto:aayushi.sr@gmail.com">Aayushi</a> 
  */
 public class OLES_Quiz extends SecureAction{
-	
+
 	String CoursePath=TurbineServlet.getRealPath("/Courses");
 	private String crsId=new String();
 	private String LangFile=new String();	
@@ -108,11 +112,13 @@ public class OLES_Quiz extends SecureAction{
 			announceExam(data,context);
 		else if(action.equals("eventSubmit_newAnnouncement"))
 			newAnnouncement(data,context);
+		else if(action.equals("eventSubmit_practiceQuiz"))
+			practiceQuiz(data,context);
 		else
 			data.setMessage(MultilingualUtil.ConvertedString("action_msg",LangFile));				
 	}
-	
-	
+
+
 	/** This method is responsible for uploading quiz setting in a xml file
 	 * @param data RunData instance
 	 * @param context Context instance
@@ -130,9 +136,10 @@ public class OLES_Quiz extends SecureAction{
 			String quizName=pp.getString("quizName","");
 			String quizID = pp.getString("quizID","");
 			String maxMarks=pp.getString("maxMarks","");
-			String maxTime=pp.getString("maxTime","");
+			String maxTime=pp.getString("maxTime","")+":00";
 			String noQuestion=pp.getString("numberQuestion","");
-				
+			String allow = pp.getString("allow","");
+
 			String filepath=CoursePath+"/"+crsId+"/Exam/";
 			File ff=new File(filepath);
 			if(!ff.exists())
@@ -159,7 +166,7 @@ public class OLES_Quiz extends SecureAction{
 			data.setMessage("See ExceptionLog !!");
 		}
 	}
-	
+
 	/** This method is responsible for creating xml file for quiz setting 
 	 * @param filepath String path to quiz.xml
 	 * @param quizID String ID of quiz (currently equal to quiz name)
@@ -180,6 +187,7 @@ public class OLES_Quiz extends SecureAction{
 		try{
 			ParameterParser pp=data.getParameters();
 			LangFile=data.getUser().getTemp("LangFile").toString();
+			String allow = pp.getString("allow","");
 			XmlWriter xmlWriter=null;
 			boolean found=false;
 			File Quizxmls=new File(filepath+"/"+quizPath);
@@ -214,7 +222,7 @@ public class OLES_Quiz extends SecureAction{
 			}
 			if(found==false){                     
 				xmlWriter=new XmlWriter(filepath+"/"+quizPath);
-				QuizMetaDataXmlWriter.appendQues_Banklist(xmlWriter,quizID,quizName,maxMarks,maxTime,noQuestion,status,Filename,CreationDate);
+				QuizMetaDataXmlWriter.appendQues_Banklist(xmlWriter,quizID,quizName,maxMarks,maxTime,noQuestion,status,Filename,CreationDate,allow);
 				xmlWriter.writeXmlFile();
 				if(!QuizQuestionxmls.exists()) {
 					QuizMetaDataXmlWriter.OLESRootOnly(QuizQuestionxmls.getAbsolutePath());
@@ -229,7 +237,7 @@ public class OLES_Quiz extends SecureAction{
 			data.setMessage("See ExceptionLog !!" );
 		}
 	}
-		
+
 	/** This method is responsible to update the quiz setting in /courses/courseid/Exam/Quiz.xml
 	 * this method is also responsible to delete the quiz setting in /courses/courseid/Exam/Quiz.xml,
 	 * quizID_Questions.xml quizID_QuestionSetting.xml files in /courses/courseid/Exam/QuizID/
@@ -252,7 +260,8 @@ public class OLES_Quiz extends SecureAction{
 			String quizName=pp.getString("quizName","");
 			String quizID = pp.getString("quizID","");
 			String maxMarks=pp.getString("maxMarks","");
-			String maxTime=pp.getString("maxTime","");
+			String maxTime=pp.getString("maxTime","")+":00";
+			//String maxTime=pp.getString("maxTime","");
 			String noQuestion=pp.getString("numberQuestion","");
 			String status = "ACT";
 			String Cur_date=ExpiryUtil.getCurrentDate("-");
@@ -274,12 +283,12 @@ public class OLES_Quiz extends SecureAction{
 			QuizMetaDataXmlReader quizmetadata=null;
 			quizmetadata=new QuizMetaDataXmlReader(filepath+quizPath);
 			collect=quizmetadata.getQuesBanklist_Detail();
-			
+
 			quizmetadata=new QuizMetaDataXmlReader(filepath1+quizQuestionSettingPath);
 			insertedQuestionHashMap=quizmetadata.getQuizQuestionNoMarks(quizmetadata,quizID);
 			int insertedMarksQuiz =((Integer)insertedQuestionHashMap.get("marks"));
 			int insertedQuestionQuiz = ((Integer)insertedQuestionHashMap.get("noQuestion"));
-			
+
 			if(collect!=null){
 				for(int i=0;i<collect.size();i++){
 					String quizid =((QuizFileEntry) collect.elementAt(i)).getQuizID();
@@ -332,16 +341,27 @@ public class OLES_Quiz extends SecureAction{
 			data.setMessage("See ExceptionLog !!");
 		}
 	}
-	
+
 	/** This method is responsible to set the quiz details in Random_Quiz.vm for creation of a quiz
-     * @param data RunData instance
-     * @param context Context instance
-     * @exception Exception, a generic exception
-     */
+	 * @param data RunData instance
+	 * @param context Context instance
+	 * @exception Exception, a generic exception
+	 */
 	public void generateQuiz(RunData data, Context context){
 		try{
 			String quizName=data.getParameters().getString("quizName","");
-			context.put("quizName",quizName);
+			context.put("quizName",quizName);			
+			String[] temp = quizName.split(",");
+			String allowPractice=temp[3];
+			//			context.put("quizID",quizID);
+			//			String maxMarks=temp[1];		
+			ErrorDumpUtil.ErrorLog("quiz id from drop down "+allowPractice);
+			if(allowPractice.equalsIgnoreCase("yes")){
+				context.put("type","createQuiz");
+				ErrorDumpUtil.ErrorLog("inside data set screen template");
+				data.setScreenTemplate("call,OLES,Practice_Quiz.vm");				
+			}			
+			context.put("type","createQuiz");		
 			ErrorDumpUtil.ErrorLog("quiz id from drop down "+quizName);
 			context.put("type","createQuiz");			
 		}catch(Exception e){
@@ -349,12 +369,12 @@ public class OLES_Quiz extends SecureAction{
 			data.setMessage("See ExceptionLog !!");
 		}
 	}
-	
+
 	/** This method is responsible for uploading quiz_questions setting (randomly) in a xml file
-     * @param data RunData instance
-     * @param context Context instance
-     * @exception Exception, a generic exception
-     */
+	 * @param data RunData instance
+	 * @param context Context instance
+	 * @exception Exception, a generic exception
+	 */
 	public void randomQuiz(RunData data, Context context){
 		try{
 			LangFile=(String)data.getUser().getTemp("LangFile");
@@ -370,10 +390,10 @@ public class OLES_Quiz extends SecureAction{
 			String levelName = data.getParameters().getString("levelName","");
 			String status = "ACT";
 			String quizStatus="ACT";
-			
-            String page = data.getParameters().getString("page","");
-            ParameterParser pp=data.getParameters();
-            String numberQuestion="";
+
+			String page = data.getParameters().getString("page","");
+			ParameterParser pp=data.getParameters();
+			String numberQuestion="";
 			if(mode.equals("one")|quizMode.equals("one")){
 				numberQuestion = "1";
 				if(levelName.equalsIgnoreCase("Easy"))
@@ -385,7 +405,7 @@ public class OLES_Quiz extends SecureAction{
 			}
 			else
 				numberQuestion = pp.getString("numberQuestion","");
-			
+
 			String marksQuestion = pp.getString("marksQuestion","");
 
 			String newFilePath=TurbineServlet.getRealPath("/Courses/"+courseid+"/Exam/"+quizID);
@@ -429,23 +449,23 @@ public class OLES_Quiz extends SecureAction{
 				else
 					data.setMessage(MultilingualUtil.ConvertedString("brih_excessmsg",LangFile));
 			}            
-        }catch(Exception e){
-        	ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:randomQuiz !! "+e);
+		}catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:randomQuiz !! "+e);
 			data.setMessage("See ExceptionLog !!");
-        }
-    }
-	
+		}
+	}
+
 	/** This method is responsible for inserting quiz_questions setting in a xml file
-     * @param xmlWriter XmlWriter instance
-     * @param String filepath, String xml file name, String no of question
-     * @param String topic name, String type of question, String difficulty level, String marks per question
-     * @param String status of question, data RunData instance, String name, String courseid
-     * @param quizQuestionSettingPath String quizID_QuestionSetting.xml file name(where question setting of a quiz is stored)
-     * @param quizQuestionPath String quizID_Question.xml file name(where questions of a quiz is stored)
-     * @exception Exception, a generic exception
-     */
+	 * @param xmlWriter XmlWriter instance
+	 * @param String filepath, String xml file name, String no of question
+	 * @param String topic name, String type of question, String difficulty level, String marks per question
+	 * @param String status of question, data RunData instance, String name, String courseid
+	 * @param quizQuestionSettingPath String quizID_QuestionSetting.xml file name(where question setting of a quiz is stored)
+	 * @param quizQuestionPath String quizID_Question.xml file name(where questions of a quiz is stored)
+	 * @exception Exception, a generic exception
+	 */
 	public String[] insertQuestionRandomly(XmlWriter xmlWriter, String newFilePath, String numberQuestion,
-		String topicName, String typeName, String levelName, String marksQuestion, String status, RunData data, String username, String courseid, String questionSettingPath, String questionsPath){
+			String topicName, String typeName, String levelName, String marksQuestion, String status, RunData data, String username, String courseid, String questionSettingPath, String questionsPath){
 		String variable[]=new String[4];
 		try{ 
 			LangFile=(String)data.getUser().getTemp("LangFile");
@@ -460,24 +480,24 @@ public class OLES_Quiz extends SecureAction{
 			String[] insertedQuestionVector = new String[2];
 			String Cur_date=ExpiryUtil.getCurrentDate("-");
 			String questionID="";
-    		String question="";
-    		String answer="";
-    		String option1="";
-    		String option2="";
-    		String option3="";
-    		String option4="";
+			String question="";
+			String answer="";
+			String option1="";
+			String option2="";
+			String option3="";
+			String option4="";
 
-    		if(mode.equals("one")|quizMode.equals("one")){
-    			questionID=data.getParameters().getString("questionID","");
-    			question=data.getParameters().getString("question","");
-    			answer=data.getParameters().getString("answer","");
-    			if(typeName.equals("mcq")){
-	    			option1=data.getParameters().getString("option1","");
-	    			option2=data.getParameters().getString("option2","");
-	    			option3=data.getParameters().getString("option3","");
-	    			option4=data.getParameters().getString("option4","");
-    			}    			
-    		}
+			if(mode.equals("one")|quizMode.equals("one")){
+				questionID=data.getParameters().getString("questionID","");
+				question=data.getParameters().getString("question","");
+				answer=data.getParameters().getString("answer","");
+				if(typeName.equals("mcq")){
+					option1=data.getParameters().getString("option1","");
+					option2=data.getParameters().getString("option2","");
+					option3=data.getParameters().getString("option3","");
+					option4=data.getParameters().getString("option4","");
+				}    			
+			}
 			File ff = new File(questionBankFilePath+"/"+questionBankQuestionsPath);
 			if(!ff.exists())
 				variable[0] = "empty";
@@ -508,11 +528,11 @@ public class OLES_Quiz extends SecureAction{
 						QuizMetaDataXmlWriter.appendRandomQuizlist(xmlWriter,topicName,typeName,levelName,marksQuestion,questionNo,id);
 						xmlWriter.writeXmlFile();
 						if(mode.equals("one")|quizMode.equals("one")){
-                        	xmlWriter=new XmlWriter(newFilePath+"/"+questionsPath);
-	                        QuizMetaDataXmlWriter.appendRandomQuizSettinglist(xmlWriter,questionID,question,option1,option2,option3,option4,answer,questionBankQuestionsPath,typeName,marksQuestion,Cur_date);
-	                        xmlWriter.writeXmlFile();
-	                        variable[0]="success";
-                        }
+							xmlWriter=new XmlWriter(newFilePath+"/"+questionsPath);
+							QuizMetaDataXmlWriter.appendRandomQuizSettinglist(xmlWriter,questionID,question,option1,option2,option3,option4,answer,questionBankQuestionsPath,typeName,marksQuestion,Cur_date);
+							xmlWriter.writeXmlFile();
+							variable[0]="success";
+						}
 						updateQuizRandomly(quizID, quizStatus, courseid, mode);
 					}
 					else{
@@ -524,11 +544,11 @@ public class OLES_Quiz extends SecureAction{
 							QuizMetaDataXmlWriter.appendRandomQuizlist(xmlWriter,topicName,typeName,levelName,marksQuestion,numberQuestion,id);
 							xmlWriter.writeXmlFile(); 
 							if(mode.equals("one")|quizMode.equals("one")){
-                            	xmlWriter=new XmlWriter(newFilePath+"/"+questionsPath);
-    	                        QuizMetaDataXmlWriter.appendRandomQuizSettinglist(xmlWriter,questionID,question,option1,option2,option3,option4,answer,questionBankQuestionsPath,typeName,marksQuestion,Cur_date);
-    	                        xmlWriter.writeXmlFile();
-    	                        variable[0]="success";
-                            }
+								xmlWriter=new XmlWriter(newFilePath+"/"+questionsPath);
+								QuizMetaDataXmlWriter.appendRandomQuizSettinglist(xmlWriter,questionID,question,option1,option2,option3,option4,answer,questionBankQuestionsPath,typeName,marksQuestion,Cur_date);
+								xmlWriter.writeXmlFile();
+								variable[0]="success";
+							}
 							variable[3] = ""+numberQuestion;
 						}
 						else if(questionNo.equalsIgnoreCase("0"))
@@ -539,11 +559,11 @@ public class OLES_Quiz extends SecureAction{
 							QuizMetaDataXmlWriter.appendRandomQuizlist(xmlWriter,topicName,typeName,levelName,marksQuestion,questionNo,id);
 							xmlWriter.writeXmlFile();
 							if(mode.equals("one")|quizMode.equals("one")){
-                            	xmlWriter=new XmlWriter(newFilePath+"/"+questionsPath);
-    	                        QuizMetaDataXmlWriter.appendRandomQuizSettinglist(xmlWriter,questionID,question,option1,option2,option3,option4,answer,questionBankQuestionsPath,typeName,marksQuestion,Cur_date);
-    	                        xmlWriter.writeXmlFile();
-    	                        variable[0]="success";
-                            }
+								xmlWriter=new XmlWriter(newFilePath+"/"+questionsPath);
+								QuizMetaDataXmlWriter.appendRandomQuizSettinglist(xmlWriter,questionID,question,option1,option2,option3,option4,answer,questionBankQuestionsPath,typeName,marksQuestion,Cur_date);
+								xmlWriter.writeXmlFile();
+								variable[0]="success";
+							}
 							variable[3] = ""+questionNo;
 						}
 						variable[1]=""+questionVector.size();
@@ -587,43 +607,43 @@ public class OLES_Quiz extends SecureAction{
 		}
 		return variable;
 	}
-	
+
 	/** This method is responsible for updating quiz setting after first time question setting insertion
 	 * status is set to ACT and mode is random / one
-     * @param String quizID
-     * @param String quiz status
-     * @param String courseid
-     * @param String quiz mode
-     * @exception Exception, a generic exception
-     */
+	 * @param String quizID
+	 * @param String quiz status
+	 * @param String courseid
+	 * @param String quiz mode
+	 * @exception Exception, a generic exception
+	 */
 	public void updateQuizRandomly(String quizID, String quizStatus, String courseid, String quizMode){
-        try{
-        	XmlWriter xmlWriter = null;
-            String newFilePath1=TurbineServlet.getRealPath("/Courses/"+courseid+"/Exam/");
-            String quizPath="/Quiz.xml";
-            int seq=-1;
-            if(quizMode.equals("")){
-            	quizMode="random";
-            }
-            Vector collect=new Vector();
-            QuizMetaDataXmlReader quizmetadata=new QuizMetaDataXmlReader(newFilePath1+quizPath);
-            collect=quizmetadata.getQuesBanklist_Detail();
-            if(collect!=null){
-                for(int i=0;i<collect.size();i++){
-                    String quizid =((QuizFileEntry) collect.elementAt(i)).getQuizID();
-                       if(quizid.equals(quizID)){
-                           seq=i;
-                        break;
-                    }
-                }
-                xmlWriter=QuizMetaDataXmlWriter.UpdateRandomQuizList(newFilePath1,quizPath,seq,quizID,quizStatus,quizMode);
-                xmlWriter.writeXmlFile();
-            }                   
-        }catch(Exception e){
-        	ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:updateQuizRandomly !! "+e);    			
-        }
-    }
-	
+		try{
+			XmlWriter xmlWriter = null;
+			String newFilePath1=TurbineServlet.getRealPath("/Courses/"+courseid+"/Exam/");
+			String quizPath="/Quiz.xml";
+			int seq=-1;
+			if(quizMode.equals("")){
+				quizMode="random";
+			}
+			Vector collect=new Vector();
+			QuizMetaDataXmlReader quizmetadata=new QuizMetaDataXmlReader(newFilePath1+quizPath);
+			collect=quizmetadata.getQuesBanklist_Detail();
+			if(collect!=null){
+				for(int i=0;i<collect.size();i++){
+					String quizid =((QuizFileEntry) collect.elementAt(i)).getQuizID();
+					if(quizid.equals(quizID)){
+						seq=i;
+						break;
+					}
+				}
+				xmlWriter=QuizMetaDataXmlWriter.UpdateRandomQuizList(newFilePath1,quizPath,seq,quizID,quizStatus,quizMode);
+				xmlWriter.writeXmlFile();
+			}                   
+		}catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:updateQuizRandomly !! "+e);    			
+		}
+	}
+
 	/** This method is responsible to delete multiple quiz settings in /courses/courseid/Exam/Quiz.xml
 	 * and quizID_Questions.xml files in /courses/courseid/Exam/QuizID/
 	 * @param data RunData instance
@@ -645,7 +665,7 @@ public class OLES_Quiz extends SecureAction{
 			data.setMessage("See ExceptionLog !!");
 		}
 	}
-    	
+
 	/** This method is responsible to delete the quiz setting in /courses/courseid/Exam/Quiz.xml
 	 * ,quizID_Questions.xml quizID_QuestionSetting.xml files in /courses/courseid/Exam/QuizID/
 	 * @param data RunData instance
@@ -662,7 +682,7 @@ public class OLES_Quiz extends SecureAction{
 			String username=data.getUser().getName();
 			crsId=(String)data.getUser().getTemp("course_id");
 			String course = (String)user.getTemp("course_name");
-			
+
 			int seq=-1;
 			XmlWriter xmlWriter=null;
 			Vector collect=new Vector();
@@ -725,7 +745,7 @@ public class OLES_Quiz extends SecureAction{
 
 			String questionBankFilePath=TurbineServlet.getRealPath("/QuestionBank/"+username+"/"+courseid);
 			String questionBankQuestionsPath=topicName+"_"+levelName+"_"+typeName+".xml";
-			
+
 			String quizFilePath=TurbineServlet.getRealPath("/Courses/"+courseid+"/Exam/"+quizID);
 			String quizQuestionsPath=quizID+"_Questions.xml";
 			Vector quizQuestionsVector = new Vector();
@@ -752,13 +772,13 @@ public class OLES_Quiz extends SecureAction{
 				}
 				else
 					quizQuestionsVector = quizXmlReader.getInsertedQuizQuestions();
-				
+
 				QuizMetaDataXmlReader questionBankXmlReader=new QuizMetaDataXmlReader(questionBankFilePath+"/"+questionBankQuestionsPath);
 				questionBankVector = questionBankXmlReader.getRandomQuizQuestions(typeName);
 				if(quizQuestionsVector!=null & questionBankVector!=null){
 					for(int i=0;i<quizQuestionsVector.size();i++){
-		           		String marks = ((QuizFileEntry) quizQuestionsVector.elementAt(i)).getMarksPerQuestion();
-		           		marksQuestion = marksQuestion + Integer.parseInt(marks);		           		
+						String marks = ((QuizFileEntry) quizQuestionsVector.elementAt(i)).getMarksPerQuestion();
+						marksQuestion = marksQuestion + Integer.parseInt(marks);		           		
 					}
 					if(quizQuestionsVector.size()!=Integer.parseInt(maxnoQuestions)){
 						if(marksQuestion!=Integer.parseInt(maxMarks)){
@@ -824,7 +844,7 @@ public class OLES_Quiz extends SecureAction{
 			data.setMessage("See ExceptionLog !!");
 		}
 	}    	
-    	
+
 	/** This method is responsible for adding questions (one by one) in a xml file
 	 * @param data RunData instance
 	 * @param context Context instance
@@ -837,14 +857,14 @@ public class OLES_Quiz extends SecureAction{
 			String typeName = data.getParameters().getString("typeName","");
 			String levelName = data.getParameters().getString("levelName","");
 			String questionDetails = data.getParameters().getString("g","");
-			
+
 			context.put("quizName",quizName);
 			context.put("topicName",topicName);
 			context.put("typeName",typeName);
 			context.put("levelName",levelName);
 			context.put("questionDetails",questionDetails);
 			context.put("insertQuestions","insertQuestions");
-			
+
 			String[] temp = questionDetails.split(",");
 			context.put("questionID",temp[0]);
 			context.put("question",temp[1]);
@@ -880,7 +900,7 @@ public class OLES_Quiz extends SecureAction{
 			String marksQuestion = pp.getString("marksQuestion","");
 			String newFilePath=TurbineServlet.getRealPath("/Courses/"+courseid+"/Exam/"+quizID);
 			String questionSettingPath=quizID+"_QuestionSetting.xml";
-			
+
 			QuizMetaDataXmlReader questionReader = new QuizMetaDataXmlReader(newFilePath+"/"+questionSettingPath);
 			HashMap hm = new HashMap();
 			hm = questionReader.getQuizQuestionNoMarks(questionReader,quizID,topicID);
@@ -941,7 +961,7 @@ public class OLES_Quiz extends SecureAction{
 			String topicID = pp.getString("topicID","");
 			String numberQuestion = pp.getString("numberQuestion","");
 			String marksQuestion = pp.getString("marksQuestion","");
-			
+
 			String questionBankFilePath=TurbineServlet.getRealPath("/QuestionBank/"+username+"/"+courseid);
 			String questionBankQuestionsPath=topicName+"_"+levelName+"_"+typeName+".xml";
 			Vector questionVector = new Vector();
@@ -1023,7 +1043,7 @@ public class OLES_Quiz extends SecureAction{
 						" "+MultilingualUtil.ConvertedString("brih_and",LangFile)+" "+variable[2]+" "+MultilingualUtil.ConvertedString("brih_insertedquestionmsg",LangFile)+
 						" "+MultilingualUtil.ConvertedString("brih_soonly",LangFile)+" "+variable[3]+" "+" "+MultilingualUtil.ConvertedString("oles_questions",LangFile)+
 						" "+MultilingualUtil.ConvertedString("update_msg",LangFile));
-				}
+			}
 			else if(variable[0].equalsIgnoreCase("dont update")){
 				data.setMessage(MultilingualUtil.ConvertedString("brih_questionrepo",LangFile)+" "+variable[1]+" "+MultilingualUtil.ConvertedString("oles_questions",LangFile)+
 						" "+MultilingualUtil.ConvertedString("brih_and",LangFile)+" "+variable[2]+" "+MultilingualUtil.ConvertedString("brih_insertedquestionmsg",LangFile)+
@@ -1063,7 +1083,7 @@ public class OLES_Quiz extends SecureAction{
 			crsId=(String)data.getUser().getTemp("course_id");
 			String course = (String)user.getTemp("course_name");
 			String quizID = pp.getString("quizID","");
-		
+
 			String filePath=data.getServletContext().getRealPath("/Courses"+"/"+crsId+"/Exam/"+quizID+"/");
 			File ff=new File(filePath);
 			if(!ff.exists())
@@ -1082,7 +1102,7 @@ public class OLES_Quiz extends SecureAction{
 			data.setMessage("See ExceptionLog !!");
 		}
 	}	
-    	
+
 	/** This method is responsible for uploading stored preview setting in the page
 	 * @param data RunData instance
 	 * @param context Context instance
@@ -1104,7 +1124,7 @@ public class OLES_Quiz extends SecureAction{
 			context.put("quizID",quizID);
 			context.put("quizDetail",quizDetail);
 			context.put("quizName",quizName);
-			
+
 			String filePath=data.getServletContext().getRealPath("/Courses"+"/"+crsId+"/Exam/"+quizID+"/");
 			File ff=new File(filePath);
 			String quizQuestionPath="/"+quizID+"_Questions.xml";
@@ -1144,7 +1164,7 @@ public class OLES_Quiz extends SecureAction{
 			context.put("tdcolor",count);
 			String quizID = data.getParameters().getString("quizID","");
 			crsId=(String)data.getUser().getTemp("course_id");
-			
+
 			String filePath=data.getServletContext().getRealPath("/Courses"+"/"+crsId+"/Exam/"+quizID+"/");
 			String tempQuizQuestionPath="/"+quizID+"_Temp_Questions.xml";
 			File tempquizQuestionxmls=new File(filePath+"/"+tempQuizQuestionPath);
@@ -1157,7 +1177,7 @@ public class OLES_Quiz extends SecureAction{
 			data.setMessage("See ExceptionLog !!");
 		}
 	}	
-	
+
 	/** This method is responsible for updating questions as well as settings of one by one type of quiz in a xml file
 	 * @param data RunData instance
 	 * @param context Context instance
@@ -1233,25 +1253,46 @@ public class OLES_Quiz extends SecureAction{
 			data.setMessage("See ExceptionLog !!");
 		}
 	}
-	
+
 	/** This method is responsible to get the quiz details to announce/update a quiz
-     * @param data RunData instance
-     * @param context Context instance
-     * @exception Exception, a generic exception
-     */
+	 * @param data RunData instance
+	 * @param context Context instance
+	 * @exception Exception, a generic exception
+	 */
 	public void announceExam(RunData data, Context context){
 		try{
 			User user=data.getUser();
 			String quizID=data.getParameters().getString("quizID","");
 			String courseid=(String)user.getTemp("course_id");  
-			        	
-        	String filePath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/");
-            String quizPath="/Quiz.xml";
-            String startDate = "",startTime = "",endDate = "",endTime = "",allowPractice = "";
-            
-            File file=new File(filePath+"/"+quizPath);
-			Vector quizDetail=new Vector();
+
+			String filePath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/");
+			String quizPath="/Quiz.xml";
 			QuizMetaDataXmlReader quizmetadata=null;
+			//functionality code-if preview is not saved then quiz can't announced
+			String previewFilePath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/"+quizID+"/");
+			String previewPath=quizID+"_Questions.xml";
+			Vector previewDetail=new Vector();
+			File previewFile=new File(previewFilePath+"/"+previewPath);
+			if(previewFile.exists()){
+				ErrorDumpUtil.ErrorLog("inside preview file exist");
+				quizmetadata=new QuizMetaDataXmlReader(previewFilePath+"/"+previewPath);				
+				previewDetail=quizmetadata.getInsertedQuizQuestions();
+				if(previewDetail==null || previewDetail.size()==0){
+					data.setMessage("The selected quiz can not be announced since no preview is saved");
+					data.setScreenTemplate("call,OLES,AnnounceExam_Manage.vm");
+				}
+			}
+			else{
+				data.setMessage("The selected quiz can not be announced since no preview is saved");
+				data.setScreenTemplate("call,OLES,AnnounceExam_Manage.vm");
+			}
+
+			//============================================================================
+			String startDate = "",startTime = "",endDate = "",endTime = "",allowPractice = "";
+
+			File file=new File(filePath+"/"+quizPath);
+			Vector quizDetail=new Vector();
+
 			if(file.exists()){
 				quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);				
 				quizDetail=quizmetadata.getQuiz_Detail(quizID);
@@ -1269,58 +1310,73 @@ public class OLES_Quiz extends SecureAction{
 							endDate = ((QuizFileEntry) quizDetail.elementAt(i)).getExpiryDate();
 							endTime = ((QuizFileEntry) quizDetail.elementAt(i)).getEndTime();
 							allowPractice = ((QuizFileEntry) quizDetail.elementAt(i)).getAllowPractice();
+							ErrorDumpUtil.ErrorLog("start date and end date "+startDate+endDate);
 						}							              
 					}
 				}
 			}
-			
+
 			String m = "";
-			if(startDate==null & startTime==null & endDate==null & endTime==null & allowPractice==null){
+			if(startDate==null & startTime==null & endDate==null & endTime==null){
 				m="new";
 			}
 			else{
 				m="update";				
 			}
+			ErrorDumpUtil.ErrorLog("value of m "+m);
 			context.put("mode",m);
 		}catch(Exception e){
 			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:announceExam !! "+e);
 			data.setMessage("See ExceptionLog !!");
 		}
 	}
-	
+
 	/** This method is responsible to announce/update a quiz
-     * @param data RunData instance
-     * @param context Context instance
-     * @exception Exception, a generic exception
-     */
+	 * @param data RunData instance
+	 * @param context Context instance
+	 * @exception Exception, a generic exception
+	 */
 	public void newAnnouncement(RunData data, Context context){
 		try{
 			LangFile=(String)data.getUser().getTemp("LangFile");
 			ParameterParser pp = data.getParameters();
 			String quizID=pp.getString("quizID","");
-			int maxTime=Integer.parseInt(pp.getString("maxTime",""));
+			//maxTime modification since for timer functionality time must be in the format mm:ss
+			int maxTime;
+			String maxtime = pp.getString("maxTime","");
+			ErrorDumpUtil.ErrorLog("\n string maxtime is :"+maxtime);
+			if(maxtime.indexOf(":")==-1){
+				ErrorDumpUtil.ErrorLog("\n inside -1");
+				maxTime=Integer.parseInt(pp.getString("maxTime",""));
+			}
+			else{
+				String maxtimeArray[] = maxtime.split(":");
+				ErrorDumpUtil.ErrorLog("\n inside -1 else after split");
+				maxTime=Integer.parseInt(maxtimeArray[0]);
+			}
+
 			String allow=pp.getString("allow","");
 			String courseID=(String)data.getUser().getTemp("course_id");
 			boolean flag = false;
-			
+
 			String startYear = pp.getString("Start_year","");
 			String startMonth = pp.getString("Start_mon","");
 			String startDay = pp.getString("Start_day","");			
 			String startHour = pp.getString("Start_hr","");
 			String startMinute = pp.getString("Start_min","");
-			
+
 			String startDate = startYear+"-"+startMonth+"-"+startDay;
 			String startTime = startHour+":"+startMinute;
-			
+
 			String endYear = pp.getString("End_year","");
 			String endMonth = pp.getString("End_mon","");
 			String endDay = pp.getString("End_day","");			
 			String endHour = pp.getString("End_hr","");
 			String endMinute = pp.getString("End_min","");
-			
+
 			String endDate = endYear+"-"+endMonth+"-"+endDay;
 			String endTime = endHour+":"+endMinute;
-			
+
 			Calendar current = Calendar.getInstance();
 			Calendar examDate = Calendar.getInstance();
 			examDate.clear();
@@ -1328,14 +1384,14 @@ public class OLES_Quiz extends SecureAction{
 			expiryDate.clear();			
 			examDate.set(Integer.parseInt(startYear),(Integer.parseInt(startMonth)-1), Integer.parseInt(startDay),Integer.parseInt(startHour),Integer.parseInt(startMinute));
 			expiryDate.set(Integer.parseInt(endYear),(Integer.parseInt(endMonth)-1), Integer.parseInt(endDay),Integer.parseInt(endHour),Integer.parseInt(endMinute));
-			
+
 			Calendar examDay = Calendar.getInstance();
 			examDay.clear();
 			Calendar expiryDay = Calendar.getInstance();
 			expiryDay.clear();			
 			examDay.set(Integer.parseInt(startYear),(Integer.parseInt(startMonth)-1), Integer.parseInt(startDay));
 			expiryDay.set(Integer.parseInt(endYear),(Integer.parseInt(endMonth)-1), Integer.parseInt(endDay));
-			
+
 			if(current.compareTo(examDate)==-1 || current.compareTo(examDate)==0){
 				if(examDate.compareTo(expiryDate)!=1){
 					if(examDay.compareTo(expiryDay)==0){
@@ -1352,13 +1408,13 @@ public class OLES_Quiz extends SecureAction{
 				}
 				else{
 					data.setMessage(MultilingualUtil.ConvertedString("Task_msg5",LangFile));
-					
+
 				}
 			}
 			else if(current.compareTo(examDate)==1){
 				data.setMessage(MultilingualUtil.ConvertedString("brih_datemsg",LangFile));
 			}
-			
+
 			if(flag==true){
 				int seq = -1;
 				XmlWriter xmlWriter=null;
@@ -1376,7 +1432,7 @@ public class OLES_Quiz extends SecureAction{
 							break;
 						}
 					}
-					xmlWriter=QuizMetaDataXmlWriter.announceQuiz(filePath,quizPath,seq,quizID,startDate,startTime,endDate,endTime,allow);
+					xmlWriter=QuizMetaDataXmlWriter.announceQuiz(filePath,quizPath,seq,quizID,startDate,startTime,endDate,endTime);
 					xmlWriter.writeXmlFile();
 				}
 				String mode=pp.getString("mode","");
@@ -1384,11 +1440,209 @@ public class OLES_Quiz extends SecureAction{
 					data.setMessage(MultilingualUtil.ConvertedString("c_msg5",LangFile));
 				else
 					data.setMessage(MultilingualUtil.ConvertedString("brih_announced",LangFile));
-				data.setScreenTemplate("call,OLES,AnnounceExam_Manage.vm");
+					data.setScreenTemplate("call,OLES,AnnounceExam_Manage.vm");
 			}			
 		}catch(Exception e){
 			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:newAnnouncement !! "+e);
 			data.setMessage("See ExceptionLog !!");
 		}
 	}
-}	
+
+	/** This method is responsible for writing practice quiz questions setting in xml file
+	 * @param data RunData instance
+	 * @param context Context instance
+	 * @exception Exception, a generic exception
+	 */
+	public void practiceQuiz(RunData data, Context context){
+		ParameterParser pp=data.getParameters();
+		try{
+			LangFile=(String)data.getUser().getTemp("LangFile");
+			String courseid=(String)data.getUser().getTemp("course_id");			
+			String quizID=pp.getString("quizID","");
+			String maxMarks=pp.getString("maxMarks","");
+			String maxnoQuestions=pp.getString("noQuestions","");
+			String numberQuestion=pp.getString("numberQuestion","");			
+			String marksQuestion = pp.getString("marksQuestion","");
+			String newFilePath=TurbineServlet.getRealPath("/Courses/"+courseid+"/Exam/"+quizID);
+			String questionSettingPath=quizID+"_QuestionSetting.xml";			
+			File newFile=new File(newFilePath+"/"+questionSettingPath);			
+			XmlWriter xmlWriter=null;
+
+			if(!newFile.exists())
+				QuizMetaDataXmlWriter.OLESRootOnly(newFile.getAbsolutePath());
+			QuizMetaDataXmlReader questionReader = new QuizMetaDataXmlReader(newFilePath+"/"+questionSettingPath);
+			HashMap hm = new HashMap();
+			hm = questionReader.getQuizQuestionNoMarks(questionReader,quizID);
+			int mark =((Integer)hm.get("marks"));
+			int enteredQuestions = ((Integer)hm.get("noQuestion"));
+			ErrorDumpUtil.ErrorLog("marks and entered questions "+mark +" : "+enteredQuestions);
+			if(enteredQuestions < Integer.parseInt(maxnoQuestions) | mark < Integer.parseInt(maxMarks)){
+				if(enteredQuestions==0){
+					if(Integer.parseInt(numberQuestion)<=Integer.parseInt(maxnoQuestions)){
+						if((Integer.parseInt(marksQuestion)*Integer.parseInt(numberQuestion))<=Integer.parseInt(maxMarks))
+							insertPreviewQuestionSetting(data,context);
+						else
+							data.setMessage(MultilingualUtil.ConvertedString("brih_marksmsg",LangFile)+" "+maxMarks);
+					}
+					else
+						data.setMessage(MultilingualUtil.ConvertedString("brih_quesmsg",LangFile)+" "+maxnoQuestions);
+				}
+				else{
+					if(Integer.parseInt(numberQuestion)<=Integer.parseInt(maxnoQuestions)-enteredQuestions){                           
+						if((Integer.parseInt(marksQuestion)*Integer.parseInt(numberQuestion))<=Integer.parseInt(maxMarks)-mark)
+							insertPreviewQuestionSetting(data,context);                            
+						else
+							data.setMessage(MultilingualUtil.ConvertedString("brih_marksmsg",LangFile)+" "+maxMarks);
+					}
+					else
+						data.setMessage(MultilingualUtil.ConvertedString("brih_quesmsg",LangFile)+" "+maxnoQuestions);
+				}
+			}
+			else
+				data.setMessage(MultilingualUtil.ConvertedString("brih_excessmsg",LangFile));          
+		}catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:practiceQuiz !! "+e);
+			data.setMessage("See ExceptionLog !!");
+		}
+	}
+
+	/** This method is responsible for inserting quiz_questions setting in a xml file
+	 * @param xmlWriter XmlWriter instance
+	 * @param String filepath, String xml file name, String no of question
+	 * @param String topic name, String type of question, String difficulty level, String marks per question
+	 * @param String status of question, data RunData instance, String name, String courseid
+	 * @param quizQuestionSettingPath String quizID_QuestionSetting.xml file name(where question setting of a quiz is stored)
+	 * @param quizQuestionPath String quizID_Question.xml file name(where questions of a quiz is stored)
+	 * @exception Exception, a generic exception
+	 */
+	public String[] insertPreviewQuestionSetting(RunData data,Context context){
+		ParameterParser pp=data.getParameters();
+		String variable[]=new String[4];
+		try{ 
+			LangFile=(String)data.getUser().getTemp("LangFile");
+			String username=data.getUser().getName();
+			String courseid=(String)data.getUser().getTemp("course_id");
+
+			String topicName = pp.getString("topicName","");
+			String typeName = pp.getString("typeName","");
+			String levelName = pp.getString("levelName","");
+			String quizID=pp.getString("quizID","");
+			String numberQuestion=pp.getString("numberQuestion","");
+			String marksQuestion = pp.getString("marksQuestion","");
+
+			String mode=data.getParameters().getString("mode","");
+			String quizMode=data.getParameters().getString("quizMode","");
+			String page = data.getParameters().getString("page","");
+			//			String quizID=data.getParameters().getString("quizID","");
+			String quizStatus="ACT";
+			String questionBankFilePath=TurbineServlet.getRealPath("/QuestionBank/"+username+"/"+courseid);
+			String questionBankQuestionsPath=topicName+"_"+levelName+"_"+typeName+".xml";
+			String newFilePath=TurbineServlet.getRealPath("/Courses/"+courseid+"/Exam/"+quizID);
+			String questionSettingPath=quizID+"_QuestionSetting.xml";	
+
+			Vector questionVector = new Vector();
+			String[] insertedQuestionVector = new String[2];
+			String Cur_date=ExpiryUtil.getCurrentDate("-");
+			String questionID="";
+			String question="";
+			String answer="";
+			String option1="";
+			String option2="";
+			String option3="";
+			String option4="";
+			XmlWriter xmlWriter = null;
+
+			File ff = new File(questionBankFilePath+"/"+questionBankQuestionsPath);
+			if(!ff.exists())
+				variable[0] = "empty";
+			else{
+				QuizMetaDataXmlReader questionBankXmlReader;         
+				questionBankXmlReader=new QuizMetaDataXmlReader(questionBankFilePath+"/"+questionBankQuestionsPath);              
+				questionVector = questionBankXmlReader.getRandomQuizQuestions(typeName);             
+				if(questionVector!=null){
+					questionBankXmlReader=new QuizMetaDataXmlReader(newFilePath+"/"+questionSettingPath);
+					String id = questionBankXmlReader.getID_RandomQuiz();
+					insertedQuestionVector = questionBankXmlReader.getQuizQuestions(questionBankQuestionsPath,numberQuestion,questionVector.size());                    
+					if(insertedQuestionVector[0].equalsIgnoreCase("a"))
+						variable[0]="empty";
+					else if(insertedQuestionVector[0].equalsIgnoreCase("firstEntry")){
+						String questionNo = "";
+						if(Integer.parseInt(numberQuestion)<=questionVector.size()){
+							variable[0]="firstInsert";
+							questionNo = numberQuestion;
+						}
+						else{
+							variable[0]="insert";
+							questionNo = String.valueOf(questionVector.size());
+							variable[1]=""+questionVector.size();
+							variable[2]="0";
+							variable[3] = ""+String.valueOf(questionVector.size());
+						}
+						xmlWriter=new XmlWriter(newFilePath+"/"+questionSettingPath);
+						QuizMetaDataXmlWriter.appendRandomQuizlist(xmlWriter,topicName,typeName,levelName,marksQuestion,questionNo,id);
+						xmlWriter.writeXmlFile();
+
+						updateQuizRandomly(quizID, quizStatus, courseid, mode);
+					}
+					else{
+
+						String questionNo = String.valueOf(questionVector.size()-Integer.parseInt(insertedQuestionVector[0]));
+						if(Integer.parseInt(numberQuestion)<=Integer.parseInt(questionNo)){
+							variable[0]="insert";
+							xmlWriter=new XmlWriter(newFilePath+"/"+questionSettingPath);
+							QuizMetaDataXmlWriter.appendRandomQuizlist(xmlWriter,topicName,typeName,levelName,marksQuestion,numberQuestion,id);
+							xmlWriter.writeXmlFile(); 							
+							variable[3] = ""+numberQuestion;
+						}
+						else if(questionNo.equalsIgnoreCase("0"))
+							variable[0]="dont insert";
+						else{
+							variable[0]="insert";
+							xmlWriter=new XmlWriter(newFilePath+"/"+questionSettingPath);
+							QuizMetaDataXmlWriter.appendRandomQuizlist(xmlWriter,topicName,typeName,levelName,marksQuestion,questionNo,id);
+							xmlWriter.writeXmlFile();
+
+							variable[3] = ""+questionNo;
+						}
+						variable[1]=""+questionVector.size();
+						variable[2]=""+insertedQuestionVector[0];
+					}
+				}
+				else
+					variable[0]="empty";
+			}        
+			if(variable[0].equalsIgnoreCase("empty"))
+				data.setMessage(MultilingualUtil.ConvertedString("brih_noquestion_repository",LangFile));
+			else if(variable[0].equalsIgnoreCase("success"))
+				data.setMessage(MultilingualUtil.ConvertedString("QueBankUtil_msg1",LangFile));
+			else if(variable[0].equalsIgnoreCase("firstInsert"))
+				data.setMessage(MultilingualUtil.ConvertedString("QueBankUtil_msg1",LangFile));
+			else if(variable[0].equalsIgnoreCase("insert")){
+				data.setMessage(MultilingualUtil.ConvertedString("brih_questionrepo",LangFile)+" "+variable[1]+" "+MultilingualUtil.ConvertedString("oles_questions",LangFile)+
+						" "+MultilingualUtil.ConvertedString("brih_and",LangFile)+" "+variable[2]+" "+MultilingualUtil.ConvertedString("brih_insertedquestionmsg",LangFile)+
+						" "+MultilingualUtil.ConvertedString("brih_soonly",LangFile)+" "+variable[3]+" "+MultilingualUtil.ConvertedString("QueBankUtil_msg1",LangFile));
+			}
+			else if(variable[0].equalsIgnoreCase("dont insert")){
+				data.setMessage(MultilingualUtil.ConvertedString("brih_questionrepo",LangFile)+" "+variable[1]+" "+MultilingualUtil.ConvertedString("oles_questions",LangFile)+
+						" "+MultilingualUtil.ConvertedString("brih_and",LangFile)+" "+variable[2]+" "+MultilingualUtil.ConvertedString("brih_insertedquestionmsg",LangFile)+
+						" "+MultilingualUtil.ConvertedString("brih_sono",LangFile));
+			} 
+			if(variable[0].equalsIgnoreCase("empty")){
+			}
+			else{
+				if(page.equalsIgnoreCase("exit")){
+					if(mode.equals("one"))
+						data.setScreenTemplate("call,OLES,Oles_Gen.vm");
+					if(quizMode.equalsIgnoreCase("random")|quizMode.equalsIgnoreCase("one"))
+						data.setScreenTemplate("call,OLES,Quiz_Detail.vm");
+					else
+						data.setScreenTemplate("call,OLES,Create_Quiz.vm");
+				}
+			}
+		}catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:insertPreviewQuestionSetting !! "+e);
+			data.setMessage("See ExceptionLog !!");
+		}
+		return variable;
+	}
+}	                           

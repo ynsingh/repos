@@ -235,23 +235,7 @@ $!data.getMessage()
 	    	</select>
  		</td>
 	</tr>
-	<tr>
-		<td><b>$brih_allowpractice</b><font color=Red>*</font></td>
-        	#if($mode=="update")
-			#set($yes="")
-			#set($no="")
-			#if($allowPractice=="yes")
-				#set($yes="checked")
-			#elseif($allowPractice=="no")
-				#set($no="checked")
-			#end
-			<td><input type="radio" name="allow" value="yes" $yes>Yes
-	               	<input type="radio" name="allow" value="no" $no>No<br>
-		#else
-        		<td><input type="radio" name="allow" value="yes" checked>Yes
-               		<input type="radio" name="allow" value="no">No<br>
-		#end
-	</tr>
+	
 	<tr bgcolor="$ui.menuColor" width="100%">
 		<td align="left" width="100%" colspan="5">
 			#if($mode == "update")

@@ -73,7 +73,7 @@ $!data.getMessage()
 	   	</td>
 	   	<td  width=70% align="left"  >
 	        	<font face="$ui.sansSerifFonts">
-	        	#if($isFile!="")
+	        	##if($isFile!="")
 	        		#if($quizList.size()!=0)
 	        			<select name=quizList>
 	        				#foreach($qid in $quizList)
@@ -85,9 +85,9 @@ $!data.getMessage()
 				#else
 					$brih_norandomquizmsg
 				#end	
-	        	#else
-	        		$brih_norandomquizmsg
-	        	#end
+	        	##else
+	        		##$brih_norandomquizmsg
+	        	##end
 		</td>
 	</tr>
 </table>

@@ -147,7 +147,7 @@ public class Preview extends  SecureScreen{
 			Vector<QuizFileEntry> question=new Vector<QuizFileEntry>();
 			Vector<QuizFileEntry> finalQues = new Vector<QuizFileEntry>();
 			Set finalQuestion = new TreeSet();
-			boolean flag = true;
+			boolean found = false;
 			int ans = 0;
 			if(allQuizSetting!=null & allQuizSetting.size()!=0){	        		
 				for(int j=0;j<allQuizSetting.size();j++){
@@ -157,19 +157,37 @@ public class Preview extends  SecureScreen{
 					noquestion = (((QuizFileEntry) allQuizSetting.elementAt(j)).getQuestionNumber());
 					markperquestion = (((QuizFileEntry) allQuizSetting.elementAt(j)).getMarksPerQuestion());
 					fileName = topicName +"_"+questionLevel+"_"+questionType+".xml";
+					ErrorDumpUtil.ErrorLog("file name"+fileName); 
 					questionReader=new QuizMetaDataXmlReader(questionBankFilePath+"/"+fileName);
 					question = questionReader.getRandomQuizQuestions(questionType);
 					for(int i=0;i<Integer.parseInt(noquestion);i++){
+						ErrorDumpUtil.ErrorLog("no of question"+noquestion+"loop no:"+i);
 						Collections.shuffle(question);
-						for(int k=0;k<question.size();k++){   
+						for(int k=0;k<question.size();k++){  
+							found = false;
 							QuizFileEntry q = question.get(k);
+							ErrorDumpUtil.ErrorLog("question and answer"+q.getQuestion()+"answer:"+q.getAnswer());
 							q.setFileName(fileName);
 							q.setMarksPerQuestion(markperquestion);
 							q.setQuestionType(questionType);
-							if(!(finalQuestion.add(q))){
+							Iterator it = finalQuestion.iterator();
+							while (it.hasNext()) {
+								QuizFileEntry a = (QuizFileEntry) it.next();
+								 String que = a.getQuestion();
+								String an = a.getAnswer();
+								ErrorDumpUtil.ErrorLog("\n ques and answer in treeset "+que +": "+an);
+								if (que.equals(q.getQuestion())&& an.equals(q.getAnswer())){ // Are they exactly the same instance?							    	 
+							    	ErrorDumpUtil.ErrorLog("inside exactly same");
+							    	found=true;
+							    	break;
+							    }
+							}
+							ErrorDumpUtil.ErrorLog("\n found "+found);
+							if(found){//question bank element in the treeset is already present
 								continue;
 							}
 							else{
+								finalQuestion.add(q);
 								question.removeElementAt(k);
 								question.trimToSize();
 								break;

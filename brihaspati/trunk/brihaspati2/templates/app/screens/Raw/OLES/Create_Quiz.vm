@@ -73,7 +73,7 @@ $!data.getMessage()
 	        		#if($quizList.size()!=0)
 	        			<select name=quizList>
 	        				#foreach($qid in $quizList)
-	        					<option value=$qid.getQuizID(),$qid.getMaxMarks(),$qid.getnoQuestion()>$qid.getQuizName()</option>
+	        					<option value=$qid.getQuizID(),$qid.getMaxMarks(),$qid.getnoQuestion(),$qid.getAllowPractice()>$qid.getQuizName()</option>
 	        				#end
 	        			</select> &nbsp;
 	        			<input type="button" name="eventSubmit_generateQuiz" value="$brih_submit" onClick="checkValue(document.frm,this);">

@@ -73,7 +73,8 @@ public class Update_Quiz_Question extends  SecureScreen{
 			String[] temp = quizDetail.split(",");
 			String quizID=temp[0];			
 			String maxMarks=temp[1];			
-			String noQuestions=temp[2];			
+			String noQuestions=temp[2];	
+			String allowPractice = temp[3];
 			String quizName=pp.getString("quizName","");			
 			String mode=pp.getString("mode","");			
 			String quizMode=pp.getString("quizMode","");			
@@ -86,6 +87,7 @@ public class Update_Quiz_Question extends  SecureScreen{
 			context.put("noQuestions",noQuestions);
 			context.put("quizMode",quizMode);
 			context.put("mode",mode);
+			context.put("allowPractice",allowPractice);
 
 			String filePath=data.getServletContext().getRealPath("/Courses"+"/"+courseid+"/Exam/"+quizID+"/");
 			String quizPath=quizID+"_QuestionSetting.xml";

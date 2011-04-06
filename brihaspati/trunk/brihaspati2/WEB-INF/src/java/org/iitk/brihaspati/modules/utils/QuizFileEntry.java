@@ -75,6 +75,11 @@ public class QuizFileEntry implements Comparable<QuizFileEntry> {
     private String startTime;
     private String endTime;
     private String allowPractice;
+    private String awardedMarks;
+    private String userID;
+    private String score;
+    private String studentAnswer;
+    private String instructorAnswer;
 //-----------------------------OLES
 	
 //	public String getName()
@@ -99,8 +104,8 @@ public class QuizFileEntry implements Comparable<QuizFileEntry> {
       * compareTo method is overrided to make quizFileEntry objects comparable
       */
     public int compareTo(QuizFileEntry o1){
-    	ErrorDumpUtil.ErrorLog("o1 's question"+o1.getQuestion());
-    	ErrorDumpUtil.ErrorLog("this 's question"+this.getQuestion());
+    	ErrorDumpUtil.ErrorLog("\n questionbank's question"+o1.getQuestion());
+    	ErrorDumpUtil.ErrorLog("\n tree set question"+this.getQuestion());
     if (o1.getQuestion().equals(this.getQuestion())&& o1.getAnswer().equals(this.getAnswer())){ // Are they exactly the same instance?    	
     	ErrorDumpUtil.ErrorLog("inside exactly same");
     	return 0;
@@ -118,6 +123,28 @@ public class QuizFileEntry implements Comparable<QuizFileEntry> {
     return 1;
     }
     
+    
+    public boolean equals(QuizFileEntry o1)
+    {
+    	ErrorDumpUtil.ErrorLog("o1 's question"+o1.getQuestion());
+    	ErrorDumpUtil.ErrorLog("this 's question"+this.getQuestion());
+    if (o1.getQuestion().equals(this.getQuestion())&& o1.getAnswer().equals(this.getAnswer())){ // Are they exactly the same instance?
+    	 
+    	ErrorDumpUtil.ErrorLog("inside exactly same");
+    	return true;
+    }
+	if (o1 == null){ // Is the object being compared null?
+		ErrorDumpUtil.ErrorLog("inside null situation");
+		return false;
+	}
+
+	if (!(o1 instanceof QuizFileEntry)){ // Is the object being compared also a Person?
+		ErrorDumpUtil.ErrorLog("inside wrong object type");
+		return false;
+	}
+	ErrorDumpUtil.ErrorLog("after every condition check");
+    return false;
+    }
     
 	public void setQuizID(String quizID){
 		this.quizID = quizID;
@@ -332,7 +359,35 @@ public class QuizFileEntry implements Comparable<QuizFileEntry> {
 	public String getAllowPractice(){
 		return allowPractice;
 	}
-	
-	
+	public void setAwardedMarks(String awardedMarks){
+		this.awardedMarks = awardedMarks;
+	}
+	public String getAwardedMarks(){
+		return awardedMarks;
+	}
+	public void setUserID(String userID){
+		this.userID = userID;
+	}
+	public String getUserID(){
+		return userID;
+	}
+	public void setScore(String score){
+		this.score = score;
+	}
+	public String getScore(){
+		return score;
+	}
+	public void setStudentAnswer(String studentAnswer){
+		this.studentAnswer = studentAnswer;
+	}
+	public String getStudentAnswer(){
+		return studentAnswer;
+	}
+	public void setInstructorAnswer(String instructorAnswer){
+		this.instructorAnswer = instructorAnswer;
+	}
+	public String getInstructorAnswer(){
+		return instructorAnswer;
+	}
      
 }

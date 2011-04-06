@@ -107,7 +107,11 @@ $!data.getMessage()
 					<td>
 						#set($quizSetting="$questionSetting.getTopic(),$questionSetting.getQuestionType(),$questionSetting.getQuestionLevel(),$questionSetting.getMarksPerQuestion(),$questionSetting.getQuestionNumber(),$questionSetting.getID()")		
 						#if($quizMode=="random")
-							<a href=$link.setPage("call,OLES,Random_Quiz.vm").addPathInfo("quizDetail",$quizDetail).addPathInfo("quizSetting",$quizSetting).addPathInfo("quizName",$quizName).addPathInfo("mode","update").addPathInfo("quizMode",$quizMode)>$brih_edit</a>									
+							#if($allowPractice=="yes")
+								<a href=$link.setPage("call,OLES,Practice_Quiz.vm").addPathInfo("quizDetail",$quizDetail).addPathInfo("quizSetting",$quizSetting).addPathInfo("quizName",$quizName).addPathInfo("mode","update").addPathInfo("quizMode",$quizMode)>$brih_edit</a>									
+							#else
+								<a href=$link.setPage("call,OLES,Random_Quiz.vm").addPathInfo("quizDetail",$quizDetail).addPathInfo("quizSetting",$quizSetting).addPathInfo("quizName",$quizName).addPathInfo("mode","update").addPathInfo("quizMode",$quizMode)>$brih_edit</a>
+							#end
 						#else
 							<a href=$link.setPage("call,OLES,OneByOne_Quiz.vm").addPathInfo("quizDetail",$quizDetail).addPathInfo("quizSetting",$quizSetting).addPathInfo("quizName",$quizName).addPathInfo("mode","update").addPathInfo("quizMode",$quizMode)>$brih_edit</a>
 						#end
@@ -121,6 +125,8 @@ $!data.getMessage()
 			    	
 <input type="hidden" name="qid" value="$!quizID">	
 <input type="hidden" name="actionName">
+<input type="hidden" name="allowPractice" value="$!allowPractice">
+
 </div>
 </form>
 </body>

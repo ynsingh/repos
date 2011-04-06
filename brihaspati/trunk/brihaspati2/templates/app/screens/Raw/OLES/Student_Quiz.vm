@@ -19,23 +19,31 @@ $!data.getMessage()
 	<b>	<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |
 		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cnm</a> | $brih_quiz
 	</b>
-</td></tr>
-</table>
-## Creating the links for help regarding FAQ 
-<table width="100%">
-	<tr>
-		<td align=right>
-		#if($user_role == "instructor" )	
-			<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/OLES_Quiz.html","newWin");>$brih_help</a>
-		#else	
-			<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Quizstudent.html","newWin");>Help</a>
-		#end
 </td>
-	</tr>
+## Creating the links for help regarding FAQ 
+<td align="right">
+<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Quizstudent.html","newWin");>$brih_help</a>
+</td>
+</tr>
 </table>
-<form name="frm" method="get"  enctype="multipart/form-data" action=$link.setPage("call,OLES,Student_Quiz.vm")>
-<table width=100% align="left" bgcolor="$ui.tableColor">
-<tr>
+
+
+#if($type=="practice")
+<form name="frm" method="get"  enctype="multipart/form-data" action=$link.setPage("call,OLES,AttemptPractice_Quiz.vm").setAction("OLES_AttemptQuiz")>
+#else
+<form name="frm" method="get"  enctype="multipart/form-data" action=$link.setPage("call,OLES,Attempt_Quiz.vm").setAction("OLES_AttemptQuiz")>
+#end
+<table width=100% align="left">
+
+#if($futureQuizList.size()!=0)
+	#foreach($futureqid in $futureQuizList)
+		<tr>	
+			<td>$velocityCount .<td colspan="5">Quiz "$futureqid.getQuizName()" is scheduled but it will start at $futureqid.getExamDate() at $futureqid.getStartTime()</td>
+		</tr>
+	#end	        						
+#end	
+
+<tr bgcolor="$ui.tableColor">
 	#if($user_role == "student")
 		#if($tdcolor != "1")
     		<td width="25%">
@@ -49,7 +57,7 @@ $!data.getMessage()
 		#elseif($tdcolor == "2")
 			<td bgcolor="#AFDCEC" width="25%">
 		#end
-				<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","2").addPathInfo("type","practice")> #if($lang == "hindi") Practice Quiz  #else Practice Quiz #end </a>
+				<a href=$link.setPage("call,OLES,Student_Quiz.vm").addPathInfo("count","2").addPathInfo("type","practice")>  $brih_Practice $brih_quiz  </a>
 			</td>
 			
 		#if($tdcolor != "3")
@@ -57,14 +65,14 @@ $!data.getMessage()
 		#elseif($tdcolor == "3")
 			<td bgcolor="#AFDCEC" width="25%">
 		#end	
-			<a href=$link.setPage("call,OLES,Oles_Other.vm").addPathInfo("count","3")>$brih_score $brih_card</a>
+			<a href=$link.setPage("call,OLES,Student_Score.vm").addPathInfo("count","3")>$brih_score $brih_card</a>
 			</td>
 		#if($tdcolor != "4")
 			<td width="25%">
 		#elseif($tdcolor == "4")
 			<td bgcolor="#AFDCEC" width="25%">
 		#end	
-        	<a href=$link.setPage("call,OLES,Oles_Other.vm").addPathInfo("count","4")>$brih_grade $brih_card</a>
+        	<a href=$link.setPage("call,OLES,Student_Score.vm").addPathInfo("count","3").addPathInfo("type","gradeCard")>$brih_grade $brih_card</a>
         	</td>
 	#end		
 	
@@ -83,12 +91,16 @@ $!data.getMessage()
 	        	#if($isFile!="")
 	        		#if($quizList.size()!=0)
 	        			<select name=quizList>
-	        				#foreach($qid in $quizList)
-	        					<option value=$qid.getQuizID()>$qid.getQuizName()</option>
+	        				#foreach($qid in $quizList)	        				
+	        					<option value=$qid.getQuizID(),$qid.getMaxTime()>$qid.getQuizName()</option>
 	        				#end
 	        			</select> &nbsp;
-	        			<input type="button" name="eventSubmit_generateQuiz" value="$brih_submit" onClick="checkValue(document.frm,this);">
+	        			#if($type=="practice")
+	        				<input type="button" name="eventSubmit_attemptPracticeQuiz" value="$brih_startquiz" onClick="confirmQuizStart(document.frm,this);">
+        				#else
+	        			<input type="button" name="eventSubmit_attemptQuiz" value="$brih_startquiz" onClick="confirmQuizStart(document.frm,this);">
 					&nbsp;&nbsp;&nbsp;
+						#end
 				#else
 					$!data.getMessage() !!!!
 				#end	
@@ -102,11 +114,28 @@ $!data.getMessage()
 ##</table>
 <input type="hidden" name="count" value="$tdcolor">
 <input type="hidden" name="type" value="$type">
+<input type="hidden" name="actionName">
+<input type="hidden" name="quizID">
+<input type="hidden" name="quizName" value="$quizName">
+<input type="hidden" name="quizIDTime">
 </form>
 <SCRIPT LANGUAGE="javascript">
  function popupWin(url,popupName)
         {
                 Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400,align=left");
         }
+        
+function confirmQuizStart(frm,field){
+	if(confirm("Are you sure to start Quiz")){
+	frm.actionName.value=field.name;
+		frm.quizIDTime.value=frm.quizList.options[frm.quizList.selectedIndex].value;
+	frm.quizName.value=frm.quizList.options[frm.quizList.selectedIndex].text;
+		//alert(frm.quizName.value);
+		frm.submit();		
+	}
+	else{
+		return false;
+	}		
+}
 
 </SCRIPT>

@@ -66,7 +66,9 @@ public class AnnounceExam_Manage extends SecureScreen{
         ParameterParser pp=data.getParameters();
         try{
         	User user=data.getUser();
-        	context.put("tdcolor",pp.getString("count",""));
+        	String count = pp.getString("count","3");
+        	ErrorDumpUtil.ErrorLog("The count value :"+count);
+        	context.put("tdcolor",pp.getString("count","3"));
         	context.put("course",(String)user.getTemp("course_name"));
         	String courseid=(String)user.getTemp("course_id");        	
         	
@@ -75,15 +77,30 @@ public class AnnounceExam_Manage extends SecureScreen{
             
             File file=new File(filePath+"/"+quizPath);
 			Vector quizList=new Vector();
+			Vector finalQuizList=new Vector();
 			QuizMetaDataXmlReader quizmetadata=null;
 			if(file.exists()){
 				context.put("isFile","exist");
 				quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);				
-				quizList=quizmetadata.getStatusQuiz_Detail("ACT");
-				if(quizList!=null){
-					if(quizList.size()!=0){
-						context.put("quizList",quizList);	              
-					}
+				quizList=quizmetadata.listActiveAndCurrentlyNotRunningQuiz();
+				if(quizList!=null && quizList.size()!=0){
+					for(int i=0;i<quizList.size();i++){
+						String quizName =((QuizFileEntry) quizList.elementAt(i)).getQuizName();
+						String quizMode = ((QuizFileEntry) quizList.elementAt(i)).getQuizMode();
+						String allowPractice =((QuizFileEntry) quizList.elementAt(i)).getAllowPractice();
+						//=============modification on 31 march-reason--> mode was not passing
+						String startDate = ((QuizFileEntry) quizList.elementAt(i)).getExamDate();
+						ErrorDumpUtil.ErrorLog("The start date :"+startDate);
+						//=================================
+//						if(quizMode.equalsIgnoreCase("random")){
+							if(allowPractice.equalsIgnoreCase("no")){
+								finalQuizList.add(quizList.get(i));				
+							}
+//						}						
+					}	
+//					if(quizList.size()!=0){
+						context.put("quizList",finalQuizList);	              
+//					}
 				}
 			}
 			else
