@@ -489,7 +489,7 @@ public class QuizMetaDataXmlWriter
 		return xmlWriter;
 	}
 	
-	/** This method is responsible for writing student'a answer in userid.xml file 
+	/** This method is responsible for writing student'a answer in userid.xml file for general quiz
 	 * @param filepath String path to userid.xml
 	 * @param filename String userid.xml 
 	 * @param data RunData	
@@ -696,6 +696,11 @@ public class QuizMetaDataXmlWriter
             String uid=Integer.toString(UserUtil.getUID(uname));
             String courseid=(String)user.getTemp("course_id");            
 			String quizID=data.getParameters().getString("quizID","");	
+			String remainTime = data.getParameters().getString("timerValue","");
+			ErrorDumpUtil.ErrorLog("\n remaining time "+remainTime);
+			String maxTime = data.getParameters().getString("maxTime","");
+			ErrorDumpUtil.ErrorLog("\n max time "+maxTime);
+			String usedTime = calcUsedTime(maxTime,remainTime);
 			String messageFlag = data.getParameters().getString("messageFlag","");	
 			int totalScore=0;
 			int awardedMarks = 0;
@@ -719,9 +724,8 @@ public class QuizMetaDataXmlWriter
                       
             xmlWriter=new XmlWriter(filePath+"/"+quizXmlPath);
             if(!answerFile.exists()) {            		
-            	QuizMetaDataXmlWriter.writeScore(xmlWriter,quizID,uid,totalScore,seq);
+            	QuizMetaDataXmlWriter.writeScore(xmlWriter,quizID,uid,totalScore,usedTime,seq);
             	ErrorDumpUtil.ErrorLog("after append question");
-
             }	
             else{
             	quizMetaData=new QuizMetaDataXmlReader(answerFilePath+"/"+answerPath);
@@ -732,10 +736,10 @@ public class QuizMetaDataXmlWriter
             			totalScore = totalScore+awardedMarks;
     				}
             		ErrorDumpUtil.ErrorLog("total marks "+totalScore);
-            		QuizMetaDataXmlWriter.writeScore(xmlWriter,quizID,uid,totalScore,seq);
+            		QuizMetaDataXmlWriter.writeScore(xmlWriter,quizID,uid,totalScore,usedTime,seq);
     			}						            		
             	else{
-            		QuizMetaDataXmlWriter.writeScore(xmlWriter,quizID,uid,totalScore,seq);
+            		QuizMetaDataXmlWriter.writeScore(xmlWriter,quizID,uid,totalScore,usedTime,seq);
             	}    				     			    					
             }
             xmlWriter.writeXmlFile();
@@ -757,13 +761,14 @@ public class QuizMetaDataXmlWriter
      * @param sequence int	    
      * @author <a href="mailto:noopur.here@gmail.com">Nupur Dixit</a>
      */
-	public static void writeScore(XmlWriter xmlWriter,String quizID,String userID, int totalScore, int seq){
+	public static void writeScore(XmlWriter xmlWriter,String quizID,String userID, int totalScore,String usedtime, int seq){
 		try{
 		AttributesImpl ats=new AttributesImpl();
 		String score = String.valueOf(totalScore);
 		ats.addAttribute("","QuizID","","",StringUtil.replaceXmlSpecialCharacters(quizID));		
 		ats.addAttribute("","UserID","","",StringUtil.replaceXmlSpecialCharacters(userID));				
-		ats.addAttribute("","TotalScore","","",StringUtil.replaceXmlSpecialCharacters(score));				
+		ats.addAttribute("","TotalScore","","",StringUtil.replaceXmlSpecialCharacters(score));
+		ats.addAttribute("","UsedTime","","",StringUtil.replaceXmlSpecialCharacters(usedtime));
 		ErrorDumpUtil.ErrorLog("after add attribute");
 		if(seq != -1){
 			ErrorDumpUtil.ErrorLog("inside seq != -1");
@@ -775,7 +780,7 @@ public class QuizMetaDataXmlWriter
 		}		  
 		ErrorDumpUtil.ErrorLog("after append element");
 		}catch(Exception e){
-			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:xmlwriteQuizlist !!"+e);
+			ErrorDumpUtil.ErrorLog("Error in quizMetaDataXmlWriter method:writeScore !!"+e);
 		}
 	}
 	
@@ -886,5 +891,136 @@ public class QuizMetaDataXmlWriter
 		}//catch
 	}//method end
 	
+	public static String calcUsedTime(String maxTime, String remainTime){
+		String usedTime="";
+		try{
+//			String maxTime="10:00";
+//			String remainTime = "07:50";
+			String usedMin,usedSec;		
+			String arr[] = maxTime.split(":");		
+			int totalMax = Integer.valueOf(arr[0])*60 + Integer.valueOf(arr[1]);
+			String arr1[] = remainTime.split(":");		
+			int totalRemain = Integer.valueOf(arr1[0])*60 + Integer.valueOf(arr1[1]);
+			int usedSeconds = totalMax - totalRemain;
+			int usedMinute = usedSeconds/60;
+			int usedSecond = usedSeconds%60;		
+			if(usedMinute<10)
+				usedMin = "0" + (String.valueOf(usedMinute));
+			else
+				usedMin = String.valueOf(usedMinute);
+			if(usedSecond<10)
+				usedSec = "0" + (String.valueOf(usedSecond));
+			else
+				usedSec = String.valueOf(usedSecond);
+			usedTime = usedMin+":"+usedSec;
+			ErrorDumpUtil.ErrorLog(totalMax+" : "+totalRemain +" --"+usedTime);
+		}catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in quizwitere method : calcUsedTime !!"+e);
+		}
+		return usedTime;
+	}
 	
+	/** This method is responsible for writing marks given by instructor during evaluation in userid.xml file 
+	 * @param filepath String path to userid.xml
+	 * @param filename String userid.xml 
+	 * @param data RunData	
+	 * @author nupur dixit 
+	 */
+	public static void xmlwriteEvaluateMarks(String answerFilePath,String answerPath,RunData data){
+		try{
+			User user=data.getUser();
+			String courseid=(String)user.getTemp("course_id");
+			String studentLoginName=data.getParameters().getString("studentLoginName","");
+			String uid=Integer.toString(UserUtil.getUID(studentLoginName));
+			String quizID=data.getParameters().getString("quizID","");		
+			String quesID=data.getParameters().getString("quesID","");		
+			String fileName=data.getParameters().getString("fileName","");		
+			String awardedMarks = data.getParameters().getString("awardedMarks","");	
+			ErrorDumpUtil.ErrorLog("\n inside save evaluate marks \n  "+quizID+"\n"+quesID+"\n"+fileName+"\n"+awardedMarks);
+			
+			XmlWriter xmlWriter=null;
+			File answerFile=new File(answerFilePath+"/"+answerPath);
+			ErrorDumpUtil.ErrorLog("full answer xml path"+answerFile.getAbsolutePath());
+			QuizMetaDataXmlReader quizMetaData=null;				
+			boolean foundDuplicate = false;
+			int seq=-1;
+			String question,studentAnswer,instructorAnswer,markPerQues;
+			question = studentAnswer = instructorAnswer = markPerQues = "";
+			/**
+			 *Checking for  xml file presence
+			 *@see QuizMetaDataXmlWriter in Util.
+			 */
+			if(!answerFile.exists()) {
+				QuizMetaDataXmlWriter.OLESRootOnly(answerFile.getAbsolutePath());
+			}	
+			else{
+				quizMetaData=new QuizMetaDataXmlReader(answerFilePath+"/"+answerPath);				
+				Vector finalAnswer=quizMetaData.getFinalAnswer();
+				if(finalAnswer!=null){
+					for(int i=0;i<finalAnswer.size();i++) {
+						String quesid=((QuizFileEntry) finalAnswer.elementAt(i)).getQuestionID();
+						String filename=((QuizFileEntry) finalAnswer.elementAt(i)).getFileName();
+						 question=((QuizFileEntry) finalAnswer.elementAt(i)).getQuestion();
+						 studentAnswer=((QuizFileEntry) finalAnswer.elementAt(i)).getStudentAnswer();
+						 instructorAnswer=((QuizFileEntry) finalAnswer.elementAt(i)).getInstructorAnswer();
+						 markPerQues=((QuizFileEntry) finalAnswer.elementAt(i)).getMarksPerQuestion();
+						if((quesID.equals(quesid)) && (fileName.equals(filename)) ){
+							foundDuplicate=true;
+							seq = i;
+							break;
+						}						
+					}
+				}
+			}
+			xmlWriter=new XmlWriter(answerFilePath+"/"+answerPath);
+			ErrorDumpUtil.ErrorLog("before append answer in writer");
+			QuizMetaDataXmlWriter.appendAnswerPractice(xmlWriter,quesID,fileName,question,studentAnswer,instructorAnswer,markPerQues,awardedMarks,"","","","","",seq);
+			ErrorDumpUtil.ErrorLog("after append answer in writer");
+			xmlWriter.writeXmlFile();
+			
+			quizMetaData=new QuizMetaDataXmlReader(answerFilePath+"/"+answerPath);
+			int getMarks=0;
+			int totalScore=0;
+        	Vector studAnswer = quizMetaData.getFinalAnswer();
+        	if(studentAnswer!=null && studAnswer.size()!=0){
+        		for(int i=0;i<studAnswer.size();i++) {
+        			getMarks=Integer.parseInt(((QuizFileEntry) studAnswer.elementAt(i)).getAwardedMarks());
+        			totalScore = totalScore+getMarks;
+				}
+        	}
+        		ErrorDumpUtil.ErrorLog("total marks "+totalScore);
+        		String scoreFilePath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/");
+    	        String scorePath="score.xml";
+    	        String usedTime="";
+//    	        int seq;
+    	        quizMetaData=new QuizMetaDataXmlReader(scoreFilePath+"/"+scorePath);
+    	        Vector scoreDetail = quizMetaData.getDetailOfAlreadyInsertedScore(scoreFilePath,scorePath,quizID,uid);
+    	        XmlWriter xmlScoreWriter = null;
+    	       
+//				ErrorDumpUtil.ErrorLog("sequence number is :"+seq);
+//    			QuizMetaDataXmlWriter.xmlwriteFinalScore(scoreFilePath, scorePath, data);
+    	        if(scoreDetail!=null && scoreDetail.size()!=0){
+            		for(int i=0;i<scoreDetail.size();i++) {
+            			usedTime = (((QuizFileEntry) scoreDetail.elementAt(i)).getUsedTime());
+            			seq = Integer.valueOf((((QuizFileEntry) scoreDetail.elementAt(i)).getID()));
+            		}  
+            		ErrorDumpUtil.ErrorLog("used time and sequence number "+usedTime+" : "+seq);        		
+			}		
+    	        xmlScoreWriter = new XmlWriter(scoreFilePath+"/"+scorePath);
+    	        ErrorDumpUtil.ErrorLog("total detail to save score "+scoreFilePath+" : "+scorePath);  
+    	        ErrorDumpUtil.ErrorLog("total detail to save score "+quizID+" : "+uid);
+    	        ErrorDumpUtil.ErrorLog("total detail to save score "+totalScore+" : "+usedTime+" : "+seq);
+    	        QuizMetaDataXmlWriter.writeScore(xmlScoreWriter,quizID,uid,totalScore,usedTime,seq);
+			//========================this part is to add scores in final score.xml concurrently========================================
+					
+			//============================================================================
+			ErrorDumpUtil.ErrorLog("after append score");
+			xmlScoreWriter.writeXmlFile();
+			data.setMessage("score is saved successfully" );
+		}//try
+		catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:xmlwriteQuizlist !!"+e);
+			data.setMessage("some problem to save answer kindly See ExceptionLog !! " );
+		}//catch
+	}//method end
 }
