@@ -233,8 +233,10 @@ public class HttpsUtil{
 							ClientObject.getController().setAudioStatus(a_status);
 							String v_status=str1[4].replaceAll("V=","");
 							ClientObject.getController().setVideoStatus(v_status);
-						}					
-						else{
+						}else if(str.startsWith("date")) {					
+							str=str.replaceAll("date","");
+							return str;
+						}else {
 							JOptionPane.showMessageDialog(null,str);
 							return null;
 						}

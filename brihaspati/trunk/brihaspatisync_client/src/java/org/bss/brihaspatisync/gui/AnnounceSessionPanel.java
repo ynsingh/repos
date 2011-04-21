@@ -56,7 +56,7 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
         private JLabel lect_Info;
         private JLabel phone,date;
         private JLabel time;
-        private JLabel email;
+        //private JLabel email;
         private JLabel duration;
         private JLabel repeat;
         private JLabel repeat_for_time;
@@ -85,6 +85,11 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
 	private ClientObject client_obj=ClientObject.getController();
 	private static AnnounceSessionPanel annPanel=null; 
 	private Log log=Log.getController();
+	private int h=0;
+	private int m=0;
+	private int year=2011;
+	private int month=1;
+        private int day=1;
 
 
 	/**
@@ -144,15 +149,16 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
 	
 	private JPanel createCenterPanel(){
                 //Creating Center Panel
+                getTimeIndexingServer();
                 center_Panel=new JPanel();
                 center_Panel.setLayout(new GridLayout(0,4,5,2));
 
-                lect_name=new JLabel("<html>&nbsp<font color=black>Lecture Name</font><font color=blue>*</font>");
-		lect_Info=new JLabel("<html>&nbsp<font color=black>Lecture Info</font><font color=blue>*</font>");
-                phone=new JLabel("<html>&nbsp<font color=black>Phone No.</font>");
-                date=new JLabel("<html>&nbsp<font color=black>Lecture Date</font><font color=blue>*</font>");
-                time=new JLabel("<html>&nbsp<font color=black>Lecture Time</font><font color=blue>*</font>");
-                email=new JLabel("<html>&nbsp<font color=black>Email</font><font color=blue>*</font>");
+                lect_name=new JLabel("<html>&nbsp<font color=black>Lecture Name</font><font color=red>*</font>");
+		lect_Info=new JLabel("<html>&nbsp<font color=black>Lecture Info</font><font color=red>*</font>");
+                phone=new JLabel("<html>&nbsp<font color=black>Phone No.</font><font color=red>*</font>");
+                date=new JLabel("<html>&nbsp<font color=black>Lecture Date</font><font color=red>*</font>");
+                time=new JLabel("<html>&nbsp<font color=black>Lecture Time</font><font color=red>*</font>");
+                //email=new JLabel("<html>&nbsp<font color=black>Email</font><font color=blue>*</font>");
                 lectName_Text=new JTextField();
                 phone_Text=new JTextField();
                 lecInfoArea=new JTextArea();
@@ -164,19 +170,25 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
                 dayBox=new JComboBox();
                 monthBox=new JComboBox();
                 yearBox=new JComboBox();
+		dayBox.addItem(Integer.toString(day));
                 for(int i=1;i<32;i++){
-                        if(i<10)
-                                dayBox.addItem("0"+Integer.toString(i));
-                        else
-                                dayBox.addItem(Integer.toString(i));
+			if(day != i) {
+				if(i<10)
+                                	dayBox.addItem("0"+Integer.toString(i));
+	                        else
+        	                        dayBox.addItem(Integer.toString(i));
+			}
                 }
+		monthBox.addItem("0"+Integer.toString(month));
                 for(int i=1;i<13;i++){
-                        if(i<10)
-                                monthBox.addItem("0"+Integer.toString(i));
-                        else
-                                monthBox.addItem(Integer.toString(i));
+			if(month != i){
+	                        if(i<10)
+        	                        monthBox.addItem("0"+Integer.toString(i));
+                	        else
+                        	        monthBox.addItem(Integer.toString(i));
+			}
                 }
-                for(int i=2009;i<=2050;i++)
+                for(int i=year;i<=2050;i++)
                         yearBox.addItem(Integer.toString(i));
                 dateEntryPanel.add(yearBox);
                 dateEntryPanel.add(monthBox);
@@ -187,12 +199,15 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
                 timeEntryPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
                 hourBox=new JComboBox();
                 minBox=new JComboBox();
+		
+		hourBox.addItem(Integer.toString(h));
                 for(int i=0;i<=23;i++){
                         if(i<10)
                                 hourBox.addItem("0"+Integer.toString(i));
 			else
                                 hourBox.addItem(Integer.toString(i));
                 }
+		minBox.addItem(Integer.toString(m));
                 for(int i=0;i<60;i++){
                         if(i<10)
                                 minBox.addItem("0"+Integer.toString(i));
@@ -203,15 +218,15 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
                 timeEntryPanel.add(minBox);
 
                 //creating a new Panel for email entry
-                JPanel mailPanel=new JPanel();
-                mailPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-                atRate=new JTextField("@");
-                atRate.setEditable(false);
-                urlText=new JTextField(5);
-                endText=new JTextField(5);
-                mailPanel.add(urlText);
-                mailPanel.add(atRate);
-                mailPanel.add(endText);
+                //JPanel mailPanel=new JPanel();
+                //mailPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+                //atRate=new JTextField("@");
+                //atRate.setEditable(false);
+                //urlText=new JTextField(5);
+                //endText=new JTextField(5);
+                //mailPanel.add(urlText);
+                //mailPanel.add(atRate);
+                //mailPanel.add(endText);
 
                 center_Panel.add(lect_name);
                 center_Panel.add(lectName_Text);
@@ -223,8 +238,8 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
                 center_Panel.add(dateEntryPanel);
                 center_Panel.add(time);
                 center_Panel.add(timeEntryPanel);
-                center_Panel.add(email);
-                center_Panel.add(mailPanel);
+                //center_Panel.add(email);
+                //center_Panel.add(mailPanel);
 
 		 return center_Panel;
 	}
@@ -234,7 +249,7 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
          */
 
 	private JPanel createSouthPanel(){
-
+			
 		//creating South Panel
                 south_Panel=new JPanel();
                 south_Panel.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -296,7 +311,7 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
 	protected String getLectureValues(){
 		String courseName="";
 		
-       		if((lectName_Text.getText().equals(""))|| (urlText.getText().equals(""))||(lecInfoArea.getText().equals(""))||(endText.getText().equals(""))||(phone_Text.getText().equals(""))){
+       		if((lectName_Text.getText().equals("")) ||(lecInfoArea.getText().equals(""))||(phone_Text.getText().equals(""))){
 		
                 	JOptionPane.showMessageDialog(null,"Please enter (*) mandatory fields");
 		
@@ -351,7 +366,9 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
 				lectValue.append("$");
 				lectValue.append((String)lecInfoArea.getText());
 				lectValue.append("$");
-				lectValue.append((String)(urlText.getText()+atRate.getText()+endText.getText()));
+				
+				lectValue.append((String)(client_obj.getUserName()));
+				//lectValue.append((String)(urlText.getText()+atRate.getText()+endText.getText()));
 				lectValue.append("$");
 				lectValue.append((String)phone_Text.getText());
 				lectValue.append("$");
@@ -435,5 +452,29 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
         public void mouseReleased(MouseEvent e) {}
         public void mouseEntered(MouseEvent e) {}
         public void mouseExited(MouseEvent e) {}
+	
+	private void getTimeIndexingServer(){
+		String indexServerName=client_obj.getIndexServerName();
+		if(!(indexServerName.equals(""))){
+			String  indexServer=indexServerName+"/ProcessRequest?req=getTimeforLecture&"+lectValue;
+			indexServer=HttpsUtil.getController().getReflectorAddress(indexServer);
+			String str[]=indexServer.split(" ");
+			String str1[]=str[0].split("/");
+			
+			year=Integer.parseInt(str1[0]);
+			month=Integer.parseInt(str1[1]);
+			day=Integer.parseInt(str1[2]);
+			
+			
+			String str2[]=str[1].split(":");
+			h=Integer.parseInt(str2[0]);
+			m=Integer.parseInt(str2[1]);
+                        System.out.println("==============>   "+HttpsUtil.getController().getReflectorAddress(indexServer));
+           	}else{
+                	System.out.println("insufficient indexServer name in AnnounceSession :" + indexServerName);
+            	}
+
+		
+	}
 	
 }//end of class
