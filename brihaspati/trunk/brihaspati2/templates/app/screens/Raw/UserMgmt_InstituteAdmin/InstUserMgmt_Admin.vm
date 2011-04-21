@@ -334,7 +334,7 @@ face="$ui.sansSerifFonts">$type</font>
                 <select name="GroupName" size=1>
                 #foreach($name in $courseList)
                 ##if(($name.getName()!="global") && ($name.getName()!="author"))
-                        <option value="$name">$name
+                        <option value="$name">$name.getGroupName()
                         ##<option value="$name.getGroupName()">$name.getGroupName()
                 ##end
                 #end
