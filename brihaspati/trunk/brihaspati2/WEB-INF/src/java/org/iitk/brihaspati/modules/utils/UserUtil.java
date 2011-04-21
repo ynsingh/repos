@@ -36,6 +36,8 @@ import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.security.TurbineSecurity;
 import org.apache.turbine.services.security.torque.om.TurbineUser;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
+import org.iitk.brihaspati.om.StudentRollno;
+import org.iitk.brihaspati.om.StudentRollnoPeer;
 
 /**
  * This utils class have all details of User
@@ -58,7 +60,7 @@ public class UserUtil
 		Criteria crit=new Criteria();
 		crit.add(TurbineUserPeer.LOGIN_NAME,userName);
 		try
-		{
+		{			
 			List v=TurbineUserPeer.doSelect(crit);
 			TurbineUser element=(TurbineUser)v.get(0);
 			uid=element.getUserId();
@@ -77,7 +79,7 @@ public class UserUtil
 		try{
 
 			Criteria crit=new Criteria();
-			crit.add(TurbineUserPeer.USER_ID,uid);
+			crit.add(TurbineUserPeer.USER_ID,uid);			
 			List v=TurbineUserPeer.doSelect(crit);
 			TurbineUser element=(TurbineUser)v.get(0);
 			LoginName=element.getUserName().toString();
@@ -87,6 +89,32 @@ public class UserUtil
 		}
 		return LoginName;
 	}
+	
+	/**
+	 * @param uid Integer
+	 * @return String full name of user
+	 * @author <a href="mailto:noopur.here@gmail.com">Nupur Dixit(DEI Agra)</a>
+	 */ 
+	public static String getFullName(int uid){
+		String fullName="";
+		try{
+
+			Criteria crit=new Criteria();
+			crit.add(TurbineUserPeer.USER_ID,uid);						
+			List v=TurbineUserPeer.doSelect(crit);
+			TurbineUser element=(TurbineUser)v.get(0);
+			String firstName = element.getFirstName().toString();
+			String lastName = element.getLastName().toString();
+			fullName = firstName + " "+lastName;			
+		}
+		catch(Exception e){
+			ErrorDumpUtil.ErrorLog("inside exception : userutil:getFullName "+e);
+			//log something
+		}		
+		return fullName;
+	}
+	
+	
 				
 	public static User getUDetail(int uid)throws Exception
 	{

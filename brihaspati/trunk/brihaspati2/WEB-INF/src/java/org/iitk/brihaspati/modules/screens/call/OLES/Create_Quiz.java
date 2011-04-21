@@ -65,6 +65,7 @@ public class Create_Quiz extends SecureScreen{
         ParameterParser pp=data.getParameters();
         try{
         	User user=data.getUser();
+        	String uname=user.getName();
         	String mode =pp.getString("mode"," ");
         	String type = pp.getString("type","");
         	String courseid=(String)user.getTemp("course_id");
@@ -84,7 +85,7 @@ public class Create_Quiz extends SecureScreen{
 			if(file.exists()){
 				context.put("isFile","exist");
 				quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);				
-				quizList=quizmetadata.getStatusQuiz_Detail("INA");
+				quizList=quizmetadata.getStatusQuiz_Detail("INA",uname);
 				if(quizList!=null){
 					if(quizList.size()!=0){
 						context.put("quizList",quizList);	              

@@ -77,7 +77,7 @@ $!data.getMessage()
 	        		#if($quizList.size()!=0)
 	        			<select name=quizList>
 	        				#foreach($qid in $quizList)
-	        					<option value=$qid.getQuizID(),$qid.getMaxMarks(),$qid.getnoQuestion(),$qid.getMaxTime()>$qid.getQuizName()</option>
+	        					<option value="$qid.getQuizID(),$qid.getMaxMarks(),$qid.getnoQuestion(),$qid.getMaxTime()">$qid.getQuizName()</option>
 	        				#end
 	        			</select> &nbsp;
 	        			<input type="button" name="" value="Submit" onClick="checkValue(document.frm,this);">
@@ -93,8 +93,8 @@ $!data.getMessage()
 </table>
 	
 
-<input type="hidden" name="mode" value=$mode >
-<input type="hidden" name="type" value=$type >
+<input type="hidden" name="mode" value="$mode" >
+<input type="hidden" name="type" value="$type" >
 <input type="hidden" name="count" value="$tdcolor">
 <input type="hidden" name="quizDetail" value="">
 <input type="hidden" name="actionName" value="">

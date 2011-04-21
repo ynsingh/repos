@@ -79,7 +79,7 @@ $!data.getMessage()
 	        			<select name=quizList>
 						#foreach($qid in $quizList)
 						
-		        				<option value=$qid.getQuizID(),$!qid.getExamDate()>$qid.getQuizName()</option>
+		        				<option value="$qid.getQuizID(),$!qid.getExamDate()">$qid.getQuizName()</option>
 	        				#end
 	        			</select> &nbsp;
 	        			<input type="button" name="eventSubmit_announceExam" value="$brih_submit" onClick="checkValue(document.frm,this);">

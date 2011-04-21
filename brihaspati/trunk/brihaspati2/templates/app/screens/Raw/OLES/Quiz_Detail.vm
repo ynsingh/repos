@@ -123,10 +123,14 @@ $!data.getMessage()
 				<tr bgcolor="$ui.tableColor">
 			#end
 			<td>
-				<INPUT TYPE="CHECKBOX" NAME=$qid.getQuizID() VALUE=$qid.getQuizID() onClick="addDeleteList(this,document.frm);">
+				<INPUT TYPE="CHECKBOX" NAME="$qid.getQuizID()" VALUE="$qid.getQuizID()" onClick="addDeleteList(this,document.frm);">
 			</td>
    			<td> 
-   				$qid.getQuizName()
+   			#if($qid.getAllowPractice()=="yes")
+   				$qid.getQuizName()<b>($brih_practice $brih_quiz)
+			#else
+				$qid.getQuizName()
+			#end   				
 			</td>			
 			<td width="30%">			 	
 				#set($quizName="$qid.getQuizID(),$qid.getMaxMarks(),$qid.getnoQuestion(),$qid.getAllowPractice()")	
@@ -156,8 +160,8 @@ $!data.getMessage()
 				<div style="clear:both"></div>
 			</td>
         		</tr>
-        		<INPUT TYPE="hidden" NAME="qname" value=$qid.getQuizID() >
-			<INPUT TYPE="hidden" NAME="quizMode" value=$qid.getQuizMode() >
+        		<INPUT TYPE="hidden" NAME="qname" value="$qid.getQuizID()" >
+			<INPUT TYPE="hidden" NAME="quizMode" value="$qid.getQuizMode()" >
 			#set($coun="$coun$qid.getQuizID()^")
 		#end
 	

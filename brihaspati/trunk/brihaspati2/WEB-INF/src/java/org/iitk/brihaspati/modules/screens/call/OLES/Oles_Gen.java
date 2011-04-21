@@ -64,8 +64,8 @@ public class Oles_Gen extends SecureScreen{
 	        */
 	        ParameterParser pp=data.getParameters();
 		try{			
-			User user=data.getUser();
-
+			User user=data.getUser();			
+			String uname=user.getName();
 			String crsId=(String)data.getUser().getTemp("course_id");
 			String mode =pp.getString("mode","");
 			String quizID=pp.getString("quizID","");
@@ -128,11 +128,11 @@ public class Oles_Gen extends SecureScreen{
 
 				if(f.exists()){
 					quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);				
-					maxQuizID=quizmetadata.getMaxQuizID();
+					maxQuizID=quizmetadata.getMaxQuizID()+"_"+uname;
 					context.put("qid",maxQuizID);
 				}
 				else{
-					context.put("qid","Quiz1");
+					context.put("qid","Quiz1_"+uname);
 				}
 			}			
 		}

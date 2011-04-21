@@ -23,7 +23,7 @@ $!data.getMessage()
 		<a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$course</a> |
 		<a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1")>$brih_generate $brih_exam</a> |
 		#if($mode == "QuizDetail")		
-
+			<a href=$link.setPage("call,OLES,Quiz_Detail.vm").addPathInfo("count","3")>$brih_quiz $brih_detail </a>|
 				$brih_quiz #if($lang =="hindi") $brih_Of1 #end $brih_update
 		#else
 				$brih_quiz #if($lang =="hindi") $brih_Of1 #end $brih_setup
@@ -86,37 +86,37 @@ $!data.getMessage()
 	#foreach ($Quiz in $allQuiz)
 		<tr bgcolor="$ui.menuColor">	
 			<td><b> $brih_quiz #if($lang =="hindi") $brih_Of1 #end $brih_ID</b></td>
-			<td><input type="text" name="quizID" value=$!qid readonly></td>
+			<td><input type="text" name="quizID" value="$!qid" readonly></td>
 		</tr>	
 		<tr>
 	       		<td><b>$brih_quiz $brih_title</b><font color=Red>*</font></td>  
 	       		<td><textarea rows="2" cols="23" name="quizName" readonly>$Quiz.getQuizName()</textarea></td>              
-			##<td><input type="text" name="quizName" value=$Quiz.getQuizName() readonly></td>
+			##<td><input type="text" name="quizName" value="$Quiz.getQuizName()" readonly></td>
 		</tr>
 		<tr>
 			<td><b>$brih_maximum $brih_marks</b><font color=Red>*</font></td>			
-			<td><input type="text" name="maxMarks" value=$Quiz.getMaxMarks()></td>
+			<td><input type="text" name="maxMarks" value="$Quiz.getMaxMarks()"></td>
 		</tr>
 		<tr>
 			<td><b>$brih_maximum $brih_time</b><font color=Red>*</font></td> 
 			#set($len = $Quiz.getMaxTime().indexOf(":")) 
   			#set($mtime=$Quiz.getMaxTime().substring(0,$len))			
-			<td><input type="text" name="maxTime" value=$mtime></td>       	
-			##<td><input type="text" name="maxTime" value=$Quiz.getMaxTime()></td>
+			<td><input type="text" name="maxTime" value="$mtime"></td>       	
+			##<td><input type="text" name="maxTime" value="$Quiz.getMaxTime()"></td>
 		</tr>
 		<tr>
            		<td><b>$brih_nos $brih_qus2</b><font color=Red>*</font></td>
-			<td><input type="text" name="numberQuestion" value=$Quiz.getnoQuestion()></td>
+			<td><input type="text" name="numberQuestion" value="$Quiz.getnoQuestion()"></td>
 	        </tr>   
 	#end
 #else
 	<tr bgcolor="$ui.menuColor">
 		<td><b> $brih_quiz #if($lang =="hindi") $brih_Of1 #end $brih_ID <font color=RED> *</font></b> </td>
-		<td> <input type="text" size=8 name="quizID" value="$!qid" "readonly"></td>
+		<td> <input type="text" name="quizID" value="$!qid" "readonly"></td>
 	</tr>
 	<tr>
 		<td><b> $brih_quiz #if($lang =="hindi") $brih_Of1 #end $brih_title <font color=RED> *</font></b> </td>
-	        <td><input type="text" size=8 name="quizName" value=""></td>
+	        <td><input type="text" name="quizName" value=""></td>
 	</tr>		
         <tr>
 	        <td><b>$brih_maximum $brih_marks</b><font color=Red>*</font></td>
@@ -133,18 +133,18 @@ $!data.getMessage()
         </tr>  
         <tr>
 		<td><b>$brih_allowpractice</b><font color=Red>*</font></td>        	
-		<td><input type="radio" name="allow" value="yes" checked>Yes
-       		<input type="radio" name="allow" value="no">No<br>		
+		<td><input type="radio" name="allow" value="yes">Yes
+       		<input type="radio" name="allow" value="no" checked>No<br>		
 		</tr>              
 #end	
        
 <tr bgcolor="$ui.menuColor" width="100%">
 	<td align="left" width="100%" colspan="5">
 		#if($mode == "QuizDetail")
-			<input type=button name="eventSubmit_doUpdate" value=$brih_update onClick="checkField(document.frm,this);"/>
+			<input type=button name="eventSubmit_doUpdate" value="$brih_update" onClick="checkField(document.frm,this);"/>
 			<input type="hidden" name="mode" value=$mode >					
 		#else
-			<input type="button" name="eventSubmit_doUploadQuiz" value=$brih_submit onClick="checkField(document.frm,this);"/>
+			<input type="button" name="eventSubmit_doUploadQuiz" value="$brih_submit" onClick="checkField(document.frm,this);"/>
 		#end		
 		<input type="reset" name="reset" value="$brih_clear" onClick="checkClear(document.frm,this);"/>
 	</td>

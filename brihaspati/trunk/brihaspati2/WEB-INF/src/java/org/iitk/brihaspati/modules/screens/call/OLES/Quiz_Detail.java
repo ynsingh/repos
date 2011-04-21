@@ -91,7 +91,7 @@ public class Quiz_Detail extends SecureScreen{
 			
 			if(f.exists()){
 				quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);
-				allQuiz=quizmetadata.listActiveAndCurrentlyNotRunningQuiz();
+				allQuiz=quizmetadata.listActiveAndCurrentlyNotRunningQuiz(uname);
 //				allQuiz=quizmetadata.getStatusQuiz_Detail("ACT");			
 			}
 			if(allQuiz==null)

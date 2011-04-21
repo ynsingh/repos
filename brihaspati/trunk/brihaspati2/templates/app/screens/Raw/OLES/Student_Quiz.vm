@@ -72,7 +72,8 @@ $!data.getMessage()
 		#elseif($tdcolor == "4")
 			<td bgcolor="#AFDCEC" width="25%">
 		#end	
-        	<a href=$link.setPage("call,OLES,Student_Score.vm").addPathInfo("count","3").addPathInfo("type","gradeCard")>$brih_grade $brih_card</a>
+        	<a href=$link.setPage("call,OLES,Student_Score.vm").addPathInfo("count","4").addPathInfo("type","gradeCard")>$brih_grade $brih_card</a>
+
         	</td>
 	#end		
 	
@@ -92,7 +93,7 @@ $!data.getMessage()
 	        		#if($quizList.size()!=0)
 	        			<select name=quizList>
 	        				#foreach($qid in $quizList)	        				
-	        					<option value=$qid.getQuizID(),$qid.getMaxTime()>$qid.getQuizName()</option>
+	        					<option value="$qid.getQuizID(),$qid.getMaxTime()">$qid.getQuizName()</option>
 	        				#end
 	        			</select> &nbsp;
 	        			#if($type=="practice")

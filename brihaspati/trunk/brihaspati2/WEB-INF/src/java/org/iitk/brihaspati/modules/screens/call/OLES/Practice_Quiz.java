@@ -1,7 +1,7 @@
 package org.iitk.brihaspati.modules.screens.call.OLES;
 
 /*
- * @(#)Preview_Quiz.java	
+ * @(#)Practice_Quiz.java	
  *
  *  Copyright (c) 2010 MHRD, DEI Agra. 
  *  All Rights Reserved.
@@ -46,89 +46,93 @@ import org.apache.turbine.util.RunData;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.util.parser.ParameterParser;
 //brihaspati
-import org.iitk.brihaspati.modules.utils.QuizFileEntry;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
 
 /**
-* This class displays the list of quizzes for preview in online examination system 
-* @author <a href="mailto:noopur.here@gmail.com">Nupur Dixit</a>
+* This class is used to create quiz randomly 
+* @author <a href="mailto:aayushi.sr@gmail.com">Aayushi</a>
 */
 
-public class Preview_Quiz extends SecureScreen{
+public class Practice_Quiz extends SecureScreen{
 	public void doBuildTemplate(RunData data,Context context){
-	/**
+		/**
         *Retrieve the Parameters by using the Parameter Parser
         *Get the UserName and put it in the context
         *for template use
         */
         ParameterParser pp=data.getParameters();
-        try
-        {
-        	String LangFile=data.getUser().getTemp("LangFile").toString();
+        try{
+        	ErrorDumpUtil.ErrorLog("inside practice quiz.java");
         	User user=data.getUser();
-        	String userName=user.getName();
-        	String mode =pp.getString("mode"," ");
-        	String type = pp.getString("type","");
-        	String courseid=(String)user.getTemp("course_id");
         	
-        	context.put("tdcolor",pp.getString("count",""));
+        	String mode =pp.getString("mode"," ");
+        	String quizMode =pp.getString("quizMode"," ");        			
+        	String type = pp.getString("type","");
+        	String count = pp.getString("count","");
+        	String courseID=(String)user.getTemp("course_id");
+        	String quizDetail="";
+        	
+        	context.put("tdcolor",count);
         	context.put("course",(String)user.getTemp("course_name"));
 			context.put("mode",mode);
+			context.put("quizMode",quizMode);
 			context.put("type",type);
+			context.put("courseID",courseID);
 			
-			String filePath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/");
-            String quizPath="/Quiz.xml";
+			String username=user.getName();
+            String filePath=TurbineServlet.getRealPath("/QuestionBank"+"/"+username+"/"+courseID+"/");
+            String quizPath="/QBtopiclist.xml";
             
             File file=new File(filePath+"/"+quizPath);
-			Vector quizList=new Vector();
-			Vector finalQuizList=new Vector();
-			QuizMetaDataXmlReader quizmetadata=null;
+            Vector topicList=new Vector();
+			QuizMetaDataXmlReader topipcmetadata=null;
 			
-			if(!file.exists()){
-				data.setMessage("No quiz is available to preview");
-				return;
+			if(file.exists()){
+				topipcmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);				
+				topicList=topipcmetadata.getTopicNames();
+					if(topicList.size()!=0){
+						context.put("topicList",topicList);
+					}	            
+			}			
+			if(mode.equalsIgnoreCase("update")){
+				quizDetail = pp.getString("quizDetail","");
+				String quizName = pp.getString("quizName","");
+				context.put("quizName",quizName);
+				String quizSetting = pp.getString("quizSetting","");
+				context.put("quizSetting",quizSetting);
+				String[] temp1 = quizSetting.split(",");
+				String topic=temp1[0];
+				context.put("topic",topic);
+				String questionType=temp1[1];
+				context.put("questionType",questionType);
+				String questionLevel=temp1[2];
+				context.put("questionLevel",questionLevel);
+				String markPerQuestion=temp1[3];
+				context.put("markPerQuestion",markPerQuestion);
+				String questionNumber=temp1[4];
+				context.put("questionNumber",questionNumber);
+				String topicID = temp1[5];
+				context.put("topicID",temp1[5]);
 			}
-//				context.put("isFile","exist");
-				quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);	
-				quizList=quizmetadata.listActiveAndCurrentlyNotRunningQuiz(userName); 
-				//this code is to list all random and nonpractice quizzes
-				if(quizList==null && quizList.size()==0){
-					data.setMessage("No quiz is available to preview");
-					return;
-				}
-				else{					
-					for(int i=0;i<quizList.size();i++){
-						String quizName =((QuizFileEntry) quizList.elementAt(i)).getQuizName();
-						String quizMode = ((QuizFileEntry) quizList.elementAt(i)).getQuizMode();
-						String allowPractice =((QuizFileEntry) quizList.elementAt(i)).getAllowPractice();						
-						if(quizMode.equalsIgnoreCase("random")){
-							if(allowPractice.equalsIgnoreCase("no")){
-								finalQuizList.add(quizList.get(i));				
-							}
-						}						
-					}					
-					if(finalQuizList.size()==0){
-						data.setMessage("No quiz is available to preview");
-						return;
-					}
-					else{
-						context.put("quizList",finalQuizList);
-					}
-				}
-//				quizList=quizmetadata.getQuizDetailForPreview("random");
-//				if(quizList!=null){
-//					if(quizList.size()!=0){
-//						context.put("quizList",quizList);
-//					}
-//				}
-//			}
-//			else
-//				context.put("isFile","");
-	    }
+			else{
+				quizDetail = pp.getString("quizName","");
+				context.put("quizName",quizDetail);
+			}			
+			context.put("quizDetail",quizDetail);
+			String[] temp = quizDetail.split(",");
+			String quizID=temp[0];
+			context.put("quizID",quizID);
+			String maxMarks=temp[1];
+			context.put("maxMarks",maxMarks);
+			String noQuestions=temp[2];
+			context.put("noQuestions",noQuestions);
+			String allowPractice = temp[3];
+			context.put("allowPractice",allowPractice);
+        }
         catch(Exception e) {
-        	ErrorDumpUtil.ErrorLog("The exception in Preview_Quiz screen::"+e);
+        	ErrorDumpUtil.ErrorLog("The exception in Random_Quiz screen::"+e);
         	data.setMessage("See ExceptionLog !! ");
         }
     }

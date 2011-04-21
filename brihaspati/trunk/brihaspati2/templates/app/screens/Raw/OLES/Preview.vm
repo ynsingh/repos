@@ -142,13 +142,20 @@ $page.setBgColor("bgcolor")
 					</tr>
 				#end
 				#if($finalQ.getQuestionType() == "tft")
+					#if($finalQ.getAnswer()=="true")
+						#set($a="checked")
+						#set($b="")
+					#elseif($finalQ.getAnswer()=="false")
+						#set($b="checked")
+						#set($a="")
+					#end
 					<tr>	
 						<td align=left colspan=2>
-							<input type="RADIO" name="field1"  value="A"  disabled>									
+							<input type="RADIO" name="$velocityCount"  value="A"  $!a disabled>									
 							$brih_true	
 						</td>
 						<td align=left colspan=2 >
-							<input type="RADIO" name="field1" value="B"  disabled>									
+							<input type="RADIO" name="$velocityCount" value="B"  $!b disabled>									
 							$brih_false
 						</td>	
 					</tr>

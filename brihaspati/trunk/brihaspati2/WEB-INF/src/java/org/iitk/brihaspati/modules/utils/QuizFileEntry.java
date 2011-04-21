@@ -80,6 +80,8 @@ public class QuizFileEntry implements Comparable<QuizFileEntry> {
     private String score;
     private String studentAnswer;
     private String instructorAnswer;
+    private String usedTime;
+
 //-----------------------------OLES
 	
 //	public String getName()
@@ -388,6 +390,13 @@ public class QuizFileEntry implements Comparable<QuizFileEntry> {
 	}
 	public String getInstructorAnswer(){
 		return instructorAnswer;
+	}
+	
+	public void setUsedTime(String usedTime){
+		this.usedTime = usedTime;
+	}
+	public String getUsedTime(){
+		return usedTime;
 	}
      
 }

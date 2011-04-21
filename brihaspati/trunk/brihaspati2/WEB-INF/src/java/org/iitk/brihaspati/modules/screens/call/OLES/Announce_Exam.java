@@ -163,6 +163,7 @@ public class Announce_Exam extends SecureScreen{
         	ErrorDumpUtil.ErrorLog("\n current date "+cld.getTime());
         	//cld.clear();
         	cld.add(Calendar.DAY_OF_MONTH, 30);
+        	cld.add(Calendar.MINUTE, 5);
         	ErrorDumpUtil.ErrorLog("\n date after 30 days "+cld.getTime());
         	String eYear = Integer.toString(cld.get(cld.YEAR));
         	int eMon = (cld.get(cld.MONTH))+1;

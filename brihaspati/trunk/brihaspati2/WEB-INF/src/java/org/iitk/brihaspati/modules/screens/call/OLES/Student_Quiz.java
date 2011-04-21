@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.OLES;
 /*
  * @(#)Student_Quiz.java	
  *
- *  Copyright (c) 2007 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2010-2011 MHRD, DEI Agra. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -32,11 +32,13 @@ package org.iitk.brihaspati.modules.screens.call.OLES;
  *  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
  *  
- *  Contributors: Members of ETRG, I.I.T. Kanpur 
+ *  Contributors: Members of MHRD, DEI Agra. 
  * 
  */
 
 import java.util.Calendar;
+import java.util.Iterator;
+
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
@@ -44,7 +46,7 @@ import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.om.security.User;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
-import org.iitk.brihaspati.modules.utils.FileEntry;
+import org.iitk.brihaspati.modules.utils.QuizFileEntry;
 import org.iitk.brihaspati.modules.utils.QuizUtil;
 import java.util.Vector;
 import java.io.File;
@@ -71,44 +73,50 @@ import org.iitk.brihaspati.om.QuizPeer;
 import org.iitk.brihaspati.om.Quiz;
 
 /**
- *   This class contains code for all discussions in workgroup
- *   Compose a discussion and reply.
- *   @author  <a href="nksinghiitk@yahoo.co.in">Nagendra Kimar Singh</a>
- *   @author  <a href="singh_jaivir@rediffmail.com">Jaivir Singh</a>
- *   @author  <a href="arvindjss17@yahoo.co.in">Arvind Pal</a>
+ *   This class contains code for quiz attempt part from student login
+ *   @author  <a href="noopur.here@gmail.com">Nupur Dixit</a>
  */
 public class Student_Quiz extends SecureScreen
 {
 	public void doBuildTemplate( RunData data, Context context )
 	{
-		 ParameterParser pp=data.getParameters();
+		ParameterParser pp=data.getParameters();
 		try{
+			Attempt_Quiz.msg = 0;
 			User user=data.getUser();
 			String LangFile=user.getTemp("LangFile").toString();
-            String loginname=user.getName();
-            int user_id=UserUtil.getUID(loginname);
-            String cid=(String)user.getTemp("course_id");
+			String loginname=user.getName();
+			String user_id=Integer.toString(UserUtil.getUID(loginname));
+			String cid=(String)user.getTemp("course_id");
 			Criteria crit=new Criteria();
 			String Role=(String)user.getTemp("role");
-            context.put("user_role",Role);
-            
-            String count = pp.getString("count","");
-            context.put("tdcolor",count);
-            String type = pp.getString("type","");
-            context.put("type",type);
-            ErrorDumpUtil.ErrorLog("type is "+type);
-            
-            String filePath=TurbineServlet.getRealPath("/Courses"+"/"+cid+"/Exam/");
-            String quizPath="/Quiz.xml";            
-            File file=new File(filePath+"/"+quizPath);
-            Vector quizList=new Vector();
+			context.put("user_role",Role);
+
+			String count = pp.getString("count","");			
+			if(count.isEmpty()){
+				count=(String)user.getTemp("count");
+			}			
+			String type = pp.getString("type","");
+			context.put("type",type);
+			ErrorDumpUtil.ErrorLog("type is "+type);
+			if(type.equalsIgnoreCase("practice"))
+				count="2";
+			context.put("tdcolor",count);
+			String filePath=TurbineServlet.getRealPath("/Courses"+"/"+cid+"/Exam/");
+			String quizPath="/Quiz.xml";  
+			String scorePath="/score.xml";
+			File file=new File(filePath+"/"+quizPath);
+			Vector quizList=new Vector();
+			Vector attemptedQuizList=new Vector();
+			Vector finalQuizList=new Vector();
+			Vector futureQuizList = new Vector();
 			QuizMetaDataXmlReader quizmetadata=null;
 			if(type.equalsIgnoreCase("practice")){
 				if(!file.exists()){
-	            	data.setMessage("No Quiz for Practice");				
-	            }
+					data.setMessage(MultilingualUtil.ConvertedString("brih_nopracticequiz",LangFile));									
+				}
 				else{
-	            	context.put("isFile","exist");
+					context.put("isFile","exist");
 					quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);				
 					quizList=quizmetadata.getPracticeQuiz_Detail();
 					if(quizList!=null){
@@ -116,209 +124,85 @@ public class Student_Quiz extends SecureScreen
 							context.put("quizList",quizList);	              
 						}
 						else
-							data.setMessage("No Quiz for Practice");
+							data.setMessage(MultilingualUtil.ConvertedString("brih_nopracticequiz",LangFile));
 					}
 					else
-						data.setMessage("No Quiz for Practice");
-	            }	
+						data.setMessage(MultilingualUtil.ConvertedString("brih_nopracticequiz",LangFile));
+				}	
 			}
 			else{
 				if(!file.exists()){
-	            	data.setMessage("No Quiz is Announced");				
-	            }
-	            else{
-	            	context.put("isFile","exist");
-					quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);				
+					data.setMessage(MultilingualUtil.ConvertedString("brih_noquizannounced",LangFile));				
+				}
+				else{
+					context.put("isFile","exist");
+					quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);
 					quizList=quizmetadata.readyToAttemptQuiz();
-					if(quizList!=null){
-						if(quizList.size()!=0){
-							context.put("quizList",quizList);	              
-						}
+					futureQuizList = quizmetadata.listFutureQuiz();
+					context.put("futureQuizList",futureQuizList);
+					File scoreFile=new File(filePath+"/"+scorePath);
+					if(quizList==null || quizList.size()==0){
+						data.setMessage(MultilingualUtil.ConvertedString("brih_noquizattempt",LangFile));
+						return;
+					}
+					if(!scoreFile.exists()){
+						context.put("quizList",quizList);
+					}
+					else{
+						quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+scorePath);
+						ErrorDumpUtil.ErrorLog("student user id is "+user_id);
+						attemptedQuizList=quizmetadata.getFinalScore(user_id);
+						String quizid,userid,quizid1;
+						boolean found = false;
+						ErrorDumpUtil.ErrorLog("The value of attempted quiz list is::"+attemptedQuizList.size());
+					if(quizList!=null && quizList.size()!=0){
+						if(attemptedQuizList!=null && attemptedQuizList.size()!=0){
+							for(int i=0;i<quizList.size();i++){
+								for(int j=0;j<attemptedQuizList.size();j++){
+									quizid = (((QuizFileEntry) quizList.elementAt(i)).getQuizID());
+									quizid1 = (((QuizFileEntry) attemptedQuizList.elementAt(j)).getQuizID());
+//									userid = (((QuizFileEntry) attemptedQuizList.elementAt(j)).getUserID());
+									ErrorDumpUtil.ErrorLog("\n total quiz list :"+ i +" : "+quizid);
+									ErrorDumpUtil.ErrorLog("\n attempted :"+j+" : "+quizid1 );									
+									if(quizid.equalsIgnoreCase(quizid1)){
+//										if(userid.equalsIgnoreCase(user_id)){
+											found = true;
+											break;
+//										}
+//										else{
+//											found = false;
+//											break;													
+//										}
+									}
+									else
+										found = false;
+								}//end for
+								ErrorDumpUtil.ErrorLog("\n found "+found);
+								if(!found){
+									QuizFileEntry q = (QuizFileEntry)quizList.get(i);
+									finalQuizList.add(q);
+									ErrorDumpUtil.ErrorLog("size of final quiz list ::"+finalQuizList);
+								}
+							}//end outer for
+							if(finalQuizList!=null && finalQuizList.size()!=0){
+								context.put("quizList",finalQuizList);
+							}
+							else
+								data.setMessage(MultilingualUtil.ConvertedString("brih_noquizattempt",LangFile));
+						}									
 						else
-							data.setMessage("No Quiz is Announced");
+							context.put("quizList",quizList);								
 					}
 					else
-						data.setMessage("No Quiz is Announced");
-	            }	
-			}
-            		
-        }
-		
-//			String createquizdir=TurbineServlet.getRealPath("/Courses"+"/"+cid+"/Exam");
-//			File filedir=new File(createquizdir);
-//			if(!filedir.exists())
-//				filedir.mkdir();
-//			Calendar calendar=Calendar.getInstance();
-//            int curmin=calendar.get(Calendar.HOUR);
-//            int am_pm=calendar.get(Calendar.AM_PM);
-//			if(am_pm == 1)
-//				curmin= curmin+12;
-//                curmin= (curmin*60) +(calendar.get(Calendar.MINUTE));
-//                boolean startQuiz=false;
-//                boolean startQuiz1=false;
-//                boolean QuizGrade=false;
-//                boolean QuizSched=false;
-//                crit=new Criteria();
-//                crit.add(QuizPeer.CID,cid);
-//                List u = QuizPeer.doSelect(crit);
-//                String datestr1="-";
-//                String quiztitle="";
-//                String scorecard="",msg="",stTime="";
-//                int date1=0;
-//                if(u.size() != 0)
-//                {
-//                	for(int i=0;i<u.size();i++)
-//                	{
-//                		Quiz element=(Quiz)(u.get(i));
-//                		String str1=element.getPostDate().toString();
-//                		str1=str1.substring(0,10);
-//                		str1=str1.replaceAll(datestr1,"");
-//                		date1=Integer.parseInt(str1);
-//                		int curdate=Integer.parseInt(ExpiryUtil.getCurrentDate(""));
-//                		startQuiz=true;
-//                		if(date1 <= curdate)
-//                		{
-//                			String str2=(element.getStartTime().toString());
-//                			stTime=str2;
-//                			String str3=(element.getEndTime().toString());
-//                			str2=str2.substring(0,5);
-//                			str3=str3.substring(0,5);
-//                			String [] str2array = str2.split(":");
-//                			String [] str3array = str3.split(":");
-//                			str2="";str3="";
-//                			int starthour=0;int endhour=0;
-//                			for(int j=0;j<2;j++)
-//                			{
-//                				if(j==0){
-//                					starthour=Integer.parseInt(str2array[j])*60;
-//                					endhour=Integer.parseInt(str3array[j])*60;
-//                				}
-//                				else {
-//                					starthour=starthour+Integer.parseInt(str2array[j]);
-//                					endhour=endhour+Integer.parseInt(str3array[j]);
-//                				}
-//                			}
-//                			quiztitle=(element.getQuizId());
-//                			//link startQuiz is open 
-//                			if(date1 == curdate)
-//                			{
-//                				if( (starthour > curmin) && (!QuizSched) && (Role.equals("student"))){
-//
-//                					quiztitle=(element.getQuizId());
-//                					msg=MultilingualUtil.ConvertedString("quiz_msg35",LangFile);
-//                					data.setMessage(quiztitle+" "+ msg + " Date "+date1+" Time "+stTime);
-//                					QuizSched=true;
-//                				}
-//
-//
-//                				if((endhour > curmin) && ( starthour <= curmin))
-//                				{
-//                					quiztitle=(element.getQuizId());
-//                					startQuiz1=true;
-//                				}
-//                				else{
-//                					/**    Delete the  Draft  */
-//                					quiztitle=(element.getQuizId());
-//                					String fPath=TurbineServlet.getRealPath("/Courses"+"/"+cid+"/Quiz"+"/"+quiztitle+"/Draft");
-//                					File f1 = new File(fPath);
-//                					if(f1.exists())
-//                					{
-//                						String flist[] = f1.list();
-//                						for(int z=0;z<flist.length;z++)
-//                						{
-//                							File f2 = new File(fPath+"/"+flist[z]);
-//                							/* removing directory of attachment with message */
-//                							f2.delete();
-//                						}
-//                					}
-//                					/**    Delete the  Draft  */
-//                				}
-//                				if(endhour < curmin) 
-//                					scorecard =(element.getQuizId());
-//                			}
-//                			else if(date1 < curdate)
-//                				QuizGrade=true;
-//                			if(endhour < curmin)
-//                				QuizGrade=true;
-//                			//link startQuiz is open
-//                		}
-//
-//                	}
-//                	String path=TurbineServlet.getRealPath("/Courses"+"/"+cid+"/Quiz"+"/"+quiztitle+"/"+"Student_Quiz");
-//                	int userid=user_id;
-//                	boolean flag1=true;
-//                	String str4=Integer.toString(userid);
-//                	String fname=path+"/"+str4+".xml";
-//                	File file1=new File(fname);
-//                	if(file1.exists())
-//                		flag1=false;
-//                	try{
-//                		/** scorcard  */
-//
-//                		QuizUtil qz=new QuizUtil();
-//                		qz.getGradecard(scorecard,cid);
-//                		qz=null;
-//                		ErrorDumpUtil.ErrorLog("The exception in quiz start before using quiz utils::");
-//                		//QuizUtil.getgradecard("quiz2",cid);
-//                		/** scorcard  */
-//                		/** xml write in Courseid by defauld */
-//                		String xmlPath=TurbineServlet.getRealPath("/Courses"+"/"+cid);
-//                		File xmlFile=new File(xmlPath+"/configuregrade.xml");
-//                		if(!xmlFile.exists())
-//                		{
-//
-//                			XmlWriter xmlwriter=null;
-//                			if(!xmlFile.exists())
-//                			{
-//                				TopicMetaDataXmlWriter.writeWithRootOnly1(xmlFile.getAbsolutePath());
-//                				xmlwriter=new XmlWriter(xmlPath+"/configuregrade.xml");
-//                			}  //if
-//                			Vector xmlVct=new Vector();
-//                			xmlVct.add(-1);
-//                			String  str[]={"A","B","C","D","E"};
-//                			String  str1[]={"85","75","65","55","45"};
-//                			for(int xmlint=0;xmlint<5;xmlint++)
-//                			{
-//                				xmlwriter=TopicMetaDataXmlWriter.WriteXml_New4(xmlPath,"/configuregrade.xml",xmlVct);
-//                				String temp="";
-//                				TopicMetaDataXmlWriter.appendGrade(xmlwriter,str1[xmlint],str[xmlint],temp);
-//                				xmlwriter.writeXmlFile();			
-//                			}  //end for
-//                			xmlVct=null;
-//                		}
-//                		/**    xml write in Courseid by defauld  */
-//                	}
-//                	catch(Exception e){
-//                		ErrorDumpUtil.ErrorLog("The exception in xml writer::"+e);
-//                		data.setMessage("See ExceptionLog !! ");	
-//                	}
-//                }
-//                else
-//                {	if(Role.equals("student")){
-//                	msg=MultilingualUtil.ConvertedString("quiz_msg34",LangFile);
-//                	data.setMessage(msg);
-//                }
-//
-//                }
-//                /**
-//			if(QuizSched) {
-//                                if(Role.equals("student")){
-//                                        msg=MultilingualUtil.ConvertedString("quiz_msg35",LangFile);
-//                                        data.setMessage(quiztitle+" "+ msg + " Date "+date1+" Time "+stTime);
-//                                }
-//                        }
-//                 **/
-//                context.put("flag",startQuiz);
-//                context.put("QuizGrade",QuizGrade);
-//                context.put("startQuiz1",startQuiz1);
-//                u=null;
-//		}
-		catch(Exception e)
+						data.setMessage(MultilingualUtil.ConvertedString("brih_noquizannounced",LangFile));
+				}
+				}
+			}            		
+		}catch(Exception e)
 		{
 			ErrorDumpUtil.ErrorLog("The exception in student_quiz ::"+e);
 			data.setMessage("See ExceptionLog !! ");
 		}
 	}
 }
-
 

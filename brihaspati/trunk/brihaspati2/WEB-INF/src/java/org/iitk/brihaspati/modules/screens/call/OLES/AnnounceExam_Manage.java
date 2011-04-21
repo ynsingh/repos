@@ -66,6 +66,7 @@ public class AnnounceExam_Manage extends SecureScreen{
         ParameterParser pp=data.getParameters();
         try{
         	User user=data.getUser();
+        	String uname=user.getName();
         	String count = pp.getString("count","3");
         	ErrorDumpUtil.ErrorLog("The count value :"+count);
         	context.put("tdcolor",pp.getString("count","3"));
@@ -81,8 +82,10 @@ public class AnnounceExam_Manage extends SecureScreen{
 			QuizMetaDataXmlReader quizmetadata=null;
 			if(file.exists()){
 				context.put("isFile","exist");
+				ErrorDumpUtil.ErrorLog("inside file exist:");
 				quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);				
-				quizList=quizmetadata.listActiveAndCurrentlyNotRunningQuiz();
+				quizList=quizmetadata.listActiveAndCurrentlyNotRunningQuiz(uname);
+				ErrorDumpUtil.ErrorLog("after active n currently not running quizzes:"+quizList);
 				if(quizList!=null && quizList.size()!=0){
 					for(int i=0;i<quizList.size();i++){
 						String quizName =((QuizFileEntry) quizList.elementAt(i)).getQuizName();

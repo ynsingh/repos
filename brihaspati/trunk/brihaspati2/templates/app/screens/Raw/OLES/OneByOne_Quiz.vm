@@ -67,7 +67,7 @@ $!data.getMessage()
 	</tr>
 	<tr>
        		<td><b>$brih_topic $brih_name</b></td>       		              
-        	<td><input type="text" name="topic" value=$topicName readonly></td>
+        	<td><input type="text" name="topic" value="$topicName" readonly></td>
 	</tr>
         <tr>
         	<td><b>$brih_difflevel</b></td>   
@@ -78,7 +78,7 @@ $!data.getMessage()
 		#elseif($levelName=="7-9")     	
 			#set($levelToDisplay="Hard")
 		#end
-        	<td><input type="text" name="level" value=$levelToDisplay readonly></td>
+        	<td><input type="text" name="level" value="$levelToDisplay" readonly></td>
         </tr>
 	<tr>
        		<td><b>$brih_qus</b></td>       		              
@@ -105,7 +105,7 @@ $!data.getMessage()
 	<tr>
         	<td><b>$brih_answer</b></td>
 		#if($typeName=="mcq" || $typeName=="tft")
-			<td><input type="text" name="answer" value=$answer readonly></td>        
+			<td><input type="text" name="answer" value="$answer" readonly></td>        
 		#else
 			<td><textarea rows="2" cols="23 name="answer" readonly>$answer</textarea></td>        
 		#end
@@ -161,14 +161,14 @@ $!data.getMessage()
 			#if($mode == "update")
 				#foreach($allTopic in $topicList)				
 					#if($allTopic.getTopic()==$topic)						
-						<option Selected value=$allTopic.getTopic()>$allTopic.getTopic()</option>
+						<option Selected value="$allTopic.getTopic()">$allTopic.getTopic()</option>
 					#else						
-						<option value=$allTopic.getTopic()>$allTopic.getTopic()</option>
+						<option value="$allTopic.getTopic()">$allTopic.getTopic()</option>
 					#end
 				#end
 			#else
 				#foreach($topic in $topicList)
-					<option value=$topic.getTopic()>$topic.getTopic()</option>
+					<option value="$topic.getTopic()">$topic.getTopic()</option>
 	        		#end
 			#end			
 		</select></td>
@@ -222,7 +222,7 @@ $!data.getMessage()
 #end
 </table>
 
-<input type="hidden" name="mode" value=$mode >
+<input type="hidden" name="mode" value="$mode" >
 <input type="hidden" name="type" value="createQuiz" >
 <input type="hidden" name="count" value="$tdcolor">
 <input type="hidden" name="courseID" value="$courseID">
@@ -233,7 +233,7 @@ $!data.getMessage()
 <input type="hidden" name="maxMarks" value="$maxMarks">
 <input type="hidden" name="noQuestions" value="$noQuestions">
 <input type="hidden" name="topicName" value="">
-<input type="hidden" name="typeName" value=$typeName>
+<input type="hidden" name="typeName" value="$typeName">
 <input type="hidden" name="levelName" value="">
 <input type="hidden" name="actionName" value="">
 <input type="hidden" name="quizMode" value="$quizMode">

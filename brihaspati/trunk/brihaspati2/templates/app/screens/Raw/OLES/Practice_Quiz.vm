@@ -1,14 +1,14 @@
 #*
- * @#Random_Quiz.vm
+ * @#Practice_Quiz.vm
  * Copyright (c) 2010 MHRD, DEI Agra.
  * All Rights Reserved.
- * @author <a href="mailto:aayushi.sr@gmail.com">Aayushi</a>
+ * @author <a href="mailto:noopur.here@gmail.com">Aayushi</a>
  * Contributors: Members of MHRD, DEI Agra.
 *#
 #if($mode == "update")
-	$page.setTitle("Question Setting Update")
+	$page.setTitle("Practice quiz Update")
 #else
-	$page.setTitle("Quiz Creation")
+	$page.setTitle("Practice Quiz Creation")
 #end
 $page.setBgColor("bgcolor")
 ## If some message has been set, that is retrieved and displayed.
@@ -24,18 +24,11 @@ $!data.getMessage()
 		<a href=$link.setPage("call,OLES,Oles_Gen.vm").addPathInfo("count","1")>$brih_generate $brih_exam</a> |
 		#if($quizMode == "random")
 			<a href=$link.setPage("call,OLES,Quiz_Detail.vm").addPathInfo("count","3")> 
-			$brih_quiz #if($lang =="hindi") $brih_Of1 #end $brih_detail </a>|
-			$quizMode
-			#if($mode == "update")				
-				$mode	
-			#end
+			$brih_quiz #if($lang =="hindi") $brih_Of1 #end $brih_detail </a>|Practice Quiz Update
+			
 		#else	
-			<a href=$link.setPage("call,OLES,Create_Quiz.vm").addPathInfo("count","2")>$brih_quiz $brih_creation</a> |
-			#if($tdcolor=="1")
-				$brih_onebyone
-			#else
-				$brih_randomly
-			#end
+			<a href=$link.setPage("call,OLES,Create_Quiz.vm").addPathInfo("count","2")>$brih_quiz $brih_creation</a> | Practice Quiz Creation
+			
 		#end	
 	</b></td></tr>
 </table>
@@ -53,41 +46,22 @@ $!data.getMessage()
 		<form name="frm" method="get"  enctype="multipart/form-data" action=$link.setPage("call,OLES,Update_Quiz_Question.vm").setAction("OLES_Quiz")>
 	#else
 		#set($tdcolor="3")
-		<form name="frm" method="get"  enctype="multipart/form-data" action=$link.setPage("call,OLES,Random_Quiz.vm").setAction("OLES_Quiz")>
+		<form name="frm" method="get"  enctype="multipart/form-data" action=$link.setPage("call,OLES,Practice_Quiz.vm").setAction("OLES_Quiz")>
 	#end
 #else	
-	<form name="frm" method="post" enctype="multipart/form-data" action=$link.setPage("call,OLES,Random_Quiz.vm").setAction("OLES_Quiz")>
+	<form name="frm" method="post" enctype="multipart/form-data" action=$link.setPage("call,OLES,Practice_Quiz.vm").setAction("OLES_Quiz")>
 #end
 	
 <table width="100%" bgcolor="$ui.tableColor">
 	#if($quizMode != "random")
-		<tr bgcolor="$ui.tableColor">
-		#if($tdcolor != "1")
-        		<td>
-        	#elseif($tdcolor == "1")
-			<td bgcolor="#AFDCEC">
-		#end
-		<b><I><a href=$link.setPage("call,OLES,OneByOne_Quiz.vm").addPathInfo("mode","one").addPathInfo("count","1").addPathInfo("type",$type).addPathInfo("quizName",$quizName) style=text-decoration:none>$brih_onebyone</I></b></a></td>
-		#if($tdcolor != "2")
-             		<td>
-        	#elseif($tdcolor == "2")
-			<td bgcolor="#AFDCEC">
-		#end
-		<b><I><a href=$link.setPage("call,OLES,Random_Quiz.vm").addPathInfo("mode","random").addPathInfo("count","2").addPathInfo("type",$type).addPathInfo("quizName",$quizName) style=text-decoration:none>$brih_randomly</I></b></a></td>		
-		</tr>	
+			
 		<tr bgcolor="$ui.menuColor" width="100%">
-			<td align="left" width="100%" colspan="5"><b><i><font size="3"> $brih_randomly $brih_quiz $brih_generation </font><b></i></td>
+			<td align="left" width="100%" colspan="5"><b><i><font size="3"color=$ui.fontColorBlue> Practice $brih_quiz $brih_generation </font><b></i></td>
 		</tr>
-	#else
-		#if($mode == "update")
-			<tr bgcolor="$ui.menuColor" width="100%">
-				<td align="left" width="100%" colspan="5"><b><i><font size="3">$brih_qus $brih_updation $brih_in $brih_random $brih_mode </font><b></i></td>
-			</tr>
-		#else
-			<tr bgcolor="$ui.menuColor" width="100%">
-				<td align="left" width="100%" colspan="5"><b><i><font size="3"> $brih_randomly $brih_qus $brih_addition </font><b></i></td>
-			</tr>
-		#end
+	#else		
+		<tr bgcolor="$ui.menuColor" width="100%">
+			<td align="left" width="100%" colspan="5"><b><i><font size="3" color=$ui.fontColorBlue>Practice quiz Update </font><b></i></td>
+		</tr>		
 	#end
 	<tr>
 		<td><b>$brih_topic $brih_name</b><font color=Red>*</font></td>        		              
@@ -115,16 +89,11 @@ $!data.getMessage()
 		    			#set($mcq='selected')                		
 				#elseif($questionType=='tft')							
 		    			#set($tft='selected')                		
-				#elseif($questionType=='sat')						
-		    			#set($sat='selected')							
-				#else						
-		    			#set($lat='selected')                		
+				             		
 				#end
 			#end
 			<option value="mcq" $mcq>$brih_multiplechoice
-			<option value="tft" $tft>$brih_true/$brih_false
-			<option value="sat" $sat>$brih_shortType $brih_answer
-			<option value="lat" $lat>$brih_long $brih_answer
+			<option value="tft" $tft>$brih_true/$brih_false		
 			</option>
             	</select></td>     	
         </tr>
@@ -172,8 +141,8 @@ $!data.getMessage()
 				<input type="button" name="eventSubmit_updateQuizQuestionSetting" value="$brih_update" onClick="checkValue(document.frm,this);"/>
 		  		<input type="reset" name="$brih_reset" value="$brih_restore $brih_original"/>
 			#else
-				<input type="button" name="eventSubmit_randomQuiz" value="$WikiSave & $brih_add $brih_more" onClick="checkValue(document.frm,this);"/>
-				<input type="button" name="eventSubmit_randomQuiz" value="$WikiSave & $brih_exit" onClick="checkValue(document.frm,this);">			
+				<input type="button" name="eventSubmit_practiceQuiz" value="$WikiSave & $brih_add $brih_more" onClick="checkValue(document.frm,this);"/>
+				<input type="button" name="eventSubmit_practiceQuiz" value="$WikiSave & $brih_exit" onClick="checkValue(document.frm,this);">			
 				<input type="reset" name="reset" value="$brih_reset" onClick="checkClear(document.frm,this);"/>
 			#end
 		</td>
@@ -195,7 +164,7 @@ $!data.getMessage()
 <input type="hidden" name="actionName" value="">
 <input type="hidden" name="quizMode" value="$quizMode">
 <input type="hidden" name="page" value="">
-<input type="hidden" name="quizDetail" value="$quizID,$maxMarks,$noQuestions">
+<input type="hidden" name="quizDetail" value="$quizID,$maxMarks,$noQuestions,$allowPractice">
 </form>
 <script LANGUAGE="JAVASCRIPT">
 	

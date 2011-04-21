@@ -1,5 +1,5 @@
 #*
- * @#Attempt_Quiz.vm
+ * @#AttemptPractice_Quiz.vm
  * Copyright (c) 2010 DEI Agra.
  * All Rights Reserved.
  * @author <a href="mailto:noopur.here@gmail.com ">Nupur Dixit</a>
@@ -29,7 +29,7 @@ $page.setBgColor("bgcolor")
 
 #set($cnm = $data.getUser().getTemp("course_name" ).toString())
 
-<form name="frm" method="post"  enctype="multipart/form-data" action=$link.setPage("call,OLES,Attempt_Quiz.vm").setAction("OLES_AttemptQuiz")>
+<form name="frm" method="post"  enctype="multipart/form-data" action=$link.setPage("call,OLES,AttemptPractice_Quiz.vm").setAction("OLES_AttemptQuiz")>
 <table  bgcolor="$ui.tableColor" border=0 cellpadding="2" width=100% >
 	<tr bgcolor="$ui.menuColor" >
     	<td align=left width="40%" >    	    	
@@ -74,7 +74,7 @@ $page.setBgColor("bgcolor")
 							#set($quesDetail="$qid.getQuestionID(),$qid.getFileName(),$qid.getQuestionType(),$qid.getMarksPerQuestion()")
 							#set($quizIDTime="$quizID,$maxTime")
 							#if($qid.getQuestionType()=="mcq")
-								<a href=$link.setPage("call,OLES,Attempt_Quiz.vm").addPathInfo("quizIDTime",$quizIDTime).addPathInfo("quizName",$quizName).addPathInfo("quesDetail",$quesDetail).addPathInfo("question",$qid.getQuestion()).addPathInfo("option1",$qid.getOption1()).addPathInfo("option2",$qid.getOption2()).addPathInfo("option3",$qid.getOption3()).addPathInfo("option4",$qid.getOption4()).addPathInfo("finalAnswer",$!finAnswer) style=text-decoration:none onClick="showAlert();">
+								<a href=$link.setPage("call,OLES,AttemptPractice_Quiz.vm").addPathInfo("quizIDTime",$quizIDTime).addPathInfo("quizName",$quizName).addPathInfo("quesDetail",$quesDetail).addPathInfo("question",$qid.getQuestion()).addPathInfo("option1",$qid.getOption1()).addPathInfo("option2",$qid.getOption2()).addPathInfo("option3",$qid.getOption3()).addPathInfo("option4",$qid.getOption4()).addPathInfo("finalAnswer",$!finAnswer) style=text-decoration:none onClick="showAlert();">
 								#if($qid.getQuestion().length()>25)
    									$qid.getQuestion().substring(0,25) .....
 								#else
@@ -82,7 +82,7 @@ $page.setBgColor("bgcolor")
 								#end
 								</a>
 							#else
-								<a href=$link.setPage("call,OLES,Attempt_Quiz.vm").addPathInfo("quizIDTime",$quizIDTime).addPathInfo("quizName",$quizName).addPathInfo("quesDetail",$quesDetail).addPathInfo("question",$qid.getQuestion()).addPathInfo("finalAnswer",$!finAnswer) onClick="showAlert();">
+								<a href=$link.setPage("call,OLES,AttemptPractice_Quiz.vm").addPathInfo("quizIDTime",$quizIDTime).addPathInfo("quizName",$quizName).addPathInfo("quesDetail",$quesDetail).addPathInfo("question",$qid.getQuestion()).addPathInfo("finalAnswer",$!finAnswer) onClick="showAlert();">
 								#if($qid.getQuestion().length()>25)
    									$qid.getQuestion().substring(0,25) .....
 								#else
@@ -155,15 +155,7 @@ $page.setBgColor("bgcolor")
            					<input type="RADIO" name="answer"  value="D" $!D>$!option4
             			</td>
 					</tr>
-					#elseif($quesType=="lat" || $quesType=="sat")
-##sat & lat
-					<tr>
-						<td  align=left width="30%">
-							<b>$brih_answer</b>
-						<td align=left>
-							<textarea name="answer" id="textAnswer" wrap="physical" rows=2 cols=40 > $!finalAnswer </textarea>
-						</td>
-					</tr>
+					
 					#else
 					<tr>
 						<td colspan="2">
@@ -183,13 +175,15 @@ $page.setBgColor("bgcolor")
 	</tr>
 	<tr bgcolor="$ui.menuColor">
 		<td colspan="3" align=center>
-			<input type="button" name="eventSubmit_saveFinalQuiz" value="Submit Quiz" onClick="saveFinalQuiz(document.frm,this);">
+			<input type="button" name="eventSubmit_savePracticeQuiz" value="Submit Quiz" onClick="savePracticeQuiz(document.frm,this);">
 		</td>
 	</tr>
 </table>					    	
 <input type="hidden" name="quizID" value="$!quizID">
 <input type="hidden" name="quizName" value="$!quizName">
-<input type="hidden" name="maxTime" value="$!maxTime">		
+<input type="hidden" name="maxTime" value="$!maxTime">	
+<input type="hidden" name="maxMarks" value="$!maxMarks">	
+<input type="hidden" name="maxQuestion" value="$!maxQuestion">		
 <input type="hidden" name="actionName">	
 <input type="hidden" name="quesID" value="$!quesID">
 <input type="hidden" name="question" value="$!question">
@@ -201,6 +195,7 @@ $page.setBgColor("bgcolor")
 <input type="hidden" name="option4" value="$!option4">
 <input type="hidden" name="finalAnswer">
 <input type="hidden" name="messageFlag">
+<input type="hidden" name="type" value="practice">
 </div>
 </form>
 </body>
@@ -218,7 +213,6 @@ function saveAnswer(frm,field){
 					return checked; 
 				}
 				else{
-					frm.finalAnswer.value=frm.answer.value;
 					checked=true;
 					frm.actionName.value=field.name;
 					frm.submit();
@@ -316,25 +310,25 @@ var mins,secs,TimerRunning,TimerID;
  }
 
 
-function showAlert() //called while question is saved 
+function showAlert() //called while question is clicked to view detail description 
  {    
     document.frm.actionName.value="eventSubmit_refreshQuiz";
     document.frm.submit();
  }
 
-function saveFinalQuiz(frm,field) //called while quiz is finally saved
+function savePracticeQuiz(frm,field) //called while quiz is finally saved
  {  
 	StopTimer();
-var confAnswer = confirm("Are you sure to submit Quiz?After Submission you won't be able to attempt again...");
+//var confAnswer = confirm("Are you sure to submit Quiz?After Submission you won't be able to attempt again...");
 //alert(confAnswer);
-   if(confAnswer){
+  // if(confAnswer){
 	frm.actionName.value=field.name;
-	frm.messageFlag.value="submit";     
+	//frm.messageFlag.value="submit";     
         frm.submit();
-   }
-   else{
-      StartTimer();
-    }    
+   //}
+   //else{
+     // StartTimer();
+    //}    
  }
 
 

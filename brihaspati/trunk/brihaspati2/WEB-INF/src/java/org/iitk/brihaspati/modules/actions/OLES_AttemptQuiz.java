@@ -96,7 +96,13 @@ public class OLES_AttemptQuiz extends SecureAction{
 		else if(action.equals("eventSubmit_savePracticeQuiz"))
 			savePracticeQuiz(data,context);		
 		else if(action.equals("eventSubmit_showScoreQuiz"))
-			showScoreQuiz(data,context);	
+			showScoreQuiz(data,context);
+		else if(action.equals("eventSubmit_showReportCard"))
+			showReportCard(data,context);
+		else if(action.equals("eventSubmit_Evaluate"))
+			evaluate(data,context);	
+		else if(action.equals("eventSubmit_EvaluateQuestion"))
+			evaluateQuestion(data,context);	
 		else
 			data.setMessage(MultilingualUtil.ConvertedString("action_msg",LangFile));				
 	}
@@ -124,7 +130,8 @@ public class OLES_AttemptQuiz extends SecureAction{
 			}
 			ErrorDumpUtil.ErrorLog("\n maxTime "+maxTime);
 			String courseid=(String)user.getTemp("course_id");  
-			Vector<QuizFileEntry> questionVector = (Vector)user.getTemp("questionvector");    	
+			Vector<QuizFileEntry> questionVector = (Vector)user.getTemp("questionvector"); 
+			ErrorDumpUtil.ErrorLog("session question vector "+questionVector);
 			String quizFilePath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/"+quizID+"/");
 			String quizQuestionPath=quizID+"_Questions.xml"; 
 			String userQuestionPath=uid+".xml";
@@ -222,6 +229,8 @@ public class OLES_AttemptQuiz extends SecureAction{
 			user.setTemp("count","1");
 			ErrorDumpUtil.ErrorLog("count in session :"+user.getTemp("count"));
 			user.setTemp("questionvector",new Vector());
+			ErrorDumpUtil.ErrorLog("session question vector "+user.getTemp("questionvector"));
+			user.setTemp("timerValue","");
 			data.setScreenTemplate("call,OLES,Student_Quiz.vm");
 		}catch(Exception e){
 			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:saveFinalQuiz !! "+e);
@@ -412,6 +421,11 @@ public class OLES_AttemptQuiz extends SecureAction{
 			addUnattendedQuestions(data,context);			
 			//======================================================================
 			user.setTemp("questionvector",new Vector());
+			//timerValue session variable is cleared before submitting the quiz. now if without logout a student will attempt another 
+			//quiz a new timer value session variable is set
+			user.setTemp("timerValue","");
+			//=======freshQuiz session variable is set to yes so that when same is tried again its previous answers are cleared
+			//and new answers are saved
 			user.setTemp("freshQuiz","yes");
 			data.setScreenTemplate("call,OLES,Quiz_Score.vm");						
 		}catch(Exception e){
@@ -522,5 +536,109 @@ public class OLES_AttemptQuiz extends SecureAction{
 			data.setMessage("See ExceptionLog !!");
 		}
 	}
+	
+	
+	/** This method is responsible to show the report card
+	 * @param data RunData instance
+	 * @param context Context instance
+	 * @exception Exception, a generic exception
+	 */
+	public void showReportCard(RunData data, Context context){
+		ParameterParser pp = data.getParameters();
+		try{		
+			ErrorDumpUtil.ErrorLog("\n inside action method");
+			String quizName=pp.getString("quizName","");
+			context.put("quizName",quizName);	
+			String quizID=pp.getString("quizID","");
+			context.put("quizID",quizID);	
+			ErrorDumpUtil.ErrorLog("quiz id and quiz name :"+quizName+" : "+quizID);
+			data.setScreenTemplate("call,OLES,Report_Card.vm");						
+		}catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:showReportCard !! "+e);
+			data.setMessage("See ExceptionLog !!");
+		}
+	}
+	
+	public void evaluate(RunData data, Context context){
+		ParameterParser pp = data.getParameters();
+		try{	
+			String cid=(String)data.getUser().getTemp("course_id");
+			ErrorDumpUtil.ErrorLog("\n inside evaluate method");
+			String quizID=pp.getString("quizID","");		
+			String studentLoginName=pp.getString("studentLoginName","");
+			String uid=Integer.toString(UserUtil.getUID(studentLoginName));
+			ErrorDumpUtil.ErrorLog("quiz id and student login name :"+quizID+" : "+uid);
+			String scoreFilePath=TurbineServlet.getRealPath("/Courses"+"/"+cid+"/Exam/");
+			String scoreXml="score.xml";
+			File scoreFile = new File(scoreFilePath+"/"+scoreXml);
+			ErrorDumpUtil.ErrorLog("score file path :"+scoreFile.getPath());
+			int seq = 0;
+			if(!scoreFile.exists()){
+				data.setMessage("This Quiz is not Attempted by this Student !!");
+				return;
+			}
+			else{
+				QuizMetaDataXmlReader quizreader= new QuizMetaDataXmlReader(scoreFilePath+"/"+scoreXml);
+				seq = quizreader.getSeqOfAlreadyInsertedScore(scoreFilePath,scoreXml,quizID,uid);
+				ErrorDumpUtil.ErrorLog("sequence number is :"+seq);
+				if(seq==-1)
+					data.setMessage("This Quiz is not Attempted by this Student !!");
+				else
+					data.setScreenTemplate("call,OLES,Evaluate_Quiz.vm");					
+			}									
+		}catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Action[OLES_AttemptQuiz] method:evaluate !! "+e);
+			data.setMessage("See ExceptionLog !!");
+		}
+	}
+	
+	public void evaluateQuestion(RunData data, Context context){
+		ParameterParser pp = data.getParameters();
+		try{	
+			String cid=(String)data.getUser().getTemp("course_id");
+			ErrorDumpUtil.ErrorLog("\n inside evaluate method");
+			String quizID=pp.getString("quizID","");
+			String quizName=pp.getString("quizName","");
+			String studentLoginName=pp.getString("studentLoginName","");
+			String uid=Integer.toString(UserUtil.getUID(studentLoginName));
+			ErrorDumpUtil.ErrorLog("quiz id and student login name :"+quizID+" : "+uid);
+			String quesID=pp.getString("quesID","");
+			String fileName=pp.getString("fileName","");
+			ErrorDumpUtil.ErrorLog("question id and filename :"+quesID+" : "+fileName);
+//			String scoreFilePath=TurbineServlet.getRealPath("/Courses"+"/"+cid+"/Exam/");
+			String answerFilePath = TurbineServlet.getRealPath("/Courses"+"/"+cid+"/Exam/"+quizID+"/");
+//			String scoreXml="score.xml";
+			String answerPath = uid+".xml";
+//			File scoreFile = new File(scoreFilePath+"/"+scoreXml);
+			File answerFile = new File(answerFilePath+"/"+answerPath);
+			ErrorDumpUtil.ErrorLog("answer file path :"+answerFile.getPath());
+//			int seq = 0;
+			if(!answerFile.exists()){
+				data.setMessage("This Quiz is not Attempted by this Student !!");
+				return;
+			}
+			else{
+//				QuizMetaDataXmlReader quizreader= new QuizMetaDataXmlReader(scoreFilePath+"/"+scoreXml);
+				QuizMetaDataXmlWriter.xmlwriteEvaluateMarks(answerFilePath,answerPath,data);
+			}
+//			if(!scoreFile.exists()){
+//				data.setMessage("This Quiz is not Attempted by this Student !!");
+//				return;
+//			}
+//			else{
+//				QuizMetaDataXmlReader quizreader= new QuizMetaDataXmlReader(scoreFilePath+"/"+scoreXml);
+//				seq = quizreader.getSeqOfAlreadyInsertedScore(scoreFilePath,scoreXml,quizID,uid);
+//				ErrorDumpUtil.ErrorLog("sequence number is :"+seq);
+				//if(seq==-1)
+					//data.setMessage("This Quiz is not Attempted by this Student !!");
+				//else
+					//data.setScreenTemplate("call,OLES,Evaluate_Quiz.vm");					
+//			}									
+		}catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Action[OLES_AttemptQuiz] method:evaluate !! "+e);
+			data.setMessage("See ExceptionLog !!");
+		}
+	}
+
 
 }	                           
