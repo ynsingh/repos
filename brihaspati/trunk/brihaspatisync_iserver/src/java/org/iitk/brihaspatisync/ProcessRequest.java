@@ -265,6 +265,20 @@ public class ProcessRequest extends HttpServlet {
                        	out.println(message);
                         out.flush();
 			out.close();
+		}else if(reqType.equals("getTimeforLecture")) {
+			java.text.SimpleDateFormat sdfDate = new java.text.SimpleDateFormat("yyyy/MM/dd");
+			java.text.SimpleDateFormat sdfTime = new java.text.SimpleDateFormat("HH:mm");
+			Date now = new Date();
+			String strDate = sdfDate.format(now);
+			String strTime = sdfTime.format(now);
+			System.out.println("Date: " + strDate);
+			System.out.println("Time: " + strTime);	
+			message="date"+strDate+" "+strTime;
+                        response.setContentLength(message.length());
+                        out.println(message);
+                        out.flush();
+                        out.close();
+		
 		}else if(reqType.equals("join")){
 			try{
 				String lect_id=request.getParameter("lect_id");
@@ -289,8 +303,10 @@ public class ProcessRequest extends HttpServlet {
 						String msg=PeerManager.getController().createPeer(lect_id,publicIP,user,role,status,privateIP,proxy,ref_ip);
 					}
        				}
+				String av_status=getAVStatus(lect_id);
+				ServerLog.getController().Log("message---> 293================ "+av_status);
 				String port=",port="+HandRaisePortHandler.getController().getPort(lect_id);
-				message	= message + port;	
+				message	= message + port+av_status;	
 				ServerLog.getController().Log("message---> 4 "+message);
 				response.setContentLength(message.length());
                         	out.println(message);
@@ -450,6 +466,26 @@ public class ProcessRequest extends HttpServlet {
                 return result;
 
 	}
+	
+	private String  getAVStatus(String lect_id){
+                String str="";
+		try{
+                        Criteria forav = new Criteria();
+                        forav.add(LecturePeer.LECTUREID,lect_id);
+                        List u = LecturePeer.doSelect(forav);
+                	for(int i=0;i<u.size();i++)
+                        {
+                                Lecture element=(Lecture)(u.get(i));
+                                String str1=(element.getForvideo());
+                                String str2=(element.getForaudio());
+                                str =",A="+str1+",V="+str2;
+                        }
+		} catch(Exception e) { ServerLog.getController().Log("Error in selection of course"+e); }
+                	return str;
+
+        }
+
+
 
 	/** Get Session list from the database on the basis of coursename
        	Actually here the Session list means get the List of Lecture in which user is registered */
