@@ -7,6 +7,21 @@
  * @modified date: 10-08-2010, 24-09-2010 (Shaista)
  * @modified date: 15-02-2011 (Shaista)
 *#
+<head>
+<style type="text/css">
+ .scrollable{
+  /* overflow: auto;*/
+  /* overflow: scroll;*/
+   /* width: 70px;  adjust this width depending to amount of text to display */
+   height: 40px; /* adjust height depending on number of options to display */
+   border: 1px silver solid;
+ }
+ .scrollable select{
+   border: none;
+ }
+</style>
+</head>
+
 $page.setTitle("Login in Brihaspati")
 $page.setBgColor($ui.bgcolor)
 <form name="frm" method="post" action="$link.setAction("myLogin")">
@@ -26,6 +41,7 @@ $page.setBgColor($ui.bgcolor)
 		<tr align="right"><td align="right" colspan=4><font color="red">$!data.getMessage() </font></td></tr>
 		<tr align="right">
         	<td colspan="3">
+			##<div class="scrollable">
 			<select id="language" onChange ="javascript:OnChange();">
                                 #if ($lang == "urdu")
                                 	<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","urdu")"> $brih_urdu </option>
@@ -33,7 +49,7 @@ $page.setBgColor($ui.bgcolor)
 	                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","arabic")"> $brih_arabic </option>
                                 #end
 				#if($lang != "arabic")
-	                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","arabic")"> ($brih_arabic1) $brih_arabic </option>
+	                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","arabic")"> ($brih_arabic1( $brih_arabic </option>
 	                                ##<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","arabic")"> $brih_arabic </option>
 				#end
                                 <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","bangla")"> ($brih_bangla1) $brih_bangla
@@ -115,7 +131,7 @@ $page.setBgColor($ui.bgcolor)
 
 		</tr>
 		<tr align="right"><td colspan="4" align="right" ><b>
-			<a href=$link.setPage("FAQlist.vm").addPathInfo("lang",$lang).addPathInfo("mode","alllist").addPathInfo("type","general")>$brih_FAQ $brih_list </a>
+			<a href=$link.setPage("FAQlist.vm").addPathInfo("lang",$lang).addPathInfo("mode","alllist").addPathInfo("type","general")>$brih_FAQ $brih_Of $brih_list </a>
 			<img src="$content.getURI("/images/orange_sq_but.gif")">
 			
 		</b></td></tr>

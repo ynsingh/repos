@@ -1,0 +1,190 @@
+#*
+ * @(#) InstituteList.vm 
+ * Copyright (c) 2009 ETRG,IIT Kanpur.
+ * All Rights Reserved.
+ *
+ * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a> 
+ * Contributors: Members of ETRG, I.I.T. Kanpur
+ * @Developed 27-07-2009
+*#
+
+
+$page.setTitle("Admin Home | View Institute List")
+
+$page.setBgColor($ui.bgcolor)
+
+$!data.getMessage()
+
+<table  bgcolor="$ui.menuColor" width=100%>
+<tr> <td>
+ <b><a href=$link.setPage("Index.vm")>$brih_ad $brih_home</a> |
+ 
+##<a href=$link.setPage("call,Root_Admin,InstituteList.vm")> $RemoteInstitute $brih_list</a> 
+RemoteInstitute $brih_list 
+</td></tr>
+</table>
+<body>
+<form name="frm" method="Post" action="$link.setPage("call,Root_Admin,InstituteList.vm").setAction("Institute_RootAdmin")">
+<table align="left" width=100% bgcolor="$ui.tableColor">
+<tr>
+<td align=left>
+##<img src="$content.getURI("/images/hand.gif")"><font face="$ui.sansSerifFonts" size=3><a href=javascript:popupWin("/brihaspati2/docs/RootAdmin.html","newWin");>$brih_help</a></font>
+</tr>
+</table>
+<table bgcolor="$ui.tableColor" cellpadding="5" align=left width=100%>
+
+      <tr bgcolor="$ui.menuColor">
+                <td align=center>
+                        <b> $brih_select </b>
+                </td>
+                <td align=center>
+                        <b> $RemoteInstitute $brih_name</b>
+                </td>
+		<td align=center>
+			<b>$RemoteInstitute $RemoteAddress</b>
+		</td>
+		<td>
+			 
+			<b>$Inst_city</b>
+		</td>
+		<td align=center>
+			<b>$Inst_state </b>
+		</td>
+                <td align=center>
+                        <b> $Inst_landline </b>
+                </td>
+                <td align=center>
+                        <b> $RemoteInstitute $brih_domain </b>
+                </td>
+                <td align=center>
+			<b>$Inst_type </b>
+                </td>
+                <td align=center>
+                        <b>$RemoteInstitute $Inst_website </b>
+                </td>
+                <td align=center>
+                        <b>$brih_ad $brih_first $brih_name </b>
+                </td>
+		<td align=center>
+                        <b>$brih_ad $brih_last $brih_name </b>
+                </td>
+
+                <td align=center>
+                        <b>$brih_ad $brih_email </b>
+                </td>
+
+                <td align=center>
+                        <b>$brih_ad $Inst_designation </b>
+                </td>
+
+                <td align=center>
+                        <b>$brih_usr $brih_name </b>
+                </td>
+        </tr>
+
+	#foreach($details in $idetail)
+	<tr>
+		<td align="center">
+                	<INPUT TYPE="CHECKBOX" NAME="$details.getInstituteId()" onClick="apprv_rej(this,document.frm);">
+          	</td>
+		<td>
+			$details.getInstituteName()
+		</td>
+		<td>
+			$details.getInstiuteAddress() 
+		</td>
+		<td>		
+			$details.getCity()
+		</td>
+		<td>
+			$details.getState()
+		</td>
+		<td>
+			$details.getLandlineNo()			
+		</td>
+		<td>
+			$details.getInstituteDomain()
+		</td>
+		<td>
+			$details.getTypeOfInstitution()
+		</td>
+		<td>
+			$details.getInstituteWebsite()
+		</td>
+		<td>
+			$details.getAdminFname()
+		</td>
+		<td>
+			$details.getAdminLname()
+		</td>
+		<td>
+			$details.getAdminEmail()
+		</td>
+		<td>
+			$details.getAdminDesignation()
+		</td>
+			<td>
+			$details.getAdminUname()
+		</td>
+
+	<tr>
+	#end
+	##$idetail.get(0).getInstituteId()
+	
+        <tr bgcolor="$ui.menuColor">
+                <td align="left" colspan=14>
+                <input type="hidden" name="actionName">
+                <input type="button" name="eventSubmit_AcceptAdmin" value="$online_accept" onClick="AcceptField(document.frm,this);">
+                <input type="button" name="eventSubmit_RejectAdmin" value="$online_reject" onClick="AcceptField(document.frm,this);">
+                <input type="hidden" name="deleteFileNames" value="">
+		<input type="hidden" name="role" value="7">
+                <input type="hidden" name="institute_id" value="$idetail.get(0).getInstituteId()">
+                </td>
+        </tr> 
+
+</td>
+</tr>
+
+</table>
+
+
+</form>
+</body>
+
+<SCRIPT LANGUAGE="javascript">
+
+        function AcceptField(frm,field)
+        {
+		if(frm.deleteFileNames.value != "")
+		{
+			frm.actionName.value=field.name;
+        	        frm.submit();
+		}
+		else
+		{
+			alert("Please select the check box");	
+			return;	
+		}
+	}
+ 
+        function apprv_rej(field,frm)
+        {
+		if(field.checked)
+        	{
+                	frm.deleteFileNames.value=frm.deleteFileNames.value+field.name+"^";
+		}                
+        	else
+		{
+                      	var rmFile,index,actualString,preString,postString;
+	        	actualString=frm.deleteFileNames.value;
+        	        index=actualString.indexOf(field.name+"^",0);
+                	preString=actualString.substring(0,index);
+                        postString=actualString.substring(index+field.name.length+1);
+	                actualString=preString+postString;
+        	        frm.deleteFileNames.value=actualString;
+		}                
+        }
+
+
+</SCRIPT>
+

@@ -5,6 +5,7 @@
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:shaista.shekh@gmail.com">Shaista</a>
+ * @modified date: 15-04-2010
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
@@ -41,8 +42,8 @@ $!data.getMessage()
 	       </b> </font>
 	</td>
 </tr>
-#if($guest_login=="true")
-<tr> <td align=center> <font face="$ui.sansSerifFonts" color="$ui.fontColorRed">brih_guestMsg</font> </td> </tr>
+	#if($guest_login=="true")
+		<tr> <td align=center> <font face="$ui.sansSerifFonts" color="$ui.fontColorRed">brih_guestMsg</font> </td> </tr>
 </table>
 #end
 
@@ -267,7 +268,6 @@ $!data.getMessage()
 		                <div style="width:300px; overflow: auto;">
         		#end
 			<table width="100%" valign="top">
-					###set($i=0)
 					## $allTask is added by shaista
 					#set($allTask="")
 					#foreach ($element in $taskList)
@@ -277,13 +277,14 @@ $!data.getMessage()
 	                                                <tr bgcolor="$ui.tableColor">
                                                 #end
 
-						<td><a href=$link.setPage("call,IndexHome.vm").addPathInfo("id",$element.getTask_Id()).addPathInfo("actionName","eventSubmit_doDelete").setAction("Task_Action") style=text-decoration:none>$brih_delete</a></td>
-
-						<td align="right">$taskList.get($i).getTitle()</td>
+						##<td><a href=$link.setPage("call,IndexHome.vm").addPathInfo("id",$element.getTask_Id()).addPathInfo("actionName","eventSubmit_doDelete").setAction("Task_Action") style=text-decoration:none>$brih_delete</a></td>
+						##<td align="right">$taskList.get($i).getTitle()</td>
+						<td><a href=$link.setPage("call,IndexHome.vm").addPathInfo("id",$element.getTask_Id()).addPathInfo("seqno",$element.getSeqNumber()).addPathInfo("actionName","eventSubmit_doDelete").setAction("Task_Action") onclick="javascript:return confirm('Do you want to delete this task')"> $brih_delete </a></td>z
+						<td align="right">$element.getTitle()</td>
 						</tr>
 						## Below line #set($allTask...) is added by shaista
                                                 ## Adding the list of all task in a $allTask context
-						#set($allTask = "${allTask}${taskList.get($i).getTitle()}<br>")
+						#set($allTask = "${allTask}${element.getTitle()}<br>")
                                         #end
 			</table>
 			</div>
@@ -291,7 +292,7 @@ $!data.getMessage()
 				<table  bgcolor="$ui.menuColor" width="100 %" valign="top">
 				<tr><td>
 					<input type="hidden" name="allTask" value="$allTask">
-	        	                <tr align="right"><td colspan="2"><a href=javascript:popupWin("newWin");>$brih_print $brih_for $brih_view $brih_task $brih_Of $brih_list</a>
+	        	                <tr align="right"><td colspan="2"><a href=javascript:popupWin("newWin"), self.print();>$brih_print $brih_for $brih_view $brih_task $brih_Of $brih_list</a>
 					</td></tr>
 				</tr></td>
 				</table>
@@ -304,11 +305,13 @@ $!data.getMessage()
 </table>
 ## bookmarks##
 <table width="27%" align="right">
-	<tr align="right" bgcolor="$ui.menuColor">
-        <ul>
+	#if($guest_login=="false")
+		<tr align="right" bgcolor="$ui.menuColor">
+	        <ul>
         	<td width=20% valign="top"><b><a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none;onmouseover="mopen('m1')" onmouseout="mclosetime()">$brih_My $brih_Bookmark</a></b>
                 <div id="m1" onmouseover="mcancelclosetime()" onmouseout="mclosetime()">
                 	<tr bgcolor="$ui.tableColor" align="right"><td width=20% valign="top"><b><li dir="rtl" ><a href=$link.setPage("call,Bookmarks,ManageBookmarks.vm").addPathInfo("stat1","All") style=text-decoration:none>$LocalMail_show $brih_all</a></li></b></td><tr>
+	#end
                         	#if($allTopics.size() > 1)
                                 	## Below line for horizental scrolling is added by shaista
 	                                <div style="width:300px; overflow: auto;">
@@ -335,32 +338,6 @@ $!data.getMessage()
 	</tr>
 </table>
                                 <div style="clear:both"></div>
-
-
-
-#**
-                        <tr align="right">
-                        <ul>
-                                <td border=1><b><a href="$link.setPage("call,IndexHome.vm")" onmouseover="mopen('m1')" onmouseout="mclosetime()">$brih_My $brih_Bookmark</a></b>
-                                <div id="m1" onmouseover="mcancelclosetime()" onmouseout="mclosetime()">
-                                <b><li dir="rtl" ><a href="$link.setPage("call,Bookmarks,ManageBookmarks.vm").addPathInfo("stat1","All")"> $LocalMail_show $brih_all </a></li></b>
-                                #foreach ($Allbookmark in $allTopics)
-                                #if($Allbookmark.type=="general")
-                                <li dir="rtl"><a href="javascript:void(0)"onclick="window.open('$Allbookmark.Url')">$Allbookmark.Topic</a></li>
-                                #end
-                                #if($Allbookmark.type=="Course")
-                                <li dir="rtl"><a href="$link.setPage("call,Bookmarks,AddBookmarks.vm").addPathInfo("btname",$Allbookmark.Topic).addPathInfo("bturl",$Allbookmark.Url).addPathInfo("bgroup",$Allbookmark.Name).addPathInfo("stat","view").addPathInfo("stat1","All")">$Allbookmark.Url</a></li>
-                                #end
-                                #if($Allbookmark.type=="Course_file")
-                                <li dir="rtl"><a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("topic",$Allbookmark.Topic).addPathInfo("dir",$Allbookmark.Name).addPathInfo("type","Bookmarks").addPathInfo("filename",$Allbookmark.Url)","newWin")>$Allbookmark.Url</a></li>
-                                #end
-                                #end
-                                </div>
-                                </ul>
-                                </td>
-			</tr>
-                                <div style="clear:both"></div>
-*#
 ##bookmarks ##
 </body>
 <SCRIPT LANGUAGE="javascript">
@@ -416,18 +393,29 @@ window.open(url,height,width)
 
 function popupWin(popupName) {
                 var x = document.getElementsByTagName('input');
-                for (var i=0;i<x.length;i++) {
-                        if (x[i].getAttribute('name') == 'allTask') {
-                                var temp =x[i].value
-                                break;
-                        }
-                }
-                //alert("allTask="+temp);
+		var col_array=x[0].value.split("<br>");
                 Win1=window.open('',popupName,"scrollbars=1,resizable,height=200,width=400");
                 var tmp = Win1.document;
-                tmp.write('<html><head><title>popup</title>');
-                tmp.write('</head><body><p>'+temp+'<p>');
-                tmp.write('<p><a href="javascript:self.print()">Print</a> all task of popup.</p>');
+                tmp.write('<html><head><title>Task List</title>');
+		tmp.write('<body bgcolor="$ui.tableColor"></head>');
+		tmp.write('<table width="100%"><tr><td colspan="2">');
+		var value=2;
+                for (var i=0;i<col_array.length;i++) {
+                    /*    if (x[i].getAttribute('name') == 'allTask') {
+                                var temp =x[i].value
+                                break;
+                        }*/
+			if(value%2 == 0){
+                                tmp.write('<tr bgcolor="$ui.tableColor" ><td>'+col_array[i]+'</td></tr>');
+                        }else {
+                                tmp.write('<tr bgcolor="$ui.menuColor" ><td>'+col_array[i]+'</td></tr>');
+                        }
+                        value++;
+
+                }
+                //tmp.write('</head><body><p>'+temp+'<p>');
+                //tmp.write('<p><a href="javascript:self.print()">Print</a> all task of popup.</p>');
+                tmp.write('</td></tr></table>');
                 tmp.write('<p><a href="javascript:self.close()">Close</a> the popup.</p>');
                 tmp.write('</body></html>');
         }

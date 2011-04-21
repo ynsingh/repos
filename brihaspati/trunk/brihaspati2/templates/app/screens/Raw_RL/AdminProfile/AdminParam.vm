@@ -5,7 +5,7 @@
  * @author <a href="mailto:chitvesh@yahoo.com">Chitvesh Dutta</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @modify date: 10-06-2009 (By Shaista)
- * @modify date: 18-03-2010 (By Shasita)
+ * @modify date: 18-03-2010, 06-04-2011 (By Shasita)
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
@@ -17,7 +17,7 @@ $!data.getMessage()
 <tr align="right" bgcolor="$ui.menuColor">
         <td colspan="2">
         <font face="$ui.sansSerifFonts" size=3> <b>
-	     	<a href=$link.setPage("call,Admin.vm")>$brih_ad $brih_Of1 $brih_home</a> | $brih_cp
+	     	<a href=$link.setPage("call,Admin.vm")>$brih_ad $brih_Of1 $brih_home</a> | $brih_ap
 	</font> </b>
 	</td>
 </tr>
@@ -64,23 +64,35 @@ $!data.getMessage()
 	<td size="30" > <font face="$ui.sansSerifFonts"> $LocalMail_mail $brih_Of1 $brih_pwd  </font></td>	
     </tr>
 	<tr align="right" bgcolor="$ui.menuColor">
+		<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="eMail" value="$!eMail"></font></td>
+		<td width=30><font face="$ui.sansSerifFonts"> $brih_ad $brih_email </td>
+	</tr>
+    	<tr align="right"  bgcolor="$ui.tableColor">
+	        <td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="iquota" value="$!iquota"></font></td>
+        	<td width=30><font face="$ui.sansSerifFonts"> $RemoteInstitute $brih_quota ($quota_sze)</td>
+	</tr>
+	<tr align="right" bgcolor="$ui.menuColor">
 	        <td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="cquota" value="$!cquota"></font></td>
-        	<td width=30><font face="$ui.sansSerifFonts">$brih_course $brih_quota ($brih_in $quota_sze)</td>
+        	<td width=30><font face="$ui.sansSerifFonts">$brih_course $brih_quota ($quota_sze)</td>
 	</tr>
 	<tr bgcolor="$ui.tableColor" align="right">
 	        <td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="uquota" value="$!uquota"></font></td>
-        	<td width=30><font face="$ui.sansSerifFonts">$brih_usr $brih_quota ($brih_in $quota_sze)</td>
+        	<td width=30><font face="$ui.sansSerifFonts">$brih_usr $brih_quota ($quota_sze)</td>
 	</tr>
-
 	<tr bgcolor="$ui.menuColor" align="right">
+		<td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="AdminFaqExp" value="$!FaqExp"></font></td>
+		 <td width=30><font face="$ui.sansSerifFonts">$brih_Faq $brih_expiry</td>
+	</tr>
+	<tr bgcolor="$ui.tableColor" align="right">
 	        <td width="50"><font face="$ui.sansSerifFonts"> <input type="text" size="30" name="hdir" value="$!hdir"></font></td>
         	<td width=30><font face="$ui.sansSerifFonts">$brih_home $brih_dir </td>
 	</tr>
-        <tr bgcolor="$ui.tableColor" align="right">
+        <tr bgcolor="$ui.menuColor" align="right">
 		<td colspan=2 >	
 		  <input type="hidden" name="actionName">
 	          <input type="button" name="eventSubmit_doUpdate" value="$brih_submit" onClick="checkValues(document.frm,this);"/>
 		  <input type="reset" name="reset" value="$brih_reset" onClick="checkClear(document.frm,this);"/>
+		  <input type="hidden" name="count" value="$tdcolor">
 	      </td>
 	</tr>
 </form>
@@ -89,7 +101,7 @@ $!data.getMessage()
 <SCRIPT LANGUAGE="javascript">
         function checkValues(frm,field)
         {
-                if((frm.AFName.value!="") && (frm.ALName.value!="") && (frm.AdminConf.value!=""))
+                if((frm.AFName.value!="") && (frm.ALName.value!="") && (frm.AdminConf.value!="")&& (frm.AdminFaqExp.value!=""))
                 {
 			if(frm.AdminConf.value>=1 && frm.AdminConf.value<=100)
 			{
@@ -99,8 +111,11 @@ $!data.getMessage()
                         	        {
                                 	        if(isNumberString(frm.uquota.value))
                                         	{
-                                                	frm.actionName.value=field.name;
-	                                                frm.submit();
+							 if(isNumberString(frm.AdminFaqExp.value))
+                                                	{
+	                                                	frm.actionName.value=field.name;
+		                                                frm.submit();
+							}
         	                                }
                 	                }
                         	}

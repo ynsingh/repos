@@ -89,7 +89,7 @@ import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @modified date: 28-01-2010
- * @modified date: 08-07-2010, 13-Oct-2010
+ * @modified date: 08-07-2010, 13-Oct-2010, 21-04-2011 (Shaista)
  */
 public class Notice_Send_Delete extends SecureAction
 {
@@ -294,7 +294,7 @@ public class Notice_Send_Delete extends SecureAction
                                                         {
                                                                 String str=username[k];
                                                                 userid=UserUtil.getUID(str);
-								insertReceiveNotice( msg_id, userid, group_id, data);
+								insertReceiveNotice( msg_id, userid, group_id, data, notice_sub_modify);
                                                         }
                                                 }
                                         }
@@ -310,7 +310,7 @@ public class Notice_Send_Delete extends SecureAction
 							for(int count=0;count<rows;count++){
 								String user_id=(String)userList.elementAt(count);
 								userid=Integer.parseInt(user_id);
-								insertReceiveNotice( msg_id, userid, group_id, data);
+								insertReceiveNotice( msg_id, userid, group_id, data, notice_sub_modify);
 							}
 						}
 					}
@@ -323,7 +323,7 @@ public class Notice_Send_Delete extends SecureAction
 						for(int k=0;k<list;k++)
 						{
 							userid=Integer.parseInt((String)userList.get(k));
-							insertReceiveNotice( msg_id, userid, group_id, data);
+							insertReceiveNotice( msg_id, userid, group_id, data, notice_sub_modify);
 						}
 						}
 					}
@@ -364,7 +364,7 @@ public class Notice_Send_Delete extends SecureAction
         * @param group_id int
         */
 
-	public void insertReceiveNotice(int msg_id,int userid,int group_id, RunData data)
+	public void insertReceiveNotice(int msg_id,int userid,int group_id, RunData data, String noticeSubject)
 	{
 		try{
 			Criteria crit=new Criteria();
@@ -393,7 +393,7 @@ public class Notice_Send_Delete extends SecureAction
 			else
 				info_new= "brihaspatiNoticehttps";
 			Properties pr =MailNotification.uploadingPropertiesFile(fileName);
-                        String subject = MailNotification.subjectFormate(info_new, courseName, pr );
+                        //String subject = MailNotification.subjectFormate(info_new, courseName, pr );
 			String message = MailNotification.getMessage(info_new, courseName, "", data.getUser().getName(), "", "", "",pr);
 			///////////////////////////////////////////////////
 			for(int c1=0;c1<userList.size();c1++) {
@@ -401,7 +401,7 @@ public class Notice_Send_Delete extends SecureAction
                                 String eMail=element.getEmail();
 				if(!eMail.equals("")){
 					//String Mail_msg=MailNotification.sendMail(notice_message,eMail,courseName,"Updation Mail",userName,"Brihaspati Notice","",server_name,srvrPort,lang);
-					String Mail_msg= MailNotification.sendMail(message+"<br><br>"+notice_message, eMail, subject, "", lang);
+					String Mail_msg= MailNotification.sendMail(message+"<br><br>"+notice_message, eMail, noticeSubject, "", lang);
 				}
 			}
 		}

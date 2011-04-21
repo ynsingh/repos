@@ -26,14 +26,20 @@ $!data.getMessage()
 	#end
 	</font>
 #end
+## if message have any value then show 
+#if(($Role1!="AdminRole") || ($guest_login!="true"))  
+        #if($message!="")
+        <table width=100% CellPadding=0 align=center>
+        <tr>
+        <td>$message &nbsp;<a href=$link.setPage("call,UserMgmt_User,Profile.vm")>$brih_click</a>
+        </td>
+        </tr>
+        #end
+#end
 
 <table bgcolor="$ui.tableColor" width=85% align="left">
 <tr bgcolor="$ui.menuColor"><td align=center colspan="6">
-#if(( $data.getUser().getTemp("lang" ).toString())!="english")
-	<font face="$ui.sansSerifFonts"><b> #UNAME() $brih_welcome </b></font> 
-#else
 	<font face="$ui.sansSerifFonts"><b>$brih_welcome #UNAME()</b></font>
-#end
 </td></tr>
 
 #if($guest_login=="false")
@@ -52,7 +58,13 @@ $!data.getMessage()
         		<b><a href=$link.setPage("call,Admin.vm").addPathInfo("lang",$lang)>$brih_ad $brih_Of1 $brih_home</a>
 		</td></tr>
    		#end*#
-		
+		 #if($Role7=="InstituteAdminRole")
+                <tr><td align="center" colspan="6">
+
+                <a href=$link.setPage("call,InstituteAdmin.vm").addPathInfo("role","institute_admin") style=text-decoration:none>$instituteHome</a>
+                </td></tr>
+                #end
+	
     		#if($Role2=="InstructorRole")
 		<tr><td align="center" colspan="6">
        		<a href=$link.setPage("call,IndexHome.vm").addPathInfo("role","instructor").addPathInfo("lang",$lang) style=text-decoration:none>$brih_instructorHome</a>
@@ -74,29 +86,58 @@ $!data.getMessage()
 		</td></tr>
 		#end
 <tr bgcolor="$ui.menuColor">
+
+#if($Role7=="InstituteAdminRole" || $Role3=="StudentRole" || $Role2=="InstructorRole")
+        <td width="20%" ><a href=$link.setPage("FAQlist.vm").addPathInfo("mode","alllist").addPathInfo("type","instadmin").addPathInfo("lang",$lang)>$brih_FAQ</a></td>
+#end
+
 #if($guest_login=="false" )
 	#if(($Role2=="InstructorRole")||($Role3=="StudentRole")||($Role4=="GAdminRole")||($Role5=="AuthorRole"))
-	<td width="33%" align="center" colspan="2" ><a href=$link.setPage("call,UserMgmt_User,Profile.vm").addPathInfo("lang",$lang) style=text-decoration:none>$Profile_user $brih_usr </a></td>
-	<td width="33%" align="center"> <a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("mode","general")> $brih_chat</a> </td>
-	<td align="center"><a href=$link.setPage("call,UserMgmt_User,changePassword.vm").addPathInfo("status","homePage").addPathInfo("lang",$lang) style=text-decoration:none>$brih_changePassword</a>
+                <td width="16%" align="right">
+                <select name="instName" onChange="checkOption(this);"/>
+                <option> $brih_Institute $brih_select </option>
+                #foreach($name in $instNameList)
+                  <option value="$link.setPage("call,Chat,Chat.vm").addPathInfo("mode","instituteWise").addPathInfo("grpName",$name)">$name </option>
+                #end
+                </select>
+                </td>
+	 	<td width="16%" > $brih_Institute $brih_wise $brih_chat </td>
+	<td width="16%" align="right" ><a href=$link.setPage("call,UserMgmt_User,Profile.vm").addPathInfo("lang",$lang) style=text-decoration:none>$Profile_user $brih_usr </a></td>
+	<td width="16%" align="right"> <a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("mode","general")> $brih_chat</a> </td>
+	<td width="16%" align="right"><a href=$link.setPage("call,UserMgmt_User,changePassword.vm").addPathInfo("status","homePage").addPathInfo("lang",$lang) style=text-decoration:none>$brih_changePassword</a>
 	</td>
 	#end
 #end
 </tr>
+<tr>
+<td>
+        <input type="hidden" name="chatRoomName" value="">
+        <input type="hidden" name="mode" value="">
+</td>
+</tr>
 </table>
 <div style="overflow:auto;  height:180px;">
         <table  bgcolor="$ui.tableColor" width="98%"  align="right">
-                <tr><td align="center" bgcolor="$ui.menuColor"><b>$brih_active $brih_usr $brih_Of $brih_list &nbsp;&nbsp;$activelist.size()</b></td></tr>
+                <tr><td align="center" bgcolor="$ui.menuColor"><b> ($brih_active $brih_usr $brih_Of $brih_list &nbsp;&nbsp;($uList.size()</b></td></tr>
 
-                        #foreach($element in $activelist)
+                        #foreach($element in $uList)
                         #if($velocityCount%2==0)
                                 <tr bgcolor="$ui.menuColor" align="right">
                         #else
                                 <tr bgcolor="$ui.tableColor" align="right">
                         #end
 
-                                <td> $element.getName() </td>
+                                <td> $element </td>
                                   </tr>
                         #end
         </table>
 </div>
+<SCRIPT Language="javascript">
+
+function checkOption(field)
+{
+          window.location = field.value;
+}
+
+</SCRIPT >
+

@@ -19,8 +19,24 @@ $page.setBgColor("$ui.bgcolor")
 #set($lang=$data.getUser().getTemp("lang" ).toString())
 
 ##$page.addStyleSheet($content.getURI("resources/css/brihaspati.css"))
-
 #TurbineHtmlHead()
+##getting the varible from screen file for video files
+
+#set($result=$data.getParameters().getString("str"))
+#if($result=="video")
+<body valign="left">
+        <table align="center"  height="600px">
+                <tr valign="middle">
+                        <td  height="100%"valign="middle" >
+                         $screen_placeholder
+                        </td>
+                </tr>
+
+        </table>
+</body>
+##file is not video than play other files
+
+#else
 
 <body>
 <table width="100%"> ##1#t table
@@ -32,12 +48,16 @@ $page.setBgColor("$ui.bgcolor")
 			<table width="100%"> ##3#d table
            			<tr bgcolor="$ui.menuColor" align="right"> ##4#h tr
               				#if($data.getUser().hasLoggedIn()) ##if(7)
-                 				<td> ##14#h td
+                 				<td> ##13#h td
                    					<a href=$link.setAction("myLogout") style=text-decoration:none> 
 							<font size=2>$brih_logout</font>
 		   					<img src=$content.getURI("/images/logout.JPG") style=border:0px solid;>
 							</a>
-                 				</td> ##14#h td closed
+                 				</td> ##13#h td closed
+						 <td> ##14#h td
+                                                        <a href=$link.setActionEvent("TimetableAction", "doInit").setPage("call,Timetable,Index.vm") style=text-decoration:none>
+                                                        <font size=2>$brih_timetable</font></a>
+                                                        </td> ##14#h td closed
                  				<td> ##15#h td
             						<a href=$link.setPage("call,Calculator.vm") style=text-decoration:none>
 							<font size=2>$brih_calculator</font>
@@ -176,5 +196,6 @@ $page.setBgColor("$ui.bgcolor")
 	</tr> ##8#h tr closed
 </table>
 </body>
+#end
 </html>
 
