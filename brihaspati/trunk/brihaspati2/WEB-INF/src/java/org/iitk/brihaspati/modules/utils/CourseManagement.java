@@ -246,7 +246,7 @@ public class CourseManagement
 			if(groupName.equals("All"))
 			{
 				crit.addGroupByColumn(CoursesPeer.GROUP_NAME);
-				crit.and(CoursesPeer.ACTIVE,1);
+				//crit.and(CoursesPeer.ACTIVE,1); //comment because all course should be display either that is active or inactive 19apr11.
 			}
 			else
 			{
@@ -305,7 +305,6 @@ public class CourseManagement
 					cuDetail.setUserName(userName);
 					cuDetail.setEmail(email);
 				}
-				
 				cuDetail.setGroupName(GName);
 				cuDetail.setCourseName(courseName);
 				cuDetail.setCAlias(gAlias);

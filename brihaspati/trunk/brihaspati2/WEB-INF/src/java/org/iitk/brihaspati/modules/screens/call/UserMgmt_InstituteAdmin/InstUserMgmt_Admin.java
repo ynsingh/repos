@@ -61,6 +61,7 @@ import org.iitk.brihaspati.modules.utils.CourseManagement;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import org.iitk.brihaspati.modules.utils.CourseManagement;
+import org.iitk.brihaspati.modules.utils.InstituteDetailsManagement;
 import org.iitk.brihaspati.om.InstituteProgramPeer;
 import org.iitk.brihaspati.om.InstituteProgram;
 import org.iitk.brihaspati.om.ProgramPeer;
@@ -86,49 +87,18 @@ public class InstUserMgmt_Admin extends SecureScreen_Institute_Admin
 	
 	/**
 	  *get InstituteId and used in getting Institute Course List.
-	  *@see ListManagement util in utils. 	
+	  *@see InstituteDetailsManagement util in utils. 	
 	  */
 	String instituteId=(data.getUser().getTemp("Institute_id")).toString();
 	try{
-	if((mode.equals(""))||(mode.equals("AddMUser"))||(mode.equals("userdelete"))){	
-        	//List CourseList=ListManagement.getInstituteCourseList(instituteId);
-		List CourseList=CourseManagement.getInstituteCourseNUserDetails("All",instituteId);
-        	context.put("courseList",CourseList);
-		Vector user_list=new Vector();
-                Vector InmeList=new Vector();
-                Vector nameList=new Vector();
-                List detail=null;
-                for(int i=0;i<CourseList.size();i++){
-                        String gname=((CourseUserDetail)CourseList.get(i)).getGroupName();
-                        String galias=((CourseUserDetail)CourseList.get(i)).getCAlias();
-                        String instrctrnameWid=gname.replaceAll(galias,"");
-                        String []instrname=instrctrnameWid.split("_");
-                        String iname=instrname[0];
-                        user_list.addElement(iname);
-                }
-                for(int j=0;j<user_list.size();j++){
-                        String loginname=(user_list.get(j)).toString();
-                        Criteria crit=new Criteria();
-                        crit.add(TurbineUserPeer.LOGIN_NAME,loginname);
-                        detail=TurbineUserPeer.doSelect(crit);
-                        for(int k=0;k<detail.size();k++){
-                        TurbineUser tudetail=(TurbineUser)detail.get(k);
-                        String fname=tudetail.getFirstName();
-                        String lname=tudetail.getLastName();
-                        String username=fname+" "+lname;
-                        if(org.apache.commons.lang.StringUtils.isBlank(username)){
-                               username=loginname;
-                        }
-
-                        InmeList.add(username);
-                	}
+		if((mode.equals(""))||(mode.equals("AddMUser"))||(mode.equals("userdelete"))){	
+			Vector CourseList=InstituteDetailsManagement.getInstituteCourseDetails(instituteId);
+        		context.put("courseList",CourseList);
 		}
-                context.put("instructorList",InmeList);
 		if(mode.equals("userdelete")){
-		String role=data.getParameters().getString("role");
-		context.put("role",role);
+			String role=data.getParameters().getString("role");
+			context.put("role",role);
 		}
-	}
 	}
 	catch(Exception ex)
 	{

@@ -121,16 +121,8 @@ $!data.getMessage()
      	<td>
         <select id="group_id" name="group" size=1 onChange="ChangeRole(document.frm,this);"/>
           ##<option>
-	  #set($counter=1)
           #foreach($name in $courseList)
-	  	#set($counter1=1)
-          	#foreach($instrctrname in $instructorList)
-          		#if($counter==$counter1)
-          		<option value="$name.getGroupName()">$name.getCAlias(): $name.getCourseName()-$instrctrname</option>
-          		#end
-          	#set($counter1=$counter1+1)
-          	#end
-          #set($counter=$counter+1)
+          		<option value="$name.getGroupName()">$name.getCAlias(): $name.getCourseName()-$name.getUserName()</option>
           #end
            ##</option>
           </select>
@@ -333,10 +325,7 @@ face="$ui.sansSerifFonts">$type</font>
         <td>
                 <select name="GroupName" size=1>
                 #foreach($name in $courseList)
-                ##if(($name.getName()!="global") && ($name.getName()!="author"))
-                        <option value="$name">$name.getGroupName()
-                        ##<option value="$name.getGroupName()">$name.getGroupName()
-                ##end
+                        <option value="$name.getGroupName()">$name.getCAlias():$name.getCourseName()-$name.getUserName()
                 #end
                 </option>
                 </select>
@@ -459,20 +448,9 @@ face="$ui.sansSerifFonts">$type</font>
           <select name="group" size=1>
           #set($i=1)
           <option name=all value="All">$Notice_All
-	  #set($counter=1)
           #foreach($course in $courseList)
-          	#set($counter1=1)
-          	#foreach($instrctrname in $instructorList)
-          	#if($counter==$counter1)
-                ##if(($course.getName()!="author") && ($course.getName()!="global"))
-          	##<option name=option$i value="$course">$course
-	  	<option name=option$i value="$course.getGroupName()">$course.getCourseName()-$instrctrname</option>	
+	  	<option name=option$i value="$course.getGroupName()">$course.getCAlias(): $course.getCourseName()-$course.getUserName()</option>	
           	#set($i=$i+1)
-          	##end
-          	#end
-          	#set($counter1=$counter1+1)
-          	#end
-          #set($counter=$counter+1)
           #end
           ##</option>
           </select>
