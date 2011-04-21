@@ -53,7 +53,11 @@ $!data.getMessage()
 </td>
 
 </tr>
+#if($mode == "cedit")
 <form name="frm" action="$link.setPage("call,Quota_Mgmt,Quota.vm").setAction("QuotaAction")"> 
+#else
+<form name="frm" action="$link.setPage("call,Quota_Mgmt,Quota.vm")"> 
+#end
 #if($mode != "cedit")  
 <tr bgcolor="$ui.tableColor">
 	<td align=left colspan=10><b><I>$brih_listOf $brih_course $brih_quota </I></td>
@@ -88,6 +92,7 @@ $!data.getMessage()
 	<td><b>$quota_avail $quota_sze</b></td>
 	<td colspan=5><b>$brih_availableAction</b></td></font>
 </tr>
+	#if($status == "nosearch")	
 		#set($counter=1)
 		#foreach($lst in $entry)
 		#set($counter1=1)
@@ -118,6 +123,21 @@ $!data.getMessage()
                 #end
                 #set($counter=$counter+1)
                 #end
+	#else
+	#foreach($det in $detail)
+	#if($velocityCount%2==0)
+	<tr bgcolor="$ui.menuColor">
+	#else
+	<tr bgcolor="$ui.tableColor">
+	#end
+	<td><I>$det.getGroupName()</I></td>
+        <td><I>$det.getCname()</I></td>
+        <td><I>$det.getQuota()</I></td>
+        <td align=left colspan=2>
+        <a href=$link.setPage("call,Quota_Mgmt,Quota.vm").addPathInfo("grName",$det.getGroupName()).addPathInfo("cname",$det.getCname()).addPathInfo("mode","cedit").addPathInfo("cquota",$det.getQuota()).addPathInfo("status",$status).addPathInfo("count",$tdcolor) style=text-decoration:none><I>$brih_edit</a>&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+	#end                
+	#end                
 
 <tr>
 <td colspan=10 align=left bgcolor="$ui.menuColor">

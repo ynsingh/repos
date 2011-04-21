@@ -398,6 +398,7 @@ public class UploadAction extends SecureAction_Instructor
 		User user=data.getUser();
 		String LangFile=(String)user.getTemp("LangFile"); 
 		String actionName=data.getParameters().getString("actionName","");
+		ErrorDumpUtil.ErrorLog("acname in upload action==========="+actionName);
 		context.put("actionName",actionName);
 		if(actionName.equals("eventSubmit_doUpload"))
 		{

@@ -104,7 +104,6 @@ public class Quota extends SecureScreen_Institute_Admin
 				String cnm=crs.getCname();
 				BigDecimal quota=crs.getQuota();
 				long qt=quota.longValue();
-				ErrorDumpUtil.ErrorLog("gname at line 152========"+gnm);
 				if(gnm.endsWith(instituteId)){
 					cvct.add(gnm);
 					v1.add(cnm);
@@ -142,6 +141,7 @@ public class Quota extends SecureScreen_Institute_Admin
                                 	clstsmode=CoursesPeer.doSelect(crit);
 					cvct=new Vector(clstsmode);
 					context.put("status","Search");
+					context.put("detail",clstsmode);
 				}
                                 Vector vctr= CommonUtility.PListing(data ,context ,cvct,list_conf);
                                 Vector vctr1= CommonUtility.PListing(data ,context ,v1,list_conf);

@@ -50,7 +50,11 @@ $!data.getMessage()
 	 #end
 	 <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("mode","ulistquota").addPathInfo("count","2").addPathInfo("status","nosearch") style=text-decoration:none>$brih_usr $brih_quota </a></td>
 </tr>
+#if($mode == "edit")
 <form name="frm" action="$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").setAction("InstituteQuotaAction")"> 
+#else
+<form name="frm" action="$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm")"> 
+#end
 #if($mode =="instlistquota")  
 <tr bgcolor="$ui.menuColor">
 	<td align=left colspan="10"><b><I>$brih_listOf $RemoteInstitute $brih_quota </I></td>
