@@ -1,5 +1,0 @@
-#Sqlfile -> Database map
-#Wed Dec 16 14:47:45 IST 2009
-turbine-schema.sql=brihaspati
-brihaspati-schema.sql=default
-id-table-schema.sql=default
