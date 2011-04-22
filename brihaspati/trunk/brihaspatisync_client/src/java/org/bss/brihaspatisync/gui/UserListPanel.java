@@ -145,17 +145,19 @@ public class UserListPanel {
 							if((user.equals(username)) && (status.equals("Allow-Screen") && (screenFlag))){
                                                                 screenFlag=false;
                                                                 HandRaiseThreadController.getController().startPostScreenFlag(true);
-                        			                if((a_status.equals("1"))&&(v_status.equals("1"))){
+                        			        /*        if((a_status.equals("1"))&&(v_status.equals("1"))){
 									HandRaiseThreadController.getController().startpresaudioflag(true);
 								}
+							*/
                                                         }
 					
                                                         if(screenFlag){
 								screenFlag=false;
 								HandRaiseThreadController.getController().startGetScreenFlag(true);
-                        			                if((a_status.equals("1"))&&(v_status.equals("1"))){
+                        			          /*      if((a_status.equals("1"))&&(v_status.equals("1"))){
 									HandRaiseThreadController.getController().startPresAudioRec(true);
 								}
+							*/
                                                         }
                                                 }catch(Exception sp){System.out.println("  Error in catch Allow-Mic ==========> ");}
 					}
@@ -192,9 +194,9 @@ public class UserListPanel {
 						if((screenFlag)){
 							screenFlag=false;
 							HandRaiseThreadController.getController().startGetScreenFlag(true);
-                                                        if((a_status.equals("1"))&&(v_status.equals("1"))){
+                                                        /*if((a_status.equals("1"))&&(v_status.equals("1"))){
 								HandRaiseThreadController.getController().startPresAudioRec(true);
-							}
+							}*/
 						}	
 					}
 
@@ -238,9 +240,9 @@ public class UserListPanel {
 				try {
                        			HandRaiseThreadController.getController().stopGetScreenFlag(true);
 					HandRaiseThreadController.getController().stopPostScreenFlag(true);
-                        		if((a_status.equals("1"))&&(v_status.equals("1"))){
+                        		/*if((a_status.equals("1"))&&(v_status.equals("1"))){
                      				HandRaiseThreadController.getController().stopPresAudioRec(true);
-					}
+					}*/
 				} catch(Exception ex){}
 			}
 		}

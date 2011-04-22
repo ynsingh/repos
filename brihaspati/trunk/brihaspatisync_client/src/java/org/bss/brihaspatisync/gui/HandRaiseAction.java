@@ -57,13 +57,14 @@ public class HandRaiseAction implements ActionListener {
                                 user="loginName="+URLEncoder.encode(client_obj.getUserName(),"UTF-8");
                         }else if((client_obj.getUserRole()).equals("instructor")){
 				if((!Request.equals("Share-Screen"))){
-                                	if(!selectedUsername.equals("")){
-                                		user="loginName="+URLEncoder.encode(selectedUsername,"UTF-8");
-						selectedUsername="";
-					}else{
-						JOptionPane.showMessageDialog(null,"Please select username ");
-                                       		return;
-					}
+                                	//if(!selectedUsername.equals("")){
+                                		user="loginName="+URLEncoder.encode(client_obj.getUserName(),"UTF-8");
+                                		//user="loginName="+URLEncoder.encode(selectedUsername,"UTF-8");
+					//	selectedUsername="";
+					//}else{
+					//	JOptionPane.showMessageDialog(null,"Please select username ");
+                                       	//	return;
+					//}
 				}else{
 					user="loginName="+URLEncoder.encode(client_obj.getUserName(),"UTF-8");
 				}
