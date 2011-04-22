@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
-<!DOCTYPE database SYSTEM "database.dtd">
+<!DOCTYPE database SYSTEM "database_3_1.dtd">
 
 <!-- ==================================================================== -->
 <!--                                                                      -->
@@ -15,7 +15,7 @@
     <!--column name="OBJECTDATA" type="VARBINARY"/-->
 <!-- ==================================================================== -->
 <!-- @author: <a href="mailto:jvanzyl@periapt.com">Jason van Zyl</a>      -->
-<!-- @version $Id: turbine-schema.xml,v 1.2 1999/09/12 18:24:10 ynsingh Exp $     -->
+<!-- @version $Id: turbine-schema.xml,v 1.4 1999/01/10 18:13:14 ynsingh Exp $     -->
 <!-- ==================================================================== -->
 
 <database name="brihaspati">
@@ -68,17 +68,18 @@
     
   <table name="TURBINE_USER" idMethod="idbroker">
     <column name="USER_ID" required="true" primaryKey="true" type="INTEGER"/>
-    <column name="LOGIN_NAME" required="true" size="32" type="VARCHAR"/>
+    <column name="LOGIN_NAME" required="true" size="255" type="VARCHAR"/>
     <column name="PASSWORD_VALUE" required="true" size="32" type="VARCHAR"/>
     <column name="FIRST_NAME" required="true" size="99" type="VARCHAR"/>
     <column name="LAST_NAME" required="true" size="99" type="VARCHAR"/>
-    <column name="EMAIL" size="99" type="VARCHAR"/>
+    <column name="EMAIL" size="255" type="VARCHAR"/>
     <column name="CONFIRM_VALUE" size="99" type="VARCHAR"/>
     <column name="MODIFIED" type="TIMESTAMP"/>
-    <column name="CREATED" type="TIMESTAMP"/>
-    <column name="LAST_LOGIN" type="TIMESTAMP"/>
+    <column name="CREATED" type="TIMESTAMP" default="20100120"/>
+    <column name="LAST_LOGIN" type="TIMESTAMP" default="20100120"/>
     <column name="OBJECTDATA" type="VARBINARY"/>
-    
+    <column name="QUOTA" required="true" type="NUMERIC" default="100"/>	   	 
+    <column name="USER_LANG" required="true" size="32" type="VARCHAR" default="english"/>
     <unique>
         <unique-column name="LOGIN_NAME"/>
     </unique>        

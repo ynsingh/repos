@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
-<!DOCTYPE database SYSTEM "database.dtd">
+<!DOCTYPE database SYSTEM "database_3_1.dtd">
 
 <!-- ==================================================================== -->
 <!--                                                                      -->
-<!-- <!DOCTYPE database SYSTEM "database_3_1.dtd">                        -->
-<!-- B R I H A S P A T I  P R O J E C T  S C H E M A                      -->
+<!-- B R I H A S P A T I  P R O J E C T  S C H E M A                            -->
 <!--                                                                      -->
 <!-- ==================================================================== -->
 <!-- ==================================================================== -->
-<database >
+<database name="brihaspati" defaultIdMethod="idbroker">
   <table name="NOTE" idMethod="idbroker">
     <column name="NOTE_ID" required="true" primaryKey="true" type="INTEGER"/>
     <column name="POSTED_BY" size="255" type="VARCHAR"/>
@@ -23,7 +22,7 @@
     <column name="AUTHOR" size="255" type="VARCHAR"/>
     <column name="DEPT" size="255" type="VARCHAR"/>
 </table>
-<!-- Modify 22-11-05 -->
+<!-- Modify 22-11-05 ,10-02-2011-->
 <table name="COURSES">
 	<column name="GROUP_NAME" required="true" primaryKey="true" type="VARCHAR" size="99"/>
 	<column name="CNAME" size="255" type="VARCHAR"/>
@@ -34,6 +33,9 @@
 	<column name="CREATIONDATE" type="DATE"/>
 	<column name="LASTMODIFIED" type="DATE"/>
 	<column name="LASTACCESS" type="DATE"/>
+	<column name="QUOTA" required="true" type="NUMERIC" default="100"/>	
+	<column name="ONLINECONF" required="true" type="INTEGER" default="0"/>
+	
 </table>
 <table name="CAL_INFORMATION" idMethod="idbroker">
 	<column name="INFO_ID" required="true" primaryKey="true" type="INTEGER" autoIncrement="true"/>
@@ -125,10 +127,24 @@
 	<column name="ID" required="true" primaryKey="true" type="INTEGER" autoIncrement="true"/>
 	<column name="CLEAN_DATE" type="DATE"/>
 </table>
+<table name="TASK" idMethod="idbroker">
+	<column name="TASK_ID" required="true" primaryKey="true" type="INTEGER" autoIncrement="true"/>
+	<column name="USER_ID" type="INTEGER" required="true"/>
+	<column name="TITLE" type="VARCHAR" size="100"/>
+	<column name="STATUS" type="INTEGER" size="1"/>
+	<column name="START_DATE" required="true" type="DATE" primaryKey="true"/>
+	<column name="END_DATE" required="true" type="DATE"/>
+	<column name="EXPIRY" required="true" type="INTEGER"/>
+	<column name="EXPIRY_DATE" required="true" type="DATE"/>
+	<column name="DUE_DAYS" required="true" type="INTEGER" default="1"/>
+        <column name="DUE_DATE" required="true" type="DATE"/>
+	<column name="SEQ_NO" required="true" type="INTEGER"/>
+</table>
 <table name="USAGE_DETAILS" idMethod="idbroker">
 	<column name="ENTRY_ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
 	<column name="USER_ID" required="true" type="INTEGER"/>
 	<column name="LOGIN_TIME" type="DATE"/>
+	<column name="LOGOUT_TIME" type="DATE"/>
 </table>
 <table name="USER_CONFIGURATION">
 	<column name="USER_ID" required="true" primaryKey="true" type="INTEGER"/>
@@ -221,35 +237,202 @@
 </table>
 
 <table name="ASSIGNMENT">
-         <column name="ASSIGN_ID" required="true" size="32" primaryKey="true" type="VARCHAR"/>
-         <column name="GROUP_NAME" required="true" size="99" type="VARCHAR"/>
+         <column name="ASSIGN_ID" required="true" size="255" primaryKey="true" type="VARCHAR"/>
+         <column name="GROUP_NAME" required="true" size="255" type="VARCHAR"/>
          <column name="TOPIC_NAME" required="true" size="255" type="VARCHAR"/>
          <column name="CUR_DATE" required="true" type="DATE"/>
          <column name="DUE_DATE" required="true" type="DATE"/>
-         <column name="PER_DATE" required="true" type="DATE"/>
-         <column name="GRADE" required="true" size="3" type="INTEGER"/>
-</table>
+		 <column name="PER_DATE" required="true" type="DATE"/>
+		 <column name="GRADE" required="true" size="3" type="INTEGER"/>
+	 </table>
+<!-- ==================================================================== -->
+<!-- This is an Brihaspati_Sync project schema.                           -->
+<!-- ==================================================================== -->
+
 
 <table name="LECTURE" idMethod="idbroker">
-           <column name="LECTUREID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER" />
-           <column name="GROUP_NAME" required="true" size="255" type="VARCHAR" />
+           <column name="LECTUREID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
+           <column name="GROUP_NAME" required="true" size="255" type="VARCHAR"/>
            <column name="LECTURENAME" required="true" size="255" type="VARCHAR"/>
            <column name="LECTUREINFO" required="true" size="255" type="VARCHAR"/>
-           <column name="URLNAME"  size="255" type="VARCHAR"/>
-           <column name="PHONENO"  size="255" type="VARCHAR"/>
-           <column name="FORVIDEO"  size="255" type="VARCHAR"/>
-           <column name="FORAUDIO"  size="255" type="VARCHAR"/>
+           <column name="URLNAME" size="255" type="VARCHAR"/>
+           <column name="PHONENO" size="255" type="VARCHAR"/>
+           <column name="FORVIDEO" size="255" type="VARCHAR"/>
+           <column name="FORAUDIO" size="255" type="VARCHAR"/>
            <column name="FORWHITEBOARD" size="255" type="VARCHAR"/>
            <column name="SESSIONDATE" required="true" type="DATE"/>
            <column name="SESSIONTIME" required="true" size="255" type="VARCHAR"/>
            <column name="DURATION" size="255" type="VARCHAR"/>
-           <column name="REPEATLEC"  size="255" type="VARCHAR"/>
-           <column name="FORTIME"  size="255" type="VARCHAR"/>
+           <column name="REPEATLEC" size="255" type="VARCHAR"/>
+           <column name="FORTIME" size="255" type="VARCHAR"/>
 </table>
 <table name="SessionAddress" idMethod="idbroker">
   <column name="SerialNo" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
   <column name="MulticastAddress" size="255" type="VARCHAR"/>
   <column name="Flag" type="INTEGER"/>
+</table>
+<!-- ==================================================================== -->
+<table name="RESEARCH_REPOSITORY" idMethod="idbroker">
+        <column name="SUBJECT_ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
+        <column name="REPLY_ID" required="true" type="INTEGER"/>
+        <column name="SUBJECT" size="255" type="VARCHAR"/>
+        <column name="REPLIES" type="INTEGER"/>
+        <column name="USER_ID" type="INTEGER"/>
+        <column name="REPO_NAME" size="255" type="VARCHAR"/>
+        <column name="POST_TIME" type="DATE"/>
+        <column name="EXPIRY" required="true" type="INTEGER"/>
+        <column name="EXPIRY_DATE" required="true" type="DATE"/>
+</table>
+<table name="INSTITUTE_ADMIN_REGISTRATION" idMethod="idbroker">
+        <column name="INSTITUTE_ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
+        <column name="INSTITUTE_NAME" required="true" type="VARCHAR" size="255"/>
+        <column name="INSTIUTE_ADDRESS" required="true" type="VARCHAR" size="255"/>
+        <column name="CITY" required="true" type="VARCHAR" size="255"/>
+        <column name="PINCODE" required="true" type="VARCHAR" size="255"/>
+        <column name="STATE" required="true" type="VARCHAR" size="255"/>
+        <column name="LANDLINE_NO" required="true" type="VARCHAR" size="255"/>
+        <column name="INSTITUTE_DOMAIN" required="true" type="VARCHAR" size="255"/>
+        <column name="TYPE_OF_INSTITUTION" type="VARCHAR" size="255"/>
+        <column name="AFFILIATION" type="VARCHAR" size="255"/>
+        <column name="INSTITUTE_WEBSITE" type="VARCHAR" size="255"/>
+        <column name="INSTITUTE_STATUS" required="true" type="INTEGER" size="1" default="0"/>
+        <column name="REGISTRATION_DATE" type="TIMESTAMP"/>
+        <column name="EXPIRY_DATE" type="TIMESTAMP" default="20201001"/>
+</table>
+<table name="INSTITUTE_ADMIN_USER" idMethod="idbroker">
+	<column name="ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
+	<column name="INSTITUTE_ID" required="true" type="INTEGER"/>
+        <column name="ADMIN_FNAME" required="true" type="VARCHAR" size="255"/>
+        <column name="ADMIN_LNAME" required="true" type="VARCHAR" size="255"/>
+        <column name="ADMIN_EMAIL" required="true" type="VARCHAR" size="255"/>
+        <column name="ADMIN_DESIGNATION" required="true" type="VARCHAR" size="255"/>
+        <column name="ADMIN_UNAME" required="true" type="VARCHAR" size="32"/>
+        <column name="ADMIN_PASSWORD" required="true" type="VARCHAR" size="32"/>
+	
+	
+</table>
+
+<!-- ===============================FAQ==================================== -->
+<table name="FAQ" idMethod="idbroker">
+        <column name="FAQ_ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
+        <column name="CATEGORY" size="255" type="VARCHAR"/>
+        <column name="USER_ID" type="INTEGER"/>
+	<column name="GROUP_ID" type="INTEGER"/>
+        <column name="QUES_ID" required="true" type="INTEGER"/>
+        <column name="POST_TIME" type="DATE"/>
+        <column name="EXPIRY_DATE" required="true" type="DATE"/>
+        <column name="VOTE" size="255" type="VARCHAR"/>
+</table>
+<table name="FAQ_VOTE" idMethod="idbroker">
+        <column name="FAQ_ID" required="true" primaryKey="true" type="INTEGER"/>
+        <column name="USER_ID" required="true" primaryKey="true" type="INTEGER"/>
+        <column name="QUES_ID" required="true" type="INTEGER"/>
+        <column name="GOOD" type="INTEGER" Default="0"/>
+        <column name="OK" type="INTEGER" Default="0"/>
+        <column name="WORST" type="INTEGER" Default="0"/>
+</table>
+
+
+<table name="STUDENT_ROLLNO" idMethod="idbroker">
+	<column name="ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
+	<column name="EMAIL_ID" required="true" type="VARCHAR" size="255"/>
+        <column name="ROLL_NO" required="true" type="VARCHAR" size="255" />
+        <column name="PROGRAM" type="VARCHAR" size="255"/>
+        <column name="INSTITUTE_ID" type="VARCHAR" size="255"/> 
+	<unique>
+	   	<unique-column name="ROLL_NO"/>
+	   	<unique-column name="PROGRAM"/>
+	        <unique-column name="INSTITUTE_ID"/> 
+	</unique>
+</table>
+<!-- ===============================TIME TABLE==================================== -->
+  <table name="EVENTS" description="Entire List of Timetable Events">
+    <column name="EVENT" required="FALSE" type="BLOB" description="Event Object"/>
+  </table>
+  
+  <table name="TABLE_ID">
+    <column name="TAB_ID" required="true" primaryKey="true" autoIncrement="true" type="INTEGER"/>
+    <column name="PATH" size="255" type="VARCHAR"/>
+    <column name="USER" size="255" type="VARCHAR"/>
+    <column name="DEPARTMENT" size="255" type="VARCHAR"/>
+    <column name="DATE" type="DATE"/>
+  </table>
+  
+  <table name="FAC_INFO" description="Faculty Information">
+  	<column name="FAC_ID" type="INTEGER"/>
+  	<column name="NAME" required="true" size="255" type="VARCHAR"/>
+  	<column name="DEPARTMENT" required="true" size="255" type="VARCHAR"/>
+  	<column name="INSTITUTE" required="true" size="255" type="VARCHAR"/>
+  	<column name="ID" required="true" size="10" type="VARCHAR"/>
+  </table>
+    
+  <table name="FACULTY_COURSE" description="Faculty to Course Mapping">
+  	<column name="COURSE_CODE" required="true" size="10" type="VARCHAR"/>
+  	<column name="FACULTY_ID" required="true" size="10" type="VARCHAR"/>
+  </table>
+  
+  <table name="COURSE_INFO" description="Course Information">
+  	<column name="COURSE_CODE" size="10" required="true" type="VARCHAR"/>
+  	<column name="COURSE_TYPE" size="3" required="true" type="VARCHAR"/>
+  	<column name="EVENTS_PER_WEEK" type="INTEGER"/>
+  	<column name="DURATION" type="INTEGER"/>
+  	<column name="COMPUTER" type="INTEGER"/>
+  	<column name="PROJECTOR" type="INTEGER"/>
+  	<column name="VENUE_CODE" size="10" type="VARCHAR"/>
+  	<column name="SCHEDULED" type="INTEGER"/>
+  </table>
+  
+  <table name="BATCH" description="Batch Information">
+  	<column name="BATCH_CODE" required="true" size="10" type="VARCHAR"/>
+  	<column name="STRENGTH" type="INTEGER"/>
+  	<column name="BATCH_NAME" size="255" type="VARCHAR"/>
+  </table>
+    
+  <table name="BATCH_COURSE" description="Batch to Course Mapping">
+  	<column name="COURSE_CODE" required="true" size="10" type="VARCHAR"/>
+  	<column name="BATCH_CODE" required="true" size="10" type="VARCHAR"/>
+  </table>
+    
+  <table name="VENUE" description="Venue Information">
+  	<column name="CODE" required="true" size="10" type="VARCHAR"/>
+  	<column name="CAPACITY" required="true" type="INTEGER"/>
+  	<column name="NCOMPUTERS" type="INTEGER"/>
+  	<column name="PROJECTOR" type="INTEGER"/>
+  	<column name="TYPE" type="INTEGER"/>
+  </table>
+
+<table name="PROGRAM" idMethod="idbroker">
+	<column name="ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
+	<column name="PROGRAM_CODE" required="true" type="VARCHAR" size="255"/>
+	<column name="PROGRAM_NAME" required="true" type="VARCHAR" size="255" />
+	<column name="DESCRP" type="VARCHAR" size="255"/>
+	<column name="ALIAS_PCODE" type="VARCHAR" size="255"/>
+	<column name="ALIAS_PNAME" type="VARCHAR" size="255"/>
+	<unique>
+		<unique-column name="PROGRAM_CODE"/>
+	</unique>
+
+</table> 
+
+<table name="INSTITUTE_PROGRAM">
+	<column name="PROGRAM_CODE" required="true" type="VARCHAR" size="255"/>
+	<column name="INSTITUTE_ID" required="true" type="INTEGER"/>
+	<unique>
+		<unique-column name="PROGRAM_CODE"/>
+		<unique-column name="INSTITUTE_ID"/>
+	</unique>
+</table>
+
+<table name="STUDENT_EXPIRY" idMethod="idbroker">
+	<column name="ID" required="true" primaryKey="true" type="INTEGER" autoIncrement="true"/>
+        <column name="UID" required="true" type="VARCHAR" size="255"/>
+        <column name="CID" type="VARCHAR" size="255"/>
+        <column name="EXPIRY_DATE" type="TIMESTAMP"/>
+        <column name="STATUS" required="true" type="VARCHAR" size="255" default="ENABLE"/>
+</table>
+<table name="INSTITUTE_QUOTA">
+	<column name="INSTITUTE_ID" required="true" primaryKey="true" type="INTEGER"/>
+	<column name="INSTITUTE_AQUOTA" required="true" type="NUMERIC"/>
 </table>
 
 </database>
