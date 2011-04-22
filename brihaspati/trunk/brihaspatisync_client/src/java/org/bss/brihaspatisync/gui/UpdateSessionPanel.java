@@ -259,8 +259,8 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                 center_Panel.add(dateEntryPanel);
                 center_Panel.add(time);
                 center_Panel.add(timeEntryPanel);
-                center_Panel.add(email);
-                center_Panel.add(mailPanel);
+                //center_Panel.add(email);
+                //center_Panel.add(mailPanel);
 
 		 return center_Panel;
 	}
