@@ -1,0 +1,202 @@
+#*
+ * @(#)InstituteUserForm.vm
+ *  Copyright (c) 2005,2010,2011 ETRG,IIT Kanpur.
+ *  All Rights Reserved.
+ *  Contributors: Members of ETRG, I.I.T. Kanpur
+ * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a>
+ * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
+ * @modified date: 20-10-2010, 21-04-2011
+ *#
+
+$page.setBgColor($ui.bgcolor)
+#set($lang = $data.getUser().getTemp("lang" ).toString())
+#if($status!="viewallUser")
+	#if($Process=="modify")
+		$page.setTitle("Admin Home | List Management | Search User | Update User")
+	#else
+		$page.setTitle("Admin Home | List Management | Search User | Remove User")
+	#end
+#else
+	#if($Process=="modify")
+		$page.setTitle("Admin Home | List Management | View All Users | Update User")
+	#else
+		$page.setTitle("Admin Home | List Management | View All Users | Remove User")
+	#end
+#end
+$!data.getMessage()
+<table bgcolor="$ui.menuColor" width=100%>
+<tr align="right"><td>
+<a href=$link.setPage("Index.vm") style=text-decoration:none>$brih_ad $brih_Of1 $brih_home</a> |
+#if($from=="usermgmt")
+	<a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("count","1") style=text-decoration:none>$brih_mgmt $brih_usr </a> |
+#else
+	<a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstAdminviewall.vm").addPathInfo("mode","All").addPathInfo("count","1") style=text-decoration:none>$brih_list_mgmt</a> |
+#end
+#if($Process=="modify")
+	$brih_userDetail $brih_update 
+#else
+	$brih_userDetail $brih_remove 
+#end
+</td></tr>
+</table>
+<table width=100% align=left bgcolor="$ui.tableColor">
+<tr align="right">
+#if($from == "usermgmt")
+        #if($tdcolor != "7")
+        <td>
+        #elseif($tdcolor == "7")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserAttendence_Sheet.vm").addPathInfo("count","7") style=text-decoration:none>$brih_attendence</a></td>
+        #if($tdcolor != "6")
+        <td>
+        #elseif($tdcolor == "6")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","UPhoto").addPathInfo("count","6") style=text-decoration:none>$brih_upload $brih_photo</a></td>
+	#if($tdcolor != "5")
+        <td>
+        #elseif($tdcolor == "5")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","AddMUser").addPathInfo("count","5") style=text-decoration:none>$brih_multi_usr</a></td>
+        #if($tdcolor != "4")
+        <td>
+        #elseif($tdcolor == "4")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","userdelete").addPathInfo("role","student").addPathInfo("count","4") style=text-decoration:none>$brih_delete $brih_student</a></td>
+        #if($tdcolor != "3")
+        <td>
+        #elseif($tdcolor == "3")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","userdelete").addPathInfo("role","instructor").addPathInfo("count","3") style=text-decoration:none>$brih_delete $brih_Instructor</a></td>
+        #if($tdcolor != "2")
+        <td>
+        #elseif($tdcolor == "2")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("mode","sclist").addPathInfo("count","2") style=text-decoration:none>$brih_student $brih_course $brih_list</a></td>
+	#if($tdcolor != "1")
+        <td>
+        #elseif($tdcolor == "1")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").addPathInfo("count","1") style=text-decoration:none>$brih_a_usr</a></td>
+
+#else
+	#if($tdcolor !="2")
+	<td>
+	#elseif($tdcolor == "2")
+	<td bgcolor="#AFDCEC">
+	#end
+	<a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("listcourse","listcourse").addPathInfo("mode","All").addPathInfo("actionStat","Edit").addPathInfo("count","2") style=text-decoration:none>$brih_view_all1</a></td>
+	#if($tdcolor !="1")
+	<td>
+	#elseif($tdcolor == "1")
+	<td bgcolor="#AFDCEC">
+	#end
+        <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstAdminviewall.vm").addPathInfo("mode","All").addPathInfo("count","1") style=text-decoration:none> $brih_listUsr 	</a></td>
+</tr>
+#end
+</table>
+#if($from=="usermgmt")
+	<form method="post" action="$link.setPage("call,UserMgmt_InstituteAdmin,InstUserMgmt_Admin.vm").setAction("UserAction_InstituteAdmin")">
+#else
+	<form method="post" action="$link.setPage("call,ListMgmt_InstituteAdmin,InstAdminviewall.vm").setAction("UserAction_InstituteAdmin")">
+#end
+<table width=100% align="right" bgcolor="$ui.menuColor">
+<tr align="right"><td> $brih_userDetail</td></tr>
+</table>
+<table width=100% bgcolor="$ui.tableColor" align="right">
+      #foreach($i in $udetail)
+      <tr bgcolor="$ui.tableColor" align="right">
+		#entry1Cell("$brih_usr $brih_Of1 $brih_name" $!i.UserName)
+      </tr>
+      #if($Process=="modify")
+      <tr bgcolor="$ui.menuColor" align="right"> 
+        	#formCell ("$brih_first $brih_name" "firstname" $!i.FirstName)
+      </tr>
+      <tr bgcolor="$ui.tableColor" align="right">
+        	#formCell ("$brih_last $brih_name" "lastname" $!i.LastName)
+      </tr>
+      <tr bgcolor="$ui.menuColor" align="right">
+        	#formCell ("$brih_email $brih_ID" "email" $!i.Email)
+      </tr>
+	#foreach($j in $urollno)
+                #if(($!i.UserName)==($!j.EmailId))
+      <tr bgcolor="$ui.tableColor" align="right">
+                #formCell ("$brih_rollno($brih_if $brih_student)" "rollno" $!j.RollNo)
+      </tr>
+	 	#end
+        #end
+      #else
+      <tr align="right">
+        <td><b>$brih_first $brih_name</b></td>
+	<td>$!i.FirstName</td>
+      </tr>
+      <tr align="right">
+        <td><b>$brih_last $brih_name</b></td>
+	<td>$!i.LastName</td>
+      </tr>
+      <tr align="right">
+        <td><b>$brih_email $brih_ID</b></td>
+	<td>$!i.Email</td>
+      </tr>
+	#foreach($j in $urollno)
+                #if(($!i.UserName)==($!j.EmailId))
+	<tr align="right">
+        <td><b>$brih_rollno(If Student)</b></td>
+        <td>$!j.RollNo</td>
+      </tr>
+		#end
+        #end
+      #end
+      <input type="hidden" name="username" value="$i.UserName"/>
+      <input type="hidden" name="mode" value="$mode"/>
+      <input type="hidden" name="count" value="$tdcolor"/>
+       #end
+         ##</table> 
+     
+      <tr align="right">
+        <td colspan ="2" bgcolor="$ui.menuColor">
+          #*
+            Check for a mode, the update and delete buttons
+            shouldn't appear when inserting a new user.
+          *#
+          #if ($Process== "modify")
+            <input type="submit" name="eventSubmit_doUpdate" value="$brih_update"/>
+          #elseif ($Process == "delete")
+            <input type="submit" name="eventSubmit_doDelete" value="$brih_remove"/>
+          #end
+      </td>
+    </tr>
+    </table>
+</form>
+
+<br>
+<table width=60% border=1 bgcolor="$ui.tableColor" align=center>
+#set ( $count = 1 )
+        #foreach( $entry in $error_user )
+                #set ( $count2 = 1 )
+                #foreach( $type in $error_type )
+                        #if( $count == $count2 )
+                        <tr bgcolor="$ui.tableColor" align="right">
+                        <td align=center>
+                                <font face="$ui.sansSerifFonts"> $brih_usr
+$brih_name <font color="brown">"$entry"</font></font>
+                        </td>
+                        <td align=center>
+                                <font
+face="$ui.sansSerifFonts">$type</font>
+                        </td>
+                        </tr>
+                        #end
+                        #set ( $count2 = $count2+1 )
+                #end
+                #set ( $count = $count+1 )
+        #end
+</table>

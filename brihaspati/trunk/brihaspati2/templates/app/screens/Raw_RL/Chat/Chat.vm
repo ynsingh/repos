@@ -34,7 +34,7 @@ $!data.getMessage()
 </tr>
 </table>
 <table align=left bgcolor="$ui.tableColor" width=100%>
-<tr>
+<tr align="right">
 	#if($data.getUser().getTemp("role") == "guest")
 	        #if($tdcolor!="4")
         	        <td>
@@ -49,7 +49,7 @@ $!data.getMessage()
                 #elseif($tdcolor == "2")
                         <td bgcolor="#AFDCEC">
                 #end
-                <a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2").addPathInfo("mode",$mode)>Chat</a></td>
+                <a href=$link.setPage("call,Chat,Chat.vm").addPathInfo("count","2").addPathInfo("mode",$mode)> $brih_chat</a></td>
         #else
                 #if($tdcolor!="1")
                         <td>
