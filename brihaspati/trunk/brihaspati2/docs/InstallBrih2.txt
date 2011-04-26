@@ -126,29 +126,6 @@ Step 10: Configuring brihaspati2.
                 #  Uncomment above line
 		
 		------------------------------------------------------------
-		#  M A I L - S E R V E R 
-		------------------------------------------------------------
-		mail.server=
-		# mail server for outgoing mail. In IIT Kanpur it is
-		# antivirus.cc.iitk.ac.in which is smtp mail server.
-		------------------------------------------------------------
-		#  M A I L - I D 
-		------------------------------------------------------------
-
-		smtp.mail.from=
-		# mail id to which failure message should return. In IIT Kanpur it
-		# is brihspti@iitk.ac.in. All failure messages are returned to this
-		# email id.
-		------------------------------------------------------------
-		#  D O M A I N  N A M E
-		------------------------------------------------------------
-	
-		local.domain.name=
-		# for example local.domain.name=@iitk.ac.in is set for iitkanpur.
-		# All the system generated mail when full mail is not specified
-		# only userid is specified will be sent to userid@iitk.ac.in
-		# automatically.
-		------------------------------------------------------------
 		# B A B Y L O N  S E R V E R  S E T T I N G
 		------------------------------------------------------------
 
@@ -178,6 +155,20 @@ Step 11:
 		databasepassword=password
 		# no space after password (This is password for accessing mysql
 		# database
+	# Also cd /home/brihaspati/tdk-2.3_01/webapps/brihaspati2/WEB-INF/conf
+
+	Open torque.properties file using ant text editor (We use vi:-)) and find and set the following entries
+                ------------------------------------------------------------
+                # D A T A B A S E  S E T T I N G S
+                ------------------------------------------------------------
+
+                databaseuser=user
+                # no space after user (This is login for mysql database)
+
+                databasepassword=password
+                # no space after password (This is password for accessing mysql
+                # database
+ 
 
 	# Run the following commond.
 		NOTE:-You will probably only run this command once. 
@@ -236,7 +227,10 @@ START BRIHASPATI
    or http://IP address of your server:8080/brihapati/servlet/brihaspati
 
    Login with userid admin (to get into as administrator.) The initial
-   password will be admin and set the profile.
+   password will be admin and set the profile parameter before creating institute account.
+   
+   If you are institute admin then login as institute admin and set the 
+   profile parameter before creating course account.
 
 STOPPING THE BRIHASPATI
 -----------------------
