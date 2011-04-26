@@ -6,7 +6,7 @@
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
     <!--<property name="hibernate.connection.url">jdbc:mysql://localhost:3307/ems</property>
     <property name="hibernate.connection.username">root</property>-->
-    <property name="hibernate.connection.datasource">java:comp/env/jdbc/ems</property>
+    <property name="hibernate.connection.datasource">java:comp/env/jdbc/Testems</property>
     <mapping resource="com/myapp/struts/hbm/Login.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/AdminRegistration.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/StaffDetail.hbm.xml"/>

@@ -15,6 +15,8 @@ import java.util.Iterator;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import com.myapp.struts.hbm.*;
+import com.myapp.struts.MyConnection;
+import java.sql.*;
 import org.hibernate.HibernateException;
 
 
@@ -45,6 +47,7 @@ private String admin_password;
 private String library_name;
 private String courtesy;
 private String gender;
+  Connection con;
 int i=0;
     /* forward name="success" path="" */
     
@@ -105,7 +108,15 @@ int i=0;
         gender.trim();
         user_id.trim();*/
       //  if((!institute_name.equalsIgnoreCase("")) || (!user_id.isEmpty()) || (institute_address!=null) && (city!=null) && (state!=null) && (country!=null) && (admin_fname!=null) && (admin_lname!=null) && (admin_password!=null) && mobile_no!=null && type_of_institute!=null && admin_email!=null && gender!=null)
-       if(adminRegistrationActionForm.getInstitute_name()!=null)
+
+         con=MyConnection.getMyConnection();
+            if(con==null)
+            {
+             request.setAttribute("msg1","Database Connectivity is Closed");
+             return mapping.findForward("failure");
+            }
+
+        if(adminRegistrationActionForm.getInstitute_name()!=null)
         {
         HttpSession session=request.getSession();
 System.out.println("institute_name="+institute_name);
