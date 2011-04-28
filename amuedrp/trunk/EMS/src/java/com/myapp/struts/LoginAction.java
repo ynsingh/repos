@@ -12,6 +12,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import java.sql.*;
 import java.sql.*;
+import java.sql.*;
 import java.util.*;
 import javax.servlet.http.HttpSession;
 import com.myapp.struts.utility.PasswordEncruptionUtility;
@@ -90,6 +91,18 @@ public class LoginAction extends org.apache.struts.action.Action {
 
 LoginActionForm loginActionForm;
 loginActionForm = (LoginActionForm) form;
+
+
+            con=MyConnection.getMyConnection();
+            if(con==null)
+            {
+             request.setAttribute("msg1","Database Connectivity is Closed");
+             return mapping.findForward("failure");
+            }
+
+
+
+
 
 
             con=MyConnection.getMyConnection();

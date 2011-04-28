@@ -10,7 +10,7 @@
     <%@ page import="org.apache.taglibs.datagrid.*,com.myapp.struts.hbm.*"%>
        <%@ page import="java.sql.*"%>
     <%@ page import="java.io.*"   %>
-    <%@ taglib uri="http://jakarta.apache.org/taglibs/datagrid" prefix="ui" %>
+     <%@ taglib uri="http://jakarta.apache.org/taglibs/datagrid-1.0" prefix="ui" %>
     <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
     <%@ taglib uri="http://java.sun.com/jstl/fmt" prefix="fmt" %>
 
