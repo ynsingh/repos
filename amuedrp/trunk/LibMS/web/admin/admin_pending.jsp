@@ -1,22 +1,63 @@
-<%--
-    Document   : admin_view
-    Created on : Jun 13, 2010, 9:19:07 AM
-    Author     : Dushyant
---%>
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
-<%@page import="java.sql.*,com.myapp.struts.MyQueryResult" %>
+<%@page import="java.sql.*,com.myapp.struts.hbm.*" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
-<link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
+<link rel="stylesheet" href="/EMS-Struts/css/page.css"/>
+<%@page import="java.util.*,java.io.*,java.net.*"%>
+
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    boolean page=true;
+    String align="left";
+%>
 <%
-String id1=request.getParameter("id");
-int id2=Integer.parseInt(id1);
-ResultSet rst;
-rst=MyQueryResult.getMyExecuteQuery("select * from admin_registration where registration_id="+id2);
+try{
+locale1=(String)session.getAttribute("locale");
+
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+       // System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
+    else{ rtl="RTL";page=false;align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
+
+
+<%
+try{
+if(session.getAttribute("library_id")!=null){
+System.out.println("institute_id"+session.getAttribute("library_id"));
+}
+else{
+    request.setAttribute("msg", "Your Session Expired: Please Login Again");
+    %><script>parent.location = "<%=request.getContextPath()%>"+"logout.do?session=\"expired\"";</script><%
+    }
+}catch(Exception e){
+    request.setAttribute("msg", "Your Session Expired: Please Login Again");
+    %>sessionout();<%
+    }
+
+
+List rst = (List)request.getAttribute("resultset");
+
+if(rst==null){System.out.println("ok"+rst); rst = (List)session.getAttribute("resultset");}
+else{session.setAttribute("resultset", rst);}
+System.out.println("ok"+rst);
+AdminRegistration adminReg = new AdminRegistration();
+if (!rst.isEmpty()){
+    adminReg = (AdminRegistration)rst.get(0);
+    }
 %>
 
 <html>
@@ -33,41 +74,42 @@ body
 </head>
 <body>
     <html:form  action="/confirm" method="post"  onsubmit="return validation();">
-         <table align="center"  class="txt" width="800px" style="font-family: arial;font-weight: bold;color:brown;font-size:13px">
+             <table align="center"  class="txt" width="800px" style="font-family: arial;font-weight: bold;color:brown;font-size:13px">
 
 
-     <tr><td  align="left" colspan="2" ><br><br> <span class="txt"><img src="/LibMS-Struts/images/Institutereg.png">
+     <tr><td  align="left" colspan="2" ><br><br> <span class="txt"><img src="<%=request.getContextPath()%>/images/Institutereg.png">
 </span><br>
              <br>
 
 
          </td></tr>
-            <%if(rst.next()){%>
-     <%
-     String registration_request_id=rst.getString("registration_id");
-     String institute_name=rst.getString("institute_name");
-     String abbreviated_name=rst.getString("abbreviated_name");
-     String institute_address=rst.getString("Institute_address");;
-     String city=rst.getString("city");
-     String state1=rst.getString("state");
-     String country=rst.getString("country");
-     String pin=rst.getString("pin");
-     String land_line_no=rst.getString("land_line_no");
-     String mobile_no=rst.getString("mobile_no");
-     String domain=rst.getString("domain");
-     String type_of_institute=rst.getString("type_of_institute");
-     String website=rst.getString("website");
-     String admin_fname=rst.getString("admin_fname");
-     String admin_lname=rst.getString("admin_lname");
-     String admin_designation=rst.getString("admin_designation");
-     String admin_email=rst.getString("admin_email");
-     String admin_password=rst.getString("admin_password");
-     String status=rst.getString("status");
-     String library_id=rst.getString("library_id");
-     String library_name=rst.getString("library_name");
-     String courtesy=rst.getString("courtesy");
-     String gender=rst.getString("gender");
 
+
+            <%if(!rst.isEmpty()){%>
+     <%
+     String registration_request_id=String.valueOf(adminReg.getRegistrationId());
+     String institute_name=adminReg.getInstituteName();
+     String abbreviated_name=adminReg.getAbbreviatedName();
+     String institute_address=adminReg.getInstituteAddress();
+     String city=adminReg.getCity();
+     String state1=adminReg.getState();
+     String country=adminReg.getCountry();
+     String pin=adminReg.getPin();
+     String land_line_no=adminReg.getLandLineNo();
+     String mobile_no=adminReg.getMobileNo();
+     
+     String type_of_institute=adminReg.getTypeOfInstitute();
+     String website=adminReg.getWebsite();
+     String admin_fname=adminReg.getAdminFname();
+     String admin_lname=adminReg.getAdminLname();
+     String admin_designation=adminReg.getAdminDesignation();
+     String admin_email=adminReg.getAdminEmail();
+     String admin_password=adminReg.getAdminPassword();
+     String status=adminReg.getStatus();
+     String courtesy=adminReg.getCourtesy();
+     String gender=adminReg.getGender();
+     String login_id = adminReg.getLoginId();
+     String library_name=adminReg.getLibraryName();
      if(registration_request_id==null)
          registration_request_id="";
      if(institute_name==null)
@@ -88,8 +130,7 @@ body
          land_line_no="";
      if(mobile_no==null)
          mobile_no="";
-     if(domain==null)
-         domain="";
+     
      if(type_of_institute==null)
          type_of_institute=null;
      if(website==null)
@@ -106,18 +147,21 @@ body
          admin_password="";
      if(status==null)
          status="";
-     if(library_id==null)
-         library_id="";
-     if(library_name==null)
-         library_name="";
      if(courtesy==null)
          courtesy="";
      if(gender==null)
          gender="";
-     %>
-              <tr><td width="150px">Institute Name</td><td><input type="text" id="Editbox1"   name="institute_name" value="<%=institute_name%>" tabindex="1" title="Enter Instutute Name" readonly></td><td>Registration_id</td><td><input type="text" id="Editbox18"  name="registration_request_id" value="<%=registration_request_id%>" tabindex="18" readonly></td></tr>
+    
+     if(library_name==null)
+         library_name="";
 
-             <tr><td>Institute Abbrivation</td><td><input type="text" id="Editbox2"   name="abbreviated_name" value="<%=abbreviated_name%>" tabindex="2" readonly title="Abbrivated name e.g. AMU(aligarh muslim University)"></td><td>Courtesy</td><td> <select name="courtesy"  disabled size="1" id="courtesy"   tabindex="11" title="courtesy" style="width:148px">
+     %>
+               <tr><td width="150px">Institute Name</td><td><input type="text" id="Editbox1"   name="institute_name" value="<%=institute_name%>" tabindex="1" title="Enter Instutute Name" readonly></td><td>Registration_id</td><td><input type="text" id="Editbox18"  name="registration_request_id" value="<%=registration_request_id%>" tabindex="18" readonly></td></tr>
+
+             <tr><td>Institute Abbrivation</td><td><input type="text" id="Editbox2"   name="abbreviated_name" value="<%=abbreviated_name%>" tabindex="2" readonly title="Abbrivated name e.g. AMU(aligarh muslim University)"></td><td>Courtesy</td><td>
+                     <input type="text" id="courtesy" readonly name="courtesy" value="<%=courtesy%>"/>
+
+<%--                     <select name="courtesy"  disabled size="1" id="courtesy"   tabindex="11" title="courtesy" style="width:148px">
     <%if(courtesy.equals("mr")){%>
 <option selected value="mr">Mr</option>
 <option value="mrs">Mrs</option>
@@ -135,8 +179,9 @@ body
 <option  selected value="ms">Ms.</option>
             <%}%>
 
-</select>
+</select>--%>
                      <input type="hidden" id="courtesy" name="courtesy" value="<%=courtesy%>"/>
+                      
 </td></tr>
 
              <tr><td>Institute Address</td><td><input type="text" id="Editbox3"   name="institute_address" value="<%=institute_address%>" tabindex="3" readonly title="Enter Address of Institute"></td><td>First Name</td><td><input type="text" id="Editbox13"  name="admin_fname" value="<%=admin_fname%>" tabindex="13" title="Enter first Name" readonly></td></tr>
@@ -181,7 +226,7 @@ body
              <tr><td>Landline no</td><td><input type="text" id="Editbox8"   name="land_line_no" value="<%=land_line_no%>" tabindex="8" title="Enter Land Line No" readonly></td>
              <td>Password</td><td><input type="password" id="Editbox11" readonly  name="admin_password" value="<%=admin_password%>" tabindex="17" title="Enter Password" readonly></td>
              </tr>
-
+             <input type="hidden" name="type_of_institute" value="<%=type_of_institute%>"/>
              <tr><td>Type of Institute</td><td><select name="type_of_institute" disabled id="type_of_institute" style="width:148px" >
 
 
@@ -218,27 +263,40 @@ body
 </select></td>
 
              </tr>
-             <tr><td>Institute Domain</td><td><input type="text" id="Editbox10" name="institute_domain" value="<%=domain%>" tabindex="10" title="Enter Institute Domain e.g amu.com" readonly></td></tr>
-             <tr><td></td><td></td></tr>
+             
+             <tr><td>User Id</td><td><input type="text" readonly  name="login_id" value="<%=login_id%>"/></td></tr>
 
 
-             <tr><td>website name</td><td><input type="text" id="Editbox12" readonly name="institute_website" value="<%=website%>" tabindex="12" title="Enter Institute Website"></td></td></tr>
+             <tr><td>website name</td><td><input type="text" id="Editbox12" readonly name="institute_website" value="<%=website%>" tabindex="12" title="Enter Institute Website"></td></tr>
              <tr> <td style="color:blue">Library ID</td><td><input type="text"  id="library_id" name="library_id" value="" tabindex="17" title="Enter Library Id"></td>
 
               </tr>
 <tr><td colspan="4" align="center"><br><br>
-        <input type="submit" class="txt2"  id="submit" name="submit" value="Accept"><input type="button" class="txt2"    name="cancel" value="Back" onclick="quit();">
+        <input type="submit" class="txt2"  id="submit" name="submit" value="Accept"><input type="button" class="txt2"    name="cancel" value="Back"  onclick="quit();">
 </td></tr>
-<%}%>
+
         </table>
- 
-             
+
+<%}%>
 
  </html:form>
 
 </body>
+<%
+String msg=(String)request.getAttribute("msg");
+if(msg!=null){
+%>
+<script language="javascript">
+    alert("<%=msg%>");
 
+    //parent.location = "<%=request.getContextPath()%>/superadmin.do"
+   // parent.document.getElementById('library_id').value="";
+
+</script>
+<%}%>
 <script type="text/javascript"  language="javascript">
+
+
 function validation()
     {
 
@@ -257,7 +315,8 @@ function validation()
          }
 function quit()
 {
-    window.location="/LibMS-Struts/admin/view_pending.jsp";
+
+   parent.location="<%=request.getContextPath()%>/superadmin.do";
 }
 </script>
 

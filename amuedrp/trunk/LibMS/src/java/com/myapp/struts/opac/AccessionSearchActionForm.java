@@ -14,7 +14,15 @@ public class AccessionSearchActionForm extends org.apache.struts.action.ActionFo
     private String TXTKEY;
     private String TXTPAGE;
     private String CMBLib;
+    private String CMBSUBLib;
 
+    public String getCMBSUBLib() {
+        return CMBSUBLib;
+    }
+
+    public void setCMBSUBLib(String CMBSUBLib) {
+        this.CMBSUBLib = CMBSUBLib;
+    }
   
     /**
      *

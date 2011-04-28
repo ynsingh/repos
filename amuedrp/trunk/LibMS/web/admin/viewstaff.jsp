@@ -1,10 +1,6 @@
-<%--
-    Document   : Simple.jsp
-    Created on : Jun 18, 2010, 7:46:24 AM
-    Author     : Mayank Saxena
---%>
-    <%@page import="com.myapp.struts.admin.StaffDoc"%>
-    <jsp:include page="header.jsp" flush="true" />
+
+    <%@page import="com.myapp.struts.admin.StaffDoc,com.myapp.struts.hbm.*"%>
+    <jsp:include page="/admin/header.jsp" flush="true" />
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
     <%@ page import="java.util.*"%>
     <%@ page import="org.apache.taglibs.datagrid.DataGridParameters"%>
@@ -18,38 +14,24 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
-    <title>View Staff Details</title>
-<link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
+    <title>LibMS : Manage Staff Details</title>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 <script language="javascript" >
 function b1click()
 {
-location.href="/LibMS-Struts/admin/main.jsp";
+location.href="<%=request.getContextPath()%>/admin/main.jsp";
 }
 function b2click()
 {
-f.action="/LibMS-Struts/admin/main.jsp";
+f.action="<%=request.getContextPath()%>/admin/main.jsp";
 f.method="post";
 f.target="_self";
 f.submit();
 }
-function getQuery(id)
-{
-    var query = "/LibMS-Struts/admin/index2.jsp?id=(select * from staff_detail where staff_id='"+id+"')";
-    return query;
-}
-</script>
-<link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
- <style>
-    th a:link      { text-decoration: none; color: black }
-     th a:visited   { text-decoration: none; color: black }
-     .rows          { background-color: white }
-     .hiliterows    { background-color: pink; color: #000000; font-weight: bold }
-     .alternaterows { background-color: #efefef }
-     .header        { background-color: #c0003b; color: #FFFFFF;font-weight: bold }
 
-     .datagrid      { border: 1px solid #C7C5B2; font-family: arial; font-size: 9pt;
-	    font-weight: normal }
-</style>
+</script>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
+ 
 </head>
 <div
    style="  top:150px;
@@ -59,63 +41,66 @@ function getQuery(id)
 
       visibility: show;">
 
-<body bgcolor="#FFFFFF">
- <table width="600px" height="600px"  valign="top" align="center" >
-
-        <tr><td valign="top" height="600px" width="800px" align="center">
+<body>
+ <table border="1" class="table" width="700px" align="center">
 
 
-<fieldset style="border:solid 1px brown;height:300px;padding-left: 10px;padding-right: 20px" ><legend><img src="/LibMS-Struts/images/StaffViewAll.PNG" /></legend>
-                    <br>
-                    <br>
+
+       <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">View All Staff</td></tr>
+                <tr><td valign="top" align="center"> <br/>
+               
+
+<%
+
+
+%>
 
 <%!
    
-   
-   StaffDoc Ob;
    ArrayList staffList;
+   StaffDoc obj;
+   List<staffsubLib> staffList1;
    int fromIndex=0, toIndex;
 %>
  <%
 
- ResultSet rs = (ResultSet)(session.getAttribute("simple_resultset"));
-
-       
+      
 
    staffList = new ArrayList ();
    int tcount =0;
    int perpage=4;
    int tpage=0;
- /*Create a connection by using getConnection() method
-   that takes parameters of string type connection url,
-   user name and password to connect to database.*/
-rs.beforeFirst();
+ 
 
 
-   while (rs.next()) {
-	tcount++;
-	Ob = new StaffDoc ();
-	Ob.setStaff_id(rs.getString("Staff_id"));
-	Ob.setfirst_name(rs.getString("first_name"));
-	Ob.setlast_name(rs.getString("last_name"));
-	Ob.setemail_id(rs.getString("emai_id"));
-        
-   staffList.add(Ob);
+ staffList1=(List<staffsubLib>)session.getAttribute("viewallstaff");
+ Iterator it = staffList1.iterator();
+ while(it.hasNext())
+     {
+        obj = new StaffDoc();
 
-  // System.out.println("tcount="+tcount);
-		     }
+        obj.setStaff_id(staffList1.get(tcount).getStaffDetail().getId().getStaffId());
+        obj.setfirst_name(staffList1.get(tcount).getStaffDetail().getFirstName());
+        obj.setlast_name(staffList1.get(tcount).getStaffDetail().getLastName());
+      obj.setSublibName(staffList1.get(tcount).getSubLibrary().getSublibName());
+     staffList.add(obj);
+     it.next();
+     tcount++;
+     }
+System.out.println("staffList="+staffList.size());
+tcount = staffList.size();
+   fromIndex = (int) DataGridParameters.getDataGridPageIndex (request, "datagrid1");
+   if ((toIndex = fromIndex+4) >= staffList.size())
+   toIndex = staffList.size();
+   request.setAttribute ("staffList", staffList.subList(fromIndex, toIndex));
+   pageContext.setAttribute("tCount", tcount);
 
 
-//System.out.println("tcount="+tcount);
 
 %>
        
 <%
-   fromIndex = (int) DataGridParameters.getDataGridPageIndex (request, "datagrid1");
-   if ((toIndex = fromIndex+4) >= staffList.size ())
-   toIndex = staffList.size();
-   request.setAttribute ("staffList", staffList.subList(fromIndex, toIndex));
-   pageContext.setAttribute("tCount", tcount);
+ 
 %>
 <%if(tcount==0)
 {%>
@@ -123,34 +108,34 @@ rs.beforeFirst();
 <%}
 else
 {%>
-<br><br>
-<table width="400px"><tr><td width="400px">
+
+
 <ui:dataGrid items="${staffList}"  var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid">
     
   <columns>
       
     <column width="50">
-      <header value="" hAlign="left" styleClass="header"/>
-    </column>
-
-    <column width="50">
-      <header value="Staff_ID" hAlign="left" styleClass="header"/>
-      <item   value="${doc.staff_id}" hyperLink="/LibMS-Struts/admin/index2.jsp?id=${doc.staff_id}"  hAlign="left"    styleClass="item"/>
+      <header value="" hAlign="left" styleClass="admingridheader"/>
     </column>
 
     <column width="100">
-      <header value="First_Name" hAlign="left" styleClass="header"/>
-      <item   value="${doc.first_name}" hAlign="left" hyperLink="/LibMS-Struts/admin/index2.jsp?id=${doc.staff_id}"  styleClass="item"/>
+      <header value="Staff_ID" hAlign="left" styleClass="admingridheader"/>
+      <item   value="${doc.staff_id}" hyperLink="./showstaff.do?id=${doc.staff_id}"  hAlign="left"    styleClass="item"/>
     </column>
 
-    <column width="100">
-      <header value="Last_Name" hAlign="left" styleClass="header"/>
-      <item   value="${doc.last_name}" hyperLink="/LibMS-Struts/admin/index2.jsp?id=${doc.staff_id}"  hAlign="left" styleClass="item"/>
+    <column width="150">
+      <header value="First_Name" hAlign="left" styleClass="admingridheader"/>
+      <item   value="${doc.first_name}" hAlign="left" hyperLink="./showstaff.do?id=${doc.staff_id}"  styleClass="item"/>
+    </column>
+
+    <column width="150">
+      <header value="Last_Name" hAlign="left" styleClass="admingridheader"/>
+      <item   value="${doc.last_name}" hyperLink="./showstaff.do?id=${doc.staff_id}"  hAlign="left" styleClass="item"/>
     </column>
    
-    <column width="100">
-      <header value="Email_ID" hAlign="left" styleClass="header"/>
-      <item   value="${doc.email_id}" hyperLink="/LibMS-Struts/admin/index2.jsp?id=${doc.staff_id}"  hAlign="left" styleClass="item"/>
+   <column width="200">
+      <header value="Library" hAlign="left" styleClass="admingridheader"/>
+      <item   value="${doc.sublibName}" hyperLink="./showstaff.do?id=${doc.staff_id}"  hAlign="left" styleClass="item"/>
     </column>
  </columns>
 
@@ -161,7 +146,7 @@ else
        previousUrlVar="previous" pagesVar="pages"/>
   <order imgAsc="up.gif" imgDesc="down.gif"/>
 </ui:dataGrid>
-<table width="400" style="font-family: arial; font-size: 10pt" border=0>
+<table width="700" style="font-family: arial; font-size: 10pt" border=0>
 <tr>
 <td align="left">
 <c:if test="${previous != null}">
@@ -194,12 +179,12 @@ else
 <form name="f">
 
     <input type="button" name="b1" value="Back" onclick="b1click()" class="txt2">
-    <input type="button" name="b2" value="Home" onclick="b2click()" class="txt2">
+   
 </form>
 
       </td></tr></table>
-</fieldset>
- </table>
+
+ 
     </body>
 </div>
   

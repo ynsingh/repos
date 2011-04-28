@@ -32,11 +32,7 @@ f.method="post";
 f.target="_self";
 f.submit();
 }
-function getQuery(id)
-{
-    var query = "MyResultSet.do?id=(select * from document_details where call_no='"+id+"')";
-    return query;
-}
+
 function showcount()
 {
     var page;
@@ -65,7 +61,7 @@ function showcount()
 
 <%!
 
-   ResultSet rs=null;
+   
    OpacDoc Ob;
    ArrayList opacList;
    int fromIndex, toIndex;
@@ -73,46 +69,29 @@ function showcount()
     Locale locale=null;
     String locale1="en";
     String rtl="ltr";
-    boolean page=true;
+    String align="left";
 %>
 
 <%
-
+String path= request.getContextPath();
+ pageContext.setAttribute("path", path);
 
 
  opacList = new ArrayList ();
-   int tcount =0;
+ opacList = (ArrayList)session.getAttribute("simple_search_list");
+ int tcount=0;
+  if(opacList!=null)tcount =opacList.size();
    int perpage=10;
    int tpage=0;
    int pagesize = 10;
      String page1 = (String)request.getParameter("pagesize");
-     System.out.println("page1="+page1);
+     //System.out.println("page1="+page1);
    if (page1!=null) pagesize = Integer.parseInt(page1);
-    rs = (ResultSet)(session.getAttribute("simple_resultset"));
-    System.out.println(rs);
-   if (rs!=null)
-{
-       rs.beforeFirst();
-
-    while (rs.next()) {
-	tcount++;
-	Ob = new OpacDoc();
-	Ob.setTitle(rs.getString("title"));
-	Ob.setAuthor(rs.getString("author_main"));
-	Ob.setCallno(rs.getString("call_no"));
-	Ob.setPublisher(rs.getString("publisher_name"));
-        Ob.setPubplace(rs.getString("publication_place"));
-        Ob.setLibrary_id(rs.getString("library_id"));
-   opacList.add(Ob);
-   		     }
-System.out.println("tcount="+tcount);
-
-}
    fromIndex = (int)DataGridParameters.getDataGridPageIndex(request, "datagrid1");
-   if ((toIndex = fromIndex+(int)pagesize) >= opacList.size ())
-   toIndex = opacList.size();
-   System.out.println("opacList="+opacList.size()+" tcount="+tcount);
-   request.setAttribute ("opacList", opacList.subList(fromIndex, toIndex));
+   if ((toIndex = fromIndex+(int)pagesize) >= tcount)
+   toIndex = tcount;
+   //System.out.println("opacList="+opacList.size()+" tcount="+tcount);
+   if(opacList!=null)request.setAttribute ("opacList", opacList.subList(fromIndex, toIndex));
    pageContext.setAttribute("tCount", tcount);
    pageContext.setAttribute("pagesize", pagesize);
 %>
@@ -127,17 +106,17 @@ locale1=(String)session.getAttribute("locale");
     else locale1="en";
 }catch(Exception e){locale1="en";}
      locale = new Locale(locale1);
-    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;}
-    else{ rtl="RTL";page=false;}
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";}
+    else{ rtl="RTL";align="right";}
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
     %>
-  <%if(page.equals(true)){%>
-<table align="left" width="1200x" height="400px" class="datagrid" style="border:solid 1px #e0e8f5;">
+  
+  <table align="<%=align%>" dir="<%=rtl%>" width="1200x" height="400px" class="datagrid" style="border:solid 1px #e0e8f5;">
 
 
 
-    <tr style="background-color:#e0e8f5;"><td  width="800px" rowspan="2"  height="18px" align="center" colspan="2">
+    <tr style="background-color:#e0e8f5;"><td  width="800px" rowspan="2" dir="<%=rtl%>"  height="18px" align="center" colspan="2">
 
 
 		Search Result
@@ -146,16 +125,16 @@ locale1=(String)session.getAttribute("locale");
 
 
 
-        </td><td valign="top" align="center">
+        </td><td valign="top" align="center" dir="<%=rtl%>">
     Biblograhic Details
   </td></tr>
-  <tr style="background-color:#e0e8f5;" height="10px">
-  <td valign="top" rowspan="2">
+  <tr style="background-color:#e0e8f5;" height="10px" dir="<%=rtl%>">
+  <td valign="top" rowspan="2" dir="<%=rtl%>">
   <IFRAME  name="fr2" src="#" frameborder=0 scrolling="NO" height="400px"  id="fr2"></IFRAME>
   </td>
      </tr>
-     <tr style="background-color:#e0e8f5;">
-         <td colspan="2" align="center" valign="top" height="300px">
+     <tr style="background-color:#e0e8f5;" dir="<%=rtl%>">
+         <td colspan="2" align="center" valign="top" dir="<%=rtl%>" height="300px">
 
         <!--     <input type="text" id="pagesize" onblur="showcount()"/>-->
 
@@ -181,22 +160,22 @@ else
 
     <column width="450">
       <header value="Title" hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.title}" hyperLink="/LibMS-Struts/OPAC/MyResultSet.do?id=select * from document_details where call_no='${doc.callno}' and library_id='${doc.library_id}'" hyperLinkTarget="fr2" hAlign="left"/>
+      <item  styleClass="item"  value="${doc.title}" hyperLink="${path}/OPAC/viewDetails.do?doc_id=${doc.id.documentId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hyperLinkTarget="fr2" hAlign="left"/>
     </column>
 
     <column width="200">
-      <header value="Author" hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.author}" hAlign="left" hyperLink="/LibMS-Struts/OPAC/MyResultSet.do?id=select * from document_details where call_no='${doc.callno}' and library_id='${doc.library_id}'" hyperLinkTarget="fr2"  />
+      <header value="Main Entry" hAlign="left" styleClass="header"/>
+      <item  styleClass="item"  value="${doc.mainEntry}" hAlign="left" hyperLink="${path}/OPAC/viewDetails.do?doc_id=${doc.id.documentId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hyperLinkTarget="fr2"  />
     </column>
 
     <column width="100">
       <header value="Call No." hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.callno}" hyperLink="/LibMS-Struts/OPAC/MyResultSet.do?id=select * from document_details where call_no='${doc.callno}' and library_id='${doc.library_id}'" hyperLinkTarget="fr2" hAlign="left" />
+      <item  styleClass="item"  value="${doc.callNo}" hyperLink="${path}/OPAC/viewDetails.do?doc_id=${doc.id.documentId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hyperLinkTarget="fr2" hAlign="left" />
     </column>
 
       <column width="150">
       <header value="Library ID" hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.library_id}" hyperLink="/LibMS-Struts/OPAC/MyResultSet.do?id=select * from document_details where call_no='${doc.callno}' and library_id='${doc.library_id}'" hyperLinkTarget="fr2" hAlign="left" />
+      <item  styleClass="item"  value="${doc.id.libraryId}" hyperLink="${path}/OPAC/viewDetails.do?doc_id=${doc.id.documentId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hyperLinkTarget="fr2" hAlign="left" />
     </column>
  </columns>
 
@@ -243,7 +222,7 @@ else
 
 
   </td></tr></table>
-  <%}else {%>
+ <%-- <%}else {%>
   <table align="left" width="1200x" height="400px" class="datagrid" style="border:solid 1px #e0e8f5;">
 
 
@@ -354,7 +333,7 @@ else
 
 
   </td></tr></table>
-  <%}%>
+  <%}%>--%>
 
     </body>
 

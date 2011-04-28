@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 2, 2011 12:00:19 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="com.myapp.struts.hbm.Privilege" table="privilege" catalog="libms">
+        <composite-id name="id" class="com.myapp.struts.hbm.PrivilegeId">
+            <key-property name="staffId" type="string">
+                <column name="staff_id" length="100" />
+            </key-property>
+            <key-property name="libraryId" type="string">
+                <column name="library_id" length="20" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="staffDetail" class="com.myapp.struts.hbm.StaffDetail" update="false" insert="false" fetch="select">
+            <column name="staff_id" length="100" not-null="true" />
+            <column name="library_id" length="20" not-null="true" />
+        </many-to-one>
+        <property name="sublibraryId" type="string">
+            <column name="sublibrary_id" length="20" />
+        </property>
+        <property name="acquisition" type="string">
+            <column name="acquisition" length="5" />
+        </property>
+        <property name="cataloguing" type="string">
+            <column name="cataloguing" length="5" />
+        </property>
+        <property name="circulation" type="string">
+            <column name="circulation" length="5" />
+        </property>
+        <property name="serial" type="string">
+            <column name="serial" length="5" />
+        </property>
+        <property name="administrator" type="string">
+            <column name="administrator" length="5" />
+        </property>
+        <property name="systemSetup" type="string">
+            <column name="system_setup" length="5" />
+        </property>
+        <property name="utilities" type="string">
+            <column name="utilities" length="5" />
+        </property>
+        <property name="opac" type="string">
+            <column name="opac" length="5" />
+        </property>
+    </class>
+</hibernate-mapping>

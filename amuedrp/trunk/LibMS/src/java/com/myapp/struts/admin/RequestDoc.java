@@ -10,7 +10,18 @@ public class RequestDoc {
     private String status;
     private String library_id;
     private String working_status;
-    
+        private String userId;
+     private String Institute_id;
+     private String city;
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
 
    
    
@@ -110,6 +121,34 @@ public class RequestDoc {
      */
     public void setWorking_status(String working_status) {
         this.working_status = working_status;
+    }
+
+    /**
+     * @return the userId
+     */
+    public String getUserId() {
+        return userId;
+    }
+
+    /**
+     * @param userId the userId to set
+     */
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    /**
+     * @return the Institute_id
+     */
+    public String getInstitute_id() {
+        return Institute_id;
+    }
+
+    /**
+     * @param Institute_id the Institute_id to set
+     */
+    public void setInstitute_id(String Institute_id) {
+        this.Institute_id = Institute_id;
     }
 
     /**

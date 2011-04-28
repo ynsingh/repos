@@ -1,51 +1,52 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated Jan 21, 2011 8:43:24 PM by Hibernate Tools 3.2.1.GA -->
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 25, 2011 8:38:11 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-  <class catalog="libms" name="com.myapp.struts.hbm.AcqFinalDemandList" table="acq_final_demand_list">
-    <composite-id class="com.myapp.struts.hbm.AcqFinalDemandListId" name="id">
-      <key-property name="libraryId" type="string">
-        <column length="20" name="library_id"/>
-      </key-property>
-      <key-property name="controlNo" type="string">
-        <column length="10" name="control_no"/>
-      </key-property>
-    </composite-id>
-    <many-to-one class="com.myapp.struts.hbm.Library" fetch="select" insert="false" name="library" update="false">
-      <column length="20" name="library_id" not-null="true"/>
-    </many-to-one>
-    <property name="listId" type="string">
-      <column length="18" name="list_id"/>
-    </property>
-    <property name="isbn" type="string">
-      <column length="18" name="isbn"/>
-    </property>
-    <property name="title" type="string">
-      <column length="100" name="title"/>
-    </property>
-    <property name="subtitle" type="string">
-      <column length="100" name="subtitle"/>
-    </property>
-    <property name="author" type="string">
-      <column length="200" name="author"/>
-    </property>
-    <property name="price" type="string">
-      <column length="20" name="price"/>
-    </property>
-    <property name="totalAmount" type="string">
-      <column length="20" name="total_amount"/>
-    </property>
-    <property name="volume" type="string">
-      <column length="3" name="volume"/>
-    </property>
-    <property name="edition" type="string">
-      <column length="5" name="edition"/>
-    </property>
-    <property name="publisherId" type="string">
-      <column length="20" name="publisher_id"/>
-    </property>
-    <property name="bindId" type="string">
-      <column length="40" name="bind_id"/>
-    </property>
-  </class>
+    <class name="com.myapp.struts.hbm.AcqFinalDemandList" table="acq_final_demand_list" catalog="libms">
+        <composite-id name="id" class="com.myapp.struts.hbm.AcqFinalDemandListId">
+            <key-property name="controlNo" type="string">
+                <column name="control_no" length="10" />
+            </key-property>
+            <key-property name="libraryId" type="string">
+                <column name="library_id" length="20" />
+            </key-property>
+            <key-property name="sublibraryId" type="string">
+                <column name="sublibrary_id" length="20" />
+            </key-property>
+        </composite-id>
+        <property name="listId" type="string">
+            <column name="list_id" length="18" />
+        </property>
+        <property name="isbn" type="string">
+            <column name="isbn" length="18" />
+        </property>
+        <property name="title" type="string">
+            <column name="title" length="100" />
+        </property>
+        <property name="subtitle" type="string">
+            <column name="subtitle" length="100" />
+        </property>
+        <property name="author" type="string">
+            <column name="author" length="200" />
+        </property>
+        <property name="price" type="string">
+            <column name="price" length="20" />
+        </property>
+        <property name="totalAmount" type="string">
+            <column name="total_amount" length="20" />
+        </property>
+        <property name="volume" type="string">
+            <column name="volume" length="3" />
+        </property>
+        <property name="edition" type="string">
+            <column name="edition" length="5" />
+        </property>
+        <property name="publisherId" type="string">
+            <column name="publisher_id" length="20" />
+        </property>
+        <property name="bindId" type="string">
+            <column name="bind_id" length="40" />
+        </property>
+    </class>
 </hibernate-mapping>

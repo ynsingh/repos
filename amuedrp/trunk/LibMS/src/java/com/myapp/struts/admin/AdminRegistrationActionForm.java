@@ -6,10 +6,9 @@
 package com.myapp.struts.admin;
 
 import javax.servlet.http.HttpServletRequest;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.validator.ValidatorForm;
+
 /**
  *
  * @author Dushyant
@@ -34,11 +33,31 @@ private String admin_designation ;
 private String type_of_institute;
 private String admin_email;
 private String admin_password;
+private String reenter_admin_password;
 private String library_name;
 private String courtesy;
 private String gender;
+private String login_id;
+private String library_id;
+ private byte[] uploadedFile;
 
+/**
+     * @return the uploadedFile
+     */
+    public byte[] getUploadedFile() {
+        return uploadedFile;
+    }
 
+    /**
+     * @param uploadedFile the uploadedFile to set
+     */
+    public void setUploadedFile(byte[] uploadedFile) {
+        this.uploadedFile = uploadedFile;
+    }
+
+ public String getLogin_id() {
+        return login_id;
+    }
 
     
     public String getInstitute_name() {
@@ -107,6 +126,10 @@ private String gender;
     
         public void setRegistration_id(int i) {
         registration_id = i;
+    }
+
+    public void setLogin_id(String login_id) {
+        this.login_id = login_id;
     }
 
     public void setInstitute_name(String string) {
@@ -194,6 +217,19 @@ private String gender;
 	}
 
 
+ /**
+     * @return the library_id
+     */
+    public String getLibrary_id() {
+        return library_name;
+    }
+
+    /**
+     * @param library_id the library_id to set
+     */
+    public void setLibrary_id(String library_id) {
+        this.library_id = library_id;
+    }
 
 
     /**
@@ -236,5 +272,19 @@ private String gender;
      */
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    /**
+     * @return the reenter_admin_password
+     */
+    public String getReenter_admin_password() {
+        return reenter_admin_password;
+    }
+
+    /**
+     * @param reenter_admin_password the reenter_admin_password to set
+     */
+    public void setReenter_admin_password(String reenter_admin_password) {
+        this.reenter_admin_password = reenter_admin_password;
     }
 }

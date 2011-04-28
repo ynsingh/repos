@@ -11,7 +11,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Untitled Page</title>
-<link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 <body>
 <%!
     Locale locale=null;

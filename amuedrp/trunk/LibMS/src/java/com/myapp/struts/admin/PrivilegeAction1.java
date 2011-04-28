@@ -4,38 +4,43 @@
  */
 
 package com.myapp.struts.admin;
-import com.myapp.struts.MyQueryResult;
-import java.sql.*;
-import javax.servlet.http.HttpServletRequest;
+//import  com.myapp.struts.hbm.*;
+
+import  com.myapp.struts.hbm.Privilege;
+import  com.myapp.struts.hbm.PrivilegeId;
+import  com.myapp.struts.hbm.Library;
+import  com.myapp.struts.hbm.SerPrivilege;
+import  com.myapp.struts.hbm.CirPrivilegeId;
+import  com.myapp.struts.hbm.CirPrivilege;
+import  com.myapp.struts.hbm.CatPrivilege;
+import  com.myapp.struts.hbm.CatPrivilegeId;
+import  com.myapp.struts.hbm.AcqPrivilege;
+import  com.myapp.struts.hbm.AcqPrivilegeId;
+import  com.myapp.struts.hbm.Login;
+import  com.myapp.struts.hbm.LoginId;
+import  com.myapp.struts.hbm.StaffDetail;
+import  com.myapp.struts.hbm.StaffDetailId;
+import  com.myapp.struts.hbm.SubLibrary;
+import  com.myapp.struts.hbm.SubLibraryId;
+import  com.myapp.struts.hbm.Library;
+import  com.myapp.struts.hbm.AdminRegistration;
+import  com.myapp.struts.hbm.SerPrivilegeId;
+import  com.myapp.struts.AdminDAO.*;
 import javax.servlet.http.*;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
-/**
- *
- * @author Dushyant
- */
+
 public class PrivilegeAction1 extends org.apache.struts.action.Action {
     String privilege_list;
     String staff_id,library_id,staff_name;
     String sql1,sql2,sql3,sql4,sql5;
     String button;
-    ResultSet privilege_resultset,acq_privilege_resultset,cat_privilege_resultset,cir_privilege_resultset,ser_privilege_resultset;
-    /* forward name="success" path="" */
-    private static final String SUCCESS = "success";
-    
-    
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
+    boolean result;
    
-     */
+   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -47,63 +52,113 @@ public class PrivilegeAction1 extends org.apache.struts.action.Action {
         staff_id=privilege.getStaff_id();
         staff_name=privilege.getStaff_name();
         button=privilege.getButton();
+        System.out.println(button+".....................................");
 if(button.equals("Restore Previous Privilege"))
 {
-         ResultSet[] privilegebackup=(ResultSet[])session.getAttribute("privilege_backup");
-        privilegebackup[0].next();        
-        privilegebackup[0].beforeFirst();
-            Privilege priv=new Privilege();
-            priv.rollbackPrivilege(privilegebackup,staff_id,library_id);
-         /*   String sql = "select * from privilege where staff_id='"+staff_id+"' and libary_id='"+library_id+"'";
-            ResultSet rs = MyQueryResult.getMyExecuteQuery(sql);
-            if(rs!=null)
-            {
-                rs.next();
-                if(rs.getString("Administrator").equals("false")){
-                    int i = MyQueryResult.getMyExecuteUpdate("update login set role='admin' where staff_id='"+staff_id+"' and library_id='"+library_id+"'");
-                    if (i>0){
+       Privilege backupprivobj=(Privilege)session.getAttribute("privilege_priv_backup");
+       AcqPrivilege backupacqprivobj=(AcqPrivilege)session.getAttribute("privilege_acq_backup");
+       CatPrivilege backupcatprivobj=(CatPrivilege)session.getAttribute("privilege_cat_backup");
+        CirPrivilege backupcirprivobj=(CirPrivilege)session.getAttribute("privilege_cir_backup");
+        SerPrivilege backupserprivobj=(SerPrivilege)session.getAttribute("privilege_ser_backup");
+        Login backuploginprivobj = (Login)session.getAttribute("login_privilege");
+
+
+        result = LoginDAO.updatePriv(backuploginprivobj,backupprivobj,backupacqprivobj,backupcatprivobj,backupcirprivobj,backupserprivobj);
+   if(result==true)
+                            {
                             request.setAttribute("res","Privileage Successfully removed");
                             request.setAttribute("staff_id", staff_id);
                             request.setAttribute("staff_name", staff_name);
                             request.setAttribute("privilege_list", privilege_list);
                             System.out.println("staff name="+staff_name);
                             return mapping.findForward("success");
-                    }
-                }
-            }
-
-*/
-            String sql = "select * from privilege where staff_id='"+staff_id+"' and library_id='"+library_id+"'";
-            ResultSet rs = MyQueryResult.getMyExecuteQuery(sql);
-            if(rs!=null)
-            {
-                rs.next();
-                if(rs.getString("administrator").equals("false")){
-                    int i = MyQueryResult.getMyExecuteUpdate("update login set role='admin' where staff_id='"+staff_id+"' and library_id='"+library_id+"'");
-                    
-
-                }
-                request.setAttribute("res","Privileage Successfully removed");
+                            }
+                            else{
+                               System.out.println("In Staff");
+                               request.setAttribute("res","Privileage Successfully removed");
                             request.setAttribute("staff_id", staff_id);
                             request.setAttribute("staff_name", staff_name);
                             request.setAttribute("privilege_list", privilege_list);
                             System.out.println("staff name="+staff_name);
                             return mapping.findForward("success");
-            }
+
+
+                            }
+
+/*
+                 result =PrivilegeDAO.DeleteStaff(staff_id,library_id);
+                   result=AcqPrivilegeDAO.DeleteStaff(staff_id, library_id);
+                   result=CatPrivilegeDAO.DeleteStaff(staff_id, library_id);
+                   result=CirPrivilegeDAO.DeleteStaff(staff_id, library_id);
+                   result=SerPrivilegeDAO.DeleteStaff(staff_id, library_id);
+
+                        if(result==true)
+                        {
+
+                            result=PrivilegeDAO.insert(backupprivobj);
+                            if(result==true)
+                                result=AcqPrivilegeDAO.insert(backupacqprivobj);
+                                if(result==true)
+                                    result=CatPrivilegeDAO.insert(backupcatprivobj);
+                                    if(result==true)
+                                        result=CirPrivilegeDAO.insert(backupcirprivobj);
+                                        if(result==true)
+                                            result=SerPrivilegeDAO.insert(backupserprivobj);
+                                       
+                                    
+
+                        if(result==true)
+                        {
+
+                        //check the privilege of admin role user and degrade it to staff role if administrator privielege
+                        //not selected
+                             if(backupprivobj.getAdministrator().equalsIgnoreCase("true"))
+                            {
+                          System.out.println("In admin");
+                            //Login logobj=LoginDAO.searchStaffLogin(staff_id, library_id, backupprivobj.getSublibraryId());
+                            
+                            System.out.println("previous login role="+backuploginprivobj.getRole());
+
+                            result=LoginDAO.update1(backuploginprivobj);
+
+                            if(result==true)
+                            {
+                            request.setAttribute("res","Privileage Successfully removed");
+                            request.setAttribute("staff_id", staff_id);
+                            request.setAttribute("staff_name", staff_name);
+                            request.setAttribute("privilege_list", privilege_list);
+                            System.out.println("staff name="+staff_name);
+                            return mapping.findForward("success");
+                            }
+                            }else{
+                                                System.out.println("In Staff");
+                               request.setAttribute("res","Privileage Successfully removed");
+                            request.setAttribute("staff_id", staff_id);
+                            request.setAttribute("staff_name", staff_name);
+                            request.setAttribute("privilege_list", privilege_list);
+                            System.out.println("staff name="+staff_name);
+                            return mapping.findForward("success");
+
+
+                            }
+                        }
+                      }else{
+                            request.setAttribute("res","Error");
+                            request.setAttribute("staff_id", staff_id);
+                            request.setAttribute("staff_name", staff_name);
+                            request.setAttribute("privilege_list", privilege_list);
+                            System.out.println("staff name="+staff_name);
+                            return mapping.findForward("success");
+
+
+                      }
+         */
+}
+                   
                 
             
-}
-else
-{
-            request.setAttribute("staff_id", staff_id);
-            request.setAttribute("staff_name", staff_name);
 
-
-           System.out.println("staff name111="+staff_name);
-           return mapping.findForward("restore");
-}
-       System.out.println("staff name111="+staff_name);
-           return mapping.findForward("restore");
+return null;
     
     }
 }

@@ -12,6 +12,8 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import java.sql.*;
 import javax.servlet.http.HttpSession;
+import com.myapp.struts.opacDAO.*;
+import java.util.List;
 /**
  *
  * @author Faraz
@@ -20,7 +22,7 @@ public class CallNoSearchAction extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
-    
+    OpacSearchDAO osdao= new OpacSearchDAO();
     /**
      * This is the action called from the Struts framework.
      * @param mapping The ActionMapping used to select this instance.
@@ -39,15 +41,18 @@ public class CallNoSearchAction extends org.apache.struts.action.Action {
         CallNoSearchActionForm myform = (CallNoSearchActionForm)form;
         String lib_id=myform.getCMBLib();
         String callno = myform.getTXTKEY();
-        if (session.getAttribute("Result")!=null) session.removeAttribute("Result");
-        String query = "select * from document_details where call_no='"+ callno +"'";
-        if(!lib_id.equals("all"))
-             query +=" and library_id='" + lib_id + "'";
-        rs = MyQueryResult.getMyExecuteQuery(query);
-       session.setAttribute("Result", rs);//resultset
-       request.setAttribute("lib_id",lib_id);
-       request.setAttribute("call_no",callno);
-       System.out.println(rs.next()+callno+lib_id);
+        String sublib =myform.getCMBSUBLib();
+       // if (session.getAttribute("Result")!=null) session.removeAttribute("Result");
+        //String query = "select * from document_details where call_no='"+ callno +"'";
+        //if(!lib_id.equals("all"))
+            // query +=" and library_id='" + lib_id + "'";
+       // rs = MyQueryResult.getMyExecuteQuery(query);
+       //session.setAttribute("Result", rs);//resultset
+      // request.setAttribute("lib_id",lib_id);
+      // request.setAttribute("call_no",callno);
+      // System.out.println(rs.next()+callno+lib_id);
+       List documentdetail  =(List)osdao.callNoSearch(callno, lib_id, sublib);
+       session.setAttribute("documentdetail", documentdetail);
         return mapping.findForward(SUCCESS);
     }
 }

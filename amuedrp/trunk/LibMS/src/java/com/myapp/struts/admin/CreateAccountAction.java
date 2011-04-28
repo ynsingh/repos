@@ -5,10 +5,8 @@
 
 package com.myapp.struts.admin;
 
-import com.myapp.struts.MyConnection;
-import com.myapp.struts.admin.CreateAccountActionForm;
-import java.io.PrintWriter;
-import java.util.Properties;
+import com.myapp.struts.AdminDAO.*;
+import com.myapp.struts.hbm.*;
 //import javax.mail.*;
 //import javax.mail.internet.*;
 
@@ -21,75 +19,128 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
+import com.myapp.struts.utility.*;
+
 /**
  *
  * @author Dushyant
  */
 public class CreateAccountAction extends org.apache.struts.action.Action {
     
-    /* forward name="success" path="" */
-    private static final String SUCCESS = "success";
-    private static final String ERROR = "error";
-    
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-    
-     */
+   
 
     private String user_name;
     private String staff_id;
     private String password;
     private String library_id;
-    private String email_id;
+    private String login_id;
+    private String sublibrary_id;
     private String role;
+    private boolean result;
     int i;
-    Connection con;
+  
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-      CreateAccountActionForm caaction=(CreateAccountActionForm)form;
-      email_id=caaction.getEmail_id();
-      user_name=caaction.getUser_name();
-      password=caaction.getPassword();
-      staff_id=caaction.getStaff_id();
-      role=caaction.getRole();
+      CreateAccountActionForm accountobj=(CreateAccountActionForm)form;
+      login_id=accountobj.getLogin_id();
+     
+      user_name=accountobj.getUser_name();
+      password=accountobj.getPassword();
+      staff_id=accountobj.getStaff_id();
+      role=accountobj.getRole();
+      sublibrary_id=accountobj.getSublibrary_id();
+
+      
       HttpSession session=request.getSession();
       library_id=(String)session.getAttribute("library_id");
+     
 
-      System.out.println(staff_id);
+     
 
-      request.setAttribute("user_id", email_id);
+      request.setAttribute("user_id", login_id);
       request.setAttribute("user_name", user_name);
-      request.setAttribute("library_id", library_id);
       request.setAttribute("staff_id", staff_id);
+      request.setAttribute("role", role);
+    
+      request.setAttribute("library_id",library_id);
 
-        request.setAttribute("staff_name", user_name);
-        request.setAttribute("role", role);
+                        Login log=LoginDAO.searchLoginID(login_id);
+                        if(log!=null)
+                        {
+                            String msg="Duplicate Login Id ";
+                            request.setAttribute("msg", msg);
+                             return mapping.findForward("duplicate");
 
-       con=MyConnection.getMyConnection();
+                        }
 
-       String sql = ("INSERT INTO login(user_id,user_name,password,library_id,staff_id,role) VALUES ('" + email_id + "','" + user_name + "','" +password + "','" + library_id +"','"+staff_id+"','"+role+"')");
+ 
 
+
+
+  /* Use to Update Staff Entry related to Library Table & SubLibrary Table if sublibrary is changed */
+            StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id,library_id);
+
+
+                    staffobj.setSublibraryId(sublibrary_id);
+
+             result=StaffDetailDAO.update1(staffobj);
+                if(result==false)
+                {
+                    String msg="Request for registration failure due to some error";
+                               request.setAttribute("msg", msg);
+                               return mapping.findForward("error");
+
+                }
+
+
+              staffobj=StaffDetailDAO.searchStaffId(staff_id,library_id,sublibrary_id);
+              LoginId loginIdobj=new LoginId(staff_id, library_id);
+              Login logobj=new Login(loginIdobj,staffobj,login_id) ;
+              password=PasswordEncruptionUtility.password_encrupt(password);
+                logobj.setPassword( password);
+                logobj.setRole(role);
+                logobj.setSublibraryId(sublibrary_id);
+                logobj.setUserName(user_name);
+                logobj.setQuestion("@");
+                  result=LoginDAO.insert1(logobj);
+                if(result==false)
+                {
+
+
+
+                    String msg="Request for registration failure due to some error";
+                    request.setAttribute("msg", msg);
+                    return mapping.findForward("error");
+
+                }
+                else{
+                           if(role.equals("staff"))
+                                    result=CreatePrivilege.assignStaffPrivilege(staff_id, library_id,sublibrary_id);
+                            else if(role.equals("admin"))
+                                    result=CreatePrivilege.assignAdminPrivilege(staff_id, library_id,sublibrary_id);
+                            else if(role.equals("dept-admin"))
+                                   result=CreatePrivilege.assignDepartmentalAdminPrivilege(staff_id, library_id,sublibrary_id);
+                            else if(role.equals("dept-staff"))
+                                   result=CreatePrivilege.assignDepartmentalStaffPrivilege(staff_id, library_id,sublibrary_id);
+
+
+                           if(result==false)
+                           {
+                               String msg="Request for registration failure due to some error";
+                               request.setAttribute("msg", msg);
+                               return mapping.findForward("error");
+                          }
+                          
+
+                           return mapping.findForward("success");
+                }
 
        
-        PreparedStatement stmt=con.prepareStatement(sql);
-        i=stmt.executeUpdate();
-        if(i!=0)
-           
-      {
-            if(role.equals("staff"))
-            Privilege.assignStaffPrivilege(staff_id, library_id);
-            else if(role.equals("admin"))
-                Privilege.assignAdminPrivilege(staff_id, library_id);
+       
 
-
-         return mapping.findForward(SUCCESS);
+         
 
 /*code for Java Mailing
 
@@ -169,14 +220,7 @@ public class CreateAccountAction extends org.apache.struts.action.Action {
 
 
 ----------------------------------*/
-          
-      }
-        else
-           return mapping.findForward(ERROR);
-      }
-      
-
-        
-
     }
+    }
+    
 

@@ -66,6 +66,11 @@ private String locale;
         return null;
     }
 
+    public void reset(ActionMapping mapping, HttpServletRequest request){
+        
+    }
+
+
   
     public String getButton1() {
          return button1;

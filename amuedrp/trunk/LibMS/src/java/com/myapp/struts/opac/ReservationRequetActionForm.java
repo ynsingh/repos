@@ -34,6 +34,8 @@ public class ReservationRequetActionForm extends ValidatorForm {
 private String accessionno;
 private String no_of_copy;
 private String pub_year;
+private String CMBLib;
+private String cmdSubLibary;
     
 
     /**
@@ -255,5 +257,33 @@ private String pub_year;
      */
     public void setPub_year(String pub_year) {
         this.pub_year = pub_year;
+    }
+
+    /**
+     * @return the CMBLib
+     */
+    public String getCMBLib() {
+        return CMBLib;
+    }
+
+    /**
+     * @param CMBLib the CMBLib to set
+     */
+    public void setCMBLib(String CMBLib) {
+        this.CMBLib = CMBLib;
+    }
+
+    /**
+     * @return the SubLibary
+     */
+    public String getcmdSubLibary() {
+        return cmdSubLibary;
+    }
+
+    /**
+     * @param SubLibary the SubLibary to set
+     */
+    public void setcmdSubLibary(String SubLibary) {
+        this.cmdSubLibary = SubLibary;
     }
 }

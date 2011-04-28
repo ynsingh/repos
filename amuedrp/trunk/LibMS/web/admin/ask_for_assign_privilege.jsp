@@ -1,12 +1,14 @@
 
 
-<%@page contentType="text/html" pageEncoding="UTF-8" import="java.sql.*,com.myapp.struts.MyQueryResult;"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
  <jsp:include page="header.jsp" flush="true" />
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
  <%
 String staff_id=(String)request.getParameter("staff_id");
 request.setAttribute("staff_id",staff_id);
+
+String first_name=(String)request.getParameter("user_name");
 
 
 
@@ -15,7 +17,7 @@ request.setAttribute("staff_id",staff_id);
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
         <title>LibMS</title>
     </head>
     <body>
@@ -27,20 +29,20 @@ request.setAttribute("staff_id",staff_id);
       position: absolute;
 
       visibility: show;"><br><br><br>
-<table width="400px" height="300px"  valign="top"
-align="center">
-        <tr><td   width="400px" height="300px"
-valign="top" style="" class="mess" align="center">
-                <fieldset style="border:solid 1px brown;height:200px;padding-left: 5px">
-                    <legend><img src="/LibMS-Struts/images/StaffAssignPrivilege.png"></legend>
-						<br>
+ <table border="1" class="table" width="400px" height="200px" align="center">
+
+
+                <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">Manage Privileges</td></tr>
+                <tr><td valign="top" align="center"> <br/>
+      						<br>
 						<br>
                                                 <%
                                                 String library_id=(String)session.getAttribute("library_id");
-                                                ResultSet rs=MyQueryResult.getMyExecuteQuery("select user_name from login where staff_id='"+staff_id+"' and library_id='"+library_id+"'");
+
+                                               
                                                 String staff_name="";
-                                                if(rs.next())
-                                              staff_name=rs.getString("user_name");
+                                               
+                                              staff_name=first_name;
                                                 %>
                                                 Do You Want To Assign privilege Now for:&nbsp;<b><%=staff_name%>?</b> <br>
 <input type="hidden" value="<%=staff_id%>" name="staff_id"/>
@@ -49,9 +51,9 @@ valign="top" style="" class="mess" align="center">
 
                     <br><br>&nbsp;&nbsp;
                     <input type="button" value="Assign Privilege" onClick="show()" class="txt2"/>
-                    <input type="button" value="Skip" class="txt2" onClick="window.location='/LibMS-Struts/admin/main.jsp';"/>
+                    <input type="button" value="Skip" class="txt2" onClick="window.location='<%=request.getContextPath()%>/admin/main.jsp';"/>
 
-                </fieldset>
+               
 <input type="hidden" name="staff_id" value="<%=staff_id%>">
                     </td></tr></table>
 

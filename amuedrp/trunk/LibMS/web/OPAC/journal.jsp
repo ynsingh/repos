@@ -36,7 +36,7 @@ body
      .datagrid      { border: 1px solid #C7C5B2; font-family: arial; font-size: 9pt;
 	    font-weight: normal }
 </style>
-   <link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
+   <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
   </head>
   <body>
   <span align="center" style="padding-left:250px;font-size:20px;"></span>
@@ -154,22 +154,22 @@ else
 
     <column width="450">
       <header value="Title" hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.title}" hyperLink="/LibMS-Struts/OPAC/MyResultSet1.do?id=select * from document where accessionno='${doc.accessionno}' and library_id='${doc.library_id}'" hyperLinkTarget="f2" hAlign="left"/>
+      <item  styleClass="item"  value="${doc.title}" hyperLink="<%=request.getContextPath()%>/OPAC/MyResultSet1.do?id=select * from document where accessionno='${doc.accessionno}' and library_id='${doc.library_id}'" hyperLinkTarget="f2" hAlign="left"/>
     </column>
 
     <column width="200">
       <header value="Author" hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.author}" hAlign="left" hyperLink="/LibMS-Struts/OPAC/MyResultSet1.do?id=select * from document where accessionno='${doc.accessionno}' and library_id='${doc.library_id}'"  hyperLinkTarget="f2"  />
+      <item  styleClass="item"  value="${doc.author}" hAlign="left" hyperLink="<%=request.getContextPath()%>/OPAC/MyResultSet1.do?id=select * from document where accessionno='${doc.accessionno}' and library_id='${doc.library_id}'"  hyperLinkTarget="f2"  />
     </column>
 
     <column width="100">
       <header value="Call No." hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.callno}" hyperLink="/LibMS-Struts/OPAC/MyResultSet1.do?id=select * from document where accessionno='${doc.accessionno}' and library_id='${doc.library_id}'"  hyperLinkTarget="f2" hAlign="left" />
+      <item  styleClass="item"  value="${doc.callno}" hyperLink="<%=request.getContextPath()%>/OPAC/MyResultSet1.do?id=select * from document where accessionno='${doc.accessionno}' and library_id='${doc.library_id}'"  hyperLinkTarget="f2" hAlign="left" />
     </column>
 
       <column width="150">
       <header value="Library ID" hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.library_id}" hyperLink="/LibMS-Struts/OPAC/MyResultSet1.do?id=select * from document where accessionno='${doc.accessionno}' and library_id='${doc.library_id}'"  hyperLinkTarget="f2" hAlign="left" />
+      <item  styleClass="item"  value="${doc.library_id}" hyperLink="<%=request.getContextPath()%>/OPAC/MyResultSet1.do?id=select * from document where accessionno='${doc.accessionno}' and library_id='${doc.library_id}'"  hyperLinkTarget="f2" hAlign="left" />
     </column>
  </columns>
 
@@ -265,22 +265,22 @@ else
 
     <column width="450">
       <header value="Title" hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.title}" hyperLink="/LibMS-Struts/OPAC/MyResultSet1.do?id=select * from document where accessionno='${doc.accessionno}' and library_id='${doc.library_id}'" hyperLinkTarget="f2" hAlign="left"/>
+      <item  styleClass="item"  value="${doc.title}" hyperLink="<%=request.getContextPath()%>/OPAC/MyResultSet1.do?id=select * from document where accessionno='${doc.accessionno}' and library_id='${doc.library_id}'" hyperLinkTarget="f2" hAlign="left"/>
     </column>
 
     <column width="200">
       <header value="Author" hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.author}" hAlign="left" hyperLink="/LibMS-Struts/OPAC/MyResultSet1.do?id=select * from document where accessionno='${doc.accessionno}' and library_id='${doc.library_id}'"  hyperLinkTarget="f2"  />
+      <item  styleClass="item"  value="${doc.author}" hAlign="left" hyperLink="<%=request.getContextPath()%>/OPAC/MyResultSet1.do?id=select * from document where accessionno='${doc.accessionno}' and library_id='${doc.library_id}'"  hyperLinkTarget="f2"  />
     </column>
 
     <column width="100">
       <header value="Call No." hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.callno}" hyperLink="/LibMS-Struts/OPAC/MyResultSet1.do?id=select * from document where accessionno='${doc.accessionno}' and library_id='${doc.library_id}'"  hyperLinkTarget="f2" hAlign="left" />
+      <item  styleClass="item"  value="${doc.callno}" hyperLink="<%=request.getContextPath()%>/OPAC/MyResultSet1.do?id=select * from document where accessionno='${doc.accessionno}' and library_id='${doc.library_id}'"  hyperLinkTarget="f2" hAlign="left" />
     </column>
 
       <column width="150">
       <header value="Library ID" hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.library_id}" hyperLink="/LibMS-Struts/OPAC/MyResultSet1.do?id=select * from document where accessionno='${doc.accessionno}' and library_id='${doc.library_id}'"  hyperLinkTarget="f2" hAlign="left" />
+      <item  styleClass="item"  value="${doc.library_id}" hyperLink="<%=request.getContextPath()%>/OPAC/MyResultSet1.do?id=select * from document where accessionno='${doc.accessionno}' and library_id='${doc.library_id}'"  hyperLinkTarget="f2" hAlign="left" />
     </column>
  </columns>
 

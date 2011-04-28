@@ -13,7 +13,7 @@ public class LoginDoc
         protected String question;
         protected String ans;
         private String role;
-
+protected String sublibName;
      
      public String getuser_id() { return user_id;}
      public void setuser_id(String user_id) {this.user_id = user_id;}
@@ -51,5 +51,8 @@ public class LoginDoc
     public void setRole(String role) {
         this.role = role;
     }
+     public String getSublibName() { return sublibName;}
+     public void setSublibName(String sublib) {this.sublibName = sublib;}
+
 
 			} //End of Class

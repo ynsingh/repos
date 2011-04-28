@@ -10,9 +10,9 @@
    "http://www.w3.org/TR/html4/loose.dtd">
 <%
 String staff_id=(String)request.getAttribute("staff_id");
-String first_name=(String)request.getAttribute("first_name");
-String last_name=(String)request.getAttribute("last_name");
-String lib=(String)request.getAttribute("library_id");
+
+
+
 
     String staff_name=(String)request.getAttribute("staff_name");
 
@@ -22,10 +22,10 @@ String lib=(String)request.getAttribute("library_id");
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="css/page.css"/>
-        <title>LibMS</title>
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
+        <title>LibMS : Manage Privileges</title>
     </head>
-    <body onload="return message();">
+    <body>
 
 <div
    style="  top:120px;

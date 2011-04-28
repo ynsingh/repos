@@ -1,5 +1,5 @@
 package com.myapp.struts.hbm;
-// Generated Jan 21, 2011 8:43:24 PM by Hibernate Tools 3.2.1.GA
+// Generated Mar 25, 2011 8:38:07 PM by Hibernate Tools 3.2.1.GA
 
 
 
@@ -9,17 +9,26 @@ package com.myapp.struts.hbm;
 public class AcqFinalDemandListId  implements java.io.Serializable {
 
 
-     private String libraryId;
      private String controlNo;
+     private String libraryId;
+     private String sublibraryId;
 
     public AcqFinalDemandListId() {
     }
 
-    public AcqFinalDemandListId(String libraryId, String controlNo) {
-       this.libraryId = libraryId;
+    public AcqFinalDemandListId(String controlNo, String libraryId, String sublibraryId) {
        this.controlNo = controlNo;
+       this.libraryId = libraryId;
+       this.sublibraryId = sublibraryId;
     }
    
+    public String getControlNo() {
+        return this.controlNo;
+    }
+    
+    public void setControlNo(String controlNo) {
+        this.controlNo = controlNo;
+    }
     public String getLibraryId() {
         return this.libraryId;
     }
@@ -27,12 +36,12 @@ public class AcqFinalDemandListId  implements java.io.Serializable {
     public void setLibraryId(String libraryId) {
         this.libraryId = libraryId;
     }
-    public String getControlNo() {
-        return this.controlNo;
+    public String getSublibraryId() {
+        return this.sublibraryId;
     }
     
-    public void setControlNo(String controlNo) {
-        this.controlNo = controlNo;
+    public void setSublibraryId(String sublibraryId) {
+        this.sublibraryId = sublibraryId;
     }
 
 
@@ -42,15 +51,17 @@ public class AcqFinalDemandListId  implements java.io.Serializable {
 		 if ( !(other instanceof AcqFinalDemandListId) ) return false;
 		 AcqFinalDemandListId castOther = ( AcqFinalDemandListId ) other; 
          
-		 return ( (this.getLibraryId()==castOther.getLibraryId()) || ( this.getLibraryId()!=null && castOther.getLibraryId()!=null && this.getLibraryId().equals(castOther.getLibraryId()) ) )
- && ( (this.getControlNo()==castOther.getControlNo()) || ( this.getControlNo()!=null && castOther.getControlNo()!=null && this.getControlNo().equals(castOther.getControlNo()) ) );
+		 return ( (this.getControlNo()==castOther.getControlNo()) || ( this.getControlNo()!=null && castOther.getControlNo()!=null && this.getControlNo().equals(castOther.getControlNo()) ) )
+ && ( (this.getLibraryId()==castOther.getLibraryId()) || ( this.getLibraryId()!=null && castOther.getLibraryId()!=null && this.getLibraryId().equals(castOther.getLibraryId()) ) )
+ && ( (this.getSublibraryId()==castOther.getSublibraryId()) || ( this.getSublibraryId()!=null && castOther.getSublibraryId()!=null && this.getSublibraryId().equals(castOther.getSublibraryId()) ) );
    }
    
    public int hashCode() {
          int result = 17;
          
-         result = 37 * result + ( getLibraryId() == null ? 0 : this.getLibraryId().hashCode() );
          result = 37 * result + ( getControlNo() == null ? 0 : this.getControlNo().hashCode() );
+         result = 37 * result + ( getLibraryId() == null ? 0 : this.getLibraryId().hashCode() );
+         result = 37 * result + ( getSublibraryId() == null ? 0 : this.getSublibraryId().hashCode() );
          return result;
    }   
 

@@ -1,0 +1,320 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 2, 2011 12:00:19 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="com.myapp.struts.hbm.SerPrivilege" table="ser_privilege" catalog="libms">
+        <composite-id name="id" class="com.myapp.struts.hbm.SerPrivilegeId">
+            <key-property name="staffId" type="string">
+                <column name="staff_id" length="100" />
+            </key-property>
+            <key-property name="libraryId" type="string">
+                <column name="library_id" length="20" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="staffDetail" class="com.myapp.struts.hbm.StaffDetail" update="false" insert="false" fetch="select">
+            <column name="staff_id" length="100" not-null="true" />
+            <column name="library_id" length="20" not-null="true" />
+        </many-to-one>
+        <property name="sublibraryId" type="string">
+            <column name="sublibrary_id" length="20" not-null="true" />
+        </property>
+        <property name="ser401" type="string">
+            <column name="ser_401" length="5" />
+        </property>
+        <property name="ser402" type="string">
+            <column name="ser_402" length="5" />
+        </property>
+        <property name="ser403" type="string">
+            <column name="ser_403" length="5" />
+        </property>
+        <property name="ser404" type="string">
+            <column name="ser_404" length="5" />
+        </property>
+        <property name="ser405" type="string">
+            <column name="ser_405" length="5" />
+        </property>
+        <property name="ser406" type="string">
+            <column name="ser_406" length="5" />
+        </property>
+        <property name="ser407" type="string">
+            <column name="ser_407" length="5" />
+        </property>
+        <property name="ser408" type="string">
+            <column name="ser_408" length="5" />
+        </property>
+        <property name="ser409" type="string">
+            <column name="ser_409" length="5" />
+        </property>
+        <property name="ser410" type="string">
+            <column name="ser_410" length="5" />
+        </property>
+        <property name="ser411" type="string">
+            <column name="ser_411" length="5" />
+        </property>
+        <property name="ser412" type="string">
+            <column name="ser_412" length="5" />
+        </property>
+        <property name="ser413" type="string">
+            <column name="ser_413" length="5" />
+        </property>
+        <property name="ser414" type="string">
+            <column name="ser_414" length="5" />
+        </property>
+        <property name="ser415" type="string">
+            <column name="ser_415" length="5" />
+        </property>
+        <property name="ser416" type="string">
+            <column name="ser_416" length="5" />
+        </property>
+        <property name="ser417" type="string">
+            <column name="ser_417" length="5" />
+        </property>
+        <property name="ser418" type="string">
+            <column name="ser_418" length="5" />
+        </property>
+        <property name="ser419" type="string">
+            <column name="ser_419" length="5" />
+        </property>
+        <property name="ser420" type="string">
+            <column name="ser_420" length="5" />
+        </property>
+        <property name="ser421" type="string">
+            <column name="ser_421" length="5" />
+        </property>
+        <property name="ser422" type="string">
+            <column name="ser_422" length="5" />
+        </property>
+        <property name="ser423" type="string">
+            <column name="ser_423" length="5" />
+        </property>
+        <property name="ser424" type="string">
+            <column name="ser_424" length="5" />
+        </property>
+        <property name="ser425" type="string">
+            <column name="ser_425" length="5" />
+        </property>
+        <property name="ser426" type="string">
+            <column name="ser_426" length="5" />
+        </property>
+        <property name="ser427" type="string">
+            <column name="ser_427" length="5" />
+        </property>
+        <property name="ser428" type="string">
+            <column name="ser_428" length="5" />
+        </property>
+        <property name="ser429" type="string">
+            <column name="ser_429" length="5" />
+        </property>
+        <property name="ser430" type="string">
+            <column name="ser_430" length="5" />
+        </property>
+        <property name="ser431" type="string">
+            <column name="ser_431" length="5" />
+        </property>
+        <property name="ser432" type="string">
+            <column name="ser_432" length="5" />
+        </property>
+        <property name="ser433" type="string">
+            <column name="ser_433" length="5" />
+        </property>
+        <property name="ser434" type="string">
+            <column name="ser_434" length="5" />
+        </property>
+        <property name="ser435" type="string">
+            <column name="ser_435" length="5" />
+        </property>
+        <property name="ser436" type="string">
+            <column name="ser_436" length="5" />
+        </property>
+        <property name="ser437" type="string">
+            <column name="ser_437" length="5" />
+        </property>
+        <property name="ser438" type="string">
+            <column name="ser_438" length="5" />
+        </property>
+        <property name="ser439" type="string">
+            <column name="ser_439" length="5" />
+        </property>
+        <property name="ser440" type="string">
+            <column name="ser_440" length="5" />
+        </property>
+        <property name="ser441" type="string">
+            <column name="ser_441" length="5" />
+        </property>
+        <property name="ser442" type="string">
+            <column name="ser_442" length="5" />
+        </property>
+        <property name="ser443" type="string">
+            <column name="ser_443" length="5" />
+        </property>
+        <property name="ser444" type="string">
+            <column name="ser_444" length="5" />
+        </property>
+        <property name="ser445" type="string">
+            <column name="ser_445" length="5" />
+        </property>
+        <property name="ser446" type="string">
+            <column name="ser_446" length="5" />
+        </property>
+        <property name="ser447" type="string">
+            <column name="ser_447" length="5" />
+        </property>
+        <property name="ser448" type="string">
+            <column name="ser_448" length="5" />
+        </property>
+        <property name="ser449" type="string">
+            <column name="ser_449" length="5" />
+        </property>
+        <property name="ser450" type="string">
+            <column name="ser_450" length="5" />
+        </property>
+        <property name="ser451" type="string">
+            <column name="ser_451" length="5" />
+        </property>
+        <property name="ser452" type="string">
+            <column name="ser_452" length="5" />
+        </property>
+        <property name="ser453" type="string">
+            <column name="ser_453" length="5" />
+        </property>
+        <property name="ser454" type="string">
+            <column name="ser_454" length="5" />
+        </property>
+        <property name="ser455" type="string">
+            <column name="ser_455" length="5" />
+        </property>
+        <property name="ser456" type="string">
+            <column name="ser_456" length="5" />
+        </property>
+        <property name="ser457" type="string">
+            <column name="ser_457" length="5" />
+        </property>
+        <property name="ser458" type="string">
+            <column name="ser_458" length="5" />
+        </property>
+        <property name="ser459" type="string">
+            <column name="ser_459" length="5" />
+        </property>
+        <property name="ser460" type="string">
+            <column name="ser_460" length="5" />
+        </property>
+        <property name="ser461" type="string">
+            <column name="ser_461" length="5" />
+        </property>
+        <property name="ser462" type="string">
+            <column name="ser_462" length="5" />
+        </property>
+        <property name="ser463" type="string">
+            <column name="ser_463" length="5" />
+        </property>
+        <property name="ser464" type="string">
+            <column name="ser_464" length="5" />
+        </property>
+        <property name="ser465" type="string">
+            <column name="ser_465" length="5" />
+        </property>
+        <property name="ser466" type="string">
+            <column name="ser_466" length="5" />
+        </property>
+        <property name="ser467" type="string">
+            <column name="ser_467" length="5" />
+        </property>
+        <property name="ser468" type="string">
+            <column name="ser_468" length="5" />
+        </property>
+        <property name="ser469" type="string">
+            <column name="ser_469" length="5" />
+        </property>
+        <property name="ser470" type="string">
+            <column name="ser_470" length="5" />
+        </property>
+        <property name="ser471" type="string">
+            <column name="ser_471" length="5" />
+        </property>
+        <property name="ser472" type="string">
+            <column name="ser_472" length="5" />
+        </property>
+        <property name="ser473" type="string">
+            <column name="ser_473" length="5" />
+        </property>
+        <property name="ser474" type="string">
+            <column name="ser_474" length="5" />
+        </property>
+        <property name="ser475" type="string">
+            <column name="ser_475" length="5" />
+        </property>
+        <property name="ser476" type="string">
+            <column name="ser_476" length="5" />
+        </property>
+        <property name="ser477" type="string">
+            <column name="ser_477" length="5" />
+        </property>
+        <property name="ser478" type="string">
+            <column name="ser_478" length="5" />
+        </property>
+        <property name="ser479" type="string">
+            <column name="ser_479" length="5" />
+        </property>
+        <property name="ser480" type="string">
+            <column name="ser_480" length="5" />
+        </property>
+        <property name="ser481" type="string">
+            <column name="ser_481" length="5" />
+        </property>
+        <property name="ser482" type="string">
+            <column name="ser_482" length="5" />
+        </property>
+        <property name="ser483" type="string">
+            <column name="ser_483" length="5" />
+        </property>
+        <property name="ser484" type="string">
+            <column name="ser_484" length="5" />
+        </property>
+        <property name="ser485" type="string">
+            <column name="ser_485" length="5" />
+        </property>
+        <property name="ser486" type="string">
+            <column name="ser_486" length="5" />
+        </property>
+        <property name="ser487" type="string">
+            <column name="ser_487" length="5" />
+        </property>
+        <property name="ser488" type="string">
+            <column name="ser_488" length="5" />
+        </property>
+        <property name="ser489" type="string">
+            <column name="ser_489" length="5" />
+        </property>
+        <property name="ser490" type="string">
+            <column name="ser_490" length="5" />
+        </property>
+        <property name="ser491" type="string">
+            <column name="ser_491" length="5" />
+        </property>
+        <property name="ser492" type="string">
+            <column name="ser_492" length="5" />
+        </property>
+        <property name="ser493" type="string">
+            <column name="ser_493" length="5" />
+        </property>
+        <property name="ser494" type="string">
+            <column name="ser_494" length="5" />
+        </property>
+        <property name="ser495" type="string">
+            <column name="ser_495" length="5" />
+        </property>
+        <property name="ser496" type="string">
+            <column name="ser_496" length="5" />
+        </property>
+        <property name="ser497" type="string">
+            <column name="ser_497" length="5" />
+        </property>
+        <property name="ser498" type="string">
+            <column name="ser_498" length="5" />
+        </property>
+        <property name="ser499" type="string">
+            <column name="ser_499" length="5" />
+        </property>
+    </class>
+</hibernate-mapping>

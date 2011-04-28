@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 2, 2011 12:00:19 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="com.myapp.struts.hbm.CirMemberDetail" table="cir_member_detail" catalog="libms">
+        <composite-id name="id" class="com.myapp.struts.hbm.CirMemberDetailId">
+            <key-property name="libraryId" type="string">
+                <column name="library_id" length="20" />
+            </key-property>
+            <key-property name="memId" type="string">
+                <column name="memId" length="70" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="library" class="com.myapp.struts.hbm.Library" update="false" insert="false" fetch="select">
+            <column name="library_id" length="20" not-null="true" />
+        </many-to-one>
+        <property name="fname" type="string">
+            <column name="fname" length="50" />
+        </property>
+        <property name="mname" type="string">
+            <column name="mname" length="40" />
+        </property>
+        <property name="lname" type="string">
+            <column name="lname" length="40" />
+        </property>
+        <property name="address1" type="string">
+            <column name="address1" length="200" />
+        </property>
+        <property name="address2" type="string">
+            <column name="address2" length="200" />
+        </property>
+        <property name="city1" type="string">
+            <column name="city1" length="50" />
+        </property>
+        <property name="state1" type="string">
+            <column name="state1" length="50" />
+        </property>
+        <property name="pin1" type="string">
+            <column name="pin1" length="15" />
+        </property>
+        <property name="country1" type="string">
+            <column name="country1" length="60" />
+        </property>
+        <property name="city2" type="string">
+            <column name="city2" length="50" />
+        </property>
+        <property name="state2" type="string">
+            <column name="state2" length="50" />
+        </property>
+        <property name="pin2" type="string">
+            <column name="pin2" length="15" />
+        </property>
+        <property name="country2" type="string">
+            <column name="country2" length="60" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="100" />
+        </property>
+        <property name="fax" type="string">
+            <column name="fax" length="100" />
+        </property>
+        <property name="phone1" type="string">
+            <column name="phone1" length="15" />
+        </property>
+        <property name="phone2" type="string">
+            <column name="phone2" length="15" />
+        </property>
+        <property name="location" type="string">
+            <column name="location" length="70" />
+        </property>
+        <property name="image" type="binary">
+            <column name="image" />
+        </property>
+        <property name="createdBy" type="string">
+            <column name="CreatedBy" length="50" />
+        </property>
+        <set name="cirOpacRequests" inverse="true">
+            <key>
+                <column name="library_id" length="20" not-null="true" />
+                <column name="memid" length="70" not-null="true" />
+            </key>
+            <one-to-many class="com.myapp.struts.hbm.CirOpacRequest" />
+        </set>
+        <set name="cirMemberAccounts" inverse="true">
+            <key>
+                <column name="library_id" length="20" not-null="true" />
+                <column name="memid" length="70" not-null="true" />
+            </key>
+            <one-to-many class="com.myapp.struts.hbm.CirMemberAccount" />
+        </set>
+    </class>
+</hibernate-mapping>

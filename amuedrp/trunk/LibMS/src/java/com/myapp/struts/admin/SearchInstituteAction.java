@@ -5,8 +5,8 @@
 
 package com.myapp.struts.admin;
 
-import com.myapp.struts.MyQueryResult;
-import java.sql.*;
+import com.myapp.struts.AdminDAO.LibraryDAO;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -25,7 +25,7 @@ public class SearchInstituteAction extends org.apache.struts.action.Action {
     private String sort_by;
     private String search_keyword;
     private String sql;
-    ResultSet rst;
+    List rst;
     /**
      * This is the action called from the Struts framework.
      * @param mapping The ActionMapping used to select this instance.
@@ -43,8 +43,8 @@ public class SearchInstituteAction extends org.apache.struts.action.Action {
         search_by=institute.getSearch_by();
         sort_by=institute.getSort_by();
         search_keyword=institute.getSearch_keyword();
-        sql="select a.*,b.library_id from admin_registration a inner join library b on a.registration_id=b.registration_id  where a."+search_by+" like '"+search_keyword+"%' order by a."+sort_by+" asc";
-        rst=MyQueryResult.getMyExecuteQuery(sql);
+        LibraryDAO institutedao = new LibraryDAO();
+        rst = institutedao.getLibrarySearch(search_by, search_keyword, sort_by);
         request.setAttribute("search_institute_resultset",rst );
         return mapping.findForward("institute_search");
     }

@@ -39,7 +39,7 @@ a:active
     Locale locale=null;
     String locale1="en";
     String rtl="ltr";
-    boolean page=true;
+    String align="left";
 %>
 <%
 try{
@@ -52,8 +52,8 @@ locale1=(String)session.getAttribute("locale");
     else locale1="en";
 }catch(Exception e){locale1="en";}
      locale = new Locale(locale1);
-    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;}
-    else{ rtl="RTL";page=false;}
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
     %>
@@ -76,14 +76,14 @@ locale1=(String)session.getAttribute("locale");
        
      
 
-<table cellpadding="0" cellspacing="1" id="Table1">
- <%if(!page.equals(true)){%>
- <tr><td align="right" valign="top">
-        <table  align="right" width="800x"  style="border:solid 1px #e0e8f5;">
+        <table cellpadding="0" cellspacing="1" id="Table1" dir="<%=rtl%>" align="<%=align%>">
+ 
+ <tr><td dir="<%=rtl%>" align="<%=align%>" valign="top">
+        <table  dir="<%=rtl%>" align="<%=align%>" width="800x"  style="border:solid 1px #e0e8f5;">
 
 
 
-  <tr class="header"><td  width="800px" height="40px"  align="center" colspan="2" style="font-size: 18px;">
+  <tr class="header" dir="<%=rtl%>" align="<%=align%>"><td  width="800px"  height="40px" dir="<%=rtl%>"  align="center" colspan="2" style="font-size: 18px;">
 
 
 		<%=resource.getString("opacmainframe.opachome.text1")%>
@@ -91,54 +91,54 @@ locale1=(String)session.getAttribute("locale");
 
 
         </td></tr>
-  <tr><td width="800px">
-              <table  height="300px" border="0" cellpadding="2" cellspacing="0" width="100%" frame="hspaces" >
+  <tr><td width="800px" dir="<%=rtl%>">
+              <table  height="300px" border="0" dir="<%=rtl%>" cellpadding="2" cellspacing="0" width="100%" frame="hspaces" >
 
-    <tbody><tr>
-            <td  align="right">
-    	<%=resource.getString("opacmainframe.opachome.text2")%>&nbsp;<img src="../images/orange_sq_but.gif"/>
+    <tbody><tr dir="<%=rtl%>">
+            <td  align="<%=align%>" dir="<%=rtl%>">&nbsp;<img src="../images/orange_sq_but.gif"/>&nbsp;
+    	<%=resource.getString("opacmainframe.opachome.text2")%>
     </td>
 
     </tr>
 <tr>
-    <td  class="tipstext" align="right">
-    	<%=resource.getString("opacmainframe.opachome.text3")%>&nbsp;<img src="../images/orange_sq_but.gif"/>
+    <td  class="tipstext" align="<%=align%>"  dir="<%=rtl%>">&nbsp;<img src="../images/orange_sq_but.gif"/>&nbsp;
+    	<%=resource.getString("opacmainframe.opachome.text3")%>
     </td>
 
     </tr>
     <tr>
-    <td  class="tipstext" align="right">
-    	<%=resource.getString("opacmainframe.opachome.text4")%>&nbsp;<img src="../images/orange_sq_but.gif"/>
+    <td  class="tipstext" dir="<%=rtl%>" align="<%=align%>">&nbsp;<img src="../images/orange_sq_but.gif"/>&nbsp;
+    	<%=resource.getString("opacmainframe.opachome.text4")%>
     </td>
 
     </tr>
     <tr>
-    <td  class="tipstext" align="right">
-    	<%=resource.getString("opacmainframe.opachome.text5")%>&nbsp;<img src="../images/orange_sq_but.gif"/>
+    <td  class="tipstext" align="<%=align%>" dir="<%=rtl%>">&nbsp;<img src="../images/orange_sq_but.gif"/>&nbsp;
+    	<%=resource.getString("opacmainframe.opachome.text5")%>
     </td>
 
     </tr>
     <tr>
-    <td class="tipstext" align="right">
-    	<%=resource.getString("opacmainframe.opachome.text6")%>&nbsp;<img src="../images/orange_sq_but.gif"/>
+    <td class="tipstext" align="<%=align%>" dir="<%=rtl%>">&nbsp;<img src="../images/orange_sq_but.gif"/>&nbsp;
+    	<%=resource.getString("opacmainframe.opachome.text6")%>
     </td>
 
     </tr>
     <tr>
-    <td  class="tipstext" align="right">
-    	Check Your Account history using MyAccount Option&nbsp;<img src="../images/orange_sq_but.gif"/>
+    <td  class="tipstext" align="<%=align%>" dir="<%=rtl%>">&nbsp;<img src="../images/orange_sq_but.gif"/>&nbsp;
+    	Check Your Account history using MyAccount Option
     </td>
 
     </tr>
      <tr>
-    <td  class="tipstext" align="right">
-    	<%=resource.getString("opacmainframe.opachome.text8")%>&nbsp;<img src="../images/orange_sq_but.gif"/>
+    <td  class="tipstext" align="<%=align%>" dir="<%=rtl%>">&nbsp;<img src="../images/orange_sq_but.gif"/>&nbsp;
+    	<%=resource.getString("opacmainframe.opachome.text8")%>
     </td>
 
     </tr>
      <tr>
-    <td  class="tipstext" align="right">
-    	<%=resource.getString("opacmainframe.opachome.text9")%>&nbsp;<img src="../images/orange_sq_but.gif"/>
+    <td  class="tipstext" align="<%=align%>" dir="<%=rtl%>">&nbsp;<img src="../images/orange_sq_but.gif"/>&nbsp;
+    	<%=resource.getString("opacmainframe.opachome.text9")%>
     </td>
 
     </tr>
@@ -155,90 +155,12 @@ locale1=(String)session.getAttribute("locale");
      </td></tr>
 
 
- <%}else{%>
- <tr><td align="left" valign="top">
-        <table  align="left" width="800x"  style="border:solid 1px #e0e8f5;">
-
-
-
-  <tr class="header"><td  width="800px" height="40px"  align="center" colspan="2" style="font-size: 18px;">
-
-
-		<%=resource.getString("opacmainframe.opachome.text1")%>
-
-
-
-        </td></tr>
-  <tr><td width="800px">
-              <table class="header1" height="300px" border="0" cellpadding="2" cellspacing="0" width="100%" frame="hspaces" >
-   
- <tr>
-            <td align="left">
-    	<img src="../images/orange_sq_but.gif"/>&nbsp;<%=resource.getString("opacmainframe.opachome.text2")%>
-    </th>
-
-    </tr>
-<tr>
-    <td   align="left">
-    	<img src="../images/orange_sq_but.gif"/>&nbsp;<%=resource.getString("opacmainframe.opachome.text3")%>
-    </td>
-
-    </tr>
-    <tr>
-    <td  align="left">
-    	<img src="../images/orange_sq_but.gif"/>&nbsp;<%=resource.getString("opacmainframe.opachome.text4")%>
-    </td>
-
-    </tr>
-    <tr>
-    <td   align="left">
-    	<img src="../images/orange_sq_but.gif"/>&nbsp;<%=resource.getString("opacmainframe.opachome.text5")%>
-    </td>
-
-    </tr>
-    <tr>
-    <td  align="left">
-    	<img src="../images/orange_sq_but.gif"/>&nbsp;<%=resource.getString("opacmainframe.opachome.text6")%>
-    </td>
-
-    </tr>
-    <tr>
-    <td   align="left">
-    	<img src="../images/orange_sq_but.gif"/>&nbsp;Check Your Account history using MyAccount Option
-    </td>
-
-    </tr>
-     <tr>
-    <td   align="left">
-    	<img src="../images/orange_sq_but.gif"/>&nbsp;<%=resource.getString("opacmainframe.opachome.text8")%>
-    </td>
-
-    </tr>
-     <tr>
-    <td   align="left">
-    	<img src="../images/orange_sq_but.gif"/>&nbsp;<%=resource.getString("opacmainframe.opachome.text9")%>
-    </td>
-
-    </tr>
-   
-  </table>
-
-
-
-
-
-      </td></tr></table>
-      
-      
-     </td></tr>
- 
- <%}%>
   <%
     String message=(String)request.getAttribute("msg");
     if(message!=null){
        %> <br>
-	           <TABLE class="datagrid" style="background-color: #E3E4FA;font-size:15px;"
-                   WIDTH="40%" border="1" align="center">
+       <TABLE class="datagrid" align="<%=align%>" dir="<%=rtl%>" style="background-color: #E3E4FA;font-size:15px;"
+                   WIDTH="40%" border="1" >
 		      <tr><th><%=message%></th></tr>
 		   </TABLE>
    <% }else

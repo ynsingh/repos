@@ -5,7 +5,7 @@
 
 package com.myapp.struts.opac;
 
-import com.myapp.struts.MyExecuteQueryAction;
+
 import java.sql.ResultSet;
 import java.util.*;
 import javax.servlet.http.*;

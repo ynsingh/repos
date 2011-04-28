@@ -8,14 +8,14 @@
 String staff_id=(String)request.getParameter("staff_id");
 String first_name=(String)request.getParameter("first_name");
 String last_name=(String)request.getParameter("last_name");
-String email_id=(String)request.getParameter("email_id");
+
 %>
 
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
-        <title>LibMS</title>
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
+        <title>LibMS : Manage Staff Create Account </title>
     </head>
     <body>
 
@@ -26,26 +26,24 @@ String email_id=(String)request.getParameter("email_id");
       position: absolute;
 
       visibility: show;"><br><br><br>
-<table width="400px" height="300px"  valign="top"
-align="center">
-        <tr><td   width="400px" height="300px"
-valign="top" style="" class="mess" align="center">
-                <fieldset style="border:solid 1px brown;height:200px;padding-left: 5px">
-                    <legend><img src="/LibMS-Struts/images/StaffAccountLogin.png"></legend>
-						<br>
+ <table border="1" class="table" width="400px" height="200px" align="center">
+
+
+                <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">Manage Staff Account</td></tr>
+                <tr><td valign="top" align="center"> <br/>
+      						<br>
 						<br>
 
                                                 Do You Want To Create Account Now for:&nbsp; <b><%=first_name%>&nbsp;<%=last_name%></b>?<br>
 <input type="hidden" value="<%=first_name%>" name="first_name"/>
 <input type="hidden" value="<%=last_name%>" name="last_name"/>
-                    </b>
+                    
 
                     <br><br>&nbsp;&nbsp;
                     <input type="button" value="Create Account" onClick="show()" class="txt2"/>
-                    <input type="button" value="Skip" class="txt2" onClick="window.location='/LibMS-Struts/admin/main.jsp';"/>
+                    <input type="button" value="Skip" class="txt2" onClick="window.location='<%=request.getContextPath()%>/admin/main.jsp';"/>
 
-                </fieldset>
-
+              
                     </td></tr></table>
 
 
@@ -58,7 +56,7 @@ valign="top" style="" class="mess" align="center">
 <script language="javascript" type="text/javascript">
     function show()
     {
-        location.href="createaccount.jsp?staff_id=<%=staff_id%>&first_name=<%=first_name%>&last_name=<%=last_name%>&email_id=<%=email_id%>";
+        location.href="<%=request.getContextPath()%>/admin/account2.do?staff_id=<%=staff_id%>&first_name=<%=first_name%>&last_name=<%=last_name%>";
     }
     </script>
 

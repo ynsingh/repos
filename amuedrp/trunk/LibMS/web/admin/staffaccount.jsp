@@ -15,6 +15,7 @@ String user_name=(String)request.getAttribute("user_name");
 String role=(String)request.getAttribute("role");
 
 String lib=(String)request.getAttribute("library_id");
+String sublib=(String)request.getAttribute("sublibrary");
 String msg=(String)request.getAttribute("msg");
 %>
 
@@ -75,7 +76,7 @@ String msg=(String)request.getAttribute("msg");
         var a=alert("Login Account Created Successfully for:<%=user_name%>");
 
 
-        location.href="/LibMS-Struts/admin/ask_for_assign_privilege.jsp?staff_id=<%=staff_id%>";
+        location.href="<%=request.getContextPath()%>/admin/ask_for_assign_privilege.jsp?staff_id=<%=staff_id%>&user_name=<%=user_name%>";
 
         return false;
     }

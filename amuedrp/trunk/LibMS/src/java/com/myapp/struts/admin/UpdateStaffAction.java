@@ -6,6 +6,8 @@
 package com.myapp.struts.admin;
 
 import com.myapp.struts.admin.StaffDetailActionForm;
+import  com.myapp.struts.hbm.*;
+import  com.myapp.struts.AdminDAO.*;
 import  com.myapp.struts.*;
 import java.sql.*;
 import javax.servlet.http.*;
@@ -24,7 +26,7 @@ public class UpdateStaffAction extends org.apache.struts.action.Action {
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
     private String library_id;
-    private String employee_id;
+    private String staff_id;
     private String first_name;
     private String last_name;
     private String contact_no;
@@ -46,26 +48,33 @@ public class UpdateStaffAction extends org.apache.struts.action.Action {
     private String father_name;
     private String gender;
     private String courtesy;
+    private String sublibrary_id;
     private String button;
+    private boolean result;
+         private byte[] imagefile;
+         private String role;
+
     int i=0;
     
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-    
-     */
+   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
-            throws Exception {
-         HttpSession session=request.getSession();
+            throws Exception
+    {
+        HttpSession session1=request.getSession();
+        HttpSession session=request.getSession();
         library_id=(String)session.getAttribute("library_id");
+
+       
+
         StaffDetailActionForm staff=(StaffDetailActionForm)form;
-        employee_id=staff.getEmployee_id();
+
+      
+    sublibrary_id= staff.getSublibrary_id();
+
+
+        staff_id=staff.getEmployee_id();
         first_name=staff.getFirst_name();
         last_name=staff.getLast_name();
         contact_no=staff.getContact_no();
@@ -86,244 +95,437 @@ public class UpdateStaffAction extends org.apache.struts.action.Action {
         zip2=staff.getZip2();
         father_name=staff.getFather_name();
         gender=staff.getGender();
+        if(staff.getCourtesy()!=null)
         courtesy=staff.getCourtesy();
         button=staff.getButton();
-        String sql,sql1,sql2;
-        ResultSet rst,rst1,rst2;
-        System.out.println(button);
-        if(button.equals("View"))
-         {
-                sql="select * from staff_detail where staff_id !='"+employee_id+"' and emai_id='"+email_id+"'and library_id='"+library_id+"'";
-              
-                rst=MyQueryResult.getMyExecuteQuery(sql);
-               
-                if(rst.next())
-                {
-                     request.setAttribute("email_id", "This Email Already Exists");
-                     return mapping.findForward("duplicate");
-                }
-             else
-            {
-            request.setAttribute("staff_id",employee_id );
-            
-              request.setAttribute("staff_name",first_name+" "+last_name );
-            request.setAttribute("msg", "Sorry Record Updation UnSuceessfully For ");
-            return mapping.findForward("success");
-              }
-         }
+       
+        System.out.println(button+staff.getCourtesy()+"..........");
+       String mainlib=(String)session.getAttribute("mainsublibrary");
 
-
-
-         
          if(button.equals("Update"))
          {
 
         String  id1=(String)session.getAttribute("staff_id");
 
+System.out.println(id1+" ........"+staff_id+staff.getSublibrary_id());
+
+        String id="admin."+library_id;   //cannot update Institute admin ID if u are not insti-admin
 
 
-        String id="admin."+library_id;   //get Institute admin ID
-        if(employee_id.equals(id) && employee_id.equals(id1)==false)
+        if(staff_id.equals(id) && staff_id.equals(id1)==false)
          {
-              ResultSet rs1=MyQueryResult.getMyExecuteQuery("select * from login where staff_id='"+employee_id+"' and library_id='"+library_id+"'");
+              StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id,library_id);
 
-            if(rs1.next())
-            {
-         first_name=rs1.getString("user_name");
+                     if(staffobj!=null)
+                     {
+                    first_name=staffobj.getFirstName()+" "+staffobj.getLastName();
 
-            }
+                     }
                request.setAttribute("user_id", email_id);
               request.setAttribute("staff_name",first_name );
                 request.setAttribute("library_id", library_id);
-                request.setAttribute("staff_id", employee_id);
+                request.setAttribute("staff_id", staff_id);
 
                 request.setAttribute("msg", "You Cannot Update Institute Admin");
                   return mapping.findForward("success");
          }
 
-       //cannot delete own account
-      /*      if(employee_id.equals(id))
+      
+             id=(String)session.getAttribute("staff_id");
+         String  login_role=(String)session.getAttribute("login_role");    //cannot update  same role person if it is not u
+
+            Login logobj=LoginDAO.searchRole(staff_id,library_id);
+
+         
+  if(logobj!=null)
             {
-
-
-                   request.setAttribute("user_id", email_id);
-
-                  request.setAttribute("staff_name",first_name+" "+last_name );
-                request.setAttribute("library_id", library_id);
-                request.setAttribute("staff_id", employee_id);
-
-                request.setAttribute("msg", "You Cannot Update Your Account for Staff Name :");
-                  return mapping.findForward("success");
-
-            }*/
-      id=(String)session.getAttribute("staff_id");
-         String login_role=(String)session.getAttribute("login_role");    //cannot create co-admin
-         ResultSet rs1=MyQueryResult.getMyExecuteQuery("select * from login where staff_id='"+employee_id+"' and library_id='"+library_id+"'");
-
-            if(rs1.next())
-            {
-                if(rs1.getString("role").equals(login_role) && (rs1.getString("staff_id").equals(id)==false))
+                if(logobj.getRole().equalsIgnoreCase(login_role) && logobj.getId().getStaffId().equalsIgnoreCase(id)==false)
                 {
-                   request.setAttribute("user_id", email_id);
+
+                request.setAttribute("user_id", email_id);
 
                   request.setAttribute("staff_name",first_name+" "+last_name );
                 request.setAttribute("library_id", library_id);
-                request.setAttribute("staff_id", employee_id);
+                request.setAttribute("staff_id", staff_id);
                 
-                request.setAttribute("msg", "You Cannot Update Admin Name :");
+                request.setAttribute("msg", "You Cannot Update Same role Person Name :");
                   return mapping.findForward("success");
                 }
             }
 
 
 
-       
+System.out.println(sublibrary_id+"/////////////////////////////////"+staff_id);
 
-       
 
-             sql = ("update  staff_detail set title='" + courtesy + "',first_name='" +
-                first_name + "',last_name='" + last_name + "',contact_no='" + contact_no + "',mobile_no='" + mobile_no + "',emai_id='" +
-                email_id + "',date_joining='" + Date.valueOf(do_joining) + "',date_releaving='" +Date.valueOf( do_releaving) +"',father_name='"+ father_name +"',date_of_birth='"+
-                Date.valueOf(date_of_birth)+ "',gender='"+ gender  +"',address1='"+ address1 +"',city1='"+ city1 +"',state1='"+ state1 +"',country1='"+
-                country1 +"',zip1='"+ zip1 +"',address1='"+ address1 +"',city2='"+ city2 +"',state2='"+ state2 +"',country2='"+ country2 +
-                "',zip2='"+ zip2 +"' where library_id='"+library_id+"' and staff_id='"+employee_id+"'");
-              i=MyQueryResult.getMyExecuteUpdate(sql);
 
-                   if(i!=0)
-                  {
-                //admin table updated if staff is admin.library_id
-                if(employee_id.equals("admin."+library_id))
+
+
+       /* Use to Update Staff Entry related to Library Table & SubLibrary Table */
+            StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id,library_id);
+
+
+
+
+            if(courtesy.equals("Select")==false)
+            staffobj.setTitle(courtesy);
+            staffobj.setSublibraryId(sublibrary_id);
+
+            staffobj.setFirstName(first_name);
+            staffobj.setLastName(last_name);
+            staffobj.setEmailId(email_id);
+            if(do_joining.equals("")==false)
+            staffobj.setDateJoining(Date.valueOf(do_joining));
+            else
+            staffobj.setDateJoining(null);
+            if(do_releaving.equals("")==false)
+            staffobj.setDateReleaving(Date.valueOf(do_releaving));
+            else
+            staffobj.setDateReleaving(null);
+            if(date_of_birth.equals("")==false)
+            staffobj.setDateOfBirth(Date.valueOf(date_of_birth));
+            else
+            staffobj.setDateOfBirth(null);
+            staffobj.setGender(gender);
+            staffobj.setMobileNo(mobile_no);
+            staffobj.setContactNo(contact_no);
+            staffobj.setCity1(city1);
+            staffobj.setState1(state1);
+            staffobj.setZip1(zip1);
+            staffobj.setCountry1(country1);
+            staffobj.setFatherName(father_name);
+            staffobj.setAddress1(address1);
+            staffobj.setAddress2(address2);
+            staffobj.setCity2(city2);
+            staffobj.setState2(state2);
+            staffobj.setCountry2(country2);
+            staffobj.setZip2(zip2);
+          //   if (form1!=null)
+         //        staffobj.setStaffImage(form1.getImg().getFileData());
+
+
+
+
+
+             result=StaffDetailDAO.update1(staffobj);
+                if(result==false)
                 {
-                    sql="update admin_registration set city='"+city1+"',state='"+state1+"',Country='"+country1+"',pin='"+zip1+"',land_line_no='"+contact_no+"',mobile_no='"+mobile_no+"',admin_fname='"+first_name+"',admin_lname='"+last_name+"',admin_email='"+email_id+"',courtesy='"+courtesy+"',gender='"+gender+"' where staff_id='"+employee_id+"' and library_id='"+library_id+"'";
-                i=MyQueryResult.getMyExecuteUpdate(sql);
+                     request.setAttribute("staff_id",staff_id );
+                  request.setAttribute("staff_name",first_name+" "+last_name );
+                    request.setAttribute("msg", "Sorry Record Updation UnSuceessfully For ");
+                      return mapping.findForward("success");
 
+                }
 
-                if(i==0)
+      /* Use to Update Login Entry related to Library Table & SubLibrary Table and Staff Table */
+            logobj=LoginDAO.searchStaffId(staff_id,library_id);
+            
+                
+                if(logobj!=null)
                 {
-                    request.setAttribute("staff_id",employee_id );
-                    request.setAttribute("staff_name",first_name+" "+last_name );
+                logobj.setUserName(first_name+" "+last_name);
+                logobj.setSublibraryId(sublibrary_id);
+
+               if(sublibrary_id.equalsIgnoreCase(mainlib))
+               {
+                if(logobj.getRole().equalsIgnoreCase("dept-admin"))
+                    logobj.setRole("staff");
+                if(logobj.getRole().equalsIgnoreCase("dept-staff"))
+                    logobj.setRole("staff");
+
+
+               }else{
+                 if(logobj.getRole().equalsIgnoreCase("admin"))
+                     logobj.setRole("dept-staff");
+                if(logobj.getRole().equalsIgnoreCase("staff"))
+                    logobj.setRole("dept-staff");
+
+
+
+               }
+
+
+
+
+
+
+                    result=LoginDAO.update1(logobj);
+                if(result==false)
+                {
+                    request.setAttribute("staff_id",staff_id );
+                  request.setAttribute("staff_name",first_name+" "+last_name );
                     request.setAttribute("msg", "Sorry Record Updation UnSuceessfully For ");
                     return mapping.findForward("success");
+
                 }
                 }
-                   //login updated
-                ResultSet rs=MyQueryResult.getMyExecuteQuery("select * from login where staff_id='"+employee_id+"' and library_id='"+library_id+"'");
-                if(rs.next())
-                  {
+
+ /* Use to Update Privilege Entry related to Library Table & SubLibrary Table and Staff Table */
+            
+            Login log=LoginDAO.searchRole(staff_id, library_id);
+            if(log!=null)
+            {  role=log.getRole();
+
+                   result =PrivilegeDAO.DeleteStaff(staff_id,library_id);
+                   result=AcqPrivilegeDAO.DeleteStaff(staff_id, library_id);
+                   result=CatPrivilegeDAO.DeleteStaff(staff_id, library_id);
+                   result=CirPrivilegeDAO.DeleteStaff(staff_id, library_id);
+                   result=SerPrivilegeDAO.DeleteStaff(staff_id, library_id);
+
+                        if(result==true)
+                        {
+
+                            if(role.equals("staff"))
+                                    result=CreatePrivilege.assignStaffPrivilege(staff_id, library_id,sublibrary_id);
+                            else if(role.equals("admin"))
+                                    result=CreatePrivilege.assignAdminPrivilege(staff_id, library_id,sublibrary_id);
+                            else if(role.equals("dept-admin"))
+                                   result=CreatePrivilege.assignDepartmentalAdminPrivilege(staff_id, library_id,sublibrary_id);
+                            else if(role.equals("dept-staff"))
+                                   result=CreatePrivilege.assignDepartmentalStaffPrivilege(staff_id, library_id,sublibrary_id);
+                            else if(role.equalsIgnoreCase("insti-admin"))
+                                   result=CreatePrivilege.assignAdminPrivilege(staff_id, library_id,sublibrary_id);
+                        }
+
+            }
+       /*  Privilege   privobj=PrivilegeDAO.searchStaffLogin(staff_id,library_id);
 
 
-                  sql = ("update  login set user_id='" + email_id + "',user_name='" +
-                                 first_name+" "+last_name + "' where staff_id='"+employee_id+"' and library_id='"+library_id+"'");
+                if(privobj!=null)
+                {
+                
+                privobj.setSublibraryId(sublibrary_id);
 
-                  i=MyQueryResult.getMyExecuteUpdate(sql);
-                 if(i!=0)
-                 {
-                    request.setAttribute("staff_id",employee_id );
-                    request.setAttribute("staff_name",first_name+" "+last_name );
-                    request.setAttribute("msg", "Record Updated Suceessfully For ");
+
+                 result=PrivilegeDAO.update(privobj);
+                if(result==false)
+                {
+                    request.setAttribute("staff_id",staff_id );
+                  request.setAttribute("staff_name",first_name+" "+last_name );
+                    request.setAttribute("msg", "Sorry Record Updation UnSuceessfully For ");
                     return mapping.findForward("success");
 
-                  }
-                   }
-                  else
-                {
-                    request.setAttribute("staff_id",employee_id );
-                    request.setAttribute("staff_name",first_name+" "+last_name );
-                    request.setAttribute("msg", "Record Updated Suceessfully For ");
-                    return mapping.findForward("success");
-                 }
-                 }
-             else
+                }
+                }
+/* Use to Update AcqPrivilege Entry related to Library Table & SubLibrary Table and Staff Table 
+         AcqPrivilege   acqprivobj=AcqPrivilegeDAO.searchStaffLogin(staff_id,library_id);
+
+
+                if(acqprivobj!=null)
                 {
 
-                     request.setAttribute("staff_id",employee_id );
+                acqprivobj.setSublibraryId(sublibrary_id);
+
+
+                 result=AcqPrivilegeDAO.update(acqprivobj);
+                if(result==false)
+                {
+                    request.setAttribute("staff_id",staff_id );
+                  request.setAttribute("staff_name",first_name+" "+last_name );
+                    request.setAttribute("msg", "Sorry Record Updation UnSuceessfully For ");
+                    return mapping.findForward("success");
+
+                }
+                }
+/* Use to Update CatPrivilege Entry related to Library Table & SubLibrary Table and Staff Table
+         CatPrivilege   catprivobj=CatPrivilegeDAO.searchStaffLogin(staff_id,library_id);
+
+
+                if(catprivobj!=null)
+                {
+
+                catprivobj.setSublibraryId(sublibrary_id);
+
+
+                 result=CatPrivilegeDAO.update(catprivobj);
+                if(result==false)
+                {
+                    request.setAttribute("staff_id",staff_id );
+                  request.setAttribute("staff_name",first_name+" "+last_name );
+                    request.setAttribute("msg", "Sorry Record Updation UnSuceessfully For ");
+                    return mapping.findForward("success");
+
+                }
+                }
+/* Use to Update CirPrivilege Entry related to Library Table & SubLibrary Table and Staff Table 
+         CirPrivilege   cirprivobj=CirPrivilegeDAO.searchStaffLogin(staff_id,library_id);
+
+
+                if(cirprivobj!=null)
+                {
+
+                cirprivobj.setSublibraryId(sublibrary_id);
+
+
+                 result=CirPrivilegeDAO.update(cirprivobj);
+                if(result==false)
+                {
+                    request.setAttribute("staff_id",staff_id );
+                  request.setAttribute("staff_name",first_name+" "+last_name );
+                    request.setAttribute("msg", "Sorry Record Updation UnSuceessfully For ");
+                    return mapping.findForward("success");
+
+                }
+                }
+/* Use to Update SerPrivilege Entry related to Library Table & SubLibrary Table and Staff Table
+         SerPrivilege   serprivobj=SerPrivilegeDAO.searchStaffLogin(staff_id,library_id);
+
+
+                if(serprivobj!=null)
+                {
+
+                serprivobj.setSublibraryId(sublibrary_id);
+
+
+                 result=SerPrivilegeDAO.update(serprivobj);
+                if(result==false)
+                {
+                    request.setAttribute("staff_id",staff_id );
+                  request.setAttribute("staff_name",first_name+" "+last_name );
+                    request.setAttribute("msg", "Sorry Record Updation UnSuceessfully For ");
+                    return mapping.findForward("success");
+
+                }
+
+
+
+                }
+       
+/**********************************************************************************/
+                //admin table updated if staff is admin.library_id
+                if(staff_id.equals("admin."+library_id))
+                {
+       /* Use to Update AdminRegistration Table */
+System.out.println("Admin...........");
+            AdminRegistration adminobj=AdminRegistrationDAO.searchInstituteAdmin(staff_id,library_id);
+            if(city1!=null)
+            adminobj.setCity(city1);
+            if(state1!=null)
+            adminobj.setState(state1);
+            if(country1!=null)
+            adminobj.setCountry(country1);
+            if(zip1!=null)
+            adminobj.setPin(zip1);
+            if(contact_no!=null)
+            adminobj.setLandLineNo(contact_no);
+            if(mobile_no!=null)
+            adminobj.setMobileNo(mobile_no);
+            if(first_name!=null)
+            adminobj.setAdminFname(first_name);
+            if(last_name!=null)
+            adminobj.setAdminLname(last_name);
+            if(email_id!=null)
+            adminobj.setAdminEmail(email_id);
+            if(courtesy!=null)
+            adminobj.setCourtesy(courtesy);
+            if(gender!=null)
+            adminobj.setGender(gender);
+
+            
+
+             result= AdminRegistrationDAO.update1(adminobj);
+
+            if(result==false)
+                {
+                    request.setAttribute("staff_id",staff_id );
                   request.setAttribute("staff_name",first_name+" "+last_name );
                     request.setAttribute("msg", "Sorry Record Updation UnSuceessfully For ");
                  return mapping.findForward("success");
-                 }
+                }
 
+              
             
       
          }
-
-
-
-               
-
-
-
-
-         if(button.equals("Delete"))
-         {
-        
-            String id="admin."+library_id;   //get Institute admin ID
-   if(employee_id.equals(id))
-         {
-              request.setAttribute("user_id", email_id);
+                request.setAttribute("staff_id",staff_id );
                   request.setAttribute("staff_name",first_name+" "+last_name );
-                request.setAttribute("library_id", library_id);
-                request.setAttribute("staff_id", employee_id);
-                request.setAttribute("msg", "You Cannot Delete Institute Admin ");
-                  return mapping.findForward("success");
+                    request.setAttribute("msg", "Record Suceessfully Updated For ");
+                 return mapping.findForward("success");
+
+
+
          }
 
+
+
+
+         if(button.equals("Confirm"))
+         {
+        
+    String id="admin."+library_id;   //get Institute admin ID
+
+
+
+                if(staff_id.equals(id))
+                {
+                      request.setAttribute("user_id", email_id);
+                      request.setAttribute("staff_name",first_name+" "+last_name );
+                      request.setAttribute("library_id", library_id);
+                      request.setAttribute("staff_id", staff_id);
+                      request.setAttribute("msg", "You Cannot Delete Institute Admin ");
+                      return mapping.findForward("success");
+                  }
+
         id=(String)session.getAttribute("staff_id");  //cannot delete own account
-            if(employee_id.equals(id))
+            if(staff_id.equals(id))
             {
 
 
                      request.setAttribute("staff_name",first_name+" "+last_name );
                 request.setAttribute("library_id", library_id);
-                request.setAttribute("staff_id", employee_id);
+                request.setAttribute("staff_id", staff_id);
                 request.setAttribute("msg", "You Cannot Delete Your Own Account for Staff Name ");
                   return mapping.findForward("success");
 
             }
-         String login_role=(String)session.getAttribute("login_role");    //cannot create co-admin
-         ResultSet rs=MyQueryResult.getMyExecuteQuery("select * from login where staff_id='"+employee_id+"' and library_id='"+library_id+"'");
+      String  login_role=(String)session.getAttribute("login_role");    //cannot create co-admin
 
-            if(rs.next())
+      Login  logobj=LoginDAO.searchRole(staff_id,library_id);
+         
+
+            if(logobj!=null)
             {
-                if(rs.getString("role").equals(login_role))
+                if(logobj.getRole().equalsIgnoreCase(login_role))
                 {
 
                request.setAttribute("staff_name",first_name+" "+last_name );
                 request.setAttribute("library_id", library_id);
-                request.setAttribute("staff_id", employee_id);
+                request.setAttribute("staff_id", staff_id);
 
-                request.setAttribute("msg", "You Cannot Delete Admin Name :");
+                request.setAttribute("msg", "You Cannot Delete Same Role Staff Name :");
                   return mapping.findForward("success");
                 }
             }
 
+System.out.println(sublibrary_id);
+           
+                  result=LoginDAO.DeleteLogin(staff_id,library_id,sublibrary_id);
 
-                ////////////////////////////////
-             sql1="Delete from login where user_id=(select emai_id from staff_detail where staff_id='"+employee_id+"' and library_id='"+library_id+"')";
-              int j=MyQueryResult.getMyExecuteUpdate(sql1);
 
-             sql="Delete from staff_detail where staff_id='"+employee_id+"' and library_id='"+library_id+"'";
-              i=MyQueryResult.getMyExecuteUpdate(sql);
-              if(i!=0)
-              {
-                    if(j!=0)
+           
+             if(result==true)
+             {
+                    
+
+                result=StaffDetailDAO.DeleteStaff(staff_id,library_id,sublibrary_id);
+                 if(result==true)
                     {
-                       
-                    request.setAttribute("staff_id",employee_id );
+                    request.setAttribute("staff_id",staff_id);
                     request.setAttribute("staff_name",first_name+" "+last_name );
                     request.setAttribute("msg", "Staff & Account Details Are Deleted Successfully for ");
                     return mapping.findForward("success");
                     }
                     else
                     {
-                    request.setAttribute("staff_id",employee_id );
-                    request.setAttribute("staff_name",first_name+" "+last_name );
-                    request.setAttribute("msg", "Staff Record are Sucessfully Deleted for  ");
+                    request.setAttribute("staff_id",staff_id );
+                   request.setAttribute("staff_name",first_name+" "+last_name );
+                    request.setAttribute("msg", "Staff Record are not Sucessfully Deleted for  ");
                     return mapping.findForward("success");
                     }
               }
               else
               {
-               request.setAttribute("staff_id",employee_id );
+               request.setAttribute("staff_id",staff_id );
                request.setAttribute("staff_name",first_name+" "+last_name );
                request.setAttribute("msg", "Sorry Record Deletion UnSuceessfully For ");
               return mapping.findForward("success");
@@ -332,7 +534,7 @@ public class UpdateStaffAction extends org.apache.struts.action.Action {
        //////////////////////////////////////////////////
                 
           }
-        return mapping.findForward("success");
+        return null;
     }
 }
         

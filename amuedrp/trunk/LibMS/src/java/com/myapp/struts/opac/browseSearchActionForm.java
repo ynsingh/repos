@@ -22,6 +22,7 @@ public class browseSearchActionForm extends org.apache.struts.action.ActionForm 
     private String TXTTITLE;
     private String CMBSORT;
     private String CMBLib;
+    private String CMBSUBLib;
 
     /**
      *
@@ -111,4 +112,16 @@ public class browseSearchActionForm extends org.apache.struts.action.ActionForm 
     public void setCMBLib(String CMBLib) {
         this.CMBLib = CMBLib;
     }
+
+    public String getCMBSUBLib() {
+        return CMBSUBLib;
+    }
+
+    /**
+     * @param CMBSUBLib the CMBSUBLib to set
+     */
+    public void setCMBSUBLib(String CMBSUBLib) {
+        this.CMBSUBLib = CMBSUBLib;
+    }
+
 }

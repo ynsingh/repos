@@ -19,31 +19,35 @@ public class SearchByIsbnActionForm extends org.apache.struts.action.ActionForm 
     
     private String TXTKEY;
     private String CMBLib;
+    private String CMBSUBLib;
 
-    /**
-     * @return the TXTKEY
-     */
-    public String getTXTKEY() {
-        return TXTKEY;
-    }
-
-    /**
-     * @param TXTKEY the TXTKEY to set
-     */
-    public void setTXTKEY(String TXTKEY) {
-        this.TXTKEY = TXTKEY;
-    }
     public String getCMBLib() {
         return CMBLib;
     }
 
-    /**
-     * @param CMBLib the CMBLib to set
-     */
     public void setCMBLib(String CMBLib) {
         this.CMBLib = CMBLib;
     }
 
+    public String getCMBSUBLib() {
+        return CMBSUBLib;
+    }
+
+    public void setCMBSUBLib(String CMBSUBLib) {
+        this.CMBSUBLib = CMBSUBLib;
+    }
+
+    public String getTXTKEY() {
+        return TXTKEY;
+    }
+
+    public void setTXTKEY(String TXTKEY) {
+        this.TXTKEY = TXTKEY;
+    }
+    /**
+     * @return the TXTKEY
+     */
+    
    
     /**
      * This is the action called from the Struts framework.

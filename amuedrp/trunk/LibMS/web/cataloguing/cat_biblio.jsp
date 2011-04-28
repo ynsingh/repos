@@ -1,7 +1,7 @@
 <%--
     Document   : cat_update_titles
     Created on : Jan 12, 2011, 10:49:28 AM
-    Author     : Client
+    Author     : Asif Iqubal
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8" import="java.util.*,java.io.*,java.net.*"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
@@ -11,20 +11,19 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%
 String library_id=(String)session.getAttribute("library_id");
+String sub_library_id=(String)session.getAttribute("sublibrary_id");
 String msg1=(String)request.getAttribute("msg1");
 String msg2=(String)request.getAttribute("msg2");
-
 %>
 <html>
     <head>
         <script>
             function back()
             {
-                location.href="/LibMS-Struts/admin/main.jsp";
+                location.href="<%=request.getContextPath()%>/admin/main.jsp";
             }
 
             </script>
- 
       <%!
     Locale locale=null;
     String locale1="en";
@@ -49,8 +48,8 @@ locale1=(String)session.getAttribute("locale");
     %>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
-             <link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
-         <link rel="stylesheet" href="/LibMS-Struts/css/formstyle.css"/>
+             <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
+         <link rel="stylesheet" href="<%=request.getContextPath()%>/css/formstyle.css"/>
     </head>
    <jsp:include page="/admin/header.jsp"/>
     <body>
@@ -60,10 +59,12 @@ locale1=(String)session.getAttribute("locale");
             <table border="1" class="table" width="400">
                 <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;" ><b>Manage Bibliographic Details</b></td></tr>
                 <html:hidden property="library_id" name="BibliographicDetailEntryActionForm" value="<%=library_id%>"/>
-                <html:hidden property="author_main" name="BibliographicDetailEntryActionForm" value="New"/>
+                <html:hidden property="sub_library_id" name="BibliographicDetailEntryActionForm" value="<%=sub_library_id%>"/>
+                <html:hidden property="main_entry" name="BibliographicDetailEntryActionForm" value="New"/>
                 <html:hidden property="call_no" name="BibliographicDetailEntryActionForm" value="New"/>
                 <html:hidden property="title" name="BibliographicDetailEntryActionForm" value="New"/>
                 <html:hidden property="document_type" name="BibliographicDetailEntryActionForm" value="New"/>
+                <html:hidden property="no_of_copies" name="BibliographicDetailEntryActionForm"/>
                 <tr><td>
                 <table border="0" cellspacing="4" cellpadding="1" align="center">
                     <tr><td><br><br></td></tr>
@@ -72,8 +73,7 @@ locale1=(String)session.getAttribute("locale");
                             <html:text styleId="isbn10" property="isbn10" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth"/>
                     <br><span class="err">   <html:messages id="err_name" property="isbn10">
                           <bean:write name="err_name" />
-                            </html:messages></span>
-                            
+                            </html:messages></span>                          
                     </td></tr>
                     <tr><td height="10px;" width="40"><br></td></tr>
                     
@@ -114,7 +114,8 @@ locale1=(String)session.getAttribute("locale");
             <table border="1" class="table" width="400">
                 <tr><td align="center" class="headerStyle" bgcolor="#CCCCCC" height="25px;" ><b>Manage Bibliographic Details</b></td></tr>
                <html:hidden property="library_id" name="BibliographicDetailEntryActionForm" value="<%=library_id%>"/>
-                <tr><td>
+                <html:hidden property="sub_library_id" name="BibliographicDetailEntryActionForm" value="<%=sub_library_id%>"/>
+               <tr><td>
                 <table border="0" cellspacing="4" cellpadding="1" align="center">
                    <tr><td><br><br></td></tr>
                    <tr><td align="left" width="50"><input type="Submit" name="button" value="New" Class="txt1"/></td><td width="40"></td><td rowspan="5" width="100" align="right">Enter ISBN-10:<br><br><html:text property="isbn10" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth"/><br>

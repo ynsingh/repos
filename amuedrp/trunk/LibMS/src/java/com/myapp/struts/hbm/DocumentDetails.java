@@ -1,5 +1,5 @@
 package com.myapp.struts.hbm;
-// Generated Jan 21, 2011 8:43:24 PM by Hibernate Tools 3.2.1.GA
+// Generated Mar 11, 2011 5:57:01 PM by Hibernate Tools 3.2.1.GA
 
 
 
@@ -10,65 +10,141 @@ public class DocumentDetails  implements java.io.Serializable {
 
 
      private DocumentDetailsId id;
-     private Library library;
-     private Integer biblioId;
-     private String serialId;
+     private BibliographicDetails bibliographicDetails;
      private String documentType;
+     private String accessionType;
+     private String dateAcquired;
+     private String bookType;
      private String title;
      private String subtitle;
-     private String authorMain;
-     private String authorSub;
+     private String altTitle;
+     private String statementResponsibility;
+     private String mainEntry;
+     private String addedEntry;
+     private String addedEntry1;
+     private String addedEntry2;
+     private String addedEntry3;
      private String publisherName;
      private String publicationPlace;
-     private int publishingYear;
-     private String callNo;
+     private String publishingYear;
+     private Integer partsNo;
+     private String subject;
+     private String entryLanguage;
      private String isbn10;
-     private String issn;
      private String isbn13;
+     private String lccNo;
      private String edition;
+     private Integer noOfCopies;
+     private String authorName;
+     private String guideName;
+     private String universityFaculty;
+     private String degree;
+     private String submittedOn;
+     private String acceptanceYear;
+     private String collation1;
+     private String notes;
+     private String abstract_;
+     private String address;
+     private String state1;
+     private String country;
+     private String email;
+     private String frmrFrq;
+     private String frqDate;
+     private String issn;
+     private String volumeLocation;
+     private Integer productionYear;
+     private String source1;
+     private String duration;
+     private String series;
+     private String physicalForm;
+     private String colour;
+     private String typeOfDisc;
+     private String fileType;
+     private String accessionNo;
+     private Integer recordNo;
+     private String callNo;
+     private String volumeNo;
+     private String location;
+     private String shelvingLocation;
      private String indexNo;
      private String noOfPages;
      private String physicalWidth;
-     private String noOfCopy;
-     private String notes;
-     private String subject;
-     private String editor;
-     private String volumeNo;
+     private String bindType;
+     private String status;
+     private int biblioId;
 
     public DocumentDetails() {
     }
 
 	
-    public DocumentDetails(DocumentDetailsId id, Library library) {
+    public DocumentDetails(DocumentDetailsId id, BibliographicDetails bibliographicDetails) {
         this.id = id;
-        this.library = library;
+        this.bibliographicDetails = bibliographicDetails;
     }
-    public DocumentDetails(DocumentDetailsId id, Library library, Integer biblioId, String serialId, String documentType, String title, String subtitle, String authorMain, String authorSub, String publisherName, String publicationPlace, int publishingYear, String callNo, String isbn10, String issn, String isbn13, String edition, String indexNo, String noOfPages, String physicalWidth, String noOfCopy, String notes, String subject, String editor, String volumeNo) {
+    public DocumentDetails(DocumentDetailsId id, BibliographicDetails bibliographicDetails,int biblioId, String documentType,String bookType, String accessionType, String dateAcquired, String title, String subtitle, String altTitle, String statementResponsibility, String mainEntry, String addedEntry, String addedEntry1, String addedEntry2, String addedEntry3, String publisherName, String publicationPlace, String publishingYear, Integer partsNo, String subject, String entryLanguage, String isbn10, String isbn13, String lccNo, String edition, Integer noOfCopies, String authorName, String guideName, String universityFaculty, String degree, String submittedOn, String acceptanceYear, String collation1, String notes, String abstract_, String address, String state1, String country, String email, String frmrFrq, String frqDate, String issn, String volumeLocation, Integer productionYear, String source1, String duration, String series, String physicalForm, String colour, String typeOfDisc, String fileType, String accessionNo, Integer recordNo, String callNo, String volumeNo, String location, String shelvingLocation, String indexNo, String noOfPages, String physicalWidth, String status, String bindType) {
        this.id = id;
-       this.library = library;
        this.biblioId = biblioId;
-       this.serialId = serialId;
+       this.bibliographicDetails = bibliographicDetails;
        this.documentType = documentType;
+       this.bookType = bookType;
+       this.accessionType = accessionType;
+       this.dateAcquired = dateAcquired;
        this.title = title;
        this.subtitle = subtitle;
-       this.authorMain = authorMain;
-       this.authorSub = authorSub;
+       this.altTitle = altTitle;
+       this.statementResponsibility = statementResponsibility;
+       this.mainEntry = mainEntry;
+       this.addedEntry = addedEntry;
+       this.addedEntry1 = addedEntry1;
+       this.addedEntry2 = addedEntry2;
+       this.addedEntry3 = addedEntry3;
        this.publisherName = publisherName;
        this.publicationPlace = publicationPlace;
        this.publishingYear = publishingYear;
-       this.callNo = callNo;
+       this.partsNo = partsNo;
+       this.subject = subject;
+       this.entryLanguage = entryLanguage;
        this.isbn10 = isbn10;
-       this.issn = issn;
        this.isbn13 = isbn13;
+       this.lccNo = lccNo;
        this.edition = edition;
+       this.noOfCopies = noOfCopies;
+       this.authorName = authorName;
+       this.guideName = guideName;
+       this.universityFaculty = universityFaculty;
+       this.degree = degree;
+       this.submittedOn = submittedOn;
+       this.acceptanceYear = acceptanceYear;
+       this.collation1 = collation1;
+       this.notes = notes;
+       this.abstract_ = abstract_;
+       this.address = address;
+       this.state1 = state1;
+       this.country = country;
+       this.email = email;
+       this.frmrFrq = frmrFrq;
+       this.frqDate = frqDate;
+       this.issn = issn;
+       this.volumeLocation = volumeLocation;
+       this.productionYear = productionYear;
+       this.source1 = source1;
+       this.duration = duration;
+       this.series = series;
+       this.physicalForm = physicalForm;
+       this.colour = colour;
+       this.typeOfDisc = typeOfDisc;
+       this.fileType = fileType;
+       this.accessionNo = accessionNo;
+       this.recordNo = recordNo;
+       this.callNo = callNo;
+       this.volumeNo = volumeNo;
+       this.location = location;
+       this.shelvingLocation = shelvingLocation;
        this.indexNo = indexNo;
        this.noOfPages = noOfPages;
        this.physicalWidth = physicalWidth;
-       this.noOfCopy = noOfCopy;
-       this.notes = notes;
-       this.subject = subject;
-       this.editor = editor;
-       this.volumeNo = volumeNo;
+       this.bindType = bindType;
+       this.status = status;
     }
    
     public DocumentDetailsId getId() {
@@ -78,26 +154,12 @@ public class DocumentDetails  implements java.io.Serializable {
     public void setId(DocumentDetailsId id) {
         this.id = id;
     }
-    public Library getLibrary() {
-        return this.library;
+    public BibliographicDetails getBibliographicDetails() {
+        return this.bibliographicDetails;
     }
     
-    public void setLibrary(Library library) {
-        this.library = library;
-    }
-    public Integer getBiblioId() {
-        return this.biblioId;
-    }
-    
-    public void setBiblioId(Integer biblioId) {
-        this.biblioId = biblioId;
-    }
-    public String getSerialId() {
-        return this.serialId;
-    }
-    
-    public void setSerialId(String serialId) {
-        this.serialId = serialId;
+    public void setBibliographicDetails(BibliographicDetails bibliographicDetails) {
+        this.bibliographicDetails = bibliographicDetails;
     }
     public String getDocumentType() {
         return this.documentType;
@@ -105,6 +167,20 @@ public class DocumentDetails  implements java.io.Serializable {
     
     public void setDocumentType(String documentType) {
         this.documentType = documentType;
+    }
+    public String getAccessionType() {
+        return this.accessionType;
+    }
+    
+    public void setAccessionType(String accessionType) {
+        this.accessionType = accessionType;
+    }
+    public String getDateAcquired() {
+        return this.dateAcquired;
+    }
+    
+    public void setDateAcquired(String dateAcquired) {
+        this.dateAcquired = dateAcquired;
     }
     public String getTitle() {
         return this.title;
@@ -120,19 +196,54 @@ public class DocumentDetails  implements java.io.Serializable {
     public void setSubtitle(String subtitle) {
         this.subtitle = subtitle;
     }
-    public String getAuthorMain() {
-        return this.authorMain;
+    public String getAltTitle() {
+        return this.altTitle;
     }
     
-    public void setAuthorMain(String authorMain) {
-        this.authorMain = authorMain;
+    public void setAltTitle(String altTitle) {
+        this.altTitle = altTitle;
     }
-    public String getAuthorSub() {
-        return this.authorSub;
+    public String getStatementResponsibility() {
+        return this.statementResponsibility;
     }
     
-    public void setAuthorSub(String authorSub) {
-        this.authorSub = authorSub;
+    public void setStatementResponsibility(String statementResponsibility) {
+        this.statementResponsibility = statementResponsibility;
+    }
+    public String getMainEntry() {
+        return this.mainEntry;
+    }
+    
+    public void setMainEntry(String mainEntry) {
+        this.mainEntry = mainEntry;
+    }
+    public String getAddedEntry() {
+        return this.addedEntry;
+    }
+    
+    public void setAddedEntry(String addedEntry) {
+        this.addedEntry = addedEntry;
+    }
+    public String getAddedEntry1() {
+        return this.addedEntry1;
+    }
+    
+    public void setAddedEntry1(String addedEntry1) {
+        this.addedEntry1 = addedEntry1;
+    }
+    public String getAddedEntry2() {
+        return this.addedEntry2;
+    }
+    
+    public void setAddedEntry2(String addedEntry2) {
+        this.addedEntry2 = addedEntry2;
+    }
+    public String getAddedEntry3() {
+        return this.addedEntry3;
+    }
+    
+    public void setAddedEntry3(String addedEntry3) {
+        this.addedEntry3 = addedEntry3;
     }
     public String getPublisherName() {
         return this.publisherName;
@@ -148,19 +259,33 @@ public class DocumentDetails  implements java.io.Serializable {
     public void setPublicationPlace(String publicationPlace) {
         this.publicationPlace = publicationPlace;
     }
-    public int getPublishingYear() {
+    public String getPublishingYear() {
         return this.publishingYear;
     }
     
-    public void setPublishingYear(int publishingYear) {
+    public void setPublishingYear(String publishingYear) {
         this.publishingYear = publishingYear;
     }
-    public String getCallNo() {
-        return this.callNo;
+    public Integer getPartsNo() {
+        return this.partsNo;
     }
     
-    public void setCallNo(String callNo) {
-        this.callNo = callNo;
+    public void setPartsNo(Integer partsNo) {
+        this.partsNo = partsNo;
+    }
+    public String getSubject() {
+        return this.subject;
+    }
+    
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+    public String getEntryLanguage() {
+        return this.entryLanguage;
+    }
+    
+    public void setEntryLanguage(String entryLanguage) {
+        this.entryLanguage = entryLanguage;
     }
     public String getIsbn10() {
         return this.isbn10;
@@ -169,13 +294,6 @@ public class DocumentDetails  implements java.io.Serializable {
     public void setIsbn10(String isbn10) {
         this.isbn10 = isbn10;
     }
-    public String getIssn() {
-        return this.issn;
-    }
-    
-    public void setIssn(String issn) {
-        this.issn = issn;
-    }
     public String getIsbn13() {
         return this.isbn13;
     }
@@ -183,12 +301,243 @@ public class DocumentDetails  implements java.io.Serializable {
     public void setIsbn13(String isbn13) {
         this.isbn13 = isbn13;
     }
+    public String getLccNo() {
+        return this.lccNo;
+    }
+    
+    public void setLccNo(String lccNo) {
+        this.lccNo = lccNo;
+    }
     public String getEdition() {
         return this.edition;
     }
     
     public void setEdition(String edition) {
         this.edition = edition;
+    }
+    public Integer getNoOfCopies() {
+        return this.noOfCopies;
+    }
+    
+    public void setNoOfCopies(Integer noOfCopies) {
+        this.noOfCopies = noOfCopies;
+    }
+    public String getAuthorName() {
+        return this.authorName;
+    }
+    
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
+    }
+    public String getGuideName() {
+        return this.guideName;
+    }
+    
+    public void setGuideName(String guideName) {
+        this.guideName = guideName;
+    }
+    public String getUniversityFaculty() {
+        return this.universityFaculty;
+    }
+    
+    public void setUniversityFaculty(String universityFaculty) {
+        this.universityFaculty = universityFaculty;
+    }
+    public String getDegree() {
+        return this.degree;
+    }
+    
+    public void setDegree(String degree) {
+        this.degree = degree;
+    }
+    public String getSubmittedOn() {
+        return this.submittedOn;
+    }
+    
+    public void setSubmittedOn(String submittedOn) {
+        this.submittedOn = submittedOn;
+    }
+    public String getAcceptanceYear() {
+        return this.acceptanceYear;
+    }
+    
+    public void setAcceptanceYear(String acceptanceYear) {
+        this.acceptanceYear = acceptanceYear;
+    }
+    public String getCollation1() {
+        return this.collation1;
+    }
+    
+    public void setCollation1(String collation1) {
+        this.collation1 = collation1;
+    }
+    public String getNotes() {
+        return this.notes;
+    }
+    
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+    public String getAbstract_() {
+        return this.abstract_;
+    }
+    
+    public void setAbstract_(String abstract_) {
+        this.abstract_ = abstract_;
+    }
+    public String getAddress() {
+        return this.address;
+    }
+    
+    public void setAddress(String address) {
+        this.address = address;
+    }
+    public String getState1() {
+        return this.state1;
+    }
+    
+    public void setState1(String state1) {
+        this.state1 = state1;
+    }
+    public String getCountry() {
+        return this.country;
+    }
+    
+    public void setCountry(String country) {
+        this.country = country;
+    }
+    public String getEmail() {
+        return this.email;
+    }
+    
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public String getFrmrFrq() {
+        return this.frmrFrq;
+    }
+    
+    public void setFrmrFrq(String frmrFrq) {
+        this.frmrFrq = frmrFrq;
+    }
+    public String getFrqDate() {
+        return this.frqDate;
+    }
+    
+    public void setFrqDate(String frqDate) {
+        this.frqDate = frqDate;
+    }
+    public String getIssn() {
+        return this.issn;
+    }
+    
+    public void setIssn(String issn) {
+        this.issn = issn;
+    }
+    public String getVolumeLocation() {
+        return this.volumeLocation;
+    }
+    
+    public void setVolumeLocation(String volumeLocation) {
+        this.volumeLocation = volumeLocation;
+    }
+    public Integer getProductionYear() {
+        return this.productionYear;
+    }
+    
+    public void setProductionYear(Integer productionYear) {
+        this.productionYear = productionYear;
+    }
+    public String getSource1() {
+        return this.source1;
+    }
+    
+    public void setSource1(String source1) {
+        this.source1 = source1;
+    }
+    public String getDuration() {
+        return this.duration;
+    }
+    
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
+    public String getSeries() {
+        return this.series;
+    }
+    
+    public void setSeries(String series) {
+        this.series = series;
+    }
+    public String getPhysicalForm() {
+        return this.physicalForm;
+    }
+    
+    public void setPhysicalForm(String physicalForm) {
+        this.physicalForm = physicalForm;
+    }
+    public String getColour() {
+        return this.colour;
+    }
+    
+    public void setColour(String colour) {
+        this.colour = colour;
+    }
+    public String getTypeOfDisc() {
+        return this.typeOfDisc;
+    }
+    
+    public void setTypeOfDisc(String typeOfDisc) {
+        this.typeOfDisc = typeOfDisc;
+    }
+    public String getFileType() {
+        return this.fileType;
+    }
+    
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
+    }
+    public String getAccessionNo() {
+        return this.accessionNo;
+    }
+    
+    public void setAccessionNo(String accessionNo) {
+        this.accessionNo = accessionNo;
+    }
+    public Integer getRecordNo() {
+        return this.recordNo;
+    }
+    
+    public void setRecordNo(Integer recordNo) {
+        this.recordNo = recordNo;
+    }
+    public String getCallNo() {
+        return this.callNo;
+    }
+    
+    public void setCallNo(String callNo) {
+        this.callNo = callNo;
+    }
+    public String getVolumeNo() {
+        return this.volumeNo;
+    }
+    
+    public void setVolumeNo(String volumeNo) {
+        this.volumeNo = volumeNo;
+    }
+    public String getLocation() {
+        return this.location;
+    }
+    
+    public void setLocation(String location) {
+        this.location = location;
+    }
+    public String getShelvingLocation() {
+        return this.shelvingLocation;
+    }
+    
+    public void setShelvingLocation(String shelvingLocation) {
+        this.shelvingLocation = shelvingLocation;
     }
     public String getIndexNo() {
         return this.indexNo;
@@ -211,45 +560,43 @@ public class DocumentDetails  implements java.io.Serializable {
     public void setPhysicalWidth(String physicalWidth) {
         this.physicalWidth = physicalWidth;
     }
-    public String getNoOfCopy() {
-        return this.noOfCopy;
+    public String getBindType() {
+        return this.bindType;
     }
     
-    public void setNoOfCopy(String noOfCopy) {
-        this.noOfCopy = noOfCopy;
-    }
-    public String getNotes() {
-        return this.notes;
-    }
-    
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-    public String getSubject() {
-        return this.subject;
-    }
-    
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
-    public String getEditor() {
-        return this.editor;
-    }
-    
-    public void setEditor(String editor) {
-        this.editor = editor;
-    }
-    public String getVolumeNo() {
-        return this.volumeNo;
-    }
-    
-    public void setVolumeNo(String volumeNo) {
-        this.volumeNo = volumeNo;
+    public void setBindType(String bindType) {
+        this.bindType = bindType;
     }
 
+    public String getBookType() {
+        return bookType;
+    }
 
+    public void setBookType(String bookType) {
+        this.bookType = bookType;
+    }
 
+    public int getBiblioId() {
+        return biblioId;
+    }
 
+    public void setBiblioId(int biblioId) {
+        this.biblioId = biblioId;
+    }
+
+    /**
+     * @return the status
+     */
+    public String getStatus() {
+        return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }
 
 

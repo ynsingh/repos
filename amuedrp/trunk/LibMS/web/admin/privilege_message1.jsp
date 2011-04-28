@@ -9,10 +9,10 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 <%
-String staff_id=(String)request.getAttribute("staff_id");
+String staff_id=(String)request.getParameter("staff_id");
 
 
-    String staff_name=(String)request.getAttribute("staff_name");
+    String staff_name=(String)request.getParameter("staff_name");
 
 
 %>
@@ -21,8 +21,8 @@ String staff_id=(String)request.getAttribute("staff_id");
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="css/page.css"/>
-        <title>LibMS</title>
-        <link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
+        <title>LibMS : Manage Privileges</title>
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
     </head>
     <body >
 

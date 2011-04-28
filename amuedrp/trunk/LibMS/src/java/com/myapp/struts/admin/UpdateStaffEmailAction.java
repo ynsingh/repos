@@ -38,7 +38,7 @@ public class UpdateStaffEmailAction extends org.apache.struts.action.Action {
         String searchText = request.getParameter("getEmail_Id");
         String staff_id = request.getParameter("getStaff_Id");
         System.out.println(staff_id+"........."+searchText);
-        String emails = emailDAO.getStaffEmailByName(staff_id,searchText);
+        String emails = "";//emailDAO.getStaffEmailByName(staff_id,searchText);
         if (!emails.equals(""))
         {
         response.setContentType("application/xml");
@@ -47,4 +47,5 @@ public class UpdateStaffEmailAction extends org.apache.struts.action.Action {
         }
         return null;
     }
+
 }

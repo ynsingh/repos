@@ -1,15 +1,15 @@
 
-<%@page contentType="text/html" import="java.sql.*,com.myapp.struts.MyQueryResult" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" import="com.myapp.struts.hbm.*,com.myapp.struts.AdminDAO.*" pageEncoding="UTF-8"%>
 
  <jsp:include page="header.jsp" flush="true" />
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 <%
-String email_id=(String)request.getAttribute("user_id");
-ResultSet rs=MyQueryResult.getMyExecuteQuery("select * from staff_detail where emai_id='"+email_id+"'");
+String login_id=(String)request.getAttribute("user_id");
+Login rs=LoginDAO.searchLoginID(login_id);
 String staff_id="";
-if(rs.next())
-    staff_id=rs.getString("staff_id");
+if(rs!=null)
+    staff_id=rs.getId().getStaffId();
 
 
 String user_name=(String)request.getAttribute("user_name");
@@ -49,7 +49,7 @@ String btn=(String)request.getAttribute("btn");
                    
                     <br><br><br>
 
-                    <p align="left" class="mess"> Login Id:<b><%=email_id%></b>
+                    <p align="left" class="mess"> Login Id:<b><%=login_id%></b>
                     <br><br>
                    <p align="left" class="mess"> User Role:<b><%=role%></b>
                     <br><br>
@@ -95,7 +95,7 @@ String btn=(String)request.getAttribute("btn");
 
 
 
-    </p>
+  
 
    </div>
    
@@ -106,9 +106,9 @@ String btn=(String)request.getAttribute("btn");
     {
 
 
-        var a=confirm("<b>Assign Privilege for staff with Login Id:<%=email_id%> Now?</b>");
+        var a=confirm("<b>Assign Privilege for staff with Login Id:<%=login_id %> Now?</b>");
         if(a==true)
-            location.href="/LibMS-Struts/admin/privilege_tree.jsp?login_id=<%=email_id%>";
+            location.href="<%=request.getContextPath()%>/admin/privilege_tree.jsp?login_id=<%=login_id%>";
 
         return false;
     }

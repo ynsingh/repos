@@ -28,7 +28,7 @@ public class MyConnection {
                 if(ctx==null)
                     throw new RuntimeException("JNDI");
 
-                    ds=(DataSource)ctx.lookup("java:comp/env/jdbc/TestDB");
+                    ds=(DataSource)ctx.lookup("java:/comp/env/jdbc/TestDB");
                     connection=ds.getConnection();
 
 
@@ -42,17 +42,15 @@ public class MyConnection {
          }
 
 
-    //    String driver="com.mysql.jdbc.Driver";
-     //   String url="jdbc:mysql://localhost:3307/libms";
-    //    Class.forName(driver).newInstance();
-      //  connection=DriverManager.getConnection(url, "root", "");
+  
        
     }
     
     public static Connection getMyConnection()
     {
-        
-        return connection;
+       
+
+                return connection;
         }
 
 }

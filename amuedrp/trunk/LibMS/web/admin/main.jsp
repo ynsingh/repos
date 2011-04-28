@@ -17,6 +17,7 @@
 
 
 <%
+session.removeAttribute("page");
 String msg=(String)request.getAttribute("msg");
 if (msg!=null)
     {

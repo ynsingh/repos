@@ -7,19 +7,38 @@
     <%@page import="com.myapp.struts.admin.RequestDoc"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
     <%@ page import="java.util.*"%>
-    <%@ page import="org.apache.taglibs.datagrid.DataGridParameters"%>
-    <%@ page import="org.apache.taglibs.datagrid.DataGridTag"%>
-    <%@ page import="java.sql.*"%>
+    <%@ page import="org.apache.taglibs.datagrid.*,com.myapp.struts.hbm.*"%>
+       <%@ page import="java.sql.*"%>
     <%@ page import="java.io.*"   %>
-    <%@ taglib uri="http://jakarta.apache.org/taglibs/datagrid-1.0" prefix="ui" %>
+     <%@ taglib uri="http://jakarta.apache.org/taglibs/datagrid-1.0" prefix="ui" %>
+
     <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
     <%@ taglib uri="http://java.sun.com/jstl/fmt" prefix="fmt" %>
+
+  <%
+try{
+if(session.getAttribute("library_id")!=null){
+System.out.println("library_id"+session.getAttribute("library_id"));
+}
+else{
+    request.setAttribute("msg", "Your Session Expired: Please Login Again");
+    %><script>parent.location = "<%=request.getContextPath()%>"+"/login.jsp?session=\"expired\"";</script><%
+    }
+}catch(Exception e){
+    request.setAttribute("msg", "Your Session Expired: Please Login Again");
+    %>sessionout();<%
+    }
+
+%>
+
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
     <title>View Request</title>
-<link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
+
+
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 <script language="javascript" >
 function b1click()
 {
@@ -34,7 +53,7 @@ f.submit();
 }
 function getQuery(id)
 {
-    var query = "/LibMS-Struts/admin/index1.jsp?id="+id;
+    var query = "<%=request.getContextPath()%>/admin/index1.jsp?id="+id;
     return query;
 }
 </script>
@@ -44,7 +63,7 @@ function getQuery(id)
      .rows          { background-color: white }
      .hiliterows    { background-color: pink; color: #000000; font-weight: bold }
      .alternaterows { background-color: #efefef }
-     .header        { background-color: #c0003b; color: #FFFFFF;font-weight: bold }
+     .header        { background-color: #7697BC; color: #FFFFFF;font-weight: bold }
 
      .datagrid      { border: 1px solid #C7C5B2; font-family: arial; font-size: 9pt;
 	    font-weight: normal }
@@ -63,38 +82,43 @@ function getQuery(id)
    
    
    RequestDoc Ob;
+   AdminRegistration adminReg;
    ArrayList requestList;
    int fromIndex=0, toIndex;
 %>
  <%
 
- ResultSet rs = (ResultSet)(session.getAttribute("resultset"));
+ List rs = (List)(session.getAttribute("resultset"));
 
        
 
-   requestList = new ArrayList ();
+   requestList = new ArrayList();
    int tcount =0;
    int perpage=4;
    int tpage=0;
- /*Create a connection by using getConnection() method
-   that takes parameters of string type connection url,
-   user name and password to connect to database.*/
+ 
+if(rs!=null)
+{
+   Iterator it = rs.iterator();
 
-rs.beforeFirst();
 
 
-   while (rs.next()) {
-	tcount++;
-	Ob = new RequestDoc ();
-	Ob.setRegistration_id(rs.getInt(1));
-	Ob.setInstitute_name(rs.getString(2));
-	Ob.setLibrary_name(rs.getString(21));
-	Ob.setAdmin_email(rs.getString(17));
-        
-   requestList.add(Ob);
-
-   //System.out.println("tcount="+tcount);
-		     }
+   while (it.hasNext())
+        {
+	
+	System.out.println("it="+(tcount));
+        adminReg = (AdminRegistration)rs.get(tcount);
+        Ob = new RequestDoc ();
+	Ob.setRegistration_id(adminReg.getRegistrationId());
+	Ob.setInstitute_name(adminReg.getInstituteName());
+	Ob.setUserId(adminReg.getLoginId());
+	Ob.setAdmin_email(adminReg.getAdminEmail());
+        adminReg = null;
+        requestList.add(Ob);
+        tcount++;
+        it.next();
+  
+	}
 
 System.out.println("tcount="+tcount);
 
@@ -114,36 +138,32 @@ System.out.println("tcount="+tcount);
 <%}
 else
 {%>
+
 <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid">
     
   <columns>
       
-    <column width="50">
-      <header value="" hAlign="left" styleClass="header"/>
-    </column>
-
-    <column width="100">
+    <column width="10%">
       <header value="Registration_ID" hAlign="left" styleClass="header"/>
-      <item   value="${doc.registration_id}" hyperLink="index1.jsp?id=${doc.registration_id}"  hAlign="left"    styleClass="item"/>
+      <item   value="${doc.registration_id}" hyperLink="view1.do?id=${doc.registration_id}"  hAlign="left"    styleClass="item"/>
     </column>
 
-    <column width="200">
+    <column width="15%">
       <header value="Institute Name" hAlign="left" styleClass="header"/>
-      <item   value="${doc.institute_name}" hAlign="left" hyperLink="index1.jsp?id=${doc.registration_id}"  styleClass="item"/>
+      <item   value="${doc.institute_name}" hAlign="left" hyperLink="view1.do?id=${doc.registration_id}"  styleClass="item"/>
     </column>
-
-    <column width="200">
-      <header value="Library Name" hAlign="left" styleClass="header"/>
-      <item   value="${doc.library_name}" hyperLink="index1.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
+    <column width="10%">
+      <header value="User Id" hAlign="left" styleClass="header"/>
+      <item   value="${doc.userId}" hAlign="left" hyperLink="view1.do?id=${doc.registration_id}"  styleClass="item"/>
     </column>
-   
-    <column width="100">
+       
+    <column width="10%">
       <header value="Admin_Email" hAlign="left" styleClass="header"/>
-      <item   value="${doc.admin_email}" hyperLink="index1.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
+      <item   value="${doc.admin_email}" hyperLink="view1.do?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
     </column>
-       <column width="100">
+       <column width="5%">
       <header value="Action" hAlign="left" styleClass="header"/>
-      <item   value="Accept" hyperLink="index1.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
+      <item   value="Accept" hyperLink="view1.do?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
     </column>
  </columns>
 
@@ -154,17 +174,17 @@ else
        previousUrlVar="previous" pagesVar="pages"/>
   <order imgAsc="up.gif" imgDesc="down.gif"/>
 </ui:dataGrid>
-<table width="600" style="font-family: arial; font-size: 10pt" border=0>
+<table width="60%" style="font-family: arial; font-size: 10pt" border=0>
 <tr>
 <td align="left" width="100px">
-<c:if test="${previous != null}">
+<c:if test="${previous} != null">
 <a href="<c:out value="${previous}"/>">Previous</a>
 </c:if>&nbsp;
-<c:if test="${next != null}">
+<c:if test="${next} != null">
 <a href="<c:out value="${next}"/>">Next</a>
 </c:if>
 
-</td><td width="500px" align="center">
+</td><td width="50%" align="center">
 
 <c:forEach items="${pages}" var="page">
 <c:choose>
@@ -180,7 +200,10 @@ else
 
 </tr>
 </table>
-<%}%>
+<%}}else{
+request.setAttribute("msg", "Your Session Expired: Please Login Again");
+    %><script>parent.location = "<%=request.getContextPath()%>"+"/login.jsp?session=\"expired\"";</script><%
+}%>
  </div>
     </body>
 

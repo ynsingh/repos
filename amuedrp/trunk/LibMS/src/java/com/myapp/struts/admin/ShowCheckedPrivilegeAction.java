@@ -5,9 +5,30 @@
 
 package com.myapp.struts.admin;
 
-import com.myapp.struts.MyQueryResult;
-import java.sql.ResultSet;
 
+
+//import  com.myapp.struts.hbm.*;
+
+import  com.myapp.struts.hbm.Privilege;
+import  com.myapp.struts.hbm.PrivilegeId;
+import  com.myapp.struts.hbm.Library;
+import  com.myapp.struts.hbm.SerPrivilege;
+import  com.myapp.struts.hbm.CirPrivilegeId;
+import  com.myapp.struts.hbm.CirPrivilege;
+import  com.myapp.struts.hbm.CatPrivilege;
+import  com.myapp.struts.hbm.CatPrivilegeId;
+import  com.myapp.struts.hbm.AcqPrivilege;
+import  com.myapp.struts.hbm.AcqPrivilegeId;
+import  com.myapp.struts.hbm.Login;
+import  com.myapp.struts.hbm.LoginId;
+import  com.myapp.struts.hbm.StaffDetail;
+import  com.myapp.struts.hbm.StaffDetailId;
+import  com.myapp.struts.hbm.SubLibrary;
+import  com.myapp.struts.hbm.SubLibraryId;
+import  com.myapp.struts.hbm.Library;
+import  com.myapp.struts.hbm.AdminRegistration;
+import  com.myapp.struts.hbm.SerPrivilegeId;
+import  com.myapp.struts.AdminDAO.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -21,57 +42,87 @@ import org.apache.struts.action.ActionMapping;
  */
 public class ShowCheckedPrivilegeAction extends org.apache.struts.action.Action {
     
-    /* forward name="success" path="" */
-    private static final String SUCCESS = "success";
+   
+   
     private String staff_id;
     private String library_id;
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-  
-     */
+    private String sublibrary_id;
+
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String sql1,sql2,sql3,sql4,sql5;
-        ResultSet privilege_resultset,acq_privilege_resultset,cat_privilege_resultset,cir_privilege_resultset,ser_privilege_resultset;
+
+
+
+
+
+
+
+
+     //   String sql1,sql2,sql3,sql4,sql5;
+     //   ResultSet privilege_resultset,acq_privilege_resultset,cat_privilege_resultset,cir_privilege_resultset,ser_privilege_resultset;
         HttpSession session=request.getSession();
         library_id=(String)session.getAttribute("library_id");
-        staff_id = (String)request.getAttribute("staff_id");
-        if (staff_id==null)staff_id = (String)request.getParameter("staff_id");
-        System.out.println("staff_id="+staff_id);
+      //  staff_id = (String)request.getAttribute("staff_id");
+      //  sublibrary_id=(String)session.getAttribute("sublibrary_id");
 
-        sql1 ="select * from privilege where staff_id='"+staff_id+"' and library_id='"+library_id+"'" ;
-        sql2="select * from acq_privilege where staff_id='"+staff_id+"' and library_id='"+library_id+"'" ;
-        sql3="select * from cat_privilege where staff_id='"+staff_id+"' and library_id='"+library_id+"'" ;
-        sql4="select * from cir_privilege where staff_id='"+staff_id+"' and library_id='"+library_id+"'" ;
-        sql5="select * from ser_privilege where staff_id='"+staff_id+"' and library_id='"+library_id+"'" ;
 
-        privilege_resultset=MyQueryResult.getMyExecuteQuery(sql1);
-        acq_privilege_resultset=MyQueryResult.getMyExecuteQuery(sql2);
-        cat_privilege_resultset=MyQueryResult.getMyExecuteQuery(sql3);
-        cir_privilege_resultset=MyQueryResult.getMyExecuteQuery(sql4);
-        ser_privilege_resultset=MyQueryResult.getMyExecuteQuery(sql5);
+        //if (staff_id==null)
+            staff_id = (String)request.getParameter("staff_id");
+        System.out.println("staff_id4="+staff_id);
 
-        privilege_resultset.next();
-        acq_privilege_resultset.next();
-        cat_privilege_resultset.next();
-        cir_privilege_resultset.next();
-        ser_privilege_resultset.next();
+        StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+        sublibrary_id=staffobj.getSublibraryId();
+System.out.println(sublibrary_id);
+
+Login staffobj1=LoginDAO.searchStaffLogin(staff_id, library_id,sublibrary_id);
+if(staffobj1!=null)
+ request.setAttribute("staff_role",staffobj1.getRole());
+
+System.out.println(staffobj1.getRole());
+
+        Privilege privobj=PrivilegeDAO.getPrivilege(library_id, sublibrary_id, staff_id);
+        AcqPrivilege acqprivobj=AcqPrivilegeDAO.getPrivilege(library_id, sublibrary_id, staff_id);
+        CatPrivilege catprivobj=CatPrivilegeDAO.getPrivilege(library_id, sublibrary_id, staff_id);
+        CirPrivilege cirprivobj=CirPrivilegeDAO.getPrivilege(library_id, sublibrary_id, staff_id);
+        SerPrivilege serprivobj=SerPrivilegeDAO.getPrivilege(library_id, sublibrary_id, staff_id);
+
+
+      
+
+        //sql1 ="select * from privilege where staff_id='"+staff_id+"' and library_id='"+library_id+"'" ;
+        //sql2="select * from acq_privilege where staff_id='"+staff_id+"' and library_id='"+library_id+"'" ;
+        //sql3="select * from cat_privilege where staff_id='"+staff_id+"' and library_id='"+library_id+"'" ;
+        //sql4="select * from cir_privilege where staff_id='"+staff_id+"' and library_id='"+library_id+"'" ;
+        //sql5="select * from ser_privilege where staff_id='"+staff_id+"' and library_id='"+library_id+"'" ;
+
+        //privilege_resultset=MyQueryResult.getMyExecuteQuery(sql1);
+        //acq_privilege_resultset=MyQueryResult.getMyExecuteQuery(sql2);
+        //cat_privilege_resultset=MyQueryResult.getMyExecuteQuery(sql3);
+        //cir_privilege_resultset=MyQueryResult.getMyExecuteQuery(sql4);
+        //ser_privilege_resultset=MyQueryResult.getMyExecuteQuery(sql5);
+
+        //privilege_resultset.next();
+        //acq_privilege_resultset.next();
+        //cat_privilege_resultset.next();
+        //cir_privilege_resultset.next();
+        //ser_privilege_resultset.next();
         //System.out.println(cir_privilege_resultset.getString(3));
 
-        session.setAttribute("privilege", privilege_resultset);
+        session.setAttribute("privilege", privobj);
 
-        session.setAttribute("acq_privilege", acq_privilege_resultset);
-        session.setAttribute("cat_privilege", cat_privilege_resultset);
-        session.setAttribute("cir_privilege", cir_privilege_resultset);
-        session.setAttribute("ser_privilege", ser_privilege_resultset);
-        request.setAttribute("staff_id", staff_id);
-        return mapping.findForward(SUCCESS);
+        session.setAttribute("acq_privilege", acqprivobj);
+        session.setAttribute("cat_privilege", catprivobj);
+        session.setAttribute("cir_privilege", cirprivobj);
+        session.setAttribute("ser_privilege", serprivobj);
+        request.setAttribute("new_staff_id",staff_id);
+        request.setAttribute("staff_sub_library",sublibrary_id);
+
+
+
+        request.setAttribute("new_staff_name",staffobj.getFirstName()+" "+staffobj.getLastName());
+      
+        return mapping.findForward("success");
     }
 }

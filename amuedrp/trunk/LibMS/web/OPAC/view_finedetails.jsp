@@ -2,12 +2,12 @@
     Document   : Simple.jsp
     Created on : Jun 18, 2010, 7:46:24 AM
     Author     : Mayank Saxena
-<jsp:include page="adminheader.jsp" flush="true" />
+
 --%>
  
-    <%@page import="com.myapp.struts.opac.FineDoc"%>
+    <%@page import="com.myapp.struts.opac.FineDoc,com.myapp.struts.hbm.*,com.myapp.struts.opac.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-    <%@ page import="java.util.*"%>
+    <%@ page import="java.util.*,com.myapp.struts.opacDAO.*"%>
     <%@ page import="org.apache.taglibs.datagrid.DataGridParameters"%>
     <%@ page import="org.apache.taglibs.datagrid.DataGridTag"%>
     <%@ page import="java.sql.*"%>
@@ -75,99 +75,56 @@ locale1=(String)session.getAttribute("locale");
 String ID,status,lastchkoutdate,no_of_chkout ,reservation_made, fine ,name;
 ResultSet rs=null,rs1=null;
 %>
-<%
-    ID = (String)session.getAttribute("id");
-     rs= (ResultSet)session.getAttribute("rs");
-    rs1= (ResultSet)session.getAttribute("rs1");
 
-        rs.beforeFirst();
-        boolean s=rs.next();
-
-   if(s)
-      { status=rs.getString(8);
-        if(status.equals("Y"))
-          {
-
-            name=rs.getString(3);
-
-            no_of_chkout=rs.getString(5);
-            reservation_made=rs.getString(6);
-            lastchkoutdate=rs.getString(7);
-            session.setAttribute("memname",name);
-
-          }
-        else
-          {
-            response.sendRedirect("member.jsp?msg=Sorry, your Membership is cancelled" +
-                           " for somehow reason, please contact to your Library..");
-          }
-       }
-   else
-       {
-    response.sendRedirect("member.jsp?msg=Invalid Member,try again..");
-
-       }
-
-
-
-
-    while(rs1.next()){fine=rs1.getString(1);}
-
-        if(fine==null)
-            fine="0";
-        if(no_of_chkout==null)
-            no_of_chkout="";
-        if(lastchkoutdate==null)
-            lastchkoutdate="";
-
-
-%>
 <%!
    
    
   FineDoc Ob;
    ArrayList requestList;
-   int fromIndex=0, toIndex;
+   int fromIndex=0, toIndex=4;
 %>
  <%
+ String name=(String)session.getAttribute("mem_name");
+ ID= (String)session.getAttribute("mem_id");
+ if(ID==null)ID=(String)session.getAttribute("id");
+ String lib_id=(String)session.getAttribute("memlib");
+ String sublibrary_id=(String)session.getAttribute("memsublib");
 
- ResultSet rs = (ResultSet)session.getAttribute("finedetails_resultset");
-
-       
-
+ //session.getAttribute("fine_details");
+List<MemberFinewithDocument> rs=(List<MemberFinewithDocument>)session.getAttribute("memberFineDetails");
+System.out.println(rs.size());
    requestList = new ArrayList ();
    int tcount =0;
    int perpage=4;
    int tpage=0;
- /*Create a connection by using getConnection() method
-   that takes parameters of string type connection url,
-   user name and password to connect to database.*/
+ 
+Iterator it = rs.iterator();
 
-rs.beforeFirst();
-
-
-   while (rs.next()) {
-	tcount++;
+   while (it.hasNext()) {
+	MemberFinewithDocument mem = (MemberFinewithDocument)it.next();
 	Ob = new FineDoc ();
 
  
-	Ob.setTitle(rs.getString(3));
-	Ob.setAuthor(rs.getString(4));
-	Ob.setCallno(rs.getString(5));
-	Ob.setPubl(rs.getString(6));
-        Ob.setDate(rs.getString(2));
-        Ob.setFine(rs.getString(1));
+	Ob.setTitle(String.valueOf(mem.getDocumentDetails().getTitle()==null?"":mem.getDocumentDetails().getTitle()));
+	Ob.setAuthor(String.valueOf(mem.getDocumentDetails().getMainEntry()==null?"":mem.getDocumentDetails().getMainEntry()));
+	Ob.setCallno(String.valueOf(mem.getDocumentDetails().getCallNo()==null?"":mem.getDocumentDetails().getCallNo().toString()));
+	Ob.setPubl(String.valueOf(mem.getDocumentDetails().getPublisherName()==null?"":mem.getDocumentDetails().getPublisherName().toString()));
+        Ob.setDate(String.valueOf(mem.getCirCheckin().getReturningDate()==null?"":mem.getCirCheckin().getReturningDate().toString()));
+        Ob.setFine(String.valueOf(mem.getCirTransactionHistory().getFineAmt()==null?"":mem.getCirTransactionHistory().getFineAmt().toString()));
         
    requestList.add(Ob);
-
+    
+tcount++;
    //System.out.println("tcount="+tcount);
 		     }
 
 System.out.println("tcount="+tcount);
 
+
+
 %>
 
- <link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
+ <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 <%
    fromIndex = (int) DataGridParameters.getDataGridPageIndex (request, "datagrid1");
    if ((toIndex = fromIndex+4) >= requestList.size ())
@@ -176,10 +133,10 @@ System.out.println("tcount="+tcount);
    pageContext.setAttribute("tCount", tcount);
 %>
 <br>
- <%if(page.equals(true))
+ <%--<%if(page.equals(true))
     {
 
-%>
+%>--%>
 
 <table  align="left" width="800px"  style="background-color: white;border:#c0003b 1px solid;margin:0px 0px 0px 0px;">
 
@@ -194,15 +151,15 @@ System.out.println("tcount="+tcount);
 
 
 	&nbsp;&nbsp;
-                <a href="accountdetails.jsp" target="f3" style="text-decoration: none;color:white"><%=resource.getString("opac.accountdetails.home")%></a>&nbsp;|&nbsp;
-            <a href="newdemand2.jsp" target="f3" style="text-decoration: none;color:white"> <%=resource.getString("opac.accountdetails.newdemand")%></a>&nbsp;
-    |&nbsp;<a href="reservationrequest1.jsp" target="f3" style="text-decoration: none;color:white"> <%=resource.getString("opac.accountdetails.reservationrequest")%></a>
+                <a href="<%=request.getContextPath()%>/OPAC/accountdetails.jsp"  style="text-decoration: none;color:white"><%=resource.getString("opac.accountdetails.home")%></a>&nbsp;|&nbsp;
+            <a href="<%=request.getContextPath()%>/OPAC/newdemand2.jsp"  style="text-decoration: none;color:white"> <%=resource.getString("opac.accountdetails.newdemand")%></a>&nbsp;
+   <%-- |&nbsp;<a href="reservationrequest1.jsp" style="text-decoration: none;color:white"> <%=resource.getString("opac.accountdetails.reservationrequest")%></a>--%>
 
 
 
 
           </b>
-                  </td><td align="right" style="color:white;font-family:Tahoma;font-size:12px"><%=resource.getString("opac.accountdetails.hi")%>&nbsp;<%=name%>&nbsp;<b>|</b>&nbsp;<a href="home.do" target="f3" style="text-decoration: none;color:white"><%=resource.getString("opac.accountdetails.logout")%></a></td></tr></table>
+                  </td><td align="right" style="color:white;font-family:Tahoma;font-size:12px"><%=resource.getString("opac.accountdetails.hi")%>&nbsp;<%=name%>&nbsp;<b>|</b>&nbsp;<a href="home.do"  style="text-decoration: none;color:white"><%=resource.getString("opac.accountdetails.logout")%></a></td></tr></table>
         </td></tr>
   </table>
         </td></tr>
@@ -273,7 +230,7 @@ else
 <a href="<c:out value="${next}"/>"><%=resource.getString("opac.accountdetails.next")%></a>
 </c:if>
 </td><td align="center" >
- <a href="accountdetails.jsp" target="f3"> <%=resource.getString("opac.accountdetails.back")%></a>&nbsp;&nbsp;
+ <a href="accountdetails.jsp" > <%=resource.getString("opac.accountdetails.back")%></a>&nbsp;&nbsp;
 
 <c:forEach items="${pages}" var="page">
 <c:choose>
@@ -299,7 +256,7 @@ else
 <%}%>
 
 </td></tr></table>
-<%}
+<%--<%}
    else
    {%>
    <table  align="left" width="800px"  style="background-color: white;border:#c0003b 1px solid;margin:0px 0px 0px 0px;">
@@ -309,16 +266,16 @@ else
   <tr><td  width="800px"  style="background-color:#c0003b;color:white;font-family:Tahoma;font-size:12px" height="28px" align="right">
           <table>
               <tr>
-                  <td width="520px" align="left" style="color:white;font-family:Tahoma;font-size:12px"><a href="home.do" target="f3" style="text-decoration: none;color:white"><%=resource.getString("opac.accountdetails.logout")%></a>&nbsp;|&nbsp;<%=resource.getString("opac.accountdetails.hi")%>&nbsp;<%=name%></td>
+                  <td width="520px" align="left" style="color:white;font-family:Tahoma;font-size:12px"><a href="home.do"  style="text-decoration: none;color:white"><%=resource.getString("opac.accountdetails.logout")%></a>&nbsp;|&nbsp;<%=resource.getString("opac.accountdetails.hi")%>&nbsp;<%=name%></td>
 
                   <td  style="background-color:#c0003b;color:white;font-family:Tahoma;font-size:12px" height="28px" align="right"><b>
 
 
-	&nbsp;&nbsp;<a href="reservationrequest1.jsp" target="f3" style="text-decoration: none;color:white"> <%=resource.getString("opac.accountdetails.reservationrequest")%>
-        &nbsp;|&nbsp;    <a href="newdemand2.jsp" target="f3" style="text-decoration: none;color:white"> <%=resource.getString("opac.accountdetails.newdemand")%></a>&nbsp;
-        &nbsp;|&nbsp;    <a href="accountdetails.jsp" target="f3" style="text-decoration: none;color:white"><%=resource.getString("opac.accountdetails.home")%></a>
+	<%--&nbsp;&nbsp;<a href="reservationrequest1.jsp"  style="text-decoration: none;color:white"> <%=resource.getString("opac.accountdetails.reservationrequest")%>
+        &nbsp;|&nbsp;    <a href="newdemand2.jsp"  style="text-decoration: none;color:white"> <%=resource.getString("opac.accountdetails.newdemand")%></a>&nbsp;
+        &nbsp;|&nbsp;    <a href="accountdetails.jsp" style="text-decoration: none;color:white"><%=resource.getString("opac.accountdetails.home")%></a>
 
-    </a>
+   
 
 
 
@@ -384,7 +341,7 @@ else
 <table width="600px" style="font-family: arial; font-size: 10pt" border=0>
 <tr>
 <td align="left" width="150px">
-     <a href="accountdetails.jsp" target="f3"> <%=resource.getString("opac.accountdetails.back")%></a>&nbsp;&nbsp;
+     <a href="accountdetails.jsp" > <%=resource.getString("opac.accountdetails.back")%></a>&nbsp;&nbsp;
 <c:if test="${previous != null}">
 <a href="<c:out value="${previous}"/>"><%=resource.getString("opac.accountdetails.previous")%></a>
 </c:if>&nbsp;
@@ -419,7 +376,7 @@ else
 
 </td></tr></table>
 
-   <%}%>
+   <%}%>--%>
     </body>
 
 </html>

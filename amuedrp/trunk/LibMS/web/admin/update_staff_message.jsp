@@ -5,7 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
- <jsp:include page="header.jsp" flush="true" />
+ <jsp:include page="/admin/header.jsp" flush="true" />
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 <%
@@ -18,8 +18,8 @@ String staff_name=(String)request.getAttribute("staff_name");
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
-        <title>LibMS</title>
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
+        <title>LibMS : Manage Staff</title>
     </head>
     <body>
    
@@ -30,12 +30,9 @@ String staff_name=(String)request.getAttribute("staff_name");
       position: absolute;
 
       visibility: show;">
-    <br><br>
-    <table width="500px" height="600px"  valign="top" align="center">
-        <tr><td   width="500px" height="200px" valign="top" align="center">
-                <fieldset style="border:solid 1px brown;height:180px;padding-left: 10px">
-                    <legend><img src="images/UpdateStaff.png"></legend>
-                    <br><br><br>
+   
+   
+                   
 
                     <p  class="mess">
                           <% if(msg!=null){%>
@@ -43,10 +40,10 @@ String staff_name=(String)request.getAttribute("staff_name");
                             <b><%=staff_name%></b>
                    
 </p>
-</fieldset>
+
 
     
-</td></tr></table>
+
         </div>
    
 

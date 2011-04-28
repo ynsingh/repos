@@ -46,15 +46,6 @@ String library_id=(String)session.getAttribute("library_id");
 
         }
 
-// call the repeater with a function as the argument
- function repeater()
-{
-   alert("Session is Expired.You Need to Login Again?")
-
-        parent.location.href="/LibMS-Struts/login.jsp";
-
-}
-window.setTimeout(repeater, 1800000);// call the repeater with a function as the argument
 
 </script>
     </head>
@@ -69,7 +60,7 @@ window.setTimeout(repeater, 1800000);// call the repeater with a function as the
      <tr>
     <td align=left  height="50" valign="left">
         <table width="100%" align="right" border="0">
-                        <tr><td rowspan="2">&nbsp;<img src="/LibMS-Struts/images/opac_lib.PNG" alt="logo1"   align="top" dir="rtl">&nbsp;</td></tr>
+                        <tr><td rowspan="2">&nbsp;<img src="<%=request.getContextPath()%>/images/opac_lib.PNG" alt="logo1"   align="top" dir="rtl">&nbsp;</td></tr>
             <tr><td align="center">
     <p style="font-family: Tahoma;color:brown;font-size: 20px">
      <%=resource.getString("opacmainframe.header.opac")%>
@@ -86,7 +77,7 @@ window.setTimeout(repeater, 1800000);// call the repeater with a function as the
       <b> &nbsp;&nbsp;<%=resource.getString("opacmainframe.header.help")%></b></a>&nbsp;|&nbsp;
 
 
-      <a href="/LibMS-Struts/admin/main.jsp" onclick="" target="_top" style="text-decoration:none;font-family: Arial;color:#c0003b;font-size: 13px" >
+      <a href="<%=request.getContextPath()%>/admin/main.jsp" onclick="" target="_top" style="text-decoration:none;font-family: Arial;color:#c0003b;font-size: 13px" >
       <b> &nbsp;&nbsp;<%=resource.getString("opacmainframe.header.exit")%></b></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 
@@ -125,7 +116,7 @@ window.setTimeout(repeater, 1800000);// call the repeater with a function as the
            <!-- <a href="OpacLib.do?name=accno" target="f3" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" >
 
       </a>-->
-     <a href="/LibMS-Struts/OPAC/OpacLib.do?name=accno" target="f3" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" >
+     <a href="<%=request.getContextPath()%>/OPAC/OpacLib.do?name=accno" target="f3" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" >
          <b style="color:white"><%=resource.getString("opacmainframe.header.accessionno")%></b></a>
 
 
@@ -140,7 +131,7 @@ window.setTimeout(repeater, 1800000);// call the repeater with a function as the
      <tr>
     <td align=left  height="50" valign="left">
         <table width="100%" align="right" border="0">
-                        <tr><td rowspan="2">&nbsp;<img src="/LibMS-Struts/images/opac_lib.PNG" alt="logo1"   align="top" dir="rtl">&nbsp;</td></tr>
+                        <tr><td rowspan="2">&nbsp;<img src="<%=request.getContextPath()%>/images/opac_lib.PNG" alt="logo1"   align="top" dir="rtl">&nbsp;</td></tr>
             <tr><td align="center">
     <p style="font-family: Tahoma;color:brown;font-size: 20px">   
      <%=resource.getString("opacmainframe.header.opac")%>
@@ -157,7 +148,7 @@ window.setTimeout(repeater, 1800000);// call the repeater with a function as the
       <b> &nbsp;&nbsp;<%=resource.getString("opacmainframe.header.help")%></b></a>&nbsp;|&nbsp;
 
     
-      <a href="/LibMS-Struts/admin/main.jsp" onclick="" target="_top" style="text-decoration:none;font-family: Arial;color:#c0003b;font-size: 13px" >
+      <a href="<%=request.getContextPath()%>/admin/main.jsp" onclick="" target="_top" style="text-decoration:none;font-family: Arial;color:#c0003b;font-size: 13px" >
       <b> &nbsp;&nbsp;<%=resource.getString("opacmainframe.header.exit")%></b></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 
@@ -196,7 +187,7 @@ window.setTimeout(repeater, 1800000);// call the repeater with a function as the
            <!-- <a href="OpacLib.do?name=accno" target="f3" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" >
 
       </a>-->
-     <a href="/LibMS-Struts/OPAC/OpacLib.do?name=accno" target="f3" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" >
+     <a href="<%=request.getContextPath()%>/OPAC/OpacLib.do?name=accno" target="f3" style="text-decoration:none;font-family: Arial;color:white;font-size: 13px" >
          <b style="color:white"><%=resource.getString("opacmainframe.header.accessionno")%></b></a>
 
            

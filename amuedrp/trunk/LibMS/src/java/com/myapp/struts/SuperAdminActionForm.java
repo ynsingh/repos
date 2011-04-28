@@ -22,6 +22,9 @@ public class SuperAdminActionForm extends org.apache.struts.action.ActionForm {
 
     private String password1;
     private String password2;
+
+  //  private String role;
+    //private String staff_id;
     
 
   

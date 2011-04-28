@@ -5,13 +5,15 @@
 
 package com.myapp.struts.admin;
 import java.sql.*;
-import com.myapp.struts.MyQueryResult;
+import  com.myapp.struts.hbm.*;
+import  com.myapp.struts.AdminDAO.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import  com.myapp.struts.utility.PasswordEncruptionUtility;
 
 /**
  *
@@ -20,60 +22,61 @@ import org.apache.struts.action.ActionMapping;
 public class ChangePasswordAction extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
-    private static final String SUCCESS = "success";
+    
     private String user_name;
     private String staff_id;
     private String password;
     private String library_id;
-    private String email_id;
+    private String login_id;
+    private boolean result;
     int i;
     Connection con;
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
    
-     */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        CreateAccountActionForm caaction=(CreateAccountActionForm)form;
-      email_id=caaction.getEmail_id();
-      user_name=caaction.getUser_name();
-      password=caaction.getPassword();
-      staff_id=caaction.getStaff_id();
-      HttpSession session=request.getSession();
-      library_id=(String)session.getAttribute("library_id");
-
-      System.out.println(staff_id);
-
-      request.setAttribute("user_id", email_id);
-      request.setAttribute("user_name", user_name);
-      request.setAttribute("library_id", library_id);
-      request.setAttribute("staff_id", staff_id);
-
-        request.setAttribute("staff_name", user_name);
+            CreateAccountActionForm caaction=(CreateAccountActionForm)form;
 
 
-       String sql = "update  login set password='" +password + "' where staff_id='"+staff_id+"' and library_id='"+library_id+"'";
+            login_id=caaction.getLogin_id();
+            user_name=caaction.getUser_name();
+            password=caaction.getPassword();
+            staff_id=caaction.getStaff_id();
+            HttpSession session=request.getSession();
+            library_id=(String)session.getAttribute("library_id");
+
+      
+
+     
+        password=PasswordEncruptionUtility.password_encrupt(password);
+
+        Login  log=LoginDAO.searchRole(staff_id, library_id);
+        log.setPassword(password);
+        result=LoginDAO.update1(log);
+System.out.println(login_id+"................"+password);
+
+        AdminRegistration admin=AdminRegistrationDAO.searchInstituteAdmin(staff_id, library_id);
+  System.out.println(admin+"................");
+        admin.setAdminPassword(password);
+        result=AdminRegistrationDAO.update1(admin);
 
 
 
+       if(result==true)
+       {
 
-        i=MyQueryResult.getMyExecuteUpdate(sql);
-        if(i!=0)
-
-      {
-            Privilege.assignStaffPrivilege(staff_id, library_id);
-
-
-         return mapping.findForward("success");
+            request.setAttribute("login_id", login_id);
+            request.setAttribute("user_name", user_name);
+            request.setAttribute("library_id", library_id);
+            request.setAttribute("staff_id", staff_id);
+            request.setAttribute("staff_name", user_name);
+            if(log.getRole().contains("admin")||log.getRole().contains("Admin"))
+            return mapping.findForward("success");
+            else
+                return mapping.findForward("success1");
         }
 
-        return mapping.findForward("failure");
+            return mapping.findForward("failure");
     }
 }

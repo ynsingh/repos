@@ -4,13 +4,15 @@
  */
 
 package com.myapp.struts.opac;
-import  com.myapp.struts.*;
-import java.sql.ResultSet;
+import com.myapp.struts.hbm.Library;
+import com.myapp.struts.hbm.Notices;
 import javax.servlet.http.*;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import com.myapp.struts.opacDAO.*;
+import java.util.List;
 
 /**
  *
@@ -20,37 +22,43 @@ public class NoticeAction extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
-    private String library_id;
+    private String library_id,sublibrary_id;
+    OpacSearchDAO osdao=new OpacSearchDAO();
     
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
     
-     */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-HttpSession session=(HttpSession)request.getSession();
-library_id=(String)session.getAttribute("library_id");
-        ResultSet rs =null;
-        System.out.println("here");
-        if(library_id==null)
-        {
-            return mapping.findForward("fail");
+            HttpSession session=(HttpSession)request.getSession();
+            library_id=(String)session.getAttribute("library_id");
+            sublibrary_id=(String)session.getAttribute("sublibrary_id");
+            List notices=NewDemandDAO.Notice(library_id, sublibrary_id);
+            List noticelibray_id=osdao.LibrarySearch(library_id);
+            /*Library lib = new Library("sel", "Active");
+            lib.setLibraryName("Select");
+            if(noticelibray_id!=null) noticelibray_id.add(lib);*/
+            List noticesublib=osdao.subLibrarySearch(library_id);
+            if(notices!=null)
+            {
+                
+              session.setAttribute("noticesublib",noticesublib);
+              session.setAttribute("noticelibray_id",noticelibray_id);
+              session.setAttribute("notices",notices);
+              return mapping.findForward("success");
 
-        }
-        else
-        {String query = "select * from notice where library_id='"+library_id+"'";
+            }
+            else
+            {
+              request.setAttribute("msg", "Record Not Selected");
+              session.setAttribute("noticesublib",noticesublib);
+              session.setAttribute("noticelibray_id",noticelibray_id);
+              session.setAttribute("notices",notices);
+              return mapping.findForward("success");
+            }
 
-        rs = MyQueryResult.getMyExecuteQuery(query);
-        request.setAttribute("noticeRs", rs);
-        return mapping.findForward(SUCCESS);
-        }
-        
+       
+       
+       
     }
 }

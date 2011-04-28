@@ -14,6 +14,8 @@ import org.apache.struts.action.ActionMapping;
 import java.sql.*;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import com.myapp.struts.opacDAO.NewDemandDAO;
+import java.util.List;
 /**
  *
  * @author Faraz
@@ -22,7 +24,7 @@ public class NewArrivalAction extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
-    
+    boolean result;
     /**
      * This is the action called from the Struts framework.
      * @param mapping The ActionMapping used to select this instance.
@@ -36,12 +38,13 @@ public class NewArrivalAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-                String loc,callno,cat,book,journal,other;
+                String loc,callno,cat,book,journal,other,sublib;
                 String db,date,date1,sort,field,query="",query1="";
                 int mm,month,year,day;
                HttpSession session=request.getSession();
-                NewArrivalActionForm myForm = (NewArrivalActionForm)form;
+               NewArrivalActionForm myForm = (NewArrivalActionForm)form;
                  String lib_id=myForm.getCMBLib();
+                 sublib=myForm.getCMBSUBLib();
                 Calendar cal = new GregorianCalendar();
      month = cal.get(Calendar.MONTH);
      month=month+1;
@@ -49,7 +52,7 @@ public class NewArrivalAction extends org.apache.struts.action.Action {
      day = cal.get(Calendar.DAY_OF_MONTH);
      date=year+"-"+month+"-"+day;
 
-     //if(session.getAttribute("arrivalRs")!=null) session.removeAttribute("arrivalRs");
+if(session.getAttribute("arrivalRs")!=null) session.removeAttribute("arrivalRs");
 
     if(day<10 && month<10){date=year+"-0"+month+"-0"+day;}
      else {
@@ -74,17 +77,24 @@ public class NewArrivalAction extends org.apache.struts.action.Action {
          if(month<10){date1=year+"-0"+month+"-"+day;}
          if(day<10){date1=year+"-"+month+"-0"+day;}
           }
-   System.out.println("Library ID:"+lib_id);
-query="select * from newarrivals where category='"+cat+"' and (arrival_date>='"+date1+"' and arrival_date<='"+date+"')";
-query1="select * from newarrivals where category='"+cat+"' and (arrival_date>='"+date1+"' and arrival_date<='"+date+"')";
-   if(!lib_id.equalsIgnoreCase("all")){ query +=" and library_id='" + lib_id + "'";}
+  System.out.println("date"+date+"@@@@##$$%%"+"date1"+date1);
+  List  newarrival=NewDemandDAO.NewArrival(lib_id, sublib,date1, date,cat);
+  System.out.println("@@@@@@@@@@@@@@@########%%%%%%%%%$$$$"+newarrival.size()+lib_id+sublib+cat);
+  if(!newarrival.isEmpty())
+  {
+    session.setAttribute("newarrival",newarrival) ;
+    
+    return mapping.findForward("success");
 
+  }
+  else
+  {
+    request.setAttribute("msg", "Record Not found");
+    return mapping.findForward("failure");
+  }
+
+
+  
         
-        ResultSet rs=MyQueryResult.getMyExecuteQuery(query);
-        System.out.println(query);
-        if(rs.next())
-            System.out.println("NewArrivalAction........");
-        session.setAttribute("arrivalRs", rs);
-        return mapping.findForward(SUCCESS);
     }
 }

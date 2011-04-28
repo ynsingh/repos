@@ -4,8 +4,57 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
+
+
+<%@page import="java.util.*,java.io.*,java.net.*"%>
+
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    boolean page=true;
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+       // System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
+    else{ rtl="RTL";page=false;align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
+
+
+
 <html><head>
 <title>Browsing.....</title>
+
+
+<%
+try{
+if(session.getAttribute("library_id")!=null){
+System.out.println("library_id"+session.getAttribute("library_id"));
+}
+else{
+    request.setAttribute("msg", "Your Session Expired: Please Login Again");
+    %><script>parent.location = "<%=request.getContextPath()%>"+"/logout.do?session=\"expired\"";</script><%
+    }
+}catch(Exception e){
+    request.setAttribute("msg", "Your Session Expired: Please Login Again");
+    %>sessionout();<%
+    }
+
+%>
+
 <style type="text/css">
 body
 {
@@ -24,31 +73,31 @@ document.Form1.submit();
 
 </script>
 </head>
-<link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 <body onload="fun()" class="datagrid">
    
 
 <form name="Form1" action="search_institute.do"  >
-      <table  align="left" width="100%" class="datagrid"  style="border:solid 1px #e0e8f5;">
+      <table  align="left" width="100%" class="datagrid"  style="border:solid 1px #e0e8f5;" dir="<%=rtl%>" align="<%=align%>">
 
 
 
-  <tr class="header"><td  width="100%"   align="center" colspan="2">
+          <tr bgcolor="#7697BC" ><td  width="100%"   align="center" colspan="2" dir="<%=rtl%>">
 
 
-		Institute Search
+                  <font color="white"> <b><%=resource.getString("login.searchinstitute.institutesearch")%></b></font>
 
 
 
 
         </td></tr>
   <tr style="background-color:#e0e8f5;"><td width="800px"  >
-          <table>
-              <tr><td >Enter Starting Keyword(s)</td><td><input  name="search_keyword" type="text" id="search_keyword" onkeyup="fun()"></td>
+          <table dir="<%=rtl%>" align="<%=align%>">
+              <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("enterstartingkeyword")%></td><td><input  name="search_keyword" type="text" id="search_keyword" onkeyup="fun()"></td>
               <td>
 
 
-<input type="reset" id="Button1" name="clear" value="CLEAR">
+                  <input type="reset" id="Button1" name="clear" value="<%=resource.getString("login.searchinstitute.clear")%>">
 
 
       </td></tr>
@@ -58,12 +107,12 @@ document.Form1.submit();
       </td>
       <td    align="left" valign="top">
           <table >
-              <tr><td>in Field </td><td rowspan="2" valign="top">
+              <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.searchinstitute.infield")%> </td><td rowspan="2" valign="top">
                       <select name="search_by" onChange="fun()" id="search_by" size="1">
-<option value="institute_name">Institute Name</option>
-<option value="library_name">Library Name</option>
-<option value="library_id">Library Id</option>
-<option value="city">City</option>
+<option value="institute_name"><%=resource.getString("institutename")%></option>
+<option value="library_id"><%=resource.getString("instituteid")%></option>
+<option value="admin_email">Email</option>
+<option value="city"><%=resource.getString("city")%></option>
 
 
 </select>
@@ -72,15 +121,14 @@ document.Form1.submit();
      </td>
 
               </tr></table></td></tr>
-  <tr class="header"><td align="left" colspan="2">Sort By</td></tr>
+  <tr bgcolor="#7697BC" ><td dir="<%=rtl%>" align="left" colspan="2"><font color="white"><b><%=resource.getString("login.searchinstitute.sortby")%></b></font></td></tr>
    <tr style="background-color:#e0e8f5;">
        <td align="left" colspan="2">
            <table>
-                           <tr><td>Field</td><td><select name="sort_by" id="sort_by" size="1" onChange="fun()" id="">
-<option value="registration_id">Registeration Id</option>
-<option  value="library_name">Library Name</option>
-<option value="institute_name">Institute Name</option>
-<option value="city">City</option>
+                           <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.searchinstitute.field")%></td><td><select name="sort_by" id="sort_by" size="1" onChange="fun()" id="">
+<option selected value="institute_name"><%=resource.getString("institutename")%></option>
+<option value="city"><%=resource.getString("city")%></option>
+<option value="registration_id"><%=resource.getString("registrationid")%></option>
 </select></td>
                            </tr></table>
 
@@ -88,7 +136,7 @@ document.Form1.submit();
       </td>
 
   </tr>
-  
+  <tr><td><IFRAME  name="f1" src="#" frameborder=0  id="f1" width="100%" height="700px" ></IFRAME></td></tr>
      
 
        </table>
@@ -106,7 +154,7 @@ document.Form1.submit();
 
 </form>
 
-    <IFRAME  name="f1" src="#" frameborder=0  id="f1" width="100%" height="700px" ></IFRAME>
+    
 
 </body>
 </html>

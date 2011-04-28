@@ -6,7 +6,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
 <%@page  import="java.util.*,java.io.*,java.net.*"%>
-<%@page import="java.sql.ResultSet"%>
+
 <html><head>
    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="Faraz Hasan" content="MCA,AMU">
@@ -26,7 +26,120 @@ body
 	    font-weight: normal;}
      .item{ padding-left: 10px;}
 </style>
-<link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
+<script language="javascript" type="text/javascript">
+/*
+* Returns an new XMLHttpRequest object, or false if the browser
+* doesn't support it
+*/
+var availableSelectList;
+function newXMLHttpRequest() {
+var xmlreq = false;
+// Create XMLHttpRequest object in non-Microsoft browsers
+if (window.XMLHttpRequest) {
+xmlreq = new XMLHttpRequest();
+} else if (window.ActiveXObject) {
+try {
+// Try to create XMLHttpRequest in later versions
+// of Internet Explorer
+xmlreq = new ActiveXObject("Msxml2.XMLHTTP");
+} catch (e1) {
+// Failed to create required ActiveXObject
+try {
+// Try version supported by older versions
+// of Internet Explorer
+xmlreq = new ActiveXObject("Microsoft.XMLHTTP");
+} catch (e2) {
+// Unable to create an XMLHttpRequest by any means
+xmlreq = false;
+}
+}
+}
+return xmlreq;
+}
+/*
+* Returns a function that waits for the specified XMLHttpRequest
+* to complete, then passes it XML response to the given handler function.
+* req - The XMLHttpRequest whose state is changing
+* responseXmlHandler - Function to pass the XML response to
+*/
+function getReadyStateHandler(req, responseXmlHandler) {
+// Return an anonymous function that listens to the XMLHttpRequest instance
+return function () {
+// If the request's status is "complete"
+if (req.readyState == 4) {
+// Check that we received a successful response from the server
+if (req.status == 200) {
+// Pass the XML payload of the response to the handler function.
+responseXmlHandler(req.responseXML);
+} else {
+// An HTTP problem has occurred
+alert("HTTP error "+req.status+": "+req.statusText);
+}
+}
+}
+}
+function search() {
+
+    var keyValue = document.getElementById('CMBLib').options[document.getElementById('CMBLib').selectedIndex].value;
+
+if (keyValue=="all")
+    {
+
+
+               document.getElementById('CMBLib').focus();
+               document.getElementById('SubLibrary').options.length = 0;
+                newOpt = document.getElementById('SubLibrary').appendChild(document.createElement('option'));
+                newOpt.value = "all";
+                newOpt.text = "All";
+
+
+		return false;
+	}
+else
+    {
+    keyValue = keyValue.replace(/^\s*|\s*$/g,"");
+if (keyValue.length >= 1)
+{
+
+var req = newXMLHttpRequest();
+
+req.onreadystatechange = getReadyStateHandler(req, update);
+
+req.open("POST","<%=request.getContextPath()%>/sublibrary.do", true);
+
+req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+req.send("getSubLibrary_Id="+keyValue);
+
+
+}
+return true;
+}
+}
+
+function update(cartXML)
+{
+var depts = cartXML.getElementsByTagName("sublibrary_ids")[0];
+var em = depts.getElementsByTagName("sublibrary_id");
+var em1 = depts.getElementsByTagName("sublibrary_name");
+
+        var newOpt =document.getElementById('SubLibrary').appendChild(document.createElement('option'));
+        document.getElementById('SubLibrary').options.length = 0;
+
+for (var i = 0; i < em.length ; i++)
+{
+var ndValue = em[i].firstChild.nodeValue;
+var ndValue1=em1[i].firstChild.nodeValue;
+newOpt = document.getElementById('SubLibrary').appendChild(document.createElement('option'));
+newOpt.value = ndValue;
+newOpt.text = ndValue1;
+
+
+}
+
+}
+
+</script>
 <script language="javascript">
 function fun()
 {
@@ -37,19 +150,25 @@ document.Form1.submit();*/
 }
 function funcSearch()
 {
-    document.Form1.action="SearchByIsbn.do";
-   document.Form1.method="post";
-    document.Form1.submit();
+    document.getElementById("FORM1").action="SearchByIsbn.do";
+    document.getElementById("Form1").method="post";
+    document.getElementById("Form1").submit();
 }
 </script>
 <%!
     Locale locale=null;
     String locale1="en";
     String rtl="ltr";
-    boolean page=true;
+    String align="left";
 %>
 <%
+  String lib_id = (String)session.getAttribute("library_id");
+  String sublib_id = (String)session.getAttribute("memsublib");
+        if(sublib_id==null)sublib_id= (String)session.getAttribute("sublibrary_id");
 try{
+    List libRs = (List)session.getAttribute("libRs");
+    List sublib = (List)session.getAttribute("sublib");
+      
 locale1=(String)session.getAttribute("locale");
     if(session.getAttribute("locale")!=null)
     {
@@ -59,20 +178,20 @@ locale1=(String)session.getAttribute("locale");
     else locale1="en";
 }catch(Exception e){locale1="en";}
      locale = new Locale(locale1);
-    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;}
-    else{ rtl="RTL";page=false;}
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";}
+    else{ rtl="RTL";align="right";}
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
     %>
 
 
 </head><body>
-    <%if(page.equals(true)){%>
-    <form method="post" action="SearchByIsbn.do" target="f1" name="Form1">
-        <table align="left" width="1200x" height="400px" class="datagrid"  style="border:solid 1px #e0e8f5;">
+   <%-- <%if(page.equals(true)){%>--%>
+    <html:form method="post" action="/OPAC/SearchByIsbn" target="f1" styleId="Form1">
+        <table align="<%=align%>" dir="<%=rtl%>" width="1200x" height="400px" class="datagrid"  style="border:solid 1px #e0e8f5;">
 
 
-  <tr class="header"><td  width="800px"  height="28px" align="center" colspan="2">
+  <tr class="header" dir="<%=rtl%>"><td dir="<%=rtl%>" width="800px"  height="28px" align="center" colspan="2">
 
 
 		ISBN Search
@@ -81,62 +200,44 @@ locale1=(String)session.getAttribute("locale");
 
 
         </td></tr>
-   <tr style="background-color:#e0e8f5;">
-       <td width="800px" rowspan="2" >
-          <table class="datagrid">
+   <tr style="background-color:#e0e8f5;" dir="<%=rtl%>">
+       <td width="800px" rowspan="2" dir="<%=rtl%>">
+          <table class="datagrid" dir="<%=rtl%>">
               <tr><td ><%=resource.getString("opac.isbn.enterisbn")%></td><td>
-                      <input id="TXTKEY"  name="TXTKEY" type="text">
-<input id="TXTPAGE" value="isbn"  name="TXTPAGE" type="hidden">
+                      <input id="TXTKEY" dir="<%=rtl%>" name="TXTKEY" type="text">
+<input id="TXTPAGE" value="isbn"  name="TXTPAGE" dir="<%=rtl%>" type="hidden">
 
 
-                  </td></tr>
+              
+              </tr>
 
 
 
 
           </table>
        </td>
-       <td class="header">
+       <td class="header" dir="<%=rtl%>">
            Restricted By
 
        </td>
         
     </tr>
-    <tr style="background-color:#e0e8f5;">
-        <td    align="left" colspan="2">
-          <table class="datagrid">
-              <tr><td>in Library ID </td><td  valign="top">
- 
-<select name="CMBLib" onchange="funcSearch()" size="1" id="CMBLib">
-    <%
-        ResultSet rs = (ResultSet)session.getAttribute("libRs");
-        String lib_id = (String)session.getAttribute("library_id");
+    <tr style="background-color:#e0e8f5;" dir="<%=rtl%>">
+        <td    align="left" colspan="1" dir="<%=rtl%>">
+          <table class="datagrid" dir="<%=rtl%>">
+              <tr >
+                  <td dir="<%=rtl%>" align="<%=align%>">Library &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-        rs.beforeFirst();
+<html:select property="CMBLib" dir="<%=rtl%>"  tabindex="3"  styleId="CMBLib" value="<%=lib_id%>" onchange="search()">
+    <html:option value="all">All</html:option>
+    <html:options collection="libRs" property="libraryId" labelProperty="libraryName"/>
+ </html:select>
 
-    if(lib_id==null)
-    {%>
-
-    <option selected value="all">ALL</option>
-    <%}
-    else
-    {%>
-    <option selected value="<%=lib_id%>"><%=lib_id.toUpperCase()%></option>
-    <option value="all">ALL</option>
-
-    <%
-    }
-    while (rs.next())
-            {
-    %>
-    <option value="<%= rs.getString(1) %>"><%=rs.getString(1).toUpperCase()%></option>
-    <% } %>
-</select>
-
-
-
-     </td>
-
+     </td></tr><tr><td  dir="<%=rtl%>">Sub Library&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <html:select property="CMBSUBLib" value="<%=sublib_id%>" styleId="SubLibrary" >
+                              <html:option value="all">All</html:option>
+                              <html:options collection="sublib" property="id.sublibraryId" labelProperty="sublibName" />
+                       </html:select></td>
               </tr></table></td>
 
     </tr>
@@ -144,13 +245,13 @@ locale1=(String)session.getAttribute("locale");
     <tr><td>
 
 
-<input type="submit" id="Button1" class="btn" name="" value="<%=resource.getString("opac.simplesearch.find")%>">
-<input type="reset" id="Button2" name="" class="btn" value="<%=resource.getString("opac.simplesearch.clear")%>">
+<input type="submit" id="Button1" dir="<%=rtl%>" class="btn" name="" value="<%=resource.getString("opac.simplesearch.find")%>">
+<input type="reset" id="Button2" name="" dir="<%=rtl%>" class="btn" value="<%=resource.getString("opac.simplesearch.clear")%>">
 
 
 
       </td></tr>
-    <tr style="background-color:#e0e8f5;"><td  height="400px" valign="top" colspan="2" >
+    <tr style="background-color:#e0e8f5;" dir="<%=rtl%>"><td  dir="<%=rtl%>" height="400px" valign="top" colspan="2" >
 
              <IFRAME  name="f1" style="background-color:#e0e8f5;" src="#" frameborder=0 height="400px" width="1200px" scrolling="no"  id="f1"></IFRAME>
 
@@ -164,110 +265,8 @@ locale1=(String)session.getAttribute("locale");
 
 
 
-    </form>
-<%}else{%>
- <form method="post" action="SearchByIsbn.do" target="f1" name="Form1">
-   <table align="left" width="1200x" class="datagrid" height="400px"  style="border:solid 1px #e0e8f5;">
+    </html:form>
 
-
-  <tr class="header"><td  width="800px"  height="28px" align="center" colspan="2">
-
-
-		ISBN Search
-
-
-
-
-        </td></tr>
-   <tr style="background-color:#e0e8f5;">
-       <td class="header">
-           Restricted By
-
-       </td>
-       <td width="800px" rowspan="2" align="right">
-          <table class="datagrid">
-              <tr><td>
-                    <input id="TXTKEY"  name="TXTKEY" type="text">
-<input id="TXTPAGE" value="isbn"  name="TXTPAGE" type="hidden">
-
-
-
-                  </td><td><%=resource.getString("opac.isbn.enterisbn")%></td></tr>
-
-
-
-
-          </table>
-       </td>
-
-    </tr>
-    <tr style="background-color:#e0e8f5;" >
-          <td    align="right">
-          <table class="datagrid">
-              <tr><td  valign="top">
-        <select name="CMBLib" onchange="funcSearch()" size="1" id="CMBLib">
-    <%
-        ResultSet rs = (ResultSet)session.getAttribute("libRs");
-        String lib_id = (String)session.getAttribute("library_id");
-
-        rs.beforeFirst();
-
-    if(lib_id==null)
-    {%>
-
-    <option selected value="all">ALL</option>
-    <%}
-    else
-    {%>
-    <option selected value="<%=lib_id%>"><%=lib_id.toUpperCase()%></option>
-    <option value="all">ALL</option>
-
-    <%
-    }
-    while (rs.next())
-            {
-    %>
-    <option value="<%= rs.getString(1) %>"><%=rs.getString(1).toUpperCase()%></option>
-    <% } %>
-</select>
-
-
-
-     </td>
-
-           <td>Library</td>   </tr></table></td>
-
-    </tr>
-
-    <tr><td align="right" colspan="2">
-
-<input type="reset" id="Button2" class="btn" name="" value="<%=resource.getString("opac.simplesearch.clear")%>">
-<input type="submit" id="Button1" class="btn" name="" value="<%=resource.getString("opac.simplesearch.find")%>">
-
-
-
-<script>
-    function back()
-    {
-        window.location="/LibMS-Struts/OPAC/OPACmain.jsp";
-
-    }
-    </script>
-      </td></tr>
-    <tr style="background-color:#e0e8f5;"><td  height="400px" valign="top" colspan="2" >
-
-             <IFRAME  name="f1" style="background-color:#e0e8f5;" src="#" frameborder=0 height="400px" width="1200px" scrolling="no"  id="f1"></IFRAME>
-
-
-      </td></tr>
-
-
-
-
-        </table>
- </form>
-
-<%}%>
 
     </body>
 

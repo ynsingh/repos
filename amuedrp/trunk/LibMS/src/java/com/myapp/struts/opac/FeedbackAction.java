@@ -4,9 +4,8 @@
  */
 
 package com.myapp.struts.opac;
-import  com.myapp.struts.*;
-import com.myapp.struts.MyExecuteQueryAction;
-import java.sql.ResultSet;
+import  com.myapp.struts.hbm.*;
+import com.myapp.struts.opacDAO.NewDemandDAO;
 import java.util.*;
 import javax.servlet.http.*;
 import javax.servlet.http.HttpServletResponse;
@@ -22,48 +21,52 @@ public class FeedbackAction extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
-        String name, email, comments,cardno, date ,library_id;
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-    
-     */
+    String name, email, comments,cardno, date ,library_id,sublibrary_id;
+    boolean result;
+    Feedback f=new Feedback();
+    FeedbackId fid=new FeedbackId();
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
-        FeedbackActionForm myForm = (FeedbackActionForm)form;
+    FeedbackActionForm myForm = (FeedbackActionForm)form;
 
-HttpSession session=request.getSession();
+    HttpSession session=request.getSession();
 
     Calendar cal = new GregorianCalendar();
     int month = cal.get(Calendar.MONTH);
     int year = cal.get(Calendar.YEAR);
     int day = cal.get(Calendar.DAY_OF_MONTH);
     date=day+ "/"+ (month+1) + "/"+year;
-
-    cardno=myForm.getCardno();
     name=myForm.getName();
     email=myForm.getEmail();
     comments=myForm.getComments();
-library_id=myForm.getCMBLib();
-System.out.println(library_id);
+    library_id=myForm.getCMBLib();
+    sublibrary_id=myForm.getCMBSUBLib();
 
-    String queryString = "INSERT INTO feedback" +
-        "(cardno,name,email,comments,date,library_id) VALUES ('"+ cardno +"','"+ name +"','"+ email +"','"+ comments +"','"+ date +"','"+library_id+"')";
-
-    int no = MyQueryResult.getMyExecuteUpdate(queryString);
-        if(no>0)
+    fid.setLibraryId(library_id);
+    fid.setSublibraryId(sublibrary_id);
+    f.setId(fid);
+    f.setName(name);
+    f.setEmail(email);
+    f.setComments(comments);
+    f.setDate(date);
+     result=NewDemandDAO.insert2(f);
+        if(result==true)
         {
-            request.setAttribute("msg", "Your Feedback is sent Successfully to Library..");
+            request.setAttribute("msg", "Record Inserted Successfully");
+            return mapping.findForward("success");
+
         }
-            return mapping.findForward(SUCCESS);
-        
+        else
+        {
+            request.setAttribute("msg", "Record Not Inserted");
+            return mapping.findForward("success");
+        }
+
+
+           
         
     }
 }

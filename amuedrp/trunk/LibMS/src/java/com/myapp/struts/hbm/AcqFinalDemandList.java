@@ -1,5 +1,5 @@
 package com.myapp.struts.hbm;
-// Generated Jan 21, 2011 8:43:24 PM by Hibernate Tools 3.2.1.GA
+// Generated Mar 25, 2011 8:38:07 PM by Hibernate Tools 3.2.1.GA
 
 
 
@@ -10,7 +10,6 @@ public class AcqFinalDemandList  implements java.io.Serializable {
 
 
      private AcqFinalDemandListId id;
-     private Library library;
      private String listId;
      private String isbn;
      private String title;
@@ -27,13 +26,11 @@ public class AcqFinalDemandList  implements java.io.Serializable {
     }
 
 	
-    public AcqFinalDemandList(AcqFinalDemandListId id, Library library) {
+    public AcqFinalDemandList(AcqFinalDemandListId id) {
         this.id = id;
-        this.library = library;
     }
-    public AcqFinalDemandList(AcqFinalDemandListId id, Library library, String listId, String isbn, String title, String subtitle, String author, String price, String totalAmount, String volume, String edition, String publisherId, String bindId) {
+    public AcqFinalDemandList(AcqFinalDemandListId id, String listId, String isbn, String title, String subtitle, String author, String price, String totalAmount, String volume, String edition, String publisherId, String bindId) {
        this.id = id;
-       this.library = library;
        this.listId = listId;
        this.isbn = isbn;
        this.title = title;
@@ -53,13 +50,6 @@ public class AcqFinalDemandList  implements java.io.Serializable {
     
     public void setId(AcqFinalDemandListId id) {
         this.id = id;
-    }
-    public Library getLibrary() {
-        return this.library;
-    }
-    
-    public void setLibrary(Library library) {
-        this.library = library;
     }
     public String getListId() {
         return this.listId;

@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 2, 2011 12:00:19 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="com.myapp.struts.hbm.DocumentCategory" table="document_category" catalog="libms">
+        <composite-id name="id" class="com.myapp.struts.hbm.DocumentCategoryId">
+            <key-property name="documentCategoryId" type="string">
+                <column name="document_category_id" length="20" />
+            </key-property>
+            <key-property name="libraryId" type="string">
+                <column name="library_id" length="20" />
+            </key-property>
+            <key-property name="sublibraryId" type="string">
+                <column name="sublibrary_id" length="20" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="library" class="com.myapp.struts.hbm.Library" update="false" insert="false" fetch="select">
+            <column name="library_id" length="20" not-null="true" unique="true" />
+        </many-to-one>
+        <property name="documentCategoryName" type="string">
+            <column name="document_category_name" length="30" />
+        </property>
+        <property name="issueCheck" type="string">
+            <column name="issue_check" length="20" />
+        </property>
+    </class>
+</hibernate-mapping>

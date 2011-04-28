@@ -6,7 +6,7 @@ public class StaffDoc {
         protected String staff_id;
         protected String first_name;
 	protected String last_name;
-	protected String email_id;
+	protected String sublibName;
 	
 
      public String getStaff_id() { return staff_id;}
@@ -20,8 +20,8 @@ public class StaffDoc {
      public void setlast_name(String last_name) {this.last_name = last_name;}
 
 
-     public String getemail_id() { return email_id;}
-     public void setemail_id(String email_id) {this.email_id = email_id;}
+     public String getSublibName() { return sublibName;}
+     public void setSublibName(String sublib) {this.sublibName = sublib;}
 
         
 			} //End of Class

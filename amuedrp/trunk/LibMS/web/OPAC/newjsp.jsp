@@ -1,4 +1,4 @@
-<%@ page import="java.sql.*" %>
+<%@ page import="com.myapp.struts.hbm.*,java.util.*,com.myapp.struts.systemsetupDAO.DocumentCategoryDAO;" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -25,34 +25,53 @@
 
 
 
-<%! String title,author,publ_pl,pub_name,pub_yr,pages,index,callno,phy_width,loc,pubyr,copy,vol,ed,publ,place,isbn,accno,subtitle,subject,id,lib_id;
-    ResultSet rs=null;
+<%! String title,author,publ_pl,pub_name,pub_yr,pages,index,callno,phy_width,loc,pubyr,copy,vol,ed,publ,place,isbn,accno,subtitle,subject,id,lib_id,status,location,booktype;
+   DocumentDetails dd;
     
 %>
 <%
 
-
-
-    
-      rs=(ResultSet) request.getAttribute("MyResultSet");
-  
-        if(rs!=null){
-        while(rs.next())
-          { 
-            title=rs.getString(6);
-            subtitle=rs.getString(7);
-            author=rs.getString(8);
-            publ_pl=rs.getString(11);
-            pub_name=rs.getString(10);
-            pub_yr=rs.getString(12);
-            pages=rs.getString("no_of_pages");
-            index=rs.getString("index_no");
-            callno=rs.getString("call_no");
-            isbn=rs.getString("isbn10");
-            ed=rs.getString("edition");
-            lib_id = rs.getString("library_id");
-            phy_width=rs.getString("physical_width");
- %>
+dd = (DocumentDetails)request.getAttribute("documentDetail");
+        if(dd!=null){
+            
+           booktype=dd.getBookType();
+            title=dd.getTitle();
+            subtitle=dd.getSubtitle();
+            author=dd.getMainEntry();
+            publ_pl=dd.getPublicationPlace();
+            pub_name=dd.getPublisherName();
+            pub_yr=dd.getPublishingYear();
+            pages=dd.getNoOfPages();
+            index=dd.getIndexNo();
+            callno=dd.getCallNo();
+            isbn=dd.getIsbn10();
+            ed=dd.getEdition();
+            location=dd.getLocation();
+            lib_id = dd.getId().getLibraryId();
+            phy_width=dd.getPhysicalWidth();
+            status = dd.getStatus();
+            accno = dd.getAccessionNo();
+            String sublib_id = (String)dd.getId().getSublibraryId();
+            if(title==null)title="";
+            if(subtitle==null)subtitle="";
+            if(author==null)author="";
+            if(publ_pl==null)publ_pl="";
+            if(pub_name==null)pub_name="";
+            if(pub_yr==null)pub_yr="";
+            if(pages==null)pages="";
+            if(index==null)index="";
+            if(callno==null)callno="";
+            if(isbn==null)isbn="";
+            if(ed==null)ed="";
+            if(lib_id==null)lib_id="";
+            if(phy_width==null)phy_width="";
+            if(status==null)status="";
+            if(accno==null)accno="";
+            DocumentCategory docc = (DocumentCategory)DocumentCategoryDAO.searchDocumentCategory(lib_id, sublib_id, booktype);
+            String issuetype ="";
+            if(docc!=null)
+                issuetype=docc.getIssueCheck();
+ %>             
 
 
 <button  onmousedown="fontResize('-5')">Font Size -&nbsp;-</button><button  onmousedown="fontResize('+5')">Font Size ++</button>
@@ -98,19 +117,33 @@
         <TD  colspan=2><%=callno%></TD>
     </TR>
     <TR>
+        <TD NOWRAP valign='top'  width=10%>Accession No: </TD>
+        <TD valign='top' >&nbsp; </TD>
+        <TD  colspan=2><%=accno%></TD>
+    </TR>
+    <TR>
         <TD NOWRAP valign='top'  width=10%>ISBN:</TD>
         <TD valign='top' >&nbsp; </TD>
         <TD  colspan=2><%=isbn%></TD>
     </TR>
-    <TR><TD NOWRAP valign='top'  width="10%">Library Id:</TD>
+    <TR>
+        <TD NOWRAP valign='top'  width=10%>Status:</TD>
         <TD valign='top' >&nbsp; </TD>
-        <TD  colspan=2><%=lib_id%><br></TD>
+        <TD  colspan=2><%=status%></TD>
     </TR>
-    <tr><td colspan="2"><a href="#">View Detail</a></td></tr>
+    <TR>
+        <TD NOWRAP valign='top'  width=10%>Issue Type:</TD>
+        <TD valign='top' >&nbsp; </TD>
+        <TD  colspan=2><%=issuetype%></TD>
+    </TR>
+    <TR><TD NOWRAP valign='top'  width="10%">Location:</TD>
+        <TD valign='top' >&nbsp; </TD>
+        <TD  colspan=2><%=location%><br></TD>
+    </TR>
+    <tr><td colspan="2"><a href="#">View Detail</a></td>
+        <%if(status.equalsIgnoreCase("available")&& issuetype.equals("Issuable")){%><td colspan="2"><a href="<%=request.getContextPath()%>/OPAC/checkoutRequest.do?docId=<%=dd.getId().getDocumentId()%>&libId=<%=dd.getId().getLibraryId()%>&sublibId=<%=dd.getId().getSublibraryId()%>">Request for Check Out</a></td><%}%></tr>
 </TABLE><br><br>
 <%       }
-
-}
 %>
 
 

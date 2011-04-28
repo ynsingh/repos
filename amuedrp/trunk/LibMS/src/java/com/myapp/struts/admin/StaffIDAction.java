@@ -35,7 +35,7 @@ public class StaffIDAction extends org.apache.struts.action.Action {
          EmailDAO emailDAO = new EmailDAO();
         String searchText = request.getParameter("getEmail_Id");
         String library_id = (String)session.getAttribute("library_id");
-        String emails = emailDAO.getStaffID(searchText,library_id);
+        String emails ="";
         if (!emails.equals(""))
         {
         response.setContentType("application/xml");

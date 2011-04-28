@@ -1,5 +1,5 @@
 package com.myapp.struts.hbm;
-// Generated Jan 21, 2011 8:43:24 PM by Hibernate Tools 3.2.1.GA
+// Generated Mar 11, 2011 5:57:01 PM by Hibernate Tools 3.2.1.GA
 
 
 
@@ -9,17 +9,26 @@ package com.myapp.struts.hbm;
 public class DocumentDetailsId  implements java.io.Serializable {
 
 
-     private String libraryId;
      private int documentId;
+     private String libraryId;
+     private String sublibraryId;
 
     public DocumentDetailsId() {
     }
 
-    public DocumentDetailsId(String libraryId, int documentId) {
-       this.libraryId = libraryId;
+    public DocumentDetailsId(int documentId, String libraryId, String sublibraryId) {
        this.documentId = documentId;
+       this.libraryId = libraryId;
+       this.sublibraryId = sublibraryId;
     }
    
+    public int getDocumentId() {
+        return this.documentId;
+    }
+    
+    public void setDocumentId(int documentId) {
+        this.documentId = documentId;
+    }
     public String getLibraryId() {
         return this.libraryId;
     }
@@ -27,12 +36,12 @@ public class DocumentDetailsId  implements java.io.Serializable {
     public void setLibraryId(String libraryId) {
         this.libraryId = libraryId;
     }
-    public int getDocumentId() {
-        return this.documentId;
+    public String getSublibraryId() {
+        return this.sublibraryId;
     }
     
-    public void setDocumentId(int documentId) {
-        this.documentId = documentId;
+    public void setSublibraryId(String sublibraryId) {
+        this.sublibraryId = sublibraryId;
     }
 
 
@@ -42,15 +51,17 @@ public class DocumentDetailsId  implements java.io.Serializable {
 		 if ( !(other instanceof DocumentDetailsId) ) return false;
 		 DocumentDetailsId castOther = ( DocumentDetailsId ) other; 
          
-		 return ( (this.getLibraryId()==castOther.getLibraryId()) || ( this.getLibraryId()!=null && castOther.getLibraryId()!=null && this.getLibraryId().equals(castOther.getLibraryId()) ) )
- && (this.getDocumentId()==castOther.getDocumentId());
+		 return (this.getDocumentId()==castOther.getDocumentId())
+ && ( (this.getLibraryId()==castOther.getLibraryId()) || ( this.getLibraryId()!=null && castOther.getLibraryId()!=null && this.getLibraryId().equals(castOther.getLibraryId()) ) )
+ && ( (this.getSublibraryId()==castOther.getSublibraryId()) || ( this.getSublibraryId()!=null && castOther.getSublibraryId()!=null && this.getSublibraryId().equals(castOther.getSublibraryId()) ) );
    }
    
    public int hashCode() {
          int result = 17;
          
-         result = 37 * result + ( getLibraryId() == null ? 0 : this.getLibraryId().hashCode() );
          result = 37 * result + this.getDocumentId();
+         result = 37 * result + ( getLibraryId() == null ? 0 : this.getLibraryId().hashCode() );
+         result = 37 * result + ( getSublibraryId() == null ? 0 : this.getSublibraryId().hashCode() );
          return result;
    }   
 

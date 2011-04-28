@@ -42,55 +42,197 @@
             </field>
         </form>
 
+<!--Circulation Validation Form-->
+<form name="CirculationMemberActionForm">
+         <field  property="TXTMEMID"   depends="required">
+                	<arg key="CirculationMemberActionForm.TXTMEMID" />
+
+            </field>
+             <field  property="TXTFNAME"   depends="required">
+                	<arg key="CirculationMemberActionForm.TXTFNAME" />
+
+            </field>
+             <field  property="TXTLNAME"   depends="required">
+                	<arg key="CirculationMemberActionForm.TXTLNAME" />
+
+            </field>
+             <field  property="TXTEMAILID"   depends="required">
+                	<arg key="CirculationMemberActionForm.TXTEMAILID" />
+
+            </field>
+             <field  property="TXTADD1"   depends="required">
+                	<arg key="CirculationMemberActionForm.TXTADD1" />
+
+            </field>
+             <field  property="TXTCITY1"   depends="required">
+                	<arg key="CirculationMemberActionForm.TXTCITY1" />
+
+            </field>
+             <field  property="TXTSTATE1"   depends="required">
+                	<arg key="CirculationMemberActionForm.TXTSTATE1" />
+
+            </field>
+             <field  property="TXTCOUNTRY1"   depends="required">
+                	<arg key="CirculationMemberActionForm.TXTCOUNTRY1" />
+
+            </field>
+             <field  property="TXTPH1"   depends="required">
+                	<arg key="CirculationMemberActionForm.TXTPH1" />
+
+
+            </field>
+             <field  property="MEMCAT"   depends="select">
+                	<arg key="CirculationMemberActionForm.MEMCAT" />
+
+            </field>
+             <field  property="MEMSUBCAT"   depends="select">
+                	<arg key="CirculationMemberActionForm.MEMSUBCAT" />
+
+            </field>
+            <field  property="TXTREG_DATE"   depends="required">
+                	<arg key="CirculationMemberActionForm.TXTREG_DATE" />
+
+            </field>
+            <field  property="TXTEXP_DATE"   depends="required">
+                	<arg key="CirculationMemberActionForm.TXTEXP_DATE" />
+
+            </field>
+
+
+
+        </form>
+
+
+
+
+        <form name="CirculationMemberRegActionForm">
+         <field  property="TXTMEMID"   depends="required">
+                	<arg key="CirculationMemberRegActionForm.TXTMEMID" />
+
+            </field>
+         </form>
+
+          <!-- opac newmemberregistration Circulation Mapping for Validation.-->
+
+           <form name="OpacNewMemberActionForm">
+         <field  property="TXTMEMID"   depends="required">
+                	<arg key="OpacNewMemberActionForm.TXTMEMID" />
+
+            </field>
+             <field  property="TXTFNAME"   depends="required">
+                	<arg key="OpacNewMemberActionForm.TXTFNAME" />
+
+            </field>
+             <field  property="TXTLNAME"   depends="required">
+                	<arg key="OpacNewMemberActionForm.TXTLNAME" />
+
+            </field>
+             <field  property="TXTEMAILID"   depends="required">
+                	<arg key="OpacNewMemberActionForm.TXTEMAILID" />
+
+            </field>
+             <field  property="TXTADD1"   depends="required">
+                	<arg key="OpacNewMemberActionForm.TXTADD1" />
+
+            </field>
+             <field  property="TXTCITY1"   depends="required">
+                	<arg key="OpacNewMemberActionForm.TXTCITY1" />
+
+            </field>
+             <field  property="TXTSTATE1"   depends="required">
+                	<arg key="OpacNewMemberActionForm.TXTSTATE1" />
+
+            </field>
+             <field  property="TXTCOUNTRY1"   depends="required">
+                	<arg key="OpacNewMemberActionForm.TXTCOUNTRY1" />
+
+            </field>
+             <field  property="TXTPH1"   depends="required">
+                	<arg key="OpacNewMemberActionForm.TXTPH1" />
+
+
+            </field>
+             <field  property="MEMCAT"   depends="select">
+                	<arg key="OpacNewMemberActionForm.MEMCAT" />
+
+            </field>
+             <field  property="MEMSUBCAT"   depends="select">
+                	<arg key="OpacNewMemberActionForm.MEMSUBCAT" />
+
+            </field>
+
+            
+
+            
+
+
+        </form>
+
 
  
 
 
         
-         <form name="AdminRegistrationActionForm">
-       <!--
-        <field  property="abbreviated_name"   depends="required">
-                	<arg key="AdminRegistrationActionForm.abbreviated_name" />
-
-            </field>
-
-        <field  property="land_line_no"   depends="required,mask">
-                	<arg key="AdminRegistrationActionForm.land_line_no" />
+         <form name="DepartmentalAdminRegistrationActionForm">
+         
+            <field  property="mobile_no"   depends="required,mask">
+                	<arg key="DepartmentalAdminRegistrationActionForm.mobile_no" />
                         <var>
                         <var-name>mask</var-name>
                         <var-value>^[0-9]*$</var-value>
                     </var>
+                       
 
             </field>
-
-        <field  property="institute_domain"   depends="required">
-                	<arg key="AdminRegistrationActionForm.institute_domain" />
-
-            </field>
-
-            <field  property="admin_designation"   depends="required">
-                	<arg key="AdminRegistrationActionForm.admin_designation" />
+           
+          
+           
+            <field  property="admin_fname"   depends="required">
+                	<arg key="DepartmentalAdminRegistrationActionForm.admin_fname" />
 
             </field>
-            <field  property="courtesy"   depends="required">
-                	<arg key="AdminRegistrationActionForm.courtesy" />
+             <field  property="admin_lname"   depends="required">
+                	<arg key="DepartmentalAdminRegistrationActionForm.admin_lname" />
 
             </field>
-            <field  property="pin"   depends="required">
-                	<arg key="AdminRegistrationActionForm.pin" />
+             
+             <field  property="admin_email"   depends="required,email">
+                	<arg key="DepartmentalAdminRegistrationActionForm.admin_email" />
+                        <arg key="DepartmentalAdminRegistrationActionForm.admin_email" />
 
             </field>
-             <field  property="institute_website"   depends="required">
-                	<arg key="AdminRegistrationActionForm.institute_website" />
+             <field
+                property="admin_password" depends="required">
+                    <arg key="DepartmentalAdminRegistrationActionForm.admin_password"/>
+                    
+            </field>
+            
+             <field  property="library_name"   depends="required">
+                	<arg key="DepartmentalAdminRegistrationActionForm.library_name" />
 
             </field>
+            
+            <field property="gender" depends="required">
 
-       -->
+                <arg key="DepartmentalAdminRegistrationActionForm.gender" />
+
+         	
+	 </field>
+          <field property="dept_name" depends="required">
+
+                <arg key="DepartmentalAdminRegistrationActionForm.dept_name" />
+
+
+	 </field>
+	
+        </form>
+     <form name="AdminRegistrationActionForm">
+      
        <field  property="institute_name"   depends="required">
                 	<arg key="AdminRegistrationActionForm.institute_name" />
 
             </field>
-           
+
             <field  property="institute_address"   depends="required">
                 	<arg key="AdminRegistrationActionForm.institute_address" />
 
@@ -103,27 +245,24 @@
                 	<arg key="AdminRegistrationActionForm.state" />
 
             </field>
-            
+
             <field  property="country"   depends="required">
                 	<arg key="AdminRegistrationActionForm.country" />
 
             </field>
-           
+
             <field  property="mobile_no"   depends="required,mask">
                 	<arg key="AdminRegistrationActionForm.mobile_no" />
                         <var>
                         <var-name>mask</var-name>
                         <var-value>^[0-9]*$</var-value>
                     </var>
-                       
+
 
             </field>
-           
-            <field  property="type_of_institute"   depends="required">
-                	<arg key="AdminRegistrationActionForm.type_of_institute" />
 
-            </field>
-           
+            
+
             <field  property="admin_fname"   depends="required">
                 	<arg key="AdminRegistrationActionForm.admin_fname" />
 
@@ -132,38 +271,42 @@
                 	<arg key="AdminRegistrationActionForm.admin_lname" />
 
             </field>
-             
+
              <field  property="admin_email"   depends="required,email">
                 	<arg key="AdminRegistrationActionForm.admin_email" />
                         <arg key="AdminRegistrationActionForm.admin_email" />
 
             </field>
+             <field  property="login_id"   depends="required">
+                	<arg key="AdminRegistrationActionForm.login_id" />
+
+            </field>
              <field
                 property="admin_password" depends="required">
                     <arg key="AdminRegistrationActionForm.admin_password"/>
-                    
+
             </field>
-            
+
              <field  property="library_name"   depends="required">
                 	<arg key="AdminRegistrationActionForm.library_name" />
 
             </field>
-            
+
             <field property="gender" depends="required">
 
                 <arg key="AdminRegistrationActionForm.gender" />
 
-         	
-	 </field>
-	
-        </form>
 
+	 </field>
+
+        </form>
 
 <form name="NewMemberActionForm">
      <field property="CMBLib" depends="select">
                 <arg key="NewMemberActionForm.CMBLib" />
 	 </field>
-      
+
+
      <field property="CMBCAT" depends="select">
                 <arg key="NewMemberActionForm.CMBCAT" />
 	 </field>
@@ -194,7 +337,7 @@
 	 </field>
          <field property="TXTEMAIL" depends="required,email">
                 <arg key="NewMemberActionForm.TXTEMAIL" />
-                 <arg key="NewMemberActionForm.TXTEMAIL" />
+                 
 	 </field>
          <field property="TXTPH1" depends="required">
                 <arg key="NewMemberActionForm.TXTPH1" />
@@ -215,6 +358,7 @@
 
             <arg key="NewDemandActionForm.CMBCAT"/>
         </field>
+     
 
           <field property="TXTAUTHOR" depends="required">
 
@@ -237,7 +381,7 @@
 
             <arg key="ReservationRequetActionForm.CMBCAT"/>
         </field>
-
+ 
           <field property="TXTAUTHOR" depends="required">
 
             <arg key="ReservationRequetActionForm.TXTAUTHOR"/>
@@ -272,24 +416,24 @@
                 	<arg key="BibliographicDetailEntryActionForm.title" />
 
             </field>
-   <field  property="author_main"   depends="required">
-                	<arg key="BibliographicDetailEntryActionForm.author_main" />
+   <field  property="statement_responsibility"   depends="required">
+                	<arg key="BibliographicDetailEntryActionForm.statement_responsibility" />
 
             </field>
    <field  property="document_type"   depends="select">
                 	<arg key="BibliographicDetailEntryActionForm.document_type" />
 
             </field>
-   <field  property="isbn10"   depends="required">
-                	<arg key="BibliographicDetailEntryActionForm.isbn10" />
+   <field  property="book_type"   depends="select">
+                	<arg key="BibliographicDetailEntryActionForm.book_type" />
 
             </field>
    <field  property="call_no"   depends="required">
                 	<arg key="BibliographicDetailEntryActionForm.call_no" />
 
             </field>
-               <field property="publishing_year" depends="integer">
-                <arg key="BibliographicDetailEntryActionForm.publishing_year"/>
+               <field property="main_entry" depends="required">
+                <arg key="BibliographicDetailEntryActionForm.main_entry"/>
             </field>
 </form>
 

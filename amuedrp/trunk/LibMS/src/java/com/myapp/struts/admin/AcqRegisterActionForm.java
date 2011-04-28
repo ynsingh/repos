@@ -21,6 +21,7 @@ public class AcqRegisterActionForm extends org.apache.struts.action.ActionForm {
     private String button;
     private String library_id;
     private String staff_name;
+    private String sublibrary_id;
 
     
 
@@ -98,5 +99,19 @@ public class AcqRegisterActionForm extends org.apache.struts.action.ActionForm {
      */
     public void setStaff_name(String staff_name) {
         this.staff_name = staff_name;
+    }
+
+    /**
+     * @return the sublibrary_id
+     */
+    public String getSublibrary_id() {
+        return sublibrary_id;
+    }
+
+    /**
+     * @param sublibrary_id the sublibrary_id to set
+     */
+    public void setSublibrary_id(String sublibrary_id) {
+        this.sublibrary_id = sublibrary_id;
     }
 }

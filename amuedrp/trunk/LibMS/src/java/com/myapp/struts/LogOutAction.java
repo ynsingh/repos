@@ -5,7 +5,6 @@
 
 package com.myapp.struts;
 
-import  com.myapp.struts.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -51,9 +50,26 @@ public class LogOutAction extends org.apache.struts.action.Action {
             throws Exception
     {
 HttpSession session=request.getSession();
+String userid = (String)session.getAttribute("staff_id");
+if(userid==null){
+userid=(String)request.getParameter("user");
+}
+System.out.println("user_id="+userid);
+/*loginTempDAO logintempdao = new loginTempDAO();
+logintempdao.delete(user_id);
+*/
+
+session.removeAttribute("LoginActionForm");
+session.removeAttribute("library_id");
+session.removeAttribute("notices");
+session.removeAttribute("noticelibrary_id");
+session.removeAttribute("noticesublib");
 session.invalidate();
 
-           
-      return mapping.findForward("success");
+
+request.setAttribute("msg", "You have successfully Logged out.");
+
+
+return mapping.findForward("success");
     }
 }

@@ -1,4 +1,10 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+Devleoped By : Kedar Kumar
+Modified On  : 17-Feb 2011
+This Page is to Enter Staff Details
+-->
+
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
  <jsp:include page="header.jsp" flush="true" />
@@ -103,65 +109,6 @@ var ndValue = em[i].firstChild.nodeValue;
 availableSelectList.innerHTML += ndValue+"\n";
 }
 }
-
-</script>
-
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Staff Account Page</title>
-<link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
-
-</head>
-<body>
-       <html:form method="post" onsubmit="return check1()" action="/account1">
-       
-<div
-   style="  top:200px;
-   left:5px;
-   right:5px;
-      position: absolute;
-
-      visibility: show;">
-    <table width="400px" height="500px"  valign="top" align="center">
-        <tr><td   width="400px" height="400px" valign="top" style="" align="center">
-                <fieldset style="border:solid 1px brown;height:200px;padding-left: 5px">
-                    <legend><img src="/LibMS-Struts/images/StaffAccountLogin.png"></legend>
-                <table cellspacing="10px">
-
-                    <tr><td rowspan="5" class="btn">Enter Staff ID<br><br>
-                            <input type="text" id="staff_id" name="staff_id" onblur="search();" value=""/>
-                        <br>
-                        <div align="left" id="searchResult" class="err" style="border:#000000; "></div>
-                        </td><td width="200px" align="center"> <input type="submit" class="btn" id="Button1" name="button" value="Create Account"  style="width:150px"/></td></tr>
-
-                    
- <tr><td width="150px" align="center"><input type="submit" id="Button3" name="button" value="View Account" class="btn"  style="width:150px" /></td></tr>
- <tr><td width="150px" align="center"><input type="submit" id="Button4" name="button" value="Delete Account" class="btn"  style="width:150px"/></td></tr>
- <tr><td width="150px" align="center"><input type="submit" id="Button5" name="button" value="Update Account" class="btn"  style="width:150px"/></td></tr>
- <tr><td width="150px" align="center"><input type="submit" id="Button6" name="button" value="Back" class="btn" onclick="return quit()" style="width:150px"/></td></tr>
- 
-
-                </table>
-       
-</fieldset>
-
-    <input type="hidden" name="library_id" value="<%=library_id%>">
-   
-
-
-
-
-
-
-
-
-</td></tr></table>
-        </div>
-   
-</html:form>
-    </body>
-<script language="javascript" type="text/javascript">
   function check1()
 {
     if(document.getElementById('staff_id').value=="")
@@ -182,20 +129,86 @@ availableSelectList.innerHTML += ndValue+"\n";
   function quit()
   {
 
-      window.location="/LibMS-Struts/admin/main.jsp";
+      window.location="<%=request.getContextPath()%>/admin/main.jsp";
       return false;
   }
 
-    </script>
-      <%     if (msg1!=null){
+
+</script>
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>LibMS : Manage Staff Account</title>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
+ <link rel="stylesheet" href="<%=request.getContextPath()%>/css/formstyle.css"/>
+
+</head>
+<body>
+       <html:form method="post" onsubmit="return check1()" action="/account1">
+       
+<div
+   style="  top:200px;
+   left:5px;
+   right:5px;
+      position: absolute;
+
+      visibility: show;">
+     <table border="1" class="table" width="400px"  align="center">
+
+
+                <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">Manage Staff</td></tr>
+                <tr><td valign="top" align="center"> <br/>
+                <table cellspacing="10px">
+
+                    <tr><td rowspan="5" class="btn">Enter Staff ID<br><br>
+                            <input type="text" id="staff_id" name="staff_id" onblur="search();" value=""/>
+                        <br>
+                        <div align="left" id="searchResult" class="err" style="border:#000000; "></div>
+                        </td><td width="200px" align="center"> <input type="submit" class="btn" id="Button1" name="button" value="Create Account"  style="width:150px"/></td></tr>
+
+                    
+ <tr><td width="150px" align="center"><input type="submit" id="Button3" name="button" value="View Account" class="btn"  style="width:150px" /></td></tr>
+ <tr><td width="150px" align="center"><input type="submit" id="Button4" name="button" value="Delete Account" class="btn"  style="width:150px"/></td></tr>
+ <tr><td width="150px" align="center"><input type="submit" id="Button5" name="button" value="Update Account" class="btn"  style="width:150px"/></td></tr>
+ <tr><td width="150px" align="center"><input type="submit" id="Button6" name="button" value="Back" class="btn" onclick="return quit()" style="width:150px"/></td></tr>
+ 
+
+                </table>
+       
+
+
+    <input type="hidden" name="library_id" value="<%=library_id%>">
+   
+
+
+
+
+
+
+
+
+</td></tr>
+                <tr><td class="err">
+                         <%     if (msg1!=null){
  %>
- <script language="javascript">
- window.location="/LibMS-Struts/admin/account.jsp";
- alert("<%=msg1%>");
- </script>
+ 
+ 
+ <%=msg1%>
+ 
  <%
 }
 
 %>
+
+                    </td></tr>
+
+     </table>
+        </div>
+   
+</html:form>
+    </body>
+
+     
 
 </html>

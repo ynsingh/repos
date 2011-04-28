@@ -5,9 +5,9 @@
 <jsp:include page="adminheader.jsp" flush="true" />
 --%>
 
-    <%@page import="com.myapp.struts.admin.RequestDoc"%>
+    <%@page import="com.myapp.struts.admin.*,com.myapp.struts.hbm.*"%>
     <%@page contentType="text/html" pageEncoding="UTF-8"%>
-    <%@ page import="java.util.*"%>
+    <%@ page import="java.util.*,java.lang.Object"%>
     <%@ page import="org.apache.taglibs.datagrid.DataGridParameters"%>
     <%@ page import="org.apache.taglibs.datagrid.DataGridTag"%>
     <%@ page import="java.sql.*"%>
@@ -19,8 +19,25 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
-    <title>LibMS </title>
-    <link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
+    <title>EMS </title>
+   
+    <%
+try{
+if(session.getAttribute("library_id")!=null){
+System.out.println("library_id"+session.getAttribute("library_id"));
+}
+else{
+    request.setAttribute("msg", "Your Session Expired: Please Login Again");
+    %><script>parent.location = "<%=request.getContextPath()%>"+"/login.jsp?session=\"expired\"";</script><%
+    }
+}catch(Exception e){
+    request.setAttribute("msg", "Your Session Expired: Please Login Again");
+    %>sessionout();<%
+    }
+
+%>
+ <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
+ 
 <script language="javascript" >
 function b1click()
 {
@@ -43,9 +60,9 @@ function getQuery(id)
     th a:link      { text-decoration: none; color: black }
      th a:visited   { text-decoration: none; color: black }
      .rows          { background-color: white }
-     .hiliterows    { background-color: pink; color: #000000; font-weight: bold }
+     .hiliterows    { background-color: white; color: #000000; font-weight: bold }
      .alternaterows { background-color: #efefef }
-     .header        { background-color: #c0003b; color: #FFFFFF;font-weight: bold }
+     .header        { background-color: 7697BC; color: #FFFFFF;font-weight: bold }
 
      .datagrid      { border: 1px solid #C7C5B2; font-family: arial; font-size: 9pt;
 	    font-weight: normal }
@@ -62,8 +79,14 @@ function getQuery(id)
    int fromIndex=0, toIndex;
 %>
  <%
-
- ResultSet rs = (ResultSet)(request.getAttribute("search_institute_resultset"));
+List rs=null;
+ if(request.getAttribute("search_institute_resultset")!=null){
+rs = (List)(request.getAttribute("search_institute_resultset"));
+session.setAttribute("search_institute_resultset", rs);
+}
+else{
+rs = (List)(session.getAttribute("search_institute_resultset"));
+}
 
 
 
@@ -75,20 +98,26 @@ function getQuery(id)
    that takes parameters of string type connection url,
    user name and password to connect to database.*/
 
-rs.beforeFirst();
-
-
-   while (rs.next()) {
-	tcount++;
+//rs.beforeFirst();
+if(rs!=null)
+{
+    Iterator it = rs.iterator();
+   while (it.hasNext()) {
+	System.out.println(rs.get(0).getClass());
+       AdminReg_Institute adminReg = (AdminReg_Institute)rs.get(tcount);
+       System.out.println(adminReg.getClass());
+       tcount++;
 	Ob = new RequestDoc ();
-	Ob.setRegistration_id(rs.getInt(1));
-	Ob.setInstitute_name(rs.getString(2));
-	Ob.setLibrary_name(rs.getString(21));
-	Ob.setAdmin_email(rs.getString(17));
-        Ob.setLibrary_id(rs.getString("library_id"));
-
+	Ob.setRegistration_id(adminReg.getAdminRegistration().getRegistrationId());
+	Ob.setInstitute_name(adminReg.getAdminRegistration().getInstituteName());
+	Ob.setAdmin_email(adminReg.getAdminRegistration().getAdminEmail());
+        Ob.setCity(adminReg.getAdminRegistration().getCity());
+        if (adminReg.getLibrary()!=null){
+            System.out.println("admin Registration="+ adminReg.getLibrary().getLibraryId());
+            Ob.setInstitute_id(adminReg.getLibrary().getLibraryId());}
+        Ob.setStatus(adminReg.getAdminRegistration().getStatus());
    requestList.add(Ob);
-
+it.next();
    //System.out.println("tcount="+tcount);
 		     }
 
@@ -100,8 +129,12 @@ System.out.println("tcount="+tcount);
    fromIndex = (int) DataGridParameters.getDataGridPageIndex (request, "datagrid1");
    if ((toIndex = fromIndex+4) >= requestList.size ())
    toIndex = requestList.size();
-   request.setAttribute ("requestList", requestList.subList(fromIndex, toIndex));
+   session.setAttribute ("requestList", requestList.subList(fromIndex, toIndex));
    pageContext.setAttribute("tCount", tcount);
+   String pagecontext = request.getContextPath();
+   System.out.println(pagecontext);
+   pageContext.setAttribute("pagecontext", pagecontext);
+   }
 %>
 <br><br>
 <%if(tcount==0)
@@ -120,27 +153,31 @@ else
 
     <column width="100">
       <header value="Registration_ID" hAlign="left" styleClass="header"/>
-      <item   value="${doc.registration_id}" hyperLink="/LibMS-Struts/admin/index7.jsp?id=${doc.registration_id}"  hAlign="left"    styleClass="item"/>
+      <item   value="${doc.registration_id}" hyperLink="${pagecontext}/admin/index7.jsp?id=${doc.registration_id}"  hAlign="left"    styleClass="item"/>
     </column>
 
     <column width="200">
       <header value="Institute Name" hAlign="left" styleClass="header"/>
-      <item   value="${doc.institute_name}" hAlign="left" hyperLink="/LibMS-Struts/admin/index7.jsp?id=${doc.registration_id}"  styleClass="item"/>
+      <item   value="${doc.institute_name}" hAlign="left" hyperLink="${pagecontext}/admin/index7.jsp?id=${doc.registration_id}"  styleClass="item"/>
     </column>
 
-    <column width="200">
-      <header value="Library Name" hAlign="left" styleClass="header"/>
-      <item   value="${doc.library_name}" hyperLink="/LibMS-Struts/admin/index7.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
-    </column>
+   
 
-    <column width="100">
+    <column width="150">
       <header value="Admin_Email" hAlign="left" styleClass="header"/>
-      <item   value="${doc.admin_email}" hyperLink="/LibMS-Struts/admin/index7.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
+      <item   value="${doc.admin_email}" hyperLink="${pagecontext}/admin/index7.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
     </column>
-
+<column width="100">
+   <header value="City" hAlign="left" styleClass="header"/>
+ <item  value="${doc.city}" hyperLink="${pagecontext}/admin/index7.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
+    </column>
    <column width="100">
-   <header value="Library ID" hAlign="center" styleClass="header"/>
- <item  value="${doc.library_id}" hyperLink="/LibMS-Struts/admin/index7.jsp?id=${doc.registration_id}"  hAlign="center" styleClass="item"/>
+   <header value="Institute ID" hAlign="left" styleClass="header"/>
+ <item  value="${doc.institute_id}" hyperLink="${pagecontext}/admin/index7.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
+    </column>
+      <column width="100">
+   <header value="Status" hAlign="left" styleClass="header"/>
+ <item  value="${doc.status}" hyperLink="${pagecontext}/admin/index7.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
     </column>
  </columns>
 

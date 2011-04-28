@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 2, 2011 12:00:19 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="com.myapp.struts.hbm.CirOpacRequest" table="cir_opac_request" catalog="libms">
+        <composite-id name="id" class="com.myapp.struts.hbm.CirOpacRequestId">
+            <key-property name="libraryId" type="string">
+                <column name="library_id" length="20" />
+            </key-property>
+            <key-property name="sublibraryId" type="string">
+                <column name="sublibrary_id" length="20" />
+            </key-property>
+            <key-property name="rid" type="int">
+                <column name="rid" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="cirMemberDetail" class="com.myapp.struts.hbm.CirMemberDetail" update="false" insert="false" fetch="select">
+            <column name="library_id" length="20" not-null="true" />
+            <column name="memid" length="70" not-null="true" />
+        </many-to-one>
+        <property name="memname" type="string">
+            <column name="memname" length="100" not-null="true" />
+        </property>
+        <property name="memid" type="string">
+            <column name="memid" length="70" not-null="true" />
+        </property>
+        <property name="accessionNo" type="string">
+            <column name="accession_no" length="70" not-null="true" />
+        </property>
+        <property name="documentId" type="java.lang.Integer">
+            <column name="document_id" />
+        </property>
+        <property name="callNo" type="string">
+            <column name="call_no" length="30" not-null="true" />
+        </property>
+        <property name="title" type="string">
+            <column name="title" length="200" not-null="true" />
+        </property>
+        <property name="author" type="string">
+            <column name="author" length="200" not-null="true" />
+        </property>
+        <property name="status" type="string">
+            <column name="status" length="50" />
+        </property>
+    </class>
+</hibernate-mapping>

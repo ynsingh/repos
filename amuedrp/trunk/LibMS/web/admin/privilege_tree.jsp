@@ -1,4 +1,4 @@
-<%@page import="java.sql.ResultSet,com.myapp.struts.*;"%>
+<%@page import="java.util.*,com.myapp.struts.*,com.myapp.struts.AdminDAO.*,com.myapp.struts.hbm.*"%>
  <jsp:include page="header.jsp" flush="true" />
 
 <%@page contentType="text/html"%>
@@ -7,14 +7,18 @@
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <%
-String staff_id=(String)request.getAttribute("staff_id");
+String staff_id=(String)request.getAttribute("new_staff_id");
 String library_id = (String)session.getAttribute("library_id");
-String query = "select * from login where staff_id='"+ staff_id +"' and library_id='"+ library_id +"'";
-ResultSet staff_roll_rs=(ResultSet)MyQueryResult.getMyExecuteQuery(query);
-String staff_roll="";
-if(staff_roll_rs.next())
-   staff_roll = staff_roll_rs.getString("role");
-System.out.println("staff_roll="+staff_roll+"staff_id="+staff_id);
+
+String sublibrary_id=(String)request.getAttribute("staff_sub_library");
+
+
+Login staffobj=LoginDAO.searchStaffLogin(staff_id, library_id,sublibrary_id);
+String staff_role="";
+if(staffobj!=null)
+   staff_role = staffobj.getRole();
+
+System.out.println("staff_role="+staff_role+"staff_id="+staff_id);
 String button=(String)request.getAttribute("button");
 
 if(button==null||staff_id!=null)
@@ -23,25 +27,15 @@ button="Assign Privilege";
 staff_id=request.getParameter("staff_id");
 System.out.println("*****"+staff_id);
    }
-String staff_name=(String)request.getAttribute("staff_name");
-if(staff_name==null)
-    staff_name=(String)session.getAttribute("staff_name");
+String staff_name=(String)request.getAttribute("new_staff_name");
 
 
 %>
 
-<script language="javascript" >
 
-</script><noscript><a href="http://media.fastclick.net/w/click.here?sid=24280&m=1&c=1" target="_blank"><img src="http://media.fastclick.net/w/get.media?sid=24280&m=1&tp=5&d=s&c=1"width=728 height=90 border=1></a></noscript>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 
 <html>
 
-<style>
-	body {font-size:12px ;font-family:arial;font-size:12px}
-	h1 {cursor:hand;font-size:16px;margin-left:10px;line-height:10px}
-	xmp {color:green;font-size:12px;margin:0px;font-family:courier;background-color:#e6e6fa;padding:2px}
-</style>
 
     
 
@@ -1076,8 +1070,8 @@ dhtmlXTreeObject.prototype._checkParenNodes=function(itemId,htmlObject,shtmlObje
  if (itemId==1 || itemId==2 || itemId==3)
      {
          <%
-         System.out.println("staff_id="+staff_roll);
-         if (staff_roll.equals("staff"))
+         System.out.println("staff_id="+staff_role);
+         if (staff_role.equals("staff"))
              {%>
 
              alert("You can not assigned this privilege to staff role");
@@ -1611,7 +1605,7 @@ this._clearMove(htmlObject);if(this._autoOpenTimer)clearTimeout(this._autoOpenTi
         <body onload="treeload()">
 	<html:form action="/assign_privilege1"  method="post">
 
-<link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 	<table>
 		
 		<tr>
@@ -1626,7 +1620,7 @@ this._clearMove(htmlObject);if(this._autoOpenTimer)clearTimeout(this._autoOpenTi
 			<table width="400px" height="300px"  valign="top" align="center">
         <tr><td   width="400px" height="300px" valign="top" style="" class="txt2" align="center">
                 <fieldset style="border:solid 1px brown;height:200px;padding-left: 5px">
-                    <legend><img src="/LibMS-Struts/images/StaffAssignPrivilege.png"></legend>
+                    <legend><img src="<%=request.getContextPath()%>/images/StaffAssignPrivilege.png"></legend>
 						<br>
 						<br>
 	
@@ -1726,7 +1720,7 @@ this._clearMove(htmlObject);if(this._autoOpenTimer)clearTimeout(this._autoOpenTi
                                return false;
                                }
                                <%
-                                       if(staff_roll.equals("admin")==true){ %>
+                                       if(staff_role.equals("admin")==true || staff_role.equals("dept-admin")==true){ %>
                            var x = list.match(/administrator/gi);
                            if(x==null){
                                
@@ -1749,7 +1743,7 @@ this._clearMove(htmlObject);if(this._autoOpenTimer)clearTimeout(this._autoOpenTi
                        }
                        function send()
                         {
-                        window.location="/LibMS-Struts/admin/assign_privilege.jsp";
+                        window.location="<%=request.getContextPath()%>/admin/assign_privilege.jsp";
                         return false;
                         }
 			
@@ -1762,98 +1756,141 @@ this._clearMove(htmlObject);if(this._autoOpenTimer)clearTimeout(this._autoOpenTi
                         }
                        function treeload1()
                        {
+                          
 			tree=new dhtmlXTreeObject("treeboxbox_tree2","100%","100%",0);
-			tree.setImagePath("/LibMS-Struts/images/");
+			tree.setImagePath("<%=request.getContextPath()%>/images/");
 			tree.enableCheckBoxes(1);
+                        
 			tree.enableThreeStateCheckboxes(true);
                                        <%
-                                       if(staff_roll.equals("staff")==true){ %>
-                        tree.loadXML("/LibMS-Struts/tree3_staff.xml");
-                        <%}else{%>
-                        tree.loadXML("/LibMS-Struts/tree3.xml");
-                        <%}%>
+
+                        if(staff_role.equalsIgnoreCase("staff")==true){ %>
+                        tree.loadXML("<%=request.getContextPath()%>/staff.xml");
+                        <%}if(staff_role.equalsIgnoreCase("admin")){%>
+                        tree.loadXML("<%=request.getContextPath()%>/admin.xml");
+                        <%}if(staff_role.equalsIgnoreCase("dept-admin")==true){%>
+                            
+                            tree.loadXML("<%=request.getContextPath()%>/dept_admin.xml");
+                            <%} if(staff_role.equalsIgnoreCase("dept-staff")==true){%>
+                                
+                       tree.loadXML("<%=request.getContextPath()%>/dept_staff.xml");
+
+                            <%}%>
                        }
                        function show_priveleges()
                        {
                            // show privileges for acquisition
                          <%
 
-ResultSet pri =(ResultSet)session.getAttribute("privilege");
-ResultSet acq =(ResultSet)session.getAttribute("acq_privilege");
-ResultSet cat =(ResultSet)session.getAttribute("cat_privilege");
-ResultSet cir =(ResultSet)session.getAttribute("cir_privilege");
-ResultSet ser =(ResultSet)session.getAttribute("ser_privilege");
+//Privilege pri =(Privilege)session.getAttribute("privilege");
+//AcqPrivilege acq =(AcqPrivilege)session.getAttribute("acq_privilege");
 
+//CatPrivilege cat =(CatPrivilege)session.getAttribute("cat_privilege");
+//CirPrivilege cir =(CirPrivilege)session.getAttribute("cir_privilege");
+//SerPrivilege ser =(SerPrivilege)session.getAttribute("ser_privilege");
+
+ List pri=PrivilegeDAO.getPrivilege1(library_id, sublibrary_id, staff_id);
+ List acq=AcqPrivilegeDAO.getPrivilege1(library_id, sublibrary_id, staff_id);
+ List cat=CatPrivilegeDAO.getPrivilege1(library_id,sublibrary_id, staff_id);
+ List cir=CirPrivilegeDAO.getPrivilege1(library_id, sublibrary_id, staff_id);
+ List ser=SerPrivilegeDAO.getPrivilege1(library_id, sublibrary_id, staff_id);
+System.out.println("privelege"+pri.toString());
+System.out.println("acquisition"+acq.toString());
                          int iii=0;
-
-                         if(pri.getString("acquisition").equalsIgnoreCase("false"))
+                         List acq_pri = (List)pri.get(0);
+                         String acq_pri1 = (String)acq_pri.get(3);
+                         System.out.println("acq_pri1"+acq_pri1);
+                         if(acq_pri1.equalsIgnoreCase("false"))
                             {
                             iii=1;
                             %>
                         tree.selectItem(100, <%=iii%>);
                         tree.setCheck(tree.getSelectedItemId(),<%=iii%>);
                     <%
+
+
+
+
+
+
+
+
                         for(int acq_i=101;acq_i<200;acq_i++)
                             {
                             int acq_check=0;
-                if(acq.getString("acq_"+acq_i).equalsIgnoreCase("false")){acq_check=1;}else acq_check=0;%>
+                            List acq1 = (List)acq.get(0);
+                            String acq2 = (String)acq1.get(acq_i-98);
+        if(acq2.equalsIgnoreCase("false")){acq_check=1;}else acq_check=0;%>
                              tree.selectItem(<%=acq_i%>,1 );
                              tree.setCheck(tree.getSelectedItemId(),<%=acq_check%>);<%
-                             String acqs = "acq_"+acq_i;
-                            System.out.println("acq_" + acq_i + "=" + acq.getString(acqs));
+                             //String acqs = "acq_"+acq_i;
+                          //  System.out.println("acq_" + acq_i + "=" + acq1);
                           }
                          }
                          // show privileges for catloging
                          iii=0;
-                         if(pri.getString("cataloguing").equalsIgnoreCase("false"))
+                         String pricat = (String)acq_pri.get(4);
+                         if(pricat.equalsIgnoreCase("false"))
                             {
                             iii=1;
                             %>
                         tree.selectItem(200, <%=iii%>);
                         tree.setCheck(tree.getSelectedItemId(),<%=iii%>);
                     <%
-                        for(int cat_i=201;cat_i<300;cat_i++)
+                    List cat_lst = (List)cat.get(0);
+                    for(int cat_i=201;cat_i<300;cat_i++)
                             {
                             int cat_check=0;
-                if(cat.getString("cat_"+cat_i).equalsIgnoreCase("false"))cat_check=1;else cat_check=0;%>
+                            String cat_val = (String)cat_lst.get(cat_i-198);
+                            if(cat_val.equalsIgnoreCase("false"))cat_check=1;else cat_check=0;%>
                              tree.selectItem(<%=cat_i%>,1 );
                              tree.setCheck(tree.getSelectedItemId(),<%=cat_check%>);<%
+                           //   System.out.println("cat_" + cat_i + "=" + CatPrivilegeDAO.getValue(cat, cat_i));
                             }
                             }
 
                  // show privileges for circulation
                          iii=0;
-                         if(pri.getString("circulation").equalsIgnoreCase("false"))
+                         String pricir = (String)acq_pri.get(5);
+                        if(pricir.equalsIgnoreCase("false"))
                             {
                             iii=1;
                             %>
                         tree.selectItem(300, <%=iii%>);
                         tree.setCheck(tree.getSelectedItemId(),<%=iii%>);
                     <%
+                        List cir_pri = (List)cir.get(0);
                         for(int cir_i=301;cir_i<400;cir_i++)
                             {
                             int cir_check=0;
-                if(cir.getString("cir_"+cir_i).equalsIgnoreCase("false"))cir_check=1; else cir_check=0;%>
+                            String cir_val = (String)cir_pri.get(cir_i-298);
+
+                        if(cir_val.equalsIgnoreCase("false")) cir_check=1; else cir_check=0;%>
                              tree.selectItem(<%=cir_i%>,1 );
                              tree.setCheck(tree.getSelectedItemId(),<%=cir_check%>);<%
+                          //   System.out.println("cir_" + cir_i + "=" + CirPrivilegeDAO.getValue(cir, cir_i));
                             }
                             }
 
                   // show privileges for serial
                          iii=0;
-                         if(pri.getString("serial").equalsIgnoreCase("false"))
+                         String priser = (String)acq_pri.get(6);
+                         if(priser.equalsIgnoreCase("false"))
                             {
                             iii=1;
                             %>
                         tree.selectItem(400, <%=iii%>);
                         tree.setCheck(tree.getSelectedItemId(),<%=iii%>);
                     <%
+                        List ser_lst = (List)ser.get(0);
                         for(int ser_i=401;ser_i<500;ser_i++)
                             {
                             int ser_check=0;
-                if(ser.getString("ser_"+ser_i).equalsIgnoreCase("false")) ser_check=1; else ser_check=0;%>
+                            String ser_val = (String)ser_lst.get(ser_i-398);
+                            if(ser_val.equalsIgnoreCase("false")) ser_check=1; else ser_check=0;%>
                              tree.selectItem(<%=ser_i%>,1 );
                              tree.setCheck(tree.getSelectedItemId(),<%=ser_check%>);<%
+                           //    System.out.println("ser_" + ser_i + "=" + SerPrivilegeDAO.getValue(ser, ser_i));
                             }
                             }
                          
@@ -1863,7 +1900,8 @@ ResultSet ser =(ResultSet)session.getAttribute("ser_privilege");
                          // show privileges for Administrator
 
                          iii=0;
-                         if(pri.getString("administrator").equalsIgnoreCase("false"))
+                         String priadm = (String)acq_pri.get(7);
+                         if(priadm.equalsIgnoreCase("false"))
                             {
                             iii=1;
                             %>
@@ -1872,7 +1910,8 @@ ResultSet ser =(ResultSet)session.getAttribute("ser_privilege");
                     <%}
                     // show privileges for Utilities
                          iii=0;
-                         if(pri.getString("utilities").equalsIgnoreCase("false"))
+                         String priutl = (String)acq_pri.get(9);
+                         if(priutl.equalsIgnoreCase("false"))
                             {
                              iii=1;
                       %>
@@ -1882,7 +1921,8 @@ ResultSet ser =(ResultSet)session.getAttribute("ser_privilege");
                         <%}
                     // show privileges for System Setup
                          iii=0;
-                         if(pri.getString("system_setup").equalsIgnoreCase("false"))
+                         String priset = (String)acq_pri.get(8);
+                         if(priset.equalsIgnoreCase("false"))
                             {
                             iii=1;
                             %>

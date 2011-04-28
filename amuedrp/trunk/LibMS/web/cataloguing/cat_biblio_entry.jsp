@@ -14,6 +14,7 @@
 <%! boolean read=false;%>
 <%
 String library_id=(String)session.getAttribute("library_id");
+String sub_library_id=(String)session.getAttribute("sublibrary_id");
 String button=(String)request.getAttribute("button");
 if (button.equals("View")||button.equals("Delete"))
 read=true;
@@ -33,7 +34,7 @@ if (answer!=true)
     }
     else
         {
-       document.Form1.action="/LibMS-Struts/cataloguing/cat_biblio.jsp";
+       document.Form1.action="<%=request.getContextPath()%>/cataloguing/cat_biblio.jsp";
        document.Form1.method="post";
    //document.Form1.target="_blank";
         document.Form1.submit();
@@ -48,8 +49,8 @@ return true;
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Bibliographic Detail Entry Form</title>
-        <link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
-         <link rel="stylesheet" href="/LibMS-Struts/css/formstyle.css"/>
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
+         <link rel="stylesheet" href="<%=request.getContextPath()%>/css/formstyle.css"/>
     </head>
     <body>
         <html:form method="post" action="/catBiblioDetailAction" style="position:absolute; left:200px; top:150px;"  >
@@ -58,8 +59,10 @@ return true;
                 <tr><td>
                         <table width="700" border="0" cellspacing="4" cellpadding="1" align="center">
                         <tr>
-                        <html:hidden property="library_id" name="BibliographicDetailEntryActionForm" value="<%=library_id%>" /><td></td>
+                        <html:hidden property="library_id" name="BibliographicDetailEntryActionForm" value="<%=library_id%>" />
+                          <html:hidden property="sub_library_id" name="BibliographicDetailEntryActionForm" value="<%=sub_library_id%>" /><td></td>
                         <html:hidden property="accession_type" name="BibliographicDetailEntryActionForm"/>
+                        <html:hidden property="no_of_copies" name="BibliographicDetailEntryActionForm"/>
                         </tr>
 <tr><td colspan="5" height="10px"></td>
 </tr>
@@ -89,13 +92,13 @@ return true;
 </tr>
   <tr>
     <td align="right" class="txtStyle"><strong>Main Author<a class="star">*</a>:</strong></td>
-  <td><html:text readonly="<%=read%>" property="author_main" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" />
-        <br><span class="err">   <html:messages id="err_name" property="author_main">
+  <td><html:text readonly="<%=read%>" property="main_entry" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" />
+        <br><span class="err">   <html:messages id="err_name" property="main_entry">
         <bean:write name="err_name" />
     </html:messages></span>
   </td>
  <td align="right" class="txtStyle"><strong>Sub Authors:</strong></td>
-  <td><html:text readonly="<%=read%>" property="author_sub" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" /></td>
+  <td><html:text readonly="<%=read%>" property="added_entry" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" /></td>
   </tr>
   <tr><td colspan="5" height="5px"></td>
 </tr>
@@ -116,7 +119,7 @@ return true;
   </td>
 
   <td align="right" class="txtStyle"><strong>LCC No:</strong></td>
-  <td><html:text readonly="<%=read%>" property="control_no" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" />
+  <td><html:text readonly="<%=read%>" property="LCC_no" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" />
            </td>
   </tr>
   <tr><td colspan="5" height="5px"></td>

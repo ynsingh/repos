@@ -1,0 +1,320 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 2, 2011 12:00:19 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="com.myapp.struts.hbm.CatPrivilege" table="cat_privilege" catalog="libms">
+        <composite-id name="id" class="com.myapp.struts.hbm.CatPrivilegeId">
+            <key-property name="staffId" type="string">
+                <column name="staff_id" length="100" />
+            </key-property>
+            <key-property name="libraryId" type="string">
+                <column name="library_id" length="20" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="staffDetail" class="com.myapp.struts.hbm.StaffDetail" update="false" insert="false" fetch="select">
+            <column name="staff_id" length="100" not-null="true" />
+            <column name="library_id" length="20" not-null="true" />
+        </many-to-one>
+        <property name="sublibraryId" type="string">
+            <column name="sublibrary_id" length="20" not-null="true" />
+        </property>
+        <property name="cat201" type="string">
+            <column name="cat_201" length="5" />
+        </property>
+        <property name="cat202" type="string">
+            <column name="cat_202" length="5" />
+        </property>
+        <property name="cat203" type="string">
+            <column name="cat_203" length="5" />
+        </property>
+        <property name="cat204" type="string">
+            <column name="cat_204" length="5" />
+        </property>
+        <property name="cat205" type="string">
+            <column name="cat_205" length="5" />
+        </property>
+        <property name="cat206" type="string">
+            <column name="cat_206" length="5" />
+        </property>
+        <property name="cat207" type="string">
+            <column name="cat_207" length="5" />
+        </property>
+        <property name="cat208" type="string">
+            <column name="cat_208" length="5" />
+        </property>
+        <property name="cat209" type="string">
+            <column name="cat_209" length="5" />
+        </property>
+        <property name="cat210" type="string">
+            <column name="cat_210" length="5" />
+        </property>
+        <property name="cat211" type="string">
+            <column name="cat_211" length="5" />
+        </property>
+        <property name="cat212" type="string">
+            <column name="cat_212" length="5" />
+        </property>
+        <property name="cat213" type="string">
+            <column name="cat_213" length="5" />
+        </property>
+        <property name="cat214" type="string">
+            <column name="cat_214" length="5" />
+        </property>
+        <property name="cat215" type="string">
+            <column name="cat_215" length="5" />
+        </property>
+        <property name="cat216" type="string">
+            <column name="cat_216" length="5" />
+        </property>
+        <property name="cat217" type="string">
+            <column name="cat_217" length="5" />
+        </property>
+        <property name="cat218" type="string">
+            <column name="cat_218" length="5" />
+        </property>
+        <property name="cat219" type="string">
+            <column name="cat_219" length="5" />
+        </property>
+        <property name="cat220" type="string">
+            <column name="cat_220" length="5" />
+        </property>
+        <property name="cat221" type="string">
+            <column name="cat_221" length="5" />
+        </property>
+        <property name="cat222" type="string">
+            <column name="cat_222" length="5" />
+        </property>
+        <property name="cat223" type="string">
+            <column name="cat_223" length="5" />
+        </property>
+        <property name="cat224" type="string">
+            <column name="cat_224" length="5" />
+        </property>
+        <property name="cat225" type="string">
+            <column name="cat_225" length="5" />
+        </property>
+        <property name="cat226" type="string">
+            <column name="cat_226" length="5" />
+        </property>
+        <property name="cat227" type="string">
+            <column name="cat_227" length="5" />
+        </property>
+        <property name="cat228" type="string">
+            <column name="cat_228" length="5" />
+        </property>
+        <property name="cat229" type="string">
+            <column name="cat_229" length="5" />
+        </property>
+        <property name="cat230" type="string">
+            <column name="cat_230" length="5" />
+        </property>
+        <property name="cat231" type="string">
+            <column name="cat_231" length="5" />
+        </property>
+        <property name="cat232" type="string">
+            <column name="cat_232" length="5" />
+        </property>
+        <property name="cat233" type="string">
+            <column name="cat_233" length="5" />
+        </property>
+        <property name="cat234" type="string">
+            <column name="cat_234" length="5" />
+        </property>
+        <property name="cat235" type="string">
+            <column name="cat_235" length="5" />
+        </property>
+        <property name="cat236" type="string">
+            <column name="cat_236" length="5" />
+        </property>
+        <property name="cat237" type="string">
+            <column name="cat_237" length="5" />
+        </property>
+        <property name="cat238" type="string">
+            <column name="cat_238" length="5" />
+        </property>
+        <property name="cat239" type="string">
+            <column name="cat_239" length="5" />
+        </property>
+        <property name="cat240" type="string">
+            <column name="cat_240" length="5" />
+        </property>
+        <property name="cat241" type="string">
+            <column name="cat_241" length="5" />
+        </property>
+        <property name="cat242" type="string">
+            <column name="cat_242" length="5" />
+        </property>
+        <property name="cat243" type="string">
+            <column name="cat_243" length="5" />
+        </property>
+        <property name="cat244" type="string">
+            <column name="cat_244" length="5" />
+        </property>
+        <property name="cat245" type="string">
+            <column name="cat_245" length="5" />
+        </property>
+        <property name="cat246" type="string">
+            <column name="cat_246" length="5" />
+        </property>
+        <property name="cat247" type="string">
+            <column name="cat_247" length="5" />
+        </property>
+        <property name="cat248" type="string">
+            <column name="cat_248" length="5" />
+        </property>
+        <property name="cat249" type="string">
+            <column name="cat_249" length="5" />
+        </property>
+        <property name="cat250" type="string">
+            <column name="cat_250" length="5" />
+        </property>
+        <property name="cat251" type="string">
+            <column name="cat_251" length="5" />
+        </property>
+        <property name="cat252" type="string">
+            <column name="cat_252" length="5" />
+        </property>
+        <property name="cat253" type="string">
+            <column name="cat_253" length="5" />
+        </property>
+        <property name="cat254" type="string">
+            <column name="cat_254" length="5" />
+        </property>
+        <property name="cat255" type="string">
+            <column name="cat_255" length="5" />
+        </property>
+        <property name="cat256" type="string">
+            <column name="cat_256" length="5" />
+        </property>
+        <property name="cat257" type="string">
+            <column name="cat_257" length="5" />
+        </property>
+        <property name="cat258" type="string">
+            <column name="cat_258" length="5" />
+        </property>
+        <property name="cat259" type="string">
+            <column name="cat_259" length="5" />
+        </property>
+        <property name="cat260" type="string">
+            <column name="cat_260" length="5" />
+        </property>
+        <property name="cat261" type="string">
+            <column name="cat_261" length="5" />
+        </property>
+        <property name="cat262" type="string">
+            <column name="cat_262" length="5" />
+        </property>
+        <property name="cat263" type="string">
+            <column name="cat_263" length="5" />
+        </property>
+        <property name="cat264" type="string">
+            <column name="cat_264" length="5" />
+        </property>
+        <property name="cat265" type="string">
+            <column name="cat_265" length="5" />
+        </property>
+        <property name="cat266" type="string">
+            <column name="cat_266" length="5" />
+        </property>
+        <property name="cat267" type="string">
+            <column name="cat_267" length="5" />
+        </property>
+        <property name="cat268" type="string">
+            <column name="cat_268" length="5" />
+        </property>
+        <property name="cat269" type="string">
+            <column name="cat_269" length="5" />
+        </property>
+        <property name="cat270" type="string">
+            <column name="cat_270" length="5" />
+        </property>
+        <property name="cat271" type="string">
+            <column name="cat_271" length="5" />
+        </property>
+        <property name="cat272" type="string">
+            <column name="cat_272" length="5" />
+        </property>
+        <property name="cat273" type="string">
+            <column name="cat_273" length="5" />
+        </property>
+        <property name="cat274" type="string">
+            <column name="cat_274" length="5" />
+        </property>
+        <property name="cat275" type="string">
+            <column name="cat_275" length="5" />
+        </property>
+        <property name="cat276" type="string">
+            <column name="cat_276" length="5" />
+        </property>
+        <property name="cat277" type="string">
+            <column name="cat_277" length="5" />
+        </property>
+        <property name="cat278" type="string">
+            <column name="cat_278" length="5" />
+        </property>
+        <property name="cat279" type="string">
+            <column name="cat_279" length="5" />
+        </property>
+        <property name="cat280" type="string">
+            <column name="cat_280" length="5" />
+        </property>
+        <property name="cat281" type="string">
+            <column name="cat_281" length="5" />
+        </property>
+        <property name="cat282" type="string">
+            <column name="cat_282" length="5" />
+        </property>
+        <property name="cat283" type="string">
+            <column name="cat_283" length="5" />
+        </property>
+        <property name="cat284" type="string">
+            <column name="cat_284" length="5" />
+        </property>
+        <property name="cat285" type="string">
+            <column name="cat_285" length="5" />
+        </property>
+        <property name="cat286" type="string">
+            <column name="cat_286" length="5" />
+        </property>
+        <property name="cat287" type="string">
+            <column name="cat_287" length="5" />
+        </property>
+        <property name="cat288" type="string">
+            <column name="cat_288" length="5" />
+        </property>
+        <property name="cat289" type="string">
+            <column name="cat_289" length="5" />
+        </property>
+        <property name="cat290" type="string">
+            <column name="cat_290" length="5" />
+        </property>
+        <property name="cat291" type="string">
+            <column name="cat_291" length="5" />
+        </property>
+        <property name="cat292" type="string">
+            <column name="cat_292" length="5" />
+        </property>
+        <property name="cat293" type="string">
+            <column name="cat_293" length="5" />
+        </property>
+        <property name="cat294" type="string">
+            <column name="cat_294" length="5" />
+        </property>
+        <property name="cat295" type="string">
+            <column name="cat_295" length="5" />
+        </property>
+        <property name="cat296" type="string">
+            <column name="cat_296" length="5" />
+        </property>
+        <property name="cat297" type="string">
+            <column name="cat_297" length="5" />
+        </property>
+        <property name="cat298" type="string">
+            <column name="cat_298" length="5" />
+        </property>
+        <property name="cat299" type="string">
+            <column name="cat_299" length="5" />
+        </property>
+    </class>
+</hibernate-mapping>

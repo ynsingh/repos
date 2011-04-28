@@ -4,7 +4,28 @@
  */
 
 package com.myapp.struts.admin;
-import com.myapp.struts.MyQueryResult;
+//import  com.myapp.struts.hbm.*;
+
+import  com.myapp.struts.hbm.Privilege;
+import  com.myapp.struts.hbm.PrivilegeId;
+import  com.myapp.struts.hbm.Library;
+import  com.myapp.struts.hbm.SerPrivilege;
+import  com.myapp.struts.hbm.CirPrivilegeId;
+import  com.myapp.struts.hbm.CirPrivilege;
+import  com.myapp.struts.hbm.CatPrivilege;
+import  com.myapp.struts.hbm.CatPrivilegeId;
+import  com.myapp.struts.hbm.AcqPrivilege;
+import  com.myapp.struts.hbm.AcqPrivilegeId;
+import  com.myapp.struts.hbm.Login;
+import  com.myapp.struts.hbm.LoginId;
+import  com.myapp.struts.hbm.StaffDetail;
+import  com.myapp.struts.hbm.StaffDetailId;
+import  com.myapp.struts.hbm.SubLibrary;
+import  com.myapp.struts.hbm.SubLibraryId;
+import  com.myapp.struts.hbm.Library;
+import  com.myapp.struts.hbm.AdminRegistration;
+import  com.myapp.struts.hbm.SerPrivilegeId;
+import  com.myapp.struts.AdminDAO.*;
 import java.sql.*;
 import javax.servlet.http.*;
 import javax.servlet.http.HttpServletResponse;
@@ -18,160 +39,183 @@ import org.apache.struts.action.ActionMapping;
  */
 public class PrivilegeAction extends org.apache.struts.action.Action {
     String privilege_list;
+    String staff_sublibrary_id;
     String staff_id,library_id,button;
     String sql1,sql2,sql3,sql4,sql5;
-    ResultSet privilege_backup_resultset[];
+    //ResultSet privilege_backup_resultset[];
     String staff_name;
-    ResultSet privilege_resultset,acq_privilege_resultset,cat_privilege_resultset,cir_privilege_resultset,ser_privilege_resultset;
-    /* forward name="success" path="" */
-    private static final String SUCCESS = "success";
+    boolean result;
+    //ResultSet privilege_resultset,acq_privilege_resultset,cat_privilege_resultset,cir_privilege_resultset,ser_privilege_resultset;
+ 
+   
 
 
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
     
-     */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         HttpSession session=request.getSession();
         PrivilegeActionForm privilege=(PrivilegeActionForm)form;
+
+
         library_id=(String)session.getAttribute("library_id");
-        staff_id=privilege.getStaff_id().trim();
+
+        staff_id=privilege.getStaff_id();
         staff_name=privilege.getStaff_name();
         button=privilege.getButton();
+
+
         System.out.println("....button="+button);
+
+    StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+        if(staffobj!=null)
+        staff_sublibrary_id=staffobj.getSublibraryId();
 
 
         if(button.equals("Assign Privilege")||button.equals("Change Privilege"))
         {
         privilege_list=privilege.getPrivilege_list();
-        System.out.println(privilege_list);
-        if (privilege_list!="")
+
+
+        System.out.println("privilege="+privilege_list);
+        
+        
+        if (privilege_list.equals("")==false)
         {
 
 
-        Privilege priv=new Privilege();
+        //CreatePrivilege priv=new CreatePrivilege();
 
-        privilege_backup_resultset=priv.backupPrivilege(staff_id,library_id);
-        session.setAttribute("privilege_backup",privilege_backup_resultset);
+        //privilege_backup_resultset=priv.backupPrivilege(staff_id,library_id);
 
-        
+        /*BackUp the Privilege of Mention User*/
+    
+       Privilege backupprivobj=PrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
+       AcqPrivilege backupacqprivobj=AcqPrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
+       CatPrivilege backupcatprivobj=CatPrivilegeDAO.getPrivilege(library_id,staff_sublibrary_id, staff_id);
+        CirPrivilege backupcirprivobj=CirPrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
+        SerPrivilege backupserprivobj=SerPrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
+        Login login=LoginDAO.searchStaffLogin(staff_id, library_id, staff_sublibrary_id);
+
+
+        session.setAttribute("privilege_priv_backup",backupprivobj);
+        session.setAttribute("privilege_acq_backup",backupacqprivobj);
+        session.setAttribute("privilege_cat_backup",backupcatprivobj);
+        session.setAttribute("privilege_cir_backup",backupcirprivobj);
+        session.setAttribute("privilege_ser_backup",backupserprivobj);
+        session.setAttribute("login_privilege",login);
 
 
 
 
 
-        priv.AssignPrivilege(privilege_list,staff_id, library_id);
-        privilege_backup_resultset[0].next();
-        System.out.println("****************************"+privilege_backup_resultset[0].getString(4)+staff_id+library_id);
-        privilege_backup_resultset[0].beforeFirst();
+      result=CreatePrivilege.AssignPrivilege(privilege_list,staff_id, library_id,staff_sublibrary_id);
+
+
+     // privilege_backup_resultset[0].next();
+       // System.out.println("****************************"+privilege_backup_resultset[0].getString(4)+staff_id+library_id);
+     //   privilege_backup_resultset[0].beforeFirst();
         request.setAttribute("staff_id", staff_id);
         request.setAttribute("staff_name", staff_name);
         request.setAttribute("privilege_list", privilege_list);
 
 
-        sql1 ="select * from privilege where staff_id='"+staff_id+"' and library_id='"+library_id+"'" ;
-        sql2="select * from acq_privilege where staff_id='"+staff_id+"' and library_id='"+library_id+"'" ;
-        sql3="select * from cat_privilege where staff_id='"+staff_id+"' and library_id='"+library_id+"'" ;
-        sql4="select * from cir_privilege where staff_id='"+staff_id+"' and library_id='"+library_id+"'" ;
-        sql5="select * from ser_privilege where staff_id='"+staff_id+"' and library_id='"+library_id+"'" ;
+   
+        Privilege privobj=PrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
+       AcqPrivilege acqprivobj=AcqPrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
+       CatPrivilege catprivobj=CatPrivilegeDAO.getPrivilege(library_id,staff_sublibrary_id, staff_id);
+        CirPrivilege cirprivobj=CirPrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
+        SerPrivilege serprivobj=SerPrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
 
-        privilege_resultset=MyQueryResult.getMyExecuteQuery(sql1);
-        acq_privilege_resultset=MyQueryResult.getMyExecuteQuery(sql2);
-        cat_privilege_resultset=MyQueryResult.getMyExecuteQuery(sql3);
-        cir_privilege_resultset=MyQueryResult.getMyExecuteQuery(sql4);
-        ser_privilege_resultset=MyQueryResult.getMyExecuteQuery(sql5);
 
-        privilege_resultset.next();
-        acq_privilege_resultset.next();
-        cat_privilege_resultset.next();
-        cir_privilege_resultset.next();
-        ser_privilege_resultset.next();
+
+
+
       
-        request.setAttribute("privilege_resultset", privilege_resultset);
+        request.setAttribute("privilege_resultset", privobj);
 
-        request.setAttribute("acq_privilege_resultset", acq_privilege_resultset);
-        request.setAttribute("cat_privilege_resultset", cat_privilege_resultset);
-        request.setAttribute("cir_privilege_resultset", cir_privilege_resultset);
-        request.setAttribute("ser_privilege_resultset", ser_privilege_resultset);
+        request.setAttribute("acq_privilege_resultset", acqprivobj);
+        request.setAttribute("cat_privilege_resultset", catprivobj);
+        request.setAttribute("cir_privilege_resultset", cirprivobj);
+        request.setAttribute("ser_privilege_resultset", serprivobj);
 
          //check the privilege of admin role user and degrade it to staff role if administrator privielege
          //not selected
-         ResultSet temp=MyQueryResult.getMyExecuteQuery("select * from privilege where staff_id='"+staff_id+"' and library_id='"+library_id+"'");
-         if(temp.next())
+        Privilege tempprivobj=PrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
+
+         if(tempprivobj!=null)
          {
-         if(temp.getString("administrator").equals("true")){
-             int i=MyQueryResult.getMyExecuteUpdate("update login set role='staff' where staff_id='"+staff_id+"' and library_id='"+library_id+"'");
-             if(i==0){
+             System.out.println(tempprivobj.getAdministrator()+"...................");
+         if(tempprivobj.getAdministrator().equalsIgnoreCase("true"))
+         {
+             System.out.println("Admin");
+           Login logobj=LoginDAO.searchStaffLogin(staff_id, library_id, staff_sublibrary_id);
+
+
+           if(logobj.getRole().equalsIgnoreCase("dept-admin"))
+             logobj.setRole("dept-staff");
+           
+           else if(logobj.getRole().equalsIgnoreCase("admin"))
+               logobj.setRole("staff");
+         
+
+             result=LoginDAO.update1(logobj);
+
+
+             if(result==false)
+             {
                 request.setAttribute("staff_id", staff_id);
                 request.setAttribute("staff_name", staff_name);
                 request.setAttribute("msg", "Exception occured");
-                System.out.println(temp.getString("administrator"));
+                System.out.println(tempprivobj.getAdministrator());
                 return mapping.findForward("failure");
              }
+            
 
          }
 
          }
+ Login logobj1=LoginDAO.searchStaffLogin(staff_id, library_id, staff_sublibrary_id);
 
-
-
+         request.setAttribute("staff_role", logobj1.getRole());
 
         return mapping.findForward("assign_privilege");
 
         }
-        request.setAttribute("staff_id", staff_id);
-        request.setAttribute("staff_name", staff_name);
-        request.setAttribute("msg", "No Specific Privilege assigned as yet");
-        return mapping.findForward("failure");
+       
         }
 
         else      //if(button.equals("View Privilge"))
         {
-             sql1 ="select * from privilege where staff_id='"+staff_id+"' and library_id='"+library_id+"'" ;
-        sql2="select * from acq_privilege where staff_id='"+staff_id+"' and library_id='"+library_id+"'" ;
-        sql3="select * from cat_privilege where staff_id='"+staff_id+"' and library_id='"+library_id+"'" ;
-        sql4="select * from cir_privilege where staff_id='"+staff_id+"' and library_id='"+library_id+"'" ;
-        sql5="select * from ser_privilege where staff_id='"+staff_id+"' and library_id='"+library_id+"'" ;
+        System.out.println(staff_sublibrary_id);
+          Login staff=LoginDAO.searchStaffLogin(staff_id, library_id, staff_sublibrary_id);
 
-        privilege_resultset=MyQueryResult.getMyExecuteQuery(sql1);
-        acq_privilege_resultset=MyQueryResult.getMyExecuteQuery(sql2);
-        cat_privilege_resultset=MyQueryResult.getMyExecuteQuery(sql3);
-        cir_privilege_resultset=MyQueryResult.getMyExecuteQuery(sql4);
-        ser_privilege_resultset=MyQueryResult.getMyExecuteQuery(sql5);
+        String staff_role=staff.getRole();
 
-        privilege_resultset.next();
-        acq_privilege_resultset.next();
-        cat_privilege_resultset.next();
-        cir_privilege_resultset.next();
-        ser_privilege_resultset.next();
+               Privilege privobj=PrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
+       AcqPrivilege acqprivobj=AcqPrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
+       CatPrivilege catprivobj=CatPrivilegeDAO.getPrivilege(library_id,staff_sublibrary_id, staff_id);
+        CirPrivilege cirprivobj=CirPrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
+        SerPrivilege serprivobj=SerPrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
 
 
 
-    /*    session.setAttribute("privilege", privilege_resultset);
 
-        session.setAttribute("acq_privilege", acq_privilege_resultset);
-        session.setAttribute("cat_privilege", cat_privilege_resultset);
-        session.setAttribute("cir_privilege", cir_privilege_resultset);
-        session.setAttribute("ser_privilege", ser_privilege_resultset);
-*/
-        request.setAttribute("privilege_resultset", privilege_resultset);
 
-        request.setAttribute("acq_privilege_resultset", acq_privilege_resultset);
-        request.setAttribute("cat_privilege_resultset", cat_privilege_resultset);
-        request.setAttribute("cir_privilege_resultset", cir_privilege_resultset);
-        request.setAttribute("ser_privilege_resultset", ser_privilege_resultset);
-        request.setAttribute("staff_id", staff_id);
-        request.setAttribute("staff_name", staff_name);
+
+        request.setAttribute("privilege_resultset", privobj);
+
+        request.setAttribute("acq_privilege_resultset", acqprivobj);
+        request.setAttribute("cat_privilege_resultset", catprivobj);
+        request.setAttribute("cir_privilege_resultset", cirprivobj);
+        request.setAttribute("ser_privilege_resultset", serprivobj);
+
+          request.setAttribute("staff_id", staff_id);
+          request.setAttribute("staff_role", staff_role);
+        request.setAttribute("staff_name", request.getAttribute("staff_name"));
             return mapping.findForward("view_privilege");
         }
-
+ return null;
     }
 }

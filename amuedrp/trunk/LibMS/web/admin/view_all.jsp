@@ -1,25 +1,37 @@
-<%--
-    Document   : Simple.jsp
-    Created on : Jun 18, 2010, 7:46:24 AM
-    Author     : Mayank Saxena
-<jsp:include page="adminheader.jsp" flush="true" />
---%>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
  
-    <%@page import="com.myapp.struts.admin.RequestDoc"%>
+    <%@page import="com.myapp.struts.admin.RequestDoc,com.myapp.struts.hbm.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
     <%@ page import="java.util.*"%>
-    <%@ page import="org.apache.taglibs.datagrid.DataGridParameters"%>
-    <%@ page import="org.apache.taglibs.datagrid.DataGridTag"%>
     <%@ page import="java.sql.*"%>
     <%@ page import="java.io.*"   %>
+    <%@ page import="org.apache.taglibs.datagrid.DataGridParameters" %>
+    <%@ page import="org.apache.taglibs.datagrid.DataGridTag" %>
     <%@ taglib uri="http://jakarta.apache.org/taglibs/datagrid-1.0" prefix="ui" %>
     <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c" %>
     <%@ taglib uri="http://java.sun.com/jstl/fmt" prefix="fmt" %>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="/EMS-Struts/css/page.css"/>
     <title>View Request</title>
+    <%
+try{
+if(session.getAttribute("library_id")!=null){
+System.out.println("library_id"+session.getAttribute("library_id"));
+}
+else{
+    request.setAttribute("msg", "Your Session Expired: Please Login Again");
+    %>
+    <script>parent.location = "<%=request.getContextPath()%>"+"/logout.do?session=\"expired\"";</script><%
+    }
+}catch(Exception e){
+    request.setAttribute("msg", "Your Session Expired: Please Login Again");
+    %>sessionout();<%
+    }
+
+%>
+
 
 <script language="javascript" >
 function b1click()
@@ -35,7 +47,7 @@ f.submit();
 }
 function getQuery(id)
 {
-    var query = "/LibMS-Struts/admin/index3.jsp?id="+id;
+    var query = "<%=request.getContextPath()%>/admin/index3.jsp?id="+id;
     return query;
 }
 </script>
@@ -43,9 +55,9 @@ function getQuery(id)
     th a:link      { text-decoration: none; color: black }
      th a:visited   { text-decoration: none; color: black }
      .rows          { background-color: white }
-     .hiliterows    { background-color: pink; color: #000000; font-weight: bold }
+     .hiliterows    { background-color: white; color: #000000; font-weight: bold }
      .alternaterows { background-color: #efefef }
-     .header        { background-color: #c0003b; color: #FFFFFF;font-weight: bold }
+     .header        { background-color: #7697BC; color: #FFFFFF;font-weight: bold }
 
      .datagrid      { border: 1px solid #C7C5B2; font-family: arial; font-size: 9pt;
 	    font-weight: normal }
@@ -69,7 +81,7 @@ function getQuery(id)
 %>
  <%
 
- ResultSet rs = (ResultSet)(session.getAttribute("resultset2"));
+ List rs = (List)(session.getAttribute("resultset2"));
 
        
 
@@ -80,21 +92,21 @@ function getQuery(id)
  /*Create a connection by using getConnection() method
    that takes parameters of string type connection url,
    user name and password to connect to database.*/
+if(rs!=null){
+Iterator it = rs.iterator();
 
-rs.beforeFirst();
 
-
-   while (rs.next()) {
-	tcount++;
+   while (it.hasNext()) {
+	AdminRegistration adminReg = (AdminRegistration)rs.get(tcount);
+       tcount++;
 	Ob = new RequestDoc ();
-	Ob.setRegistration_id(rs.getInt(1));
-	Ob.setInstitute_name(rs.getString(2));
-	Ob.setLibrary_name(rs.getString(21));
-	Ob.setAdmin_email(rs.getString(17));
-        Ob.setStatus(rs.getString(19));
-        
+	Ob.setRegistration_id(adminReg.getRegistrationId());
+	Ob.setInstitute_name(adminReg.getInstituteName());
+	Ob.setAdmin_email(adminReg.getAdminEmail());
+        Ob.setStatus(adminReg.getStatus());
+        adminReg=null;
    requestList.add(Ob);
-
+it.next();
    //System.out.println("tcount="+tcount);
 		     }
 
@@ -134,12 +146,8 @@ else
       <item   value="${doc.institute_name}" hAlign="left" hyperLink="index3.jsp?id=${doc.registration_id}"  styleClass="item"/>
     </column>
 
-    <column width="200">
-      <header value="Library Name" hAlign="left" styleClass="header"/>
-      <item   value="${doc.library_name}" hyperLink="index3.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
-    </column>
-   
-    <column width="100">
+       
+    <column width="150">
       <header value="Admin_Email" hAlign="left" styleClass="header"/>
       <item   value="${doc.admin_email}" hyperLink="index3.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
     </column>
@@ -182,7 +190,11 @@ else
 
 </tr>
 </table>
-<%}%>
+<%}}else{
+     request.setAttribute("msg", "Your Session Expired: Please Login Again");
+    %>
+    <script>parent.location = "<%=request.getContextPath()%>"+"/logout.do?session=\"expired\"";</script><%
+}%>
  </div>
     </body>
 

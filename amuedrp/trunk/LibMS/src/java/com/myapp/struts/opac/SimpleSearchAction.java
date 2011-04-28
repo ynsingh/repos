@@ -5,7 +5,9 @@
 
 package com.myapp.struts.opac;
 import  com.myapp.struts.*;
+import com.myapp.struts.opacDAO.OpacSearchDAO;
 import java.sql.*;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -20,40 +22,74 @@ public class SimpleSearchAction extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
-     String p,cmbyr,yr1,yr2,cf,db,cnf,sort;
+     String p,cmbyr,cf,db,cnf,sort;
+     Integer yr1,yr2;
+     String lib_id,sub_lib,phrase[];
     // ArrayList opacList;
      //OpacDoc Ob;
      Connection conn;
      PreparedStatement stmt;
      ResultSet rs;
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
+     OpacSearchDAO simpleSearchDAO=new OpacSearchDAO();
+     List simple_search_list;
     
-     */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         SimpleSearchActionForm simpleform = (SimpleSearchActionForm)form;
         HttpSession session =request.getSession();
-        String lib_id= simpleform.getCMBLib();
+        lib_id= simpleform.getCMBLib();
+        sub_lib=simpleform.getCMBSUBLib();
         p = simpleform.getTXTPHRASE();
         cmbyr = simpleform.getCMBYR();
-        yr1 = simpleform.getTXTYR1();
-        yr2 = simpleform.getTXTYR2();
+        if(simpleform.getTXTYR1()!=null)
+        yr1 = Integer.parseInt(simpleform.getTXTYR1());
+        if(simpleform.getTXTYR2()!=null)
+        yr2 = Integer.parseInt(simpleform.getTXTYR2());
         cf = simpleform.getCMBFIELD();
         db = simpleform.getCMBDB();
         cnf = simpleform.getCMBCONN();
         sort= simpleform.getCMBSORT();
         int flag=0;
+        //System.out.println("*************************"+p+".....");
+        //String library_id,String searching_word,String sortby
+   //System.out.println(yr1+"............."+yr2+".............");
+   /* if(cmbyr.equalsIgnoreCase("all"))
+    {
+        yr1=-1;
+        yr2=9999;
+    }
+    else if (cmbyr.equalsIgnoreCase("after"))
+    {
 
+        yr2=9999;
+    }
+    else if(cmbyr.equalsIgnoreCase("upto"))
+    {
+    yr2=yr1+1;
+    yr1=0;
+    }*/
+/*
+ * Seperate words that are entered to search in String Array named phrase
+ */
+    //if(p.equals(""))
+    //phrase[0]="";
+    //else
+    phrase=p.split(" ");
+    System.out.println("*************************"+phrase.length+phrase[0]+".....");
+ /*
+ * Execute query by passing parameters and set resulting List in session
+ */
+    simple_search_list =simpleSearchDAO.simpleSearch(lib_id,sub_lib,phrase,cnf,db,sort,cf,yr1,yr2);
+    
+    session.setAttribute("simple_search_list",simple_search_list);
+
+
+
+/*
         String query = "select * from document_details";
-System.out.println(db+".............");
+    
          
          
         
@@ -147,8 +183,8 @@ System.out.println(db+".............");
    if ((toIndex = fromIndex+4) >= opacList.size ())
    toIndex = opacList.size();
    request.setAttribute ("opacList", opacList.subList(fromIndex, toIndex));
-   pageContext.setAttribute("tCount", tcount);*/
-
+   pageContext.setAttribute("tCount", tcount);
+   */
         return mapping.findForward(SUCCESS);
     }
 }

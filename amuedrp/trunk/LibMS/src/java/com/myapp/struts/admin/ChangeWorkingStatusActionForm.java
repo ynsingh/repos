@@ -18,8 +18,8 @@ import org.apache.struts.action.ActionMessage;
 public class ChangeWorkingStatusActionForm extends org.apache.struts.action.ActionForm {
     
     private String working_status;
-    private String library_name;
-    private String library_id;
+    private String institute_name;
+    private String institute_id;
     private int registration_request_id;
 
    
@@ -32,7 +32,7 @@ public class ChangeWorkingStatusActionForm extends org.apache.struts.action.Acti
      * This is the action called from the Struts framework.
      * @param mapping The ActionMapping used to select this instance.
      * @param request The HTTP Request we are processing.
-    
+     * @return
      */
 
 
@@ -58,7 +58,7 @@ public class ChangeWorkingStatusActionForm extends org.apache.struts.action.Acti
     }
 
     /**
-     * @param  registration_request_id to set
+     * @param the registration_request_id to set
      */
     public void setRegistration_request_id(int registration_request_id) {
         this.registration_request_id = registration_request_id;
@@ -67,28 +67,28 @@ public class ChangeWorkingStatusActionForm extends org.apache.struts.action.Acti
     /**
      * @return the library_name
      */
-    public String getLibrary_name() {
-        return library_name;
+    public String getInstitute_name() {
+        return institute_name;
     }
 
     /**
      * @param library_name the library_name to set
      */
-    public void setLibrary_name(String library_name) {
-        this.library_name = library_name;
+    public void setInstitute_name(String institute_name) {
+        this.institute_name = institute_name;
     }
 
     /**
      * @return the library_id
      */
-    public String getLibrary_id() {
-        return library_id;
+    public String getInstitute_id() {
+        return institute_id;
     }
 
     /**
      * @param library_id the library_id to set
      */
-    public void setLibrary_id(String library_id) {
-        this.library_id = library_id;
+    public void setInstitute_id(String institute_id) {
+        this.institute_id = institute_id;
     }
 }

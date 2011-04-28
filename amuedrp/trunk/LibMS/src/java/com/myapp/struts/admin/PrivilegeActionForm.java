@@ -5,12 +5,6 @@
 
 package com.myapp.struts.admin;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-
 /**
  *
  * @author Dushyant
@@ -35,11 +29,7 @@ private String staff_name;
      * @param request The HTTP Request we are processing.
      
      */
-    public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
-        ActionErrors errors = new ActionErrors();
-        
-        return null;
-    }
+
 
     /**
      * @return the privilege_list

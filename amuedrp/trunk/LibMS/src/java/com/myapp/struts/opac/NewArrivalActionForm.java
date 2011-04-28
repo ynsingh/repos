@@ -21,6 +21,16 @@ public class NewArrivalActionForm extends org.apache.struts.action.ActionForm {
 
     private String CMBPERIOD;
     private String CMBLib;
+    private String  CMBSUBLib;
+
+    public String getCMBSUBLib() {
+        return CMBSUBLib;
+    }
+
+    public void setCMBSUBLib(String CMBSUBLib) {
+        this.CMBSUBLib = CMBSUBLib;
+    }
+    
     
     /**
      *
@@ -30,12 +40,7 @@ public class NewArrivalActionForm extends org.apache.struts.action.ActionForm {
         // TODO Auto-generated constructor stub
     }
 
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param request The HTTP Request we are processing.
     
-     */
     public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
         ActionErrors errors = new ActionErrors();
         if (getR() == null || getR().length() < 1) {   

@@ -1,13 +1,4 @@
-<%-- 
-    Document   : Advance.jsp
-    Created on : Jun 1, 2010, 3:51:48 PM
-    Author     : MAYANK SAXENA
---%>
-<%--
-    Document   :Advanced.jsp
-    Created on : Jun 18, 2010, 7:46:24 AM
-    Author     : Mayank Saxena
---%>
+
     <%@page import="com.myapp.struts.opac.OpacDoc"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
     <%@ page import="java.util.*"%>
@@ -23,7 +14,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="Mayank Saxena" content="MCA,AMU">
 
-    <link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 
 <script language="javascript" >
 
@@ -35,16 +26,12 @@ location.href="advance.jsp";
 
 function b2click()
 {
-f.action="/LibMS-Struts/OPAC/home.html";
+f.action="<%=request.getContextPath()%>/OPAC/home.html";
 f.method="post";
 f.target="_self";
 f.submit();
 }
-function getQuery(id)
-{
-    var query = "MyResultSet.do?id=(select * from document_details where call_no='"+id+"')";
-    return query;
-}
+
 </script>
  <style>
 
@@ -64,11 +51,11 @@ function getQuery(id)
 <body bgcolor="#FFFFFF">
 <%!
 
-   ResultSet rs=null;
-
+  
 Locale locale=null;
     String locale1="en";
     String rtl="ltr";
+    String align="left";
    OpacDoc Ob;
    ArrayList opacList;
    int fromIndex, toIndex;
@@ -80,34 +67,12 @@ Locale locale=null;
    int perpage=10;
    int tpage=0;
 
- rs=(ResultSet)session.getAttribute("ResultSet");
- if (rs!=null){
- while (rs.next()) {
-	tcount++;
-	Ob = new OpacDoc ();
-	Ob.setTitle(rs.getString("title"));
-	Ob.setAuthor(rs.getString("author_main"));
-	Ob.setCallno(rs.getString("call_no"));
-	
-        
-	Ob.setPublisher(rs.getString("publisher_name"));
-        Ob.setPubplace(rs.getString("publication_place"));
-        Ob.setLibrary_id(rs.getString("library_id"));
-   opacList.add(Ob);
-		     }
-rs.beforeFirst();
-rs.next();
-
-
-System.out.println("tcount="+tcount);
-}
-else{
-}%>
-<%
+opacList=(ArrayList)session.getAttribute("ResultSet");
+ if(opacList!=null)tcount = opacList.size();
    fromIndex = (int) DataGridParameters.getDataGridPageIndex (request, "datagrid1");
-   if ((toIndex = fromIndex+10) >= opacList.size ())
-   toIndex = opacList.size();
-   request.setAttribute ("opacList", opacList.subList(fromIndex, toIndex));
+   if ((toIndex = fromIndex+10) >= tcount)
+   toIndex = tcount;
+   if(opacList!=null)request.setAttribute ("opacList", opacList.subList(fromIndex, toIndex));
    pageContext.setAttribute("tCount", tcount);
 %>
 <%
@@ -121,16 +86,16 @@ locale1=(String)session.getAttribute("locale");
     else locale1="en";
 }catch(Exception e){locale1="en";}
      locale = new Locale(locale1);
-    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;}
-    else{ rtl="RTL";page=false;}
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";}
+    else{ rtl="RTL";align="right";}
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
     %>
-  <%if(page.equals(true)){%>
-<table align="left" width="1200x" height="400px"  style="border:solid 1px #e0e8f5;">
+<%--  <%if(page.equals(true)){%>--%>
+<table align="<%=align%>" dir="<%=rtl%>" width="1200x" height="400px"  style="border:solid 1px #e0e8f5;">
 
 
-  <tr style="background-color:#e0e8f5;"><td  width="800px"  height="28px" align="center" rowspan="2" colspan="2">
+  <tr style="background-color:#e0e8f5;" dir="<%=rtl%>"><td  width="800px" dir="<%=rtl%>"  height="28px" align="center" rowspan="2" colspan="2">
 
 
 		Advanced Search (Search Result)
@@ -138,16 +103,16 @@ locale1=(String)session.getAttribute("locale");
 
 
 
-        </td><td valign="top" align="center">
+        </td><td valign="top" align="center" dir="<%=rtl%>">
     Biblograhic Details
   </td></tr>
-  <tr style="background-color:#e0e8f5;" height="10px">
-  <td valign="top" rowspan="2">
-  <IFRAME  name="fr2" src="#" frameborder=0 scrolling="NO" height="400px"  id="fr2"></IFRAME>
+  <tr style="background-color:#e0e8f5;" height="10px" dir="<%=rtl%>">
+  <td valign="top" rowspan="2" dir="<%=rtl%>">
+  <IFRAME  name="fr2" src="#" frameborder=0 scrolling="NO" dir="<%=rtl%>" height="400px"  id="fr2"></IFRAME>
   </td>
      </tr>
-     <tr style="background-color:#e0e8f5;">
-         <td colspan="2" align="center" valign="top" height="300px">
+     <tr style="background-color:#e0e8f5;" dir="<%=rtl%>">
+         <td colspan="2" align="center" valign="top" dir="<%=rtl%>" height="300px">
 
 
 
@@ -165,31 +130,31 @@ if(tcount==0)
 <%}
 else
 {%>
-<table height="300px" ><tr><td valign="top">
-<ui:dataGrid items="${opacList}"   var="doc" name="datagrid1" cellPadding="0"  cellSpacing="0" styleClass="datagrid">
+<table height="300px" dir="<%=rtl%>"><tr><td valign="top" dir="<%=rtl%>">
+<ui:dataGrid items="${opacList}"  var="doc" name="datagrid1" cellPadding="0"  cellSpacing="0" styleClass="datagrid">
 
   <columns>
 
 
 
-    <column width="450">
-      <header value="Title" hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.title}" hyperLink="/LibMS-Struts/OPAC/MyResultSet.do?id=select * from document_details where call_no='${doc.callno}' and library_id='${doc.library_id}'" hyperLinkTarget="fr2" hAlign="left"/>
+    <column width="450" >
+      <header value="Title" hAlign="left" styleClass="header" />
+      <item  styleClass="item"  value="${doc.title}"  hyperLink="./viewDetails.do?doc_id=${doc.id.documentId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hyperLinkTarget="fr2" hAlign="left"/>
     </column>
 
-    <column width="200">
-      <header value="Author" hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.author}" hAlign="left" hyperLink="/LibMS-Struts/OPAC/MyResultSet.do?id=select * from document_details where call_no='${doc.callno}' and library_id='${doc.library_id}'" hyperLinkTarget="fr2"  />
+    <column width="200" >
+      <header value="Main Entry" hAlign="left" styleClass="header"/>
+      <item  styleClass="item"  value="${doc.mainEntry}" hAlign="left" hyperLink="./viewDetails.do?doc_id=${doc.id.documentId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hyperLinkTarget="fr2"  />
     </column>
 
-    <column width="100">
-      <header value="Call No." hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.callno}" hyperLink="/LibMS-Struts/OPAC/MyResultSet.do?id=select * from document_details where call_no='${doc.callno}' and library_id='${doc.library_id}'" hyperLinkTarget="fr2" hAlign="left" />
+    <column width="100" >
+      <header value="Call No." hAlign="left"  styleClass="header"/>
+      <item  styleClass="item"  value="${doc.callNo}"  hyperLink="./viewDetails.do?doc_id=${doc.id.documentId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hyperLinkTarget="fr2" hAlign="left" />
     </column>
 
-      <column width="150">
-      <header value="Library ID" hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.library_id}" hyperLink="/LibMS-Struts/OPAC/MyResultSet.do?id=select * from document_details where call_no='${doc.callno}' and library_id='${doc.library_id}'" hyperLinkTarget="fr2" hAlign="left" />
+      <column width="150" >
+      <header value="Library ID" hAlign="left"  styleClass="header"/>
+      <item  styleClass="item"  value="${doc.id.libraryId}"  hyperLink="./viewDetails.do?doc_id=${doc.id.documentId}&amp;library_id=${doc.id.libraryId}&amp;sublibrary_id=${doc.id.sublibraryId}" hyperLinkTarget="fr2" hAlign="left" />
     </column>
  </columns>
 
@@ -201,20 +166,20 @@ else
 
 </ui:dataGrid>
 </td></tr>
-<tr><td height="5px" style="margin:0px 0px 0px 0px;" >
-        <table width="900"  border=0 class="header">
+<tr><td height="5px" style="margin:0px 0px 0px 0px;" dir="<%=rtl%>">
+        <table width="900"  border=0 class="header" dir="<%=rtl%>">
     <tr >
-<td align="left" width="10%" class="datagrid">
+<td align="<%=align%>" width="10%" class="datagrid" dir="<%=rtl%>">
 <c:if test="${previous != null}">
     <a style="color:white;" href="<c:out value="${previous}"/>">Previous</a>
 </c:if>&nbsp;
 </td>
 
-<td align="center" width="10%" class="datagrid">
+<td align="center" dir="<%=rtl%>" width="10%" class="datagrid">
 <c:forEach items="${pages}" var="page">
 <c:choose>
   <c:when test="${page.current}">
-      <b><a style="color:white" href="<c:out value="${page.url}" />"><c:out value="${page.index}"/></a></b>
+      <b><a style="color:white" dir="<%=rtl%>" href="<c:out value="${page.url}" />"><c:out value="${page.index}"/></a></b>
   </c:when>
   <c:otherwise>
     <a style="color:white" href="<c:out value="${page.url}" />"><c:out value="${page.index}"/></a>
@@ -222,17 +187,17 @@ else
 </c:choose>
 </c:forEach>
 </td>
-<td align="right" width="10%" class="datagrid">&nbsp;
+<td align="right" width="10%" class="datagrid" dir="<%=rtl%>">&nbsp;
 <c:if test="${next != null}">
-<a style="color:white;" href="<c:out value="${next}"/>">Next</a>
+<a style="color:white;" dir="<%=rtl%>" href="<c:out value="${next}"/>">Next</a>
 </c:if>
 </td>
 </tr>
     </table></td></tr>
-<tr><td height="10px">
-<form name="f">
-  <div align="left">
-    <input type="button" name="b1" value="Back..." onclick="b1click()">
+<tr><td height="10px" dir="<%=rtl%>">
+<form name="f" dir="<%=rtl%>">
+  <div align="<%=align%>" dir="<%=rtl%>">
+    <input type="button" dir="<%=rtl%>" name="b1" value="Back..." onclick="b1click()">
   
   </div>
 </form>
@@ -241,123 +206,6 @@ else
 
 
   </td></tr></table>
-  <%}else{%>
-  <table align="left" width="1200x" class="datagrid" height="400px"  style="border:solid 1px #e0e8f5;">
-
-
-  <tr style="background-color:#e0e8f5;"><td valign="top" align="center">
-    Biblograhic Details
-  </td><td  width="800px"  height="28px" align="center" rowspan="2" colspan="2">
-
-
-		Advanced Search (Search Result)
-
-
-
-
-        </td></tr>
-  <tr style="background-color:#e0e8f5;" height="10px">
-  <td valign="top" rowspan="2">
-  <IFRAME  name="fr2" src="#" frameborder=0 scrolling="NO" height="400px"  id="fr2"></IFRAME>
-  </td>
-     </tr>
-     <tr style="background-color:#e0e8f5;">
-         <td colspan="2" align="center" valign="top" height="300px">
-
-
-
-
-
-<%
-
-
-
-
-if(tcount==0)
-{
-%>
-<p class="err">No record Found</p>
-<%}
-else
-{%>
-<table height="300px" ><tr><td valign="top">
-<ui:dataGrid items="${opacList}"   var="doc" name="datagrid1" cellPadding="0"  cellSpacing="0" styleClass="datagrid">
-
-  <columns>
-
-
-
-    <column width="450">
-      <header value="Title" hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.title}" hyperLink="/LibMS-Struts/OPAC/MyResultSet.do?id=select * from document_details where call_no='${doc.callno}' and library_id='${doc.library_id}'" hyperLinkTarget="fr2" hAlign="left"/>
-    </column>
-
-    <column width="200">
-      <header value="Author" hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.author}" hAlign="left" hyperLink="/LibMS-Struts/OPAC/MyResultSet.do?id=select * from document_details where call_no='${doc.callno}' and library_id='${doc.library_id}'" hyperLinkTarget="fr2"  />
-    </column>
-
-    <column width="100">
-      <header value="Call No." hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.callno}" hyperLink="/LibMS-Struts/OPAC/MyResultSet.do?id=select * from document_details where call_no='${doc.callno}' and library_id='${doc.library_id}'" hyperLinkTarget="fr2" hAlign="left" />
-    </column>
-
-      <column width="150">
-      <header value="Library ID" hAlign="left" styleClass="header"/>
-      <item  styleClass="item"  value="${doc.library_id}" hyperLink="/LibMS-Struts/OPAC/MyResultSet.do?id=select * from document_details where call_no='${doc.callno}' and library_id='${doc.library_id}'" hyperLinkTarget="fr2" hAlign="left" />
-    </column>
- </columns>
-
-<rows styleClass="rows" hiliteStyleClass="hiliterows"/>
-  <alternateRows styleClass="alternaterows"/>
-
-  <paging size="10" count="${tCount}" custom="true" nextUrlVar="next"
-       previousUrlVar="previous" pagesVar="pages"/>
-
-</ui:dataGrid>
-</td></tr>
-<tr><td height="5px" style="margin:0px 0px 0px 0px;" >
-        <table width="900"  border=0 class="header">
-    <tr >
-<td align="left" width="10%" class="datagrid">
-<c:if test="${previous != null}">
-    <a style="color:white;" href="<c:out value="${previous}"/>">Previous</a>
-</c:if>&nbsp;
-</td>
-
-<td align="center" width="10%" class="datagrid">
-<c:forEach items="${pages}" var="page">
-<c:choose>
-  <c:when test="${page.current}">
-      <b><a style="color:white" href="<c:out value="${page.url}" />"><c:out value="${page.index}"/></a></b>
-  </c:when>
-  <c:otherwise>
-    <a style="color:white" href="<c:out value="${page.url}" />"><c:out value="${page.index}"/></a>
-  </c:otherwise>
-</c:choose>
-</c:forEach>
-</td>
-<td align="right" width="10%" class="datagrid">&nbsp;
-<c:if test="${next != null}">
-<a style="color:white;" href="<c:out value="${next}"/>">Next</a>
-</c:if>
-</td>
-</tr>
-    </table></td></tr>
-<tr><td height="10px">
-<form name="f">
-  <div align="left">
-    <input type="button" name="b1" value="Back..." onclick="b1click()">
-
-  </div>
-</form>
-    </td></tr></table>
-  <%}%>
-
-
-  </td></tr></table>
-
-  <%}%>
     </body>
 
 </html>

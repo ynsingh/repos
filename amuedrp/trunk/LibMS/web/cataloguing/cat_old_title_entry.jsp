@@ -1,7 +1,7 @@
 <%--
     Document   : cat_biblio_entry
     Created on : Jan 13, 2011, 12:02:47 PM
-    Author     : Client
+    Author     : Asif Iqubal
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -14,12 +14,13 @@
 <%! boolean read=false;%>
 <%
 String library_id=(String)session.getAttribute("library_id");
+String sub_library_id=(String)session.getAttribute("sublibrary_id");
 String button=(String)request.getAttribute("button");
+String msg1=(String) request.getAttribute("msg1");
 if (button.equals("View")||button.equals("Delete"))
 read=true;
-
 else
-    read=false;
+read=false;
 System.out.println("<<<<<<"+read+button);
 %>
 <script type="text/javascript">
@@ -33,145 +34,189 @@ if (answer!=true)
     }
     else
         {
-       document.Form1.action="/LibMS-Struts/cataloguing/cat_old_title.jsp";
+       document.Form1.action="<%=request.getContextPath()%>/cataloguing/cat_old_title.jsp";
        document.Form1.method="post";
-   //document.Form1.target="_blank";
-        document.Form1.submit();
+       document.Form1.submit();
 return true;
+        }
+}
+function generateRow() {
+       var d=document.getElementById("my_div");
+       var no = document.getElementById("my_div").childNodes;
+        if (no.length<5){
+       d.innerHTML+="<input type='text' name='added_entry"+(no.length/2)+"' Class='textBoxWidth'/><br>";
+    }else{
+       // d.innerHTML+="</td>";
+   }
 
         }
-
-
-}
 </script>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Bibliographic Detail Entry Form</title>
-        <link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
-         <link rel="stylesheet" href="/LibMS-Struts/css/formstyle.css"/>
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
+         <link rel="stylesheet" href="<%=request.getContextPath()%>/css/formstyle.css"/>
     </head>
     <body>
-        <html:form method="post" action="/catOldBiblioDetailAction" style="position:absolute; left:200px; top:150px;"  >
- <table border="1" class="table" width="730">
-                <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;" ><b>Bibliographic Detail Entry</b></td></tr>
-                <tr><td>
-                        <table width="700" border="0" cellspacing="4" cellpadding="1" align="center">
+    <%if(msg1!=null){%>   <span style=" position:absolute; top: 90px; font-size:12px;font-weight:bold;color:red;" ><%=msg1%></span>  <%}%>
+
+    <table border="1" class="table" width="80%" style="position: absolute; top: 20%; left: 10%">
+        <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;" colspan="2" ><b>Bibliographic Detail Entry</b></td></tr>
+            <tr><td>
+                    <table width="100%">
+                        <tr><td>    <html:form method="post" action="/catOldBiblioDetailAction">
+        <table width="100%" border="0" cellspacing="4" cellpadding="1" align="left">
                         <tr>
-                        <html:hidden property="library_id" name="BibliographicDetailEntryActionForm" value="<%=library_id%>" /><td></td>
-                        <html:hidden property="accession_type" name="BibliographicDetailEntryActionForm"/>
+                        <html:hidden property="library_id" name="BibliographicDetailEntryActionForm" value="<%=library_id%>" />
+                        <html:hidden property="sublibrary_id" name="BibliographicDetailEntryActionForm" value="<%=sub_library_id%>" /><td></td>
+                        <html:hidden property="accession_type" name="BibliographicDetailEntryActionForm" value="Old"/>
+                         <html:hidden property="document_type" name="BibliographicDetailEntryActionForm" value="Book"/>
+                         <html:hidden property="no_of_copies" name="BibliographicDetailEntryActionForm"/>
                         </tr>
 <tr><td colspan="5" height="10px"></td>
 </tr>
 <tr><td colspan="5" height="10px"></td>
 </tr>
-  <tr>
-    <td width="150" align="right" class="txtStyle"><strong>Biblio ID:</strong> </td>
-    <td><html:text readonly="true"  property="biblio_id" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" /></td>
-    <td width="150" align="right" class="txtStyle"><strong>Document Type:</strong> </td>
+<tr>
+    <td width="150" align="right" class="txtStyle"><strong>Document Catagory<a class="star">*</a>:</strong> </td>
     <td>
-      <html:text readonly="true"  property="document_type" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" />
-    </td>
-  </tr>
-  <tr><td colspan="5" height="10px"></td>
-</tr>
-  <tr>
-    <td width="150" align="right" class="txtStyle"><strong>Title<a class="star">*</a>:</strong> </td>
-    <td><html:text readonly="<%=read%>" property="title" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" />
-            <br><span class="err">   <html:messages id="err_name" property="title">
+        <html:select property="book_type" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth"  tabindex="1">
+            <html:options collection="bookList"  labelProperty="detail" property="id.bookType" name="BookCategory"></html:options>
+  </html:select>
+     <br><span class="err">   <html:messages id="err_name" property="book_type">
         <bean:write name="err_name" />
-    </html:messages></span>
-    </td>
- <td align="right" class="txtStyle"><strong> Subtitle:</strong></td>
-    <td><html:text readonly="<%=read%>" property="subtitle" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" /></td>
-  </tr>
-  <tr><td colspan="5" height="5px"></td>
+    </html:messages></span></td>
+
 </tr>
-  <tr>
-    <td align="right" class="txtStyle"><strong>Main Author<a class="star">*</a>:</strong></td>
-  <td><html:text readonly="<%=read%>" property="author_main" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" />
-        <br><span class="err">   <html:messages id="err_name" property="author_main">
-        <bean:write name="err_name" />
-    </html:messages></span>
-  </td>
- <td align="right" class="txtStyle"><strong>Sub Authors:</strong></td>
-  <td><html:text readonly="<%=read%>" property="author_sub" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" /></td>
-  </tr>
-  <tr><td colspan="5" height="5px"></td>
+<tr><td height="2px"></td>
 </tr>
-  <tr>
-    <td align="right" class="txtStyle"><strong>Publisher Name:</strong></td>
-  <td><html:text readonly="<%=read%>" property="publisher_name" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" /></td>
- <td align="right" class="txtStyle"><strong>Publication Place :</strong></td>
-  <td><html:text readonly="<%=read%>" property="publication_place" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" /></td>
-  </tr>
-  <tr><td colspan="5" height="5px"></td>
-</tr>
-  <tr>
-   <td align="right" class="txtStyle"><strong>Publishing Year:</strong></td>
-  <td><html:text readonly="<%=read%>" property="publishing_year" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" />
-            <br><span class="err">   <html:messages id="err_name" property="publishing_year">
-        <bean:write name="err_name" />
-    </html:messages></span>
-  </td>
- <td align="right" class="txtStyle"><strong>LCC No:</strong></td>
-  <td><html:text readonly="<%=read%>" property="control_no" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" />
-           </td>
-  </tr>
-  <tr><td colspan="5" height="5px"></td>
-</tr>
-  <tr>
-    <td align="right" class="txtStyle"><strong>ISBN: </strong></td>
-    <td><html:text readonly="true"  property="isbn10" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" /></td>
-   <td align="right" class="txtStyle"><strong>Second ISBN: </strong></td>
-  <td><html:text readonly="<%=read%>"  property="isbn13" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" /></td>
+<tr>
+       <td align="right" class="txtStyle"><strong>Subtitle:</strong></td>
+    <td><html:text property="subtitle" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" /></td>
 
   </tr>
-  <tr><td colspan="5" height="5px"></td>
+  <tr><td height="2px"></td>
 </tr>
   <tr>
+      <td align="right" class="txtStyle"><strong>Main Entry<a class="star">*</a>:</strong></td>
+  <td><html:text property="main_entry" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" />
+      <br><span class="err">   <html:messages id="err_name" property="main_entry">
+        <bean:write name="err_name" />
+    </html:messages></span>
+  </td>
+   </tr>
+  <tr><td height="2px"></td>
+</tr>
+   <tr>
+ <td align="right" class="txtStyle"><strong>Publisher Name:</strong></td>
+ <td><html:text property="publisher_name" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" /></td>
+     </tr>
+  <tr><td height="2px"></td>
+</tr>
+     <tr>
+  <td align="right" class="txtStyle"><strong>Publishing Year:</strong></td>
+  <td><html:text property="publishing_year" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" />
+  </td>
+  </tr>
+  <tr><td height="2px"></td>
+</tr>
+  <tr>
+    <td align="right" class="txtStyle"><strong>ISBN-10: </strong></td>
+    <td><html:text  property="isbn10" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" /></td>
+   </tr>
+  <tr><td height="2px"></td>
+</tr>
+   <tr>
     <td align="right" class="txtStyle"><strong>Edition:</strong></td>
-  <td><html:text readonly="<%=read%>" property="edition" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" /></td>
- <td align="right" class="txtStyle"><strong>Call No<a class="star">*</a>:</strong></td>
-  <td><html:text readonly="<%=read%>" property="call_no" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" />
-          <br><span class="err">   <html:messages id="err_name" property="call_no">
-        <bean:write name="err_name" />
-    </html:messages></span>
-  </td>
-  </tr>
-<tr><td colspan="5" height="10px"></td>
-</tr>
-  <tr>
-   <td align="right" class="txtStyle"><strong>Index No:</strong></td>
-  <td><html:text readonly="<%=read%>" property="index_no" name="BibliographicDetailEntryActionForm"  styleClass="textBoxWidth" /></td>
- <td align="right" class="txtStyle"><strong>No of pages:</strong></td>
-  <td><html:text readonly="<%=read%>" property="no_of_pages" name="BibliographicDetailEntryActionForm"  styleClass="textBoxWidth" /></td>
-  </tr>
-  <tr><td colspan="5" height="5px"></td>
-</tr>
-  <tr>
-   <td align="right" class="txtStyle"><strong>Physical Width:</strong></td>
-  <td><html:text readonly="<%=read%>" property="physical_width" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" /></td>
- <td align="right" class="txtStyle"><strong>Price:</strong></td>
-  <td><html:text readonly="<%=read%>" property="price" name="BibliographicDetailEntryActionForm"  styleClass="textBoxWidth" /></td>
+  <td><html:text property="edition" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" /></td>
 
   </tr>
-<tr><td colspan="5" height="10px"></td>
+  <tr><td height="2px"></td>
 </tr>
   <tr>
-   <td align="right" class="txtStyle"><strong>Bind Type:</strong></td>
-  <td><html:text readonly="<%=read%>" property="bind_type" name="BibliographicDetailEntryActionForm"  styleClass="textBoxWidth" /></td>
-  <td align="right" class="txtStyle"><strong>No of copies:</strong></td>
-  <td><html:text readonly="<%=read%>" property="no_of_copies" name="BibliographicDetailEntryActionForm"  styleClass="textBoxWidth" /></td>
-
+   <td align="right" class="txtStyle"><strong>Alternate Title:</strong></td>
+  <td><html:text property="alt_title" name="BibliographicDetailEntryActionForm"  styleClass="textBoxWidth" /></td>
   </tr>
-    <tr><td colspan="5" height="5px"></td>
+  <tr><td height="2px"></td>
 </tr>
- 
+  <tr>
+      <td align="right" class="txtStyle"><strong>Series:</strong></td>
+      <td><html:text property="ser_note" styleClass="textBoxWidth" name="BibliographicDetailEntryActionForm"/></td>
+  </tr>
+  <tr><td height="2px"></td>
+</tr>
+  <tr>
+   <td align="right" class="txtStyle"><strong>Abstract:</strong></td>
+   <td><html:textarea rows="5" cols="20" property="thesis_abstract" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" /></td>
+   </tr>
+<tr><td colspan="5" height="5px"></td>
+</tr>
+<tr><td colspan="5" height="5px"></td>
+</tr>
 <tr><td></td><td></td></tr>
 <tr><td colspan="5" height="10px"></td>
 </tr>
-<tr><td colspan="5" height="5px" class="mandatory" align="right"><a class="star">*</a>indicated fields are mandatory</td></tr>
+</table>
+</td>
+ <td>
+     <table>
+         <tr>
+    <td width="150" align="right" class="txtStyle"><strong>Title:</strong> </td>
+    <td><html:text readonly="true" property="title" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" />
+    </td>
+         </tr>
+         <tr><td height="2px"></td>
+</tr>
+         <tr>
+  <td align="right" class="txtStyle"><strong>Statement Responsiblity<a class="star">*</a>:</strong></td>
+  <td><html:text property="statement_responsibility" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" />
+      <br><span class="err">   <html:messages id="err_name" property="statement_responsibility">
+        <bean:write name="err_name" />
+    </html:messages></span>
+  </td>
+         </tr>
+         <tr><td height="2px"></td>
+</tr>
+         <tr>
+        <td align="right" class="txtStyle"><strong>Added Entry:</strong></td>
+        <td><html:text property="added_entry" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" /><input type="button" onclick="generateRow()" value="+"/><div id="my_div"></div></td>
+       <tr><td height="2px"></td>
+</tr>
+     <tr><td align="right" class="txtStyle"><strong>Publication Place :</strong></td>
+  <td><html:text property="publication_place" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" /></td>
+</tr>
+<tr><td height="2px"></td>
+</tr>
+<tr> <td align="right" class="txtStyle"><strong>LCC No:</strong></td>
+  <td><html:text property="LCC_no" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" />
+         </td></tr>
+<tr><td height="2px"></td>
+</tr>
+<tr> <td align="right" class="txtStyle"><strong>ISBN-13: </strong></td>
+  <td><html:text  property="isbn13"  name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" /></td>
+</tr>
+<tr><td height="2px"></td>
+</tr>
+<tr><td align="right" class="txtStyle"><strong>Call No<a class="star">*</a>:</strong></td>
+  <td><html:text property="call_no" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" />
+        <br><span class="err">   <html:messages id="err_name" property="call_no">
+        <bean:write name="err_name" />
+    </html:messages></span>
+  </td></tr>
+<tr><td height="2px"></td>
+</tr>
+<tr><td align="right" class="txtStyle"><strong>Subjects:</strong></td>
+  <td><html:text property="subject" name="BibliographicDetailEntryActionForm"  styleClass="textBoxWidth" /></td>
+</tr>
+<tr><td height="2px"></td>
+</tr>
+<tr> <td align="right" class="txtStyle"><strong>Notes:</strong></td>
+  <td><html:textarea rows="5" cols="20" property="notes" name="BibliographicDetailEntryActionForm"  styleClass="textBoxWidth" /></td>
+</tr>
+     </table></td></tr>
+
+              <tr><td colspan="5" height="5px" class="mandatory" align="right"><a class="star">*</a>indicated fields are mandatory</td></tr>
 <tr><td colspan="5" height="10px"></td>
 </tr>
 <tr>

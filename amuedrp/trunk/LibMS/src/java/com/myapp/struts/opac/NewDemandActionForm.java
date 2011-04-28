@@ -30,6 +30,8 @@ public class NewDemandActionForm extends ValidatorForm {
     private String TXTCOPY;
     private String TXTVOL;
     private String TXTEDITION;
+    private String CMBLib;
+private String cmdSubLibary;
     
 
     /**
@@ -221,6 +223,34 @@ public class NewDemandActionForm extends ValidatorForm {
      */
     public void setTXTEDITION(String TXTEDITION) {
         this.TXTEDITION = TXTEDITION;
+    }
+
+    /**
+     * @return the CMBLib
+     */
+    public String getCMBLib() {
+        return CMBLib;
+    }
+
+    /**
+     * @param CMBLib the CMBLib to set
+     */
+    public void setCMBLib(String CMBLib) {
+        this.CMBLib = CMBLib;
+    }
+
+    /**
+     * @return the cmdSubLibary
+     */
+    public String getCmdSubLibary() {
+        return cmdSubLibary;
+    }
+
+    /**
+     * @param cmdSubLibary the cmdSubLibary to set
+     */
+    public void setCmdSubLibary(String cmdSubLibary) {
+        this.cmdSubLibary = cmdSubLibary;
     }
 
   

@@ -14,12 +14,13 @@
 
 <%
 String library_id=(String)session.getAttribute("library_id");
+String sub_library_id=(String)session.getAttribute("sublibrary_id");
 String msg1=(String) request.getAttribute("msg1");
 %>
 <script type="text/javascript">
 function send()
 {
-    window.location="/LibMS-Struts/cataloguing/cat_biblio.jsp";
+    window.location="<%=request.getContextPath()%>/cataloguing/cat_biblio.jsp";
     return false;
 }
 </script>
@@ -27,8 +28,8 @@ function send()
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Bibliographic Detail Entry Form</title>
-        <link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
-         <link rel="stylesheet" href="/LibMS-Struts/css/formstyle.css"/>
+        <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
+         <link rel="stylesheet" href="<%=request.getContextPath()%>/css/formstyle.css"/>
     </head>
     <body>
    <%if(msg1!=null){%>   <span style=" position:absolute; top: 120px; font-size:12px;font-weight:bold;color:red;" ><%=msg1%></span>  <%}%>
@@ -38,8 +39,10 @@ function send()
                 <tr><td>
                         <table width="700" border="0" cellspacing="4" cellpadding="1" align="left">
                         <tr>
-                        <html:hidden property="library_id" name="BibliographicDetailEntryActionForm" value="<%=library_id%>" /><td></td>
+                        <html:hidden property="library_id" name="BibliographicDetailEntryActionForm" value="<%=library_id%>" />
+                        <html:hidden property="sub_library_id" name="BibliographicDetailEntryActionForm" value="<%=sub_library_id%>" /><td></td>
                         <html:hidden property="accession_type" name="BibliographicDetailEntryActionForm" value="New"/>
+                        <html:hidden property="no_of_copies" name="BibliographicDetailEntryActionForm"/>
                         </tr>
 <tr><td colspan="5" height="10px"></td>
 </tr>
@@ -62,7 +65,7 @@ function send()
 </tr>
 <tr>
     <td width="150" align="right" class="txtStyle"><strong>Title<a class="star">*</a>:</strong> </td>
-    <td><html:text property="title" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" />
+    <td><html:text readonly="true" property="title" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" />
         <br><span class="err">   <html:messages id="err_name" property="title">
         <bean:write name="err_name" />
     </html:messages></span>
@@ -74,13 +77,13 @@ function send()
 </tr>
   <tr>
     <td align="right" class="txtStyle"><strong>Main Author<a class="star">*</a>:</strong></td>
-  <td><html:text property="author_main" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" />
-      <br><span class="err">   <html:messages id="err_name" property="author_main">
+  <td><html:text property="main_entry" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" />
+      <br><span class="err">   <html:messages id="err_name" property="main_entry">
         <bean:write name="err_name" />
     </html:messages></span>
   </td>
  <td align="right" class="txtStyle"><strong>Sub Authors:</strong></td>
-  <td><html:text property="author_sub" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" /></td>
+  <td><html:text property="added_entry" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" /></td>
   </tr>
   <tr><td colspan="5" height="5px"></td>
 </tr>
@@ -101,7 +104,7 @@ function send()
     </html:messages></span>
   </td>
  <td align="right" class="txtStyle"><strong>LCC No:</strong></td>
-  <td><html:text property="control_no" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" />
+  <td><html:text property="LCC_no" name="BibliographicDetailEntryActionForm" styleClass="textBoxWidth" />
          </td>
   </tr>
   <tr><td colspan="5" height="5px"></td>

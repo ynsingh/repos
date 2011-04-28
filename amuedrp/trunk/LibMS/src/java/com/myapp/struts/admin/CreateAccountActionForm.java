@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
 
 /**
  *
@@ -20,9 +19,12 @@ public class CreateAccountActionForm extends org.apache.struts.action.ActionForm
     private String user_name;
     private String staff_id;
     private String password;
-    private String email_id;
+    private String login_id;
+    private String sublibrary_id;
     private String role;
     private String button;
+    private String question;
+    private String ans;
 
    
 
@@ -34,12 +36,7 @@ public class CreateAccountActionForm extends org.apache.struts.action.ActionForm
         // TODO Auto-generated constructor stub
     }
 
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param request The HTTP Request we are processing.
-   
-     */
+  
     @Override
     public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
    
@@ -92,20 +89,7 @@ public class CreateAccountActionForm extends org.apache.struts.action.ActionForm
         this.password = password;
     }
 
-    /**
-     * @return the email_id
-     */
-    public String getEmail_id() {
-        return email_id;
-    }
-
-    /**
-     * @param email_id the email_id to set
-     */
-    public void setEmail_id(String email_id) {
-        this.email_id = email_id;
-    }
-
+   
     /**
      * @return the button
      */
@@ -132,5 +116,61 @@ public class CreateAccountActionForm extends org.apache.struts.action.ActionForm
      */
     public void setRole(String role) {
         this.role = role;
+    }
+
+    /**
+     * @return the login_id
+     */
+    public String getLogin_id() {
+        return login_id;
+    }
+
+    /**
+     * @param login_id the login_id to set
+     */
+    public void setLogin_id(String login_id) {
+        this.login_id = login_id;
+    }
+
+    /**
+     * @return the sublibrary_id
+     */
+    public String getSublibrary_id() {
+        return sublibrary_id;
+    }
+
+    /**
+     * @param sublibrary_id the sublibrary_id to set
+     */
+    public void setSublibrary_id(String sublibrary_id) {
+        this.sublibrary_id = sublibrary_id;
+    }
+
+    /**
+     * @return the question
+     */
+    public String getQuestion() {
+        return question;
+    }
+
+    /**
+     * @param question the question to set
+     */
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
+    /**
+     * @return the ans
+     */
+    public String getAns() {
+        return ans;
+    }
+
+    /**
+     * @param ans the ans to set
+     */
+    public void setAns(String ans) {
+        this.ans = ans;
     }
 }

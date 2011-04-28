@@ -13,6 +13,7 @@ String staff_id=(String)request.getAttribute("staff_id");
 String first_name=(String)request.getAttribute("first_name");
 String last_name=(String)request.getAttribute("last_name");
 String lib=(String)request.getAttribute("library_id");
+String sublib=(String)request.getAttribute("sublibrary_id");
 String email_id=(String)request.getAttribute("email_id");
 //out.println()
 %>
@@ -21,7 +22,7 @@ String email_id=(String)request.getAttribute("email_id");
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="css/page.css"/>
-        <title>LibMS</title>
+        <title>LibMS : Manage Staff Section</title>
     </head>
     <body onload="return message();">
    
@@ -44,7 +45,7 @@ String email_id=(String)request.getAttribute("email_id");
                     
                     &nbsp;&nbsp;&nbsp;<p align="left" class="mess">Name :<b><%=first_name%>&nbsp;<%=last_name%></b></p>
                     &nbsp;&nbsp;&nbsp;<p align="left" class="mess">Library Name:<b><%=lib%></b></p>
-                    
+                   &nbsp;&nbsp;&nbsp;<p align="left" class="mess">SubLibrary Name:<b><%=sublib%></b></p>
 
 
 
@@ -61,7 +62,7 @@ String email_id=(String)request.getAttribute("email_id");
         var a=alert("Staff registered  Successfully with Staff Id :<%=staff_id%>");
 
 
-        location.href="/LibMS-Struts/admin/ask_for_create_account.jsp?staff_id=<%=staff_id%>&first_name=<%=first_name%>&last_name=<%=last_name%>&email_id=<%=email_id%>";
+        location.href="<%=request.getContextPath()%>/admin/ask_for_create_account.jsp?staff_id=<%=staff_id%>&first_name=<%=first_name%>&last_name=<%=last_name%>&email_id=<%=email_id%>";
 
     }
 </script>

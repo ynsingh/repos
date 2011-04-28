@@ -4,42 +4,62 @@
     Author     : System Administrator
 --%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN "http://www.w3.org/TR/html4/strict.dtd">
+<%@page import="java.util.*,java.io.*,java.net.*"%>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    boolean page=true;
+    String align="left";
+%>
 <%
+try{
+locale1=(String)session.getAttribute("locale");
+
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+       // System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
+    else{ rtl="RTL";page=false;align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
+<%
+try{
+if(session.getAttribute("library_id")!=null){
+System.out.println("library_id"+session.getAttribute("library_id"));
+}
+else{
+    request.setAttribute("msg", "Your Session Expired: Please Login Again");
+    %><script>parent.location = "<%=request.getContextPath()%>"+"/logout.do?session=\"expired\"";</script><%
+    }
+}catch(Exception e){
+    request.setAttribute("msg", "Your Session Expired: Please Login Again");
+    %><script>parent.location = "<%=request.getContextPath()%>"+"/login.jsp?session=\"expired\"";</script><%
+    }
 
 String user=(String)session.getAttribute("username");
-String pass=(String)session.getAttribute("pass");
+
  session.setAttribute("pass","t");
-  String user_id=   (String)session.getAttribute("user_id");
-String user_name=   (String) session.getAttribute("username");
-  String question=  (String)request.getAttribute("question");
-   String staff_id=  (String) request.getAttribute("staff_id");
-
-
-
 
 %>
-<script>
-    // call the repeater with a function as the argument
-function repeater()
-{
-  alert("Session is Expired.You Need to Login Again?")
 
-        parent.location.href="/LibMS-Struts/login.jsp";
-}
-window.setTimeout(repeater, 1800000);
-    </script>
+<table width="100%"  border="0px" style="margin:0px 0px 0px 0px" dir="<%=rtl%>">
 
-       <body style="margin:0px 0px 0px 0px;">
+    <tr dir="<%=rtl%>"><td valign="top"  dir="<%=rtl%>">
 
+                        <p align="<%=align%>"   dir="<%=rtl%>"><img src="<%=request.getContextPath()%>/images/opac_lib.PNG" alt="banner space"   align="top" style="padding:5px 5px 5px 5px;"><br/><br></td>
+                   
 
-<table width="100%" height="80px;" border="0px" style="">
-
-                <tr><td >
-
-                        <p align="left"  style="font-family:Tempus Sans ITC;color:brown;font-size:30px;"><span><b> &nbsp;&nbsp; <img src="/LibMS-Struts/images/lib.PNG" alt="banner space"  border="0" align="top" id="Image1" style="height:50px;width:200px;"></b></span></td>
-                    <td><p align="center"  style="font-family:Tempus Sans ITC;color:brown;font-size:20px;"><span><b> </b></span></td>
-
-                    <td align="right" width="250px" valign="top"><span style="font-family:arial;color:brown;font-size:12px;"><b>Hello [<%=user%>]&nbsp;|<a href="/LibMS-Struts/admin/logout.jsp" style="text-decoration: none;color:brown" >&nbsp;Sign Out</a></b></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <td align="right" width="250px" valign="top" dir="<%=rtl%>"><span  dir="<%=rtl%>" style="font:10pt Verdana;"><%=resource.getString("login.hello")%> [<%=user%>]&nbsp;|<a href="<%=request.getContextPath()%>/logout.do" style="text-decoration: none;color:brown" dir="<%=rtl%>">&nbsp;<%=resource.getString("login.signout")%></a></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 
                      </td>
                 </tr>
@@ -49,8 +69,3 @@ window.setTimeout(repeater, 1800000);
 
                 </table>
 
-
-           <hr/>
-    </body>
-
-   

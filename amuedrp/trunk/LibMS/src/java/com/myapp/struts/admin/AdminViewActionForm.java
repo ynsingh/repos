@@ -6,10 +6,8 @@
 package com.myapp.struts.admin;
 
 import javax.servlet.http.HttpServletRequest;
-import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.validator.ValidatorForm;
 
 /**
  *
@@ -18,8 +16,8 @@ import org.apache.struts.validator.ValidatorForm;
 public class AdminViewActionForm   extends org.apache.struts.action.ActionForm {
     
     private String library_id;
-    private String query_id;
-private int registration_request_id ;
+  
+private int registration_request_id;
 private String institute_name ;
 private String abbreviated_name ;
 private String institute_address ;
@@ -29,7 +27,7 @@ private String country ;
 private String pin ;
 private String land_line_no ;
 private String mobile_no ;
-private String institute_domain ;
+
 private String institute_website ;
 private String admin_fname ;
 private String admin_lname ;
@@ -40,13 +38,12 @@ private String admin_password;
 private String library_name;
 private String courtesy;
 private String gender;
+private String login_id;
+
+
  @Override
     public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
-        ActionErrors errors = new ActionErrors();
-        //if (getStaff_id() == null ) {
-           // errors.add("name", new ActionMessage("error.name.required"));
-            // TODO: add 'error.name.required' key to your resources
-        //}
+       
         return null;
     }
     
@@ -100,9 +97,7 @@ private String gender;
         return mobile_no;
     }
 
-        public String getInstitute_domain() {
-        return institute_domain;
-    }
+        
         public String getInstitute_website() {
         return institute_website;
     }
@@ -164,9 +159,7 @@ private String gender;
         mobile_no=string;
     }
 
-        public void setInstitute_domain(String string) {
-        institute_domain=string;
-    }
+        
         public void setInstitute_website(String string) {
         institute_website=string;
     }
@@ -204,13 +197,6 @@ private String gender;
         // TODO Auto-generated constructor stub
     }
 
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param request The HTTP Request we are processing.
-   
-     */
-     
    
 
     /**
@@ -255,17 +241,18 @@ private String gender;
         this.gender = gender;
     }
 
+   
     /**
-     * @return the query_id
+     * @return the login_id
      */
-    public String getQuery_id() {
-        return query_id;
+   public String getLogin_id() {
+        return login_id;
     }
 
     /**
-     * @param query_id the query_id to set
+     * @param login_id the login_id to set
      */
-    public void setQuery_id(String query_id) {
-        this.query_id = query_id;
+     public void setLogin_id(String login_id) {
+        this.login_id = login_id;
     }
 }

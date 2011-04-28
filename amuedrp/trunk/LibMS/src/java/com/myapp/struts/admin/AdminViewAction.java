@@ -6,13 +6,15 @@
 package com.myapp.struts.admin;
 
 
-import com.myapp.struts.MyConnection;
+import com.myapp.struts.AdminDAO.AdminRegistrationDAO;
+import com.myapp.struts.hbm.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import java.sql.*;
+import java.util.List;
 
 /**
  *
@@ -23,7 +25,7 @@ public class AdminViewAction extends org.apache.struts.action.Action {
     /* forward name="success" path="" */
     private int registration_id ;
     Connection con;
-    ResultSet rst;
+    List rst;
 
     /**
      * This is the action called from the Struts framework.
@@ -41,9 +43,10 @@ public class AdminViewAction extends org.apache.struts.action.Action {
        // registration_id=(Integer.parseInt(request.getParameter("id")));
       //  System.out.println("Registration Id="+registration_id);
         try{
-        con=MyConnection.getMyConnection();
-        PreparedStatement stmt=con.prepareStatement("select * from admin_registration where  status ='registered'");
-        rst=stmt.executeQuery();
+        AdminRegistrationDAO admindao = new AdminRegistrationDAO();
+        registration_id = Integer.parseInt(request.getParameter("id"));
+        rst = (List)admindao.getAdminInstituteDetailsById(registration_id);
+        System.out.println("AdminvIEW"+rst+registration_id);
         request.setAttribute("resultset", rst);
         return mapping.findForward("success");
         }

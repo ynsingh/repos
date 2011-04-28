@@ -29,6 +29,16 @@ public class AdditionalSearchActionForm extends org.apache.struts.action.ActionF
     private String CMBCONN3;
     private String CMBCONN4;
     private String CMBLib;
+    private String CMBSUBLib;
+    private String CMBSORT;
+
+    public String getCMBSORT() {
+        return CMBSORT;
+    }
+
+    public void setCMBSORT(String CMBSORT) {
+        this.CMBSORT = CMBSORT;
+    }
 
     public String getCMBLib() {
         return CMBLib;
@@ -231,5 +241,16 @@ public class AdditionalSearchActionForm extends org.apache.struts.action.ActionF
      */
     public void setCMBYR(String CMBYR) {
         this.CMBYR = CMBYR;
+    }
+
+    public String getCMBSUBLib() {
+        return CMBSUBLib;
+    }
+
+    /**
+     * @param CMBYR the CMBSUBLib to set
+     */
+    public void setCMBSUBLib(String CMBSUBLib) {
+        this.CMBSUBLib = CMBSUBLib;
     }
 }

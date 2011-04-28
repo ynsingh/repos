@@ -19,6 +19,7 @@ public class MemberActionForm extends org.apache.struts.action.ActionForm {
     private String TXTMEMID;
     private String TXTPASS;
     private String CMBLib;
+    private String cmdSubLibary;
 
     /**
      *
@@ -83,5 +84,19 @@ public class MemberActionForm extends org.apache.struts.action.ActionForm {
      */
     public void setCMBLib(String CMBLib) {
         this.CMBLib = CMBLib;
+    }
+
+    /**
+     * @return the cmdSubLibary
+     */
+    public String getCmdSubLibary() {
+        return cmdSubLibary;
+    }
+
+    /**
+     * @param cmdSubLibary the cmdSubLibary to set
+     */
+    public void setCmdSubLibary(String cmdSubLibary) {
+        this.cmdSubLibary = cmdSubLibary;
     }
 }

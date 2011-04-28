@@ -19,7 +19,15 @@ public class CallNoSearchActionForm extends org.apache.struts.action.ActionForm 
     
     private String TXTKEY;
     private String CMBLib;
+    private String CMBSUBLib;
 
+    public String getCMBSUBLib() {
+        return CMBSUBLib;
+    }
+
+    public void setCMBSUBLib(String CMBSUBLib) {
+        this.CMBSUBLib = CMBSUBLib;
+    }
     
     public CallNoSearchActionForm() {
         super();

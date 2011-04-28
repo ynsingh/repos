@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 2, 2011 12:00:19 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="com.myapp.struts.hbm.StaffDetail" table="staff_detail" catalog="libms">
+        <composite-id name="id" class="com.myapp.struts.hbm.StaffDetailId">
+            <key-property name="staffId" type="string">
+                <column name="staff_id" length="100" />
+            </key-property>
+            <key-property name="libraryId" type="string">
+                <column name="library_id" length="20" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="library" class="com.myapp.struts.hbm.Library" update="false" insert="false" fetch="select">
+            <column name="library_id" length="20" not-null="true" unique="true" />
+        </many-to-one>
+        <property name="sublibraryId" type="string">
+            <column name="sublibrary_id" length="20" not-null="true" />
+        </property>
+        <property name="title" type="string">
+            <column name="title" length="5" />
+        </property>
+        <property name="firstName" type="string">
+            <column name="first_name" length="20" />
+        </property>
+        <property name="lastName" type="string">
+            <column name="last_name" length="20" />
+        </property>
+        <property name="contactNo" type="string">
+            <column name="contact_no" length="20" />
+        </property>
+        <property name="mobileNo" type="string">
+            <column name="mobile_no" length="20" />
+        </property>
+        <property name="emailId" type="string">
+            <column name="email_id" length="100" />
+        </property>
+        <property name="dateJoining" type="date">
+            <column name="date_joining" length="10" />
+        </property>
+        <property name="dateReleaving" type="date">
+            <column name="date_releaving" length="10" />
+        </property>
+        <property name="fatherName" type="string">
+            <column name="father_name" length="30" />
+        </property>
+        <property name="dateOfBirth" type="date">
+            <column name="date_of_birth" length="10" />
+        </property>
+        <property name="gender" type="string">
+            <column name="gender" length="8" />
+        </property>
+        <property name="address1" type="string">
+            <column name="address1" length="50" />
+        </property>
+        <property name="city1" type="string">
+            <column name="city1" length="20" />
+        </property>
+        <property name="state1" type="string">
+            <column name="state1" length="20" />
+        </property>
+        <property name="country1" type="string">
+            <column name="country1" length="20" />
+        </property>
+        <property name="zip1" type="string">
+            <column name="zip1" length="20" />
+        </property>
+        <property name="address2" type="string">
+            <column name="address2" length="50" />
+        </property>
+        <property name="city2" type="string">
+            <column name="city2" length="20" />
+        </property>
+        <property name="state2" type="string">
+            <column name="state2" length="20" />
+        </property>
+        <property name="country2" type="string">
+            <column name="country2" length="20" />
+        </property>
+        <property name="zip2" type="string">
+            <column name="zip2" length="20" />
+        </property>
+        <property name="staffImage" type="binary">
+            <column name="staff_image" />
+        </property>
+        <set name="privileges" inverse="true">
+            <key>
+                <column name="staff_id" length="100" not-null="true" />
+                <column name="library_id" length="20" not-null="true" />
+            </key>
+            <one-to-many class="com.myapp.struts.hbm.Privilege" />
+        </set>
+        <set name="acqPrivileges" inverse="true">
+            <key>
+                <column name="staff_id" length="100" not-null="true" />
+                <column name="library_id" length="20" not-null="true" />
+            </key>
+            <one-to-many class="com.myapp.struts.hbm.AcqPrivilege" />
+        </set>
+        <set name="serPrivileges" inverse="true">
+            <key>
+                <column name="staff_id" length="100" not-null="true" />
+                <column name="library_id" length="20" not-null="true" />
+            </key>
+            <one-to-many class="com.myapp.struts.hbm.SerPrivilege" />
+        </set>
+        <set name="cirPrivileges" inverse="true">
+            <key>
+                <column name="staff_id" length="100" not-null="true" />
+                <column name="library_id" length="20" not-null="true" />
+            </key>
+            <one-to-many class="com.myapp.struts.hbm.CirPrivilege" />
+        </set>
+        <set name="catPrivileges" inverse="true">
+            <key>
+                <column name="staff_id" length="100" not-null="true" />
+                <column name="library_id" length="20" not-null="true" />
+            </key>
+            <one-to-many class="com.myapp.struts.hbm.CatPrivilege" />
+        </set>
+        <set name="logins" inverse="true">
+            <key>
+                <column name="staff_id" length="100" not-null="true" />
+                <column name="library_id" length="20" not-null="true" />
+            </key>
+            <one-to-many class="com.myapp.struts.hbm.Login" />
+        </set>
+    </class>
+</hibernate-mapping>

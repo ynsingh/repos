@@ -5,6 +5,7 @@
 
 package com.myapp.struts.opac;
 import  com.myapp.struts.*;
+import  com.myapp.struts.opacDAO.OpacSearchDAO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -12,6 +13,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import java.sql.*;
+import java.util.List;
 /**
  *
  * @author Faraz
@@ -20,7 +22,7 @@ public class AdvanceSearchAction extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
-    
+    String searchtext1[],searchtext2[],searchtext3[]; /* array of fields*/
     /**
      * This is the action called from the Struts framework.
      * @param mapping The ActionMapping used to select this instance.
@@ -34,34 +36,164 @@ public class AdvanceSearchAction extends org.apache.struts.action.Action {
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-                String p1,p2,p3,yr1,yr2,cf1,cf2,cf3,cmbyr,db,title,author,accno;
+                String p1,p2,p3,yr1,yr2,cf1,cf2,cf3,cmbyr,db,title,author,accno,subject,isbn10;
                 String cnf1,cnf2,callno,publ,loc,place,cnf3,c1,c2,c3,op1="",op2="",op3="";
                 String sort,field,query="",query1="";
                 ResultSet rs=null;
                 AdvanceSearchActionForm myForm = (AdvanceSearchActionForm)form;
                 String lib_id= myForm.getCMBLib();
+                String sub_lib = myForm.getCMBSUBLib();
                 HttpSession session = request.getSession();
                 session.removeAttribute("ResultSet");
-                p1=myForm.getTXTPHRASE1();
-         p2=myForm.getTXTPHRASE2();
-         p3=myForm.getTXTPHRASE3();
-         yr1=myForm.getTXTYR1();
-         yr2=myForm.getTXTYR2();
-         cf1=myForm.getCMBFIELD1();
-         cf2=myForm.getCMBFIELD2();
-         cf3=myForm.getCMBFIELD3();
-         cmbyr=myForm.getCMBYR();
-         db=myForm.getCMBDB();
-         cnf1=myForm.getCMBF1();
-         cnf2=myForm.getCMBF2();
-         cnf3=myForm.getCMBF3();
-         c1=myForm.getCMB1();
-         c2=myForm.getCMB2();
-         c3=myForm.getCMB3();
+                //variables for phrases
+                 p1=myForm.getTXTPHRASE1();
+                 p2=myForm.getTXTPHRASE2();
+                 p3=myForm.getTXTPHRASE3();
+                 //variable for years
+                 yr1=myForm.getTXTYR1();
+                 yr2=myForm.getTXTYR2();
+                 //variables for fields to be search in
+                 cf1=myForm.getCMBFIELD1();
+                 cf2=myForm.getCMBFIELD2();
+                 cf3=myForm.getCMBFIELD3();
+                 //variable for search type of year
+                 cmbyr=myForm.getCMBYR();
+                 //variable for selecting a document type
+                 db=myForm.getCMBDB();
+                 //variable for query connectors
+                 cnf1=myForm.getCMBF1();
+                 cnf2=myForm.getCMBF2();
+                 cnf3=myForm.getCMBF3();
+                 //variable for word connectors
+                 c1=myForm.getCMB1();
+                 c2=myForm.getCMB2();
+                 c3=myForm.getCMB3();
+                 //variable for sort
+                 sort=myForm.getCMBSORT();
 
-        
+    if(cmbyr.equalsIgnoreCase("all"))
+    {
+        yr1=null;
+        yr2=null;
+    }
+    else if (cmbyr.equalsIgnoreCase("after"))
+    {
 
-          query="select * from document_details";
+        yr2=null;
+    }
+    else if(cmbyr.equalsIgnoreCase("upto"))
+    {
+    yr2=String.valueOf(Integer.parseInt(yr1)+1);
+    yr1=null;
+    }
+
+                 /*
+ * Criteria for setting Variables to pass searching method
+ * 1.Set variables for author,title,subject,other field in String Array by seperating word  (if connector is AND or OR )
+ * 2.set variables for author,title,subject,other field in String Array at 0 postion (if connector is phrase)
+ * 3.if any text box has no value at submit form  then assign Null corresponding to field
+ */
+/* conditions for phrases */
+   /* author=title=subject=isbn10="";
+
+    //for first phrase
+                 if(cf1.equals("author"))
+                        author = p1;
+                 else if(cf1.equals("title"))
+                        title = p1;
+                 else if(cf1.equals("subject"))
+                        subject = p1;
+                 else if(cf1.equals("isbn10"))
+                        isbn10 = p1;
+    //for second phrase
+                 if(cf2.equals("author"))
+                        author += " " + p2;
+                 else if(cf2.equals("title"))
+                        title += " "+p2;
+                 else if(cf2.equals("subject"))
+                        subject += " "+p2;
+                 else if(cf2.equals("isbn10"))
+                        isbn10 += " "+p2;
+
+    //for third phrase
+                 if(cf3.equals("author"))
+                        author = " "+p3;
+                 else if(cf3.equals("title"))
+                        title = " "+p3;
+                 else if(cf3.equals("subject"))
+                        subject = " "+p3;
+                 else if(cf3.equals("isbn10"))
+                        isbn10 = " "+p3;
+
+           author = author.replace(" ", "  ");
+           subject = subject.replace(" ", "  ");
+           title = title.replace(" ", "  ");
+           isbn10 = isbn10.replace(" ", "  ");*/
+         /* conditions for author field  */
+
+         if(p1.equals("")||p1.equals(" "))
+         {
+         searchtext1=null;
+         }
+         else
+         {
+           if(c1.equalsIgnoreCase("or")||c1.equalsIgnoreCase("and"))
+           {
+              searchtext1=p1.split(" ");
+           }
+           else         /*for Phrase*/
+           {
+           searchtext1[0]=p1;
+           }
+         }
+/* conditions for Title field  */
+         if(p2.equals("")||p2.equals(" "))
+         {
+         searchtext2=null;
+         }
+         else
+         {
+         if(c2.equalsIgnoreCase("or")||c2.equalsIgnoreCase("and"))
+           {
+              searchtext2=p2.split(" ");
+           }
+           else         /*for Phrase*/
+           {
+           searchtext2[0]=p2;
+           }
+         }
+/* conditions for Subject field  */
+
+         if(p3.equals(""))
+         {
+         searchtext3=null;
+         }
+         else
+         {
+         if(cnf3.equalsIgnoreCase("or")||cnf3.equalsIgnoreCase("and"))
+           {
+              searchtext3=p3.split(" ");
+           }
+           else         /*for Phrase*/
+           {
+           searchtext3[0]=p3;
+           }
+         }
+
+
+/*
+ *  public List additionalSearch(String library_id,String sub_lib,String [] author,String author_connector,
+         String [] title,String title_connector,String [] subject,String subject_connector,
+         String [] other_field,String other_connector,String doc_type,
+         String sortby,Integer year1,Integer year2)
+ */ //                        all,all,null,or,Head First,or,null,or,null,or,combined,authorName,-1,9999
+//         System.out.println(lib_id+ sub_lib+ authors+cnf1+ titles[0]+ cnf2+subjects+cnf3+other_fields+cnf4+doc_type+sort+yr1+yr2);
+  OpacSearchDAO opac = new OpacSearchDAO();
+  Integer year1 = (yr1==null?0:Integer.parseInt(yr1));
+  Integer year2 = (yr2==null?0:Integer.parseInt(yr2));
+  System.out.println("year1="+year1+" year2="+year2);
+                 List advance_search_list=(List)opac.advanceSearch(lib_id, sub_lib, searchtext1, c1, searchtext2, c2,searchtext3,c3,cnf1,cnf2,cnf3,cf1,cf2,cf3,db,sort,year1,year2);
+     /* query="select * from document_details";
           int flag=0;
           if(db.equals("combined")){query="select * from document_details "; flag=0;}
         else                     {query=query+" where document_type='"+db+"' ";flag=1;}
@@ -225,49 +357,7 @@ public class AdvanceSearchAction extends org.apache.struts.action.Action {
 
             System.out.println("query any field="+query);
             }
- /*     if(cnf1.equals("phrase")){op1="or";}
-      else                     {op1=cnf1;}
-      if(cnf2.equals("phrase")){op2="or";}
-       else                     {op2=cnf2;}
-      if(cnf3.equals("phrase")){op3="or";}
-       else                     {op3=cnf3;}
 
-
-        if(cnf1.equals("or") || cnf1.equals("and") || cnf2.equals("or") || cnf2.equals("and") || cnf3.equals("or"))
-          {
-            if (!p1.equals("") && !cnf1.equals("phrase")) query=query + " and "+ cf1 +" like '"+p1+"%' ";
-            else if (!p1.equals("")) query=query+" and "+ cf1 +" like '%"+p1+"%' ";
-            if (p1.equals("") && !p2.equals("") && !cnf2.equals("phrase")) query=query + " and "+ cf2 +" like '"+p2+"%' ";
-              else if(!p2.equals("") && !cnf2.equals("phrase")) query = query + " " + op1 + " "+ cf2 +" like '" + p2 + "%' ";
-              else if(!p2.equals("")) query = query + " or "+ cf2 +" like '%" + p2 + "%' ";
-            if (p1.equals("") && p2.equals("") && !p3.equals("") && !cnf3.equals("phrase") ) query=query + " and "+ cf3 +" like '"+p3+"%'";
-              else if(!p3.equals("") && !cnf3.equals("phrase")) query = query + " " + op2 + " "+ cf3 +" like '" + p3 + "%'";
-            else if (!p3.equals("")) query=query+" or "+ cf3 +" like '%"+p3+"%' ";
-        }
-/*
-        if(cnf1.equals("phrase")){query=query+" and author like '%"+author+"%' ";}
-        if(cnf2.equals("phrase")) {query=query+" or title like '%"+title+"%' ";}
-        if(cnf3.equals("phrase")) {query=query+" or subject like '%"+subject+"%' ";}*/
-       /* if(!other.equalsIgnoreCase(""))
-        if(cnf4.equals("phrase"))
-         {
-            query=q+" and (author like'%"+other+"%' or title like '%"+other+"%' or subject like '%"+other+"%' or pub_yr like '%"+other+"%' " +
-                    "or publisher like '%"+other+"%' or accessionno like'%"+other+"%' or pubPlace like'%"+other+"%')";
-         }
-        else
-        {
-            query=q+" and (author like'"+other+"%' or title like '"+other+"%' or subject like '"+other+"%' or pub_yr like '"+other+"%' " +
-                    "or publisher like '"+other+"%' or accessionno like'"+other+"%' or pubPlace like'"+other+"%')";
-        }
-
-                //if(cnf4.equals("or") || cnf4.equals("and")){
-                   // query=query+" or author='"+other+"' or title='"+other+"' or subject='"+other+"' or pub_yr='"+other+"' " +
-                     //   "or publisher='"+other+"' or accessionNo='"+other+"' or pubplace='"+other+"'";
-                if(cmbyr.equals("all")){query=query;}
-                if(cmbyr.equals("between")){query=query+" "+cnf3+" pub_yr between "+yr1+" and "+yr2;}
-                if(cmbyr.equals("upto")){query=query+" "+cnf3+" pub_yr <="+yr1;}
-                if(cmbyr.equals("after")){query=query+" "+cnf3+" pub_yr >="+yr1;}
-*/
           if(cmbyr.equals("between")){
               if (flag==0){
               query=query+" where publishing_year between "+yr1+" and "+yr2;flag=1;}
@@ -287,12 +377,14 @@ public class AdvanceSearchAction extends org.apache.struts.action.Action {
           if (!lib_id.equalsIgnoreCase("all") && flag==1)
             query = query+ " and library_id='"+ lib_id  +"'";
           else if (!lib_id.equalsIgnoreCase("all") && flag==0) query = query+ " where library_id='"+ lib_id  +"'";
+*/
 
-         
-          System.out.println("Advance Query="+query);
-         rs = MyQueryResult.getMyExecuteQuery(query);
+
+
+         // System.out.println("Advance Query="+query);
+       //  rs = MyQueryResult.getMyExecuteQuery(query);
          //if(rs.next())
-         session.setAttribute("ResultSet", rs);
+         session.setAttribute("ResultSet", advance_search_list);
 
         return mapping.findForward(SUCCESS);
     }

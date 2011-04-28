@@ -34,6 +34,8 @@ public class AdvanceSearchActionForm extends org.apache.struts.action.ActionForm
     private String CMB2;
     private String CMB3;
     private String CMBLib;
+    private String CMBSUBLib;
+    private String CMBSORT;
 
     public String getCMBLib() {
         return CMBLib;
@@ -289,5 +291,33 @@ public class AdvanceSearchActionForm extends org.apache.struts.action.ActionForm
      */
     public String getTXTPHRASE3() {
         return TXTPHRASE3;
+    }
+
+    /**
+     * @return the CMBSORT
+     */
+    public String getCMBSORT() {
+        return CMBSORT;
+    }
+
+    /**
+     * @param CMBSORT the CMBSORT to set
+     */
+    public void setCMBSORT(String CMBSORT) {
+        this.CMBSORT = CMBSORT;
+    }
+
+    /**
+     * @return the CMBSUBLib
+     */
+    public String getCMBSUBLib() {
+        return CMBSUBLib;
+    }
+
+    /**
+     * @param CMBSUBLib the CMBSUBLib to set
+     */
+    public void setCMBSUBLib(String CMBSUBLib) {
+        this.CMBSUBLib = CMBSUBLib;
     }
 }

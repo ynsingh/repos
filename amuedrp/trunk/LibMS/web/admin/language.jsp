@@ -16,6 +16,6 @@ if(locale.equals("English")) session.setAttribute("locale", "en");
                     else if(locale.equals("Hindi")) session.setAttribute("locale", "hi");
                     else if(locale.equals("Urdu")) session.setAttribute("locale", "ur");
                     else if(locale.equals("Arabic")) session.setAttribute("locale", "ar");
-response.sendRedirect("/LibMS-Struts/login.jsp");
+response.sendRedirect(request.getContextPath()+"/login.jsp");
 
 %>

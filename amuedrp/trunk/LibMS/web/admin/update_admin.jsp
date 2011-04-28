@@ -5,7 +5,7 @@
 <jsp:include page="adminheader.jsp" flush="true" />
 --%>
  
-    <%@page import="com.myapp.struts.admin.RequestDoc"%>
+    <%@page import="com.myapp.struts.admin.RequestDoc,com.myapp.struts.hbm.*"%>
     <%@page contentType="text/html" pageEncoding="UTF-8"%>
     <%@ page import="java.util.*"%>
     <%@ page import="org.apache.taglibs.datagrid.DataGridParameters"%>
@@ -19,8 +19,26 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
-    <title>LibMS </title>
-    <link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
+    <title>EMS </title>
+    
+    <%
+try{
+if(session.getAttribute("library_id")!=null){
+System.out.println("library_id"+session.getAttribute("library_id"));
+}
+else{
+    request.setAttribute("msg", "Your Session Expired: Please Login Again");
+    %><script>parent.location = "<%=request.getContextPath()%>"+"/login.jsp?session=\"expired\"";</script><%
+    }
+}catch(Exception e){
+    request.setAttribute("msg", "Your Session Expired: Please Login Again");
+    %>sessionout();<%
+    }
+
+%>
+
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
+
 <script language="javascript" >
 function b1click()
 {
@@ -43,10 +61,10 @@ function getQuery(id)
     th a:link      { text-decoration: none; color: black }
      th a:visited   { text-decoration: none; color: black }
      .rows          { background-color: white }
-     .hiliterows    { background-color: pink; color: #000000; font-weight: bold }
+     .hiliterows    { background-color: white; color: #000000; font-weight: bold }
      .alternaterows { background-color: #efefef }
-     .header        { background-color: #c0003b; color: #FFFFFF;font-weight: bold }
-
+     .header        { background-color: #7697BC; color: #FFFFFF;font-weight: bold }
+.mess1               { font-family:Tahoma;font-size:13px;letter-spacing:1px;padding-left:5px;color:blue;}
      .datagrid      { border: 1px solid #C7C5B2; font-family: arial; font-size: 9pt;
 	    font-weight: normal }
 </style>
@@ -69,11 +87,11 @@ function getQuery(id)
 %>
  <%
 
- ResultSet rs = (ResultSet)(session.getAttribute("resultset2"));
+ List rs = (List)(session.getAttribute("resultset2"));
+if (rs!=null){
+       Iterator it = rs.iterator();
 
-       
-
-   requestList = new ArrayList ();
+   requestList = new ArrayList();
    int tcount =0;
    int perpage=4;
    int tpage=0;
@@ -81,19 +99,21 @@ function getQuery(id)
    that takes parameters of string type connection url,
    user name and password to connect to database.*/
 
-rs.beforeFirst();
+//rs.beforeFirst();
 
 
-   while (rs.next()) {
-	tcount++;
+   while (it.hasNext()) {
+	System.out.println("tcount="+tcount);
+       AdminRegistration adminReg = (AdminRegistration)rs.get(tcount);
+       tcount++;
 	Ob = new RequestDoc ();
-	Ob.setRegistration_id(rs.getInt(1));
-	Ob.setInstitute_name(rs.getString(2));
-	Ob.setLibrary_name(rs.getString(21));
-	Ob.setAdmin_email(rs.getString(17));
-        
+	Ob.setRegistration_id(adminReg.getRegistrationId());
+	Ob.setInstitute_name(adminReg.getInstituteName());
+	Ob.setStatus(adminReg.getStatus());
+	Ob.setAdmin_email(adminReg.getAdminEmail());
+     it.next();
    requestList.add(Ob);
-
+   adminReg=null;
    //System.out.println("tcount="+tcount);
 		     }
 
@@ -106,6 +126,7 @@ System.out.println("tcount="+tcount);
    if ((toIndex = fromIndex+4) >= requestList.size ())
    toIndex = requestList.size();
    request.setAttribute ("requestList", requestList.subList(fromIndex, toIndex));
+   pageContext.setAttribute("getContextPath", request.getContextPath());
    pageContext.setAttribute("tCount", tcount);
 %>
 <br><br>
@@ -125,27 +146,26 @@ else
 
     <column width="100">
       <header value="Registration_ID" hAlign="left" styleClass="header"/>
-      <item   value="${doc.registration_id}" hyperLink="/LibMS-Struts/admin/index5.jsp?id=${doc.registration_id}"  hAlign="left"    styleClass="item"/>
+      <item   value="${doc.registration_id}" hyperLink="${getContextPath}/admin/index5.jsp?id=${doc.registration_id}"   hAlign="left"    styleClass="item"/>
     </column>
 
     <column width="200">
       <header value="Institute Name" hAlign="left" styleClass="header"/>
-      <item   value="${doc.institute_name}" hAlign="left" hyperLink="/LibMS-Struts/admin/index5.jsp?id=${doc.registration_id}"  styleClass="item"/>
+      <item   value="${doc.institute_name}" hAlign="left" hyperLink="${getContextPath}/admin/index5.jsp?id=${doc.registration_id}"  styleClass="item"/>
     </column>
 
-    <column width="200">
-      <header value="Library Name" hAlign="left" styleClass="header"/>
-      <item   value="${doc.library_name}" hyperLink="/LibMS-Struts/admin/index5.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
-    </column>
-   
-    <column width="100">
+       
+    <column width="150">
       <header value="Admin_Email" hAlign="left" styleClass="header"/>
-      <item   value="${doc.admin_email}" hyperLink="/LibMS-Struts/admin/index5.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
+      <item   value="${doc.admin_email}" hyperLink="${getContextPath}/admin/index5.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
     </column>
-
+<column width="100">
+   <header value="Status" hAlign="left" styleClass="header"/>
+ <item  value="${doc.status}" hyperLink="${getContextPath}/admin/index5.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
+    </column>
    <column width="100">
-   <header value="Action" hAlign="center" styleClass="header"/>
- <item  value="Edit" hyperLink="/LibMS-Struts/admin/index5.jsp?id=${doc.registration_id}"  hAlign="center" styleClass="item"/>
+   <header value="Action" hAlign="left" styleClass="header"/>
+ <item  value="Edit" hyperLink="${getContextPath}/admin/index5.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
     </column>
  </columns>
 
@@ -182,23 +202,45 @@ else
 
 </tr>
 <tr><td colspan="2">
+
+
         <%
 
 String msg=(String)request.getAttribute("msg");
 if(msg!=null)
     {%>
-    <p class="err" style="font-size:12px"><%=msg%></p>
+    <script>
+        var i=0;
+        if(i==0)
+        {
 
+        alert("<%=msg%>")
+     parent.location = "<%=request.getContextPath()%>/superadmin.do";
+            i++;
+        }
+
+
+    </script>
 
 <%}%>
 
     </td></tr>
 </table>
-<%}%>
+<%}}else{
+request.setAttribute("msg", "Your Session Expired: Please Login Again");
+    %><script>parent.location = "<%=request.getContextPath()%>"+"/login.jsp?session=\"expired\"";</script><%
+}%>
  </div>
     </body>
 
-
+    <script type="text/javascript" language="javascript">
+            function change()
+            {
+                document.getUserData("msg").value="";
+                alert(document.getUserData("msg").value);
+                return true;
+            }
+    </script>
 
 
 

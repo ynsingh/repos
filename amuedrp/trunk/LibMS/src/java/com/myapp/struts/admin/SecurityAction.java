@@ -5,6 +5,8 @@
 
 package com.myapp.struts.admin;
 import com.myapp.struts.admin.SecurityActionForm;
+import  com.myapp.struts.hbm.*;
+import  com.myapp.struts.AdminDAO.*;
 import java.sql.*;
 import  com.myapp.struts.*;
 import javax.servlet.http.HttpSession;
@@ -16,35 +18,29 @@ import org.apache.struts.action.ActionMapping;
 
 /**
  *
- * @author System Administrator
+ * Developed By Kedar Kumar
+ * Use to Check the First Login Security Question Setup
  */
 public class SecurityAction extends org.apache.struts.action.Action {
+
+
     
-    /* forward name="success" path="" */
-    private static final String SUCCESS = "success";
     String staff_id;
     String user_name;
     String question;
     String ans;
-    ResultSet rs;
-    String library_id;
 
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-    
-     */
+    String library_id;
+    private boolean result;
+
+
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception
     {
      SecurityActionForm login=(SecurityActionForm)form;
-    
+
 
            staff_id=login.getStaff_id();
            user_name=login.getUser_id();
@@ -52,13 +48,18 @@ public class SecurityAction extends org.apache.struts.action.Action {
            ans=login.getAns();
            HttpSession session=request.getSession();
 library_id=(String)session.getAttribute("library_id");
-          // System.out.println(staff_id+question+ans);
-        int x=MyQueryResult.getMyExecuteUpdate("update  login set question='"+question+"',ans='"+ans+"' where staff_id='"+staff_id+"' and library_id='"+ library_id + "'");
-      if(x!=0)
-      {
-           rs=MyQueryResult.getMyExecuteQuery("select *  from login where staff_id='"+staff_id+"' and library_id='"+library_id+"'" );
 
-                            if(rs.next())
+
+Login obj=LoginDAO.searchStaffId(staff_id, library_id);
+obj.setQuestion(question);
+obj.setAns(ans);
+
+result=LoginDAO.update1(obj);
+      if(result==true)
+      {
+          Login rs=LoginDAO.searchStaffId(staff_id, library_id);
+
+                            if(rs!=null)
                              {
                                 request.setAttribute("account_resultset", rs);
                                 return mapping.findForward("success");

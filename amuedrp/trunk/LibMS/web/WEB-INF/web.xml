@@ -44,15 +44,7 @@
         <url-pattern>/dupli</url-pattern>
         </servlet-mapping>
 
-    <servlet>
-        <servlet-name>viewall</servlet-name>
-        <servlet-class>com.myapp.struts.admin.ViewAll</servlet-class>
-     </servlet>
-        <servlet-mapping>
-        <servlet-name>viewall</servlet-name>
-        <url-pattern>/viewall</url-pattern>
-        </servlet-mapping>
-
+   
  <servlet>
         <servlet-name>view_all_account</servlet-name>
         <servlet-class>com.myapp.struts.admin.View_All_Account</servlet-class>

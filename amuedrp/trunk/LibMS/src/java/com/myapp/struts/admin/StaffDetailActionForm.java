@@ -17,7 +17,9 @@ import org.apache.struts.action.ActionMapping;
  */
 public class StaffDetailActionForm extends ValidatorForm {
     private String staff_id;
+    private String library_id;
     private String employee_id;
+    private String sublibrary_id;
     private String first_name;
     private String last_name;
     private String contact_no;
@@ -41,7 +43,7 @@ public class StaffDetailActionForm extends ValidatorForm {
     private String courtesy;
     private String button;
     private String role;
-
+ private byte[] uploadedFile;
     
 
    
@@ -378,9 +380,8 @@ public class StaffDetailActionForm extends ValidatorForm {
 
      public void reset(ActionMapping mapping, HttpServletRequest request) {
 
-			// reset properties
-			first_name="";
 
+			
 		}
 
     /**
@@ -409,5 +410,47 @@ public class StaffDetailActionForm extends ValidatorForm {
      */
     public void setRole(String role) {
         this.role = role;
+    }
+
+    /**
+     * @return the sublibrary_id
+     */
+    public String getSublibrary_id() {
+        return sublibrary_id;
+    }
+
+    /**
+     * @param sublibrary_id the sublibrary_id to set
+     */
+    public void setSublibrary_id(String sublibrary_id) {
+        this.sublibrary_id = sublibrary_id;
+    }
+
+    /**
+     * @return the library_id
+     */
+    public String getLibrary_id() {
+        return library_id;
+    }
+
+    /**
+     * @param library_id the library_id to set
+     */
+    public void setLibrary_id(String library_id) {
+        this.library_id = library_id;
+    }
+
+    /**
+     * @return the uploadedFile
+     */
+    public byte[] getUploadedFile() {
+        return uploadedFile;
+    }
+
+    /**
+     * @param uploadedFile the uploadedFile to set
+     */
+    public void setUploadedFile(byte[] uploadedFile) {
+        this.uploadedFile = uploadedFile;
     }
 }

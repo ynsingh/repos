@@ -10,7 +10,7 @@
     Locale locale=null;
     String locale1="en";
     String rtl="ltr";
-    boolean page=true;
+    String align="left";
 %>
 <%
 try{
@@ -23,8 +23,8 @@ locale1=(String)session.getAttribute("locale");
     else locale1="en";
 }catch(Exception e){locale1="en";}
      locale = new Locale(locale1);
-    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;}
-    else{ rtl="RTL";page=false;}
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";}
+    else{ rtl="RTL";align="right";}
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
    
 
@@ -42,50 +42,23 @@ locale1=(String)session.getAttribute("locale");
 </head>
 
 
+<frameset rows="16%,74%,10%" border="0" frameborder=2 framespacing="0" dir="<%=rtl%>" align="<%=align%>">
 
 
-          <%if(!page.equals(true)){%>
-
-
-<frameset rows="16%,74%,10%" border="0" frameborder=2 framespacing="0">
-
-
-  <frame name="f1" src="../OPAC/opacframe1.jsp" frameborder=2 scrolling="NO"/>
-
-<frameset cols="89%,*">
-
-    <frame name="f3" src="../OPAC/opachome.jsp" frameborder=2 scrolling="NO"/>
-
-<frame name="f2" src="../OPAC/m.jsp" frameborder=0 scrolling="NO"/>
-</frameset>
-       <frame name="f4" src="/LibMS-Struts/OPAC/footer.jsp" frameborder=0 scrolling="NO"/>
-
-</frameset>
-
-
-            <%}else{%>
-
-
-
-
-<frameset rows="16%,74%,10%" border="0" frameborder=2 framespacing="0">
-
-
-  <frame name="f1" src="../OPAC/opacframe1.jsp"  scrolling="NO"/>
-
+  <frame name="f1" src="../OPAC/opacframe1.jsp" frameborder=2 scrolling="NO" dir="<%=rtl%>" align="<%=align%>"/>
+  <%if(align.equals("left")){%>
 <frameset cols="11%,*">
-
-
-<frame name="f2" src="../OPAC/m.jsp" frameborder=0 scrolling="NO" />
-     <frame name="f3" src="../OPAC/opachome.jsp" frameborder=2 scrolling="YES"/>
-
-
-</frameset>
-       <frame name="f4" src="/LibMS-Struts/OPAC/footer.jsp" frameborder=2 scrolling="NO"/>
-
-</frameset>
+<frame name="f2" src="../OPAC/m.jsp" frameborder=0 scrolling="NO" dir="<%=rtl%>" align="<%=align%>"/>
+<frame name="f3" src="../OPAC/opachome.jsp" frameborder=2 scrolling="yes" dir="<%=rtl%>" align="<%=align%>"/>
+<%}else{%>
+<frameset cols="89%,*">
+<frame name="f3" src="../OPAC/opachome.jsp" frameborder=2 scrolling="yes" dir="<%=rtl%>" align="<%=align%>"/>
+<frame name="f2" src="../OPAC/m.jsp" frameborder=0 scrolling="NO" dir="<%=rtl%>" align="<%=align%>"/>
 <%}%>
+</frameset>
+       <frame name="f4" src="<%=request.getContextPath()%>/OPAC/footer.jsp" frameborder=0 scrolling="NO" dir="<%=rtl%>" align="<%=align%>"/>
 
+</frameset>
 
 </html>
 

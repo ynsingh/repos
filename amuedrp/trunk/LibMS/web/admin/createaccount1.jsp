@@ -1,5 +1,5 @@
 
-<%@page import="java.sql.*;"%>
+<%@page import="java.sql.*,com.myapp.struts.hbm.*,com.myapp.struts.AdminDAO.*,java.util.*"%>
  <jsp:include page="header.jsp" flush="true" />
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
  
@@ -10,55 +10,233 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 <%
-ResultSet  rst=(ResultSet)request.getAttribute("account_resultset");
-ResultSet  rst1=(ResultSet)request.getAttribute("account_resultset1");
-String button=(String)request.getAttribute("button");
-String email_id=null;
-String staff_id=null;
-String first_name=null;
-String last_name=null;
-String user_name=null;
-String library_id=(String)session.getAttribute("library_id");
-String password=null;
+StaffDetail  rst=(StaffDetail)session.getAttribute("account_resultset");
+
+List<SubLibrary> sublibrary=(List<SubLibrary>)session.getAttribute("sublib");
+
+String mainlib=(String)session.getAttribute("mainsublibrary");
+String sublibrary_name="";
+
+
+    
+
+String sublibrary_id=(String)session.getAttribute("sublibrary_id");
+
 String login_role=(String)session.getAttribute("login_role");
+
+
+
+
+String staff_id=null;
+String user_name=null;
+
 
 if(rst!=null)
     {
 
-    staff_id=rst.getString(1);
-    first_name=rst.getString(2);
-    last_name=rst.getString(3);
-    email_id=rst.getString(4);
+    staff_id=rst.getId().getStaffId();
+    user_name=rst.getFirstName()+" "+rst.getLastName();
+    sublibrary_name=rst.getSublibraryId();
    
     }
-if(rst1!=null)
-    {
-    staff_id=rst1.getString(1);
-    email_id=rst1.getString(2);
-    user_name=rst1.getString(3);
-    password=rst1.getString(4);
 
-
-    }
-
+System.out.println(sublibrary_name+mainlib);
 %>
 
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="css/page.css"/>
-        <title>LibMS</title>
+        <title>LibMS : Create Account Page </title>
     </head>
-    <script>
-        function pcheck(str) {
+       <script  type="text/javascript" language="javascript">
+
+    function check()
+    {
+     var role1=document.getElementById('role').options[document.getElementById('role').selectedIndex].value;
+    if(role1=="Select")
+        {
+            alert("Select Role");
+            document.getElementById('role').focus();
+            return false;
+        }
+
+         var x=document.getElementById('login_id');
+        if(x.value=="")
+            {
+                alert("Login ID should not be blank");
+                 document.getElementById('login_id').focus();
+                return false;
+            }
+
+       
+    
+        var x=document.getElementById('password');
+        if(x.value=="")
+            {
+                alert("Password should not be blank");
+                document.getElementById('password').focus();
+                return false;
+            }
+     if(document.getElementById('password1').value=="")
+    {
+        alert("Enter Reenter password...");
+
+        document.getElementById('password1').focus();
+        
+
+        return false;
+    }
+          var x1=document.getElementById('password');
+        var x2=document.getElementById('password1');
+        if(x1.value!=x2.value)
+            {
+                alert("password mismatch");
+                document.getElementById('password').value="";
+                document.getElementById('password1').value="";
+                document.getElementById('password').focus();
+                return false;
+            }
+            else
+                return true;
+
+
+    }
+  
+           function checkrole()
+    {
+
+var sublibrary_id=document.getElementById('sublibrary_id').options[document.getElementById('sublibrary_id').selectedIndex].text;
+
+document.getElementById('role').options.length = 0;
+var adminText="Admin";
+var adminValue="admin";
+var deptadminText="Departmental Admin";
+var deptadminValue="dept-admin";
+var staffText="Staff";
+var staffValue="staff";
+var deptstaffText="Deptartmental Staff";
+var deptstaffValue="dept-staff";
+
+var instiText="Institute Admin";
+var instiValue="insti-admin";
+var role="<%=login_role%>";
+
+if(sublibrary_id=="Select")
+        {
+
+            newOpt = document.getElementById('role').appendChild(document.createElement('option'));
+            newOpt.value = "Select";
+            newOpt.text = "Select";
+        }
+    else if(sublibrary_id=="Main Library" && role=="insti-admin")
+        {
+
+            newOpt = document.getElementById('role').appendChild(document.createElement('option'));
+            newOpt.value = "Select";
+            newOpt.text = "Select";
+
+             newOpt = document.getElementById('role').appendChild(document.createElement('option'));
+            newOpt.value = staffValue;
+            newOpt.text = staffText;
+
+            newOpt = document.getElementById('role').appendChild(document.createElement('option'));
+            newOpt.value = adminValue;
+            newOpt.text = adminText;
+
+
+           
 
 
 
-return true;
+
+
+        }
+        else if(sublibrary_id=="Main Library" && role=="admin")
+        {
+            newOpt = document.getElementById('role').appendChild(document.createElement('option'));
+            newOpt.value = "Select";
+            newOpt.text = "Select";
+
+            newOpt = document.getElementById('role').appendChild(document.createElement('option'));
+            newOpt.value = staffValue;
+            newOpt.text = staffText;
+        }
+        else{
+           if(sublibrary_id!="Main Library" && (role=="admin" || role=="insti-admin"))
+               {
+                   newOpt = document.getElementById('role').appendChild(document.createElement('option'));
+            newOpt.value = "Select";
+            newOpt.text = "Select";
+
+            newOpt = document.getElementById('role').appendChild(document.createElement('option'));
+            newOpt.value = deptstaffValue;
+            newOpt.text = deptstaffText;
+
+        newOpt = document.getElementById('role').appendChild(document.createElement('option'));
+            newOpt.value = deptadminValue;
+            newOpt.text = deptadminText;
+               }
+               else
+                   {
+                       newOpt = document.getElementById('role').appendChild(document.createElement('option'));
+            newOpt.value = "Select";
+            newOpt.text = "Select";
+
+            newOpt = document.getElementById('role').appendChild(document.createElement('option'));
+            newOpt.value = deptstaffValue;
+            newOpt.text = deptstaffText;
+                   }
+        
+
+
+           
+
+
+                                
+
+
+
+        }
+
+
+
+                return true;
+
+
+    }
+   
+
+      function send1()
+    {
+        window.location="<%=request.getContextPath()%>/admin/account.jsp";
+        return false;
+
+    }
+function check1()
+{
+    KeyValue=document.getElementById('login_id').value;
+        KeyValue1=document.getElementById('password').value;
+
+        if(KeyValue==KeyValue1)
+            {
+               availableSelectList = document.getElementById("searchResult");
+ 
+               availableSelectList.innerHTML="LoginId and Password Should not be same";
+                document.getElementById('password').value="";
+
+            }
+else{
+ availableSelectList = document.getElementById("searchResult");
+
+               availableSelectList.innerHTML="";
+
 }
 
-        </script>
-    <body>
+}
+
+    </script>
+    <body onload="return checkrole();">
       <html:form  action="/createaccount" method="post" onsubmit="return check();">
 <div
    style="  top:120px;
@@ -68,83 +246,71 @@ return true;
 
       visibility: show;">
 
-    <table width="400px" height="600px"  valign="top" align="center">
-        <tr><td   width="400px" height="500px" valign="top" style="" align="center">
-                <br><br>
-                <fieldset style="border:solid 1px brown;height:300px;width:300px;padding-left: 5px">
-                    <legend><img src="/LibMS-Struts/images/StaffAccountLogin.png"/></legend><br><br>
-                    <table width="400px" align="center">
-                        <%
-                        if(rst1!=null)
-                            {
-                            %>
-                        <tr><td class="btn">Staff ID</td><td><input type="text" id="staff_id" name="staff_id"  readonly   value="<%=staff_id%>"></td></tr>
-                        <tr><td class="btn">User Name</td><td><input type="text" id="user_name" name="user_name"  readonly   value="<%=user_name%>"></td></tr>
-                        <tr><td colspan="2" height="5px"></td></tr>
-                        <tr><td class="btn" >Email/Login ID</td><td><input type="text" id="email_id" name="email_id" readonly     value="<%=email_id%>"/> </td></tr>
-                        <tr><td colspan="2" height="5px" class="txt2"></td></tr>
-                         
-                          <%  if(button.equals("View Account")||button.equals("Delete Account"))
-                        {
-
-                        %>    
-                    <tr><td class="txt2">Password</td><td>            <input type="text" id="password"  name="password" readonly  value="<%=password%>"></td></tr>
-                            <%}
-                            else
-                               {%>
-                             <tr><td class="txt2">Password</td><td>            <input type="password" id="password" readonly name="password"  value="<%=password%>"></td></tr>
-                              <tr><td colspan="2" height="5px"></td></tr>
-                             <tr><td class="txt2">Reenter Password</td><td>            <input type="text" id="password1"  name="password1"  value=""></td></tr>
-
-                            <%}%>
-                            
+     <table border="1" class="table" width="400px" height="200px" align="center">
 
 
-                         <tr><td colspan="2" height="5px"></td></tr>
-                         <tr><td colspan="2" align="center"></td></tr>
-                                <%
-                                }
-                             if(rst!=null)
+                <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">Manage Staff Account</td></tr>
+                <tr><td valign="top" align="center"> <br/>
+                <table cellspacing="10px">
+
+                          <% if(rst!=null)
                                  {
                                  %>
                      
                         <tr><td colspan="2" height="5px"></td></tr>
+                        <tr><td class="txt2">SubLibrary Name</td><td>
+                                
+                                
+                               
+                    <%if(sublibrary_id.equalsIgnoreCase(mainlib)){%>
+                 
+                    <html:select  property="sublibrary_id" styleId="sublibrary_id"   value="<%=sublibrary_name%>" onchange="return checkrole();">
+                        <html:option value="Select">Select</html:option>
+                        <html:options name="SubLibrary" collection="sublib" property="id.sublibraryId" labelProperty="sublibName"></html:options>
+                     </html:select>
+
+                    <%}else{%>
+                        <html:hidden property="sublibrary_id" styleId="sublibrary_id"  value="<%=sublibrary_name%>"/>
+                        <html:select  property="sublibrary_id" tabindex="3" disabled="true"  value="<%=sublibrary_name%>">
+                             <html:option value="Select">Select</html:option>
+                    <html:options name="SubLibrary" collection="sublib" property="id.sublibraryId" labelProperty="sublibName"></html:options>
+                     </html:select>
+
+                    <%}%>
+
+                   
+
+
+                            </td></tr>
+
                         <tr><td class="txt2">Staff ID</td><td><input type="text" id="staff_id" name="staff_id"  readonly   value="<%=staff_id%>"></td></tr>
                          <tr><td colspan="2" height="5px"></td></tr>
-                        <tr><td class="txt2">User Name</td><td><input type="text" id="user_name" name="user_name" readonly   value="<%=first_name%><%=last_name%> "></td></tr>
+                        <tr><td class="txt2">User Name</td><td><input type="text" id="user_name" name="user_name" readonly   value="<%=user_name%>"></td></tr>
                         <tr><td colspan="2" height="5px"></td></tr>
-                        <tr><td class="txt2" >Email/Login ID</td><td><input type="text" id="email_id" name="email_id" readonly    value="<%=email_id%>"/> </td></tr>
+                        <tr><td class="txt2" >Login ID</td><td><input type="text" id="login_id" name="login_id"    value=""/> </td></tr>
                         <tr><td colspan="2" height="5px"></td></tr>
                            <tr><td class="txt2" width="250px" align="left">Select Role</td><td width="250px">
-                                <select id="role" size="1" name="role">
+                                   <select id="role" size="1" name="role">
+                                    
                                     <%
-                                    if(login_role.equals("insti-admin"))
+                                    if(login_role.equals("dept-admin"))
                                     {%>
-
-                                    <option value="Select">Select Role</option>
-                                    <option value="staff">Staff</option>
-                                    <option value="admin">Admin</option>
-
-
-                                    <%}
-                                    else if(login_role.equals("admin"))
-                                    {%>
-                                    <option value="Select">Select Role</option>
-                                    <option value="staff">Staff</option>
-
+                                  
+                                    <option value="dept-staff">Departmental Staff</option>
+                                  
                                     <%}%>
 
                                 </select>
                                 </td></tr>
                             <tr><td colspan="2" height="5px">
-                       <tr><td class="txt2">Password</td><td><input type="password" id="password"  name="password"  onblur="return search();"  value=""></td></tr>
+                       <tr><td class="txt2">Password</td><td><input type="password" id="password"  name="password"  onblur="return check1();"  value="">
+                           <div align="left" id="searchResult" class="err" style="border:#000000; "></div>
+                           </td></tr>
                         <tr><td colspan="2" height="5px">
                        
                        <tr><td class="txt2">Reenter Password</td><td><input type="password" id="password1"  name="password1" onblur="return search1();" value=""></td></tr>
 
                        <tr><td colspan="2" height="5px"></td></tr>
-                       <tr><td colspan="2" height="5px">
-                       <div align="left" id="searchResult1" class="err" style="border:#000000; "></div></td></tr>
                        
 
 
@@ -154,51 +320,13 @@ return true;
                         <%}%>
                                 <br>
                                 <br>
-                        <%
-                        if(button.equals("View Account"))
-                        {
-
-                        %>
-
-                        <input type="button" id="Button3" name="" value="Back" onclick=" return send1()" class="txt2"/>
-                      <%
-                        }
-                         else if(button.equals("Change Password"))
-                            {
-                        %>
-                        <input type="submit" id="Button1" name="button" value="<%=button%>" class="txt2" />
-                         <input type="button" id="Button3" name="" value="Back" onclick=" return send1()" class="txt2"/>
-                        <%
-                         }
-                        else if(button.equals("Delete Account"))
-                        {%>
-                         <input type="submit" id="Button1" name="button" value="<%=button%>" class="txt2" onclick="return confirm1()"/>
+                         
+                            <input type="submit" id="Button1" name="button" value="Create Account" class="txt2" />
 
                          <input type="button" id="Button3" name="" value="Back" onclick=" return send1()" class="txt2"/>
-
-                           <%}
-                           else
-                            {%>
-                            <input type="submit" id="Button1" name="button" value="<%=button%>" class="txt2" />
-
-                         <input type="button" id="Button3" name="" value="Back" onclick=" return send1()" class="txt2"/>
-                       <%}%>
+                       
 
                            
-
-
-
-</fieldset>
-
-
-
-
-
-
-
-
-
-
 
 </td></tr>
 
@@ -209,101 +337,6 @@ return true;
     </body>
 
 
-    <script  type="text/javascript" language="javascript">
-
-    function check()
-    {
-        var role=document.getElementById('role').options[document.getElementById('role').selectedIndex].value;
-
-    if(role=="Select")
-        {
-            alert("Select Role");
-            document.getElementById('role').focus();
-            return false;
-        }
-
-        var x=document.getElementById('password');
-        if(x.value=="")
-            {
-                alert("Password should not be blank");
-                return false;
-            }
-     if(document.getElementById('password1').value=="")
-    {
-        alert("Enter Reenter password...");
-
-        document.getElementById('password1').focus();
-
-        return false;
-    }
-          var x1=document.getElementById('password');
-        var x2=document.getElementById('password1');
-        if(x1.value!=x2.value)
-            {
-                alert("password mismatch");
-                document.getElementById('password1').focus();
-                return false;
-            }
-            else
-                return true;
-
-
-    }
-    function search()
-    {
-     availableSelectList = document.getElementById("searchResult1");
-  availableSelectList.innerHTML = "";
-    var keyValue = document.getElementById("password").value;
-
-
-
-    if (pcheck(keyValue)==false)
-    {
-		password.value="";
-		password.focus();
-		return false;
-	}
-        else
-            return true;
-    }
-      function search1()
-    {
-     availableSelectList = document.getElementById("searchResult1");
-  availableSelectList.innerHTML = "";
-    var keyValue = document.getElementById("password1").value;
-
-
-
-    if (pcheck(keyValue)==false)
-    {
-		password1.value="";
-		password1.focus();
-		return false;
-	}
-        else
-            return true;
-
-    }
-      function send1()
-    {
-        window.location="/LibMS-Struts/admin/account.jsp";
-        return false;
-
-    }
-
-    function confirm1()
-{
-   var answer = confirm ("Do you want to Delete Record?")
-if (answer!=true)
-    {
-        document.getElementById('Button1').focus();
-        return false;
-    }
-    else
-        return true;
-
-
-}
-    </script>
+ 
 
 </html>

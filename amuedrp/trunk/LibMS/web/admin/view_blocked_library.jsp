@@ -1,9 +1,4 @@
-<%--
-    Document   : Simple.jsp
-    Created on : Jun 18, 2010, 7:46:24 AM
-    Author     : Mayank Saxena
-<jsp:include page="adminheader.jsp" flush="true" />
---%>
+
  
     <%@page import="com.myapp.struts.admin.RequestDoc"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -19,8 +14,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
-    <title>View approval</title>
-<link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
+    <title>LibMS : Manage SuperAdmin</title>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 <script language="javascript" >
 function b1click()
 {
@@ -35,7 +30,7 @@ f.submit();
 }
 function getQuery(id)
 {
-    var query = "/LibMS-Struts/admin/index.jsp?id="+id;
+    var query = "<%=request.getContextPath()%>/admin/index.jsp?id="+id;
     return query;
 }
 </script>

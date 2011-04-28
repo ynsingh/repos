@@ -21,7 +21,7 @@
 <script language="javascript">
       history.back(-2);
     
-     alert("Email is duplicate");
+     alert("User Id is duplicate");
    //  parent.location.reload();
  // parent.document.getElementById('library_id').value="";
         

@@ -12,8 +12,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
-        <title>LibMS</title>
+        <link rel="stylesheet" href="/EMS-Struts/css/page.css"/>
+        <title>EMS</title>
     </head>
     <body >
    
@@ -28,12 +28,12 @@
     <table height="300px"  valign="top" align="center" id="tab1">
         <tr><td   width="400px" height="300px" valign="top" align="center">
                 <fieldset style="border:solid 1px brown;height:200px;padding-left: 5px">
-                    <legend><img src="/LibMS-Struts/images/Logout.png"></legend>
+                    <legend><img src="/EMS-Struts/images/Logout.png"></legend>
                     <br><br><br>
 
                   <p align="center" class="txt2">Staff Logged Out Successfully
                     <br><br>
-                    Click Here <a href="/LibMS-Struts/login.jsp">Home</a></p>
+                    Click Here <a href="/EMS-Struts/login.jsp">Home</a></p>
                     
                     
                    

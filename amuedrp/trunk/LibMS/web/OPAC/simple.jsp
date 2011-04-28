@@ -1,4 +1,4 @@
-<%@page import="java.sql.ResultSet"%>
+<%@page import="com.myapp.struts.hbm.*"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@page contentType="text/html" pageEncoding="UTF-8" import="java.util.*,java.io.*,java.net.*"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
@@ -10,8 +10,22 @@
  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="Mayank Saxena" content="MCA,AMU">
 <title>Simple Search...</title>
+<%
+        List libRs = (List)session.getAttribute("libRs");
 
+        System.out.println(libRs.size());
+        List sublib = (List)session.getAttribute("sublib");
+        String lib_id = (String)session.getAttribute("library_id");
+        String sublib_id =  (String)session.getAttribute("memsublib");
+        if(sublib_id==null ||sublib_id.equals(""))
+            sublib_id = (String)session.getAttribute("sublibrary_id");
+        System.out.println("sublibId="+ sublib_id);
+       // rs.beforeFirst();
+
+
+    %>
 <style type="text/css">
+
 a:active
 {
    color: #0000FF;
@@ -31,6 +45,7 @@ a:active
     String locale1="en";
     String rtl="ltr";
     boolean page=true;
+    String align="left";
 %>
 <%
 try{
@@ -43,12 +58,128 @@ locale1=(String)session.getAttribute("locale");
     else locale1="en";
 }catch(Exception e){locale1="en";}
      locale = new Locale(locale1);
-    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;}
-    else{ rtl="RTL";page=false;}
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
+    else{ rtl="RTL";page=false;align="right";}
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
     %>
 <link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
+<script language="javascript" type="text/javascript">
+/*
+* Returns an new XMLHttpRequest object, or false if the browser
+* doesn't support it
+*/
+var availableSelectList;
+function newXMLHttpRequest() {
+var xmlreq = false;
+// Create XMLHttpRequest object in non-Microsoft browsers
+if (window.XMLHttpRequest) {
+xmlreq = new XMLHttpRequest();
+} else if (window.ActiveXObject) {
+try {
+// Try to create XMLHttpRequest in later versions
+// of Internet Explorer
+xmlreq = new ActiveXObject("Msxml2.XMLHTTP");
+} catch (e1) {
+// Failed to create required ActiveXObject
+try {
+// Try version supported by older versions
+// of Internet Explorer
+xmlreq = new ActiveXObject("Microsoft.XMLHTTP");
+} catch (e2) {
+// Unable to create an XMLHttpRequest by any means
+xmlreq = false;
+}
+}
+}
+return xmlreq;
+}
+/*
+* Returns a function that waits for the specified XMLHttpRequest
+* to complete, then passes it XML response to the given handler function.
+* req - The XMLHttpRequest whose state is changing
+* responseXmlHandler - Function to pass the XML response to
+*/
+function getReadyStateHandler(req, responseXmlHandler) {
+// Return an anonymous function that listens to the XMLHttpRequest instance
+return function () {
+// If the request's status is "complete"
+if (req.readyState == 4) {
+// Check that we received a successful response from the server
+if (req.status == 200) {
+// Pass the XML payload of the response to the handler function.
+responseXmlHandler(req.responseXML);
+} else {
+// An HTTP problem has occurred
+alert("HTTP error "+req.status+": "+req.statusText);
+}
+}
+}
+}
+function search() {
+
+    var keyValue = document.getElementById('CMBLib').options[document.getElementById('CMBLib').selectedIndex].value;
+
+
+     if(keyValue=="all"){
+
+           document.getElementById('CMBLib').focus();
+               document.getElementById('SubLibary').options.length = 0;
+               newOpt = document.getElementById('SubLibary').appendChild(document.createElement('option'));
+                newOpt.value = "all";
+                newOpt.text = "All";
+
+
+
+		return false;
+
+
+
+        }
+else
+    {
+    keyValue = keyValue.replace(/^\s*|\s*$/g,"");
+if (keyValue.length >= 1)
+{
+
+var req = newXMLHttpRequest();
+
+req.onreadystatechange = getReadyStateHandler(req, update);
+
+req.open("POST","<%=request.getContextPath()%>/sublibrary.do", true);
+
+req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+req.send("getSubLibrary_Id="+keyValue);
+
+
+}
+return true;
+}
+}
+
+function update(cartXML)
+{
+var depts = cartXML.getElementsByTagName("sublibrary_ids")[0];
+var em = depts.getElementsByTagName("sublibrary_id");
+var em1 = depts.getElementsByTagName("sublibrary_name");
+
+        var newOpt =document.getElementById('SubLibary').appendChild(document.createElement('option'));
+        document.getElementById('SubLibary').options.length = 0;
+
+for (var i = 0; i < em.length ; i++)
+{
+var ndValue = em[i].firstChild.nodeValue;
+var ndValue1=em1[i].firstChild.nodeValue;
+newOpt = document.getElementById('SubLibary').appendChild(document.createElement('option'));
+newOpt.value = ndValue;
+newOpt.text = ndValue1;
+
+
+}
+
+}
+
+</script>
 <SCRIPT language="JAVASCRIPT">
     function f()
     {
@@ -100,45 +231,41 @@ locale1=(String)session.getAttribute("locale");
     }
 </SCRIPT>
 </head>
-<body>
+<body >
 
-    <%if(page.equals(true)){%>
+    
     <html:form  method="post" action="/simple_search"  onsubmit="return validate();">
     
-       <table  align="left" width="1200x" class="datagrid"  style="border:solid 1px #e0e8f5;">
+        <table  align="<%=align%>" dir="<%=rtl%>" width="1200x" class="datagrid"  style="border:solid 1px #e0e8f5;">
 
 
 
-  <tr class="header"><td  width="1000px"   align="center" colspan="2">
+  <tr class="header"><td  width="1000px" dir="<%=rtl%>"  align="center" colspan="2">
           
 
 		Simple Search
-
-
-
-         
-        </td></tr>
-  <tr style="background-color:#e0e8f5;"><td width="800px"  >
-          <table>
-              <tr><td ><%=resource.getString("opac.simplesearch.enterwordorphrase")%></td><td><input type="text" id="TXTPHRASE" name="TXTPHRASE"></td></tr>
-              <tr>   <td >Connected Word As</td><td><select name="CMBCONN" size="1" id="CMBCONN">
-<option selected value="or">OR</option>
-<option value="and">AND</option>
+</td></tr>
+  <tr style="background-color:#e0e8f5;"><td width="800px" dir="<%=rtl%>" >
+          <table dir="<%=rtl%>">
+              <tr><td dir="<%=rtl%>" ><%=resource.getString("opac.simplesearch.enterwordorphrase")%></td><td><input type="text" dir="<%=rtl%>" id="TXTPHRASE" name="TXTPHRASE"></td></tr>
+              <tr>   <td dir="<%=rtl%>">Connected Word As</td><td><select name="CMBCONN" dir="<%=rtl%>" size="1" id="CMBCONN">
+<option selected dir="<%=rtl%>" value="or">OR</option>
+<option dir="<%=rtl%>" value="and">AND</option>
 </select></td>
 
       </tr>
 
           </table>
       </td>
-      <td    align="left" valign="top">
+      <td    align="<%=align%>" dir="<%=rtl%>" valign="top">
           <table >
-              <tr><td>in <%=resource.getString("opac.simplesearch.field")%> </td><td rowspan="2" valign="top">
+              <tr><td dir="<%=rtl%>">in <%=resource.getString("opac.simplesearch.field")%> </td><td rowspan="2" dir="<%=rtl%>" valign="top">
 
-          <select name="CMBFIELD" size="1" id="CMBFIELD">
-<option value="any field" selected>ANY FIELD</option>
-<option  value="author_main">AUTHOR</option>
-<option value="title">TITLE</option>
-<option value="isbn10">ISBN</option>
+          <select name="CMBFIELD" size="1" id="CMBFIELD" dir="<%=rtl%>">
+<option value="any field" selected dir="<%=rtl%>">ANY FIELD</option>
+<option  value="authorName" dir="<%=rtl%>">AUTHOR</option>
+<option value="title" dir="<%=rtl%>">TITLE</option>
+<option value="publisherName" dir="<%=rtl%>">PUBLISHER</option>
 
 
 
@@ -146,80 +273,61 @@ locale1=(String)session.getAttribute("locale");
      </td>
      
               </tr></table></td></tr>
-  <tr class="header"><td width="1000px"   align="left" >&nbsp;Restricted By</td><td align="left">Sort By</td></tr>
-   <tr style="background-color:#e0e8f5;"><td width="800px"   align="left">
-           <table  width="800px" ><tr><td align="500px">
+  <tr class="header"><td width="1000px" dir="<%=rtl%>"  align="<%=align%>" >&nbsp;Restricted By</td><td align="<%=align%>" dir="<%=rtl%>">Sort By</td></tr>
+   <tr style="background-color:#e0e8f5;"><td width="800px"  dir="<%=rtl%>" align="<%=align%>">
+           <table  width="800px" ><tr><td dir="<%=rtl%>" align="<%=align%>">
           <table>
-              <tr><td ><%=resource.getString("opac.simplesearch.database")%></td><td>
-                      <select name="CMBDB" size="1" id="CMBDB">
-<option value="combined" selected>COMBINED</option>
-    <option value="book">BOOKS</option>
-    <option value="cd">CDs</option>
-   
+             
+              <tr>   <td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.library")%></td><td>
+    
+                      <html:select property="CMBLib" dir="<%=rtl%>"  value="<%=lib_id%>"   styleId="CMBLib" onchange="search()">
+                          <html:option value="all">All</html:option>
+     <html:options collection="libRs" property="libraryId"  labelProperty="libraryName"/>
+ </html:select>
+</td>
+</tr>
+ <tr><td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.database")%></td><td>
+                      <select name="CMBDB" dir="<%=rtl%>" size="1" id="CMBDB">
+<option value="combined" dir="<%=rtl%>" selected>COMBINED</option>
+    <option value="book" dir="<%=rtl%>">BOOKS</option>
+    <option value="cd" dir="<%=rtl%>">CDs</option>
+
 </select>
                   </td></tr>
-              <tr>   <td ><%=resource.getString("opac.simplesearch.library")%></td><td>
-                  <select name="CMBLib" size="1" id="CMBLib">
-    <%
-        ResultSet rs = (ResultSet)session.getAttribute("libRs");
-        String lib_id = (String)session.getAttribute("library_id");
 
-        rs.beforeFirst();
-
-    if(lib_id==null)
-    {%>
-
-    <option selected value="all">ALL</option>
-    <%}
-    else
-    {%>
-    <option selected value="<%=lib_id%>"><%=lib_id.toUpperCase()%></option>
-    <option value="all">ALL</option>
-
-    <%
-    }
-    while (rs.next())
-            {
-    %>
-    <option value="<%= rs.getString(1) %>"><%=rs.getString(1).toUpperCase()%></option>
-    <% } %>
-</select>
-
-
-                  </td>
-
-      </tr>
 
           </table>
-                   </td><td align="left">Publishing Year<br/>
+
+                   </td><td align="<%=align%>" dir="<%=rtl%>">Sub Library&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                       <html:select property="CMBSUBLib" dir="<%=rtl%>"  styleId="SubLibary" value="<%=sublib_id%>">
+                            <html:option value="all">All</html:option>
+                           <html:options collection="sublib" property="id.sublibraryId" labelProperty="sublibName" />
+                       </html:select>
                        <table>
-                           <tr><td rowspan="4"></td><td><select name="CMBYR" onChange="f()" size="1" id="CMBYR" style="left:0px;top:0px;width:100%;height:100%;border-width:0px;font-family:Courier New;font-size:13px;">
-<option selected value="all">Select Year</option>
-<option value="all">ALL YEARS</option>
-<option value="between">BETWEEN</option>
-<option value="upto">UPTO</option>
-<option value="after">AFTER</option>
-</select></td><td>
-<input type="text" id="TXTYR1"  name="TXTYR1" style="width:50px"></td><td>
-<input type="text" id="TXTYR2"  name="TXTYR2" style="width:50px">
+                           <tr><td dir="<%=rtl%>">Publishing Year</td><td rowspan="4" dir="<%=rtl%>"></td>
+                               <td><select name="CMBYR" dir="<%=rtl%>" onChange="f()" size="1" id="CMBYR" style="left:0px;top:0px;width:100%;height:100%;border-width:0px;font-family:Courier New;font-size:13px;">
+                                    <option selected value="all" dir="<%=rtl%>">ALL YEARS</option>
+                                    <option value="between" dir="<%=rtl%>">BETWEEN</option>
+                                    <option value="upto" dir="<%=rtl%>">UPTO</option>
+                                    <option value="after" dir="<%=rtl%>">AFTER</option>
+                                </select>
+                               </td>
+                               <td>
+                                   <input type="text" dir="<%=rtl%>" id="TXTYR1"  name="TXTYR1" align="<%=align%>" disabled="true" style="width:50px">
+                               </td>
+<td>
+    <input type="text" id="TXTYR2"  align="<%=align%>" name="TXTYR2" dir="<%=rtl%>" disabled="true" style="width:50px">
 </td></tr>
-                      
-
-
-                       </table>
-
-
-
-
-                   </td></tr></table>
+ </table>
+ </td></tr></table>
       </td>
-      <td align="left">
+      <td align="<%=align%>" dir="<%=rtl%>">
            <table>
-                           <tr><td>Field</td><td> <select name="CMBSORT" size="1" id="CMBSORT">
-<option  value="author_main">AUTHOR</option>
-<option value="title">TITLE</option>
-<option value="isbn10">ISBN</option>
-<option value="publisher_name">PUBLISHER</option>
+                           <tr><td dir="<%=rtl%>">Field</td><td> <select name="CMBSORT" size="1" dir="<%=rtl%>" id="CMBSORT">
+<option  value="authorName" dir="<%=rtl%>">AUTHOR</option>
+<option value="title" dir="<%=rtl%>">TITLE</option>
+<option value="isbn10" dir="<%=rtl%>">ISBN</option>
+<option value="publisher_name" dir="<%=rtl%>">PUBLISHER</option>
 </select></td>
                            </tr></table>
 
@@ -230,109 +338,109 @@ locale1=(String)session.getAttribute("locale");
   <tr><td>
 
 
-          <input type="submit" id="Button1" class="btn" name="" value="FIND" >
-<input type="reset" id="Button2" class="btn" name="" value="CLEAR">
+          <input type="submit" dir="<%=rtl%>" id="Button1" class="btn" name="" value="FIND" >
+<input type="reset" dir="<%=rtl%>" id="Button2" class="btn" name="" value="CLEAR">
 
 
       </td></tr>
-       <tr class="header">
-                               <td colspan="2">
+       <tr class="header" dir="<%=rtl%>">
+                               <td colspan="2" dir="<%=rtl%>">
                  
 
-                            <a name="tips">&nbsp;Search Tips</a>
+                            <a dir="<%=rtl%>" name="tips">&nbsp;Search Tips</a>
                           
 
 
 
-                            <table class="datagrid" style="background-color:#e0e8f5;color:black" halign="right" border="0" cellpadding="2" cellspacing="0" width="100%" frame="hspaces" height="38" rules="rows">
+                            <table class="datagrid" dir="<%=rtl%>" style="background-color:#e0e8f5;color:black" halign="right" border="0" cellpadding="2" cellspacing="0" width="100%" frame="hspaces" height="38" rules="rows">
     <colgroup width="15%"></colgroup><colgroup width="1%"></colgroup><colgroup width="90%"></colgroup>
     <tbody><tr>
-    <th colspan="3" class="tipstext">
+    <th colspan="3" class="tipstext" dir="<%=rtl%>">
     	The user can make a simple search using this option. The fields to be entered are:
     </th>
 
     </tr>
 
     <tr>
-        <td class="txt2">
+        <td class="txt2" dir="<%=rtl%>">
     		Database
     </td>
-    <td class="tipsheading">:</td>
-    <td class="tipstext">
+    <td class="tipsheading" dir="<%=rtl%>">:</td>
+    <td class="tipstext" dir="<%=rtl%>">
     		 Select from the combo box the database on which the search is to be made.
     </td>
 
     </tr>
 
-    <tr valign="top">
-    	<td class="txt2">
+    <tr valign="top" dir="<%=rtl%>">
+    	<td class="txt2" dir="<%=rtl%>">
     		Field
    	</td>
-   	<td class="tipsheading">:</td>
-   	<td class="tipstext">
+   	<td class="tipsheading" dir="<%=rtl%>">:</td>
+   	<td class="tipstext" dir="<%=rtl%>">
     		Select from the combo box the field on which the search is to be made.
     	</td>
 
     </tr>
 
-    <tr valign="top">
+    <tr valign="top" dir="<%=rtl%>">
 
-    	<td class="txt2">
+    	<td class="txt2" dir="<%=rtl%>">
     		Enter word(s) or phrase
     	</td>
-    	<td class="tipsheading">:</td>
-    	<td class="tipstext">
+    	<td class="tipsheading" dir="<%=rtl%>">:</td>
+    	<td class="tipstext" dir="<%=rtl%>">
     		 Give the word(s) or phrase on the basis of which the search is to be made.
     	</td>
 
     </tr>
 
-    <tr valign="top">
-    	<td class="txt2">
+    <tr valign="top" dir="<%=rtl%>">
+    	<td class="txt2" dir="<%=rtl%>">
     		Connected Word As
     	</td>
-    	<td class="tipsheading">:</td>
-    	<td class="tipstext">
+    	<td class="tipsheading" dir="<%=rtl%>">:</td>
+    	<td class="tipstext" dir="<%=rtl%>">
     		 Select from the combo box the connector required between the search words.
     	</td>
 
     </tr>
-     <tr valign="top">
-    	<td class="txt2" nowrap1="">
+     <tr valign="top" dir="<%=rtl%>">
+    	<td class="txt2" nowrap1="" dir="<%=rtl%>">
     		Library
     	</td>
-    	<td class="tipsheading">:</td>
-    	<td class="tipstext">
+    	<td class="tipsheading" dir="<%=rtl%>">:</td>
+    	<td class="tipstext" dir="<%=rtl%>">
     		 Give the Library ID within which a search has to be made.
     	</td>
 
     </tr>
-    <tr valign="top">
-    	<td class="txt2" nowrap1="">
+    <tr valign="top" dir="<%=rtl%>">
+    	<td class="txt2" nowrap1="" dir="<%=rtl%>">
     		Publication Year
     	</td>
-    	<td class="tipsheading">:</td>
-    	<td class="tipstext">
+    	<td class="tipsheading" dir="<%=rtl%>">:</td>
+    	<td class="tipstext" dir="<%=rtl%>">
     		 Give the publishing year(s) within which a search has to be made.
     	</td>
 
     </tr>
-    <tr valign="top">
-    	<td class="txt2" nowrap1="">
+    <tr valign="top" dir="<%=rtl%>">
+    	<td class="txt2" nowrap1="" dir="<%=rtl%>">
     		in Field
     	</td>
-    	<td class="tipsheading">:</td>
-    	<td class="tipstext">
+    	<td class="tipsheading" dir="<%=rtl%>">:</td>
+    	<td class="tipstext" dir="<%=rtl%>">
     		 Select from the combo box the field on which searching is to made.
     	</td>
 
     </tr>
 
-   <tr valign="top">
-   	<td class="txt2" align="right">
+   <tr valign="top" dir="<%=rtl%>">
+   	<td class="txt2" align="right" dir="<%=rtl%>">
    		Click Find
     	</td>
-    	<td colspan="2" class="txt2">
+    	<td colspan="2" class="txt2" dir="<%=rtl%>">
     		and the result is displayed. Thus , a simple search can be made on any field, title-wise, author-wise or subject-wise.
     	</td>
 
@@ -349,272 +457,7 @@ locale1=(String)session.getAttribute("locale");
       
     </html:form>
 
-
-     <%}else{%>
-
-     <html:form  method="post" action="/simple_search" onsubmit="return validate()">
-       <table  align="left" width="1200x" class="datagrid" style="border:solid 1px #e0e8f5;">
-
-
-
-  <tr class="header"><td  width="1000px"   align="center" colspan="2">
-
-
-		Simple Search
-
-
-
-
-        </td></tr>
-  <tr style="background-color:#e0e8f5;">
-      <td    align="left" width="200px" valign="top">
-          <table width="200px">
-              <tr><td>in <%=resource.getString("opac.simplesearch.field")%> </td><td rowspan="2" valign="top">
-
-          <select name="CMBFIELD" size="1" id="CMBFIELD">
-<option value="any field" selected>ANY FIELD</option>
-<option  value="author_main">AUTHOR</option>
-<option value="title">TITLE</option>
-<option value="isbn10">ISBN</option>
-
-
-
-</select>
-     </td>
-
-              </tr></table></td>
-  <td align="right">
-          <table>
-              <tr><td ><%=resource.getString("opac.simplesearch.enterwordorphrase")%></td><td><input type="text" id="TXTPHRASE" name="TXTPHRASE"></td></tr>
-              <tr>   <td >Connected Word As</td><td><select name="CMBCONN" size="1" id="CMBCONN">
-<option selected value="or">OR</option>
-<option value="and">AND</option>
-</select></td>
-
-      </tr>
-
-          </table>
-      </td>
-  </tr>
-  <tr class="header">
-      <td align="right">Sort By</td><td width="1000px"   align="right" >&nbsp;Restricted By</td></tr>
-    <tr style="background-color:#e0e8f5;">
-
-      <td align="left">
-           <table>
-                           <tr><td>Field</td><td> <select name="CMBSORT" size="1" id="CMBSORT">
-<option  value="author_main">AUTHOR</option>
-<option value="title">TITLE</option>
-<option value="isbn10">ISBN</option>
-<option value="publisher_name">PUBLISHER</option>
-</select></td>
-                           </tr></table>
-
-
-      </td>
-  <td width="800px"   align="right">
-           <table  width="800px" ><tr>
-                  <td align="left"><%=resource.getString("opac.additional.publicationyear")%>
-                                   <br/>
-                       <table >
-                           <tr><td rowspan="4"></td><td><select name="CMBYR" onChange="f()" size="1" id="CMBYR" style="left:0px;top:0px;width:100%;height:100%;border-width:0px;font-family:Courier New;font-size:13px;">
-<option selected value="all">Select Year</option>
-<option value="all">ALL YEARS</option>
-<option value="between">BETWEEN</option>
-<option value="upto">UPTO</option>
-<option value="after">AFTER</option>
-</select></td><td>
-<input type="text" id="TXTYR1"  name="TXTYR1" style="width:50px"></td><td>
-<input type="text" id="TXTYR2"  name="TXTYR2" style="width:50px">
-</td></tr>
-
-
-
-                       </table>
-
-
-
-
-                   </td>
-                <td align="500px" align="right">
-          <table>
-              <tr><td ><%=resource.getString("opac.simplesearch.database")%></td><td>
-                      <select name="CMBDB" size="1" id="CMBDB">
-<option value="combined" selected>COMBINED</option>
-    <option value="book">BOOKS</option>
-    <option value="cd">CDs</option>
-
-</select>
-                  </td></tr>
-                   <tr>   <td ><%=resource.getString("opac.simplesearch.library")%></td><td>
-                  <select name="CMBLib" size="1" id="CMBLib">
-    <%
-        ResultSet rs = (ResultSet)session.getAttribute("libRs");
-        String lib_id = (String)session.getAttribute("library_id");
-
-        rs.beforeFirst();
-
-    if(lib_id==null)
-    {%>
-
-    <option selected value="all">ALL</option>
-    <%}
-    else
-    {%>
-    <option selected value="<%=lib_id%>"><%=lib_id.toUpperCase()%></option>
-    <option value="all">ALL</option>
-
-    <%
-    }
-    while (rs.next())
-            {
-    %>
-    <option value="<%= rs.getString(1) %>"><%=rs.getString(1).toUpperCase()%></option>
-    <% } %>
-</select>
-
-
-                  </td>
-
-      </tr>
-
-          </table>
-                   </td>
-               </tr></table>
-      </td>
-  </tr>
-
-
-  <tr><td colspan="2" align="right">
-
-
-
-<input type="reset" id="Button2" class="btn" name="" value="CLEAR">
-<input type="submit" id="Button1" class="btn" name="" value="SEARCH">
-
-      </td></tr>
-   <tr class="header">
-       <td colspan="2" align="right">
-
-
-                            <a name="tips">&nbsp;Search Tips</a>
-
-
-
-
-                            <table class="datagrid" style="background-color:#e0e8f5;color:black" halign="left" border="0" cellpadding="2" cellspacing="0" width="100%" frame="hspaces" height="38" rules="rows">
-    <colgroup width="79%"></colgroup><colgroup width="1%"></colgroup><colgroup width="20%"></colgroup>
-    <tbody><tr>
-    <th colspan="3" class="tipstext">
-    	The user can make a simple search using this option. The fields to be entered are:
-    </th>
-
-    </tr>
-
-    <tr>
-        <td class="tipstext" align="right">
-    		 Select from the combo box the database on which the search is to be made.
-    </td>
-
-       
-    <td class="tipsheading">:</td>
-     <td class="txt2" align="right">
-    		Database
-    </td>
-    </tr>
-
-    <tr valign="top">
-    	
-   	
-   	<td class="tipstext" align="right">
-    		Select from the combo box the field on which the search is to be made.
-    	</td>
-        <td class="tipsheading">:</td>
-<td class="txt2" align="right">
-    		Field
-   	</td>
-    </tr>
-    <tr valign="top">
-
-
-    	<td class="tipstext" align="right">
-    		 Select from the combo box the field on which searching is to made.
-    	</td>
-        <td class="tipsheading">:</td>
-        <td class="txt2" nowrap1="" align="right">
-    		in Field
-    	</td>
-
-    </tr>
-
-    <tr valign="top">
-
-    	
-    	
-    	<td class="tipstext" align="right">
-    		 Give the word(s) or phrase on the basis of which the search is to be made.
-    	</td>
-        <td class="tipsheading">:</td>
-<td class="txt2" align="right">
-    		Enter word(s) or phrase
-    	</td>
-    </tr>
-
-    <tr valign="top">
-    	
-    	
-    	<td class="tipstext" align="right">
-    		 Select from the combo box the connector required between the search words.
-    	</td>
-        <td class="tipsheading">:</td>
-<td class="txt2" align="right">
-    		Connected Word As
-    	</td>
-    </tr>
-    <tr valign="top">
-
-
-    	<td class="tipstext" align="right">
-    		 Give the Library ID within which a search has to be made.
-    	</td>
-        <td class="tipsheading">:</td>
-        <td class="txt2" align="right">
-    		Library ID
-    	</td>
-
-    </tr>
-    <tr valign="top">
-    	
-    	
-    	<td class="tipstext" align="right">
-    		 Give the publishing year(s) within which a search has to be made.
-    	</td>
-        <td class="tipsheading">:</td>
-<td class="txt2"  align="right">
-    		Publication Year
-    	</td>
-    </tr>
-
-   <tr valign="top">
-   	
-    	<td colspan="2" class="txt2" align="right">
-    	Click on Find and the result is displayed. Thus , a simple search can be made on any field, title-wise, author-wise or subject-wise.
-    	</td>
-
-   </tr></tbody></table>
-       </table>
-
-      
-                              
-
-
-
-    </html:form>
-
-
-     <%}%>
-
-
+   
 
 
 </body>

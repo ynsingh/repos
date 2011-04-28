@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated May 2, 2011 12:00:19 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="com.myapp.struts.hbm.SubEmployeeType" table="sub_employee_type" catalog="libms">
+        <composite-id name="id" class="com.myapp.struts.hbm.SubEmployeeTypeId">
+            <key-property name="libraryId" type="string">
+                <column name="library_id" length="20" />
+            </key-property>
+            <key-property name="emptypeId" type="string">
+                <column name="emptype_id" length="20" />
+            </key-property>
+            <key-property name="subEmptypeId" type="string">
+                <column name="sub_emptype_id" length="20" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="employeeType" class="com.myapp.struts.hbm.EmployeeType" update="false" insert="false" fetch="select">
+            <column name="library_id" length="20" not-null="true" />
+            <column name="emptype_id" length="20" not-null="true" />
+        </many-to-one>
+        <many-to-one name="library" class="com.myapp.struts.hbm.Library" update="false" insert="false" fetch="select">
+            <column name="library_id" length="20" not-null="true" />
+        </many-to-one>
+        <property name="subEmptypeFullName" type="string">
+            <column name="sub_emptype_full_name" length="100" />
+        </property>
+        <property name="noOfIssueableBook" type="java.lang.Integer">
+            <column name="no_of_issueable_book" />
+        </property>
+        <set name="bookCategories" inverse="true">
+            <key>
+                <column name="library_id" length="20" not-null="true" />
+                <column name="emptype_id" length="20" not-null="true" />
+                <column name="sub_emptype_id" length="20" not-null="true" />
+            </key>
+            <one-to-many class="com.myapp.struts.hbm.BookCategory" />
+        </set>
+    </class>
+</hibernate-mapping>

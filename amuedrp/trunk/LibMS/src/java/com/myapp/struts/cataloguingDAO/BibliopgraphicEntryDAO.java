@@ -2,47 +2,97 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.myapp.struts.cataloguingDAO;
+
+import com.myapp.struts.hbm.AccessionRegister;
 import com.myapp.struts.hbm.BibliographicDetails;
 import com.myapp.struts.hbm.AcqFinalDemandList;
+import com.myapp.struts.hbm.DocumentDetails;
 import com.myapp.struts.hbm.HibernateUtil;
-import java.util.Iterator;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.Query;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
+import org.hibernate.criterion.Restrictions;
 
 /**
  *
- * @author Client
+ * @author <a href="mailto:asif633@gmail.com">Asif Iqubal</a>
  */
 public class BibliopgraphicEntryDAO {
- public void insert(BibliographicDetails bibDetails){
-    Session session = HibernateUtil.getSessionFactory().openSession();
+// All inserts
+
+    /**
+     * This method is used to insert data into table.
+     * @param bibDetails
+     */
+    public void insert(BibliographicDetails bibDetails) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
-        Criteria criteria = session.createCriteria(BibliographicDetails.class)
-                 .setProjection(Projections.max("id.biblioId"));
-            Integer maxNewSerialId = Integer.parseInt((String)criteria.uniqueResult());
-            maxNewSerialId++;
-          
         try {
             tx = session.beginTransaction();
             session.save(bibDetails);
             tx.commit();
-        }
-        catch (RuntimeException e) {
-            if(bibDetails != null)
-                tx.rollback();
+        } catch (RuntimeException e) {
+            //if(bibDetails != null)
+            tx.rollback();
             throw e;
-        }
-        finally {
-          session.close();
+        } finally {
+            session.close();
         }
     }
-public void update(BibliographicDetails bibDetails) {
+
+    /**
+     * This method is used to insert data into table.
+     * @param docDetails
+     */
+    public void insert1(DocumentDetails docDetails) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.save(docDetails);
+            tx.commit();
+        } catch (RuntimeException e) {
+            //if(docDetails != null)
+            tx.rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
+    }
+
+    /**
+     * This method is used to insert data into table.
+     * @param docDetails
+     */
+    public void insert2(AccessionRegister docDetails) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.save(docDetails);
+            tx.commit();
+        } catch (RuntimeException e) {
+            //if(docDetails != null)
+            tx.rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
+    }
+    // All updates
+
+    /**
+     * This method updates bibliographic details.
+     * @param bibDetails
+     */
+    public void update(BibliographicDetails bibDetails) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
 
@@ -50,17 +100,60 @@ public void update(BibliographicDetails bibDetails) {
             tx = session.beginTransaction();
             session.update(bibDetails);
             tx.commit();
-        }
-        catch (RuntimeException e) {
-          //  if(bibDetails != null)
-                tx.rollback();
+        } catch (RuntimeException e) {
+            //  if(bibDetails != null)
+            tx.rollback();
             throw e;
-        }
-        finally {
-           //session.close();
+        } finally {
+            session.close();
         }
     }
-public void delete(int biblio_id,String library_id) {
+
+    public void update2(AccessionRegister bibDetails) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+
+        try {
+            tx = session.beginTransaction();
+            session.update(bibDetails);
+            tx.commit();
+        } catch (RuntimeException e) {
+            //  if(bibDetails != null)
+            tx.rollback();
+            throw e;
+        } finally {
+            // session.close();
+        }
+    }
+
+    /**
+     * This method updates document details used in OPAC
+     * @param docDetails
+     */
+    public void update1(DocumentDetails docDetails) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+
+        try {
+            tx = session.beginTransaction();
+            session.update(docDetails);
+            tx.commit();
+        } catch (RuntimeException e) {
+            //  if(bibDetails != null)
+            tx.rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
+    }
+    // All deletes
+
+    /**
+     * This method is used to delete the record from document details table used for OPAC
+     * @param biblio_id
+     * @param library_id
+     */
+    public void delete1(int biblio_id, String library_id, String sub_library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
         //Object acqdocentry = null;
@@ -68,147 +161,700 @@ public void delete(int biblio_id,String library_id) {
         try {
             tx = session.beginTransaction();
             //acqdocentry = session.load(BibliographicDetails.class, id);
-            Query query = session.createQuery("DELETE FROM BibliographicDetails  WHERE  id.biblioId = :biblioId and id.libraryId = :libraryId ");
- 
-            query.setInteger("biblioId",biblio_id );
-            query.setString("libraryId",library_id );
+            Query query = session.createQuery("DELETE FROM DocumentDetails  WHERE  biblioId = :biblioId and id.libraryId = :libraryId and id.sublibraryId = :subLibraryId");
+
+            query.setInteger("biblioId", biblio_id);
+            query.setString("libraryId", library_id);
+            query.setString("subLibraryId", sub_library_id);
             query.executeUpdate();
             tx.commit();
             //return (BibliographicDetails) query.uniqueResult();
+        } finally {
+            //  session.close();
+        }
+    }
+
+    public void deletedocItem(String acc_no, String library_id, String sub_library_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        //Object acqdocentry = null;
+
+        try {
+            tx = session.beginTransaction();
+            //acqdocentry = session.load(BibliographicDetails.class, id);
+            Query query = session.createQuery("DELETE FROM DocumentDetails  WHERE  accessionNo = :accessionNo and id.libraryId = :libraryId and id.sublibraryId = :subLibraryId");
+
+            query.setString("accessionNo", acc_no);
+            query.setString("libraryId", library_id);
+            query.setString("subLibraryId", sub_library_id);
+            query.executeUpdate();
+            tx.commit();
+            //return (BibliographicDetails) query.uniqueResult();
+        } finally {
+            //  session.close();
+        }
+    }
+/**
+ * This method deletes accession register items.
+ * @param acc_no
+ * @param library_id
+ * @param sub_library_id
+ */
+    public void deleteaccItem(String acc_no, String library_id, String sub_library_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        //Object acqdocentry = null;
+
+        try {
+            tx = session.beginTransaction();
+            //acqdocentry = session.load(BibliographicDetails.class, id);
+            Query query = session.createQuery("DELETE FROM AccessionRegister  WHERE  accessionNo = :accessionNo and id.libraryId = :libraryId and id.sublibraryId = :subLibraryId");
+
+            query.setString("accessionNo", acc_no);
+            query.setString("libraryId", library_id);
+            query.setString("subLibraryId", sub_library_id);
+            query.executeUpdate();
+            tx.commit();
+            //return (BibliographicDetails) query.uniqueResult();
+        } finally {
+            //  session.close();
+        }
+    }
+    public void deleteaccItemBiblio(int acc_no, String library_id, String sub_library_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        //Object acqdocentry = null;
+
+        try {
+            tx = session.beginTransaction();
+            //acqdocentry = session.load(BibliographicDetails.class, id);
+            Query query = session.createQuery("DELETE FROM AccessionRegister  WHERE  bibliographicDetails.id.biblioId = :accessionNo and id.libraryId = :libraryId and id.sublibraryId = :subLibraryId");
+
+            query.setInteger("accessionNo", acc_no);
+            query.setString("libraryId", library_id);
+            query.setString("subLibraryId", sub_library_id);
+            query.executeUpdate();
+            tx.commit();
+            //return (BibliographicDetails) query.uniqueResult();
+        } finally {
+            //  session.close();
+        }
+    }
+    /**
+     * This method is used to delete record from bibliographic details table.
+     * @param biblio_id
+     * @param library_id
+     */
+    public void delete(int biblio_id, String library_id, String sub_library_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        //Object acqdocentry = null;
+
+        try {
+            tx = session.beginTransaction();
+            //acqdocentry = session.load(BibliographicDetails.class, id);
+            Query query = session.createQuery("DELETE FROM BibliographicDetails  WHERE id.biblioId = :biblioId and id.libraryId = :libraryId and id.sublibraryId = :subLibraryId");
+
+            query.setInteger("biblioId", biblio_id);
+            query.setString("libraryId", library_id);
+            query.setString("subLibraryId", sub_library_id);
+            query.executeUpdate();
+            tx.commit();
+            //return (BibliographicDetails) query.uniqueResult();
+        } finally {
+            // session.close();
+        }
+    }
+    //Return Max
+
+    /**
+     * This method is used to return the maximum biblio Id specific to a library
+     * @param library_id
+     * @return maxbiblio
+     */
+    public Integer returnMaxBiblioId(String library_id, String sublibrary_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        try {
+            Criteria criteria = session.createCriteria(BibliographicDetails.class);
+            Criterion a = Restrictions.eq("id.libraryId", library_id);
+            Criterion b = Restrictions.eq("id.sublibraryId", sublibrary_id);
+            LogicalExpression le = Restrictions.and(a, b);
+            Integer maxbiblio = (Integer) criteria.add(le).setProjection(Projections.max("id.biblioId")).uniqueResult();
+            if (maxbiblio == null) {
+                maxbiblio = 1;
+            } else {
+                maxbiblio++;
+            }
+
+            return maxbiblio;
+        } finally {
+            session.close();
         }
 
-        finally {
+    }
+
+    /**
+     * This method is used to return maximum record no of accession register
+     * @param library_id
+     * @param sublibrary_id
+     * @return returnMaxRecord
+     */
+    public Integer returnMaxRecord(String library_id, String sublibrary_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        try {
+            Criteria criteria = session.createCriteria(AccessionRegister.class);
+            Criterion a = Restrictions.eq("id.libraryId", library_id);
+            Criterion b = Restrictions.eq("id.sublibraryId", sublibrary_id);
+            LogicalExpression lexp = Restrictions.and(a, b);
+            Integer maxbiblio = (Integer) criteria.add(lexp).setProjection(Projections.max("id.recordNo")).uniqueResult();
+            if (maxbiblio == null) {
+                maxbiblio = 1;
+            } else {
+                maxbiblio++;
+            }
+
+            return maxbiblio;
+        } finally {
+            session.close();
+        }
+
+    }
+
+    /**
+     * This method is used to return maximum document id specific to a library
+     * @param library_id
+     * @return maxbiblio
+     */
+    public Integer returnMaxDocumentId(String library_id, String sublibrary_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        try {
+            Criteria criteria = session.createCriteria(DocumentDetails.class);
+            Criterion a = Restrictions.eq("id.libraryId", library_id);
+            Criterion b = Restrictions.eq("id.sublibraryId", sublibrary_id);
+            LogicalExpression le = Restrictions.and(a, b);
+            Integer maxbiblio = (Integer) criteria.add(le).setProjection(Projections.max("id.documentId")).uniqueResult();
+            if (maxbiblio == null) {
+                maxbiblio = 1;
+            } else {
+                maxbiblio++;
+            }
+
+            return maxbiblio;
+        } finally {
+            session.close();
+        }
+    }
+
+    /**
+     *
+     * @param library_id
+     * @param sublibrary_id
+     * @return maxbiblio
+     */
+    public Integer returnMaxDocumentId1(String library_id, String sublibrary_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        try {
+            Criteria criteria = session.createCriteria(DocumentDetails.class);
+            Criterion a = Restrictions.eq("id.libraryId", library_id);
+            Criterion b = Restrictions.eq("id.sublibraryId", sublibrary_id);
+            LogicalExpression le = Restrictions.and(a, b);
+
+            Integer maxbiblio = (Integer) criteria.add(le).setProjection(Projections.property("id.sublibraryId")).INNER_JOIN;
+
+
+            if (maxbiblio == null) {
+                maxbiblio = 1;
+            } else {
+                maxbiblio++;
+            }
+
+            return maxbiblio;
+        } finally {
+            session.close();
+        }
+    }
+// All objects
+  /**
+   * This method is used while updating accession register detail.
+   * It searches all the accessioned items and checks duplicate entry.   
+   * @param record_no
+   * @param library_id
+   * @param sub_library_id
+   * @param acc_no
+   * @return AccessionRegister
+   */
+    public AccessionRegister searchaccupdate(int  record_no,String library_id, String sub_library_id, String acc_no) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            Criteria criteria = session.createCriteria(AccessionRegister.class)
+                    .add(Restrictions.conjunction()
+                    .add(Restrictions.eq("id.libraryId", library_id))
+                    .add(Restrictions.eq("id.sublibraryId", sub_library_id))
+                    .add(Restrictions.eq("accessionNo", acc_no))
+                    .add(Restrictions.ne("id.recordNo", record_no)));
+            //session.close();
+            return (AccessionRegister) criteria.uniqueResult();
+        } finally {
+            session.close();
+        }
+    }
+/**
+ * This method is used while updating bibliographic detail.
+ * It searches all the titles and checks duplicate entry of call no.
+ * @param callno
+ * @param biblio_id
+ * @param library_id
+ * @param sub_library_id
+ * @return BibliographicDetails
+ */
+      public BibliographicDetails searchCallNOByBiblio(String callno, int biblio_id, String library_id, String sub_library_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        Criteria criteria = session.createCriteria(BibliographicDetails.class)
+                .add(Restrictions.conjunction()
+                .add(Restrictions.eq("id.libraryId", library_id))
+                .add(Restrictions.eq("id.sublibraryId", sub_library_id))
+                .add(Restrictions.ne("id.biblioId", biblio_id))
+                .add(Restrictions.eq("callNo", callno)));
+        //session.close();
+        return (BibliographicDetails) criteria.uniqueResult();
+    }
+ /**
+ * This method is used while updating bibliographic detail.
+ * It searches all the titles and checks duplicate entry of isbn-10.
+  * @param isbn
+  * @param biblio_id
+  * @param library_id
+  * @param sub_library_id
+  * @return BibliographicDetails
+  */
+      public BibliographicDetails searchIsbn10ByBiblio(String isbn10, int biblio_id, String library_id, String sub_library_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        Criteria criteria = session.createCriteria(BibliographicDetails.class)
+                .add(Restrictions.conjunction()
+                .add(Restrictions.eq("id.libraryId", library_id))
+                .add(Restrictions.eq("id.sublibraryId", sub_library_id))
+                .add(Restrictions.ne("id.biblioId", biblio_id))
+                .add(Restrictions.eq("isbn10", isbn10)));
+        //session.close();
+        return (BibliographicDetails) criteria.uniqueResult();
+    }
+    /**
+     * This method returns specific document used in OPAC.
+     * @param biblio_id
+     * @param library_id
+     * @return DocumentDetails
+     */
+    public DocumentDetails searchDoc(int biblio_id, int record_no, String library_id, String sub_library_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        try {
+            Criteria criteria = session.createCriteria(DocumentDetails.class).add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("id.sublibraryId", sub_library_id)).add(Restrictions.eq("biblioId", biblio_id)).add(Restrictions.eq("recordNo", record_no)));
+            return (DocumentDetails) criteria.uniqueResult();
+        } finally {
+            session.close();
+        }
+    }
+
+    /**
+     *
+     * @param isbn10
+     * @param library_id
+     * @param sub_library_id
+     * @return BibliographicDetails
+     */
+    public BibliographicDetails searchIsbn10(String isbn10, String library_id, String sub_library_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+
+        try {
+            session.beginTransaction();
+            Query query = session.createQuery("FROM BibliographicDetails  WHERE isbn10 = :isbn10  and id.libraryId = :libraryId and id.sublibraryId = :subLibraryId");
+            query.setString("isbn10", isbn10);
+            query.setString("libraryId", library_id);
+            query.setString("subLibraryId", sub_library_id);
+            return (BibliographicDetails) query.uniqueResult();
+        } finally {
+            session.close();
+        }
+
+    }
+
+    /**
+     *
+     * @param isbn10
+     * @param library_id
+     * @param sub_library_id
+     * @return BibliographicDetails
+     */
+    public BibliographicDetails search1Isbn10(String isbn10, String library_id, String sub_library_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        Criteria criteria = session.createCriteria(BibliographicDetails.class).add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("id.sublibraryId", sub_library_id)).add(Restrictions.eq("isbn10", isbn10)));
+        //session.close();
+        return (BibliographicDetails) criteria.uniqueResult();
+    }
+
+    /**
+     *
+     * @param title
+     * @param isbn10
+     * @param library_id
+     * @param sub_library_id
+     * @return BibliographicDetails
+     */
+    public BibliographicDetails search2Isbn10(String title, String isbn10, String library_id, String sub_library_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        Criteria criteria = session.createCriteria(BibliographicDetails.class).add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("id.sublibraryId", sub_library_id)).add(Restrictions.eq("isbn10", isbn10)).add(Restrictions.eq("title", title)));
+        //session.close();
+        return (BibliographicDetails) criteria.uniqueResult();
+    }
+
+    /**
+     *
+     * @param library_id
+     * @param sub_library_id
+     * @param acc_no
+     * @return AccessionRegister
+     */
+    public AccessionRegister searchacc(String library_id, String sub_library_id, String acc_no) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+            Criteria criteria = session.createCriteria(AccessionRegister.class).add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("id.sublibraryId", sub_library_id)).add(Restrictions.eq("accessionNo", acc_no)));
+
+            //session.close();
+            return (AccessionRegister) criteria.uniqueResult();
+        } finally {
             //session.close();
         }
     }
-public BibliographicDetails searchIsbn10(String isbn10,String library_id) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
 
+    /**
+     *
+     * @param library_id
+     * @param sub_library_id
+     * @param record_no
+     * @return AccessionRegister
+     */
+    public AccessionRegister searchAccByRecord(String library_id, String sub_library_id, int record_no) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             session.beginTransaction();
-            Query query = session.createQuery("FROM BibliographicDetails  WHERE isbn10 = :isbn10  and id.libraryId = :libraryId ");
-            query.setString("isbn10", isbn10);
-            query.setString("libraryId",library_id );
-            return (BibliographicDetails) query.uniqueResult();
-        }
-        finally {
+            Criteria criteria = session.createCriteria(AccessionRegister.class).add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("id.sublibraryId", sub_library_id)).add(Restrictions.eq("id.recordNo", record_no)));
+
+            //session.close();
+            return (AccessionRegister) criteria.uniqueResult();
+        } finally {
             //session.close();
         }
+    }
 
-}
-public BibliographicDetails searchcall(String call_no,String library_id) {
+    /**
+     *
+     * @param library_id
+     * @param sub_library_id
+     * @param acc_no
+     * @return AccessionRegister
+     */
+    public AccessionRegister searchacc1(String library_id, String sub_library_id, String acc_no) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
         try {
             session.beginTransaction();
-            Query query = session.createQuery("FROM BibliographicDetails  WHERE id.callNo = :callNo  and id.libraryId = :libraryId ");
-            query.setString("callNo", call_no);
-            query.setString("libraryId",library_id );
-            return (BibliographicDetails) query.uniqueResult();
-        }
-        finally {
+            Criteria criteria = session.createCriteria(AccessionRegister.class).add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("id.sublibraryId", sub_library_id)).add(Restrictions.eq("accessionNo", acc_no)));
+
+            //session.close();
+            return (AccessionRegister) criteria.uniqueResult();
+        } finally {
             //session.close();
         }
+    }
 
-}
-public AcqFinalDemandList searchacqIsbn10(String isbn10,String library_id) {
+    /**
+     *
+     * @param call_no
+     * @param library_id
+     * @param sub_library_id
+     * @return BibliographicDetails
+     */
+    public BibliographicDetails searchcall(String call_no, String library_id, String sub_library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+        session.beginTransaction();
         try {
-            session.beginTransaction();
-            Query query = session.createQuery("FROM AcqFinalDemandList  WHERE isbn = :isbn  and id.libraryId = :libraryId ");
-            query.setString("isbn", isbn10);
-            query.setString("libraryId",library_id );
-            return (AcqFinalDemandList) query.uniqueResult();
-        }
-        finally {
-            //session.close();
-        }
-
-}
-public BibliographicDetails searchIsbn13(String isbn13,String library_id) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-
-        try {
-            session.beginTransaction();
-            Query query = session.createQuery("FROM BibliographicDetails  WHERE isbn13 = :isbn13  and id.libraryId = :libraryId ");
-            query.setString("isbn13", isbn13);
-            query.setString("libraryId",library_id );
-            return (BibliographicDetails) query.uniqueResult();
-        }
-        finally {
-            //session.close();
-        }
-
-}
-public String isbn10search(String isbn10,String library_id) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        StringBuffer isbn10s = new StringBuffer();
-        try {
-            session.beginTransaction();
-            Query query = session.createQuery("FROM BibliographicDetails  WHERE isbn10 = :isbn10  and id.libraryId = :libraryId ");
-            query.setString("isbn10", isbn10);
-            query.setString("libraryId",library_id );
-            List l=query.list();
-            Iterator it = l.iterator();
-            if(it.hasNext()){
-            isbn10s.append("<isbn10s>");
-            isbn10s.append("<isbn13>This isbn already exists</isbn13>");
-            isbn10s.append("</isbn10s>");
-            }
-            else
-           {
-            isbn10s.append("<isbn10s>");
-            isbn10s.append("<isbn103></isbn10>");
-            isbn10s.append("<isbn10s>");
-           }
-           return isbn10s.toString();
-        }
-        finally {
-            //session.close();
-        }
-
-}
-public String isbn13search(String isbn13,String library_id) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        StringBuffer isbn13s = new StringBuffer();
-        try {
-            session.beginTransaction();
-            Query query = session.createQuery("FROM BibliographicDetails  WHERE isbn13 = :isbn13  and id.libraryId = :libraryId ");
-            query.setString("isbn13", isbn13);
-            query.setString("libraryId",library_id );
-            List l=query.list();
-            Iterator it = l.iterator();
-            if(it.hasNext()){
-            isbn13s.append("<isbn13s>");
-            isbn13s.append("<isbn13>This isbn already exists</isbn13>");
-            isbn13s.append("</isbn13s>");
-            }
-            else
-           {
-            isbn13s.append("<isbn13s>");
-            isbn13s.append("<isbn133></isbn13>");
-            isbn13s.append("<isbn13s>");
-           }
-           return isbn13s.toString();
-        }
-        finally {
-            //session.close();
-        }
-
-}
-public List getBibliographicDetails(String library_id){
-  Session session = HibernateUtil.getSessionFactory().openSession();
-
-        try {
-            session.beginTransaction();
-            Query query = session.createQuery("FROM BibliographicDetails where id.libraryId = :libraryId");
-             query.setString("libraryId",library_id );
-            return query.list();
-        }
-        finally {
+            Criteria criteria = session.createCriteria(BibliographicDetails.class).add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("id.sublibraryId", sub_library_id)).add(Restrictions.eq("callNo", call_no)));
+            return (BibliographicDetails) criteria.uniqueResult();
+        } finally {
             session.close();
         }
-}
+    }
 
+    /**
+     *
+     * @param isbn10
+     * @param library_id
+     * @param sub_library_id
+     * @return AcqFinalDemandList
+     */
+    public AcqFinalDemandList searchacqIsbn10(String isbn10, String library_id, String sub_library_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+
+        try {
+            session.beginTransaction();
+            Query query = session.createQuery("FROM AcqFinalDemandList  WHERE isbn = :isbn  and id.libraryId = :libraryId and id.sublibraryId = :subLibraryId");
+            query.setString("isbn", isbn10);
+            query.setString("libraryId", library_id);
+            query.setString("subLibraryId", sub_library_id);
+            return (AcqFinalDemandList) query.uniqueResult();
+        } finally {
+            session.close();
+        }
+
+    }
+
+    /**
+     *
+     * @param isbn10
+     * @param title
+     * @param library_id
+     * @param sub_library_id
+     * @return AcqFinalDemandList
+     */
+    public AcqFinalDemandList searchacq1Isbn10(String isbn10, String title, String library_id, String sub_library_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        try {
+            Criteria criteria = session.createCriteria(BibliographicDetails.class).add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("id.sublibraryId", sub_library_id)).add(Restrictions.eq("title", title)).add(Restrictions.eq("isbn10", isbn10)));
+            return (AcqFinalDemandList) criteria.uniqueResult();
+        } finally {
+            session.close();
+        }
+    }
+
+    /**
+     *
+     * @param control_no
+     * @param library_id
+     * @param sub_library_id
+     * @return AcqFinalDemandList
+     */
+    public AcqFinalDemandList searchacq(String control_no, String library_id, String sub_library_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        try {
+            Criteria criteria = session.createCriteria(AcqFinalDemandList.class).add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("id.sublibraryId", sub_library_id)).add(Restrictions.eq("id.controlNo", control_no)));
+            return (AcqFinalDemandList) criteria.uniqueResult();
+        } finally {
+            session.close();
+        }
+    }
+
+    /**
+     *
+     * @param library_id
+     * @param sub_library_id
+     * @param biblio_id
+     * @return BibliographicDetails
+     */
+    public BibliographicDetails getBiblio(String library_id, String sub_library_id, int biblio_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        try {
+            Criteria criteria = session.createCriteria(BibliographicDetails.class).add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("id.sublibraryId", sub_library_id)).add(Restrictions.eq("id.biblioId", biblio_id)));
+            return (BibliographicDetails) criteria.uniqueResult();
+        } finally {
+            session.close();
+        }
+    }
+
+    /**
+     *
+     * @param isbn13
+     * @param library_id
+     * @return BibliographicDetails
+     */
+    public BibliographicDetails searchIsbn13(String isbn13, String library_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+
+        try {
+            session.beginTransaction();
+            Query query = session.createQuery("FROM BibliographicDetails  WHERE isbn13 = :isbn13  and id.libraryId = :libraryId ");
+            query.setString("isbn13", isbn13);
+            query.setString("libraryId", library_id);
+            return (BibliographicDetails) query.uniqueResult();
+        } finally {
+            session.close();
+        }
+
+    }
+// All Lists
+
+    /**
+     *
+     * @param biblio_id
+     * @param library_id
+     * @param sub_library_id
+     * @return List
+     */
+    public List searchDoc1(int biblio_id, String library_id, String sub_library_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        try {
+            Criteria criteria = session.createCriteria(DocumentDetails.class).add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("id.sublibraryId", sub_library_id)).add(Restrictions.eq("biblioId", biblio_id)));
+            return criteria.list();
+        } finally {
+            session.close();
+        }
+    }
+
+    /**
+     *
+     * @param title
+     * @param library_id
+     * @param sub_library_id
+     * @param doc_type
+     * @return List
+     */
+    public List getTitles(String title, String library_id, String sub_library_id, String doc_type) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        try {
+            Criteria criteria = session.createCriteria(BibliographicDetails.class).add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("id.sublibraryId", sub_library_id)).add(Restrictions.eq("title", title)).add(Restrictions.eq("documentType", doc_type)));
+            return (List) criteria.list();
+        } finally {
+            session.close();
+        }
+    }
+
+    /**
+     *
+     * @param title
+     * @param library_id
+     * @param doc_type
+     * @return List
+     */
+    public List getTitles2(String title, String library_id, String doc_type) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        try {
+            Criteria criteria = session.createCriteria(BibliographicDetails.class).add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("title", title)).add(Restrictions.eq("documentType", doc_type)));
+            return (List) criteria.list();
+        } finally {
+            session.close();
+        }
+    }
+
+    /**
+     *
+     * @param search_by
+     * @param search_keyword
+     * @param sort_by
+     * @return List
+     */
+   public List getBiblio(String library_id,String sublibrary_id,String search_by, String search_keyword, String sort_by) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        try { 
+            Criteria criteria = session.createCriteria(BibliographicDetails.class)
+                    //.add(Restrictions.conjunction())
+                    .add(Restrictions.eq("id.libraryId", library_id))
+                    .add(Restrictions.eq("id.sublibraryId", sublibrary_id))
+                    .add(Restrictions.ilike(search_by,search_keyword+"%"))
+                    .addOrder(Property.forName(sort_by).asc());
+            return (List) criteria.list();
+        } finally {
+            session.close();
+        }
+    }
+/*public List getBiblio(String library_id,String sublibrary_id,String search_by,String search_keyword, String sort_by){
+  Session session =null;
+    Transaction tx = null;
+        try {
+            session.beginTransaction();
+            Query query = session.createQuery("FROM BibliographicDetails where id.libraryId = :libraryId and id.sublibraryId = :subLibraryId and"+search_by+"like"+search_keyword+"% order by"+sort_by+" asc");
+            query.setString("libraryId", library_id);
+            query.setString("subLibraryId", sublibrary_id);
+
+            return query.list();
+        } finally {
+//            session.close();
+        }
+}*/
+    /**
+     *
+     * @param library_id
+     * @param sub_library_id
+     * @param biblio_id
+     * @return List
+     */
+    public List getItems(String library_id, String sub_library_id, int biblio_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        try {
+            Criteria criteria = session.createCriteria(AccessionRegister.class).add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("id.sublibraryId", sub_library_id)).add(Restrictions.eq("biblioId", biblio_id)));
+            return (List) criteria.list();
+        } finally {
+            session.close();
+        }
+    }
+
+    /**
+     *
+     * @param title
+     * @param library_id
+     * @param sub_library_id
+     * @return List
+     */
+    public List getTitles1(String title, String library_id, String sub_library_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        try {
+            Criteria criteria = session.createCriteria(AcqFinalDemandList.class).add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("id.sublibraryId", sub_library_id)).add(Restrictions.eq("title", title)));
+            return (List) criteria.list();
+        } finally {
+            session.close();
+        }
+    }
+
+        /**
+     *
+     * @param title
+     * @param library_id
+     * @param sub_library_id
+     * @return List
+     */
+    public List getAllTitles(String library_id, String sub_library_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        try {
+            Criteria criteria = session.createCriteria(BibliographicDetails.class).add(Restrictions.conjunction().add(Restrictions.eq("id.libraryId", library_id)).add(Restrictions.eq("id.sublibraryId", sub_library_id)));
+            return (List) criteria.list();
+        } finally {
+            session.close();
+        }
+    }
+    /**
+     *
+     * @param library_id
+     * @param sub_library_id
+     * @return List
+     */
+    public List getBibliographicDetails(String library_id, String sub_library_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+
+        try {
+            session.beginTransaction();
+            Query query = session.createQuery("FROM BibliographicDetails where id.libraryId = :libraryId and sublibraryId = :subLibraryId");
+            query.setString("libraryId", library_id);
+            query.setString("subLibraryId", sub_library_id);
+            return query.list();
+        } finally {
+            session.close();
+        }
+    }
 }

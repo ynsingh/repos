@@ -4,9 +4,10 @@
  */
 
 package com.myapp.struts.admin;
-import com.myapp.struts.admin.AccountActionForm;
-import  com.myapp.struts.*;
+import  com.myapp.struts.hbm.*;
+import  com.myapp.struts.AdminDAO.*;
 import java.sql.*;
+import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletResponse;
@@ -23,23 +24,15 @@ public class AccountAction extends org.apache.struts.action.Action {
     private String staff_id;
     private String button;
     private String library_id;
+    private String loginstaff_id;
     Connection con;
     PreparedStatement stmt;
     String sql;
     ResultSet rst,rst1;
-    /**
-    /* forward name="success" path="" */
-   
+    String main_sublib;
+
+    private String sublibrary_id;
     
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-    
-     */
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -49,95 +42,172 @@ public class AccountAction extends org.apache.struts.action.Action {
    AccountActionForm acqRegisterActionForm =(AccountActionForm)form;
         staff_id=acqRegisterActionForm.getStaff_id();
         button=acqRegisterActionForm.getButton();
-        //library_id=acqRegisterActionForm.getLibrary_id();
-        HttpSession session=request.getSession();
-        library_id=(String)session.getAttribute("library_id");
+
+
+       
         
+         HttpSession session=request.getSession();
+         loginstaff_id=(String)session.getAttribute("staff_id");
+        library_id=(String)session.getAttribute("library_id");
+        sublibrary_id=(String)session.getAttribute("sublibrary_id");
+
+main_sublib=(String)session.getAttribute("mainsublibrary");
+
+System.out.print(staff_id+"........"+library_id+"////"+sublibrary_id);
+
+
+
+Login loginobj;
+
         if(button.equals("Create Account"))
         {
-            System.out.println("create account....................."+library_id);
-            //staff_id search
-            rst1=MyQueryResult.getMyExecuteQuery("select emai_id from staff_detail where staff_id='"+staff_id+"' and library_id='"+library_id+"'" );
-            //if found
-            if(rst1.next())
+            StaffDetail staff=StaffDetailDAO.searchStaffId(staff_id, library_id);
+            if(staff!=null)
             {
+             
+                         loginobj=(Login)LoginDAO.searchStaffLogin(staff_id, library_id);
 
-               //account search
-                     rst1=MyQueryResult.getMyExecuteQuery("select user_id from login where user_id=(select emai_id from staff_detail where staff_id='"+staff_id+"' and library_id='"+library_id+"')" );
-                     if(rst1.next())
-                    {
-                     request.setAttribute("msg1", "Staff ID: "+staff_id+" Account Already Exists");
-                    return mapping.findForward("not_found");
-                     }
-                    else
-                    {
-                    //create account code
-                        rst1=MyQueryResult.getMyExecuteQuery("select staff_id,first_name,last_name,emai_id from staff_detail where staff_id='"+staff_id+"' and library_id='"+library_id+"'" );
 
-                            if(rst1.next())
+
+             
+
+             if(loginobj==null)
+                {
+
+           
+                           //create account code
+                            StaffDetail staffobj=(StaffDetail)StaffDetailDAO.searchStaffId(staff_id, library_id);
+
+
+                            if(staffobj!=null)
                              {
+                                List<SubLibrary>  sublib;
+                                
+                                    sublib=SubLibraryDAO.searchSubLib(library_id);
+                                
+                                if(!sublib.isEmpty())
+                                {
+                                session.setAttribute("sublib",sublib);
+                                session.setAttribute("button", button);
 
-                                request.setAttribute("button", button);
-
-                                request.setAttribute("account_resultset", rst1);
+                                session.setAttribute("account_resultset", staffobj);
+                                System.out.println("I am here");
 
                                 return mapping.findForward("register");
+                                }
+                                else{
+                                 request.setAttribute("msg1", "Some Error Encounterd");
+                              return mapping.findForward("not_found");
+                                }
+
+
                             }
-                    }
-            }
-            else
-            {
-                request.setAttribute("msg1", "Staff_ID : "+staff_id+" not exists");
-                return mapping.findForward("not_found");
            
-             }
-            
+                    }else
+                    {
+
+                              request.setAttribute("msg1", "Account Already Registered for Staff_id :"+staff_id);
+                              return mapping.findForward("not_found");
+                        }
+                       
+            }else{
+             request.setAttribute("msg1", "Staff_id :"+staff_id+" Not Registered");
+                              return mapping.findForward("not_found");
+
+
+            }
+
+           
+
+
+
+
+         
+
+
+       
+
+         
+
+
+
+
         }
+           
+            
+        
         
 
          if(button.equals("Update Account")||button.equals("View Account")||button.equals("Delete Account"))
          {
-             
 
-            //staff_id search
-            rst1=MyQueryResult.getMyExecuteQuery("select emai_id from staff_detail where staff_id='"+staff_id+"' and library_id='"+library_id+"'" );
-            //if found
-            if(rst1.next())
-            {
-
-               //account search
-                     rst1=MyQueryResult.getMyExecuteQuery("select user_id from login where user_id=(select emai_id from staff_detail where staff_id='"+staff_id+"' and library_id='"+library_id+"')" );
-                     if(rst1.next())
-                    {
-                         //update/view/delete account code
-                        rst=MyQueryResult.getMyExecuteQuery("select b.staff_id,a.user_id,a.user_name,a.password,a.role from login a inner join staff_detail b on a.user_id=b.emai_id and a.library_id=b.library_id where b.staff_id='"+staff_id+"' and b.library_id='"+library_id+"'");
+              if(sublibrary_id.equalsIgnoreCase(main_sublib))
+             {
 
 
-                            if(rst.next())
-                             {
-
-                                request.setAttribute("button", button);
-
-                                request.setAttribute("account_resultset1", rst);
-
-                                return mapping.findForward("view_account/delete_account/change_password");
-                            }
-                     }
-                    else
-                    {
-                     request.setAttribute("msg1", "Account not registered for Staff_id :"+staff_id);
-                return mapping.findForward("not_found");
-                    }
-            }
-            else
-            {
-                request.setAttribute("msg1", "Staff_id not registered :"+staff_id);
-                return mapping.findForward("not_found");
+                        loginobj=(Login)LoginDAO.searchStaffLogin(staff_id, library_id);
 
              }
+             else
+             {
+                         loginobj=(Login)LoginDAO.searchStaffLogin(staff_id, library_id,sublibrary_id);
+
+
+
+             }
+
+
+
+          
+
+         if(loginobj!=null)
+         {
+            if(loginobj.getId().getStaffId().equalsIgnoreCase(loginstaff_id))
+             {
+              request.setAttribute("msg1", "Cannot Modify Your Own Account Staff_id :"+staff_id);
+                              return mapping.findForward("not_found");
+
+          }
+             if(loginobj.getId().getStaffId().equalsIgnoreCase("admin."+library_id))
+             {
+              request.setAttribute("msg1", "Cannot Modify Account of Institute Admin Staff_id :"+staff_id);
+                              return mapping.findForward("not_found");
+
+             }
+          
+
+
+
+
+              
+                           List<SubLibrary>  sublib;
+                                
+                                    sublib=SubLibraryDAO.searchSubLib(library_id);
+                                
+                                if(!sublib.isEmpty())
+                                {
+                                session.setAttribute("sublib",sublib);
+                                session.setAttribute("button", button);
+
+                                session.setAttribute("update_account", loginobj);
+
+                                return mapping.findForward("view_account/delete_account/change_password");
+                                }
+                                else{
+                                     request.setAttribute("msg1", "Some Error Encounterd");
+                                     return mapping.findForward("not_found");
+                               
+                                }
+         }
+            else
+               {
+                             request.setAttribute("msg1", "Account not registered for Staff_id :"+staff_id);
+                              return mapping.findForward("not_found");
+               }
+           
          }
 
-        return mapping.findForward("not_found");
+        return null;
     }
 }
 

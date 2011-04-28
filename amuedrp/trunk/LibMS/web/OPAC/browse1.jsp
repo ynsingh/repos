@@ -14,7 +14,7 @@
     Locale locale=null;
     String locale1="en";
     String rtl="ltr";
-    boolean page=true;
+    String align="left";
 %>
 <style type="text/css">
 body
@@ -32,9 +32,15 @@ body
      .item{ padding-left: 10px;}
 
 </style>
-<link rel="stylesheet" href="/LibMS-Struts/css/page.css"/>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 <%
+String library_id = (String)session.getAttribute("library_id");
+String sublibrary_id = (String)session.getAttribute("memsublib");
+     if(sublibrary_id==null)sublibrary_id=   (String)session.getAttribute("sublibrary_id");
+if(sublibrary_id==null)sublibrary_id="all";
 try{
+    List libRs = (List)session.getAttribute("libRs");
+    
 locale1=(String)session.getAttribute("locale");
     if(session.getAttribute("locale")!=null)
     {
@@ -44,32 +50,153 @@ locale1=(String)session.getAttribute("locale");
     else locale1="en";
 }catch(Exception e){locale1="en";}
      locale = new Locale(locale1);
-    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;}
-    else{ rtl="RTL";page=false;}
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";}
+    else{ rtl="RTL";align="right";}
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
     %>
+<script language="javascript" type="text/javascript">
+/*
+* Returns an new XMLHttpRequest object, or false if the browser
+* doesn't support it
+*/
+var availableSelectList;
+function newXMLHttpRequest() {
+var xmlreq = false;
+// Create XMLHttpRequest object in non-Microsoft browsers
+if (window.XMLHttpRequest) {
+xmlreq = new XMLHttpRequest();
+} else if (window.ActiveXObject) {
+try {
+// Try to create XMLHttpRequest in later versions
+// of Internet Explorer
+xmlreq = new ActiveXObject("Msxml2.XMLHTTP");
+} catch (e1) {
+// Failed to create required ActiveXObject
+try {
+// Try version supported by older versions
+// of Internet Explorer
+xmlreq = new ActiveXObject("Microsoft.XMLHTTP");
+} catch (e2) {
+// Unable to create an XMLHttpRequest by any means
+xmlreq = false;
+}
+}
+}
+return xmlreq;
+}
+/*
+* Returns a function that waits for the specified XMLHttpRequest
+* to complete, then passes it XML response to the given handler function.
+* req - The XMLHttpRequest whose state is changing
+* responseXmlHandler - Function to pass the XML response to
+*/
+function getReadyStateHandler(req, responseXmlHandler) {
+// Return an anonymous function that listens to the XMLHttpRequest instance
+return function () {
+// If the request's status is "complete"
+if (req.readyState == 4) {
+// Check that we received a successful response from the server
+if (req.status == 200) {
+// Pass the XML payload of the response to the handler function.
+responseXmlHandler(req.responseXML);
+} else {
+// An HTTP problem has occurred
+alert("HTTP error "+req.status+": "+req.statusText);
+}
+}
+}
+}
+function search() {
 
+    var keyValue = document.getElementById('CMBLib').options[document.getElementById('CMBLib').selectedIndex].value;
+
+ if(keyValue=="all"){
+
+           document.getElementById('CMBLib').focus();
+               document.getElementById('SubLibary').options.length = 0;
+               newOpt = document.getElementById('SubLibary').appendChild(document.createElement('option'));
+                newOpt.value = "all";
+                newOpt.text = "All";
+
+                fun1();
+
+		return false;
+
+
+
+        }
+else
+    {
+    keyValue = keyValue.replace(/^\s*|\s*$/g,"");
+if (keyValue.length >= 1)
+{
+
+var req = newXMLHttpRequest();
+
+req.onreadystatechange = getReadyStateHandler(req, update);
+
+req.open("POST","<%=request.getContextPath()%>/sublibrary.do", true);
+
+req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+req.send("getSubLibrary_Id="+keyValue);
+
+
+}
+return true;
+}
+}
+
+function update(cartXML)
+{
+var depts = cartXML.getElementsByTagName("sublibrary_ids")[0];
+var em = depts.getElementsByTagName("sublibrary_id");
+var em1 = depts.getElementsByTagName("sublibrary_name");
+
+        var newOpt =document.getElementById('SubLibary').appendChild(document.createElement('option'));
+        document.getElementById('SubLibary').options.length = 0;
+
+for (var i = 0; i < em.length ; i++)
+{
+var ndValue = em[i].firstChild.nodeValue;
+var ndValue1=em1[i].firstChild.nodeValue;
+newOpt = document.getElementById('SubLibary').appendChild(document.createElement('option'));
+newOpt.value = ndValue;
+newOpt.text = ndValue1;
+
+
+}
+
+}
+
+</script>
 <script language="javascript">
 function fun()
 {
-
-document.Form1.action="browse.do";
-document.Form1.method="post";
-document.Form1.target="f1";
-document.Form1.submit();
+search();
+document.getElementById("Form1").action="browse.do";
+document.getElementById("Form1").method="post";
+document.getElementById("Form1").target="f1";
+document.getElementById("Form1").submit();
+}
+function fun1()
+{
+    document.getElementById("Form1").action="browse.do";
+document.getElementById("Form1").method="post";
+document.getElementById("Form1").target="f1";
+document.getElementById("Form1").submit();
 }
 
 </script>
 </head>
-<body onload="fun()">
-    <%if(page.equals(true)){%>
-    <form action="/browse.do"  name="Form1">
-   <table  align="left" width="1200x" class="datagrid" style="border:solid 1px #e0e8f5;">
+<body onload="fun1()">
+    
+    <html:form action="/OPAC/browse"  styleId="Form1" target="f1">
+   <table  align="<%=align%>" dir="<%=rtl%>" width="1200x" class="datagrid" style="border:solid 1px #e0e8f5;">
 
 
 
-  <tr class="header"><td  width="1000px"  height="28px" align="center" colspan="2">
+  <tr class="header"><td  width="1000px" dir="<%=rtl%>"  height="28px" align="center" colspan="2">
 
 
 		Browse Search
@@ -78,70 +205,58 @@ document.Form1.submit();
 
 
         </td></tr>
-  <tr style="background-color:#e0e8f5;"><td width="800px"  >
+  <tr style="background-color:#e0e8f5;"><td width="800px" dir="<%=rtl%>" >
           <table>
-              <tr><td ><%=resource.getString("opac.browse.enterstartingkeyword")%></td><td><input  name="TXTTITLE" type="text" onkeyup="fun()"></td></tr>
+              <tr><td dir="<%=rtl%>"><%=resource.getString("opac.browse.enterstartingkeyword")%></td><td><input  name="TXTTITLE" type="text" dir="<%=rtl%>" onkeyup="fun()"></td></tr>
              
 
           </table>
       </td>
-      <td    align="left" valign="top">
+      <td dir="<%=rtl%>"   align="<%=align%>" valign="top">
           <table >
-              <tr><td>in <%=resource.getString("opac.browse.field")%> </td><td rowspan="2" valign="top">
+              <tr><td dir="<%=rtl%>">in <%=resource.getString("opac.browse.field")%> </td><td rowspan="2" dir="<%=rtl%>" valign="top">
 
 
-<select name="CMBFIELD" onChange="fun()" size="1">
-<option value="any field" selected>ANY FIELD</option>
-<option value="author_main">AUTHOR</option>
-<option value="title">TITLE</option>
-<option value="isbn10">ISBN</option>
-<option value="publisher_name">PUBLISHER</option>
+<select dir="<%=rtl%>" name="CMBFIELD" onChange="fun()" size="1">
+<option value="any field" selected dir="<%=rtl%>">ANY FIELD</option>
+<option value="authorName" dir="<%=rtl%>">AUTHOR</option>
+<option value="title" dir="<%=rtl%>">TITLE</option>
+<option value="publisherName" dir="<%=rtl%>">PUBLISHER</option>
 
 </select>
      </td>
 
               </tr></table></td></tr>
-  <tr class="header"><td width="1000px"   align="left" >Restricted By</td><td align="left">Sort By</td></tr>
-   <tr style="background-color:#e0e8f5;"><td width="800px"   align="left">
-           <table  width="800px" ><tr><td align="500px">
+  <tr class="header"><td width="1000px" dir="<%=rtl%>"  align="<%=align%>" >Restricted By</td><td align="<%=align%>" dir="<%=rtl%>">Sort By</td></tr>
+   <tr style="background-color:#e0e8f5;" dir="<%=rtl%>"> <td width="800px" dir="<%=rtl%>"  align="<%=align%>">
+           <table  width="800px" dir="<%=rtl%>"><tr><td align="<%=align%>" dir="<%=rtl%>">
           <table>
-              <tr><td ><%=resource.getString("opac.browse.database")%></td><td>
-                    <select name="CMBDB" onChange="fun()" size="1">
-<option selected value="combined">COMBINED</option>
-    <option value="book">BOOKS</option>
-     <option value="cd">CDs</option>
+              <tr><td dir="<%=rtl%>"><%=resource.getString("opac.browse.database")%></td><td>
+                    <select name="CMBDB" dir="<%=rtl%>" onChange="fun1()" size="1">
+<option selected value="combined" dir="<%=rtl%>">COMBINED</option>
+    <option value="book" dir="<%=rtl%>">BOOKS</option>
+     <option value="cd" dir="<%=rtl%>">CDs</option>
   
   
 </select>
-                  </td><td ><%=resource.getString("opac.simplesearch.library")%></td><td><select name="CMBLib" onChange="fun()"  size="1" id="CMBLib">
-    <%
-        ResultSet rs = (ResultSet)session.getAttribute("libRs");
-        String lib_id = (String)session.getAttribute("library_id");
+                  </td><td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.library")%></td>
+                  <td>
+                      <html:select property="CMBLib" dir="<%=rtl%>"  tabindex="3" value="<%=library_id%>"  styleId="CMBLib" onchange="fun()">
+                           <html:option value="all">All</html:option>
+                            <html:options collection="libRs" property="libraryId" labelProperty="libraryName"/>
+                      </html:select>
+                  </td>
+                  <td align="left" dir="<%=rtl%>">SubLib<html:select property="CMBSUBLib" dir="<%=rtl%>" value="<%=sublibrary_id%>" styleId="SubLibary" onchange="fun1()">
+                          <html:option value="all">All</html:option>
+                          <html:options collection="sublib" property="id.sublibraryId" labelProperty="sublibName" />
+                       </html:select>
 
-        rs.beforeFirst();
 
-    if(lib_id==null)
-    {%>
 
-    <option selected value="all">ALL</option>
-    <%}
-    else
-    {%>
-    <option selected value="<%=lib_id%>"><%=lib_id.toUpperCase()%></option>
-    <option value="all">ALL</option>
-
-    <%
-    }
-    while (rs.next())
-            {
-    %>
-    <option value="<%= rs.getString(1) %>"><%=rs.getString(1).toUpperCase()%></option>
-    <% } %>
-</select></td>
 </tr>
             
           </table>
-                   </td><td align="left">
+                   </td><td align="<%=align%>" dir="<%=rtl%>">
                       
 
 
@@ -149,13 +264,13 @@ document.Form1.submit();
 
                    </td></tr></table>
       </td>
-      <td align="left">
+      <td align="<%=align%>" dir="<%=rtl%>">
            <table>
-                           <tr><td><%=resource.getString("opac.browse.title")%></td><td> <select name="CMBSORT" size="1" onChange="fun()" id="CMBSORT">
-<option value="title">TITLE</option>
-<option  value="author_main">AUTHOR</option>
-<option value="isbn10">ISBN</option>
-<option value="publisher_name">PUBLISHER</option>
+                           <tr><td dir="<%=rtl%>"><%=resource.getString("opac.browse.title")%></td><td dir="<%=rtl%>"> <select name="CMBSORT" dir="<%=rtl%>" size="1" onChange="fun()" id="CMBSORT">
+<option value="title" dir="<%=rtl%>">TITLE</option>
+<option  value="authorName" dir="<%=rtl%>">AUTHOR</option>
+<option value="isbn10" dir="<%=rtl%>">ISBN</option>
+<option value="publisherName" dir="<%=rtl%>">PUBLISHER</option>
 </select>
 </td>
                            </tr></table>
@@ -167,12 +282,12 @@ document.Form1.submit();
   <tr><td>
 
 
-<input type="submit" id="Button1" name="" class="btn" value="FIND">
-<input type="reset" id="Button2" name="" class="btn" value="CLEAR">
+<input type="submit" id="Button1" name="" dir="<%=rtl%>" class="btn" value="FIND">
+<input type="reset" id="Button2" name="" dir="<%=rtl%>" class="btn" value="CLEAR">
 
 
       </td></tr>
- <tr><td  height="400px" valign="top" colspan="2" >
+ <tr><td  height="400px" valign="top" colspan="2"  dir="<%=rtl%>">
 
              <IFRAME  name="f1"  src="#" frameborder=0 height="400px" width="1200px" scrolling="no"  id="f1"></IFRAME>
 
@@ -188,11 +303,11 @@ document.Form1.submit();
     
 
 
- </form>
+ </html:form>
 
 
- <%}else{%>
-  <form action="/browse.do"  name="Form1">
+ <%--<%}else{%>
+ <html:form action="/OPAC/browse"  styleId="Form1">
 
         <table  align="left" width="1200x" class="datagrid" style="border:solid 1px #e0e8f5;">
 
@@ -213,10 +328,9 @@ document.Form1.submit();
               <tr><td>in Field </td><td rowspan="2" valign="top">
 <select name="CMBFIELD" onChange="fun()" size="1">
 <option value="any field" selected>ANY FIELD</option>
-<option value="author_main">AUTHOR</option>
+<option value="authorName">AUTHOR</option>
 <option value="title">TITLE</option>
-<option value="isbn10">ISBN</option>
-<option value="publisher_name">PUBLISHER</option>
+<option value="publisherName">PUBLISHER</option>
 
 </select>
         
@@ -237,10 +351,10 @@ document.Form1.submit();
       <td align="left">
            <table>
                            <tr><td>Field</td><td> <select name="CMBSORT" size="1" id="CMBSORT">
-<option  value="author_main">AUTHOR</option>
+<option  value="authorName">AUTHOR</option>
 <option value="title">TITLE</option>
 <option value="isbn10">ISBN</option>
-<option value="publisher_name">PUBLISHER</option>
+<option value="publisherName">PUBLISHER</option>
 </select></td>
                            </tr></table>
 
@@ -257,34 +371,20 @@ document.Form1.submit();
 
 </select>
                   </td><td ><%=resource.getString("opac.simplesearch.library")%></td><td>
-                  <select name="CMBLib" size="1" id="CMBLib" onChange="fun()">
-    <%
-        ResultSet rs = (ResultSet)session.getAttribute("libRs");
-        String lib_id = (String)session.getAttribute("library_id");
+                  <html:select property="CMBLib"  tabindex="3"  styleId="CMBLib" onchange="search()">
+     <html:options collection="libRs" property="libraryId" labelProperty="libraryName"/>
+ </html:select>
 
-        rs.beforeFirst();
+</td>
 
-    if(lib_id==null)
-    {%>
-
-    <option selected value="all">ALL</option>
-    <%}
-    else
-    {%>
-    <option selected value="<%=lib_id%>"><%=lib_id.toUpperCase()%></option>
-    <option value="all">ALL</option>
-
-    <%
-    }
-    while (rs.next())
-            {
-    %>
-    <option value="<%= rs.getString(1) %>"><%=rs.getString(1).toUpperCase()%></option>
-    <% } %>
-</select>
-
-
-                  </td>
+<td align="left">SubLib <select  name="CMBSUBLib"size="1" id="SUBLIB" onChange="fun()">
+                        <option selected value="all">All</option>
+                       <option value="amu">Main Library</option>
+                       <option  value="csl">Computer Science Libray</option>
+                       <option  value="phl">Physics Seminar Libray</option>
+                       <option  value="chl">Chemistry Seminar Library</option>
+                       </select>
+    </td>          
 </tr>
                    
           </table>
@@ -299,7 +399,7 @@ document.Form1.submit();
 <input type="reset" id="Button2" class="btn" name="" value="CLEAR">
 <input type="submit" id="Button1" class="btn" name="" value="FIND">
 
-      </td></tr>
+      </td>
 
  
   
@@ -310,7 +410,7 @@ document.Form1.submit();
 
       </td></tr>
 
-       </table>
+       
 
 
 
@@ -318,8 +418,8 @@ document.Form1.submit();
 
 
 
- </form>
- <%}%>
+ </html:form>
+ <%}%>--%>
  
 </body>
 </html>

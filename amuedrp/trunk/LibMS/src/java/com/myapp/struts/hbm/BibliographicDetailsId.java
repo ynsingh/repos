@@ -1,5 +1,5 @@
 package com.myapp.struts.hbm;
-// Generated Jan 21, 2011 8:43:24 PM by Hibernate Tools 3.2.1.GA
+// Generated Mar 11, 2011 5:57:01 PM by Hibernate Tools 3.2.1.GA
 
 
 
@@ -9,28 +9,19 @@ package com.myapp.struts.hbm;
 public class BibliographicDetailsId  implements java.io.Serializable {
 
 
-     private String libraryId;
      private int biblioId;
-     private String callNo;
-     private String isbn10;
+     private String libraryId;
+     private String sublibraryId;
 
     public BibliographicDetailsId() {
     }
 
-    public BibliographicDetailsId(String libraryId, int biblioId, String callNo, String isbn10) {
-       this.libraryId = libraryId;
+    public BibliographicDetailsId(int biblioId, String libraryId, String sublibraryId) {
        this.biblioId = biblioId;
-       this.callNo = callNo;
-       this.isbn10 = isbn10;
+       this.libraryId = libraryId;
+       this.sublibraryId = sublibraryId;
     }
    
-    public String getLibraryId() {
-        return this.libraryId;
-    }
-    
-    public void setLibraryId(String libraryId) {
-        this.libraryId = libraryId;
-    }
     public int getBiblioId() {
         return this.biblioId;
     }
@@ -38,19 +29,19 @@ public class BibliographicDetailsId  implements java.io.Serializable {
     public void setBiblioId(int biblioId) {
         this.biblioId = biblioId;
     }
-    public String getCallNo() {
-        return this.callNo;
+    public String getLibraryId() {
+        return this.libraryId;
     }
     
-    public void setCallNo(String callNo) {
-        this.callNo = callNo;
+    public void setLibraryId(String libraryId) {
+        this.libraryId = libraryId;
     }
-    public String getIsbn10() {
-        return this.isbn10;
+    public String getSublibraryId() {
+        return this.sublibraryId;
     }
     
-    public void setIsbn10(String isbn10) {
-        this.isbn10 = isbn10;
+    public void setSublibraryId(String sublibraryId) {
+        this.sublibraryId = sublibraryId;
     }
 
 
@@ -60,19 +51,17 @@ public class BibliographicDetailsId  implements java.io.Serializable {
 		 if ( !(other instanceof BibliographicDetailsId) ) return false;
 		 BibliographicDetailsId castOther = ( BibliographicDetailsId ) other; 
          
-		 return ( (this.getLibraryId()==castOther.getLibraryId()) || ( this.getLibraryId()!=null && castOther.getLibraryId()!=null && this.getLibraryId().equals(castOther.getLibraryId()) ) )
- && (this.getBiblioId()==castOther.getBiblioId())
- && ( (this.getCallNo()==castOther.getCallNo()) || ( this.getCallNo()!=null && castOther.getCallNo()!=null && this.getCallNo().equals(castOther.getCallNo()) ) )
- && ( (this.getIsbn10()==castOther.getIsbn10()) || ( this.getIsbn10()!=null && castOther.getIsbn10()!=null && this.getIsbn10().equals(castOther.getIsbn10()) ) );
+		 return (this.getBiblioId()==castOther.getBiblioId())
+ && ( (this.getLibraryId()==castOther.getLibraryId()) || ( this.getLibraryId()!=null && castOther.getLibraryId()!=null && this.getLibraryId().equals(castOther.getLibraryId()) ) )
+ && ( (this.getSublibraryId()==castOther.getSublibraryId()) || ( this.getSublibraryId()!=null && castOther.getSublibraryId()!=null && this.getSublibraryId().equals(castOther.getSublibraryId()) ) );
    }
    
    public int hashCode() {
          int result = 17;
          
-         result = 37 * result + ( getLibraryId() == null ? 0 : this.getLibraryId().hashCode() );
          result = 37 * result + this.getBiblioId();
-         result = 37 * result + ( getCallNo() == null ? 0 : this.getCallNo().hashCode() );
-         result = 37 * result + ( getIsbn10() == null ? 0 : this.getIsbn10().hashCode() );
+         result = 37 * result + ( getLibraryId() == null ? 0 : this.getLibraryId().hashCode() );
+         result = 37 * result + ( getSublibraryId() == null ? 0 : this.getSublibraryId().hashCode() );
          return result;
    }   
 

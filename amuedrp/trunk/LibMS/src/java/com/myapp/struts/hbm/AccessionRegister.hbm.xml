@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Mar 11, 2011 5:57:04 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="com.myapp.struts.hbm.AccessionRegister" table="accession_register" catalog="libms">
+        <composite-id name="id" class="com.myapp.struts.hbm.AccessionRegisterId">
+            <key-property name="recordNo" type="int">
+                <column name="record_no" />
+            </key-property>
+            <key-property name="libraryId" type="string">
+                <column name="library_id" length="20" />
+            </key-property>
+            <key-property name="sublibraryId" type="string">
+                <column name="sublibrary_id" length="20" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="bibliographicDetails" class="com.myapp.struts.hbm.BibliographicDetails" update="false" insert="false" fetch="select">
+            <column name="biblio_id" />
+            <column name="library_id" length="20" not-null="true" />
+            <column name="sublibrary_id" length="20" not-null="true" />
+        </many-to-one>
+        <property name="biblioId" type="java.lang.Integer">
+            <column name="biblio_id" />
+        </property>
+        <property name="accessionNo" type="string">
+            <column name="accession_no" length="40" />
+        </property>
+        <property name="volumeNo" type="string">
+            <column name="volume_no" length="5" />
+        </property>
+        <property name="location" type="string">
+            <column name="location" length="200" />
+        </property>
+        <property name="shelvingLocation" type="string">
+            <column name="shelving_location" length="200" />
+        </property>
+        <property name="indexNo" type="string">
+            <column name="index_no" length="20" />
+        </property>
+        <property name="noOfPages" type="string">
+            <column name="no_of_pages" length="20" />
+        </property>
+        <property name="physicalWidth" type="string">
+            <column name="physical_width" length="20" />
+        </property>
+        <property name="bindType" type="string">
+            <column name="bind_type" length="20" />
+        </property>
+        <property name="physicalForm" type="string">
+            <column name="physical_form" length="200" />
+        </property>
+        <property name="physicalDescription" type="string">
+            <column name="physical_description" length="200" />
+        </property>
+        <property name="colour" type="string">
+            <column name="colour" length="20" />
+        </property>
+    </class>
+</hibernate-mapping>

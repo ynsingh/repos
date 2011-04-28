@@ -27,6 +27,7 @@ public class SimpleSearchActionForm extends org.apache.struts.action.ActionForm 
     private String TXTYR2;
     private String CMBSORT;
     private String CMBLib;
+    private String CMBSUBLib;
 
 
 
@@ -177,4 +178,16 @@ public class SimpleSearchActionForm extends org.apache.struts.action.ActionForm 
     public void setCMBLib(String CMBLib) {
         this.CMBLib = CMBLib;
     }
+
+    public String getCMBSUBLib() {
+        return CMBSUBLib;
+    }
+
+    /**
+     * @param CMBLib the CMBLib to set
+     */
+    public void setCMBSUBLib(String CMBSUBLib) {
+        this.CMBSUBLib = CMBSUBLib;
+    }
+
 }

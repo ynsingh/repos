@@ -2,13 +2,47 @@
 <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
   <session-factory>
-    <property name="hibernate.connection.datasource">java:comp/env/jdbc/TestDB</property>
-    <property name="hibernate.show_sql">true</property>
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+   <!-- <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/libms</property>
+    <property name="hibernate.connection.username">root</property>
+    <property name="hibernate.connection.password">root</property>-->
+   <property name="hibernate.connection.datasource">java:comp/env/jdbc/TestDB</property>  
     <property name="current_session_context_class">thread</property>
-     <mapping resource="com/myapp/struts/hbm/DocumentDetails.hbm.xml"/>
+    <property name="hibernate.show_sql">true</property>
+    <mapping resource="com/myapp/struts/hbm/EmployeeType.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/CirCheckin.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/AcqPrivilege.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/AcqFinalDemandList.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/Department.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/Location.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/Notices.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/Faculty.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/Library.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/DocumentCategory.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/CirMemberAccount.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/CirMemberDetail.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/Reservationlist.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/Privilege.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/AccessionRegister.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/BookCategory.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/Courses.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/CirCheckout.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/SerPrivilege.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/CatPrivilege.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/Login.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/DocumentDetails.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/CirTransactionHistory.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/StaffDetail.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/SubEmployeeType.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/AdminRegistration.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/Feedback.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/Demandlist.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/CirPrivilege.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/CirOpacRequest.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/CirRequestfromOpac.hbm.xml"/>
+    <mapping resource="com/myapp/struts/hbm/SubLibrary.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/BibliographicDetails.hbm.xml"/>
+    <!--20-->
   </session-factory>
 </hibernate-configuration>

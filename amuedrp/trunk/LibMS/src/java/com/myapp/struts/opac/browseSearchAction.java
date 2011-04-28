@@ -12,6 +12,8 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import java.sql.*;
+import com.myapp.struts.opacDAO.OpacSearchDAO;
+import java.util.List;
 import javax.servlet.http.HttpSession;
 /**
  *
@@ -21,7 +23,9 @@ public class browseSearchAction extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
-    
+    OpacSearchDAO opacSearchDAO=new OpacSearchDAO();
+    String phrase,title,author,accno;
+    String doc_type,id,callno,publ,loc,place,sort,field,sublib_id,lib_id;
     /**
      * This is the action called from the Struts framework.
      * @param mapping The ActionMapping used to select this instance.
@@ -37,18 +41,24 @@ public class browseSearchAction extends org.apache.struts.action.Action {
             throws Exception {
         HttpSession session=request.getSession();
         session.removeAttribute("Result");
-
-        String phrase,title,author,accno;
-        String db,id,callno,publ,loc,place,sort,field,query="";
-        ResultSet rs=null;
         browseSearchActionForm myform = (browseSearchActionForm)form;
-         String lib_id= myform.getCMBLib();
+        lib_id= myform.getCMBLib();
+        sublib_id=myform.getCMBSUBLib();
         phrase=myform.getTXTTITLE();
-        db=myform.getCMBDB();
+        doc_type=myform.getCMBDB();
         sort=myform.getCMBSORT();
         field=myform.getCMBFIELD();
         int flag=0;
-    query="select * from document_details";
+        System.out.println("lib_id="+lib_id+"sublib_id="+sublib_id+"phrase="+phrase+"doc_type="+doc_type+"sort="+sort+"field="+field+"...................");
+        //public List browseSearch(String library_id,String sub_lib,String searching_word,String doc_type,String sortby,String searching_field)
+    List browse_search_list=opacSearchDAO.browseSearch(lib_id, sublib_id,phrase, doc_type, sort, field);
+    session.setAttribute("browse_search_list",browse_search_list);
+
+
+
+
+        /*
+                query="select * from document_details";
      
         if(db.equals("combined")==false){query=query+" where document_type='"+db+"' and";flag=1;}
 
@@ -74,13 +84,8 @@ System.out.println("query="+query);
 
   session.setAttribute("Result", rs);
   session.setAttribute("database",db );
-
-
-
-
-
-     }
-
+    }
+     */
 
         return mapping.findForward(SUCCESS);
     }

@@ -1,21 +1,19 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:include page="adminheader.jsp" flush="true" />
+<jsp:include page="/admin/adminheader.jsp" flush="true" />
  <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
-  <!--int res=MyQueryResult.getMyExecuteUpdate("update login set first_login='t' where user_id='"+user_id+"' and password='"+password+"'");
-    //                  if(res!=0)
-                      {-->
+       
 
 
 <%
 String staff_id=(String)session.getAttribute("staff_id");
 String user_name=(String)session.getAttribute("username");
-String library_id=(String)session.getAttribute("library_id");
-String lib_name=(String)session.getAttribute("library_name");
+
+
 %>
 <div
    style="  top:120px;
@@ -27,18 +25,20 @@ String lib_name=(String)session.getAttribute("library_name");
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="css/page.css"/>
-        <title>LibMS</title>
+        <link rel="stylesheet" href="/css/page.css"/>
+        <title>LibMS : Forget Password</title>
     </head>
+      <link rel="stylesheet" href="css/page.css"/>
     <body >
     
 
   <html:form  action="/forget1" method="post" onsubmit="return check1()">
-      <table width="400px" height="600px"  valign="top" align="center" class="txt1">
-        <tr><td   width="400px" height="500px" valign="top" style="" align="center">
-                <fieldset style="border:solid 1px brown;height:300px;width:300px;padding-left: 10px">
-                    <legend><img src="images/SecurityQuestion.png"/></legend><br>
-                    <table width="400px" align="center">
+       <table  class="table" width="400px" height="200px" align="center">
+
+
+                <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">First Time Login</td></tr>
+                <tr><td valign="top" align="center"> <br/>
+                   <table width="400px" align="center">
                         <tr><td  class="txt1" width="250px">Staff ID</td><td width="250px"><input type="text" id="staff_id" style="width:200px" name="staff_id" readonly  name="Editbox1" value="<%=staff_id%>"></td></tr>
                         <tr><td colspan="2" height="5px"></td></tr>
                         <tr><td class="txt1" >User Name</td><td><input type="text" id="user_name" name="user_name" style="width:200px"  readonly  value="<%=user_name%>"></td></tr>
@@ -66,12 +66,6 @@ String lib_name=(String)session.getAttribute("library_name");
 <tr><td colspan="2" height="10px"></td></tr>
 
                     </table>
-
-
-
-
-
-</fieldset>
 
 
 
@@ -118,7 +112,7 @@ function check1()
     function quit()
     {
 
-       window.location="login.jsp";
+       window.location="<%=request.getContextPath()%>/login.jsp";
        return false;
 
     }
