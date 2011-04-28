@@ -65,12 +65,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
-  <div>
-   <div>
-    <jsp:include page="header.jsp"></jsp:include>
-	</div>
-	<hr width="100%">
-  <jsp:include page="Menu.jsp"></jsp:include><br/>
+  <table width="100%">
+  <tr><td>  <jsp:include page="header.jsp"></jsp:include></td></tr>
+  <tr><td>	<hr width="100%"> </td></tr>
+ <tr><td> <jsp:include page="Menu.jsp"></jsp:include></td></tr>
+</table>
   <%!
   String qry;
   int testid;
@@ -127,10 +126,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   				  				resAns=(ArrayList<String>)request.getAttribute("responseAns");
   				  				questionNO=(ArrayList<Integer>)request.getAttribute("questionNo");
   				  				resQues=(ArrayList<Integer>)request.getAttribute("resQues");
-  				  				
+  				  				System.out.println("ques size : " + questionNO.size());
   				  				for(Integer ques:questionNO)
-  				  				{
-  				  				if(ques==resQues.get(i))
+  				  				{ 
+  				  				if(resQues.size()>0 && ques==resQues.get(i))
 								{  				  				
    				  	%>
 						<tr><td><%=ques%></td><td> 
@@ -154,6 +153,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   							i=0;
   							}catch(Exception e)
   								{
+  								//System.out.println("Ex " + e);
   								}
   							 %>	
   				</table>

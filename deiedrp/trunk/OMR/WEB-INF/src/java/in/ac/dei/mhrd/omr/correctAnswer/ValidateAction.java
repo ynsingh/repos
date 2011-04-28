@@ -111,7 +111,11 @@ public class ValidateAction extends Action {
 		Iterator itr1 = questionNo.iterator();
 		Iterator itr2 = sectionNo.iterator();
 		Object element1;
-
+        if(isCancelled(request)){
+        	return mapping.findForward("selectCorrect");
+        	
+        }
+		
 		// converting the check box value to byte values
 
 		while (itr1.hasNext()) {

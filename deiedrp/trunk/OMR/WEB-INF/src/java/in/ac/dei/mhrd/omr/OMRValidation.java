@@ -222,8 +222,8 @@ public class OMRValidation {
  */	
 	public static boolean validateResponseSheet(Object bean,
 			ValidatorAction action, Field field, ActionMessages errors, 
-			Validator validator, HttpServletRequest request)
-	{
+			Validator validator, HttpServletRequest request){
+	
 	    String value = ValidatorUtils.getValueAsString(bean, field.getProperty());
 	   System.out.println("value :" + value);
 	   if(!((value.endsWith((".zip"))||(value.endsWith(".ZIP")))))
@@ -236,8 +236,53 @@ public class OMRValidation {
 	  
 	}
 	
+	public static boolean validateHiddenQno(Object bean,
+			ValidatorAction action, Field field, ActionMessages errors, 
+			Validator validator, HttpServletRequest request){
+	
+	    String value = ValidatorUtils.getValueAsString(bean, field.getProperty());
+	   if(value.equalsIgnoreCase("false"))
+	   {
+		   errors.add(field.getKey(), Resources.getActionMessage(validator, request, action, field ));
+		   return false;
+	   }
+	    
+	  return true;
+	  
+	}
+	
+	public static boolean validateExistQno(Object bean,
+			ValidatorAction action, Field field, ActionMessages errors, 
+			Validator validator, HttpServletRequest request){
+	
+	    String value = ValidatorUtils.getValueAsString(bean, field.getProperty());
+	   if(value.equalsIgnoreCase("true"))
+	   {
+		   errors.add(field.getKey(), Resources.getActionMessage(validator, request, action, field ));
+		   return false;
+	   }
+	    
+	  return true;
+	  
+	}
+	
+	public static boolean validateTotalQnoExist(Object bean,
+			ValidatorAction action, Field field, ActionMessages errors, 
+			Validator validator, HttpServletRequest request){
+	
+	    String value = ValidatorUtils.getValueAsString(bean, field.getProperty());
+	   if(value.equalsIgnoreCase("false"))
+	   {
+		   errors.add(field.getKey(), Resources.getActionMessage(validator, request, action, field ));
+		   return false;
+	   }
+	    
+	  return true;
+	  
+	}
+	
 	/**
-	 * This function validates the size of correct answer sheets.
+	 * This method validates the size of correct answer sheets.
 	 * The size of the correct answer sheet cannot be greater than 2MB
 	 * @param bean
 	 * @param action
@@ -332,12 +377,14 @@ public class OMRValidation {
 	    System.out.println("inside existin validation");
 	    //get the name of the test name selected by the user
 	    String testName = request.getParameter("testName");
+	    String status = request.getParameter("status");
 	    //get the testid of the selected test name
 	    int testid = SelectTestId.getTestId(testName);
 	    Connection con =null;
 	    try{
-			
-			  con = Connect.prepareConnection();
+	    	TreeMap<Integer, String> mapw = ExistingWrongQues.getWrongQues(testName);
+			System.out.println("hsj exist wrong valid "+ mapw.containsKey(Integer.parseInt(value)));
+			  /*con = Connect.prepareConnection();
 	            
            PreparedStatement psExistQues = con.prepareStatement(
                    "select status from wrongquestion where TestId=? AND WrongQuestionNo=?");
@@ -351,8 +398,8 @@ public class OMRValidation {
         		existingQuesStatus=false;
         	}
            System.out.println("inside existing wrong Ques validation");
-           Connect.freeConnection(con);
-          if(existingQuesStatus){	
+           Connect.freeConnection(con);*/
+          if(!mapw.containsKey(Integer.parseInt(value))){	
 	   return true;
 		   }
 	   else{
@@ -510,23 +557,28 @@ public static boolean validateResultDisplayPeriod(Object bean,
 		ValidatorAction action, Field field, ActionMessages errors, 
 		Validator validator, HttpServletRequest request)
 {
+	boolean bool=true;
 	System.out.println("inside result display period");
 	String value = ValidatorUtils.getValueAsString(bean, field.getProperty());
-    String resultLastDate = request.getParameter("lastResultDate");
-	DateFormat df = new SimpleDateFormat ("yyyy-MM-dd");
+	String res2 = field.getVarValue("lastResultDate1");
+	String resultLastDate =ValidatorUtils.getValueAsString(bean, res2);
+	System.out.println("result iast date " + resultLastDate);
+    //String resultLastDate = request.getParameter("lastResultDate");
+	DateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd");
     try{
 
-      Date d1 = df.parse(value);
-
-      Date resultDate = df.parse(resultLastDate);
-		if(d1.after(resultDate)){
+      Date d1 =(Date) formatter.parse(value);
+System.out.println("d1"+d1);
+      Date resultDate = formatter.parse(resultLastDate);
+      System.out.println(resultDate);
+		if(d1.compareTo(resultDate)>0){
 		   errors.add(field.getKey(), Resources.getActionMessage(validator, request, action, field ));
-		   return false;
+		   bool= false;
 	   }
 	    }catch(Exception e){
 	    	log.error("error in validating result last date");
 	    }
-	    return true;
+	    return bool;
 	  
 	}
 

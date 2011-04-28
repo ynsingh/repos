@@ -63,11 +63,11 @@
 	
 	<body onload="setSection()">
 
-	<div>
-    <jsp:include page="header.jsp"></jsp:include>
-	</div>
-	<hr width="100%">
-		<jsp:include page="Menu.jsp"></jsp:include>
+	 <table width="100%">
+  <tr><td>  <jsp:include page="header.jsp"></jsp:include></td></tr>
+  <tr><td>	<hr width="100%"> </td></tr>
+ <tr><td> <jsp:include page="Menu.jsp"></jsp:include></td></tr>
+</table>
 		<div style="height: 72%">
 		<html:javascript formName="testSetUpForm"/>
 		<html:form action="/test" onsubmit="return validateTestSetUpForm(this);">
@@ -80,12 +80,12 @@
 				<table align="left">
 
 					<tr>
-						<td>
-						<font face="Arial" color="#000040">	<bean:message key="label.testname" /></font>
+						<td width="175px">
+						<font face="Arial" color="#000040">	<bean:message key="label.testname"/></font>
 												</td>
 						<td>
 						<font face="Arial" color="#000040">
-							<html:text property="testName" size="20" /></font>
+							<html:text property="testName"  onchange="validateTestName();"/></font>
 							<font color="red" size="2">*</font>
 							<html:errors property="testName" />
 						</td>

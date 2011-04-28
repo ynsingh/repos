@@ -78,6 +78,10 @@ public class ConfirmAnsAction extends Action {
 		ConfirmAnsForm confirmAns = (ConfirmAnsForm) form;// TODO
 															// Auto-generated
 															// method stub
+		if (isCancelled(request)) {
+			System.out.println("here");
+			return mapping.findForward("uploadSheet");
+		}
 		int testid =Integer.parseInt(confirmAns.getTestid());
 		
 		/* This method returns the number of correct 

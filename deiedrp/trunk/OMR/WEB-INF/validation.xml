@@ -13,6 +13,10 @@
 			  <var-name>datePatternStrict</var-name>
 			   <var-value>yyyy-MM-dd</var-value>
 			</var>
+			<var>
+				  <var-name>lastResultDate1</var-name>
+				  <var-value>lastResultDate</var-value>
+				</var>
 			 </field>
 			 
 			 <field property="resultTo" depends = "required, date, currentDate, resultDisplayPeriod">
@@ -21,6 +25,10 @@
 			  <var-name>datePatternStrict</var-name>
 			   <var-value>yyyy-MM-dd</var-value>
 			</var>
+			<var>
+				  <var-name>lastResultDate1</var-name>
+				  <var-value>lastResultDate</var-value>
+				</var>
 			 </field>
 			</form>
 			
@@ -82,13 +90,18 @@
 			
 			</form>
 			<form name="testSetUpForm">
-			<field property="testName" depends="required, maxlength, uniqueTestName">
+			<field property="testName" depends="required, maxlength, uniqueTestName, mask">
 				<arg position="0" key="label.testname" />
 				<arg position="1" key="${var:maxlength}" resource="false"/>
 				<var> 
 				 <var-name>maxlength</var-name>
-				  <var-value>20</var-value>
-				</var>
+				  <var-value>30</var-value>
+				  </var>
+				  <var>
+				   <var-name>mask</var-name>
+				   <var-value>^[a-zA-Z][a-zA-Z0-9]*$</var-value>
+				 </var> 
+				 
 			</field>
 			
 			<field property="testNo" depends="required, maxlength, minlength, integer">
@@ -163,15 +176,23 @@
 			<field property="testName" depends="required">
 			<msg name="required" key="error.wrong.test"/>  
 			<arg position="0" key="label.testname"/>
-			
+			</field>
+			<field property="wrongQuesNo" depends="existQno">
+		  		 	 <arg position="0" key="label.Qno"/>
+			</field>
+			<field property="totalQuesExist" depends="totalQnoExist">
+		  		 	 <arg position="0" key="label.Qno"/>
 			</field>
 			</form>
 			
 			
 		<form name="delQues">
-		 <field property="qno" depends="required, integer, deleteWrongQuesNo">
+		 <field property="qno" depends="required, integer">
 		 	 <arg position="0" key="label.Qno"/>
 		 </field>
+		 <field property="delWrongQuesNo" depends="hiddenQno">
+		  		 	 <arg position="0" key="label.Qno"/>
+		 </field> 
 		</form>	
 		
 				

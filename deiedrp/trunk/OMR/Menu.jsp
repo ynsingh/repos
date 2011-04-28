@@ -60,14 +60,15 @@
   </head>
   
   <body>
-    <div style="background-color:#0000CD">	    
+<%--  0000CD--%>
+    <div style="background-color:#003F87">	    
 <table id="buton" width="20%" cellpadding="0" cellspacing="0" border="0">
-	<tr><td style="padding-right:1px" title ="Evaluate" bgcolor="#0000CD">
+	<tr><td style="padding-right:1px" title ="Evaluate" bgcolor="#003F87">
 		<a onmouseover='xpe("1g2j7o");xpshow("1g2j7",0,this);xpsmover(this);' onmouseout='xpsmout(this);' onmousedown='xpe("1g2j7c");'>
 			<font size="4%" face="calibri" color="white"><bean:message key="link.evaluate"/></font>
 		</a>
 
-<ul id="vbUL_1g2j7" class="vbUL1g2j7" style="background-color:#00009C">
+<ul id="vbUL_1g2j7" class="vbUL1g2j7" style="background-color:#003F87">
 	<li>
 		<a title="Test Set Up"><font size="3" face="calibri"><bean:message key="link.testsetup"/> </font> </a>
 			<img class="menu" src="home-files/tri.jpg" alt="»" width="10px" height="10px" align="right"/>

@@ -860,7 +860,7 @@ INSERT INTO `student_info` (`id`,`xstart`,`xend`,`y_ratio1`,`y_ratio2`,`field`,`
 DROP TABLE IF EXISTS `testheader`;
 CREATE TABLE `testheader` (
   `TestId` int(8) unsigned NOT NULL,
-  `Test_name` varchar(20) NOT NULL,
+  `Test_name` varchar(30) NOT NULL,
   `Total_question` tinyint(3) unsigned NOT NULL,
   `Total_section` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `Conduct_date` date DEFAULT NULL,

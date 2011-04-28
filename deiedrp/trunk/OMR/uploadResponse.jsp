@@ -32,25 +32,25 @@
 
  -->
 <%@ page language="java" pageEncoding="ISO-8859-1"%>
-<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%> 
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
- 
-<html> 
+
+<html>
 	<head>
 		<title>Online OMR Evaluation System</title>
-			<script src='dwr/util.js'></script>
-	<script src='dwr/engine.js'></script>
-	<script src='dwr/interface/ComboBoxOptions.js'></script>
-			<script type="text/javascript" src="javascript/validatecomboBox.js"></script>
-	
-	
-	<script type="text/javascript">
+		<script src='dwr/util.js'></script>
+		<script src='dwr/engine.js'></script>
+		<script src='dwr/interface/ComboBoxOptions.js'></script>
+		<script type="text/javascript" src="javascript/validatecomboBox.js"></script>
+
+
+		<script type="text/javascript">
 		
 function validateTimePeriod(){
 	var from = dwr.util.getValue("fromDate");
 		var to = dwr.util.getValue("toDate");
 				//alert("inside time to : " + to); 
-		if(!(from=="--Select--" || to=="--Select--")){
+		if(!(from=="--Select--" || to=="--Select--" || from=="0" || to=="0")){
 	ComboBoxOptions.checkTimePeriod(from, to, function(data)
 	{
 	 if(!data){
@@ -65,6 +65,11 @@ function validateTimePeriod(){
 	}
 	}
 	);
+	}else{
+	dwr.util.removeAllOptions(document.getElementsByName("testName")[0]);
+	     var selectTestName = dwr.util.byId("testName");
+	     selectTestName.options[0] = new Option('--Select--', 0);
+	
 	}
 	}	
 	function populateName(){
@@ -100,29 +105,125 @@ function validateTimePeriod(){
  }
 	
 	</script>
-		
+
 	</head>
 	<body onload="populateDate();">
-	<div>
-    <jsp:include page="header.jsp"></jsp:include>
-	</div>
-	<hr width="100%">
-	<jsp:include page="Menu.jsp"></jsp:include>
-	<html:javascript formName="uploadResponseSheet" staticJavascript="true" dynamicJavascript="true"/>
-	
-		<html:form action="/uploadzip"  method="post" enctype="multipart/form-data" onsubmit="return validateUploadResponseSheet(this);">
-		<font face="Arial" color="#000040"><STRONG><bean:message key="msg.uploadResponse"/></STRONG></font>
-		<center><font face="Arial" color="#ff0000"> <html:errors property="zippedFolder"/></font> </center><br/>
-		<table align="center">
-		<tr><td><font face="Arial" color="#000040"><bean:message key="label.testDate"/> </font></td><td><font face="Arial" color="#000040"> <bean:message key="label.from"/> </font><html:select indexed="fromDate" property="fromDate"  onchange="validateTimePeriod();"><html:option value="0"><bean:message key="msg.select"/> </html:option></html:select><font color="red" size="2"><bean:message key="required.symbol"/></font> <html:errors property="fromDate" /></td>
-		
-		<td><font face="Arial" color="#000040"><bean:message key="label.to"/>: </font><html:select indexed="toDate" property="toDate" onchange="validateTimePeriod();"><html:option value="0"><bean:message key="msg.select"/> </html:option></html:select><font color="red" size="2"><bean:message key="required.symbol"/></font>   <html:errors property="toDate" /></td></tr>
-			<tr>
-			<td><font face="Arial" color="#000040"> <bean:message key="label.testname"/>  </font></td><td><select id="testName" name="testName">
-			<option value="0"><bean:message key="msg.select"/> </option></select><font color="red" size="2"><bean:message key="required.symbol"/></font> 
-			<html:errors property="testName"/></td></tr>
-			<tr><td><font face="Arial" color="#000040"><bean:message key="label.zipFolder"/>  </font></td><td><html:file property="zippedFolder"/><font color="red" size="2"><bean:message key="required.symbol"/></font></td></tr>
-			<tr><td><html:submit onclick="return confirmMsg();"/></td><td><html:cancel/></td></tr>
+		 <table width="100%">
+  <tr><td>  <jsp:include page="header.jsp"></jsp:include></td></tr>
+  <tr><td>	<hr width="100%"> </td></tr>
+ <tr><td> <jsp:include page="Menu.jsp"></jsp:include></td></tr>
+</table>
+		<html:javascript formName="uploadResponseSheet"
+			staticJavascript="true" dynamicJavascript="true" />
+
+		<html:form action="/uploadzip" method="post"
+			enctype="multipart/form-data"
+			onsubmit="return validateUploadResponseSheet(this);">
+			<font face="Arial" color="#000040"><STRONG><bean:message
+						key="msg.uploadResponse" />
+			</STRONG>
+			</font>
+			<center>
+				<font face="Arial" color="#ff0000"> <html:errors
+						property="zippedFolder" />
+				</font>
+			</center>
+			<br />
+			<table align="center">
+				<tr>
+					<td>
+						<font face="Arial" color="#000040"><bean:message
+								key="label.testDate" /> </font>
+					</td>
+					<td>
+						<font face="Arial" color="#000040"> <bean:message
+								key="label.from" /> </font>
+								 &nbsp;&nbsp;<font
+								face="Arial" color="#000040"><strong>:</strong></font>
+					    </td>
+					    <td>			
+						<html:select indexed="fromDate" property="fromDate" style="width:150px"
+							onchange="validateTimePeriod();">
+							<html:option value="0">
+								<bean:message key="msg.select" />
+							</html:option>
+						</html:select>
+						<font color="red" size="2"><bean:message
+								key="required.symbol" />
+						</font>
+						<html:errors property="fromDate" />
+					</td>
+
+					<td>
+						<font face="Arial" color="#000040"><bean:message
+								key="label.to" /> </font>
+								 &nbsp;&nbsp;<font
+								face="Arial" color="#000040"><strong>:</strong></font>
+								</td>
+								<td>
+						<html:select indexed="toDate" property="toDate" style="width:150px"
+							onchange="validateTimePeriod();">
+							<html:option value="0">
+								<bean:message key="msg.select" />
+							</html:option>
+						</html:select>
+						<font color="red" size="2"><bean:message
+								key="required.symbol" />
+						</font>
+						<html:errors property="toDate" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<font face="Arial" color="#000040"> <bean:message
+								key="label.testname" /> </font>
+								
+					</td>
+					<td>
+							<font color="#ffffff"><bean:message key="label.from" />&nbsp;&nbsp;&nbsp; <font
+								face="Arial" color="#000040"><strong>:</strong></font>
+						</td>
+					<td>
+						<select id="testName" name="testName" style="width: 150px">
+							<option value="0">
+								<bean:message key="msg.select" />
+							</option>
+						</select>
+						<font color="red" size="2"><bean:message
+								key="required.symbol" />
+						</font>
+						<html:errors property="testName" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<font face="Arial" color="#000040"><bean:message
+								key="label.zipFolder" /> </font>
+					</td>
+					<td>
+							<font color="#ffffff"><bean:message key="label.from" />&nbsp;&nbsp;&nbsp; <font
+								face="Arial" color="#000040"><strong>:</strong></font>
+						</td>
+					<td colspan="2">
+						<html:file property="zippedFolder" />
+						<font color="red" size="2"><bean:message
+								key="required.symbol" />
+						</font>
+					</td>
+				</tr>
+				<tr>
+				<td>
+							<font color="#ffffff"><bean:message key="label.from" />&nbsp;&nbsp;&nbsp; 
+						</td>
+						<td>
+							<font color="#ffffff"><bean:message key="label.from" />
+						</td>
+					<td>
+						<html:submit onclick="return confirmMsg();" />
+					
+						<html:cancel />
+					</td>
+				</tr>
 			</table>
 		</html:form>
 	</body>

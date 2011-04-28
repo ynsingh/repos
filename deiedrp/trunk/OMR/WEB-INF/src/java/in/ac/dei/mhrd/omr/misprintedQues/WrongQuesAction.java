@@ -42,9 +42,11 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.Action;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
 import org.apache.struts.validator.Resources;
 
 import org.apache.log4j.Logger;
@@ -82,6 +84,9 @@ public class WrongQuesAction extends Action {
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response) {
 		WrongQuesForm wrongQuesForm = (WrongQuesForm) form;// TODO Auto-generated method stub
+		ActionErrors error = new ActionErrors();
+		ActionMessage msg = new ActionMessage("msg.existingQues");
+		
 		if(isCancelled(request)){
 			return mapping.findForward("home");
 		}

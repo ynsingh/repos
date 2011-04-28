@@ -69,7 +69,7 @@ public class CirclePosition {
 	*/
 	public static String getCandidateInfo(ij.process.ImageProcessor ip,
         ArrayList<MidPoint> infoLeft, ArrayList<MidPoint> infoRight, double xrtAvg,
-        double xleftAvg, int xstart, int xend, String filename, int testid) {
+        double xleftAvg, int xstart, int xend, String filename, int testid, String instructorTestNo) {
         int count = -1; //count the no. of rows
         int c = 0; // count the no. of circles
 
@@ -154,7 +154,7 @@ public class CirclePosition {
             }
         }
 
-       String roll =  Infoobj.getCandidateId(filename, testid);
+       String roll =  Infoobj.getCandidateId(filename, testid, instructorTestNo);
         //System.out.println("total circle found : " + c);
        // System.out.println("tno in c p " + tno);
         //if r pno no is not -1 , insert into the database
@@ -235,7 +235,7 @@ public class CirclePosition {
                               	break;
                               }
                         	circleStartPoint = i;
-                          //  ip.drawPixel(i, y);
+                            ip.drawPixel(i, y);
                             if (checkPixelGroup(ip, i, y)) {
                             //	System.out.println("row : " + j + "connecte pixel found at x : " + i + " y : " + y);
                             	
@@ -283,9 +283,9 @@ public class CirclePosition {
         int i = 1;
         int j = 1;
         boolean found = false;
-        int pixelGroup=(int)(ip.getWidth()*1.4)/100;
+        int pixelGroup=(int)(ip.getWidth()*1.5)/100;
         
-        while ((i <= 8) && (j <= 8)) {
+        while ((i <= 8) && (j <=8)) {
             j++;
             i++;
 

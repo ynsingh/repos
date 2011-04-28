@@ -59,10 +59,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <body>
     
-	<div>
-    <jsp:include page="header.jsp"></jsp:include>
-	</div>
-	<hr width="100%">
+	 <table width="100%">
+  <tr><td>  <jsp:include page="header.jsp"></jsp:include></td></tr>
+  <tr><td>	<hr width="100%"> </td></tr>
+ <tr><td> <jsp:include page="Menu.jsp"></jsp:include></td></tr>
+</table>
 	<center> <b> <bean:message key="link.proLog"/>: </b></center>
 	<table align = "center" width = "90%" border = "1">
 	<TR> 

@@ -19,7 +19,6 @@ var status=false;
           }else{
                 ComboBoxOptions.checkTimePeriod(to, lastDate, function(data)
                 {
-                	alert("data : " + data);
                   if(data == false){
                   alert("Result can be displayed Maximum for one month after processing of the sheets. Date cannot be greater than "+ lastDate);
                   status=false;

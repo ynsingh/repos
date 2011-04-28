@@ -99,13 +99,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   
   <body>
-  <div>
-    <jsp:include page="header.jsp"></jsp:include>
-	</div>
-	<hr width="100%">
- 			<jsp:include page="Menu.jsp"></jsp:include>	
-  	
-  	<html:form action="validate" method="post">
+   <table width="100%">
+  <tr><td>  <jsp:include page="header.jsp"></jsp:include></td></tr>
+  <tr><td>	<hr width="100%"> </td></tr>
+ <tr><td> <jsp:include page="Menu.jsp"></jsp:include></td></tr>
+</table>
+  	<html:form action="/validate" method="post">
   		
   				<%!
   		  					                                    int i;
@@ -125,6 +124,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		  				  		  				  					<% try
   		  				  		  				  						{
   		  				  		  				  						hs = request.getSession();
+  		  				  		  				  						hs.setAttribute("correctSheetMsg", "NA");
   		  				  		  				  						quesNo=(ArrayList<Integer>)hs.getAttribute("qno");
   		  				  		  				  						sectionNo=(ArrayList<Integer>)hs.getAttribute("secno");
   		  				  		  				     		   									}
@@ -132,7 +132,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		  				  		  				  			 					
   		  				  		  				  								}
   		  				%>	
-  		  <b><font size="4"face="Arial" color="blue"><bean:message key="label.testname"/>:<%= (String)hs.getAttribute("testName")  %></font></b>
+  		 <font size="4"face="Arial" color="#000040"><b>  <bean:message key="label.testname"/>: </b><I> <%= (String)hs.getAttribute("testName")  %></I> </font>
   	<div align="right"><html:link href="correctScanSheet.jsp" title="upload via scanned sheet"><bean:message key="label.upload"/> </html:link></div>
   								
   		  				
@@ -149,7 +149,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		   			%>
   		   				
   		 <center><u>
-  		 <font size="3" color="blue" style="font-family: verdana;font-weight: bold">
+  		 <font size="3" color="#000040" style="font-family: Arial;font-weight: bold">
   		 <bean:message key="label.section"/><%out.print(element1.hashCode()); %>
   		 </font>
   		 </u></center>
@@ -183,7 +183,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		 <input type="hidden" name="noq" id="noq" value=<%=--questionNo %>>
   		 <center>
   		 <input type="submit" name="Submit" value="Submit" onclick="return validate();">
-  		 <input type="button" value="Back" onclick="history.back();">
+  		 <html:cancel></html:cancel>
   		 </center>
   		 <% questionNo=1; %>
   		 </html:form>

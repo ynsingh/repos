@@ -253,15 +253,13 @@ public ArrayList<String> populateWrongQuesName(String from, String to){
 		
 		java.util.Date fromdate = sdf.parse(from); 
 		java.sql.Timestamp timest = new java.sql.Timestamp(fromdate.getTime()); 
-		System.out.println("time Stamp value" + timest);
 		
 		java.util.Date todate = sdf.parse(to); 
 		java.sql.Timestamp timeen = new java.sql.Timestamp(todate.getTime()); 
-		System.out.println("time Stamp value" + timeen);
 		
 		System.out.println("Executing select statemt ");
          ps = con.prepareStatement(
-                "SELECT distinct Test_name FROM testheader where Test_status=? AND Conduct_date BETWEEN ? AND ?");
+                "SELECT distinct Test_name FROM testheader where Test_status=? AND Conduct_date BETWEEN ? AND ? order by Test_name");
          ps.setString(1, message.getString("TestReady"));
          ps.setTimestamp(2, timest);
          ps.setTimestamp(3, timeen);
@@ -311,15 +309,12 @@ try {
 	
 	java.util.Date fromdate = sdf.parse(from); 
 	java.sql.Timestamp timest = new java.sql.Timestamp(fromdate.getTime()); 
-	System.out.println("time Stamp value" + timest);
 	
 	java.util.Date todate = sdf.parse(to); 
 	java.sql.Timestamp timeen = new java.sql.Timestamp(todate.getTime()); 
-	System.out.println("time Stamp value" + timeen);
 	
-	System.out.println("Executing select statemt inside name correct Ans ");
      ps = con.prepareStatement(
-            "SELECT t.Test_name, t.TestId FROM testheader t where Test_status=? AND Conduct_date<=now() AND Conduct_date BETWEEN ? AND ? AND t.TestId Not IN (Select distinct TestId from correctans) order by Test_name");
+            "SELECT t.Test_name, t.TestId FROM testheader t where Test_status=? AND Conduct_date BETWEEN ? AND ? AND t.TestId Not IN (Select distinct TestId from correctans) order by Test_name");
      ps.setString(1, message.getString("TestReady"));
      ps.setTimestamp(2, timest);
      ps.setTimestamp(3, timeen);
@@ -371,7 +366,7 @@ public ArrayList<String> populateNameListProcess(String from, String to){
 		
 		
          ps = con.prepareStatement(
-                "select distinct t.Test_name from testheader t where t.upload_status=? AND (t.Test_Status=? OR t.Test_Status=?) AND (t.TestId IN (Select distinct TestId from correctans))AND t.Conduct_Date<=now() AND t.Conduct_date BETWEEN ? AND ?");
+                "select distinct t.Test_name from testheader t where t.upload_status=? AND (t.Test_Status=? OR t.Test_Status=?) AND (t.TestId IN (Select distinct TestId from correctans))AND t.Conduct_Date<=now() AND t.Conduct_date BETWEEN ? AND ? order by Test_name");
          ps.setString(1, message.getString("sheetsUploaded"));
          ps.setString(2, message.getString("processingStart"));
          ps.setString(3, message.getString("TestReady"));
@@ -532,18 +527,25 @@ public ArrayList<String> selectDateCorrectAns(){
 try {
 	
      con = Connect.prepareConnection();
-    ResultSet rs;
+    ResultSet rs=null;
     con.setAutoCommit(false);
     PreparedStatement ps = null;
     
     testDateList.add(0, message.getString("msg.select"));
+    ps=con.prepareStatement("select Date(now()+ INTERVAL -3 DAY)");
+    ResultSet rs1=ps.executeQuery();
+    rs1.next();
+    System.out.println("rs11.getString(1)" + rs1.getDate(1));
+    
      ps = con.prepareStatement(
-            "select distinct Conduct_date from testheader t where t.Test_Status=? AND t.Conduct_date<=now() AND t.TestId NOT IN (Select distinct TestId from correctans) order BY Conduct_date");
+            "select distinct Conduct_date from testheader t where t.Test_Status=?" +
+            "AND t.TestId NOT IN (Select distinct TestId from correctans) AND (t.Conduct_date + INTERVAL -3 DAY)<=now() order by t.Conduct_date");
      ps.setString(1, message.getString("TestReady"));
-
+     System.out.println("");
      rs = ps.executeQuery();
      
    	  while(rs.next()){
+   		  System.out.println("1 " + rs.getString(1));
    		  testDateList.add(rs.getString(1));
      }
      
@@ -585,12 +587,11 @@ try {
    		  log.info("value in result date ="+rs.getString(1));
    		  testDateList.add(rs.getString(1));
      }
-     System.out.println("aray list size :"+testDateList.size());
    	  con.commit();
     
     }
     catch(Exception e){
-    	System.out.println("error in result date " + e);
+    	log.error("error in result date " + e);
     }
     finally{
     	Connect.freeConnection(con);
@@ -656,16 +657,12 @@ public boolean checkTimePeriod(String from, String to) throws ParseException{
 
       //String relation="";
       if (d1.compareTo(d2)<=0){
-    	  System.out.println("inside if");
     	  b=true;
         // relation = "the  date is less";
       }
       else {
-    	  System.out.println("inside else ");
-        // relation = "greater";
          b=false;
       }
-      System.out.println("value return by Ajax func: " + b);
       return b;
 }
 
@@ -687,7 +684,7 @@ try {
     testDateList.add(0, message.getString("msg.select"));
     
      ps = con.prepareStatement(
-            "select distinct Conduct_date from testheader where Test_Status=? AND ResultDisplayedTo > now()");
+            "select distinct Conduct_date from testheader where Test_Status=? AND ResultDisplayedTo > now() order by Conduct_date");
      ps.setString(1, message.getString("processed"));
      rs = ps.executeQuery();
      
@@ -740,7 +737,7 @@ try {
 	java.sql.Timestamp timeen = new java.sql.Timestamp(todate.getTime()); 
 	
      ps = con.prepareStatement(
-            "SELECT Test_name FROM testheader where Test_Status=? AND ResultDisplayedTo>now() AND Conduct_date BETWEEN ? AND ?");
+            "SELECT Test_name FROM testheader where Test_Status=? AND ResultDisplayedTo>now() AND Conduct_date BETWEEN ? AND ? order by Test_name");
      ps.setString(1, message.getString("processed"));
      ps.setTimestamp(2, timest);
      ps.setTimestamp(3, timeen);

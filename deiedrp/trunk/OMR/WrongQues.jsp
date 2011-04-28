@@ -38,22 +38,39 @@
 <html>
 	<head>
 		<title>Online OMR Evaluation System</title>
-		
+
 		<script src='dwr/util.js'></script>
-	<script src='dwr/engine.js'></script>
-	<script src='dwr/interface/ComboBoxOptions.js'></script>
-	<script type="text/javascript" src="javascript/validatecomboBox.js"></script>
+		<script src='dwr/engine.js'></script>
+		<script src='dwr/interface/ComboBoxOptions.js'></script>
+		<script src='dwr/interface/WrongQuesValidation.js'></script>
+		<script type="text/javascript" src="javascript/validatecomboBox.js"></script>
+
+		<script type="text/javascript">
+	function validateQno(){
+	// alert();
+       var selectTestName = dwr.util.getValue("testName");
+    //   alert(selectTestName);
+       	   var wrongQno = dwr.util.getValue("qno"); 
+       	   WrongQuesValidation.getDeleteQno(selectTestName, wrongQno, function(data){
+         	dwr.util.setValue("wrongQuesNo", data);
+	});
+	  WrongQuesValidation.getQno(selectTestName, wrongQno, function(data){
+         	dwr.util.setValue("totalQuesExist", data);
+	}); 
+	}
 	
-	<script type="text/javascript">
-	
-	
+	function checkQno(){
+	validateQno();
+	var flag = checkComboBoxValue();
+	return flag;
+	}
 	function validateTimePeriod(){
 		//alert("inside time period");
 	var from = dwr.util.getValue("fromDate");
 		var to = dwr.util.getValue("toDate");
 		//alert("inside time from : " + from); 
 				//alert("inside time to : " + to); 
-		if(!(from=="--Select--" || to=="--Select--")){
+		if(!(from=="--Select--" || to=="--Select--" || from=="0" || to=="0")){
 	ComboBoxOptions.checkTimePeriod(from, to, function(data)
 	{
 	 //alert(data);
@@ -69,6 +86,11 @@
 	}
 	}
 	);
+	}else{
+	dwr.util.removeAllOptions(document.getElementsByName("testName")[0]);
+	     var selectTestName = dwr.util.byId("testName");
+	     selectTestName.options[0] = new Option('--Select--', 0);
+	     
 	}
 	}	
 	
@@ -108,36 +130,112 @@
 	}
 	
 	</script>
-	
-		
+
+
 	</head>
-	<body  onload="populateDate();">
-	<div>
-    <jsp:include page="header.jsp"></jsp:include>
-	</div>
-	<hr width="100%">
-		<jsp:include page="Menu.jsp"></jsp:include>
-		<br/><blockquote><font face="Arial"><strong><bean:message key="label.misprint"/> </strong></font><br></blockquote>
-						<html:javascript formName="wrongQuesForm" dynamicJavascript="true" staticJavascript="true"/>  
-		
-		<html:form action="/wrong" onsubmit="return validateWrongQuesForm(this);">
+	<body onload="populateDate();">
+		 <table width="100%" >
+  <tr><td>  <jsp:include page="header.jsp"></jsp:include></td></tr>
+  <tr><td>	<hr width="100%"> </td></tr>
+ <tr><td> <jsp:include page="Menu.jsp"></jsp:include></td></tr>
+</table>
+		<blockquote>
+			<font face="Arial"><strong><bean:message
+						key="label.misprint" /> </strong>
+			</font>
+			<br>
+		</blockquote>
+		<html:javascript formName="wrongQuesForm" dynamicJavascript="true"
+			staticJavascript="true" />
+
+		<html:form action="/wrong"
+			onsubmit="return validateWrongQuesForm(this);">
+			<html:hidden property="wrongQuesNo" />
+			<html:hidden property="totalQuesExist" />
+
 			<table align="center">
-			
-		<tr><td><font face="Arial" color="#000040"><bean:message key="label.testDate"/> </font></td><td><font face="Arial" color="#000040"> <bean:message key="label.from"/> </font><html:select indexed="fromDate" property="fromDate"  onchange="validateTimePeriod();"><html:option value="0"><bean:message key="msg.select"/> </html:option></html:select><font color="red" size="2"><bean:message key="required.symbol"/></font> <html:errors property="fromDate" /></td>
-		
-		<td><font face="Arial" color="#000040"><bean:message key="label.to"/>: </font><html:select indexed="toDate" property="toDate" onchange="validateTimePeriod();"><html:option value="0"><bean:message key="msg.select"/> </html:option></html:select><font color="red" size="2"><bean:message key="required.symbol"/></font>   <html:errors property="toDate" /></td></tr>
-			<tr>
-			<td><font face="Arial" color="#000040"> <bean:message key="label.testname"/>  </font></td><td><select id="testName" name="testName">
-			<option value="0"><bean:message key="msg.select"/> </option></select><font color="red" size="2"><bean:message key="required.symbol"/></font> 
-			<html:errors property="testName"/></td></tr>		
-	
+
 				<tr>
 					<td>
-						<font face="Arial" color="#000040"><bean:message key="label.Qno" /></font>
+						<font face="Arial" color="#000040"><bean:message
+								key="label.testDate" /> </font>
 					</td>
 					<td>
+						<font face="Arial" color="#000040"> <bean:message
+								key="label.from" /> </font>
+							&nbsp;&nbsp;<font
+								face="Arial" color="#000040"><strong>:</strong></font>
+								</td>
+								<td>
+						<html:select indexed="fromDate" property="fromDate" style="width:150px"
+							onchange="validateTimePeriod();">
+							<html:option value="0">
+								<bean:message key="msg.select" />
+							</html:option>
+						</html:select>
+						<font color="red" size="2"><bean:message
+								key="required.symbol" />
+						</font>
+						<html:errors property="fromDate" />
+					</td>
 
-						<html:text property="qno" value=""></html:text><font color="red" size="2"><bean:message key="required.symbol"/></font>
+					<td>
+						<font face="Arial" color="#000040"><bean:message
+								key="label.to" /></font>
+								&nbsp;&nbsp;&nbsp;<font
+								face="Arial" color="#000040"><strong>:</strong></font>
+								</td>
+								<td>
+						<html:select indexed="toDate" property="toDate" style="width:150px"
+							onchange="validateTimePeriod();">
+							<html:option value="0">
+								<bean:message key="msg.select" />
+							</html:option>
+						</html:select>
+						<font color="red" size="2"><bean:message
+								key="required.symbol" />
+						</font>
+						<html:errors property="toDate" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<font face="Arial" color="#000040"> <bean:message
+								key="label.testname" /> </font>
+					</td>
+					<td>
+							<font color="#ffffff"><bean:message key="label.from" />
+							</font>&nbsp;&nbsp;&nbsp;<font
+								face="Arial" color="#000040"><strong>:</strong></font>
+						</td>
+					<td>
+						<select id="testName" name="testName" style="width: 150px">
+							<option value="0">
+								<bean:message key="msg.select" />
+							</option>
+						</select>
+						<font color="red" size="2"><bean:message
+								key="required.symbol" />
+						</font>
+						<html:errors property="testName" />
+					</td>
+				</tr>
+
+				<tr>
+					<td colspan="2">
+						<font face="Arial" color="#000040"><bean:message
+								key="label.Qno" />
+						</font>
+						&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;<font
+								face="Arial" color="#000040"><strong>:</strong></font>
+							
+					</td>
+					<td colspan=>
+
+						<html:text property="qno" value="" onchange="validateQno()"></html:text>
+						<font color="red" size="2"><bean:message
+								key="required.symbol" />
+						</font>
 
 
 					</td>
@@ -145,19 +243,40 @@
 						<html:errors property="qno" />
 					</td>
 				</tr>
-				
-				<tr><td><html:radio property="status" value="G">
-				<font face="Arial" color="#000040"><bean:message key="label.radio"/></font>
-				</html:radio></td></tr>
+
 				<tr>
-			<td><html:radio property="status" value="D"><font face="Arial" color="#000040"><bean:message key = "label.radio.discard"/></font></html:radio></td></tr>
+					<td colspan="2">
+						<html:radio property="status" value="G">
+							<font face="Arial" color="#000040"><bean:message
+									key="label.radio" />
+							</font>
+						</html:radio>
+					</td>
+				</tr>
 				<tr>
+					<td colspan="2">
+						<html:radio property="status" value="D">
+							<font face="Arial" color="#000040"><bean:message
+									key="label.radio.discard" />
+							</font>
+						</html:radio>
+					</td>
+				</tr>
+				<tr>
+				<td>
+							<font color="#ffffff"><bean:message key="label.from" />
+							</font>
+						</td>
+						<td>
+							<font color="#ffffff"><bean:message key="label.from" />
+							</font>						</td>
 					<td>
-						<html:submit onclick="return checkComboBoxValue();" />
-              <html:cancel /></td>
+						<html:submit onclick="return checkQno();" />
+						<html:cancel />
+					</td>
 				</tr>
 			</table>
-			
+
 
 		</html:form>
 	</body>

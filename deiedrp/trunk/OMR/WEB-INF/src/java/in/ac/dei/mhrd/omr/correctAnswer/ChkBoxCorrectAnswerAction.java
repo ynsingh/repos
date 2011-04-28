@@ -107,10 +107,14 @@ public class ChkBoxCorrectAnswerAction extends Action {
  		 int i=1; 
  		 questionTotal=1; 
  		
- 		Object elementQuestion;
- 		Object elementAnswer;
+ 		Integer elementQuestion;
+ 		Byte elementAnswer;
  			 
  		try{   
+ 			if(isCancelled(request)){
+ 				return mapping.findForward("selectCorrect");
+ 				
+ 			}
     			 con = Connect.prepareConnection(); 
     			 con.setAutoCommit(false);
  			    ps=con.prepareStatement("select Total_section from testheader where TestId=?"); 
@@ -126,17 +130,18 @@ public class ChkBoxCorrectAnswerAction extends Action {
         	while(i<=totalSection) 
         		{ 
                	 elementQuestion=quesNo.get(i-1);
-        	 for(k=1;k<=elementQuestion.hashCode();k++) 
+            	 while(elementQuestion>0) 
         	{ 
         	elementAnswer=byteAnsValues.get(k-1);
             ps.setInt(1, testid); 
             ps.setInt(2, i); 
             ps.setInt(3,questionTotal); 
-            ps.setInt(4,elementAnswer.hashCode()); 
+            ps.setInt(4,elementAnswer); 
              //add answers in a batch
             ps.addBatch(); 
-            	 
+            elementQuestion--;
               			questionTotal++; 
+              			k++;
               			} 
               	i++; 
         		} 

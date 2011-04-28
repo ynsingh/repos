@@ -94,59 +94,6 @@ public class ProcessSheetAction extends Action {
 	public void getZipFiles(String filename) {
 		try {
 
-			/*System.out.println("zipped file 1");
-			File zipFolder = new File(filename);
-             System.out.println("file Name : " + filename);
-			String destinationname = zipFolder.getParent();
-            System.out.println("destinatrion name : " + destinationname);  
-			byte[] buf = new byte[1024];
-			ZipInputStream zipinputstream = null;
-			ZipEntry zipentry;
-			zipinputstream = new ZipInputStream(new FileInputStream(filename));
-
-			zipentry = zipinputstream.getNextEntry();
-			System.out.println("zipped file 2" + zipentry);
-
-          			while (zipentry != null) {
-				// for each entry to be extracted
-				String entryName = zipentry.getName();
-				System.out.println("zipped file 3 inside while name  entry:" + entryName);
-
-				int fileData;
-				FileOutputStream fileoutputstream;
-				File newFile = new File(entryName);
-				String directory = newFile.getParent();
-				System.out.println("6"+directory);
-
-				if (directory == null) {
-				    System.out.println("is dir 1 : " + newFile.isDirectory() );	
-					if (newFile.isDirectory()) {
-						System.out.println("directory found");
-
-						break;
-					}
-				}
-				System.out.println("unzipped folder create fule" + destinationname + "/" + directory);
-
-				unzippFolder = new File(destinationname + "/" + directory);
-				unzippFolder.mkdir();
-				System.out.println("is dir : " + unzippFolder.isDirectory());
-				System.out.println("unzipped folder create folder2");
-
-				fileoutputstream = new FileOutputStream(destinationname + "/"
-						+ entryName);
-
-				while ((fileData = zipinputstream.read(buf, 0, 1024)) > -1)
-					fileoutputstream.write(buf, 0, fileData);
-
-				fileoutputstream.close();
-				zipinputstream.closeEntry();
-				zipentry = zipinputstream.getNextEntry();
-			} // while
-
-			zipinputstream.close();*/
-            System.out.println("file Name : " + filename);
-
 			try {
 				String reqPath ="";
 				System.out.println("slash : \\");
@@ -156,13 +103,8 @@ public class ProcessSheetAction extends Action {
 				File file =null;
 				b= filename.contains("/");
 				if(b){
-					System.out.println("img path :  " + filename.substring(0, filename.lastIndexOf("/")));
-
-				 reqPath = filename.substring(0, filename.lastIndexOf("/"));
+					reqPath = filename.substring(0, filename.lastIndexOf("/"));
 				}else{
-					
-					System.out.println("img path :  " + filename.substring(0, filename.lastIndexOf("\\")));
-
 					 reqPath = filename.substring(0, filename.lastIndexOf("\\"));
 
 				}
@@ -173,9 +115,6 @@ public class ProcessSheetAction extends Action {
                    
 					String name = zipEntry.getName();
 					
-					System.out.println();
-					System.out.println("");
-                    System.out.println("name : " + name);
                     if(b){
 					 file = new File(reqPath+ "/"+ name);
 					System.out.println("file path : " + file.getAbsolutePath());
@@ -186,9 +125,7 @@ public class ProcessSheetAction extends Action {
 					}
                     }else{
                     	file = new File(reqPath+ "\\"+ name);
-                    	System.out.println("file else : " + file.toString());
-    					System.out.println("file path : " + file.getAbsolutePath());
-    					System.out.println("bool :" + (name.endsWith("\\")||name.endsWith("/")));
+                    	
     					if (name.endsWith("/")) {
     						System.out.println("inside if");
     						file.getAbsoluteFile().mkdirs();
@@ -197,9 +134,7 @@ public class ProcessSheetAction extends Action {
     					}
                     }
 					 unzippFolder = file.getParentFile();
-					System.out.println("parent : " + file.getParent());
-					System.out.println("parent 2"+ unzippFolder.toString());
-					System.out.println("paren path : " + unzippFolder.getParentFile());
+					
 					if (unzippFolder != null) {
 						unzippFolder.getAbsoluteFile().mkdirs();
 					}
@@ -255,6 +190,7 @@ public class ProcessSheetAction extends Action {
 		int testid;
 		int totalQues = 0;
 		int totatSec = 0;
+		String instructorTestNo="0"; //TestNo given by the instructor 
 		String testName = processSheetForm.getTestName();
 		Connection con = null;
 		if (isCancelled(request)) {
@@ -278,13 +214,14 @@ public class ProcessSheetAction extends Action {
 			con.setAutoCommit(false);
 
 			PreparedStatement ps = con
-					.prepareStatement("select  TestId, Total_question, Total_section from testheader where Test_name = ?");
+					.prepareStatement("select  TestId, TestNo, Total_question, Total_section from testheader where Test_name = ?");
 			ps.setString(1, testName);
 			ResultSet rs = ps.executeQuery();
 			rs.next();
 			testid = rs.getInt(1);
-			totalQues = rs.getInt(2);
-			totatSec = rs.getInt(3);
+			instructorTestNo=rs.getString(2);
+			totalQues = rs.getInt(3);
+			totatSec = rs.getInt(4);
 			log.info("test Id retrieved : " + testid);
 
 						ArrayList<String> pathInfo = new ArrayList<String>();
@@ -295,7 +232,6 @@ public class ProcessSheetAction extends Action {
 			String imgPath = getServlet().getServletContext().getRealPath("/")
 					+ "inputFolder" + "/" + testName;
             
-			System.out.println("1");
 			ProcessedFolder = new File(getServlet().getServletContext()
 					.getRealPath("/")
 					+ "processedFolder" + "/" + testid);
@@ -303,12 +239,10 @@ public class ProcessSheetAction extends Action {
 			RejectedFolderPath = getServlet().getServletContext().getRealPath(
 					"/")
 					+ "RejectedFolder" + "/" + testid;
-			System.out.println("2");
 
 			rejectedFolder = new File(getServlet().getServletContext()
 					.getRealPath("/")
 					+ "RejectedFolder" + "/" + testid);
-			System.out.println("3");
 
 			/* creates the rejected folder if it does not exists */
 
@@ -362,23 +296,20 @@ public class ProcessSheetAction extends Action {
 			 * the sheets starts
 			 */
 
-			ps = con
-					.prepareStatement("update testheader set ProcessStartDate=now(), Test_Status = 'S' where Test_name=?");
+			ps = con.prepareStatement("update testheader set ProcessStartDate=now(), Test_Status = 'S' where Test_name=?");
 			ps.setString(1, testName);
-			int updateStatus = ps.executeUpdate();
+		    ps.executeUpdate();
 			con.commit();
-			System.out.println("update : " + updateStatus);
 
-          System.out.println("path info : " + pathInfo);
 			for (String filepath : pathInfo) { // Each file is extracted &
 				// pass to the system for
 				// further processing
-				System.out.println("Executing:" + filepath);
+				//System.out.println("Executing:" + filepath);
 				no_of_sheets++;
 
 				RotateImg obj = new RotateImg();
 
-				obj.processSheet(filepath, testid, totalQues); // process
+				obj.processSheet(filepath, testid, totalQues, RejectedFolderPath, instructorTestNo); // process
 				// the sheet
 				// further
 
@@ -432,15 +363,12 @@ public class ProcessSheetAction extends Action {
 				con.commit();
 				if (updatetestLog != 1) {
 
-					log
-							.error("test log couldn't updated after processing completes");
+					log.error("test log couldn't updated after processing completes");
 
 				}
 
 				// delete the input folder if all sheets are processed
-				System.out.println(" input folder to be deleted + "
-						+ unzippFolder.getParentFile());
-				unzippFolder.delete();
+								unzippFolder.delete();
 				unzippFolder.getParentFile().delete();
 
 			}

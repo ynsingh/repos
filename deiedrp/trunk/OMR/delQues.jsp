@@ -39,6 +39,27 @@
 <html> 
 	<head>
 		<title>Online OMR Evaluation System</title>
+		<script src='dwr/util.js'></script>
+	<script src='dwr/engine.js'></script>
+			<script src='dwr/interface/WrongQuesValidation.js'></script>
+		
+			<script type="text/javascript">
+		
+		function validateQno(){
+       var selectTestName = dwr.util.getValue("testName");
+       if(selectTestName!=""){
+       	   var wrongQno = dwr.util.getValue("qno"); 
+       	   WrongQuesValidation.getDeleteQno(selectTestName, wrongQno, function(data){
+       	   //alert("data "+data);
+	dwr.util.setValue("delWrongQuesNo", data);
+	});
+	 }  
+	}
+	
+	function checkQno(){
+	validateQno();
+	}
+	</script>
 	</head>
 	<body>
 	<%!
@@ -50,14 +71,17 @@
 	 <%
 	 test= (String)session.getAttribute("testName");
 	  %>
-	  <div>
-    <jsp:include page="header.jsp"></jsp:include>
-	</div>
-	<hr width="100%">
-	<jsp:include page="Menu.jsp"></jsp:include>
-							<html:javascript formName="delQues" />  
+	  <table width="100%">
+  <tr><td>  <jsp:include page="header.jsp"></jsp:include></td></tr>
+  <tr><td>	<hr width="100%"> </td></tr>
+ <tr><td> <jsp:include page="Menu.jsp"></jsp:include></td></tr>
+</table>
+						<html:javascript formName="delQues" />  
 	
 		<html:form action="/delQuesPath" onsubmit="return validateDelQues(this);">
+		 		<html:hidden property="delWrongQuesNo"/>
+		 			<html:hidden property="testName" value="<%= test %>"/>
+		 
 		<font face="Arial" color="#000040"><strong><bean:message key="label.testname"/> : &nbsp;<%=test %></strong></font><br/>
 		<center><font face="Arial" color="#000040"><strong><bean:message key="msg.existingQues"/></strong></font>
 		<br/><br/>
@@ -87,10 +111,9 @@
 		 </table><br/>
 		<font face="Arial" color="#000040" size="2"> <bean:message key="acronyms.wrongQues"/> </font><br/><br/>
 		<font color="red" size="2"><html:errors property="qno"/></font> <br/>
-		<font face="Arial" color="#000040">	<bean:message key="label.delQues"/> </font><html:text property="qno" value=""/>							<font color="red" size="2">*</font>
+		<font face="Arial" color="#000040">	<bean:message key="label.delQues"/> </font><html:text property="qno" value="" onchange="validateQno();"/><font color="red" size="2">*</font>
 		<br/>
-			<html:hidden property="testName" value="<%= test %>"/>
-			<html:submit/><html:cancel value="Back"/>
+			<html:submit onclick="checkQno();"/><html:cancel value="Back"/>
 		</html:form>
 	</body>
 </html>

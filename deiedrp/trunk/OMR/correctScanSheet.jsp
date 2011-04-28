@@ -13,6 +13,7 @@
  * notice, this list of conditions and the following disclaimer in
  * the documentation and/or other materials provided with the
  * distribution.
+ 
  *
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -39,32 +40,53 @@
 <html>
 	<head>
 		<title>Online OMR Evaluation System</title>
+		<script>
+		function changeBody()
+	{
+	 var blurDiv = document.createElement("div");
+	 blurDiv.id = "blurDiv";
+	 blurDiv.style.cssText = "position:absolute; top:0; right:0; width:" + screen.width + "px; height:" + screen.height + "px; background-color:#3B6AA0; opacity:0.4; filter:alpha(opacity=40);";
+	// var ImgTag = document.createElement("Img");
+	// ImgTag.setAttribute("id", "ImgTag");
+	// ImgTag.setAttribute("src", "img/ajax-loader.gif");
+	//ImgTag.src="img/ajax-loader.gif";
+//	document.getElementById("blurDiv").appendChild(ImgTag);
+	//blurDiv.appendChild(ImgTag);
+	document.getElementsByTagName("body")[0].appendChild(blurDiv);	
+	}
+		</script>
 	</head>
 	<body>
-	<div>
-    <jsp:include page="header.jsp"></jsp:include>
-	</div>
-	<hr width="100%">
-		<jsp:include page="Menu.jsp"></jsp:include>
-		
+	 <table width="100%">
+  <tr><td>  <jsp:include page="header.jsp"></jsp:include></td></tr>
+  <tr><td>	<hr width="100%"> </td></tr>
+ <tr><td> <jsp:include page="Menu.jsp"></jsp:include></td></tr>
+</table>	
 		<%
 		HttpSession hs = request.getSession();
 		String testName =(String) hs.getAttribute("testName");
 		 %>
 			
-				<html:javascript formName="correctSheetBrowseForm123" />  
 				 
-				<html:form action="/correctBrowse" method="post" enctype="multipart/form-data" onsubmit="return validateCorrectSheetBrowseForm123(this);"> 
+				<html:form action="/correctBrowse" method="post" enctype="multipart/form-data" onsubmit="changeBody();"> 
 					
 					<blockquote><font face="Arial" color="#000040"> 
 				 
 <strong>	<bean:message key="msg.correct"/><br/>
 <bean:message key="label.testname"/> : <%=testName %>
 </strong></font></blockquote>
-
 				
 					<center> 
-					<font color="red" size="2">								  	
+					<font color="red" size="2">
+					<%
+					try{
+					if(!((String)hs.getAttribute("correctSheetMsg")).equals("NA")){
+					 %>	
+					 <%=(String) hs.getAttribute("correctSheetMsg") %>	
+					 <%} 
+					 }catch(Exception e){
+					 System.out.println("Exception in corr : " + e);
+					 }%>						  	
 				          <html:errors property="correctPath" /> 
 					</font>
 						<table> 
@@ -90,7 +112,7 @@
  
 						<html:submit></html:submit> 
 						&nbsp; 
-<html:button value="Cancel" property="btn" onclick="history.back();"></html:button>					</center> 
+<html:cancel value="Cancel"></html:cancel>					</center> 
 				</html:form> 
 				
 	</body>

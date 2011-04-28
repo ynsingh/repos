@@ -105,7 +105,6 @@
         float totalMarks=0;
         int rollNo;
         int testid =(Integer) session.getAttribute("testid");
-        System.out.println("testid session : " + testid);
         String path=(String)session.getAttribute("imagePath");
     		    int i = 1;
   				int j = 1;
@@ -225,7 +224,7 @@
 							{alt++;
 		%>
     			
-    			<tr bgcolor="#c0c0c0"><%}else{alt++; %>
+    			<tr bgcolor="#c0c0c0"> <%}else{alt++; %>
     			<tr bgcolor="white">
     			<%
     			 }
@@ -234,7 +233,7 @@
     			<%
     				out.print(i++);
     			%>
-    			</td><td><a href="displayResponse.do?filename=<%=Imgpath%>&testid=<%=testid %>"><%=rollNo%></a></td>
+    			</td><td><%=rollNo%></td>
     	  <%
     	  
     	     	   	for (j = 1; j <= totalSection; j++)

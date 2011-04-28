@@ -168,7 +168,7 @@ public class AnsDetail {
 					int counter = 0;
 					int tempy;
 
-					for (int i = 1; i <= 15; i++) {
+					for (int i = 1; i <= 12; i++) {
 						counter = 0;
 
 						tempy = y + i;

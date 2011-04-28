@@ -52,6 +52,9 @@ public class DelQuesForm extends ValidatorForm {
 	 */
 
 	/** qno property */
+	
+	private String delWrongQuesNo;
+	
 	private String qno="";
 	
 	private String testName;
@@ -104,5 +107,13 @@ public class DelQuesForm extends ValidatorForm {
 	 */
 	public void setQno(String qno) {
 		this.qno = qno;
+	}
+
+	public String getDelWrongQuesNo() {
+		return delWrongQuesNo;
+	}
+
+	public void setDelWrongQuesNo(String delWrongQuesNo) {
+		this.delWrongQuesNo = delWrongQuesNo;
 	}
 }

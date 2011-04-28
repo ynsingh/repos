@@ -33,25 +33,29 @@
  -->
 <%@ page language="java" pageEncoding="UTF-8"%>
 
-<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%> 
+<%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
-<html> 
+<html>
 	<head>
-		<link rel="stylesheet" type="text/css" href="style/jquery.datepick.css" />
-	
-	<script src='dwr/util.js'></script>
-	<script src='dwr/engine.js'></script>
-	<script src='dwr/interface/ComboBoxOptions.js'></script>
-	<script src='dwr/interface/ResultDate.js'></script>
-	<script type="text/javascript" src="javascript/datetimepicker.js" /></script>
-	<script type="text/javascript" src="javascript/validatecomboBox.js"></script>
-	<script type="text/javascript" src="javascript/ManageResult.js"></script>
-	
-	<script type="text/javascript" src="javascript/jQueryDatePicker/jquery-1.4.2.min.js"></script>
-	<script type="text/javascript" src="javascript/jQueryDatePicker/jquery.datepick.js"></script>
-	<script type="text/javascript" src="javascript/jQueryDatePicker/jquery-ui-1.8.6.custom.min.js"></script>
+		<link rel="stylesheet" type="text/css"
+			href="style/jquery.datepick.css" />
 
-	<script type="text/javascript">
+		<script src='dwr/util.js'></script>
+		<script src='dwr/engine.js'></script>
+		<script src='dwr/interface/ComboBoxOptions.js'></script>
+		<script src='dwr/interface/ResultDate.js'></script>
+		<script type="text/javascript" src="javascript/datetimepicker.js" /></script>
+		<script type="text/javascript" src="javascript/validatecomboBox.js"></script>
+		<script type="text/javascript" src="javascript/ManageResult.js"></script>
+
+		<script type="text/javascript"
+			src="javascript/jQueryDatePicker/jquery-1.4.2.min.js"></script>
+		<script type="text/javascript"
+			src="javascript/jQueryDatePicker/jquery.datepick.js"></script>
+		<script type="text/javascript"
+			src="javascript/jQueryDatePicker/jquery-ui-1.8.6.custom.min.js"></script>
+
+		<script type="text/javascript">
 	jQuery(document).ready(function(){
  	
  	//for datapicker
@@ -76,46 +80,123 @@
 
 	</head>
 	<body onload="populateDate();">
-<div>
-    <jsp:include page="header.jsp"></jsp:include>
-	</div>
-	<hr width="100%">
-	<jsp:include page="Menu.jsp"></jsp:include>
-	
-			<html:javascript formName="resultSchedule"/>
-	
-				<html:form action="/manageResult" onsubmit="validateResultSchedule(this)">	
-				
-				                             <input type="hidden" name="firstResultDate" id = "firstResultDate"/>
-				                              <input type="hidden" name="lastResultDate" id="lastResultDate"/>
-  				
-				<font face="Arial" color="#000040"><STRONG><bean:message key="link.manageresult"/></STRONG></font>			
-					<center> 
-					<font color="red" size="2"> <html:errors property="resultTo"/>
-					                            <html:errors property="fromDate"/>  <br/>
-					                            <html:errors property="resultFrom"/> <br/>
-					</font>
-						<table> 
+		 <table width="100%">
+  <tr><td>  <jsp:include page="header.jsp"></jsp:include></td></tr>
+  <tr><td>	<hr width="100%"> </td></tr>
+ <tr><td> <jsp:include page="Menu.jsp"></jsp:include></td></tr>
+</table>
+
+		<html:javascript formName="resultSchedule" />
+
+		<html:form action="/manageResult"
+			onsubmit="validateResultSchedule(this)">
+
+			<input type="hidden" name="firstResultDate" id="firstResultDate" />
+			<input type="hidden" name="lastResultDate" id="lastResultDate" />
+
+			<font face="Arial" color="#000040"><STRONG><bean:message
+						key="link.manageresult" /> </STRONG> </font>
+			<center>
+				<font color="red" size="2"> <html:errors property="resultTo" />
+					<html:errors property="fromDate" /> <br /> <html:errors
+						property="resultFrom" /> <br /> </font>
+				<table>
+
+					<tr>
+						<td>
+							<font face="Arial" color="#000040"><bean:message
+									key="label.ConductDate" /> </font>
+						</td>
+						<td>
+							<font face="Arial" color="#000040"> <bean:message
+									key="label.FromConductDate" /> </font>
+									&nbsp;&nbsp;<font
+								face="Arial" color="#000040"><strong>:</strong></font>
+									</td>
+									<td>
+							<html:select indexed="fromDate" property="fromDate" style="width:150px"
+								onchange="validateTimePeriod();" />
+						</td>
+						<td>
+							<font face="Arial" color="#000040"> <bean:message
+									key="label.ToConductDate" /> </font>
+									&nbsp;&nbsp;&nbsp;<font
+								face="Arial" color="#000040"><strong>:</strong></font>
+									</td>
+									<td>
+							<html:select indexed="toDate" property="toDate" style="width:150px"
+								onchange="validateTimePeriod();" />
+							<html:errors property="toDate" />
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<font face="Arial" color="#000040"><bean:message
+									key="label.testname" /> </font>
+						</td>
+						<td>
+							<font color="#ffffff"><bean:message key="label.from" />
+							</font>&nbsp;&nbsp;&nbsp;<font
+								face="Arial" color="#000040"><strong>:</strong></font>
+						</td>
+						<td>
+							<select id="testName" name="testName" style="width: 150px"
+								onchange="getResultDuration();">
+								<option value="0">
+									<bean:message key="msg.select" />
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<font face="Arial" color="#000040"><bean:message
+									key="label.resultFrom" /> </font>
+						</td>
+						<td>
+							<font color="#ffffff"><bean:message key="label.from" />
+							</font>&nbsp;&nbsp;&nbsp;<font
+								face="Arial" color="#000040"><strong>:</strong></font>
+						</td>
+						<td>
+							<Input type="text" name="resultFrom" id="resultFrom" />
+							<font color="red" size="2">*</font>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<font face="Arial" color="#000040"><bean:message
+									key="label.resultTo" /> </font>
+						</td>
+						<td>
+							<font color="#ffffff"><bean:message key="label.from" />
+							</font>&nbsp;&nbsp;&nbsp;<font
+								face="Arial" color="#000040"><strong>:</strong></font>
+						</td>
+						<td>
+							<Input type="text" name="resultTo" id="resultTo" />
+							<font color="red" size="2">*</font>
+						</td>
+					</tr>
+
+					<tr>
+					<td>
+							<font color="#ffffff"><bean:message key="label.from" />
+							</font>
+						</td>
+						<td>
+							<font color="#ffffff"><bean:message key="label.from" />
+							</font>
+						</td>
+						<td>
+							<html:submit></html:submit>
 						
-						  <tr><td><font face="Arial" color="#000040"><bean:message key="label.ConductDate"/> </font></td><td><font face="Arial" color="#000040"> <bean:message key="label.FromConductDate"/> </font><html:select indexed="fromDate" property="fromDate"   onchange="validateTimePeriod();"/></td><td><font face="Arial" color="#000040">  <bean:message key="label.ToConductDate"/> </font><html:select indexed="toDate" property="toDate"  onchange="validateTimePeriod();"/><html:errors property="toDate" /></td></tr>
- 
-							<tr> 
-								<td> 
-								<font face="Arial" color="#000040"><bean:message key="label.testname"/>	</font> 
-								</td> 
-								<td> 
-									<select id="testName" name="testName" onchange="getResultDuration();"> 
-                                         <option value="0"><bean:message key="msg.select"/> 
-                                         </select>
-								</td> 
-							</tr> 
-							<tr><td><font face="Arial" color="#000040"><bean:message key="label.resultFrom"/> </font></td><td><Input type="text" name="resultFrom" id="resultFrom"/>
-							<font color="red" size="2">*</font></td></tr>
-							   <tr> <td><font face="Arial" color="#000040"><bean:message key="label.resultTo"/> </font></td><td><Input type="text" name="resultTo" id="resultTo"/><font color="red" size="2">*</font></td></tr>
-	
-	<tr><td><html:submit onclick="return validateResultPeriod();"></html:submit></td><td><html:cancel></html:cancel></td></tr>
-		</table></center>
-		</html:form>	
+							<html:cancel></html:cancel>
+						</td>
+					</tr>
+				</table>
+			</center>
+		</html:form>
 	</body>
 </html>
 

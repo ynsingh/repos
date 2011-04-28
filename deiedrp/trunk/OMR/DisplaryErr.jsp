@@ -60,13 +60,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
-  <div>
-    <jsp:include page="header.jsp"></jsp:include>
-	</div>
-	<hr width="100%">
-  <jsp:include page="Menu.jsp"></jsp:include> 
-  
-   <br/><br/>
+   <table width="100%">
+  <tr><td>  <jsp:include page="header.jsp"></jsp:include></td></tr>
+  <tr><td>	<hr width="100%"> </td></tr>
+ <tr><td> <jsp:include page="Menu.jsp"></jsp:include></td></tr>
+</table>
    <%!
    String TestName="";
    int TestId=0;
@@ -79,6 +77,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    		 TestName  =(String) request.getAttribute("TestName");
    		TestId = (Integer)request.getAttribute("testid");
    		String table = (String)request.getAttribute("tableName");
+   		String msg = (String)request.getAttribute("logName");
    		try{
    		  con = (Connection) Connect.prepareConnection();
    		     
@@ -88,7 +87,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                  rs = ps.executeQuery();
    %>
    
-  <font color="#000040"><font face="Arial"><strong><bean:message key="label.errLog"/><br><bt>
+  <font color="#000040"><font face="Arial"><strong><%=msg%><br><bt>
   <bean:message key="label.testname"/>:&nbsp;<%=TestName %></font>
   
 		

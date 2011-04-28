@@ -39,12 +39,11 @@
 <link rel="stylesheet" href="style/dropdown.css" type="text/css"></link>
 
 <body>
-
-
-<center>
-    <img src="img/Inst_Admin.PNG" align="right" width="16%" height="14%"/>
-	<h1><font color = " #3232CD"><center> <bean:message key="label.onOmrEvaSys"/></center> </font></h1>
-	        <font size="4" face = "calibri"><center><b><bean:message key="label.openSrcInitiative"/></b> </center></font>
-            <font size="3" face = "calibri"><center> <bean:message key="label.devUnder"/></center> </font></center>
+            <table width="95%" align="right">
+            <tr  align="center">
+            <td><h1><font color = "#3232CD"> <bean:message key="label.onOmrEvaSys"/></font></h1></td><td rowspan="3" valign="top" align="right"><img src="img/Inst_Admin.PNG"/></td></tr>
+            <tr align="center"><td><font size="4" face = "calibri"><b><bean:message key="label.openSrcInitiative"/></b></font></td></tr>
+            <tr align="center"><td> <font size="3" face = "calibri"> <bean:message key="label.devUnder"/> </font></td></tr>
+            </table>
 	
 </body>

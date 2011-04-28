@@ -75,24 +75,19 @@ public class Coordinates {
 	 */
    public static ArrayList<Coordinates> computeCorners(ij.process.ImageProcessor ip, int xstart, int xend){
          
-          
 	  
      ArrayList<Coordinates> arr = new ArrayList<Coordinates>();
-     //int block_height= 50;
 	 int block_height = (int)((ip.getHeight()*1.5)/100);
-	
 	  int x=0,y=0, x1=0,y1=0, i=0;
 	  int block_dist=(int)((ip.getHeight()*2.5)/100);
-	  
-	  int block_width = (int)((ip.getWidth()*1.55)/100);
-	  	  /*
+	
+	  int block_width = (int)((ip.getWidth()*1.25)/100);
+	  /*
 	   * xcoord, ycoord, y1 are the coordinates of the top and bottom of the block x vl remain same
 	   */
 	  
 	 // position from where processing will start
-	 
-	int ystart = (int)(ip.getHeight()*10)/100;
-	System.out.println("ystart : " + ystart);
+	  int ystart = (int)(ip.getHeight()*10)/100;
 	 
 	  int yend = ip.getHeight(); // position where processing will end
 	  
@@ -115,7 +110,7 @@ public class Coordinates {
 		   for(x=xstart;x<xend;x++) //horizontal position where processing starts and ends
 		   {
 			   
-			   //ip.drawPixel(x, y);
+			 //  ip.drawPixel(x, y);
 			   if(x>=ip.getWidth()-1)
 			   {
 				   break;
@@ -129,24 +124,22 @@ public class Coordinates {
 			   x1=x;
 			   if(ip.getPixelValue(x1, y)==0) // check if black pixel found			
 			   {  
-				 
+				// System.out.println("black pixel ");
 				   xcoord = x1;
 				   
 				  int tempy = y+10; // y coord move due to tilt
 				   while(ip.getPixelValue(x1, tempy)==0) //compute how many black pixels in sequence horizontally
 				   {
-					 //  System.out.println("inside while x1 : " +x1 + " tempy " + tempy);
 					   hx++;
 					   x1++;
-					 
+					  // System.out.println("inside while x1 : " +x1 + " tempy " + tempy);
+
 					   if(x1>=xend){
 						   break;
 					   }
 					   if(hx==block_width)  //check if black pixels upto the width of block found
 					   {
-						  // System.out.println("hx : " +hx + " " + tempy);
 						   xlimit = true; 
-						   
 						   hx=0;
 						  
 						   break;
@@ -160,10 +153,11 @@ public class Coordinates {
 						   if(y1>yend){
 							   break;
 						   }
-						   int tempx = x+12; // to overcome the tilt
+						   int tempx = x+30; // to overcome the tilt
+						   int a = y1;
 						   while(ip.getPixelValue(tempx,y1)==0)
 						   {
-							   //System.out.println("inside vertical loop x : " + tempx + " y: " + y1);
+							  // System.out.println("inside vertical loop x : " + tempx + " y: " + y1);
 							   hy++;
 							   y1++;
 							   if(y1>yend){
@@ -174,15 +168,13 @@ public class Coordinates {
 								  if(hy > block_height){
 							    
 								   i++;
-								
-								   /*
-								   System.out.println(i+" block found at top x:" +xcoord + "y:  "+ ycoord);
+																   
+								 /* System.out.println(i+" block found at top x:" +xcoord + "y:  "+ ycoord);
 								   System.out.println("Bottom Left x: " +xcoord + "y: "+y1);
-								   System.out.println("HEight :" +hy);
-								   */
-								  
-								   y=y+block_dist; // distance between top corner of block
+								   System.out.println("HEight :" +hy);*/
 								   
+								
+								   y=y+block_dist; // distance between top corner of block
 								   
 								   Coordinates obj=new Coordinates(xcoord, ycoord);
 								   arr.add(obj);

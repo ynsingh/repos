@@ -111,14 +111,27 @@
 				
 				markNeg=(document.getElementById("nm"+i)).value;
 				
-				if(parseInt(toq)<1 || toq==""){
-				alert("Please enter number of questions in section " + i);
-				return false;
-				}
+				if(toq==""){
+               		 alert("Please enter the number of questions in section "+ i);
+               		 return false;
+               		 }
+               		 if(!isInteger(toq)){
+               		 alert('Question number must be an integer in section ' +i);
+               		 return false;
+               		 }
+               		 if(parseInt(toq)<1){
+               		 alert("Invalid question number in section "+i);
+               		 return false;
+               		 }
 				if(markEach==""){
 				alert('Please enter the marks for section : ' + i);
 				return false;
 				}
+				
+               	if(isNaN(markEach)){
+               	alert('Marks should be numeric in section ' + i);
+               	return false;
+               	}
 						if(markEach>10 || markEach<0.25)
 						{
 						alert("Marks of each question cannot be greater than 10 and less than 0.25 \n for section : "+i);
@@ -128,6 +141,10 @@
 					alert('Please enter the Negative marks for section : ' + i);
 				    return false;
 					}
+					if(isNaN(markNeg)){
+               	alert('Negative Marks should be numeric in section ' + i);
+               	return false;
+               	}
 					   if(parseFloat(markNeg)>10 && parseFloat(markNeg)<(-10))
 							{
 							alert("Negative marks can't be greater than 10 for Section No:"+i);
@@ -149,11 +166,12 @@
   </head>
   
   <body>
-  <div>
-    <jsp:include page="header.jsp"></jsp:include>
-	</div>
-	<hr width="100%">
-  <jsp:include page="Menu.jsp"></jsp:include>
+  <table width="100%">
+  <tr><td>  <jsp:include page="header.jsp"></jsp:include></td></tr>
+  <tr><td>	<hr width="100%"> </td></tr>
+ <tr><td> <jsp:include page="Menu.jsp"></jsp:include></td></tr>
+</table>
+
   <%!
   		 int sec;
   		//no.of sections

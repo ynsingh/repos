@@ -14,6 +14,9 @@
     <create creator="new" javascript="OMRValidation">
       <param name="class" value="in.ac.dei.mhrd.omr.OMRValidation"/>
     </create>
+    <create creator="new" javascript="WrongQuesValidation">
+      <param name="class" value="in.ac.dei.mhrd.omr.misprintedQues.WrongQuesValidation"/>
+    </create>
     
   </allow>
 </dwr>

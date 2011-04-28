@@ -97,7 +97,7 @@ public class UpdateTestSetupAction extends Action {
 			ResultSet rsTestHeader=null;
 			ResultSet rsWrongQues=null;
 			PreparedStatement ps=null;
-			int testNo=manageForm.getTestNo();
+			String testNo=manageForm.getTestNo();
 			int testId=(Integer)session.getAttribute("testId");
 			int totalQuestion=manageForm.getTotalQuestion();
 			int totalSection=manageForm.getTotalSection();
@@ -189,7 +189,7 @@ public class UpdateTestSetupAction extends Action {
 				
 					qryTestHeader="update testheader set TestNo=?,Conduct_date=?,Total_section=?,Total_question=? where TestId=?";
 					ps=con.prepareStatement(qryTestHeader);
-					ps.setInt(1,testNo );
+					ps.setString(1, testNo);
 					ps.setDate(2,date);
 					ps.setInt(3, totalSection);
 					ps.setInt(4,totalQuestion);

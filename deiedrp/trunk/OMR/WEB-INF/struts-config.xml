@@ -85,10 +85,12 @@
       attribute="correctSheetBrowseForm123"
       input="/correctScanSheet.jsp"
       name="correctSheetBrowseForm123"
+      cancellable="true"
       path="/correctBrowse"
       validate="true"
       type="in.ac.dei.mhrd.omr.correctAnswer.CorrectSheetBrowseAction">
       <forward name="confirmAns1" path="/confirmAnsJsp.jsp" />
+      <forward name="fillAnswer" path="/fillAnswer.jsp"></forward>
       </action>
 
     <action
@@ -108,9 +110,12 @@
       input="/confirmAnsJsp.jsp"
       name="confirmAns"
       path="/confirm"
+      cancellable="true"
       scope="request"
       type="in.ac.dei.mhrd.omr.correctAnswer.ConfirmAnsAction">
       <forward name="confirmAnsMsg1" path="/ConfirmAnsMsg.jsp" />
+            <forward name="uploadSheet" path="/correctScanSheet.jsp" />
+      
     </action>
 
     <action
@@ -136,6 +141,8 @@
       scope="request"
       type="in.ac.dei.mhrd.omr.result.ManageResultAction" >
       <forward name="success1" path="/ConfirmAnsMsg.jsp" />
+            <forward name="home" path="/Home.jsp" />
+      
       </action>
 
     <action
@@ -208,18 +215,24 @@
       input="/ValidateAnswer.jsp"
       name="answerForm"
       path="/addAnswer"
+      cancellable="true"
       type="in.ac.dei.mhrd.omr.correctAnswer.ChkBoxCorrectAnswerAction" >
       <forward name="correctAnsMsg" path="/WrongQMsgJsp.jsp" />
+            <forward name="selectCorrect" path="/SelectCorrectAnsJsp.jsp" />
+      
       </action>
 
     <action
       attribute="answerForm"
       input="/fillAnswer.jsp"
+      cancellable="true"
       name="answerForm"
       path="/validate"
       scope="request"
       type="in.ac.dei.mhrd.omr.correctAnswer.ValidateAction" >
       <forward name="populate" path="/ValidateAnswer.jsp" />
+                  <forward name="selectCorrect" path="/SelectCorrectAnsJsp.jsp" />
+      
     </action>
 
     <action

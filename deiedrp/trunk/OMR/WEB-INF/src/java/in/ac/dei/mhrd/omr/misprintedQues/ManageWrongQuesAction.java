@@ -94,13 +94,11 @@ public class ManageWrongQuesAction extends Action {
 	
 TreeMap<Integer, String> qnoList = ExistingWrongQues.getWrongQues(manageWrongQues.getTestName()); 	
 		if(qnoList.size()==0){
-			System.out.println("list size 0");
 			log.info("Wrong Ques not retrieved");
 			request.setAttribute("wrongmsg", "No mis printed Question entered for this test");
 			return mapping.findForward("WrongQ");
 		}
 		else{
-		System.out.println("inside manage wrong Ques");
 		hs.setAttribute("testName", manageWrongQues.getTestName());
 		hs.setAttribute("qnoList", qnoList);
 	

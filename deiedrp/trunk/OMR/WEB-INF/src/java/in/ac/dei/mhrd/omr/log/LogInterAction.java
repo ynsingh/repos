@@ -83,12 +83,15 @@ public class LogInterAction extends Action {
 			return mapping.findForward("home");
 		}
 		if(selectedLog.equalsIgnoreCase("E")){
+			request.setAttribute("logName", "Error Log");
 		request.setAttribute("tableName", "log");
 		}
 		else{
 			/*
 			 * If user opt to view the test log
 			 */
+			request.setAttribute("logName", "Test Log");
+
 			request.setAttribute("tableName", "testlog");
 		}
 			return mapping.findForward("erroLog");

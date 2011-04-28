@@ -112,7 +112,7 @@ public class ManageTestAction extends Action {
 				session.setAttribute("sec", sec);
 				session.setAttribute("testName", testName);
 				session.setAttribute("testId", testId);
-				manageForm.setTestNo(rs.getInt(3));
+				manageForm.setTestNo(rs.getString(3));
 				manageForm.setTestName(testName);
 				manageForm.setTestId(rs.getInt(2));
 				manageForm.setTotalQuestion(rs.getInt(4));

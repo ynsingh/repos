@@ -84,7 +84,7 @@ public class EachCandidateInfo {
 	     * @param testid
 	     * @return
 	     */
-	    public String getCandidateId(String fileName, int testid)
+	    public String getCandidateId(String fileName, int testid, String instructorTestNo)
 		{
 	    	Locale obj = new Locale("en", "US");
 			ResourceBundle message = ResourceBundle.getBundle("in//ac//dei//mhrd//omr//ApplicationResources", obj);
@@ -103,9 +103,9 @@ public class EachCandidateInfo {
 			else{
 						
 			  testno = (tid.get(0)+ tid.get(1) +tid.get(2) + tid.get(3) + tid.get(4) + tid.get(5));
-			  if(Integer.parseInt(testno)!=testid){
+			  if(!testno.equals(instructorTestNo)){
 				  LogEntry.insert_Log(testid, new File(fileName).getName(), message.getString("code.E107"), message.getString("msg.E107"));
-	             	log.info("error in roll no"+message.getString("msg.E107"));
+	             	log.info("error in test no"+message.getString("msg.E107"));
 	  		 }
 			}
 			

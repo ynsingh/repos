@@ -59,6 +59,141 @@
                        org.apache.commons.validator.Validator,
                        javax.servlet.http.HttpServletRequest"
                   msg="errors.invalidQues"/>
+                  
+                  
+    <validator name="existQno"
+            classname="in.ac.dei.mhrd.omr.OMRValidation"
+               method="validateExistQno"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionMessages,
+                       org.apache.commons.validator.Validator,
+                       javax.servlet.http.HttpServletRequest"
+                  msg="errors.exist">
+                  <javascript><![CDATA[
+        function validateExistQno(form) {
+            var bValid = true;
+            var focusField = null;
+            var i = 0;
+            var fields = new Array();
+             var oExistQno = eval('new ' + jcv_retrieveFormName(form) +  '_existQno()');
+            for (x in oExistQno) {
+                var field = form[oExistQno[x][0]];
+           
+                if (field.type == 'text' ||
+                    field.type == 'textarea' ||
+                    field.type == 'select-one' ||
+                    field.type == 'radio' ||
+                    field.type == 'password' ||
+                    field.type == 'hidden') {
+           
+                    var value;
+                    // get field's value
+                                          value = field.value;
+                       if (value=="true") {
+                        fields[i++] = oExistQno[x][1];
+                        bValid = false;
+                    }
+                }
+            }
+           
+            if (fields.length > 0) {
+                alert(fields.join('\n'));
+            }
+            return bValid;
+        }]]></javascript>
+                   </validator>
+         
+         <validator name="totalQnoExist"
+            classname="in.ac.dei.mhrd.omr.OMRValidation"
+               method="validateTotalQnoExist"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionMessages,
+                       org.apache.commons.validator.Validator,
+                       javax.servlet.http.HttpServletRequest"
+                  msg="errors.invalid">
+                  <javascript><![CDATA[
+        function validateTotalQnoExist(form) {
+            var bValid = true;
+            var focusField = null;
+            var i = 0;
+            var fields = new Array();
+             var oTotalQnoExist = eval('new ' + jcv_retrieveFormName(form) +  '_totalQnoExist()');
+            for (x in oTotalQnoExist) {
+                var field = form[oTotalQnoExist[x][0]];
+           
+                if (field.type == 'text' ||
+                    field.type == 'textarea' ||
+                    field.type == 'select-one' ||
+                    field.type == 'radio' ||
+                    field.type == 'password' ||
+                    field.type == 'hidden') {
+           
+                    var value;
+                    // get field's value
+                                          value = field.value;
+                       if (value=="false") {
+                        fields[i++] = oTotalQnoExist[x][1];
+                        bValid = false;
+                    }
+                }
+            }
+           
+            if (fields.length > 0) {
+                alert(fields.join('\n'));
+            }
+            return bValid;
+        }]]></javascript>
+                   </validator>
+                  
+                  
+                  
+    <validator name="hiddenQno"
+            classname="in.ac.dei.mhrd.omr.OMRValidation"
+               method="validateHiddenQno"
+         methodParams="java.lang.Object,
+                       org.apache.commons.validator.ValidatorAction,
+                       org.apache.commons.validator.Field,
+                       org.apache.struts.action.ActionMessages,
+                       org.apache.commons.validator.Validator,
+                       javax.servlet.http.HttpServletRequest"
+                  msg="errors.invalid">
+                  <javascript><![CDATA[
+        function validateHiddenQno(form) {
+            var bValid = true;
+            var focusField = null;
+            var i = 0;
+            var fields = new Array();
+             var oHiddenQno = eval('new ' + jcv_retrieveFormName(form) +  '_hiddenQno()');
+            for (x in oHiddenQno) {
+                var field = form[oHiddenQno[x][0]];
+           
+                if (field.type == 'text' ||
+                    field.type == 'textarea' ||
+                    field.type == 'select-one' ||
+                    field.type == 'radio' ||
+                    field.type == 'password' ||
+                    field.type == 'hidden') {
+           
+                    var value;
+                    // get field's value
+                                          value = field.value;
+                       if (value=="false") {
+                        fields[i++] = oHiddenQno[x][1];
+                        bValid = false;
+                    }
+                }
+            }
+           
+            if (fields.length > 0) {
+                alert(fields.join('\n'));
+            }
+            return bValid;
+        }]]></javascript>
+                   </validator>
   
   <validator name="currentDate"
             classname="in.ac.dei.mhrd.omr.OMRValidation"
@@ -93,6 +228,57 @@
                        org.apache.commons.validator.Validator,
                        javax.servlet.http.HttpServletRequest"
                   msg="errors.resultLastDate">
+                    <javascript><![CDATA[
+                  
+  function validateResultDisplayPeriod(form) {
+            var bValid = true;
+            var focusField = null;
+            var i = 0;
+            var fields = new Array();
+
+             var oResultDisplayPeriod = eval('new ' + jcv_retrieveFormName(form) +  '_resultDisplayPeriod()');
+
+            for (x in oResultDisplayPeriod) {
+                var field = form[oResultDisplayPeriod[x][0]];
+                var secondField = form[oResultDisplayPeriod[x][2]("lastResultDate1")];
+           
+                if (field.type == 'text' ||
+                    field.type == 'textarea' ||
+                    field.type == 'select-one' ||
+                    field.type == 'radio' ||
+                    field.type == 'password') {
+           
+                    var value;
+                    var secondValue;
+                    // get field's value
+                    if (field.type == "select-one") {
+                        var si = field.selectedIndex;
+                        value = field.options[si].value;
+                        secondValue = secondField.options[si].value;
+                    } else {
+                        value = field.value;
+                        secondValue = secondField.value;
+                    }
+              
+                    if (value > secondValue) {
+                   
+                        if (i == 0) {
+                            focusField = field;
+                        }
+                        fields[i++] = oResultDisplayPeriod[x][1];
+                        bValid = false;
+                    }
+                }
+            }
+           
+            if (fields.length > 0) {
+                focusField.focus();
+                alert(fields.join('\n'));
+            }
+            return bValid;
+}]]></javascript>
+         	
+ 
                   </validator>   
    <validator name="wrongQuesNo"
             classname="in.ac.dei.mhrd.omr.OMRValidation"
@@ -164,8 +350,42 @@
                        org.apache.commons.validator.Validator,
                        javax.servlet.http.HttpServletRequest"
                   msg="errors.responseSheetformat"> 
-                    
-            </validator>  
+                  <javascript><![CDATA[
+            function validateResponseSheet(form) {
+            var bValid = true;
+            var focusField = null;
+            var i = 0;
+            var fields = new Array();
+             var oResponseSheet = eval('new ' + jcv_retrieveFormName(form) +  '_responseSheet()');
+            for (x in oResponseSheet) {
+                var field = form[oResponseSheet[x][0]];
+                if (field.type == 'text' ||
+                    field.type == 'textarea' ||
+                    field.type == 'select-one' ||
+                    field.type == 'radio' ||
+                    field.type == 'password' ||
+                    field.type == 'hidden' ||
+                    field.type == 'file') {
+           
+                    var value;
+                    // get field's value
+                                          value = field.value;
+                                          var result = value.search(/(.ZIP)+/ig);
+                       if (result== -1) {
+                        fields[i++] = oResponseSheet[x][1];
+                        bValid = false;
+                    }
+                }
+            }
+           
+            if (fields.length > 0) {
+                alert(fields.join('\n'));
+            }
+            return bValid;
+        }]]></javascript>
+                  
+                  
+   </validator>  
    
    <validator name="maxQues"
             classname="in.ac.dei.mhrd.omr.OMRValidation"

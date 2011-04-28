@@ -44,9 +44,12 @@
 	ArrayList<String> ansList=null;
 	String test="0";
 	int i=0, j=0;
+	HttpSession hs = null;
 	 %>
 	<%
-	if(!((String)request.getAttribute("correctSheetMsg")==" "))
+	try{
+	hs = request.getSession();
+	if(!((String)hs.getAttribute("correctSheetMsg")).equals("NA"))
 	{
 	%>
 	<%=(String)request.getAttribute("correctSheetMsg")%>
@@ -80,10 +83,13 @@
 </td>			</tr>
 			</table><br/>
 			<center>
-			<font face="Arial" color="#000040"><bean:message key="label.wantSubmit"/></font> <html:submit value="Yes"/><html:button value="No" property="btn" onclick="history.back();"/>
+			<font face="Arial" color="#000040"><bean:message key="label.wantSubmit"/></font> <html:submit value="Yes"/><html:cancel value="No"/>
 		</center>
 		</html:form>
-		<%} %>
+		<%} }
+		catch(Exception e){
+		System.out.println("error in confirm ans");
+		}%>
 	</body>
 </html>
 

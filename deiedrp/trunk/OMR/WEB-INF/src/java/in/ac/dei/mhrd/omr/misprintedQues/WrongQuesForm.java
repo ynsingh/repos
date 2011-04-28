@@ -54,7 +54,8 @@ public class WrongQuesForm extends ValidatorForm {
 	/*
 	 * Generated fields
 	 */
-	
+	private String totalQuesExist;
+	private String wrongQuesNo;
 	private String fromDate;
 	
 	private String toDate;
@@ -143,5 +144,21 @@ public class WrongQuesForm extends ValidatorForm {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getWrongQuesNo() {
+		return wrongQuesNo;
+	}
+
+	public void setWrongQuesNo(String wrongQuesNo) {
+		this.wrongQuesNo = wrongQuesNo;
+	}
+
+	public String getTotalQuesExist() {
+		return totalQuesExist;
+	}
+
+	public void setTotalQuesExist(String totalQuesExist) {
+		this.totalQuesExist = totalQuesExist;
 	}
 }

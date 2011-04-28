@@ -8,6 +8,14 @@
 	
 	}
 	
+	function isInteger(s){
+	var i;
+	for(i=0;i<s.length; i++){
+	var c = s.charAt(i);
+	if(((c<"0") || (c>"9"))) return false;
+	}
+	return true;
+	}
 	
 	function verify()
 			{
@@ -38,8 +46,17 @@ if(totalSec > 0){
             }
                if(c==1)
                		{
-               		 if(parseInt(cellval)<1 || cellval==""){
+               		 if(cellval==""){
                		 alert("Please enter the number of questions in section "+r);
+               		 return false;
+               		 }
+               		 
+               		 if(!isInteger(cellval)){
+               		 alert('Question number must be an integer in section ' +r);
+               		 return false;
+               		 }
+               		 if(parseInt(cellval)<1){
+               		 alert("Invalid question number in section "+r);
                		 return false;
                		 }
                		totalQues=parseInt(totalQues)+parseInt(cellval);
@@ -48,7 +65,13 @@ if(totalSec > 0){
                	{
                	if(cellval==""){
                	alert("Please Enter the marks for section : " + r);
-               	}else
+               	return false;
+               	}
+              
+               	if(isNaN(cellval)){
+               	alert('Marks should be numeric in section ' + r);
+               	return false;
+               	}
                	if(parseFloat(cellval)>10 || parseFloat(cellval)<0.25)
                		{
                		alert("Marks of each question cannot be greater than 10 and less than 0.25 for section : "+r);
@@ -58,6 +81,14 @@ if(totalSec > 0){
                	}
                	if(c==3)
                		{
+               		if(cellval==""){
+               	alert("Please Enter the Negative marks for section : " + r);
+               	return false;
+               	}
+               	if(isNaN(cellval)){
+               	alert('Negative Marks should be numeric in section ' + r);
+               	return false;
+               	}
                	if(parseFloat(cellval)>10 || parseFloat(cellval)<(-10))
                			{
                			alert("Negative marks can't be greater than 10 for Section No:"+r);

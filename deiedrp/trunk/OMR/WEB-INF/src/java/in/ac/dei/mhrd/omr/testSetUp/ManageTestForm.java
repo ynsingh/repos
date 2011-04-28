@@ -59,7 +59,7 @@ public class ManageTestForm extends ActionForm {
 	private int totalSection;
 	private int testId;
 	private Date date;
-	int testNo;
+	String testNo;
 	boolean change;
 	private ArrayList<SectionDetail> sectionDetail;
 	private String fromDate;
@@ -138,11 +138,11 @@ public class ManageTestForm extends ActionForm {
 		this.date = date;
 	}
 
-	public int getTestNo() {
+	public String getTestNo() {
 		return testNo;
 	}
 
-	public void setTestNo(int testNo) {
+	public void setTestNo(String testNo) {
 		this.testNo = testNo;
 	}
 

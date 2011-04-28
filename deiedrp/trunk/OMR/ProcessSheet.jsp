@@ -38,18 +38,19 @@
 <html>
 	<head>
 		<title>Online OMR Evaluation System</title>
-		
+
 		<script src='dwr/util.js'></script>
-	<script src='dwr/engine.js'></script>
-	<script src='dwr/interface/ComboBoxOptions.js'></script>
-	<script type="text/javascript" src="javascript/validatecomboBox.js"></script>
-	<script type="text/javascript">
+		<script src='dwr/engine.js'></script>
+		<script src='dwr/interface/ComboBoxOptions.js'></script>
+		<script type="text/javascript" src="javascript/validatecomboBox.js"></script>
+		<script type="text/javascript">
 	
 	function changeBody()
 	{
 	 var blurDiv = document.createElement("div");
 	 blurDiv.id = "blurDiv";
 	 blurDiv.style.cssText = "position:absolute; top:0; right:0; width:" + screen.width + "px; height:" + screen.height + "px; background-color: #000000; opacity:0.5; filter:alpha(opacity=50)";
+	
 	document.getElementsByTagName("body")[0].appendChild(blurDiv);	
 	}
 	
@@ -60,7 +61,7 @@
 		var to = dwr.util.getValue("toDate");
 		//alert("inside time from : " + from); 
 				//alert("inside time to : " + to); 
-	if(!(from=="--Select--" || to=="--Select--")){	
+	if(!(from=="--Select--" || to=="--Select--" || from=="0" || to=="0")){	
 	ComboBoxOptions.checkTimePeriod(from, to, function(data)
 	{
 	 if(!data){
@@ -76,7 +77,11 @@
 	}
 	);
 	
-	}	
+	}	else{
+	dwr.util.removeAllOptions(document.getElementsByName("testName")[0]);
+	     var selectTestName = dwr.util.byId("testName");
+	     selectTestName.options[0] = new Option('--Select--', 0);
+	}
 	}
 	
 	function populateName(){
@@ -115,34 +120,111 @@
 	}
 	
 	</script>
-		
-	
-		
+
+
+
 	</head>
-	<body  onload="populateDate();">
-	<div>
-    <jsp:include page="header.jsp"></jsp:include>
-	</div>
-	<hr width="100%">
-				<jsp:include page="Menu.jsp"></jsp:include>
-				<html:form action="/processSheet" onsubmit="changeBody();">	
-				
-				<font face="Arial" color="#000040"><STRONG><bean:message key="msg.Process"/></STRONG></font>			
-					<center> 
-						<table> 
-						<tr><td><font face="Arial" color="#000040"><bean:message key="label.testDate"/> </font></td><td><font face="Arial" color="#000040"> <bean:message key="label.from"/> </font><html:select indexed="fromDate" property="fromDate"  onchange="validateTimePeriod();"><html:option value="0"><bean:message key="msg.select"/> </html:option></html:select><font color="red" size="2"><bean:message key="required.symbol"/></font> <html:errors property="fromDate" /></td>
-		
-		<td><font face="Arial" color="#000040"><bean:message key="label.to"/>: </font><html:select indexed="toDate" property="toDate" onchange="validateTimePeriod();"><html:option value="0"><bean:message key="msg.select"/> </html:option></html:select><font color="red" size="2"><bean:message key="required.symbol"/></font>   <html:errors property="toDate" /></td></tr>
-			<tr>
-			<td><font face="Arial" color="#000040"> <bean:message key="label.testname"/>  </font></td><td><select id="testName" name="testName">
-			<option value="0"><bean:message key="msg.select"/> </option></select><font color="red" size="2"><bean:message key="required.symbol"/></font> 
-			<html:errors property="testName"/></td></tr>		
-	
-			
-			<tr><TD><html:submit onclick="return checkComboBoxValue();" /></TD>
-<td><html:cancel/></td></tr></table>
-					</center> 
-				</html:form> 
+	<body onload="populateDate();">
+		 <table width="100%">
+  <tr><td>  <jsp:include page="header.jsp"></jsp:include></td></tr>
+  <tr><td>	<hr width="100%"> </td></tr>
+ <tr><td> <jsp:include page="Menu.jsp"></jsp:include></td></tr>
+</table>
+
+		<html:form action="/processSheet" onsubmit="changeBody();">
+
+			<font face="Arial" color="#000040"><STRONG><bean:message
+						key="msg.Process" />
+			</STRONG>
+			</font>
+			<center>
+				<table>
+					<tr>
+						<td>
+							<font face="Arial" color="#000040"><bean:message
+									key="label.testDate" /> </font>
+						</td>
+						<td>
+							<font face="Arial" color="#000040"> <bean:message
+									key="label.from" /> </font>
+									&nbsp;&nbsp;<font
+								face="Arial" color="#000040"><strong>:</strong></font>
+									</td>
+									<td>
+							<html:select indexed="fromDate" property="fromDate" style="width:150px"
+								onchange="validateTimePeriod();">
+								<html:option value="0">
+									<bean:message key="msg.select" />
+								</html:option>
+							</html:select>
+							<font color="red" size="2"><bean:message
+									key="required.symbol" />
+							</font>
+							<html:errors property="fromDate" />
+						</td>
+
+						<td>
+							<font face="Arial" color="#000040"><bean:message
+									key="label.to" /> </font>
+									&nbsp;&nbsp;&nbsp;<font
+								face="Arial" color="#000040"><strong>:</strong></font>
+									</td>
+									<td>
+							<html:select indexed="toDate" property="toDate"
+								onchange="validateTimePeriod();">
+								<html:option value="0">
+									<bean:message key="msg.select" />
+								</html:option>
+							</html:select>
+							
+							<font color="red" size="2"><bean:message
+									key="required.symbol" />
+							</font>
+							<html:errors property="toDate" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<font face="Arial" color="#000040"> <bean:message
+									key="label.testname" /> </font>
+						</td>
+						<td>
+							<font color="#ffffff"><bean:message key="label.from" />
+							</font>&nbsp;&nbsp;&nbsp;<font
+								face="Arial" color="#000040"><strong>:</strong></font>
+						</td>
+						<td>
+							<select id="testName" name="testName" style="width: 150px">
+								<option value="0">
+									<bean:message key="msg.select" />
+								</option>
+							</select>
+							<font color="red" size="2"><bean:message
+									key="required.symbol" />
+							</font>
+							<html:errors property="testName" />
+						</td>
+					</tr>
+
+
+					<tr>
+					<td>
+							<font color="#ffffff"><bean:message key="label.from" />
+							</font>
+						</td>
+						<td>
+							<font color="#ffffff"><bean:message key="label.from" />
+							</font>
+						</td>
+						<TD>
+							<html:submit onclick="return checkComboBoxValue();" />
+						
+							<html:cancel />
+						</td>
+					</tr>
+				</table>
+			</center>
+		</html:form>
 	</body>
 </html>
 

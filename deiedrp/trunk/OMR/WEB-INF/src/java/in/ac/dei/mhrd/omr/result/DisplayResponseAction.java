@@ -109,10 +109,11 @@ public class DisplayResponseAction extends Action {
 		    qry="select distinct RollNo from response where TestId="+testid+" AND FileName='"+sheetName.getName()+"'";
 		    PreparedStatement ps = con.prepareStatement(qry);
 		       rsResponse=ps.executeQuery();
-		       rsResponse.next();      
+		       while(rsResponse.next()){      
 		       rollno=rsResponse.getInt(1);
+		       }
 		       request.setAttribute("rollNo", rollno);
-		     
+
 		       ps=con.prepareStatement("select Ques_no,answer from correctans where TestId=? order by Ques_no");
 		       ps.setInt(1, testid);
 		       rsCorrectResponse=ps.executeQuery();
@@ -136,8 +137,13 @@ public class DisplayResponseAction extends Action {
 				ps.setInt(1, testid);
 				ps.setString(2, sheetName.getName());
 				rsCorrectResponse=ps.executeQuery();
+				System.out.println("Anshul 2");
 				rsCorrectResponse.last();
+				System.out.println("Anshul 2");
+
 				row=rsCorrectResponse.getRow();
+				System.out.println("Anshul 2");
+
 				responseAnswer=new byte[row];
 				rsCorrectResponse.beforeFirst();
 					while(rsCorrectResponse.next())

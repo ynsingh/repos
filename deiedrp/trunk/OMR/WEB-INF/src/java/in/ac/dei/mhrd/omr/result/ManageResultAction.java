@@ -46,9 +46,12 @@ import in.ac.dei.mhrd.omr.img.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.Action;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.util.MessageResources;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -88,10 +91,15 @@ public class ManageResultAction extends Action {
 																	// Auto-generated
 																	// method
 																	// stub
+		System.out.println("dcfds");
 		int testid = SelectTestId.getTestId(resultSchedule.getTestName());
 		System.out.println("from : " + resultSchedule.getTestName());
 		Connection con = null;
 		PreparedStatement psUpdateResultPeriod = null;
+		//ActionErrors errors = new ActionErrors();
+		//ActionMessage msg = new ActionMessage("errors.resultLastDate");
+		//MessageResources msgResrc = getResources(request);
+		//errors = new ActionMessage(errors.resultLastDate);
 		Locale obj = new Locale("en", "US");
 		ResourceBundle message = ResourceBundle.getBundle(
 				"in//ac//dei//mhrd//omr//ApplicationResources", obj);
@@ -110,6 +118,16 @@ public class ManageResultAction extends Action {
 					.getResultFrom());
 			java.util.Date ResultDisplayedTo = sdf.parse(resultSchedule
 					.getResultTo());
+			java.util.Date ResultDisplayedLAst = sdf.parse(resultSchedule.getLastResultDate());
+                System.out.println("jhds " + ResultDisplayedTo.compareTo(ResultDisplayedLAst));
+//			if(ResultDisplayedTo.compareTo(ResultDisplayedLAst)>0){
+//				errors.add("error", new ActionMessage("errors.resultLastDate", "anshul", "gfg"));
+//				saveErrors(request, errors);
+//				
+//				return mapping.findForward("samePage");
+//				
+//			}
+			
 			java.sql.Timestamp timest = new java.sql.Timestamp(
 					ResultDisplayedFrom.getTime());
 

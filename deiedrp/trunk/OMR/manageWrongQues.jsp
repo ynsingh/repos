@@ -38,13 +38,13 @@
 <html>
 	<head>
 		<title>Online OMR Evaluation System</title>
-		
+
 		<script src='dwr/util.js'></script>
-	<script src='dwr/engine.js'></script>
-	<script src='dwr/interface/ComboBoxOptions.js'></script>
-	<script type="text/javascript" src="javascript/validatecomboBox.js"></script>
-	
-	<script type="text/javascript">
+		<script src='dwr/engine.js'></script>
+		<script src='dwr/interface/ComboBoxOptions.js'></script>
+		<script type="text/javascript" src="javascript/validatecomboBox.js"></script>
+
+		<script type="text/javascript">
 	
 	
 	function validateTimePeriod(){
@@ -108,48 +108,89 @@
 	}
 	
 	</script>
-		
-	
-		
+
+
+
 	</head>
-	<body  onload="populateDate();"><br>
-	<div>
-    <jsp:include page="header.jsp"></jsp:include>
-	</div>
-	<hr width="100%">
-				<jsp:include page="Menu.jsp"></jsp:include>
-				<html:form action="/manageWrongQues">	
-				
-				<font face="Arial" color="#000040"><STRONG><bean:message key="msg.WrongQues"/></STRONG></font>			
-					<center> 
-						<table> 
-						
-						<tr><td>  <font face="Arial" color="#000040"><bean:message key="label.testDate"/> </font></td><td> <font face="Arial" color="#000040"> <bean:message key="label.from"/> &nbsp;<strong>:</strong>&nbsp; </font>
-						<td> <html:select indexed="fromDate" property="fromDate" style="width: 100px" onchange="validateTimePeriod();"/><html:errors property="fromDate"/></td>
-						<td> <font face="Arial" color="#000040">  <bean:message key="label.to"/>&nbsp;<strong>:</strong>&nbsp;</font> <td><html:select indexed="toDate" property="toDate" style="width: 100px" onchange="validateTimePeriod();"/><html:errors property="toDate" /></td></tr>
-						<tr> 
-								<td> 
-								<font face="Arial" color="#000040"><bean:message key="label.testname"/>	</font> 
-								<td> <font color="#ffffff"><bean:message key="label.from"/>&nbsp;&nbsp;&nbsp;<font face="Arial" color="#000040"><strong>:</strong>&nbsp;</font> </td>
-								<td> 
-									<select id="testName" name="testName"> 
-                                      <option value="0"><bean:message key="msg.select"/> </option>
-									</select> 
-								</td> 
-							</tr> 
-							<tr>
-							<td> <font color="#ffffff"><bean:message key="label.from"/></font></td>
-							<td> <font color="#ffffff"><bean:message key="label.from"/></font></td>
-							<td><html:submit onclick="return checkComboBoxValue();" ></html:submit>&nbsp;&nbsp;
-							<html:cancel value="Cancel"></html:cancel></td>
-                             </tr>
-						</table> 
- 
-						 
-						&nbsp; 
- 
-					</center> 
-				</html:form> 
+	<body onload="populateDate();">
+		 <table width="100%">
+  <tr><td>  <jsp:include page="header.jsp"></jsp:include></td></tr>
+  <tr><td>	<hr width="100%"> </td></tr>
+ <tr><td> <jsp:include page="Menu.jsp"></jsp:include></td></tr>
+</table>
+
+		<html:form action="/manageWrongQues">
+
+			<font face="Arial" color="#000040"><STRONG><bean:message
+						key="msg.WrongQues" />
+			</STRONG>
+			</font>
+			<center>
+				<table>
+
+					<tr>
+						<td>
+							<font face="Arial" color="#000040"><bean:message
+									key="label.testDate" /> </font>
+						</td>
+						<td>
+							<font face="Arial" color="#000040"> <bean:message
+									key="label.from" /> &nbsp;<strong>:</strong>&nbsp; </font>
+						</td>
+
+						<td>
+							<html:select indexed="fromDate" property="fromDate"
+								style="width: 150px" onchange="validateTimePeriod();" />
+							<html:errors property="fromDate" />
+						</td>
+						<td>
+							<font face="Arial" color="#000040"> <bean:message
+									key="label.to" />&nbsp;<strong>:</strong>&nbsp;</font>
+						<td>
+							<html:select indexed="toDate" 
+								property="toDate" style="width: 150px"
+								onchange="validateTimePeriod();" />
+							<html:errors property="toDate" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<font face="Arial" color="#000040"><bean:message
+									key="label.testname" /> </font>
+						<td>
+							<font color="#ffffff"><bean:message key="label.from" />&nbsp;&nbsp;&nbsp;<font
+								face="Arial" color="#000040"><strong>:</strong>&nbsp;</font>
+						</td>
+						<td>
+							<select id="testName" name="testName" style="width: 150px">
+								<option value="0">
+									<bean:message key="msg.select" />
+								</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<font color="#ffffff"><bean:message key="label.from" />
+							</font>
+						</td>
+						<td>
+							<font color="#ffffff"><bean:message key="label.from" />
+							</font>
+						</td>
+						<td>
+							<html:submit onclick="return checkComboBoxValue();"></html:submit>
+							&nbsp;&nbsp;
+							<html:cancel value="Cancel"></html:cancel>
+						</td>
+					</tr>
+				</table>
+
+
+				&nbsp;
+
+			</center>
+		</html:form>
 	</body>
 </html>
 

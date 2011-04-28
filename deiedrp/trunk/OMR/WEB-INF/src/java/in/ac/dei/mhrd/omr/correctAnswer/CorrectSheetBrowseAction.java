@@ -44,6 +44,7 @@ import in.ac.dei.mhrd.omr.img.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts.action.Action;
@@ -91,7 +92,10 @@ public class CorrectSheetBrowseAction extends Action {
 																					// Auto-generated
 																					// method
 																					// stub
-
+        HttpSession hs = request.getSession(false);
+        if (isCancelled(request)) {
+			return mapping.findForward("fillAnswer");
+		}
 		int testid = SelectTestId.getTestId(correctSheetBrowse.getTest());
 		byte[] correctAns;
 		ArrayList<String> ansList;
@@ -124,7 +128,7 @@ public class CorrectSheetBrowseAction extends Action {
 				}
 			}
 
-			request.setAttribute("correctSheetMsg", " ");
+			hs.setAttribute("correctSheetMsg", "NA");
 
 			con = Connect.prepareConnection();
 			// get total number of questions in the test
@@ -144,16 +148,25 @@ public class CorrectSheetBrowseAction extends Action {
 			 * this method returns the arraylist containg 
 			 * the correct answers in user readable form
 			 */
+			if(!RotateImg.flag){
 			ansList = correctImg.convertToString(correctAns);
 
+			System.out.println("anslist size ");
 			request.setAttribute("confirmAnsList", ansList);
 			request.setAttribute("correctAnsId", String.valueOf(testid));
 			request.setAttribute("path", filePath);
 			request.setAttribute("Ques", rs.getString(1));
-			fileToCreate.delete();
+			}else{
+				hs.setAttribute("correctSheetMsg", "Improper Image format. Error in printing or scanning.");
+			RotateImg.flag=false;
+			return mapping.getInputForward();
+			}
 		} catch (Exception e) {
 			log.error("Error in correct Sheet browse action " + e);
 		} finally {
+		
+			fileToCreate.delete();
+
 			Connect.freeConnection(con);
 		}
 		return mapping.findForward("confirmAns1");
