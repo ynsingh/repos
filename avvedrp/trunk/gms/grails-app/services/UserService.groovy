@@ -363,6 +363,17 @@ public void addRolesUser(def person,def params) {
 		return userId
 	}
 	
+	/**
+	 * Getting user by email.
+	 */
+	public Integer getUserByEmail(String email){
+		Integer userEmailId = null;
+		def person  = Person.find("from Person U where U.email='"+email+"'");
+		if(person)
+			userEmailId = person.id
+		return userEmailId
+	}
+	
 	/*
 	 * Function to get user Role Id using User Id.
 	 */
@@ -425,9 +436,13 @@ public void addRolesUser(def person,def params) {
 	 */
 	 public deleteRole(def authorityInstance)
 	{
+		if(authorityInstance)
+		{
 		 authorityInstance.activeYesNo="N"
-		 def authorityInstanceDelete = updateRole(authorityInstance)
-		 return authorityInstanceDelete
+			 authorityInstance.save()
+		 // def authorityInstanceDelete = updateRole(authorityInstance)
+		 return authorityInstance
+		}
 	}
 	/*
 	 * Update Role

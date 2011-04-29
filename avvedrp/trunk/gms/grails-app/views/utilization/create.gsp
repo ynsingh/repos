@@ -6,6 +6,7 @@
     </head>
     <body>
     <div class="wrapper">
+    <g:subMenuList/> 
         <div class="tablewrapper">
         	<div class="body">
             	<h1><g:message code="default.CreateUtilization.head"/></h1>

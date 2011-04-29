@@ -191,4 +191,28 @@ class ProposalApprovalAuthorityMapService {
        	def proposalApprovalAuthorityMapInstance = ProposalApprovalAuthorityMap.find("from ProposalApprovalAuthorityMap PAM where PAM.proposalType = '"+proposalType+"' and PAM.proposalId="+proposalId+" and PAM.approvalAuthority="+approvalauthorityId)
        	return proposalApprovalAuthorityMapInstance
        }
+       /*
+        * method to get proposal approval authority map by proposalid,approvalauthority and type
+        */
+       public getProposalApprovalAuthorityMapById(def id)
+       {
+    	def proposalApprovalAuthorityMapInstance = ProposalApprovalAuthorityMap.get(id)
+    	return proposalApprovalAuthorityMapInstance
+       }
+       /*
+        * Get proposal approval authority map List by Approvalauthority
+        */
+       public getProposalApprovalAuthorityMapByApprovalauthority(def approvalAuthorityId)
+       {
+    	   def proposalApprovalAuthorityMapInstance = ProposalApprovalAuthorityMap.findAll("from ProposalApprovalAuthorityMap PAM where PAM.approvalAuthority.id =" +approvalAuthorityId+ "and PAM.proposalType = 'ExpenseRequest'")
+   		   return proposalApprovalAuthorityMapInstance
+       }
+       /*
+        * Get proposal Approval Authority Map By Id and Expense Request
+        */
+       public getProposalAuthorityMapById(def proposalApprovalAuthorityMapId)
+       {
+    	   def proposalApprovalAuthorityMapInstance = ProposalApprovalAuthorityMap.find("from ProposalApprovalAuthorityMap PAM where PAM.id =" + proposalApprovalAuthorityMapId + "and PAM.proposalType = 'ExpenseRequest'")
+       	   return proposalApprovalAuthorityMapInstance
+       }
 }

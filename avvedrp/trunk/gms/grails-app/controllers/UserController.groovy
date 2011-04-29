@@ -125,7 +125,6 @@ class UserController extends GmsController {
 	def edit = {
 
 		def userService = new UserService()
-		println"userParams"+params
 		def person = userService.getUserById(new Integer(params.id))
 		def party = userService.getParty(person)
 		def grantAllocationInstance = new GrantAllocation();
@@ -151,14 +150,18 @@ class UserController extends GmsController {
 		EmailValidator emailValidator = EmailValidator.getInstance()
 		if (emailValidator.isValid(params.email))
 		{
-
 		def userService = new UserService()
-		
-		
 		def ctx = AH.application.mainContext
 		def springSecurityService=ctx.springSecurityService
-		
-
+		Integer userId  = userService.getUserByUserName(params.email)
+		Integer userEmailId = userService.getUserByEmail(params.email)
+         if((userId && userId != new Integer(params.id)) || (userEmailId && userEmailId != new Integer(params.id)))
+        {
+               	flash.message = "${message(code: 'default.UserNamealreadyexists.label')}"
+        		redirect action: edit, id: params.id
+        }
+        else
+        {
 		long version = params.version.toLong()
 		if (person.version > version) {
 			person.errors.rejectValue 'version', "person.optimistic.locking.failure",
@@ -166,9 +169,7 @@ class UserController extends GmsController {
 				render view: 'edit', model: buildPersonModel(person)
 			return
 		}
-		println "+++++++++++++++++++++++++params++++++++++++++++++++++++++++"+ params
-		println "person.password = "+ person.password
-		println "params.passwd = "+ params.password
+		
 		//def oldPassword = person.password
 		person.properties = params
 		//if (!params.password.equals(oldPassword)) {
@@ -185,12 +186,12 @@ class UserController extends GmsController {
 				redirect action:list,id:params.id
 			}
 		}
+		}
 		
 		else
 		{
 			flash.message = "${message(code: 'default.EntervalidEmailAddress.label')}"
 				def authorityInstance = userService.getActiveRoles() 
-				println"authorityInstance"+authorityInstance
 				redirect action: edit, id: person.id
 		}
 		
@@ -238,8 +239,6 @@ class UserController extends GmsController {
 		person.password=params.password
 		person.password = springSecurityService.encodePassword(params.password)
 		person.enabled=false
-		println "paswwod"+params.password
-		println params.get("party.id")
 		if(params.get("party.id")==null)
 			params.put("party.id",getUserPartyID())
 	    Integer personId = userService.saveUser(person,params)
@@ -252,7 +251,7 @@ class UserController extends GmsController {
 	        mailMessage+="\n \n LoginName    : "+params.email;
 	        mailMessage+="\n Password     : "+params.password;
 	        mailMessage+="\n \n \n To activate your account,click on the following link   \t:"+urlPath+personId+" \n";
-	    	def emailId = notificationsEmailsService.sendMessage(params.email,mailMessage)
+	    	def emailId = notificationsEmailsService.sendMessage(params.email,mailMessage,"text/plain")
 	    	flash.message = "${message(code: 'default.UserCreated.label')}"
 			redirect action: list, id: personId
 		}
@@ -274,7 +273,6 @@ class UserController extends GmsController {
 	 * Person update password action.
 	 */
 	def updatePassword={
-		println "params======"+params
 		def userService = new UserService()
 		def ctx = AH.application.mainContext
 		def springSecurityService=ctx.springSecurityService
@@ -369,8 +367,7 @@ class UserController extends GmsController {
 		
 	}
 	def saveNewUser = {
-			println "+++++++++++++++++++++++++params++++++++++++++++++++++++++++"+ params
-			println "+++++=save new user+++++++++"
+			
 			EmailValidator emailValidator = EmailValidator.getInstance()
 			if (emailValidator.isValid(params.email))
 			{
@@ -383,9 +380,9 @@ class UserController extends GmsController {
 			def newParty = new Party()
 			def partyInstance = new Party()
 			person.properties = params
-			println "+++++++++++++++++++++++++params++++++++++++++++++++++++++++"+ params
+			
 			user.username= params.email
-			println "+++++++++++++++++++++++++params.user.username++++++++++++++++++++++++++++"+ params
+			
 			user.userRealName = params.userRealName
 			user.userSurName = params.userSurName
 			user.password = params.password
@@ -393,7 +390,7 @@ class UserController extends GmsController {
 			user.password = springSecurityService.encodePassword(params.password)
 			user.enabled=false
 			Integer userId  = userService.getUserByUserName(params.email)
-			println "+++++++++++++++++++++++++userInst++++++++++++++++++++++++++++"+ userId
+			
 			if(userId)
 			{
 				flash.message = "${message(code: 'default.UserNamealreadyexists.label')}"
@@ -401,7 +398,7 @@ class UserController extends GmsController {
 			}
 			else
 			{
-				println "4444444444444before ++++++++++++++"+partyInstance
+				
 		        partyInstance.createdBy="admin"
 		        partyInstance.createdDate = new Date();
 		        partyInstance.modifiedBy="admin"
@@ -413,25 +410,9 @@ class UserController extends GmsController {
 		       
 		        partyInstance.email = ""
 		        partyInstance.phone = ""
-		        println " ++++++++++++++"+partyInstance.code
-		        println " ++++++++++++++"+partyInstance.nameOfTheInstitution
-		        println " ++++++++++++++"+partyInstance.address
-		        println " ++++++++++++++"+partyInstance.phone
-		        println " ++++++++++++++"+partyInstance.email
-		        println " ++++++++++++++"+partyInstance.partyType
-		        println " ++++++++++++++"+partyInstance.activeYesNo
-		        println " ++++++++++++++"+partyInstance.createdBy
-		        println " ++++++++++++++"+partyInstance.createdDate
-		        println " ++++++++++++++"+partyInstance.modifiedBy
-		        println " ++++++++++++++"+partyInstance.modifiedDate
-		              
 		       
-		      
-				println "+++++++++++++++++++++++++before call addParty++++++++++++++++++++++++++++" +partyInstance
-				
-		       		 
 			def party = userService.addParty(partyInstance)
-			println "+++++++++++++++++++++++++after call addParty++++++++++++++++++++++++++++" 
+			 
 			if((partyInstance.saveMode != null) && (partyInstance.saveMode.equals("Duplicate")))
 	       		 {
 	       			flash.message = "${message(code: 'default.InstitutionAlreadyExists.label')}"
@@ -440,75 +421,17 @@ class UserController extends GmsController {
 			else
 			{
 				
-				
-				 println " ++++++++++++++"+user.username
-			        println " ++++++++++++++"+user.password
-			        println " ++++++++++++++"+user.email
-			        println " ++++++++++++++"+user.userRealName
-			        println " ++++++++++++++"+user.userSurName
-			        println " ++++++++++++++"+user.email
-			        println " ++++++++++++++"+user.enabled
-			        println " ++++++++++++++"+user.accountExpired
-			        println " ++++++++++++++"+user.accountLocked
-			        println " ++++++++++++++"+user.passwordExpired
-			        println " user.hasErrors :"+user.hasErrors()
-
 				def userInstance = userService.saveNewUser(user,params)
 				
 				person.user = userInstance
 				person.user.id = userInstance.id;
 				
-				
-				
-		       	println "party user-=-"+party	
 				person.party = party
 				person.party.id = party.id
-				println "+++++++++++++++++++++++++person.party.id++++++++++++++++++++++++++++"+ person.party.id
+				
 				Integer personId = userService.saveNewUserMap(person,params)
 			  
-				//creating accespermission for all roles in new party
-				 def webRootDir
-				if ( GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_PRODUCTION)) 
-				{
-					webRootDir = servletContext.getRealPath("/")+"WEB-INF/grails-app/views/"
-					//folder = webRootDir+"WEB-INF/grails-app/views"
-				}
-		       	if ( GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_DEVELOPMENT)) 
-		       	{
-		       		webRootDir = "grails-app/views/"
-		       		//folder = new File("grails-app/views")
-		       	}
-		       //	def roleId=null
-		       //	def rolePrivilegesService = new RolePrivilegesService()
-	    		//def rolePrivilegesSaveStatus = rolePrivilegesService.saveRolePrivilegesForParty(party,webRootDir,roleId)
-	    		//creating role privileges for each role in the new party starting
-	    		def roleInstance = Authority.findAll("from Authority A")
-	    		def data = []
-	       		for (controller in grailsApplication.controllerClasses) {
-	       			def controllerInfo = [:]
-	       			controllerInfo.controller = controller.logicalPropertyName
-	       			controllerInfo.controllerName = controller.fullName
-	       			List actions = []
-	       			BeanWrapper beanWrapper = PropertyAccessorFactory.forBeanPropertyAccess(controller.newInstance())
-	       			for (pd in beanWrapper.propertyDescriptors) {
-	       				String closureClassName = controller.getPropertyOrStaticPropertyOrFieldValue(pd.name, Closure)?.class?.name
-	       						if (closureClassName) 
-	       							{
-	       							actions << pd.name
-	       								for(authorityInstance in roleInstance)
-	       								{
-	       									def rolePrivilegesInstance=new RolePrivileges()
-	       									rolePrivilegesInstance.controllerName=controller.logicalPropertyName
-	       									rolePrivilegesInstance.actionName=pd.name
-	       									rolePrivilegesInstance.role=authorityInstance
-	       									rolePrivilegesInstance.party=party
-	       									rolePrivilegesInstance.save()
-	       								}
-	       							}
-	       			}
-	       			controllerInfo.actions = actions.sort()
-	       			data << controllerInfo
-	       		}
+				
 		       	//creating role privileges for each role in the new party ending
 			    if(personId != null){
 			    	String urlPath = request.getScheme() + "://" + request.getServerName() +":"+ request.getServerPort() + request.getContextPath()+"/user/userActivation/"
@@ -522,7 +445,7 @@ class UserController extends GmsController {
 			        mailMessage+="\n \n \n To activate your account,click on the following link   \t: "+urlPath+personId+" \n";
 			        mailMessage=mailMessage+" \n\n" 
 			    	mailMessage+=mailFooter
-			        def emailId = notificationsEmailsService.sendMessage(params.email,mailMessage)
+			        def emailId = notificationsEmailsService.sendMessage(params.email,mailMessage,"text/plain")
 					//redirect uri: '/user/newUserConfirm'
 						render(view: "newUserConfirm")
 				}
@@ -543,18 +466,64 @@ class UserController extends GmsController {
 	 * Action to activate a user
 	 */
 	def userActivation = {
-		   
-			def userInstance = userService.getUserById(Integer.parseInt(params.id))
-			if(userInstance.enabled==false)
-			{
-				userInstance.enabled=true
-				userInstance.save()
-				redirect uri: '/user/userConfirmation'
-			}
-			else
-			{
-				redirect(controller:'login',action:'auth')
-			}
+			   
+				def userInstance = userService.getUserById(Integer.parseInt(params.id))
+				if(userInstance.enabled==false)
+				{
+					userInstance.enabled=true
+					userInstance.save()
+					GrailsHttpSession gh=getSession()
+					def userMap=UserMap.find("from UserMap UM where UM.user.id="+params.id);
+					def party=userMap.party
+					//creating accespermission for all roles in new party
+					 def webRootDir
+					if ( GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_PRODUCTION)) 
+					{
+						webRootDir = servletContext.getRealPath("/")+"WEB-INF/grails-app/views/"
+						//folder = webRootDir+"WEB-INF/grails-app/views"
+					}
+			       	if ( GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_DEVELOPMENT)) 
+			       	{
+			       		webRootDir = "grails-app/views/"
+			       		//folder = new File("grails-app/views")
+			       	}
+			       //	def roleId=null
+			       //	def rolePrivilegesService = new RolePrivilegesService()
+		    		//def rolePrivilegesSaveStatus = rolePrivilegesService.saveRolePrivilegesForParty(party,webRootDir,roleId)
+		    		//creating role privileges for each role in the new party starting
+		    		def roleInstance = Authority.findAll("from Authority A")
+		    		def data = []
+		       		for (controller in grailsApplication.controllerClasses) {
+		       			def controllerInfo = [:]
+		       			controllerInfo.controller = controller.logicalPropertyName
+		       			controllerInfo.controllerName = controller.fullName
+		       			List actions = []
+		       			BeanWrapper beanWrapper = PropertyAccessorFactory.forBeanPropertyAccess(controller.newInstance())
+		       			for (pd in beanWrapper.propertyDescriptors) {
+		       				String closureClassName = controller.getPropertyOrStaticPropertyOrFieldValue(pd.name, Closure)?.class?.name
+		       						if (closureClassName) 
+		       							{
+		       							actions << pd.name
+		       								for(authorityInstance in roleInstance)
+		       								{
+		       									def rolePrivilegesInstance=new RolePrivileges()
+		       									rolePrivilegesInstance.controllerName=controller.logicalPropertyName
+		       									rolePrivilegesInstance.actionName=pd.name
+		       									rolePrivilegesInstance.role=authorityInstance
+		       									rolePrivilegesInstance.party=party
+		       									rolePrivilegesInstance.save()
+		       								}
+		       							}
+		       			}
+		       			controllerInfo.actions = actions.sort()
+		       			data << controllerInfo
+		       		}
+					redirect uri: '/user/userConfirmation'
+				}
+				else
+				{
+					redirect(controller:'login',action:'auth')
+				}
 		}
 	
 	/**

@@ -6,6 +6,43 @@
     </head>
     <body>
     <div class="wrapper">
+    <g:subMenuList/>
+    <div class="proptable">
+     			<table width="100%" align="left">
+     				<tr>
+                    	<td valign="top" class="name">
+                        	<label for="projects"><g:message code="default.Project.label"/>:</label>
+                        </td>
+                        <td valign="top" >
+                         	<strong>  ${fieldValue(bean:projectsInstance,field:'parent.code')} </strong>
+                        </td>
+                        <td valign="top" class="name">
+                            <label for="party"> <g:message code="default.Grantor.label"/> :</label>
+                        </td>
+                        <td valign="top" class="name" >
+                          <strong>  ${fieldValue(bean:partyInstance,field:'code')} </strong>  
+                        </td>
+                        <td valign="top" class="name">
+                            <label for="party"> <g:message code="default.AmountAllocated.label"/>:</label>
+                        </td>
+                        <td valign="top" >
+						<strong>
+                             	<g:message code="default.Rs.label" />
+                             	${currencyFormat.ConvertToIndainRS(projectsInstance.parent.totAllAmount)}
+                             </strong>
+                        </td>
+                        <td valign="top" class="name">
+                            <label for="party"> <g:message code="default.BalanceAmount.label"/>:</label>
+                        </td>
+                        <td valign="top" >
+                         	<strong>
+                             	<g:message code="default.Rs.label" />
+                             	${currencyFormat.ConvertToIndainRS(grantAllocationInstance.balanceAmount)}
+                             </strong>
+                        </td>
+                     </tr> 
+                </table>
+            </div>
     <g:hiddenField name="parentProjectStartDate" value="${grantAllocationInstance?.projects?.parent?.projectStartDate}"/>
     <g:hiddenField name="parentProjectEndDate" value="${grantAllocationInstance?.projects?.parent?.projectEndDate}"/>
         <div class="body">

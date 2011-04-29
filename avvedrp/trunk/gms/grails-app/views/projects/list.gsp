@@ -3,9 +3,11 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main" />
         <title><g:message code="default.projects.list.head"/></title>
+		<g:javascript library="jquery"/>
+		
     </head>
     <body>
-    
+    <div id="paginate">
     <div class="wrapper"> 
        
         <div class="body">
@@ -20,6 +22,7 @@
             </g:if>
             <g:if test="${grantAllocationWithprojectsInstanceList}">
             <div class="list">
+            <div class="paginateButtons" style="border: 0px;height:14px;text-align:right" ><util:remotePaginate controller="projects" action="list" total="${grantAllocationWithprojectsTotal}" update="paginate"  prev="Prev" pageSizes="[5,10,20,40,50]"/><font style="font:8pt verdana;font-weight:bold;color:black">Total:${grantAllocationWithprojectsTotal}</font></div>
                 <table cellspacing="0" cellpadding="0">
                     <thead>
                         <tr>
@@ -96,6 +99,7 @@
                     </g:each>
                     </tbody>
                 </table>
+                </div>
             </div>
             </g:if>
             <g:else>

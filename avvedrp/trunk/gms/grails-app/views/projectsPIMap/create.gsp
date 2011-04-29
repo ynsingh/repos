@@ -29,7 +29,7 @@
                                     <label for="investigator"><g:message code="default.Investigator.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:projectsPIMapInstance,field:'investigator','errors')}">
-                                    <g:select optionKey="id" optionValue="name" from="${investigatorList}" name="investigator.id" value="${projectsPIMapInstance?.investigator?.id}" noSelection="['null':'select']" ></g:select>
+                                    <g:select optionKey="id" optionValue="name" from="${investigatorList}" name="investigator.id" value="${projectsPIMapInstance?.investigator?.id}" noSelection="['null':'-Select-']" ></g:select>
                                 </td>
                             </tr> 
                           
@@ -48,7 +48,7 @@
                                     <label for="role"><g:message code="default.Role.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:projectsPIMapInstance,field:'role','errors')}">
-                                    <g:select id="role" name="role"  from="${['PI','CO-PI']}" value="${projectsPIMapInstance?.role}" noSelection="['null':'select']" ></g:select>
+                                    <g:select id="role" name="role"  from="${['CO-PI','PI']}" value="${projectsPIMapInstance?.role}" noSelection="['null':'-Select-']" ></g:select>
                                 </td>
                             </tr> 
                            

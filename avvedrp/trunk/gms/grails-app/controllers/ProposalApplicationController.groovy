@@ -191,7 +191,7 @@ class ProposalApplicationController {
 			if(params.proposalApplication.id=="")
 			{
 				/*method used to save proposal*/
-				proposalInstance = proposalService.saveProposal(params,gh.getValue("NotificationId"))
+				proposalInstance = proposalService.saveProposal(params,gh.getValue("NotificationId"),gh.getValue("PartyId"))
 				if(proposalInstance)
 				{
 					/*method used to save proposalApplication*/
@@ -221,7 +221,7 @@ class ProposalApplicationController {
 					        mailMessage=mailMessage+" \n\n" 
 					    	mailMessage+=mailFooter
 					    	/*Send email to PI*/
-					        def emailId = notificationsEmailsService.sendMessage(params.Email_12,mailMessage)
+					        def emailId = notificationsEmailsService.sendMessage(params.Email_12,mailMessage,"text/plain")
 						}
 					}
 				
@@ -325,7 +325,7 @@ class ProposalApplicationController {
     {
     	
     	GrailsHttpSession gh = getSession()
-			
+		gh.putValue("PartyId",params.party)
     	def proposalApplicationInstance = proposalService.getProposalApplicationByProposal(gh.getValue("ProposalId"))
     	def total=2
     	def page=1
@@ -543,7 +543,7 @@ class ProposalApplicationController {
 			def attachmentsInstanceGetCV=attachmentsService.getAttachmentsByDomainAndType("Proposal","CV",proposalApplicationExtInstance[0].proposalApplication.proposal.id)
         	def attachmentsInstanceGetDPR=attachmentsService.getAttachmentsByDomainAndType("Proposal","DPR",proposalApplicationExtInstance[0].proposalApplication.proposal.id)
 	    	
-			[proposalApplicationExtInstance:proposalApplicationExtInstance,proposalApplicationInstance:proposalApplicationExtInstance.proposalApplication,attachmentsInstanceGetCV:attachmentsInstanceGetCV,attachmentsInstanceGetDPR:attachmentsInstanceGetDPR]
+			[proposalApplicationExtInstance:proposalApplicationExtInstance,proposalApplicationInstance:proposalApplicationExtInstance[0].proposalApplication,attachmentsInstanceGetCV:attachmentsInstanceGetCV,attachmentsInstanceGetDPR:attachmentsInstanceGetDPR]
 	}
 	/*
 	 * method used to view the uploaded proposal application details
@@ -594,5 +594,12 @@ class ProposalApplicationController {
 		
 		[proposalApplicationInstance:proposalApplicationInstance]
 	}
+    def proposalApplicationPartyList =
+    {
+    	def partyInstanceList
+    	def partyService = new PartyService()
+    	partyInstanceList = partyService.getAllActiveParties()
+    	render(view:'proposalApplicationPartyList',model:[partyInstanceList:partyInstanceList])
+    }
 	
 }

@@ -159,11 +159,11 @@
                             </tr>
                             <tr class="prop">
                                 <td valign="top" class="prname">
-                                    <label for="code"><g:message code="default.ProjectCategory.label"/>:</label>
+                                    <label for="code"><g:message code="default.ProposalCategory.label"/>:</label>
                                     <label for="name" class="mandatory"> * </label>
                                 </td>
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'code','errors')}">
-                                     <g:select  optionKey="name" optionValue="name" id="ProjectCategory" from="${proposalCategoryList}"  name="ProjectCategory_14"  ></g:select>
+                                     <g:select  optionKey="name" optionValue="name" id="ProjectCategory" from="${proposalCategoryList}"  name="ProjectCategory_14" noSelection="['null':'-Select-']" ></g:select>
                                 </td>
                             </tr>
                          

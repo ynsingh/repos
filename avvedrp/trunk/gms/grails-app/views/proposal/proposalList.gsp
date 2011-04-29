@@ -49,6 +49,7 @@
 		                    	
 		               	        <th><g:message code="default.View.label"/></th>
 		               	        <th><g:message code="default.ProposalVersion.label"/></th>
+		               	        <th>Proposal Review</th>
 		               	        <th><g:message code="default.proposalRating.label"/></th>
 		                    </tr>
 		                </thead>
@@ -64,6 +65,7 @@
 			                         
 			                        <td><g:link action="proposalApplicationReview" controller='proposalApplication' id="${proposalApplicationInstance.id}"><g:message code="default.View.label"/></g:link></td>
 			                    	  <td>V${proposalApplicationInstance?.proposal?.proposalVersion}</td>
+			                    	  <td><g:link action="proposalReviewDetails" controller='proposal' id="${proposalApplicationInstance.proposal.id}">Proposal Review</g:link></td>
 			                    	  <td>
 			                        	<richui:rating dynamic="false" units="${maxScaleList[i]}" rating="${evalScoreInstanceList[i]?.totalScore}" showCurrent="false"/>
 			                       		<g:message code="default.AvgRating.label"/>:

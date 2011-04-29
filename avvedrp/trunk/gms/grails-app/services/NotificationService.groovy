@@ -1,3 +1,4 @@
+import java.util.*;
 class NotificationService 
 {
 public List getAllNotifications(String subQuery,def PartyId)
@@ -41,17 +42,19 @@ public Notification updateNotification(def notificationInstance)
 /*
  * method to get all published notification 
  */
-public List getAllPublishedNotification(def partyId)
-{
-	def notificationInstanceList = Notification.findAll("from Notification N where N.publishYesNo='Y'")
+public List getAllPublishedNotification(def partyId,def currentDate)
+{println"########################currentDate################"+currentDate
+	def notificationInstanceList = Notification.findAll("from Notification N where N.publishYesNo='Y' and DATE_FORMAT(N.proposalSubmissionLastDate, '%Y-%m-%d')>='"+currentDate+"'")
 	return notificationInstanceList
 }
 /*
  * method to get all public notification 
  */
-public List getAllPublicAndPublishedNotification()
+public List getAllPublicAndPublishedNotification(def currentDate)
 {
-	def notificationInstanceList = Notification.findAll("from Notification N where N.publishYesNo='Y' and N.publicYesNo='Y'")
+	println"+++++++++++++++++++currentDate+++++++++++++++++++++"+currentDate
+	
+	def notificationInstanceList = Notification.findAll("from Notification N where N.publishYesNo='Y' and N.publicYesNo='Y' and DATE_FORMAT(N.proposalSubmissionLastDate, '%Y-%m-%d')>='"+currentDate+"'")
 	return notificationInstanceList
 }
 

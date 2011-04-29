@@ -31,7 +31,7 @@
                                     <label for="documentType" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:proposalInstance,field:'documentType','errors')}">
-                                    <g:select name="documentType" from="${['Proposal', 'Notification', 'Invoice', 'Receipt', 'Project']}" value="${attachmentTypeInstance?.documentType}" ></g:select>
+                                    <g:select id="documentType" name="documentType" from="${['Proposal', 'Notification', 'Invoice', 'Receipt', 'Project']}" value="${attachmentTypeInstance?.documentType}" noSelection="['null':'-Select-']" ></g:select>
                                 </td>
                             </tr>
                             <tr class="prop">
@@ -56,7 +56,7 @@
                     </table>
                 </div>
                 <div class="buttons">
-                    <span class="button"><input class="save" type="submit" value="${message(code: 'default.Create.button')}" onClick="return validateAttachmentType();" /></span>
+                    <span class="button"><input class="save" type="submit" value="${message(code: 'default.Create.button')}" onClick="return validateAttachmentType()" /></span>
                 </div>
             </g:form>
         </div>

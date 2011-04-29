@@ -23,7 +23,7 @@
                             <g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}" />
                             <th><g:message code="default.Institution.label" /></th>
                               <th><g:message code="default.Users.label" /></th>  
-                              <th><g:message code="default.ProjectTitle.label" /></th>   
+                              <th><g:message code="default.ProposalTitle.label" /></th>   
                                 <th><g:message code="default.FullProposalStatus.label"/></th>             
                             <th><g:message code="default.SubmitFullProposal.label" /></th>
                         

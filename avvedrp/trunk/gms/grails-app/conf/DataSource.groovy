@@ -14,7 +14,7 @@ environments {
 	development {
 		dataSource {
 			dbCreate = "update" // one of 'create', 'create-drop','update'
-				url = "jdbc:mysql://192.168.18.95/gms_upgrade"
+				url = "jdbc:mysql://192.168.18.95/demo_data_iitk"
 		}
 	}
 	

@@ -63,7 +63,7 @@
 			                                    </g:if>
 			                                    <g:if test="${grantAllocationTrackingInstance.trackType == 'withdraw' }">
 			                                    	<g:select name="grantAllocationStatus" from="${['Withdrawal','Closed']}"  
-			                                    	value="${fieldValue(bean:grantAllocationTrackingInstance,field:'grantAllocationStatus')}" />
+			                                    	value="${fieldValue(bean:grantAllocationTrackingInstance,field:'grantAllocationStatus')}" noSelection="['null':'-Select-']"/>
 			                                    </g:if>
                                     			<g:hiddenField name="grantAllocation.id" 
                                     				value="${grantAllocationTrackingInstance?.grantAllocation?.id}" />

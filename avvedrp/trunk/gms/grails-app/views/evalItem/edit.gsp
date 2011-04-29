@@ -30,16 +30,6 @@
 	                                <td valign="top" class="value ${hasErrors(bean: evalItemInstance, field: 'item', 'errors')}">
 	                                    <g:textField name="item" value="${evalItemInstance?.item}" />
 	                                </td>
-                           
-	                                 <td valign="top" class="name">
-	                                    <label for="notification"><g:message code="default.evalItem.notification.label" /></label>
-	                                </td>
-	                                <td valign="top" class="value ${hasErrors(bean: evalItemInstance, field: 'notification', 'errors')}">
-	                                    <g:select optionKey="id" optionValue="notificationCode" from="${(notificationInstanceList)}"  name="notification.id" value="${fieldValue(bean: evalItemInstance, field: 'notification.id')}" noSelection="['null':'select']" />
-	                                </td>
-                              </tr>
-                            
-                              <tr class="prop">
                                 
 	                                <td valign="top" class="name">
 	                                    <label for="evalScale"><g:message code="default.evalItem.evalScale.label"/></label>

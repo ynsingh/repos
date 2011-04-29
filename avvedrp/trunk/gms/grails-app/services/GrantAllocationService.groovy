@@ -452,8 +452,8 @@ class GrantAllocationService {
 	 */
 	@PostFilter("hasPermission(filterObject, 'read') or hasPermission(filterObject, admin)")
 	public GrantAllocation[] getGrantAllocationGroupByProjects(def partyID){
-		 def grantAllocationInstanceList=GrantAllocation.findAll("from GrantAllocation GA GROUP BY GA.projects");
-		 return grantAllocationInstanceList
+			 def grantAllocationInstanceList=GrantAllocation.findAll("from GrantAllocation GA where GA.projects.activeYesNo='Y' GROUP BY GA.projects");
+			 return grantAllocationInstanceList
 	}
 	/**
 	 * Get all grant allocation with active projects for logged in user groupBy Projects 

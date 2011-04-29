@@ -7,6 +7,8 @@ class ProposalApprovalDetailController {
     def approvalAuthorityDetailService
     def proposalApprovalAuthorityMapService
     def fullProposalDetailService
+    def fullProposalService
+    def ProposalApprovalService
     def index = {
         redirect(action: "list", params: params)
     }
@@ -24,248 +26,135 @@ class ProposalApprovalDetailController {
 
     def save = {
     	
-        def proposalApprovalDetailInstance = new ProposalApprovalDetail(params)
-       println "params ******************** "+params
-        proposalApprovalDetailInstance.approvalDate=new Date()
-        proposalApprovalDetailInstance.activeYesNo="Y"
-        	GrailsHttpSession gh=getSession()
-        	
-        	def preProposalInstance = preProposalService.getPrePropsalById(proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.proposalId)
-        	def proposalApprovalDetailUserInstance = proposalApprovalDetailService.getPreProposalApprovalDetailsByUserAndProposalId(gh.getValue("UserId"),params.proposalId,proposalApprovalDetailInstance.proposalApproval.approvalAuthorityDetail.approvalAuthority.id)
-        	def preProposalApprovalRestartMinOrder=proposalApprovalAuthorityMapService.getPreProposalApprovalRestartMinOrder("PreProposal",preProposalInstance.id)
-        	def preProposalApprovalMaxOrder=proposalApprovalAuthorityMapService.getPreProposalApprovalMaxOrder("PreProposal",preProposalInstance.id)
-        if(proposalApprovalDetailUserInstance == null)
-        {
-        	if (proposalApprovalDetailInstance.save(flush: true)) 
-        	{
-        	def proposalApprovalDetailByApprovalAuthority=proposalApprovalDetailService.getPreProposalApprovalDetailsByAuthorityAndProposalId(proposalApprovalDetailInstance.proposalApproval.approvalAuthorityDetail.approvalAuthority.id,proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.proposalId)
-        	def approvalAuthorityInstance = approvalAuthorityDetailService.getApprovalAuthorityDetailByApprovalAuthority(proposalApprovalDetailInstance.proposalApproval.approvalAuthorityDetail.approvalAuthority.id)
-        	def proposalApprovalDetailByProposalStatus =proposalApprovalDetailService.getApprovedPreProposalApprovalDetailsByAuthorityAndProposalId(proposalApprovalDetailInstance.proposalApproval.approvalAuthorityDetail.approvalAuthority.id,proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.proposalId)
-        	def proposalApprovalDetailByProposalRejectedStatus=proposalApprovalDetailService.getPreProposalApprovalDetailByProposalRejectedStatus(proposalApprovalDetailInstance.proposalApproval.approvalAuthorityDetail.approvalAuthority.id,proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.proposalId)
-        	def proposalApprovalDetailByProposalNeedMoreInfoStatus=proposalApprovalDetailService.getPreProposalApprovalDetailByProposalStatus(proposalApprovalDetailInstance.proposalApproval.approvalAuthorityDetail.approvalAuthority.id,proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.proposalId,"NeedMoreInfo","PreProposal")
-        	println "proposalApprovalDetailInstance "+proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.approveOrder
-        	println "preProposalLevel "+preProposalInstance.preProposalLevel
-        	if(proposalApprovalDetailByApprovalAuthority.size()==approvalAuthorityInstance.size())
-        	{
-        		if(approvalAuthorityInstance[0].approvalAuthority.approveAll=='Y')
-        		{
-        			if(proposalApprovalDetailByProposalStatus.size()==approvalAuthorityInstance.size())
-        			{
-        				println "proposalApprovalDetailInstance "+proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.approveOrder
-        				println "preProposalLevel "+preProposalInstance.preProposalLevel
-        				if(preProposalInstance.preProposalLevel<proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.approveOrder)
-        				{
-        				//preProposalInstance.preProposalLevel=preProposalInstance.preProposalLevel+1
-        					preProposalInstance.preProposalLevel=proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.approveOrder
-        				}
-                		preProposalInstance.save()
-                		if(preProposalApprovalMaxOrder[0]==preProposalInstance.preProposalLevel)
-        				{
-        					preProposalInstance.preProposalStatus="Approved"
-                    		preProposalInstance.save()
-        				}
-        			}
-        			else
-        			{
-        				if(proposalApprovalDetailByProposalRejectedStatus.size()>proposalApprovalDetailByProposalNeedMoreInfoStatus.size())
-        				{
-        					if(preProposalInstance.preProposalLevel<proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.approveOrder)
-            				{
-            				//preProposalInstance.preProposalLevel=preProposalInstance.preProposalLevel+1
-            					preProposalInstance.preProposalLevel=proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.approveOrder
-            				}
-                    		
-            					preProposalInstance.preProposalStatus="Rejected"
-                        		preProposalInstance.save()
-            				
-        				}
-        				else
-        				{
-        					preProposalInstance.preProposalLevel=preProposalInstance.preProposalLevel+1
-                    			preProposalInstance.preProposalStatus="NeedMoreInfo"
-                        		preProposalInstance.preProposalLevel=new Integer(preProposalApprovalRestartMinOrder[0])-1
-                        		preProposalInstance.save()
-                        		def proposalApprovalDetailInactivate = proposalApprovalDetailService.inactivateProposalApprovalDetailForNeedMoreInfo(preProposalInstance)
-            				
-        				}
-        			}
-        		}
-        		else
-        		{
-        			if(proposalApprovalDetailByProposalRejectedStatus.size()==approvalAuthorityInstance.size())
-        				{
-        				if(preProposalInstance.preProposalLevel<proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.approveOrder)
-        				{
-        				//preProposalInstance.preProposalLevel=preProposalInstance.preProposalLevel+1
-        					preProposalInstance.preProposalLevel=proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.approveOrder
-        				}
-                    			preProposalInstance.preProposalStatus="Rejected"
-                        			preProposalInstance.save()
-            			
-        				}
-        			else if(proposalApprovalDetailByProposalStatus)
-        			{
-        				if(preProposalInstance.preProposalLevel<proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.approveOrder)
-        				{
-        				//preProposalInstance.preProposalLevel=preProposalInstance.preProposalLevel+1
-        					preProposalInstance.preProposalLevel=proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.approveOrder
-        				}
-                		preProposalInstance.save()
-                		if(preProposalApprovalMaxOrder[0]==preProposalInstance.preProposalLevel)
-        				{
-        					preProposalInstance.preProposalStatus="Approved"
-                    		preProposalInstance.save()
-        				}
-        			}
-        			else
-        			{
-        				if(preProposalInstance.preProposalLevel<proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.approveOrder)
-        				{
-        				//preProposalInstance.preProposalLevel=preProposalInstance.preProposalLevel+1
-        					preProposalInstance.preProposalLevel=proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.approveOrder
-        				}
-                			preProposalInstance.preProposalStatus="NeedMoreInfo"
-                    		preProposalInstance.preProposalLevel=new Integer(preProposalApprovalRestartMinOrder[0])-1
-                    		preProposalInstance.save()
-                    		def proposalApprovalDetailInactivate = proposalApprovalDetailService.inactivateProposalApprovalDetailForNeedMoreInfo(preProposalInstance)
-        			}
-        		}
-        		
-        	}
-        	flash.message = "${message(code: 'default.ReviewedSuccessfully.label')}"
-            redirect(controller:"proposalApproval",action: "list")
-        }
-        else {
-            render(view: "create", model: [proposalApprovalDetailInstance: proposalApprovalDetailInstance])
-        }
-        }
-        else
-        {
-        	flash.message = "${message(code: 'default.Allreadyreviewed.label')}"
-        	redirect(controller:"proposalApproval",action: "list")
-        }
+    	GrailsHttpSession gh=getSession()
+    	/*method to get preProposalInstance using id*/
+    	def preProposalInstance = preProposalService.getPrePropsalById(params.proposalId)
+    	/*method to get proposalApprovalAuthorityMap using id*/
+    	def proposalApprovalAuthorityMapInstance=proposalApprovalAuthorityMapService.getProposalApprovalAuthorityMapById(params.proposalApprovalAuthorityMap.id)
+        /*method to get approvalAuthorityDetail using id*/
+    	def approvalAuthorityDetailInstance=approvalAuthorityDetailService.getApprovalAuthorityDetailById(new Integer(params.approvalAuthorityDetail.id))
+    	 /*method to get proposalApproval of current user*/
+    	def proposalApprovalUserInstance = proposalApprovalService.getProposalApprovalByProposalApprovalAuthorityMapAndUser(proposalApprovalAuthorityMapInstance.id,approvalAuthorityDetailInstance.id)
+        def proposalApprovalInstance
+        /*check proposalApproval exist or not */
+    	if(!proposalApprovalUserInstance)
+    	{
+    		proposalApprovalInstance = new ProposalApproval(params['ProposalApproval'])
+    		proposalApprovalInstance=proposalApprovalService.saveProposalApproval(proposalApprovalInstance)
+    	}
+    	else
+    	{
+    		proposalApprovalInstance = proposalApprovalUserInstance
+    	}
+    		if(proposalApprovalInstance)
+    		{
+    			/*check if the user is already review the preProposal */
+    			def proposalApprovalDetailUserInstance = proposalApprovalDetailService.getProposalApprovalDetailByProposalApproval(proposalApprovalInstance.id)
+    			/*check if the user is already review the preProposal */
+    			if(!proposalApprovalDetailUserInstance)
+    			{
+    				/*save ProposalApprovalDetail*/
+    				def proposalApprovalDetailInstance = new ProposalApprovalDetail(params['ProposalApprovalDetail'])
+    				proposalApprovalDetailInstance.proposalApproval=proposalApprovalInstance
+    				proposalApprovalDetailInstance.activeYesNo='Y'
+    				proposalApprovalDetailInstance.approvalDate=new Date()
+    				def proposalApprovalDetailSaveInstance=proposalApprovalDetailService.saveProposalApprovalDetail(proposalApprovalDetailInstance)
+    				if(proposalApprovalDetailSaveInstance)
+    				{
+    					/*validate proposal reviews*/
+    					def proposalApprovalDetailValidateInstance = proposalApprovalDetailService.validateProposalApprovalDetail(proposalApprovalDetailInstance,"PreProposal",preProposalInstance.preProposalLevel,preProposalInstance.preProposalStatus)
+	        			/*update proposal based on proposal reviews*/
+    	    			if((proposalApprovalDetailValidateInstance.proposalStatus!=preProposalInstance.preProposalStatus)||(proposalApprovalDetailValidateInstance.proposalNewLevel!=preProposalInstance.preProposalLevel))
+    	    			{
+    	    				preProposalInstance.preProposalStatus=proposalApprovalDetailValidateInstance.proposalStatus
+    	    				preProposalInstance.preProposalLevel=proposalApprovalDetailValidateInstance.proposalNewLevel
+    	    				def preProposalSaveInstance=preProposalService.updatePreProposalInstance(preProposalInstance)
+    	    				if(proposalApprovalDetailValidateInstance.proposalStatus=='NeedMoreInfo')
+    	    				{
+    	    					/*inactivate proposalApprovalDetails for review again*/
+    	    					def proposalApprovalDetailInactivate = proposalApprovalDetailService.inactivateProposalApprovalDetailForNeedMoreInfo(preProposalInstance.id,preProposalInstance.preProposalLevel,"PreProposal")
+    	    				}
+    	    			}
+    	    			flash.message = "${message(code: 'default.ReviewedSuccessfully.label')}"
+	            		redirect(controller:"proposalApproval",action: "list")
+	    			}
+    			
+    			}
+    			else
+    			{
+    				flash.message = "${message(code: 'default.Allreadyreviewed.label')}"
+    				redirect(controller:"proposalApproval",action: "list")
+    			}
+    		}
+    	
+      
     }
-// new save
 
-		def saveFullProposal = {
+
+		def saveFullProposal = 
+		{
 		    	
-		        def proposalApprovalDetailInstance = new ProposalApprovalDetail(params)
-		        proposalApprovalDetailInstance.approvalDate=new Date()
-		        proposalApprovalDetailInstance.activeYesNo="Y"
-		        	GrailsHttpSession gh=getSession()
-		        	
-		        	def preProposalInstance = FullProposal.get(proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.proposalId)
-		        	def proposalApprovalDetailUserInstance = proposalApprovalDetailService.getFullProposalApprovalDetailsByUserAndProposalId(gh.getValue("UserId"),params.proposalId,proposalApprovalDetailInstance.proposalApproval.approvalAuthorityDetail.approvalAuthority.id)
-		        	def preProposalApprovalRestartMinOrder=proposalApprovalAuthorityMapService.getPreProposalApprovalRestartMinOrder("FullProposal",preProposalInstance.id)
-		        	def preProposalApprovalMaxOrder=proposalApprovalAuthorityMapService.getPreProposalApprovalMaxOrder("FullProposal",preProposalInstance.id)
-		        if(proposalApprovalDetailUserInstance == null)
-		        {
-		        	if (proposalApprovalDetailInstance.save(flush: true)) {
-		        	def proposalApprovalDetailByApprovalAuthority=proposalApprovalDetailService.getFullProposalApprovalDetailsByAuthorityAndProposalId(proposalApprovalDetailInstance.proposalApproval.approvalAuthorityDetail.approvalAuthority.id,proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.proposalId)
-		        	
-		        	def approvalAuthorityInstance = approvalAuthorityDetailService.getApprovalAuthorityDetailByApprovalAuthority(proposalApprovalDetailInstance.proposalApproval.approvalAuthorityDetail.approvalAuthority.id)
-		        	def proposalApprovalDetailByProposalStatus =proposalApprovalDetailService.getApprovedFullProposalApprovalDetailsByAuthorityAndProposalId(proposalApprovalDetailInstance.proposalApproval.approvalAuthorityDetail.approvalAuthority.id,proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.proposalId)
-		        	def proposalApprovalDetailByProposalRejectedStatus=proposalApprovalDetailService.getFullProposalApprovalDetailByProposalRejectedStatus(proposalApprovalDetailInstance.proposalApproval.approvalAuthorityDetail.approvalAuthority.id,proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.proposalId)
-		        	if(proposalApprovalDetailByApprovalAuthority.size()==approvalAuthorityInstance.size())
-		        	{
-		        		if(approvalAuthorityInstance[0].approvalAuthority.approveAll=='Y')
-		        		{
-		        			if(proposalApprovalDetailByProposalStatus.size()==approvalAuthorityInstance.size())
-		        			{
-		        				if(preProposalInstance.preProposalLevel<proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.approveOrder)
-		        				{
-		        				//preProposalInstance.preProposalLevel=preProposalInstance.preProposalLevel+1
-		        					preProposalInstance.preProposalLevel=proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.approveOrder
-		        				}
-		                		preProposalInstance.save()
-		                		if(preProposalApprovalMaxOrder[0]==preProposalInstance.preProposalLevel)
-		        				{
-		        					preProposalInstance.proposalStatus="Approved"
-		                    		preProposalInstance.save()
-		        				}
-		        			}
-		        			else
-		        			{
-		        				if(proposalApprovalDetailByProposalRejectedStatus.size()==approvalAuthorityInstance.size())
-		        				{
-		        					if(preProposalInstance.preProposalLevel<proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.approveOrder)
-		            				{
-		            				//preProposalInstance.preProposalLevel=preProposalInstance.preProposalLevel+1
-		            					preProposalInstance.preProposalLevel=proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.approveOrder
-		            				}
-		                    		preProposalInstance.proposalStatus="Rejected"
-		                        		preProposalInstance.save()
-		            				
-		        				}
-		        				else
-		        				{
-		        					if(preProposalInstance.preProposalLevel<proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.approveOrder)
-		            				{
-		            				//preProposalInstance.preProposalLevel=preProposalInstance.preProposalLevel+1
-		            					preProposalInstance.preProposalLevel=proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.approveOrder
-		            				}
-		                    			preProposalInstance.proposalStatus="NeedMoreInfo"
-		                        		preProposalInstance.preProposalLevel=new Integer(preProposalApprovalRestartMinOrder[0])-1
-		                        		preProposalInstance.save()
-		                        		def proposalApprovalDetailInactivate = proposalApprovalDetailService.inactivateFullProposalApprovalDetailForNeedMoreInfo(preProposalInstance)
-		        				}
-		        			}
-		        		}
-		        		
-		        		else
-		        		{
-		        			if(proposalApprovalDetailByProposalRejectedStatus.size()==approvalAuthorityInstance.size())
-		        				{
-		        				if(preProposalInstance.preProposalLevel<proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.approveOrder)
-		        				{
-		        				//preProposalInstance.preProposalLevel=preProposalInstance.preProposalLevel+1
-		        					preProposalInstance.preProposalLevel=proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.approveOrder
-		        				}
-		                    			preProposalInstance.proposalStatus="Rejected"
-		                        			preProposalInstance.save()
-		            			
-		        				}
-		        			else if(proposalApprovalDetailByProposalStatus)
-		        			{
-		        				if(preProposalInstance.preProposalLevel<proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.approveOrder)
-		        				{
-		        				//preProposalInstance.preProposalLevel=preProposalInstance.preProposalLevel+1
-		        					preProposalInstance.preProposalLevel=proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.approveOrder
-		        				}
-		                		preProposalInstance.save()
-		                		if(preProposalApprovalMaxOrder[0]==preProposalInstance.preProposalLevel)
-		        				{
-		        					preProposalInstance.proposalStatus="Approved"
-		                    		preProposalInstance.save()
-		        				}
-		        			}
-		        			else
-		        			{
-		        				if(preProposalInstance.preProposalLevel<proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.approveOrder)
-		        				{
-		        				//preProposalInstance.preProposalLevel=preProposalInstance.preProposalLevel+1
-		        					preProposalInstance.preProposalLevel=proposalApprovalDetailInstance.proposalApproval.proposalApprovalAuthorityMap.approveOrder
-		        				}
-		                		preProposalInstance.proposalStatus="NeedMoreInfo"
-		                    		preProposalInstance.preProposalLevel=new Integer(preProposalApprovalRestartMinOrder[0])-1
-		                    		preProposalInstance.save()
-		                    		def proposalApprovalDetailInactivate = proposalApprovalDetailService.inactivateFullProposalApprovalDetailForNeedMoreInfo(preProposalInstance)
-		        			}
-		        		}
-		        		
-		        	}
-		        	flash.message = "${message(code: 'default.ReviewedSuccessfully.label', args: [message(code: 'proposalApprovalDetail.label', default: 'Proposal'), proposalApprovalDetailInstance.proposalStatus])}"
-		            redirect(controller:"proposalApproval",action: "fullProposalList")
-		        }
-		        else {
-		            render(view: "create", model: [proposalApprovalDetailInstance: proposalApprovalDetailInstance])
-		        }
-		        }
-		        else
-		        {
-		        	flash.message = "${message(code: 'default.Allreadyreviewed.label')}"
-		        	redirect(controller:"proposalApproval",action: "fullProposalList")
-		        }
+    	GrailsHttpSession gh=getSession()
+    	/*method to get preProposalInstance using id*/
+    	def fullProposalInstance = fullProposalService.getFullProposalById(params.proposalId)
+    	/*method to get proposalApprovalAuthorityMap using id*/
+    	def proposalApprovalAuthorityMapInstance=proposalApprovalAuthorityMapService.getProposalApprovalAuthorityMapById(params.proposalApprovalAuthorityMap.id)
+        /*method to get approvalAuthorityDetail using id*/
+    	def approvalAuthorityDetailInstance=approvalAuthorityDetailService.getApprovalAuthorityDetailById(new Integer(params.approvalAuthorityDetail.id))
+    	 /*method to get proposalApproval of current user*/
+    	def proposalApprovalUserInstance = proposalApprovalService.getProposalApprovalByProposalApprovalAuthorityMapAndUser(proposalApprovalAuthorityMapInstance.id,approvalAuthorityDetailInstance.id)
+        def proposalApprovalInstance
+        /*check proposalApproval exist or not */
+    	if(!proposalApprovalUserInstance)
+    	{
+    		proposalApprovalInstance = new ProposalApproval(params['ProposalApproval'])
+    		proposalApprovalInstance=proposalApprovalService.saveProposalApproval(proposalApprovalInstance)
+    	}
+    	else
+    	{
+    		proposalApprovalInstance = proposalApprovalUserInstance
+    	}
+    		if(proposalApprovalInstance)
+    		{
+    			/*check if the user is already review the preProposal */
+    			def proposalApprovalDetailUserInstance = proposalApprovalDetailService.getProposalApprovalDetailByProposalApproval(proposalApprovalInstance.id)
+    			/*check if the user is already review the preProposal */
+    			if(!proposalApprovalDetailUserInstance)
+    			{
+    				/*save ProposalApprovalDetail*/
+    				def proposalApprovalDetailInstance = new ProposalApprovalDetail(params['ProposalApprovalDetail'])
+    				proposalApprovalDetailInstance.proposalApproval=proposalApprovalInstance
+    				proposalApprovalDetailInstance.activeYesNo='Y'
+    				proposalApprovalDetailInstance.approvalDate=new Date()
+    				def proposalApprovalDetailSaveInstance=proposalApprovalDetailService.saveProposalApprovalDetail(proposalApprovalDetailInstance)
+    				if(proposalApprovalDetailSaveInstance)
+    				{
+    					/*validate proposal reviews*/
+    					def proposalApprovalDetailValidateInstance = proposalApprovalDetailService.validateProposalApprovalDetail(proposalApprovalDetailInstance,"FullProposal",fullProposalInstance.preProposalLevel,fullProposalInstance.proposalStatus)
+	        			/*update proposal based on proposal reviews*/
+    	    			if((proposalApprovalDetailValidateInstance.proposalStatus!=fullProposalInstance.proposalStatus)||(proposalApprovalDetailValidateInstance.proposalNewLevel!=fullProposalInstance.preProposalLevel))
+    	    			{
+    	    				fullProposalInstance.proposalStatus=proposalApprovalDetailValidateInstance.proposalStatus
+    	    				fullProposalInstance.preProposalLevel=proposalApprovalDetailValidateInstance.proposalNewLevel
+    	    				def fullProposalSaveInstance=fullProposalService.updateFullProposal(fullProposalInstance)
+    	    				if(proposalApprovalDetailValidateInstance.proposalStatus=='NeedMoreInfo')
+    	    				{
+    	    					/*inactivate proposalApprovalDetails for review again*/
+    	    					def proposalApprovalDetailInactivate = proposalApprovalDetailService.inactivateProposalApprovalDetailForNeedMoreInfo(fullProposalInstance.id,fullProposalInstance.preProposalLevel,"FullProposal")
+    	    				}
+    	    			}
+    	    			flash.message = "${message(code: 'default.ReviewedSuccessfully.label')}"
+	            		redirect(controller:"proposalApproval",action: "fullProposalList")
+	    			}
+    			
+    			}
+    			else
+    			{
+    				flash.message = "${message(code: 'default.Allreadyreviewed.label')}"
+    				redirect(controller:"proposalApproval",action: "fullProposalList")
+    			}
+    		}
+    		
 		    }
 
 // new save end
@@ -338,21 +227,36 @@ class ProposalApprovalDetailController {
     }
     def preProposalReview = 
     {
-    	def proposalApprovalInstance = ProposalApproval.get(params.id)
     	GrailsHttpSession gh=getSession()
-      
-    	def preProposalInstance = preProposalService.getPreProposalById(proposalApprovalInstance.proposalApprovalAuthorityMap.proposalId)
+    	/*method to get pre proposal by id*/
+        def preProposalInstance = preProposalService.getPreProposalById(new Integer(params.id))
+    	/*method to get proposalApprovalAuthorityMap by id*/
+        def proposalApprovalAuthorityMapInstance=proposalApprovalAuthorityMapService.getProposalApprovalAuthorityMapById(params.proposalApprovalAuthorityMap.id)
+    	/*method to get ApprovalAuthorityDetail by approval authority and user id*/
+        def approvalAuthorityDetailInstance=approvalAuthorityDetailService.getApprovalAuthorityDetailByApprovalAuthorityUser(proposalApprovalAuthorityMapInstance.approvalAuthority.id,gh.getValue("UserId"))
+    	
     	gh.putValue("ProposalId",preProposalInstance.id);
-    	[proposalApprovalInstance:proposalApprovalInstance,preProposalInstance:preProposalInstance,proposalApplicationForm:preProposalInstance.preProposalForm]
+    	[preProposalInstance:preProposalInstance,
+    	 proposalApplicationForm:preProposalInstance.preProposalForm,
+    	 proposalApprovalAuthorityMapInstance:proposalApprovalAuthorityMapInstance,
+    	 approvalAuthorityDetailInstance:approvalAuthorityDetailInstance]
     }
     def fullProposalReview =
     {
     	
-    	def proposalApprovalInstance = ProposalApproval.get(params.id)
-    	GrailsHttpSession gh=getSession()    	   	
-    	def fullProposalDetailInstance = fullProposalDetailService.getFullProposalDetailByFullProposalId(proposalApprovalInstance.proposalApprovalAuthorityMap.proposalId)
-    	//gh.putValue("ProposalId",fullProposalDetailInstance?.id);
-    	[fullProposalDetailInstance:fullProposalDetailInstance,proposalApprovalInstance:proposalApprovalInstance]
+    	GrailsHttpSession gh=getSession()   
+    	/*method to get full proposal by id*/
+    	def fullProposalInstance = fullProposalService.getFullProposalById(params.id)
+    	/*method to get proposalApprovalAuthorityMap by id*/
+    	def proposalApprovalAuthorityMapInstance=proposalApprovalAuthorityMapService.getProposalApprovalAuthorityMapById(params.proposalApprovalAuthorityMap.id)
+    	/*method to get ApprovalAuthorityDetail by approval authority and user id*/
+    	def approvalAuthorityDetailInstance=approvalAuthorityDetailService.getApprovalAuthorityDetailByApprovalAuthorityUser(proposalApprovalAuthorityMapInstance.approvalAuthority.id,gh.getValue("UserId"))
+    	/*method to get FullProposalDetail by fullproposal id*/
+    	def fullProposalDetailInstance = fullProposalDetailService.getFullProposalDetailByFullProposalId(proposalApprovalAuthorityMapInstance.proposalId)
+    	
+    	[fullProposalDetailInstance:fullProposalDetailInstance,
+    	 proposalApprovalAuthorityMapInstance:proposalApprovalAuthorityMapInstance,
+    	 approvalAuthorityDetailInstance:approvalAuthorityDetailInstance]
     }
     def preProposalReviewStatus =
     {

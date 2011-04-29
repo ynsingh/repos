@@ -40,7 +40,7 @@
                                     <label for="partyDepartment"><g:message code="default.Department.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:projectDepartmentMapInstance,field:'partyDepartment','errors')}">
-                                    <g:select optionKey="id" optionValue="departmentCode" from="${partyDepartmentList}" name="partyDepartment.id" value="${projectDepartmentMapInstance?.partyDepartment?.id}" ></g:select>
+                                    <g:select optionKey="id" optionValue="departmentCode" from="${partyDepartmentList}" name="partyDepartment.id" value="${projectDepartmentMapInstance?.partyDepartment?.id}"  noSelection="['null':'-Select-']" ></g:select>
                                 </td>
                                 <td></td>
                                 <td></td>
@@ -49,7 +49,7 @@
                     </table>
                 </div>
                 <div class="buttons">
-                    <span class="button"><input class="save" type="submit" value="${message(code: 'default.Create.button')}" /></span>
+                    <span class="button"><input class="save" type="submit" value="${message(code: 'default.Create.button')}" onClick="return validateDepartmentMap()" /></span>
                 </div>
             </g:form>
         	</div>
@@ -57,9 +57,7 @@
         </div>
         	<div class="body">
             <h1></h1>
-            <g:if test="${flash.message}">
-            <div class="message">${flash.message}</div>
-            </g:if>
+            
             <g:if test='${projectDepartmentMapInstanceList}'>
             <div class="list">
                 <table>

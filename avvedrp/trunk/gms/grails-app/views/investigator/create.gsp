@@ -59,7 +59,7 @@
                                  
                                 <td valign="top" class="value ${hasErrors(bean:investigatorInstance,field:'department','errors')}">
                                   
-                                    <g:select optionKey="id" optionValue="departmentCode" from="${departmentList}" name="department.id" value="${investigatorInstance?.department?.id}"></g:select>
+                                    <g:select optionKey="id" optionValue="departmentCode" from="${departmentList}" name="department.id" value="${investigatorInstance?.department?.id}" noSelection="['null':'-Select-']"></g:select>
                                		
                                 </td>
                             </tr> 

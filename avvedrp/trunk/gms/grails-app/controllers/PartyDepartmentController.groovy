@@ -20,7 +20,7 @@ class PartyDepartmentController {
 	    			def partyDepartmentInstance = partyDepartmentService.getPartyDepartmentById(params.id )
 			        if(partyDepartmentInstance) 
 			        {
-			        	partyDepartmentInstance.properties = params
+			        	//partyDepartmentInstance.properties = params
 			        	partyDepartmentInstance = partyDepartmentService.deleteDepartment(partyDepartmentInstance)
 			        	flash.message = "${message(code: 'default.deleted.label')}"
 				        redirect(action:create)

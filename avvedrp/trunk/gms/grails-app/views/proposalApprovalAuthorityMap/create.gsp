@@ -32,21 +32,23 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="proposalType"><g:message code="proposalApprovalAuthorityMap.proposalType.label" default="Proposal Type" /></label>
+                                    <label for="proposalType"><g:message code="proposalApprovalAuthorityMap.proposalType.label" default="Proposal Type" />:</label>
+                                    <label for="proposalType" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: proposalApprovalAuthorityMapInstance, field: 'proposalType', 'errors')}">
                                     <g:select name="proposalType" from="${['PreProposal','FullProposal']}" value="${proposalApprovalAuthorityMapInstance?.proposalType}" 
-                                    onchange="${remoteFunction(controller:'proposalApprovalAuthorityMap',action:'getProposals',update:'proposalSel',params:'\'proposal=\'+this.value')};" />
+                                    onchange="${remoteFunction(controller:'proposalApprovalAuthorityMap',action:'getProposals',update:'proposalSel',params:'\'proposal=\'+this.value')};" noSelection="['null':'-Select-']" />
                                 </td>
                             </tr>
                      
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="proposalId"><g:message code="proposalApprovalAuthorityMap.proposalId.label" default="Proposal Title" /></label>
+                                    <label for="proposalId"><g:message code="proposalApprovalAuthorityMap.proposalId.label" default="Proposal Title" />:</label>
+                                    <label for="proposalId" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 
                                 <td id="proposalSel" valign="top" class="value ${hasErrors(bean: proposalApprovalAuthorityMapInstance, field: 'proposalId', 'errors')}">
-                                    <g:select name="proposalId" from="${preProposalList}" optionKey="id" optionValue="projectTitle"  value="${fieldValue(bean: proposalApprovalAuthorityMapInstance, field: 'proposalId')}" />
+                                    <g:select name="proposalId" from="${preProposalList}" optionKey="id" optionValue="projectTitle"  value="${fieldValue(bean: proposalApprovalAuthorityMapInstance, field: 'proposalId')}" noSelection="['null':'-Select-']"/>
                                     
                                 </td>
                                 
@@ -54,16 +56,18 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="approvalAuthority"><g:message code="proposalApprovalAuthorityMap.approvalAuthority.label" default="Approval Authority" /></label>
+                                    <label for="approvalAuthority"><g:message code="proposalApprovalAuthorityMap.approvalAuthority.label" default="Approval Authority" />:</label>
+                                    <label for="approvalAuthority" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: proposalApprovalAuthorityMapInstance, field: 'approvalAuthority', 'errors')}">
-                                    <g:select name="approvalAuthority.id" from="${approvalAuthorityInstance}" optionKey="id" optionValue = "name" value="${proposalApprovalAuthorityMapInstance?.approvalAuthority?.id}"  />
+                                    <g:select name="approvalAuthority.id" from="${approvalAuthorityInstance}" optionKey="id" optionValue = "name" value="${proposalApprovalAuthorityMapInstance?.approvalAuthority?.id}"  noSelection="['null':'-Select-']"/>
                                 </td>
                             </tr>
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="approveOrder"><g:message code="proposalApprovalAuthorityMap.approveOrder.label" default="Approve Order" /></label>
+                                    <label for="approveOrder"><g:message code="proposalApprovalAuthorityMap.approveOrder.label" default="Approve Order" />:</label>
+                                     <label for="approveOrder" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: proposalApprovalAuthorityMapInstance, field: 'approveOrder', 'errors')}">
                                     <g:textField name="approveOrder" value="${fieldValue(bean: proposalApprovalAuthorityMapInstance, field: 'approveOrder')}" />
@@ -72,7 +76,8 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="processRestartOrder"><g:message code="proposalApprovalAuthorityMap.processRestartOrder.label" default="Process Restart Order" /></label>
+                                    <label for="processRestartOrder"><g:message code="proposalApprovalAuthorityMap.processRestartOrder.label" default="Process Restart Order" />:</label>
+                                    <label for="processRestartOrder" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: proposalApprovalAuthorityMapInstance, field: 'processRestartOrder', 'errors')}">
                                     <g:textField name="processRestartOrder" value="${fieldValue(bean: proposalApprovalAuthorityMapInstance, field: 'processRestartOrder')}" />

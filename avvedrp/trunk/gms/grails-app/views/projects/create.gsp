@@ -15,7 +15,7 @@
             <div class="message">${flash.message}</div>
             </g:if>
             <g:hasErrors bean="${projectsInstance}">
-            <div class="errors">
+            <div class="rejerrors">
                 <g:renderErrors bean="${projectsInstance}" as="list" />
             </div>
             </g:hasErrors>
@@ -51,7 +51,7 @@
                                     <label for="projectyype" style="color:red;font-weight:bold"> * </label>  
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'projectType','errors')}">
-                                    <g:select optionKey="id" optionValue="type" id="projectType" from="${ProjectType.findAll('from ProjectType P where P.activeYesNo=\'Y\' ')}"  name="projectType.id" value="${projectsInstance?.projectType?.id}" noSelection="['null':'select']" ></g:select>
+                                    <g:select optionKey="id" optionValue="type" id="projectType" from="${ProjectType.findAll('from ProjectType P where P.activeYesNo=\'Y\' ')}"  name="projectType.id" value="${projectsInstance?.projectType?.id}" noSelection="['null':'-Select-']" ></g:select>
                                 </td>
                             </tr> 
                            <tr class="prop">
@@ -59,7 +59,7 @@
                                     <label for="investigator"><g:message code="default.Investigator.label"/>:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'investigator','errors')}">
-                                    <g:select optionKey="id" optionValue="name" from="${investigatorList}" name="investigator.id" value="${projectsInstance?.investigator?.id}" ></g:select>
+                                    <g:select optionKey="id" optionValue="name" from="${investigatorList}" name="investigator.id" value="${projectsInstance?.investigator?.id}" noSelection="['null':'-Select-']" ></g:select>
                                  </td>
                             </tr> 
                          </tr>                           

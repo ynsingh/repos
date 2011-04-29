@@ -94,6 +94,7 @@
 		                        	 
 		                        	 <td valign="top" class="name">
 		                                <label for="sendForApprovalTo"><g:message code="default.ForApprovalto.label"/></label>
+		                                <label for="symbol" style="color:red;font-weight:bold"> * </label>
 		                                <td>
 		                                	<g:select name="approvalAuthority.id" from="${approvalAuthorityInstance}" optionKey="id" optionValue = "name" value="${proposalApprovalAuthorityMapInstance?.approvalAuthority?.id}" noSelection="['null':'-Select-']"/>
 		                                </td>

@@ -469,14 +469,25 @@ class GrantExpenseController extends GmsController {
 			
 		}
         grantExpenseInstance.properties = params
-        def expenseTotal=GrantExpense.executeQuery("select sum(GE.expenseAmount) from GrantExpense GE where GE.projects="+grantExpenseInstance.projects.id)
+        def fundTransferService = new FundTransferService()
+        def fundTransferAmnt = fundTransferService.getFundTransferTotal(grantExpenseInstance)
+        println"fundTransferAmnt;;;;;;;;"+fundTransferAmnt
+        def expenseTotal= grantExpenseService.getTotalExpenseAmnt(grantExpenseInstance)
         println"expenseTotal[0]"+expenseTotal[0]
-         if(expenseTotal[0])
+         if(expenseTotal[0] && fundTransferAmnt[0])
      	  {
-        	  
-        	 grantExpenseInstance.currentBalance = receivedAmount - expenseTotal[0]
+        	
+        	 grantExpenseInstance.currentBalance = receivedAmount - (expenseTotal[0]+ fundTransferAmnt[0])
      		  println"currentBalance"+grantExpenseInstance.currentBalance
      	  }
+         else if(expenseTotal[0])
+         {
+        	 grantExpenseInstance.currentBalance = receivedAmount - expenseTotal[0]
+         }
+         else if(fundTransferAmnt[0])
+         {
+        	 grantExpenseInstance.currentBalance = receivedAmount - fundTransferAmnt[0]
+         }
          else
          {
         	 grantExpenseInstance.currentBalance = receivedAmount

@@ -1,6 +1,10 @@
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
+import java.util.Date
+import grails.util.GrailsUtil
+import java.text.SimpleDateFormat
 class NotificationsEmailsController {
 	def notificationService
+	def projectsService
     def index = { redirect(action:list,params:params) }
 
     // the delete, save and update actions only accept POST requests
@@ -159,13 +163,28 @@ class NotificationsEmailsController {
         gh.removeValue("Help")
        		//putting help pages in session
        	gh.putValue("Help","Party_Notifications_List.htm")
+       	params.max = Math.min(params.max ? params.int('max') : 10, 100)
             if(!params.max) params.max = 10
             def notificationsEmailsService = new NotificationsEmailsService()
     		println "party=="+gh.getValue("Party")
             //def partyNotificationsInstance = notificationsEmailsService.getNotificationsByParty(gh.getValue("Party"))
-            def partyNotificationsInstance = notificationService.getAllPublishedNotification(gh.getValue("Party"))
+              SimpleDateFormat sdfDestination = new SimpleDateFormat("yyyy-MM-dd")
+	        Date date = new Date()
+	        println"date"+date
+            String currentDate = sdfDestination.format(date)
+            println"currentDate"+currentDate
+	    params.offset = (params.offset ? params.int('offset') : 0)	
+            def partyNotificationsInstance = notificationService.getAllPublishedNotification(gh.getValue("Party"),currentDate)
+	    // For Pagination
+            def total=partyNotificationsInstance.size()
+			if(total)
+			{
+			 def max = projectsService.findUpperIndex(params.offset,params.max,total) 
+			
+			 partyNotificationsInstance = partyNotificationsInstance.getAt(params.offset..max)											
+			}
             println "instance=="+partyNotificationsInstance
-            [ partyNotificationsInstance : partyNotificationsInstance ]
+            [ partyNotificationsInstance : partyNotificationsInstance,'partyNotificationsInstanceTotal':total ]
     }
     def showPartyNotifications = {
     		

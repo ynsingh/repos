@@ -1,14 +1,15 @@
 class EvalItemService {
 
     boolean transactional = true
+    def notificationService
  
 /*
  * Function to Get Duplicate EvalItems
 */
 	
-	public toGetDuplicateEvalItem(def evalitem,def notificationId,def evalScaleId)
+	public toGetDuplicateEvalItem(def evalitem,def evalScaleId)
 	{
-		def evalItemDuplicateInstance = EvalItem.find("from EvalItem EI where EI.activeYesNo = 'Y' and EI.item ='"+evalitem+"' and EI.notification = '"+notificationId+"' and EI.evalScale = "+evalScaleId )
+		def evalItemDuplicateInstance = EvalItem.find("from EvalItem EI where EI.activeYesNo = 'Y' and EI.item ='"+evalitem+"' and EI.evalScale = "+evalScaleId )
 	    return evalItemDuplicateInstance
 	}
 	 
@@ -103,12 +104,12 @@ class EvalItemService {
     	return evalSaved;
     }
     /**
-     * Get Eval Item List based on notification
+     * Get Eval Item List from EvalItemNotificationMap based on notification
      */
     public List getevalItemList(def notificationId)
     {
-    	def evalItemInstanceList =  EvalItem.findAll("from EvalItem EI where EI.activeYesNo='Y' and EI.notification.id = " + notificationId)
-    	return evalItemInstanceList
+    	def evalItemNotificationMapInstanceList =  EvalItemNotificationMap.findAll("from EvalItemNotificationMap EI where EI.activeYesNo='Y' and EI.notification.id = " + notificationId)
+    	return evalItemNotificationMapInstanceList.evalItem
     }
     /**
      * Get Eval Answer List of reviewer based on the proposal
@@ -239,6 +240,116 @@ class EvalItemService {
      			userId+" and EA.proposal.notification.party.id ="+party+" group by EA.proposal.id")
      	return evalAnswerInstanceList
      }
+     /**
+      * Function to get Eval item List by party id
+      */
+     public List getEvalItemByParty(def party)
+     {
+     	def evalItemList = EvalItem.findAll("from EvalItem EI where EI.activeYesNo='Y' and EI.evalScale.party.id ="+party)
+     	return evalItemList
+     }
+     /**
+      * Function to get EvalItem notification map by notification id
+      */
+     public List getEvalItemNotificationMapByNotification(def notification)
+     {
+     	def evalItemNotificationMapList = EvalItemNotificationMap.findAll("from EvalItemNotificationMap EN where EN.activeYesNo='Y' and EN.notification.id ="+notification)
+     	return evalItemNotificationMapList
+     }
+     /**
+      * Function to save EvalItemNotificationMap 
+      */
+     public def saveEvalItemNotificationMapList(def params)
+     {
+    	 //get notification instance by notification id
+    	 def notificationInstance = notificationService.getNotificationById(params.notification.id)
+    	 def evalItemNotificationMapStatus 
+        //iterating selected eval items
+    	 for(int i=0;i<params.evalItem.id.size();i++)
+         {
+    		if(params.evalItem.id[i]!='')
+         	{
+    			//get EvalItem instance by evalItem id
+    			def evalItemInstance = getEvalItemById(params.evalItem.id[i])
+    			//create and intilize new EvalItemNotificationMap
+         		def evalItemNotificationMapInstance = new EvalItemNotificationMap(notification:notificationInstance,evalItem:evalItemInstance,activeYesNo:'Y')
+         		if(evalItemNotificationMapInstance.save(flush: true))
+         		{
+         			evalItemNotificationMapStatus = 'Saved'
+         		}
+         		else
+         		{
+         			evalItemNotificationMapStatus = 'NotSaved'
+         			break
+         		}
+         	}
+         }
+    	 return evalItemNotificationMapStatus
+     }
+     /**
+      * Function to inactivate EvalItemNotificationMap 
+      */
+     public def inactivateEvalItemNotificationMapList(def params)
+     {
+    	    	 
+    	 def evalItemNotificationMapStatus 
+    	 for(int i=0;i<params.evalItemNotificationMap.id.size();i++)
+         {
+    		if(params.evalItemNotificationMap.id[i]!='')
+         	{
+    			//get EvalItemNotificationMap instance by EvalItemNotificationMap id
+    			def evalItemNotificationMapInstance = getevalItemNotificationMapById(params.evalItemNotificationMap.id[i])
+    			//inactivate EvalItemNotificationMap
+         		evalItemNotificationMapInstance.activeYesNo = 'N'
+         		if(evalItemNotificationMapInstance.save(flush: true))
+         		{
+         			evalItemNotificationMapStatus = 'Saved'
+         		}
+         		else
+         		{
+         			evalItemNotificationMapStatus = 'NotSaved'
+         			break
+         		}
+         	}
+         }
+    	 return evalItemNotificationMapStatus
+     }
+     /**
+      * Function to get Eval Answer List by notification id
+      */
+     public List getEvalAnswerListByNotificationId(def notificationId)
+     {
+     	def evalAnswerInstanceList = EvalAnswer.findAll("from EvalAnswer EA where EA.activeYesNo='Y' and"
+     			+" EA.proposal.notification.id ="
+     			+notificationId)
+     	return evalAnswerInstanceList
+     }
+     /**
+      * Function to get EvalItem by id
+      */
+      public def getEvalItemById(def id)
+      {
+      	def evalItemInstance = EvalItem.get(id)
+      	return evalItemInstance
+      }
+      /**
+       * Function to get EvalItemNotificationMap by id
+       */
+       public def getevalItemNotificationMapById(def id)
+       {
+       	def evalItemNotificationMapInstance = EvalItemNotificationMap.get(id)
+       	return evalItemNotificationMapInstance
+       }
+       /**
+        * Function to get EvalItemNotificationMap by id
+        */
+        public def getAssignedEvalItem(id)
+        {
+        	def assignedEvalItemInstance = EvalItemNotificationMap.find("from EvalItemNotificationMap ENM where ENM.activeYesNo='Y' and ENM.evalItem.id="+id)
+            return assignedEvalItemInstance
+        } 
+      
+     
     def serviceMethod() {
 
     }

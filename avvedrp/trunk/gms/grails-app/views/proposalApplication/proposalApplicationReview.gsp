@@ -38,22 +38,138 @@
                                 </td>
                                 
                             </tr>
-                         <g:each in="${proposalApplicationExtInstance}" var="proposalApplicationExtInstance">
-                            <g:if test="${proposalApplicationExtInstance.page==1}">
-                              <tr class="prop">
+                          <tr class="prop">
                                 <td valign="top" style="width:200px;" class="prname">
-                                    <label for="name"><g:message code="${proposalApplicationExtInstance.label}"/>:</label>
+                                    <label for="name"><g:message code="default.Name.label"/>:</label>
                                 </td>
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'name','errors')}">
                                 
                                     <label for="name">
-                                    ${proposalApplicationExtInstance.value}
+                                    ${proposalApplicationInstance?.name}
                                     
                                     </label>
                                 </td>
                             </tr> 
-                            </g:if>
-                            </g:each>
+                            <tr class="prop">
+                                <td valign="top" style="width:200px;" class="prname">
+                                    <label for="name"><g:message code="default.Designation.label"/>:</label>
+                                </td>
+                                <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'name','errors')}">
+                                
+                                    <label for="name">
+                                    ${proposalApplicationInstance?.designation}
+                                    
+                                    </label>
+                                </td>
+                            </tr> 
+                            <tr class="prop">
+                                <td valign="top" style="width:200px;" class="prname">
+                                    <label for="name"><g:message code="default.Organisation.label"/>:</label>
+                                </td>
+                                <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'name','errors')}">
+                                
+                                    <label for="name">
+                                    ${proposalApplicationInstance?.organisation}
+                                    
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr class="prop">
+                                <td valign="top" style="width:200px;" class="prname">
+                                    <label for="name"><g:message code="default.PostalAddress.label"/>:</label>
+                                </td>
+                                <td valign="top" class="prvalue ${hasErrors(proposalApplicationInstance,field:'postalAddress','errors')}">
+                                
+                                    <label for="name">
+                                    ${proposalApplicationInstance?.postalAddress}
+                                    
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr class="prop">
+                                <td valign="top" style="width:200px;" class="prname">
+                                    <label for="name"><g:message code="default.City.label"/>:</label>
+                                </td>
+                                <td valign="top" class="prvalue ${hasErrors(proposalApplicationInstance,field:'City','errors')}">
+                                
+                                    <label for="name">
+                                    ${proposalApplicationInstance?.city}
+                                    
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr class="prop">
+                                <td valign="top" style="width:200px;" class="prname">
+                                    <label for="name"><g:message code="default.State.label"/>:</label>
+                                </td>
+                                <td valign="top" class="prvalue ${hasErrors(proposalApplicationInstance,field:'State','errors')}">
+                                
+                                    <label for="name">
+                                    ${proposalApplicationInstance?.state}
+                                    
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr class="prop">
+                                <td valign="top" style="width:200px;" class="prname">
+                                    <label for="name"><g:message code="default.Phone.label"/>:</label>
+                                </td>
+                                <td valign="top" class="prvalue ${hasErrors(proposalApplicationInstance,field:'phone','errors')}">
+                                
+                                    <label for="name">
+                                    ${proposalApplicationInstance?.phone}
+                                    
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr class="prop">
+                                <td valign="top" style="width:200px;" class="prname">
+                                    <label for="name"><g:message code="default.Fax.label"/>:</label>
+                                </td>
+                                <td valign="top" class="prvalue ${hasErrors(proposalApplicationInstance,field:'fax','errors')}">
+                                
+                                    <label for="name">
+                                    ${proposalApplicationInstance?.fax}
+                                    
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr class="prop">
+                                <td valign="top" style="width:200px;" class="prname">
+                                    <label for="name"><g:message code="default.Email.label"/>:</label>
+                                </td>
+                                <td valign="top" class="prvalue ${hasErrors(proposalApplicationInstance,field:'email','errors')}">
+                                
+                                    <label for="name">
+                                    ${proposalApplicationInstance?.email}
+                                    
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr class="prop">
+                                <td valign="top" style="width:200px;" class="prname">
+                                    <label for="name"><g:message code="default.Mobile.label"/>:</label>
+                                </td>
+                                <td valign="top" class="prvalue ${hasErrors(proposalApplicationInstance,field:'mobile','errors')}">
+                                
+                                    <label for="name">
+                                    ${proposalApplicationInstance?.mobile}
+                                    
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr class="prop">
+                                <td valign="top" style="width:200px;" class="prname">
+                                    <label for="name"><g:message code="default.ProjectCategory.label"/>:</label>
+                                </td>
+                                <td valign="top" class="prvalue ${hasErrors(proposalApplicationInstance,field:'proposalCategory.name','errors')}">
+                                
+                                    <label for="name">
+                                    ${proposalApplicationInstance?.proposalCategory?.name}
+                                    
+                                    </label>
+                                </td>
+                            </tr>
                             
                             <tr class="prop">
                                 <td valign="top" colspan="2" style="width:200px;" class="prname">

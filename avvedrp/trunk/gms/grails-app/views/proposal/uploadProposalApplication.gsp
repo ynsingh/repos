@@ -100,7 +100,7 @@
             			<tr>
             			
             				<td colspan="2">
-            				<div id="grantorList"><b><label><g:message code="default.ClickHereStart.label"/></label><g:link action="proposalAppPart1PersonalDetails" controller='proposalApplication' id="" ><g:message code="default.NewForm.label"/></g:link>
+            				<div id="grantorList"><b><label><g:message code="default.ClickHereStart.label"/></label><g:link action="proposalApplicationPartyList" controller='proposalApplication' id="" ><g:message code="default.NewForm.label"/></g:link>
             				</b>
             				</div></td>
             				

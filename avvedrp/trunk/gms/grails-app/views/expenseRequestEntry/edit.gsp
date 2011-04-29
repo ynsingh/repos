@@ -30,6 +30,7 @@
 	                        	<tr class="prop">
 	                                <td valign="top" class="name">
 	                                  <label for="projects"><g:message code="default.Projects.label" /></label>
+	                                  <label for="symbol" style="color:red;font-weight:bold"> * </label>
 	                                </td>
 	                                <td valign="top" class="value ${hasErrors(bean: expenseRequestEntryInstance, field: 'projects', 'errors')}">
 	                                    <g:select name="projects.id" from="${projectsList}" optionKey="id" optionValue="code" value="${expenseRequestEntryInstance?.projects?.id}"  />
@@ -46,6 +47,7 @@
 	                            <tr class="prop">
 	                                <td valign="top" class="name">
 	                                  <label for="expenseDescription"><g:message code="default.ExpenseDescription.label" /></label>
+	                                  <label for="symbol" style="color:red;font-weight:bold"> * </label>
 	                                </td>
 	                                <td valign="top" class="value ${hasErrors(bean: expenseRequestEntryInstance, field: 'expenseDescription', 'errors')}">
 	                                    <g:textField name="expenseDescription" value="${expenseRequestEntryInstance?.expenseDescription}" />
@@ -64,6 +66,7 @@
 	                            <tr class="prop">
 	                                <td valign="top" class="name">
 	                                  <label for="dateOfExpense"><g:message code="default.ExpenseDate.label" /></label>
+	                                  <label for="symbol" style="color:red;font-weight:bold"> * </label>
 	                                </td>
 	                                <td valign="top" class="value ${hasErrors(bean: expenseRequestEntryInstance, field: 'dateOfExpense', 'errors')}">
 	                                    <calendar:datePicker name="dateOfExpense" defaultValue="${new Date()}" value="${expenseRequestEntryInstance?.dateOfExpense}" dateFormat= "%d/%m/%Y"/>
@@ -80,6 +83,7 @@
 	                            <tr class="prop">
 	                                <td valign="top" class="name">
 	                                  <label for="expenseAmount"><g:message code="default.ExpenseAmount(Rs).label" /></label>
+	                                  <label for="symbol" style="color:red;font-weight:bold"> * </label>
 	                                </td>
 	                                <td valign="top" class="value ${hasErrors(bean: expenseRequestEntryInstance, field: 'expenseAmount', 'errors')}">
 	                                    <g:textField name="expenseAmount" value="${expenseAmount}" />

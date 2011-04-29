@@ -664,6 +664,8 @@
     
     
     def editProAllot = {
+		GrailsHttpSession gh=getSession()
+		def partyService = new PartyService()
 		def grantAllocationService = new GrantAllocationService()
 		def grantAllocationInstance = grantAllocationService.getGrantAllocationById(new Integer(params.id))
 		def projectsInstance = Projects.get(grantAllocationInstance.projects.id)
@@ -673,7 +675,7 @@
 			if(projectsPIMapInstance)
 				projectsInstance.investigator = projectsPIMapInstance.investigator
 		}
-
+		def partyInstance=partyService.getPartyById(gh.getValue("Party"))
 		  def projectInstance 
 		 println "ss "+grantAllocationInstance.projects
         if(grantAllocationInstance.projects.parent!=null) 
@@ -688,7 +690,7 @@
         	sumAmountAllocated = sumAmountAllocated + grantAllocationInstanceList[i].amountAllocated
         }
         grantAllocationInstance.totAllAmount = sumAmountAllocated
-       
+        grantAllocationInstance.balanceAmount=projectsInstance.parent.totAllAmount - grantAllocationInstance.totAllAmount
         
         def dataSecurityService = new DataSecurityService()
         //checking  whether the user has access to the given projects
@@ -706,9 +708,12 @@
 	            redirect(action:list)
 	        }
 	        else {
+	        	ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
 	        	NumberFormat formatter = new DecimalFormat("#0.00");
 	        	return [ grantAllocationInstance : grantAllocationInstance ,
 	        	         'projectInstance':projectInstance,
+	        	         'partyInstance':partyInstance,
+	        	         'currencyFormat':currencyFormatter,
 	        	         'amount':formatter.format(grantAllocationInstance.amountAllocated),
 	        	         'projectsInstance':projectsInstance]
 	        }

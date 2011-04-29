@@ -17,5 +17,10 @@ class FundTransferService
 		def grantAllocationParentInstance= GrantAllocation.findAll("from GrantAllocation GA where GA.projects ="+fundTransferInstance.grantAllocation.projects.parent.id)
 		return grantAllocationParentInstance
 	}
-
+	
+	public List getFundTransferTotal(def grantExpenseInstance)
+	{
+	def fundTransferAmnt = FundTransfer.executeQuery("select sum(FT.amount) from FundTransfer FT where FT.grantAllocation.projects.parent="+grantExpenseInstance.projects.id)
+    return fundTransferAmnt
+	}
 }

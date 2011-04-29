@@ -82,7 +82,7 @@
                                     </label>:
                                 </td>
                                 <td valign="top" class="value ${hasErrors(grantReceiptInstance,field:'grantAllocation','errors')}">
-                                    <g:select optionKey="id" optionValue="grantCode" from="${grantAllocationInstanceList}" name="grantAllocation.id" value="${grantReceiptInstance?.grantAllocation?.id}" noSelection="['null':'Select']"></g:select>
+                                    <g:select optionKey="id" optionValue="grantCode" from="${grantAllocationInstanceList}" name="grantAllocation.id" value="${grantReceiptInstance?.grantAllocation?.id}" noSelection="['null':'-Select-']"></g:select>
                                 </td>
                                 <td valign="top" class="name">
                                     <label for="fundTransfer">
@@ -94,7 +94,7 @@
 	                                    <g:select optionKey="id" 
 	                                    onchange="${remoteFunction(controller:'grantReceipt', action:'selectAmount',update:'grantAmt',params:'\'id=\' + this.value')}" 
 	                                    onFocus="${remoteFunction(controller:'grantReceipt', action:'selectAmount',update:'grantAmt',params:'\'id=\' + this.value')}" 
-	                                    optionValue="amountCode" from="${fundTransferInstanceList}" name="fundTransfer.id" id="fundTransfer.id" value="${grantReceiptInstance?.fundTransfer?.id}" noSelection="['null':'select']"></g:select>
+	                                    optionValue="amountCode" from="${fundTransferInstanceList}" name="fundTransfer.id" id="fundTransfer.id" value="${grantReceiptInstance?.fundTransfer?.id}" noSelection="['null':'-Select-']"></g:select>
 	                                    
 	                                </td>
 	                            </g:if>
@@ -112,7 +112,7 @@
 			                        </label>:
 			                    </td>
 			                    <td valign="top" class="value ${hasErrors(bean:grantReceiptInstance,field:'grantAllocationSplit','errors')}">
-			                        <g:select optionKey="id" optionValue="accHeadPeriod"  from="${accountHeadList}" name="grantAllocationSplit.id" value="${grantReceiptInstance?.grantAllocationSplit?.id}" noSelection="['null':'select']"></g:select>
+			                        <g:select optionKey="id" optionValue="accHeadPeriod"  from="${accountHeadList}" name="grantAllocationSplit.id" value="${grantReceiptInstance?.grantAllocationSplit?.id}" noSelection="['null':'-Select-']"></g:select>
 			                    </td>
                                 <td valign="top" class="name">
                                     <label for="amount">
@@ -135,7 +135,7 @@
                                      <label for="modeOfPayment" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:grantReceiptInstance,field:'modeOfPayment','errors')}">
-                                    <g:select name="modeOfPayment" from="${['DD','Cheque','BankTransfer']}"  value="${fieldValue(bean:grantReceiptInstance,field:'modeOfPayment')}" noSelection="['null':'select']"></g:select>
+                                    <g:select name="modeOfPayment" from="${['DD','Cheque','BankTransfer']}"  value="${fieldValue(bean:grantReceiptInstance,field:'modeOfPayment')}" noSelection="['null':'-Select-']"></g:select>
                                 </td>
                                 <td valign="top" class="name">
                                     <label for="ddDate">

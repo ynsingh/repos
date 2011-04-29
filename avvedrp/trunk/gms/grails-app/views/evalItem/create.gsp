@@ -12,6 +12,9 @@
 	            <g:if test="${flash.message}">
 	            	<div class="message">${flash.message}</div>
 	            </g:if>
+	            <g:if test="${flash.error}">
+            		<div class="errors">${flash.error}</div>
+            	</g:if>
             	<g:hasErrors bean="${evalItemInstance}">
 		            <div class="errors">
 		                <g:renderErrors bean="${evalItemInstance}" as="list" />
@@ -29,20 +32,11 @@
 	                                    <g:textField name="item" value="${evalItemInstance?.item}" />
 	                                </td>
 	                           
-	                                <td valign="top" class="name">
-	                                    <label for="notification"><g:message code="default.evalItem.notification.label"/></label>
-	                                </td>
-	                                <td valign="top" class="value ${hasErrors(bean: evalItemInstance, field: 'notification', 'errors')}">
-	                                    <g:select optionKey="id" optionValue="notificationCode" from="${(notificationInstanceList)}"  name="notification.id" value="${fieldValue(bean: evalItemInstance, field: 'notification')}" noSelection="['null':'select']" />
-	                                </td>
-	                            </tr>
-	                            
-	                            <tr class="prop">
 	                               <td valign="top" class="name">
 	                                    <label for="evalScale"><g:message code="default.evalItem.evalScale.label"/></label>
 	                               </td>
 	                               <td valign="top" class="value ${hasErrors(bean: evalItemInstance, field: 'evalScale', 'errors')}">
-	                                    <g:select optionKey="id" optionValue="scaleTitle" from="${(evalScaleInstanceList)}" name="evalScale.id" value="${fieldValue(bean: evalScaleInstance, field: 'scaleTiltle')}" noSelection="['null':'select']" ></g:select>
+	                                    <g:select optionKey="id" optionValue="scaleTitle" from="${(evalScaleInstanceList)}" name="evalScale.id" value="${fieldValue(bean: evalScaleInstance, field: 'scaleTiltle')}" noSelection="['null':'-Select-']" ></g:select>
 	                               </td>
 	                           </tr>
 	                       </tbody>
@@ -67,9 +61,7 @@
 		                            <g:sortableColumn property="item" title="${message(code: 'default.evalItem.item.label')}" />
 		                            
 		                            <th><g:message code="default.evalItem.evalScale.label"/></th>
-		                            
-		                            <th><g:message code="default.evalItem.notification.label" /></th>
-		                            
+		                                                      
 		                            <th><g:message code="default.Edit.label" default="Edit" /></th>
 		                        
 	                        	</tr>
@@ -83,9 +75,7 @@
 			                            <td>${fieldValue(bean: evalItemInstance, field: "item")}</td>
 			                                                    
 			                            <td>${fieldValue(bean: evalItemInstance, field: "evalScale.scaleTitle")}</td>
-			                        
-			                            <td>${fieldValue(bean: evalItemInstance, field: "notification.notificationCode")}</td>
-			                            
+			                        	                            
 			                            <td><g:link action="edit" id="${fieldValue(bean:evalItemInstance, field:'id')}"><g:message code="default.Edit.label"/></g:link></td>
 			                        
 		                           </tr>

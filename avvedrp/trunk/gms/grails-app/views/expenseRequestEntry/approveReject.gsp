@@ -108,7 +108,9 @@
 			                			<tr class="prop">
 					                       	<td valign="top" class="name"> 
 					                       		
-						                       		<label for="status"><g:message code="default.RequestEvaluationStatus.label"/>:</label></td>
+						                       		<label for="status"><g:message code="default.RequestEvaluationStatus.label"/>:</label>
+						                       		<label for="symbol" style="color:red;font-weight:bold"> * </label>
+						                       		</td>
 								            		 
 								            		<td><g:radio name="status" value="Approved"/> <label for=' Approved '><g:message code="default.Approved.label"/></label>
 											  			<br>

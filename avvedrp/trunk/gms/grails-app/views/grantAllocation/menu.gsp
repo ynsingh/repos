@@ -72,13 +72,14 @@
 					</ul>
 				</div>
 			</g:if>	
-			<g:if test="${(session.Role != 'ROLE_USER') && (session.Role != 'ROLE_STAFF')&& (session.Role != 'ROLE_REVIEWER')&& (session.Role != 'ROLE_FINANCE')&& (session.Role != 'ROLE_PI')}">
+			<g:if test="${(session.Role == 'ROLE_PROJECTADMIN') || (session.Role == 'ROLE_SITEADMIN')|| (session.Role == 'ROLE_PROPOSALADMIN')}">
 				<a class="menuitem submenuheader" href="#" ><g:message code="default.Projects.label"/></a>
 				<div class="submenu">
 					<ul>
 						<g:if test="${session.Role == 'ROLE_SITEADMIN'}">
 							<li><a href="${createLinkTo(dir:'projects/create')}" target="right"><g:message code="default.AddProjects.label"/></a></li>
 							<li><a href="${createLinkTo(dir:'projects/list')}" target="right"><g:message code="default.ProjectList.label"/></a></li>
+							<li><a href="${createLinkTo(dir:'projects/projectsDashBoard')}" target="right"><g:message code="default.ProjectsDashBoard.label"/></a></li>
 							<li><a href="${createLinkTo(dir:'projects/search')}" target="right"><g:message code="default.SearchProjects.label"/></a></li>
 							<!-- <li><a href="${createLinkTo(dir:'projects/inactiveProjectsList')}" target="right">Inactive Projects</a></li> -->
 						</g:if>	
@@ -94,6 +95,7 @@
 				<div class="submenu">
 					<ul>
 						<li><a href="${createLinkTo(dir:'projects/list')}" target="right"><g:message code="default.ProjectList.label"/></a></li>
+						<li><a href="${createLinkTo(dir:'projects/projectsDashBoard')}" target="right"><g:message code="default.ProjectsDashBoard.label"/></a></li>
 						<li><a href="${createLinkTo(dir:'projects/search')}" target="right"><g:message code="default.SearchProjects.label"/></a></li>
 					</ul>
 				</div>
@@ -146,7 +148,7 @@
 							<li><a href="${createLinkTo(dir:'evalScale/create')}" target="right"><g:message code="default.EvalScale.label"/></a></li>
 							<li><a href="${createLinkTo(dir:'evalScaleOptions/create')}" target="right"><g:message code="default.EvalScaleOptions.label"/></a></li>
 							<li><a href="${createLinkTo(dir:'evalItem/create')}" target="right"><g:message code="default.EvalItem.label"/></a></li>
-							
+							<li><a href="${createLinkTo(dir:'evalItemNotificationMap/create')}" target="right"><g:message code="default.QuestionNotificationMap.label"/></a></li>
 						</ul>
 					</div>
 			</g:if>

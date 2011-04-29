@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical" 
+	xmlns:maximporges="com.maximporges.*" creationComplete="loadChart();"  backgroundColor="#D5E5ED">
+    
+<mx:Style>
+     @font-face{
+        src: url("assets/MyriadWebPro.ttf");
+        fontFamily: myMyriad;
+     }
+
+     ColumnChart {
+        fontFamily: myMyriad;
+        fontSize: 12;        
+     }
+     
+     .labelStyle { 
+            fontSize: 12;
+            fontWeight: bold;          
+        }
+  </mx:Style>
+<mx:Script><![CDATA[
+        import mx.formatters.*;
+		import mx.collections.XMLListCollection;
+		import mx.rpc.events.ResultEvent;
+		import mx.rpc.events.FaultEvent;
+		import mx.collections.ArrayCollection;
+		import mx.controls.Alert;
+	    import mx.charts.events.ChartItemEvent;
+	    import mx.charts.HitData;
+		import flash.events.MouseEvent;
+		import mx.utils.ObjectUtil;
+		import mx.controls.DateField;
+
+
+      private function loadChart():void{	
+			projectlist.send();			   	
+		}
+		
+		
+		
+         
+		//chart1 starts here
+		 private var xmldata1:XML;
+		[Bindable] private var combo_projects:ArrayCollection=new ArrayCollection;
+		private function projectHandler(evt:ResultEvent):void{
+			 
+                xmldata1=evt.result as XML;  
+               // Alert.show(evt.result as XML);
+			    combo_projects.removeAll();
+			    var obj:Object= {"label":'-------------- Select a Project ---------------',"data":''};	
+			    combo_projects.addItem(obj);					
+			    for each (var thexml:XML in xmldata1.project){
+			 	  var obj1:Object= {"label":thexml.label,"data":thexml.data};				
+				   combo_projects.addItem(obj1);		
+               }
+		}
+		
+		private var project_id:String=new String();
+        private var project_title:String=new String();
+		 private function showCharts(event:Event):void
+        {          
+		   project_id=projects.selectedItem.data;
+           project_title=projects.selectedItem.label;
+           panel1.title="PROJECT NAME : "+project_title;     
+		   showAllocationChart();
+		   showReceiptChart();	
+		  //clearExpenseDates();
+		  if(isVisible(from_date) && isVisible(to_date)) {		 
+		   from_date.text='';
+		   to_date.text=''; }
+		   expenseInfo.removeAll(); 	  		 			  
+		   showBalanceChart(); //Monthly expense  	
+        }		
+     
+     //Checking the visibility of Date Fields
+     public static function isVisible(obj:DisplayObject):Boolean
+		{
+		    while (obj && obj.visible && obj !== Application.application)
+		    {
+		        obj = obj.parent;
+		    }
+		    return obj && obj.visible;
+		}
+
+     
+		//Coding for Allocation chart Starts here   
+         private function showAllocationChart():void
+            {             
+               project_id=projects.selectedItem.data;
+               var http:HTTPService = new HTTPService();   			 
+			   http.addEventListener( ResultEvent.RESULT, allocationResultHandler );
+			   http.addEventListener( FaultEvent.FAULT, allocationFaultHandler );	 
+			   http.url = "../graphs/allocationChart?proj_id="+project_id;
+			   http.method = "POST";
+			   http.resultFormat = "e4x"; 
+			   http.send();				
+            }      
+            
+         private var xmldata2:XML;
+        [Bindable]  public var allocationInfo:ArrayCollection=new ArrayCollection;  
+        [Bindable]private var total_expense:Number;
+        [Bindable]private var expense:Number;      
+		 private function allocationResultHandler(evt:ResultEvent):void{	               
+                total_expense=0;
+    	        var f:NumberFormatter = new NumberFormatter();
+		        f.precision = 2;   
+                
+               xmldata2=evt.result as XML;       
+                        allocationInfo.removeAll(); 	    				
+			   for each (var thexml:XML in xmldata2.allocation){
+			      var obj1:Object= {"accounthead":thexml.accounthead,"amount":thexml.amount};				
+				   allocationInfo.addItem(obj1);				
+               }               
+		}			
+		 private function allocationFaultHandler(evt:FaultEvent):void{}
+	//Coding for Allocation chart Ends here	 	
+     
+     
+    //Coding for Receipt chart Starts here	  
+             public function showReceiptChart():void
+            {    
+                receiptInfo.removeAll(); 	    
+                var http1:HTTPService = new HTTPService();   			 
+			    http1.addEventListener( ResultEvent.RESULT, receiptResultHandler );
+			    http1.addEventListener( FaultEvent.FAULT, receiptFaultHandler );	 
+			    http1.url = "../graphs/receiptChart?proj_id="+project_id;
+			    http1.method = "POST";
+			    http1.resultFormat = "e4x"; 
+			    http1.send();				    
+            }           
+           
+
+          private var xmldata3:XML;        
+          [Bindable]  public var receiptInfo:ArrayCollection=new ArrayCollection;   
+           public function receiptResultHandler(evt:ResultEvent):void{         
+               // receiptInfo = evt.result.receipts;      
+               // Alert.show(evt.result as XML);   
+                 xmldata3=evt.result as XML;    
+               receiptInfo.removeAll(); 	    				
+			   for each (var thexml:XML in xmldata3.receipts){
+			      var obj2:Object= {"date":thexml.date,"amount":thexml.amount};				
+				   receiptInfo.addItem(obj2);				
+               }                       
+	    	}
+   	       public function receiptFaultHandler(evt:FaultEvent):void{}   	   
+      //Coding for Receipt chart Ends here 
+      
+
+		
+		//Coding for Monthly Expense chart Starts here				
+             public function showBalanceChart():void
+            {              	
+                balanceInfo.removeAll();
+                var http1:HTTPService = new HTTPService();   			 
+			    http1.addEventListener( ResultEvent.RESULT, balanceResultHandler );
+			    http1.addEventListener( FaultEvent.FAULT, balanceFaultHandler );	 
+			    http1.url = "../graphs/monthlyExpense?proj_id="+project_id;
+			    http1.method = "POST";
+			    http1.resultFormat = "e4x"; 
+			    http1.send();				    
+            }   
+
+         
+           private var xmldata4:XML;
+           [Bindable] private var balanceInfo:ArrayCollection=new ArrayCollection; 
+           public function balanceResultHandler(evt:ResultEvent):void{  
+                xmldata4=evt.result as XML;  
+			    balanceInfo.removeAll();
+			    for each (var thexml:XML in xmldata4.month)
+			    {
+			    	if(Number(thexml.amount) !=0)
+			    	{
+			 	     var obj1:Object= {"date":thexml.date,"amount":thexml.amount};				
+				     balanceInfo.addItem(obj1);		
+				    } 
+                }                         
+	    	}
+   	       public function balanceFaultHandler(evt:FaultEvent):void{}
+      //Coding for Monthly Expense chart Ends here 
+      
+      
+        //Coding for Expense chart Starts here...........      
+             private function showExpenseChart():void
+            {   
+            	var arg2:String=new String();
+            	var arg3:String=new String();
+            	arg2=from_date.text;
+            	arg3=to_date.text; 
+                var http:HTTPService = new HTTPService();   			 
+			    http.addEventListener( ResultEvent.RESULT, expenseResultHandler );
+			    http.addEventListener( FaultEvent.FAULT, expenseFaultHandler );	 
+			    http.url = "../graphs/expenseChart?proj_id="+project_id+"&from="+arg2+"&to="+arg3;
+			    http.method = "POST";
+			    http.resultFormat = "e4x"; 
+			    http.send();				  
+            }           
+           
+            [Bindable] private var xmldata5:XML;  
+            [Bindable]  public var expenseInfo:ArrayCollection=new ArrayCollection;         
+           private function expenseResultHandler(evt:ResultEvent):void{                 
+                xmldata5=evt.result as XML;    
+               expenseInfo.removeAll(); 	    				
+			   for each (var thexml:XML in xmldata5.expenses){
+			      var obj3:Object= {"accounthead":thexml.accounthead,"expense":thexml.expense};				
+				   expenseInfo.addItem(obj3);				
+               }                                        
+	    	}
+   	       private function expenseFaultHandler(evt:FaultEvent):void{}
+      //Coding for Expense chart Ends here 
+      
+    
+         //Setting dates for expense chart date chooser starts here
+        private function formatFromDate(date:Date):String {
+                return dfconv.format(date);
+            } 
+             private function formatToDate(date:Date):String {
+                return dfconv.format(date);
+            } 
+           private function enableTodate():void {
+            //	to_date.text='';
+               to_date.enabled=true;
+            }
+             private function validateDate():void {           
+            	var arg2:String=new String();//getting from date
+            	arg2=from_date.text;
+            	var a:Array = arg2.split( '-' );
+	            var fdate:Date= new Date( a[0], a[1] - 1, a[2] );	            
+	            var arg3:String=new String();
+	            
+            	arg3=to_date.text;//getting to date
+            	var b:Array = arg3.split( '-' );
+	            var tdate:Date= new Date( b[0], b[1] - 1, b[2] );
+	            var x:Number;	           
+	            x=ObjectUtil.dateCompare(fdate,tdate);
+	            if(x==1) {
+	             Alert.show("To date should be greater then From date");
+	             to_date.text='';
+	            }            	
+            } 
+        //Setting dates for expense chart date chooser ends here
+		
+		
+		
+		//DATA TIPS		
+		  public function myDataTipFunction1(e:HitData):String {
+        var f:NumberFormatter = new NumberFormatter();
+		f.precision = 2;   
+        var s:String;      
+        s = "\n<I><B>&nbsp;Account Head :</B></I> <FONT COLOR='#339966'><B>" + 
+            e.item.accounthead + "</B></FONT>\n";
+        s += "<I><B>&nbsp;Allocated Amount :</B></I> <FONT COLOR='#339966'><B>" + 
+             f.format(e.item.amount) + " Rs</B></FONT>\n";   
+        return s;       
+     }
+     
+  
+     
+     public function myDataTipFunction2(e:HitData):String {
+        var f:NumberFormatter = new NumberFormatter();
+		f.precision = 2;   
+        var s:String;      
+        s = "\n<I><B>&nbsp;Date :</B></I> <FONT COLOR='#339966'><B>" + 
+            e.item.date + "</B></FONT>\n";
+        s += "<I><B>&nbsp;Receipt Amount :</B></I> <FONT COLOR='#339966'><B>" + 
+             f.format(e.item.amount) + " Rs</B></FONT>\n";   
+        return s;       
+     }
+     
+          /*
+        public function myDataTipFunction3(e:HitData):String {
+        var f:NumberFormatter = new NumberFormatter();
+		f.precision = 2;   
+        var s:String;      
+        s = "\n<I><B>&nbsp;Account Head :</B></I> <FONT COLOR='#339966'><B>" + 
+            e.item.accounthead + "</B></FONT>\n";
+        s += "<I><B>&nbsp;Expense Amount :</B></I> <FONT COLOR='#339966'><B>" + 
+             f.format(e.item.amount) + " Rs</B></FONT>\n";   
+        return s;       
+     }
+     */
+
+       public function myDataTipFunction3(e:HitData):String {
+        var f:NumberFormatter = new NumberFormatter();
+		f.precision = 2;   
+        var s:String;      
+        s = "\n<I><B>&nbsp;Date :</B></I> <FONT COLOR='#339966'><B>" + 
+            e.item.date + "</B></FONT>\n";
+        s += "<I><B>&nbsp;Amount :</B></I> <FONT COLOR='#339966'><B>" + 
+             f.format(e.item.amount) + " Rs</B></FONT>\n";   
+        return s;       
+     }
+
+     
+       public function myDataTipFunction4(e:HitData):String {
+        var f:NumberFormatter = new NumberFormatter();
+		f.precision = 2;   
+        var s:String;      
+        s = "\n<I><B>&nbsp;Account Head :</B></I> <FONT COLOR='#339966'><B>" + 
+            e.item.accounthead + "</B></FONT>\n";
+        s += "<I><B>&nbsp;Expense Amount :</B></I> <FONT COLOR='#339966'><B>" + 
+             f.format(e.item.expense) + " Rs</B></FONT>\n";   
+        return s;          
+     }
+     
+     
+      public function display1(data:Object,field:String,index:Number,percentValue:Number):String
+        {
+          //  return data.insname + "\n" + data.Usage + "\n" + round(percentValue,2) + "%";
+           return round(percentValue,2) + "%";
+       }
+     public function round(num:Number, precision:Number):Number {
+        var result:String;
+        var f:NumberFormatter = new NumberFormatter();
+        f.precision = precision;
+        result = f.format(num);
+        return Number(result);
+     }
+   	   //DATA TIPS	
+     
+       
+  ]]></mx:Script>  
+  
+
+	<!--Effect for when chart data changes-->
+	<mx:SeriesInterpolate id="changeEffect1" duration="2000"/>
+	<mx:SeriesInterpolate id="changeEffect2" duration="2000"/>
+	<mx:SeriesInterpolate id="changeEffect3" duration="2000"/>
+	<mx:DateFormatter id="dfconv" formatString="YYYY-MM-DD"/>
+	
+<mx:HTTPService url="../graphs/projectList" id="projectlist" result="projectHandler(event)" resultFormat="e4x"/>               
+
+
+        
+   <mx:ComboBox id="projects" dataProvider="{combo_projects}"  width="300" change="showCharts(event);"/>
+ <mx:HDividedBox width="600" height="350" paddingTop="10">      
+      <mx:VDividedBox width="50%" height="100%" >
+      
+	   <!-- Start of Panel -->
+		 <mx:Panel title="Chart" id="panel1" width="100%" height="100%"  borderColor="#73A5C6">			
+			  <mx:ViewStack id="vs1" width="100%" height="100%">
+			  
+			        <mx:VBox  width="100%" height="100%"  hideEffect="Fade" showEffect="Fade" label="Allocation">
+			       
+				      														
+						   <!-- Space for Allocation chart -->
+						   <mx:ColumnChart id="allocationchart" showDataTips="true" dataTipFunction="myDataTipFunction1" width="95%"	height="95%"  paddingLeft="10" paddingTop="12"
+											   dataProvider="{scrollableRenderer1.maskedCollection}"  columnWidthRatio="0.20" >
+												<mx:horizontalAxis>
+												<mx:CategoryAxis id="categoryAxis1" categoryField="accounthead"  title="Account Head"/>
+												</mx:horizontalAxis>
+												<mx:verticalAxis>
+												<mx:LinearAxis id="verticalAxis1"  title="Allocated Amount"/>
+												</mx:verticalAxis>
+												<mx:series>
+												<mx:ColumnSeries showDataEffect="{changeEffect1}" id="series1" xField="accounthead" yField="amount" displayName="Account Head"/>
+												</mx:series>
+												
+												<mx:horizontalAxisRenderers>
+												<maximporges:ScrollBarAxisRenderer	id="scrollableRenderer1"
+																					placement="left"
+																					axis="{categoryAxis1}"
+																					verticalAxis="{verticalAxis1}"
+																					series="{series1}"
+																					dataProvider="{allocationInfo}"
+																					pageSize="10" 
+																					labelRenderer="InnerlabelRenderer"
+																				 />
+												</mx:horizontalAxisRenderers>
+												</mx:ColumnChart>				
+						      <!-- Space for Allocation chart -->
+				     </mx:VBox>
+							     
+							     
+							    
+							     
+			      <mx:VBox width="100%" height="100%"  toolTip="View in Chart" hideEffect="Fade" showEffect="Fade" label="Receipt">														
+							   <!-- Space for Receipt chart -->
+						   <mx:ColumnChart id="receiptchart" showDataTips="true" dataTipFunction="myDataTipFunction2" width="95%"	height="95%"  paddingLeft="10" paddingTop="12"
+											   dataProvider="{scrollableRenderer2.maskedCollection}"  columnWidthRatio="0.20">
+												<mx:horizontalAxis>
+												<mx:CategoryAxis id="categoryAxis2" categoryField="date"  title="Date"/>
+												</mx:horizontalAxis>
+												<mx:verticalAxis>
+												<mx:LinearAxis id="verticalAxis2"  title="Receipt Amount"/>
+												</mx:verticalAxis>
+												<mx:series>
+												<mx:ColumnSeries id="series2" showDataEffect="{changeEffect3}" xField="date" yField="amount" displayName="Receipt Amount"/>
+												</mx:series>
+												
+												<mx:horizontalAxisRenderers>
+												<maximporges:ScrollBarAxisRenderer	id="scrollableRenderer2"
+																					placement="left"
+																					axis="{categoryAxis2}"
+																					verticalAxis="{verticalAxis2}"
+																					series="{series2}"
+																					dataProvider="{receiptInfo}"
+																					pageSize="10" 
+																					labelRenderer="InnerlabelRenderer"
+																				 />
+												</mx:horizontalAxisRenderers>
+												</mx:ColumnChart>
+						      <!-- Space for Receiptchart -->
+			     </mx:VBox>
+			     
+							     
+							     
+			     <mx:VBox  width="100%" height="100%"  toolTip="View in Chart" hideEffect="Fade" showEffect="Fade" label="Monthly Balance">														
+				  	   <!-- Space for Monthly Balance chart -->
+						   <mx:LineChart id="balancechart"   showDataTips="true" dataTipFunction="myDataTipFunction3" width="95%"	height="95%"  paddingLeft="10" paddingTop="12"
+											   dataProvider="{scrollableRenderer3.maskedCollection}">
+										        <mx:horizontalAxis>
+										          <mx:CategoryAxis id="categoryAxis3" categoryField="date"  title="Date"/>
+										        </mx:horizontalAxis>
+										        <mx:series>
+										           <mx:LineSeries  id="series3" showDataEffect="{changeEffect2}" xField="date" yField="amount" displayName="Amount"/>					          
+										        </mx:series>
+										        
+										        <mx:horizontalAxisRenderers>
+												<maximporges:ScrollBarAxisRenderer	id="scrollableRenderer3"
+																					placement="left"
+																					axis="{categoryAxis3}"																	
+																					series="{series3}"
+																					dataProvider="{balanceInfo}"
+																					pageSize="10" 
+																					labelRenderer="DatelabelRenderer"
+																				 />
+												</mx:horizontalAxisRenderers>
+										        </mx:LineChart>
+						      <!-- Space for Monthly Expense chart -->
+			     </mx:VBox>
+							     
+							     
+			      <mx:VBox label="Expense"  width="100%" height="100%">													          
+
+							<!-- Space for  Expense chart -->
+						    <mx:Spacer height="4"/>		                             
+													  <mx:Spacer height="4"/>		                             
+													  <mx:HBox width="400">
+													  <mx:Spacer width="20%"/>
+													  <mx:Label text="From" styleName="labelStyle" paddingLeft="0"/><mx:DateField id="from_date" labelFunction="formatFromDate" yearNavigationEnabled="true" parseFunction="null"  change="enableTodate()"/>						      
+													  <mx:Spacer width="10%"/>
+													  <mx:Label text="To" styleName="labelStyle" paddingLeft="0"/><mx:DateField id="to_date" labelFunction="formatToDate" yearNavigationEnabled="true" parseFunction="null" enabled="false" change="validateDate()"/>
+													  <mx:Button  label="Show" click="showExpenseChart()" />
+													  </mx:HBox>
+													   <mx:Spacer height="4"/>
+													   
+																										
+															
+															
+															<mx:ColumnChart id="expensechart" showDataTips="true" dataTipFunction="myDataTipFunction4" width="95%"	height="95%"  paddingLeft="10" paddingTop="12"
+											   dataProvider="{scrollableRenderer4.maskedCollection}"  columnWidthRatio="0.20">
+												<mx:horizontalAxis>
+												<mx:CategoryAxis id="categoryAxis4" categoryField="accounthead"  title="Account head"/>
+												</mx:horizontalAxis>
+												<mx:verticalAxis>
+												<mx:LinearAxis id="verticalAxis4"  title="Expense"/>
+												</mx:verticalAxis>
+												<mx:series>
+												<mx:ColumnSeries id="series4" showDataEffect="{changeEffect3}" xField="accounthead" yField="expense" displayName="Account Head"/>
+												</mx:series>
+												
+												<mx:horizontalAxisRenderers>
+												<maximporges:ScrollBarAxisRenderer	id="scrollableRenderer4"
+																					placement="left"
+																					axis="{categoryAxis4}"
+																					verticalAxis="{verticalAxis4}"
+																					series="{series4}"
+																					dataProvider="{expenseInfo}"
+																					pageSize="10" 
+																					labelRenderer="InnerlabelRenderer"
+																				 />
+												</mx:horizontalAxisRenderers>
+												</mx:ColumnChart>
+																	
+						      <!-- Space for  Expense chart -->
+		        </mx:VBox> 
+			     
+		 </mx:ViewStack>		
+		    <mx:ControlBar>
+		        <mx:ToggleButtonBar dataProvider="{vs1}" />													        
+		    </mx:ControlBar>  
+	 </mx:Panel> 
+	  <!-- End of  Panel -->   
+								
+   </mx:VDividedBox>
+ </mx:HDividedBox>
+</mx:Application>

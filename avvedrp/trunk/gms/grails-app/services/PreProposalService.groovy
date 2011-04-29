@@ -15,10 +15,8 @@ class PreProposalService {
     public savePreProposal(def params,def userId,def partyId)
     {
     	
-    	println "params "+params
     	def userService = new UserService()
     	def userInstance=Person.get(userId)
-    	println "userInstance "+userInstance
     	//def userMapInstance=UserMap.find("from UserMap UM where UM.user="+userId)
     	def preProposalInstance = new PreProposal(params)
     	preProposalInstance.party=Party.get(partyId)
@@ -150,5 +148,28 @@ class PreProposalService {
    		 def chkPreProposalInstance = PreProposal.findAll("from PreProposal P where P.projectTitle= '"+params.projectTitle+"' and P.activeYesNo='Y'")
    		 return chkPreProposalInstance
    	}
+   	/*
+	 * update PreProposal
+	 */
+	 public updatePreProposalInstance(def preProposalInstance)
+	{
+		 if(preProposalInstance.save())
+		 {
+			 
+		 }
+		 else
+		 {
+			 preProposalInstance=null
+		 }
+		 return preProposalInstance
+	} 
+	 /*
+      * method to get preproposal by proposal status and user id
+      */
+     public List getPreProposalByStatus(def proposalStatus,def userId)
+     {
+    	 def preProposalInstance= PreProposal.findAll("from PreProposal P where P.preProposalStatus='"+proposalStatus+"' and P.person="+userId)
+    	 return preProposalInstance
+     }
 
 }

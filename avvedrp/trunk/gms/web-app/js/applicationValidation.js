@@ -32,6 +32,7 @@ function checkAllDelete()
 		}
 	}
 }
+docclick=0;
 function validate()
 { 
 	var isChecked=0; 
@@ -68,6 +69,12 @@ function validate()
 			return false;
 			}
 		}
+	docclick++;
+	if(docclick>1)
+	{
+		return false;
+	}
+	setTimeout('docclick=0', 2000);
 		
 	//rolePrivi.submit();	
    return true;
@@ -178,6 +185,12 @@ function validateActions()
 				return false;
 			}
 		}
+	docclick++;
+	if(docclick>1)
+	{
+		return false;
+	}
+	setTimeout('docclick=0', 2000);
 		
 	//rolePrivi.submit();	
    return true;
@@ -871,6 +884,12 @@ function validateGrantExpense()
 	    document.getElementById("ddNo").focus();
 	    return false;
     }
+     if(((document.getElementById("grantAllocation.id").value) == 'null') || ( (document.getElementById("grantAllocation.id").value) == '' ) )
+   {
+	   alert("Please select Grant Allocation");
+	   document.getElementById("grantAllocation.id").focus();
+	   return false;
+   }
     
    if(((document.getElementById("grantAllocationSplit.id").value) == 'null') || ( (document.getElementById("grantAllocationSplit.id").value) == '' ) )
    {
@@ -1106,7 +1125,7 @@ function validatePI()
 		document.getElementById('institution').focus();
 		return false;
 	}
-	if(document.getElementById('department.id').value == '' || document.getElementById('department.id').value == null)
+	if( ( (document.getElementById("department.id").value) == 'null') || ( (document.getElementById("department.id").value) == '') )
 	{
 		alert("Please select the Department");
 		document.getElementById('department.id').focus();
@@ -1391,10 +1410,11 @@ function validateParty()
 }
 function validateProjectTracking()
 {
-	if(document.getElementById("percOfCompletion").value == "")
+  if( ( (document.getElementById("projectStatus").value) == 'null') || ( (document.getElementById("projectStatus").value) == '') )
+	  
 	{
-		alert("Please Enter Percentage Of Completion");
-	    document.getElementById("percOfCompletion").focus();
+		alert("Please Enter Project Status");
+	    document.getElementById("projectStatus").focus();
 	    return false;
 	}
 	else if(isNaN(document.getElementById("percOfCompletion").value) )
@@ -1961,8 +1981,14 @@ function validateAttachmentType()
   			}
     	}
     }
+   if( ( (document.getElementById("documentType").value) == 'null') || ( (document.getElementById("documentType").value) == '') )
+	{
+		alert("Please Enter the Document Type");
+	    document.getElementById("documentType").focus();
+	    return false;
+	}
     
-	if(document.getElementById("type").value == "")
+	if( ( (document.getElementById("type").value) == 'null') || ( (document.getElementById("type").value) == '') )
 	{
 		alert("Please Enter the Type");
 	    document.getElementById("type").focus();
@@ -1970,7 +1996,33 @@ function validateAttachmentType()
 	}
 	return true;
 }
+function validateAttachmentTypeEdit()
+{
 
+      var speclChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?0123456789";
+	
+	if(document.getElementById("type").value != "")
+	 {
+    	
+    	for (var i = 0; i < (document.getElementById("type").value.length); i++) 
+    	{
+   	 		if (speclChars.indexOf(document.getElementById("type").value.charAt(i)) != -1) 
+  			{
+	  			alert ("Special characters and numbers are not allowed in Type.");
+	  			document.getElementById("type").focus();
+	  			return false;
+  			}
+    	}
+    }
+
+	if( ( (document.getElementById("type").value) == 'null') || ( (document.getElementById("type").value) == '') )
+	{
+		alert("Please Enter the Type");
+	    document.getElementById("type").focus();
+	    return false;
+	}
+	return true;
+}
 function validateItemPurchase()
 {
 	if(document.getElementById("name").value == "")
@@ -2547,7 +2599,14 @@ function validateEligibilityCriteria()
 				return false;
 			}
 		}
-  
+		
+	docclick++;
+		if(docclick>1)
+		{
+			return false;
+		}
+			setTimeout('docclick=0', 2000);
+	  
   		return true;
 	}
 	
@@ -2560,8 +2619,8 @@ function validatePreProposal()
 	    document.getElementById("projectTitle").focus();
 	    return false;
 	}
-	if(document.getElementById("proposalCategory").value == "")
-	{
+	  if( ( (document.getElementById("proposalCategory").value) == 'null') || ( (document.getElementById("proposalCategory").value) == '') )
+      {
 		alert("Please Enter the Proposal Category");
 	    document.getElementById("proposalCategory").focus();
 	    return false;
@@ -2639,16 +2698,21 @@ function validateApprovalAuthority()
 
 function validateApprovalAuthorityMap()
 {  
-
+   if( ( (document.getElementById("proposalType").value) == 'null') || ( (document.getElementById("proposalType").value) == '') )
+	 {
+	    alert("Please enter a Proposal Type");
+	    document.getElementById("proposalType").focus();
+	    return false;
+    } 
     
-    if(document.getElementById("proposalId").value =="")
-    {
+    if( ( (document.getElementById("proposalId").value) == 'null') || ( (document.getElementById("proposalId").value) == '') )
+	 {
 	    alert("Please enter a Proposal Title");
 	    document.getElementById("proposalId").focus();
 	    return false;
     } 
-    if(document.getElementById("approvalAuthority.id").value =="")
-    {
+    if( ( (document.getElementById("approvalAuthority.id").value) == 'null') || ( (document.getElementById("approvalAuthority.id").value) == '') )
+	  {
 	    alert("Please enter a Approval Authority");
 	    document.getElementById("approvalAuthority.id").focus();
 	    return false;
@@ -2673,13 +2737,20 @@ function validateApprovalAuthorityMap()
             return false;
          }
       }   
- 
+   if((document.getElementById("approveOrder").value)== 0)
+    {
+	    alert("Please enter Proper Amount  ");
+	    document.getElementById("approveOrder").focus();
+	    return false;
+    }
+    
     if(document.getElementById("approveOrder").value =="")
     {
 	    alert("Please enter a Approve Order");
 	    document.getElementById("approveOrder").focus();
 	    return false;
     } 
+     
     
      var str = document.getElementById('processRestartOrder').value;
     var oneDecimal = false;
@@ -2699,7 +2770,13 @@ function validateApprovalAuthorityMap()
             document.getElementById('processRestartOrder').focus();
             return false;
          }
-      }   
+      }
+       if((document.getElementById("processRestartOrder").value)== 0)
+    {
+	    alert("Please enter Proper Amount  ");
+	    document.getElementById("processRestartOrder").focus();
+	    return false;
+    }   
     
     if(document.getElementById("processRestartOrder").value =="")
     {
@@ -2707,10 +2784,8 @@ function validateApprovalAuthorityMap()
 	    document.getElementById("processRestartOrder").focus();
 	    return false;
     } 
-    
-   
      return true;
- 	}
+ }
  	
  	function validateEditApprovalAuthorityMap()
 {  
@@ -3013,12 +3088,7 @@ function validateApprovalAuthorityMap()
 		    document.getElementById("invoiceAmount").focus();
 		    return false;
 	    }
-	    if(document.getElementById("invoiceAmount").value == 0)
-		{
-			alert("Invalid Invoice Amount");
-		    document.getElementById("invoiceAmount").focus();
-		    return false;
-		}
+	    
 	    if((document.getElementById("approvalAuthority.id").value) == 'null')
 	    {
 		    alert("Please select an ApprovalAuthority to send request");
@@ -3176,6 +3246,26 @@ function validateEvalScale()
 		    document.getElementById("scaleOptionIndex").focus();
 		    return false;
 		}
+		 var str = document.getElementById('scaleOptionIndex').value;
+    var oneDecimal = false;
+    var oneChar = 0;
+    str = str.toString();
+
+    for (var i = 0; i < str.length; i++)
+     {
+
+        oneChar = str.charAt(i).charCodeAt(0);
+       // characters outside of 0 through 9 not OK
+
+        if (oneChar < 48 || oneChar > 57)
+         {
+
+            alert("Enter only valid numbers into the Scale Option Index Field.");
+            document.getElementById('scaleOptionIndex').focus();
+            return false;
+         }
+      }   
+		
 	  
 	    var speclChars = "!@#$%^&*+='[];,{}<>?";
 	
@@ -3205,25 +3295,112 @@ function validateEvalScale()
  {
      if( ( (document.getElementById("item").value) == 'null') || ( (document.getElementById("item").value) == '') )
 	    {
-		    alert("Please enter an item");
+		    alert("Please enter an Question");
 		    document.getElementById("item").focus();
 		    return false;
 	    }
 	 
-	   if( ( (document.getElementById("notification.id").value) == 'null') || ( (document.getElementById("notification.id").value) == '') )
-	    {
-		    alert("Please select a notification");
-		    document.getElementById("notification.id").focus();
-		    return false;
-	    }
-	    
+	  
 	   if( ( (document.getElementById("evalScale.id").value) == 'null') || ( (document.getElementById("evalScale.id").value) == '') )
 	    {
-		    alert("Please select an Eval Scale");
+		    alert("Please select an Evaluation Scale");
 		    document.getElementById("evalScale.id").focus();
 		    return false;
 	    }
 	      
 	    
   }
- 
+  
+   function validateDepartmentMap()
+ {
+  if( ( (document.getElementById("partyDepartment.id").value) == 'null') || ( (document.getElementById("partyDepartment.id").value) == '') )
+	    {
+		    alert("Please enter a Department");
+		    document.getElementById("partyDepartment.id").focus();
+		    return false;
+	    }
+ }
+  
+   function validateRolePrivilege()
+ {
+  if( ( (document.getElementById("authority").value) == 'null') || ( (document.getElementById("authority").value) == '') )
+	    {
+		    alert("Please enter a Authority Name");
+		    document.getElementById("authority").focus();
+		    return false;
+	    }
+ }
+  
+function checkAllBox(all,instance)
+{	
+	if(all.checked==true)
+	{
+		for(var i=0;i<instance.length;i++)
+		{
+			instance[i].checked=true;
+		}
+	}
+	else
+	{
+		for(var i=0;i<instance.length;i++)
+		{
+			instance[i].checked=false;
+		}
+	}
+}
+function validateCheckBox(instance,msg)
+{ 
+	var isChecked=0; 
+	if(instance.length > 1)  
+	{ 
+		for(var i=0;i<instance.length;i++)
+		{
+			if(instance[i].checked==true)
+			{
+				isChecked++;
+			}
+			if (isChecked > 0) 
+			{ 
+				break; 
+			}
+		}
+		if (isChecked == 0) 
+		{ 
+			alert(msg); 
+			return false;
+		}
+		}
+		else
+		{
+			if(instance.checked!=true)
+			{
+				alert(msg); 
+				return false;
+			}
+		}
+		
+	//rolePrivi.submit();	
+   return true;
+}
+function validateEvalItemNotificationMap(firstInstance,instance,msg)
+{ 
+	if(firstInstance.value == 'null')
+	{
+		alert("Please Select a Notification");
+		firstInstance.focus();
+		return false;
+	}
+	if(!validateCheckBox(instance,msg))
+	{
+		return false;
+	}
+	docclick++;
+		if(docclick>1)
+		{
+			return false;
+		}
+			setTimeout('docclick=0', 2000);
+	
+   return true;
+}
+

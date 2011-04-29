@@ -5,8 +5,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main" />
         <title><g:message code="default.Notification.NotificationList.head"/></title>
+ 		<g:javascript library="jquery"/>   
     </head>
     <body>
+    <div id="paginate">
       <g:subMenuNotification/>
         <div class="wrapper">
           <div class="body">
@@ -16,6 +18,8 @@
             </g:if>
             <g:if test="${notificationInstanceList}">
               <div class="list">
+              <div class="paginateButtons" style="border: 0px;height:14px;text-align:right" ><util:remotePaginate controller="notification" action="list" total="${notificationInstanceListTotal}" update="paginate"  prev="Prev" pageSizes="[5,10,20,40,50]"/><font style="font:8pt verdana;font-weight:bold;color:black">Total:${notificationInstanceListTotal}</font></div>
+              
                 <table cellpadding="0" cellspacing="0">
                     <thead>
                         <tr>
@@ -75,6 +79,7 @@
               <br><g:message code="default.NoRecordsAvailable.label"/></br>
             </g:else>
           </div>
+        </div>
         </div>
     </body>
 </html>

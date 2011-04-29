@@ -97,7 +97,7 @@ class NotificationsEmailsService {
      * Function to send mail to users
      */
     
-    public boolean sendMessage(def emailId,def mailMessage)
+    public boolean sendMessage(def emailId,def mailMessage,def contentType)
     {
     	def mailServerStatus = true
     	def mailSubject=gmsSettingsService.getGmsSettingsValue("MailSubject")
@@ -206,7 +206,8 @@ class NotificationsEmailsService {
 		                Session session = Session.getDefaultInstance(props, null);
 		               session.setDebug(true); 
 		            MimeMessage msg = new MimeMessage(session);
-	                    msg.setText(mailMessage);
+	                    //msg.setText(mailMessage);
+	                    msg.setContent(mailMessage, contentType);
 		            msg.setSubject(mailSubject);
 	                    msg.setFrom(new InternetAddress(from));
 		                        for(int i=0;i<to.length;i++){

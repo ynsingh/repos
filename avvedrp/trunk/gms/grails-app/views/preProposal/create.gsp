@@ -28,7 +28,8 @@
                         
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="projectTitle"><g:message code="default.ProposalTitle.label"/></label>
+                                    <label for="projectTitle"><g:message code="default.ProposalTitle.label"/>:</label>
+                                    <label for="projectTitle" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: preProposalInstance, field: 'projectTitle', 'errors')}">
                                     <g:textField name="projectTitle" value="${preProposalInstance?.projectTitle}" />
@@ -36,7 +37,7 @@
                         </tr>
                         <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="remarks"><g:message code="default.Remarks.label" /></label>
+                                    <label for="remarks"><g:message code="default.Remarks.label" />:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: preProposalInstance, field: 'remarks', 'errors')}">
                                     <g:textArea name="remarks" value="${preProposalInstance?.remarks}" />
@@ -47,10 +48,11 @@
                         
                            <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="proposalCategory"><g:message code="default.ProposalCategory.label"/></label>
+                                    <label for="proposalCategory"><g:message code="default.ProposalCategory.label"/>:</label>
+                                    <label for="proposalCategory" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: preProposalInstance, field: 'proposalCategory', 'errors')}">
-                                    <g:select  optionKey="id" optionValue="name" id="proposalCategory" from="${ProposalCategory.findAll('from ProposalCategory PC where PC.activeYesNo=\'Y\' ')}"  name="proposalCategory.id" value="${preProposalInstance?.proposalCategory?.id}"  ></g:select>
+                                    <g:select  optionKey="id" optionValue="name" id="proposalCategory" from="${ProposalCategory.findAll('from ProposalCategory PC where PC.activeYesNo=\'Y\' ')}"  name="proposalCategory.id" value="${preProposalInstance?.proposalCategory?.id}" noSelection="['null':'-Select-']" ></g:select>
                                 </td>        																											
                             </tr>
                         

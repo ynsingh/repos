@@ -31,7 +31,7 @@
                                 <td valign="top" class="value ${hasErrors(bean:rolePrivilegesInstance,field:'role','errors')}">
                                     <g:select optionKey="id" optionValue="authority" from="${authorityInstanceList}" name="role.id" 
                                     onchange="${remoteFunction(controller:'rolePrivileges',action:'getActionName',update:'actionNameSel',params:'\'filename=\'+document.getElementById(\'controllerName\').value+\'&role=\'+this.value')};"
-                                    value="${rolePrivilegesInstance?.role?.id}" ></g:select>
+                                    value="${rolePrivilegesInstance?.role?.id}" noSelection="['null':'-Select-']"></g:select>
                                 </td>
                                 <td valign="top" class="name">
                                     <label for="controllerName"><g:message code="default.Privilegesgroup.label"/>:</label>

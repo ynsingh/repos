@@ -175,7 +175,7 @@
 				                                    <g:select id="recipient" optionKey="id" optionValue="code" 
 					                                    from="${Party.findAll('from Party P where P.activeYesNo=\'Y\' and P.partyType is null ')}"  
 					                                    name="party.id" value="${grantAllocationInstance?.party?.id}" 
-					                                    noSelection="['null':'Select']">
+					                                    noSelection="['null':'-Select-']">
 				                                    </g:select>
 				                                </td>
 					                             
@@ -184,7 +184,7 @@
 					                                <label for="investigator" style="color:red;font-weight:bold"> * </label>
 					                            </td>
 					                            <td valign="top" class="value ${hasErrors(bean:grantAllocationInstance,field:'investigator','errors')}">
-					                                <g:select id="investigator.id" optionKey="id" optionValue="name" from="${Investigator.findAll('from Investigator I where I.activeYesNo=\'Y\' ')}" name="investigator.id" value="" noSelection="['null':'select']"></g:select>
+					                                <g:select id="investigator.id" optionKey="id" optionValue="name" from="${Investigator.findAll('from Investigator I where I.activeYesNo=\'Y\' ')}" name="investigator.id" value="" noSelection="['null':'-Select-']"></g:select>
 					                            </td>
 				                     		</tr>  
 								                             

@@ -13,6 +13,9 @@
             <td>
               <div class="body">
               <h1><g:message code="default.AccountHeads.CreateSubAccountHeads.head"/></h1>
+               <g:if test="${flash.message}">
+              <div class="message">${flash.message}</div>
+            </g:if>
               <g:hasErrors bean="${accountHeadsInstance}">
                  <div class="errors">
                     <g:renderErrors bean="${accountHeadsInstance}" as="list" />
@@ -78,9 +81,7 @@
             <td>
               <div class="body">
                <h1><g:message code="default.AccountHeads.SubAccountHeadsList.head"/>   ${fieldValue(bean:accountHeadsInstance,field:'parent.code')}</h1>
-               <g:if test="${flash.message}">
-                 <div class="message">${flash.message}</div>
-               </g:if>
+             
                <div class="list">
                 <table cellspacing="0" cellpadding="0">
                     <thead>

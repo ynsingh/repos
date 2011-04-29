@@ -295,7 +295,7 @@ class InvestigatorController {
         		        mailMessage+="\n Password     : "+userName;
         		        mailMessage+="\n \n \n To activate your account,click on the following link   \t:"+urlPath+userInstance.id;
         				mailMessage+=mailFooter;
-        		        def emailId = notificationsEmailsService.sendMessage(investigatorInstance.email,mailMessage)
+        		        def emailId = notificationsEmailsService.sendMessage(investigatorInstance.email,mailMessage,"text/plain")
             	
         			}
         			redirect(action:create,id:investigatorInstance.id)

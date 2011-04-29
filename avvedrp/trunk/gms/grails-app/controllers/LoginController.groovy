@@ -78,7 +78,7 @@ class LoginController {
 		if (springSecurityService.isLoggedIn()) {
 			println  "indexisLoggedIn"+SCH.context.authentication.principal.username
 			println  "authisLoggedIn"
-			 redirect uri:'/projects/list'
+			redirect uri:'/grantAllocation/gmsFrame'
 			return
 		}
 

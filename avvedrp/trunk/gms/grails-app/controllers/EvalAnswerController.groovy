@@ -19,7 +19,7 @@ class EvalAnswerController {
     	def proposalApplicationInstance = ProposalApplication.find("from ProposalApplication PA where PA.proposal.id ="+proposalId) 
     	if (isSaved) 
         {
-            flash.message = "${message(code: 'default.created.label')}"
+            flash.message = "${message(code: 'default.saved.label')}"
             redirect(action: "evalForm",id:proposalApplicationInstance.id)
         }
         else 

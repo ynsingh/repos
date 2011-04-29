@@ -1,10 +1,14 @@
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 import org.codehaus.groovy.grails.commons.GrailsApplication
 import grails.util.GrailsUtil
+import java.text.SimpleDateFormat
+import java.text.*;
+import java.util.*;
 
 class NotificationController {
 	def grantAllocationService
 	def notificationService
+	def projectsService
     def index = { redirect(action:list,params:params) }
 
     // the delete, save and update actions only accept POST requests
@@ -12,6 +16,7 @@ class NotificationController {
 
   
     def list = {
+			params.max = Math.min(params.max ? params.int('max') : 10, 100)
             if(!params.max) params.max = 10
             String subQuery ="";
            GrailsHttpSession gh=getSession()
@@ -28,7 +33,16 @@ class NotificationController {
         	//def dataSecurityService = new DataSecurityService()
             def notificationService = new NotificationService()
         	println"++++++notparams++++++"+params
+        	params.offset = (params.offset ? params.int('offset') : 0)
+        
         	notificationInstanceList=notificationService.getAllNotifications(subQuery,gh.getValue("Party"))
+        	 // For Pagination
+        	def total=notificationInstanceList.size()
+        	if(total)
+			{
+        	def max = projectsService.findUpperIndex(params.offset,params.max,total)
+        	notificationInstanceList = notificationInstanceList.getAt(params.offset..max)
+			}
         	def notificationsEmailsInstanceList = []
         	for(int i=0;i<notificationInstanceList.size();i++)
 	        {
@@ -38,7 +52,7 @@ class NotificationController {
 	        }
         	
     		
-            [ notificationInstanceList: notificationInstanceList,notificationsEmailsInstanceList:notificationsEmailsInstanceList ]
+            [ notificationInstanceList: notificationInstanceList,notificationsEmailsInstanceList:notificationsEmailsInstanceList,'notificationInstanceListTotal': total]
         }
     
     def show = {

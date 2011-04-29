@@ -42,7 +42,7 @@
 								    <label for="SalaryComponent" style="color:red;font-weight:bold"> * </label>
 								    </td>
 								    <td><g:select name='salaryComponent.id' optionKey="id" optionValue="Name" 
-								    		from="${salaryComponentInstance}" noSelection="['null':'select']" 
+								    		from="${salaryComponentInstance}" noSelection="['null':'-Select-']" 
 								    		value="${projectEmployeeSalaryDetailsInstance?.salaryComponent?.id}"></g:select>
 						    		</td>
 									<td><label><g:message code="default.ProjectEmployeeSalary.SalaryAmount.label" />

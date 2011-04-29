@@ -4,22 +4,100 @@ class ProposalApprovalController {
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
     def proposalApprovalService
     def proposalApprovalDetailService
+    def proposalApprovalAuthorityMapService
+    def preProposalService
+    def fullProposalService
     def index = {
         redirect(action: "list", params: params)
     }
 
     def list = {
     	GrailsHttpSession gh=getSession()
-    	def proposalApprovalInstanceNewList = proposalApprovalService.getProposalApprovalList(gh.getValue("UserId"))
+    	
+    	def proposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService.getProposalApprovalAuthorityMapByReviewer(gh.getValue("UserId"),'PreProposal')
+    	//def proposalApprovalInstanceNewList = proposalApprovalService.getProposalApprovalList(proposalApprovalAuthorityMapInstance)
+    	 def preProposalApprovalInstanceList=[]
+    	def proposalApprovalAuthorityMapInstanceList=[]
+    	for(proposalApprovalValue in proposalApprovalAuthorityMapInstance)
+        {
+        	
+    		
+        	def preProposalValue=preProposalService.getSubmittedPreProposalById(proposalApprovalValue.proposalId)
+        	
+        	def preProposalApprovalLevel
+        	if(preProposalValue == null)
+        	{
+        		preProposalApprovalLevel = 0
+        	}
+        	else
+        	{
+        		preProposalApprovalLevel = preProposalValue.preProposalLevel
+        	}
+        	
+        	if(preProposalValue != null)
+        	{
+        	if((new Integer(proposalApprovalValue.approveOrder))==(new Integer(preProposalApprovalLevel)+1))
+        	{
+        		
+        		proposalApprovalValue.viewAll='N'
+        		preProposalApprovalInstanceList << preProposalValue
+        		proposalApprovalAuthorityMapInstanceList << proposalApprovalValue
+        	}
+        	else if(proposalApprovalValue.approvalAuthority.viewAll=='Y')
+        	{
+        		proposalApprovalValue.viewAll='Y'
+        		preProposalApprovalInstanceList << preProposalValue
+        		proposalApprovalAuthorityMapInstanceList << proposalApprovalValue
+        	}
+        	}
+        }
     	params.max = Math.min(params.max ? params.int('max') : 10, 100)
-        [proposalApprovalInstanceList: proposalApprovalInstanceNewList, proposalApprovalInstanceTotal: ProposalApproval.count()]
+        [preProposalInstanceList: preProposalApprovalInstanceList, proposalApprovalInstanceTotal: ProposalApproval.count(),proposalApprovalAuthorityMapInstanceList:proposalApprovalAuthorityMapInstanceList]
     }
     def fullProposalList = 
     {
     	GrailsHttpSession gh=getSession()
-    	def proposalApprovalInstanceNewList = proposalApprovalService.getFullProposalApprovalList(gh.getValue("UserId"))
+    	
+    	def proposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService.getProposalApprovalAuthorityMapByReviewer(gh.getValue("UserId"),'FullProposal')
+    	//def proposalApprovalInstanceNewList = proposalApprovalService.getProposalApprovalList(proposalApprovalAuthorityMapInstance)
+    	 def fullProposalApprovalInstanceList=[]
+    	def proposalApprovalAuthorityMapInstanceList=[]
+    	for(proposalApprovalValue in proposalApprovalAuthorityMapInstance)
+        {
+        	
+    		
+        	def fullProposalValue=fullProposalService.getSubmittedFullProposalById(proposalApprovalValue.proposalId)
+        	
+        	def fullProposalApprovalLevel
+        	if(fullProposalValue == null)
+        	{
+        		fullProposalApprovalLevel = 0
+        	}
+        	else
+        	{
+        		fullProposalApprovalLevel = fullProposalValue.preProposalLevel
+        	}
+        	
+        	if(fullProposalValue != null)
+        	{
+        	if((new Integer(proposalApprovalValue.approveOrder))==(new Integer(fullProposalApprovalLevel)+1))
+        	{
+        		
+        		proposalApprovalValue.viewAll='N'
+        		fullProposalApprovalInstanceList << fullProposalValue
+        		proposalApprovalAuthorityMapInstanceList << proposalApprovalValue
+        	}
+        	else if(proposalApprovalValue.approvalAuthority.viewAll=='Y')
+        	{
+        		proposalApprovalValue.viewAll='Y'
+        		fullProposalApprovalInstanceList << fullProposalValue
+        		proposalApprovalAuthorityMapInstanceList << proposalApprovalValue
+        	}
+        	}
+        }
+    	//def proposalApprovalInstanceNewList = proposalApprovalService.getFullProposalApprovalList(gh.getValue("UserId"))
     	params.max = Math.min(params.max ? params.int('max') : 10, 100)
-        [proposalApprovalInstanceList: proposalApprovalInstanceNewList, proposalApprovalInstanceTotal: ProposalApproval.count()]
+        [fullProposalApprovalInstanceList: fullProposalApprovalInstanceList, proposalApprovalInstanceTotal: ProposalApproval.count(),proposalApprovalAuthorityMapInstanceList:proposalApprovalAuthorityMapInstanceList]
     
     }
 

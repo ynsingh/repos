@@ -113,6 +113,7 @@
                                      <tr class="prop"> 
                                          <td valign="top" class="name"> 
                                           <label for="dateOfExpense"><g:message code="default.DateOfPayment.label"/></label> 
+                                          <label for="symbol" style="color:red;font-weight:bold"> * </label>
                                          </td>
                                          <td valign="top" class="value ${hasErrors(bean:grantExpenseInstance,field:'dateOfExpense','errors')}"> 
                                             <calendar:datePicker name="dateOfExpense" defaultValue="${new Date()}" value="${grantExpenseInstance?.dateOfExpense}" dateFormat= "%d/%m/%Y"/> 
@@ -121,6 +122,7 @@
                                      	
                                      	<td valign="top" class="name"> 
                                              <label for="expenseAmount"><g:message code="default.PaymentAmount.label"/></label> 
+                                             <label for="symbol" style="color:red;font-weight:bold"> * </label>
                                          </td>
                                          <td valign="top" class="value ${hasErrors(bean:grantExpenseInstance,field:'expenseAmount','errors')}"> 
                                              <input type="text" id="expenseAmount" name="expenseAmount" value="${amount}" style="text-align: right" />
@@ -131,13 +133,15 @@
                                      <tr class="prop">
                                          <td valign="top" class="name">
                                              <label for="grantAllocation"><g:message code="default.GrantAllocation.label"/></label>
+                                             <label for="symbol" style="color:red;font-weight:bold"> * </label>
                                          </td>
                                          <td valign="top" class="value ${hasErrors(grantExpenseInstance,field:'grantAllocation','errors')}">
-                                             <g:select optionKey="id" optionValue="grantCode" from="${grantAllocationInstanceList}" name="grantAllocation.id" value="${grantExpenseInstance?.grantAllocation?.id}" ></g:select>
+                                             <g:select optionKey="id" optionValue="grantCode" from="${grantAllocationInstanceList}" name="grantAllocation.id" value="${grantExpenseInstance?.grantAllocation?.id}" noSelection="['null':'-Select-']"></g:select>
                                          </td>
                                      	
                                      	 <td valign="top" class="name"> 
                                              <label for="grantAllocationSplit"><g:message code="default.AccountHeads.label"/></label> 
+                                             <label for="symbol" style="color:red;font-weight:bold"> * </label>
                                          </td>
                                          <td valign="top" class="value ${hasErrors(bean:grantExpenseInstance,field:'grantAllocationSplit','errors')}"> 
                                              <g:select optionKey="id" optionValue="accHeadPeriod" from="${accountHeadList}" noSelection="['null':'-Select-']" name="grantAllocationSplit.id" value="${grantExpenseInstance?.grantAllocationSplit?.id}" ></g:select> 
@@ -147,13 +151,15 @@
                                     <tr class="prop">
                                          <td valign="top" class="name">
                                             <label for="modeOfPayment"><g:message code="default.ModeOfPayment.label"/></label>
+                                            <label for="symbol" style="color:red;font-weight:bold"> * </label>
                                          </td>
                                          <td valign="top" class="value ${hasErrors(bean:grantExpenseInstance,field:'modeOfPayment','errors')}">
-                                            <g:select name="modeOfPayment" from="${['DD','Cheque','BankTransfer']}"  value="${fieldValue(bean:grantExpenseInstance,field:'modeOfPayment')}" noSelection="['null':'Select']"></g:select>
+                                            <g:select name="modeOfPayment" from="${['DD','Cheque','BankTransfer']}"  value="${fieldValue(bean:grantExpenseInstance,field:'modeOfPayment')}" noSelection="['null':'-Select-']"></g:select>
                                          </td>
                                          
                                          <td valign="top" class="name">
                                              <label for="bankName"><g:message code="default.BankName.label"/></label>
+                                             <label for="symbol" style="color:red;font-weight:bold"> * </label>
                                          </td>
                                          <td valign="top" class="value ${hasErrors(bean:grantExpenseInstance,field:'bankName','errors')}">
                                              <input type="text" id="bankName" name="bankName" value="${fieldValue(bean:grantExpenseInstance,field:'bankName')}" style="text-align: right" />
@@ -163,6 +169,7 @@
                                     <tr class="prop">
                                          <td valign="top" class="name">
                                             <label for="ddNo"><g:message code="default.DD/ChequeNo.label"/></label>
+                                            <label for="symbol" style="color:red;font-weight:bold"> * </label>
                                          </td>
                                          <td valign="top" class="value ${hasErrors(bean:grantExpenseInstance,field:'ddNo','errors')}">
                                             <input type="text" id="ddNo" name="ddNo" value="${fieldValue(bean:grantExpenseInstance,field:'ddNo')}" style="text-align: right" />
@@ -170,6 +177,7 @@
                                          
                                          <td valign="top" class="name">
                                              <label for="ddBranch"><g:message code="default.Branch.label"/></label>
+                                             <label for="symbol" style="color:red;font-weight:bold"> * </label>
                                          </td>
                                          <td valign="top" class="value ${hasErrors(bean:grantExpenseInstance,field:'ddBranch','errors')}">
                                              <input type="text" id="ddBranch" name="ddBranch" value="${fieldValue(bean:grantExpenseInstance,field:'ddBranch')}" style="text-align: right" />
@@ -179,6 +187,7 @@
                                     <tr class="prop">
                                          <td valign="top" class="name">
                                              <label for="ddDate"><g:message code="default.DD/ChequeDate.label"/></label>
+                                             <label for="symbol" style="color:red;font-weight:bold"> * </label>
                                          </td>
                                          <td valign="top" class="value ${hasErrors(bean:grantExpenseInstance,field:'ddDate','errors')}">
                                              <calendar:datePicker name="ddDate" defaultValue="${new Date()}" value="${grantExpenseInstance?.ddDate}" dateFormat= "%d/%m/%Y"/>
@@ -197,7 +206,7 @@
                             </div>
                             			
 	                            <div class="buttons"> 
-	                              <span class="button"><g:actionSubmit class="save" action="saveExpense" value="${message(code: 'default.Save.button')}" onClick="return validateGrantExpense()"  /></span>
+	                              <span class="button"><g:actionSubmit class="save" action="saveExpense" value="${message(code: 'default.Save.button')}" onClick="return validateGrantExpense()" /></span>
 	                            </div>
                            
                          </g:form>

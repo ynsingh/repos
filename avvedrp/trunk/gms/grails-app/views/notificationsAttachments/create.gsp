@@ -34,7 +34,7 @@
                              <label for="attachmentType"><g:message code="default.Type.label"/></label>
                          </td>
                          <td valign="top" class="value ${hasErrors(bean:notificationsAttachmentsInstance,field:'attachmentType','errors')}">
-                             <g:select optionKey="id" optionValue="type" from="${AttachmentType.findAllByDocumentTypeAndActiveYesNo(params.documentType,'Y')}" name="attachmentType.id" value="${notificationsAttachmentsInstance?.attachmentType?.id}"  ></g:select>
+                             <g:select optionKey="id" optionValue="type" from="${AttachmentType.findAllByDocumentTypeAndActiveYesNo(params.documentType,'Y')}" name="attachmentType.id" value="${notificationsAttachmentsInstance?.attachmentType?.id}" noSelection="['null':'-Select-']" ></g:select>
                          </td>                       
                        </tr> 
                         

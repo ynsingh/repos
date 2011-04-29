@@ -476,7 +476,7 @@ if((parent.right.frames['editframe'].document.forms[0].scstobc.value =="sc") ||
     }
     
     var email = document.getElementById('Email');
-	var filter = /^([a-zA-Z0-9_.-])+@(([a-zA-Z0-9-])+.)+([a-zA-Z0-9]{2,4})+$/;
+	var filter =/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 	if(email.value != "")
 	{
 		if (!filter.test(email.value))
@@ -520,6 +520,13 @@ if((parent.right.frames['editframe'].document.forms[0].scstobc.value =="sc") ||
             document.getElementById('Mobile').focus;
             return false;
       }
+      
+       if( ( (document.getElementById("ProjectCategory").value) == 'null') || ( (document.getElementById("ProjectCategory").value) == '') )
+    {
+	    alert("Please enter Proposal Category");
+	    document.getElementById("ProjectCategory").focus();
+	    return false;
+    }
     return true;
 	}
 	function validateAppSummary()

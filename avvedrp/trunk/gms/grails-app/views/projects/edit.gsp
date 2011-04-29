@@ -13,7 +13,7 @@
             <div class="message">${flash.message}</div>
             </g:if>
             <g:hasErrors bean="${projectsInstance}">
-            <div class="errors">
+            <div class="rejerrors">
                 <g:renderErrors bean="${projectsInstance}" as="list" />
             </div>
             </g:hasErrors>
@@ -78,14 +78,14 @@
                                      </g:else>
                                 </td>
                                 
-                             <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'projectType','errors')}">
+                             <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'projectType','errors')}" >
                                     <g:if test="${projectsInstance.parent}">
 										<strong>	
 											${projectsInstance.projectType.type}
 					 					</strong>
 				     				</g:if>
                                     <g:else>
-                                    <g:select optionKey="id" optionValue="type" id="projectType" from="${ProjectType.findAll('from ProjectType P where P.activeYesNo=\'Y\' ')}"  name="projectType.id" value="${projectsInstance?.projectType?.id}"></g:select>
+                                    <g:select optionKey="id" optionValue="type" id="projectType" from="${ProjectType.findAll('from ProjectType P where P.activeYesNo=\'Y\' ')}"  name="projectType.id" value="${projectsInstance?.projectType?.id}" ></g:select>
                                     </g:else>
                                 </td>
                            </tr>                                                    

@@ -50,7 +50,7 @@
                     </table>
                 </div>
                 <div class="buttons">
-                    <span class="button"><g:actionSubmit class="save" action="update" value="${message(code: 'default.Update.button')}" onClick="return validateAttachmentType();"  /></span>
+                    <span class="button"><g:actionSubmit class="save" action="update" onClick="return validateAttachmentTypeEdit()" value="${message(code: 'default.Update.button')}"  /></span>
 					<span class="button">
 							<g:actionSubmit class="delete"  action="delete" 
 							value="${message(code: 'default.Delete.button')}" 

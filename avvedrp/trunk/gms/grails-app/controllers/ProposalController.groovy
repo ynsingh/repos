@@ -1,5 +1,8 @@
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 import grails.converters.JSON
+import java.util.Date
+import grails.util.GrailsUtil
+import java.text.SimpleDateFormat
 import org.apache.commons.validator.EmailValidator
 class ProposalController {
     
@@ -17,6 +20,7 @@ class ProposalController {
     def approvalAuthorityService
     def notificationsAttachmentsService
     def attachmentsService
+    def evalItemService
     def list = 
     {
         if(!params.max) params.max = 10
@@ -222,6 +226,7 @@ class ProposalController {
     			def evalScoreInstance = evalItemService.getEvalScoreByProposal(proposalInstanceList[i].id)
     			evalScoreInstanceList.add(evalScoreInstance)
     			def evalItemList = evalItemService.getevalItemList(proposalInstanceList[i].notification.id)
+    			double nOfQuestions = evalItemList.size()
     			double maxScale = 0
     			for(int j=0;j<evalItemList.size();j++)
     			{
@@ -231,8 +236,16 @@ class ProposalController {
     					if(scale[0])
     						maxScale = maxScale + scale[0].doubleValue()
     				}
+    				/*Getting the eval scale options of particular eval item*/
+				    				def evalScaleOptionsService =new EvalScaleOptionsService()
+				    				def scaleOptionsList = evalScaleOptionsService.listEvalScaleOptionsByEvalScale(evalItemList[j].evalScale.id)
+				    	    		
+				/**Excluding Particular Eval Item from calculating the average scale
+				  *if the item doesn't have any Scale options */
+				if(!scaleOptionsList)
+    	    			nOfQuestions = nOfQuestions - (1).doubleValue()
     			}
-    			def avgScale = maxScale/evalItemList.size()
+    			def avgScale = maxScale/nOfQuestions
     			def val = Math.round(avgScale)
     			if(maxScale)
     					maxScaleList.add(val.toString())
@@ -424,40 +437,27 @@ class ProposalController {
     		def mailContent=gmsSettingsService.getGmsSettingsValue("MailContent")
 			def mailFooter=gmsSettingsService.getGmsSettingsValue("MailFooter")
 			String urlPath = request.getScheme() + "://" + request.getServerName() +":"+ request.getServerPort() + request.getContextPath()+"/login/auth"
-	        if(proposalInstance) 
+			
+			if(proposalInstance) 
 	        {
 	        	proposalInstance.properties = params
 	            proposalInstance.lockedYN='N'
 	            def aprovalAuthorityDetailInstance = approvalAuthorityDetailService.getDefaultApprovalAuthorityDetailsByParty(proposalInstance.notification.party.id)
 	            def proposalInstanceSave =proposalService.updateProposal(proposalInstance)
-	            for(aprovalAuthorityDetailValue in aprovalAuthorityDetailInstance)
+	            /*methhod to get all submitted proposal of the notification*/
+				def proposalByNotification=proposalService.getProposalByNotification(proposalInstance.notification.id)
+				/*template used to send mail content*/
+				String mailMessage=g.render(template:"mailMessage",model:['proposalApplicationInstance':proposalApplicationInstance,'proposalInstance':proposalInstance,'projectTitle':projectTitle,'urlPath':urlPath,'totalProposal':proposalByNotification.size()]); 
+				
+				for(aprovalAuthorityDetailValue in aprovalAuthorityDetailInstance)
 	            {
 	            	if(aprovalAuthorityDetailValue?.person?.email)
 					{
 						if (emailValidator.isValid(aprovalAuthorityDetailValue?.person?.email))
 						{
-							String mailMessage="";
-					        mailMessage="Dear Reviewer"+".";
-					        mailMessage+="\none Project proposal has been uploaded on the site for reviewing.The details are as follows";
-					        mailMessage+="\n\n New Proposal's Brief";
-					        mailMessage+="\n------------------------";
-					        mailMessage+="\n\n\tProject Title:- "+projectTitle+""
-					        mailMessage+="\n\tProposal Category :- "+proposalApplicationInstance?.proposalCategory?.name
-					        mailMessage+="\n\tDate of Submission :- "+proposalInstance?.proposalSubmitteddate
-					        mailMessage+="\n\nSubmited By :-"
-					        mailMessage+="\n\n\tName :- "+proposalApplicationInstance?.name
-					        mailMessage+="\n\tDesignation :- "+proposalApplicationInstance?.designation
-					        mailMessage+="\n\tOrganisation Name :- "+proposalApplicationInstance?.organisation
-					        mailMessage+="\n\tOffice Address :- "+proposalApplicationInstance?.postalAddress
-					        mailMessage+="\n\t\t\tCity :- "+proposalApplicationInstance?.city
-					        mailMessage+="\n\t\t\tState :- "+proposalApplicationInstance?.state
-					        mailMessage+="\n\t\t\tMobile :- "+proposalApplicationInstance?.mobile
-					        mailMessage+="\n\t\t\tPhone No :- "+proposalApplicationInstance?.phone
-					        mailMessage+="\n\t\t\tE_Mail :- "+proposalApplicationInstance?.email
-					        mailMessage+="\n\nTo review the proposal please logon to :- "+urlPath
-					        mailMessage=mailMessage+"\n\n\n" 
-					    	mailMessage+=mailFooter
-					        def emailId = notificationsEmailsService.sendMessage(aprovalAuthorityDetailValue?.person?.email,mailMessage)
+							
+					        /*send mail to each reviewer*/
+					    	def emailId = notificationsEmailsService.sendMessage(aprovalAuthorityDetailValue?.person?.email,mailMessage,"text/html")
 						}
 					}
 	            }
@@ -501,10 +501,10 @@ class ProposalController {
      */
     def proposalApplicationList = 
     {
-    		GrailsHttpSession gh=getSession()
+    		GrailsHttpSession gh=getSession()  		
     		/*method to get proposal application of each reviewer using user id and party id*/
     		def proposalInstanceList = proposalService.getProposalApplicationListForReviewer(gh.getValue("UserId"),gh.getValue("Party"))
-    		/*method to get attachment type instance of cv*/
+    		/*Geting attachment type of cv*/
     		def attachmentsTypeInstanceCV=attachmentsService.getAttachmentTypesByDocumentTypeAndType("CV","Proposal")
     		def attachmentsInstanceCVList=[]
     		def evalItemService = new EvalItemService()  	   	
@@ -516,23 +516,47 @@ class ProposalController {
     			def attachmentsInstanceGetCV=attachmentsService.getAttachmentsByDomainAndType("Proposal",attachmentsTypeInstanceCV?.type,proposalInstanceList[i]?.proposal?.id)
     			/*adding each attachments to list*/
     			attachmentsInstanceCVList.add(attachmentsInstanceGetCV)
+    			
+    			/*Getting the total score of each proposal*/
     			def evalScoreInstance = evalItemService.getEvalScoreByProposal(proposalInstanceList[i].proposal.id)
+    			/*Forming a list*/
     			evalScoreInstanceList.add(evalScoreInstance)
+    			
     			def evalItemList = evalItemService.getevalItemList(proposalInstanceList[i].proposal.notification.id)
+    			
+    			/*Initializing the maximum score as zero*/
     			double maxScale = 0
-    			for(int j=0;j<evalItemList.size();j++)
+
+	    		double nOfQuestions = evalItemList.size()
+	    		for(int j=0;j<evalItemList.size();j++)
     			{
-    				def scale = evalItemService.getMaxScoreEvalScale(evalItemList[j].evalScale)
-    				if(scale)
+    				/*Getting the maximum score each eval Item*/
+	    			def scale = evalItemService.getMaxScoreEvalScale(evalItemList[j].evalScale)
+    				/*Getting the total of maximum score*/
+	    			if(scale)
     				{
     					if(scale[0])
     						maxScale = maxScale + scale[0].doubleValue()
     				}
+    				/*Getting the eval scale options of particular eval item*/
+    				def evalScaleOptionsService =new EvalScaleOptionsService()
+    				def scaleOptionsList = evalScaleOptionsService.listEvalScaleOptionsByEvalScale(evalItemList[j].evalScale.id)
+    	    		
+    				/**Excluding Particular Eval Item from calculating the average scale
+    	    		  *if the item doesn't have any Scale options */
+    				if(!scaleOptionsList)
+    	    			nOfQuestions = nOfQuestions - (1).doubleValue()
     			}
-    			def avgScale = maxScale/evalItemList.size()
-    			def val = Math.round(avgScale)
-    			//if(maxScale) (changeLog(28-02-2011) Ainsha)
-    			maxScaleList.add(val.toString())
+	    		/**Taking the Average maximum score
+	    		 * Calculation -- sum(max.score of each item)/total no of evalItems
+	    		 */
+	    		def avgScale = maxScale/nOfQuestions
+    			
+	    		/*Round the average score*/
+	    		def avgScore = Math.round(avgScale)
+    			
+	    		/*Adding the Score to a List*/
+    			maxScaleList.add(avgScore.toString())
     		}
     		[proposalInstanceList:proposalInstanceList,evalScoreInstanceList:evalScoreInstanceList,
     		 maxScaleList:maxScaleList,attachmentsInstanceCVList:attachmentsInstanceCVList]
@@ -544,8 +568,14 @@ class ProposalController {
     }
     def notificationList = 
     {
-    		def notificationInstanceList=notificationService.getAllPublicAndPublishedNotification()	
-    		[notificationInstanceList:notificationInstanceList]
+            SimpleDateFormat sdfDestination = new SimpleDateFormat("yyyy-MM-dd")
+	        Date date = new Date()
+	        println"date"+date
+            String currentDate = sdfDestination.format(date)
+            println"currentDate"+currentDate
+		
+	        def notificationInstanceList=notificationService.getAllPublicAndPublishedNotification(currentDate)	
+			[notificationInstanceList:notificationInstanceList]
     }
     def notificationDetails = 
     {
@@ -561,7 +591,7 @@ class ProposalController {
     		GrailsHttpSession gh=getSession()
     		/*method to get proposal application based on search criteria*/
     		def proposalInstanceList = proposalService.getProposalApplicationSearchListForReviewer(gh.getValue("UserId"),gh.getValue("Party"),params)
-    		/*method to get attachment type instance of cv*/
+    		/*Geting attachment type of cv*/
     		def attachmentsTypeInstanceCV=attachmentsService.getAttachmentTypesByDocumentTypeAndType("CV","Proposal")
     		def attachmentsInstanceCVList=[]
     		def evalItemService = new EvalItemService()  	   	
@@ -573,28 +603,80 @@ class ProposalController {
     			def attachmentsInstanceGetCV=attachmentsService.getAttachmentsByDomainAndType("Proposal",attachmentsTypeInstanceCV?.type,proposalInstanceList[i]?.proposal?.id)
     			/*adding each attachments to list*/
     			attachmentsInstanceCVList.add(attachmentsInstanceGetCV)
+    			
+    			/*Getting the total score of each proposal*/
     			def evalScoreInstance = evalItemService.getEvalScoreByProposal(proposalInstanceList[i].proposal.id)
+    			/*Forming a list*/
     			evalScoreInstanceList.add(evalScoreInstance)
+    			
     			def evalItemList = evalItemService.getevalItemList(proposalInstanceList[i].proposal.notification.id)
+    			
+    			/*Initializing the maximum score as zero*/
     			double maxScale = 0
-    			for(int j=0;j<evalItemList.size();j++)
+
+	    		double nOfQuestions = evalItemList.size()
+	    		for(int j=0;j<evalItemList.size();j++)
     			{
-    				def scale = evalItemService.getMaxScoreEvalScale(evalItemList[j].evalScale)
-    				if(scale)
+    				/*Getting the maximum score each eval Item*/
+	    			def scale = evalItemService.getMaxScoreEvalScale(evalItemList[j].evalScale)
+    				/*Getting the total of maximum score*/
+	    			if(scale)
     				{
     					if(scale[0])
     						maxScale = maxScale + scale[0].doubleValue()
     				}
+    				/*Getting the eval scale options of particular eval item*/
+    				def evalScaleOptionsService =new EvalScaleOptionsService()
+    				def scaleOptionsList = evalScaleOptionsService.listEvalScaleOptionsByEvalScale(evalItemList[j].evalScale.id)
+    	    		
+    				/**Excluding Particular Eval Item from calculating the average scale
+    	    		  *if the item doesn't have any Scale options */
+    				if(!scaleOptionsList)
+    	    			nOfQuestions = nOfQuestions - (1).doubleValue()
     			}
-    			def avgScale = maxScale/evalItemList.size()
-    			def val = Math.round(avgScale)
-    			if(maxScale)
-    					maxScaleList.add(val.toString())
+	    		/**Taking the Average maximum score
+	    		 * Calculation -- sum(max.score of each item)/total no of evalItems
+	    		 */
+	    		def avgScale = maxScale/nOfQuestions
+    			
+	    		/*Round the average score*/
+	    		def avgScore = Math.round(avgScale)
+    			
+	    		/*Adding the Score to a List*/
+    			maxScaleList.add(avgScore.toString())
     		}
     		render (template:"proposalSearch", model : ['proposalInstanceList' : proposalInstanceList,
     		                                              'evalScoreInstanceList':evalScoreInstanceList,'maxScaleList':maxScaleList,'attachmentsInstanceCVList':attachmentsInstanceCVList])
     		
     
+    }
+    def mailMessage={}
+    
+    def proposalReviewDetails =
+    {
+    	
+    	 def proposalInstance = Proposal.get(params.id)
+    	 def evalAnswerInstance = proposalService.getEvalAnswerByProposal(proposalInstance.id)
+    	 def evalInstance = evalItemService.getEvalAnswerForProposalId(proposalInstance.id)
+    	 def evalItemInstance = evalItemService.getevalItemList(proposalInstance.notification.id)
+    	 
+    	 def evalScoreInstance
+    	 def evalScoreInstanceList=[]
+    	 def evalList=[]
+    	 for(int i=0;i<evalAnswerInstance.size();i++)
+    	 {
+    		 
+    	  evalScoreInstance = proposalService.getEvalScore(proposalInstance.id,evalAnswerInstance[i].person.id)
+    	
+    	  for(int j=0;j<evalScoreInstance.size();j++)
+    	    	{
+    			 evalScoreInstanceList = evalScoreInstance[j]
+    			 evalList.add(evalScoreInstanceList)
+    	    	}
+    	 
+    	 }
+   
+    	 ['evalAnswerInstance':evalAnswerInstance,'evalItemInstance':evalItemInstance,'evalScoreInstance':evalScoreInstance,'evalInstance':evalInstance,'evalList':evalList]
     }
     
 }

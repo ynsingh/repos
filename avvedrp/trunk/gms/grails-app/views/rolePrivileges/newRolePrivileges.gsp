@@ -24,7 +24,7 @@
 			<tr class="prop">
 				<td valign="top" class="name"><label for="authority"><g:message code="default.AuthorityName.label"/>:</label></td>
 				<td valign="top" class="value ${hasErrors(bean:authority,field:'authority','errors')}">
-					 <g:select optionKey="id" optionValue="authority" from="${authorityInstanceList}" name="authority" value="${rolePrivilegesInstance?.role?.id}" ></g:select>
+					 <g:select optionKey="id" optionValue="authority" from="${authorityInstanceList}" name="authority" value="${rolePrivilegesInstance?.role?.id}" noSelection="['null':'-Select-']"></g:select>
 				</td>
 			</tr>
 
@@ -34,7 +34,7 @@
 		</div>
 
 		<div class="buttons">
-			<span class="button"><input class="save" type="submit" value="${message(code: 'default.Create.button')}" /></span>
+			<span class="button"><input class="save" type="submit" value="${message(code: 'default.Create.button')}" onClick="return validateRolePrivilege()"/></span>
 		</div>
 		</g:form>
 	</div>

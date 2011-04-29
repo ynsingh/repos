@@ -109,4 +109,12 @@ class ApprovalAuthorityService {
      	def approvalAuthorityList = ApprovalAuthority.findAll("from ApprovalAuthority A where A.activeYesNo = 'Y' and A.defaultYesNo = 'Y' and A.party="+partyId)
      	return approvalAuthorityList
      }
+     /*
+      *Get Approval Authority By Party 
+      */
+      public List getApprovalAuthorityByParty(def partyId)
+     {
+    	 def approvalAuthorityInstance = ApprovalAuthority.findAll("from ApprovalAuthority A where A.activeYesNo = 'Y' and A.party="+partyId)
+      	 return approvalAuthorityInstance
+     }
 }

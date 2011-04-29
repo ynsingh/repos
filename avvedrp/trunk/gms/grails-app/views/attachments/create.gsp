@@ -39,7 +39,7 @@
 						                                 <td valign="top" 
 						                                 	class="value ${hasErrors(bean: attachmentsInstance, field: 'attachmentType', 'errors')}">
 						                                    <g:select name="attachmentType.id" optionValue="type" from="${attachmentTypeList}" 
-						                                    	optionKey="id" value="${attachmentsInstance?.attachmentType?.id}"  />
+						                                    	optionKey="id" value="${attachmentsInstance?.attachmentType?.id}" noSelection="['null':'-Select-']" />
 						                                 </td>
 						                            </tr>                   
 						                            <tr class="prop">

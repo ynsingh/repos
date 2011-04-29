@@ -31,7 +31,7 @@
                             <label for="project" style="color:red;font-weight:bold"> * </label>
                         </td>
                         <td valign="top" class="value ${hasErrors(bean:notificationInstance,field:'notificationTitle','errors')}">
-                             <input type="text" id="notificationTitle" name="notificationTitle" value="${fieldValue(bean:notificationInstance,field:'notificationTitle')}"/>                         
+                             <input type="text" id="notificationTitle" size="60" name="notificationTitle" value="${fieldValue(bean:notificationInstance,field:'notificationTitle')}"/>                         
                         </td>
                     </tr> 
                         

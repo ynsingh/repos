@@ -51,7 +51,7 @@
 						   			 <label for="Designation" style="color:red;font-weight:bold"> * </label></td>
 						   			<td><g:select name='employeeDesignation.id' optionKey="id" optionValue="Designation" 
 						   				from="${employeeDesignationInstanceList}" value="${projectEmployeeInstance?.employeeDesignation?.id}" 
-						   				noSelection="['null':'select']"></g:select></td>						   				
+						   				noSelection="['null':'-Select-']"></g:select></td>						   				
 					       		</tr>
 	             			</tbody>
 	  					</table>

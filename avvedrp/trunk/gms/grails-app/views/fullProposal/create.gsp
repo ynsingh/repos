@@ -137,7 +137,7 @@
                 
                 <tr>
                 
-      <td> <strong><g:message code="default.ProjectTitle.label" />:<strong><td>
+      <td> <strong><g:message code="default.ProposalTitle.label" />:<strong><td>
       <td> ${preProposalInstance.projectTitle} </td>
       </tr>
       

@@ -5,19 +5,23 @@ class ProposalApprovalService {
     boolean transactional = true
     def preProposalService
     def fullProposalService
+    def proposalApprovalAuthorityMapService
     def serviceMethod() {
 
     }
-    def getProposalApprovalList(def userId)
+    def getProposalApprovalList(def proposalApprovalAuthorityMapInstance)
     {
     	def proposalApprovalInstanceNewList = []
-    	
-    	def proposalApprovalInstanceList=getProposalApprovalByUserIdAndProposalType(userId,'PreProposal')
-        for(proposalApprovalValue in proposalApprovalInstanceList)
+    	//println "preProposalValue00000 "+userId
+    	//def proposalApprovalInstanceList=getProposalApprovalByUserIdAndProposalType(userId,'PreProposal')
+        //def proposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService.getProposalApprovalAuthorityMapByReviewer(userId,'PreProposal')
+    	println "proposalApprovalAuthorityMapInstance "+proposalApprovalAuthorityMapInstance
+        for(proposalApprovalValue in proposalApprovalAuthorityMapInstance)
         {
         	
     		
-        	def preProposalValue=preProposalService.getSubmittedPreProposalById(proposalApprovalValue.proposalApprovalAuthorityMap.proposalId)
+        	def preProposalValue=preProposalService.getSubmittedPreProposalById(proposalApprovalValue.proposalId)
+        	
         	def preProposalApprovalLevel
         	if(preProposalValue == null)
         	{
@@ -30,14 +34,15 @@ class ProposalApprovalService {
         	
         	if(preProposalValue != null)
         	{
-        	if((new Integer(proposalApprovalValue.proposalApprovalAuthorityMap.approveOrder))==(new Integer(preProposalApprovalLevel)+1))
+        	if((new Integer(proposalApprovalValue.approveOrder))==(new Integer(preProposalApprovalLevel)+1))
         	{
-        		  proposalApprovalInstanceNewList << proposalApprovalValue
+        		  proposalApprovalInstanceNewList << preProposalValue
+        		  preProposalValue.viewAll='Y'
         	}
-        	else if(proposalApprovalValue.proposalApprovalAuthorityMap.approvalAuthority.viewAll=='Y')
+        	else if(proposalApprovalValue.approvalAuthority.viewAll=='Y')
         	{
-        		proposalApprovalValue.viewAll='Y'
-        		proposalApprovalInstanceNewList << proposalApprovalValue
+        		preProposalValue.viewAll='Y'
+        		proposalApprovalInstanceNewList << preProposalValue
         	}
         	}
         }
@@ -102,5 +107,36 @@ class ProposalApprovalService {
 		}
     	return proposalApprovalInstanceList
     }
-    
+    /*
+     * method to get proposal approval by proposalApprovalAuthorityMap and approvalAuthorityDetails id
+     */
+    def getProposalApprovalByProposalApprovalAuthorityMapAndUser(def proposalApprovalAuthorityMapInstanceId,
+    																def approvalAuthorityDetailId)
+    {
+    	def proposalApprovalInstance = ProposalApproval.find("from ProposalApproval PA where PA.proposalApprovalAuthorityMap.id ="+proposalApprovalAuthorityMapInstanceId+" and PA.approvalAuthorityDetail = "+approvalAuthorityDetailId)
+	    return proposalApprovalInstance
+    }
+    /*
+     * method to get proposal approval by proposalApprovalAuthorityMap and approvalAuthorityDetails id
+     */
+    def saveProposalApproval(def proposalApprovalInstance)
+    {
+    	if(proposalApprovalInstance.save())
+    	{
+    		
+    	}
+    	else
+    	{
+    		proposalApprovalInstance=null
+    	}
+    	return proposalApprovalInstance
+    }
+   /*
+    * Get Proposal Approval By ProposalApprovalAuthorityMap
+    */
+    def getProposalApprovalByProposalApprovalAuthorityMap(def proposalApprovalAuthorityMapInstanceId)
+   {
+    	def proposalApprovalInstanceList = ProposalApproval.findAll("from ProposalApproval PA where PA.proposalApprovalAuthorityMap.id =" +proposalApprovalAuthorityMapInstanceId) 
+		return proposalApprovalInstanceList
+   }
 }

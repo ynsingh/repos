@@ -167,15 +167,19 @@ class ProjectTrackingController {
     		
     		/* Get project tracking details if any */
     		def projectTrackingInstanceList = projectsService.getProjectTrackingByProject(projectsInstance) 
-        		
+        	def projectTrackingInstance = new ProjectTracking()	
     		for(projectStatus in projectTrackingInstanceList.projectStatus)
         		{
         			if(projectStatus=='Closed')
         			{
         				projectsInstance.status='Closed'
+        					projectTrackingInstance.projects = projectsInstance
+        		            projectTrackingInstance.properties = params
+        		            flash.message = projectsInstance.name +" "+"${message(code: 'default.closed.label')}"
+        					 redirect(controller:'projects',action:'list')
         			}
         		}
-            def projectTrackingInstance = new ProjectTracking()
+            
     		projectTrackingInstance.projects = projectsInstance
             projectTrackingInstance.properties = params
             return ['projectsInstance':projectsInstance, 
@@ -227,7 +231,7 @@ class ProjectTrackingController {
 			        projectTrackingInstance.projects = projectsInstance
 			        projectTrackingInstance.properties = params
 			        projectTrackingInstance.save()
-			        flash.message = "${message(code: 'default.created.label')}"
+			        flash.message = projectsInstance.name +" "+"${message(code: 'default.closed.label')}"
 		            redirect(action:create,params:[id:projectTrackingInstance.projects.id,projectStatus:projectTrackingInstance.projectStatus])
 
 			        

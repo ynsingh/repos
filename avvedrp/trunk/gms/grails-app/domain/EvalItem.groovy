@@ -5,7 +5,6 @@
 class EvalItem
 {
 	EvalScale evalScale;
-	Notification notification;	
 	String item;
 	char activeYesNo;
 	String createdBy;

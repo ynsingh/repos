@@ -10,22 +10,22 @@
 <p>The salient features are as  follows: </p>
 <ol start="1" type="1">
   <ol>
-    <li>Multiple staff members/PI can create and submit        expense request to the organization, on behalf of their projects. </li>
+    <li>All users of role PI can create and submit        expense request to the organization, on behalf of their projects. </li>
     <li>The expense request details are captured on a fixed        format screen in MGMS </li>
     <li>The requests from the entire institution are  received by a finance clerk who will start the routing process by selecting the  first level approval authority.</li>
     <li>The same clerk can track the status of all  requests &ndash; the level where the request is held up and the status.</li>
     <li>Each of the submitted expense requests may go        through multiple levels of evaluations, each of which is done by one or        more individuals. </li>
     <li>Currently, the routing of expense requests is not        pre-set and for each expense request, the next approver can be decided by        the previous one. </li>
-    <li>The can track the status of their expense requests        in their login. </li>
+    <li>The PIs can track the status of their expense requests        in their login. </li>
     <li>Corresponding to the approved expense requests,        payment is made and the details can be recorded by the finance department        personnel. </li>
-    <li>There is provision for capturing multiple payment        records for each approved expense until the expense amount is covered.</li>
+    <li>There is provision for capturing multiple payment        records at different times for each approved expense until the expense amount is covered.</li>
   </ol>
 </ol>
 <h3><a name="_Toc284002168" id="_Toc284002168">Initial  Administrative Functions</a></h3>
 <h4><a name="_Toc284002169" id="_Toc284002169">Adding  new users &ndash; finance department personnel:</a></h4>
 <p>The various  finance department personnel can be added by the Administrator through <strong><em>Add  User</em></strong> page and the roles can also be assigned here.</p>
 <h4><a name="_Toc284002169" id="_Toc284002169">Adding  new roles</a></h4>
-<p>A new role &quot;ROLE_FINANCE&quot; is required to be saved in the application and  assigned to the finance department user who needs to receive all requests from  all projects running in the institution. Currently the  same role also has the privilege to record payment details. Multiple persons  may be assigned this role. Any other roles  required in the finance department can be added as per user&rsquo;s choice.</p>
+<p>A new role &quot;ROLE_FINANCE&quot; is required to be saved in the application and  assigned to the finance department (clerk) user who needs to receive all requests from  all projects running in the institution. Currently the  same role also has the privilege to record payment details. Multiple persons  may be assigned this role. Any other roles  required in the finance department can be added as per user&rsquo;s choice.</p>
 <h4><a name="_Toc284002170" id="_Toc284002170">Creating  approval Authorities:</a></h4>
 <p>On the left menu  panel, the administrator clicks on <strong><em>Approval Authority</em></strong> menu. It expands  to display the sub menu &ndash; <strong><em>Add Approval Authority</em></strong> <br />
   On clicking <strong><em>Add  Approval Authority</em></strong>, the page below opens up. Here each group of  approving persons for expense requests at the institution is registered. Further,  for each approval authority, the members are also added.</p>
@@ -35,8 +35,8 @@
 <p>In the <em><strong>Approval  Authority List</strong></em>, for each line item (approval authority), clicking on  <em><strong>Edit</strong></em>, opens the page  where any modification can be made. </p>
 <p><strong><em>Please  note that in case the finance department has only a single individual at each  evaluation level, the approval authority can be given the name of the specific  individual and just that single person assigned to it. Thereafter, at the time  of selecting approval authority, the individual name can be selected for  further routing.</em></strong></p>
 <p><strong>&nbsp;</strong></p>
-<h3><a name="_Toc284002171" id="_Toc284002171">Submission  of Expense request by staff members</a></h3>
-<p>The staff  includes those users who submit expense requests /proposals for evaluation. The  Staff logs into the application to create and submit expense requests to own  institution for review. After logging in, user clicks <strong>Enter Expense Request</strong> Menu on the left panel. The page below is  opened. </p>
+<h3><a name="_Toc284002171" id="_Toc284002171">Submission  of Expense request by PI </a></h3>
+<p> The  PI&nbsp; user logs into the application to create and submit expense requests to own  institution for review. After logging in, user clicks <strong>Enter Expense Request</strong> Menu on the left panel. The page below is  opened. </p>
 <p><strong>Purchase Order  Date</strong> is the date of order for the items made to the vendor.<strong> Date of Expense</strong> is  the day of receipt of the ordered items and <strong>Invoice Date</strong> is the date as on the  bill accompanying the items. For certain purchases, it is not necessary to have  Purchase Orders and then date of expense and invoice date are sufficient. It is  also possible for all 3 dates to be the same. <br />
   Documents can be  uploaded (for e.g. PO, Quotations, invoices  etc) to be reviewed by the approval authorities. <br />
 On clicking <strong>Submit</strong>, the institution&rsquo;s expense  request is displayed as a line item in the table below as well as in the  finance clerk&rsquo;s (who is privileged to receive all expense requests)&nbsp; <strong>Request  List</strong>.</p>
@@ -45,7 +45,7 @@ On clicking <strong>Submit</strong>, the institution&rsquo;s expense  request is
 <p><strong><u>Finance Clerk:</u></strong></p>
 <p>The Clerk has access to the <strong>Expense Requests List</strong> which have been submitted so far from  various projects and their status. </p>
 <p align="left">Clicking <strong>View</strong> for a line item in the column <strong>Request  Details</strong>, the <strong>Expense Request Details </strong>page is opened:</p>
-<p>The invoice  details are populated here and editable. The reason for this provision is to  cover a scenario where the invoice is sent to the institution directly. In that  case, the clerk will be capturing the invoice details.&nbsp; It is assumed that the purchase order details  are completed by the staff/PI always. </p>
+<p>The invoice  details are populated here and editable. The reason for this provision is to  cover a scenario where the invoice is sent to the institution directly. In that  case, the clerk will be capturing the invoice details.&nbsp; It is assumed that the purchase order details  are completed by the PI always. </p>
 <p><br />
   Documents may be  uploaded as well as existing attachments viewed by clicking link &ndash; <strong>View/Upload</strong>.</p>
 <p><br />
@@ -59,10 +59,10 @@ Currently, in an  evaluation level, even if 1 person rejects the request and set
 <h3><a name="_Toc284002172" id="_Toc284002172">Expense  Request approval</a></h3>
 <p>The finance  department approver logs in, clicks <strong>Evaluate  Expense Request</strong> menu on the left.&nbsp;  The list of expense requests expected to be reviewed by this employee at  various evaluation levels is displayed here. </p>
 <p>On clicking the  &ldquo;<strong>Approve/Reject</strong>&rdquo; link in the <strong>Approve/Reject</strong> column, the specific expense  request is opened and the approval authority is provided with 2 buttons &ndash; <strong>Accept &amp; Reject</strong>, along with a field  to enter comments.</p>
-<p>Once a suitable  status (for e.g. Approved) is selected, the screen refreshes to display  additional fields along with the message confirming successful completion of  evaluation </p>
+<p>Once a suitable  status (for e.g. Approved) is selected, the screen refreshes to display  additional fields along with the message confirming successful completion of  evaluation. </p>
 <p>If the user is the final approver for this request then he can directly click  button &ldquo;<strong>Evaluation Completed</strong>&rdquo;. The  process ends and in the clerk&rsquo;s <strong>Request  List</strong>, the <strong>Record</strong> link is activated  for entering payment details.</p>
 <p>If there are  multiple members for an authority level, then &ldquo;Evaluation Completed&rdquo; can be set  only by the last member in that level. Else, a message is  displayed informing the user that other members are yet to evaluate. </p>
-<p>On the other  hand, if the request needs to be sent to a different approval authority, the  user selects the particular authority from the drop down list Send for approval  to and then clicks &ldquo;Send Request&rdquo;. Here again, if the other members are yet to  evaluate, only a message is shown. </p>
+<p>On the other  hand, if the request needs to be sent to a different approval authority, the  user selects the particular authority from the drop down list <strong>Send for approval </strong>to and then clicks &ldquo;Send Request&rdquo;. Here again, if the other members are yet to  evaluate, only a message is shown. </p>
 <p>Once  successfully evaluated by all members in a level and the request sent to the  next level, the line item now populates the selected approval authorities&rsquo;  lists. The process is repeated. </p>
 <p>Please note that  currently it is possible for an authority to &ldquo;Reject&rdquo; a request and still send  it to a different authority. The final status of a request is the same as that  set by the authority which clicked &ldquo;Evaluation completed&rdquo;</p>
 <h3><a name="_Toc284002173" id="_Toc284002173">Payment</a> </h3>

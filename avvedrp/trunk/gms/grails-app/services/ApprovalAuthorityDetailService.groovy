@@ -93,5 +93,28 @@ class ApprovalAuthorityDetailService {
   		def approvalAuthorityDetailList = ApprovalAuthorityDetail.findAll("from ApprovalAuthorityDetail AD where AD.activeYesNo='Y' and AD.approvalAuthority.defaultYesNo='Y' and AD.approvalAuthority.party="+party)
   		return approvalAuthorityDetailList
   	}
- 	
+ 	/*
+ 	 * To get Approval Authority Detail list By Approval Authority
+ 	 */
+ 	public List getApprovalAuthorityDetailByApprovalAuthority(def approvalAuthorityId)
+ 	{
+ 		def approvalAuthorityDetailInstanceList = ApprovalAuthorityDetail.findAll("from ApprovalAuthorityDetail AAD where AAD.approvalAuthority ="+approvalAuthorityId+" and AAD.activeYesNo = 'Y'")
+    	return approvalAuthorityDetailInstanceList
+	}
+ 	/*
+ 	 * method to get approval authority details by approval authority and user
+ 	 */
+ 	public getApprovalAuthorityDetailByApprovalAuthorityUser(def approvalAuthorityId,def userId)
+ 	{
+ 		def approvalAuthorityDetailInstance = ApprovalAuthorityDetail.find("from ApprovalAuthorityDetail AD where AD.activeYesNo='Y' and AD.approvalAuthority="+approvalAuthorityId+" and AD.person="+userId)
+ 		return approvalAuthorityDetailInstance
+ 	}
+ 	/*
+ 	 * Get ApprovalAuthorityDetail List By Person
+ 	 */
+ 	 public getApprovalAuthorityDetailInstanceListByPerson(def UserId)
+ 	 {
+ 		def approvalAuthorityDetailInstanceList = ApprovalAuthorityDetail.findAll("from ApprovalAuthorityDetail AAD where AAD.person.id="+UserId+" and AAD.activeYesNo = 'Y'")
+    	return approvalAuthorityDetailInstanceList
+ 	 }
 }

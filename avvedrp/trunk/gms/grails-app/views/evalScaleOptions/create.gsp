@@ -27,7 +27,7 @@
 	                                    <label for="evalScale"><g:message code="default.evalScaleOptions.evalScale.label"/></label>
 	                                </td>
 	                                <td valign="top" class="value ${hasErrors(bean: evalScaleOptionsInstance, field: 'evalScale', 'errors')}">
-	                                   <g:select optionKey="id" optionValue="scaleTitle" from="${(evalScaleInstanceList)}" name="evalScale.id" value="${fieldValue(bean: evalScaleOptionsInstance, field: 'evalScale')}" noSelection="['null':'select']" ></g:select>
+	                                   <g:select optionKey="id" optionValue="scaleTitle" from="${(evalScaleInstanceList)}" name="evalScale.id" value="${fieldValue(bean: evalScaleOptionsInstance, field: 'evalScale')}" noSelection="['null':'-Select-']" ></g:select>
 	                                </td>
 	                                
 	                                <td valign="top" class="name">

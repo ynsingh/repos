@@ -29,7 +29,7 @@ class ProjectsController extends GmsController
 		
 		gh.removeValue("Help")
 		gh.putValue("Help","_List.htm")//putting help pages in session
-		
+		params.max = Math.min(params.max ? params.int('max') : 10, 100)
 		if(!params.max) params.max = 10
 			String subQuery="";
 		if(params.sort != null && !params.sort.equals(""))
@@ -37,11 +37,19 @@ class ProjectsController extends GmsController
 		println "+params.sort"+params.sort
 		if(params.order != null && !params.order.equals(""))
 			subQuery =subQuery+" "+params.order
-		
+			params.offset = (params.offset ? params.int('offset') : 0)
 		grantAllocationWithprojectsInstanceList = grantAllocationService
 													.getGrantAllocationGroupByProjects(gh.getValue("Party"))
-													
-		def  pIMapList =[]
+		//------
+		 // For Pagination
+			def total=grantAllocationWithprojectsInstanceList.size()
+			if(total)
+			{
+			def max = projectsService.findUpperIndex(params.offset,params.max,total) 
+			
+			 grantAllocationWithprojectsInstanceList = grantAllocationWithprojectsInstanceList.getAt(params.offset..max)											
+			}
+			 def  pIMapList =[]
 		def pIMapInstance
 		def projectInstanceList = []
 		for(int i=0;i<grantAllocationWithprojectsInstanceList.size();i++)
@@ -56,7 +64,7 @@ class ProjectsController extends GmsController
 			
 		}
 		
-		[ 'grantAllocationWithprojectsInstanceList': grantAllocationWithprojectsInstanceList,'pIMapList':pIMapList ]
+		[ 'grantAllocationWithprojectsInstanceList': grantAllocationWithprojectsInstanceList,'pIMapList':pIMapList,'grantAllocationWithprojectsTotal':total ]
     }
 	
 	def inactiveProjectsList = 
@@ -266,14 +274,21 @@ class ProjectsController extends GmsController
 			{
 				if(projectsInstance.saveMode.equals("Updated"))
 				{
-					flash.message ="" +projectsInstance.name+ "&nbsp;"+"${message(code: 'default.updated.label')}" 
+					flash.message ="${message(code: 'default.updated.label')}" 
 					redirect(action:edit,id:projectsInstance.id)
 				}
 				else if(projectsInstance.saveMode.equals("Duplicate"))
 				{
-					flash.message = "${message(code: 'default.AlreadyExists.label')}"
-						gh.putValue("ProjectId",projectsInstance.id)
-		    			redirect(action:edit,id:projectsInstance.id)
+					def investigatorList=investigatorService.getInvestigatorsWithParty(gh.getValue("PartyID"))
+					gh.putValue("ProjectId",projectsInstance.id)
+		    		//validation error msg start
+        			// The following helps with field highlighting in your view
+        			def projectsNewInstance = new Projects()
+					projectsNewInstance.properties=params
+					projectsNewInstance.id=projectsInstance.id
+					projectsNewInstance.errors.rejectValue('code','default.AlreadyExists.label')
+        			//end
+        			render(view:'edit',model:['projectsInstance':projectsNewInstance,'investigatorList':investigatorList])
 					}
 				else if(projectsInstance.saveMode.equals("NotUpdated"))
 				{
@@ -331,8 +346,9 @@ class ProjectsController extends GmsController
 
     def create = 
     {
-		def projectsInstance = new Projects()
-		projectsInstance.properties = params
+		println "params = "+params
+			def projectsInstance = new Projects()
+		projectsInstance.properties = params['Projects']
 		def projectsService = new ProjectsService()
 		GrailsHttpSession gh=getSession()
 		gh.putValue("Help","New_Projects.htm")//putting help pages in session
@@ -377,13 +393,18 @@ class ProjectsController extends GmsController
     		{
     			flash.message = "${message(code: 'default.created.label')}"
     			gh.putValue("ProjectId",projectsInstance.id)
-    			redirect(action:create )
+    			redirect(action:list )
     		}
     		else if(projectsInstance.saveMode.equals("Duplicate"))
     		{
-    			flash.message = "${message(code: 'default.AlreadyExists.label')}"
+    			def investigatorList=investigatorService.getInvestigatorsWithParty(gh.getValue("PartyID"))
     				gh.putValue("ProjectId",projectsInstance.id)
-        			redirect(action:create )
+        			//validation error msg start
+        			 // The following helps with field highlighting in your view
+                    projectsInstance.errors.rejectValue('code','default.AlreadyExists.label')
+        			//end
+        			render(view:'create',model:['projectsInstance':projectsInstance,'investigatorList':investigatorList])
+        			
     		}
     	}
     	else
@@ -564,5 +585,9 @@ class ProjectsController extends GmsController
 		}
 		
 			render(template:'grantSearchResult',model:['grantAllocationInstanceList':grantAllocationInstanceList])  
+	}
+	def projectsDashBoard =
+	{
+			
 	}
 }

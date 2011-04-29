@@ -49,7 +49,7 @@
                                           <label for="projectStatus"><g:message code="default.ProjectStatus.label"/></label>:
                                       </td>
                                       <td valign="top" class="value ${hasErrors(bean:projectTrackingInstance,field:'projectStatus','errors')}">
-                                          <g:select name="projectStatus" from="${['Open','Deadline Passed','Grant Funded','Closed']}"  value="${fieldValue(bean:projectTrackingInstance,field:'projectStatus')}" />
+                                          <g:select name="projectStatus" from="${['Open','Deadline Passed','Grant Funded','Closed']}"  value="${fieldValue(bean:projectTrackingInstance,field:'projectStatus')}" noSelection="['null':'-Select-']"/>
                                           <g:hiddenField name="projects.id" value="${projectTrackingInstance?.projects?.id}" />
                                       </td>
                                   </tr> 

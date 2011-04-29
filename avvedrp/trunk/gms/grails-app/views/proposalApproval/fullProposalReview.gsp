@@ -18,7 +18,7 @@
                         <tr>
                            <g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}" />
                             
-                           <th><g:message code ="default.ProjectTitle.label" /></th>
+                           <th><g:message code ="default.ProposalTitle.label" /></th>
                             
                             <th> <g:message code="default.ReviewerStatus.label" /></th>
                             

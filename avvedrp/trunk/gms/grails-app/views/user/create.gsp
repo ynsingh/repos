@@ -77,7 +77,7 @@
 						<g:message code="default.AssignRoles.label"/>:
 						<label for="AssignRoles" style="color:red;font-weight:bold"> * </label>
 						</td>
-						<td> <g:select optionKey="id" optionValue="authority" from= "${authorityInstance}" id="authorities" name="authorities"  noSelection="['Select':'Select']"></g:select>
+						<td> <g:select optionKey="id" optionValue="authority" from= "${authorityInstance}" id="authorities" name="authorities"  noSelection="['Select':'-Select-']"></g:select>
 						</td>
 					</tr>
 

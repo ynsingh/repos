@@ -29,7 +29,7 @@
 	</div> 
 	<g:subMenuLogin/>
           <div class="body">
-            <h1><g:message code="default.NotificationList.label"/></h1>
+            <h1><g:message code="default.ProposalsAreInvited.head"/></h1>
             <g:if test="${flash.message}">
               <div class="message">${flash.message}</div>
             </g:if>

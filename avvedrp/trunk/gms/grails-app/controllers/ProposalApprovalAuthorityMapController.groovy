@@ -59,15 +59,7 @@ class ProposalApprovalAuthorityMapController {
         		proposalApprovalAuthorityMapInstance.activeYesNo = 'Y'
         		if (proposalApprovalAuthorityMapInstance.save(flush: true))
 	        	{
-	        		def approvalAuthorityDetailInstance = ApprovalAuthorityDetail.findAll("from ApprovalAuthorityDetail AD where AD.activeYesNo='Y' and AD.approvalAuthority.id="+proposalApprovalAuthorityMapInstance.approvalAuthority.id)
-	        		for(approvalAuthorityDetails in approvalAuthorityDetailInstance)
-	        		{
-	        	  
-	        			def proposalApprovalInstance = new ProposalApproval()
-	        			proposalApprovalInstance.proposalApprovalAuthorityMap=proposalApprovalAuthorityMapInstance
-	        			proposalApprovalInstance.approvalAuthorityDetail=approvalAuthorityDetails
-	        			proposalApprovalInstance.save()
-	        		}
+	        		
 	        		flash.message = "${message(code: 'default.ProposalApprovalAuthorityMapCreated.label')}"
 	        		redirect(action: "create", id: proposalApprovalAuthorityMapInstance.id)
 	        	}

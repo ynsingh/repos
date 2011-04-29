@@ -183,7 +183,7 @@ class ProjectTypeController {
 	          def projectTypeInstance = ProjectType.get( params.id )
 	          if(projectTypeInstance) 
 	          {
-	             projectTypeInstance.properties = params
+	             //projectTypeInstance.properties = params
 	             
 	             /* Delete project type details*/
 	             Integer projectTypeId = projectTypeService.deleteProjectType(new Integer(params.id))

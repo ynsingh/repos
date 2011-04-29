@@ -20,7 +20,7 @@
                     <tbody>
                     
                         <tr class="prop">
-                            <td valign="top" class="name">Project Title</td>
+                            <td valign="top" class="name">Proposal Title</td>
                             
                             <td valign="top" class="value">${fullProposalDetailInstance?.fullProposal?.preProposal.projectTitle}</td>
                             
@@ -72,29 +72,32 @@
                         <tbody><tr>
 		   		 	     <td>
                     <g:form method="post" controller="proposalApprovalDetail" >
-     <input type=hidden id="proposalApproval.id" name="proposalApproval.id" value="${proposalApprovalInstance.id}">
-     <input type=hidden id="proposalId" name="proposalId" value="${proposalApprovalInstance.proposalApprovalAuthorityMap.proposalId}">
+     <input type=hidden id="proposalApprovalAuthorityMap.id" name="proposalApprovalAuthorityMap.id" value="${proposalApprovalAuthorityMapInstance?.id}">
+     <input type=hidden id="approvalAuthorityDetail.id" name="approvalAuthorityDetail.id" value="${approvalAuthorityDetailInstance?.id}">
+     <input type=hidden id="proposalId" name="proposalId" value="${proposalApprovalAuthorityMapInstance?.proposalId}">
      <input type=hidden id="proposalStatus" name="proposalStatus" value="Approved">
      <input type=hidden id="remar" name="remarks" value="">
-      <g:actionSubmit class="more" value="Approve" action="saveFullProposal" onclick="(document.getElementById('remar').value = document.getElementById('myField').value);"/>
+      <g:actionSubmit class="inputbutton" value="Approve" action="saveFullProposal" onclick="(document.getElementById('remar').value = document.getElementById('myField').value);"/>
       </g:form> </td>
                             
 		   		 	     <td>
       <g:form method="post" controller="proposalApprovalDetail" >
-      <input type=hidden id="proposalApproval.id" name="proposalApproval.id" value="${proposalApprovalInstance.id}">
-      <input type=hidden id="proposalId" name="proposalId" value="${proposalApprovalInstance.proposalApprovalAuthorityMap.proposalId}">
+      <input type=hidden id="proposalApprovalAuthorityMap.id" name="proposalApprovalAuthorityMap.id" value="${proposalApprovalAuthorityMapInstance?.id}">
+     <input type=hidden id="approvalAuthorityDetail.id" name="approvalAuthorityDetail.id" value="${approvalAuthorityDetailInstance?.id}">
+     <input type=hidden id="proposalId" name="proposalId" value="${proposalApprovalAuthorityMapInstance?.proposalId}">
      <input type=hidden id="proposalStatus" name="proposalStatus" value="NeedMoreInfo">
      <input type=hidden id="remar1" name="remarks" value="">
-      <g:actionSubmit class="more" value="Need More Info" action="saveFullProposal" onclick="(document.getElementById('remar1').value = document.getElementById('myField').value);"/>
+      <g:actionSubmit class="inputbutton" value="Need More Info" action="saveFullProposal" onclick="(document.getElementById('remar1').value = document.getElementById('myField').value);"/>
      </g:form></td>
                            
 		   		 	     <td>
      <g:form method="post" controller="proposalApprovalDetail" >
-     <input type=hidden id="proposalApproval.id" name="proposalApproval.id" value="${proposalApprovalInstance.id}">
-     <input type=hidden id="proposalId" name="proposalId" value="${proposalApprovalInstance.proposalApprovalAuthorityMap.proposalId}">
+     <input type=hidden id="proposalApprovalAuthorityMap.id" name="proposalApprovalAuthorityMap.id" value="${proposalApprovalAuthorityMapInstance?.id}">
+     <input type=hidden id="approvalAuthorityDetail.id" name="approvalAuthorityDetail.id" value="${approvalAuthorityDetailInstance?.id}">
+     <input type=hidden id="proposalId" name="proposalId" value="${proposalApprovalAuthorityMapInstance?.proposalId}">
      <input type=hidden id="proposalStatus" name="proposalStatus" value="Rejected">
      <input type=hidden id="remar2" name="remarks" value="">
-      <g:actionSubmit class="more" value="Reject" action="saveFullProposal" onclick="(document.getElementById('remar2').value = document.getElementById('myField').value);" />
+      <g:actionSubmit class="inputbutton" value="Reject" action="saveFullProposal" onclick="(document.getElementById('remar2').value = document.getElementById('myField').value);" />
        </g:form> </td>
                             </tr>
                             </tbody>

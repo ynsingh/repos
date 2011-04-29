@@ -990,4 +990,20 @@ class ProjectsService{
 		return closedProjectInstance
 	}
 	
+	/* To get active project list by project id*/
+	
+	public Projects getActiveProjectById(def projectId)
+	{
+		def projectInstance = Projects.find("from Projects P where P.activeYesNo='Y' and P.id ="+ projectId)
+		return projectInstance
+	}
+	
+	/* To get the upperlimit for pagination */
+	public Integer findUpperIndex(int offset, int max, int total) {
+	    max = offset + max - 1
+	    if (max >= total) {
+	      max -= max - total + 1
+	    }
+	    return max
+	  }
 }

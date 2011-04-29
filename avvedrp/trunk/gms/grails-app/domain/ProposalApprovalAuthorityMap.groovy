@@ -28,4 +28,6 @@ class ProposalApprovalAuthorityMap {
 		createdBy(nullable: true)
 		modifiedBy(nullable: true)
     }
+    String viewAll;
+    static transients = [ "viewAll" ]
 }

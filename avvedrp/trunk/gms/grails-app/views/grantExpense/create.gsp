@@ -77,7 +77,7 @@
                                              <label for="grantAllocation"><g:message code="default.GrantAllocation.label"/></label>:
                                          </td>
                                          <td valign="top" class="value ${hasErrors(grantExpenseInstance,field:'grantAllocation','errors')}">
-                                             <g:select optionKey="id" optionValue="grantCode" from="${grantAllocationInstanceList}" name="grantAllocation.id" value="${grantExpenseInstance?.grantAllocation?.id}" ></g:select>
+                                             <g:select optionKey="id" optionValue="grantCode" from="${grantAllocationInstanceList}" name="grantAllocation.id" value="${grantExpenseInstance?.grantAllocation?.id}"  noSelection="['null':'-Select-']" ></g:select>
                                          </td>
                                      </tr> 
                                      
@@ -108,7 +108,7 @@
                                             <label for="modeOfPayment" style="color:red;font-weight:bold"> * </label>
                                          </td>
                                          <td valign="top" class="value ${hasErrors(bean:grantExpenseInstance,field:'modeOfPayment','errors')}">
-                                            <g:select name="modeOfPayment" from="${['DD','Cheque','BankTransfer']}"  value="${fieldValue(bean:grantExpenseInstance,field:'modeOfPayment')}" noSelection="['null':'Select']"></g:select>
+                                            <g:select name="modeOfPayment" from="${['DD','Cheque','BankTransfer']}"  value="${fieldValue(bean:grantExpenseInstance,field:'modeOfPayment')}" noSelection="['null':'-Select-']"></g:select>
                                          </td>
                                     </tr>      
                

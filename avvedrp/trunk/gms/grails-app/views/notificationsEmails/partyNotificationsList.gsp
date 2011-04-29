@@ -5,8 +5,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <meta name="layout" content="main" />
         <title><g:message code="default.Proposal.ProposalList.head"/></title>
+    	<g:javascript library="jquery"/>  
     </head>
     <body>
+    	<div id="paginate">
     	<div class="wrapper"> 
           <div class="body">
             <h1><g:message code="default.Proposal.ProposalList.head"/></h1>
@@ -15,6 +17,7 @@
             </g:if>
             <g:if test="${partyNotificationsInstance}">
               <div class="list">
+              <div class="paginateButtons" style="border: 0px;height:14px;text-align:right" ><util:remotePaginate controller="notificationsEmails" action="partyNotificationsList" total="${partyNotificationsInstanceTotal}" update="paginate"  prev="Prev" pageSizes="[5,10,20,40,50]"/><font style="font:8pt verdana;font-weight:bold;color:black">Total:${partyNotificationsInstanceTotal}</font></div>
                 <table>
                     <thead>
                         <tr>
@@ -74,6 +77,7 @@
               <br><g:message code="default.NoRecordsAvailable.label"/></br>
             </g:else>
           </div>
+       </div>
        </div>
     </body>
 </html>

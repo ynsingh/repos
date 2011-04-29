@@ -56,6 +56,7 @@ class PreProposalController {
     def save = {
     	def preProposalService = new PreProposalService()
         def preProposalInstance = new PreProposal(params)
+    	println params
     	GrailsHttpSession gh=getSession()
     	def chkPreProposalInstance = preProposalService.checkDuplicatePreProposal(params)
 		if(chkPreProposalInstance)
@@ -65,10 +66,10 @@ class PreProposalController {
 	    }
 		else
 	   {
-    	
+    	println "saveee"
     	 preProposalInstance  = preProposalService.savePreProposal(params,gh.getValue("UserId"),gh.getValue("Party"))
-        if (preProposalInstance) {
-        	
+        if (preProposalInstance.id) {
+        	println "saved----------"+preProposalInstance
         	gh.putValue("PreProposal",preProposalInstance.id)
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'preProposal.label', default: 'PreProposal'), preProposalInstance.id])}"
             redirect(action: "preProposalApplication", id: preProposalInstance.id)

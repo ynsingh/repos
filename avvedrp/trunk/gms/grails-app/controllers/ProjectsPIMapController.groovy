@@ -66,7 +66,7 @@ class ProjectsPIMapController {
         	if(pIMapDuplicateInstance && pIMapDuplicateInstance.id != new Integer(params.id))
             {
             	redirect(action:create,model:[projectsPIMapInstance:projectsPIMapInstance],params:[id:PIprojectsInstance.id]) 
-            	flash.message = investigatorInstance.name + "${message(code: 'default.alreadyAssignedCoPI.label')}"
+            	flash.message = investigatorInstance.name +" "+ "${message(code: 'default.alreadyAssignedCoPI.label')}"
             }
             else
             {
@@ -152,7 +152,7 @@ class ProjectsPIMapController {
 	        else
 	        {
 	        	redirect(action:create,model:[projectsPIMapInstance:projectsPIMapInstance,projectsInstance:PIprojectsInstance],params:[id:PIprojectsInstance.id]) 
-	        	flash.message = pIMapInstance.investigator.name + "${message(code: 'default.alreadyAssignedPI.label')}"
+	        	flash.message = pIMapInstance.investigator.name +" "+ "${message(code: 'default.alreadyAssignedPI.label')}"
 	        }
         }
         else
@@ -174,10 +174,18 @@ class ProjectsPIMapController {
       
         else
         {
+        	println"pIMapDuplicateInstance.role"+pIMapDuplicateInstance.role
         	redirect(action:create,model:[projectsPIMapInstance:projectsPIMapInstance],params:[id:PIprojectsInstance.id]) 
-        	flash.message = investigatorInstance.name + "${message(code: 'default.alreadyAssignedCoPI.label')}"
+        	if(pIMapDuplicateInstance.role == 'PI')
+        	{
+        		flash.message = pIMapInstance.investigator.name +" "+ "${message(code: 'default.alreadyAssignedPI.label')}"
+        	}
+        	else
+        	{
+        	flash.message = investigatorInstance.name +" "+ "${message(code: 'default.alreadyAssignedCoPI.label')}"
+        	}
         }
-        }
+       }
     }
    
 }

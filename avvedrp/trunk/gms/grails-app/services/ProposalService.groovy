@@ -60,7 +60,7 @@ class ProposalService {
 		    mailMessage+="\n \n \n To Login   \t "+urlPath;
 		   	if(userInstance.email)
 		    {
-		    	mailStatus=notificationsEmailsService.sendMessage(userInstance.email,mailMessage)
+		    	mailStatus=notificationsEmailsService.sendMessage(userInstance.email,mailMessage,"text/plain")
 		    	saveStatusList.controllerIdMail=true
 		    }
 			else
@@ -166,13 +166,23 @@ class ProposalService {
     /*
      * method to save proposalApplication
      */
-    public def saveProposal(def params,def notification)
+    public def saveProposal(def params,def notification,def partyId)
     {
  	   def proposalInstance = new Proposal()
  	   def dateValue = new Date()
  	   def notificationInstance=notificationService.getNotificationById(notification)
+ 	   def partyInstance
+ 	   if(partyId == "null")
+ 	   {
+ 		  partyInstance=null
+ 	   }
+ 	   else
+ 	   {
+ 	      partyInstance = partyService.getPartyById(partyId)
+ 	   }
  	  String uniqueId = UUID.randomUUID().toString();
  	  Random randomNumber = new Random();
+ 	  proposalInstance.party=partyInstance
  	  proposalInstance.code="PR-"+dateValue.getYear()+dateValue.getMonth()+1+dateValue.getDate()+dateValue.getSeconds()+dateValue.getMinutes()+dateValue.getHours()   
  	  proposalInstance.notification=notificationInstance
  	  proposalInstance.proposalSubmitteddate=dateValue
@@ -364,4 +374,23 @@ class ProposalService {
     	return proposalApplicationInstanceList
     }
     
+    public List getEvalAnswerByProposal(def proposalId)
+    {
+    	def evalAnswerInstance = EvalAnswer.findAll("from EvalAnswer EA where EA.proposal.id ="+proposalId+"group by EA.person.id")
+    	return evalAnswerInstance
+    }
+    
+   
+    
+    public List getEvalItem(def notificationId)
+    {
+    	def evalItemInstance = EvalItem.findAll("from EvalItem EI where EI.notification.id ="+notificationId)
+    	return evalItemInstance
+    }
+    
+    public List getEvalScore(def proposalId,def personId)
+    {
+    def evalScoreInstance = EvalAnswer.findAll("from EvalAnswer EA where EA.proposal.id ="+proposalId+"and EA.person.id="+personId)
+    return evalScoreInstance
+    }
 }

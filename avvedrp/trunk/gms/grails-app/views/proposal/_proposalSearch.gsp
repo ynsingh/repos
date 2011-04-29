@@ -3,9 +3,9 @@
                         <tr>
                          <input type="hidden" id="notificationId" name="notificationId" value="${fieldValue(bean:proposalInstance, field:'notification.id')}"/>
                    	       <g:sortableColumn property="id" title="${message(code: 'default.SINo.label')}"/>
-                   	        
-                   	        <th><g:message code="default.TitleOfTheResearchProject.label"/></th>
                    	        <th><g:message code="default.NotificationTitle.label"/></th>
+                   	        <th><g:message code="default.TitleOfTheResearchProject.label"/></th>
+                   	        
                    	        <th><g:message code="default.SubmittedBy.label"/></th>
                         	<th><g:message code="default.Organisation.label"/></th>
                         	
@@ -19,9 +19,10 @@
                            <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                         
                             <td>${i+1}</td>
+                            <td>${proposalApplicationInstance?.proposal?.notification?.notificationTitle}</td>
                             <% def proposalApplicationExtProjectInstance = ProposalApplicationExt.find("from ProposalApplicationExt PE where PE.field='TitleOfTheResearchProject_2' and PE.proposalApplication.id="+proposalApplicationInstance?.id)%>
                              <td>${proposalApplicationExtProjectInstance?.value}</td>
-                             <td>${proposalApplicationInstance?.proposal?.notification?.notificationTitle}</td>
+                             
                              <td>
                              <g:link action="downloadAttachments" controller="attachments" id="${attachmentsInstanceCVList[i]?.id}"><label for="name">${proposalApplicationInstance?.name}</label></g:link></td>
                         	 <td>${proposalApplicationInstance?.organisation}</td>

@@ -60,7 +60,7 @@ background-color: #d5e5ed;
 	float: right;
 	right:80px;
 	top: 30px;
-	width:35%;
+	width:36%;
 	height:18%;
 	color: #01518e;
 	font-size:95%;
@@ -92,12 +92,28 @@ background-color: #d5e5ed;
 
 	function breakout_of_frame()
 	{
+	
+	
+	
+	 if(self.name == "selenium_myiframe" || self.name == "selenium_main"){
+    	// do nothing in case of selenium both in normal mode and multiwindow mode
+  }else{
+		if (parent != self && parent.name != "selenium") {
+		    top.location=self.document.location;
+		}
+	
+		if ( opener ) {
+		  if (opener.top.location != self.document.location ) {
+		       top.location=self.document.location;
+	     	    self.close();
+		   }
+		}            
+  }
+	
 	  // see http://www.thesitewizard.com/archive/framebreak.shtml
 	  // for an explanation of this script and how to use it on your
 	  // own website
-	  if (top.location != location) {
-	    top.location.href = document.location.href ;
-	  }
+	 
 	}
 	
 
@@ -140,7 +156,7 @@ background-color: #d5e5ed;
   <table width="100%" border="0" cellspacing="0" cellpadding="0">
     <form action='${postUrl}' method='POST' id='loginForm' class='cssform'>
     <tr>
-	    <td height="42">
+	    <td height="40">
 	    <label for="language"><g:message code="default.language.label"/>:</label>
 	    </td>
        <td>
@@ -261,20 +277,20 @@ background-color: #d5e5ed;
         </td>
     </tr>
     <tr>
-      <th width="49%" height="42" scope="col"><g:message code="default.UserName.label"/>:</th>
+      <th width="49%" height="40" scope="col"><g:message code="default.UserName.label"/>:</th>
       <th width="51%" scope="col">
       
          <input type="text" size="16" name='j_username' id='j_username' value='${request.remoteUser}' />
      </th>
       </tr>
     <tr>
-      <th height="42" scope="row"><g:message code="default.Password.label"/>:</th>
+      <th height="40" scope="row"><g:message code="default.Password.label"/>:</th>
       <td>
        <input type='password' size="16" name='j_password' id='j_password' />
     </td>
       </tr>
     <tr>
-      <th height="30" scope="row">&nbsp;</th>
+      <th height="25" scope="row">&nbsp;</th>
       <td><input type='submit' value='<g:message code="default.login.label"/>' /></td>
       </tr>
     <tr>
