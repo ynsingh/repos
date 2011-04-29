@@ -14,11 +14,11 @@
 	<div id="content">
                         <div align="center">
                           <h3>${institute} - ${year}</h3>
-                          <h2>Student Activity Chart [ Course - ${course} ]</h3>
+                          <h2>Student Activity Chart [ Course - ${sel_course} ]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LMS - ${lms_used}</h3>
                         </div>
                         <g:javascript src="swfobject.js"/>
                         <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="100%" height="600">
-                        <param name="movie" value="${resource(dir:'charts',file:'time_utilization .swf')}" />
+                        <param name="movie" value="${resource(dir:'charts',file:'time_utilization.swf')}" />
                         <param name="quality" value="high" />
                         <param name="bgcolor" value="#ffffff" />
                         <param name="allowScriptAccess" value="sameDomain" />

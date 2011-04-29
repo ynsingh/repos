@@ -12,7 +12,7 @@
 
 
 	<div id="content">
-                        <div align="center"><h3>${institute} - ${year}</h3></div>
+                        <div align="center"><h3>${institute} - ${year}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LMS - ${lms_used}</h3></div>
                         <g:javascript src="swfobject.js"/>
                         <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="100%" height="600">
                         <param name="movie" value="${resource(dir:'charts',file:'visual_details .swf')}" />

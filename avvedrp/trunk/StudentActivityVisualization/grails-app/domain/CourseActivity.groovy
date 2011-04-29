@@ -1,5 +1,6 @@
 class CourseActivity {
 
+/*
      Date CourseStartDate;
      String CourseID;
      String CourseDescription;
@@ -9,6 +10,7 @@ class CourseActivity {
      Integer TotViewRes;
      Integer IniThrdCount;
      Integer IniTotPosts;
+	 */
  
    static mapping = {
    	      table 'course_activity'
@@ -18,8 +20,12 @@ class CourseActivity {
    String userId;
    String eventId;
    String userName;
-   String siteId;
-   String siteName;
-   static transients = [ "eventCount","userId","eventId","userName","siteId","siteName" ]
+   
+   Integer instId;
+   String instName;
+   Integer crsId;
+   String crsName;
+   
+   static transients = [ "eventCount","userId","eventId","userName","instId","instName","crsId","crsName" ]
 
 }

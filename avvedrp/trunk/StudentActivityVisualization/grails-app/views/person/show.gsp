@@ -6,7 +6,7 @@
 	<div id="wrapper">
 		<div id="head">
 			<div id="logo_user_details">&nbsp;</div>
-		      <g:if test="${session.ROLE == 'ROLE_ADMIN'}">
+		      <g:if test="${session.ROLE == 'ROLE_SUPERADMIN' || session.ROLE == 'ROLE_ADMIN'}">
                         <g:menu/>
                         </g:if >
 		</div>
@@ -62,20 +62,7 @@
 						</td>
 						</tr>
 
-						<tr class="prop">
-						<td valign="top" class="name"><label for="email">Email:</label></td>
-						<td valign="top" class="value ${hasErrors(bean:person,field:'email','errors')}">
-						<input type="text" id="email" name="email" value="${person.email?.encodeAsHTML()}"/>
-						</td>
-						</tr>
-
-						<tr class="prop">
-						<td valign="top" class="name"><label for="emailShow">Show Email:</label></td>
-						<td valign="top" class="value ${hasErrors(bean:person,field:'emailShow','errors')}">
-						<g:checkBox name="emailShow" value="${person.emailShow}"/>
-						</td>
-						</tr>
-
+						
 						<tr class="prop">
 						<td valign="top" class="name" align="left">Assign Roles:</td>
 						</tr>

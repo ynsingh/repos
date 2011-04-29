@@ -8,15 +8,16 @@
  * @author ahis
  */
 class Institute {
-
-   	/** ROLE Stringuserid */
-	String code
-
-        String name
-
-        String address
-
-    String email
-
+    
+    String univ_id
+	String user_id
+	String inst_name
+	String inst_address
+    String inst_email
+	static constraints = {
+                 inst_name(blank:false)
+                 inst_address(blank:false)
+                 inst_email(blank:false)
+	}
 }
 

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Schema name="staff">
+    <Cube name="staff">
+        <Table name="master"/>
+
+         <Dimension name="Course" foreignKey="course_id">
+            <Hierarchy hasAll="true" allMemberName="All Courses" primaryKey="id">
+                <Table name="course_master"/>
+                <Level name="courses" column="course_name" uniqueMembers="true"/>
+            </Hierarchy>
+        </Dimension>
+
+         <Dimension name="User" foreignKey="user_name">
+				<Hierarchy hasAll="true" allMemberName="All Users" primaryKey="user_name">
+					<Table name="lms_users"/>
+					<Level name="users" column="user_name" uniqueMembers="true"/>                
+				</Hierarchy>
+           </Dimension>	
+		
+		
+		 <Dimension name="SelCourse" foreignKey="course_id">
+            <Hierarchy hasAll="true" allMemberName="All Courses" primaryKey="id">
+                <Table name="course_master"/>
+                <Level name="courses" column="course_name" uniqueMembers="true"/>
+            </Hierarchy>
+        </Dimension>
+		
+		  
+         <Dimension name="CurrUser" foreignKey="user_name">
+				<Hierarchy hasAll="true" allMemberName="All Users" primaryKey="user_name">
+					<Table name="lms_users"/>
+					<Level name="users" column="user_name" uniqueMembers="true"/>                
+				</Hierarchy>
+           </Dimension>	
+		
+		 
+        
+        <Measure name="Activity Count" column="action" aggregator="count" datatype="String" formatString="#,##0"/>
+    </Cube>
+</Schema>

@@ -3,15 +3,19 @@
 
 import org.springframework.security.providers.UsernamePasswordAuthenticationToken as AuthToken
 import org.springframework.security.context.SecurityContextHolder as SCH
+import groovy.sql.Sql;
+
 
 /**
  * Registration controller.
  */
 class RegisterController {
 
+
 	def authenticateService
 	def daoAuthenticationProvider
 	def emailerService
+        def dataSource
        // def personService
 
 	static Map allowedMethods = [save: 'POST', update: 'POST']
@@ -250,6 +254,398 @@ class RegisterController {
 
 	}
 
+
+
+/*---------------------------------------  UNIVERSITY REGISTRATION STARTS HERE -------------------------------------*/
+
+    def registerUniversity = {
+		// skip if already logged in
+		if (authenticateService.isLoggedIn()) {
+			redirect action: show
+			return
+		}
+
+		def person = new Person()
+		person.properties = params
+                def university = new University()
+		university.properties = params
+                
+                String pswd=params.univ_paswd
+		def config = authenticateService.securityConfig
+		def defaultRole = config.security.defaultRole
+
+		def role = Authority.findByAuthority(defaultRole)
+
+		if (!role) {
+			person.passwd = ''
+			flash.message = "Default Role '$defaultRole' not found."
+			render view: 'index', model: [person: person]
+			return
+		}
+
+
+		if (params.univ_captcha.toUpperCase() != session.captcha) {
+			person.passwd = ''
+			flash.message = 'Captcha code did not match.'
+			render view: 'index', model: [person: person]
+			return
+		}
+
+
+		if (params.univ_paswd != params.univ_conpaswd) {
+			person.passwd = ''
+			flash.message = 'The passwords you entered do not match.'
+			render view: 'index', model: [person: person]
+			return
+		}
+
+        	def pass = authenticateService.encodePassword(params.univ_paswd)
+		bindData(person, [
+				username: params.univ_username,
+                                userRealName : '',
+				passwd: pass,
+                                usercode: 'nil',
+				enabled: false,
+				emailShow: true,
+				description: '' ])
+                 bindData(university, [univ_name: params.univ_name,
+                                       univ_address: params.univ_address,
+				       univ_email: params.univ_username])
+
+
+
+         def personService =new PersonService()
+         def chkDuplicateUser = personService.checkDuplicateUser(params.univ_username)
+	 if(chkDuplicateUser)
+	       {
+                     flash.message ="${message(code: 'UserName Already Exists')}"
+                    //redirect(action: "index", id: salaryComponentInstance.id)
+                    render view: 'index', model: [person: person]
+	       }
+           else
+             {
+              	   if ( person.save() && university.save())
+                          {
+                                       Authority.findByAuthority('ROLE_USER').addToPeople(person)								   
+								
+    //Sending Mail starts here
+    if(params.univ_username!='') {
+    def mailService =new MailService()
+    String emailMessage = """
+    Hi,
+    Thanks for Registering with our site:-
+    ${request.scheme}://${request.serverName}:${request.serverPort}${request.contextPath}
+
+    Your Account Details:
+    ---------------------
+    Username: ${params.univ_username}
+    Password : ${params.univ_paswd}
+    """
+    def mailstatus = mailService.sendMessage(params.univ_username,emailMessage)
+    }
+    //Sending Mail ends here
+
+										
+									   person.save(flush: true)
+                                       flash.message ="<font color='#399C0B'><strong>${message(code: 'Thanks For Registering.... </strong></font>')}"
+                                       render view: 'index'
+                            }
+                            else
+                            {
+                                    person.passwd = ''
+                                    render view: 'index', model: [person: person]
+                            }
+                        }
+	}
+
+/*---------------------------------------  UNIVERSITY REGISTRATION ENDS HERE -------------------------------------*/
+
+
+
+/*---------------------------------------  INSTITUTE REGISTRATION STARTS HERE -------------------------------------*/
+ def registerInstitute = {
+
+	   //Setting the LMS Name Array for insertion
+                def sql=new Sql(dataSource);
+		def lms_array=[];
+		def index=0;
+		if (params.lmsname.class.isArray())
+		{		  
+		   for ( lmsname in params.lmsname ) {
+				  lms_array[index]=lmsname;
+				  index++;
+				 }
+		}
+		else {			
+		    lms_array[index]=params.lmsname;
+		}
+       
+
+ 
+
+        // skip if already logged in
+		if (authenticateService.isLoggedIn()) {
+			redirect action: show
+			return
+		}
+
+		def person = new Person()
+		person.properties = params
+                def institute = new Institute()
+		institute.properties = params
+
+                String pswd=params.inst_paswd
+		def config = authenticateService.securityConfig
+		def defaultRole = config.security.defaultRole
+
+		def role = Authority.findByAuthority(defaultRole)
+
+		if (!role) {
+			person.passwd = ''
+			flash.message = "Default Role '$defaultRole' not found."
+			render view: 'index', model: [person: person]
+			return
+		}
+
+
+		if (params.inst_captcha.toUpperCase() != session.captcha) {
+			person.passwd = ''
+			flash.message = 'Captcha code did not match.'
+			render view: 'index', model: [person: person]
+			return
+		}
+
+
+		if (params.inst_paswd != params.inst_conpaswd) {
+			person.passwd = ''
+			flash.message = 'The passwords you entered do not match.'
+			render view: 'index', model: [person: person]
+			return
+		}
+
+        	def pass = authenticateService.encodePassword(params.inst_paswd)
+                
+		bindData(person, [
+				username: params.inst_username,
+                                userRealName : '',
+				passwd: pass,
+                                usercode: 'nil',
+				enabled: false,
+				emailShow: true,
+				description: '' ])
+             
+
+
+
+         def personService =new PersonService()
+         def chkDuplicateUser = personService.checkDuplicateUser(params.inst_username)
+	 if(chkDuplicateUser)
+	       {
+                     flash.message ="${message(code: 'UserName Already Exists')}"
+                    //redirect(action: "index", id: salaryComponentInstance.id)
+                    render view: 'index', model: [person: person]
+	       }
+           else
+             {
+              	   if (person.save())
+                          {								
+								bindData(institute, [
+                                univ_id: params.inst_univ_id,
+								user_id: person.id,
+				                inst_name: params.inst_name,
+                                inst_address: params.inst_address,
+                                inst_email: params.inst_username])
+								
+								if(institute.save()) {
+								for (lmsval in lms_array){                                  
+								sql.execute("insert into lms (inst_id, lms_name) values (${institute.id},'"+lmsval+"')")                                   }
+								}
+                                Authority.findByAuthority('ROLE_USER').addToPeople(person)
+									   
+ //Sending Mail starts here
+    def univ = sql.firstRow("select univ_email as email from university where id='"+params.inst_univ_id+"'")
+    if(univ.email!='') {
+    def mailService =new MailService()
+    String emailMessage = """
+    Hi,
+    An Institute under your university has been registered with our site:-
+    ${request.scheme}://${request.serverName}:${request.serverPort}${request.contextPath}
+
+    Here are the Account details of the New Institute Member:
+    --------------------------------------------------------
+
+    Institute Name: ${params.inst_name}
+    Email-ID : ${params.inst_username}
+    Address : ${params.inst_address}
+    """   
+    def mailstatus = mailService.sendMessage(univ.email,emailMessage)
+    }
+//Sending Mail ends here		
+								 
+								 
+				       person.save(flush: true)
+                                       flash.message ="<font color='#399C0B'><strong>${message(code: 'Thanks For Registering.Waiting for Approval... </strong></font>')}"
+                                       render view: 'index'
+                            }
+                            else
+                            {
+                                    person.passwd = ''
+                                    render view: 'index', model: [person: person]
+                            }
+             }
+
+}
+/*---------------------------------------  INSTITUTE REGISTRATION ENDS HERE -------------------------------------*/
+
+
+/*---------------------------------------  AJAX FUNCTIONS START HERE -------------------------------------*/
+def ajaxGetInstitutes={
+     def sel_id=params.id;  
+     def response="<select style='width:183px;' id='usr_inst_id' name='usr_inst_id' onchange='getLms(this.value)'><option value=''>-------------- select -------------</option>"
+     def sql=new Sql(dataSource);
+     def list1=sql.rows("select id,inst_name from institute where univ_id='"+sel_id+"'");
+     for(a in list1)
+        {
+            response+="<option value="+a.id+">"+a.inst_name+"</option>";
+        }
+      response+="</select>";
+      render response;
+}
+
+  def ajaxGetLms={
+     def sel_id=params.id;
+     def response="<select style='width:183px;' id='lmsname' name='lmsname' multiple size=4 onchange='call()'>"
+     def sql=new Sql(dataSource);
+     def lmslist=sql.rows("select id,lms_name from lms where inst_id='"+sel_id+"'");
+     for(lmsval in lmslist)
+        {
+            response+="<option value="+lmsval.id+">"+lmsval.lms_name+"</option>";
+        }
+      response+="</select>";
+      render response;
+}
+/*---------------------------------------  AJAX FUNCTIONS ENDS HERE -------------------------------------*/
+
+
+/*---------------------------------------  STAFF/STUDENT REGISTRATION STARTS HERE -------------------------------------*/
+    def registerUser={
+
+        //Getting the LMS Username's   
+        def split_usrdet=params.usernames.split(",");
+        def array_len=(split_usrdet.length-1);
+   
+
+         def sql=new Sql(dataSource);
+        // skip if already logged in
+		if (authenticateService.isLoggedIn()) {
+			redirect action: show
+			return
+		}
+
+		def person = new Person()
+		person.properties = params
+
+
+                String pswd=params.usr_paswd
+		def config = authenticateService.securityConfig
+		def defaultRole = config.security.defaultRole
+
+		def role = Authority.findByAuthority(defaultRole)
+
+		if (!role) {
+			person.passwd = ''
+			flash.message = "Default Role '$defaultRole' not found."
+			render view: 'index', model: [person: person]
+			return
+		}
+
+
+		if (params.usr_captcha.toUpperCase() != session.captcha) {
+			person.passwd = ''
+			flash.message = 'Captcha code did not match.'
+			render view: 'index', model: [person: person]
+			return
+		}
+
+
+		if (params.usr_paswd != params.usr_conpaswd) {
+			person.passwd = ''
+			flash.message = 'The passwords you entered do not match.'
+			render view: 'index', model: [person: person]
+			return
+		}
+
+        	def pass = authenticateService.encodePassword(params.usr_paswd)
+
+		bindData(person, [
+				username: params.usr_username,
+                                userRealName : '',
+				passwd: pass,
+                                usercode: 'nil',
+				enabled: false,
+				emailShow: true,
+				description: '' ])
+
+
+
+         def personService =new PersonService()
+         def chkDuplicateUser = personService.checkDuplicateUser(params.usr_username)
+	 if(chkDuplicateUser)
+	       {
+                     flash.message ="${message(code: 'UserName Already Exists')}"
+                    //redirect(action: "index", id: salaryComponentInstance.id)
+                    render view: 'index', model: [person: person]
+	       }
+           else
+             {
+              	   if ( person.save())
+                          {
+                                    //Inserting the usernames for LMS
+                                    
+                                        for ( i in 0..array_len ) {
+                                                def split_val=split_usrdet[i].split("@");
+                                                 sql.execute("insert into lms_mapping (lms_id,user_id,lms_username) values ("+split_val[0]+",${person.id},'"+split_val[1]+"')")
+                                        
+                                     }
+                                     //Inserting the usernames for LMS
+
+                                       Authority.findByAuthority('ROLE_USER').addToPeople(person)
+									   
+ //Sending Mail starts here
+    def univ = sql.firstRow("select univ_name,univ_email from university where id='"+params.usr_univ_id+"'")
+    def inst = sql.firstRow("select inst_name,inst_email from institute where id='"+params.usr_inst_id+"'")
+    if(inst.inst_email!='') {
+    def mailService =new MailService()
+    String emailMessage = """
+    Hi,
+    A member of your institute has been registered with our site:-
+    ${request.scheme}://${request.serverName}:${request.serverPort}${request.contextPath}
+
+    Here are the Account details of the New  Member:
+    --------------------------------------------------------
+    Username :${params.usr_username}
+    University : ${univ.univ_name}
+    Institute : ${inst.inst_name}
+    """
+    def mailstatus = mailService.sendMessage(inst.inst_email,emailMessage)
+    }
+//Sending Mail ends here
+								 
+								 
+									   person.save(flush: true)
+                                       flash.message ="<font color='#399C0B'><strong>${message(code: 'Thanks For Registering.Waiting for Approval... </strong></font>')}"
+                                       render view: 'index'
+                            }
+                            else
+                            {
+                                    person.passwd = ''
+                                    render view: 'index', model: [person: person]
+                            }
+                           
+             }
+           
+    }
+/*---------------------------------------  STAFF/STUDENT REGISTRATION ENDS HERE -------------------------------------*/
     
 
     //New User Activation
@@ -270,5 +666,7 @@ class RegisterController {
 		}
 
       def confirmActivation = {}
+	  
+	  def gmsFrame = {}
 
 }

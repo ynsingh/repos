@@ -17,14 +17,11 @@ class Person {
 	/** MD5 Password */
 	String passwd
 
-        String usercode
+  
 	/** enabled */
 	boolean enabled
 
-	String email
-
-	boolean emailShow
-
+	
 	/** description */
 	String description = ''
 
@@ -32,13 +29,9 @@ class Person {
 	String pass = '[secret]'
 
 	static constraints = {
-		//username(blank: false, unique: true)
                  username(email:true,blank:false)
-                 usercode(blank:false)
-		//userRealName(blank: false)
-                userRealName(nullable: true)
-                email(nullable: true)
-		passwd(blank: false)
-		enabled()
+                 userRealName(nullable: true)               
+		         passwd(blank: false)
+		         enabled()
 	}
 }

@@ -9,9 +9,8 @@
 			<div id="logo_user_details">&nbsp;</div>
 		       <g:menu/>
 		</div>
-
-	<div id="content">
-                         
+	<div id="content"> 
+	<div align="right" style="padding-right:30px;"><strong>DATABASE UPDATED ON : <font color="#B27115">${session.last_update}</font></strong></div>
                         <g:javascript src="swfobject.js"/>
                         <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="100%" height="600">
                         <param name="movie" value="${resource(dir:'charts',file:'admin_dashboard.swf')}" />

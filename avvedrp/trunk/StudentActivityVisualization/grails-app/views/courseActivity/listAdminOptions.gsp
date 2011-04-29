@@ -23,7 +23,7 @@
                alert("Please select a course");
                return false;
              }
-           var course_val=$.trim($('#course').val());
+           var course_val=$.trim($('#course').val());		  
            $('#hidCourse2').val(course_val);
            thisform.submit();
         }
@@ -59,13 +59,13 @@
 	<div id="wrapper">
 		<div id="head">
 			<div id="logo_user_details">&nbsp;</div>
-		      <g:if test="${session.ROLE == 'ROLE_ADMIN'}">
+		      <g:if test="${session.ROLE == 'ROLE_SUPERADMIN' || session.ROLE == 'ROLE_UNIVERSITY'}">
                         <g:menu/>
                         </g:if >
 		</div>
 
 	<div id="content"> <!-- Start of content div -->
-                                       <div align="center"><h3>${institute} - ${year}</h3></div>
+                                       <div align="center"><h3>${institute} - ${year}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LMS - ${lms_used}</h3></div>
                                         <br />   <br />
 					<div class="inner" >
 					<table width="750" border="0" align="center" cellpadding="0" cellspacing="0">
@@ -86,8 +86,8 @@
 
 					<h2>Course Wise Analysis </h2>
 					<br>
-					<label><strong>Select Course:&nbsp;&nbsp;&nbsp;&nbsp; </strong></label>
-					<g:select  from="${courseList}" id="course" name="course" noSelection="['':'------------ Select ----------']"   ></g:select>
+					<label><strong>Course:&nbsp;&nbsp;&nbsp;&nbsp; </strong></label>					
+					<g:select keys="${courseList.crsId}"  from="${courseList.crsName}" name="course"  id="course" noSelection="['':'Select']"/>
 					</div>
 
 

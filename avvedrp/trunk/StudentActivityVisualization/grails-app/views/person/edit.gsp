@@ -1,12 +1,21 @@
 <head>
 	<meta name="layout" content="main" />
 	<title>LMS List</title>
+	 <g:javascript src="jquery.js"/>
+	<script>	
+	function validate(thisform)
+	{
+	  var uname=$('#username').val().split("@"); 	 
+	  $('#userRealName').val(uname[0]);
+	  thisform.submit();
+	}
+	</script>
        </head>
 <body>
 	<div id="wrapper">
 		<div id="head">
 			<div id="logo_user_details">&nbsp;</div>
-		      <g:if test="${session.ROLE == 'ROLE_ADMIN'}">
+		      <g:if test="${session.ROLE == 'ROLE_SUPERADMIN' || session.ROLE == 'ROLE_ADMIN'}">
                         <g:menu/>
                         </g:if >
 		</div>
@@ -24,23 +33,16 @@
 					</g:hasErrors>
 
 					<div class="prop">					
-					<g:form>
+					<g:form name="edituser">
 					<input type="hidden" name="id" value="${person.id}" />
 					<input type="hidden" name="version" value="${person.version}" />
 					<table style="padding-left: 40px;">
 					<tbody>
 
 					<tr class="prop">
-					<td valign="top" class="name"><label for="username">Login Name:</label></td>
+					<td valign="top" class="name"><label for="username">User Name:</label></td>
 					<td valign="top" class="value ${hasErrors(bean:person,field:'username','errors')}">
 					<input type="text" id="username" name="username" value="${person.username?.encodeAsHTML()}"/>
-					</td>
-					</tr>
-
-					<tr class="prop">
-					<td valign="top" class="name"><label for="userRealName">Full Name:</label></td>
-					<td valign="top" class="value ${hasErrors(bean:person,field:'userRealName','errors')}">
-					<input type="text" id="userRealName" name="userRealName" value="${person.userRealName?.encodeAsHTML()}"/>
 					</td>
 					</tr>
 
@@ -65,19 +67,7 @@
 					</td>
 					</tr>
 
-					<tr class="prop">
-					<td valign="top" class="name"><label for="email">Email:</label></td>
-					<td valign="top" class="value ${hasErrors(bean:person,field:'email','errors')}">
-					<input type="text" id="email" name="email" value="${person?.email?.encodeAsHTML()}"/>
-					</td>
-					</tr>
-
-					<tr class="prop">
-					<td valign="top" class="name"><label for="emailShow">Show Email:</label></td>
-					<td valign="top" class="value ${hasErrors(bean:person,field:'emailShow','errors')}">
-					<g:checkBox name="emailShow" value="${person.emailShow}"/>
-					</td>
-					</tr>
+					
 
 					<tr class="prop">
 					<td valign="top" class="name"><label for="authorities">Roles:</label></td>
@@ -94,7 +84,7 @@
 					<tr class="prop">
 					<td colspan="3">
 					<div class="buttons">
-					<span><g:actionSubmit class="save" value="Update" /></span>
+					<span><g:actionSubmit class="save" value="Update"  onclick="return validate(document.edituser);"/></span>
 					<span><g:actionSubmit class="delete" onclick="return confirm('Are you sure?');" value="Delete" /></span>
 					</div>
 
@@ -104,6 +94,7 @@
 
 					</tbody>
 					</table>
+					<input type="hidden" name="userRealName" id="userRealName" value=""/>
 					</g:form>
 
 

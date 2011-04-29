@@ -106,7 +106,8 @@ class PersonController {
 		if (person.save()) {
 			Authority.findAll().each { it.removeFromPeople(person) }
 			addRoles(person)
-			redirect action: show, id: person.id
+			//redirect action: show, id: person.id
+			redirect action: list
 		}
 		else {
 			render view: 'edit', model: buildPersonModel(person)
@@ -127,7 +128,8 @@ class PersonController {
 		person.passwd = authenticateService.encodePassword(params.passwd)
 		if (person.save()) {
 			addRoles(person)
-			redirect action: show, id: person.id
+			//redirect action: show, id: person.id
+			redirect action: list
 		}
 		else {
 			render view: 'create', model: [authorityList: Authority.list(), person: person]
