@@ -34,6 +34,7 @@ package com.erp.nfes;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -76,12 +77,11 @@ public class StaffProfileServlet extends HttpServlet {
 			response.sendRedirect("login.jsp");
 		}
 		
-		if ( action.trim().equals( "CDOC-OPEN_A_DOCUMENT" ) ) {
+		if ( action.trim().equals( "CDOC-OPEN_A_DOCUMENT" )||(action.trim().equals( "CDOC-OPEN_A_DOCUMENT_FOR_APPROVE" )) ) {
 			request.getSession().setAttribute("clinicalform-actiondesc","Opening clinical form");
-			createNewDocument ( request, response, userRequest );
-			
+			createNewDocument ( request, response, userRequest );			
 		} else if ( action.trim().equals( "CDOC-SAVE_THE_DOCUMENT" ) ) {
-			request.getSession().setAttribute("clinicalform-actiondesc","Saving clinical form");
+			request.getSession().setAttribute("clinicalform-actiondesc","Saving Staff Profile");
 			userRequest.setSubmitButton( "" + StaffProfileConstants.CDOC_DOCUMENT_DICTATED );
 			userRequest.setSaveFormat( StaffProfileConstants.CDOC_REGULAR_FORM );
 			try {
@@ -94,7 +94,17 @@ public class StaffProfileServlet extends HttpServlet {
 			request.getSession().setAttribute("clinicalform-actiondesc","View in printableformat (pdf)");
 			userRequest.setSubmitButton( StaffProfileConstants.CDOC_DOCUMENT_SHOW_PRINT_READY_REPORT );
 			showPrintableReport ( request, response, userRequest );
-		}	
+		}else if ( action.trim().equals( "CDOC-FINAL_APPROVE")){
+			request.getSession().setAttribute("clinicalform-actiondesc","Approving Staff Profile");
+			userRequest.setSubmitButton( "" + StaffProfileConstants.CDOC_DOCUMENT_SIGNED_OFF );
+			userRequest.setSaveFormat( StaffProfileConstants.CDOC_REGULAR_FORM );
+			try {
+				saveDocument ( request, response, userRequest );				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}			
+		}
+		
 	}//end of function service.
 
 	private void saveDocument(HttpServletRequest request,HttpServletResponse response, RequestParam userRequest) throws Exception {
@@ -110,6 +120,7 @@ public class StaffProfileServlet extends HttpServlet {
 		if ( !userRequest.getSubmitButton().trim().equals( StaffProfileConstants.CDOC_DOCUMENT_SHOW_PRINT_READY_REPORT ) ) {
 			String conPath = request.getContextPath();
 			String form_Name=userRequest.getFormName();
+			//System.out.println("++++++++++Action :+++"+userRequest.getAction());
 			if (form_Name.equals("staff_profile_report_v0")){				 
 			response.sendRedirect("./StaffProfileServlet?action=CDOC-OPEN_A_DOCUMENT&entityId=" + userRequest.getEntityId() + "&documentId=" + documentId +
 						"&formName=" + userRequest.getFormName() + "&docType=" + userRequest.getDocumentType() +
@@ -213,6 +224,7 @@ public class StaffProfileServlet extends HttpServlet {
 			Connection connect = null;
 			ConnectDB conObj=new ConnectDB();
 			connect = conObj.getMysqlConnection();
+						
 			if ( isValid(userRequest.getDocumentId()) && Integer.parseInt(userRequest.getDocumentId())>0 ){
 				questionVOsList = HtmlTemplateHelper.getEditableReportFormForPatients( userRequest,number);
 
@@ -245,7 +257,8 @@ public class StaffProfileServlet extends HttpServlet {
 			} else {
 				str.append ("<documentId></documentId>\n<docNumber></docNumber>\n");
 			}
-
+			str.append("<action>" + userRequest.getAction() + "</action>\n\n");
+			str.append("<approved>" + userRequest.getApprovedYesNo() + "</approved>\n\n");
 			str.append ("<docType>" + userRequest.getDocumentType() + "</docType>\n\n");
 			str.append ("<entityId>" + userRequest.getEntityId() + "</entityId>\n\n");
 			str.append("<parentDocumentId>" + userRequest.getParentDocumentId() + "</parentDocumentId>\n");
@@ -258,8 +271,7 @@ public class StaffProfileServlet extends HttpServlet {
 
 				str.append("<amendYN>" + "yes" + "</amendYN>\n");
 			}
-
-
+			
 			//iterate over ArrayList to generate Xml string for the questions.
 			for (int cnt=0; cnt<questionVOsList.size(); cnt++){
 				questVO = (QuestionsVO) questionVOsList.get(cnt);

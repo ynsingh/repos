@@ -57,19 +57,29 @@ public class ForgotPasswordController extends HttpServlet {
  
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
         Connection conn = null;
-    	String user = "";
+    	String user = "";    	
     	String pwd = "";
     	String mail = "";
     	String userFullName="";
-    	
+		ResultSet rset = null;
+		Statement stmt = null;
     	int status=0;
 		try {
-			user = request.getParameter("userName");
-			mail=user;
-			//System.out.println("================user=========="+user);
-			ConnectDB conObj=new ConnectDB(); //New 21-12-2010
-			conn = conObj.getMysqlConnection();//New 21-12-2010			
-			String criteria = "username = \"" + user + "\"";
+			ConnectDB conObj=new ConnectDB(); 
+			conn = conObj.getMysqlConnection();
+			/*user = request.getParameter("userName");
+			mail=user;*/			
+			mail = request.getParameter("email");
+			//System.out.println("======"+user);
+			user="";
+			String criteria = "email = \"" + mail + "\"";
+			stmt = conn.createStatement();
+			rset = stmt.executeQuery("SELECT username FROM users WHERE " + criteria);
+			while (rset.next()) {
+				user=rset.getString(1);
+			}
+			//System.out.println("======"+user);
+			
 	        if( existsUserRecord( criteria, conn ) ){	        	
 	        	pwd=resetUserPassword(conn,user);
 				sendemail( request, mail, user, pwd );			

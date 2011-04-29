@@ -445,7 +445,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 										}/* ========== File Upload 07-12-2010===========*/
 										else if(action.equalsIgnoreCase("file_upload") ){
 											UploadFile actionObj = new UploadFile();
-											htmlString = actionObj.getObjectHtml( name, action, choice, code, valuestring);
+											htmlString = actionObj.getObjectHtml( name, action, choice, code, valuestring,entityId);
 										}/* ========== Detail Form 12-01-2011===========*/
 										else if(action.equalsIgnoreCase("detail_form") ){
 											DetailForm actionObj = new DetailForm();
@@ -455,15 +455,18 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 										else if(action.equalsIgnoreCase("pickone_radio_choose") ){
 											PickRadio actionObj = new PickRadio();
 											htmlString = actionObj.getObjectHtml01(name, action, choice, code, valuestring);
-										}
-										//Akhil End
+										}//Akhil End
 										//25-01-2011
 										else if(action.equalsIgnoreCase("pickone_master") ){
 											//System.out.println("pickone_master");
 											PickOneMaster actionObj = new PickOneMaster();
 											htmlString = actionObj.getObjectHtml(name, action, choice, code, valuestring);
-										}
-										//end
+										}//end 
+										//15-03-2011
+										else if(action.equalsIgnoreCase("pickone_table") ){
+											PickOneMaster actionObj = new PickOneMaster();
+											htmlString = actionObj.getObjectHtml01(name, action, choice, code, valuestring, entityId);
+										}//end of addition 15-03-2011
 										else{
 											htmlString.append(valuestring);//as general string.
 										}//end if.
@@ -649,7 +652,10 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 		 */
 		public static String getAimsDisplayStringSql(String formName)   {
 			String SqlState;
-			SqlState = "select name, prompt, number, description, creator, time, itemtype, prioritem, nextitem from " +
+			// Modified on 23-02-2011 By Rajitha, bcoz prompt abbreviation also set in the prompt field separated with '|' symbol
+			/*SqlState = "select name, prompt, number, description, creator, time, itemtype, prioritem, nextitem from " +
+			  formName + "_items order by number";*/
+			SqlState = "select name, SUBSTRING_INDEX(Prompt, '|',1 ) AS Prompt, SUBSTR( prompt,(INSTR(prompt,'|'))-LENGTH(prompt)) AS abbreviation, number, description, creator, time, itemtype, prioritem, nextitem from " +
 			  formName + "_items order by number";
 			//System.out.println("*******"+SqlState);
 			return SqlState;
@@ -1136,7 +1142,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 	    			documentInfo.setAddendum_yesno(rs.getString("addendum_yesno"));
 	    			documentInfo.setAmended_document_id(rs.getInt("amended_document_id"));
 	    			documentInfo.setAmended_yesno(rs.getString("amended_yesno"));
-	    			documentInfo.setApproved_yn(rs.getString("approved_yesno"));
+	    			documentInfo.setApproved_yn(rs.getString("approved_yesno"));	    			
 	    			documentInfo.setDescription(rs.getString("description"));
 	    			documentInfo.setTitle(rs.getString("title"));
 	    			documentInfo.setShow_draft_copy_yesno( rs.getInt( "fm.show_draft_copy_yesno" ) );
@@ -1415,7 +1421,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 			str.append("<" + questVO.getName() + ">\n");
 			str.append("	<number>" + questVO.getNumber() + "</number>\n");
 			str.append("	<description>" + questVO.getDescription() + "</description>\n");
-			str.append("	<oioNS:prompt>" + questVO.getPrompt() + "</oioNS:prompt>\n");
+			str.append("	<oioNS:prompt>" + questVO.getPrompt() + "</oioNS:prompt>\n");			
 			str.append("	<oioNS:itemtype>" + questVO.getItemtype() + "</oioNS:itemtype>\n");
 			//str.append("	<oioNS:renderinfo>\n\n" + questVO.getAction() + "\n\n</oioNS:renderinfo>\n");  //07/01/2011
 			str.append("	<oioNS:renderinfo>\n\n" + questVO.getValue() + "\n\n</oioNS:renderinfo>\n"); //07/01/2011

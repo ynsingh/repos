@@ -11,23 +11,29 @@ public class filedownload  extends HttpServlet
     public void doGet(HttpServletRequest  request, HttpServletResponse response)
 			     throws ServletException, IOException
     {
-        
+
         String filename = request.getParameter("filename");
+        String userId=request.getParameter("userId");
+        String ctrlName=request.getParameter("ctrlName");
+        
 	    Properties properties = new Properties();
         try
-        {     
+        {
       		properties.load(new FileInputStream("../conf/fileuploadpath.properties"));
-			String path = properties.getProperty("DESTINATION_DIR_PATH");
-			doDownload(request,response,(path+"\\"+filename),filename);
-			
+			String path = properties.getProperty("DESTINATION_DIR_PATH")+"/"+userId;
+			if (ctrlName.equals("upload_photo")){
+				path=path + "/photo";
+			}
+			doDownload(request,response,(path+"/"+filename),filename);
+
         }
         catch(Exception e)
         {
            e.printStackTrace();
 	   return;
         }
-     
-    }  
+
+    }
     private void doDownload( HttpServletRequest req, HttpServletResponse resp,String filename, String original_filename )throws IOException
     {
     	File                f        = new File(filename);

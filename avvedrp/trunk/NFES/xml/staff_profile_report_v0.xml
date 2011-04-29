@@ -19,7 +19,7 @@
 
 var x="";
 var resume=0;
-
+var photo=0;
 
 
 function getRichValues(){
@@ -44,16 +44,17 @@ function getRichValues(){
 	document.getElementById("d1").style.display='block';
 	document.getElementById("fu1").style.display='block';
 	document.getElementById("t1").style.color='#FFFF00';
-	x="t1";resume=0;
+	x="t1";resume=0;photo=0;
+	courses_taught();
 	return 1;
 }
 
 function show(id)
 {	
-	
+	window.scrollTo(0, 0);
 	if(id=="d1")
 	{
-		document.getElementById(x).style.color='#FFFFFF';
+		document.getElementById(x).style.color='#174664';
 		x="t1";
 		document.getElementById(x).style.color='#0000FF';
 		document.getElementById("d2").style.display='none';
@@ -78,7 +79,7 @@ function show(id)
 	}
 	else if(id=="d2")
 	{
-		document.getElementById(x).style.color='#FFFFFF';
+		document.getElementById(x).style.color='#174664';
 		x="t2";
 		document.getElementById(x).style.color='#0000FF';
 		document.getElementById("d1").style.display='none';
@@ -103,7 +104,7 @@ function show(id)
 	}
 	else if(id=="d3")
 	{
-		document.getElementById(x).style.color='#FFFFFF';
+		document.getElementById(x).style.color='#174664';
 		x="t3";
 		document.getElementById(x).style.color='#0000FF';
 		document.getElementById("d1").style.display='none';
@@ -128,7 +129,7 @@ function show(id)
 	}
 	else if(id=="d4")
 	{
-		document.getElementById(x).style.color='#FFFFFF';
+		document.getElementById(x).style.color='#174664';
 		x="t4";
 		document.getElementById(x).style.color='#0000FF';
 		document.getElementById("d1").style.display='none';
@@ -153,7 +154,7 @@ function show(id)
 	}
 	else if(id=="d5")
 	{	
-		document.getElementById(x).style.color='#FFFFFF';
+		document.getElementById(x).style.color='#174664';
 		x="t5";
 		document.getElementById(x).style.color='#0000FF';
 		document.getElementById("d1").style.display='none';
@@ -178,7 +179,7 @@ function show(id)
 	}
 	else if(id=="d6")
 	{
-		document.getElementById(x).style.color='#FFFFFF';
+		document.getElementById(x).style.color='#174664';
 		x="t6";
 		document.getElementById(x).style.color='#0000FF';
 		document.getElementById("d1").style.display='none';
@@ -203,7 +204,7 @@ function show(id)
 	}
 	else if(id=="d7")
 	{
-		document.getElementById(x).style.color='#FFFFFF';
+		document.getElementById(x).style.color='#174664';
 		x="t7";
 		document.getElementById(x).style.color='#0000FF';
 		document.getElementById("d1").style.display='none';
@@ -228,7 +229,7 @@ function show(id)
 	}
 	else if(id=="d8")
 	{
-		document.getElementById(x).style.color='#FFFFFF';
+		document.getElementById(x).style.color='#174664';
 		x="t8";
 		document.getElementById(x).style.color='#0000FF';
 		document.getElementById("d1").style.display='none';
@@ -253,7 +254,7 @@ function show(id)
 	}
 	else if(id=="d9")
 	{
-		document.getElementById(x).style.color='#FFFFFF';
+		document.getElementById(x).style.color='#174664';
 		x="t9";
 		document.getElementById(x).style.color='#0000FF';
 		document.getElementById("d1").style.display='none';
@@ -278,7 +279,7 @@ function show(id)
 	}
 	else if(id=="d10")
 	{
-		document.getElementById(x).style.color='#FFFFFF';
+		document.getElementById(x).style.color='#174664';
 		x="t10";
 		document.getElementById(x).style.color='#0000FF';
 		document.getElementById("d1").style.display='none';
@@ -304,7 +305,7 @@ function show(id)
 	}
 	else if(id=="d11")
 	{
-		document.getElementById(x).style.color='#FFFFFF';
+		document.getElementById(x).style.color='#174664';
 		x="t11";
 		document.getElementById(x).style.color='#0000FF';
 		document.getElementById("d1").style.display='none';
@@ -329,7 +330,7 @@ function show(id)
 	}
 	else if(id=="d12")
 	{
-		document.getElementById(x).style.color='#FFFFFF';
+		document.getElementById(x).style.color='#174664';
 		x="t12";
 		document.getElementById(x).style.color='#0000FF';
 		document.getElementById("d1").style.display='none';
@@ -354,7 +355,7 @@ function show(id)
 	}
 	else if(id=="d13")
 	{
-		document.getElementById(x).style.color='#FFFFFF';
+		document.getElementById(x).style.color='#174664';
 		x="t13";
 		document.getElementById(x).style.color='#0000FF';
 		document.getElementById("d1").style.display='none';
@@ -379,7 +380,7 @@ function show(id)
 	}
 	else if(id=="d14")
 	{
-		document.getElementById(x).style.color='#FFFFFF';
+		document.getElementById(x).style.color='#174664';
 		x="t14";
 		document.getElementById(x).style.color='#0000FF';
 		document.getElementById("d1").style.display='none';
@@ -404,7 +405,7 @@ function show(id)
 	}
 	else if(id=="d15")
 	{
-		document.getElementById(x).style.color='#FFFFFF';
+		document.getElementById(x).style.color='#174664';
 		x="t15";
 		document.getElementById(x).style.color='#0000FF';
 		document.getElementById("d1").style.display='none';
@@ -429,7 +430,7 @@ function show(id)
 	}
 	else if(id=="d16")
 	{
-		document.getElementById(x).style.color='#FFFFFF';
+		document.getElementById(x).style.color='#174664';
 		x="t16";
 		document.getElementById(x).style.color='#0000FF';
 		document.getElementById("d1").style.display='none';
@@ -454,7 +455,7 @@ function show(id)
 	}
 	else if(id=="d17")
 	{
-		document.getElementById(x).style.color='#FFFFFF';
+		document.getElementById(x).style.color='#174664';
 		x="t17";
 		document.getElementById(x).style.color='#0000FF';
 		document.getElementById("d1").style.display='none';
@@ -479,7 +480,7 @@ function show(id)
 	}
 	else
 	{
-		document.getElementById(x).style.color='#FFFFFF';
+		document.getElementById(x).style.color='#174664';
 		x="t18";
 		document.getElementById(x).style.color='#0000FF';
 		document.getElementById("d1").style.display='none';
@@ -505,11 +506,30 @@ function show(id)
 	moveTop();
 }
 
+function save()
+{	
+	if(submitform_staff_profile_report_v0())
+	{
+		docHtmlSave();
+	}
+	
+}
+
+
+function approve()
+{	
+	if(submitform_staff_profile_report_v0())
+	{
+		docHtmlSaveAndApprove();
+	}
+	
+}
+
 function change(a,b)
 {
 	if(a==1)
 	{
-		document.getElementById(b).style.color='#0000FF';
+		document.getElementById(b).style.color='#FFFFFF;'//'#0000FF';
 		
 	}
 	else
@@ -520,38 +540,18 @@ function change(a,b)
 	     }
 	     else
 	     {
-		document.getElementById(b).style.color='#FFFFFF';
+		document.getElementById(b).style.color='#174664';//'#FFFFFF';
 	     }
 	}
 }
 
-function dirty()
+function upload_resume_dirty()
 {
 	resume=1;
 }
-
-function submitform01()
+function upload_photo_dirty()
 {
-	
-	var frmelement=document.getElementById("staff_profile_report_v0");	
-	if (isMandatoryDataExists(frmelement)=="1") {    		
-	
-		if(resume==1)
-		{      if (document.forms[1].upload_resumefiles.value==""){
-				document.forms[0].upload_resume.value=document.forms[1].upload_resume.value 
-			}	
-			else{
-			document.forms[0].upload_resume.value=document.forms[1].upload_resume.value + "|"+ document.forms[1].upload_resumefiles.value; 
-			}
-
-		       document.forms[1].submit();docHtmlSave();
-		}
-		else
-		{
-			document.forms[0].upload_resume.value=document.forms[1].upload_resumefiles.value
-			docHtmlSave();
-		}
-	}	
+	photo=1;
 }
 
 function showchildform(formname,documentId,entity_type)
@@ -559,7 +559,7 @@ function showchildform(formname,documentId,entity_type)
 var entity_id=document.forms[0].entityId.value;
 var document_Id=documentId;
 setEditmark(documentId,formname);
-window.open("./jsp/showdetailedform.jsp?entityId="+entity_id+"&amp;documentId="+document_Id+"&amp;formname="+formname+"&amp;entitytype="+entity_type ,"DetailForm","width=1500,height=650,screenX=50,left=50,screenY=50,top=50,status=yes,menubar=no,scrollbars=yes,toolbar=no,modal=yes");
+window.open("./jsp/showdetailedform.jsp?entityId="+entity_id+"&amp;documentId="+document_Id+"&amp;formname="+formname+"&amp;entitytype="+entity_type ,"DetailForm","height=700, width=800, screenX=50,left=200,screenY=50,top=50,scrollbars=yes,directories=no,location=no,menubar=no,resizable=no,status=yes,toolbar=no,modal=yes");
 }
 
 function deleteRow(i,tabname){     
@@ -572,6 +572,11 @@ function deleteRow(i,tabname){
      //document.getElementById(tabname).deleteRow(i)          
      document.getElementById(rowID).style.visibility="collapse";     
      generateIds(tabname);      
+}
+
+function courses_taught()
+{ 	//alert(document.forms[0].academic_term.value);
+	document.getElementById("if01").src="./courses_taught?entity_id="+document.forms[0].entityId.value+"&amp;academic_term="+document.forms[0].academic_term.value;
 }
 
 </script>
@@ -599,6 +604,7 @@ function moveTop()
 <body onLoad="return getRichValues();">
 
 <form method="post" action="./StaffProfileServlet" NAME="myForm" ID="staff_profile_report_v0"> 
+
 <font size="1" face="Verdana, Arial, Helvetica, sans-serif">
 
 <INPUT TYPE="HIDDEN" NAME="dobx"><xsl:attribute name="value"><xsl:value-of select="//patient/patientDob"/></xsl:attribute></INPUT>
@@ -613,10 +619,10 @@ function moveTop()
 	</xsl:attribute></INPUT>
 <INPUT TYPE="HIDDEN" NAME="formName" VALUE="staff_profile_report_v0"></INPUT>
 <INPUT TYPE="HIDDEN" NAME="entitytype" VALUE="staff"></INPUT>
-
 <INPUT TYPE="HIDDEN" NAME="upload_resume"></INPUT>
-
-
+<INPUT TYPE="HIDDEN" NAME="upload_photo"></INPUT>
+<INPUT TYPE="HIDDEN" NAME="caction"><xsl:attribute name="VALUE"><xsl:value-of select="//action"/> </xsl:attribute></INPUT>
+<INPUT TYPE="HIDDEN" NAME="approved"><xsl:attribute name="VALUE"><xsl:value-of select="//approved"/> </xsl:attribute></INPUT>
 
 <!-- 
 <table width="100%">
@@ -632,69 +638,72 @@ function moveTop()
 
 <!-- ================================= Creating Tabs  ====================================== -->
 	
+	
 <tr>
 <td width="160px" valign="top">
-        <table width="160px" cellspacing="0" class="tabBG2">
+	<div >
+        <table width="160px" cellspacing="2" class="tabBG2">
         <tr width="100%" height="10px"><td></td></tr>
         <tr width="100%"><td align="center">
-	<table width="145px" border="1" style="cursor:pointer;" cellspacing="0" class="tabBG1">
-	<tr width="100%"><td></td>
+	<table width="145px" border="1" style="cursor:pointer;" cellspacing="2"  class="tabBG1">
+	<tr width="100%">
 	<td id="t1" align="center" height="27px" background="./images/tab1.png"  onmouseover="change(1,'t1')" onmouseout="change(2,'t1')" onclick="show('d1')" title="Profile">Profile</td>
-	<td></td></tr>
-	<tr width="100%"><td></td>
+	</tr>
+	<tr width="100%">
 	<td id="t2" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t2')" onmouseout="change(2,'t2')" onclick="show('d2')" title="Awards">Awards</td>
-	<td></td></tr>
-	<tr width="100%"><td></td>
-	<td id="t3" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t3')" onmouseout="change(2,'t3')" onclick="show('d3')" title="Journal Papers">Journal Papers</td>
-	<td></td></tr>
-	<tr width="100%"><td></td>
+	</tr>
+	<tr width="100%">
+	<td id="t3" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t3')" onmouseout="change(2,'t3')" onclick="show('d3')" title="Publications">Publications</td>
+	</tr>
+	<tr width="100%">
 	<td id="t4" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t4')" onmouseout="change(2,'t4')" onclick="show('d4')" title="Conference Papers">Conference Papers</td>
-	<td></td></tr>
-	<tr width="100%"><td></td>
+	</tr>
+	<tr width="100%">
 	<td id="t5" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t5')" onmouseout="change(2,'t5')" onclick="show('d5')" title="Books/Chapters">Books/Chapters</td>
-	<td></td></tr>
-	<tr width="100%"><td></td>
+	</tr>
+	<tr width="100%">
 	<td id="t6" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t6')" onmouseout="change(2,'t6')" onclick="show('d6')" title="Invited Talks/Guest Lectures">Invited Talks</td>
-	<td></td></tr>
-	<tr width="100%"><td></td>
+	</tr>
+	<tr width="100%">
 	<td id="t7" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t7')" onmouseout="change(2,'t7')" onclick="show('d7')" title="Seminars / Conferences / Workshops / Training Attended">Seminars</td>
-	<td></td></tr>
-	<tr width="100%"><td></td>
+	</tr>
+	<tr width="100%">
 	<td id="t8" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t8')" onmouseout="change(2,'t8')"  onclick="show('d8')" title="Projects">Projects</td>
-	<td></td></tr>
-	<tr width="100%"><td></td>
+	</tr>
+	<tr width="100%">
 	<td id="t9" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t9')" onmouseout="change(2,'t9')" onclick="show('d9')" title="Patents">Patents</td>
-	<td></td></tr>
-	<tr width="100%"><td></td>
+	</tr>
+	<tr width="100%">
 	<td id="t10" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t10')" onmouseout="change(2,'t10')" onclick="show('d10')" title="Media Publication">Media Publication</td>
-	<td></td></tr>
-	<tr width="100%"><td></td>
+	</tr>
+	<tr width="100%">
 	<td id="t11" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t11')" onmouseout="change(2,'t11')" onclick="show('d11')" title="Courses Taught">Courses Taught</td>
-	<td></td></tr>
-	<tr width="100%"><td></td>
+	</tr>
+	<tr width="100%">
 	<td id="t12" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t12')" onmouseout="change(2,'t12')" onclick="show('d12')" title="Thesis/Student Project">Student Project</td>
-	<td></td></tr>
-	<tr width="100%"><td></td>
+	</tr>
+	<tr width="100%">
 	<td id="t13" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t13')" onmouseout="change(2,'t13')" onclick="show('d13')" title="Faculty Exchange Program">Faculty Exchange</td>
-	<td></td></tr>
-	<tr width="100%"><td></td>
+	</tr>
+	<tr width="100%">
 	<td id="t14" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t14')" onmouseout="change(2,'t14')" onclick="show('d14')" title="Professional Bodies/Societies">Professional Bodies</td>
-	<td></td></tr>
-	<tr width="100%"><td></td>
+	</tr>
+	<tr width="100%">
 	<td id="t15" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t15')" onmouseout="change(2,'t15')" onclick="show('d15')" title="Consultancy Offered">Consultancy Offered</td>
-	<td></td></tr>
-	<tr width="100%"><td></td>
+	</tr>
+	<tr width="100%">
 	<td id="t16" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t16')" onmouseout="change(2,'t16')" onclick="show('d16')" title="Governance">Governance</td>
-	<td></td></tr>
-	<tr width="100%"><td></td>
+	</tr>
+	<tr width="100%">
 	<td id="t17" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t17')" onmouseout="change(2,'t17')" onclick="show('d17')" title="Review Committees">Review Committees</td>
-	<td></td></tr>
-	<tr width="100%"><td></td>
+	</tr>
+	<tr width="100%">
 	<td id="t18" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t18')" onmouseout="change(2,'t18')" onclick="show('d18')" title="Community Service">Community Service</td>
-	<td></td></tr>
+	</tr>
 	</table>
 	</td></tr><tr width="100%" height="10px"><td></td></tr>	
 	</table>
+	</div>
 
 </td>
 <td valign="top">
@@ -706,26 +715,13 @@ function moveTop()
 <td width="30%" colspan="2" align="center" class="thead">Personal Details</td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//focus_area/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//focus_area/oioNS:renderinfo" /></td>
+<td width="30%" colspan="2" class="tabBG4"><xsl:apply-templates select="//personal_details/oioNS:renderinfo" /></td>
 </tr>
 <tr>
 <td colspan="2" class="thead" align="center"><xsl:apply-templates select="//qualification/oioNS:prompt" /></td>
 </tr>
 <tr>
 <td colspan="2" class="tabBG4"><xsl:apply-templates select="//qualification/oioNS:renderinfo" /></td>
-</tr>
-<tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//research_interests/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//research_interests/oioNS:renderinfo" /></td>
-</tr>
-<tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//teaching_interests/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//teaching_interests/oioNS:renderinfo" /></td>
-</tr>
-<tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//positions_held/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//positions_held/oioNS:renderinfo" /></td>
 </tr>
 <tr>
 <td width="30%" colspan="2" align="center" class="thead">Contact Details</td>
@@ -781,7 +777,7 @@ function moveTop()
 
 
 
-<!--============================= Journal Papers =============================-->
+<!--============================= Publications Papers =============================-->
 
 <div id="d3">
 
@@ -897,7 +893,18 @@ function moveTop()
 <div id="d11">
 <table width="100%" class="tabBG3">
 <tr>
-<td class="tabBG4" width="50%">Choose Academic term</td><td class="tabBG4">(Drop Down)</td>
+<td class="thead" align="center" colspan="2">Courses Taught</td>
+</tr>
+<tr>
+<td class="tabBG4" width="30%"><xsl:apply-templates select="//academic_term/oioNS:prompt" /></td>
+<td class="tabBG4" width="70%"><xsl:apply-templates select="//academic_term/oioNS:renderinfo" /><input type="button" value="Search" onclick="courses_taught();" /></td>
+</tr>
+<tr>
+<td class="tabBG4" colspan="2" width="100%" align="center" >
+<iframe id="if01" src="" width="99%" height="250" frameborder="0" >
+  <p>Your browser does not support iframes.</p>
+</iframe>
+</td>
 </tr>
 </table>
 </div>
@@ -995,40 +1002,57 @@ function moveTop()
 </div>
 
 <!--============================= Upload Resume =============================-->
-
+<form method="post" action="./fileupload" NAME="myForm01" id="staff_profile_report_v0_0" enctype="multipart/form-data">
  <div id="fu1">
-  <form method="post" action="./fileupload" NAME="myForm01" enctype="multipart/form-data">
+  
   <table width="100%" class="tabBG3">
   <tr>
-  <td width="30%" class="tabBG4">Upload Resume :</td>
+  <td width="30%" class="tabBG4"><xsl:apply-templates select="//upload_resume/oioNS:prompt" /></td>
   <td width="70%" class="tabBG4"><xsl:apply-templates select="//upload_resume/oioNS:renderinfo" /></td>
   </tr>
+  <tr>
+    <td width="30%" class="tabBG4"><xsl:apply-templates select="//upload_photo/oioNS:prompt" /></td>
+    <td width="70%" class="tabBG4"><xsl:apply-templates select="//upload_photo/oioNS:renderinfo" /></td>
+  </tr>
   </table>
+  </div>
+   <input type="HIDDEN" name="validation_fields" value="upload_photo-P" />
   </form>
- </div> 
-
 <!--============================= Save,Save and Approve,Show Printable Buttons =============================-->
 <br />
+
 <table width="100%" class="tabBG3">
      <tr ><td align="center" class="thead">
-    <input type="hidden" name="action" value="" /> 
-     <input type="button" name="btsave" value="  Save  " onClick="submitform01();" />
-     <!-- <input type="button" name="btsapprove" value=" Save and Approve " onClick="submitForm();docHtmlSaveAndApprove();" /> -->
-     <input type="button" name="btprintable" value="Print " onClick="docHtmlShowPrintable();" />           
-      <input type="HIDDEN" name="mandatory_fields" value="focus_area|office_room_num|office_phone_ext|email_id" />
+     <input type="button" name="btsave" value="  Save  " onClick="save();" />
+     <input type="button" name="btsapprove" value=" Save and Approve " onClick="approve();" />
+     <input type="button" name="btprintable" value="Print " onClick="docHtmlShowPrintable();" />  
+     <input type="hidden" name="action" value="" /> 
+     <input type="HIDDEN" name="mandatory_fields" value="focus_area|office_room_num|office_phone_ext|email_id" />
+     <input type="HIDDEN" name="validation_fields" value="office_phone_ext-N|email_id-E|email-E|home_phone-N|fax-N|upload_photo-P" />
+     <script language="javascript">
+       if (document.forms[0].approved.value==1){                      	
+       	document.forms[0].btsave.style.display='none';         	
+       	document.forms[0].btsapprove.style.display='none';       
+       }
+       else{if (document.forms[0].caction.value=="CDOC-OPEN_A_DOCUMENT_FOR_APPROVE"){                      	
+       		document.forms[0].btsave.style.display='none';         	
+       		}       
+	       else{
+ 	      document.forms[0].btsapprove.style.display='none';         	
+ 	      }
+	}
+       
+     </script>     
      </td>     
      </tr>
 </table>
 
+
 </td>
 </tr>
 </table>
-
 </font>
-<script language="javascript">
-	document.forms["myForm"].Bage.onfocus=ageBlur;
-	document.forms["myForm"].Bage.onchange=ageBlur;
-</script>
+
 </form>
 </body>
 </html>

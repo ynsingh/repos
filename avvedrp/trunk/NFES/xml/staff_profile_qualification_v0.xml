@@ -14,6 +14,7 @@
 
 </style>
 <script language="javascript" src="./js/richtext.js"></script>
+<script language="javascript" src="./js/clinicaldoc_common.js"></script>
 
 <style type="text/css">
 .style1 {
@@ -22,18 +23,6 @@
 }
 </style>
 
-
-<script type="text/javascript">
-
-function submitform(){
-var frmelement=document.getElementById("staff_profile_qualification_v0");
-if (isMandatoryDataExists(frmelement)=="1") {
-	docHtmlSave();
-}	
-}
-
-
-</script>
 
 
 </head>
@@ -56,7 +45,7 @@ if (isMandatoryDataExists(frmelement)=="1") {
 
 
 <!-- ================================= Qualification ======================================-->
-<div id="d1">
+<div id="d1" class="childdiv">
 <table width="100%" class="tabBG3">
 <tr>
 <td width="30%" colspan="2" align="center" class="thead">Qualification Details</td>
@@ -105,12 +94,14 @@ if (isMandatoryDataExists(frmelement)=="1") {
 <!--============================= Save,Save and Approve,Show Printable Buttons =============================-->
 <br />
 <script language="javascript" src="./js/clinicaldoc_common.js"></script>
+
 <table width="100%" class="tabBG3">
      <tr ><td align="center" class="thead">
     <input type="hidden" name="action" value="" /> 
-    <input type="button" name="btsave" value="  Save  " onClick="submitform()" />      
+    <input type="button" name="btsave" value="  Save  " onClick="submitform_staff_profile_qualification_v0();" />      
     <input type="HIDDEN" name="mandatory_fields" value="course_name|institution|location|board|join_month|join_year" />
-     </td></tr>
+     <input type="HIDDEN" name="validation_fields" value="passing_year-Y" />
+    </td></tr>
 </table>
 
 </font>

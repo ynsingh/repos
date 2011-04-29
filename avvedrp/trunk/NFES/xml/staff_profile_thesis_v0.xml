@@ -25,43 +25,28 @@
 var resume=0;
 var x=""
 function load()
-{
-	resume=0;
-	document.getElementById("d2").style.display='none';
-	document.getElementById("fu2").style.display='none';
-	document.getElementById("d1").style.display='block';
-	document.getElementById("fu1").style.display='block';
-	x="Thesis";
+{       
+    if(document.myForm.choose[1].checked){
+    	 choose_click("Thesis");
+    }else{
+         choose_click("Student Project");
+    }
 }
 
-function load1()
-{	alert(document.getElementById("choose1").value);
-	resume=0;
-	if(document.getElementById("choose1").value==",Thesis"||document.getElementById("choose1").value=="")
-	{
-		document.getElementById("d2").style.display='none';
-		document.getElementById("fu2").style.display='none';
-		document.getElementById("d1").style.display='block';
-		document.getElementById("fu1").style.display='block';
-		x="Thesis";
-	}
-	else
-	{
-		document.getElementById("d1").style.display='none';
-		document.getElementById("fu1").style.display='none';
-		document.getElementById("d2").style.display='block';
-		document.getElementById("fu2").style.display='block';
-		x="Student Project";		
-	}
-}
 
-function dirty()
+function thesis_upload_dirty()
 {
 	resume=1;
 }
-
-function submitform01()
+function project_upload_dirty()
 {
+	resume=1;
+}
+function submitform_staff_profile_thesis_v0()
+{
+   var frmelement=document.getElementById("staff_profile_thesis_v0");
+   if (isMandatoryDataExists(frmelement)=="1") 
+   { 
      if(x=="Thesis")
      {
 	if(resume==1)
@@ -99,7 +84,8 @@ function submitform01()
 		document.forms[0].project_upload.value=document.forms[2].project_uploadfiles.value
 		docHtmlSave();
 	}
-     }
+     }   
+   }
 }
 
 function choose_click(value)
@@ -110,7 +96,8 @@ function choose_click(value)
 		document.getElementById("fu2").style.display='none';
 		document.getElementById("d1").style.display='block';
 		document.getElementById("fu1").style.display='block';
-		x="Thesis";
+		x="Thesis";resume=0;
+		document.getElementById("mf01").value="thesis_title|thesis_author|thesis_department_institution|thesis_course_programe|thesis_external_internal|thesis_registration_month_year";
 	}
 	else
 	{
@@ -118,15 +105,16 @@ function choose_click(value)
 		document.getElementById("fu1").style.display='none';
 		document.getElementById("d2").style.display='block';
 		document.getElementById("fu2").style.display='block';
-		x="Student Project";
+		x="Student Project";resume=0;
+		document.getElementById("mf01").value="project_title|project_student_group|project_student_name|project_type|project_start_month_year";
 	}
 }
 
 </script>
 </head>
-<body onload="load()">
+<body onload="load();">
 
-<form method="post" action="./StaffProfileServlet" NAME="myForm">
+<form method="post" action="./StaffProfileServlet" NAME="myForm" id="staff_profile_thesis_v0">
 <font size="1" face="Verdana, Arial, Helvetica, sans-serif">
 
 
@@ -142,10 +130,11 @@ function choose_click(value)
 <INPUT TYPE="HIDDEN" NAME="thesis_upload" />
 <INPUT TYPE="HIDDEN" NAME="project_upload" />
 <INPUT TYPE="HIDDEN" NAME="entitytype" VALUE="thesis"></INPUT>
+<input type="HIDDEN" id="mf01" name="mandatory_fields" value="" />
 
 
 <!-- ================================= Thesis/Student Project ======================================-->
-<div id="d0">
+<div id="d0" >
 <table width="100%" class="tabBG3">
 <tr>
 <td class="thead" align="center" colspan="2">Thesis/Student Project Details</td>
@@ -157,7 +146,7 @@ function choose_click(value)
 </table>
 </div>
 
-<div id="d1">
+<div id="d1" class="childdiv">
 <table width="100%" class="tabBG3">
 <tr>
 <td class="thead" align="center" colspan="2">Thesis</td>
@@ -205,7 +194,7 @@ function choose_click(value)
 </table>
 </div>
 
-<div id="d2">
+<div id="d2" class="childdiv">
 <table width="100%" class="tabBG3">
 <tr>
 <td class="thead" align="center" colspan="2">Student Project</td>
@@ -282,7 +271,7 @@ function choose_click(value)
 <table width="100%" class="tabBG3">
      <tr ><td align="center" class="thead">
     <input type="hidden" name="action" value="" />
-     <input type="button" name="btsave" value="  Save  " onclick="submitform01()" />
+     <input type="button" name="btsave" value="  Save  " onclick="submitform_staff_profile_thesis_v0();" />
      </td></tr>
 </table>
 

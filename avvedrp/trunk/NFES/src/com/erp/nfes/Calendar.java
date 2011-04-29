@@ -35,14 +35,13 @@ public class Calendar {
 			
 			//set the html string to render.
 			String space = "			";
-			
-			html.append( space + "<script language=\"JavaScript\" src=\"./js/date-picker.js\"></script>\n");
-			
-			html.append( space + "<INPUT TYPE=\"TEXT\" VALUE=\"" + value + "\" NAME=\"" + name + "\" SIZE=\"15\"></INPUT>\n");
-			
-			html.append( space + "<a href=\"javascript:show_calendar('myForm." + name + "');\" \n" + 
-						 space + "onmouseover=\"window.status='Date Picker';return true;\" \n" + 
-						 space + "onmouseout=\"window.status='';return true;\"><img src=\"./images/calendar.gif\" border=\"0\"></img></a>\n");
+			html.append("<link href=\"./css/jquery.datepick.css\" rel=\"stylesheet\" type=\"text/css\" />");
+			html.append( space + "<script language=\"JavaScript\" src=\"./js/jquery-1.4.2.min.js\"></script>\n");
+			html.append( space + "<script language=\"JavaScript\" src=\"./js/jquery.datepick.js\"></script>\n");
+			html.append("<script>$(document).ready(function(){");
+			html.append("$('#"+name+"').datepick({maxDate:'',dateFormat: 'dd-mm-yy',closeAtTop: false, showStatus: true,  showOn: 'both', buttonImageOnly: true, buttonImage: './images/calendar.gif'});");
+			html.append("});</script>");
+			html.append( space + "<INPUT TYPE=\"TEXT\" readonly=\"readonly\" VALUE=\"" + value + "\" NAME=\"" + name + "\" id=\""+name+"\" SIZE=\"15\"></INPUT>\n");
 			
 			//return the html string.
 			return html;

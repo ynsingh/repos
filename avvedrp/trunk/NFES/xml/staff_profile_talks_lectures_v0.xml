@@ -27,12 +27,12 @@ function load()
 {
 	resume=0;
 }
-function dirty()
+function upload_dirty()
 {
 	resume=1;
 }
 
-function submitform01()
+function submitform_staff_profile_talks_lectures_v0()
 {
      var frmelement=document.getElementById("staff_profile_talks_lectures_v0");
     if (isMandatoryDataExists(frmelement)=="1")
@@ -78,7 +78,7 @@ function submitform01()
 
 
 <!-- ================================= Invited Talks/Guest Lectures ======================================-->
-<div id="d1">
+<div id="d1" class="childdiv">
 <table width="100%" class="tabBG3">
 <tr>
 <td colspan="2" class="thead" align="center">Invited Talks/Guest Lectures Details</td>
@@ -130,7 +130,6 @@ function submitform01()
 <td class="tabBG4"><xsl:apply-templates select="//other_details/oioNS:renderinfo" /></td>
 </tr>
 </table>
-</div>
 
 <!--============================= Upload File =============================-->
 
@@ -144,14 +143,14 @@ function submitform01()
   </table>
   </form>
  </div> 
- 
+ </div>
 <!--============================= Save,Save and Approve,Show Printable Buttons =============================-->
 <br />
 <script language="javascript" src="./js/clinicaldoc_common.js"></script>
 <table width="100%" class="tabBG3">
      <tr ><td align="center" class="thead">
     <input type="hidden" name="action" value="" />
-     <input type="button" name="btsave" value="  Save  " onclick="submitform01()" />
+     <input type="button" name="btsave" value="  Save  " onclick="submitform_staff_profile_talks_lectures_v0();" />
       <input type="HIDDEN" name="mandatory_fields" value="istitution_address|event_name|lecture_topic|talk_date_time" />
      </td></tr>
 </table>

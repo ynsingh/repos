@@ -1,6 +1,7 @@
 package com.erp.nfes;
 
 //import java.io.FileInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -60,7 +61,7 @@ public class ProfileCreationServlet extends HttpServlet {
     	String pwd = "";
     	String mail = "";
     	String userFullName="";
-    	
+    	String Instid;
     	int status=0;
 		try {
 			
@@ -70,7 +71,7 @@ public class ProfileCreationServlet extends HttpServlet {
 			pwd  = request.getParameter("userPassword");
 			mail = request.getParameter("emailId");
 			userFullName=request.getParameter("userFullName");
-			
+			Instid=request.getParameter("institution");
 			//patient_status=request.getParameter("hcheck");
 			//status=Integer.parseInt(patient_status);			
 			RequestDispatcher rd;			
@@ -90,13 +91,13 @@ public class ProfileCreationServlet extends HttpServlet {
 			conn = conObj.getMysqlConnection();//New 21-12-2010			
 			String criteria = "username = \"" + user + "\"";
 	        if( existsUserRecord( criteria, conn ) ){	        	
-				rd = request.getRequestDispatcher("Account.jsp?userExists=1");
+				rd = request.getRequestDispatcher("jsp/Account.jsp?userExists=1");
 				rd.forward( request, response );				
 				return;
 	        }	        
 	        criteria = "email = \"" + mail + "\"";
 	        if( existsUserRecord( criteria, conn ) ){	    
-				rd = request.getRequestDispatcher("Account.jsp?emailExists=1");
+				rd = request.getRequestDispatcher("jsp/Account.jsp?emailExists=1");
 				rd.forward( request, response );	
 				return;
 	        }	        
@@ -118,13 +119,14 @@ public class ProfileCreationServlet extends HttpServlet {
 			Rset.close();	        
 	        /*==========================================================*/
 			
-			String qry = "INSERT INTO users( username, password, email,user_full_name,id,enabled) VALUES ( ?, ?, ?, ?,?,1)";
+			String qry = "INSERT INTO users( username, password, email,user_full_name,id,enabled,institution_id) VALUES ( ?, ?, ?, ?,?,1,?)";
 			PreparedStatement insertStmt = conn.prepareStatement( qry );
 			insertStmt.setString( 1, user );
 			insertStmt.setString( 2, encodedPwd );
 			insertStmt.setString( 3, mail );
 			insertStmt.setString(4, userFullName);
 			insertStmt.setInt(5,userid);
+			insertStmt.setString(6,Instid);
 			insertStmt.executeUpdate();
 			
 			/*==================Temporarily Commented the account activation using Mail Sending Procedure
@@ -135,10 +137,24 @@ public class ProfileCreationServlet extends HttpServlet {
 			/*============================User Actiavtion 22-12-2010 =======================*/
 			//PreparedStatement st = conn.prepareStatement("UPDATE users SET enabled = 1 WHERE username = ?");
 			//st.setString( 1, user ); code exists in the insertion of users table
-			assignDefaultPrivileges(conn, user, "ROLE_TELLER" );//For user authentication
-			assignDefaultPrivileges(conn, user, "STAFF_REGISTRATION" );//For staff registration
+			
+			/* Commented on 10-02-2009 , activate only after role_assign
+			assignDefaultPrivileges(conn, user, "ROLE_TELLER" );//For user authentication*/
+			assignDefaultPrivileges(conn, user, "2" );//For Profile Creation 10-02-2011
+			
+			/*================ Creating Folder for storing uploaded files 19-02-2011============*/
+			
+			Properties properties = new Properties();
+			properties.load(new FileInputStream("../conf/fileuploadpath.properties"));
+		    String url = properties.getProperty("DESTINATION_DIR_PATH");
+		   	CreateDir createdirobj= new CreateDir();
+			createdirobj.CreateFolder(url,Integer.toString(userid));
+			createdirobj.CreateFolder(url+"/"+Integer.toString(userid), "photo");
+			
+			/*============================== End of 19-02-2011 =================================*/
+			
 			String val = "Your Registration Activated Successfully !";
-			response.sendRedirect("ActivateProfile.jsp?successVal=" + val);
+			response.sendRedirect("jsp/ActivateProfile.jsp?successVal=" + val);
 			/*==========================================================================*/
 			
 		}catch(Exception e)	{

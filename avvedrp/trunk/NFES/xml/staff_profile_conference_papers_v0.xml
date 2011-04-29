@@ -27,12 +27,12 @@ function load()
 {
 	resume=0;
 }
-function dirty()
+function upload_paper_dirty()
 {
 	resume=1;
 }
 
-function submitform01()
+function submitform_staff_profile_conference_papers_v0()
 {
     var frmelement=document.getElementById("staff_profile_conference_papers_v0");
     if (isMandatoryDataExists(frmelement)=="1")
@@ -78,131 +78,128 @@ function submitform01()
 
 
 <!-- ================================= Conference Papers ======================================-->
-<div id="d1">
+<div id="d1" class="childdiv">
 <table width="100%" class="tabBG3">
 <tr>
 <td colspan="2" class="thead" align="center">Conference Papers Details</td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//conference_type/oioNS:prompt" /></td>
-<td  class="tabBG4"><xsl:apply-templates select="//conference_type/oioNS:renderinfo" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//conference_type/oioNS:prompt" /></td>
+<td class="tabBG4"><xsl:apply-templates select="//conference_type/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td  class="tabBG4"><xsl:apply-templates select="//research_expertise_area/oioNS:prompt" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//research_expertise_area/oioNS:renderinfo" /></td>
 </tr>
 
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//research_expertise_area/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//research_expertise_area/oioNS:renderinfo" /></td>
-</tr>
-
-<tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//paper_associated_project/oioNS:prompt" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//paper_associated_project/oioNS:prompt" /></td>
 <td  class="tabBG4"><xsl:apply-templates select="//paper_associated_project/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//project_name/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//project_name/oioNS:renderinfo" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//project_name/oioNS:prompt" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//project_name/oioNS:renderinfo" /></td>
 </tr>
+
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//paper_title/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//paper_title/oioNS:renderinfo" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//paper_title/oioNS:prompt" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//paper_title/oioNS:renderinfo" /></td>
 </tr>
 
 
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//author1/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//author1/oioNS:renderinfo" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//author1/oioNS:prompt" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//author1/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//author2/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//author2/oioNS:renderinfo" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//author2/oioNS:prompt" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//author2/oioNS:renderinfo" /></td>
 </tr>
 
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//month_year/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//month_year/oioNS:renderinfo" /></td>
-</tr>
-
-
-<tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//abstract/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//abstract/oioNS:renderinfo" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//month_year/oioNS:prompt" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//month_year/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//pages/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//pages/oioNS:renderinfo" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//abstract/oioNS:prompt" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//abstract/oioNS:renderinfo" /></td>
 </tr>
 
-
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//conference_name/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//conference_name/oioNS:renderinfo" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//pages/oioNS:prompt" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//pages/oioNS:renderinfo" /></td>
 </tr>
 
 
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//date_from/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//date_from/oioNS:renderinfo" /></td>
-</tr>
-<tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//date_to/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//date_to/oioNS:renderinfo" /></td>
-</tr>
-
-<tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//conference_venue/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//conference_venue/oioNS:renderinfo" /></td>
-</tr>
-<tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//organizer_name/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//organizer_name/oioNS:renderinfo" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//conference_name/oioNS:prompt" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//conference_name/oioNS:renderinfo" /></td>
 </tr>
 
 
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//language/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//language/oioNS:renderinfo" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//date_from/oioNS:prompt" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//date_from/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//affiliation/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//affiliation/oioNS:renderinfo" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//date_to/oioNS:prompt" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//date_to/oioNS:renderinfo" /></td>
+</tr>
+
+<tr>
+<td  class="tabBG4"><xsl:apply-templates select="//conference_venue/oioNS:prompt" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//conference_venue/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td  class="tabBG4"><xsl:apply-templates select="//organizer_name/oioNS:prompt" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//organizer_name/oioNS:renderinfo" /></td>
 </tr>
 
 
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//url/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//url/oioNS:renderinfo" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//language/oioNS:prompt" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//language/oioNS:renderinfo" /></td>
 </tr>
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//keyword/oioNS:prompt" /></td>
-<td width="70%" class="tabBG4"><xsl:apply-templates select="//keyword/oioNS:renderinfo" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//affiliation/oioNS:prompt" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//affiliation/oioNS:renderinfo" /></td>
+</tr>
+
+
+<tr>
+<td  class="tabBG4"><xsl:apply-templates select="//url/oioNS:prompt" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//url/oioNS:renderinfo" /></td>
+</tr>
+<tr>
+<td  class="tabBG4"><xsl:apply-templates select="//keyword/oioNS:prompt" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//keyword/oioNS:renderinfo" /></td>
 </tr>
 
 <tr>
-<td width="30%" class="tabBG4"><xsl:apply-templates select="//other_details/oioNS:prompt" /></td>
+<td  class="tabBG4"><xsl:apply-templates select="//other_details/oioNS:prompt" /></td>
 <td class="tabBG4"><xsl:apply-templates select="//other_details/oioNS:renderinfo" /></td>
 </tr>
 </table>
-</div>
-
 <!--============================= Upload File =============================-->
 
  <div id="fu1">
   <form method="post" action="./fileupload" NAME="myForm01" enctype="multipart/form-data">
   <table width="100%" class="tabBG3">
   <tr>
-  <td width="30%" class="tabBG4"><xsl:apply-templates select="//upload_paper/oioNS:prompt" /></td>
-  <td width="70%" class="tabBG4"><xsl:apply-templates select="//upload_paper/oioNS:renderinfo" /></td>
+  <td  class="tabBG4"><xsl:apply-templates select="//upload_paper/oioNS:prompt" /></td>
+  <td  class="tabBG4"><xsl:apply-templates select="//upload_paper/oioNS:renderinfo" /></td>
   </tr>
   </table>
   </form>
  </div> 
- 
+ </div>
 <!--============================= Save,Save and Approve,Show Printable Buttons =============================-->
 <br />
 <script language="javascript" src="./js/clinicaldoc_common.js"></script>
 <table width="100%" class="tabBG3">
      <tr ><td align="center" class="thead">
     <input type="hidden" name="action" value="" />
-     <input type="button" name="btsave" value="  Save  " onclick="submitform01()" />
+     <input type="button" name="btsave" value="  Save  " onclick="submitform_staff_profile_conference_papers_v0();" />
      <input type="HIDDEN" name="mandatory_fields" value="conference_type|research_expertise_area|paper_associated_project|paper_title|author1" />
      </td></tr>
 </table>

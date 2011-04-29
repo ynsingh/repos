@@ -1,11 +1,11 @@
 
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
-	margin: 0;
+	margin: 10px;
 	padding: 0;
 	border: 0;
 	outline: 0;
 	font-size: 100%;
-	vertical-align: baseline;
+	vertical-align:center; baseline;
 	background: transparent;
 }
 body {
@@ -38,7 +38,7 @@ table {
  GENERAL STYLE
 ============================================================================*/
 body {
-	background-color: #DEDEDE;
+	background-color:#d4e5ed;// #FFFFFF;
 	font-family: Verdana, Helvetica, Sans-Serif;
 	color: #555;
 	font-size: .9em;
@@ -71,7 +71,7 @@ p, ul, ol {
 	line-height: 1.6em;
 }
 ul, ol {
-	padding: 10px 40px;
+	padding: 2px 10px;
 }
 ul {
 	list-style: disc;
@@ -90,7 +90,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 h1 {
 	font-size: 3em;
-	margin-top: 10px;
+	margin-top: 0;//10px;
 	padding: 10px 0;
 	font-size: 2.6em;
 }
@@ -270,7 +270,7 @@ button.btn:hover {
 #login-info {
 	width: 260px;
 	float: right;
-	padding: 10px 10px 5px 0px;
+	//padding: 10px 10px 5px 0px;
 	color: #000;
 	text-align: left;
 	height: 35px;
@@ -282,11 +282,11 @@ button.btn:hover {
 }
 #login-info img#profile {
 	float: left;
-	margin-right: 15px;
+	//margin-right: 15px;
 }
 #login-info span#message-count {
 	background-color: #CC3300;
-	padding: 2px 5px;
+	//padding: 2px 5px;
 	color: #fff;
 	text-shadow: 0px 1px 16px #333;
 	-webkit-box-shadow: 1px 1px 1px #fff;
@@ -295,7 +295,7 @@ button.btn:hover {
 	border-radius: 4px; /* Opera 10.5, IE 9, Saf5, Chrome */
 }
 #login-info p#top {
-	margin: 2px 0 0 0;
+	//margin: 2px 0 0 0;
 	padding: 0;
 	line-height: 1.2em;
 }
@@ -308,11 +308,11 @@ span#name {
 #login-info a#power {
 	background: url('../images/icons/power.png') no-repeat;
 	position: absolute;
-	right: 15px;
-	top: 12px;
-	width: 25px;
-	height: 25px;
-	text-indent: 999px;
+	//right: 15px;
+	//top: 12px;
+	//width: 25px;
+	//height: 25px;
+	//text-indent: 999px;
 	overflow: hidden;
 	opacity: 0.3;
 }
@@ -613,14 +613,14 @@ div.buttons p {
 ----------------------------------------------------------*/
 div#tab {
 	float: right;
-	width: 48%;
+	//width: 48%;
 }
 ul.tabs {
 	list-style: none;
 	float: right;
 	display: inline;
 	padding: 0;
-	margin-right: 30px;
+	//margin-right: 30px;
 }
 ul.tabs li {
 	float: left;
@@ -632,7 +632,7 @@ ul.tabs li a {
 	-webkit-box-shadow: -3px 3px 8px #ccc; /* Saf3.0+, Chrome */;
 	box-shadow: -3px 3px 8px #ccc; /* Opera 10.5, IE 9.0 */;
 	color: #666;
-	padding: 5px 12px;
+	//padding: 5px 12px;
 	float: left;
 	text-shadow: #fff 1px 1px 1px; /*--top left rounded corner--*/;
 	-moz-border-radius-bottomright: 3px;
@@ -687,7 +687,7 @@ h2.head-alt {
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#f5f5f5', EndColorStr='#ffffff')";
 	font-size: 1.6em;
 	float: left;
-	margin-right: 10px;
+	//margin-right: 10px;
 	text-shadow: 1px 1px 0px #fff;
 	-moz-box-shadow: 3px 6px 6px #ddd;
 	-webkit-box-shadow: 3px 6px 6px #ddd;
@@ -719,23 +719,27 @@ h2.head-alt {
 	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #ffffff),color-stop(1, #cccccc));/* Saf4+, Chrome */
 }
 a.button:visited {
-	color: #555;
+	color:#555;
 }
 .top-button {
 	margin: 10px 5px;
 	float: left;
 }
 .button:hover {
-	color: #555;
-	background-color: #eee; /* FF3.6 */;
-	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#ffffff', EndColorStr='#aaaaaa')";
-	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #ffffff),color-stop(1, #aaaaaa));/* Saf4+, Chrome */
+	border-color: #000000;
+	//color: #555;
+	//background-color: #eee; /* FF3.6 */;
+	//-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#ffffff', EndColorStr='#aaaaaa')";
+	//background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #ffffff),color-stop(1, #aaaaaa));/* Saf4+, Chrome */
 }
 .button:active {
 	-moz-box-shadow: 0px -1px 1px #8a8a8a; /* FF3.5+ */;
 	-webkit-box-shadow: 0px -1px 1px #8a8a8a; /* Saf3.0+, Chrome */;
 	box-shadow: 0px -1px 1px #8a8a8a; /* Opera 10.5, IE 9.0 */;
 	border-color: #fff;
+}
+.button:focus {
+	border-color: #000000;
 }
 .big {
 	font-size: 1.2em;
@@ -936,7 +940,7 @@ table {
 	-moz-box-shadow: 1px 1px 1px #fff; /* FF3.5+ */;
 	-webkit-box-shadow: 1px 1px 1px #fff; /* Saf3.0+, Chrome */;
 	box-shadow: 1px 1px 1px #fff; /* Opera 10.5, IE 9.0 */;
-	margin: 0;
+	margin: 30px 140px 1px;	
 	padding: 0;
 	border-collapse: collapse;
 }
@@ -951,6 +955,7 @@ td + td + td {
 	color: #666;
 	border-left: none;
 }
+
 td a {
 	color: #444;
 	text-decoration: none;
@@ -992,7 +997,7 @@ thead tr, tfoot tr {
 	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #F0F0F0),color-stop(1, #DDDDDD));/* Saf4+, Chrome */
 }
 tr {
-	background: #F8F8F8;
+	background: #F2F9FF;//#F8F8F8;
 	color: #666;
 }
 tbody tr:hover {
@@ -1066,7 +1071,7 @@ fieldset legend {
 	border-bottom: 1px #C0C0C0 solid;
 	padding: 5px 0px;
 	font-size: 1.6em;
-	text-shadow: #fff 1px 1px 0px;
+	//text-shadow: #fff 1px 1px 0px;
 	font-weight: bold;
 	display: block;
 	width: 100%;
@@ -1082,7 +1087,7 @@ label {
 	font-weight: bold;
 	margin-top: 10px;
 	font-size: 1em;
-	text-shadow: 1px 1px 0px #fff;
+	//text-shadow: 1px 1px 0px #fff;
 	color: #666;
 }
 .validation {
@@ -1312,7 +1317,7 @@ ul.imageList ul li a:hover {
 	right: 8px;
 	width: 16px;
 	height: 16px;
-	background: url('../images/icons/close.png') no-repeat 0 0;
+	background: url('../images/close.png') no-repeat 0 0;
 	margin-top: -4px;
 	cursor: pointer;
 	opacity: 0.3;
@@ -1320,9 +1325,10 @@ ul.imageList ul li a:hover {
 .closelink:hover {
 	opacity: 1;
 }
-.notification {
-	padding: 16px 10px 10px 90px;
-	margin: 10px 0;
+.notification {	
+	//padding: 16px 10px 10px 90px;
+	padding: 1px 1px 1px 1px;
+	margin: 1px 0;
 	font-size: 1em;
 	-moz-border-radius: 4px; /* FF1+ */;
 	-webkit-border-radius: 4px; /* Saf3-4 */;
@@ -1341,9 +1347,9 @@ ul.imageList ul li a:hover {
 }
 .errors {
 	background-color: #F7E1DF;
-	background-image: url('../images/cross.png');
+	//background-image: url('../images/cross.png');
 	color: #B81010;
-	text-shadow: 1px 1px 1px #FCF4F3;
+	//text-shadow: 1px 1px 1px #FCF4F3;
 }
 .successfull {
 	background-color: #CCEECC;
@@ -1531,7 +1537,7 @@ jquery 'simplemodal' plugin style
 	right: 10px;
 	width: 12px;
 	height: 12px;
-	background: url('../images/icons/close.png') no-repeat -5px;
+	background: url('../images/close.png') no-repeat -5px;
 	cursor: pointer;
 	-moz-opacity: 0.5;
 	opacity: 0.5;
@@ -1990,13 +1996,13 @@ jquery 'visualize' plugin style
  LOGIN
 ============================================================================*/
 div#login {
-	width: 470px;
+	width: 225px;
 	height: auto;
 	font-size: .8em;
-	margin: 10% auto 0 auto;
-	padding-bottom: 10px;
+	margin: 0% auto 0 auto;
+	padding-bottom: 0px;//10px;
 	overflow: hidden;
-	background-color: #f5f5f5;
+	background-color:#6f91a3;//#aed0eb;// #f5f5f5;
 	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#f5f5f5', EndColorStr='#ffffff')";
 	-moz-box-shadow: 2px 2px 10px #777; /* FF3.5+ */
   -webkit-box-shadow: 2px 2px 10px #777; /* Saf3.0+, Chrome */
@@ -2004,7 +2010,7 @@ div#login {
           background-image: -webkit-gradient(linear, 0% 100%, 0% 0%, from(#F5F5F5), to(#FFFFFF));
 	-moz-border-radius: 6px; /* FF1+ */;
 	-webkit-border-radius: 6px; /* Saf3-4 */;
-	border-radius: 6px; /* Opera 10.5, IE 9, Saf5, Chrome */
+	//border-radius: 6px; /* Opera 10.5, IE 9, Saf5, Chrome */
 }
 div#validation-summary {
 	width: 470px;
@@ -2014,41 +2020,43 @@ div#validation-summary {
 }
 div#login fieldset {
 	margin: 0;
-	padding: 10px 30px 0 140px;
-	background-image:url('../images/user-login.png');
-	background-repeat:no-repeat;
-	background-position: 30px 30px;
+	//padding: 10px 30px 0 140px;	
+	//background-image:url('../images/user-login.png');
+	//background-repeat:no-repeat;
+	//background-position: 30px 30px;
 	clear:both;
 }
 div#login legend {
-	font-size: .86em;
-	padding: 16px 0px 3px 0px;
-	color: #999;
+	font-size: .96em;	
+	//padding: 16px 0px 3px 0px;
+	color: #ffffff;//#999;
 	margin: 0;
 	border: 0;
 }
 div#login label {
 	font-size: .95em;
 	margin: 0;
+	color:#ffffff;//#01518e;
 }
 div#login input[type=text], input[type=password] {
-	width: 280px;
-	padding: 4px 8px;
+	width: 180px;//280px;
+	padding:4px 4px; //4px 8px;
 	margin-bottom: 8px;
 	font-weight: bold;
 	color: #777;
+	
 }
 div#login .button {
-	padding: 6px 45px;
+	//padding: 6px 45px;
 	margin: 0;
 	font-size: 1.1em;
-	float: right;
+	float: left;//right;
 }
 
 div#login img {
 	clear: left;
 	float: left;
-	margin: 45px 0px 0 0;
-	padding-left: 30px;
-	width: 80px;
+	//margin: 45px 0px 0 0;
+	//padding-left: 30px;
+	//width: 80px;
 }

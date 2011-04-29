@@ -6,6 +6,8 @@
  */
 package com.erp.nfes;
 
+import sun.misc.Request;
+
 
 /**
  * @author ahis
@@ -16,7 +18,7 @@ package com.erp.nfes;
 public class UploadFile {
 	
 //	function to get the html string to render the except object in the form.
-	public StringBuffer getObjectHtml(String name, String action, String choice, String code, String valueString) {
+	public StringBuffer getObjectHtml(String name, String action, String choice, String code, String valueString,String entityId) {
 			StringBuffer html = new StringBuffer (1000);
 			String value;
 		/*	String size;	
@@ -33,9 +35,9 @@ public class UploadFile {
 			}			
 			//set the html string to render.
 			if(value!=""){
-				html.append("<input type=\"file\" value=\"" + value + "\" name=\"" + name + "\" onclick=\"dirty()\" /><input type=\"HIDDEN\" value=\"" + value + "\" name=\"" + name + "files\" />");
+				html.append("<input type=\"file\" value=\"" + value + "\" name=\"" + name + "\" onclick=\""+ name +"_dirty()\" /><input type=\"HIDDEN\" value=\"" + value + "\" name=\"" + name + "files\" />");
 			}else{
-				html.append("<input type=\"file\" value=\"" + value + "\" name=\"" + name + "\" onclick=\"dirty()\" />"+ "<input type=\"HIDDEN\" value=\"" + value + "\" name=\"" + name + "files\" />");
+				html.append("<input type=\"file\" value=\"" + value + "\" name=\"" + name + "\" onclick=\""+ name +"_dirty()\" />"+ "<input type=\"HIDDEN\" value=\"" + value + "\" name=\"" + name + "files\" />");
 		    }
 			if (value!=""){
 				String uploaded_Files[]=value.split("\\|");
@@ -43,7 +45,7 @@ public class UploadFile {
 					String htmlStr=null;
 					htmlStr="<ul>";
 					for(int i = 0;i< uploaded_Files.length; i++){
-						htmlStr=htmlStr + "<li><a href=\"./filedownload?filename="+uploaded_Files[i]+"\" target=\"_blank\">"+uploaded_Files[i]+"</a></li>"; 
+						htmlStr=htmlStr + "<li><a href=\"./filedownload?filename="+uploaded_Files[i]+"&amp;userId="+ entityId + "&amp;ctrlName="+ name + "\" target=\"_blank\">"+uploaded_Files[i]+"</a></li>"; 
 					}
 					htmlStr=htmlStr + "</ul>";					
 					html.append(htmlStr);

@@ -36,7 +36,8 @@ public class PickRadio {
 		//get the html code for render.
 		htmlStr.append("		<INPUT TYPE=\"HIDDEN\" VALUE=\"\" NAME=\"" + name + "\"></INPUT>\n");
 		
-		htmlStr.append("		<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
+		//htmlStr.append("		<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
+		htmlStr.append("		<table  border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n"); // to eliminate gap between radio button
 		
 		//put the options with splited columns and rows.
 		while (cnt < iter){
@@ -50,13 +51,16 @@ public class PickRadio {
 			if (cnt==0){checked="CHECKED=\"CHECKED\"";}
 			
 			if(start == 1){
-				htmlStr.append("		<tr>\n		<td width=\"33%\">\n");	
+				//htmlStr.append("		<tr>\n		<td width=\"33%\">\n");
+				htmlStr.append("		<tr>\n		<td>\n");
 				start = 2;
 			}else if(start == 2 ){
-				htmlStr.append("		<td width=\"33%\">\n");
+				//htmlStr.append("		<td width=\"33%\">\n");
+				htmlStr.append("		<td >\n");
 				start = 3;
 			}else if(start == 3){
-				htmlStr.append("		<td width=\"33%\">\n");
+				//htmlStr.append("		<td width=\"33%\">\n");
+				htmlStr.append("		<td>\n");
 				start = 1;
 			}
 						
@@ -108,7 +112,8 @@ public class PickRadio {
 		//get the html code for render.
 		htmlStr.append("		<INPUT TYPE=\"HIDDEN\"  VALUE=\"\" NAME=\"" + name + "\"></INPUT>\n");
 		
-		htmlStr.append("		<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
+		//htmlStr.append("		<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
+		htmlStr.append("		<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n"); // to eliminate gap between radio button
 		
 		//put the options with splited columns and rows.
 		while (cnt < iter){
@@ -121,13 +126,16 @@ public class PickRadio {
 			if (cnt==0){checked="CHECKED=\"CHECKED\"";}
 			
 			if(start == 1){
-				htmlStr.append("		<tr>\n		<td width=\"33%\">\n");	
+				//htmlStr.append("		<tr>\n		<td width=\"33%\">\n");
+				htmlStr.append("		<tr>\n		<td>\n");
 				start = 2;
 			}else if(start == 2 ){
-				htmlStr.append("		<td width=\"33%\">\n");
+				//htmlStr.append("		<td width=\"33%\">\n");
+				htmlStr.append("		<td >\n");
 				start = 3;
 			}else if(start == 3){
-				htmlStr.append("		<td width=\"33%\">\n");
+				//htmlStr.append("		<td width=\"33%\">\n");
+				htmlStr.append("		<td >\n");
 				start = 1;
 			}
 						

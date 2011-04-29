@@ -3162,6 +3162,7 @@ function addRow(documentId,formname,entitytype,tabledata){
 	}
 	
 	*/	
+	
 	var editRow=getEditedrow(formname);	
 	tabname="Tab_"+formname;	
 	var mytable     = document.getElementById(tabname); 
@@ -3171,8 +3172,7 @@ function addRow(documentId,formname,entitytype,tabledata){
 	var colCount = (TabElements.length)
 	//alert(rowCount);
 
-	var i=0;	
-	
+	var i=0;		
 	if (editRow>0){	
 		//alert("Edit :1");
 		var editRowcells=document.getElementById(tabname).rows[editRow].cells;		
@@ -3193,11 +3193,12 @@ function addRow(documentId,formname,entitytype,tabledata){
 			 y.id="TD_"+TabElements[i];
 		}
 
-		var editbutton='<input type="BUTTON" value="Edit" name="EDIT'+ documentId + '" ONCLICK="showchildform('+"'"+formname+ "'" + ',' + "'" + '' + documentId + "'" +','+ "'" + '' + entitytype + "'" + ') />'	
+		var editbutton='<input type="BUTTON" value="Edit" name="EDIT'+ documentId + '" ONCLICK="showchildform('+"'"+formname+ "'" + ',' + "'" + '' + documentId + "'" +','+ "'" + '' + entitytype + "'" + ');" />';		
+		//alert(editbutton);
 		var y=x.insertCell(i);		
 		y.innerHTML=editbutton;
 
-		var deletebutton='<input type="BUTTON" value="Delete" name="DELETE'+ documentId + '" ONCLICK="deleteRow(this.parentNode.parentNode.rowIndex,' + "'" +tabname+ "'"+') />'	
+		var deletebutton='<input type="BUTTON" value="Delete" name="DELETE'+ documentId + '" ONCLICK="deleteRow(this.parentNode.parentNode.rowIndex,' + "'" +tabname+ "'"+');" />';	
 		//alert(deletebutton);
 		var y=x.insertCell(i+1);		
 		y.innerHTML=deletebutton;
@@ -3245,34 +3246,32 @@ function hideIdColumn(tabname){
 function isMandatoryDataExists(frm) {
 
 mandatory_fields=document.forms[0].mandatory_fields.value;
-var fields= mandatory_fields.split("|") ;
+var fields= mandatory_fields.split("|");
 var msg="";
 for (var i=0;i<frm.length;i++){  	
 	if(frm.elements[i].type!="hidden"){	
 		for(var j=0;j<fields.length;j++){		
-		 if(fields[j]==frm.elements[i].name){ 		
+		  if(fields[j]==frm.elements[i].name){ 		
 			if(frm.elements[i].value==""){ 					
-			alert("Please Fill Mandatory Values!!!");
-			msg="1";
-			break;
+				alert("Please Fill Mandatory Values!!!");
+				msg="1";
+				break;
 			}
 		 } 	
 		}
 		if(msg=="1"){
-		break;  	
+			break;  	
 		}
 	}	
   }  
   if(msg=="1") {
-  return 0
+  	return 0;
   }
   else {
-  return 1
-  };
+  	return 1;
+  }
   	
 }
-
-
 
 
 function setEditmark(documentId,formname){
@@ -3319,4 +3318,221 @@ function getEditedrow(formname){
 	return 0;	
 }
 
+/*============================ Added on 21-02-2011 ==========================================*/
+
+function submitform_staff_profile_report_v0()
+{
+	//alert("forms[0]: "+document.forms[0].name+"\nforms[1]: "+document.forms[1].name);
+	var frmelement0=document.getElementById("staff_profile_report_v0_0");
+	var frmelement1=document.getElementById("staff_profile_report_v0");
+	if(validateForm(frmelement0) && validateForm(frmelement1) && isMandatoryDataExists(frmelement1)=="1") {    		
 	
+		if(resume && photo)
+		{       //alert("Resume: "+resume+"\nPhoto: "+photo);
+			if(document.forms[1].upload_resumefiles.value==""){
+				document.forms[0].upload_resume.value=document.forms[1].upload_resume.value; 
+			}	
+			else{
+				document.forms[0].upload_resume.value=document.forms[1].upload_resume.value + "|"+ document.forms[1].upload_resumefiles.value; 
+			}
+		 
+		       document.forms[0].upload_photo.value=document.forms[1].upload_photo.value;
+		       document.forms[1].submit();
+		}
+		else if(resume && (!photo))
+		{	//alert("Resume: "+resume+"\nPhoto: "+photo);
+			if(document.forms[1].upload_resumefiles.value==""){
+				document.forms[0].upload_resume.value=document.forms[1].upload_resume.value; 
+			}	
+			else{
+				document.forms[0].upload_resume.value=document.forms[1].upload_resume.value + "|"+ document.forms[1].upload_resumefiles.value; 
+			}
+			 
+		       document.forms[0].upload_photo.value=document.forms[1].upload_photofiles.value;
+		       document.forms[1].submit();
+		}
+		else if((!resume) && photo)
+		{
+			//alert("Resume: "+resume+"\nPhoto: "+photo);
+			document.forms[0].upload_resume.value=document.forms[1].upload_resumefiles.value;
+			document.forms[0].upload_photo.value=document.forms[1].upload_photo.value;
+		        document.forms[1].submit();
+		}
+		else
+		{
+			//alert("Resume: "+resume+"\nPhoto: "+photo);
+			document.forms[0].upload_resume.value=document.forms[1].upload_resumefiles.value;
+			document.forms[0].upload_photo.value=document.forms[1].upload_photofiles.value;
+			
+		}
+		return 1;
+	}
+	else {
+		return 0;
+	}
+}
+
+/*================================ End of added on 21-02-2011 ===================================*/
+
+/*============================ Added on 28-02-2011 ==========================================*/
+
+function isEmail(field) {
+	var check = true;
+	var str=field.value;
+	var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	if(! str.match(re)) {
+	    check = false;
+        }
+	if(!check)
+	{
+	    field.style.backgroundColor = "red";
+	}
+	else
+	{
+	    field.style.backgroundColor = "white";
+	}
+        return check;
+}
+	
+
+function isNumber(field)
+     {
+          var check = true;
+          var value = field.value;
+          for(var i=0;i < field.value.length; ++i)
+          {
+               var new_key = value.charAt(i);
+               if(((new_key < "0") || (new_key > "9")) && !(new_key == ""))
+               {
+                    check = false;
+                    break;
+               }
+          }
+          if(!check)
+          {
+               field.style.backgroundColor = "red";
+          }
+          else
+          {
+               field.style.backgroundColor = "white";
+          }
+          return check;
+     }
+
+/*================================ End of added on 28-02-2011 ===================================*/
+
+/*============================ Added on 01-03-2011 ==========================================*/
+
+function validateForm(frm){
+	var str=frm.validation_fields.value;
+	var fields=str.split("|");
+	var opt="";
+	var f=true;
+	for(var i=0;i<fields.length;i++){
+	     opt=fields[i].split("-");
+	     for(var j=0;j<frm.length;j++){
+	          if(opt[0]==frm.elements[j].name){
+	               if(frm.elements[j].value!=""){
+	                    if(opt[1]=="E"){
+		                 if(!(isEmail(frm.elements[j]))){
+		                      alert("Not a valid e-mail address");f=false;
+		       		      break;
+		                 }
+		            }else if(opt[1]=="N"){
+		                 if(!(isNumber(frm.elements[j]))){
+		                      alert("invalid character in number fields");f=false;	
+		                      break;
+		                 }
+		            }else if(opt[1]=="Y"){
+		            	 if(!(isYear(frm.elements[j]))){
+		                      alert("invalid character in Year field");f=false;	
+		                      break;
+		                 } 
+		            }else if(opt[1]=="P"){
+		            	 if(!(isPhoto(frm.elements[j]))){
+		                      alert("Invalid image file type in Photo field");f=false;	
+		                      break;
+		                 } 
+		            }else if(opt[1]=="D"){
+		            	 if(!(isDate(frm.elements[j]))){
+		                      alert("Invalid date format");f=false;	
+		                      break;
+		                 } 
+		            }
+		       }     
+	          }
+	     }
+	}
+	return f;
+}
+
+function isYear(field){
+	var check = true;
+	var str=field.value;
+	var re=/[^0-9]/;
+	if(str.length>4 || str.length<4){
+		check=false;
+	}else if(str.match(re)){
+		check=false;
+	}
+	if(!check)
+	{
+	     field.style.backgroundColor = "red";
+	}
+	else
+	{
+	     field.style.backgroundColor = "white";
+        }
+	return check;
+}
+
+function submitform_staff_profile_qualification_v0(){
+     var frmelement=document.getElementById("staff_profile_qualification_v0");
+     if(validateForm(frmelement) && isMandatoryDataExists(frmelement)=="1"){
+          docHtmlSave();
+     }	
+}
+
+/*================================ End of added on 01-03-2011 ===================================*/
+
+/*============================ Added on 03-03-2011 ==========================================*/
+
+function isPhoto(field) {
+	var check = true;
+	var str=field.value;
+	if(!/(\.bmp|\.gif|\.jpg|\.jpeg)$/i.test(str)) {
+	     check = false;
+	}
+	if(!check)
+	{
+	     field.style.backgroundColor = "red";
+	}
+	else
+	{
+	     field.style.backgroundColor = "white";
+	}
+	return check;
+}
+
+function isDate(field){
+	var check = true;
+	var str=field.value;
+	var s=str.split("-");
+	var re=/[^0-9-]/;
+	if(str.length>10 || str.length<6 || s[0]=="" || s[1]=="" || s[2]==""|| s[0]=="0" || s[0]=="00" || s[1]=="0" || s[1]=="00"){
+	     check = false;
+	}else if(str.match(re)){
+	     check = false;
+	}
+	if(!check)
+	{
+	     field.style.backgroundColor = "red";
+	}
+	else
+	{
+	     field.style.backgroundColor = "white";
+	}
+	return check;
+}
+
+/*================================ End of added on 03-03-2011 ===================================*/

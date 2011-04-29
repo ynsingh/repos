@@ -3,21 +3,11 @@
 
 <HTML lang=en-US dir=ltr xmlns="http://www.w3.org/11001/xhtml"><HEAD
 profile=http://gmpg.org/xfn/11><TITLE>Change Password</TITLE>
-<META http-equiv=Content-Type content="text/html; charset=UTF-8"><LINK
-media=screen href="../css/style1.css" type=text/css rel=stylesheet>
+<META http-equiv=Content-Type content="text/html; charset=UTF-8">
+
+<LINK media=screen href="../css/oiostyles.css" type=text/css rel=stylesheet>
 <META content="MSHTML 6.00.2900.5694" name=GENERATOR>
 
-
-<style type="text/css">
-<!--
-.style2 {color: #0000FF}
-.style5 {color: #000099}
-.style6 {
-	color: #000000;	
-}
-
--->
-</style>
 </HEAD>
 <BODY>
 
@@ -62,21 +52,8 @@ function checkval(){
 }
 </script>
 
-
-
-<table  width=100%>
-<tr>
-<td width=30%>
-
-<FORM id="searchform"   action="../j_spring_security_logout" method="get"  ">
-<p class="style2" > Welcome &nbsp; <%=usertop%></p>
-<a href="../j_spring_security_logout"><image src="../images/logout.jpg"></img> </a> 
-</FORM></td>
-
-<td width=70%>
-
 <form id="user" action="../ChangePasswordServlet" method="post" name="user" onSubmit="return checkval()">
-
+<div class="listdiv">
 <table>  	
 <tr>
 <td colspan="2"><image src="../images/changepassword.gif" ></img></td>
@@ -108,38 +85,28 @@ if(s.equals("0")){
 }
 %>
 </td>
+</tr>
 
-</tr>
 <tr>	 
- <td colspan=2> <p class="style6">To reset your password, provide your current password  </p>
-   <p class="style5">&nbsp;</p></td>
+ <td colspan=2> <p class="labeltext">To reset your password, provide your current password  </p>  </td>
 </tr>
 <tr>
-  <td width="198"><label  class="desc">Current Password </label></td>
-  <td width="265"><input  name="oldpass" class="text medium" type="password" value="" maxlength="50"/></td>
+  <td width="198"><label  class="labeltext">Current Password </label></td>
+  <td width="265"><input  name="oldpass" class="textmedium" type="password" value="" maxlength="50"/></td>
 </tr>  
 <tr>
-  <td><label  class="desc">New Password </label></td>
-  <td> <input  name="newpass" class="text medium" type="password" value="" maxlength="50"/></td>
+  <td><label  class="labeltext">New Password </label></td>
+  <td> <input  name="newpass" class="textmedium" type="password" value="" maxlength="50"/></td>
 </tr>  
 <tr>
-  <td><label  class="desc">Confirm New Password </label>  </td>
-  <td><input  name="cnewpass" class="text medium" type="password" value="" maxlength="50"/></td>
+  <td><label  class="labeltext">Confirm New Password </label>  </td>
+  <td><input  name="cnewpass" class="textmedium" type="password" value="" maxlength="50"/></td>
 </tr>
 <tr>
-      <td><input type="button"  onClick="clearall()"  value="Clear"/></td>
-      <td><input type="submit"  name="Save"  value="Change Password"/>    </td>
+      <td></td>
+      <td><input type="submit"  name="Save"  value="Change Password"/><input type="button"  onClick="clearall()"  value="Clear"/>    </td>
 </tr>  
 </table>
+</div>
 </form>
-</td>
-</tr>
-
-<tr>
-<td><img src="../images/arrowlback.gif" width="22" height="22"> <a href="index.jsp"> Back</a></img> </td>
-</tr>     
-
-
-</table>	
-
 </BODY></HTML>

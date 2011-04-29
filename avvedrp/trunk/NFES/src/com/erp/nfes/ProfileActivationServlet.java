@@ -40,7 +40,7 @@ public class ProfileActivationServlet extends HttpServlet{
 			
 			if( isUserActivated( conn, userLogin ) ){
 				val = "Your Registration is already activated !";
-				response.sendRedirect("ActivateProfile.jsp?successVal=" + val);
+				response.sendRedirect("jsp/ActivateProfile.jsp?successVal=" + val);
 				return;
 			}
 			PreparedStatement selectSt = conn.prepareStatement("SELECT * FROM users WHERE username = ?");
@@ -69,7 +69,7 @@ public class ProfileActivationServlet extends HttpServlet{
 			//}
 			
 			val = "Your Registration Activated Successfully !";
-			response.sendRedirect("ActivateProfile.jsp?successVal=" + val);
+			response.sendRedirect("/jsp/ActivateProfile.jsp?successVal=" + val);
 		} catch (NamingException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {			
