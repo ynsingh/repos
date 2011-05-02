@@ -160,9 +160,11 @@ public class UploadAction extends SecureAction_Instructor
 		f=new File(topicDir.getPath()+"/Unpublished/");
 
 //check for available quota space and return true if space available
-		String gname=GroupUtil.getGroupName(uid,2);
+	//	String gname=GroupUtil.getGroupName(uid,2);
 		long dirS=QuotaUtil.getDirSizeInMegabytes(new File(coursesRealPath+"/"+courseHome));
-                boolean check=QuotaUtil.CompareQuotainCourse(dirS,gname);
+	//	ErrorDumpUtil.ErrorLog(" The dirs is "+ Long.toString(dirS)+ "C Name "+gname+ " C Home "+courseHome );
+                boolean check=QuotaUtil.CompareQuotainCourse(dirS,courseHome);
+	//	ErrorDumpUtil.ErrorLog(" The Compare quota in course is "+check);
                 if(check){
 		try
 		{
@@ -220,7 +222,7 @@ public class UploadAction extends SecureAction_Instructor
 			{
 				boolean fileExists=false;
 				fileItem=pp.getFileItem("file"+(count+1));
-				ErrorDumpUtil.ErrorLog("fitm in uploadaction at line 180=="+fileItem);
+	//			ErrorDumpUtil.ErrorLog("fitm in uploadaction at line 180=="+fileItem);
 				if(fileItem!=null && fileItem.getSize() != 0)
 				{
 					String temp=fileItem.getName();
@@ -241,10 +243,10 @@ public class UploadAction extends SecureAction_Instructor
 					new_files_uploaded.addElement(tempFile[count]);
 					
 					long fsize=fileItem.getSize()/1024/1024;
-					long uquota=QuotaUtil.getCrsQuota(gname);
+					long uquota=QuotaUtil.getCrsQuota(courseHome);
 					uquota= uquota - dirS;
 					long disSpace=QuotaUtil.getFileSystemSpace(instituteId);
-					ErrorDumpUtil.ErrorLog("The value of quota in upload course content"+uquota+"and f size "+fsize +"and dspace "+disSpace);
+				//	ErrorDumpUtil.ErrorLog("The value of quota in upload course content"+uquota+"and f size "+fsize +"and dspace "+disSpace);
 					if((uquota>fsize)&&(disSpace>fsize))
 					{
                                         	f.mkdirs();
@@ -398,7 +400,7 @@ public class UploadAction extends SecureAction_Instructor
 		User user=data.getUser();
 		String LangFile=(String)user.getTemp("LangFile"); 
 		String actionName=data.getParameters().getString("actionName","");
-		ErrorDumpUtil.ErrorLog("acname in upload action==========="+actionName);
+//		ErrorDumpUtil.ErrorLog("acname in upload action==========="+actionName);
 		context.put("actionName",actionName);
 		if(actionName.equals("eventSubmit_doUpload"))
 		{
