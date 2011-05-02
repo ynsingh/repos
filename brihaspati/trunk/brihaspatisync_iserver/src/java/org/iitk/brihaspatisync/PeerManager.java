@@ -24,6 +24,8 @@ import org.apache.xml.serialize.XMLSerializer;
 import java.util.Vector;
 import org.iitk.brihaspatisync.util.ServerLog;
 
+import javax.servlet.ServletContext;
+
 /**
  * @author <a href="mailto:arvindjss17@gmail.com"> Arvind Pal </a>
  * @author <a href="mailto:ashish.knp@gmail.com"> Ashish Yadav </a>
@@ -32,7 +34,8 @@ import org.iitk.brihaspatisync.util.ServerLog;
 public class PeerManager 
 {
 	private static PeerManager pm=null;
-	NodeList peerList=null;
+	private NodeList peerList=null;
+	private ServletContext context=null;
 
 	/**
          * This method returns controller for PeerManager class.
@@ -44,16 +47,15 @@ public class PeerManager
 		return pm;
 	}
 
+	public void setContext(ServletContext context1) throws Exception {
+                context=context1;
+	}
 	/**
 	 * This method is used to create a xml file if it is not exist.
 	 */
 	
 	private File getFile(String lectureID){
-		String Path="../webapps/brihaspatisync_iserver/"+lectureID+".xml";
-                File existingFile=new File(Path);
-                Path = existingFile.getAbsolutePath();
-                File file=new File(Path);
-		
+		File file=new File(context.getRealPath(lectureID+".xml"));
                 if(file.exists()){
                        	return file;
 		}else{

@@ -10,6 +10,7 @@ import java.lang.Long;
 import java.io.FileOutputStream;
 import java.io.File;
 import java.io.DataOutputStream;
+import javax.servlet.ServletContext;
 
 /**
  * @author <a href="mailto:ayadav@iitk.ac.in"> Ashish Yadav </a>
@@ -18,9 +19,10 @@ import java.io.DataOutputStream;
 
 public class ServerLog {
 
-	public static ServerLog log=null;
+	private static ServerLog log=null;
 	private static File existingFile =null;
         private static DataOutputStream dos = null;
+	private ServletContext context=null;
 	
 	/**
 	 * ServerLog controller 
@@ -32,16 +34,15 @@ public class ServerLog {
                 return log;
         }
 	
+	public void setContext(ServletContext context1) throws Exception {
+		context=context1;
+		existingFile=new File(context.getRealPath("logs/ServerLog.txt"));
+		dos = new DataOutputStream(new FileOutputStream(existingFile,true));
+	}
+	
 	private void createFile(){
 		try {
-			existingFile=new File("../webapps/brihaspatisync_iserver/logs/");
-                        String LogfilePath = existingFile.getAbsolutePath();
-                        existingFile=new File(LogfilePath);
-                        if(!existingFile.exists()) {
-                                existingFile.mkdirs();
-                        }
-                        LogfilePath=LogfilePath+"/ServerLog.txt";
-                        dos = new DataOutputStream(new FileOutputStream(LogfilePath,true));
+                        dos = new DataOutputStream(new FileOutputStream(existingFile,true));
 		}catch(Exception e){ }	
 	}
 	
@@ -58,7 +59,8 @@ public class ServerLog {
 				createFile();
 			}
 			Date Errordate=new Date();
-	        	dos.writeBytes(Errordate+"---"+msg+"\n");                        
+	        	dos.writeBytes(Errordate+"---"+msg+"\n");
+			dos.flush();                        
                 }catch(Exception e) { }
         }
 }

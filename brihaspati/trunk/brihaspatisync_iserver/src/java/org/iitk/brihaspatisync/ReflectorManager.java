@@ -23,6 +23,7 @@ import org.apache.xml.serialize.XMLSerializer;
 import java.util.Vector;
 import org.iitk.brihaspatisync.util.ServerLog;
 
+import javax.servlet.ServletContext;
 /**
  * @author <a href="mailto:arvindjss17@gmail.com"> Arvind Pal </a>
  * @author <a href="mailto:ashish.knp@gmail.com"> Ashish Yadav </a>
@@ -35,6 +36,7 @@ public class ReflectorManager
 	private NodeList ref_List=null;
 	private final static int maxload = 10;	
 	private final static int maxcource = 2;	
+	private ServletContext context=null;
 	
 	/**
          * This method returns controller for PeerManager class.
@@ -45,6 +47,12 @@ public class ReflectorManager
 		}
 		return rm;
 	}
+
+	public void setContext(ServletContext context1) throws Exception {
+                context=context1;
+                //existingFile=new File(context.getRealPath("logs/ServerLog.txt"));
+                //dos = new DataOutputStream(new FileOutputStream(existingFile,true));
+        }	
 
 	protected String getIP(String courceid , String ins_or_stu){
 		try {
@@ -578,10 +586,7 @@ public class ReflectorManager
          */
 
         private File getFile(String reflector){
-                String Path="../webapps/brihaspatisync_iserver/"+reflector;
-                File existingFile=new File(Path);
-                Path = existingFile.getAbsolutePath();
-                File file=new File(Path);
+		File file=new File(context.getRealPath(reflector));
 		if(file.exists()){
                         return file;
                 }else{

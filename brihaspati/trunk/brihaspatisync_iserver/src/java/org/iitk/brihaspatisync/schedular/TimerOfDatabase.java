@@ -47,7 +47,7 @@ public class TimerOfDatabase extends TimerTask {
                 		//ServerLog.getController().Log("schedular is running under thread"+sessiondate);
 				int returnvalue=ServerUtil.getController().getDifferenceOfDay(sessiondate,resultofLecture.getSessiontime());
 				if(returnvalue==1) {
-                             		deleteRow(resultofLecture.getLectureid());
+					//deleteRow(resultofLecture.getLectureid());
                             	}
                      	}	 
 			

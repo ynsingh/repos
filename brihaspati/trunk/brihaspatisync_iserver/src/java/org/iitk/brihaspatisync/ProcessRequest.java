@@ -17,7 +17,7 @@ import java.util.Timer;
 import java.util.Vector;
 import java.util.Iterator;
 import java.util.Hashtable;
-import java.util.Date;
+//import java.util.Date;
 import java.util.StringTokenizer;
 import java.text.SimpleDateFormat;
 
@@ -51,19 +51,19 @@ import org.iitk.brihaspatisync.om.TurbineUserGroupRole;
 import org.iitk.brihaspatisync.om.TurbineUserGroupRolePeer;
 import org.iitk.brihaspatisync.om.TurbineUser;
 import org.iitk.brihaspatisync.om.TurbineUserPeer;
-
+import java.sql.Date;
  /**
- * @author <a href="mailto:ayadav@iitk.ac.in"> Ashish Yadav </a>
- * @author <a href="mailto:@arvindjss17@gmai..com"> Arvind Pal </a>
- */
+  * @author <a href="mailto:ayadav@iitk.ac.in"> Ashish Yadav </a>
+  * @author <a href="mailto:@arvindjss17@gmai..com"> Arvind Pal </a>
+  */
 
 public class ProcessRequest extends HttpServlet {
 	
    	private Timer dbTimer=null;
 	private static Hashtable table;
 	private Torque set=null;
-	private String message="";
 	
+
 	protected void doGet(HttpServletRequest request,HttpServletResponse response) throws ServletException,IOException{
 		doPost(request,response);
 	}
@@ -74,7 +74,11 @@ public class ProcessRequest extends HttpServlet {
 			try{
 				set=new Torque();
 				ServletContext context = getServletContext();
-                                String tempFileName =context.getRealPath("Torque.properties");
+				ServerLog.getController().setContext(context);
+				ReflectorManager.getController().setContext(context);
+				PeerManager.getController().setContext(context);
+                                
+				String tempFileName =context.getRealPath("Torque.properties");
                                 set.init(tempFileName);
 		      		dbTimer=new Timer(true);
                		}catch(Exception dberror){ServerLog.getController().Log("Error in database connection "+dberror.getMessage());}
@@ -82,23 +86,20 @@ public class ProcessRequest extends HttpServlet {
 		try{
   			dbTimer.schedule(TimerOfDatabase.getController(), 1000, 60*60*1000);
  		}catch(Exception e){ ServerLog.getController().Log("Error in database Scheduler "+e.getMessage());}
-
-		//Retriving client sent req parameters
+		
 		String reqType=request.getParameter("req");
+		//ServerLog.getController().Log(reqType);
 		PrintWriter out = response.getWriter();
-		/* arvind -----------------------------------------*/
 		if(reqType.equals("reflector_logout")){
                         String reflectorIP  =InetAddress.getByName(request.getRemoteAddr()).toString();
 			ServerLog.getController().Log("reflector_logout------------->"+reflectorIP);	
                         String msg =ReflectorManager.getController().removePeer(reflectorIP);
-                        message=msg;
+                        String message=msg;
                         response.setContentLength(message.length());
                         out.println(message);
                         out.flush();
                         out.close();
                 }
-		/* arvind -----------------------------------------*/
-
                            
 		/**
 		 * This block of code is used to register a reflector on this server with ipAddress of reflector 
@@ -110,7 +111,7 @@ public class ProcessRequest extends HttpServlet {
 			String reflectorIP  =InetAddress.getByName(request.getRemoteAddr()).toString();
 			String status=request.getParameter("status");
 			String arvind =ReflectorManager.getController().Register(reflectorIP,status);
-			message="successfull";
+			String message="successfull";
 			response.setContentLength(message.length());
                         out.println(message);
                         out.flush();
@@ -128,7 +129,7 @@ public class ProcessRequest extends HttpServlet {
 			
 			String reflectorIP=InetAddress.getByName(request.getRemoteAddr()).toString();
 			String status=request.getParameter("status");
-                        message =ReflectorManager.getController().updateStatus(reflectorIP,status);
+                        String message =ReflectorManager.getController().updateStatus(reflectorIP,status);
 			if(!message.equals("UnSuccessfull")){
                         	message="successfull";
 			}
@@ -142,7 +143,7 @@ public class ProcessRequest extends HttpServlet {
 		else if(reqType.equals("http")){
 			
 			InetAddress clientIP  = InetAddress.getByName(request.getRemoteAddr());
-			message=clientIP.toString();
+			String message=clientIP.toString();
 			response.setContentLength(message.length());
                         out.println(message);
                         out.flush();
@@ -164,22 +165,17 @@ public class ProcessRequest extends HttpServlet {
 			*/
 				
 		}else if(reqType.equals("login")){
-				
 			String userName=request.getParameter("usr");
 	                String userPassword=request.getParameter("pass");
         		String ipAddress=request.getParameter("ip");
 			String nodeType=request.getParameter("fw-node");
-			message=loginAuthorised(userName,userPassword);
+			String message=loginAuthorised(userName,userPassword);
 			if(message.equals("loginfailed")){
 				response.setContentLength(message.length());
                			out.println(message);
                        		out.flush();
                        		out.close();
 			}else{
-				
-				response.setContentLength(message.length());
-                        	out.println(message);
-       	                	out.flush();
 				/** Send the userid and  session key of the client for the authentication purpose each time 
 				    when the request is coming from the client to the server This session key is creating by
 				    using the server util.After sending the session key to the user also store this session
@@ -188,12 +184,10 @@ public class ProcessRequest extends HttpServlet {
 				    for the single session 
 				*/
               			int key=ServerUtil.getController().generateSessionKey();
-       		                message=Integer.toString(key);
-				response.setContentLength(message.length());
-        	                out.println(message);
-       	        	        out.flush();
+       		                message=message+"\n"+Integer.toString(key);
 				/* send server date to client user for synchrozise clock with this server. */
-				message=getCurrentDate("");
+				message=message+"\n"+ServerUtil.getController().getCurrentDate("");
+				ServerLog.getController().Log(message);
 				response.setContentLength(message.length());
                                 out.println(message);
                                 out.flush();
@@ -222,13 +216,17 @@ public class ProcessRequest extends HttpServlet {
 			int role=Integer.parseInt(request.getParameter("role"));
 			result=getCourse(id,role);
 			int resultSize=result.size();
+			String message="";
 			if(resultSize!=0){
-				for(int i=0;i<=resultSize;i++){
-					message=result.elementAt(i).toString();
-					response.setContentLength(message.length());
-        	              		out.println(message);
-                	        	out.flush();
+				for(int i=0;i<resultSize;i++){
+					if(i==0)
+						message=result.elementAt(i).toString();
+					else
+						message=message+","+result.elementAt(i).toString();
 				}
+				response.setContentLength(message.length());
+        	              	out.println(message);
+                	        out.flush();
                         	out.close();
 			}else{
 				message="noCourse";
@@ -239,16 +237,13 @@ public class ProcessRequest extends HttpServlet {
 			}
 		}else if(reqType.equals("getSession")){
 			String courseName=request.getParameter("cn");
-			Vector result=getSessionList(courseName);
-			int resultSize=result.size();
-			if(resultSize!=0){
-                        	for(int i=0;i<=resultSize;i++){
-                                	message=result.elementAt(i).toString();
-                                	response.setContentLength(message.length());
-                                	out.println(message);
-                                	out.flush();
-                        	}
-                        	out.close();
+			
+			String message=ServerUtil.getController().getSessionList(courseName);
+			if(!message.equals(""))	{
+                        	response.setContentLength(message.length());
+	                        out.println(message);
+        	                out.flush();
+                	        out.close();
 			}else{
 				message="noLecture";
                                 response.setContentLength(message.length());
@@ -256,29 +251,32 @@ public class ProcessRequest extends HttpServlet {
                                 out.flush();
 				out.close();
 			}
-		}else if(reqType.equals("putLecture")){
-                      	String str=request.getParameter("lectValue");
-			int startindex=str.indexOf("$",0);
-			String fristString=str.substring(0,startindex);
-			message=putLecture(fristString,str);                        
-			response.setContentLength(message.length());
+		
+		} else if(reqType.equals("putLecture")){
+			String lect_id=request.getParameter("lect_id");
+                      	String lectGetParameter=request.getParameter("lectGetParameter");
+                      	String lectUserName=request.getParameter("lectUserName");
+                      	String lectCouseName=request.getParameter("lectCouseName");
+                      	String lectName=request.getParameter("lectName");
+                      	String lectInfo=request.getParameter("lectInfo");
+                      	String lectNo=request.getParameter("lectNo");
+                      	String lectDate=request.getParameter("lectDate");
+                      	String lectTime=request.getParameter("lectTime");
+                      	String lectDuration=request.getParameter("lectDuration");
+                      	String lectAudio=request.getParameter("lectAudio");
+                      	String lectVedio=request.getParameter("lectVedio");
+                      	String lectWhiteBoard=request.getParameter("lectWhiteBoard");
+
+			String message=putLecture(lect_id,lectGetParameter,lectUserName,lectCouseName,lectName,lectInfo,lectNo,lectDate,lectTime,lectDuration,lectAudio,lectVedio,lectWhiteBoard);                        
                        	out.println(message);
                         out.flush();
 			out.close();
 		}else if(reqType.equals("getTimeforLecture")) {
-			java.text.SimpleDateFormat sdfDate = new java.text.SimpleDateFormat("yyyy/MM/dd");
-			java.text.SimpleDateFormat sdfTime = new java.text.SimpleDateFormat("HH:mm");
-			Date now = new Date();
-			String strDate = sdfDate.format(now);
-			String strTime = sdfTime.format(now);
-			System.out.println("Date: " + strDate);
-			System.out.println("Time: " + strTime);	
-			message="date"+strDate+" "+strTime;
+			String message=ServerUtil.getController().getSystemDateTime();
                         response.setContentLength(message.length());
                         out.println(message);
                         out.flush();
                         out.close();
-		
 		}else if(reqType.equals("join")){
 			try{
 				String lect_id=request.getParameter("lect_id");
@@ -289,7 +287,7 @@ public class ProcessRequest extends HttpServlet {
 				String role=request.getParameter("role");
 				String privateIP=ipaddress.toString();
 				String proxy="NO";	
-				message=ReflectorManager.getController().getIP(lect_id,role);
+				String message=ReflectorManager.getController().getIP(lect_id,role);
 				ServerLog.getController().Log("message---> 1"+message);
 				if((!message.equals("UnSuccessfull")) && (!message.equals("Reflector is not running"))){
 					HandRaisePortHandler.getController().handRaisePortHandler(lect_id);
@@ -303,7 +301,7 @@ public class ProcessRequest extends HttpServlet {
 						String msg=PeerManager.getController().createPeer(lect_id,publicIP,user,role,status,privateIP,proxy,ref_ip);
 					}
        				}
-				String av_status=getAVStatus(lect_id);
+				String av_status=ServerUtil.getController().getAVStatus(lect_id);
 				ServerLog.getController().Log("message---> 293================ "+av_status);
 				String port=",port="+HandRaisePortHandler.getController().getPort(lect_id);
 				message	= message + port+av_status;	
@@ -321,13 +319,14 @@ public class ProcessRequest extends HttpServlet {
 				/** Get Userlist in Vector for given Lecture Id */
 				Vector result=PeerManager.getController().getPeerList(lect_id);
 				int resultSize=result.size();
+				String message="";
                         	if(resultSize!=0){
-                                	for(int i=0;i<=resultSize;i++){
-                                        	message=result.elementAt(i).toString();
-        	                                response.setContentLength(message.length());
-						out.println(message);
-		                                out.flush();
-                                	}
+					for(int i=0;i<=resultSize;i++){
+                                        	message=message+","+result.elementAt(i).toString();
+					}
+                              		response.setContentLength(message.length());
+					out.println(message);
+		                        out.flush();
 	                                out.close();
         	                }else{
                 	                message="noUser";
@@ -344,7 +343,7 @@ public class ProcessRequest extends HttpServlet {
 				Criteria crit=new Criteria();
                                 crit.add(LecturePeer.LECTUREID,str);
 		                LecturePeer.doDelete(crit);
-        	                message="Successfull";//putLecture(str);
+        	                String message="Successfull";
                         	response.setContentLength(message.length());
                         	out.println(message);
                        		out.flush();
@@ -354,14 +353,11 @@ public class ProcessRequest extends HttpServlet {
 		else if(reqType.equals("Permissions")){
                        try{
 				String ipAddress=InetAddress.getByName(request.getRemoteAddr()).toString();
-				ServerLog.getController().Log("---------------------------->\n\n\n\n"+ipAddress);
 				String lectID=request.getParameter("lectID");
 				String userAction=request.getParameter("userAction");
-				ServerLog.getController().Log("---------------------------->\n\n\n\n"+userAction);
 				String login=request.getParameter("loginName");
 				login=login.replaceAll("loginName=","");
-				message=PeerManager.getController().updateStatus(userAction,login,lectID);
-				ServerLog.getController().Log("---------------------------->\n\n\n\n"+message);
+				String message=PeerManager.getController().updateStatus(userAction,login,lectID);
 				response.setContentLength(message.length());
                                 out.println(message);
                                 out.flush();
@@ -373,41 +369,10 @@ public class ProcessRequest extends HttpServlet {
 
 	}//end of post method
 		
-	/**  getCurrent Date  **/
-	private static String getCurrentDate(String delimiter)
-        {
-		String cdate="";
-                try{
-                        java.util.Calendar calendar=java.util.Calendar.getInstance();
-
-                        int curr_day=calendar.get(calendar.DATE);
-                        int curr_month=calendar.get(calendar.MONTH)+1;
-                        int curr_year=calendar.get(calendar.YEAR);
-                        String current_day=Integer.toString(curr_day);
-                        String current_month=Integer.toString(curr_month);
-                        String current_year=Integer.toString(curr_year);
-                        if(curr_month<10)
-                                current_month="0"+current_month;
-                        if(curr_day<10)
-                                current_day="0"+current_day;
-                        if(!delimiter.equals(""))
-                                cdate=current_year+delimiter+current_month+delimiter+current_day;
-                        else
-                                cdate=current_year+current_month+current_day;
-                }
-                catch(Exception ex)
-                {
-                        System.out.println("Error in Expiry Util");
-                }
-                return(cdate);
-        }
-	
-
-	/**  getCurrent Date  **/
-	
 	/** If authorisation is successful then return client's USER_ID else return loginfailed */
 	
 	private String loginAuthorised(String username,String password){
+		
 		String result=null;
 		List returnValue=null;
 		try{
@@ -429,15 +394,17 @@ public class ProcessRequest extends HttpServlet {
                         /** If authorisation is successfull then put information of the client
                             in result vector.These information are such as userid of the client. */
                         else {
-                                Iterator forResult=returnValue.iterator();
-                                while(forResult.hasNext()) {
-                                	TurbineUser next=(TurbineUser) forResult.next();
-                                        result=next.getUserId().toString();
-                        	}
+				try {	
+					TurbineUser element=(TurbineUser)returnValue.get(0);
+        	                        result=Integer.toString(element.getUserId());
+					ServerLog.getController().Log(result);
+				} catch(Exception ex) { ServerLog.getController().Log(ex.getMessage());}	
         		}
 
 		} catch(Exception e) { ServerLog.getController().Log("Error in authentication in ProcessRequest class= "+e.getMessage());}
+		ServerLog.getController().Log(result);
 		return result;
+		
 	}
 	
 	/** Here Server send the request to the database to get the course in which Client is registered
@@ -467,229 +434,52 @@ public class ProcessRequest extends HttpServlet {
 
 	}
 	
-	private String  getAVStatus(String lect_id){
-                String str="";
-		try{
-                        Criteria forav = new Criteria();
-                        forav.add(LecturePeer.LECTUREID,lect_id);
-                        List u = LecturePeer.doSelect(forav);
-                	for(int i=0;i<u.size();i++)
-                        {
-                                Lecture element=(Lecture)(u.get(i));
-                                String str1=(element.getForvideo());
-                                String str2=(element.getForaudio());
-                                str =",A="+str1+",V="+str2;
-                        }
-		} catch(Exception e) { ServerLog.getController().Log("Error in selection of course"+e); }
-                	return str;
-
-        }
-
-
-
-	/** Get Session list from the database on the basis of coursename
-       	Actually here the Session list means get the List of Lecture in which user is registered */
-
-	private Vector getSessionList(String CourseName){
-
-        	String  cid="";
-           	Date systemDate=new Date();
-           	long syDateintime=Math.abs(systemDate.getTime());
-           	Vector result=new Vector();
-    
-		/** Get the CourseId from the Course Name */
-            	try{
-                	Criteria crit=new Criteria();
-                 	crit.add(CoursesPeer.GROUP_NAME,CourseName);
-                 	List selectCid=CoursesPeer.doSelect(crit);
-                 	Iterator iter=selectCid.iterator();
-                    	while(iter.hasNext()) {
-                       		Courses resultOfCourse=(Courses)iter.next();
-                       		cid=resultOfCourse.getGroupName().toString();
-                    	}
-
-                  	/** After getting the CourseId then Select the Lecture from the database on the basis of CourseId */
-                   	Criteria forlect=new Criteria();
-                   	forlect.add(LecturePeer.GROUP_NAME,cid);
-                   	List selectList=LecturePeer.doSelect(forlect);
-                   	Iterator iterate=selectList.iterator();
-                       	while(iterate.hasNext()) {
-                        	Lecture resultofLecture=(Lecture)iterate.next();
-                              	result.addElement((String)resultofLecture.getLectureid().toString());
-                              	Date lectureDate=resultofLecture.getSessiondate();
-                              	long lectDateintime=Math.abs(lectureDate.getTime());
-
-                        	/** Here our motive to provide the special symbol to that lecture
-                            	which should be running in next one or two days.So at the client side
-                            	we can seperate these lecture. */
-
-                       		/** Add all of the elements of lecture in a vector */
-
-                                if(Math.abs(lectDateintime-syDateintime)<(2*86400000))
-                                	result.addElement(resultofLecture.getLecturename().toString() + "#");
-				else
-                           		result.addElement((String)resultofLecture.getLecturename().toString());
-                           		result.addElement((String)resultofLecture.getLectureinfo());
-                           		result.addElement((String)resultofLecture.getUrlname());
-                           		result.addElement((String)resultofLecture.getPhoneno());
-                           		result.addElement((String)resultofLecture.getForvideo());
-                           		result.addElement((String)resultofLecture.getForaudio());
-                           		result.addElement((String)resultofLecture.getForwhiteboard());
-                           		result.addElement(resultofLecture.getSessiondate().toString());
-                           		result.addElement((String)resultofLecture.getSessiontime());
-                           		result.addElement((String)resultofLecture.getDuration());
-                           		result.addElement((String)resultofLecture.getRepeatlec());
-                           		result.addElement((String)resultofLecture.getFortime());
-                       		}//else
-             	} catch(Exception ex) { ServerLog.getController().Log("Error in selection of session list==>" +ex); }
-       		return result;
-     	}// end of the method getSessionList(String CourseName)
-	
-	private String putLecture(String check1,String lectValues){
-		String tempvar="";
-		Lecture lect=null;
-		String return_str="";
-		Vector lectureInfo=new Vector();
-		int repeattime=0;
-		int repeatday=0;
-		String  cid="";
-                Date lecDate2=null;
-		long millisecond=0;
-		Criteria crit; int j=0;
-		String tempid="";
-		StringTokenizer st = new StringTokenizer(lectValues,"$");
-
-		while(st.hasMoreTokens()) {
-			if(check1.equals("GetAnnounceValues")){	
-				lectureInfo.addElement(st.nextToken());
-			}else if(check1.equals("GetUpdateLectValues")) {
-			  	if(j==0){
-					tempvar=st.nextToken();
-                                        j++;
-                                }else if(j==1){
-                                        tempid=st.nextToken(); j++;
-                                        lectureInfo.addElement(tempid);
-                        	}else
-					lectureInfo.addElement(st.nextToken());
-			}
-             	}
-		
-                Date lecDate=new SimpleDateFormat("yyyy-MM-dd").parse((String)lectureInfo.elementAt(9),new ParsePosition(0));
-		String repeat=(String)lectureInfo.elementAt(12);
-		String repeatforTime=(String)lectureInfo.elementAt(13);
-		if(repeat.equals("No"))
-                        repeatday=0;
-                if(repeat.equals("Daily"))
-                        repeatday=1;
-                if(repeatforTime.equals("7 Days"))
-                        repeattime=7;
-              	if(repeatforTime.equals("15 Days"))    
-			repeattime=15;
-                try{
-                        crit=new Criteria();
-                        crit.add(CoursesPeer.GROUP_NAME,(String)lectureInfo.elementAt(1));
-                        List selectCid=CoursesPeer.doSelect(crit);
-                        Iterator iter=selectCid.iterator();
-                        while(iter.hasNext()) {
-                                Courses resultOfCourse=(Courses)iter.next();
-                                cid=resultOfCourse.getGroupName().toString();
-				
-                        }
-		}catch(Exception e){ServerLog.getController().Log("Error to get Courseid at putLecture() in ProcessRequest == >"+e.getMessage());}
-               	if(repeatday==0){
-			
-			/**
-	                 * Here the lecture details are inserted only once showing that the
-        	         * lecture will be delivered only once
-		       	 */
-			
-			try{
-                                crit=new Criteria();
-                                if(tempvar.equals("GetUpdateLectValues"))
-				{
-					crit.add(LecturePeer.LECTUREID,tempid);
-					crit.add(LecturePeer.GROUP_NAME,(String)lectureInfo.elementAt(1));//COURSEID,new NumberKey(cid));
-                                        crit.add(LecturePeer.LECTURENAME,(String)lectureInfo.elementAt(2));
-                                        crit.add(LecturePeer.LECTUREINFO,(String)lectureInfo.elementAt(3));
-                                        crit.add(LecturePeer.URLNAME,(String)lectureInfo.elementAt(4));
-                                        crit.add(LecturePeer.PHONENO,(String)lectureInfo.elementAt(5));
-                                        crit.add(LecturePeer.FORVIDEO,(String)lectureInfo.elementAt(6));
-                                        crit.add(LecturePeer.FORAUDIO,(String)lectureInfo.elementAt(7));
-                                        crit.add(LecturePeer.FORWHITEBOARD,(String)lectureInfo.elementAt(8));
-                                        crit.add(LecturePeer.SESSIONDATE,lecDate);
-                                        crit.add(LecturePeer.SESSIONTIME,(String)lectureInfo.elementAt(10));
-                                        crit.add(LecturePeer.DURATION,(String)lectureInfo.elementAt(11));
-                                        crit.add(LecturePeer.REPEATLEC,(String)lectureInfo.elementAt(12));
-                                        crit.add(LecturePeer.FORTIME,(String)lectureInfo.elementAt(13));
-                                        LecturePeer.doUpdate(crit);
-					
-				}else {
-					crit.add(LecturePeer.GROUP_NAME,(String)lectureInfo.elementAt(1));//COURSEID,new NumberKey(cid));
-					crit.add(LecturePeer.LECTURENAME,(String)lectureInfo.elementAt(2));
-        	                        crit.add(LecturePeer.LECTUREINFO,(String)lectureInfo.elementAt(3));
-                	                crit.add(LecturePeer.URLNAME,(String)lectureInfo.elementAt(4));
-                        	        crit.add(LecturePeer.PHONENO,(String)lectureInfo.elementAt(5));
-                                	crit.add(LecturePeer.FORVIDEO,(String)lectureInfo.elementAt(6));
-	                                crit.add(LecturePeer.FORAUDIO,(String)lectureInfo.elementAt(7));
-        	                        crit.add(LecturePeer.FORWHITEBOARD,(String)lectureInfo.elementAt(8));
-                	                crit.add(LecturePeer.SESSIONDATE,lecDate);
-                        	        crit.add(LecturePeer.SESSIONTIME,(String)lectureInfo.elementAt(10));
-                                	crit.add(LecturePeer.DURATION,(String)lectureInfo.elementAt(11));
-	                                crit.add(LecturePeer.REPEATLEC,(String)lectureInfo.elementAt(12));
-        	                        crit.add(LecturePeer.FORTIME,(String)lectureInfo.elementAt(13));
-                	                LecturePeer.doInsert(crit);
-				}
-			 }catch(Exception e){
-                                ServerLog.getController().Log("Error in Insert of Lecture Data when repeat day=0 : "+e+" " +e.getMessage());
-			      	return return_str="Error";
-                	}
-		 return return_str="Successfull";
-		/**
-                 * Here the lecture details are inserted for the number of times it has
-                 * to be delivered.The only difference comes in the date field
-                 */
-             	}else {
-			for(int i=1;i<=repeattime;i++) {
-                                if(i==1)
-                                        millisecond=Math.abs(lecDate.getTime());
-                                else
-                                        millisecond=Math.abs(lecDate2.getTime());
-                                millisecond=Math.abs(millisecond+86400000);
-                                Date sessionDate=new Date(millisecond);
-                                SimpleDateFormat sd=new SimpleDateFormat("yyyy-MM-dd");
-                                lecDate2 = sd.parse(Integer.toString(sessionDate.getYear()+1900)+"-"+Integer.toString(sessionDate.getMonth()+1)+"-"+Integer.toString(sessionDate.getDate()) ,new ParsePosition(0));
-
-                                try{
-                                        crit=new Criteria();
-                                        crit.add(LecturePeer.GROUP_NAME,(String)lectureInfo.elementAt(1));//COURSEID,new NumberKey(cid));
-                                        crit.add(LecturePeer.LECTURENAME,(String)lectureInfo.elementAt(2));
-                                        crit.add(LecturePeer.LECTUREINFO,(String)lectureInfo.elementAt(3));
-                                        crit.add(LecturePeer.URLNAME,(String)lectureInfo.elementAt(4));
-                                        crit.add(LecturePeer.PHONENO,(String)lectureInfo.elementAt(5));
-                                        crit.add(LecturePeer.FORVIDEO,(String)lectureInfo.elementAt(6));
-                                        crit.add(LecturePeer.FORAUDIO,(String)lectureInfo.elementAt(7));
-                                        crit.add(LecturePeer.FORWHITEBOARD,(String)lectureInfo.elementAt(8));
-                                        if(i==1)
-                                                // lecDate contains the date for the first day when the lecture starts
-                                                crit.add(LecturePeer.SESSIONDATE,lecDate);
-                                        else
-                                                /** lecDate2 contains the date for the next days the lecture is going to run.This is null in
-                                                 *the first loop and initialized later on.
-                                                 */
-                                                crit.add(LecturePeer.SESSIONDATE,lecDate2);
-                                        crit.add(LecturePeer.SESSIONTIME,(String)lectureInfo.elementAt(10));
-                                        crit.add(LecturePeer.DURATION,(String)lectureInfo.elementAt(11));
-                                        crit.add(LecturePeer.REPEATLEC,(String)lectureInfo.elementAt(12));
-                                        crit.add(LecturePeer.FORTIME,(String)lectureInfo.elementAt(13));
-					LecturePeer.doInsert(crit);
-                                }catch(Exception e) {
-                                        ServerLog.getController().Log("Error in Insert of Lecture Data when repeat day=1: "+e.getMessage()+" "+e);
-                                        return return_str="Error";
-                        	}
-			}
-			return return_str="Successfull";
-                }
-		
+	private String putLecture(String lect_id,String lectGetParameter,String lectUserName,String lectCouseName,String lectName,String lectInfo,String lectNo,String lectDate,String lectTime,String lectDuration,String lectAudio,String lectVedio,String lectWhiteBoard){ 
+		if(lectGetParameter.equals("GetAnnounceValues")) {
+			try {
+				Date date=Date.valueOf(lectDate);
+				Criteria crit=new Criteria();
+				crit.add(LecturePeer.GROUP_NAME,lectCouseName);
+				crit.add(LecturePeer.LECTURENAME,lectName);
+				crit.add(LecturePeer.LECTUREINFO,lectInfo);
+				crit.add(LecturePeer.URLNAME,lectUserName);
+				crit.add(LecturePeer.PHONENO,lectNo);	
+				crit.add(LecturePeer.FORVIDEO,lectVedio);
+				crit.add(LecturePeer.FORAUDIO,lectAudio);
+				crit.add(LecturePeer.FORWHITEBOARD,lectWhiteBoard);
+				crit.add(LecturePeer.SESSIONDATE,date);
+				crit.add(LecturePeer.SESSIONTIME,lectTime);
+				crit.add(LecturePeer.DURATION,lectDuration);
+				crit.add(LecturePeer.REPEATLEC,"NO");
+				crit.add(LecturePeer.FORTIME,"NO");
+	        	        LecturePeer.doInsert(crit);
+				return "Successfull";
+			}catch(Exception e){ServerLog.getController().Log("Error Log in Lecture =============> "+e.getMessage()); }
+		}else if(lectGetParameter.equals("GetUpdateLectValues")) {
+			try {
+				ServerLog.getController().Log("   lectGetParameter "+lectGetParameter);
+				ServerLog.getController().Log("   lectGetParameter "+lect_id);
+				Date date=Date.valueOf(lectDate);
+				Criteria crit=new Criteria();
+        	                crit.add(LecturePeer.LECTUREID,Integer.parseInt(lect_id));
+                	        crit.add(LecturePeer.GROUP_NAME,lectCouseName);
+                        	crit.add(LecturePeer.LECTURENAME,lectName);
+				crit.add(LecturePeer.LECTUREINFO,lectInfo);
+	                        crit.add(LecturePeer.URLNAME,lectUserName);
+        	                crit.add(LecturePeer.PHONENO,lectNo);
+                	        crit.add(LecturePeer.FORVIDEO,lectVedio);
+                        	crit.add(LecturePeer.FORAUDIO,lectAudio);
+	                        crit.add(LecturePeer.FORWHITEBOARD,lectWhiteBoard);
+        	                crit.add(LecturePeer.SESSIONDATE,date);
+                	        crit.add(LecturePeer.SESSIONTIME,lectTime);
+                        	crit.add(LecturePeer.DURATION,lectDuration);
+	                        crit.add(LecturePeer.REPEATLEC,"NO");
+        	                crit.add(LecturePeer.FORTIME,"NO");
+                	        LecturePeer.doUpdate(crit);
+				return "Successfull";
+			}catch(Exception e){ServerLog.getController().Log("Error Log in Lecture =============> "+e.getMessage()); }
+		}
+		return "Error";	
 	}
 }//end of class
 

@@ -11,6 +11,11 @@ import java.util.Date;
 import java.util.StringTokenizer;
 import java.util.Calendar;
 
+import java.util.List;
+import org.apache.torque.util.Criteria;
+import org.iitk.brihaspatisync.om.Lecture;
+import org.iitk.brihaspatisync.om.LecturePeer;
+
 /**
  * @author <a href="mailto:ashish.knp@gmail.com"> Ashish Yadav </a>
  */
@@ -38,7 +43,7 @@ public class ServerUtil{
         	return key;
     	}
 	/****************  get Corent Date **************/
-	private String getCurrentDate(String delimiter)
+	public String getCurrentDate(String delimiter)
         {
                 String cdate="";
                 try{
@@ -71,7 +76,6 @@ public class ServerUtil{
 
 	public int getDifferenceOfDay(Date sessionDate,String sessionTime) {
 
-		//ServerLog.getController().Log("Session Data = "+sessionDate+" Session time = "+sessionTime);
         	StringTokenizer str=new StringTokenizer(sessionTime,":");
               	int hours=0,minutes=0;
              	while(str.hasMoreTokens()) {
@@ -95,4 +99,61 @@ public class ServerUtil{
                 else
                 	return 0;
   	}
+	
+	public String getSystemDateTime() {
+		java.text.SimpleDateFormat sdfDate = new java.text.SimpleDateFormat("yyyy/MM/dd");
+                java.text.SimpleDateFormat sdfTime = new java.text.SimpleDateFormat("HH:mm");
+                Date now = new Date();
+                String strDate = sdfDate.format(now);
+                String strTime = sdfTime.format(now);
+                System.out.println("Date: " + strDate);
+                System.out.println("Time: " + strTime); 
+                return "date"+strDate+" "+strTime;
+	}
+	
+	public String  getAVStatus(String lect_id) {
+                String str="";
+                try{
+                        Criteria forav = new Criteria();
+                        forav.add(LecturePeer.LECTUREID,lect_id);
+                        List u = LecturePeer.doSelect(forav);
+                        for(int i=0;i<u.size();i++)
+                        {
+                                Lecture element=(Lecture)(u.get(i));
+                                String str1=(element.getForvideo());
+                                String str2=(element.getForaudio());
+                                str =",A="+str1+",V="+str2;
+                        }
+                } catch(Exception e) { ServerLog.getController().Log("Error in selection of course"+e); }
+                return str;
+        }
+		
+	public String getSessionList(String courseName){
+               	String message="";
+                try {
+                        Criteria crit=new Criteria();
+                        crit.add(LecturePeer.GROUP_NAME,courseName);
+                        List l=LecturePeer.doSelect(crit);
+                        for(int i=0;i<l.size();i++) {
+                                Lecture element=(Lecture)(l.get(i));
+                                String lectid=Integer.toString(element.getLectureid());
+                                String lectUserName=element.getGroupName();
+                                String lectCouseName=element.getLecturename();
+                                String lectName=element.getLectureinfo();
+                                String lectInfo=element.getUrlname();
+                                String lectNo=element.getPhoneno();
+                                String lectVedio=element.getForvideo();
+                                String lectAudio=element.getForaudio();
+                                String lectWhiteBoard=element.getForwhiteboard();
+                                Date lectDate=element.getSessiondate();
+                                String lectTime=element.getSessiontime();
+                                String lectDuration=element.getDuration();
+                                String repeattime=element.getRepeatlec();
+                                String fortime=element.getFortime();
+                                message=message+"$$"+lectid+","+lectUserName+","+lectCouseName+","+lectName+","+lectInfo+","+lectNo+","+lectVedio+","+lectAudio+","+lectWhiteBoard+","+lectDate+","+lectTime+","+lectDuration+","+repeattime+","+fortime;
+                        }
+                }catch(Exception e){ServerLog.getController().Log("Error Log in Lecture select "+e.getMessage());}
+             	return message;
+        }	
+		
 }//end of class	
