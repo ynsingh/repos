@@ -280,7 +280,7 @@ public class HttpsUtil{
                 return msgList;
         }
 	
-	public Vector getSessionForCourse(Vector courseList, String indexServerName){
+	public Vector getSessionForCourse(Vector courseList, String indexServerName) {
 		Vector userlist=new Vector();
                 for(int i=0;i<courseList.size();i++){
                         try{
@@ -296,7 +296,10 @@ public class HttpsUtil{
                                 	try{
                                         	while((str=in.readLine())!=null){
                                                 	if(!(str.equals("noLecture"))){
-                                                        	userlist.addElement(str);
+								java.util.StringTokenizer str1 = new java.util.StringTokenizer(str,"$$");
+								while(str1.hasMoreTokens()) {
+									userlist.addElement(str1.nextElement().toString());
+								}
                                                 	}
                                         	}
                                 	}finally {

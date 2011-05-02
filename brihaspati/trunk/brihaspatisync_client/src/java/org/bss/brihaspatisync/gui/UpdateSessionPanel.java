@@ -21,6 +21,7 @@ import org.bss.brihaspatisync.util.HttpsUtil;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.DateUtil;
 
+import java.net.URLEncoder;
 import org.bss.brihaspatisync.network.Log;
 
 /**
@@ -47,6 +48,7 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
         private JPanel south_Panel;
 	private Container con=null;
 
+	private String lecture_id="";
 	private JLabel lect_name;
         private JLabel lect_Info;
         private JLabel phone,date;
@@ -78,7 +80,7 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
         private JButton annBttn;
 
 	private Vector returnVector=null;
-	private StringBuffer lectValue;
+	private String lectValue;
 	private Log log=Log.getController();	
 	private ClientObject client_obj=ClientObject.getController();
 	private InstructorCSPanel insCSPanel=InstructorCSPanel.getController();
@@ -116,39 +118,40 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
 	}
 
 	private void setLectureValues(int indexnumber,Vector updatevector){
-		
-		indexnumber=(indexnumber*13)+1;
-		courseId=((String)updatevector.get(indexnumber-1));
-		log.setLog("c         "+courseId);
-		lectName_Text.setText(((String)updatevector.get(indexnumber)).replaceAll("#",""));	
-		phone_Text.setText(((String)updatevector.get(indexnumber+3)).replaceAll("#",""));	
-		lecInfoArea.setText(((String)updatevector.get(indexnumber+1)).replaceAll("#",""));
-		String updatemailid=((String)updatevector.get(indexnumber+2));
-		String updatemailidarry[]=updatemailid.split("@");
-		urlText.setText(updatemailidarry[0]);
-		atRate.setText("@");	
-		endText.setText(updatemailidarry[1]);
-		if(((String)updatevector.get(indexnumber+4)).equals("1"))
-			audio.setSelected(true);	
-		else
-			audio.setSelected(false);
-		if(((String)updatevector.get(indexnumber+5)).equals("1"))
+		java.util.StringTokenizer str1 = new java.util.StringTokenizer(updatevector.get(indexnumber).toString(),",");
+                //System.out.println(updatevector.get(indexnumber).toString());
+                lecture_id=str1.nextElement().toString();
+                courseId=str1.nextElement().toString();
+                lectName_Text.setText(str1.nextElement().toString());
+                lecInfoArea.setText(str1.nextElement().toString());
+                String updatemailid=str1.nextElement().toString();
+                phone_Text.setText(str1.nextElement().toString());
+                String updatemailidarry[]=updatemailid.split("@");
+                urlText.setText(updatemailidarry[0]);
+                atRate.setText("@");
+                endText.setText(updatemailidarry[1]);
+                if((str1.nextElement().toString()).equals("1"))
                         video.setSelected(true);
                 else
                         video.setSelected(false);
+                if((str1.nextElement().toString()).equals("1"))
+                        audio.setSelected(true);
+                else
+                        audio.setSelected(false);
+                String sr=str1.nextElement().toString();
 
-		updatemailidarry=null;
-		updatemailid=((String)updatevector.get(indexnumber+7)).substring(0,10);	
-		updatemailidarry=updatemailid.split("-");
-		yearBox.setSelectedItem(updatemailidarry[0]);	
-		monthBox.setSelectedItem(updatemailidarry[1]);	
-		dayBox.setSelectedItem(updatemailidarry[2]);	
-		updatemailid=(String)updatevector.get(indexnumber+8);
-		updatemailidarry=null;
-		updatemailidarry=updatemailid.split(":");	
-		hourBox.setSelectedItem(updatemailidarry[0]);
-		minBox.setSelectedItem(updatemailidarry[1]);
-		durationBox.setSelectedItem((String)updatevector.get(indexnumber+9)+":Hour");	
+                updatemailid=str1.nextElement().toString();//((String)updatevector.get(indexnumber+7)).substring(0,10);
+                updatemailidarry=updatemailid.split("-");
+
+                yearBox.setSelectedItem(updatemailidarry[0]);
+                monthBox.setSelectedItem(updatemailidarry[1]);
+                dayBox.setSelectedItem(updatemailidarry[2]);
+
+                updatemailid=str1.nextElement().toString();//Session Time
+                updatemailidarry=updatemailid.split(":");
+                hourBox.setSelectedItem(updatemailidarry[0]);
+                minBox.setSelectedItem(updatemailidarry[1]);
+                durationBox.setSelectedItem(str1.nextElement().toString());	
 		
 	}	
 
@@ -339,6 +342,7 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                         String st_year=(String)yearBox.getSelectedItem();
                         String st_month=(String)monthBox.getSelectedItem();
                         String st_day=(String)dayBox.getSelectedItem();
+			
                         int curdate=Integer.parseInt(client_obj.getServerDate());
 			int intforduedate=Integer.parseInt(st_year+st_month+st_day);
                         boolean check=date.checkDateInput(st_year,st_month,st_day);
@@ -351,6 +355,7 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                         else if((intforduedate >= curdate)&& check){
                                 String st_hour=(String)hourBox.getSelectedItem();
                                 String st_minutes=(String)minBox.getSelectedItem();
+				String st_hour_st_minutes=st_hour+":"+st_minutes;
                                 if(intforduedate == curdate){
                                         int totaltime=Integer.parseInt(st_hour)*60;
                                         totaltime=totaltime+Integer.parseInt(st_minutes);
@@ -360,19 +365,19 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                                                 return lectValue.toString();
                                         }
                                 }
-				lectValue=new StringBuffer(500);
+				//lectValue=new StringBuffer(500);
 				String courseName="";
-				 if(!((client_obj.getCourseForAnnounce()).equals("")))
+				if(!((client_obj.getCourseForAnnounce()).equals("")))
                                         courseName=client_obj.getCourseForAnnounce();
 				if(courseName.equals("--Show All--")){
                                         JOptionPane.showMessageDialog(null,"Please select the Course except Show All !!");
                                         lectValue=null;
-                                        return lectValue.toString();
+                                        return lectValue;
                                 }
 				
 				String st_duration=(String)durationBox.getSelectedItem();
 				StringTokenizer st=new StringTokenizer(st_duration,":");
-				
+				/*	
 				lectValue.append("GetUpdateLectValues");
 				lectValue.append("$"+courseId);
 				lectValue.append("$");
@@ -386,29 +391,38 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
 				lectValue.append("$");
 				lectValue.append((String)phone_Text.getText());
 				lectValue.append("$");
-					
+				*/
+				String vedeo="";					
                        	       	if(video.isSelected()==true){
-					lectValue.append("1");
-					lectValue.append("$");
+					vedeo="1";
+					//lectValue.append("1");
+					//lectValue.append("$");
                        		}else{	
-					lectValue.append("0");
-					lectValue.append("$");
+					vedeo="0";
+					//lectValue.append("0");
+					//lectValue.append("$");
 				}
+				String audio1="";
 	                      	if(audio.isSelected()==true){
-					lectValue.append("1");
-					lectValue.append("$");
+					audio1="1";
+					//lectValue.append("1");
+					//lectValue.append("$");
                             	}else{
-					lectValue.append("0");
-					lectValue.append("$");
-
+					audio1="0";
+					//lectValue.append("0");
+					//lectValue.append("$");
                      		}
+				String whiteboard1="1";
 				if(whiteboard.isSelected()==true){
-					lectValue.append("1");
-					lectValue.append("$");
+					whiteboard1="1";
+					//lectValue.append("1");
+					//lectValue.append("$");
         	               	}else{
-					lectValue.append("0");
-					lectValue.append("$");
+					whiteboard1="0";
+					//lectValue.append("0");
+					//lectValue.append("$");
 				}
+				/*
 				lectValue.append(st_year+"-"+st_month+"-"+st_day);
 				lectValue.append("$");
 				lectValue.append(st_hour+":"+st_minutes);
@@ -416,8 +430,9 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
 
 				lectValue.append(st.nextToken());
 				lectValue.append("$");
-
-                	        if(((String)repeatBox.getSelectedItem()).equals("No")){
+				*/
+				/*
+		       	        if(((String)repeatBox.getSelectedItem()).equals("No")){
 					lectValue.append("No");
 					lectValue.append("$");
 					lectValue.append("No");
@@ -429,9 +444,27 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
 					lectValue.append((String)repeat_for_timeBox.getSelectedItem());
 					lectValue.append("$");
                         	}
+				*/
+				try {
+					lectValue = "&"+"lect_id="+URLEncoder.encode(lecture_id,"UTF-8");
+                                        lectValue =lectValue+"&"+"lectGetParameter="+URLEncoder.encode("GetUpdateLectValues","UTF-8");
+                                        lectValue =lectValue+"&"+ "lectUserName="+URLEncoder.encode(client_obj.getUserName(),"UTF-8");
+                                        lectValue =lectValue+"&"+"lectCouseName="+URLEncoder.encode(courseId,"UTF-8");
+                                        lectValue =lectValue+"&"+"lectName="+URLEncoder.encode((String)lectName_Text.getText(),"UTF-8");
+                                        lectValue =lectValue+"&"+"lectInfo="+URLEncoder.encode((String)lecInfoArea.getText(),"UTF-8");
+                                        lectValue =lectValue+"&"+"lectNo="+URLEncoder.encode((String)phone_Text.getText(),"UTF-8");
+                                        lectValue =lectValue+"&"+"lectDate="+URLEncoder.encode(st_year+"-"+st_month+"-"+st_day,"UTF-8");
+                                        lectValue =lectValue+"&"+"lectTime="+URLEncoder.encode(st_hour_st_minutes,"UTF-8");
+                                        lectValue =lectValue+"&"+"lectDuration="+URLEncoder.encode(st_duration,"UTF-8");
+                                        lectValue =lectValue+"&"+"lectAudio="+URLEncoder.encode(audio1,"UTF-8");
+                                        lectValue =lectValue+"&"+"lectVedio="+URLEncoder.encode(vedeo,"UTF-8");
+                                        lectValue =lectValue+"&"+"lectWhiteBoard="+URLEncoder.encode(whiteboard1,"UTF-8");
+                                        //System.out.println(lectValue);
+                                } catch(Exception es){}
+	
 			}//if
             	}//else
-		return lectValue.toString();
+		return lectValue;
      	}
 
 	/**
@@ -450,7 +483,8 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
 			//BufferedReader in=null;
 			//URL indexurl=null;
 			try{
-				String lectValue = "lectValue="+URLEncoder.encode(getLectureValues(),"UTF-8");
+				String lectValue = getLectureValues();
+				System.out.println(lectValue);
                                 String indexServerName=client_obj.getIndexServerName();
 
                                 if(!(indexServerName.equals(""))){

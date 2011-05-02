@@ -68,7 +68,8 @@ public class AnnounceSessionAction extends JPanel implements ActionListener{
 					AnnounceSessionPanel.getController().getannBttn().setCursor(new Cursor(Cursor.HAND_CURSOR));
 				}
 				if(!(AnnounceSessionPanel.getController().getLectureValues().equals(""))){
-					String lectValue = "lectValue="+URLEncoder.encode(AnnounceSessionPanel.getController().getLectureValues(),"UTF-8");
+					//String lectValue = "lectValue="+URLEncoder.encode(AnnounceSessionPanel.getController().getLectureValues(),"UTF-8");
+					String lectValue = AnnounceSessionPanel.getController().getLectureValues();
 					String indexServerName=client_obj.getIndexServerName();
 
 					if(!(indexServerName.equals(""))){

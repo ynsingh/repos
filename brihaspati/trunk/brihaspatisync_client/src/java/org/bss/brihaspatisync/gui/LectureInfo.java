@@ -68,7 +68,7 @@ public class LectureInfo extends JFrame implements MouseListener
 
 	private JPanel descPanel=null;
        
-	private String[] sessionInfo={"Lecture Id","Lecture Name","Lecture Info","Author Url","Phone No","Transmit Video","Transmit Audio","WhiteBoard-chat","Session Date","Session Time","Duration","Repeat","For Times" };
+	private String[] sessionInfo={"Lecture Id","Course Name","Lecture Name","Lecture Info","Author Url","Phone No","Transmit Video","Transmit Audio","WhiteBoard-chat","Session Date","Session Time","Duration","Repeat","For Times" };
 	
 	private Cursor busyCursor =Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
         private Cursor defaultCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);	
@@ -78,20 +78,17 @@ public class LectureInfo extends JFrame implements MouseListener
 	 */
         protected LectureInfo(int p, Vector infoVector){
 		ClassLoader clr= this.getClass().getClassLoader();
+		java.util.StringTokenizer str1 = new java.util.StringTokenizer(infoVector.get(p).toString(),",");
+		int k=0;
 		descLabel=new JLabel[20];
-             	p=p*13;                       
-		for(int i=0;i<13;i++){
-			if(i==10)
-				descLabel[i]=new JLabel("<html><font color=Black>"+sessionInfo[i]+"</font><font color=Black><b>=</font><font color=blue><I>"+(String)infoVector.elementAt(p)+" Hour"+"</font></html>");
-			else
-    				descLabel[i]=new JLabel("<html><font color=Black>"+sessionInfo[i]+"</font><font color=Black><b>=</font><font color=blue><I>"+(String)infoVector.elementAt(p)+"</font></html>");                    
-                        p++;
-             	}
-
+		while(str1.hasMoreTokens()){
+			descLabel[k]=new JLabel("<html><font color=Black>"+sessionInfo[k]+"</font><font color=Black><b>=</font><font color=blue><I>"+str1.nextElement().toString()+"</font></html>");  
+			k++;
+		}	
 		descPanel=new JPanel();
 		descPanel.setLayout(new GridLayout(0,2,5,0));
 		descPanel.setBorder(BorderFactory.createLineBorder(Color.black));
-		for(int i=0;i<13;i++)
+		for(int i=0;i<=13;i++)
 			descPanel.add(descLabel[i]);			
 		infoLabel=new JLabel("<html><u><Font Color=Black>Information Of Lecture");
 		closeLabel=new JLabel(new ImageIcon(clr.getResource("resources/images/close.jpg")));

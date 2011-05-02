@@ -35,7 +35,7 @@ import org.bss.brihaspatisync.util.HttpsUtil;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.DateUtil;
 import org.bss.brihaspatisync.network.Log;
-
+import java.net.URLEncoder;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a> created 
@@ -81,7 +81,7 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
         private JButton annBttn;
 
 	private Vector returnVector=null;
-	private StringBuffer lectValue;
+	private String lectValue;
 	private ClientObject client_obj=ClientObject.getController();
 	private static AnnounceSessionPanel annPanel=null; 
 	private Log log=Log.getController();
@@ -170,7 +170,10 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
                 dayBox=new JComboBox();
                 monthBox=new JComboBox();
                 yearBox=new JComboBox();
-		dayBox.addItem(Integer.toString(day));
+		if(day<10)
+			dayBox.addItem("0"+Integer.toString(day));
+		else
+			 dayBox.addItem(Integer.toString(day));
                 for(int i=1;i<32;i++){
 			if(day != i) {
 				if(i<10)
@@ -179,7 +182,10 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
         	                        dayBox.addItem(Integer.toString(i));
 			}
                 }
-		monthBox.addItem("0"+Integer.toString(month));
+		if(month<10)
+			monthBox.addItem("0"+Integer.toString(month));
+		else
+			monthBox.addItem(Integer.toString(month));
                 for(int i=1;i<13;i++){
 			if(month != i){
 	                        if(i<10)
@@ -217,17 +223,6 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
                 timeEntryPanel.add(hourBox);
                 timeEntryPanel.add(minBox);
 
-                //creating a new Panel for email entry
-                //JPanel mailPanel=new JPanel();
-                //mailPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-                //atRate=new JTextField("@");
-                //atRate.setEditable(false);
-                //urlText=new JTextField(5);
-                //endText=new JTextField(5);
-                //mailPanel.add(urlText);
-                //mailPanel.add(atRate);
-                //mailPanel.add(endText);
-
                 center_Panel.add(lect_name);
                 center_Panel.add(lectName_Text);
                 center_Panel.add(lect_Info);
@@ -238,10 +233,7 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
                 center_Panel.add(dateEntryPanel);
                 center_Panel.add(time);
                 center_Panel.add(timeEntryPanel);
-                //center_Panel.add(email);
-                //center_Panel.add(mailPanel);
-
-		 return center_Panel;
+		return center_Panel;
 	}
 	
 	/**
@@ -295,8 +287,7 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
 		annBttn.setCursor(new Cursor(Cursor.HAND_CURSOR));
                	annBttn.addActionListener(AnnounceSessionAction.getController());
               	//End of modification
-
-//		annBttn.addActionListener(this);
+		//annBttn.addActionListener(this);
                 south_Panel.add(duration);
                 south_Panel.add(durationBox);
                 south_Panel.add(new JLabel("      "));
@@ -310,11 +301,8 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
 	
 	protected String getLectureValues(){
 		String courseName="";
-		
        		if((lectName_Text.getText().equals("")) ||(lecInfoArea.getText().equals(""))||(phone_Text.getText().equals(""))){
-		
                 	JOptionPane.showMessageDialog(null,"Please enter (*) mandatory fields");
-		
               	}
 		else{
 	       		String st_year=(String)yearBox.getSelectedItem();
@@ -323,102 +311,84 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
 			int curdate=Integer.parseInt(client_obj.getServerDate());
 	                int intforduedate=Integer.parseInt(st_year+st_month+st_day);
 			boolean check=DateUtil.getController().checkDateInput(st_year,st_month,st_day);
+			System.out.println(intforduedate+" < "+curdate);
 			if(intforduedate < curdate)
 			{
 				JOptionPane.showMessageDialog(null,"Please checked the Lecture date !!");
 				lectValue=null;
-				return lectValue.toString();
+				return lectValue;
 			}
 			else if((intforduedate >= curdate)&& check){
 				String st_hour=(String)hourBox.getSelectedItem();
                			String st_minutes=(String)minBox.getSelectedItem();
+				String st_hour_st_minutes=st_hour+":"+st_minutes;	
+				
 				if(intforduedate == curdate){
 					int totaltime=Integer.parseInt(st_hour)*60;
 					totaltime=totaltime+Integer.parseInt(st_minutes);	
 					if(totaltime< (DateUtil.getController().checkTimeInput())) {
 						JOptionPane.showMessageDialog(null,"Please checked the Lecture Time !!");
 						lectValue=null;
-						return lectValue.toString();
+						return lectValue;
 					}
 				}
+				
+				System.out.println("1 "+st_hour_st_minutes);
 				if(((String)lectName_Text.getText()).length()<6)
 				{
 					JOptionPane.showMessageDialog(null,"Please checked the Lecture Name atleast 5 !!");
                                         lectValue=null;  
-					return lectValue.toString();  
+					return lectValue;  
 				}
 	              		String st_duration=(String)durationBox.getSelectedItem();
+				System.out.println("2 "+st_duration);
 				
-				lectValue=new StringBuffer(500);
 				if(!((client_obj.getCourseForAnnounce()).equals("")))
 					courseName=client_obj.getCourseForAnnounce();
-				log.setLog("courseName----> "+courseName);
-				lectValue.append("GetAnnounceValues");
-				lectValue.append("$");
 				if(courseName.equals("--Show All--")){
 					JOptionPane.showMessageDialog(null,"Please select the Course except Show All !!");
 					lectValue=null;
-                                        return lectValue.toString();
+                                        return lectValue;
 				}
-				lectValue.append(courseName);
-				lectValue.append("$");
-				lectValue.append((String)lectName_Text.getText());
-				lectValue.append("$");
-				lectValue.append((String)lecInfoArea.getText());
-				lectValue.append("$");
-				
-				lectValue.append((String)(client_obj.getUserName()));
-				//lectValue.append((String)(urlText.getText()+atRate.getText()+endText.getText()));
-				lectValue.append("$");
-				lectValue.append((String)phone_Text.getText());
-				lectValue.append("$");
-					
+				String vedeo="";	
                        	       	if(video.isSelected()==true){
-					lectValue.append("1");
-					lectValue.append("$");
+					vedeo="1";
                        		}else{	
-					lectValue.append("0");
-					lectValue.append("$");
+					vedeo="0";
 				}
+				
+				String audio1="";
 	                      	if(audio.isSelected()==true){
-					lectValue.append("1");
-					lectValue.append("$");
+					audio1="1";
                             	}else{
-					lectValue.append("0");
-					lectValue.append("$");
-
+					audio1="0";
                      		}
-				if(whiteboard.isSelected()==true){
-					lectValue.append("1");
-					lectValue.append("$");
+				System.out.println("9 "+audio1);
+				String whiteboard1="1";
+				if(whiteboard.isSelected()){
+					whiteboard1="1";
         	               	}else{
-					lectValue.append("0");
-					lectValue.append("$");
+					whiteboard1="0";
 				}
-				lectValue.append(st_year+"-"+st_month+"-"+st_day);
-				lectValue.append("$");
-				lectValue.append(st_hour+":"+st_minutes);
-				lectValue.append("$");
-
-	                       	StringTokenizer st=new StringTokenizer(st_duration,":");
-				lectValue.append(st.nextToken());
-				lectValue.append("$");
-
-                	        if(((String)repeatBox.getSelectedItem()).equals("No")){
-					lectValue.append("No");
-					lectValue.append("$");
-					lectValue.append("No");
-					lectValue.append("$");
-                             	}	
-				else{
-        	                       	lectValue.append((String)repeatBox.getSelectedItem());
-					lectValue.append("$");
-					lectValue.append((String)repeat_for_timeBox.getSelectedItem());
-					lectValue.append("$");
-                        	}
+				try {
+					lectValue = "&"+"lectGetParameter="+URLEncoder.encode("GetAnnounceValues","UTF-8");
+					lectValue =lectValue+"&"+ "lectUserName="+URLEncoder.encode(client_obj.getUserName(),"UTF-8");
+					lectValue =lectValue+"&"+"lectCouseName="+URLEncoder.encode(courseName,"UTF-8");
+					lectValue =lectValue+"&"+"lectName="+URLEncoder.encode((String)lectName_Text.getText(),"UTF-8");
+					lectValue =lectValue+"&"+"lectInfo="+URLEncoder.encode((String)lecInfoArea.getText(),"UTF-8");
+					lectValue =lectValue+"&"+"lectNo="+URLEncoder.encode((String)phone_Text.getText(),"UTF-8");
+					lectValue =lectValue+"&"+"lectDate="+URLEncoder.encode(st_year+"-"+st_month+"-"+st_day,"UTF-8");
+					lectValue =lectValue+"&"+"lectTime="+URLEncoder.encode(st_hour_st_minutes,"UTF-8");
+					lectValue =lectValue+"&"+"lectDuration="+URLEncoder.encode(st_duration,"UTF-8");
+					lectValue =lectValue+"&"+"lectAudio="+URLEncoder.encode(audio1,"UTF-8");
+					lectValue =lectValue+"&"+"lectVedio="+URLEncoder.encode(vedeo,"UTF-8");
+					lectValue =lectValue+"&"+"lectWhiteBoard="+URLEncoder.encode(whiteboard1,"UTF-8");
+					System.out.println(lectValue);
+				} catch(Exception es){}
 			}
             	}//else
-		return lectValue.toString();
+		
+		return lectValue;
      	}
 
 	/**
@@ -456,7 +426,7 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
 	private void getTimeIndexingServer(){
 		String indexServerName=client_obj.getIndexServerName();
 		if(!(indexServerName.equals(""))){
-			String  indexServer=indexServerName+"/ProcessRequest?req=getTimeforLecture&"+lectValue;
+			String  indexServer=indexServerName+"/ProcessRequest?req=getTimeforLecture&";
 			indexServer=HttpsUtil.getController().getReflectorAddress(indexServer);
 			String str[]=indexServer.split(" ");
 			String str1[]=str[0].split("/");
@@ -469,7 +439,7 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
 			String str2[]=str[1].split(":");
 			h=Integer.parseInt(str2[0]);
 			m=Integer.parseInt(str2[1]);
-                        System.out.println("==============>   "+HttpsUtil.getController().getReflectorAddress(indexServer));
+                        //System.out.println("==============>   "+HttpsUtil.getController().getReflectorAddress(indexServer));
            	}else{
                 	System.out.println("insufficient indexServer name in AnnounceSession :" + indexServerName);
             	}
