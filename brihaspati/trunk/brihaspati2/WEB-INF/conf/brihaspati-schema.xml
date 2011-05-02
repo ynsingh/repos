@@ -342,7 +342,7 @@
 	<unique>
 	   	<unique-column name="ROLL_NO"/>
 	   	<unique-column name="PROGRAM"/>
-	        <unique-column name="INSTITUTE_ID"/> 
+	    <unique-column name="INSTITUTE_ID"/> 
 	</unique>
 </table>
 <!-- ===============================TIME TABLE==================================== -->
@@ -434,5 +434,40 @@
 	<column name="INSTITUTE_ID" required="true" primaryKey="true" type="INTEGER"/>
 	<column name="INSTITUTE_AQUOTA" required="true" type="NUMERIC"/>
 </table>
+
+<!-- ===============================INFRA MANAGEMENT SCHEMA==================================== -->
+
+<table name="ROOM" idMethod="idbroker" description="Institute Room Information">
+  	<column name="ROOM_ID" required="true" primaryKey="true" autoIncrement="true" type="INTEGER"/>
+  	<column name="ROOM_CODE" required="true" size="10" type="VARCHAR"/>
+	<column name="INSTITUTE_ID" required="true" type="INTEGER"/>
+	<column name="DEPARTMENT_ID" required="true" type="INTEGER"/>
+  	<column name="CAPACITY" required="true" type="INTEGER"/>
+  	<column name="PROJECTOR" type="TINYINT"/>
+  	<column name="LAB" type="TINYINT"/>
+  	<column name="DEPTONLY" type="TINYINT"/>
+	<column name="FLOOR" type="INTEGER"/>
+</table>
+
+<table name="DEPARTMENT" idMethod="idbroker" description="Institute Room Information">
+  	<column name="DEPARTMENT_ID" required="true" primaryKey="true" autoIncrement="true" type="INTEGER"/>
+  	<column name="NAME" required="true" size="100" type="VARCHAR"/>
+  	<column name="DEPARTMENT_CODE" required="true" size="10" type="VARCHAR"/>
+	<column name="FLOORS_COUNT" required="true" size="10" type="INTEGER"/>
+	<column name="INSTITUTE_ID" required="true" type="INTEGER"/>
+</table>
+
+<!-- ===============================TIMETABLE MANAGEMENT SCHEMA==================================== -->
+
+<table name ="TIMETABLE_COURSE_INFO" idMethod="idbroker" description="Course Scheduling Information">
+        <column name="COURSE_ID" required="true" primaryKey="true" autoIncrement="true" type="INTEGER"/>
+        <column name="COURSE_CODE" required="true" size="10" type="VARCHAR"/>
+        <column name="VENUE_LIST" required="true" size="255" type="VARCHAR"/>
+        <column name="COURSE_TYPE" required="true" size="10" type="VARCHAR"/>
+        <column name="PROJECTOR" required="true" type="TINYINT"/>
+</table>
+
+
+
 
 </database>
