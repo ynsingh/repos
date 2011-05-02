@@ -127,7 +127,7 @@ public class QuotaUtil {
 				}
 			}
 		}
-		ErrorDumpUtil.ErrorLog("size in getDirSize method======"+size);
+//		ErrorDumpUtil.ErrorLog("size in getDirSize method======"+size);
 		return size;
 	}
 //This methods gives course quota from database of particular course

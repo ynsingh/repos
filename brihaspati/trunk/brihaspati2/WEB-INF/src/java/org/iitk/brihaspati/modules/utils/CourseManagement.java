@@ -462,7 +462,7 @@ public class CourseManagement
 			   	if(fromPath.equals("ByCourseMgmt")|| fromPath.equals("admin"))
 				{
 					Vector All_User=UserGroupRoleUtil.getUID(gid);
-					ErrorDumpUtil.ErrorLog("all user at line 453="+All_User);
+//					ErrorDumpUtil.ErrorLog("all user at line 453="+All_User);
 					if(All_User.size()!=0)
 					{
 						String userName="";
@@ -470,10 +470,10 @@ public class CourseManagement
 						{
 						int uId=Integer.parseInt((String)All_User.get(i));
 						userName=UserUtil.getLoginName(uId);
-						ErrorDumpUtil.ErrorLog("userName at line 461=="+userName);
+//						ErrorDumpUtil.ErrorLog("userName at line 461=="+userName);
 			   			UserManagement umt=new UserManagement();
 						msg=umt.removeUserProfile(userName,gName,file);
-						//ErrorDumpUtil.ErrorLog("msg at line 464=="+msg);
+//						ErrorDumpUtil.ErrorLog("msg at line 464=="+msg);
 						}
 					}
 				}
