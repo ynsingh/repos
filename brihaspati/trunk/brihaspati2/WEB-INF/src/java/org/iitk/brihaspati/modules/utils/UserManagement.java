@@ -71,6 +71,7 @@ import org.iitk.brihaspati.om.StudentRollnoPeer;
 import org.iitk.brihaspati.om.StudentRollno;
 import org.iitk.brihaspati.om.UserConfigurationPeer;
 import org.iitk.brihaspati.om.StudentExpiryPeer;
+import org.iitk.brihaspati.om.StudentExpiry;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.StringUtil;
@@ -130,10 +131,13 @@ public class UserManagement
 				String instituteid=Integer.toString(InstituteIdUtil.getIst_Id(i_name));
 				String path12=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+instituteid+"Admin.properties";
 				String expdays = AdminProperties.getValue(path12,"brihaspati.user.expdays.value");
+ErrorDumpUtil.ErrorLog("This utils(UserManagement) "+expdays);
 		                Integer exp1 = Integer.valueOf(expdays);		
+ErrorDumpUtil.ErrorLog("This is  :--utils(UserManagement) "+exp1);
 				String c_date=ExpiryUtil.getCurrentDate("-");
 	                	String E_date=ExpiryUtil.getExpired(c_date,exp1);
 	                	expdate=java.sql.Date.valueOf(E_date);
+ErrorDumpUtil.ErrorLog("This is the path :--utils(UserManagement) "+expdate) ;
 			}
 			catch(Exception ex){ErrorDumpUtil.ErrorLog("This is the exception in getting path :--utils(UserManagement) "+ex);}
 		}
@@ -775,7 +779,7 @@ public class UserManagement
                         ErrorDumpUtil.ErrorLog("This is the exception in get user details -utils(UserManagement)  :- "+e);
 					
 		}
-		ErrorDumpUtil.ErrorLog("Total User====>"+v);
+	//	ErrorDumpUtil.ErrorLog("Total User====>"+v);
 		return v;
 	}
 	/**
@@ -1076,14 +1080,22 @@ public class UserManagement
 		//	ErrorDumpUtil.ErrorLog("user_role at line 781 in removeUserProfile= "+user);
                         Criteria crit=new Criteria();
 
+						/**
+                                                * Remove student membership from the Student Expiry 
+                                                */
+                                                crit=new Criteria();
+                                                crit.add(StudentExpiryPeer.UID,userName);
+                                                crit.add(StudentExpiryPeer.CID,group_name);
+                                                StudentExpiryPeer.doDelete(crit);
                         /**
                         * Delete the role of the user from the specified group
                         */
-
+			crit=new Criteria();
                         try{
 				this.flag=new Boolean(false);
                                 TurbineSecurity.revoke(user,user_group,user_role);
 				this.flag=new Boolean(false);
+
                                 String usr_role=MultilingualUtil.ConvertedString("usr's_role",file);
                                 String remove=MultilingualUtil.ConvertedString("remove",file);
 				String msg1="";
@@ -1120,14 +1132,6 @@ public class UserManagement
                                                 crit=new Criteria();
                                                 crit.add(UserConfigurationPeer.USER_ID,user_id);
                                                 UserConfigurationPeer.doDelete(crit);
-						/**
- 						* Remove student membership from the courses
-						*/
-						crit=new Criteria();
-                	                        crit.add(StudentExpiryPeer.UID,userName);
-                	                        crit.add(StudentExpiryPeer.CID,group_name);
-        	                                StudentExpiryPeer.doDelete(crit);
-	
 						
                                                	/**
                                                	* Finally remove the user profile from the

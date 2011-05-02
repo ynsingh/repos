@@ -230,7 +230,7 @@ public class UserGroupRoleUtil{
 
 	public static Vector getRID(int uid,int gid)
 	{
-		Vector roleid=null;
+		Vector roleid=new Vector();
 		List v=null;
 		try{
 			Criteria crit=new Criteria();
