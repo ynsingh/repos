@@ -86,6 +86,12 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
 		north_mainPanel.setBackground(Color.LIGHT_GRAY);
 		studLabel=new JLabel("<html><b>Course in which you are resistered as a student</b></html>");
 		Vector courseVec=client_obj.getStudCourseList();
+		String str=courseVec.get(0).toString();
+                courseVec.clear();
+                String str1[]=str.split(",");
+                for(int i=0;i<str1.length;i++){
+                        courseVec.add(str1[i]);
+                }
 		courseVec.add(0,"--Show All--");
 		studCourseCombo=new JComboBox(courseVec);
 		studCourseCombo.addActionListener(this);	

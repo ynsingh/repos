@@ -95,6 +95,12 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 		 * get Course list form clienmt object class.
 		 */		
 		Vector courseVec=client_obj.getInstCourseList();
+		String str=courseVec.get(0).toString();
+                courseVec.clear();
+                String str1[]=str.split(",");
+                for(int i=0;i<str1.length;i++){
+                        courseVec.add(str1[i]);
+                }
 		courseVec.add(0,"--Show All--");
 		instCourseCombo=new JComboBox(courseVec);
 		instCourseCombo.addActionListener(this);	
