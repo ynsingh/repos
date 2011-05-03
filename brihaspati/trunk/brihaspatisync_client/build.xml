@@ -108,7 +108,7 @@
              		 version      ="true"
              		 doctitle     ="&lt;h1&gt;${component.title}&lt;/h1&gt;"
              		 windowtitle  ="${component.title} (Version ${component.version})"
-             		 bottom       ="Copyright (c) 2009-2010 - IIT Kanpur"
+             		 bottom       ="Copyright (c) 2009-2011 - IIT Kanpur"
     		></javadoc>
   	</target>
 
