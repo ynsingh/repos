@@ -100,9 +100,10 @@ public class RegisterToIndexServer {
 			JOptionPane.showMessageDialog(null,"Check your Network Connection or try again");
               	}
 	}
+
 	/**
-         * Instantiate connection to master server to retrieve the secondry indexing serveris' list
-         * If there is secondary indexing serveris's list is find from master server, pass it to make connection 
+         * Instantiate connection to master server to retrieve the secondry indexing servers' list.
+         * If secondary indexing servers' list is found from master server, pass it to make connection 
 	 * with indexserver otherwise it return from main method.
          */
         public boolean connectToMasterServer(){

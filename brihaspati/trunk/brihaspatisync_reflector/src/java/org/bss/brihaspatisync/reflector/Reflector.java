@@ -47,10 +47,8 @@ public class Reflector {
 	}
 	
 	/**
-         * startReflector() - It calls RegisterToIndexServer() for registering this reflector 
-	 * to an index server from index server list (index server list would be 
-         * found from master server) with its IP Address and status. On successful 
-	 * registration it will return list of indexing servers. 
+         * init(String str) - This functions starts the reflector in either text mode or GUI mode
+	 * depending on the whether str is "startjnlp" or "start" respectively.
 	 */
 	private void init(String str){
 		if(str.equals("startjnlp")) {	
@@ -82,6 +80,12 @@ public class Reflector {
 		}
 	}      	
 
+	/**
+         * startReflector() - It calls RegisterToIndexServer() for registering this reflector 
+	 * to an index server from index server list (index server list would be 
+         * found from master server) with its IP Address and status. On successful 
+	 * registration it will return list of indexing servers. 
+	 */
 	private boolean startReflector() {
 		RegisterToIndexServer regstToIndxSrv= RegisterToIndexServer.getController();
 		boolean indexServerList=regstToIndxSrv.connectToMasterServer();
