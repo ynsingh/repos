@@ -718,12 +718,12 @@ else
 
                                     <%}%>
                                     </select></td>
-                                    <td>&nbsp;<input type="text" id="first_name" style="width:100px;"  tabindex="3" name="first_name" value="<%=first_name%>" disabled></td>
+                                    <td>&nbsp;<input type="text" id="first_name" style="width:100px;"  tabindex="3" name="first_name" value="<%=first_name%>" readonly></td>
                                         </table>
                  </td>
             </tr>
             <tr><td>Last Name*</td>
-                <td><input type="text" id="last_name"  tabindex="4"  name="last_name" value="<%=last_name%>" disabled></td>
+                <td><input type="text" id="last_name"  tabindex="4"  name="last_name" value="<%=last_name%>" readonly></td>
 
             </tr>
                                 <tr><td>Employee's Gender</td><td>
@@ -1029,12 +1029,12 @@ else
                                     <option selected value="ms">Ms.</option>
                                     <%}%>
                                     </select></td>
-                                    <td>&nbsp;<input type="text" id="first_name" style="width:100px;"  tabindex="3" name="first_name" value="<%=first_name%>" disabled></td>
+                                    <td>&nbsp;<input type="text" id="first_name" style="width:100px;"  tabindex="3" name="first_name" value="<%=first_name%>" readonly></td>
                                         </table>
                  </td>
             </tr>
             <tr><td>Last Name*</td>
-                <td><input type="text" id="last_name"  tabindex="4"  name="last_name" value="<%=last_name%>" disabled></td>
+                <td><input type="text" id="last_name"  tabindex="4"  name="last_name" value="<%=last_name%>" readonly></td>
 
             </tr>
                                 <tr><td>Employee's Gender</td><td>

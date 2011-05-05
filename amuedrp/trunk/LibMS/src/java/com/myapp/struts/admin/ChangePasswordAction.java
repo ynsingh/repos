@@ -56,10 +56,12 @@ public class ChangePasswordAction extends org.apache.struts.action.Action {
         result=LoginDAO.update1(log);
 System.out.println(login_id+"................"+password);
 
-        AdminRegistration admin=AdminRegistrationDAO.searchInstituteAdmin(staff_id, library_id);
-  System.out.println(admin+"................");
-        admin.setAdminPassword(password);
-        result=AdminRegistrationDAO.update1(admin);
+
+//if(staff_id.contains("admin")){
+  //      AdminRegistration admin=AdminRegistrationDAO.searchInstituteAdmin(staff_id, library_id);
+   //   System.out.println(admin+"................");
+    //    admin.setAdminPassword(password);
+     //   result=AdminRegistrationDAO.update1(admin);
 
 
 

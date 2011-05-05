@@ -192,7 +192,7 @@ public static boolean SendCheckOutRequest(String memId,String libId, String subl
                 ciropacReq.setDocumentId(Integer.parseInt(docId));
                 ciropacReq.setTitle(title);
                 ciropacReq.setStatus("Pending");
-
+		ciropacReq.setCirMemberDetail(memDetail);
                 boolean flag = CirculationDAO.insert(ciropacReq);
                 return flag;
 }
@@ -202,6 +202,7 @@ public static List<CheckoutDeocumentDetails> getCheckOuts(String library_id,Stri
         Transaction tx = null;
         try {
             session.beginTransaction();
+   session.flush();
             /*Criteria criteria = session.createCriteria(CirOpacRequest.class);
             criteria.add(Restrictions.eq("id.libraryId", library_id));
             criteria.add(Restrictions.eq("id.sublibraryId", sublibrary_id));
