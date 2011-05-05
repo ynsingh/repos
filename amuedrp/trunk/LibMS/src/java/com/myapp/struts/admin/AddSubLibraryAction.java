@@ -59,6 +59,27 @@ public class AddSubLibraryAction extends org.apache.struts.action.Action {
 
         Library lib=LibraryDAO.searchLibraryID(library_id);
 
+        //if sublibrary name is already used return false
+
+
+        SubLibrary searchsubobj;
+
+         if(sublib_name1.equals("Select")==true)
+        {
+
+       searchsubobj=SubLibraryDAO.getSubLibraryId(library_id, sublib_name);
+        }
+        else
+        {
+
+            searchsubobj=SubLibraryDAO.getSubLibraryId(library_id, sublib_name1);
+        }
+
+
+
+
+        if(searchsubobj==null){
+
 
         SubLibraryId subid=new SubLibraryId(library_id, sublibrary_id);
         SubLibrary subobj;
@@ -66,12 +87,16 @@ public class AddSubLibraryAction extends org.apache.struts.action.Action {
         if(sublib_name1.equals("Select")==true)
         {
         subobj=new SubLibrary(subid, lib, sublib_name);
-       
+    
         }
         else
         {
             subobj=new SubLibrary(subid, lib, sublib_name1);
         }
+
+
+
+
         
         if(faculty1.equals("Select")==false)
             subobj.setFacultyName(faculty1);
@@ -87,7 +112,10 @@ public class AddSubLibraryAction extends org.apache.struts.action.Action {
             return mapping.findForward("success");
 
         }
-
+        }else{
+                request.setAttribute("msg1", "Duplicate SubLibrary Name");
+            return mapping.findForward("success");
+            }
 
         return null;
  

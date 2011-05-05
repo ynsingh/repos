@@ -48,6 +48,15 @@ public class AddDepartmentAction extends org.apache.struts.action.Action {
 
        HttpSession session=request.getSession();
         library_id=(String)session.getAttribute("library_id");
+         Department fcheck=DeptDAO.getDeptId(library_id, faculty_id, dept_name);
+        System.out.println("Dept"+fcheck);
+            if(fcheck==null)
+            {
+
+
+
+
+
         d.setDeptName(dept_name);
         did.setDeptId(dept_id);
         did.setLibraryId(library_id);
@@ -62,10 +71,13 @@ public class AddDepartmentAction extends org.apache.struts.action.Action {
         }
         else
         {
-            request.setAttribute("msg", "Record Not Inserted");
+            request.setAttribute("msg1", "Record Not Inserted");
             return mapping.findForward("success");
         }
-
+            }else{
+                request.setAttribute("msg1", "Duplicate Deptartment Name");
+            return mapping.findForward("success");
+            }
 
         
        

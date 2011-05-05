@@ -64,11 +64,11 @@ public class AddFacultyAction extends org.apache.struts.action.Action {
         }
         else
         {
-            request.setAttribute("msg", "Record Not Inserted");
+            request.setAttribute("msg1", "Record Not Inserted");
             return mapping.findForward("success");
         }
             }else{
-                request.setAttribute("msg", "Duplicate Faculty Name");
+                request.setAttribute("msg1", "Duplicate Faculty Name");
             return mapping.findForward("success");
             }
        
