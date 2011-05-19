@@ -30,6 +30,31 @@ f.submit();
 
 </script>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+String lib_id=(String)session.getAttribute("library_id");
+String sublib_id = (String)session.getAttribute("memsublib");
+        if(sublib_id==null)sublib_id= (String)session.getAttribute("sublibrary_id");
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
 
 </head>
 
@@ -39,7 +64,7 @@ f.submit();
 
 
 
-       <tr ><td align="center" class="header" height="25px;">View New Arrival</td></tr>
+       <tr ><td align="center" class="header" height="25px;" align="<%=align%>" dir="<%=rtl%>"> <%=resource.getString("opac.newarrivals.viewnewarrival")%></td></tr>
                 <tr><td valign="top" align="center"> <br/>
 
 

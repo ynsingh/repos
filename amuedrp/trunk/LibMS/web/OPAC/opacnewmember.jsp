@@ -2,7 +2,7 @@
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
 
- <%@page contentType="text/html" import="java.util.List,java.sql.*,java.io.*,com.myapp.struts.hbm.SubLibrary,com.myapp.struts.AdminDAO.*,org.apache.struts.upload.FormFile"%>
+ <%@page contentType="text/html" import="java.util.*,java.sql.*,java.io.*,com.myapp.struts.hbm.SubLibrary,com.myapp.struts.AdminDAO.*,org.apache.struts.upload.FormFile"%>
 
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
@@ -81,6 +81,29 @@ String image_path=request.getContextPath()+"/images/no-image.jpg";
 <title>Member Registration Page</title>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/newformat.css"/>
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    boolean page=true;
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
+    else{ rtl="RTL";page=false;align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
 <script language="javascript" type="text/javascript">
  function showPic()
     {
@@ -741,7 +764,7 @@ a:active
 
      <div style="position: absolute; top: 42%; left: 38%">
     <html:form action="/imageupload1" method="post" styleId="form1" enctype="multipart/form-data">
-        Image Upload <html:file  property="img" name="OpacNewMemberActionForm" styleId="img" onchange="submit()"  onclick="copy()" />
+        <%=resource.getString("opac.simplesearch.imageupload")%> <html:file  property="img" name="OpacNewMemberActionForm" styleId="img" onchange="submit()"  onclick="copy()" />
           <input type="hidden" name="filename" id="filename" />
            <html:hidden property="TXTLNAME" name="OpacNewMemberActionForm" styleId="lname1"/>
           <html:hidden property="TXTFNAME" name="OpacNewMemberActionForm" styleId="fname1"/>
@@ -782,8 +805,8 @@ a:active
 
   <tr><td  width="90%"   class="header"  align="center">
 
-
-		New Member Registration
+<%=resource.getString("opac.newmemberentry.text")%>
+		
 
 
 
@@ -793,7 +816,7 @@ a:active
 
 
           <table  class="table_text"  border="0" >
-              <tr><td align="right">Library Name*</td><td width="200px" align="left">
+              <tr><td dir="<%=rtl%>"  align="right"><%=resource.getString("opac.simplesearch.library")%>*</td><td width="200px" align="left">
            <html:select property="CMBLib"  tabindex="3"  styleId="CMBLib" onchange="search_sub()" value="<%=lib_id%>">
                <html:option value="Select">Select</html:option>
                <html:options collection="libRs" property="libraryId" labelProperty="libraryName"/>
@@ -801,7 +824,7 @@ a:active
 
 
 </tr>
-<tr><td  align="right"> SubLibrary Name*</td><td width="200px" align="left">
+<tr><td dir="<%=rtl%>" align="right"><%=resource.getString("opac.simplesearch.library")%>*</td><td width="200px" align="left">
         <html:select property="cmdSubLibrary"  styleId="SubLibrary" value="<%=sublib_id%>" >
              <html:option value="Select">Select</html:option>
             <html:options collection="sublib" property="id.sublibraryId" labelProperty="sublibName" />
@@ -810,7 +833,7 @@ a:active
 </tr>
 
 
-                <tr><td width="150px">&nbsp;Member ID*</td><td class="table_textbox"><html:text    property="TXTMEMID" value="<%=mem_id1%>" styleId="mem_id2"  style="width:160px" /><br/>
+                <tr><td width="150px">&nbsp;<%=resource.getString("opac.myaccount.memberid")%>*</td><td class="table_textbox"><html:text    property="TXTMEMID" value="<%=mem_id1%>" styleId="mem_id2"  style="width:160px" /><br/>
                     <html:messages id="err_name" property="TXTMEMID">
 				<bean:write name="err_name" />
 
@@ -829,7 +852,7 @@ a:active
 
                     
                    </tr>
-            <tr><td >First Name*</td><td class="table_textbox"><html:text    property="TXTFNAME" styleId="fname2" style="width:160px" value="<%=fname%>" /><br/>
+            <tr><td ><%=resource.getString("opac.newmemberentry.firstname")%>*</td><td class="table_textbox"><html:text    property="TXTFNAME" styleId="fname2" style="width:160px" value="<%=fname%>" /><br/>
                  <html:messages id="err_name" property="TXTFNAME">
 				<bean:write name="err_name" />
 
@@ -838,8 +861,8 @@ a:active
                 </td>
 
                 </tr>
-            <tr><td>&nbsp;Middle Name</td><td class="table_textbox"><html:text  property="TXTMNAME" styleId="mname2" style="width:160px" value="<%=mname%>" /></td></tr>
-            <tr><td>&nbsp;Last Name*</td><td class="table_textbox"><html:text  property="TXTLNAME" styleId="lname2" style="width:160px" value="<%=lname%>" />
+            <tr><td>&nbsp;<%=resource.getString("opac.newmemberentry.middlename")%></td><td class="table_textbox"><html:text  property="TXTMNAME" styleId="mname2" style="width:160px" value="<%=mname%>" /></td></tr>
+            <tr><td>&nbsp;<%=resource.getString("opac.newmemberentry.lastname")%>*</td><td class="table_textbox"><html:text  property="TXTLNAME" styleId="lname2" style="width:160px" value="<%=lname%>" />
                 <br/>
                  <html:messages id="err_name" property="TXTLNAME">
 				<bean:write name="err_name" />
@@ -855,14 +878,14 @@ a:active
 
 
                 </tr>
-            <tr>  <td>&nbsp;Email ID*</td><td class="table_textbox"><html:text  property="TXTEMAILID" styleId="mail2" style="width:160px" value="<%=mail_id%>" />
+            <tr>  <td>&nbsp;<%=resource.getString("opac.newmemberentry.emailid")%>*</td><td class="table_textbox"><html:text  property="TXTEMAILID" styleId="mail2" style="width:160px" value="<%=mail_id%>" />
                 <br/>
                  <html:messages id="err_name" property="TXTEMAILID">
 				<bean:write name="err_name" />
 
 			</html:messages>
                 </td>
-                 <td> Type of Member*</td><td class="table_textbox">
+                 <td><%=resource.getString("opac.newmemberentry.typemem")%> *</td><td class="table_textbox">
                  <html:select  property="MEMCAT" style="width:160px" styleId="emptype_id" tabindex="3" value="<%=memcat%>" onchange="return search();">
                   <%--   <html:options  collection="list1" labelProperty="emptypeFullName" property="id.emptypeId"></html:options>--%>
                      </html:select>
@@ -874,7 +897,7 @@ a:active
 
 
             </tr>
-             <tr><td>Local Address*</td><td class="table_textbox"> <html:text property="TXTADD1" style="width:160px" styleId="add11" value="<%=add1%>" />
+             <tr><td><%=resource.getString("opac.newmemberentry.localadd")%>*</td><td class="table_textbox"> <html:text property="TXTADD1" style="width:160px" styleId="add11" value="<%=add1%>" />
                  <br/>
                  <html:messages id="err_name" property="TXTADD1">
 				<bean:write name="err_name" />
@@ -882,7 +905,7 @@ a:active
 			</html:messages>
 
                  </td>
-              <td>Member SubCategory*
+              <td><%=resource.getString("opac.newmemberentry.memsubcat")%>*
                   </td><td class="table_textbox">
                      <html:select  property="MEMSUBCAT" styleId="subemptype_id" value="<%=submemcat%>">
                        <%--  <html:options  collection="list2" labelProperty="subEmptypeFullName" property="id.subEmptypeId"></html:options>--%>
@@ -892,50 +915,50 @@ a:active
                       </td>
 
              </tr>
-             <tr><td>City*</td><td class="table_textbox"><html:text  property="TXTCITY1" value="<%=city1%>" styleId="city11" style="width:160px"/>
+             <tr><td><%=resource.getString("opac.newmemberentry.city")%>*</td><td class="table_textbox"><html:text  property="TXTCITY1" value="<%=city1%>" styleId="city11" style="width:160px"/>
                  <br/>
                  <html:messages id="err_name" property="TXTCITY1">
 				<bean:write name="err_name" />
 
 			</html:messages>
 
-                 </td><td>Employee Designation</td><td class="table_textbox"><html:text  property="TXTDESG1" style="width:160px" styleId="desg2" value="<%=desg%>"/></td></tr>
-             <tr><td >State*</td><td class="table_textbox"><html:text  property="TXTSTATE1" style="width:160px" styleId="state11" value="<%=state1%>"/>
+                 </td><td><%=resource.getString("opac.newmemberentry.empdesign")%></td><td class="table_textbox"><html:text  property="TXTDESG1" style="width:160px" styleId="desg2" value="<%=desg%>"/></td></tr>
+             <tr><td ><%=resource.getString("opac.newmemberentry.state")%>*</td><td class="table_textbox"><html:text  property="TXTSTATE1" style="width:160px" styleId="state11" value="<%=state1%>"/>
                  <br/>
                  <html:messages id="err_name" property="TXTSTATE1">
 				<bean:write name="err_name" />
 
 			</html:messages>
 
-                 </td><td>Office Name</td><td class="table_textbox"><html:text  property="TXTOFFICE" style="width:160px" styleId="office2" value="<%=office%>"/></td></tr>
-             <tr><td>Country*</td><td class="table_textbox"><html:text  property="TXTCOUNTRY1" value="<%=country1%>" styleId="country11" style="width:160px"/>
+                 </td><td><%=resource.getString("opac.newmemberentry.offname")%></td><td class="table_textbox"><html:text  property="TXTOFFICE" style="width:160px" styleId="office2" value="<%=office%>"/></td></tr>
+             <tr><td><%=resource.getString("opac.newmemberentry.country")%>*</td><td class="table_textbox"><html:text  property="TXTCOUNTRY1" value="<%=country1%>" styleId="country11" style="width:160px"/>
                  <br/>
                  <html:messages id="err_name" property="TXTCOUNTRY1">
 				<bean:write name="err_name" />
 
 			</html:messages>
 
-                 </td><td> Faculty of
+                 </td><td> <%=resource.getString("opac.newmemberentry.facultyof")%>
                  </td><td class="table_textbox">
                       <html:select  property="TXTFACULTY" styleId="TXTFACULTY" style="width:160px" value="<%=faculty%>" onchange="return search1()" tabindex="3">
                        <%--   <html:options  collection="list3" property="id.facultyId" labelProperty="facultyName"></html:options>--%>
                      </html:select>
                       </td></tr>
-             <tr><td>Mobile*</td><td class="table_textbox"><html:text  property="TXTPH1" value="<%=ph1%>" styleId="ph11" style="width:160px"/>
+             <tr><td><%=resource.getString("opac.newmemberentry.mobile")%>*</td><td class="table_textbox"><html:text  property="TXTPH1" value="<%=ph1%>" styleId="ph11" style="width:160px"/>
                  <br/>
                  <html:messages id="err_name" property="TXTPH1">
 				<bean:write name="err_name" />
 
 			</html:messages>
 
-                 </td> <td> Department  </td><td class="table_textbox">
+                 </td> <td><%=resource.getString("opac.newmemberentry.dept")%> </td><td class="table_textbox">
                      <html:select  property="TXTDEPT" styleId="TXTDEPT" style="width:160px" value="<%=dept%>" onchange="return search_dept();" tabindex="3">
                         <%-- <html:options  collection="list4" property="id.deptId" labelProperty="deptName"></html:options>--%>
                      </html:select>
 
                  </td></tr>
-             <tr><td>Land Line No.</td><td class="table_textbox"><html:text  property="TXTPH2" styleId="ph22" value="<%=ph2%>" style="width:160px"/></td>
-                 <td>Course</td><td class="table_textbox">
+             <tr><td><%=resource.getString("opac.newmemberentry.landlineno")%>.</td><td class="table_textbox"><html:text  property="TXTPH2" styleId="ph22" value="<%=ph2%>" style="width:160px"/></td>
+                 <td><%=resource.getString("opac.newmemberentry.course")%></td><td class="table_textbox">
 
                     <html:select  property="TXTCOURSE" styleId="TXTCOURSE" style="width:160px" value="<%=course%>"  tabindex="3">
                       <%--  <html:options  collection="list5" property="id.courseId"  labelProperty="courseName"></html:options>--%>
@@ -948,21 +971,21 @@ a:active
 
 
 </td></tr>
-             <tr><td>Fax</td><td class="table_textbox"><html:text  property="TXTFAX" styleId="fax2" style="width:160px" value="<%=fax%>"/></td><td> Semester/Year
+             <tr><td><%=resource.getString("opac.newmemberentry.fax")%></td><td class="table_textbox"><html:text  property="TXTFAX" styleId="fax2" style="width:160px" value="<%=fax%>"/></td><td><%=resource.getString("opac.newmemberentry.semister")%> 
                  </td><td class="table_textbox"><html:text  property="TXTSEM"  styleId="sem2"  value="<%=sem%>" styleClass="textBoxWidth" style="width:160px"  />
 
                   </td></tr>
 
-            <tr><td>Permanent Address</td><td class="table_textbox"><html:text property="TXTADD2" value="<%=add2%>" styleId="add22"  style="width:160px"/></td></tr>
-             <tr><td >City</td><td class="table_textbox"><html:text  property="TXTCITY2" value="<%=city2%>" styleId="city22" style="width:160px"/></td>
+            <tr><td><%=resource.getString("opac.newmemberentry.paddress")%></td><td class="table_textbox"><html:text property="TXTADD2" value="<%=add2%>" styleId="add22"  style="width:160px"/></td></tr>
+             <tr><td ><%=resource.getString("opac.newmemberentry.city")%></td><td class="table_textbox"><html:text  property="TXTCITY2" value="<%=city2%>" styleId="city22" style="width:160px"/></td>
               </tr>
 
 
              
-             <tr><td >State</td><td class="table_textbox"><html:text  property="TXTSTATE2" value="<%=state2%>" styleId="state22" style="width:160px"/></td>
+             <tr><td ><%=resource.getString("opac.newmemberentry.state")%></td><td class="table_textbox"><html:text  property="TXTSTATE2" value="<%=state2%>" styleId="state22" style="width:160px"/></td>
                 </tr>
-             <tr><td >Country</td><td class="table_textbox"><html:text  property="TXTCOUNTRY2" value="<%=country2%>" styleId="country22" style="width:160px"/></td>
-             <td  align="center" class="txt2"> <html:submit property="button" value="Submit">Submit</html:submit>&nbsp;&nbsp;<html:reset>Reset</html:reset>
+             <tr><td ><%=resource.getString("opac.newmemberentry.country")%></td><td class="table_textbox"><html:text  property="TXTCOUNTRY2" value="<%=country2%>" styleId="country22" style="width:160px"/></td>
+             <td  align="center" class="txt2"> <html:submit property="button" ><%=resource.getString("opac.newmemberentry.submit")%></html:submit>&nbsp;&nbsp;<html:reset><%=resource.getString("opac.newmemberentry.reset")%></html:reset>
                       </td>
              </tr>
 

@@ -263,9 +263,9 @@ newOpt.text = ndValue1;
               <tr><td dir="<%=rtl%>"> <%=resource.getString("opac.additional.connectas1")%> </td><td  valign="top" dir="<%=rtl%>">
 
          <select name="CMBCONN1" size="1" dir="<%=rtl%>" id="CMBCONN1" style="left:0px;top:0px;width:100%;height:100%;border-width:0px;font-family:Courier;font-size:13px;">
-<option selected value="or" dir="<%=rtl%>">OR</option>
-<option value="and" dir="<%=rtl%>">AND</option>
-<option value="phrase" dir="<%=rtl%>">PHRASE</option>
+<option selected value="or" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.or")%></option>
+<option value="and" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.and")%></option>
+<option value="phrase" dir="<%=rtl%>"><%=resource.getString("opac.additional.phrase")%></option>
 </select>
      </td>
 
@@ -273,9 +273,9 @@ newOpt.text = ndValue1;
                <tr><td dir="<%=rtl%>"><%=resource.getString("opac.additional.connectas2")%> </td><td dir="<%=rtl%>"  valign="top">
 
          <select name="CMBCONN2" size="1" id="CMBCONN2" dir="<%=rtl%>" style="left:0px;top:0px;width:100%;height:100%;border-width:0px;font-family:Courier New;font-size:13px;">
-<option selected value="or" dir="<%=rtl%>">OR</option>
-<option value="and" dir="<%=rtl%>">AND</option>
-<option value="phrase" dir="<%=rtl%>">PHRASE</option>
+<option selected value="or" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.or")%></option>
+<option value="and" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.and")%></option>
+<option value="phrase" dir="<%=rtl%>"><%=resource.getString("opac.additional.phrase")%></option>
 </select>
      </td>
 
@@ -283,9 +283,9 @@ newOpt.text = ndValue1;
            <tr><td dir="<%=rtl%>"><%=resource.getString("opac.additional.connectas3")%></td><td  valign="top">
 
           <select name="CMBCONN3" size="1" id="CMBCONN3" dir="<%=rtl%>">
-<option selected value="or" dir="<%=rtl%>">OR</option>
-<option value="and" dir="<%=rtl%>">AND</option>
-<option value="phrase" dir="<%=rtl%>">PHRASE</option>
+<option selected value="or" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.or")%></option>
+<option value="and" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.and")%></option>
+<option value="phrase" dir="<%=rtl%>"><%=resource.getString("opac.additional.phrase")%></option>
 </select>
      </td>
 
@@ -293,9 +293,9 @@ newOpt.text = ndValue1;
            <tr><td dir="<%=rtl%>"><%=resource.getString("opac.additional.connectas4")%> </td><td  valign="top">
 
         <select name="CMBCONN4" dir="<%=rtl%>" size="1" id="CMBCONN4" style="left:0px;top:0px;width:100%;height:100%;border-width:0px;font-family:Courier New;font-size:13px;">
-<option selected value="or" dir="<%=rtl%>">OR</option>
-<option value="and" dir="<%=rtl%>">AND</option>
-<option value="phrase" dir="<%=rtl%>">PHRASE</option>
+<option selected value="or" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.or")%></option>
+<option value="and" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.and")%></option>
+<option value="phrase" dir="<%=rtl%>"><%=resource.getString("opac.additional.phrase")%></option>
 </select>
      </td>
 
@@ -305,7 +305,7 @@ newOpt.text = ndValue1;
 
 
           </table></td></tr>
-  <tr class="header" dir="<%=rtl%>"><td width="1000px"   align="<%=align%>" dir="<%=rtl%>">Restricted By</td><td align="<%=align%>" dir="<%=rtl%>">Sort By</td></tr>
+  <tr class="header" dir="<%=rtl%>"><td width="1000px"   align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.restrictedby")%></td><td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sortby")%></td></tr>
    <tr style="background-color:#e0e8f5;">
        <td width="800px"   align="<%=align%>" dir="<%=rtl%>">
            <table  width="700px" dir="<%=rtl%>">
@@ -328,8 +328,8 @@ newOpt.text = ndValue1;
                             <td dir="<%=rtl%>"><%=resource.getString("opac.additional.database")%></td>
                             <td>
                                 <select name="CMBDB"  dir="<%=rtl%>" size="1" id="CMBDB">
-                                     <option selected value="combined" dir="<%=rtl%>">COMBINED</option>
-                                     <option value="book" dir="<%=rtl%>">BOOKS</option>
+                                     <option selected value="combined" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.combnd")%></option>
+                                     <option value="book" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.books")%></option>
                                      <option value="cd" dir="<%=rtl%>">CDs</option>
                                 </select>
                             </td>
@@ -340,7 +340,7 @@ newOpt.text = ndValue1;
                    <td>              
                        <table>
                            <tr>
-                               <td align="<%=align%>" colspan="3" dir="<%=rtl%>">SubLib
+                               <td align="<%=align%>" colspan="3" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sublibrary")%>
                        <html:select property="CMBSUBLib" dir="<%=rtl%>"  value="<%=sublib_id%>" styleId="SubLibary" >
                            <html:option value="all">All</html:option>
                            <html:options collection="sublib" property="id.sublibraryId" labelProperty="sublibName" />
@@ -348,14 +348,14 @@ newOpt.text = ndValue1;
                         </td></tr>
                            <table>
                            <tr>
-                               <td dir="<%=rtl%>">Publishing Year</td>
+                               <td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.pubyear")%></td>
                                <td rowspan="4" dir="<%=rtl%>"></td>
                                <td>
                                    <select name="CMBYR" onChange="f()" dir="<%=rtl%>" size="1" id="CMBYR" style="left:0px;top:0px;width:100%;height:100%;border-width:0px;font-family:Courier New;font-size:13px;">
-                                    <option selected value="all" dir="<%=rtl%>">ALL YEARS</option>
-                                    <option value="between" dir="<%=rtl%>">BETWEEN</option>
-                                    <option value="upto" dir="<%=rtl%>">UPTO</option>
-                                    <option value="after" dir="<%=rtl%>">AFTER</option>
+                                    <option selected value="all" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.allyear")%></option>
+                                    <option value="between" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.between")%></option>
+                                    <option value="upto" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.upto")%></option>
+                                    <option value="after" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.after")%></option>
                                 </select>
                                </td>
                                <td>
@@ -377,11 +377,11 @@ newOpt.text = ndValue1;
 
                              <table>
                            <tr>
-                               <td dir="<%=rtl%>">Field</td><td> <select name="CMBSORT" size="1" dir="<%=rtl%>" id="CMBSORT">
-<option  value="authorName" dir="<%=rtl%>">AUTHOR</option>
-<option value="title" dir="<%=rtl%>">TITLE</option>
+                               <td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.field1")%></td><td> <select name="CMBSORT" size="1" dir="<%=rtl%>" id="CMBSORT">
+<option  value="authorName" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.auth")%></option>
+<option value="title" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.tit")%></option>
 <option value="isbn10" dir="<%=rtl%>">ISBN</option>
-<option value="publisher_name" dir="<%=rtl%>">PUBLISHER</option>
+<option value="publisher_name" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.pub")%></option>
 </select></td>
                            </tr></table>
        </td>
@@ -394,10 +394,10 @@ newOpt.text = ndValue1;
 
   </tr>
   <tr><td>
-<input type="submit" id="Button1" class="btn" name="" value="FIND">
+<input type="submit" id="Button1" class="btn" name="" value="<%=resource.getString("opac.simplesearch.find")%>">
 
 
-<input type="reset" id="Button2" class="btn" name="" value="CLEAR">
+<input type="reset" id="Button2" class="btn" name="" value="<%=resource.getString("opac.browse.clear")%>">
 
 
       </td></tr>
@@ -405,7 +405,7 @@ newOpt.text = ndValue1;
                                <td colspan="2" dir="<%=rtl%>">
 
 
-                            <a name="tips" dir="<%=rtl%>">&nbsp;Search Tips</a>
+                            <a name="tips" dir="<%=rtl%>">&nbsp;<%=resource.getString("opac.simplesearch.searchtip")%></a>
 
 
 
@@ -414,58 +414,58 @@ newOpt.text = ndValue1;
     <colgroup width="15%"></colgroup><colgroup width="1%"></colgroup><colgroup width="90%"></colgroup>
     <tbody><tr>
     <th colspan="3" class="tipstext" dir="<%=rtl%>">
-    	The user can make a Additional Search using this option. The fields to be entered are:
+     <%=resource.getString("opac.additional.t1")%>
     </th>
 
     </tr>
 
     <tr>
         <td class="txt2" dir="<%=rtl%>">
-    		Database
+    		<%=resource.getString("opac.simplesearch.t2")%>
     </td>
     <td class="tipsheading" dir="<%=rtl%>">:</td>
     <td class="tipstext" dir="<%=rtl%>">
-    		 Select from the combo box the database on which the search is to be made.
+    		<%=resource.getString("opac.simplesearch.t3")%>
     </td>
 
     </tr>
 <tr valign="top" dir="<%=rtl%>">
     	<td class="txt2" nowrap1="" dir="<%=rtl%>">
-    		Library
+    		<%=resource.getString("opac.simplesearch.t10")%>
     	</td>
     	<td class="tipsheading" dir="<%=rtl%>">:</td>
     	<td class="tipstext" dir="<%=rtl%>">
-    		 Give the Library within which a search has to be made.
+    		 <%=resource.getString("opac.simplesearch.t11")%>
     	</td>
 
     </tr>
     <tr valign="top" dir="<%=rtl%>">
     	<td class="txt2" dir="<%=rtl%>">
-    		Author
+    	   <%=resource.getString("opac.additional.t3")%>	
    	</td>
    	<td class="tipsheading" dir="<%=rtl%>">:</td>
    	<td class="tipstext" dir="<%=rtl%>">
-    		Give the word(s) or phrase on the basis of which the search is to be made on Author Field.
+    	  <%=resource.getString("opac.additional.t4")%>	
     	</td>
 
     </tr>
     <tr valign="top" dir="<%=rtl%>">
     	<td class="txt2" dir="<%=rtl%>">
-    		Title
+    	  <%=resource.getString("opac.additional.t5")%>
    	</td>
    	<td class="tipsheading" dir="<%=rtl%>">:</td>
    	<td class="tipstext" dir="<%=rtl%>">
-    		Give the word(s) or phrase on the basis of which the search is to be made on Title Field.
+    	  <%=resource.getString("opac.additional.t6")%>	
     	</td>
 
     </tr>
     <tr valign="top" dir="<%=rtl%>">
     	<td class="txt2" dir="<%=rtl%>">
-    		Subject
+    		<%=resource.getString("opac.additional.t7")%>
    	</td>
    	<td class="tipsheading" dir="<%=rtl%>">:</td>
    	<td class="tipstext" dir="<%=rtl%>">
-    		Give the word(s) or phrase on the basis of which the search is to be made on Subject Field.
+    	  <%=resource.getString("opac.additional.t8")%>
     	</td>
 
     </tr>
@@ -473,51 +473,51 @@ newOpt.text = ndValue1;
     <tr valign="top" dir="<%=rtl%>">
 
     	<td class="txt2" dir="<%=rtl%>">
-    		other fields
+    	   <%=resource.getString("opac.additional.t9")%>
     	</td>
     	<td class="tipsheading" dir="<%=rtl%>">:</td>
     	<td class="tipstext" dir="<%=rtl%>">
-    		 Give the word(s) or phrase on the basis of which the search is to be made on Given Field.
+           <%=resource.getString("opac.additional.t10")%>
     	</td>
 
     </tr>
 
     <tr valign="top" dir="<%=rtl%>">
     	<td class="txt2" dir="<%=rtl%>">
-    		Connect As
+    		 <%=resource.getString("opac.simplesearch.t8")%>
     	</td>
     	<td class="tipsheading" dir="<%=rtl%>">:</td>
     	<td class="tipstext" dir="<%=rtl%>">
-    		 Select from the combo box the connector required between the search words.
+    		 <%=resource.getString("opac.simplesearch.t9")%>
     	</td>
 
     </tr>
     <tr valign="top" dir="<%=rtl%>">
     	<td class="txt2" nowrap1="" dir="<%=rtl%>">
-    		Publication Year
+    		<%=resource.getString("opac.simplesearch.t12")%>
     	</td>
     	<td class="tipsheading" dir="<%=rtl%>">:</td>
     	<td class="tipstext" dir="<%=rtl%>">
-    		 Give the publishing year(s) within which a search has to be made.
+    		 <%=resource.getString("opac.simplesearch.t13")%>
     	</td>
 
     </tr>
 <tr valign="top" dir="<%=rtl%>">
     	<td class="txt2" dir="<%=rtl%>">
-    		Field
+    		<%=resource.getString("opac.simplesearch.t4")%>
    	</td>
    	<td class="tipsheading" dir="<%=rtl%>">:</td>
    	<td class="tipstext" dir="<%=rtl%>">
-    		Select from the combo box the field on which the sorting has to be made.
+    		<%=resource.getString("opac.simplesearch.t5")%>
     	</td>
 
     </tr>
    <tr valign="top" dir="<%=rtl%>">
    	<td class="txt2" align="right" dir="<%=rtl%>">
-   		Click Find
+   		<%=resource.getString("opac.simplesearch.t16")%>
     	</td>
     	<td colspan="2" class="txt2" dir="<%=rtl%>">
-    		and the result is displayed. Thus , a additional search can be made on any field, title-wise, author-wise or subject-wise.
+    		<%=resource.getString("opac.additional.t2")%>
     	</td>
 
    </tr></tbody></table>

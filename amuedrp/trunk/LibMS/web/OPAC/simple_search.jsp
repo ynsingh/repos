@@ -119,14 +119,14 @@ locale1=(String)session.getAttribute("locale");
     <tr style="background-color:#e0e8f5;"><td  width="800px" rowspan="2" dir="<%=rtl%>"  height="18px" align="center" colspan="2">
 
 
-		Search Result
+	<%=resource.getString("opac.simplesearch.smpsearch")%>
 
 
 
 
 
         </td><td valign="top" align="center" dir="<%=rtl%>">
-    Biblograhic Details
+    <%=resource.getString("opac.browse.bibliodetail")%>
   </td></tr>
   <tr style="background-color:#e0e8f5;" height="10px" dir="<%=rtl%>">
   <td valign="top" rowspan="2" dir="<%=rtl%>">

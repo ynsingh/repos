@@ -46,7 +46,7 @@ locale1=(String)session.getAttribute("locale");
         <table dir="<%=rtl%>" align="<%=align%>">
         <%if(loc.size()==0){%>no record found<%}else{%>
 
-        <tr bgcolor="#CCDD66" dir="<%=rtl%>"><td dir="<%=rtl%>">Location Id</td><td>Location Name</td></tr>
+        <tr bgcolor="#CCDD66" dir="<%=rtl%>"><td dir="<%=rtl%>"><%=resource.getString("opac.locationview.locid")%></td><td><%=resource.getString("opac.locationview.locname")%></td></tr>
 
          <% for(int i=0;i<loc.size();i++ ){%>
         

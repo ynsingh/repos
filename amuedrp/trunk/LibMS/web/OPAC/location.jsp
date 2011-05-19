@@ -172,7 +172,7 @@ locale1=(String)session.getAttribute("locale");
     <body onload="fun()">
        <html:form method="post" action="/Locationview" target="f4" styleId="form1">
            <table dir="<%=rtl%>">
-        <tr><td dir="<%=rtl%>" style="width:130px" align="<%=align%>">Library ID</td>
+        <tr><td dir="<%=rtl%>" style="width:130px" align="<%=align%>"><%=resource.getString("opac.simplesearch.library")%></td>
             <td width="200px" dir="<%=rtl%>" align="<%=align%>">
                 <html:select property="CMBLib" dir="<%=rtl%>" value="<%=library_id%>" tabindex="3"  styleId="CMBLib" onchange="search()">
                     <html:option value="sel">Select</html:option>
@@ -180,7 +180,7 @@ locale1=(String)session.getAttribute("locale");
              </html:select>
 
             </td>
-            <td style="width:130px" align="<%=align%>" dir="<%=rtl%>">SubLibrary ID</td>
+            <td style="width:130px" align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sublibrary")%></td>
              <td width="200px" dir="<%=rtl%>">
                  <html:select property="CMBSUBLib" dir="<%=rtl%>" value="<%=sublib_id%>"  styleId="SubLibary" onchange="fun()">
                <html:option value="sel">Select</html:option>

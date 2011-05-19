@@ -199,7 +199,7 @@ locale1=(String)session.getAttribute("locale");
   <tr class="header"><td  width="100%" height="25px" dir="<%=rtl%>"  align="center">
 
 
-		New Arrivals
+		<%=resource.getString("opac.newarrivals.viewnewarrival")%>
 
 
 
@@ -218,7 +218,7 @@ locale1=(String)session.getAttribute("locale");
                   </td>
 
    
-<td style="width:130px" align="<%=align%>" dir="<%=rtl%>">SubLibrary ID</td>
+<td style="width:130px" align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sublibrary")%></td>
 <td width="200px" dir="<%=rtl%>">
     <html:select property="CMBSUBLib" dir="<%=rtl%>" value="<%=sublib_id%>" styleId="SubLibary" onchange="return fun();" >
                             <html:option value="suball">All Sub Library</html:option>
@@ -234,11 +234,11 @@ locale1=(String)session.getAttribute("locale");
 <input type="radio" id="RadioButton3" name="r" dir="<%=rtl%>" onclick="fun()" value="other"><%=resource.getString("opac.newarrivals.other")%>
                   </td><td width="300px" dir="<%=rtl%>">
      <%=resource.getString("opac.newarrivals.selectperiod")%><select dir="<%=rtl%>" name="CMBPERIOD" onChange="fun()" size="1">
-<option value="2">within 2 months</option>
-<option value="6">within 6 months</option>
-<option value="12">within 1 year</option>
+<option value="2"><%=resource.getString("opac.newarrivals.selectperiod1")%></option>
+<option value="6"><%=resource.getString("opac.newarrivals.selectperiod2")%></option>
+<option value="12"><%=resource.getString("opac.newarrivals.selectperiod3")%></option>
 </select>
-                  </td><td><input type="submit" name="b1" value="Find"  class="txt2" dir="<%=rtl%>"></td></tr></table>
+                  </td><td><input type="submit" name="b1" value="<%=resource.getString("opac.accessionno.go")%>"  class="txt2" dir="<%=rtl%>"></td></tr></table>
 
 
       </td></tr>

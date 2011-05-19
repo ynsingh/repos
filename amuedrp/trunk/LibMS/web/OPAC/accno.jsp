@@ -195,7 +195,7 @@ session.setAttribute("page_name", "accessionno");
   <tr class="header"><td  width="800px" dir="<%=rtl%>"  height="28px" align="center" colspan="2">
 
 
-		Accession No Search
+		<%=resource.getString("opac.accessionno.accessionno")%>
 
 
 
@@ -219,7 +219,7 @@ session.setAttribute("page_name", "accessionno");
 
           </table>
        </td><td class="header" dir="<%=rtl%>">
-           Restricted By
+           <%=resource.getString("opac.simplesearch.restrictedby")%>
 
        </td>
 
@@ -234,7 +234,7 @@ session.setAttribute("page_name", "accessionno");
     <html:options collection="libRs" property="libraryId" labelProperty="libraryName"/>
  </html:select>
 
-     </td></tr><tr><td align="<%=align%>" dir="<%=rtl%>">Sub Library&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     </td></tr><tr><td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sublibrary")%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       <html:select property="CMBSUBLib"  dir="<%=rtl%>" value="<%=sublib_id%>"  styleId="SubLibrary" >
                            <html:option value="all">All</html:option>
                               <html:options collection="sublib" property="id.sublibraryId" labelProperty="sublibName" />
@@ -250,7 +250,7 @@ session.setAttribute("page_name", "accessionno");
 
 <input type="submit" id="Button1" name="go" dir="<%=rtl%>" value="<%=resource.getString("opac.accessionno.go")%>" class="btn" />
 
-<input type="reset" id="Button2" name="" value="<%=resource.getString("opac.simplesearch.clear")%>" class="btn">
+<input type="reset" id="Button2" name="" value="<%=resource.getString("opac.browse.clear")%>" class="btn">
 
 
 <script>

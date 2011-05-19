@@ -272,7 +272,7 @@ body
 <option  value="Select"><%=resource.getString("select")%></option>
             <%}%>
 
-</select></td> <tr><td>Library Name</td><td><input type="text"  id="Editbox14" readonly name="library_name" value="<%=library_name%>" tabindex="16" title="Enter Library Name"></td>
+</select></td> <tr><td><%=resource.getString("libraryname")%></td><td><input type="text"  id="Editbox14" readonly name="library_name" value="<%=library_name%>" tabindex="16" title="Enter Library Name"></td>
   
              </tr>
 

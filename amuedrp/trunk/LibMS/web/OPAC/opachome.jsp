@@ -126,7 +126,7 @@ locale1=(String)session.getAttribute("locale");
     </tr>
     <tr>
     <td  class="tipstext" align="<%=align%>" dir="<%=rtl%>">&nbsp;<img src="../images/orange_sq_but.gif"/>&nbsp;
-    	Check Your Account history using MyAccount Option
+    	<%=resource.getString("opacmainframe.opachome.text7")%>
     </td>
 
     </tr>

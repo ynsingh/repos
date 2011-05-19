@@ -61,7 +61,7 @@ locale1=(String)session.getAttribute("locale");
      <td/>
   </tr>
   <tr dir="<%=rtl%>" align="<%=align%>"><td><img src="../images/orange_sq_but.gif" dir="<%=rtl%>"  align="<%=align%>"/><a  href="./OpacLib.do?name=newarrival" target="f3" dir="<%=rtl%>" ><%=resource.getString("opacmainframe.mframe.newarrivals")%></a></td></tr>
-  <tr dir="<%=rtl%>" align="<%=align%>"><td><img src="../images/orange_sq_but.gif" dir="<%=rtl%>"  align="<%=align%>"/><a href="../OPAC/OpacLib.do?name=newmember" target="f3" dir="<%=rtl%>"  >Member Registration</a></td></tr>
+  <tr dir="<%=rtl%>" align="<%=align%>"><td><img src="../images/orange_sq_but.gif" dir="<%=rtl%>"  align="<%=align%>"/><a href="../OPAC/OpacLib.do?name=newmember" target="f3" dir="<%=rtl%>"  ><%=resource.getString("opacmainframe.mframe.memberregistration")%></a></td></tr>
   <tr dir="<%=rtl%>" align="<%=align%>"><td><img src="../images/orange_sq_but.gif" dir="<%=rtl%>"  align="<%=align%>"/><a  href="../OPAC/OpacLib.do?name=myaccount" target="_parent" dir="<%=rtl%>" ><%=resource.getString("opacmainframe.mframe.myaccount")%></a></td></tr>
   <tr dir="<%=rtl%>" align="<%=align%>"><td><img src="../images/orange_sq_but.gif" dir="<%=rtl%>"  align="<%=align%>"/><a  href="http://catalog.loc.gov" target="f3" dir="<%=rtl%>"  ><%=resource.getString("opacmainframe.mframe.libofcong")%></a></td></tr>
   <tr dir="<%=rtl%>" align="<%=align%>"><td><img src="../images/orange_sq_but.gif" dir="<%=rtl%>"  align="<%=align%>"/><a  href="../OPAC/Notice.do" target="f3" dir="<%=rtl%>"  ><%=resource.getString("opacmainframe.mframe.notices")%></a></td></tr>

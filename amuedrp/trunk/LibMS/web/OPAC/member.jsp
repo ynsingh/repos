@@ -196,7 +196,7 @@ locale1=(String)session.getAttribute("locale");
 
 
             </td></tr>
-        <tr><td class="btn1" dir="<%=rtl%>" align="<%=align%>">Library Name</td><td dir="<%=rtl%>" width="200px">
+        <tr><td class="btn1" dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("opac.simplesearch.library")%></td><td dir="<%=rtl%>" width="200px">
                
 <html:select property="CMBLib" dir="<%=rtl%>"  tabindex="3"  styleId="CMBLib" value="<%=lib_id%>" onchange="search()">
    <html:option value="Select">Select</html:option>
@@ -216,7 +216,7 @@ locale1=(String)session.getAttribute("locale");
 
 
             </td></tr>
-        <tr><td class="btn1" dir="<%=rtl%>" align="<%=align%>">Departmental Library Name</td><td dir="<%=rtl%>" width="200px">
+        <tr><td class="btn1" dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("opac.myaccount.deptname")%></td><td dir="<%=rtl%>" width="200px">
                 <html:select property="cmdSubLibary"  styleId="SubLibary" value="<%=sublib_id%>">
                             <html:option value="select">Select</html:option>
                            <html:options collection="sublib" property="id.sublibraryId" labelProperty="sublibName" />
@@ -227,7 +227,7 @@ locale1=(String)session.getAttribute("locale");
 
 
         <tr><td dir="<%=rtl%>"></td><td width="200px" dir="<%=rtl%>"><input id="Button1" class="btn2" value="<%=resource.getString("opac.myaccount.submit")%>"  type="submit">
-            <input type="button" class="btn2" value="Back" onclick="quit();">
+            <input type="button" class="btn2" value="<%=resource.getString("opac.myaccount.back")%>" onclick="quit();">
 
             </td></tr>
         <tr><td dir="<%=rtl%>"></td><td dir="<%=rtl%>" align="<%=align%>" width="200px">

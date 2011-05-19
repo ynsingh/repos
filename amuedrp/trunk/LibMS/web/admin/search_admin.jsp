@@ -111,7 +111,7 @@ document.Form1.submit();
                       <select name="search_by" onChange="fun()" id="search_by" size="1">
 <option value="institute_name"><%=resource.getString("institutename")%></option>
 <option value="library_id"><%=resource.getString("instituteid")%></option>
-<option value="admin_email">Email</option>
+<option value="admin_email"><%=resource.getString("email")%></option>
 <option value="city"><%=resource.getString("city")%></option>
 
 

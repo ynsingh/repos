@@ -340,7 +340,7 @@ else
 <option value="other"><%=resource.getString("other")%></option>
 <%}%>
 
-</select></td><td>Library Name</td><td><input type="text"  id="Editbox14"  name="library_name" value="<%=library_name%>" tabindex="16" title="Enter Library Name"></td>
+</select></td><td><%=resource.getString("libraryname")%></td><td><input type="text"  id="Editbox14"  name="library_name" value="<%=library_name%>" tabindex="16" title="Enter Library Name"></td>
 
              </tr>
 

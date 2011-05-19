@@ -199,7 +199,7 @@ document.getElementById("Form1").submit();
   <tr class="header"><td  width="1000px" dir="<%=rtl%>"  height="28px" align="center" colspan="2">
 
 
-		Browse Search
+	<%=resource.getString("opac.browse.browsesearch")%>	
 
 
 
@@ -214,7 +214,7 @@ document.getElementById("Form1").submit();
       </td>
       <td dir="<%=rtl%>"   align="<%=align%>" valign="top">
           <table >
-              <tr><td dir="<%=rtl%>">in <%=resource.getString("opac.browse.field")%> </td><td rowspan="2" dir="<%=rtl%>" valign="top">
+              <tr><td dir="<%=rtl%>"> <%=resource.getString("opac.simplesearch.field")%> </td><td rowspan="2" dir="<%=rtl%>" valign="top">
 
 
 <select dir="<%=rtl%>" name="CMBFIELD" onChange="fun()" size="1">
@@ -227,14 +227,14 @@ document.getElementById("Form1").submit();
      </td>
 
               </tr></table></td></tr>
-  <tr class="header"><td width="1000px" dir="<%=rtl%>"  align="<%=align%>" >Restricted By</td><td align="<%=align%>" dir="<%=rtl%>">Sort By</td></tr>
+  <tr class="header"><td width="1000px" dir="<%=rtl%>"  align="<%=align%>" ><%=resource.getString("opac.simplesearch.restrictedby")%></td><td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sortby")%></td></tr>
    <tr style="background-color:#e0e8f5;" dir="<%=rtl%>"> <td width="800px" dir="<%=rtl%>"  align="<%=align%>">
            <table  width="800px" dir="<%=rtl%>"><tr><td align="<%=align%>" dir="<%=rtl%>">
           <table>
               <tr><td dir="<%=rtl%>"><%=resource.getString("opac.browse.database")%></td><td>
                     <select name="CMBDB" dir="<%=rtl%>" onChange="fun1()" size="1">
-<option selected value="combined" dir="<%=rtl%>">COMBINED</option>
-    <option value="book" dir="<%=rtl%>">BOOKS</option>
+<option selected value="combined" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.combnd")%></option>
+    <option value="book" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.books")%></option>
      <option value="cd" dir="<%=rtl%>">CDs</option>
   
   
@@ -246,7 +246,7 @@ document.getElementById("Form1").submit();
                             <html:options collection="libRs" property="libraryId" labelProperty="libraryName"/>
                       </html:select>
                   </td>
-                  <td align="left" dir="<%=rtl%>">SubLib<html:select property="CMBSUBLib" dir="<%=rtl%>" value="<%=sublibrary_id%>" styleId="SubLibary" onchange="fun1()">
+                  <td align="left" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sublibrary")%><html:select property="CMBSUBLib" dir="<%=rtl%>" value="<%=sublibrary_id%>" styleId="SubLibary" onchange="fun1()">
                           <html:option value="all">All</html:option>
                           <html:options collection="sublib" property="id.sublibraryId" labelProperty="sublibName" />
                        </html:select>
@@ -267,10 +267,10 @@ document.getElementById("Form1").submit();
       <td align="<%=align%>" dir="<%=rtl%>">
            <table>
                            <tr><td dir="<%=rtl%>"><%=resource.getString("opac.browse.title")%></td><td dir="<%=rtl%>"> <select name="CMBSORT" dir="<%=rtl%>" size="1" onChange="fun()" id="CMBSORT">
-<option value="title" dir="<%=rtl%>">TITLE</option>
-<option  value="authorName" dir="<%=rtl%>">AUTHOR</option>
+<option value="title" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.auth")%></option>
+<option  value="authorName" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.field1")%></option>
 <option value="isbn10" dir="<%=rtl%>">ISBN</option>
-<option value="publisherName" dir="<%=rtl%>">PUBLISHER</option>
+<option value="publisherName" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.pub")%></option>
 </select>
 </td>
                            </tr></table>
@@ -282,8 +282,8 @@ document.getElementById("Form1").submit();
   <tr><td>
 
 
-<input type="submit" id="Button1" name="" dir="<%=rtl%>" class="btn" value="FIND">
-<input type="reset" id="Button2" name="" dir="<%=rtl%>" class="btn" value="CLEAR">
+<input type="submit" id="Button1" name="" dir="<%=rtl%>" class="btn" value="<%=resource.getString("opac.simplesearch.find")%>">
+<input type="reset" id="Button2" name="" dir="<%=rtl%>" class="btn" value="<%=resource.getString("opac.browse.clear")%>">
 
 
       </td></tr>

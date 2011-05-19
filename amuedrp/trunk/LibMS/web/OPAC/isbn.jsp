@@ -194,7 +194,7 @@ locale1=(String)session.getAttribute("locale");
   <tr class="header" dir="<%=rtl%>"><td dir="<%=rtl%>" width="800px"  height="28px" align="center" colspan="2">
 
 
-		ISBN Search
+		<%=resource.getString("opac.isbn.isbnsearch")%>
 
 
 
@@ -217,7 +217,7 @@ locale1=(String)session.getAttribute("locale");
           </table>
        </td>
        <td class="header" dir="<%=rtl%>">
-           Restricted By
+           <%=resource.getString("opac.simplesearch.restrictedby")%>
 
        </td>
         
@@ -226,14 +226,14 @@ locale1=(String)session.getAttribute("locale");
         <td    align="left" colspan="1" dir="<%=rtl%>">
           <table class="datagrid" dir="<%=rtl%>">
               <tr >
-                  <td dir="<%=rtl%>" align="<%=align%>">Library &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("opac.simplesearch.library")%> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 <html:select property="CMBLib" dir="<%=rtl%>"  tabindex="3"  styleId="CMBLib" value="<%=lib_id%>" onchange="search()">
     <html:option value="all">All</html:option>
     <html:options collection="libRs" property="libraryId" labelProperty="libraryName"/>
  </html:select>
 
-     </td></tr><tr><td  dir="<%=rtl%>">Sub Library&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     </td></tr><tr><td  dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sublibrary")%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       <html:select property="CMBSUBLib" value="<%=sublib_id%>" styleId="SubLibrary" >
                               <html:option value="all">All</html:option>
                               <html:options collection="sublib" property="id.sublibraryId" labelProperty="sublibName" />
@@ -246,7 +246,7 @@ locale1=(String)session.getAttribute("locale");
 
 
 <input type="submit" id="Button1" dir="<%=rtl%>" class="btn" name="" value="<%=resource.getString("opac.simplesearch.find")%>">
-<input type="reset" id="Button2" name="" dir="<%=rtl%>" class="btn" value="<%=resource.getString("opac.simplesearch.clear")%>">
+<input type="reset" id="Button2" name="" dir="<%=rtl%>" class="btn" value="<%=resource.getString("opac.browse.clear")%>">
 
 
 

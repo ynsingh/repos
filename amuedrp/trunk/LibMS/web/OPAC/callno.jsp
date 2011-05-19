@@ -193,7 +193,7 @@ locale1=(String)session.getAttribute("locale");
   <tr class="header" dir="<%=rtl%>"><td  width="800px" dir="<%=rtl%>"  height="28px" align="center" colspan="2">
 
 
-          <b dir="<%=rtl%>">CallNo Search</b>
+          <b dir="<%=rtl%>"><%=resource.getString("opac.callno.callno")%></b>
 
 
 
@@ -212,7 +212,7 @@ locale1=(String)session.getAttribute("locale");
 
           </table>
        </td><td class="header" dir="<%=rtl%>">
-           Restricted By
+           <%=resource.getString("opac.simplesearch.restrictedby")%>
 
        </td>
 
@@ -220,14 +220,14 @@ locale1=(String)session.getAttribute("locale");
     <tr style="background-color:#e0e8f5;" dir="<%=rtl%>">
           <td    align="<%=align%>" dir="<%=rtl%>">
           <table>
-              <tr><td dir="<%=rtl%>">Library &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <tr><td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.library")%> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 <html:select property="CMBLib" dir="<%=rtl%>"  tabindex="3"  value="<%=lib_id%>" styleId="CMBLib" onchange="search()">
      <html:option value="all">All</html:option>
     <html:options collection="libRs" property="libraryId" labelProperty="libraryName"/>
  </html:select>
 
-     </td></tr><tr><td align="<%=align%>" dir="<%=rtl%>">Sub Library&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+     </td></tr><tr><td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sublibrary")%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       <html:select property="CMBSUBLib"  styleId="SubLibrary" value="<%=sublib_id%>">
                            <html:option value="all">All</html:option>
                               <html:options collection="sublib" property="id.sublibraryId" labelProperty="sublibName" />
@@ -245,7 +245,7 @@ locale1=(String)session.getAttribute("locale");
 
 <input type="submit" class="btn" dir="<%=rtl%>" id="Button1" name="go" value="<%=resource.getString("opac.callno.go")%>" >
 
-<input type="reset" class="btn" id="Button2" dir="<%=rtl%>" name="" value="CLEAR">
+<input type="reset" class="btn" id="Button2" dir="<%=rtl%>" name="" value="<%=resource.getString("opac.browse.clear")%>">
 
 
 <script>

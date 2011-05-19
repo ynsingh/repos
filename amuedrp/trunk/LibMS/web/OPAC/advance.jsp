@@ -250,18 +250,18 @@ locale1=(String)session.getAttribute("locale");
         </td></tr>
   <tr style="background-color:#e0e8f5;"><td width="800px" dir="<%=rtl%>">
           <table width="800px" dir="<%=rtl%>">
-              <tr><td width="130px" dir="<%=rtl%>">Search Keyword as</td><td><input name="TXTPHRASE1" type="text" dir="<%=rtl%>">
+              <tr><td width="130px" dir="<%=rtl%>"><%=resource.getString("opac.advance.seachkeyword")%></td><td><input name="TXTPHRASE1" type="text" dir="<%=rtl%>">
 </td></tr>
-              <tr>   <td>Connected Word As</td><td> <select name="CMB1" size="1" dir="<%=rtl%>">
-    <option value="or" dir="<%=rtl%>">OR</option>
-    <option value="and" dir="<%=rtl%>">AND</option>
+              <tr>   <td><%=resource.getString("opac.simplesearch.connectwordas")%></td><td> <select name="CMB1" size="1" dir="<%=rtl%>">
+    <option value="or" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.or")%></option>
+    <option value="and" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.and")%></option>
   </select>
 
                
 
                   </td><td align="<%=align%>" dir="<%=rtl%>">  <select name="CMBF1" size="1">
-<option value="or" dir="<%=rtl%>">OR</option>
-<option value="and" dir="<%=rtl%>">AND</option>
+<option value="or" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.or")%></option>
+<option value="and" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.and")%></option>
 </select></td>
 
       </tr>
@@ -270,14 +270,14 @@ locale1=(String)session.getAttribute("locale");
       </td>
       <td    align="<%=align%>" valign="top" dir="<%=rtl%>">
           <table >
-              <tr><td dir="<%=rtl%>">in Field </td><td rowspan="2" valign="top" dir="<%=rtl%>">
+              <tr><td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.field")%> </td><td rowspan="2" valign="top" dir="<%=rtl%>">
 
           <select name="CMBFIELD1" size="1" dir="<%=rtl%>" >
-<option selected value="title" dir="<%=rtl%>">ANY FIELD</option>
-<option value="author" dir="<%=rtl%>">AUTHOR</option>
-<option value="title" dir="<%=rtl%>">TITLE</option>
+<option selected value="title" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.anyfld")%></option>
+<option value="author" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.auth")%></option>
+<option value="title" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.tit")%></option>
 <option value="isbn10" dir="<%=rtl%>">ISBN</option>
-<option value="subject" dir="<%=rtl%>">SUBJECT</option>
+<option value="subject" dir="<%=rtl%>"><%=resource.getString("opac.advance.subject")%></option>
 
 </select>
 
@@ -286,14 +286,14 @@ locale1=(String)session.getAttribute("locale");
               </tr></table></td></tr>
    <tr style="background-color:#e0e8f5;" dir="<%=rtl%>"><td width="800px" dir="<%=rtl%>" >
           <table width="800px" dir="<%=rtl%>">
-              <tr><td width="130px" dir="<%=rtl%>">Search Keyword as</td><td dir="<%=rtl%>"> <input name="TXTPHRASE2" dir="<%=rtl%>"  type="text">
+              <tr><td width="130px" dir="<%=rtl%>"><%=resource.getString("opac.advance.seachkeyword")%></td><td dir="<%=rtl%>"> <input name="TXTPHRASE2" dir="<%=rtl%>"  type="text">
 </td></tr>
-              <tr>   <td dir="<%=rtl%>">Connected Word As</td><td> <select name="CMB2" size="1" dir="<%=rtl%>">
-    <option value="or" dir="<%=rtl%>">OR</option>
-    <option value="and" dir="<%=rtl%>">AND</option>
+              <tr>   <td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.connectwordas")%></td><td> <select name="CMB2" size="1" dir="<%=rtl%>">
+    <option value="or" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.or")%></option>
+    <option value="and" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.and")%></option>
                       </select></td><td align="<%=align%>" dir="<%=rtl%>">      <select name="CMBF2" size="1" dir="<%=rtl%>">
-<option value="or" dir="<%=rtl%>">OR</option>
-<option value="and" dir="<%=rtl%>">AND</option>
+<option value="or" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.or")%></option>
+<option value="and" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.and")%></option>
 </select>
 </td>
 
@@ -303,14 +303,14 @@ locale1=(String)session.getAttribute("locale");
       </td>
       <td    align="<%=align%>" valign="top" dir="<%=rtl%>">
           <table dir="<%=rtl%>">
-              <tr><td dir="<%=rtl%>">in Field </td><td rowspan="2" dir="<%=rtl%>" valign="top">
+              <tr><td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.anyfld")%> </td><td rowspan="2" dir="<%=rtl%>" valign="top">
 
          <select name="CMBFIELD2" size="1"  dir="<%=rtl%>">
-<option selected value="author" dir="<%=rtl%>">ANY FIELD</option>
-<option value="author" dir="<%=rtl%>">AUTHOR</option>
-<option value="title" dir="<%=rtl%>">TITLE</option>
+<option selected value="author" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.anyfld")%></option>
+<option value="author" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.auth")%></option>
+<option value="title" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.tit")%></option>
 <option value="isbn10" dir="<%=rtl%>">ISBN</option>
-<option value="subject" dir="<%=rtl%>">SUBJECT</option>
+<option value="subject" dir="<%=rtl%>"><%=resource.getString("opac.advance.subject")%></option>
 
 </select>
 
@@ -320,15 +320,15 @@ locale1=(String)session.getAttribute("locale");
               </tr></table></td></tr>
     <tr style="background-color:#e0e8f5;" dir="<%=rtl%>"><td width="800px"  dir="<%=rtl%>">
           <table width="800px" dir="<%=rtl%>">
-              <tr><td width="130px" dir="<%=rtl%>">Search Keyword as</td><td dir="<%=rtl%>"><input name="TXTPHRASE3" type="text" dir="<%=rtl%>">
+              <tr><td width="130px" dir="<%=rtl%>"><%=resource.getString("opac.advance.seachkeyword")%></td><td dir="<%=rtl%>"><input name="TXTPHRASE3" type="text" dir="<%=rtl%>">
 
 </td></tr>
-              <tr>   <td dir="<%=rtl%>">Connected Word As</td><td dir="<%=rtl%>"> <select name="CMB3" size="1" dir="<%=rtl%>">
-    <option value="or" dir="<%=rtl%>">OR</option>
-    <option value="and" dir="<%=rtl%>">AND</option>
+              <tr>   <td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.connectwordas")%></td><td dir="<%=rtl%>"> <select name="CMB3" size="1" dir="<%=rtl%>">
+    <option value="or" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.or")%></option>
+    <option value="and" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.and")%></option>
   </select></td><td>     <select name="CMBF3" size="1" dir="<%=rtl%>">
-<option value="or" dir="<%=rtl%>">OR</option>
-<option value="and" dir="<%=rtl%>">AND</option>
+<option value="or" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.or")%></option>
+<option value="and" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.and")%></option>
 </select>
 </td>
 
@@ -338,14 +338,14 @@ locale1=(String)session.getAttribute("locale");
       </td>
       <td dir="<%=rtl%>"   align="<%=align%>" valign="top">
           <table dir="<%=rtl%>">
-              <tr><td dir="<%=rtl%>">in Field </td><td dir="<%=rtl%>" rowspan="2" valign="top">
+              <tr><td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.anyfld")%> </td><td dir="<%=rtl%>" rowspan="2" valign="top">
 
         <select name="CMBFIELD3" size="1" dir="<%=rtl%>">
-<option selected value="subject" dir="<%=rtl%>">ANY FIELD</option>
-<option value="author" dir="<%=rtl%>">AUTHOR</option>
-<option value="title" dir="<%=rtl%>">TITLE</option>
+<option selected value="subject" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.anyfld")%></option>
+<option value="author" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.auth")%></option>
+<option value="title" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.tit")%></option>
 <option value="isbn10" dir="<%=rtl%>">ISBN</option>
-<option value="subject" dir="<%=rtl%>">SUBJECT</option>
+<option value="subject" dir="<%=rtl%>"><%=resource.getString("opac.advance.subject")%></option>
 
 </select>
 
@@ -353,14 +353,14 @@ locale1=(String)session.getAttribute("locale");
      </td>
 
               </tr></table></td></tr>
-  <tr class="header" dir="<%=rtl%>"><td width="1000px" dir="<%=rtl%>"  align="<%=align%>" >Restricted By</td><td align="<%=align%>" dir="<%=rtl%>">Sort By</td></tr>
+  <tr class="header" dir="<%=rtl%>"><td width="1000px" dir="<%=rtl%>"  align="<%=align%>" ><%=resource.getString("opac.simplesearch.restrictedby")%></td><td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sortby")%></td></tr>
    <tr style="background-color:#e0e8f5;" dir="<%=rtl%>"><td width="800px" dir="<%=rtl%>"  align="<%=align%>">
            <table  width="800px" dir="<%=rtl%>"><tr><td align="<%=align%>" dir="<%=rtl%>">
           <table>
               <tr><td ><%=resource.getString("opac.simplesearch.database")%></td><td>
                       <select name="CMBDB" size="1" id="CMBDB" dir="<%=rtl%>">
-<option value="combined" selected dir="<%=rtl%>">COMBINED</option>
-    <option value="book" dir="<%=rtl%>">BOOKS</option>
+<option value="combined" selected dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.combnd")%></option>
+    <option value="book" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.books")%></option>
     <option value="cd" dir="<%=rtl%>">CDs</option>
 
 </select>
@@ -372,7 +372,7 @@ locale1=(String)session.getAttribute("locale");
      <html:options collection="libRs" property="libraryId" labelProperty="libraryName"/>
  </html:select>
 </td>
-<td align="<%=align%>" dir="<%=rtl%>">Sub Library&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.sublibrary")%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                        <html:select property="CMBSUBLib" dir="<%=rtl%>" value="<%=sublib_id%>"  styleId="SubLibrary" >
                            <html:option value="all">All</html:option>
                            <html:options collection="sublib" property="id.sublibraryId" labelProperty="sublibName" />
@@ -380,15 +380,15 @@ locale1=(String)session.getAttribute("locale");
       </tr>
 
           </table>
-                   </td><td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.additional.publicationyear")%>
+                   </td><td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.pubyear")%>
                                    <br/>
                        <table>
                            <tr><td rowspan="4" dir="<%=rtl%>"></td><td><select name="CMBYR" dir="<%=rtl%>" onChange=f() size="1" id="CMBYR" style="left:0px;top:0px;width:100%;height:100%;border-width:0px;font-family:Courier New;font-size:13px;">
 
-<option value="all" dir="<%=rtl%>">ALL YEARS</option>
-<option value="between" dir="<%=rtl%>">BETWEEN</option>
-<option value="upto" dir="<%=rtl%>">UPTO</option>
-<option value="after" dir="<%=rtl%>">AFTER</option>
+<option value="all" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.allyear")%></option>
+<option value="between" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.between")%></option>
+<option value="upto" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.upto")%></option>
+<option value="after" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.after")%></option>
 </select></td><td dir="<%=rtl%>">
 <input type="text" dir="<%=rtl%>" id="TXTYR1"  name="TXTYR1" style="width:50px"></td><td>
 <input type="text" id="TXTYR2" dir="<%=rtl%>" name="TXTYR2" style="width:50px">
@@ -405,11 +405,11 @@ locale1=(String)session.getAttribute("locale");
       </td>
       <td align="<%=align%>" dir="<%=rtl%>">
            <table dir="<%=rtl%>">
-                           <tr dir="<%=rtl%>"><td dir="<%=rtl%>">Field</td><td> <select name="CMBSORT" dir="<%=rtl%>" size="1" id="CMBSORT">
-<option  value="author_main" dir="<%=rtl%>">AUTHOR</option>
-<option value="title" dir="<%=rtl%>">TITLE</option>
+                           <tr dir="<%=rtl%>"><td dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.field1")%></td><td> <select name="CMBSORT" dir="<%=rtl%>" size="1" id="CMBSORT">
+<option  value="author_main" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.auth")%></option>
+<option value="title" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.tit")%></option>
 <option value="isbn10" dir="<%=rtl%>">ISBN</option>
-<option value="publisher_name" dir="<%=rtl%>">PUBLISHER</option>
+<option value="publisher_name" dir="<%=rtl%>"><%=resource.getString("opac.simplesearch.pub")%></option>
 </select></td>
                            </tr></table>
 
@@ -419,8 +419,8 @@ locale1=(String)session.getAttribute("locale");
   </tr>
   <tr dir="<%=rtl%>"><td dir="<%=rtl%>">
 
-<input id="Button2" class="btn" name="" dir="<%=rtl%>" value="<%=resource.getString("opac.advance.find")%>"  type="submit">
-<input id="Button1" name="" class="btn" dir="<%=rtl%>" value="<%=resource.getString("opac.advance.clear")%>" type="reset">
+<input id="Button2" class="btn" name="" dir="<%=rtl%>" value="<%=resource.getString("opac.simplesearch.find")%>"  type="submit">
+<input id="Button1" name="" class="btn" dir="<%=rtl%>" value="<%=resource.getString("opac.browse.clear")%>" type="reset">
 
 
       </td></tr>
@@ -428,7 +428,7 @@ locale1=(String)session.getAttribute("locale");
                                <td colspan="2" dir="<%=rtl%>">
 
 
-                            <a name="tips" dir="<%=rtl%>">&nbsp;Search Tips</a>
+                            <a name="tips" dir="<%=rtl%>">&nbsp;<%=resource.getString("opac.simplesearch.searchtip")%></a>
 
 
 
@@ -437,39 +437,39 @@ locale1=(String)session.getAttribute("locale");
     <colgroup width="15%"></colgroup><colgroup width="1%" dir="<%=rtl%>"></colgroup><colgroup width="90%" dir="<%=rtl%>"></colgroup>
     <tbody><tr>
     <th colspan="3" class="tipstext" dir="<%=rtl%>">
-    	The user can make a advanced search using this option. The fields to be entered are:
+    	<%=resource.getString("opac.advance.t1")%>
     </th>
 
     </tr>
 
     <tr>
         <td class="txt2" dir="<%=rtl%>">
-    		Library
+    		<%=resource.getString("opac.simplesearch.library")%>
     </td>
     <td class="tipsheading" dir="<%=rtl%>">:</td>
     <td class="tipstext" dir="<%=rtl%>">
-    		 Select from the combo box the Library on which the search is to be made.
+    		 <%=resource.getString("opac.simplesearch.t11")%>
     </td>
 
     </tr>
       <tr>
         <td class="txt2" dir="<%=rtl%>">
-    		Database
+    		<%=resource.getString("opac.simplesearch.database")%>
     </td>
     <td class="tipsheading" dir="<%=rtl%>">:</td>
     <td class="tipstext" dir="<%=rtl%>">
-    		 Select from the combo box the database on which the search is to be made.
+    		<%=resource.getString("opac.simplesearch.t3")%>
     </td>
 
     </tr>
 
     <tr valign="top" dir="<%=rtl%>">
     	<td class="txt2" dir="<%=rtl%>">
-    		Field
+    		<%=resource.getString("opac.simplesearch.field1")%>
    	</td>
    	<td class="tipsheading" dir="<%=rtl%>">:</td>
    	<td class="tipstext" dir="<%=rtl%>">
-    		Select from the combo box the field on which the search is to be made.
+    		<%=resource.getString("opac.simplesearch.t5")%>
     	</td>
 
     </tr>
@@ -477,52 +477,52 @@ locale1=(String)session.getAttribute("locale");
     <tr valign="top" dir="<%=rtl%>">
 
     	<td class="txt2" dir="<%=rtl%>">
-    		Search Keyword As
+    		<%=resource.getString("opac.advance.seachkeyword")%>
     	</td>
     	<td class="tipsheading" dir="<%=rtl%>">:</td>
     	<td class="tipstext" dir="<%=rtl%>">
-    		 Give the word(s) or phrase on the basis of which the search is to be made.
+    		 <%=resource.getString("opac.simplesearch.t7")%>
     	</td>
 
     </tr>
 
     <tr valign="top" dir="<%=rtl%>">
     	<td class="txt2" dir="<%=rtl%>">
-    		Connected Word As
+    		<%=resource.getString("opac.simplesearch.connectwordas")%>
     	</td>
     	<td class="tipsheading" dir="<%=rtl%>">:</td>
     	<td class="tipstext" dir="<%=rtl%>">
-    		 Select from the combo box the connector required between the search words.
+    		 <%=resource.getString("opac.simplesearch.t9")%>
     	</td>
 
     </tr>
      <tr valign="top" dir="<%=rtl%>">
     	<td class="txt2" dir="<%=rtl%>">
-    		In Field
+    		<%=resource.getString("opac.simplesearch.field1")%>
     	</td>
     	<td class="tipsheading" dir="<%=rtl%>">:</td>
     	<td class="tipstext" dir="<%=rtl%>">
-    		 Select from the combo box the Field in which searching has to made.
+    		 <%=resource.getString("opac.simplesearch.t15")%>
     	</td>
 
     </tr>
     <tr valign="top" dir="<%=rtl%>">
     	<td class="txt2" nowrap1="" dir="<%=rtl%>">
-    		Publication Year
+    		<%=resource.getString("opac.simplesearch.pubyear")%>
     	</td>
     	<td class="tipsheading" dir="<%=rtl%>">:</td>
     	<td class="tipstext" dir="<%=rtl%>">
-    		 Give the publishing year(s) within which a search has to be made.
+    		 <%=resource.getString("opac.simplesearch.t13")%>
     	</td>
 
     </tr>
 
    <tr valign="top" dir="<%=rtl%>">
    	<td class="txt2" align="right" dir="<%=rtl%>">
-   		Click Find
+   	     <%=resource.getString("opac.simplesearch.t16")%>
     	</td>
     	<td colspan="2" class="txt2" dir="<%=rtl%>">
-    		and the result is displayed. Thus , a advanced search can be made on any field, title-wise, author-wise or subject-wise.
+    		<%=resource.getString("opac.advance.t2")%>
     	</td>
 
    </tr></tbody></table>
