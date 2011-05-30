@@ -266,7 +266,8 @@ public class OLES_Quiz extends SecureAction{
 			String status = "ACT";
 			String Cur_date=ExpiryUtil.getCurrentDate("-");
 			String modifiedDate = Cur_date;
-
+			
+			boolean success;
 			int seq=-1;
 			XmlWriter xmlWriter=null;
 			Vector collect=new Vector();
@@ -297,26 +298,43 @@ public class OLES_Quiz extends SecureAction{
 						break;
 					}
 				}
-				if(deltype.equals("quizDel")){        	
+				if(deltype.equals("quizDel")){ 
+					String quizid;
+					File scoreFile = new File(filepath+"/score.xml");
+					Vector<QuizFileEntry> scoreVector=new Vector<QuizFileEntry>();
+					if(scoreFile.exists()){
+						quizmetadata=new QuizMetaDataXmlReader(filepath+"/score.xml");
+						scoreVector = quizmetadata.getDistinctIDFromFinalScore();
+						for(QuizFileEntry a:scoreVector){
+							quizid = a.getQuizID();
+							if(quizid.equalsIgnoreCase(quizID)){
+								ErrorDumpUtil.ErrorLog("quiz is stored in score.xml");
+								data.setMessage(MultilingualUtil.ConvertedString("brih_quizcannotdeleted",LangFile));
+								return;
+							}
+						}
+					}
 					xmlWriter=new XmlWriter(filepath+"/"+quizPath);
-					xmlWriter.removeElement("Quiz",seq);        	  
-					File file=new File(filepath1+"/"+quizQuestionPath);
-					File fileTemp=new File(filepath1+"/"+tempQuizQuestionPath);
-					File fileQuestionSetting=new File(filepath1+"/"+quizQuestionSettingPath);
-					if(!file.exists()){
-						return;
-					}
-					else if(!fileQuestionSetting.exists()){
-						file.delete();
-						return;
-					} 
-					else {
-						file.delete();
-						fileQuestionSetting.delete();						
-					}
-					if(fileTemp.exists()){
-						fileTemp.delete();
-					}
+					xmlWriter.removeElement("Quiz",seq); 
+					File file=new File(filepath1);
+					success = deleteDir(file);
+//					File file=new File(filepath1+"/"+quizQuestionPath);
+//					File fileTemp=new File(filepath1+"/"+tempQuizQuestionPath);
+//					File fileQuestionSetting=new File(filepath1+"/"+quizQuestionSettingPath);
+//					if(!file.exists()){
+//						return;
+//					}
+//					else if(!fileQuestionSetting.exists()){
+//						file.delete();
+//						return;
+//					} 
+//					else {
+//						file.delete();
+////						fileQuestionSetting.delete();						
+//					}
+//					if(fileTemp.exists()){
+//						fileTemp.delete();
+//					}
 					xmlWriter.writeXmlFile();
 					data.setMessage(MultilingualUtil.ConvertedString("brih_quiz",LangFile)+" "+MultilingualUtil.ConvertedString("brih_hasbeendelete",LangFile));
 				}
@@ -361,9 +379,9 @@ public class OLES_Quiz extends SecureAction{
 				ErrorDumpUtil.ErrorLog("inside data set screen template");
 				data.setScreenTemplate("call,OLES,Practice_Quiz.vm");				
 			}			
-			context.put("type","createQuiz");		
+//			context.put("type","createQuiz");		
 			ErrorDumpUtil.ErrorLog("quiz id from drop down "+quizName);
-			context.put("type","createQuiz");			
+				
 		}catch(Exception e){
 			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:generateQuiz !! "+e);
 			data.setMessage("See ExceptionLog !!");
@@ -386,10 +404,12 @@ public class OLES_Quiz extends SecureAction{
 			String mode=data.getParameters().getString("mode","");
 			String quizMode=data.getParameters().getString("quizMode","");
 			String topicName = data.getParameters().getString("topicName","");
+			ErrorDumpUtil.ErrorLog("\n topic name is:"+topicName);
 			String typeName = data.getParameters().getString("typeName","");
 			String levelName = data.getParameters().getString("levelName","");
 			String status = "ACT";
 			String quizStatus="ACT";
+			ErrorDumpUtil.ErrorLog("\n mode in oles quiz is:"+mode);
 
 			String page = data.getParameters().getString("page","");
 			ParameterParser pp=data.getParameters();
@@ -499,6 +519,7 @@ public class OLES_Quiz extends SecureAction{
 				}    			
 			}
 			File ff = new File(questionBankFilePath+"/"+questionBankQuestionsPath);
+			ErrorDumpUtil.ErrorLog("ff file path :"+ff.getPath());
 			if(!ff.exists())
 				variable[0] = "empty";
 			else{
@@ -618,11 +639,14 @@ public class OLES_Quiz extends SecureAction{
 	 */
 	public void updateQuizRandomly(String quizID, String quizStatus, String courseid, String quizMode){
 		try{
+			
 			XmlWriter xmlWriter = null;
 			String newFilePath1=TurbineServlet.getRealPath("/Courses/"+courseid+"/Exam/");
 			String quizPath="/Quiz.xml";
 			int seq=-1;
-			if(quizMode.equals("")){
+			ErrorDumpUtil.ErrorLog("quiz mode in update quiz randomy is :"+quizMode);
+			if(quizMode.trim().isEmpty()){
+				ErrorDumpUtil.ErrorLog("inside quiz mode empty");
 				quizMode="random";
 			}
 			Vector collect=new Vector();
@@ -675,6 +699,7 @@ public class OLES_Quiz extends SecureAction{
 	 */
 	public void doRemoveQuiz(RunData data, Context context, String quizID){
 		try{
+			boolean success;
 			LangFile=(String)data.getUser().getTemp("LangFile");
 			ParameterParser pp=data.getParameters();
 			User user=data.getUser();
@@ -705,19 +730,54 @@ public class OLES_Quiz extends SecureAction{
 						seq=i;            	   
 						break;
 					}
-				}  	
-				xmlWriter=new XmlWriter(filepath+"/"+quizPath);
-				xmlWriter.removeElement("Quiz",seq);        	  
-				File file=new File(filepath1+"/"+quizQuestionPath);
-				File fileTemp=new File(filepath1+"/"+tempQuizQuestionPath);
-				File fileQuestionSetting=new File(filepath1+"/"+quizQuestionSettingPath);
-				file.delete(); 
-				fileQuestionSetting.delete();
-				if(fileTemp.exists()){
-					fileTemp.delete();
+				}  
+				String quizid;
+				File scoreFile = new File(filepath+"/score.xml");
+				Vector<QuizFileEntry> scoreVector=new Vector<QuizFileEntry>();
+				if(scoreFile.exists()){
+					quizmetadata=new QuizMetaDataXmlReader(filepath+"/score.xml");
+					scoreVector = quizmetadata.getDistinctIDFromFinalScore();
+					for(QuizFileEntry a:scoreVector){
+						quizid = a.getQuizID();
+						if(quizid.equalsIgnoreCase(quizID)){
+							ErrorDumpUtil.ErrorLog("quiz id entry in score.xml");
+							return;
+						}
+					}
 				}
+				xmlWriter=new XmlWriter(filepath+"/"+quizPath);
+				xmlWriter.removeElement("Quiz",seq); 
+				//=====================
+				File file=new File(filepath1);
+				success = deleteDir(file);
+//				File file=new File(filepath1+"/"+quizQuestionPath);
+//				File fileTemp=new File(filepath1+"/"+tempQuizQuestionPath);
+//				File fileQuestionSetting=new File(filepath1+"/"+quizQuestionSettingPath);
+//				if(!file.exists()){
+//					return;
+//				}
+//				else if(!fileQuestionSetting.exists()){
+//					file.delete();
+//					return;
+//				} 
+//				else {
+//					file.delete();
+////					fileQuestionSetting.delete();						
+//				}
+//				if(fileTemp.exists()){
+//					fileTemp.delete();
+//				}
+				//=========================
+//				File file=new File(filepath1+"/"+quizQuestionPath);
+//				File fileTemp=new File(filepath1+"/"+tempQuizQuestionPath);
+//				File fileQuestionSetting=new File(filepath1+"/"+quizQuestionSettingPath);
+//				file.delete(); 
+//				fileQuestionSetting.delete();
+//				if(fileTemp.exists()){
+//					fileTemp.delete();
+//				}
 				xmlWriter.writeXmlFile();
-				data.setMessage(MultilingualUtil.ConvertedString("brih_quiz",LangFile)+" "+MultilingualUtil.ConvertedString("brih_hasbeendelete",LangFile));
+				data.setMessage("Unattempted "+MultilingualUtil.ConvertedString("brih_quiz",LangFile)+" "+MultilingualUtil.ConvertedString("brih_hasbeendelete",LangFile));
 			}			
 		}catch(Exception e){
 			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:doRemoveQuiz !! "+e);
@@ -1033,11 +1093,11 @@ public class OLES_Quiz extends SecureAction{
 					variable[0]="empty";
 			}        
 			if(variable[0].equalsIgnoreCase("empty"))
-				data.setMessage("No Question in the repository with specified settings");
+				data.setMessage(MultilingualUtil.ConvertedString("brih_noquestion_repository",LangFile));
 			else if(variable[0].equalsIgnoreCase("success"))
-				data.setMessage("Questions are inserted successfully");
+				data.setMessage(MultilingualUtil.ConvertedString("brih_questioninsertsuccess",LangFile));
 			else if(variable[0].equalsIgnoreCase("firstUpdate"))
-				data.setMessage("Questions are updated successfully");
+				data.setMessage(MultilingualUtil.ConvertedString("brih_questionupdatesuccess",LangFile));
 			else if(variable[0].equalsIgnoreCase("update")){
 				data.setMessage(MultilingualUtil.ConvertedString("brih_questionrepo",LangFile)+" "+variable[1]+" "+MultilingualUtil.ConvertedString("oles_questions",LangFile)+
 						" "+MultilingualUtil.ConvertedString("brih_and",LangFile)+" "+variable[2]+" "+MultilingualUtil.ConvertedString("brih_insertedquestionmsg",LangFile)+
@@ -1261,6 +1321,7 @@ public class OLES_Quiz extends SecureAction{
 	 */
 	public void announceExam(RunData data, Context context){
 		try{
+			LangFile=(String)data.getUser().getTemp("LangFile");
 			User user=data.getUser();
 			String quizID=data.getParameters().getString("quizID","");
 			String courseid=(String)user.getTemp("course_id");  
@@ -1278,12 +1339,12 @@ public class OLES_Quiz extends SecureAction{
 				quizmetadata=new QuizMetaDataXmlReader(previewFilePath+"/"+previewPath);				
 				previewDetail=quizmetadata.getInsertedQuizQuestions();
 				if(previewDetail==null || previewDetail.size()==0){
-					data.setMessage("The selected quiz can not be announced since no preview is saved");
+					data.setMessage(MultilingualUtil.ConvertedString("brih_quizcannotannounced",LangFile));
 					data.setScreenTemplate("call,OLES,AnnounceExam_Manage.vm");
 				}
 			}
 			else{
-				data.setMessage("The selected quiz can not be announced since no preview is saved");
+				data.setMessage(MultilingualUtil.ConvertedString("brih_quizcannotannounced",LangFile));
 				data.setScreenTemplate("call,OLES,AnnounceExam_Manage.vm");
 			}
 
@@ -1553,6 +1614,7 @@ public class OLES_Quiz extends SecureAction{
 			XmlWriter xmlWriter = null;
 
 			File ff = new File(questionBankFilePath+"/"+questionBankQuestionsPath);
+			ErrorDumpUtil.ErrorLog("\n question bank file path :"+ff.getPath());
 			if(!ff.exists())
 				variable[0] = "empty";
 			else{
@@ -1644,5 +1706,20 @@ public class OLES_Quiz extends SecureAction{
 			data.setMessage("See ExceptionLog !!");
 		}
 		return variable;
+	}
+	
+	public static boolean deleteDir(File dir) {
+	    if (dir.isDirectory()) {
+	        String[] children = dir.list();
+	        for (int i=0; i<children.length; i++) {
+	            boolean success = deleteDir(new File(dir, children[i]));
+	            if (!success) {
+	                return false;
+	            }
+	        }
+	    }
+
+	    // The directory is now empty so delete it
+	    return dir.delete();
 	}
 }	                           

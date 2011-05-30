@@ -57,7 +57,7 @@ $!data.getMessage()
 		<form name="frm" method="get"  enctype="multipart/form-data" action=$link.setPage("call,OLES,OneByOne_Quiz.vm").setAction("OLES_Quiz")>
 	#end
 #else	
-	<form name="frm" method="post" enctype="multipart/form-data" action=$link.setPage("call,OLES,OneByOne_Quiz.vm").setAction("OLES_Quiz")>
+     	<form name="frm" method="post" enctype="multipart/form-data" action=$link.setPage("call,OLES,OneByOne_Quiz.vm").setAction("OLES_Quiz")>
 #end
 
 <table width="100%" bgcolor="$ui.tableColor">
@@ -116,17 +116,19 @@ $!data.getMessage()
         </tr>
 	<tr bgcolor="$ui.menuColor" width="100%">
 		<td align="left" width="100%" colspan="5">
+		
 			#if($mode == "update")
 				<input type="button" name="eventSubmit_updateOneByOneQuiz" value="$brih_update" onClick="checkValue1(document.frm,this);"/>
 			#else
 				<input type="button" name="eventSubmit_randomQuiz" value="$WikiSave & $brih_add $brih_more" onClick="checkValue1(document.frm,this);"/>
-				<input type="button" name="eventSubmit_randomQuiz" value="$WikiSave & $brih_exit" onClick="checkValue1(document.frm,this);">			
+				<input type="button" name="eventSubmit_randomQuiz" value="$WikiSave & $brih_exit" onClick="checkValue1(document.frm,this);">	
 			#end
 				<input type="reset" name="reset" value="$brih_reset" onClick="checkClear(document.frm,this);"/>
 		</td>
 	</tr>	
 #else
 	#if($quizMode != "one")
+	
 		<tr bgcolor="$ui.tableColor">
 			#if($tdcolor != "1")
 	        		<td>
@@ -142,7 +144,7 @@ $!data.getMessage()
 			<b><I><a href=$link.setPage("call,OLES,Random_Quiz.vm").addPathInfo("mode","random").addPathInfo("count","2").addPathInfo("type",$type).addPathInfo("quizName",$quizName) style=text-decoration:none>$brih_randomly</I></b></a></td>		
 		</tr>	
 		<tr bgcolor="$ui.menuColor" width="100%">
-			<td align="left" width="100%" colspan="5"><b><i><font size="3"> $brih_onebyone $brih_quiz $brih_generation </font><b></i></td>
+				<td align="left" width="100%" colspan="5"><b><i><font size="3"> $brih_onebyone $brih_quiz $brih_generation </font><b></i></td>
 		</tr>
 	#else
 		#if($mode == "update")
@@ -241,6 +243,7 @@ $!data.getMessage()
 <input type="hidden" name="questionID" value="$questionID">
 <input type="hidden" name="page" value="">
 <input type="hidden" name="quizDetail" value="$quizDetail">
+
 </form>
 <script LANGUAGE="JAVASCRIPT">
 	
@@ -272,6 +275,7 @@ $!data.getMessage()
 				frm.topicName.value=frm.topic.value;
 				frm.levelName.value=frm.level.value;
 				if(field.value=="Save & Exit"){
+					frm.count.value="2";
 					frm.page.value="exit";
 				}
 				frm.submit();
@@ -292,5 +296,6 @@ $!data.getMessage()
                         }
                 }
                 return false;
-        }		
-</script>
+        }	
+       
+    </script>

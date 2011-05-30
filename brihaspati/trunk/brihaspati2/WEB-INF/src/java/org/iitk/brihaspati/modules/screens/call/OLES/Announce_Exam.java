@@ -74,7 +74,7 @@ public class Announce_Exam extends SecureScreen{
         	User user=data.getUser();
         	String courseid=(String)user.getTemp("course_id");   
         	String username=user.getName();
-        	context.put("tdcolor",pp.getString("count",""));
+        	//context.put("tdcolor",pp.getString("count",""));
         	String mode = pp.getString("mode","");
         	String quizID = pp.getString("quizID","");
         	context.put("quizID",quizID);
@@ -95,10 +95,13 @@ public class Announce_Exam extends SecureScreen{
         	if(creationDate!="")
         		context.put("creationDate",creationDate);
         	        	
-        	if(mode.equals("new"))
+        	if(mode.equals("new")){
         		context.put("mode",mode);
+        		context.put("tdcolor","1");
+        	}
         	if(mode.equals("update")){
         		context.put("mode",mode);
+        		context.put("tdcolor","2");
         		String filePath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/");
                 String quizPath="/Quiz.xml";       
                 String startDate = "",startTime = "",endDate = "",endTime = "",allowPractice = "";

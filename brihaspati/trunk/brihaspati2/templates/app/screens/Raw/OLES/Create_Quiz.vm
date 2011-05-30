@@ -30,7 +30,7 @@ $!data.getMessage()
 	</tr>
 </table>
 
-<form name="frm" method="post" enctype="multipart/form-data" action=$link.setPage("call,OLES,Random_Quiz.vm").addPathInfo("mode","random").addPathInfo("count","1").addPathInfo("type",$type).setAction("OLES_Quiz")>
+<form name="frm" method="post" enctype="multipart/form-data" action=$link.setPage("call,OLES,Random_Quiz.vm").addPathInfo("mode","random").addPathInfo("count","2").addPathInfo("type",$type).setAction("OLES_Quiz")>
 ## Adding links for  add category,showing list of Faq category and delete category
 <table width="100%" bgcolor="$ui.tableColor">	
 	<tr bgcolor="$ui.tableColor">

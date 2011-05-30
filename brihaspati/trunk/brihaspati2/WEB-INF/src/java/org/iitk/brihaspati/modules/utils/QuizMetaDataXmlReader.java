@@ -140,8 +140,12 @@ public class QuizMetaDataXmlReader{
 				for(int j=0;j<files.length;j++) {
 					QuizFileEntry fileEntry=new QuizFileEntry();
 					ats=files[j].getAttributes();
-					quizID = ats.getValue("QuizID"); 					
-					int num=Integer.parseInt(quizID.substring(4,5));
+					quizID = ats.getValue("QuizID"); 
+					String arr[] = quizID.split("_");
+					ErrorDumpUtil.ErrorLog("arr at 0 :"+arr[0]);
+					String subPart = arr[0].substring(4,arr[0].length());
+					int num=Integer.parseInt(subPart);
+//					int num=Integer.parseInt(quizID.substring(4,5));
 					ErrorDumpUtil.ErrorLog("num is :"+num);
 					if(num>max){
 						max = num;
@@ -157,7 +161,7 @@ public class QuizMetaDataXmlReader{
 		}
 		return maxQuizID;
 	}
-        
+            
 	/**
 	 * This method get quiz_questions detail from the quizID_Questions.xml except the specified topicid        
 	 * @param topicID String  

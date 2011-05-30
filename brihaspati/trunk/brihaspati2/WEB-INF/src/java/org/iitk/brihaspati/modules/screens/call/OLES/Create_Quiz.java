@@ -69,8 +69,7 @@ public class Create_Quiz extends SecureScreen{
         	String mode =pp.getString("mode"," ");
         	String type = pp.getString("type","");
         	String courseid=(String)user.getTemp("course_id");
-        	
-        	context.put("tdcolor",pp.getString("count",""));
+          	context.put("tdcolor",pp.getString("count",""));
         	context.put("course",(String)user.getTemp("course_name"));
 			context.put("mode",mode);
 			context.put("type",type);

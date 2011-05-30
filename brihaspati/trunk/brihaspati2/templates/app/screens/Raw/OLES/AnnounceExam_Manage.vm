@@ -112,11 +112,11 @@ $!data.getMessage()
 			//alert(temp[1]);
 			if(temp[1]==""){
 				frm.mode.value="new";
-				frm.count.value="1";
+				//frm.count.value="1";
 				}
 				else{
 				frm.mode.value="update";
-				frm.count.value="2";
+				//frm.count.value="2";
 				}
 			//frm.quizID.value=frm.quizList.options[frm.quizList.selectedIndex].value;
 			frm.submit();

@@ -1,0 +1,228 @@
+#*
+ * @(#) Quiz_Score.vm
+ * Copyright (c) 2010 DEI Agra.
+ * All Rights Reserved.
+ * @author <a href="mailto:noopur.here@gmail.com ">Nupur Dixit</a>
+ * Contributors: Members of MHRD Project DEI Agra
+*#
+
+$page.setTitle("Quiz Score")
+$page.setBgColor($ui.bgcolor)
+## Retreiving the $lang (representing the choosen language for display, which was set in corresponding the screen class.
+#set($lang = $data.getUser().getTemp("lang" ).toString())
+## Creating the links for help regarding FAQ 
+<table width="100%">
+	<tr>
+		<td align=left>
+			## If some message has been set, that is retrieved and displayed.
+			<font face="$ui.sansSerifFonts">
+				$!data.getMessage()
+			</font>
+		</td>
+		<td align=right>
+			<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Quizstudent.html","newWin");>$brih_help</a>
+		</td>
+	</tr>
+</table>
+
+#set($cnm = $data.getUser().getTemp("course_name" ).toString())
+
+<table bgcolor="$ui.menuColor" width=100%>
+<tr>
+	<td>
+		<b>
+		<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> |	
+        <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cnm</a> | 
+        #set($role = $data.getUser().getTemp("role").toString())
+        #if($role=="instructor")
+         <a href=$link.setPage("call,OLES,Evaluate.vm").addPathInfo("count","5").addPathInfo("type","result")>$brih_quiz </a> | 
+        #elseif($role=="student")
+         	<a href=$link.setPage("call,OLES,Student_Score.vm").addPathInfo("count","3")>$brih_quiz </a> | 
+        #end 
+       
+        #if($!answerSheetFlag!="yes")
+			$brih_score $brih_card 
+		#else
+			$brih_answer $brih_sheet
+		#end                
+    </td>
+</tr>
+</table>
+
+<form name=frm method="post" action="$link.setPage("call,OLES,Quiz_Score.vm")">
+#if($!answerSheetFlag!="yes")
+<table bgcolor="$ui.tableColor" width="100%">
+	<tr>
+		<td colspan=5><font color="$ui.fontColorBlue" size="4"><b><i> <u>$brih_score $brih_card $brih_for $!quizName</i></b></font>
+		</td>
+	</tr>
+	<tr bgcolor="$ui.menuColor">
+		<td width=20% colspan=2><b> Total Marks </td>
+		<td>$!maxMarks</td>
+	</tr>		
+	<tr bgcolor="$ui.menuColor">
+		<td width=20% colspan=2><b> $brih_score </td>
+		<td>$!studentMarks </td>
+	</tr>
+	<tr>
+		<td width=20% colspan=2><b>$brih_min Passing Marks</td>
+                <td>$!passingMarks</td>
+	</tr>
+	<tr bgcolor="$ui.menuColor">
+		<td width=20% colspan=2><b> $brih_percentage (%) </td>
+                <td>$!percentageScore %</td>
+	</tr>
+	<tr>
+		<td width=20% colspan=2><B>$brih_result</td>
+		<td><b><i> $!finalResult </i></b></td> 
+	</tr>
+	<tr bgcolor="$ui.menuColor">
+	        <td colspan=5>
+        	<input type="button" value="$brih_answer $brih_sheet" onClick="showAnswerSheet(document.frm,this);"/>
+	        </td>
+	</tr>
+</table>
+#else
+
+<table width=100% bgcolor="$ui.tableColor">
+	<tr>
+		<td colspan=5>
+			<font color="$ui.fontColorBlue" size="4"><b><i> <u>$brih_answer $brih_sheet $brih_for $!quizName</i></b></font>
+		</td>
+		
+	</tr>
+	#if($answerDetail.size()!=0)
+	#foreach($answer in $answerDetail)
+	#if($velocityCount%2==0)
+		<tr bgcolor="$ui.tableColor">
+	#else
+		<tr bgcolor="$ui.menuColor">
+	#end
+		<td colspan="6">
+		<table width=100% >
+		<tr>
+		<td width="5%">$velocityCount .
+		</td>
+		<td colspan="5">
+			<table width=100% >
+				<tr >
+					<td width="30%"><b>$brih_qus</td>							
+					<td colspan=3>$!answer.getQuestion()</td>
+					<td align="right">$answer.getMarksPerQuestion()</td>
+				</tr>
+				<tr>					
+					#if($!answer.getQuestionType()=="mcq")
+					<td width="30%"><b>Options</td>		
+					<td colspan=4>
+						<table width=100% >
+						#set($A="")
+						#set($B="")
+						#set($C="")
+						#set($D="")
+						#if($!answer.getStudentAnswer()=="A")
+							#set($A="checked")				
+						#elseif($!answer.getStudentAnswer()=="B")				
+							#set($B = "checked")
+						#elseif($!answer.getStudentAnswer()=="C")				
+							#set($C = "checked")
+						#elseif($!answer.getStudentAnswer()=="D")				
+							#set($D = "checked")
+						#end
+							<tr>
+								<td align=left> <b> A </b>
+						 			<input type="RADIO" name="answer$velocityCount" value="A" $!A disabled>$!answer.getOption1()						
+       		        			</td>
+								<td align=left ><b> B </b>
+									<input type="RADIO" name="answer$velocityCount" value="B" $!B disabled>$!answer.getOption2()						
+								</td>
+							</tr>
+							<tr>					
+								<td align=left> <b> C </b>
+									<input type="RADIO" name="answer$velocityCount" value="C" $!C disabled>$!answer.getOption3()	
+            					</td>
+        						<td align=left> <b> D </b>
+           							<input type="RADIO" name="answer$velocityCount" value="D" $!D disabled>$!answer.getOption4()	
+            					</td>
+							</tr>
+					</table></td></tr>
+						#elseif($!answer.getQuestionType()=="tft")
+						<td width="30%"><b>Options</td>		
+						<td colspan=4>
+						<table width=100% >
+							#if($!answer.getStudentAnswer()=="true")
+								#set($A="checked")
+								#set($B="")
+							#elseif($!answer.getStudentAnswer()=="false")
+								#set($A="")	
+								#set($B = "checked")
+							#elseif($!answer.getStudentAnswer()=="")
+								#set($A="")	
+								#set($B = "")
+							#end
+							<tr>
+								<td align=left>
+									<input type="RADIO" name="answer$velocityCount"  value="true" $!A disabled>True	
+								</td>
+								<td align=left>
+									<input type="RADIO" name="answer$velocityCount" value="false" $!B disabled>False
+								</td>	
+							</tr>
+							</table>
+					</td>
+				</tr>
+						#end
+						
+				<tr>
+					<td> <b> $brih_your  $brih_answer</td>
+					#if($!answer.getStudentAnswer()!="")
+					<td colspan=4>$!answer.getStudentAnswer()</td>
+					#else
+					<td colspan=4>Not Attempted</td>
+					#end					
+				</tr>
+				<tr >
+					<td><b>$brih_correct $brih_answer</td>
+					<td colspan=4>$!answer.getInstructorAnswer()</td>
+				</tr>
+				<tr>
+					<td> <b> Marks Obtained</td>
+					<td colspan=4>$!answer.getAwardedMarks()</td>
+				</tr>
+			</table>
+		</td>	
+	</tr>
+	</table>			
+	#end
+	#else
+	<tr>
+		<td colspan=5><font color="$ui.fontColorBlue" size="4"><b><i> $data.getMessage() !!!</i></b></font>
+		</td>
+	</tr>
+	
+	#end
+#end	
+<input type="hidden" name="actionName">
+<input type="hidden" name="answerSheetFlag" value="$!answerSheetFlag">
+<input type="hidden" name="maxMarks" value="$!maxMarks">
+<input type="hidden" name="maxQuestion" value="$!maxQuestion">
+<input type="hidden" name="quizName" value="$!quizName">
+<input type="hidden" name="quizID" value="$!quizID">
+<input type="hidden" name="maxTime" value="$!maxTime">
+<input type="hidden" name="studentLoginName" value="$!studentLoginName">
+</table>
+</form>
+
+<SCRIPT LANGUAGE="javascript">
+
+ 	function popupWin(url,popupName)
+        {
+                Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=400,width=400,align=left");
+        }
+
+	function showAnswerSheet(frm,field){
+		//frm.actionName.value=field.name;
+		frm.answerSheetFlag.value="yes";
+		frm.submit();
+	}	 
+
+</SCRIPT>

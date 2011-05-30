@@ -103,6 +103,8 @@ public class OLES_AttemptQuiz extends SecureAction{
 			evaluate(data,context);	
 		else if(action.equals("eventSubmit_EvaluateQuestion"))
 			evaluateQuestion(data,context);	
+		else if(action.equals("eventSubmit_Result"))
+			result(data,context);	
 		else
 			data.setMessage(MultilingualUtil.ConvertedString("action_msg",LangFile));				
 	}
@@ -114,6 +116,7 @@ public class OLES_AttemptQuiz extends SecureAction{
 	 */
 	public void attemptQuiz(RunData data, Context context){
 		try{
+			LangFile=(String)data.getUser().getTemp("LangFile");
 			User user=data.getUser();
 			String uname=user.getName();            
 			String uid=Integer.toString(UserUtil.getUID(uname));
@@ -142,7 +145,7 @@ public class OLES_AttemptQuiz extends SecureAction{
 			if(questionVector==null || questionVector.size()==0){						
 				if(!quizQuestionFile.exists()){
 					ErrorDumpUtil.ErrorLog("before first message");
-					data.setMessage("No questions are stored to attempt");				
+					data.setMessage(MultilingualUtil.ConvertedString("brih_quizwithoutquestion",LangFile));				
 				}
 				else{
 					quizQuestionMetaData=new QuizMetaDataXmlReader(quizFilePath+"/"+quizQuestionPath);				
@@ -155,7 +158,7 @@ public class OLES_AttemptQuiz extends SecureAction{
 					}
 					else{
 						ErrorDumpUtil.ErrorLog("before third message"+quizQuestionList.size());
-						data.setMessage("No questions are stored to attempt");
+						data.setMessage(MultilingualUtil.ConvertedString("brih_quizwithoutquestion",LangFile));	
 					}            
 				}
 			}
@@ -176,6 +179,7 @@ public class OLES_AttemptQuiz extends SecureAction{
 	 */
 	public void saveAnswerQuiz(RunData data, Context context){
 		try{
+			LangFile=(String)data.getUser().getTemp("LangFile");
 			User user=data.getUser();
 			String uname=user.getName();
 
@@ -214,6 +218,7 @@ public class OLES_AttemptQuiz extends SecureAction{
 	 */
 	public void saveFinalQuiz(RunData data, Context context){
 		try{
+			LangFile=(String)data.getUser().getTemp("LangFile");
 			User user=data.getUser();
 			String uname=user.getName();            
 			String uid=Integer.toString(UserUtil.getUID(uname));
@@ -247,6 +252,7 @@ public class OLES_AttemptQuiz extends SecureAction{
 	public void refreshQuiz(RunData data, Context context){
 		ParameterParser pp=data.getParameters();
 		try{
+			LangFile=(String)data.getUser().getTemp("LangFile");
 			ErrorDumpUtil.ErrorLog("inside oles_quiz");
 			User user=data.getUser();	
 			String timerValue = pp.getString("timerValue","");
@@ -284,6 +290,7 @@ public class OLES_AttemptQuiz extends SecureAction{
 	 */
 	public void attemptPracticeQuiz(RunData data, Context context){
 		try{
+			LangFile=(String)data.getUser().getTemp("LangFile");
 			User user=data.getUser();
 			String uname=user.getName();            
 			String uid=Integer.toString(UserUtil.getUID(uname));
@@ -405,6 +412,7 @@ public class OLES_AttemptQuiz extends SecureAction{
 	public void savePracticeQuiz(RunData data, Context context){
 		ParameterParser pp = data.getParameters();
 		try{
+			LangFile=(String)data.getUser().getTemp("LangFile");
 			User user=data.getUser();
 			String quizName=pp.getString("quizName","");
 			context.put("quizName",quizName);	
@@ -441,7 +449,8 @@ public class OLES_AttemptQuiz extends SecureAction{
 	 */
 	public void showScoreQuiz(RunData data, Context context){
 		ParameterParser pp = data.getParameters();
-		try{			
+		try{	
+			LangFile=(String)data.getUser().getTemp("LangFile");
 			String quizName=pp.getString("quizName","");
 			context.put("quizName",quizName);	
 			String quizID=pp.getString("quizID","");
@@ -462,6 +471,7 @@ public class OLES_AttemptQuiz extends SecureAction{
 	public void addUnattendedQuestions(RunData data,Context context){
 		ParameterParser pp = data.getParameters();
 		try{
+			LangFile=(String)data.getUser().getTemp("LangFile");
 			User user=data.getUser();
 			String uname=user.getName();            
 			String uid=Integer.toString(UserUtil.getUID(uname));		
@@ -545,7 +555,8 @@ public class OLES_AttemptQuiz extends SecureAction{
 	 */
 	public void showReportCard(RunData data, Context context){
 		ParameterParser pp = data.getParameters();
-		try{		
+		try{
+			LangFile=(String)data.getUser().getTemp("LangFile");
 			ErrorDumpUtil.ErrorLog("\n inside action method");
 			String quizName=pp.getString("quizName","");
 			context.put("quizName",quizName);	
@@ -562,6 +573,7 @@ public class OLES_AttemptQuiz extends SecureAction{
 	public void evaluate(RunData data, Context context){
 		ParameterParser pp = data.getParameters();
 		try{	
+			LangFile=(String)data.getUser().getTemp("LangFile");
 			String cid=(String)data.getUser().getTemp("course_id");
 			ErrorDumpUtil.ErrorLog("\n inside evaluate method");
 			String quizID=pp.getString("quizID","");		
@@ -574,7 +586,7 @@ public class OLES_AttemptQuiz extends SecureAction{
 			ErrorDumpUtil.ErrorLog("score file path :"+scoreFile.getPath());
 			int seq = 0;
 			if(!scoreFile.exists()){
-				data.setMessage("This Quiz is not Attempted by this Student !!");
+				data.setMessage(MultilingualUtil.ConvertedString("brih_quiznotattempted",LangFile));
 				return;
 			}
 			else{
@@ -582,7 +594,7 @@ public class OLES_AttemptQuiz extends SecureAction{
 				seq = quizreader.getSeqOfAlreadyInsertedScore(scoreFilePath,scoreXml,quizID,uid);
 				ErrorDumpUtil.ErrorLog("sequence number is :"+seq);
 				if(seq==-1)
-					data.setMessage("This Quiz is not Attempted by this Student !!");
+					data.setMessage(MultilingualUtil.ConvertedString("brih_quiznotattempted",LangFile));
 				else
 					data.setScreenTemplate("call,OLES,Evaluate_Quiz.vm");					
 			}									
@@ -595,6 +607,7 @@ public class OLES_AttemptQuiz extends SecureAction{
 	public void evaluateQuestion(RunData data, Context context){
 		ParameterParser pp = data.getParameters();
 		try{	
+			LangFile=(String)data.getUser().getTemp("LangFile");
 			String cid=(String)data.getUser().getTemp("course_id");
 			ErrorDumpUtil.ErrorLog("\n inside evaluate method");
 			String quizID=pp.getString("quizID","");
@@ -605,40 +618,57 @@ public class OLES_AttemptQuiz extends SecureAction{
 			String quesID=pp.getString("quesID","");
 			String fileName=pp.getString("fileName","");
 			ErrorDumpUtil.ErrorLog("question id and filename :"+quesID+" : "+fileName);
-//			String scoreFilePath=TurbineServlet.getRealPath("/Courses"+"/"+cid+"/Exam/");
 			String answerFilePath = TurbineServlet.getRealPath("/Courses"+"/"+cid+"/Exam/"+quizID+"/");
-//			String scoreXml="score.xml";
 			String answerPath = uid+".xml";
-//			File scoreFile = new File(scoreFilePath+"/"+scoreXml);
 			File answerFile = new File(answerFilePath+"/"+answerPath);
 			ErrorDumpUtil.ErrorLog("answer file path :"+answerFile.getPath());
-//			int seq = 0;
 			if(!answerFile.exists()){
-				data.setMessage("This Quiz is not Attempted by this Student !!");
+				data.setMessage(MultilingualUtil.ConvertedString("brih_quiznotattempted",LangFile));
 				return;
 			}
 			else{
-//				QuizMetaDataXmlReader quizreader= new QuizMetaDataXmlReader(scoreFilePath+"/"+scoreXml);
 				QuizMetaDataXmlWriter.xmlwriteEvaluateMarks(answerFilePath,answerPath,data);
 			}
-//			if(!scoreFile.exists()){
-//				data.setMessage("This Quiz is not Attempted by this Student !!");
-//				return;
-//			}
-//			else{
-//				QuizMetaDataXmlReader quizreader= new QuizMetaDataXmlReader(scoreFilePath+"/"+scoreXml);
-//				seq = quizreader.getSeqOfAlreadyInsertedScore(scoreFilePath,scoreXml,quizID,uid);
-//				ErrorDumpUtil.ErrorLog("sequence number is :"+seq);
-				//if(seq==-1)
-					//data.setMessage("This Quiz is not Attempted by this Student !!");
-				//else
-					//data.setScreenTemplate("call,OLES,Evaluate_Quiz.vm");					
-//			}									
 		}catch(Exception e){
 			ErrorDumpUtil.ErrorLog("Error in Action[OLES_AttemptQuiz] method:evaluate !! "+e);
 			data.setMessage("See ExceptionLog !!");
 		}
 	}
-
-
+	
+	public void result(RunData data, Context context){
+		ParameterParser pp = data.getParameters();
+		try{
+			LangFile=(String)data.getUser().getTemp("LangFile");
+			String cid=(String)data.getUser().getTemp("course_id");
+			ErrorDumpUtil.ErrorLog("\n inside evaluate method");
+			String quizID=pp.getString("quizID","");		
+			String studentLoginName=pp.getString("studentLoginName","");
+			String uid=Integer.toString(UserUtil.getUID(studentLoginName));
+			ErrorDumpUtil.ErrorLog("quiz id and student login name :"+quizID+" : "+uid);
+			String scoreFilePath=TurbineServlet.getRealPath("/Courses"+"/"+cid+"/Exam/");
+			String scoreXml="score.xml";
+			File scoreFile = new File(scoreFilePath+"/"+scoreXml);
+			ErrorDumpUtil.ErrorLog("score file path :"+scoreFile.getPath());
+			int seq = 0;
+			if(!scoreFile.exists()){
+				data.setMessage(MultilingualUtil.ConvertedString("brih_quiznotattempted",LangFile));
+				return;
+			}
+			else{
+				QuizMetaDataXmlReader quizreader= new QuizMetaDataXmlReader(scoreFilePath+"/"+scoreXml);
+				seq = quizreader.getSeqOfAlreadyInsertedScore(scoreFilePath,scoreXml,quizID,uid);
+				ErrorDumpUtil.ErrorLog("sequence number is :"+seq);
+				if(seq==-1){
+					data.setMessage(MultilingualUtil.ConvertedString("brih_quiznotattempted",LangFile));
+					return;
+				}
+				else
+					data.setScreenTemplate("call,OLES,Quiz_Score.vm");	
+//					data.setScreenTemplate("call,OLES,Evaluate_Quiz.vm");					
+			}									
+		}catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Action[OLES_AttemptQuiz] method:evaluate !! "+e);
+			data.setMessage("See ExceptionLog !!");
+		}
+	}
 }	                           

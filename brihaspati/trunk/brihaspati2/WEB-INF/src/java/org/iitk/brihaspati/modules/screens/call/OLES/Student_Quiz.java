@@ -98,7 +98,7 @@ public class Student_Quiz extends SecureScreen
 			}			
 			String type = pp.getString("type","");
 			context.put("type",type);
-			ErrorDumpUtil.ErrorLog("type is "+type);
+			ErrorDumpUtil.ErrorLog("type is here"+type);
 			if(type.equalsIgnoreCase("practice"))
 				count="2";
 			context.put("tdcolor",count);
@@ -106,19 +106,23 @@ public class Student_Quiz extends SecureScreen
 			String quizPath="/Quiz.xml";  
 			String scorePath="/score.xml";
 			File file=new File(filePath+"/"+quizPath);
+			ErrorDumpUtil.ErrorLog("second to check");
 			Vector quizList=new Vector();
 			Vector attemptedQuizList=new Vector();
 			Vector finalQuizList=new Vector();
 			Vector futureQuizList = new Vector();
 			QuizMetaDataXmlReader quizmetadata=null;
 			if(type.equalsIgnoreCase("practice")){
+				ErrorDumpUtil.ErrorLog("inside practice");
 				if(!file.exists()){
+					ErrorDumpUtil.ErrorLog("inside file not exist");
 					data.setMessage(MultilingualUtil.ConvertedString("brih_nopracticequiz",LangFile));									
 				}
 				else{
 					context.put("isFile","exist");
 					quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);				
 					quizList=quizmetadata.getPracticeQuiz_Detail();
+					ErrorDumpUtil.ErrorLog("inside else "+quizList);
 					if(quizList!=null){
 						if(quizList.size()!=0){
 							context.put("quizList",quizList);	              

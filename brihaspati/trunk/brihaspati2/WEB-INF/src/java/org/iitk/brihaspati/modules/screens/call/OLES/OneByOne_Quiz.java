@@ -68,7 +68,7 @@ public class OneByOne_Quiz extends SecureScreen{
         	String mode =pp.getString("mode","");
         	String type = pp.getString("type","");
         	String count = pp.getString("count","");
-        	String courseID=(String)user.getTemp("course_id");
+          	String courseID=(String)user.getTemp("course_id");
         	String quizMode =pp.getString("quizMode"," "); 
         	String quizDetail="";
         	

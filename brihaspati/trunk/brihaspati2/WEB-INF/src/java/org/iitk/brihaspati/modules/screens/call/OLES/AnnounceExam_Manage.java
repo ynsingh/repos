@@ -67,9 +67,10 @@ public class AnnounceExam_Manage extends SecureScreen{
         try{
         	User user=data.getUser();
         	String uname=user.getName();
-        	String count = pp.getString("count","3");
-        	ErrorDumpUtil.ErrorLog("The count value :"+count);
-        	context.put("tdcolor",pp.getString("count","3"));
+//        	String count = pp.getString("count","3");
+//        	ErrorDumpUtil.ErrorLog("The count value :"+count);
+//        	context.put("tdcolor",pp.getString("count","3"));
+        	context.put("tdcolor","3");
         	context.put("course",(String)user.getTemp("course_name"));
         	String courseid=(String)user.getTemp("course_id");        	
         	

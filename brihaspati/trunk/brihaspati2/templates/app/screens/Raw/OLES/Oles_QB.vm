@@ -77,7 +77,7 @@ $!data.getMessage()
             #elseif($tdcolor == "5")
             	<td bgcolor="#AFDCEC">
             #end
-			<b><I><a href=$link.setPage("call,OLES,Oles_Other.vm").addPathInfo("count","5") style=text-decoration:none>$brih_result</I></b></a></td>
+			<b><I><a href=$link.setPage("call,OLES,Evaluate.vm").addPathInfo("count","5").addPathInfo("type","result") style=text-decoration:none>$brih_result</I></b></a></td>
 		</tr>
 		<tr bgcolor="$ui.menuColor"><td colspan="5">
 		<b><a href="$link.setPage("call,OLES,Create_QB.vm").addPathInfo("mode","cnqb").addPathInfo("count","1")" style=text-decoration:none>$WikiCreate $brih_new $brih_queBank</a></b>

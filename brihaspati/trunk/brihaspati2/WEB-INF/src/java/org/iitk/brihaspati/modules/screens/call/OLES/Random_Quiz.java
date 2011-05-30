@@ -126,7 +126,8 @@ public class Random_Quiz extends SecureScreen{
 			String maxMarks=temp[1];
 			context.put("maxMarks",maxMarks);
 			String noQuestions=temp[2];
-			context.put("noQuestions",noQuestions);				
+			context.put("noQuestions",noQuestions);
+			
         }
         catch(Exception e) {
         	ErrorDumpUtil.ErrorLog("The exception in Random_Quiz screen::"+e);
