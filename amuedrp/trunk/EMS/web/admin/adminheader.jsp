@@ -53,6 +53,7 @@ String pass=(String)session.getAttribute("pass");
 String user_name=   (String) session.getAttribute("username");
   String question=  (String)request.getAttribute("question");
    String staff_id=  (String) request.getAttribute("staff_id");
+   String contextPath = request.getContextPath();
 %>
 
 <table width="100%" height="50px;" border="0px" style="margin:0px 0px 0px 0px" dir="<%=rtl%>">
@@ -62,7 +63,7 @@ String user_name=   (String) session.getAttribute("username");
                         <p align="<%=align%>"  style="font-family:Arial;color:brown;font-size:22px;" dir="<%=rtl%>">&nbsp;&nbsp;<%=resource.getString("electionmanagement")%><br/><br></td>
                     <td dir="<%=rtl%>"><p align="center"  style="font-family:Tempus Sans ITC;color:brown;font-size:20px;" dir="<%=rtl%>"><span dir="<%=rtl%>"><b> </b></span></td>
 
-                    <td align="right" width="250px" valign="top" dir="<%=rtl%>"><span style="font-family:arial;color:brown;font-size:12px;" dir="<%=rtl%>"><b dir="<%=rtl%>"><%=resource.getString("login.hello")%> [<%=user%>]&nbsp;|<a href="/EMS-Struts/logout.do" style="text-decoration: none;color:brown" dir="<%=rtl%>">&nbsp;<%=resource.getString("login.signout")%></a></b></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <td align="right" width="250px" valign="top" dir="<%=rtl%>"><span style="font-family:arial;color:brown;font-size:12px;" dir="<%=rtl%>"><b dir="<%=rtl%>"><%=resource.getString("login.hello")%> [<%=user%>]&nbsp;|<a href="<%=contextPath%>/logout.do" style="text-decoration: none;color:brown" dir="<%=rtl%>">&nbsp;<%=resource.getString("login.signout")%></a></b></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 
                      </td>
                 </tr>

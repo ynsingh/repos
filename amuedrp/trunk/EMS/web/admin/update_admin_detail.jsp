@@ -66,7 +66,7 @@ locale1=(String)session.getAttribute("locale");
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
     %>
-<link rel="stylesheet" href="/EMS-Struts/css/page.css"/>
+<link rel="stylesheet" href="/EMS/css/page.css"/>
 <style type="text/css">
 body
 {
@@ -101,7 +101,7 @@ font-weight:bold;
         <table align="center" dir="<%=rtl%>"  class="txt" width="80%" style="font-family: arial;font-weight: bold;color:brown;font-size:13px">
 
 
-     <tr><td  align="<%=align%>" dir="<%=rtl%>" colspan="2" ><br><br> <span class="txt"><img src="/EMS-Struts/images/Institutereg.png">
+            <tr><td  align="<%=align%>" dir="<%=rtl%>" colspan="2" ><br><br> <span class="txt">
 </span><br>
              <br>
 
@@ -197,9 +197,12 @@ font-weight:bold;
      if(user_id==null)
          user_id="";
      %>
-               <tr><td width="15%" dir="<%=rtl%>"><%=resource.getString("institutename")%></td><td width="15%" ><input type="text" id="institute_name"      name="institute_name" value="<%=institute_name%>" tabindex="1" title="Enter Instutute Name" dir="<%=rtl%>" ></td><td dir="<%=rtl%>" width="15%" ><%=resource.getString("registrationid")%></td><td dir="<%=rtl%>" width="15%" ><input type="text" dir="<%=rtl%>" id="registration_request_id"  name="registration_request_id" value="<%=registration_id%>"  readonly></td></tr>
+               <tr><td width="15%" dir="<%=rtl%>"><%=resource.getString("institutename")%>*</td><td width="15%" ><input type="text" id="institute_name"      name="institute_name" value="<%=institute_name%>" tabindex="1" title="Enter Instutute Name" dir="<%=rtl%>" ></td><td dir="<%=rtl%>" width="15%" ><%=resource.getString("registrationid")%></td><td dir="<%=rtl%>" width="15%" ><input type="text" dir="<%=rtl%>" id="registration_request_id"  name="registration_request_id" value="<%=registration_id%>"  readonly></td></tr>
 
-             <tr><td dir="<%=rtl%>"><%=resource.getString("instituteabbrevation")%></td><td dir="<%=rtl%>"><input type="text" dir="<%=rtl%>" id="abbreviated_name"   name="abbreviated_name" value="<%=abbreviated_name%>" tabindex="2"  title="Abbrivated name e.g. AMU(aligarh muslim University)"></td><td dir="<%=rtl%>"><%=resource.getString("courtesy")%></td><td> <select name="courtesy"  dir="<%=rtl%>"  size="1" id="courtesy"   tabindex="13" title="courtesy" style="width:148px">
+             <tr><td dir="<%=rtl%>"><%=resource.getString("instituteabbrevation")%></td><td dir="<%=rtl%>"><input type="text" dir="<%=rtl%>" id="abbreviated_name"   name="abbreviated_name" value="<%=abbreviated_name%>" tabindex="2"  title="Abbrivated name e.g. AMU(aligarh muslim University)"></td><td dir="<%=rtl%>"><%=resource.getString("courtesy")%></td><td>
+                <input type="text" name="courtesy"  dir="<%=rtl%>" value="<%=courtesy%>" size="1" id="courtesy"   tabindex="11" title="courtesy" style="width:148px"/>
+
+              <%--       <select name="courtesy"  dir="<%=rtl%>"  size="1" id="courtesy"   tabindex="13" title="courtesy" style="width:148px">
     <%if(courtesy.equals("mr")){%>
 <option selected value="mr"><%=resource.getString("Mr")%></option>
 <option value="mrs"><%=resource.getString("Mrs")%></option>
@@ -230,22 +233,22 @@ else
 }
 %>
 
-</select>
+</select>--%>
                      <input type="hidden" id="courtesy" name="courtesy" value="<%=courtesy%>"/>
 </td></tr>
 
-             <tr><td dir="<%=rtl%>"><%=resource.getString("instituteAddress")%></td><td dir="<%=rtl%>"><input type="text" dir="<%=rtl%>" id="institute_address"   name="institute_address" value="<%=institute_address%>" tabindex="3"  title="Enter Address of Institute"></td><td dir="<%=rtl%>"><%=resource.getString("firstname")%></td><td dir="<%=rtl%>"><input type="text" id="admin_fname"  name="admin_fname" value="<%=admin_fname%>" tabindex="14" title="Enter first Name" ></td></tr>
-             <tr><td dir="<%=rtl%>"><%=resource.getString("lastname")%></td><td dir="<%=rtl%>"> <input type="text" id="admin_lname" dir="<%=rtl%>"  name="admin_lname" value="<%=admin_lname%>" tabindex="15" title="Enter Last Name" ></td><td><%=resource.getString("userid")%></td><td dir="<%=rtl%>"><input type="text" readonly id="userId" dir="<%=rtl%>"  name="user_id" value="<%=user_id%>" tabindex="13" title="Enter UserId" F></td></tr>
-              <tr><td dir="<%=rtl%>"><%=resource.getString("city")%></td><td>
+             <tr><td dir="<%=rtl%>"><%=resource.getString("instituteAddress")%>*</td><td dir="<%=rtl%>"><input type="text" dir="<%=rtl%>" id="institute_address"   name="institute_address" value="<%=institute_address%>" tabindex="3"  title="Enter Address of Institute"></td><td dir="<%=rtl%>"><%=resource.getString("firstname")%>*</td><td dir="<%=rtl%>"><input type="text" id="admin_fname"  name="admin_fname" value="<%=admin_fname%>" tabindex="14" title="Enter first Name" ></td></tr>
+             <tr><td dir="<%=rtl%>"><%=resource.getString("lastname")%>*</td><td dir="<%=rtl%>"> <input type="text" id="admin_lname" dir="<%=rtl%>"  name="admin_lname" value="<%=admin_lname%>" tabindex="15" title="Enter Last Name" ></td><td><%=resource.getString("userid")%></td><td dir="<%=rtl%>"><input type="text" readonly id="userId" dir="<%=rtl%>"  name="user_id" value="<%=user_id%>" tabindex="13" title="Enter UserId" F></td></tr>
+              <tr><td dir="<%=rtl%>"><%=resource.getString("city")%>*</td><td>
 
                  <input type="text" id="city" dir="<%=rtl%>"  name="city" value="<%=city%>" tabindex="5" title="Enter City " >
 
 
                  </td><td dir="<%=rtl%>"><%=resource.getString("designation")%></td><td dir="<%=rtl%>"><input type="text" dir="<%=rtl%>" id="admin_designation"  name="admin_designation" value="<%=admin_designation%>" tabindex="16" title="Enter Designation" ></td></tr>
-             <tr><td dir="<%=rtl%>"><%=resource.getString("state")%></td><td dir="<%=rtl%>"><input type="text" dir="<%=rtl%>" id="state"   name="state" value="<%=state1%>" tabindex="6" title="Enter State" ></td><td><%=resource.getString("mobileno")%>
+             <tr><td dir="<%=rtl%>"><%=resource.getString("state")%>*</td><td dir="<%=rtl%>"><input type="text" dir="<%=rtl%>" id="state"   name="state" value="<%=state1%>" tabindex="6" title="Enter State" ></td><td><%=resource.getString("mobileno")%>*
                  </td><td dir="<%=rtl%>"><input type="text" id="mobile_no" dir="<%=rtl%>"  name="mobile_no" value="<%=mobile_no%>" tabindex="17" title="Enter Mobile No with STD Code" ></td></tr>
-             <tr><td dir="<%=rtl%>"><%=resource.getString("country")%></td><td dir="<%=rtl%>"><input type="text" dir="<%=rtl%>" id="country"   name="country" value="<%=country%>" tabindex="7" title="Enter Country" ></td>
-             <td dir="<%=rtl%>"><%=resource.getString("emailid")%></td><td dir="<%=rtl%>"><input type="text" dir="<%=rtl%>" id="admin_email"  name="admin_email" value="<%=admin_email%>" onBlur="echeck(admin_email.value);" tabindex="18" title="Enter E-mail Id">
+             <tr><td dir="<%=rtl%>"><%=resource.getString("country")%>*</td><td dir="<%=rtl%>"><input type="text" dir="<%=rtl%>" id="country"   name="country" value="<%=country%>" tabindex="7" title="Enter Country" ></td>
+             <td dir="<%=rtl%>"><%=resource.getString("emailid")%>*</td><td dir="<%=rtl%>"><input type="text" dir="<%=rtl%>" id="admin_email"  name="admin_email" value="<%=admin_email%>" onBlur="echeck(admin_email.value);" tabindex="18" title="Enter E-mail Id">
                  <br/>
                      <div align="<%=align%>" dir="<%=rtl%>" id="searchResult" class="err" style="border:#000000; "></div>
                      <%
@@ -256,7 +259,7 @@ else
                          %>
               </tr>
              <tr><td dir="<%=rtl%>"><%=resource.getString("pin")%></td><td dir="<%=rtl%>"><input type="text" dir="<%=rtl%>" id="pin"  name="pin" value="<%=pin%>" tabindex="8" title="Enter PIN/ZIP Code" ></td>
-             <td dir="<%=rtl%>"><%=resource.getString("gender")%></td><td> <select name="gender" size="1" dir="<%=rtl%>"  id="gender" style="width:148px"   tabindex="19" title="gender">
+             <td dir="<%=rtl%>"><%=resource.getString("gender")%>*</td><td> <select name="gender" size="1" dir="<%=rtl%>"  id="gender" style="width:148px"   tabindex="19" title="gender">
             <%if(gender.equals("male")){%>
             <option selected value="male"><%=resource.getString("male")%></option>
             <option value="female"><%=resource.getString("female")%></option>
@@ -293,10 +296,10 @@ else
 
 
              <tr><td dir="<%=rtl%>"><%=resource.getString("landlineno")%></td><td dir="<%=rtl%>"><input type="text" dir="<%=rtl%>" id="land_line_no"   name="land_line_no" value="<%=land_line_no%>" tabindex="9" title="Enter Land Line No" ></td>
-             <td dir="<%=rtl%>"><%=resource.getString("password")%></td><td dir="<%=rtl%>"><input type="password" id="admin_password" dir="<%=rtl%>"  name="admin_password" value="<%=admin_password%>"  title="Enter Password" readonly/></td>
+             <input type="hidden" id="admin_password" dir="<%=rtl%>"  name="admin_password" value="<%=admin_password%>"  title="Enter Password" readonly/>
              </tr>
 
-             <tr><td dir="<%=rtl%>"><%=resource.getString("typeofinstitute")%></td><td><select name="type_of_institute" dir="<%=rtl%>" tabindex="10" id="type_of_institute" style="width:148px" >
+             <tr><td dir="<%=rtl%>"><%=resource.getString("typeofinstitute")%>*</td><td><select name="type_of_institute" dir="<%=rtl%>" tabindex="10" id="type_of_institute" style="width:148px" >
 
 
 
@@ -306,27 +309,35 @@ else
 <option value="self_financed"><%=resource.getString("selffinanced")%></option>
 <option value="other"><%=resource.getString("other")%></option>
 <option  value="Select"><%=resource.getString("select")%></option>
-            <%}%>
-            <%if(type_of_institute.equals("semi_govt")){%>
+            <%}
+            if(type_of_institute.equals("semi_govt")){%>
 <option value="govt"><%=resource.getString("govt")%></option>
 <option selected value="semi_govt"><%=resource.getString("semigovt")%></option>
 <option value="self_financed"><%=resource.getString("selffinanced")%></option>
 <option value="other"><%=resource.getString("other")%></option>
 <option value="Select"><%=resource.getString("select")%></option>
-            <%}%>
-            <%if(type_of_institute.equals("self_financed")){%>
+            <%}
+      if(type_of_institute.equals("self_financed")){%>
 <option  value="govt"><%=resource.getString("govt")%></option>
 <option value="semi_govt"><%=resource.getString("semigovt")%></option>
 <option selected value="self_financed"><%=resource.getString("selffinanced")%></option>
 <option value="other"><%=resource.getString("other")%></option>
 <option  value="Select"><%=resource.getString("select")%></option>
-            <%}%>
-            <%if(type_of_institute.equals("other")){%>
+            <%} %>
+            <% if(type_of_institute.equals("other")){%>
 <option  value="govt"><%=resource.getString("govt")%></option>
 <option value="semi_govt"><%=resource.getString("semigovt")%></option>
 <option value="self_financed"><%=resource.getString("selffinanced")%></option>
 <option selected value="other"><%=resource.getString("other")%></option>
 <option  value="Select"><%=resource.getString("select")%></option>
+            <%}
+     if(type_of_institute.equals("Select"))
+        {%>
+            <option  value="govt"><%=resource.getString("govt")%></option>
+<option value="semi_govt"><%=resource.getString("semigovt")%></option>
+<option value="self_financed"><%=resource.getString("selffinanced")%></option>
+<option  value="other"><%=resource.getString("other")%></option>
+<option selected value="Select"><%=resource.getString("select")%></option>
             <%}%>
 
 </select></td>
@@ -343,7 +354,7 @@ else
 <tr><td colspan="4" align="center" dir="<%=rtl%>" class="txt2"><br><br>
          
                           
-        <input type="submit" class="txt2" dir="<%=rtl%>" id="Button1" name="submit" value="<%=resource.getString("update")%>">&nbsp;&nbsp;<input type="button" dir="<%=rtl%>"  name="cancel" class="txt2" value="<%=resource.getString("cancel")%>" onclick="quit();"></td></tr>
+        <input type="submit" class="txt2" dir="<%=rtl%>" id="Button1" name="submit" value="<%=resource.getString("update")%>" onclick="return validation();">&nbsp;&nbsp;<input type="button" dir="<%=rtl%>"  name="cancel" class="txt2" value="<%=resource.getString("cancel")%>" onclick="quit();"></td></tr>
         </table>
 
 
@@ -371,22 +382,19 @@ else
     var email_id=document.getElementById('admin_email');
     var type_of_institute=document.getElementById('type_of_institute').options[document.getElementById('type_of_institute').selectedIndex].text;
     var gender=document.getElementById('gender').options[document.getElementById('gender').selectedIndex].text;
-    var courtesy=document.getElementById('courtesy').options[document.getElementById('courtesy').selectedIndex].text;
-
+    
     var institute_name=document.getElementById('institute_name');
-  //  var abbreviated_name=document.getElementById('abbreviated_name');
+  
     var institute_address=document.getElementById('institute_address');
     var admin_fname=document.getElementById('admin_fname');
     var admin_lname=document.getElementById('admin_lname');
- //   var institute_website=document.getElementById('institute_website');
- //   var admin_designation=document.getElementById('admin_designation');
+ 
     var city=document.getElementById('city');
     var state=document.getElementById('state');
     var country=document.getElementById('country');
-  //  var pin=document.getElementById('pin');
-  //  var land_line_no=document.getElementById('land_line_no');
+  
     var mobile_no=document.getElementById('mobile_no');
-  //  var institute_domain=document.getElementById('institute_domain');
+ 
   var library_name=document.getElementById('institute_name');
 
   if (echeck(email_id.value)==false)
@@ -398,9 +406,9 @@ else
 	}
 
 
-var str="Enter Following Values:-";
+var str="<%=resource.getString("enter_follwing")%>";
 if(institute_name.value=="")
-      {  str+="\n Enter Institute Name ";
+      {  str+="\n <%=resource.getString("institutename")%>";
        alert(str);
             document.getElementById('institute_name').focus();
             return false;
@@ -421,28 +429,24 @@ if(institute_name.value=="")
    //         return false;
    //    }
       if(institute_address.value=="")
-       { str+="\n Enter institute Address"; alert(str);
+       { str+="\n <%=resource.getString("instituteAddress")%>"; alert(str);
             document.getElementById('institute_address').focus();
             return false;
        }
     if(admin_fname.value=="")
-       { str+="\n Enter admin first name"; alert(str);
+       { str+="\n <%=resource.getString("firstname")%>"; alert(str);
             document.getElementById('admin_fname').focus();
             return false;
        }
 
-       if(library_name.value=="")
-       { str+="\n Enter Institute name"; alert(str);
-            document.getElementById('institute_name').focus();
-            return false;
-       }
+       
  if(admin_lname.value=="")
-       { str+="\n Enter admin last name"; alert(str);
+       { str+="\n <%=resource.getString("lastname")%>"; alert(str);
             document.getElementById('admin_lname').focus();
             return false;
        }
         if(city.value=="")
-       { str+="\n Enter city";
+       { str+="\n <%=resource.getString("city")%>";
            alert(str);
             document.getElementById('city').focus();
             return false;
@@ -453,29 +457,29 @@ if(institute_name.value=="")
     //        return false;
     //   }
        if(state.value=="")
-        {str+="\n Enter State"; alert(str);
+        {str+="\n <%=resource.getString("state")%>"; alert(str);
             document.getElementById('state').focus();
             return false;
        }
        if(mobile_no.value=="")
-       { str+="\n Enter mobile no" ; alert(str);
+       { str+="\n <%=resource.getString("mobileno")%>" ; alert(str);
             document.getElementById('mobile_no').focus();
             return false;
        }
        if (isNaN(mobile_no.value))
         {
-            str+="\n Enter Valid Mobile No";
+            str+="\n <%=resource.getString("valid_mobileno")%>";
             alert(str);
             document.getElementById('mobile_no').focus();
             return false;
         }
         if(country.value=="")
-       { str+="\n Enter Country"; alert(str);
+       { str+="\n <%=resource.getString("country")%>"; alert(str);
             document.getElementById('country').focus();
             return false;
        }
     if(email_id.value=="")
-       { str+="\n Enter Email ID";
+       { str+="\n <%=resource.getString("emailid")%>";
            alert(str);
             document.getElementById('admin_email').focus();
             return false;
@@ -486,18 +490,14 @@ if(institute_name.value=="")
     //        return false;
     //   }
 
-   if(gender=="Select")
-       { str+="\n Select Gender"; alert(str);
+   if(gender=="<%=resource.getString("select")%>")
+       { str+="\n <%=resource.getString("gender")%>"; alert(str);
             document.getElementById('gender').focus();
             return false;
        }
 
 
-       if(courtesy=="Select")
-       { str+="\n Select Courtesy"; alert(str);
-            document.getElementById('courtesy').focus();
-            return false;
-       }
+      
 
 
 //if(land_line_no.value=="")
@@ -512,8 +512,8 @@ if(institute_name.value=="")
    //         document.getElementById('land_line_no').focus();
    //         return false;
    //     }
-    if(type_of_institute=="Select")
-    {str+="\n Select Type of Institute";
+    if(type_of_institute=="<%=resource.getString("select")%>")
+    {str+="\n <%=resource.getString("typeofinstitute")%>";
          alert(str);
             document.getElementById('type_of_institute').focus();
             return false;
@@ -532,7 +532,7 @@ if(institute_name.value=="")
   //          return false;
    //    }
 
-if(str=="Enter Following Values:-")
+if(str=="<%=resource.getString("enter_follwing")%>")
     return true;
 else
     {

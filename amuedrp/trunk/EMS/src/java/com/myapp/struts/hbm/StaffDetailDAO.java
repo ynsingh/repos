@@ -13,7 +13,22 @@ import org.hibernate.*;
  * @author Edrp-04
  */
 public class StaffDetailDAO {
+public static StaffDetail searchStaffId(String staff_id,String institute_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
 
+        try {
+            session.beginTransaction();
+            Query query = session.createQuery("FROM  StaffDetail  WHERE institute_id =:institute_id and  staff_id=:staff_id ");
+            query.setString("institute_id", institute_id);
+
+            query.setString("staff_id", staff_id);
+            return ( StaffDetail) query.uniqueResult();
+        }
+        finally {
+            session.close();
+        }
+
+}
      public void insert(StaffDetail staffDetails){
     Session session =null;
     Transaction tx = null;
@@ -95,6 +110,21 @@ public List getStaffDetails(String staffId,String instituteId){
              query.setString("staffId", staffId);
              query.setString("instituteId", instituteId);
             return query.list();
+        }
+        finally {
+            session.close();
+        }
+}
+public StaffDetail getStaffDetails1(String staffId,String instituteId){
+ Session session =null;
+    Transaction tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("FROM StaffDetail where id.staffId=:staffId and id.instituteId=:instituteId");
+             query.setString("staffId", staffId);
+             query.setString("instituteId", instituteId);
+            return (StaffDetail)query.uniqueResult();
         }
         finally {
             session.close();

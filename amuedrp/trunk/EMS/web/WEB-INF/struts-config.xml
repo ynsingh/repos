@@ -28,7 +28,7 @@
         <form-bean name="PrivilegeActionForm" type="com.myapp.struts.admin.PrivilegeActionForm"/>
         <form-bean name="SearchInstituteActionForm" type="com.myapp.struts.admin.SearchInstituteActionForm"/>
         <form-bean name="ChangeWorkingStatusActionForm" type="com.myapp.struts.admin.ChangeWorkingStatusActionForm"/>
-
+        <form-bean name="Election_Manager_RegistrationActionForm" type="com.myapp.struts.institute_admin.Election_Manager_RegistrationActionForm"/>
     </form-beans>
 
     <global-exceptions>
@@ -51,6 +51,8 @@
                         <forward name="forgetpassword" path="/forget.jsp"/>
                         <forward name="login" path = "/login.jsp"/>
                         <forward name="logout" path = "/logout.do"/>
+                        <forward name="instituteadmin" path = "/instituteadmin.do"/>
+
            </action>
            <action path="/superadmin" type="com.myapp.struts.superadminModuleAction">
                               <forward name="success" path="/admin/admin_home.jsp"/>
@@ -74,7 +76,7 @@
 
 
 
-       <!--Admin Action Setting-->
+       <!--====================================Admin Action Setting===============================================-->
 
  <action path="/update_email" scope="request" type="com.myapp.struts.admin.UpdateStaffEmailAction"/>
 
@@ -83,10 +85,13 @@
                       <forward name="failure" path="/admin/admin_registration.jsp"/>
                     </action>
 
+<action  path="/forget1"  input="/admin/security.jsp" name="SecurityActionForm"  scope="request" type="com.myapp.struts.admin.SecurityAction">
+                        <forward name="success" path="/instituteadmin.do"/>
+                        <forward name="failure" path="/login.jsp"/>
+                    </action>
 
-
-                    <action  path="/forget1"  input="/admin/security.jsp" name="SecurityActionForm"  scope="request" type="com.myapp.struts.admin.SecurityAction">
-                        <forward name="success" path="/admin/changepassword.jsp"/>
+                    <action  path="/forget"  input="/forget.jsp" name="SecurityActionForm"  scope="request" type="com.myapp.struts.admin.SecurityAction">
+                        <forward name="success" path="/instituteadmin.do"/>
                         <forward name="failure" path="/login.jsp"/>
                     </action>
 
@@ -105,13 +110,7 @@
                     </action>
 
 
-                     <action   input="/admin/privilege_tree.jsp" name="PrivilegeActionForm"  path="/assign_privilege1"  scope="request" type="com.myapp.struts.admin.PrivilegeAction">
-
-                        <forward name="assign_privilege" path="/admin/pri_header.jsp"/>
-                        <forward name="view_privilege" path="/admin/view_privilege.jsp"/>
-                        <forward name="failure" path="/admin/privilege_tree.jsp"/>
-                    </action>
-
+                  
 
                 <action   input="/admin/pri_header.jsp" name="PrivilegeActionForm"  path="/assign_privilege2"  scope="request" type="com.myapp.struts.admin.PrivilegeAction1">
 
@@ -136,7 +135,7 @@
                     <action path="/confirm"  input="/admin/admin_pending.jsp" name="AdminViewActionForm" scope="request" type="com.myapp.struts.admin.AdminViewAction1">
                         <forward name="success" path="/admin/accept_message.jsp"/>
                         <forward name="failure" path="/admin/admin_pending.jsp"/>
-                        <forward name="error" path="/admin/error_message.jsp"/>
+                        <forward name="error" path="/admin/admin_pending.jsp"/>
                     </action>
 
 
@@ -229,12 +228,92 @@
 
                      </action>
 
+
+ <!--====================================Institute Admin Action Setting==========================================-->
+
+                     <action attribute="Election_Manager_RegistrationActionForm" input="/institute_admin/enter_election_manager_details.jsp" path="/manager_registration"  name="Election_Manager_RegistrationActionForm"   scope="request" type="com.myapp.struts.institute_admin.Election_Manager_RegistrationAction" validate="true">
+                      <forward name="success" path="/create_manager.do"/>
+                      <forward name="failure" path="/institute_admin/enter_election_manager_details.jsp"/>
+                    </action>
+
+
+                    <action   path="/manager_details"     scope="request" type="com.myapp.struts.institute_admin.View_Manager_DetailAction" validate="false">
+                      <forward name="success" path="/institute_admin/election_manager_details.jsp"/>
+                      <forward name="failure" path="/institute_admin/view_election_manager_details.jsp"/>
+                    </action>
+                    <action   path="/view_managers"     scope="request" type="com.myapp.struts.institute_admin.View_ManagersAction" validate="false">
+                      <forward name="success" path="/institute_admin/view_election_manager_details.jsp"/>
+                      <forward name="failure" path="/institute_admin/view_election_manager_details.jsp"/>
+                    </action>
+
+
+                    <action   path="/status_detail"     scope="request" type="com.myapp.struts.institute_admin.View_Manager_DetailAction" validate="false">
+                      <forward name="success" path="/institute_admin/view_status_detail.jsp"/>
+                      <forward name="failure" path="/institute_admin/view_election_manager_details.jsp"/>
+                    </action>
+
+
+                    <action   path="/update_managers"     scope="request" type="com.myapp.struts.institute_admin.View_ManagersAction" validate="false">
+                      <forward name="success" path="/institute_admin/update_election_managergrid_details.jsp"/>
+                     
+                    </action>
+
+                     <action   path="/instituteadmin"     scope="request" type="com.myapp.struts.instituteAdmin" validate="false">
+                      <forward name="success" path="/institute_admin/institute_admin_home.jsp"/>
+
+                    </action>
+
+<action   path="/block_managers"     scope="request" type="com.myapp.struts.institute_admin.View_ManagersAction" validate="false">
+                      <forward name="success" path="/institute_admin/block_managergrid.jsp"/>
+
+                    </action>
+
+                    <action   path="/update_manager_details"     scope="request" type="com.myapp.struts.institute_admin.View_Manager_DetailAction" validate="true">
+                      <forward name="success" path="/institute_admin/update_election_manager.jsp"/>
+                      <forward name="failure" path="/institute_admin/update_election_manager.jsp"/>
+                    </action>
+
+
+                    <action   path="/confirm_update_manager" name="Election_Manager_RegistrationActionForm"    scope="request" type="com.myapp.struts.institute_admin.Update_ManagerAction" attribute="Election_Manager_RegistrationActionForm" input="/institute_admin/update_election_manager.jsp" validate="true">
+                      <forward name="success" path="/institute_admin/update_election_managergrid_details.jsp"/>
+                      <forward name="failure" path="/institute_admin/update_election_manager.jsp"/>
+                    </action>
+
+
+                    <action   path="/change_status" name="Election_Manager_RegistrationActionForm"    scope="request" type="com.myapp.struts.institute_admin.change_statusAction" attribute="Election_Manager_RegistrationActionForm"  validate="false">
+                      <forward name="success" path="/block_managers.do"/>
+                      <forward name="failure" path="/institute_admin/update_election_manager.jsp"/>
+                    </action>
+
+
+                    <action   path="/admin_account"     scope="request" type="com.myapp.struts.institute_admin.Admin_AccountAction" validate="false">
+                      <forward name="success" path="/institute_admin/institute_admin_details.jsp"/>
+                      <forward name="failure" path="/institute_admin/update_election_manager.jsp"/>
+                    </action>
+                    <action   path="/admin_password"     scope="request" type="com.myapp.struts.institute_admin.Admin_AccountAction" validate="false">
+                      <forward name="success" path="/institute_admin/institute_admin_details1.jsp"/>
+                      <forward name="failure" path="/institute_admin/update_election_manager.jsp"/>
+                    </action>
+
+                    <action   path="/changeadminpassword"  attribute="AdminViewActionForm" input="/institute_admin/institute_admin_details.jsp"   scope="request" name="AdminViewActionForm" type="com.myapp.struts.institute_admin.ChangePasswordAction" validate="true">
+                      <forward name="success" path="/institute_admin/institute_admin_details1.jsp"/>
+                      <forward name="failure" path="/institute_admin/update_election_manager.jsp"/>
+                    </action>
+
+
+
+<action path="/create_manager" scope="request" type="com.myapp.struts.institute_admin.Create_ManagerAction">
+    <forward name="success" path="/institute_admin/enter_election_manager_details.jsp"/>
+</action>
     </action-mappings>
+
+
+
 
     <controller processorClass="org.apache.struts.tiles.TilesRequestProcessor"/>
 
-    <message-resources parameter="com/myapp/struts/ApplicationResource"/>    
-    
+    <message-resources parameter="com/myapp/struts/ApplicationResource"/>
+
     <!-- ========================= Tiles plugin ===============================-->
     <!--
     This plugin initialize Tiles definition factory. This later can takes some
@@ -263,15 +342,15 @@
     Paths found in Tiles definitions are relative to the main context.
     -->
     <plug-in className="org.apache.struts.tiles.TilesPlugin" >
-        <set-property property="definitions-config" value="/WEB-INF/tiles-defs.xml" />      
+        <set-property property="definitions-config" value="/WEB-INF/tiles-defs.xml" />
         <set-property property="moduleAware" value="true" />
     </plug-in>
-    
+
     <!-- ========================= Validator plugin ================================= -->
     <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
         <set-property
             property="pathnames"
             value="/WEB-INF/validator-rules.xml,/WEB-INF/validation.xml"/>
     </plug-in>
-  
+
 </struts-config>

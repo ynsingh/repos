@@ -37,9 +37,34 @@ else{
     }
 
 %>
+
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    boolean page=true;
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+       // System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
+    else{ rtl="RTL";page=false;align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
     
 
-<link rel="stylesheet" href="/EMS-Struts/css/page.css"/>
+<link rel="stylesheet" href="/EMS/css/page.css"/>
 
 <script language="javascript" >
 function b1click()
@@ -55,7 +80,7 @@ f.submit();
 }
 function getQuery(id)
 {
-    var query = "/EMS-Struts/admin/index.jsp?id="+id;
+    var query = "/EMS/admin/index.jsp?id="+id;
     return query;
 }
 </script>
@@ -125,6 +150,21 @@ it.next();
 System.out.println("tcount="+tcount);
 
 %>
+
+<%
+String Registration_ID=resource.getString("registrationid");
+pageContext.setAttribute("Registration_ID", Registration_ID);
+String Institute_Name=resource.getString("institutename");
+pageContext.setAttribute("Institute_Name", Institute_Name);
+String Admin_Email=resource.getString("login.ems.adminemail");
+pageContext.setAttribute("Admin_Email", Admin_Email);
+String Working_Status=resource.getString("workingstatus");
+pageContext.setAttribute("Working_Status", Working_Status);
+String Action=resource.getString("login.ems.action");
+pageContext.setAttribute("Action", Action);
+String Change_Status=resource.getString("changestatus");
+pageContext.setAttribute("Change_Status", Change_Status);
+%>
        
 <%
    //if (tcount!=0){
@@ -141,10 +181,12 @@ System.out.println("tcount="+tcount);
 <br><br>
 <%if(tcount==0)
 {%>
-<p class="err" style="font-size:12px">No Record Found</p>
+<p class="err" style="font-size:12px"><%=resource.getString("no_record_found")%></p>
 <%}
 else
 {%>
+<table align="<%=align%>" dir="<%=rtl%>" width="100%">
+    <tr dir="<%=rtl%>"><td dir="<%=rtl%>">
 
 <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid">
     
@@ -155,27 +197,27 @@ else
     </column>
 
     <column width="100">
-      <header value="Registration_ID" hAlign="left" styleClass="header"/>
+      <header value="${Registration_ID}" hAlign="left" styleClass="header"/>
       <item   value="${doc.registration_id}" hyperLink="block_institute_index.jsp?id=${doc.registration_id}"  hAlign="left"    styleClass="item"/>
     </column>
 
     <column width="200">
-      <header value="Institute Name" hAlign="left" styleClass="header"/>
+      <header value="${Institute_Name}" hAlign="left" styleClass="header"/>
       <item   value="${doc.institute_name}" hAlign="left" hyperLink="block_institute_index.jsp?id=${doc.registration_id}"  styleClass="item"/>
     </column>
 
      <column width="200">
-      <header value="Admin_Email" hAlign="left" styleClass="header"/>
+      <header value="${Admin_Email}" hAlign="left" styleClass="header"/>
       <item   value="${doc.admin_email}" hyperLink="block_institute_index.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
     </column>
  <column width="100">
-      <header value="Working Status" hAlign="left" styleClass="header"/>
+      <header value="${Working_Status}" hAlign="left" styleClass="header"/>
       <item   value="${doc.working_status}" hyperLink="block_institute_index.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
     </column>
 
       <column width="100">
-      <header value="Action" hAlign="left" styleClass="header"/>
-      <item   value="Change Status" hyperLink="block_institute_index.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
+      <header value="${Action}" hAlign="left" styleClass="header"/>
+      <item   value="${Change_Status}" hyperLink="block_institute_index.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
     </column>
  </columns>
 
@@ -190,10 +232,10 @@ else
 <tr>
 <td align="left" width="100px">
 <c:if test="${previous != null}">
-<a href="<c:out value="${previous}"/>">Previous</a>
+<a href="<c:out value="${previous}"/>"><%=resource.getString("previous")%></a>
 </c:if>&nbsp;
 <c:if test="${next != null}">
-<a href="<c:out value="${next}"/>">Next</a>
+<a href="<c:out value="${next}"/>"><%=resource.getString("next")%></a>
 </c:if>
 
 </td><td align="center" width="500px">
@@ -217,6 +259,8 @@ else{
 request.setAttribute("msg", "Your Session Expired: Please Login Again");
     %><script>parent.location = "<%=request.getContextPath()%>"+"/login.jsp?session=\"expired\"";</script><%
 }%>
+</td></tr>
+</table>
  </div>
     </body>
 

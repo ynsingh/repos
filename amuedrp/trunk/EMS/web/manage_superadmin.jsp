@@ -81,13 +81,13 @@ String user=(String)session.getAttribute("user_id");
         var x=document.getElementById('password1');
         if(x.value=="")
             {
-                alert("Existing Password should not be blank");
+                alert("<%=resource.getString("existing_password_blank")%>");
                  document.getElementById('password1').focus();
                 return false;
             }
      if(document.getElementById('password2').value=="")
     {
-        alert("Enter New password...");
+        alert("<%=resource.getString("enter_newpassword")%>");
 
         document.getElementById('password2').focus();
 
@@ -95,7 +95,7 @@ String user=(String)session.getAttribute("user_id");
     }
      if(document.getElementById('password3').value=="")
     {
-        alert("Enter Re-enter password...");
+        alert("<%=resource.getString("reenter_password")%>");
 
         document.getElementById('password3').focus();
 
@@ -105,7 +105,7 @@ String user=(String)session.getAttribute("user_id");
         var x2=document.getElementById('password3');
         if(x1.value!=x2.value)
             {
-                alert("password mismatch");
+                alert("<%=resource.getString("password_mismatch")%>");
                 document.getElementById('password3').focus();
                 return false;
             }
@@ -150,10 +150,12 @@ function clearme()
     if(message!=null) {%>
             <font size="2px" dir="<%=rtl%>" align="<%=align%>" color=red><b><%=message%></b></font>
             <script type="text/javascript" language="javascript">
-                <%if(message.equalsIgnoreCase("Record Successfully Updated")==true){%>
-                alert("Please Re-Login to Continue with New Login ID");
+                <%
+                if(message.equalsIgnoreCase("Record Updated Successfully")==true)
+                {%>
+                alert("<%=resource.getString("password_change_loginagain")%>");
                 top.location="<%=contextPath%>/logout.do";<%}else{%>
-                alert("<%=message%>");
+                //alert("<%=message%>");
                 //document.getElementById("form1").reset();
               //  parent.target = "_blank";
             

@@ -40,35 +40,143 @@
                     </var>
             </field>
         </form>
-
-    </formset>
-
-    <!-- An example formset for another locale -->
-    <formset language="fr">
-
-        <constant>
-            <constant-name>postalCode</constant-name>
-            <constant-value>^[0-9a-zA-Z]*$</constant-value>
-        </constant>
-
-        <!-- An example form -->
-        <form name="logonForm">
+        <form name="AdminRegistrationActionForm">
             <field
-                property="username"
+                property="institute_name"
                 depends="required">
-                    <arg key="logonForm.username"/>
+                    <arg key="AdminRegistrationActionForm.institute_name"/>
             </field>
             <field
-                property="password"
-                depends="required,mask">
-                    <arg key="logonForm.password"/>
-                    <var>
+                property="institute_address"
+                depends="required">
+                    <arg key="AdminRegistrationActionForm.institute_address"/>
+                    
+            </field>
+            
+             <field
+                property="city"
+                depends="required">
+                    <arg key="AdminRegistrationActionForm.city"/>
+            </field>
+
+ <field
+                property="state"
+                depends="required">
+                    <arg key="AdminRegistrationActionForm.state"/>
+            </field>
+             <field
+                property="country"
+                depends="required">
+                    <arg key="AdminRegistrationActionForm.country"/>
+            </field>
+
+             <field
+                property="admin_fname"
+                depends="required">
+                    <arg key="AdminRegistrationActionForm.admin_fname"/>
+            </field>
+
+            <field
+                property="admin_lname"
+                depends="required">
+                    <arg key="AdminRegistrationActionForm.admin_lname"/>
+            </field>
+
+            <field
+                property="gender"
+                depends="required">
+                    <arg key="AdminRegistrationActionForm.gender"/>
+            </field>
+
+              <field  property="mobile_no"   depends="required,mask">
+                	<arg key="AdminRegistrationActionForm.mobile_no" />
+                        <var>
                         <var-name>mask</var-name>
-                        <var-value>^[0-9a-zA-Z]*$</var-value>
+                        <var-value>^[0-9]*$</var-value>
                     </var>
+
+
+            </field>
+             <field
+                property="userId"
+                depends="required">
+                    <arg key="AdminRegistrationActionForm.userId"/>
+            </field>
+
+          <!--  <field
+                property="admin_password"
+                depends="required">
+                    <arg key="AdminRegistrationActionForm.admin_password"/>
+            </field>-->
+
+
+             <field  property="admin_email"   depends="required,email">
+                	<arg key="AdminRegistrationActionForm.admin_email" />
+                        <arg key="AdminRegistrationActionForm.admin_email" />
+
+            </field>
+
+            <field
+                property="type_of_institute"
+                depends="required">
+                    <arg key="AdminRegistrationActionForm.type_of_institute"/>
             </field>
         </form>
 
-   </formset>
+
+ <form name="Election_Manager_RegistrationActionForm">
+     <field property="manager_id" depends="required">
+         <arg key="Election_Manager_RegistrationActionForm.manager_id"/>
+     </field>
+
+     <field property="institute_id" depends="required">
+         <arg key="Election_Manager_RegistrationActionForm.institute_id"/>
+     </field>
+
+<field property="first_name" depends="required">
+         <arg key="Election_Manager_RegistrationActionForm.first_name"/>
+     </field>
+
+     <field property="last_name" depends="required">
+         <arg key="Election_Manager_RegistrationActionForm.last_name"/>
+     </field>
+
+     <field property="contact_no" depends="required,mask">
+         <arg key="Election_Manager_RegistrationActionForm.contact_no"/>
+         <var>
+                        <var-name>mask</var-name>
+                        <var-value>^[0-9]*$</var-value>
+                    </var>
+     </field>
+
+     <field property="email_id" depends="required,email">
+         <arg key="Election_Manager_RegistrationActionForm.email_id"/>
+         <arg key="Election_Manager_RegistrationActionForm.email_id"/>
+     </field>
+
+     <field property="staff_id" depends="required">
+         <arg key="Election_Manager_RegistrationActionForm.staff_id"/>
+     </field>
+
+     <field property="user_id" depends="required">
+         <arg key="Election_Manager_RegistrationActionForm.user_id"/>
+     </field>
+
+   <!-- <field property="password" depends="required">
+         <arg key="Election_Manager_RegistrationActionForm.password"/>
+     </field>-->
+
+     </form>
+
+<form name="AdminViewActionForm">
+    <field property="password" depends="required">
+        <arg key="AdminViewActionForm.password">
+        </arg>
+    </field>
+</form>
+
+    </formset>
+
+   
 
 </form-validation>

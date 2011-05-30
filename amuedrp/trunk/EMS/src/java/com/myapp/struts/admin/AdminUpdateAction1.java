@@ -49,6 +49,12 @@ private String institute_id;
 private String staff_id;
 private String user_id;
 private String working_status;
+//private String password;1
+Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    boolean page=true;
+    String align="left";
 
 int i=0;
     /* forward name="success" path="" */
@@ -91,10 +97,25 @@ int i=0;
         gender=adminRegistrationActionForm.getGender();
         institute_id=adminRegistrationActionForm.getInstitute_id();
         user_id=adminRegistrationActionForm.getUser_id();
+       // password=adminRegistrationActionForm.getPassword();
+ HttpSession session=request.getSession();
+        try{
+locale1=(String)session.getAttribute("locale");
 
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+       // System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
+    else{ rtl="RTL";page=false;align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
         System.out.println("user_id="+user_id);
       
-        HttpSession session=request.getSession();
+        
         InstituteDAO institutedao = new InstituteDAO();
         AdminRegistrationDAO admindao = new AdminRegistrationDAO();
         LoginDAO logindao = new LoginDAO();
@@ -182,8 +203,8 @@ if(status.equals("Registered"))
             ///update staff
 */
             
-            StaffDetailId staffdetail1 = new StaffDetailId(staff_id, institute_id);
-            StaffDetail staffdetail = new StaffDetail();
+            StaffDetail staffdetail = staffdetaildao.getStaffDetails1(staff_id, institute_id);
+            
             staffdetail.setTitle(courtesy);
             staffdetail.setFirstName(admin_fname);
             staffdetail.setLastName(admin_lname);
@@ -195,19 +216,18 @@ if(status.equals("Registered"))
             staffdetail.setState1(state);
             staffdetail.setCountry1(country);
             staffdetail.setZip1(pin);
-            staffdetail.setId(staffdetail1);
+        
+            staffdetaildao.update(staffdetail);
 
-           // staffdetaildao.update(staffdetail);
 
-
-                    Login login = new Login();
-                    login.setUserId(user_id);
+                    Login login = logindao.getStaffDetails1(staff_id, institute_id);
+                    
                     login.setUserName(admin_fname + " "+admin_lname);
-                    login.setPassword(admin_password);
-                    login.setStaffDetail(staffdetail);
+                   
+                   
                     logindao.update(login);
                      
-                    String msg="Record Updated Successfully for Institute :"+institute_name;
+                    String msg=resource.getString("record_updateds_successfully_for_institute")+institute_name;
                     request.setAttribute("msg", msg);
                      request.setAttribute("registration_id",registration_id);
                         return mapping.findForward("success");
@@ -215,7 +235,7 @@ if(status.equals("Registered"))
                 
      }
     
-      String msg="Record Updated Successfully for Institute :"+institute_name;
+      String msg=resource.getString("record_updateds_successfully_for_institute")+institute_name;
                     request.setAttribute("msg", msg);
                      request.setAttribute("registration_id",registration_id);
                         return mapping.findForward("success");

@@ -27,5 +27,6 @@
         <property name="role" type="string">
             <column name="role" length="50" />
         </property>
+         
     </class>
 </hibernate-mapping>

@@ -169,6 +169,29 @@ public List getAdminInstituteDetailsById(Integer registerationId){
             session.close();
         }
 }
+
+public List<AdminReg_Institute> getAdminInstituteDetailsById(String registerationId){
+  Session session =null;
+    Transaction tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createSQLQuery("select a.*,b.* from admin_registration a left outer join institute b on a.registration_id=b.registration_id where b.institute_id=:instituteId")
+                    .addEntity(AdminRegistration.class)
+                    .addEntity(Institute.class)
+                    .setResultTransformer(Transformers.aliasToBean(AdminReg_Institute.class));
+            if(registerationId!=null && !registerationId.equals(""))
+                query.setString("instituteId", registerationId);
+            else
+                query.setString("instituteId", "amu");
+            System.out.println("Sql Query="+query.getQueryString());
+            return (List<AdminReg_Institute>)query.list();
+        }
+        finally {
+            session.close();
+        }
+}
+
 public List getAdminInstituteDetailsByStatus(String status){
   Session session =null;
     Transaction tx = null;

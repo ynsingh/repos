@@ -5,8 +5,6 @@
 
 package com.myapp.struts.admin;
 import com.myapp.struts.hbm.LoginDAO;
-import com.myapp.struts.MyConnection;
-import java.sql.Connection;
 import java.util.List;
 /**
  *
@@ -19,16 +17,6 @@ List rs = null;
 StringBuffer email_ids = new StringBuffer();
 //String sql = "select *  from login where user_id='"+searchText+"' and password='"+searchText+"'";
 try {
- Connection    con=MyConnection.getMyConnection();
-            if(con==null)
-            {
-             email_ids.append("<email_ids>");
-             email_ids.append("<email_id>Database not Connected! Please contact Web Admin</email_id>");
-             email_ids.append("</email_ids>");
-             return email_ids.toString();
-            }
-
-
 LoginDAO login = new LoginDAO();
 rs = login.getUser(searchText);
 
@@ -82,15 +70,6 @@ List rs = null;
 StringBuffer email_ids = new StringBuffer();
 LoginDAO login = new LoginDAO();
 try {
-  Connection    con=MyConnection.getMyConnection();
-            if(con==null)
-            {
-             email_ids.append("<email_ids>");
-             email_ids.append("<email_id>Database not Connected! Please contact Web Admin</email_id>");
-             email_ids.append("</email_ids>");
-             return email_ids.toString();
-            }
-
 rs=login.getUser(searchText);
 //construct the xml string.
 
@@ -132,15 +111,6 @@ List rs = null;
 StringBuffer email_ids = new StringBuffer();
 String sql = "select *  from login where user_id='"+searchText+"' and password='"+searchText2+"'";
 try {
-  Connection    con=MyConnection.getMyConnection();
-            if(con==null)
-            {
-             email_ids.append("<email_ids>");
-             email_ids.append("<email_id>Database not Connected! Please contact Web Admin</email_id>");
-             email_ids.append("</email_ids>");
-             return email_ids.toString();
-            }
-
 LoginDAO login = new LoginDAO();
 rs = login.getLoginDetails(searchText, searchText2);
 //construct the xml string.

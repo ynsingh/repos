@@ -37,7 +37,32 @@ else{
 
 %>
 
-<link rel="stylesheet" href="/EMS-Struts/css/page.css"/>
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    boolean page=true;
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+       // System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
+    else{ rtl="RTL";page=false;align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
+
+<link rel="stylesheet" href="/EMS/css/page.css"/>
 
 <script language="javascript" >
 function b1click()
@@ -53,7 +78,7 @@ f.submit();
 }
 function getQuery(id)
 {
-    var query = "/EMS-Struts/admin/view.do?id="+id;
+    var query = "/EMS/admin/view.do?id="+id;
     return query;
 }
 </script>
@@ -119,6 +144,17 @@ it.next();
 System.out.println("tcount="+tcount);
 
 %>
+
+
+<%
+String Registration_ID=resource.getString("registrationid");
+pageContext.setAttribute("Registration_ID", Registration_ID);
+String Institute_Name=resource.getString("institutename");
+pageContext.setAttribute("Institute_Name", Institute_Name);
+String Admin_Email=resource.getString("login.ems.adminemail");
+pageContext.setAttribute("Admin_Email", Admin_Email);
+
+%>
        
 <%
    fromIndex = (int) DataGridParameters.getDataGridPageIndex (request, "datagrid1");
@@ -130,10 +166,14 @@ System.out.println("tcount="+tcount);
 <br><br>
 <%if(tcount==0)
 {%>
-<p class="err" style="font-size:12px">No Record Found</p>
+<p class="err" style="font-size:12px"><%=resource.getString("no_record_found")%></p>
 <%}
 else
 {%>
+
+<table align="<%=align%>" dir="<%=rtl%>" width="100%">
+    <tr dir="<%=rtl%>"><td dir="<%=rtl%>">
+
 <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid">
     
   <columns>
@@ -143,18 +183,18 @@ else
     </column>
 
     <column width="10%">
-      <header value="Registration_ID" hAlign="left" styleClass="header"/>
+      <header value="${Registration_ID}" hAlign="left" styleClass="header"/>
       <item   value="${doc.registration_id}" hyperLink="index.jsp?id=${doc.registration_id}"  hAlign="left"    styleClass="item"/>
     </column>
 
     <column width="20%">
-      <header value="Institute Name" hAlign="left" styleClass="header"/>
+      <header value="${Institute_Name}" hAlign="left" styleClass="header"/>
       <item   value="${doc.institute_name}" hAlign="left" hyperLink="index.jsp?id=${doc.registration_id}"  styleClass="item"/>
     </column>
 
        
     <column width="15%">
-      <header value="Admin_Email" hAlign="left" styleClass="header"/>
+      <header value="${Admin_Email}" hAlign="left" styleClass="header"/>
       <item   value="${doc.admin_email}" hyperLink="index.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
     </column>
 
@@ -173,10 +213,10 @@ else
 <tr>
 <td align="left" width="10%">
 <c:if test="${previous != null}">
-<a href="<c:out value="${previous}"/>">Previous</a>
+<a href="<c:out value="${previous}"/>"><%=resource.getString("previous")%></a>
 </c:if>&nbsp;
 <c:if test="${next != null}">
-<a href="<c:out value="${next}"/>">Next</a>
+<a href="<c:out value="${next}"/>"><%=resource.getString("next")%></a>
 </c:if>
 
 </td><td align="center" width="50%">
@@ -199,6 +239,10 @@ else
 request.setAttribute("msg", "Your Session Expired: Please Login Again");
     %><script>parent.location = "<%=request.getContextPath()%>"+"/login.jsp?session=\"expired\"";</script><%
 }%>
+
+</td></tr>
+</table>
+
  </div>
     </body>
 

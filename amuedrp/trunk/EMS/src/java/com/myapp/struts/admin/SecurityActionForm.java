@@ -22,6 +22,7 @@ public class SecurityActionForm extends org.apache.struts.action.ActionForm {
     private String user_id;
     private String question;
     private String ans;
+    private String role;
 
    
     /**
@@ -98,5 +99,19 @@ public class SecurityActionForm extends org.apache.struts.action.ActionForm {
      */
     public void setAns(String ans) {
         this.ans = ans;
+    }
+
+    /**
+     * @return the role
+     */
+    public String getRole() {
+        return role;
+    }
+
+    /**
+     * @param role the role to set
+     */
+    public void setRole(String role) {
+        this.role = role;
     }
 }

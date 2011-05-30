@@ -3,7 +3,7 @@
     "http://java.sun.com/j2ee/dtds/web-app_2_5.dtd">-->
 <web-app version="2.2" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_2.xsd">
 <resource-ref>
-     <res-ref-name>jdbc/Testems</res-ref-name>
+     <res-ref-name>jdbc/ems</res-ref-name>
      <res-type>javax.sql.DataSource</res-type>
      <res-auth>Container</res-auth>
 

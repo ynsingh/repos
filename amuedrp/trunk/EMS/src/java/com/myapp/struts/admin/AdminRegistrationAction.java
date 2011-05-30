@@ -5,6 +5,7 @@
 
 package com.myapp.struts.admin;
 
+import com.myapp.struts.MyConnection;
 import com.myapp.struts.utility.PasswordEncruptionUtility;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,9 +16,9 @@ import java.util.Iterator;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import com.myapp.struts.hbm.*;
-import com.myapp.struts.MyConnection;
-import java.sql.*;
+import java.sql.Connection;
 import org.hibernate.HibernateException;
+import java.util.*;
 
 
 /**
@@ -47,7 +48,12 @@ private String admin_password;
 private String library_name;
 private String courtesy;
 private String gender;
-  Connection con;
+Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    boolean page=true;
+    String align="left";
+Connection con1;
 int i=0;
     /* forward name="success" path="" */
     
@@ -83,10 +89,28 @@ int i=0;
         admin_designation=adminRegistrationActionForm.getAdmin_designation();
         admin_email=adminRegistrationActionForm.getAdmin_email();
         user_id=adminRegistrationActionForm.getUserId();
-        admin_password=adminRegistrationActionForm.getAdmin_password();
+       // admin_password=adminRegistrationActionForm.getAdmin_password();
        // library_name=adminRegistrationActionForm.getLibrary_name();
         courtesy=adminRegistrationActionForm.getCourtesy();
         gender=adminRegistrationActionForm.getGender();
+
+         HttpSession session=request.getSession();
+        try{
+locale1=(String)session.getAttribute("locale");
+
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+       // System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
+    else{ rtl="RTL";page=false;align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+
        /* institute_name.trim();
         abbreviated_name.trim();
         institute_address.trim();
@@ -108,20 +132,19 @@ int i=0;
         gender.trim();
         user_id.trim();*/
       //  if((!institute_name.equalsIgnoreCase("")) || (!user_id.isEmpty()) || (institute_address!=null) && (city!=null) && (state!=null) && (country!=null) && (admin_fname!=null) && (admin_lname!=null) && (admin_password!=null) && mobile_no!=null && type_of_institute!=null && admin_email!=null && gender!=null)
-
-         con=MyConnection.getMyConnection();
-            if(con==null)
-            {
-             request.setAttribute("msg1","Database Connectivity is Closed");
-             return mapping.findForward("failure");
-            }
-
-        if(adminRegistrationActionForm.getInstitute_name()!=null)
+       if(adminRegistrationActionForm.getInstitute_name()!=null)
         {
-        HttpSession session=request.getSession();
+        
 System.out.println("institute_name="+institute_name);
         try{
-        //con=MyConnection.getMyConnection();
+        con1=MyConnection.getMyConnection();
+
+        if(con1==null){
+        String msg1="Database Not Connected! Please contact web-Administrator";
+        request.setAttribute("msg1", msg1);
+        session.invalidate();
+         return mapping.findForward("failure");
+        }
 
         AdminRegistrationDAO admindao = new AdminRegistrationDAO();
         LoginDAO logindao = new LoginDAO();
@@ -136,7 +159,8 @@ System.out.println("institute_name="+institute_name);
        if(it.hasNext() || it1.hasNext() )
        {
 
-            request.setAttribute("msg1", "Duplicate User ID");
+            String msg1=resource.getString("duplicate_user_id");
+            request.setAttribute("msg1", msg1);
             return mapping.findForward("failure");
        }
 
@@ -159,7 +183,7 @@ System.out.println("institute_name="+institute_name);
                 adminReg.setAdminLname(admin_lname);
                 adminReg.setAdminDesignation(admin_designation);
                 adminReg.setAdminEmail(admin_email);
-                adminReg.setAdminPassword(PasswordEncruptionUtility.password_encrupt(admin_password));
+               // adminReg.setAdminPassword(PasswordEncruptionUtility.password_encrupt(admin_password));
                 //adminReg.setLibraryName(library_name);
                 adminReg.setCourtesy(courtesy);
                 System.out.println("Courtesy");
@@ -176,7 +200,7 @@ System.out.println("institute_name="+institute_name);
                 stmt=con.prepareStatement("select max(registration_id) from admin_registration");
                 ResultSet rst=stmt.executeQuery();*/
                 registration_id = admindao.insert(adminReg);
-                String msg="Request for registration accepted successfully with user id :"+String.valueOf(user_id) ;
+                String msg=resource.getString("requestforregistration_accept_successfuly")+String.valueOf(user_id) ;
                 // System.out.println(msg);
                 request.setAttribute("registration_msg", msg);
                 return mapping.findForward("success");

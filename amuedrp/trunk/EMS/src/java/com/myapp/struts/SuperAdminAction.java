@@ -29,6 +29,11 @@ public class SuperAdminAction extends org.apache.struts.action.Action {
     ResultSet rst1,rst2;
     String role;
     String staff_id;
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    boolean page=true;
+    String align="left";
     
   
     
@@ -53,6 +58,25 @@ Login login= new Login();
         password1=admin.getPassword1().trim();
         password4=admin.getPassword2().trim();
         role="Superadmin";//login.getRole();
+
+        HttpSession session=request.getSession();
+        try{
+locale1=(String)session.getAttribute("locale");
+
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+       // System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
+    else{ rtl="RTL";page=false;align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+
+
         
 if(password1.equals(password4)==false)
 {
@@ -114,30 +138,30 @@ if(i==0)
            login.setUserId(user_id1);
            logindao.update(login);
        }
-       
-       request.setAttribute("msg","Record Successfully Updated");
-       HttpSession session = request.getSession();
+      // String msg=resource.getString("record_updated_successfully");
+       request.setAttribute("msg","Record Updated Successfully");
        session.removeAttribute("SuperAdminActionForm");
                 return    mapping.findForward("success");
 }
 request.setAttribute("msg","User Name Already Exists");
-HttpSession session = request.getSession();
        session.removeAttribute("SuperAdminActionForm");
             return mapping.findForward("fail");
             
         }
             }request.setAttribute("msg","Please enter SuperAdmin Id");
-            HttpSession session = request.getSession();
+            
        session.removeAttribute("SuperAdminActionForm");
             return mapping.findForward("fail");
       }
-            request.setAttribute("msg","Invalid user Name or Password");
-            HttpSession session = request.getSession();
+String msg=resource.getString("invalid_user_pass");
+            request.setAttribute("msg",msg);
+            
        session.removeAttribute("SuperAdminActionForm");
             return mapping.findForward("fail");
 }
 else{
-            request.setAttribute("msg","Please Enter Password different from the previous one!");
+         String msg=resource.getString("different_password");
+            request.setAttribute("msg",msg);
             return mapping.findForward("fail");
 }
 

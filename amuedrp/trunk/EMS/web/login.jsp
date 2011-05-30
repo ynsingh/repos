@@ -12,7 +12,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Election Management System</title>
-<link rel="stylesheet" href="/EMS-Struts/css/page.css"/>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 <%!
     Locale locale=null;
     String locale1="en";
@@ -24,7 +24,7 @@
 <script type="text/javascript" language="javascript">
     this.opener.close();
 </script>
-<link rel="stylesheet" href="/EMS-Struts/css/page.css"/>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 <script language="javascript" type="text/javascript">
 /*
 * Returns an new XMLHttpRequest object, or false if the browser
@@ -156,7 +156,7 @@ availableSelectList.innerHTML += ndValue+"\n";
 
 </script>
 </head>
-<link rel="stylesheet" href="/EMS-Struts/css/page.css"/>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 
         <script type="text/javascript" language="javascript">
     function submitLogin()
@@ -217,14 +217,16 @@ sessionId = session.getId().toString();
     ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
     %>
-<body style="margin:0px 0px 0px 0px" onload="validateSession()" >
+<body style="margin:0px 0px 0px 0px" onload="validateSession()" background="<%=request.getContextPath()%>/images/spaces_background-2560x1600.png" >
     
 
-    <br><br>
+
 
     <form method="post" action="login.do" name="form1" onsubmit="return search2();" >
-        <table align="center" style="height:300px; width: 100%; top: 0px" dir="<%=rtl%>" >
-              <%
+        <table align="center" style="width: 70%;background-color: white;border: solid #ECF1EF 10px;margin-top: 50px" dir="<%=rtl%>" >
+             
+            <tr><td>
+                     <%
 String col="blue";
 String str1=(String)request.getAttribute("msg");
 if(str1==null){col="red";str1=(String)request.getAttribute("msg1");}
@@ -241,69 +243,52 @@ if(str!=null)
     &nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size:12px;font-weight:bold;color:blue; direction: <%=rtl%>" ><%=str%></span>
 <%}%>
 
-            
-           <!-- <//jsp:include page="login_ltr.jsp"/>-->
+                </td> </tr>
+           
         <tr>
-    <td style="margin-left: 65px" valign="top" colspan="3" width="100%" align="center">
-        <table style=" margin-top: 0px;width: 100%" align="center"  dir="<%=rtl%>">
-            <tr><td colspan="2"  valign="bottom" height="50px" align="<%=align%>">
-                                <img src="images/ems.JPG" alt="banner space"  border="0" align="top" id="Image1" style="height: 125px;width:40%">
-                            <br>
-                <%String align="left"; if(page.equals(false)){align="right";}else{align="left";}%>
-
-                                <table dir="<%=rtl%>"><tr><td><span style="font-family: Tahoma" dir="<%=rtl%>"><%=resource.getString("login.message.logo.under")%></span><br></td></tr>
-                                    <tr><td></td></tr></table>
-
-                            </td><td  align="center" width="20%"> <img src="images/logo.png" alt=""  border="0" align="top" id="Image1" style="" height="100px" width="100%">
+    <td  valign="top" colspan="2" width="100%" align="center">
+        <table  align="center"  dir="<%=rtl%>">
+            <tr><td  width="73%" valign="bottom"  align="<%=align%>">
+                                <img src="images/logo.bmp" alt="banner space"  border="0" align="top" id="Image1">
+                          
+               
+                </td><td   > <img src="images/logo.png" alt="No Image"  border="0" align="top" id="Image1" style="" height="100px" width="100%"><br/>
+                                
                             </td></tr>
             </table></td>
             </tr>
+            <tr  height="5px" style="font-family: arial;color:#6495ED;font-weight: bold;font-size: 12px"><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=resource.getString("login.message.logo.under")%></td><td align="center"><%=resource.getString("login.message.selectlanguage")%><select name="locale" onchange="fun()"><option dir="<%=rtl%>"<%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("en")){ %>selected<%}%>>English</option><option dir="<%=rtl%>" <%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("ur")){ %>selected<%}%>>Urdu</option><option dir="<%=rtl%>" <%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("ar")){ %>selected<%}%>>Arabic</option><option dir="<%=rtl%>" <%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("hi")){ %>selected<%}%>>Hindi</option></select></td></tr>
+            <tr><td width="90%" colspan="2" valign="top" align="center" dir="<%=rtl%>" >
 
-            <tr style=""><td width="100%" colspan="2" valign="top" align="center" dir="<%=rtl%>" >
+                    <table align="center" ><tr><td align="center" >
+                                <table width="90%" dir="<%=rtl%>" style="color:#00008B;font-family: arial;font-size: 16px;text-align: justify;line-height: 30px">
+                                    <tr><td dir="<%=rtl%>">
 
-                               <br>
-                            <span style="font-family: Arial;font-size:15px;" dir="<%=rtl%>"><br>
-                                <table style="border:solid 1px #BFDBFF; height: 250px; width: 80%" dir="<%=rtl%>">
-                                    <tr><td colspan="2" width="20%" style="background: #BFDBFF;height: 20px">
-                                            <span style="text-align: center;text-decoration: blink; font-size: 14px; color: navy; font-family:arial " ><b style="text-align: center"><%=resource.getString("electionupdates") %></b></span>
-                                        </td>
+                                          <%=resource.getString("intro")%> 
 
-                                    </tr>
-                                    <tr><td width="80%" style="border: solid 1px #BFDBFF;">
-                                            <iframe src="<%=request.getContextPath()%>/news.jsp"  frameborder="0" width="100%" height="100%" style="vertical-align: text-top" scrolling="no"></iframe></td>
-                                    </tr>
+                                        </td></tr>
+
                                 </table>
+                               
+                            </td><td style="background-color:#ECF1EF ;font-family:arial;font-size:12px;">
 
-
-
-
-
-                        </span>
-
-                </td><td  width="80%" colspan="2" valign="top" align="center">
-                    <br><table dir="<%=rtl%>" width="90%" align="center"><tr><td align="center" style=" font-family:Tahoma;font-size:15px;"><%=resource.getString("login.message.selectlanguage")%><select name="locale" onchange="fun()"><option dir="<%=rtl%>"<%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("en")){ %>selected<%}%>>English</option><option dir="<%=rtl%>" <%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("ur")){ %>selected<%}%>>Urdu</option><option dir="<%=rtl%>" <%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("ar")){ %>selected<%}%>>Arabic</option><option dir="<%=rtl%>" <%if(session.getAttribute("locale")!=null && session.getAttribute("locale").equals("hi")){ %>selected<%}%>>Hindi</option></select></td></tr></table>
-                    <table  cellpadding="0" style="border:solid 1px #BFDBFF;color:#006BF5;font-family:Tahoma;font-size:13px;font-weight: bold;height:150px;width:300px" dir="<%=rtl%>">
-                    <tr><td colspan="2" height="2px" style="color:#006BF5; vertical-align: top" align="center" ><br><%=resource.getString("login.message.signin.top")%><br>
-
-                                <img src="images/lib1.PNG" style="height:75px;width:75px;" alt="" style=""  border="0" align="top" id="Image1" style="">&nbsp;</td>
-
-
-                    </tr>
+                    <table  width="250px" dir="<%=rtl%>">
+                        <tr><td style="background-color: #458B74;color:white;font-size: 15px"><%=resource.getString("pleaselogin")%></td></tr>
                     <tr>
-                    <td  align="center">
-                        <table dir="<%=rtl%>">
-                            <tr> <td><%=resource.getString("login.message.signin.username")%></td>
+                    <td  align="center" width="250px">
+                        <table dir="<%=rtl%>" width="250px">
+                            <tr> <td width="250px"><%=resource.getString("login.message.signin.username")%></td>
                                 <td align="left"><input name="username" type="text" id="username" onblur="return search();" style="width:160px;height:18px;background-color:#FFFFFF;border-color:#BFDBFF;border-width:1px;border-style:solid;color:#006BF5;font-family:Verdana;font-size:11px;"/>
                     <br/> <div align="left" id="searchResult" class="err" style="border:#000000; "></div></td>
                     </tr>
                            <tr>
-                    <td  height="20px"><%=resource.getString("login.message.signin.password")%></td>
+                    <td  ><%=resource.getString("login.message.signin.password")%></td>
                     <td align="left"><input name="password" class="err" type="password" id="password" value="" onblur="return search1();" style="width:160px;height:18px;background-color:#FFFFFF;border-color:#BFDBFF;border-width:1px;border-style:solid;color:#006BF5;font-family:Verdana;font-size:11px;">
                      <div align="left" id="searchResult1" class="err" style="border:#000000; "></div>
                     </td>
                     </tr>
                     <tr>
-                        <td>&nbsp;</td><td height="20px" align="center"><input id="rememberme" type="checkbox" name="rememberme"><%=resource.getString("login.message.signin.remember")%>
+                        <td>&nbsp;</td><td  align="left"><input id="rememberme" type="checkbox" name="rememberme"><%=resource.getString("login.message.signin.remember")%>
                         <br>
 
 
@@ -311,20 +296,31 @@ if(str!=null)
                     </tr>
                     <tr>
                     <td align="center" valign="bottom">
-                        <input type="submit" name="button"  value="<%=resource.getString("login.button.sigin.login")%>" dir="<%=rtl%>"  onclick="return submitLogin();" /></td><td><input type="submit" name="button" value="<%=resource.getString("login.button.sigin.forgetpassword")%>" onclick="return submitForget();" />
+                        <input type="submit" name="button" style="font-family: arial;font-size: 12px"  value="<%=resource.getString("login.button.sigin.login")%>" dir="<%=rtl%>"  onclick="return submitLogin();" /></td><td><input type="submit" name="button" style="font-family: arial;font-size: 12px" value="<%=resource.getString("login.button.sigin.forgetpassword")%>" onclick="return submitForget();" />
                     </td>
                     </tr>
+                    <tr><td width="250px" colspan="2">
+                            <a href="<%=request.getContextPath()%>/admin/admin_registration.jsp"> <%=resource.getString("join")%></a>
+                        </td></tr>
                         </table>
+
+
+
+                       
+
+                </td><td  width="80%" colspan="2" valign="top" align="center">
+                 
 <input type="hidden" id="button1" name="button1" value=""/>
                     </td></tr>
 
 
 
                     </table>
-                    <br>
+                            </td></tr></table>
+                
 
-                    <span style="font-family: Tahoma;font-size:14px"><b><%=resource.getString("login.message.newlib")%></b></span><br><br>
-                   &nbsp;&nbsp;&nbsp;&nbsp; <img src="images/B.jpg" alt="" style="height:20px;width:20px;"  border="0" align="top" id="Image1" style="">&nbsp;&nbsp;<b><a href="/EMS-Struts/admin/admin_registration.jsp" style="text-decoration: none;color:brown;font-family: Tahoma;font-size:13px;font-weight: bold;"><%= resource.getString("login.href.institute.registration") %></a></b>
+                    
+                 
 
 
 
@@ -332,7 +328,7 @@ if(str!=null)
 
 
 
- <tr><td colspan="3" align="center" class="loginreg" valign="top">
+ <tr><td colspan="3" align="center" style="font-family: arial;font-size: 12px;color:#6495ED;" valign="top"><br/><br/><br/>
          <%=resource.getString("developedby")%> &nbsp;<br/>
                     &copy; <%=resource.getString("login.message.footer")%>
                 </td></tr>

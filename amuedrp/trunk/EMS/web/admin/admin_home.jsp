@@ -87,7 +87,7 @@ locale1=(String)session.getAttribute("locale");
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">
 -->
-
+<link rel="stylesheet" href="<%=contextPath%>/css/page.css"/>
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Admin Home</title>
@@ -110,8 +110,8 @@ body
 
 <script>
     
-    var loc2 = "http://<%=host%>"+"/EMS-Struts/superadmin.do";
-    if(window.location=="http://<%=host%>/EMS-Struts/login.do")
+    var loc2 = "http://<%=host%>"+"<%=contextPath%>/superadmin.do";
+    if(window.location=="http://<%=host%><%=contextPath%>login.do")
         window.location=loc2;
   
 </script>
@@ -159,7 +159,7 @@ if(session.getAttribute("username")==null)
   </tr>
   <tr><td dir="<%=rtl%>">
             <font color="blue" size="-1" dir="<%=rtl%>"><b><br>
-<%=resource.getString("login.pendingrequestforinstitueregistration")%> (<%=count%>)&nbsp;<a href="/EMS-Struts/admin/view_pending.jsp" target="f3" dir="<%=rtl%>"> <%=resource.getString("viewpending")%></a>
+<%=resource.getString("login.pendingrequestforinstitueregistration")%> (<%=count%>)&nbsp;<a href="<%=contextPath%>/admin/view_pending.jsp" target="f3" dir="<%=rtl%>"> <%=resource.getString("viewpending")%></a>
 
     </b>
 </font>

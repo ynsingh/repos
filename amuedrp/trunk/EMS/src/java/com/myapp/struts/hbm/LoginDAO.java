@@ -109,7 +109,20 @@ public List getLoginDetails(String user_id,String password){
         }
         
 }
-
+public Login getbyStaffId(String staff_id){
+ Session session =null;
+    Transaction tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("FROM Login where staffDetail.staffId = :staffId");
+             query.setString("staffId",staff_id );
+            return (Login) query.uniqueResult();
+        }
+        finally {
+            session.close();
+        }
+}
 
 public List getLoginDetailsbyRole(String role){
  Session session =null;
@@ -142,4 +155,51 @@ public List getUser(String user_id){
         }
 }
 
+
+public List getStaffDetails(String staffId,String instituteId){
+ Session session =null;
+    Transaction tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("FROM Login where staff_id=:staffId and institute_id=:instituteId");
+             query.setString("staffId", staffId);
+             query.setString("instituteId", instituteId);
+            return query.list();
+        }
+        finally {
+            session.close();
+        }
+}
+public Login getStaffDetails1(String staffId,String instituteId){
+ Session session =null;
+    Transaction tx = null;
+    try {
+        session= HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            Query query = session.createQuery("FROM Login where staff_id=:staffId and institute_id=:instituteId");
+             query.setString("staffId", staffId);
+             query.setString("instituteId", instituteId);
+            return (Login)query.uniqueResult();
+        }
+        finally {
+            session.close();
+        }
+}
+public static Login searchForgetPassword(String login_id) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+
+        try {
+            session.beginTransaction();
+            Query query = session.createQuery("FROM  Login  WHERE userId =:user_id and question!=:ques");
+            query.setString("user_id", login_id);
+            query.setString("ques", "@");
+
+            return ( Login) query.uniqueResult();
+        }
+        finally {
+           // session.close();
+        }
+
+}
 }

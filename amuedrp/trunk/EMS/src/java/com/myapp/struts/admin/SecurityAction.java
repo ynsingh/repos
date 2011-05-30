@@ -29,6 +29,7 @@ public class SecurityAction extends org.apache.struts.action.Action {
     String ans;
     List rs;
     String institute_id;
+    String role;
 
     /**
      * This is the action called from the Struts framework.
@@ -51,8 +52,10 @@ public class SecurityAction extends org.apache.struts.action.Action {
            user_name=login.getUser_id();
            question=login.getQuestion();
            ans=login.getAns();
+           
            HttpSession session=request.getSession();
             institute_id=(String)session.getAttribute("institute_id");
+            role=(String)session.getAttribute("role");
           // System.out.println(staff_id+question+ans);
 LoginDAO logindao = new LoginDAO();
 Login loginDetails = new Login();
@@ -70,24 +73,20 @@ loginDetails = (Login)loginList.get(0);
 
 logindao.update(loginDetails);
 
-    //if(x!=0)
-      
-          rs= logindao.getUser(userid);
+   
+      if(loginDetails.getRole().equalsIgnoreCase("insti-admin"))
+        
+                                return mapping.findForward("success");
 
-                            if(!rs.isEmpty())
-                             {
-                                //request.setAttribute("account_resultset", rs);
-                                request.setAttribute("msg","Requested Page is being developed");
-                                return mapping.findForward("failure");
-                                //return mapping.findForward("success");
-                             }
-                             else
-                             {
-                              return mapping.findForward("failure");
-                             }
+if(loginDetails.getRole().equalsIgnoreCase("Election Manager"))
+{ request.setAttribute("msg","Requested Page is being developed");
+                                return mapping.findForward("failure");}
+                             
       
         
-    }return mapping.findForward("failure");
+    }
+
+return mapping.findForward("failure");
     }
 }
 

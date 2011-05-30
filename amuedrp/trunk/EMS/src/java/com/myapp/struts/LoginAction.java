@@ -11,8 +11,6 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import java.sql.*;
-import java.sql.*;
-import java.sql.*;
 import java.util.*;
 import javax.servlet.http.HttpSession;
 import com.myapp.struts.utility.PasswordEncruptionUtility;
@@ -92,30 +90,6 @@ public class LoginAction extends org.apache.struts.action.Action {
 LoginActionForm loginActionForm;
 loginActionForm = (LoginActionForm) form;
 
-
-            con=MyConnection.getMyConnection();
-            if(con==null)
-            {
-             request.setAttribute("msg1","Database Connectivity is Closed");
-             return mapping.findForward("failure");
-            }
-
-
-
-
-
-
-            con=MyConnection.getMyConnection();
-            if(con==null)
-            {
-             request.setAttribute("msg1","Database Connectivity is Closed");
-             return mapping.findForward("failure");
-            }
-
-
-
-
-
         //if(loginActionForm.getButton1()!=null){
         user_id = loginActionForm.getUsername();
         password = loginActionForm.getPassword();
@@ -144,6 +118,12 @@ session.setAttribute("staff_id", user_id);
 
         System.out.println(user_id+"....."+password+"......"+button+"......");
 
+con=MyConnection.getMyConnection();
+            if(con==null)
+            {
+             request.setAttribute("msg1","Database Connectivity is Closed");
+             return mapping.findForward("failure");
+            }
 
 
         if (button.equals("Log In")) {
@@ -222,12 +202,17 @@ session.setAttribute("staff_id", user_id);
                    
                     return mapping.findForward("superadmin");
                 }
-                 }
-                else{
-                request.setAttribute("msg1","Invalid User Id or Password");
-                session.setAttribute("staff_id", user_id);
-                return mapping.findForward("failure");
-                }
+               // System.out.println("institute login role="+ login.getRole());
+                //if(login.getRole().equalsIgnoreCase("insti-admin"))
+                //{
+                  //  return mapping.findForward("instituteadmin");
+                //}
+                 
+               // else{
+                //request.setAttribute("msg1","Invalid User Id or Password");
+                //session.setAttribute("staff_id", user_id);
+                //return mapping.findForward("failure");
+               // }
                 //  System.out.println(user_id+""+password+staff_id);
 
                 //check first login
@@ -282,6 +267,7 @@ session.setAttribute("staff_id", user_id);
 */
                         return mapping.findForward("firstlogin");
 
+
                     }
 
 
@@ -323,10 +309,13 @@ session.setAttribute("staff_id", user_id);
 */
                     //System.out.println("ok1"+staff_id);
                     // System.out.println(user_id+""+password+"1");
-                    request.setAttribute("msg", "You are Successfully Logged In! Further functionality is being developed...");
-                    return mapping.findForward("failure");
+                   
 
-
+else
+                        if(login.getRole().equalsIgnoreCase("insti-admin"))
+                {
+                    return mapping.findForward("instituteadmin");
+                }
                     //System.out.println("ok"+staff_id);
                 }
 
@@ -340,42 +329,37 @@ session.setAttribute("staff_id", user_id);
 
     }
 
-        //login button
+        } //login button
         else if (button.equals("Forget Password")) {
-            //loginActionForm.setButton("");
-           /* con = MyConnection.getMyConnection();
-            stmt = con.prepareStatement("select * from login where user_id=? and question is not null");
-            stmt.setString(1, user_id);
-            rst = (List)stmt.executeQuery();
-            if (rst.next()) {
-                session.setAttribute("pass", "t");
-                session.setAttribute("user_id", rst.getString("user_id"));
-                session.setAttribute("username", rst.getString("user_name"));
-                request.setAttribute("question", rst.getString("question"));
-                request.setAttribute("staff_id", rst.getString("staff_id"));
+           /* Check Weather the Question is Assigned for the User or Not */
+               // stmt=con.prepareStatement("select * from login where login_id=? and question is not null");
+               /// stmt.setString(1, login_id);
+               Login obj=LoginDAO.searchForgetPassword(user_id);
+                if(obj!=null)
+                {
+                session.setAttribute("pass","t");
+                session.setAttribute("user_id", obj.getUserId());
+                session.setAttribute("institute_id", obj.getStaffDetail().getId().getInstituteId());
+                session.setAttribute("login_id",obj.getUserId());
+                session.setAttribute("username", obj.getUserName());
+                session.setAttribute("question",obj.getQuestion());
+                session.setAttribute("staff_id",obj.getStaffDetail().getId().getStaffId());
+
 
                 return mapping.findForward("forgetpassword");
-            } else {
+                }
+                else
+                {
 
-                request.setAttribute("msg", "Security question not assigned");
-                return mapping.findForward("failure");
-            }
-*/
+                    request.setAttribute("msg","Security question not assigned");
+                    return mapping.findForward("failure");
+                }
         }
 
-
-
-        //  else//if(!locale.equals(locale1))
-        //  {
-        // if(locale.equals("English")) session.setAttribute("locale", "en");
-        // else if(locale.equals("Hindi")) session.setAttribute("locale", "hi");
-        //  else if(locale.equals("Urdu")) session.setAttribute("locale", "ur");
-        // else if(locale.equals("Arabic")) session.setAttribute("locale", "ar");
-        //return mapping.findForward("login");
-        // }
-
+     
 
         return mapping.findForward("failure");
         
     }
+
 }

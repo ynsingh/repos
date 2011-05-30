@@ -42,9 +42,15 @@ locale1=(String)session.getAttribute("locale");
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Institute Registration</title>
 
-<link rel="stylesheet" href="/EMS-Struts/css/page.css"/>
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 
-
+<script language="javascript" type="text/javascript">
+    function quit()
+    {
+      
+        window.location="<%=request.getContextPath()%>/login.jsp";
+    }
+    </script>
 </head>
 <body dir="<%=rtl%>">
   
@@ -75,7 +81,7 @@ locale1=(String)session.getAttribute("locale");
      <tr><td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("institutename")%>*</td><td width="150px"><html:text property="institute_name" name="AdminRegistrationActionForm" />
 
          </td><td width="300px" class="err" dir="<%=rtl%>" align="<%=align%>"> <html:messages id="err_name"  property="institute_name">
-            <bean:write name="err_name" />
+            <%=resource.getString("institutename_cannotbe_blank")%>
              </html:messages>
          </td></tr>
      <tr><td align="<%=align%>" dir="<%=rtl%>"><%=resource.getString("instituteabbrevation")%></td><td><html:text property="abbreviated_name" name="AdminRegistrationActionForm" />  </td><td  class="err" dir="<%=rtl%>" align="<%=align%>">   <html:messages id="err_name" property="abbreviated_name">
@@ -84,22 +90,22 @@ locale1=(String)session.getAttribute("locale");
 			</html:messages>
          </td></tr>
              <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("instituteAddress")%>*</td><td><html:text    property="institute_address" name="AdminRegistrationActionForm"/></td><td  class="err" dir="<%=rtl%>" align="<%=align%>">   <html:messages id="err_name" property="institute_address">
-				<bean:write name="err_name" />
+				<%=resource.getString("instiaddress_cannotbe_blank")%>
 
 			</html:messages>
          </td></tr>
              <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("city")%>*</td><td><html:text  property="city"/></td><td  class="err" dir="<%=rtl%>" align="<%=align%>">   <html:messages id="err_name" property="city">
-				<bean:write name="err_name" />
+				<%=resource.getString("city_cannotbe_blank")%>
 
 			</html:messages>
          </td></tr>
              <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("state")%>*</td><td><html:text  property="state"/></td><td  class="err" dir="<%=rtl%>" align="<%=align%>">   <html:messages id="err_name" property="state">
-				<bean:write name="err_name" />
+				<%=resource.getString("state_cannotbe_blank")%>
 
 			</html:messages>
          </td></tr>
              <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("country")%>*</td><td><html:text  property="country" /></td><td  class="err" dir="<%=rtl%>" align="<%=align%>">   <html:messages id="err_name" property="country">
-				<bean:write name="err_name" />
+				<%=resource.getString("country_cannotbe_blank")%>
 
 			</html:messages>
          </td></tr>
@@ -109,11 +115,11 @@ locale1=(String)session.getAttribute("locale");
 			</html:messages>
          </td></tr>
               <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("courtesy")%></td><td>
- <html:select property="courtesy" style="width:146px">
+ <html:text property="courtesy"/>
 
 
 
- <html:option value="" dir="<%=rtl%>"><%=resource.getString("select")%> </html:option>
+     <%--<html:option value="" dir="<%=rtl%>"><%=resource.getString("select")%> </html:option>
 
 
                     <html:option value="mr"><%=resource.getString("Mr")%></html:option>
@@ -121,7 +127,7 @@ locale1=(String)session.getAttribute("locale");
                     <html:option value="mrs"><%=resource.getString("Mrs")%></html:option>
                     <html:option value="ms"><%=resource.getString("Ms")%></html:option>
 
-                    </html:select>
+</html:select>--%>
 
 
 
@@ -133,12 +139,12 @@ locale1=(String)session.getAttribute("locale");
 			</html:messages>
          </td></tr>
              <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("firstname")%>*</td><td><html:text  property="admin_fname" /></td><td  class="err" dir="<%=rtl%>" align="<%=align%>">   <html:messages id="err_name" property="admin_fname">
-				<bean:write name="err_name" />
+				<%=resource.getString("firstname_cannotbe_blank")%>
 
 			</html:messages>
          </td></tr>
              <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("lastname")%>*</td><td><html:text  property="admin_lname" /></td><td  class="err" dir="<%=rtl%>" align="<%=align%>">   <html:messages id="err_name" property="admin_lname">
-				<bean:write name="err_name" />
+				<%=resource.getString("lastname_cannotbe_blank")%>
 
 			</html:messages>
          </td></tr>
@@ -163,7 +169,7 @@ locale1=(String)session.getAttribute("locale");
 
 
                  </td><td  class="err" dir="<%=rtl%>" align="<%=align%>">   <html:messages id="err_name" property="gender">
-				<bean:write name="err_name" />
+				<%=resource.getString("gender_cannotbe_blank")%>
 
 			</html:messages>
          </td></tr>
@@ -178,23 +184,23 @@ locale1=(String)session.getAttribute("locale");
 			</html:messages>
          </td></tr>
              <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("mobileno")%>*</td><td><html:text  property="mobile_no" /></td><td  class="err" dir="<%=rtl%>" align="<%=align%>">   <html:messages id="err_name" property="mobile_no">
-				<bean:write name="err_name" />
+				<%=resource.getString("contactno_cannotbe_blank")%>
 
 			</html:messages>
          </td></tr>
              <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("userid")%>*</td><td><html:text  property="userId" styleId="user_id"/></td><td  class="err" dir="<%=rtl%>" align="<%=align%>" >   <html:messages id="err_name" property="userId">
-				<bean:write name="err_name" />
+				<%=resource.getString("userid_cannotbe_blank")%>
 
 			</html:messages>
          </td></tr>
-<tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("password")%>*</td><td><html:password  property="admin_password" styleId="pass" style="width: 143px"/></td><td  class="err" dir="<%=rtl%>" align="<%=align%>">   <html:messages id="err_name" property="admin_password">
+<%--<tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("password")%>*</td><td><html:password  property="admin_password" styleId="pass" style="width: 143px"/></td><td  class="err" dir="<%=rtl%>" align="<%=align%>">   <html:messages id="err_name" property="admin_password">
 				<bean:write name="err_name" />
 
-			</html:messages>
+			</html:messages><div id="repasswordErr1"></div>
          </td></tr>
 <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("login.managesuperadminaccount.repassword")%>*</td><td><input type="password" id="pass1" name="admin_password1" style="width: 143px"/></td><td  class="err" dir="<%=rtl%>" align="<%=align%>"><div id="repasswordErr"></div>
 
-         </td></tr>
+         </td></tr>--%>
                 
 
              <tr><td dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("typeofinstitute")%>*</td><td>
@@ -214,7 +220,7 @@ locale1=(String)session.getAttribute("locale");
 
 
                  </td><td  class="err" dir="<%=rtl%>" align="<%=align%>">   <html:messages id="err_name" property="type_of_institute">
-				<bean:write name="err_name" />
+				<%=resource.getString("typeofinsti_cannotbe_blank")%>
 
 			</html:messages>
          </td></tr>
@@ -230,7 +236,7 @@ locale1=(String)session.getAttribute("locale");
                    
                  
                  </td><td  class="err" dir="<%=rtl%>" align="<%=align%>">   <html:messages id="err_name" property="admin_email">
-				<bean:write name="err_name" />
+				 <%=resource.getString("emailid_cannotbe_blank")%>
 
 			</html:messages>
          </td></tr>
@@ -251,7 +257,7 @@ locale1=(String)session.getAttribute("locale");
 			</html:messages>
          </td></tr>
 
-              <tr><td></td><td colspan="2" dir="<%=rtl%>" align="<%=align%>"><input type="submit"  id="submit" name="submit" value=" <%=resource.getString("register")%>" class="txt2">&nbsp;<input type="button"   name="cancel" value="<%=resource.getString("cancel")%>" class="txt2" onclick="quit()"><br></td></tr>
+              <tr><td></td><td colspan="2" dir="<%=rtl%>" align="<%=align%>"><input type="submit"  id="submit" name="submit" value=" <%=resource.getString("register")%>" class="txt2" onclick="return checkPassLog();">&nbsp;<input type="button"   name="cancel" value="<%=resource.getString("cancel")%>" class="txt2" onclick="quit()"><br></td></tr>
         </table><br><br>
           </td></tr>
     </table>
@@ -259,11 +265,8 @@ locale1=(String)session.getAttribute("locale");
 </div>
 
         </body>
-        <script>
-    function quit()
-    {
-        window.location="/EMS-Struts/login.jsp";
-    }
+        <script language="javascript">
+    
     function  checkPassword()
     {
        // alert("hello");
@@ -281,6 +284,25 @@ locale1=(String)session.getAttribute("locale");
             return false;
         }
     }
+
+    function  checkPassLog()
+    {
+       // alert("hello");
+        var pass = document.getElementById("pass").value;
+        var id=document.getElementById("user_id").value;
+        //alert(pass+" "+pass1);
+        if(pass!=id){
+          //  alert("successfull");
+            return true;}
+        else{
+            //alert("fail");
+            document.getElementById("repasswordErr1").innerHTML="<p>UserId & Password should be different</p>";
+            document.getElementById("pass").value="";
+            document.getElementById("pass").focus();
+            return false;
+        }
+    }
+
     </script>
 
 <%
@@ -290,7 +312,7 @@ if(msg!=null)
     {
     %>
     <script language="javascript" type="text/javascript">
-        //window.location="/EMS-Struts/admin/admin_registration.jsp";
+        
         document.getElementById("user_id").value = "";
         document.getElementById("user_id").focus();
         alert("<%=msg%>");

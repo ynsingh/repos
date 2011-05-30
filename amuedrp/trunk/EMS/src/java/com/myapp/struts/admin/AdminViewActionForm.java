@@ -37,6 +37,7 @@ private String library_name;
 private String courtesy;
 private String gender;
 private String user_id;
+private String password;
 
  
 /**
@@ -367,6 +368,20 @@ private String user_id;
      */
     public void setUser_id(String user_id) {
         this.user_id = user_id;
+    }
+
+    /**
+     * @return the password
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * @param password the password to set
+     */
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     /**

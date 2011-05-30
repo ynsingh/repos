@@ -15,6 +15,10 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.hibernate.Session;
+import  com.myapp.struts.utility.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -27,8 +31,15 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
     private  String institute_id;
     private int registration_request_id;
     private String staff_id;
-
-    
+  private final ExecutorService executor=Executors.newFixedThreadPool(1);
+    Email obj;
+    private String admin_password;
+    private String admin_password1;
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    boolean page=true;
+    String align="left";
     
     /**
      * This is the action called from the Struts framework.
@@ -49,6 +60,24 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
         institute_id=admin.getInstitute_id();
         System.out.println("Registration_Id="+ registration_request_id +" Institute ID="+institute_id);
         staff_id="admin."+institute_id;
+
+        HttpSession session=request.getSession();
+
+            try{
+locale1=(String)session.getAttribute("locale");
+
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+       // System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
+    else{ rtl="RTL";page=false;align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
 
         //Institute Table Data Access Objects and POJO's
             InstituteDAO institutedao = new InstituteDAO();
@@ -78,7 +107,8 @@ if (institute_id!=null)
             
          //request.setAttribute("query_id",query_id);
       //   System.out.println(query_id);
-             request.setAttribute("msg", "Institute Already Registered with institute_id: "+institute_id);
+            String msg=resource.getString("institute_registeredwith_id");
+             request.setAttribute("msg", msg +institute_id);
              return mapping.findForward("failure");
         }
         if(b1==false)
@@ -115,8 +145,19 @@ if (institute_id!=null)
             System.out.println("user_id = "+user_id);
             login.setUserId(user_id);
             login.setUserName(adminReg.getAdminFname()+" "+ adminReg.getAdminLname());
-            login.setPassword(adminReg.getAdminPassword());
+            
+             /*Admin Password Generate*/
+                 admin_password= RandomPassword.getRandomString(10);
+                 System.out.println(admin_password);
+                admin_password1=PasswordEncruptionUtility.password_encrupt(admin_password);
+
+            
+            login.setPassword(admin_password1);
+
+            //login.setQuestion("@");
+
             login.setStaffDetail(staffDetail);
+            login.setRole("insti-admin");
 
             institutedao.insert(institute);
             staffDetaildao.insert(staffDetail);
@@ -126,9 +167,18 @@ if (institute_id!=null)
             admindao.update(adminReg);
             request.setAttribute("accept_msg1", institute_id);
             request.setAttribute("accept_msg3",adminReg.getInstituteName() );
-            request.setAttribute("msg", "Request Accepted with institute Id "+institute_id);
+            String msg=resource.getString("request_accepted_instituteid");
+            request.setAttribute("msg", msg +institute_id);
             
-        
+         obj=new Email(adminReg.getAdminEmail(),admin_password,"Registration Accepted Successfully from EMS","User Id="+adminReg.getUserId()+" Your Password for EMS Login is="+admin_password);
+         executor.submit(new Runnable() {
+
+                public void run() {
+                    obj.send();
+                }
+            });
+
+
         
 return mapping.findForward("success");
     }
@@ -137,7 +187,7 @@ return mapping.findForward("success");
        System.out.println(e2);
        
         }
-  return mapping.findForward("success");
+ // return mapping.findForward("success");
 }
         return mapping.findForward("failure");
     }

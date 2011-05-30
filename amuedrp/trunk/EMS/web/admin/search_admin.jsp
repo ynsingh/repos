@@ -73,7 +73,7 @@ document.Form1.submit();
 
 </script>
 </head>
-<link rel="stylesheet" href="/EMS-Struts/css/page.css"/>
+<link rel="stylesheet" href="/EMS/css/page.css"/>
 <body onload="fun()" class="datagrid">
    
 

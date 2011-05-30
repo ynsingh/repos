@@ -76,7 +76,7 @@ if (rst!=null && rst.get(0).getClass().equals(AdminRegistration.class))
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Untitled Page</title>
-<link rel="stylesheet" href="/EMS-Struts/css/page.css"/>
+<link rel="stylesheet" href="/EMS/css/page.css"/>
 <style type="text/css">
 body
 {
@@ -90,7 +90,7 @@ body
         <table align="center" dir="<%=rtl%>"  class="txt" width="80%" style="font-family: arial;font-weight: bold;color:brown;font-size:13px">
 
 
-            <tr><td  align="<%=align%>" colspan="2" ><br><br> <span class="txt"><img src="/EMS-Struts/images/Institutereg.png" dir="<%=rtl%>">
+            <tr><td  align="<%=align%>" colspan="2" ><br><br> <span class="txt">
 </span>
 
          </td></tr>
@@ -170,8 +170,9 @@ body
      %>
             <tr><td width="15%" dir="<%=rtl%>"><%=resource.getString("institutename")%></td><td width="15%"><input type="text" id="Editbox1"   name="institute_name" value="<%=institute_name%>" tabindex="1" title="Enter Instutute Name" readonly></td><td width="15%"><%=resource.getString("registrationid")%></td><td width="15%"><input type="text" id="Editbox18"  name="registration_request_id" value="<%=registration_id%>" tabindex="18" readonly></td></tr>
 
-            <tr><td dir="<%=rtl%>"><%=resource.getString("instituteabbrevation")%></td><td><input type="text" id="Editbox2" dir="<%=rtl%>"   name="abbreviated_name" value="<%=abbreviated_name%>" tabindex="2" readonly title="Abbrivated name e.g. AMU(aligarh muslim University)"></td><td dir="<%=rtl%>"><%=resource.getString("courtesy")%></td><td> <select name="courtesy"  dir="<%=rtl%>" disabled size="1" id="courtesy"   tabindex="11" title="courtesy" style="width:148px">
-    <%if(courtesy.equals("mr")){%>
+            <tr><td dir="<%=rtl%>"><%=resource.getString("instituteabbrevation")%></td><td><input type="text" id="Editbox2" dir="<%=rtl%>"   name="abbreviated_name" value="<%=abbreviated_name%>" tabindex="2" readonly title="Abbrivated name e.g. AMU(aligarh muslim University)"></td><td dir="<%=rtl%>"><%=resource.getString("courtesy")%></td><td> 
+    <input type="text" name="courtesy"  dir="<%=rtl%>" value="<%=courtesy%>" disabled size="1" id="courtesy"   tabindex="11" title="courtesy" style="width:148px"/>
+   <%-- <%if(courtesy.equals("mr")){%>
 <option selected value="mr">Mr</option>
 <option value="mrs">Mrs</option>
 <option value="ms">Ms.</option>
@@ -188,7 +189,7 @@ body
 <option  selected value="ms">Ms.</option>
             <%}%>
 
-</select>
+</select>--%>
 </td></tr>
 
      <tr><td dir="<%=rtl%>"><%=resource.getString("instituteAddress")%></td><td><input type="text" id="Editbox3" dir="<%=rtl%>"   name="institute_address" value="<%=institute_address%>" tabindex="3" readonly title="Enter Address of Institute"></td><td dir="<%=rtl%>"><%=resource.getString("firstname")%></td><td><input type="text" id="Editbox13"  name="admin_fname" value="<%=admin_fname%>" tabindex="13" title="Enter first Name" readonly></td></tr>
@@ -231,7 +232,7 @@ body
             
 
              <tr><td dir="<%=rtl%>"><%=resource.getString("landlineno")%></td><td dir="<%=rtl%>"><input type="text" dir="<%=rtl%>" id="Editbox8"   name="land_line_no" value="<%=land_line_no%>" tabindex="8" title="Enter Land Line No" readonly></td>
-             <td dir="<%=rtl%>"><%=resource.getString("password")%></td><td dir="<%=rtl%>"><input type="password" id="Editbox11" readonly  name="admin_password" dir="<%=rtl%>" value="<%=admin_password%>" tabindex="17" title="Enter Password" readonly></td>
+             <input type="hidden" id="Editbox11" readonly  name="admin_password" dir="<%=rtl%>" value="<%=admin_password%>" tabindex="17" title="Enter Password" readonly>
              </tr>
 
              <tr><td dir="<%=rtl%>"><%=resource.getString("typeofinstitute")%></td><td dir="<%=rtl%>"><select name="type_of_institute" disabled id="type_of_institute" style="width:148px" dir="<%=rtl%>" >

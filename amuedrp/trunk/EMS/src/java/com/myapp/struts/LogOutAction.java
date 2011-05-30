@@ -54,7 +54,7 @@ String userid = (String)session.getAttribute("staff_id");
 if(userid==null){
 userid=(String)request.getParameter("user");
 }
-System.out.println("user_id="+userid);
+System.out.println("staff_id="+userid);
 /*loginTempDAO logintempdao = new loginTempDAO();
 logintempdao.delete(user_id);
 */

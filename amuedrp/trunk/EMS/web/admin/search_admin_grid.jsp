@@ -36,7 +36,33 @@ else{
     }
 
 %>
- <link rel="stylesheet" href="/EMS-Struts/css/page.css"/>
+
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    boolean page=true;
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+       // System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
+    else{ rtl="RTL";page=false;align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
+
+ <link rel="stylesheet" href="/EMS/css/page.css"/>
  
 <script language="javascript" >
 function b1click()
@@ -124,21 +150,41 @@ System.out.println("tcount="+tcount);
 
 %>
 
+
+<%
+String Registration_ID=resource.getString("registrationid");
+pageContext.setAttribute("Registration_ID", Registration_ID);
+String Institute_Name=resource.getString("institutename");
+pageContext.setAttribute("Institute_Name", Institute_Name);
+String Admin_Email=resource.getString("login.ems.adminemail");
+pageContext.setAttribute("Admin_Email", Admin_Email);
+String Status=resource.getString("login.ems.status");
+pageContext.setAttribute("Status", Status);
+String Institute_ID=resource.getString("instituteid");
+pageContext.setAttribute("Institute_ID", Institute_ID);
+
+%>
+
 <%
    fromIndex = (int) DataGridParameters.getDataGridPageIndex (request, "datagrid1");
    if ((toIndex = fromIndex+4) >= requestList.size ())
    toIndex = requestList.size();
    session.setAttribute ("requestList", requestList.subList(fromIndex, toIndex));
    pageContext.setAttribute("tCount", tcount);
+   pageContext.setAttribute("path", request.getContextPath());
    }
 %>
 <br><br>
 <%if(tcount==0)
 {%>
-<p class="err" style="font-size:12px">No Record Found</p>
+<p class="err" style="font-size:12px"><%=resource.getString("no_record_found")%></p>
 <%}
 else
 {%>
+
+<table align="<%=align%>" dir="<%=rtl%>" width="100%">
+    <tr dir="<%=rtl%>"><td dir="<%=rtl%>">
+
 <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid">
 
   <columns>
@@ -148,29 +194,29 @@ else
     </column>
 
     <column width="100">
-      <header value="Registration_ID" hAlign="left" styleClass="header"/>
-      <item   value="${doc.registration_id}" hyperLink="/EMS-Struts/admin/index7.jsp?id=${doc.registration_id}"  hAlign="left"    styleClass="item"/>
+      <header value="${Registration_ID}" hAlign="left" styleClass="header"/>
+      <item   value="${doc.registration_id}" hyperLink="${path}/admin/index7.jsp?id=${doc.registration_id}"  hAlign="left"    styleClass="item"/>
     </column>
 
     <column width="200">
-      <header value="Institute Name" hAlign="left" styleClass="header"/>
-      <item   value="${doc.institute_name}" hAlign="left" hyperLink="/EMS-Struts/admin/index7.jsp?id=${doc.registration_id}"  styleClass="item"/>
+      <header value="${Institute_Name}" hAlign="left" styleClass="header"/>
+      <item   value="${doc.institute_name}" hAlign="left" hyperLink="${path}/admin/index7.jsp?id=${doc.registration_id}"  styleClass="item"/>
     </column>
 
    
 
     <column width="150">
-      <header value="Admin_Email" hAlign="left" styleClass="header"/>
-      <item   value="${doc.admin_email}" hyperLink="/EMS-Struts/admin/index7.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
+      <header value="${Admin_Email}" hAlign="left" styleClass="header"/>
+      <item   value="${doc.admin_email}" hyperLink="${path}/admin/index7.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
     </column>
 
    <column width="100">
-   <header value="Institute ID" hAlign="left" styleClass="header"/>
- <item  value="${doc.institute_id}" hyperLink="/EMS-Struts/admin/index7.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
+   <header value="${Institute_ID}" hAlign="left" styleClass="header"/>
+ <item  value="${doc.institute_id}" hyperLink="${path}/admin/index7.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
     </column>
       <column width="100">
-   <header value="Status" hAlign="left" styleClass="header"/>
- <item  value="${doc.status}" hyperLink="/EMS-Struts/admin/index7.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
+   <header value="${Status}" hAlign="left" styleClass="header"/>
+ <item  value="${doc.status}" hyperLink="${path}/admin/index7.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
     </column>
  </columns>
 
@@ -185,10 +231,10 @@ else
 <tr>
 <td align="left" width="100px">
 <c:if test="${previous != null}">
-<a href="<c:out value="${previous}"/>">Previous</a>
+<a href="<c:out value="${previous}"/>"><%=resource.getString("previous")%></a>
 </c:if>&nbsp;
 <c:if test="${next != null}">
-<a href="<c:out value="${next}"/>">Next</a>
+<a href="<c:out value="${next}"/>"><%=resource.getString("next")%></a>
 </c:if>
 
 </td><td width="400px" align="center">
@@ -220,7 +266,8 @@ if(msg!=null)
     </td></tr>
 </table>
 <%}%>
-
+</td></tr>
+</table>
     </body>
 
 

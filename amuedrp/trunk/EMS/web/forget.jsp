@@ -13,12 +13,12 @@
   <%
   String user_id=(String)session.getAttribute("user_id");
   String username=(String)session.getAttribute("username");
-  String question=(String)request.getAttribute("question");
-  String staff_id= (String)request.getAttribute("staff_id");
-  String ans=(String)request.getAttribute("ans");
-  String password=(String)request.getAttribute("password");
+  String question=(String)session.getAttribute("question");
+  String staff_id= (String)session.getAttribute("staff_id");
+  String ans=(String)session.getAttribute("ans");
+  String password=(String)session.getAttribute("password");
   String errors=(String)request.getAttribute("error");
-  
+   String msg=(String)request.getAttribute("msg");
   %>
   
 
@@ -33,7 +33,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="css/page.css"/>
-        <title>LibMS</title>
+        <title>EMS</title>
     </head>
     <body >
 
@@ -43,7 +43,7 @@
       <table width="600px" height="600px"  valign="top" align="center" >
         <tr><td   width="600px" height="500px" valign="top" style="" align="center">
                 <fieldset style="border:solid 1px brown;height:350px;width:200px;padding-left: 5px">
-                    <legend><img src="/LibMS-Struts/images/ForgetPassword.png"/></legend><br><br>
+                    <legend><img src="/EMS/images/ForgetPassword.png"/></legend><br><br>
                     <table width="500px" align="center">
                         <tr><td class="txt2" width="150px">Staff ID</td><td width="200px"><input style="width:170px;" type="text" id="staff_id" name="staff_id" readonly  name="Editbox1" value="<%=staff_id%>"></td></tr>
                         <tr><td colspan="2" height="5px"></td></tr>
@@ -64,6 +64,9 @@
                         <input type="hidden" style="width:170px;" id="password"  name="password"  <% if(password==null){%> value="" <%}else{%> value="<%=password%>"<%}%>>
                             <tr><td colspan="2" height="5px"></td></tr>
                         <% if(errors!=null){%>    <tr><td class="err" width="150px"></td><td class="err" ><%=errors%></td></tr> <%}%>
+  <% if(msg!=null){%>    <tr><td class="mess" width="150px"></td><td class="mess" ><%=msg%></td></tr> <%}%>
+
+
 
 
 
@@ -94,7 +97,7 @@
                         <script>
                             function quit()
                             {
-                                window.location="/libMS-Struts/login.jsp";
+                                window.location="/EMS/login.jsp";
                             }
                             </script>
                             </td></tr>
@@ -166,7 +169,7 @@ return true;
     function quit()
     {
 
-       window.location="/LibMS-Struts/login.jsp";
+       window.location="/EMS/login.jsp";
        return false;
 
     }
