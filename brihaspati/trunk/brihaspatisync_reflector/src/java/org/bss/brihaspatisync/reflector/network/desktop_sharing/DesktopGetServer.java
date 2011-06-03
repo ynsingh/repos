@@ -88,8 +88,8 @@ class MyGetHandler implements HttpHandler {
                                 exchange.sendResponseHeaders(200, 0);
                                 OutputStream responseBody = exchange.getResponseBody();
 				try {
-					BufferedImage image=BufferImage.getController().get(0);
-					BufferImage.getController().remove();	
+					BufferedImage image=DestopSharingUtil.getController().getBuffer().get(0);
+					DestopSharingUtil.getController().getBuffer().remove();	
 					ImageIO.write(image, "jpeg", responseBody);
 				}catch(Exception e){}
 				responseBody.close();

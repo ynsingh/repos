@@ -55,6 +55,7 @@ public class RegisterToIndexServer {
 	private MaintainLog log=MaintainLog.getController();
 	private Timer UL_Timer=null;
 	private String ServerIP="";
+	private Vector server_ip_vector=new Vector();
 		
 	/**
 	 * Controller for this class.
@@ -71,6 +72,9 @@ public class RegisterToIndexServer {
                 return temp;
 	}
 
+	protected void setIServerIP(String temp){
+                temp=ServerIP=temp;
+        }
 		
 	public void getUserListToMasterServer(String m_url,String course_id){
 		try {
@@ -106,8 +110,7 @@ public class RegisterToIndexServer {
          * If secondary indexing servers' list is found from master server, pass it to make connection 
 	 * with indexserver otherwise it return from main method.
          */
-        public boolean connectToMasterServer(){
-		boolean flag=false;
+        public Vector connectToMasterServer(){
         	try {
                 	String m_url=RuntimeDataObject.getController().getMasterUrl().trim()+"req=getISList";;
                         if(!(m_url.equals(""))){
@@ -120,32 +123,28 @@ public class RegisterToIndexServer {
 
                                                 BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                                                 String str="";
+						server_ip_vector.clear();
                                                 try{
                                                         while((str=in.readLine())!=null) {
                                                                 if(!(str.equals(""))) {
-                                                                        flag=true;
-                                                                        ServerIP=str;
+                                                                        server_ip_vector.add(str);
                                                                 }
                                                         }
                                                 }finally {
                                                         if(in != null) {
                                                                 in.close();
-                                                                return flag;
                                                         }
                                                 }
                                         }
                                 } catch(Exception e){
                                         log.setString("Error on getvectorMessage(connection) HttpsUtil.java "+e.getMessage());
                                 }
-			}else {
-                                return flag;
-                        }
+			}
                 }catch (Exception ioe) {
                         log.setString("Error at connectToMasterServer()in HttpsConnection"+ioe.getMessage());
                 }
-                return flag;
+                return server_ip_vector;
 	}
-	
 
 	
 	/**
@@ -155,20 +154,23 @@ public class RegisterToIndexServer {
       		if(!ServerIP.equals("")){
                         try{
                                 String indexServer=ServerIP;
-						System.out.println("-------------------------------"+indexServer);
+				System.out.println("-------------------------------"+indexServer);
                                 String status= "status="+URLEncoder.encode("inactive", "UTF-8");
                                 String req_url=indexServer+"/ProcessRequest?req=reflector_registration&"+status;
                                 URL indexurl = new URL(req_url);
                                 connection=HttpsUtil.getController().createHTTPConnection(indexurl);
+				System.out.println("-------------------------------"+connection);
                                 if(connection==null){
                                         JOptionPane.showMessageDialog(null,"Check your Network Connection or try again");
                                 }else{
                                         if(bufferReader(connection.getInputStream())){
-						System.out.println("-------------------------------"+indexServer);
-                                                if(setStatus(indexServer)){
-                                                        RuntimeDataObject.getController().setindexServerAddr(indexServer);
-                                                }
+						if(setStatus(indexServer)){
+							RuntimeDataObject.getController().setindexServerAddr(indexServer);
+                                                }else{ 
+							System.out.println("There is an error!! please try again");
+						}
                                         } else{
+						System.out.println("There is an error!! please try again");
                                                 JOptionPane.showMessageDialog(null,"There is an error!! please try again");
                                         }
                                 }
@@ -220,7 +222,7 @@ public class RegisterToIndexServer {
 				if(str.equals("successfull")){
                                        return true;
                                 }else{
-                                        //JOptionPane.showMessageDialog(null,"There is an error!! please try again");
+                                        System.out.println("There is an error!! please try again");
 					return false;
                                 }
 			}
@@ -237,6 +239,7 @@ public class RegisterToIndexServer {
 			String req_url=server+"/ProcessRequest?req=reflector_status&"+status;
         	        URL indexurl = new URL(req_url);
                 	connection=HttpsUtil.getController().createHTTPConnection(indexurl);
+			System.out.println(connection);
                      	if(connection==null){
                      		JOptionPane.showMessageDialog(null,"Check your Network Connection or try again");
 	                }else{

@@ -66,60 +66,51 @@ public class PPTGetAndPostServer {
 }
 	
 class PPTHandler implements HttpHandler {
-
-	
-
         public void handle(HttpExchange exchange) throws IOException {
 		try {
                 	while(PPTGetAndPostServer.getController().getFlag()){
 				String requestMethod = exchange.getRequestMethod();
                         	if (requestMethod.equalsIgnoreCase("POST")) {
-                                	System.out.println(requestMethod+"=======================================>");
-                                	Headers responseHeaders = exchange.getResponseHeaders();
-	                                responseHeaders.set("Content-Type", "text/plain");
-        	                        exchange.sendResponseHeaders(200, 0);
-                	                OutputStream responseBody = exchange.getResponseBody();
-                        	        InputStream in = exchange.getRequestBody();
-                                	byte[] bytes = new byte[1024*1024];
-	                               int count = 0;
-        	                       do {
-                	                       count+= in.read(bytes,count,bytes.length-count);
-                        	       } while(!(count>4&&bytes[count-2]==(byte)-1 && bytes[count-1]==(byte)-39));
-	                                responseBody.close();
-					checkDirectory();
-                	                try {
-						FileOutputStream fout=new FileOutputStream("temp"+"/"+"presentation.ppt");
-                				fout.write(bytes);
-	                                }catch(Exception e){}
+                                	System.out.println(requestMethod+"        ppt Server Start         ");
+					Headers responseHeaders = exchange.getResponseHeaders();
+                                        responseHeaders.set("Content-Type", "text/plain");
+                                        exchange.sendResponseHeaders(200, 0);
+                                        OutputStream responseBody = exchange.getResponseBody();
+                                        InputStream in = exchange.getRequestBody();
+                                        byte[] bytes = new byte[1024*1024];
+                                        int count = 0;
+                                        do {
+                                                count+= in.read(bytes,count,bytes.length-count);
+                                        } while(!(count>4&&bytes[count-2]==(byte)-1 && bytes[count-1]==(byte)-39));
+					
+                                        java.awt.image.BufferedImage image = javax.imageio.ImageIO.read(new java.io.ByteArrayInputStream(bytes));
+					System.out.println("    image "+image);
+                                        try {
+						/*
+                                                if((PPTUtil.getController().getBuffer().bufferSize()) < 50)
+                                                        PPTUtil.getController().getBuffer().put(image);
+                                                else
+                                                        PPTUtil.getController().getBuffer().handleBuffer();
+						*/	
+                                        } catch(Exception e){}
+                                        responseBody.close();
         	                }
+				
 			  	if (requestMethod.equalsIgnoreCase("GET")) {
-                      			System.out.println(requestMethod+"===========================================");
+                      			System.out.println(requestMethod+"      ppt Server Start        ");
 					Headers responseHeaders = exchange.getResponseHeaders();
 	                                responseHeaders.set("Content-Type", "text/plain");
         	                        exchange.sendResponseHeaders(200, 0);
                 	                OutputStream responseBody = exchange.getResponseBody();
-					File f=new File("temp"+"/"+"presentation.ppt");
-					if(f.exists()) {			
-        	                        	try {
-							FileInputStream fin = new FileInputStream(f);
-							byte bytes[] = new byte[(int)f.length()];
-							fin.read(bytes);
-	                                       		responseBody.write(bytes);
-        	                        	}catch(Exception e){}
-					}
-                        	        responseBody.close();
+                        	        try {
+                                	        java.awt.image.BufferedImage image=PPTUtil.getController().getBuffer().get(0);
+                                        	PPTUtil.getController().getBuffer().remove();
+	                                        javax.imageio.ImageIO.write(image, "jpeg", responseBody);
+        	                        }catch(Exception e){}
+                	                responseBody.close();
 				}
                 	}
 		}catch(Exception ep){}
         }
-	
-	private void checkDirectory(){
-                File dest=new File("temp");
-                if(!dest.exists()) 
-                        dest.mkdir();
-                File f=new File("temp"+"/"+"presentation.ppt");
-                if(f.exists())
-                        f.delete();
-	}
 }
 

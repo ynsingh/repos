@@ -28,13 +28,14 @@ public class BufferImage {
 	public BufferImage(){
 		buffer= new Vector();
 	} 
-
+	
+	/*
 	public static BufferImage getController(){
                 if(bufferimage==null)
                         bufferimage=new BufferImage();
                 return bufferimage;
         }
-    
+    	*/
 
        	/** 
          * Return the Buffer head 

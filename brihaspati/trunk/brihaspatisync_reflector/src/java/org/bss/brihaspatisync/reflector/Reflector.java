@@ -11,6 +11,9 @@ import java.util.Vector;
 
 import javax.swing.JFrame;
 import javax.swing.JButton;
+
+import javax.swing.JComboBox;
+
 import javax.swing.JOptionPane;
 import javax.swing.JLabel;
 
@@ -35,6 +38,7 @@ public class Reflector {
 	private static Reflector reflector=null;
         private JButton button=null;
         private boolean flag=false;// Flag to check reflector running status.
+        private boolean startflag=false;// Flag to check reflector running status.
         private JLabel label1 = new JLabel();
     	
 	/**
@@ -70,6 +74,7 @@ public class Reflector {
 		}else if(str.equals("start")){
 			if(!flag) {
 				if(startReflector()){
+					RegisterToIndexServer.getController().connectToIndexServer();
                         		System.out.println("Reflector started successfully.");
                                	}else { 
                 			System.out.println("There is problem in starting Reflector.");
@@ -87,30 +92,45 @@ public class Reflector {
 	 * registration it will return list of indexing servers. 
 	 */
 	private boolean startReflector() {
-		RegisterToIndexServer regstToIndxSrv= RegisterToIndexServer.getController();
-		boolean indexServerList=regstToIndxSrv.connectToMasterServer();
-                if(indexServerList){
+		Vector indexServerList=RegisterToIndexServer.getController().connectToMasterServer();
+		System.out.println(indexServerList.toString());
+		String str1[]=new String[indexServerList.size()];
+                for(int i=0;i<indexServerList.size();i++)
+                	str1[i]=indexServerList.get(i).toString();
+		JComboBox combo = new JComboBox(str1);
+                Object[] message = new Object[] {"Select I_Server ",combo};
+                int r = JOptionPane.showConfirmDialog(null, message, "I_Server", JOptionPane.OK_CANCEL_OPTION);
+		System.out.println("==================>  "+r);
+                if (r == JOptionPane.OK_OPTION) {
+                	System.out.println("  year  is  "+ (String)combo.getSelectedItem()); 
+			RegisterToIndexServer.getController().setIServerIP((String)combo.getSelectedItem());
+		}	
+		System.out.println("==================>  "+indexServerList.toString());
+                if(indexServerList.size()>0){
                 	flag=true;
-                        regstToIndxSrv.connectToIndexServer();
               	}
-		return indexServerList;
+		return flag;
 	} 
 
 	ActionListener actionListener = new ActionListener() {
 		public void actionPerformed(ActionEvent actionEvent) {
                         Component source = (Component) actionEvent.getSource();
+			if(!startflag) {
+				if(!startReflector()){
+        	                	label1.setText("There is problem in starting Reflector.");
+					return;
+                       		}
+			}
+	
 			Object response = JOptionPane.showInputDialog(source,"Choose options!","Select a Destination", JOptionPane.QUESTION_MESSAGE,null, new String[] {"Start Reflector", "Stop Reflector and Exit "},"Start Reflector");
                         String response1=response.toString();
                         if(response1.startsWith("Start Reflector")) {
-                                if(!flag) {
-					if(startReflector()){
-						label1.setText("Reflector started successfully.");
-					}else {
-						label1.setText("There is problem in starting Reflector.");
-					}
+                                if(!startflag) {
+					startflag=true;
+					RegisterToIndexServer.getController().connectToIndexServer();
+					label1.setText("Reflector started successfully.");
                                 }else {
                                       	JOptionPane.showMessageDialog(null,"Reflector is already running.");
-
                                 }
                         }else if(response1.startsWith("Stop Reflector")) {
                                 LogoutReflector.getController().stopReflector();

@@ -96,10 +96,10 @@ class MyHandler implements HttpHandler {
 			                } while(!(count>4&&bytes[count-2]==(byte)-1 && bytes[count-1]==(byte)-39));
 			                BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
 		        	      	try {
-						if((BufferImage.getController().bufferSize()) < 50)
-                                        		BufferImage.getController().put(image);
+						if((DestopSharingUtil.getController().getBuffer().bufferSize()) < 50)
+                                        		DestopSharingUtil.getController().getBuffer().put(image);
 						else
-							BufferImage.getController().handleBuffer();
+							DestopSharingUtil.getController().getBuffer().handleBuffer();
 						
                 	                }catch(Exception e){}
 		        	        responseBody.close();
