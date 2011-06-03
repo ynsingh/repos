@@ -14,11 +14,14 @@ import org.bss.brihaspatisync.tools.audio_video.AVTransmitReceiveHandler;
 import org.bss.brihaspatisync.tools.audio_video.AudioVideoPanel;
 import org.bss.brihaspatisync.tools.audio_video.transmitter.PresentationAudioTransmit;
 import org.bss.brihaspatisync.network.ppt_sharing.GetAndPostPPT;
+import org.bss.brihaspatisync.network.ppt_sharing.GetPPTScreen;
 import org.bss.brihaspatisync.tools.audio_video.transmitter.AudioFromStudent;
+
+//import org.bss.brihaspatisync.tools.presentation.PresentationPanel;
 
 /**
  * @author <a href="mailto:arvindjass17@gmail.com">Arvind Pal </a>Created on feb2011	
- * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>Modified on feb2011 
+ * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>Modified on feb2011   
  */
 
 
@@ -152,7 +155,6 @@ public class HandRaiseThreadController implements Runnable{
 
 					// Start post share screen controll for student
 					if(startpostscreeflag) {	
-
 						try {
                                                         PostSharedScreen.getController().start();
                 	                        } catch(Exception sp) {System.out.println("Error in starting PostSharedScreen"+sp.getMessage());}
@@ -171,13 +173,14 @@ public class HandRaiseThreadController implements Runnable{
 					//start post PPT Presentation controll for student
 					if(startpostpptflag) {
 						startpostpptflag=false;
+						org.bss.brihaspatisync.tools.presentation.PresentationPanel.getController().setEnable_Decable(true);		
 						GetAndPostPPT.getController().startFTPClient("POST");
 					}
 
 					//start get PPT Presentation controll for student
 					if(startgetpptflag) {
+						GetPPTScreen.getController().start();
 						startgetpptflag=false;
-						GetAndPostPPT.getController().startFTPClient("GET");
 					}
 					// Starting Audio mic capture for student to ask question or clear doubts from instructor.
 					if(starthraudio){
@@ -250,16 +253,15 @@ public class HandRaiseThreadController implements Runnable{
 					}
 					//Start post PPT Presentation controll for instructor.
 					if(startpostpptflag) {
-                                                GetAndPostPPT.getController().startFTPClient("POST");
 						startpostpptflag=false;
-						System.out.println("===========================>  ppt POST command rechive !!!!!!!!!!!!!!!instructor ");
+						org.bss.brihaspatisync.tools.presentation.PresentationPanel.getController().setEnable_Decable(true);	
+                                                GetAndPostPPT.getController().startFTPClient("POST");
                                         }
 					
 					//Start get PPT Presentation controll for instructor.
 					if(startgetpptflag) {
-                                                GetAndPostPPT.getController().startFTPClient("GET");
+						GetPPTScreen.getController().start();
 						startgetpptflag=false;
-						System.out.println("===========================>  ppt GET command rechive !!!!!!!!!!!!!!!instructor ");
                                         }
 				}	
 				runner.yield();

@@ -24,6 +24,7 @@ import javax.swing.DefaultListCellRenderer;
 
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.RuntimeDataObject;
+import org.bss.brihaspatisync.network.ppt_sharing.GetPPTScreen;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
@@ -145,19 +146,19 @@ public class UserListPanel {
 							if((user.equals(username)) && (status.equals("Allow-Screen") && (screenFlag))){
                                                                 screenFlag=false;
                                                                 HandRaiseThreadController.getController().startPostScreenFlag(true);
-                        			        /*        if((a_status.equals("1"))&&(v_status.equals("1"))){
+                        			        	/*if((a_status.equals("1"))&&(v_status.equals("1"))){
 									HandRaiseThreadController.getController().startpresaudioflag(true);
 								}
-							*/
+								*/
                                                         }
 					
                                                         if(screenFlag){
 								screenFlag=false;
 								HandRaiseThreadController.getController().startGetScreenFlag(true);
-                        			          /*      if((a_status.equals("1"))&&(v_status.equals("1"))){
+                        			          	/*if((a_status.equals("1"))&&(v_status.equals("1"))){
 									HandRaiseThreadController.getController().startPresAudioRec(true);
 								}
-							*/
+								*/
                                                         }
                                                 }catch(Exception sp){System.out.println("  Error in catch Allow-Mic ==========> ");}
 					}
@@ -182,7 +183,6 @@ public class UserListPanel {
                                                         sharescreenFlag=false;
                                                         HandRaiseThreadController.getController().startPostScreenFlag(true);
                                                 }
-
 					}
 
 					// Instructor Screen share controller.
@@ -203,7 +203,7 @@ public class UserListPanel {
 					// Instructor ppt presentation controller.
 					if(statusVector.contains("Allow-PPT")){
                                                 try {
-                                                        if((user.equals(username)) && (status.equals("Allow-PPT") && (pptFlag))){
+                                                        if((user.equals(username)) && (status.equals("Allow-PPT") && (pptFlag))) {
                                                                 pptFlag=false;
                                                                 HandRaiseThreadController.getController().startpostpptFlag(true);
                                                         }
@@ -224,7 +224,7 @@ public class UserListPanel {
                 }
 
 		if(!(statusVector.contains("Share-Screen"))) {
-			if(!sharescreenFlag){
+			if(!sharescreenFlag) {
 				sharescreenFlag=true;
 				try {
                                         HandRaiseThreadController.getController().stopGetScreenFlag(true);
@@ -263,6 +263,8 @@ public class UserListPanel {
 		if(!(statusVector.contains("Allow-PPT"))) {
                         if(!pptFlag) {
                                 pptFlag=true;
+				GetPPTScreen.getController().stop();
+				org.bss.brihaspatisync.tools.presentation.PresentationViewPanel.getController().setEnable_Decable(false ,false);
                         }
                }
 	 		

@@ -4,32 +4,34 @@ package org.bss.brihaspatisync.tools.presentation;
  * PreferenceWindow.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2007-2008 ETRG, IIT kanpur.
+ * Copyright (c) 2007-2011 ETRG, IIT kanpur.
  */
+
 
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
-import java.awt.Container;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import org.bss.brihaspatisync.gui.MainWindow;
-import org.bss.brihaspatisync.util.ClientObject;
-import org.bss.brihaspatisync.network.util.UtilObject;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
-import java.io.File;
-import javax.swing.JProgressBar;
-import org.bss.brihaspatisync.network.ppt_sharing.GetAndPostPPT;
+import javax.swing.BorderFactory;
+import javax.swing.border.TitledBorder;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.text.html.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+
+import org.bss.brihaspatisync.network.util.UtilObject;
+import org.bss.brihaspatisync.network.ppt_sharing.PostPPTScreen;
 
 
 /**
@@ -38,16 +40,10 @@ import javax.swing.text.html.*;
  */
  
 public class PresentationPanel extends JPanel implements ActionListener {
-	private int i=0;	
-	private Timer timer=null;
 	private JLabel label=null;
-	private Container con=null;
 	private JButton browse=null;
-        private JProgressBar pb=null;
 	private JPanel mainPanel=null;
 	private JButton slideShow=null;
-	final static int interval = 10000;
-	final static int stoptimer = 10000;	
 	private JFileChooser instcspanel=null;
 	private static PresentationPanel prePanel=null;
 	private UtilObject utilObject=UtilObject.getController();
@@ -59,43 +55,23 @@ public class PresentationPanel extends JPanel implements ActionListener {
 		return prePanel;
 	}
 	
-	public PresentationPanel(){
-		
-		timer = new Timer(interval, new ActionListener() {
-                        public void actionPerformed(ActionEvent evt) {
-                                if (stoptimer < i){
-                                        Toolkit.getDefaultToolkit().beep();
-					slideShow.setEnabled(true);
-					browse.setEnabled(false);
-                                        timer.stop();
-                                        pb.setValue(0);
-                                        String str = "<html>" + "<font color=\"#FF0000\">" + "Uploading completed."  + "</font>" + "</html>";
-                                        label.setText(str);
-                                }
-                                i = i + 1;
-                                pb.setValue(i);
-                        }
-                });
-		
-	}
-		
   	public JPanel createGUI(){
   		mainPanel=new JPanel();
   		mainPanel.setLayout(new BorderLayout());
 
+		TitledBorder title = BorderFactory.createTitledBorder("PPT Upload");
+		mainPanel.setBorder(title);
+
+
   		JPanel labelPane=new JPanel();
 		JPanel bttnPane=new JPanel();
-
+		
 	        browse=new JButton("Upload");
                	browse.addActionListener(this);
-			
-		pb = new JProgressBar(0, 20);
-	       	pb.setValue(0);
-       		pb.setStringPainted(true);
-		label = new JLabel("Upload .ppt File ");
-		labelPane.add(label);
-		labelPane.add(pb);			
-		browse.setEnabled(true);
+		
+		label = new JLabel();//"Upload .ppt File ");
+                labelPane.add(label);
+		browse.setEnabled(false);
 		slideShow=new JButton("Slide Show");
        	        slideShow.addActionListener(this);
 		slideShow.setEnabled(false);
@@ -111,25 +87,27 @@ public class PresentationPanel extends JPanel implements ActionListener {
                 if(ae.getSource()==browse){	
 			if (instcspanel == null) {
                                 instcspanel = new JFileChooser();
-                                GetAndPostPPT.getController().checkDirectory();
+                                org.bss.brihaspatisync.network.ppt_sharing.GetAndPostPPT.getController().checkDirectory();
                         }else {
-		                int returnVal = instcspanel.showDialog(PresentationPanel.this,"Attach");
+				int returnVal = instcspanel.showDialog(PresentationPanel.this,"Attach");
 				this.revalidate();
                                 if (returnVal == JFileChooser.APPROVE_OPTION) {
-                                        File b=instcspanel.getSelectedFile();
+					try {
+						ClassLoader clr= this.getClass().getClassLoader();
+						label.setIcon(new ImageIcon(clr.getResource("resources/images/user/LoadingProgressBar.gif")));	
+					}catch(Exception e){System.out.println("--------------------> "+e.getMessage());}
+                                        
+					File b=instcspanel.getSelectedFile();
 					File src=new File(b.getAbsolutePath().toString());
                                         File dst=new File("temp/");
 					if(dst.exists()) {
+						dst=new File(dst.getAbsolutePath().toString()+"/presentation.ppt");
 						try {
-							FileChooser.getController().start(src,dst);
-							label.setText("Uploading process ---");
 							browse.setEnabled(false);
+							copy(src,dst);
+							//label.setText("Uploading process ---");
 						}catch(Exception e){System.out.println("Errorrrrrrrrrrrrrrr"+e.getCause());}
 					}
-					timer.start();
-                                        dst=null;
-                                        src=null;
-					
                                 } else {
                                         label.setText("Attachment cancelled by user.");
                                 }
@@ -139,24 +117,42 @@ public class PresentationPanel extends JPanel implements ActionListener {
                 }
 		
 		if(ae.getSource() == slideShow){
-			SlideShowWindow.getController().setUPGUI();
-			StringBuffer sb=new StringBuffer(100);
-			sb=sb.append("ppt");
-                        sb=sb.append("$");
-                        sb=sb.append("0");
-			String send_msg=sb.toString();
-                        utilObject.setSendQueue(send_msg);
+			try {
+				/***  button enable /decable *************/
+				PresentationViewPanel.getController().setEnable_Decable(true ,true);
+				/************   send frist slide ********************/
+                	        PostPPTScreen.getController().start_to_sendppt(0);
+				/***************  browse button decable *******/
+				slideShow.setEnabled(false);
+				//this.revalidate();
+			} catch(Exception e){}
 			return ;
 		}
 	}
+		
+	public void setlabelText(){
+		try {
+                        ClassLoader clr= this.getClass().getClassLoader();
+                        label.setIcon(new ImageIcon(clr.getResource("resources/images/user/accept.png")));
+                        slideShow.setEnabled(true);
+                }catch(Exception e){System.out.println("--------------------> "+e.getMessage());}
+        }
 	
-	protected void stopTimer(int i){
-		this.i=i;
-	}
 	
-	protected void setlabelText(String str){
-                label.setText(str);
+	public void setEnable_Decable(boolean flag){
+		browse.setEnabled(flag);                
+        }
+	
+        private void copy(File src, File dst) throws IOException {
+                InputStream in = new FileInputStream(src);
+                OutputStream out = new FileOutputStream(dst);
+                byte[] buf = new byte[1024];
+                int len;
+                while ((len = in.read(buf)) > 0) {
+                        out.write(buf, 0, len);
+                }
+                in.close();
+                out.close();
+                System.out.println("PPT File  Upload Successfully !! ");
         }
 }
-
-

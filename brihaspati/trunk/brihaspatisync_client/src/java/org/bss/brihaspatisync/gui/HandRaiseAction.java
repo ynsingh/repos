@@ -56,16 +56,20 @@ public class HandRaiseAction implements ActionListener {
                         if((client_obj.getUserRole()).equals("student")){
                                 user="loginName="+URLEncoder.encode(client_obj.getUserName(),"UTF-8");
                         }else if((client_obj.getUserRole()).equals("instructor")){
-				if((!Request.equals("Share-Screen"))){
-                                	//if(!selectedUsername.equals("")){
-                                		user="loginName="+URLEncoder.encode(client_obj.getUserName(),"UTF-8");
-                                		//user="loginName="+URLEncoder.encode(selectedUsername,"UTF-8");
-					//	selectedUsername="";
-					//}else{
-					//	JOptionPane.showMessageDialog(null,"Please select username ");
-                                       	//	return;
-					//}
-				}else{
+				System.out.println("Request  ================>>>>>>>  "+Request);
+				if((!Request.equals("Share-Screen")) && ((!Request.equals("Instructor_Allow-PPT"))) && ((!Request.equals("Instructor_Stop_Allow"))) ){
+                                	if(!selectedUsername.equals("")){
+                                                user="loginName="+URLEncoder.encode(selectedUsername,"UTF-8");
+                                                selectedUsername="";
+                                        }else{
+                                                JOptionPane.showMessageDialog(null,"Please select username ");
+                                                return;
+                                        }
+				}else {
+					if(Request.equals("Instructor_Allow-PPT"))
+						Request="Allow-PPT";
+					if(Request.equals("Instructor_Stop_Allow"))
+                                                Request="available";
 					user="loginName="+URLEncoder.encode(client_obj.getUserName(),"UTF-8");
 				}
 	              	}else

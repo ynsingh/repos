@@ -44,11 +44,11 @@ public class Desktop_Sharing {
 		js.getViewport().add( imageDisplay);
 		return js; 	
 	}
-
+	/*
 	public JLabel getImageDisplay(){
 		return imageDisplay;
 	}
-		
+	*/	
 	public void runDesktopSharing(BufferedImage image){
                 try {
 			imageDisplay.setIcon(new ImageIcon(image));

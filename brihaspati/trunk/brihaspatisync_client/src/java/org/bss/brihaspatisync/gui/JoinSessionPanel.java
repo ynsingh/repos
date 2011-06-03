@@ -9,6 +9,10 @@ package org.bss.brihaspatisync.gui;
 
 import java.awt.Color;
 import java.awt.BorderLayout;
+
+import java.awt.Toolkit;
+import java.awt.Dimension;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
@@ -88,24 +92,26 @@ public class JoinSessionPanel extends JPanel implements ActionListener, MouseLis
 		JPanel slide_Pane=new JPanel();
 		
 		JSplitPane chat_pp_Split=new JSplitPane(JSplitPane.VERTICAL_SPLIT,ChatPanel.getController().createGUI(),PresentationPanel.getController().createGUI());
-                chat_pp_Split.setDividerLocation(110);
-		chat_slide_Pane.add(chat_pp_Split);
+               	chat_slide_Pane.add(chat_pp_Split);
+                Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
+                chat_pp_Split.setDividerLocation((((int)dim.getWidth()/5)-40));
 		
 		JSplitPane av_chat_Split=new JSplitPane(JSplitPane.VERTICAL_SPLIT,av_Pane, chat_slide_Pane);
+                new_Pane.add(av_chat_Split);
 		av_chat_Split.setDividerLocation(160);
 
-                new_Pane.add(av_chat_Split);
-
                 JSplitPane ul_av_Split=new JSplitPane(JSplitPane.VERTICAL_SPLIT,UserListPanel.getController().createGUI(),new_Pane);
-		ul_av_Split.setDividerLocation(220);
                 left_Pane.add(ul_av_Split);
+		ul_av_Split.setDividerLocation(270);
 	
 		//TabbedPane for whiteboard, screen share and ppt presentation.
 		JTabbedPane jtp = new JTabbedPane();
 		jtp.addTab(" White Board ", WhiteBoardPanel.getController().createGUI());
 	        jtp.addTab(" Desktop Sharing ",Desktop_Sharing.getController().createGUI());
-                
+		jtp.addTab(" PPT Presentation ",org.bss.brihaspatisync.tools.presentation.PresentationViewPanel.getController().createGUI());                
+		
 		//start for whiteboard,chat,remoteDesktop Panel
+
                	right_Pane=new JPanel();
 		right_Pane.setLayout(new BorderLayout());
 		right_Pane.add(jtp,BorderLayout.CENTER);

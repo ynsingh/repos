@@ -9,6 +9,7 @@ package org.bss.brihaspatisync.gui;
 
 import java.awt.Container;
 import java.awt.BorderLayout;
+import java.awt.Toolkit;
 import java.awt.Dimension;
 import javax.swing.JPanel;
 import javax.swing.JInternalFrame;
@@ -59,9 +60,12 @@ public class CourseSessionWindow extends JInternalFrame {
   		
 	  	mainPanel.add(splitPane,BorderLayout.CENTER);
 	  	add(mainPanel);
-	  	setLocation(200,50);
-	    	setVisible(true); 
+		
+	  	//setLocation(200,50);
+	  	Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
+                setLocation((((int)dim.getWidth()/2)-385),(((int)dim.getHeight()/2)-310));
 	    	setSize(750, 600);
+	    	setVisible(true); 
 		setResizable(false);	
    	}
 }

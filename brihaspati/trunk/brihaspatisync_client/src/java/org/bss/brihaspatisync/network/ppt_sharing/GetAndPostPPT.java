@@ -10,37 +10,27 @@ package org.bss.brihaspatisync.network.ppt_sharing;
 import java.io.File;
 import java.io.IOException;
 
-import org.bss.brihaspatisync.util.ClientObject;
-import org.bss.brihaspatisync.util.RuntimeDataObject;
-import org.bss.brihaspatisync.gui.JoinSession;
+import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 
 import org.apache.poi.hslf.model.Slide;
 import org.apache.poi.hslf.HSLFSlideShow;
 import org.apache.poi.hslf.usermodel.SlideShow;
 import org.apache.poi.hslf.usermodel.PictureData;
 
-import java.awt.image.BufferedImage;
-import java.awt.Graphics2D;
+import org.bss.brihaspatisync.util.ClientObject;
+import org.bss.brihaspatisync.util.RuntimeDataObject;
 
-import java.io.FileOutputStream;
-import java.io.FileInputStream;
-import java.awt.geom.Rectangle2D;
-
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Dimension;
-import java.awt.Graphics;
-
-import java.awt.RenderingHints;
-import java.awt.AlphaComposite;
-import javax.imageio.ImageIO;
-
-
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.apache.commons.httpclient.methods.PostMethod;
 import org.bss.brihaspatisync.util.RuntimeDataObject;
 
 /**
@@ -49,8 +39,8 @@ import org.bss.brihaspatisync.util.RuntimeDataObject;
 
 public class GetAndPostPPT {
 
-	private final int IMG_WIDTH = 210;
-        private final int IMG_HEIGHT = 210;
+	private final int IMG_WIDTH = 800;
+        private final int IMG_HEIGHT = 700;
 	private static GetAndPostPPT client=null;
 	private boolean flag=false;
 	private int port =RuntimeDataObject.getController().getPPTPort();
@@ -70,18 +60,9 @@ public class GetAndPostPPT {
 	public void startFTPClient(String fileformate) {
 		try{
 			String lect_id=client_obj.getLectureID();
-			/** if POST command receive 
-			 * means Send file to reflector 
-			 */
 			if(fileformate.equals("POST")){
                         	SendFile(lect_id);
                       	}
-			/** if GET command receive
-                         * means Receive File from reflector
-                         */
-			else if(fileformate.equals("GET")){
-                        	ReceiveFile(lect_id);
-                       	}
                 }catch(Exception e){ System.out.println("Error on FTPClient=>"+e.getMessage()); }
 	}
 	
@@ -95,59 +76,18 @@ public class GetAndPostPPT {
 		File f=new File(filename);
 		checkDirectory();
 		while(true) {	
-                	System.out.println("POST Command Received ...");
 			if(f.exists()){
+				createppt_TO_Images();
 				break;
 			}
 			Thread.yield();
                         Thread.sleep(1000);
 		}
-		HttpClient client = new HttpClient();
-	        PostMethod postMethod = new PostMethod("http://"+client_obj.getReflectorIP()+":"+port+"/"+lect_id);
-		client.setConnectionTimeout(8000);
-		postMethod.setRequestBody(new FileInputStream("temp/presentation.ppt"));
-                postMethod.setRequestHeader("Content-type","image/jpeg; charset=ISO-8859-1");
-		int statusCode1 = client.executeMethod(postMethod);
-                System.out.println("statusLine>>>" + postMethod.getStatusLine());
-               	postMethod.releaseConnection();
-		createppt_TO_Images();
-                f.delete();
         }
-	/**
-	 * This method is used to Receive ppt File from reflector 
-	 */
-	private void ReceiveFile(String lect_id) throws Exception {
-		String filename="temp/presentation.ppt";
-                File f=new File(filename);
-                checkDirectory();
-                while(true) {
-                       	System.out.println("GET Command Received ...");
-			Thread.yield();
-	                Thread.sleep(1000);
-			HttpClient client = new HttpClient();
-	                HttpMethod method = new GetMethod("http://"+client_obj.getReflectorIP()+":"+port+"/"+lect_id);
-        	        client.setConnectionTimeout(8000);
-                	method.setRequestHeader("Content-type","image/jpeg; charset=ISO-8859-1");
-	                int statusCode1 = client.executeMethod(method);
-        	        byte[] bytes=method.getResponseBody();
-	               	method.releaseConnection();
-        	        FileOutputStream fout=new FileOutputStream(new File("temp/presentation.ppt"));
-                	fout.write(bytes);
-	                fout.close();
-			if(f.exists()){
-                                break;
-                        }
-                }	
-		createppt_TO_Images();
-                f.delete();
-		
-        }
-
 	/**
 	 * This method is used to create ppt to image
 	 */	
         private void createppt_TO_Images() {
-		
 		try {
 			File pptfile=new File("temp/presentation.ppt");
                         pptfile=new File(pptfile.getAbsolutePath().toString());
@@ -169,19 +109,19 @@ public class GetAndPostPPT {
                                 	//render
                                 	slide[i].draw(graphics);
                                 	//save the output
-                                	FileOutputStream out = new FileOutputStream("temp/"+"image"+(i)+".png");
-                                	javax.imageio.ImageIO.write(img, "png", out);
+                                	FileOutputStream out = new FileOutputStream("temp/"+"image"+(i)+".jpeg");
+                                	javax.imageio.ImageIO.write(img, "jpeg", out);
                                 	out.close();
-					/////////////////////////////arvind
-					BufferedImage originalImage = ImageIO.read(new File("temp/"+"image"+(i)+".png"));
+					BufferedImage originalImage = ImageIO.read(new File("temp/"+"image"+(i)+".jpeg"));
 	        	                int type = originalImage.getType() == 0? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
         	        	        BufferedImage resizeImageJpg = resizeImage(originalImage, type);
-                        		ImageIO.write(resizeImageJpg, "png", new File("temp/"+"image"+(i)+".png"));
-					/////////////////////////////arvind
+                        		ImageIO.write(resizeImageJpg, "jpeg", new File("temp/"+"image"+(i)+".jpeg"));
                         	}
 			}else {
 				System.out.println(".ppt file is not found !! ");
 			}
+			org.bss.brihaspatisync.tools.presentation.PresentationPanel.getController().setlabelText();			
+			pptfile.delete();
 		}catch(Exception e){System.out.println("Error in createppt_TO_Images() method ----->"+e.getMessage());}
 		
         }

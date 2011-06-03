@@ -15,8 +15,6 @@ import org.bss.brihaspatisync.network.util.UtilObject;
 import org.bss.brihaspatisync.util.Recorder;
 import org.bss.brihaspatisync.tools.chat.ChatPanel;
 import org.bss.brihaspatisync.tools.whiteboard.WhiteBoardDraw;
-import org.bss.brihaspatisync.tools.presentation.SlideShowWindow;
-import org.bss.brihaspatisync.tools.presentation.ImageLoadforStudent;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
@@ -88,40 +86,25 @@ public class ReceiveQueueHandler implements Runnable{
 			try{
 				synchronized(utilobject){
 					while(utilobject.getRecQueueSize() != 0){
-					String datastr=utilobject.getRecQueue();
-					StringTokenizer st=new StringTokenizer(datastr,"$");
-					while(st.hasMoreTokens()){
-						String type=st.nextToken();
-						if(!type.equals("ppt")){
-							//file write in txt file
-							try {
-								Recorder.getController().Record(type);
-							}catch(Exception e){}
+						String datastr=utilobject.getRecQueue();
+						StringTokenizer st=new StringTokenizer(datastr,"$");
+						while(st.hasMoreTokens()){
+							String type=st.nextToken();
+							if(!type.equals("ppt")){
+								//file write in txt file
+								try {
+									Recorder.getController().Record(type);
+								}catch(Exception e){}
+							}
+							if(type.equals("wb")){
+                	                       			WhiteBoardDraw.getController().getDraw_vector().addElement(datastr); 
+							}else if(type.equals("ch")){
+								String data=st.nextToken();
+								// Modified by pratibha
+								ChatPanel.getController().showMsg(data);
+								//end of modification
+							}
 						}
-						if(type.equals("wb")){
-                                       			WhiteBoardDraw.getController().getDraw_vector().addElement(datastr); 
-						}else if(type.equals("ch")){
-							String data=st.nextToken();
-							// Modified by pratibha
-							ChatPanel.getController().showMsg(data);
-							//end of modification
-						} else if(type.equals("ppt")){
-							String data=st.nextToken();
-							if(data.equals("cancleppt")){
-                        			                SlideShowWindow.getController().getCanclePPT();
-								tempInt=0;tempInt1=0;
-                                			}else{
-                                        			int slide_index=Integer.parseInt(data);
-                                        			if(tempInt==tempInt1){
-                                                			tempInt++;
-									SlideShowWindow.getController().setUPGUI();
-									ImageLoadforStudent.getController().runSlide(slide_index);
-                                                		}else{
-									ImageLoadforStudent.getController().runSlide(slide_index);
-                                                		}
-                                			}
-						}
-					}
 					}
 				}
 				runner.yield();

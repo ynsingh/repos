@@ -84,7 +84,6 @@ public class HTTPClient extends Thread {
                                 	        reg="null";
                                 	}
 					PostMethod method = new PostMethod("http://"+reflectorIP+":"+refHttpPort);
-
                                         client.setConnectionTimeout(8000);
                                         method.setRequestBody(clientObject.getUserRole()+","+lect_id+"req"+datastr+"req"+reg);
                                         method.setRequestHeader("Content-type","text/plain; charset=ISO-8859-1");
@@ -122,7 +121,7 @@ public class HTTPClient extends Thread {
 						System.out.println("=================>  "+ww.getMessage());
 					}	
 	                  	}catch(Exception ex) { 
-					JOptionPane.showMessageDialog(null,"Reflector connection failed !!","Reflector Message",JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null,"Reflector connection failed !!","HTTPClient Message",JOptionPane.ERROR_MESSAGE);
 					System.out.println(" HTTPClient could not connect  "+ex.getMessage()); 
 				}
 			}
