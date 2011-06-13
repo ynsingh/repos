@@ -113,15 +113,22 @@ public class InstUserRegistrationManagement extends SecureScreen_Institute_Admin
                         String instituteId=data.getParameters().getString("instituteId","");
                         context.put("instituteId",instituteId);
 			/**
+ 			*Check Institute Profile exist or not
+ 			*/ 
+			String Path=data.getServletContext().getRealPath("/WEB-INF"+"/conf");
+                        File existfile=new File(Path+"/"+instituteId+"Admin.properties");
+			if(!existfile.exists())
+			{
+                        	//data.addMessage("Institute Profile does not exist. so please first configure the profile");
+                        	data.addMessage(m_u.ConvertedString("brih_instprfl",LangFile));
+                        }
+			/**
 			 *get Institute Quota and Used Quota
 			 */  	
 			long instquota=QuotaUtil.getInstituteQuota(instituteId);
-			ErrorDumpUtil.ErrorLog("iqt in reg screen====="+instquota);
                         context.put("allotedquota",instquota);
 			long qtingb=QuotaUtil.getInstituteUsedQuota(instituteId);
-			ErrorDumpUtil.ErrorLog("iusdqt in reg screen====="+qtingb);
                         long remquota =(instquota - qtingb);
-			ErrorDumpUtil.ErrorLog("rrm qt in reg screen====="+remquota);
                         context.put("rquota",remquota);
 			/**
 			* Set InstitutedId and domain name in temp variable

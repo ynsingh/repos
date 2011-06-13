@@ -95,8 +95,9 @@ public class InstituteProfile extends SecureScreen{
 		context.put("expdays",expdays);
 		}
 		catch(Exception e) {	
-			data.addMessage(MultilingualUtil.ConvertedString("adm_msg1",LangFile)); 
+			//data.addMessage(MultilingualUtil.ConvertedString("adm_msg1",LangFile)); 
 			//data.addMessage("Some Problem Occured in getting the Parameter Value"); 
+			data.addMessage(MultilingualUtil.ConvertedString("brih_instadminnote",LangFile));
 		}
 		context.put("afname",user.getFirstName());
 		context.put("alname",user.getLastName());	
