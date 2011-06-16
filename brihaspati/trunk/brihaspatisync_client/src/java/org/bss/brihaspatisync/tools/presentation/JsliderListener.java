@@ -20,46 +20,70 @@ public class JsliderListener {
 	
 	private int widthint=0;
 	private int heightint=0;
-	
+
+	private String tools="";
 	private JPanel panel=null;	
-	
+	private JSlider width=null;
+	private JSlider height=null;
+
 	private static JsliderListener pptPanel =null;
 
-        public static JsliderListener getController(){
+        private static JsliderListener getController(){
                 if (pptPanel==null){
                         pptPanel =new JsliderListener();
                 }
                 return pptPanel;
         }
-		
+	
+	public void setTools(String temp){
+		tools=temp;
+	}		
 
 	public JPanel createGUI(){  
-     		JPanel panel = new JPanel();  
-        	JSlider width = new JSlider(JSlider.VERTICAL, 50, 150, 80);  
+     		panel = new JPanel();  
+        	width = new JSlider(JSlider.VERTICAL, 50, 150, 80);  
+		width.enable(false);
           	width.addChangeListener(new ChangeListener() {  
             		public void stateChanged(ChangeEvent evt) {  
                 		JSlider width = (JSlider)evt.getSource();  
           			if (!width.getValueIsAdjusting()) {  
 					int value=width.getValue();
-					if(widthint<value)
-						PresentationViewPanel.getController().revalidateImgWidth(value);
-					else
-						PresentationViewPanel.getController().revalidateImgWidth(-(value));
+					if(widthint<value) {
+						if(tools.equals("presentation"))
+							PresentationViewPanel.getController().revalidateImgWidth(value);
+						else if(tools.equals("Desktop_Sharing"))
+							org.bss.brihaspatisync.gui.Desktop_Sharing.getController().revalidateImgWidth(value);		
+					} else {
+						if(tools.equals("presentation"))
+							PresentationViewPanel.getController().revalidateImgWidth(-(value));
+						else if(tools.equals("Desktop_Sharing"))
+                                                        org.bss.brihaspatisync.gui.Desktop_Sharing.getController().revalidateImgWidth(-(value));
+
+					}		
 					widthint=value;	
-                		}  
+				}  
             		}  
         	});  
 		
-		JSlider height = new JSlider(JSlider.VERTICAL, 50, 150, 80);
+		height = new JSlider(JSlider.VERTICAL, 50, 150, 80);
+		height.enable(false);
                 height.addChangeListener(new ChangeListener() {        
                         public void stateChanged(ChangeEvent evt) {
                                 JSlider height = (JSlider)evt.getSource();
                                 if (!height.getValueIsAdjusting()) {                
 					int value=height.getValue();
-                                        if(heightint<value)
-						PresentationViewPanel.getController().revalidateImgHeight(value);
-					else 
-						PresentationViewPanel.getController().revalidateImgHeight(-value);
+                                        if(heightint<value) {
+						if(tools.equals("presentation"))
+							PresentationViewPanel.getController().revalidateImgHeight(value);
+						else if(tools.equals("Desktop_Sharing"))
+							org.bss.brihaspatisync.gui.Desktop_Sharing.getController().revalidateImgHeight(value);
+							
+					} else {
+						if(tools.equals("presentation"))
+							PresentationViewPanel.getController().revalidateImgHeight(-value);
+						else if(tools.equals("Desktop_Sharing"))
+                                                        org.bss.brihaspatisync.gui.Desktop_Sharing.getController().revalidateImgHeight(-(value));
+					}
 					heightint=value;
                                 }
                         }
@@ -68,5 +92,11 @@ public class JsliderListener {
 		panel.add(width);  
      		panel.add(height);  
 		return panel;
-	}  
+	} 	
+	
+	public void setEnable_Decable(boolean flag){
+		width.enable(flag);
+		height.enable(flag);
+		panel.revalidate();
+        } 
 }  

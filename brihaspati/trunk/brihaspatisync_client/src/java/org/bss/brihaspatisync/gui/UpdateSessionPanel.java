@@ -27,6 +27,7 @@ import org.bss.brihaspatisync.network.Log;
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
  * @author <a href="mailto:pratibhaayadav@gmail.com">Pratibha </a> Modified for Signalling.
+ * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>  Modified for GUI on 13 Jun 2011
  */
 
 public class UpdateSessionPanel extends JFrame implements ActionListener, MouseListener{
@@ -34,6 +35,10 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
 	private JFrame frame=null;
 
 	/**Button for closing the window*/
+
+        private int day=1;
+        private int month=1;
+        private int year=2011;
 
         private JLabel closeLabel=null;
         private String courseId=null;
@@ -89,7 +94,7 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
 
 
 	private static UpdateSessionPanel annPanel=null; 
-	
+
 	/**
          *The Controller for UpdateSessionPanel Class.
          */
@@ -119,7 +124,6 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
 
 	private void setLectureValues(int indexnumber,Vector updatevector){
 		java.util.StringTokenizer str1 = new java.util.StringTokenizer(updatevector.get(indexnumber).toString(),",");
-                //System.out.println(updatevector.get(indexnumber).toString());
                 lecture_id=str1.nextElement().toString();
                 courseId=str1.nextElement().toString();
                 lectName_Text.setText(str1.nextElement().toString());
@@ -140,7 +144,7 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                         audio.setSelected(false);
                 String sr=str1.nextElement().toString();
 
-                updatemailid=str1.nextElement().toString();//((String)updatevector.get(indexnumber+7)).substring(0,10);
+                updatemailid=str1.nextElement().toString();
                 updatemailidarry=updatemailid.split("-");
 
                 yearBox.setSelectedItem(updatemailidarry[0]);
@@ -182,6 +186,7 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
 	}
 	
 	private JPanel createCenterPanel(){
+		getTimeIndexingServer();
                 //Creating Center Panel
                 center_Panel=new JPanel();
                 center_Panel.setLayout(new GridLayout(0,4,5,2));
@@ -203,19 +208,33 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                 dayBox=new JComboBox();
                 monthBox=new JComboBox();
                 yearBox=new JComboBox();
-                for(int i=1;i<32;i++){
-                        if(i<10)
-                                dayBox.addItem("0"+Integer.toString(i));
-                        else
-                                dayBox.addItem(Integer.toString(i));
+
+		if(day<10)
+                        dayBox.addItem("0"+Integer.toString(day));
+                else
+                         dayBox.addItem(Integer.toString(day));
+		for(int i=1;i<32;i++){
+			if(day != i) {
+				if(i<10)
+                                	dayBox.addItem("0"+Integer.toString(i));
+                        	else
+                                	dayBox.addItem(Integer.toString(i));
+			}
                 }
+		if(month<10)
+                        monthBox.addItem("0"+Integer.toString(month));
+                else
+                        monthBox.addItem(Integer.toString(month));
                 for(int i=1;i<13;i++){
-                        if(i<10)
-                                monthBox.addItem("0"+Integer.toString(i));
-                        else
-                                monthBox.addItem(Integer.toString(i));
+			if(month != i){
+				if(i<10)
+                                	monthBox.addItem("0"+Integer.toString(i));
+                        	else
+                                	monthBox.addItem(Integer.toString(i));
+			}
                 }
-                for(int i=2005;i<=2050;i++)
+		
+                for(int i=year;i<=2050;i++)
                         yearBox.addItem(Integer.toString(i));
                 dateEntryPanel.add(yearBox);
                 dateEntryPanel.add(monthBox);
@@ -365,7 +384,6 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                                                 return lectValue.toString();
                                         }
                                 }
-				//lectValue=new StringBuffer(500);
 				String courseName="";
 				if(!((client_obj.getCourseForAnnounce()).equals("")))
                                         courseName=client_obj.getCourseForAnnounce();
@@ -377,74 +395,24 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
 				
 				String st_duration=(String)durationBox.getSelectedItem();
 				StringTokenizer st=new StringTokenizer(st_duration,":");
-				/*	
-				lectValue.append("GetUpdateLectValues");
-				lectValue.append("$"+courseId);
-				lectValue.append("$");
-				lectValue.append(courseName);
-				lectValue.append("$");
-				lectValue.append((String)lectName_Text.getText());
-				lectValue.append("$");
-				lectValue.append((String)lecInfoArea.getText());
-				lectValue.append("$");
-				lectValue.append((String)(urlText.getText()+atRate.getText()+endText.getText()));
-				lectValue.append("$");
-				lectValue.append((String)phone_Text.getText());
-				lectValue.append("$");
-				*/
 				String vedeo="";					
                        	       	if(video.isSelected()==true){
 					vedeo="1";
-					//lectValue.append("1");
-					//lectValue.append("$");
                        		}else{	
 					vedeo="0";
-					//lectValue.append("0");
-					//lectValue.append("$");
 				}
 				String audio1="";
 	                      	if(audio.isSelected()==true){
 					audio1="1";
-					//lectValue.append("1");
-					//lectValue.append("$");
                             	}else{
 					audio1="0";
-					//lectValue.append("0");
-					//lectValue.append("$");
                      		}
 				String whiteboard1="1";
 				if(whiteboard.isSelected()==true){
 					whiteboard1="1";
-					//lectValue.append("1");
-					//lectValue.append("$");
         	               	}else{
 					whiteboard1="0";
-					//lectValue.append("0");
-					//lectValue.append("$");
 				}
-				/*
-				lectValue.append(st_year+"-"+st_month+"-"+st_day);
-				lectValue.append("$");
-				lectValue.append(st_hour+":"+st_minutes);
-				lectValue.append("$");
-
-				lectValue.append(st.nextToken());
-				lectValue.append("$");
-				*/
-				/*
-		       	        if(((String)repeatBox.getSelectedItem()).equals("No")){
-					lectValue.append("No");
-					lectValue.append("$");
-					lectValue.append("No");
-					lectValue.append("$");
-                             	}	
-				else{
-					lectValue.append((String)repeatBox.getSelectedItem());
-					lectValue.append("$");
-					lectValue.append((String)repeat_for_timeBox.getSelectedItem());
-					lectValue.append("$");
-                        	}
-				*/
 				try {
 					lectValue = "&"+"lect_id="+URLEncoder.encode(lecture_id,"UTF-8");
                                         lectValue =lectValue+"&"+"lectGetParameter="+URLEncoder.encode("GetUpdateLectValues","UTF-8");
@@ -459,7 +427,6 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                                         lectValue =lectValue+"&"+"lectAudio="+URLEncoder.encode(audio1,"UTF-8");
                                         lectValue =lectValue+"&"+"lectVedio="+URLEncoder.encode(vedeo,"UTF-8");
                                         lectValue =lectValue+"&"+"lectWhiteBoard="+URLEncoder.encode(whiteboard1,"UTF-8");
-                                        //System.out.println(lectValue);
                                 } catch(Exception es){}
 	
 			}//if
@@ -535,4 +502,16 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
         public void mouseEntered(MouseEvent e) {}
         public void mouseExited(MouseEvent e) {}
 	
+	private void getTimeIndexingServer(){
+                String indexServerName=client_obj.getIndexServerName();
+                if(!(indexServerName.equals(""))){
+                        String  indexServer=indexServerName+"/ProcessRequest?req=getTimeforLecture&";
+                        indexServer=HttpsUtil.getController().getReflectorAddress(indexServer);
+                        String str[]=indexServer.split(" ");
+                        String str1[]=str[0].split("/");
+                        year=Integer.parseInt(str1[0]);
+                        month=Integer.parseInt(str1[1]);
+                        day=Integer.parseInt(str1[2]);
+		}
+	}		
 }//end of class

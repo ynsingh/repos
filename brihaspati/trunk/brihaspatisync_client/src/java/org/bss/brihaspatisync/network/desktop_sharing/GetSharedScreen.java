@@ -58,6 +58,7 @@ public class GetSharedScreen implements Runnable {
 			flag=true;
                         runner = new Thread(this);
                         runner.start();
+			Desktop_Sharing.getController().setSclollEnable_Decable(true);
 			System.out.println("GetSharedScreen start sucessfully !!");
 		}
         }
@@ -70,6 +71,7 @@ public class GetSharedScreen implements Runnable {
 			flag=false;
                         runner.stop();
                         runner = null;
+			Desktop_Sharing.getController().setSclollEnable_Decable(false);
 			System.out.println("GetSharedScreen stop Successfully !!");
                 }
         }

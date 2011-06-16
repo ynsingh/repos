@@ -439,12 +439,8 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
 			String str2[]=str[1].split(":");
 			h=Integer.parseInt(str2[0]);
 			m=Integer.parseInt(str2[1]);
-                        //System.out.println("==============>   "+HttpsUtil.getController().getReflectorAddress(indexServer));
            	}else{
                 	System.out.println("insufficient indexServer name in AnnounceSession :" + indexServerName);
             	}
-
-		
 	}
-	
 }//end of class

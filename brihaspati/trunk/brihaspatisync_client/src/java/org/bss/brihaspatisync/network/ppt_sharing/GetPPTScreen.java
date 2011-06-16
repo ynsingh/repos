@@ -57,6 +57,7 @@ public class GetPPTScreen implements Runnable {
 			flag=true;
                         runner = new Thread(this);
                         runner.start();
+			org.bss.brihaspatisync.tools.presentation.PresentationViewPanel.getController().setSclollEnable_Decable(true);
 			System.out.println("GetSharedScreen start sucessfully !!");
 		}
         }
@@ -69,6 +70,7 @@ public class GetPPTScreen implements Runnable {
 			flag=false;
                         runner.stop();
                         runner = null;
+			org.bss.brihaspatisync.tools.presentation.PresentationViewPanel.getController().setSclollEnable_Decable(false);
 			System.out.println("GetSharedScreen stop Successfully !!");
                 }
         }

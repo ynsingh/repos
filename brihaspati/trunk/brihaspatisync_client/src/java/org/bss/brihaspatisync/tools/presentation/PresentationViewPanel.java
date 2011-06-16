@@ -43,7 +43,9 @@ public class PresentationViewPanel implements ActionListener {
 	private BufferedImage origanalimage=null;
 	
         private static PresentationViewPanel pptPanel =null;
-	
+
+	private JsliderListener slider =new JsliderListener();
+		
 	public static PresentationViewPanel getController(){
                 if (pptPanel==null){
                         pptPanel =new PresentationViewPanel();
@@ -55,6 +57,7 @@ public class PresentationViewPanel implements ActionListener {
  	 * Create JscrollPane in which images dislpay label is added to show screen share images.
  	 */ 
 	public JPanel createGUI(){                 
+		slider.setTools("presentation");
 		mainPanel=new JPanel();
 		mainPanel.setLayout(new BorderLayout());
 
@@ -78,7 +81,7 @@ public class PresentationViewPanel implements ActionListener {
                 js.getViewport().add(imageDisplay);
 
 		mainPanel.add(js,BorderLayout.CENTER);
-		mainPanel.add(JsliderListener.getController().createGUI(),BorderLayout.WEST);
+		mainPanel.add(slider.createGUI(),BorderLayout.WEST);
 		return mainPanel; 	
 	}
 
@@ -87,6 +90,10 @@ public class PresentationViewPanel implements ActionListener {
                 next.setEnabled(t2);
         }
 
+	public void setSclollEnable_Decable(boolean flag){
+                slider.setEnable_Decable(flag);
+        }
+	
 	public void runPresentationPanel(BufferedImage originalImage){
                 try {
 			origanalimage=originalImage;
@@ -146,9 +153,7 @@ public class PresentationViewPanel implements ActionListener {
                                 temp=temp-1;
                                 try {
                                         PostPPTScreen.getController().start_to_sendppt(temp);
-                                }catch(Exception e){
-                                        System.out.println(" Error in ===========>  "+e.getMessage());
-                                }
+                                }catch(Exception e){ System.out.println(" Error in ===========>  "+e.getMessage());}
 				if(temp==0) {
                                         next.setEnabled(true);
                                         previous.setEnabled(false);
@@ -157,10 +162,8 @@ public class PresentationViewPanel implements ActionListener {
                                         next.setEnabled(true);
                                         previous.setEnabled(true);
                                 }
-                        }else{
-                                JOptionPane.showMessageDialog(null," This is start .ppt !!");
-                        }
-
+                        }else JOptionPane.showMessageDialog(null," This is start .ppt !!");
+                        
                 }
 	}
 }

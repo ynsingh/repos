@@ -105,7 +105,6 @@ public class PresentationPanel extends JPanel implements ActionListener {
 						try {
 							browse.setEnabled(false);
 							copy(src,dst);
-							//label.setText("Uploading process ---");
 						}catch(Exception e){System.out.println("Errorrrrrrrrrrrrrrr"+e.getCause());}
 					}
                                 } else {
@@ -119,12 +118,13 @@ public class PresentationPanel extends JPanel implements ActionListener {
 		if(ae.getSource() == slideShow){
 			try {
 				/***  button enable /decable *************/
+				slideShow.setEnabled(false);
+				//JsliderListener.getController().setEnable_Decable(true);
 				PresentationViewPanel.getController().setEnable_Decable(true ,true);
+				PresentationViewPanel.getController().setSclollEnable_Decable(true);
+				
 				/************   send frist slide ********************/
                 	        PostPPTScreen.getController().start_to_sendppt(0);
-				/***************  browse button decable *******/
-				slideShow.setEnabled(false);
-				//this.revalidate();
 			} catch(Exception e){}
 			return ;
 		}

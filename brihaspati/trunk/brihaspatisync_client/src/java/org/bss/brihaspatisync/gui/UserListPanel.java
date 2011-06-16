@@ -265,6 +265,8 @@ public class UserListPanel {
                                 pptFlag=true;
 				GetPPTScreen.getController().stop();
 				org.bss.brihaspatisync.tools.presentation.PresentationViewPanel.getController().setEnable_Decable(false ,false);
+				org.bss.brihaspatisync.tools.presentation.PresentationViewPanel.getController().setSclollEnable_Decable(false);
+				//org.bss.brihaspatisync.tools.presentation.JsliderListener.getController().setEnable_Decable(false);
                         }
                }
 	 		

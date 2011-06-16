@@ -20,12 +20,23 @@ import javax.swing.ImageIcon;
 import java.awt.image.BufferedImage;
 import java.awt.BorderLayout;
 
-public class Desktop_Sharing {
+import java.awt.Graphics2D;
+import java.awt.BorderLayout;
+import javax.swing.JOptionPane;
+import java.awt.image.BufferedImage;
 
-	private JLabel imageDisplay = null;
+public class Desktop_Sharing {
+	
+	private int IMG_WIDTH =800;
+        private int IMG_HEIGHT =700;
+
 	private JScrollPane js=null;
-		
+        private JPanel mainPanel=null;
+	private JPanel northPanel=null;
+	private JLabel imageDisplay = null;
+	private BufferedImage origanalimage=null;	
         private static Desktop_Sharing desktopSharing=null;
+	private org.bss.brihaspatisync.tools.presentation.JsliderListener slider =new org.bss.brihaspatisync.tools.presentation.JsliderListener();
 	
 	public static Desktop_Sharing getController(){
                 if (desktopSharing==null){
@@ -37,22 +48,58 @@ public class Desktop_Sharing {
 	/**
  	 * Create JscrollPane in which images dislpay label is added to show screen share images.
  	 */ 
-	public JScrollPane createGUI(){                 
-		js=new JScrollPane(); 
-		js.setBackground(java.awt.Color.black); 
-		imageDisplay = new JLabel();
-		js.getViewport().add( imageDisplay);
-		return js; 	
+	public JPanel createGUI(){  
+                js=new JScrollPane();
+		mainPanel=new JPanel();
+		slider.setTools("Desktop_Sharing");
+                mainPanel.setLayout(new BorderLayout());
+
+                northPanel=new JPanel();
+                mainPanel.add(northPanel,BorderLayout.NORTH);
+                imageDisplay = new JLabel();
+                js.setBackground(java.awt.Color.black);
+                js.getViewport().add(imageDisplay);
+
+                mainPanel.add(js,BorderLayout.CENTER);
+                mainPanel.add(slider.createGUI(),BorderLayout.WEST);
+		
+		return mainPanel; 	
 	}
-	/*
-	public JLabel getImageDisplay(){
-		return imageDisplay;
-	}
-	*/	
-	public void runDesktopSharing(BufferedImage image){
+
+	public void setSclollEnable_Decable(boolean flag){
+                slider.setEnable_Decable(flag);
+        }
+		
+	public void runDesktopSharing(BufferedImage originalImage){
                 try {
-			imageDisplay.setIcon(new ImageIcon(image));
-                } catch(Exception e){ System.out.println("Error in Desktop_Sharing.java \n\n");}
+			origanalimage=originalImage;
+                        System.out.println(IMG_WIDTH +" , "+ IMG_HEIGHT);
+                        int type = originalImage.getType() == 0? BufferedImage.TYPE_INT_ARGB : originalImage.getType();
+                        BufferedImage resizeImageJpg = resizeImage(originalImage, type);
+                        imageDisplay.setIcon(new ImageIcon(resizeImageJpg));
+                } catch(Exception e){ System.out.println("Error in Desktop_Sharing.java !! ");}
 	}
+	
+	private BufferedImage resizeImage(BufferedImage originalImage, int type) {
+                BufferedImage resizedImage = new BufferedImage(IMG_WIDTH, IMG_HEIGHT, type);
+                Graphics2D g = resizedImage.createGraphics();
+                g.drawImage(originalImage, 0, 0, IMG_WIDTH, IMG_HEIGHT, null);
+                g.dispose();
+                return resizedImage;
+        }
+
+        public void revalidateImgWidth(int w){
+                IMG_WIDTH=IMG_WIDTH+w;
+                int type = origanalimage.getType() == 0? BufferedImage.TYPE_INT_ARGB : origanalimage.getType();
+                BufferedImage resizeImageJpg = resizeImage(origanalimage, type);
+                imageDisplay.setIcon(new ImageIcon(resizeImageJpg));
+        }
+
+        public void revalidateImgHeight(int h){
+                IMG_HEIGHT=IMG_HEIGHT+h;
+                int type = origanalimage.getType() == 0? BufferedImage.TYPE_INT_ARGB : origanalimage.getType();
+                BufferedImage resizeImageJpg = resizeImage(origanalimage, type);
+                imageDisplay.setIcon(new ImageIcon(resizeImageJpg));
+        }
 }
 
