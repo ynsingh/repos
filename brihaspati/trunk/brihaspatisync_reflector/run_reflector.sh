@@ -7,5 +7,5 @@ for i in lib/*
 
 export CLASSPATH   
 
-java org.bss.brihaspatisync.reflector.Reflector start 
+java org.bss.brihaspatisync.reflector.Reflector start
 

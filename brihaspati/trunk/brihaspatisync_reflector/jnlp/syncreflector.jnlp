@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?> 
 	<!-- JNLP File for Brihaspati_Sync Reflector Application. In the codebase replace the ipaddress by
              the server full domain name, or server ip address where this jnlp is hosted for download by the client. --> 
-<jnlp  spec="1.0+"  codebase="https://172.26.82.18:8443/brihaspatisync_reflector/jnlp"  href="syncreflector.jnlp">
+<jnlp  spec="1.0+"  codebase="https://172.26.82.19:8443/brihaspatisync_reflector/jnlp"  href="syncreflector.jnlp">
   	<information>
     		<title>Brihaspatisync Reflector</title>
     		<vendor>IIT Kanpur</vendor>
@@ -18,7 +18,8 @@
 		<j2se version="1.0+" />
 		<property name="sun.java2d.d3d" value="false"/>
 		<jar href="syncreflector.jar"/>
-
 	</resources>
-	<application-desc main-class="org.bss.brihaspatisync.reflector.Reflector"/>
+	<application-desc main-class="org.bss.brihaspatisync.reflector.Reflector">
+		<argument>startjnlp</argument>  
+	</application-desc>	
 </jnlp>

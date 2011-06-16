@@ -86,12 +86,12 @@ class PPTHandler implements HttpHandler {
                                         java.awt.image.BufferedImage image = javax.imageio.ImageIO.read(new java.io.ByteArrayInputStream(bytes));
 					System.out.println("    image "+image);
                                         try {
-						/*
+						
                                                 if((PPTUtil.getController().getBuffer().bufferSize()) < 50)
                                                         PPTUtil.getController().getBuffer().put(image);
                                                 else
                                                         PPTUtil.getController().getBuffer().handleBuffer();
-						*/	
+							
                                         } catch(Exception e){}
                                         responseBody.close();
         	                }
