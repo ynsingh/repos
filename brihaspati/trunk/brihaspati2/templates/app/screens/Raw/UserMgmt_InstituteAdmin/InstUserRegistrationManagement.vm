@@ -282,6 +282,7 @@ $!data.getMessage()
                         <font face="$ui.sansSerifFonts">
                         <a href=$link.setPage("call,UserMgmt_InstituteAdmin,RegisterSecInstructorInst.vm").addPathInfo("gName",$entry.getGroupName()).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_reg1</a>
                         </font>
+			<a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("institudeName","ListAll").addPathInfo("cName",$entry.getGroupName()).addPathInfo("count","2").addPathInfo("mode","instructordelete") style=text-decoration:none> $brih_listOfInstructor </a></td>
                  </td>
         </tr>
         #end

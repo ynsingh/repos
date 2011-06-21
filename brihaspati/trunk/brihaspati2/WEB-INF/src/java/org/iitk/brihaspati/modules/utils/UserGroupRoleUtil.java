@@ -86,12 +86,14 @@ public class UserGroupRoleUtil{
 			if(role_id == 0){
 				
 				Criteria crit=new Criteria();
+				crit.addAscendingOrderByColumn(TurbineUserGroupRolePeer.USER_ID);
 				crit.add(TurbineUserGroupRolePeer.GROUP_ID,gid);
 				crit.andNotIn(TurbineUserGroupRolePeer.USER_ID,uId);
 				v=TurbineUserGroupRolePeer.doSelect(crit);
 			}
 			else{
 				Criteria crit=new Criteria();
+				crit.addAscendingOrderByColumn(TurbineUserGroupRolePeer.USER_ID);
 				crit.add(TurbineUserGroupRolePeer.GROUP_ID,gid);
 				crit.and(TurbineUserGroupRolePeer.ROLE_ID,role_id);
 				crit.andNotIn(TurbineUserGroupRolePeer.USER_ID,uId);

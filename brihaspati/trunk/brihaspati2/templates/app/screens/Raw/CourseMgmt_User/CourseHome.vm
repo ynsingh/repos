@@ -276,6 +276,16 @@ $!data.getMessage()
 					    </table>
 					</td>
 					##Online Examination System 
+					<td align=center>
+					<table border=0>
+				                <tr><td align=center>
+                				<a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("count","2").addPathInfo("mode","instructordelete") style=text-decoration:none><img border=0 src="$content.getURI("/images/Instructor.png")"></a>
+                				</td></tr>
+                				<tr><td align=center><font face="$ui.sansSerifFonts">
+                					<a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("count","2").addPathInfo("mode","instructordelete") style=text-decoration:none>$brih_ins $brih_mgmt</a><br>
+                			</td></tr>
+                			</table>
+                			</td>
 				</tr>
 			#elseif($user_role=="student")
 				## inner row 1 open

@@ -22,6 +22,15 @@
     <column name="AUTHOR" size="255" type="VARCHAR"/>
     <column name="DEPT" size="255" type="VARCHAR"/>
 </table>
+
+<table name="INSTRUCTOR_PERMISSIONS">
+        <column name="ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
+        <column name="USER_ID" required="true" size="255" type="VARCHAR"/>
+        <column name="GROUP_NAME" required="true" size="255" type="VARCHAR"/>
+        <column name="PERMISSION_STATUS" type="INTEGER" size="2"/>
+</table>
+
+
 <!-- Modify 22-11-05 ,10-02-2011-->
 <table name="COURSES">
 	<column name="GROUP_NAME" required="true" primaryKey="true" type="VARCHAR" size="99"/>

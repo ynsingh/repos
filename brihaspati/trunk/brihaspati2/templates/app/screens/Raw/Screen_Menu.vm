@@ -56,6 +56,13 @@
 			<a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1") style=text-decoration:none>$online_online $brih_examat $brih_system</a>
 			</td>
 		</tr>
+
+		<tr>
+                        <td>
+			 <a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("count","2").addPathInfo("mode","instructordelete") style=text-decoration:none>$brih_ins $brih_mgmt</a>
+                        </td>
+                </tr>
+
  #end
  #if($data.getUser().getTemp("role") == "student")
                 <tr bgcolor="$ui.menuColor">
