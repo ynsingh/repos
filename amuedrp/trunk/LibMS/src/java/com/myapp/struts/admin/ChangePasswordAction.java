@@ -7,6 +7,7 @@ package com.myapp.struts.admin;
 import java.sql.*;
 import  com.myapp.struts.hbm.*;
 import  com.myapp.struts.AdminDAO.*;
+import com.myapp.struts.utility.Email;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpServletResponse;
@@ -14,7 +15,8 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import  com.myapp.struts.utility.PasswordEncruptionUtility;
-
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 /**
  *
  * @author System Administrator
@@ -30,8 +32,8 @@ public class ChangePasswordAction extends org.apache.struts.action.Action {
     private String login_id;
     private boolean result;
     int i;
-    Connection con;
-   
+    Email obj;
+    private final ExecutorService executor=Executors.newFixedThreadPool(1);
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -49,19 +51,25 @@ public class ChangePasswordAction extends org.apache.struts.action.Action {
       
 
      
-        password=PasswordEncruptionUtility.password_encrupt(password);
-
+       
+        StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
         Login  log=LoginDAO.searchRole(staff_id, library_id);
+ String path = servlet.getServletContext().getRealPath("/");
+        obj=new Email(path,staffobj.getEmailId(),password,"Password Changed Successfully from LibMS","User Id="+login_id+" Your Password for LibMS Login is="+password);
+         executor.submit(new Runnable() {
+
+                public void run() {
+                    obj.send();
+                }
+            });
+
+
+        password=PasswordEncruptionUtility.password_encrupt(password);
         log.setPassword(password);
         result=LoginDAO.update1(log);
-System.out.println(login_id+"................"+password);
+        System.out.println(login_id+"................"+password);
 
 
-//if(staff_id.contains("admin")){
-  //      AdminRegistration admin=AdminRegistrationDAO.searchInstituteAdmin(staff_id, library_id);
-   //   System.out.println(admin+"................");
-    //    admin.setAdminPassword(password);
-     //   result=AdminRegistrationDAO.update1(admin);
 
 
 

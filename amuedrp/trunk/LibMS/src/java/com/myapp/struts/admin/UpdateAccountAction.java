@@ -33,7 +33,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import com.myapp.struts.utility.Email;
+import com.myapp.struts.utility.PasswordEncruptionUtility;
+import com.myapp.struts.utility.RandomPassword;
+import java.util.Locale;
+import java.util.ResourceBundle;
 /**
  *
  * @author Dushyant
@@ -41,7 +47,8 @@ import org.apache.struts.action.ActionMapping;
 public class UpdateAccountAction extends org.apache.struts.action.Action {
     
    /* forward name="success" path="" */
-    
+    private final ExecutorService executor=Executors.newFixedThreadPool(1);
+    Email obj;
     private String user_name;
     private String staff_id;
     private String password;
@@ -56,20 +63,46 @@ public class UpdateAccountAction extends org.apache.struts.action.Action {
      private String login_role;
     int i;
     Connection con;
+    private String password1;
+    Locale locale=null;
+   String locale1="en";
+   String rtl="ltr";
+   String align="left";
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+         HttpSession session=request.getSession();
+       try{
+
+        locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
       CreateAccountActionForm caaction=(CreateAccountActionForm)form;
       login_id=caaction.getLogin_id();
       user_name=caaction.getUser_name();
-      password=caaction.getPassword();
+      /*Password Generate and Reset It*/
+                 password= RandomPassword.getRandomString(10);
+                 System.out.println(password+"Button"+caaction.getButton());
+
+
+      password1=PasswordEncruptionUtility.password_encrupt(password);
+
       staff_id=caaction.getStaff_id();
       button=caaction.getButton();
       role=caaction.getRole();
       question=caaction.getQuestion();
       ans=caaction.getAns();
-      HttpSession session=request.getSession();
+     
       library_id=(String)session.getAttribute("library_id");
       request.setAttribute("btn",button);
      System.out.println(question+".......");
@@ -78,9 +111,8 @@ public class UpdateAccountAction extends org.apache.struts.action.Action {
 
       
     sublibrary_id=caaction.getSublibrary_id();
-       // sublibrary_id=logobj.getSublibraryId();
-System.out.println("Data :"+staff_id+" library id "+library_id+" sub lib:"+sublibrary_id+"role selected:"+role);
-    //  con=MyConnection.getMyConnection();
+    
+    
     if(button.equals("Update Account"))
     {
 
@@ -95,7 +127,8 @@ System.out.println("Data :"+staff_id+" library id "+library_id+" sub lib:"+subli
                 request.setAttribute("library_id", library_id);
                 request.setAttribute("staff_id", staff_id);
                 request.setAttribute("role", role);
-                request.setAttribute("msg1", "You Cannot Update Institute Admin");
+               // request.setAttribute("msg1", "You Cannot Update Institute Admin");
+                 request.setAttribute("msg1",resource.getString("admin.UpdateStaffAction.error1"));
                 return mapping.findForward("success");
          }
 
@@ -112,7 +145,8 @@ System.out.println("Data :"+staff_id+" library id "+library_id+" sub lib:"+subli
                 request.setAttribute("library_id", library_id);
                 request.setAttribute("staff_id", staff_id);
                 request.setAttribute("role", role);
-                request.setAttribute("msg1", "You Cannot Update Your Own Account");
+                //request.setAttribute("msg1", "You Cannot Update Your Own Account");
+                request.setAttribute("msg1",resource.getString("admin.UpdateAccountAction.error1"));
                 return mapping.findForward("success");
 
             }
@@ -132,7 +166,8 @@ System.out.println("Data :"+staff_id+" library id "+library_id+" sub lib:"+subli
                    request.setAttribute("library_id", library_id);
                    request.setAttribute("staff_id", staff_id);
                    request.setAttribute("role",logobj.getRole());
-                   request.setAttribute("msg1", "You Cannot Update Admin ");
+                   //request.setAttribute("msg1", "You Cannot Update Admin ");
+                   request.setAttribute("msg1",resource.getString("admin.UpdateAccountAction.error2"));
                    return mapping.findForward("success");
                 }
             }
@@ -158,7 +193,7 @@ user_role=logobj.getRole();
 if(user_role.equals(role) && logobj.getSublibraryId().equalsIgnoreCase(sublibrary_id))
 {
     logobj=LoginDAO.searchStaffId(staff_id, library_id);
-    logobj.setPassword(password);
+    logobj.setPassword(password1);
     logobj.setSublibraryId(sublibrary_id);
     
  
@@ -175,13 +210,28 @@ if(user_role.equals(role) && logobj.getSublibraryId().equalsIgnoreCase(sublibrar
                 request.setAttribute("library_id", library_id);
                 request.setAttribute("staff_id", staff_id);
                  request.setAttribute("role", role);
-                 request.setAttribute("msg", "Record Updated Successfully");
+
+                /*mail to user for updatation*/
+                StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                 String path = servlet.getServletContext().getRealPath("/");
+            obj=new Email(path,staffobj.getEmailId(),password,"Update Account Successfully from LibMS","User Id="+login_id+" Your Password for LibMS Login is="+password+" User Role="+role);
+               System.out.println("Mailing");
+            executor.submit(new Runnable() {
+
+                public void run() {
+
+                    obj.send();
+                }
+            });
+                // request.setAttribute("msg", "Record Updated Successfully");
+             request.setAttribute("msg", resource.getString("admin.UpdateAccountAction.error3"));
                 return mapping.findForward("success");
 
                 }
                 else{
 
-                 request.setAttribute("msg", "Record Cannot Updated");
+                 //request.setAttribute("msg", "Record Cannot Updated");
+                    request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error4"));
                  return mapping.findForward("error");
 
 
@@ -207,7 +257,7 @@ if(user_role.equals(role) && logobj.getSublibraryId().equalsIgnoreCase(sublibrar
 
     
     logobj=LoginDAO.searchStaffLogin(staff_id, library_id);
-    logobj.setPassword(password);
+    logobj.setPassword(password1);
     logobj.setSublibraryId(sublibrary_id);
 
 
@@ -230,12 +280,27 @@ if(user_role.equals(role) && logobj.getSublibraryId().equalsIgnoreCase(sublibrar
                     request.setAttribute("library_id", library_id);
                     request.setAttribute("staff_id", staff_id);
                     request.setAttribute("role", role);
-                    request.setAttribute("msg", "Record Updated Successfully");
+
+                /*mail to user for updatation*/
+                StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                 String path = servlet.getServletContext().getRealPath("/");
+            obj=new Email(path,staffobj.getEmailId(),password,"Update Account Successfully from LibMS","User Id="+login_id+" Your Password for LibMS Login is="+password+" User Role="+role);
+               System.out.println("Mailing");
+            executor.submit(new Runnable() {
+
+                public void run() {
+
+                    obj.send();
+                }
+            });
+                   // request.setAttribute("msg", "Record Updated Successfully");
+              request.setAttribute("msg", resource.getString("admin.UpdateAccountAction.error3"));
                     return mapping.findForward("success");
                     }
                      else
                      {
-                     request.setAttribute("msg", "Record Cannot Updated");
+                    // request.setAttribute("msg", "Record Cannot Updated");
+                       request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error4"));
                      return mapping.findForward("error");
 
                      }
@@ -245,7 +310,8 @@ if(user_role.equals(role) && logobj.getSublibraryId().equalsIgnoreCase(sublibrar
 
              
 
-                 request.setAttribute("msg", "Record Cannot Updated");
+                // request.setAttribute("msg", "Record Cannot Updated");
+           request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error4"));
                  return mapping.findForward("error");
 
 
@@ -265,6 +331,7 @@ if(user_role.equals("admin") && role.equals("staff"))
 
   logobj=LoginDAO.searchStaffLogin(staff_id, library_id);
     logobj.setRole(role);
+    logobj.setPassword(password1);
       logobj.setSublibraryId(sublibrary_id);
       logobj.setQuestion(question);
       logobj.setAns(ans);
@@ -282,11 +349,7 @@ if(user_role.equals("admin") && role.equals("staff"))
 
                 if(result==true)
                 {
-                  // result =PrivilegeDAO.DeleteStaff(staff_id,library_id);
-                 //  result=AcqPrivilegeDAO.DeleteStaff(staff_id, library_id);
-                 //  result=CatPrivilegeDAO.DeleteStaff(staff_id, library_id);
-                 //  result=CirPrivilegeDAO.DeleteStaff(staff_id, library_id);
-                //   result=SerPrivilegeDAO.DeleteStaff(staff_id, library_id);
+                 
                     Privilege priv=PrivilegeDAO.searchStaffLogin(staff_id, library_id);
                     priv.setSublibraryId(sublibrary_id);
                     priv.setAdministrator("true");
@@ -321,13 +384,32 @@ if(user_role.equals("admin") && role.equals("staff"))
                     request.setAttribute("library_id", library_id);
                     request.setAttribute("staff_id", staff_id);
                     request.setAttribute("role", role);
-                    request.setAttribute("msg", "Record Updated Successfully");
+
+                /*mail to user for updatation*/
+                StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                 String path = servlet.getServletContext().getRealPath("/");
+            obj=new Email(path,staffobj.getEmailId(),password,"Update Account Successfully from LibMS","User Id="+login_id+" Your Password for LibMS Login is="+password+" User Role="+role);
+               System.out.println("Mailing");
+            executor.submit(new Runnable() {
+
+                public void run() {
+
+                    obj.send();
+                }
+            });
+                    //request.setAttribute("msg", "Record Updated Successfully");
+ request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error3"));
+
+
+
                     return mapping.findForward("success");
                 }else{
-                request.setAttribute("msg", "Record Cannot Updated");
+                //request.setAttribute("msg", "Record Cannot Updated");
+                           request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error4"));
                       return mapping.findForward("error");
                 }}else{
-                 request.setAttribute("msg", "Record Cannot Updated");
+                 //request.setAttribute("msg", "Record Cannot Updated");
+                       request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error4"));
                       return mapping.findForward("error");
 
                 }
@@ -350,6 +432,7 @@ if(user_role.equals("admin") && role.equals("dept-staff"))
     logobj.setRole(role);
       logobj.setSublibraryId(sublibrary_id);
       logobj.setQuestion(question);
+      logobj.setPassword(password1);
       logobj.setAns(ans);
     result=LoginDAO.update1(logobj);
 
@@ -608,19 +691,35 @@ if(user_role.equals("admin") && role.equals("dept-staff"))
 
                  
 
-                      System.out.println("..............kkkkkkkk");
+                      
                     request.setAttribute("user_id", login_id);
                     request.setAttribute("user_name", user_name);
                     request.setAttribute("library_id", library_id);
                     request.setAttribute("staff_id", staff_id);
+
+                /*mail to user for updatation*/
+                StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                 String path = servlet.getServletContext().getRealPath("/");
+            obj=new Email(path,staffobj.getEmailId(),password,"Update Account Successfully from LibMS","User Id="+login_id+" Your Password for LibMS Login is="+password+" User Role="+role);
+               System.out.println("Mailing");
+            executor.submit(new Runnable() {
+
+                public void run() {
+
+                    obj.send();
+                }
+            });
                     request.setAttribute("role", role);
-                    request.setAttribute("msg", "Record Updated Successfully");
+                   // request.setAttribute("msg", "Record Updated Successfully");
+                     request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error3"));
                     return mapping.findForward("success");
                 }else{
-                request.setAttribute("msg", "Record Cannot Updated");
+                //request.setAttribute("msg", "Record Cannot Updated");
+                         request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error4"));
                       return mapping.findForward("error");
                 }}else{
-                 request.setAttribute("msg", "Record Cannot Updated");
+                 //request.setAttribute("msg", "Record Cannot Updated");
+                     request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error4"));
                       return mapping.findForward("error");
 
                 }
@@ -638,6 +737,7 @@ if(user_role.equals("admin") && role.equals("dept-admin"))
       logobj.setSublibraryId(sublibrary_id);
       logobj.setQuestion(question);
       logobj.setAns(ans);
+      logobj.setPassword(password1);
     result=LoginDAO.update1(logobj);
 
 
@@ -902,13 +1002,29 @@ if(user_role.equals("admin") && role.equals("dept-admin"))
                     request.setAttribute("library_id", library_id);
                     request.setAttribute("staff_id", staff_id);
                     request.setAttribute("role", role);
-                    request.setAttribute("msg", "Record Updated Successfully");
+
+                /*mail to user for updatation*/
+                StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                 String path = servlet.getServletContext().getRealPath("/");
+            obj=new Email(path,staffobj.getEmailId(),password,"Update Account Successfully from LibMS","User Id="+login_id+" Your Password for LibMS Login is="+password+" User Role="+role);
+               System.out.println("Mailing");
+            executor.submit(new Runnable() {
+
+                public void run() {
+
+                    obj.send();
+                }
+            });
+                    //request.setAttribute("msg", "Record Updated Successfully");
+             request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error3"));
                     return mapping.findForward("success");
                 }else{
-                request.setAttribute("msg", "Record Cannot Updated");
+                //request.setAttribute("msg", "Record Cannot Updated");
+                         request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error4"));
                       return mapping.findForward("error");
                 }}else{
-                 request.setAttribute("msg", "Record Cannot Updated");
+                 //request.setAttribute("msg", "Record Cannot Updated");
+                     request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error4"));
                       return mapping.findForward("error");
 
                 }
@@ -925,6 +1041,7 @@ if(user_role.equals("dept-admin") && role.equals("admin"))
     logobj.setRole(role);
       logobj.setSublibraryId(sublibrary_id);
       logobj.setQuestion(question);
+      logobj.setPassword(password1);
       logobj.setAns(ans);
     result=LoginDAO.update1(logobj);
 
@@ -958,13 +1075,29 @@ if(user_role.equals("dept-admin") && role.equals("admin"))
                     request.setAttribute("library_id", library_id);
                     request.setAttribute("staff_id", staff_id);
                     request.setAttribute("role", role);
-                    request.setAttribute("msg", "Record Updated Successfully");
+
+                /*mail to user for updatation*/
+                StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                 String path = servlet.getServletContext().getRealPath("/");
+            obj=new Email(path,staffobj.getEmailId(),password,"Update Account Successfully from LibMS","User Id="+login_id+" Your Password for LibMS Login is="+password+" User Role="+role);
+               System.out.println("Mailing");
+            executor.submit(new Runnable() {
+
+                public void run() {
+
+                    obj.send();
+                }
+            });
+                    //request.setAttribute("msg", "Record Updated Successfully");
+             request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error3"));
                     return mapping.findForward("success");
                 }else{
-                request.setAttribute("msg", "Record Cannot Updated");
+                //request.setAttribute("msg", "Record Cannot Updated");
+                        request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error4"));
                       return mapping.findForward("error");
                 }}else{
-                 request.setAttribute("msg", "Record Cannot Updated");
+                 //request.setAttribute("msg", "Record Cannot Updated");
+                     request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error4"));
                       return mapping.findForward("error");
 
                 }
@@ -978,6 +1111,7 @@ if(user_role.equals("dept-admin") && role.equals("staff"))
     logobj.setRole(role);
     logobj.setQuestion(question);
       logobj.setAns(ans);
+      logobj.setPassword(password1);
       logobj.setSublibraryId(sublibrary_id);
     result=LoginDAO.update1(logobj);
 
@@ -1238,20 +1372,37 @@ if(user_role.equals("dept-admin") && role.equals("staff"))
 
 
 
-                      System.out.println("..............kkkkkkkk");
+                      
                     request.setAttribute("user_id", login_id);
                     request.setAttribute("user_name", user_name);
                     request.setAttribute("library_id", library_id);
                     request.setAttribute("staff_id", staff_id);
                     request.setAttribute("role", role);
-                    request.setAttribute("msg", "Record Updated Successfully");
+
+                /*mail to user for updatation*/
+                StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                 String path = servlet.getServletContext().getRealPath("/");
+            obj=new Email(path,staffobj.getEmailId(),password,"Update Account Successfully from LibMS","User Id="+login_id+" Your Password for LibMS Login is="+password+" User Role="+role);
+               System.out.println("Mailing");
+            executor.submit(new Runnable() {
+
+                public void run() {
+
+                    obj.send();
+                }
+            });
+                   // request.setAttribute("msg", "Record Updated Successfully");
+             request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error3"));
                     return mapping.findForward("success");
                 }else{
-                request.setAttribute("msg", "Record Cannot Updated");
+                //request.setAttribute("msg", "Record Cannot Updated");
+                         request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error4"));
+
                       return mapping.findForward("error");
                 }
                 }else{
-                 request.setAttribute("msg", "Record Cannot Updated");
+                 //request.setAttribute("msg", "Record Cannot Updated");
+                     request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error4"));
                       return mapping.findForward("error");
 
                 }
@@ -1267,9 +1418,10 @@ if(user_role.equals("dept-admin") && role.equals("dept-staff"))
     logobj.setRole(role);
     logobj.setQuestion(question);
       logobj.setAns(ans);
+      logobj.setPassword(password1);
       logobj.setSublibraryId(sublibrary_id);
     result=LoginDAO.update1(logobj);
-System.out.print("Here................");
+
 
 
                if(result==true)
@@ -1528,19 +1680,35 @@ System.out.print("Here................");
 
 
 
-                      System.out.println("..............kkkkkkkk");
+
                     request.setAttribute("user_id", login_id);
                     request.setAttribute("user_name", user_name);
                     request.setAttribute("library_id", library_id);
                     request.setAttribute("staff_id", staff_id);
                     request.setAttribute("role", role);
-                    request.setAttribute("msg", "Record Updated Successfully");
+
+                /*mail to user for updatation*/
+                StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                 String path = servlet.getServletContext().getRealPath("/");
+            obj=new Email(path,staffobj.getEmailId(),password,"Update Account Successfully from LibMS","User Id="+login_id+" Your Password for LibMS Login is="+password+" User Role="+role);
+               System.out.println("Mailing");
+            executor.submit(new Runnable() {
+
+                public void run() {
+
+                    obj.send();
+                }
+            });
+//                    request.setAttribute("msg", "Record Updated Successfully");
+             request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error3"));
                     return mapping.findForward("success");
                 }else{
-                request.setAttribute("msg", "Record Cannot Updated");
+                //request.setAttribute("msg", "Record Cannot Updated");
+                         request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error4"));
                       return mapping.findForward("error");
                 }}else{
-                 request.setAttribute("msg", "Record Cannot Updated");
+                 //request.setAttribute("msg", "Record Cannot Updated");
+                     request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error4"));
                       return mapping.findForward("error");
 
                 }
@@ -1555,6 +1723,7 @@ if(user_role.equals("staff") && role.equals("admin"))
     logobj.setRole(role);
      logobj.setQuestion(question);
       logobj.setAns(ans);
+      logobj.setPassword(password1);
       logobj.setSublibraryId(sublibrary_id);
     result=LoginDAO.update1(logobj);
 
@@ -1582,19 +1751,35 @@ if(user_role.equals("staff") && role.equals("admin"))
                     CreatePrivilege.assignAdminPrivilege(staff_id, library_id, sublibrary_id);
 
 
-                      System.out.println("..............kkkkkkkk");
+                      
                     request.setAttribute("user_id", login_id);
                     request.setAttribute("user_name", user_name);
                     request.setAttribute("library_id", library_id);
                     request.setAttribute("staff_id", staff_id);
                     request.setAttribute("role", role);
-                    request.setAttribute("msg", "Record Updated Successfully");
+
+                /*mail to user for updatation*/
+                StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                 String path = servlet.getServletContext().getRealPath("/");
+            obj=new Email(path,staffobj.getEmailId(),password,"Update Account Successfully from LibMS","User Id="+login_id+" Your Password for LibMS Login is="+password+" User Role="+role);
+               System.out.println("Mailing");
+            executor.submit(new Runnable() {
+
+                public void run() {
+
+                    obj.send();
+                }
+            });
+                    //request.setAttribute("msg", "Record Updated Successfully");
+             request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error3"));
                     return mapping.findForward("success");
                 }else{
-                request.setAttribute("msg", "Record Cannot Updated");
+                //request.setAttribute("msg", "Record Cannot Updated");
+                        request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error4"));
                       return mapping.findForward("error");
                 }}else{
-                 request.setAttribute("msg", "Record Cannot Updated");
+                 //request.setAttribute("msg", "Record Cannot Updated");
+                     request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error4"));
                       return mapping.findForward("error");
 
                 }
@@ -1609,6 +1794,7 @@ if(user_role.equals("staff") && role.equals("dept-admin"))
     logobj.setRole(role);
      logobj.setQuestion(question);
       logobj.setAns(ans);
+      logobj.setPassword(password1);
       logobj.setSublibraryId(sublibrary_id);
     result=LoginDAO.update1(logobj);
 
@@ -1876,13 +2062,29 @@ if(user_role.equals("staff") && role.equals("dept-admin"))
                     request.setAttribute("library_id", library_id);
                     request.setAttribute("staff_id", staff_id);
                     request.setAttribute("role", role);
-                    request.setAttribute("msg", "Record Updated Successfully");
+
+                /*mail to user for updatation*/
+                StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                 String path = servlet.getServletContext().getRealPath("/");
+            obj=new Email(path,staffobj.getEmailId(),password,"Update Account Successfully from LibMS","User Id="+login_id+" Your Password for LibMS Login is="+password+" User Role="+role);
+               System.out.println("Mailing");
+            executor.submit(new Runnable() {
+
+                public void run() {
+
+                    obj.send();
+                }
+            });
+                    //request.setAttribute("msg", "Record Updated Successfully");
+             request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error3"));
                     return mapping.findForward("success");
                 }else{
-                request.setAttribute("msg", "Record Cannot Updated");
+                //request.setAttribute("msg", "Record Cannot Updated");
+                         request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error4"));
                       return mapping.findForward("error");
                 }}else{
-                 request.setAttribute("msg", "Record Cannot Updated");
+                 //request.setAttribute("msg", "Record Cannot Updated");
+                     request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error4"));
                       return mapping.findForward("error");
 
                 }
@@ -1897,6 +2099,7 @@ if(user_role.equals("staff") && role.equals("dept-staff"))
     logobj.setRole(role);
      logobj.setQuestion(question);
       logobj.setAns(ans);
+      logobj.setPassword(password1);
       logobj.setSublibraryId(sublibrary_id);
     result=LoginDAO.update1(logobj);
 
@@ -2164,13 +2367,29 @@ if(user_role.equals("staff") && role.equals("dept-staff"))
                     request.setAttribute("library_id", library_id);
                     request.setAttribute("staff_id", staff_id);
                     request.setAttribute("role", role);
-                    request.setAttribute("msg", "Record Updated Successfully");
+
+                /*mail to user for updatation*/
+                StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                 String path = servlet.getServletContext().getRealPath("/");
+            obj=new Email(path,staffobj.getEmailId(),password,"Update Account Successfully from LibMS","User Id="+login_id+" Your Password for LibMS Login is="+password+" User Role="+role);
+               System.out.println("Mailing");
+            executor.submit(new Runnable() {
+
+                public void run() {
+
+                    obj.send();
+                }
+            });
+                    //request.setAttribute("msg", "Record Updated Successfully");
+             request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error3"));
                     return mapping.findForward("success");
                 }else{
-                request.setAttribute("msg", "Record Cannot Updated");
+                //request.setAttribute("msg", "Record Cannot Updated");
+                         request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error4"));
                       return mapping.findForward("error");
                 }}else{
-                 request.setAttribute("msg", "Record Cannot Updated");
+                 //request.setAttribute("msg", "Record Cannot Updated");
+                     request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error4"));
                       return mapping.findForward("error");
 
                 }
@@ -2186,6 +2405,7 @@ if(user_role.equals("dept-staff") && role.equals("admin"))
       logobj.setSublibraryId(sublibrary_id);
       logobj.setQuestion(question);
       logobj.setAns(ans);
+      logobj.setPassword(password1);
     result=LoginDAO.update1(logobj);
 
 
@@ -2218,13 +2438,29 @@ if(user_role.equals("dept-staff") && role.equals("admin"))
                     request.setAttribute("library_id", library_id);
                     request.setAttribute("staff_id", staff_id);
                     request.setAttribute("role", role);
-                    request.setAttribute("msg", "Record Updated Successfully");
+
+                /*mail to user for updatation*/
+                StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                 String path = servlet.getServletContext().getRealPath("/");
+            obj=new Email(path,staffobj.getEmailId(),password,"Update Account Successfully from LibMS","User Id="+login_id+" Your Password for LibMS Login is="+password+" User Role="+role);
+               System.out.println("Mailing");
+            executor.submit(new Runnable() {
+
+                public void run() {
+
+                    obj.send();
+                }
+            });
+                    //request.setAttribute("msg", "Record Updated Successfully");
+             request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error3"));
                     return mapping.findForward("success");
                 }else{
-                request.setAttribute("msg", "Record Cannot Updated");
+                //request.setAttribute("msg", "Record Cannot Updated");
+                        request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error4"));
                       return mapping.findForward("error");
                 }}else{
-                 request.setAttribute("msg", "Record Cannot Updated");
+                 //request.setAttribute("msg", "Record Cannot Updated");
+                     request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error4"));
                       return mapping.findForward("error");
 
                 }
@@ -2241,7 +2477,8 @@ if(user_role.equals("dept-staff") && role.equals("dept-admin"))
                    request.setAttribute("library_id", library_id);
                    request.setAttribute("staff_id", staff_id);
                    request.setAttribute("role",logobj.getRole());
-                   request.setAttribute("msg1", "You Cannot Create Departmental Admin ");
+                  // request.setAttribute("msg1", "You Cannot Create Departmental Admin ");
+                    request.setAttribute("msg1", resource.getString("admin.UpdateAccountAction.error5"));
                    return mapping.findForward("success");
 
     }
@@ -2249,6 +2486,7 @@ if(user_role.equals("dept-staff") && role.equals("dept-admin"))
 
 logobj=LoginDAO.searchStaffLogin(staff_id, library_id);
     logobj.setRole(role);
+    logobj.setPassword(password1);
       logobj.setSublibraryId(sublibrary_id);
       logobj.setQuestion(question);
       logobj.setAns(ans);
@@ -2518,13 +2756,30 @@ logobj=LoginDAO.searchStaffLogin(staff_id, library_id);
                     request.setAttribute("library_id", library_id);
                     request.setAttribute("staff_id", staff_id);
                     request.setAttribute("role", role);
-                    request.setAttribute("msg", "Record Updated Successfully");
+                   // request.setAttribute("msg", "Record Updated Successfully");
+                    request.setAttribute("msg", resource.getString("admin.UpdateAccountAction.error3"));
+
+                /*mail to user for updatation*/
+                StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                 String path = servlet.getServletContext().getRealPath("/");
+            obj=new Email(path,staffobj.getEmailId(),password,"Update Account Successfully from LibMS","User Id="+login_id+" Your Password for LibMS Login is="+password+" User Role="+role);
+               System.out.println("Mailing");
+            executor.submit(new Runnable() {
+
+                public void run() {
+
+                    obj.send();
+                }
+            });
+
                     return mapping.findForward("success");
                 }else{
-                request.setAttribute("msg", "Record Cannot Updated");
+                //request.setAttribute("msg", "Record Cannot Updated");
+                            request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error4"));
                       return mapping.findForward("error");
                 }}else{
-                 request.setAttribute("msg", "Record Cannot Updated");
+                 //request.setAttribute("msg", "Record Cannot Updated");
+                        request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error4"));
                       return mapping.findForward("error");
 
                 }
@@ -2536,6 +2791,7 @@ if(user_role.equals("dept-staff") && role.equals("staff"))
     logobj.setRole(role);
       logobj.setSublibraryId(sublibrary_id);
       logobj.setQuestion(question);
+      logobj.setPassword(password1);
       logobj.setAns(ans);
     result=LoginDAO.update1(logobj);
 
@@ -2803,13 +3059,30 @@ if(user_role.equals("dept-staff") && role.equals("staff"))
                     request.setAttribute("library_id", library_id);
                     request.setAttribute("staff_id", staff_id);
                     request.setAttribute("role", role);
-                    request.setAttribute("msg", "Record Updated Successfully");
+                    // request.setAttribute("msg", "Record Updated Successfully");
+                        request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error3"));
+
+                /*mail to user for updatation*/
+                StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                 String path = servlet.getServletContext().getRealPath("/");
+            obj=new Email(path,staffobj.getEmailId(),password,"Update Account Successfully from LibMS","User Id="+login_id+" Your Password for LibMS Login is="+password+" User Role="+role);
+               System.out.println("Mailing");
+            executor.submit(new Runnable() {
+
+                public void run() {
+                 
+                    obj.send();
+                }
+            });
+                   
                     return mapping.findForward("success");
                 }else{
-                request.setAttribute("msg", "Record Cannot Updated");
+               // request.setAttribute("msg", "Record Cannot Updated");
+                            request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error4"));
                       return mapping.findForward("error");
                 }}else{
-                 request.setAttribute("msg", "Record Cannot Updated");
+                // request.setAttribute("msg", "Record Cannot Updated");
+                        request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error4"));
                       return mapping.findForward("error");
 
                 }
@@ -2822,42 +3095,11 @@ if(user_role.equals("dept-staff") && role.equals("staff"))
 
 
 
-/* logobj=LoginDAO.searchStaffLogin(staff_id, library_id,sublibrary_id);
-    logobj.setRole(role);
-    result=LoginDAO.update(logobj);
-
-
-             
-                if(result==true)
-
-                {
-                    result =PrivilegeDAO.DeleteStaff(staff_id,library_id,sublibrary_id);
-                    if(result==true)
-                    {
-                        if(role.equals("staff"))
-                            CreatePrivilege.assignStaffPrivilege(staff_id, library_id, sublibrary_id);
-                        else if(role.equals("admin"))
-                           CreatePrivilege.assignAdminPrivilege(staff_id, library_id,sublibrary_id);
-                        else if(role.equals("dept-admin"))
-                           CreatePrivilege.assignDepartmentalAdminPrivilege(staff_id, library_id,sublibrary_id);
-                    }
-                request.setAttribute("user_id", login_id);
-                request.setAttribute("user_name", user_name);
-                request.setAttribute("library_id", library_id);
-                request.setAttribute("staff_id", staff_id);
-                 request.setAttribute("role", role);
-                request.setAttribute("msg", "Record Updated Successfully");
-                return mapping.findForward("success");
-
-                /*code for Java Mailing*/
-                /*mail to user for updatation
+          
 
 
 
 
-
-
-*/
     }
  
    
@@ -2871,7 +3113,8 @@ if(user_role.equals("dept-staff") && role.equals("staff"))
                 request.setAttribute("library_id", library_id);
                 request.setAttribute("staff_id", staff_id);
                  request.setAttribute("role", role);
-                request.setAttribute("msg1", "You Cannot Delete Institute Admin");
+              //  request.setAttribute("msg1", "You Cannot Delete Institute Admin");
+                   request.setAttribute("msg1",resource.getString("admin.UpdateAccountAction.error6"));
                   return mapping.findForward("success");
          }
 
@@ -2885,7 +3128,8 @@ if(user_role.equals("dept-staff") && role.equals("staff"))
                 request.setAttribute("library_id", library_id);
                 request.setAttribute("staff_id", staff_id);
                  request.setAttribute("role", role);
-                request.setAttribute("msg1", "You Cannot Delete Your Own Account");
+                // request.setAttribute("msg1", "You Cannot Delete Your Own Account");
+                request.setAttribute("msg1", resource.getString("admin.UpdateAccountAction.error7"));
                   return mapping.findForward("success");
 
             }
@@ -2905,7 +3149,8 @@ if(user_role.equals("dept-staff") && role.equals("staff"))
                 request.setAttribute("library_id", library_id);
                 request.setAttribute("staff_id", staff_id);
                  request.setAttribute("role", role);
-                request.setAttribute("msg1", "You Cannot Delete Admin");
+              //  request.setAttribute("msg1", "You Cannot Delete Admin");
+                   request.setAttribute("msg1",resource.getString("admin.UpdateAccountAction.error8"));
                   return mapping.findForward("success");
                 }
             }
@@ -2928,11 +3173,23 @@ if(user_role.equals("dept-staff") && role.equals("staff"))
      request.setAttribute("role", role);
 
 
-            request.setAttribute("msg", "Record Deleted Successfully  ");
-         return mapping.findForward("success");
+          //  request.setAttribute("msg", "Record Deleted Successfully  ");
+       request.setAttribute("msg",resource.getString("admin.UpdateAccountAction.error9"));
+            /*code for Java Mailing*/
+            /*mail to user for deletion of account message*/
+                StaffDetail staffobj=StaffDetailDAO.searchStaffId(staff_id, library_id);
+                 String path = servlet.getServletContext().getRealPath("/");
+            obj=new Email(path,staffobj.getEmailId(),password,"Delete Account Successfully from LibMS","Your Account of  LibMS is Deleted ");
+            executor.submit(new Runnable() {
 
-/*code for Java Mailing*/
-/*mail to user for deletion of account message*/
+                public void run() {
+                    obj.send();
+                }
+            });
+
+
+
+         return mapping.findForward("success");
 
 
 
@@ -2947,7 +3204,8 @@ if(user_role.equals("dept-staff") && role.equals("staff"))
      request.setAttribute("role", role);
 
 
-            request.setAttribute("msg", "Some Error Encountered ");
+         //   request.setAttribute("msg", "Some Error Encountered ");
+        request.setAttribute("msg",resource.getString("admin.error.error"));
          return mapping.findForward("success");
 
         }

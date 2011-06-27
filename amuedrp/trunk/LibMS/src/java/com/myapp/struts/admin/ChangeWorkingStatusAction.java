@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import java.util.*;
 
 /**
  *
@@ -29,15 +30,13 @@ public class ChangeWorkingStatusAction extends org.apache.struts.action.Action {
    // private String library_name;
     private String institute_id;
     private int registration_id;
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-     * @return
-     */
+
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    boolean page=true;
+    String align="left";
+   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -53,7 +52,7 @@ public class ChangeWorkingStatusAction extends org.apache.struts.action.Action {
 
 
         try{
-        // System.out.println(working_status+registration_id+institute_id+library_name+"*******************");
+         System.out.println(working_status+registration_id+institute_id+"*******************");
 adminreg.setAdminRegistration((AdminRegistration)admindao.getAdminDeatilsById(registration_id).get(0));
 adminreg.getAdminRegistration().setWorkingStatus(working_status);
 admindao.update(adminreg.getAdminRegistration());
@@ -65,8 +64,23 @@ institutedao.update(adminreg.getLibrary());
 List rst = admindao.getAdminDetailsByStatus("Registered");
 HttpSession session= request.getSession();
                     session.setAttribute("resultset1", rst);
-     
-         String msg="Working Status of Institute Successfully Updated ";
+
+         try{
+              locale1=(String)session.getAttribute("locale");
+
+              if(session.getAttribute("locale")!=null)
+              {
+                locale1 = (String)session.getAttribute("locale");
+       // System.out.println("locale="+locale1);
+              }
+              else locale1="en";
+            }catch(Exception e){locale1="en";}
+             locale = new Locale(locale1);
+             if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
+             else{ rtl="RTL";page=false;align="right";}
+              ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+         String msg=resource.getString("admin.adminblock.msg");
          String msg1=institute_id;
          String msg2=adminreg.getAdminRegistration().getInstituteName();
          String msg3=working_status;
@@ -79,7 +93,7 @@ HttpSession session= request.getSession();
         }catch(Exception e)
         {
             System.out.println(e+"****************************************************");
-            return mapping.findForward("success");
+            return mapping.findForward("failure");
 
         }
     }

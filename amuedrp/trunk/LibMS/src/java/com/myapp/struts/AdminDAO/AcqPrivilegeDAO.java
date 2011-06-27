@@ -49,20 +49,20 @@ public static boolean DeleteLogin(String staff_id,String library_id,String subli
         }
         finally
         {
-          //session.close();
+    //   session.close();
         }
    return true;
 
 
 }
 public static String getValue(AcqPrivilege acq,int i) {
-   //   Session session = HibernateUtil.getSessionFactory().openSession();
+      Session session = HibernateUtil.getSessionFactory().openSession();
 
 
 
         try
         {
-     //    session.beginTransaction();
+         session.beginTransaction();
 
            if(i==101)
                 return acq.getAcq101();
@@ -280,7 +280,7 @@ public static String getValue(AcqPrivilege acq,int i) {
         }
         finally
         {
-          //session.close();
+        //  session.close();
         }
 
 return null;
@@ -319,7 +319,7 @@ public static AcqPrivilege searchStaffLogin(String staff_id,String library_id) {
             return ( AcqPrivilege) query.uniqueResult();
         }
         finally {
-           // session.close();
+       //   session.close();
         }
 
 }
@@ -351,7 +351,7 @@ public static  boolean insert(AcqPrivilege obj)
         }
         finally
         {
-          //session.close();
+          session.close();
         }
    return true;
 

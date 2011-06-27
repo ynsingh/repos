@@ -1,9 +1,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.sql.*,com.myapp.struts.hbm.*" %>
+<%@page contentType="text/html" import="java.util.*,java.io.*,java.net.*"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN "http://www.w3.org/TR/html4/strict.dtd">
  <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
+
 
 <html>
     <head>
@@ -16,6 +18,31 @@
        String cir_privilege[]=new String[100];
        String ser_privilege[]=new String[100];
         %>
+         <%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    boolean page=true;
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+       // System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
+    else{ rtl="RTL";page=false;align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
+       
           <%
 
            String username=(String)session.getAttribute("username");
@@ -894,130 +921,193 @@ System.out.println(staff_role);
 
 
 //Start: Third Level Serial Menu 3333333333333333333333333333333333333333333333333333333333333333333333
- var oSerRequestToVendorMenu = new YAHOO.widget.Menu("Request To Vendor");
+ //var oSerRequestToVendorMenu = new YAHOO.widget.Menu("Request To Vendor");
+ var oSerRequestToVendorMenu = new YAHOO.widget.Menu("<%=resource.getString("admin.header.serial1") %>");
 
-                oSerRequestToVendorMenu.addItem(new YAHOO.widget.MenuItem("Direct Request", {  disabled: <%=ser_privilege[11]%>,  url: ""}));
-                oSerRequestToVendorMenu.addItem(new YAHOO.widget.MenuItem("Approved Request", {  disabled: <%=ser_privilege[12]%>,  url: ""}));
+                //oSerRequestToVendorMenu.addItem(new YAHOO.widget.MenuItem("Direct Request", {  disabled: <%=ser_privilege[11]%>,  url: ""}));
+                oSerRequestToVendorMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial2") %>", {  disabled: <%=ser_privilege[11]%>,  url: ""}));
+                //oSerRequestToVendorMenu.addItem(new YAHOO.widget.MenuItem("Approved Request", {  disabled: <%=ser_privilege[12]%>,  url: ""}));
+                oSerRequestToVendorMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial3") %>", {  disabled: <%=ser_privilege[12]%>,  url: ""}));
 
-
-                var oSerStatusUpdateMenu = new YAHOO.widget.Menu("Status Update");
-                oSerStatusUpdateMenu.addItem(new YAHOO.widget.MenuItem("Vendor Request", {  disabled: <%=ser_privilege[14]%>,  url: ""}));
-                oSerStatusUpdateMenu.addItem(new YAHOO.widget.MenuItem("Approval Status", {  disabled: <%=ser_privilege[15]%>,  url: ""}));
-
-
-
-
-                var oSerViewSubscriptionListMenu = new YAHOO.widget.Menu("View Subscription List");
-
-                oSerViewSubscriptionListMenu.addItem(new YAHOO.widget.MenuItem("Direct Request", {  disabled: <%=ser_privilege[19]%>,  url: ""}));
-                oSerViewSubscriptionListMenu.addItem(new YAHOO.widget.MenuItem("Approved Request", {  disabled: <%=ser_privilege[20]%>,  url: ""}));
+               // var oSerStatusUpdateMenu = new YAHOO.widget.Menu("Status Update");
+                var oSerStatusUpdateMenu = new YAHOO.widget.Menu("<%=resource.getString("admin.header.serial4") %>");
+                //oSerStatusUpdateMenu.addItem(new YAHOO.widget.MenuItem("Vendor Request", {  disabled: <%=ser_privilege[14]%>,  url: ""}));
+                oSerStatusUpdateMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial5") %>", {  disabled: <%=ser_privilege[14]%>,  url: ""}));
+               // oSerStatusUpdateMenu.addItem(new YAHOO.widget.MenuItem("Approval Status", {  disabled: <%=ser_privilege[15]%>,  url: ""}));
+            oSerStatusUpdateMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial6") %>", {  disabled: <%=ser_privilege[15]%>,  url: ""}));
 
 
 
-                var oSerBindingMenu = new YAHOO.widget.Menu("Binding");
+              //  var oSerViewSubscriptionListMenu = new YAHOO.widget.Menu("View Subscription List");
+              var oSerViewSubscriptionListMenu = new YAHOO.widget.Menu("<%=resource.getString("admin.header.serial7") %>");
 
-                oSerBindingMenu.addItem(new YAHOO.widget.MenuItem("Prepare Binding List", {  disabled: <%=ser_privilege[39]%>,  url: ""}));
-                oSerBindingMenu.addItem(new YAHOO.widget.MenuItem("Binding Order", {  disabled: <%=ser_privilege[40]%>,  url: ""}));
-                oSerBindingMenu.addItem(new YAHOO.widget.MenuItem("Binding Update", {  disabled: <%=ser_privilege[41]%>,  url: ""}));
-                oSerBindingMenu.addItem(new YAHOO.widget.MenuItem("Receive Binded Update", {  disabled: <%=ser_privilege[42]%>,  url: ""}));
-                oSerBindingMenu.addItem(new YAHOO.widget.MenuItem("Prepare Binding Slip", {  disabled: <%=ser_privilege[43]%>,  url: ""}));
-                oSerBindingMenu.addItem(new YAHOO.widget.MenuItem("Document Slip", {  disabled: <%=ser_privilege[44]%>,  url: ""}));
-
-
-
-                var oSerAccessioningMenu = new YAHOO.widget.Menu("Accessioning");
-
-                oSerAccessioningMenu.addItem(new YAHOO.widget.MenuItem("Generate Accession No", {  disabled: <%=ser_privilege[46]%>,  url: ""}));
-                oSerAccessioningMenu.addItem(new YAHOO.widget.MenuItem("Change Accession No", {  disabled: <%=ser_privilege[47]%>,  url: ""}));
-                oSerAccessioningMenu.addItem(new YAHOO.widget.MenuItem("Accession Register", {  disabled: <%=ser_privilege[48]%>,  url: ""}));
+              //  oSerViewSubscriptionListMenu.addItem(new YAHOO.widget.MenuItem("Direct Request", {  disabled: <%=ser_privilege[19]%>,  url: ""}));
+                oSerViewSubscriptionListMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial8") %>", {  disabled: <%=ser_privilege[19]%>,  url: ""}));
+                //oSerViewSubscriptionListMenu.addItem(new YAHOO.widget.MenuItem("Approved Request", {  disabled: <%=ser_privilege[20]%>,  url: ""}));
+                oSerViewSubscriptionListMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial3") %>", {  disabled: <%=ser_privilege[20]%>,  url: ""}));
 
 
 
-                var oSerArticleRegisterMenu = new YAHOO.widget.Menu("Article Register");
+               // var oSerBindingMenu = new YAHOO.widget.Menu("Binding");
+                var oSerBindingMenu = new YAHOO.widget.Menu("<%=resource.getString("admin.header.serial9") %>");
 
-                oSerArticleRegisterMenu.addItem(new YAHOO.widget.MenuItem("Add", {  disabled: <%=ser_privilege[51]%>,  url: ""}));
-                oSerArticleRegisterMenu.addItem(new YAHOO.widget.MenuItem("Modify", {  disabled: <%=ser_privilege[52]%>,  url: ""}));
-                oSerArticleRegisterMenu.addItem(new YAHOO.widget.MenuItem("Remove", {  disabled: <%=ser_privilege[53]%>,  url: ""}));
+              //  oSerBindingMenu.addItem(new YAHOO.widget.MenuItem("Prepare Binding List", {  disabled: <%=ser_privilege[39]%>,  url: ""}));
+               oSerBindingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial10") %>", {  disabled: <%=ser_privilege[39]%>,  url: ""}));
+              //  oSerBindingMenu.addItem(new YAHOO.widget.MenuItem("Binding Order", {  disabled: <%=ser_privilege[40]%>,  url: ""}));
+              oSerBindingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial11") %>", {  disabled: <%=ser_privilege[40]%>,  url: ""}));
+              //  oSerBindingMenu.addItem(new YAHOO.widget.MenuItem("Binding Update", {  disabled: <%=ser_privilege[41]%>,  url: ""}));
+               oSerBindingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial12") %>", {  disabled: <%=ser_privilege[41]%>,  url: ""}));
+                //oSerBindingMenu.addItem(new YAHOO.widget.MenuItem("Receive Binded Update", {  disabled: <%=ser_privilege[42]%>,  url: ""}));
+                oSerBindingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial13") %>", {  disabled: <%=ser_privilege[42]%>,  url: ""}));
+              //  oSerBindingMenu.addItem(new YAHOO.widget.MenuItem("Prepare Binding Slip", {  disabled: <%=ser_privilege[43]%>,  url: ""}));
+                oSerBindingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial4") %>", {  disabled: <%=ser_privilege[43]%>,  url: ""}));
+               // oSerBindingMenu.addItem(new YAHOO.widget.MenuItem("Document Slip", {  disabled: <%=ser_privilege[44]%>,  url: ""}));
+               oSerBindingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial15") %>", {  disabled: <%=ser_privilege[44]%>,  url: ""}));
 
 
 
-                var oSerArticleRetrievalMenu = new YAHOO.widget.Menu("Article Retrieval");
+              //  var oSerAccessioningMenu = new YAHOO.widget.Menu("Accessioning");
+                var oSerAccessioningMenu = new YAHOO.widget.Menu("<%=resource.getString("admin.header.serial16") %>");
 
-                oSerArticleRetrievalMenu.addItem(new YAHOO.widget.MenuItem("Web Search", {  disabled: <%=ser_privilege[57]%>,  url: ""}));
-                oSerArticleRetrievalMenu.addItem(new YAHOO.widget.MenuItem("Article Document", {  disabled: <%=ser_privilege[58]%>,  url: ""}));
-                oSerArticleRetrievalMenu.addItem(new YAHOO.widget.MenuItem("Article Bibliography", {  disabled: <%=ser_privilege[59]%>,  url: ""}));
+              //  oSerAccessioningMenu.addItem(new YAHOO.widget.MenuItem("Generate Accession No", {  disabled: <%=ser_privilege[46]%>,  url: ""}));
+                oSerAccessioningMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial17") %>", {  disabled: <%=ser_privilege[46]%>,  url: ""}));
+                //oSerAccessioningMenu.addItem(new YAHOO.widget.MenuItem("Change Accession No", {  disabled: <%=ser_privilege[47]%>,  url: ""}));
+                oSerAccessioningMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial18") %>", {  disabled: <%=ser_privilege[47]%>,  url: ""}));
+               // oSerAccessioningMenu.addItem(new YAHOO.widget.MenuItem("Accession Register", {  disabled: <%=ser_privilege[48]%>,  url: ""}));
+                 oSerAccessioningMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial19") %>", {  disabled: <%=ser_privilege[48]%>,  url: ""}));
 
 
-                var oSerMiscellaneousMenu = new YAHOO.widget.Menu("Miscellaneous");
+               // var oSerArticleRegisterMenu = new YAHOO.widget.Menu("Article Register");
+                var oSerArticleRegisterMenu = new YAHOO.widget.Menu("<%=resource.getString("admin.header.serial20") %>");
 
-                oSerMiscellaneousMenu.addItem(new YAHOO.widget.MenuItem("Multimedia", {  disabled: <%=ser_privilege[61]%>,  url: ""}));
-                oSerMiscellaneousMenu.addItem(new YAHOO.widget.MenuItem("List By Journal", {  disabled: <%=ser_privilege[62]%>,  url: ""}));
-                oSerMiscellaneousMenu.addItem(new YAHOO.widget.MenuItem("Classified Subject", {  disabled: <%=ser_privilege[63]%>,  url: ""}));
+                //oSerArticleRegisterMenu.addItem(new YAHOO.widget.MenuItem("Add", {  disabled: <%=ser_privilege[51]%>,  url: ""}));
+                oSerArticleRegisterMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial21") %>", {  disabled: <%=ser_privilege[51]%>,  url: ""}));
+              //  oSerArticleRegisterMenu.addItem(new YAHOO.widget.MenuItem("Modify", {  disabled: <%=ser_privilege[52]%>,  url: ""}));
+                oSerArticleRegisterMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial22") %>", {  disabled: <%=ser_privilege[52]%>,  url: ""}));
+               // oSerArticleRegisterMenu.addItem(new YAHOO.widget.MenuItem("Remove", {  disabled: <%=ser_privilege[53]%>,  url: ""}));
+                oSerArticleRegisterMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial23") %>", {  disabled: <%=ser_privilege[53]%>,  url: ""}));
 
+
+               // var oSerArticleRetrievalMenu = new YAHOO.widget.Menu("Article Retrieval");
+                var oSerArticleRetrievalMenu = new YAHOO.widget.Menu("<%=resource.getString("admin.header.serial24") %>");
+
+              //  oSerArticleRetrievalMenu.addItem(new YAHOO.widget.MenuItem("Web Search", {  disabled: <%=ser_privilege[57]%>,  url: ""}));
+               oSerArticleRetrievalMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial25") %>", {  disabled: <%=ser_privilege[57]%>,  url: ""}));
+
+               // oSerArticleRetrievalMenu.addItem(new YAHOO.widget.MenuItem("Article Document", {  disabled: <%=ser_privilege[58]%>,  url: ""}));
+                oSerArticleRetrievalMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial26") %>", {  disabled: <%=ser_privilege[58]%>,  url: ""}));
+              //  oSerArticleRetrievalMenu.addItem(new YAHOO.widget.MenuItem("Article Bibliography", {  disabled: <%=ser_privilege[59]%>,  url: ""}));
+                oSerArticleRetrievalMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial27") %>", {  disabled: <%=ser_privilege[59]%>,  url: ""}));
+
+
+              //  var oSerMiscellaneousMenu = new YAHOO.widget.Menu("Miscellaneous");
+            var oSerMiscellaneousMenu = new YAHOO.widget.Menu("<%=resource.getString("admin.header.serial28") %>");
+             //   oSerMiscellaneousMenu.addItem(new YAHOO.widget.MenuItem("Multimedia", {  disabled: <%=ser_privilege[61]%>,  url: ""}));
+                oSerMiscellaneousMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial29") %>", {  disabled: <%=ser_privilege[61]%>,  url: ""}));
+                //oSerMiscellaneousMenu.addItem(new YAHOO.widget.MenuItem("List By Journal", {  disabled: <%=ser_privilege[62]%>,  url: ""}));
+                oSerMiscellaneousMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial30") %>", {  disabled: <%=ser_privilege[62]%>,  url: ""}));
+               // oSerMiscellaneousMenu.addItem(new YAHOO.widget.MenuItem("Classified Subject", {  disabled: <%=ser_privilege[63]%>,  url: ""}));
+             oSerMiscellaneousMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial31") %>", {  disabled: <%=ser_privilege[63]%>,  url: ""}));
 
 
 //End: Third Level Serial Menu 3333333333333333333333333333333333333333333333333333333333333333333333
 //Start: Second Level Serial Menu 2222222222222222222222222222222222222222222222222222222222222222222222
 
-                var oSerSubscriptionListMenu = new YAHOO.widget.Menu("Prepare Subscription List");
+               // var oSerSubscriptionListMenu = new YAHOO.widget.Menu("Prepare Subscription List");
+                 var oSerSubscriptionListMenu = new YAHOO.widget.Menu("<%=resource.getString("admin.header.serial32") %>");
 
-                oSerSubscriptionListMenu.addItem(new YAHOO.widget.MenuItem("Refer From Serial Catalogue", {  disabled: <%=ser_privilege[2]%>,  url:""}));
-                oSerSubscriptionListMenu.addItem(new YAHOO.widget.MenuItem("Refer From Demand List", {  disabled: <%=ser_privilege[3]%>,  url: ""}));
-                oSerSubscriptionListMenu.addItem(new YAHOO.widget.MenuItem("New Entry", {  disabled: <%=ser_privilege[4]%>,  url: ""}));
-                oSerSubscriptionListMenu.addItem(new YAHOO.widget.MenuItem("Request For Specimen Copy", {  disabled: <%=ser_privilege[5]%>,  url: ""}));
-                oSerSubscriptionListMenu.addItem(new YAHOO.widget.MenuItem("New Serial Status", {  disabled: <%=ser_privilege[6]%>,  url: ""}));
-
-                var oSerApprovalProcessMenu = new YAHOO.widget.Menu("Approval Process");
-
-                oSerApprovalProcessMenu.addItem(new YAHOO.widget.MenuItem("Add Serial Into Approval List", {  disabled: <%=ser_privilege[8]%>,  url: ""}));
-                oSerApprovalProcessMenu.addItem(new YAHOO.widget.MenuItem("Approve/Reject Serial", {  disabled: <%=ser_privilege[9]%>,  url: ""}));
-                oSerApprovalProcessMenu.addItem(new YAHOO.widget.MenuItem("Request To Vendor", {    submenu:oSerRequestToVendorMenu  ,  disabled: <%=ser_privilege[10]%>,  url: ""}));
-                oSerApprovalProcessMenu.addItem(new YAHOO.widget.MenuItem("Status Update", {    submenu:oSerStatusUpdateMenu ,  disabled: <%=ser_privilege[13]%>,  url: ""}));
-                oSerApprovalProcessMenu.addItem(new YAHOO.widget.MenuItem("List Of Serials", {  disabled: <%=ser_privilege[16]%>,  url: ""}));
+               // oSerSubscriptionListMenu.addItem(new YAHOO.widget.MenuItem("Refer From Serial Catalogue", {  disabled: <%=ser_privilege[2]%>,  url:""}));
+                oSerSubscriptionListMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial33") %>", {  disabled: <%=ser_privilege[2]%>,  url:""}));
 
 
-                var oSerOrderSubscriptionMenu = new YAHOO.widget.Menu("Order Subscription");
+               // oSerSubscriptionListMenu.addItem(new YAHOO.widget.MenuItem("Refer From Demand List", {  disabled: <%=ser_privilege[3]%>,  url: ""}));
+                oSerSubscriptionListMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial34") %>", {  disabled: <%=ser_privilege[3]%>,  url: ""}));
 
-                oSerOrderSubscriptionMenu.addItem(new YAHOO.widget.MenuItem("View Subscription List", {submenu:oSerViewSubscriptionListMenu ,  disabled: <%=ser_privilege[18]%>,  url: ""}));
-                oSerOrderSubscriptionMenu.addItem(new YAHOO.widget.MenuItem("Initiate Subscription/Ordering", {  disabled: <%=ser_privilege[21]%>,  url: ""}));
-                oSerOrderSubscriptionMenu.addItem(new YAHOO.widget.MenuItem("Duplicate Subscription", {  disabled: <%=ser_privilege[22]%>,  url: ""}));
-                oSerOrderSubscriptionMenu.addItem(new YAHOO.widget.MenuItem("Update Subscription Detail", {  disabled: <%=ser_privilege[23]%>,  url: ""}));
-                oSerOrderSubscriptionMenu.addItem(new YAHOO.widget.MenuItem("Initial Old Subscription", {  disabled: <%=ser_privilege[24]%>,  url: ""}));
-                oSerOrderSubscriptionMenu.addItem(new YAHOO.widget.MenuItem("Renewal Subscription", {  disabled: <%=ser_privilege[25]%>,  url: ""}));
-                oSerOrderSubscriptionMenu.addItem(new YAHOO.widget.MenuItem("Cancel/Reorder Subscription", {  disabled: <%=ser_privilege[26]%>,  url: ""}));
+               // oSerSubscriptionListMenu.addItem(new YAHOO.widget.MenuItem("New Entry", {  disabled: <%=ser_privilege[4]%>,  url: ""}));
+                oSerSubscriptionListMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial35") %>", {  disabled: <%=ser_privilege[4]%>,  url: ""}));
+                //oSerSubscriptionListMenu.addItem(new YAHOO.widget.MenuItem("Request For Specimen Copy", {  disabled: <%=ser_privilege[5]%>,  url: ""}));
+                oSerSubscriptionListMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial36") %>", {  disabled: <%=ser_privilege[5]%>,  url: ""}));
+               // oSerSubscriptionListMenu.addItem(new YAHOO.widget.MenuItem("New Serial Status", {  disabled: <%=ser_privilege[6]%>,  url: ""}));
+                oSerSubscriptionListMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial37") %>", {  disabled: <%=ser_privilege[6]%>,  url: ""}));
+
+                //var oSerApprovalProcessMenu = new YAHOO.widget.Menu("Approval Process");
+                var oSerApprovalProcessMenu = new YAHOO.widget.Menu("<%=resource.getString("admin.header.serial38") %>");
+
+                //oSerApprovalProcessMenu.addItem(new YAHOO.widget.MenuItem("Add Serial Into Approval List", {  disabled: <%=ser_privilege[8]%>,  url: ""}));
+                oSerApprovalProcessMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial39") %>", {  disabled: <%=ser_privilege[8]%>,  url: ""}));
+                //oSerApprovalProcessMenu.addItem(new YAHOO.widget.MenuItem("Approve/Reject Serial", {  disabled: <%=ser_privilege[9]%>,  url: ""}));
+                oSerApprovalProcessMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial40") %>", {  disabled: <%=ser_privilege[9]%>,  url: ""}));
+                //oSerApprovalProcessMenu.addItem(new YAHOO.widget.MenuItem("Request To Vendor", {    submenu:oSerRequestToVendorMenu  ,  disabled: <%=ser_privilege[10]%>,  url: ""}));
+                oSerApprovalProcessMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial41") %>", {    submenu:oSerRequestToVendorMenu  ,  disabled: <%=ser_privilege[10]%>,  url: ""}));
+                //oSerApprovalProcessMenu.addItem(new YAHOO.widget.MenuItem("Status Update", {    submenu:oSerStatusUpdateMenu ,  disabled: <%=ser_privilege[13]%>,  url: ""}));
+                oSerApprovalProcessMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial42") %>", {    submenu:oSerStatusUpdateMenu ,  disabled: <%=ser_privilege[13]%>,  url: ""}));
+                //oSerApprovalProcessMenu.addItem(new YAHOO.widget.MenuItem("List Of Serials", {  disabled: <%=ser_privilege[16]%>,  url: ""}));
+                oSerApprovalProcessMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial43") %>", {  disabled: <%=ser_privilege[16]%>,  url: ""}));
+
+                //var oSerOrderSubscriptionMenu = new YAHOO.widget.Menu("Order Subscription");
+                var oSerOrderSubscriptionMenu = new YAHOO.widget.Menu("<%=resource.getString("admin.header.serial44") %>");
+
+                //oSerOrderSubscriptionMenu.addItem(new YAHOO.widget.MenuItem("View Subscription List", {submenu:oSerViewSubscriptionListMenu ,  disabled: <%=ser_privilege[18]%>,  url: ""}));
+                oSerOrderSubscriptionMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial45") %>", {submenu:oSerViewSubscriptionListMenu ,  disabled: <%=ser_privilege[18]%>,  url: ""}));
+                //oSerOrderSubscriptionMenu.addItem(new YAHOO.widget.MenuItem("Initiate Subscription/Ordering", {  disabled: <%=ser_privilege[21]%>,  url: ""}));
+                oSerOrderSubscriptionMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial46") %>", {  disabled: <%=ser_privilege[21]%>,  url: ""}));
+                //oSerOrderSubscriptionMenu.addItem(new YAHOO.widget.MenuItem("Duplicate Subscription", {  disabled: <%=ser_privilege[22]%>,  url: ""}));
+                oSerOrderSubscriptionMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial47") %>", {  disabled: <%=ser_privilege[22]%>,  url: ""}));
+                //oSerOrderSubscriptionMenu.addItem(new YAHOO.widget.MenuItem("Update Subscription Detail", {  disabled: <%=ser_privilege[23]%>,  url: ""}));
+                oSerOrderSubscriptionMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial48") %>", {  disabled: <%=ser_privilege[23]%>,  url: ""}));
+                //oSerOrderSubscriptionMenu.addItem(new YAHOO.widget.MenuItem("Initial Old Subscription", {  disabled: <%=ser_privilege[24]%>,  url: ""}));
+                oSerOrderSubscriptionMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial49") %>", {  disabled: <%=ser_privilege[24]%>,  url: ""}));
+                //oSerOrderSubscriptionMenu.addItem(new YAHOO.widget.MenuItem("Renewal Subscription", {  disabled: <%=ser_privilege[25]%>,  url: ""}));
+                oSerOrderSubscriptionMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial50") %>", {  disabled: <%=ser_privilege[25]%>,  url: ""}));
+                //oSerOrderSubscriptionMenu.addItem(new YAHOO.widget.MenuItem("Cancel/Reorder Subscription", {  disabled: <%=ser_privilege[26]%>,  url: ""}));
+                oSerOrderSubscriptionMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial51") %>", {  disabled: <%=ser_privilege[26]%>,  url: ""}));
 
 
 
-                var oSerPaymentProcessMenu = new YAHOO.widget.Menu("Payment Process");
+                //var oSerPaymentProcessMenu = new YAHOO.widget.Menu("Payment Process");
 
-                oSerPaymentProcessMenu.addItem(new YAHOO.widget.MenuItem("Payment Request", {  disabled: <%=ser_privilege[29]%>,  url: ""}));
-                oSerPaymentProcessMenu.addItem(new YAHOO.widget.MenuItem("Payment update", {  disabled: <%=ser_privilege[30]%>,  url: ""}));
+                var oSerPaymentProcessMenu = new YAHOO.widget.Menu("<%=resource.getString("admin.header.serial52") %>");
 
-
-
-                var oSerIssueManagementMenu = new YAHOO.widget.Menu("Issues Management");
-
-                oSerIssueManagementMenu.addItem(new YAHOO.widget.MenuItem("Registering Issue", {  disabled: <%=ser_privilege[33]%>,  url: ""}));
-                oSerIssueManagementMenu.addItem(new YAHOO.widget.MenuItem("Additional Issue", {  disabled: <%=ser_privilege[34]%>,  url: ""}));
-                oSerIssueManagementMenu.addItem(new YAHOO.widget.MenuItem("Annual Issue", {  disabled: <%=ser_privilege[35]%>,  url: ""}));
-                oSerIssueManagementMenu.addItem(new YAHOO.widget.MenuItem("Claim Monitoring", {  disabled: <%=ser_privilege[36]%>,  url: ""}));
-
-
-                var oSerBindingManagementMenu = new YAHOO.widget.Menu("Binding Management");
-
-                oSerBindingManagementMenu.addItem(new YAHOO.widget.MenuItem("Binding", {submenu:oSerBindingMenu ,  disabled: <%=ser_privilege[38]%>,  url: ""}));
-                oSerBindingManagementMenu.addItem(new YAHOO.widget.MenuItem("Accessioning", {submenu:oSerAccessioningMenu ,  disabled: <%=ser_privilege[45]%>,  url: ""}));
+                //oSerPaymentProcessMenu.addItem(new YAHOO.widget.MenuItem("Payment Request", {  disabled: <%=ser_privilege[29]%>,  url: ""}));
+                oSerPaymentProcessMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial53") %>", {  disabled: <%=ser_privilege[29]%>,  url: ""}));
+              //  oSerPaymentProcessMenu.addItem(new YAHOO.widget.MenuItem("Payment update", {  disabled: <%=ser_privilege[30]%>,  url: ""}));
+               oSerPaymentProcessMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial54") %>", {  disabled: <%=ser_privilege[30]%>,  url: ""}));
 
 
 
-                var oSerArticleIndexingMenu = new YAHOO.widget.Menu("Article Indexing");
+               // var oSerIssueManagementMenu = new YAHOO.widget.Menu("Issues Management");
+                var oSerIssueManagementMenu = new YAHOO.widget.Menu("<%=resource.getString("admin.header.serial55") %>");
+                //oSerIssueManagementMenu.addItem(new YAHOO.widget.MenuItem("Registering Issue", {  disabled: <%=ser_privilege[33]%>,  url: ""}));
+                oSerIssueManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial56") %>", {  disabled: <%=ser_privilege[33]%>,  url: ""}));
+                //oSerIssueManagementMenu.addItem(new YAHOO.widget.MenuItem("Additional Issue", {  disabled: <%=ser_privilege[34]%>,  url: ""}));
+                oSerIssueManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial57") %>", {  disabled: <%=ser_privilege[34]%>,  url: ""}));
+                //oSerIssueManagementMenu.addItem(new YAHOO.widget.MenuItem("Annual Issue", {  disabled: <%=ser_privilege[35]%>,  url: ""}));
+                oSerIssueManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial58") %>", {  disabled: <%=ser_privilege[35]%>,  url: ""}));
+                //oSerIssueManagementMenu.addItem(new YAHOO.widget.MenuItem("Claim Monitoring", {  disabled: <%=ser_privilege[36]%>,  url: ""}));
+                oSerIssueManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial59") %>", {  disabled: <%=ser_privilege[36]%>,  url: ""}));
 
-                oSerArticleIndexingMenu.addItem(new YAHOO.widget.MenuItem("Article Register", {submenu:oSerArticleRegisterMenu ,  disabled: <%=ser_privilege[50]%>,  url: ""}));
-                oSerArticleIndexingMenu.addItem(new YAHOO.widget.MenuItem("Article Detail", {  disabled: <%=ser_privilege[54]%>,  url: ""}));
-                oSerArticleIndexingMenu.addItem(new YAHOO.widget.MenuItem("Article List", {  disabled: <%=ser_privilege[55]%>,   url: ""}));
-                oSerArticleIndexingMenu.addItem(new YAHOO.widget.MenuItem("Article Retrieval", {submenu:oSerArticleRetrievalMenu ,  disabled: <%=ser_privilege[56]%>,  url: ""}));
-                oSerArticleIndexingMenu.addItem(new YAHOO.widget.MenuItem("Miscellaneous", {submenu:oSerMiscellaneousMenu ,  disabled: <%=ser_privilege[60]%>,  url: ""}));
 
+               // var oSerBindingManagementMenu = new YAHOO.widget.Menu("Binding Management");
+                var oSerBindingManagementMenu = new YAHOO.widget.Menu("<%=resource.getString("admin.header.serial60") %>");
+
+             //   oSerBindingManagementMenu.addItem(new YAHOO.widget.MenuItem("Binding", {submenu:oSerBindingMenu ,  disabled: <%=ser_privilege[38]%>,  url: ""}));
+                oSerBindingManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial61") %>", {submenu:oSerBindingMenu ,  disabled: <%=ser_privilege[38]%>,  url: ""}));
+                //oSerBindingManagementMenu.addItem(new YAHOO.widget.MenuItem("Accessioning", {submenu:oSerAccessioningMenu ,  disabled: <%=ser_privilege[45]%>,  url: ""}));
+                    oSerBindingManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial62") %>", {submenu:oSerAccessioningMenu ,  disabled: <%=ser_privilege[45]%>,  url: ""}));
+
+
+               // var oSerArticleIndexingMenu = new YAHOO.widget.Menu("Article Indexing");
+                            var oSerArticleIndexingMenu = new YAHOO.widget.Menu("<%=resource.getString("admin.header.serial63") %>");
+               // oSerArticleIndexingMenu.addItem(new YAHOO.widget.MenuItem("Article Register", {submenu:oSerArticleRegisterMenu ,  disabled: <%=ser_privilege[50]%>,  url: ""}));
+                oSerArticleIndexingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial64") %>", {submenu:oSerArticleRegisterMenu ,  disabled: <%=ser_privilege[50]%>,  url: ""}));
+              //  oSerArticleIndexingMenu.addItem(new YAHOO.widget.MenuItem("Article Detail", {  disabled: <%=ser_privilege[54]%>,  url: ""}));
+                oSerArticleIndexingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial65") %>", {  disabled: <%=ser_privilege[54]%>,  url: ""}));
+               // oSerArticleIndexingMenu.addItem(new YAHOO.widget.MenuItem("Article List", {  disabled: <%=ser_privilege[55]%>,   url: ""}));
+                oSerArticleIndexingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial66") %>", {  disabled: <%=ser_privilege[55]%>,   url: ""}));
+               // oSerArticleIndexingMenu.addItem(new YAHOO.widget.MenuItem("Article Retrieval", {submenu:oSerArticleRetrievalMenu ,  disabled: <%=ser_privilege[56]%>,  url: ""}));
+                oSerArticleIndexingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial67") %>", {submenu:oSerArticleRetrievalMenu ,  disabled: <%=ser_privilege[56]%>,  url: ""}));
+               // oSerArticleIndexingMenu.addItem(new YAHOO.widget.MenuItem("Miscellaneous", {submenu:oSerMiscellaneousMenu ,  disabled: <%=ser_privilege[60]%>,  url: ""}));
+                 oSerArticleIndexingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial68") %>", {submenu:oSerMiscellaneousMenu ,  disabled: <%=ser_privilege[60]%>,  url: ""}));
 
 
 
@@ -1025,17 +1115,27 @@ System.out.println(staff_role);
 //End: Secondt Level Serial Menu 2222222222222222222222222222222222222222222222222222222222222222222222
 //Start: First Level Serial Menu 11111111111111111111111111111111111111111111111111111111111111111111111
 //submenu of serial
-                var oSerMenu = new YAHOO.widget.Menu("Serial", { zIndex:2 });
+                //var oSerMenu = new YAHOO.widget.Menu("Serial", { zIndex:2 });
+                var oSerMenu = new YAHOO.widget.Menu("<%=resource.getString("admin.header.serial69") %>", { zIndex:2 });
 
-                oSerMenu.addItem(new YAHOO.widget.MenuItem(" Prepare Subscription List", {submenu:oSerSubscriptionListMenu ,  disabled: <%=ser_privilege[1]%>,  url:"" } ));
-                oSerMenu.addItem(new YAHOO.widget.MenuItem("Approval Process", {submenu:oSerApprovalProcessMenu ,  disabled: <%=ser_privilege[7]%>,  url:"" }));
-                oSerMenu.addItem(new YAHOO.widget.MenuItem("Order Subscription", {submenu:oSerOrderSubscriptionMenu ,  disabled: <%=ser_privilege[17]%>,  url:"" }));
-                oSerMenu.addItem(new YAHOO.widget.MenuItem("Receive Subscription", {   disabled: <%=ser_privilege[27]%>,  url:""}));
-                oSerMenu.addItem(new YAHOO.widget.MenuItem("Payment Process", {submenu:oSerPaymentProcessMenu ,  disabled: <%=ser_privilege[28]%>,  url:""} ));
-                oSerMenu.addItem(new YAHOO.widget.MenuItem("Invoice Process", {  disabled: <%=ser_privilege[31]%>,  url:"" } ));
-                oSerMenu.addItem(new YAHOO.widget.MenuItem("Issues Management", {submenu:oSerIssueManagementMenu ,  disabled: <%=ser_privilege[32]%>,  url:"" } ));
-                oSerMenu.addItem(new YAHOO.widget.MenuItem("Binding Management", {submenu:oSerBindingManagementMenu ,  disabled: <%=ser_privilege[37]%>,  url:"" } ));
-                oSerMenu.addItem(new YAHOO.widget.MenuItem("Article Indexing", {submenu:oSerArticleIndexingMenu ,   disabled: <%=ser_privilege[49]%>,  url:"" } ));
+                //oSerMenu.addItem(new YAHOO.widget.MenuItem(" Prepare Subscription List", {submenu:oSerSubscriptionListMenu ,  disabled: <%=ser_privilege[1]%>,  url:"" } ));
+                oSerMenu.addItem(new YAHOO.widget.MenuItem(" <%=resource.getString("admin.header.serial70") %>", {submenu:oSerSubscriptionListMenu ,  disabled: <%=ser_privilege[1]%>,  url:"" } ));
+                //oSerMenu.addItem(new YAHOO.widget.MenuItem("Approval Process", {submenu:oSerApprovalProcessMenu ,  disabled: <%=ser_privilege[7]%>,  url:"" }));
+                oSerMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial71") %>", {submenu:oSerApprovalProcessMenu ,  disabled: <%=ser_privilege[7]%>,  url:"" }));
+                //oSerMenu.addItem(new YAHOO.widget.MenuItem("Order Subscription", {submenu:oSerOrderSubscriptionMenu ,  disabled: <%=ser_privilege[17]%>,  url:"" }));
+                oSerMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial72") %>", {submenu:oSerOrderSubscriptionMenu ,  disabled: <%=ser_privilege[17]%>,  url:"" }));
+                //oSerMenu.addItem(new YAHOO.widget.MenuItem("Receive Subscription", {   disabled: <%=ser_privilege[27]%>,  url:""}));
+                oSerMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial73") %>", {   disabled: <%=ser_privilege[27]%>,  url:""}));
+               // oSerMenu.addItem(new YAHOO.widget.MenuItem("Payment Process", {submenu:oSerPaymentProcessMenu ,  disabled: <%=ser_privilege[28]%>,  url:""} ));
+                oSerMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial74") %>", {submenu:oSerPaymentProcessMenu ,  disabled: <%=ser_privilege[28]%>,  url:""} ));
+                //oSerMenu.addItem(new YAHOO.widget.MenuItem("Invoice Process", {  disabled: <%=ser_privilege[31]%>,  url:"" } ));
+                oSerMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial75") %>", {  disabled: <%=ser_privilege[31]%>,  url:"" } ));
+                //oSerMenu.addItem(new YAHOO.widget.MenuItem("Issues Management", {submenu:oSerIssueManagementMenu ,  disabled: <%=ser_privilege[32]%>,  url:"" } ));
+                oSerMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial76") %>", {submenu:oSerIssueManagementMenu ,  disabled: <%=ser_privilege[32]%>,  url:"" } ));
+                //oSerMenu.addItem(new YAHOO.widget.MenuItem("Binding Management", {submenu:oSerBindingManagementMenu ,  disabled: <%=ser_privilege[37]%>,  url:"" } ));
+                oSerMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial77") %>", {submenu:oSerBindingManagementMenu ,  disabled: <%=ser_privilege[37]%>,  url:"" } ));
+                //oSerMenu.addItem(new YAHOO.widget.MenuItem("Article Indexing", {submenu:oSerArticleIndexingMenu ,   disabled: <%=ser_privilege[49]%>,  url:"" } ));
+                oSerMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.serial78") %>", {submenu:oSerArticleIndexingMenu ,   disabled: <%=ser_privilege[49]%>,  url:"" } ));
 
 
 
@@ -1048,76 +1148,112 @@ System.out.println(staff_role);
 //Start: Third Level Circulation Menu 3333333333333333333333333333333333333333333333333333333333333333333333
 var oCirInstituteMemberDetailsMenu = new YAHOO.widget.Menu("Member Details");
 
-                 oCirInstituteMemberDetailsMenu.addItem(new YAHOO.widget.MenuItem("Register", {  disabled: <%=cir_privilege[3]%>,  url: "<%=request.getContextPath()%>/circulation/cir_member_reg.jsp"}));
+         /*        oCirInstituteMemberDetailsMenu.addItem(new YAHOO.widget.MenuItem("Register", {  disabled: <%=cir_privilege[3]%>,  url: "<%=request.getContextPath()%>/circulation/cir_member_reg.jsp"}));
                  oCirInstituteMemberDetailsMenu.addItem(new YAHOO.widget.MenuItem("Update", {  disabled: <%=cir_privilege[4]%>,  url: "<%=request.getContextPath()%>/circulation/cir_member_reg.jsp"}));
                  oCirInstituteMemberDetailsMenu.addItem(new YAHOO.widget.MenuItem("Delete", {  disabled: <%=cir_privilege[5]%>,  url: "<%=request.getContextPath()%>/circulation/cir_member_reg.jsp"}));
                  oCirInstituteMemberDetailsMenu.addItem(new YAHOO.widget.MenuItem("View", {  disabled: <%=cir_privilege[6]%>,  url: "<%=request.getContextPath()%>/circulation/cir_member_reg.jsp"}));
                  oCirInstituteMemberDetailsMenu.addItem(new YAHOO.widget.MenuItem("View All", {  disabled: <%=cir_privilege[7]%>,  url: "<%=request.getContextPath()%>/circulation/cir_viewalldetail.do"}));
+            */
+                 oCirInstituteMemberDetailsMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation1") %>", {  disabled: <%=cir_privilege[3]%>,  url: "<%=request.getContextPath()%>/circulation/cir_member_reg.jsp"}));
+                 oCirInstituteMemberDetailsMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation2") %>", {  disabled: <%=cir_privilege[4]%>,  url: "<%=request.getContextPath()%>/circulation/cir_member_reg.jsp"}));
+                 oCirInstituteMemberDetailsMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation3") %>", {  disabled: <%=cir_privilege[5]%>,  url: "<%=request.getContextPath()%>/circulation/cir_member_reg.jsp"}));
+                 oCirInstituteMemberDetailsMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation4") %>", {  disabled: <%=cir_privilege[6]%>,  url: "<%=request.getContextPath()%>/circulation/cir_member_reg.jsp"}));
+                 oCirInstituteMemberDetailsMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation5") %>", {  disabled: <%=cir_privilege[7]%>,  url: "<%=request.getContextPath()%>/circulation/cir_viewalldetail.do"}));
 
 var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
 
-                 oCirInstituteMemberAccountMenu.addItem(new YAHOO.widget.MenuItem("Create", {  disabled: <%=cir_privilege[9]%>,  url: "<%=request.getContextPath()%>/circulation/manage_member_account.jsp"}));
+            /*   oCirInstituteMemberAccountMenu.addItem(new YAHOO.widget.MenuItem("Create", {  disabled: <%=cir_privilege[9]%>,  url: "<%=request.getContextPath()%>/circulation/manage_member_account.jsp"}));
                  oCirInstituteMemberAccountMenu.addItem(new YAHOO.widget.MenuItem("Update", {  disabled: <%=cir_privilege[10]%>,  url: "<%=request.getContextPath()%>/circulation/manage_member_account.jsp"}));
                  oCirInstituteMemberAccountMenu.addItem(new YAHOO.widget.MenuItem("Delete", {  disabled: <%=cir_privilege[11]%>,  url: "<%=request.getContextPath()%>/circulation/manage_member_account.jsp"}));
                  oCirInstituteMemberAccountMenu.addItem(new YAHOO.widget.MenuItem("View", {  disabled: <%=cir_privilege[12]%>,  url: "<%=request.getContextPath()%>/circulation/manage_member_account.jsp"}));
                  oCirInstituteMemberAccountMenu.addItem(new YAHOO.widget.MenuItem("View All", {  disabled: <%=cir_privilege[13]%>,  url: "<%=request.getContextPath()%>/circulation/cir_viewallaccount.do"}));
+            */
+                 oCirInstituteMemberAccountMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation6") %>", {  disabled: <%=cir_privilege[9]%>,  url: "<%=request.getContextPath()%>/circulation/manage_member_account.jsp"}));
+                 oCirInstituteMemberAccountMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation7") %>", {  disabled: <%=cir_privilege[10]%>,  url: "<%=request.getContextPath()%>/circulation/manage_member_account.jsp"}));
+                 oCirInstituteMemberAccountMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation8") %>", {  disabled: <%=cir_privilege[11]%>,  url: "<%=request.getContextPath()%>/circulation/manage_member_account.jsp"}));
+                 oCirInstituteMemberAccountMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation9") %>", {  disabled: <%=cir_privilege[12]%>,  url: "<%=request.getContextPath()%>/circulation/manage_member_account.jsp"}));
+                 oCirInstituteMemberAccountMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation10") %>", {  disabled: <%=cir_privilege[13]%>,  url: "<%=request.getContextPath()%>/circulation/cir_viewallaccount.do"}));
+
 
  var oCirInstituteMemberMenu = new YAHOO.widget.Menu("Institute Member");
 
-                 oCirInstituteMemberMenu.addItem(new YAHOO.widget.MenuItem("Member Set", {  disabled: <%=cir_privilege[22]%>,  url: ""}));
+              /*  oCirInstituteMemberMenu.addItem(new YAHOO.widget.MenuItem("Member Set", {  disabled: <%=cir_privilege[22]%>,  url: ""}));
                  oCirInstituteMemberMenu.addItem(new YAHOO.widget.MenuItem("Daily", {  disabled: <%=cir_privilege[23]%>,  url: ""}));
                  oCirInstituteMemberMenu.addItem(new YAHOO.widget.MenuItem("By Group", {  disabled: <%=cir_privilege[24]%>,  url: ""}));
                  oCirInstituteMemberMenu.addItem(new YAHOO.widget.MenuItem("General", {  disabled: <%=cir_privilege[25]%>,  url: ""}));
 
+             */
+                oCirInstituteMemberMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation11") %>", {  disabled: <%=cir_privilege[22]%>,  url: ""}));
+                 oCirInstituteMemberMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation12") %>", {  disabled: <%=cir_privilege[23]%>,  url: ""}));
+                 oCirInstituteMemberMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation13") %>", {  disabled: <%=cir_privilege[24]%>,  url: ""}));
+                 oCirInstituteMemberMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation14") %>", {  disabled: <%=cir_privilege[25]%>,  url: ""}));
 
                  var oCirReminderMenu = new YAHOO.widget.Menu("Reminder");
 
-                 oCirReminderMenu.addItem(new YAHOO.widget.MenuItem("Overdue Reminder", {  disabled: <%=cir_privilege[65]%>,  url: ""}));
+              /*   oCirReminderMenu.addItem(new YAHOO.widget.MenuItem("Overdue Reminder", {  disabled: <%=cir_privilege[65]%>,  url: ""}));
                  oCirReminderMenu.addItem(new YAHOO.widget.MenuItem("Collect Notice", {  disabled: <%=cir_privilege[66]%>,  url: ""}));
                  oCirReminderMenu.addItem(new YAHOO.widget.MenuItem("Bindery Order", {  disabled: <%=cir_privilege[67]%>,  url: ""}));
+                    */
+                oCirReminderMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation15") %>", {  disabled: <%=cir_privilege[65]%>,  url: ""}));
+                 oCirReminderMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation16") %>", {  disabled: <%=cir_privilege[66]%>,  url: ""}));
+                 oCirReminderMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation17") %>", {  disabled: <%=cir_privilege[67]%>,  url: ""}));
 
 
                  var oCirMemberRelatedParameterMenu = new YAHOO.widget.Menu("Member Related Parameter");
 
-                 oCirMemberRelatedParameterMenu.addItem(new YAHOO.widget.MenuItem("Member Id Sequence", {  disabled: <%=cir_privilege[72]%>,  url: ""}));
+              /*   oCirMemberRelatedParameterMenu.addItem(new YAHOO.widget.MenuItem("Member Id Sequence", {  disabled: <%=cir_privilege[72]%>,  url: ""}));
                  oCirMemberRelatedParameterMenu.addItem(new YAHOO.widget.MenuItem("Member Category", {  disabled: <%=cir_privilege[73]%>,  url: ""}));
                  oCirMemberRelatedParameterMenu.addItem(new YAHOO.widget.MenuItem("Member Group", {  disabled: <%=cir_privilege[74]%>,  url: ""}));
 
-
+                    */
+                 oCirMemberRelatedParameterMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation18") %>", {  disabled: <%=cir_privilege[72]%>,  url: ""}));
+                 oCirMemberRelatedParameterMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation19") %>", {  disabled: <%=cir_privilege[73]%>,  url: ""}));
+                 oCirMemberRelatedParameterMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation20") %>", {  disabled: <%=cir_privilege[74]%>,  url: ""}));
 
                  var oCirRemoveExpiredRecordsMenu = new YAHOO.widget.Menu("Remove Expired record");
 
-                 oCirRemoveExpiredRecordsMenu.addItem(new YAHOO.widget.MenuItem("Related To Members", {  disabled: <%=cir_privilege[83]%>,  url: ""}));
+               /*  oCirRemoveExpiredRecordsMenu.addItem(new YAHOO.widget.MenuItem("Related To Members", {  disabled: <%=cir_privilege[83]%>,  url: ""}));
                  oCirRemoveExpiredRecordsMenu.addItem(new YAHOO.widget.MenuItem("Related To Reservation", {  disabled: <%=cir_privilege[84]%>,  url: ""}));
-
+                */
+                   oCirRemoveExpiredRecordsMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation21") %>", {  disabled: <%=cir_privilege[83]%>,  url: ""}));
+                 oCirRemoveExpiredRecordsMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation22") %>", {  disabled: <%=cir_privilege[84]%>,  url: ""}));
 
                  var oLibraryLoanRecordKeepingMenu = new YAHOO.widget.Menu("Record Keeping");
 
-                  oLibraryLoanRecordKeepingMenu.addItem(new YAHOO.widget.MenuItem("Document Details", {  disabled: <%=cir_privilege[87]%>,  url: ""}));
+                /*  oLibraryLoanRecordKeepingMenu.addItem(new YAHOO.widget.MenuItem("Document Details", {  disabled: <%=cir_privilege[87]%>,  url: ""}));
                   oLibraryLoanRecordKeepingMenu.addItem(new YAHOO.widget.MenuItem("Modify Recieved Documents", {  disabled: <%=cir_privilege[88]%>,  url: ""}));
                   oLibraryLoanRecordKeepingMenu.addItem(new YAHOO.widget.MenuItem("Return Documents", {  disabled: <%=cir_privilege[89]%>,  url: ""}));
-
+                */
+                oLibraryLoanRecordKeepingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation23") %>", {  disabled: <%=cir_privilege[87]%>,  url: ""}));
+                  oLibraryLoanRecordKeepingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation24") %>", {  disabled: <%=cir_privilege[88]%>,  url: ""}));
+                  oLibraryLoanRecordKeepingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation25") %>", {  disabled: <%=cir_privilege[89]%>,  url: ""}));
 
 
                  var oLibraryLoanCirculationMenu = new YAHOO.widget.Menu("Circulation");
 
-                 oLibraryLoanCirculationMenu.addItem(new YAHOO.widget.MenuItem("Check-Out", {  disabled: <%=cir_privilege[91]%>,  url: ""}));
-                  oLibraryLoanCirculationMenu.addItem(new YAHOO.widget.MenuItem("Check-In", {  disabled: <%=cir_privilege[92]%>,  url: ""}));
-
+                /* oLibraryLoanCirculationMenu.addItem(new YAHOO.widget.MenuItem("Check-Out", {  disabled: <%=cir_privilege[91]%>,  url: ""}));
+                 oLibraryLoanCirculationMenu.addItem(new YAHOO.widget.MenuItem("Check-In", {  disabled: <%=cir_privilege[92]%>,  url: ""}));
+                        */
+                 oLibraryLoanCirculationMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation26") %>", {  disabled: <%=cir_privilege[91]%>,  url: ""}));
+                 oLibraryLoanCirculationMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation27") %>", {  disabled: <%=cir_privilege[92]%>,  url: ""}));
 
 
                   var oLibraryLoanEnquiriesMenu  = new YAHOO.widget.Menu("Enquiries.");
 
-                  oLibraryLoanEnquiriesMenu.addItem(new YAHOO.widget.MenuItem("ILL Documents", {  disabled: <%=cir_privilege[94]%>,  url: ""}));
+                /*  oLibraryLoanEnquiriesMenu.addItem(new YAHOO.widget.MenuItem("ILL Documents", {  disabled: <%=cir_privilege[94]%>,  url: ""}));
                   oLibraryLoanEnquiriesMenu.addItem(new YAHOO.widget.MenuItem("Documents Checked-Out", {  disabled: <%=cir_privilege[95]%>,  url: ""}));
-
+                  */
+                  oLibraryLoanEnquiriesMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation28") %>", {  disabled: <%=cir_privilege[94]%>,  url: ""}));
+                  oLibraryLoanEnquiriesMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation29") %>", {  disabled: <%=cir_privilege[95]%>,  url: ""}));
 
 
                 var oLibraryLoanReportMenu = new YAHOO.widget.Menu("Reports");
 
-        	oLibraryLoanReportMenu.addItem(new YAHOO.widget.MenuItem("ILL Documents", {  disabled: <%=cir_privilege[97]%>,  url: ""}));
+        	/*oLibraryLoanReportMenu.addItem(new YAHOO.widget.MenuItem("ILL Documents", {  disabled: <%=cir_privilege[97]%>,  url: ""}));
                 oLibraryLoanReportMenu.addItem(new YAHOO.widget.MenuItem("Documents Checked-Out", {  disabled: <%=cir_privilege[98]%>,  url: ""}));
-
+                        */
+                oLibraryLoanReportMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation30") %>", {  disabled: <%=cir_privilege[97]%>,  url: ""}));
+                oLibraryLoanReportMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation31") %>", {  disabled: <%=cir_privilege[98]%>,  url: ""}));
 
 
 
@@ -1128,7 +1264,7 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
 
                   var oCirMemberManagementMenu = new YAHOO.widget.Menu("Member Management");
 
-                  oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("Member Details", { submenu:oCirInstituteMemberDetailsMenu ,  disabled: <%=cir_privilege[2]%>,  url:"" }));
+              /**    oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("Member Details", { submenu:oCirInstituteMemberDetailsMenu ,  disabled: <%=cir_privilege[2]%>,  url:"" }));
                 oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("Member Account", { submenu:oCirInstituteMemberAccountMenu ,  disabled: <%=cir_privilege[8]%>,  url:"" }));
 
 
@@ -1145,100 +1281,158 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
                   oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("Member Statistics", {   disabled: <%=cir_privilege[20]%>,  url:"" }));
                   oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("Institute Member", {submenu:oCirInstituteMemberMenu ,   disabled: <%=cir_privilege[21]%>,  url:"" }));
                   oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("Scheme Allocation", {   disabled: <%=cir_privilege[26]%>,  url:"" }));
+*/
 
+                oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation32") %>", { submenu:oCirInstituteMemberDetailsMenu ,  disabled: <%=cir_privilege[2]%>,  url:"" }));
+                oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation33") %>", { submenu:oCirInstituteMemberAccountMenu ,  disabled: <%=cir_privilege[8]%>,  url:"" }));
+                 oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation34") %>", {   disabled: <%=cir_privilege[14]%>,  url:"<%=request.getContextPath()%>/requestfromopac.do" }));
+                  oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation35") %>", {   disabled: <%=cir_privilege[15]%>,  url:"" }));
+
+                  oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation36") %>", {   disabled: <%=cir_privilege[16]%>,  url:"" }));
+                  oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation37") %>", {   disabled: <%=cir_privilege[17]%>,  url:"" }));
+                  oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation38") %>", {   disabled: <%=cir_privilege[18]%>,  url:"" }));
+                  oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation39") %>", {   disabled: <%=cir_privilege[19]%>,  url:"" }));
+                  oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation40") %>", {   disabled: <%=cir_privilege[20]%>,  url:"" }));
+                  oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation41") %>", {submenu:oCirInstituteMemberMenu ,   disabled: <%=cir_privilege[21]%>,  url:"" }));
+                  oCirMemberManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation42") %>", {   disabled: <%=cir_privilege[26]%>,  url:"" }));
 
 
                   var oCirMembershipCardManagementMenu = new YAHOO.widget.Menu("Membership Card Management");
 
-                  oCirMembershipCardManagementMenu.addItem(new YAHOO.widget.MenuItem("Generate Card", {  disabled: <%=cir_privilege[29]%>,  url: ""}));
+              /*    oCirMembershipCardManagementMenu.addItem(new YAHOO.widget.MenuItem("Generate Card", {  disabled: <%=cir_privilege[29]%>,  url: ""}));
                   oCirMembershipCardManagementMenu.addItem(new YAHOO.widget.MenuItem("Lost Card/Found Card", {  disabled: <%=cir_privilege[30]%>,  url: ""}));
                   oCirMembershipCardManagementMenu.addItem(new YAHOO.widget.MenuItem("Duplicate Card", {  disabled: <%=cir_privilege[31]%>,  url: ""}));
                   oCirMembershipCardManagementMenu.addItem(new YAHOO.widget.MenuItem("Remove Card", {  disabled: <%=cir_privilege[32]%>,  url: ""}));
-
+*/
+                  oCirMembershipCardManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation43") %>", {  disabled: <%=cir_privilege[29]%>,  url: ""}));
+                  oCirMembershipCardManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation44") %>", {  disabled: <%=cir_privilege[30]%>,  url: ""}));
+                  oCirMembershipCardManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation45") %>", {  disabled: <%=cir_privilege[31]%>,  url: ""}));
+                  oCirMembershipCardManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation46") %>", {  disabled: <%=cir_privilege[32]%>,  url: ""}));
 
 
                  var oCirFineManagementMenu = new YAHOO.widget.Menu("Fine Management");
 
-                 oCirFineManagementMenu.addItem(new YAHOO.widget.MenuItem("Fine Collection", {  disabled: <%=cir_privilege[36]%>,  url: ""}));
+               /*  oCirFineManagementMenu.addItem(new YAHOO.widget.MenuItem("Fine Collection", {  disabled: <%=cir_privilege[36]%>,  url: ""}));
                  oCirFineManagementMenu.addItem(new YAHOO.widget.MenuItem("Update Fine Detail", {  disabled: <%=cir_privilege[37]%>,  url: ""}));
                  oCirFineManagementMenu.addItem(new YAHOO.widget.MenuItem("Fine Notices", {  disabled: <%=cir_privilege[38]%>,  url: ""}));
 
+                    */
+                 oCirFineManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation47") %>", {  disabled: <%=cir_privilege[36]%>,  url: ""}));
+                 oCirFineManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation48") %>", {  disabled: <%=cir_privilege[37]%>,  url: ""}));
+                 oCirFineManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation49") %>", {  disabled: <%=cir_privilege[38]%>,  url: ""}));
 
 
                  var oCirCollectionManagementMenu = new YAHOO.widget.Menu("Collection Management");
 
-                 oCirCollectionManagementMenu.addItem(new YAHOO.widget.MenuItem("Titles On Showcase/Display", {  disabled: <%=cir_privilege[40]%>,  url: ""}));
+               /*  oCirCollectionManagementMenu.addItem(new YAHOO.widget.MenuItem("Titles On Showcase/Display", {  disabled: <%=cir_privilege[40]%>,  url: ""}));
                  oCirCollectionManagementMenu.addItem(new YAHOO.widget.MenuItem("Missing Document", {  disabled: <%=cir_privilege[41]%>,  url: ""}));
                  oCirCollectionManagementMenu.addItem(new YAHOO.widget.MenuItem("Damaged Document", {  disabled: <%=cir_privilege[42]%>,  url: ""}));
                  oCirCollectionManagementMenu.addItem(new YAHOO.widget.MenuItem("Withdrawn Document", {  disabled: <%=cir_privilege[43]%>,  url: ""}));
                  oCirCollectionManagementMenu.addItem(new YAHOO.widget.MenuItem("Written Off Document", {  disabled: <%=cir_privilege[44]%>,  url: ""}));
+                                */
+                    oCirCollectionManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation50") %>", {  disabled: <%=cir_privilege[40]%>,  url: ""}));
+                 oCirCollectionManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation51") %>", {  disabled: <%=cir_privilege[41]%>,  url: ""}));
+                 oCirCollectionManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation52") %>", {  disabled: <%=cir_privilege[42]%>,  url: ""}));
+                 oCirCollectionManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation53") %>", {  disabled: <%=cir_privilege[43]%>,  url: ""}));
+                 oCirCollectionManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation54") %>", {  disabled: <%=cir_privilege[44]%>,  url: ""}));
 
 
 
                  var oCirBindingManagementMenu = new YAHOO.widget.Menu("Binding Management");
 
-                 oCirBindingManagementMenu.addItem(new YAHOO.widget.MenuItem("Prepare List For Binding", {  disabled: <%=cir_privilege[46]%>,  url: ""}));
+                /* oCirBindingManagementMenu.addItem(new YAHOO.widget.MenuItem("Prepare List For Binding", {  disabled: <%=cir_privilege[46]%>,  url: ""}));
                  oCirBindingManagementMenu.addItem(new YAHOO.widget.MenuItem("Sent to Binder", {  disabled: <%=cir_privilege[47]%>,  url: ""}));
                  oCirBindingManagementMenu.addItem(new YAHOO.widget.MenuItem("Update Binding Status", {  disabled: <%=cir_privilege[48]%>,  url: ""}));
                  oCirBindingManagementMenu.addItem(new YAHOO.widget.MenuItem("Receive Binded Titles", {  disabled: <%=cir_privilege[49]%>,  url: ""}));
                  oCirBindingManagementMenu.addItem(new YAHOO.widget.MenuItem("Written Off Document", {  disabled: <%=cir_privilege[50]%>,  url: ""}));
+*/
+                   oCirBindingManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation55") %>", {  disabled: <%=cir_privilege[46]%>,  url: ""}));
+                 oCirBindingManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation56") %>", {  disabled: <%=cir_privilege[47]%>,  url: ""}));
+                 oCirBindingManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation57") %>", {  disabled: <%=cir_privilege[48]%>,  url: ""}));
+                 oCirBindingManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation58") %>", {  disabled: <%=cir_privilege[49]%>,  url: ""}));
+                 oCirBindingManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation59") %>", {  disabled: <%=cir_privilege[50]%>,  url: ""}));
 
 
 
                  var oCirDocumentReservationMenu = new YAHOO.widget.Menu("Document Reservation");
 
-                 oCirDocumentReservationMenu.addItem(new YAHOO.widget.MenuItem("Reserve Document", {  disabled: <%=cir_privilege[52]%>,  url: ""}));
+               /** oCirDocumentReservationMenu.addItem(new YAHOO.widget.MenuItem("Reserve Document", {  disabled: <%=cir_privilege[52]%>,  url: ""}));
                  oCirDocumentReservationMenu.addItem(new YAHOO.widget.MenuItem("Cancel Reservation", {  disabled: <%=cir_privilege[53]%>,  url: ""}));
                  oCirDocumentReservationMenu.addItem(new YAHOO.widget.MenuItem("Change Reserve Sequence", {  disabled: <%=cir_privilege[54]%>,  url: ""}));
-
+                    **/
+                     oCirDocumentReservationMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation60") %>", {  disabled: <%=cir_privilege[52]%>,  url: ""}));
+                 oCirDocumentReservationMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation61") %>", {  disabled: <%=cir_privilege[53]%>,  url: ""}));
+                 oCirDocumentReservationMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation62") %>", {  disabled: <%=cir_privilege[54]%>,  url: ""}));
 
 
                  var oCirCirculationEnquiriesMenu = new YAHOO.widget.Menu("Circulation Enquiry");
 
-                 oCirCirculationEnquiriesMenu.addItem(new YAHOO.widget.MenuItem("Members", {  disabled: <%=cir_privilege[56]%>,  url: ""}));
+              /*   oCirCirculationEnquiriesMenu.addItem(new YAHOO.widget.MenuItem("Members", {  disabled: <%=cir_privilege[56]%>,  url: ""}));
                  oCirCirculationEnquiriesMenu.addItem(new YAHOO.widget.MenuItem("Collection", {  disabled: <%=cir_privilege[57]%>,  url: ""}));
                  oCirCirculationEnquiriesMenu.addItem(new YAHOO.widget.MenuItem("Transaction Log", {  disabled: <%=cir_privilege[58]%>,  url: ""}));
                  oCirCirculationEnquiriesMenu.addItem(new YAHOO.widget.MenuItem("Serial Based", {  disabled: <%=cir_privilege[59]%>,  url: ""}));
                  oCirCirculationEnquiriesMenu.addItem(new YAHOO.widget.MenuItem("Statistics", {  disabled: <%=cir_privilege[60]%>,  url: ""}));
-
+*/
+                  oCirCirculationEnquiriesMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation63") %>", {  disabled: <%=cir_privilege[56]%>,  url: ""}));
+                 oCirCirculationEnquiriesMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation64") %>", {  disabled: <%=cir_privilege[57]%>,  url: ""}));
+                 oCirCirculationEnquiriesMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation65") %>", {  disabled: <%=cir_privilege[58]%>,  url: ""}));
+                 oCirCirculationEnquiriesMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation66") %>", {  disabled: <%=cir_privilege[59]%>,  url: ""}));
+                 oCirCirculationEnquiriesMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation67") %>", {  disabled: <%=cir_privilege[60]%>,  url: ""}));
 
 
                 var oCirCirculationReport = new YAHOO.widget.Menu("Circulation Report");
 
-                oCirCirculationReport.addItem(new YAHOO.widget.MenuItem("CheckOut Report", {  disabled: <%=cir_privilege[62]%>,  url: "<%=request.getContextPath()%>/circulation/cir_checkout_report.jsp"}));
+             /*   oCirCirculationReport.addItem(new YAHOO.widget.MenuItem("CheckOut Report", {  disabled: <%=cir_privilege[62]%>,  url: "<%=request.getContextPath()%>/circulation/cir_checkout_report.jsp"}));
                 oCirCirculationReport.addItem(new YAHOO.widget.MenuItem("CheckIn Report", {  disabled: <%=cir_privilege[63]%>,  url: "<%=request.getContextPath()%>/circulation/cir_checkin_report.jsp"}));
-                oCirCirculationReport.addItem(new YAHOO.widget.MenuItem("Reminder", {   submenu:oCirReminderMenu ,  disabled: <%=cir_privilege[64]%>,  url: ""}));
+                 oCirCirculationReport.addItem(new YAHOO.widget.MenuItem("Reminder", {   submenu:oCirReminderMenu ,  disabled: <%=cir_privilege[64]%>,  url: ""}));
                 oCirCirculationReport.addItem(new YAHOO.widget.MenuItem("Management Reporting", {  disabled: <%=cir_privilege[68]%>,  url: ""}));
                 oCirCirculationReport.addItem(new YAHOO.widget.MenuItem("Written off Document", {  disabled: <%=cir_privilege[69]%>,  url: ""}));
 
-
+*/
+                   oCirCirculationReport.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation68") %>", {  disabled: <%=cir_privilege[62]%>,  url: "<%=request.getContextPath()%>/circulation/cir_checkout_report.jsp"}));
+                oCirCirculationReport.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation69") %>", {  disabled: <%=cir_privilege[63]%>,  url: "<%=request.getContextPath()%>/circulation/cir_checkin_report.jsp"}));
+                 oCirCirculationReport.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation70") %>", {   submenu:oCirReminderMenu ,  disabled: <%=cir_privilege[64]%>,  url: ""}));
+                oCirCirculationReport.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation71") %>", {  disabled: <%=cir_privilege[68]%>,  url: ""}));
+                oCirCirculationReport.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation72") %>", {  disabled: <%=cir_privilege[69]%>,  url: ""}));
 
                 var oCirSystemSetupMenu = new YAHOO.widget.Menu("System Setup");
 
-                oCirSystemSetupMenu.addItem(new YAHOO.widget.MenuItem("Member Related Parameter", {submenu:oCirMemberRelatedParameterMenu ,  disabled: <%=cir_privilege[71]%>,  url: ""}));
+              /*  oCirSystemSetupMenu.addItem(new YAHOO.widget.MenuItem("Member Related Parameter", {submenu:oCirMemberRelatedParameterMenu ,  disabled: <%=cir_privilege[71]%>,  url: ""}));
                 oCirSystemSetupMenu.addItem(new YAHOO.widget.MenuItem("Delinquency Reasons", {  disabled: <%=cir_privilege[75]%>,  url: ""}));
                 oCirSystemSetupMenu.addItem(new YAHOO.widget.MenuItem("Cancellation Reasons", {  disabled: <%=cir_privilege[76]%>,  url: ""}));
                 oCirSystemSetupMenu.addItem(new YAHOO.widget.MenuItem("Fine Categories", {  disabled: <%=cir_privilege[77]%>,  url: ""}));
                 oCirSystemSetupMenu.addItem(new YAHOO.widget.MenuItem("Text of Notices For Member", {  disabled: <%=cir_privilege[78]%>,  url: ""}));
                 oCirSystemSetupMenu.addItem(new YAHOO.widget.MenuItem("Parameter For Slips", {  disabled: <%=cir_privilege[79]%>,  url: ""}));
-
+*/
+            oCirSystemSetupMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation73") %>", {submenu:oCirMemberRelatedParameterMenu ,  disabled: <%=cir_privilege[71]%>,  url: ""}));
+                oCirSystemSetupMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation74") %>", {  disabled: <%=cir_privilege[75]%>,  url: ""}));
+                oCirSystemSetupMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation75") %>", {  disabled: <%=cir_privilege[76]%>,  url: ""}));
+                oCirSystemSetupMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation76") %>", {  disabled: <%=cir_privilege[77]%>,  url: ""}));
+                oCirSystemSetupMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation77") %>", {  disabled: <%=cir_privilege[78]%>,  url: ""}));
+                oCirSystemSetupMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation78") %>", {  disabled: <%=cir_privilege[79]%>,  url: ""}));
 
 
                 var oCirHouseKeepingMenu = new YAHOO.widget.Menu("House Keeping");
 
-                oCirHouseKeepingMenu.addItem(new YAHOO.widget.MenuItem("Remove Transaction Log", {  disabled: <%=cir_privilege[81]%>,  url: ""}));
+             /*   oCirHouseKeepingMenu.addItem(new YAHOO.widget.MenuItem("Remove Transaction Log", {  disabled: <%=cir_privilege[81]%>,  url: ""}));
                 oCirHouseKeepingMenu.addItem(new YAHOO.widget.MenuItem("Remove Expired Records", {submenu:oCirRemoveExpiredRecordsMenu ,  disabled: <%=cir_privilege[82]%>,  url: ""}));
-
+*/
+                        oCirHouseKeepingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation79") %>", {  disabled: <%=cir_privilege[81]%>,  url: ""}));
+                oCirHouseKeepingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation80") %>", {submenu:oCirRemoveExpiredRecordsMenu ,  disabled: <%=cir_privilege[82]%>,  url: ""}));
 
 
                  var oInterLibraryLoanMenu = new YAHOO.widget.Menu("Inter Library Loan");
 
-               oInterLibraryLoanMenu.addItem(new YAHOO.widget.MenuItem("Record keeping", {submenu:oLibraryLoanRecordKeepingMenu ,disabled: <%=cir_privilege[86]%>,  url: ""}));
+            /*   oInterLibraryLoanMenu.addItem(new YAHOO.widget.MenuItem("Record keeping", {submenu:oLibraryLoanRecordKeepingMenu ,disabled: <%=cir_privilege[86]%>,  url: ""}));
                oInterLibraryLoanMenu.addItem(new YAHOO.widget.MenuItem("Circulation", {submenu :oLibraryLoanCirculationMenu ,  disabled: <%=cir_privilege[90]%>,   url: ""}));
                oInterLibraryLoanMenu.addItem(new YAHOO.widget.MenuItem("Enquiries.", {submenu:oLibraryLoanEnquiriesMenu ,  disabled: <%=cir_privilege[93]%>,   url: ""}));
                oInterLibraryLoanMenu.addItem(new YAHOO.widget.MenuItem("Reports", {submenu:oLibraryLoanReportMenu ,  disabled: <%=cir_privilege[96]%>,   url: ""}));
+*/
 
-
+                oInterLibraryLoanMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation81") %>", {submenu:oLibraryLoanRecordKeepingMenu ,disabled: <%=cir_privilege[86]%>,  url: ""}));
+               oInterLibraryLoanMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation82") %>", {submenu :oLibraryLoanCirculationMenu ,  disabled: <%=cir_privilege[90]%>,   url: ""}));
+               oInterLibraryLoanMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation83") %>", {submenu:oLibraryLoanEnquiriesMenu ,  disabled: <%=cir_privilege[93]%>,   url: ""}));
+               oInterLibraryLoanMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation84") %>", {submenu:oLibraryLoanReportMenu ,  disabled: <%=cir_privilege[96]%>,   url: ""}));
 
 //End: Secondt Level Circulation Menu 2222222222222222222222222222222222222222222222222222222222222222222222
 
@@ -1246,7 +1440,7 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
 
                var oCirMenu = new YAHOO.widget.Menu("Circulation", { zIndex:2 });
 
-                oCirMenu.addItem(new YAHOO.widget.MenuItem("Member Management", {Submenu:oCirMemberManagementMenu ,   disabled: <%=cir_privilege[1]%>,  url:"" } ));
+             /*   oCirMenu.addItem(new YAHOO.widget.MenuItem("Member Management", {Submenu:oCirMemberManagementMenu ,   disabled: <%=cir_privilege[1]%>,  url:"" } ));
                 oCirMenu.addItem(new YAHOO.widget.MenuItem("Member Directory", {   disabled: <%=cir_privilege[27]%>,  url:""  } ));
                 oCirMenu.addItem(new YAHOO.widget.MenuItem("Membership Card Management", {submenu:oCirMembershipCardManagementMenu ,   disabled: <%=cir_privilege[28]%>,  url:""  }));
 
@@ -1263,6 +1457,25 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
                 oCirMenu.addItem(new YAHOO.widget.MenuItem("Inter Library Loan", {submenu:oInterLibraryLoanMenu ,    disabled: <%=cir_privilege[85]%>,  url:"" }));
                 oCirMenu.addItem(new YAHOO.widget.MenuItem("Serial Circulation", {   disabled: <%=cir_privilege[99]%>,  url:""  }));
 
+*/
+
+
+  oCirMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation85") %>", {Submenu:oCirMemberManagementMenu ,   disabled: <%=cir_privilege[1]%>,  url:"" } ));
+                oCirMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation86") %>", {   disabled: <%=cir_privilege[27]%>,  url:""  } ));
+                oCirMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation87") %>", {submenu:oCirMembershipCardManagementMenu ,   disabled: <%=cir_privilege[28]%>,  url:""  }));
+
+                 oCirMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation88") %>", {  disabled: <%=cir_privilege[33]%>,  url: "<%=request.getContextPath()%>/circulation/cir_checkout.jsp"}));
+                  oCirMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation89") %>", {  disabled: <%=cir_privilege[34]%>,  url: "<%=request.getContextPath()%>/circulation/cir_checkin.jsp"}));
+                oCirMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation90") %>", {submenu:oCirFineManagementMenu ,   disabled: <%=cir_privilege[35]%>,  url:""  }));
+                oCirMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation91") %>", {submenu: oCirCollectionManagementMenu ,   disabled: <%=cir_privilege[39]%>,  url:""  }));
+                oCirMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation92") %>", {submenu:oCirBindingManagementMenu ,   disabled: <%=cir_privilege[45]%>,  url:""  }));
+                oCirMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation93") %>", {submenu:oCirDocumentReservationMenu ,   disabled: <%=cir_privilege[51]%>,  url:""  }));
+                oCirMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation94") %>", {submenu:oCirCirculationEnquiriesMenu ,   disabled: <%=cir_privilege[55]%>,  url:"" }));
+                oCirMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation95") %>", {submenu:oCirCirculationReport ,   disabled: <%=cir_privilege[61]%>,  url:""  }));
+                oCirMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation96") %>", {submenu:oCirSystemSetupMenu ,   disabled: <%=cir_privilege[70]%>,  url:""  }));
+                oCirMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation97") %>", {submenu:oCirHouseKeepingMenu ,    disabled: <%=cir_privilege[80]%>,  url:"" }));
+                oCirMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation98") %>", {submenu:oInterLibraryLoanMenu ,    disabled: <%=cir_privilege[85]%>,  url:"" }));
+                oCirMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.circulation99") %>", {   disabled: <%=cir_privilege[99]%>,  url:""  }));
 
 
 //End: First Level Circulation Menu 11111111111111111111111111111111111111111111111111111111111111111111111
@@ -1279,63 +1492,96 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
 
                 var oCatTitleHoldingmanagementMenu =  new YAHOO.widget.Menu("Title Holding Management");
 
-                oCatTitleHoldingmanagementMenu.addItem(new YAHOO.widget.MenuItem("Merge Titles", {  disabled: <%=cat_privilege[7]%>,  url: ""}));
+             /*   oCatTitleHoldingmanagementMenu.addItem(new YAHOO.widget.MenuItem("Merge Titles", {  disabled: <%=cat_privilege[7]%>,  url: ""}));
                 oCatTitleHoldingmanagementMenu.addItem(new YAHOO.widget.MenuItem("Update Holding", {  disabled: <%=cat_privilege[8]%>,  url: ""}));
                 oCatTitleHoldingmanagementMenu.addItem(new YAHOO.widget.MenuItem("Remove Title", {  disabled: <%=cat_privilege[9]%>,  url: ""}));
+*/
+ oCatTitleHoldingmanagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing1") %>", {  disabled: <%=cat_privilege[7]%>,  url: ""}));
+                oCatTitleHoldingmanagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing2") %>", {  disabled: <%=cat_privilege[8]%>,  url: ""}));
+                oCatTitleHoldingmanagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing3") %>", {  disabled: <%=cat_privilege[9]%>,  url: ""}));
 
                 var oCatOldTitleMenu = new YAHOO.widget.Menu("Old Title Entry");
-                oCatOldTitleMenu.addItem(new YAHOO.widget.MenuItem("Manage Biblography", {  disabled: <%=cat_privilege[4]%>,  url: ""}));
-                oCatOldTitleMenu.addItem(new YAHOO.widget.MenuItem("View All", {  disabled: <%=cat_privilege[5]%>,  url: ""}));
+               /* oCatOldTitleMenu.addItem(new YAHOO.widget.MenuItem("Manage Biblography", {  disabled: <%=cat_privilege[4]%>,  url: "<%=request.getContextPath()%>/cataloguing/cat_old_title.jsp"}));
+                oCatOldTitleMenu.addItem(new YAHOO.widget.MenuItem("View All", {  disabled: <%=cat_privilege[5]%>,  url: "<%=request.getContextPath()%>/cataloguing/cat_search.jsp"}));
+*/
+ oCatOldTitleMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing4") %>", {  disabled: <%=cat_privilege[4]%>,  url: "<%=request.getContextPath()%>/cataloguing/cat_old_title.jsp"}));
+                oCatOldTitleMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing5") %>", {  disabled: <%=cat_privilege[5]%>,  url: "<%=request.getContextPath()%>/cataloguing/cat_search.jsp"}));
 
                 var oCatAccessionManagementMenu =  new YAHOO.widget.Menu("Accession Management");
 
-                oCatAccessionManagementMenu.addItem(new YAHOO.widget.MenuItem("Change Accession No", {  disabled: <%=cat_privilege[12]%>,  url: ""}));
-                oCatAccessionManagementMenu.addItem(new YAHOO.widget.MenuItem("Assign Accession No", {  disabled: <%=cat_privilege[13]%>,  url: ""}));
-
+              /*  oCatAccessionManagementMenu.addItem(new YAHOO.widget.MenuItem("Change Accession No", {  disabled: <%=cat_privilege[12]%>,  url: "<%=request.getContextPath()%>/cataloguing/cat_accession.jsp"}));
+                oCatAccessionManagementMenu.addItem(new YAHOO.widget.MenuItem("Assign Accession No", {  disabled: <%=cat_privilege[13]%>,  url: "<%=request.getContextPath()%>/cataloguing/cat_accession.jsp"}));
+*/
+ oCatAccessionManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing6") %>", {  disabled: <%=cat_privilege[12]%>,  url: "<%=request.getContextPath()%>/cataloguing/cat_accession.jsp"}));
+                oCatAccessionManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing7") %>", {  disabled: <%=cat_privilege[13]%>,  url: "<%=request.getContextPath()%>/cataloguing/cat_accession.jsp"}));
 
 
                 var oCatTitleManagementMenu =  new YAHOO.widget.Menu("Non MARC Bibliography Management");
 
-                oCatTitleManagementMenu.addItem(new YAHOO.widget.MenuItem("Manage Biblography", {  disabled: <%=cat_privilege[15]%>,  url: ""}));
+               /* oCatTitleManagementMenu.addItem(new YAHOO.widget.MenuItem("Manage Biblography", {  disabled: <%=cat_privilege[15]%>,  url: ""}));
                 oCatTitleManagementMenu.addItem(new YAHOO.widget.MenuItem("View All", {  disabled: <%=cat_privilege[16]%>,  url: ""}));
+*/
+                    oCatTitleManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing8") %>", {  disabled: <%=cat_privilege[15]%>,  url: ""}));
+                oCatTitleManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing9") %>", {  disabled: <%=cat_privilege[16]%>,  url: ""}));
+
 //End: Third Level Catalogue Menu 33333333333333333333333333333333333333333333333333333333333333333333333333
 //Start: Second Level Catalogue Menu 2222222222222222222222222222222222222222222222222222222222222222222222
                 var oCatInitiateCataloguingMenu = new YAHOO.widget.Menu("Initiate Cataloguing");
 
-                oCatInitiateCataloguingMenu.addItem(new YAHOO.widget.MenuItem("Titles ready for Cataloguing", {  disabled: <%=cat_privilege[2]%>,  url: ""}));
+              /*  oCatInitiateCataloguingMenu.addItem(new YAHOO.widget.MenuItem("Titles ready for Cataloguing", {  disabled: <%=cat_privilege[2]%>,  url: ""}));
                 oCatInitiateCataloguingMenu.addItem(new YAHOO.widget.MenuItem("Old Title Entry", { submenu:oCatOldTitleMenu, disabled: <%=cat_privilege[3]%>, url: ""}));
                 oCatInitiateCataloguingMenu.addItem(new YAHOO.widget.MenuItem("Title Holding management", {submenu:oCatTitleHoldingmanagementMenu,  disabled: <%=cat_privilege[6]%>, url: ""}));
                 oCatInitiateCataloguingMenu.addItem(new YAHOO.widget.MenuItem("Subject Updates", {  disabled: <%=cat_privilege[10]%>, url: ""}));
                 oCatInitiateCataloguingMenu.addItem(new YAHOO.widget.MenuItem("Accession Management", {submenu:oCatAccessionManagementMenu,  disabled: <%=cat_privilege[11]%>, url: ""}));
                 oCatInitiateCataloguingMenu.addItem(new YAHOO.widget.MenuItem("Non MARC Bibliography Management", {submenu:oCatTitleManagementMenu,  disabled: <%=cat_privilege[14]%>, url: ""}));
                 oCatInitiateCataloguingMenu.addItem(new YAHOO.widget.MenuItem("Multimedia Management", {  disabled: <%=cat_privilege[17]%>, url: ""}));
-
+*/
+                  oCatInitiateCataloguingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing10") %>", {  disabled: <%=cat_privilege[2]%>,  url: ""}));
+                oCatInitiateCataloguingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing11") %>", { submenu:oCatOldTitleMenu, disabled: <%=cat_privilege[3]%>, url: ""}));
+                oCatInitiateCataloguingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing12") %>", {submenu:oCatTitleHoldingmanagementMenu,  disabled: <%=cat_privilege[6]%>, url: ""}));
+                oCatInitiateCataloguingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing13") %>", {  disabled: <%=cat_privilege[10]%>, url: ""}));
+                oCatInitiateCataloguingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing14") %>", {submenu:oCatAccessionManagementMenu,  disabled: <%=cat_privilege[11]%>, url: ""}));
+                oCatInitiateCataloguingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing15") %>", {submenu:oCatTitleManagementMenu,  disabled: <%=cat_privilege[14]%>, url: ""}));
+                oCatInitiateCataloguingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing16") %>", {  disabled: <%=cat_privilege[17]%>, url: ""}));
 
 
                 var oCatLatestCognizanceMenu= new YAHOO.widget.Menu("Latest Cognizance");
 
-                oCatLatestCognizanceMenu.addItem(new YAHOO.widget.MenuItem("Generate Latest Addition List", {  disabled: <%=cat_privilege[19]%>, url: ""}));
+              /*  oCatLatestCognizanceMenu.addItem(new YAHOO.widget.MenuItem("Generate Latest Addition List", {  disabled: <%=cat_privilege[19]%>, url: ""}));
                 oCatLatestCognizanceMenu.addItem(new YAHOO.widget.MenuItem("Update Latest Addition List", {  disabled: <%=cat_privilege[20]%>, url: ""}));
                 oCatLatestCognizanceMenu.addItem(new YAHOO.widget.MenuItem("View Latest Addition List", {  disabled: <%=cat_privilege[21]%>, url: ""}));
                 oCatLatestCognizanceMenu.addItem(new YAHOO.widget.MenuItem("Develop Bibliography", {  disabled: <%=cat_privilege[22]%>, url: ""}));
+*/
+ oCatLatestCognizanceMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing17") %>", {  disabled: <%=cat_privilege[19]%>, url: ""}));
+                oCatLatestCognizanceMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing18") %>", {  disabled: <%=cat_privilege[20]%>, url: ""}));
+                oCatLatestCognizanceMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing19") %>", {  disabled: <%=cat_privilege[21]%>, url: ""}));
+                oCatLatestCognizanceMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing20") %>", {  disabled: <%=cat_privilege[22]%>, url: ""}));
 
 
 
                var oCatReportsMenu = new YAHOO.widget.Menu("Catalogue Reports");
 
-               oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("Document Slip", {  disabled: <%=cat_privilege[27]%>, url: ""}));
+             /*  oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("Document Slip", {  disabled: <%=cat_privilege[27]%>, url: ""}));
                oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("List Titles", {  disabled: <%=cat_privilege[28]%>, url: ""}));
                oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("Subjects/Keywords", {  disabled: <%=cat_privilege[29]%>, url: ""}));
                oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("Arrival Notice", {  disabled: <%=cat_privilege[30]%>, url: ""}));
                oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("Classified Subjects", {  disabled: <%=cat_privilege[31]%>, url: ""}));
                oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("Highly Priced titles", {  disabled: <%=cat_privilege[32]%>, url: ""}));
                oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("Withdrawn Register", {  disabled: <%=cat_privilege[33]%>, url: ""}));
+*/
+ oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing21") %>", {  disabled: <%=cat_privilege[27]%>, url: ""}));
+               oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing22") %>", {  disabled: <%=cat_privilege[28]%>, url: ""}));
+               oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing23") %>", {  disabled: <%=cat_privilege[29]%>, url: ""}));
+               oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing24") %>", {  disabled: <%=cat_privilege[30]%>, url: ""}));
+               oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing25") %>", {  disabled: <%=cat_privilege[31]%>, url: ""}));
+               oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing26") %>", {  disabled: <%=cat_privilege[32]%>, url: ""}));
+               oCatReportsMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing27") %>", {  disabled: <%=cat_privilege[33]%>, url: ""}));
 
 //End: Second Level Catalogue Menu 2222222222222222222222222222222222222222222222222222222222222222222222
 //Start: First Level Catalogue Menu 11111111111111111111111111111111111111111111111111111111111111111111111
                var oCatMenu = new YAHOO.widget.Menu("Cataloguing", { zIndex:2 });
 
-                oCatMenu.addItem(new YAHOO.widget.MenuItem("Initiate Cataloguing", {submenu:oCatInitiateCataloguingMenu ,   disabled: <%=cat_privilege[1]%>, url:""} ));
+              /*  oCatMenu.addItem(new YAHOO.widget.MenuItem("Initiate Cataloguing", {submenu:oCatInitiateCataloguingMenu ,   disabled: <%=cat_privilege[1]%>, url:""} ));
                 oCatMenu.addItem(new YAHOO.widget.MenuItem("Latest Cognizance", {submenu:oCatLatestCognizanceMenu ,  disabled: <%=cat_privilege[18]%>, url:""}));
                 oCatMenu.addItem(new YAHOO.widget.MenuItem("Print Catalogue Cards", {  disabled: <%=cat_privilege[23]%>, url:""}));
                 oCatMenu.addItem(new YAHOO.widget.MenuItem("Catalogue System Setup", {  disabled: <%=cat_privilege[24]%>,url:"" }));
@@ -1344,6 +1590,17 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
                 oCatMenu.addItem(new YAHOO.widget.MenuItem("Annual Stock", {  disabled: <%=cat_privilege[34]%>,url:""}));
                 oCatMenu.addItem(new YAHOO.widget.MenuItem("Database Backup", {  disabled: <%=cat_privilege[35]%>, url:""}));
                 oCatMenu.addItem(new YAHOO.widget.MenuItem("Online Search", {  disabled: <%=cat_privilege[36]%>, url:""}));
+*/
+
+ oCatMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing28") %>", {submenu:oCatInitiateCataloguingMenu ,   disabled: <%=cat_privilege[1]%>, url:""} ));
+                oCatMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing29") %>", {submenu:oCatLatestCognizanceMenu ,  disabled: <%=cat_privilege[18]%>, url:""}));
+                oCatMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing30") %>", {  disabled: <%=cat_privilege[23]%>, url:""}));
+                oCatMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing31") %>", {  disabled: <%=cat_privilege[24]%>,url:"" }));
+                oCatMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing32") %>", {   disabled: <%=cat_privilege[25]%>,url:""}));
+                oCatMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing33") %>", {submenu:oCatReportsMenu ,  disabled: <%=cat_privilege[26]%>,url:""}));
+                oCatMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing34") %>", {  disabled: <%=cat_privilege[34]%>,url:""}));
+                oCatMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing35") %>", {  disabled: <%=cat_privilege[35]%>, url:""}));
+                oCatMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.cataloguing36") %>", {  disabled: <%=cat_privilege[36]%>, url:""}));
 
 //End: First Level Catalogue Menu 11111111111111111111111111111111111111111111111111111111111111111111111
 //End:Cataloguing Menu *********************************************************************************
@@ -1356,39 +1613,56 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
 
                 var oAcqRequestToVendorMenu = new YAHOO.widget.Menu("Request To Vendor");
 
-                oAcqRequestToVendorMenu.addItem(new YAHOO.widget.MenuItem("Direct Request", {  disabled: <%=acq_privilege[10]%>, url: ""}));
+            /*    oAcqRequestToVendorMenu.addItem(new YAHOO.widget.MenuItem("Direct Request", {  disabled: <%=acq_privilege[10]%>, url: ""}));
                 oAcqRequestToVendorMenu.addItem(new YAHOO.widget.MenuItem("Approved Request", {  disabled: <%=acq_privilege[11]%>,url: ""}));
+*/
+                 oAcqRequestToVendorMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition1") %>", {  disabled: <%=acq_privilege[10]%>, url: ""}));
+                oAcqRequestToVendorMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition2") %>", {  disabled: <%=acq_privilege[11]%>,url: ""}));
 
                 var oAcqStatusUpdateMenu =  new YAHOO.widget.Menu("Status Update");
 
-                oAcqStatusUpdateMenu.addItem(new YAHOO.widget.MenuItem("Vendor Request", {  disabled: <%=acq_privilege[13]%>, url: ""}));
+              /*  oAcqStatusUpdateMenu.addItem(new YAHOO.widget.MenuItem("Vendor Request", {  disabled: <%=acq_privilege[13]%>, url: ""}));
                 oAcqStatusUpdateMenu.addItem(new YAHOO.widget.MenuItem("Approval Status", {  disabled: <%=acq_privilege[14]%>,url: ""}));
-
+*/
+                     oAcqStatusUpdateMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition3") %>", {  disabled: <%=acq_privilege[13]%>, url: ""}));
+                oAcqStatusUpdateMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition4") %>", {  disabled: <%=acq_privilege[14]%>,url: ""}));
 
 
                 var oAcqListTitlesMenu =  new YAHOO.widget.Menu("List Titles");
 
-                oAcqListTitlesMenu.addItem(new YAHOO.widget.MenuItem("On-Approval Titles", {  disabled: <%=acq_privilege[16]%>, url: ""}));
+            /*    oAcqListTitlesMenu.addItem(new YAHOO.widget.MenuItem("On-Approval Titles", {  disabled: <%=acq_privilege[16]%>, url: ""}));
                 oAcqListTitlesMenu.addItem(new YAHOO.widget.MenuItem("On Request To Vendor Titles", {  disabled: <%=acq_privilege[17]%>, url: ""}));
                 oAcqListTitlesMenu.addItem(new YAHOO.widget.MenuItem("Pending Titles", {  disabled: <%=acq_privilege[18]%>,url: ""}));
                 oAcqListTitlesMenu.addItem(new YAHOO.widget.MenuItem("Approved Titles", {  disabled: <%=acq_privilege[19]%>,url: ""}));
                 oAcqListTitlesMenu.addItem(new YAHOO.widget.MenuItem("Rejected Titles", {  disabled: <%=acq_privilege[20]%>,url: ""}));
-
+*/
+                        oAcqListTitlesMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition5") %>", {  disabled: <%=acq_privilege[16]%>, url: ""}));
+                oAcqListTitlesMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition6") %>", {  disabled: <%=acq_privilege[17]%>, url: ""}));
+                oAcqListTitlesMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition7") %>", {  disabled: <%=acq_privilege[18]%>,url: ""}));
+                oAcqListTitlesMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition8") %>", {  disabled: <%=acq_privilege[19]%>,url: ""}));
+                oAcqListTitlesMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition9") %>", {  disabled: <%=acq_privilege[20]%>,url: ""}));
 
 
                 var oAcqViewListForOrderMenu = new YAHOO.widget.Menu("View List for Order");
 
-                oAcqViewListForOrderMenu.addItem(new YAHOO.widget.MenuItem("Direct Request", {  disabled: <%=acq_privilege[23]%>,url: ""}));
+              /*  oAcqViewListForOrderMenu.addItem(new YAHOO.widget.MenuItem("Direct Request", {  disabled: <%=acq_privilege[23]%>,url: ""}));
                 oAcqViewListForOrderMenu.addItem(new YAHOO.widget.MenuItem("Approved Request ", {  disabled: <%=acq_privilege[24]%>,url: ""}));
+*/
 
-
+                    oAcqViewListForOrderMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition10") %>", {  disabled: <%=acq_privilege[23]%>,url: ""}));
+                oAcqViewListForOrderMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition11") %> ", {  disabled: <%=acq_privilege[24]%>,url: ""}));
 
                 var oAcqListInvoicesMenu = new YAHOO.widget.Menu("List Invoices");
 
-               oAcqListInvoicesMenu.addItem(new YAHOO.widget.MenuItem("All Invoices", {  disabled: <%=acq_privilege[35]%>,url: ""}))
+             /*  oAcqListInvoicesMenu.addItem(new YAHOO.widget.MenuItem("All Invoices", {  disabled: <%=acq_privilege[35]%>,url: ""}))
                oAcqListInvoicesMenu.addItem(new YAHOO.widget.MenuItem("With Library", {  disabled: <%=acq_privilege[36]%>,url: ""}))
                oAcqListInvoicesMenu.addItem(new YAHOO.widget.MenuItem("Unpaid Invoice", {  disabled: <%=acq_privilege[37]%>,url: ""}))
                oAcqListInvoicesMenu.addItem(new YAHOO.widget.MenuItem("Invoice Register", {  disabled: <%=acq_privilege[38]%>,url: ""}))
+*/
+                    oAcqListInvoicesMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition12") %>", {  disabled: <%=acq_privilege[35]%>,url: ""}))
+               oAcqListInvoicesMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition13") %>", {  disabled: <%=acq_privilege[36]%>,url: ""}))
+               oAcqListInvoicesMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition14") %>", {  disabled: <%=acq_privilege[37]%>,url: ""}))
+               oAcqListInvoicesMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition15") %>", {  disabled: <%=acq_privilege[38]%>,url: ""}))
 
 //End:Third Level Acquisition Menu 333333333333333333333333333333333333333333333333333333333333333333333
 
@@ -1397,61 +1671,83 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
 
                 var oAcqGenerateTitleMenu = new YAHOO.widget.Menu("Generate Title");
 
-               oAcqGenerateTitleMenu.addItem(new YAHOO.widget.MenuItem("Refer from Demend list/ Requests", { disabled: <%=acq_privilege[2]%>,url: ""}));
+           /*    oAcqGenerateTitleMenu.addItem(new YAHOO.widget.MenuItem("Refer from Demend list/ Requests", { disabled: <%=acq_privilege[2]%>,url: ""}));
                 oAcqGenerateTitleMenu.addItem(new YAHOO.widget.MenuItem("Refer From Catalogue", { disabled: <%=acq_privilege[3]%>,url: ""}));
-                oAcqGenerateTitleMenu.addItem(new YAHOO.widget.MenuItem("New Entry of Title", {  disabled: <%=acq_privilege[4]%>,url: ""}));
-                oAcqGenerateTitleMenu.addItem(new YAHOO.widget.MenuItem("Refer from Library Of Congress", { disabled: <%=acq_privilege[5]%>,url: ""}));
-
-
+                oAcqGenerateTitleMenu.addItem(new YAHOO.widget.MenuItem("New Entry of Title", {  disabled: <%=acq_privilege[4]%>,url: "<%=request.getContextPath()%>/acquisition/acq_new_entry.jsp"}));
+               oAcqGenerateTitleMenu.addItem(new YAHOO.widget.MenuItem("Initiate Acquisition", { disabled: <%=acq_privilege[5]%>,url: "<%=request.getContextPath()%>/acquisition/acq_search_title.jsp"}));
+              */
+              oAcqGenerateTitleMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition16") %>", { disabled: <%=acq_privilege[2]%>,url: ""}));
+                oAcqGenerateTitleMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition17") %>", { disabled: <%=acq_privilege[3]%>,url: ""}));
+                oAcqGenerateTitleMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition18") %>", {  disabled: <%=acq_privilege[4]%>,url: "<%=request.getContextPath()%>/acquisition/acq_new_entry.jsp"}));
+               oAcqGenerateTitleMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition19") %>", { disabled: <%=acq_privilege[5]%>,url: "<%=request.getContextPath()%>/acquisition/acq_search_title.jsp"}));
 
               var oAcqApprovalprocessMenu = new YAHOO.widget.Menu("Approval Process");
 
-                 oAcqApprovalprocessMenu.addItem(new YAHOO.widget.MenuItem("Add Title into Approval List", { disabled: <%=acq_privilege[7]%>, url: ""}));
+              /*   oAcqApprovalprocessMenu.addItem(new YAHOO.widget.MenuItem("Add Title into Approval List", { disabled: <%=acq_privilege[7]%>, url: ""}));
                  oAcqApprovalprocessMenu.addItem(new YAHOO.widget.MenuItem("Approve/Rejects Title", {disabled: <%=acq_privilege[8]%> ,url: ""}));
                  oAcqApprovalprocessMenu.addItem(new YAHOO.widget.MenuItem("Request to Vendor", {submenu:oAcqRequestToVendorMenu  ,disabled: <%=acq_privilege[9]%> , url: ""}));
                  oAcqApprovalprocessMenu.addItem(new YAHOO.widget.MenuItem("Status Update", {submenu:oAcqStatusUpdateMenu  ,disabled: <%=acq_privilege[12]%> ,url: ""}));
                  oAcqApprovalprocessMenu.addItem(new YAHOO.widget.MenuItem("List Titles ", {submenu:oAcqListTitlesMenu ,disabled: <%=acq_privilege[15]%> ,url: ""}));
-
+*/
+                oAcqApprovalprocessMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition20") %>", { disabled: <%=acq_privilege[7]%>, url: ""}));
+                 oAcqApprovalprocessMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition21") %>", {disabled: <%=acq_privilege[8]%> ,url: ""}));
+                 oAcqApprovalprocessMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition22") %>", {submenu:oAcqRequestToVendorMenu  ,disabled: <%=acq_privilege[9]%> , url: ""}));
+                 oAcqApprovalprocessMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition23") %>", {submenu:oAcqStatusUpdateMenu  ,disabled: <%=acq_privilege[12]%> ,url: ""}));
+                 oAcqApprovalprocessMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition24") %> ", {submenu:oAcqListTitlesMenu ,disabled: <%=acq_privilege[15]%> ,url: ""}));
 
 
               var oAcqPlaceorderMenu = new YAHOO.widget.Menu("Place Order");
 
-                 oAcqPlaceorderMenu.addItem(new YAHOO.widget.MenuItem("View List For Order", {submenu:oAcqViewListForOrderMenu , disabled: <%=acq_privilege[22]%> ,url: ""}));
+              /*   oAcqPlaceorderMenu.addItem(new YAHOO.widget.MenuItem("View List For Order", {submenu:oAcqViewListForOrderMenu , disabled: <%=acq_privilege[22]%> ,url: ""}));
                  oAcqPlaceorderMenu.addItem(new YAHOO.widget.MenuItem("Generate Order", {disabled: <%=acq_privilege[25]%> ,url: ""}));
                  oAcqPlaceorderMenu.addItem(new YAHOO.widget.MenuItem("List of Ordered Titles", {disabled: <%=acq_privilege[26]%> ,url: ""}));
                  oAcqPlaceorderMenu.addItem(new YAHOO.widget.MenuItem("Overdue Notices", {disabled: <%=acq_privilege[27]%> ,url: ""}));
                  oAcqPlaceorderMenu.addItem(new YAHOO.widget.MenuItem("Cancel Order", {disabled: <%=acq_privilege[28]%> ,url: ""}));
-
+*/
+                oAcqPlaceorderMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition25") %>", {submenu:oAcqViewListForOrderMenu , disabled: <%=acq_privilege[22]%> ,url: ""}));
+                 oAcqPlaceorderMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition26") %>", {disabled: <%=acq_privilege[25]%> ,url: ""}));
+                 oAcqPlaceorderMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition27") %>", {disabled: <%=acq_privilege[26]%> ,url: ""}));
+                 oAcqPlaceorderMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition28") %>", {disabled: <%=acq_privilege[27]%> ,url: ""}));
+                 oAcqPlaceorderMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition29") %>", {disabled: <%=acq_privilege[28]%> ,url: ""}));
 
 
                 var oInvoiceManagementMenu = new YAHOO.widget.Menu("Invoice Management");
 
-                oInvoiceManagementMenu.addItem(new YAHOO.widget.MenuItem("Process Invoice", {disabled: <%=acq_privilege[31]%> ,url: ""}));
+              /*  oInvoiceManagementMenu.addItem(new YAHOO.widget.MenuItem("Process Invoice", {disabled: <%=acq_privilege[31]%> ,url: ""}));
                 oInvoiceManagementMenu.addItem(new YAHOO.widget.MenuItem("Payment Request", {disabled: <%=acq_privilege[32]%>,url: ""}));
                 oInvoiceManagementMenu.addItem(new YAHOO.widget.MenuItem("Payment Updates", {disabled: <%=acq_privilege[33]%> , url: ""}));
                 oInvoiceManagementMenu.addItem(new YAHOO.widget.MenuItem("List Invoices", {submenu:oAcqListInvoicesMenu ,disabled: <%=acq_privilege[34]%> , url: ""}));
+*/
 
-
+ oInvoiceManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition30") %>", {disabled: <%=acq_privilege[31]%> ,url: ""}));
+                oInvoiceManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition31") %>", {disabled: <%=acq_privilege[32]%>,url: ""}));
+                oInvoiceManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition32") %>", {disabled: <%=acq_privilege[33]%> , url: ""}));
+                oInvoiceManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition33") %>", {submenu:oAcqListInvoicesMenu ,disabled: <%=acq_privilege[34]%> , url: ""}));
 
                var oAccessioningMenu =new YAHOO.widget.Menu("Accessioning");
 
-               oAccessioningMenu.addItem(new YAHOO.widget.MenuItem("Accession Process", {disabled: <%=acq_privilege[40]%> ,url: ""}));
+           /*    oAccessioningMenu.addItem(new YAHOO.widget.MenuItem("Accession Process", {disabled: <%=acq_privilege[40]%> ,url: ""}));
                oAccessioningMenu.addItem(new YAHOO.widget.MenuItem("Accession Register", {disabled: <%=acq_privilege[41]%> ,url: ""}));
+*/
 
-
+                  oAccessioningMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition34") %>", {disabled: <%=acq_privilege[40]%> ,url: ""}));
+               oAccessioningMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition35") %>", {disabled: <%=acq_privilege[41]%> ,url: ""}));
 
                 var oAcqRecordkeepingMenu = new YAHOO.widget.Menu("Record Keeping");
 
-                oAcqRecordkeepingMenu.addItem(new YAHOO.widget.MenuItem("Vendors", {disabled: <%=acq_privilege[45]%> ,url:""}));
+              /*  oAcqRecordkeepingMenu.addItem(new YAHOO.widget.MenuItem("Vendors", {disabled: <%=acq_privilege[45]%> ,url:"<%=request.getContextPath()%>/acquisition/acq_initiate_vendor.jsp"}));
                 oAcqRecordkeepingMenu.addItem(new YAHOO.widget.MenuItem("Member's Set", {disabled: <%=acq_privilege[46]%> ,url: ""}));
                 oAcqRecordkeepingMenu.addItem(new YAHOO.widget.MenuItem("Update Subjects/Class No", {disabled: <%=acq_privilege[47]%> ,url: ""}));
-
+*/
+                    oAcqRecordkeepingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition36") %>", {disabled: <%=acq_privilege[45]%> ,url:"<%=request.getContextPath()%>/acquisition/acq_initiate_vendor.jsp"}));
+                oAcqRecordkeepingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition37") %>", {disabled: <%=acq_privilege[46]%> ,url: ""}));
+                oAcqRecordkeepingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition38") %>", {disabled: <%=acq_privilege[47]%> ,url: ""}));
 
 
 
               var oAcqReportMenu = new YAHOO.widget.Menu("Reports");{url: ""}
 
-              oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("Titles in Acquisition", { disabled: <%=acq_privilege[49]%>, url: ""}));
+            /*  oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("Titles in Acquisition", { disabled: <%=acq_privilege[49]%>, url: ""}));
               oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("Requested Titles", { disabled: <%=acq_privilege[50]%>, url: ""}));
               oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("Titles for Approval", { disabled: <%=acq_privilege[51]%>, url: ""}));
               oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("Collect Notice", { disabled: <%=acq_privilege[52]%>, url: ""}));
@@ -1476,29 +1772,61 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
               oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("Expenditure Analysis", { disabled: <%=acq_privilege[71]%>, url: ""}));
               oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("Order List", { disabled: <%=acq_privilege[72]%>, url: ""}));
               oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("Receipt Voucher", { disabled: <%=acq_privilege[73]%>, url: ""}));
-
+*/
+ oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition39") %>", { disabled: <%=acq_privilege[49]%>, url: ""}));
+              oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition40") %>", { disabled: <%=acq_privilege[50]%>, url: ""}));
+              oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition41") %>", { disabled: <%=acq_privilege[51]%>, url: ""}));
+              oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition42") %>", { disabled: <%=acq_privilege[52]%>, url: ""}));
+              oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition43") %>", { disabled: <%=acq_privilege[53]%>, url: ""}));
+              oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition44") %>", { disabled: <%=acq_privilege[54]%>, url: ""}));
+              oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition45") %>", { disabled: <%=acq_privilege[55]%>, url: ""}));
+              oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition46") %>", { disabled: <%=acq_privilege[56]%>, url: ""}));
+              oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition47") %>", { disabled: <%=acq_privilege[57]%>, url: ""}));
+              oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition48") %>", { disabled: <%=acq_privilege[58]%>,url: ""}));
+              oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition49") %>", { disabled: <%=acq_privilege[59]%>, url: ""}));
+              oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition50") %>", { disabled: <%=acq_privilege[60]%>, url: ""}));
+              oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition51") %>", { disabled: <%=acq_privilege[61]%> ,url: ""}));
+              oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition52") %>", { disabled: <%=acq_privilege[62]%>, url: ""}));
+              oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition53") %>", { disabled: <%=acq_privilege[63]%>, url: ""}));
+              oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition54") %>", { disabled: <%=acq_privilege[64]%>, url: ""}));
+              oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition55") %>", { disabled: <%=acq_privilege[65]%>, url: ""}));
+              oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition56") %>", { disabled: <%=acq_privilege[66]%>, url: ""}));
+              oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition57") %>", { disabled: <%=acq_privilege[67]%>, url: ""}));
+              oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition58") %>", { disabled: <%=acq_privilege[68]%>, url: ""}));
+              oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition59") %>", { disabled: <%=acq_privilege[69]%>, url: ""}));
+              oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition60") %>", { disabled: <%=acq_privilege[70]%>, url: ""}));
+              oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition61") %>", { disabled: <%=acq_privilege[71]%>, url: ""}));
+              oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition62") %>", { disabled: <%=acq_privilege[72]%>, url: ""}));
+              oAcqReportMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition63") %>", { disabled: <%=acq_privilege[73]%>, url: ""}));
 
 
                var oAcqHouseKeepingMenu = new YAHOO.widget.Menu("House Keeping");
 
-                oAcqHouseKeepingMenu.addItem(new YAHOO.widget.MenuItem("Remove Invoice Record", {  disabled: <%=acq_privilege[75]%>, url: ""}));
+            /*    oAcqHouseKeepingMenu.addItem(new YAHOO.widget.MenuItem("Remove Invoice Record", {  disabled: <%=acq_privilege[75]%>, url: ""}));
                 oAcqHouseKeepingMenu.addItem(new YAHOO.widget.MenuItem("Flushout Order Form", {  disabled: <%=acq_privilege[76]%>,  url: ""}));
-
+*/
+ oAcqHouseKeepingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition64") %>", {  disabled: <%=acq_privilege[75]%>, url: ""}));
+                oAcqHouseKeepingMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition65") %>", {  disabled: <%=acq_privilege[76]%>,  url: ""}));
 
 
                 var oAcqBudgetManagementMenu=new YAHOO.widget.Menu("Budget Management")
 
-                oAcqBudgetManagementMenu.addItem(new YAHOO.widget.MenuItem("Budget Heads", {  disabled: <%=acq_privilege[78]%>,url: ""}));
+          /*      oAcqBudgetManagementMenu.addItem(new YAHOO.widget.MenuItem("Budget Heads", {  disabled: <%=acq_privilege[78]%>,url: "<%=request.getContextPath()%>/acquisition/acq_budget_source_details.jsp"}));
                 oAcqBudgetManagementMenu.addItem(new YAHOO.widget.MenuItem("Currencies", {  disabled: <%=acq_privilege[79]%>,  url: ""}));
                oAcqBudgetManagementMenu.addItem(new YAHOO.widget.MenuItem("Exchange Rates", {  disabled: <%=acq_privilege[80]%>, url: ""}));
+*/
 
-
+  oAcqBudgetManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition66") %>", {  disabled: <%=acq_privilege[78]%>,url: "<%=request.getContextPath()%>/acquisition/acq_budget_source_details.jsp"}));
+                oAcqBudgetManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition67") %>", {  disabled: <%=acq_privilege[79]%>,  url: ""}));
+               oAcqBudgetManagementMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition68") %>", {  disabled: <%=acq_privilege[80]%>, url: ""}));
 
                 var oAcqSystemSetupMenu = new YAHOO.widget.Menu("System Setup");
 
-                oAcqSystemSetupMenu.addItem(new YAHOO.widget.MenuItem("System Setup", {  disabled: <%=acq_privilege[82]%>, url: ""}));
+  /*              oAcqSystemSetupMenu.addItem(new YAHOO.widget.MenuItem("System Setup", {  disabled: <%=acq_privilege[82]%>, url: ""}));
                 oAcqSystemSetupMenu.addItem(new YAHOO.widget.MenuItem("System Option", {  disabled: <%=acq_privilege[83]%>, url: ""}));
-
+*/
+ oAcqSystemSetupMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition69") %>", {  disabled: <%=acq_privilege[82]%>, url: ""}));
+                oAcqSystemSetupMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition70") %>", {  disabled: <%=acq_privilege[83]%>, url: ""}));
 
 
 //End:Second Level Acquisition Menu 22222222222222222222222222222222222222222222222222222222222222222222
@@ -1506,77 +1834,115 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
 //Start: First Level Acquisition Menu1111111111111111111111111111111111111111111111111111111111111111111
 
                 var oAcqMenu = new YAHOO.widget.Menu("Acquisition", { zIndex:2 });
-                oAcqMenu.addItem(new YAHOO.widget.MenuItem("Generate Title", {submenu:oAcqGenerateTitleMenu , disabled: <%=acq_privilege[1]%> , url:"" } ));
+            /*    oAcqMenu.addItem(new YAHOO.widget.MenuItem("Generate Title", {submenu:oAcqGenerateTitleMenu , disabled: <%=acq_privilege[1]%> , url:"" } ));
                 oAcqMenu.addItem(new YAHOO.widget.MenuItem("Approval Process" , {submenu:oAcqApprovalprocessMenu , disabled: <%=acq_privilege[6]%> , url:""}));
                 oAcqMenu.addItem(new YAHOO.widget.MenuItem("Place Order", {submenu:oAcqPlaceorderMenu , disabled:<%=acq_privilege[21]%> , url:"" }));
                 oAcqMenu.addItem(new YAHOO.widget.MenuItem("Receive Order", { disabled:<%=acq_privilege[29]%> , url:"" }));
                 oAcqMenu.addItem(new YAHOO.widget.MenuItem("Invoice Management", {submenu:oInvoiceManagementMenu , disabled:<%=acq_privilege[30]%> , url:"" }));
                 oAcqMenu.addItem(new YAHOO.widget.MenuItem("Accessioning", {submenu:oAccessioningMenu , disabled: <%=acq_privilege[39]%> , url:"" }));
                 oAcqMenu.addItem(new YAHOO.widget.MenuItem("Manage Demand List", { disabled: <%=acq_privilege[42]%> , url:"" }));
-                oAcqMenu.addItem(new YAHOO.widget.MenuItem("Free/Gifted Documents", { disabled:<%=acq_privilege[43]%> , url:"" }));
+                oAcqMenu.addItem(new YAHOO.widget.MenuItem("Free/Gifted Documents", { disabled:<%=acq_privilege[43]%> , url:"<%=request.getContextPath()%>/acquisition/acq_gift_entry.jsp" }));
                 oAcqMenu.addItem(new YAHOO.widget.MenuItem("Record Keeping", {submenu:oAcqRecordkeepingMenu , disabled:<%=acq_privilege[44]%> , url:"" }));
                 oAcqMenu.addItem(new YAHOO.widget.MenuItem(" Acquisition Reports", {submenu:oAcqReportMenu ,  disabled:<%=acq_privilege[48]%> , url:"" }));
                 oAcqMenu.addItem(new YAHOO.widget.MenuItem("House Keping", {submenu:oAcqHouseKeepingMenu ,  disabled:<%=acq_privilege[74]%> , url:"" }));
                 oAcqMenu.addItem(new YAHOO.widget.MenuItem("Budget Management", {submenu:oAcqBudgetManagementMenu , disabled:<%=acq_privilege[77]%> , url:"" }));
                 oAcqMenu.addItem(new YAHOO.widget.MenuItem("System Setup", {submenu:oAcqSystemSetupMenu ,  disabled:<%=acq_privilege[81]%> , url:"" }));
-
+*/
+                oAcqMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition71") %>", {submenu:oAcqGenerateTitleMenu , disabled: <%=acq_privilege[1]%> , url:"" } ));
+                oAcqMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition72") %>" , {submenu:oAcqApprovalprocessMenu , disabled: <%=acq_privilege[6]%> , url:""}));
+                oAcqMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition73") %>", {submenu:oAcqPlaceorderMenu , disabled:<%=acq_privilege[21]%> , url:"" }));
+                oAcqMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition74") %>", { disabled:<%=acq_privilege[29]%> , url:"" }));
+                oAcqMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition75") %>", {submenu:oInvoiceManagementMenu , disabled:<%=acq_privilege[30]%> , url:"" }));
+                oAcqMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition76") %>", {submenu:oAccessioningMenu , disabled: <%=acq_privilege[39]%> , url:"" }));
+                oAcqMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition77") %>", { disabled: <%=acq_privilege[42]%> , url:"" }));
+                oAcqMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition78") %>", { disabled:<%=acq_privilege[43]%> , url:"<%=request.getContextPath()%>/acquisition/acq_gift_entry.jsp" }));
+                oAcqMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition79") %>", {submenu:oAcqRecordkeepingMenu , disabled:<%=acq_privilege[44]%> , url:"" }));
+                oAcqMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition80") %>", {submenu:oAcqReportMenu ,  disabled:<%=acq_privilege[48]%> , url:"" }));
+                oAcqMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition81") %>", {submenu:oAcqHouseKeepingMenu ,  disabled:<%=acq_privilege[74]%> , url:"" }));
+                oAcqMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition82") %>", {submenu:oAcqBudgetManagementMenu , disabled:<%=acq_privilege[77]%> , url:"" }));
+                oAcqMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.acquisition83") %>", {submenu:oAcqSystemSetupMenu ,  disabled:<%=acq_privilege[81]%> , url:"" }));
 
  //End First Level Acquisition Menu1111111111111111111111111111111111111111111111111111111111111111111111111111
 //************************************End Acquisition Menu******************************************************
 
 
-//sum menu of acquisition-staffAcc
+//sum menu of admin-staffAcc
 
+               // var oStaffAccMenu = new YAHOO.widget.Menu("StaffAcc");
                 var oStaffAccMenu = new YAHOO.widget.Menu("StaffAcc");
 
-                oStaffAccMenu.addItem(new YAHOO.widget.MenuItem("Create Staff Account", {url: ""}));
-                oStaffAccMenu.addItem(new YAHOO.widget.MenuItem("View Staff Account", {url: ""}));
-                oStaffAccMenu.addItem(new YAHOO.widget.MenuItem("Update Account", {url: ""}));
-                oStaffAccMenu.addItem(new YAHOO.widget.MenuItem("Delete Staff Account", {url: ""}));
-                oStaffAccMenu.addItem(new YAHOO.widget.MenuItem("View All Staff Account", {url: ""}));
 
-//submenu of acquisition-staff
+            //    oStaffAccMenu.addItem(new YAHOO.widget.MenuItem("Create Staff Account", {url: "<%=request.getContextPath()%>/admin/account.jsp"}));
+            oStaffAccMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin4")%>", {url: "<%=request.getContextPath()%>/admin/account.jsp"}));
+                //oStaffAccMenu.addItem(new YAHOO.widget.MenuItem("View Staff Account", {url: "<%=request.getContextPath()%>/admin/account.jsp"}));
+                oStaffAccMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin5")%>", {url: "<%=request.getContextPath()%>/admin/account.jsp"}));
+                //oStaffAccMenu.addItem(new YAHOO.widget.MenuItem("Update Account", {url: "<%=request.getContextPath()%>/admin/account.jsp"}));
+                oStaffAccMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin6")%>", {url: "<%=request.getContextPath()%>/admin/account.jsp"}));
+                //oStaffAccMenu.addItem(new YAHOO.widget.MenuItem("Delete Staff Account", {url: "<%=request.getContextPath()%>/admin/account.jsp"}));
+                oStaffAccMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin7")%>", {url: "<%=request.getContextPath()%>/admin/account.jsp"}));
+                //oStaffAccMenu.addItem(new YAHOO.widget.MenuItem("View All Staff Account", {url: "<%=request.getContextPath()%>/admin/viewallaccount.do"}));
+                oStaffAccMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin8")%>", {url: "<%=request.getContextPath()%>/admin/viewallaccount.do"}));
 
-                var oStaffMenu = new YAHOO.widget.Menu("Staff");
+//submenu of admin Staff
+               var oStaffMenu = new YAHOO.widget.Menu("Staff");
 
-                oStaffMenu.addItem(new YAHOO.widget.MenuItem("Register Staff", {url: ""}));
-                oStaffMenu.addItem(new YAHOO.widget.MenuItem("Change Staff Details", {url: ""}));
-                oStaffMenu.addItem(new YAHOO.widget.MenuItem("Delete Staff", {url: ""}));
-                oStaffMenu.addItem(new YAHOO.widget.MenuItem("View Staff Record", {url: ""}));
-                oStaffMenu.addItem(new YAHOO.widget.MenuItem("View All Staff Record", {url: ""}));
+             //   oStaffMenu.addItem(new YAHOO.widget.MenuItem("Register Staff", {url: "<%=request.getContextPath()%>/admin/acq_register.jsp"}));
+                oStaffMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin9")%>", {url: "<%=request.getContextPath()%>/admin/acq_register.jsp"}));
+                //oStaffMenu.addItem(new YAHOO.widget.MenuItem("Change Staff Details", {url: "<%=request.getContextPath()%>/admin/acq_register.jsp"}));
+                oStaffMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin10")%>", {url: "<%=request.getContextPath()%>/admin/acq_register.jsp"}));
+                //oStaffMenu.addItem(new YAHOO.widget.MenuItem("Delete Staff", {url: "<%=request.getContextPath()%>/admin/acq_register.jsp"}));
+                oStaffMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin11")%>", {url: "<%=request.getContextPath()%>/admin/acq_register.jsp"}));
+                //oStaffMenu.addItem(new YAHOO.widget.MenuItem("View Staff Record", {url: "<%=request.getContextPath()%>/admin/acq_register.jsp"}));
+                oStaffMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin12")%>", {url: "<%=request.getContextPath()%>/admin/acq_register.jsp"}));
+
+                //oStaffMenu.addItem(new YAHOO.widget.MenuItem("View All Staff Record", {url: "<%=request.getContextPath()%>/admin/viewall.do"}));
+                oStaffMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin13")%>", {url: "<%=request.getContextPath()%>/admin/viewall.do"}));
 
 
-//submenu of acquisition-privilege
-                var oPrivilegeMenu = new YAHOO.widget.Menu("Privilege");
+//submenu of admin-privilege
 
-                oPrivilegeMenu.addItem(new YAHOO.widget.MenuItem("Assign Privileges", {url: ""}));
-                oPrivilegeMenu.addItem(new YAHOO.widget.MenuItem("Change Privileges", {url: ""}));
-                oPrivilegeMenu.addItem(new YAHOO.widget.MenuItem("View Privileges", {url: ""}));
+               var oPrivilegeMenu = new YAHOO.widget.Menu("Privilege");
 
+             //   oPrivilegeMenu.addItem(new YAHOO.widget.MenuItem("Assign Privileges", {url: "<%=request.getContextPath()%>/admin/assign_privilege.jsp"}));
+                oPrivilegeMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin14")%>", {url: "<%=request.getContextPath()%>/admin/assign_privilege.jsp"}));
+               // oPrivilegeMenu.addItem(new YAHOO.widget.MenuItem("Change Privileges", {url: "<%=request.getContextPath()%>/admin/assign_privilege.jsp"}));
+                oPrivilegeMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin15")%>", {url: "<%=request.getContextPath()%>/admin/assign_privilege.jsp"}));
+               // oPrivilegeMenu.addItem(new YAHOO.widget.MenuItem("View Privileges", {url: "<%=request.getContextPath()%>/admin/assign_privilege.jsp"}));
+                oPrivilegeMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin16")%>", {url: "<%=request.getContextPath()%>/admin/assign_privilege.jsp"}));
 
 
 //submenu of Manage Library
 
 <%
-       if(staff_role.equalsIgnoreCase("insti-admin") || staff_role.equalsIgnoreCase("admin")){%>
+        if(staff_role.equalsIgnoreCase("insti-admin") || staff_role.equalsIgnoreCase("admin")){%>
                 var oManDepMenu =new YAHOO.widget.Menu("Manage SubLibrary");
 
-                oManDepMenu.addItem(new YAHOO.widget.MenuItem("Add SubLibrary", {url: ""}))
-                oManDepMenu.addItem(new YAHOO.widget.MenuItem("Update SubLibrary", {url: ""}))
-                oManDepMenu.addItem(new YAHOO.widget.MenuItem("Delete SubLibrary", {url: ""}))
-                oManDepMenu.addItem(new YAHOO.widget.MenuItem("View SubLibrary", {url: ""}))
-                oManDepMenu.addItem(new YAHOO.widget.MenuItem("ViewAll SubLibrary", {url: ""}))
+               // oManDepMenu.addItem(new YAHOO.widget.MenuItem("Add SubLibrary", {url: "<%=request.getContextPath()%>/admin/manage_library.jsp"}))
+                 oManDepMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.sublibrary1")%>", {url: "<%=request.getContextPath()%>/admin/manage_library.jsp"}))
+               // oManDepMenu.addItem(new YAHOO.widget.MenuItem("Update SubLibrary", {url: "<%=request.getContextPath()%>/admin/manage_library.jsp"}))
+                oManDepMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.sublibrary2")%>", {url: "<%=request.getContextPath()%>/admin/manage_library.jsp"}))
+               // oManDepMenu.addItem(new YAHOO.widget.MenuItem("Delete SubLibrary", {url: "<%=request.getContextPath()%>/admin/manage_library.jsp"}))
+               oManDepMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.sublibrary3")%>", {url: "<%=request.getContextPath()%>/admin/manage_library.jsp"}))
+               // oManDepMenu.addItem(new YAHOO.widget.MenuItem("View SubLibrary", {url: "<%=request.getContextPath()%>/admin/manage_library.jsp"}))
+                oManDepMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.sublibrary4")%>", {url: "<%=request.getContextPath()%>/admin/manage_library.jsp"}))
+               // oManDepMenu.addItem(new YAHOO.widget.MenuItem("ViewAll SubLibrary", {url: "<%=request.getContextPath()%>/admin/sub_lib_viewall.do"}))
+               oManDepMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.sublibrary5")%>", {url: "<%=request.getContextPath()%>/admin/sub_lib_viewall.do"}))
 <%}%>
 //submenu of Manage Faculty
 
 
                 var oFacultyMenu =new YAHOO.widget.Menu("Manage Faculty");
 
-                oFacultyMenu.addItem(new YAHOO.widget.MenuItem("Add Faculty", {url: ""}))
-                oFacultyMenu.addItem(new YAHOO.widget.MenuItem("Update Faculty", {url: ""}))
-                oFacultyMenu.addItem(new YAHOO.widget.MenuItem("Delete Faculty", {url: ""}))
-                oFacultyMenu.addItem(new YAHOO.widget.MenuItem("View Faculty", {url: ""}))
-                oFacultyMenu.addItem(new YAHOO.widget.MenuItem("ViewAll Faculty", {url: ""}))
+               // oFacultyMenu.addItem(new YAHOO.widget.MenuItem("Add Faculty", {url: "<%=request.getContextPath()%>/systemsetup/manage_faculty.jsp"}))
+                oFacultyMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.faculty1")%>", {url: "<%=request.getContextPath()%>/systemsetup/manage_faculty.jsp"}))
+                //oFacultyMenu.addItem(new YAHOO.widget.MenuItem("Update Faculty", {url: "<%=request.getContextPath()%>/systemsetup/manage_faculty.jsp"}))
+                oFacultyMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.faculty2")%>", {url: "<%=request.getContextPath()%>/systemsetup/manage_faculty.jsp"}))
+                //oFacultyMenu.addItem(new YAHOO.widget.MenuItem("Delete Faculty", {url: "<%=request.getContextPath()%>/systemsetup/manage_faculty.jsp"}))
+                oFacultyMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.faculty3")%>", {url: "<%=request.getContextPath()%>/systemsetup/manage_faculty.jsp"}))
+                //oFacultyMenu.addItem(new YAHOO.widget.MenuItem("View Faculty", {url: "<%=request.getContextPath()%>/systemsetup/manage_faculty.jsp"}))
+                oFacultyMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.faculty4")%>", {url: "<%=request.getContextPath()%>/systemsetup/manage_faculty.jsp"}))
+                //oFacultyMenu.addItem(new YAHOO.widget.MenuItem("ViewAll Faculty", {url: "<%=request.getContextPath()%>/systemsetup/view_allfaculty.do"}))
+                oFacultyMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.faculty5")%>", {url: "<%=request.getContextPath()%>/systemsetup/view_allfaculty.do"}))
 
 
 
@@ -1585,22 +1951,32 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
 
                 var oDepartmentMenu =new YAHOO.widget.Menu("Manage Department");
 
-                oDepartmentMenu.addItem(new YAHOO.widget.MenuItem("Add Department", {url: ""}))
-                oDepartmentMenu.addItem(new YAHOO.widget.MenuItem("Update Department", {url: ""}))
-                oDepartmentMenu.addItem(new YAHOO.widget.MenuItem("Delete Department", {url: ""}))
-                oDepartmentMenu.addItem(new YAHOO.widget.MenuItem("View Department", {url: ""}))
-                oDepartmentMenu.addItem(new YAHOO.widget.MenuItem("ViewAll Department", {url: ""}))
+              //  oDepartmentMenu.addItem(new YAHOO.widget.MenuItem("Add Department", {url: "<%=request.getContextPath()%>/systemsetup/managedept1.do"}))
+                oDepartmentMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.dept1")%>", {url: "<%=request.getContextPath()%>/systemsetup/managedept1.do"}))
+                //oDepartmentMenu.addItem(new YAHOO.widget.MenuItem("Update Department", {url: "<%=request.getContextPath()%>/systemsetup/managedept1.do"}))
+                oDepartmentMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.dept2")%>", {url: "<%=request.getContextPath()%>/systemsetup/managedept1.do"}))
+                //oDepartmentMenu.addItem(new YAHOO.widget.MenuItem("Delete Department", {url: "<%=request.getContextPath()%>/systemsetup/managedept1.do"}))
+                oDepartmentMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.dept3")%>", {url: "<%=request.getContextPath()%>/systemsetup/managedept1.do"}))
+                //oDepartmentMenu.addItem(new YAHOO.widget.MenuItem("View Department", {url: "<%=request.getContextPath()%>/systemsetup/managedept1.do"}))
+                oDepartmentMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.dept4")%>", {url: "<%=request.getContextPath()%>/systemsetup/managedept1.do"}))
+                //oDepartmentMenu.addItem(new YAHOO.widget.MenuItem("ViewAll Department", {url: "<%=request.getContextPath()%>/systemsetup/view_alldept.do"}))
+                oDepartmentMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.dept5")%>", {url: "<%=request.getContextPath()%>/systemsetup/view_alldept.do"}))
 
 //submenu of Manage Course
 
 
                 var oCourseMenu =new YAHOO.widget.Menu("Manage Course");
 
-                oCourseMenu.addItem(new YAHOO.widget.MenuItem("Add Course", {url: ""}))
-                oCourseMenu.addItem(new YAHOO.widget.MenuItem("Update Course", {url: ""}))
-                oCourseMenu.addItem(new YAHOO.widget.MenuItem("Delete Course", {url: ""}))
-                oCourseMenu.addItem(new YAHOO.widget.MenuItem("View Course", {url: ""}))
-                oCourseMenu.addItem(new YAHOO.widget.MenuItem("ViewAll Course", {url: ""}))
+               // oCourseMenu.addItem(new YAHOO.widget.MenuItem("Add Course", {url: "<%=request.getContextPath()%>/systemsetup/managecourse1.do"}))
+                oCourseMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.course1")%>", {url: "<%=request.getContextPath()%>/systemsetup/managecourse1.do"}))
+                //oCourseMenu.addItem(new YAHOO.widget.MenuItem("Update Course", {url: "<%=request.getContextPath()%>/systemsetup/managecourse1.do"}))
+                oCourseMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.course2")%>", {url: "<%=request.getContextPath()%>/systemsetup/managecourse1.do"}))
+                //oCourseMenu.addItem(new YAHOO.widget.MenuItem("Delete Course", {url: "<%=request.getContextPath()%>/systemsetup/managecourse1.do"}))
+                oCourseMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.course3")%>", {url: "<%=request.getContextPath()%>/systemsetup/managecourse1.do"}))
+                //oCourseMenu.addItem(new YAHOO.widget.MenuItem("View Course", {url: "<%=request.getContextPath()%>/systemsetup/managecourse1.do"}))
+                oCourseMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.course4")%>", {url: "<%=request.getContextPath()%>/systemsetup/managecourse1.do"}))
+                //oCourseMenu.addItem(new YAHOO.widget.MenuItem("ViewAll Course", {url: "<%=request.getContextPath()%>/systemsetup/view_allcourse.do"}))
+                oCourseMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.course5")%>", {url: "<%=request.getContextPath()%>/systemsetup/view_allcourse.do"}))
 
 
 //submenu of Member
@@ -1608,11 +1984,16 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
 
                 var oMemberMenu =new YAHOO.widget.Menu("Manage Member Types");
 
-                oMemberMenu.addItem(new YAHOO.widget.MenuItem("Add Member", {url: ""}))
-                oMemberMenu.addItem(new YAHOO.widget.MenuItem("Update Member", {url: ""}))
-                oMemberMenu.addItem(new YAHOO.widget.MenuItem("Delete Member", {url: ""}))
-                oMemberMenu.addItem(new YAHOO.widget.MenuItem("View Member", {url: ""}))
-                oMemberMenu.addItem(new YAHOO.widget.MenuItem("ViewAll AllMember", {url: ""}))
+              //  oMemberMenu.addItem(new YAHOO.widget.MenuItem("Add Member", {url: "<%=request.getContextPath()%>/systemsetup/manage_member.jsp"}))
+                oMemberMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.member1")%>", {url: "<%=request.getContextPath()%>/systemsetup/manage_member.jsp"}))
+              //  oMemberMenu.addItem(new YAHOO.widget.MenuItem("Update Member", {url: "<%=request.getContextPath()%>/systemsetup/manage_member.jsp"}))
+                oMemberMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.member2")%>", {url: "<%=request.getContextPath()%>/systemsetup/manage_member.jsp"}))
+                //oMemberMenu.addItem(new YAHOO.widget.MenuItem("Delete Member", {url: "<%=request.getContextPath()%>/systemsetup/manage_member.jsp"}))
+                oMemberMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.member3")%>", {url: "<%=request.getContextPath()%>/systemsetup/manage_member.jsp"}))
+                //oMemberMenu.addItem(new YAHOO.widget.MenuItem("View Member", {url: "<%=request.getContextPath()%>/systemsetup/manage_member.jsp"}))
+                oMemberMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.member4")%>", {url: "<%=request.getContextPath()%>/systemsetup/manage_member.jsp"}))
+                //oMemberMenu.addItem(new YAHOO.widget.MenuItem("ViewAll AllMember", {url: "<%=request.getContextPath()%>/systemsetup/viewall_member.do"}))
+                oMemberMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.member5")%>", {url: "<%=request.getContextPath()%>/systemsetup/viewall_member.do"}))
 
 
 
@@ -1621,13 +2002,16 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
 
                 var oSubMemberMenu =new YAHOO.widget.Menu("Manage SubMember Types");
 
-                oSubMemberMenu.addItem(new YAHOO.widget.MenuItem("Add SubMember", {url: ""}))
-                oSubMemberMenu.addItem(new YAHOO.widget.MenuItem("Update SubMember", {url: ""}))
-                oSubMemberMenu.addItem(new YAHOO.widget.MenuItem("Delete SubMember", {url: ""}))
-                oSubMemberMenu.addItem(new YAHOO.widget.MenuItem("View SubMember", {url: ""}))
-                oSubMemberMenu.addItem(new YAHOO.widget.MenuItem("ViewAll AllSubMember", {url: ""}))
-
-
+                //oSubMemberMenu.addItem(new YAHOO.widget.MenuItem("Add SubMember", {url: "<%=request.getContextPath()%>/systemsetup/submember1.do"}))
+                oSubMemberMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.submember1")%>", {url: "<%=request.getContextPath()%>/systemsetup/submember1.do"}))
+                //oSubMemberMenu.addItem(new YAHOO.widget.MenuItem("Update SubMember", {url: "<%=request.getContextPath()%>/systemsetup/submember1.do"}))
+                oSubMemberMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.submember2")%>", {url: "<%=request.getContextPath()%>/systemsetup/submember1.do"}))
+                //oSubMemberMenu.addItem(new YAHOO.widget.MenuItem("Delete SubMember", {url: "<%=request.getContextPath()%>/systemsetup/submember1.do"}))
+                oSubMemberMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.submember3")%>", {url: "<%=request.getContextPath()%>/systemsetup/submember1.do"}))
+                //oSubMemberMenu.addItem(new YAHOO.widget.MenuItem("View SubMember", {url: "<%=request.getContextPath()%>/systemsetup/submember1.do"}))
+                oSubMemberMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.submember4")%>", {url: "<%=request.getContextPath()%>/systemsetup/submember1.do"}))
+                //oSubMemberMenu.addItem(new YAHOO.widget.MenuItem("ViewAll AllSubMember", {url: "<%=request.getContextPath()%>/systemsetup/viewall_submember.do"}))
+                oSubMemberMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.submember5")%>", {url: "<%=request.getContextPath()%>/systemsetup/viewall_submember.do"}))
 
 
 
@@ -1637,32 +2021,45 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
 //submenu of Manage Book Type
                 var oBookMenu =new YAHOO.widget.Menu("Manage Document Category");
 
-                oBookMenu.addItem(new YAHOO.widget.MenuItem("Add Document Category", {url: "<%=request.getContextPath()%>/systemsetup/document_category.jsp"}))
-                oBookMenu.addItem(new YAHOO.widget.MenuItem("Update Document Category", {url: "<%=request.getContextPath()%>/systemsetup/document_category.jsp"}))
-                oBookMenu.addItem(new YAHOO.widget.MenuItem("Delete Document Category", {url: "<%=request.getContextPath()%>/systemsetup/document_category.jsp"}))
-                oBookMenu.addItem(new YAHOO.widget.MenuItem("View Document Category", {url: "<%=request.getContextPath()%>/systemsetup/document_category.jsp"}))
-                oBookMenu.addItem(new YAHOO.widget.MenuItem("ViewAll Document Category", {url: "<%=request.getContextPath()%>/systemsetup/viewallcat.do"}))
+                //oBookMenu.addItem(new YAHOO.widget.MenuItem("Add Document Category", {url: "<%=request.getContextPath()%>/systemsetup/document_category.jsp"}))
+                oBookMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.doccat1")%>", {url: "<%=request.getContextPath()%>/systemsetup/document_category.jsp"}))
+                //oBookMenu.addItem(new YAHOO.widget.MenuItem("Update Document Category", {url: "<%=request.getContextPath()%>/systemsetup/document_category.jsp"}))
+                oBookMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.doccat2")%>", {url: "<%=request.getContextPath()%>/systemsetup/document_category.jsp"}))
+               // oBookMenu.addItem(new YAHOO.widget.MenuItem("Delete Document Category", {url: "<%=request.getContextPath()%>/systemsetup/document_category.jsp"}))
+                oBookMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.doccat3")%>", {url: "<%=request.getContextPath()%>/systemsetup/document_category.jsp"}))
+                //oBookMenu.addItem(new YAHOO.widget.MenuItem("View Document Category", {url: "<%=request.getContextPath()%>/systemsetup/document_category.jsp"}))
+                oBookMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.doccat4")%>", {url: "<%=request.getContextPath()%>/systemsetup/document_category.jsp"}))
+                //oBookMenu.addItem(new YAHOO.widget.MenuItem("ViewAll Document Category", {url: "<%=request.getContextPath()%>/systemsetup/viewallcat.do"}))
+                oBookMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.doccat5")%>", {url: "<%=request.getContextPath()%>/systemsetup/viewallcat.do"}))
 
 //submenu of Manage Fine
                 var oFineMenu =new YAHOO.widget.Menu("Configure Fine Parameters");
 
-                oFineMenu.addItem(new YAHOO.widget.MenuItem("Set FineDetail ", {url: "<%=request.getContextPath()%>/systemsetup/managebooktype.do"}))
-                oFineMenu.addItem(new YAHOO.widget.MenuItem("Update FineDetail", {url: "<%=request.getContextPath()%>/systemsetup/managebooktype.do"}))
-                oFineMenu.addItem(new YAHOO.widget.MenuItem("Delete FineDetail", {url: "<%=request.getContextPath()%>/systemsetup/managebooktype.do"}))
-                oFineMenu.addItem(new YAHOO.widget.MenuItem("View FineDetail", {url: "<%=request.getContextPath()%>/systemsetup/managebooktype.do"}))
-                oFineMenu.addItem(new YAHOO.widget.MenuItem("ViewAll FineDetail", {url: "<%=request.getContextPath()%>/systemsetup/view_allbook.do"}))
-
-
+                //oFineMenu.addItem(new YAHOO.widget.MenuItem("Set FineDetail ", {url: "<%=request.getContextPath()%>/systemsetup/managebooktype.do"}))
+                oFineMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.fine1")%>", {url: "<%=request.getContextPath()%>/systemsetup/managebooktype.do"}))
+                //oFineMenu.addItem(new YAHOO.widget.MenuItem("Update FineDetail", {url: "<%=request.getContextPath()%>/systemsetup/managebooktype.do"}))
+                oFineMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.fine2")%>", {url: "<%=request.getContextPath()%>/systemsetup/managebooktype.do"}))
+                //oFineMenu.addItem(new YAHOO.widget.MenuItem("Delete FineDetail", {url: "<%=request.getContextPath()%>/systemsetup/managebooktype.do"}))
+                oFineMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.fine3")%>", {url: "<%=request.getContextPath()%>/systemsetup/managebooktype.do"}))
+                //oFineMenu.addItem(new YAHOO.widget.MenuItem("View FineDetail", {url: "<%=request.getContextPath()%>/systemsetup/managebooktype.do"}))
+                oFineMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.fine4")%>", {url: "<%=request.getContextPath()%>/systemsetup/managebooktype.do"}))
+                //oFineMenu.addItem(new YAHOO.widget.MenuItem("ViewAll FineDetail", {url: "<%=request.getContextPath()%>/systemsetup/view_allbook.do"}))
+                oFineMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.fine5")%>", {url: "<%=request.getContextPath()%>/systemsetup/view_allbook.do"}))
 
 
 //submenu of Manage Locations
                 var oLocations =new YAHOO.widget.Menu("Manage Locations");
-                oLocations.addItem(new YAHOO.widget.MenuItem("Add Location", {url: ""}))
-                oLocations.addItem(new YAHOO.widget.MenuItem("Update Location", {url: ""}))
-                oLocations.addItem(new YAHOO.widget.MenuItem("Delete Location", {url: ""}))
-                oLocations.addItem(new YAHOO.widget.MenuItem("View Locations", {url: ""}))
-                oLocations.addItem(new YAHOO.widget.MenuItem("ViewAll Locations", {url: ""}))
-
+              /*  oLocations.addItem(new YAHOO.widget.MenuItem("Add Location", {url: "<%=request.getContextPath()%>/systemsetup/add_location.jsp"}))
+                oLocations.addItem(new YAHOO.widget.MenuItem("Update Location", {url: "<%=request.getContextPath()%>/systemsetup/add_location.jsp"}))
+                oLocations.addItem(new YAHOO.widget.MenuItem("Delete Location", {url: "<%=request.getContextPath()%>/systemsetup/add_location.jsp"}))
+                oLocations.addItem(new YAHOO.widget.MenuItem("View Locations", {url: "<%=request.getContextPath()%>/systemsetup/add_location.jsp"}))
+                oLocations.addItem(new YAHOO.widget.MenuItem("ViewAll Locations", {url: "<%=request.getContextPath()%>/systemsetup/view_alllocations.do"}))
+*/
+                 oLocations.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.loc1")%>", {url: "<%=request.getContextPath()%>/systemsetup/add_location.jsp"}))
+                oLocations.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.loc2")%>", {url: "<%=request.getContextPath()%>/systemsetup/add_location.jsp"}))
+                oLocations.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.loc3")%>", {url: "<%=request.getContextPath()%>/systemsetup/add_location.jsp"}))
+                oLocations.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.loc4")%>", {url: "<%=request.getContextPath()%>/systemsetup/add_location.jsp"}))
+                oLocations.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.loc5")%>", {url: "<%=request.getContextPath()%>/systemsetup/view_alllocations.do"}))
 
 
 
@@ -1671,28 +2068,38 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
 
                  var oManNotMenu =new YAHOO.widget.Menu("Manage Notices");
 
-                oManNotMenu.addItem(new YAHOO.widget.MenuItem("Add Notices", {url: ""}))
-                oManNotMenu.addItem(new YAHOO.widget.MenuItem("Update Notices", {url: ""}))
-                oManNotMenu.addItem(new YAHOO.widget.MenuItem("Delete Notices", {url: ""}))
-                oManNotMenu.addItem(new YAHOO.widget.MenuItem("View Notices", {url: ""}))
-                oManNotMenu.addItem(new YAHOO.widget.MenuItem("ViewAll Notices", {url: ""}))
+              /*  oManNotMenu.addItem(new YAHOO.widget.MenuItem("Add Notices", {url: "<%=request.getContextPath()%>/systemsetup/manage_notices.jsp"}))
+                oManNotMenu.addItem(new YAHOO.widget.MenuItem("Update Notices", {url: "<%=request.getContextPath()%>/systemsetup/manage_notices.jsp"}))
+                oManNotMenu.addItem(new YAHOO.widget.MenuItem("Delete Notices", {url: "<%=request.getContextPath()%>/systemsetup/manage_notices.jsp"}))
+                oManNotMenu.addItem(new YAHOO.widget.MenuItem("View Notices", {url: "<%=request.getContextPath()%>/systemsetup/manage_notices.jsp"}))
+                oManNotMenu.addItem(new YAHOO.widget.MenuItem("ViewAll Notices", {url: "<%=request.getContextPath()%>/systemsetup/view_allnotices.do"}))
 
+                */
 
-
+                oManNotMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.notice1")%>", {url: "<%=request.getContextPath()%>/systemsetup/manage_notices.jsp"}))
+                oManNotMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.notice2")%>", {url: "<%=request.getContextPath()%>/systemsetup/manage_notices.jsp"}))
+                oManNotMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.notice3")%>", {url: "<%=request.getContextPath()%>/systemsetup/manage_notices.jsp"}))
+                oManNotMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.notice4")%>", {url: "<%=request.getContextPath()%>/systemsetup/manage_notices.jsp"}))
+                oManNotMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup.notice5")%>", {url: "<%=request.getContextPath()%>/systemsetup/view_allnotices.do"}))
 
 
 
 //submenu of Administrator
-                var oAdminMenu = new YAHOO.widget.Menu("Administrator", { zIndex:2 });
+               // var oAdminMenu = new YAHOO.widget.Menu("Administrator", { zIndex:2 });
+               var oAdminMenu = new YAHOO.widget.Menu("<%=resource.getString("admin.header.main2")%>", { zIndex:2 });
 
-                oAdminMenu.addItem(new YAHOO.widget.MenuItem("Manage Staff", { submenu: oStaffMenu }));
-                oAdminMenu.addItem(new YAHOO.widget.MenuItem("Manage Staff Account", { submenu: oStaffAccMenu }));
-                oAdminMenu.addItem(new YAHOO.widget.MenuItem("Manage Staff Privilege", { submenu: oPrivilegeMenu }));
-  
+               // oAdminMenu.addItem(new YAHOO.widget.MenuItem("Manage Staff", { submenu: oStaffMenu }));
+                oAdminMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin3")%>", { submenu: oStaffMenu }));
+                //oAdminMenu.addItem(new YAHOO.widget.MenuItem("Manage Staff Account", { submenu: oStaffAccMenu }));
+                oAdminMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin1")%>", { submenu: oStaffAccMenu }));
+                //oAdminMenu.addItem(new YAHOO.widget.MenuItem("Manage Staff Privilege", { submenu: oPrivilegeMenu }));
+                oAdminMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.admin2")%>", { submenu: oPrivilegeMenu }));
+
 
 //submenu of System Setup
                 var oSetupMenu = new YAHOO.widget.Menu("System Setup", { zIndex:2 });
-                oSetupMenu.addItem(new YAHOO.widget.MenuItem("Manage Notices", {submenu:oManNotMenu}));
+
+               /*  oSetupMenu.addItem(new YAHOO.widget.MenuItem("Manage Notices", {submenu:oManNotMenu}));
                  oSetupMenu.addItem(new YAHOO.widget.MenuItem("Manage Locations", { submenu: oLocations }));
                  oSetupMenu.addItem(new YAHOO.widget.MenuItem("Manage Member Types", { submenu: oMemberMenu }));
                  oSetupMenu.addItem(new YAHOO.widget.MenuItem("Manage SubMember Types", { submenu: oSubMemberMenu }));
@@ -1701,13 +2108,33 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
                  oSetupMenu.addItem(new YAHOO.widget.MenuItem("Manage Faculty", { submenu: oFacultyMenu }));
                 oSetupMenu.addItem(new YAHOO.widget.MenuItem("Manage Department", { submenu: oDepartmentMenu }));
                 oSetupMenu.addItem(new YAHOO.widget.MenuItem("Manage Courses", { submenu: oCourseMenu }));
+                      */
+                     oSetupMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup1")%>", {submenu:oManNotMenu}));
+                 oSetupMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup2")%>", { submenu: oLocations }));
+                 oSetupMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup3")%>", { submenu: oMemberMenu }));
+                 oSetupMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup4")%>", { submenu: oSubMemberMenu }));
+                 oSetupMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup5")%>", { submenu: oBookMenu }));
+                 oSetupMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup6")%>", { submenu: oFineMenu }));
+                 oSetupMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup7")%>", { submenu: oFacultyMenu }));
+                oSetupMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup8")%>", { submenu: oDepartmentMenu }));
+                oSetupMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup9")%>", { submenu: oCourseMenu }));
 
 
-   <% if(staff_role.equalsIgnoreCase("insti-admin") || staff_role.equalsIgnoreCase("admin")){%>
-                oSetupMenu.addItem(new YAHOO.widget.MenuItem("Manage SubLibrary", {submenu:oManDepMenu}));
+
+
+            <% if(staff_role.equalsIgnoreCase("insti-admin") || staff_role.equalsIgnoreCase("admin")){%>
+               // oSetupMenu.addItem(new YAHOO.widget.MenuItem("Manage SubLibrary", {submenu:oManDepMenu}));
+                 oSetupMenu.addItem(new YAHOO.widget.MenuItem("<%=resource.getString("admin.header.systemsetup10")%>", {submenu:oManDepMenu}));
   <%}%>
 
-                
+
+
+
+
+
+
+
+
 
 
 
@@ -1717,11 +2144,11 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
 
                 var oBookMenu =new YAHOO.widget.Menu("Manage Book Category");
 
-                oBookMenu.addItem(new YAHOO.widget.MenuItem("Add Book Category", {url: ""}))
-                oBookMenu.addItem(new YAHOO.widget.MenuItem("Update Book Category", {url: ""}))
-                oBookMenu.addItem(new YAHOO.widget.MenuItem("Delete Book Category", {url: ""}))
-                oBookMenu.addItem(new YAHOO.widget.MenuItem("View Book Category", {url: ""}))
-                oBookMenu.addItem(new YAHOO.widget.MenuItem("ViewAll Book Category", {url: ""}))
+                oBookMenu.addItem(new YAHOO.widget.MenuItem("Add Book Category", {url: "<%=request.getContextPath()%>/systemsetup/managebooktype.do"}))
+                oBookMenu.addItem(new YAHOO.widget.MenuItem("Update Book Category", {url: "<%=request.getContextPath()%>/systemsetup/managebooktype.do"}))
+                oBookMenu.addItem(new YAHOO.widget.MenuItem("Delete Book Category", {url: "<%=request.getContextPath()%>/systemsetup/managebooktype.do"}))
+                oBookMenu.addItem(new YAHOO.widget.MenuItem("View Book Category", {url: "<%=request.getContextPath()%>/systemsetup/managebooktype.do"}))
+                oBookMenu.addItem(new YAHOO.widget.MenuItem("ViewAll Book Category", {url: "<%=request.getContextPath()%>/systemsetup/view_allbook.do"}))
 
 
 
@@ -1732,19 +2159,62 @@ var oCirInstituteMemberAccountMenu = new YAHOO.widget.Menu("Member Account");
 //*****************************************Start main menu*******************************************************
                 var oMenuBar = new YAHOO.widget.MenuBar("menubar");
 
-                oMenuBar.addItem(new YAHOO.widget.MenuBarItem("HOME", {url:""}));
-                oMenuBar.addItem(new YAHOO.widget.MenuBarItem("ADMINISTRATOR", { submenu: oAdminMenu , disabled:<%=privilege[5]%> }));
-                oMenuBar.addItem(new YAHOO.widget.MenuBarItem("ACQUISITION", { submenu: oAcqMenu, disabled:<%=privilege[1]%> }));
-                oMenuBar.addItem(new YAHOO.widget.MenuBarItem("CATALOGUING", { submenu: oCatMenu, disabled: <%=privilege[2]%> }));
-                oMenuBar.addItem(new YAHOO.widget.MenuBarItem("CIRCULATION", { submenu: oCirMenu , disabled: <%=privilege[3]%>}));
-                oMenuBar.addItem(new YAHOO.widget.MenuBarItem("SERIAL", { submenu: oSerMenu , disabled: <%=privilege[4]%>}));
-                oMenuBar.addItem(new YAHOO.widget.MenuBarItem("SYSTEM SETUP", { submenu: oSetupMenu, disabled:<%=privilege[6]%>}));
-                oMenuBar.addItem(new YAHOO.widget.MenuBarItem("UTILITIES", { disabled: <%=privilege[7]%>}));
-                oMenuBar.addItem(new YAHOO.widget.MenuBarItem("OPAC", {url:""}));
-                oMenuBar.addItem("HELP");
+              <% if(locale1.equalsIgnoreCase("ar")|| locale1.equalsIgnoreCase("ur")){%>
 
+     //oMenuBar.addItem("HELP");
+                oMenuBar.addItem("<%=resource.getString("admin.header.main10") %>");
+                 //oMenuBar.addItem(new YAHOO.widget.MenuBarItem("OPAC", {url:"<%=request.getContextPath()%>/OPAC/OPACmain.jsp"}));
+                oMenuBar.addItem(new YAHOO.widget.MenuBarItem("<%=resource.getString("admin.header.main9") %>", {url:"<%=request.getContextPath()%>/OPAC/OPACmain.jsp"}));
+         //oMenuBar.addItem(new YAHOO.widget.MenuBarItem("UTILTIES", { disabled: <%=privilege[7]%>}));
+                oMenuBar.addItem(new YAHOO.widget.MenuBarItem("<%=resource.getString("admin.header.main8") %>", { disabled: <%=privilege[7]%>}));
+             //oMenuBar.addItem(new YAHOO.widget.MenuBarItem("SYSTEM SETUP", { submenu: oSetupMenu, disabled:<%=privilege[6]%>}));
+                oMenuBar.addItem(new YAHOO.widget.MenuBarItem("<%=resource.getString("admin.header.main7") %>", { submenu: oSetupMenu, disabled:<%=privilege[6]%>}));
+               //oMenuBar.addItem(new YAHOO.widget.MenuBarItem("SERIAL", { submenu: oSerMenu , disabled: <%=privilege[4]%>}));
+                oMenuBar.addItem(new YAHOO.widget.MenuBarItem("<%=resource.getString("admin.header.main6") %>", { submenu: oSerMenu , disabled: <%=privilege[4]%>}));
+                //oMenuBar.addItem(new YAHOO.widget.MenuBarItem("CIRCULATION", { submenu: oCirMenu , disabled: <%=privilege[3]%>}));
+                oMenuBar.addItem(new YAHOO.widget.MenuBarItem("<%=resource.getString("admin.header.main5") %>", { submenu: oCirMenu , disabled: <%=privilege[3]%>}));
+                //oMenuBar.addItem(new YAHOO.widget.MenuBarItem("CATALOGUING", { submenu: oCatMenu, disabled: <%=privilege[2]%> }));
+                oMenuBar.addItem(new YAHOO.widget.MenuBarItem("<%=resource.getString("admin.header.main4") %>", { submenu: oCatMenu, disabled: <%=privilege[2]%> }));
+               //oMenuBar.addItem(new YAHOO.widget.MenuBarItem("ACQUISITION", { submenu: oAcqMenu, disabled:<%=privilege[1]%> }));
+                oMenuBar.addItem(new YAHOO.widget.MenuBarItem("<%=resource.getString("admin.header.main3") %>", { submenu: oAcqMenu, disabled:<%=privilege[1]%> }));
+               //oMenuBar.addItem(new YAHOO.widget.MenuBarItem("ADMINISTRATOR", { submenu: oAdminMenu , disabled:<%=privilege[5]%> }));
+                oMenuBar.addItem(new YAHOO.widget.MenuBarItem("<%=resource.getString("admin.header.main2") %>", { submenu: oAdminMenu , disabled:<%=privilege[5]%> }));
+
+
+
+
+
+  //oMenuBar.addItem(new YAHOO.widget.MenuBarItem("HOME", {url:"<%=request.getContextPath()%>/admin/main.jsp"}));
+                oMenuBar.addItem(new YAHOO.widget.MenuBarItem("<%=resource.getString("admin.header.main1") %>", {url:"<%=request.getContextPath()%>/admin/main.jsp"}));
+
+
+
+    <%}else{%>
+                //oMenuBar.addItem(new YAHOO.widget.MenuBarItem("HOME", {url:"<%=request.getContextPath()%>/admin/main.jsp"}));
+                oMenuBar.addItem(new YAHOO.widget.MenuBarItem("<%=resource.getString("admin.header.main1") %>", {url:"<%=request.getContextPath()%>/admin/main.jsp"}));
+                //oMenuBar.addItem(new YAHOO.widget.MenuBarItem("ADMINISTRATOR", { submenu: oAdminMenu , disabled:<%=privilege[5]%> }));
+                oMenuBar.addItem(new YAHOO.widget.MenuBarItem("<%=resource.getString("admin.header.main2") %>", { submenu: oAdminMenu , disabled:<%=privilege[5]%> }));
+                //oMenuBar.addItem(new YAHOO.widget.MenuBarItem("ACQUISITION", { submenu: oAcqMenu, disabled:<%=privilege[1]%> }));
+                oMenuBar.addItem(new YAHOO.widget.MenuBarItem("<%=resource.getString("admin.header.main3") %>", { submenu: oAcqMenu, disabled:<%=privilege[1]%> }));
+                //oMenuBar.addItem(new YAHOO.widget.MenuBarItem("CATALOGUING", { submenu: oCatMenu, disabled: <%=privilege[2]%> }));
+                oMenuBar.addItem(new YAHOO.widget.MenuBarItem("<%=resource.getString("admin.header.main4") %>", { submenu: oCatMenu, disabled: <%=privilege[2]%> }));
+                //oMenuBar.addItem(new YAHOO.widget.MenuBarItem("CIRCULATION", { submenu: oCirMenu , disabled: <%=privilege[3]%>}));
+                oMenuBar.addItem(new YAHOO.widget.MenuBarItem("<%=resource.getString("admin.header.main5") %>", { submenu: oCirMenu , disabled: <%=privilege[3]%>}));
+                //oMenuBar.addItem(new YAHOO.widget.MenuBarItem("SERIAL", { submenu: oSerMenu , disabled: <%=privilege[4]%>}));
+                oMenuBar.addItem(new YAHOO.widget.MenuBarItem("<%=resource.getString("admin.header.main6") %>", { submenu: oSerMenu , disabled: <%=privilege[4]%>}));
+                //oMenuBar.addItem(new YAHOO.widget.MenuBarItem("SYSTEM SETUP", { submenu: oSetupMenu, disabled:<%=privilege[6]%>}));
+                oMenuBar.addItem(new YAHOO.widget.MenuBarItem("<%=resource.getString("admin.header.main7") %>", { submenu: oSetupMenu, disabled:<%=privilege[6]%>}));
+                //oMenuBar.addItem(new YAHOO.widget.MenuBarItem("UTILTIES", { disabled: <%=privilege[7]%>}));
+                oMenuBar.addItem(new YAHOO.widget.MenuBarItem("<%=resource.getString("admin.header.main8") %>", { disabled: <%=privilege[7]%>}));
+                //oMenuBar.addItem(new YAHOO.widget.MenuBarItem("OPAC", {url:"<%=request.getContextPath()%>/OPAC/OPACmain.jsp"}));
+                oMenuBar.addItem(new YAHOO.widget.MenuBarItem("<%=resource.getString("admin.header.main9") %>", {url:"<%=request.getContextPath()%>/OPAC/OPACmain.jsp"}));
+                //oMenuBar.addItem("HELP");
+                oMenuBar.addItem("<%=resource.getString("admin.header.main10") %>");
+
+
+                <%}%>
 //*****************************************End main menu*******************************************************
-                //oMenuBar.addItem(new YAHOO.widget.MenuBarItem("Examples Home", { url: "index.html" }));
+                               //oMenuBar.addItem(new YAHOO.widget.MenuBarItem("Examples Home", { url: "index.html" }));
 
 
                 // Render the MenuBar instance and corresponding submenus
@@ -1904,19 +2374,66 @@ else {
     <body style="margin:2px 2px 2px 2px;">
   <html:form action="/assign_privilege2" method="post">
 
-
+   <% if(locale1.equalsIgnoreCase("ar")|| locale1.equalsIgnoreCase("ur")){%>
 <table width="100%"  border="0px" class="logout">
 
-               <tr><td width="150px" align="right">
+               <tr>
+                    <td  width="300px"   valign="top">
+                        <table border="0"><tr><td valign="top"><%=resource.getString("login.hello")%>,&nbsp;
+                        <script>document.write('<span ');
+document.write('height:10px;border:0px solid black;font:bold 10pt Verdana;');
+document.write(' onClick="toggle_menu(1);');
+document.write('event.cancelBubble=1" ><span style="cursor:hand;">');
+document.write('<%=username%> <img width=10 height=10 src="<%=request.getContextPath()%>/images/down.gif"></span>')
+document.write('<div id="ddmenu" style="');
+document.write('height:45px;border:0px solid black;background-color:white;text-align: right;padding-right:2px');
+document.write('overflow-y:scroll;visibility:hidden;">')
+  additem("Change Profile","<%=request.getContextPath()%>/admin/staffupdate.do?id=admin");
+additem("Change Password","<%=request.getContextPath()%>/admin/changeuserpassword.do");
+
+
+
+document.onclick= function() {toggle_menu(0); }
+document.write('</div></span>');
+
+
+                        </script>
+                                </td><td valign="top">
+&nbsp;|&nbsp;<a href="<%=request.getContextPath()%>/logout.do"><%=resource.getString("login.signout")%></a>&nbsp;&nbsp;&nbsp;
+                                </td></tr></table>
+
+
+
+</td>
+                    <td align="center" class=""><span style="font-size:20px;font-weight:bold;color:blue;" > <%=library_name%></span>&nbsp;&nbsp;<br/><span class="mess"><%=resource.getString("admin.header.role")%>:&nbsp;[<%=role_name%>]&nbsp;&nbsp;<%=resource.getString("opac.simplesearch.library")%>&nbsp;[<%=sublibrary_name%>]&nbsp;&nbsp;</span></td>
+
+
+             <td width="150px"   align="right" >
 
 
                     <img src="<%=request.getContextPath()%>/images/opac_lib.PNG" alt="banner space"   align="top" style="padding:5px 5px 5px 5px;">
 
                    </td>
-                    <td align="center" class=""><span style="font-size:20px;font-weight:bold;color:blue;" > <%=library_name%></span>&nbsp;&nbsp;<br/><span class="mess">Department:&nbsp;[<%=sublibrary_name%>]&nbsp;&nbsp;User Role:&nbsp;[<%=role_name%>]</span></td>
+               </tr>
 
-                    <td align="right" width="300px"   valign="top">
-                        <table border="0"><tr><td valign="top">Hello,&nbsp;
+
+
+
+                </table>
+                                <%}else{%>
+
+<table width="100%"  border="0px"  class="logout">
+
+               <tr><td width="150px"  align="left">
+
+
+                    <img src="<%=request.getContextPath()%>/images/opac_lib.PNG" alt="banner space"   align="top" style="padding:5px 5px 5px 5px;">
+
+                   </td>
+                        <td align="center" class=""><span style="font-size:20px;font-weight:bold;color:blue;" > <%=library_name%></span>&nbsp;&nbsp;<br/><span class="mess"><%=resource.getString("opac.simplesearch.library")%>&nbsp;[<%=sublibrary_name%>]&nbsp;&nbsp;<%=resource.getString("admin.header.role")%>:&nbsp;[<%=role_name%>]</span></td>
+
+                    <td  align="<%=align%>"  width="300px"  valign="top">
+                        <table border="0"><tr><td valign="top"><%=resource.getString("login.hello")%>,&nbsp;
                         <script>document.write('<span ');
 document.write('height:10px;border:0px solid black;font:bold 10pt Verdana;');
 document.write(' onClick="toggle_menu(1);');
@@ -1936,7 +2453,7 @@ document.write('</div></span>');
 
                         </script>
                                 </td><td valign="top">
-&nbsp;|&nbsp;<a href="<%=request.getContextPath()%>/logout.do">Sign Out</a>&nbsp;&nbsp;&nbsp;
+&nbsp;|&nbsp;<a href="<%=request.getContextPath()%>/logout.do"><%=resource.getString("login.signout")%></a>&nbsp;&nbsp;&nbsp;
                                 </td></tr></table>
 
 
@@ -1947,10 +2464,10 @@ document.write('</div></span>');
 
 
 
+
                 </table>
 
-
-
+<%}%>
       
 <div
    style="
@@ -1961,7 +2478,7 @@ document.write('</div></span>');
 
       visibility: show;">
     <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/><br><br><br>
-   <table width="400px"   align="center" border="0" class="table">
+   <table width="400px"  dir="<%=rtl%>" align="center" border="0" class="table">
         <tr><td class="headerstyle" align="center"><b>Manage SubLibrary</b></td></tr>
 
         <tr><td>
@@ -1975,13 +2492,16 @@ document.write('</div></span>');
 <br>
 <input type="hidden" name="staff_id" value="<%=staff_id%>">
 <input type="hidden" name="staff_name" value="<%=staff_name%>">
-<input type="button" value="Confirm Privilege" name="button" class="txt2" onclick="quit()"/>
-<input type="submit" value="Restore Previous Privilege" name="button" class="txt2"/>
 
 
 
                         
-                    </td></tr></table>
+                    </td></tr>
+        <tr><td dir="<%=rtl%>" align="<%=align%>">
+                <input type="button" value="Confirm Privilege" name="button" class="txt2" onclick="quit()"/>
+<input type="submit" value="Restore Previous Privilege" name="button" class="txt2"/>
+
+            </td></tr></table>
 
 
 

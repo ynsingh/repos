@@ -142,12 +142,12 @@ public class PrivilegeAction extends org.apache.struts.action.Action {
 
          //check the privilege of admin role user and degrade it to staff role if administrator privielege
          //not selected
-        Privilege tempprivobj=PrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
+        privobj=PrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
 
-         if(tempprivobj!=null)
+         if(privobj!=null)
          {
-             System.out.println(tempprivobj.getAdministrator()+"...................");
-         if(tempprivobj.getAdministrator().equalsIgnoreCase("true"))
+             System.out.println(privobj.getAdministrator()+"...................");
+         if(privobj.getAdministrator().equalsIgnoreCase("true"))
          {
              System.out.println("Admin");
            Login logobj=LoginDAO.searchStaffLogin(staff_id, library_id, staff_sublibrary_id);
@@ -168,7 +168,7 @@ public class PrivilegeAction extends org.apache.struts.action.Action {
                 request.setAttribute("staff_id", staff_id);
                 request.setAttribute("staff_name", staff_name);
                 request.setAttribute("msg", "Exception occured");
-                System.out.println(tempprivobj.getAdministrator());
+                System.out.println(privobj.getAdministrator());
                 return mapping.findForward("failure");
              }
             

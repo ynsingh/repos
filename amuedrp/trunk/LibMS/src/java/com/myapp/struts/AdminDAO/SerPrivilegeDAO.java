@@ -246,7 +246,7 @@ public static String getValue(SerPrivilege ser,int i) {
         }
         finally
         {
-          //session.close();
+        //  session.close();
         }
 
 return "";
@@ -316,7 +316,7 @@ public static  boolean insert(SerPrivilege obj)
         }
         finally
         {
-          //session.close();
+        //  session.close();
         }
    return true;
 
@@ -340,7 +340,7 @@ public static  boolean insert(SerPrivilege obj)
         }
         finally
         {
-          //  session.close();
+         //   session.close();
         }
         return ( SerPrivilege) query.uniqueResult();
 
@@ -434,7 +434,7 @@ public static  List getPrivilege1(String library_id,String sublibrary_id,String 
         }
         finally
         {
-          //  session.close();
+        //    session.close();
         }
         return ( List) query.list();
 

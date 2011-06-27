@@ -24,27 +24,7 @@ This Page is to accept Institute Request and Send to SuperAdmin
 var availableSelectList;
 
 
-function check1()
-{
-    KeyValue=document.getElementById('login_id').value;
-        KeyValue1=document.getElementById('password1').value;
 
-        if(KeyValue==KeyValue1)
-            {
-               availableSelectList = document.getElementById("searchResult");
-
-               availableSelectList.innerHTML="LoginId and Password Should not be same";
-                document.getElementById('password1').value="";
-
-            }
-else{
- availableSelectList = document.getElementById("searchResult");
-
-               availableSelectList.innerHTML="";
-
-}
-
-}
 
 
 
@@ -218,16 +198,7 @@ else{
 
 			</html:messages>
          </td></tr>
-             <tr><td class="txtStyle">Password*</td><td><html:password  property="admin_password" styleId="password1" styleClass="txtTextBox" onblur="check1()"/></td><td  class="err">   <html:messages id="err_name" property="admin_password">
-				<bean:write name="err_name" />
-
-			</html:messages><div align="left" id="searchResult" class="err" style="border:#000000; "></div>
-         </td></tr>
- <tr><td class="txtStyle">Re-enter Password*</td><td><html:password  styleId="password2" property="reenter_admin_password" styleClass="txtTextBox"/></td><td  class="err">   <html:messages id="err_name" property="reenter_admin_password">
-				<bean:write name="err_name" />
-
-			</html:messages>
-         </td></tr>
+           
                 <tr><td class="txtStyle">Library Name*</td><td><html:text  property="library_name" styleClass="txtTextBox"/></td><td  class="err">   <html:messages id="err_name" property="library_name">
 				<bean:write name="err_name" />
 

@@ -1,5 +1,31 @@
+<%@page pageEncoding="UTF-8"%>
+<%@page import="java.sql.*,com.myapp.struts.admin.AdminReg_Institute,com.myapp.struts.hbm.*,java.util.*" %>
 
- 
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    boolean page=true;
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+       // System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
+    else{ rtl="RTL";page=false;align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
+
 <%
 try{
 if(session.getAttribute("library_id")!=null){
@@ -24,16 +50,16 @@ String msg3=(String)request.getAttribute("accept_msg3");
  <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
 
 
-    <table width="400px" height="400px" class="txt2"  valign="top" align="left" id="tab1">
+    <table width="400px" height="400px" class="txt2"  valign="top"  dir="<%=rtl%>" align="<%=align%>" id="tab1">
         <tr>
-            <td   width="400px" height="600px" valign="top" style="" align="left" class="mess">
+            <td   width="400px" height="600px" valign="top" style=""  dir="<%=rtl%>" align="<%=align%>" class="mess">
                
   <br>
-                    <p align="left" ><u>Institute Details</u><br></p>
-                    <p align="left" >Institute ID    :<b><%=msg1%></b></p>
+                    <p  align="<%=align%>" ><u><%=resource.getString("admin.acceptmesg.institutedetail")%></u><br></p>
+                    <p   align="<%=align%>" ><%=resource.getString("admin.searchadmingrid.InstituteId")%>   :<b><%=msg1%></b></p>
                   <!-- <p align="left"> Library Name  :<b><%=msg2%></b></p>   -->
-                    <p align="left" >Institute Name:<b><%=msg3%></b></p>
-                    <p align="left" >Institute is Successfully registered</p>
+                    <p   align="<%=align%>" ><%=resource.getString("admin.viewpending.institutename")%> :<b><%=msg3%></b></p>
+                    <p   align="<%=align%>"><%=resource.getString("admin.acceptmesg.text")%></p>
 
 
 

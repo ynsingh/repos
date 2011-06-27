@@ -18,8 +18,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import com.myapp.struts.utility.*;
+import com.myapp.struts.utility.Email;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 
 /**
  *
@@ -28,7 +33,8 @@ import com.myapp.struts.utility.*;
 public class CreateAccountAction extends org.apache.struts.action.Action {
     
    
-
+  private final ExecutorService executor=Executors.newFixedThreadPool(1);
+  Email obj;
     private String user_name;
     private String staff_id;
     private String password;
@@ -38,11 +44,31 @@ public class CreateAccountAction extends org.apache.struts.action.Action {
     private String role;
     private boolean result;
     int i;
-  
+    private String password1;
+   Locale locale=null;
+   String locale1="en";
+   String rtl="ltr";
+   String align="left";
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+         HttpSession session=request.getSession();
+       try{
+
+        locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
       CreateAccountActionForm accountobj=(CreateAccountActionForm)form;
       login_id=accountobj.getLogin_id();
      
@@ -53,7 +79,7 @@ public class CreateAccountAction extends org.apache.struts.action.Action {
       sublibrary_id=accountobj.getSublibrary_id();
 
       
-      HttpSession session=request.getSession();
+    
       library_id=(String)session.getAttribute("library_id");
      
 
@@ -69,7 +95,8 @@ public class CreateAccountAction extends org.apache.struts.action.Action {
                         Login log=LoginDAO.searchLoginID(login_id);
                         if(log!=null)
                         {
-                            String msg="Duplicate Login Id ";
+                            //String msg="Duplicate Login Id ";
+                         String msg=resource.getString("admin.createaccountaction.duplicate");
                             request.setAttribute("msg", msg);
                              return mapping.findForward("duplicate");
 
@@ -88,7 +115,8 @@ public class CreateAccountAction extends org.apache.struts.action.Action {
              result=StaffDetailDAO.update1(staffobj);
                 if(result==false)
                 {
-                    String msg="Request for registration failure due to some error";
+                   // String msg="Request for registration failure due to some error";
+                    String msg=resource.getString("admin.StaffDetailAction.error");
                                request.setAttribute("msg", msg);
                                return mapping.findForward("error");
 
@@ -98,8 +126,15 @@ public class CreateAccountAction extends org.apache.struts.action.Action {
               staffobj=StaffDetailDAO.searchStaffId(staff_id,library_id,sublibrary_id);
               LoginId loginIdobj=new LoginId(staff_id, library_id);
               Login logobj=new Login(loginIdobj,staffobj,login_id) ;
-              password=PasswordEncruptionUtility.password_encrupt(password);
-                logobj.setPassword( password);
+
+              /*Password Generate and Reset It*/
+                 password= RandomPassword.getRandomString(10);
+                 System.out.println(password);
+
+
+              password1=PasswordEncruptionUtility.password_encrupt(password);
+
+                logobj.setPassword( password1);
                 logobj.setRole(role);
                 logobj.setSublibraryId(sublibrary_id);
                 logobj.setUserName(user_name);
@@ -110,12 +145,26 @@ public class CreateAccountAction extends org.apache.struts.action.Action {
 
 
 
-                    String msg="Request for registration failure due to some error";
+                    //String msg="Request for registration failure due to some error";
+                      String msg=resource.getString("admin.StaffDetailAction.error");
                     request.setAttribute("msg", msg);
                     return mapping.findForward("error");
 
                 }
                 else{
+
+ String path = servlet.getServletContext().getRealPath("/");
+             obj=new Email(path,staffobj.getEmailId(),password,"Create Account Successfully from LibMS","User Id="+login_id+" Your Password for LibMS Login is="+password+" User Role="+role);
+            executor.submit(new Runnable() {
+
+                public void run() {
+                    obj.send();
+                }
+            });
+
+
+
+
                            if(role.equals("staff"))
                                     result=CreatePrivilege.assignStaffPrivilege(staff_id, library_id,sublibrary_id);
                             else if(role.equals("admin"))
@@ -128,7 +177,8 @@ public class CreateAccountAction extends org.apache.struts.action.Action {
 
                            if(result==false)
                            {
-                               String msg="Request for registration failure due to some error";
+                               //String msg="Request for registration failure due to some error";
+                                 String msg=resource.getString("admin.StaffDetailAction.error");
                                request.setAttribute("msg", msg);
                                return mapping.findForward("error");
                           }
@@ -142,84 +192,6 @@ public class CreateAccountAction extends org.apache.struts.action.Action {
 
          
 
-/*code for Java Mailing
-
-        PrintWriter writer = response.getWriter();
-        response.setContentType("text/html");
-        writer.println("<html><head><title>Mail Example</title></head>");
-        writer.println("<body bgcolor=\"white\">");
-        writer.println("<h1>Mail Example</h1>");
-
-        ///////// set this variable to be your SMTP host
-
-        String mailHost = "your.smtp.server";
-
-        ///////// set this variable to be your desired email recipient
-
-        String to = "recipient@recip.recip";
-
-        // these variables come from the mail form
-
-        String from = request.getParameter("from");
-        String subject = request.getParameter("subject");
-        String body = request.getParameter("body");
-
-        if ((from != null) && (to != null) && (subject != null)  && (body != null)) // we have mail to send
-        {
-
-        try {
-
-
-            //Get system properties
-            Properties props = System.getProperties();
-
-            //Specify the desired SMTP server
-            props.put("mail.smtp.host", mailHost);
-
-            // create a new Session object
-      Session   session1 = Session.getInstance(props,null);
-
-            // create a new MimeMessage object (using the Session created above)
-            Message message = new MimeMessage(session1);
-            message.setFrom(new InternetAddress(from));
-            message.setRecipients(Message.RecipientType.TO, new InternetAddress[] { new InternetAddress(to) });
-            message.setSubject(subject);
-            message.setContent(body, "text/plain");
-
-            Transport.send(message);
-
-            // it worked!
-            writer.println("<b>Thank you.  Your message to " + to + " was successfully sent.</b>");
-
-        } catch (Throwable t) {
-
-            writer.println("<b>Unable to send message: <br><pre>");
-            t.printStackTrace(writer);
-            writer.println("</pre></b>");
-        }
-
-
-        }
-        else
-        {
-            // no mail to send. print a blank mail form
-            writer.println("<form action=\"/mine/mail\" method=\"POST\">");
-            writer.println("<table border=\"0\">");
-            writer.println("<tr><td>Message From: </td><td><input type=\"text\" name=\"from\"></td></tr>");
-            writer.println("<tr><td>Subject: </td><td><input type=\"text\" name=\"subject\"></td></tr>");
-            writer.println("<tr><td valign=\"top\">Message: </td><td><textarea name=\"body\" rows=\"10\" cols\"40\"></textarea></td></tr>");
-            writer.println("<tr><td colspan=\"2\" align=\"center\"><input type=\"submit\" value=\"Send\"></td></tr>");
-            writer.println("</table>");
-            writer.println("</form>");
-        }
-
-
-        writer.println("</body>");
-        writer.println("</html>");
-
-
-
-----------------------------------*/
     }
     }
     

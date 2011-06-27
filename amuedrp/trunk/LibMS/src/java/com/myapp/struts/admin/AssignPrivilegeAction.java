@@ -46,18 +46,10 @@ public class AssignPrivilegeAction extends org.apache.struts.action.Action {
     private String staff_name;
     private String staff_sublibrary_id;
 private String sql1,sql2,sql3,sql4,sql5;
-private ResultSet privilege_resultset,acq_privilege_resultset,cat_privilege_resultset,cir_privilege_resultset,ser_privilege_resultset;
+//private ResultSet privilege_resultset,acq_privilege_resultset,cat_privilege_resultset,cir_privilege_resultset,ser_privilege_resultset;
 
     String sql;
-    /**
-     * This is the action called from the Struts framework.
-     * @param mapping The ActionMapping used to select this instance.
-     * @param form The optional ActionForm bean for this request.
-     * @param request The HTTP Request we are processing.
-     * @param response The HTTP Response we are processing.
-     * @throws java.lang.Exception
-    
-     */
+   
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
@@ -133,10 +125,7 @@ private ResultSet privilege_resultset,acq_privilege_resultset,cat_privilege_resu
 
 
 
-            // ResultSet rs=MyQueryResult.getMyExecuteQuery("select user_name from login where staff_id='"+staff_id+"' and library_id='"+ library_id + "'");
-            // if(rs.next())
-            //     staff_name=rs.getString("user_name");
-System.out.println("Staff_id="+staff_id);
+          
             request.setAttribute("button", button);
             request.setAttribute("new_staff_name", staff_name);
             request.setAttribute("new_staff_id", staff_id);
@@ -149,9 +138,8 @@ System.out.println("Staff_id="+staff_id);
         CirPrivilege cirprivobj=CirPrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
         SerPrivilege serprivobj=SerPrivilegeDAO.getPrivilege(library_id, staff_sublibrary_id, staff_id);
         Login loginprivobj=LoginDAO.searchStaffLogin(staff_id, library_id, staff_sublibrary_id);
-System.out.println("login Role="+loginprivobj.getRole());
-        session.setAttribute("privilege", privobj);
 
+        session.setAttribute("privilege", privobj);
         session.setAttribute("acq_privilege", acqprivobj);
         session.setAttribute("cat_privilege", catprivobj);
         session.setAttribute("cir_privilege", cirprivobj);

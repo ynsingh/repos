@@ -41,7 +41,7 @@ public class LibraryDAO {
             throw e;
         }
         finally {
-          session.close();
+        //  session.close();
         }
     }
 public void update(Library instituteDetails) {
@@ -59,7 +59,7 @@ public void update(Library instituteDetails) {
             throw e;
         }
         finally {
-           //session.close();
+       session.close();
         }
     }
 public void delete(int instituteId) {
@@ -99,7 +99,7 @@ public Integer getInstituteRequestCount(String status){
             return countrequest;
         }
         finally {
-            session.close();
+          //  session.close();
         }
 }
 public List getInstituteDetailsByStatus(String institute_id, String status){
@@ -115,7 +115,7 @@ public List getInstituteDetailsByStatus(String institute_id, String status){
             return (List)query.list();
         }
         finally {
-            session.close();
+          //  session.close();
         }
 }
 public Library getInstituteDetails(String instituteId){
@@ -167,7 +167,7 @@ public List getLibrarySearch(String search_by, String search_keyword, String sor
             return query.list();
         }
         finally {
-            session.close();
+         //   session.close();
         }
 }
 
@@ -188,7 +188,7 @@ public Integer getLibraryRequestCount(){
             return countrequest;
         }
         finally {
-            session.close();
+          //  session.close();
         }
 }
 
@@ -214,7 +214,7 @@ public static  List<Library> searchAllLibrary()
         }
         finally
         {
-          //  session.close();
+         //   session.close();
         }
         return (List<Library>) query.list();
 
@@ -241,7 +241,7 @@ public static  Library searchLibraryID(String library_id)
         }
         finally
         {
-          //  session.close();
+         //   session.close();
         }
         return ( Library) query.uniqueResult();
 
@@ -265,7 +265,7 @@ public static  Library searchBlockLibrary(String library_id)
         }
         finally
         {
-          //  session.close();
+         //  session.close();
         }
         return ( Library) query.uniqueResult();
 
@@ -289,7 +289,7 @@ public static  Library getLibraryName(String library_id)
         }
         finally
         {
-          //  session.close();
+       //    session.close();
         }
         return ( Library) query.uniqueResult();
 
@@ -313,7 +313,7 @@ public static  Library getLibraryNameByID(String library_name)
         }
         finally
         {
-          //  session.close();
+         //   session.close();
         }
         return ( Library) query.uniqueResult();
 

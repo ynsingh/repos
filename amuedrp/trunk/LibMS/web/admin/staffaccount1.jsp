@@ -1,6 +1,6 @@
 
 <%@page contentType="text/html" import="com.myapp.struts.hbm.*,com.myapp.struts.AdminDAO.*" pageEncoding="UTF-8"%>
-
+<%@page contentType="text/html" import="java.util.*,java.io.*,java.net.*"%>
  <jsp:include page="header.jsp" flush="true" />
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
@@ -29,6 +29,29 @@ String btn=(String)request.getAttribute("btn");
             request.setAttribute("staff_id", staff_id);
 
 %>
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+       // System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+
+%>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -49,15 +72,15 @@ String btn=(String)request.getAttribute("btn");
                    
                     <br><br><br>
 
-                    <p align="left" class="mess"> Login Id:<b><%=login_id%></b>
+                    <p dir="<%=rtl%>" align="<%=align%>" class="mess"> <%=resource.getString("admin.createaccount1.loginid")%>:<b><%=login_id%></b>
                     <br><br>
-                   <p align="left" class="mess"> User Role:<b><%=role%></b>
+                   <p dir="<%=rtl%>" align="<%=align%>" class="mess"> <%=resource.getString("admin.createaccount1.role")%>:<b><%=role%></b>
                     <br><br>
 
                           
-                    Staff Name:<b><%=user_name%></b><br>
+                    <%=resource.getString("admin.createaccount1.username")%>:<b><%=user_name%></b><br>
                     <input type="hidden" name="user_name" value="<b><%=user_name%></b>"/>
-                    <br>Library ID:<b><%=lib%></b>
+                    <br> <%=resource.getString("admin.staffaccount.libid")%>:<b><%=lib%></b>
                     <br><br>
                       <%
                     if(msg!=null)
@@ -87,7 +110,7 @@ String btn=(String)request.getAttribute("btn");
 
                            <br><br>
 
-                    <%if(btn.equals("Create Account")){%>The confirmation email sent successfully.<%}%>
+                    <%if(btn.equals("Create Account")){%><%=resource.getString("admin.staffaccount1.mess1")%><%}%>
 
                     <%
                     session.setAttribute("staff_name",user_name);
@@ -106,7 +129,7 @@ String btn=(String)request.getAttribute("btn");
     {
 
 
-        var a=confirm("<b>Assign Privilege for staff with Login Id:<%=login_id %> Now?</b>");
+        var a=confirm("<b><%=resource.getString("admin.staffaccount1.mess2")%><%=login_id %> <%=resource.getString("admin.staffaccount1.mess3")%></b>");
         if(a==true)
             location.href="<%=request.getContextPath()%>/admin/privilege_tree.jsp?login_id=<%=login_id%>";
 

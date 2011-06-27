@@ -35,7 +35,7 @@ String login_role=(String)session.getAttribute("login_role");
       <table width="400px" height="600px"  valign="top" align="center" >
         <tr><td   width="400px" height="500px" valign="top" style="" align="center">
                 <fieldset style="border:solid 1px brown;height:300px;width:300px;padding-left: 5px">
-                    <legend><img src="/LibMS-Struts/images/StaffAccountLogin.png"/></legend><br>
+                    
                     <table width="500px" align="left">
                        
                         <tr><td colspan="2" height="5px"></td></tr>
@@ -69,10 +69,10 @@ String login_role=(String)session.getAttribute("login_role");
                                 </html:select>
                                 </td></tr>
                          <tr><td colspan="2" height="5px"></td></tr>
-                        <tr><td class="btn">Password</td><td><input type="password" id="password"  name="password"    value=""></td></tr>
+                 <!--  <tr><td class="btn">Password</td><td><input type="password" id="password"  name="password"    value=""></td></tr>
                         <tr><td colspan="2" height="5px"></td></tr>
                         <tr><td class="btn">Reenter Password</td><td><input type="password" id="password1"  name="password1"    value=""></td></tr>
-
+                 -->
                         <tr><td colspan="2" align="center">
                                 <br>
                                 <br>

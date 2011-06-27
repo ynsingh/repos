@@ -62,9 +62,9 @@ Connection con1;
         AdminRegistrationActionForm adminRegistrationActionForm=(AdminRegistrationActionForm)form;
         
         login_id=adminRegistrationActionForm.getLogin_id();
-        admin_password=adminRegistrationActionForm.getAdmin_password();
-       System.out.println(admin_password);
-admin_password=PasswordEncruptionUtility.password_encrupt(admin_password);
+       // admin_password=adminRegistrationActionForm.getAdmin_password();
+      // System.out.println(admin_password);
+        //admin_password=PasswordEncruptionUtility.password_encrupt(admin_password);
         HttpSession session=request.getSession();
 
 
@@ -122,7 +122,7 @@ admin_password=PasswordEncruptionUtility.password_encrupt(admin_password);
                 adminobj.setAdminLname(adminRegistrationActionForm.getAdmin_lname());
                 adminobj.setAdminDesignation(adminRegistrationActionForm.getAdmin_designation());
                 adminobj.setAdminEmail(adminRegistrationActionForm.getAdmin_email());
-                adminobj.setAdminPassword(admin_password);
+             //   adminobj.setAdminPassword(admin_password);
                 adminobj.setLibraryName(adminRegistrationActionForm.getLibrary_name());
                 adminobj.setCourtesy(adminRegistrationActionForm.getCourtesy());
                 adminobj.setRegistrationId(AdminRegistrationDAO.maxRegistrationID());

@@ -51,7 +51,7 @@ public static  boolean insert1(AdminRegistration obj)
         }
         finally
         {
-          //session.close();
+       //   session.close();
         }
    return true;
 
@@ -81,7 +81,7 @@ public static  boolean insert1(AdminRegistration obj)
             throw e;
         }
         finally {
-          session.close();
+      //    session.close();
         }
     }
 public void update(AdminRegistration adminDetails) {
@@ -99,7 +99,7 @@ public void update(AdminRegistration adminDetails) {
             throw e;
         }
         finally {
-           //session.close();
+           session.close();
         }
     }
 public void delete(int registration_id) {
@@ -141,7 +141,7 @@ public Integer getAdminRequestCount(String status){
             return countrequest;
         }
         finally {
-            session.close();
+         //   session.close();
         }
 }
 public List getAdminDetailsByStatus(String status){
@@ -156,7 +156,7 @@ public List getAdminDetailsByStatus(String status){
             return query.list();
         }
         finally {
-            session.close();
+        //    session.close();
         }
 }
 public List getAdminDetails(){
@@ -169,7 +169,7 @@ public List getAdminDetails(){
             return query.list();
         }
         finally {
-            session.close();
+        //    session.close();
         }
 }
 public List getAdminInstituteDetails(){
@@ -185,7 +185,7 @@ public List getAdminInstituteDetails(){
             return query.list();
         }
         finally {
-            session.close();
+        //    session.close();
         }
 }
 
@@ -204,7 +204,7 @@ public List getAdminInstituteDetailsById(Integer registerationId){
             return query.list();
         }
         finally {
-            session.close();
+          //  session.close();
         }
 }
 public List getAdminInstituteDetailsByStatus(String status){
@@ -238,7 +238,7 @@ public List getAdminDeatilsById(Integer registrationId){
             return query.list();
         }
         finally {
-            session.close();
+         //   session.close();
         }
 }
 
@@ -276,7 +276,7 @@ public Integer getAdminRequestCount(){
             return countrequest;
         }
         finally {
-            session.close();
+          //  session.close();
         }
 }
 
@@ -288,11 +288,11 @@ return true;
 
     public static Integer maxRegistrationID()
     {
-
+         Session session = HibernateUtil.getSessionFactory().openSession();
         
         try
           {
-            Session session = HibernateUtil.getSessionFactory().openSession();
+          
             Transaction tx = null;
             Criteria criteria = session.createCriteria(AdminRegistration.class).setProjection(Projections.max("registrationId"));
             maxNewRegId = (Integer)criteria.uniqueResult();
@@ -307,6 +307,9 @@ return true;
         {
 
              System.out.println(e.toString());
+        }
+        finally{
+       // session.close();
         }
          return maxNewRegId;
     }
@@ -331,7 +334,7 @@ public static  AdminRegistration searchLoginID(String login_id)
         }
         finally
         {
-          //  session.close();
+        //    session.close();
         }
         return (AdminRegistration) query.uniqueResult();
 
@@ -356,7 +359,7 @@ public static  AdminRegistration searchInstituteAdmin(String staff_id,String lib
         }
         finally
         {
-          //  session.close();
+        //    session.close();
         }
         return (AdminRegistration) query.uniqueResult();
 
@@ -379,7 +382,7 @@ public static  AdminRegistration searchInstituteAdmin(String login_id)
         }
         finally
         {
-          //  session.close();
+        //    session.close();
         }
         return (AdminRegistration) query.uniqueResult();
 

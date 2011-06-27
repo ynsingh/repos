@@ -4,7 +4,10 @@
  */
 
 package com.myapp.struts.admin;
-
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import com.myapp.struts.utility.*;
+import com.myapp.struts.utility.Email;
 import  com.myapp.struts.hbm.Privilege;
 import  com.myapp.struts.hbm.PrivilegeId;
 import  com.myapp.struts.hbm.Library;
@@ -26,13 +29,14 @@ import  com.myapp.struts.hbm.AdminRegistration;
 import  com.myapp.struts.hbm.SerPrivilegeId;
 
 import  com.myapp.struts.AdminDAO.*;
-
+import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import  com.myapp.struts.utility.*;
+import javax.servlet.http.HttpSession;
 
 
 /**
@@ -44,7 +48,8 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
     
     
     boolean result;
-   
+    Email obj;
+    private final ExecutorService executor=Executors.newFixedThreadPool(1);
     private  String user_name;
     private  String password;
     private String staff_id;
@@ -77,6 +82,13 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
     private String courtesy;
     private String gender;
 
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    boolean page=true;
+    String align="left";
+    private String password1;
+
 
     
     
@@ -86,6 +98,21 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
             HttpServletRequest request, HttpServletResponse response)
     throws Exception
     {
+         HttpSession session=request.getSession();
+         try{
+              locale1=(String)session.getAttribute("locale");
+
+              if(session.getAttribute("locale")!=null)
+              {
+                locale1 = (String)session.getAttribute("locale");
+       // System.out.println("locale="+locale1);
+              }
+              else locale1="en";
+            }catch(Exception e){locale1="en";}
+             locale = new Locale(locale1);
+             if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
+             else{ rtl="RTL";page=false;align="right";}
+              ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
 
 
@@ -110,7 +137,7 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
         admin_lname=admin.getAdmin_lname();
         admin_designation=admin.getAdmin_designation();
         admin_email=admin.getAdmin_email();
-        admin_password=admin.getAdmin_password();
+       // admin_password=admin.getAdmin_password();
         library_id=admin.getLibrary_id();
         library_name=admin.getLibrary_name();
         courtesy=admin.getCourtesy();
@@ -120,7 +147,15 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
         
         user_name =admin.getAdmin_fname()+" "+admin.getAdmin_lname();
         
-        System.out.println(admin_password);
+
+         /*Password Generate and Reset It*/
+                 password= RandomPassword.getRandomString(10);
+                 System.out.println(password);
+
+
+              password1=PasswordEncruptionUtility.password_encrupt(password);
+
+
         
 
         sublibrary_id=library_id;
@@ -135,8 +170,10 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
 
             if(tempobj!=null)
             {
-
-             request.setAttribute("msg", "Library Already Registered with Library_ID: "+library_id);
+               if(locale.equals("en")||locale.equals("ar")||locale.equals("ur"))
+                 request.setAttribute("msg",resource.getString("admin.acceptmesg.msg")+library_id);
+               else
+                 request.setAttribute("msg",library_id+" "+resource.getString("admin.acceptmesg.msg"));
              return mapping.findForward("failure");
            }
 
@@ -154,7 +191,7 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
              result=LibraryDAO.insert1(libobj);
                 if(result==false)
                 {
-                    String msg="Request for registration failure due to some error";
+                    String msg=resource.getString("admin.acceptmesg.msg2");
                     request.setAttribute("msg", msg);
                     return mapping.findForward("failure");
 
@@ -174,7 +211,7 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
                 result=SubLibraryDAO.insert(subobj);
                 if(result==false)
                 {
-                    String msg="Request for registration failure due to some error";
+                    String msg=resource.getString("admin.acceptmesg.msg2");
                     request.setAttribute("msg", msg);
                     return mapping.findForward("failure");
 
@@ -210,7 +247,7 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
              result=StaffDetailDAO.insert1(staffobj);
                 if(result==false)
                 {
-                    String msg="Request for registration failure due to some error";
+                    String msg=resource.getString("admin.acceptmesg.msg2");
                     request.setAttribute("msg", msg);
                     return mapping.findForward("failure");
 
@@ -219,7 +256,7 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
       /* Use to Insert New Login Entry related to Library Table & SubLibrary Table and Staff Table */
                 LoginId loginIdobj=new LoginId(staff_id, library_id);
                 Login logobj=new Login(loginIdobj,staffobj,login_id) ;
-                logobj.setPassword(admin_password);
+                logobj.setPassword(password1);
                 logobj.setRole("insti-admin");
                 logobj.setSublibraryId(sublibrary_id);
                 logobj.setUserName(user_name);
@@ -229,9 +266,11 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
                 
 
                  result=LoginDAO.insert1(logobj);
+
+
                 if(result==false)
                 {
-                    String msg="Request for registration failure due to some error";
+                    String msg=resource.getString("admin.acceptmesg.msg2");
                     request.setAttribute("msg", msg);
                     return mapping.findForward("failure");
 
@@ -254,7 +293,7 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
 
             if(result==false)
                 {
-                    String msg="Request for registration failure due to some error";
+                    String msg=resource.getString("admin.acceptmesg.msg2");
                     request.setAttribute("msg", msg);
                     return mapping.findForward("failure");
 
@@ -367,7 +406,7 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
 
             if(result==false)
                 {
-                    String msg="Request for registration failure due to some error";
+                    String msg=resource.getString("admin.acceptmesg.msg2");
                     request.setAttribute("msg", msg);
                     return mapping.findForward("failure");
 
@@ -482,7 +521,7 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
 
             if(result==false)
                 {
-                    String msg="Request for registration failure due to some error";
+                    String msg=resource.getString("admin.acceptmesg.msg2");
                     request.setAttribute("msg", msg);
                     return mapping.findForward("failure");
 
@@ -598,7 +637,7 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
 
             if(result==false)
                 {
-                    String msg="Request for registration failure due to some error";
+                    String msg=resource.getString("admin.acceptmesg.msg2");
                     request.setAttribute("msg", msg);
                     return mapping.findForward("failure");
 
@@ -712,7 +751,7 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
 
             if(result==false)
                 {
-                    String msg="Request for registration failure due to some error";
+                    String msg=resource.getString("admin.acceptmesg.msg2");
                     request.setAttribute("msg", msg);
                     return mapping.findForward("failure");
 
@@ -723,38 +762,15 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
     /* Use to Update AdminRegistration Table if status is approved */
 
             AdminRegistration adminobj=(AdminRegistration)AdminRegistrationDAO.searchInstituteAdmin(login_id);
-           // adminobj.setRegistrationId(registration_request_id);
-           // adminobj.setInstituteName(institute_name);
-          //  adminobj.setAbbreviatedName(abbreviated_name);
-         //   adminobj.setInstituteAddress(institute_address);
-          //  adminobj.setCity(city);
-         //   adminobj.setState(state);
-          //  adminobj.setCountry(country);
-          //  adminobj.setPin(pin);
-         //   adminobj.setLandLineNo(land_line_no);
-         //   adminobj.setMobileNo(mobile_no);
+          
             
-         //   adminobj.setLoginId(login_id);
-        //    adminobj.setTypeOfInstitute(type_of_institute);
-         //   adminobj.setWebsite(website);
-         //   adminobj.setAdminFname(admin_fname);
-         //   adminobj.setAdminLname(admin_lname);
-        //    adminobj.setAdminDesignation(admin_designation);
-        //    adminobj.setAdminEmail(admin_email);
-        //    adminobj.setAdminPassword(admin_password);
-            adminobj.setStatus("Registered");
+             adminobj.setStatus("Registered");
             adminobj.setLibraryId(library_id);
-       //     adminobj.setLibraryName(library_name);
-       //     adminobj.setCourtesy(courtesy);
-       //     adminobj.setGender(gender);
-           adminobj.setStaffId(staff_id);
-       //     System.out.println(admin_email);
-
              result= AdminRegistrationDAO.update1(adminobj);
 
             if(result==false)
                 {
-                    String msg="Request for registration failure due to some error";
+                    String msg=resource.getString("admin.acceptmesg.msg2");
                     request.setAttribute("msg", msg);
                     return mapping.findForward("failure");
 
@@ -765,11 +781,23 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
                         request.setAttribute("accept_msg1", library_id);
                         request.setAttribute("accept_msg2",library_name );
                         request.setAttribute("accept_msg3",institute_name );
-                        request.setAttribute("msg", "Request Accepted with library Id "+library_id);
+                        if(locale.equals("en")||locale.equals("ar")||locale.equals("ur"))
+                           request.setAttribute("msg",resource.getString("admin.acceptmesg.msg1")+library_id);
+                        else
+                          request.setAttribute("msg",library_id+" "+resource.getString("admin.acceptmesg.msg1"));
+                        
 
          
                         
-                   //    Email.sendMail(admin_email);
+               String path = servlet.getServletContext().getRealPath("/");
+            obj=new Email(path,admin_email,password,"Create SuperAdmin Account Successfully from LibMS","User Id="+login_id+" Your Password for LibMS Login is="+password);
+            executor.submit(new Runnable() {
+
+                public void run() {
+                    obj.send();
+                }
+            });
+
 
                        
                        

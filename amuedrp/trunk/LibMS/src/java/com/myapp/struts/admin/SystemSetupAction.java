@@ -69,7 +69,7 @@ List<DocumentCategory> docobj=(List<DocumentCategory>)DocumentCategoryDAO.search
 
             if(empobj.isEmpty())
             {
-            session.setAttribute("member","Manage Member Type ");
+           session.setAttribute("member","Manage Member Type");
             }
             if(subempobj.isEmpty())
             {

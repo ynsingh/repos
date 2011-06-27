@@ -50,7 +50,7 @@ public static boolean DeleteStaff(String staff_id,String library_id,String subli
         }
         finally
         {
-        session.close();
+      //  session.close();
         }
    return true;
 
@@ -67,7 +67,7 @@ public static StaffDetail searchLoginID(String login_id) {
             return ( StaffDetail) query.uniqueResult();
         }
         finally {
-            session.close();
+          //  session.close();
         }
 
 }
@@ -118,7 +118,7 @@ public static List<staffsubLib> searchAllStaff(String library_id) {
             return (List<staffsubLib>) query.list();
         }
         finally {
-            session.close();
+          //  session.close();
         }
 
 }
@@ -154,7 +154,7 @@ public static StaffDetail searchStaffId(String staff_id,String library_id,String
             return ( StaffDetail) query.uniqueResult();
         }
         finally {
-          session.close();
+        //  session.close();
         }
 
 }
@@ -184,7 +184,7 @@ public static  boolean insert1(StaffDetail obj)
         }
         finally
         {
-          session.close();
+        //  session.close();
         }
    return true;
 
@@ -216,7 +216,7 @@ public static  boolean update1(StaffDetail obj)
         }
         finally
         {
-        session.close();
+       // session.close();
         }
    return true;
 
@@ -237,7 +237,7 @@ public static  boolean update1(StaffDetail obj)
             throw e;
         }
         finally {
-          session.close();
+        //  session.close();
         }
     }
 public void update(StaffDetail staffDetails) {
@@ -290,7 +290,7 @@ public List getStaffDetails(){
             return query.list();
         }
         finally {
-            session.close();
+          //  session.close();
         }
 }
 
@@ -306,7 +306,7 @@ public List getStaffDetails(String staffId,String libraryId){
             return query.list();
         }
         finally {
-            session.close();
+          //  session.close();
         }
 }
 

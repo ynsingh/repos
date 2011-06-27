@@ -30,7 +30,9 @@ public class PrivilegeDAO {
 
         try {
             tx = session.beginTransaction();
+            if(obj!=null)
             session.update(obj);
+            
             tx.commit();
         }
         catch (RuntimeException e) {
@@ -65,10 +67,10 @@ public class PrivilegeDAO {
         }
         finally
         {
-          //  session.close();
+           // session.close();
         }
-        return ( Privilege) query.uniqueResult();
-
+       
+return ( Privilege) query.uniqueResult();
 }
  
 
@@ -97,7 +99,7 @@ public static  boolean insert(Privilege obj)
         }
         finally
         {
-          //session.close();
+        //  session.close();
         }
    return true;
 
@@ -113,11 +115,78 @@ public static Privilege searchStaffLogin(String staff_id,String library_id) {
             return ( Privilege) query.uniqueResult();
         }
         finally {
-          //  session.close();
+         //  session.close();
         }
 
 }
+public static boolean DeleteStaffPrivilege(String staff_id,String library_id,String sublibrary_id) {
+      Session session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
 
+
+        try
+        {
+            tx = (Transaction) session.beginTransaction();
+            Query query = session.createQuery("Delete From  Privilege where id.libraryId =:library_id and id.staffId =:staff_id and sublibraryId= :sublibrary_id  ");
+            query.setString("staff_id", staff_id);
+            query.setString("library_id", library_id);
+            query.setString("sublibrary_id", sublibrary_id);
+
+            query.executeUpdate();
+
+            Query query1 = session.createQuery("Delete From  AcqPrivilege where id.libraryId =:library_id and id.staffId =:staff_id and sublibraryId= :sublibrary_id  ");
+            query1.setString("staff_id", staff_id);
+            query1.setString("library_id", library_id);
+            query1.setString("sublibrary_id", sublibrary_id);
+
+            query1.executeUpdate();
+
+            Query query2 = session.createQuery("Delete From  SerPrivilege where id.libraryId =:library_id and id.staffId =:staff_id and sublibraryId= :sublibrary_id  ");
+            query2.setString("staff_id", staff_id);
+            query2.setString("library_id", library_id);
+            query2.setString("sublibrary_id", sublibrary_id);
+
+            query2.executeUpdate();
+
+            Query query3 = session.createQuery("Delete From  CatPrivilege where id.libraryId =:library_id and id.staffId =:staff_id and sublibraryId= :sublibrary_id  ");
+            query3.setString("staff_id", staff_id);
+            query3.setString("library_id", library_id);
+            query3.setString("sublibrary_id", sublibrary_id);
+
+            query3.executeUpdate();
+
+              Query query4 = session.createQuery("Delete From  CirPrivilege where id.libraryId =:library_id and id.staffId =:staff_id and sublibraryId= :sublibrary_id  ");
+            query4.setString("staff_id", staff_id);
+            query4.setString("library_id", library_id);
+            query4.setString("sublibrary_id", sublibrary_id);
+
+            query4.executeUpdate();
+
+
+
+
+            tx.commit();
+
+
+
+        }
+        catch (Exception ex)
+        {
+            System.out.println(ex);
+            tx.rollback();
+             return false;
+
+       //  System.out.println(ex.toString());
+
+        }
+        finally
+        {
+        // session.close();
+        }
+   return true;
+
+
+}
 public static boolean DeleteStaff(String staff_id,String library_id,String sublibrary_id) {
       Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = null;
@@ -132,6 +201,11 @@ public static boolean DeleteStaff(String staff_id,String library_id,String subli
             query.setString("sublibrary_id", sublibrary_id);
 
             query.executeUpdate();
+
+
+
+
+
             tx.commit();
 
 
@@ -140,6 +214,7 @@ public static boolean DeleteStaff(String staff_id,String library_id,String subli
         catch (Exception ex)
         {
             System.out.println(ex);
+            tx.rollback();
              return false;
 
        //  System.out.println(ex.toString());
@@ -211,7 +286,7 @@ public static boolean DeleteStaff(String staff_id,String library_id) {
         }
         finally
         {
-           // session.close();
+         //   session.close();
             
         }
 return (List) query.list();

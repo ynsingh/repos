@@ -281,11 +281,7 @@
                 	<arg key="AdminRegistrationActionForm.login_id" />
 
             </field>
-             <field
-                property="admin_password" depends="required">
-                    <arg key="AdminRegistrationActionForm.admin_password"/>
-
-            </field>
+             
 
              <field  property="library_name"   depends="required">
                 	<arg key="AdminRegistrationActionForm.library_name" />

@@ -104,7 +104,7 @@ body
      String admin_lname=adminReg.getAdminLname();
      String admin_designation=adminReg.getAdminDesignation();
      String admin_email=adminReg.getAdminEmail();
-     String admin_password=adminReg.getAdminPassword();
+    // String admin_password=adminReg.getAdminPassword();
      String status=adminReg.getStatus();
      String courtesy=adminReg.getCourtesy();
      String gender=adminReg.getGender();
@@ -143,8 +143,8 @@ body
          admin_designation="";
      if(admin_email==null)
          admin_email="";
-     if(admin_password==null)
-         admin_password="";
+   //  if(admin_password==null)
+   //      admin_password="";
      if(status==null)
          status="";
      if(courtesy==null)
@@ -156,9 +156,9 @@ body
          library_name="";
 
      %>
-               <tr><td width="150px">Institute Name</td><td><input type="text" id="Editbox1"   name="institute_name" value="<%=institute_name%>" tabindex="1" title="Enter Instutute Name" readonly></td><td>Registration_id</td><td><input type="text" id="Editbox18"  name="registration_request_id" value="<%=registration_request_id%>" tabindex="18" readonly></td></tr>
+               <tr><td width="15%" dir="<%=rtl%>" width="150px"><%=resource.getString("institutename")%></td><td><input type="text" id="Editbox1"   name="institute_name" value="<%=institute_name%>" tabindex="1" title="Enter Instutute Name" readonly></td><td width="15%" dir="<%=rtl%>"><%=resource.getString("registrationid")%></td><td><input type="text" id="Editbox18"  name="registration_request_id" value="<%=registration_request_id%>" tabindex="18" readonly></td></tr>
 
-             <tr><td>Institute Abbrivation</td><td><input type="text" id="Editbox2"   name="abbreviated_name" value="<%=abbreviated_name%>" tabindex="2" readonly title="Abbrivated name e.g. AMU(aligarh muslim University)"></td><td>Courtesy</td><td>
+             <tr><td dir="<%=rtl%>"><%=resource.getString("instituteabbrevation")%></td><td><input type="text" id="Editbox2"   name="abbreviated_name" value="<%=abbreviated_name%>" tabindex="2" readonly title="Abbrivated name e.g. AMU(aligarh muslim University)"></td><td dir="<%=rtl%>"><%=resource.getString("courtesy")%></td><td>
                      <input type="text" id="courtesy" readonly name="courtesy" value="<%=courtesy%>"/>
 
 <%--                     <select name="courtesy"  disabled size="1" id="courtesy"   tabindex="11" title="courtesy" style="width:148px">
@@ -184,30 +184,30 @@ body
                       
 </td></tr>
 
-             <tr><td>Institute Address</td><td><input type="text" id="Editbox3"   name="institute_address" value="<%=institute_address%>" tabindex="3" readonly title="Enter Address of Institute"></td><td>First Name</td><td><input type="text" id="Editbox13"  name="admin_fname" value="<%=admin_fname%>" tabindex="13" title="Enter first Name" readonly></td></tr>
-             <tr><td>Library Name</td><td><input type="text"  id="Editbox14" readonly name="library_name" value="<%=library_name%>" tabindex="16" title="Enter Library Name"></td><td>Last Name</td><td><input type="text" id="Editbox16"  name="admin_lname" value="<%=admin_lname%>" tabindex="14" title="Enter Last Name" readonly></td></tr>
-              <tr><td>City</td><td>
+             <tr><td><%=resource.getString("instituteAddress")%></td><td><input type="text" id="Editbox3"   name="institute_address" value="<%=institute_address%>" tabindex="3" readonly title="Enter Address of Institute"></td><td dir="<%=rtl%>"><%=resource.getString("firstname")%></td><td><input type="text" id="Editbox13"  name="admin_fname" value="<%=admin_fname%>" tabindex="13" title="Enter first Name" readonly></td></tr>
+             <tr><td dir="<%=rtl%>"><%=resource.getString("admin.adminpending.libraryname")%></td><td><input type="text"  id="Editbox14" readonly name="library_name" value="<%=library_name%>" tabindex="16" title="Enter Library Name"></td><td dir="<%=rtl%>"><%=resource.getString("lastname")%></td><td><input type="text" id="Editbox16"  name="admin_lname" value="<%=admin_lname%>" tabindex="14" title="Enter Last Name" readonly></td></tr>
+              <tr><td dir="<%=rtl%>"><%=resource.getString("city")%></td><td>
 
                  <input type="text" id="Editbox4"   name="city" value="<%=city%>" tabindex="4" title="Enter City " readonly>
 
 
-                 </td><td>Designation</td><td><input type="text" id="Editbox15"  name="admin_designation" value="<%=admin_designation%>" tabindex="15" title="Enter Designation" readonly></td></tr>
-             <tr><td>State</td><td><input type="text" id="Editbox5"   name="state" value="<%=state1%>" tabindex="5" title="Enter State" readonly></td><td>Mobile No
+                 </td><td dir="<%=rtl%>"><%=resource.getString("designation")%></td><td><input type="text" id="Editbox15"  name="admin_designation" value="<%=admin_designation%>" tabindex="15" title="Enter Designation" readonly></td></tr>
+             <tr><td dir="<%=rtl%>"><%=resource.getString("state")%></td><td><input type="text" id="Editbox5"   name="state" value="<%=state1%>" tabindex="5" title="Enter State" readonly></td><td dir="<%=rtl%>"><%=resource.getString("mobileno")%>
                  </td><td><input type="text" id="Editbox9"   name="mobile_no" value="<%=mobile_no%>" tabindex="9" title="Enter Mobile No with STD Code" readonly></td></tr>
-             <tr><td>Country</td><td><input type="text" id="Editbox6"   name="country" value="<%=country%>" tabindex="6" title="Enter Country" readonly></td>
-             <td>Email ID</td><td><input type="text"  id="Editbox14" readonly name="admin_email" value="<%=admin_email%>" tabindex="16" title="Enter E-mail Id">
+             <tr><td dir="<%=rtl%>"><%=resource.getString("country")%></td><td><input type="text" id="Editbox6"   name="country" value="<%=country%>" tabindex="6" title="Enter Country" readonly></td>
+             <td dir="<%=rtl%>"><%=resource.getString("emailid")%></td><td><input type="text"  id="Editbox14" readonly name="admin_email" value="<%=admin_email%>" tabindex="16" title="Enter E-mail Id">
              </tr>
-             <tr><td>PIN</td><td><input type="text" id="Editbox7"  name="pin" value="<%=pin%>" tabindex="7" title="Enter PIN/ZIP Code" readonly></td>
-             <td>Gender</td><td> <select name="gender" size="1" disabled id="gender" style="width:148px"   tabindex="11" title="gender">
+             <tr><td dir="<%=rtl%>"><%=resource.getString("pin")%></td><td><input type="text" id="Editbox7"  name="pin" value="<%=pin%>" tabindex="7" title="Enter PIN/ZIP Code" readonly></td>
+             <td dir="<%=rtl%>"><%=resource.getString("gender")%></td><td> <select name="gender" size="1" disabled id="gender" style="width:148px"   tabindex="11" title="gender">
             <%if(gender.equals("male")){%>
-            <option selected value="male">Male</option>
-            <option value="female">Female</option>
+            <option selected value="male"><%=resource.getString("male")%></option>
+            <option value="female"><%=resource.getString("female")%></option>
 
 
             <%}%>
             <%if(gender.equals("female")){%>
-            <option  value="male">Male</option>
-            <option selected value="female">Female</option>
+            <option  value="male"><%=resource.getString("male")%></option>
+            <option selected value="female"><%=resource.getString("female")%></option>
 
             <%}%>
 
@@ -223,56 +223,56 @@ body
 
 
 
-             <tr><td>Landline no</td><td><input type="text" id="Editbox8"   name="land_line_no" value="<%=land_line_no%>" tabindex="8" title="Enter Land Line No" readonly></td>
-             <td>Password</td><td><input type="password" id="Editbox11" readonly  name="admin_password" value="<%=admin_password%>" tabindex="17" title="Enter Password" readonly></td>
+             <tr><td dir="<%=rtl%>"><%=resource.getString("landlineno")%></td><td><input type="text" id="Editbox8"   name="land_line_no" value="<%=land_line_no%>" tabindex="8" title="Enter Land Line No" readonly></td>
+       <%--   <td><%=resource.getString("password")%></td><td><input type="password" id="Editbox11" readonly  name="admin_password" value="<%=admin_password%>" tabindex="17" title="Enter Password" readonly></td>--%>
              </tr>
              <input type="hidden" name="type_of_institute" value="<%=type_of_institute%>"/>
-             <tr><td>Type of Institute</td><td><select name="type_of_institute" disabled id="type_of_institute" style="width:148px" >
+             <tr><td dir="<%=rtl%>"><%=resource.getString("typeofinstitute")%></td><td><select name="type_of_institute" disabled id="type_of_institute" style="width:148px" >
 
 
 
     <%if(type_of_institute.equals("govt")){%>
-<option selected value="govt">Govt</option>
-<option value="semi govt">Semi Govt</option>
-<option value="self financed">Self Financed</option>
-<option value="other">Other</option>
-<option  value="Select">Select</option>
+<option selected value="govt"><%=resource.getString("govt")%></option>
+<option value="semi govt"><%=resource.getString("semigovt")%></option>
+<option value="self financed"><%=resource.getString("selffinanced")%></option>
+<option value="other"><%=resource.getString("other")%></option>
+<option  value="Select"><%=resource.getString("select")%></option>
             <%}%>
             <%if(type_of_institute.equals("semi_govt")){%>
-<option value="govt">Govt</option>
-<option selected value="semi govt">Semi Govt</option>
-<option value="self financed">Self Financed</option>
-<option value="other">Other</option>
-<option value="Select">Select</option>
+<option value="govt"><%=resource.getString("govt")%></option>
+<option selected value="semi govt"><%=resource.getString("semigovt")%></option>
+<option value="self financed"><%=resource.getString("selffinanced")%></option>
+<option value="other"><%=resource.getString("other")%></option>
+<option value="Select"><%=resource.getString("select")%></option>
             <%}%>
             <%if(type_of_institute.equals("self_financed")){%>
-<option  value="govt">Govt</option>
-<option value="semi govt">Semi Govt</option>
-<option selected value="self financed">Self Financed</option>
-<option value="other">Other</option>
-<option  value="Select">Select</option>
+<option  value="govt"><%=resource.getString("govt")%></option>
+<option value="semi govt"><%=resource.getString("semigovt")%></option>
+<option selected value="self financed"><%=resource.getString("selffinanced")%></option>
+<option value="other"><%=resource.getString("other")%></option>
+<option  value="Select"><%=resource.getString("select")%></option>
             <%}%>
             <%if(type_of_institute.equals("other")){%>
-<option  value="govt">Govt</option>
-<option value="semi govt">Semi Govt</option>
-<option value="self financed">Self Financed</option>
-<option selected value="other">Other</option>
-<option  value="Select">Select</option>
+<option  value="govt"><%=resource.getString("govt")%></option>
+<option value="semi govt"><%=resource.getString("semigovt")%></option>
+<option value="self financed"><%=resource.getString("selffinanced")%></option>
+<option selected value="other"><%=resource.getString("other")%></option>
+<option  value="Select"><%=resource.getString("select")%></option>
             <%}%>
 
 </select></td>
 
              </tr>
              
-             <tr><td>User Id</td><td><input type="text" readonly  name="login_id" value="<%=login_id%>"/></td></tr>
+             <tr><td dir="<%=rtl%>"><%=resource.getString("userid")%></td><td><input type="text" readonly  name="login_id" value="<%=login_id%>"/></td></tr>
 
 
-             <tr><td>website name</td><td><input type="text" id="Editbox12" readonly name="institute_website" value="<%=website%>" tabindex="12" title="Enter Institute Website"></td></tr>
-             <tr> <td style="color:blue">Library ID</td><td><input type="text"  id="library_id" name="library_id" value="" tabindex="17" title="Enter Library Id"></td>
+             <tr><td dir="<%=rtl%>"><%=resource.getString("websitename")%></td><td><input type="text" id="Editbox12" readonly name="institute_website" value="<%=website%>" tabindex="12" title="Enter Institute Website"></td></tr>
+             <tr> <td style="color:blue" dir="<%=rtl%>"><%=resource.getString("admin.adminpending.libraryid")%></td><td><input type="text"  id="library_id" name="library_id" value="" tabindex="17" title="Enter Library Id"></td>
 
               </tr>
-<tr><td colspan="4" align="center"><br><br>
-        <input type="submit" class="txt2"  id="submit" name="submit" value="Accept"><input type="button" class="txt2"    name="cancel" value="Back"  onclick="quit();">
+<tr><td dir="<%=rtl%>" colspan="4" align="center"><br><br>
+        <input type="submit" class="txt2"  id="submit" name="submit" value="<%=resource.getString("accept")%>"><input type="button" class="txt2"    name="cancel" value="<%=resource.getString("back")%>"  onclick="quit();">
 </td></tr>
 
         </table>

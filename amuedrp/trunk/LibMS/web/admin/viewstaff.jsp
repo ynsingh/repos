@@ -1,6 +1,7 @@
 
     <%@page import="com.myapp.struts.admin.StaffDoc,com.myapp.struts.hbm.*"%>
     <jsp:include page="/admin/header.jsp" flush="true" />
+    <%@page contentType="text/html" import="java.util.*,java.io.*,java.net.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
     <%@ page import="java.util.*"%>
     <%@ page import="org.apache.taglibs.datagrid.DataGridParameters"%>
@@ -30,6 +31,30 @@ f.submit();
 }
 
 </script>
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    boolean page=true;
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+       // System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
+    else{ rtl="RTL";page=false;align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/page.css"/>
  
 </head>
@@ -46,14 +71,11 @@ f.submit();
 
 
 
-       <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">View All Staff</td></tr>
+       <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;"><%=resource.getString("admin.viewstaff.heading")%></td></tr>
                 <tr><td valign="top" align="center"> <br/>
                
 
-<%
 
-
-%>
 
 <%!
    
@@ -95,6 +117,15 @@ tcount = staffList.size();
    request.setAttribute ("staffList", staffList.subList(fromIndex, toIndex));
    pageContext.setAttribute("tCount", tcount);
 
+String staffId=resource.getString("staffid");
+pageContext.setAttribute("staffId", staffId);
+String fname=resource.getString("opac.newmemberentry.firstname");
+pageContext.setAttribute("fname",fname);
+String lastname=resource.getString("opac.newmemberentry.lastname");
+pageContext.setAttribute("lname",lastname);
+String library=resource.getString("opac.simplesearch.library");
+pageContext.setAttribute("library",library);
+
 
 
 %>
@@ -119,22 +150,22 @@ else
     </column>
 
     <column width="100">
-      <header value="Staff_ID" hAlign="left" styleClass="admingridheader"/>
+      <header value="${staffId}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.staff_id}" hyperLink="./showstaff.do?id=${doc.staff_id}"  hAlign="left"    styleClass="item"/>
     </column>
 
     <column width="150">
-      <header value="First_Name" hAlign="left" styleClass="admingridheader"/>
+      <header value="${fname}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.first_name}" hAlign="left" hyperLink="./showstaff.do?id=${doc.staff_id}"  styleClass="item"/>
     </column>
 
     <column width="150">
-      <header value="Last_Name" hAlign="left" styleClass="admingridheader"/>
+      <header value="${lname}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.last_name}" hyperLink="./showstaff.do?id=${doc.staff_id}"  hAlign="left" styleClass="item"/>
     </column>
    
    <column width="200">
-      <header value="Library" hAlign="left" styleClass="admingridheader"/>
+      <header value="${library}" hAlign="left" styleClass="admingridheader"/>
       <item   value="${doc.sublibName}" hyperLink="./showstaff.do?id=${doc.staff_id}"  hAlign="left" styleClass="item"/>
     </column>
  </columns>
@@ -150,10 +181,10 @@ else
 <tr>
 <td align="left">
 <c:if test="${previous != null}">
-<a href="<c:out value="${previous}"/>">Previous</a>
+<a href="<c:out value="${previous}"/>"><%=resource.getString("opac.accountdetails.previous")%></a>
 </c:if>&nbsp;
 <c:if test="${next != null}">
-<a href="<c:out value="${next}"/>">Next</a>
+<a href="<c:out value="${next}"/>"><%=resource.getString("opac.accountdetails.next")%></a>
 </c:if>
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -178,7 +209,7 @@ else
   <tr><td align="center" width="400px">
 <form name="f">
 
-    <input type="button" name="b1" value="Back" onclick="b1click()" class="txt2">
+    <input type="button" name="b1" value="<%=resource.getString("opac.accountdetails.back")%>" onclick="b1click()" class="txt2">
    
 </form>
 

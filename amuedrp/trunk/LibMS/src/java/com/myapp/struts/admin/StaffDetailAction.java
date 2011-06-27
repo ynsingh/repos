@@ -7,13 +7,14 @@ package com.myapp.struts.admin;
 import  com.myapp.struts.hbm.*;
 import  com.myapp.struts.AdminDAO.*;
 import java.sql.*;
+import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-
+import java.util.ResourceBundle;
 
 /**
  *
@@ -50,8 +51,11 @@ public class StaffDetailAction extends org.apache.struts.action.Action {
     private String role;
     public boolean result;
      private byte[] imagefile;
-
-    Connection con;
+ Locale locale=null;
+   String locale1="en";
+   String rtl="ltr";
+   String align="left";
+    
     int i=0;
 
    
@@ -60,6 +64,22 @@ public class StaffDetailAction extends org.apache.struts.action.Action {
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 HttpSession session1 =request.getSession();
+
+       try{
+
+        locale1=(String)session1.getAttribute("locale");
+    if(session1.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session1.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
 ImageUploadActionForm form1 = (ImageUploadActionForm)session1.getAttribute("ImageUploadActionForm");
 
         HttpSession session=request.getSession();
@@ -183,7 +203,8 @@ else{
              result=StaffDetailDAO.insert1(staffobj);
                 if(result==false)
                 {
-                    String msg="Request for registration failure due to some error";
+                   // String msg="Request for registration failure due to some error";
+                     String msg=resource.getString("admin.StaffDetailAction.error");
                     request.setAttribute("msg", msg);
                     return mapping.findForward("errorp");
 

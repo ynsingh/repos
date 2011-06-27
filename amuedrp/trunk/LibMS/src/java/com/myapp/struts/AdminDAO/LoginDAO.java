@@ -34,7 +34,7 @@ public class LoginDAO {
             throw e;
         }
         finally {
-          session.close();
+        //  session.close();
         }
     }
 public void update(Login loginDetails) {
@@ -136,7 +136,7 @@ public List getLoginDetails(String user_id,String password){
             return query.list();
         }
         finally {
-            session.close();
+          //  session.close();
         }
 
 }
@@ -155,7 +155,7 @@ public static Login getSuperAdminLoginDetails(String user_id,String password,Str
 
         }
         finally {
-            session.close();
+          //  session.close();
         }
 
 }
@@ -188,7 +188,7 @@ public List getUser(String user_id){
                 return query.list();
         }
         finally {
-            session.close();
+       //     session.close();
         }
 }
 
@@ -206,7 +206,7 @@ public static Login searchAns(String staff_id,String library_id,String ans1) {
             return ( Login) query.uniqueResult();
         }
         finally {
-          //  session.close();
+         //   session.close();
         }
 
 }
@@ -222,7 +222,7 @@ public static Login searchLoginID(String login_id) {
             return ( Login) query.uniqueResult();
         }
         finally {
-          //  session.close();
+            session.close();
         }
 
 }
@@ -238,7 +238,7 @@ public static Login searchAllStaffAccount(String library_id) {
             return ( Login) query.uniqueResult();
         }
         finally {
-         //   session.close();
+          ///  session.close();
         }
 
 }
@@ -253,28 +253,35 @@ public static Login searchAllStaffAccount(String library_id,String sublibrary_id
             return (Login) query.uniqueResult();
         }
         finally {
-           // session.close();
+        //    session.close();
         }
 
 }
 
 public static List<AccountSubLibrary> searchAllStaffListAccount(String library_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+         try {
+            session.beginTransaction();
         Query query = session.createSQLQuery("select a.*,b.* from login a inner join sub_library b on a.sublibrary_id=b.sublibrary_id and a.library_id=b.library_id where a.library_id=:library_id")
                 .addEntity(Login.class)
                 .addEntity(SubLibrary.class)
                 .setResultTransformer(Transformers.aliasToBean(AccountSubLibrary.class));
 
             query.setString("library_id", library_id);
+            
 
             return (List<AccountSubLibrary>) query.list();
+              }
+        finally {
+         //   session.close();
+        }
 
 }
 public static List<AccountSubLibrary> searchAllStaffListAccount(String library_id,String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
 
         try {
+            session.beginTransaction();
             Query query = session.createSQLQuery("select a.*,b.* from login a inner join sub_library b on a.sublibrary_id=b.sublibrary_id and a.library_id=b.library_id where a.library_id=:library_id and  a.sublibrary_id=:sublibrary_id")
                 .addEntity(Login.class)
                 .addEntity(SubLibrary.class)
@@ -286,7 +293,7 @@ public static List<AccountSubLibrary> searchAllStaffListAccount(String library_i
              return (List<AccountSubLibrary>) query.list();
         }
         finally {
-           // session.close();
+         //   session.close();
         }
 
 }
@@ -302,7 +309,7 @@ public static Login searchStaffLogin(String staff_id,String library_id,String su
             return ( Login) query.uniqueResult();
         }
         finally {
-          //  session.close();
+            session.close();
         }
 
 }
@@ -318,7 +325,7 @@ public static Login searchStaffLogin(String staff_id,String library_id) {
             return ( Login) query.uniqueResult();
         }
         finally {
-          //  session.close();
+            session.close();
         }
 
 }
@@ -422,7 +429,7 @@ public static Login searchRole(String staff_id,String library_id) {
             return ( Login) query.uniqueResult();
         }
         finally {
-         //   session.close();
+            session.close();
         }
 
 }
@@ -506,7 +513,7 @@ public static Login searchForgetPassword(String login_id) {
             return ( Login) query.uniqueResult();
         }
         finally {
-           // session.close();
+         //   session.close();
         }
 
 }
@@ -534,7 +541,7 @@ public static Login searchFirstLogin(String staff_id,String library_id,String su
             
         }
         finally {
-         //   session.close();
+        //   session.close();
         }
 
 }
@@ -549,7 +556,7 @@ public static Login searchUser(String login_id,String password) {
             return (Login) query.uniqueResult();
         }
         finally {
-          //  session.close();
+           // session.close();
         }
 
 }

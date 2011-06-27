@@ -61,6 +61,10 @@ List list1,list2;
 
 
 
+ 
+
+
+
 
 
             LoginActionForm loginActionForm=(LoginActionForm)form;
@@ -69,7 +73,7 @@ List list1,list2;
             password=loginActionForm.getPassword();
             button=loginActionForm.getButton1();
 
-System.out.println(password);
+
             password=PasswordEncruptionUtility.password_encrupt(password);
 
 
@@ -98,30 +102,32 @@ System.out.println(password);
               {
                 list=(List)SubLibraryDAO.getAllSubLibrary( tempobj.getId().getLibraryId());
                    list1=(List)MemberCategoryDAO.searchEmpType( tempobj.getId().getLibraryId());
-          System.out.println(list1.size());
+         
           list2=(List)FacultyDAO.searchFaculty( tempobj.getId().getLibraryId());
 
                 session.setAttribute("sublibrary",list);
-                System.out.println("sublibrary"+list.size());
+               
             session.setAttribute("list1",list1);
             session.setAttribute("list2",list2);
-
-               // rst=MyQueryResult.getMyExecuteQuery("select * from login where login_id='"+login_id+"' and password='"+password+"'");
-               // rst.next();
+               
                           session.setAttribute("library_id", tempobj.getId().getLibraryId());
                           session.setAttribute("username", tempobj.getUserName());
                           session.setAttribute("staff_id",tempobj.getId().getStaffId());
                           session.setAttribute("login_role",tempobj.getRole());
                         session.setAttribute("login_id",tempobj.getLoginId());
 
-
+String lib_id=tempobj.getId().getLibraryId();
+String sublib_id=tempobj.getSublibraryId();
 
                           session.setAttribute("sublibrary_id",tempobj.getSublibraryId());
-                          SubLibrary sub1=SubLibraryDAO.getMainSubLibraryId( tempobj.getId().getLibraryId());
+                            System.out.println("before sublib ");
+                          SubLibrary sub1=SubLibraryDAO.getMainSubLibraryId(lib_id,sublib_id);
+                       System.out.println("After sublib "+sub1);
+
                           if(sub1!=null)
                               session.setAttribute("mainsublibrary",sub1.getId().getSublibraryId());
 
-                          System.out.println(sub1.getId().getSublibraryId()+"...........");
+                          System.out.println(sub1.getId().getSublibraryId()+"..........111.");
 
                           staff_id=tempobj.getId().getStaffId();
                           library_id=tempobj.getId().getLibraryId();
@@ -129,10 +135,9 @@ System.out.println(password);
                           session.setAttribute("staff_id",staff_id);
 
 
-                          SubLibrary sub=(SubLibrary)SubLibraryDAO.getLibName(library_id,sublibrary_id);
-                          if(sub!=null)
-                          {session.setAttribute("sublibrary_name",sub.getSublibName());
-                          }
+                        
+                          session.setAttribute("sublibrary_name",sub1.getSublibName());
+                        
 
 
 
@@ -143,61 +148,9 @@ System.out.println(password);
 
                          if(tempobj.getId().getStaffId().equals("admin.libms"))  //superadmin
                          {
-                                /* Collect the List of Pending Institute 
-                                stmt=con.prepareStatement("select * from admin_registration where status = 'NotRegistered'");
-                                rst=stmt.executeQuery();
-                                session.setAttribute("resultset", rst);
-                                  Collect the Count of NotRegistered Institute 
-                                stmt=con.prepareStatement("select count(*) from admin_registration where status = 'NotRegistered'");
-                                rst=stmt.executeQuery();
-                                rst.next();
-                                int count=rst.getInt(1);
+                              
+                            session.setAttribute("user_id",login_id);
 
-                                session.setAttribute("count", count);
-
-                                  Collect the List of Registered Institute 
-                                stmt=con.prepareStatement("select * from admin_registration where status='Registered' ");
-                                rst=stmt.executeQuery();
-                                session.setAttribute("resultset1", rst);
-                                 Collect the Count of Registered Institute 
-                                stmt=con.prepareStatement("select count(*) from admin_registration where status ='Registered'");
-                                rst=stmt.executeQuery();
-                                rst.next();
-                                count=rst.getInt(1);
-                                session.setAttribute("count1", count);
-
-
-                                 Collect the List of All Institute 
-                                stmt=con.prepareStatement("select * from admin_registration");
-                                rst=stmt.executeQuery();
-                                session.setAttribute("resultset2", rst);
-
-                                stmt=con.prepareStatement("select count(*) from admin_registration");
-                                rst=stmt.executeQuery();
-                                rst.next();
-                                count=rst.getInt(1);
-                                session.setAttribute("count2", count);
-
-
-                    //java mailing code to send it on Admin registration page*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    session.setAttribute("user_id",login_id);
-                    System.out.println("Admin---------------"+login_id);
 
 
 
@@ -223,7 +176,7 @@ System.out.println(password);
             {
 
                         sublibrary_id=tempobj.getSublibraryId();
-                        libobj=(Library)LibraryDAO.getLibraryName(library_id);
+                 Library  libobj1=(Library)LibraryDAO.getLibraryName(library_id);
 
      /* Check Whether Its First Time Login of the User
       *
@@ -237,7 +190,7 @@ System.out.println(password);
                                 session.setAttribute("username", logobj.getUserName());
                                  session.setAttribute("staff_id",logobj.getId().getStaffId());
 
-                            session.setAttribute("library_name", libobj.getLibraryName());
+                            session.setAttribute("library_name", libobj1.getLibraryName());
 
                             Privilege priv=PrivilegeDAO.getPrivilege(library_id,sublibrary_id,staff_id);
                             session.setAttribute("privilege_resultset", priv);
@@ -265,7 +218,7 @@ System.out.println(password);
       *
       *
       */
-                            session.setAttribute("library_name", libobj.getLibraryName());
+                            session.setAttribute("library_name", libobj1.getLibraryName());
 
                             Privilege priv=PrivilegeDAO.getPrivilege(library_id,sublibrary_id,staff_id);
                             session.setAttribute("privilege_resultset", priv);

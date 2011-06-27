@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-
+import java.util.ResourceBundle;
 /**
  *
  * @author Dushyant
@@ -27,24 +27,43 @@ public class AcqRegisterAction extends org.apache.struts.action.Action {
     private String button;
     private String library_id;
     private String sublibrary_id;
-    Connection con;
+    
     PreparedStatement stmt;
     String sql;
-
+    Locale locale=null;
+   String locale1="en";
+   String rtl="ltr";
+   String align="left";
     
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
             HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+        HttpSession session=request.getSession();
+       try{
+
+        locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
         AcqRegisterActionForm acqRegisterActionForm =(AcqRegisterActionForm)form;
         staff_id=acqRegisterActionForm.getStaff_id();
         button=acqRegisterActionForm.getButton();
        
-        HttpSession session=request.getSession();
+        
         library_id=(String)session.getAttribute("library_id");
         sublibrary_id=(String)session.getAttribute("sublibrary_id");
         String mainlib=(String)session.getAttribute("mainsublibrary");
-       
+       System.out.println(button);
         if(button.equals("Register"))
         {
          
@@ -53,7 +72,8 @@ public class AcqRegisterAction extends org.apache.struts.action.Action {
 
          if(staffobj!=null)
          {
-            request.setAttribute("msg1", "Staff Id : "+staff_id+" already exists");
+           // request.setAttribute("msg1", "Staff Id : "+staff_id+" already exists");
+              request.setAttribute("msg1",resource.getString("admin.acq_register.staffId")+ " : "+staff_id+" "+resource.getString("admin.acq_register.exists"));
             return mapping.findForward("duplicate");
          }
          else
@@ -67,7 +87,7 @@ public class AcqRegisterAction extends org.apache.struts.action.Action {
              }
              else
              {
-                request.setAttribute("msg1", "Error Encourted");
+                request.setAttribute("msg1", resource.getString("admin.acq_register.error"));
                 return mapping.findForward("duplicate");
 
 
@@ -101,8 +121,8 @@ StaffDetail staffobj;
                          staffobj=(StaffDetail)StaffDetailDAO.searchStaffId(staff_id,library_id);
                         if(staffobj==null)
                         {
-                       
-                        request.setAttribute("msg1", "Staff Id: "+staff_id+" doesn't exists");
+                        //request.setAttribute("msg1", "Staff Id: "+staff_id+" doesn't exists");
+                        request.setAttribute("msg1",resource.getString("admin.acq_register.staffId")+ " : "+staff_id+" "+resource.getString("admin.acq_register.notexists"));
                         return mapping.findForward("duplicate");
                         }
              }
@@ -112,7 +132,8 @@ StaffDetail staffobj;
                         if(staffobj==null)
                         {
 
-                        request.setAttribute("msg1", "Staff Id: "+staff_id+" doesn't exists");
+                       // request.setAttribute("msg1", "Staff Id: "+staff_id+" doesn't exists");
+                       request.setAttribute("msg1",resource.getString("admin.acq_register.staffId")+ " : "+staff_id+" "+resource.getString("admin.acq_register.notexists"));
                         return mapping.findForward("duplicate");
                         }
 

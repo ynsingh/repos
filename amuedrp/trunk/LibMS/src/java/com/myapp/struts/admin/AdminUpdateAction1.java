@@ -53,9 +53,14 @@ private String user_id;
 private String working_status;
 private boolean result;
 
-
+String msg;
 int i=0;
     /* forward name="success" path="" */
+Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    boolean page=true;
+    String align="left";
 
 
    
@@ -98,6 +103,21 @@ int i=0;
         LoginDAO logindao = new LoginDAO();
         StaffDetailDAO staffdetaildao = new StaffDetailDAO();
 
+        try{
+              locale1=(String)session.getAttribute("locale");
+
+              if(session.getAttribute("locale")!=null)
+              {
+                locale1 = (String)session.getAttribute("locale");
+       // System.out.println("locale="+locale1);
+              }
+              else locale1="en";
+            }catch(Exception e){locale1="en";}
+             locale = new Locale(locale1);
+             if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
+             else{ rtl="RTL";page=false;align="right";}
+              ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
 
          AdminRegistration adminobj = AdminRegistrationDAO.searchInstituteAdmin(user_id);
          if(adminobj.getStatus().equals("NotRegistered"))
@@ -131,8 +151,16 @@ int i=0;
           result= AdminRegistrationDAO.update1(adminobj);
 if(result==true){
          System.out.println("Here");
-      String msg="Record Updated Successfully for Institute :"+institute_name;
-      request.setAttribute("msg", msg);
+         System.out.println("@@@@@@@@@"+locale);
+      if(locale1.equals("en")||locale1.equals("ar")||locale1.equals("ur")) {
+          System.out.println("###############################33");
+        String msg=resource.getString("admin.updateadmin.msg")+" "+institute_name;
+        request.setAttribute("msg", msg);}
+      else
+      {  System.out.println("###############################33#############");
+         String msg=institute_name+" "+resource.getString("admin.updateadmin.msg");
+        request.setAttribute("msg", msg);}
+     
       request.setAttribute("registration_id",registration_id);
       return mapping.findForward("success");
 }
@@ -238,12 +266,20 @@ if(status.equalsIgnoreCase("Registered"))
                     login.setPassword(admin_password);
                     
                     result=LoginDAO.update1(login);
+                    
                      if(result==true)
-                     {
-                        String msg="Record Updated Successfully for Institute :"+institute_name;
-                        request.setAttribute("msg", msg);
-                        request.setAttribute("registration_id",registration_id);
-                        return mapping.findForward("success");
+                     {  System.out.println("Here");
+                        System.out.println("@@@@@@@@@"+locale);
+                         if(locale1.equals("en")||locale1.equals("ar")||locale1.equals("ur")) {
+                            msg=resource.getString("admin.updateadmin.msg")+" "+institute_name;
+                           }
+                         else
+                         {
+                            msg=institute_name+" "+resource.getString("admin.updateadmin.msg");
+                           }
+                         request.setAttribute("msg", msg);
+                         request.setAttribute("registration_id",registration_id);
+                         return mapping.findForward("success");
                      }
                 
      }
@@ -257,7 +293,7 @@ if(status.equalsIgnoreCase("Registered"))
         catch(Exception e)
         {
         e.printStackTrace();
-         String msg="Failure due to some Internal Errors";
+         String msg=resource.getString("admin.updateadmin.msg1");
         request.setAttribute("msg", msg);
        request.setAttribute("registration_id",registration_id);
          return mapping.findForward("failure");

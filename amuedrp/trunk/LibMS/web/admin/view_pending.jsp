@@ -139,30 +139,69 @@ System.out.println("tcount="+tcount);
 else
 {%>
 
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    boolean page=true;
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+       // System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
+    else{ rtl="RTL";page=false;align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
+
+<%
+  String Registration_ID=resource.getString("admin.viewpending.registrationid");
+  pageContext.setAttribute("Registration_ID", Registration_ID);
+  String InstituteName=resource.getString("admin.viewpending.institutename");
+  pageContext.setAttribute("InstituteName", InstituteName);
+  String UserId=resource.getString("admin.viewpending.userid");
+  pageContext.setAttribute("UserId", UserId);
+  String Admin_Email=resource.getString("admin.viewpending.adminemail");
+  pageContext.setAttribute("Admin_Email",Admin_Email);
+  String Action=resource.getString("admin.viewpending.action");
+  pageContext.setAttribute("Action",Action);
+
+%>
+
 <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid">
     
   <columns>
       
     <column width="10%">
-      <header value="Registration_ID" hAlign="left" styleClass="header"/>
+      <header value="${Registration_ID}" hAlign="left" styleClass="header"/>
       <item   value="${doc.registration_id}" hyperLink="view1.do?id=${doc.registration_id}"  hAlign="left"    styleClass="item"/>
     </column>
 
     <column width="15%">
-      <header value="Institute Name" hAlign="left" styleClass="header"/>
+      <header value="${InstituteName}" hAlign="left" styleClass="header"/>
       <item   value="${doc.institute_name}" hAlign="left" hyperLink="view1.do?id=${doc.registration_id}"  styleClass="item"/>
     </column>
     <column width="10%">
-      <header value="User Id" hAlign="left" styleClass="header"/>
+      <header value="${UserId}" hAlign="left" styleClass="header"/>
       <item   value="${doc.userId}" hAlign="left" hyperLink="view1.do?id=${doc.registration_id}"  styleClass="item"/>
     </column>
        
     <column width="10%">
-      <header value="Admin_Email" hAlign="left" styleClass="header"/>
+      <header value="${Admin_Email}" hAlign="left" styleClass="header"/>
       <item   value="${doc.admin_email}" hyperLink="view1.do?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
     </column>
        <column width="5%">
-      <header value="Action" hAlign="left" styleClass="header"/>
+      <header value="${Action}" hAlign="left" styleClass="header"/>
       <item   value="Accept" hyperLink="view1.do?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
     </column>
  </columns>

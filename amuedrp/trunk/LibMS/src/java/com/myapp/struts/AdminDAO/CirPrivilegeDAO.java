@@ -245,7 +245,7 @@ public class CirPrivilegeDAO {
         }
         finally
         {
-          //session.close();
+         // session.close();
         }
 
 return "";
@@ -318,7 +318,7 @@ public static CirPrivilege searchStaffLogin(String staff_id,String library_id) {
             return ( CirPrivilege) query.uniqueResult();
         }
         finally {
-        //    session.close();
+           // session.close();
         }
 
 }
@@ -352,7 +352,7 @@ public static  boolean insert(CirPrivilege obj)
         }
         finally
         {
-          //session.close();
+         // session.close();
         }
    return true;
 
@@ -376,7 +376,7 @@ public static  boolean insert(CirPrivilege obj)
         }
         finally
         {
-          //  session.close();
+           //session.close();
         }
         return ( CirPrivilege) query.uniqueResult();
 
@@ -435,7 +435,7 @@ public static  List getPrivilege1(String library_id,String sublibrary_id,String 
         }
         finally
         {
-          //  session.close();
+         //   session.close();
         }
         return ( List) query.list();
 

@@ -37,12 +37,9 @@ public class AdminPendingAction extends org.apache.struts.action.Action {
     AdminRegistration adminReg = new AdminRegistration();
     AdminRegistrationDAO admindao = new AdminRegistrationDAO();
     List rst;
-      //  System.out.println("Registration Id="+registration_id);
+     
         try{
-        //con=MyConnection.getMyConnection();
-        //PreparedStatement stmt=con.prepareStatement("select * from admin_registration where  status is null");
-        //rst=stmt.executeQuery();
-        rst = (List) admindao.getAdminDeatilsById(registration_id);
+          rst = (List) admindao.getAdminDeatilsById(registration_id);
             request.setAttribute("resultset", rst);
         return mapping.findForward("success");
         }

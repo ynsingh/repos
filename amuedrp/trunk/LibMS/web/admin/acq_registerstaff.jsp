@@ -5,6 +5,7 @@ This Page is to Enter Staff Details
 -->
 
 <%@ page language="java" import="java.sql.*,org.apache.struts.upload.FormFile"  %>
+<%@page contentType="text/html" import="java.util.*,java.io.*,java.net.*"%>
 <%@page import="com.myapp.struts.*"%>
 <%@page pageEncoding="UTF-8" contentType="text/html"%>
 <jsp:include page="header.jsp" flush="true" />
@@ -23,7 +24,30 @@ String msg3=request.getParameter("email_id");
 String sublibrary_id=(String)session.getAttribute("sublibrary_id");
 String sublibrary_name=(String)session.getAttribute("sublibrary_name");
 String mainlib=(String)session.getAttribute("mainsublibrary");
-System.out.println(sublibrary_id+"   "+sublibrary_name );
+
+%>
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+       // System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -144,43 +168,43 @@ availableSelectList = document.getElementById("searchResult");
 		var lstr=str.length
 		var ldot=str.indexOf(dot)
 		if (str.indexOf(at)==-1){
-		   availableSelectList.innerHTML="Invalid E-mail ID";
+                    availableSelectList.innerHTML="<%=resource.getString("admin.acq_registerstaff.invalidemail") %>";
                    document.getElementById('email_id').value="";
 		   return false
 		}
 
 		if (str.indexOf(at)==-1 || str.indexOf(at)==0 || str.indexOf(at)==lstr){
-		    availableSelectList.innerHTML="Invalid E-mail ID";
+		    availableSelectList.innerHTML="<%=resource.getString("admin.acq_registerstaff.invalidemail") %>";
                     document.getElementById('email_id').value="";
 		   return false
 		}
 
 		if (str.indexOf(dot)==-1 || str.indexOf(dot)==0 || str.indexOf(dot)==lstr){
-		     availableSelectList.innerHTML="Invalid E-mail ID";
+		     availableSelectList.innerHTML="<%=resource.getString("admin.acq_registerstaff.invalidemail") %>";
                      document.getElementById('email_id').value="";
 		    return false
 		}
 
 		 if (str.indexOf(at,(lat+1))!=-1){
-		     availableSelectList.innerHTML="Invalid E-mail ID";
+		     availableSelectList.innerHTML="<%=resource.getString("admin.acq_registerstaff.invalidemail") %>";
                      document.getElementById('email_id').value="";
 		    return false
 		 }
 
 		 if (str.substring(lat-1,lat)==dot || str.substring(lat+1,lat+2)==dot){
-		     availableSelectList.innerHTML="Invalid E-mail ID";
+		     availableSelectList.innerHTML="<%=resource.getString("admin.acq_registerstaff.invalidemail") %>";
                      document.getElementById('email_id').value="";
 		    return false
 		 }
 
 		 if (str.indexOf(dot,(lat+2))==-1){
-		     availableSelectList.innerHTML="Invalid E-mail ID";
+		     availableSelectList.innerHTML="<%=resource.getString("admin.acq_registerstaff.invalidemail") %>";
                      document.getElementById('email_id').value="";
 		    return false
 		 }
 
 		 if (str.indexOf(" ")!=-1){
-		     availableSelectList.innerHTML="Invalid E-mail ID";
+		     availableSelectList.innerHTML="<%=resource.getString("admin.acq_registerstaff.invalidemail") %>";
                      document.getElementById('email_id').value="";
 		    return false
 		 }
@@ -215,26 +239,26 @@ availableSelectList1.innerHTML="";
 
 
 
-var str="Enter Following Values:-";
+var str="<%=resource.getString("admin.acq_registerstaff.enter") %>";
 
 
    if(email_id.value=="")
         {
-            str+="\n Enter Email ID";
+            str+="\n"+"<%=resource.getString("admin.acq_registerstaff.enteremail")%>";
             alert(str);
             document.getElementById('email_id').focus();
             return false;
         }
 
     if(first_name.value=="")
-        {str+="\n Enter First Name ";
+        {str+="\n"+"<%=resource.getString("admin.acq_registerstaff.enterfirstname")%>";
              alert(str);
              document.getElementById('first_name').focus();
             return false;
 
         }
     if(last_name.value=="")
-      {  str+="\n Enter Last_name";
+      {  str+="\n"+"<%=resource.getString("admin.acq_registerstaff.enterlastname")%>";
            alert(str);
            document.getElementById('last_name').focus();
             return false;
@@ -268,28 +292,28 @@ var str="Enter Following Values:-";
 
 
     if(address1.value=="")
-        {str+="\n Enter Address";
+        {str+="\n"+"<%=resource.getString("admin.acq_registerstaff.enteraddress")%>";
              alert(str);
              document.getElementById('address1').focus();
             return false;
 
         }
     if(city1.value=="")
-        {str+="\n Enter city";
+        {str+="\n"+"<%=resource.getString("admin.acq_registerstaff.entercity")%>";
              alert(str);
          document.getElementById('city1').focus();
             return false;
         }
 
     if(state1.value=="")
-      {  str+="\n Enter State";
+      {  str+="\n"+"<%=resource.getString("admin.acq_registerstaff.enterstate")%>";
            alert(str);
            document.getElementById('state1').focus();
             return false;
 
       }
     if(country1.value=="")
-      {  str+="\n Enter Country";
+      {  str+="\n"+"<%=resource.getString("admin.acq_registerstaff.entercty")%>";
            alert(str);
            document.getElementById('country1').focus();
             return false;
@@ -299,13 +323,13 @@ var str="Enter Following Values:-";
 
 if(IsDateGreater(do_joining.value,do_releaving.value)==true)
     {
-       str+="\nDate of Releaving Should be greater than Date of Joining";
+       str+="\n"+"<%=resource.getString("admin.acq_registerstaff.datediff")%>";
        alert(str);
          document.getElementById('do_releaving').focus();
          return false;
     }
 
-if(str=="Enter Following Values:-")
+if(str=="<%=resource.getString("admin.acq_registerstaff.enter")%>")
    {
        return true;
 
@@ -435,20 +459,21 @@ $(document).ready(function()
       position: absolute;
 
       visibility: show;">
-    <table width="60%" class="table"  border="1" align="center">
+    <table width="60%" class="table" dir="<%=rtl%>"  border="1" align="center">
 
-         <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">Manage Staff</td></tr>
-                <tr><td valign="top" align="right" style=" padding-left: 5px;">
+         <tr><td align="center" class="headerStyle" dir="<%=rtl%>"  bgcolor="#E0E8F5" height="25px;"><%=resource.getString("admin.acq_registerstaff.newmember")%></td></tr>
+                <tr><td valign="top" dir="<%=rtl%>"  align="<%=align%>" style=" padding-left: 5px;">
+
                       
-     <font color="blue">  <b>Fields marked with asterisk (*) are Compuslory</b></font>
+     <font color="blue">  <b><%=resource.getString("admin.acq_registerstaff.note2")%></b></font>
      
              
      <br/>
-            <table align="center">
+            <table align="center"  dir="<%=rtl%>"  >
                    
             <tr>
-                <td width="10%">      Library</td >
-                <td width="15%">
+                <td width="10%"  dir="<%=rtl%>"  >  <%=resource.getString("admin.acq_registerstaff.library")%></td >
+                <td width="15%"  dir="<%=rtl%>" >
 
                     <%if(sublibrary_id.equalsIgnoreCase(mainlib)){%>
                     <html:select  property="sublibrary_id" tabindex="3">
@@ -462,38 +487,39 @@ $(document).ready(function()
                     <%}%>
                 </td>
             </tr>
-            <tr><td width="15%">Employee Id</td><td><input type="text" id="staff_id"  disabled="true"  value="<%=staff_id%>"></td>
+            <tr><td width="15%"  dir="<%=rtl%>"  ><%=resource.getString("admin.acq_registerstaff.staffId")%></td><td  dir="<%=rtl%>" ><input type="text" id="staff_id"  disabled="true"  value="<%=staff_id%>"></td>
                
 
 
             </tr>
             <tr>
-                <td>Email Id*</td>
-                <td>
+                <td  dir="<%=rtl%>" ><%=resource.getString("admin.acq_registerstaff.email")%>*</td>
+                <td  dir="<%=rtl%>"  >
                  <input type="text" name="email_id" id="email_id" value="" onblur="return echeck(email_id.value)"/>
                     
                                         <br/> <div align="left" class="err" id="searchResult" style="border:#000000; "></div>
                 </td>
             </tr>
             <tr>     
-                <td>First Name*</td>
-                <td>
-                                        <table><tr><td>
+                <td  dir="<%=rtl%>"  ><%=resource.getString("admin.acq_registerstaff.first_name")%>*</td>
+                <td  dir="<%=rtl%>" >
+                                        <table  dir="<%=rtl%>" ><tr><td  dir="<%=rtl%>" >
                                         <select name="courtesy" size="1" id="courtesy" tabindex="2" style="align:right">
                                     <option selected value="Select">Select</option>
                                     <option  value="mr">Mr.</option>
                                     <option value="mrs">Mrs.</option>
                                      <option  value="ms">Ms.</option>
                                     </select></td>
-                                    <td>&nbsp;<input type="text" id="first_name" style="width:100px;"  tabindex="3" name="first_name" value=""></td>
+                                    <td  dir="<%=rtl%>" >&nbsp;<input type="text" id="first_name" style="width:100px;"  tabindex="3" name="first_name" value=""></td>
                                         </table>
                  </td>
             </tr>
-            <tr><td>Last Name*</td>
-                <td><input type="text" id="last_name"  tabindex="4"  name="last_name" value=""></td>
+            <tr><td  dir="<%=rtl%>" ><%=resource.getString("admin.acq_registerstaff.last_name")%>*</td>
+                <td  dir="<%=rtl%>" ><input type="text" id="last_name"  tabindex="4"  name="last_name" value=""></td>
 
             </tr>
-                                <tr><td>Employee's Gender</td><td>
+                                <tr><td  dir="<%=rtl%>"><%=resource.getString("admin.acq_registerstaff.gender")%></td>
+                                    <td  dir="<%=rtl%>">
                                 <select name="gender" size="1" id="gender" tabindex="10">
                                 <option selected value="Select">Select</option>
                                 <option  value="male">Male</option>
@@ -501,18 +527,20 @@ $(document).ready(function()
                                 </select>
 
 
-                                </td><td width="15%">Date of Joining<br>(YYYY-MM-DD)</td><td width="15%">
+                                </td><td width="15%" dir="<%=rtl%>"  ><%=resource.getString("admin.acq_registerstaff.doj")%><br><%=resource.getString("admin.acq_registerstaff.dateformat")%></td>
+                                <td width="15%"  dir="<%=rtl%>" >
                                   <input type="text" id="do_joining" value=""   name="do_joining"   tabindex="7"/>
 
               <br/> <div class="err" align="left" id="searchResult1" ></div>
 
                                     </td></tr>
-                                <tr>        <td>Date of Birth<br>(YYYY-MM-DD)</td><td width="250px">
+                                <tr>        <td  dir="<%=rtl%>" ><%=resource.getString("admin.acq_registerstaff.dob")%><br><%=resource.getString("admin.acq_registerstaff.dateformat")%></td><td width="250px"  dir="<%=rtl%>" >
                                         <input type="text" id="date_of_birth" style=""  tabindex ="16"   name="date_of_birth"  />
                                <br/> <div align="left" class="err" id="searchResult3" style="border:#000000; "></div>
 
 
-                               </td><td >Date of Releaving<br>(YYYY-MM-DD)</td><td >
+                               </td><td  dir="<%=rtl%>"  ><%=resource.getString("admin.acq_registerstaff.dor")%><br><%=resource.getString("admin.acq_registerstaff.dateformat")%></td>
+                               <td  dir="<%=rtl%>"  >
                                    <input type="text" id="do_releaving" style="" name="do_releaving"    tabindex="8"/>
                  <br/> <div align="left" class="err" id="searchResult2" style="border:#000000; "></div>
 
@@ -521,38 +549,38 @@ $(document).ready(function()
                             </tr>
 
                              
-                          <tr> <td>Father Name</td><td ><input type="text" id="father_name"  tabindex="9"  name="father_name" value=""></td>
+                          <tr> <td  dir="<%=rtl%>" ><%=resource.getString("admin.acq_registerstaff.father_name")%></td><td  dir="<%=rtl%>"  ><input type="text" id="father_name"  tabindex="9"  name="father_name" value=""></td>
                                   </tr>
                                 
 
                                
                          
                               
-                                    <tr><td >Contact No<br>
-                                        With STD/ISD Code</td><td ><input type="text"  id="contact_no"  tabindex="5"  title="(STD)-(NUMBER)" name="contact_no" value=""></td></tr>
-                                    <tr><td >Mobile No</td><td><input type="text"  id="mobile_no"  tabindex="6"  name="mobile_no" value=""></td>
+                                    <tr><td  dir="<%=rtl%>" ><%=resource.getString("admin.acq_registerstaff.contact_no")%><br>
+                                        <%=resource.getString("admin.acq_registerstaff.contactformat")%></td><td  dir="<%=rtl%>"  ><input type="text"  id="contact_no"  tabindex="5"  title="(STD)-(NUMBER)" name="contact_no" value=""></td></tr>
+                                    <tr><td  dir="<%=rtl%>"  ><%=resource.getString("admin.acq_registerstaff.mobile_no")%></td><td  dir="<%=rtl%>" ><input type="text"  id="mobile_no"  tabindex="6"  name="mobile_no" value=""></td>
                                 </tr>
                                
-                                <tr>    <td>Mailing Address*</td><td><input type="textbox" name="address1" id="address1" tabindex="11"  /></td></tr>
-                                <tr><td width="185px">City*</td><td width="100px"><input type="text" id="city1" tabindex="12" name="city1" value=""></tr>
-                                <tr><td>State*</td><td><input type="text" id="state1"  name="state1" tabindex="13" value=""/></td></tr>
-                                <tr><td>Country*</td><td><input type="text" id="country1"  name="country1" tabindex="14" value=""></tr>
+                                <tr>    <td  dir="<%=rtl%>" ><%=resource.getString("admin.acq_registerstaff.address")%>*</td><td  dir="<%=rtl%>" ><input type="textbox" name="address1" id="address1" tabindex="11"  /></td></tr>
+                                <tr><td width="185px"  dir="<%=rtl%>"  ><%=resource.getString("admin.acq_registerstaff.city")%>*</td><td width="100px"  dir="<%=rtl%>" ><input type="text" id="city1" tabindex="12" name="city1" value=""></tr>
+                                <tr><td  dir="<%=rtl%>"  ><%=resource.getString("admin.acq_registerstaff.state")%>*</td><td  dir="<%=rtl%>" ><input type="text" id="state1"  name="state1" tabindex="13" value=""/></td></tr>
+                                <tr><td  dir="<%=rtl%>"  ><%=resource.getString("admin.acq_registerstaff.country")%>*</td><td  dir="<%=rtl%>"  ><input type="text" id="country1"  name="country1" tabindex="14" value=""></tr>
                             <tr>
                             </tr>
-                            <tr><td width="250px">ZIP Code</td><td width="250px"><input type="text" id="zip1" tabindex="15" name="zip1" value=""></td></tr>
+                            <tr><td width="250px"  dir="<%=rtl%>"  ><%=resource.getString("admin.acq_registerstaff.zip")%></td><td width="250px"  dir="<%=rtl%>"  ><input type="text" id="zip1" tabindex="15" name="zip1" value=""></td></tr>
                             
                             <tr>
-                                <td colspan="2"><input type="checkbox" id="Checkbox1" name="check" value="on" tabindex="17" onclick="return copy()" >&nbsp;&nbsp;<b>Click Here</b>&nbsp;(If permanent address is same as mailing address)</td>
+                                <td colspan="2"  dir="<%=rtl%>" ><input type="checkbox" id="Checkbox1" name="check" value="on" tabindex="17" onclick="return copy()" >&nbsp;&nbsp;<b><%=resource.getString("admin.acq_registerstaff.click")%></b>&nbsp;<%=resource.getString("admin.acq_registerstaff.note1")%></td>
 
                             </tr>
-                    <tr>    <td>Permanent Address</td><td><input type="textbox" name="address2" id="address2" tabindex="18" /></td></tr>
-                <tr>    <td>City</td><td><input type="text" id="city2" tabindex="19"  name="city2" value=""></td></tr>
-                <tr>    <td>State</td><td><input type="text" id="state2"  name="state2" tabindex="20" value=""></td></tr>
-                <tr><td>Country</td><td><input type="text" id="country2"  name="country2" tabindex="21" value=""></td></tr>
-                <tr> <td>ZIP Code</td><td><input type="text" tabindex="22" id="zip2"  name="zip2" value=""></td><td colspan="2">
-                            <input type="submit" id="Button1" name="" value="Register" >
-                            <input type="reset" id="Button2" name="submit" value="Reset" >
-                            <input type="button" id="Button3" name="" value="Back" onclick="return send()">
+                    <tr>    <td  dir="<%=rtl%>"  ><%=resource.getString("admin.acq_registerstaff.permanent_address")%></td><td  dir="<%=rtl%>"  ><input type="textbox" name="address2" id="address2" tabindex="18" /></td></tr>
+                <tr>    <td  dir="<%=rtl%>" ><%=resource.getString("admin.acq_registerstaff.city")%></td><td  dir="<%=rtl%>" ><input type="text" id="city2" tabindex="19"  name="city2" value=""></td></tr>
+                <tr>    <td><%=resource.getString("admin.acq_registerstaff.state")%></td><td><input type="text" id="state2"  name="state2" tabindex="20" value=""></td></tr>
+                <tr><td  dir="<%=rtl%>"  ><%=resource.getString("admin.acq_registerstaff.country")%></td><td  dir="<%=rtl%>"  ><input type="text" id="country2"  name="country2" tabindex="21" value=""></td></tr>
+                <tr> <td  dir="<%=rtl%>" ><%=resource.getString("admin.acq_registerstaff.zip")%></td><td  dir="<%=rtl%>"><input type="text" tabindex="22" id="zip2"  name="zip2" value=""></td><td colspan="2"  dir="<%=rtl%>" >
+                            <input type="submit" id="Button1" name="" value="<%=resource.getString("admin.acq_register.register")%>" >
+                            <input type="reset" id="Button2" name="submit" value="<%=resource.getString("admin.acq_registerstaff.reset")%>" >
+                            <input type="button" id="Button3" name="" value="<%=resource.getString("admin.acq_register.back")%>" onclick="return send()">
 </td></tr>
 
                     </table>

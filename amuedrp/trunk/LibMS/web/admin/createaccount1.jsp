@@ -1,5 +1,6 @@
 
 <%@page import="java.sql.*,com.myapp.struts.hbm.*,com.myapp.struts.AdminDAO.*,java.util.*"%>
+<%@page contentType="text/html" import="java.util.*,java.io.*,java.net.*"%>
  <jsp:include page="header.jsp" flush="true" />
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
  
@@ -42,7 +43,29 @@ if(rst!=null)
 
 System.out.println(sublibrary_name+mainlib);
 %>
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+       // System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
 
+
+%>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -56,7 +79,7 @@ System.out.println(sublibrary_name+mainlib);
      var role1=document.getElementById('role').options[document.getElementById('role').selectedIndex].value;
     if(role1=="Select")
         {
-            alert("Select Role");
+            alert("<%=resource.getString("admin.createaccount1.role") %>");
             document.getElementById('role').focus();
             return false;
         }
@@ -64,40 +87,14 @@ System.out.println(sublibrary_name+mainlib);
          var x=document.getElementById('login_id');
         if(x.value=="")
             {
-                alert("Login ID should not be blank");
+                alert("<%=resource.getString("admin.createaccount1.loginmess") %>");
                  document.getElementById('login_id').focus();
                 return false;
             }
 
        
     
-        var x=document.getElementById('password');
-        if(x.value=="")
-            {
-                alert("Password should not be blank");
-                document.getElementById('password').focus();
-                return false;
-            }
-     if(document.getElementById('password1').value=="")
-    {
-        alert("Enter Reenter password...");
-
-        document.getElementById('password1').focus();
-        
-
-        return false;
-    }
-          var x1=document.getElementById('password');
-        var x2=document.getElementById('password1');
-        if(x1.value!=x2.value)
-            {
-                alert("password mismatch");
-                document.getElementById('password').value="";
-                document.getElementById('password1').value="";
-                document.getElementById('password').focus();
-                return false;
-            }
-            else
+   
                 return true;
 
 
@@ -246,19 +243,19 @@ else{
 
       visibility: show;">
 
-     <table border="1" class="table" width="400px" height="200px" align="center">
+     <table border="1" class="table" width="400px" height="200px" dir="<%=rtl%>" align="center">
 
 
-                <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">Manage Staff Account</td></tr>
-                <tr><td valign="top" align="center"> <br/>
-                <table cellspacing="10px">
+                <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" dir="<%=rtl%>" height="25px;"><%=resource.getString("admin.createaccount1.head") %></td></tr>
+                <tr><td valign="top" dir="<%=rtl%>" align="center"> <br/>
+                <table cellspacing="10px" dir="<%=rtl%>">
 
                           <% if(rst!=null)
                                  {
                                  %>
                      
-                        <tr><td colspan="2" height="5px"></td></tr>
-                        <tr><td class="txt2">SubLibrary Name</td><td>
+                        <tr><td colspan="2" height="5px" dir="<%=rtl%>"></td></tr>
+                        <tr><td class="txt2" dir="<%=rtl%>"><%=resource.getString("admin.createaccount1.sublib") %></td><td>
                                 
                                 
                                
@@ -283,34 +280,34 @@ else{
 
                             </td></tr>
 
-                        <tr><td class="txt2">Staff ID</td><td><input type="text" id="staff_id" name="staff_id"  readonly   value="<%=staff_id%>"></td></tr>
-                         <tr><td colspan="2" height="5px"></td></tr>
-                        <tr><td class="txt2">User Name</td><td><input type="text" id="user_name" name="user_name" readonly   value="<%=user_name%>"></td></tr>
-                        <tr><td colspan="2" height="5px"></td></tr>
-                        <tr><td class="txt2" >Login ID</td><td><input type="text" id="login_id" name="login_id"    value=""/> </td></tr>
-                        <tr><td colspan="2" height="5px"></td></tr>
-                           <tr><td class="txt2" width="250px" align="left">Select Role</td><td width="250px">
+                        <tr><td class="txt2" dir="<%=rtl%>"><%=resource.getString("admin.acq_register.staffId") %></td><td><input type="text" id="staff_id" name="staff_id"  readonly   value="<%=staff_id%>"></td></tr>
+                         <tr><td colspan="2" dir="<%=rtl%>" height="5px"></td></tr>
+                        <tr><td class="txt2" dir="<%=rtl%>"><%=resource.getString("admin.createaccount1.username") %></td><td><input type="text" id="user_name" name="user_name" readonly   value="<%=user_name%>"></td></tr>
+                        <tr><td colspan="2" height="5px" dir="<%=rtl%>"></td></tr>
+                        <tr><td class="txt2" dir="<%=rtl%>"><%=resource.getString("admin.createaccount1.loginid") %></td><td><input type="text" id="login_id" name="login_id"    value=""/> </td></tr>
+                        <tr><td colspan="2" height="5px" dir="<%=rtl%>"></td></tr>
+                           <tr><td class="txt2" width="250px"  dir="<%=rtl%>" align="<%=align%>"><%=resource.getString("admin.createaccount1.role") %></td><td width="250px">
                                    <select id="role" size="1" name="role">
                                     
                                     <%
                                     if(login_role.equals("dept-admin"))
                                     {%>
                                   
-                                    <option value="dept-staff">Departmental Staff</option>
+                                    <option value="dept-staff"><%=resource.getString("admin.acq_register.deptstaff") %></option>
                                   
                                     <%}%>
 
                                 </select>
                                 </td></tr>
-                            <tr><td colspan="2" height="5px">
-                       <tr><td class="txt2">Password</td><td><input type="password" id="password"  name="password"  onblur="return check1();"  value="">
+                            <tr><td colspan="2" height="5px" dir="<%=rtl%>">
+                      <%-- <tr><td class="txt2">Password</td><td><input type="password" id="password"  name="password"  onblur="return check1();"  value="">
                            <div align="left" id="searchResult" class="err" style="border:#000000; "></div>
                            </td></tr>
                         <tr><td colspan="2" height="5px">
                        
                        <tr><td class="txt2">Reenter Password</td><td><input type="password" id="password1"  name="password1" onblur="return search1();" value=""></td></tr>
-
-                       <tr><td colspan="2" height="5px"></td></tr>
+                    --%>
+                       <tr><td colspan="2" height="5px" dir="<%=rtl%>"></td></tr>
                        
 
 
@@ -321,9 +318,9 @@ else{
                                 <br>
                                 <br>
                          
-                            <input type="submit" id="Button1" name="button" value="Create Account" class="txt2" />
+                            <input type="submit" id="Button1" name="button" value="<%=resource.getString("admin.ask_for_create_account.createaccount")%>" class="txt2" />
 
-                         <input type="button" id="Button3" name="" value="Back" onclick=" return send1()" class="txt2"/>
+                         <input type="button" id="Button3" name="" value="<%=resource.getString("admin.acq_register.back")%>" onclick=" return send1()" class="txt2"/>
                        
 
                            

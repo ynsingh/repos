@@ -45,7 +45,7 @@ locale1=(String)session.getAttribute("locale");
 
 
 
-<link rel="stylesheet" href="/css/page.css"/>
+<link rel="stylesheet" href="LibMS/css/page.css"/>
 <%
 System.out.println("Session Id"+ session.getId());
 
@@ -62,8 +62,9 @@ else{
     %>sessionout();<%
     }
 
-String id1=request.getParameter("id");
-int id2=Integer.parseInt(id1);
+//String id1=request.getParameter("id");
+//System.out.println (id1);
+//int id2=Integer.parseInt(id1);
 List rst;
 rst=(List)session.getAttribute("blocked_resultset");
 AdminReg_Institute adminReg = new AdminReg_Institute();

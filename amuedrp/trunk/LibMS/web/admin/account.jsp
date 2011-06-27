@@ -8,7 +8,7 @@ This Page is to Enter Staff Details
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
  <jsp:include page="header.jsp" flush="true" />
-
+<%@page contentType="text/html" import="java.util.*,java.io.*,java.net.*"%>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
@@ -19,7 +19,30 @@ String library_id=(String)session.getAttribute("library_id");
 String msg1=(String)request.getAttribute("msg1");
 
 %>
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    boolean page=true;
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
 
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+       // System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
+    else{ rtl="RTL";page=false;align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
     <script language="javascript">
 /*
 * Returns an new XMLHttpRequest object, or false if the browser
@@ -113,7 +136,7 @@ availableSelectList.innerHTML += ndValue+"\n";
 {
     if(document.getElementById('staff_id').value=="")
     {
-        alert("Enter Staff Id...");
+        alert("<%=resource.getString("admin.acq_register.enterStaff")%>");
 
         document.getElementById('staff_id').focus();
 
@@ -123,6 +146,12 @@ availableSelectList.innerHTML += ndValue+"\n";
   }
 
 
+function Send(value)
+{
+
+    document.getElementById("button").setAttribute("value", value);
+    return true;
+}
 
 
 
@@ -154,26 +183,26 @@ availableSelectList.innerHTML += ndValue+"\n";
       position: absolute;
 
       visibility: show;">
-     <table border="1" class="table" width="400px"  align="center">
+     <table border="1" class="table" width="400px" dir="<%=rtl%>"  align="center">
 
 
-                <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">Manage Staff</td></tr>
-                <tr><td valign="top" align="center"> <br/>
-                <table cellspacing="10px">
+                <tr><td align="center" dir="<%=rtl%>" class="headerStyle" bgcolor="#E0E8F5" height="25px;"><%=resource.getString("admin.acq_register.heading")%></td></tr>
+                <tr><td valign="top" dir="<%=rtl%>" align="center"> <br/>
+                <table cellspacing="10px" dir="<%=rtl%>">
 
-                    <tr><td rowspan="5" class="btn">Enter Staff ID<br><br>
+                    <tr><td rowspan="5" class="btn"><%=resource.getString("admin.acq_register.enterStaff")%><br><br>
                             <input type="text" id="staff_id" name="staff_id" onblur="search();" value=""/>
                         <br>
-                        <div align="left" id="searchResult" class="err" style="border:#000000; "></div>
-                        </td><td width="200px" align="center"> <input type="submit" class="btn" id="Button1" name="button" value="Create Account"  style="width:150px"/></td></tr>
+                        <div align="<%=align%>" dir="<%=rtl%>" id="searchResult" class="err" style="border:#000000; "></div>
+                        </td><td width="200px" dir="<%=rtl%>" align="center"> <input type="submit" class="btn" id="Button1" onClick="return Send('Create Account')" value="<%=resource.getString("admin.ask_for_create_account.createaccount")%>"  style="width:150px"/></td></tr>
 
                     
- <tr><td width="150px" align="center"><input type="submit" id="Button3" name="button" value="View Account" class="btn"  style="width:150px" /></td></tr>
- <tr><td width="150px" align="center"><input type="submit" id="Button4" name="button" value="Delete Account" class="btn"  style="width:150px"/></td></tr>
- <tr><td width="150px" align="center"><input type="submit" id="Button5" name="button" value="Update Account" class="btn"  style="width:150px"/></td></tr>
- <tr><td width="150px" align="center"><input type="submit" id="Button6" name="button" value="Back" class="btn" onclick="return quit()" style="width:150px"/></td></tr>
+ <tr><td width="150px" dir="<%=rtl%>" align="center"><input type="submit" id="Button3"  onClick="return Send('View Account')"  value="<%=resource.getString("admin.account.viewaccount")%>" class="btn"  style="width:150px" /></td></tr>
+ <tr><td width="150px" dir="<%=rtl%>" align="center"><input type="submit" id="Button4"  onClick="return Send('Delete Account')" value="<%=resource.getString("admin.account.deleteaccount")%>" class="btn"  style="width:150px"/></td></tr>
+ <tr><td width="150px" dir="<%=rtl%>" align="center"><input type="submit" id="Button5"   onClick="return Send('Update Account')" value="<%=resource.getString("admin.account.updateaccount")%>" class="btn"  style="width:150px"/></td></tr>
+ <tr><td width="150px" dir="<%=rtl%>" align="center"><input type="submit" id="Button6"    value="<%=resource.getString("admin.acq_register.back")%>" class="btn" onclick="return quit()" style="width:150px"/></td></tr>
  
-
+ <input type="hidden" name="button" id="button"/>
                 </table>
        
 
@@ -189,7 +218,7 @@ availableSelectList.innerHTML += ndValue+"\n";
 
 
 </td></tr>
-                <tr><td class="err">
+                <tr><td class="err" dir="<%=rtl%>">
                          <%     if (msg1!=null){
  %>
  

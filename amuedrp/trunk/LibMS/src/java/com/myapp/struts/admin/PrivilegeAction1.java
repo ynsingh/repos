@@ -66,7 +66,7 @@ if(button.equals("Restore Previous Privilege"))
         result = LoginDAO.updatePriv(backuploginprivobj,backupprivobj,backupacqprivobj,backupcatprivobj,backupcirprivobj,backupserprivobj);
    if(result==true)
                             {
-                            request.setAttribute("res","Privileage Successfully removed");
+                            request.setAttribute("res","Privileage Successfully Restored");
                             request.setAttribute("staff_id", staff_id);
                             request.setAttribute("staff_name", staff_name);
                             request.setAttribute("privilege_list", privilege_list);
@@ -74,8 +74,8 @@ if(button.equals("Restore Previous Privilege"))
                             return mapping.findForward("success");
                             }
                             else{
-                               System.out.println("In Staff");
-                               request.setAttribute("res","Privileage Successfully removed");
+                               
+                               request.setAttribute("res","Privileage Successfully not removed");
                             request.setAttribute("staff_id", staff_id);
                             request.setAttribute("staff_name", staff_name);
                             request.setAttribute("privilege_list", privilege_list);
@@ -85,74 +85,7 @@ if(button.equals("Restore Previous Privilege"))
 
                             }
 
-/*
-                 result =PrivilegeDAO.DeleteStaff(staff_id,library_id);
-                   result=AcqPrivilegeDAO.DeleteStaff(staff_id, library_id);
-                   result=CatPrivilegeDAO.DeleteStaff(staff_id, library_id);
-                   result=CirPrivilegeDAO.DeleteStaff(staff_id, library_id);
-                   result=SerPrivilegeDAO.DeleteStaff(staff_id, library_id);
 
-                        if(result==true)
-                        {
-
-                            result=PrivilegeDAO.insert(backupprivobj);
-                            if(result==true)
-                                result=AcqPrivilegeDAO.insert(backupacqprivobj);
-                                if(result==true)
-                                    result=CatPrivilegeDAO.insert(backupcatprivobj);
-                                    if(result==true)
-                                        result=CirPrivilegeDAO.insert(backupcirprivobj);
-                                        if(result==true)
-                                            result=SerPrivilegeDAO.insert(backupserprivobj);
-                                       
-                                    
-
-                        if(result==true)
-                        {
-
-                        //check the privilege of admin role user and degrade it to staff role if administrator privielege
-                        //not selected
-                             if(backupprivobj.getAdministrator().equalsIgnoreCase("true"))
-                            {
-                          System.out.println("In admin");
-                            //Login logobj=LoginDAO.searchStaffLogin(staff_id, library_id, backupprivobj.getSublibraryId());
-                            
-                            System.out.println("previous login role="+backuploginprivobj.getRole());
-
-                            result=LoginDAO.update1(backuploginprivobj);
-
-                            if(result==true)
-                            {
-                            request.setAttribute("res","Privileage Successfully removed");
-                            request.setAttribute("staff_id", staff_id);
-                            request.setAttribute("staff_name", staff_name);
-                            request.setAttribute("privilege_list", privilege_list);
-                            System.out.println("staff name="+staff_name);
-                            return mapping.findForward("success");
-                            }
-                            }else{
-                                                System.out.println("In Staff");
-                               request.setAttribute("res","Privileage Successfully removed");
-                            request.setAttribute("staff_id", staff_id);
-                            request.setAttribute("staff_name", staff_name);
-                            request.setAttribute("privilege_list", privilege_list);
-                            System.out.println("staff name="+staff_name);
-                            return mapping.findForward("success");
-
-
-                            }
-                        }
-                      }else{
-                            request.setAttribute("res","Error");
-                            request.setAttribute("staff_id", staff_id);
-                            request.setAttribute("staff_name", staff_name);
-                            request.setAttribute("privilege_list", privilege_list);
-                            System.out.println("staff name="+staff_name);
-                            return mapping.findForward("success");
-
-
-                      }
-         */
 }
                    
                 

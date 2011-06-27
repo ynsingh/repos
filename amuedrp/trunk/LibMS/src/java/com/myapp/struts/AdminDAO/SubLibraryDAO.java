@@ -56,20 +56,22 @@ public class SubLibraryDAO {
 
 }
 
-public static SubLibrary getMainSubLibraryId(String library_id) {
+public static SubLibrary getMainSubLibraryId(String library_id,String sublibrary_id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+      Query query1;
         try {
             session.beginTransaction();
-            Query query1 = session.createQuery("FROM  SubLibrary  WHERE id.libraryId =:library_id and id.sublibraryId=:library_id");
+       query1= session.createQuery("FROM  SubLibrary  WHERE id.libraryId =:library_id and id.sublibraryId=:sublibrary_id");
             query1.setString("library_id", library_id);
+            query1.setString("sublibrary_id", sublibrary_id);
             
 
-            return (SubLibrary) query1.uniqueResult();
+           
         }
         finally {
-           // session.close();
+      //      session.close();
         }
+         return (SubLibrary) query1.uniqueResult();
 
 }
 
@@ -85,7 +87,7 @@ public static List<SubLibrary> getAllSubLibrary(String library_id) {
             return (List<SubLibrary>) query1.list();
         }
         finally {
-           // session.close();
+         //   session.close();
         }
 
 }
@@ -103,7 +105,7 @@ public static SubLibrary getLibName(String library_id,String sublibrary_id) {
             return (SubLibrary) query1.uniqueResult();
         }
         finally {
-           // session.close();
+          //  session.close();
         }
 
 }
@@ -120,7 +122,7 @@ public static SubLibrary getSubLibraryId(String library_id,String sublibrary_nam
             return (SubLibrary) query1.uniqueResult();
         }
         finally {
-           // session.close();
+          //  session.close();
         }
 
 }
@@ -137,7 +139,7 @@ public static List<SubLibrary> searchAccessibleSubLib(String library_id,String s
             return (List<SubLibrary>) query1.list();
         }
         finally {
-           // session.close();
+            //session.close();
         }
 
 }
@@ -154,7 +156,7 @@ public static List<SubLibrary> searchSubLib(String library_id) {
             return (List<SubLibrary>) query1.list();
         }
         finally {
-           // session.close();
+           session.close();
         }
 
 }
@@ -170,7 +172,7 @@ public static List<SubLibrary> searchSubLib(String library_id,String sublibrary_
             return (List<SubLibrary>) query1.list();
         }
         finally {
-           // session.close();
+       //     session.close();
         }
 
 }
@@ -187,7 +189,7 @@ public static List<SubLibrary> searchSubLib(String library_id,String sublibrary_
             return (SubLibrary) query1.uniqueResult();
         }
         finally {
-           // session.close();
+      //      session.close();
         }
 
 }

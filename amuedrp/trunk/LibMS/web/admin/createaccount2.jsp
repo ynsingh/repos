@@ -1,4 +1,5 @@
  <%@page import="java.sql.*,com.myapp.struts.hbm.*,com.myapp.struts.AdminDAO.*,java.util.*"%>
+ <%@page contentType="text/html" import="java.util.*,java.io.*,java.net.*"%>
 <jsp:include page="header.jsp" flush="true" />
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -8,6 +9,29 @@
 <%@ taglib uri="http://struts.apache.org/tags-logic" prefix="logic" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+       // System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align="left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+
+%>
 <%
 Login  rst=(Login)session.getAttribute("update_account");
 
@@ -46,7 +70,7 @@ if(rst!=null)
     sublibrary_id=rst.getSublibraryId();
     }
 
-
+System.out.println("User Login Role"+login_role1+"  "+login_role);
 
 %>
 
@@ -154,7 +178,7 @@ var role="<%=login_role%>";
         }
 
 
-
+document.getElementById('role').value="<%=login_role1%>";
 
                 return true;
 
@@ -196,7 +220,7 @@ var sublibrary_id=document.getElementById('sublibrary_id').options[document.getE
 
     function confirm1()
 {
-   var answer = confirm ("Do you want to Delete Record?")
+   var answer = confirm ("<%=resource.getString("admin.update_staff.del") %>")
 if (answer!=true)
     {
         document.getElementById('Button1').focus();
@@ -219,15 +243,15 @@ if (answer!=true)
 
       visibility: show;">
 
-      <table border="1" class="table" width="400px" height="200px" align="center">
+      <table border="1" class="table" width="400px" height="200px"  dir="<%=rtl%>" align="center">
 
 
-                <tr><td align="center" class="headerStyle" bgcolor="#E0E8F5" height="25px;">Manage Staff</td></tr>
-                <tr><td valign="top" align="center"> <br/>
-                <table cellspacing="10px">
+                <tr><td align="center"  dir="<%=rtl%>" class="headerStyle" bgcolor="#E0E8F5" height="25px;"><%=resource.getString("admin.createaccount1.head") %></td></tr>
+                <tr><td valign="top"  dir="<%=rtl%>" align="center"> <br/>
+                <table cellspacing="10px"  dir="<%=rtl%>">
 
                           <tr>
-                <td width="10%">      SubLibrary Name</td >
+                <td width="10%"> <%=resource.getString("admin.staff_register_message.sublibname") %>     </td >
                 <td width="15%">
 
                      <%
@@ -265,13 +289,13 @@ if (answer!=true)
                    
                 </td>
             </tr>
-                        <tr><td class="btn">Staff ID</td><td><input type="text" id="staff_id" name="staff_id"  readonly   value="<%=staff_id%>"></td></tr>
-                         <tr><td colspan="2" height="5px"></td></tr>
-                        <tr><td class="btn">User Name</td><td><input type="text" id="user_name" name="user_name"  readonly   value="<%=user_name%>"></td></tr>
-                        <tr><td colspan="2" height="5px" width="300px"></td></tr>
-                        <tr><td class="btn" >Login ID</td><td><input type="text" id="login_id" name="login_id" readonly     value="<%=login_id%>"/> </td></tr>
-                        <tr><td colspan="2" height="5px" align="center"></td></tr>
-                        <tr><td class="btn" width="250px">Select Role</td><td width="250px">
+                        <tr><td class="btn"  dir="<%=rtl%>"><%=resource.getString("admin.acq_register.staffId") %></td><td><input type="text" id="staff_id" name="staff_id"  readonly   value="<%=staff_id%>"></td></tr>
+                         <tr><td colspan="2" height="5px"  dir="<%=rtl%>"></td></tr>
+                        <tr><td class="btn"  dir="<%=rtl%>"><%=resource.getString("admin.createaccount1.username") %></td><td><input type="text" id="user_name" name="user_name"  readonly   value="<%=user_name%>"></td></tr>
+                        <tr><td colspan="2" height="5px" width="300px"  dir="<%=rtl%>"></td></tr>
+                        <tr><td class="btn"  dir="<%=rtl%>"><%=resource.getString("admin.createaccount1.loginid") %></td><td><input type="text" id="login_id" name="login_id" readonly     value="<%=login_id%>"/> </td></tr>
+                        <tr><td colspan="2" height="5px"   dir="<%=rtl%>" align="center"></td></tr>
+                        <tr><td class="btn" width="250px"  dir="<%=rtl%>"><%=resource.getString("admin.createaccount1.role") %></td><td width="250px">
 
                                
                                 <%  if(button.equals("View Account")||button.equals("Delete Account"))
@@ -285,31 +309,31 @@ if (answer!=true)
                                 </html:select>
 
                                       <%  }else{%>
-                                      <html:select styleId="role" size="1" property="role" value="<%=login_role1%>">
-                                          <%if(login_role1.equalsIgnoreCase("dept-admin")){%>
+                                      <html:select styleId="role" size="1" property="role">
+                                         <%-- <%if(login_role1.equalsIgnoreCase("dept-admin")){%>
                                           <html:option  value="dept-admin"> Departmental Admin</html:option>
                                            <html:option  value="dept-staff"> Departmental Staff</html:option>
-                                           <%}else if(login_role1.equalsIgnoreCase("dept-staff")){%>
+                                                <%}else if(login_role1.equalsIgnoreCase("dept-staff")){%>
                                            <html:option  value="dept-staff"> Departmental Staff</html:option>
 
-                                     <%}%>
+                                     <%}%>--%>
                                       
                                 </html:select>
                                  <%}%>
                          </td></tr>
-                             <tr><td colspan="2" height="5px" align="center"></td></tr>
+                             <tr><td colspan="2" height="5px"  dir="<%=rtl%>" align="center"></td></tr>
                          
                        
-                    <tr><td class="btn">Password</td><td>            <input type="password" id="password"  name="password" readonly  value="<%=password%>"></td></tr>
+                    <tr><td class="btn"  dir="<%=rtl%>"><%=resource.getString("login.message.signin.password") %></td><td>            <input type="password" id="password"  name="password" readonly  value="<%=password%>"></td></tr>
                                <input type="hidden" id="password"  name="password"  value="<%=password%>">
  
 
                        
                             
-  <tr><td colspan="2" height="5px" align="center"></td></tr>
+  <tr><td colspan="2" height="5px" align="center"  dir="<%=rtl%>"></td></tr>
                       
 
-                            <tr><td colspan="2" height="5px" align="center">
+                            <tr><td colspan="2" height="5px" align="center"  dir="<%=rtl%>">
                        
                        
                         <%
@@ -318,21 +342,23 @@ if (answer!=true)
 
                         %>
                         
-                        <input type="button" id="Button3" name="" value="Back" onclick=" return send1()" class="txt2"/>
+                        <input type="button" id="Button3" name="" value="<%=resource.getString("admin.acq_register.back") %>" onclick=" return send1()" class="txt2"/>
                       <%
                         }
                          else if(button.equals("Update Account"))
                             {
                         %>
-                        <input type="submit" id="Button1" name="button" value="<%=button%>" class="txt2"/>
-                         <input type="button" id="Button3" name="" value="Back" onclick=" return send1()" class="txt2"/>
+                        <input type="hidden" name="button" value="Update Account"/>
+                        <input type="submit" id="Button1"  value="<%=resource.getString("admin.acq_register.update") %>" class="txt2"/>
+                         <input type="button" id="Button3" name="" value="<%=resource.getString("admin.acq_register.back") %>" onclick=" return send1()" class="txt2"/>
                         <%
                          }
                         else if(button.equals("Delete Account"))
                         {%>
-                         <input type="submit" id="Button1" name="button" value="Confirm" class="txt2" onclick="return confirm1()"/>
+                                  <input type="hidden" name="button" value="Confirm"/>
+                         <input type="submit" id="Button1" value="<%=resource.getString("admin.acq_register.delete") %>"  class="txt2" onclick="return confirm1()"/>
 
-                         <input type="button" id="Button3" name="" value="Back" onclick=" return send1()" class="txt2"/>
+                         <input type="button" id="Button3" name="" value="<%=resource.getString("admin.acq_register.back") %>" onclick=" return send1()" class="txt2"/>
                    
                        
 

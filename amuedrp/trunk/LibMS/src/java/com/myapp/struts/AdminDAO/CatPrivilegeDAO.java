@@ -245,7 +245,7 @@ public class CatPrivilegeDAO {
         }
         finally
         {
-          //session.close();
+        //  session.close();
         }
 
 return "";
@@ -350,7 +350,7 @@ public static  boolean insert(CatPrivilege obj)
         }
         finally
         {
-          //session.close();
+        //  session.close();
         }
    return true;
 
@@ -374,7 +374,7 @@ public static  boolean insert(CatPrivilege obj)
         }
         finally
         {
-          //  session.close();
+         //   session.close();
         }
         return ( CatPrivilege) query.uniqueResult();
 
@@ -408,7 +408,7 @@ public static boolean DeleteStaff(String staff_id,String library_id) {
         }
         finally
         {
-        // session.close();
+         session.close();
         }
    return true;
 

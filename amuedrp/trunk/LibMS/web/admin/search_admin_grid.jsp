@@ -143,6 +143,49 @@ System.out.println("tcount="+tcount);
 <%}
 else
 {%>
+
+<%!
+    Locale locale=null;
+    String locale1="en";
+    String rtl="ltr";
+    boolean page=true;
+    String align="left";
+%>
+<%
+try{
+locale1=(String)session.getAttribute("locale");
+
+    if(session.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session.getAttribute("locale");
+       // System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";page=true;align="left";}
+    else{ rtl="RTL";page=false;align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+    %>
+
+<%
+  String RegistrationID=resource.getString("admin.viewpending.registrationid");
+  pageContext.setAttribute("RegistrationID", RegistrationID);
+  String InstituteName=resource.getString("admin.viewpending.institutename");
+  pageContext.setAttribute("InstituteName", InstituteName);
+  String AdminEmail=resource.getString("admin.viewpending.adminemail");
+  pageContext.setAttribute("AdminEmail",AdminEmail);
+  String Status=resource.getString("admin.viewall.status");
+  pageContext.setAttribute("Status",Status);
+  String Action=resource.getString("admin.viewpending.action");
+  pageContext.setAttribute("Action",Action);
+  String City=resource.getString("admin.searchadmingrid.city");
+  pageContext.setAttribute("City",City);
+  String InstituteID=resource.getString("admin.searchadmingrid.InstituteId");
+  pageContext.setAttribute("InstituteID",InstituteID);
+
+%>
 <ui:dataGrid items="${requestList}"  var="doc" name="datagrid1" cellPadding="0" cellSpacing="0" styleClass="datagrid">
 
   <columns>
@@ -152,31 +195,31 @@ else
     </column>
 
     <column width="100">
-      <header value="Registration_ID" hAlign="left" styleClass="header"/>
+      <header value="${RegistrationID}" hAlign="left" styleClass="header"/>
       <item   value="${doc.registration_id}" hyperLink="${pagecontext}/admin/index7.jsp?id=${doc.registration_id}"  hAlign="left"    styleClass="item"/>
     </column>
 
     <column width="200">
-      <header value="Institute Name" hAlign="left" styleClass="header"/>
+      <header value="${InstituteName}" hAlign="left" styleClass="header"/>
       <item   value="${doc.institute_name}" hAlign="left" hyperLink="${pagecontext}/admin/index7.jsp?id=${doc.registration_id}"  styleClass="item"/>
     </column>
 
    
 
     <column width="150">
-      <header value="Admin_Email" hAlign="left" styleClass="header"/>
+      <header value="${AdminEmail}" hAlign="left" styleClass="header"/>
       <item   value="${doc.admin_email}" hyperLink="${pagecontext}/admin/index7.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
     </column>
 <column width="100">
-   <header value="City" hAlign="left" styleClass="header"/>
+   <header value="${City}" hAlign="left" styleClass="header"/>
  <item  value="${doc.city}" hyperLink="${pagecontext}/admin/index7.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
     </column>
    <column width="100">
-   <header value="Institute ID" hAlign="left" styleClass="header"/>
+   <header value="${InstituteID}" hAlign="left" styleClass="header"/>
  <item  value="${doc.institute_id}" hyperLink="${pagecontext}/admin/index7.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
     </column>
       <column width="100">
-   <header value="Status" hAlign="left" styleClass="header"/>
+   <header value="${Status}" hAlign="left" styleClass="header"/>
  <item  value="${doc.status}" hyperLink="${pagecontext}/admin/index7.jsp?id=${doc.registration_id}"  hAlign="left" styleClass="item"/>
     </column>
  </columns>
