@@ -255,20 +255,21 @@ class ExpenseRequestEntryController {
  */     
     
     def submit = {
-		GrailsHttpSession gh=getSession()
+    	GrailsHttpSession gh=getSession()
     	if(params.invoiceAmount == "")
     	{
     		params.invoiceAmount = 0
     	}
     	def expenseRequestEntryInstance = expenseRequestService
     			.getExpenseRequestEntryById(params.expenseRequestEntry)
-		expenseRequestEntryInstance.invoiceNo = params.invoiceNo
+    	expenseRequestEntryInstance.invoiceNo = params.invoiceNo
     	DateFormat df = new SimpleDateFormat("dd/MM/yyyy")
     	expenseRequestEntryInstance.invoiceDate  = df.parse(params.invoiceDate_value)
     	expenseRequestEntryInstance.invoiceAmount = new Double(params.invoiceAmount)
     	expenseRequestEntryInstance.save() // save the new/updated invoice details.
     	def proposalApprovalAuthorityMapInstanceList = proposalApprovalAuthorityMapService
     		.getProposalApprovalAuthorityMapInstanceListByProposalId(expenseRequestEntryInstance.id)
+    	
     	def approvalAuthorityInstance =ApprovalAuthority.get(new Integer(params.approvalAuthority.id).intValue())
     	def userInstance = Person.get(gh.getValue("UserId"))
     	def proposalApprovalAuthorityMapInstance
@@ -294,26 +295,61 @@ class ExpenseRequestEntryController {
 			    		.getProposalApprovalInstanceListByProposalApprovalAuthorityMapInstance(approvalAuthorityDetailInstanceList,proposalApprovalAuthorityMapInstance) // get the list of persons reviewed in current authority level.
 			    	if(approvalAuthorityDetailInstanceList.size() == proposalApprovalInstanceList.size())
 					{
+			    		def proposalApprovalAuthorityMapDuplicateInstance= proposalApprovalAuthorityMapService.getProposalApprovalAuthorityMapInstanceListByProposalIdAndType(expenseRequestEntryInstance.id,params)
+			        	if(proposalApprovalAuthorityMapDuplicateInstance)
+			        	{
+			        		flash.error = "${message(code: 'default.CannotSend.message')}"
+			        		redirect(action: "financeLogin")
+					    		
+			        			
+			        	}
+			        	else
+			        	{
 						proposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService
 							.saveProposalApprovalAuthorityMap(proposalApprovalAuthorityMapInstanceList,approvalAuthorityInstance,userInstance,expenseRequestEntryInstance) //create new approval authority map by selected approval authority.
 		    			flash.message = "${message(code: 'default.SendSuccessfully.message')}"
 		    			redirect(action: "financeLogin")
 		    		}
+					}
 		    		else{
 		    			flash.error = "${message(code: 'default.RequestPending.message')}"
 		    			redirect(action: "financeLogin")
 		    		}
 		    	}
-		    	else {
+		    	else 
+		    	{
+		    		def approvalAuthorityDetailInstanceList = approvalAuthorityDetailService
+		    		.getApprovalAuthorityDetailByApprovalAuthority(proposalApprovalAuthorityMapInstance.approvalAuthority.id)// get the list of persons in current authority level.
+		    	   def proposalApprovalInstanceList = proposalApprovalService
+		    		.getProposalApprovalInstanceListByProposalApprovalAuthorityMapInstance(approvalAuthorityDetailInstanceList,proposalApprovalAuthorityMapInstance) // get the list of persons reviewed in current authority level.
+		    	    if(proposalApprovalInstanceList)
+		    	    {
+		    	    	
+		    	    
+		    		def proposalApprovalAuthorityMapDuplicateInstance= proposalApprovalAuthorityMapService.getProposalApprovalAuthorityMapInstanceListByProposalIdAndType(expenseRequestEntryInstance.id,params)
+		        	if(proposalApprovalAuthorityMapDuplicateInstance)
+		        	{
+		        		flash.error = "${message(code: 'default.CannotSend.message')}"
+		        		redirect(action: "financeLogin")
+				  	}
+		        	else
+		        	{
 		    		proposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService
 		    			.saveProposalApprovalAuthorityMap(proposalApprovalAuthorityMapInstanceList,approvalAuthorityInstance,userInstance,expenseRequestEntryInstance) //create new approval authority map by selected approval authority.
 	    			flash.message = "${message(code: 'default.SendSuccessfully.message')}"
 	    			redirect(action: "financeLogin")
+		        	}
+		    	    }
+		    	    else
+		    	    {
+		    	    	flash.error = "${message(code: 'default.RequestPending.message')}"
+			    		redirect(action: "financeLogin")
+		    	    }
+		    		
 		    	}
-		    	
-						
-			}
+		 	}
 	    	else{
+	    		
 	    		proposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService
 	    			.saveProposalApprovalAuthorityMap(proposalApprovalAuthorityMapInstanceList,approvalAuthorityInstance,userInstance,expenseRequestEntryInstance)
 		    	if (proposalApprovalAuthorityMapInstance) 
@@ -333,103 +369,112 @@ class ExpenseRequestEntryController {
 /*
  * Function to list the status details of each member in Approval authority.
  */     
-    def approvalStatus = {
-    	def approvalAuthorityInstanceList = []
-    	def proposalApprovalInstanceList = []
-    	int s=0
-    	def sizeList = []
-    	def approvalAuthorityDetailList = []
-    	def proposalApprovalDetailInstanceList = []
-    	def proposalApprovalAuthorityMapInstanceList = []
-    	def expenseRequestEntryInstance = expenseRequestService.getExpenseRequestEntryById(params.id)
-    	
-    	proposalApprovalAuthorityMapInstanceList = proposalApprovalAuthorityMapService
-    			.getProposalApprovalAuthorityMapInstanceListByProposalId(params.id) // get all proposal Approval Authority Map.
-    	
-    	for(int i=0;i<proposalApprovalAuthorityMapInstanceList.size();i++)
-		{
-    		def approvalAuthorityInstance = ApprovalAuthority
-    			.get( proposalApprovalAuthorityMapInstanceList[i].approvalAuthority.id) 
-    		approvalAuthorityInstanceList.add(approvalAuthorityInstance)// get all approval authority to which request had send.
-		}
-    		
-    		
-    	if(expenseRequestEntryInstance.status == 'Pending')
-    	{
-    		def expenseRequestMaxOrder = proposalApprovalAuthorityMapService
-    			.getPreProposalApprovalMaxOrder('ExpenseRequest',expenseRequestEntryInstance.id) // get the heighest approve order of an expense request.
-	    	def newProposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService
-	    		.getProposalApprovalAuthorityMapByApproveOrder(expenseRequestEntryInstance,expenseRequestMaxOrder[0]) // get the proposalApprovalAuthorityMapInstance have heighest approve order.
-	    	for(int j=0;j<proposalApprovalAuthorityMapInstanceList.size();j++)
-	    	{
-	    		if(proposalApprovalAuthorityMapInstanceList[j].approveOrder == newProposalApprovalAuthorityMapInstance.approveOrder)
-		    	{
-		    		
-	    			def approvalAuthorityDetailInstanceList = approvalAuthorityDetailService
-	    				.getApprovalAuthorityDetailByApprovalAuthority(proposalApprovalAuthorityMapInstanceList[j].approvalAuthority.id)//get members in each authority.
-		        	sizeList[s] = approvalAuthorityDetailInstanceList.size()
-		        	s++
-		        	for(int k=0;k<approvalAuthorityDetailInstanceList.size();k++)
-		        	{
-		        		def proposalApprovalInstance = proposalApprovalService
-		        			.getProposalApprovalByProposalApprovalAuthorityMapAndUser(proposalApprovalAuthorityMapInstanceList[j].id,approvalAuthorityDetailInstanceList[k].id) //get the list of persons reviewed in current authority level.
-		        		approvalAuthorityDetailList.add(approvalAuthorityDetailInstanceList[k])
-		        		if(proposalApprovalInstance)
-		        		{
-		        			def proposalApprovalDetailInstance = proposalApprovalDetailService
-		        				.proposalApprovalDetailByProposalApproval(proposalApprovalInstance.id)
-		            		proposalApprovalDetailInstanceList.add(proposalApprovalDetailInstance) // get the status of each reviewed member in the authority.
-		            		proposalApprovalInstanceList.add(proposalApprovalInstance)
-		            		
-		        		}
-		        		else
-		        		{
-		        			proposalApprovalInstanceList.add(null)
-		        			
-		        		}
-		        		
-		        	}
+ def approvalStatus = {
+	    	def approvalAuthorityInstanceList = []
+	    	def proposalApprovalInstanceList = []
+	    	int s=0
+	    	def sizeList = []
+	    	def approvalAuthorityDetailList = []
+	    	def proposalApprovalDetailInstanceList = []
+	    	def proposalApprovalAuthorityMapInstanceList = []
+	    	def expenseRequestEntryInstance = expenseRequestService.getExpenseRequestEntryById(params.id)
+	    	
+	    	proposalApprovalAuthorityMapInstanceList = proposalApprovalAuthorityMapService
+	    			.getProposalApprovalAuthorityMapInstanceListByProposalId(params.id) // get all proposal Approval Authority Map.
+	    	
+	    	for(int i=0;i<proposalApprovalAuthorityMapInstanceList.size();i++)
+			{
+	    		def approvalAuthorityInstance = ApprovalAuthority
+	    			.get( proposalApprovalAuthorityMapInstanceList[i].approvalAuthority.id) 
+	    		approvalAuthorityInstanceList.add(approvalAuthorityInstance)// get all approval authority to which request had send.
+			}
 	    		
-				}
-		    	else
+	    		
+	    	if(expenseRequestEntryInstance.status == 'Pending')
+	    	{
+	    		def expenseRequestMaxOrder = proposalApprovalAuthorityMapService
+	    			.getPreProposalApprovalMaxOrder('ExpenseRequest',expenseRequestEntryInstance.id) // get the heighest approve order of an expense request.
+		    	def newProposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService
+		    		.getProposalApprovalAuthorityMapByApproveOrder(expenseRequestEntryInstance,expenseRequestMaxOrder[0]) // get the proposalApprovalAuthorityMapInstance have heighest approve order.
+		    	for(int j=0;j<proposalApprovalAuthorityMapInstanceList.size();j++)
 		    	{
+		    		if(proposalApprovalAuthorityMapInstanceList[j].approveOrder == newProposalApprovalAuthorityMapInstance.approveOrder)
+			    	{
+			    		
+		    			def approvalAuthorityDetailInstanceList = approvalAuthorityDetailService
+		    				.getApprovalAuthorityDetailByApprovalAuthority(proposalApprovalAuthorityMapInstanceList[j].approvalAuthority.id)//get members in each authority.
+			        	sizeList[s] = approvalAuthorityDetailInstanceList.size()
+			        	s++
+			        	for(int k=0;k<approvalAuthorityDetailInstanceList.size();k++)
+			        	{
+			        		def proposalApprovalInstance = proposalApprovalService
+			        			.getProposalApprovalByProposalApprovalAuthorityMapAndUser(proposalApprovalAuthorityMapInstanceList[j].id,approvalAuthorityDetailInstanceList[k].id) //get the list of persons reviewed in current authority level.
+			        		approvalAuthorityDetailList.add(approvalAuthorityDetailInstanceList[k])
+			        		if(proposalApprovalInstance)
+			        		{
+			        			def proposalApprovalDetailInstance = proposalApprovalDetailService
+			        				.proposalApprovalDetailByProposalApproval(proposalApprovalInstance.id)
+			            		proposalApprovalDetailInstanceList.add(proposalApprovalDetailInstance) // get the status of each reviewed member in the authority.
+			            		proposalApprovalInstanceList.add(proposalApprovalInstance)
+			            		
+			        		}
+			        		else
+			        		{
+			        			proposalApprovalInstanceList.add(null)
+			        			
+			        		}
+			        		
+			        	}
 		    		
+					}
+			    	else
+			    	{
+			    		def approvalAuthorityDetailInstanceList = approvalAuthorityDetailService
+	    				.getApprovalAuthorityDetailByApprovalAuthority(proposalApprovalAuthorityMapInstanceList[j].approvalAuthority.id)//get members in each authority.
+			    		
+		    			proposalApprovalInstanceList = proposalApprovalService
+		    				.getProposalApprovalByProposalApprovalAuthorityMap(proposalApprovalAuthorityMapInstanceList[j].id) 
+		    			sizeList[s] = proposalApprovalInstanceList.size()
+			        	s++
+			        	for(int l=0;l<proposalApprovalInstanceList.size();l++)
+			        	{
+			        		def proposalApprovalDetailInstance = proposalApprovalDetailService
+			        			.proposalApprovalDetailByProposalApproval(proposalApprovalInstanceList[l].id)
+		            		proposalApprovalDetailInstanceList.add(proposalApprovalDetailInstance) // get the status of each reviewed member in the authority.
+			        	
+		            		approvalAuthorityDetailList.add(approvalAuthorityDetailInstanceList[l])
+			        	}
+					}
+		    	}
+	    	}
+	    	else
+	    	{
+	    		for(int i=0;i<proposalApprovalAuthorityMapInstanceList.size();i++)
+				{
+	    			def approvalAuthorityDetailInstanceList = approvalAuthorityDetailService
+					.getApprovalAuthorityDetailByApprovalAuthority(proposalApprovalAuthorityMapInstanceList[i].approvalAuthority.id)//get members in each authority.
+	    			
 	    			proposalApprovalInstanceList = proposalApprovalService
-	    				.getProposalApprovalByProposalApprovalAuthorityMap(proposalApprovalAuthorityMapInstanceList[j].id) 
+	    				.getProposalApprovalByProposalApprovalAuthorityMap(proposalApprovalAuthorityMapInstanceList[i].id) // get reviewed list of each authority.
 	    			sizeList[s] = proposalApprovalInstanceList.size()
 		        	s++
-		        	for(int l=0;l<proposalApprovalInstanceList.size();l++)
+		        	for(int j=0;j<proposalApprovalInstanceList.size();j++)
 		        	{
 		        		def proposalApprovalDetailInstance = proposalApprovalDetailService
-		        			.proposalApprovalDetailByProposalApproval(proposalApprovalInstanceList[l].id)
+		        			.proposalApprovalDetailByProposalApproval(proposalApprovalInstanceList[j].id)
 	            		proposalApprovalDetailInstanceList.add(proposalApprovalDetailInstance) // get the status of each reviewed member in the authority.
+	            		approvalAuthorityDetailList.add(approvalAuthorityDetailInstanceList[j])
 		        	}
 				}
+	    		
 	    	}
-    	}
-    	else
-    	{
-    		for(int i=0;i<proposalApprovalAuthorityMapInstanceList.size();i++)
-			{
-    			proposalApprovalInstanceList = proposalApprovalService
-    				.getProposalApprovalByProposalApprovalAuthorityMap(proposalApprovalAuthorityMapInstanceList[i].id) // get reviewed list of each authority.
-    			sizeList[s] = proposalApprovalInstanceList.size()
-	        	s++
-	        	for(int j=0;j<proposalApprovalInstanceList.size();j++)
-	        	{
-	        		def proposalApprovalDetailInstance = proposalApprovalDetailService
-	        			.proposalApprovalDetailByProposalApproval(proposalApprovalInstanceList[j].id)
-            		proposalApprovalDetailInstanceList.add(proposalApprovalDetailInstance) // get the status of each reviewed member in the authority.
-	        	}
-			}
-    		
-    	}
-    	[proposalApprovalAuthorityMapInstanceList:proposalApprovalAuthorityMapInstanceList,
-    	 approvalAuthorityInstanceList:approvalAuthorityInstanceList,
-    	 expenseRequestEntryInstance:expenseRequestEntryInstance,sizeList:sizeList,
-    	 proposalApprovalDetailInstanceList:proposalApprovalDetailInstanceList,
-    	 approvalAuthorityDetailList:approvalAuthorityDetailList]
-    }
+	    	[proposalApprovalAuthorityMapInstanceList:proposalApprovalAuthorityMapInstanceList,
+	    	 approvalAuthorityInstanceList:approvalAuthorityInstanceList,
+	    	 expenseRequestEntryInstance:expenseRequestEntryInstance,sizeList:sizeList,
+	    	 proposalApprovalDetailInstanceList:proposalApprovalDetailInstanceList,
+	    	 approvalAuthorityDetailList:approvalAuthorityDetailList]
+	    }
+	    
     
 /*
  * Function to list the requests in Approval authority members login.
@@ -497,7 +542,8 @@ class ExpenseRequestEntryController {
 			proposalApprovalDetailInstance = proposalApprovalDetailService
 			.proposalApprovalDetailByProposalApproval(proposalApprovalInstance.id)
 		}
-		[expenseRequestEntryInstance:expenseRequestEntryInstance,approvalAuthorityInstance:approvalAuthorityInstance,
+    	ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
+		[expenseRequestEntryInstance:expenseRequestEntryInstance,'currencyFormat':currencyFormatter,approvalAuthorityInstance:approvalAuthorityInstance,
     	 proposalApprovalAuthorityMapInstance:proposalApprovalAuthorityMapInstance,proposalApprovalDetailInstance:proposalApprovalDetailInstance]
     }
 /*
@@ -577,25 +623,58 @@ class ExpenseRequestEntryController {
 	        		.getProposalApprovalInstanceListByProposalApprovalAuthorityMapInstance(approvalAuthorityDetailInstanceList,proposalApprovalAuthorityMapInstance)
 	    		if(approvalAuthorityDetailInstanceList.size() == proposalApprovalInstanceList.size())
 	    		{
+	    			def proposalApprovalAuthorityMapDuplicateInstance= proposalApprovalAuthorityMapService.getProposalApprovalAuthorityMapInstanceListByProposalIdAndType(expenseRequestEntryInstance.id,params)
+		        	if(proposalApprovalAuthorityMapDuplicateInstance)
+		        	{
+		        		flash.error = "${message(code: 'default.CannotSend.message')}"
+		        		redirect(action: "expenseApprovalRequest")
+				 	}
+		        	else
+		        	{
 	    			proposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService
 	    				.saveProposalApprovalAuthorityMap(proposalApprovalAuthorityMapInstanceList,approvalAuthorityInstance,userInstance,expenseRequestEntryInstance)
 	    			flash.message = "${message(code: 'default.SendSuccessfully.message')}"
 	    			redirect(action: "expenseApprovalRequest")
+	    		}
 	    		}
 	    		else{
 	    			flash.error = "${message(code: 'default.RequestPending.message')}"
 	    			redirect(action: "expenseApprovalRequest")
 	    		}
 	    	}
-	    	else{
-	    		
+	    	else 
+	    	{
+	    		def approvalAuthorityDetailInstanceList = approvalAuthorityDetailService
+	    		.getApprovalAuthorityDetailByApprovalAuthority(proposalApprovalAuthorityMapInstance.approvalAuthority.id)// get the list of persons in current authority level.
+	    	    def proposalApprovalInstanceList = proposalApprovalService
+	    		.getProposalApprovalInstanceListByProposalApprovalAuthorityMapInstance(approvalAuthorityDetailInstanceList,proposalApprovalAuthorityMapInstance) // get the list of persons reviewed in current authority level.
+	    	    if(proposalApprovalInstanceList)
+	    	    {
+	    	    	
+	    	    
+	    		def proposalApprovalAuthorityMapDuplicateInstance= proposalApprovalAuthorityMapService.getProposalApprovalAuthorityMapInstanceListByProposalIdAndType(expenseRequestEntryInstance.id,params)
+	        	if(proposalApprovalAuthorityMapDuplicateInstance)
+	        	{
+	        		flash.error = "${message(code: 'default.CannotSend.message')}"
+	        		redirect(action: "financeLogin")
+			  	}
+	        	else
+	        	{
 	    		proposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService
-	    		 	.saveProposalApprovalAuthorityMap(proposalApprovalAuthorityMapInstanceList,approvalAuthorityInstance,userInstance,expenseRequestEntryInstance)
-	    		flash.message = "${message(code: 'default.SendSuccessfully.message')}"
-	    		redirect(action: "expenseApprovalRequest")
+	    			.saveProposalApprovalAuthorityMap(proposalApprovalAuthorityMapInstanceList,approvalAuthorityInstance,userInstance,expenseRequestEntryInstance) //create new approval authority map by selected approval authority.
+    			flash.message = "${message(code: 'default.SendSuccessfully.message')}"
+    			redirect(action: "financeLogin")
+	        	}
+	    	    }
+	    	    else
+	    	    {
+	    	    	flash.error = "${message(code: 'default.RequestPending.message')}"
+		    		redirect(action: "financeLogin")
+	    	    }
+	    		
 	    	}
-    	}
 	}
+    }
 /*
  * Function to terminate the routing process.
  */
@@ -658,7 +737,8 @@ class ExpenseRequestEntryController {
     		else{
     			def approvalAuthorityDetailInstance = approvalAuthorityDetailService
     				.getApprovalAuthorityDetailByApprovalAuthorityUser(proposalApprovalAuthorityMapInstance.approvalAuthority.id,gh.getValue("UserId"))
-    			def proposalApprovalInstance = ProposalApproval.find("from ProposalApproval PA where PA.approvalAuthorityDetail.id ="+approvalAuthorityDetailInstance.id)
+    			def proposalApprovalInstance = proposalApprovalService.getProposalApprovalByProposalApprovalAuthorityMap(proposalApprovalAuthorityMapInstance.id)
+    			def proposalApprovalDetailInstance = proposalApprovalDetailService.proposalApprovalDetailByProposalApproval(proposalApprovalInstance[0].id)
     			if(proposalApprovalInstance)
     			{
     				if(proposalApprovalDetailInstance.proposalStatus == 'Approved')
@@ -931,5 +1011,46 @@ class ExpenseRequestEntryController {
 			flash.message = "${message(code: 'default.notfond.label')}"
             redirect(action:list,id:expenseRequestEntryInstance.id)
 		}
+    }
+    
+    def revieweStatus = 
+    {
+    	GrailsHttpSession gh=getSession()
+    	def proposalApprovalAuthorityMapInstance
+    	def expenseRequestEntryList=[]
+    	 def expenseRequestEntryInstance
+    	 def proposalApprovalInstance
+    	 def proposalApprovalDetailInstance
+    	 def proposalStatusList=[]
+    	def approvalAuthorityInstance = approvalAuthorityDetailService
+		.getApprovalAuthorityDetailInstanceListByPerson(gh.getValue("UserId")) // get the authority list where login user assigned as a member.
+       
+    	if(approvalAuthorityInstance)
+    	{
+    		for(int k=0;k<approvalAuthorityInstance.size();k++)
+    		{
+    	proposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService
+		.getProposalApprovalAuthorityMapByApprovalauthority(approvalAuthorityInstance[k].approvalAuthority.id)//get proposal Approval authority map based on authority.
+		
+        if(proposalApprovalAuthorityMapInstance)
+        {
+        	for(int i=0;i<proposalApprovalAuthorityMapInstance.size();i++)
+        	{
+        		 expenseRequestEntryInstance = expenseRequestService
+ 				.getExpenseRequestEntryById(proposalApprovalAuthorityMapInstance[i].proposalId) // get all expense request of the proposal.
+ 				expenseRequestEntryList.add(expenseRequestEntryInstance)
+ 				proposalApprovalDetailInstance = ProposalApprovalDetail.find("from ProposalApprovalDetail PAD where PAD.proposalApproval.proposalApprovalAuthorityMap.proposalId="+expenseRequestEntryInstance.id+
+        		   "and PAD.proposalApproval.approvalAuthorityDetail.id="+approvalAuthorityInstance[k].id)
+        		  proposalStatusList.add(proposalApprovalDetailInstance)
+        	
+        		   }
+        		  }
+        		}
+        	
+        }
+ 
+    	ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
+	 [expenseRequestEntryList:expenseRequestEntryList,'currencyFormat':currencyFormatter,proposalStatusList:proposalStatusList]
+       
     }
 }

@@ -302,8 +302,12 @@ class ApprovalAuthorityDetailController {
     
     def remove =
     {
-    	println"params"+params.approvalAuthority
+    	
     	def approvalAuthorityDetailInstance
+    	def proposalApprovalInstance
+    	def approvalAuthorityDetailService = new ApprovalAuthorityDetailService()
+    	def proposalApprovalAuthorityMapService = new ProposalApprovalAuthorityMapService()
+    	def proposalApprovalService = new ProposalApprovalService()
     	GrailsHttpSession gh=getSession()
 		def authorityPersonInstanceList = params.approvalAuthority
 		def authorityPersonList=params.approvalAuthority.toString();
@@ -318,7 +322,18 @@ class ApprovalAuthorityDetailController {
 		{
     		approvalAuthorityDetailInstance = ApprovalAuthorityDetail.find("from ApprovalAuthorityDetail AD where AD.id="+authorityPersonInstanceList[i])
     		def evalAnswerInstance = EvalAnswer.find("from EvalAnswer EA where EA.person.id="+approvalAuthorityDetailInstance.person.id)
-			if(evalAnswerInstance)
+    		
+    		def proposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService
+		.getProposalApprovalAuthorityMapByApprovalauthorityId(approvalAuthorityDetailInstance.approvalAuthority.id)
+		println"proposalApprovalAuthorityMapInstance--------------->"+proposalApprovalAuthorityMapInstance
+		if(proposalApprovalAuthorityMapInstance)
+		{
+			for(int j=0;j<proposalApprovalAuthorityMapInstance.size();j++)
+        	{
+				proposalApprovalInstance=proposalApprovalService.getProposalApprovalByAuthorityMapandauthorityId(proposalApprovalAuthorityMapInstance,approvalAuthorityDetailInstance.id)
+		    }
+		}
+			if(proposalApprovalInstance || evalAnswerInstance)
 			{
 				flash.error = "${message(code: 'default.CannotRemove.message')}"
 					
@@ -331,6 +346,7 @@ class ApprovalAuthorityDetailController {
 	    	    println "saved"
 	    	    }
 			}
+		
 		}
     	redirect(action:getAssignedMembers,id:approvalAuthorityDetailInstance.approvalAuthority.id)
     	

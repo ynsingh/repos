@@ -21,7 +21,6 @@
 					<g:sortableColumn property="user.userRealName" title="${message(code: 'default.FirstName.label')}" />
 					<g:sortableColumn property="user.userSurName" title="${message(code: 'default.LastName.label')}" />
 					<th><g:message code="default.Role.label"/></th>
-					<!--<g:sortableColumn property="authority.description" title="${message(code: 'default.Role.label')}" />-->
 				    <th><g:message code="default.Edit.label"/></th>
 				    <g:if test="${session.Role == 'ROLE_ADMIN'}"> 
 						<th><g:message code="default.Edit.label"/></th>
@@ -38,13 +37,16 @@
 					<td>${userMap.user.userSurName?.encodeAsHTML()}</td>
 				    <td>${authorityList[i].authority}</td>
 			        <g:if test="${session.Role == 'ROLE_SITEADMIN'}"> 
-					<td class="actionButtons">
-					 
-						<span class="actionButton">
-							<g:link action="edit" id="${userMap.user.id}" ><g:message code="default.Edit.label"/></g:link>
-						</span>
-						
-					</td>
+				         	<g:if test="${authorityList[i].authority == 'ROLE_SITEADMIN'}">
+				         		<td class="actionButtons"><span class="actionButton"></span></td>
+				         	</g:if>
+				         	<g:else>
+									<td class="actionButtons">
+										<span class="actionButton">
+											<g:link action="edit" id="${userMap.user.id}" ><g:message code="default.Edit.label"/></g:link>
+										</span>
+									</td>
+							</g:else>	
 					</g:if>	
 				</tr>
 			</g:each>

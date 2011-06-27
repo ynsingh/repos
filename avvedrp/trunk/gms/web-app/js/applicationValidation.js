@@ -375,7 +375,7 @@ function validateProject(){
     		
     	//Parent Project End Date
     		
-    	var parentEndDate = document.getElementById("parentProjectEndDate").value;
+    	    var parentEndDate = document.getElementById("parentProjectEndDate").value;
        		var parentEndDateYear=parentEndDate.substring(0,parentEndDate.indexOf("-"));
     		var parentEndDateMonth=parentEndDate.substring(parentEndDate.indexOf("-")+1,parentEndDate.lastIndexOf("-"));
     		var parentEndDateDate=parentEndDate.substring(parentEndDate.lastIndexOf("-")+1,parentEndDate.lastIndexOf(" "));
@@ -808,6 +808,20 @@ function refreshParentGrantAllocationSplit()
 }
 function validateGrantExpense()
 {
+
+if(((document.getElementById("grantAllocation.id").value) == 'null') || ( (document.getElementById("grantAllocation.id").value) == '' ) )
+   {
+	   alert("Please select Grant Allocation");
+	   document.getElementById("grantAllocation.id").focus();
+	   return false;
+   }
+    
+   if(((document.getElementById("grantAllocationSplit.id").value) == 'null') || ( (document.getElementById("grantAllocationSplit.id").value) == '' ) )
+   {
+	   alert("Please select Account Head");
+	   document.getElementById("grantAllocationSplit.id").focus();
+	   return false;
+   }
     if((document.getElementById("expenseAmount").value)==0)
     {
 	    alert("Please enter Proper Amount  ");
@@ -884,19 +898,7 @@ function validateGrantExpense()
 	    document.getElementById("ddNo").focus();
 	    return false;
     }
-     if(((document.getElementById("grantAllocation.id").value) == 'null') || ( (document.getElementById("grantAllocation.id").value) == '' ) )
-   {
-	   alert("Please select Grant Allocation");
-	   document.getElementById("grantAllocation.id").focus();
-	   return false;
-   }
-    
-   if(((document.getElementById("grantAllocationSplit.id").value) == 'null') || ( (document.getElementById("grantAllocationSplit.id").value) == '' ) )
-   {
-	   alert("Please select Account Head");
-	   document.getElementById("grantAllocationSplit.id").focus();
-	   return false;
-   }
+     
     
     if(((document.getElementById("modeOfPayment").value) == 'null') || ( (document.getElementById("modeOfPayment").value) == '' ) )
     {
@@ -1199,6 +1201,24 @@ function validateNotificationCreate()
     {
 	    alert("Please enter Notification code");
 	     document.getElementById("notificationCode").focus();
+	    return false;
+    }
+     if(isNaN(document.getElementById("amount").value))
+    {
+	    alert("Invalid Amount  ");
+	    document.getElementById("amount").focus();
+	    return false;
+    }
+    if(eval(document.getElementById("amount").value)<=0)
+    {
+	    alert("Please enter Proper Amount  ");
+	    document.getElementById("amount").focus();
+	    return false;
+    }
+    if( ( (document.getElementById("amount").value) == 'null') || ( (document.getElementById("amount").value) == '') || ( (document.getElementById("amount").value) == '0')  )
+    {
+	    alert("Please enter an amount");
+	    document.getElementById("amount").focus();
 	    return false;
     }
     var notificationDateYear = document.getElementById("notificationDate_year").value;
@@ -2569,6 +2589,7 @@ function validateEligibilityCriteria()
     		}
     	}
     } 
+ 	docclick=0;
  	function validateAppAuthorityMembers()
 	{ 
 		var isChecked=0;
@@ -2739,7 +2760,7 @@ function validateApprovalAuthorityMap()
       }   
    if((document.getElementById("approveOrder").value)== 0)
     {
-	    alert("Please enter Proper Amount  ");
+	    alert("Please enter a Approve Order  ");
 	    document.getElementById("approveOrder").focus();
 	    return false;
     }
@@ -2773,7 +2794,7 @@ function validateApprovalAuthorityMap()
       }
        if((document.getElementById("processRestartOrder").value)== 0)
     {
-	    alert("Please enter Proper Amount  ");
+	    alert("Please enter a Process RestartOrder  ");
 	    document.getElementById("processRestartOrder").focus();
 	    return false;
     }   
@@ -3032,7 +3053,7 @@ function validateApprovalAuthorityMap()
 		    document.getElementById("expenseAmount").focus();
 		    return false;
 		}
-		if(document.getElementById("expenseAmount").value <= 0)
+		if(document.getElementById("expenseAmount").value <= 1)
 		{
 			alert("Please Enter Proper Expense amount");
 		    document.getElementById("expenseAmount").focus();
@@ -3382,6 +3403,7 @@ function validateCheckBox(instance,msg)
 	//rolePrivi.submit();	
    return true;
 }
+docclick=0
 function validateEvalItemNotificationMap(firstInstance,instance,msg)
 { 
 	if(firstInstance.value == 'null')
@@ -3402,5 +3424,156 @@ function validateEvalItemNotificationMap(firstInstance,instance,msg)
 			setTimeout('docclick=0', 2000);
 	
    return true;
+}
+
+   function validateNotificationAuthorityMap()
+ {
+  if ((document.getElementById("approvalAuthorityId").value) == 'null') 
+	    {
+		    alert("Please Select a Approval Authority");
+		    document.getElementById("approvalAuthorityId").focus();
+		    return false;
+	    }
+ }
+ function validateAwardProposal()
+{
+	if(document.getElementById("name").value == "")
+	{
+		alert("Please Enter Project Title");
+	    document.getElementById("name").focus();
+	    return false;
+	}
+	var speclChars = "!@#$%^&*()+=-[]\\\';,./{}|\":<>?0123456789";
+	
+	if(document.getElementById("name").value != "")
+	 {
+    	
+    	for (var i = 0; i < (document.getElementById("name").value.length); i++) 
+    	{
+   	 		if (speclChars.indexOf(document.getElementById("name").value.charAt(i)) != -1) 
+  			{
+	  			alert ("Special characters and numbers are not allowed in Name.");
+	  			document.getElementById("name").focus();
+	  			return false;
+  			}
+    	}
+    	}
+
+	if(document.getElementById("code").value != "")
+	 {
+    	
+    	for (var i = 0; i < (document.getElementById("code").value.length); i++) 
+    	{
+   	 		if (speclChars.indexOf(document.getElementById("code").value.charAt(i)) != -1) 
+  			{
+  			alert ("Special characters and numbers are not allowed in Code.");
+  			document.getElementById("code").focus();
+  			return false;
+  			}
+    	}
+    }
+    
+    	if(document.getElementById("code").value == ""){
+    		alert("Please Enter Code");
+		    document.getElementById("code").focus();
+		    return false;
+    	}
+    if( ( (document.getElementById("projectType").value) == 'null') || ( (document.getElementById("projectType").value) == '') )
+    {
+	    alert("Please enter the Project Type");
+	    document.getElementById("projectType").focus();
+	    return false;
+    }
+    	var projectStartDateYear = document.getElementById("projectStartDate_year").value;
+	var projectStartDateMonth = document.getElementById("projectStartDate_month").value;
+	var projectStartDateDate = document.getElementById("projectStartDate_day").value;
+	
+	var projectEndDateYear = document.getElementById("projectEndDate_year").value;
+	var projectEndDateMonth = document.getElementById("projectEndDate_month").value;
+	var projectEndDateDate = document.getElementById("projectEndDate_day").value;
+    	
+    	var newProjectStartDate = new Date(projectStartDateYear,projectStartDateMonth-1,projectStartDateDate);
+    	var newProjectEndDate = new Date(projectEndDateYear,projectEndDateMonth-1,projectEndDateDate);
+    	    	
+    	if((document.getElementById("parentProjectStartDate").value != "") || (document.getElementById("parentProjectEndDate").value != ""))
+    	{
+		//Parent Project Start Date
+		
+    	var parentStartDate = document.getElementById("parentProjectStartDate").value;  		
+    	var parentStartDateYear=parentStartDate.substring(0,parentStartDate.indexOf("-"));
+    	var parentStartDateMonth=parentStartDate.substring(parentStartDate.indexOf("-")+1,parentStartDate.lastIndexOf("-"));
+    	var parentStartDateDate=parentStartDate.substring(parentStartDate.lastIndexOf("-")+1,parentStartDate.lastIndexOf(" "));
+    		
+    	//Parent Project End Date
+    		
+    	var parentEndDate = document.getElementById("parentProjectEndDate").value;
+       		var parentEndDateYear=parentEndDate.substring(0,parentEndDate.indexOf("-"));
+    		var parentEndDateMonth=parentEndDate.substring(parentEndDate.indexOf("-")+1,parentEndDate.lastIndexOf("-"));
+    		var parentEndDateDate=parentEndDate.substring(parentEndDate.lastIndexOf("-")+1,parentEndDate.lastIndexOf(" "));
+    		
+    		var newParentProjectStartDate = new Date(parentStartDateYear,parentStartDateMonth-1,parentStartDateDate);
+    		var newParentProjectEndDate = new Date(parentEndDateYear,parentEndDateMonth-1,parentEndDateDate);
+    		
+    		
+    		
+    		if ((newProjectStartDate<newParentProjectStartDate)||(newProjectEndDate>newParentProjectEndDate))
+	 	{
+		alert("Sub project Date period should be between the Main project date");
+		return false;
+		}
+    
+    	}
+    	    	if (newProjectStartDate>=newProjectEndDate)
+    	{
+    		alert("Project End Date should be greater than Start Date");
+    		document.getElementById("projectEndDate").focus();
+    		return false;
+    	}
+	
+    	
+    if(isNaN(document.getElementById("amountAllocated").value))
+    {
+	    alert("Invalid Amount  ");
+	    document.getElementById("amountAllocated").focus();
+	    return false;
+    }
+    if((document.getElementById("amountAllocated").value)== 0)
+    {
+	    alert("Please enter Proper Amount  ");
+	    document.getElementById("amountAllocated").focus();
+	    return false;
+    }
+       if( (parseFloat(document.getElementById("amountAllocated").value)) > (parseFloat(document.getElementById("balanceAmount").value)) )
+       {
+		    alert("Enter an amount less than  BalanceAmount ");
+		    document.getElementById("amountAllocated").focus();
+		    return false;
+       }
+   
+   if(document.getElementById("notificationAmount").value)
+    {
+	    if( (parseFloat(document.getElementById("notificationAmount").value)) < (parseFloat(document.getElementById("amountAllocated").value)) )
+	      {
+		    alert("Enter an amount less than the amount allocated for main project ");
+		    document.getElementById("amountAllocated").focus();
+		    return false;
+	      }
+    }
+    if(eval(document.getElementById("amountAllocated").value)<=0)
+    {
+	    alert("Please enter Proper Amount  ");
+	    document.getElementById("amountAllocated").focus();
+	    return false;
+    }
+  
+    if(document.getElementById("sanctionOrderNo").value == ""){
+    		alert("Please Enter sanctionOrderNo");
+		    document.getElementById("sanctionOrderNo").focus();
+		    return false;
+    	}
+    	
+      
+   
+    return true;
 }
 

@@ -148,7 +148,7 @@ class ProposalApplicationController {
     		}
     }
     def getForm = {
-    		GrailsHttpSession gh = getSession()
+			GrailsHttpSession gh = getSession()
     		def proposalApplicationInstance = proposalService.getProposalApplicationByProposal(gh.getValue("ProposalId"))
     		if(proposalApplicationInstance)
     		{

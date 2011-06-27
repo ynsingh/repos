@@ -44,6 +44,15 @@
                             <input type="text" id="notificationCode" name="notificationCode" value="${fieldValue(bean:notificationInstance,field:'notificationCode')}"/>
                         </td>
                     </tr> 
+                    <tr class="prop">
+                        <td valign="top" class="name">
+                            <label for="amount"><g:message code="default.AmountAllocated(Rs).label"/>:</label>
+                            <label for="amount" style="color:red;font-weight:bold"> * </label>
+                        </td>
+                        <td valign="top" class="value ${hasErrors(bean:notificationInstance,field:'notificationCode','errors')}">
+                            <input type="text" id="amount" name="amount" value="${notificationAmount}"/>
+                        </td>
+                    </tr>
                         
                     <tr class="prop">
                         <td valign="top" class="name">

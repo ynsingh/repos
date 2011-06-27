@@ -9,6 +9,9 @@
         <div class="wrapper"> 
 	        <div class="body">
 	            <h1><g:message code="default.ExpenseRequestEntry.label"/></h1>
+	            <g:if test="${flash.message}">
+	            <div class="message">${flash.message}</div>
+	            </g:if>
 	            <g:hasErrors bean="${expenseRequestEntryInstance}">
 		            <div class="errors">
 		                <g:renderErrors bean="${expenseRequestEntryInstance}" as="list" />
@@ -123,10 +126,7 @@
 	            </g:form>
 	        </div>
 	        
-	        <div class="body">
-	            <g:if test="${flash.message}">
-	            <div class="message">${flash.message}</div>
-	            </g:if>
+	        <div class="body">  
 	            <div class="list">
 		            <g:if test="${expenseRequestEntryInstanceList}">
 		                <table>

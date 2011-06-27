@@ -87,7 +87,7 @@
     					    <table style="width: 100%;" cellpadding="0" cellspacing="0">
 			                     <tr>
 								    <th align="center"><g:checkBox name="AllapprovalAuthorityDetail" onclick="checkAllApprovalAuthorityDetails()" value="${All}" checked="false"/></th>
-									<th>ApprovalAuthority</th>
+									<th>Approval Authority</th>
 									<th>Person</th>
 							     </tr>		
 								<g:each in="${approvalAuthorityDetailInstance}" status="i" var="approvalAuthorityInstance">

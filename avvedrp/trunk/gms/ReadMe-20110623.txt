@@ -1,0 +1,13 @@
+Steps to be done before checkin
+
+Step 1: Checkout gms from repository.
+
+Step 2: Apply patch
+
+Step 3: Delete the files whose path is given in "Files_to_ be_deleted" file.
+
+Step 4: Overwrite the folder 'graphs' in 'web-app'. Path :-(http://202.141.40.215/repos/avvedrp/trunk/gms/)
+
+Step 5: Execute the scripts placed in "Release_Scripts.sql" file  from  /*Script for GMS release 2.1 - added on 19th April 2011 */  to 
+           /*Script for GMS release 2.3 - added on 16th May 2011 */ .
+           Path for Release_Scripts.sql :-(http://202.141.40.215/repos/avvedrp/trunk/gms/sql/).

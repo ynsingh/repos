@@ -93,6 +93,7 @@
 							 <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="investigator"><g:message code="default.Investigator.label"/>:</label>
+                                    <label for="investigator" style="color:red;font-weight:bold"> * </label>
                                </td>
                                 <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'investigator','errors')}">
                                 <g:if test="${projectsInstance.parent}">

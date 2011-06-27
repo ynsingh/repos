@@ -186,16 +186,16 @@ class NotificationsEmailsController {
             println "instance=="+partyNotificationsInstance
             [ partyNotificationsInstance : partyNotificationsInstance,'partyNotificationsInstanceTotal':total ]
     }
-    def showPartyNotifications = {
-    		
-    		println "comonnnnnnnnnnn=="+params.id
-    		println "show party"
+    def showPartyNotifications = 
+    {
+
     		GrailsHttpSession gh = getSession()
     		gh.removeValue("Help")
        		//putting help pages in session
        	gh.putValue("Help","Show_Party_Notifications.htm")
     		 def notificationsInstance = Notification.get( params.id )
-    		 println "hii id="+notificationsInstance
+    		 ConvertToIndainRS currencyFormatter=new ConvertToIndainRS();
+    		 
     	        if(!notificationsInstance) {
     	            flash.message = "${message(code: 'default.FilenotFound.label')}"
     	            redirect(action:partyNotificationsList)
@@ -206,7 +206,7 @@ class NotificationsEmailsController {
     	        	def proposalInstance = Proposal.find("from Proposal P where P.notification="+params.id+"and P.party.id='"+gh.getValue("Party")+"'and P.lockedYN='N'")
 
     	        	if(proposalInstance){flash.message = "${message(code: 'default.ProposalSubmited.label')}"}
-    	        	return [ notificationsInstance : notificationsInstance,attachmentTypesInstance:attachmentTypesInstance,notificationsAttachmentsInstance:notificationsAttachmentsInstance,proposalInstance:proposalInstance ] }
+    	        	return [ notificationsInstance : notificationsInstance,'currencyFormat':currencyFormatter,attachmentTypesInstance:attachmentTypesInstance,notificationsAttachmentsInstance:notificationsAttachmentsInstance,proposalInstance:proposalInstance ] }
     		
     }
     def publish = {

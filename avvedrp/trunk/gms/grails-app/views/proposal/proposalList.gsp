@@ -50,6 +50,7 @@
 		               	        <th><g:message code="default.View.label"/></th>
 		               	        <th><g:message code="default.ProposalVersion.label"/></th>
 		               	        <th>Proposal Review</th>
+		               	        <th><g:message code="default.Award.label"/></th>
 		               	        <th><g:message code="default.proposalRating.label"/></th>
 		                    </tr>
 		                </thead>
@@ -67,6 +68,17 @@
 			                    	  <td>V${proposalApplicationInstance?.proposal?.proposalVersion}</td>
 			                    	  <td><g:link action="proposalReviewDetails" controller='proposal' id="${proposalApplicationInstance.proposal.id}">Proposal Review</g:link></td>
 			                    	  <td>
+			                    	  <g:if test="${evalScoreInstanceList[i]?.totalScore}">
+			                    	  <g:if test="${proposalApplicationInstance?.award=='Y'}">
+			                    	  <g:link action="awardedProposal" controller='proposal' id="${proposalApplicationInstance.proposal.id}"><g:message code="default.Awarded.label"/></g:link>
+			                    	  </g:if>
+			                    	  <g:else>
+			                    	   <g:link action="award" controller='proposal' id="${proposalApplicationInstance.proposal.id}"><g:message code="default.Award.label"/></g:link>
+			                    	 </g:else>
+			                    	  </g:if>
+			                       		<g:else></g:else>
+			                    	 </td>
+			                    	 	<td>
 			                        	<richui:rating dynamic="false" units="${maxScaleList[i]}" rating="${evalScoreInstanceList[i]?.totalScore}" showCurrent="false"/>
 			                       		<g:message code="default.AvgRating.label"/>:
 			                       		<g:if test="${evalScoreInstanceList[i]?.totalScore}">${evalScoreInstanceList[i]?.totalScore}</g:if>

@@ -138,7 +138,13 @@ class UserService{
 		if (person.save()) {
 			Authority.findAll().each { it.removeFromPeople(person) }
 				
-			if(params.authorities == '1')
+			if(params.authorities)
+			{
+				updateUserRole(person,params)
+            }
+
+			
+		/*	if(params.authorities == '1')
 			{
 				
 			addRoles(person,params)
@@ -157,7 +163,7 @@ class UserService{
 			if(params.authorities =='4')
 			{
 			addRolesPi(person)
-			}
+			} */
 			userId = person.id
 		}
 		return userId
@@ -229,7 +235,11 @@ class UserService{
 		
 	}
 	
-public void addRolesUser(def person,def params) {
+	// To update User's Role
+	public void updateUserRole(def person,def params) {
+		UserRole.executeUpdate("update UserRole UR set UR.role= '"+params.authorities+"' where UR.user='"+params.id+"'")
+		}	
+    public void addRolesUser(def person,def params) {
 	// if(params.authorities == 2)
 		//Authority.findByAuthority('ROLE_USER').addToPeople(person)
 		
@@ -243,7 +253,7 @@ public void addRolesUser(def person,def params) {
 	public void addRolesSiteAdmin(def person,def params) {
 		  
 		// if(params.authorities == 3)
-		println"+++params.usertype+++"+params.authorities
+		
 		//Authority.findByAuthority('ROLE_SITEADMIN').addToPeople(person)
 		def userRole=new UserRole()
 		userRole.user=person;
@@ -506,7 +516,68 @@ public void addRolesUser(def person,def params) {
 		 def userMapList = UserMap.findAll("from UserMap UM where  UM.party = "+PartyID)
 		 return userMapList
 	 }
+	
+   /*
+	* Getting All authorities except Site admin
+	*/
+	 public getAuthoritiesExceptSiteAdmin()
+	 {
+		 def authorityInstance = Authority.findAll("from Authority R where R.activeYesNo='Y' and not authority = 'ROLE_SITEADMIN'")
+		 return authorityInstance
+	 }
+	
+	 /*
+	  * Function to get user by party and id.
+	  */
+	  public getUserByIdAndParty(def userId,def partyId)
+	 {
+		def userMapInstance = UserMap.find("from UserMap UM where UM.user.id='"+userId+"'and UM.party.id= "+partyId)
+		return userMapInstance
+	 }
 	 
-	 
-	 
+	  /*
+	   * Function to get user role by userId .
+	   */
+	   public getUserRoleByUserId(def userId)
+	  {
+			def userRoleInstance  = UserRole.executeQuery("select UR.role from UserRole UR where UR.user.id="+userId)		
+			return userRoleInstance
+	  }
+   /*
+	* save user map
+	*/
+	 public def saveNewUserMapInstance(def userMapInstance)
+	{
+		userMapInstance.createdBy=""
+	    userMapInstance.modifiedBy=""
+		if(userMapInstance.save())
+		 {
+			userMapInstance.saveMode = "Saved"
+		 }
+		 else
+		 {
+			 userMapInstance.saveMode = "NotSaved"
+		 }
+		 return userMapInstance
+	}
+    /*
+	 * method to get UserRole using authority and party id
+	 * (get siteadmin)
+	 */
+	 public def getUserRoleByAuthorityAndParty(def authorityName,def partyId)
+	{
+		 def userRoleInstance = UserRole.find("from UserRole UR where UR.role.authority='"+authorityName+"' and UR.user.id in (select UM.user.id from UserMap UM where UM.party.id="+partyId+")")
+		 return userRoleInstance
+	}
+    /*
+     * method to get person by user name
+     */
+	 public List getPersonByUserName(def userName)
+	 {
+			Integer userId = null;
+			def person  = Person.findAll("from Person P where P.username= '"+userName+"'");
+			
+			return person
+	 }
+	
 }

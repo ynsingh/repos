@@ -53,8 +53,8 @@
                             
                             <tr class="prop">
                                 <td valign="top" class="name">
-                                    <label for="department"><g:message code="default.Department.label"/>:</label>
-                                   
+                                     <label for="department"><g:message code="default.Department.label"/>:</label>
+                                     <label for="department" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                  
                                 <td valign="top" class="value ${hasErrors(bean:investigatorInstance,field:'department','errors')}">

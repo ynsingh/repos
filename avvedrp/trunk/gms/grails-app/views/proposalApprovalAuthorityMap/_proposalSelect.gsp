@@ -1,1 +1,1 @@
- <g:select name="proposalId" from="${preProposalList}" optionKey="id" optionValue="projectTitle"  value="${fieldValue(bean: proposalApprovalAuthorityMapInstance, field: 'proposalId')}" />
+ <g:select name="proposalId" from="${proposalApplicationList}" optionKey="id" optionValue="projectTitle"  value="${fieldValue(bean: proposalApprovalAuthorityMapInstance, field: 'proposalId')}" noSelection="['null':'-Select-']" />

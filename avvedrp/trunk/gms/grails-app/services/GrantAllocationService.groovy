@@ -452,8 +452,8 @@ class GrantAllocationService {
 	 */
 	@PostFilter("hasPermission(filterObject, 'read') or hasPermission(filterObject, admin)")
 	public GrantAllocation[] getGrantAllocationGroupByProjects(def partyID){
-			 def grantAllocationInstanceList=GrantAllocation.findAll("from GrantAllocation GA where GA.projects.activeYesNo='Y' GROUP BY GA.projects");
-			 return grantAllocationInstanceList
+		 def grantAllocationInstanceList=GrantAllocation.findAll("from GrantAllocation GA where GA.projects.activeYesNo='Y' GROUP BY GA.projects");
+		 return grantAllocationInstanceList
 	}
 	/**
 	 * Get all grant allocation with active projects for logged in user groupBy Projects 
@@ -505,7 +505,33 @@ class GrantAllocationService {
 		def grantAllocationInstanceList = GrantAllocation.findAll("from GrantAllocation GA where GA.party.id="+PartyID+"GROUP BY GA.projects")	
 		return grantAllocationInstanceList
 	}
-	
+	/*
+	 * save new grantAllocation
+	 */
+	 public saveNewGrantAllocation(def grantAllocationInstance)
+	{
+		grantAllocationInstance.code="default"
+  		grantAllocationInstance.allocationType=""
+  		grantAllocationInstance.createdBy=""
+  		grantAllocationInstance.modifiedBy=""
+		
+		if(grantAllocationInstance.save())
+		{
+			
+		}
+		else
+		{
+			
+		}
+		return grantAllocationInstance
+	}
+	 /**
+	  * Get sum of grant allocation for projects 
+	  */
+		public def getGrantAllocationsSumForProject(def projectId){
+			 def grantAllocationInstance=GrantAllocation.executeQuery("select SUM(GA.amountAllocated) from GrantAllocation GA where GA.projects.id="+projectId+" group by GA.projects.id");
+			 return grantAllocationInstance
+		}
 	
 	
 	

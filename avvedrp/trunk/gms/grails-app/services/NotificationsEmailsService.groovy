@@ -285,7 +285,7 @@ class NotificationsEmailsService {
 				        mailMessage="Dear "+name+", \n \nYour Password changed successfully .";
 				        mailMessage+="\n \n LoginName    : "+name;
 				        mailMessage+="\n Password     : "+pass;
-        mailMessage+="\n \n \n To activate your account,click on the following link   \t:"+urlPath+personId;
+        mailMessage+="\n \n \n To activate your account,click on the following link   \t:"+urlPath+personId+"?passwd=true";
 	    		        
 	    		 
 	    		        try

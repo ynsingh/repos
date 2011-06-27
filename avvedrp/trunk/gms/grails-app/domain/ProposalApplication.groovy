@@ -17,6 +17,7 @@ class ProposalApplication {
     String email;
     String mobile;
     ProposalCategory proposalCategory;
+    String projectTitle;
 static constraints={
 	
 					controllerId(nullable:true)
@@ -35,8 +36,10 @@ static constraints={
 					email(nullable:true)
 					mobile(nullable:true)
 					proposalCategory(nullable:true)
+					projectTitle(nullable:true)
  }
 	boolean saveAll
-	static transients=["saveAll"]
+	char award
+	static transients=["saveAll","award"]
 
 }

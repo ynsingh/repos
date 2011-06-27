@@ -247,4 +247,17 @@ class ProposalApprovalDetailService {
     	 def proposalApprovalDetailInstance = ProposalApprovalDetail.find("from ProposalApprovalDetail PAD where PAD.proposalApproval.id ="+proposalApprovalInstanceId)
  		 return proposalApprovalDetailInstance
      }
+     def proposalApprovalDetailByProposalApprovalAuthorityMap(def proposalApprovalAuthorityMapInstance)
+     {
+    	 def proposalList = ProposalApprovalDetail.executeQuery(" from ProposalApprovalDetail PA where PA.proposalApproval.proposalApprovalAuthorityMap.proposalId ="+ proposalApprovalAuthorityMapInstance.proposalId +" and  PA.proposalApproval.proposalApprovalAuthorityMap.proposalType='"+proposalApprovalAuthorityMapInstance.proposalType+"'") 
+    	 return proposalList
+     }
+     /*
+      * method to get proposal approval details by user id and proposal type
+      */
+      def getProposalApplDetailsByUserAndProposalType(def userId,def params)
+     {
+     	 def proposalApprovalDetailInstance= ProposalApprovalDetail.findAll("from ProposalApprovalDetail PA where PA.proposalApproval.approvalAuthorityDetail.person.id="+userId+"and PA.proposalApproval.proposalApprovalAuthorityMap.proposalType='"+params.ProposalType+"'")
+     	 return proposalApprovalDetailInstance
+     }
 }

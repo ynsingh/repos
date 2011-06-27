@@ -94,7 +94,8 @@ class GrantAllocationTrackingController {
 		def grantAllocationService = new GrantAllocationService()	
 		params.modifiedBy = "admin"
     	params.modifiedDate = new Date()
-		
+		if(params.grantAllocationStatus != "null")
+		{
 		def grantAllocationTrackingInstance = grantAllocationService.saveOrUpdateGrantAllocationTracking(params)
 		if(grantAllocationTrackingInstance){
 			if(grantAllocationTrackingInstance.saveMode != null){
@@ -105,10 +106,16 @@ class GrantAllocationTrackingController {
 				redirect(action:create,id:grantAllocationTrackingInstance.grantAllocation.id,params:[trackType:params.trackType])
 			}
 		}
-    }
+		}
+		else
+		{
+			flash.message = "${message(code: 'default.GrantAllocationStatusEnter.label')}"
+			redirect(action:create,id:params.grantAllocation.id,params:[trackType:params.trackType])
+		}
+   
+	}
     
     def grantAllocationTrackingReports = {
-		println params
 		def dataSecurityService = new DataSecurityService()
 		GrailsHttpSession gh=getSession()
 		def grantAllocationInstanceList=[]

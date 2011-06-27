@@ -22,39 +22,33 @@
                         <tr class="prop">
                             <td valign="top" class="name">Proposal Title</td>
                             
-                            <td valign="top" class="value">${fullProposalDetailInstance?.fullProposal?.preProposal.projectTitle}</td>
+                            <td valign="top" class="value">${fullProposalDetailInstance.projectTitle}</td>
                             
                         </tr>
                     
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="fullProposalDetail.fileName.label" default="File Name" /></td>
                             
-                            <td valign="top" class="value"><a href="${g.createLink(controller:'fullProposal', action:'download', id:fullProposalDetailInstance?.fullProposal?.id)}"><g:message code="${fullProposalDetailInstance?.fileName}" encodeAs="HTML"/></a></td>
-                            
+                            <td valign="top" class="value"><a href="${g.createLink(controller:'proposal', action:'download', id:fullProposalDetailInstance?.proposal?.id)}"><g:message code="${fullProposalDetailInstance?.proposal?.proposalDocumentationPath}" encodeAs="HTML"/></a></td>
+                    
+                       
                         </tr>
                     
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="fullProposalDetail.comments.label" default="Comments" /></td>
                             
-                            <td valign="top" class="value">${fieldValue(bean: fullProposalDetailInstance, field: "comments")}</td>
+                            <td valign="top" class="value">${fullProposalDetailInstance.proposal.lockedYN}</td>
                             
                         </tr>
                     
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="fullProposalDetail.proposalSubmittedDate.label" default="Proposal Submitted Date" /></td>
                             
-                            <td valign="top" class="value"><g:formatDate date="${fullProposalDetailInstance?.proposalSubmittedDate}" /></td>
+                            <td valign="top" class="value"><g:formatDate date="${fullProposalDetailInstance?.applicationSubmitDate}" /></td>
                             
                         </tr>
                     
-                        
-                    
-                        <tr class="prop">
-                            <td valign="top" class="name"><g:message code="fullProposalDetail.fullProposal.label" default="Full Proposal" /></td>
-                            
-                            <td valign="top" class="value">${fullProposalDetailInstance?.fullProposal?.preProposal.projectTitle}</td>
-                            
-                        </tr>
+                      
                         <tr>
                     <td>
 		   		 	     	 <g:message code="default.Remarks.label" default="Project Title" />

@@ -10,10 +10,7 @@
            <div class="proptable">
               <table width="100%" align="left">
                 <tr >
-			        <td valign="top" ><g:message code="default.GrantAllocationStatus.GrantCode.label"/>:</td>
-			        <td valign="top" >
-			        	<strong>${fieldValue(bean:grantAllocationInstance, field:'code')}</strong>
-		        	</td>
+
 		            <td valign="top" ><g:message code="default.ProjectCode.label"/>:</td>
 		            <td valign="top" >
 		            	<strong>${fieldValue(bean:grantAllocationInstance, field:'projects.code')}</strong>

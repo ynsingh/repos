@@ -73,12 +73,14 @@ class UtilizationController {
 
     def create = {
         def utilizationInstance = new Utilization()
+        GrailsHttpSession gh = getSession()
         println "projectid=="+params.id
         def projectInstance = Projects.get(params.id)
         def utilizationInstanceCheck = Utilization.findAll("from Utilization U where U.projects.id="+projectInstance.id)
         utilizationInstance.properties = params
-        
-        [projectInstance:projectInstance,utilizationInstance:utilizationInstance]
+        def utilizationCertificateList
+		utilizationCertificateList = Utilization.findAll("from Utilization U where U.projects.id ="+projectInstance.id+" and U.grantee='"+gh.getValue("Party")+"')")
+        [projectInstance:projectInstance,utilizationInstance:utilizationInstance,utilizationCertificateList:utilizationCertificateList]
       }
 
     def save = {

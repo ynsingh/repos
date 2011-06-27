@@ -1,7 +1,8 @@
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
-
+import grails.util.GrailsUtil
+import org.codehaus.groovy.grails.commons.GrailsApplication
 class AttachmentsService {
-
+	def gmsSettingsService
     boolean transactional = true
 
     def serviceMethod() {
@@ -76,6 +77,13 @@ class AttachmentsService {
  	   def attachmentInstance = AttachmentType.get( attachmentTypeId )
  	   return attachmentInstance
     }
+    /*Function to get all attachment type by attachmentId*/ 
+    public def getattachmentsTypeInstanceByAttachmentId(def attachmentTypeId)
+    {
+    	def attachmentsTypeInstance=AttachmentType.find("from AttachmentType AT where AT.activeYesNo='Y' and AT.id="+attachmentTypeId)
+ 	   return attachmentsTypeInstance
+    }
+    
     /*Function to get all attachment type*/ 
     public List getattachmentTypesByDocTypeAndType(def type,def docType)
    {
@@ -147,5 +155,60 @@ class AttachmentsService {
  	   }
  	   return attachmentInstanceStatus
     }
+/*
+ * function to upload attachments
+ */
+	public uploadAttachments(def downloadedfile,def domainName,def domainId,def attachmentTypeInstance)
+	{
+		def attachmentsInstance = new Attachments()
+		attachmentsInstance.domainId=domainId
+        def attachmentsName='Attachments'
+    	def gmsSettingsInstance = gmsSettingsService.getGmsSettings(attachmentsName)
+        attachmentsInstance.domain=domainName
+		
+    	def webRootDir
+        if ( GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_PRODUCTION)) 
+        {
+        	webRootDir = gmsSettingsInstance.value
+        }
+        if ( GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_DEVELOPMENT)) 
+        {
+        	webRootDir = gmsSettingsInstance.value
+        }
+        
+        if(!downloadedfile.empty) 
+        {
+        	String fileName=downloadedfile.getOriginalFilename()
+        	if((fileName.lastIndexOf(".EXE")==-1)&&(fileName.lastIndexOf(".exe")==-1))
+			{
+        		downloadedfile.transferTo(new File(webRootDir+fileName))
+        		
+        		attachmentsInstance.domainId=domainId
+        		attachmentsInstance.attachmentType=attachmentTypeInstance
+        		attachmentsInstance.attachmentPath=fileName
+        		
+        		if (attachmentsInstance.save(flush: true)) 
+        		{
+                   
+                    
+                }
+                else 
+                {
+                	
+                }
+			}
+        	else 
+            {
+            	
+            	
+            }
+        }
+        else 
+        {
+          
+            
+         }
+        return attachmentsInstance
+	}
 
 }

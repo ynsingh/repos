@@ -18,6 +18,7 @@ class ProjectsPIMapController {
 	        if(projectsPIMapInstance) 
 	        {	        	
 	        	projectsPIMapInstance = investigatorService.deletePIMap(projectsPIMapInstance)
+	        	projectsService.checkFordeleteProjectAccessPermissionOfPiMap(projectsPIMapInstance?.projects?.id,projectsPIMapInstance?.investigator?.id)
 	        	flash.message = "${message(code: 'default.deleted.label')}"
 	            redirect(action:create,id:projectsPIMapInstance.projects.id)
 	        }

@@ -31,12 +31,14 @@ class ProposalApprovalAuthorityMapService {
    /*
     * Method to check  duplicate data
     */
-    public def checkDuplicateProposalApprovalAuthorityMap(def proposalApprovalAuthorityMapInstance,def params)
+    public def checkDuplicateProposalApprovalAuthorityMap(def proposalApplicationInstance,def params)
    
    {   
-	   println"proposalApprovalAuthorityMapInstance++++"+proposalApprovalAuthorityMapInstance
-   	 def proposalApprovalAuthorityMapData = ProposalApprovalAuthorityMap.findAll("from ProposalApprovalAuthorityMap PAM where PAM.proposalId="+proposalApprovalAuthorityMapInstance.proposalId+" and PAM.proposalType='"+proposalApprovalAuthorityMapInstance.proposalType+"' and PAM.approvalAuthority="+params.approvalAuthority.id)
-   	 println"proposalApprovalAuthorityMapData"+proposalApprovalAuthorityMapData
+	   println"proposalApplicationInstance++++"+proposalApplicationInstance
+	                                              
+   	 def proposalApprovalAuthorityMapData = ProposalApprovalAuthorityMap.findAll("from ProposalApprovalAuthorityMap PAM where PAM.proposalId="+proposalApplicationInstance.proposal.id+" and PAM.proposalType='"+params.proposalType+"' and PAM.approvalAuthority="+params.approvalAuthority.id)
+	    
+   	 println"proposalApprovalAuthorityMapData---------------"+proposalApprovalAuthorityMapData
    	 return proposalApprovalAuthorityMapData
    }
    
@@ -137,10 +139,10 @@ class ProposalApprovalAuthorityMapService {
     /*
      * Save Proposal Approval Authority Map for proposal application
      */
-     public saveProposalApprovalAuthorityMapForProposalApplication(def approvalAuthorityInstance,def proposalId)
+     public saveProposalApprovalAuthorityMapForProposalApplication(def approvalAuthorityInstance,def proposalId,def proposalType)
     {
     	 def proposalApprovalAuthorityMapInstance 
-    	 def proposalApprovalAuthorityMapLastInstance =getProposalApprovalAuthorityMapByProposalIdAndApprovalAuthority(proposalId,approvalAuthorityInstance.id,'Proposal')
+    	 def proposalApprovalAuthorityMapLastInstance =getProposalApprovalAuthorityMapByProposalIdAndApprovalAuthority(proposalId,approvalAuthorityInstance.id,proposalType)
     	
     	 if(proposalApprovalAuthorityMapLastInstance)
     	 {
@@ -148,13 +150,19 @@ class ProposalApprovalAuthorityMapService {
     	 }
     	 else
     	 {
-    		 proposalApprovalAuthorityMapInstance= new ProposalApprovalAuthorityMap()
+    		 def proposalApprovalAuthorityMapOldInstance = getProposalApprovalAuthorityMapByProposalIdAndType(proposalId,proposalType)
+    		if(proposalApprovalAuthorityMapOldInstance)
+    			{
+    				proposalApprovalAuthorityMapOldInstance.activeYesNo = 'N'
+    				proposalApprovalAuthorityMapOldInstance.save()
+    			}	 
+    		proposalApprovalAuthorityMapInstance= new ProposalApprovalAuthorityMap()
     	 }
     	 proposalApprovalAuthorityMapInstance.approveOrder = 1
     	 proposalApprovalAuthorityMapInstance.approvalAuthority= approvalAuthorityInstance
      	proposalApprovalAuthorityMapInstance.proposalId = proposalId
      	proposalApprovalAuthorityMapInstance.processRestartOrder = 1
-     	proposalApprovalAuthorityMapInstance.proposalType = 'Proposal'
+     	proposalApprovalAuthorityMapInstance.proposalType = proposalType
      	proposalApprovalAuthorityMapInstance.activeYesNo = 'Y'
  		proposalApprovalAuthorityMapInstance.remarks = ""
  		if(proposalApprovalAuthorityMapInstance.save())
@@ -180,7 +188,7 @@ class ProposalApprovalAuthorityMapService {
       */
       public getProposalApprovalAuthorityMapByProposalIdAndType(def proposalId,def proposalType)
       {
-      	def proposalApprovalAuthorityMapInstance = ProposalApprovalAuthorityMap.find("from ProposalApprovalAuthorityMap PAM where PAM.proposalType = '"+proposalType+"' and PAM.proposalId="+proposalId)
+      	def proposalApprovalAuthorityMapInstance = ProposalApprovalAuthorityMap.find("from ProposalApprovalAuthorityMap PAM where PAM.proposalType = '"+proposalType+"' and PAM.proposalId="+proposalId+" and PAM.activeYesNo = 'Y'" )
       	return proposalApprovalAuthorityMapInstance
       }
       /*
@@ -188,7 +196,7 @@ class ProposalApprovalAuthorityMapService {
        */
        public getProposalApprovalAuthorityMapByProposalIdAndApprovalAuthority(def proposalId,def approvalauthorityId,def proposalType)
        {
-       	def proposalApprovalAuthorityMapInstance = ProposalApprovalAuthorityMap.find("from ProposalApprovalAuthorityMap PAM where PAM.proposalType = '"+proposalType+"' and PAM.proposalId="+proposalId+" and PAM.approvalAuthority="+approvalauthorityId)
+       	def proposalApprovalAuthorityMapInstance = ProposalApprovalAuthorityMap.find("from ProposalApprovalAuthorityMap PAM where PAM.proposalType = '"+proposalType+"' and PAM.proposalId="+proposalId+" and PAM.approvalAuthority="+approvalauthorityId+" and PAM.activeYesNo = 'Y'")
        	return proposalApprovalAuthorityMapInstance
        }
        /*
@@ -204,7 +212,7 @@ class ProposalApprovalAuthorityMapService {
         */
        public getProposalApprovalAuthorityMapByApprovalauthority(def approvalAuthorityId)
        {
-    	   def proposalApprovalAuthorityMapInstance = ProposalApprovalAuthorityMap.findAll("from ProposalApprovalAuthorityMap PAM where PAM.approvalAuthority.id =" +approvalAuthorityId+ "and PAM.proposalType = 'ExpenseRequest'")
+    	   def proposalApprovalAuthorityMapInstance = ProposalApprovalAuthorityMap.findAll("from ProposalApprovalAuthorityMap PAM where PAM.approvalAuthority.id =" +approvalAuthorityId+ " and  PAM.proposalType = 'ExpenseRequest'")
    		   return proposalApprovalAuthorityMapInstance
        }
        /*
@@ -214,5 +222,56 @@ class ProposalApprovalAuthorityMapService {
        {
     	   def proposalApprovalAuthorityMapInstance = ProposalApprovalAuthorityMap.find("from ProposalApprovalAuthorityMap PAM where PAM.id =" + proposalApprovalAuthorityMapId + "and PAM.proposalType = 'ExpenseRequest'")
        	   return proposalApprovalAuthorityMapInstance
+       }
+
+       /*
+        * Get proposal Type  and Proposal Id 
+        */  
+       public getProposalAuthorityMapByType(def proposalInstance)
+       {
+    	   def authorityInstance= ProposalApprovalAuthorityMap.findAll("from ProposalApprovalAuthorityMap PAM where PAM.proposalType = 'PreProposal' and PAM.proposalId ="+proposalInstance.id)
+    	   authorityInstance
+       }
+       /*
+        * Method to get Proposal Approval AuthorityMap Details
+        */
+       public getProposalAuthorityMapDetails(def proposalApplicationInstance,def params)
+       {
+    	   def proposalApprovalAuthorityMapList = ProposalApprovalAuthorityMap.findAll("from ProposalApprovalAuthorityMap PM where PM.activeYesNo='Y' and PM.proposalId="+proposalApplicationInstance.proposal.id+" and PM.proposalType='"+params.proposalType+"' and PM.approveOrder= "+params.approveOrder)
+    	   return proposalApprovalAuthorityMapList
+       }
+       
+       /*
+        * Method to check duplicate Proposal Approval AuthorityMap Details
+        */
+       
+       public getDuplicateProposalAuthorityMapDetails(def proposalApplicationInstance,def params)
+       {
+       
+           def proposalApprovalAuthorityMapData = ProposalApprovalAuthorityMap.findAll("from ProposalApprovalAuthorityMap PAM where PAM.proposalId="+proposalApplicationInstance.proposal.id+" and PAM.proposalType='"+params.proposalType+"' and PAM.approvalAuthority="+params.approvalAuthority.id)
+           return proposalApprovalAuthorityMapData
+       
+       }
+       /*
+        * method to get proposal approval authority map by user id and type
+        */
+        public getProposalAppAuthorityMapByReviewer(def userId,def params)
+        {
+        	def proposalApprovalAuthorityMapInstanceList = ProposalApprovalAuthorityMap.findAll("from ProposalApprovalAuthorityMap PAM where PAM.proposalType = '"+params.ProposalType+"' and PAM.approvalAuthority in (select AD.approvalAuthority from ApprovalAuthorityDetail AD where AD.activeYesNo = 'Y' and AD.person.id="+userId+")")
+        	return proposalApprovalAuthorityMapInstanceList
+        }
+   	
+
+       
+       public getProposalApprovalAuthorityMapInstanceListByProposalIdAndType(def expenseRequestEntryId,def params)
+       {
+       	def proposalApprovalAuthorityMapDuplicateInstance = ProposalApprovalAuthorityMap.findAll("from ProposalApprovalAuthorityMap PAM where PAM.approvalAuthority.id='"+params.approvalAuthority.id+"'and PAM.proposalId =" +expenseRequestEntryId+ " and PAM.proposalType = 'ExpenseRequest'")
+       	return proposalApprovalAuthorityMapDuplicateInstance
+       }
+   	
+       public getProposalApprovalAuthorityMapByApprovalauthorityId(def approvalAuthorityId)
+       {
+    	   def proposalApprovalAuthorityMapInstance = ProposalApprovalAuthorityMap.findAll("from ProposalApprovalAuthorityMap PAM where PAM.approvalAuthority.id =" +approvalAuthorityId)
+    	   return proposalApprovalAuthorityMapInstance
        }
 }

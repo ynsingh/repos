@@ -52,6 +52,7 @@
 		                         				</g:if>	
 		                         				<g:else>
 		                         					<td>&nbsp;&nbsp;&nbsp;&nbsp;${proposalApprovalDetailInstanceList[k].proposalApproval.approvalAuthorityDetail.person.userRealName}&nbsp;-&nbsp;${proposalApprovalDetailInstanceList[k].proposalStatus}</td>
+		                         					<%  l++ %>
 				                    			</g:else>
 	                         				</tr>
 		                         			<%  k++ %>

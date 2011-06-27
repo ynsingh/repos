@@ -1,5 +1,9 @@
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 import java.util.*;
+import grails.util.GrailsUtil
+import java.text.SimpleDateFormat
+import org.apache.commons.validator.EmailValidator
+import org.codehaus.groovy.grails.commons.ApplicationHolder as AH
 class ProposalService {
 
    def userService
@@ -8,6 +12,8 @@ class ProposalService {
    def notificationService
    def proposalApprovalAuthorityMapService
    def evalItemService
+   def projectsService
+   def grantAllocationService
 	/*
     * Method to list all proposals
     */
@@ -188,6 +194,7 @@ class ProposalService {
  	  proposalInstance.proposalSubmitteddate=dateValue
  	  proposalInstance.lockedYN='Y'
  	  proposalInstance.proposalVersion=new Integer(0);
+ 	  proposalInstance.proposalType='Proposal'
  	  if(proposalInstance.save())
  	  {
  		
@@ -224,7 +231,7 @@ class ProposalService {
  		proposalApplicationInstance.email=params.Email_12
  		proposalApplicationInstance.mobile=params.Mobile_13
  		proposalApplicationInstance.proposalCategory=ProposalCategory.find("from ProposalCategory PC where PC.name='"+params.ProjectCategory_14+"'")
- 		
+ 		proposalApplicationInstance.projectTitle=""
  		if(proposalApplicationInstance.save())
  		{
  			
@@ -276,11 +283,16 @@ class ProposalService {
     	if(proposalApprovalAuthorityMapInstance)
     	{
     		for(proposalId in proposalApprovalAuthorityMapInstance.proposalId)
-    		{
-    			def proposalApplicationInstance=getProposalApplicationByLockedNoProposal(proposalId)
-    			if(proposalApplicationInstance)
+    		{	
+    			//check if proposal awarded or not
+    			def proposalAwardList = getAwardListByProposal(proposalId)
+    			if(proposalAwardList.size() == 0)
     			{
-    				proposalApplicationInstanceList.add(proposalApplicationInstance)
+	    			def proposalApplicationInstance=getProposalApplicationByLockedNoProposal(proposalId)
+	    			if(proposalApplicationInstance)
+	    			{
+	    				proposalApplicationInstanceList.add(proposalApplicationInstance)
+	    			}
     			}
     		}
     	}
@@ -363,10 +375,15 @@ class ProposalService {
     	{
     		for(proposalId in proposalInstanceList)
     		{
-    			def proposalApplicationInstance=getProposalApplicationByLockedNoProposal(proposalId)
-    			if(proposalApplicationInstance)
+    			//check if proposal awarded or not
+    			def proposalAwardList = getAwardListByProposal(proposalId)
+    			if(proposalAwardList.size() == 0)
     			{
-    				proposalApplicationInstanceList.add(proposalApplicationInstance)
+	    			def proposalApplicationInstance=getProposalApplicationByLockedNoProposal(proposalId)
+	    			if(proposalApplicationInstance)
+	    			{
+	    				proposalApplicationInstanceList.add(proposalApplicationInstance)
+	    			}
     			}
     		}
     	}
@@ -393,4 +410,368 @@ class ProposalService {
     def evalScoreInstance = EvalAnswer.findAll("from EvalAnswer EA where EA.proposal.id ="+proposalId+"and EA.person.id="+personId)
     return evalScoreInstance
     }
+    
+    /*
+     * method to save award details
+     */
+     public Award saveAward(def proposalInstance,def projectsInstance)
+    {
+    	def awardInstance = new Award()
+    	awardInstance.proposal=proposalInstance
+		awardInstance.projects=projectsInstance
+		awardInstance.createdBy="admin"
+		awardInstance.createdDate=new Date()	
+		awardInstance.modifiedBy="admin"
+		awardInstance.modifiedDate=new Date()
+		awardInstance.activeYesNo='Y'
+		awardInstance.awardedDate=new Date()
+		if(awardInstance.save())
+		{
+			
+		}
+		else
+		{
+			awardInstance=null
+		}
+    	return awardInstance
+    }
+   
+    /*
+     * method to get award list by proposal id
+     */
+    public def getAwardListByProposal(def proposalId)
+    {
+    	def proposalAwardList = Award.findAll("from Award A where A.proposal.id="+proposalId)
+    	return proposalAwardList
+    }
+    /*
+     * method to get award by proposal id
+     */
+    public def getAwardByProposal(def proposalId)
+    {
+    	def proposalAwardList = Award.find("from Award A where A.proposal.id="+proposalId)
+    	return proposalAwardList
+    }
+    /*
+     * method to get award list by notification id 
+     */
+    public def getAwardListByProposalNotificationId(def notificationId)
+    {
+    	def proposalAwardList = Award.findAll("from Award A where A.proposal.notification.id="+notificationId)
+    	return proposalAwardList
+    }
+    /*
+     * method to get ProposalApplicationExt by field name and proposal application id 
+     */
+    public def getProposalApplicationExtByFieldAndProposalAppId(def field,def proposalApplicationId)
+    {
+    	def proposalApplicationExtProjectInstance = ProposalApplicationExt.find("from ProposalApplicationExt PE where PE.field='"+field+"' and PE.proposalApplication.id="+proposalApplicationId)
+    	return proposalApplicationExtProjectInstance
+    }
+    /*
+     * method to generate random string
+     */
+    public def generateCode()  
+    {  
+      final int PASSWORD_LENGTH = 8;  
+      StringBuffer sb = new StringBuffer();  
+      for (int x = 0; x < PASSWORD_LENGTH; x++)  
+      {  
+        sb.append((char)((int)(Math.random()*26)+97));  
+      }  
+      System.out.println(sb.toString());  
+      return sb.toString()
+    }  
+    public getParentProposalId(def proposal,def proposalStatus,def userId)
+    {
+   	 def proposalInstance = Proposal.findAll("from Proposal P where P.proposalType='"+proposal+"' and P.proposalStatus ='"+proposalStatus+"' and P.person="+userId);
+   	 return proposalInstance
+    }
+
+   
+    /*
+     * method to get getfullProposalStatus
+     */
+    public getfullProposalStatus(def proposalId)
+    {
+   	 def fullProposalStatus = Proposal.find("from Proposal P where P.parent="+proposalId+" and P.proposalStatus in ('Submitted','Approved')")
+   	 return fullProposalStatus
+    }
+    
+    /*
+     * method to get fullProposalSavedStatus
+     */
+    
+    public getfullProposalSavedStatus(def proposalId)
+    {
+   	 def fullProposalSavedStatus = Proposal.find("from Proposal P where P.parent="+proposalId+" and P.proposalStatus in ('Saved','NeedMoreInfo')")
+   	 return fullProposalSavedStatus
+    }
+    
+    /*
+     * method to get full proposal by proposalId
+     */
+    def getFullProposalByProposal(def proposalId)
+    {
+    	def fullProposalInstance= Proposal.find("from Proposal F where F.parent.id = "+proposalId)
+    	return fullProposalInstance
+    }
+ /*
+     * method to save PreProposal
+     */
+     public savePreProposal(def params,def userId,def partyId)
+     {
+    	 def dateValue = new Date()
+    	def userService = new UserService()
+     	def userInstance=Person.get(userId)
+     	//def userMapInstance=UserMap.find("from UserMap UM where UM.user="+userId)
+     	def proposalInstance = new Proposal(params)
+     	proposalInstance.party=Party.get(partyId)
+     	
+     	//preProposalInstance.department=facultyInstance.department
+     	proposalInstance.person=userInstance
+     	proposalInstance.proposalSubmitteddate=new Date()
+    	proposalInstance.proposalStatus="Saved"
+    	proposalInstance.proposalLevel=new Integer(0)
+	    proposalInstance.proposalType="PreProposal"
+     	proposalInstance.code="PR-"+dateValue.getYear()+dateValue.getMonth()+1+dateValue.getDate()+dateValue.getSeconds()+dateValue.getMinutes()+dateValue.getHours()   
+     	if(proposalInstance.save(flush: true))
+     	{
+     		def proposalApplicationInstance = new ProposalApplication(params)
+         	proposalApplicationInstance.proposal=proposalInstance
+    		proposalApplicationInstance.applicationSubmitDate=new Date()
+     		proposalApplicationInstance.save()
+      		
+     	}
+     	return  proposalInstance
+        
+     }
+    /*
+     * method to get preproposal by id
+     */
+     public def getPrePropsalById(def proposalId)
+     {
+     	def proposalInstance = Proposal.get(proposalId) 
+     	return proposalInstance
+     }
+     
+     /*
+      * Get the details of the PreProposal Detail by PreProposalId
+      */
+      public List getAllPreProposalAppExtByPreProposalId(def proposalId)
+   	{
+    	  def proposalApplicationExtInstance = ProposalApplicationExt.findAll("from ProposalApplicationExt PE where PE.proposalApplication.proposal.id="+proposalId)
+   	   return proposalApplicationExtInstance
+      
+   	}
+     
+     /*
+  	 * method to save preProposalDetails
+  	 */
+      public def saveformDetailsPreProposal(def params,def proposalId)
+      {
+     	 def proposalApplicationExtSavedInstance
+     	 def proposalInstance=getPrePropsalById(proposalId)
+     	 def proposalApplicationInstance = ProposalApplication.find("from ProposalApplication PA where PA.proposal="+proposalId)
+     	
+	  	 Set keyList=params.keySet()
+ 		def saveStatusList = true
+ 		Iterator itr=keyList.iterator()
+ 					println "saved para"+params		
+ 			while(itr.hasNext())
+ 			{
+ 				Object obj=itr.next()
+ 				if(obj.toString() !="action")
+ 				{
+ 					if(obj.toString()!="controller")
+ 					{
+ 						def proposalApplicationExtInstance=new ProposalApplicationExt()
+ 						proposalApplicationExtSavedInstance = ProposalApplicationExt.findAll("from ProposalApplicationExt PAE where PAE.proposalApplication.proposal.id="+proposalInstance.id+" and PAE.field='"+obj+"'") 
+ 			
+ 						if(proposalApplicationExtSavedInstance)
+ 						{
+ 							for(proposalPreviousInstance in proposalApplicationExtSavedInstance)
+ 							{
+ 								println"-------------------proposalPreviousInstance----------------------"+proposalPreviousInstance
+ 								proposalPreviousInstance.activeYesNo="N"
+ 								proposalPreviousInstance.save()
+ 							}
+ 						}
+ 						println "field - "+params.get(obj).toString()
+ 						proposalApplicationExtInstance.proposalApplication=proposalApplicationInstance
+						proposalApplicationExtInstance.field=obj.toString()
+ 						proposalApplicationExtInstance.value=params.get(obj).toString()
+ 						proposalApplicationExtInstance.activeYesNo='Y'
+ 						proposalApplicationExtInstance.save()
+ 						
+ 						
+ 					}
+ 				}
+ 			}
+ 		
+ 		
+ 		
+ 		return saveStatusList
+     }
+     
+      public savePreProposalInstance(def proposalInstance)
+      {
+     	 def status = false
+     	 if(proposalInstance.save())
+     	 {
+     		 status = true
+     	 }
+     	 return status
+      }
+      
+      /*
+       * Get the details of the Pre Proposal
+       */
+       public Proposal getPreProposalById(def proposalId)
+    	{
+    		def  proposalInstance = Proposal.get(proposalId)
+    		return proposalInstance
+    	}
+      
+       /*
+        * Update  Pre Proposal
+        */
+        public updatePreProposal(def params, def  proposalInstance)
+       {
+       	if( proposalInstance)
+       	{
+       		proposalInstance.properties = params
+       	
+       	    if (! proposalInstance.hasErrors() &&  proposalInstance.save(flush: true)) 
+       	    {
+       	    	 proposalInstance.saveMode = "Updated"
+       	    }
+       	 return   proposalInstance
+           }
+        return  proposalInstance
+       }
+       
+       
+        /*
+       	 * Check Duplicate PreProposal
+       	 */
+       	 public checkDuplicatePreProposal(def params)
+       	{
+       		 def chkPreProposalInstance = ProposalApplication.find("from ProposalApplication PA where PA.projectTitle= '"+params.projectTitle+"'")
+       		 return chkPreProposalInstance
+       	}
+        /*
+         * Method to get submitted PreProposal
+         */
+       	 public List getSubmittedPreProposal(def party)
+       	
+       	{
+       		def preProposalList = Proposal.findAll("from Proposal P where P.proposalStatus = 'Submitted' and P.party="+party)
+       		return preProposalList
+
+       	}
+        
+         /*
+          * method to get submitted preproposal by id
+          */
+         public Proposal getSubmittedPreProposalById(def proposalId)
+         {
+        	 def preProposalValue= Proposal.find("from Proposal P where P.proposalStatus='Submitted' and P.id="+proposalId)
+        	 return preProposalValue
+         }
+
+       
+	
+ /*
+  * update PreProposal
+	 */
+	 public updatePreProposalInstance(def proposalInstance)
+	{
+		 if(proposalInstance.save())
+		 {
+			 
+		 }
+		 else
+		 {
+			 proposalInstance=null
+		 }
+		 return proposalInstance
+	} 
+
+	 public getUserInstance(def UserId)
+		{
+		  def proposalInstanceList = Proposal.findAll("from Proposal P where P.proposalType='PreProposal' and P.person.id= "+UserId)
+		  return proposalInstanceList
+		}
+	 /*
+	  * Method to get Proposal Approval Authority By proposal Id
+	  */
+	 public getProposalApprovalAuthorityByProposalId(def proposalId)
+		{
+	      def proposalInstance = Proposal.find("from Proposal P where P.id ="+proposalId)
+	      return proposalInstance
+		}
+	 /*
+	  * Method to get Proposal Application By proposal Id
+	  */
+	 public getProposalApplicationByProposalId(def proposalId)
+		{
+			 def proposalApplicationInstance = ProposalApplication.find("from ProposalApplication PA where PA.proposal.id ="+proposalId)
+			 return proposalApplicationInstance
+		}
+	   /*
+	    * Method to get proposal Application Details by Proposal Application Id
+	    */
+	 public getProposalApplicationId(def proposalApplicationId)
+	    {
+		   
+	    	def proposalApplicationInstance = ProposalApplication.find("from ProposalApplication PA where PA.id="+proposalApplicationId)
+           return proposalApplicationInstance
+	    }
+    
+	 /*
+	     * method to update FullProposal
+	     */
+	    def updateFullProposal(def fullProposalInstance)
+	    {
+	    	if(fullProposalInstance.save())
+	    	{
+	    		
+	    	}
+	    	else
+	    	{
+	    		fullProposalInstance=null
+	    	}
+	    	return fullProposalInstance
+	    }
+	 
+	    /*
+         * method to get submitted preproposal by id and type
+         */
+        public Proposal getSubmittedPreProposalByIdAndType(def proposalId,def params)
+        {
+       	 def preProposalValue= Proposal.find("from Proposal P where P.proposalType='"+params.ProposalType+"'and P.proposalStatus='Submitted' and P.id="+proposalId)
+       	 return preProposalValue
+        }
+	    
+	    
+        /*
+         * Method to get submitted PreProposal By type
+         */
+       	 public List getSubmittedPreProposalByType(def party)
+       	
+       	{
+       		def preProposalList = Proposal.findAll("from Proposal P where P.proposalType='PreProposal' and P.proposalStatus = 'Submitted' and P.party="+party)
+       		return preProposalList
+
+       	}
+       	 /*
+          * Method to get submitted FullProposal By type
+          */
+     	 public List getSubmittedFullProposalByType(def party)
+         {
+        	def preProposalList = Proposal.findAll("from Proposal P where P.proposalType='FullProposal' and P.proposalStatus = 'Submitted' and P.party="+party)
+        	return preProposalList
+         }
+
 }

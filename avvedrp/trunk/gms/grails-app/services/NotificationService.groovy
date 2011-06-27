@@ -68,5 +68,16 @@ public List getAllPublicAndPublishedNotification(def currentDate)
  	return notificationInstanceList
  }
 
+ /*
+  * method to get  all public notification  based on party 
+  */
+
+  public List getAllPublicNotificationUnderAParty(def partyId)
+  {
+  	def notificationInstanceList = Notification.findAll("from Notification N where N.publicYesNo='Y'and N.party.id= "+partyId)
+  	return notificationInstanceList
+  }
+
+ 
 }
 

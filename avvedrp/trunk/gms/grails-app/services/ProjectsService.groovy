@@ -1006,4 +1006,27 @@ class ProjectsService{
 	    }
 	    return max
 	  }
+	/*
+	 * method to save new projects
+	 */
+	 public def saveNewProjects(def projectsInstance)
+	{
+		projectsInstance.createdBy=''
+		projectsInstance.modifiedBy=''
+		projectsInstance.createdDate=new Date()
+		projectsInstance.modifiedDate=new Date()
+		 /* Check whether Projects with same name already exists.*/
+		if(checkDuplicateProject(projectsInstance) == 0)
+		{
+			if(!projectsInstance.hasErrors() && projectsInstance.save()) 
+			{
+				projectsInstance.saveMode = "Saved"
+			}
+		}
+		else
+		{
+			projectsInstance.saveMode = "Duplicate"
+		}
+		 return projectsInstance
+	}
 }

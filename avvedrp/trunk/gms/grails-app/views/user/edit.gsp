@@ -52,6 +52,19 @@
 								<input type="text" id="userSurName" name="userSurName" value="${person.userSurName?.encodeAsHTML()}"/>
 							</td>
 						</tr>
+						<g:if test="${authorityPersonInstance.authority == 'ROLE_PI'}">
+						</g:if>
+						<g:else>
+						<tr class="prop">	
+							<td valign="top" class="name">
+							<label for="role"><g:message code="default.Role.label"/>:</label>
+							<label for="role" style="color:red;font-weight:bold"> * </label>
+							</td>
+							<td> 
+							   <g:select optionKey="id" optionValue="authority" from= "${authorityInstance}" id="authorities" name="authorities" value="${authorityPersonInstance?.id}" ></g:select>
+							</td>
+						</tr>
+						</g:else>	
 													
 						<tr class="prop">
 							<td valign="top" class="name">

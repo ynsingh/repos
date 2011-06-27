@@ -26,8 +26,7 @@
                 <div class="dialog">
                     <table>
                         <tbody>
-                                                                            
-                            <tr class="prop">
+                             <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="notification"><g:message code="default.notification.label" default="Notification" /></label>
                                 </td>

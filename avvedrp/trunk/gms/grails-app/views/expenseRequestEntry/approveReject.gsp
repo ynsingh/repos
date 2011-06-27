@@ -6,12 +6,12 @@
     </head>
     <body>
     	<div class="wrapper"> 
-    		<g:if test="${flash.message}">
-	            <div class="message">${flash.message}</div>
-            </g:if>
+    		
 	    	 <div class="body">
 	            <h1><g:message code="default.RequestEvaluation.label"/></h1> 
-	     		 
+	     		 <g:if test="${flash.message}">
+	            <div class="message">${flash.message}</div>
+            </g:if>
 	     		 <div class="dialog">
 	                    <table>
 	                        <tbody>
@@ -50,7 +50,7 @@
 	                                <td valign="top" class="name">
 	                                    <label for="expenseAmount"><g:message code="default.ExpenseAmount(Rs).label" /></label>
 	                                </td>
-	                                <td>${expenseRequestEntryInstance.expenseAmount}</td>
+	                                <td>${currencyFormat.ConvertToIndainRS(expenseRequestEntryInstance.expenseAmount)}</td>
 	                                
 	                            </tr>
 	                        	
@@ -138,7 +138,10 @@
 					                       			<label for="status"><g:message code="default.RequestEvaluationStatus.label"/>:</label></td>
 								            	<td>${proposalApprovalDetailInstance.proposalStatus}</td>
 									            <td valign="top" class="name">
-				                                	<label for="sendForApprovalTo"><g:message code="default.ForApprovalto.label"/></label></td>
+				                                	<label for="sendForApprovalTo"><g:message code="default.ForApprovalto.label"/></label>
+				                                	<label for="sendForApprovalTo" style="color:red;font-weight:bold"> * </label>
+						                       		</td>
+				                                	
 			                                	<td>
 			                                		<g:select name="approvalAuthority.id" from="${approvalAuthorityInstance}" optionKey="id" optionValue = "name" value="${proposalApprovalAuthorityMapInstanceList?.approvalAuthority?.id}" noSelection="['null':'-Select-']"/>
 			                                	</td>

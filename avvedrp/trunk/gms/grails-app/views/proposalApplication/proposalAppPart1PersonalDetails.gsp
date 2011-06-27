@@ -47,9 +47,10 @@
                 <div class="dialog">
                     <table>
                         <tbody>
-                        <input type="hidden" name="proposalApplication.id" value="${proposalApplicationInstance?.id}">
+                        <input type="hidden" id="proposalApplication.id" name="proposalApplication.id" value="${proposalApplicationInstance?.id}">
                         <input type="hidden" name="actionName" value="${params.action}">
                         <input type="hidden" name="Page" value="${page}">
+                        <input type="hidden" id="party.id" name="party.id" value="${session.PartyId}">
                         <tr class="prop">
                                 <td colspan="2" style="text-align:right;"><font face="Arial, sans-serif" size="-1"><span style="color:#4c99cc;">
                     All fields are mandatory</span></font></td>

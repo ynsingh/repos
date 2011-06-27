@@ -25,11 +25,6 @@
 		<g:if test="${flash.message}">
 		<div class="message">${flash.message}</div>
 		</g:if>
-		<g:hasErrors bean="${authority}">
-		<div class="errors">
-		<g:renderErrors bean="${authority}" as="list" />
-		</div>
-		</g:hasErrors>
 		<g:form action="proposalAppPart1PersonalDetails">
 		<div class="dialog">
 		<table>
@@ -44,7 +39,7 @@
 		</table>
 		</div>
 		<div class="buttons">
-			<span class="button"><input class="save" type="submit" value="${message(code: 'default.Create.button')}" /></span>
+			<span class="button"><input class="save" type="submit" value="${message(code: 'default.Continue.button')}" /></span>
 		</div>
 		</g:form>
 	</div>

@@ -25,6 +25,11 @@
                         </tr>
                         
                        
+                       <tr class="prop">
+                          <td valign="top" class="name"><g:message code="default.AmountAllocated(Rs).label"/>:</td>
+                          <td>${currencyFormat.ConvertToIndainRS(notificationsInstance.amount)}</td>
+                       </tr>
+                       
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="default.DateOfNotification.label"/></td>
                            <td><g:formatDate format="dd-MM-yyyy" date="${notificationsInstance.notificationDate}"/></td>

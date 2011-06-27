@@ -1,6 +1,6 @@
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 class ProposalApprovalAuthorityMapController {
-	def preProposalService
+	def proposalService
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def index = {
@@ -15,11 +15,19 @@ class ProposalApprovalAuthorityMapController {
     def create = {
 		GrailsHttpSession gh=getSession()
         def proposalApprovalAuthorityMapInstance = new ProposalApprovalAuthorityMap()
-        def preProposalService = new PreProposalService()
+        def proposalService = new ProposalService()
+		def proposalApplicationList = []
+		def proposalApplicationInstanceDataList = []
 		def approvalAuthorityService = new ApprovalAuthorityService()
 		def proposalApprovalAuthorityMapInstanceList = []
         proposalApprovalAuthorityMapInstance.properties = params
-        def preProposalList = preProposalService.getSubmittedPreProposal(gh.getValue("Party"))
+    	def preProposalList = proposalService.getSubmittedPreProposal(gh.getValue("Party"))
+         for(int i=0;i<preProposalList.size();i++)
+         {
+        	 def proposalApplicationInstance = proposalService.getProposalApplicationByProposal(preProposalList[i].id)
+     		proposalApplicationList.add(proposalApplicationInstance)
+          	  
+         }
         def approvalAuthorityInstance = approvalAuthorityService.getActiveApprovalAuthority(gh.getValue("PartyID"))
         def proposalApprovalAuthorityMapList = []
 		
@@ -27,20 +35,29 @@ class ProposalApprovalAuthorityMapController {
 		
         for(int i=0;i<approvalAuthorityInstance.size();i++)
         {
-        	proposalApprovalAuthorityMapInstanceList = ProposalApprovalAuthorityMap.findAll("from ProposalApprovalAuthorityMap PAAM WHERE PAAM.approvalAuthority IN ("+approvalAuthorityInstance[i].id+") and PAAM.proposalType NOT IN('ExpenseRequest','Proposal')")
+        	proposalApprovalAuthorityMapInstanceList = ProposalApprovalAuthorityMap.findAll("from ProposalApprovalAuthorityMap PAAM WHERE PAAM.approvalAuthority IN ("+approvalAuthorityInstance[i].id+") and PAAM.proposalType NOT IN('ExpenseRequest','Proposal','Notification')")
         	for(int j=0;j<proposalApprovalAuthorityMapInstanceList.size();j++)
         		proposalApprovalAuthorityMapList.add(proposalApprovalAuthorityMapInstanceList[j])
         	
         }
+        for(int k=0;k<proposalApprovalAuthorityMapList.size();k++)
+        {
+       	 def proposalApplicationInstanceData = proposalService.getProposalApplicationByProposal(proposalApprovalAuthorityMapList[k].proposalId)
+  		    proposalApplicationInstanceDataList.add(proposalApplicationInstanceData)
+        	
+        }
         
-        return ['proposalApprovalAuthorityMapInstance': proposalApprovalAuthorityMapInstance,'preProposalList':preProposalList,'proposalApprovalAuthorityMapInstanceList': proposalApprovalAuthorityMapList,'approvalAuthorityInstance':approvalAuthorityInstance]
+        return ['proposalApprovalAuthorityMapInstance': proposalApprovalAuthorityMapInstance,'preProposalList':preProposalList,'proposalApprovalAuthorityMapInstanceList': proposalApprovalAuthorityMapList,'approvalAuthorityInstance':approvalAuthorityInstance,'proposalApplicationList':proposalApplicationList,'proposalApplicationInstanceDataList':proposalApplicationInstanceDataList]
     }
 
     def save = 
     {
 		def proposalApprovalAuthorityMapService = new ProposalApprovalAuthorityMapService()
         def proposalApprovalAuthorityMapInstance = new ProposalApprovalAuthorityMap(params)
-        def proposalApprovalAuthorityMapData = proposalApprovalAuthorityMapService.checkDuplicateProposalApprovalAuthorityMap(proposalApprovalAuthorityMapInstance,params)
+		def proposalApplicationInstance = ProposalApplication.get(params.proposalId)
+        
+		def proposalApprovalAuthorityMapData = proposalApprovalAuthorityMapService.getDuplicateProposalAuthorityMapDetails(proposalApplicationInstance,params)
+			//ProposalApprovalAuthorityMap.findAll("from ProposalApprovalAuthorityMap PAM where PAM.proposalId="+proposalApplicationInstance.proposal.id+" and PAM.proposalType='"+params.proposalType+"' and PAM.approvalAuthority="+params.approvalAuthority.id)
         if(proposalApprovalAuthorityMapData)
         {
         	flash.error ="${message(code: 'default.AlreadyExistsAuthorityApproveOrder.label')}"
@@ -48,7 +65,8 @@ class ProposalApprovalAuthorityMapController {
         }
         else 
         {
-         	def proposalApprovalAuthorityMapList = ProposalApprovalAuthorityMap.findAll("from ProposalApprovalAuthorityMap PM where PM.activeYesNo='Y' and PM.proposalId="+params.proposalId+" and PM.proposalType='"+params.proposalType+"' and PM.approveOrder= "+params.approveOrder)
+         	def proposalApprovalAuthorityMapList = proposalApprovalAuthorityMapService.getProposalAuthorityMapDetails(proposalApplicationInstance,params)
+         		//ProposalApprovalAuthorityMap.findAll("from ProposalApprovalAuthorityMap PM where PM.activeYesNo='Y' and PM.proposalId="+proposalApplicationInstance.proposal.id+" and PM.proposalType='"+params.proposalType+"' and PM.approveOrder= "+params.approveOrder)
         	if(proposalApprovalAuthorityMapList.size())
         	{
         		flash.error ="${message(code: 'default.AlreadyExistsApproveOrder.label')}"
@@ -57,7 +75,10 @@ class ProposalApprovalAuthorityMapController {
         	else
         	{
         		proposalApprovalAuthorityMapInstance.activeYesNo = 'Y'
-        		if (proposalApprovalAuthorityMapInstance.save(flush: true))
+        		//def proposalIdInstance = ProposalApplication.get(proposalApprovalAuthorityMapInstance.proposalId)
+        		//println"----------------proposalApplicationInstance--------------"+proposalApplicationInstance  
+         		proposalApprovalAuthorityMapInstance.proposalId = proposalApplicationInstance.proposal.id
+           		if (proposalApprovalAuthorityMapInstance.save(flush: true))
 	        	{
 	        		
 	        		flash.message = "${message(code: 'default.ProposalApprovalAuthorityMapCreated.label')}"
@@ -83,24 +104,33 @@ class ProposalApprovalAuthorityMapController {
     }
 
     def edit = {
+		println"----------params-------------"+params
 		GrailsHttpSession gh=getSession()
 		def approvalAuthorityService = new ApprovalAuthorityService()
+		def proposalApplicationList = []
         def proposalApprovalAuthorityMapInstance = ProposalApprovalAuthorityMap.get(params.id)
+        def projectTitleInstance = proposalService.getProposalApplicationByProposal(proposalApprovalAuthorityMapInstance.proposalId)
         def approvalAuthorityInstance = approvalAuthorityService.getActiveApprovalAuthority(gh.getValue("PartyID"))
-        def preProposalList = preProposalService.getSubmittedPreProposal(gh.getValue("Party"))
-        def preProposalInstance = PreProposal.find("from PreProposal P where P.id ="+proposalApprovalAuthorityMapInstance.proposalId)
+        def preProposalList = proposalService.getSubmittedPreProposal(gh.getValue("Party"))
+         for(int i=0;i<preProposalList.size();i++)
+         {
+        	 def proposalApplicationInstance = proposalService.getProposalApplicationByProposal(preProposalList[i].id)
+      		  proposalApplicationList.add(proposalApplicationInstance)
+          	  
+         }
+        def proposalInstance = proposalService.getProposalApprovalAuthorityByProposalId(proposalApprovalAuthorityMapInstance.proposalId)
         if (!proposalApprovalAuthorityMapInstance) {
         	
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'proposalApprovalAuthorityMap.label', default: 'ProposalApprovalAuthorityMap'), params.id])}"
             redirect(action: "edit")
         }
         else {
-            return ['proposalApprovalAuthorityMapInstance': proposalApprovalAuthorityMapInstance,'approvalAuthorityInstance':approvalAuthorityInstance,'preProposalInstance':preProposalInstance,'preProposalList':preProposalList]
+            return ['proposalApprovalAuthorityMapInstance': proposalApprovalAuthorityMapInstance,'approvalAuthorityInstance':approvalAuthorityInstance,'proposalInstance':proposalInstance,'preProposalList':preProposalList,'proposalApplicationList':proposalApplicationList,'projectTitleInstance':projectTitleInstance]
         }
     }
 
     def update = {
-       def proposalApprovalAuthorityMapInstance = ProposalApprovalAuthorityMap.get(params.id)
+	     def proposalApprovalAuthorityMapInstance = ProposalApprovalAuthorityMap.get(params.id)
        
        
         if (proposalApprovalAuthorityMapInstance) {
@@ -115,9 +145,10 @@ class ProposalApprovalAuthorityMapController {
             }
             
             def proposalApprovalAuthorityMapService = new ProposalApprovalAuthorityMapService()
-            def proposalApprovalAuthorityMapDetail = proposalApprovalAuthorityMapService.checkDuplicateProposalApprovalAuthorityMap(proposalApprovalAuthorityMapInstance,params)
-            	def proposalList = ProposalApprovalDetail.executeQuery(" from ProposalApprovalDetail PA where PA.proposalApproval.proposalApprovalAuthorityMap.proposalId ="+ proposalApprovalAuthorityMapInstance.proposalId +" and  PA.proposalApproval.proposalApprovalAuthorityMap.proposalType='"+proposalApprovalAuthorityMapInstance.proposalType+"'") 
-            	println "proposalList"+proposalList
+            def proposalApprovalDetailService = new ProposalApprovalDetailService()
+            def proposalApplicationInstance = proposalService.getProposalApplicationByProposalId(proposalApprovalAuthorityMapInstance.proposalId)
+  		    def proposalApprovalAuthorityMapDetail = proposalApprovalAuthorityMapService.checkDuplicateProposalApprovalAuthorityMap(proposalApplicationInstance,params)
+            	def proposalList = proposalApprovalDetailService.proposalApprovalDetailByProposalApprovalAuthorityMap(proposalApprovalAuthorityMapInstance) 
             	if(proposalList)
             	{
             		flash.message ="${message(code: 'default.ReviewStarts.message')}"
@@ -132,7 +163,7 @@ class ProposalApprovalAuthorityMapController {
             else 
              {
             	
-            	def proposalApprovalAuthorityMapList = ProposalApprovalAuthorityMap.findAll("from ProposalApprovalAuthorityMap PM where PM.activeYesNo='Y' and PM.proposalId="+params.proposalId+" and PM.proposalType='"+params.proposalType+"' and PM.approveOrder= "+params.approveOrder)
+            	def proposalApprovalAuthorityMapList = proposalApprovalAuthorityMapService.getProposalAuthorityMapDetails(proposalApplicationInstance,params)            	
             	
 	            	if(proposalApprovalAuthorityMapList.size())
 	            	{
@@ -196,21 +227,31 @@ class ProposalApprovalAuthorityMapController {
     def getProposals =
     {
     	def preProposalList 
+    	def proposalApplicationList=[]
     	GrailsHttpSession gh=getSession()
     	if(params.proposal=="PreProposal")
     	{
-    		preProposalList = preProposalService.getSubmittedPreProposal(gh.getValue("Party"))
-    		render (template:"preProposalSelect", model : ['preProposalList' : preProposalList])
+    		/*Method to get submitted PreProposal by type*/
+    		preProposalList = proposalService.getSubmittedPreProposalByType(gh.getValue("Party"))
+    		  for(int i=0;i<preProposalList.size();i++)
+    	         {	
+    			     /*method to get proposalApplication Instance by proposalId*/
+    	    	     def proposalApplicationInstance = proposalService.getProposalApplicationByProposal(preProposalList[i].id)
+    	    		 proposalApplicationList.add(proposalApplicationInstance)
+    	        	
+    	         }
+    		render (template:"preProposalSelect", model : ['proposalApplicationList' : proposalApplicationList])
     	}
     	else
     	{
-    		preProposalList = FullProposal.findAll("from FullProposal PP where PP.proposalStatus = 'Submitted' and PP.preProposal.party="+gh.getValue("Party"))
-    		for(preProposalValue in preProposalList)
+    		preProposalList = proposalService.getSubmittedFullProposalByType(gh.getValue("Party"))
+    		for(int i=0;i<preProposalList.size();i++)
     		{
-    			def preProposalId = PreProposal.get(preProposalValue.preProposal.id)
-    			preProposalValue.projectTitle=preProposalId.projectTitle
+    			def proposalTitleInstance = proposalService.getProposalApplicationByProposal(preProposalList[i].id)
+    			//def proposalTitleInstance = ProposalApplication.find("from ProposalApplication PA where PA.proposal= "+preProposalList[i].id)
+                         proposalApplicationList.add(proposalTitleInstance)
     		}
-    		render (template:"proposalSelect", model : ['preProposalList' : preProposalList])
+    		render (template:"proposalSelect", model : ['proposalApplicationList' : proposalApplicationList])
     	}
     	//render (template:"proposalSelect", model : ['preProposalList' : preProposalList])
     }

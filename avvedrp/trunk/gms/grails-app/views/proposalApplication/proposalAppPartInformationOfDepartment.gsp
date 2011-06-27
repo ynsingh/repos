@@ -70,6 +70,7 @@
                             <tr class="prop">
                                 <td valign="top" colspan="2" class="nameline">
                                     <label for="code">2.<g:message code="default.TitleOfTheResearchProject.label"/>:</label>
+                                    <label for="code" class="mandatory"> * </label>
                                 </td>
                                 </tr>
                             <tr class="prop">
@@ -172,7 +173,7 @@
                     </g:if>
                     <g:else>
                     <input type="hidden" name="status" value="save">
-                    <input class="inputbutton" type="submit" value="${message(code: 'default.Next.button')}" />
+                    <input class="inputbutton" type="submit" value="${message(code: 'default.Next.button')}" onClick="return validateApplicationFormPartII();"  />
                     <input type="button" class="inputbutton" onClick="Redirect()"  value="${message(code: 'default.Cancel.button')}"/>
                     </g:else>
                     </span>

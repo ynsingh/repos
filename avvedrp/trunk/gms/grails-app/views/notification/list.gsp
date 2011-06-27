@@ -32,6 +32,7 @@
                    	        <th><g:message code="default.publicYesNo.label"/></th>
                        		<th><g:message code="default.Publish.label"/></th>
                             <th><g:message code="default.ProposalReceived.label"/></th>
+                   	        <th><g:message code="default.AssignNotificationtoApprovalAuthority.label"/></th>
                    	        <th><g:message code="default.Edit.label"/></th>
                         </tr>
                     </thead>
@@ -61,6 +62,8 @@
             					<td>Published</td>
         					</g:else>
                             <td><g:link action="proposalList" controller='proposal' id="${fieldValue(bean:notificationInstance, field:'id')}"><g:message code="default.View.label"/></g:link></td>
+                            
+                            <td><g:link action="notificationAuthorityMap" controller='notification' id="${fieldValue(bean:notificationInstance, field:'id')}"><g:message code="default.AssignNotification.label"/></g:link></td>
                             
                             <g:if test="${notificationInstance?.publishYesNo=='N'}">
                             	<td><g:link action="edit" id="${fieldValue(bean:notificationInstance, field:'id')}"><g:message code="default.Edit.label"/></g:link></td>

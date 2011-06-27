@@ -90,7 +90,8 @@ class NotificationController {
             redirect(action:list)
         }
         else {
-            return [ notificationInstance : notificationInstance ]
+        	NumberFormat formatter = new DecimalFormat("#0.00");
+            return [ 'notificationInstance' : notificationInstance,'notificationAmount':formatter.format(notificationInstance.amount) ]
         }
     }
 
@@ -213,6 +214,8 @@ class NotificationController {
        def notificationInstance = new Notification(params)
       
        def notificationService = new NotificationService()
+       def approvalAuthorityService = new ApprovalAuthorityService()
+       def proposalApprovalAuthorityMapService = new ProposalApprovalAuthorityMapService()
        //GrailsHttpSession gh=getSession()
        
        //println"notificationInstanceList.notificationCode"+notificationInstanceList.notificationCode
@@ -259,6 +262,16 @@ class NotificationController {
     		}*/
     		if(!notificationInstance.hasErrors() && notificationInstance.save()) 
     		{
+    			GrailsHttpSession gh=getSession()
+    			def chkDefaultAuthorityInstance = approvalAuthorityService.chkDefaultAuthority(gh.getValue("PartyID"))
+    			
+    			if(chkDefaultAuthorityInstance)
+    			{
+    				
+    				def approvalAuthorityInstance = approvalAuthorityService.getApprovalAuthorityById((Integer)chkDefaultAuthorityInstance[0].id)
+    				def proposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService.saveProposalApprovalAuthorityMapForProposalApplication(approvalAuthorityInstance,notificationInstance.id,"Notification")
+    				
+    			}
             flash.message = "${message(code: 'default.created.label')}"
             	
             redirect(action:list,id:notificationInstance.id)
@@ -355,6 +368,10 @@ class NotificationController {
 	def publish = {
     		
     		def notificationInstance = Notification.get(params.id)
+    		def proposalApprovalAuthorityMapService = new ProposalApprovalAuthorityMapService()
+    		def proposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService.getProposalApprovalAuthorityMapByProposalIdAndType(params.id,"Notification")
+    		if(proposalApprovalAuthorityMapInstance != null)
+    		{
     		notificationInstance.publishYesNo="Y"
     		def notificationInstanceSaveStatus=notificationService.updateNotification(notificationInstance)
     		if(notificationInstanceSaveStatus)
@@ -363,10 +380,39 @@ class NotificationController {
     	    	redirect(controller:"notification",action:"list")
     		}
     		else
+    		{	
+    			redirect(controller:"notification",action:"list")
+    		}
+    		}
+    		else
     		{
-    			
+    			flash.message ="${message(code: 'default.NotificationNotPublished.label')}"
     			redirect(controller:"notification",action:"list")
     		}
     }
+	def notificationAuthorityMap = {	
+			def proposalApprovalAuthorityMapService = new ProposalApprovalAuthorityMapService()
+			def approvalAuthorityService = new ApprovalAuthorityService()
+			GrailsHttpSession gh=getSession()
+			def partyId = gh.getValue("Party")
+			def approvalAuthorityInstance = approvalAuthorityService.getApprovalAuthorityByParty(partyId)
+			def currentApprovalAuthority = proposalApprovalAuthorityMapService.getProposalApprovalAuthorityMapByProposalIdAndType(params.id,"Notification")
+			['approvalAuthorityInstance': approvalAuthorityInstance,'proposalId':params.id,'currentApprovalAuthority':currentApprovalAuthority]
+	}
+	def saveNotificationAuthorityMap = {
+			def proposalApprovalAuthorityMapService = new ProposalApprovalAuthorityMapService()
+			def approvalAuthorityService = new ApprovalAuthorityService()
+			if(params.approvalAuthorityId != 'null')
+			{
+			def approvalAuthorityInstance = approvalAuthorityService.getApprovalAuthorityById(Integer.parseInt(params.approvalAuthorityId))
+			def proposalApprovalAuthorityMapInstance = proposalApprovalAuthorityMapService.saveProposalApprovalAuthorityMapForProposalApplication(approvalAuthorityInstance,Integer.parseInt(params.proposalId),"Notification")
+			flash.message="${message(code: 'default.NotificationApprovalAuthorityMapCreated.label')}"
+			redirect(controller:"notification",action:"list")
+			}
+			else
+			{
+			redirect(controller:"notification",action:"notificationAuthorityMap")	
+			}
+	}
 }
 

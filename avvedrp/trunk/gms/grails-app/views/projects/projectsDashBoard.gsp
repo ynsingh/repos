@@ -8,7 +8,7 @@
     </head>
     <body>
     	<div class="wrapper">   
-       
+       <h1><g:message code="default.ProjectsDashBoard.label"/></h1>
          
                     <div id="content">
                     

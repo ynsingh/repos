@@ -124,6 +124,7 @@ class UserController extends GmsController {
 
 	def edit = {
 
+		GrailsHttpSession gh=getSession()
 		def userService = new UserService()
 		def person = userService.getUserById(new Integer(params.id))
 		def party = userService.getParty(person)
@@ -136,9 +137,15 @@ class UserController extends GmsController {
 		}
 		//get active roles
 		def authorityInstance = userService.getActiveRoles()
+		def userMapInstance   = userService.getUserByIdAndParty(params.id,gh.getValue("Party"))
+		//get role of current user 
+		def userRoleInstance  = userService.getUserRoleByUserId(params.id)	
+		//get current role of a user
+		def authorityPersonInstance = Authority.find("from Authority AA where AA.id ="+userRoleInstance[0].id)
+		
 		//return buildPersonModel(person)
 		return [person:person, grantAllocationInstance : grantAllocationInstance,
-		        authorityInstance:authorityInstance]
+		        authorityInstance:authorityInstance, authorityPersonInstance:authorityPersonInstance]
 	}
 
 	/**
@@ -466,64 +473,71 @@ class UserController extends GmsController {
 	 * Action to activate a user
 	 */
 	def userActivation = {
-			   
-				def userInstance = userService.getUserById(Integer.parseInt(params.id))
-				if(userInstance.enabled==false)
+		   
+			def userInstance = userService.getUserById(Integer.parseInt(params.id))
+			if(userInstance.enabled==false)
+			{
+				userInstance.enabled=true
+				userInstance.save()
+				GrailsHttpSession gh=getSession()
+				def userMap=UserMap.find("from UserMap UM where UM.user.id="+params.id);
+				def party=userMap.party
+				//creating accespermission for all roles in new party
+				 def webRootDir
+				if ( GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_PRODUCTION)) 
 				{
-					userInstance.enabled=true
-					userInstance.save()
-					GrailsHttpSession gh=getSession()
-					def userMap=UserMap.find("from UserMap UM where UM.user.id="+params.id);
-					def party=userMap.party
-					//creating accespermission for all roles in new party
-					 def webRootDir
-					if ( GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_PRODUCTION)) 
-					{
-						webRootDir = servletContext.getRealPath("/")+"WEB-INF/grails-app/views/"
-						//folder = webRootDir+"WEB-INF/grails-app/views"
-					}
-			       	if ( GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_DEVELOPMENT)) 
-			       	{
-			       		webRootDir = "grails-app/views/"
-			       		//folder = new File("grails-app/views")
-			       	}
-			       //	def roleId=null
-			       //	def rolePrivilegesService = new RolePrivilegesService()
-		    		//def rolePrivilegesSaveStatus = rolePrivilegesService.saveRolePrivilegesForParty(party,webRootDir,roleId)
-		    		//creating role privileges for each role in the new party starting
-		    		def roleInstance = Authority.findAll("from Authority A")
-		    		def data = []
-		       		for (controller in grailsApplication.controllerClasses) {
-		       			def controllerInfo = [:]
-		       			controllerInfo.controller = controller.logicalPropertyName
-		       			controllerInfo.controllerName = controller.fullName
-		       			List actions = []
-		       			BeanWrapper beanWrapper = PropertyAccessorFactory.forBeanPropertyAccess(controller.newInstance())
-		       			for (pd in beanWrapper.propertyDescriptors) {
-		       				String closureClassName = controller.getPropertyOrStaticPropertyOrFieldValue(pd.name, Closure)?.class?.name
-		       						if (closureClassName) 
-		       							{
-		       							actions << pd.name
-		       								for(authorityInstance in roleInstance)
-		       								{
-		       									def rolePrivilegesInstance=new RolePrivileges()
-		       									rolePrivilegesInstance.controllerName=controller.logicalPropertyName
-		       									rolePrivilegesInstance.actionName=pd.name
-		       									rolePrivilegesInstance.role=authorityInstance
-		       									rolePrivilegesInstance.party=party
-		       									rolePrivilegesInstance.save()
-		       								}
-		       							}
-		       			}
-		       			controllerInfo.actions = actions.sort()
-		       			data << controllerInfo
-		       		}
-					redirect uri: '/user/userConfirmation'
+					webRootDir = servletContext.getRealPath("/")+"WEB-INF/grails-app/views/"
+					//folder = webRootDir+"WEB-INF/grails-app/views"
 				}
-				else
-				{
-					redirect(controller:'login',action:'auth')
-				}
+		       	if ( GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_DEVELOPMENT)) 
+		       	{
+		       		webRootDir = "grails-app/views/"
+		       		//folder = new File("grails-app/views")
+		       	}
+		       //	def roleId=null
+		       //	def rolePrivilegesService = new RolePrivilegesService()
+	    		//def rolePrivilegesSaveStatus = rolePrivilegesService.saveRolePrivilegesForParty(party,webRootDir,roleId)
+	    		//creating role privileges for each role in the new party starting
+	    		 
+	    		if(!params.passwd)
+	    		{
+	    			 
+	    		def roleInstance = Authority.findAll("from Authority A")
+	    		def data = []
+	       		for (controller in grailsApplication.controllerClasses) {
+	       			def controllerInfo = [:]
+	       			controllerInfo.controller = controller.logicalPropertyName
+	       			controllerInfo.controllerName = controller.fullName
+	       			List actions = []
+	       			BeanWrapper beanWrapper = PropertyAccessorFactory.forBeanPropertyAccess(controller.newInstance())
+	       			for (pd in beanWrapper.propertyDescriptors) {
+	       				String closureClassName = controller.getPropertyOrStaticPropertyOrFieldValue(pd.name, Closure)?.class?.name
+	       						if (closureClassName) 
+	       							{
+	       							actions << pd.name
+	       								for(authorityInstance in roleInstance)
+	       								{
+	       									def rolePrivilegesInstance=new RolePrivileges()
+	       									rolePrivilegesInstance.controllerName=controller.logicalPropertyName
+	       									rolePrivilegesInstance.actionName=pd.name
+	       									rolePrivilegesInstance.role=authorityInstance
+	       									rolePrivilegesInstance.party=party
+	       									rolePrivilegesInstance.save()
+	       								}
+	       							}
+	       			}
+	       			controllerInfo.actions = actions.sort()
+	       			data << controllerInfo
+	       		}
+	       		
+	    		}
+	       		
+				redirect uri: '/user/userConfirmation'
+			}
+			else
+			{
+				redirect(controller:'login',action:'auth')
+			}
 		}
 	
 	/**

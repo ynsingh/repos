@@ -192,7 +192,7 @@
                                 </tr>
                             
                           <tr class="prop">
-                         	<td valign="top" class="prvalue"><g:message code="default.a.label"/>)<label for="code">7.<g:message code="default.Plan.label"/></label>
+                         	<td valign="top" class="prvalue"><g:message code="default.a.label"/>)<label for="code"><g:message code="default.Plan.label"/></label>
                          	<label for="name" class="mandatory"> * </label></td> 
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'code','errors')}">
                                     <ckeditor:editor name="Plan_9" height="200px" width="100%" toolbar="custom">
@@ -201,7 +201,7 @@
                            </tr>
                            <tr class="prop">
                                 <td valign="top" colspan="2" class="nameline">
-                                    <label for="code"><g:message code="default.b.label"/><g:message code="default.Strategy.label"/>:</label>
+                                    <label for="code"><g:message code="default.b.label"/>)<g:message code="default.Strategy.label"/>:</label>
                                     <label for="name" class="mandatory"> * </label>
                                 </td>
                                 </tr>
@@ -232,7 +232,7 @@
                                 </tr>
                             <tr class="prop">
                            
-                                 <td valign="top" style="width:200px;" class="prvalue"><label for="name"><g:message code="default.a.label"/>.<g:message code="default.StrategyForPopularization.label"/>:</label>
+                                 <td valign="top" style="width:200px;" class="prvalue"><label for="name"><g:message code="default.a.label"/>)<g:message code="default.StrategyForPopularization.label"/>:</label>
                                  <label for="name" class="mandatory"> * </label></td> 
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'name','errors')}">
                                     <ckeditor:editor name="StrategyForPopularization_12" height="200px" width="100%" toolbar="custom">
@@ -241,13 +241,13 @@
                             </tr>
                             <tr class="prop">
                                 <td valign="top" colspan="2" class="nameline">
-                                    <label for="name"><g:message code="default.b.label"/>.<g:message code="default.ExtensionActivitiesPlans.label"/>:</label>
+                                    <label for="name"><g:message code="default.b.label"/>)<g:message code="default.ExtensionActivitiesPlans.label"/>:</label>
                                     <label for="name" class="mandatory"> * </label>
                                 </td>
                                 </tr>
                          <tr class="prop">
                            
-                                 <td valign="top" style="width:200px;" class="prvalue"><label for="name">i)<g:message code="default.Maintenance.label"/>:</label>
+                                 <td valign="top" style="width:200px;" class="prvalue"><label for="name">(i)<g:message code="default.Maintenance.label"/>:</label>
                                  <label for="name" class="mandatory"> * </label></td> 
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'name','errors')}">
                                     <ckeditor:editor name="Maintenance_13" height="200px" width="100%" toolbar="custom">
@@ -256,7 +256,7 @@
                             </tr>
                             <tr class="prop">
                            
-                                 <td valign="top" style="width:200px;" class="prvalue"><label for="name">ii)<g:message code="default.UserFeedbackMechanism.label"/>:</label>
+                                 <td valign="top" style="width:200px;" class="prvalue"><label for="name">(ii)<g:message code="default.UserFeedbackMechanism.label"/>:</label>
                                  <label for="name" class="mandatory"> * </label></td> 
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'name','errors')}">
                                     <ckeditor:editor name="UserFeedbackMechanism_14" height="200px" width="100%" toolbar="custom">
@@ -265,7 +265,7 @@
                             </tr>
                             <tr class="prop">
                            
-                                 <td valign="top" style="width:200px;" class="prvalue"><label for="name"><g:message code="default.a.label"/>)<g:message code="default.FrequencyOfReview.label"/>:</label>
+                                 <td valign="top" style="width:200px;" class="prvalue"><label for="name"><g:message code="default.c.label"/>)<g:message code="default.FrequencyOfReview.label"/>:</label>
                                  <label for="name" class="mandatory"> * </label></td> 
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'name','errors')}">
                                     <ckeditor:editor name="FrequencyOfReview_15" height="200px" width="100%" toolbar="custom">
@@ -281,7 +281,7 @@
                             
                             <tr class="prop">
                            
-                                 <td valign="top" style="width:200px;" class="prvalue"><label for="name"><g:message code="default.b.label"/>.)<g:message code="default.ListAtLeastReviewers.label"/>:</label>
+                                 <td valign="top" style="width:200px;" class="prvalue"><label for="name"><g:message code="default.a.label"/>)<g:message code="default.ListAtLeastReviewers.label"/>:</label>
                                  <label for="name" class="mandatory"> * </label></td> 
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'name','errors')}">
                                     <ckeditor:editor name="ListAtLeastReviewers_16" height="200px" width="100%" toolbar="custom">
@@ -290,14 +290,14 @@
                             </tr>
                             <tr class="prop">
                                 <td valign="top" colspan="2" class="nameline">
-                                    <label for="name"><g:message code="default.a.label"/><g:message code="default.CapitalExpenditure.label"/>:</label>
+                                    <label for="name"><g:message code="default.b.label"/>)<g:message code="default.CapitalExpenditure.label"/>:</label>
                                     <label for="name" class="mandatory"> * </label>
                                 </td>
                                 </tr>
                             
                             <tr class="prop">
                            
-                                 <td valign="top" style="width:200px;" class="prvalue"><label for="name">i).<g:message code="default.DetailsCapturedItemwise.label"/>:</label>
+                                 <td valign="top" style="width:200px;" class="prvalue"><label for="name">(i).<g:message code="default.DetailsCapturedItemwise.label"/>:</label>
                                  <label for="name" class="mandatory"> * </label></td> 
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'name','errors')}">
                                     <ckeditor:editor name="DetailsCapturedItemwise_17" height="200px" width="100%" toolbar="custom">
@@ -306,7 +306,7 @@
                             </tr>
                             <tr class="prop">
                            
-                                 <td valign="top" style="width:200px;" class="prvalue"><label for="name">ii).<g:message code="default.FocusedCommentsHighCostEquipment.label"/>:</label>
+                                 <td valign="top" style="width:200px;" class="prvalue"><label for="name">(ii).<g:message code="default.FocusedCommentsHighCostEquipment.label"/>:</label>
                                  <label for="name" class="mandatory"> * </label></td> 
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'name','errors')}">
                                     <ckeditor:editor name="FocusedCommentsHighCostEquipment_18" height="200px" width="100%" toolbar="custom">
@@ -316,7 +316,7 @@
                             <tr class="prop">
                            
                                  <td valign="top" style="width:200px;" class="prvalue">
-                                 <label for="name"><g:message code="default.a.label"/>.<g:message code="default.RevenueExpe.label"/></label>
+                                 <label for="name"><g:message code="default.c.label"/>)<g:message code="default.RevenueExpe.label"/></label>
                                  <label for="name" class="mandatory"> * </label>
                                  <br/>
                                  <label for="name">i).<g:message code="default.RevenueDeCapturedItemwise.label"/>:</label></td> 
@@ -334,16 +334,16 @@
                             
                             <tr class="prop">
                            
-                                 <td valign="top" style="width:200px;" class="prvalue"><label for="name">ii).<g:message code="default.FocusedCommentsOn.label"/>:</label>
+                                 <td valign="top" style="width:200px;" class="prvalue"><label for="name">(i).<g:message code="default.FocusedCommentsOn.label"/>:</label>
                                  <label for="name" class="mandatory"> * </label></td> 
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'name','errors')}">
-                                    <ckeditor:editor name="ListAtLeastReviewers_20" height="200px" width="100%" toolbar="custom">
+                                    <ckeditor:editor name="FocusedCommentsOn_20" height="200px" width="100%" toolbar="custom">
 								</ckeditor:editor>
                                 </td>
                             </tr>
                             <tr class="prop">
                            
-                                 <td valign="top" style="width:200px;" class="prvalue"><label for="name">ii).<g:message code="default.TotalConsultancyFee.label"/>:</label>
+                                 <td valign="top" style="width:200px;" class="prvalue"><label for="name">(ii).<g:message code="default.TotalConsultancyFee.label"/>:</label>
                                  <label for="name" class="mandatory"> * </label></td> 
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'name','errors')}">
                                     <ckeditor:editor name="TotalConsultancyFee_21" height="200px" width="100%" toolbar="custom">
@@ -352,7 +352,7 @@
                             </tr>
                             <tr class="prop">
                            
-                                 <td valign="top" style="width:200px;" class="prvalue"><label for="name">ii).<g:message code="default.IndicateAnchorInstitution.label"/>:</label>
+                                 <td valign="top" style="width:200px;" class="prvalue"><label for="name">(iii).<g:message code="default.IndicateAnchorInstitution.label"/>:</label>
                                  <label for="name" class="mandatory"> * </label></td> 
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'name','errors')}">
                                     <ckeditor:editor name="IndicateAnchorInstitution_22" height="200px" width="100%" toolbar="custom">
@@ -400,7 +400,7 @@
                            
                                  <td valign="top" style="width:200px;" class="prvalue">&nbsp;</td> 
                                 <td valign="top" class="prvalue ${hasErrors(bean:projectsInstance,field:'name','errors')}">
-                                    <ckeditor:editor name="OutcomeExtentToProject_24" height="200px" width="100%" toolbar="custom">
+                                    <ckeditor:editor name="OutcomeExtentToProject_25" height="200px" width="100%" toolbar="custom">
 								</ckeditor:editor>
                                 </td>
                             </tr>

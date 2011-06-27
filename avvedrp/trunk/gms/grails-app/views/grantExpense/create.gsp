@@ -75,6 +75,8 @@
                                      <tr class="prop">
                                          <td valign="top" class="name">
                                              <label for="grantAllocation"><g:message code="default.GrantAllocation.label"/></label>:
+                                               <label for="grantAllocation" style="color:red;font-weight:bold"> * </label>
+                                        
                                          </td>
                                          <td valign="top" class="value ${hasErrors(grantExpenseInstance,field:'grantAllocation','errors')}">
                                              <g:select optionKey="id" optionValue="grantCode" from="${grantAllocationInstanceList}" name="grantAllocation.id" value="${grantExpenseInstance?.grantAllocation?.id}"  noSelection="['null':'-Select-']" ></g:select>

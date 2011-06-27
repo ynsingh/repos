@@ -17,7 +17,7 @@ class EvalItemNotificationMapController {
         def evalItemNotificationMapInstance = new EvalItemNotificationMap()
         evalItemNotificationMapInstance.properties = params
         GrailsHttpSession gh=getSession()
-        def notificationInstance = notificationService.getAllNotificationUnderAParty(gh.getValue("Party"))
+        def notificationInstance = notificationService.getAllPublicNotificationUnderAParty(gh.getValue("Party"))
         return [evalItemNotificationMapInstance: evalItemNotificationMapInstance,notificationInstance:notificationInstance]
     }
 

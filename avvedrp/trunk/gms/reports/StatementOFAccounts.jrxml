@@ -215,8 +215,7 @@ WHERE
 	AND gs.grant_allocation_id =GA.id
 	AND (PJ.parent_id =$P{projectID} OR PJ.id =$P{projectID})
 GROUP BY 
-	gs.id	
-]]></queryString>
+	gs.id]]></queryString>
 
 	<field name="StartDate" class="java.lang.String"/>
 	<field name="EndDate" class="java.lang.String"/>
@@ -257,6 +256,11 @@ $F{BudgetAmount}!=null?$F{BudgetAmount}:new Double(0)]]></variableExpression>
 	</variable>
 	<variable name="Expenditure" class="java.lang.Double" resetType="Report" calculation="Nothing">
 		<variableExpression><![CDATA[new Double($F{TotalExpenditure}.doubleValue()+$F{FundAmt}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="OpeningBal" class="java.lang.Double" resetType="Report" calculation="Nothing">
+		<variableExpression><![CDATA[new Double(
+(($F{ReceiptsOpeningPeriod}!=null?$F{ReceiptsOpeningPeriod}:new Double(0)).doubleValue()) - 
+(($F{TotalOpenExpenditure}!=null?$F{TotalOpenExpenditure}:new Double(0)).doubleValue()+($F{FundOpenAmt}!=null?$F{FundOpenAmt}:new Double(0)).doubleValue()))]]></variableExpression>
 	</variable>
 		<background>
 			<band height="0"  isSplitAllowed="true" >
@@ -1362,7 +1366,9 @@ $F{BudgetAmount}!=null?$F{BudgetAmount}:new Double(0)]]></variableExpression>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Times New Roman" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[new Double($F{OpeningBalance}.doubleValue()+($F{ReceiptsDuringPeriod}!=null?$F{ReceiptsDuringPeriod}:new Double(0)).doubleValue())]]></textFieldExpression>
+				<textFieldExpression   class="java.lang.Double"><![CDATA[new Double(
+(($F{ReceiptsOpeningPeriod}!=null?$F{ReceiptsOpeningPeriod}:new Double(0)).doubleValue()) - 
+(($F{TotalOpenExpenditure}!=null?$F{TotalOpenExpenditure}:new Double(0)).doubleValue()+($F{FundOpenAmt}!=null?$F{FundOpenAmt}:new Double(0)).doubleValue())+($F{ReceiptsDuringPeriod}!=null?$F{ReceiptsDuringPeriod}:new Double(0)).doubleValue())]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
@@ -1692,8 +1698,10 @@ $F{BudgetAmount}!=null?$F{BudgetAmount}:new Double(0)]]></variableExpression>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
 						<font fontName="Times New Roman" pdfFontName="Helvetica" size="12" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
-				<textFieldExpression   class="java.lang.Double"><![CDATA[new Double(($F{OpeningBalance}.doubleValue()+
-($F{ReceiptsDuringPeriod}!=null?$F{ReceiptsDuringPeriod}:new Double(0)).doubleValue()) - 
+				<textFieldExpression   class="java.lang.Double"><![CDATA[new Double(
+(((($F{ReceiptsOpeningPeriod}!=null?$F{ReceiptsOpeningPeriod}:new Double(0)).doubleValue()) - 
+(($F{TotalOpenExpenditure}!=null?$F{TotalOpenExpenditure}:new Double(0)).doubleValue()+($F{FundOpenAmt}!=null?$F{FundOpenAmt}:new Double(0)).doubleValue()))+
+(($F{ReceiptsDuringPeriod}!=null?$F{ReceiptsDuringPeriod}:new Double(0)).doubleValue())) - 
 (($F{TotalExpenditure}!=null?$F{TotalExpenditure}:new Double(0)).doubleValue()+($F{FundAmt}!=null?$F{FundAmt}:new Double(0)).doubleValue()))]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
@@ -1850,8 +1858,8 @@ $F{BudgetAmount}!=null?$F{BudgetAmount}:new Double(0)]]></variableExpression>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						mode="Transparent"
-						x="395"
-						y="372"
+						x="397"
+						y="371"
 						width="112"
 						height="18"
 						forecolor="#000000"

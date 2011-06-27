@@ -48,7 +48,7 @@
                                 </td>
                                 
                                 <td id="proposalSel" valign="top" class="value ${hasErrors(bean: proposalApprovalAuthorityMapInstance, field: 'proposalId', 'errors')}">
-                                    <g:select name="proposalId" from="${preProposalList}" optionKey="id" optionValue="projectTitle"  value="${fieldValue(bean: proposalApprovalAuthorityMapInstance, field: 'proposalId')}" noSelection="['null':'-Select-']"/>
+                                    <g:select name="proposalId" from="${proposalApplicationList}" optionKey="id" optionValue="projectTitle"  value="${fieldValue(bean: proposalApprovalAuthorityMapInstance, field: 'proposalId')}" noSelection="['null':'-Select-']"/>
                                     
                                 </td>
                                 
@@ -118,6 +118,7 @@
                         </tr>
                     </thead>
                     <tbody>
+                    
                     <g:each in="${proposalApprovalAuthorityMapInstanceList}" status="i" var="proposalApprovalAuthorityMapInstance">
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
                         
@@ -125,12 +126,13 @@
                         
                             <td>${proposalApprovalAuthorityMapInstance.proposalType}</td>
                             <g:if test="${proposalApprovalAuthorityMapInstance?.proposalType=='PreProposal'}">
-                            <%def proposal = PreProposal.get(proposalApprovalAuthorityMapInstance.proposalId)%>
-                        	<td>${proposal?.projectTitle}</td>
+                            <%def proposalApplication =  ProposalApplication.find("from ProposalApplication P where P.proposal.id="+proposalApprovalAuthorityMapInstance.proposalId)%>
+                        	<td>${proposalApplication?.projectTitle}</td>
+                        	
                         	</g:if>
                         	<g:elseif test="${proposalApprovalAuthorityMapInstance?.proposalType=='FullProposal'}">
-                        	<%def proposal = FullProposal.get(proposalApprovalAuthorityMapInstance.proposalId)%>
-                        	<td>${proposal?.preProposal?.projectTitle}</td>
+                        	<%def proposal = ProposalApplication.find("from ProposalApplication P where P.proposal.id="+proposalApprovalAuthorityMapInstance.proposalId)%>
+                        	<td>${proposal?.projectTitle}</td>
                         	</g:elseif>
                         	
                             <td>${proposalApprovalAuthorityMapInstance.approvalAuthority.name}</td>                    

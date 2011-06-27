@@ -11,6 +11,7 @@ class Notification {
     String createdBy;
     Date createdDate;
     String modifiedBy;
+    double amount;
     Date modifiedDate;
     char publicYesNo;
     char publishYesNo;
@@ -24,6 +25,7 @@ static constraints={
                     eligibilitydocument(nullable:true)
                     applicationForm(nullable:true)
                     description(nullable:true)
+                    amount(nullable:true)
                     createdBy(nullable:true)
                     createdDate(nullable:true)
                     modifiedBy(nullable:true)

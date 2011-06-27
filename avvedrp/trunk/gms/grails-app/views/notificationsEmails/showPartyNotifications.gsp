@@ -25,6 +25,10 @@
                           <td valign="top" class="value">${fieldValue(bean:notificationsInstance, field:'notificationTitle')}</td>
                         </tr>
                         
+                        <tr class="prop">
+                          <td valign="top" class="name"><g:message code="default.AmountAllocated(Rs).label"/>:</td>
+                          <td>${currencyFormat.ConvertToIndainRS(notificationsInstance.amount)}</td>
+                       </tr>
                        
                         <tr class="prop">
                             <td valign="top" class="name"><g:message code="default.DateOfNotification.label"/></td>

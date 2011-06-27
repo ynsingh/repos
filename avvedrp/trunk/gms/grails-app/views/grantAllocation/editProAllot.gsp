@@ -69,6 +69,7 @@
                        <tr class="prop">
                             <td valign="top" class="name">
                                 <label for="projects"><g:message code="default.Project.label"/>:</label>
+                                <label for="projects" style="color:red;font-weight:bold"> * </label>
                             </td>
                             <td valign="top" 
                             	class="value ${hasErrors(bean:grantAllocationInstance,field:'projects','errors')}">
@@ -78,6 +79,7 @@
                        <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="code">Code:</label>
+                                    <label for="code" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'code','errors')}">
                                     <input type="text" id="code" name="code" value="${fieldValue(bean:grantAllocationInstance?.projects,field:'code')}"/>
@@ -87,6 +89,7 @@
                        <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="projectStartDate">Start Date:</label>
+                                    <label for="projectStartDate" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'projectStartDate','errors')}">
                                     <calendar:datePicker name="projectStartDate" value="${grantAllocationInstance?.projects?.projectStartDate}" defaultValue="${new Date()}" dateFormat= "%d/%m/%Y" />
@@ -97,6 +100,7 @@
                              <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="projectEndDate">End Date:</label>
+                                    <label for="projectEndDate" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'projectEndDate','errors')}">
                                     <calendar:datePicker name="projectEndDate" value="${grantAllocationInstance?.projects?.projectEndDate}" defaultValue="${new Date()}" dateFormat= "%d/%m/%Y"/>
@@ -107,6 +111,7 @@
 	                       	<td valign="top" class="name">
 	                            <label for="party">
 	                            	<g:message code="default.GrantAllocation.Recipient.label"/>:
+	                            	<label for="party" style="color:red;font-weight:bold"> * </label>
 	                        	</label>
 	                        </td>
 	                        <td valign="top" class="value ${hasErrors(bean:grantAllocationInstance,field:'party','errors')}">
@@ -120,6 +125,7 @@
                         <tr class="prop">
                                 <td valign="top" class="name">
                                     <label for="investigator"><g:message code="default.Investigator.label"/>:</label>
+                                    <label for="investigator" style="color:red;font-weight:bold"> * </label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean:projectsInstance,field:'investigator','errors')}">
                                     <g:select id="investigator.id" optionKey="id" optionValue="name" from="${Investigator.findAll('from Investigator I where I.activeYesNo=\'Y\' ')}" name="investigator.id" value="${projectsInstance?.investigator?.id}" noSelection="['null':'select']"></g:select>
@@ -131,6 +137,7 @@
                                 <label for="party">
                                 	<g:message code="default.GrantAllocation.SanctionOrderNo.label"/>:
                             	</label>
+                            	<label for="party" style="color:red;font-weight:bold"> * </label>
                             </td>
                             <td valign="top" 
                             	class="value ${hasErrors(bean:grantAllocationInstance,field:'sanctionOrderNo','errors')}">
@@ -156,6 +163,7 @@
                         <tr class="prop">
                             <td valign="top" class="name">
                                 <label for="amountAllocated"><g:message code="default.AmountAllocated(Rs).label"/>:</label>
+                                <label for="amountAllocated" style="color:red;font-weight:bold"> * </label>
                             </td>
                             <td valign="top" 
                             	class="value ${hasErrors(bean:grantAllocationInstance,field:'amountAllocated','errors')}">

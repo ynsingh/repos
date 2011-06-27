@@ -42,7 +42,7 @@
                                   <label for="proposalId"><g:message code="proposalApprovalAuthorityMap.proposalId.label" default="Proposal Title" />:</label>
                                 </td>
                                 <td valign="top" class="value ${hasErrors(bean: proposalApprovalAuthorityMapInstance, field: 'proposalId', 'errors')}">
-                                    <strong>${preProposalInstance?.projectTitle}</strong>
+                                    <strong>${projectTitleInstance?.projectTitle}</strong>
                                     <input type=hidden name="proposalId" id = "proposalId" value="${proposalApprovalAuthorityMapInstance.proposalId}">
                                 </td>
                             </tr>
