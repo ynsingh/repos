@@ -9,7 +9,6 @@ package org.bss.brihaspatisync;
 
 import javax.swing.UIManager;
 import javax.swing.JOptionPane;
-import javax.swing.UIManager;
 
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.network.Log;

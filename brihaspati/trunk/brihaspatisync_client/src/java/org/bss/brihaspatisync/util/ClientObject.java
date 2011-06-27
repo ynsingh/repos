@@ -25,6 +25,8 @@ public class ClientObject {
 	private String a_status="";
 	private String v_status="";
 
+//mention what is stored in a_status and v_status --YNS
+
 	private String usr_name="";
 	private String usr_role="";
 	private String lect_id="";
