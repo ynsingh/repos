@@ -40,19 +40,33 @@
 
 </head>
 
-<body >
+<body>
 
-	<div id="wrapper">
+<div id="wrapper">
 		<div id="head">
-			<div id="logo_user_details">&nbsp;</div>
-                        <div id="menus_wrapper">
-                            <div id="sec_menu">
+			<div class="innnerBanner">
+			<g:isLoggedIn>
+			<div class="loginLink">
+			<span>
+			<font face="verdana" color:#01518e; font-weight:bold; text-decoration: none>			
+		
+			</span>
+			</div>
+			</g:isLoggedIn>
+			</div>		    
+		</div>
+		<br /><br />
+	<div id="content"> 
+ 	<div style="float: left; width: 200px; margin-right: 5px;">
+			 <div class="urbangreymenu" style="padding-left:10px;">
+				<h3 class="headerbar">MENU OPTIONS</h3>
+				<ul class="submenu">
                                    <ul>
                                         <%
                                         String URL=session.getAttribute("ROLE").toString();
                                         %>
                                         <%
-                                        if(URL.equals("ROLE_ADMIN"))
+                                        if(URL.equals("ROLE_SUPERADMIN") || URL.equals("ROLE_UNIVERSITY"))
                                         {
                                         %>
                                            <li><a  class="house" href='<c:out value="courseActivity/listAdminOptions"/>'>Home</a></li>
@@ -63,7 +77,7 @@
                                         if(URL.equals("ROLE_STAFF"))
                                         {
                                         %>
-                                             <li><a  class="house" href='<c:out value="courseActivity/listSiteForLoginUser"/>'>Home</a></li>
+                                             <li><a  class="house" href='<c:out value="courseActivity/listStaffCourses"/>'>Home</a></li>
                                         <%
                                         }
                                         %>
@@ -78,7 +92,7 @@
 
 
                                          <%
-                                        if(URL.equals("ROLE_ADMIN"))
+                                        if(URL.equals("ROLE_SUPERADMIN") || URL.equals("ROLE_UNIVERSITY"))
                                         {
                                         %>
                                            <li><a  class="dashboard" href='<c:out value="dashboard/admindashboard"/>'>Dashboard</a></li>
@@ -97,7 +111,7 @@
 
 
                                         <%
-                                        if(URL.equals("ROLE_ADMIN"))
+                                        if(URL.equals("ROLE_SUPERADMIN"))
                                         {
                                         %>
                                         <li><a href='<c:out value="authority/list"/>'  class="manage_page">Roles Privileges</a></li>
@@ -107,12 +121,11 @@
                                         %>
                                         <li><a  class="house" href='<c:out value="siteHelp/help"/>' class="help">Help</a></li>
                                         <li><a  class="house" href='<c:out value="logout"/>' class="logout">Logout</a></li>
-                                   </ul>
-                            </div>
-                            </div>
-                    </div>
-
-			<div id="content" style="padding-left:30px;">
+                                 </ul>
+			</div>
+		 </div>
+<div style="float: left; width: 790px; margin-right: 5px;">
+			<div style="width:750px; height:500px;padding-left:50px;overflow: scroll;white-space: nowrap">
 							   	<form action="analytics.jsp" method="post">
 								<c:url var="url" value='/'></c:url>
 
@@ -209,11 +222,15 @@
 
 
 							</form>
-            </div> <!-- End of content div -->
-
-
-	</div>
-	 <div id="footer">
-          <div style="padding:8px 30px 20px 0px" align="right"><h4><font color="white">Developed by Amrita University under ERP, NME ICT, MHRD</h4></font></div>
+          <div style="clear: both;">&nbsp;</div>
+		<br />
+<!-- Middle area ends here -->		
+  </div> <!-- End of content div -->
 </div>
-</body>
+ <div style="clear: both;">&nbsp;</div>
+ <br /> <br /> <br /> <br />
+<div id="footer">
+          <div style="padding:8px 0px 10px 0px;background-color: #9DC6D9;" align="center">
+		  <font color="#104d6b" size="-3"><strong>Developed by Amrita University under ERP, NME ICT, MHRD</strong></font>
+		  </div>
+</div>

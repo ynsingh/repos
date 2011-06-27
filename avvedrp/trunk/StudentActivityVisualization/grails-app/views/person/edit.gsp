@@ -1,29 +1,37 @@
-<head>
-	<meta name="layout" content="main" />
-	<title>LMS List</title>
-	 <g:javascript src="jquery.js"/>
-	<script>	
-	function validate(thisform)
-	{
-	  var uname=$('#username').val().split("@"); 	 
-	  $('#userRealName').val(uname[0]);
-	  thisform.submit();
-	}
-	</script>
-       </head>
-<body>
+<meta name="layout" content="main" />
+<g:javascript src="jquery.js"/>
+<g:javascript src="ddaccordion.js"/>
+<script>	
+function validate(thisform)
+{
+  var uname=$('#username').val().split("@"); 	 
+  $('#userRealName').val(uname[0]);
+  thisform.submit();
+}
+</script>
+<!-- ##################################  Layout body starts here  ###########################################-->
 	<div id="wrapper">
 		<div id="head">
-			<div id="logo_user_details">&nbsp;</div>
-		      <g:if test="${session.ROLE == 'ROLE_SUPERADMIN' || session.ROLE == 'ROLE_ADMIN'}">
-                        <g:menu/>
-                        </g:if >
+			<div class="innnerBanner">
+			<g:isLoggedIn>
+			<div class="loginLink">
+			<span>
+			<font face="verdana" color:#01518e; font-weight:bold; text-decoration: none>			
+			<b>${session.UserId}</b> (<a href="${resource(dir:'/logout')}" class="logout">Logout</a>)
+			</span>
+			</div>
+			</g:isLoggedIn>
+			</div>		    
 		</div>
-
-	<div id="content"> <!-- Start of content div -->
-
-					   <div style="padding-left: 40px;"><h3>Edit User</h3></div>
-					<g:if test="${flash.message}">
+		
+		<br /><h4>Edit User</h4><br />
+	<div id="content"> 	
+<!-- Middle area starts here -->	
+		<g:if test="${session.ROLE == 'ROLE_SUPERADMIN' || session.ROLE == 'ROLE_ADMIN'}">
+		<g:menu/>
+		</g:if >	
+		<div style="padding-left:350px;">						
+			<g:if test="${flash.message}">
 					<div class="message">${flash.message}</div>
 					</g:if>
 					<g:hasErrors bean="${person}">
@@ -96,12 +104,13 @@
 					</table>
 					<input type="hidden" name="userRealName" id="userRealName" value=""/>
 					</g:form>
-
-
-
-         </div> <!-- End of content div -->
-
-
-	</div>
+     
+		</div>
+		
+		<div style="clear: both;">&nbsp;</div>
+		<br />
+<!-- Middle area ends here -->		
+  </div> <!-- End of content div -->
+</div>
 <g:footer/>
-</body>
+<!-- ##################################  Layout body ends here  ###########################################-->

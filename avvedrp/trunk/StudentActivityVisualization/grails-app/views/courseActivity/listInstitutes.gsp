@@ -1,6 +1,6 @@
-<head>
-	<meta name="layout" content="main" />
-	<title>LMS List</title>	
+<meta name="layout" content="main" />
+<g:javascript src="jquery.js"/>
+<g:javascript src="ddaccordion.js"/>
 	<style>
 		.myform{
 		margin:0 auto;
@@ -23,43 +23,51 @@
 		padding-top:4px;
 		width:140px;
 		float:left;
-		}
-			
-		</style>
-        <g:javascript src="jquery.js"/>
-        <script type="text/javascript">
+		}			
+</style>
+<script type="text/javascript">
 
-          function validateForm(thisform)
-          {
-             if($('#institute').val()=='')
-              {
-                alert("Please select a Institute.");
-                return false;
-              }
-              if($('#year').val()=='')
-              {
-                alert("Please select a Year.");
-                return false;
-              }
-            thisform.submit();
-          }
+  function validateForm(thisform)
+  {
+	 if($('#institute').val()=='')
+	  {
+		alert("Please select a Institute.");
+		return false;
+	  }
+	  if($('#year').val()=='')
+	  {
+		alert("Please select a Year.");
+		return false;
+	  }
+	thisform.submit();
+  }
 
-        </script>
-       </head>
-<body>
-	<div id="wrapper">
-		<div id="head">
-			<div id="logo_user_details">&nbsp;</div>
-			
-		      <g:if test="${session.ROLE == 'ROLE_SUPERADMIN' || session.ROLE == 'ROLE_UNIVERSITY'}">
-                        <g:menu/>
-                     
-                        </g:if >
-		</div>
+</script>
 		
 
-	<div style="padding:80px 0px 0px 300px;"> <!-- Start of content div -->
-          <g:form action="redirectpage" name="institutes">
+<!-- ##################################  Layout body starts here  ###########################################-->
+	<div id="wrapper">
+		<div id="head">
+			<div class="innnerBanner">
+			<g:isLoggedIn>
+			<div class="loginLink">
+			<span>
+			<font face="verdana" color:#01518e; font-weight:bold; text-decoration: none>			
+			<b>${session.UserId}</b> (<a href="${resource(dir:'/logout')}" class="logout">Logout</a>)
+			</span>
+			</div>
+			</g:isLoggedIn>
+			</div>		    
+		</div>
+		
+		<br /><br />
+	<div id="content"> 	
+<!-- Middle area starts here -->	
+		<g:if test="${session.ROLE == 'ROLE_SUPERADMIN' || session.ROLE == 'ROLE_UNIVERSITY'}">
+		<g:menu/>
+		</g:if >
+		<div style="padding-left:300px;">						
+			<g:form action="redirectpage" name="institutes">
                 <div id="stylized" class="myform">	
 					<br >
 						<table>					  
@@ -78,8 +86,13 @@
 						</table>
 					<br >
 				   </div>	 
-              </g:form>
-        </div> <!-- End of content div -->
-	</div>
+              </g:form> 
+		</div>
+		
+		<div style="clear: both;">&nbsp;</div>
+		<br />
+<!-- Middle area ends here -->		
+  </div> <!-- End of content div -->
+</div>
 <g:footer/>
-</body>
+<!-- ##################################  Layout body ends here  ###########################################-->

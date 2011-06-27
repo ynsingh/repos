@@ -1,6 +1,3 @@
-
-
-
 import org.springframework.security.providers.UsernamePasswordAuthenticationToken as AuthToken
 import org.springframework.security.context.SecurityContextHolder as SCH
 import groovy.sql.Sql;

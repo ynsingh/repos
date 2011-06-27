@@ -2102,6 +2102,7 @@ h3 {
 	line-height:20px;
 }
 .user{background:transparent url(images/icons/user.png) no-repeat left;}
+.settings{background:transparent url(images/icons/settings.png) no-repeat left;}
 .dashboard{background:transparent url(images/icons/dashboard-icon.png) no-repeat left;}
 .useradd{background:transparent url(images/icons/user_add.png) no-repeat left;}
 .group{background:transparent url(images/icons/group.png) no-repeat left;}
@@ -2126,7 +2127,7 @@ h3 {
 .report_seo{background:transparent url(images/icons/report_link.png) no-repeat left;}
 .modules{background:transparent url(images/icons/bricks.png) no-repeat left;}
 .modules_manage{background:transparent url(images/icons/bricks_gear.png) no-repeat left;}
-.help{background:transparent url(images/icons/help.png) no-repeat left;}
+.help{background:transparent url(images/icons/help-icon.png) no-repeat left;}
 .logout{background:transparent url(images/icons/logout.png) no-repeat left;}
 
 

@@ -1,5 +1,0 @@
-class StudentActivityEventsFact {
-
-    static constraints = {
-    }
-}

@@ -26,6 +26,13 @@ class PersonService {
         def instituteInstance = Institute.find("from Institute I where I.id='"+institute+"'")
         return instituteInstance
     }
+	
+	def getUniversityInfo(def university)
+    {
+
+        def universityInstance = University.find("from university U where U.id='"+university+"'")
+        return universityInstance
+    }
 
     def getUserById(def userid)
     {

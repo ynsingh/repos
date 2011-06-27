@@ -1,0 +1,100 @@
+/* CSS file */
+Application
+{
+	background-gradient-colors:	#D5E5ED, #D5E5ED;
+	theme-color:				#D5E5ED;
+	
+	padding-top:				0;
+	padding-bottom:				0;
+	padding-left:				0;
+	padding-right:				0;
+}
+
+
+SuperPanel
+{
+
+	actionAlpha:		 		0.75;
+    border-color: 				#ffffff;
+    border-alpha: 				1;
+    border-thickness-left: 		0;
+    border-thickness-top: 		0;
+    border-thickness-bottom:	9;
+    border-thickness-right: 	0;
+    corner-radius: 				6;
+    highlight-alphas: 			0.1, 0;
+    header-colors: 				#385D7A, #5F91B7;
+    footer-colors: 				#ffffff, #ffffff;
+    dropShadowEnabled: 			true;
+    shadow-distance:			4;
+    
+    title-style-name:			"mypanelTitle";
+    close-button-style-name:	"closeButton";
+    minimize-button-style-name:	"minimizeButton";
+    maximize-button-style-name:	"maximizeButton";
+    
+    inactive-header-colors: 	#385D7A, #5F91B7;
+    inactive-footer-colors: 	#ffffff, #ffffff;
+	inactive-shadow-distance:	1;
+	inactive-title-style-name:	"mypanelInactiveTitle";
+}
+
+.maximizeButton
+{
+	icon: 						Embed(source="/../assets/images/icon_expand_up.png");
+	up-icon: 					Embed(source="/../assets/images/icon_expand_up.png");
+	over-icon: 					Embed(source="/../assets/images/icon_expand_over.png");
+	selected-over-icon: 		Embed(source="/../assets/images/icon_expand_over.png");
+	down-icon: 					Embed(source="/../assets/images/icon_expand_down.png");
+	selected-down-icon: 		Embed(source="/../assets/images/icon_expand_down.png");
+	disabled-skin: 				Embed(source="/../assets/images/clear.png");
+	selected-up-skin: 			Embed(source="/../assets/images/clear.png");
+	selected-over-skin: 		Embed(source="/../assets/images/clear.png");
+	selected-down-skin: 		Embed(source="/../assets/images/clear.png");
+    down-skin: 					Embed(source="/../assets/images/clear.png");
+    over-skin: 					Embed(source="/../assets/images/clear.png");
+    up-skin: 					Embed(source="/../assets/images/clear.png");	
+}
+
+.minimizeButton
+{
+	icon: 						Embed(source="/../assets/images/icon_minimize_up.png");
+	up-icon: 					Embed(source="/../assets/images/icon_minimize_up.png");
+	over-icon: 					Embed(source="/../assets/images/icon_minimize_over.png");
+	selected-over-icon: 		Embed(source="/../assets/images/icon_minimize_over.png");
+	down-icon: 					Embed(source="/../assets/images/icon_minimize_down.png");
+	selected-down-icon: 		Embed(source="/../assets/images/icon_minimize_down.png");
+	disabled-skin: 				Embed(source="/../assets/images/clear.png");
+	selected-up-skin: 			Embed(source="/../assets/images/clear.png");
+	selected-over-skin: 		Embed(source="/../assets/images/clear.png");
+	selected-down-skin: 		Embed(source="/../assets/images/clear.png");
+    down-skin: 					Embed(source="/../assets/images/clear.png");
+    over-skin: 					Embed(source="/../assets/images/clear.png");
+    up-skin: 					Embed(source="/../assets/images/clear.png");
+}
+
+.mypanelTitle
+{
+	font-weight:				bold;
+    color: 						#ffffff;
+}
+
+.mypanelInactiveTitle
+{
+	font-weight:				bold;
+    color: 						#bbbbbb;
+}
+
+.leftBox
+{
+	border-style:				solid;
+	border-sides:				right;
+	border-color:				#666666;
+	background-color:			#000000;
+	background-alpha:			0.6;
+	
+	padding-top:				20;
+	padding-bottom:				20;
+	padding-left:				20;
+	padding-right:				20;
+}

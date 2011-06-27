@@ -1,19 +1,29 @@
-<head>
-	<meta name="layout" content="main" />
-	<title>LMS List</title>
-       </head>
+<meta name="layout" content="main" />
+<g:javascript src="jquery.js"/>
+<g:javascript src="ddaccordion.js"/>
 
-<body>
+<!-- ##################################  Layout body starts here  ###########################################-->
 	<div id="wrapper">
 		<div id="head">
-			<div id="logo_user_details">&nbsp;</div>
-		       <g:menu/>
+			<div class="innnerBanner">
+			<g:isLoggedIn>
+			<div class="loginLink">
+			<span>
+			<font face="verdana" color:#01518e; font-weight:bold; text-decoration: none>			
+			<b>${session.UserId}</b> (<a href="${resource(dir:'/logout')}" class="logout">Logout</a>)
+			</span>
+			</div>
+			</g:isLoggedIn>
+			</div>		    
 		</div>
-
-	<div id="content">
-	<div align="right" style="padding-right:30px;"><strong>DATABASE UPDATED ON : <font color="#B27115">${session.last_update}</font></strong></div>
-                        <g:javascript src="swfobject.js"/>
-                        <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="100%" height="600">
+	<div id="content"> 
+	<div align="right" style="padding-right:30px;height:40px;"><strong>DATABASE UPDATED ON : <font color="#B27115">${session.last_update}</font></strong></div>
+	
+<!-- Middle area starts here -->	
+	    <g:menu/>
+		
+		<div style="float: left; width: 790px; margin-right: 5px;">
+		                       <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="100%" height="600">
                         <param name="movie" value="${resource(dir:'charts',file:'student_dashboard.swf')}" />
                         <param name="quality" value="high" />
                         <param name="bgcolor" value="#ffffff" />
@@ -37,10 +47,12 @@
                         </object>
                         <!--<![endif]-->
                         </object>
-
-       </div> <!-- End of content div -->
-
-
-	</div>
-	 <g:footer/>
-</body>
+		</div>
+		
+		<div style="clear: both;">&nbsp;</div>
+		<br /><br /><br />
+<!-- Middle area ends here -->		
+  </div> <!-- End of content div -->
+</div>
+<g:footer/>
+<!-- ##################################  Layout body ends here  ###########################################-->

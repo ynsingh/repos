@@ -3,19 +3,21 @@
     <Cube name="master">
         <Table name="master"/>
 
-         <Dimension name="Course" foreignKey="course">
+         <Dimension name="Course" foreignKey="course_id">
             <Hierarchy hasAll="true" allMemberName="All Courses" primaryKey="id">
                 <Table name="course_master"/>
-                <Level name="courses" column="course_description" uniqueMembers="true"/>
+                <Level name="courses" column="course_name" uniqueMembers="true"/>
             </Hierarchy>
         </Dimension>
 
-         <Dimension name="User" foreignKey="userid">
-            <Hierarchy hasAll="true" allMemberName="All Users" primaryKey="id">
-                <Table name="person"/>
-                <Level name="users" column="username" uniqueMembers="true"/>                
-            </Hierarchy>
-        </Dimension>
+          <Dimension name="User" foreignKey="user_name">
+				<Hierarchy hasAll="true" allMemberName="All Users" primaryKey="user_name">
+					<Table name="lms_users"/>
+					<Level name="users" column="user_name" uniqueMembers="true"/>                
+				</Hierarchy>
+           </Dimension>	
+		
+		 
         
         <Measure name="Activity Count" column="action" aggregator="count" datatype="String" formatString="#,##0"/>
     </Cube>

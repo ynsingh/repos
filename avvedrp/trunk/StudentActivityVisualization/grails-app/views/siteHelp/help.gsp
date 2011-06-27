@@ -1,10 +1,11 @@
-<head>
-	<meta name="layout" content="main" />
-	<title>LMS List</title>
-	 <style>
+<meta name="layout" content="main" />
+<g:javascript src="jquery.js"/>
+<g:javascript src="ddaccordion.js"/>
+
+ <style>
 
           #jFlowSlide{ background:#FFFEF7; font-family: Georgia; }
-          #myController { font-family: Arial; font-weight: bold; padding:2px 0;  width:900px; background:#E0B225; }
+          #myController { font-family: Arial; font-weight: bold; padding:2px 0;  width:775px; background:#E0B225; }
           #myController span.jFlowSelected { background:#43A0D5;margin-right:0px; }
 
           .slide-wrapper { padding: 5px; }
@@ -19,8 +20,8 @@
 
 
         </style>
-        <script language="javascript" type="text/javascript" src="../jquery-1.3.2.min.js"></script>
-        <script language="javascript" type="text/javascript" src="../jquery.flow.1.2.min.js"></script>
+
+        <script language="javascript" type="text/javascript" src="../js/jquery.flow.1.2.min.js"></script>
         <script type="text/javascript">
         $(document).ready(function(){
                 $("#myController").jFlow({
@@ -29,7 +30,7 @@
                         slideWrapper : "#jFlowSlide", // must be id, use # sign
                         selectedWrapper: "jFlowSelected",  // just pure text, no sign
                         auto: true,		//auto change slide, default true
-                        width: "900px",
+                        width: "775px",
                         height: "400px",
                         duration: 400,
                         prev: ".jFlowPrev", // must be class, use . sign
@@ -37,17 +38,29 @@
                 });
         });
         </script>
-       </head>
-<body>
+
+<!-- ##################################  Layout body starts here  ###########################################-->
 	<div id="wrapper">
 		<div id="head">
-			<div id="logo_user_details">&nbsp;</div>	
-                        <g:menu/>                        
+			<div class="innnerBanner">
+			<g:isLoggedIn>
+			<div class="loginLink">
+			<span>
+			<font face="verdana" color:#01518e; font-weight:bold; text-decoration: none>			
+			<b>${session.UserId}</b> (<a href="${resource(dir:'/logout')}" class="logout">Logout</a>)
+			</span>
+			</div>
+			</g:isLoggedIn>
+			</div>		    
 		</div>
- 
-	<div id="content" style="padding-left:50px;"> <!-- Start of content div -->
-<div style="padding-left: 10px;"><h3>User Guidelines</h3></div>
-					                		<div id="myController">
+		
+		<br /><h4>User Guidelines</h4><br />
+	<div id="content"> 	
+<!-- Middle area starts here -->	
+			<g:menu/>
+		<div style="padding-left:210px;">			
+					
+		       		<div id="myController">
 					<span class="jFlowPrev">Prev</span>
 					<span class="jFlowControl">1</span>
 					<span class="jFlowControl">2</span>
@@ -149,7 +162,7 @@
 		 		<div id="slides">
 		 			<div class="slide-wrapper">
 		 			<p><b>System Process</b><p>
-		 			<img src="../soft2.bmp">n system.</p>
+		 			<img src="${resource(dir:'images/userguide',file:'soft2.bmp')}">n system.</p>
 		 			<div class="clear"></div>
 		 			</div>
 		 		</div>
@@ -164,7 +177,7 @@
 		 		<div id="slides">
 		 			<div class="slide-wrapper">
 		 			<h2>Kettle Transformation of System Database to .xml file</h2>
-		 						  <img src="../soft3.bmp">
+		 						  <img src="${resource(dir:'images/userguide',file:'soft3.bmp')}">
 		 			<div class="clear"></div>
 		 			</div>
 		 	</div>
@@ -177,7 +190,7 @@
 		 		<div id="slides">
 		 			<div class="slide-wrapper">
 		 			<h2>Kettle Transformation From .xml file to system databse</h2>
-		 			<img src="../soft4.bmp">
+		 			<img src="${resource(dir:'images/userguide',file:'soft4.bmp')}">
 		 			<div class="clear"></div>
 		 			</div>
 		 		</div>
@@ -190,10 +203,13 @@
 	</div>
 
 	</div>
-
-         </div> <!-- End of content div -->
-
-
-	</div>
+    
+		</div>
+		
+		<div style="clear: both;">&nbsp;</div>
+		<br />		<br />		<br />
+<!-- Middle area ends here -->		
+  </div> <!-- End of content div -->
+</div>
 <g:footer/>
-</body>
+<!-- ##################################  Layout body ends here  ###########################################-->

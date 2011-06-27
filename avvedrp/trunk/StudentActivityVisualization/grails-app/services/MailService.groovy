@@ -13,7 +13,7 @@ class MailService {
             public boolean sendMessage(def emailId,def mailMessage)
             {
                 def mailServerStatus = true
-                def mailSubject="New Registration at Visualization"
+                def mailSubject="New Registration at DIVE"
                 def mailContent="Test Content"
                 String host = "192.168.36.10";
                 String username = "" // your authsmtp username

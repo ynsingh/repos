@@ -2,7 +2,7 @@ dataSource {
 	pooled = true
 	driverClassName = "com.mysql.jdbc.Driver"
 	username = "root"
-	password = "devima"
+	password = "root"
 }
 hibernate {
     cache.use_second_level_cache=false
@@ -14,7 +14,7 @@ environments {
 	development {
 		dataSource {
 			dbCreate = "update" // one of 'create', 'create-drop','update'
-				url = "jdbc:mysql://192.168.18.95/studviz"
+				url = "jdbc:mysql://localhost:3306/dive"
 		}
 	}
 	test {

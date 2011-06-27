@@ -1,0 +1,1 @@
+For copying binary files, Please read Guidelines.pdf which is inside TO_copy folder

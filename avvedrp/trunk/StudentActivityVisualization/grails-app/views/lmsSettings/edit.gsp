@@ -1,10 +1,11 @@
-<head>
-	<meta name="layout" content="main" />
-	<title>LMS List</title>
-	<style>
+<meta name="layout" content="main" />
+<g:javascript src="jquery.js"/>
+<g:javascript src="ddaccordion.js"/>
+<style>
 .myform{
 margin:0 auto;
 width:375px;
+height:260px;
 float:left;
 margin:20px;
 padding-left:10px;
@@ -62,8 +63,8 @@ margin:2px 0 5px 10px;
 	font-weight: bold;	
 	width: 94px;
 	color: white;
-	background: transparent url(../bt_register.png) no-repeat 0 0;
-	background:url(../bt_register.png) repeat-x left top;
+	background: transparent url(../images/links/bt_register.png) no-repeat 0 0;
+	background:url(../images/links/bt_register.png) repeat-x left top;
 	}	
 .mandatory
 {
@@ -76,8 +77,7 @@ margin:2px 0 5px 10px;
 		   padding:0px 0px 8px; 0px;
 	       font-size:12px;color:green}	
 </style>
-        <g:javascript src="jquery.js"/>
-		<g:javascript src="blockui.js"/>				
+<g:javascript src="blockui.js"/>				
 		<script>	
 		   $(document).ready(function() {
 			  var dflt_id=$('#lms').val();
@@ -141,26 +141,34 @@ margin:2px 0 5px 10px;
 		      window.location.href='transform?lms_id='+lmsid;
 		      return false;
 		  }
-
-			 </script>
-       </head>
-
-<body>
+ </script>
+<!-- ##################################  Layout body starts here  ###########################################-->
 	<div id="wrapper">
 		<div id="head">
-			<div id="logo_user_details">&nbsp;</div>
-		       <g:menu/>
+			<div class="innnerBanner">
+			<g:isLoggedIn>
+			<div class="loginLink">
+			<span>
+			<font face="verdana" color:#01518e; font-weight:bold; text-decoration: none>			
+			<b>${session.UserId}</b> (<a href="${resource(dir:'/logout')}" class="logout">Logout</a>)
+			</span>
+			</div>
+			</g:isLoggedIn>
+			</div>		    
 		</div>
-	<div id="content" align="center">	
-	  <g:if test="${flash.message}">
-	<div align="center" class="alert"><strong>${flash.message}</strong></div>
-	</g:if>
-	<br />
-	<strong>LMS</strong> &nbsp;<g:select keys="${lmsList.lmsId}"  from="${lmsList.lmsName}" onchange="getLmsInfo(this.value)" name="lms"  id="lms" style="width:150px;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label id="loader" style="display:none;"><image src='../ajax-loader.gif'></label>
-
-	           <div style="padding-left:300px;">
-                  
-							<div id="stylized" class="myform">
+		<br />
+		<g:if test="${flash.message}">
+		<div align="center" class="alert"><strong>${flash.message}</strong></div>
+		</g:if>
+		<br />
+		<strong>LMS</strong> &nbsp;<g:select keys="${lmsList.lmsId}"  from="${lmsList.lmsName}" onchange="getLmsInfo(this.value)" name="lms"  id="lms" style="width:150px;"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label id="loader" style="display:none;"><image src='../ajax-loader.gif'></label>		
+		<br />
+	<div id="content"> 
+<!-- Middle area starts here -->	
+	    <g:menu/>
+		 
+		<div style="float: left; width: 790px;margin-right: 15px;">
+		                    <div id="stylized" class="myform">
 							   <g:form action="update" name="settings" id="settings">
 									<h1 id="title"></h1>
 									<p>&nbsp;</p>
@@ -189,11 +197,13 @@ margin:2px 0 5px 10px;
 									onclick="return Redirect(document.settings);">Transform</button>
 									</div>					
 								</g:form>
-						 </div>		
-				</div>	    
-       </div> <!-- End of content div -->
-	    <br /><br />
-
+						 </div>	
+		</div>
+		
+		<div style="clear: both;">&nbsp;</div>
+		<br />
+<!-- Middle area ends here -->		
+  </div> <!-- End of content div -->
 </div>
-	 <g:footer/>
-</body>
+<g:footer/>
+<!-- ##################################  Layout body ends here  ###########################################-->

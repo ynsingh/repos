@@ -1,6 +1,3 @@
-
-
-
 /**
  * Authority Controller.
  */

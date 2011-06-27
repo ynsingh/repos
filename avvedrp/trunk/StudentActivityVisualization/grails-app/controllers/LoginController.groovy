@@ -7,6 +7,9 @@ import org.springframework.security.ui.AbstractProcessingFilter
 import org.springframework.security.ui.webapp.AuthenticationProcessingFilter
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsHttpSession
 import grails.util.Environment
+
+import groovy.sql.Sql
+
 /**
  * Login Controller (Example).
  */
@@ -16,6 +19,7 @@ class LoginController {
 	 * Dependency injection for the authentication service.
 	 */
 	def authenticateService
+	def dataSource    
 
 	/**
 	 * Dependency injections for OpenIDConsumer and OpenIDAuthenticationProcessingFilter.
@@ -31,71 +35,75 @@ class LoginController {
 	 */
 	def index = {
 		if (authenticateService.isLoggedIn()) {
-		 def ROLE
-		  
+		         
+				    			
+		             def ROLE		
+					 def sql=new Sql(dataSource);		  
 					 GrailsHttpSession gh=getSession()
-					 gh.putValue("env",grails.util.Environment.getCurrent())
-
-                                           if(authenticateService.ifAllGranted('ROLE_SUPERADMIN'))
-					{
-						ROLE="ROLE_SUPERADMIN"
-						gh.putValue("ROLE", ROLE);
-						redirect action: 'admindashboard', controller:'dashboard'
+					 gh.putValue("env",grails.util.Environment.getCurrent())  
+					  
+					  //getting the last transformation update time
+					 def update = sql.firstRow("select id,date as LAST_UPDATE from last_update  order by id desc limit 0,1");
+			         def last_updated=update.LAST_UPDATE;  
+				     gh.putValue("last_update",last_updated)  
+					 
+					 					                          
+                    if(authenticateService.ifAllGranted('ROLE_SUPERADMIN'))
+					{						
+						 ROLE="ROLE_SUPERADMIN"
+						 gh.putValue("ROLE", ROLE);
+						 redirect action: 'admindashboard', controller:'dashboard'
 					}
+					
+					 if(authenticateService.ifAllGranted('ROLE_UNIVERSITY'))
+					{						
+						 ROLE="ROLE_UNIVERSITY"
+						 gh.putValue("ROLE", ROLE);						
+						 redirect action: 'admindashboard', controller:'dashboard'
+					}
+					
+					 if(authenticateService.ifAllGranted('ROLE_INSTITUTE'))
+					{						 
+						 ROLE="ROLE_INSTITUTE"
+						 gh.putValue("ROLE", ROLE);
+						 redirect action: 'institutedashboard', controller:'dashboard'
+					}
+					
+					/*
+					 if (authenticateService.ifAllGranted('ROLE_ADMIN')) 
+					 {
+					       ROLE="ROLE_ADMIN"
+			        	   gh.putValue("ROLE", ROLE);   
+                           redirect action: 'admindashboard', controller:'dashboard'
+			          }
+					  */
+                           
 
-                                         if (authenticateService.ifAllGranted('ROLE_STAFF'))
-                                         {
-                                                   ROLE="ROLE_STAFF"
-                                                   gh.putValue("ROLE", ROLE);
-                                                   redirect action: 'staffdashboard', controller:'dashboard'
-                                         }
-
-					 if (authenticateService.ifAllGranted('ROLE_ADMIN')) {
-					        ROLE="ROLE_ADMIN"
-			        	 	gh.putValue("ROLE", ROLE);
-                                                println("entered")
-			        	       // redirect action: 'listSiteForLoginUser', controller:'courseActivity'
-                                               redirect action: 'admindashboard', controller:'dashboard'
-                                               //render '<login><loginsuccess>yes</loginsuccess><controller>dashboard</controller><action>admindashboard</action></login>'
-			                 }
-
-                                         /*
-					 if (authenticateService.ifAllGranted('ROLE_STAFF')) {
-						 ROLE="ROLE_STAFF"
-			        	 	
-			        	 	gh.putValue("ROLE", ROLE);
-			        	 redirect action: 'listSiteForLoginUser', controller:'courseActivity'
-			                    } */
+					 if (authenticateService.ifAllGranted('ROLE_STAFF'))
+					 {						
+						  ROLE="ROLE_STAFF"
+						  gh.putValue("ROLE", ROLE);
+						  redirect action: 'staffdashboard', controller:'dashboard'
+					 }
+					         
 					 
 					 if (authenticateService.ifAllGranted('ROLE_STUDENT')) {
-						 ROLE="ROLE_STUDENT"
-			        	 
+						 // println("entered5");
+						 ROLE="ROLE_STUDENT"			        	 
 			        	 gh.putValue("ROLE", ROLE);
 			        	 redirect action: 'studentdashboard', controller:'dashboard'
 			         }
-                                      /*
-					if(authenticateService.ifAllGranted('ROLE_SUPERADMIN'))
-					{
-						ROLE="ROLE_ADMIN"
-						gh.putValue("ROLE", ROLE);
-						redirect action: 'listLMS', controller:'courseActivity'
-                                                println "enetered"
-					}
-                                        */
-
-					
+                   
 					
 					 def userDetails = authenticateService.userDomain()
+					 gh.putValue("currUserId", userDetails.getId());               
 					 gh.putValue("UserId", userDetails.getUsername());                                      
-                                         def user_name=userDetails.getUsername().split("@");                                      
-                                         gh.putValue("currUsername", user_name[0]);
-					    
-		    	
-	        			
-		        	 		        	 	
+                     def user_name=userDetails.getUsername().split("@");                                      
+                     gh.putValue("currUsername", user_name[0]);		    	   
 					
 				 }
 			else {
+			   // println("enterde6");
 				redirect action: auth, params: params
 	}
 	}
@@ -106,7 +114,21 @@ class LoginController {
 	def auth = {
 
 		nocache response
-
+        //Setting language
+		GrailsHttpSession gh=getSession()
+		if(params.lang!=null)
+		{
+		 println  "params:"+params.lang
+		 gh.putValue("lang",params.lang) 
+		}
+		else
+		{
+		 if(gh.getValue("lang")==null)
+		 {
+			 gh.putValue("lang","en")
+		 }
+		}
+		
 		def config = authenticateService.securityConfig.security
 
 		if (authenticateService.isLoggedIn()) {
@@ -212,10 +234,12 @@ class LoginController {
 			if (exception instanceof DisabledException) {
 				//msg = "[$username] is disabled."
                                 msg = "Username is disabled."
+								flash.message = msg
 			}
 			else {
 				// msg = "[$username] wrong username/password."
                                 msg = "Invalid username/password."
+								flash.message = msg
 			}
 		}
 
