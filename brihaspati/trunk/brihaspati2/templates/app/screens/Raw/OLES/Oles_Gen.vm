@@ -84,7 +84,8 @@ $!data.getMessage()
 	
 #if($mode == "QuizDetail")
 	#foreach ($Quiz in $allQuiz)
-		<tr bgcolor="$ui.menuColor">	
+		##<tr bgcolor="$ui.menuColor">
+		<tr>	
 			<td><b> $brih_quiz #if($lang =="hindi") $brih_Of1 #end $brih_ID</b></td>
 			<td><input type="text" name="quizID" value="$!qid" readonly></td>
 		</tr>	
@@ -110,7 +111,8 @@ $!data.getMessage()
 	        </tr>   
 	#end
 #else
-	<tr bgcolor="$ui.menuColor">
+	##<tr bgcolor="$ui.menuColor">
+	<tr>
 		<td><b> $brih_quiz #if($lang =="hindi") $brih_Of1 #end $brih_ID <font color=RED> *</font></b> </td>
 		<td> <input type="text" name="quizID" value="$!qid" "readonly"></td>
 	</tr>
@@ -142,7 +144,8 @@ $!data.getMessage()
 	<td align="left" width="100%" colspan="5">
 		#if($mode == "QuizDetail")
 			<input type=button name="eventSubmit_doUpdate" value="$brih_update" onClick="checkField(document.frm,this);"/>
-			<input type="hidden" name="mode" value=$mode >					
+			<input type="hidden" name="mode" value=$mode >
+			<input type="hidden" name="quizMode" value=$quizMode >					
 		#else
 			<input type="button" name="eventSubmit_doUploadQuiz" value="$brih_submit" onClick="checkField(document.frm,this);"/>
 		#end		

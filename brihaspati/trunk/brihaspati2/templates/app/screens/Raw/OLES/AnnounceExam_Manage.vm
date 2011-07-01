@@ -62,7 +62,13 @@ $!data.getMessage()
 		#elseif($tdcolor == "5")
 		        <td bgcolor="#AFDCEC">
 		#end
-		<b><I><a href=$link.setPage("call,OLES,Oles_Other.vm").addPathInfo("count","5") style=text-decoration:none>$brih_result</I></b></a></td>
+		<b><I><a href=$link.setPage("call,OLES,Evaluate.vm").addPathInfo("count","5").addPathInfo("type","result") style=text-decoration:none>$brih_result</I></b></a></td>
+		#if($tdcolor != "6")
+			<td>
+        #elseif($tdcolor == "6")
+           	<td bgcolor="#AFDCEC">
+       	#end
+        <b><I><a href=$link.setPage("call,OLES,OLES_ReEvaluation.vm").addPathInfo("count","6") style=text-decoration:none>$brih_reevaluation</I></b></a></td>
 	</tr>
 </table>
 

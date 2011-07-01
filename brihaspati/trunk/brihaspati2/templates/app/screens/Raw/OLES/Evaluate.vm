@@ -8,6 +8,10 @@
 
 $page.setTitle("quiz Evaluation")
 $page.setBgColor("bgcolor")
+## If some message has been set, that is retrieved and displayed.
+<font face="$ui.sansSerifFonts">
+	$!data.getMessage()
+</font>
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 #set($cnm = $data.getUser().getTemp("course_name" ).toString())
 <table bgcolor="$ui.menuColor" width=100%>
@@ -18,22 +22,16 @@ $page.setBgColor("bgcolor")
                 <a href=$link.setPage("call,OLES,Oles_QB.vm").addPathInfo("count","1")>OnLine Examination System</a>|
                 #if($!type == "result")
                 	Result
-                	#else
-		Evaluate
-		#end
-                </b>
+                #else
+					Evaluate
+				#end
+        </b>
         </td>
         </tr>
 </table>
 ## Creating the links for help regarding FAQ 
 <table width="100%">
 	<tr>
-		<td align=left>
-			## If some message has been set, that is retrieved and displayed.
-			<font face="$ui.sansSerifFonts">
-				$!data.getMessage()
-			</font>
-		</td>
 		<td align=right>
 			<img src="$content.getURI("/images/hand.gif")"><a href=javascript:popupWin("/brihaspati2/docs/Quizstudent.html","newWin");>Help</a>
 		</td>
@@ -76,12 +74,16 @@ $page.setBgColor("bgcolor")
 		        <td bgcolor="#AFDCEC">
 		#end
 		<b><I><a href=$link.setPage("call,OLES,Evaluate.vm").addPathInfo("count","5").addPathInfo("type","result") style=text-decoration:none>$brih_result</I></b></a></td>
+		#if($tdcolor != "6")
+			<td>
+        #elseif($tdcolor == "6")
+           	<td bgcolor="#AFDCEC">
+       	#end
+        <b><I><a href=$link.setPage("call,OLES,OLES_ReEvaluation.vm").addPathInfo("count","6") style=text-decoration:none>$brih_reevaluation</I></b></a></td>
 	</tr>
 </table>	
-
-	
 <table width="100%" >
-	<tr><td>&nbsp;</td></tr>
+	##<tr><td>&nbsp;</td></tr>
 	<tr bgcolor="$ui.menuColor" >
 		<td >
 	        <b>$brih_usr $brih_name </b>
@@ -91,7 +93,7 @@ $page.setBgColor("bgcolor")
     		<option value="1" >Select Student</option>
 			#foreach($topic in $userList2)
 				#if($!topic.getLoginName()==$!studentLoginName)
-					<option value="$!topic.getLoginName()" selected>$!topic.getLoginName()</option>
+					<option value="$!topic.getLoginName()">$!topic.getLoginName()</option>
 				#else
 					<option value="$!topic.getLoginName()">$!topic.getLoginName()</option>
 				#end              			
@@ -108,7 +110,7 @@ $page.setBgColor("bgcolor")
 			<option value="1">Select Quiz</option>			
 				#foreach($topic in $quizList)
 					#if($!topic.getQuizID()==$!quizID)
-						<option value="$!topic.getQuizID()" selected>$!topic.getQuizName()</option>
+						<option value="$!topic.getQuizID()">$!topic.getQuizName()</option>
 					#else
 						<option value="$!topic.getQuizID()">$!topic.getQuizName()</option>
 					#end               		 		
@@ -116,6 +118,7 @@ $page.setBgColor("bgcolor")
     		</SELECT>
 		</td>
 	</tr>
+	
 	<tr bgcolor="$ui.menuColor" >
 		<td colspan="2">
 		#if($type=="result")
@@ -197,7 +200,7 @@ $page.setBgColor("bgcolor")
 
  function checkField(frm,field){
 	quizid = frm.quizlist.options[frm.quizlist.selectedIndex].value;
-	userid = frm.userList.options[frm.userList.selectedIndex].value;
+	userid = frm.userList.options[frm.userList.selectedIndex].value;	
 	if(userid==1){
 		alert("kindly select the Student Name")		
 		frm.userList.focus();
@@ -216,11 +219,6 @@ $page.setBgColor("bgcolor")
 			frm.actionName.value=field.name;
 	       	frm.submit();
 		}
-	}
-	function checkType(frm,field){
-		quizid=frm.quizlist.option[frm.quizlist.selectedIndex]
-		alert(quizid)
-		frm.submit();
 	}
 }
 </SCRIPT>

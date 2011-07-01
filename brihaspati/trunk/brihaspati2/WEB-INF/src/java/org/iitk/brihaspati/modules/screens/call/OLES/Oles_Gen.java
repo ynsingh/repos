@@ -49,7 +49,7 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlWriter;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
-
+import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 /**
  * This class manage Quiz Generation process 
  * @author <a href="mailto:noopur.here@gmail.com">Nupur Dixit</a>
@@ -63,6 +63,7 @@ public class Oles_Gen extends SecureScreen{
 	        *for template use
 	        */
 	        ParameterParser pp=data.getParameters();
+		String lang=data.getUser().getTemp("LangFile").toString();
 		try{			
 			User user=data.getUser();			
 			String uname=user.getName();
@@ -80,7 +81,7 @@ public class Oles_Gen extends SecureScreen{
 			
 			context.put("tdcolor",pp.getString("count",""));
 			context.put("course",(String)user.getTemp("course_name"));						
-			context.put("mode",mode);			
+			context.put("mode",mode);
 			context.put("quizName",quizName);			
 			context.put("quizID",quizID);			
 			context.put("maxMarks",maxMarks);			
@@ -138,7 +139,7 @@ public class Oles_Gen extends SecureScreen{
 		}
 		catch(Exception ex){
 			ErrorDumpUtil.ErrorLog("The exception in Oles_Gen screen::"+ex);
-	    	data.setMessage("See ExceptionLog !! ");
+	    		data.setMessage(MultilingualUtil.ConvertedString("brih_exception"+ex,lang));
 		}
 	}
 }

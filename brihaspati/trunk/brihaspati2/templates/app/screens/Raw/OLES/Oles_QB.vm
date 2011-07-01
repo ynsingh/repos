@@ -78,14 +78,20 @@ $!data.getMessage()
             	<td bgcolor="#AFDCEC">
             #end
 			<b><I><a href=$link.setPage("call,OLES,Evaluate.vm").addPathInfo("count","5").addPathInfo("type","result") style=text-decoration:none>$brih_result</I></b></a></td>
+			#if($tdcolor != "6")
+				<td>
+			 #elseif($tdcolor == "6")
+            	<td bgcolor="#AFDCEC">
+            #end
+           	<b><I><a href=$link.setPage("call,OLES,OLES_ReEvaluation.vm").addPathInfo("count","6") style=text-decoration:none>$brih_reevaluation</I></b></a></td>
 		</tr>
-		<tr bgcolor="$ui.menuColor"><td colspan="5">
+		<tr bgcolor="$ui.menuColor"><td colspan="6">
 		<b><a href="$link.setPage("call,OLES,Create_QB.vm").addPathInfo("mode","cnqb").addPathInfo("count","1")" style=text-decoration:none>$WikiCreate $brih_new $brih_queBank</a></b>
 		</td></tr>
 		#if( $total_size!=0 )
-			<tr bgcolor="$ui.menuColor" width="100%"><td align="left" width="100%" colspan="5"><b><i><font size="3">$brih_queBank $brih_topics</font><b></i></td></tr>
+			<tr bgcolor="$ui.menuColor" width="100%"><td align="left" width="100%" colspan="6"><b><i><font size="3">$brih_queBank $brih_topics</font><b></i></td></tr>
 		#else
-			<tr bgcolor="$ui.menuColor" width="100%"><td align="left" width="100%" colspan="5"> $brih_question $brih_arenotexists $brih_in $brih_queBank </td></tr>
+			<tr bgcolor="$ui.menuColor" width="100%"><td align="left" width="100%" colspan="6"> $brih_question $brih_arenotexists $brih_in $brih_queBank </td></tr>
 		#end
 </table>
 <table width="100%" bgcolor="$ui.tableColor">

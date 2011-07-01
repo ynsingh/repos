@@ -50,7 +50,7 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.QuizFileEntry;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
-
+import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 /**
 * This class displays the list of quizzes to announce/update that quiz
 * @author <a href="mailto:aayushi.sr@gmail.com">Aayushi Sr</a>
@@ -58,6 +58,7 @@ import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
 
 public class AnnounceExam_Manage extends SecureScreen{
 	public void doBuildTemplate(RunData data,Context context){
+	String LangFile=data.getUser().getTemp("LangFile").toString();
 	/**
         *Retrieve the Parameters by using the Parameter Parser
         *Get the UserName and put it in the context
@@ -73,9 +74,8 @@ public class AnnounceExam_Manage extends SecureScreen{
         	context.put("tdcolor","3");
         	context.put("course",(String)user.getTemp("course_name"));
         	String courseid=(String)user.getTemp("course_id");        	
-        	
         	String filePath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/");
-            String quizPath="/Quiz.xml";
+	        String quizPath="Quiz.xml";
             
             File file=new File(filePath+"/"+quizPath);
 			Vector quizList=new Vector();
@@ -85,7 +85,7 @@ public class AnnounceExam_Manage extends SecureScreen{
 				context.put("isFile","exist");
 				ErrorDumpUtil.ErrorLog("inside file exist:");
 				quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);				
-				quizList=quizmetadata.listActiveAndCurrentlyNotRunningQuiz(uname);
+				quizList=quizmetadata.listActiveAndCurrentlyNotRunningQuiz(filePath+"/"+quizPath,uname);
 				ErrorDumpUtil.ErrorLog("after active n currently not running quizzes:"+quizList);
 				if(quizList!=null && quizList.size()!=0){
 					for(int i=0;i<quizList.size();i++){
@@ -111,7 +111,7 @@ public class AnnounceExam_Manage extends SecureScreen{
 				context.put("isFile","");
         }catch(Exception e) {
         	ErrorDumpUtil.ErrorLog("The exception in AnnounceExam_Manage screen::"+e);
-        	data.setMessage("See ExceptionLog !! ");
+        	data.setMessage(MultilingualUtil.ConvertedString("brih_exception"+e,LangFile));	
         }
     }
 }

@@ -15,7 +15,6 @@ $page.setBgColor("bgcolor")
 $!data.getMessage()
 ## Retreiving the $lang (representing the choosen language for display, which was set in corresponding the screen class.
 #set($lang = $data.getUser().getTemp("lang" ).toString())
-
 <table bgcolor="$ui.menuColor" width=100%>
 	<tr><td><b>
 		<font face="$ui.sansSerifFonts">
@@ -67,13 +66,13 @@ $!data.getMessage()
         	#elseif($tdcolor == "1")
 			<td bgcolor="#AFDCEC">
 		#end
-		<b><I><a href=$link.setPage("call,OLES,OneByOne_Quiz.vm").addPathInfo("mode","one").addPathInfo("count","1").addPathInfo("type",$type).addPathInfo("quizName",$quizName) style=text-decoration:none>$brih_onebyone</I></b></a></td>
+			<b><I><a href=$link.setPage("call,OLES,OneByOne_Quiz.vm").addPathInfo("mode","one").addPathInfo("count","1").addPathInfo("type",$type).addPathInfo("quizName",$quizName) style=text-decoration:none >$brih_onebyone</I></b></a></td>
 		#if($tdcolor != "2")
              		<td>
         	#elseif($tdcolor == "2")
 			<td bgcolor="#AFDCEC">
 		#end
-		<b><I><a href=$link.setPage("call,OLES,Random_Quiz.vm").addPathInfo("mode","random").addPathInfo("count","2").addPathInfo("type",$type).addPathInfo("quizName",$quizName) style=text-decoration:none>$brih_randomly</I></b></a></td>		
+		<b><I><a href=$link.setPage("call,OLES,Random_Quiz.vm").addPathInfo("mode","random").addPathInfo("count","2").addPathInfo("type",$type).addPathInfo("quizName",$quizName) id="random" style=text-decoration:none>$brih_randomly</I></b></a></td>		
 		</tr>	
 		<tr bgcolor="$ui.menuColor" width="100%">
 			<td align="left" width="100%" colspan="5"><b><i><font size="3"> $brih_randomly $brih_quiz $brih_generation </font><b></i></td>
@@ -82,6 +81,10 @@ $!data.getMessage()
 		#if($mode == "update")
 			<tr bgcolor="$ui.menuColor" width="100%">
 				<td align="left" width="100%" colspan="5"><b><i><font size="3">$brih_qus $brih_updation $brih_in $brih_random $brih_mode </font><b></i></td>
+			</tr>
+		#elseif($mode == "random")
+			<tr bgcolor="$ui.menuColor" width="100%">
+				<td align="left" width="100%" colspan="5"><b><i><font size="3"> $brih_randomly $brih_quiz $brih_generation </font><b></i></td>
 			</tr>
 		#else
 			<tr bgcolor="$ui.menuColor" width="100%">
@@ -195,10 +198,10 @@ $!data.getMessage()
 <input type="hidden" name="actionName" value="">
 <input type="hidden" name="quizMode" value="$quizMode">
 <input type="hidden" name="page" value="">
-<input type="hidden" name="quizDetail" value="$quizID,$maxMarks,$noQuestions">
+<input type="hidden" name="quizDetail" value="$quizID,$maxMarks,$noQuestions,$allowPractice">
 </form>
 <script LANGUAGE="JAVASCRIPT">
-	
+	var flag=false;
 	function popupWin(url,popupName){
     		Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=200,width=300,align=center");
    	}
@@ -215,6 +218,24 @@ $!data.getMessage()
                                 	frm.marksQuestion.focus();                                
                         	}
 				else{
+					if(field.value=="Save & Add More"){
+							if(frm.quizMode.value!="random" ){
+								if(frm.mode.value!="random")
+										flag=true;
+										frm.quizMode.value="random";
+										frm.mode.value="random";
+								}
+							}
+							else{
+								if(frm.mode.value!=""){
+									flag=false;
+								}
+							}
+							if(flag){
+								frm.quizMode.value="random";
+								frm.mode.value="random";
+							}
+					}
 					frm.actionName.value=field.name;			
 					frm.topicName.value=frm.topicList.options[frm.topicList.selectedIndex].value;
 					frm.typeName.value=frm.typeList.options[frm.typeList.selectedIndex].value;
@@ -224,10 +245,11 @@ $!data.getMessage()
 					}
         				frm.submit();
 				}
-			}			
+				
         	}
         	else
-            		alert("Please fill the Mandatory(*) Fields !!");            
+            		alert("Please fill the Mandatory(*) Fields !!");
+                     
 	}
 
 	function isNumberString(chString){
@@ -241,5 +263,6 @@ $!data.getMessage()
                         }
                 }
                 return false;
-        }        
+        }   
+            
 </script>

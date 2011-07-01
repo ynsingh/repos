@@ -39,6 +39,9 @@ package org.iitk.brihaspati.modules.utils;
 import java.io.File;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -129,6 +132,44 @@ public class QuizMetaDataXmlReader{
 	 */
 	public String getMaxQuizID(){
 		String maxQuizID = "Quiz1";
+//		Vector vt=new Vector();
+		try {
+//			XmlData files[]=xr.getElements("Quiz");
+//			int max = 0;
+//			if(files!=null) {
+//				Attributes ats;
+//				String quizID, quizName,maxMarks,maxTime,noQuestion,creationDate,fileName, status;
+//				ErrorDumpUtil.ErrorLog("file length :"+files.length);
+//				for(int j=0;j<files.length;j++) {
+//					QuizFileEntry fileEntry=new QuizFileEntry();
+//					ats=files[j].getAttributes();
+//					quizID = ats.getValue("QuizID"); 
+//					String arr[] = quizID.split("_");
+//					ErrorDumpUtil.ErrorLog("arr at 0 :"+arr[0]);
+//					String subPart = arr[0].substring(4,arr[0].length());
+//					int num=Integer.parseInt(subPart);
+////					int num=Integer.parseInt(quizID.substring(4,5));
+//					ErrorDumpUtil.ErrorLog("num is :"+num);
+//					if(num>max){
+//						max = num;
+//					}        			
+//				}
+		int num = getMissingQuizID();
+		ErrorDumpUtil.ErrorLog("quiz id is :"+num);
+				maxQuizID = "Quiz"+(num);
+				ErrorDumpUtil.ErrorLog("final quiz id is :"+maxQuizID);
+//				return maxQuizID;
+//			}
+			return maxQuizID;
+		}catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Util[QuizMetaDataXmlReader] method:getMaxQuizID !! "+e);			
+		}
+		return maxQuizID;
+	}
+            
+	
+	public String getMaxQuizIDNupur(){
+		String maxQuizID = "Quiz1";
 		Vector vt=new Vector();
 		try {
 			XmlData files[]=xr.getElements("Quiz");
@@ -142,10 +183,11 @@ public class QuizMetaDataXmlReader{
 					ats=files[j].getAttributes();
 					quizID = ats.getValue("QuizID"); 
 					String arr[] = quizID.split("_");
-					ErrorDumpUtil.ErrorLog("arr at 0 :"+arr[0]);
+					ErrorDumpUtil.ErrorLog("arr at "+j+" : "+arr[0]);
 					String subPart = arr[0].substring(4,arr[0].length());
 					int num=Integer.parseInt(subPart);
 //					int num=Integer.parseInt(quizID.substring(4,5));
+
 					ErrorDumpUtil.ErrorLog("num is :"+num);
 					if(num>max){
 						max = num;
@@ -402,7 +444,7 @@ public class QuizMetaDataXmlReader{
             {
                 Attributes ats;
                 String quizID, quizName,maxMarks,maxTime,noQuestion,creationDate,quizFileName, quizStatus,quizMode,modifiedDate;
-                String startDate, startTime, endDate, endTime, allowPractice;
+                String startDate, startTime, endDate, endTime, allowPractice,resultDate;
                 for(int j=0;j<files.length;j++)
                 {
                     QuizFileEntry fileEntry=new QuizFileEntry();
@@ -422,6 +464,8 @@ public class QuizMetaDataXmlReader{
                     endDate = ats.getValue("ExpiryDate");
                     endTime = ats.getValue("EndTime");
                     allowPractice = ats.getValue("AllowPractice");
+                    resultDate = ats.getValue("ResultDate");
+                    ErrorDumpUtil.ErrorLog("in reader"+resultDate);
                     if(quizID.equalsIgnoreCase(quizid)){
                         fileEntry.setQuizID(quizID);
                         fileEntry.setQuizName(quizName);
@@ -438,6 +482,7 @@ public class QuizMetaDataXmlReader{
                         fileEntry.setExpiryDate(endDate);
                         fileEntry.setEndTime(endTime);
                         fileEntry.setAllowPractice(allowPractice);
+                        fileEntry.setResDate(resultDate);
                         vt.add(fileEntry);                       
                     }                                       
                 }
@@ -857,6 +902,7 @@ public class QuizMetaDataXmlReader{
 			if(files!=null){
 				Attributes ats;
 				String quizID, userID,score,usedTime;
+				String evaluate="";
 				for(int j=0;j<files.length;j++){
 					QuizFileEntry fileEntry=new QuizFileEntry();
 					ats=files[j].getAttributes();
@@ -864,10 +910,12 @@ public class QuizMetaDataXmlReader{
 					userID = ats.getValue("UserID");
 					score = ats.getValue("TotalScore");
 					usedTime = ats.getValue("UsedTime");
+					evaluate = ats.getValue("evaluate");
 					fileEntry.setQuizID(quizID);
 					fileEntry.setUserID(userID);
 					fileEntry.setScore(score);
 					fileEntry.setUsedTime(usedTime);
+					fileEntry.setEvaluate(evaluate);
 					vt.add(fileEntry);					   
 				}
 				return vt;
@@ -986,7 +1034,7 @@ public class QuizMetaDataXmlReader{
 			XmlData files[]=xr.getElements("QuizQuestions");
 			if(files!=null){
 				Attributes ats;
-				String quizid,userid,score,usedTime;				
+				String quizid,userid,score,usedTime,evaluate;				
 				for(int j=0;j<files.length;j++){
 					QuizFileEntry fileEntry=new QuizFileEntry();
 					ats=files[j].getAttributes();
@@ -994,17 +1042,60 @@ public class QuizMetaDataXmlReader{
 					userid=ats.getValue("UserID");					
 					score = ats.getValue("TotalScore");
 					usedTime = ats.getValue("UsedTime");
+					evaluate=ats.getValue("evaluate");
 					if(userid.equals(userID)){
 						fileEntry.setQuizID(quizid);										
 						fileEntry.setUserID(userid);
 						fileEntry.setScore(score);	
-						fileEntry.setUsedTime(usedTime);	
+						fileEntry.setUsedTime(usedTime);
+						fileEntry.setEvaluate(evaluate);
 						vt.add(fileEntry);
 					}					
 				}				
 				return vt;
 			}
 		}catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Util[QuizMetaDataXmlReader] method:getFinalscore !! "+e);
+		}
+		return null;
+	}
+	
+	/**
+	 * This method gets all quizID,userID,score,usedTime and evaluate from score.xml file
+	 * @return Vector
+	 * @author Devendra Singhal
+	 */
+	
+	public Vector getFinalScore(){
+		Vector collect=new Vector();
+		try{
+			XmlData files[]=xr.getElements("QuizQuestions");
+			if(files!=null){
+				Attributes ats;
+				String quizid,userid,score,usedTime,evaluate,studentName;
+				int uid;
+				for(int i=0;i<files.length;i++){
+					QuizFileEntry fileEntry=new QuizFileEntry();
+					ats=files[i].getAttributes();
+					quizid=ats.getValue("QuizID");
+					userid=ats.getValue("UserID");					
+					score = ats.getValue("TotalScore");
+					usedTime = ats.getValue("UsedTime");
+					evaluate=ats.getValue("evaluate");
+					uid=Integer.parseInt(userid);
+					studentName=UserUtil.getLoginName(uid);
+						fileEntry.setQuizID(quizid);										
+						fileEntry.setUserID(userid);
+						fileEntry.setScore(score);	
+						fileEntry.setUsedTime(usedTime);
+						fileEntry.setEvaluate(evaluate);
+						fileEntry.setStudentName(studentName);
+						collect.add(fileEntry);	
+				}
+				return collect;
+			}
+		}
+		catch(Exception e){
 			ErrorDumpUtil.ErrorLog("Error in Util[QuizMetaDataXmlReader] method:getFinalscore !! "+e);
 		}
 		return null;
@@ -1105,8 +1196,9 @@ public class QuizMetaDataXmlReader{
 		int seq = -1;
 			try{
 				QuizFileEntry fileEntry=new QuizFileEntry();
-	        String quizid,userid,score,usedTime;
+	        String quizid,userid,score,usedTime,evaluate;
 	        quizid=userid=score=usedTime="";
+	        evaluate="";
 	        Vector scoreList=new Vector();
 	        File scoreFile=new File(scoreFilePath+"/"+scorePath);
 	        if(scoreFile.exists()){
@@ -1119,12 +1211,14 @@ public class QuizMetaDataXmlReader{
 					userid=((QuizFileEntry) scoreList.elementAt(i)).getUserID();
 					score = ((QuizFileEntry) scoreList.elementAt(i)).getScore();
 					usedTime = ((QuizFileEntry) scoreList.elementAt(i)).getUsedTime();
+					evaluate = ((QuizFileEntry) scoreList.elementAt(i)).getEvaluate();
 					if(quizid.equalsIgnoreCase(quizID) && userid.equalsIgnoreCase(userID)){
 						seq = i;
 						fileEntry.setQuizID(quizid);										
 						fileEntry.setUserID(userid);
 						fileEntry.setScore(score);	
 						fileEntry.setUsedTime(usedTime);
+						fileEntry.setEvaluate(evaluate);
 						//setID here used to store the sequence number
 						fileEntry.setID(String.valueOf(seq));
 						vt.add(fileEntry);						
@@ -1210,8 +1304,8 @@ public class QuizMetaDataXmlReader{
 	 * @exception generic Exception
 	 * @author Nupur Dixit
 	 */
-	public Vector listActiveAndCurrentlyNotRunningQuiz(String userName){	
-		Vector vt = new Vector();
+	public Vector listActiveAndCurrentlyNotRunningQuiz(String filePath,String userName){	
+		Vector<QuizFileEntry> vt = new Vector<QuizFileEntry>(); 
 		try{
 			XmlData files[]=xr.getElements("Quiz");
 			if(files!=null){
@@ -1284,6 +1378,34 @@ public class QuizMetaDataXmlReader{
 					}//end else	
                     }//end if username
 				}//end for	
+				//============code to eliminate all the quizzes which are attempted by student
+				String quizIDAll;
+				File scoreFile = new File(filePath+"/score.xml");
+				Vector<QuizFileEntry> scoreVector=new Vector<QuizFileEntry>();
+				if(scoreFile.exists()){
+					QuizMetaDataXmlReader quizmetadata = new QuizMetaDataXmlReader(filePath+"/score.xml");
+					scoreVector = quizmetadata.getDistinctIDFromFinalScore();
+					ErrorDumpUtil.ErrorLog("size of full vector"+vt.size());
+					ErrorDumpUtil.ErrorLog("size of score vector"+scoreVector.size());
+					for(QuizFileEntry a:scoreVector){
+						String quizIDScore = a.getQuizID();
+						for(QuizFileEntry all:vt){
+							quizIDAll = all.getQuizID();
+							if(quizIDAll.equalsIgnoreCase(quizIDScore)){
+								ErrorDumpUtil.ErrorLog("quiz is stored in score.xml");
+								vt.remove(all);
+								vt.trimToSize();
+								break;
+	//								data.setMessage(MultilingualUtil.ConvertedString("brih_quizcannotdeleted",LangFile));
+	//								return;
+							}
+						}
+					}
+				}
+				
+				ErrorDumpUtil.ErrorLog("size of full vector after trimming"+vt.size());
+				ErrorDumpUtil.ErrorLog("size of score vector after trimming"+scoreVector.size());
+				//==========================================================================
 				return vt;
 			}
 		}catch(Exception e){
@@ -1373,5 +1495,55 @@ public class QuizMetaDataXmlReader{
 			//data.setMessage("See Exception Log !!");
 		}
 		return null;
+	}
+	
+	public int getMissingQuizID(){
+		String quizId="";
+		Integer firstNumber = 1;
+		try{
+			XmlData files[]=xr.getElements("Quiz");
+			List<Integer> quizIDNo=new ArrayList<Integer>();
+			if(files!=null){
+				Attributes ats;
+				String quizID;
+				String uname;				
+				for(int j=0;j<files.length;j++){
+					QuizFileEntry fileEntry=new QuizFileEntry();
+					ats=files[j].getAttributes();					
+					quizID = ats.getValue("QuizID");
+					String arr[] = quizID.split("_");
+					ErrorDumpUtil.ErrorLog("arr at 0 :"+arr[0]);
+					String subPart = arr[0].substring(4,arr[0].length());
+					int num=Integer.parseInt(subPart);
+					quizIDNo.add(new Integer(num));
+				}
+				ErrorDumpUtil.ErrorLog("quizIDNo before sorting !! "+quizIDNo);
+				Collections.sort(quizIDNo);
+				ErrorDumpUtil.ErrorLog("quizIDNo after sorting !! "+quizIDNo);
+				
+				for(Integer a:quizIDNo){
+			        int compare = firstNumber.compareTo(a);
+			        if(compare==0){
+			        	ErrorDumpUtil.ErrorLog("since numbers are equal so increment to"+(firstNumber+1));
+			        	firstNumber=firstNumber+1;
+			        	continue;
+		            }
+		            if(compare==-1){
+		            	ErrorDumpUtil.ErrorLog("this number perfect to add "+firstNumber);
+		            	return firstNumber;
+		            }
+		            if(compare==1){
+		            	ErrorDumpUtil.ErrorLog("number is greater so proceed to check more "+firstNumber);
+		                continue;
+		            }  
+				}
+			}//end if(files!=null)
+			return firstNumber;
+
+		}
+		catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Util[QuizMetaDataXmlReader] method:getQuesBanklist_Detail !! "+e);		
+		}
+		return firstNumber;
 	}
 }

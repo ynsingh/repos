@@ -44,6 +44,7 @@ import org.apache.turbine.util.parser.ParameterParser;
 //brihaspati
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
+import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 /**
 * This class manage all online examination system 
 * @author <a href="mailto:palseema30@gmail.com">Manorama Pal</a>
@@ -53,6 +54,7 @@ public class Oles_Other extends SecureScreen{
 
 	public void doBuildTemplate(RunData data,Context context) 
 	{
+		String lang=data.getUser().getTemp("LangFile").toString();
 		try{
 
 			User user=data.getUser();
@@ -65,7 +67,7 @@ public class Oles_Other extends SecureScreen{
 		}//try
 		catch(Exception ex)
 		{
-		data.setMessage("The error in Oles_Gen !! "+ex);
+		data.setMessage(MultilingualUtil.ConvertedString("brih_exception"+ex,lang));
 		}
 	}
 }

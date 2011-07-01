@@ -45,6 +45,8 @@ import java.util.Arrays;
 import java.util.*;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.Calendar;
+import java.text.SimpleDateFormat;
 //Turbine
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.om.security.User;
@@ -101,10 +103,16 @@ public class OLES_AttemptQuiz extends SecureAction{
 			showReportCard(data,context);
 		else if(action.equals("eventSubmit_Evaluate"))
 			evaluate(data,context);	
+		else if(action.equals("eventSubmit_revaluate"))
+			reevaluate(data,context);
 		else if(action.equals("eventSubmit_EvaluateQuestion"))
 			evaluateQuestion(data,context);	
 		else if(action.equals("eventSubmit_Result"))
 			result(data,context);	
+		else if(action.equals("eventSubmit_EvaluateQuestionDone"))
+			evaluateQuestionDone(data,context);
+		else if(action.equals("eventSubmit_answerSheet"))
+			answerSheet(data,context);
 		else
 			data.setMessage(MultilingualUtil.ConvertedString("action_msg",LangFile));				
 	}
@@ -159,7 +167,7 @@ public class OLES_AttemptQuiz extends SecureAction{
 					else{
 						ErrorDumpUtil.ErrorLog("before third message"+quizQuestionList.size());
 						data.setMessage(MultilingualUtil.ConvertedString("brih_quizwithoutquestion",LangFile));	
-					}            
+					}           
 				}
 			}
 			else{
@@ -260,7 +268,7 @@ public class OLES_AttemptQuiz extends SecureAction{
 			context.put("maxTime",maxTime);
 			String timerValueSession = (String)user.getTemp("timerValue"); 
 			ErrorDumpUtil.ErrorLog("\n timer value and timersession"+timerValue+":"+timerValueSession);
-			ErrorDumpUtil.ErrorLog("max time is "+maxTime);
+			ErrorDumpUtil.ErrorLog("max timeventSubmit_EvaluateQuestionDonee is "+maxTime);
 			if(timerValue==null || timerValue.equalsIgnoreCase("")){
 				if(timerValueSession==null || timerValueSession.equalsIgnoreCase("")){
 					context.put("timerValue",maxTime);
@@ -281,8 +289,6 @@ public class OLES_AttemptQuiz extends SecureAction{
 			data.setMessage("See ExceptionLog !!");
 		}
 	}
-
-	
 	/** This method get list of final questions of a practice quiz in a shuffled mode to be attempted by student
 	 * @param data RunData instance
 	 * @param context Context instance
@@ -450,12 +456,111 @@ public class OLES_AttemptQuiz extends SecureAction{
 	public void showScoreQuiz(RunData data, Context context){
 		ParameterParser pp = data.getParameters();
 		try{	
+
+			User user=data.getUser();
 			LangFile=(String)data.getUser().getTemp("LangFile");
 			String quizName=pp.getString("quizName","");
 			context.put("quizName",quizName);	
 			String quizID=pp.getString("quizID","");
-			context.put("quizID",quizID);				
-			data.setScreenTemplate("call,OLES,Quiz_Score.vm");						
+			context.put("quizID",quizID);
+			String loginname=user.getName();
+			String userID=Integer.toString(UserUtil.getUID(loginname));
+			String cid=(String)user.getTemp("course_id");
+			ErrorDumpUtil.ErrorLog("UserID inside showScoreQuiz method  is"+ userID);
+			String examPath=TurbineServlet.getRealPath("/Courses"+"/"+cid+"/Exam/");
+			String quizSettingPath=quizID+"_QuestionSetting.xml";
+			String scoreXml="score.xml";
+			String quizPath2="/Quiz.xml";       
+			File file2=new File(examPath+"/"+quizPath2);
+			File file=new File(examPath+"/"+scoreXml);
+			File file1=new File(examPath+"/"+quizID+"/"+quizSettingPath);
+			QuizMetaDataXmlReader quizmetadata=null;
+			Vector scoreCollect=new Vector();
+			Vector quizDetail=new Vector();
+			Vector collect=new Vector();
+			Date dt = new Date();
+			SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd"); 
+			String curDate = sd.format(dt);
+			String evaluate="",userId="",quizId="";
+			String resDate = "";
+			String type = "";
+			String check = "y";
+			boolean flag=false;
+			
+			if(file.exists()){
+				quizmetadata=new QuizMetaDataXmlReader(examPath+"/"+scoreXml);
+				scoreCollect=quizmetadata.getFinalScore(userID);
+				if(scoreCollect!=null && scoreCollect.size()!=0){
+					for(int i=0;i<scoreCollect.size();i++){
+						evaluate=((QuizFileEntry) scoreCollect.elementAt(i)).getEvaluate();
+						userId=((QuizFileEntry) scoreCollect.elementAt(i)).getUserID();
+						quizId=((QuizFileEntry) scoreCollect.elementAt(i)).getQuizID();
+						if(evaluate!=null){
+							ErrorDumpUtil.ErrorLog("inside not null"+evaluate+quizId);
+							if(evaluate.equals("complete") && userID.equals(userId) && quizID.equals(quizId)){
+								flag=true;
+								break;
+							}
+							else{
+								flag=false;
+							}
+						}
+						else{
+							flag=false;
+						}
+					}
+				}
+			}	
+			if(file1.exists()){
+				quizmetadata=new QuizMetaDataXmlReader(examPath+"/"+quizID+"/"+quizSettingPath);	
+				collect=quizmetadata.getQuizQuestionDetail(quizID);		
+				if(collect!=null && collect.size()!=0){
+					for(int i=0;i<collect.size();i++){
+						type=((QuizFileEntry)collect.elementAt(i)).getQuestionType();
+						ErrorDumpUtil.ErrorLog("question type "+type);
+						if((type.equals("sat")) ||(type.equals("lat"))){
+							check = "n";
+						}
+					}
+				}
+			}
+			if(file2.exists()){
+				quizmetadata=new QuizMetaDataXmlReader(examPath+"/"+quizPath2);				
+				quizDetail=quizmetadata.getQuiz_Detail(quizID);
+					if(quizDetail!=null){
+						if(quizDetail.size()!=0){
+							for(int i = 0; i<quizDetail.size(); i++){
+								String resDate1 = ((QuizFileEntry) quizDetail.elementAt(i)).getResDate();
+								String quizId1 = ((QuizFileEntry) quizDetail.elementAt(i)).getQuizID();
+								if(quizId1.equals(quizID)){
+									resDate=resDate1;
+									ErrorDumpUtil.ErrorLog("resdate in oles_attemptquiz.java "+resDate+" : "+quizId);
+									break;
+								}
+							}    						         
+						}
+					}
+			}		
+			if(check.equals("n")){
+				if(resDate.compareTo(curDate)==0 || resDate.compareTo(curDate)==-1){
+					if(flag){
+						ErrorDumpUtil.ErrorLog("inside complete");
+						data.setScreenTemplate("call,OLES,Quiz_Score.vm");
+					}
+					else{
+						ErrorDumpUtil.ErrorLog("inside partial/Re-Evaluate");
+						data.setMessage(MultilingualUtil.ConvertedString("brih_noevaluateQuiz",LangFile));
+						data.setScreenTemplate("call,OLES,Student_Score.vm");
+					}
+				}
+				else{
+					data.setMessage(MultilingualUtil.ConvertedString("brih_waitforresult",LangFile));
+					data.setScreenTemplate("call,OLES,Student_Score.vm");
+				}
+			}			
+			else{
+				data.setScreenTemplate("call,OLES,Quiz_Score.vm");
+			}						
 		}catch(Exception e){
 			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:showScoreQuiz !! "+e);
 			data.setMessage("See ExceptionLog !!");
@@ -557,13 +662,114 @@ public class OLES_AttemptQuiz extends SecureAction{
 		ParameterParser pp = data.getParameters();
 		try{
 			LangFile=(String)data.getUser().getTemp("LangFile");
+			User user=data.getUser();
 			ErrorDumpUtil.ErrorLog("\n inside action method");
 			String quizName=pp.getString("quizName","");
 			context.put("quizName",quizName);	
 			String quizID=pp.getString("quizID","");
 			context.put("quizID",quizID);	
 			ErrorDumpUtil.ErrorLog("quiz id and quiz name :"+quizName+" : "+quizID);
-			data.setScreenTemplate("call,OLES,Report_Card.vm");						
+			String loginname=user.getName();
+			String userID=Integer.toString(UserUtil.getUID(loginname));
+			String cid=(String)user.getTemp("course_id");
+			ErrorDumpUtil.ErrorLog("UserID inside showScoreQuiz method  is"+ userID);
+			String examPath=TurbineServlet.getRealPath("/Courses"+"/"+cid+"/Exam/");
+			String quizSettingPath=quizID+"_QuestionSetting.xml";
+			String scoreXml="score.xml";
+			String quizPath2="/Quiz.xml";
+			File file=new File(examPath+"/"+scoreXml);
+			File file2=new File(examPath+"/"+quizPath2);
+			File file1=new File(examPath+"/"+quizID+"/"+quizSettingPath);
+			QuizMetaDataXmlReader quizmetadata=null;
+			Vector scoreCollect=new Vector();
+			Vector quizDetail=new Vector();
+			Vector collect=new Vector();
+			Date dt = new Date();
+			SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd"); 
+			String curDate = sd.format(dt);
+			String evaluate="",userId="",quizId="";
+			String resDate = "";
+			String type = "";
+			String check = "y";
+			boolean flag=false;
+				
+			if(file.exists()){
+				ErrorDumpUtil.ErrorLog("inside file exist if");
+				quizmetadata=new QuizMetaDataXmlReader(examPath+"/"+scoreXml);
+				scoreCollect=quizmetadata.getFinalScore(userID);
+				if(scoreCollect!=null && scoreCollect.size()!=0){
+					ErrorDumpUtil.ErrorLog("inside file if 01111");
+					for(int i=0;i<scoreCollect.size();i++){
+						evaluate=((QuizFileEntry) scoreCollect.elementAt(i)).getEvaluate();
+						userId=((QuizFileEntry) scoreCollect.elementAt(i)).getUserID();
+						quizId=((QuizFileEntry) scoreCollect.elementAt(i)).getQuizID();
+						if(evaluate!=null){
+							ErrorDumpUtil.ErrorLog("inside not null"+evaluate+quizId);
+							if(evaluate.equals("complete") && userID.equals(userId) && quizID.equals(quizId)){
+								flag=true;
+								break;
+							}
+							else{
+								flag=false;
+							}
+						}
+						else{
+							flag=false;
+						}
+						
+						ErrorDumpUtil.ErrorLog("inside for loop"+evaluate+userId);
+					}
+				}
+			}
+			if(file1.exists()){
+				quizmetadata=new QuizMetaDataXmlReader(examPath+"/"+quizID+"/"+quizSettingPath);	
+				collect=quizmetadata.getQuizQuestionDetail(quizID);		
+				if(collect!=null && collect.size()!=0){
+					for(int i=0;i<collect.size();i++){
+						type=((QuizFileEntry)collect.elementAt(i)).getQuestionType();
+						if((type.equals("sat")) ||(type.equals("lat"))){
+							check = "n";
+						}
+					}
+				}
+			}
+			if(file2.exists()){
+				quizmetadata=new QuizMetaDataXmlReader(examPath+"/"+quizPath2);				
+				quizDetail=quizmetadata.getQuiz_Detail(quizID);
+				if(quizDetail!=null){
+					if(quizDetail.size()!=0){
+						for(int i = 0; i<quizDetail.size(); i++){
+							String resDate1 = ((QuizFileEntry) quizDetail.elementAt(i)).getResDate();
+							String quizId1 = ((QuizFileEntry) quizDetail.elementAt(i)).getQuizID();
+							if(quizId1.equals(quizID)){
+								resDate=resDate1;
+								ErrorDumpUtil.ErrorLog("resdate in oles_attemptquiz.java "+resDate+" : "+quizId);
+								break;
+							}
+						}    						         
+					}
+				}
+			}		
+			if(check.equals("n")){
+				if(resDate.compareTo(curDate)==0 || resDate.compareTo(curDate)==-1){
+					if(flag){
+						ErrorDumpUtil.ErrorLog("inside complete");
+						data.setScreenTemplate("call,OLES,Quiz_Score.vm");
+					}
+					else{
+						ErrorDumpUtil.ErrorLog("inside partial/Re-Evaluate");
+						data.setMessage(MultilingualUtil.ConvertedString("brih_noevaluateQuiz",LangFile));
+						data.setScreenTemplate("call,OLES,Student_Score.vm");
+					}
+				}
+				else{
+					data.setMessage(MultilingualUtil.ConvertedString("brih_waitforresult",LangFile));
+					data.setScreenTemplate("call,OLES,Student_Score.vm");
+				}
+			}			
+			else{
+				data.setScreenTemplate("call,OLES,Quiz_Score.vm");
+			}	
 		}catch(Exception e){
 			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:showReportCard !! "+e);
 			data.setMessage("See ExceptionLog !!");
@@ -582,14 +788,39 @@ public class OLES_AttemptQuiz extends SecureAction{
 			ErrorDumpUtil.ErrorLog("quiz id and student login name :"+quizID+" : "+uid);
 			String scoreFilePath=TurbineServlet.getRealPath("/Courses"+"/"+cid+"/Exam/");
 			String scoreXml="score.xml";
+			String questionSettingPath=quizID+"_QuestionSetting.xml";
+			Vector<QuizFileEntry> questionDetailVector=new Vector<QuizFileEntry>();
 			File scoreFile = new File(scoreFilePath+"/"+scoreXml);
 			ErrorDumpUtil.ErrorLog("score file path :"+scoreFile.getPath());
 			int seq = 0;
+			boolean flag=true;
 			if(!scoreFile.exists()){
 				data.setMessage(MultilingualUtil.ConvertedString("brih_quiznotattempted",LangFile));
 				return;
 			}
 			else{
+				QuizMetaDataXmlReader typeReader= new QuizMetaDataXmlReader(scoreFilePath+"/"+quizID+"/"+questionSettingPath);
+				questionDetailVector=typeReader.getQuizQuestionDetail(quizID);
+				if(questionDetailVector!=null && questionDetailVector.size()!=0){
+					for(int i=0;i<questionDetailVector.size();i++){
+						String quizQuestionType=((QuizFileEntry)questionDetailVector.elementAt(i)).getQuestionType();
+						if(quizQuestionType.equalsIgnoreCase("sat")||quizQuestionType.equalsIgnoreCase("lat")){
+							flag=false;
+							break;
+						}
+						else{
+							flag=true;
+						}
+					}
+					if(flag){
+						data.setMessage(MultilingualUtil.ConvertedString("brih_noshtlngAnswer",LangFile));
+						return;
+					}
+				}
+				else{
+					data.setMessage(MultilingualUtil.ConvertedString("brih_noquestionToevaluate",LangFile));
+					return;
+				}
 				QuizMetaDataXmlReader quizreader= new QuizMetaDataXmlReader(scoreFilePath+"/"+scoreXml);
 				seq = quizreader.getSeqOfAlreadyInsertedScore(scoreFilePath,scoreXml,quizID,uid);
 				ErrorDumpUtil.ErrorLog("sequence number is :"+seq);
@@ -620,6 +851,9 @@ public class OLES_AttemptQuiz extends SecureAction{
 			ErrorDumpUtil.ErrorLog("question id and filename :"+quesID+" : "+fileName);
 			String answerFilePath = TurbineServlet.getRealPath("/Courses"+"/"+cid+"/Exam/"+quizID+"/");
 			String answerPath = uid+".xml";
+			
+			String evaluate=pp.getString("evaluate","partial");		
+			ErrorDumpUtil.ErrorLog("inside attempt Quiz evaluate "+evaluate);
 			File answerFile = new File(answerFilePath+"/"+answerPath);
 			ErrorDumpUtil.ErrorLog("answer file path :"+answerFile.getPath());
 			if(!answerFile.exists()){
@@ -627,8 +861,67 @@ public class OLES_AttemptQuiz extends SecureAction{
 				return;
 			}
 			else{
-				QuizMetaDataXmlWriter.xmlwriteEvaluateMarks(answerFilePath,answerPath,data);
+				QuizMetaDataXmlWriter.xmlwriteEvaluateMarks(answerFilePath,answerPath,data,evaluate);
+
 			}
+		}catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Action[OLES_AttemptQuiz] method:evaluate !! "+e);
+			data.setMessage("See ExceptionLog !!");
+		}
+	}
+	
+	public void reevaluate(RunData data, Context context){
+		ParameterParser pp = data.getParameters();
+		try{	
+			ErrorDumpUtil.ErrorLog("inside attempt Quiz evaluateQuestionDone !! ");
+			LangFile=(String)data.getUser().getTemp("LangFile");
+			String cid=(String)data.getUser().getTemp("course_id");
+			ErrorDumpUtil.ErrorLog("\n inside evaluateQuestionDone method");
+			String quizID=pp.getString("quizID","");
+			//String quizName=pp.getString("quizName","");
+			String studentLoginName=pp.getString("studentLoginName","");
+			ErrorDumpUtil.ErrorLog("quiz id and student login name :"+studentLoginName);
+			String uid=Integer.toString(UserUtil.getUID(studentLoginName));
+			ErrorDumpUtil.ErrorLog("quiz id and student login name :"+quizID+" : "+uid);
+			int seq=-1;
+        	
+    		String scoreFilePath=TurbineServlet.getRealPath("/Courses"+"/"+cid+"/Exam/");
+	        String scorePath="score.xml";
+	        String usedTime="";
+	        String quizid="";
+	        String userID="";
+	        int totalScore=0;
+	        String evaluate=null;
+	        QuizMetaDataXmlReader quizmMtaData=new QuizMetaDataXmlReader(scoreFilePath+"/"+scorePath); 
+	        Vector scoreDetail = quizmMtaData.getDetailOfAlreadyInsertedScore(scoreFilePath,scorePath,quizID,uid);
+	        XmlWriter xmlScoreWriter = null;
+	        if(scoreDetail!=null && scoreDetail.size()!=0){
+        		for(int i=0;i<scoreDetail.size();i++) {
+        			usedTime = (((QuizFileEntry) scoreDetail.elementAt(i)).getUsedTime());
+        			totalScore=Integer.valueOf((((QuizFileEntry) scoreDetail.elementAt(i)).getScore()));
+        			userID=(((QuizFileEntry) scoreDetail.elementAt(i)).getUserID());
+        			quizid=(((QuizFileEntry) scoreDetail.elementAt(i)).getQuizID());
+        			seq = Integer.valueOf((((QuizFileEntry) scoreDetail.elementAt(i)).getID()));
+        			evaluate=(((QuizFileEntry) scoreDetail.elementAt(i)).getEvaluate());
+        		}  
+        		ErrorDumpUtil.ErrorLog("used time ,totalScore,userID,quizID,evaluate,StrudentLoginName and seq are : "+usedTime+" : "+totalScore+" : "+userID+" : "+quizid+" : "+evaluate+" : "+uid+" : "+seq);        		
+		}		
+	        xmlScoreWriter = new XmlWriter(scoreFilePath+"/"+scorePath);
+	        if(uid.equalsIgnoreCase(userID) && quizID.equalsIgnoreCase(quizid)){
+			
+			if(evaluate!=null && evaluate.equalsIgnoreCase("complete")){
+	        	evaluate="ReEvaluate";
+	        	QuizMetaDataXmlWriter.writeScore(xmlScoreWriter,quizID,uid,totalScore,usedTime,seq,evaluate);
+			data.setMessage(MultilingualUtil.ConvertedString("brih_successforReevaluation",LangFile));		
+			data.setScreenTemplate("call,OLES,Student_Score.vm");	
+							
+			}
+			else{
+			data.setMessage(MultilingualUtil.ConvertedString("brih_noevaluateQuiz",LangFile));
+			}
+	        }
+	        xmlScoreWriter.writeXmlFile();
+	        	
 		}catch(Exception e){
 			ErrorDumpUtil.ErrorLog("Error in Action[OLES_AttemptQuiz] method:evaluate !! "+e);
 			data.setMessage("See ExceptionLog !!");
@@ -662,13 +955,71 @@ public class OLES_AttemptQuiz extends SecureAction{
 					data.setMessage(MultilingualUtil.ConvertedString("brih_quiznotattempted",LangFile));
 					return;
 				}
-				else
-					data.setScreenTemplate("call,OLES,Quiz_Score.vm");	
-//					data.setScreenTemplate("call,OLES,Evaluate_Quiz.vm");					
+				else{
+					data.setScreenTemplate("call,OLES,Quiz_Score.vm");
+//					data.setScreenTemplate("call,OLES,Evaluate_Quiz.vm");						
+				}
 			}									
 		}catch(Exception e){
 			ErrorDumpUtil.ErrorLog("Error in Action[OLES_AttemptQuiz] method:evaluate !! "+e);
 			data.setMessage("See ExceptionLog !!");
 		}
+	}
+	public void evaluateQuestionDone(RunData data,Context context){
+		
+		ParameterParser pp = data.getParameters();
+		try{	
+			ErrorDumpUtil.ErrorLog("inside attempt Quiz evaluateQuestionDone !! ");
+			LangFile=(String)data.getUser().getTemp("LangFile");
+			String cid=(String)data.getUser().getTemp("course_id");
+			ErrorDumpUtil.ErrorLog("\n inside evaluateQuestionDone method");
+			String quizID=pp.getString("quizID","");
+			String type=pp.getString("type","");
+			String studentLoginName=pp.getString("studentLoginName","");
+			String uid=Integer.toString(UserUtil.getUID(studentLoginName));
+			ErrorDumpUtil.ErrorLog("quiz id and student login name and type :"+quizID+" : "+uid+" : "+type);
+			int seq=-1;
+    		String scoreFilePath=TurbineServlet.getRealPath("/Courses"+"/"+cid+"/Exam/");
+	        String scorePath="score.xml";
+	        String usedTime="";
+	        String quizid="";
+	        String userID="";
+	        int totalScore=0;
+	        String evaluate=null;
+	        QuizMetaDataXmlReader quizmMtaData=new QuizMetaDataXmlReader(scoreFilePath+"/"+scorePath); 
+	        Vector scoreDetail = quizmMtaData.getDetailOfAlreadyInsertedScore(scoreFilePath,scorePath,quizID,uid);
+	        XmlWriter xmlScoreWriter = null;
+	        if(scoreDetail!=null && scoreDetail.size()!=0){
+        		for(int i=0;i<scoreDetail.size();i++) {
+        			usedTime = (((QuizFileEntry) scoreDetail.elementAt(i)).getUsedTime());
+        			totalScore=Integer.valueOf((((QuizFileEntry) scoreDetail.elementAt(i)).getScore()));
+        			userID=(((QuizFileEntry) scoreDetail.elementAt(i)).getUserID());
+        			quizid=(((QuizFileEntry) scoreDetail.elementAt(i)).getQuizID());
+        			seq = Integer.valueOf((((QuizFileEntry) scoreDetail.elementAt(i)).getID()));
+        			evaluate=(((QuizFileEntry) scoreDetail.elementAt(i)).getEvaluate());
+        		}  
+        		ErrorDumpUtil.ErrorLog("used time ,totalScore,userID,quizID,evaluate,StrudentLoginName and seq are : "+usedTime+" : "+totalScore+" : "+userID+" : "+quizid+" : "+evaluate+" : "+uid+" : "+seq);        		
+	        }			
+	        xmlScoreWriter = new XmlWriter(scoreFilePath+"/"+scorePath);
+	        if(uid.equalsIgnoreCase(userID) && quizID.equalsIgnoreCase(quizid)){
+	        	evaluate="complete";
+	        	QuizMetaDataXmlWriter.writeScore(xmlScoreWriter,quizID,uid,totalScore,usedTime,seq,evaluate);
+	        }
+	        xmlScoreWriter.writeXmlFile();
+	        if(type.equals("ReEvaluate")){
+	        	data.setScreenTemplate("call,OLES,OLES_ReEvaluation.vm");
+	        }
+	        else{
+	        	data.setScreenTemplate("call,OLES,Evaluate.vm");
+	        }
+	        data.setMessage(MultilingualUtil.ConvertedString("brih_finalScoreSaved",LangFile));
+		}catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in Action[OLES_AttemptQuiz] method:evaluate !! "+e);
+			data.setMessage("See ExceptionLog !!");
+		}
+	}
+	
+	public void answerSheet(RunData data, Context context){
+		LangFile=(String)data.getUser().getTemp("LangFile");
 	}
 }	                           

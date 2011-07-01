@@ -49,7 +49,7 @@ import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
-
+import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 /**
 * This class is used to create quiz randomly 
 * @author <a href="mailto:aayushi.sr@gmail.com">Aayushi</a>
@@ -63,6 +63,7 @@ public class Practice_Quiz extends SecureScreen{
         *for template use
         */
         ParameterParser pp=data.getParameters();
+	String lang=data.getUser().getTemp("LangFile").toString();
         try{
         	ErrorDumpUtil.ErrorLog("inside practice quiz.java");
         	User user=data.getUser();
@@ -133,7 +134,7 @@ public class Practice_Quiz extends SecureScreen{
         }
         catch(Exception e) {
         	ErrorDumpUtil.ErrorLog("The exception in Random_Quiz screen::"+e);
-        	data.setMessage("See ExceptionLog !! ");
+        	data.setMessage(MultilingualUtil.ConvertedString("brih_exception"+e,lang));
         }
     }
 }

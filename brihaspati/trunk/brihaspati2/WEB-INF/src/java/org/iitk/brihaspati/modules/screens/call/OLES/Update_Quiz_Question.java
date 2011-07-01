@@ -62,10 +62,9 @@ public class Update_Quiz_Question extends  SecureScreen{
 	        *for template use
 	        */
 	        ParameterParser pp=data.getParameters();
+		String LangFile=data.getUser().getTemp("LangFile").toString();
 		try{
 			User user=data.getUser();
-
-			String LangFile=data.getUser().getTemp("LangFile").toString();
 			String courseid=(String)user.getTemp("course_id");
 			String courseName=(String)user.getTemp("course_name");
 			String username=data.getUser().getName();
@@ -88,7 +87,6 @@ public class Update_Quiz_Question extends  SecureScreen{
 			context.put("quizMode",quizMode);
 			context.put("mode",mode);
 			context.put("allowPractice",allowPractice);
-
 			String filePath=data.getServletContext().getRealPath("/Courses"+"/"+courseid+"/Exam/"+quizID+"/");
 			String quizPath=quizID+"_QuestionSetting.xml";
 			QuizMetaDataXmlReader quizmetadata=null;
@@ -112,7 +110,7 @@ public class Update_Quiz_Question extends  SecureScreen{
 		}
 		catch(Exception e) {
 			ErrorDumpUtil.ErrorLog("The exception in ViewQuizFile::"+e);
-			data.setMessage("See ExceptionLog !! ");	
+			data.setMessage(MultilingualUtil.ConvertedString("brih_exception"+e,LangFile));	
 		}
 	}
 }

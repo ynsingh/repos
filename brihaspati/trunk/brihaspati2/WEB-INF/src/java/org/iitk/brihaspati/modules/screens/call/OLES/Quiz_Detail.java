@@ -66,10 +66,9 @@ public class Quiz_Detail extends SecureScreen{
 	        *for template use
 	        */
 	        ParameterParser pp=data.getParameters();
+		String LangFile=data.getUser().getTemp("LangFile").toString();
 		try {			
             User user=data.getUser();
-            String LangFile=data.getUser().getTemp("LangFile").toString();
-            
             String uname=user.getName();
             int userid=UserUtil.getUID(uname);
             String uid=Integer.toString(userid);
@@ -86,12 +85,12 @@ public class Quiz_Detail extends SecureScreen{
 			QuizMetaDataXmlReader quizmetadata=null;
             Vector allQuiz=new Vector();
             HashMap visibilityFlag = new HashMap(); 
-            String quizPath="/Quiz.xml";
+            String quizPath="Quiz.xml";
 			File f=new File(filePath+"/"+quizPath);
 			
 			if(f.exists()){
 				quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);
-				allQuiz=quizmetadata.listActiveAndCurrentlyNotRunningQuiz(uname);
+				allQuiz=quizmetadata.listActiveAndCurrentlyNotRunningQuiz(filePath+"/"+quizPath,uname);
 //				allQuiz=quizmetadata.getStatusQuiz_Detail("ACT");			
 			}
 			if(allQuiz==null)
@@ -112,12 +111,14 @@ public class Quiz_Detail extends SecureScreen{
                 		data.setMessage(MultilingualUtil.ConvertedString("brih_noquestion_setting",LangFile));
                 	}
                 	else{
+                		ErrorDumpUtil.ErrorLog("inside else !!");
                 		QuizMetaDataXmlReader questionReader = new QuizMetaDataXmlReader(newFilePath+"/"+questionsPath);
                 		HashMap hm = new HashMap();
                 		hm = questionReader.getQuizQuestionNoMarks(questionReader,quizid);
                 		int mark =((Integer)hm.get("marks"));
                 		int enteredQuestions = ((Integer)hm.get("noQuestion")); 
                 		if(mark==(Integer.parseInt(maxmarks))||enteredQuestions==(Integer.parseInt(maxquestions))){
+                			ErrorDumpUtil.ErrorLog("inside if !!");
                 			visibilityFlag.put(quizid, "true");			        				       
 			        	}
                 		else{
@@ -135,7 +136,7 @@ public class Quiz_Detail extends SecureScreen{
 		}		        
 		catch(Exception ex){
 			ErrorDumpUtil.ErrorLog("The exception in detail quiz file!!"+ex);
-			data.setMessage("See ExceptionLog !! ");
+			data.setMessage(MultilingualUtil.ConvertedString("brih_exception"+ex,LangFile));
         }
 	}
 }

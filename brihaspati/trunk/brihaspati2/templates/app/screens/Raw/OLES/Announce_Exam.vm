@@ -113,8 +113,14 @@ $!data.getMessage()
 					<option value="$year">$year
 				#end
 				#foreach($cyear in $year_list)
-					#if($cyear != $year)
-						<option value="$cyear">$cyear
+					#if($mode=="update")
+						#if($cyear != $Start_year)
+							<option value="$cyear">$cyear
+						#end
+					#else
+						#if($cyear != $year)
+							<option value="$cyear">$cyear
+						#end
 					#end
 				#end				
 			</select>
@@ -126,7 +132,15 @@ $!data.getMessage()
 					<option value="$cmonth">$cmonth
 				#end
 				#foreach($mn in $month)
-					<option value="$mn">$mn
+					#if($mode=="update")
+						#if($mn != $Start_month)
+							<option value="$mn">$mn
+						#end
+					#else
+						#if($mn != $cmonth)
+							<option value="$mn">$mn
+						#end
+					#end
 				#end							
 			</select>
   			&nbsp;<b><font size=+1>-</font></b>&nbsp;
@@ -137,7 +151,15 @@ $!data.getMessage()
 					<option value="$cday">$cday
 				#end
 				#foreach($dy in $day)
-					<option value="$dy">$dy
+					#if($mode=="update")
+						#if($dy != $Start_day)
+							<option value="$dy">$dy
+						#end
+					#else
+						#if($dy != $cday)
+							<option value="$dy">$dy
+						#end
+					#end
 				#end			
 			</select>
 	        </td>
@@ -152,9 +174,16 @@ $!data.getMessage()
 				#else
 					<option value="$eHour">$eHour                		
 				#end
-				
-        		        #foreach($hr in $hour)
-					<option value="$hr">$hr
+        		 #foreach($hr in $hour)
+        		 	#if($mode=="update")
+						#if($hr != $Start_hr)
+							<option value="$hr">$hr
+						#end
+					#else
+						#if($hr != $eHour)
+							<option value="$hr">$hr
+						#end
+					#end
 				#end
                 	</select>
 			&nbsp<b><font size=+1>-</font></b>&nbsp
@@ -164,8 +193,16 @@ $!data.getMessage()
 				#else
 					<option value="$eMinute">$eMinute                		
 				#end						
-			    	#foreach($m in $minute)
-			    	   	<option value="$m">$m
+			    #foreach($m in $minute)
+			    	#if($mode=="update")
+			    		  #if($m != $Start_min)
+							<option value="$m">$m
+						  #end
+					#else
+						#if($m != $eMinute)
+							<option value="$m">$m
+						#end
+					#end
 				#end
         	    	</select>
  		</td>
@@ -173,38 +210,60 @@ $!data.getMessage()
 	<tr>
 		<td><b>$brih_end $brih_Da</b></td>
 		<td>
-                	<select name="End_year">
+                	<select name="End_year" id="end1">
 				#if($mode=="update")
 					<option value="$End_year">$End_year
 				#else
 					<option value="$eYear">$eYear
 				#end
 				#foreach($cyear in $year_list)
-					#if($cyear != $eYear)
-						<option value="$cyear">$cyear
+					#if($mode=="update")
+						#if($cyear != $End_year)
+							<option value="$cyear">$cyear
+						#end
+					#else
+						#if($cyear != $eYear)
+							<option value="$cyear">$cyear
+						#end
 					#end
 				#end	
 			</select>
 			&nbsp<b><font size=+1>-</font></b>&nbsp
-			<select name="End_mon">
+			<select name="End_mon" id="end2">
 				#if($mode=="update")
 					<option value="$End_month">$End_month
 				#else
 					<option value="$eMonth">$eMonth
 				#end
-	            		#foreach($mn in $month)
-					<option value="$mn">$mn
+	            #foreach($mn in $month)
+	            	#if($mode=="update")
+						#if($mn != $End_month)
+							<option value="$mn">$mn
+						#end
+					#else
+						#if($mn != $eMonth)
+							<option value="$mn">$mn
+						#end
+					#end
 				#end					
 			</select>
 	  		&nbsp;<b><font size=+1>-</font></b>&nbsp;
-	                <select name="End_day">
+	                <select name="End_day" id="end3">
 				#if($mode=="update")
 					<option value="$End_day">$End_day
 				#else
 					<option value="$eDate">$eDate
 				#end
 				#foreach($dy in $day)
-					<option value="$dy">$dy
+					#if($mode=="update")
+						#if($dy != $End_day)
+							<option value="$dy">$dy
+						#end
+					#else
+						#if($dy != $eDate)
+							<option value="$dy">$dy
+						#end
+					#end
 				#end				
 			</select>
 	        </td>
@@ -219,7 +278,15 @@ $!data.getMessage()
 					<option value="$eHour">$eHour                		
 				#end	
 				#foreach($hr in $hour)
-					<option value="$hr">$hr
+					#if($mode=="update")
+						#if($hr != $End_hr)
+							<option value="$hr">$hr
+						#end
+					#else
+						#if($hr != $eHour)
+							<option value="$hr">$hr
+						#end
+					#end		
 				#end			
             </select>
 			&nbsp<b><font size=+1>-</font></b>&nbsp
@@ -230,10 +297,80 @@ $!data.getMessage()
 					<option value="$eMinute">$eMinute              		
 				#end	
 				#foreach($m in $minute)
-			    	   	<option value="$m">$m
+					#if($mode=="update")
+			    	  	#if($m != $End_min)
+							<option value="$m">$m
+						#end
+					#else
+						#if($m != $eMinute)
+							<option value="$m">$m
+						#end
+					#end
 				#end					
 	    	</select>
  		</td>
+	</tr>
+    	 
+        <tr style="visibility:$setVisible">
+		<td><b>$brih_result $brih_Da</b></td>
+		<td>
+                	<select name="Res_year" id="res1">
+				#if($mode=="update")
+					<option value="$Res_year">$Res_year
+				#else
+					<option value="$eYear">$eYear
+				#end
+				#foreach($cyr in $year_list)
+					#if($mode=="update")
+						#if($cyr != $Res_year)
+							<option value="$cyr">$cyr
+						#end
+					#else
+						#if($cyr != $eYear)
+							<option value="$cyr">$cyr
+						#end
+					#end
+				#end	
+			</select>
+			&nbsp<b><font size=+1>-</font></b>&nbsp
+			<select name="Res_mon" id="res2">
+				#if($mode=="update")
+					<option value="$Res_month">$Res_month
+				#else
+					<option value="$eMonth">$eMonth
+				#end
+	            #foreach($mn in $month)
+	            	#if($mode=="update")
+						#if($mn != $Res_month)
+							<option value="$mn">$mn
+						#end
+					#else
+						#if($mn != $eMonth)
+							<option value="$mn">$mn
+						#end
+					#end
+				#end					
+			</select>
+	  		&nbsp;<b><font size=+1>-</font></b>&nbsp;
+	                <select name="Res_day" id="res3">
+				#if($mode=="update")
+					<option value="$Res_day">$Res_day
+				#else
+					<option value="$eDate">$eDate
+				#end
+				#foreach($dy in $day)
+					#if($mode=="update")
+						#if($dy != $Res_day)
+							<option value="$dy">$dy
+						#end
+					#else
+						#if($dy != $eDate)
+							<option value="$dy">$dy
+						#end
+					#end
+				#end				
+			</select>
+	        </td>
 	</tr>
 	
 	<tr bgcolor="$ui.menuColor" width="100%">
@@ -269,6 +406,7 @@ $!data.getMessage()
 <input type="hidden" name="allowPractice" value="$allowPractice">
 <input type="hidden" name="allow" value="">
 <input type="hidden" name="actionName" value="">
+<input type="hidden" name="checkResultDate" value="$setVisible">
 </form>
 <script LANGUAGE="JAVASCRIPT">
 	function popupWin(url,popupName){
@@ -276,8 +414,43 @@ $!data.getMessage()
    	}
 
 	function checkField(frm,field){		
+		var dd1=document.getElementById('end1');
+		var mm1=document.getElementById('end2');
+		var yy1=document.getElementById('end3');
+		var dd2=document.getElementById('res1');
+		var mm2=document.getElementById('res2');
+		var yy2=document.getElementById('res3');
+		var validate=true;
+
+		//if(yy2<yy1){
+		//validate=false;
+		//}
+		//else if((yy2==yy1)&&(mm2<mm1)){
+		//validate=false;
+		//}
+		//else if(((yy2==yy1)&&(mm1==mm2)&&(dd2<dd1)){
+		//validate=false;
+		//}
+		
+		var date1=yy1.value.toString()+"/"+mm1.value.toString()+"/"+dd1.value.toString();
+		var date2=yy2.value.toString()+"/"+mm2.value.toString()+"/"+dd2.value.toString();
+		
+		var checkres=frm.checkResultDate.value;
+		
+		if(checkres=="visible"){
+		if(Date.parse(date2)>(Date.parse(date1))){
 		frm.actionName.value=field.name;
 		frm.allow.value=frm.allow.value;
 		frm.submit();		
+		}
+		else{
+		alert("Result Date Can't be Less than End Date");
+		}
+		}
+		else{
+		frm.actionName.value=field.name;
+		frm.allow.value=frm.allow.value;
+		frm.submit();	
+		}
 	}
 </script>

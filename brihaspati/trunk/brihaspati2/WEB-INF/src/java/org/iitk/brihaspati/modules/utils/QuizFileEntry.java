@@ -81,6 +81,9 @@ public class QuizFileEntry implements Comparable<QuizFileEntry> {
     private String studentAnswer;
     private String instructorAnswer;
     private String usedTime;
+    private String resDate;
+    private String evaluate;
+    private String studentLoginName;
 
 //-----------------------------OLES
 	
@@ -151,6 +154,7 @@ public class QuizFileEntry implements Comparable<QuizFileEntry> {
 	public void setQuizID(String quizID){
 		this.quizID = quizID;
 	}
+	
 	public String getQuizID(){
 		return quizID;
 	}
@@ -343,6 +347,12 @@ public class QuizFileEntry implements Comparable<QuizFileEntry> {
 	public String getExpiryDate(){
 		return expiryDate;
 	}
+	public void setResDate(String resDate){
+ 		this.resDate = resDate;
+ 	}
+ 	public String getResDate(){
+ 		return resDate;
+ 	}
 	public void setStartTime(String startTime){
 		this.startTime = startTime;
 	}
@@ -397,6 +407,18 @@ public class QuizFileEntry implements Comparable<QuizFileEntry> {
 	}
 	public String getUsedTime(){
 		return usedTime;
+	}
+	public void setEvaluate(String evaluate){
+		this.evaluate=evaluate;
+	}
+	public String getEvaluate(){
+		return evaluate;
+	}
+	public void setStudentName(String name){
+		this.studentLoginName=name;
+	}
+	public String getStudentName(){
+		return studentLoginName;
 	}
      
 }

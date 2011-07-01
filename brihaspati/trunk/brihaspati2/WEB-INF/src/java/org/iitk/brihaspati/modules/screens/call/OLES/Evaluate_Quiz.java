@@ -60,10 +60,11 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 public class Evaluate_Quiz extends SecureScreen{
 //	MultilingualUtil mu=new MultilingualUtil();
 
-	public void doBuildTemplate( RunData data, Context context ){
+	public void doBuildTemplate( RunData data,Context context ){
 		ParameterParser pp=data.getParameters();
+		String file=data.getUser().getTemp("LangFile").toString();
 		try{
-			String file=data.getUser().getTemp("LangFile").toString();
+			boolean flag=false;
 			User user=data.getUser();
 			String uname=user.getName();
 			String courseid=(String)user.getTemp("course_id");
@@ -72,6 +73,12 @@ public class Evaluate_Quiz extends SecureScreen{
 			context.put("quizID",quizID);
 			String quizName=pp.getString("quizName","");
 			context.put("quizName",quizName);
+			String count=pp.getString("count","");
+			context.put("tdcolor",count);
+			String type1=pp.getString("type","");
+			ErrorDumpUtil.ErrorLog("type in evaluate Quiz"+type1);
+			context.put("type",type1);
+			
 			String studentLoginName=pp.getString("studentLoginName","0");
 			context.put("studentLoginName",studentLoginName);	
 			ErrorDumpUtil.ErrorLog(" quizID, studentLoginName "+quizID+" : "+studentLoginName);	
@@ -96,20 +103,28 @@ public class Evaluate_Quiz extends SecureScreen{
 			//			context.put("checkedQuiz","cheked");
 
 			String quizAnswerPath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam"+"/"+quizID);
-			String quizAnswerFile = studentID+".xml";					
+			String quizAnswerFile = studentID+".xml";						
 			File answerFile= new File(quizAnswerPath+"/"+quizAnswerFile);
 			if(!answerFile.exists()){
-				data.setMessage("No question is attempted");
+				data.setMessage(MultilingualUtil.ConvertedString("brih_noquestionAttempt",file));
 				return;
 			}
 			else{
 				QuizMetaDataXmlReader quizmetadata=new QuizMetaDataXmlReader(quizAnswerPath+"/"+quizAnswerFile);
 				answerDetail = quizmetadata.getFinalAnswer();
 				if(answerDetail==null || answerDetail.size()==0){
-					data.setMessage("No question is attempted");
+					data.setMessage(MultilingualUtil.ConvertedString("brih_noquestionAttempt",file));
 					return;
 				}
 				else{
+					for(int i=0;i<answerDetail.size();i++){
+						String type=((QuizFileEntry)answerDetail.elementAt(i)).getQuestionType();
+						if(type.equalsIgnoreCase("sat") || type.equalsIgnoreCase("lat")){
+							flag=true;
+							break;
+						}
+					}
+					context.put("flag",flag);
 					context.put("answerDetail",answerDetail);
 //					for(int i=0;i<answerDetail.size();i++){
 //						int studentMark = Integer.parseInt(((QuizFileEntry) answerDetail.elementAt(i)).getAwardedMarks());					
@@ -128,7 +143,8 @@ public class Evaluate_Quiz extends SecureScreen{
 			}											
 		}	
 		catch(Exception ex){
-			ErrorDumpUtil.ErrorLog("The exception in detail Score Quiz file!!"+ex); data.setMessage("See ExceptionLog !! ");
+			ErrorDumpUtil.ErrorLog("The exception in detail Score Quiz file!!"+ex); 
+			data.setMessage(MultilingualUtil.ConvertedString("brih_exception"+ex,file));
 		}
 	}
 }

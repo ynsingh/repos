@@ -71,23 +71,23 @@ import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 public class Evaluate extends  SecureScreen{               
 	public void doBuildTemplate(RunData data,Context context){
 		ParameterParser pp=data.getParameters();
-		try{
-			String LangFile=(String)data.getUser().getTemp("LangFile");			
+		String LangFile=(String)data.getUser().getTemp("LangFile");	
+		try{		
 			User user=data.getUser();
 			String uname=user.getName();
 			String uid=Integer.toString(UserUtil.getUID(uname));
 			context.put("uid",uid);			
 			String courseid=(String)user.getTemp("course_id");
 			
-			String count = pp.getString("count","");			
+			String count = pp.getString("count","4");			
 			context.put("tdcolor",count);
 //			context.put("test","test");
-			String type = pp.getString("type");
-			ErrorDumpUtil.ErrorLog("type is:"  +type);	
+			String type = pp.getString("type","");
 			context.put("type",type);
 //			String Quizid=pp.getString("Quizid","0");
 			String quizID=pp.getString("quizID","0");
 			String studentLoginName=pp.getString("studentLoginName","0");
+			ErrorDumpUtil.ErrorLog(" uname, U id  rohit "+uname+" : "+uid+""+type);
 			ErrorDumpUtil.ErrorLog(" quizID, Userlist "+quizID+" : "+studentLoginName);	
 			String filePath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/");
 			String quizPath="/Quiz.xml";  
@@ -97,7 +97,7 @@ public class Evaluate extends  SecureScreen{
 			Vector instructorQuizList=new Vector();
 			QuizMetaDataXmlReader quizmetadata=null;
 			if(!file.exists()){
-				data.setMessage("No quiz to Evaluate");	
+				data.setMessage(MultilingualUtil.ConvertedString("brih_noquizToEvaluate",LangFile));
 				return;
 			}
 			else{
@@ -121,7 +121,7 @@ public class Evaluate extends  SecureScreen{
 						context.put("quizList",instructorQuizList);
 					}
 					else{
-						data.setMessage("No quiz to Evaluate");	
+						data.setMessage(MultilingualUtil.ConvertedString("brih_noquizToEvaluate",LangFile));
 						return;
 					}
 //					quizList=null;
@@ -134,8 +134,32 @@ public class Evaluate extends  SecureScreen{
 //					context.put("slct","slcted");	
 //				}
 			}
+// rohit------------------------
+
+			String filePath2=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/");
+                String quizPath2="/Quiz.xml";       
+                String resDate = "";
+                File file2=new File(filePath2+"/"+quizPath2);
+    			Vector quizDetail=new Vector();
+    			QuizMetaDataXmlReader quizmetadata2=null;
+    			if(file2.exists()){
+    				quizmetadata2=new QuizMetaDataXmlReader(filePath2+"/"+quizPath2);				
+    				quizDetail=quizmetadata.getQuiz_Detail(quizID);
+    				if(quizDetail!=null){
+    					if(quizDetail.size()!=0){
+    						for(int i = 0; i<quizDetail.size(); i++){
+    							resDate = ((QuizFileEntry) quizDetail.elementAt(i)).getResDate();
+    							ErrorDumpUtil.ErrorLog("resdate in evaluate.java "+resDate);
+    						}    						         
+    					}
+    				}
+    			}
+
+// rohit end------------------------------------------
+
+
+			String createquiz=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam"+"/"+quizID);	
 			
-						
 //			if(studentLoginName.equals("0"))
 //			{
 				int g_id=GroupUtil.getGID(courseid);
@@ -155,7 +179,8 @@ public class Evaluate extends  SecureScreen{
 //					/**  Path */ 
 //
 //					String createquiz1=createquiz;
-//					String createquiz3=createquiz;
+//					String createquiz3=createquiz;<td align=left>
+				
 //					String createquiz2=createquiz+"/Student_Quiz";
 //
 //					/**  Path */
@@ -309,7 +334,7 @@ public class Evaluate extends  SecureScreen{
 		}
 		catch(Exception e) {
 			ErrorDumpUtil.ErrorLog("The exception in gradequiz class ::"+e);
-			data.setMessage("See ExceptionLog!!");
+			data.setMessage(MultilingualUtil.ConvertedString("brih_exception"+e,LangFile));
 		}
 	}
 }			

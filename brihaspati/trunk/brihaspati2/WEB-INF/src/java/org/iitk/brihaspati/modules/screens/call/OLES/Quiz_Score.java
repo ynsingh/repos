@@ -63,8 +63,8 @@ public class Quiz_Score extends SecureScreen{
 
 	public void doBuildTemplate( RunData data, Context context ){
 		ParameterParser pp=data.getParameters();
+		String file=data.getUser().getTemp("LangFile").toString();
 		try{
-			String file=data.getUser().getTemp("LangFile").toString();
 			//			String stat = pp.getString("status");			
 			//			context.put("status",stat);
 			User user=data.getUser();
@@ -83,6 +83,7 @@ public class Quiz_Score extends SecureScreen{
 			String maxMarks="";
 			String maxQuestion="";
 			if(role.equalsIgnoreCase("instructor")){
+				context.put("setVisible","hidden");
 				String quizPath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam"+"/");
 				String quizXmlPath = "Quiz.xml";	
 				File quizFile= new File(quizPath+"/"+quizXmlPath);
@@ -102,7 +103,7 @@ public class Quiz_Score extends SecureScreen{
 					QuizMetaDataXmlReader quizmetadata=new QuizMetaDataXmlReader(quizPath+"/"+quizXmlPath);
 					quizDetail = quizmetadata.getQuiz_Detail(quizID);
 					if(quizDetail==null || quizDetail.size()==0){
-						data.setMessage("Quiz entries are deleted");						
+						data.setMessage(MultilingualUtil.ConvertedString("brih_deletequizEntry",file));						
 					}
 					else{
 						for(QuizFileEntry a:quizDetail){
@@ -114,7 +115,8 @@ public class Quiz_Score extends SecureScreen{
 					}
 				}				
 			}
-			else if(role.equalsIgnoreCase("student")){				
+			else if(role.equalsIgnoreCase("student")){
+				context.put("setVisible","visible");				
 				maxTime=pp.getString("maxTime","");				
 				maxMarks=pp.getString("maxMarks","");				
 				maxQuestion=pp.getString("maxQuestion","");
@@ -125,7 +127,33 @@ public class Quiz_Score extends SecureScreen{
 					maxMarks = temp[1];
 					maxQuestion = temp[2];
 				}
-				//==========================================================				
+				//==========================================================
+					String filePath1=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/"+quizID);
+					String type = "";
+					String check = "y";
+            				String quizSettingPath=quizID+"_QuestionSetting.xml";
+					File file1=new File(filePath1+"/"+quizSettingPath);
+            				QuizMetaDataXmlReader quizmetadata1=null;
+					Vector collect=new Vector();
+					if(file1.exists()){
+						quizmetadata1=new QuizMetaDataXmlReader(filePath1+"/"+quizSettingPath);	
+						collect=quizmetadata1.getQuizQuestionDetail(quizID);		
+						if(collect!=null && collect.size()!=0){
+								for(int i=0;i<collect.size();i++){
+										type=((QuizFileEntry)collect.elementAt(i)).getQuestionType();
+										ErrorDumpUtil.ErrorLog("question type "+type);
+										if((type.equals("sat")) ||(type.equals("lat"))){
+												check = "n";
+										}
+								}
+						}
+					}
+					if(check.equals("n")){
+						context.put("setVisible","visible");
+					}
+					else{
+						context.put("setVisible","hidden");
+					}
 			}
 			context.put("maxTime",maxTime);	
 			context.put("maxMarks",maxMarks);
@@ -157,14 +185,16 @@ public class Quiz_Score extends SecureScreen{
 				uid=Integer.toString(UserUtil.getUID(studentLoginName));
 				ErrorDumpUtil.ErrorLog("student login name :"+uid);
 			}
-			else if(role.equalsIgnoreCase("student")){	
+			else if(role.equalsIgnoreCase("student")){
+				context.put("studentLoginName",uname);
+				//uid=Integer.toString(UserUtil.getUID(studentLoginName));	
 				uid=Integer.toString(UserUtil.getUID(uname));			
 			}
 			String quizAnswerFile = uid+".xml";						
 			File answerFile= new File(quizAnswerPath+"/"+quizAnswerFile);
 			ErrorDumpUtil.ErrorLog("answer file path :"+answerFile.getPath());
 			if(!answerFile.exists()){
-				data.setMessage("No question is attempted");
+				data.setMessage(MultilingualUtil.ConvertedString("brih_noquestionAttempt",file));
 				return;
 			}
 			else{
@@ -172,7 +202,7 @@ public class Quiz_Score extends SecureScreen{
 				answerDetail = quizmetadata.getFinalAnswer();
 				ErrorDumpUtil.ErrorLog("after answer detail fetching :"+answerDetail);
 				if(answerDetail==null || answerDetail.size()==0){
-					data.setMessage("No question is attempted");
+					data.setMessage(MultilingualUtil.ConvertedString("brih_noquestionAttempt",file));
 					return;
 				}
 				else{
@@ -194,7 +224,8 @@ public class Quiz_Score extends SecureScreen{
 			}											
 		}	
 		catch(Exception ex){
-			ErrorDumpUtil.ErrorLog("The exception in detail Score Quiz file!!"+ex); data.setMessage("See ExceptionLog !! ");
+			ErrorDumpUtil.ErrorLog("The exception in detail Score Quiz file!!"+ex);
+			data.setMessage(MultilingualUtil.ConvertedString("brih_exception",file));
 		}
 	}
 }

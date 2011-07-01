@@ -67,8 +67,8 @@ public class Preview extends  SecureScreen{
 	        *for template use
 	        */
 	        ParameterParser pp=data.getParameters();
+		String LangFile=data.getUser().getTemp("LangFile").toString();
 		try{
-			String LangFile=data.getUser().getTemp("LangFile").toString();
 			User user=data.getUser();
 
 			String courseid=(String)user.getTemp("course_id");
@@ -230,7 +230,7 @@ public class Preview extends  SecureScreen{
 		}
 		catch(Exception e) {
 			ErrorDumpUtil.ErrorLog("The exception in Preview screen::"+e);
-			data.setMessage("See ExceptionLog !! ");	
+			data.setMessage(MultilingualUtil.ConvertedString("brih_exception"+e,LangFile));	
 		}
 	}
 }			

@@ -103,6 +103,7 @@ $!data.getMessage()
 		if(frm.quizList.value !=""){			
 			frm.actionName.value=field.name;
 			frm.quizName.value=frm.quizList.options[frm.quizList.selectedIndex].value;
+			//alert(frm.quizName.value);
 			frm.submit();
 		}
 		else

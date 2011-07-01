@@ -62,9 +62,15 @@ $!data.getMessage()
 
 <table width="100%" bgcolor="$ui.tableColor">
 #if($insertQuestions == "insertQuestions")
-	<tr bgcolor="$ui.menuColor" width="100%">
-		<td align="left" width="100%" colspan="5"><b><i><font size="3"> $brih_onebyone $brih_quiz $brih_generation </font><b></i></td>
-	</tr>
+	#if($mode=="one")
+		<tr bgcolor="$ui.menuColor" width="100%">
+			<td align="left" width="100%" colspan="5"><b><i><font size="3"> $brih_onebyone $brih_quiz $brih_generation </font><b></i></td>
+		</tr>
+	#else
+		<tr bgcolor="$ui.menuColor" width="100%">
+			<td align="left" width="100%" colspan="5"><b><i><font size="3"> $brih_onebyone $brih_qus $brih_addition </font><b></i></td>
+		</tr>
+	#end
 	<tr>
        		<td><b>$brih_topic $brih_name</b></td>       		              
         	<td><input type="text" name="topic" value="$topicName" readonly></td>
@@ -144,12 +150,17 @@ $!data.getMessage()
 			<b><I><a href=$link.setPage("call,OLES,Random_Quiz.vm").addPathInfo("mode","random").addPathInfo("count","2").addPathInfo("type",$type).addPathInfo("quizName",$quizName) style=text-decoration:none>$brih_randomly</I></b></a></td>		
 		</tr>	
 		<tr bgcolor="$ui.menuColor" width="100%">
-				<td align="left" width="100%" colspan="5"><b><i><font size="3"> $brih_onebyone $brih_quiz $brih_generation </font><b></i></td>
-		</tr>
+			<td align="left" width="100%" colspan="5"><b><i><font size="3"> $brih_onebyone $brih_qus $brih_generation </font><b></i></td>
+		</tr>	
+
 	#else
 		#if($mode == "update")
 			<tr bgcolor="$ui.menuColor" width="100%">
 				<td align="left" width="100%" colspan="5"><b><i><font size="3">$brih_qus $brih_updation $brih_in $brih_onebyone $brih_mode </font><b></i></td>
+			</tr>
+		#elseif($mode == "one")
+			<tr bgcolor="$ui.menuColor" width="100%">
+				<td align="left" width="100%" colspan="5"><b><i><font size="3"> $brih_onebyone $brih_quiz $brih_generation </font><b></i></td>
 			</tr>
 		#else
 			<tr bgcolor="$ui.menuColor" width="100%">
@@ -246,14 +257,32 @@ $!data.getMessage()
 
 </form>
 <script LANGUAGE="JAVASCRIPT">
-	
+	var flag=false;
 	function popupWin(url,popupName){
     		Win1=window.open(url,popupName,"resizable=0,scrollbars=1,height=200,width=300,align=center");
    	}
    	
 	function checkValue(frm,field){		
         	if(frm.topicList.value!="" && frm.typeList.value!="" && frm.levelList.value!="" ){
-			frm.actionName.value=field.name;
+        	if(field.value == "Search Questions"){
+        		if(frm.quizMode.value!="one" ){
+						if(frm.mode.value!="one"){
+							flag=true;
+							frm.quizMode.value="one";
+							frm.mode.value="one";
+						}
+				}
+				else{
+					if(frm.mode.value!=""){
+							flag=false;
+					}
+				}
+				if(flag){
+					frm.quizMode.value="one";
+					frm.mode.value="one";
+				}
+			}
+   			frm.actionName.value=field.name;
 			frm.topicName.value=frm.topicList.options[frm.topicList.selectedIndex].value;
 			frm.typeName.value=frm.typeList.options[frm.typeList.selectedIndex].value;
 			frm.levelName.value=frm.levelList.options[frm.levelList.selectedIndex].value;
@@ -262,29 +291,49 @@ $!data.getMessage()
         	else
             		alert("Please fill the Mandatory(*) Fields !!");            
 	}
-
 	function checkValue1(frm,field){
 		
         	if(frm.marksQuestion.value!=""){
 			if(isNumberString(frm.marksQuestion.value)){
                                 alert("Marks should be an integer value");
                                 frm.marksQuestion.focus();                                
-                        }
+             }
 			else{
+				if(field.value=="Save & Add More"){
+						if(frm.quizMode.value!="one" ){
+							if(frm.mode.value!="one")
+								flag=true;
+								frm.quizMode.value="one";
+								frm.mode.value="one";
+							}
+						}
+						else{
+							if(frm.mode.value!=""){
+								flag=false;
+							}
+						}
+						if(flag){
+							frm.quizMode.value="one";
+							frm.mode.value="one";
+						}
 				frm.actionName.value=field.name;
 				frm.topicName.value=frm.topic.value;
 				frm.levelName.value=frm.level.value;
 				if(field.value=="Save & Exit"){
-					frm.count.value="2";
+					if(frm.mode.value=="one"){
+						frm.count.value="2";
+					}
+					else{
+						frm.count.value="3";
+					}
 					frm.page.value="exit";
 				}
 				frm.submit();
-			}
+				}
         	}
         	else
             		alert("Please fill the Marks !!");            
 	}
-
 	function isNumberString(chString){
                 if(chString.length==0)
 	                return false;
@@ -297,5 +346,5 @@ $!data.getMessage()
                 }
                 return false;
         }	
-       
     </script>
+

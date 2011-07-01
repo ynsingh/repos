@@ -56,7 +56,7 @@ import org.iitk.brihaspati.modules.utils.YearListUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
-
+import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 /**
 * This class announce a quiz
 * @author <a href="mailto:aayushi.sr@gmail.com">Aayushi Sr</a>
@@ -70,6 +70,7 @@ public class Announce_Exam extends SecureScreen{
         *for template use
         */
         ParameterParser pp=data.getParameters();
+	String LangFile=data.getUser().getTemp("LangFile").toString();
         try{
         	User user=data.getUser();
         	String courseid=(String)user.getTemp("course_id");   
@@ -83,7 +84,40 @@ public class Announce_Exam extends SecureScreen{
         	String maxMarks = pp.getString("maxMarks","");
         	String noQuestions = pp.getString("noQuestions","");
         	String creationDate = pp.getString("creationDate","");
+        	String type="";
         	ErrorDumpUtil.ErrorLog("mode is :"+mode);
+           	String check = "y";
+           	String filePath1=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/"+quizID);
+          	String quizSettingPath=quizID+"_QuestionSetting.xml";
+		File file1=new File(filePath1+"/"+quizSettingPath);
+           	QuizMetaDataXmlReader quizmetadata1=null;
+		Vector collect=new Vector();
+		boolean flag=false;
+		if(file1.exists()){
+			quizmetadata1=new QuizMetaDataXmlReader(filePath1+"/"+quizSettingPath);	
+			collect=quizmetadata1.getQuizQuestionDetail(quizID);		
+			if(collect!=null && collect.size()!=0){
+				for(int i=0;i<collect.size();i++){
+					type=((QuizFileEntry)collect.elementAt(i)).getQuestionType();
+					ErrorDumpUtil.ErrorLog("question type "+type);
+						if((type.equals("sat")) ||(type.equals("lat"))){
+					 	   check = "n";
+					 	   flag=true;
+						}
+				}
+				if(check.equals("y")){
+					ErrorDumpUtil.ErrorLog("set for mcq tft"+type+check);
+					context.put("setVisible","hidden");
+					context.put("flag",flag);
+				}
+				else{
+					ErrorDumpUtil.ErrorLog("set for else"+type+check);
+					context.put("setVisible","visible");
+				}		
+
+			}
+		}
+		
         	if(quizName!="")
         		context.put("quizName",quizName);
         	if(maxTime!="")
@@ -103,9 +137,9 @@ public class Announce_Exam extends SecureScreen{
         		context.put("mode",mode);
         		context.put("tdcolor","2");
         		String filePath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/");
-                String quizPath="/Quiz.xml";       
-                String startDate = "",startTime = "",endDate = "",endTime = "",allowPractice = "";
-                File file=new File(filePath+"/"+quizPath);
+                	String quizPath="/Quiz.xml";       
+                	String startDate = "",startTime = "",endDate = "",endTime = "",allowPractice = "",resDate = "";
+                	File file=new File(filePath+"/"+quizPath);
     			Vector quizDetail=new Vector();
     			QuizMetaDataXmlReader quizmetadata=null;
     			if(file.exists()){
@@ -113,12 +147,20 @@ public class Announce_Exam extends SecureScreen{
     				quizDetail=quizmetadata.getQuiz_Detail(quizID);
     				if(quizDetail!=null){
     					if(quizDetail.size()!=0){
+
     						for(int i = 0; i<quizDetail.size(); i++){
     							startDate = ((QuizFileEntry) quizDetail.elementAt(i)).getExamDate();
     							startTime = ((QuizFileEntry) quizDetail.elementAt(i)).getStartTime();
     							endDate = ((QuizFileEntry) quizDetail.elementAt(i)).getExpiryDate();
     							endTime = ((QuizFileEntry) quizDetail.elementAt(i)).getEndTime();
     							allowPractice = ((QuizFileEntry) quizDetail.elementAt(i)).getAllowPractice();
+							if(check.equals("n")){
+								resDate = ((QuizFileEntry) quizDetail.elementAt(i)).getResDate();
+							}
+							else{
+								resDate = null;
+							}
+								ErrorDumpUtil.ErrorLog("resdate in aanounce.java "+resDate);
     						}    						         
     					}
     				}
@@ -140,11 +182,16 @@ public class Announce_Exam extends SecureScreen{
 				String[] temp3 = endTime.split(":");
 				context.put("End_hr",temp3[0]);
 				context.put("End_min",temp3[1]);
-				context.put("allowPractice",allowPractice);        		
+				context.put("allowPractice",allowPractice);  
+				if(check.equals("n")){	
+					String[] temp4 = resDate.split("-");
+					context.put("Res_year",temp4[0]);
+					context.put("Res_month",temp4[1]);
+					context.put("Res_day",temp4[2]);
+				}
         	}
         	
         	context.put("course",(String)user.getTemp("course_name"));
-        	
         	String currentdate=ExpiryUtil.getCurrentDate("-");
         	String[] temp4 = currentdate.split("-");
         	String month = temp4[1];
@@ -193,7 +240,7 @@ public class Announce_Exam extends SecureScreen{
         	context.put("eMinute",eMinute);
         }catch(Exception e) {
         	ErrorDumpUtil.ErrorLog("The exception in Announce_Exam screen::"+e);
-        	data.setMessage("See ExceptionLog !! ");
+		data.setMessage(MultilingualUtil.ConvertedString("brih_exception",LangFile));
         }
     }
 }

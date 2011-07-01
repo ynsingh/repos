@@ -48,7 +48,7 @@ import org.apache.turbine.services.servlet.TurbineServlet;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
-
+import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 /**
  * This class is used to view the last stored preview. 
  * @author <a href="mailto:noopur.here@gmail.com">Nupur Dixit</a>
@@ -62,6 +62,7 @@ public class Stored_Preview extends  SecureScreen{
 	        *for template use
 	        */
 	        ParameterParser pp=data.getParameters();
+		String lang=data.getUser().getTemp("LangFile").toString();
 		try{
 			User user=data.getUser();
 
@@ -104,7 +105,7 @@ public class Stored_Preview extends  SecureScreen{
 		}
 		catch(Exception e) {
 			ErrorDumpUtil.ErrorLog("The exception in Stored_Preview Screen::"+e);
-			data.setMessage("See ExceptionLog !! ");	
+			data.setMessage(MultilingualUtil.ConvertedString("brih_exception"+e,lang));	
 		}
 	}
 }			

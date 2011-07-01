@@ -34,17 +34,9 @@ package org.iitk.brihaspati.modules.actions;
 import java.io.File;
 import java.io.FileReader;
 import java.io.BufferedReader;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Vector;
-import java.util.StringTokenizer;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Arrays;
 import java.util.*;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.Calendar;
+import java.text.SimpleDateFormat;
 //Turbine
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.om.security.User;
@@ -63,6 +55,7 @@ import org.apache.turbine.modules.screens.VelocityScreen;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlWriter;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
+import org.iitk.brihaspati.modules.utils.XmlData;
 
 /**
  * This Action class for Generate quiz  module of online examination system 
@@ -114,6 +107,8 @@ public class OLES_Quiz extends SecureAction{
 			newAnnouncement(data,context);
 		else if(action.equals("eventSubmit_practiceQuiz"))
 			practiceQuiz(data,context);
+		else if(action.equals("eventSubmit_doDeleteQuestions"))
+			deleteQuestions(data,context);
 		else
 			data.setMessage(MultilingualUtil.ConvertedString("action_msg",LangFile));				
 	}
@@ -263,6 +258,9 @@ public class OLES_Quiz extends SecureAction{
 			String maxTime=pp.getString("maxTime","")+":00";
 			//String maxTime=pp.getString("maxTime","");
 			String noQuestion=pp.getString("numberQuestion","");
+			String mode=pp.getString("mode","");
+			String quizMode=pp.getString("quizMode","");
+			ErrorDumpUtil.ErrorLog("mode,quizMode is"+"::"+mode+"::"+quizMode);
 			String status = "ACT";
 			String Cur_date=ExpiryUtil.getCurrentDate("-");
 			String modifiedDate = Cur_date;
@@ -305,12 +303,14 @@ public class OLES_Quiz extends SecureAction{
 					if(scoreFile.exists()){
 						quizmetadata=new QuizMetaDataXmlReader(filepath+"/score.xml");
 						scoreVector = quizmetadata.getDistinctIDFromFinalScore();
-						for(QuizFileEntry a:scoreVector){
-							quizid = a.getQuizID();
-							if(quizid.equalsIgnoreCase(quizID)){
-								ErrorDumpUtil.ErrorLog("quiz is stored in score.xml");
-								data.setMessage(MultilingualUtil.ConvertedString("brih_quizcannotdeleted",LangFile));
-								return;
+						if(scoreVector!=null){
+							for(QuizFileEntry a:scoreVector){
+								quizid = a.getQuizID();
+								if(quizid.equalsIgnoreCase(quizID)){
+									ErrorDumpUtil.ErrorLog("quiz is stored in score.xml");
+									data.setMessage(MultilingualUtil.ConvertedString("brih_quizcannotdeleted",LangFile));
+									return;
+								}
 							}
 						}
 					}
@@ -343,7 +343,7 @@ public class OLES_Quiz extends SecureAction{
 						if(insertedMarksQuiz<=Integer.parseInt(maxMarks)){
 							xmlWriter=QuizMetaDataXmlWriter.Update_QuizList(filepath,quizPath,seq,quizID,maxMarks,maxTime,noQuestion,modifiedDate);
 							xmlWriter.writeXmlFile();
-							data.setMessage(MultilingualUtil.ConvertedString("brih_quiz",LangFile)+" "+MultilingualUtil.ConvertedString("brih_hasbeenedit",LangFile));							
+								data.setMessage(MultilingualUtil.ConvertedString("brih_quiz",LangFile)+" "+MultilingualUtil.ConvertedString("brih_hasbeenedit",LangFile));
 						}
 						else{
 							data.setMessage(MultilingualUtil.ConvertedString("brih_quizupdate",LangFile)+" "+insertedMarksQuiz+" "+MultilingualUtil.ConvertedString("brih_insertedmarksmsg",LangFile)+" "+MultilingualUtil.ConvertedString("brih_maxmarks",LangFile));														
@@ -407,10 +407,13 @@ public class OLES_Quiz extends SecureAction{
 			ErrorDumpUtil.ErrorLog("\n topic name is:"+topicName);
 			String typeName = data.getParameters().getString("typeName","");
 			String levelName = data.getParameters().getString("levelName","");
+			String count=data.getParameters().getString("count","");
+			ErrorDumpUtil.ErrorLog("cont in random Quiz inside OLES_Quiz.java");
+			context.put("tdcolor",count);
 			String status = "ACT";
 			String quizStatus="ACT";
 			ErrorDumpUtil.ErrorLog("\n mode in oles quiz is:"+mode);
-
+			
 			String page = data.getParameters().getString("page","");
 			ParameterParser pp=data.getParameters();
 			String numberQuestion="";
@@ -431,13 +434,12 @@ public class OLES_Quiz extends SecureAction{
 			String newFilePath=TurbineServlet.getRealPath("/Courses/"+courseid+"/Exam/"+quizID);
 			String questionSettingPath=quizID+"_QuestionSetting.xml";
 			String questionsPath=quizID+"_Questions.xml";
-
+			
 			File newFile=new File(newFilePath+"/"+questionSettingPath);
 			XmlWriter xmlWriter=null;
 			if(!newFile.exists())
 				context.put("isFile","");
-			else
-			{
+			else {
 				context.put("isFile","exist");
 				QuizMetaDataXmlReader questionReader = new QuizMetaDataXmlReader(newFilePath+"/"+questionSettingPath);
 				HashMap hm = new HashMap();
@@ -450,7 +452,7 @@ public class OLES_Quiz extends SecureAction{
 							if((Integer.parseInt(marksQuestion)*Integer.parseInt(numberQuestion))<=Integer.parseInt(maxMarks))
 								insertQuestionRandomly(xmlWriter,newFilePath,numberQuestion,topicName,typeName,levelName,marksQuestion,status,data,username,courseid,questionSettingPath,questionsPath);
 							else
-								data.setMessage(MultilingualUtil.ConvertedString("brih_marksmsg",LangFile)+" "+maxMarks);
+										data.setMessage(MultilingualUtil.ConvertedString("brih_marksmsg",LangFile)+" "+maxMarks);
 						}
 						else
 							data.setMessage(MultilingualUtil.ConvertedString("brih_quesmsg",LangFile)+" "+maxnoQuestions);
@@ -517,6 +519,32 @@ public class OLES_Quiz extends SecureAction{
 					option3=data.getParameters().getString("option3","");
 					option4=data.getParameters().getString("option4","");
 				}    			
+			}
+			
+			String quizXmlPath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/");
+			String quizXml="Quiz.xml";
+			String startDate=null;
+			String startTime=null;
+			Calendar current=Calendar.getInstance();
+			SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			String dateNow = formatter.format(current.getTime());
+			String amt[]=dateNow.split(" ");
+			String currentDate=amt[0];
+			String currentTime=amt[1];
+			Vector dateCollect=new Vector();
+			File file1=new File(quizXmlPath+"/"+quizXml);
+			QuizMetaDataXmlReader topipcmetadata=null;
+			if(file1.exists()){
+				topipcmetadata=new QuizMetaDataXmlReader(quizXmlPath+"/"+quizXml);
+				dateCollect=topipcmetadata.getQuiz_Detail(quizID);
+					if(dateCollect!=null && dateCollect.size()!=0){
+						for(int i=0;i<dateCollect.size();i++){
+							startDate=((QuizFileEntry) dateCollect.elementAt(i)).getExamDate();
+							startTime=((QuizFileEntry) dateCollect.elementAt(i)).getStartTime();
+							ErrorDumpUtil.ErrorLog("stattDate is "+ startDate);
+							ErrorDumpUtil.ErrorLog("Start Time is "+ startTime);
+						}
+					}
 			}
 			File ff = new File(questionBankFilePath+"/"+questionBankQuestionsPath);
 			ErrorDumpUtil.ErrorLog("ff file path :"+ff.getPath());
@@ -596,15 +624,44 @@ public class OLES_Quiz extends SecureAction{
 			}        
 			if(variable[0].equalsIgnoreCase("empty"))
 				data.setMessage(MultilingualUtil.ConvertedString("brih_noquestion_repository",LangFile));
-			else if(variable[0].equalsIgnoreCase("success"))
+			else if(variable[0].equalsIgnoreCase("success")){
 				data.setMessage(MultilingualUtil.ConvertedString("QueBankUtil_msg1",LangFile));
-			else if(variable[0].equalsIgnoreCase("firstInsert"))
-				data.setMessage(MultilingualUtil.ConvertedString("QueBankUtil_msg1",LangFile));
+			}		
+			else if(variable[0].equalsIgnoreCase("firstInsert")){
+					data.setMessage(MultilingualUtil.ConvertedString("QueBankUtil_msg1",LangFile));
+			}		
 			else if(variable[0].equalsIgnoreCase("insert")){
-				data.setMessage(MultilingualUtil.ConvertedString("brih_questionrepo",LangFile)+" "+variable[1]+" "+MultilingualUtil.ConvertedString("oles_questions",LangFile)+
-						" "+MultilingualUtil.ConvertedString("brih_and",LangFile)+" "+variable[2]+" "+MultilingualUtil.ConvertedString("brih_insertedquestionmsg",LangFile)+
-						" "+MultilingualUtil.ConvertedString("brih_soonly",LangFile)+" "+variable[3]+" "+MultilingualUtil.ConvertedString("QueBankUtil_msg1",LangFile));
+				if(mode.equals("random")|quizMode.equals("random")){
+					if(startDate!=null && startTime!=null){
+						if((currentDate.compareTo(startDate)==-1) && (currentTime.compareTo(startTime)==-1 ||  currentTime.compareTo(startTime)==0 || currentTime.compareTo(startTime)==1)){
+							data.setMessage(MultilingualUtil.ConvertedString("brih_questionrepo",LangFile)+" "+variable[1]+" "+MultilingualUtil.ConvertedString("oles_questions",LangFile)+
+									" "+MultilingualUtil.ConvertedString("brih_and",LangFile)+" "+variable[2]+" "+MultilingualUtil.ConvertedString("brih_insertedquestionmsg",LangFile)+
+									" "+MultilingualUtil.ConvertedString("brih_soonly",LangFile)+" "+variable[3]+" "+MultilingualUtil.ConvertedString("QueBankUtil_msg1",LangFile)+" "+MultilingualUtil.ConvertedString("brih_updateAnnouncequizSave",LangFile));
+						}
+						else if((currentDate.compareTo(startDate)==0) && (currentTime.compareTo(startTime)==-1 ||  currentTime.compareTo(startTime)==0)){
+								data.setMessage(MultilingualUtil.ConvertedString("brih_questionrepo",LangFile)+" "+variable[1]+" "+MultilingualUtil.ConvertedString("oles_questions",LangFile)+
+										" "+MultilingualUtil.ConvertedString("brih_and",LangFile)+" "+variable[2]+" "+MultilingualUtil.ConvertedString("brih_insertedquestionmsg",LangFile)+
+										" "+MultilingualUtil.ConvertedString("brih_soonly",LangFile)+" "+variable[3]+" "+MultilingualUtil.ConvertedString("QueBankUtil_msg1",LangFile)+" "+" "+MultilingualUtil.ConvertedString("brih_updateAnnouncequizSave",LangFile));
+							}
+					else{
+						data.setMessage(MultilingualUtil.ConvertedString("brih_questionrepo",LangFile)+" "+variable[1]+" "+MultilingualUtil.ConvertedString("oles_questions",LangFile)+
+								" "+MultilingualUtil.ConvertedString("brih_and",LangFile)+" "+variable[2]+" "+MultilingualUtil.ConvertedString("brih_insertedquestionmsg",LangFile)+
+								" "+MultilingualUtil.ConvertedString("brih_soonly",LangFile)+" "+variable[3]+" "+MultilingualUtil.ConvertedString("QueBankUtil_msg1",LangFile));
+					}
+				 }
+				else{
+					data.setMessage(MultilingualUtil.ConvertedString("brih_questionrepo",LangFile)+" "+variable[1]+" "+MultilingualUtil.ConvertedString("oles_questions",LangFile)+
+							" "+MultilingualUtil.ConvertedString("brih_and",LangFile)+" "+variable[2]+" "+MultilingualUtil.ConvertedString("brih_insertedquestionmsg",LangFile)+
+							" "+MultilingualUtil.ConvertedString("brih_soonly",LangFile)+" "+variable[3]+" "+MultilingualUtil.ConvertedString("QueBankUtil_msg1",LangFile));	
+				}
 			}
+				else{
+					data.setMessage(MultilingualUtil.ConvertedString("brih_questionrepo",LangFile)+" "+variable[1]+" "+MultilingualUtil.ConvertedString("oles_questions",LangFile)+
+							" "+MultilingualUtil.ConvertedString("brih_and",LangFile)+" "+variable[2]+" "+MultilingualUtil.ConvertedString("brih_insertedquestionmsg",LangFile)+
+							" "+MultilingualUtil.ConvertedString("brih_soonly",LangFile)+" "+variable[3]+" "+MultilingualUtil.ConvertedString("QueBankUtil_msg1",LangFile));
+				}
+		}
+			
 			else if(variable[0].equalsIgnoreCase("dont insert")){
 				data.setMessage(MultilingualUtil.ConvertedString("brih_questionrepo",LangFile)+" "+variable[1]+" "+MultilingualUtil.ConvertedString("oles_questions",LangFile)+
 						" "+MultilingualUtil.ConvertedString("brih_and",LangFile)+" "+variable[2]+" "+MultilingualUtil.ConvertedString("brih_insertedquestionmsg",LangFile)+
@@ -644,7 +701,7 @@ public class OLES_Quiz extends SecureAction{
 			String newFilePath1=TurbineServlet.getRealPath("/Courses/"+courseid+"/Exam/");
 			String quizPath="/Quiz.xml";
 			int seq=-1;
-			ErrorDumpUtil.ErrorLog("quiz mode in update quiz randomy is :"+quizMode);
+			ErrorDumpUtil.ErrorLog("quiz mode in update quiz randomly is :"+quizMode);
 			if(quizMode.trim().isEmpty()){
 				ErrorDumpUtil.ErrorLog("inside quiz mode empty");
 				quizMode="random";
@@ -732,6 +789,7 @@ public class OLES_Quiz extends SecureAction{
 					}
 				}  
 				String quizid;
+				ErrorDumpUtil.ErrorLog("seq inside doRempveQuiz method "+seq);
 				File scoreFile = new File(filepath+"/score.xml");
 				Vector<QuizFileEntry> scoreVector=new Vector<QuizFileEntry>();
 				if(scoreFile.exists()){
@@ -741,6 +799,7 @@ public class OLES_Quiz extends SecureAction{
 						quizid = a.getQuizID();
 						if(quizid.equalsIgnoreCase(quizID)){
 							ErrorDumpUtil.ErrorLog("quiz id entry in score.xml");
+							data.setMessage(MultilingualUtil.ConvertedString("brih_quizcannotdeleted",LangFile));
 							return;
 						}
 					}
@@ -777,7 +836,8 @@ public class OLES_Quiz extends SecureAction{
 //					fileTemp.delete();
 //				}
 				xmlWriter.writeXmlFile();
-				data.setMessage("Unattempted "+MultilingualUtil.ConvertedString("brih_quiz",LangFile)+" "+MultilingualUtil.ConvertedString("brih_hasbeendelete",LangFile));
+				data.setMessage(MultilingualUtil.ConvertedString("brih_unattempt",LangFile)+" "+MultilingualUtil.ConvertedString("brih_quiz",LangFile)+" "+MultilingualUtil.ConvertedString("brih_hasbeendelete",LangFile));
+
 			}			
 		}catch(Exception e){
 			ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:doRemoveQuiz !! "+e);
@@ -802,7 +862,7 @@ public class OLES_Quiz extends SecureAction{
 			String topicName = data.getParameters().getString("topicName","");
 			String typeName = data.getParameters().getString("typeName","");
 			String levelName = data.getParameters().getString("levelName","");
-
+			ErrorDumpUtil.ErrorLog("mode inside OLES_Quiz.java at method oneByOneQuiz"+ mode);
 			String questionBankFilePath=TurbineServlet.getRealPath("/QuestionBank/"+username+"/"+courseid);
 			String questionBankQuestionsPath=topicName+"_"+levelName+"_"+typeName+".xml";
 
@@ -1016,7 +1076,8 @@ public class OLES_Quiz extends SecureAction{
 			String typeName = data.getParameters().getString("typeName","");
 			String levelName = data.getParameters().getString("levelName","");
 			String page = data.getParameters().getString("page","");
-
+			String mode=data.getParameters().getString("mode","");
+			
 			ParameterParser pp=data.getParameters();
 			String topicID = pp.getString("topicID","");
 			String numberQuestion = pp.getString("numberQuestion","");
@@ -1030,6 +1091,33 @@ public class OLES_Quiz extends SecureAction{
 			Vector collect=new Vector();
 			QuizMetaDataXmlReader quizmetadata=new QuizMetaDataXmlReader(newFilePath+"/"+questionSettingPath);
 			collect=quizmetadata.getQuizQuestionDetail();
+			
+			String quizXmlPath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/");
+			String quizXml="Quiz.xml";
+			String startDate=null;
+			String startTime=null;
+			Calendar current=Calendar.getInstance();
+			SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			String dateNow = formatter.format(current.getTime());
+			String amt[]=dateNow.split(" ");
+			String currentDate=amt[0];
+			String currentTime=amt[1];
+			Vector dateCollect=new Vector();
+			File file1=new File(quizXmlPath+"/"+quizXml);
+			QuizMetaDataXmlReader topipcmetadata=null;
+			if(file1.exists()){
+				topipcmetadata=new QuizMetaDataXmlReader(quizXmlPath+"/"+quizXml);
+				dateCollect=topipcmetadata.getQuiz_Detail(quizID);
+					if(dateCollect!=null && dateCollect.size()!=0){
+						for(int i=0;i<dateCollect.size();i++){
+							startDate=((QuizFileEntry) dateCollect.elementAt(i)).getExamDate();
+							startTime=((QuizFileEntry) dateCollect.elementAt(i)).getStartTime();
+							ErrorDumpUtil.ErrorLog("stattDate is "+ startDate);
+							ErrorDumpUtil.ErrorLog("Start Time is "+ startTime);
+						}
+					}
+			}
+			
 			if(collect!=null){
 				for(int i=0;i<collect.size();i++){
 					String topicid =((QuizFileEntry) collect.elementAt(i)).getID();
@@ -1093,16 +1181,66 @@ public class OLES_Quiz extends SecureAction{
 					variable[0]="empty";
 			}        
 			if(variable[0].equalsIgnoreCase("empty"))
-				data.setMessage(MultilingualUtil.ConvertedString("brih_noquestion_repository",LangFile));
+				
+				data.setMessage(MultilingualUtil.ConvertedString("brih_noquestion_repository",LangFile)); 
 			else if(variable[0].equalsIgnoreCase("success"))
-				data.setMessage(MultilingualUtil.ConvertedString("brih_questioninsertsuccess",LangFile));
-			else if(variable[0].equalsIgnoreCase("firstUpdate"))
-				data.setMessage(MultilingualUtil.ConvertedString("brih_questionupdatesuccess",LangFile));
+				data.setMessage(MultilingualUtil.ConvertedString("brih_questioninsertsuccess",LangFile)); 
+			else if(variable[0].equalsIgnoreCase("firstUpdate")){
+				if(mode.equals("update") && quizMode.equals("random")){
+					if(startDate!=null && startTime!=null){
+						if((currentDate.compareTo(startDate)==-1) && (currentTime.compareTo(startTime)==-1 ||  currentTime.compareTo(startTime)==0 || currentTime.compareTo(startTime)==1)){
+							data.setMessage(MultilingualUtil.ConvertedString("brih_questionupdatesuccess",LangFile)+" "+MultilingualUtil.ConvertedString("brih_savepreview_reannounce",LangFile)); 
+						}
+						else if((currentDate.compareTo(startDate)==0) && (currentTime.compareTo(startTime)==-1 ||  currentTime.compareTo(startTime)==0)){
+							data.setMessage(MultilingualUtil.ConvertedString("brih_questionupdatesuccess",LangFile)+" "+MultilingualUtil.ConvertedString("brih_savepreview_reannounce",LangFile)); 
+						}
+						else{
+							data.setMessage(MultilingualUtil.ConvertedString("brih_questionupdatesuccess",LangFile));
+						}
+					}
+					else
+						data.setMessage(MultilingualUtil.ConvertedString("brih_questionupdatesuccess",LangFile));
+				}
+				else
+					data.setMessage(MultilingualUtil.ConvertedString("brih_questionupdatesuccess",LangFile));
+			}
+
 			else if(variable[0].equalsIgnoreCase("update")){
-				data.setMessage(MultilingualUtil.ConvertedString("brih_questionrepo",LangFile)+" "+variable[1]+" "+MultilingualUtil.ConvertedString("oles_questions",LangFile)+
-						" "+MultilingualUtil.ConvertedString("brih_and",LangFile)+" "+variable[2]+" "+MultilingualUtil.ConvertedString("brih_insertedquestionmsg",LangFile)+
-						" "+MultilingualUtil.ConvertedString("brih_soonly",LangFile)+" "+variable[3]+" "+" "+MultilingualUtil.ConvertedString("oles_questions",LangFile)+
-						" "+MultilingualUtil.ConvertedString("update_msg",LangFile));
+				if(mode.equals("update") && quizMode.equals("random")){
+					if(startDate!=null && startTime!=null){
+						if((currentDate.compareTo(startDate)==-1)&&(currentTime.compareTo(startTime)==0 ||currentTime.compareTo(startTime)==-1 || currentTime.compareTo(startTime)==1)){
+							data.setMessage(MultilingualUtil.ConvertedString("brih_questionrepo",LangFile)+" "+variable[1]+" "+MultilingualUtil.ConvertedString("oles_questions",LangFile)+
+								" "+MultilingualUtil.ConvertedString("brih_and",LangFile)+" "+variable[2]+" "+MultilingualUtil.ConvertedString("brih_insertedquestionmsg",LangFile)+
+								" "+MultilingualUtil.ConvertedString("brih_soonly",LangFile)+" "+variable[3]+" "+" "+MultilingualUtil.ConvertedString("oles_questions",LangFile)+
+								" "+MultilingualUtil.ConvertedString("update_msg",LangFile)+" "+MultilingualUtil.ConvertedString("brih_savepreview_reannounce",LangFile));
+						}
+						else if((currentDate.compareTo(startDate)==0)&&(currentTime.compareTo(startTime)==-1 || currentTime.compareTo(startTime)==0)){
+							data.setMessage(MultilingualUtil.ConvertedString("brih_questionrepo",LangFile)+" "+variable[1]+" "+MultilingualUtil.ConvertedString("oles_questions",LangFile)+
+								" "+MultilingualUtil.ConvertedString("brih_and",LangFile)+" "+variable[2]+" "+MultilingualUtil.ConvertedString("brih_insertedquestionmsg",LangFile)+
+								" "+MultilingualUtil.ConvertedString("brih_soonly",LangFile)+" "+variable[3]+" "+" "+MultilingualUtil.ConvertedString("oles_questions",LangFile)+
+								" "+MultilingualUtil.ConvertedString("update_msg",LangFile)+" "+MultilingualUtil.ConvertedString("brih_savepreview_reannounce",LangFile));
+						}
+						else{
+							data.setMessage(MultilingualUtil.ConvertedString("brih_questionrepo",LangFile)+" "+variable[1]+" "+MultilingualUtil.ConvertedString("oles_questions",LangFile)+
+								" "+MultilingualUtil.ConvertedString("brih_and",LangFile)+" "+variable[2]+" "+MultilingualUtil.ConvertedString("brih_insertedquestionmsg",LangFile)+
+								" "+MultilingualUtil.ConvertedString("brih_soonly",LangFile)+" "+variable[3]+" "+" "+MultilingualUtil.ConvertedString("oles_questions",LangFile)+
+								" "+MultilingualUtil.ConvertedString("update_msg",LangFile));
+						}
+					
+					}
+					else{
+						data.setMessage(MultilingualUtil.ConvertedString("brih_questionrepo",LangFile)+" "+variable[1]+" "+MultilingualUtil.ConvertedString("oles_questions",LangFile)+
+								" "+MultilingualUtil.ConvertedString("brih_and",LangFile)+" "+variable[2]+" "+MultilingualUtil.ConvertedString("brih_insertedquestionmsg",LangFile)+
+								" "+MultilingualUtil.ConvertedString("brih_soonly",LangFile)+" "+variable[3]+" "+" "+MultilingualUtil.ConvertedString("oles_questions",LangFile)+
+								" "+MultilingualUtil.ConvertedString("update_msg",LangFile));
+					}
+			}
+				else{
+					data.setMessage(MultilingualUtil.ConvertedString("brih_questionrepo",LangFile)+" "+variable[1]+" "+MultilingualUtil.ConvertedString("oles_questions",LangFile)+
+							" "+MultilingualUtil.ConvertedString("brih_and",LangFile)+" "+variable[2]+" "+MultilingualUtil.ConvertedString("brih_insertedquestionmsg",LangFile)+
+							" "+MultilingualUtil.ConvertedString("brih_soonly",LangFile)+" "+variable[3]+" "+" "+MultilingualUtil.ConvertedString("oles_questions",LangFile)+
+							" "+MultilingualUtil.ConvertedString("update_msg",LangFile));
+				}
 			}
 			else if(variable[0].equalsIgnoreCase("dont update")){
 				data.setMessage(MultilingualUtil.ConvertedString("brih_questionrepo",LangFile)+" "+variable[1]+" "+MultilingualUtil.ConvertedString("oles_questions",LangFile)+
@@ -1126,7 +1264,6 @@ public class OLES_Quiz extends SecureAction{
 		}
 		return variable;
 	}
-
 	/** This method is responsible to accept the quiz preview and stored in the quizID_questions xml file
 	 * @param data RunData instance
 	 * @param context Context instance
@@ -1288,7 +1425,8 @@ public class OLES_Quiz extends SecureAction{
 			QuizMetaDataXmlReader quizXmlReader=new QuizMetaDataXmlReader(quizFilePath+"/"+quizQuestionSettingPath);
 			HashMap insertedMarksHashMap = new HashMap();
 			insertedMarksHashMap = quizXmlReader.getQuizQuestionNoMarks(quizXmlReader,quizID);
-			int insertedMarksQuiz =((Integer)insertedMarksHashMap.get("marks"));			
+			int insertedMarksQuiz =((Integer)insertedMarksHashMap.get("marks"));
+			
 			if(Integer.parseInt(marksQuestion)<Integer.parseInt(maxMarks)){
 				if(Integer.parseInt(marksQuestion)+insertedMarksQuiz<Integer.parseInt(maxMarks)){
 					XmlWriter xmlWriter=null;
@@ -1298,7 +1436,7 @@ public class OLES_Quiz extends SecureAction{
 					XmlWriter xmlWriter1=null;
 					xmlWriter1=new XmlWriter(quizFilePath+"/"+quizQuestionsPath);
 					xmlWriter1 = QuizMetaDataXmlWriter.UpdateQuizQuestion(quizFilePath,quizQuestionsPath,Integer.parseInt(id),questionID,question,option1,option2,option3,option4,answer,marksQuestion,fileName);
-					xmlWriter1.writeXmlFile();			
+					xmlWriter1.writeXmlFile();	
 					data.setMessage(MultilingualUtil.ConvertedString("c_msg5",LangFile));
 				}
 				else
@@ -1329,6 +1467,32 @@ public class OLES_Quiz extends SecureAction{
 			String filePath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/");
 			String quizPath="/Quiz.xml";
 			QuizMetaDataXmlReader quizmetadata=null;
+			
+			//==========functionality - if quiz is attempted then can not be reannounced===============
+			String quizid;
+			File scoreFile = new File(filePath+"/score.xml");
+			Vector<QuizFileEntry> scoreVector=new Vector<QuizFileEntry>();
+			
+			if(scoreFile.exists()){
+				
+					ErrorDumpUtil.ErrorLog("\n inside score vector  is "+scoreVector);
+					quizmetadata=new QuizMetaDataXmlReader(filePath+"/score.xml");
+					scoreVector = quizmetadata.getDistinctIDFromFinalScore();
+					if(scoreVector!=null){
+					for(QuizFileEntry a:scoreVector){
+						quizid = a.getQuizID();
+						if(quizid.equalsIgnoreCase(quizID)){
+							ErrorDumpUtil.ErrorLog("quiz is stored in score.xml");
+							data.setMessage(MultilingualUtil.ConvertedString("brih_quizcannotreannounce",LangFile));
+							data.setScreenTemplate("call,OLES,AnnounceExam_Manage.vm");
+							return;
+						}
+					}
+				}
+			}
+			
+			
+			//============================================
 			//functionality code-if preview is not saved then quiz can't announced
 			String previewFilePath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/"+quizID+"/");
 			String previewPath=quizID+"_Questions.xml";
@@ -1349,7 +1513,7 @@ public class OLES_Quiz extends SecureAction{
 			}
 
 			//============================================================================
-			String startDate = "",startTime = "",endDate = "",endTime = "",allowPractice = "";
+			String startDate = "",startTime = "",endDate = "",endTime = "",allowPractice = "",resDate = "";
 
 			File file=new File(filePath+"/"+quizPath);
 			Vector quizDetail=new Vector();
@@ -1371,6 +1535,7 @@ public class OLES_Quiz extends SecureAction{
 							endDate = ((QuizFileEntry) quizDetail.elementAt(i)).getExpiryDate();
 							endTime = ((QuizFileEntry) quizDetail.elementAt(i)).getEndTime();
 							allowPractice = ((QuizFileEntry) quizDetail.elementAt(i)).getAllowPractice();
+							resDate = ((QuizFileEntry) quizDetail.elementAt(i)).getResDate();
 							ErrorDumpUtil.ErrorLog("start date and end date "+startDate+endDate);
 						}							              
 					}
@@ -1378,7 +1543,7 @@ public class OLES_Quiz extends SecureAction{
 			}
 
 			String m = "";
-			if(startDate==null & startTime==null & endDate==null & endTime==null){
+			if(startDate==null & startTime==null & endDate==null & endTime==null & resDate==null){
 				m="new";
 			}
 			else{
@@ -1435,9 +1600,15 @@ public class OLES_Quiz extends SecureAction{
 			String endHour = pp.getString("End_hr","");
 			String endMinute = pp.getString("End_min","");
 
+			String resYear = pp.getString("Res_year","");
+			String resMonth = pp.getString("Res_mon","");
+			String resDay = pp.getString("Res_day","");
+			
 			String endDate = endYear+"-"+endMonth+"-"+endDay;
 			String endTime = endHour+":"+endMinute;
-
+			String resDate = resYear+"-"+resMonth+"-"+resDay;
+			ErrorDumpUtil.ErrorLog("in oles_quiz"+resDate);
+			
 			Calendar current = Calendar.getInstance();
 			Calendar examDate = Calendar.getInstance();
 			examDate.clear();
@@ -1493,7 +1664,7 @@ public class OLES_Quiz extends SecureAction{
 							break;
 						}
 					}
-					xmlWriter=QuizMetaDataXmlWriter.announceQuiz(filePath,quizPath,seq,quizID,startDate,startTime,endDate,endTime);
+					xmlWriter=QuizMetaDataXmlWriter.announceQuiz(filePath,quizPath,seq,quizID,startDate,startTime,endDate,endTime,resDate);
 					xmlWriter.writeXmlFile();
 				}
 				String mode=pp.getString("mode","");
@@ -1722,4 +1893,167 @@ public class OLES_Quiz extends SecureAction{
 	    // The directory is now empty so delete it
 	    return dir.delete();
 	}
-}	                           
+	public void deleteQuestions(RunData data,Context context){
+		try{
+			LangFile=(String)data.getUser().getTemp("LangFile");
+			ParameterParser pp=data.getParameters();
+			ErrorDumpUtil.ErrorLog("Inside deleteQuestion Method !! ");
+			crsId=(String)data.getUser().getTemp("course_id");
+			String quizID=pp.getString("quizID","");
+			String topicName=pp.getString("topicName","");
+			String questionNumber=pp.getString("questionNumber","");
+			String quizName=pp.getString("quizName","");
+			String ID=pp.getString("ID","");
+			String questionLevel=pp.getString("questionLevel","");
+			String questionMarks=pp.getString("questionMarks","");
+			String questionType=pp.getString("questionType","");
+			String deltype = pp.getString("delType","");
+			String mode=pp.getString("Mode","");
+			String quizMode=pp.getString("quizMode","");
+			ErrorDumpUtil.ErrorLog("quizID,topicName,questionNumber,ID,questionType,deltype"+" : "+quizID+" : "+topicName+" : "+questionNumber+ID+" : "+deltype+" : "+mode+" : "+quizMode+" : "+questionLevel+" : "+questionMarks);
+			boolean success;
+			boolean flag=false;
+			boolean flag1=false;
+			int seq=-1;
+			int seq1=-1;
+			XmlWriter xmlWriter=null;
+			Vector collect=new Vector();
+			Vector questionCollect=new Vector();
+			String filePath=TurbineServlet.getRealPath("/Courses/"+crsId+"/Exam/"+quizID);
+			String quizQuestionPath="/"+quizID+"_Questions.xml";
+			String quizQuestionSettingPath="/"+quizID+"_QuestionSetting.xml";
+			QuizMetaDataXmlReader quizmetadata=null;
+			File questionFile=new File(filePath+quizQuestionPath);
+			File questionSettingFile=new File(filePath+quizQuestionSettingPath);
+			
+			String quizXmlPath=TurbineServlet.getRealPath("/Courses"+"/"+crsId+"/Exam/");
+			String quizXml="Quiz.xml";
+			String startDate=null;
+			String startTime=null;
+			String endDate=null;
+			String endTime=null;
+			Calendar current=Calendar.getInstance();
+			SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			String dateNow = formatter.format(current.getTime());
+			String amt[]=dateNow.split(" ");
+			String currentDate=amt[0];
+			String currentTime=amt[1];
+			Vector dateCollect=new Vector();
+			File file1=new File(quizXmlPath+"/"+quizXml);
+			//QuizMetaDataXmlReader topipcmetadata=null;
+			ErrorDumpUtil.ErrorLog("quizXmlPath and quizXml is"+quizXmlPath+"/"+quizXml);
+			if(file1.exists()){
+				quizmetadata=new QuizMetaDataXmlReader(quizXmlPath+"/"+quizXml);
+				dateCollect=quizmetadata.getQuiz_Detail(quizID);
+				ErrorDumpUtil.ErrorLog("inside file 1 dateCollect is "+ dateCollect);
+					if(dateCollect!=null && dateCollect.size()!=0){
+						for(int i=0;i<dateCollect.size();i++){
+							startDate=((QuizFileEntry) dateCollect.elementAt(i)).getExamDate();
+							startTime=((QuizFileEntry) dateCollect.elementAt(i)).getStartTime();
+							endDate=((QuizFileEntry) dateCollect.elementAt(i)).getExpiryDate();
+							endTime=((QuizFileEntry) dateCollect.elementAt(i)).getEndTime();
+							ErrorDumpUtil.ErrorLog("stattDate is "+ startDate);
+							ErrorDumpUtil.ErrorLog("Start Time is "+ startTime);
+						}
+					}
+			}
+			
+			if(questionSettingFile.exists()){
+				quizmetadata=new QuizMetaDataXmlReader(filePath+quizQuestionSettingPath);
+				collect=quizmetadata.getQuizQuestionDetail(quizID);
+				if(collect!=null && collect.size()!=0){
+					for(int i=0;i<collect.size();i++){
+						String id=((QuizFileEntry) collect.elementAt(i)).getID();
+						String topic=((QuizFileEntry) collect.elementAt(i)).getTopic();
+						String questionNumber1=((QuizFileEntry) collect.elementAt(i)).getQuestionNumber();
+						if(id.equals(ID) && topic.equals(topicName) && questionNumber1.equals(questionNumber)){
+							seq=i;
+							break;
+						}
+					}
+				}
+			}
+			if(mode.equals("update") && quizMode.equals("one")){
+				ErrorDumpUtil.ErrorLog("inside update one");
+				if(questionFile.exists()){
+					String file_Name=topicName+"_"+questionLevel+"_"+questionType+".xml";
+					ErrorDumpUtil.ErrorLog("file_Name is "+file_Name+":::"+ questionMarks);
+					quizmetadata=new QuizMetaDataXmlReader(filePath+quizQuestionPath);
+					questionCollect=quizmetadata.getInsertedQuizQuestions(ID);
+					if(questionCollect!=null && questionCollect.size()!=0){
+						ErrorDumpUtil.ErrorLog("inside colloec");
+						for(int j=0;j<questionCollect.size();j++){
+							String questionID=((QuizFileEntry) questionCollect.elementAt(j)).getQuestionID();
+							String questionMarks1=((QuizFileEntry) questionCollect.elementAt(j)).getMarksPerQuestion();
+							String fileName=((QuizFileEntry) questionCollect.elementAt(j)).getFileName();
+							ErrorDumpUtil.ErrorLog("file Name is "+fileName);
+							if(fileName.equals(file_Name) && questionMarks1.equals(questionMarks)){
+								ErrorDumpUtil.ErrorLog("file name is "+fileName+":::"+ questionMarks1);
+								seq1=j;
+								break;
+							}
+						}
+					}
+				}
+			}
+			ErrorDumpUtil.ErrorLog("seq is "+seq);
+			ErrorDumpUtil.ErrorLog("seq1 is "+seq1);
+			if(deltype.equals("quizDel")){
+					xmlWriter=new XmlWriter(filePath+quizQuestionSettingPath);
+					ErrorDumpUtil.ErrorLog("Before Remove Question Setting");
+					xmlWriter.removeElement("QuizQuestions",seq);
+					xmlWriter.writeXmlFile();
+					ErrorDumpUtil.ErrorLog("After Remove Question Setting");
+					if(mode.equals("update") && quizMode.equals("random")){
+						if(questionFile.exists()){
+							success=questionFile.delete();
+							if(success){
+								ErrorDumpUtil.ErrorLog("insie success");
+								if(startDate!=null && startTime!=null){
+									ErrorDumpUtil.ErrorLog("insie startDate");
+									if((currentDate.compareTo(startDate)==-1) && (currentTime.compareTo(startTime)==0 ||currentTime.compareTo(startTime)==-1 || currentTime.compareTo(startTime)==1)){
+										data.setMessage(MultilingualUtil.ConvertedString("brih_anuncquestiondelete",LangFile)+""+MultilingualUtil.ConvertedString("brih_savepreview_reannounce",LangFile));
+									}
+									else if((currentDate.compareTo(startDate)==0) && (currentTime.compareTo(startTime)==-1 || currentTime.compareTo(startTime)==0)){
+										data.setMessage(MultilingualUtil.ConvertedString("brih_anuncquestiondelete",LangFile)+""+MultilingualUtil.ConvertedString("brih_savepreview_reannounce",LangFile));
+									}
+									else{
+										data.setMessage(MultilingualUtil.ConvertedString("brih_questiondelete",LangFile));
+									}
+								}
+								else{
+									ErrorDumpUtil.ErrorLog("insie else 1");
+									data.setMessage(MultilingualUtil.ConvertedString("brih_questiondelete",LangFile));
+								}
+							}
+							else{
+								ErrorDumpUtil.ErrorLog("insie else 2");
+								data.setMessage(MultilingualUtil.ConvertedString("brih_questionNotdelete",LangFile));
+							}
+						}
+						else{
+							data.setMessage(MultilingualUtil.ConvertedString("brih_questionNotdelete",LangFile));
+						}
+				}
+				else{
+						ErrorDumpUtil.ErrorLog("Before Remove Question");
+						xmlWriter=new XmlWriter(filePath+quizQuestionPath);
+						xmlWriter.removeElement("QuizQuestions",seq1);
+						xmlWriter.writeXmlFile();
+						ErrorDumpUtil.ErrorLog("After Remove Question");
+						data.setMessage(MultilingualUtil.ConvertedString("brih_questiondelete",LangFile));
+				}
+				return;
+			}
+			else{
+				data.setMessage(MultilingualUtil.ConvertedString("brih_questionNotdelete",LangFile));
+				return;
+			}
+	 }
+	 catch(Exception e){
+		ErrorDumpUtil.ErrorLog("Error in Action[OLES_Quiz] method:deleteQuestions !!"+e);
+		data.setMessage("See ExceptionLog !!");
+	 }
+   }
+}
+

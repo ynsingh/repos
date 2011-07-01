@@ -48,7 +48,7 @@ import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
-
+import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 /**
 * This class is used to create quiz one by one
 * @author <a href="mailto:aayushi.sr@gmail.com">Aayushi</a>
@@ -62,6 +62,7 @@ public class OneByOne_Quiz extends SecureScreen{
         *for template use
         */
         ParameterParser pp=data.getParameters();
+	String lang=data.getUser().getTemp("LangFile").toString();
         try{
         	User user=data.getUser();
         	
@@ -71,7 +72,6 @@ public class OneByOne_Quiz extends SecureScreen{
           	String courseID=(String)user.getTemp("course_id");
         	String quizMode =pp.getString("quizMode"," "); 
         	String quizDetail="";
-        	
         	context.put("tdcolor",count);
         	context.put("course",(String)user.getTemp("course_name"));
 			context.put("mode",mode);
@@ -133,7 +133,7 @@ public class OneByOne_Quiz extends SecureScreen{
         }
 	    catch(Exception e){
 	    	ErrorDumpUtil.ErrorLog("The exception in OneByOne_Quiz screen::"+e);
-	    	data.setMessage("See ExceptionLog !! ");
+	    	data.setMessage(MultilingualUtil.ConvertedString("brih_exception"+e,lang));
 	    }
 	}
 }

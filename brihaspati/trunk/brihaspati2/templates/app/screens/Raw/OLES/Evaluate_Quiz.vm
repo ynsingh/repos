@@ -58,7 +58,6 @@ $page.setBgColor($ui.bgcolor)
 	</tr>
 
 <table width=100% bgcolor="$ui.tableColor">
-	
 	#if($answerDetail.size()!=0)
 	#foreach($answer in $answerDetail)
 	#if($velocityCount%2==0)
@@ -180,6 +179,13 @@ $page.setBgColor($ui.bgcolor)
 	</tr>
 	</table>			
 	#end
+	<tr>
+		<td>
+			#if($flag)
+					<input type="button" name="eventSubmit_EvaluateQuestionDone" value="Evaluation Done" onClick="saveEvaluation1(document.frm,this);"/>
+			#end
+		</td>
+	</tr>
 	#else
 	<tr>
 		<td colspan=5><font color="$ui.fontColorBlue" size="4"><b><i> $data.getMessage() !!!</i></b></font>
@@ -199,6 +205,8 @@ $page.setBgColor($ui.bgcolor)
 <input type="hidden" name="awardedMarks">
 <input type="hidden" name="quesID">
 <input type="hidden" name="fileName">
+<input type="hidden" name="count" value="$!tdcolor">
+<input type="hidden" name="type" value="$!type">
 </table>
 </form>
 
@@ -223,7 +231,6 @@ $page.setBgColor($ui.bgcolor)
 		maxMarks = (document.getElementById(name1).value);
 		quesID = (document.getElementById(quesName).value);
 		fileName = (document.getElementById(file).value);	
-		
 		if(isNaN(marks)){
 			alert("kindly give valid marks");
 			document.getElementById(name).value="";
@@ -245,5 +252,9 @@ $page.setBgColor($ui.bgcolor)
 				//return true;
 			}
 		}	
+	}
+	function saveEvaluation1(frm,field){
+				document.frm.actionName.value=field.name;
+				document.frm.submit();
 	}	
 </SCRIPT>

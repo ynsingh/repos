@@ -81,18 +81,18 @@ public class Student_Quiz extends SecureScreen
 	public void doBuildTemplate( RunData data, Context context )
 	{
 		ParameterParser pp=data.getParameters();
+		String LangFile=data.getUser().getTemp("LangFile").toString();
 		try{
 			Attempt_Quiz.msg = 0;
 			User user=data.getUser();
-			String LangFile=user.getTemp("LangFile").toString();
 			String loginname=user.getName();
 			String user_id=Integer.toString(UserUtil.getUID(loginname));
 			String cid=(String)user.getTemp("course_id");
 			Criteria crit=new Criteria();
 			String Role=(String)user.getTemp("role");
 			context.put("user_role",Role);
-
-			String count = pp.getString("count","");			
+			String count = pp.getString("count","");	
+			context.put("userID",user_id);
 			if(count.isEmpty()){
 				count=(String)user.getTemp("count");
 			}			
@@ -205,7 +205,7 @@ public class Student_Quiz extends SecureScreen
 		}catch(Exception e)
 		{
 			ErrorDumpUtil.ErrorLog("The exception in student_quiz ::"+e);
-			data.setMessage("See ExceptionLog !! ");
+			data.setMessage(MultilingualUtil.ConvertedString("brih_exception"+e,LangFile));
 		}
 	}
 }

@@ -84,6 +84,7 @@ public class AttemptPractice_Quiz extends SecureScreen
 	static int msg = 0;
 	public void doBuildTemplate( RunData data, Context context )
 	{
+		String LangFile=data.getUser().getTemp("LangFile").toString();
 		ParameterParser pp=data.getParameters();
 		try{
 			 		    
@@ -95,7 +96,7 @@ public class AttemptPractice_Quiz extends SecureScreen
 			*/
 			String freshQuiz = (String)user.getTemp("freshQuiz","yes"); 
 			ErrorDumpUtil.ErrorLog("value of fresh quiz ::"+user.getTemp("freshQuiz"));
-			String LangFile=user.getTemp("LangFile").toString();
+			
 			String loginname=user.getName();           
 			String uid=Integer.toString(UserUtil.getUID(uname));
 			String cid=(String)user.getTemp("course_id");
@@ -111,8 +112,6 @@ public class AttemptPractice_Quiz extends SecureScreen
 //				context.put("maxMarks",maxMarks);
 //				context.put("maxQuestion",maxQuestion);
 //			}
-			
-			
 			
 			String quizName = pp.getString("quizName","");
 			context.put("quizName",quizName);
@@ -185,7 +184,7 @@ public class AttemptPractice_Quiz extends SecureScreen
 //			Vector allQuizSetting=new Vector();
 			File f=new File(answerFilePath+"/"+questionSettingPath);									
 				if(!f.exists()){
-					data.setMessage("No questions are stored to attempt");	
+					data.setMessage(MultilingualUtil.ConvertedString("brih_noquestionStoredToAttempt",LangFile));
 					return;
 				}
 //            	else{            				
@@ -218,8 +217,8 @@ public class AttemptPractice_Quiz extends SecureScreen
 		    	}
 		    }, (maxtime*60) * 1000);
 		    
-		    if(msg==1){		    	
-		    	data.setMessage("Oops! Your Quiz Time is over");
+		    if(msg==1){	
+			data.setMessage(MultilingualUtil.ConvertedString("brih_overQuizTime",LangFile));	    	
 		    	data.setScreenTemplate("call,OLES,Student_Quiz.vm");
 		    }	
 			/*
@@ -271,7 +270,7 @@ public class AttemptPractice_Quiz extends SecureScreen
 		catch(Exception e)
 		{
 			ErrorDumpUtil.ErrorLog("The exception in attempt_quiz ::"+e);
-			data.setMessage("See ExceptionLog !! ");
+			data.setMessage(MultilingualUtil.ConvertedString("brih_exception"+e,LangFile));	
 		}
 	}
 }

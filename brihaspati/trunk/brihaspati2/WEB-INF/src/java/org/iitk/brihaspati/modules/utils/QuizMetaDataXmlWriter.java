@@ -142,6 +142,35 @@ public class QuizMetaDataXmlWriter
 		}
 	}
 	
+	public static void update_QuizList(XmlWriter xmlWriter,String quizID,String quizName,String maxMarks,String maxTime,String noQuestion,String status,String Filename,String CreationDate,String modifiedDate, String quizMode,int seq,String allowPractice,String ExamDate,String startTime,String ExpiryDate,String endTime,String resDate)
+	{
+		try{
+			ErrorDumpUtil.ErrorLog("inside update quiz "+quizID);
+			AttributesImpl ats=new AttributesImpl();		
+			ats.addAttribute("","QuizID","","",StringUtil.replaceXmlSpecialCharacters(quizID));			
+			ats.addAttribute("","QuizName","","",StringUtil.replaceXmlSpecialCharacters(quizName));			
+			ats.addAttribute("","MaxMarks","","",StringUtil.replaceXmlSpecialCharacters(maxMarks));			
+			ats.addAttribute("","MaxTime","","",StringUtil.replaceXmlSpecialCharacters(maxTime));			
+			ats.addAttribute("","NumberQuestion","","",StringUtil.replaceXmlSpecialCharacters(noQuestion));			
+			ats.addAttribute("","status","","",StringUtil.replaceXmlSpecialCharacters(status));			
+			ats.addAttribute("","Filename","","",StringUtil.replaceXmlSpecialCharacters(Filename));			
+			ats.addAttribute("","CreationDate","","",CreationDate);
+			ats.addAttribute("","QuizMode","","",quizMode);
+			ats.addAttribute("","ModifiedDate","","",modifiedDate);
+			ats.addAttribute("","ExamDate","","",ExamDate);
+			ats.addAttribute("","StartTime","","",startTime);
+			ats.addAttribute("","ExpiryDate","","",ExpiryDate);
+			ats.addAttribute("","EndTime","","",endTime);
+			ats.addAttribute("","AllowPractice","","",allowPractice);
+			ats.addAttribute("","ResultDate","","",resDate);
+			xmlWriter.changeAttributes("Quiz",ats,seq);
+			ErrorDumpUtil.ErrorLog("after change attributes ");
+		}
+		catch(Exception e){
+			ErrorDumpUtil.ErrorLog("The exception in Quizxmlwriterutil [XmlWriter update quiz list]::"+e);
+		}
+	}
+	
 	/**
 	* This method write new xml file with specified file path and xml file name
 	* @param filePath String
@@ -207,8 +236,17 @@ public class QuizMetaDataXmlWriter
 				String CreationDate=((QuizFileEntry)v.get(i)).getCreationDate();
 				String quizMode = ((QuizFileEntry)v.get(i)).getQuizMode();
 				String allowPractice = ((QuizFileEntry)v.get(i)).getAllowPractice();
-				ErrorDumpUtil.ErrorLog("before going to update quiz part "+quizID+quizName+maxMarks+maxTime+status+noQuestion+Filename);
-				update_QuizList(xmlWriter,quizID,quizName,maxMarks,maxTime,noQuestion,status,Filename,CreationDate,modifiedDate,quizMode,seq,allowPractice);
+				String ExamDate=((QuizFileEntry) v.elementAt(i)).getExamDate();
+				String StartTime=((QuizFileEntry) v.elementAt(i)).getStartTime();
+				String ExpiryDate=((QuizFileEntry) v.elementAt(i)).getExpiryDate();
+				String EndTime=((QuizFileEntry) v.elementAt(i)).getEndTime();
+				String resDate=((QuizFileEntry) v.elementAt(i)).getResDate();
+				ErrorDumpUtil.ErrorLog("before going to update quiz part "+quizID+quizName+maxMarks+maxTime+status+noQuestion+Filename+":::"+resDate);
+				if(ExamDate!=null && StartTime!=null && ExpiryDate!=null && EndTime!=null && resDate!=null){
+					update_QuizList(xmlWriter,quizID,quizName,maxMarks,maxTime,noQuestion,status,Filename,CreationDate,modifiedDate,quizMode,seq,allowPractice,ExamDate,StartTime,ExpiryDate,EndTime,resDate);
+				}
+				else
+					update_QuizList(xmlWriter,quizID,quizName,maxMarks,maxTime,noQuestion,status,Filename,CreationDate,modifiedDate,quizMode,seq,allowPractice);
 			}
 		}
 		catch(Exception e){
@@ -279,7 +317,12 @@ public class QuizMetaDataXmlWriter
 				String CreationDate=((QuizFileEntry)v.get(i)).getCreationDate();
 				String modifiedDate=((QuizFileEntry)v.get(i)).getModifiedDate();
 				String allowPractice = ((QuizFileEntry)v.get(i)).getAllowPractice();
+//				String ExamDate=((QuizFileEntry) v.elementAt(i)).getExamDate();
+//				String StartTime=((QuizFileEntry) v.elementAt(i)).getStartTime();
+//				String ExpiryDate=((QuizFileEntry) v.elementAt(i)).getExpiryDate();
+//				String EndTime=((QuizFileEntry) v.elementAt(i)).getEndTime();
 				ErrorDumpUtil.ErrorLog("before going to update quiz part "+quizID+quizName+maxMarks+maxTime+quizStatus+noQuestion+Filename);
+//				update_QuizList(xmlWriter,quizID,quizName,maxMarks,maxTime,noQuestion,quizStatus,Filename,CreationDate,modifiedDate,quizMode,seq,allowPractice,ExamDate,StartTime,ExpiryDate,EndTime);
 				update_QuizList(xmlWriter,quizID,quizName,maxMarks,maxTime,noQuestion,quizStatus,Filename,CreationDate,modifiedDate,quizMode,seq,allowPractice);
 			}
 		}
@@ -443,7 +486,7 @@ public class QuizMetaDataXmlWriter
 	* @param allow practice String 
 	* @author <a href="mailto:aayushi.sr@gmail.com">Aayushi</a>
 	*/
-	public static XmlWriter announceQuiz(String filePath,String quizPath,int seq,String quizID,String startDate,String startTime,String endDate,String endTime)
+	public static XmlWriter announceQuiz(String filePath,String quizPath,int seq,String quizID,String startDate,String startTime,String endDate,String endTime,String resDate)
 	{
 		XmlWriter xmlWriter=null;
 		try{
@@ -479,7 +522,9 @@ public class QuizMetaDataXmlWriter
 				ats.addAttribute("","ExpiryDate","","",StringUtil.replaceXmlSpecialCharacters(endDate));
 				ats.addAttribute("","EndTime","","",StringUtil.replaceXmlSpecialCharacters(endTime));
 				ats.addAttribute("","AllowPractice","","",allowPractice);
-
+				if(!(resDate.equals("$Res_year-$Res_month-$Res_day"))){
+					ats.addAttribute("","ResultDate","","",resDate);
+				}
 				xmlWriter.changeAttributes("Quiz",ats,seq);
 			}
 		}
@@ -783,6 +828,30 @@ public class QuizMetaDataXmlWriter
 			ErrorDumpUtil.ErrorLog("Error in quizMetaDataXmlWriter method:writeScore !!"+e);
 		}
 	}
+	public static void writeScore(XmlWriter xmlWriter,String quizID,String userID, int totalScore,String usedtime, int seq,String evaluate){
+		try{
+		AttributesImpl ats=new AttributesImpl();
+		String score = String.valueOf(totalScore);
+		ats.addAttribute("","QuizID","","",StringUtil.replaceXmlSpecialCharacters(quizID));		
+		ats.addAttribute("","UserID","","",StringUtil.replaceXmlSpecialCharacters(userID));				
+		ats.addAttribute("","TotalScore","","",StringUtil.replaceXmlSpecialCharacters(score));
+		ats.addAttribute("","UsedTime","","",StringUtil.replaceXmlSpecialCharacters(usedtime));
+		ats.addAttribute("","evaluate","","",StringUtil.replaceXmlSpecialCharacters(evaluate));
+		ErrorDumpUtil.ErrorLog("inside WriteScore evaluate is :"+evaluate);
+		ErrorDumpUtil.ErrorLog("after add attribute");
+		if(seq != -1){
+			ErrorDumpUtil.ErrorLog("inside seq != -1");
+			xmlWriter.changeAttributes("QuizQuestions",ats,seq);
+		}
+		else{
+			ErrorDumpUtil.ErrorLog("inside seq != -1 else");
+			xmlWriter.appendElement("QuizQuestions",null,ats); 
+		}		  
+		ErrorDumpUtil.ErrorLog("after append element");
+		}catch(Exception e){
+			ErrorDumpUtil.ErrorLog("Error in quizMetaDataXmlWriter method:writeScore !!"+e);
+		}
+	}
 	
 	/** This method is responsible for writing student'a answer in userid.xml file 
 	 * @param filepath String path to userid.xml
@@ -926,7 +995,7 @@ public class QuizMetaDataXmlWriter
 	 * @param data RunData	
 	 * @author nupur dixit 
 	 */
-	public static void xmlwriteEvaluateMarks(String answerFilePath,String answerPath,RunData data){
+	public static void xmlwriteEvaluateMarks(String answerFilePath,String answerPath,RunData data,String evaluate){
 		try{
 			User user=data.getUser();
 			String courseid=(String)user.getTemp("course_id");
@@ -935,7 +1004,9 @@ public class QuizMetaDataXmlWriter
 			String quizID=data.getParameters().getString("quizID","");		
 			String quesID=data.getParameters().getString("quesID","");		
 			String fileName=data.getParameters().getString("fileName","");		
-			String awardedMarks = data.getParameters().getString("awardedMarks","");	
+			String awardedMarks = data.getParameters().getString("awardedMarks","");
+			boolean flag=false;
+			ErrorDumpUtil.ErrorLog("inside writer xmlwriteEvaluateMarks evaluate is "+evaluate);
 			ErrorDumpUtil.ErrorLog("\n inside save evaluate marks \n  "+quizID+"\n"+quesID+"\n"+fileName+"\n"+awardedMarks);
 			
 			XmlWriter xmlWriter=null;
@@ -969,6 +1040,14 @@ public class QuizMetaDataXmlWriter
 							seq = i;
 							break;
 						}						
+					}
+					for(int i=0;i<finalAnswer.size();i++){
+						 String questionType=((QuizFileEntry) finalAnswer.elementAt(i)).getQuestionType();
+						 if(questionType.equalsIgnoreCase("sat") || questionType.equalsIgnoreCase("lat")){
+							 flag=true;
+							 //evaluate ="partial";
+							 break;
+						 }
 					}
 				}
 			}
@@ -1009,8 +1088,14 @@ public class QuizMetaDataXmlWriter
     	        xmlScoreWriter = new XmlWriter(scoreFilePath+"/"+scorePath);
     	        ErrorDumpUtil.ErrorLog("total detail to save score "+scoreFilePath+" : "+scorePath);  
     	        ErrorDumpUtil.ErrorLog("total detail to save score "+quizID+" : "+uid);
-    	        ErrorDumpUtil.ErrorLog("total detail to save score "+totalScore+" : "+usedTime+" : "+seq);
-    	        QuizMetaDataXmlWriter.writeScore(xmlScoreWriter,quizID,uid,totalScore,usedTime,seq);
+    	        ErrorDumpUtil.ErrorLog("total detail to save score "+totalScore+" : "+usedTime+" : "+seq+" : "+evaluate);
+    	        if(flag){
+    	        	QuizMetaDataXmlWriter.writeScore(xmlScoreWriter,quizID,uid,totalScore,usedTime,seq,evaluate);
+    	        }
+    	        else{
+    	        	 QuizMetaDataXmlWriter.writeScore(xmlScoreWriter,quizID,uid,totalScore,usedTime,seq);
+    	        }
+    	       // QuizMetaDataXmlWriter.writeScore(xmlScoreWriter,quizID,uid,totalScore,usedTime,seq);
 			//========================this part is to add scores in final score.xml concurrently========================================
 					
 			//============================================================================
@@ -1023,4 +1108,5 @@ public class QuizMetaDataXmlWriter
 			data.setMessage("some problem to save answer kindly See ExceptionLog !! " );
 		}//catch
 	}//method end
+	
 }

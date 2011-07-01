@@ -84,12 +84,12 @@ public class Attempt_Quiz extends SecureScreen
 	public void doBuildTemplate( RunData data, Context context )
 	{
 		ParameterParser pp=data.getParameters();
+		String LangFile=data.getUser().getTemp("LangFile").toString();
 		try{
 			 		    
 			User user=data.getUser();
 			String uname=user.getName();
 			Vector<QuizFileEntry> questionVector = (Vector)user.getTemp("questionvector");   
-			String LangFile=user.getTemp("LangFile").toString();
 			String loginname=user.getName();           
 			String uid=Integer.toString(UserUtil.getUID(uname));
 			String cid=(String)user.getTemp("course_id");
@@ -198,7 +198,7 @@ public class Attempt_Quiz extends SecureScreen
 		    }, (maxtime*60) * 1000);
 		    
 		    if(msg==1){		    	
-		    	data.setMessage("Oops! Your Quiz Time is over");
+		    	data.setMessage(MultilingualUtil.ConvertedString("brih_overQuizTime",LangFile));
 		    	data.setScreenTemplate("call,OLES,Student_Quiz.vm");
 		    }	
 			/*
@@ -240,7 +240,7 @@ public class Attempt_Quiz extends SecureScreen
 		catch(Exception e)
 		{
 			ErrorDumpUtil.ErrorLog("The exception in attempt_quiz ::"+e);
-			data.setMessage("See ExceptionLog !! ");
+			data.setMessage(MultilingualUtil.ConvertedString("brih_exception"+e,LangFile));
 		}
 	}
 }

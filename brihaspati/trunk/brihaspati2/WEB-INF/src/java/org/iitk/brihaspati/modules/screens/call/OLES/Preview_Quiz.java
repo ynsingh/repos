@@ -50,7 +50,7 @@ import org.iitk.brihaspati.modules.utils.QuizFileEntry;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 import org.iitk.brihaspati.modules.utils.QuizMetaDataXmlReader;
-
+import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 /**
 * This class displays the list of quizzes for preview in online examination system 
 * @author <a href="mailto:noopur.here@gmail.com">Nupur Dixit</a>
@@ -64,9 +64,9 @@ public class Preview_Quiz extends SecureScreen{
         *for template use
         */
         ParameterParser pp=data.getParameters();
+	String LangFile=data.getUser().getTemp("LangFile").toString();
         try
         {
-        	String LangFile=data.getUser().getTemp("LangFile").toString();
         	User user=data.getUser();
         	String userName=user.getName();
         	String mode =pp.getString("mode"," ");
@@ -79,7 +79,7 @@ public class Preview_Quiz extends SecureScreen{
 			context.put("type",type);
 			
 			String filePath=TurbineServlet.getRealPath("/Courses"+"/"+courseid+"/Exam/");
-            String quizPath="/Quiz.xml";
+            String quizPath="Quiz.xml";
             
             File file=new File(filePath+"/"+quizPath);
 			Vector quizList=new Vector();
@@ -87,15 +87,15 @@ public class Preview_Quiz extends SecureScreen{
 			QuizMetaDataXmlReader quizmetadata=null;
 			
 			if(!file.exists()){
-				data.setMessage("No quiz is available to preview");
+				data.setMessage(MultilingualUtil.ConvertedString("brih_nopreview",LangFile));
 				return;
 			}
 //				context.put("isFile","exist");
 				quizmetadata=new QuizMetaDataXmlReader(filePath+"/"+quizPath);	
-				quizList=quizmetadata.listActiveAndCurrentlyNotRunningQuiz(userName); 
+				quizList=quizmetadata.listActiveAndCurrentlyNotRunningQuiz(filePath+"/"+quizPath,userName); 
 				//this code is to list all random and nonpractice quizzes
 				if(quizList==null && quizList.size()==0){
-					data.setMessage("No quiz is available to preview");
+					data.setMessage(MultilingualUtil.ConvertedString("brih_noQuizpreview",LangFile));
 					return;
 				}
 				else{					
@@ -110,7 +110,7 @@ public class Preview_Quiz extends SecureScreen{
 						}						
 					}					
 					if(finalQuizList.size()==0){
-						data.setMessage("No quiz is available to preview");
+						data.setMessage(MultilingualUtil.ConvertedString("brih_noQuizpreview",LangFile));
 						return;
 					}
 					else{
@@ -129,7 +129,7 @@ public class Preview_Quiz extends SecureScreen{
 	    }
         catch(Exception e) {
         	ErrorDumpUtil.ErrorLog("The exception in Preview_Quiz screen::"+e);
-        	data.setMessage("See ExceptionLog !! ");
+        	data.setMessage(MultilingualUtil.ConvertedString("brih_exception"+e,LangFile));
         }
     }
 }
