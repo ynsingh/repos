@@ -182,7 +182,7 @@ public class UserMgmt_Instructor extends SecureScreen{
                                 context.put("AdminConf_str",Integer.toString(AdminConf));
                                 ParameterParser pp=data.getParameters();
                                 int startIndex=pp.getInt("startIndex",0);
-				if(AdminConf != startIndex)
+				if(startIndex == 0)
 					context.put("as",0);
 				else
 					context.put("as",-1);

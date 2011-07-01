@@ -43,7 +43,7 @@ $!data.getMessage()
         #elseif($tdcolor == "2")
         <td bgcolor="#AFDCEC">
         #end
-        <a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("count","2").addPathInfo("mode","instructordelete") style=text-decoration:none> #if($lang == "hindi") $brih_listOfInstructor #else brih_listOfInstructor #end </a>
+        <a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("count","2").addPathInfo("mode","instructordelete") style=text-decoration:none> #if($lang == "hindi") $brih_listOfInstructor #else $brih_listOfInstructor #end </a>
 	</td
 	#end
 </tr>

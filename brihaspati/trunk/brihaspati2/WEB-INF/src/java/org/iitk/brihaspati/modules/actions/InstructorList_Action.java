@@ -58,7 +58,7 @@ import org.apache.turbine.services.security.torque.om.TurbineUser;
 /**
  * This class is responsible for removing secondary instructor and changing their permission to the system.
  *  
- *	@author <a href="mailto:hardlucksunil@yahoo.in">Sunil Yadav</a>
+ *	@author <a href="mailto:mail2sunil00@gmail.com">Sunil Yadav</a>
  */
 
 public class InstructorList_Action extends SecureAction
@@ -77,6 +77,7 @@ public class InstructorList_Action extends SecureAction
 		String mode = pp.getString("mode","");
 		String institudeName=data.getParameters().getString("institudeName","");
 		String gName="";
+		String msg="";
                 if(institudeName.equals("ListAll")){
                         gName=data.getParameters().getString("cName","");
                         context.put("institudeName",institudeName);
@@ -85,9 +86,8 @@ public class InstructorList_Action extends SecureAction
                         gName=(String)user.getTemp("course_id");
                 }
 		
-		//String gName=(String)user.getTemp("course_id");
 			
-		
+	try{	
 		if(!mid_delete.equals(""))
 		{
 		java.util.StringTokenizer st=new java.util.StringTokenizer(mid_delete,"^");
@@ -96,18 +96,16 @@ public class InstructorList_Action extends SecureAction
 			String username=st.nextToken();
 			int uid=UserUtil.getUID(username);
 			int GID=GroupUtil.getGID(gName);
-			try{
 				Criteria crit=new Criteria();
 				crit.add(TurbineUserGroupRolePeer.ROLE_ID,2);
 				crit.add(TurbineUserGroupRolePeer.USER_ID,uid);
 				crit.add(TurbineUserGroupRolePeer.GROUP_ID,GID);
 				TurbineUserGroupRolePeer.doDelete(crit);
-				String msg=MultilingualUtil.ConvertedString("Repo_prm3",LangFile);
-				data.addMessage(msg);
-				//data.addMessage("Secondry Instructor Delete Successfully !!!");
-			}catch (Exception ex){ data.setMessage("Error in doRemoveUser of action InstructorList !!  " +ex); }
 		     }
-		}
+				msg=MultilingualUtil.ConvertedString("brih_remsec",LangFile);
+		}		data.addMessage(msg);
+			}catch (Exception ex){ data.setMessage("Error in Removing Secondary Instructor !!  " +ex); }
+		
 		 context.put("mode",mode);
 	}
 
@@ -152,10 +150,9 @@ public class InstructorList_Action extends SecureAction
 				crit.add(InstructorPermissionsPeer.PERMISSION_STATUS,permission);
 				InstructorPermissionsPeer.doInsert(crit);
 			}
-			String msg=MultilingualUtil.ConvertedString("Repo_prm1",LangFile);	
+			String msg=MultilingualUtil.ConvertedString("brih_secperm",LangFile);	
 			data.addMessage(msg);
-			//data.addMessage("Instructor Permission Change Successfully !!!!");
-		}catch(Exception ex){data.setMessage("Error in doRemoveUser of action InstructorList !!  " +ex); }
+		}catch(Exception ex){data.setMessage("Error in Grant of Instructor's Permission !!  " +ex); }
 	}			
 
 
