@@ -137,12 +137,13 @@ public class HttpCommManager {
  		}
  		if(studCourseList!=null){
  			studSessionList=httpsUtil.getController().getSessionForCourse(studCourseList, indexServerName);
- 		}
- 		if(instCourseList!=null){
+ 		} if(instCourseList!=null){
  			instSessionList=httpsUtil.getController().getSessionForCourse(instCourseList,indexServerName);
- 		}else{
+ 		}
+		//System.out.println(studCourseList+"hhh  "+ instCourseList);
+		if((studCourseList.contains("noCourse")) && (instSessionList.contains("noCourse")))
  		 	JOptionPane.showMessageDialog(null,"There is no any Lecture");
- 		}		
+				
  	}
 				
         public Vector getInstSessionList(){

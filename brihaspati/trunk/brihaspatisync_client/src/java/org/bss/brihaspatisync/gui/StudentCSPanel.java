@@ -175,7 +175,7 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
                		//p=p+13;
 		}
        		if(y==0){
-			JOptionPane.showMessageDialog(null,"No Lecture in this course");
+			//JOptionPane.showMessageDialog(null,"No Lecture in this course");
 			return new JScrollPane();
 		}else{
 			scrollPane1=new JScrollPane(center_mainPanel,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);

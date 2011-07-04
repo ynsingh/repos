@@ -121,7 +121,7 @@ public class HTTPClient extends Thread {
 						System.out.println("=================>  "+ww.getMessage());
 					}	
 	                  	}catch(Exception ex) { 
-					JOptionPane.showMessageDialog(null,"Reflector connection failed !!","HTTPClient Message",JOptionPane.ERROR_MESSAGE);
+					//JOptionPane.showMessageDialog(null,"Reflector connection failed !!","HTTPClient Message",JOptionPane.ERROR_MESSAGE);
 					System.out.println(" HTTPClient could not connect  "+ex.getMessage()); 
 				}
 			}

@@ -214,8 +214,8 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                                 	passwordField.setText("");
 			JOptionPane.showMessageDialog(null,"Incorrect Entry.", "Message", JOptionPane.ERROR_MESSAGE);
 					}else {
-                                	System.out.println("Login Successful");
-					JOptionPane.showMessageDialog(null,"Login Successful");
+                                	//System.out.println("Login Successful");
+					//JOptionPane.showMessageDialog(null,"Login Successful");
 
 					client_obj.setUserName(usernameText.getText());
 					if(((client_obj.getStudSessionList())!=null)||((client_obj.getInstSessionList())!=null)){
@@ -326,8 +326,8 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                         	passwordField.setText("");
 				JOptionPane.showMessageDialog(null,"Incorrect Entry.", "Message", JOptionPane.ERROR_MESSAGE);
 			}else {
-				System.out.println("Login Successfull");
-				JOptionPane.showMessageDialog(null,"Login Successfull");
+				//System.out.println("Login Successfull");
+				//JOptionPane.showMessageDialog(null,"Login Successfull");
 				client_obj.setUserName(usernameText.getText());
 				if(((client_obj.getStudSessionList())!=null)||((client_obj.getInstSessionList())!=null)){
 					mainWindow.getMenuItem4().setEnabled(true);
