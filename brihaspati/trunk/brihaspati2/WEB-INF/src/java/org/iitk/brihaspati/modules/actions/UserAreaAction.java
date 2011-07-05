@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.actions;
 /**
  * @(#)UserAreaAction.java
  *
- *  Copyright (c) 2005-2006,2009 ETRG,IIT Kanpur.
+ *  Copyright (c) 2005-2006,2009,2011 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -37,12 +37,15 @@ package org.iitk.brihaspati.modules.actions;
  */
  /**
  * @author <a href="mailto:singh_jaivir@rediffmail.com ">Jaivir Singh</a>
+ * @author <a href="mailto:richa.tandon1@gamil.com ">Richa Tandon</a>
+ * @modified date:02-07-2011
  */ 
 
 import java.io.File;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
+import java.lang.reflect.Array;
 import java.util.StringTokenizer;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.util.RunData;
@@ -58,8 +61,13 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.SystemIndependentUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
+import org.iitk.brihaspati.modules.utils.FileEntry;
 import org.iitk.brihaspati.modules.utils.QuotaUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.CommonUtility;
+import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
+import org.apache.turbine.services.security.torque.om.TurbineUser;
+import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
 /**
 *This class contain the code for Uploading the file,
 *in the Private Area and
@@ -171,9 +179,9 @@ public class UserAreaAction extends SecureAction
 					  	long uquota=QuotaUtil.getUsrQuota(uid);
 						ErrorDumpUtil.ErrorLog("testing at line 172==="+uquota);
 						uquota = uquota - totalsize;
-						//long disSpace=QuotaUtil.getFileSystemSpace();
-						int instId=Integer.parseInt(data.getUser().getTemp("Institute_id").toString());
-						long disSpace=QuotaUtil.getFileSystemSpace(instId);
+						long disSpace=(QuotaUtil.getFileSystemSpaceinGB())*1024;//to convert GB into MB
+						/*int instId=Integer.parseInt(data.getUser().getTemp("Institute_id").toString());
+						long disSpace=QuotaUtil.getFileSystemSpace(instId);*/
                 	                        if((uquota>fsize)&&(disSpace>fsize)){
 	                				f.mkdirs();
 							flag=true;
@@ -285,7 +293,7 @@ public class UserAreaAction extends SecureAction
                                 xmlWriter.writeXmlFile();
                                 xmlWriter=TopicMetaDataXmlWriter.WriteXml_New(Path,"Shared");
 				String move1=mu.ConvertedString("personal_move1",file);
-				if(file.equals("english"))
+				if(file.endsWith("en.properties"))
 	                 		data.addMessage(filename+" "+move1);
 				else
                         		data.setMessage(move1+" "+filename+" ");
@@ -300,7 +308,7 @@ public class UserAreaAction extends SecureAction
                                 fPath=dirPath+"/"+UName+"/"+"Private"+"/"+Content;
                                 xmlWriter=TopicMetaDataXmlWriter.WriteXml_New(fPath,Content);	
 				String move2=mu.ConvertedString("personal_move2",file);
-				if(file.equals("english"))
+				if(file.endsWith("en.properties"))
                         		data.setMessage(filename+" "+move2);
 				else
                         		data.setMessage(move2+" "+filename+" ");
@@ -388,8 +396,8 @@ public class UserAreaAction extends SecureAction
 				else
 				{
 					/**Get the Path of Shared Area of User
-					*in which the file exist
-					*/
+					 *in which the file exist
+					 */
 					fileway=new File(UserPath+"/"+UName+"/"+"/Shared"+"/"+Filename);
 					dPath=UserPath+"/"+UName+"/"+"/Shared";
                         	        xmlwriter=TopicMetaDataXmlWriter.WriteXml_New(dPath,"Shared");
@@ -406,6 +414,101 @@ public class UserAreaAction extends SecureAction
 		}
                 catch(Exception e){}
        }
+
+	/**
+ 	 * Method for searching username and file that contain query  
+ 	 */ 
+	public void doSearch(RunData data,Context context)
+	{
+		try{
+			User user=data.getUser();
+                	String LangFile=(String)user.getTemp("LangFile");
+			String keyword = data.getParameters().getString("valueString");	
+			String mode = data.getParameters().getString("type");
+			String query= data.getParameters().getString("queryList");	
+			String str=null;
+			Vector Searchlist = new Vector();
+			String sharedPath=TurbineServlet.getRealPath("/SharedUserList");
+			File updatexml = new File(sharedPath+"/SharedUserList__des.xml");
+			String fpath = updatexml.getPath();
+			/**
+ 			 * if query equals to Username then check 
+ 			 * it in xml file 
+ 			 */ 
+			if(query.equals("UserName"))
+			{
+				TopicMetaDataXmlReader topicmetadata=new TopicMetaDataXmlReader(fpath);
+				Vector collect = topicmetadata.getFileDetails();
+				if(collect!=null)
+				{
+					for(int i=0;i<collect.size();i++)
+                                        {
+						String Uname =((FileEntry) collect.elementAt(i)).getName();
+						boolean checkContains1=Uname.contains(keyword);
+						if(checkContains1)
+							Searchlist.add(Uname);
+					}
+				}
+				if(Searchlist.size()==0){
+					String msg1= query+" '"+keyword+"' "+MultilingualUtil.ConvertedString("notExist",LangFile);
+					context.put("val",msg1);
+				}
+				context.put("Searchlist",Searchlist);
+				context.put("type",mode);
+			}
+			/**
+ 			 * else query has content to be search  
+ 			 */ 	
+			else
+			{
+			Vector end=new Vector();
+			int cou=0;
+			long ti=0;
+        	        String username=user.getName();
+			File indexDir = new File(data.getServletContext().getRealPath("/UserArea")+"/"+username+"_Index");
+                        if(indexDir.exists() && indexDir.isDirectory() && Array.getLength(indexDir.list())!=0)
+                        {
+                                Vector sd=CommonUtility.doMySearch(indexDir, keyword, context);
+				if(sd.size()==0)
+				{
+					String msg=MultilingualUtil.ConvertedString("personal_docmsg",LangFile);
+					context.put("val",msg);	
+				}
+				else
+				{
+                                	for(int j=0;j<sd.size();j++)
+                                        	end.addElement(sd.elementAt(j));
+                        	}
+			}
+			Vector fin=new Vector();
+		        Vector fout=new Vector();
+		        String sub=new String();
+		        for(int k=0;k<end.size();k++)
+		        {
+		                String last=(String)end.elementAt(k);
+		                StringTokenizer st=new StringTokenizer(last,"/");
+		                while(st.hasMoreTokens())
+		                {
+		                        if(st.nextToken().equals("UserArea"))
+		                        {
+		                                String one=st.nextToken();
+		                                String two=st.nextToken();
+		                                String three=st.nextToken();
+		                                fin.addElement("../"+one+"/"+three);
+                		                fout.add(one);
+		                                fout.add(two);
+                		                fout.add(three);
+		                        }
+		                }
+        		}
+			context.put("k",keyword);
+		        context.put("vec",fin);
+		        context.put("out",fout);
+		        context.put("Search", end);
+		}
+		}
+		catch(Exception ex){}
+	}
 	/**
          * This method is invoked when no button corresponding to
          * called Method
@@ -423,7 +526,6 @@ public class UserAreaAction extends SecureAction
         	String nfind=mu.ConvertedString("action_msg",file);
         	ParameterParser pp=data.getParameters();
 		String action = pp.getString("actionName","");
-	//	ErrorDumpUtil.ErrorLog("repository at line 413==="+action);
 		if(action.equals("eventSubmit_doMove"))
 			doMove(data,context);
 
@@ -431,6 +533,8 @@ public class UserAreaAction extends SecureAction
                         doUpload(data,context);
                 else if(action.equals("eventSubmit_doDelete"))
                         doDelete(data,context);
+                else if(action.equals("eventSubmit_doSearch"))
+                        doSearch(data,context);
 		else
 			data.setMessage(nfind);
 

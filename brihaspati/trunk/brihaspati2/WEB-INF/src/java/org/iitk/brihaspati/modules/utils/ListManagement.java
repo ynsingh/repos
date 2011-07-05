@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.utils;
 /*
  * @(#)ListManagement.java	
  *
- *  Copyright (c) 2004-2008,2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2004-2008,2010,2011 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -45,19 +45,29 @@ import org.apache.torque.util.Criteria;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
+import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.apache.turbine.services.security.torque.om.TurbineUser;
+import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
 import org.apache.turbine.services.security.torque.om.TurbineGroup;
 import org.apache.turbine.services.security.torque.om.TurbineGroupPeer;
 import org.iitk.brihaspati.om.CoursesPeer;
 import org.iitk.brihaspati.om.Courses;
 import java.io.FileOutputStream;
+import java.io.File;
+import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
+import org.apache.turbine.services.security.torque.om.TurbineUser;
+import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
+
 /**
  * This class contains methods for listing
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a> 
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a> 
  * @author <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kumar trivedi</a>
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a> 
+ * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a> 
+ * @modified date:02-07-2011
  */
 
 public class ListManagement
@@ -519,6 +529,80 @@ public class ListManagement
 		value[5]=check_last;
 		value[6]=startIndex+1;
 		return value;
+	}
+
+	/**
+         * Method for getting list of users who shared their content
+         */ 
+	public static Vector SharedUserList(String Path)
+	{
+		Vector userList=new Vector();
+		Vector UsDetail = new Vector();
+		List l = null;
+                try
+		{
+			/**
+ 			 * Getting path where xml has to be created 
+                         */ 
+			String sharedPath=TurbineServlet.getRealPath("/SharedUserList");
+	                File f=new File(sharedPath);
+	                if(!f.exists())
+	                       f.mkdirs();
+	                File updatexml = null;
+	                XmlWriter xmlwriter=null;
+			TopicMetaDataXmlReader topicmetadata=null;
+	                updatexml = new File(sharedPath+"/SharedUserList__des.xml");
+	                Vector updatelist = new Vector();
+			/**
+ 			 * Getting list of all users from database 	
+ 			 */ 	
+                        int rid[]={1,5,6};
+                        int uid[]={0,1};
+                        Criteria crit=new Criteria();
+                        crit.addJoin(TurbineUserPeer.USER_ID,TurbineUserGroupRolePeer.USER_ID);
+                        crit.addNotIn(TurbineUserGroupRolePeer.ROLE_ID,rid);
+                        crit.addNotIn(TurbineUserPeer.USER_ID,uid);
+                        crit.addGroupByColumn(TurbineUserPeer.LOGIN_NAME);
+                        l=TurbineUserPeer.doSelect(crit);
+			/**
+ 			 * check if user has any content in shared area 
+ 			 */ 	
+                        for(int k=0;k<l.size();k++)
+                        {
+                                TurbineUser element = (TurbineUser)l.get(k);
+                                String Uname = element.getUserName();
+                                //ErrorDumpUtil.ErrorLog("uname in shared dir ========="+Uname);
+                                File ContentDir=new File(Path+"/"+Uname+"/Shared/");
+                                if(ContentDir.exists())
+                                {
+                                        File shared=new File(ContentDir+"/Shared__des.xml");
+                                        if(shared.exists())
+                                        {
+                                                TopicMetaDataXmlReader topicMeta=new TopicMetaDataXmlReader(ContentDir+"/"+"Shared__des.xml");
+                                                String topicdc=topicMeta.getTopicDescription();
+                                                Vector filedc=topicMeta.getFileDetails();
+                                                if(filedc!=null)
+                                                {
+                                                        UsDetail.add(Uname);
+                                                }
+                                        }
+                                 }
+                	}
+			/**
+ 			 * Write list of users in xml file who have content in shared area  
+ 			 */ 
+			TopicMetaDataXmlWriter.updationRootOnly(updatexml.getAbsolutePath());
+                        xmlwriter=new XmlWriter(sharedPath+"/SharedUserList__des.xml");
+			for(int j=0;j<UsDetail.size();j++)
+			{
+				String UserName=(String)UsDetail.elementAt(j);
+				TopicMetaDataXmlWriter.appendFileElement(xmlwriter,UserName,"","");
+				xmlwriter.writeXmlFile();
+			}
+
+                }
+                        catch(Exception e){ErrorDumpUtil.ErrorLog("The error in display Shared userlist "+e);}
+			return UsDetail;
 	}
 }
 

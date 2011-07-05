@@ -38,6 +38,7 @@ package org.iitk.brihaspati.modules.screens.call.UserMgmt_User;
 import java.util.Vector;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.lang.reflect.Array;
 import org.apache.velocity.context.Context;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.om.security.User;
@@ -46,10 +47,12 @@ import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.NotInclude;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.ListManagement;
 import org.iitk.brihaspati.modules.utils.FileEntry;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.services.security.torque.om.TurbineUserPeer;
+import org.apache.turbine.services.security.torque.om.TurbineUser;
 import org.apache.turbine.services.security.torque.om.TurbineUserGroupRolePeer;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen;
 /**
@@ -109,22 +112,11 @@ public class SharedArea extends SecureScreen
 
 		String seq=pp.getString("seq","");
                 context.put("seqno",seq);
-		
+	
 		File topicDir=new File(Path+"/"+username+"/Shared");
-			Vector userList=new Vector();
-			try{
-			int rid[]={1,5,6};
-			int uid[]={0,1};
-			Criteria crit=new Criteria();
-			crit.addJoin(TurbineUserPeer.USER_ID,TurbineUserGroupRolePeer.USER_ID);
-			crit.addNotIn(TurbineUserGroupRolePeer.ROLE_ID,rid);
-			crit.addNotIn(TurbineUserPeer.USER_ID,uid);
-			crit.addGroupByColumn(TurbineUserPeer.LOGIN_NAME);
-			List l=TurbineUserPeer.doSelect(crit);
-			context.put("userlist",l);
-			}
-			catch(Exception e){data.setMessage("The error in display userlist "+e);}
-
+		Vector UsList = ListManagement.SharedUserList(Path);
+		//ErrorDumpUtil.ErrorLog("\n\nreturn userlist from util in screen file------->"+UsList);
+		context.put("userlist",UsList);
 		if( status.equals("fromSubDirectory") ||mode1.equals("move"))
 		{
 			if(!topicDir.exists())
@@ -144,6 +136,7 @@ public class SharedArea extends SecureScreen
 				File shared_Path=new File(topicDir+"/Shared__des.xml");
 				if(!shared_Path.exists())
 				{
+
 					String noXml=mu.ConvertedString("personal_noXml",file);
                         		data.setMessage(username+" "+noXml);
 				}

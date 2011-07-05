@@ -83,6 +83,7 @@ public class PersonalArea extends SecureScreen
                 	String Content=pp.getString("topic","");
                 	String Filename =pp.getString("filename","");
                 	String mode =pp.getString("mode","");
+                	String seq =pp.getString("seq","");
                 	context.put("mode",mode);
                 	context.put("topic",Content);
                 	context.put("fname",Filename);
@@ -137,7 +138,7 @@ public class PersonalArea extends SecureScreen
 			*Retrieve the Files of Particular topic exist in the Private Area
 			*@see TopicMetaDataXmlReader in utils
 			*/
-                 	if(status.equals("fromSubDirectory"))
+                 	if(status.equals("fromSubDirectory")&&(!seq.equals("0")))
 			{
 				String filetopic=Path+"/"+UserName+"/"+"/Private"+"/"+Content;
 				TopicMetaDataXmlReader topicMetaData=new TopicMetaDataXmlReader(filetopic+"/"+Content+"__des.xml");

@@ -105,6 +105,15 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.actions.Groupmanagement;
 import org.iitk.brihaspati.om.StudentExpiryPeer;
 
+//Lucene
+import org.apache.lucene.search.Hits;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 
 /**
  * This class is used for call the method in mylogin 
@@ -115,7 +124,7 @@ import org.iitk.brihaspati.om.StudentExpiryPeer;
  * @author <a href="mailto:kalpanagtm@gmail.com">Kalpana Gautam</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur</a>
- * @modified date:09-11-2010,03-03-2011
+ * @modified date:09-11-2010,03-03-2011,02-07-2011
  * @version 1.0
  * @since 1.0
  * @see ExpiryUtil
@@ -125,10 +134,11 @@ public class CommonUtility{
 	 * This method create the index of course
 	 * @return boolean 
 	 */
-	public static boolean CreateIndex(){
+	public static boolean CreateIndex(String Path){
 
 	try{
-		File f1=new File(TurbineServlet.getRealPath("/Courses"));
+		//File f1=new File(TurbineServlet.getRealPath("/Courses"));
+		File f1=new File(Path);
                 String arr[]=null;
                 if(f1.isDirectory())
                 {
@@ -141,7 +151,8 @@ public class CommonUtility{
                 	else
                 	{
 	                	String s=TurbineServlet.getRealPath("/");
-        		        File f2=new File(s+"/Courses/"+arr[i]+"_Index");
+        		        //File f2=new File(s+"/Courses/"+arr[i]+"_Index");
+        		        File f2=new File(Path+"/"+arr[i]+"_Index");
 		                if(!f2.exists()){
                 			boolean success=false;
 			                success=f2.mkdir();
@@ -154,7 +165,8 @@ public class CommonUtility{
                 	if(arr[i].endsWith("_Index")){
 				int l=arr[i].length();
 				String cst=arr[i].substring(0,l-6);
-			        CreateIndexer.StartIndex(TurbineServlet.getRealPath("/Courses")+"/"+arr[i],TurbineServlet.getRealPath("/Courses")+"/"+cst);
+			        //CreateIndexer.StartIndex(TurbineServlet.getRealPath("/Courses")+"/"+arr[i],TurbineServlet.getRealPath("/Courses")+"/"+cst);
+			        CreateIndexer.StartIndex(Path+"/"+arr[i],Path+"/"+cst);
                 	}
                 }
 	}
@@ -199,7 +211,9 @@ public class CommonUtility{
                                // if(Expiry_Success=true){//3 if
 	                               // this code moved to upside
                                // }//end of if 3 loop
-				boolean CI=CreateIndex();
+                                String path = TurbineServlet.getRealPath("/");
+				boolean CI=CreateIndex(path+"Courses");
+				boolean CIndx=CreateIndex(path+"UserArea");
 				boolean OT=optimizeTables();
 				boolean ADB=autoDeletebackup();
 				grpLeader();
@@ -850,6 +864,30 @@ public static void grpLeader()
                 ErrorDumpUtil.ErrorLog("Exception in InsertStuExpRecord method in Common utility class! "+e);
                 }
         }
+	
+	/** 
+  	 * This method perform the search process and return the result
+         */
 
+	public static Vector doMySearch(File indexDir, String q, Context context)  throws Exception{
+        Vector search=new Vector();
+	int cou=0;
+	long ti=0;
+        Directory fsDir = FSDirectory.getDirectory(indexDir, false);
+        IndexSearcher is = new IndexSearcher(fsDir);
+        Query query = QueryParser.parse(q, "contents", new StandardAnalyzer());
+
+        long start=new java.util.Date().getTime();
+        Hits hits = is.search(query);
+        long end=new java.util.Date().getTime();
+        cou=cou+hits.length();
+        ti=ti+(end-start);
+        for (int i = 0; i < hits.length(); i++) {
+                Document doc = hits.doc(i);
+                search.addElement(doc.get("filename"));
+        }
+        return search;
+
+   }
 		
 }//end of class

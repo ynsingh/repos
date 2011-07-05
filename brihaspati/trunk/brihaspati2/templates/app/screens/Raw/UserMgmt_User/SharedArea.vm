@@ -3,6 +3,8 @@
  *Copyright (c) 2005,2009,2011 ETRG,IIT Kanpur.
  *All Rights Reserved.
  *@author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a> 
+ *@author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
+ *@ modified date:02-07-2011 
   *Contributors: Members of ETRG, I.I.T. Kanpur
  *#
 
@@ -12,29 +14,57 @@ $page.setTitle("$brih_home |$personal $area |$shared $area")
 $!data.getMessage()
 #set($lang = $data.getUser().getTemp("lang" ).toString())
 
+#if($val !="")
+	$val
+#end
+
 <table bgcolor="$ui.tableColor" width=100%>
 	<tr bgcolor="$ui.menuColor"><td>
 	        <a href=$link.setPage("call,IndexHome.vm") style=text-decoration:none>$brih_home</a> |
 		<a href=$link.setPage("call,UserMgmt_User,PersonalArea.vm") style=text-decoration:none>$personal $area</a> | $shared $area  
 	</td></tr>
 </table>
+#if($seqno!="")
 <form name="frm" method="post" action="$link.setPage("call,UserMgmt_User,SharedArea.vm").setAction("UserAreaAction").addPathInfo("seq",$seqno).addPathInfo("actionName","eventSubmit_doMove")">
+#else
+<form name="frm" method="post" action="$link.setPage("call,UserMgmt_User,SharedArea.vm").setAction("UserAreaAction").addPathInfo("type","Search").addPathInfo("actionName","eventSubmit_doSearch")">
+#end
+## table for search of user and their content 
 	##<table align="center" width=80% cellpadding="1" cellspacing="1" bgcolor="$ui.tableColor" border="1">
 	<table width=100% bgcolor="$ui.tableColor" cellpadding="1" cellspacing="1" border="1">
-			<tr><td colspan="10" align="center" bgcolor="$ui.menuColor"><b>$brih_listUsr</b></td></tr><br>
-			<tr>
+		<tr bgcolor="$ui.menuColor">
+                <td><b>$brih_searchBy</b></td>
+                <td>
+                        <select name="queryList">
+				<option value="UserName"> $brih_usr #if($lang == "hindi") $brih_Of1 #end $brih_name</option>
+				<option value="Word"> $brih_Content</option>
+                        </select>
+                </td>
+                <td><b>$brih_match_str</b></td>
+                <td>
+                        <input align=center type="text" name="valueString" value="">
+                </td>
+                <td>
+                        <input type="button" name="eventSubmit_doSearch" value="Search" onClick="checkNull(document.frm,this);">
+			<input type="hidden" name="ulist" value=$userlist>
+                </td>
+		<td colspan=5><a href=$link.setPage("call,UserMgmt_User,SharedArea.vm") style=text-decoration:none>$brih_listUsr</a></td>
+                        <tr>
 			#set($count=0)
-			#foreach ($urecord in $userlist) 
+## if type is search then replace userlist with search list of user
+			#if($type == "Search")
+				#set($userlist = $Searchlist)
+			#end
+			#foreach ($urecord in $userlist)
 				#if ($count==10)
 					</tr><tr>
 					#set($count=0)
 				#end
-				<td><a href=$link.setPage("call,UserMgmt_User,SharedArea.vm").addPathInfo("stat","fromSubDirectory").addPathInfo("name",$urecord.getUserName()) style=text-decoration:none>$urecord.getUserName()</a></td> 
-			#set($count=$count+1)
-			#end
-			</tr>
+				<td><a href=$link.setPage("call,UserMgmt_User,SharedArea.vm").addPathInfo("stat","fromSubDirectory").addPathInfo("name",$urecord) style=text-decoration:none>$urecord</a></td>
+                        #set($count=$count+1)
+                        #end
+                        </tr>
 		##end
-
 	</table>
 	<br>
 	<table align="center" bgcolor="$ui.tableColor" cellpadding="3" border="1">
@@ -61,6 +91,21 @@ $!data.getMessage()
 			#end
 		#end
 	</table>
+
+	<table  width=100% bgcolor="$ui.tableColor">
+	#set($count=1)
+	#set($t=0)
+		#foreach($i in $vec)    
+		#set($one=$out.elementAt($t))
+		#set($t=$t+1)
+		#set($two=$out.elementAt($t))
+		#set($t=$t+1)
+		#set($three=$out.elementAt($t))
+		#set($t=$t+1)
+			<tr><td>$count</td><td> <a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("contents",$one).addPathInfo("type","UserArea").addPathInfo("area","shared").addPathInfo("filename",$three)","newWin");>$i</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+        #set($count=$count+1)
+		#end
+ 	</table>
 <br>
 	<table align="center" bgcolor="$ui.tableColor">
 	#if($mode1=="move")
@@ -97,5 +142,12 @@ $!data.getMessage()
         {
                 window.open(urlName,popupName,"toolbar=yes,scrollbars=yes");
         }
-
+	function checkNull(frm,field){
+                if(frm.valueString.value!=""){
+                        frm.submit();
+                }
+                else{
+                        alert("The 'Match String' text box can not be NULL !!");
+                }
+        }
 </script>
