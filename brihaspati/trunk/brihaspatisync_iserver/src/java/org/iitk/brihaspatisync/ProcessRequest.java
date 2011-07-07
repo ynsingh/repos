@@ -318,12 +318,14 @@ public class ProcessRequest extends HttpServlet {
 				String lect_id=request.getParameter("lect_id");
 				/** Get Userlist in Vector for given Lecture Id */
 				Vector result=PeerManager.getController().getPeerList(lect_id);
+				ServerLog.getController().Log("Get Userlist in Vector for given Lecture Id "+result.toString());
 				int resultSize=result.size();
 				String message="";
                         	if(resultSize!=0){
-					for(int i=0;i<=resultSize;i++){
+					for(int i=0;i<resultSize;i++){
                                         	message=message+","+result.elementAt(i).toString();
 					}
+					ServerLog.getController().Log("Get Userlist in Vector for given Lecture Id "+message);
                               		response.setContentLength(message.length());
 					out.println(message);
 		                        out.flush();
