@@ -290,7 +290,7 @@ $!msg
 <tr><td colspan=4> <b>$brih_login with $brih_open Id </b></td></tr>
 <tr><td colspan=4>Please click your open Id provider:</td></tr>
 <tr><td colspan=4>
-<input id="openid_identifier" name="openid_identifier" type="text" value="http://" size="49" style="border: 1px solid #789; padding: 0.2em;"/>
+<input id="openid_identifier" name="openid_identifier" type="text" value="http://202.141.40.217:8080/openid/username" size="49" style="border: 1px solid #789; padding: 0.2em;"/>
 </td></tr>
 <tr align="right"><td align=left colspan=4> ## , 
 <font face="$ui.sansSerifFonts">
@@ -300,6 +300,7 @@ $!msg
 </font>
 </td> </tr> ## ,
 <tr><td colspan=4>
+Please replace username with your actual username.<br> You can create the Brihaspati openId account from <a href="http://202.141.40.217:8080/openid/">here.  <br>
 <a href=javascript:popupWin("/brihaspati2/docs/openidfaq.html","newWin");>Problems logging in with OpenID?</a>
 OpenID eliminates the need for multiple usernames across different websites.<br>
 

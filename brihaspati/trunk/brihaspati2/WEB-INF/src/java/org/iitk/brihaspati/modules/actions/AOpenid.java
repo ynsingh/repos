@@ -112,7 +112,8 @@ public class AOpenid extends VelocityAction{
 
 		// configure the return_to URL where your application will receive
 	        // the authentication responses from the OpenID provider
-		String returnToUrl = RegistrationService.getReturnToUrl();
+		String returnToUrl = RegistrationService.getReturnToUrl(data,context);
+                ErrorDumpUtil.ErrorLog("Getting the return URL "+returnToUrl);
 /*
                   // perform discovery on the user-supplied identifier
 		DiscoveryInformation discovered = consumerManager.associate(discoveries);

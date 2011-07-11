@@ -61,12 +61,14 @@ import org.openid4java.message.sreg.SRegResponse;
 
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 
+import org.apache.velocity.context.Context;
+import org.apache.turbine.util.RunData;
+
+
+
 /**
  * Consolidates business logic from the UI code for Registration activities.
  * 
- * Most of this code modeled after ConsumerServlet, part of the openid4java 
- * sample code available at 
- * http://code.google.com/p/openid4java/wiki/SampleConsumer.
  * 
  * @author Nagendra Kumar singh
  * @author http://sites.google.com/site/nksinghiitk/
@@ -268,9 +270,10 @@ public class RegistrationService {
    *  
    * @return String - the returnToUrl to be used for the authentication request.
    */
-  public static String getReturnToUrl() {
+  public static String getReturnToUrl(RunData data, Context context) {
+	String rturl=data.getServerScheme()+"://"+data.getServerName()+":"+data.getServerPort()+"/brihaspati/servlet/brihaspati/action/openidResponse?is_return=true";
 //    return "http://172.26.82.17:8080/brihaspati/servlet/brihaspati/action/openidResponse";
-    return "http://172.26.82.17:8080/brihaspati/servlet/brihaspati/action/openidResponse?is_return=true";
-    //return "http://172.26.82.17:8080/openid4java-sample-app/sample/OpenIdRegistrationSavePage?is_return=true";
+   // return sScheme+"://"+sName+":"+sPort+"/brihaspati/servlet/brihaspati/action/openidResponse?is_return=true";
+    return rturl;
   }
 }
