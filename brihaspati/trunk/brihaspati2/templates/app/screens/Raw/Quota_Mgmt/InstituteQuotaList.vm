@@ -50,11 +50,7 @@ $!data.getMessage()
 	 #end
 	 <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("mode","ulistquota").addPathInfo("count","2").addPathInfo("status","nosearch") style=text-decoration:none>$brih_usr $brih_quota </a></td>
 </tr>
-#if($mode == "edit")
 <form name="frm" action="$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").setAction("InstituteQuotaAction")"> 
-#else
-<form name="frm" action="$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm")"> 
-#end
 #if($mode =="instlistquota")  
 <tr bgcolor="$ui.menuColor">
 	<td align=left colspan="10"><b><I>$brih_listOf $RemoteInstitute $brih_quota </I></td>
@@ -228,7 +224,8 @@ $!data.getMessage()
         <td><I>$lst.getLoginName()</I></td>
                 <td><I>$lst.getQuota()</I></td>
                 <td colspan=7>
-                <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("uid",$lst.getUserId()).addPathInfo("name",$lst.getLoginName()).addPathInfo("mode","uedit").addPathInfo("quota",$lst.getQuota()).addPathInfo("count",$tdcolor).addPathInfo("status",$status) style=text-decoration:none><I>$brih_edit</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                ##<a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("uid",$lst.getUserId()).addPathInfo("name",$lst.getLoginName()).addPathInfo("mode","uedit").addPathInfo("quota",$lst.getQuota()).addPathInfo("count",$tdcolor).addPathInfo("status",$status) style=text-decoration:none><I>$brih_edit</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href=$link.setPage("call,Quota_Mgmt,InstituteQuotaList.vm").addPathInfo("uid",$lst.getUserId()).addPathInfo("name",$lst.getLoginName()).addPathInfo("mode","uedit").addPathInfo("quota",$lst.getQuota()).addPathInfo("count",$tdcolor) style=text-decoration:none><I>$brih_edit</a>&nbsp;&nbsp;&nbsp;&nbsp;
                 </td>
         </tr>
         #end 
@@ -300,9 +297,11 @@ $!data.getMessage()
         <td><input type="text" name="quota" value="$quota"></td>
         </tr>
         <tr><td>
-        <input type=button name="eventSubmit_doUpdate" value=$brih_update onClick="updatefield(document.frm,this);"/>
+        ##<input type=button name="eventSubmit_doUpdate" value=$brih_update onClick="updatefield(document.frm,this);"/>
+        <input type=button name="eventSubmit_doUpdateUserQuota" value=$brih_update onClick="updatefield(document.frm,this);"/>
         <input type="hidden" name="count" value="$tdcolor">
-        <input type="hidden" name="status" value="$status">
+        ##<input type="hidden" name="status" value="$status">
+        <input type="hidden" name="mode" value="$mode">
         </td></tr>
 #end
 		<input type="hidden" name="actionName">

@@ -43,6 +43,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.torque.util.Criteria;
 import org.apache.turbine.util.parser.ParameterParser;
 import org.iitk.brihaspati.om.InstituteQuotaPeer;
+import org.iitk.brihaspati.om.TurbineUserPeer;
 
 /**
  *This action is called when SysAdmin update the Institute Quota.
@@ -87,13 +88,46 @@ public class  InstituteQuotaAction extends SecureAction
 		}
 		catch(Exception ex)
 		{data.setMessage("The Error in updating the quota"+ex);}
-	}
+	}	
+        public void doUpdateUserQuota(RunData data, Context context)
+        {
+		try
+		{
+			ParameterParser pp=data.getParameters();
+			String mode=pp.getString("mode");
+			context.put("mode",mode);
+			String msg="";
+			Criteria crt=new Criteria();
+                        long LsValue=QuotaUtil.getFileSystemSpaceinGB();
+			long LsValueinmb=LsValue*1024;
+			String LangFile=data.getUser().getTemp("LangFile").toString();
+				String uid=pp.getString("uid");
+				String uquota=pp.getString("quota");
+				long ASpace=Long.valueOf(uquota).longValue();
+				crt=new Criteria();
+				crt.add(TurbineUserPeer.USER_ID,uid);
+				crt.add(TurbineUserPeer.QUOTA,uquota);
+				if(LsValueinmb > ASpace){
+	                        	TurbineUserPeer.doUpdate(crt);
+					msg=MultilingualUtil.ConvertedString("c_msg5",LangFile);
+                        		data.setMessage(msg);
+				}
+				else{
+					msg=MultilingualUtil.ConvertedString("qmgmt_msg1",LangFile);
+					data.addMessage(msg);	
+				}
+		}
+		catch(Exception ex)
+		{data.setMessage("The Error in updating the quota"+ex);}
+	}	
 	public void doPerform(RunData data,Context context) throws Exception
         {
 		String LangFile=data.getUser().getTemp("LangFile").toString();
         	String action=data.getParameters().getString("actionName","");
                 if(action.equals("eventSubmit_doUpdate"))
                 	doUpdate(data,context);
+                else if(action.equals("eventSubmit_doUpdateUserQuota"))
+                	doUpdateUserQuota(data,context);
                 else{    
 			String msg=MultilingualUtil.ConvertedString("action_msg",LangFile);
                 	data.setMessage(msg);
