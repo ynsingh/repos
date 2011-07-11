@@ -117,6 +117,7 @@ public class BrihaspatiLogin extends VelocityScreen
 			String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Notification.properties";
 			String fhead = AdminProperties.getValue(path,"brihaspati.admin.flashHeading.value");
 	                context.put("fNoti",fhead);
+	                context.put("msg",pp.getString("msg",""));
 
 
 		}

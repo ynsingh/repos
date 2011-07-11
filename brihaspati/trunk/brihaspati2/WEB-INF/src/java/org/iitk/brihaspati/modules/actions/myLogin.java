@@ -58,8 +58,6 @@ import org.apache.commons.logging.LogFactory;
 
 import org.iitk.brihaspati.om.TurbineUserPeer;
 import org.iitk.brihaspati.om.TurbineUser;
-//import org.iitk.brihaspati.om.StudentExpiryPeer;
-//import org.iitk.brihaspati.om.StudentExpiry;
 import org.iitk.brihaspati.om.UsageDetailsPeer;
 import org.iitk.brihaspati.om.UserConfigurationPeer;
 import org.iitk.brihaspati.modules.utils.UserUtil;
@@ -68,16 +66,13 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
 import org.iitk.brihaspati.modules.utils.EncryptionUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+import org.iitk.brihaspati.modules.utils.LoginUtils;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.apache.turbine.services.session.TurbineSession;
 import org.apache.turbine.services.session.TurbineSessionService;
 import javax.servlet.http.HttpSession ;
 import java.util.Collection;
 import java.util.Vector;
-//import org.iitk.brihaspati.modules.utils.AdminProperties;
-
-
-//import java.util.Iterator;
 
 /**
  * Action class for authenticating a user into the system
@@ -123,6 +118,9 @@ public class myLogin extends VelocityAction{
 			/** 
 			 *  Get the session if exist then remove and create new session
 			 **/
+			LoginUtils.CheckSession(username);
+			ErrorDumpUtil.ErrorLog("After checking the session");
+/*
 			try{
                                 Vector ve=new Vector();
                                 Collection aul=TurbineSession.getActiveUsers();
@@ -150,7 +148,7 @@ public class myLogin extends VelocityAction{
                         }catch(Exception ev){
                                 ErrorDumpUtil.ErrorLog("This error comes from Single session in myLogin Action "+ev.getMessage());
                         }
-
+*/
 		user = null;
 		String page=new String();
 		// Provide a logger with the class name as category. This
@@ -159,6 +157,11 @@ public class myLogin extends VelocityAction{
 		// any other category name here, though.
 
 		log.info("this message would go to any facility configured to use the " + this.getClass().getName() + " Facility");//
+		Date date=new Date();
+		lang=LoginUtils.SetUserData(username, password, flag, lang, data);
+		context.put("lang",lang);
+		ErrorDumpUtil.ErrorLog("After setting User data");
+/*
 		try{//(1)
 			String str=new String();
 			// Authenticate the user and get the object.
@@ -226,8 +229,14 @@ public class myLogin extends VelocityAction{
 					
 
 				}	
+*/
 				userLanguage = null;
+
 				crit = null;
+				int uid=UserUtil.getUID(username);
+				LoginUtils.UpdateUsageData(uid);
+				ErrorDumpUtil.ErrorLog("After updating usage data");
+/*
 				int least_entry=0,count=0;
 
 				//code for usage details starts here
@@ -236,7 +245,7 @@ public class myLogin extends VelocityAction{
 				List entry=UsageDetailsPeer.doSelect(crit);
 				count=entry.size();
 				String find_minimum="SELECT MIN(ENTRY_ID) FROM USAGE_DETAILS WHERE USER_ID="+uid;
-				ErrorDumpUtil.ErrorLog("fm from usage details=="+find_minimum);
+			//	ErrorDumpUtil.ErrorLog("fm from usage details=="+find_minimum);
 				if(count >= 10)
 				{
 					List v=UsageDetailsPeer.executeQuery(find_minimum);
@@ -244,7 +253,7 @@ public class myLogin extends VelocityAction{
 					{
 						Record item2=(Record)j.next();
 						least_entry=item2.getValue("MIN(ENTRY_ID)").asInt();
-						ErrorDumpUtil.ErrorLog("least_entry from usage details=="+least_entry);
+					//	ErrorDumpUtil.ErrorLog("least_entry from usage details=="+least_entry);
 					}
 					crit=new Criteria();
 					crit.add(UsageDetailsPeer.ENTRY_ID,Integer.toString(least_entry));
@@ -265,18 +274,21 @@ public class myLogin extends VelocityAction{
 				
 				log.info("this message would go to any facility configured to use the " + this.getClass().getName() + " Facility");
 			}
-
+*/
 
 			//If there is an error redirect to login page with a message"Cannot Login"
+			try{
 			AccessControlList acl = data.getACL();
 			if( acl == null ){
 				acl = TurbineSecurity.getACL( data.getUser() );
+				ErrorDumpUtil.ErrorLog("If ACL null");
 				data.getSession().setAttribute( AccessControlList.SESSION_KEY,(Object)acl );
-				ErrorDumpUtil.ErrorLog("acl in mylogin action=="+acl);	
 			}
 			data.setACL(acl);
 			data.save();
-
+			}
+			catch(Exception ex){data.setMessage("Error in setting Access rules :- "+ex);}
+			ErrorDumpUtil.ErrorLog("After setting the ACL");
 			
 					boolean CL=CommonUtility.CleanSystem();
 					if(!CL)
@@ -287,11 +299,14 @@ public class myLogin extends VelocityAction{
 			/**
                           *Check the user for hint question when login at the first time.
                           */
+			LoginUtils.SetHintQues(uid, data);
+			ErrorDumpUtil.ErrorLog("After checking hint question");
+/*
                         try
 			{
                                 /**
                                 *Check for the admin and the guest.
-                                */
+                                *
                                 if(uid!=0 && uid!=1)
                                 {
                                         crit=new Criteria();
@@ -317,7 +332,7 @@ public class myLogin extends VelocityAction{
 		
 	         /** In case of an error, get the appropriate error message from
 	          *  TurbineResources.properties  
-		  */
+		  *
 	 	catch ( TurbineSecurityException e ){
 			//LangFile =data.getParameters().getString("Langfile");
 			String msg1=MultilingualUtil.ConvertedString("t_msg",MultilingualUtil.LanguageSelectionForScreenMessage(lang));
@@ -331,6 +346,12 @@ public class myLogin extends VelocityAction{
 			page=Turbine.getConfiguration().getString("screen.login");
 			data.setScreenTemplate(page);
 		}
+*/
+			/**
+ 			* Called the method from utils for Insert record when user (Student) already exist
+ 			* in Turbine User Table
+ 			*/
+//			CommonUtility.InsertStuExpRecord();
 		System.gc();
                 //----------------code for the groupmanagement--------//
           //  CommonUtility.grpLeader();

@@ -14,12 +14,12 @@
 
 $page.setTitle("Login in Brihaspati")
 $page.setBgColor($ui.bgcolor)
-<form name="frm" method="post" action="$link.setAction("myLogin")">
 <table width="100%">
 <tr><td>
 <marquee> <font size=4>$!fNoti</font></marquee>
 </td></tr>
 </table>
+$!msg
 <table align=left> ## 1
 <tr><td valign="top" width="25%">  ## 2, 3
 		<table bgcolor="$ui.tableColor" width="100%"> ## 4
@@ -271,7 +271,8 @@ $page.setBgColor($ui.bgcolor)
 #end
         </select>
         </td> </tr> ## 6, 5
-<tr> #formCell("$brih_email ($brih_usr)" "username" "") </tr> 
+<form name="frm" method="post" action="$link.setAction("myLogin")">
+<tr> #formCell("$brih_email ($brih_usr)" "username" "") <td>(Ex. ynsingh@iitk.ac.in)</td></tr> 
 <tr> #formPasswordCell("$brih_pwd" "password" "") </tr> 
 <tr align="right"><td align=left> ## 5, 6
 <font face="$ui.sansSerifFonts">
@@ -282,38 +283,59 @@ $page.setBgColor($ui.bgcolor)
 <input type=hidden name="flag" value="$flag">
 </font>
 </td> </tr> ## 6, 5
-<tr><td colspan=2>$brih_guestMsg2</td></tr>
-##</table>
-<tr><td colspan=2><b> ## 5, 6
+<tr><td colspan=4>$brih_guestMsg2</td></tr>
+</form>
+
+<form name="frm1" method="post" action="$link.setAction("AOpenid")">
+<tr><td colspan=4> <b>$brih_login with $brih_open Id </b></td></tr>
+<tr><td colspan=4>Please click your open Id provider:</td></tr>
+<tr><td colspan=4>
+<input id="openid_identifier" name="openid_identifier" type="text" value="http://" size="49" style="border: 1px solid #789; padding: 0.2em;"/>
+</td></tr>
+<tr align="right"><td align=left colspan=4> ## , 
+<font face="$ui.sansSerifFonts">
+<input type="submit" value="$brih_login">
+<input type=hidden name="lang" value="english">
+<input type=hidden name="flag" value="$flag">
+</font>
+</td> </tr> ## ,
+<tr><td colspan=4>
+<a href=javascript:popupWin("/brihaspati2/docs/openidfaq.html","newWin");>Problems logging in with OpenID?</a>
+OpenID eliminates the need for multiple usernames across different websites.<br>
+
+Find out <a href="http://openid.net/what/">more about OpenID</a> and <a href="http://openid.net/get/">how to get an OpenID enabled account</a>.
+   </td></tr>
+</form> 
+
+<tr><td colspan=4><b> ## 5, 6
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
 <a href=$link.setPage("ForgotPassword.vm").addPathInfo("lang",$lang).addPathInfo("status","User")>$brih_forgot $brih_pwd</a>
 </b></td></tr> ## 6, 5
-<tr><td colspan=2><b> ## 5, 6
+<tr><td colspan=4><b> ## 5, 6
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
 <a href=$link.setPage("ViewCourseList.vm").addPathInfo("lang",$lang)>$brih_reg2 $brih_course $brih_list</a>
 </b></td></tr> ## 6, 5
-<tr><td colspan=2><b> ## 5,6
+<tr><td colspan=4><b> ## 5,6
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
 <a href=$link.setPage("OnlineRegistration.vm").addPathInfo("lang",$lang).addPathInfo("status","UserResitration").addPathInfo("count","1")> $online_online $brih_reg </a>
 </b></td></tr> ## 6, 5
 
-<tr><td colspan=2><b> ## 5, 6
+<tr><td colspan=4><b> ## 5, 6
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
 <a href=$link.setAction("myLogin").addPathInfo("username","guest").addPathInfo("password","guest").addPathInfo("lang",$lang)> $brih_open $brih_access $brih_courses</a>
 </b></td></tr> ## 6, 5
-<tr><td colspan=2><b>
+<tr><td colspan=4><b>
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
 <a href=$link.setPage("InstituteAdminRegistration.vm").addPathInfo("lang",$lang)> #if($lang == "hindi") $brih_Institute $brih_Of2 #else $RemoteInstitute #end $brih_admin #if($lang == "hindi") $brih_Of1 #end $brih_reg </a>
 </b></td></tr>
 ##Add FAQ link in login page
-<tr><td colspan=2><b>
+<tr><td colspan=4><b>
 <img src="$content.getURI("/images/orange_sq_but.gif")">&nbsp;
 <a href=$link.setPage("FAQlist.vm").addPathInfo("lang",$lang).addPathInfo("mode","alllist").addPathInfo("type","general")>$brih_FAQ $brih_list </a>
 </b></td></tr>
 </table> ## 4
 </td></tr> ## 3, 2
 </table> ## 1
-</form>
 <SCRIPT language="JavaScript">
         function popupWin(url,popupName)
         {
