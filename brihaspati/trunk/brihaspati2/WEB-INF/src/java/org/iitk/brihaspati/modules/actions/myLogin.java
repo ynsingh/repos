@@ -326,7 +326,7 @@ public class myLogin extends VelocityAction{
 			/**
  			* Called the method from utils for Insert record when user (Student) already exist
  			* in Turbine User Table
- 			*/
+ 			*
 //			CommonUtility.InsertStuExpRecord();
 		}//end try1		
 		
@@ -357,5 +357,5 @@ public class myLogin extends VelocityAction{
           //  CommonUtility.grpLeader();
         //----------------code for the groupmanagement--------//
 
-	}
+       }
 }
