@@ -82,40 +82,10 @@ public class InstituteIdUtil
 
 		return instdetail;
 	}
-        /**
-         * getting institute id of instructor and studend user by the help of userid 
-         */
-        /*public static String getInstId(int uid)
-        {
-                Criteria crit=new Criteria();
-                String e=null;
-                int[] uId2 ={0,1};
-                try{
-                crit.add(TurbineUserGroupRolePeer.USER_ID,uid);
-                crit.andNotIn(TurbineUserGroupRolePeer.GROUP_ID,uId2);
-                List v=TurbineUserGroupRolePeer.doSelect(crit);
-                                for(int k=0;k<=v.size();k++){
-                                TurbineUserGroupRole element=(TurbineUserGroupRole)v.get(k);
-                                int s=(element.getGroupId());
-				if(s!=2){
-                                String gname=GroupUtil.getGroupName(s);
-                                StringTokenizer st=new  StringTokenizer(gname,"_");
-                                for(int j=0;st.hasMoreTokens();j++){
-                                                String instid=st.nextToken();
-                                                e=st.nextToken();
-                                        }
-                                }else
-                               {
-					e="author";
-
-                              }
-			     }
-
-                }catch(Exception ex){}
-                return e;
- }*/
-	/** Get the Institute Name on the basis of Institute Id
-	*/
+	
+	/** 
+	 * Get the Institute Name on the basis of Institute Id
+	 */
 	public static String getIstName(int instituteid){
 		String iName=null;
 		Criteria crit=new Criteria();
@@ -128,12 +98,12 @@ public class InstituteIdUtil
 		catch(Exception ex){	
 			ErrorDumpUtil.ErrorLog("The error in getIstName() - Institute Id Util class !!"+ex);
 		}
-
-	return iName;
+		return iName;
 	}
-	/* 
-	 *Get the Program name on the basis of programe code
- 	*/
+	
+	/** 
+	 * Get the Program name on the basis of programe code
+ 	 */
 	public static String getPrgName(String PrgCode){
 		String pName=null;
 		Criteria crt=new Criteria();
@@ -146,47 +116,12 @@ public class InstituteIdUtil
 		catch(Exception ex){
                         ErrorDumpUtil.ErrorLog("The error in getPrgName() - Institute Id Util class !!"+ex);
                 }
-	return pName;
+		return pName;
 	} 	
-        /*
+	
+        /**
          * getting the instituteid of institute admin by the help of userid
          */
-        /*public static String getAdminInstId(int uid)
-        {
-                Criteria crit=new Criteria();
-                String ef=null;
-                try{
-                        String username=UserUtil.getLoginName(uid);
-                                crit.add(InstituteAdminUserPeer.ADMIN_EMAIL,username);
-                                List v3=InstituteAdminUserPeer.doSelect(crit);
-
-                                for(int b=0;b<v3.size();b++)
-                                        {
-                                                InstituteAdminUser el=(InstituteAdminUser)v3.get(b);
-                                                int aid=(el.getInstituteId());
-                                                ef = Integer.toString(aid);
-                                        }
-                        }catch(Exception ex){}
-                        return ef;
- }*/
-        /**
-         * search method for given id  is a instituteAdmin or normal user
-         */
-        /*public static String getSearch(int uid)
-        {
-                String efg=null;
-                String f=null;
-                try{
-                        efg=InstituteIdUtil.getInstId(uid);
-                        if(efg.equals("admin")){
-                        f=InstituteIdUtil.getAdminInstId(uid);
-                        }
-                        else{
-                         f=InstituteIdUtil.getInstId(uid);
-                        }
-                }catch(Exception ex){}
-                return f;
-        }*/
 
 	public static Vector getAllInstId(int uid)
         {
@@ -195,10 +130,9 @@ public class InstituteIdUtil
                 Criteria crit=new Criteria();
                 int[] uId2 ={0,1};
                 try{
-                crit.add(TurbineUserGroupRolePeer.USER_ID,uid);
-                crit.andNotIn(TurbineUserGroupRolePeer.GROUP_ID,uId2);
-                List v=TurbineUserGroupRolePeer.doSelect(crit);
-
+	                crit.add(TurbineUserGroupRolePeer.USER_ID,uid);
+        	        crit.andNotIn(TurbineUserGroupRolePeer.GROUP_ID,uId2);
+                	List v=TurbineUserGroupRolePeer.doSelect(crit);
                         for(int k=0;k<v.size();k++){
                                 TurbineUserGroupRole element=(TurbineUserGroupRole)v.get(k);
                                 int s=(element.getGroupId());
@@ -214,26 +148,23 @@ public class InstituteIdUtil
                                                 e = Integer.toString(aid);
                                                 instidlist.add(e);
                                         }
-                                }else if(s==2){
-				e="author";
-				instidlist.add(e);
-				}
-                                else
-                                {
+                                }else if(s==2) {
+					e="author";
+					instidlist.add(e);
+				} else {
                                         String gname=GroupUtil.getGroupName(s);
                                         StringTokenizer st=new  StringTokenizer(gname,"_");
                                         for(int j=0;st.hasMoreTokens();j++){
                                                 String instid=st.nextToken();
                                                 e=st.nextToken();
                                                 instidlist.add(e);
-						}
-                                        
+					}
                                 }
                         }
                 }catch(Exception ex){ErrorDumpUtil.ErrorLog("Exception in getting all institute id according to  user id --[InstituteIdUtil]"+ex);}
                 return instidlist;
-//        }
-}
+	}
+	
 	public static String getTimeCalculation(int uid)
 	{	String utime=null;
 		try{
@@ -259,7 +190,6 @@ public class InstituteIdUtil
                 	long diffHours = diff/(60 * 60 * 1000);
                 	long diffHour = diff%(60 * 60 * 1000);
                 	long diffMin=diffHour/(60*1000);
-			//String username=user.getName();
 			utime=+diffHours+"Hrs"+" "+diffMin+"Min";
 		}catch(Exception ex){}
                 return utime;
@@ -311,7 +241,7 @@ public class InstituteIdUtil
                 catch(Exception ex){
                         ErrorDumpUtil.ErrorLog("The error in getInst_Courselist() - Institute Id Util class !!"+ex);
                 }
-        return vct;
+        	return vct;
         }
 	public static Vector getInstStudentDetail(String instituteId)
         {
@@ -345,8 +275,7 @@ public class InstituteIdUtil
                                 }
 
                         }
-                }
-                catch(Exception ex){}
+                } catch(Exception ex){}
                 return uidvct;
         }
 }

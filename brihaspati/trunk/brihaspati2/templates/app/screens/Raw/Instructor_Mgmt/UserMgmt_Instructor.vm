@@ -194,13 +194,15 @@ $!data.getMessage()
           </td>
         </tr>
 	#end
+
+	#if($mode == "instructordelete")
 	<tr><td align=left bgcolor="$ui.tableColor" colspan=6>
-        #if($total_size <= $userConf)
+        #if($total_size <= $AdminConf)
         <font color="white">$brih_first</font> &nbsp;
         <font color="white">$brih_pre</font> &nbsp;
         <font color="white">$brih_nxt</font>&nbsp;
         <font color="white">$brih_last</font> &nbsp;
-        #elseif($startIndex == $userConf_string)
+        #elseif($startIndex == $AdminConf_str)
         <font color="white">$brih_first</font> &nbsp;
         <font color="white">$brih_pre</font> &nbsp;
         <a href=$link.setPage("call,Instructor_Mgmt,UserMgmt_Instructor.vm").addPathInfo("institudeName",$institudeName).addPathInfo("cName",$cName).addPathInfo("count",$tdcolor).addPathInfo("mode","instructordelete").addPathInfo("startIndex",$startIndex) style=text-decoration:none>$brih_nxt</a> &nbsp;
@@ -220,6 +222,7 @@ $!data.getMessage()
         #end
         </td>
         </tr>
+	#end
 ##</table>
  #end
 </form>

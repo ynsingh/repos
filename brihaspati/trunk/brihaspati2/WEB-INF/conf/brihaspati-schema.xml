@@ -27,6 +27,7 @@
         <column name="ID" required="true" autoIncrement="true" primaryKey="true" type="INTEGER"/>
         <column name="USER_ID" required="true" size="255" type="VARCHAR"/>
         <column name="GROUP_NAME" required="true" size="255" type="VARCHAR"/>
+        <column name="INSTITUTE_ID" required="true" size="255" type="VARCHAR"/>
         <column name="PERMISSION_STATUS" type="INTEGER" size="2"/>
 </table>
 

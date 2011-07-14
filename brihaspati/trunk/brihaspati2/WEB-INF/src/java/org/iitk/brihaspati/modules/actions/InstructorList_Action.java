@@ -57,8 +57,7 @@ import org.apache.turbine.services.security.torque.om.TurbineUser;
 
 /**
  * This class is responsible for removing secondary instructor and changing their permission to the system.
- *  
- *	@author <a href="mailto:mail2sunil00@gmail.com">Sunil Yadav</a>
+ * @author <a href="mailto:mail2sunil00@gmail.com">Sunil Yadav</a>
  */
 
 public class InstructorList_Action extends SecureAction
@@ -78,6 +77,7 @@ public class InstructorList_Action extends SecureAction
 		String institudeName=data.getParameters().getString("institudeName","");
 		String gName="";
 		String msg="";
+		
                 if(institudeName.equals("ListAll")){
                         gName=data.getParameters().getString("cName","");
                         context.put("institudeName",institudeName);
@@ -85,28 +85,26 @@ public class InstructorList_Action extends SecureAction
                 }else{
                         gName=(String)user.getTemp("course_id");
                 }
-		
-			
-	try{	
-		if(!mid_delete.equals(""))
-		{
-		java.util.StringTokenizer st=new java.util.StringTokenizer(mid_delete,"^");
-		for(int j=0;st.hasMoreTokens();j++) 
-		   {
-			String username=st.nextToken();
-			int uid=UserUtil.getUID(username);
-			int GID=GroupUtil.getGID(gName);
-				Criteria crit=new Criteria();
-				crit.add(TurbineUserGroupRolePeer.ROLE_ID,2);
-				crit.add(TurbineUserGroupRolePeer.USER_ID,uid);
-				crit.add(TurbineUserGroupRolePeer.GROUP_ID,GID);
-				TurbineUserGroupRolePeer.doDelete(crit);
-		     }
+		try{	
+			if(!mid_delete.equals("")) {
+				java.util.StringTokenizer st=new java.util.StringTokenizer(mid_delete,"^");
+				for(int j=0;st.hasMoreTokens();j++)  {
+					String username=st.nextToken();
+					String inst_id=(data.getUser().getTemp("Institute_id")).toString();
+					int uid=UserUtil.getUID(username);
+					int GID=GroupUtil.getGID(gName);
+					Criteria crit=new Criteria();
+					crit.add(TurbineUserGroupRolePeer.ROLE_ID,2);
+					crit.add(TurbineUserGroupRolePeer.USER_ID,uid);
+					crit.add(TurbineUserGroupRolePeer.GROUP_ID,GID);
+					crit.add(InstructorPermissionsPeer.INSTITUTE_ID,inst_id);
+					TurbineUserGroupRolePeer.doDelete(crit);
+		     		}
 				msg=MultilingualUtil.ConvertedString("brih_remsec",LangFile);
-		}		data.addMessage(msg);
-			}catch (Exception ex){ data.setMessage("Error in Removing Secondary Instructor !!  " +ex); }
-		
-		 context.put("mode",mode);
+			}
+			data.addMessage(msg);
+		}catch (Exception ex){ data.setMessage("Error in Removing Secondary Instructor !!  " +ex); }
+		context.put("mode",mode);
 	}
 
 	/**
@@ -120,7 +118,7 @@ public class InstructorList_Action extends SecureAction
 		String username=pp.getString("username");
 		int permission=Integer.parseInt(pp.getString("permission"));
 		int uid=UserUtil.getUID(username);
-
+		String inst_id=(data.getUser().getTemp("Institute_id")).toString();
 		String institudeName=data.getParameters().getString("institudeName","");
                 String gName="";
                 if(institudeName.equals("ListAll")){
@@ -134,6 +132,7 @@ public class InstructorList_Action extends SecureAction
 		try{
 			Criteria crit=new Criteria();
 			crit.add(InstructorPermissionsPeer.USER_ID,uid);
+			crit.add(InstructorPermissionsPeer.INSTITUTE_ID,inst_id);
 			List l=InstructorPermissionsPeer.doSelect(crit);
 			if(l.size()>0) {
 				for(int i=0;i<l.size();i++) {
@@ -147,6 +146,7 @@ public class InstructorList_Action extends SecureAction
 				crit=new Criteria();
 				crit.add(InstructorPermissionsPeer.USER_ID,uid);
 				crit.add(InstructorPermissionsPeer.GROUP_NAME,GID);
+				crit.add(InstructorPermissionsPeer.INSTITUTE_ID,inst_id);
 				crit.add(InstructorPermissionsPeer.PERMISSION_STATUS,permission);
 				InstructorPermissionsPeer.doInsert(crit);
 			}
@@ -155,8 +155,6 @@ public class InstructorList_Action extends SecureAction
 		}catch(Exception ex){data.setMessage("Error in Grant of Instructor's Permission !!  " +ex); }
 	}			
 
-
-	
 	public void doPerform(RunData data,Context context) throws Exception
 	{
 		LangFile=(String)data.getUser().getTemp("LangFile");
@@ -172,52 +170,3 @@ public class InstructorList_Action extends SecureAction
 	}
 }
 		
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-			
-
-
-		
-
-
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

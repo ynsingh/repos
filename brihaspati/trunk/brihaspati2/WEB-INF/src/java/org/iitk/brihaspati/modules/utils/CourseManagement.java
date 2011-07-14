@@ -53,6 +53,10 @@ import org.iitk.brihaspati.om.DbReceivePeer;
 import org.iitk.brihaspati.om.NoticeSendPeer;
 import org.iitk.brihaspati.om.NoticeReceivePeer;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+
+import org.iitk.brihaspati.om.InstructorPermissionsPeer;
+import org.iitk.brihaspati.om.InstructorPermissions;
+
 /**
  * This utils class have all details of course
  * @author <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kumar Trivedi</a>
@@ -62,7 +66,8 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla</a>
- * @modified date: 20-10-2010,23-12-2010
+ * @author <a href="mailto:mail2sunil00@gmail.com">Sunil Yadav</a>
+ * @modified date: 20-10-2010,23-12-2010,14-07-2011
  */
 public class CourseManagement
 {
@@ -170,6 +175,25 @@ public class CourseManagement
 						String rollno="";
 						String program="";
 						String message2=UserManagement.CreateUserProfile(uname,passwd,fname,lname,iname,email,newcid,"instructor",serverName,serverPort,file,rollno,program);
+						/**********************modify by sunil***/
+                                		int GID=GroupUtil.getGID(newcid);
+                                		int uid=UserUtil.getUID(uname);
+						String inst_id=Integer.toString(institute_id);
+						//String inst_id=InstituteIdUtil.getInstId(uid);
+                                		if(newcid.indexOf(uname)>0){
+                                        		crit=new Criteria();
+	        	                                crit.add(InstructorPermissionsPeer.USER_ID,uid);
+        	        	                        java.util.List l=InstructorPermissionsPeer.doSelect(crit);
+                                	        	if(l.size()==0){
+                                        	        	crit=new Criteria();
+	        	                                        crit.add(InstructorPermissionsPeer.USER_ID,uid);
+        	        	                                crit.add(InstructorPermissionsPeer.GROUP_NAME,GID);
+								crit.add(InstructorPermissionsPeer.INSTITUTE_ID,inst_id);
+                                	                	crit.add(InstructorPermissionsPeer.PERMISSION_STATUS,1);
+                                        	        	InstructorPermissionsPeer.doInsert(crit);
+                                        		}
+                                		}
+						/******************************/
 						message=message1+message2;
 					}
 					catch(Exception e)
