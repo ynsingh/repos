@@ -13,14 +13,14 @@
  * @author <a href="palseema30@gmail.com">ManoramaPal</a>
  * @author <a href="kishore.shukla@gmail.com">Kishore Kumar Shukla</a>
  * @modified date: 22-11-2010 Add lang parameter
- * @modified date: 04-04-2011 
+ * @modified date: 04-04-2011,14-07-2011(smita) 
  * Contributors: Members of ETRG, I.I.T. Kanpur
 *#
 
 $page.setTitle("User Home Page")
 $page.setBgColor("bgcolor")
 $!data.getMessage()
-
+<body onload="doLoad();">
 #macro(UNAME)
        <font color="blue">
 	#if($firstname!="")
@@ -142,11 +142,22 @@ $!data.getMessage()
                         #end
         </table>
 </div>
+</body>
 <SCRIPT Language="javascript">
 
 function checkOption(field)
 {
 	  window.location = field.value;
+}
+function doLoad()
+{
+setTimeout( "refresh()", 60*1000 );
+}
+
+function refresh()
+{
+window.location = '$link.setPage("Index.vm")';
+refresh='true';
 }
 
 </SCRIPT >

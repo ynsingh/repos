@@ -85,7 +85,7 @@ public class InstituteIdUtil
         /**
          * getting institute id of instructor and studend user by the help of userid 
          */
-        public static String getInstId(int uid)
+        /*public static String getInstId(int uid)
         {
                 Criteria crit=new Criteria();
                 String e=null;
@@ -113,7 +113,7 @@ public class InstituteIdUtil
 
                 }catch(Exception ex){}
                 return e;
- }
+ }*/
 	/** Get the Institute Name on the basis of Institute Id
 	*/
 	public static String getIstName(int instituteid){
@@ -131,7 +131,8 @@ public class InstituteIdUtil
 
 	return iName;
 	}
-	/* Get the Program name on the basis of programe code
+	/* 
+	 *Get the Program name on the basis of programe code
  	*/
 	public static String getPrgName(String PrgCode){
 		String pName=null;
@@ -150,7 +151,7 @@ public class InstituteIdUtil
         /*
          * getting the instituteid of institute admin by the help of userid
          */
-        public static String getAdminInstId(int uid)
+        /*public static String getAdminInstId(int uid)
         {
                 Criteria crit=new Criteria();
                 String ef=null;
@@ -167,11 +168,11 @@ public class InstituteIdUtil
                                         }
                         }catch(Exception ex){}
                         return ef;
- }
+ }*/
         /**
          * search method for given id  is a instituteAdmin or normal user
          */
-        public static String getSearch(int uid)
+        /*public static String getSearch(int uid)
         {
                 String efg=null;
                 String f=null;
@@ -185,7 +186,7 @@ public class InstituteIdUtil
                         }
                 }catch(Exception ex){}
                 return f;
-        }
+        }*/
 
 	public static Vector getAllInstId(int uid)
         {
@@ -198,7 +199,7 @@ public class InstituteIdUtil
                 crit.andNotIn(TurbineUserGroupRolePeer.GROUP_ID,uId2);
                 List v=TurbineUserGroupRolePeer.doSelect(crit);
 
-                        for(int k=0;k<=v.size();k++){
+                        for(int k=0;k<v.size();k++){
                                 TurbineUserGroupRole element=(TurbineUserGroupRole)v.get(k);
                                 int s=(element.getGroupId());
                                 if(s==3){
