@@ -47,9 +47,11 @@ $page.setBgColor($ui.bgcolor)
                                 	<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","urdu")"> $brih_urdu </option>
 				#elseif($lang == "arabic")
 	                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","arabic")"> $brih_arabic </option>
+				#elseif($lang == "persian")
+	                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","persian")"> $brih_persian </option>
                                 #end
 				#if($lang != "arabic")
-	                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","arabic")"> ($brih_arabic1( $brih_arabic </option>
+	                                <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","arabic")"> ($brih_arabic( $brih_arabic1 </option>
 	                                ##<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","arabic")"> $brih_arabic </option>
 				#end
                                 <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","bangla")"> ($brih_bangla1) $brih_bangla
@@ -69,6 +71,9 @@ $page.setBgColor($ui.bgcolor)
 			        <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","malayalam")"> ($brih_malayalam1) $brih_malayalam
                                 <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","marathi")"> ($brih_marathi1) $brih_marathi
 				<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","nepali")"> ($brih_nepali1) $brih_nepali
+                                #if ($lang != "persian")
+	        			<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","persian")">($brih_persian( $brih_persian1 
+				#end
                                 <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","russian")"> ($brih_russian1) $brih_russian
         			<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","spanish")"> (EspaýOB) $brih_spanish
         			<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","tamil")"> ($brih_tamil1) $brih_tamil

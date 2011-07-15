@@ -46,8 +46,10 @@ import org.apache.turbine.util.parser.ParameterParser;
 import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.torque.util.Criteria; 
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import org.iitk.brihaspati.modules.utils.MailNotification;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.EncryptionUtil;
 import org.iitk.brihaspati.modules.utils.UserUtil; 
 import org.iitk.brihaspati.modules.utils.UserManagement; 
@@ -63,7 +65,7 @@ import org.iitk.brihaspati.om.HintQuestion;
  * @author <a href="awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista</a>
  * @author <a href="ynsingh@iitk.ac.in">Y.N.Singh</a>
- * modified date: 08-07-2010
+ * modified date: 08-07-2010, 16-06-2011
  */
 
 public class ForgotPassword extends VelocitySecureAction
@@ -194,28 +196,29 @@ public class ForgotPassword extends VelocitySecureAction
 					String msg1=new String();
 					try
 					{
-						String info_new = "";
-						if(srvrPort == 8080)
+						////////////////////////////////////////////////// Shaista did Modification for mail Sending 
+						String info_new = "", info_Opt="", msgRegard="", msgBrihAdmin=""; 
+						//msgDear="",
+						if(srvrPort == 8080){
 							info_new="newPassword";
-						else
+							info_Opt = "newUser";
+						}
+						else {
 							info_new="newPasswordhttps";
-
+							info_Opt = "newUserhttps";
+						}
 						
-						//////////////////////////////////////////////////
 						Properties pr =MailNotification.uploadingPropertiesFile(fileName);
+						//getMessage_new(String info,String FName,String LName,String i_name,String uName)
+						msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
+						msgRegard = MailNotification.replaceServerPort(msgRegard, serverName, serverPort);
+						msgBrihAdmin=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgBrihAdmin");
 						String subject = MailNotification.subjectFormate(info_new, "", pr );
-						String message = MailNotification.getMessage(info_new, "", "", "", password, serverName, serverPort,pr);
-						msg1=MailNotification.sendMail(message, mailId, subject, "", LangFile); 
-						
+						String message = MailNotification.getMessage(info_new, "", "", "", password, pr);
+						//ErrorDumpUtil.ErrorLog("\n\n\nsubject="+subject+"\n messageFormat="+message+"\nmsgRegard   "+msgRegard);
+						//msg1=MailNotification.sendMail(message, mailId, subject, "", LangFile); 
+						msg1=MailNotificationThread.getController().set_Message(message, "", msgRegard, msgBrihAdmin, mailId, subject, "", LangFile, ""); 
 						/////////////////////////////////////////////////
-						//if(srvrPort == 8080)
-						//{
-							//msg1=MailNotification.sendMail("newPassword",mailId,"","","",str,fileName,serverName,serverPort,LangFile); 
-	      					//}
-						//else
-						//{
-							//msg1=MailNotification.sendMail("newPasswordhttps",mailId,"","","",str,fileName,serverName,serverPort,LangFile);
-						//}
 						 if(msg1.equals(MultilingualUtil.ConvertedString("mail_msg2",LangFile)))
                                                 {
 						/**

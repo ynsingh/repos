@@ -65,6 +65,7 @@ import org.iitk.brihaspati.modules.utils.CommonUtility;
 import org.iitk.brihaspati.modules.utils.RomanToUnicode;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.MailNotification;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.om.MailSendPeer;
 import org.iitk.brihaspati.om.MailReceivePeer;
@@ -425,7 +426,8 @@ public class MailSendMessage extends SecureAction
         			        String serverPort= TurbineServlet.getServerPort();
 	                		if( (fileItem.getSize() == 0) && (mailId != null && mailId != "") ){
 						// mailMsg=MailNotification.sendMail(message, mailId, "LocalMail", "Updation Mail", subject, "", "", serverName, serverPort, LangFile);
-						mailMsg=MailNotification.sendMail(message, mailId, subject, "", LangFile);
+						//mailMsg=MailNotification.sendMail(message, mailId, subject, "", LangFile);
+						mailMsg =  MailNotificationThread.getController().set_Message(message, "", "", "", mailId, subject, "", LangFile, "");	
 					}
 	                		if((fileItem!=null) && (fileItem.getSize()!=0))
                                 	{
@@ -441,7 +443,8 @@ public class MailSendMessage extends SecureAction
 							File f1ForLM=new File(filePathForLM);
 							fileItem.write(f1ForLM);
 							//mailMsg=MailNotification.sendMail(message, mailId, "LocalMail", "Updation Mail", subject, "", filePathForLM, serverName, serverPort, LangFile);
-							mailMsg=MailNotification.sendMail(message, mailId, subject, filePathForLM, LangFile);
+							//mailMsg=MailNotification.sendMail(message, mailId, subject, filePathForLM, LangFile);
+							mailMsg =  MailNotificationThread.getController().set_Message(message, "", "", "", mailId, subject, filePathForLM, LangFile, "");
 						} //if s3 end
 						else { //else s3 start
 	                                		String realPath = TurbineServlet.getRealPath("/UserArea");

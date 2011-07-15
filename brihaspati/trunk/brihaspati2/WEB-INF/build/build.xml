@@ -655,9 +655,10 @@
 	<delete dir="${Multilingual.TemplatePath}/italian" />
 	<delete dir="${Multilingual.TemplatePath}/japanese" />
 	<delete dir="${Multilingual.TemplatePath}/korean" />
-	<delete dir="${Multilingual.TemplatePath}/nepali" />
 	<delete dir="${Multilingual.TemplatePath}/malayalam" />
 	<delete dir="${Multilingual.TemplatePath}/marathi" />
+	<delete dir="${Multilingual.TemplatePath}/nepali" />
+	<delete dir="${Multilingual.TemplatePath}/persian" />
 	<delete dir="${Multilingual.TemplatePath}/russian" />
 	<delete dir="${Multilingual.TemplatePath}/spanish" />
 	<delete dir="${Multilingual.TemplatePath}/tamil" />

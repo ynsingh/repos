@@ -57,6 +57,7 @@ import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.MailNotification;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
@@ -71,7 +72,7 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @modified date 29-12-2009
  * @modified date: 08-07-2010
- * @modified date 15-09-2010
+ * @modified date 15-09-2010, 16-06-2011 (Shaista)
  */
 
 public class UploadMarksAction extends SecureAction_Instructor
@@ -301,21 +302,32 @@ public class UploadMarksAction extends SecureAction_Instructor
 		{
 			try
 				{
+					String [] splitCrs = courseHome.split("_");
+					ErrorDumpUtil.ErrorLog("splitCrs length in uploadMarks Action="+splitCrs.length); 
+					String instId = splitCrs[1];
+					ErrorDumpUtil.ErrorLog("instId in uploadMarks Action="+instId); 
 					String LangFile=data.getUser().getTemp("LangFile").toString();
 					String serverName= TurbineServlet.getServerName();
                                 	String serverPort= TurbineServlet.getServerPort();
 	                                String mailMsg = "";
 				 	String mailId="";
 	                                //String marksUploadStr="Marks are uploaded in"+courseHome;
-	                                String info_new ="";
+					// Shaista did Modification for mail Sending 
+	                                String info_new ="", info_Opt="";
 
-	                                if(serverPort == "8080")
+	                                if(serverPort == "8080"){
         	                                info_new = "marksUpload";
-	                                else
+						 info_Opt = "newUser";
+					}
+	                                else {
         	                                info_new = "marksUpload_https";
+						 info_Opt = "newUserhttps";
+                                	}
 	                                Properties pr =MailNotification.uploadingPropertiesFile(TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties"));
 	                                String subject = MailNotification.subjectFormate(info_new, "", pr );
-	                                String message = MailNotification.getMessage(info_new, courseHome, "", "", "", serverName, serverPort,pr);
+	                                String message = MailNotification.getMessage(info_new, courseHome, "", "", "", pr);
+					String msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
+	                                msgRegard = MailNotification.replaceServerPort(msgRegard, serverName, serverPort);
 	                                //ErrorDumpUtil.ErrorLog("\n\n\n\n Upload marks.java message="+message+"      subject="+subject);
 					Criteria crit=new Criteria();
 					crit.add(TurbineUserPeer.LOGIN_NAME,userName);
@@ -326,8 +338,12 @@ public class UploadMarksAction extends SecureAction_Instructor
 	                                        TurbineUser element=(TurbineUser)v.get(0);
 	                                        mailId=element.getEmail();
 	                                        if(mailId != null && mailId != "")
-	                                                //mailMsg=MailNotification.sendMail(marksUploadStr, mailId, "", "Updation Mail", "", "", "", serverName, serverPort, (String)user.getTemp("LangFile"));
-	                                                mailMsg=MailNotification.sendMail(message, mailId, subject, "", (String)user.getTemp("LangFile"));
+		                                                //mailMsg=MailNotification.sendMail(message, mailId, subject, "", (String)user.getTemp("LangFile"));
+							if(!instId.equals(""))
+								 mailMsg = MailNotificationThread.getController().set_Message(message, "", msgRegard, " ", mailId, subject, "", LangFile, instId);
+							else						
+								 mailMsg = MailNotificationThread.getController().set_Message(message, "", msgRegard, " ", mailId, subject, "", LangFile, "");
+					mailId = "";
 	                                }
 	
 			
@@ -341,8 +357,11 @@ public class UploadMarksAction extends SecureAction_Instructor
 		                                        for(int i=0; i<usDetail.size(); i++){
 		                                                mailId=((CourseUserDetail) usDetail.elementAt(i)).getEmail().trim();
 	                                                if(mailId != null && mailId != ""){
-	                                                //mailMsg=MailNotification.sendMail(marksUploadStr, mailId, "", "Updation Mail", "", "", "", serverName, serverPort, (String)user.getTemp("LangFile"));
-	                                                mailMsg=MailNotification.sendMail(message, mailId, subject, "", (String)user.getTemp("LangFile"));
+	                                                //mailMsg=MailNotification.sendMail(message, mailId, subject, "", (String)user.getTemp("LangFile"));
+							if(!instId.equals(""))
+								 mailMsg = MailNotificationThread.getController().set_Message(message, "", msgRegard, " ", mailId, subject, "", LangFile, instId);
+							else						
+								mailMsg = MailNotificationThread.getController().set_Message(message, "", msgRegard, " ", mailId, subject, "", LangFile, "");
 	                                                }
 	 	                                       }
 	                                               usDetail=null;

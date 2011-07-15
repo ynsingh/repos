@@ -64,6 +64,7 @@ import javax.mail.Transport;
  * @modified date: 31-08-2005, 20-03-2009, 29-12-2009, 17-02-2010, 08-07-2010;
  * @author <a href="mailto:shikha@gmail.com">Shikha Shukla</a>
  * @modified date: 22-11-2010;
+ * @modified date: 14-07-2011 (Shaista);
 
  */
 
@@ -127,9 +128,17 @@ public class MailNotification{
 		replaceString("course_id",course_id);
         	replaceString("dept_name",dept_name);
              	replaceString("user_name",uName);
-		replaceString("user_pass",uPassword);
-                replaceString("server_name",server_name);
-               	return(replaceString("server_port",server_port));
+		return replaceString("user_pass",uPassword);
+                //replaceString("server_name",server_name);
+               	//return(replaceString("server_port",server_port));
+	}
+
+	 public static String replaceServerPort(String info,String serverName, String serverPort) throws Exception {
+               if(serverName.length() >0)
+                       info=info.replaceAll("server_name", serverName);
+               if(serverPort.length() >0)
+                       info=info.replaceAll("server_port", serverPort);
+               return info;
 	}
 	
 	public static String getMessage_new(String info,String FName,String LName,String i_name,String uName) throws Exception {
@@ -188,7 +197,7 @@ public class MailNotification{
 		
 		String email_new="";
 		String msg = "";
-		ErrorDumpUtil.ErrorLog("\n\n\n  message========"+ message+"	mail_id="+mail_id+"          subject="+subject+"	attachedFile="+attachedFile);
+		ErrorDumpUtil.ErrorLog("\n\n\n  message========"+ message+"\n	mail_id="+mail_id+"\n          subject="+subject+"\n	attachedFile="+attachedFile);
 		try{ //try 1
 			 if(!mail_id.equals("")){
 				email_new=mail_id;
@@ -289,9 +298,10 @@ public class MailNotification{
                                                       l_msg.saveChanges();     // don't forget this
                                                       tr.sendMessage(l_msg, l_msg.getAllRecipients());
                                                       tr.close();
-
+						/**
 						     if( (attachedFile.length() > 0 )) 
 						     		deletingAttachedFile(attachedFile);
+						*/
 							
 						} catch (MessagingException mex) { // Trap the MessagingException Error
                                                 // If here, then error in sending Mail. Display Error message.
@@ -327,13 +337,10 @@ public class MailNotification{
 		
 		//ErrorDumpUtil.ErrorLog("this is deleting attached File"+attachedFile);
 		File f1 = new File(attachedFile);
-		if((attachedFile.length() > 0 ))
-		{
-			if(f1.exists())
-        	        {
-                		f1.delete();
-	                }
-		}
+		if(f1.exists())
+       	        {
+               		f1.delete();
+                }
 	}
 }
 

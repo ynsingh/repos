@@ -117,6 +117,7 @@ $!msg
         <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","marathi")"> $brih_marathi 
         <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","malayalam")"> $brih_malayalam 
         <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","nepali")"> $brih_nepali 
+        <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","persian")"> $brih_persian 
         <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","russian")"> $brih_russian
         <option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","spanish")"> $brih_spanish
 	<option value="$link.setPage("BrihaspatiLogin.vm").addPathInfo("lang","tamil")"> $brih_tamil

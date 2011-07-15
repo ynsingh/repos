@@ -56,6 +56,9 @@ $!data.getMessage()
 #elseif ($lang == "nepali")
         #set($lang="ne")
 
+#elseif ($lang == "persian")
+        #set($lang="pr")
+
 #elseif ($lang == "russian")
         #set($lang="ru")
 

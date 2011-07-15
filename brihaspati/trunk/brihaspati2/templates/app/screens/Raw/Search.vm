@@ -28,13 +28,14 @@ $val
 <form name="frm" method="post" action="$link.setPage("call,Search.vm").setAction("SearchEngine")">
 	<table bgcolor="$ui.tableColor" width=100%>
 	<tr>
-		#if($lang == "hindi" )
-    			 #formCell("$brih_bri $brih_inside $brih_search" "WORD" "")
-			<td><b>$brih_bri $brih_inside $brih_search</b>
+		<td>
+		#if($lang == "english" )
+    			 ##formCell("$brih_bri $brih_inside $brih_search" "WORD" "")
+			<b>$brih_search $brih_inside $brih_bri</b>
                         <input type="text" size=25 name="WORD" value=""> 
 		#else
 			##formCell("$brih_search $brih_inside $brih_bri" "WORD" "") 
-			<b>$brih_search $brih_inside $brih_bri</b>
+			<b>$brih_bri $brih_inside $brih_search</b>
                         <input type="text" size=25 name="WORD" value=""> 
 		#end
 	

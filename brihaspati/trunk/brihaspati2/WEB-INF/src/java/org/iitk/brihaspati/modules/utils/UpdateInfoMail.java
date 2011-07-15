@@ -67,7 +67,7 @@ import org.apache.turbine.services.security.torque.om.TurbineUserGroupRole;
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:arvindjss17@yahoo.co.in">Arvind Pal</a> 
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
- * @modified date: 08-07-2010
+ * @modified date: 08-07-2010, 13-07-2011
  * @since 1.0
  * @see ExpiryUtil 
  */
@@ -241,7 +241,9 @@ public class UpdateInfoMail{
                                                 String Messagebackup ="Taken backup";
 						////////////////////////////////////////////
                                                 //Mail_msg=MailNotification.sendMail(Messagebackup,emailId1,"","Updation Mail","","","",server_name,srvrPort,"");
-                                                Mail_msg=MailNotification.sendMail(Messagebackup, emailId1, "Updation Mail", "", "english");
+                                                //Mail_msg=MailNotification.sendMail(Messagebackup, emailId1, "Updation Mail", "", "english");
+						// Shaista did Modification for mail Sending 
+						Mail_msg = MailNotificationThread.getController().set_Message(Messagebackup, "", "", " ", emailId1, "Updation Mail", "", "english", "");
 						////////////////////////////////////////////
                                         }
                                         else
@@ -251,7 +253,9 @@ public class UpdateInfoMail{
 						//ErrorDumpUtil.ErrorLog("Update Info TitalMailMessage"+TitalMailMessage);
                                                 if(!TitalMailMessage.equals("")){
                                                 	//Mail_msg=MailNotification.sendMail(TitalMailMessage,emailId1,"","Updation Mail","","","",server_name,srvrPort,"english");
-                                                	Mail_msg=MailNotification.sendMail(TitalMailMessage,  emailId1, "Updation Mail", "", "english");
+                                                	//Mail_msg=MailNotification.sendMail(TitalMailMessage,  emailId1, "Updation Mail", "", "english");
+							// Shaista did Modification for mail Sending 
+							Mail_msg = MailNotificationThread.getController().set_Message(TitalMailMessage, "", "", " ", emailId1, "Updation Mail", "", "english", "");
                                   //              	ErrorDumpUtil.ErrorLog("This is  else  condision !!!!!");
                                                 }
                                         }

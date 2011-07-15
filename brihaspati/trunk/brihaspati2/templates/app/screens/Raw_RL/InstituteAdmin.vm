@@ -34,7 +34,7 @@ $!data.getMessage()
 </tr>
 	
 	##<tr><td align="center">Institute Admin List</td></tr>
-	<tr align="right"><td align="center"> $brih_Institute $brih_Of2 $brih_ad $brih_Of $brih_list </td></tr>
+	<tr align="right"><td align="center"> $RemoteInstitute $brih_Of2 $brih_ad $brih_Of $brih_list </td></tr>
 	#if($rldpage != "yes")
 		#foreach($lst in $list1)
 		##	#foreach($lst1 in $list1)

@@ -227,10 +227,10 @@ $brih_course #if($lang=="hindi") $brih_Of2 #end $brih_news
 
 #end
 	#set($lang = $data.getUser().getTemp( "lang" ).toString())
-	#if($lang == "hindi")
-		<td colspan=2><b><a href=$link.setPage("call,News,News_Add.vm").addPathInfo("status",$status).addPathInfo("count",$tdcolor)> $brih_news $brih_add</a></b></td>
-	#else
+	#if($lang == "english")
 		<td colspan=2><b><a href=$link.setPage("call,News,News_Add.vm").addPathInfo("status",$status).addPathInfo("count",$tdcolor)>$brih_add $brih_news</a></b></td>
+	#else
+		<td colspan=2><b><a href=$link.setPage("call,News,News_Add.vm").addPathInfo("status",$status).addPathInfo("count",$tdcolor)> $brih_news $brih_add</a></b></td>
 	#end
 </tr>
 </td>

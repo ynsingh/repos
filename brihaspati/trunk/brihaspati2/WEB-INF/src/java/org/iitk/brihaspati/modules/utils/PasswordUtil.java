@@ -37,7 +37,7 @@ package org.iitk.brihaspati.modules.utils;
  * @author: <a href="mailto:awadhk_t@yahoo.com">Awadhesh Kumar Trivedi</a>
  * @author: <a href="mailto:madhavi_mungole@hotmail.com">Madhavi Mungole</a>
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
- * @modified date: 08-07-2010, 07-12-2010
+ * @modified date: 08-07-2010, 07-12-2010, 13-07-2011
  */
 import java.util.Random;
 import java.util.Properties;
@@ -153,17 +153,26 @@ public class PasswordUtil{
         	                String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
                         	try
 	                        {
-					String info_new = "";
-        	                        if(serverPort == "8080")
+					// Shaista did Modification for mail Sending 
+					String info_new = "", info_Opt="", msgRegard="", msgBrihAdmin="";
+        	                        if(serverPort == "8080"){
 						info_new = "newPassword";
-					else
+						 info_Opt = "newUser";
+					}
+					else {
 						info_new = "newPasswordhttps";
-
+						info_Opt = "newUserhttps";
+					}
 					Properties pr =MailNotification.uploadingPropertiesFile(fileName);
+					msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
+                                        msgRegard = MailNotification.replaceServerPort(msgRegard, PasswordUtil.serverName, PasswordUtil.serverPort);
+                                        msgBrihAdmin=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgBrihAdmin");
                                         String subject = MailNotification.subjectFormate(info_new, "", pr );
-					String messageFormat = MailNotification.getMessage(info_new, "", "", "", newPassword, PasswordUtil.serverName, PasswordUtil.serverPort,pr);
-					//ErrorDumpUtil.ErrorLog("\n\n\nsubject="+subject+"\n messageFormat="+messageFormat);
-					msg1=MailNotification.sendMail(messageFormat, mailId, subject, "", file);
+					//String messageFormat = MailNotification.getMessage(info_new, "", "", "", newPassword, PasswordUtil.serverName, PasswordUtil.serverPort,pr);
+					String messageFormat = MailNotification.getMessage(info_new, "", "", "", newPassword, pr);
+					//ErrorDumpUtil.ErrorLog("\n\n\nsubject="+subject+"\n messageFormat="+messageFormat+"\nmsgRegard	"+msgRegard);
+					msg1= MailNotificationThread.getController().set_Message(messageFormat, "", msgRegard, msgBrihAdmin, mailId, subject, "", file, "");
+					//MailNotification.sendMail(messageFormat, mailId, subject, "", file);
 					//ErrorDumpUtil.ErrorLog("\n msg1="+msg1);
 
 

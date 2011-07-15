@@ -36,13 +36,13 @@ $!data.getMessage()
         #if( $total_size!=0 )
         #if( $endIndex < $total_size )
                 #if( $endIndex < $AdminConf )
-	                #if($lang == "hindi") $total_size in $brih_from1 [$k - $total_size] #else [$k - $total_size] of $total_size #end
+	                #if($lang == "hindi") $total_size $brih_in $brih_from1 [$k - $total_size] #else [$k - $total_size] $brih_Of $total_size #end
                 #else
-                	#if($lang == "hindi") $total_size in $brih_from1 [$k - $endIndex] #else [$k - $endIndex] of $total_size #end
+                	#if($lang == "hindi") $total_size $brih_in $brih_from1 [$k - $endIndex] #else [$k - $endIndex] $brih_Of $total_size #end
                 #end
         #else
         	##[$k - $total_size] of $total_size
-		#if($lang == "hindi") $total_size in $brih_from1 [$k - $total_size] #else [$k - $total_size] of $total_size #end
+		#if($lang == "hindi") $total_size $brih_in $brih_from1 [$k - $total_size] #else [$k - $total_size] $brih_Of $total_size #end
         #end
         #end
         </td>
