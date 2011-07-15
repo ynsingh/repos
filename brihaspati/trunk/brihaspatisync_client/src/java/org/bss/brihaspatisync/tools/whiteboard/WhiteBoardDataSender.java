@@ -13,13 +13,10 @@ import java.net.InetAddress;
 import org.bss.brihaspatisync.network.util.UtilObject;
 import org.bss.brihaspatisync.network.Log;
 
-
-
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>
  */
-
 
 public class WhiteBoardDataSender {
 

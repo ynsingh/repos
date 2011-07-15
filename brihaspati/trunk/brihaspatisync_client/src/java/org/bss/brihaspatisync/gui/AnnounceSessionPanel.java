@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.gui;
  * AnnounceSessionPanel.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2007-2008 ETRG, IIT Kanpur.
+ * Copyright (c) 20011 ETRG, IIT Kanpur.
  */
 
 import java.awt.BorderLayout;
@@ -31,6 +31,7 @@ import javax.swing.border.TitledBorder;
 import java.util.Vector;
 import java.util.StringTokenizer;
 import java.net.URLEncoder;
+import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.util.HttpsUtil;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.DateUtil;
@@ -42,6 +43,7 @@ import java.net.URLEncoder;
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a> Modified 
  * @author <a href="mailto:pratibhaayadav@gmail.com">Pratibha Yadav</a> Modified
  * Modify action for announce new session on 20 Dec 2008
+ * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  */
 
 public class AnnounceSessionPanel extends JPanel implements MouseListener{
@@ -153,11 +155,11 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
                 center_Panel=new JPanel();
                 center_Panel.setLayout(new GridLayout(0,4,5,2));
 
-                lect_name=new JLabel("<html>&nbsp<font color=black>Lecture Name</font><font color=red>*</font>");
-		lect_Info=new JLabel("<html>&nbsp<font color=black>Lecture Info</font><font color=red>*</font>");
-                phone=new JLabel("<html>&nbsp<font color=black>Phone No.</font><font color=red>*</font>");
-                date=new JLabel("<html>&nbsp<font color=black>Lecture Date</font><font color=red>*</font>");
-                time=new JLabel("<html>&nbsp<font color=black>Lecture Time</font><font color=red>*</font>");
+                lect_name=new JLabel("<html>&nbsp<font color=black>"+Language.getController().getLangValue("AnnounceSessionPanel.LectureName")+"</font><font color=red>*</font>");
+		lect_Info=new JLabel("<html>&nbsp<font color=black>"+Language.getController().getLangValue("AnnounceSessionPanel.LectureInfo")+"</font><font color=red>*</font>");
+                phone=new JLabel("<html>&nbsp<font color=black>"+Language.getController().getLangValue("AnnounceSessionPanel.Phone")+"</font><font color=red>*</font>");
+                date=new JLabel("<html>&nbsp<font color=black>"+Language.getController().getLangValue("AnnounceSessionPanel.LectureDate")+"</font><font color=red>*</font>");
+                time=new JLabel("<html>&nbsp<font color=black>"+Language.getController().getLangValue("AnnounceSessionPanel.LectureTime")+"</font><font color=red>*</font>");
                 //email=new JLabel("<html>&nbsp<font color=black>Email</font><font color=blue>*</font>");
                 lectName_Text=new JTextField();
                 phone_Text=new JTextField();
@@ -247,12 +249,12 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
                 south_Panel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		south_Panel.setBackground(Color.LIGHT_GRAY);
                 south_Panel.setBorder(BorderFactory.createLineBorder(Color.black));
-                JLabel duration=new JLabel("<html>&nbsp<font color=black>Duration</font><font color=blue>*</font>");
+                JLabel duration=new JLabel("<html>&nbsp<font color=black>"+Language.getController().getLangValue("AnnounceSessionPanel.LectureDuration")+"</font><font color=blue>*</font>");
                 durationBox=new JComboBox();
                 for(int i=1;i<=24;i++)
                         durationBox.addItem(Integer.toString(i)+":Hour");
 
-                JLabel repeat=new JLabel("<html>&nbsp<font color=black>Repeat</font>");
+                JLabel repeat=new JLabel("<html>&nbsp<font color=black>"+Language.getController().getLangValue("AnnounceSessionPanel.LectureRepeat")+"</font>");
                 repeatBox=new JComboBox();
                 repeat_for_timeBox=new JComboBox();
                 repeatBox.addActionListener(new ActionListener(){
@@ -265,7 +267,7 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
                                                         }
                                                 }
                                         });
-                JLabel repeat_for_time=new JLabel("<html>&nbsp<font color=black>Repeat For Time</font>");
+                JLabel repeat_for_time=new JLabel("<html>&nbsp<font color=black>"+Language.getController().getLangValue("AnnounceSessionPanel.lectureRepeatForTime")+"</font>");
                 try{
                         repeatBox.removeAllItems();
                 }catch(Exception e){}
@@ -281,7 +283,7 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
                 repeat_for_timeBox.addItem("30 Days");
                 repeat_for_timeBox.addItem("60 Days");
                 repeat_for_timeBox.setEnabled(false);
-                annBttn=new JButton("<html><u><b><center><font color=blue>Announce</font></center></b></u>");
+                annBttn=new JButton("<html><u><b><center><font color=blue>"+Language.getController().getLangValue("AnnounceSessionPanel.LectureAnnounce")+"</font></center></b></u>");
 
 		//Modified by pratibha
 		annBttn.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -301,8 +303,9 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
 	
 	protected String getLectureValues(){
 		String courseName="";
+		String value;
        		if((lectName_Text.getText().equals("")) ||(lecInfoArea.getText().equals(""))||(phone_Text.getText().equals(""))){
-                	JOptionPane.showMessageDialog(null,"Please enter (*) mandatory fields");
+                	JOptionPane.showMessageDialog(null,Language.getController().getLangValue("AnnounceSessionPanel.MessageDialog1"));
               	}
 		else{
 	       		String st_year=(String)yearBox.getSelectedItem();
@@ -314,7 +317,8 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
 			System.out.println(intforduedate+" < "+curdate);
 			if(intforduedate < curdate)
 			{
-				JOptionPane.showMessageDialog(null,"Please checked the Lecture date !!");
+				value=Language.getController().getLangValue("AnnounceSessionPanel.MessageDialog2");
+      				JOptionPane.showMessageDialog(null,value);
 				lectValue=null;
 				return lectValue;
 			}
@@ -327,7 +331,7 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
 					int totaltime=Integer.parseInt(st_hour)*60;
 					totaltime=totaltime+Integer.parseInt(st_minutes);	
 					if(totaltime< (DateUtil.getController().checkTimeInput())) {
-						JOptionPane.showMessageDialog(null,"Please checked the Lecture Time !!");
+					JOptionPane.showMessageDialog(null,Language.getController().getLangValue("AnnounceSessionPanel.MessageDialog3"));
 						lectValue=null;
 						return lectValue;
 					}
@@ -336,7 +340,7 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
 				System.out.println("1 "+st_hour_st_minutes);
 				if(((String)lectName_Text.getText()).length()<6)
 				{
-					JOptionPane.showMessageDialog(null,"Please checked the Lecture Name atleast 5 !!");
+					JOptionPane.showMessageDialog(null,Language.getController().getLangValue("AnnounceSessionPanel.MessageDialog4"));
                                         lectValue=null;  
 					return lectValue;  
 				}
@@ -346,7 +350,7 @@ public class AnnounceSessionPanel extends JPanel implements MouseListener{
 				if(!((client_obj.getCourseForAnnounce()).equals("")))
 					courseName=client_obj.getCourseForAnnounce();
 				if(courseName.equals("--Show All--")){
-					JOptionPane.showMessageDialog(null,"Please select the Course except Show All !!");
+					JOptionPane.showMessageDialog(null,Language.getController().getLangValue("AnnounceSessionPanel.MessageDialog5"));
 					lectValue=null;
                                         return lectValue;
 				}

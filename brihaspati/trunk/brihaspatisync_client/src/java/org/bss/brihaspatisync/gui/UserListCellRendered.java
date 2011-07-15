@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.gui;
  * UserListCellRendered.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2007-2008 ETRG,Kanpur.
+ * Copyright (c) 2011 ETRG,Kanpur.
  */
 
 import java.awt.Font;

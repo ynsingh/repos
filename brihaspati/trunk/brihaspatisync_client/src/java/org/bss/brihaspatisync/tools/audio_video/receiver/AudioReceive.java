@@ -35,12 +35,14 @@ import org.bss.brihaspatisync.network.Log;
 import javax.media.format.FormatChangeEvent;
 import javax.media.control.BufferControl;
 import org.bss.brihaspatisync.gui.MainWindow;
+import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.RuntimeDataObject;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>      
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>
+ * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  */
 
 
@@ -126,7 +128,7 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
 
 		if (!dataReceived) {
 	    		System.out.println("No RTP data was received.");
-            		JOptionPane.showMessageDialog(null,"Sorry You do not get the unicast Audio");
+            		JOptionPane.showMessageDialog(null,Language.getController().getLangValue("AudioReceive.MessageDialog1"));
             
            		/**If data does not receive then transmitAudio button become disabled */
          
@@ -134,7 +136,7 @@ public class AudioReceive implements ReceiveStreamListener, SessionListener {
 	    		return false;
 		}
 
-        	JOptionPane.showMessageDialog(null,"You get the unicast Audio");
+        	JOptionPane.showMessageDialog(null,Language.getController().getLangValue("AudioReceive.MessageDialog2"));
         	return true;
     	}
 

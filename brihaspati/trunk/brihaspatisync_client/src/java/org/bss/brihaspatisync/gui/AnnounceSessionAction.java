@@ -4,13 +4,14 @@ package org.bss.brihaspatisync.gui;
  * AnnounceSessionAction.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2009-2010 ETRG, IIT Kanpur.
+ * Copyright (c) 2011 ETRG, IIT Kanpur.
  */
 
 import java.awt.Cursor;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.util.HttpsUtil;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.DateUtil;
@@ -26,6 +27,7 @@ import org.bss.brihaspatisync.network.Log;
 
 /**
  * @author <a href="mailto:pratibhaayadav@gmail.com">Pratibha Yadav </a>Created on 20Dec2008
+ * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  */
 
 public class AnnounceSessionAction extends JPanel implements ActionListener{
@@ -71,7 +73,7 @@ public class AnnounceSessionAction extends JPanel implements ActionListener{
 					//String lectValue = "lectValue="+URLEncoder.encode(AnnounceSessionPanel.getController().getLectureValues(),"UTF-8");
 					String lectValue = AnnounceSessionPanel.getController().getLectureValues();
 					String indexServerName=client_obj.getIndexServerName();
-
+                                        String value;
 					if(!(indexServerName.equals(""))){
 						String 	indexServer=indexServerName+"/ProcessRequest?req=putLecture&"+lectValue;
 						if(HttpsUtil.getController().getIndexingMessage(indexServer)){
@@ -80,12 +82,15 @@ public class AnnounceSessionAction extends JPanel implements ActionListener{
 					 		course_Name=client_obj.getInstCourseList();
 					 		insCSPanel.getmainPanel().add(insCSPanel.showLecture(client_obj.getSessionList(course_Name,client_obj.getIndexServerName())),BorderLayout.CENTER);
 							insCSPanel.getmainPanel().revalidate();
-							JOptionPane.showMessageDialog(null,"Lecture Announced successfully !!");
+							value=Language.getController().getLangValue("AnnounceSessionAction.MessageDialog1");
+                              				JOptionPane.showMessageDialog(null,value);
 							insCSPanel.getinstCourseCombo().setSelectedItem("--Show All--");
 						}else
-							JOptionPane.showMessageDialog(null,"There is some problem in Announced Lecture  !!");
+						        value=Language.getController().getLangValue("AnnounceSessionAction.MessageDialog2");
+                                                        JOptionPane.showMessageDialog(null,value);
 					}else{
-						System.out.println("insufficient indexServer name in AnnounceSession :" + indexServerName);
+						value=Language.getController().getLangValue("AnnounceSessionAction.MessageDialog3");
+						JOptionPane.showMessageDialog(null,value);
 					}//else
 				}//if
         		}catch(Exception ex){

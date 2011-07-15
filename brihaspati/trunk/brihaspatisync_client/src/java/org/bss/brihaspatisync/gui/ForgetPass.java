@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.gui;
  * ForgetPass.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2009-2010 ETRG,IIT Kanpur.
+ * Copyright (c) 20011 ETRG,IIT Kanpur.
  */
 
 import java.awt.Container;
@@ -22,11 +22,12 @@ import javax.swing.JFrame;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
-
+import org.bss.brihaspatisync.util.Language;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
  * @author <a href="mailto:pratibhaayadav@gmail.com">Pratibha </a>Modified for signalling on button click.
+ * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  */
  
 public class ForgetPass extends JFrame implements ActionListener{
@@ -49,22 +50,22 @@ public class ForgetPass extends JFrame implements ActionListener{
 	}
 
   	private ForgetPass(){
-   		setTitle("Brihaspati Live Classroom");
+   		setTitle(Language.getController().getLangValue("ForgetPassword.Title"));
 		con=this.getContentPane();
    		con.setLayout(new BorderLayout());
      
    		JPanel northPanel=new JPanel();
-   		JLabel InstructionLabel= new JLabel("Enter the email address that you supplied when you signed up with brihaspatisync.");
+   		JLabel InstructionLabel= new JLabel(Language.getController().getLangValue("ForgetPassword.InstructionLabel"));
    		northPanel.add(InstructionLabel);//,BorderLayout.NORTH);
    		con.add(northPanel,BorderLayout.NORTH);
    
    		JPanel centerPanel=new JPanel();
-   		JLabel entermail=new JLabel("Enter E-Mail:");
+   		JLabel entermail=new JLabel(Language.getController().getLangValue("ForgetPassword.EnterMail"));
    		JTextField email=new JTextField(15); 
    		centerPanel.add(entermail);
    		centerPanel.add(email);
    
-   		submitBttn=new JButton("Submit");
+   		submitBttn=new JButton(Language.getController().getLangValue("ForgetPassword.SubmitButton"));
 		
    		submitBttn.addActionListener(this);
    		submitBttn.setActionCommand("Submit.Action");
@@ -96,7 +97,7 @@ public class ForgetPass extends JFrame implements ActionListener{
 					submitBttn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 				}
   			this.hide();    
-  			JOptionPane.showMessageDialog( null, "Your password will be sent to your email address." );
+  			JOptionPane.showMessageDialog( null, Language.getController().getLangValue("ForgetPassword.MessageDialog1"));
   			  			
       		}
     	}

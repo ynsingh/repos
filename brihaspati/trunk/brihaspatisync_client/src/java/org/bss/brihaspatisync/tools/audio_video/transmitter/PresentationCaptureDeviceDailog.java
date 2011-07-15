@@ -12,6 +12,7 @@ import java.util.Vector;
 import javax.media.*;
 import javax.media.format.*;
 import javax.media.protocol.DataSource;
+import org.bss.brihaspatisync.util.Language;
 
 public class PresentationCaptureDeviceDailog extends Dialog implements ActionListener, ItemListener {
 
@@ -32,13 +33,16 @@ public class PresentationCaptureDeviceDailog extends Dialog implements ActionLis
     		Panel p = new Panel();
     		p.setLayout(null);
 
-		Label l1 = new Label("Audio Device(s)");
-    		Label l3 = new Label("Audio Format(s)");
+		Label l1 = new Label(Language.getController().getLangValue("CaptureDeviceDialog.AudioDevice"));
+    		Label l3 = new Label(Language.getController().getLangValue("CaptureDeviceDialog.AudioFormat"));
     		audioDeviceCombo = new Choice();
     		audioFormatCombo = new Choice();
 
-    		Button OKbutton = new Button("OK");
-    		Button cancelButton = new Button("Cancel");
+		Button OKbutton = new Button(Language.getController().getLangValue("CaptureDeviceDialog.OKBttn"));
+        	OKbutton.setActionCommand("OK");
+        	Button cancelButton = new Button(Language.getController().getLangValue("CaptureDeviceDialog.CancelBttn"));
+        	cancelButton.setActionCommand("Cancel");
+    		
 		
 		p.add(l1);
     		l1.setBounds(5, 5, 100, 20);

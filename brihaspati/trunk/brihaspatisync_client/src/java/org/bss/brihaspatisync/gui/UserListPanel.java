@@ -21,7 +21,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.DefaultListCellRenderer;
-
+import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.RuntimeDataObject;
 import org.bss.brihaspatisync.network.ppt_sharing.GetPPTScreen;
@@ -29,6 +29,7 @@ import org.bss.brihaspatisync.network.ppt_sharing.GetPPTScreen;
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
  * @author <a href="mailto:arvindjass17@gmail.com">Arvind Pal </a>
+ * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  */
 
 public class UserListPanel {
@@ -84,9 +85,9 @@ public class UserListPanel {
                 scrollPane = new JScrollPane(jlist);
 	
 		JPanel labelPane=new JPanel();
-                JLabel welcome=new JLabel("Welcome!");
+                JLabel welcome=new JLabel(Language.getController().getLangValue("UserListPanel.WelcomeLabel"));
                 welcome.setFont(new Font("Arial", Font.PLAIN, 20));
-                JLabel userLogin=new JLabel(username);
+                JLabel userLogin=new JLabel(Language.getController().getLangValue("UserListPanel.UserName"));
                 userLogin.setForeground(new Color(24,116,205));
                 userLogin.setFont(new Font("Arial", Font.BOLD, 20));
                 labelPane.add(welcome);

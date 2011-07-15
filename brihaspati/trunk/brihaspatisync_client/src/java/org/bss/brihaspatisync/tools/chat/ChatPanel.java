@@ -39,6 +39,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.FileOutputStream;
 import java.io.File;
+import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.network.util.UtilObject;
 import org.bss.brihaspatisync.network.Log;
@@ -49,6 +50,7 @@ import org.bss.brihaspatisync.network.Log;
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>
  * @author <a href="mailto:pratibhaayadav@gmail.com">Pratibha </a>
+ * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  */
 
 public class ChatPanel extends JPanel implements ActionListener,KeyListener,MouseListener {
@@ -99,7 +101,7 @@ public class ChatPanel extends JPanel implements ActionListener,KeyListener,Mous
 		toolbar=new JToolBar("ChatTool"); 
 		
 		south_mainPanel=new JPanel();
-		JLabel textLabel = new JLabel("Enter Text : ",JLabel.LEFT);
+		JLabel textLabel = new JLabel(Language.getController().getLangValue("ChatPanel.Label1"),JLabel.LEFT);
                 //south_mainPanel.add(textLabel);
                 toolbar.add(textLabel);
 
@@ -109,7 +111,7 @@ public class ChatPanel extends JPanel implements ActionListener,KeyListener,Mous
 		//south_mainPanel.add(input_text);
                 toolbar.add(input_text);
                 
-		save=new JButton("Save");
+		save=new JButton(Language.getController().getLangValue("ChatPanel.SaveBttn"));
 		save.addActionListener(this);
 		//south_mainPanel.add(save);
 		toolbar.add(save);

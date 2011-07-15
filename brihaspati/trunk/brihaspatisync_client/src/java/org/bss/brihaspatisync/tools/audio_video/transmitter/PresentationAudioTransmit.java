@@ -24,6 +24,7 @@ import com.sun.media.rtp.*;
 import java.util.Vector;
 
 import org.bss.brihaspatisync.util.RuntimeDataObject;
+import org.bss.brihaspatisync.util.Language;
 
 public class PresentationAudioTransmit {
 	private MediaLocator locator;
@@ -69,8 +70,7 @@ public class PresentationAudioTransmit {
   	}
 
   	void registerDevices() {
-    		PresentationCaptureDeviceDailog cdDialog = new PresentationCaptureDeviceDailog(new Frame(), "Capture Device", true);
-    		cdDialog.show();
+    		PresentationCaptureDeviceDailog cdDialog = new PresentationCaptureDeviceDailog(new Frame(),Language.getController().getLangValue("PresentationAudioTransmit.CaptureDialogTitle") , true);   		cdDialog.show();
     		if (!cdDialog.hasConfigurationChanged())
       			return;
 		//configuration has changed, update variables.

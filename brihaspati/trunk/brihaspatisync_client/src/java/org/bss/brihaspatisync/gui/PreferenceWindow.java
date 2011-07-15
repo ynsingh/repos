@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.gui;
  * PreferenceWindow.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2007-2008 ETRG,IIT Kanpur.
+ * Copyright (c) 2011 ETRG,IIT Kanpur.
  */
 
 import java.io.BufferedWriter;
@@ -39,6 +39,7 @@ import java.io.InputStream;
 //import java.lang.*;
 import java.io.File;
 import javax.swing.JOptionPane;
+import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.util.HttpsUtil;
 import org.bss.brihaspatisync.network.Log;
 
@@ -46,6 +47,7 @@ import org.bss.brihaspatisync.network.Log;
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a> 
  * @author <a href="mailto:pratibhaayadav@gmail.com">Pratibha </a> Modified for file handlling and signalling.
+ * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  */
  
 public class PreferenceWindow extends JFrame implements ActionListener{
@@ -95,13 +97,13 @@ public class PreferenceWindow extends JFrame implements ActionListener{
 	}
   	
 	protected void createWindow(){
-    	   	setTitle("Preferences");
+    	   	setTitle(Language.getController().getLangValue("PreferenceWindow.SetTitle"));
     		con=this.getContentPane();
 		window_mainPanel=new JPanel();
 		window_mainPanel.setLayout(new BorderLayout());
   				
 		JTabbedPane tabPane = new JTabbedPane();
-		tabPane.add("Connection Setting",createTabPane());
+		tabPane.add(Language.getController().getLangValue("PreferenceWindow.TabPane"),createTabPane());
 		window_mainPanel.add(tabPane,BorderLayout.CENTER);
 		con.add(window_mainPanel); 
     		setSize(420, 300);
@@ -117,7 +119,7 @@ public class PreferenceWindow extends JFrame implements ActionListener{
             		prop.load(inputStream);
 		}catch(Exception e){
 			log.setLog("Error on get Properties file"+e.getCause());
-			JOptionPane.showMessageDialog(null,"Error on loading preference file !!");
+			JOptionPane.showMessageDialog(null,Language.getController().getLangValue("PreferenceWindow.MessageDialog1"));
 		}
 		return prop;
 	}
@@ -157,14 +159,14 @@ public class PreferenceWindow extends JFrame implements ActionListener{
   		
   		rbttnPanel=new JPanel();
   		rbttnPanel.setLayout(new GridLayout(3,1,1,1));
-  		proxyhost= new JLabel("Host");
+  		proxyhost= new JLabel(Language.getController().getLangValue("PreferenceWindow.Proxyhost"));
 		proxyhosttext=new JTextField(20);
-	        proxyport= new JLabel("Port");
+	        proxyport= new JLabel(Language.getController().getLangValue("PreferenceWindow.Proxyport"));
 		proxyporttext=new JTextField(8);
 
-		proxyuser= new JLabel("Username");
+		proxyuser= new JLabel(Language.getController().getLangValue("PreferenceWindow.Proxyuser"));
         	proxyusertext=new JTextField(25);
-	        proxypass= new JLabel("Password");
+	        proxypass= new JLabel(Language.getController().getLangValue("PreferenceWindow.Proxypass"));
         	proxypasstext=new JPasswordField(25);
 
   		bttngroup= new ButtonGroup();
@@ -173,11 +175,11 @@ public class PreferenceWindow extends JFrame implements ActionListener{
  		netType=Integer.parseInt(getProperties().getProperty("Type"));
   		
   		if(netType==1){
-  			rb1= new JRadioButton("Direct Connection to the Internet", true);
+  			rb1= new JRadioButton(Language.getController().getLangValue("PreferenceWindow.RadioButton1"), true);
 		//	rb1.addActionListener(this);
         //  rb1.setActionCommand("rb1");
 
-			rb3= new JRadioButton("proxy configuration : ", false);
+			rb3= new JRadioButton(Language.getController().getLangValue("PreferenceWindow.RadioButton2"), false);
 			proxyhost.setEnabled(false);
 			proxyhosttext.setEditable(false);
 			proxyport.setEnabled(false);
@@ -189,8 +191,8 @@ public class PreferenceWindow extends JFrame implements ActionListener{
 
 		} else {
 
-			rb1= new JRadioButton("Direct Connection to the Internet", false);
-			rb3= new JRadioButton("proxy configuration : ", true);
+			rb1= new JRadioButton(Language.getController().getLangValue("PreferenceWindow.RadioButton1"), false);
+			rb3= new JRadioButton(Language.getController().getLangValue("PreferenceWindow.RadioButton2"), true);
 		//	rb3.addActionListener(this);
         	//  rb3.setActionCommand("rb3");
 
@@ -227,7 +229,7 @@ public class PreferenceWindow extends JFrame implements ActionListener{
                 	rbttnPanel.add(rb1);
                 	rbttnPanel.add(rb3);
                 
-			titledBorder = BorderFactory.createTitledBorder("Proxy-Login");
+			titledBorder = BorderFactory.createTitledBorder(Language.getController().getLangValue("PreferenceWindow.TitledBorder"));
         		centerPanel.setBorder(titledBorder);
 
 			proxyPanel1.add(proxyhost);
@@ -248,11 +250,11 @@ public class PreferenceWindow extends JFrame implements ActionListener{
                 	bttnPanel.setLayout(new FlowLayout());
                 	bttnPanel.setBorder(BorderFactory.createTitledBorder(""));
 
-                	appbttn=new JButton("Apply");
+                	appbttn=new JButton(Language.getController().getLangValue("PreferenceWindow.Applybttn"));
                 	appbttn.addActionListener(this);
 			appbttn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-                	cancelbttn=new JButton("Cancel");
+                	cancelbttn=new JButton(Language.getController().getLangValue("PreferenceWindow.Cancelbttn"));
                 	cancelbttn.addActionListener(this);
 			cancelbttn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
@@ -421,23 +423,23 @@ public class PreferenceWindow extends JFrame implements ActionListener{
   			}
   			if(rb3.isSelected()==true){
   				if(((proxyhosttext.getText().equals("")))){
-  					JOptionPane.showMessageDialog(null,"THE HOST FIELD IS LEFT BLANK");
+  					JOptionPane.showMessageDialog(null,Language.getController().getLangValue("PreferenceWindow.MessageDialog2"));
   					proxyhosttext.requestFocus();
   					return;
 				}
   				if(((proxyporttext.getText().equals("")))){
-  					JOptionPane.showMessageDialog(null,"THE PORT FIELD IS LEFT BLANK");
+  					JOptionPane.showMessageDialog(null,Language.getController().getLangValue("PreferenceWindow.MessageDialog3"));
   					proxyporttext.requestFocus();
   					return;
   				}
   				if(((proxyusertext.getText().equals("")))){
-  					JOptionPane.showMessageDialog(null,"THE USERNAME FIELD IS LEFT BLANK");
+  					JOptionPane.showMessageDialog(null,Language.getController().getLangValue("PreferenceWindow.MessageDialog4"));
   					proxyusertext.requestFocus();
   					return;
   				}
   
   				if(((proxypasstext.getText().equals("")))){
-  					JOptionPane.showMessageDialog(null,"THE PASSWORD FIELD IS LEFT BLANK");
+  					JOptionPane.showMessageDialog(null,Language.getController().getLangValue("PreferenceWindow.MessageDialog5"));
   					proxyhosttext.requestFocus();
   					return;
   				}

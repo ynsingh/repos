@@ -24,13 +24,16 @@ import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
 import java.util.Vector;
+import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.tools.whiteboard.WhiteBoardPanel;
 import org.bss.brihaspatisync.tools.chat.ChatPanel;
 import org.bss.brihaspatisync.tools.presentation.PresentationPanel;
+import org.bss.brihaspatisync.tools.presentation.PresentationViewPanel;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
  * @author <a href="mailto:arvindjss17@gmail.com"> Arvind Pal </a>
+ * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  */
 
 public class JoinSessionPanel extends JPanel implements ActionListener, MouseListener{
@@ -106,9 +109,9 @@ public class JoinSessionPanel extends JPanel implements ActionListener, MouseLis
 	
 		//TabbedPane for whiteboard, screen share and ppt presentation.
 		JTabbedPane jtp = new JTabbedPane();
-		jtp.addTab(" White Board ", WhiteBoardPanel.getController().createGUI());
-	        jtp.addTab(" Desktop Sharing ",Desktop_Sharing.getController().createGUI());
-		jtp.addTab(" PPT Presentation ",org.bss.brihaspatisync.tools.presentation.PresentationViewPanel.getController().createGUI());                
+		jtp.addTab(Language.getController().getLangValue("JoinSessionPanel.Whiteboard"), WhiteBoardPanel.getController().createGUI());
+	        jtp.addTab(Language.getController().getLangValue("JoinSessionPanel.DesktopSharing"),Desktop_Sharing.getController().createGUI());
+		jtp.addTab(Language.getController().getLangValue("JoinSessionPanel.PptPresentation"),PresentationViewPanel.getController().createGUI());                
 		
 		//start for whiteboard,chat,remoteDesktop Panel
 

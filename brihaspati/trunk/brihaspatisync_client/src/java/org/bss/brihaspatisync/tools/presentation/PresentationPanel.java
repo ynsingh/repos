@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import org.bss.brihaspatisync.util.Language;
 
 import org.bss.brihaspatisync.network.util.UtilObject;
 import org.bss.brihaspatisync.network.ppt_sharing.PostPPTScreen;
@@ -37,6 +38,7 @@ import org.bss.brihaspatisync.network.ppt_sharing.PostPPTScreen;
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a> 
  * @author <a href="mailto:arvindjass17@gmail.com">Arvind Pal </a> 
+ * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  */
  
 public class PresentationPanel extends JPanel implements ActionListener {
@@ -59,20 +61,20 @@ public class PresentationPanel extends JPanel implements ActionListener {
   		mainPanel=new JPanel();
   		mainPanel.setLayout(new BorderLayout());
 
-		TitledBorder title = BorderFactory.createTitledBorder("PPT Upload");
+		TitledBorder title = BorderFactory.createTitledBorder(Language.getController().getLangValue("PresentationPanel.Title"));
 		mainPanel.setBorder(title);
 
 
   		JPanel labelPane=new JPanel();
 		JPanel bttnPane=new JPanel();
 		
-	        browse=new JButton("Upload");
+	        browse=new JButton(Language.getController().getLangValue("PresentationPanel.Browsebttn"));
                	browse.addActionListener(this);
 		
 		label = new JLabel();//"Upload .ppt File ");
                 labelPane.add(label);
 		browse.setEnabled(false);
-		slideShow=new JButton("Slide Show");
+		slideShow=new JButton(Language.getController().getLangValue("PresentationPanel.SlideShowBttn"));
        	        slideShow.addActionListener(this);
 		slideShow.setEnabled(false);
 		bttnPane.add(browse);
@@ -108,7 +110,7 @@ public class PresentationPanel extends JPanel implements ActionListener {
 						}catch(Exception e){System.out.println("Errorrrrrrrrrrrrrrr"+e.getCause());}
 					}
                                 } else {
-                                        label.setText("Attachment cancelled by user.");
+                                        label.setText(Language.getController().getLangValue("PresentationPanel.label1"));
                                 }
                         }
                         instcspanel.setSelectedFile(null);

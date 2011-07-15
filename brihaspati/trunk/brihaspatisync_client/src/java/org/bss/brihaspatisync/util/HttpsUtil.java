@@ -35,7 +35,7 @@ import java.util.StringTokenizer;
 import java.util.List;
 import java.util.Properties;
 import java.util.Iterator;
-
+import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.Client;
 import org.bss.brihaspatisync.network.Log;
 import org.bss.brihaspatisync.gui.ProxyAuthenticator;
@@ -43,6 +43,7 @@ import org.bss.brihaspatisync.gui.ProxyAuthenticator;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a> 
+ * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  */
 
 public class HttpsUtil{
@@ -125,7 +126,7 @@ public class HttpsUtil{
 			}		
 		});
 		if(connection==null)
-			JOptionPane.showMessageDialog(null,"Check your Network Connection");
+	        	JOptionPane.showMessageDialog(null,Language.getController().getLangValue("HttpsUtil.MessageDialog1"))				;
 		return connection;
 	}
 	
@@ -179,7 +180,7 @@ public class HttpsUtil{
 			URL indexurl = new URL(indexServer);
 			connection=createHTTPConnection(indexurl);
 			if(connection==null){
-				JOptionPane.showMessageDialog(null,"Check your Network Connection or try again");
+				JOptionPane.showMessageDialog(null,Language.getController().getLangValue("HttpsUtil.MessageDialog2"));
        	        	}else{
 	                        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         	                String str="";
@@ -209,7 +210,7 @@ public class HttpsUtil{
                         URL indexurl = new URL(indexServer);
                         connection=createHTTPConnection(indexurl);
                         if(connection==null){
-                                JOptionPane.showMessageDialog(null,"Check your Network Connection or try again");
+                                JOptionPane.showMessageDialog(null,Language.getController().getLangValue("HttpsUtil.MessageDialog1"));
                         }else{
                                 BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 				String str="";
@@ -258,7 +259,7 @@ public class HttpsUtil{
                 	URL url = new URL(sendurl);
                         connection=createHTTPConnection(url);
                         if(connection==null){
-                                JOptionPane.showMessageDialog(null,"Check your Network Connection or try again");
+                                JOptionPane.showMessageDialog(null,Language.getController().getLangValue("HttpsUtil.MessageDialog2"));
                         }else{
                         	BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                                 String str="";
@@ -289,7 +290,7 @@ public class HttpsUtil{
                         	URL indexurl = new URL(indexServer);
 	                        connection=createHTTPConnection(indexurl);	
 				if(connection==null){
-	                                JOptionPane.showMessageDialog(null,"Check your Network Connection or try again");
+	                                JOptionPane.showMessageDialog(null,Language.getController().getLangValue("HttpsUtil.MessageDialog2"));
         	                }else{
                 	                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                         	        String str="";

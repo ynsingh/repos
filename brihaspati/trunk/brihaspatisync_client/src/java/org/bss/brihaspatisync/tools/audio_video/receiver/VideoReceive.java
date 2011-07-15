@@ -34,11 +34,13 @@ import java.net.InetAddress;
 import org.bss.brihaspatisync.network.Log;
 import org.bss.brihaspatisync.gui.MainWindow;
 import org.bss.brihaspatisync.util.ClientObject;
+import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.util.RuntimeDataObject;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>      
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>
+ * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  */
 
 
@@ -122,12 +124,12 @@ public class VideoReceive implements ReceiveStreamListener, SessionListener {
 
 		if (!dataReceived) {
  	    		System.out.println("No RTP data was received.");
-            		JOptionPane.showMessageDialog(null,"Sorry You do not get the unicast Video");
+            		JOptionPane.showMessageDialog(null,Language.getController().getLangValue("VideoReceive.MessageDialog1"));
             
 	     		close();
 	    		return false;
 		}
-       		JOptionPane.showMessageDialog(null,"You get the unicast Video");
+       		JOptionPane.showMessageDialog(null,Language.getController().getLangValue("VideoReceive.MessageDialog2"));
         	return true;
     	}
 

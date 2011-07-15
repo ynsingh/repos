@@ -11,6 +11,7 @@ import javax.swing.UIManager;
 import javax.swing.JOptionPane;
 
 import org.bss.brihaspatisync.util.ClientObject;
+import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.network.Log;
 import org.bss.brihaspatisync.gui.MainWindow;
 import org.bss.brihaspatisync.gui.LoginWindow;
@@ -20,6 +21,7 @@ import java.io.File;
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>
+ * @author <a href="mailto:@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  */
 
 public class Client {
@@ -41,9 +43,11 @@ public class Client {
                	}catch(Exception e){System.out.println("Error on Loading Look&Feel");}
 
                 if(((ClientObject.getController().getIndexServerList()).size()) > 1){
+			Language.getController().SelectLanguage("English");
+			MainWindow.getController().createGUI();
                 	MainWindow.getController().getDesktop().add(new LoginWindow());
 		}else{
-                	JOptionPane.showMessageDialog(null,"Index server list not found. Please try again !!");
+                	JOptionPane.showMessageDialog(null,Language.getController().getLangValue("Client.MessageDialog"));
               	}
 	}
 	

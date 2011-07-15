@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.gui;
  * CourseSessionWindow.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2007-2008 ETRG,IIT Kanpur
+ * Copyright (c) 2011 ETRG,IIT Kanpur
  */
 
 import java.awt.Container;
@@ -16,9 +16,12 @@ import javax.swing.JInternalFrame;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JTabbedPane;
+import org.bss.brihaspatisync.util.Language;
+
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a> 
+ * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  */
 
 public class CourseSessionWindow extends JInternalFrame {
@@ -47,7 +50,7 @@ public class CourseSessionWindow extends JInternalFrame {
 	 * Creating GUI for CourseSessionWindow.
 	 */
   	public  CourseSessionWindow(){
-    		super("Course & Session List",true,false,true,true);
+    		super(Language.getController().getLangValue("CourseSessionWindow.title"),true,false,true,true);
     		mainPanel=new JPanel();
 	  	mainPanel.setLayout(new BorderLayout());
   	

@@ -12,12 +12,14 @@ import java.net.URLEncoder;
 import java.net.InetAddress;
 import javax.swing.JOptionPane;
 import org.bss.brihaspatisync.Client;
+import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.util.HttpsUtil;
 import org.bss.brihaspatisync.util.RuntimeDataObject;
 import org.bss.brihaspatisync.network.Log;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a> 
+ * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  */
 
 public class HttpCommManager {
@@ -142,7 +144,7 @@ public class HttpCommManager {
  		}
 		//System.out.println(studCourseList+"hhh  "+ instCourseList);
 		if((studCourseList.contains("noCourse")) && (instSessionList.contains("noCourse")))
- 		 	JOptionPane.showMessageDialog(null,"There is no any Lecture");
+ 		 	JOptionPane.showMessageDialog(null,Language.getController().getLangValue("HttpCommManager.MessageDialog1"));
 				
  	}
 				

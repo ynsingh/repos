@@ -20,7 +20,7 @@ import java.net.HttpURLConnection;
 
 import java.io.DataInputStream;
 import java.io.BufferedInputStream;
-
+import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.RuntimeDataObject;
 import org.bss.brihaspatisync.Client;
@@ -40,6 +40,7 @@ import org.apache.commons.httpclient.auth.AuthScope;
 /**
  * @author <a href="mailto: ashish.knp@gmail.com"  >Ashish Yadav</a>
  * @author <a href="mailto: arvindjss17@gmail.com" > Arvind Pal </a>
+ * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  */
 
 public class HTTPClient extends Thread {
@@ -121,6 +122,7 @@ public class HTTPClient extends Thread {
 						System.out.println("=================>  "+ww.getMessage());
 					}	
 	                  	}catch(Exception ex) { 
+					JOptionPane.showMessageDialog(null,Language.getController().getLangValue("HTTPClient.MessageDialog1"),"HTTPClient Message",JOptionPane.ERROR_MESSAGE);
 					//JOptionPane.showMessageDialog(null,"Reflector connection failed !!","HTTPClient Message",JOptionPane.ERROR_MESSAGE);
 					System.out.println(" HTTPClient could not connect  "+ex.getMessage()); 
 				}

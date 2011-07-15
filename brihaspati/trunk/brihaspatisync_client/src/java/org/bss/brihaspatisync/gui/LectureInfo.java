@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.gui;
  * LectureInfo.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2009-2010 ETRG,IIT Kanpur.
+ * Copyright (c) 2011 ETRG,IIT Kanpur.
  */
 
 import java.awt.Color;
@@ -24,10 +24,13 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.border.BevelBorder;
 import java.util.Vector;
+import org.bss.brihaspatisync.util.Language;
+
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
  * @author <a href="mailto:pratibhaayadav@gmail.com">Pratibha </a> Modified for signalling 
+ * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  */
 
 
@@ -90,7 +93,7 @@ public class LectureInfo extends JFrame implements MouseListener
 		descPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		for(int i=0;i<=13;i++)
 			descPanel.add(descLabel[i]);			
-		infoLabel=new JLabel("<html><u><Font Color=Black>Information Of Lecture");
+		infoLabel=new JLabel("<html><u><Font Color=Black>"+Language.getController().getLangValue("LectureInfo.InformationOfLecture")+"</Font Color=Black></u></html>");
 		closeLabel=new JLabel(new ImageIcon(clr.getResource("resources/images/close.jpg")));
        		closeLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
     		closeLabel.addMouseListener(this);
@@ -118,7 +121,7 @@ public class LectureInfo extends JFrame implements MouseListener
 		mainPan.add("Center",descPanel);
 	
 		frame=new JFrame();
-		frame.setTitle("Session Description");		/**Setting the title of the Frame*/
+		frame.setTitle(Language.getController().getLangValue("LectureInfo.Title"));		/**Setting the title of the Frame*/
 		frame.getContentPane().add(mainPan);		/**Adding panel to the frame*/
 		frame.setSize(450,350);				/**Setting the size of the frame*/
 		frame.setVisible(true);				/**Showing the frame*/

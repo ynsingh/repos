@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.gui;
  * UserListTimer.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2007-2008 ETRG,IIT Kanpur.
+ * Copyright (c) 2011 ETRG,IIT Kanpur.
  */
 
 import java.awt.BorderLayout;

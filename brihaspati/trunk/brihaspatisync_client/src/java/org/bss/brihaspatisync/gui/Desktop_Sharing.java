@@ -10,6 +10,7 @@ package org.bss.brihaspatisync.gui;
 /**
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>Created on feb2011
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav</a>Modified on feb2011
+ * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  */
 
 import javax.swing.JLabel;

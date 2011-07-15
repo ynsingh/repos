@@ -22,6 +22,7 @@ import javax.media.rtp.*;
 import javax.media.rtp.rtcp.*;
 import com.sun.media.rtp.*;
 import java.util.Vector;
+import org.bss.brihaspatisync.util.Language;
 
 import org.bss.brihaspatisync.util.RuntimeDataObject;
 
@@ -72,7 +73,7 @@ public class AudioFromStudent {
   	}
 
   	void registerDevices() {
-    		StudentCaptureDeviceDialog cdDialog = new StudentCaptureDeviceDialog(new Frame(), "Capture Device", true);
+    		StudentCaptureDeviceDialog cdDialog = new StudentCaptureDeviceDialog(new Frame(),Language.getController().getLangValue("AudioFromStudent.CaptureDialogTitle") , true);
     		cdDialog.show();
     		if (!cdDialog.hasConfigurationChanged())
       			return;

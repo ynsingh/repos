@@ -53,10 +53,12 @@ import java.util.Vector;
 import org.bss.brihaspatisync.network.Log;
 import org.bss.brihaspatisync.util.RuntimeDataObject;
 import org.bss.brihaspatisync.util.ClientObject;
+import org.bss.brihaspatisync.util.Language;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>      
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>
+ * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  */
 
 public class AVTransmit3 {
@@ -118,7 +120,7 @@ public class AVTransmit3 {
   	}
   	
   	void registerDevices() {
-    		CaptureDeviceDialog cdDialog = new CaptureDeviceDialog(new Frame(), "Capture Device", true);
+    		CaptureDeviceDialog cdDialog = new CaptureDeviceDialog(new Frame(),Language.getController().getLangValue("AVTransmit3.CaptureDialogTitle") , true);
     		cdDialog.show();
     		if (!cdDialog.hasConfigurationChanged())
       			return;

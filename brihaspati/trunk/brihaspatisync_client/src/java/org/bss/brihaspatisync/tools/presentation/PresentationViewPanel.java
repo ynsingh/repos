@@ -22,12 +22,13 @@ import javax.swing.JOptionPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-
+import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.network.ppt_sharing.PostPPTScreen;
 
 /**
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav</a>
+ * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  */
 
 public class PresentationViewPanel implements ActionListener {
@@ -62,11 +63,11 @@ public class PresentationViewPanel implements ActionListener {
 		mainPanel.setLayout(new BorderLayout());
 
 		northPanel=new JPanel();
-		previous=new JButton("previous");
+		previous=new JButton(Language.getController().getLangValue("PresentationViewPanel.PreviousBttn"));
                 previous.addActionListener(this);
 		previous.setEnabled(false);
 
-                next=new JButton("next");
+                next=new JButton(Language.getController().getLangValue("PresentationViewPanel.NextBttn"));
                 next.addActionListener(this);
                 next.setEnabled(false);
 
@@ -132,7 +133,7 @@ public class PresentationViewPanel implements ActionListener {
 			File f=new File("temp/");
                         String str[]=f.list();
                         if(temp==(str.length-1)){
-                                JOptionPane.showMessageDialog(null," This is last .ppt !!");
+                                JOptionPane.showMessageDialog(null,Language.getController().getLangValue("PresentationViewPanel.MessageDialog1"));
                         }else {
                                 temp=temp+1;
                                 try {
@@ -141,7 +142,7 @@ public class PresentationViewPanel implements ActionListener {
 				if(temp==(str.length-1)){
                                         next.setEnabled(false);
                                         previous.setEnabled(true);
-                                        JOptionPane.showMessageDialog(null," This is last ppt Slide !!");
+                                        JOptionPane.showMessageDialog(null,Language.getController().getLangValue("PresentationViewPanel.MessageDialog1"));
                                 }else{
                                         next.setEnabled(true);
                                         previous.setEnabled(true);
@@ -157,12 +158,12 @@ public class PresentationViewPanel implements ActionListener {
 				if(temp==0) {
                                         next.setEnabled(true);
                                         previous.setEnabled(false);
-                                        JOptionPane.showMessageDialog(null," This is start ppt Slide !!");
+                                        JOptionPane.showMessageDialog(null,Language.getController().getLangValue("PresentationViewPanel.MessageDialog2"));
                                 }else{
                                         next.setEnabled(true);
                                         previous.setEnabled(true);
                                 }
-                        }else JOptionPane.showMessageDialog(null," This is start .ppt !!");
+                        }else JOptionPane.showMessageDialog(null,Language.getController().getLangValue("PresentationViewPanel.MessageDialog3"));
                         
                 }
 	}

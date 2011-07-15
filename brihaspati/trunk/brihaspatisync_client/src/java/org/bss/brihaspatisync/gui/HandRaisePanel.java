@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import org.bss.brihaspatisync.network.Log;
+import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.RuntimeDataObject;
 import org.bss.brihaspatisync.tools.whiteboard.WhiteBoardDraw;
@@ -21,6 +22,7 @@ import org.bss.brihaspatisync.tools.audio_video.AudioVideoPanel;
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
  * @author <a href="mailto:arvindjass17@gmail.com">Arvind Pal </a>
+ * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  */
 
 public class HandRaisePanel {
@@ -61,56 +63,57 @@ public class HandRaisePanel {
 		// Buttons for student handraise panel.
 	 	if(role.equals("student")){
 			wbBttn=new JButton("Get-WB",new ImageIcon(clr.getResource("resources/images/user/accept.png")));
-			wbBttn.setToolTipText("Request to draw on Whiteboard");
+			wbBttn.setToolTipText(Language.getController().getLangValue("HandRaisePanel.ToolTipText1"));
                 	wbBttn.setActionCommand("Get-WB");
                 	wbBttn.addActionListener(HandRaiseAction.getController());
 
 			
 			denieWB=new JButton("Cancel-WB",new ImageIcon(clr.getResource("resources/images/user/denie.png")));
-			denieWB.setToolTipText("Withdraw from Whiteboard request");
+			denieWB.setToolTipText(Language.getController().getLangValue("HandRaisePanel.ToolTipText2"));
                 	denieWB.setActionCommand("Denie-WB");
                 	denieWB.addActionListener(HandRaiseAction.getController());	
 			
 			micBttn=new JButton("Get-Mic",new ImageIcon(clr.getResource("resources/images/user/accept.png")));
-			micBttn.setToolTipText("Request mic from instructotr");
+			micBttn.setToolTipText(Language.getController().getLangValue("HandRaisePanel.ToolTipText3"));
                 	micBttn.setActionCommand("Get-Mic");
                 	micBttn.addActionListener(HandRaiseAction.getController());
 
 			denieMic=new JButton("Cancel-Mic",new ImageIcon(clr.getResource("resources/images/user/denie.png")));				
-			denieMic.setToolTipText("Withdraw from Mic Request");
+			denieMic.setToolTipText(Language.getController().getLangValue("HandRaisePanel.ToolTipText4"));
                 	denieMic.setActionCommand("Denie-Mic");
                 	denieMic.addActionListener(HandRaiseAction.getController());
 			
 			screenBttn=new JButton("Get-Screen",new ImageIcon(clr.getResource("resources/images/user/accept.png")));
-                        screenBttn.setToolTipText("Request to screen share from instructotr");
+                        screenBttn.setToolTipText(Language.getController().getLangValue("HandRaisePanel.ToolTipText5"));
                         screenBttn.setActionCommand("Get-Screen");
                         screenBttn.addActionListener(HandRaiseAction.getController());
 
                         denieScreen=new JButton("Cancel-Screen",new ImageIcon(clr.getResource("resources/images/user/denie.png")));
-                        denieScreen.setToolTipText("Withdraw from screen share request");
+                        denieScreen.setToolTipText(Language.getController().getLangValue("HandRaisePanel.ToolTipText6"));
                         denieScreen.setActionCommand("Denie-Screen");
                         denieScreen.addActionListener(HandRaiseAction.getController());
 
 			pptBttn=new JButton("Get-PPT",new ImageIcon(clr.getResource("resources/images/user/accept.png")));
-                        pptBttn.setToolTipText("Request to PPT from instructotr");
+                        
+			pptBttn.setToolTipText(Language.getController().getLangValue("HandRaisePanel.ToolTipText7"));
                         pptBttn.setActionCommand("Get-PPT");
                         pptBttn.addActionListener(HandRaiseAction.getController());
 
                         denieppt=new JButton("Cancel-PPT",new ImageIcon(clr.getResource("resources/images/user/denie.png")));
-                        denieppt.setToolTipText("Withdraw from PPT request");
+                        denieppt.setToolTipText(Language.getController().getLangValue("HandRaisePanel.ToolTipText8"));
                         denieppt.setActionCommand("Denie-PPT");
                         denieppt.addActionListener(HandRaiseAction.getController());
 
 		// Buttons for instructor Handraise panel.
 		}else if(role.equals("instructor")){
 			wbBttn=new JButton("Allow-WB",new ImageIcon(clr.getResource("resources/images/user/accept.png")));
-                        wbBttn.setToolTipText("Allow to draw on whiteboard");
+                        wbBttn.setToolTipText(Language.getController().getLangValue("HandRaisePanel.ToolTipText9"));
                         wbBttn.setActionCommand("Allow-WB");
                         wbBttn.addActionListener(HandRaiseAction.getController());
 
 
                         denieWB=new JButton("Deny-WB",new ImageIcon(clr.getResource("resources/images/user/denie.png")));
-                        denieWB.setToolTipText("Denie student to draw on whiteboard");
+                        denieWB.setToolTipText(Language.getController().getLangValue("HandRaisePanel.ToolTipText10"));
                         denieWB.setActionCommand("Denie-WB");
                         denieWB.addActionListener(HandRaiseAction.getController());
                         
@@ -120,26 +123,26 @@ public class HandRaisePanel {
                         micBttn.addActionListener(HandRaiseAction.getController());
 
                         denieMic=new JButton("Deny-Mic",new ImageIcon(clr.getResource("resources/images/user/denie.png")));                           
-                        denieMic.setToolTipText("Denie student for mic request");
+                        denieMic.setToolTipText(Language.getController().getLangValue("HandRaisePanel.ToolTipText11"));
                         denieMic.setActionCommand("Denie-Mic");
                         denieMic.addActionListener(HandRaiseAction.getController());
 
 			screenBttn=new JButton("Allow-Screen",new ImageIcon(clr.getResource("resources/images/user/accept.png")));
-                        screenBttn.setToolTipText("Allow screen share to student");
+                        screenBttn.setToolTipText(Language.getController().getLangValue("HandRaisePanel.ToolTipText12"));
                         screenBttn.setActionCommand("Allow-Screen");
                         screenBttn.addActionListener(HandRaiseAction.getController());
 
                         denieScreen=new JButton("Deny-Screen",new ImageIcon(clr.getResource("resources/images/user/denie.png")));
-                        denieScreen.setToolTipText("Denie student for share screen");
+                        denieScreen.setToolTipText(Language.getController().getLangValue("HandRaisePanel.ToolTipText13"));
                         denieScreen.setActionCommand("Denie-Screen");
                         denieScreen.addActionListener(HandRaiseAction.getController());
 			pptBttn=new JButton("Allow-PPT",new ImageIcon(clr.getResource("resources/images/user/accept.png")));
-                        pptBttn.setToolTipText("Allow PPT to student");
+                        pptBttn.setToolTipText(Language.getController().getLangValue("HandRaisePanel.ToolTipText14"));
                         pptBttn.setActionCommand("Allow-PPT");
                         pptBttn.addActionListener(HandRaiseAction.getController());
 
                         denieppt=new JButton("Deny-PPT",new ImageIcon(clr.getResource("resources/images/user/denie.png")));
-                        denieppt.setToolTipText("Denie student for PPT");
+                        denieppt.setToolTipText(Language.getController().getLangValue("HandRaisePanel.ToolTipText15"));
                         denieppt.setActionCommand("Denie-PPT");
                         denieppt.addActionListener(HandRaiseAction.getController());
 		}

@@ -1,12 +1,15 @@
 package org.bss.brihaspatisync.gui;
 
 /**
- * MainWindow.java
+ * LoginWindow.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2009-2010 ETRG,IIT Kanpur.
+ * Copyright (c) 2011 ETRG,IIT Kanpur.
  */
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
@@ -35,13 +38,16 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.BorderFactory;
+
 import org.bss.brihaspatisync.util.ClientObject;
+import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.network.Log;
 import javax.swing.JOptionPane;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a> 
  * @author <a href="mailto:pratibhaayadav@gmail.com">Pratibha</a> Modified this class for signalling. 
+ * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  */
 
 public class LoginWindow extends JInternalFrame implements ActionListener, MouseListener {	
@@ -50,12 +56,17 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 	private JPanel panel;
 	private JPanel titlePane;
 	private JPanel NorthPanel;
+	private JPanel langPanel;
 	private JPanel CenterPanel;
 	private JPanel SouthPanel;	
-	private JComboBox indexServerListCombo=null;	
+	
+	private JComboBox indexServerListCombo=null;
+	private JComboBox languageListCombo=null;	
+	
 	private JPanel loginPanel;
 	private JPanel buttonPanel;
 	private JLabel chooseServerLabel;
+	private JLabel chooseLanguageLabel;
 	private JLabel username;
 	private JLabel password;
 	private JLabel bottomLabel;
@@ -68,10 +79,8 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 	private TitledBorder titledBorder2;
 	private TitledBorder titledBorder3;
 	private String indexServerName=null;
+	private String languageName=null;
 
-	//private BufferedReader in;
-	//private BufferedReader input;
-   	//private File listFile=null;
    	private JMenuItem menuItem1;
 	private String userName=null;
 	private JPanel mainLoginPanel;
@@ -82,46 +91,38 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 	private boolean loginValue=false;
 
 	private MainWindow mainWindow=MainWindow.getController();		
+	
 	private ClientObject client_obj=ClientObject.getController();
 	private Cursor busyCursor =Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
 	private Cursor defaultCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
-
-
-	//private Log log=Log.getController();
-
+	private java.util.Vector languages = new java.util.Vector();
+	private ClassLoader clr= this.getClass().getClassLoader();
 	
-//	private static LoginWindow loginWindow=null;
-
-	/**
-	 * Controller for the class.
-	 */
-/*	public static LoginWindow getController(){
-		if (loginWindow==null){
-			loginWindow=new LoginWindow();
-		}
-		return loginWindow;
-	}
-*/	
 	/**
 	 * Constructor detail
 	 */
 	public LoginWindow(){
-		super("User Authentication",true,false,true,true);
+		super(Language.getController().getLangValue("LoginWindow.Title"),true,false,true,true);
 		createGUI();
+		setFrameIcon(new ImageIcon(clr.getResource("resources/images/login.png")));
 	}
 	
 	/**
 	 * Create GUI for LoginWindow
 	 */	
 	protected void createGUI(){
+		languages.add("English");
+		//languages.add("Urdu");
+		//languages.add("Hindi");
     		panel=new JPanel();
     		panel.setLayout(new BorderLayout());
     		titlePane = new JPanel();
-		ClassLoader clr= this.getClass().getClassLoader();
+
 		JLabel imageLabel = new JLabel(new ImageIcon(clr.getResource("resources/images/Title.jpg")));
+
 		imageLabel.setFont(new java.awt.Font("Times", 1, 20));
 		titlePane.add(imageLabel);
-		titlePane.setSize(301,100);
+		titlePane.setSize(301,200);
 		titlePane.setBackground(Color.WHITE);
 		titlePane.setBorder(BorderFactory.createCompoundBorder(BorderFactory
 				.createBevelBorder(BevelBorder.LOWERED), BorderFactory
@@ -133,17 +134,26 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
         	mainPanel.setLayout(new BorderLayout());
     
     		NorthPanel =new JPanel();
-    		NorthPanel.setLayout(new GridLayout(1,2));
-    		titledBorder1 = BorderFactory.createTitledBorder("Servers");
+    		NorthPanel.setLayout(new GridLayout(2,2,5,5));
+    		titledBorder1 = BorderFactory.createTitledBorder(Language.getController().getLangValue("LoginWindow.ServerPanelTitle"));
     		NorthPanel.setBorder(titledBorder1);
-    
-    		chooseServerLabel=new JLabel("Choose Server :");
-    		NorthPanel.add(chooseServerLabel);
+		
+                chooseLanguageLabel=new JLabel(Language.getController().getLangValue("LoginWindow.chooseLanguage"));
+                NorthPanel.add(chooseLanguageLabel);
+
+		languageListCombo=new JComboBox(languages);
+                languageListCombo.setPreferredSize(new Dimension(160,25));
+                languageListCombo.addActionListener(this);
+                NorthPanel.add(languageListCombo);
+		chooseServerLabel=new JLabel(Language.getController().getLangValue("LoginWindow.ChooseServer"));
+                NorthPanel.add(chooseServerLabel);
+              
     		indexServerListCombo=new JComboBox(client_obj.getIndexServerList());
     		indexServerListCombo.addActionListener(this);
     		NorthPanel.add(indexServerListCombo);
-    	
-    		mainPanel.add(NorthPanel,BorderLayout.NORTH);
+
+           	mainPanel.add(NorthPanel,BorderLayout.NORTH);
+
         	mainPanel.add(createLoginPanel(),BorderLayout.CENTER);   	
    	
     		panel.add(mainPanel,BorderLayout.CENTER);
@@ -152,7 +162,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
     		SouthPanel.setBackground(Color.LIGHT_GRAY);
     		titledBorder3 = BorderFactory.createTitledBorder("");
     		SouthPanel.setBorder(titledBorder3);
-    		bottomLabel=new JLabel("Advertisement");
+    		bottomLabel=new JLabel(Language.getController().getLangValue("LoginWindow.bottomLabel"));
     		SouthPanel.add(bottomLabel);
     	
     		panel.add(SouthPanel,BorderLayout.SOUTH);
@@ -160,9 +170,9 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 		add(panel,BorderLayout.CENTER);
 		Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();
 		setLocation((((int)dim.getWidth()/2)-185),(((int)dim.getHeight()/2)-220));
-    		setSize(355,420); 
+    		setSize(355,450); 
     		setVisible(true);
-		setResizable(false);
+		//setResizable(false);
   	}
 
 	protected JPanel createLoginPanel(){
@@ -172,13 +182,14 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 
                 CenterPanel=new JPanel();
                 CenterPanel.setLayout(new BorderLayout());
-                titledBorder2 = BorderFactory.createTitledBorder("Login");
+                titledBorder2 = BorderFactory.createTitledBorder(Language.getController().getLangValue("LoginWindow.login"));
                 CenterPanel.setBorder(titledBorder2);
 
 
                 loginPanel1=new JPanel();
                 loginPanel1.setLayout(new GridLayout(2,3,0,4));
-                username =new JLabel("Username *");
+               	username =new JLabel(Language.getController().getLangValue("LoginWindow.username"));
+
 
                 username.setEnabled(false);
                 usernameText=new JTextField();
@@ -186,10 +197,11 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 
                 usernameText.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent ae) {
+				System.out.println("");
                                 KeyboardFocusManager.getCurrentKeyboardFocusManager().focusNextComponent();
                         }
                 });
-                password=new JLabel("Password * ");
+                password=new JLabel(Language.getController().getLangValue("LoginWindow.password"));
                 password.setEnabled(false);
                 passwordField=new JPasswordField();
                 passwordField.setEnabled(false);
@@ -199,24 +211,25 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 				passwordField.setCursor(busyCursor);
 				mainLoginPanel.setCursor(busyCursor);
 				panel.setCursor(busyCursor);
-				MainWindow.getController().setCursor(busyCursor);
-				loginValue=client_obj.getAuthentication(indexServerName,usernameText.getText(),passwordField.getText());			try{
+				mainWindow.getController().setCursor(busyCursor);
+				loginValue=client_obj.getAuthentication(indexServerName,usernameText.getText(),passwordField.getText());			
+				try{
 						Thread.sleep(1000);
-					}catch(InterruptedException ie){
-						usernameText.setCursor(defaultCursor);
-						MainWindow.getController().setCursor(defaultCursor);
-					}finally{
-						usernameText.setCursor(defaultCursor);                                                                                     MainWindow.getController().setCursor(defaultCursor);
-					}
+				}catch(InterruptedException ie){
+					usernameText.setCursor(defaultCursor);
+					mainWindow.getController().setCursor(defaultCursor);
+				}finally{
+					usernameText.setCursor(defaultCursor);
+			                mainWindow.getController().setCursor(defaultCursor);
+				}
 						
                         	if(loginValue==false){
                                 	usernameText.setText("");
                                 	passwordField.setText("");
-			JOptionPane.showMessageDialog(null,"Incorrect Entry.", "Message", JOptionPane.ERROR_MESSAGE);
-					}else {
-                                	//System.out.println("Login Successful");
-					//JOptionPane.showMessageDialog(null,"Login Successful");
-
+					JOptionPane.showMessageDialog(null,Language.getController().getLangValue("LoginWindow.MessageDialog1"), "Message", JOptionPane.ERROR_MESSAGE);
+				}else {
+                                	System.out.println("Login Successful");
+					JOptionPane.showMessageDialog(null,Language.getController().getLangValue("LoginWindow.MessageDialog2"));
 					client_obj.setUserName(usernameText.getText());
 					if(((client_obj.getStudSessionList())!=null)||((client_obj.getInstSessionList())!=null)){
 						mainWindow.getMenuItem4().setEnabled(true);
@@ -256,7 +269,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
                 cancelLabel.addMouseListener(this);
                 cancelLabel.setName("cancle.Action");
 
-                forgetpass=new JLabel("<html><font color=blue><u>Forget Password</u></font></html>");
+                forgetpass=new JLabel("<html><font color=blue><u>"+Language.getController().getLangValue("LoginWindow.forgetpass")+"</u></font></html>");
                 forgetpass.addMouseListener(this);
                 forgetpass.setCursor(new Cursor(Cursor.HAND_CURSOR));
                 forgetpass.setName("forgetpass.Action");
@@ -278,7 +291,6 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
         		indexServerName=(String)combo.getSelectedItem();
 			// set this indexServerName object to ClientObject for later use by this client.
 			client_obj.setIndexServerName(indexServerName);
-
         		if(!(indexServerName.equals("Select"))){
         			username.setEnabled(true);
         			usernameText.setEnabled(true);
@@ -296,9 +308,49 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
         			submitLabel.setEnabled(false);
         			cancelLabel.setEnabled(false);
 	           	}
-      		}
-    	}   
+      		}else if(e.getSource()==languageListCombo) {
+			JComboBox combo = (JComboBox)e.getSource();
+                        languageName=(String)combo.getSelectedItem();
+			Language.getController().SelectLanguage(languageName);
 
+			if(languageName.equals("English")){
+				
+				try {
+					chooseLanguageLabel.setText(Language.getController().getLangValue("LoginWindow.chooseLanguageLabel")+"En");
+					chooseServerLabel.setText(Language.getController().getLangValue("LoginWindow.ChooseServer")+"en");
+					mainPanel.remove(1);
+                                        mainPanel.add(createLoginPanel(),BorderLayout.CENTER);
+                                        mainPanel.revalidate();
+                                        mainPanel.validate();
+                                        panel.repaint();
+					//this.setTitle("this is english");
+					mainWindow.setTitle(Language.getController().getLangValue("MainWindow.MainWindowTitle")+"English");
+					mainWindow.setMenuText();
+					mainWindow.setMenuItemText();
+
+				}catch(Exception ex){}
+				return;
+			} else if(languageName.equals("Urdu")){
+				try {
+					chooseLanguageLabel.setText(Language.getController().getLangValue("LoginWindow.chooseLanguageLabel")+"ur");    
+					
+			        	chooseServerLabel.setText(Language.getController().getLangValue("LoginWindow.ChooseServer")+"ur");
+					mainPanel.remove(1);
+					mainPanel.add(createLoginPanel(),BorderLayout.CENTER);
+					mainPanel.revalidate();
+					mainPanel.validate();
+					panel.repaint();
+					//this.setTitle("This is urdu");
+					mainWindow.setTitle(Language.getController().getLangValue("MainWindow.MainWindowTitle")+"Urdu");
+					mainWindow.setMenuText();
+                                        mainWindow.setMenuItemText();
+		                }catch(Exception ex){}
+				return;
+			} 
+
+    		}
+	}   
+		
 	public void mouseClicked(MouseEvent e) {
                  if(e.getComponent().getName().equals("forgetpass.Action")){
 			forgetpass.setCursor(busyCursor);
@@ -324,8 +376,10 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 			if(loginValue==false){
                         	usernameText.setText("");
                         	passwordField.setText("");
-				JOptionPane.showMessageDialog(null,"Incorrect Entry.", "Message", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null,Language.getController().getLangValue("LoginWindow.MessageDialog1"), "Message", JOptionPane.ERROR_MESSAGE);
 			}else {
+				//System.out.println("Login Successfull");
+				JOptionPane.showMessageDialog(null,Language.getController().getLangValue("LoginWindow.MessageDialog2"));
 				//System.out.println("Login Successfull");
 				//JOptionPane.showMessageDialog(null,"Login Successfull");
 				client_obj.setUserName(usernameText.getText());

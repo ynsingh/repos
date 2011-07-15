@@ -28,10 +28,12 @@ import javax.media.format. AudioFormat;
 
 import javax.media.protocol.DataSource;
 import org.bss.brihaspatisync.network.Log;
+import org.bss.brihaspatisync.util.Language;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>      
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>
+ * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  */
 
 public class CaptureDeviceDialog extends Dialog implements ActionListener, ItemListener {
@@ -60,17 +62,19 @@ public class CaptureDeviceDialog extends Dialog implements ActionListener, ItemL
     	Panel p = new Panel();
     	p.setLayout(null);
 
-    	Label l1 = new Label("Audio Device(s)");
-    	Label l2 = new Label("Video Device(s)");
-    	Label l3 = new Label("Audio Format(s)");
-    	Label l4 = new Label("Video Format(s)");
+    	Label l1 = new Label(Language.getController().getLangValue("CaptureDeviceDialog.AudioDevice"));
+    	Label l2 = new Label(Language.getController().getLangValue("CaptureDeviceDialog.VideoDevice"));
+    	Label l3 = new Label(Language.getController().getLangValue("CaptureDeviceDialog.AudioFormat"));
+    	Label l4 = new Label(Language.getController().getLangValue("CaptureDeviceDialog.VideoFormat"));
     	audioDeviceCombo = new Choice();
     	videoDeviceCombo = new Choice();
     	audioFormatCombo = new Choice();
     	videoFormatCombo = new Choice();
 
-    	Button OKbutton = new Button("OK");
-    	Button cancelButton = new Button("Cancel");
+    	Button OKbutton = new Button(Language.getController().getLangValue("CaptureDeviceDialog.OKBttn"));
+	OKbutton.setActionCommand("OK");
+    	Button cancelButton = new Button(Language.getController().getLangValue("CaptureDeviceDialog.CancelBttn"));
+	cancelButton.setActionCommand("Cancel");
 
 
     	p.add(l1);

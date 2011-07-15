@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.gui;
  * HandRaiseAction.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2010-2011 ETRG,Kanpur.
+ * Copyright (c) 2011 ETRG,Kanpur.
  */
 
 import java.net.URLEncoder;
@@ -12,15 +12,17 @@ import javax.swing.JOptionPane;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.util.HttpsUtil;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.network.util.UtilObject;
 import org.bss.brihaspatisync.util.RuntimeDataObject;
 import org.bss.brihaspatisync.tools.whiteboard.WhiteBoardPanel;
+
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
  * @author <a href="mailto:arvindjass17@gmail.com">Arvind Pal </a>
+ * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  */
 
 public class HandRaiseAction implements ActionListener {
@@ -51,7 +53,7 @@ public class HandRaiseAction implements ActionListener {
 			if(!(id.equals("")))
                         	lectid ="lectID="+URLEncoder.encode(id,"UTF-8");
 			else
-				System.out.println("Insufficient lecture id in HandRaiseAction class "+id);
+				System.out.println("Insufficient lecture id in HandRaiseAction class"+id);
 
                         if((client_obj.getUserRole()).equals("student")){
                                 user="loginName="+URLEncoder.encode(client_obj.getUserName(),"UTF-8");
@@ -62,7 +64,7 @@ public class HandRaiseAction implements ActionListener {
                                                 user="loginName="+URLEncoder.encode(selectedUsername,"UTF-8");
                                                 selectedUsername="";
                                         }else{
-                                                JOptionPane.showMessageDialog(null,"Please select username ");
+                                                JOptionPane.showMessageDialog(null,Language.getController().getLangValue("HandRaiseAction.MessageDialog1"));
                                                 return;
                                         }
 				}else {

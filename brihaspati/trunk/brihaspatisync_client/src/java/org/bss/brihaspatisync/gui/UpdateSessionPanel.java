@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.gui;
  * UpdateSessionPanel.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2009-2010 ETRG, IIT Kanpur.
+ * Copyright (c) 2011 ETRG, IIT Kanpur.
  */
 import java.awt.Cursor;
 import java.awt.*;
@@ -17,8 +17,12 @@ import java.awt.event.MouseListener;
 import javax.swing.border.TitledBorder;
 import java.util.StringTokenizer;
 import java.net.URLEncoder;
+import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.util.HttpsUtil;
 import org.bss.brihaspatisync.util.ClientObject;
+import org.bss.brihaspatisync.util.Language;
+import org.bss.brihaspatisync.util.DateUtil;
+
 import org.bss.brihaspatisync.util.DateUtil;
 
 import java.net.URLEncoder;
@@ -28,6 +32,7 @@ import org.bss.brihaspatisync.network.Log;
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
  * @author <a href="mailto:pratibhaayadav@gmail.com">Pratibha </a> Modified for Signalling.
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>  Modified for GUI on 13 Jun 2011
+ * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  */
 
 public class UpdateSessionPanel extends JFrame implements ActionListener, MouseListener{
@@ -114,7 +119,7 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                 mainPanel.add(createSouthPanel(),BorderLayout.SOUTH);
 		setLectureValues(indexnumber,updatevector);
 		frame=new JFrame();
-  		frame.setTitle("Session Description");                           /**Setting the title of the Frame*/
+  		frame.setTitle(Language.getController().getLangValue("UpdateSessionPanel.Title"));                                                                                                            /**Setting the title of the Frame*/
                 frame.getContentPane().add(mainPanel);                           /**Adding panel to the frame*/
                 frame.setSize(850,250);                                          /**Setting the size of the frame*/
                 frame.setVisible(true);                                          /**Showing the frame*/
@@ -169,11 +174,11 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                 north_Panel.setLayout(new FlowLayout(FlowLayout.CENTER));
                 north_Panel.setBackground(Color.LIGHT_GRAY);
                 north_Panel.setBorder(BorderFactory.createLineBorder(Color.black));
-                video=new JCheckBox("<html><font color=green>Video");
+                video=new JCheckBox("<html><font color=green>"+Language.getController().getLangValue("UpdateSessionPanel.VideoCheck")+"</font></html>");
                 video.setBackground(Color.LIGHT_GRAY);
-                audio=new JCheckBox("<html><font color=green>Audio");
+                audio=new JCheckBox("<html><font color=green>"+Language.getController().getLangValue("UpdateSessionPanel.AudioCheck")+"</font></html>");
                 audio.setBackground(Color.LIGHT_GRAY);
-                whiteboard=new JCheckBox("<html><font color=green>WhiteBoard");
+                whiteboard=new JCheckBox("<html><font color=green>"+Language.getController().getLangValue("UpdateSessionPanel.WBCheck")+"</font></html>");
                 whiteboard.setBackground(Color.LIGHT_GRAY);
                 north_Panel.add(new JLabel("                           "));
                 north_Panel.add(audio);
@@ -191,12 +196,12 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                 center_Panel=new JPanel();
                 center_Panel.setLayout(new GridLayout(0,4,5,2));
 
-                lect_name=new JLabel("<html>&nbsp<font color=black>Lecture Name</font><font color=blue>*</font>");
-		lect_Info=new JLabel("<html>&nbsp<font color=black>Lecture Info</font><font color=blue>*</font>");
-                phone=new JLabel("<html>&nbsp<font color=black>Phone No.</font>");
-                date=new JLabel("<html>&nbsp<font color=black>Lecture Date</font><font color=blue>*</font>");
-                time=new JLabel("<html>&nbsp<font color=black>Lecture Time</font><font color=blue>*</font>");
-                email=new JLabel("<html>&nbsp<font color=black>Email</font><font color=blue>*</font>");
+                lect_name=new JLabel("<html>&nbsp<font color=black>"+Language.getController().getLangValue("UpdateSessionPanel.LectureName")+"</font><font color=blue>*</font>");
+		lect_Info=new JLabel("<html>&nbsp<font color=black>"+Language.getController().getLangValue("UpdateSessionPanel.LectureInfo")+"</font><font color=blue>*</font>");
+                phone=new JLabel("<html>&nbsp<font color=black>"+Language.getController().getLangValue("UpdateSessionPanel.Phone")+"</font><font color=blue>*</font>");
+                date=new JLabel("<html>&nbsp<font color=black>"+Language.getController().getLangValue("UpdateSessionPanel.LectureDate")+"</font><font color=blue>*</font>");
+                time=new JLabel("<html>&nbsp<font color=black>"+Language.getController().getLangValue("UpdateSessionPanel.LectureTime")+"</font><font color=blue>*</font>");
+                email=new JLabel("<html>&nbsp<font color=black>"+Language.getController().getLangValue("UpdateSessionPanel.Email")+"</font><font color=blue>*</font>");
                 lectName_Text=new JTextField();
                 phone_Text=new JTextField();
                 lecInfoArea=new JTextArea();
@@ -293,12 +298,12 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                 south_Panel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		south_Panel.setBackground(Color.LIGHT_GRAY);
                 south_Panel.setBorder(BorderFactory.createLineBorder(Color.black));
-                JLabel duration=new JLabel("<html>&nbsp<font color=black>Duration</font><font color=blue>*</font>");
+                JLabel duration=new JLabel(Language.getController().getLangValue("UpdateSessionPanel.LectureDuration"));
                 durationBox=new JComboBox();
                 for(int i=1;i<=24;i++)
-                        durationBox.addItem(Integer.toString(i)+":Hour");
+                        durationBox.addItem(Integer.toString(i)+Language.getController().getLangValue("UpdateSessionPanel.LectureHour"));
 
-                JLabel repeat=new JLabel("<html>&nbsp<font color=black>Repeat</font>");
+                JLabel repeat=new JLabel("<html>&nbsp<font color=black>"+Language.getController().getLangValue("UpdateSessionPanel.LectureRepeat")+"</font></html>");
                 repeatBox=new JComboBox();
                 repeat_for_timeBox=new JComboBox();
                 repeatBox.addActionListener(new ActionListener(){
@@ -312,21 +317,21 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
 			}
 		});
 	
-                JLabel repeat_for_time=new JLabel("<html>&nbsp<font color=black>Repeat For Time</font>");
+                JLabel repeat_for_time=new JLabel("<html>&nbsp<font color=black>"+Language.getController().getLangValue("UpdateSessionPanel.LectureRepeatForTime")+"</font></html>");
                 try{
                         repeatBox.removeAllItems();
                 }catch(Exception e){}
-                repeatBox.addItem("No");
-                repeatBox.addItem("Daily");
-                repeatBox.addItem("Every 7 Days");
-                repeatBox.addItem("Every 15 Days");
+                repeatBox.addItem(Language.getController().getLangValue("UpdateSessionPanel.RepeatBox1"));
+                repeatBox.addItem(Language.getController().getLangValue("UpdateSessionPanel.RepeatBox2"));
+                repeatBox.addItem(Language.getController().getLangValue("UpdateSessionPanel.RepeatBox3"));
+                repeatBox.addItem(Language.getController().getLangValue("UpdateSessionPanel.RepeatBox4"));
                 try{
                         repeat_for_timeBox.removeAllItems();
                 }catch(Exception e){}
-                repeat_for_timeBox.addItem("7 Days");
-                repeat_for_timeBox.addItem("15 Days");
-                repeat_for_timeBox.addItem("30 Days");
-                repeat_for_timeBox.addItem("60 Days");
+                repeat_for_timeBox.addItem(Language.getController().getLangValue("UpdateSessionPanel.TimeBox1"));
+                repeat_for_timeBox.addItem(Language.getController().getLangValue("UpdateSessionPanel.TimeBox2"));
+                repeat_for_timeBox.addItem(Language.getController().getLangValue("UpdateSessionPanel.TimeBox3"));
+                repeat_for_timeBox.addItem(Language.getController().getLangValue("UpdateSessionPanel.TimeBox4"));
                 repeat_for_timeBox.setEnabled(false);
 		
 		ClassLoader clr= this.getClass().getClassLoader();	
@@ -337,7 +342,7 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                 closeLabel.addMouseListener(this);
 
 
-                annBttn=new JButton("<html><u><b><center><font color=blue>Update</font></center></b></u>");
+                annBttn=new JButton("<html><u><b><center><font color=blue>"+Language.getController().getLangValue("UpdateSessionPanel.UpdateBttn")+"</font></center></b></u>");
 		annBttn.addActionListener(this);
                 south_Panel.add(duration);
                 south_Panel.add(durationBox);
@@ -354,7 +359,7 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
 			
 	private String getLectureValues(){
 	if((lectName_Text.getText().equals(""))|| (urlText.getText().equals(""))||(lecInfoArea.getText().equals(""))||(endText.getText().equals(""))||(phone_Text.getText().equals(""))){
-			JOptionPane.showMessageDialog(null,"Please enter (*) mandatory fields");
+			JOptionPane.showMessageDialog(null,Language.getController().getLangValue("UpdateSessionPanel.MessageDialog1"));
                 }
                 else{
 			DateUtil date=DateUtil.getController();
@@ -367,7 +372,8 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                         boolean check=date.checkDateInput(st_year,st_month,st_day);
                         if(intforduedate < curdate)
                         {
-                                JOptionPane.showMessageDialog(null,"Please checked the Duration date !!");
+                                JOptionPane.showMessageDialog(null,Language.getController().getLangValue("UpdateSessionPanel.MessageDialog2"));
+
                                 lectValue=null;
                                 return lectValue.toString();
                         }
@@ -379,7 +385,9 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                                         int totaltime=Integer.parseInt(st_hour)*60;
                                         totaltime=totaltime+Integer.parseInt(st_minutes);
                                         if(totaltime< (date.checkTimeInput())) {
-                                                JOptionPane.showMessageDialog(null,"Please checked the Duration Time !!");
+                                                JOptionPane.showMessageDialog(null,Language.getController().getLangValue("UpdateSessionPanel.MessageDialog3"));
+
+
                                                 lectValue=null;
                                                 return lectValue.toString();
                                         }
@@ -388,7 +396,7 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
 				if(!((client_obj.getCourseForAnnounce()).equals("")))
                                         courseName=client_obj.getCourseForAnnounce();
 				if(courseName.equals("--Show All--")){
-                                        JOptionPane.showMessageDialog(null,"Please select the Course except Show All !!");
+                                        JOptionPane.showMessageDialog(null,Language.getController().getLangValue("UpdateSessionPanel.MessageDialog4"));
                                         lectValue=null;
                                         return lectValue;
                                 }
@@ -458,7 +466,8 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                                         String  indexServer=indexServerName+"/ProcessRequest?req=putLecture&"+lectValue;
                                         if(HttpsUtil.getController().getIndexingMessage(indexServer)){
 						/********************* modified ******************************/
-                                                JOptionPane.showMessageDialog(null," Lecture is Updated Successfully !!");
+                                                JOptionPane.showMessageDialog(null,Language.getController().getLangValue("UpdateSessionPanel.MessageDialog5"));
+
 						frame.dispose();
 						insCSPanel.getmainPanel().remove(1);
                                                         Vector course_Name=client_obj.getInstCourseList();
@@ -467,7 +476,8 @@ public class UpdateSessionPanel extends JFrame implements ActionListener, MouseL
                                                         insCSPanel.getinstCourseCombo().setSelectedItem("--Show All--");
 						/*************************************************************/
                                         }else
-                                                JOptionPane.showMessageDialog(null,"There are some problem in Update lecture !!");
+                                                JOptionPane.showMessageDialog(null,Language.getController().getLangValue("UpdateSessionPanel.MessageDialog6"));
+
                                 }else{
                                         log.setLog("insufficient indexServer name in UpdateSession :" + indexServerName);
                                 }

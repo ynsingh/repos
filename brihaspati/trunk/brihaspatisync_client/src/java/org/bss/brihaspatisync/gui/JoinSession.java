@@ -14,6 +14,7 @@ import java.net.URLEncoder;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
+import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.util.HttpsUtil;
 import org.bss.brihaspatisync.util.ClientObject;
 
@@ -27,6 +28,7 @@ import org.bss.brihaspatisync.tools.audio_video.AVTransmitReceiveHandler;
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>Created on dec2008
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>Modified on jan2011
+ * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  */
 
 public class JoinSession {
@@ -82,7 +84,7 @@ public class JoinSession {
 					// Thread for get userlist and other media data from reflector.
                 			new HTTPClient(ref_ip,Lecture_ID).start();
 				}else{
-					JOptionPane.showMessageDialog(null,"Reflector ip can't find!!");
+					JOptionPane.showMessageDialog(null,Language.getController().getLangValue("JoinSession.MessageDialog1"));
 				}
 
 				//start GUI for this lecture id 

@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.gui;
  * StudentCSPanel.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2009-2010 ETRG, IIT Kanpur.
+ * Copyright (c) 2011 ETRG, IIT Kanpur.
  */
 
 import java.awt.BorderLayout;
@@ -28,6 +28,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import java.util.Vector;
 import java.util.Date;
+import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.network.Log;
 
@@ -35,6 +36,7 @@ import org.bss.brihaspatisync.network.Log;
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a> 
  * @author <a href="mailto:arvindjss17@gmail.com"> Arvind Pal </a> 
  * @author <a href="mailto:pratibhaayadav@gmail.com">Pratibha </a> Modified for signalling.
+ * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  */
 
 public class StudentCSPanel extends JPanel implements ActionListener, MouseListener{
@@ -84,7 +86,7 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
 		north_mainPanel=new JPanel();
 		north_mainPanel.setLayout(new FlowLayout());
 		north_mainPanel.setBackground(Color.LIGHT_GRAY);
-		studLabel=new JLabel("<html><b>Course in which you are resistered as a student</b></html>");
+		studLabel=new JLabel("<html><b>"+Language.getController().getLangValue("StudentCSPanel.TitleLabel")+"</b></html>");
 		Vector courseVec=client_obj.getStudCourseList();
 		String str=courseVec.get(0).toString();
                 courseVec.clear();
@@ -119,9 +121,9 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
 		center_mainPanel=new JPanel();
     	
  		center_mainPanel.setLayout(new GridLayout(0,2,5,3));
-    		center_mainPanel.setBorder(BorderFactory.createTitledBorder("Announced Sessions "));
-		center_mainPanel.add(new JLabel("<html><b><U><font color=green>LECTURE NAME</font></U></b>",0));
-		center_mainPanel.add(new JLabel("<html><b><U><font color=green>ACTIONS</font></U></b>",0));
+    		center_mainPanel.setBorder(BorderFactory.createTitledBorder(Language.getController().getLangValue("StudentCSPanel.BorderText")));
+		center_mainPanel.add(new JLabel("<html><b><U><font color=green>"+Language.getController().getLangValue("UpdateSessionPanel.LectureLabel")+"</font></U></b>",0));
+		center_mainPanel.add(new JLabel("<html><b><U><font color=green>"+Language.getController().getLangValue("UpdateSessionPanel.ActionLabel")+"</font></U></b>",0));
 		
 		int curdate=Integer.parseInt(client_obj.getServerDate());
 		
@@ -151,7 +153,7 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
                         lectDate=lectDate.replaceAll("-","");
 			int checkintdate=Integer.parseInt(lectDate);
                         if(checkintdate == curdate) {
-                    		runButton[i]=new JButton("Join");
+                    		runButton[i]=new JButton(Language.getController().getLangValue("StudentCSPanel.Join"));
 				runButton[i].addActionListener(this);
 
                		}
@@ -163,7 +165,7 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
                        	buttonPanel[i].setLayout(new FlowLayout());
                        	buttonPanel[i].setBorder(BorderFactory.createLineBorder(Color.gray));
 			ClassLoader clr= this.getClass().getClassLoader();
-                       	descLabel[i]=new JLabel("<html><Font color=blue><u>Lecture Info</u></font></html>",new ImageIcon(clr.getResource("resources/images/info.gif")),0);
+                       	descLabel[i]=new JLabel("<html><Font color=blue><u>"+Language.getController().getLangValue("StudentCSPanel.LectureInfo")+"</u></font></html>",new ImageIcon(clr.getResource("resources/images/info.gif")),0);
 			descLabel[i].addMouseListener(this);
 			descLabel[i].setName("lectureInfo.Action");
 			descLabel[i].setCursor(new Cursor(Cursor.HAND_CURSOR));

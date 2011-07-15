@@ -4,7 +4,7 @@ package org.bss.brihaspatisync.tools.whiteboard;
  * WhiteBoardPanel.java
  *
  * See LICENCE file for usage and redistribution terms
- * Copyright (c) 2007-2008 ETRG, IIT Kanpur.
+ * Copyright (c) 2011 ETRG, IIT Kanpur.
  */
 
 import java.awt.Font;
@@ -34,11 +34,13 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JTabbedPane;
 import org.bss.brihaspatisync.util.ClientObject;
+import org.bss.brihaspatisync.util.Language;
 import org.bss.brihaspatisync.gui.HandRaiseAction;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>
+ * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  */
 
 public class WhiteBoardPanel extends JPanel implements ActionListener, MouseListener{
@@ -92,42 +94,42 @@ public class WhiteBoardPanel extends JPanel implements ActionListener, MouseList
 		JToolBar toolBar = new JToolBar("Whiteboard Toolbar");
 		
 		curveButton=new JButton(new ImageIcon(clr.getResource("resources/images/wb/freehand.png")));
-                curveButton.setToolTipText("curve");
+                curveButton.setToolTipText(Language.getController().getLangValue("WhiteBoardPanel.CurveToolTip"));
                 curveButton.setActionCommand("0");
                 curveButton.addActionListener(this);
                 toolBar.add(curveButton);
 		toolBar.addSeparator();
 
                 lineButton=new JButton(new ImageIcon(clr.getResource("resources/images/wb/line.png")));
-                lineButton.setToolTipText("line");
+                lineButton.setToolTipText(Language.getController().getLangValue("WhiteBoardPanel.LineToolTip"));
                 lineButton.setActionCommand("1");
                 lineButton.addActionListener(this);
                 toolBar.add(lineButton);
 		toolBar.addSeparator();
 
                 rectButton=new JButton(new ImageIcon(clr.getResource("resources/images/wb/rectangle.gif")));
-                rectButton.setToolTipText("rectangle");
+                rectButton.setToolTipText(Language.getController().getLangValue("WhiteBoardPanel.RectangleToolTip"));
                 rectButton.setActionCommand("2");
                 rectButton.addActionListener(this);
                 toolBar.add(rectButton);
 		toolBar.addSeparator();
 
 		filledrectButton=new JButton(new ImageIcon(clr.getResource("resources/images/wb/rectanglefill.gif")));
-                filledrectButton.setToolTipText("<html>filled<br>rectangle</html>");
+                filledrectButton.setToolTipText(Language.getController().getLangValue("WhiteBoardPanel.FilledrectangleToolTip"));
                 filledrectButton.setActionCommand("5");
                 filledrectButton.addActionListener(this);
                 toolBar.add(filledrectButton);
                 toolBar.addSeparator();
 
                 ovalButton=new JButton(new ImageIcon(clr.getResource("resources/images/wb/ellipse.gif")));
-                ovalButton.setToolTipText("oval");
+                ovalButton.setToolTipText(Language.getController().getLangValue("WhiteBoardPanel.OvalToolTip"));
                 ovalButton.setActionCommand("3");
                 ovalButton.addActionListener(this);
                 toolBar.add(ovalButton);
 		toolBar.addSeparator();
 
 		filledovalButton=new JButton(new ImageIcon(clr.getResource("resources/images/wb/ovalfill.gif")));
-                filledovalButton.setToolTipText("<html>filled<br>oval</html>");
+                filledovalButton.setToolTipText(Language.getController().getLangValue("WhiteBoardPanel.FilledovalToolTip"));
                 filledovalButton.setActionCommand("6");
                 filledovalButton.addActionListener(this);
                 toolBar.add(filledovalButton);
@@ -135,28 +137,28 @@ public class WhiteBoardPanel extends JPanel implements ActionListener, MouseList
 
 		
 		roundrectButton=new JButton(new ImageIcon(clr.getResource("resources/images/wb/roundrect.gif")));
-                roundrectButton.setToolTipText("<html>round<br>rectangle</html>");
+                roundrectButton.setToolTipText(Language.getController().getLangValue("WhiteBoardPanel.RoundrectangleToolTip"));
                 roundrectButton.setActionCommand("4");
                 roundrectButton.addActionListener(this);
                 toolBar.add(roundrectButton);
 		toolBar.addSeparator();
 
                 filledroundrectButton=new JButton(new ImageIcon(clr.getResource("resources/images/wb/fillroundrect.gif")));
-                filledroundrectButton.setToolTipText("<html>filled<br>round<br>rectangle</html>");
+                filledroundrectButton.setToolTipText(Language.getController().getLangValue("WhiteBoardPanel.FilledroundrectangleToolTip"));
                 filledroundrectButton.setActionCommand("7");
                 filledroundrectButton.addActionListener(this);
                 toolBar.add(filledroundrectButton);
 		toolBar.addSeparator();
 		
 		texter=new JButton(new ImageIcon(clr.getResource("resources/images/wb/text.png")));
-                texter.setToolTipText("text");
+                texter.setToolTipText(Language.getController().getLangValue("WhiteBoardPanel.TextToolTip"));
                 texter.setActionCommand("8");
                 texter.addActionListener(this);
                 toolBar.add(texter);
 		toolBar.addSeparator();
 	
 		eraser=new JButton(new ImageIcon(clr.getResource("resources/images/wb/eraser.png")));
-                eraser.setToolTipText("eraser");
+                eraser.setToolTipText(Language.getController().getLangValue("WhiteBoardPanel.EraserToolTip"));
                 eraser.setActionCommand("9");
                 eraser.addActionListener(this);
 		if((ClientObject.getController().getUserRole()).equals("student"))
@@ -165,14 +167,14 @@ public class WhiteBoardPanel extends JPanel implements ActionListener, MouseList
                 toolBar.addSeparator();
 		
 		color=new JButton(new ImageIcon(clr.getResource("resources/images/wb/color.png")));
-                color.setToolTipText("choose color");
+                color.setToolTipText(Language.getController().getLangValue("WhiteBoardPanel.ChooseColourToolTip"));
                 color.setActionCommand("10");
                 color.addActionListener(this);
                 toolBar.add(color);
                 toolBar.addSeparator();
 
 		JComboBox colChoice = new JComboBox();
-                colChoice.setToolTipText("Color");
+                //colChoice.setToolTipText("Color");
                 colChoice.addItem(new ImageIcon(clr.getResource("resources/images/wb/color/black")));
                 colChoice.addItem(new ImageIcon(clr.getResource("resources/images/wb/color/red")));
                 colChoice.addItem(new ImageIcon(clr.getResource("resources/images/wb/color/green")));
@@ -184,12 +186,12 @@ public class WhiteBoardPanel extends JPanel implements ActionListener, MouseList
 		toolBar.add(colChoice);
 
 		desk_share=new JButton("Share Screen",new ImageIcon(clr.getResource("resources/images/user/getscreen.jpeg")));
-		desk_share.setToolTipText("stop desktop screen sharing");
+		desk_share.setToolTipText(Language.getController().getLangValue("WhiteBoardPanel.StopDesktopSharing"));
 		desk_share.setActionCommand("Share-Screen");
 		desk_share.addActionListener(this);
 
 		desk_ppt=new JButton("Share PPT",new ImageIcon(clr.getResource("resources/images/user/getscreen.jpeg")));
-                desk_ppt.setToolTipText("stop desktop screen sharing");
+                desk_ppt.setToolTipText(Language.getController().getLangValue("WhiteBoardPanel.StopPPTSharing"));
                 desk_ppt.setActionCommand("Instructor_Allow-PPT");
                 desk_ppt.addActionListener(this);
 		
@@ -201,19 +203,20 @@ public class WhiteBoardPanel extends JPanel implements ActionListener, MouseList
 		mainPanel.add(toolBar,BorderLayout.PAGE_START);
 		mainPanel.add(WhiteBoardDraw.getController(),BorderLayout.CENTER);
 		JToolBar texttool = new JToolBar("TextToolbar");
-		JLabel textLabel = new JLabel("Text : ",JLabel.LEFT);
+		JLabel textLabel = new JLabel(Language.getController().getLangValue("WhiteBoardPanel.TextLabel"),JLabel.LEFT);
                 texttool.add(textLabel);
 
                 JTextField input_text=new JTextField(20);
                 texttool.add(input_text);
 		texttool.addSeparator();
 		
-		JButton Insert = new JButton("Insert");
+		JButton Insert = new JButton(Language.getController().getLangValue("WhiteBoardPanel.InsertBttn"));
 		Insert.addActionListener(WhiteBoardDraw.getController());
+		Insert.setActionCommand("Insert");
                 texttool.add(Insert);
 		texttool.addSeparator();
 		
-                JLabel size = new JLabel("Font-size",JLabel.LEFT);
+                JLabel size = new JLabel(Language.getController().getLangValue("WhiteBoardPanel.FontSize"),JLabel.LEFT);
 
                 fontsize=new JComboBox();
 		for(int j=1;j<=50;j++) {
@@ -228,7 +231,7 @@ public class WhiteBoardPanel extends JPanel implements ActionListener, MouseList
 
                 texttool.add(fontsize);
 		texttool.addSeparator();
-                JLabel style = new JLabel("Font-Style",JLabel.LEFT);
+                JLabel style = new JLabel(Language.getController().getLangValue("WhiteBoardPanel.FontStyle"),JLabel.LEFT);
 
                 f_Name=new JComboBox();
 		f_Name.addItem("Style");
@@ -261,7 +264,7 @@ public class WhiteBoardPanel extends JPanel implements ActionListener, MouseList
 	 	if(cmd.equals("Share-Screen")) {
                         HandRaiseAction.getController().actionONRequest("Share-Screen");
 			desk_share.setText("Stop Screen Share");
-			desk_share.setToolTipText("Stop desktop screen sharing");
+			desk_share.setToolTipText(Language.getController().getLangValue("WhiteBoardPanel.StopDesktopSharing"));
 			desk_share.setIcon(new ImageIcon(clr.getResource("resources/images/user/allowscreen.jpeg")));
 			desk_share.setActionCommand("Stop-Share-Screen");
                 }
@@ -270,7 +273,7 @@ public class WhiteBoardPanel extends JPanel implements ActionListener, MouseList
                         HandRaiseAction.getController().actionONRequest("Instructor_Stop_Allow");
                         desk_share.setText("Screen Share");
 			desk_share.setIcon(new ImageIcon(clr.getResource("resources/images/user/getscreen.jpeg")));
-			desk_share.setToolTipText("start desktop screen sharing");
+			desk_share.setToolTipText(Language.getController().getLangValue("WhiteBoardPanel.StartDesktopSharing"));
                         desk_share.setActionCommand("Share-Screen");
 
 		}
@@ -278,7 +281,7 @@ public class WhiteBoardPanel extends JPanel implements ActionListener, MouseList
 		if(cmd.equals("Instructor_Allow-PPT")) {
                         HandRaiseAction.getController().actionONRequest("Instructor_Allow-PPT");
                         desk_ppt.setText("Stop PPT Share");
-                        desk_ppt.setToolTipText("Stop PPT sharing");
+                        desk_ppt.setToolTipText(Language.getController().getLangValue("WhiteBoardPanel.StopPPTSharing"));
                         desk_ppt.setIcon(new ImageIcon(clr.getResource("resources/images/user/allowscreen.jpeg")));
                         desk_ppt.setActionCommand("Stop-Allow-PPT");
                 }
@@ -287,7 +290,7 @@ public class WhiteBoardPanel extends JPanel implements ActionListener, MouseList
                         HandRaiseAction.getController().actionONRequest("Instructor_Stop_Allow");//available");
                         desk_ppt.setText("PPT Share");
                         desk_ppt.setIcon(new ImageIcon(clr.getResource("resources/images/user/getscreen.jpeg")));
-                        desk_ppt.setToolTipText("start desktop PPT sharing");
+                        desk_ppt.setToolTipText(Language.getController().getLangValue("WhiteBoardPanel.StartPPTSharing"));
                         desk_ppt.setActionCommand("Instructor_Allow-PPT");
                 }
 		

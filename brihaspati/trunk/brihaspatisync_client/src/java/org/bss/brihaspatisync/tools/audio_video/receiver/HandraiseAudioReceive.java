@@ -36,10 +36,12 @@ import javax.media.control.BufferControl;
 import org.bss.brihaspatisync.gui.MainWindow;
 import org.bss.brihaspatisync.util.ClientObject;
 import org.bss.brihaspatisync.util.RuntimeDataObject;
+import org.bss.brihaspatisync.util.Language;
 
 /**
  * @author <a href="mailto:ashish.knp@gmail.com">Ashish Yadav </a>      
  * @author <a href="mailto:arvindjss17@gmail.com">Arvind Pal </a>
+ * @author <a href="mailto:shikhashuklaa@gmail.com">Shikha Shukla </a>Modify for multilingual implementation. 
  */
 
 
@@ -122,14 +124,14 @@ public class HandraiseAudioReceive implements ReceiveStreamListener, SessionList
 
 		if (!dataReceived) {
 	    		System.out.println("No handraise RTP data was received.");
-            		JOptionPane.showMessageDialog(null,"Sorry You do not get the handraise unicast Audio");
+            		JOptionPane.showMessageDialog(null,Language.getController().getLangValue("AudioReceive.MessageDialog1"));
             
            		/**If data does not receive then transmitAudio button become disabled */
            		close();
 	    		return false;
 		}
 
-        	JOptionPane.showMessageDialog(null,"You get the Handraised unicast Audio");
+        	JOptionPane.showMessageDialog(null,Language.getController().getLangValue("AudioReceive.MessageDialog2"));
         	return true;
     	}
 		
