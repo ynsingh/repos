@@ -214,7 +214,7 @@ public class ForgotPassword extends VelocitySecureAction
 						msgRegard = MailNotification.replaceServerPort(msgRegard, serverName, serverPort);
 						msgBrihAdmin=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgBrihAdmin");
 						String subject = MailNotification.subjectFormate(info_new, "", pr );
-						String message = MailNotification.getMessage(info_new, "", "", "", password, pr);
+						String message = MailNotification.getMessage(info_new, "", "", "", password, serverName, Integer.toString(srvrPort), pr);
 						//ErrorDumpUtil.ErrorLog("\n\n\nsubject="+subject+"\n messageFormat="+message+"\nmsgRegard   "+msgRegard);
 						//msg1=MailNotification.sendMail(message, mailId, subject, "", LangFile); 
 						msg1=MailNotificationThread.getController().set_Message(message, "", msgRegard, msgBrihAdmin, mailId, subject, "", LangFile, ""); 

@@ -325,7 +325,7 @@ public class UploadMarksAction extends SecureAction_Instructor
                                 	}
 	                                Properties pr =MailNotification.uploadingPropertiesFile(TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties"));
 	                                String subject = MailNotification.subjectFormate(info_new, "", pr );
-	                                String message = MailNotification.getMessage(info_new, courseHome, "", "", "", pr);
+	                                String message = MailNotification.getMessage(info_new, courseHome, "", "", "", serverName, serverPort, pr);
 					String msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
 	                                msgRegard = MailNotification.replaceServerPort(msgRegard, serverName, serverPort);
 	                                //ErrorDumpUtil.ErrorLog("\n\n\n\n Upload marks.java message="+message+"      subject="+subject);

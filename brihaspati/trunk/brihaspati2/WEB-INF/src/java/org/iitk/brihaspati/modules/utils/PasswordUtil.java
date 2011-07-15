@@ -155,7 +155,7 @@ public class PasswordUtil{
 	                        {
 					// Shaista did Modification for mail Sending 
 					String info_new = "", info_Opt="", msgRegard="", msgBrihAdmin="";
-        	                        if(serverPort == "8080"){
+        	                        if(PasswordUtil.serverPort == "8080"){
 						info_new = "newPassword";
 						 info_Opt = "newUser";
 					}
@@ -169,7 +169,7 @@ public class PasswordUtil{
                                         msgBrihAdmin=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgBrihAdmin");
                                         String subject = MailNotification.subjectFormate(info_new, "", pr );
 					//String messageFormat = MailNotification.getMessage(info_new, "", "", "", newPassword, PasswordUtil.serverName, PasswordUtil.serverPort,pr);
-					String messageFormat = MailNotification.getMessage(info_new, "", "", "", newPassword, pr);
+					String messageFormat = MailNotification.getMessage(info_new, "", "", "", newPassword,PasswordUtil.serverName, PasswordUtil.serverPort, pr);
 					//ErrorDumpUtil.ErrorLog("\n\n\nsubject="+subject+"\n messageFormat="+messageFormat+"\nmsgRegard	"+msgRegard);
 					msg1= MailNotificationThread.getController().set_Message(messageFormat, "", msgRegard, msgBrihAdmin, mailId, subject, "", file, "");
 					//MailNotification.sendMail(messageFormat, mailId, subject, "", file);
