@@ -208,7 +208,9 @@ public  class openidResponse extends VelocityAction{
                         
 				LoginUtils.CheckSession(emal);		
 				Date date=new Date();
-		                lang=LoginUtils.SetUserData(emal, password, flag, lang, data);
+		//                lang=LoginUtils.SetUserData(emal, password, flag, lang, data);
+				ModifyTUTable mtut=new ModifyTUTable();
+		                mtut.doPerform(data,context);
                 		context.put("lang",lang);
 		ErrorDumpUtil.ErrorLog("I am in open id responce ande part set user data");
                                 LoginUtils.UpdateUsageData(uid);
