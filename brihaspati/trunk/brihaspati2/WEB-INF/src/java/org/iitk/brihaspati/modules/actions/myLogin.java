@@ -67,7 +67,6 @@ import org.iitk.brihaspati.modules.utils.CommonUtility;
 import org.iitk.brihaspati.modules.utils.EncryptionUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.LoginUtils;
-import org.iitk.brihaspati.modules.dbutil.dbLoginUtils;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.apache.turbine.services.session.TurbineSession;
 import org.apache.turbine.services.session.TurbineSessionService;
@@ -115,6 +114,10 @@ public class myLogin extends VelocityAction{
 		String username = data.getParameters().getString("username", "" );
 		if(StringUtil.checkString(username) != -1) username="";
 		String password = data.getParameters().getString("password", "" );
+		if (password.equals(" ")){
+			data.setScreenTemplate("BrihaspatiLogin.vm");
+		}
+		else{
 		User user=null;
 			/** 
 			 *  Get the session if exist then remove and create new session
@@ -362,5 +365,6 @@ public class myLogin extends VelocityAction{
           //  CommonUtility.grpLeader();
         //----------------code for the groupmanagement--------//
 
-       }
+       }//end else of password check
+}
 }
