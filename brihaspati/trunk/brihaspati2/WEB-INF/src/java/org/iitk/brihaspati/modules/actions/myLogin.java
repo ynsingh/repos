@@ -67,6 +67,7 @@ import org.iitk.brihaspati.modules.utils.CommonUtility;
 import org.iitk.brihaspati.modules.utils.EncryptionUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.LoginUtils;
+import org.iitk.brihaspati.modules.dbutil.dbLoginUtils;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;
 import org.apache.turbine.services.session.TurbineSession;
 import org.apache.turbine.services.session.TurbineSessionService;
@@ -158,7 +159,11 @@ public class myLogin extends VelocityAction{
 
 		log.info("this message would go to any facility configured to use the " + this.getClass().getName() + " Facility");//
 		Date date=new Date();
-		lang=LoginUtils.SetUserData(username, password, flag, lang, data);
+		//lang=LoginUtils.SetUserData(username, password, flag, lang, data);
+		//ErrorDumpUtil.ErrorLog("lang at line 163==="+lang);
+		//LoginUtils.SetUserData(data,context);
+		ModifyTUTable mtut=new ModifyTUTable();
+		mtut.doPerform(data,context);
 		context.put("lang",lang);
 		ErrorDumpUtil.ErrorLog("After setting User data");
 /*

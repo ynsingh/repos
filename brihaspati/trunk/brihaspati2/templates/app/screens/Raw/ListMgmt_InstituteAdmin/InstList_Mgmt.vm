@@ -169,7 +169,7 @@ $!data.getMessage()
          <u><font color="white">$brih_nxt</font></u> &nbsp;
          <u><font color="white">$brih_last</font></u> &nbsp;
           #else
-	 <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathinfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_first</a> &nbsp;
+	 <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_first</a> &nbsp;
 	<a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_pre</a> &nbsp;
      <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_nxt</a> &nbsp;
      <a href=$link.setPage("call,ListMgmt_InstituteAdmin,InstList_Mgmt.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("listcourse",$listcourse).addPathInfo("count",$tdcolor) style=text-decoration:none>$brih_last</a> &nbsp;
