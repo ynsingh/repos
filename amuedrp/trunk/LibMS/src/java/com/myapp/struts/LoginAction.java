@@ -9,7 +9,6 @@ import com.myapp.struts.systemsetupDAO.MemberCategoryDAO;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import java.sql.*;
 import java.util.*;
 import javax.servlet.http.*;
 import  com.myapp.struts.utility.PasswordEncruptionUtility;
@@ -25,11 +24,11 @@ public class LoginAction extends org.apache.struts.action.Action {
     String login_id;
     String username;
     String password;
-    Connection con;
+   
   
 
     List ls1,ls2,ls3,ls4;
-    PreparedStatement stmt;
+   
     String staff_id;
     String library_id;
     String button;
@@ -77,12 +76,7 @@ List list1,list2;
             password=PasswordEncruptionUtility.password_encrupt(password);
 
 
-            con=MyConnection.getMyConnection();
-            if(con==null)
-            {
-             request.setAttribute("msg1","Database Connectivity is Closed");
-             return mapping.findForward("failure");
-            }
+        
 
 
 
@@ -270,8 +264,7 @@ String sublib_id=tempobj.getSublibraryId();
             {
 
             /* Check Weather the Question is Assigned for the User or Not */
-               // stmt=con.prepareStatement("select * from login where login_id=? and question is not null");
-               /// stmt.setString(1, login_id);
+              
                Login obj=LoginDAO.searchForgetPassword(login_id);
                 if(obj!=null)
                 {

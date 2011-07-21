@@ -13,7 +13,6 @@ import org.apache.struts.action.ActionMapping;
 import java.util.List;
 import com.myapp.struts.hbm.SubLibrary;
 import  com.myapp.struts.AdminDAO.*;
-import com.myapp.struts.MyConnection;
 import com.myapp.struts.opacDAO.OpacSearchDAO;
 import com.myapp.struts.systemsetupDAO.*;
 import java.sql.Connection;
@@ -26,7 +25,7 @@ public class OpacLibResultSetAction extends org.apache.struts.action.Action {
     
     /* forward name="success" path="" */
     private static final String SUCCESS = "success";
-    Connection con1;
+   // Connection con1;
     
     @Override
     public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -40,13 +39,7 @@ public class OpacLibResultSetAction extends org.apache.struts.action.Action {
         String formname="";
         String lib_id = (String)session.getAttribute("library_id");
 
- con1= MyConnection.getMyConnection();
 
-            if(con1==null)
-             {
-                request.setAttribute("msg","Database Connectivity is Closed");
-                return mapping.findForward("failure");
-             }
 
 
         formname = request.getParameter("name");
