@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Mar 10, 2011 10:00:02 AM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.StaffDetail" table="staff_detail" catalog="ems">
+    <class name="com.myapp.struts.hbm.StaffDetail" table="staff_detail">
         <composite-id name="id" class="com.myapp.struts.hbm.StaffDetailId">
             <key-property name="staffId" type="string">
                 <column name="staff_id" length="100" />

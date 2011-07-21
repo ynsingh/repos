@@ -25,7 +25,7 @@ public class LoginAction extends org.apache.struts.action.Action {
     String user_id;
     String username;
     String password;
-    Connection con;
+   
     List rst, rst1, rst2, rst3, rst4, rst5, rst6;
     PreparedStatement stmt;
     String staff_id;
@@ -118,12 +118,7 @@ session.setAttribute("staff_id", user_id);
 
         System.out.println(user_id+"....."+password+"......"+button+"......");
 
-con=MyConnection.getMyConnection();
-            if(con==null)
-            {
-             request.setAttribute("msg1","Database Connectivity is Closed");
-             return mapping.findForward("failure");
-            }
+
 
 
         if (button.equals("Log In")) {

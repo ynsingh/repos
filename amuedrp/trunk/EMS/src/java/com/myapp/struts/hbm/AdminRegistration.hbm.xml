@@ -3,7 +3,7 @@
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated Mar 10, 2011 10:00:02 AM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="com.myapp.struts.hbm.AdminRegistration" table="admin_registration" catalog="ems">
+    <class name="com.myapp.struts.hbm.AdminRegistration" table="admin_registration">
         <id name="registrationId" type="int">
             <column name="registration_id" />
             <generator class="assigned" />
