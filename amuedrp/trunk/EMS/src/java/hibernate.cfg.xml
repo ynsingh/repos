@@ -5,8 +5,8 @@
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
     <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/emsiitk</property>
-    <property name="hibernate.connection.username">emsamu</property>
-    <property name="hibernate.connection.password">amuems</property>
+    <property name="hibernate.connection.username">xxxxx</property>
+    <property name="hibernate.connection.password">xxxxxx</property>
 <!-- <property name="hibernate.connection.datasource">java:comp/env/jdbc/Testems</property> -->
     <mapping resource="com/myapp/struts/hbm/Login.hbm.xml"/>
     <mapping resource="com/myapp/struts/hbm/AdminRegistration.hbm.xml"/>
