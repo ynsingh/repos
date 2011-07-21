@@ -5,8 +5,8 @@
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
     <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/libms</property>
-    <property name="hibernate.connection.username">libms</property>
-    <property name="hibernate.connection.password">amulibms</property>
+    <property name="hibernate.connection.username">xxxx</property>
+    <property name="hibernate.connection.password">xxxxxxx</property>
 <!--   <property name="hibernate.connection.datasource">java:comp/env/jdbc/TestDB</property>  -->
     <property name="current_session_context_class">thread</property>
     <property name="hibernate.show_sql">true</property>
