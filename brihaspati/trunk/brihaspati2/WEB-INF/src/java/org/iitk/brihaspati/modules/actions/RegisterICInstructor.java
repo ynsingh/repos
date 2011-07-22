@@ -115,14 +115,14 @@ public class RegisterICInstructor extends SecureAction_Institute_Admin
 	 			//String msg=CourseManagement.CreateCourse(gname,cname,dept,description,uname,passwd,fname,lname,email,serverName,serverPort,LangFile,instituteId);
 	 			boolean check=QuotaUtil.CompareAllotedQuota(instId);
 				ErrorDumpUtil.ErrorLog("check at line 116 in registration action==========="+check);
-				if(check){
+				//if(check){
 	 			String msg=CourseManagement.CreateCourse(gname,cname,dept,description,email,passwd,fname,lname,email,serverName,serverPort,LangFile,instituteId,instName); //modified by Shikha                   
 		 		data.setMessage(msg);
-				}
+				/*}
 				else{
 					data.setMessage(MultilingualUtil.ConvertedString("qmgmt_msg7",LangFile));
 					//data.setMessage("For Register new Course ,the Space is not enough,so contact to Sysadmin");
-				}
+				}*/
 		}
 		catch(Exception e)
 		{
