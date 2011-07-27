@@ -21,7 +21,7 @@
 	{
 		a=document.getElementsByName("nrec");
 		b=document.getElementById("proj");
-		window.location.href="viewProjTeam.do?key="+a[0].value+"&key1="+b.value;
+		window.location.href="forwardPmsPage.do?parameter=viewProjTeam&key="+a[0].value+"&key1="+b.value;
 	}
 	function deleteUser()
 	{
@@ -74,7 +74,7 @@
 	
 	 <logic:notEmpty name="projectTeam" property="list">
 	 
- <display:table name="projectTeam.list" id="row" defaultsort="1" export="false" pagesize="<%=Integer.parseInt(key) %>" requestURI="/viewProjTeam.do" decorator="in.ac.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >
+ <display:table name="projectTeam.list" id="row" defaultsort="1" export="false" pagesize="<%=Integer.parseInt(key) %>" requestURI="/forwardPmsPage.do?parameter=viewProjTeam" decorator="in.ac.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >
 		<display:column property="userid" group="1" title="User ID" sortable="true" />
 		<display:column property="portalname" title="Permitted By" sortable="true" />
 		<display:column property="orgname" title="Project" sortable="true" />

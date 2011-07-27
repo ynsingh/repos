@@ -1,4 +1,5 @@
 <%@ page language="java" pageEncoding="ISO-8859-1"%>
+<%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -24,5 +25,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <body><div align="center">
     <strong><font size="5" color="#0000ff">Welcome To Project Management System.</font></strong> <br> 
-  </div></body>
+  </div>
+  
+  <div align="center">
+	   <html:errors property="urlFindFail"/>
+   </div>
+  </body>
 </html>

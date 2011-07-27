@@ -48,7 +48,7 @@
         </html:select>
 			<html:errors property="nrec"/>
 			<div align="right">
-	<html:link action="newrole"><bean:message key="label.newRole"/><img border="0" title="Edit" src="img/user1_add.png" width="15" "height="15" ></html:link>
+	<html:link page="/forwardPmsPage.do?parameter=newRole"><bean:message key="label.newRole"/><img border="0" title="Edit" src="img/user1_add.png" width="15" "height="15" ></html:link>
 			</div>
 	</div>
   

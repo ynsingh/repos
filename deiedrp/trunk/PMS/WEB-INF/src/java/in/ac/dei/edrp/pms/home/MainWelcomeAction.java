@@ -39,6 +39,7 @@ public class MainWelcomeAction extends Action {
 		String forwardString="invalid";
 		HttpSession session=request.getSession();
 		try{
+			
 		if((String)session.getAttribute("mysession")!=null)
 		{
 			session.setAttribute("portalname", portalnameform.getPortalname());
@@ -54,7 +55,10 @@ public class MainWelcomeAction extends Action {
 			}
 			session.setAttribute("roleid", roleid);
 			session.setAttribute("myquery",request.getRequestURL()+"?"+request.getQueryString());
-			forwardString="showWelcome";
+			if(((String)session.getAttribute("authority")).equalsIgnoreCase("User"))//the authority is user or super admin
+			{
+				forwardString="showWelcome";
+			}
 		}
 		
 	}

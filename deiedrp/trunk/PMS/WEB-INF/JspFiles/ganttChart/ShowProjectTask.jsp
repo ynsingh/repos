@@ -67,7 +67,7 @@
         </html:select>
 			<html:errors property="nrec"/>
 	<div align="right">
-		<html:link action="newtask"><bean:message key="label.newTask"/><img border="0" title="Add new task" src="img/user1_add.png" width="15" "height="15" ></html:link>
+		<html:link page="/forwardPmsPage.do?parameter=newTask"><bean:message key="label.newTask"/><img border="0" title="Add new task" src="img/user1_add.png" width="15" "height="15" ></html:link>
 	</div>
  </div>
     <logic:empty name="taskList" property="list"><br><font color="#0000ff" size="2">

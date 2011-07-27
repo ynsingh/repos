@@ -49,7 +49,7 @@ jQuery(function() {
 </script>
 
 </head>
-<body onload="hide();"> 
+<body onload="show();"> 
 
 <div style="padding-top: 8px;padding-left: 50px;width: 90%;">
 	<div id="accordion">

@@ -193,7 +193,7 @@ jQuery('a.close, #fade').live('click', function() { //When clicking on the close
         </html:select>
 			<html:errors property="nrec"/>
 			<div id="button">
-				<html:link action="newproject"><bean:message key="label.newProject"/><img border="0" title="Add new project" src="img/user1_add.png" width="15" "height="15" ></html:link>
+				<html:link page="/forwardPmsPage.do?parameter=addProject"><bean:message key="label.newProject"/><img border="0" title="Add new project" src="img/user1_add.png" width="15" "height="15" ></html:link>
 			</div>
 	</div>
    <logic:notEmpty name="projectList" property="list">
@@ -238,7 +238,7 @@ jQuery('a.close, #fade').live('click', function() { //When clicking on the close
 		<display:column media="html" title="Project Team">
 		<logic:equal name="row" property="enable" value="0">
 		
-		<html:link href="viewProjTeam.do" paramProperty="project_code" paramId="key1" paramName="row">
+		<html:link href="forwardPmsPage.do?parameter=viewProjTeam" paramProperty="project_code" paramId="key1" paramName="row">
 		<img border="0" title="View project team" src="img/user1_add.png" width="20"  height="10" >
 		  </html:link>
 		  		<logic:equal name="row" property="teamCreation" value="Allow">

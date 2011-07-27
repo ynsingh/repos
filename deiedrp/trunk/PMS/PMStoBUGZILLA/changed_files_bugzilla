@@ -1,0 +1,16 @@
+
+
+Location of Changed files of Bugzilla
+
+   1. Login-small.html.tmpl
+      Path: Installed location of bugzilla >bugzilla >template >en > default > account > auth
+   2. Common-links.html.tmpl
+      Path : Installed location of bugzilla >bugzilla >template >en > default > global
+   3. Userdata.html.tmpl
+      Path : Installed location of bugzilla >bugzilla >template >en > default > admin > users
+   4. Constants.pm
+      Path : Installed location of bugzilla >bugzilla >Bugzilla
+   5. Editusers.cgi
+      Path :  Installed location of bugzilla >bugzilla
+   6. Global.js
+      Path : Installed location of bugzilla >bugzilla >js 

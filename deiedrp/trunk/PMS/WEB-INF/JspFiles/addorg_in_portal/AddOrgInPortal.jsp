@@ -125,7 +125,7 @@ jQuery(function() {
 			<tr></tr><tr></tr><tr></tr>		  
 			<tr><td>
 			<input type="submit" value='<bean:message key="label.done.button" />' class="butStnd"/>
-			<input type="reset" value='<bean:message key="label.reset.button" />' class="butStnd" onclick="location.href='addorg_in_portal.do'"/>
+			<input type="reset" value='<bean:message key="label.reset.button" />' class="butStnd" onclick="location.href='forwardPmsPage.do?parameter=addOrgPortal'"/>
 			<input type="button" value='<bean:message key="label.cancel.button" />' class="butStnd" onclick="location.href='welcome.do'" />
             </td></tr>
 			</table>

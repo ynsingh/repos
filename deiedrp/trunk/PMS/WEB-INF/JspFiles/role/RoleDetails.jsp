@@ -53,19 +53,19 @@ jQuery(function() {
 		<logic:iterate name="roleDetail" property="list" id="var">
 		<logic:equal name="var" property="roleauthority" value="add_role">
 		<tr class="form-element"><td>
-		<html:link href="newrole.do" paramProperty="rolename" paramId="id" paramName="var" styleClass="B">
+		<html:link page="/forwardPmsPage.do?parameter=newRole" paramProperty="rolename" paramId="id" paramName="var" styleClass="B">
 		<bean:message key="label.authorities.addRole"/></html:link></td>
 		<td class="hilite">: <bean:message key="detail.addRole"/></td>
 		</tr></logic:equal>
 		<logic:equal name="var" property="roleauthority" value="edit_remove_role">
 		<tr class="form-element"><td>
-		<html:link href="viewrole.do" paramProperty="rolename" paramId="id" paramName="var" styleClass="B">
+		<html:link page="/forwardPmsPage.do?parameter=viewRole" paramProperty="rolename" paramId="id" paramName="var" styleClass="B">
 		<bean:message key="label.authorities.editRole"/></html:link></td>
 		  <td class="hilite">: <bean:message key="detail.editRole"/></td>
 		  </tr></logic:equal>
 		<logic:equal name="var" property="roleauthority" value="add_project">
 		<tr class="form-element"><td>
-		<html:link href="newproject.do" paramProperty="rolename" paramId="id" paramName="var" styleClass="B">
+		<html:link page="/forwardPmsPage.do?parameter=addProject" paramProperty="rolename" paramId="id" paramName="var" styleClass="B">
 		<bean:message key="label.authorities.addProject"/></html:link></td><td>: <bean:message key="detail.addProject"/></td>
 		  </tr></logic:equal>
 		<logic:equal name="var" property="roleauthority" value="edit_disable_project">
@@ -80,12 +80,12 @@ jQuery(function() {
 		 </tr></logic:equal>
 		<logic:equal name="var" property="roleauthority" value="add_member">
 		<tr class="form-element"><td>
-		<html:link href="addmember.do" paramProperty="rolename" paramId="id" paramName="var" styleClass="B">
+		<html:link page="/forwardPmsPage.do?parameter=addMember" paramProperty="rolename" paramId="id" paramName="var" styleClass="B">
 		<bean:message key="label.authorities.addMember"/></html:link></td><td>: <bean:message key="detail.addMember"/></td>
 		  </tr></logic:equal>
 		<logic:equal name="var" property="roleauthority" value="edit_remove_member">
 		<tr class="form-element"><td>
-		<html:link href="viewmember.do" paramProperty="rolename" paramId="id" paramName="var" styleClass="B">
+		<html:link page="/forwardPmsPage.do?parameter=viewMember" paramProperty="rolename" paramId="id" paramName="var" styleClass="B">
 		<bean:message key="label.authorities.editMember"/></html:link></td><td>: <bean:message key="detail.editMember"/></td>
 		  </tr></logic:equal>
 		
@@ -96,7 +96,7 @@ jQuery(function() {
 		  </tr></logic:equal>
 		<logic:equal name="var" property="roleauthority" value="assign_task">
 		 <tr class="form-element"><td>
-		<html:link href="newtask.do" paramProperty="rolename" paramId="id" paramName="var" styleClass="B">
+		<html:link page="/forwardPmsPage.do?parameter=newTask" paramProperty="rolename" paramId="id" paramName="var" styleClass="B">
 		<bean:message key="label.authorities.creatingTask"/> </html:link></td><td>: <bean:message key="detail.creatingTask"/></td>
 		</tr></logic:equal>
 		<logic:equal name="var" property="roleauthority" value="edit_remove_task">

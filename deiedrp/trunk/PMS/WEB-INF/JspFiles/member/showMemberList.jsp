@@ -22,7 +22,8 @@
 	{
 		a=document.getElementsByName("nrec");
 		b=document.getElementsByName("nrec1");
-		window.location.href="viewmember.do?key="+a[0].value+"&key1="+b[0].value;
+		
+		window.location.href="forwardPmsPage.do?parameter=viewMember&key="+a[0].value+"&key1="+b[0].value;
 	}
 	function deleteUser()
 	{
@@ -76,12 +77,12 @@
 	if(key1.equalsIgnoreCase("Active"))
 	{
 	 %>
-	 <html:link action="addorg_in_portal"><bean:message key="label.newMember"/><img border="0" title="Edit" src="img/user1_add.png" width="15" "height="15" ></html:link>
+	 <html:link page="/forwardPmsPage.do?parameter=addOrgPortal"><bean:message key="label.newMember"/><img border="0" title="Edit" src="img/user1_add.png" width="15" "height="15" ></html:link>
 	 <%}
 	 else
 	 {
 	  %>
-	 <html:link action="addmember"><bean:message key="label.newMember"/><img border="0" title="Edit" src="img/user1_add.png" width="15" "height="15" ></html:link> 
+	 <html:link page="/forwardPmsPage.do?parameter=addMember"><bean:message key="label.newMember"/><img border="0" title="Edit" src="img/user1_add.png" width="15" "height="15" ></html:link> 
 	 <%} %>
 	 </div>
 	</div>
@@ -92,7 +93,7 @@
 	new PmsDecorator().setUser("");
 	%>
  
- <display:table name="memberList.list" id="row" defaultsort="1" export="false" pagesize="<%=Integer.parseInt(key) %>" requestURI="/viewmember.do" decorator="in.ac.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >
+ <display:table name="memberList.list" id="row" defaultsort="1" export="false" pagesize="<%=Integer.parseInt(key) %>" requestURI="/forwardPmsPage.do?parameter=viewMember" decorator="in.ac.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >
 				   
 		<display:column property="userid" group="1" title="User ID" sortable="true" />
 		<display:column property="portalname" title="Portal Name" sortable="true" />
@@ -108,20 +109,20 @@
     else if(key1.equalsIgnoreCase("InActive"))
     {
      %>
-<display:table name="memberList.list" id="row" defaultsort="1" export="false" pagesize="<%=Integer.parseInt(key) %>" requestURI="/viewmember.do" decorator="in.ac.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >
+<display:table name="memberList.list" id="row" defaultsort="1" export="false" pagesize="<%=Integer.parseInt(key) %>" requestURI="/forwardPmsPage.do?parameter=viewMember" decorator="in.ac.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >
 				   
 		<display:column property="userIdLink" group="1" title="User ID" sortable="true" />
 		<display:column property="portalname" title="First Name" sortable="true" />
 		<display:column property="orgname" title="Last Name" sortable="true" />
 		<display:column property="rolename" title="Skills" sortable="true" />
-		<display:column property="valid_key" title="Experince (in years)" sortable="true" />
+		<display:column property="valid_key" title="Experience (in years)" sortable="true" />
 		<display:column property="inActiveMemberLink" media="html" title="Actions"/>
 </display:table>
 <%}
 else 
     {
      %>
-<display:table name="memberList.list" id="row" defaultsort="1" export="false" pagesize="<%=Integer.parseInt(key) %>" requestURI="/viewmember.do" decorator="in.ac.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >
+<display:table name="memberList.list" id="row" defaultsort="1" export="false" pagesize="<%=Integer.parseInt(key) %>" requestURI="/forwardPmsPage.do?parameter=viewMember" decorator="in.ac.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >
 				   
 		<display:column property="userIdLink" group="1" title="User ID" sortable="true" />
 		<display:column property="portalname" title="First Name" sortable="true" />

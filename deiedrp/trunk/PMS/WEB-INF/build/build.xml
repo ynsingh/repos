@@ -115,7 +115,7 @@
       		<classpath refid="classpath"/>
 	</sql>
 	<echo message="============================================="/>
-	<echo message="The admin name is superadmin and password is superadmin"/>
+	<echo message="The admin name is superadmin@gmail.com and password is superadmin"/>
 	<echo message="so please change it for security reasons."    />
 	<echo message="============================================="/>
 

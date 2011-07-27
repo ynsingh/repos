@@ -25,12 +25,18 @@
 	 <!-- for jquery -->
     jQuery.noConflict();
  	jQuery(document).ready(function(){
- 		//for accordation
+ 		//for progress bar
+ 		jQuery("#task_percentage_completion").change(function() {  
+        jQuery("#progressbar").progressbar({ value: Number(document.getElementById('task_percentage_completion').value) });  
+       	});
+
+//for accordation
  	jQuery(function() {
 		jQuery("#accordion").accordion({ collapsible: true,
 		header: 'h3',
 		fillSpace: false
 		});
+		jQuery("#progressbar").progressbar({ value: Number(document.getElementById('task_percentage_completion').value) });
 	});
 	//for datapicker
 	jQuery('#actualEndDate').datepick({ 
@@ -55,10 +61,12 @@
         jQuery('#actualStartDate').datepick('option', 'maxDate', dates[0] || null); 
     } 
 	}
+	
+	
 });
  </script>
   <script language="JavaScript" type="text/javascript">
-    
+   
   	function taskGenerate() {
   
    	var taskName = DWRUtil.getValue("taskName");
@@ -171,10 +179,13 @@
 			<bean:message key="label.taskCompleted"/> : 
 			</td>
 		<td class="form-widget">
-			<html:text property="task_percentage_completion" size="5" value="<%=crs_task.getString(10)%>"/><strong><font color="#0000ff">%</font>
-			<font color="red" size="2">*</font></strong><html:errors property="task_percentage_completion"/>
+   			<div id="progressbar"></div>
+   			<input type="text" name="task_percentage_completion" id="task_percentage_completion"
+			 size="5" value="<%=crs_task.getString(10)%>"/><strong><font color="#0000ff">%</font></strong>
+			<font color="red" size="2">*</font><html:errors property="task_percentage_completion"/>
+			
 			</td>
-			<td  class="form-label">
+			<td class="form-label">
 			<bean:message key="label.status"/> :
 			</td>
 			<td class="form-widget">

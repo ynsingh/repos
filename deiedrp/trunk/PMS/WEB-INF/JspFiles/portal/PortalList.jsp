@@ -47,7 +47,7 @@
         </html:select>
 			<html:errors property="nrec"/>
 	<div align="right">
-			<html:link action="newportal"><bean:message key="link.newPortal"/><img border="0" title="Edit" src="img/user1_add.png" width="15" "height="15" ></html:link>
+			<html:link page="/forwardPmsPage.do?parameter=newPortal"><bean:message key="link.newPortal"/><img border="0" title="Edit" src="img/user1_add.png" width="15" "height="15" ></html:link>
 	</div>
 	</div>
   

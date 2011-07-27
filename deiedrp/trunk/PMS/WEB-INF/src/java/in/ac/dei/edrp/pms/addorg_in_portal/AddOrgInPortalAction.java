@@ -55,6 +55,8 @@ public class AddOrgInPortalAction extends Action {
 		String pass1="Please use your old password.";
 		int x=0;
 		String permitted_By=null;
+		ActionErrors errors = new ActionErrors();
+		ActionMessage error=null;
 		try{
 			/*
 			 * This method Established the connection from the database MySql
@@ -79,7 +81,7 @@ public class AddOrgInPortalAction extends Action {
 		}
 
 		String orginportal=checkRecord.twoFieldDuplicacyChecker("valid_org_inportal","org_into_portal","org_id",org_id,"portal_id",portal_id);
-		request.setAttribute("message","This user already work in this portal and organisation on the same role.");
+		request.setAttribute("message","The insertion operation failed.");
 		if(checkRecord.twoFieldDuplicacyChecker("Valid_User_ID","user_in_org","valid_user_id",orgportalform.getEmailid().trim(),"Valid_OrgPortal",orginportal)==null)
 		{
 			System.out.println("user in user_in_org does not exist.");
@@ -102,15 +104,19 @@ public class AddOrgInPortalAction extends Action {
 		ps.setString(3,valid_code);
 		ps.executeUpdate();
 		}
+		String Valid_Key = checkRecord.twoFieldDuplicacyChecker("Valid_Key","user_in_org","valid_user_id",orgportalform.getEmailid().trim(),"Valid_OrgPortal",orginportal);
 		permitted_By=checkRecord.duplicacyChecker("login_user_id","login","authority","Super Admin");
+		if(checkRecord.twoFieldDuplicacyChecker("Valid_Key","user_role_in_org","Valid_Key",Valid_Key,"Valid_Role",role_id)==null)
+		{
+			System.out.println("user role in user_role_in_org does not exist.");
 		ps=con.prepareStatement("insert into user_role_in_org values(?,?,?,?,?)");
-		ps.setString(1,checkRecord.twoFieldDuplicacyChecker("Valid_Key","user_in_org","valid_user_id",orgportalform.getEmailid().trim(),"Valid_OrgPortal",orginportal));
+		ps.setString(1,Valid_Key);
 		ps.setInt(2,Integer.parseInt(role_id));
 		ps.setString(3,permitted_By);
 		ps.setString(4,"Default");//which authority default/member.
 		ps.setString(5,"Active");//status active/inactive.
 		x=ps.executeUpdate();
-
+		}
 		if(x>0) /*if x is greater than zero it means insertion operation is successful.*/
 		{
 			//update validatetab on 21june 2010
@@ -136,7 +142,7 @@ public class AddOrgInPortalAction extends Action {
 				String url="http://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath();
 				//System.out.println("url="+url);
 				Locale locale = new Locale("en", "US");
-				ResourceBundle message = ResourceBundle.getBundle("in\\ac\\dei\\edrp\\pms\\propertiesFile\\ApplicationResources",locale);
+				ResourceBundle message = ResourceBundle.getBundle("in//ac//dei//edrp//pms//propertiesFile//ApplicationResources",locale);
 				String s4=message.getString("body.text.mail") + " "+url+
 				"\n"+message.getString("label.user")+": "+orgportalform.getEmailid().trim()+
 				"\n"+message.getString("label.password")+": "+pass1+
@@ -145,8 +151,7 @@ public class AddOrgInPortalAction extends Action {
 				boolean bool=SendingMail.sendMail(s4,orgportalform.getEmailid().trim(),
 						message.getString("mail.subject.newmember.addedby.superadmin"),
 						ReadPropertiesFile.mailConfig(getServlet().getServletContext().getRealPath("/")+"WEB-INF/"));
-				ActionErrors errors = new ActionErrors();
-				ActionMessage error=null;
+				
 				if(bool)
 				{
 					error = new ActionMessage("msg.addorg_in_portal.mailSuccess");
@@ -160,7 +165,12 @@ public class AddOrgInPortalAction extends Action {
 				forwardmsg="addorginportalsuccess"; 
 				//System.out.println("body="+s4);
 			}
-			
+		else{
+			error = new ActionMessage("msg.addorg_in_portal.notadded");
+			errors.add("addOrgIntoPortalMessage",error);
+			saveErrors(request,errors);
+			forwardmsg="addorginportalsuccess"; 
+		}
 		//}//outer if
 		
 		}

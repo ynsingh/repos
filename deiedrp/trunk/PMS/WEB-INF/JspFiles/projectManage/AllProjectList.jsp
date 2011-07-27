@@ -154,7 +154,7 @@
 		
 		<display:column media="html" title="Project Team">
 		<logic:equal name="row" property="enable" value="0">
-		<html:link href="viewProjTeam.do" paramProperty="project_code" paramId="key1" paramName="row">
+		<html:link href="forwardPmsPage.do?parameter=viewProjTeam" paramProperty="project_code" paramId="key1" paramName="row">
 		<img border="0" title="View Team" src="img/users3.png" width="20"  height="10" >
 		  </html:link>
 		  </logic:equal>

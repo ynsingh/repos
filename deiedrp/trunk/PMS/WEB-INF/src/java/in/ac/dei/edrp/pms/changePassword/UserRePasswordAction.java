@@ -54,7 +54,7 @@ public class UserRePasswordAction extends Action {
 				if(x>0)
 				{
 					Locale locale = new Locale("en", "US");
-					ResourceBundle message = ResourceBundle.getBundle("in\\ac\\dei\\edrp\\pms\\propertiesFile\\ApplicationResources",locale);
+					ResourceBundle message = ResourceBundle.getBundle("in//ac//dei//edrp//pms//propertiesFile//ApplicationResources",locale);
 
 				String url="http://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath();
 				String s4=message.getString("body.text.mail.changePassword") + " "+url+

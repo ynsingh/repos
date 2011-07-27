@@ -53,7 +53,7 @@
 			<html:errors property="nrec"/>
 		<div align="right">
 		<c:if test="${sessionScope.authority=='Super Admin'}">
-	<html:link action="neworganization"><bean:message key="label.newOrganization"/><img border="0" title="Add New" src="img/user1_add.png" width="15" "height="15" ></html:link>
+	<html:link page="/forwardPmsPage.do?parameter=addOrganization"><bean:message key="label.newOrganization"/><img border="0" title="Add New" src="img/user1_add.png" width="15" "height="15" ></html:link>
 		</c:if>
 		</div>
 	</div>

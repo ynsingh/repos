@@ -145,7 +145,7 @@ CREATE TABLE `login` (
 
 /*!40000 ALTER TABLE `login` DISABLE KEYS */;
 INSERT INTO `login` (`login_user_id`,`authority`,`password`) VALUES 
- ('superadmin','Super Admin','889a3a791b3875cfae413574b53da4bb8a90d53e');
+ ('superadmin@gmail.com','Super Admin','889a3a791b3875cfae413574b53da4bb8a90d53e');
 /*!40000 ALTER TABLE `login` ENABLE KEYS */;
 
 
@@ -478,7 +478,7 @@ CREATE TABLE `user_info` (
 
 /*!40000 ALTER TABLE `user_info` DISABLE KEYS */;
 INSERT INTO `user_info` (`User_ID`,`First_Name`,`Last_Name`,`Phone_No`,`Skills`,`Experince`,`Secure_Qid`,`Secure_Ans`,`Created_On`,`Updated_On`) VALUES 
- ('superadmin',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2010-08-23','2010-08-23');
+ ('superadmin@gmail.com',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2010-08-23','2010-08-23');
 /*!40000 ALTER TABLE `user_info` ENABLE KEYS */;
 
 

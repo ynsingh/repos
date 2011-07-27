@@ -1,0 +1,106 @@
+#############################################################################
+Copyright © 2009-2011 DEI Agra.
+Created by: - Nupur Dixit
+Created on 14 May 2011
+#############################################################################
+
+Instructions for installing PMS for Windows operating system
+
+Step 1: Download jdk-1_5_0_05-windows-i586-p.exe for windows from 
+	http://java.sun.com. 
+	Install jdk.
+
+Step 2: download mysql from http://dev.mysql.com/downloads/
+	MySQL-shared-5.1.54.0
+	MySQl-server-5.1.54.0
+	MySQL-client-5.1.54.0
+	Install mysql.
+
+	Configure MYSQL
+  	 # mysql -u root mysql->GRANT ALL ON pms.* to pmsuser@127.0.0.1 
+	IDENTIFIED BY 'pmspasswd';
+	here 'pmsuser' is username for pms database and 'pmspasswd' is 
+	password for pms database.
+
+	These will be later entered in <build.properties> file in PMS system.
+
+Step 3: download apache tomcat from http://tomcat.apache.org/
+	apache-tomcat-6.0.20
+	install tomcat
+
+Step 4: Download apache-ant-1.6.1.zip
+	Unzip in c:
+Step 5: Configuration-
+	Set the environment variable in 'autoexec.bat' file.
+
+	SET PATH=%PATH%;C:\jdk-1.5.0_05\bin;C:\apache-ant-
+		1.6.1\bin;C:\mysql\bin\
+	SET JAVA-HOME=C:\jdk-1.5.0_05
+	SET ANT-HOME =C:\apache-ant-1.6.1
+
+Step 6: Installing PMS 
+i)	Go into the webapps folder of apache-tomcat and checkout the latest 
+ version of PMS from this location
+	(http://202.141.40.215/repos/deiedrp/trunk/PMS)
+ii) Go into conf folder of apache-tomcat and paste these bold lines into the    
+    context.xml file inside the
+    <Context>
+   //paste the lines here
+    </Context>
+
+<Context>
+<Resource name="jdbc/mydb" auth="Container" type="javax.sql.DataSource"
+maxActive="100" maxIdle="10" maxWait="10"
+username="pmsuser" password="pmspasswd" driverClassName="com.mysql.jdbc.Driver"
+url="jdbc:mysql://localhost/pms?autoReconnect=true"/>
+</Context>
+iii) Go into webapps\PMS\WEB-INF\build folder and modify these two lines of build.properties file
+
+databaseUser = pmsuser //user of pms database
+databasePassword = pmspasswd //password of pms database
+
+iv) Now go into webapps\PMS\WEB-INF\build directory and type the command 
+ # ant init 
+(if everything is ok then message comes as Build successful..)
+Now type
+# ant createadminaccount
+(If everything is ok then message comes as Build successfully…)
+
+v) Go into the bin directory of tomcat and execute this command for start the tomcat
+
+# ./startup.sh
+
+vi) Now open your browser and type this url into the address bar
+ 	http://localhost:8080/PMS
+  	Or 
+	http://IP address of your server: port number on which your tomcat is   
+  running/PMS
+
+Now login as super admin to start using pms.
+   userid = superadmin@gmail.com 
+   Password = superadmin (initial password), you can change this password after login.
+
+Note: mysql-connector.jar and jstl.jar should be inside lib folder of tomcat
+
+KNOWN PROBLEMS--
+
+1> When running ant init, if build failed and error shown is-
+	"Error:-Can't Connect to MySQL Server on 'localhost'(10061)"
+   Solution: - This problem comes when mysql server is not running.
+	       One of the solution of this problem is to start the mysql 
+	       Server using mysqld in c:\mysql\bin
+	       Alternatively you can start the mysqlserver by clicking
+	       'mysqladmin' exe file in the directory c:\mysql\bin 	  
+     
+2> When running ant init,if build failed and error shown is-
+	"Error:-Java.sql.SQLException: Invalid authorization specification: 
+	 Access denied for user: 'username'@ localhost (Using password yes)"
+   Solution:-This problem comes because of the gap between @ and localhost.
+	     For this kind of problems please check the build.properties file
+             If there is any space left between databaseUser and
+	     databasePasword variables. Remove that space from file. It will
+	     Work fine.
+
+	
+
+

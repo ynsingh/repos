@@ -18,11 +18,44 @@
 	
 	<definition name="page.pmsHelpPage" extends="base.definition">
 	<put name="title" value="PMS Help Page" />
-	<put name="body" value="/Help Document of PMS.htm" />
+	<!--  <put name="body" value="/Help Document of PMS.htm" />-->
+	<put name="body" value="/MyJsp.jsp" />
 	</definition>
 	
 	<!-- online help part ends -->
 	
+	<!-- Bugzilla configuration part starts -->
+	
+	<definition name="page.accountCreationPage" extends="base.definition">
+	<put name="title" value="Bugzilla Account creation" />
+	<put name="body" value="/WEB-INF/JspFiles/bugzilla/ActiveUserList.jsp" />
+	</definition>
+	
+	<definition name="page.loginPage" extends="base.definition">
+	<put name="title" value="Bugzilla Account creation" />
+	<put name="body" value="http://localhost:81/index.cgi?Bugzilla_login=${sessionScope.uid}&amp;Bugzilla_password=&amp;GoAheadAndLogIn=Log+in" />
+	</definition>
+	
+	<definition name="page.urlCreationPage" extends="base.definition">
+	<put name="title" value="Path to Bugzilla" />	
+	<put name="body" value="/WEB-INF/JspFiles/bugzilla/AddUrlToBugzilla.jsp" />
+	</definition>
+	
+	<definition name="page.setupReportBug" extends="base.definition">
+	<put name="title" value="Bugzilla Bug Setting" />
+	<put name="body" value="/WEB-INF/JspFiles/bugzilla/SetupBugReportPage.jsp" />
+	</definition>
+	
+	<definition name="page.addProjectToReportBug" extends="base.definition">
+	<put name="title" value="Add project to report bug" />
+	<put name="body" value="/WEB-INF/JspFiles/bugzilla/AddProjectToReportBug.jsp" />
+	</definition>
+	<definition name="page.addComponentToReportBug" extends="base.definition">
+	<put name="title" value="Add component to report bug" />
+	<put name="body" value="/WEB-INF/JspFiles/bugzilla/AddComponentToReportBug.jsp" />
+	</definition>
+	
+	<!-- Bugzilla configuration part ends -->
 	
 	<!-- mail configuration part starts -->
 	

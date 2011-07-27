@@ -43,7 +43,7 @@
 <td>
 <dl class="dropdown">
   <dt >
-   <html:link action="mailconfig" style="padding:0px;background-color:#336699;font-weight:bold;color:#ffffff;"><bean:message key="menu.mailConfiguration"/></html:link>
+   <html:link page="/forwardPmsPage.do?parameter=mailConfigPage" style="padding:0px;background-color:#336699;font-weight:bold;color:#ffffff;"><bean:message key="menu.mailConfiguration"/></html:link>
   </dt>
   </dl>
 </td>
@@ -52,7 +52,7 @@
   <dt id="two-ddheader" onmouseover="ddMenu('two',1)" onmouseout="ddMenu('two',-1)"><bean:message key="menu.portal"/></dt>
   <dd id="two-ddcontent" onmouseover="cancelHide('two')" onmouseout="ddMenu('two',-1)">
     <ul class="ss">
-      <li><html:link styleClass="underline" action="newportal"><bean:message key="submenu.portal.createPortal"/></html:link></li>
+      <li><html:link styleClass="underline" page="/forwardPmsPage.do?parameter=newPortal"><bean:message key="submenu.portal.createPortal"/></html:link></li>
       <li><html:link styleClass="underline" action="viewportal"><bean:message key="submenu.portal.viewPortal"/></html:link></li>
     </ul>
   </dd>
@@ -64,8 +64,8 @@
   <dt id="three-ddheader" onmouseover="ddMenu('three',1)" onmouseout="ddMenu('three',-1)"><bean:message key="menu.organization"/></dt>
   <dd id="three-ddcontent" onmouseover="cancelHide('three')" onmouseout="ddMenu('three',-1)">
     <ul class="ss">
-      <li><html:link styleClass="underline" action="neworganization"><bean:message key="submenu.organization.addOrganization"/></html:link></li>
-      <li><html:link styleClass="underline" action="vieworganization"><bean:message key="submenu.organization.viewOrganization"/></html:link></li>
+      <li><html:link styleClass="underline" page="/forwardPmsPage.do?parameter=addOrganization"><bean:message key="submenu.organization.addOrganization"/></html:link></li>
+      <li><html:link styleClass="underline" page="/forwardPmsPage.do?parameter=viewOrganization"><bean:message key="submenu.organization.viewOrganization"/></html:link></li>
       <li><html:link styleClass="underline" action="searchorganization"><bean:message key="submenu.organization.searchOrganization"/></html:link></li>
     </ul>
   </dd>
@@ -77,8 +77,8 @@
   <dt id="four-ddheader" onmouseover="ddMenu('four',1)" onmouseout="ddMenu('four',-1)"><bean:message key="menu.role"/></dt>
   <dd id="four-ddcontent" onmouseover="cancelHide('four')" onmouseout="ddMenu('four',-1)">
     <ul class="ss">
-      <li><html:link styleClass="underline" action="newrole"><bean:message key="submenu.role.addRole"/></html:link></li>
-      <li><html:link styleClass="underline" action="viewrole"><bean:message key="submenu.role.viewRoles"/></html:link></li>
+      <li><html:link styleClass="underline" page="/forwardPmsPage.do?parameter=newRole"><bean:message key="submenu.role.addRole"/></html:link></li>
+      <li><html:link styleClass="underline" page="/forwardPmsPage.do?parameter=viewRole"><bean:message key="submenu.role.viewRoles"/></html:link></li>
       </ul>
   </dd>
 </dl>
@@ -88,9 +88,9 @@
   <dt id="five-ddheader" onmouseover="ddMenu('five',1)" onmouseout="ddMenu('five',-1)"><bean:message key="menu.member"/></dt>
   <dd id="five-ddcontent" onmouseover="cancelHide('five')" onmouseout="ddMenu('five',-1)">
     <ul class="ss">
-      <li><html:link styleClass="underline" action="addmember"> <bean:message key="submenu.member.addMember"/> </html:link></li>
-      <li><html:link styleClass="underline" action="viewmember"> <bean:message key="submenu.member.viewMembers"/> </html:link></li>
-    <li><html:link styleClass="underline" action="addorg_in_portal"><bean:message key="submenu.member.addOrganizationIntoPortal"/></html:link></li>
+      <li><html:link styleClass="underline" page="/forwardPmsPage.do?parameter=addMember"> <bean:message key="submenu.member.addMember"/> </html:link></li>
+      <li><html:link styleClass="underline" page="/forwardPmsPage.do?parameter=viewMember"> <bean:message key="submenu.member.viewMembers"/> </html:link></li>
+    <li><html:link styleClass="underline" page="/forwardPmsPage.do?parameter=addOrgPortal"><bean:message key="submenu.member.addOrganizationIntoPortal"/></html:link></li>
      <!--   <li><html:link styleClass="underline" action="assignproject"> Assign Project </html:link></li>-->
       	<li><html:link styleClass="underline" action="searchpeople"> <bean:message key="submenu.member.peopleSearch"/> </html:link></li>
       </ul>
@@ -126,10 +126,28 @@
 </dl>
 </td>
  -->
+ <!--  changes done by nupur/11/02/2011 -->
+ <td>
+   <dl class="dropdown">
+  <dt id="seven-ddheader" onmouseover="ddMenu('seven',1)" onmouseout="ddMenu('seven',-1)"><bean:message key="menu.forBugzilla"/></dt>
+  <dd id="seven-ddcontent" onmouseover="cancelHide('seven')" onmouseout="ddMenu('seven',-1)">
+    <ul class="ss">    
+    <li><html:link styleClass="underline" page="/bugzillaConfig.do?parameter=urlCreationPage"> <bean:message key="submenu.forBugzilla.urlToBugzilla"/> </html:link></li>
+    <!--<li><html:link styleClass="underline" page="/bugzillaConfig.do?parameter=loginPage"> <bean:message key="submenu.forBugzilla.gointoBugzilla"/> </html:link></li>-->
+    <li><html:link styleClass="underline" target="_blank" action="loginBugzilla"><bean:message key="submenu.forBugzilla.gointoBugzilla"/></html:link></li>
+<!--     <li><a style="underline" target="_blank" href="<bean:message bundle="myResource" key="url"/>/index.cgi?Bugzilla_login=${sessionScope.uid}&Bugzilla_password=&GoAheadAndLogIn=Log+in"> <bean:message key="submenu.forBugzilla.gointoBugzilla"/> </a></li>      -->
+    <li><html:link styleClass="underline" page="/bugzillaConfig.do?parameter=accountCreationPage"><bean:message key="submenu.forBugzilla.createAccountIntoBugzilla"/> </html:link></li>
+    <li><html:link styleClass="underline" page="/bugzillaConfig.do?parameter=setupReportBug"><bean:message key="submenu.forBugzilla.setupReportbug"/> </html:link></li>      
+<!--    <li><a style="underline" href="<bean:message bundle="myResource" key="url"/>/enter_bug.cgi"><bean:message key="submenu.forBugzilla.reportBug"/></a></li>     -->
+    <li><html:link styleClass="underline" action="reportBug"><bean:message key="submenu.forBugzilla.reportBug"/></html:link></li>
+    </ul>
+  </dd>
+</dl>
+</td>
  <td>
 <dl class="dropdown">
   <dt>
-   <html:link action="help" style="padding:0px;width: 100px;background-color:#336699;font-weight:bold;color:#ffffff;"><bean:message key="menu.help"/></html:link>
+   <html:link page="/forwardPmsPage.do?parameter=pmsHelpPage" style="padding:0px;width: 100px;background-color:#336699;font-weight:bold;color:#ffffff;"><bean:message key="menu.help"/></html:link>
   </dt>
   </dl>
 </td>

@@ -91,7 +91,11 @@ public class PmsDecorator extends TableDecorator {
 			if(!(String.valueOf(lObject.getUserid())).equals(PmsDecorator.uid))
 			return //"<a href=\"editMember.do?valid_key=" + valid_key+ "&roleName="+roleName
 			//+ "&action=edit\"><img border=\"0"+"\"title=\"Edit"+"\"src=\"img/write_pen.gif"+"\"width=\"15"+"\"height=\"10\" ></a> | "+
-			 "<a href=\"deleteUserRole.do?valid_key=" + valid_key+ "&roleName="+roleName+"&key1="+"Active"+ "&userid="+user_id
+//			"<a href=\"http://localhost/index.cgi?Bugzilla_login="+
+//			"aniltiwari08@gmail.com"+"&Bugzilla_password="+"anilsoft"+
+//			"&GoAheadAndLogIn=Log+in"+
+//			"\"target=\"_blank\">create a/c of bug</a> | "+  
+			"<a href=\"deleteUserRole.do?valid_key=" + valid_key+ "&roleName="+roleName+"&key1="+"Active"+ "&userid="+user_id
 			+ "\"onclick=\"return deleteUserRole();\">Delete</a>";
 			else
 				return null;
@@ -115,7 +119,7 @@ public class PmsDecorator extends TableDecorator {
     {
 		MemberBean lObject= (MemberBean)getCurrentRowObject();
 		//String user_id= String.valueOf(lObject.getUserid());
-		return "<a href=\"addorg_in_portal.do?userid=" + lObject.getUserid()
+		return "<a href=\"forwardPmsPage.do?parameter=addOrgPortal&userid=" + lObject.getUserid()
 		+"\">"+lObject.getUserid()+ "</a>";
     }
 	

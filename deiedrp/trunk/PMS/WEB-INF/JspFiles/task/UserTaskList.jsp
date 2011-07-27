@@ -90,7 +90,7 @@
         </html:select>
 			<html:errors property="nrec"/>
 	<div align="right">
-		<html:link action="newtask"><bean:message key="label.newTask"/><img border="0" title="Add new task" src="img/user1_add.png" width="15" "height="15" ></html:link>
+		<html:link page="/forwardPmsPage.do?parameter=newTask"><bean:message key="label.newTask"/><img border="0" title="Add new task" src="img/user1_add.png" width="15" "height="15" ></html:link>
 	</div>
  </div>
     <logic:empty name="taskList" property="list"><br><font color="#0000ff" size="2">
@@ -102,7 +102,7 @@
    <html:form action="/assignedTask">
    <input type="hidden" name="projname" id="projname" value="<%=key1 %>"/>
  <display:table name="taskList.list" defaultsort="1" id="row" export="true" pagesize="<%=Integer.parseInt(key) %>" requestURI="/viewtask.do" decorator="in.ac.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >
-		<display:column title="Task Name" sortable="true" >
+		<display:column title="Task Name" sortable="true">
 		<input type="text" readonly="readonly" name="tname" id="tname" 
 		style="border: none;background-color: transparent;" class="dataTable"
 					value="<%=((TaskFields)pageContext.getAttribute("row")).getTaskName()%>"/>

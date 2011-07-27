@@ -40,10 +40,19 @@
     <form-bean name="orgform" type="in.ac.dei.edrp.pms.organization.OrgForm" />
     <form-bean name="searchorgform" type="in.ac.dei.edrp.pms.organization.SearchOrgForm" />
   		<!-- Ending For Organisation -->
+  		
+  	<!-- Bugzilla Configuration part starts -->
+  	<!-- urlConfigForm added by nupur dixit on 14/02/2011 -->
+  	<form-bean name="urlConfigForm" type="in.ac.dei.edrp.pms.bugzillaConfig.BugzillaUrlCreateForm" />
+  	<form-bean name="bugConfigForm" type="in.ac.dei.edrp.pms.bugzillaConfig.BugzillaAccountCreateForm" />
+  	<form-bean name="DispatchActionForm" type="in.ac.dei.edrp.pms.bugzillaConfig.DispatchActionForm"/>
+  	<form-bean name="projectConfigFormIntoBugzilla" type="in.ac.dei.edrp.pms.bugzillaConfig.ProjectConfigFormIntoBugzilla"/>
+  	<form-bean name="componentConfigFormIntoBugzilla" type="in.ac.dei.edrp.pms.bugzillaConfig.ComponentConfigFormIntoBugzilla"/>
+  	<!-- Bugzilla Configuration part ends -->
+  		
   	<form-bean name="uploadfileform" type="in.ac.dei.edrp.pms.upload.UploadFileForm" />
   
-  </form-beans>
-    
+  </form-beans>    
   <global-exceptions />
   <global-forwards>
   
@@ -97,6 +106,114 @@
 </global-forwards>
 <action-mappings >
 
+<!-- forwarding next view part starts -->
+<action
+			path="/forwardPmsPage"
+			type="in.ac.dei.edrp.pms.control.ForwardNextView"
+			parameter="parameter"
+			name="DispatchActionForm"
+			scope="request"
+			validate="false">
+			<forward name="mailConfigPage" path="page.mailConfigPage" />
+			<forward name="portal" path="page.newportal" />
+			<forward name="addorgportal" path="page.addorginportal" />
+			<forward name="neworg" path="page.neworganization" />
+			<forward name="vieworg" path="/WEB-INF/JspFiles/Organization/vieworg.jsp" />
+			<forward name="role" path="page.newrole" />
+			<forward name="viewRoleList" path="/WEB-INF/JspFiles/role/ViewRole.jsp" />
+      		<forward name="member" path="page.addnewmember" />
+      		<forward name="viewmember" path="page.memberList" />
+         	<forward name="viewOrgMember" path="page.OrgMemberList" />
+        	<forward name="viewprojteam" path="page.projTeamList" />
+      		<forward name="project" path="page.newproject"/>
+      		<forward name="task" path="page.newtask"/>
+      		
+   <forward name="notAssigning" path="page.orginfo"/>    
+	<forward name="pmsHelpPage" path="page.pmsHelpPage" />
+      <forward name="invalid" path="/logout.jsp" />
+</action>
+<!-- forwarding next view part ends -->
+
+
+<!-- Bugzilla Configuration part starts -->
+<!-- urlCreationPage added by nupur dixit on 14/02/2011 -->  
+    <action
+			path="/bugzillaConfig"
+			type="in.ac.dei.edrp.pms.bugzillaConfig.ForwardNextView"
+			parameter="parameter"
+			name="DispatchActionForm"
+			scope="request"
+			validate="false">
+	<forward name="loginPage" path="page.loginPage" />	
+	<forward name="urlCreationPage" path="page.urlCreationPage" />
+	<forward name="accountCreationPage" path="page.accountCreationPage" />
+	<forward name="setupReportBug" path="page.setupReportBug" />
+	<forward name="addProjectToReportBug" path="page.addProjectToReportBug" />
+	<forward name="addComponentToReportBug" path="page.addComponentToReportBug" />
+	<forward name="notLoggedInBuzilla" path="page.welcome" />
+</action>
+
+
+<!-- 
+    <action
+     path="/bugzillaconfig"
+     scope="request"
+      type="in.ac.dei.edrp.pms.bugzillaConfig.ForwardActiveUserAccountAction" > 
+      <forward name="accountCreationPage" path="page.accountCreationPage" />
+      <forward name="invalid" path="/logout.jsp" />
+      </action>
+       -->
+  <action
+    	attribute="bugConfigForm"
+      	input="page.accountCreationPage"
+      	name="bugConfigForm"
+      	path="/addUserIntoBugzilla"
+      	scope="session"
+      	validate="true"
+      	type="in.ac.dei.edrp.pms.bugzillaConfig.BugzillaAccountCreateAction">
+   	  	<forward name="invalid" path="/logout.jsp" />
+     	</action>
+     	
+     	<action
+    	attribute="urlConfigForm"
+      	input="page.urlCreationPage"
+      	name="urlConfigForm"
+      	path="/addUrlToBugzilla"
+      	scope="session"
+      	validate="true"
+      	type="in.ac.dei.edrp.pms.bugzillaConfig.BugzillaUrlCreateAction">
+      	<forward name="urlconfigsuccess" path="page.urlCreationPage" />
+      	<forward name="urlconfigfailure" path="page.urlCreationPage" />
+		<forward name="invalid" path="/logout.jsp" />
+     	</action>
+     	
+     	
+    <action
+    	attribute="projectConfigFormIntoBugzilla"
+     	input="page.setupReportBug"
+      	name="projectConfigFormIntoBugzilla"
+     	path="/addProjectIntoBugzilla"
+     	scope="request"
+      	type="in.ac.dei.edrp.pms.bugzillaConfig.AddProjectIntoBugAction" > 
+      <forward name="accountCreationPage" path="page.addProjectToReportBug" />
+      <forward name="invalid" path="/logout.jsp" />
+      </action>
+      
+       <action
+    	attribute="componentConfigFormIntoBugzilla"
+     	input="page.setupReportBug"
+      	name="componentConfigFormIntoBugzilla"
+     	path="/addComponentIntoBugzilla"
+     	scope="request"
+      	type="in.ac.dei.edrp.pms.bugzillaConfig.AddComponentIntoBugAction" > 
+      <forward name="accountCreationPage" path="page.addComponentToReportBug" />
+      <forward name="invalid" path="/logout.jsp" />
+      </action>
+     	
+    <!-- Bugzilla Configuration part ends -->
+
+
+
 
 <action
       attribute="assignedTaskform"
@@ -124,8 +241,11 @@
 	type="in.ac.dei.edrp.pms.home.WelcomeAction">
 	<forward name="showWelcome" path="page.welcome" />
 	<forward name="showUrl" path="/Portal_Org_Selection.jsp"/>
+	<forward name="showList" path="page.userProjectList" />
 	<forward name="invalid" path="/login.jsp" />
 	</action>
+	
+	
 	
 	<action path="/mainwelcome"
 	input="/Portal_Org_Selection.jsp"
@@ -176,16 +296,7 @@
    	  	<forward name="passinfo" path="page.changepasswordMessage" />
      </action>
     <!-- Change Password part Ends -->
-    <!-- Online help part starts -->
-    <action
-     path="/help"
-     scope="request"
-      type="in.ac.dei.edrp.pms.help.ForwardHelpAction" > 
-      <forward name="pmsHelpPage" path="page.pmsHelpPage" />
-      <forward name="invalid" path="/logout.jsp" />
-      </action>
-    <!-- Online help part ends -->
-        
+           
     <action
     	attribute="pmsteamform"
        	name="pmsteamform"
@@ -195,15 +306,8 @@
    	  <forward name="pmsTeamPage" path="page.userProjectList" />
    	  <forward name="invalid" path="/logout.jsp" />
      	</action>
+     	
     <!-- Mail Configuration part starts -->
-    
-    <action
-     path="/mailconfig"
-     scope="request"
-      type="in.ac.dei.edrp.pms.adminConfig.ForwardMailConfigAction" > 
-      <forward name="mailConfigPage" path="page.mailConfigPage" />
-      <forward name="invalid" path="/logout.jsp" />
-      </action>
       <action
     	attribute="mailconfigform"
       	input="page.mailConfigPage"
@@ -218,12 +322,7 @@
     
     <!-- Portal part starts -->
     
-    <action
-      path="/newportal"
-      scope="request"
-      type="in.ac.dei.edrp.pms.portal.ForwardPortalAction" > 
-      <forward name="portal" path="page.newportal" />
-      </action>
+   
       <action
     	attribute="newportalform"
       	input="page.newportal"
@@ -273,13 +372,7 @@
    
     <!-- Role part starts -->
     
-    <action
-      path="/newrole"
-      scope="request"
-      type="in.ac.dei.edrp.pms.role.ForwardNewRoleAction" > 
-      <forward name="role" path="page.newrole" />
-      <forward name="notAssigning" path="page.orginfo"/>
-      </action>
+    
     <action
     	attribute="newroleform"
       	input="page.newrole"
@@ -292,10 +385,7 @@
      	<forward name="rolefail" path="page.orginfo"/>
    </action>
    
-    <action path="/viewrole" type="in.ac.dei.edrp.pms.role.ForwardViewRoleAction">
-      <forward name="viewRoleList" path="/WEB-INF/JspFiles/role/ViewRole.jsp" />
-    </action>
-
+   
     <action        
       path="/roleList"
       type="in.ac.dei.edrp.pms.role.RoleListAction" >
@@ -337,9 +427,7 @@
     
     <!-- Member part starts -->
     
-    <action path="/addorg_in_portal" type="in.ac.dei.edrp.pms.addorg_in_portal.ForwardAddOrgInPortalAction">
-      <forward name="addorgportal" path="page.addorginportal" />
-    </action>
+    
     <action
     	attribute="addorginportalform"
       	input="page.addorginportal"
@@ -354,13 +442,7 @@
    </action>
         
     
-    <action
-      path="/addmember"
-      scope="request"
-      type="in.ac.dei.edrp.pms.member.ForwardAddMemberAction" > 
-      <forward name="member" path="page.addnewmember" />
-      <forward name="notAssigning" path="page.orginfo"/>
-      </action>
+    
     <action
     	attribute="newmemberform"
       	input="page.addnewmember"
@@ -374,12 +456,7 @@
    </action>
    
    
-	<action path="/viewmember" type="in.ac.dei.edrp.pms.member.ViewMemberAction" >
-	     <forward name="viewmember" path="page.memberList" />
-         <forward name="viewOrgMember" path="page.OrgMemberList" />
-         <forward name="invalid" path="/logout.jsp" />
-      </action>
-   
+	
    <!--delete Member permanently -->
    <action        
       path="/deleteMember"
@@ -428,26 +505,26 @@
    	  	<forward name="success" path="page.newproject" />
      	<forward name="projectfail" path="page.projectfail"/>
    </action>
-
-	<action
-      	path="/newproject"
-      	type="in.ac.dei.edrp.pms.projmanage.ForwardProjectAction" >
-      	<forward name="notAssigning" path="page.orginfo"/>
-      	<forward name="project" path="page.newproject"/>
-     </action>
-          
-          
-          <action path="/viewproject" type="in.ac.dei.edrp.pms.projmanage.ProjectListAction" >
+    
+    <action path="/viewproject" type="in.ac.dei.edrp.pms.projmanage.ProjectListAction" >
 	     <forward name="userProjectList" path="page.userProjectList" />
          <forward name="adminProjectList" path="page.adminProjectList" />
          <forward name="invalid" path="/logout.jsp" />
       </action>
           
-          <action path="/viewProjTeam" type="in.ac.dei.edrp.pms.member.ViewProjTeamAction" >
-	     <forward name="viewprojteam" path="page.projTeamList" />
-         <forward name="invalid" path="/logout.jsp" />
-      </action>
       
+       <action path="/loginBugzilla" type="in.ac.dei.edrp.pms.bugzillaConfig.LoginBugzillaAction" >
+	     <forward name="userProjectList" path="page.userProjectList" />
+         <forward name="adminProjectList" path="page.adminProjectList" />
+         <forward name="invalid" path="page.welcome" />
+      </action> 
+      
+      <action path="/reportBug" type="in.ac.dei.edrp.pms.bugzillaConfig.ReportBugAction" >
+	     <forward name="userProjectList" path="page.userProjectList" />
+         <forward name="adminProjectList" path="page.adminProjectList" />
+         <forward name="invalid" path="page.welcome" />
+      </action> 
+       
     <action        
         path="/editProject"
       type="in.ac.dei.edrp.pms.updation.EditProjectAction">
@@ -520,13 +597,6 @@
       </action>
 
 <action
-      path="/newtask"
-      type="in.ac.dei.edrp.pms.task.ForwardNewTaskAction" >
-      <forward name="task" path="page.newtask"/>
-       <forward name="notAssigning" path="page.orginfo"/>
-      </action>
-
-<action
       attribute="taskform"
       input="page.newtask"
       name="taskform"
@@ -574,11 +644,7 @@
 
 <!-- Organisation part Starts -->
 
-    <!-- FOR NEW ORGANIZATION -->
     
-   <action path="/neworganization" type="in.ac.dei.edrp.pms.organization.ForwardNewOrgAction">
-      <forward name="neworg" path="page.neworganization" />
-    </action>
     <action
       	path="/orgInfo"
       	type="in.ac.dei.edrp.pms.organization.OrgDetailAction" >
@@ -599,12 +665,7 @@
       <forward name="info" path="page.orginfo" />
      </action> 
      
-     <!-- FOR VIEW ORGANIZATION -->
     
-    <action path="/vieworganization" type="in.ac.dei.edrp.pms.organization.ViewOrganisationAction">
-      <forward name="vieworg" path="/WEB-INF/JspFiles/Organization/vieworg.jsp" />
-     </action>
-
     <action        
       path="/orgList"
       type="in.ac.dei.edrp.pms.organization.OrgListAction">
@@ -750,12 +811,16 @@
 	<set-property  property="locale" value="false"/>
 
 </controller>
-
+<message-resources
+    parameter="UrlConfig"
+    key="myResource" null="false"></message-resources>
+    
  <message-resources parameter="in.ac.dei.edrp.pms.propertiesFile.ApplicationResources_fr" />
  <message-resources parameter="in.ac.dei.edrp.pms.propertiesFile.ApplicationResources_hi" />
  <message-resources parameter="in.ac.dei.edrp.pms.propertiesFile.ApplicationResources_sa" />
  <message-resources parameter="in.ac.dei.edrp.pms.propertiesFile.ApplicationResources_ur" />
  <message-resources parameter="in.ac.dei.edrp.pms.propertiesFile.ApplicationResources" />
+ 
  
  
   <plug-in className="org.apache.struts.tiles.TilesPlugin">

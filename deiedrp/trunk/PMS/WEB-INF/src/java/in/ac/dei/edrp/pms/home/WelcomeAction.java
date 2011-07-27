@@ -35,11 +35,15 @@ public class WelcomeAction extends Action{
 		String retString="invalid";
 		if((String)session.getAttribute("mysession")!=null)
 		{
-			retString="showWelcome";
+			retString="showWelcome";//welcome page
 			//System.out.println("session is not null");
 			if(((String)session.getAttribute("authority")).equalsIgnoreCase("User"))//the authority is user or super admin
 			{
-				retString="showUrl";
+				if(session.getAttribute("portalname")==null)
+					retString="showUrl";//poral page
+				else
+					retString = "showList";
+				
 			}
 		}
 		return mapping.findForward(retString);

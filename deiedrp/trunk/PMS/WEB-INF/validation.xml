@@ -7,6 +7,34 @@
 <!-- ================================================================= -->
 <form-validation>
 <formset>
+<form name="bugConfigForm" >
+<field property="user_id" depends="selectoption" >
+<arg0 key="error.emailid" />
+</field>
+</form>
+<form name="projectConfigFormIntoBugzilla" >
+<field property="projectName" depends="selectoption" >
+<arg0 key="error.projectName" />
+</field>
+<field property="projectVersion" depends="required" >
+<arg0 key="label.project.version" />
+</field>
+</form>
+<form name="componentConfigFormIntoBugzilla" >
+<field property="projectName" depends="selectoption" >
+<arg0 key="error.projectName" />
+</field>
+<field property="component" depends="required" >
+<arg0 key="label.component" />
+</field>
+<field property="componentDescription" depends="required" >
+<arg0 key="label.description" />
+</field>
+<field property="assignedTo" depends="selectoption" >
+<arg0 key="label.defaultAssignedTo" />
+</field>
+
+</form>
 <form name="mailconfigform" >
 <field property="smtpServerName" depends="required" >
 <arg0 key="mail.smtpServerName" />
@@ -22,6 +50,30 @@
 </field>
 </form>
 
+<!--<form name="urlConfigForm" >
+<field property="url" depends="myUrlValidator">
+       <var><var-name>slashes</var-name>
+                 <var-value>true</var-value>
+       </var>
+       <var><var-name>fragments</var-name>
+                 <var-value>true</var-value>
+       </var>
+       <var><var-name></var-name></var>
+ </field>
+</form>
+-->
+ 
+<form name="urlConfigForm" >
+<field property="url" depends="mask,required" >
+<var>
+<var-name>mask</var-name>
+<!--<var-value>^(ht|f)tp(s?)\:\/\/[a-zA-Z0-9\-\._:]+(\:[a-zA-Z0-9\-\._]+){1}|(\.[a-zA-Z0-9\-\._]+){2,}(\/?)([a-zA-Z0-9\-\.\?\,\'\/\\\+%\$#_]*)?$</var-value>-->
+<var-value>^(ht|f)tp(s?)\:\/\/[a-zA-Z0-9\-\._:]+(\:[0-9]+){1}|(\.[a-zA-Z0-9\-\._]+){2,}(\/?)([a-zA-Z0-9\-\.\?\,\'\/\\\+%\$#_]*)?$</var-value>
+</var>
+<arg0 key="url.name" />
+</field>
+</form>
+ 
 <form name="portalnameform" >
 <field property="portalname" depends="selectoption" >
 <arg0 key="label.portalName" />

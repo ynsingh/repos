@@ -21,7 +21,7 @@
 	{
 		a=document.getElementsByName("nrec");
 		b=document.getElementsByName("nrec1");
-		window.location.href="viewmember.do?key="+a[0].value+"&key1="+b[0].value;
+		window.location.href="forwardPmsPage.do?parameter=viewMember&key="+a[0].value+"&key1="+b[0].value;
 	}
 	function deleteUser()
 	{
@@ -77,7 +77,7 @@
 	{
 	 %>
 	
-	<html:link action="addmember"><bean:message key="label.newMember"/><img border="0" title="Add new member" src="img/user1_add.png" width="15" "height="15" ></html:link>
+	<html:link page="/forwardPmsPage.do?parameter=addMember"><bean:message key="label.newMember"/><img border="0" title="Add new member" src="img/user1_add.png" width="15" "height="15" ></html:link>
 	 <%}
 	 else
 	 {
@@ -92,7 +92,7 @@
 	new PmsDecorator().setUser((String)session.getAttribute("uid"));
 	%>
  
- <display:table name="memberList.list" id="row" defaultsort="3" export="false" pagesize="<%=Integer.parseInt(key) %>" requestURI="/viewmember.do" decorator="in.ac.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >
+ <display:table name="memberList.list" id="row" defaultsort="3" export="false" pagesize="<%=Integer.parseInt(key) %>" requestURI="/forwardPmsPage.do?parameter=viewMember" decorator="in.ac.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >
 				   
 		<display:column property="userid" group="1" title="User ID" sortable="true" />
 		<display:column property="rolename" title="Role Name" sortable="true" />
@@ -106,13 +106,13 @@
     else if(key1.equalsIgnoreCase("InActive"))
     {
      %>
-<display:table name="memberList.list" id="row" defaultsort="1" export="false" pagesize="<%=Integer.parseInt(key) %>" requestURI="/viewmember.do" decorator="in.ac.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >
+<display:table name="memberList.list" id="row" defaultsort="1" export="false" pagesize="<%=Integer.parseInt(key) %>" requestURI="/forwardPmsPage.do?parameter=viewMember" decorator="in.ac.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >
 				   
 		<display:column property="addUserIntoProject" group="1" title="User ID" sortable="true" />
 		<display:column property="portalname" title="First Name" sortable="true" />
 		<display:column property="orgname" title="Last Name" sortable="true" />
 		<display:column property="rolename" title="Skills" sortable="true" />
-		<display:column property="valid_key" title="Experince (in years)" sortable="true" />
+		<display:column property="valid_key" title="Experience (in years)" sortable="true" />
 		<logic:equal name="row" property="editPermission" value="Allow">
 		<display:column media="html" title="Actions">
 		<%
@@ -130,13 +130,13 @@
 <%}else 
     {
      %>
-<display:table name="memberList.list" id="row" defaultsort="6" export="false" pagesize="<%=Integer.parseInt(key) %>" requestURI="/viewmember.do" decorator="in.ac.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >
+<display:table name="memberList.list" id="row" defaultsort="6" export="false" pagesize="<%=Integer.parseInt(key) %>" requestURI="/forwardPmsPage.do?parameter=viewMember" decorator="in.ac.dei.edrp.pms.deco.PmsDecorator" class="dataTable" >
 				   
 		<display:column property="addUserIntoProject" title="User ID" sortable="true" />
 		<display:column property="portalname" title="First Name" sortable="true" />
 		<display:column property="orgname" title="Last Name" sortable="true" />
 		<display:column property="rolename" title="Skills" sortable="true" />
-		<display:column property="valid_key" title="Experince (in years)" sortable="true" />
+		<display:column property="valid_key" title="Experience (in years)" sortable="true" />
 		<display:column property="status" title="Status" sortable="true"/>
 		<logic:equal name="row" property="editPermission" value="Allow">
 		<display:column media="html" title="Actions">

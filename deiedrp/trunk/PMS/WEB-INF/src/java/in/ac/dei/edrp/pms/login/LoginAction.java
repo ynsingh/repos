@@ -6,23 +6,22 @@ package in.ac.dei.edrp.pms.login;
 
 import in.ac.dei.edrp.pms.dataBaseConnection.MyDataSource;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.servlet.http.*;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Locale;
 
-import javax.sql.DataSource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionMessage;
+import org.apache.log4j.Logger;
 import org.apache.struts.action.Action;
+import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.log4j.Logger;
+import org.apache.struts.action.ActionMessage;
 
 
 /** 
@@ -85,16 +84,8 @@ public class LoginAction extends Action {
 		session.setAttribute("mysession",loginform.getUid().trim().toLowerCase());
 		try
 		{
-			Context ctx = new InitialContext();
-			//System.out.println("ctx="+ctx);
-			// Look up the data source 
-			DataSource ds = (DataSource) ctx.lookup("java:comp/env/jdbc/mydb");
-			//System.out.println("ds="+ds);
-			MyDataSource.setDataSource(ds);
-			//Get a connection from the pool 
+		//Get a connection from the pool 
 			con=MyDataSource.getConnection();
-			//System.out.println("con="+con);
-			
 		PreparedStatement ps=con.prepareStatement("select l.Authority from login l where l.login_user_id=?" +
 				" and l.Password=SHA1(?)");// and Authority=?");
 		ps.setString(1,(String)session.getAttribute("mysession"));
@@ -104,6 +95,7 @@ public class LoginAction extends Action {
 		if(rs.next())
 		{
 			session.setAttribute("uid", loginform.getUid().trim().toLowerCase());
+			session.setAttribute("pass", loginform.getPass().trim());//setting for bugzilla users
 			if(rs.getString(1).equals("Super Admin"))				
 			{
 				forwardString="admin";

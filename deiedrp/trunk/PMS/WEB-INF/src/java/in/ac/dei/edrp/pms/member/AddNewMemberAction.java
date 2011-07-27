@@ -54,11 +54,13 @@ public class AddNewMemberAction extends Action {
 		boolean bool=false;
 		int recInUser_Info=0,recInUser_In_Org=0;
 		Connection con=null;
-		PreparedStatement ps=null;
+		PreparedStatement ps=null,ps1=null,ps2=null,ps3=null;
+		Savepoint svpt=null;
 		String retstring="addmemberfail";
 		request.setAttribute("message", "User could not be added ,because this user already exist in the system!!");
 		try{
 			con=MyDataSource.getConnection();
+			con.setAutoCommit(false);
 			//for checking email id of super admin or not
 			if(!checkRecord.duplicacyChecker("login_user_id","login","authority","Super Admin").equalsIgnoreCase(newmemberform.getEmailid().trim()))
 			{
@@ -77,6 +79,9 @@ public class AddNewMemberAction extends Action {
 				ps.setInt(6, Integer.parseInt(newmemberform.getExperience()));
 //				ps.setString(7, newmemberform.getSecurequestion());
 //				ps.setString(8, newmemberform.getSecureanswer());
+				ps.addBatch();
+				
+				svpt = con.setSavepoint("MySavepoint");
 				recInUser_Info=ps.executeUpdate();
 			}
 			ActionErrors errors = new ActionErrors();
@@ -90,9 +95,9 @@ public class AddNewMemberAction extends Action {
 				/*
 				 * Inserting the record into user_in_org table.
 				 */
-				ps=con.prepareStatement("insert into user_in_org values(?,?,?)");
-				ps.setString(1,newmemberform.getEmailid().trim());
-				ps.setString(2,(String)session.getAttribute("validOrgInPortal"));
+				ps1=con.prepareStatement("insert into user_in_org values(?,?,?)");
+				ps1.setString(1,newmemberform.getEmailid().trim());
+				ps1.setString(2,(String)session.getAttribute("validOrgInPortal"));
 				PreparedStatement pst=con.prepareStatement("select max(substr(Valid_Key,5)) from user_in_org where substr(Valid_Key,1,4)=Date_Format(Now(),'%Y')");
 				ResultSet rst=pst.executeQuery();
 				rst.next();
@@ -103,35 +108,38 @@ public class AddNewMemberAction extends Action {
 					}
 					else
 						valid_code=CodeGenerator.gettingCode(1,6);
-				ps.setString(3,valid_code);
-				recInUser_In_Org=ps.executeUpdate();
+				ps1.setString(3,valid_code);
+				ps1.addBatch();
+				recInUser_In_Org=ps1.executeUpdate();
 				
-				if(recInUser_In_Org>0) /*if recInUser_In_Org is greater than zero it means insertion operation is successful.*/
-				{
+//				if(recInUser_In_Org>0) /*if recInUser_In_Org is greater than zero it means insertion operation is successful.*/
+//				{
 					String role_id=checkRecord.twoFieldDuplicacyChecker("Role_ID","role","Role_Name",newmemberform.getRolename().trim(),"ValidOrgPortal",(String)session.getAttribute("validOrgInPortal"));				
 					
-					ps=con.prepareStatement("insert into user_role_in_org values(?,?,?,?,?)");
-					ps.setString(1,valid_code);
-					ps.setInt(2,Integer.parseInt(role_id));
-					ps.setString(3,(String)session.getAttribute("uid"));
-					ps.setString(4,"Default");//which authority default/member.
-					ps.setString(5,"Active");//status active/inactive.
-					ps.executeUpdate();
+					ps2=con.prepareStatement("insert into user_role_in_org values(?,?,?,?,?)");
+					ps2.setString(1,valid_code);
+					ps2.setInt(2,Integer.parseInt(role_id));
+					ps2.setString(3,(String)session.getAttribute("uid"));
+					ps2.setString(4,"Default");//which authority default/member.
+					ps2.setString(5,"Active");//status active/inactive.
+					ps2.addBatch();
+					ps2.executeUpdate();
 		
 					if(checkRecord.duplicacyChecker("login_user_id","login","login_user_id",newmemberform.getEmailid().trim())==null)
 						{
-						PreparedStatement ps1=con.prepareStatement("insert into login values(?,?,SHA1(?))");
-						ps1.setString(1,newmemberform.getEmailid().trim());
-						ps1.setString(2,"User");
+						ps3=con.prepareStatement("insert into login values(?,?,SHA1(?))");
+						ps3.setString(1,newmemberform.getEmailid().trim());
+						ps3.setString(2,"User");
 						pass1=PasswordGenerator.generatePassword(3,5).toLowerCase();
-						ps1.setString(3,pass1);
-						ps1.executeUpdate();
+						ps3.setString(3,pass1);
+						ps3.addBatch();
+						ps3.executeUpdate();
 						}
 					
 						
 					String url="http://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath();
 					Locale locale = new Locale("en", "US");
-					ResourceBundle message = ResourceBundle.getBundle("in\\ac\\dei\\edrp\\pms\\propertiesFile\\ApplicationResources",locale);
+					ResourceBundle message = ResourceBundle.getBundle("in//ac//dei//edrp//pms//propertiesFile//ApplicationResources",locale);
 					String s4=message.getString("body.text.mail") + " "+url+
 							"\n"+message.getString("label.user")+": "+newmemberform.getEmailid().trim()+
 							"\n"+message.getString("label.password")+": "+pass1+
@@ -142,10 +150,10 @@ public class AddNewMemberAction extends Action {
 								ReadPropertiesFile.mailConfig(getServlet().getServletContext().getRealPath("/")+"WEB-INF/"));
 //						System.out.println("body="+s4);
 //						request.setAttribute("message",s4);
-					}
+//					}
 				}
 			}
-			
+			con.commit();
 			if(bool)
 			{
 				error = new ActionMessage("msg.addmember_in_orgportal.added");
@@ -169,12 +177,28 @@ public class AddNewMemberAction extends Action {
 				retstring="addmembersuccess";
 			}
 		  }//outer if closed
-		}catch(Exception e)
-		{
-			System.out.println("Exception in add new member action="+e);
-		}
+		}catch (SQLException e) {
+			// TODO Auto-generated catch block
+			try {
+				con.rollback(svpt);
+				con.commit();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		}catch(Exception e1){
+			System.out.println("Exception in add new member action="+e1);
+			try {
+			 con.rollback(svpt);
+			 con.commit();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}}
+		
 		finally
-		{
+		{			
 			MyDataSource.freeConnection(con);
 		}
 		return mapping.findForward(retstring);

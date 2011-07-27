@@ -198,7 +198,7 @@ var array_of_checked_values = jQuery("#authorities").multiselect("getChecked").m
 </table><br>
 			<table align="center">
 			<tr><td><input type="submit" value='<bean:message key="label.add.button" />' class="butStnd"/></td>
-			<td><input type="reset" value='<bean:message key="label.reset.button" />' class="butStnd" onclick="location.href='newrole.do'"/></td>
+			<td><input type="reset" value='<bean:message key="label.reset.button" />' class="butStnd" onclick="location.href='forwardPmsPage.do?parameter=newRole'"/></td>
 			<td><c:if test="${sessionScope.authority=='User'}">
 			<input type="button" value='<bean:message key="label.cancel.button" />' class="butStnd" onclick="location.href='mainwelcome.do'" />
 			</c:if>

@@ -124,7 +124,7 @@ jQuery(function() {
 			  
 			<tr><td><BR><br>	  
 			<input type="submit" value='<bean:message key="label.addMember.button"/>' class="butStnd"/>
-			<input type="reset" value='<bean:message key="label.reset.button" />' class="butStnd" onclick="location.href='addmember.do'"/>
+			<input type="reset" value='<bean:message key="label.reset.button" />' class="butStnd" onclick="location.href='forwardPmsPage.do?parameter=addMember'"/>
 			<c:if test="${sessionScope.authority=='User'}">
 			<input type="button" value='<bean:message key="label.cancel.button" />' class="butStnd" onclick="location.href='mainwelcome.do'" />
 			</c:if>
