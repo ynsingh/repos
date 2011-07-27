@@ -48,7 +48,9 @@ import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
  *  @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a> 
  *  @author <a href="mailto:madhavi_mungole@hotmail.com">Madhavi Mungole</a> 
  *  @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a> 
- *  @modified date: 20-10-2010, 23-12-2010
+ *  @author <a href="mailto:tejdgurung20@gmail.com">Tej Bahadur Gurung</a> 
+ *  @author <a href="mailto:shaista.shekh@gmail.com">Shaista</a> 
+ *  @modified date: 20-10-2010, 23-12-2010, 26-07-2011
  */
 
 public class RegisterMultiUser
@@ -58,13 +60,14 @@ public class RegisterMultiUser
 	 * details stored in a file
 	 * @param f File
 	 * @param Gname String
+	 * @param Inst_id String
 	 * @param Role String
 	 * @param serverName String
 	 * @param serverPort String
 	 * @param Langfile String
 	 * @return Vector 
 	 */
-	public static Vector Multi_Register(File f,String Gname,String Role,String serverName,String serverPort,String Langfile)
+	public static Vector Multi_Register(File f,String Gname,String Role,String serverName,String serverPort,String Langfile, String instName)
 	{
 		System.gc();
 		Vector ErrType=new Vector();
@@ -72,6 +75,7 @@ public class RegisterMultiUser
 		{
 			int entryNumber=0;
 			CourseUserDetail MsgDetails=new CourseUserDetail();
+			
 			/**
 		 	* Stores the uploaded file on the specified path
 		 	*/
@@ -179,7 +183,19 @@ public class RegisterMultiUser
 						}
 					if(error==0){
 							email=username;
-							String str=UserManagement.CreateUserProfile(email,passwd,first_name,last_name,"",email,Gname,Role,serverName,serverPort,Langfile,rollno,program); //modified by Shikha Shukla
+							/**
+							 * instName is passed by shaista
+ 							 * Passing the institue_name as string variable for getting 
+ 							 * expirydate according to admin profile
+ 							 * and to get Institute Admin First and last name to send in mail 
+ 							 * @see UserManagement Util
+ 							 */
+							String str="";
+                                                        if(instName.length() >0)
+                                                                str=UserManagement.CreateUserProfile(email,passwd,first_name,last_name,instName,email,Gname,Role,serverName,serverPort,Langfile,rollno,program); //modified by Shikha Shukla
+                                                        else
+								str="InstituteName is null please check instName=="+instName;
+								//str=UserManagement.CreateUserProfile(email,passwd,first_name,last_name,"",email,Gname,Role,serverName,serverPort,Langfile,rollno,program); //modified by Shikha Shukla
 								error=3;
 								errMsg=str;
 						}

@@ -80,7 +80,7 @@ import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a> 
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a> 
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a> 
- * @modified date: 26-02-2011
+ * @modified date: 26-02-2011, 27-07-2011
  */
 public class UserAction_Instructor extends SecureAction_Instructor
 {
@@ -318,11 +318,11 @@ public class UserAction_Instructor extends SecureAction_Instructor
         {
 		/**
                  * getting property file According to selection of Language in temporary variable
-                 * getting the values of first,last names and
+                 * getting the values of first,last names,institute id and
                  * configuration parameter.
                  */
- 
 		String serverName=data.getServerName();
+		String instName=InstituteIdUtil.getIstName(Integer.parseInt((data.getUser().getTemp("Institute_id")).toString()));
                 int srvrPort=data.getServerPort();
                 String serverPort=Integer.toString(srvrPort); 
 	        User user=data.getUser();
@@ -341,7 +341,14 @@ public class UserAction_Instructor extends SecureAction_Instructor
                                 Date date=new Date();
                                 File f=new File(TurbineServlet.getRealPath("/tmp")+"/"+group+"student"+date.toString()+".txt");
                                 file.write(f);
-                                Vector msg=RegisterMultiUser.Multi_Register(f,group,"student",serverName,serverPort,LangFile);
+				/** 
+				 * Added By shaista 	
+                                 * passing instituteName variable as a string 
+                                 * to get institute id for exprydate according to admin profile
+                                 * @see RegisterMultiUser util
+                                 * @see UserManagement Util
+                                 **/
+                                Vector msg=RegisterMultiUser.Multi_Register(f,group,"student",serverName,serverPort,LangFile,instName);
                                 context.put("Msg",msg);
                         }
                 }

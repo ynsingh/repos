@@ -54,6 +54,7 @@ import org.iitk.brihaspati.modules.utils.CourseManagement;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.QuotaUtil;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
 import java.math.BigDecimal;
 
 /**
@@ -63,7 +64,7 @@ import java.math.BigDecimal;
  * @author: <a href="mailto:shaistashekh@hotmail.com">Shaista </a>
  * @author <a href="mailto:sharad23nov@yahoo.com">Sharad Singh</a> 
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a> 
- * @modified date: 22-11-2010
+ * @modified date: 22-11-2010, 27-07-2011
  */
 public class RegisterIMCInstructor extends SecureAction_Institute_Admin
 {
@@ -87,9 +88,15 @@ public class RegisterIMCInstructor extends SecureAction_Institute_Admin
 	        try
 		{
 			MultilingualUtil mu= new MultilingualUtil();
+			/**
+			 * Added by shaista
+			 * Getting institute id as a String from Temp Variable
+			 * Getting instName as a String according to institute id
+			 */
 			String instituteId=(data.getUser().getTemp("Institute_id").toString());
 			ErrorDumpUtil.ErrorLog("iid in action at line 86==="+instituteId);
-			int InstituteId=Integer.parseInt(instituteId);	
+			int InstituteId=Integer.parseInt(instituteId);
+			String instName= InstituteIdUtil.getIstName(InstituteId);	
 		 	ParameterParser pp=data.getParameters();
                         FileItem file = pp.getFileItem("file");
                         String fileName=file.getName();
@@ -186,7 +193,15 @@ public class RegisterIMCInstructor extends SecureAction_Institute_Admin
 					boolean checkspace=QuotaUtil.CompareAllotedQuota(instituteId);
                                 	ErrorDumpUtil.ErrorLog("check at line 116 in registration action==========="+checkspace);
                                 	//if(checkspace){
-					String msg=CourseManagement.CreateCourse(courseid,courseName,dept,description,uname,passwd,first_name,lname,email,serverName,serverPort,LangFile,InstituteId,"");
+
+					/** 
+					 * Added By shaista 	
+                	                 * passing instituteName variable as a string 
+                        	         * to get institute id for exprydate according to admin profile
+                                	 * @see RegisterMultiUser util
+	                                 * @see UserManagement Util
+        	                         **/
+					String msg=CourseManagement.CreateCourse(courseid,courseName,dept,description,uname,passwd,first_name,lname,email,serverName,serverPort,LangFile,InstituteId,instName);
 					error=3;
 		                        errMsg=msg;
 					/*}

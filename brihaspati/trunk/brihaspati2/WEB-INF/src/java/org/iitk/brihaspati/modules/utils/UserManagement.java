@@ -72,6 +72,8 @@ import org.iitk.brihaspati.om.StudentRollno;
 import org.iitk.brihaspati.om.UserConfigurationPeer;
 import org.iitk.brihaspati.om.StudentExpiryPeer;
 import org.iitk.brihaspati.om.StudentExpiry;
+import org.iitk.brihaspati.om.InstituteAdminUser;
+import org.iitk.brihaspati.om.InstituteAdminUserPeer;
 import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.StringUtil;
@@ -98,6 +100,7 @@ import babylon.babylonPasswordEncryptor;
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @modified date: 08-07-2010, 20-10-2010, 3-11-2010, 26-12-2010
+ * @modified date: 27-07-2011
  */
 
 public class UserManagement
@@ -126,18 +129,27 @@ public class UserManagement
 		StringUtil S=new StringUtil();
 		Criteria crit=new Criteria();
 		java.sql.Date expdate=null;
+		String instituteid="";
+		int instIdint = 0;
+		/**
+		 * Below  check is added by Shaista
+		 * In admin case iname is recieved null 
+		 * This chek will remove later on
+		 * getting institute id as a string  to pass in mail Notification Thread to compare
+		 * getting instid as an integer to use in criteria to get admin's First & Last name
+		 */	
+		if(!Role.equals("turbine_root")) {
+			instituteid=Integer.toString(InstituteIdUtil.getIst_Id(i_name));
+			instIdint=InstituteIdUtil.getIst_Id(i_name);
+		}
 		if(Role.equals("student")){
 			try{
-				String instituteid=Integer.toString(InstituteIdUtil.getIst_Id(i_name));
 				String path12=TurbineServlet.getRealPath("/WEB-INF")+"/conf"+"/"+instituteid+"Admin.properties";
 				String expdays = AdminProperties.getValue(path12,"brihaspati.user.expdays.value");
-ErrorDumpUtil.ErrorLog("This utils(UserManagement) "+expdays);
 		                Integer exp1 = Integer.valueOf(expdays);		
-ErrorDumpUtil.ErrorLog("This is  :--utils(UserManagement) "+exp1);
 				String c_date=ExpiryUtil.getCurrentDate("-");
 	                	String E_date=ExpiryUtil.getExpired(c_date,exp1);
 	                	expdate=java.sql.Date.valueOf(E_date);
-ErrorDumpUtil.ErrorLog("This is the path :--utils(UserManagement) "+expdate) ;
 			}
 			catch(Exception ex){ErrorDumpUtil.ErrorLog("This is the exception in getting path :--utils(UserManagement) "+ex);}
 		}
@@ -163,7 +175,7 @@ ErrorDumpUtil.ErrorLog("This is the path :--utils(UserManagement) "+expdate) ;
 				}
 
 				String Mail_msg=new String();
-				String Rollno_msg="";
+				String Rollno_msg="", info_Opt="", msgRegard="", msgDear="", msgBrihAdmin="", instFirstLastName="";
 				String email_existing=new String();
 				String cAlias=new String();
 				String dept=new String();
@@ -264,22 +276,65 @@ ErrorDumpUtil.ErrorLog("This is the path :--utils(UserManagement) "+expdate) ;
                                 			else
                        						userRole="newAuthorhttps";
                         			}
+						/**
+						 * Added by shaista
+						 * Assigning a string "newUser" in info_opt to get the keys like msgDear, msgRegard, 
+						 * instAdmin/ brihaspatiAdmin defined in brihasapti.properties
+						 */
+						if(serverPort.equals("8080"))
+							info_Opt = "newUser";
+						else
+							info_Opt = "newUserhttps";
 
                         			/**
+						 *  Added by shaista
                          			 * Check if the user already exists. If the user exists then 
-						 * initialize the 				
-						 * mail id and the
-			                         * variable which will fetch approriate message from the properties file
+			                         * if(Role is author or institute admin to register{
+			                         * 	Getting Brihaspati Admin String from brihaspati.properties for author and 
+			                         * 	institute admin registration}
+			                         * else { getting Institute admin's First and last name according to institute id to send in mail}
+			                         * if(UserProfile already exist){
+			                         *  Calling  MailNotificationThread.getController().set_Message Method to push the message in queue
+			                         *  and to send mail.
+			                         *  Informing to user that he is registered again in Brihaspati.
+						 * initialize the variable which will fetch approriate message from the properties file
+                                                 * @see MailNotificationThread class in utils
                         			 */
 						fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
 						pr =MailNotification.uploadingPropertiesFile(fileName);
+						if(Role.equals("author") || Role.equals("institute_admin"))
+							msgBrihAdmin=msgBrihAdmin=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgBrihAdmin");
+						else{ 
+							crit=new Criteria();
+							//ErrorDumpUtil.ErrorLog("\n\n\n\n UM CLASS line 283 instIdint="+instIdint);
+							try{
+        				                        crit.add(InstituteAdminUserPeer.INSTITUTE_ID,instIdint);
+	                                			List inm=InstituteAdminUserPeer.doSelect(crit);
+								//ErrorDumpUtil.ErrorLog("\n line 287="+inm);
+	                                		        InstituteAdminUser element=(InstituteAdminUser)inm.get(0);
+        	                                        	instFirstLastName= element.getAdminFname() +" "+element.getAdminLname();
+								//ErrorDumpUtil.ErrorLog("\n\ninstFirstLastName"+instFirstLastName);
+                        			       }
+			                               catch(Exception ex){
+                        			               ErrorDumpUtil.ErrorLog("The error in User Managemen Util class at line 282 to 288 !!"+ex);
+			                               }
+
+							msgBrihAdmin = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgInstAdmin");
+							msgBrihAdmin = MailNotification.getMessage_new(msgBrihAdmin, "", "", instFirstLastName, "");
+							ErrorDumpUtil.ErrorLog("\n\nline 301 msgBrihAdmin"+msgBrihAdmin);
+						}
+						msgDear = pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgDear");
+						msgDear = MailNotification.getMessage_new(msgDear, FName, LName, "", UName);
+						msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
+						msgRegard = MailNotification.replaceServerPort(msgRegard, serverName, serverPort);
 				                subject = MailNotification.subjectFormate(userRole, "", pr );
-						messageFormate = MailNotification.getMessage(userRole, cAlias, dept, "", "", serverName, serverPort,pr);
-                                                messageFormate=MailNotification.getMessage_new(messageFormate,FName,LName,i_name,UName);
-              					Mail_msg=message+MailNotification.sendMail(messageFormate, email_existing, subject, "", file);
+						messageFormate = MailNotification.getMessage(userRole, cAlias, dept, UName, "", serverName, serverPort, pr);
+                                                messageFormate=MailNotification.getMessage_new(messageFormate,"","",i_name,"");
+              					//Mail_msg=message+MailNotification.sendMail(messageFormate, email_existing, subject, "", file);
+						Mail_msg = message + MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, msgBrihAdmin, email_existing, subject, "", file, instituteid);
 						pr = null;
 						subject ="";
-						messageFormate = "";	
+						messageFormate = "";msgBrihAdmin =""; msgDear=""; msgRegard="";	
 						Msg =MultilingualUtil.ConvertedString("u_msg1",file);
 						String Msg2 =MultilingualUtil.ConvertedString("u_msg5",file);
 						/**
@@ -442,34 +497,75 @@ ErrorDumpUtil.ErrorLog("This is the path :--utils(UserManagement) "+expdate) ;
 							NewUser="newUser";
 						else
 							NewUser="newUserhttps";
+                        			/**
+						 *  Added by shaista
+                         			 * One more mail is sent to New User on behalf of Brihaspati Admin if given user is new one.  
+                         			 * To inform that user is registered on Brihaspati 
+                         			 * To inform his user name and password.
+			                         * if(Role is author or institute admin to register{
+			                         * 	Getting Brihaspati Admin String from brihaspati.properties for author and 
+			                         * 	institute admin registration to send in mail }
+			                         * else { getting Institute admin's First and last name according to institute id to send in mail}
+			                         *  Calling  MailNotificationThread.getController().set_Message Method to push the message in queue
+			                         *  and to send mail.
+                                                 * @see MailNotificationThread class in utils
+						 * Initialize the variable which will fetch approriate message from the properties file
+			                         */
 						/**
                                                  * This mail will specify the user name and password of the new user
                                                  * @see MailNotification in utils
                                                  */
 						pr =MailNotification.uploadingPropertiesFile(fileName);
+						msgBrihAdmin=msgBrihAdmin=pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgBrihAdmin");
+                                                msgDear = pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgDear");
+                                                msgDear = MailNotification.getMessage_new(msgDear, FName, LName, "", UName);
+                                                msgRegard=pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgRegard");
+                                                msgRegard = MailNotification.replaceServerPort(msgRegard, serverName, serverPort);
                                                 subject = MailNotification.subjectFormate(NewUser, "", pr );
                                                 messageFormate = MailNotification.getMessage(NewUser, "", "", UName, Passwd, serverName, serverPort,pr);
-						 messageFormate=MailNotification.getMessage_new( messageFormate,FName,LName,i_name,UName);
+						//messageFormate=MailNotification.getMessage_new( messageFormate,FName,LName,i_name,UName);
+                                                messageFormate=MailNotification.getMessage_new( messageFormate,"","",i_name,"");
+	
 						//ErrorDumpUtil.ErrorLog("\n\n\n\n subject="+subject+"		messageFormate="+messageFormate);
-                                                //MailNotification.sendMail(NewUser,email_new,"","",UName,Passwd,fileName,serverName,serverPort,file);
-						MailNotification.sendMail(messageFormate, email_new, subject, "", file);
-						subject = ""; messageFormate ="";
+						//MailNotification.sendMail(messageFormate, email_new, subject, "", file);
+						 MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, msgBrihAdmin, email_new, subject, "", file, instituteid);
+						subject = ""; messageFormate =""; msgBrihAdmin="";
+						if(Role.equals("author") || Role.equals("institute_admin"))
+                                                        msgBrihAdmin=msgBrihAdmin=pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgBrihAdmin");
+                                                else{
+                                                        try{
+                                                                crit=new Criteria();
+                                                                crit.add(InstituteAdminUserPeer.INSTITUTE_ID,instIdint);
+                                                                List inm=InstituteAdminUserPeer.doSelect(crit);
+                                                                InstituteAdminUser element=(InstituteAdminUser)inm.get(0);
+                                                                instFirstLastName= element.getAdminFname() +" "+element.getAdminLname();
+                                                       }
+                                                       catch(Exception ex){
+                                                               ErrorDumpUtil.ErrorLog("The error in User Managemen Util class at line 506 to 513 !!"+ex);
+                                                       }
+                                                        msgBrihAdmin = pr.getProperty("brihaspati.Mailnotification."+NewUser+".msgInstAdmin");
+                                                        msgBrihAdmin = MailNotification.getMessage_new(msgBrihAdmin, "", "", instFirstLastName, "");
+                                                }
+						
                                                	subject = MailNotification.subjectFormate(userRole, "", pr );
 						if(Role.equals("author"))
 						{
 							//Mail_msg=message+MailNotification.sendMail(userRole,email_new,"","","","",fileName,serverName,serverPort,file);
                                                		messageFormate = MailNotification.getMessage(userRole, "", "", "", "", serverName, serverPort,pr);
-							 messageFormate=MailNotification.getMessage_new( messageFormate,FName,LName,i_name,UName);
+							//messageFormate=MailNotification.getMessage_new( messageFormate,FName,LName,i_name,UName);
+							messageFormate=MailNotification.getMessage_new( messageFormate,"","",i_name, "");
 							//ErrorDumpUtil.ErrorLog("----------- subject="+subject+"		messageFormate="+messageFormate);
-							Mail_msg=message+MailNotification.sendMail(messageFormate, email_new, subject, "", file);
+							//Mail_msg=message+MailNotification.sendMail(messageFormate, email_new, subject, "", file);
+							 Mail_msg = message+MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, msgBrihAdmin, email_new, subject, "", file, instituteid);
 						}
 						else
 						{
                                                		messageFormate = MailNotification.getMessage(userRole, cAlias, dept, "", "", serverName, serverPort,pr);
-							messageFormate=MailNotification.getMessage_new( messageFormate,FName,LName,i_name,UName);
+							//messageFormate=MailNotification.getMessage_new( messageFormate,FName,LName,i_name,UName);
+							messageFormate=MailNotification.getMessage_new( messageFormate,"","",i_name, "");
 							//ErrorDumpUtil.ErrorLog("----------- subject="+subject+"		messageFormate="+messageFormate);
-							//Mail_msg=message+MailNotification.sendMail(userRole,email_new,cAlias,dept,"","",fileName,serverName,serverPort,file);
-							Mail_msg=message+MailNotification.sendMail(messageFormate, email_new, subject, "", file);
+							//Mail_msg=message+MailNotification.sendMail(messageFormate, email_new, subject, "", file);
+							Mail_msg = message+MailNotificationThread.getController().set_Message(messageFormate, msgDear, msgRegard, msgBrihAdmin, email_new, subject, "", file, instituteid);							
 						}
 						/**
 						  * Insert default value of configuartion parameter
@@ -1140,6 +1236,13 @@ ErrorDumpUtil.ErrorLog("This is the path :--utils(UserManagement) "+expdate) ;
                                       		TurbineSecurity.removeUser(user);
                                                	tool.deleteUser(userName);
 				//		ErrorDumpUtil.ErrorLog("testing after tooldeletion=======");	
+
+						/**
+                                                 * Remove the user rollno and Program from database  
+                                                 */
+						crit = new Criteria();
+                                                crit.add(StudentRollnoPeer.EMAIL_ID,userName);
+                                                StudentRollnoPeer.doDelete(crit);
                                                	/**
                        				* Delete the repository from the server for
                        				* this User

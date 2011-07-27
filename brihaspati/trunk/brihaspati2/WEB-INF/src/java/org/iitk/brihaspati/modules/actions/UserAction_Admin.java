@@ -64,6 +64,7 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.CourseManagement;
 import org.iitk.brihaspati.modules.utils.UserGroupRoleUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
+import org.iitk.brihaspati.modules.utils. InstituteIdUtil;
 import org.apache.turbine.services.servlet.TurbineServlet;
 import org.apache.turbine.services.security.torque.om.TurbineUser;
 
@@ -82,7 +83,7 @@ import org.iitk.brihaspati.om.CoursesPeer;
  * @author <a href="mailto:shaistashekh@gmail.com">Shaista</a>
  * @author <a href="mailto:singh_jaivir@rediffmail.com">Jaivir Singh</a>
  * @author <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
- * @modified date: 08-07-2010, 20-10-2010, 23-12-2010
+ * @modified date: 08-07-2010, 20-10-2010, 23-12-2010, 27-07-2011
  */
 
 public class UserAction_Admin extends SecureAction_Admin{
@@ -105,6 +106,12 @@ public class UserAction_Admin extends SecureAction_Admin{
 			System.gc();
 			LangFile=(String)data.getUser().getTemp("LangFile");	
 			ParameterParser pp=data.getParameters();
+			/**
+			 * Added by shaista
+			 * Getting institute id as a String from prameter Parser Variable
+			 * Getting instName as a String according to institute id
+			 */
+			String instName= InstituteIdUtil.getIstName(Integer.parseInt(pp.getString("instId","")));
 	        	FileItem file = pp.getFileItem("file");
         		String fileName=file.getName();
 			if((!(fileName.toLowerCase()).endsWith(".txt"))||(file.getSize()<=0))
@@ -126,7 +133,15 @@ public class UserAction_Admin extends SecureAction_Admin{
 				Date date=new Date();
                 		File f=new File(TurbineServlet.getRealPath("/tmp")+"/"+group+role+date.toString()+".txt");
 				file.write(f);
-        			Vector msg=RegisterMultiUser.Multi_Register(f,group,role,serverName,serverPort,LangFile);
+				/** 
+				 * Added By shaista 	
+               	                 * passing instituteName variable as a string 
+                       	         * to get institute id for exprydate according to admin profile
+                       	         * to get Institute admin name and Institute Name
+                               	 * @see RegisterMultiUser util
+                                 * @see UserManagement Util
+       	                         **/
+        			Vector msg=RegisterMultiUser.Multi_Register(f,group,role,serverName,serverPort,LangFile,instName);
 	        		context.put("Msg",msg);
 			}
 		}
