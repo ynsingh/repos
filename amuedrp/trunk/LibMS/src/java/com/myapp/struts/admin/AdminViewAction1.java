@@ -4,10 +4,7 @@
  */
 
 package com.myapp.struts.admin;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import com.myapp.struts.utility.*;
-import com.myapp.struts.utility.Email;
+
 import  com.myapp.struts.hbm.Privilege;
 import  com.myapp.struts.hbm.PrivilegeId;
 import  com.myapp.struts.hbm.Library;
@@ -37,7 +34,10 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import  com.myapp.struts.utility.*;
 import javax.servlet.http.HttpSession;
-
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import com.myapp.struts.utility.*;
+import com.myapp.struts.utility.Email;
 
 /**
  * Developed By : Kedar Kumar
@@ -46,10 +46,10 @@ import javax.servlet.http.HttpSession;
  */
 public class AdminViewAction1 extends org.apache.struts.action.Action {
     
-    
+      private final ExecutorService executor=Executors.newFixedThreadPool(1);
+  Email obj;
     boolean result;
-    Email obj;
-    private final ExecutorService executor=Executors.newFixedThreadPool(1);
+   
     private  String user_name;
     private  String password;
     private String staff_id;
@@ -87,7 +87,6 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
     String rtl="ltr";
     boolean page=true;
     String align="left";
-    private String password1;
 
 
     
@@ -137,7 +136,7 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
         admin_lname=admin.getAdmin_lname();
         admin_designation=admin.getAdmin_designation();
         admin_email=admin.getAdmin_email();
-       // admin_password=admin.getAdmin_password();
+        admin_password=admin.getAdmin_password();
         library_id=admin.getLibrary_id();
         library_name=admin.getLibrary_name();
         courtesy=admin.getCourtesy();
@@ -147,15 +146,7 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
         
         user_name =admin.getAdmin_fname()+" "+admin.getAdmin_lname();
         
-
-         /*Password Generate and Reset It*/
-                 password= RandomPassword.getRandomString(10);
-                 System.out.println(password);
-
-
-              password1=PasswordEncruptionUtility.password_encrupt(password);
-
-
+        System.out.println(admin_password);
         
 
         sublibrary_id=library_id;
@@ -252,6 +243,14 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
                     return mapping.findForward("failure");
 
                 }
+
+              /*Password Generate and Reset It*/
+                 password= RandomPassword.getRandomString(10);
+                 System.out.println(password);
+        String password1 = PasswordEncruptionUtility.password_encrupt(password);
+
+
+
               
       /* Use to Insert New Login Entry related to Library Table & SubLibrary Table and Staff Table */
                 LoginId loginIdobj=new LoginId(staff_id, library_id);
@@ -266,8 +265,6 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
                 
 
                  result=LoginDAO.insert1(logobj);
-
-
                 if(result==false)
                 {
                     String msg=resource.getString("admin.acceptmesg.msg2");
@@ -762,10 +759,33 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
     /* Use to Update AdminRegistration Table if status is approved */
 
             AdminRegistration adminobj=(AdminRegistration)AdminRegistrationDAO.searchInstituteAdmin(login_id);
-          
+           // adminobj.setRegistrationId(registration_request_id);
+           // adminobj.setInstituteName(institute_name);
+          //  adminobj.setAbbreviatedName(abbreviated_name);
+         //   adminobj.setInstituteAddress(institute_address);
+          //  adminobj.setCity(city);
+         //   adminobj.setState(state);
+          //  adminobj.setCountry(country);
+          //  adminobj.setPin(pin);
+         //   adminobj.setLandLineNo(land_line_no);
+         //   adminobj.setMobileNo(mobile_no);
             
-             adminobj.setStatus("Registered");
+         //   adminobj.setLoginId(login_id);
+        //    adminobj.setTypeOfInstitute(type_of_institute);
+         //   adminobj.setWebsite(website);
+         //   adminobj.setAdminFname(admin_fname);
+         //   adminobj.setAdminLname(admin_lname);
+        //    adminobj.setAdminDesignation(admin_designation);
+        //    adminobj.setAdminEmail(admin_email);
+        //    adminobj.setAdminPassword(admin_password);
+            adminobj.setStatus("Registered");
             adminobj.setLibraryId(library_id);
+       //     adminobj.setLibraryName(library_name);
+       //     adminobj.setCourtesy(courtesy);
+       //     adminobj.setGender(gender);
+           adminobj.setStaffId(staff_id);
+       //     System.out.println(admin_email);
+
              result= AdminRegistrationDAO.update1(adminobj);
 
             if(result==false)
@@ -787,17 +807,15 @@ public class AdminViewAction1 extends org.apache.struts.action.Action {
                           request.setAttribute("msg",library_id+" "+resource.getString("admin.acceptmesg.msg1"));
                         
 
-         
                         
-               String path = servlet.getServletContext().getRealPath("/");
-            obj=new Email(path,admin_email,password,"Create SuperAdmin Account Successfully from LibMS","User Id="+login_id+" Your Password for LibMS Login is="+password);
+                  String path = servlet.getServletContext().getRealPath("/");
+             obj=new Email(path,staffobj.getEmailId(),password,"Create Account Successfully from LibMS","User Id="+login_id+" Your Password for LibMS Login is="+password+" User Role="+"Inst-Admin");
             executor.submit(new Runnable() {
 
                 public void run() {
                     obj.send();
                 }
             });
-
 
                        
                        

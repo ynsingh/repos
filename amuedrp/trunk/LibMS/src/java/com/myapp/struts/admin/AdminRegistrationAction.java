@@ -7,7 +7,7 @@ package com.myapp.struts.admin;
 import  com.myapp.struts.hbm.*;
 import  com.myapp.struts.AdminDAO.*;
 
-import  com.myapp.struts.MyConnection;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -17,7 +17,7 @@ import org.apache.struts.action.ActionMapping;
 import javax.servlet.http.HttpSession;
 import com.myapp.struts.utility.*;
 import java.sql.Connection;
-
+import java.util.*;
 
 
 
@@ -40,7 +40,10 @@ boolean result;
 AdminRegistration adminobj;
  private byte[] imagefile;
 Connection con1;
-
+ Locale locale=null;
+   String locale1="en";
+   String rtl="ltr";
+   String align="left";
 
 
 
@@ -57,6 +60,22 @@ Connection con1;
 
  HttpSession session1 =request.getSession();
 
+   try{
+
+        locale1=(String)session1.getAttribute("locale");
+    if(session1.getAttribute("locale")!=null)
+    {
+        locale1 = (String)session1.getAttribute("locale");
+        System.out.println("locale="+locale1);
+    }
+    else locale1="en";
+}catch(Exception e){locale1="en";}
+     locale = new Locale(locale1);
+    if(!(locale1.equals("ur")||locale1.equals("ar"))){ rtl="LTR";align = "left";}
+    else{ rtl="RTL";align="right";}
+    ResourceBundle resource = ResourceBundle.getBundle("multiLingualBundle", locale);
+
+
  //ImageUploadActionForm form1 = (ImageUploadActionForm)session1.getAttribute("ImageUploadActionForm");
 
         AdminRegistrationActionForm adminRegistrationActionForm=(AdminRegistrationActionForm)form;
@@ -71,14 +90,7 @@ Connection con1;
         try{
        
             
-        con1= MyConnection.getMyConnection();
-
-            if(con1==null)
-             {
-                request.setAttribute("msg1","Database Connectivity is Closed");
-                return mapping.findForward("failure");
-             }
-
+       
 
 
 
@@ -98,7 +110,8 @@ Connection con1;
           if(tempobj!=null || loginobj!=null)
             {
 
-            request.setAttribute("msg", "User ID is Duplicate");
+           // request.setAttribute("msg", "User ID is Duplicate");
+             request.setAttribute("msg",resource.getString("admin.adminregistrationaction.error1"));
                 return mapping.findForward("duplicate");
            }
 
@@ -138,14 +151,17 @@ Connection con1;
                 if(result==false)
                 {
                     String msg="Request for registration failure due to some error";
-                    request.setAttribute("msg1", msg);
+
+                    //request.setAttribute("msg1", msg);
+                    request.setAttribute("msg1",resource.getString("admin.adminregistrationaction.error2"));
                     return mapping.findForward("failure");
                 }
 
                 String msg="Request for Library Registration accepted successfully" ;
 
               
-                request.setAttribute("registration_msg", msg);
+                //request.setAttribute("registration_msg", msg);
+                 request.setAttribute("registration_msg",resource.getString("admin.adminregistrationaction.error3"));
                 return mapping.findForward("success");
            }
 
@@ -154,7 +170,9 @@ Connection con1;
         {
       
             String msg="Request for registration failure due to some error";
-            request.setAttribute("msg1", msg);
+            //request.setAttribute("msg1", msg);
+            request.setAttribute("msg1", resource.getString("admin.adminregistrationaction.error2"));
+
             session.invalidate();
             System.out.println(e.toString());
             return mapping.findForward("failure");

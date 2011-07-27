@@ -45,17 +45,14 @@ public void send(){
 
 try
 {
+System.out.println(path);
 
-  path=path.substring(0,path.lastIndexOf("/"));
-  path=path.substring(0,path.lastIndexOf("/"));
-  //path=path.substring(0,path.lastIndexOf("\\"));
-  System.out.println(path);
 
 
 
   // Open the file that is the first
   // command line parameter
-  FileInputStream fstream = new FileInputStream(path+"/web/admin/mail.txt");
+  FileInputStream fstream = new FileInputStream(path+"/admin/mail.txt");
   InputStreamReader isr = new InputStreamReader(fstream,"UTF8");
  buffer= new StringBuffer();
  Reader in = new BufferedReader(isr);
@@ -77,7 +74,7 @@ props.put("mail.smtp.starttls.enable", "true");
 props.put("mail.smtp.host", host);
 props.setProperty("mail.transport.protocol", "smtp");
 props.put("mail.smtp.user", userid);
-props.put("mail.smtp.password", "amuadmin123");
+props.put("mail.smtp.password",buffer);
 props.put("mail.smtp.port", "587");
 props.put("mail.smtp.auth", "true");
 Session session = Session.getDefaultInstance(props, null);
