@@ -197,14 +197,14 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
                                 upLabel[i].removeMouseListener(this);
                         }
 			else{
-                                upLabel[i]=new JLabel("<html><Font color=black>"+Language.getController().getLangValue("InstructorCSPanel.Update")+"</font></html>");
+                                upLabel[i]=new JLabel("<html><Font color=blue>"+Language.getController().getLangValue("InstructorCSPanel.Update")+"</font></html>");
                                 upLabel[i].addMouseListener(this);
                 		upLabel[i].setName("Update.Action");
                                 upLabel[i].setCursor(new Cursor(Cursor.HAND_CURSOR));
                         }
                         /******************************************************************************/
 			buttonPanel[i].add(upLabel[i]);
-			cancleLabel[i]=new JLabel("<html><Font color=blue><u>"+Language.getController().getLangValue("InstructorCSPanel.Cancle")+"</u></font></html>");
+			cancleLabel[i]=new JLabel("<html><Font color=blue><u>"+Language.getController().getLangValue("InstructorCSPanel.Cancel")+"</u></font></html>");
                         cancleLabel[i].addMouseListener(this);
                         cancleLabel[i].setName("Cancle.Action");
                         cancleLabel[i].setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -231,13 +231,13 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
                   	mainPanel.remove(1);
 			if(((String)combo.getSelectedItem()).equals("--Show All--")){
 				announceLabel.setEnabled(false);
-                                announceLabel.setText("<html><b><font color=blue>"+Language.getController().getLangValue("InstructorCSPanel.AnnounceLabel")+"</font></b></html>");
+                                announceLabel.setText("<html><b><font color=black>"+Language.getController().getLangValue("InstructorCSPanel.AnnounceLabel")+"</font></b></html>");
 				announceLabel.removeMouseListener(this);
 				Vector courseName=client_obj.getInstCourseList();
 				mainPanel.add(showLecture(client_obj.getSessionList(courseName,client_obj.getIndexServerName())),BorderLayout.CENTER);
 			}else{
 				announceLabel.setEnabled(true);
-                                announceLabel.setText("<html><b><font color=blue>"+Language.getController().getLangValue("InstructorCSPanel.AnnounceLabel")+"</font></b></html>");
+                                announceLabel.setText("<html><b><font color=blue><u>"+Language.getController().getLangValue("InstructorCSPanel.AnnounceLabel")+"</u></font></b></html>");
 				announceLabel.addMouseListener(this);
 				Vector courseName=new Vector();
 				client_obj.setCourseForAnnounce((String)combo.getSelectedItem());
@@ -324,7 +324,7 @@ public class InstructorCSPanel extends JPanel implements ActionListener, MouseLi
 
 	public void mouseEntered(MouseEvent e) {	
 		if(e.getComponent().getName().equals("announceLabel.Action"))
-		 announceLabel.setText("<html><b><font color=blue>"+Language.getController().getLangValue("InstructorCSPanel.AnnounceLabel")+"</font></b></html>");
+		 announceLabel.setText("<html><b><font color=blue><u>"+Language.getController().getLangValue("InstructorCSPanel.AnnounceLabel")+"</u></font></b></html>");
 
 	}
 

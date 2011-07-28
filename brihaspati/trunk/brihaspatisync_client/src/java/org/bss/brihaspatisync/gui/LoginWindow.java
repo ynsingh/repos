@@ -112,7 +112,8 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 	 */	
 	protected void createGUI(){
 		languages.add("English");
-		//languages.add("Urdu");
+		languages.add("Greek");
+		languages.add("Korean");
 		//languages.add("Hindi");
     		panel=new JPanel();
     		panel.setLayout(new BorderLayout());
@@ -316,38 +317,57 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 			if(languageName.equals("English")){
 				
 				try {
-					chooseLanguageLabel.setText(Language.getController().getLangValue("LoginWindow.chooseLanguageLabel")+"En");
-					chooseServerLabel.setText(Language.getController().getLangValue("LoginWindow.ChooseServer")+"en");
+					chooseLanguageLabel.setText(Language.getController().getLangValue("LoginWindow.chooseLanguage"));
+					chooseServerLabel.setText(Language.getController().getLangValue("LoginWindow.ChooseServer"));
+					bottomLabel.setText(Language.getController().getLangValue("LoginWindow.bottomLabel"));
+					titledBorder1.setTitle(Language.getController().getLangValue("LoginWindow.ServerPanelTitle"));
+					setTitle(Language.getController().getLangValue("LoginWindow.Title"));
 					mainPanel.remove(1);
                                         mainPanel.add(createLoginPanel(),BorderLayout.CENTER);
                                         mainPanel.revalidate();
                                         mainPanel.validate();
                                         panel.repaint();
-					//this.setTitle("this is english");
-					mainWindow.setTitle(Language.getController().getLangValue("MainWindow.MainWindowTitle")+"English");
+					mainWindow.setTitle(Language.getController().getLangValue("MainWindow.MainWindowTitle"));
 					mainWindow.setMenuText();
 					mainWindow.setMenuItemText();
 
 				}catch(Exception ex){}
 				return;
-			} else if(languageName.equals("Urdu")){
+			} else if(languageName.equals("Greek")){
 				try {
-					chooseLanguageLabel.setText(Language.getController().getLangValue("LoginWindow.chooseLanguageLabel")+"ur");    
-					
-			        	chooseServerLabel.setText(Language.getController().getLangValue("LoginWindow.ChooseServer")+"ur");
+					chooseLanguageLabel.setText(Language.getController().getLangValue("LoginWindow.chooseLanguage"));    
+			        	chooseServerLabel.setText(Language.getController().getLangValue("LoginWindow.ChooseServer"));
+					bottomLabel.setText(Language.getController().getLangValue("LoginWindow.bottomLabel"));
+                                        titledBorder1.setTitle(Language.getController().getLangValue("LoginWindow.ServerPanelTitle"));
+                                        setTitle(Language.getController().getLangValue("LoginWindow.Title"));
 					mainPanel.remove(1);
 					mainPanel.add(createLoginPanel(),BorderLayout.CENTER);
 					mainPanel.revalidate();
 					mainPanel.validate();
 					panel.repaint();
-					//this.setTitle("This is urdu");
-					mainWindow.setTitle(Language.getController().getLangValue("MainWindow.MainWindowTitle")+"Urdu");
+					mainWindow.setTitle(Language.getController().getLangValue("MainWindow.MainWindowTitle"));
 					mainWindow.setMenuText();
                                         mainWindow.setMenuItemText();
 		                }catch(Exception ex){}
 				return;
-			} 
-
+			}else if(languageName.equals("Korean")){
+                                try {
+                                        chooseLanguageLabel.setText(Language.getController().getLangValue("LoginWindow.chooseLanguage"));
+                                        chooseServerLabel.setText(Language.getController().getLangValue("LoginWindow.ChooseServer"));
+                                        bottomLabel.setText(Language.getController().getLangValue("LoginWindow.bottomLabel"));
+                                        titledBorder1.setTitle(Language.getController().getLangValue("LoginWindow.ServerPanelTitle"));
+                                        setTitle(Language.getController().getLangValue("LoginWindow.Title"));
+                                        mainPanel.remove(1);
+                                        mainPanel.add(createLoginPanel(),BorderLayout.CENTER);
+                                        mainPanel.revalidate();
+                                        mainPanel.validate();
+                                        panel.repaint();
+                                    	mainWindow.setTitle(Language.getController().getLangValue("MainWindow.MainWindowTitle"));
+                                     	mainWindow.setMenuText();
+                                	mainWindow.setMenuItemText();
+                            	}catch(Exception ex){}
+                                        return;
+                    	}
     		}
 	}   
 		
@@ -379,7 +399,7 @@ public class LoginWindow extends JInternalFrame implements ActionListener, Mouse
 				JOptionPane.showMessageDialog(null,Language.getController().getLangValue("LoginWindow.MessageDialog1"), "Message", JOptionPane.ERROR_MESSAGE);
 			}else {
 				//System.out.println("Login Successfull");
-				JOptionPane.showMessageDialog(null,Language.getController().getLangValue("LoginWindow.MessageDialog2"));
+				//JOptionPane.showMessageDialog(null,Language.getController().getLangValue("LoginWindow.MessageDialog2"));
 				//System.out.println("Login Successfull");
 				//JOptionPane.showMessageDialog(null,"Login Successfull");
 				client_obj.setUserName(usernameText.getText());

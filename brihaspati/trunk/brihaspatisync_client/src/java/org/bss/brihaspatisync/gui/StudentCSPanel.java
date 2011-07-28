@@ -153,7 +153,7 @@ public class StudentCSPanel extends JPanel implements ActionListener, MouseListe
                         lectDate=lectDate.replaceAll("-","");
 			int checkintdate=Integer.parseInt(lectDate);
                         if(checkintdate == curdate) {
-                    		runButton[i]=new JButton(Language.getController().getLangValue("StudentCSPanel.Join"));
+                    		runButton[i]=new JButton(Language.getController().getLangValue("StudentCSPanel.JoinBttn"));
 				runButton[i].addActionListener(this);
 
                		}
