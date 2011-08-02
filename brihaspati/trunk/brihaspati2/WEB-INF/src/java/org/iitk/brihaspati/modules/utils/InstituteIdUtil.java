@@ -53,6 +53,7 @@ import org.iitk.brihaspati.om.InstituteAdminUser;
 import org.iitk.brihaspati.om.ProgramPeer;
 import org.iitk.brihaspati.om.Program;
 import org.iitk.brihaspati.modules.utils.UserUtil;
+import org.iitk.brihaspati.modules.utils.UsageDetailsUtil;
 import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 /**
  * @author <a href="mailto:nksinghiitk@gmail.com">Nagendra Kumar Singh</a>
@@ -168,35 +169,23 @@ public class InstituteIdUtil
 	public static String getTimeCalculation(int uid)
 	{	String utime=null;
 		try{
+			int eid=UsageDetailsUtil.getentryId(uid);
 			Date de=new Date();
-                	DateFormat df = DateFormat.getDateInstance();
-                	String s = df.format(de);
                 	Criteria crit=new Criteria();
-                	crit.add(UsageDetailsPeer.USER_ID,uid);
-               		 List v=UsageDetailsPeer.doSelect(crit);
-                	Vector vec=new Vector();
-                 	for(int p=0;p<v.size();p++) {
-                 		UsageDetails element=(UsageDetails)v.get(p);
+			crit.add(UsageDetailsPeer.ENTRY_ID,eid);
+               		List v=UsageDetailsPeer.doSelect(crit);
+                 		UsageDetails element=(UsageDetails)v.get(0);
                         	Date time=(element.getLoginTime());
-                        	long te=time.getTime();
-                        	String s1 = df.format(time);
-                        	if(s.equals(s1))
-                        	vec.add(te);
-                	}
-                	Object obm = Collections.max(vec);
-                	String str1 = obm.toString();
-                	long l = Long.parseLong(str1.trim());
-                	long diff = de.getTime() - l;
+                	long diff = de.getTime()-time.getTime();
                 	long diffHours = diff/(60 * 60 * 1000);
                 	long diffHour = diff%(60 * 60 * 1000);
                 	long diffMin=diffHour/(60*1000);
 			utime=+diffHours+"Hrs"+" "+diffMin+"Min";
-		}catch(Exception ex){}
+		}catch(Exception ex){ ErrorDumpUtil.ErrorLog("Exception in time Calculation of every Activeuser----------");}
                 return utime;
 
 	}
-
-
+		
 	/** Get the Institute id on the basis of Institute Name
 	 */
 
