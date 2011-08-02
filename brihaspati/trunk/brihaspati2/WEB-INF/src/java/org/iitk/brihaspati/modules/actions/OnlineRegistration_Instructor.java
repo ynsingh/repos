@@ -54,7 +54,10 @@ import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.CourseManagement;
 import org.iitk.brihaspati.modules.utils.MailNotification;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
+import org.iitk.brihaspati.modules.utils.InstituteIdUtil;
+import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
 
@@ -65,7 +68,7 @@ import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
  * @author  <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @author  <a href="mailto:richa.tandon1@gmail.com">Richa Tandon</a>
  * @modify 20-03-09
- * @modify 20-10-2010,23-12-2010
+ * @modify 20-10-2010,23-12-2010, 16-06-2011
  */
 
 
@@ -90,6 +93,7 @@ public class  OnlineRegistration_Instructor extends SecureAction{
 
                         User user=data.getUser();
 			LangFile=(String)user.getTemp("LangFile");
+			
                         ParameterParser pp=data.getParameters();
 	                String accept=pp.getString("deleteFileNames");
 			String path=data.getServletContext().getRealPath("/OnlineUsers");
@@ -102,13 +106,24 @@ public class  OnlineRegistration_Instructor extends SecureAction{
                         String srvrPort= TurbineServlet.getServerPort();
 ////////////////////////////////////////////////////////////////////////
 			String message ="";
-                        String info_new = "";
+                        String info_new = "", info_Opt="", msgRegard="";
+			String loginName = data.getUser().getName();
+			String strInstId =  (String)user.getTemp("Institute_id","");
+			//ErrorDumpUtil.ErrorLog("\n\nstrInstId======="+strInstId);
+                        String instName=InstituteIdUtil.getIstName(Integer.parseInt(strInstId));
                         if(srvrPort == "8080")
+			{
                                 info_new="onLineRegReqForUserReject";
-                        else
+				 info_Opt = "newUser";
+			}
+                        else {
                                 info_new="onLineRegReqForUserReject_https";
+				 info_Opt = "newUserhttps";
+			}
                         Properties pr =MailNotification.uploadingPropertiesFile(TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties"));
                         String subject = MailNotification.subjectFormate(info_new, "", pr );
+			msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
+			msgRegard = MailNotification.replaceServerPort(msgRegard, server_name, srvrPort);
 			//ErrorDumpUtil.ErrorLog("OnlineRegistration_Instructor.java RejectUser  subject="+subject);
 ///////////////////////////////////////////////////////////////////////////
 			for(int j=0;st.hasMoreTokens();j++)
@@ -118,6 +133,7 @@ public class  OnlineRegistration_Instructor extends SecureAction{
 				userName = splitedTokn[0];
 				groupName = splitedTokn[1];
 				mailId = splitedTokn[2];
+				
 				
 
                         	if(userlist!= null)
@@ -131,10 +147,11 @@ public class  OnlineRegistration_Instructor extends SecureAction{
 
 						if(uname.equals(userName) && gname.equals(groupName) && email.equals(mailId))
 						{	
-							message = MailNotification.getMessage(info_new, gname, "", uname, "", server_name, srvrPort,pr);					
+							message = MailNotification.getMessage(info_new, gname, "", uname, "", pr);					
 							//ErrorDumpUtil.ErrorLog("OnlineRegistration_Instructor.java RejectUser  message="+message);
-							//String Mail_msg=MailNotification.sendMail(msgForExpireTime+gname+subMsgForExpireTime,mailId,"onlineRegRequest","Updation Mail","","","",server_name,srvrPort,LangFile);
-							String Mail_msg=MailNotification.sendMail(message, mailId, subject, "", LangFile);
+							//String Mail_msg=MailNotification.sendMail(message, mailId, subject, "", LangFile);
+							String Mail_msg = MailNotificationThread.getController().set_Message(message, "", msgRegard, "Instructor of  "+instName+"<br>"+loginName, mailId, subject, "", LangFile, strInstId);
+
 							indexList.add(i);
 							String str=MultilingualUtil.ConvertedString("online_msg3",LangFile);
                 					data.setMessage(str);
@@ -163,6 +180,8 @@ public class  OnlineRegistration_Instructor extends SecureAction{
 			
 			Vector userlist=new Vector();
 			Vector indexList=new Vector();
+			String splitedInstId [];
+			String instId ="", instName="";
 	
 			User user=data.getUser();
                         ParameterParser pp=data.getParameters();
@@ -183,6 +202,9 @@ public class  OnlineRegistration_Instructor extends SecureAction{
                                 splitedTokn = tokn.split(":");
                                 userName = splitedTokn[0];
                                 groupName = splitedTokn[1];
+				splitedInstId = groupName.split("_");
+				instId = splitedInstId [1];
+				instName=InstituteIdUtil.getIstName(Integer.parseInt(instId));
                                 mailId = splitedTokn[2];
 
 				if(userlist!=null)
@@ -209,7 +231,7 @@ public class  OnlineRegistration_Instructor extends SecureAction{
 							if(uname!=null)
 							{
 								try{
-			              					String msg=UserManagement.CreateUserProfile(uname,passwd,fname,lname,"",email,gname,roleName,serverName,serverPort,LangFile,rollno,program); //modified by Shikha
+			              					String msg=UserManagement.CreateUserProfile(uname,passwd,fname,lname,instName,email,gname,roleName,serverName,serverPort,LangFile,rollno,program); //modified by Shikha
 									data.setMessage(msg);
 								}
 								catch(Exception e){
@@ -217,8 +239,9 @@ public class  OnlineRegistration_Instructor extends SecureAction{
 								}
 							}//if
 							indexList.add(i);
-							String str=MultilingualUtil.ConvertedString("online_msg1",LangFile);
-                					data.addMessage(str);
+							//Selected user registered successfully
+							//String str=MultilingualUtil.ConvertedString("online_msg1",LangFile);
+                					//data.addMessage(str);
 						}	
 					}//for
 				}//if

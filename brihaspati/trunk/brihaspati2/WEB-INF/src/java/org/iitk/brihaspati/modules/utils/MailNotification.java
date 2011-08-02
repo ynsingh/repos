@@ -132,6 +132,14 @@ public class MailNotification{
                 //replaceString("server_name",server_name);
                	//return(replaceString("server_port",server_port));
 	}
+	public static String getMessage(String info, String course_id, String dept_name, String uName, String uPassword, Properties pr) throws Exception{
+		
+		message = new StringBuffer(pr.getProperty("brihaspati.Mailnotification."+info+".message"));
+		replaceString("course_id",course_id);
+        	replaceString("dept_name",dept_name);
+             	replaceString("user_name",uName);
+		return replaceString("user_pass",uPassword);
+	}
 
 	 public static String replaceServerPort(String info,String serverName, String serverPort) throws Exception {
                if(serverName.length() >0)

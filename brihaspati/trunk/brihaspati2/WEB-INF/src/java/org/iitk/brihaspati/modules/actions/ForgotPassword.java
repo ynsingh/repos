@@ -219,8 +219,6 @@ public class ForgotPassword extends VelocitySecureAction
 						//msg1=MailNotification.sendMail(message, mailId, subject, "", LangFile); 
 						msg1=MailNotificationThread.getController().set_Message(message, "", msgRegard, msgBrihAdmin, mailId, subject, "", LangFile, ""); 
 						/////////////////////////////////////////////////
-						 if(msg1.equals(MultilingualUtil.ConvertedString("mail_msg2",LangFile)))
-                                                {
 						/**
 						* new Password encrypted by MD5 then modify database 
 						* password for user
@@ -230,12 +228,8 @@ public class ForgotPassword extends VelocitySecureAction
 		       				user.setPassword(encPass); 
 						TurbineSecurity.saveUser(user);
 						msg=MultilingualUtil.ConvertedString("forgotPwd_msg3",LangFile);
-						data.setMessage(msg);
-						}
-                                               else
-                                               {
-                                                       data.setMessage(msg1);
-                                               }
+						data.setMessage(msg1);
+						data.addMessage(msg);
 
 					}
 					catch(Exception e)

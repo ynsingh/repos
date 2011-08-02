@@ -68,6 +68,7 @@ import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.PasswordUtil;
 import org.apache.turbine.services.security.TurbineSecurity;
 import org.iitk.brihaspati.modules.utils.MailNotification;
+import org.iitk.brihaspati.modules.utils.MailNotificationThread;
 import org.iitk.brihaspati.om.StudentExpiryPeer;
 import org.iitk.brihaspati.modules.utils.AdminProperties;
 import org.iitk.brihaspati.modules.utils.InstituteDetailsManagement;
@@ -181,6 +182,13 @@ public class UserAction_Instructor extends SecureAction_Instructor
 	                String serverPort=TurbineServlet.getServerPort();
 			String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
 			String subject="";
+			String loginName = user.getName();
+			String strInstId =  (String)user.getTemp("Institute_id","");
+			//ErrorDumpUtil.ErrorLog("\n\nstrInstId======="+strInstId);
+                        //int instid=Integer.parseInt( strInstId);
+                        String instName=InstituteIdUtil.getIstName(Integer.parseInt(strInstId));
+			ErrorDumpUtil.ErrorLog("\n\n UserAction_Instructor class instName="+instName);
+
 			/**
 	                if(serverPort.equals("8080"))
         	        subject="deleteUser";
@@ -224,7 +232,7 @@ public class UserAction_Instructor extends SecureAction_Instructor
 					TurbineUser element=(TurbineUser)UserManagement.getUserDetail(uid).get(0);
                                 	email=element.getEmail();
 					subject=checkUserAvailabilityDifferntGroup(userName,serverPort);
-			                msg1=umt.removeUserProfileWithMail(userName,group,LangFile,subject,email,"","","","",fileName,serverName,serverPort);
+			                msg1=umt.removeUserProfileWithMail(userName,group,LangFile,subject,email,instName, loginName,"","",fileName,serverName,serverPort);
 		                	msg = msg1.split(":");
 	                		data.setMessage(msg[0]);
 					/**
@@ -293,12 +301,29 @@ public class UserAction_Instructor extends SecureAction_Instructor
 			//String file=(String)data.getUser().getTemp("LangFile");
 			User user1 = TurbineSecurity.getUser(userName);
                         String mailId=user1.getEmail();
-			String info_new = "newPassword";
-			String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
+			
+			String info_new = "", info_Opt="";
+			if(serverPort.equals("8080")){
+				info_new = "newPassword";
+				info_Opt = "newUser";
+			}
+			else {
+				info_new = "newPasswordhttps";
+				info_Opt = "newUserhttps";
+			}
+			PasswordUtil.passwordFromUtil(serverName, serverPort);
+			String newPW=StringUtil.replaceXmlSpecialCharacters(Passwd);
+			String msg=PasswordUtil.doChangepassword(user1,"",newPW,LangFile);
+                        //data.setMessage(msg);
+
+			/*String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
 			Properties pr =MailNotification.uploadingPropertiesFile(fileName);
 			String subject = MailNotification.subjectFormate(info_new, "", pr );
-			String messageFormat = MailNotification.getMessage(info_new, "", "", "", Passwd, serverName, serverPort,pr);
-			String msg=MailNotification.sendMail(messageFormat, mailId, subject, "", LangFile);
+			String messageFormat = MailNotification.getMessage(info_new, "", "", "", Passwd, pr);
+			String msgRegard=pr.getProperty("brihaspati.Mailnotification."+info_Opt+".msgRegard");
+			msgRegard = MailNotification.replaceServerPort(msgRegard, serverName, serverPort);
+			//String msg=MailNotification.sendMail(messageFormat, mailId, subject, "", LangFile);
+			String msg=  MailNotificationThread.getController().set_Message(messageFormat, "", msgRegard, "<br> Brihaspati Admin", mailId, subject, "", LangFile, "");*/
 			data.setMessage(msg);			
                 }
                 catch(Exception ex)
@@ -414,6 +439,11 @@ public class UserAction_Instructor extends SecureAction_Instructor
 		TurbineUser element=(TurbineUser)UserManagement.getUserDetail(uid).get(0);
                 String email=element.getEmail();
 		String group=data.getUser().getTemp("course_id").toString();
+		String loginName = user.getName();
+		String strInstId =  (String)user.getTemp("Institute_id","");
+		//ErrorDumpUtil.ErrorLog("\n\nstrInstId======="+strInstId);
+                String instName=InstituteIdUtil.getIstName(Integer.parseInt( strInstId));
+
 		/**
                 *Get the Server Name and
                 *Server Port using in sending mail on deletion
@@ -427,7 +457,7 @@ public class UserAction_Instructor extends SecureAction_Instructor
                 */
 		String fileName=TurbineServlet.getRealPath("/WEB-INF/conf/brihaspati.properties");
 		UserManagement umt= new UserManagement();
-		msg1=umt.removeUserProfileWithMail(userName,group,LangFile,subject,email,"","","","",fileName,serverName,serverPort);
+		msg1=umt.removeUserProfileWithMail(userName,group,LangFile,subject,email,instName, loginName, "","",fileName,serverName,serverPort);
                 msg = msg1.split(":");
 		data.setMessage(msg[0]);
 		data.addMessage(msg[1]);
@@ -557,16 +587,16 @@ public class UserAction_Instructor extends SecureAction_Instructor
                 if( (grpId.size() > 1) )
                 {
                         if(serverPort.equals("8080"))
-                                 subject="deleteFromGroup";
+                                 subject="deleteFromGroup$newUser";
                         else
-                                subject="deleteFromGrouphttps";
+                                subject="deleteFromGrouphttps$newUserhttps";
                 }
                 else
                 {
                         if(serverPort.equals("8080"))
-                                subject="deleteUser";
+                                subject="deleteUser$newUser";
                         else
-                                subject="deleteUserhttps";
+                                subject="deleteUserhttps$newUserhttps";
                 }
                 return subject;
 	}
