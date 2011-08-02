@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!--
-  - Sample namespace-based configuration
-  -
-  -->
 
 <beans:beans xmlns="http://www.springframework.org/schema/security"
     xmlns:beans="http://www.springframework.org/schema/beans"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+              http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+              http://www.springframework.org/schema/security 
+              http://www.springframework.org/schema/security/spring-security-3.0.xsd">
 
     <global-method-security pre-post-annotations="enabled">
         <!-- AspectJ pointcut expression that locates our "post" method and applies security that way
@@ -18,16 +16,26 @@
     </global-method-security>
 
     <http use-expressions="true">
-        <intercept-url pattern="/Jsp/extreme/**" access="hasRole('ROLE_SUPERVISOR')"/>
-        <intercept-url pattern="/Jsp/**" access="isAuthenticated()" />
-        <!-- Disable web URI authorization, as we're using <global-method-security> and have @Secured the services layer instead
-        <intercept-url pattern="/listAccounts.html" access="isRememberMe()" />
-        <intercept-url pattern="/post.html" access="hasRole('ROLE_TELLER')" />
-        -->
-        <intercept-url pattern="/**" access="permitAll" />
+    	<intercept-url pattern="/ForgotPasswordController" access="permitAll" />
+	<intercept-url pattern="/profileCreationServlet" access="permitAll" />
+	<intercept-url pattern="/profileActivationServlet" access="permitAll" />
+        <intercept-url pattern="/login.jsp" access="permitAll" />
+        <intercept-url pattern="/ActivateProfile.jsp" access="permitAll" />
+        <intercept-url pattern="/ForgotPassword.jsp" access="permitAll" />
+        <intercept-url pattern="/ForgotPwdSuccess.jsp" access="permitAll" />
+        <intercept-url pattern="/index.jsp" access="permitAll" />
+        <intercept-url pattern="/error_page.jsp" access="permitAll" />
+        <intercept-url pattern="/images/**" access="permitAll" />
+        <intercept-url pattern="/css/**" access="permitAll" />
+        <intercept-url pattern="/js/**" access="permitAll" />        
+        <intercept-url pattern="/xml/staff_profile_report_v0.xml" access="permitAll" />
+        <intercept-url pattern="/**" access="isAuthenticated()" /> 
+        
         <form-login login-page="/login.jsp" authentication-failure-url="/login.jsp?login_error=1" />
         <logout logout-success-url="/login.jsp"/>
-        <remember-me />
+        
+        <session-management invalid-session-url="/login.jsp"/>
+       
 <!--
     Uncomment to enable X509 client authentication support
         <x509 />
@@ -39,14 +47,6 @@
 	-->
     </http>
 
-    <!--
-    Usernames/Passwords are
-        rod/koala
-        dianne/emu
-        scott/wombat
-        peter/opal
-    -->
-    
        
     <!-- added for SHA1 password encryption by Hani -->
     <beans:bean id="passwordEncoderBean" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">

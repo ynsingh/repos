@@ -1,37 +1,4 @@
 package com.erp.nfes;
-
-/*
- * Copyright (c) 2002-2006 Amrita Technologies
- * Amritapuri, Kerala, India
- * All rights reserved.
- *
- * This software is the confidential and proprietary information of Amrita
- * Technologies. ("Confidential Information").  You shall not
- * disclose such Confidential Information and shall use it only in
- * accordance with the terms of the license agreement you entered into
- * with Amrita Technologies.
- */
-
-/** Servlet Handling the ClinicalDoc Actions
- *
- *	@author		Manoj
- *	@version	1.0 11/11/2005
- */
-
-/*
- * Revision History
- *
- *  Date			Author			Comments
- *	11/11/05		Kannan			Added the copyright and revision history comments
- *  12/11/05		Manoj S			Added code to implement the CPath saving
- *  12/12/05		Manoj S			Added function to get the global configuration parameter for sound applet.
- *  28/12/05        Prajeesh        Added for general form Impl
- *  27/01/06		Manoj S			Added validations in getPatient function to avoid null pointer exceptions.
- *  08/03/06		Manoj S			For commenting the unused method modifyHashReportParams, which was using the jasper,
- *  									classes.
- *
- */
-
 import java.io.File;
 import java.io.IOException;
 import java.sql.CallableStatement;
@@ -42,20 +9,17 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+//import javax.swing.JOptionPane;
 
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-import javax.servlet.RequestDispatcher;
+
 
 public class StaffProfileServlet extends HttpServlet {
 
@@ -64,6 +28,10 @@ public class StaffProfileServlet extends HttpServlet {
 
 		//Set the session time out to 45 minutes...
 		request.getSession().setMaxInactiveInterval(2700);
+		String language=(String) request.getSession().getAttribute("language");
+		//System.out.println("Language1: "+language);
+		response.setContentType("text/html; charset=UTF-8");
+		Locale locale = new Locale(language, "");
 		RequestParam userRequest = new RequestParam ();
 		try {
 			userRequest = getRequestParamenters ( request );
@@ -72,73 +40,100 @@ public class StaffProfileServlet extends HttpServlet {
 		}
 
 		String action = userRequest.getAction();
-		
+
 		if (request.getParameter("entityId")==null){
 			response.sendRedirect("login.jsp");
 		}
-		
+
 		if ( action.trim().equals( "CDOC-OPEN_A_DOCUMENT" )||(action.trim().equals( "CDOC-OPEN_A_DOCUMENT_FOR_APPROVE" )) ) {
 			request.getSession().setAttribute("clinicalform-actiondesc","Opening clinical form");
-			createNewDocument ( request, response, userRequest );			
+			createNewDocument ( request, response, userRequest,language );
 		} else if ( action.trim().equals( "CDOC-SAVE_THE_DOCUMENT" ) ) {
 			request.getSession().setAttribute("clinicalform-actiondesc","Saving Staff Profile");
 			userRequest.setSubmitButton( "" + StaffProfileConstants.CDOC_DOCUMENT_DICTATED );
 			userRequest.setSaveFormat( StaffProfileConstants.CDOC_REGULAR_FORM );
 			try {
-				saveDocument ( request, response, userRequest );				
+				saveDocument ( request, response, userRequest );
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
 		}else if ( action.trim().equals( "CDOC-PRINT_READY_DOCUMENT" ) ) {
 			request.getSession().setAttribute("clinicalform-actiondesc","View in printableformat (pdf)");
 			userRequest.setSubmitButton( StaffProfileConstants.CDOC_DOCUMENT_SHOW_PRINT_READY_REPORT );
 			showPrintableReport ( request, response, userRequest );
-		}else if ( action.trim().equals( "CDOC-FINAL_APPROVE")){
+		}else if ( action.trim().equals( "CDOC-FINAL_APPROVE")||(action.trim().equals( "CDOC-RECORD_APPROVE" )) ) {
 			request.getSession().setAttribute("clinicalform-actiondesc","Approving Staff Profile");
 			userRequest.setSubmitButton( "" + StaffProfileConstants.CDOC_DOCUMENT_SIGNED_OFF );
 			userRequest.setSaveFormat( StaffProfileConstants.CDOC_REGULAR_FORM );
 			try {
-				saveDocument ( request, response, userRequest );				
+				saveDocument ( request, response, userRequest );
 			} catch (Exception e) {
 				e.printStackTrace();
-			}			
+			}
 		}
-		
+
 	}//end of function service.
 
 	private void saveDocument(HttpServletRequest request,HttpServletResponse response, RequestParam userRequest) throws Exception {
-		long documentId = 0;		
+		long documentId = 0;
 		documentId = saveTheDocument(request, response, userRequest);
 		if ( documentId != 0 ) {
-			redirectUrlDocument ( request, response, documentId, userRequest );
+			redirectUrlDocument ( request, response, documentId, userRequest,"null" );
+		}	else{
+			if (userRequest.getDocumentId().equals("")){
+					documentId=0;}
+			else{
+				documentId=Long.parseLong(userRequest.getDocumentId())	;			
+			}
+			//System.out.println("Doc ID:"+documentId);
+			redirectUrlDocument ( request, response,documentId, userRequest,"Unable to Save Record.Try Again." );
 		}
-		
+
 	}
 
-	private void redirectUrlDocument(HttpServletRequest request,HttpServletResponse response, long documentId,RequestParam userRequest) throws Exception {
+	private void redirectUrlDocument(HttpServletRequest request,HttpServletResponse response, long documentId,RequestParam userRequest,String message) throws Exception {
 		if ( !userRequest.getSubmitButton().trim().equals( StaffProfileConstants.CDOC_DOCUMENT_SHOW_PRINT_READY_REPORT ) ) {
 			String conPath = request.getContextPath();
 			String form_Name=userRequest.getFormName();
+			String action="";
 			//System.out.println("++++++++++Action :+++"+userRequest.getAction());
-			if (form_Name.equals("staff_profile_report_v0")){				 
+			if (userRequest.getAction().trim().equals( "CDOC-RECORD_APPROVE" )){
+				if(message.equals("null")){
+					message="Record Approved.";		
+					action="CDOC-OPEN_A_DOCUMENT";
+				}else{
+					action="CDOC-OPEN_A_DOCUMENT_FOR_APPROVE";
+				}				
+				response.sendRedirect("./StaffProfileServlet?action="+action+"&entityId=" + userRequest.getEntityId() + "&documentId=" + documentId +
+							"&formName=" + userRequest.getFormName() + "&docType=" + userRequest.getDocumentType() +
+							"&addendumYN=" + userRequest.getAddendumYesNo() + "&parentDocId=" + userRequest.getParentDocumentId()+"&user_dept_id=" + userRequest.getUserDepartmentId() +
+							( !isValid( userRequest.getAnchor() ) ? "" : "&form_anchor=" + userRequest.getAnchor() ) +
+							( !isValid( userRequest.getEntityType() ) ? "" : "&entityType=" + userRequest.getEntityType())+ "&reload_after_save="+message);
+			}
+			else if (form_Name.equals("staff_profile_report_v0") ){			
+				if(message.equals("null")){
+					message="Saved Successfully. ";							
+				}				
 			response.sendRedirect("./StaffProfileServlet?action=CDOC-OPEN_A_DOCUMENT&entityId=" + userRequest.getEntityId() + "&documentId=" + documentId +
 						"&formName=" + userRequest.getFormName() + "&docType=" + userRequest.getDocumentType() +
 						"&addendumYN=" + userRequest.getAddendumYesNo() + "&parentDocId=" + userRequest.getParentDocumentId()+"&user_dept_id=" + userRequest.getUserDepartmentId() +
 						( !isValid( userRequest.getAnchor() ) ? "" : "&form_anchor=" + userRequest.getAnchor() ) +
-						( !isValid( userRequest.getEntityType() ) ? "" : "&entityType=" + userRequest.getEntityType()));
+						( !isValid( userRequest.getEntityType() ) ? "" : "&entityType=" + userRequest.getEntityType())+ "&reload_after_save="+message);
 			}
 			else {
-				
-				ArrayList tableData=getTableData(documentId, userRequest.getEntityId(),userRequest.getFormName(),userRequest.getEntityType());								
-				String args="entityId="+userRequest.getEntityId()+"&documentId="+ documentId+"&formname='"+userRequest.getFormName()+"'&entitytype='"+userRequest.getEntityType()+"'&reload=1"+ "&Data="+tableData;
-				//System.out.println("============="+args);				
-				response.sendRedirect( conPath + "/jsp/showdetailedform.jsp?"+args);				
+				ArrayList tableData=getTableData(documentId, userRequest.getEntityId(),userRequest.getFormName(),userRequest.getEntityType());
+				if(message.equals("null")){
+					message="'Record Saved.'";							
+				}else{
+					message="'"+message+"'";
+				}
+				String args="entityId="+userRequest.getEntityId()+"&documentId="+ documentId+"&formname='"+userRequest.getFormName()+"'&entitytype='"+userRequest.getEntityType()+"'&reload=1"+ "&Data="+tableData+"&message="+message;
+				response.sendRedirect( conPath + "/jsp/showdetailedform.jsp?"+args);
 				return;
 			}
-			
+
 		}
-		
+
 	}
 
 	/**
@@ -153,13 +148,20 @@ public class StaffProfileServlet extends HttpServlet {
 		if ( string.trim().length() < 1 ) return false;
 
 		return true;
-	}	
+	}
 
 
 	private long saveTheDocument(HttpServletRequest request,HttpServletResponse response, RequestParam userRequest) throws Exception {
 		HashMap qaMap = userRequest.getQuestionAnswerMap();
+		if(qaMap==null){
+			//System.out.println("Empty Has Map");			
+			//return (Long.parseLong(userRequest.getDocumentId()));
+			return 0;
+		}
+		else{
 		long documentId = HtmlTemplateHelper.saveOrUpdateTheDocumentData ( qaMap, userRequest,request );
 		return documentId;
+		}
 	}
 
 
@@ -170,9 +172,9 @@ public class StaffProfileServlet extends HttpServlet {
 	 * @param response
 	 * @param userRequest
 	 */
-	private void createNewDocument(HttpServletRequest request, HttpServletResponse response, RequestParam userRequest) {
+	private void createNewDocument(HttpServletRequest request, HttpServletResponse response, RequestParam userRequest,String language) {
 		try {
-			createOrOpenNewDocument ( request, response, userRequest );
+			createOrOpenNewDocument ( request, response, userRequest,language );
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -185,7 +187,7 @@ public class StaffProfileServlet extends HttpServlet {
 	 */
 	private void createOrOpenNewDocument(HttpServletRequest request,
 									HttpServletResponse response,
-									RequestParam userRequest)
+									RequestParam userRequest,String language)
 									throws Exception {
 
 
@@ -195,12 +197,12 @@ public class StaffProfileServlet extends HttpServlet {
 			//pdfreportHelper.showErrorMessage( response,"Invalid result document info..." );
 			return;
 		}
-		
+
 		String formType = "0";//dInfo.getForm_type();
 		userRequest.setFormType( formType );
 		userRequest.setDocumentType( "1");//dInfo.getDocument_type() );
-		createOrOpenStylesheetDocument ( request, response, userRequest );
-	
+		createOrOpenStylesheetDocument ( request, response, userRequest,language );
+
 
 	}
 
@@ -209,9 +211,9 @@ public class StaffProfileServlet extends HttpServlet {
 	 * @param request
 	 * @param response
 	 * @param userRequest
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	private void createOrOpenStylesheetDocument(HttpServletRequest request, HttpServletResponse response, RequestParam userRequest) throws Exception
+	private void createOrOpenStylesheetDocument(HttpServletRequest request, HttpServletResponse response, RequestParam userRequest,String language) throws Exception
  {
 
 		try {
@@ -223,29 +225,43 @@ public class StaffProfileServlet extends HttpServlet {
 			//System.out.println("number==========="+number);
 			Connection connect = null;
 			ConnectDB conObj=new ConnectDB();
-			connect = conObj.getMysqlConnection();
-						
+			connect = conObj.getMysqlConnection();			
 			if ( isValid(userRequest.getDocumentId()) && Integer.parseInt(userRequest.getDocumentId())>0 ){
-				questionVOsList = HtmlTemplateHelper.getEditableReportFormForPatients( userRequest,number);
+				questionVOsList = HtmlTemplateHelper.getEditableReportFormForPatients( userRequest,number,language);
 
 			} else {
-				questionVOsList = HtmlTemplateHelper.getPrintFormElements(connect, userRequest);
+				questionVOsList = HtmlTemplateHelper.getPrintFormElements(connect, userRequest, language);
 			}
 
-			String patientDob="30/05/1980";
+			//String patientDob="30/05/1980";
 
-	        
+
 			ArrayList questionNames = new ArrayList();
-
 			StringBuffer str = new StringBuffer (10000);
 			QuestionsVO questVO = new QuestionsVO();
-			
+
 			//System.out.println("<documentId>" + userRequest.getDocumentId() + "</documentId>\n");
 			//System.out.println("<docNumber>" + userRequest.getNumber() + "</docNumber>\n");
 			//System.out.println("<docType>" + userRequest.getDocumentType() + "</docType>\n\n");
 			//System.out.println("<entityId>" + userRequest.getEntityId() + "</entityId>\n\n");
-			
 			//System.out.println("=========<?xml-stylesheet type=\"text/xsl\" href=\"./xml/" + userRequest.getFormName().trim() + ".xml\" ?> \n");
+			
+			String userfullname="";
+			String staffemail="";
+			String university="";
+			String institution="";
+			String department="";
+			String designation="";
+			Statement st_userdet = connect.createStatement();			
+			ResultSet rs_userdets = st_userdet.executeQuery("SELECT * FROM `staff_profile_masterdetails_v0_values` WHERE userid="+ userRequest.getEntityId());
+			while(rs_userdets.next()) {				
+				userfullname=rs_userdets.getString("user_full_name");				
+				university=rs_userdets.getString("University");
+				institution=rs_userdets.getString("Institution");
+				department=rs_userdets.getString("Department");
+				designation=rs_userdets.getString("Designation");
+				staffemail=rs_userdets.getString("username");
+			}		
 			
 			str.append ("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?> \n");
 			str.append ("<?xml-stylesheet type=\"text/xsl\" href=\"./xml/" + userRequest.getFormName().trim() + ".xml\" ?> \n");
@@ -257,6 +273,8 @@ public class StaffProfileServlet extends HttpServlet {
 			} else {
 				str.append ("<documentId></documentId>\n<docNumber></docNumber>\n");
 			}
+			//System.out.println("Reload :"+request.getParameter("reload_after_save"));
+			str.append ("<reload_after_save>"+request.getParameter("reload_after_save")+"</reload_after_save>");
 			str.append("<action>" + userRequest.getAction() + "</action>\n\n");
 			str.append("<approved>" + userRequest.getApprovedYesNo() + "</approved>\n\n");
 			str.append ("<docType>" + userRequest.getDocumentType() + "</docType>\n\n");
@@ -265,12 +283,20 @@ public class StaffProfileServlet extends HttpServlet {
 			if(userRequest.getParentDocumentId() != null ) {
 				str.append("<addendumYN>" + "yes" + "</addendumYN>\n");
 			}
-			str.append ("<user_dept_id>" + userRequest.getUserDepartmentId() + "</user_dept_id>\n");
+			str.append ("<user_dept_id>" + userRequest.getUserDepartmentId() + "</user_dept_id>\n");			
 			String str1 = userRequest.getAmmendedYesNo();
 			if("1".equals(str1))  {
 
 				str.append("<amendYN>" + "yes" + "</amendYN>\n");
 			}
+			
+			str.append("<loguser>"+ request.getUserPrincipal().getName() +"</loguser>");
+			str.append("<staffemail>"+staffemail+"</staffemail>");
+			str.append("<userfullname>"+ userfullname +"</userfullname>");
+			str.append("<university>"+university+"</university>");
+			str.append("<institution>"+institution+"</institution>");
+			str.append("<department>"+department+"</department>");
+			str.append("<designation>"+designation+"</designation>");
 			
 			//iterate over ArrayList to generate Xml string for the questions.
 			for (int cnt=0; cnt<questionVOsList.size(); cnt++){
@@ -279,7 +305,7 @@ public class StaffProfileServlet extends HttpServlet {
 				str.append("	<number>" + questVO.getNumber() + "</number>\n");
 				str.append("	<description>" + questVO.getDescription() + "</description>\n");
 
-				str.append("	<oioNS:prompt>" + questVO.getPrompt() + "</oioNS:prompt>\n");
+				str.append("	<oioNS:prompt>" + questVO.getPrompt().replace("&", "&amp;") + "</oioNS:prompt>\n");
 				str.append("	<oioNS:itemtype>" + questVO.getItemtype() + "</oioNS:itemtype>\n");
 
 				str.append("	<oioNS:renderinfo>\n\n" + questVO.getAction() + "\n\n</oioNS:renderinfo>\n");
@@ -303,7 +329,7 @@ public class StaffProfileServlet extends HttpServlet {
 		} catch (Exception e) {
 
 			e.printStackTrace();
-		} 
+		}
 
 	}
 
@@ -357,17 +383,17 @@ public class StaffProfileServlet extends HttpServlet {
 		/*
 		userRequest.setFormName( "staff_profile_report_v0");
 		userRequest.setEntityType("staff");
-		*/		
+		*/
 		userRequest.setFormName(request.getParameter("formName"));
 		userRequest.setEntityType(request.getParameter("entitytype"));
-		
-		
+
+
 		userRequest.setEntityId(request.getParameter("entityId"));
 		//System.out.println("entityId : " +userRequest.getEntityId());
 		String formId = "1";
 		userRequest.setFormId(formId);
-		userRequest.setFormType( "0" );		
-		userRequest.setDocumentId( request.getParameter("documentId") );		
+		userRequest.setFormType( "0" );
+		userRequest.setDocumentId( request.getParameter("documentId") );
 		String action = request.getParameter("action");
 		userRequest.setAction( action );
 
@@ -385,7 +411,7 @@ public class StaffProfileServlet extends HttpServlet {
 				userRequest.setDocumentType( dInfo.getDocument_type() );
 				userRequest.setFormName( dInfo.getFormName() );
 				userRequest.setEntityId(dInfo.getEntityId() );
-				userRequest.setFormType( dInfo.getForm_type() ); 
+				userRequest.setFormType( dInfo.getForm_type() );
 				userRequest.setEntityType(dInfo.getEntity_type());
 				userRequest.setNumber(dInfo.getNumber());
 				userRequest.setAmmendedDocumentId(""+dInfo.getAmended_document_id());
@@ -393,7 +419,7 @@ public class StaffProfileServlet extends HttpServlet {
 				userRequest.setStatusId(dInfo.getStatusId());
 				userRequest.setAmmendedYesNo(dInfo.getAmended_yesno());
 				userRequest.setAddendumDocumentId(dInfo.getAddendum_document_id());
-				
+
 
 			}
 			connect.close();
@@ -402,7 +428,11 @@ public class StaffProfileServlet extends HttpServlet {
 		//userRequest.setSubmitButton( getSubmitButtonValue ( request ) );
 		userRequest.setAddendumYesNo( request.getParameter( "addendumYN" ) );
 		userRequest.setParentDocumentId( request.getParameter( "parentDocId" ) );
-		userRequest.setUserlogin("admin");
+
+		//userRequest.setUserlogin("admin"); commented on 07-05-2011 by Rajitha
+		userRequest.setUserlogin(request.getUserPrincipal().getName());
+
+
 		//Get the question and answer details of the form...
 		userRequest.setQuestionAnswerMap( getFormQuestionAnswerFromSession( request, userRequest.getFormName() ) );
 		String userDeptId = "";
@@ -486,26 +516,26 @@ public class StaffProfileServlet extends HttpServlet {
 	 * This API retrieves the document status message to be displayed on the header part of the report
 	 * @param userRequest
 	 * @return
-	 */	
+	 */
 	private String getDocumentStatusMsg(RequestParam userRequest) {
-	     
+
 		String ammendedDocId = userRequest.getAmmendedDocumentId();
 		String approvedYN = userRequest.getApprovedYesNo();
 		String statusMessage = "";
-			
+
 		if( ammendedDocId != null && Integer.parseInt(ammendedDocId)>0 ){
 			statusMessage = "Provisional - Interim - DO NOT PRINT";
 		}else if(approvedYN != null && approvedYN.equals("0") && StaffProfileConstants.CDOC_DOCUMENT_FROZEN != userRequest.getStatusId()){
 			statusMessage = "D R A F T - C O P Y";
 		}
-		
+
 		return statusMessage;
 
 	}
 
-	//API to show the error message 
+	//API to show the error message
 	public void showErrorMessage ( HttpServletResponse response,String message ) {
-		
+
 		String htmlstring = "Info: " + message + "";
 		try {
 			response.getWriter().println( htmlstring );
@@ -520,7 +550,7 @@ public class StaffProfileServlet extends HttpServlet {
 	 * @param response
 	 * @param userRequest
 	 */
-	private void showPrintableReport(HttpServletRequest request, HttpServletResponse response, RequestParam userRequest){   
+	private void showPrintableReport(HttpServletRequest request, HttpServletResponse response, RequestParam userRequest){
 		String documentId = userRequest.getDocumentId();
 		if ( documentId == null || documentId.trim().length() < 1 ) {
 			HtmlTemplateHelper.showErrorMessage( response,"No document available for print..." );
@@ -538,7 +568,7 @@ public class StaffProfileServlet extends HttpServlet {
 		}
 	}
 
-	
+
 	public void showHtmlPrintableReport(HttpServletRequest request, HttpServletResponse response, RequestParam userRequest) throws Exception{
 	    ArrayList returnList = new ArrayList();
 		returnList =HtmlTemplateHelper.getXMLString( request,  response,  userRequest);
@@ -547,12 +577,11 @@ public class StaffProfileServlet extends HttpServlet {
 		session.setAttribute(key, returnList.get(0));
 		response.setContentType("application/xml");
 		response.getWriter().println(returnList.get(1));
-	}	
-//============================= END ======================================	
-	
+	}
+//============================= END ======================================
+
 	public static ArrayList getTableData(long documetId,String entityID,String formName,String entity_type)
-	{	
-		
+	{
 		Connection con =  null;
 		ArrayList dataArray=new ArrayList();
 		try  {
@@ -561,26 +590,40 @@ public class StaffProfileServlet extends HttpServlet {
 			Statement st = con.createStatement();
 			Statement st1 = con.createStatement();
 			Statement st2 = con.createStatement();
-			
-			String listedFields="";			
+
+			String listedFields="";
 			ResultSet rs_listedFields = st2.executeQuery("SELECT CODE FROM staff_profile_report_v0_itemtypes WHERE NAME='"+ entity_type + "_childform'");
 			while(rs_listedFields.next()) {
 				listedFields=rs_listedFields.getString("CODE");
 			}
+			dataArray.add ("'"+listedFields+"'");
+			/* commented on 23-05-2011
 			listedFields="'" + listedFields.replace(",", "','")+"'";
-			ResultSet rs_items = st.executeQuery("Select * from " + formName + "_items where NAME IN(" + listedFields + ")");			
+			ResultSet rs_items = st.executeQuery("Select * from " + formName + "_items where NAME IN(" + listedFields + ")");
 			ResultSet rs_values = st1.executeQuery("Select * from " + formName + "_values where idf="+entityID + " and number=(SELECT number FROM entity_document_master WHERE document_id="+documetId + ")");
 			dataArray.add("'"+documetId+"'");
-			while(rs_values.next()){				
+			while(rs_values.next()){
 				while (rs_items.next()){
 					dataArray.add ("'||"+rs_values.getString(rs_items.getString("name"))+"'");
 				}
-			}
+			}================ END ===========*/
 			//System.out.println("Data Array :"+dataArray);
-		}catch (SQLException e) {				
-			e.printStackTrace();				
+		}catch (SQLException e) {
+			e.printStackTrace();
 		}
-		return dataArray;		
+		return dataArray;
 	}
 
+	private void show_messge(HttpServletResponse response,String msg) throws IOException{
+		StringBuffer str = new StringBuffer (10000);
+		str.append("<html>");
+		str.append("<head><script>");
+		str.append("alert(\""+msg+"\");");
+		str.append("</script></head>");
+		str.append("</html>");
+		response.setContentType("text/html; charset=UTF-8");
+		response.getWriter().println(str);
+		System.out.println(str);
+	}
+	
 }//StaffProfileServlet...

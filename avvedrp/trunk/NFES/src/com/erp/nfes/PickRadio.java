@@ -64,7 +64,7 @@ public class PickRadio {
 				start = 1;
 			}
 						
-			htmlStr.append("		<INPUT TYPE=\"RADIO\" NAME=\"" + name + "\" VALUE=\"" + colstr + 
+			htmlStr.append("		<INPUT TYPE=\"RADIO\" NAME=\"" + name + "\" ID=\"" + name + "\" VALUE=\"" + colstr + 
 									"\" " + checked + "></INPUT> " + rowstr + "\n");
 			
 			if(end == 1){
@@ -139,7 +139,7 @@ public class PickRadio {
 				start = 1;
 			}
 						
-			htmlStr.append("		<INPUT TYPE=\"RADIO\" NAME=\"" + name + "\" onclick=\""+name+"_click(value)\" VALUE=\"" + colstr + 
+			htmlStr.append("		<INPUT TYPE=\"RADIO\" NAME=\"" + name + "\" ID=\"" + name + "\" onclick=\""+name+"_click(value)\" VALUE=\"" + colstr + 
 									"\" " + checked + "></INPUT> " + rowstr + "\n");
 			
 			if(end == 1){

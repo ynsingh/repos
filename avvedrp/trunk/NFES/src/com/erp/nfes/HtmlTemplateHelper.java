@@ -49,7 +49,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 		String name, itemtype, ifBchControl = "N";
 
 		StringBuffer actionStr = null;
-		String sql = getAimsDisplayStringSql(formName);
+		String sql = getAimsDisplayStringSql(formName,"");
 
 		String sqlstr = "";
 			//createConnectionIfNotExists();
@@ -79,14 +79,12 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 							myQuestVO.setPrioritem(rs.getString("prioritem"));
 							myQuestVO.setNextitem(rs.getString("nextitem"));
 							//get the item value from the table.
-							sqlstr = "select " + name + " from " + formName + "_values where idf='" + patientId + "' and number=" + number;
-
+							sqlstr = "select " + name + " from " + formName + "_values where idf='" + patientId + "' and number=" + number;														
 							Statement sst = conn.createStatement();
 							ResultSet rss = sst.executeQuery(sqlstr);
 
 							if(rss.next()){
-
-								//07-01-2011
+								
 								if (rss.getString(1)!=null){
 									myQuestVO.setValue(rss.getString(1));
 								}else{
@@ -314,7 +312,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 				//Merging : This function has changes merged from 4.0.7 aims branch for PM#2420
 				//static ArrayList getPrintFormElements(Connection hisconn,Connection conn, PersistenceManager pm, int patientId, int visitId, String formName,String parentDocumentId,String userDeptId) throws HisException, SQLException {
 
-				static ArrayList getPrintFormElements(Connection conn, RequestParam userRequest) throws  SQLException {
+				static ArrayList getPrintFormElements(Connection conn, RequestParam userRequest,String language) throws  SQLException {
 
 					String ptid, name, itemtype, str;
 					Integer o1;
@@ -327,7 +325,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 						try {
 
 							if(conn != null){
-								String sql = getAimsDisplayStringSql( userRequest.getFormName() );
+								String sql = getAimsDisplayStringSql( userRequest.getFormName(),language);
 								Statement stmt = conn.createStatement();
 								ResultSet rs = stmt.executeQuery(sql);
 								arrMyQuest = new ArrayList();
@@ -351,7 +349,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 																	"", userRequest.getEntityId(),
 																	String.valueOf(rs.getInt("number")),
 																	userRequest.getParentDocumentId(),
-																	userRequest.getUserDepartmentId());
+																	userRequest.getUserDepartmentId(),language);
 									myQuestVO.setAction(actionStr.toString());
 									arrMyQuest.add(myQuestVO);
 								}
@@ -386,7 +384,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 							String entityId,
 							String number,
 							String parentDocumentId,
-							String userDeptId)
+							String userDeptId,String language)
 					throws SQLException {
 
 						String action, choice, code, qryString;
@@ -398,7 +396,8 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 
 								if (conn != null){
 									try {
-
+										
+										valuestring=valuestring.replace("&", "&amp;");
 										Statement state = conn.createStatement();
 
 										ResultSet rss = state.executeQuery(qryString);
@@ -439,6 +438,9 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 										}else if (action.equalsIgnoreCase("calendar")){
 											Calendar actionObj = new Calendar();
 											htmlString = actionObj.getObjectHtml(name, action, choice, code, valuestring);
+										}else if (action.equalsIgnoreCase("datetimepicker")){
+											DateTimepicker actionObj = new DateTimepicker();
+											htmlString = actionObj.getObjectHtml(name, action, choice, code, valuestring);											
 										}else if(action.equalsIgnoreCase("addendum_oio_text") ){
 											TextArea actionObj = new TextArea();
 											htmlString = actionObj.getAddendumObject( name, action, choice, code, valuestring,parentDocumentId);
@@ -449,7 +451,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 										}/* ========== Detail Form 12-01-2011===========*/
 										else if(action.equalsIgnoreCase("detail_form") ){
 											DetailForm actionObj = new DetailForm();
-											htmlString = actionObj.getObjectHtml( name, action, choice, code, valuestring,entityId);
+											htmlString = actionObj.getObjectHtml( name, action, choice, code, valuestring,entityId,language);
 											}
 										/*========== Akhil ===========*/
 										else if(action.equalsIgnoreCase("pickone_radio_choose") ){
@@ -496,13 +498,13 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 
 	//public static ArrayList getEditableFormElements(Connection hisconn,Connection conn, PersistenceManager pm, String patientId, String visitId, String formName, String number,String userDeptId) throws HisException, SQLException {
 	//Commented SN
-	public static ArrayList getEditableFormElements(Connection conn,RequestParam userRequest,String number) throws SQLException {
+	public static ArrayList getEditableFormElements(Connection conn,RequestParam userRequest,String number,String language) throws SQLException {
 		//System.out.println("========getEditableFormElements");
 		ArrayList queReport = null;
 		QuestionsVO myQuestVO = null;
 		String name, itemtype, nVal = null;
 		StringBuffer actionStr = new StringBuffer (10000);
-		String sql = getAimsDisplayStringSql(userRequest.getFormName());
+		String sql = getAimsDisplayStringSql(userRequest.getFormName(),language);
 		String sqlstr = "";
 
 		try {
@@ -547,7 +549,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 							                        name, itemtype, nVal,
 							                        userRequest.getEntityId(),
 							                        number,"",
-							                        userRequest.getUserDepartmentId());
+							                        userRequest.getUserDepartmentId(),language);
 
 
 					myQuestVO.setAction(actionStr.toString());
@@ -650,14 +652,23 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 		 * @return String query
 		 * @throws HisException
 		 */
-		public static String getAimsDisplayStringSql(String formName)   {
+		public static String getAimsDisplayStringSql(String formName,String language)   {
 			String SqlState;
 			// Modified on 23-02-2011 By Rajitha, bcoz prompt abbreviation also set in the prompt field separated with '|' symbol
 			/*SqlState = "select name, prompt, number, description, creator, time, itemtype, prioritem, nextitem from " +
 			  formName + "_items order by number";*/
-			SqlState = "select name, SUBSTRING_INDEX(Prompt, '|',1 ) AS Prompt, SUBSTR( prompt,(INSTR(prompt,'|'))-LENGTH(prompt)) AS abbreviation, number, description, creator, time, itemtype, prioritem, nextitem from " +
+			/* commented on 23-04-2011 AKHIL R R
+			  SqlState = "select name, SUBSTRING_INDEX(Prompt, '|',1 ) AS Prompt, SUBSTR( prompt,(INSTR(prompt,'|'))-LENGTH(prompt)) AS abbreviation, number, description, creator, time, itemtype, prioritem, nextitem from " +
 			  formName + "_items order by number";
+			  */
+			
+			SqlState = "select name, number, description, creator, time, itemtype, prioritem, nextitem,SUBSTRING_INDEX(language_localisation.language_string, '|',1 ) AS prompt from "+formName+"_items,language_localisation WHERE language_localisation.control_name="+formName+"_items.name AND language_localisation.language_code=\'"+language+"\' AND language_localisation.active_yes_no=1 AND language_localisation.file_code = (SELECT id FROM file_master WHERE active_yes_no=1 AND SUBSTRING_INDEX(NAME, '.',1 ) = \'"+formName+"\') ORDER BY "+formName+"_items.number";
+			
+		//	SELECT NAME, number, description, creator, TIME, itemtype, prioritem, nextitem,SUBSTRING_INDEX(language_localisation.language_string, '|',1 ) AS prompt FROM staff_profile_awards_v0_items,language_localisation WHERE language_localisation.control_name=staff_profile_awards_v0_items.name AND language_localisation.language_code='en' AND language_localisation.active_yes_no=1 AND language_localisation.file_code = (SELECT id FROM file_master WHERE active_yes_no=1 AND SUBSTRING_INDEX(NAME, '.',1 ) = 'staff_profile_awards_v0') ORDER BY staff_profile_awards_v0_items.number
+
+			
 			//System.out.println("*******"+SqlState);
+			//System.out.println("Language: "+language);
 			return SqlState;
 
 
@@ -1040,9 +1051,8 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 					.append( requestParam.getUserlogin() ).append( "',NOW() )" );
 
 				Statement st = conn.createStatement();
-				st.execute(insertQry.toString());
-
-
+				st.execute(insertQry.toString());				
+				
 			} catch ( SQLException e ) {
 				e.printStackTrace();
 				throw new Exception ( "ERROR: SQLException in ClinicalDocHelper : " + e.getMessage() );
@@ -1356,10 +1366,10 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 			}
 
 
-		public static ArrayList getEditableReportFormForPatients(RequestParam userRequest, String number) throws Exception {
+		public static ArrayList getEditableReportFormForPatients(RequestParam userRequest, String number,String language) throws Exception {
 			ConnectDB conObj=new ConnectDB();
 			Connection connect = conObj.getMysqlConnection();
-			ArrayList queReport =  getEditableFormElements(connect,userRequest,number);
+			ArrayList queReport =  getEditableFormElements(connect,userRequest,number,language);
 			return queReport;
 		}
 //		=====================PRINT FUNCTION 06-12-2010=========================
@@ -1409,7 +1419,7 @@ public class HtmlTemplateHelper implements StaffProfileConstants {
 		ArrayList questionNames = new ArrayList();
 		//Xml header.
 		StringBuffer str = new StringBuffer (10000);
-		str.append ("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?> \n");
+		str.append ("<?xml version=\"1.0\" encoding=\"UTF-8\"?> \n");
 		str.append("<?xml-stylesheet type=\"text/xsl\" href=\"./xml/" + userRequest.getFormName() + "_Report.xml\" ?> \n");
 		str.append("<OIO version=\"1.00\" xmlns:oioNS=\"http://devedge.netscape.com/2002/de\"> \n");
 		str.append ("\n" + "<form> \n" + "<name>" + userRequest.getFormName().trim() + "</name>\n");

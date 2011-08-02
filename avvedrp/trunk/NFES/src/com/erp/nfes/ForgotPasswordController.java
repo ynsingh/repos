@@ -67,16 +67,17 @@ public class ForgotPasswordController extends HttpServlet {
 		try {
 			ConnectDB conObj=new ConnectDB(); 
 			conn = conObj.getMysqlConnection();
-			/*user = request.getParameter("userName");
-			mail=user;*/			
-			mail = request.getParameter("email");
+			user = request.getParameter("userName");
+			/*mail=user;			
+			mail = request.getParameter("email");*/
 			//System.out.println("======"+user);
-			user="";
-			String criteria = "email = \"" + mail + "\"";
+			//user="";
+			String criteria = "username = \"" + user + "\"";
 			stmt = conn.createStatement();
-			rset = stmt.executeQuery("SELECT username FROM users WHERE " + criteria);
+			rset = stmt.executeQuery("SELECT username,email FROM users WHERE " + criteria);
 			while (rset.next()) {
 				user=rset.getString(1);
+				mail=rset.getString(2);
 			}
 			//System.out.println("======"+user);
 			

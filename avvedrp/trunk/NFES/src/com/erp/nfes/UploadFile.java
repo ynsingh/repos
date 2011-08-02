@@ -34,22 +34,22 @@ public class UploadFile {
 				value = "";
 			}			
 			//set the html string to render.
-			if(value!=""){
-				html.append("<input type=\"file\" value=\"" + value + "\" name=\"" + name + "\" onclick=\""+ name +"_dirty()\" /><input type=\"HIDDEN\" value=\"" + value + "\" name=\"" + name + "files\" />");
-			}else{
-				html.append("<input type=\"file\" value=\"" + value + "\" name=\"" + name + "\" onclick=\""+ name +"_dirty()\" />"+ "<input type=\"HIDDEN\" value=\"" + value + "\" name=\"" + name + "files\" />");
-		    }
+			
+			html.append("<table width=\"100%\"><tr width=\"100\"><td width=\"30%\"><input type=\"file\" value=\"" + value + "\" name=\"" + name + "\" id=\"" + name + "\" onclick=\""+ name +"_dirty()\" /></td>");
+			html.append("<td width=\"10%\"><input type=\"button\" value=\"Upload\" name=\"upload_button_"+name+"\" id=\"upload_button_"+name+"\" onclick=\"uploadFile(this.name);\" /></td><td width=\"60%\"><span id=\"upload_status_"+name+"\" ></span></td></tr></table><input type=\"HIDDEN\" value=\"" + value + "\" name=\"" + name + "files\" />");
 			if (value!=""){
 				String uploaded_Files[]=value.split("\\|");
 				if(uploaded_Files.length>0){
 					String htmlStr=null;
-					htmlStr="<ul>";
+					htmlStr="<ul id=\""+name+"_filelist\" name=\""+name+"_filelist\" >";
 					for(int i = 0;i< uploaded_Files.length; i++){
 						htmlStr=htmlStr + "<li><a href=\"./filedownload?filename="+uploaded_Files[i]+"&amp;userId="+ entityId + "&amp;ctrlName="+ name + "\" target=\"_blank\">"+uploaded_Files[i]+"</a></li>"; 
 					}
 					htmlStr=htmlStr + "</ul>";					
 					html.append(htmlStr);
 				}
+			}else{
+				html.append("<ul id=\""+name+"_filelist\" name=\""+name+"_filelist\" ></ul>");	
 			}
 			return html;
 	}//end of function.

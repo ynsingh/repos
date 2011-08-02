@@ -71,8 +71,11 @@ public class PickOneMaster {
 
 		//split the choice option with the comma oparator.
         //choice=field name, code=table name
-		choice=getTableData("select "+choice+" from "+code+" where idf="+entityId);
-		code=choice;
+		String choice_temp=choice;
+		choice=getTableData("SELECT '-Select-' FROM DUAL UNION select "+choice_temp+" from "+code+" where idf="+entityId);
+		
+		//code=choice;Commented on 21-06-11 Anish
+		code=getTableData("SELECT '' FROM DUAL UNION select "+choice_temp+" from "+code+" where idf="+entityId);
 
 		//System.out.println("Choice :"+choice);
 		//System.out.println("Code :"+code);

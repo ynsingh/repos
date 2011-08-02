@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<table_relation>
+
+<relation>
+		<category>Department</category>
+		<related_field>department_master.department_id</related_field>	
+		<related_field>staff_profile_projects_v0_values.project_center_department</related_field>
+		<related_field>staff_master.department_id</related_field>
+</relation>
+<relation>
+		<category>Institution</category>
+		<related_field>department_master.institution_id</related_field>								
+</relation>
+<relation>
+		<category>University</category>
+		<related_field>institution_master.university_id</related_field>				
+</relation>
+<relation>
+		<category>Academic_Term</category>
+		<related_field>course_taught.academic_term</related_field>	
+		<related_field>staff_profile_thesis_v0_values.project_academic_term</related_field>
+</relation>
+<relation >
+		<category>Designation</category>
+		<related_field>staff_master.designation_id</related_field>				
+</relation >
+<relation >
+		<category>Affiliation</category>
+		<related_field>staff_profile_journal_papers_v0_values.affiliation</related_field>
+		<related_field>staff_profile_conference_papers_v0_values.affiliation</related_field>
+		<related_field>staff_profile_books_chapter_v0_values.affiliation</related_field>
+		<related_field>staff_profile_patents_v0_values.affiliation</related_field>
+</relation >
+<relation >
+		<category>Language</category>
+		<related_field>staff_profile_journal_papers_v0_values.language</related_field>
+		<related_field>staff_profile_conference_papers_v0_values.language</related_field>
+		<related_field>staff_profile_books_chapter_v0_values.language</related_field>
+</relation >
+<relation >
+		<category>Specialization</category>
+		<related_field>staff_profile_journal_papers_v0_values.research_expertise_area</related_field>	
+		<related_field>staff_profile_conference_papers_v0_values.research_expertise_area</related_field>
+		<related_field>staff_profile_training_v0_values.research_expertise_area</related_field>
+</relation >
+<relation >
+		<category>Journal</category>
+		<related_field>staff_profile_journal_papers_v0_values.journal_name</related_field>				
+</relation >
+<relation >
+		<category>Conference_Name</category>
+		<related_field>staff_profile_conference_papers_v0_values.conference_name</related_field>				
+</relation >
+<relation >
+		<category>Role</category>
+		<related_field>staff_profile_books_chapter_v0_values.role</related_field>				
+</relation >
+<relation >
+		<category>Participants_Level</category>
+		<related_field>staff_profile_talks_lectures_v0_values.participants_level</related_field>				
+</relation >
+<relation >
+		<category>Funding_Source</category>
+		<related_field>staff_profile_training_v0_values.funding_source</related_field>				
+		<related_field>staff_profile_projects_v0_values.funding_source</related_field>
+</relation >
+<relation >
+		<category>Attending_Purpose</category>
+		<related_field>staff_profile_training_v0_values.purpose</related_field>				
+</relation >
+<relation >
+		<category>Country</category>
+		<related_field>staff_profile_patents_v0_values.country</related_field>				
+</relation >
+<relation >
+		<category>Media</category>
+		<related_field>staff_profile_media_publication_v0_values.media_type</related_field>				
+</relation >
+<relation >
+		<category>Membership</category>
+		<related_field>staff_profile_professional_body_v0_values.membership_type</related_field>				
+</relation >
+<relation >
+		<category>Professional_Body_Name</category>
+		<related_field>staff_profile_professional_body_v0_values.professional_body_name</related_field>				
+</relation >
+<relation >
+		<category>Consultancy_Facilities</category>
+		<related_field>staff_profile_consultancy_offered_v0_values.labs_used</related_field>				
+</relation >
+<relation >
+		<category>Committee_Type</category>
+		<related_field>staff_profile_review_committees_v0_values.committee_type</related_field>				
+</relation >
+<relation >
+		<category>Role_Played</category>
+		<related_field>staff_profile_review_committees_v0_values.role_played</related_field>				
+</relation >
+<relation >
+		<category>Principal Investigator</category>
+		<related_field>staff_profile_projects_v0_values.principal_investigator</related_field>				
+</relation >
+</table_relation>

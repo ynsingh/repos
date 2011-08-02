@@ -7,25 +7,25 @@
 package com.erp.nfes;
 
 
-import java.rmi.RemoteException;
+//import java.rmi.RemoteException;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
+//import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-import java.util.StringTokenizer;
+//import java.text.SimpleDateFormat;
+//import java.util.ArrayList;
+//import java.util.Date;
+//import java.util.HashMap;
+//import java.util.Iterator;
+//import java.util.Map;
+//import java.util.Set;
+//import java.util.StringTokenizer;
 /*=============06-12-2010 */
-import java.io.IOException;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import java.sql.Array;
+//import java.io.IOException;
+//import javax.servlet.http.HttpServletResponse;
+//import javax.servlet.http.HttpServletRequest;
+//import java.sql.Array;
 /**
  * @author nfes
  *
@@ -34,11 +34,12 @@ import java.sql.Array;
  */
 public class DetailForm {
 	//function to get the html string to render the detail_form object in the form.
-	public StringBuffer getObjectHtml(String name, String action, String choice, String code, String valueString,String entityId) throws SQLException {
+	public StringBuffer getObjectHtml(String name, String action, String choice, String code, String valueString,String entityId,String language) throws SQLException {
 			StringBuffer html = new StringBuffer (1000);
 			String value=null;;
 			String button_id=null;
-
+            mlObj ml=new mlObj();
+            ml.init("DetailForm.java", language);
 			if (code!=null){
 				value=code;
 				}
@@ -50,14 +51,14 @@ public class DetailForm {
 			entity_type=entity_type.replace("staff_profile_", "");
 			entity_type=entity_type.replace("_v0", "");
 
-			String htmltab=getTableData(button_id,entityId,entity_type,valueString);
-			html.append("<INPUT TYPE=\"BUTTON\" VALUE=\"Add New \" NAME=\"" + name + "_Add\" ID=\""+ button_id + "\" ONCLICK=\"showchildform('"+ button_id  + "','','" + entity_type  +"')\" ></INPUT>"+ "<input type=\"HIDDEN\" value=\"" + valueString+ "\" name=\"" + name + "\" ID=\""+ name + "_ID\" />"+ "<input type=\"HIDDEN\" value=\"" + value + "\" name=\"" + name + "_FIELDS\" ID=\""+ name + "_FIELDSID\" />"+htmltab);
+			String htmltab=getTableData(button_id,entityId,entity_type,valueString,language,ml);
+			html.append("<INPUT TYPE=\"BUTTON\" VALUE=\""+ml.getValue("add_new")+"\" NAME=\"" + name + "_Add\" ID=\""+ button_id + "\" ONCLICK=\"showchildform('"+ button_id  + "','','" + entity_type  +"')\" ></INPUT>"+ "<input type=\"HIDDEN\" value=\"" + valueString+ "\" name=\"" + name + "\" ID=\""+ name + "_ID\" />"+ "<input type=\"HIDDEN\" value=\"" + value + "\" name=\"" + name + "_FIELDS\" ID=\""+ name + "_FIELDSID\" />"+htmltab);
 			//System.out.println("<INPUT TYPE=\"BUTTON\" VALUE=\"" + value + "\" NAME=\"" + name + "_Add\" ID=\""+ button_id + "\" ONCLICK=\"showchildform('"+ button_id  + "','','" + entity_type  +"')\" ></INPUT>"+ "<input type=\"TEXT\" value=\"" + valueString+ "\" name=\"" + name + "\" ID=\""+ name + "_ID\" />"+htmltab);
 			return html;
 	}//end of function.
 
 
-	public static String getTableData( String table_name,String entityid,String entity_type,String document_Ids) throws SQLException {
+	public static String getTableData( String table_name,String entityid,String entity_type,String document_Ids,String language,mlObj ml) throws SQLException {
 	   	//System.out.println("=============getTableData");
 		Connection con =  null;
 		String TableStr="";
@@ -69,6 +70,7 @@ public class DetailForm {
 			Statement st = con.createStatement();
 			Statement st1 = con.createStatement();
 			Statement st2 = con.createStatement();
+			Statement st3=con.createStatement();
 			ResultSet rs_items=null;
 	    	if (document_Ids==""){
 				document_Ids="-1";
@@ -91,31 +93,47 @@ public class DetailForm {
 			ResultSet rs_values = st.executeQuery(SqlStr);
 
 			listedFields="'" + listedFields.replace(",", "','")+"'";
-			rs_items = st1.executeQuery("Select A.*,SUBSTR( prompt,(INSTR(prompt,'|'))-LENGTH(prompt)) AS abbreviation from " + table_name + "_items A where NAME IN(" + listedFields + ")");
+			
+			//	Tested OK(12-05-2011): SELECT staff_profile_awards_v0_items.name,SUBSTRING_INDEX(language_localisation.language_string, '|',-1 ) AS abbreviation FROM staff_profile_awards_v0_items,language_localisation WHERE language_localisation.control_name=staff_profile_awards_v0_items.name AND language_localisation.language_code='en' AND language_localisation.active_yes_no=1 AND language_localisation.file_code = (SELECT id FROM file_master WHERE active_yes_no=1 AND SUBSTRING_INDEX(NAME, '.',1 ) = 'staff_profile_awards_v0') AND staff_profile_awards_v0_items.name IN('award_name','agency_name','receiving_month_year')
+
+			//rs_items = st1.executeQuery("Select A.*,SUBSTR( prompt,(INSTR(prompt,'|'))-LENGTH(prompt)) AS abbreviation from " + table_name + "_items A where NAME IN(" + listedFields + ")");
+			
+			rs_items = st1.executeQuery("Select "+table_name+"_items.name,SUBSTRING_INDEX(language_localisation.language_string, '|',-1 ) AS abbreviation from "+table_name+"_items,language_localisation WHERE language_localisation.control_name="+table_name+"_items.name AND language_localisation.language_code=\'"+language+"\' AND language_localisation.active_yes_no=1 AND language_localisation.file_code = (SELECT id FROM file_master WHERE active_yes_no=1 AND SUBSTRING_INDEX(NAME, '.',1 ) = \'"+table_name+"\') And "+table_name+"_items.name IN(" + listedFields + ")");
 			TableStr="<TABLE WIDTH=\"100%\"><tr><td height=\"1px\" ></td></tr></TABLE>";
 			TableStr=TableStr +"<TABLE CLASS=\"dataTableRows\" ID='"+ tab_id + "' BORDER=\"1\" WIDTH=\"100%\">";
 			TableStr=TableStr + "<TR CLASS=\"dataTableRowHead\">";
-			TableStr=TableStr + "<TD ID=\"TD_"+ tab_id +"\">doc_Id</TD>";
+			TableStr=TableStr + "<TD CLASS=\"dataTableRowHead\" ID=\"TD_"+ tab_id +"\">doc_Id</TD>";
 			while (rs_items.next()){
 				//TableStr=TableStr + "<TD>"+ rs_items.getString("prompt")+ "</TD>";
-				TableStr=TableStr + "<TD>"+ rs_items.getString("abbreviation")+ "</TD>";
+				TableStr=TableStr + "<TD CLASS=\"dataTableRowHead\">"+ rs_items.getString("abbreviation").replace("&", "&amp;")+ "</TD>";
 			}
-			TableStr=TableStr + "<TD></TD>"; //Edit
-			TableStr=TableStr + "<TD></TD>"; //Delete
+			TableStr=TableStr + "<TD CLASS=\"dataTableRowHead\" style=\"text-align:center\" >"+ml.getValue("edit")+"</TD>"; //Edit
+			TableStr=TableStr + "<TD CLASS=\"dataTableRowHead\" style=\"text-align:center\" >"+ml.getValue("delete")+"</TD>"; //Delete
 			TableStr=TableStr + "</TR>";
 
 			while(rs_values.next()){
 				String document_id=rs_values.getString("document_id");
-				TableStr=TableStr + "<TR ID=\"TR_"+ document_id +"\">";
-				rs_items.first();
-				rs_items.previous();
-				TableStr=TableStr + "<TD ID=\"TD_" + document_id + "\">"+ document_id +"</TD>";
+				String record_approved="0";
+				ResultSet rsapprove= st3.executeQuery("Select approved_yesno from entity_document_master where document_id="+document_id);
+				while (rsapprove.next()){
+					record_approved= rsapprove.getString("approved_yesno");
+				}
+				TableStr=TableStr + "<TR CLASS=\"dataTableRows\" ID=\"TR_"+ document_id +"\">";
+				rs_items.beforeFirst();//rs_items.first();rs_items.previous();
+				TableStr=TableStr + "<TD CLASS=\"dataTableRows\" ID=\"TD_" + document_id + "\">"+ document_id +"</TD>";
 				while (rs_items.next()){
 					//System.out.println("<TD>"+rs_values.getString(rs_items.getString("name"))+"</TD>");
-					TableStr=TableStr + "<TD>"+rs_values.getString(rs_items.getString("name"))+"</TD>";
+					TableStr=TableStr + "<TD CLASS=\"dataTableRows\">"+rs_values.getString(rs_items.getString("name")).replace("&","&amp;")+"</TD>";
 				}
-				TableStr=TableStr + "<TD><INPUT TYPE=\"BUTTON\" VALUE=\"Edit\" NAME=\"EDIT"+ document_id + "\" ONCLICK=\"showchildform('"+ table_name  + "','"+ document_id + "','" + entity_type  +"')\"/> </TD>";
-				TableStr=TableStr + "<TD><INPUT TYPE=\"BUTTON\" VALUE=\"Delete\" NAME=\"DELETE"+ document_id + "\" onclick=\"deleteRow(this.parentNode.parentNode.rowIndex,'"+ tab_id + "')\"/> </TD>";
+				//System.out.println("docid:"+document_id+","+record_approved);
+				if(record_approved.equals("0")){
+					TableStr=TableStr + "<TD CLASS=\"dataTableRows\" style=\"text-align:center\" ><INPUT TYPE=\"BUTTON\" VALUE=\""+ml.getValue("edit")+"\" NAME=\"EDIT"+ document_id + "\" ONCLICK=\"showchildform('"+ table_name  + "','"+ document_id + "','" + entity_type  +"')\"/> </TD>";
+					TableStr=TableStr + "<TD CLASS=\"dataTableRows\" style=\"text-align:center\" ><INPUT TYPE=\"BUTTON\" VALUE=\""+ml.getValue("delete")+"\" NAME=\"DELETE"+ document_id + "\" onclick=\"deleteRow(this.parentNode.parentNode.rowIndex,'"+ tab_id + "')\"/> </TD>";
+				}else{
+					TableStr=TableStr + "<TD CLASS=\"dataTableRows\" style=\"text-align:center\" ><INPUT TYPE=\"BUTTON\" VALUE=\""+ml.getValue("edit")+"\" NAME=\"EDIT"+ document_id + "\" ONCLICK=\"showchildform('"+ table_name  + "','"+ document_id + "','" + entity_type  +"')\"/> </TD>";
+					//System.out.println(TableStr=TableStr + "<TD CLASS=\"dataTableRows\" style=\"text-align:center\" ><INPUT TYPE=\"BUTTON\" disabled=\"disabled\" VALUE=\""+ml.getValue("edit")+"\" NAME=\"EDIT"+ document_id + "\" ONCLICK=\"showchildform('"+ table_name  + "','"+ document_id + "','" + entity_type  +"')\"/> </TD>");
+					TableStr=TableStr + "<TD CLASS=\"dataTableRows\" style=\"text-align:center\" ><INPUT TYPE=\"BUTTON\" disabled=\"disabled\" VALUE=\""+ml.getValue("delete")+"\" NAME=\"DELETE"+ document_id + "\" onclick=\"deleteRow(this.parentNode.parentNode.rowIndex,'"+ tab_id + "')\"/> </TD>";					
+				}
 				TableStr=TableStr + "</TR>";
 
 			}

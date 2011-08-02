@@ -66,7 +66,13 @@ try
 	 
 	    //out.println(rs.getString("result_fields"));
 	    tabHead=rs.getString("description");
-	    pst=conn1.prepareStatement(rs.getString("result_fields")+" and idf="+userId);		    
+	    if(rs.getString("entity").equals("masterdetails")){
+	    	pst=conn1.prepareStatement(rs.getString("result_fields")+" and userid="+userId);		    
+	    }
+	    else
+	    {
+	    	pst=conn1.prepareStatement(rs.getString("result_fields")+" and userid="+userId + " and entity_document_master.approved_yesno=1");		    
+	    }	
 	    ResultSet rs_details=pst.executeQuery();
 	    if (rs.getInt("sequence")==1){   %>
 	    	    		<table width=70%>
@@ -75,15 +81,16 @@ try
 			<%
 	    		    while(rs_details.next()){%>
 				<td>Name:</td><td><b><%=rs_details.getString("user_full_name")%></b></td></tr>
-				<tr><td>University:</td><td><%=rs_details.getString("uniname")%></td></tr>		
-				<tr><td>Institution:</td><td><%=rs_details.getString("instname")%></td></tr>								
+				<tr><td>University:</td><td><%=rs_details.getString("university")%></td></tr>		
+				<tr><td>Institution:</td><td><%=rs_details.getString("Institution")%></td></tr>								
+				<tr><td>Department:</td><td><%=rs_details.getString("department")%></td></tr>								
 				</table><br><%
 				out.println("<table  class=\"searchtab\" width=70% border=\"0\"><tr class=\"search_resul_head\" ><td>"+ tabHead + "</td></tr><tr><td>");  
 	    			ResultSetMetaData rsMetaData = rs_details.getMetaData();
 	    			int numberOfColumns = rsMetaData.getColumnCount(); 
 	    			out.println("<ul>");
 	    			String profile_data="";
-	    			for(int col=7;col<=numberOfColumns;col++){
+	    			for(int col=12;col<=numberOfColumns;col++){
 	    			  out.println("<li>"+rs_details.getString(rsMetaData.getColumnName(col))+"</li>") ;
 	    			  //if (col!=numberOfColumns){profile_data=profile_data+",";}
 	    			} 
@@ -101,7 +108,7 @@ try
 		    	String profile_data="";
 			ResultSetMetaData rsMetaData = rs_details.getMetaData();
 			int numberOfColumns = rsMetaData.getColumnCount(); 	   		
-			for(int col=7;col<=numberOfColumns;col++){
+			for(int col=12;col<=numberOfColumns;col++){
 			  //out.println(rs_details.getString(rsMetaData.getColumnName(col)) );
 			  profile_data=profile_data+rs_details.getString(rsMetaData.getColumnName(col)) ;
 			  if (col!=numberOfColumns){//out.println(",");

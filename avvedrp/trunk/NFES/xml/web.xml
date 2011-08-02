@@ -5,12 +5,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 version="2.5">
 
-<display-name>Welcome to Tomcat</display-name>
-<description>
-Welcome to Tomcat
-</description>
-
-   <display-name>Spring Security Tutorial Application</display-name>
+<display-name>National Faculty Expertise System</display-name>
    
        <!--
          - Location of the XML file that defines the root application context
@@ -18,10 +13,7 @@ Welcome to Tomcat
          -->
        <context-param>
            <param-name>contextConfigLocation</param-name>
-           <param-value>
-              
-               /WEB-INF/applicationContext-security.xml
-           </param-value>
+           <param-value>/WEB-INF/applicationContext-security.xml</param-value>
        </context-param>
    
    
@@ -36,22 +28,24 @@ Welcome to Tomcat
        </filter-mapping>
        
        
-               <listener>
-                   <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-               </listener>
+       <listener>
+         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+       </listener>
+         
+       <!--
+       - Publishes events for session creation and destruction through the application
+       - context. Optional unless concurrent session control is being used.
+       -->
+       
+       <listener>
+         <listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
+       </listener>
            
-               <!--
-                 - Publishes events for session creation and destruction through the application
-                 - context. Optional unless concurrent session control is being used.
-                 -->
-               <listener>
-                 <listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
-               </listener>
-           
-               <listener>
-                   <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
-            </listener>
-
+       <!-- -->
+       <listener>
+         <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+       </listener>
+       
     
 <servlet>
 <servlet-name>StaffProfileServlet</servlet-name>
@@ -174,9 +168,27 @@ Welcome to Tomcat
 <url-pattern>/advanceSearch</url-pattern>
 </servlet-mapping>
 
+<servlet>
+<servlet-name>ApprovalServlet</servlet-name>
+<servlet-class>com.erp.nfes.ApprovalServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+<servlet-name>ApprovalServlet</servlet-name>
+<url-pattern>/ApprovalServlet</url-pattern>
+</servlet-mapping>
 
 <welcome-file-list>
   <welcome-file>index.jsp</welcome-file>
 </welcome-file-list>
+
+
+<error-page>
+	<exception-type>java.lang.NullPointerException</exception-type>
+	<location>/error_page.jsp?errmsg=java.lang.NullPointerException</location>
+</error-page>
+<error-page>
+	<exception-type>java.lang.NumberFormatException</exception-type>
+	<location>/error_page.jsp?errmsg=java.lang.NumberFormatException</location>
+</error-page>
 
 </web-app>

@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.util.*;
 import java.io.*;
 
-import javax.mail.Session;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -23,6 +22,9 @@ public class fileupload extends HttpServlet {
 	private File tmpDir;
 	private File destinationDir;
 	Connection conn = null;
+	String filename="";
+	String controlname="";
+	String userid="";
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 				
@@ -31,8 +33,8 @@ public class fileupload extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		PrintWriter out = response.getWriter();
-	    response.setContentType("text/plain");
-	    out.println("<h1>File Uploading</h1>");
+	    response.setContentType("text/html; charset=UTF-8");
+	    out.println("<HTML><HEAD><TITLE>File Uploading</TITLE>");
 		
 		DiskFileItemFactory  fileItemFactory = new DiskFileItemFactory ();
 		/*
@@ -49,7 +51,11 @@ public class fileupload extends HttpServlet {
 			
 		    /*============== Added on 19-02-2011 ========================*/
 			String dir="";
-			ConnectDB conobj= new ConnectDB();
+			
+			
+			/*---------------- Commented on 17-06-11 Rajitha.----------------
+			  
+			 ConnectDB conobj= new ConnectDB();
 			conn = conobj.getMysqlConnection();
 			PreparedStatement pst=conn.prepareStatement("select id from users where username=?");
 		    pst.setString(1,request.getUserPrincipal().getName());
@@ -59,6 +65,8 @@ public class fileupload extends HttpServlet {
 				dir=Integer.toString(rs.getInt(1));
 				
 			}	
+			userid=dir;
+			 --------------------------- End ------------------------------*/
 			
 			Properties prop = new Properties();
 			
@@ -95,12 +103,21 @@ public class fileupload extends HttpServlet {
 				/*
 				 * Handle Form Fields.
 				 */
+				
+				
+				/*---- to get user id , in case other user upload a file Rajitha. */
+				if(item.getFieldName().equals("userId")){
+				  dir=item.getString();				  
+				} 
+				/*------------------------------------*/
+				
+				
 				if((!(item.isFormField())) && isBlank(item.getName())) {
-					String fn= item.getName();
-					
+					String fn= item.getName();					
 			        /*=============== Added on 21-02-2011 ===============*/
 					String DESTINATION_DIR_PATH = prop.getProperty("DESTINATION_DIR_PATH");
-					if(item.getFieldName().equals("upload_photo")){
+					controlname=item.getFieldName();
+					if(controlname.equals("upload_photo")){
 						destinationDir = new File(DESTINATION_DIR_PATH+"/"+dir+"/photo");
 					}
 					else{
@@ -116,16 +133,34 @@ public class fileupload extends HttpServlet {
 					   int lo=fn.lastIndexOf("\\");
 					   fn=fn.substring((lo+1));
 				    }
-
+                    filename=fn;
 					/*
 					 * Write file to the ultimate location.
 					 */
 
 					File file = new File(destinationDir,fn);
 					item.write(file);
-				}
-				out.close();
+					break;
+				} 
+				
 			}
+			out.println("<script language=\"javascript\">" +
+			"function init(){window.parent.document.getElementById('upload_status_"+controlname+"').style.color='green';" +
+			"window.parent.document.getElementById('upload_status_"+controlname+"').innerHTML='File uploading completed';");
+			String str="'<li><a href=\"./filedownload?filename="+filename+"&amp;userId="+userid+ "&amp;ctrlName="+ controlname + "\" target=\"_blank\">"+filename+"</a></li>'";
+			if(controlname.equals("upload_photo")){
+				out.println("window.parent.document.getElementById('"+controlname+"_filelist').innerHTML="+str+";");
+			}else{
+				out.println("var oldHTML=window.parent.document.getElementById('"+controlname+"_filelist').innerHTML;" +
+				"window.parent.document.getElementById('"+controlname+"_filelist').innerHTML="+str+"+oldHTML;");
+			}
+			out.println("window.parent.document.getElementById('"+controlname+"').value='';");
+			out.println("alert(\"Click Save button to save uploaded file name\")");
+			out.println("window.parent.document.getElementById('upload_status_"+controlname+"').style.color='black';" +
+					"window.parent.document.getElementById('upload_status_"+controlname+"').innerHTML='';");
+			out.println("}</script></HEAD><BODY onload=\"init();\"><form></form>" +
+			"</BODY></HTML>"); 
+			out.close();
 		}catch(FileUploadException ex) {
 			log("Error encountered while parsing the request",ex);
 		} catch(Exception ex) {

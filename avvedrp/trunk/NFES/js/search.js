@@ -97,3 +97,11 @@ if( document.getElementById(tab_id).style.display=='none' ){
 function showSearchCondition(srchcondition){
 document.searchForm.searchConditions.value=srchcondition;
 }
+
+function showdetals(UserId,documentid,entity_type){
+//alert("showdetals Fucntion");
+var entity_id=UserId;
+var document_Id=documentid;	  	
+formname="staff_profile_"+ entity_type +"_v0.xml";
+window.open("./jsp/showdetailedformforapprove.jsp?entityId="+entity_id+"&documentId="+document_Id+"&formname="+formname+"&entitytype="+entity_type ,"DetailForm","height="+screen.height +", width="+screen.width+", scrollbars=yes,directories=no,location=no,menubar=no,resizable=no,status=yes,toolbar=no,modal=yes");
+}

@@ -2,11 +2,11 @@
 <HTML lang=en-US dir=ltr xmlns="http://www.w3.org/11001/xhtml"><HEAD 
 profile=http://gmpg.org/xfn/11><TITLE>Forgot Password</TITLE>
 <META http-equiv=Content-Type content="text/html; charset=UTF-8">
-<LINK media=screen href="css/style1.css" type=text/css 
-rel=stylesheet>
+
 <META content="MSHTML 6.00.2900.5694" name=GENERATOR>
 <%@ taglib prefix='c' uri='http://java.sun.com/jstl/core_rt' %>
 <LINK media=screen href="./css/oiostyles.css" type=text/css rel=stylesheet>
+
 <script>
 
 function updateAccount(){
@@ -17,53 +17,86 @@ function updateAccount(){
 
 function checkValues(){
 	var frmObj = document.forms['usrForm'];
-	var email = frmObj.email.value;	
-	if( email == ""  ){
+	var userName = frmObj.userName.value;	
+	if( userName == ""  ){
 		alert("Email is required !!!");
 		return false;
 	}	
 	return true;
 }
 
+
+function showlogin()
+{
+location.href="login.jsp";
+}
 </script>
+<style type="text/css" media="screen"> 
+#footer {position: absolute; bottom: 0; left: 0px; right:0px; width: 100%; } 
+</style>
+
 </HEAD>
-<div style="height:545px; background-color:#d5e5ed;">
-<BODY class="bodystyle">
-<br>
-<img src="images/loginheader_large.png" width=100%>
+<body class="bodystyle">
+<div class="innnerBanner">
+	<div class="loginLink">
+	<span>
+	<b><a href="login.jsp" STYLE="TEXT-DECORATION: NONE"><img src="./images/home.jpg">Home</a></b></font>
+	</span>
+	</div>
+</div>
+
 <form id="usrForm" action="./ForgotPasswordController" method="POST">
-<script language="JavaScript" type="text/javascript" ></script>
+<div  class="listdiv" style="margin:2px">
+	<h1></h1>
+	<div style= "margin:10px;background-color:#386890;width:98%;height:25px">&nbsp;<br><br><br>		
+	</div>
+	
+	<div style= "margin:10px">
 		<%
-		 if ((request.getParameter("invalidUser") != "")&&(request.getParameter("invalidUser") != null)) {%>
-			<div class="errorlogin">			
-			Email you entered is not correct..
-			</div>		             
-		<%  } 		 
+					 if ((request.getParameter("invalidUser") != "")&&(request.getParameter("invalidUser") != null)) {%>
+						<div class="message">			
+						Please enter a valid User Name
+						</div>		             
+					<%  } 		 
 		%>
-  <table width="50%" border="0"  align="center" cellpadding="0" cellspacing="0" >
+	<h2>Forgot your password?</h2>
+	<h4>Admin will send password to the email address associated with your account.</h4>
+	</div>		
+  	      
+  	     <table style="background-color: #d5e5ed;" align="center" width="98%"; >
   			
-			 <TR>  
-			 <td colspan="2"><h5 style="color:#000000"> Please enter your email .Your account details will be showed to you.</h5></td> 
-			 </TR>
+		 <TR>  
+		 <td colspan="2"><h4 style="color:#000000">  Please type your <b>User Name<b> below.</h4></td> 
+		 </TR>
 			 
-			 <tr><td>&nbsp;</td></tr>
+		
              
-			 <TR> 
-			  <TD><label class="desc">Email</label> 
-			  </TD><td><input class="textmedium" id="email" name="email" > </td>
-              </TR>	
+	       <TR> 
+		  <!--<TD><label class="desc">Email</label></TD>-->
+		  <td><input class="textmedium" id="userName" name="userName" > </td>
+               </TR>	
 			   	             
- 	          <tr><td>&nbsp;</td>	
-			  <td><input type="button" class="buttonforgotpassword" id="btnUpdateAccount" onClick="updateAccount()" value="Send"/>          </td></tr>         	                        
-      	<!--<tr>
-      	<td><img src="images/arrowlback.gif"> <a href="index.jsp"> Back</a></img> </td>
-      	</tr>     -->
-  </table>
- </BODY> 
+ 	        <tr>
+		<td><input type="button"  id="btnUpdateAccount" onClick="updateAccount()" value="Send"/>
+		<input type="button"  value="Cancel"  id="btncancel" onClick="showlogin();"></td>	
+		</tr>         	                        
+      	
+  	  </table>
+  	  <br>
+  	  
+</div>  
+</form> 
+
+
+
+
+<div id="footer">
+<center>
+<div class="footerdiv" > 
+Developed by Amrita University under ERP, NME ICT, MHRD
 </div>
-<div class="footerdivlogin" > 
-<br>Developed by Amrita University under ERP, NME ICT, MHRD
-</div>
-</form>
+</center>
+</div> 
+</body>
 
 </HTML>

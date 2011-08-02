@@ -61,15 +61,15 @@ public class ProfileActivationServlet extends HttpServlet{
 			//System.out.println("------ User Login " + userLogin );
 			st.executeUpdate();
 			
-			assignDefaultPrivileges(conn, userLogin, "ROLE_TELLER" );//For user authentication
+			//assignDefaultPrivileges(conn, userLogin, "ROLE_TELLER" );//For user authentication
 			//if( hasMrd == 0 ){
-				assignDefaultPrivileges(conn, userLogin, "STAFF_REGISTRATION" );//For staff registration
+				assignDefaultPrivileges(conn, userLogin, "2" );//For staff registration
 			//} else {
 			//	assignDefaultPrivileges(conn, userLogin, "PORTAL_MRD_LINK_REQUEST" );//For existing patient MRD linking request
 			//}
-			
-			val = "Your Registration Activated Successfully !";
-			response.sendRedirect("/jsp/ActivateProfile.jsp?successVal=" + val);
+				String conPath = request.getContextPath();
+			val = "Your Registration Activated Successfully !";			
+			response.sendRedirect(conPath + "/ActivateProfile.jsp?successVal=" + val);
 		} catch (NamingException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {			

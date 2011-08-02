@@ -48,6 +48,7 @@
           <fileset dir="xml">
             <include name="staff_profile_*.xml"/>
             <include name="basic_search_items.xml"/>
+            <include name="table_relation.xml"/>
           </fileset>
     </copy>
     <mkdir dir="nfes/jsp"/>
@@ -81,15 +82,9 @@
     </copy>
      
     <!-- the ant war task. with all resources in place, create the war file -->
-    
-    <war destfile="nfes.war" webxml="nfes/WEB-INF/web.xml" basedir="nfes">
-    
-    <fileset dir="nfes"/>
-    <lib dir="nfes/WEB-INF/lib"/>
-    <classes dir="build/classes"/>
-     
-    </war>
   
+  <war destfile="nfes.war" basedir="nfes" >
+  </war>
     
    </target>
     

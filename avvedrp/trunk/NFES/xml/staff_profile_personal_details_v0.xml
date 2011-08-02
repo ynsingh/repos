@@ -14,7 +14,7 @@
 
 </style>
 <script language="javascript" src="./js/richtext.js"></script>
-
+<script language="javascript" src="./js/jquery-1.4.2.min.js"></script>
 <style type="text/css">
 .style1 {
 	color: #0000FF;
@@ -32,6 +32,13 @@ if (isMandatoryDataExists(frmelement)=="1") {
 }	
 }
 
+function approve()
+{		
+	var frmelement=document.getElementById("staff_profile_personal_details_v0");
+	if (isMandatoryDataExists(frmelement)=="1") {
+   	docHtmlRecordwiseApprove();	
+   	}
+}
 
 </script>
 
@@ -53,8 +60,14 @@ if (isMandatoryDataExists(frmelement)=="1") {
 	</xsl:attribute></INPUT>
 <INPUT TYPE="HIDDEN" NAME="formName" VALUE="staff_profile_personal_details_v0"></INPUT>
 <INPUT TYPE="HIDDEN" NAME="entitytype" VALUE="personal_details"></INPUT>
-
-
+<INPUT TYPE="HIDDEN" NAME="caction" id="caction"><xsl:attribute name="VALUE"><xsl:value-of select="//action"/> </xsl:attribute></INPUT> 
+<INPUT TYPE="HIDDEN" NAME="approved" id="approved"><xsl:attribute name="VALUE"><xsl:value-of select="//approved"/> </xsl:attribute></INPUT>
+<INPUT TYPE="HIDDEN" NAME="reload_after_save" id="reload_after_save"><xsl:attribute name="VALUE"><xsl:value-of select="//reload_after_save"/> </xsl:attribute></INPUT>
+<script language="javascript">
+if (document.getElementById('reload_after_save').value!="null"){
+	alert(document.getElementById('reload_after_save').value);
+}
+</script>
 <!-- ================================= Personal Details ======================================-->
 <div id="d1" class="childdiv">
 <table width="100%" class="tabBG3">
@@ -78,21 +91,34 @@ if (isMandatoryDataExists(frmelement)=="1") {
 <td width="70%" class="tabBG4"><xsl:apply-templates select="//positions_held/oioNS:renderinfo" /></td>
 </tr>
 </table>
-</div>
-
-
 
 <!--============================= Save,Save and Approve,Show Printable Buttons =============================-->
-<br />
+
 <script language="javascript" src="./js/clinicaldoc_common.js"></script>
 <table width="100%" class="tabBG3">
      <tr ><td align="center" class="thead">
     <input type="hidden" name="action" value="" /> 
-    <input type="button" name="btsave" value="  Save  " onClick="submitform()" />      
+    <input type="button" name="btsave" id="btsave" value="   Save  " onClick="submitform()" />      
+    <input type="button" name="btsapprove" id="btsapprove" value="Save and Approve" onClick="approve();" />
     <input type="HIDDEN" name="mandatory_fields" value="focus_area|research_interests" />
+    <input type="button" name="btclose" id="btclose" value="Close" onClick="window.parent.close();" />      
+    <script language="javascript">         
+           if (document.getElementById("approved").value==1){                      	
+           	document.getElementById("btsave").style.display='none';         	
+           	document.getElementById("btsapprove").style.display='none';       
+           }
+           else{           
+           	if (document.getElementById("caction").value=="CDOC-OPEN_A_DOCUMENT_FOR_APPROVE"){                      	
+           		document.getElementById("btsave").style.display='none';         	
+           		}       
+    	       else{
+     	      document.getElementById("btsapprove").style.display='none';         	
+     	      }
+    	}           
+     </script>  
      </td></tr>
 </table>
-
+</div>
 </font>
 </form>
 </body>

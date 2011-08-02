@@ -15,11 +15,42 @@
 </style>
 <script language="javascript" src="./js/richtext.js"></script>
 <script language="javascript" src="./js/clinicaldoc_common.js"></script>
+<script language="javascript" src="./js/jquery-1.4.2.min.js"></script>
 <script language="javascript">
 
 var x="";
 var resume=0;
 var photo=0;
+
+function closewindow(){
+alert("asdsdsa");
+window.close();
+}
+
+function copyAddress()
+{
+if(document.forms[0].copy_permanent_add.checked==1){
+	document.forms[0].comm_Address1.value=document.forms[0].pmt_Address1.value;
+	document.forms[0].comm_Address2.value=document.forms[0].pmt_Address2.value;
+	document.forms[0].comm_City.value=document.forms[0].pmt_City.value;
+	document.forms[0].comm_District.value=document.forms[0].pmt_District.value;
+	document.forms[0].comm_state.value=document.forms[0].pmt_state.value;
+	document.forms[0].comm_country.value=document.forms[0].pmt_country.value;
+	document.forms[0].comm_pincode.value=document.forms[0].pmt_pincode.value;
+	document.forms[0].comm_phone.value=document.forms[0].pmt_phone.value;
+}
+else{
+	document.forms[0].comm_Address1.value="";
+	document.forms[0].comm_Address2.value="";
+	document.forms[0].comm_City.value="";
+	document.forms[0].comm_District.value="";
+	document.forms[0].comm_state.value="";
+	document.forms[0].comm_country.value="";
+	document.forms[0].comm_pincode.value="";
+	document.forms[0].comm_phone.value="";
+
+}
+}
 
 
 function getRichValues(){
@@ -43,7 +74,8 @@ function getRichValues(){
 	document.getElementById("d18").style.display='none';
 	document.getElementById("d1").style.display='block';
 	document.getElementById("fu1").style.display='block';
-	document.getElementById("t1").style.color='#FFFF00';
+	//document.getElementById("t1").style.background='#ffe7ce';
+	document.getElementById("t1").className="profilemenuselected";
 	x="t1";resume=0;photo=0;
 	courses_taught();
 	return 1;
@@ -53,10 +85,11 @@ function show(id)
 {	
 	window.scrollTo(0, 0);
 	if(id=="d1")
-	{
-		document.getElementById(x).style.color='#174664';
-		x="t1";
-		document.getElementById(x).style.color='#0000FF';
+	{	
+					
+		document.getElementById(x).className="profilemenu";
+		x="t1";		
+		document.getElementById(x).className="profilemenuselected";
 		document.getElementById("d2").style.display='none';
 		document.getElementById("d3").style.display='none';
 		document.getElementById("d4").style.display='none';
@@ -79,9 +112,9 @@ function show(id)
 	}
 	else if(id=="d2")
 	{
-		document.getElementById(x).style.color='#174664';
-		x="t2";
-		document.getElementById(x).style.color='#0000FF';
+		document.getElementById(x).className="profilemenu";				
+		x="t2";		
+		document.getElementById(x).className="profilemenuselected";
 		document.getElementById("d1").style.display='none';
 		document.getElementById("d3").style.display='none';
 		document.getElementById("d4").style.display='none';
@@ -104,9 +137,10 @@ function show(id)
 	}
 	else if(id=="d3")
 	{
-		document.getElementById(x).style.color='#174664';
+		
+		document.getElementById(x).className="profilemenu";
 		x="t3";
-		document.getElementById(x).style.color='#0000FF';
+		document.getElementById(x).className="profilemenuselected";
 		document.getElementById("d1").style.display='none';
 		document.getElementById("d2").style.display='none';
 		document.getElementById("d4").style.display='none';
@@ -129,9 +163,9 @@ function show(id)
 	}
 	else if(id=="d4")
 	{
-		document.getElementById(x).style.color='#174664';
+		document.getElementById(x).className="profilemenu";
 		x="t4";
-		document.getElementById(x).style.color='#0000FF';
+		document.getElementById(x).className="profilemenuselected";
 		document.getElementById("d1").style.display='none';
 		document.getElementById("d2").style.display='none';
 		document.getElementById("d3").style.display='none';
@@ -154,9 +188,9 @@ function show(id)
 	}
 	else if(id=="d5")
 	{	
-		document.getElementById(x).style.color='#174664';
+		document.getElementById(x).className="profilemenu";
 		x="t5";
-		document.getElementById(x).style.color='#0000FF';
+		document.getElementById(x).className="profilemenuselected";
 		document.getElementById("d1").style.display='none';
 		document.getElementById("d2").style.display='none';
 		document.getElementById("d3").style.display='none';
@@ -179,9 +213,9 @@ function show(id)
 	}
 	else if(id=="d6")
 	{
-		document.getElementById(x).style.color='#174664';
+		document.getElementById(x).className="profilemenu";
 		x="t6";
-		document.getElementById(x).style.color='#0000FF';
+		document.getElementById(x).className="profilemenuselected";
 		document.getElementById("d1").style.display='none';
 		document.getElementById("d2").style.display='none';
 		document.getElementById("d3").style.display='none';
@@ -204,9 +238,9 @@ function show(id)
 	}
 	else if(id=="d7")
 	{
-		document.getElementById(x).style.color='#174664';
+		document.getElementById(x).className="profilemenu";
 		x="t7";
-		document.getElementById(x).style.color='#0000FF';
+		document.getElementById(x).className="profilemenuselected";
 		document.getElementById("d1").style.display='none';
 		document.getElementById("d2").style.display='none';
 		document.getElementById("d3").style.display='none';
@@ -229,9 +263,9 @@ function show(id)
 	}
 	else if(id=="d8")
 	{
-		document.getElementById(x).style.color='#174664';
+		document.getElementById(x).className="profilemenu";
 		x="t8";
-		document.getElementById(x).style.color='#0000FF';
+		document.getElementById(x).className="profilemenuselected";
 		document.getElementById("d1").style.display='none';
 		document.getElementById("d2").style.display='none';
 		document.getElementById("d3").style.display='none';
@@ -254,9 +288,9 @@ function show(id)
 	}
 	else if(id=="d9")
 	{
-		document.getElementById(x).style.color='#174664';
+		document.getElementById(x).className="profilemenu";
 		x="t9";
-		document.getElementById(x).style.color='#0000FF';
+		document.getElementById(x).className="profilemenuselected";
 		document.getElementById("d1").style.display='none';
 		document.getElementById("d2").style.display='none';
 		document.getElementById("d3").style.display='none';
@@ -279,9 +313,9 @@ function show(id)
 	}
 	else if(id=="d10")
 	{
-		document.getElementById(x).style.color='#174664';
+		document.getElementById(x).className="profilemenu";
 		x="t10";
-		document.getElementById(x).style.color='#0000FF';
+		document.getElementById(x).className="profilemenuselected";
 		document.getElementById("d1").style.display='none';
 		document.getElementById("d2").style.display='none';
 		document.getElementById("d3").style.display='none';
@@ -305,9 +339,9 @@ function show(id)
 	}
 	else if(id=="d11")
 	{
-		document.getElementById(x).style.color='#174664';
+		document.getElementById(x).className="profilemenu";
 		x="t11";
-		document.getElementById(x).style.color='#0000FF';
+		document.getElementById(x).className="profilemenuselected";
 		document.getElementById("d1").style.display='none';
 		document.getElementById("d2").style.display='none';
 		document.getElementById("d3").style.display='none';
@@ -330,9 +364,9 @@ function show(id)
 	}
 	else if(id=="d12")
 	{
-		document.getElementById(x).style.color='#174664';
+		document.getElementById(x).className="profilemenu";
 		x="t12";
-		document.getElementById(x).style.color='#0000FF';
+		document.getElementById(x).className="profilemenuselected";
 		document.getElementById("d1").style.display='none';
 		document.getElementById("d2").style.display='none';
 		document.getElementById("d3").style.display='none';
@@ -355,9 +389,9 @@ function show(id)
 	}
 	else if(id=="d13")
 	{
-		document.getElementById(x).style.color='#174664';
+		document.getElementById(x).className="profilemenu";
 		x="t13";
-		document.getElementById(x).style.color='#0000FF';
+		document.getElementById(x).className="profilemenuselected";
 		document.getElementById("d1").style.display='none';
 		document.getElementById("d2").style.display='none';
 		document.getElementById("d3").style.display='none';
@@ -380,9 +414,9 @@ function show(id)
 	}
 	else if(id=="d14")
 	{
-		document.getElementById(x).style.color='#174664';
+		document.getElementById(x).className="profilemenu";
 		x="t14";
-		document.getElementById(x).style.color='#0000FF';
+		document.getElementById(x).className="profilemenuselected";
 		document.getElementById("d1").style.display='none';
 		document.getElementById("d2").style.display='none';
 		document.getElementById("d3").style.display='none';
@@ -405,9 +439,9 @@ function show(id)
 	}
 	else if(id=="d15")
 	{
-		document.getElementById(x).style.color='#174664';
+		document.getElementById(x).className="profilemenu";
 		x="t15";
-		document.getElementById(x).style.color='#0000FF';
+		document.getElementById(x).className="profilemenuselected";
 		document.getElementById("d1").style.display='none';
 		document.getElementById("d2").style.display='none';
 		document.getElementById("d3").style.display='none';
@@ -430,9 +464,9 @@ function show(id)
 	}
 	else if(id=="d16")
 	{
-		document.getElementById(x).style.color='#174664';
+		document.getElementById(x).className="profilemenu";
 		x="t16";
-		document.getElementById(x).style.color='#0000FF';
+		document.getElementById(x).className="profilemenuselected";
 		document.getElementById("d1").style.display='none';
 		document.getElementById("d2").style.display='none';
 		document.getElementById("d3").style.display='none';
@@ -455,9 +489,9 @@ function show(id)
 	}
 	else if(id=="d17")
 	{
-		document.getElementById(x).style.color='#174664';
+		document.getElementById(x).className="profilemenu";
 		x="t17";
-		document.getElementById(x).style.color='#0000FF';
+		document.getElementById(x).className="profilemenuselected";
 		document.getElementById("d1").style.display='none';
 		document.getElementById("d2").style.display='none';
 		document.getElementById("d3").style.display='none';
@@ -480,9 +514,9 @@ function show(id)
 	}
 	else
 	{
-		document.getElementById(x).style.color='#174664';
+		document.getElementById(x).className="profilemenu";
 		x="t18";
-		document.getElementById(x).style.color='#0000FF';
+		document.getElementById(x).className="profilemenuselected";
 		document.getElementById("d1").style.display='none';
 		document.getElementById("d2").style.display='none';
 		document.getElementById("d3").style.display='none';
@@ -529,18 +563,18 @@ function change(a,b)
 {
 	if(a==1)
 	{
-		document.getElementById(b).style.color='#FFFFFF;'//'#0000FF';
+		document.getElementById(b).style.color='#FFFFFF';
 		
 	}
 	else
 	{
 	     if(b==x)
 	     {
-	     	document.getElementById(b).style.color='#FFFF00';
+	     	document.getElementById(b).style.color='#174664';
 	     }
 	     else
 	     {
-		document.getElementById(b).style.color='#174664';//'#FFFFFF';
+		document.getElementById(b).style.color='#174664';
 	     }
 	}
 }
@@ -557,26 +591,53 @@ function upload_photo_dirty()
 function showchildform(formname,documentId,entity_type)
 {
 var entity_id=document.forms[0].entityId.value;
-var document_Id=documentId;
+var document_Id="0";
+if(documentId.length!=0){document_Id=documentId;}
 setEditmark(documentId,formname);
-window.open("./jsp/showdetailedform.jsp?entityId="+entity_id+"&amp;documentId="+document_Id+"&amp;formname="+formname+"&amp;entitytype="+entity_type ,"DetailForm","height=700, width=800, screenX=50,left=200,screenY=50,top=50,scrollbars=yes,directories=no,location=no,menubar=no,resizable=no,status=yes,toolbar=no,modal=yes");
+window.open("./jsp/showdetailedform.jsp?entityId="+entity_id+"&amp;documentId="+document_Id+"&amp;formname="+formname+"&amp;entitytype="+entity_type ,"DetailForm","height=600, width=800, screenX=50,left=200,screenY=50,top=50,scrollbars=yes,directories=no,location=no,menubar=no,resizable=no,status=yes,toolbar=no,modal=yes");
 }
 
 function deleteRow(i,tabname){     
-     
-     var delRow=document.getElementById(tabname).rows[i].cells;                    
-     var cont= delRow[0].innerHTML
-     var rowID="TR_"+cont;
-     cont=cont.replace("#deleted","");
-     delRow[0].innerHTML=cont+"#deleted";// delRow[0].innerHTML+"#deleted";          
+     var delVal = confirm("Do you want to delete the selected record?");
+     if(delVal==true)
+     {
+     var delRow=document.getElementById(tabname).rows[i].cells;                         
+     delRow[0].innerHTML=delRow[0].innerHTML.replace("#Edit","");
+     var cont= delRow[0].innerHTML;     
+     var rowID="TR_"+cont;     
+     cont=cont.replace("#deleted","");     
+     delRow[0].innerHTML=cont+"#deleted";// delRow[0].innerHTML+"#deleted";               
      //document.getElementById(tabname).deleteRow(i)          
-     document.getElementById(rowID).style.visibility="collapse";     
-     generateIds(tabname);      
+     generateIds(tabname);  
+     document.getElementById(rowID).className="hidetd";          
+     document.getElementById(rowID).style.visibility="collapse";  // not work in i.e             
+         
+     }
 }
-
 function courses_taught()
 { 	//alert(document.forms[0].academic_term.value);
 	document.getElementById("if01").src="./courses_taught?entity_id="+document.forms[0].entityId.value+"&amp;academic_term="+document.forms[0].academic_term.value;
+}
+
+function uploadFile(n){
+        n=n.substring(14);
+        var frmelement0=document.getElementById('staff_profile_report_v0_1');
+       	if(resume==1 &amp;&amp; document.myForm01.upload_resume.value!=""){
+       	     document.getElementById('upload_status_'+n).style.color='black';	
+	     document.getElementById('upload_status_'+n).innerHTML='uploading...';
+	     resume=0;
+	     document.myForm01.upload_resumefiles.value=document.myForm01.upload_resume.value +"|"+ document.myForm01.upload_resumefiles.value;
+	     document.myForm01.submit();
+       	}else if(photo==1 &amp;&amp; document.myForm02.upload_photo.value!=""  &amp;&amp; validateForm(frmelement0)){
+	     document.getElementById('upload_status_'+n).style.color='black';	
+	     document.getElementById('upload_status_'+n).innerHTML='uploading...';
+	     photo=0;
+	     document.myForm02.upload_photofiles.value=document.myForm02.upload_photo.value;;
+	     document.myForm02.submit();
+	}else{
+	    document.getElementById('upload_status_'+n).style.color='red';
+	    document.getElementById('upload_status_'+n).innerHTML = 'Select a file to upload';	
+	}
 }
 
 </script>
@@ -601,10 +662,10 @@ function moveTop()
 </style>
 
 </head>
-<body onLoad="return getRichValues();">
+<body class="bodystyle1" onLoad="return getRichValues();">
 
 <form method="post" action="./StaffProfileServlet" NAME="myForm" ID="staff_profile_report_v0"> 
-
+<div class="listdiv_toggle">
 <font size="1" face="Verdana, Arial, Helvetica, sans-serif">
 
 <INPUT TYPE="HIDDEN" NAME="dobx"><xsl:attribute name="value"><xsl:value-of select="//patient/patientDob"/></xsl:attribute></INPUT>
@@ -621,139 +682,223 @@ function moveTop()
 <INPUT TYPE="HIDDEN" NAME="entitytype" VALUE="staff"></INPUT>
 <INPUT TYPE="HIDDEN" NAME="upload_resume"></INPUT>
 <INPUT TYPE="HIDDEN" NAME="upload_photo"></INPUT>
-<INPUT TYPE="HIDDEN" NAME="caction"><xsl:attribute name="VALUE"><xsl:value-of select="//action"/> </xsl:attribute></INPUT>
-<INPUT TYPE="HIDDEN" NAME="approved"><xsl:attribute name="VALUE"><xsl:value-of select="//approved"/> </xsl:attribute></INPUT>
-
-<!-- 
-<table width="100%">
-<tr width="100%">
-<td class="Header2"><img src="../images/docustatus.jpg" /></td><td class="Header3">Document Status:</td>-->
-<!--<td class="Header2"><img src="../images/empid.jpg" /></td><td class="Header1">Emp ID:</td>
-<td class="Header2"><img src="../images/empname.jpg" /></td><td class="Header3">Name:</td>
-<td class="Header2"><img src="../images/empdept.jpg" /></td><td class="Header1">Dept:</td>
+<INPUT TYPE="HIDDEN" NAME="caction" id="caction"><xsl:attribute name="VALUE"><xsl:value-of select="//action"/> </xsl:attribute></INPUT>
+<INPUT TYPE="HIDDEN" NAME="approved" id="approved"><xsl:attribute name="VALUE"><xsl:value-of select="//approved"/> </xsl:attribute></INPUT>
+<INPUT TYPE="HIDDEN" NAME="reload_after_save" id="reload_after_save"><xsl:attribute name="VALUE"><xsl:value-of select="//reload_after_save"/> </xsl:attribute></INPUT>
+<INPUT TYPE="HIDDEN" NAME="loginuser" id="loginuser"><xsl:attribute name="VALUE"><xsl:value-of select="//loguser"/> </xsl:attribute></INPUT>
+<INPUT TYPE="HIDDEN" NAME="staffemail" id="staffemail"><xsl:attribute name="VALUE"><xsl:value-of select="//staffemail"/> </xsl:attribute></INPUT>
+<div  name="userdetails" id="userdetails"  >
+<table  name="userdetailstab" id="userdetailstab" class="thead" width="100%" >
+<tr >
+<td align="center"><h2><xsl:value-of select="//userfullname"/></h2> </td>
 </tr>
-</table>-->
+<tr>
+<td align="center"><xsl:value-of select="//designation"/> &#160;&#160;&#160;
+<xsl:value-of select="//department"/> &#160;&#160;&#160;
+<xsl:value-of select="//institution"/>&#160;&#160;&#160;
+<xsl:value-of select="//university"/> 
+</td> 
+</tr>
+</table>
+</div>
 
-<table width="100%" cellspacing="0">
+<script language="javascript">
+if (document.getElementById('reload_after_save').value!="null"){
+	alert(document.getElementById('reload_after_save').value);
+}
+
+if(document.getElementById('loginuser').value==document.getElementById('staffemail').value){
+document.getElementById('userdetails').className="hidetd";}
+
+</script>
+
+<table width="100%" cellspacing="0" class="bodystyle1">
 
 <!-- ================================= Creating Tabs  ====================================== -->
 	
-	
+<!--<tr><td></td></tr>	-->
 <tr>
-<td width="160px" valign="top">
-	<div >
-        <table width="160px" cellspacing="2" class="tabBG2">
-        <tr width="100%" height="10px"><td></td></tr>
+<td id="menutd" name="menutd" width="160px" valign="top">
+	<div id="menudiv" name="menudiv">
+        <table id="menutable" name="menutable" width="160px" cellspacing="2" class="tabBG2">
+        <!--<tr width="100%" height="10px"><td></td></tr>-->
         <tr width="100%"><td align="center">
-	<table width="145px" border="1" style="cursor:pointer;" cellspacing="2"  class="tabBG1">
+	<table width="145px"  style="cursor:pointer;" cellspacing="2"  class="tabBG1">
 	<tr width="100%">
-	<td id="t1" align="center" height="27px" background="./images/tab1.png"  onmouseover="change(1,'t1')" onmouseout="change(2,'t1')" onclick="show('d1')" title="Profile">Profile</td>
+	<td id="t1" align="center" height="27px" class="profilemenu"  onmouseover="change(1,'t1')" onmouseout="change(2,'t1')" onclick="show('d1')" title="Profile">Profile</td>
 	</tr>
 	<tr width="100%">
-	<td id="t2" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t2')" onmouseout="change(2,'t2')" onclick="show('d2')" title="Awards">Awards</td>
+	<td id="t2" align="center" height="27px" class="profilemenu" onmouseover="change(1,'t2')" onmouseout="change(2,'t2')" onclick="show('d2')" title="Awards">Awards</td>
 	</tr>
 	<tr width="100%">
-	<td id="t3" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t3')" onmouseout="change(2,'t3')" onclick="show('d3')" title="Publications">Publications</td>
+	<td id="t3" align="center" height="27px" class="profilemenu" onmouseover="change(1,'t3')" onmouseout="change(2,'t3')" onclick="show('d3')" title="Publications">Publications</td>
 	</tr>
 	<tr width="100%">
-	<td id="t4" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t4')" onmouseout="change(2,'t4')" onclick="show('d4')" title="Conference Papers">Conference Papers</td>
+	<td id="t4" align="center" height="27px" class="profilemenu" onmouseover="change(1,'t4')" onmouseout="change(2,'t4')" onclick="show('d4')" title="Conference Papers">Conference Papers</td>
 	</tr>
 	<tr width="100%">
-	<td id="t5" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t5')" onmouseout="change(2,'t5')" onclick="show('d5')" title="Books/Chapters">Books/Chapters</td>
+	<td id="t5" align="center" height="27px" class="profilemenu" onmouseover="change(1,'t5')" onmouseout="change(2,'t5')" onclick="show('d5')" title="Books/Chapters">Books/Chapters</td>
 	</tr>
 	<tr width="100%">
-	<td id="t6" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t6')" onmouseout="change(2,'t6')" onclick="show('d6')" title="Invited Talks/Guest Lectures">Invited Talks</td>
+	<td id="t6" align="center" height="27px" class="profilemenu" onmouseover="change(1,'t6')" onmouseout="change(2,'t6')" onclick="show('d6')" title="Invited Talks/Guest Lectures">Invited Talks</td>
 	</tr>
 	<tr width="100%">
-	<td id="t7" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t7')" onmouseout="change(2,'t7')" onclick="show('d7')" title="Seminars / Conferences / Workshops / Training Attended">Seminars</td>
+	<td id="t7" align="center" height="27px" class="profilemenu" onmouseover="change(1,'t7')" onmouseout="change(2,'t7')" onclick="show('d7')" title="Seminars / Conferences / Workshops / Training Attended">Seminars</td>
 	</tr>
 	<tr width="100%">
-	<td id="t8" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t8')" onmouseout="change(2,'t8')"  onclick="show('d8')" title="Projects">Projects</td>
+	<td id="t8" align="center" height="27px" class="profilemenu" onmouseover="change(1,'t8')" onmouseout="change(2,'t8')"  onclick="show('d8')" title="Projects">Projects</td>
 	</tr>
 	<tr width="100%">
-	<td id="t9" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t9')" onmouseout="change(2,'t9')" onclick="show('d9')" title="Patents">Patents</td>
+	<td id="t9" align="center" height="27px" class="profilemenu" onmouseover="change(1,'t9')" onmouseout="change(2,'t9')" onclick="show('d9')" title="Patents">Patents</td>
 	</tr>
 	<tr width="100%">
-	<td id="t10" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t10')" onmouseout="change(2,'t10')" onclick="show('d10')" title="Media Publication">Media Publication</td>
+	<td id="t10" align="center" height="27px" class="profilemenu" onmouseover="change(1,'t10')" onmouseout="change(2,'t10')" onclick="show('d10')" title="Media Publication">Media Publication</td>
 	</tr>
 	<tr width="100%">
-	<td id="t11" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t11')" onmouseout="change(2,'t11')" onclick="show('d11')" title="Courses Taught">Courses Taught</td>
+	<td id="t11" align="center" height="27px" class="profilemenu" onmouseover="change(1,'t11')" onmouseout="change(2,'t11')" onclick="show('d11')" title="Courses Taught">Courses Taught</td>
 	</tr>
 	<tr width="100%">
-	<td id="t12" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t12')" onmouseout="change(2,'t12')" onclick="show('d12')" title="Thesis/Student Project">Student Project</td>
+	<td id="t12" align="center" height="27px" class="profilemenu" onmouseover="change(1,'t12')" onmouseout="change(2,'t12')" onclick="show('d12')" title="Thesis/Student Project">Student Project</td>
 	</tr>
 	<tr width="100%">
-	<td id="t13" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t13')" onmouseout="change(2,'t13')" onclick="show('d13')" title="Faculty Exchange Program">Faculty Exchange</td>
+	<td id="t13" align="center" height="27px" class="profilemenu" onmouseover="change(1,'t13')" onmouseout="change(2,'t13')" onclick="show('d13')" title="Faculty Exchange Program">Faculty Exchange</td>
 	</tr>
 	<tr width="100%">
-	<td id="t14" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t14')" onmouseout="change(2,'t14')" onclick="show('d14')" title="Professional Bodies/Societies">Professional Bodies</td>
+	<td id="t14" align="center" height="27px" class="profilemenu" onmouseover="change(1,'t14')" onmouseout="change(2,'t14')" onclick="show('d14')" title="Professional Bodies/Societies">Professional Bodies</td>
 	</tr>
 	<tr width="100%">
-	<td id="t15" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t15')" onmouseout="change(2,'t15')" onclick="show('d15')" title="Consultancy Offered">Consultancy Offered</td>
+	<td id="t15" align="center" height="27px" class="profilemenu" onmouseover="change(1,'t15')" onmouseout="change(2,'t15')" onclick="show('d15')" title="Consultancy Offered">Consultancy Offered</td>
 	</tr>
 	<tr width="100%">
-	<td id="t16" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t16')" onmouseout="change(2,'t16')" onclick="show('d16')" title="Governance">Governance</td>
+	<td id="t16" align="center" height="27px" class="profilemenu" onmouseover="change(1,'t16')" onmouseout="change(2,'t16')" onclick="show('d16')" title="Governance">Governance</td>
 	</tr>
 	<tr width="100%">
-	<td id="t17" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t17')" onmouseout="change(2,'t17')" onclick="show('d17')" title="Review Committees">Review Committees</td>
+	<td id="t17" align="center" height="27px" class="profilemenu" onmouseover="change(1,'t17')" onmouseout="change(2,'t17')" onclick="show('d17')" title="Review Committees">Review Committees</td>
 	</tr>
 	<tr width="100%">
-	<td id="t18" align="center" height="27px" background="./images/tab1.png" onmouseover="change(1,'t18')" onmouseout="change(2,'t18')" onclick="show('d18')" title="Community Service">Community Service</td>
+	<td id="t18" align="center" height="27px" class="profilemenu" onmouseover="change(1,'t18')" onmouseout="change(2,'t18')" onclick="show('d18')" title="Community Service">Community Service</td>
 	</tr>
 	</table>
-	</td></tr><tr width="100%" height="10px"><td></td></tr>	
+	</td></tr>
+	<!--<tr width="100%" height="10px"><td></td></tr>	-->
 	</table>
 	</div>
 
 </td>
-<td valign="top">
+<td valign="top" class="listdiv_toggle">
 
 <!-- ================================= Brief Profile ======================================-->
 <div id="d1">
-<table width="100%" class="tabBG3">
-<tr>
-<td width="30%" colspan="2" align="center" class="thead">Personal Details</td>
+<table width="100%" class="tabBG3" >
+<tr id="personal_details_prompt" name="personal_details_prompt">
+<td width="30%" colspan="4" align="center" class="thead"><xsl:apply-templates select="//personal_details/oioNS:prompt" /></td>
 </tr>
-<tr>
-<td width="30%" colspan="2" class="tabBG4"><xsl:apply-templates select="//personal_details/oioNS:renderinfo" /></td>
+<tr id="personal_details_value" name="personal_details_value">
+<td width="30%" colspan="4" class="tabBG4"><xsl:apply-templates select="//personal_details/oioNS:renderinfo" /></td>
 </tr>
-<tr>
-<td colspan="2" class="thead" align="center"><xsl:apply-templates select="//qualification/oioNS:prompt" /></td>
+
+<tr id="qualification_prompt" name="qualification_prompt">
+<td colspan="4" class="thead" align="center"><xsl:apply-templates select="//qualification/oioNS:prompt" /></td>
 </tr>
-<tr>
-<td colspan="2" class="tabBG4"><xsl:apply-templates select="//qualification/oioNS:renderinfo" /></td>
+<tr id="qualification_value" name="qualification_value">
+<td colspan="4" class="tabBG4"><xsl:apply-templates select="//qualification/oioNS:renderinfo" /></td>
 </tr>
+
 <tr>
-<td width="30%" colspan="2" align="center" class="thead">Contact Details</td>
+<td width="30%" colspan="4" align="center" class="thead">Contact Details</td>
 </tr>
 <tr>
 <td width="30%" class="tabBG4"><xsl:apply-templates select="//office_room_num/oioNS:prompt" /></td>
 <td width="70%" class="tabBG4"><xsl:apply-templates select="//office_room_num/oioNS:renderinfo" /></td>
-</tr>
-<tr>
+<!--</tr>
+<tr>-->
 <td width="30%" class="tabBG4"><xsl:apply-templates select="//office_phone_ext/oioNS:prompt" /></td>
 <td width="70%" class="tabBG4"><xsl:apply-templates select="//office_phone_ext/oioNS:renderinfo" /></td>
 </tr>
 <tr>
 <td width="30%" class="tabBG4"><xsl:apply-templates select="//email_id/oioNS:prompt" /></td>
 <td width="70%" class="tabBG4"><xsl:apply-templates select="//email_id/oioNS:renderinfo" /> </td>
-</tr>
-<tr>
+<!--</tr>
+<tr>-->
 <td width="30%" class="tabBG4"><xsl:apply-templates select="//email/oioNS:prompt" /></td>
 <td class="tabBG4"><xsl:apply-templates select="//email/oioNS:renderinfo" /></td>
 </tr>
 <tr>
 <td width="30%" class="tabBG4"><xsl:apply-templates select="//home_phone/oioNS:prompt" /></td>
 <td width="70%" class="tabBG4"><xsl:apply-templates select="//home_phone/oioNS:renderinfo" /></td>
-</tr>
-<tr>
+<!--</tr>
+<tr>-->
 <td width="30%" class="tabBG4"><xsl:apply-templates select="//fax/oioNS:prompt" /></td>
 <td class="tabBG4"><xsl:apply-templates select="//fax/oioNS:renderinfo" /></td>
 </tr>
-<!--<tr>
-<td width="30%" class="tabBG4">Upload Bio</td>
-<td width="70%" class="tabBG4"></td>
-</tr>-->
+
+<tr>
+<td colspan="4" class="tabBG4"><b>Permanent Address</b></td>
+</tr>
+
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//pmt_Address1/oioNS:prompt" /></td>
+<td class="tabBG4"><xsl:apply-templates select="//pmt_Address1/oioNS:renderinfo" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//pmt_Address2/oioNS:prompt" /></td>
+<td class="tabBG4"><xsl:apply-templates select="//pmt_Address2/oioNS:renderinfo" /></td>
+</tr>
+
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//pmt_City/oioNS:prompt" /></td>
+<td class="tabBG4"><xsl:apply-templates select="//pmt_City/oioNS:renderinfo" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//pmt_District/oioNS:prompt" /></td>
+<td class="tabBG4"><xsl:apply-templates select="//pmt_District/oioNS:renderinfo" /></td>
+</tr>
+
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//pmt_state/oioNS:prompt" /></td>
+<td class="tabBG4"><xsl:apply-templates select="//pmt_state/oioNS:renderinfo" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//pmt_country/oioNS:prompt" /></td>
+<td class="tabBG4"><xsl:apply-templates select="//pmt_country/oioNS:renderinfo" /></td>
+</tr>
+
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//pmt_pincode/oioNS:prompt" /></td>
+<td class="tabBG4"><xsl:apply-templates select="//pmt_pincode/oioNS:renderinfo" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//pmt_phone/oioNS:prompt" /></td>
+<td class="tabBG4"><xsl:apply-templates select="//pmt_phone/oioNS:renderinfo" /></td>
+</tr>
+
+
+<tr>
+<td colspan="4" class="tabBG4"><b>Communication Address</b>
+<input type="CHECKBOX" name="copy_permanent_add" id="copy_permanent_add" onclick="copyAddress();"/>Same as Permanent Address
+</td>
+</tr>
+
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//comm_Address1/oioNS:prompt" /></td>
+<td class="tabBG4"><xsl:apply-templates select="//comm_Address1/oioNS:renderinfo" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//comm_Address2/oioNS:prompt" /></td>
+<td class="tabBG4"><xsl:apply-templates select="//comm_Address2/oioNS:renderinfo" /></td>
+</tr>
+
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//comm_City/oioNS:prompt" /></td>
+<td class="tabBG4"><xsl:apply-templates select="//comm_City/oioNS:renderinfo" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//comm_District/oioNS:prompt" /></td>
+<td class="tabBG4"><xsl:apply-templates select="//comm_District/oioNS:renderinfo" /></td>
+</tr>
+
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//comm_state/oioNS:prompt" /></td>
+<td class="tabBG4"><xsl:apply-templates select="//comm_state/oioNS:renderinfo" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//comm_country/oioNS:prompt" /></td>
+<td class="tabBG4"><xsl:apply-templates select="//comm_country/oioNS:renderinfo" /></td>
+</tr>
+
+<tr>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//comm_pincode/oioNS:prompt" /></td>
+<td class="tabBG4"><xsl:apply-templates select="//comm_pincode/oioNS:renderinfo" /></td>
+<td width="30%" class="tabBG4"><xsl:apply-templates select="//comm_phone/oioNS:prompt" /></td>
+<td class="tabBG4"><xsl:apply-templates select="//comm_phone/oioNS:renderinfo" /></td>
+</tr>
+
 
 </table>
 </div>
@@ -764,7 +909,6 @@ function moveTop()
 
 
 <div id="d2">
-
 <table width="100%" class="tabBG3">
 <tr>
 <td colspan="2" class="thead" align="center"><xsl:apply-templates select="//awards/oioNS:prompt" /></td>
@@ -1001,59 +1145,74 @@ function moveTop()
 </table>
 </div>
 
-<!--============================= Upload Resume =============================-->
-<form method="post" action="./fileupload" NAME="myForm01" id="staff_profile_report_v0_0" enctype="multipart/form-data">
- <div id="fu1">
-  
-  <table width="100%" class="tabBG3">
-  <tr>
-  <td width="30%" class="tabBG4"><xsl:apply-templates select="//upload_resume/oioNS:prompt" /></td>
-  <td width="70%" class="tabBG4"><xsl:apply-templates select="//upload_resume/oioNS:renderinfo" /></td>
-  </tr>
-  <tr>
-    <td width="30%" class="tabBG4"><xsl:apply-templates select="//upload_photo/oioNS:prompt" /></td>
-    <td width="70%" class="tabBG4"><xsl:apply-templates select="//upload_photo/oioNS:renderinfo" /></td>
-  </tr>
-  </table>
-  </div>
-   <input type="HIDDEN" name="validation_fields" value="upload_photo-P" />
-  </form>
-<!--============================= Save,Save and Approve,Show Printable Buttons =============================-->
-<br />
-
-<table width="100%" class="tabBG3">
-     <tr ><td align="center" class="thead">
-     <input type="button" name="btsave" value="  Save  " onClick="save();" />
-     <input type="button" name="btsapprove" value=" Save and Approve " onClick="approve();" />
-     <input type="button" name="btprintable" value="Print " onClick="docHtmlShowPrintable();" />  
-     <input type="hidden" name="action" value="" /> 
-     <input type="HIDDEN" name="mandatory_fields" value="focus_area|office_room_num|office_phone_ext|email_id" />
-     <input type="HIDDEN" name="validation_fields" value="office_phone_ext-N|email_id-E|email-E|home_phone-N|fax-N|upload_photo-P" />
-     <script language="javascript">
-       if (document.forms[0].approved.value==1){                      	
-       	document.forms[0].btsave.style.display='none';         	
-       	document.forms[0].btsapprove.style.display='none';       
-       }
-       else{if (document.forms[0].caction.value=="CDOC-OPEN_A_DOCUMENT_FOR_APPROVE"){                      	
-       		document.forms[0].btsave.style.display='none';         	
-       		}       
-	       else{
- 	      document.forms[0].btsapprove.style.display='none';         	
- 	      }
-	}
-       
-     </script>     
-     </td>     
-     </tr>
-</table>
+<input type="hidden" name="action" value="" /> 
+<input type="HIDDEN" name="mandatory_fields" value="focus_area|office_room_num|office_phone_ext|email_id" />
+<input type="HIDDEN" name="validation_fields" value="office_phone_ext-N|email_id-E|email-E|home_phone-N|fax-N" />
 
 
 </td>
 </tr>
 </table>
 </font>
-
+</div>
 </form>
+
+<!-- ============================= Upload Resume ============================= -->
+
+<div><table width="100%" cellspacing="0" class="bodystyle1"><tr><td width="160px" class="tabBG2"></td><td valign="top" class="listdiv_toggle">
+ <div id="fu1">
+ <form method="post" target="upload_target_iframe" action="./fileupload" NAME="myForm01" id="staff_profile_report_v0_0" enctype="multipart/form-data"> 
+ <INPUT TYPE="HIDDEN" NAME="userId"><xsl:attribute name="VALUE"><xsl:value-of select="//entityId"/></xsl:attribute></INPUT>
+  <table width="100%" class="tabBG3">
+  <tr>
+  <td width="30%" class="tabBG4"><xsl:apply-templates select="//upload_resume/oioNS:prompt" /></td>
+  <td width="70%" class="tabBG4"><xsl:apply-templates select="//upload_resume/oioNS:renderinfo" /></td>
+  </tr>
+  </table>
+  </form>
+  <form method="post" target="upload_target_iframe" action="./fileupload" NAME="myForm02" id="staff_profile_report_v0_1" enctype="multipart/form-data">
+  <INPUT TYPE="HIDDEN" NAME="userId"><xsl:attribute name="VALUE"><xsl:value-of select="//entityId"/></xsl:attribute></INPUT>
+  <table width="100%" class="tabBG3">
+  <tr>
+    <td width="30%" class="tabBG4"><xsl:apply-templates select="//upload_photo/oioNS:prompt" /></td>
+    <td width="70%" class="tabBG4"><xsl:apply-templates select="//upload_photo/oioNS:renderinfo" /></td>
+  </tr>
+  </table>
+  <input type="HIDDEN" name="validation_fields" value="upload_photo-P" />
+  </form>
+  <iframe id="upload_target_iframe" name="upload_target_iframe" src="" style="width:0;height:0;border:0px;display:none;"></iframe>
+ </div>
+<!--============================= Save,Save and Approve,Show Printable Buttons ============================= -->
+
+<table width="100%" class="tabBG3">
+     <tr ><td align="center" class="thead">
+     
+     <input type="button" name="btsave" id="btsave" value="  Save  " onClick="save();" />
+     <input type="button" name="btsapprove" id="btsapprove" value=" Save and Approve " onClick="approve();" />
+     <input type="button" name="btclose" id="btclose" value="Close" onClick="parent.close();" />      
+     <!--input type="button" name="btprintable" value="Print " onClick="docHtmlShowPrintable();" />  -->
+     
+          
+     <script language="javascript">
+       if (document.getElementById("approved").value==1){                      	
+       	//document.getElementById("btsave").style.display='none';         	
+       	document.getElementById("btsapprove").style.display='none';       
+       }
+       else{if (document.getElementById("caction").value=="CDOC-OPEN_A_DOCUMENT_FOR_APPROVE"){                      	
+       		document.getElementById("btsave").style.display='none';         	
+       		}       
+	       else{
+ 	      document.getElementById("btsapprove").style.display='none';         	
+ 	      }
+	}
+       document.getElementById('btclose').style.visibility="hidden";
+     </script>     
+     </td>     
+     </tr>
+</table>
+</td></tr></table>
+</div>
+
 </body>
 </html>
 </xsl:template>

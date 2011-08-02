@@ -1,5 +1,23 @@
 <?xml version="1.0"?>
-<basic_search>
+<basic_search>	
+	
+	
+	
+	<table>
+		<field_caption>Faculty Name</field_caption>
+		<field_name>staff_profile_masterdetails_v0_values.user_full_name</field_name>				
+	</table>	
+	
+	<table>
+		<field_caption>Department</field_caption>
+		<field_name>staff_profile_masterdetails_v0_values.department</field_name>				
+	</table>
+	
+	<table>
+		<field_caption>Designation</field_caption>
+		<field_name>staff_profile_masterdetails_v0_values.Designation</field_name>				
+	</table>
+	
 	<table>
 		<field_caption>Research Interests</field_caption>
 		<field_name>staff_profile_personal_details_v0_values.research_interests</field_name>				

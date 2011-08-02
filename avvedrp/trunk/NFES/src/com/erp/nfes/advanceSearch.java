@@ -24,13 +24,13 @@ public class advanceSearch extends HttpServlet{
 	String action="";
 	String tab_name="";
 
-	private ServletConfig config;
+	/*private ServletConfig config;
 
 	public void init(ServletConfig config)
 		throws ServletException{
 		this.config=config;
 
-	}
+	}*/
 
     public void service (HttpServletRequest req, HttpServletResponse res)
       throws ServletException, IOException {
@@ -38,7 +38,7 @@ public class advanceSearch extends HttpServlet{
 	  HttpSession session = req.getSession(true);
 	  res.setContentType("text/html");
 	  PrintWriter out = res.getWriter();
-	  action=req.getParameter("action");
+	  //action=req.getParameter("action");
 
 	try{
         ConnectDB conObj=new ConnectDB();
@@ -155,9 +155,9 @@ public class advanceSearch extends HttpServlet{
 	     }
 
 	}//end of function service.
-	public void destroy(){
+	/*public void destroy(){
 
-	}
+	}*/
 
 
 	private void search(Connection conn, PrintWriter out,HttpServletRequest req){

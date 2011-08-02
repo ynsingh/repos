@@ -15,7 +15,7 @@
 </style>
 <script language="javascript" src="./js/richtext.js"></script>
 <script language="javascript" src="./js/clinicaldoc_common.js"></script>
-
+<script language="javascript" src="./js/jquery-1.4.2.min.js"></script>
 <style type="text/css">
 .style1 {
 	color: #0000FF;
@@ -42,8 +42,14 @@
 	</xsl:attribute></INPUT>
 <INPUT TYPE="HIDDEN" NAME="formName" VALUE="staff_profile_qualification_v0"></INPUT>
 <INPUT TYPE="HIDDEN" NAME="entitytype" VALUE="qualification"></INPUT>
-
-
+<INPUT TYPE="HIDDEN" NAME="caction" id="caction"><xsl:attribute name="VALUE"><xsl:value-of select="//action"/> </xsl:attribute></INPUT> 
+<INPUT TYPE="HIDDEN" NAME="approved" id="approved"><xsl:attribute name="VALUE"><xsl:value-of select="//approved"/> </xsl:attribute></INPUT>
+<INPUT TYPE="HIDDEN" NAME="reload_after_save" id="reload_after_save"><xsl:attribute name="VALUE"><xsl:value-of select="//reload_after_save"/> </xsl:attribute></INPUT>
+<script language="javascript">
+if (document.getElementById('reload_after_save').value!="null"){
+	alert(document.getElementById('reload_after_save').value);
+}
+</script>
 <!-- ================================= Qualification ======================================-->
 <div id="d1" class="childdiv">
 <table width="100%" class="tabBG3">
@@ -92,18 +98,32 @@
 
 
 <!--============================= Save,Save and Approve,Show Printable Buttons =============================-->
-<br />
+
 <script language="javascript" src="./js/clinicaldoc_common.js"></script>
 
 <table width="100%" class="tabBG3">
      <tr ><td align="center" class="thead">
     <input type="hidden" name="action" value="" /> 
-    <input type="button" name="btsave" value="  Save  " onClick="submitform_staff_profile_qualification_v0();" />      
+    <input type="button" name="btsave" id="btsave" value="  Save  " onClick="submitform_staff_profile_qualification_v0();" />  
+    <input type="button" name="btsapprove" id="btsapprove" value="Save and Approve" onClick="approveform_staff_profile_qualification_v0();" />
+    <input type="button" name="btclose" id="btclose" value="Close" onClick="parent.close();" />      
     <input type="HIDDEN" name="mandatory_fields" value="course_name|institution|location|board|join_month|join_year" />
-     <input type="HIDDEN" name="validation_fields" value="passing_year-Y" />
+     <input type="HIDDEN" name="validation_fields" value="join_month-N|join_year-Y|passing_year-Y|percentage-Per" />
+    <script language="javascript">         
+	if (document.getElementById("approved").value==1){                      	
+		document.getElementById("btsave").style.display='none';         	
+		document.getElementById("btsapprove").style.display='none';       
+	}
+	else{if(document.getElementById("caction").value=="CDOC-OPEN_A_DOCUMENT_FOR_APPROVE"){                      	
+			document.getElementById("btsave").style.display='none';         	
+			}       
+	       else{
+	      document.getElementById("btsapprove").style.display='none';         	
+	      }
+	}                
+     </script>  
     </td></tr>
 </table>
-
 </font>
 </form>
 </body>

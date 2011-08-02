@@ -20,7 +20,7 @@ public   class ConnectDB {
 			    String username = properties.getProperty("username");
 			    String password = properties.getProperty("password");
 				Class.forName("org.gjt.mm.mysql.Driver");
-				conn=DriverManager.getConnection("jdbc:mysql:"+dbname,username,password);
+				conn=DriverManager.getConnection("jdbc:mysql:"+dbname+"?characterSetResults=UTF-8&characterEncoding=UTF-8&useUnicode=yes",username,password);
 				
 			}catch(Exception e){
 

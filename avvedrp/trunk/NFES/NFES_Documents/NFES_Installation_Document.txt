@@ -1,0 +1,43 @@
+NFES Installation Document
+===========================
+
+
+System Requirement
+==================
+1. Java 1.6
+
+2. Tomcat 6.0.16
+
+3. MySQL 5.0.37
+
+4. Apache Ant 1.8.1
+
+5. Mozilla Firefox 3.6 or above
+
+
+
+Execution Steps
+================
+After check out NFES 
+
+1. Create nfes.war file. Using the following command
+   a. in command prompt move to the directory where you checkout NFES .e.g. D:\NFES>
+   b. Type ant package.  This will create nfes.war in the NFES folder. 
+
+2. Move "nfes.war" to "Tomcat\webapps" folder from NFES.
+
+3. Create a folder named "resources" and  two sub folders named "temp" and nfes_files  under "Tomcat\" folder (temp folder is used for storing temporary files during the file upload, nfes_files folder is used to store uploaded files).
+
+4. Move db.properties, mail.properties and fileuploadpath.properties to "Tomcat\conf" folder from "NFES\properties" folder
+
+5. Configure db.properties (change dbname, username and password if necessary), mail.Properties (change email.smtp.host and email.smtp.port) and fileuploadpath.properties  (if you want to change the file uploading location change TMP_DIR_PATH and DESTINATION_DIR_PATH) files.
+
+6. Create database (e.g. NFES) in MySQL.
+
+7. Select the above created database and Execute "nfes.sql"(NFES\database\nfes.sql).
+
+8. Start Tomcat and type url  http://localhost:8080/nfes
+
+9. Login as 'admin' with password 'admin123'.
+
+=================================================================================

@@ -21,7 +21,7 @@ try{
      Class.forName("org.gjt.mm.mysql.Driver");
      conn=DriverManager.getConnection("jdbc:mysql:"+dbname+"?characterSetResults=UTF-8&characterEncoding=UTF-8&useUnicode=yes",username,password);
      theStatement=conn.createStatement();
-     theResult=theStatement.executeQuery("select control_name,language_string from language_localisation where active_yes_no=1 and language_code=\'"+lc+"\'");
+     theResult=theStatement.executeQuery("select control_name,language_string from language_localisation where active_yes_no=1 and file_code=1 and language_code=\'"+lc+"\'");
      theResult.last();int len=theResult.getRow();String cn[]=new String[len];String ls[]=new String[len];
      int i=0;theResult.beforeFirst();
      while(theResult.next()){
@@ -66,7 +66,7 @@ try{
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <HTML lang=en-US dir=ltr xmlns="http://www.w3.org/11001/xhtml">
 <HEAD profile=http://gmpg.org/xfn/11>
-<TITLE>Staff Profile Login</TITLE>
+<TITLE>NFES - Login</TITLE>
 
 
 
@@ -86,7 +86,7 @@ function doLogin(){
 	document.forms[0].submit();
 }
 
-function keypress(c,e){
+function keypress(c,e){	
      var unicode=e.keyCode? e.keyCode : e.charCode;
      if(unicode==13){
      	if(c=="j_username" && document.forms[0].j_username.value!=""){
@@ -108,127 +108,195 @@ function combo_change(){
 
 </script>
 <title>Login NFES</title>
-<link href="./css/main.css" rel="stylesheet" type="text/css" />
-<link href="./css/dark_blue.css" rel="stylesheet" type="text/css" />
-<!--<script src="./js/jquery-1.4.2.min.js" type="text/javascript"></script>-->
-<link href="./css/oiostyles.css" rel="stylesheet" type="text/css"/>
 
-<style type="text/css">
-.class1 A:link {text-decoration: none;color: white;}
-.class1 A:visited {text-decoration: none;color: white;}
-.class1 A:active {text-decoration: none}
-.class1 A:hover {text-decoration: underline; color: yellow;}
+<style type="text/css" media='screen'>
+
+.class1 A:link {font-family:verdana,Helvetica,sans-serif;font-weight: normal;font-size: 12px;text-decoration: none;color: #7D053F;}
+.class1 A:visited {text-decoration: none;}
+.class1 A:active {text-decoration: none;}
+.class1 A:hover {text-decoration: underline; }
+
+
+
+body {
+text-align: center;
+font-family:verdana,Helvetica,sans-serif;
+font-size: 12px;
+background-image:url(./images/bg.jpg);
+background-repeat: repeat-x;
+background-color: #D5E5ED;
+}
+
+
+/* Login Bar Start */
+.loginLink{
+	margin: 0 auto; 
+	width:847px;
+	height:30px;
+	background-color: #b9dcef;
+	font-size:14px;
+	text-align:right;
+	font-weight:bold;
+	color:#007500;
+	}
+.loginLink span { 
+  text-align:right;
+  padding-right: 15px;
+  }
+	
+.loginLink span A:link { color:#01518e; font-weight:bold; text-decoration: none}
+.loginLink span A:visited { color:#01518e; font-weight:bold; text-decoration: none}
+.loginLink span A:active { color:#01518e; font-weight:bold; text-decoration: none}
+.loginLink span A:hover { color:#01518e; font-weight:bold; text-decoration: none}
+/* Login Bar Start */
+
+/* Banner Start */
+.banner {
+	margin: 0 auto; 
+	width:847px;
+	height:158px;
+	background-color: #b9dcef;
+	background-image: url(./images/indexnew_02.jpg);
+	background-repeat: no-repeat;  
+	}
+/* Banner end */
+
+/* login Start */
+.login {
+	margin: 0 auto; 
+	width:847px;
+	height:260px;
+	text-align: right;
+	background-color: #b9dcef;
+	background-image: url(./images/login_03.jpg);
+	background-repeat: no-repeat;  
+	}
+.loginUserPass{
+     	position: relative;
+	float: right;
+	right:80px;
+	top: 35px;
+	width:310px;
+	height:164px;
+	color: #01518e;
+	font-size:12px;
+	font-weight: bold;
+	letter-spacing: 1px;
+	text-align:left;
+	font-family: verdana,Helvetica,sans-serif;
+	
+	}
+/* login end */
+/* dashboardBar Start */
+.dashboardBar {
+	margin: 0 auto; 
+	width:847px;
+	height:48px;
+	background-color: #b9dcef;
+	background-image: url(./images/indexnew_04.jpg);
+	background-repeat: no-repeat;  
+	}
+.dashboardBar span { 
+  text-align:right;
+  
+  }
+/* dashboardBar end */
+
 </style>
 
 </HEAD>
 
-<BODY onload="document.f.j_username.focus();" >
+<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onload="document.f.j_username.focus();" >
 
 <form name="f" action="<c:url value='j_spring_security_check'/>" method="POST">
 <%
 if ((request.getParameter("login_error") != "")&&(request.getParameter("login_error") != null)) {%>
 <div id="validation-summary">	
-	 <div class="notification errors closable">	
-		<!--<h3><%=em1%></h3>		-->
-		<ul>
-			<li><%=em2%></li>
-			<!--<li><%=em3%></li>-->
-		</ul>
-		
+	 <div class="loginLink">			
+		<div class='login_message'  align="center"><br><%=em2%></div>
 	</div>
 </div>		
 <%} 		 
 %>
 
-<!--<div class="logindiv">-->
+<!-- Banner Start-->
+<div class="banner"></div>
+<!-- Banner end-->
+<form name="f" action="<c:url value='j_spring_security_check'/>" method="POST">
+
+<!-- Login Start-->
+<div class="login">
+<div class="loginUserPass">
 
 
-<table WIDTH=70% align="center"><tr>
-<td colspan=2 class="logindiv"><!--<img  src="./images/loginheader.png"  >--></td>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
 
-<!--<tr><td>
-<div align="center" style="margin:6% auto 20px;">
-</div>
-</tr></td>-->
+<tr align="left">
+		<th height="40"> <%=l%></th>
+		<th align="left">
+		<select name="language" onchange="combo_change();" ><%
+		theResult=theStatement.executeQuery("select name,code from language_master where active_yes_no=1");
+		String c="";
+		while(theResult.next()){
+		     c=theResult.getString("code");
+		     if(c.equals(lc)){%>
+			<option value=<%=c%> selected="selected" ><%=theResult.getString("name")%></option>
+		     <%}else{%>
+			<option value=<%=c%> ><%=theResult.getString("name")%></option>
+		     <%}
+		}		
+		theResult.close();
+		theStatement.close();
+		conn.close();%>
+		</select>
+		</th>
+</tr>		
 
-<tr>
-<td><p>A nation wide,web based,searchable electronic respository that acquires, maintains, and provides information regarding the research interests and  publications of faculty members within and across various educational institutions under MHRD</p></td>
+<tr align="left">
+      <th width="50%" height="40"><%=u%> </th>
+      <th width="50%" align="left">	      
+	 <input type="text" style="width: 150px;" name='j_username' id='j_username' onkeypress="keypress(this.name,event)" />
+     </th>
+</tr>
+<tr align="left">
+      <th width="50%" height="40"><%=p%> </th>
+      <th width="50%" align="left">
+       <input type='password' style="width: 150px;" name='j_password' id='j_password' onkeypress="keypress(this.name,event)" />
+    </th>
+</tr>
+    <tr align="left">
+      <th >&nbsp;</th>
+      <th align="left"><input type=button name="button" onclick="doLogin()" value='<%=login%>' ></th>
+      </tr>
+<tr align="left">
+<th ></th>
+<td > 	 
 
-<td>
-<div id="login">	
-	<!--<h2 class="head-alt"><%=login%></h2>
-	<ul class="tabs">
-		<li><a tabindex="4" href="ForgotPassword.jsp"><%=lp%></a></li>
-	</ul>
-	-->
-	
-	<!--<div class="panes">	-->
-		<div>			
-			<form action="index.html" method="post">							
-				<fieldset>
-				<label for="language"> <%=l%></label>
-				<select name="language" onchange="combo_change();" ><%
-				theResult=theStatement.executeQuery("select name,code from language_master where active_yes_no=1");
-				String c="";
-				while(theResult.next()){
-				     c=theResult.getString("code");
-				     if(c.equals(lc)){%>
-					<option value=<%=c%> selected="selected" ><%=theResult.getString("name")%></option>
-				     <%}else{%>
-					<option value=<%=c%> ><%=theResult.getString("name")%></option>
-				     <%}
-				}		
-				theResult.close();
-				theStatement.close();
-				conn.close();%>
-				</select>
-				<br><br>
-				<!--<legend><%=login_msg%></legend>-->
-				
-				<label for="username"><%=u%></label><input id="j_username" tabindex="1" value="" name="j_username" type="text" onkeypress="keypress(this.name,event)" />
-				<label for="password"><%=p%></label><input id="j_password" tabindex="2"  name="j_password" type="password" onkeypress="keypress(this.name,event)" />
-				<br><a name="button" href="#" tabindex="3" onclick="doLogin()" class="button" ><%=login%></a>				
-				<span class="class1"><a tabindex="4" href="ForgotPassword.jsp"><%=lp%></a>
-				</span>
-				</fieldset>
-			</form>
-		</div>
-	<!--</div>-->
-</div>
-</td></tr>
-<tr><td colspan=2 class="footerdivlogin">
-<!--<div class="footerdivlogin" > -->
-Developed by Amrita University under ERP, NME ICT, MHRD
-<!--</div>-->
-</td></tr>
-</table>
+	 <a onmouseout="this.style.textDecoration='none';" onmouseover="this.style.textDecoration ='underline';" style="font-size: 12px; font-weight: normal; text-decoration: none; color: rgb(125, 5, 63);" href="ForgotPassword.jsp"><%=lp%> </a>
+</td>
+</tr>
+<tr align="left">
+<th>&nbsp;</th>
+<td align="right"><font size="1" face="Times"/>     
+</td>
+</tr>
+      
+  </table>
+ 
+ </div>
+ 	
+ 	
+ </div>
+  </form>
+ <!-- Login end-->
+ 
+ <!-- dashboardBar Start-->
+ <div class="dashboardBar">
+ <br>
+ <center>
+<label style="text-align: center;font: bold 9px Verdana;color: #104d6b;line-height: 2.5;">Developed by Amrita University under ERP, NME ICT, MHRD</label>
+ </div>
+<!-- dashboardBar end-->
 
-
-<!--<%
-if ((request.getParameter("login_error") != "")&&(request.getParameter("login_error") != null)) {%>
-<div id="validation-summary">	
-	<div class="notification errors closable">	
-		<h3><%=em1%></h3>
-		<ul>
-			<li><%=em2%></li>
-			<li><%=em3%></li>
-		</ul>
-	</div>
-</div>		
-<%} 		 
-%>	-->
-<!--</div>-->
-
-
-
-</form>
-	
-</BODY>
+</body>
 </HTML>
-
-
-<!--NFES is a nation wide, web based, searchable electronic respository that acquires, maintains, and provides information regarding the research interests and publications of faculty members within and across various educational institutions under MHRD-->
-
-
-
-	

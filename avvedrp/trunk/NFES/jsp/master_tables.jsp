@@ -1,8 +1,57 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-		
-<%@ page contentType="text/html; charset=iso-8859-1" language="java" import="javax.sql.DataSource,javax.naming.Context,javax.naming.InitialContext,java.sql.*,java.util.*,java.io.FileInputStream" errorPage="" %>
+<%@ page contentType="text/html; charset=utf-8" pageEncoding="UTF-8" language="java" import="javax.sql.DataSource,javax.naming.Context,javax.naming.InitialContext,java.sql.*,java.util.*,java.io.FileInputStream" errorPage="" %>
+
+<%
+Connection conn=null;
+Statement theStatement=null;
+ResultSet theResult=null;
+String gm="";String pim="";String ctm="";String um="";String im="";String lc="";String idm="";
+try{
+     lc=(String) session.getAttribute("language");
+     Properties properties = new Properties();
+     properties.load(new FileInputStream("../conf/db.properties"));
+     String dbname = properties.getProperty("dbname");
+     String username = properties.getProperty("username");
+     String password = properties.getProperty("password");
+     Class.forName("org.gjt.mm.mysql.Driver");
+     conn=DriverManager.getConnection("jdbc:mysql:"+dbname+"?characterSetResults=UTF-8&characterEncoding=UTF-8&useUnicode=yes",username,password);
+     theStatement=conn.createStatement();
+     theResult=theStatement.executeQuery("select control_name,language_string from language_localisation where active_yes_no=1 and file_code=26 and language_code=\'"+lc+"\'");
+     theResult.last();int len=theResult.getRow();String cn[]=new String[len];String ls[]=new String[len];
+     int i=0;theResult.beforeFirst();
+     while(theResult.next()){
+          cn[i]=theResult.getString("control_name");
+          ls[i]=theResult.getString("language_string");
+          i++;
+     }
+     
+     for(i=0;i<len;i++){
+     	if(cn[i].equals("general_master")){
+     		gm=ls[i];
+     	}else if(cn[i].equals("principal_investigator_master")){
+     		pim=ls[i];
+     	}else if(cn[i].equals("courses_taught_master")){
+     		ctm=ls[i];
+     	}else if(cn[i].equals("university_master")){
+     		um=ls[i];
+     	}else if(cn[i].equals("intitution_master")){
+     		im=ls[i];
+     	}else if(cn[i].equals("intitution_department_master")){
+     		idm=ls[i];
+     	}
+     	
+     }
+     
+     
+     request.setCharacterEncoding("UTF-8");
+     response.setContentType("text/html; charset=utf-8");
+     Locale locale=new Locale(lc,"");
+}catch(Exception e){
+     e.printStackTrace();
+}
+theResult.close();theStatement.close();conn.close();	
+%>
+
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <HEAD profile=http://gmpg.org/xfn/11>
 <TITLE>Master Tables</TITLE>
@@ -10,10 +59,11 @@
 <META content="MSHTML 6.00.2900.5694" name=GENERATOR>
 
 <link type="text/css" href="../css/jquery-ui-1.8.4.custom.css" rel="stylesheet" />
+<link type="text/css" href="../css/oiostyles.css" rel="stylesheet" />
 <script type="text/javascript" src="../js/jquery-1.4.2.min.js"></script>
 <script type="text/javascript" src="../js/jquery-ui-1.8.4.custom.min.js"></script>
 <script type="text/javascript">
- var pi="0";var ct="0";var u="0";var i="0";
+ var pi="0";var ct="0";var u="0";var i="0";var dm="0";
 $(function() {
 $("#tabs").tabs();
 });
@@ -53,6 +103,12 @@ function im(){
      	 i="1";
      }
 }
+function idm(){
+     if(dm=="0"){
+     	 document.getElementById("if06").src="../master_tables?tab_name=institution_department_master&action=show_institution_department_master";
+     	 dm="1";
+     }
+}
 
 </script>
 
@@ -63,36 +119,42 @@ function im(){
 
  <div id="tabs">
      <ul>
-     <li><a href="#tabs-1">General Master</a></li>
-     <li><a href="#tabs-2" onclick="pim();" >Principal Investigator Master</a></li>
-     <li><a href="#tabs-3"onclick="ctm();" >Courses Taught Master</a></li>
-     <li><a href="#tabs-4"onclick="um();" >University Master</a></li>
-     <li><a href="#tabs-5"onclick="im();" >Institution Master</a></li>
+     <li><a href="#tabs-1"><%=gm%></a></li>
+     <li><a href="#tabs-2" onclick="pim();" ><%=pim%></a></li>
+     <li><a href="#tabs-3"onclick="ctm();" ><%=ctm%></a></li>
+     <li><a href="#tabs-4"onclick="um();" ><%=um%></a></li>
+     <li><a href="#tabs-5"onclick="im();" ><%=im%></a></li>
+     <li><a href="#tabs-6"onclick="idm();" ><%=idm%></a></li>
      </ul>
      <div id="tabs-1" align="center">
-     <iframe name="General_Master" id="if01" src="" width="99%" height="350px" frameborder="0" >
+     <iframe name="General_Master" id="if01" src="" width="99%" height="330px" frameborder="0" >
        <p>Your browser does not support iframes.</p>
      </iframe>
      </div>
      <div id="tabs-2">
-     <iframe name="Principal_Investigator_Master" id="if02" src="" width="99%" height="350px" frameborder="0" >
+     <iframe name="Principal_Investigator_Master" id="if02" src="" width="99%" height="330px" frameborder="0" >
        <p>Your browser does not support iframes.</p>
      </iframe>	 
      </div>
      <div id="tabs-3">
-     <iframe name="Courses_Taught_Master" id="if03" src="" width="99%" height="350px" frameborder="0" >
+     <iframe name="Courses_Taught_Master" id="if03" src="" width="99%" height="330px" frameborder="0" >
             <p>Your browser does not support iframes.</p>
      </iframe>
      </div>
      <div id="tabs-4">
-     <iframe name="University_Master" id="if04" src="" width="99%" height="350px" frameborder="0" >
+     <iframe name="University_Master" id="if04" src="" width="99%" height="330px" frameborder="0" >
                  <p>Your browser does not support iframes.</p>
      </iframe>
      </div>
      <div id="tabs-5">
-     <iframe name="Institution_Master" id="if05" src="" width="99%" height="350px" frameborder="0" >
+     <iframe name="Institution_Master" id="if05" src="" width="99%" height="330px" frameborder="0" >
                  <p>Your browser does not support iframes.</p>
      </iframe>
+     </div>
+     <div id="tabs-6">
+          <iframe name="Institution_department_Master" id="if06" src="" width="99%" height="330px" frameborder="0" >
+                      <p>Your browser does not support iframes.</p>
+          </iframe>
      </div>
  </div>
 

@@ -5,7 +5,7 @@
 <LINK media=screen href="./css/oiostyles.css" type=text/css rel=stylesheet>
 </head>
 <div>
-<frameset  cols="18%,*"  border="1" bordercolor="#f2f9ff" framespacing="3">
+<frameset  cols="160px,*"  framespacing="0px" FRAMEBORDER=NO>
 	<frame name="menu" src="adminmenu.jsp" noresize="noresize"  >
 	<frame name="content" src="staffList.jsp" name="content" >
 <noframes>

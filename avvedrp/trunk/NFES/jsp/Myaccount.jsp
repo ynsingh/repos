@@ -9,7 +9,7 @@ profile=http://gmpg.org/xfn/11><TITLE>Change Password</TITLE>
 <META content="MSHTML 6.00.2900.5694" name=GENERATOR>
 
 </HEAD>
-<BODY>
+<BODY class="bodystyle">
 
 <%
 String usertop=null;
@@ -23,6 +23,7 @@ try
 
 <script language="JavaScript" type="text/javascript" ></script>
 <script type="text/javascript">
+var ps="";
 function clearall()
 {
 	document.forms['user'].oldpass.value="";
@@ -30,10 +31,39 @@ function clearall()
 	document.forms['user'].cnewpass.value="";
 	
 }
-function checkval(){
+function passwordChanged()
+{	
+	
+	var strength = document.getElementById("strength");
+	var strongRegex = new RegExp("^(?=.{8,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*\\W).*$", "g");
+	var mediumRegex = new RegExp("^(?=.{7,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$","g");
+	var enoughRegex = new RegExp("(?=.{6,}).*", "g");
+	var pwd = document.getElementById("newpass");
+	if (pwd.value.length==0) {
+		strength.innerHTML = 'Type Password';ps="";
+	} else if (false == enoughRegex.test(pwd.value)) {
+		strength.innerHTML = 'More Characters';ps="MC";
+	} else if (strongRegex.test(pwd.value)) {
+		strength.innerHTML = '<span style="color:green">Strong</span>';ps="S";
+	} else if (mediumRegex.test(pwd.value)) {
+		strength.innerHTML = '<span style="color:orange">Medium</span>';ps="M";
+	} else { 
+		strength.innerHTML = '<span style="color:red">Weak</span>';ps="W";
+	}
+}
+function checkval(){	
 	var a = document.forms['user'].newpass.value;	
 	var b = document.forms['user'].cnewpass.value;
+	var c=document.forms['user'].oldpass.value;	
+	if(a=="" || b=="" || c=="" ){
+		alert("Please enter mandatory fields.");
+		return false;
+	}
 	
+	if(ps=="MC" || ps=="W"){
+		alert( "Weak Password enter new one");
+		return false;
+	}	
 	if( a != b ){
 		alert("Typed in passwords do not match");
 		return false;
@@ -54,10 +84,9 @@ function checkval(){
 
 <form id="user" action="../ChangePasswordServlet" method="post" name="user" onSubmit="return checkval()">
 <div class="listdiv">
-<table>  	
-<tr>
-<td colspan="2"><image src="../images/changepassword.gif" ></img></td>
-</tr>
+<h4>&nbsp;&nbsp;&nbsp;Change Password </h4> 
+<table style="background: none repeat scroll 0 0 #CCE6F3;" align="center" width="98%">  	
+
 <tr>
 <td colspan=2> &nbsp;
 <%    		
@@ -65,19 +94,19 @@ String s = request.getParameter("value");
 if( s != null ){
 if(s.equals("0")){
 	%>
-	<div class="success">			
+	<div class="message">			
 		Successfully changed your password.
 	</div>	
 	<%
 } else if(s.equals("1")){
 	%>
-	<div class="errorlogin">			
+	<div class="message">			
 		Current password is not correct.
 	</div>	
 	<%
 } else if(s.equals("2")){
 	%>
-	<div class="errorlogin">			
+	<div class="message">			
 		Current password and new password should not be same.
 	</div>	
 	<%
@@ -88,25 +117,28 @@ if(s.equals("0")){
 </tr>
 
 <tr>	 
- <td colspan=2> <p class="labeltext">To reset your password, provide your current password  </p>  </td>
+ <td colspan=2>  </td>
 </tr>
 <tr>
-  <td width="198"><label  class="labeltext">Current Password </label></td>
+  <td width="198"><label  class="labeltext">Current Password: </label><label class="mandatory">*</label></td>
   <td width="265"><input  name="oldpass" class="textmedium" type="password" value="" maxlength="50"/></td>
 </tr>  
 <tr>
-  <td><label  class="labeltext">New Password </label></td>
-  <td> <input  name="newpass" class="textmedium" type="password" value="" maxlength="50"/></td>
+  <td><label  class="labeltext">New Password: </label><label class="mandatory">*</label></td>
+  <td> <input  name="newpass" id="newpass" class="textmedium" type="password" value="" maxlength="50" onkeyup="return passwordChanged();"/>
+  <span id="strength" class="labeltext">type password</span>
+  </td>
 </tr>  
 <tr>
-  <td><label  class="labeltext">Confirm New Password </label>  </td>
+  <td><label  class="labeltext">Confirm New Password: </label><label class="mandatory">*</label>  </td>
   <td><input  name="cnewpass" class="textmedium" type="password" value="" maxlength="50"/></td>
 </tr>
 <tr>
       <td></td>
       <td><input type="submit"  name="Save"  value="Change Password"/><input type="button"  onClick="clearall()"  value="Clear"/>    </td>
-</tr>  
+</tr> 
 </table>
+<br>
 </div>
 </form>
 </BODY></HTML>

@@ -15,7 +15,7 @@
 </style>
 <script language="javascript" src="./js/richtext.js"></script>
 <script language="javascript" src="./js/clinicaldoc_common.js"></script>
-
+<script language="javascript" src="./js/jquery-1.4.2.min.js"></script>
 <style type="text/css">
 .style1 {
 	color: #0000FF;
@@ -37,29 +37,40 @@ function submitform_staff_profile_awards_v0()
 {
 	var frmelement=document.getElementById("staff_profile_awards_v0");
 	if (isMandatoryDataExists(frmelement)=="1") {
-		if(resume==1)
-		{      if (document.forms[1].upload_imagefiles.value==""){
-				document.forms[0].upload_image.value=document.forms[1].upload_image.value 
-			}	
-			else
-			{
-				document.forms[0].upload_image.value=document.forms[1].upload_image.value + "|"+ document.forms[1].upload_imagefiles.value; 
-			}
-
-		       document.forms[1].submit();docHtmlSave();
-		}
-		else
-		{
-			document.forms[0].upload_image.value=document.forms[1].upload_imagefiles.value
-			docHtmlSave();
-		}
-	}	
+             document.myForm.upload_image.value=document.myForm01.upload_imagefiles.value; 
+             docHtmlSave();
+        }     
 }
+
+function approve()
+{		
+	var frmelement=document.getElementById("staff_profile_awards_v0");
+	if (isMandatoryDataExists(frmelement)=="1") {
+             document.myForm.upload_image.value=document.myForm01.upload_imagefiles.value; 
+	     docHtmlRecordwiseApprove();	
+   	}
+}
+
+function uploadFile(n){
+        n=n.substring(14);
+        if(resume==1 &amp;&amp; document.myForm01.upload_image.value!=""){
+       	     document.getElementById('upload_status_'+n).style.color='black';	
+	     document.getElementById('upload_status_'+n).innerHTML='uploading...';
+	     resume=0;
+	     document.myForm01.upload_imagefiles.value=document.myForm01.upload_image.value +"|"+ document.myForm01.upload_imagefiles.value;
+	     document.myForm01.submit();
+       	}else{
+	    document.getElementById('upload_status_'+n).style.color='red';
+	    document.getElementById('upload_status_'+n).innerHTML = 'Select a file to upload';	
+	}
+}
+
+
 
 </script>
 </head>
-<body onload="load()">
-
+<body onload="load()" >
+<div id="d1" class="childdiv">
 <form method="post" action="./StaffProfileServlet" NAME="myForm" ID="staff_profile_awards_v0">
 <font size="1" face="Verdana, Arial, Helvetica, sans-serif">
 
@@ -75,10 +86,16 @@ function submitform_staff_profile_awards_v0()
 <INPUT TYPE="HIDDEN" NAME="formName" VALUE="staff_profile_awards_v0"></INPUT>
 <INPUT TYPE="HIDDEN" NAME="upload_image" />
 <INPUT TYPE="HIDDEN" NAME="entitytype" VALUE="awards"></INPUT>
-
-
+<INPUT TYPE="HIDDEN" NAME="caction" id="caction"><xsl:attribute name="VALUE"><xsl:value-of select="//action"/> </xsl:attribute></INPUT> 
+<INPUT TYPE="HIDDEN" NAME="approved" id="approved"><xsl:attribute name="VALUE"><xsl:value-of select="//approved"/> </xsl:attribute></INPUT>
+<INPUT TYPE="HIDDEN" NAME="reload_after_save" id="reload_after_save"><xsl:attribute name="VALUE"><xsl:value-of select="//reload_after_save"/> </xsl:attribute></INPUT>
+<script language="javascript">
+if (document.getElementById('reload_after_save').value!="null"){
+	alert(document.getElementById('reload_after_save').value);
+}
+</script>
 <!-- ================================= Awards ======================================-->
-<div id="d1" class="childdiv">
+
 <table width="100%" class="tabBG3">
 <tr>
 <td colspan="2" class="thead" align="center">Awards Details</td>
@@ -108,11 +125,16 @@ function submitform_staff_profile_awards_v0()
 </tr>
 </table>
 
+<input type="HIDDEN" name="mandatory_fields" value="award_name|receiving_month_year" />
+<input type="hidden" name="action" value="" />
+</font>
+</form>
 
 <!--============================= Upload Image =============================-->
 
  <div id="fu1">
-  <form method="post" action="./fileupload" NAME="myForm01" enctype="multipart/form-data">
+  <form method="post" target="upload_target_iframe" action="./fileupload" NAME="myForm01" enctype="multipart/form-data">
+  <INPUT TYPE="HIDDEN" NAME="userId"><xsl:attribute name="VALUE"><xsl:value-of select="//entityId"/></xsl:attribute></INPUT>
   <table width="100%" class="tabBG3">
   <tr>
   <td width="30%" class="tabBG4"><xsl:apply-templates select="//upload_image/oioNS:prompt" /></td>
@@ -121,20 +143,35 @@ function submitform_staff_profile_awards_v0()
   </table>
   </form>
  </div> 
- </div>
-<!--============================= Save,Save and Approve,Show Printable Buttons =============================-->
-<br />
-<script language="javascript" src="./js/clinicaldoc_common.js"></script>
-<table width="100%" class="tabBG3">
-     <tr ><td align="center" class="thead">
-    <input type="hidden" name="action" value="" />
-     <input type="button" name="btsave" value="  Save  " onclick="submitform_staff_profile_awards_v0();" />
-     <input type="HIDDEN" name="mandatory_fields" value="award_name|receiving_month_year" />
-     </td></tr>
+ 
+  
+ <!--============================= Save,Save and Approve,Show Printable Buttons =============================-->
+ <div>
+ <script language="javascript" src="./js/clinicaldoc_common.js"></script>
+ <table width="100%" class="tabBG3">
+      <tr ><td align="center" class="thead">
+     
+      <input type="button" name="btsave" id="btsave" value="  Save  " onclick="submitform_staff_profile_awards_v0();" />
+      <input type="button" name="btsapprove" id="btsapprove" value="Save and Approve" onClick="approve();" />
+      <input type="button" name="btclose" id="btclose" value="Close" onClick="parent.close();" />      
+      <script language="javascript">               
+	if (document.getElementById("approved").value==1){                      	
+		document.getElementById("btsave").style.display='none';         	
+		document.getElementById("btsapprove").style.display='none';       
+	}
+	else{if (document.getElementById("caction").value=="CDOC-OPEN_A_DOCUMENT_FOR_APPROVE"){                      	
+		document.getElementById("btsave").style.display='none';         	
+		}       
+	else{
+	document.getElementById("btsapprove").style.display='none';         	
+		}
+	}                 
+     </script>  
+      </td></tr>
 </table>
-
-</font>
-</form>
+</div>
+<iframe id="upload_target_iframe" name="upload_target_iframe" src="" style="width:0;height:0;border:0px;display:none;"></iframe>
+</div>
 </body>
 </html>
 </xsl:template>

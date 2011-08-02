@@ -36,7 +36,7 @@ public class Calendar {
 			//set the html string to render.
 			String space = "			";
 			html.append("<link href=\"./css/jquery.datepick.css\" rel=\"stylesheet\" type=\"text/css\" />");
-			html.append( space + "<script language=\"JavaScript\" src=\"./js/jquery-1.4.2.min.js\"></script>\n");
+			//html.append( space + "<script language=\"JavaScript\" src=\"./js/jquery-1.4.2.min.js\"></script>\n");
 			html.append( space + "<script language=\"JavaScript\" src=\"./js/jquery.datepick.js\"></script>\n");
 			html.append("<script>$(document).ready(function(){");
 			html.append("$('#"+name+"').datepick({maxDate:'',dateFormat: 'dd-mm-yy',closeAtTop: false, showStatus: true,  showOn: 'both', buttonImageOnly: true, buttonImage: './images/calendar.gif'});");

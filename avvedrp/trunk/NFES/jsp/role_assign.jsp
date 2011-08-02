@@ -1,8 +1,66 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
 
-<%@ page contentType="text/html; charset=iso-8859-1" language="java" import="javax.sql.DataSource,javax.naming.Context,javax.naming.InitialContext,java.sql.*,java.util.*,java.io.FileInputStream" errorPage="" %>
+<%@ page contentType="text/html; charset=utf-8" pageEncoding="UTF-8" language="java" import="javax.sql.DataSource,javax.naming.Context,javax.naming.InitialContext,java.sql.*,java.util.*,java.io.FileInputStream" errorPage="" %>
 
 <%@ taglib prefix="app" uri="http://www.springframework.org/security/tags" %>
+
+
+<%
+String msg = request.getParameter("value");
+Connection conn=null;
+Statement theStatement=null;
+ResultSet theResult=null;
+String uname="";String prole="";String nrole="";String arole="";String smsg=""; String lc="";
+try{
+    
+     lc=(String) session.getAttribute("language");
+     Properties properties = new Properties();
+     properties.load(new FileInputStream("../conf/db.properties"));
+     String dbname = properties.getProperty("dbname");
+     String username = properties.getProperty("username");
+     String password = properties.getProperty("password");
+     Class.forName("org.gjt.mm.mysql.Driver");
+     conn=DriverManager.getConnection("jdbc:mysql:"+dbname+"?characterSetResults=UTF-8&characterEncoding=UTF-8&useUnicode=yes",username,password);
+     theStatement=conn.createStatement();
+     theResult=theStatement.executeQuery("select control_name,language_string from language_localisation where active_yes_no=1 and file_code=25 and language_code=\'"+lc+"\'");
+     theResult.last();int len=theResult.getRow();String cn[]=new String[len];String ls[]=new String[len];
+     int i=0;theResult.beforeFirst();
+     while(theResult.next()){
+          cn[i]=theResult.getString("control_name");
+          ls[i]=theResult.getString("language_string");
+          i++;
+     }
+     
+          
+     for(i=0;i<len;i++){
+     	
+     	if(cn[i].equals("user_name")){
+     		uname=ls[i];
+     	}else if(cn[i].equals("present_role")){
+     		prole=ls[i];
+     	}else if(cn[i].equals("new_role")){
+     		nrole=ls[i];
+     	}else if(cn[i].equals("assign_role")){
+     		arole=ls[i];
+     	}else if(cn[i].equals("success_msg")){
+     		smsg=ls[i];
+     	}
+     	
+     }
+     
+     
+     request.setCharacterEncoding("UTF-8");
+     response.setContentType("text/html; charset=utf-8");
+     Locale locale=new Locale(lc,"");
+}catch(Exception e){
+     e.printStackTrace();
+}
+theResult.close();
+theStatement.close();
+conn.close();
+%>
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
 
 <HTML lang=en-US dir=ltr xmlns="http://www.w3.org/11001/xhtml">
 
@@ -21,9 +79,7 @@
 		document.forms[0].present_role.value=role_name;
 	}
 	
-	function test(conn1,pst){
-	alert("sf");
-	}
+	
 	
 </script>
 
@@ -31,26 +87,22 @@
 <BODY class="bodystyle">
 
 <form name="role_assign" method="post" action="../RoleAssignServlet">
-<div align="center" class="listdiv">
+<div class="listdiv">
 
 <%
-String msg = request.getParameter("value");
 if( msg!=null ){
 	%>	
-	<table><tr><td>	<img src="../images/information_16x16.gif"></td>
-	<td>
-	<div class="success">			
-		<%=msg%>		
-	</div>		
-	</td></tr></table>
-	<br/>
+	<br>
+	<div class="message">			
+		<%=smsg%>		
+	</div>				
 	<%
 }%>
 
 <p>
-<table style="background-color: #d5e5ed;" align="center" width="90%">
+<table style="background: none repeat scroll 0 0 #CCE6F3;"; align="center" width="98%">
 <tr>
-<td><label  class="labeltext">User Name </td>
+<td><label  class="labeltext"><%=uname%><label  class="mandatory">*</label> </td>
 <td><select name="userName" onchange="getPresentRoll();">
 
 <%    		
@@ -88,11 +140,11 @@ try
 	</tr>
 	<tr>
 	<tr>
-	<td><label class="labeltext">Present Role</td>
+	<td><label class="labeltext"><%=prole%><label  class="mandatory">*</label></td>
 	<td><input class="textmedium" type=text name="present_role" value="" disabled="disabled"/>
 	<script>getPresentRoll();</script>
 	</tr>
-	<td><label class="labeltext">New Role</td> 	
+	<td><label class="labeltext"><%=nrole%><label  class="mandatory">*</label></td> 	
 	<td><select name="role">
 	<%
 	Class.forName("org.gjt.mm.mysql.Driver");	
@@ -116,7 +168,7 @@ try
 </tr>
 </select>
 <td><img src="../images/role.png"></td>
-<td><input type="submit"  name="Save"  value="Assign Role"/></td>
+<td><input type="submit"  name="Save"  value="<%=arole%>"/></td>
 
 </table>
 <br/>

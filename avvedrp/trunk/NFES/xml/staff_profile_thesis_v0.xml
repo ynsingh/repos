@@ -14,7 +14,7 @@
 
 </style>
 <script language="javascript" src="./js/richtext.js"></script>
-
+<script language="javascript" src="./js/jquery-1.4.2.min.js"></script>
 <style type="text/css">
 .style1 {
 	color: #0000FF;
@@ -42,49 +42,46 @@ function project_upload_dirty()
 {
 	resume=1;
 }
+
+function clear_unselected_tab(){
+if(document.myForm.choose[1].checked){
+document.myForm.project_title.value="";
+document.myForm.project_student_group.value="";
+document.myForm.project_student_name.value="";
+document.myForm.project_outcome[1].checked=true;
+document.myForm.project_url.value="";
+document.myForm.project_other_details.value="";
+}
+else{
+document.myForm.thesis_other_details.value="";
+document.myForm.thesis_url.value="";
+document.myForm.thesis_outcome[1].checked=true;
+document.myForm.thesis_external_internal[1].checked=true;
+document.myForm.thesis_course_programe.value="";
+document.myForm.thesis_department_institution.value="";
+document.myForm.thesis_author.value="";
+document.myForm.thesis_title.value="";
+
+}
+}
+
 function submitform_staff_profile_thesis_v0()
-{
+{	
+
+   clear_unselected_tab();
    var frmelement=document.getElementById("staff_profile_thesis_v0");
+   
+   var fromDate =document.getElementById("thesis_registration_month_year").value;
+   var toDate =document.getElementById("thesis_completion_month_year").value;
+   if(compareDatesfunc(fromDate,toDate ) == 1 ){
+    	alert("Completion month\year  cannot be less than Registration month\year");
+    	return false ;
+    }    
    if (isMandatoryDataExists(frmelement)=="1") 
    { 
-     if(x=="Thesis")
-     {
-	if(resume==1)
-	{      if (document.forms[1].thesis_uploadfiles.value==""){
-			document.forms[0].thesis_upload.value=document.forms[1].thesis_upload.value 
-		}	
-		else
-		{
-	       		document.forms[0].thesis_upload.value=document.forms[1].thesis_upload.value + "|"+ document.forms[1].thesis_uploadfiles.value; 
-	       	}
-	       
-	        document.forms[1].submit();docHtmlSave();
-	}
-	else
-	{
-		document.forms[0].thesis_upload.value=document.forms[1].thesis_uploadfiles.value
-		docHtmlSave();
-	}
-     }
-     else
-     {
-     	if(resume==1)
-	{      if (document.forms[2].project_uploadfiles.value==""){
-			document.forms[0].project_upload.value=document.forms[2].project_upload.value 
-		}	
-		else
-		{
-	       		document.forms[0].project_upload.value=document.forms[2].project_upload.value + "|"+ document.forms[2].project_uploadfiles.value; 
-	       	}
-	       
-	        document.forms[2].submit();docHtmlSave();
-	}
-	else
-	{
-		document.forms[0].project_upload.value=document.forms[2].project_uploadfiles.value
-		docHtmlSave();
-	}
-     }   
+     	document.myForm.thesis_upload.value=document.myForm01.thesis_uploadfiles.value;
+     	document.myForm.project_upload.value=document.myForm02.project_uploadfiles.value;     	
+	docHtmlSave();
    }
 }
 
@@ -110,6 +107,35 @@ function choose_click(value)
 	}
 }
 
+function uploadFile(n){
+        n=n.substring(14);
+       if(resume==1 &amp;&amp; x=="Thesis" &amp;&amp; document.myForm01.thesis_upload.value!=""){
+       	     document.getElementById('upload_status_'+n).style.color='black';	
+	     document.getElementById('upload_status_'+n).innerHTML='uploading...';
+	     resume=0;
+	     document.myForm01.thesis_uploadfiles.value=document.myForm01.thesis_upload.value +"|"+ document.myForm01.thesis_uploadfiles.value;
+	     document.myForm01.submit();
+       	}else if(resume==1 &amp;&amp; x=="Student Project" &amp;&amp; document.myForm02.project_upload.value!=""){
+	     document.getElementById('upload_status_'+n).style.color='black';	
+	     document.getElementById('upload_status_'+n).innerHTML='uploading...';
+	     resume=0;
+	     document.myForm02.project_uploadfiles.value=document.myForm02.project_upload.value +"|"+ document.myForm02.project_uploadfiles.value;
+	     document.myForm02.submit();
+	}else{
+	    document.getElementById('upload_status_'+n).style.color='red';
+	    document.getElementById('upload_status_'+n).innerHTML = 'Select a file to upload';	
+	}
+}
+function approve()
+{
+   var frmelement=document.getElementById("staff_profile_thesis_v0");
+   if (isMandatoryDataExists(frmelement)=="1") 
+   { 
+     	document.myForm.thesis_upload.value=document.myForm01.thesis_uploadfiles.value;
+     	document.myForm.project_upload.value=document.myForm02.project_uploadfiles.value;
+	docHtmlRecordwiseApprove();
+   }
+}
 </script>
 </head>
 <body onload="load();">
@@ -131,8 +157,15 @@ function choose_click(value)
 <INPUT TYPE="HIDDEN" NAME="project_upload" />
 <INPUT TYPE="HIDDEN" NAME="entitytype" VALUE="thesis"></INPUT>
 <input type="HIDDEN" id="mf01" name="mandatory_fields" value="" />
+<INPUT TYPE="HIDDEN" NAME="caction" id="caction"><xsl:attribute name="VALUE"><xsl:value-of select="//action"/> </xsl:attribute></INPUT> 
+<INPUT TYPE="HIDDEN" NAME="approved" id="approved"><xsl:attribute name="VALUE"><xsl:value-of select="//approved"/> </xsl:attribute></INPUT>
 
-
+<INPUT TYPE="HIDDEN" NAME="reload_after_save" id="reload_after_save"><xsl:attribute name="VALUE"><xsl:value-of select="//reload_after_save"/> </xsl:attribute></INPUT>
+<script language="javascript">
+if (document.getElementById('reload_after_save').value!="null"){
+	alert(document.getElementById('reload_after_save').value);
+}
+</script>
 <!-- ================================= Thesis/Student Project ======================================-->
 <div id="d0" >
 <table width="100%" class="tabBG3">
@@ -241,11 +274,18 @@ function choose_click(value)
 </tr>
 </table>
 </div>
+</font>
+
+<input type="hidden" name="action" value="" />
+
+
+</form>
 
 <!--============================= Upload File =============================-->
 
  <div id="fu1">
-  <form method="post" action="./fileupload" NAME="myForm01" enctype="multipart/form-data">
+  <form method="post" target="upload_target_iframe" action="./fileupload" NAME="myForm01" enctype="multipart/form-data">
+  <INPUT TYPE="HIDDEN" NAME="userId"><xsl:attribute name="VALUE"><xsl:value-of select="//entityId"/></xsl:attribute></INPUT>
   <table width="100%" class="tabBG3">
   <tr>
   <td width="30%" class="tabBG4"><xsl:apply-templates select="//thesis_upload/oioNS:prompt" /></td>
@@ -255,7 +295,7 @@ function choose_click(value)
   </form>
  </div> 
  <div id="fu2">
-   <form method="post" action="./fileupload" NAME="myForm02" enctype="multipart/form-data">
+   <form method="post" target="upload_target_iframe" action="./fileupload" NAME="myForm02" enctype="multipart/form-data">
    <table width="100%" class="tabBG3">
    <tr>
    <td width="30%" class="tabBG4"><xsl:apply-templates select="//project_upload/oioNS:prompt" /></td>
@@ -266,17 +306,30 @@ function choose_click(value)
  </div> 
  
 <!--============================= Save,Save and Approve,Show Printable Buttons =============================-->
-<br />
+
 <script language="javascript" src="./js/clinicaldoc_common.js"></script>
 <table width="100%" class="tabBG3">
      <tr ><td align="center" class="thead">
-    <input type="hidden" name="action" value="" />
-     <input type="button" name="btsave" value="  Save  " onclick="submitform_staff_profile_thesis_v0();" />
+     <input type="button" name="btsave" id="btsave" value="  Save  " onclick="submitform_staff_profile_thesis_v0();" />
+     <input type="button" name="btsapprove" id="btsapprove" value="Save and Approve" onClick="approve();" />
+     <input type="button" name="btclose" id="btclose" value="Close" onClick="parent.close();" />      
+    <script language="javascript">         
+           if (document.getElementById("approved").value==1){                      	
+           	document.getElementById("btsave").style.display='none';         	
+           	document.getElementById("btsapprove").style.display='none';       
+           }
+           else{           
+           	if (document.getElementById("caction").value=="CDOC-OPEN_A_DOCUMENT_FOR_APPROVE"){                      	
+           		document.getElementById("btsave").style.display='none';         	
+           		}       
+    	       else{
+     	      document.getElementById("btsapprove").style.display='none';         	
+     	      }
+    	}           
+     </script>  
      </td></tr>
 </table>
-
-</font>
-</form>
+<iframe id="upload_target_iframe" name="upload_target_iframe" src="" style="width:0;height:0;border:0px;display:none;"></iframe>
 </body>
 </html>
 </xsl:template>

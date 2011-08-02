@@ -14,7 +14,7 @@
 
 </style>
 <script language="javascript" src="./js/richtext.js"></script>
-
+<script language="javascript" src="./js/jquery-1.4.2.min.js"></script>
 <style type="text/css">
 .style1 {
 	color: #0000FF;
@@ -26,6 +26,7 @@ var resume=0;
 function load()
 {
 	resume=0;
+	radio_button_validation();
 }
 function upload_dirty()
 {
@@ -33,27 +34,61 @@ function upload_dirty()
 }
 
 function submitform_staff_profile_patents_v0()
-{
+{	
+    if(!document.getElementsByName('choose_patent')[1].checked){    
+    document.getElementsByName("mandatory_fields")[0].value="choose_patent|patent_title|registration_month_year|country";
+    }
+    else{
+     
+    document.getElementsByName("mandatory_fields")[0].value="choose_patent|patent_title|registration_month_year";
+    }
     var frmelement=document.getElementById("staff_profile_patents_v0");
     if (isMandatoryDataExists(frmelement)=="1")
     {		
-	if(resume==1)
-	{      if (document.forms[1].uploadfiles.value==""){
-			document.forms[0].upload.value=document.forms[1].upload.value 
-		}	
-		else
-		{
-	       		document.forms[0].upload.value=document.forms[1].upload.value + "|"+ document.forms[1].uploadfiles.value; 
-	       	}
-	       
-	        document.forms[1].submit();docHtmlSave();
-	}
-	else
-	{
-		document.forms[0].upload.value=document.forms[1].uploadfiles.value
-		docHtmlSave();
-	}
+	document.myForm.upload.value=document.myForm01.uploadfiles.value;
+	docHtmlSave();
     }	
+}
+function approve(){
+    if(!document.getElementsByName('choose_patent')[1].checked){    
+    document.getElementsByName("mandatory_fields")[0].value="choose_patent|patent_title|registration_month_year|country";
+    }
+    else{
+     
+    document.getElementsByName("mandatory_fields")[0].value="choose_patent|patent_title|registration_month_year";
+    }
+    var frmelement=document.getElementById("staff_profile_patents_v0");
+    if (isMandatoryDataExists(frmelement)=="1")
+    {		
+	document.myForm.upload.value=document.myForm01.uploadfiles.value;
+	docHtmlRecordwiseApprove();
+    }	
+}
+function radio_button_validation()
+{
+     if(document.getElementsByName('choose_patent')[1].checked)
+     {     
+     document.getElementsByName('country')[0].value = "";
+     document.getElementsByName('country')[0].disabled = true;
+     }
+     else{
+     document.getElementsByName('country')[0].disabled = false;     
+     }
+     
+}
+
+function uploadFile(n){
+        n=n.substring(14);
+        if(resume==1 &amp;&amp; document.myForm01.upload.value!=""){
+       	     document.getElementById('upload_status_'+n).style.color='black';	
+	     document.getElementById('upload_status_'+n).innerHTML='uploading...';
+	     resume=0;
+	     document.myForm01.uploadfiles.value=document.myForm01.upload.value +"|"+ document.myForm01.uploadfiles.value;
+	     document.myForm01.submit();
+       	}else{
+	    document.getElementById('upload_status_'+n).style.color='red';
+	    document.getElementById('upload_status_'+n).innerHTML = 'Select a file to upload';	
+	}
 }
 
 </script>
@@ -75,8 +110,14 @@ function submitform_staff_profile_patents_v0()
 <INPUT TYPE="HIDDEN" NAME="formName" VALUE="staff_profile_patents_v0"></INPUT>
 <INPUT TYPE="HIDDEN" NAME="upload" />
 <INPUT TYPE="HIDDEN" NAME="entitytype" VALUE="patents"></INPUT>
-
-
+<INPUT TYPE="HIDDEN" NAME="caction" id="caction"><xsl:attribute name="VALUE"><xsl:value-of select="//action"/> </xsl:attribute></INPUT> 
+<INPUT TYPE="HIDDEN" NAME="approved" id="approved"><xsl:attribute name="VALUE"><xsl:value-of select="//approved"/> </xsl:attribute></INPUT>
+<INPUT TYPE="HIDDEN" NAME="reload_after_save" id="reload_after_save"><xsl:attribute name="VALUE"><xsl:value-of select="//reload_after_save"/> </xsl:attribute></INPUT>
+<script language="javascript">
+if (document.getElementById('reload_after_save').value!="null"){
+	alert(document.getElementById('reload_after_save').value);
+}
+</script>
 <!-- ================================= Patents ======================================-->
 <div id="d1" class="childdiv">
 <table width="100%" class="tabBG3">
@@ -85,7 +126,7 @@ function submitform_staff_profile_patents_v0()
 </tr>
 <tr>
 <td width="30%" class="tabBG4"><xsl:apply-templates select="//choose_patent/oioNS:prompt" /></td>
-<td  class="tabBG4"><xsl:apply-templates select="//choose_patent/oioNS:renderinfo" /></td>
+<td onclick="radio_button_validation()" class="tabBG4"><xsl:apply-templates select="//choose_patent/oioNS:renderinfo" /></td>
 </tr>
 
 <tr>
@@ -122,12 +163,19 @@ function submitform_staff_profile_patents_v0()
 <td class="tabBG4"><xsl:apply-templates select="//other_details/oioNS:renderinfo" /></td>
 </tr>
 </table>
+</div>
 
+<input type="hidden" name="action" value="" />
+<input type="HIDDEN" name="mandatory_fields" value="choose_patent|patent_title|registration_month_year" />
+
+</font>
+</form>
 
 <!--============================= Upload File =============================-->
 
  <div id="fu1">
-  <form method="post" action="./fileupload" NAME="myForm01" enctype="multipart/form-data">
+  <form method="post" target="upload_target_iframe" action="./fileupload" NAME="myForm01" enctype="multipart/form-data">
+  <INPUT TYPE="HIDDEN" NAME="userId"><xsl:attribute name="VALUE"><xsl:value-of select="//entityId"/></xsl:attribute></INPUT>
   <table width="100%" class="tabBG3">
   <tr>
   <td width="30%" class="tabBG4"><xsl:apply-templates select="//upload/oioNS:prompt" /></td>
@@ -136,20 +184,32 @@ function submitform_staff_profile_patents_v0()
   </table>
   </form>
  </div> 
- </div>
+ 
 <!--============================= Save,Save and Approve,Show Printable Buttons =============================-->
-<br />
+
 <script language="javascript" src="./js/clinicaldoc_common.js"></script>
 <table width="100%" class="tabBG3">
      <tr ><td align="center" class="thead">
-    <input type="hidden" name="action" value="" />
-     <input type="button" name="btsave" value="  Save  " onclick="submitform_staff_profile_patents_v0():" />
-     <input type="HIDDEN" name="mandatory_fields" value="choose_patent|patent_title|registration_month_year" />
+     <input type="button" name="btsave" id="btsave" value="  Save  " onclick="submitform_staff_profile_patents_v0();" />
+     <input type="button" name="btsapprove" id="btsapprove" value="Save and Approve" onClick="approve();" />
+     <input type="button" name="btclose" id="btclose" value="Close" onClick="parent.close();" />      
+    <script language="javascript">         
+           if (document.getElementById("approved").value==1){                      	
+           	document.getElementById("btsave").style.display='none';         	
+           	document.getElementById("btsapprove").style.display='none';       
+           }
+           else{           
+           	if (document.getElementById("caction").value=="CDOC-OPEN_A_DOCUMENT_FOR_APPROVE"){                      	
+           		document.getElementById("btsave").style.display='none';         	
+           		}       
+    	       else{
+     	      document.getElementById("btsapprove").style.display='none';         	
+     	      }
+    	}           
+     </script>       
      </td></tr>
 </table>
-
-</font>
-</form>
+<iframe id="upload_target_iframe" name="upload_target_iframe" src="" style="width:0;height:0;border:0px;display:none;"></iframe>
 </body>
 </html>
 </xsl:template>
