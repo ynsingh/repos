@@ -61,6 +61,8 @@ import org.iitk.brihaspati.modules.utils.CourseUserDetail;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlWriter;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
 import org.iitk.brihaspati.modules.utils.CourseUserDetail;
+import org.iitk.brihaspati.modules.utils.InstituteDetailsManagement;
+import org.iitk.brihaspati.modules.utils.CourseManagement;
 import org.iitk.brihaspati.om.InstituteAdminRegistrationPeer;
 import org.iitk.brihaspati.om.InstituteAdminRegistration;
 import org.iitk.brihaspati.om.InstituteAdminUserPeer;
@@ -615,6 +617,10 @@ public class OnlineRegistration extends VelocitySecureAction
 	}
         public void doSearch(RunData data, Context context) throws Exception
         {
+		/**
+ 		*Get only those courses in which instructor allowed the student for online Registration
+		*@see CourseManagement util in utils
+ 		*/ 
 		String LangFile=(String)data.getUser().getTemp("LangFile");
 		ParameterParser pp=data.getParameters();
 		String instName=pp.getString("instName");
@@ -623,56 +629,9 @@ public class OnlineRegistration extends VelocitySecureAction
 		crit.add(InstituteAdminRegistrationPeer.INSTITUTE_NAME,instName);
 		List lst=InstituteAdminRegistrationPeer.doSelect(crit);
 		int instituteId=((InstituteAdminRegistration)lst.get(0)).getInstituteId();
-		List CourseList=CourseManagement.getInstituteCourseNUserDetails("All",Integer.toString(instituteId));
-		for(int p=0;p<CourseList.size();p++)
-		{
-			int onlineconf=((CourseUserDetail)CourseList.get(p)).getOnlineconf();
-		}
-		context.put("courseList",CourseList);
-		Vector user_list=new Vector();
-		Vector InmeList=new Vector();
-		Vector nameList=new Vector();
-		List detail=null;
-		for(int i=0;i<CourseList.size();i++){
-			String gname=((CourseUserDetail)CourseList.get(i)).getGroupName();
-			String galias=((CourseUserDetail)CourseList.get(i)).getCAlias();
-			String instrctrnameWid=gname.replaceAll(galias,"");
-			String []instrname=instrctrnameWid.split("_");
-			String iname=instrname[0];
-                        user_list.addElement(iname);
-		}
-		for(int j=0;j<user_list.size();j++){
-			String loginname=(user_list.get(j)).toString();
-			crit=new Criteria();
-			crit.add(TurbineUserPeer.LOGIN_NAME,loginname);
-			detail=TurbineUserPeer.doSelect(crit);
-			for(int k=0;k<detail.size();k++){
-                        TurbineUser tudetail=(TurbineUser)detail.get(k);
-                        String fname=tudetail.getFirstName();
-                        String lname=tudetail.getLastName();
-                        String username=fname+" "+lname;
-			if(org.apache.commons.lang.StringUtils.isBlank(username)){
-                               username=loginname;
-                        }
-
-                        InmeList.add(username);
-			//nameList.add(loginname);
-		}
-		/*for(int a=0;a<nameList.size();a++){
-			String lgnname=(nameList.get(a)).toString();
-			crit=new Criteria();
-			crit.add(TurbineUserPeer.LOGIN_NAME,lgnname);
-			detail=TurbineUserPeer.doSelect(crit);
-			for(int k=0;k<detail.size();k++){
-                        TurbineUser tudetail=(TurbineUser)detail.get(k);
-                        String fname=tudetail.getFirstName();
-                        String lname=tudetail.getLastName();
-                        String username=fname+" "+lname;
-                        ErrorDumpUtil.ErrorLog("instrctrnaem at last====="+username);
-                        InmeList.add(username);
-		}*/
-		}
-                context.put("instructorList",InmeList);
+		//Vector courseList=InstituteDetailsManagement.getInstituteCourseDetails(Integer.toString(instituteId));	
+		Vector courseList=CourseManagement.getCrsOnlinDetails(Integer.toString(instituteId));	
+		context.put("courseList",courseList);
 	}
 	/**
 	 * This is the default method called when the button is not found

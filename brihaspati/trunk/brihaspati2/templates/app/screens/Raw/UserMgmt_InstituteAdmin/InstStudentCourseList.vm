@@ -130,7 +130,8 @@ $page.setBgColor($ui.bgcolor)
 		#foreach($name in $CourseList)
 			##if($name.getName() !="global" && $name.getName()!="author")
 			##<option value="$name.getName()">$name.getName()
-			<option value="$name.getGroupName()">$name.getGroupName()
+			##<option value="$name.getGroupName()">$name.getGroupName()
+			<option value="$name.getGroupName()">$name.getCAlias(): $name.getCourseName()- $name.getUserName()
 			##end
 		#end
 		</option>

@@ -70,26 +70,9 @@ $!data.getMessage()
 	  <input type="submit" name="eventSubmit_doSearch" value="$brih_search"/>
 		<select id="group_id" name="group" size=1 onChange="ChangeRole(document.frm,this);"/>
 	  	##<option></option>
-		#set($counter=1)
+		##set($counter=1)
 		#foreach($crsname in $courseList)
-			## code modification for online configuration by sharad on 10-02-2011
-			#set($counter1=1)
-			#foreach($instrctrname in $instructorList)
-		                #if($crsname.getOnlineconf() != 2)
-				#if($counter==$counter1)
-				<option value="$crsname.getGroupName()">$crsname.getCourseName()-$instrctrname</option>
-				#end	
-				#end
-				#set($counter1=$counter1+1)
-			#end
-			#set($counter=$counter+1)
-#*
-		#set($counter1=1)
-		#foreach($instrctrname in $instructorList)
-		#if($counter==$counter1)
-		<option value="$crsname.getGroupName()">$crsname.getCAlias()-$crsname.getCourseName()-$instrctrname</option>
-		#end	
-		#set($counter1=$counter1+1)*#
+			<option value="$crsname.getGroupName()">$crsname.getCAlias(): $crsname.getCourseName()-$crsname.getUserName()</option>
 		#end
 		</select>
 	  </td>

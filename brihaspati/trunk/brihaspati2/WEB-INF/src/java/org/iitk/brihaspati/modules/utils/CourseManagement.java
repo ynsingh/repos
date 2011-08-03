@@ -591,5 +591,72 @@ public class CourseManagement
 		}
 		return(checkPrimary);
 	}
-	
+
+	/**
+ 	*This method return that courses which are available for online registration.
+ 	*
+ 	*/
+	public static Vector getCrsOnlinDetails(String instituteId)
+        {
+                Vector Cdetails=new Vector();
+                try
+                { 
+		Criteria crit=new Criteria();
+                        crit.addGroupByColumn(CoursesPeer.GROUP_NAME);
+                        List v=CoursesPeer.doSelect(crit);
+			for(int i=0;i<v.size();i++)
+                        {
+                                String GName=((Courses)v.get(i)).getGroupName();
+				if(GName.endsWith(instituteId)){
+                                        String courseName=((Courses)v.get(i)).getCname();
+                                        String dept=((Courses)v.get(i)).getDept();
+                                        String gAlias=((Courses)v.get(i)).getGroupAlias();
+                                        String description=((Courses)v.get(i)).getDescription();
+                                        int onconf=((Courses)v.get(i)).getOnlineconf();
+                                        byte active=((Courses)v.get(i)).getActive();
+                                        String act=Byte.toString(active);
+                                        Date CDate=((Courses)v.get(i)).getCreationdate();
+                                        String CrDate=CDate.toString();
+                                        CourseUserDetail cuDetail=new CourseUserDetail();
+                                        int index=gAlias.length();
+                                        if(onconf != 2){
+                                        String loginName=GName.substring(index);
+                                        String []brkloginName=loginName.split("@");
+                                        String oldloginName=brkloginName[0];
+                                        String dmnWIid=brkloginName[1];
+                                        String stri[]=dmnWIid.split("_");
+                                        String dname=stri[0];
+                                        oldloginName=oldloginName+"@"+dname;
+                                        int UId=UserUtil.getUID(oldloginName);
+                                        String uID=Integer.toString(UId);
+                                        List userDetails=UserManagement.getUserDetail(uID);
+                                        TurbineUser element=(TurbineUser)userDetails.get(0);
+                                        String firstName=element.getFirstName().toString();
+                                        String lastName=element.getLastName().toString();
+                                        String email=element.getEmail().toString();
+                                        String userName=firstName+lastName;
+                                        if(org.apache.commons.lang.StringUtils.isBlank(userName)){
+                                                userName=oldloginName;
+                                        }
+					cuDetail.setLoginName(loginName);
+                                        cuDetail.setUserName(userName);
+                                        cuDetail.setEmail(email);
+                                        cuDetail.setGroupName(GName);
+                                        cuDetail.setCourseName(courseName);
+                                        cuDetail.setCAlias(gAlias);
+                                        cuDetail.setDept(dept);
+                                        cuDetail.setActive(act);
+                                        cuDetail.setDescription(description);
+                                        cuDetail.setCreateDate(CrDate);
+                                        Cdetails.add(cuDetail);
+                                        }
+                                }
+                        }
+                }
+                catch(Exception e)
+                {
+                        ErrorDumpUtil.ErrorLog("The error in getInstituteCourseDetails()"+e);
+		}
+                return(Cdetails);
+	}
 }

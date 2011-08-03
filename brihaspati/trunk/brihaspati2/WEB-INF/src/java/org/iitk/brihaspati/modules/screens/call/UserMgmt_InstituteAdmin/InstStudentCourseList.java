@@ -51,6 +51,7 @@ import org.iitk.brihaspati.modules.utils.UserUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil;
 import org.iitk.brihaspati.modules.utils.UserManagement;
 import org.iitk.brihaspati.modules.utils.CourseManagement;
+import org.iitk.brihaspati.modules.utils.InstituteDetailsManagement;
 import org.iitk.brihaspati.modules.screens.call.SecureScreen_Institute_Admin;
 
 /**
@@ -106,7 +107,8 @@ public class InstStudentCourseList extends SecureScreen_Institute_Admin{
 			  * @see ListManagement in utils
 			  */
 			String instituteId=data.getUser().getTemp("Institute_id").toString();
-			List courseList=CourseManagement.getInstituteCourseNUserDetails("All",instituteId);
+			//List courseList=CourseManagement.getInstituteCourseNUserDetails("All",instituteId);
+			Vector courseList=InstituteDetailsManagement.getInstituteCourseDetails(instituteId);  
 			if(g.size()!=0)
 			{
 				context.put("student",student);
