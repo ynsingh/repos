@@ -11,13 +11,13 @@
 $page.setTitle("Brihaspati")
 $page.setBgColor($ui.bgcolor)
 <br>
+<table align="right"><tr><td><b>
 $!data.getMessage()
-##parse ("BrihaspatiLogin.vm")
+</b></td></tr></table>
 <form name="frm">
 <table>
 <tr>
 <td align="left"> <font color="red"><b> <blink>
-##<img src="$content.getURI("/images/wimbaico.jpg")" border="0"></a>
 Go For Live Lecture
 </blink> </b></font>
 <a href="https://202.141.40.217:8443/brihaspatisync_client/jnlp/brihaspatisync.jnlp">

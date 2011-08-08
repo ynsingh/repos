@@ -295,7 +295,10 @@ public class myLogin extends VelocityAction{
 			data.setACL(acl);
 			data.save();
 			}
-			catch(Exception ex){data.setMessage("Error in setting Access rules :- "+ex +"Or password is incorrect");}
+			catch(Exception ex){
+				ErrorDumpUtil.ErrorLog("Error in setting Access rules :- "+ex +" The account '' does not exist Or password is incorrect");
+				data.setMessage("The account does not exist Or password is incorrect");
+			}
 			ErrorDumpUtil.ErrorLog("After setting the ACL");
 			
 					boolean CL=CommonUtility.CleanSystem();
