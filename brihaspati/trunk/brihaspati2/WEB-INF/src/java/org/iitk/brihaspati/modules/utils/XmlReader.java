@@ -181,7 +181,7 @@ public class XmlReader extends DefaultHandler
 	public XmlData[] getElements(String element)
 	{
 		Vector vt=(Vector)elements.get(element);	
-		ErrorDumpUtil.ErrorLog("value of vector"+vt);
+		//ErrorDumpUtil.ErrorLog("value of vector"+vt);
 		/* modified by:nupur dixit (Dei agra) to return null if vector is null
 		 * to avoid null pointer exception
 		 */

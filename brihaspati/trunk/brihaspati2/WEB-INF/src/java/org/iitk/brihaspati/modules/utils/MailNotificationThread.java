@@ -165,7 +165,7 @@ public class MailNotificationThread implements Runnable {
 						sub = "Combined mail from Brihaspati- The Virtual Classroom ";
 					}
 					String msg=MailNotification.sendMail(msgDear+message_text+msgRegard1+msgUserInfo, mailId, sub, filePathForLM, LangFile);
-					ErrorDumpUtil.ErrorLog(""+msg);
+					//ErrorDumpUtil.ErrorLog(""+msg);
 					//ErrorDumpUtil.ErrorLog("\nmailNotification llllllllllllllllllllll  "+mailnotification.toString());
 				} //main while close
 					if(mailnotification.size() == 0){
