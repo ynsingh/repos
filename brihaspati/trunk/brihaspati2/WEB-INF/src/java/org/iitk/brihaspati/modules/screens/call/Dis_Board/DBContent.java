@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.screens.call.Dis_Board;
 
 /*
  * @(#)DBContent.java	
- *  Copyright (c) 2005-2007,2009, 2010 ETRG/IIT Kanpur. 
+ *  Copyright (c) 2005-2007,2009, 2010, 2011 ETRG/IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -70,8 +70,10 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
  * @author  <a href="sumanrjpt@yahoo.co.in">Suman Rajput</a>
  * @author  <a href="rekha_20july@yahoo.co.in">Rekha Pal</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+ * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @ modified date: 13-Oct-2010 (Shaista)
  * @ modified date: 15-Feb-2011 (Shaista)
+ * @ modified date: 24-Aug-2011 (Sunil Kumar)
  */
 
 public class DBContent extends SecureScreen
@@ -97,6 +99,8 @@ public class DBContent extends SecureScreen
                         context.put("from",frompath);
                         context.put("tdcolor",pp.getString("count","4"));
                         context.put("tdcolor1",pp.getString("countTemp",""));
+			
+
            		/**	
 	    		* Retrive the UserId from Turbine_User table
 	    		* @see UserUtil
@@ -104,7 +108,26 @@ public class DBContent extends SecureScreen
 			int user_id=UserUtil.getUID(Username);
 	        	String group=(String)data.getUser().getTemp("course_id");
 			context.put("course_id",group);
-	        	int group_id=GroupUtil.getGID(group);  
+			/*
+                        * stats=data.getParameters().getString("stats","");
+                        * mode2=data.getParameters().getString("mode2","");
+                        * stats and mode2 use for general and institute wise discussion group
+                        */
+			String stats=data.getParameters().getString("stats","");
+                        context.put("stats",stats);
+			String mode2=data.getParameters().getString("mode2","");
+                        context.put("mode2",mode2);
+                        int group_id=0;
+			String mode=data.getParameters().getString("mode");
+			//this is use for general and institute wise discussion group
+                        if(stats.equals("fromIndex")){
+                                group_id=4;
+				group="general";
+                        }else if(mode2.equals("instituteWise")){
+                                group_id=5;
+				group="instituteWise";
+                        }else
+	        		group_id=GroupUtil.getGID(group);  
 	        	String gid=Integer.toString(group_id);   
 	        	String uid=Integer.toString(user_id);   
 	        	context.put("group",gid);
@@ -113,20 +136,24 @@ public class DBContent extends SecureScreen
 	     		* Select all the messagesid according to the ReceiverId
 	     		* from the Db_Receive table
 	     		*/
-			String mode=data.getParameters().getString("mode");
 			context.put("mode",mode);
 			Criteria crit=new Criteria();
 			List v=null;
 			if(mode.equals("All"))
 			{
-				crit.add(DbReceivePeer.RECEIVER_ID,user_id);
+				if(!stats.equals("fromIndex")){
+					crit.add(DbReceivePeer.RECEIVER_ID,user_id);
+				}
 				crit.add(DbReceivePeer.GROUP_ID,group_id);
 				v=DbReceivePeer.doSelect(crit);
+				//ErrorDumpUtil.ErrorLog("when from index mode all ==v=====>>"+v);
 			}
 			else
 			{
 				int readflg=0;
-				crit.add(DbReceivePeer.RECEIVER_ID,user_id);
+				if(!stats.equals("fromIndex")){
+					crit.add(DbReceivePeer.RECEIVER_ID,user_id);
+				}
 				crit.add(DbReceivePeer.GROUP_ID,group_id);
 				crit.add(DbReceivePeer.READ_FLAG,readflg);
 	        		v=DbReceivePeer.doSelect(crit);
@@ -225,6 +252,3 @@ public class DBContent extends SecureScreen
 		catch(Exception e){data.setMessage("Exception screens [Dis_Board,DBContent.java]" + e);}
     	}//method
 }//class
-
-
-

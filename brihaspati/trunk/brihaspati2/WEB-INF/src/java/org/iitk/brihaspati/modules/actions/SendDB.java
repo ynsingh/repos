@@ -1,7 +1,7 @@
 package org.iitk.brihaspati.modules.actions;
 
 /*
- * Copyright (c) 2005-2007, 2010 ETRG,IIT Kanpur.
+ * Copyright (c) 2005-2007, 2010, 2011 ETRG,IIT Kanpur.
  * All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or
@@ -69,9 +69,10 @@ import org.iitk.brihaspati.modules.utils.FileEntry;
 import org.iitk.brihaspati.modules.utils.ExpiryUtil;   
 import org.iitk.brihaspati.modules.utils.StringUtil;
 import org.iitk.brihaspati.modules.utils.CommonUtility;
-//import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.MultilingualUtil;
 import org.iitk.brihaspati.modules.utils.TopicMetaDataXmlReader;
+import org.iitk.brihaspati.modules.utils.SystemIndependentUtil;//sunil
 
 import java.nio.MappedByteBuffer;
 import java.io.FileInputStream;
@@ -89,7 +90,9 @@ import java.io.FileOutputStream;
  *  @author <a href="rekha_20july@yahoo.co.in">Rekha Pal</a>
  *  @author <a href="nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+ * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @ modified date: 13-Oct-2010 (Shaista)
+ * @ modified date: 08-Aug-2011 (Sunil Kr)
  */
 public class SendDB extends SecureAction
 {
@@ -115,6 +118,7 @@ public class SendDB extends SecureAction
 			String mode=pp.getString("mode1","");
                         String grpname=pp.getString("val","");
                         //ErrorDumpUtil.ErrorLog("In send DB java action mode"+mode+"\ngrpname----"+grpname);
+
 			/**
 			* Check for special character in Topic Name excluding Re: /Re:Re:Re:
 			*/
@@ -144,10 +148,22 @@ public class SendDB extends SecureAction
                         context.put("status",status);
 			String course_id=pp.getString("courseid");
         		context.put("courseid",course_id);
-			int group_id=GroupUtil.getGID(course_id);
-
-			//here we get userid by the help of UserUtil
-
+			
+			/** 
+			* this is use for General Discussion Group
+			*/
+			String stats=data.getParameters().getString("stats","");
+                        context.put("stats",stats);
+			
+			/**
+			* this is use for institute wise Discusson Group
+			*/
+			String mode2=data.getParameters().getString("mode2","");
+                        context.put("mode2",mode2);
+			
+			/**
+			* Here we get userid by the help of UserUtil
+			*/
 			int userid=UserUtil.getUID(UserName);
 			if(expiry.equals(""))
 			{
@@ -158,8 +174,22 @@ public class SendDB extends SecureAction
 			String Cur_date=ExpiryUtil.getCurrentDate("-");
 			Date Post_date=Date.valueOf(Cur_date);
 			Date exDate=Date.valueOf(ExpiryUtil.getExpired(Cur_date,exp));
-				
-               		/* Insert message in database*/
+			
+			/**
+			* ************* suneel ***********
+			* group_id define for gereral and institute wise *
+			*/
+			int group_id=0;
+			if(stats.equals("fromIndex")){
+				group_id=4;
+			}else if(mode2.equals("instituteWise")){
+				group_id=5;
+                        }else{
+				group_id=GroupUtil.getGID(course_id);
+			}
+			//ErrorDumpUtil.ErrorLog("\ngorup Id====genral==>inst==>course==========176>>>"+group_id);
+               		
+			/********** Insert message in database**********/
 			Criteria crit=new Criteria();
 			crit.add(DbSendPeer.REPLY_ID,Rep_id); 
 			crit.add(DbSendPeer.MSG_SUBJECT,DB_subject); 
@@ -174,6 +204,7 @@ public class SendDB extends SecureAction
                         else
                                 crit.add(DbSendPeer.GRPMGMT_TYPE,0);
 			DbSendPeer.doInsert(crit);
+			//ErrorDumpUtil.ErrorLog("\nDo Insert in DataBase DbSend==========>"+crit);
 			int msg_id=0;
 	  		String Query_msgid="SELECT MAX(MSG_ID) FROM DB_SEND";
 	   		List u=DbSendPeer.executeQuery(Query_msgid);
@@ -187,8 +218,16 @@ public class SendDB extends SecureAction
 			*  From here starts the code do store message               
 		        * in a single txt file.
 			*/
-           
-        		String path = data.getServletContext().getRealPath("/Courses/"+course_id+"/DisBoard")+"/"+DB_subject;
+			String path="";
+			//This is use for general discussion group
+          		if(stats.equals("fromIndex"))
+        			path = data.getServletContext().getRealPath("/Courses/"+"general"+"/DisBoard/"+DB_subject);
+			//This is use for institutewise discussion group
+			else if(mode2.equals("instituteWise"))
+        			path = data.getServletContext().getRealPath("/Courses/"+"instituteWise"+"/DisBoard/"+DB_subject);
+			else 
+        			path = data.getServletContext().getRealPath("/Courses/"+course_id+"/DisBoard")+"/"+DB_subject;
+			//ErrorDumpUtil.ErrorLog("\nfile path=================================>214====>"+path);
 			File topicDir = new File(path);
 			topicDir.mkdirs();
 			path = path+"/"+"Msg.txt";
@@ -206,7 +245,15 @@ public class SendDB extends SecureAction
 			{
 				FileItem fileItem = pp.getFileItem("file");
 				String tempFile=(fileItem.getName()).substring(((fileItem.getName()).lastIndexOf("\\"))+1);
-				File f= new File(TurbineServlet.getRealPath("/Courses/"+course_id+"/DisBoard/"+DB_subject+"/Attachment/"+msg_id));
+				File f=null;
+				//This is use for general discussion group
+				if(stats.equals("fromIndex")){
+					f= new File(TurbineServlet.getRealPath("/Courses/"+"general"+"/DisBoard/"+DB_subject+"/Attachment/"+msg_id));
+				//This is use for institutewise discussion group
+				}else if(mode2.equals("instituteWise")){
+					f= new File(TurbineServlet.getRealPath("/Courses/"+"instituteWise"+"/DisBoard/"+DB_subject+"/Attachment/"+msg_id));
+				}else
+					f= new File(TurbineServlet.getRealPath("/Courses/"+course_id+"/DisBoard/"+DB_subject+"/Attachment/"+msg_id));
 				f.mkdirs();
 				if(fileItem.getSize() > 0 )
 				{
@@ -216,83 +263,93 @@ public class SendDB extends SecureAction
 				
             		}//try
                  	catch(Exception e){}
-			
-      			//Insert Detail in Receiver Table 
-			crit=new Criteria();
-			int i[]={0,1};
-			crit.add(TurbineUserGroupRolePeer.GROUP_ID,group_id);
-			crit.addNotIn(TurbineUserGroupRolePeer.USER_ID,i);
-			List q=TurbineUserGroupRolePeer.doSelect(crit);
-			String uid=new String();
-			if(mode.equals("grpmgmt"))
-                        {
-                                String gpath=TurbineServlet.getRealPath("/Courses"+"/"+course_id)+"/GroupManagement";
-                                TopicMetaDataXmlReader topicmetadata=new TopicMetaDataXmlReader(gpath+"/"+grpname+"__des.xml"
-);
-                                Vector grouplist=topicmetadata.getGroupDetails();
-                                int usrid=0;
-                                if(grouplist!=null)
-                                {
-                                        String username[]=new String[1000];
-                                        int l=0;
-                                        for(int m=0;m<grouplist.size();m++)
-                                        {//for
-                                                String uname =((FileEntry) grouplist.elementAt(m)).getUserName();
-                                                username[m]=uname;
-                                                l++;
-                                        }
-                                        username[l]=UserName;
-                                        for(int k=0;k<=l;k++)
-                                        {
-                                                String str=username[k];
-                                                usrid=UserUtil.getUID(str);
-                                                crit.add(DbReceivePeer.RECEIVER_ID,usrid);
-                                                crit.add(DbReceivePeer.MSG_ID,msg_id);
-                                                crit.add(DbReceivePeer.GROUP_ID,group_id);
-                                                crit.add(DbReceivePeer.READ_FLAG,0);
-                                                context.put("test",Integer.toString(msg_id));
-                                                DbReceivePeer.doInsert(crit);
-                                        }
-                                }
-                        }
-                        else
-			{
-				for(int k=0;k<q.size();k++)
+		
+			//Insert value in DB_RECEIVE Table
+			//general and  institutewise discussion group
+			if((stats.equals("fromIndex")) || (mode2.equals("instituteWise"))){
+				int u_id=UserUtil.getUID(UserName);
+				crit=new Criteria();
+                                crit.add(DbReceivePeer.RECEIVER_ID,u_id);
+                                crit.add(DbReceivePeer.MSG_ID,msg_id);
+                                crit.add(DbReceivePeer.GROUP_ID,group_id);
+                                crit.add(DbReceivePeer.READ_FLAG,0);
+                                context.put("test",Integer.toString(msg_id));
+                                DbReceivePeer.doInsert(crit);
+				//ErrorDumpUtil.ErrorLog("\nGeneral insert value in to the recive table==>"+crit);
+			}else
+      				//Insert Detail in Receiver Table 
+				crit=new Criteria();
+				int i[]={0,1};
+				crit.add(TurbineUserGroupRolePeer.GROUP_ID,group_id);
+				crit.addNotIn(TurbineUserGroupRolePeer.USER_ID,i);
+				List q=TurbineUserGroupRolePeer.doSelect(crit);
+				String uid=new String();
+				if(mode.equals("grpmgmt"))
+                        	{
+                                	String gpath=TurbineServlet.getRealPath("/Courses"+"/"+course_id)+"/GroupManagement";
+	                                TopicMetaDataXmlReader topicmetadata=new TopicMetaDataXmlReader(gpath+"/"+grpname+"__des.xml");
+		                        Vector grouplist=topicmetadata.getGroupDetails();
+                	                int usrid=0;
+                        	        if(grouplist!=null)
+                                	{
+                                        	String username[]=new String[1000];
+	                                        int l=0;
+        	                                for(int m=0;m<grouplist.size();m++)
+                	                        {//for
+                        	                        String uname =((FileEntry) grouplist.elementAt(m)).getUserName();
+                                	                username[m]=uname;
+                                        	        l++;
+                                        	}
+	                                        username[l]=UserName;
+        	                                for(int k=0;k<=l;k++)
+                	                        {
+                        	                        String str=username[k];
+                                	                usrid=UserUtil.getUID(str);
+                                        	        crit.add(DbReceivePeer.RECEIVER_ID,usrid);
+                                                	crit.add(DbReceivePeer.MSG_ID,msg_id);
+	                                                crit.add(DbReceivePeer.GROUP_ID,group_id);
+        	                                        crit.add(DbReceivePeer.READ_FLAG,0);
+                	                                context.put("test",Integer.toString(msg_id));
+                        	                        DbReceivePeer.doInsert(crit);
+							//ErrorDumpUtil.ErrorLog("\ninsert value in to the recive table from Courses if=====>"+crit);
+                                        	}
+                                	}
+                        	}
+	                        else
 				{
-					TurbineUserGroupRole element=(TurbineUserGroupRole)q.get(k);
-					int u_id=element.getUserId();
-					crit=new Criteria();
-					crit.add(DbReceivePeer.RECEIVER_ID,u_id);
-					crit.add(DbReceivePeer.MSG_ID,msg_id);
-					crit.add(DbReceivePeer.GROUP_ID,group_id);
-					crit.add(DbReceivePeer.READ_FLAG,0);
-		 			context.put("test",Integer.toString(msg_id));
-					DbReceivePeer.doInsert(crit);
-                       
-				}//for
-			}
-			String msg="",msg1="";
-	   		if(Status==1)
-			{	
-                       		msg=MultilingualUtil.ConvertedString("attach",LangFile);			
-                       		msg1=MultilingualUtil.ConvertedString("db_msg1",LangFile);
-			
-				if(LangFile.endsWith("en.properties"))
-                                         data.setMessage(msg1+" "+msg);
-                                 else
-                                         data.setMessage(msg+" "+msg1);
-
-				
-			}
-			else
-			{
-				msg=MultilingualUtil.ConvertedString("db_msg1",LangFile);
-				data.setMessage(msg);
-				
-			}
-	    	}//try
-            	catch(Exception e){data.setMessage("Some Error Occured in Sending Discussion !!!!" +e);}
-	}//method(doSend)												
+					for(int k=0;k<q.size();k++)
+					{
+						//int k=0;
+						TurbineUserGroupRole element=(TurbineUserGroupRole)q.get(k);
+						int u_id=element.getUserId();
+						crit=new Criteria();
+						crit.add(DbReceivePeer.RECEIVER_ID,u_id);
+						crit.add(DbReceivePeer.MSG_ID,msg_id);
+						crit.add(DbReceivePeer.GROUP_ID,group_id);
+						crit.add(DbReceivePeer.READ_FLAG,0);
+		 				context.put("test",Integer.toString(msg_id));
+						DbReceivePeer.doInsert(crit);
+						//ErrorDumpUtil.ErrorLog("\ninsert value in to the recive table from Courses else======>"+crit);
+					}//for
+				}
+				String msg="",msg1="";
+		   		if(Status==1)
+				{	
+                       			msg=MultilingualUtil.ConvertedString("attach",LangFile);			
+                       			msg1=MultilingualUtil.ConvertedString("db_msg1",LangFile);
+					if(LangFile.endsWith("en.properties"))
+                                        	data.setMessage(msg1+" "+msg);
+                                 	else
+                                        	data.setMessage(msg+" "+msg1);
+				}
+				else
+				{
+					msg=MultilingualUtil.ConvertedString("db_msg1",LangFile);
+					data.setMessage(msg);
+				}
+		    	}//try
+        	    	catch(Exception e){data.setMessage("Some Error Occured in Sending Discussion !!!!" +e);}
+			}//method(doSend)												
 
  	/**
   	* Place all the data object in the context for use in the template.
@@ -315,7 +372,20 @@ public class SendDB extends SecureAction
                         context.put("mgid",mgid);
                         String permit=pp.getString("perm");
 			context.put("permit",permit);
-                        String course_id=pp.getString("courseid");
+			//this is use for general discussion group
+			String stats=data.getParameters().getString("stats","");
+                        context.put("stats",stats);
+			//this is use for institutewise disscussion group
+			String mode2=data.getParameters().getString("mode2","");
+                        context.put("mode2",mode2);
+			String course_id=null;
+                        if(stats.equals("fromIndex")){
+				course_id="general";
+			}else if(mode2.equals("instituteWise")){
+				course_id="instituteWise";
+                        }else
+                        	course_id=pp.getString("courseid");
+                        //String course_id=pp.getString("courseid");
                         context.put("courseid",course_id);
                         int group_id=GroupUtil.getGID(course_id);
                 	/* Update Permision field according to instructor permission*/
@@ -327,8 +397,6 @@ public class SendDB extends SecureAction
 			String msg5=MultilingualUtil.ConvertedString("db_msg3",LangFile);
 			data.setMessage(msg5);
 			data.setScreenTemplate("call,Dis_Board,Edit.vm");
-
-			
 		}//try
 		catch(Exception e){data.setMessage("Some Error Occured in Sending Permission !!!!" +e);}
 	}//doPermission
@@ -391,7 +459,6 @@ public class SendDB extends SecureAction
                         {
                                 DbSend element=(DbSend)sendDetail.get(i);
                                 Rep_id=Integer.toString(element.getReplyId());
-                        //        ErrorDumpUtil.ErrorLog("arvind      ,,c vxc,vn xcv x xcv   "+Rep_id);
                         }
 			
 
@@ -422,9 +489,7 @@ public class SendDB extends SecureAction
                         */
 	                 		
   			String filePath=data.getServletContext().getRealPath("/Courses")+"/"+course_id+"/DisBoard/"+ DB_subject+"/Msg.txt";
-
 			CommonUtility.UpdateTxtFile(filePath,DB_mgid,DB_message,true);
-
 			String msg6=MultilingualUtil.ConvertedString("c_msg5",LangFile);
 			data.setMessage(msg6);
                         	
@@ -452,8 +517,6 @@ public class SendDB extends SecureAction
 			{	
 				String msg7=MultilingualUtil.ConvertedString("db_msg5",LangFile);
 			    	data.setMessage(msg7);
-                                
-
 				Status=0;
 			}					   
 		}//try
@@ -461,7 +524,6 @@ public class SendDB extends SecureAction
 	}//method doupdate 
 
 	/* for the deletion message*/
-	
  	public void doDelete(RunData data, Context context) throws Exception
 	{
 		try{
@@ -475,14 +537,19 @@ public class SendDB extends SecureAction
 			String msg_id=pp.getString("msg_id","");
                         context.put("msgid",msg_id);
  			String course_id=pp.getString("course_id","");
+			//use for general
+			String stats=data.getParameters().getString("stats","");
+ 			context.put("stats",stats);
+			//use for instituteWise
+			String mode2=data.getParameters().getString("mode2","");
+                        context.put("mode2",mode2);
  			context.put("courseid",course_id);
  		        context.put("userid",userid);
                         Criteria crit=new Criteria();
  			String mid_delete = pp.getString("deleteFileNames","");
 			String Deleteper = pp.getString("Deleteper","");
-
+			
 			// Code to get message from DB_subject
-
 			String [] subjectarray = DB_subject.split("@@@@");
                        	if(!mid_delete.equals(""))
 		        { //outer 'if'
@@ -509,6 +576,7 @@ public class SendDB extends SecureAction
         	                                crit=new Criteria();
                 	                        crit.add(DbSendPeer.REPLY_ID,Integer.parseInt(msg_idd));
                         	                sendDetail=DbSendPeer.doSelect(crit);
+						
                                 	        for(int i=0;i<sendDetail.size();i++)
                                         	{
 	                                                DbSend element=(DbSend)sendDetail.get(i);
@@ -522,15 +590,40 @@ public class SendDB extends SecureAction
 
 	                   			/*Delete message in database */
 	
+			        		//crit.add(DbSendPeer.MSG_ID,msg_idd);
+			        		//DbSendPeer.doDelete(crit);
+                        			crit=new Criteria();
 			        		crit.add(DbSendPeer.MSG_ID,msg_idd);
 			        		DbSendPeer.doDelete(crit);
-                        			crit=new Criteria();
 		        			crit.add(DbReceivePeer.MSG_ID,msg_idd);
 						String LangFile=data.getUser().getTemp("LangFile").toString();
 			        		DbReceivePeer.doDelete(crit);
 						String msg8=MultilingualUtil.ConvertedString("db_msg7",LangFile);
 						data.setMessage(msg8);
-						String filePath=data.getServletContext().getRealPath("/Courses")+"/"+course_id+"/DisBoard"+"/"+ DB_subject+"/"+"/Msg.txt";
+						
+						///delete from Course
+						//String courseRealPath=TurbineServlet.getRealPath("/Courses");
+						String courseRealPath=TurbineServlet.getRealPath("/Courses");
+			                        String filepath=(courseRealPath+"/"+course_id+"/"+"/DisBoard"+"/"+ DB_subject);
+                        			File AssDir=new File(filepath+"/"+msg_idd);
+			                        //ErrorDumpUtil.ErrorLog("\nassignid"+assignid+"\nfilepath"+filepath+"\nAssDir"+AssDir);
+                        			SystemIndependentUtil.deleteFile(AssDir);
+			                        //AssDir.delete();
+			                        data.setMessage("DiscussionBoard deleted successfully !!");
+						
+						if(stats.equals("fromIndex"))
+                        			{
+			                                course_id="general";
+			                        	context.put("stats",stats);
+                        			}
+			                        else{
+                        			        if(mode2.equals("instituteWise")){
+			                                	course_id="instituteWise";
+				                        	context.put("mode2",mode2);
+                        		        	}
+                        			}
+						String filePath=data.getServletContext().getRealPath("/Courses")+"/"+course_id+"/DisBoard"+"/"+ DB_subject;
+						//ErrorDumpUtil.ErrorLog("file Paht================Courses======>>>"+filePath);
 						CommonUtility.UpdateTxtFile(filePath,msg_idd,"",false);
 	
  						/* deleting attachment if any with the message */	
@@ -553,10 +646,23 @@ public class SendDB extends SecureAction
 	     						f1.delete();
 	  					}
 					} else {
+						if(stats.equals("fromIndex")) 
+						{
+                                                        course_id="general";
+                                                        context.put("stats",stats);
+                                                }
+						else
+						{
+							if(mode2.equals("instituteWise"))
+							{
+                                                        	course_id="instituteWise";
+	                                                        context.put("mode2",mode2);
+        	                                        }
+						}
                                                 String LangFile=data.getUser().getTemp("LangFile").toString();
                                                 String msg8=MultilingualUtil.ConvertedString("db_msg7",LangFile);
-                                                String APath1=data.getServletContext().getRealPath("/Courses"+"/"+course_id
-+"/Archive");
+                                                String APath1=data.getServletContext().getRealPath("/Courses"+"/"+course_id+"/Archive");
+						//ErrorDumpUtil.ErrorLog("===================690=======>>>>"+APath1);
                                                 String msgId=APath1 +"/"+msg_idd;
                                                 String message= msgId+"/"+DB_subject;
                                                 File fid=new File(msgId);
@@ -577,8 +683,6 @@ public class SendDB extends SecureAction
                                                 fid.delete();
                                                 data.setMessage(msg8);
                                         }
-
-
       				}//for
 			}//if		     
 		
@@ -586,7 +690,7 @@ public class SendDB extends SecureAction
 		catch(Exception e){data.setMessage("Some Error Occured in DeletingMessage !!!!" +e);}
 	}//do delete
 	
-	                /**
+        /**
          * This method is invoked when no button corresponding to
          * @param data RunData
          * @param context Context
@@ -610,11 +714,17 @@ public class SendDB extends SecureAction
                         context.put("DB_message",DB_message);
                         String msg_id=pp.getString("msg_id","");
                         context.put("msgid",msg_id);
+			
                         String course_id=pp.getString("course_id","");
                         context.put("courseid",course_id);
                         context.put("Post_date",Post_date);
                         String topiclist = pp.getString("deleteFileNames","");
                         String [] topicarray = DB_subject.split("@@@@");
+			String stats=pp.getString("stats","");
+                        context.put("stats",stats);
+			String mode2=pp.getString("mode2","");
+                        context.put("mode2",mode2);
+			//ErrorDumpUtil.ErrorLog("Occured in ArchiveMessage==================>>"+stats);
                         if(!topiclist.equals(""))
                         { //outer 'if'
                                 StringTokenizer st=new StringTokenizer(topiclist,"^");
@@ -622,10 +732,19 @@ public class SendDB extends SecureAction
                                 { //first 'for' loop
                                         String msg_idd=st.nextToken();
                                         // get New subject
-                                        DB_subject = topicarray[j];
-                                        String readMsg=data.getServletContext().getRealPath("/Courses"+"/"+course_id+"/DisBoard"+"/"+DB_subject+"/Msg.txt");
-					 String readAttach = data.getServletContext().getRealPath("/Courses"+"/"+course_id+"/DisBoard"+"/"+DB_subject+"/Attachment/"+msg_idd);
-                                        String writepath=data.getServletContext().getRealPath("/Courses"+"/"+course_id+"/Archive"+"/"+msg_idd);
+					if(stats.equals("fromIndex"))
+					{
+		                                course_id="general";
+					}else{
+						if(mode2.equals("instituteWise"))
+		                                {	
+							course_id="instituteWise";
+						}
+					}      	DB_subject = topicarray[j];
+                                        	String readMsg=data.getServletContext().getRealPath("/Courses"+"/"+course_id+"/DisBoard"+"/"+DB_subject+"/Msg.txt");
+						String readAttach = data.getServletContext().getRealPath("/Courses"+"/"+course_id+"/DisBoard"+"/"+DB_subject+"/Attachment/"+msg_idd);
+                                        	String writepath=data.getServletContext().getRealPath("/Courses"+"/"+course_id+"/Archive"+"/"+msg_idd);
+						//ErrorDumpUtil.ErrorLog("\nread msg====>>"+readMsg+"\nread Attachment====>>>"+readAttach+"\nwrithepath====>>"+writepath);
                                         File f=new File(writepath);
                                         if(f.exists()){
                                                 String strmess=MultilingualUtil.ConvertedString("archive_msg1",LangFile);
@@ -662,7 +781,7 @@ public class SendDB extends SecureAction
                                         writepath=writepath+"/"+DB_subject+".html";
                                         String str[]=new String[10000];
                                         int i=0; int start = 0; int stop= 0;String string="";
-
+					//String readMsg=null;//add by sunil
                                         BufferedReader br=new BufferedReader(new FileReader (readMsg));
                                         while ((str[i]=br.readLine()) != null)
                                         {
@@ -708,6 +827,11 @@ public class SendDB extends SecureAction
 	
 	public void doShowArchive(RunData data , Context context)
         {
+                        ParameterParser pp=data.getParameters();
+		String stats=pp.getString("stats","");
+                context.put("stats",stats);
+		String mode2=pp.getString("mode2","");
+                context.put("mode2",mode2);
 		context.put("count",data.getParameters().getString("count",""));
 		context.put("countTemp",data.getParameters().getString("countTemp",""));
                 data.setScreenTemplate("call,Dis_Board,Archive.vm");
@@ -720,8 +844,6 @@ public class SendDB extends SecureAction
                 data.setScreenTemplate("call,Dis_Board,DBContent.vm");
         }
 	
-
-
 	/**  
  	* This method is invoked when no button corresponding to
  	* @param data RunData
@@ -758,6 +880,4 @@ public class SendDB extends SecureAction
 		}//try
 		catch(Exception ex){data.setMessage("The error in Send DB !!"+ex);}
         }//(doPerform)
-
-
 }//class

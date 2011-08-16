@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.screens.call.Dis_Board;
 
 /*
  * @(#)DBContent.java
- *  Copyright (c) 2005-2006, 2010 ETRG,IIT Kanpur.
+ *  Copyright (c) 2005-2006, 2010, 2011 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -65,7 +65,9 @@ import java.util.LinkedList;
  * This class contains code for all discussion are shows
  * @author  <a href="arvindjss17@yahoomail.co.in">Aarvind Pal</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+ * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @ modified date: 13-Oct-2010 (Shaista)
+ * @ modified date: 25-May-2011 (Sunil Kr)
  */
 
 public class Multithread extends SecureScreen
@@ -96,36 +98,43 @@ public class Multithread extends SecureScreen
                         * Retrive the UserId from Turbine_User table
                         * @see UserUtil
                         */
-
-                        int user_id=UserUtil.getUID(Username);
+			int user_id=UserUtil.getUID(Username);
                         String group=(String)data.getUser().getTemp("course_id");
                         context.put("course_id",group);
-                        int group_id=GroupUtil.getGID(group);
+
+                        String stats=data.getParameters().getString("stats","");
+                        context.put("stats",stats);
+                        String mode2=data.getParameters().getString("mode2","");
+                        context.put("mode2",mode2);
+                        int group_id=0;
+                        //this is use for General and Institute wise Group_Id define
+                        if(stats.equals("fromIndex")){
+                                group_id=4;
+                                group="general";
+                        }else if(mode2.equals("instituteWise")){
+                                group_id=5;
+                                group="instituteWise";
+                        }else
+                                group_id=GroupUtil.getGID(group);
                         String gid=Integer.toString(group_id);
                         String uid=Integer.toString(user_id);
                         context.put("group",gid);
                         context.put("userid",uid);
-
-
                         /**
                         * Select all the messagesid according to the ReceiverId
                         * from the Db_Receive table
                         */
-
-
-                        LinkedList li1=new LinkedList();
+			
+			LinkedList li1=new LinkedList();
                         LinkedList Reli2=new LinkedList();
                         LinkedList temp=new LinkedList();
                         LinkedList li=new LinkedList();
                         LinkedList li3=new LinkedList();
 
-
-
                         String mode=data.getParameters().getString("mode");
                         context.put("mode",mode);
 			Criteria crit=new Criteria();
                         List v=null;
-
 
                         if(mode.equals("All"))
                         {
@@ -141,7 +150,6 @@ public class Multithread extends SecureScreen
                                 crit.add(DbReceivePeer.READ_FLAG,readflg);
                                 v=DbReceivePeer.doSelect(crit);
                         }
-
 
                         /**
                         * Below code just converts the List 'v' into Vector 'entry'
@@ -293,7 +301,8 @@ public class Multithread extends SecureScreen
                                 }//for2
                         }//for1
                         }
-                        String newgroup=(String)data.getUser().getTemp("course_id");
+                        //String newgroup=(String)data.getUser().getTemp("course_id");
+                        String newgroup=(String)data.getUser().getTemp("course_id","general");
                         String cname=CourseUtil.getCourseName(newgroup);
                         AccessControlList acl=data.getACL();
                         if(acl.hasRole("instructor",newgroup))
@@ -321,5 +330,3 @@ public class Multithread extends SecureScreen
                 catch(Exception e){data.setMessage("Exception screens [Dis_Board,DBContent.java]" + e);}
         }//method
 }//class
-
-				

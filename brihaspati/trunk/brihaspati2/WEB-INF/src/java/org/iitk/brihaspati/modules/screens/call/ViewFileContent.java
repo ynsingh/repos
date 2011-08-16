@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call;
 /*
  * @(#)ViewFileContent.java	
  *
- *  Copyright (c) 2005-2006, 2008 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006, 2008, 2011 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -56,6 +56,7 @@ import org.iitk.brihaspati.modules.utils.MultilingualUtil;
  * In this class, Display of contents for any file.
  * @author <a href="mailto:nksngh_p@yahoo.co.in">Nagendra Kumar Singh</a>
  * @author <a href="mailto:awadhesh_trivedi@yahoo.co.in">Awadhesh Kumar Trivedi</a>
+ * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar Pal</a>
  */
 
 public class ViewFileContent extends SecureScreen
@@ -83,8 +84,12 @@ public class ViewFileContent extends SecureScreen
                         fileID=URL.substring(endIndex+1);
                         fileID=fileID.replace(",","/");
                         fileID=URLDecoder.decode(fileID, "UTF-8");
-			
 			String Type=pp.getString("type","");
+			String stats=data.getParameters().getString("stats","");
+                        context.put("stats",stats);
+			String mode2=data.getParameters().getString("mode2","");
+                        context.put("mode2",mode2);
+			//ErrorDumpUtil.ErrorLog("stats======>>>"+stats+"mode2======>>>"+mode2);
 			
 			/**
                         * getting the actual path where stored the Repository contents file
@@ -148,12 +153,22 @@ public class ViewFileContent extends SecureScreen
 
 			else if(Type.equals("DB")){
 				String docRoot=data.getServletContext().getRealPath("/Courses")+"/";
-				String dir=(String)data.getUser().getTemp("course_id")+"/";
-				String topic=pp.getString("topic","")+"/";
-				String msg_id=pp.getString("msgid","");
-                             	filePath=docRoot+dir+"/DisBoard/"+topic+"/Attachment/"+msg_id+"/"+fileID;
+			/**
+			 * this is use for general and institutewise discussion group.
+			 */	String dir="";
+	                        if(stats.equals("fromIndex")){
+        	                        dir="general";
+                	        }else if(mode2.equals("instituteWise")){
+                        	        dir="instituteWise";
+                        	}else	
+                                        dir=(String)data.getUser().getTemp("course_id")+"/";
+					//String dir=(String)data.getUser().getTemp("course_id")+"/";
+					String topic=pp.getString("topic","")+"/";
+					String msg_id=pp.getString("msgid","");
+                	             	filePath=docRoot+dir+"/DisBoard/"+topic+"/Attachment/"+msg_id+"/"+fileID;
+					//ErrorDumpUtil.ErrorLog("==============file path======db==>>>>"+filePath);
 			}
-                         else if(Type.equals("reload"))
+                        else if(Type.equals("reload"))
                         {
                            String docRoot=data.getServletContext().getRealPath("/BrihaspatiEditor")+"/";
                             filePath=docRoot+ fileID;
@@ -172,6 +187,8 @@ public class ViewFileContent extends SecureScreen
                                 String docRoot=data.getServletContext().getRealPath("/Courses")+"/";
                                 filePath=docRoot+dir+"Scormpackage/"+topic+fileID;
                         }
+
+
 			/**
                          * getting the actual path where stored the Assignment file
                          */
@@ -183,19 +200,39 @@ public class ViewFileContent extends SecureScreen
 			} 
 			
 			/**
+                         * getting the actual path where stored the DB file
+                         */
+
+                        else if(Type.equals("general")){
+                                String docRoot=data.getServletContext().getRealPath("/Courses")+"/";
+                                String topic=pp.getString("topic","")+"/";
+                                String msg_id=pp.getString("msgid","");
+                                filePath=docRoot+Type+"/DisBoard/"+topic+"/Attachment/"+msg_id+"/"+fileID;
+                        }
+
+				
+			/**
                          * getting the actual path where stored the Archive file
                          */
-		
 			else if(Type.equals("Archive")) {
 				String attachment=pp.getString("attachment","notAttachment");
-				String dir=(String)data.getUser().getTemp("course_id")+"/";
+				String dir="";
+				if(stats.equals("fromIndex")){
+					dir="general";
+				}else if(mode2.equals("instituteWise")){
+					dir="instituteWise";
+				}else{
+					dir=(String)data.getUser().getTemp("course_id");
+				}
+				//String dir=data.getUser().getTemp("course_id")+"/";
 				String msg_id=pp.getString("msgid","");
-				if(attachment.equals("Attachment")){
-                                	filePath=data.getServletContext().getRealPath("/Courses")+"/"+dir+"/Archive/"+msg_id+"/Attachment"+"/"+fileID;
-                               	} else{
-					filePath=data.getServletContext().getRealPath("/Courses")+"/"+dir+"/Archive/"+msg_id+"/"+fileID;
-                             	}
-			} else if(Type.equals("marks")) {
+				//ErrorDumpUtil.ErrorLog("\nDir =========>>>>>>>>"+dir);
+					if(attachment.equals("Attachment")){
+                                		filePath=data.getServletContext().getRealPath("/Courses")+"/"+dir+"/Archive/"+msg_id+"/Attachment"+"/"+fileID;
+	                               	}else{
+						filePath=data.getServletContext().getRealPath("/Courses")+"/"+dir+"/Archive/"+msg_id+"/"+fileID;
+                	             	}
+			}else if(Type.equals("marks")) {
 				String docRoot=data.getServletContext().getRealPath("/Courses")+"/";
                        		String dir=(String)data.getUser().getTemp("course_id")+"/";
 				filePath=docRoot+dir+"Marks/"+fileID;

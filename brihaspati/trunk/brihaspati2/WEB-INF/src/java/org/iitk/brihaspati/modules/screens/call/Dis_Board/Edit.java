@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.screens.call.Dis_Board;
 
 /*
  * @(#)Edit.java	
- *  Copyright (c) 2005-2006, 2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006, 2010, 2011 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -67,7 +67,9 @@ import org.apache.torque.util.Criteria;
  * @author  <a href="sumanrjpt@yahoo.co.in">Suman Rajput</a>
  * @author  <a href="rekha_20july@yahoo.co.in">Rekha Pal</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+ * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @ modified date: 13-Oct-2010 (Shaista)
+ * @ modified date: 10-Aug-2011 (Sunil Kumar)
  */
 
 public class Edit extends SecureScreen
@@ -135,15 +137,33 @@ public class Edit extends SecureScreen
 			Vector v=new Vector();
 			String topic=data.getParameters().getString("topic","");
 			context.put("topic",topic);
-                   
-                         AccessControlList acl=data.getACL();
-		 	String dir=data.getParameters().getString("course_id");
-		  	context.put("cid",dir);
+
+                   	/**
+			* stats=data.getParameters().getString("stats","");
+			* mode2=data.getParameters().getString("mode2","");
+			* stats and mode2 use for general and institute wise discussion group
+			*/
+
+			String stats=data.getParameters().getString("stats","");
+                        context.put("stats",stats);
+			String mode2=data.getParameters().getString("mode2","");
+                        context.put("mode2",mode2);
+                        AccessControlList acl=data.getACL();
+			String dir=null;
+                        if(stats.equals("fromIndex")){
+                                dir="general";
+                        }else if(mode2.equals("instituteWise")){
+                                dir="instituteWise";
+                        }else
+		 		dir=data.getParameters().getString("course_id");
+			  	context.put("cid",dir);
+
 			int msg_id=data.getParameters().getInt("msgid");
 			
                 	/**
 		 	* Retrive the group and CourseId
 			*/
+			
 			String course_id=pp.getString("course_id","");
 			context.put("course_id",course_id);
 			String mgid =pp.getString("msgid");
@@ -160,7 +180,16 @@ public class Edit extends SecureScreen
 		 	* Getting the actual path where the DB file is stored
 		 	* @return String
 		 	*/
-			String filePath=data.getServletContext().getRealPath("/Courses")+"/"+dir+"/DisBoard";
+
+			String filePath="";
+			if(stats.equals("fromIndex")){
+				//filePath=data.getServletContext().getRealPath("/Courses")+"/general";
+				filePath=data.getServletContext().getRealPath("/Courses")+"/general"+"/DisBoard";
+                        }else if(mode2.equals("instituteWise")){
+				filePath=data.getServletContext().getRealPath("/Courses")+"/instituteWise"+"/DisBoard";
+			}else
+				filePath=data.getServletContext().getRealPath("/Courses")+"/"+dir+"/DisBoard";
+				
                                                                                                            
                         /**
 		 	* read the file using fileReader
@@ -249,9 +278,3 @@ public class Edit extends SecureScreen
 		return authorised;
 	}//boolean	
 }//class
-
-
-
-
-
-

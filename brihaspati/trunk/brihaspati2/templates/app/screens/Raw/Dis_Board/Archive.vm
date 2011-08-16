@@ -1,6 +1,6 @@
 #*
  * @(#)Archive.vm
- * Copyright (c)2005-2006, 2009, 2010 ETRG,IIT Kanpur.
+ * Copyright (c)2005-2006, 2009, 2010, 2011  ETRG,IIT Kanpur.
  * All Rights Reserved.
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @author <a href="mailto:aktri@iitk.ac.in">Awadhesh Kumar Trivedi</a>
@@ -8,8 +8,8 @@
  * @author <a href="mailto:rekha_20july@yahoo.co.in">Rekha Pal</a>
  * @author <a href="sneha.srivastava24@gmail.com">Sneha Srivastava</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
- * @ modified date: 13-Oct-2010 (Shaista)
-
+ * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
+ * @ modified date: 13-Oct-2010 (Shaista), 09-Aug-2011 (Sunil Kr)
  *#
 
 $!data.getMessage()
@@ -17,12 +17,40 @@ $!data.getMessage()
 	<tr bgcolor="$ui.menuColor">
 		<td colspan=5>
 		<b>
-		<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cname</a> | 
-		<a href =$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_communication</a> | 
-		<a href =$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4")>$DiscussionBoard</a> | $brih_arch
+
+## (stats == fromIndex) Use for general discussion group ##
+## (mode2 == instituteWise) Use for InsitituteWise discussion group ##
+
+		#if($stats == "fromIndex")
+                        <b><a href=$link.setPage("Index.vm")>Home</a> |
+                        <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("stats","fromIndex").addPathInfo("count","4")>$brih_general $DiscussionBoard</a>
+                #elseif($mode2 == "instituteWise")
+                        <b><a href=$link.setPage("Index.vm")>Home</a> |
+                        <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("mode2","instituteWise").addPathInfo("count","8")> $RemoteInstitute $brih_wise $DiscussionBoard</a>
+                #else
+			<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> | <a href=$link.setPage("call,CourseMgmt_User,CourseHome.vm")>$cname</a>|
+			<a href =$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_communication</a> | 
+			<a href =$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4")>$DiscussionBoard</a> 
+		#end
+			| $brih_arch
 		</td>
 	</tr>
 <tr>
+#if($stats == "fromIndex")
+        #if($tdcolor!="4")
+        <td>
+        #elseif($tdcolor == "4")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("stats","fromIndex").addPathInfo("count","4")>$brih_general $DiscussionBoard</td>
+#elseif($mode2 == "instituteWise")
+        #if($tdcolor!="8")
+        <td>
+        #elseif($tdcolor == "8")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("mode2","instituteWise").addPathInfo("count","8")>$RemoteInstitute $brih_wise $DiscussionBoard</td>
+#else
         #if($tdcolor != "1")
         <td>
         #elseif($tdcolor=="1")
@@ -59,6 +87,7 @@ $!data.getMessage()
 	        #end
         	<a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status","fromCourse").addPathInfo("count","5")>$brih_news</td>
 	#end
+#end
 </tr>
 
 </table>
@@ -93,9 +122,21 @@ $!data.getMessage()
 				 
 				<td width="50%" align="Center"> $!e.getStudentname() </td> 
 				<td width="50%" align="center">
+                                #if($mode2 == "instituteWise")
+                                        <a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("mode2","instituteWise").addPathInfo("type","Archive").addPathInfo("msgid",$e.getStudentfile()).addPathInfo("filename",$e.getStudentname())","newWin");>$brih_view</a>
+				#elseif($stats == "fromIndex")
+                                        <a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("stats","fromIndex").addPathInfo("type","Archive").addPathInfo("msgid",$e.getStudentfile()).addPathInfo("filename",$e.getStudentname())","newWin");>$brih_view</a>
+                                #else
 					<a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("type","Archive").addPathInfo("msgid",$e.getStudentfile()).addPathInfo("filename",$e.getStudentname())","newWin");>$brih_view</a>
+				#end
 				#if($e.getfeedback() != "")
-					<a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("type","Archive").addPathInfo("msgid",$e.getStudentfile()).addPathInfo("attachment","Attachment").addPathInfo("filename",$e.getfeedback())","newWin");> $brih_attachment </a>
+                                	#if($mode2 == "instituteWise")
+						<a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("mode2","instituteWise").addPathInfo("type","Archive").addPathInfo("msgid",$e.getStudentfile()).addPathInfo("attachment","Attachment").addPathInfo("filename",$e.getfeedback())","newWin");> $brih_attachment </a>
+					#elseif($stats == "fromIndex")
+						<a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("stats","fromIndex").addPathInfo("type","Archive").addPathInfo("msgid",$e.getStudentfile()).addPathInfo("attachment","Attachment").addPathInfo("filename",$e.getfeedback())","newWin");> $brih_attachment </a>
+                                	#else
+						<a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("type","Archive").addPathInfo("msgid",$e.getStudentfile()).addPathInfo("attachment","Attachment").addPathInfo("filename",$e.getfeedback())","newWin");> $brih_attachment </a>
+					#end
 				#end
 			#end  
 		</tr>
@@ -108,6 +149,8 @@ $!data.getMessage()
 			<INPUT TYPE="hidden" name="DB_subject" value="">
 			<INPUT TYPE="hidden" name="course_id" value="$course_id">
                         <INPUT TYPE="hidden" NAME="count" VALUE="$tdcolor">
+			<INPUT TYPE="hidden" NAME="mode2" VALUE="$mode2">
+			<INPUT TYPE="hidden" NAME="stats" VALUE="$stats">
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;				
 			#if($mode!="Search")
 				#if($total_size<= $AdminConf)
@@ -118,18 +161,46 @@ $!data.getMessage()
         			#elseif($startIndex== $AdminConf_str)
           			<u><font color="white">$brih_first</font></u> &nbsp;
 				<u><font color="white">$brih_pre</font></u> &nbsp;
-				<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor)">$brih_nxt</a> &nbsp;
-          			<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor)">$brih_last</a> &nbsp;
+					#if($stats == "fromIndex") ## this is use for general discussion group
+						<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$startIndex).addPathInfo("stats","fromIndex").addPathInfo("count",$tdcolor)">$brih_nxt</a> &nbsp;
+	        	  			<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_last).addPathInfo("stats","fromIndex").addPathInfo("count",$tdcolor)">$brih_last</a> &nbsp;
+					#elseif($mode2 == "instituteWise") ## this is use for institute wise discussion group
+						<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode2","instituteWise").addPathInfo("count",$tdcolor)">$brih_nxt</a> &nbsp;
+          					<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode2","instituteWise").addPathInfo("count",$tdcolor)">$brih_last</a> &nbsp;
+					#else
+						<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor)">$brih_nxt</a> &nbsp;
+		          			<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor)">$brih_last</a> &nbsp;
+					#end			
         			#elseif($endIndex == $total_size || $endIndex > $total_size)
+					#if($stats == "fromIndex")
+        			<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_first).addPathInfo("stats","fromIndex").addPathInfo("count",$tdcolor)">$brih_first</a> &nbsp;
+				<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_pre).addPathInfo("stats","fromIndex").addPathInfo("count",$tdcolor)">$brih_pre</a> &nbsp;
+					#elseif($mode2 == "instituteWise")
+        			<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode2","instituteWise").addPathInfo("count",$tdcolor)">$brih_first</a> &nbsp;
+				<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode2","instituteWise").addPathInfo("count",$tdcolor)">$brih_pre</a> &nbsp;
+					#else
         			<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor)">$brih_first</a> &nbsp;
 				<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor)">$brih_pre</a> &nbsp;
+					#end
          			<u><font color="white">$brih_nxt</font></u> &nbsp;
          			<u><font color="white">$brih_last</font></u> &nbsp;
          			#else
-         			<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor)">$brih_first</a> ## &nbsp;
-				<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor)">$brih_pre</a> ## &nbsp;
-         			<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor)">$brih_nxt</a> &nbsp;
-        	 		<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor)">$brih_last</a> ## &nbsp;
+					#if($stats == "fromIndex")
+         					<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_first).addPathInfo("stats","fromIndex").addPathInfo("count",$tdcolor)">$brih_first</a> ## &nbsp;
+						<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_pre).addPathInfo("stats","fromIndex").addPathInfo("count",$tdcolor)">$brih_pre</a> ## &nbsp;
+         					<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex).addPathInfo("stats","fromIndex").addPathInfo("count",$tdcolor)">$brih_nxt</a> &nbsp;
+        	 				<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_last).addPathInfo("stats","fromIndex").addPathInfo("count",$tdcolor)">$brih_last</a> ## &nbsp;
+					#elseif($mode2 == "instituteWise")
+		         			<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode2","instituteWise").addPathInfo("count",$tdcolor)">$brih_first</a> ## &nbsp;
+						<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode2","instituteWise").addPathInfo("count",$tdcolor)">$brih_pre</a> ## &nbsp;
+         					<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex).addPathInfo("mode2","instituteWise").addPathInfo("count",$tdcolor)">$brih_nxt</a> &nbsp;
+		        	 		<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode2","instituteWise").addPathInfo("count",$tdcolor)">$brih_last</a> ## &nbsp;
+					#else
+         					<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor)">$brih_first</a> ## &nbsp;
+						<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor)">$brih_pre</a> ## &nbsp;
+		         			<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$startIndex).addPathInfo("end",$endIndex).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor)">$brih_nxt</a> &nbsp;
+        			 		<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("count",$tdcolor)">$brih_last</a> ## &nbsp;
+					#end
          			#end
          		#else
          			#if($total_size<= $AdminConf)
@@ -140,18 +211,46 @@ $!data.getMessage()
          			#elseif($startIndex== $AdminConf_str)
          			<u><font color="white">$brih_first</font></u> &nbsp;
          			<u><font color="white">$brih_pre</font></u> &nbsp;
-         			<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_nxt</a> &nbsp;
-         			<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_last</a> &nbsp;
+					#if($stats == "fromIndex")
+		         			<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$startIndex).addPathInfo("stats","fromIndex").addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_nxt</a> &nbsp;
+         					<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_last).addPathInfo("stats","fromIndex").addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_last</a> &nbsp;
+					#elseif($mode2 == "instituteWise")
+         					<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode2","instituteWise").addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_nxt</a> &nbsp;
+		         			<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode2","instituteWise").addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_last</a> &nbsp;
+					#else
+         					<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_nxt</a> &nbsp;
+         					<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_last</a> &nbsp;
+					#end
          			#elseif($endIndex == $total_size || $endIndex > $total_size)
-         			<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_first</a> &nbsp;
-         			<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_pre</a> &nbsp;
+					#if($stats == "fromIndex")
+		         			<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_first).addPathInfo("stats","fromIndex").addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_first</a> &nbsp;
+         					<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_pre).addPathInfo("stats","fromIndex").addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_pre</a> &nbsp;
+					#elseif($mode2 == "instituteWise")
+         					<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode2","instituteWise").addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_first</a> &nbsp;
+		         			<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode2","instituteWise").addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_pre</a> &nbsp;
+					#else
+         					<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_first</a> &nbsp;
+         					<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_pre</a> &nbsp;
+					#end
          			<u><font color="white">$brih_nxt</font></u>  &nbsp;
          			<u><font color="white">$brih_last</font></u> &nbsp;
          			#else
-         			<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_first</a> &nbsp;
-         			<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_pre</a> &nbsp;
-         			<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_nxt</a> &nbsp;
-         			<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_last</a> &nbsp;
+					#if($stats == "fromIndex")
+		         			<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_first).addPathInfo("stats","fromIndex").addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_first</a> &nbsp;
+         					<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_pre).addPathInfo("stats","fromIndex").addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_pre</a> &nbsp;
+         					<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$startIndex).addPathInfo("stats","fromIndex").addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_nxt</a> &nbsp;
+		         			<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_last).addPathInfo("stats","fromIndex").addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_last</a> &nbsp;
+					#elseif($mode2 == "instituteWise")
+         					<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode2","instituteWise").addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_first</a> &nbsp;
+		         			<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode2","instituteWise").addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_pre</a> &nbsp;
+         					<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode2","instituteWise").addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_nxt</a> &nbsp;
+         					<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode2","instituteWise").addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_last</a> &nbsp;
+					#else
+		         			<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_first).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_first</a> &nbsp;
+         					<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_pre).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_pre</a> &nbsp;
+         					<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$startIndex).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_nxt</a> &nbsp;
+		         			<a href="$link.setPage("call,Dis_Board,Archive.vm").addPathInfo("startIndex",$check_last).addPathInfo("mode",$mode).addPathInfo("queryList",$query).addPathInfo("valueString",$valueString).addPathInfo("count",$tdcolor)">$brih_last</a> &nbsp;
+					#end
          			#end
     			#end
                 </tr>
@@ -195,8 +294,3 @@ $!data.getMessage()
 		window.open(urlName,popupName,"toolbar=yes,scrollbars=yes");
 	}                                    
 </script>
-
-
-
-
-

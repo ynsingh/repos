@@ -2,7 +2,7 @@ package org.iitk.brihaspati.modules.screens.call.Dis_Board;
 
 /*
  * @(#)DBView.java	
- *  Copyright (c) 2005-2006 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006, 2011 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -59,11 +59,13 @@ import org.iitk.brihaspati.om.DbReceivePeer;
 import org.iitk.brihaspati.om.DbSendPeer;
 import org.iitk.brihaspati.om.DbSend;
 import org.apache.torque.util.Criteria;
-
+import org.apache.velocity.context.Context;
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 /**
  * This class contains code for display message
  * @author  <a href="aktri@iitk.ac.in">Awadhesh Kumar Trivedi</a>
  * @author  <a href="sumanrjpt@yahoo.co.in">Suman Rajput</a>
+ * @author  <a href="sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @author  <a href="rekha_20july@yahoo.co.in">Rekha Pal</a>
  */
 public class DBView extends SecureScreen 
@@ -88,7 +90,20 @@ public class DBView extends SecureScreen
 		 	// Retrive the group and CourseId
 
 			String dir,group,topicDesc="";
-			group=dir=pp.getString("course_id");
+			//this is use for General Discussion Group
+                        String stats=data.getParameters().getString("stats","");
+                        context.put("stats",stats);
+                        String mode2=data.getParameters().getString("mode2","");
+                        context.put("mode2",mode2);
+		
+                        if(stats.equals("fromIndex"))
+                        	group=dir="general";
+                        else if(mode2.equals("instituteWise"))
+                        	group=dir="instituteWise";
+                        else
+                                group=dir=pp.getString("course_id");
+			//ErrorDumpUtil.ErrorLog("group===========>"+group);
+					
 			String cname=CourseUtil.getCourseName(group);
 			context.put("CName",cname);
 			context.put("workgroup",group);
@@ -96,7 +111,9 @@ public class DBView extends SecureScreen
 		 	* Getting the actual path where the DB file is stored
 		 	* @return String
 		 	*/
+			
 			String filePath=data.getServletContext().getRealPath("/Courses")+"/"+dir+"/DisBoard";
+			//ErrorDumpUtil.ErrorLog("file paht===========>"+filePath);
 
 		 	// check role of User
 			if( acl.hasRole("instructor",group) )
@@ -115,6 +132,7 @@ public class DBView extends SecureScreen
 				int stop = 0;
 				try{
 					BufferedReader br=new BufferedReader(new FileReader (filePath+"/"+topic+"/Msg.txt"));
+			//ErrorDumpUtil.ErrorLog("BufferedReader===========>"+br);
 		                	while ((str[i]=br.readLine()) != null)
 	                        	{
 						if (str[i].equals("<"+msg_id+">"))
@@ -145,6 +163,7 @@ public class DBView extends SecureScreen
 		 	**/		
 			context.put("message",topicDesc);
 			File dirHandle=new File(filePath+"/"+topic+"/"+"Attachment/"+msg_id);
+			ErrorDumpUtil.ErrorLog("Directory location==========sunil========>"+dirHandle);
 			FilenameFilter exclude=new NotInclude("__desc.txt");
 	      		File file[]=dirHandle.listFiles(exclude);
 			String servContext=TurbineServlet.getContextPath();
@@ -156,6 +175,7 @@ public class DBView extends SecureScreen
 				content.addElement(fileData);
 			}
 			context.put("dirContent",content);
+			//ErrorDumpUtil.ErrorLog("\nContent==================>"+content);
 		
 			/** 
 	 		* From Here comes the code for change in Status.( Unread to Read ) 
@@ -167,7 +187,10 @@ public class DBView extends SecureScreen
 				context.put("msgID",dbtopic);
 				String Username=user.getName();
 				int receiver_user_id=UserUtil.getUID(Username);
+			//ErrorDumpUtil.ErrorLog("receiver_user_id========>"+receiver_user_id);
 				String update_message="UPDATE DB_RECEIVE SET READ_FLAG=1 WHERE MSG_ID="+msg_id+" AND RECEIVER_ID=" +receiver_user_id;
+			//ErrorDumpUtil.ErrorLog("update_message========>"+update_message);
+				
 				DbReceivePeer.executeStatement(update_message);
 			}
 			catch(Exception e) {data.setMessage("The Error in DB Receive table for read flag updatation "+e);}
@@ -190,6 +213,7 @@ public class DBView extends SecureScreen
        				  	context.put("sub",subject);
                                   	context.put("retrive_user",username);
                                   	context.put("retrive_date",retrive_date);
+			//ErrorDumpUtil.ErrorLog("subject========>"+subject+"\nusername========>"+username+"\nretrive_date"+retrive_date);
 			 	}//for
 			}
 			catch(Exception e) {data.setMessage("The error in sender name and post date in DBView Screens !!"+e);}
@@ -205,8 +229,9 @@ public class DBView extends SecureScreen
   	* Performs the security check required
   	* @param data RunData
   	* @return boolean
-  	*/           
-	public boolean isAuthorized(RunData data)
+  	*/          
+	public boolean isAuthorized(RunData data,Context context)
+	//public boolean isAuthorized(RunData data)
 	{
 		boolean authorised=false;
 		ParameterParser pp=data.getParameters();
@@ -214,11 +239,23 @@ public class DBView extends SecureScreen
 		{
 			AccessControlList acl=data.getACL();
 			User user=data.getUser();
-			String g=pp.getString("course_id");
+			String stats=data.getParameters().getString("stats","");
+                        context.put("stats",stats);
+			String mode2=data.getParameters().getString("mode2","");
+                        context.put("mode2",mode2);
+			String g=null;
+                        if(stats.equals("fromIndex")){
+                                g="general";
+                        }else if(mode2.equals("instituteWise")){
+                                g="instituteWise";
+                        }else
+			//String g=pp.getString("course_id");
+				g=pp.getString("course_id");
                         /**
 		  	* Checks if the user has logged in as an instructor. If so, then he is
 		  	* authorized to view this page
 		  	*/ 
+			
 		   	if(g!=null && acl.hasRole("instructor",g) || acl.hasRole("student",g))
 			{
 				authorised=true;
@@ -228,12 +265,9 @@ public class DBView extends SecureScreen
 				data.setScreenTemplate(Turbine.getConfiguration().getString("template.login"));
 				authorised=false;
 			}
+			
 		}
 		catch(Exception e){data.setMessage("The error in  authorisation block in DBView Screens !!"+e);}
 		return authorised;
 	}//method boolean
 }//class
-
-
-
-

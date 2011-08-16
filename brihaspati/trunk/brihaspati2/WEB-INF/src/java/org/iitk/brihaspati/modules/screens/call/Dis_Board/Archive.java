@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.Dis_Board;
 /*
  * @(#) Archive.java
  *
- *  Copyright (c) 2005-2006 ETRG,IIT Kanpur.
+ *  Copyright (c) 2005-2006, 2011 ETRG,IIT Kanpur.
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or
@@ -54,6 +54,8 @@ import org.iitk.brihaspati.modules.utils.AssignmentDetail;
  *   This class contains code for all discussions in workgroup
  *   Archive Message with listing
  *   @author  <a href="arvindjss17@gmail.com">Arvind Pal</a>
+ *   @author  <a href="sunil.singh6094@gmail.com">Sunil Kumar</a>
+ *   @Last modification 10Aug2011 by sunil kumar
  */
 
 public class Archive extends SecureScreen
@@ -64,17 +66,44 @@ public class Archive extends SecureScreen
                 try
                 { 
                         ParameterParser pp=data.getParameters();
-                        String UserName=data.getUser().getName();
+
+			/**
+                        * stats=data.getParameters().getString("stats","");
+                        * mode2=data.getParameters().getString("mode2","");
+                        * stats and mode2 use for general and institute wise discussion group
+                        */
+
+			String stats=data.getParameters().getString("stats","");
+                        context.put("stats",stats);
+			String mode2=data.getParameters().getString("mode2","");
+                        context.put("mode2",mode2);
+			if((!stats.equals("fromIndex")) || (!mode2.equals("instituteWise"))){
+                        	String UserName=data.getUser().getName();
+                        	context.put("UserName",UserName);
+			}
                         String course_id=(String)data.getUser().getTemp("course_id");
                         String msg_id=(String)data.getUser().getTemp("msg_id");
-                        String path1=data.getServletContext().getRealPath("/Courses"+"/"+course_id+"/Archive");
+			String path1="";
+			//this is use for general and institute wise discussion group
+			if(stats.equals("fromIndex"))
+			{
+				course_id="general";
+			}
+			else{
+				if(mode2.equals("instituteWise")){
+				course_id="instituteWise";
+				}
+			}
+                        path1=data.getServletContext().getRealPath("/Courses"+"/"+course_id+"/Archive");
+			
+			//ErrorDumpUtil.ErrorLog(" When show Archive then show this path============>>>>>>>>>"+path1);
 			context.put("tdcolor",data.getParameters().getString("count",""));
                         File topicDir=new File(path1);
                         String ContentList []=topicDir.list();
                         int t_size=0;
-                        context.put("UserName",UserName);
 			context.put("cname",(String)data.getUser().getTemp("course_name"));
                         context.put("course_id",course_id);
+
                        	String path2="";
                        	String path3="";
 			if(!topicDir.exists())
@@ -122,8 +151,18 @@ public class Archive extends SecureScreen
 				if(t_size !=0) {
 					MultilingualUtil m_u=new MultilingualUtil();
         	        	        String file=(String)data.getUser().getTemp("LangFile");
-	                	        String Mode=data.getParameters().getString("mode");
-	                        	context.put("mode","All");
+					/** if(stats.equals("fromIndex")){
+	                	        String Mode=data.getParameters().getString("mode","");
+                	                	String mode=null;
+                        			context.put("stats","fromIndex");
+                        		}else if(mode2.equals("instituteWise")){
+	                	        String Mode=data.getParameters().getString("mode","");
+                                		String mode=null;
+                        			context.put("mode2","instituteWise");
+                                	}else{ **/
+	                	        	String Mode=data.getParameters().getString("mode");
+                        			context.put("mode","All");
+				//	}
 					String path=data.getServletContext().getRealPath("/WEB-INF")+"/conf"+"/"+"Admin.properties";
 		                        int AdminConf = Integer.valueOf(AdminProperties.getValue(path,"brihaspati.admin.listconfiguration.value"));
 		                        context.put("AdminConf",new Integer(AdminConf));
@@ -161,9 +200,3 @@ public class Archive extends SecureScreen
                 catch(Exception e) { ErrorDumpUtil.ErrorLog("Error in Archive.java");    }
         }
 }
-
-
-
-
-
-

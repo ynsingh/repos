@@ -3,7 +3,7 @@ package org.iitk.brihaspati.modules.screens.call.Dis_Board;
 /*
  * @(#)DB.java	
  *
- *  Copyright (c) 2005-2006, 2010 ETRG,IIT Kanpur. 
+ *  Copyright (c) 2005-2006, 2010, 2011 ETRG,IIT Kanpur. 
  *  All Rights Reserved.
  *
  *  Redistribution and use in source and binary forms, with or 
@@ -49,6 +49,7 @@ import org.apache.velocity.context.Context;
 import com.workingdogs.village.Record;
 //import com.workingdogs.village.Value;
 import org.iitk.brihaspati.modules.utils.UserUtil; 
+import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
 import org.iitk.brihaspati.modules.utils.GroupUtil; 
 //import org.iitk.brihaspati.modules.utils.CourseUtil; 
 import org.apache.turbine.om.security.User;
@@ -61,7 +62,9 @@ import org.iitk.brihaspati.om.DbReceivePeer;
  *   @author  <a href="sumanrjpt@yahoo.co.in">Suman Rajput</a>
  *   @author  <a href="rekha_20july@yahoo.co.in">Rekha Pal</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+ * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @ modified date: 13-Oct-2010 (Shaista)
+ * @ modified date: 24-Aug-2011 (Sunil Kumar)
  */
 
 public class DB extends SecureScreen
@@ -82,40 +85,55 @@ public class DB extends SecureScreen
 			*/
 			User user=data.getUser();
 			String dir=(String)user.getTemp("course_id","testing");
-            		int gid=GroupUtil.getGID(dir);
-			String filePath=data.getServletContext().getRealPath("/Courses")+"/"+dir+"/DisBoard";
-			File dirHandle=new File(filePath);
-			context.put("mode1",data.getParameters().getString("mode1",""));
-			context.put("tdcolor",data.getParameters().getString("count",""));
-			context.put("tdcolor1",data.getParameters().getString("countTemp",""));
-			if(!(dirHandle.exists())){
-				dirHandle.mkdirs();
-			}
-			String file[]=dirHandle.list();
-			Vector v=new Vector();
-			for(int i=0;i<file.length;i++)
-			{
+			/*
+                        * stats=data.getParameters().getString("stats","");
+                        * mode2=data.getParameters().getString("mode2","");
+                        * stats and mode2 use for general and institute wise discussion group
+                        */
+			String stats=data.getParameters().getString("stats","");
+	                context.put("stats",stats);
+			String mode2=data.getParameters().getString("mode2","");
+                        context.put("mode2",mode2);
+			int gid=0;
+			if(stats.equals("fromIndex")){
+                                gid=4;
+			}else if(mode2.equals("instituteWise")){
+				gid=5;
+                	}else
+				gid=GroupUtil.getGID(dir);
+				String filePath=data.getServletContext().getRealPath("/Courses")+"/"+dir+"/DisBoard";
+				File dirHandle=new File(filePath);
+				context.put("mode1",data.getParameters().getString("mode1",""));
+				context.put("tdcolor",data.getParameters().getString("count",""));
+				context.put("tdcolor1",data.getParameters().getString("countTemp",""));
+				if(!(dirHandle.exists())){
+					dirHandle.mkdirs();
+				}
+				String file[]=dirHandle.list();
+				Vector v=new Vector();
+				for(int i=0;i<file.length;i++)
+				{
 				/**
 		  		* Add file in the Vector and vector put into context for further uses 
 		  		*/
 		 		v.addElement(file[i]);
-		 	}
-			for(int c=0;c<v.size();c++)
-			{
-				String Dname=(String)v.elementAt(c);
-				Criteria crit=new Criteria();
-				crit.add(DbSendPeer.MSG_SUBJECT,Dname);
-				List l=DbSendPeer.doSelect(crit);
-				if(l.size()==0)
+		 		}
+				for(int c=0;c<v.size();c++)
 				{
+					String Dname=(String)v.elementAt(c);
+					Criteria crit=new Criteria();
+					crit.add(DbSendPeer.MSG_SUBJECT,Dname);
+					List l=DbSendPeer.doSelect(crit);
+					if(l.size()==0)
+					{
 					/**
 				 	* If no entry in the topic then Remove the topic(directory)
 				 	*/ 
-					String fileName=filePath+"/"+Dname;
-					File f=new File(fileName);
-					SystemIndependentUtil.deleteFile(f);
-				}
-			}//for
+						String fileName=filePath+"/"+Dname;
+						File f=new File(fileName);
+						SystemIndependentUtil.deleteFile(f);
+					}
+				}//for
 			
 			/**
 		  	* Getting the userId of logged user from Turbine_User table
@@ -137,13 +155,30 @@ public class DB extends SecureScreen
 			}		  
 		   	// Count the Total messages according to userId
 			String totalMsg=new String();
-			String total_msg="SELECT COUNT(MSG_ID)TOTAL FROM DB_RECEIVE WHERE RECEIVER_ID = "+user_id+" AND GROUP_ID="+gid;
-		 	List totalmsg=DbReceivePeer.executeQuery(total_msg);
+			if(!stats.equals("fromIndex")){
+				String total_msg="SELECT COUNT(MSG_ID)TOTAL FROM DB_RECEIVE WHERE RECEIVER_ID = "+user_id+" AND GROUP_ID="+gid;
+		 		List totalmsg=DbReceivePeer.executeQuery(total_msg);
 			for(Iterator k=totalmsg.iterator(); k.hasNext();)
 			{
 				Record item=(Record)k.next();
 				totalMsg=item.getValue("TOTAL").asString();
 			}
+			}else{
+				String total_msg="SELECT COUNT(MSG_ID)TOTAL FROM DB_RECEIVE WHERE GROUP_ID="+gid;
+		 		List totalmsg=DbReceivePeer.executeQuery(total_msg);
+			for(Iterator k=totalmsg.iterator(); k.hasNext();)
+			{
+				Record item=(Record)k.next();
+				totalMsg=item.getValue("TOTAL").asString();
+			}
+			}
+		 	/*List totalmsg=DbReceivePeer.executeQuery(total_msg);
+			for(Iterator k=totalmsg.iterator(); k.hasNext();)
+			{
+				Record item=(Record)k.next();
+				totalMsg=item.getValue("TOTAL").asString();
+			}*/
+			//ErrorDumpUtil.ErrorLog("=======================>>>>>>>>>>>>>>>.   "+unreads);
 		   	//Adds the information to context
 			context.put("unread",unreads);
 			context.put("total",totalMsg);

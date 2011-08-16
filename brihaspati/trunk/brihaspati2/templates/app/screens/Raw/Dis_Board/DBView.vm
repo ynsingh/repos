@@ -1,6 +1,6 @@
 #*
  * @(#)DBView.vm
- * Copyright (c)2005-2006, 2009, 2010 ETRG,IIT Kanpur.
+ * Copyright (c)2005-2006, 2009, 2010, 2011 ETRG,IIT Kanpur.
  * All Rights Reserved.
  * Contributors: Members of ETRG, I.I.T. Kanpur
  * @author <a href="mailto:aktri@iitk.ac.in">Awadhesh Kumar Trivedi</a>
@@ -10,7 +10,7 @@
  * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
  * @modified date: 31-12-2009
- * @ modified date: 13-Oct-2010 (Shaista)
+ * @ modified date: 13-Oct-2010 (Shaista), 11-Aug-2011 (Sunil Kr)
  *#
 <head>
 ##This Script use for Fck Editor in Textarea.
@@ -19,69 +19,9 @@
         _editor_lang = "en";
 </script>
 <script type="text/javascript" src="$content.getURI("/scrpts/htmlarea.js")"></script>
-<script type="text/javascript">
-        var editor = null;
-        function initEditor() {
-                editor = new HTMLArea("ta");
-                editor.generate();
-                return false;
-                var cfg = editor.config;
-                cfg.registerButton({
-                        id        : "my-hilite",
-                        tooltip   : "Highlight text",
-                        image     : "ed_custom.gif",
-                        textMode  : false,
-                        action    : function(editor) {
-                                editor.surroundHTML("<span class=\"hilite\">", "</span>");
-                        },
-                        context   : 'table'
-                });
-                cfg.toolbar.push(["linebreak", "my-hilite"]); var cfg = editor.config;
-                function clickHandler(editor, buttonId) {
-                        switch (buttonId) {
-                                case "my-toc":
-                                        editor.insertHTML("<h1>Table Of Contents</h1>");
-                                break;
-                                case "my-date":
-                                        editor.insertHTML((new Date()).toString());
-                                break;
-                                case "my-bold":
-                                        editor.execCommand("bold");
-                                        editor.execCommand("italic");
-                                break;
-                                case "my-hilite":
-                                        editor.surroundHTML("<span class=\"hilite\">", "</span>");
-                                break;
-                        }
-                };
-                Cfg.registerButton("my-toc",  "Insert TOC", "ed_custom.gif", false, clickHandler);
-                cfg.registerButton("my-date", "Insert date/time", "ed_custom.gif", false, clickHandler);
-                cfg.registerButton("my-bold", "Toggle bold/italic", "ed_custom.gif", false, clickHandler);
-                cfg.registerButton("my-hilite", "Hilite selection", "ed_custom.gif", false, clickHandler);
-                cfg.registerButton("my-sample", "Class: sample", "ed_custom.gif", false,
-                        function(editor) {
-                                if (HTMLArea.is_ie) {
-                                        editor.insertHTML("<span class=\"sample\">&nbsp;&nbsp;</span>");
-                                        var r = editor._doc.selection.createRange();
-                                        r.move("character", -2); r.moveEnd("character", 2); r.select();
-                                } else {
-                                        var n = editor._doc.createElement("span"); n.className = "sample"; editor.insertNodeAtSelection(n);
-                                        var sel = editor._iframe.contentWindow.getSelection();  sel.removeAllRanges(); var r = editor._doc.createRange();
-                                        r.setStart(n, 0); r.setEnd(n, 0); sel.addRange(r);
-                                }
-                        }
-                );
-                cfg.pageStyle = "body { background-color:  } .hilite { background-color: yellow; } "+ ".sample { color: green; font-family: monospace; }";
-                cfg.toolbar.push(["linebreak", "my-toc", "my-date", "my-bold", "my-hilite", "my-sample"]);
-               editor.generate();
-        }
-        function insertHTML() { var html = prompt("Enter some HTML code here"); if (html) { editor.insertHTML(html); } }
-        function highlight() { editor.surroundHTML('<span style="background-color: yellow">', '</span>'); }
-</script>
+<script type="text/javascript" src="$content.getURI("/scrpts/Head.js")"></script> ##sk
 </head>
 <body onload="initEditor()">
-~
-
 $page.setBgColor($ui.bgcolor)
 $page.setTitle("Home|$CName|Communication|Discussion Board|Read Message")
 $!data.getMessage()
@@ -90,12 +30,39 @@ $!data.getMessage()
 <table bgcolor="$ui.tableColor" width=100%> 
 <tr bgcolor="$ui.menuColor"><td colspan=5> 
 	<b>
+
+##($stats == "fromIndex") Use for general discussion group ## sk
+##($mode2 == "instituteWise") Use for insititue wise discussion group ## sk
+
+#if($stats=="fromIndex")
+        <a href=$link.setPage("call,IndexHome.vm")>Home</a> |<a href =$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4").addPathInfo("stats","fromIndex")>$brih_general $DiscussionBoard</a>|
+        <a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("stats","fromIndex").addPathInfo("mode","All").addPathInfo("count","4")>$LocalMail_MailContent_msg3</a> | $Notice_Read $brih_msg2
+#elseif($mode2=="instituteWise")
+        <a href=$link.setPage("call,IndexHome.vm")>Home</a> |<a href =$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","8").addPathInfo("mode2","instituteWise")>$RemoteInstitute $brih_wise $DiscussionBoard</a>|
+        <a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("mode2","instituteWise").addPathInfo("mode","All").addPathInfo("count","8")>$LocalMail_MailContent_msg3</a> | $Notice_Read $brih_msg2
+#else
 	<a href=$link.setPage("call,IndexHome.vm")>$brih_home</a> | <a href=$link.setPage("CourseHome.vm")>$CName</a> | 
         <a href=$link.setPage("call,Local_Mail,Mail.vm").addPathInfo("count","1")>$brih_communication</a> | 
         <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("count","4")>$DiscussionBoard</a> |
 	<a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("mode","All").addPathInfo("count","4")>$LocalMail_MailContent_msg3</a> | $Notice_Read $brih_msg2
+#end
 </td></tr>
 <tr>
+#if($stats=="fromIndex")
+        #if($tdcolor != "4")
+        <td>
+        #elseif($tdcolor=="4")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("stats","fromIndex").addPathInfo("count","4")>$brih_general $DiscussionBoard</td>
+#elseif($mode2=="instituteWise")
+        #if($tdcolor != "8")
+        <td>
+        #elseif($tdcolor=="8")
+        <td bgcolor="#AFDCEC">
+        #end
+        <a href=$link.setPage("call,Dis_Board,DB.vm").addPathInfo("mode2","instituteWise").addPathInfo("count","8")>$RemoteInstitute $brih_wise $DiscussionBoard</td>
+#else
         #if($tdcolor != "1")
         <td>
         #elseif($tdcolor=="1")
@@ -132,8 +99,8 @@ $!data.getMessage()
         	#end
 	   	<a href=$link.setPage("call,News,News_Edit.vm").addPathInfo("status","fromCourse").addPathInfo("count","5")>$brih_news</td>
         #end
+#end
 </tr>
- 
 </table> 
 <form method="post" enctype="multipart/form-data">
 <table width=100% bgcolor="$ui.tableColor"> 
@@ -181,7 +148,15 @@ $!data.getMessage()
 		     		<td>&nbsp <image src="$content.getURI("/images/star_off_2.gif")" height=10 width=10> &nbsp </td>
 				#foreach($var in $file)
 		     			#if($countfield==0)
-    						<td><a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("topic","$topic").addPathInfo("view","content").addPathInfo("type","DB").addPathInfo("msgid",$msgID).addPathInfo("filename",$var)","newWin");>$var</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+						#if($stats=="fromIndex")
+                                                        <input type="hidden" name="stats" value="$stats">
+                                                        <td><a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("topic","$topic").addPathInfo("view","content").addPathInfo("type","DB").addPathInfo("stats","fromIndex").addPathInfo("msgid",$msgID).addPathInfo("filename",$var)","newWin");>$var</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                                #elseif($mode2=="instituteWise")
+                                                        <input type="hidden" NAME="mode2" value="$mode2">
+                                                        <td><a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("topic","$topic").addPathInfo("view","content").addPathInfo("type","DB").addPathInfo("mode2","instituteWise").addPathInfo("msgid",$msgID).addPathInfo("filename",$var)","newWin");>$var</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                                #else   
+                                                        <td><a href=javascript:popupWin("$link.setPage("call,ViewFileContent.vm").addPathInfo("topic","$topic").addPathInfo("view","content").addPathInfo("type","DB").addPathInfo("msgid",$msgID).addPathInfo("filename",$var)","newWin");>$var</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                                #end
 	             			#else
 		         			<td>
 							#if($lang == "hindi")
@@ -197,9 +172,16 @@ $!data.getMessage()
 		#end
 	</table>
 	<tr bgcolor="$ui.menuColor"><td colspan=5>
+	#if($stats=="fromIndex")
+                <a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("stats","fromIndex").addPathInfo("msgid",$msgID).addPathInfo("mode","reply").addPathInfo("course_id",$workgroup).addPathInfo("count",$tdcolor)>Reply</a>&nbsp&nbsp
+                <a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("stats","fromIndex").addPathInfo("course_id",$workgroup).addPathInfo("mode","All").addPathInfo("count",$tdcolor).addPathInfo("countTemp","1")>$LocalMail_Close</a>
+        #elseif($mode2=="instituteWise")
+                <a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("mode2","instituteWise").addPathInfo("msgid",$msgID).addPathInfo("mode","reply").addPathInfo("course_id",$workgroup).addPathInfo("count","8")>$LocalMail_Reply</a>&nbsp&nbsp
+                <a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("mode2","instituteWise").addPathInfo("course_id",$workgroup).addPathInfo("mode","All").addPathInfo("count","8").addPathInfo("countTemp","1")>$LocalMail_Close</a>
+        #else
 		<a href=$link.setPage("call,Dis_Board,DisBoard.vm").addPathInfo("msgid",$msgID).addPathInfo("mode","reply").addPathInfo("course_id",$workgroup).addPathInfo("count",$tdcolor)>$LocalMail_Reply</a>&nbsp&nbsp
 		<a href=$link.setPage("call,Dis_Board,DBContent.vm").addPathInfo("course_id",$workgroup).addPathInfo("mode","All").addPathInfo("count",$tdcolor).addPathInfo("countTemp","1")>$LocalMail_Close</a>
-
+	#end
  	 </td></tr>
 </table> 
 </td></tr> 

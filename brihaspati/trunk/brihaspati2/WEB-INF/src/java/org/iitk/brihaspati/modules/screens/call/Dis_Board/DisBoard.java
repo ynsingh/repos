@@ -64,8 +64,10 @@ import org.iitk.brihaspati.modules.utils.ErrorDumpUtil;
  * @author  <a href="sumanrjpt.@yahoo.co.in">Suman Rajput</a>
  * @author  <a href="rekha_20july@yahoo.co.in">Rekha Pal</a>
  * @author <a href="mailto:shaistashekh@hotmail.com">Shaista Bano</a>
+ * @author <a href="mailto:sunil.singh6094@gmail.com">Sunil Kumar</a>
  * @ modified date: 13-Oct-2010 (Shaista)
  * @ modified date: 13-Feb-2011 (Shaista)
+ * @ modified date: 25-May-2011 (Sunil Kr)
  * 
  */
 
@@ -79,27 +81,44 @@ public class DisBoard extends SecureScreen
 	public void doBuildTemplate(RunData data,Context context)
 	{
 		try{
-			 ParameterParser pp=data.getParameters();
+			ParameterParser pp=data.getParameters();
 			User user=data.getUser();
 			context.put("course",(String)user.getTemp("course_name"));
-			String mode=data.getParameters().getString("mode");
+			String stats=data.getParameters().getString("stats","");
+			context.put("stats",stats);	
+			String mode=data.getParameters().getString("mode","");
 			context.put("mode",mode);
+			String mode2=data.getParameters().getString("mode2","");
+			context.put("mode2",mode2);
+			ErrorDumpUtil.ErrorLog("DisBoard java=========>"+mode2);
 			String checkNull=data.getParameters().getString("check","noCheck");
 			context.put("check",checkNull);
-			String dir=data.getParameters().getString("course_id");
-			context.put("cid",dir);
-			String mode1=data.getParameters().getString("mode1");
-                        context.put("mode1",mode1);
-                        String grpname=data.getParameters().getString("val1");
-                        context.put("val",grpname);
-			context.put("tdcolor",data.getParameters().getString("count","4"));	
-			context.put("mode1",data.getParameters().getString("mode1",""));	
-
+			//this is use for general and institute wise discussion group	
+			String dir="", dir1="";
+			if(stats.equals("fromIndex")){
+				dir=data.getParameters().getString("course_id","general");
+			}else if(mode2.equals("instituteWise")){
+				dir=data.getParameters().getString("course_id","instituteWise");
+			}else
+				dir=data.getParameters().getString("course_id","");
+				//ErrorDumpUtil.ErrorLog("sunilll==========dir=>"+dir);
+				context.put("course",(String)user.getTemp("course_name"));
+				dir1=(String)user.getTemp("course_id");
+				context.put("cid",dir);
+	                        String grpname=data.getParameters().getString("val1");
+        	                context.put("val",grpname);
+				context.put("tdcolor",data.getParameters().getString("count","4"));	
 		 	/**
 		  	*  Getting the actual path where the DB file will be stored
 		  	*/
-		
-			String filePath=data.getServletContext().getRealPath("/Courses")+"/"+dir+"/DisBoard";		
+			
+			if(stats.equals("fromIndex"))
+				dir="general";
+			else if(mode2.equals("instituteWise"))
+				dir="instituteWise";
+			String filePath=data.getServletContext().getRealPath("/Courses")+"/"+dir+"/DisBoard";
+			ErrorDumpUtil.ErrorLog("instituteWise/general/courese=======filePath===>"+filePath);
+			
 			File dirHandle=new File(filePath);
 			String file[]=dirHandle.list();
 			Vector v=new Vector();
@@ -122,6 +141,7 @@ public class DisBoard extends SecureScreen
                 		Criteria crit=new Criteria();
                 		crit.add(DbSendPeer.MSG_ID,msg_id);
                	 		List u=DbSendPeer.doSelect(crit);
+				//ErrorDumpUtil.ErrorLog("general all list"+u);
 
                   		// Getting the record from Vector one by one
 
@@ -179,7 +199,3 @@ public class DisBoard extends SecureScreen
                 catch(Exception e){data.setMessage("Error in the Disboard screen !! "+e);}
 	}//method
 }//class
-
-
-
-
